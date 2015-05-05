@@ -84,7 +84,7 @@ class cApiRightCollection extends ItemCollection {
                 LIMIT 1";
 
         $params = array(
-            'pk' => $this->primaryKey,
+            'pk' => $this->getPrimaryKeyName(),
             'rights' => $this->table,
             'actions' => $cfg['tab']['actions'],
             'area' => $cfg['tab']['area'],
@@ -123,7 +123,8 @@ class cApiRight extends Item {
     /**
      * Constructor function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -134,36 +135,37 @@ class cApiRight extends Item {
         }
     }
 
-	/**
+    /**
      * Userdefined setter for right fields.
      *
      * @param string $name
      * @param mixed $value
      * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
             case 'idarea':
                 $value = (int) $value;
                 break;
-			case 'idaction':
+            case 'idaction':
                 $value = (int) $value;
                 break;
-			case 'idcat':
+            case 'idcat':
                 $value = (int) $value;
                 break;
-			case 'idclient':
+            case 'idclient':
                 $value = (int) $value;
                 break;
-			case 'idlang':
+            case 'idlang':
                 $value = (int) $value;
                 break;
-			case 'type':
+            case 'type':
                 $value = (int) $value;
                 break;
         }
 
         return parent::setField($name, $value, $bSafe);
     }
-	
+
 }

@@ -35,19 +35,22 @@ class cContentTypeHtml extends cContentTypeAbstract {
      *        types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-        // change attributes from the parent class and call the parent
-        // constructor
+
+        // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
+
+        // set props
         $this->_type = 'CMS_HTML';
         $this->_prefix = 'html';
+
     }
 
     /**
      * Generates the code which should be shown if this content type is shown in
      * the frontend.
      *
-     * @return string escaped HTML code which sould be shown if content type is
-     *         shown in frontend
+     * @return string
+     *         escaped HTML code which sould be shown if content type is shown in frontend
      */
     public function generateViewCode() {
         return $this->_encodeForOutput($this->_rawSettings);
@@ -56,8 +59,8 @@ class cContentTypeHtml extends cContentTypeAbstract {
     /**
      * Generates the code which should be shown if this content type is edited.
      *
-     * @return string escaped HTML code which should be shown if content type is
-     *         edited
+     * @return string
+     *         escaped HTML code which should be shown if content type is edited
      */
     public function generateEditCode() {
         $wysiwygDiv = new cHTMLDiv();
@@ -71,6 +74,7 @@ class cContentTypeHtml extends cContentTypeAbstract {
         $db->nextRecord();
         $id .= $db->f('idtype') . '_' . $this->_id;
         $wysiwygDiv->setId($id);
+        $wysiwygDiv->setClass(htmlentities($this->_type));
 
         $wysiwygDiv->setEvent('Focus', "this.style.border='1px solid #bb5577';");
         $wysiwygDiv->setEvent('Blur', "this.style.border='1px dashed #bfbfbf';");
@@ -92,16 +96,25 @@ class cContentTypeHtml extends cContentTypeAbstract {
         $editAnchor = new cHTMLLink("javascript:Con.Tiny.setContent('" . $this->_idArtLang . "','" . $editLink . "');");
         $editButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_edithtml.gif');
         $editButton->appendStyleDefinition('margin-right', '2px');
-		$editButton->setClass('content_type_zindex');
+        $editButton->setClass('content_type_zindex');
         $editAnchor->setContent($editButton);
 
         // construct save button
         $saveAnchor = new cHTMLLink();
-        $saveAnchor->setLink("javascript:Con.Tiny.setContent('" . $this->_idArtLang . "', '0')");
+        $saveAnchor->setLink("javascript:Con.Tiny.setContent('" . $this->_idArtLang . "', '0');");
         $saveButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_ok.gif');
         $saveAnchor->setContent($saveButton);
 
         return $this->_encodeForOutput($wysiwygDiv->render() . $editAnchor->render() . $saveAnchor->render());
+    }
+
+    /**
+     * This content type and its derived types can be edited by a WYSIWYG editor
+     *
+     * @return bool
+     */
+    public function isWysiwygCompatible() {
+        return true;
     }
 
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module>
     <name>content_sitemap_xml</name>
-    <description>see http://www.sitemaps.org/</description>
+    <description>Configurable xml sitemap. See also on: http://www.sitemaps.org</description>
     <type></type>
     <alias>content_sitemap_xml</alias>
 </module>

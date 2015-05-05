@@ -75,7 +75,10 @@ class cValidatorEmail extends cValidatorAbstract {
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @see cValidatorAbstract::_isValid()
+     * @param   mixed  $value
+     * @return  bool
      */
     protected function _isValid($value) {
         if (!is_string($value) || empty($value)) {

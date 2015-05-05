@@ -28,6 +28,8 @@ class UploadSearchResultList extends FrontendList {
 
     var $pathdata;
 
+    private $_fileType;
+
     function convert($field, $data) {
         global $cfg, $sess, $client, $cfgClient, $appendparameters;
 
@@ -64,21 +66,27 @@ class UploadSearchResultList extends FrontendList {
 
             if ($appendparameters == "imagebrowser" || $appendparameters == "filebrowser") {
                 $mstr = '<a href="javascript://" onclick="javascript:Con.getFrame(\'left_top\').document.getElementById(\'selectedfile\').value= \'' . $cfgClient[$client]["upl"]["frontendpath"] . $path . $data . '\'; window.returnValue=\'' . $cfgClient[$client]["upl"]["frontendpath"] . $path . $data . '\'; window.close();">' . $icon . $data . '</a>';
-            } else {
+            } else if ('' !== $this->_fileType) {
                 $markLeftPane = "Con.getFrame('left_bottom').upl.click(Con.getFrame('left_bottom').document.getElementById('$path'));";
 
                 $tmp_mstr = '<a onmouseover="this.style.cursor=\'pointer\'" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\');' . $markLeftPane . '">%s</a>';
                 $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$file"), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$file"), $data);
+            } else {
+                $markLeftPane = "Con.getFrame('left_bottom').upl.click(Con.getFrame('left_bottom').document.getElementById('$path'));";
+
+                $tmp_mstr = '<a onmouseover="this.style.cursor=\'pointer\'" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\');' . $markLeftPane . '">%s</a>';
+                // concatinate path with folder name (file) for path parameter to access folder
+                $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl&frame=4&path=$path$file/&file="), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$file"), $data);
             }
             return $mstr;
         }
 
         if ($field == 1) {
-            $this->path = $data;
+            $this->pathdata = $data;
 
             // If this file is an image, try to open
-            $fileType = strtolower(getFileType($data));
-            switch ($fileType) {
+            $this->_fileType = strtolower(getFileType($data));
+            switch ($this->_fileType) {
                 case "png":
                 case "psd":
                 case "gif":
@@ -105,22 +113,25 @@ class UploadSearchResultList extends FrontendList {
 
                     if (cApiDbfs::isDbfs($data)) {
                         $retValue = '<a href="JavaScript:iZoom(\'' . $sess->url($frontendURL . "dbfs.php?file=" . $data) . '\');">
-                                <img class="hover" name="smallImage" src="' . $sCacheThumbnail . '">
-                                <img class="preview" name="prevImage" src="' . $sCacheThumbnail . '">
+                                <img class="hover" alt="" name="smallImage" src="' . $sCacheThumbnail . '">
+                                <img class="preview" alt="" name="prevImage" src="' . $sCacheThumbnail . '">
                             </a>';
                         return $retValue;
                     } else {
                         $retValue = '<a href="JavaScript:iZoom(\'' . $frontendURL . $cfgClient[$client]["upload"] . $data . '\');">
-                                    <img class="hover" name="smallImage"  onMouseOver="correctPosition(this, ' . $iWidth . ', ' . $iHeight . ');" onmouseout="if (typeof(previewHideIe6) == \'function\') {previewHideIe6(this)}" src="' . $sCacheThumbnail . '">
-                                    <img class="preview" name="prevImage" src="' . $sCacheThumbnail . '">
+                                    <img class="hover" alt="" name="smallImage"  onMouseOver="correctPosition(this, ' . $iWidth . ', ' . $iHeight . ');" onmouseout="if (typeof(previewHideIe6) == \'function\') {previewHideIe6(this)}" src="' . $sCacheThumbnail . '">
+                                    <img class="preview" alt="" name="prevImage" src="' . $sCacheThumbnail . '">
                                 </a>';
-                        $retValue .= '<a href="JavaScript:iZoom(\'' . $frontendURL . $cfgClient[$client]["upload"] . $data . '\');"><img class="preview" name="prevImage" src="' . $sCacheThumbnail . '"></a>';
+                        $retValue .= '<a href="JavaScript:iZoom(\'' . $frontendURL . $cfgClient[$client]["upload"] . $data . '\');"><img class="preview" alt="" name="prevImage" src="' . $sCacheThumbnail . '"></a>';
                         return $retValue;
                     }
                     break;
+                case '':
+                    // folder has empty filetype column value
+                    return '<img class="hover_none" name="smallImage" alt="" src="' . cRegistry::getBackendUrl() . 'images/grid_folder.gif' . '">';
                 default:
                     $sCacheThumbnail = uplGetThumbnail($data, 150);
-                    return '<img class="hover_none" name="smallImage" src="' . $sCacheThumbnail . '">';
+                    return '<img class="hover_none" name="smallImage" alt="" src="' . $sCacheThumbnail . '">';
             }
         }
 
@@ -142,50 +153,50 @@ $thisfile = $sess->url("main.php?area=$area&frame=$frame&appendparameters=$appen
 $scrollthisfile = $thisfile . "&sortmode=$sortmode&sortby=$sortby";
 
 if ($sortby == 2 && $sortmode == "DESC") {
-    $fnsort = '<a class="gray" href="' . $thisfile . '&sortby=2&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Filename / Description") . '<img src="images/sort_down.gif" border="0"></a>';
+    $fnsort = '<a class="gray" href="' . $thisfile . '&sortby=2&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Filename / Description") . '<img src="images/sort_down.gif" alt="" border="0"></a>';
 } else {
     if ($sortby == 2) {
-        $fnsort = '<a class="gray" href="' . $thisfile . '&sortby=2&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Filename / Description") . '<img src="images/sort_up.gif" border="0"></a>';
+        $fnsort = '<a class="gray" href="' . $thisfile . '&sortby=2&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Filename / Description") . '<img src="images/sort_up.gif" alt="" border="0"></a>';
     } else {
         $fnsort = '<a class="gray" href="' . $thisfile . '&sortby=2&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Filename / Description") . '</a>';
     }
 }
 
 if ($sortby == 3 && $sortmode == "DESC") {
-    $pathsort = '<a class="gray" href="' . $thisfile . '&sortby=3&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Path") . '<img src="images/sort_down.gif" border="0"></a>';
+    $pathsort = '<a class="gray" href="' . $thisfile . '&sortby=3&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Path") . '<img src="images/sort_down.gif" alt="" border="0"></a>';
 } else {
     if ($sortby == 3) {
-        $pathsort = '<a class="gray" href="' . $thisfile . '&sortby=3&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Path") . '<img src="images/sort_up.gif" border="0"></a>';
+        $pathsort = '<a class="gray" href="' . $thisfile . '&sortby=3&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Path") . '<img src="images/sort_up.gif" alt="" border="0"></a>';
     } else {
         $pathsort = '<a class="gray" href="' . $thisfile . '&sortby=3&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Path") . "</a>";
     }
 }
 
 if ($sortby == 4 && $sortmode == "DESC") {
-    $sizesort = '<a class="gray" href="' . $thisfile . '&sortby=4&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Size") . '<img src="images/sort_down.gif" border="0"></a>';
+    $sizesort = '<a class="gray" href="' . $thisfile . '&sortby=4&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Size") . '<img src="images/sort_down.gif" alt="" border="0"></a>';
 } else {
     if ($sortby == 4) {
-        $sizesort = '<a class="gray" href="' . $thisfile . '&sortby=4&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Size") . '<img src="images/sort_up.gif" border="0"></a>';
+        $sizesort = '<a class="gray" href="' . $thisfile . '&sortby=4&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Size") . '<img src="images/sort_up.gif" alt="" border="0"></a>';
     } else {
         $sizesort = '<a class="gray" href="' . $thisfile . '&sortby=4&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Size") . "</a>";
     }
 }
 
 if ($sortby == 5 && $sortmode == "DESC") {
-    $typesort = '<a class="gray" href="' . $thisfile . '&sortby=5&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Type") . '<img src="images/sort_down.gif" border="0"></a>';
+    $typesort = '<a class="gray" href="' . $thisfile . '&sortby=5&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Type") . '<img src="images/sort_down.gif" alt="" border="0"></a>';
 } else {
     if ($sortby == 5) {
-        $typesort = '<a class="gray" href="' . $thisfile . '&sortby=5&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Type") . '<img src="images/sort_up.gif" border="0"></a>';
+        $typesort = '<a class="gray" href="' . $thisfile . '&sortby=5&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Type") . '<img src="images/sort_up.gif" alt="" border="0"></a>';
     } else {
         $typesort = '<a class="gray" href="' . $thisfile . '&sortby=5&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Type") . "</a>";
     }
 }
 
 if ($sortby == 6 && $sortmode == "DESC") {
-    $srelevance = '<a class="gray" href="' . $thisfile . '&sortby=6&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Relevance") . '<img src="images/sort_down.gif" border="0"></a>';
+    $srelevance = '<a class="gray" href="' . $thisfile . '&sortby=6&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Relevance") . '<img src="images/sort_down.gif" alt="" border="0"></a>';
 } else {
     if ($sortby == 6) {
-        $srelevance = '<a class="gray" href="' . $thisfile . '&sortby=6&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Relevance") . '<img src="images/sort_up.gif" border="0"></a>';
+        $srelevance = '<a class="gray" href="' . $thisfile . '&sortby=6&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Relevance") . '<img src="images/sort_up.gif" alt="" border="0"></a>';
     } else {
         $srelevance = '<a class="gray" href="' . $thisfile . '&sortby=6&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Relevance") . "</a>";
     }

@@ -73,34 +73,110 @@ if ($action == 10) {
 // Contenido --> Articles --> Editor)
 $markSubItem = markSubMenuItem(5, true);
 
-// Include tiny class
-include($backendPath . 'external/wysiwyg/tinymce3/editorclass.php');
-$oEditor = new cTinyMCEEditor('', '');
-$oEditor->setToolbar('inline_edit');
-
-// Get configuration for popup und inline tiny
-$sConfigInlineEdit = $oEditor->getConfigInlineEdit();
-$sConfigFullscreen = $oEditor->getConfigFullscreen();
-
 // Replace vars in Script
 $oScriptTpl = new cTemplate();
+
+// Include wysiwyg editor class
+$wysiwygeditor = cWYSIWYGEditor::getCurrentWysiwygEditorName();
+
+// tinymce 3 not autoloaded, tinymce 4 and all custom editors must be
+if ('tinymce3' === $wysiwygeditor) {
+    include($cfg['path'][$wysiwygeditor . '_editorclass']);
+}
+switch ($wysiwygeditor) {
+    case 'tinymce4':
+        $oScriptTpl->set('s', '_PATH_CONTENIDO_TINYMCE_CSS_', $cfg['path']['all_wysiwyg_html'] . $wysiwygeditor . '/contenido/css/');
+        $oEditor = new cTinyMCE4Editor('', '');
+        break;
+    default:
+        $oScriptTpl->set('s', '_PATH_CONTENIDO_TINYMCE_CSS_', $cfg['path']['contenido_fullhtml'] . 'styles/');
+        $oEditor = new cTinyMCEEditor('', '');
+        $oEditor->setToolbar('inline_edit');
+
+        // Get configuration for popup and inline tiny
+        $sConfigInlineEdit = $oEditor->getConfigInlineEdit();
+        $sConfigFullscreen = $oEditor->getConfigFullscreen();
+}
+
+
+$jslibs = '';
+// get scripts from editor class
+$jslibs .= $oEditor->_getScripts();
+if ('tinymce3' === substr($wysiwygeditor, 0, 8)
+&& true === $oEditor->getGZIPMode()) {
+    // tinyMCE_GZ.init call must be placed in its own script tag
+    // User defined plugins and themes should be identical in both "inits"
+    $jslibs .= <<<JS
+<script type="text/javascript">
+tinyMCE_GZ.init({
+    plugins: '{$oEditor->getPlugins()}',
+    themes: '{$oEditor->getThemes()}',
+    disk_cache: true,
+    debug: false
+});
+</script>
+JS;
+}
+foreach ($cfg['path'][$wysiwygeditor . '_scripts'] as $onejs) {
+    $jslibs .= '<script src="' . $onejs . '" type="text/javascript"></script>';
+}
+unset($onejs);
+$oScriptTpl->set('s', '_WYSIWYG_JS_TAGS_', $jslibs);
+unset($jslibs);
 
 $oScriptTpl->set('s', 'JS_EDITCONTENT', $markSubItem);
 
 // Set urls to file browsers
 $oScriptTpl->set('s', 'IMAGE', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
 $oScriptTpl->set('s', 'FILE', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=filebrowser');
-$oScriptTpl->set('s', 'FLASH', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
 $oScriptTpl->set('s', 'MEDIA', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
 $oScriptTpl->set('s', 'FRONTEND', cRegistry::getFrontendUrl());
 
 // Add tiny options
-$oScriptTpl->set('s', 'TINY_OPTIONS', $sConfigInlineEdit);
-$oScriptTpl->set('s', 'TINY_FULLSCREEN', $sConfigFullscreen);
+//var_dump(json_encode($sConfigInlineEdit));
+
+if ('tinymce4' === $wysiwygeditor) {
+    // set toolbar options for each CMS type that can be edited using a WYSIWYG editor
+    $aTinyOptions = array();
+    $oTypeColl = new cApiTypeCollection();
+    $oTypeColl->select();
+    while (false !== ($typeEntry = $oTypeColl->next())) {
+        // specify a shortcut for type field
+        $curType = $typeEntry->get('type');
+
+        $contentTypeClassName = cTypeGenerator::getContentTypeClassName($curType);
+        if (false === class_exists($contentTypeClassName)) {
+            continue;
+        }
+        $cContentType = new $contentTypeClassName(null, 0, array());
+        if (false === $cContentType->isWysiwygCompatible()) {
+            continue;
+        }
+        $oEditor->setToolbar($curType, 'inline_edit');
+    }
+
+    // get configuration for inline editor
+    $aConfigInlineEdit = $oEditor->getConfigInlineEdit();
+    // Get configuration for fullscreen editor
+    $aConfigFullscreen = $oEditor->getConfigFullscreen();
+
+    foreach($aConfigInlineEdit as $sCmsType => $setting) {
+        // Get configuration for popup and inline tiny
+        $aTinyOptions[$sCmsType] = $aConfigInlineEdit[$sCmsType];
+        $aTinyOptions[$sCmsType]['fullscreen_settings'] = $aConfigFullscreen[$sCmsType];
+    }
+
+    $oScriptTpl->set('s', 'TINY_OPTIONS', json_encode($aTinyOptions));
+//     $oScriptTpl->set('s', 'TINY_OPTIONS', '[{' . $sTinyOptions . '},{' . $sCmsHtmlHeadConfig . '}]');
+} else {
+    $sTinyOptions= $sConfigInlineEdit . ",\nfullscreen_settings: {\n" . $sConfigFullscreen . "\n}";
+    $oScriptTpl->set('s', 'TINY_OPTIONS', '{' . $sTinyOptions . '}');
+}
 $oScriptTpl->set('s', 'IDARTLANG', $idartlang);
-$oScriptTpl->set('s', 'CLOSE', utf8_encode(html_entity_decode(i18n('Close editor'))));
-$oScriptTpl->set('s', 'SAVE', utf8_encode(html_entity_decode(i18n('Close editor and save changes'))));
-$oScriptTpl->set('s', 'QUESTION', i18n('Do you want to save changes?'));
+$oScriptTpl->set('s', 'CLOSE', html_entity_decode(i18n('Close editor'), ENT_COMPAT | ENT_HTML401, cRegistry::getEncoding()));
+$oScriptTpl->set('s', 'SAVE', html_entity_decode(i18n('Close editor and save changes'), ENT_COMPAT | ENT_HTML401, cRegistry::getEncoding()));
+$oScriptTpl->set('s', 'QUESTION', html_entity_decode(i18n('You have unsaved changes.'), ENT_COMPAT | ENT_HTML401, cRegistry::getEncoding()));
+$oScriptTpl->set('s', 'BACKEND_URL', cRegistry::getBackendUrl());
 
 if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false') {
     $oScriptTpl->set('s', 'USE_TINY', '');

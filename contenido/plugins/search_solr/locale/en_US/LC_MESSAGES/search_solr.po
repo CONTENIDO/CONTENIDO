@@ -90,3 +90,6 @@ msgstr "Reload the core according to its configuration file schema.xml."
 msgid "DESCR_REINDEX"
 msgstr "Reindex articles of current client. Articles that are offline, not searchable or hidden by protected categories will be skipped."
 
+msgid "DESCR_DELETE"
+msgstr "Delete articles of current client."
+

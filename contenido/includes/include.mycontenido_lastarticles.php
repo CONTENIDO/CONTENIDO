@@ -136,7 +136,7 @@ while ($db->nextRecord()) {
     $tpl->set('d', 'TPLNAME', $a_tplname);
 
     // Make Startarticle button
-    $tmp_img = (1 == $is_start) ? '<img src="images/isstart1.gif" border="0">' : '<img src="images/isstart0.gif" border="0">';
+    $tmp_img = (1 == $is_start) ? '<img src="images/isstart1.gif" border="0" alt="">' : '<img src="images/isstart0.gif" border="0" alt="">';
     $tpl->set('d', 'START', $tmp_img);
 
     if ($online) {

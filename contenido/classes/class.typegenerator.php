@@ -74,8 +74,8 @@ class cTypeGenerator {
      * Returns the classname for a content type.
      *
      * @param string $type Content type, e. g. CMS_HTMLHEAD
-     * @return string The classname e. g. cContentTypeHtmlhead for content type
-     *         CMS_HTMLHEAD
+     * @return string
+     *         The classname e. g. cContentTypeHtmlhead for content type CMS_HTMLHEAD
      */
     protected function _getContentTypeClassName($type) {
         $typeClassName = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $type)));
@@ -83,11 +83,22 @@ class cTypeGenerator {
     }
 
     /**
+     *
+     * @param string $type
+     * @return string
+     */
+    public static function getContentTypeClassName($type)  {
+        $contentType = substr($type, 4);
+        return 'cContentType' . strtoupper($contentType[0]) . strtolower(substr($contentType, 1));
+    }
+
+    /**
      * Returns the full path to the include file name of a content type.
      *
-     * @param string $type Content type, e. g. CMS_HTMLHEAD
-     * @return string The full path e. g.
-     *
+     * @param string $type
+     *         Content type, e. g. CMS_HTMLHEAD
+     * @return string
+     *         The full path e. g.
      *         {path_to_contenido_includes}/type/code/include.CMS_HTMLHEAD.code.php
      *         for content type CMS_HTMLHEAD
      */

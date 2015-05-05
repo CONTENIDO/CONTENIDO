@@ -84,7 +84,12 @@ class cHttpRequestSocket extends cHttpRequest {
     }
 
     /**
+     * Set the request URL
+     *
      * @see cHttpRequest::setURL()
+     * @param string $url
+     *         the URL
+     * @return cHttpRequest
      */
     public function setURL($url) {
         $this->url = $url;
@@ -93,7 +98,12 @@ class cHttpRequestSocket extends cHttpRequest {
     }
 
     /**
+     * Set the GET parameters
+     *
      * @see cHttpRequest::setGetParams()
+     * @param array $array
+     *         associative array containing keys and values of the GET parameters
+     * @return cHttpRequest
      */
     public function setGetParams($array) {
         $this->getArray = $array;
@@ -102,7 +112,12 @@ class cHttpRequestSocket extends cHttpRequest {
     }
 
     /**
+     * Set the POST parameters
+     *
      * @see cHttpRequest::setPostParams()
+     * @param array $array
+     *         associative array containing keys and values of the POST parameters
+     * @return cHttpRequest
      */
     public function setPostParams($array) {
         $this->postArray = $array;
@@ -111,7 +126,12 @@ class cHttpRequestSocket extends cHttpRequest {
     }
 
     /**
+     * Set the HTTP headers
+     *
      * @see cHttpRequest::setHeaders()
+     * @param array $array
+     *         associative array containing the HTTP headers
+     * @return cHttpRequest
      */
     public function setHeaders($array) {
         $this->headerArray = $array;
@@ -178,7 +198,7 @@ class cHttpRequestSocket extends cHttpRequest {
      * @param bool $return Wether the function should return the servers response
      * @param string $method GET or PUT
      * @param bool $returnHeaders Wether the headers should be included in the response
-     * @return string|boolean
+     * @return string|bool
      */
     protected function sendRequest($return, $method, $returnHeaders = false) {
         if (!(strpos($this->url, 'http') === 0)) {
@@ -232,7 +252,15 @@ class cHttpRequestSocket extends cHttpRequest {
     }
 
     /**
+     * Peform the request using POST
+     *
      * @see cHttpRequest::postRequest()
+     * @param bool $return
+     *         If true, response of the server gets returned as string
+     * @param bool $returnHeaders
+     *         If true, headers will be included in the response
+     * @return string|bool
+     *         False on error, response otherwise
      */
     public function postRequest($return = true, $returnHeaders = false) {
         $this->preparePostRequest();
@@ -241,7 +269,15 @@ class cHttpRequestSocket extends cHttpRequest {
     }
 
     /**
+     * Peform the request using GET
+     *
      * @see cHttpRequest::getRequest()
+     * @param bool $return
+     *         If true, response of the server gets returned as string
+     * @param bool $returnHeaders
+     *         If true, headers will be included in the response
+     * @return string|bool
+     *         False on error, response otherwise
      */
     public function getRequest($return = true, $returnHeaders = false) {
         $this->prepareGetRequest();
@@ -250,7 +286,15 @@ class cHttpRequestSocket extends cHttpRequest {
     }
 
     /**
+     * Peform the request using POST AND append all GET parameters
+     *
      * @see cHttpRequest::request()
+     * @param bool $return
+     *         If true, response of the server gets returned as string
+     * @param bool $returnHeaders
+     *         If true, headers will be included in the response
+     * @return string|bool
+     *         False on error, response otherwise
      */
     public function request($return = true, $returnHeaders = false) {
         $this->prepareGetRequest();

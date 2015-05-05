@@ -13,7 +13,6 @@
  * @link http://www.contenido.org
  */
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
-
 $backendPath = cRegistry::getBackendPath();
 $backendUrl = cRegistry::getBackendUrl();
 
@@ -44,6 +43,60 @@ $versioning = new cContentVersioning();
 $versioningState = $versioning->getState();
 
 $page = new cGuiPage("con_content_list");
+
+$templateFile = cRegistry::getConfigValue('path', 'templates', '') . cRegistry::getConfigValue('templates', 'generic_page_html5');
+$page->setPageBase($templateFile);
+
+$jslibs = '';
+$aNotifications = array();
+
+// Include wysiwyg editor class
+$wysiwygeditor = cWYSIWYGEditor::getCurrentWysiwygEditorName();
+
+// tinymce 3 not autoloaded, tinymce 4 is
+// use blacklist in case customer has own editor that is not autoloaded
+if ('tinymce3' === $wysiwygeditor) {
+    include($cfg['path'][$wysiwygeditor . '_editorclass']);
+}
+switch ($wysiwygeditor) {
+    case 'tinymce4':
+        $page->set('s', '_PATH_CONTENIDO_TINYMCE_CSS_', $cfg['path']['all_wysiwyg_html'] . $wysiwygeditor . '/contenido/css/');
+        $oEditor = new cTinyMCE4Editor('', '');
+        break;
+    default:
+        $page->set('s', '_PATH_CONTENIDO_TINYMCE_CSS_', $cfg['path']['contenido_fullhtml'] . 'styles/');
+        $oEditor = new cTinyMCEEditor('', '');
+        $oEditor->setToolbar('inline_edit');
+
+        // Get configuration for popup and inline tiny
+        $sConfigInlineEdit = $oEditor->getConfigInlineEdit();
+        $sConfigFullscreen = $oEditor->getConfigFullscreen();
+}
+
+// get scripts from editor class
+$jslibs .= $oEditor->_getScripts();
+if ('tinymce3' === substr($wysiwygeditor, 0, 8)
+&& true === $oEditor->getGZIPMode()) {
+    // tinyMCE_GZ.init call must be placed in its own script tag
+    // User defined plugins and themes should be identical in both "inits"
+    $jslibs .= <<<JS
+<script type="text/javascript">
+tinyMCE_GZ.init({
+    plugins: '{$oEditor->getPlugins()}',
+    themes: '{$oEditor->getThemes()}',
+    disk_cache: true,
+    debug: false
+});
+</script>
+JS;
+}
+foreach ($cfg['path'][$wysiwygeditor . '_scripts'] as $onejs) {
+    $jslibs .= '<script src="' . $onejs . '" type="text/javascript"></script>';
+}
+unset($onejs);
+
+$page->set('s', '_WYSIWYG_JS_TAGS_', $jslibs);
+unset($jslibs);
 
 if (!($perm->have_perm_area_action($area, "savecontype") || $perm->have_perm_area_action_item($area, "savecontype", $idcat) || $perm->have_perm_area_action("con", "deletecontype") || $perm->have_perm_area_action_item("con", "deletecontype", $idcat))) {
     // $page->displayCriticalError(i18n("Permission denied")); (Apparently one of the action files already displays this error message)
@@ -76,7 +129,7 @@ if (($action == 'savecontype' || $action == 10)) {
             $data = $_REQUEST['data'];
             $value = $_REQUEST['value'];
 
-            $notification->displayNotification("info", i18n("Changes saved"));
+            $aNotifications[] = $notification->returnNotification("info", i18n("Changes saved"));
         }
 
         conGenerateCodeForArtInAllCategories($idart);
@@ -84,8 +137,14 @@ if (($action == 'savecontype' || $action == 10)) {
         $page->displayError(i18n("Permission denied"));
     }
 } else if ($action == 'deletecontype') {
+<<<<<<< HEAD
     if ($perm->have_perm_area_action($Area, "deletecontype") || $perm->have_perm_area_action_item($area, "deletecontype", $idcat)) {
         if (isset($_REQUEST['idcontent']) && is_numeric($_REQUEST['idcontent'])) {
+=======
+    if ($perm->have_perm_area_action($area, "deletecontype") || $perm->have_perm_area_action_item($area, "deletecontype", $idcat)) {
+       if (isset($_REQUEST['idcontent']) && is_numeric($_REQUEST['idcontent'])) {
+            $oContentColl = new cApiContentCollection();
+>>>>>>> origin/develop
 
             $linkedTypes = array(
                 4 => 22, // if a CMS_IMG is deleted, the corresponding
@@ -150,8 +209,13 @@ if (($action == 'savecontype' || $action == 10)) {
                 default:
                     break;
             }
+<<<<<<< HEAD
 
             $notification->displayNotification("info", i18n("Changes saved"));
+=======
+            $oContentColl->delete((int) $_REQUEST['idcontent']);
+            $aNotifications[] = $notification->returnNotification("info", i18n("Changes saved"));
+>>>>>>> origin/develop
 
             conGenerateCodeForArtInAllCategories($idart);
         }
@@ -270,7 +334,7 @@ if (($action == 'savecontype' || $action == 10)) {
             $xmlDocument = new SimpleXMLElement($rawData);
 
             foreach ($xmlDocument->children() as $articleNode) {
-                $articleId = $articleNode->attributes()->id;
+                $articleId = cRegistry::getArticleId();
 
                 // check article id exists in xml
                 if ($articleId > 0) {
@@ -374,8 +438,13 @@ if (($action == 'savecontype' || $action == 10)) {
                     $error = true;
                 }
             }
+<<<<<<< HEAD
             if ($error === false) {
                 $page->displayInfo(i18n("Raw data was imported successfully"));
+=======
+            if($error === false) {
+                $page->displayOk(i18n("Raw data was imported successfully"));
+>>>>>>> origin/develop
             }
         } catch (Exception $e) {
             $page->displayError(i18n("Error: The XML file is not valid"));
@@ -383,6 +452,18 @@ if (($action == 'savecontype' || $action == 10)) {
     } else {
         $page->displayWarning(i18n("Please choose a file"));
     }
+<<<<<<< HEAD
+=======
+}
+if (count($aNotifications) > 0) {
+    $sNotifications = '';
+    foreach ($aNotifications as $curNotification) {
+        $sNotifications .= $curNotification . '<br />';
+    }
+    $page->set('s', 'NOTIFICATIONS', $sNotifications);
+} else {
+    $page->set('s', 'NOTIFICATIONS', '');
+>>>>>>> origin/develop
 }
 
 if (count($aNotifications) > 0) {
@@ -424,11 +505,27 @@ switch ($versioningState) {
             }
         }
 
+<<<<<<< HEAD
         // Get Content or Content Version
         if ($articleType == 'current' || $articleType == 'editable') {
             $selectedArticle->loadArticleContent();
         } else if ($articleType == 'version') {
             $selectedArticle->loadArticleVersionContent();
+=======
+foreach ($sortID as $name) {
+    // $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id,
+    // a.value as value FROM " . $cfg["tab"]["content"] . " as a, " .
+    // $cfg["tab"]["type"] . " as b WHERE a.idartlang = " .
+    // cSecurity::toInteger($_REQUEST["idartlang"]) . " AND a.idtype = b.idtype
+    // AND b.type = '" . cSecurity::toString($name) . "' ORDER BY idtype,
+    // typeid, idcontent";
+    $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM %s AS a, %s AS b " . "WHERE a.idartlang = %d AND a.idtype = b.idtype AND b.type = '%s' ORDER BY idtype, typeid, idcontent";
+    $db->query($sql, $cfg["tab"]["content"], $cfg["tab"]["type"], $_REQUEST["idartlang"], $name);
+    while ($db->nextRecord()) {
+        $result[$db->f("name")][$db->f("id")] = $db->f("value");
+        if (!in_array($db->f("name"), $aList)) {
+            $aList[$db->f("idtype")] = $db->f("name");
+>>>>>>> origin/develop
         }
         $result = array_change_key_case($selectedArticle->content, CASE_UPPER);
         $result = $versioning->sortResults($result);
@@ -668,37 +765,74 @@ switch ($versioningState) {
 // Contenido --> Articles --> Editor)
 $markSubItem = markSubMenuItem(4, true);
 
-// Include tiny class
-include($backendPath . 'external/wysiwyg/tinymce3/editorclass.php');
-$oEditor = new cTinyMCEEditor('', '');
-$oEditor->setToolbar('inline_edit');
 
-// Get configuration for popup und inline tiny
-$sConfigInlineEdit = $oEditor->getConfigInlineEdit();
-$sConfigFullscreen = $oEditor->getConfigFullscreen();
 
 // Replace vars in Script
 // Set urls to file browsers
 $page->set('s', 'IMAGE', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
 $page->set('s', 'FILE', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=filebrowser');
-$page->set('s', 'FLASH', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
 $page->set('s', 'MEDIA', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
 $page->set('s', 'FRONTEND', cRegistry::getFrontendUrl());
 
 // Add tiny options
+if ('tinymce4' === $wysiwygeditor) {
+    // set toolbar options for each CMS type that can be edited using a WYSIWYG editor
+    $aTinyOptions = array();
+    $oTypeColl = new cApiTypeCollection();
+    $oTypeColl->select();
+    while (false !== ($typeEntry = $oTypeColl->next())) {
+        // specify a shortcut for type field
+        $curType = $typeEntry->get('type');
+
+        $contentTypeClassName = cTypeGenerator::getContentTypeClassName($curType);
+        if (false === class_exists($contentTypeClassName)) {
+            continue;
+        }
+        $cContentType = new $contentTypeClassName(null, 0, array());
+        if (false === $cContentType->isWysiwygCompatible()) {
+            continue;
+        }
+        $oEditor->setToolbar($curType, 'inline_edit');
+    }
+
+    // get configuration for inline editor
+    $aConfigInlineEdit = $oEditor->getConfigInlineEdit();
+    // Get configuration for fullscreen editor
+    $aConfigFullscreen = $oEditor->getConfigFullscreen();
+
+    foreach($aConfigInlineEdit as $sCmsType => $setting) {
+        $oEditor->setToolbar($sCmsType, 'inline_edit');
+        $aTinyOptions[$sCmsType] = $aConfigInlineEdit[$sCmsType];
+        $aTinyOptions[$sCmsType]['fullscreen_settings'] = $aConfigFullscreen[$sCmsType];
+    }
+    $page->set('s', 'TINY_OPTIONS', json_encode($aTinyOptions));
+    //$page->set('s', 'TINY_OPTIONS', '[{' . $sTinyOptions . '},{' . $sCmsHtmlHeadConfig . '}]');
+} else {
+    $sTinyOptions= $sConfigInlineEdit . ",\nfullscreen_settings: {\n" . $sConfigFullscreen . "\n}";
+    $page->set('s', 'TINY_OPTIONS', '{' . $sTinyOptions . '}');
+}
 $page->set('s', 'TINY_OPTIONS', $sConfigInlineEdit);
 $page->set('s', 'TINY_FULLSCREEN', $sConfigFullscreen);
 $page->set('s', 'IDARTLANG', $idartlang);
-$page->set('s', 'CLOSE', i18n('Close editor'));
-$page->set('s', 'SAVE', i18n('Close editor and save changes'));
-$page->set('s', 'QUESTION', i18n('Do you want to save changes?'));
+$page->set('s', 'CLOSE', html_entity_decode(i18n('Close editor'), ENT_COMPAT | ENT_HTML401, cRegistry::getEncoding()));
+$page->set('s', 'SAVE', html_entity_decode(i18n('Close editor and save changes'), ENT_COMPAT | ENT_HTML401, cRegistry::getEncoding()));
+$page->set('s', 'QUESTION', html_entity_decode(i18n('You have unsaved changes.'), ENT_COMPAT | ENT_HTML401, cRegistry::getEncoding()));
+$page->set('s', 'BACKEND_URL', cRegistry::getBackendUrl());
 
 // Add export and import translations
+<<<<<<< HEAD
 $page->set('s', 'EXPORT_RAWDATA', i18n('Export raw data'));
 $page->set('s', 'IMPORT_RAWDATA', i18n('Import raw data'));
 $page->set('s', 'EXPORT_LABEL', i18n('Raw data export'));
 $page->set('s', 'IMPORT_LABEL', i18n('Raw data import'));
 $page->set('s', 'OVERWRITE_DATA_LABEL', i18n('Overwrite data'));
+=======
+$page->set('s', 'EXPORT_RAWDATA', i18n("Export raw data"));
+$page->set('s', 'IMPORT_RAWDATA', i18n("Import raw data"));
+$page->set('s', 'EXPORT_LABEL', i18n("Raw data export"));
+$page->set('s', 'IMPORT_LABEL', i18n("Raw data import"));
+$page->set('s', 'OVERWRITE_DATA_LABEL', i18n("Overwrite data"));
+>>>>>>> origin/develop
 
 //CON-2151 check if article is locked
 $aAuthPerms = explode(',', $auth->auth['perm']);
@@ -722,6 +856,7 @@ if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false'
 $breadcrumb = renderBackendBreadcrumb($syncoptions, true, true);
 $page->set('s', 'CATEGORY', $breadcrumb);
 if (count($result) <= 0) {
+<<<<<<< HEAD
     $page->displayInfo(i18n('Article has no raw data'));
 } else {
     foreach ($result AS $type => $typeIdValue) {
@@ -732,6 +867,31 @@ if (count($result) <= 0) {
             } else if ($articleType == 'current' || $articleType == 'version') {
                 $class = ' noactive';
                 $formattedVersion = '';
+=======
+    $page->displayInfo(i18n("Article has no raw data"));
+//    $page->abortRendering();
+    // $layoutcode .= '<div>--- ' . i18n("none") . ' ---</div>';
+} else {
+    foreach ($aIdtype as $idtype) {
+        foreach ($sortID as $name) {
+            if (in_array($name, array_keys($result)) && isset($result[$name][$idtype])) {
+                if (in_array($name . "[" . $idtype . "]", $currentTypes)) {
+                    $class = '';
+                } else {
+                    $class = ' noactive';
+                }
+                $page->set("d", "EXTRA_CLASS", $class);
+                $page->set("d", "NAME", $name);
+                $page->set("d", "ID_TYPE", $idtype);
+                if(in_array($name, $allowedContentTypes)) {
+                    $page->set("d", "EXPORT_CONTENT",  '<input type="checkbox" class="rawtypes" name="' . $name .'" value="' .$idtype .'" checked="checked">');
+                    $page->set('d', 'EXPORT_CONTENT_LABEL', i18n("Export"));
+                } else {
+                    $page->set("d", "EXPORT_CONTENT", '');
+                    $page->set('d', 'EXPORT_CONTENT_LABEL', '');
+                }
+                $page->next();
+>>>>>>> origin/develop
             }
             $page->set('d', 'EXTRA_CLASS', $class);
             $page->set('d', 'NAME', $type);
@@ -808,6 +968,7 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
     $client = $_REQUEST['client'];
     $idartlang = $_REQUEST['idartlang'];
     $contenido = $_REQUEST['contenido'];
+
 
     // Get locked status (article freeze)
     $cApiArticleLanguage = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
@@ -900,12 +1061,26 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
             $num = $val;
             $search[$num] = sprintf('%s[%s]', $type, $val);
 
+<<<<<<< HEAD
             $path = $backendUrl . 'main.php?area=con_content_list&action=deletecontype&changeview=edit&idart=' . $idart . '&idartlang=' . $idartlang . '&idcat=' . $idcat . '&client=' . $client . '&lang=' . $lang . '&frame=4&contenido=' . $contenido . '&idcontent=' . $idcontent;
             if ($_typeItem->idtype == 20 || $_typeItem->idtype == 21) {
                 $tmp = str_replace('";?>', '', $tmp);
                 $tmp = str_replace('<?php echo "', '', $tmp);
                 // echo
                 // "<textarea>"."?".">\n".stripslashes($tmp)."\n\";?"."><"."?php\n"."</textarea>";
+=======
+                if ($locked == 0) { // No freeze
+                    $replacements[$val] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); }); return false;">
+                <img alt="" border="0" src="' . $backendUrl . 'images/delete.gif">
+                </a>';
+                    $keycode[$type][$val] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); }); return false;">
+                <img alt="" border="0" src="' . $backendUrl . 'images/delete.gif">
+                </a>';
+                } else { // Freeze status
+                    $replacements[$val] = $tmp;
+                    $keycode[$type][$val] = $tmp;
+                }
+>>>>>>> origin/develop
             }
 
             if ($locked == 0 && $articleType == 'editable' || $articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple')) { // No freeze				

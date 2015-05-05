@@ -25,7 +25,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * are preserved, without exceeding $maxlen.
  *
  * Warning: Currently, this function uses a regular ASCII-Whitespace to do the
- * seperation test. If you are using '&nbsp' to create spaces, this function
+ * separation test. If you are using '&nbsp' to create spaces, this function
  * will fail.
  *
  * Example:

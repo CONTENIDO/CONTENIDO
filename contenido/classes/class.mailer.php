@@ -147,7 +147,8 @@ class cMailer extends Swift_Mailer {
      * @param string $mailEncryption [optional] the mail encryption
      * @param string $mailUser [optional] the mail user
      * @param string $mailPass [optional] the mail password
-     * @return Swift_SmtpTransport Swift_MailTransport the transport object
+     * @return Swift_SmtpTransport|Swift_MailTransport
+     *         the transport object
      */
     public static function constructTransport($mailHost, $mailPort, $mailEncryption = NULL, $mailUser = NULL, $mailPass = NULL) {
         // try to use SMTP
@@ -206,7 +207,8 @@ class cMailer extends Swift_Mailer {
      *        be sent
      * @param bool $resend [optional] whether the mail is resent
      * @param string $contentType
-     * @return int number of recipients to which the mail has been sent
+     * @return int
+     *         number of recipients to which the mail has been sent
      */
     public function sendMail($from, $to, $subject, $body = '', $cc = NULL, $bcc = NULL, $replyTo = NULL, $resend = false, $contentType = 'text/plain') {
         $message = Swift_Message::newInstance($subject, $body, $contentType);
@@ -298,7 +300,8 @@ class cMailer extends Swift_Mailer {
      *
      * @param string|array $value the value to encode
      * @param string $charset the charset to use in htmlentities
-     * @return string array encoded value
+     * @return string|array
+     *         encoded value
      */
     private function encodeField($value, $charset) {
         if (is_array($value)) {
@@ -319,7 +322,8 @@ class cMailer extends Swift_Mailer {
      *
      * @param string|array $value the value to decode
      * @param string $charset the charset to use in htmlentities
-     * @return string array decoded value
+     * @return string|array
+     *         decoded value
      */
     private function decodeField($value, $charset) {
         if (is_array($value)) {
@@ -340,9 +344,18 @@ class cMailer extends Swift_Mailer {
      * @param Swift_Message $message the message which has been send
      * @param array $failedRecipients [optional] the recipient addresses that
      *        did not get the mail
-     * @return string the idmail of the inserted table row in con_mail_log
+     * @return string|bool
+     *         the idmail of the inserted table row in con_mail_log|bool
+     *         false if mail_log option is inactive
      */
     private function _logMail(Swift_Mime_Message $message, array $failedRecipients = array()) {
+
+        // Log only if mail_log is active otherwise return false
+        $mail_log = getSystemProperty('system', 'mail_log');
+        if ($mail_log == 'false') {
+            return false;
+        }
+
         $mailLogCollection = new cApiMailLogCollection();
 
         // encode all fields
@@ -356,6 +369,9 @@ class cMailer extends Swift_Mailer {
         $body = $this->encodeField($message->getBody(), $charset);
         $contentType = $message->getContentType();
         $mailItem = $mailLogCollection->create($from, $to, $replyTo, $cc, $bcc, $subject, $body, time(), $charset, $contentType);
+
+        // get idmail variable
+        $idmail = $mailItem->get('idmail');
 
         // do not use array_merge here since the mail addresses are array keys
         // array_merge will make problems if one recipient is e.g. in cc and bcc
@@ -381,7 +397,7 @@ class cMailer extends Swift_Mailer {
                 if (in_array($key, $failedRecipients)) {
                     $success = false;
                 }
-                $mailLogSuccessCollection->create($mailItem->get('idmail'), $recipient, $success, $exception);
+                $mailLogSuccessCollection->create($idmail, $recipient, $success, $exception);
             }
         }
 

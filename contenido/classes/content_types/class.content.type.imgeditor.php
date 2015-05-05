@@ -107,10 +107,11 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *        types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-		global $area;
-	
-        // change attributes from the parent class and call the parent
-        // constructor
+
+        // TODO is this required?
+        global $area;
+
+        // set props
         $this->_type = 'CMS_IMGEDITOR';
         $this->_prefix = 'imgeditor';
         $this->_formFields = array(
@@ -121,16 +122,17 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             'image_internal_notice',
             'image_copyright'
         );
-		
+        
+        // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
 
-		// if form is submitted, store the current teaser settings
+        // if form is submitted, store the current teaser settings
         // notice: also check the ID of the content type (there could be more
         // than one content type of the same type on the same page!)
         if (isset($_POST[$this->_prefix . '_action']) && $_POST[$this->_prefix . '_action'] === 'store' && isset($_POST[$this->_prefix . '_id']) && (int) $_POST[$this->_prefix . '_id'] == $this->_id) {
             $this->_storeSettings();
         }
-		
+
         // get image information from con_upl from the database
         $upload = new cApiUpload($this->_rawSettings);
         $this->_filename = $upload->get('filename');
@@ -270,7 +272,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     /**
      * Generates the link to the image for use in the src attribute.
      *
-     * @return string the link to the image
+     * @return string
+     *         the link to the image
      */
     private function _generateImagePath() {
         if (!empty($this->_filename)) {
@@ -287,7 +290,6 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     /**
      * Stores all values from the $_POST array in the $_settings attribute
      * (associative array) and saves them in the database (XML).
-     *
      */
     protected function _storeSettings() {
         // prepare the filename and dirname
@@ -351,8 +353,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * Generates the code which should be shown if this content type is shown in
      * the frontend.
      *
-     * @return string escaped HTML code which sould be shown if content type is
-     *         shown in frontend
+     * @return string
+     *         escaped HTML code which sould be shown if content type is shown in frontend
      */
     public function generateViewCode() {
         $image = new cHTMLImage($this->_imagePath);
@@ -364,8 +366,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     /**
      * Generates the code which should be shown if this content type is edited.
      *
-     * @return string escaped HTML code which should be shown if content type is
-     *         edited
+     * @return string
+     *         escaped HTML code which should be shown if content type is edited
      */
     public function generateEditCode() {
         // construct the top code of the template
@@ -430,7 +432,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * Generates code for the directories tab in which various settings can be
      * made.
      *
-     * @return string - the code for the directories tab
+     * @return string
+     *         the code for the directories tab
      */
     private function _generateTabDirectories() {
         // define a wrapper which contains the whole content of the directories
@@ -439,7 +442,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $wrapperContent = array();
 
         $directoryList = new cHTMLDiv('', 'directoryList', 'directoryList' . '_' . $this->_id);
-        $liRoot = new cHTMLListItem('root', 'last');
+        $liRoot = new cHTMLListItem('root', 'root');
         $aUpload = new cHTMLLink('#');
         $aUpload->setClass('on');
         $aUpload->setAttribute('title', 'upload');
@@ -484,7 +487,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * Generates code for the meta tab in which the images's meta data can be
      * edited.
      *
-     * @return string - the code for the meta tab
+     * @return string
+     *         the code for the meta tab
      */
     private function _generateTabMeta() {
         // define a wrapper which contains the whole content of the meta tab
@@ -516,7 +520,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     /**
      * Generates code for the upload tab in which new images can be uploaded.
      *
-     * @return string - the code for the upload tab
+     * @return string
+     *         the code for the upload tab
      */
     private function _generateTabUpload() {
         // define a wrapper which contains the whole content of the upload tab
@@ -604,7 +609,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * Generate a select box containing all files in the given directory.
      *
      * @param string $directoryPath directory of the files
-     * @return string rendered cHTMLSelectElement
+     * @return string
+     *         rendered cHTMLSelectElement
      */
     public function generateFileSelect($directoryPath = '') {
         // make sure the path ends with a slash
@@ -619,16 +625,15 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
 
         $files = array();
         if (is_dir($this->_uploadPath . $directoryPath)) {
-            if ($handle = opendir($this->_uploadPath . $directoryPath)) {
-                while (($entry = readdir($handle)) != false) {
-                    if (is_file($this->_uploadPath . $directoryPath . $entry) && (! (strpos($entry, ".") === 0))) {
+            if (false !== ($handle = cDirHandler::read($this->_uploadPath . $directoryPath, false, false, true))) {
+                foreach ($handle as $entry) {
+                    if (false === cFileHandler::fileNameBeginsWithDot($entry)) {
                         $file = array();
                         $file["name"] = $entry;
                         $file["path"] = $directoryPath . $entry;
                         $files[] = $file;
                     }
                 }
-                closedir($handle);
             }
         }
 
@@ -646,9 +651,9 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
 
         $i = 1;
         foreach($files as $file) {
-        	$htmlSelectOption = new cHTMLOptionElement($file["name"], $file["path"]);
-        	$htmlSelect->addOptionElement($i, $htmlSelectOption);
-        	$i++;
+            $htmlSelectOption = new cHTMLOptionElement($file["name"], $file["path"]);
+            $htmlSelect->addOptionElement($i, $htmlSelectOption);
+            $i++;
         }
 
         if ($i === 0) {
@@ -675,7 +680,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * Overwrite in subclasses if you use getDirectoryList!
      *
      * @param array $dirData directory information
-     * @return boolean whether the directory is the currently active directory
+     * @return bool
+     *         whether the directory is the currently active directory
      */
     protected function _isActiveDirectory(array $dirData) {
         return $dirData['path'] . $dirData['name'] . '/' === $this->_dirname;
@@ -687,7 +693,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * Overwrite in subclasses if you use getDirectoryList!
      *
      * @param array $dirData directory information
-     * @return boolean whether the directory should be shown expanded
+     * @return bool
+     *         whether the directory should be shown expanded
      */
     protected function _shouldDirectoryBeExpanded(array $dirData) {
         return $this->_isSubdirectory($dirData['path'] . $dirData['name'], $this->_dirname);
@@ -698,7 +705,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *
      * @param string $filename the filename of the image
      * @param string $dirname the dirname of the image
-     * @return string JSON-encoded array with meta data
+     * @return string
+     *         JSON-encoded array with meta data
      */
     public function getImageMeta($filename, $dirname) {
         $upload = new cApiUpload();
@@ -733,7 +741,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *        upload
      *        directory or a dbfs path
      * @param string $name Name of directory to create
-     * @return string void value of filemode as string ('0702') or nothing
+     * @return string|void
+     *         value of filemode as string ('0702') or nothing
      */
     public function uplmkdir($path, $name) {
         return uplmkdir($path, $name);
@@ -743,7 +752,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * Uploads the transmitted files saved in the $_FILES array.
      *
      * @param string $path the path to which the file should be uploaded
-     * @return string the filename of the uploaded file
+     * @return string
+     *         the filename of the uploaded file
      */
     public function uplupload($path) {
         if (count($_FILES) === 1) {

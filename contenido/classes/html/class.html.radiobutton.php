@@ -66,7 +66,8 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      * Sets the checked flag.
      *
      * @param bool $checked If true, the "checked" attribute will be assigned.
-     * @return cHTMLRadiobutton $this
+     * @return cHTMLRadiobutton
+     *         $this for chaining
      */
     public function setChecked($checked) {
         if ($checked == true) {
@@ -80,7 +81,8 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      * Sets a custom label text
      *
      * @param string $text Text to display
-     * @return cHTMLRadiobutton $this
+     * @return cHTMLRadiobutton
+     *         $this for chaining
      */
     public function setLabelText($text) {
         $this->_labelText = $text;
@@ -98,7 +100,8 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      * parameter.
      *
      * @param bool $renderlabel If true, renders a label
-     * @return string Rendered HTML
+     * @return string
+     *         Rendered HTML
      */
     public function toHtml($renderLabel = true) {
         $attributes = $this->getAttributes(true);

@@ -200,14 +200,6 @@ class cApiDbfsCollection extends ItemCollection {
     }
 
     /**
-     * @deprecated [20131106]  Use cApiDbfsCollection->fileExists() instead
-     */
-    public function file_exists($path) {
-        cDeprecated('The method file_exists() is deprecated. Use fileExists() instead.');
-        return $this->fileExists($path);
-    }
-
-    /**
      * Checks, if a dbfs directory exists.
      *
      * @global int $client
@@ -234,14 +226,6 @@ class cApiDbfsCollection extends ItemCollection {
     }
 
     /**
-     * @deprecated [20131106]  Use cApiDbfsCollection->dirExists() instead
-     */
-    public function dir_exists($path) {
-        cDeprecated('The method dir_exists() is deprecated. Use dirExists() instead.');
-        return $this->dirExists($path);
-    }
-
-    /**
      *
      * @param string $path
      * @return string
@@ -250,14 +234,6 @@ class cApiDbfsCollection extends ItemCollection {
         $path = dirname($path);
 
         return $path;
-    }
-
-    /**
-     * @deprecated [20131106]  Use cApiDbfsCollection->parentDir() instead
-     */
-    public function parent_dir($path) {
-        cDeprecated('The method parent_dir() is deprecated. Use parentDir() instead.');
-        return $this->parentDir($path);
     }
 
     /**
@@ -478,7 +454,8 @@ class cApiDbfs extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -488,6 +465,13 @@ class cApiDbfs extends Item {
         }
     }
 
+    /**
+     * Stores the loaded and modified item to the database.
+     * The properties "modified" & "modifiedby" are set automatically.
+     *
+     * @see Item::store()
+     * @return bool
+     */
     public function store() {
         global $auth;
 
@@ -501,9 +485,12 @@ class cApiDbfs extends Item {
      * Sets the value of a specific field.
      * Ensures to bypass any set inFilter for 'content' field which is a blob.
      *
-     * @param string $sField Field name
-     * @param string $mValue Value to set
-     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @param string $sField
+     *         Field name
+     * @param string $mValue
+     *         Value to set
+     * @param bool $bSafe
+     *         Flag to run defined inFilter on passed value
      * @return bool
      */
     public function setField($sField, $mValue, $bSafe = true) {
@@ -519,9 +506,12 @@ class cApiDbfs extends Item {
      * User defined value getter for cApiDbfs.
      * Ensures to bypass any set outFilter for 'content' field which is a blob.
      *
-     * @param string $sField Specifies the field to retrieve
-     * @param bool $bSafe Flag to run defined outFilter on passed value
-     * @return mixed Value of the field
+     * @param string $sField
+     *         Specifies the field to retrieve
+     * @param bool $bSafe
+     *         Flag to run defined outFilter on passed value
+     * @return mixed
+     *         Value of the field
      */
     public function getField($sField, $bSafe = true) {
         if ('content' === $sField) {

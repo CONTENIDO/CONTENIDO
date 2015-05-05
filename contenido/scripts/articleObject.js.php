@@ -484,7 +484,4 @@ echo $cutomTabsJs;
 
     };
 
-    // @deprecated [2013-10-22] Assign to windows scope (downwards compatibility)
-    window.articleObject = Con.ArticleObject;
-
 })(Con, Con.$);

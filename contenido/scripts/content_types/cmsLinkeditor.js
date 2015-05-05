@@ -137,6 +137,10 @@
                 url: self.pathBackend + 'ajaxmain.php',
                 data: 'ajax=linkeditorfilelist&idcat=' + idcat + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
                 success: function(msg) {
+					if (Con.checkAjaxResponse(msg) === false)  {
+						return false;
+					}
+
                     $(self.frameId + ' #directoryFile_' + self.id).html(msg);
                 }
             });
@@ -170,6 +174,10 @@
                     url: self.pathBackend + 'ajaxmain.php',
                     data: 'ajax=linkeditordirlist&level=' + level + '&parentidcat=' + parentidcat + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
                     success: function(msg) {
+						if (Con.checkAjaxResponse(msg) === false)  {
+							return false;
+						}
+
                         divContainer.after(msg);
                         divContainer.parent('li').removeClass('collapsed');
                         self.addNaviActions();
@@ -196,6 +204,10 @@
                 url: self.pathBackend + 'ajaxmain.php',
                 data: 'ajax=linkeditorimagelist&dir=' + dirname + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
                 success: function(msg) {
+					if (Con.checkAjaxResponse(msg) === false)  {
+						return false;
+					}
+
                     $(self.frameId + ' #file #directoryFile_' + self.id).html(msg);
                 }
             });
@@ -237,7 +249,7 @@
             titles.push($(this).attr('title'));
         });
         if (titles.length < 1) {
-            $(self.frameId + ' li#root>div').addClass('active');
+            $(self.frameId + ' li.root>div').addClass('active');
         }
 
         // get the selected directory and save it
@@ -290,6 +302,10 @@
                     url: self.pathBackend + 'ajaxmain.php',
                     data: 'ajax=linkeditorimagelist&dir=' + self.selectedPath + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
                     success: function(msg) {
+						if (Con.checkAjaxResponse(msg) === false)  {
+							return false;
+						}
+	
                         $(self.frameId + ' img.loading').hide();
                         $(self.frameId + ' input.jqueryAjaxUpload').css('visibility', 'visible');
                         $(self.frameId + ' #file #directoryFile_' + self.id).html(msg);
@@ -321,7 +337,11 @@
                 type: 'POST',
                 url: self.pathBackend + 'ajaxmain.php',
                 data: 'ajax=upl_mkdir&id=' + self.id + '&idartlang=' + self.idArtLang + '&path=' + dirname + '&foldername=' + folderName + '&contenido=' + self.session,
-                success: function(msg) {//make create folder
+                success: function(msg) { //make create folder
+					if (Con.checkAjaxResponse(msg) === false)  {
+						return false;
+					}
+
                     if (msg === '1') {
                         // reset input field
                         $('input[name="foldername"]').val('');
@@ -331,6 +351,10 @@
                             url: self.pathBackend + 'ajaxmain.php',
                             data: 'ajax=dirlist&idartlang=' + self.idArtLang + '&id=' + self.id + '&dir=' + dirname + '&contenido=' + self.session,
                             success: function(msg) {
+								if (Con.checkAjaxResponse(msg) === false)  {
+									return false;
+								}
+
                                 if ($('div.cms_linkeditor .con_str_tree div.active').length == 0) {
                                     // to make sure that some element is selected. Otherwise the list wouldn't get updated
                                     $('div.cms_linkeditor div.file .con_str_tree .last div').first().click();
@@ -397,8 +421,5 @@
 
 
     Con.cContentTypeLinkeditor = cContentTypeLinkeditor;
-
-    // @deprecated [2013-10-21] Assign to windows scope (downwards compatibility)
-    window.cContentTypeLinkeditor = cContentTypeLinkeditor;
 
 })(Con, Con.$);

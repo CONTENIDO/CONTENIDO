@@ -31,7 +31,6 @@ class cHTMLUpload extends cHTMLFormElement {
      * default width is 20 units.
      *
      * @param string $name Name of the element
-     * @param string $initvalue Initial value of the box
      * @param int $width width of the text box
      * @param int $maxlength maximum input length of the box
      * @param string $id ID of the element
@@ -56,7 +55,8 @@ class cHTMLUpload extends cHTMLFormElement {
      * Sets the width of the text box.
      *
      * @param int $width width of the text box
-     * @return cHTMLUpload $this
+     * @return cHTMLUpload
+     *         $this for chaining
      */
     public function setWidth($width) {
         $width = intval($width);
@@ -72,7 +72,8 @@ class cHTMLUpload extends cHTMLFormElement {
      * Sets the maximum input length of the text box.
      *
      * @param int $maxlen maximum input length
-     * @return cHTMLUpload $this
+     * @return cHTMLUpload
+     *         $this for chaining
      */
     public function setMaxLength($maxlen) {
         $maxlen = intval($maxlen);

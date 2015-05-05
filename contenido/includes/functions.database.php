@@ -67,7 +67,7 @@ function dbGetIndexes($db, $table) {
  * @param  string  $null  Parameter to forbid NULL values, feasible values '', 'NULL' or 'YES'
  *                        where 'NULL' or 'YES' allows NULL values and '' doesn't
  * @param  string  $key   The field will be added as a primary key, if value is 'PRI',
- *                        otherwhise the value should be empty ''
+ *                        otherwise the value should be empty ''
  * @param  string  $default  The default value for the field. Feasible is each possible
  *                           value depending on passed $type
  * @param  string  $extra  Additional info for the field, e. g. 'auto_increment', if the
@@ -86,8 +86,8 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
 
     $parameter = array();
 
-    // Parameter checking for $null. If parameter is '' or 'NULL' or 'YES', we
-    // know that we want the colum to forbid null entries.
+    // Parameter checking for $null. If parameter is 'NULL' or 'YES', we
+    // know that we want the colum to allow null entries, otherwise forbid null entries.
     if ($null == 'NULL' || $null == 'YES') {
         $parameter['NULL'] = 'NULL';
         $null = 'YES';

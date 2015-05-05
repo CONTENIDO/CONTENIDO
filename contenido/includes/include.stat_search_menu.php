@@ -26,7 +26,7 @@ $searchTerms = new cApiSearchTrackingCollection();
 $searchTerms->selectPopularSearchTerms();
 while ($term = $searchTerms->next()) {
     $page->set("d", "SEARCHTERM_URL", urlencode($term->get("searchterm")));
-    $page->set("d", "SEARCHTERM", $term->get("searchterm"));
+    $page->set("d", "SEARCHTERM", conHtmlSpecialChars($term->get("searchterm")));
     $page->next();
 }
 

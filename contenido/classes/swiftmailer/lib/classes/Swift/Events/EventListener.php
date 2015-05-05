@@ -10,9 +10,8 @@
 
 /**
  * An identity interface which all EventListeners must extend.
- * @package Swift
- * @subpackage Events
- * @author Chris Corbyn
+ *
+ * @author     Chris Corbyn
  */
 interface Swift_Events_EventListener
 {

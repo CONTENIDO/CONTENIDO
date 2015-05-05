@@ -131,7 +131,7 @@ $oRecipients = new NewsletterRecipientCollection();
 // Updating keys, if activated; all recipients of all clients!
 if (getSystemProperty("newsletter", "updatekeys")) {
     $iUpdatedRecipients = $oRecipients->updateKeys();
-    $oPage->displayInfo(sprintf(i18n("%d recipients, with no or incompatible key has been updated. Deactivate update function.", 'newsletter'), $iUpdatedRecipients));
+    $oPage->displayOk(sprintf(i18n("%d recipients, with no or incompatible key has been updated. Deactivate update function.", 'newsletter'), $iUpdatedRecipients));
 }
 
 $oRecipients->setWhere("idclient", $client);

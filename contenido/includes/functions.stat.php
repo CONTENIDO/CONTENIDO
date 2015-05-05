@@ -244,7 +244,7 @@ function statsOverviewAll($yearmonth) {
 
         $inThisLanguage = $db2->f(0);
 
-        $icon = '<img src="' . $cfg['path']['images'] . 'folder.gif" class="vAlignMiddle">';
+        $icon = '<img alt="" src="' . $cfg['path']['images'] . 'folder.gif" class="vAlignMiddle">';
 
         //************ art ********************************
         $sql = "SELECT * FROM " . $cfg["tab"]["cat_art"] . " AS A, " . $cfg["tab"]["art"] . " AS B, " . $cfg["tab"]["art_lang"] . " AS C WHERE A.idcat=" . cSecurity::toInteger($idcat) . "
@@ -272,7 +272,7 @@ function statsOverviewAll($yearmonth) {
         $db3->free();
 
         $tpl->set('d', 'PADDING_LEFT', $padding_left);
-        $tpl->set('d', 'TEXT', $text . ' (idcat: ' . cSecurity::toInteger($db->f('idcat')) . ')');
+        $tpl->set('d', 'TEXT', conHtmlSpecialChars($text) . ' (idcat: ' . cSecurity::toInteger($db->f('idcat')) . ')');
         $tpl->set('d', 'ONCLICK', $onclick);
         $tpl->set('d', 'ICON', $icon);
         $tpl->set('d', 'STATUS', $offonline);
@@ -288,7 +288,7 @@ function statsOverviewAll($yearmonth) {
                                                class="vAlignMiddle">
                                       </a>');
         } else {
-            $tpl->set('d', 'EXPAND', '<img src="' . $cfg['path']['images'] . 'spacer.gif" width="7">');
+            $tpl->set('d', 'EXPAND', '<img alt="" src="' . $cfg['path']['images'] . 'spacer.gif" width="7">');
         }
         $tpl->set('d', 'INTHISLANGUAGE', $inThisLanguage);
         if ($db->f("level") != 0) {
@@ -374,9 +374,9 @@ function statsOverviewAll($yearmonth) {
                 $offonline = '<img src="' . $cfg['path']['images'] . 'online_off.gif" alt="' . i18n("Article is online") . '" title="' . i18n("Article is online") . '">';
             }
 
-            $icon = '<img src="' . $cfg['path']['images'] . 'article.gif"  class="vAlignMiddle">';
+            $icon = '<img alt="" src="' . $cfg['path']['images'] . 'article.gif"  class="vAlignMiddle">';
             $tpl->set('d', 'PADDING_LEFT', $padding_left);
-            $tpl->set('d', 'TEXT', $text . ' (idart: ' . cSecurity::toInteger($db3->f('idart')) . ')');
+            $tpl->set('d', 'TEXT', conHtmlSpecialChars($text) . ' (idart: ' . cSecurity::toInteger($db3->f('idart')) . ')');
             $tpl->set('d', 'ONCLICK', "");
             $tpl->set('d', 'ICON', $icon);
             $tpl->set('d', 'STATUS', $offonline);
@@ -385,7 +385,7 @@ function statsOverviewAll($yearmonth) {
             $tpl->set('d', 'NUMBEROFARTICLES', $numberOfArticles);
             $tpl->set('d', 'TOTAL', $total);
             $tpl->set('d', 'INTHISLANGUAGE', $inThisLanguage);
-            $tpl->set('d', 'EXPAND', '<img src="' . $cfg['path']['images'] . 'spacer.gif" width="7">');
+            $tpl->set('d', 'EXPAND', '<img alt="" src="' . $cfg['path']['images'] . 'spacer.gif" width="7">');
             $tpl->set('d', 'DISPLAY_ROW', 'none');
             $cat_name = "";
             statCreateLocationString($db3->f('idart'), "&nbsp;/&nbsp;", $cat_name);
@@ -556,7 +556,7 @@ function statsOverviewYear($year) {
 
         $inThisLanguage = $db2->f(0);
 
-        $icon = '<img src="' . $cfg['path']['images'] . 'folder.gif" class="vAlignMiddle">';
+        $icon = '<img alt="" src="' . $cfg['path']['images'] . 'folder.gif" class="vAlignMiddle">';
 
         //************ art ********************************
         $sql = "SELECT * FROM " . $cfg["tab"]["cat_art"] . " AS A, " . $cfg["tab"]["art"] . " AS B, " . $cfg["tab"]["art_lang"] . " AS C WHERE A.idcat=" . cSecurity::toInteger($idcat) . " AND A.idart=B.idart AND B.idart=C.idart
@@ -583,7 +583,7 @@ function statsOverviewYear($year) {
         $db3->free();
 
         $tpl->set('d', 'PADDING_LEFT', $padding_left);
-        $tpl->set('d', 'TEXT', $text . ' (idcat: ' . cSecurity::toInteger($db->f('idcat')) . ')');
+        $tpl->set('d', 'TEXT', conHtmlSpecialChars($text) . ' (idcat: ' . cSecurity::toInteger($db->f('idcat')) . ')');
         $tpl->set('d', 'ONCLICK', $onclick);
         $tpl->set('d', 'ICON', $icon);
         $tpl->set('d', 'STATUS', $offonline);
@@ -601,7 +601,7 @@ function statsOverviewYear($year) {
                                                class="vAlignMiddle">
                                       </a>');
         } else {
-            $tpl->set('d', 'EXPAND', '<img src="' . $cfg['path']['images'] . 'spacer.gif" width="7">');
+            $tpl->set('d', 'EXPAND', '<img alt="" src="' . $cfg['path']['images'] . 'spacer.gif" width="7">');
         }
 
         if ($db->f("level") != 0) {
@@ -666,9 +666,9 @@ function statsOverviewYear($year) {
                 $offonline = '<img src="' . $cfg['path']['images'] . 'online_off.gif" alt="' . i18n("Category is online") . '" title="' . i18n("Category is online") . '">';
             }
 
-            $icon = '<img src="' . $cfg['path']['images'] . 'article.gif" class="vAlignMiddle">';
+            $icon = '<img alt="" src="' . $cfg['path']['images'] . 'article.gif" class="vAlignMiddle">';
             $tpl->set('d', 'PADDING_LEFT', $padding_left);
-            $tpl->set('d', 'TEXT', $text . ' (idart: ' . cSecurity::toInteger($idart) . ')');
+            $tpl->set('d', 'TEXT', conHtmlSpecialChars($text) . ' (idart: ' . cSecurity::toInteger($idart) . ')');
             $tpl->set('d', 'ONCLICK', "");
             $tpl->set('d', 'ICON', $icon);
             $tpl->set('d', 'STATUS', $offonline);
@@ -676,7 +676,7 @@ function statsOverviewYear($year) {
             $tpl->set('d', 'NUMBEROFARTICLES', $numberOfArticles);
             $tpl->set('d', 'TOTAL', $total);
             $tpl->set('d', 'ROWNAME', implode('_', $aRowname));
-            $tpl->set('d', 'EXPAND', '<img src="' . $cfg['path']['images'] . 'spacer.gif" width="7">');
+            $tpl->set('d', 'EXPAND', '<img alt="" src="' . $cfg['path']['images'] . 'spacer.gif" width="7">');
             $tpl->set('d', 'INTHISLANGUAGE', $inThisLanguage);
             $tpl->set('d', 'DISPLAY_ROW', 'none');
             $cat_name = "";
@@ -777,7 +777,7 @@ function statsOverviewTop($yearmonth, $top) {
         statCreateLocationString($db->f(2), "&nbsp;/&nbsp;", $cat_name);
         $tpl->set('d', 'PADDING_LEFT', '5');
         $tpl->set('d', 'PATH', i18n("Path") . ":&nbsp;/&nbsp;" . $cat_name);
-        $tpl->set('d', 'TEXT', $db->f(0) . ' (idart: ' . cSecurity::toInteger($db->f('idart')) . ')');
+        $tpl->set('d', 'TEXT', conHtmlSpecialChars($db->f(0)) . ' (idart: ' . cSecurity::toInteger($db->f('idart')) . ')');
         $tpl->set('d', 'TOTAL', $db->f(1));
         $tpl->set('d', 'ULR_TO_PAGE', $frontendURL . 'front_content.php?idart=' . $db->f('idart'));
         $tpl->next();
@@ -839,7 +839,7 @@ function statsOverviewTopYear($year, $top) {
 
         $tpl->set('d', 'PADDING_LEFT', '0');
         $tpl->set('d', 'PATH', i18n("Path") . ":&nbsp;/&nbsp;" . $cat_name);
-        $tpl->set('d', 'TEXT', $db->f(0) . ' (idart: ' . cSecurity::toInteger($db->f('idart')) . ')');
+        $tpl->set('d', 'TEXT', conHtmlSpecialChars($db->f(0)) . ' (idart: ' . cSecurity::toInteger($db->f('idart')) . ')');
         $tpl->set('d', 'TOTAL', $db->f(1));
         $tpl->set('d', 'ULR_TO_PAGE', $frontendURL . 'front_content.php?idart=' . $db->f('idart'));
         $tpl->next();

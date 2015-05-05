@@ -37,7 +37,8 @@ class cApiArticleSpecificationCollection extends ItemCollection {
      *
      * @param int $client
      * @param int $lang
-     * @param string $orderby Order statement, like "artspec ASC"
+     * @param string $orderby
+     *         Order statement, like "artspec ASC"
      * @return array
      */
     public function fetchByClientLang($client, $lang, $orderBy = '') {
@@ -62,7 +63,8 @@ class cApiArticleSpecification extends Item {
     /**
      * Constructor function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;

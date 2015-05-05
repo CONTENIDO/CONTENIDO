@@ -63,7 +63,7 @@ if ($action == 'user_delete') {
     $oRightColl = new cApiRightCollection();
     $oRightColl->deleteByUserId($request['userid']);
 
-    $page->displayInfo(i18n("User deleted"));
+    $page->displayOk(i18n("User deleted"));
     $page->setReload();
 
     $page->abortRendering();
@@ -97,7 +97,7 @@ if ($action == 'user_edit') {
 				// Client has one or more assigned language(s)
 				foreach ($mlang as $selectedlanguage) {
 
-					if (!in_array($selectedlanguage, $availablelanguages)) {
+					if (!$clientLanguageCollection->hasLanguageInClients($selectedlanguage, $mclient)) {
 						// Selected language are not assigned to selected client
 						$sNotification = $notification->returnNotification("warning", i18n("You have to select a client with a language of that client."));
 						$bError = true;
@@ -202,7 +202,7 @@ $tpl->set('s', 'VALUE', i18n("Value"));
 
 $tpl->set('d', 'ROW_ID', "username");
 $tpl->set('d', 'CATNAME', i18n("Username"));
-$tpl->set('d', 'CATFIELD', $oUser->getField('username') . '<img align="top" src="images/spacer.gif" height="20">');
+$tpl->set('d', 'CATFIELD', conHtmlSpecialChars($oUser->getField('username')) . '<img align="top" alt="" src="images/spacer.gif" height="20">');
 $tpl->next();
 
 $tpl->set('d', 'ROW_ID', "name");

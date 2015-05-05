@@ -26,8 +26,8 @@ class cApiTemplateCollection extends ItemCollection {
     /**
      * Create a new collection of items.
      *
-     * @param string $select where clause to use for selection (see
-     *        ItemCollection::select())
+     * @param string $select
+     *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
         global $cfg;
@@ -49,7 +49,8 @@ class cApiTemplateCollection extends ItemCollection {
      *
      * @param int $idclient
      * @param int $idlay
-     * @param int $idtplcfg  Either a valid template configuration id or an empty string
+     * @param int $idtplcfg
+     *         Either a valid template configuration id or an empty string
      * @param string $name
      * @param string $description
      * @param int $deletable
@@ -94,7 +95,7 @@ class cApiTemplateCollection extends ItemCollection {
      * Returns the default template configuration item
      *
      * @param int $idclient
-     * @return cApiTemplateConfiguration NULL
+     * @return cApiTemplateConfiguration|NULL
      */
     public function selectDefaultTemplate($idclient) {
         $this->select('defaulttemplate = 1 AND idclient = ' . (int) $idclient);
@@ -105,7 +106,7 @@ class cApiTemplateCollection extends ItemCollection {
      * Returns all templates having passed layout id.
      *
      * @param int $idlay
-     * @return cApiTemplate[]
+     * @return array
      */
     public function fetchByIdLay($idlay) {
         $this->select('idlay = ' . (int) $idlay);
@@ -128,7 +129,8 @@ class cApiTemplate extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -140,12 +142,50 @@ class cApiTemplate extends Item {
     }
 
     /**
+     * Load a template based on article, category, language and client id
+     *
+     * @todo avoid returning void
+     * @param int $idart
+     *         article id
+     * @param int $idcat
+     *         category id
+     * @param int $lang
+     *         language id
+     * @param int $client
+     *         client id
+     * @return void|bool
+     */
+    public function loadByArticleOrCategory($idart, $idcat, $lang, $client) {
+
+        // get ID of template configuration that is used for
+        // either the article language or the category language
+        $idtplcfg = conGetTemplateConfigurationIdForArticle($idart, $idcat, $lang, $client);
+        if (!is_numeric($idtplcfg) || $idtplcfg == 0) {
+            $idtplcfg = conGetTemplateConfigurationIdForCategory($idcat, $lang, $client);
+        }
+        if (is_null($idtplcfg)) {
+            return false;
+        }
+
+        // load template configuration to get its template ID
+        $templateConfiguration = new cApiTemplateConfiguration($idtplcfg);
+        if (!$templateConfiguration->isLoaded()) {
+            return;
+        }
+
+        // try to load template by determined ID
+        $idtpl = $templateConfiguration->get('idtpl');
+        $this->loadByPrimaryKey($idtpl);
+    }
+
+    /**
      * Userdefined setter for template fields.
      *
+     * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
-     * @todo should return return value of overloaded method
+     * @param bool $bSafe
+     *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {

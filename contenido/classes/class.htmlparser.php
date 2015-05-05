@@ -137,7 +137,7 @@ class HtmlParser {
      * Parses the next node. Returns false only if the end of the HTML text has
      * been reached. Updates values of iNode* fields.
      *
-     * @return boolean
+     * @return bool
      */
     function parse() {
         $text = $this->skipToElement();
@@ -158,7 +158,7 @@ class HtmlParser {
 
     /**
      *
-     * @return boolean
+     * @return bool
      */
     function readTag() {
         if ($this->currentChar() != "<") {
@@ -234,7 +234,7 @@ class HtmlParser {
 
     /**
      *
-     * @return boolean
+     * @return bool
      */
     function skipBlanksInTag() {
         return "" != ($this->skipInTag(array(
@@ -247,7 +247,7 @@ class HtmlParser {
 
     /**
      *
-     * @return Ambigous <string, number, unknown_type>
+     * @return string
      */
     function skipToBlanksOrEqualsInTag() {
         return $this->skipToInTag(array(
@@ -261,7 +261,7 @@ class HtmlParser {
 
     /**
      *
-     * @return Ambigous <string, number, unknown_type>
+     * @return string
      */
     function skipToBlanksInTag() {
         return $this->skipToInTag(array(
@@ -274,7 +274,7 @@ class HtmlParser {
 
     /**
      *
-     * @return Ambigous <unknown, string, number, unknown_type>
+     * @return string
      */
     function skipEqualsInTag() {
         return $this->skipInTag(array(
@@ -284,7 +284,7 @@ class HtmlParser {
 
     /**
      *
-     * @return Ambigous <string, Ambigous, number, unknown_type>
+     * @return string
      */
     function readValueInTag() {
         $ch = $this->currentChar();
@@ -319,7 +319,7 @@ class HtmlParser {
 
     /**
      *
-     * @return number string
+     * @return number|string
      */
     function currentChar() {
         if ($this->iHtmlTextIndex >= $this->iHtmlTextLength) {
@@ -330,7 +330,7 @@ class HtmlParser {
 
     /**
      *
-     * @return boolean
+     * @return bool
      */
     function moveNext() {
         if ($this->iHtmlTextIndex < $this->iHtmlTextLength) {
@@ -343,7 +343,7 @@ class HtmlParser {
 
     /**
      *
-     * @return string Ambigous number, number, unknown_type>
+     * @return string
      */
     function skipEndOfTag() {
         $sb = "";
@@ -361,7 +361,7 @@ class HtmlParser {
     /**
      *
      * @param string $chars
-     * @return string Ambigous number, number, unknown_type>
+     * @return string
      */
     function skipInTag($chars) {
         $sb = "";
@@ -389,7 +389,7 @@ class HtmlParser {
     /**
      *
      * @param string $chars
-     * @return string Ambigous number, number, unknown_type>
+     * @return string
      */
     function skipToInTag($chars) {
         $sb = "";
@@ -414,7 +414,7 @@ class HtmlParser {
 
     /**
      *
-     * @return string Ambigous number, number, unknown_type>
+     * @return string
      */
     function skipToElement() {
         $sb = "";

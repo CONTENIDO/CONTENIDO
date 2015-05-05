@@ -4,7 +4,6 @@
  * Description: Facebook embedded post
  *
  * Example URLs:
- * https://www.facebook.com/timo.trautmann/posts/672837062745612
  * https://www.facebook.com/cms.contenido/posts/567068046687531
  * https://www.facebook.com/photo.php?fbid=567068046687531&amp;set=a.567067956687540.1073741828.153315271396146&amp;type=1
  *

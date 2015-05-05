@@ -56,7 +56,8 @@ class cHTMLTextarea extends cHTMLFormElement {
      * Sets the width of the text box.
      *
      * @param int $width width of the text box
-     * @return cHTMLTextarea $this
+     * @return cHTMLTextarea
+     *         $this for chaining
      */
     public function setWidth($width) {
         $width = intval($width);
@@ -72,7 +73,8 @@ class cHTMLTextarea extends cHTMLFormElement {
      * Sets the maximum input length of the text box.
      *
      * @param int $maxlen maximum input length
-     * @return cHTMLTextarea $this
+     * @return cHTMLTextarea
+     *         $this for chaining
      */
     public function setHeight($height) {
         $height = intval($height);
@@ -88,7 +90,8 @@ class cHTMLTextarea extends cHTMLFormElement {
      * Sets the initial value of the text box.
      *
      * @param string $value Initial value
-     * @return cHTMLTextarea $this
+     * @return cHTMLTextarea
+     *         $this for chaining
      */
     public function setValue($value) {
         $this->_value = $value;
@@ -99,7 +102,8 @@ class cHTMLTextarea extends cHTMLFormElement {
     /**
      * Renders the textarea
      *
-     * @return string Rendered HTML
+     * @return string
+     *         Rendered HTML
      */
     public function toHtml() {
         $this->_setContent($this->_value);

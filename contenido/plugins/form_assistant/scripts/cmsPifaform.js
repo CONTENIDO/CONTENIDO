@@ -53,7 +53,4 @@
 
     Con.cContentTypePifaForm = cContentTypePifaForm;
 
-    // @deprecated [2013-11-15] Assign to windows scope (downwards compatibility)
-    window.cContentTypePifaForm = cContentTypePifaForm;
-
 })(Con, Con.$);

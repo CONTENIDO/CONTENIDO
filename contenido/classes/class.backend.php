@@ -204,7 +204,8 @@ class cBackend {
      * else return an empty string.
      *
      * @param string $action action to be read
-     * @return string code for given action
+     * @return string
+     *         code for given action
      */
     public function getCode($action) {
         $actionCodeFile = cRegistry::getBackendPath() . 'includes/type/action/include.' . $action . '.action.php';

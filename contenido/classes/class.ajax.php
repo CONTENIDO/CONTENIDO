@@ -341,8 +341,10 @@ class cAjaxRequest {
 
                     $pluginId = cSecurity::toInteger($_POST['idplugin']);
                     $plugin = new PimPlugin($pluginId);
-                    $plugin->updateExecOrder($newOrder);
-                    $string = 'ok';
+                    $result = $plugin->updateExecOrder($newOrder);
+                    if ($result === true) {
+                    	$string = 'ok';
+                    }
                 } else {
                     $string = 'Unknown Ajax Action';
                 }
@@ -392,6 +394,7 @@ class cAjaxRequest {
                     'state' => 'error',
                     'code' => 401,
                     'message' => 'Unauthorized',
+					'type' => 'authentication_failure'
                 );
                 $string = json_encode($result);
                 break;

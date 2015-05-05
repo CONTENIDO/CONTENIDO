@@ -56,7 +56,7 @@
                 {MAKEPUBLIC_BUTTON_NEW}
                 {INPUT_PUBLIC}
             </div>
-            <div class="cat_icon_text" id="public_label">i18n("Protect category")</div>
+            <div class="cat_icon_text public_label">i18n("Protect category")</div>
             <div class="cat_end_row"></div>
 
             <div class="cat_label">&nbsp;</div>
@@ -74,7 +74,7 @@
                 <div class="cat_icon">
                     <input type="checkbox" name="is_tree" value="0" id="is_tree" onclick="refreshStatus();" {PERMISSION_NEWTREE}>
                 </div>
-                <label for="is_tree" class="cat_icon_text" id="public_label">i18n("Category is a tree")</label>
+                <label for="is_tree" class="cat_icon_text public_label">i18n("Category is a tree")</label>
                 <div class="cat_end_row"></div>
             </div>
 
@@ -90,7 +90,7 @@
             <div class="cat_spacer"></div>
 
             <div style="text-align:right; padding-right:15px;">
-                <a href="javascript:hideNewForm()"><img src="{CON_IMAGES}but_cancel.gif" id="cat_new_cancel" style="vertical-align:middle" border="0"></a>
+                <a href="javascript:hideNewForm()"><img src="{CON_IMAGES}but_cancel.gif" id="cat_new_cancel" alt="" style="vertical-align:middle" border="0"></a>
                 &nbsp;
                 <input type="image" id="cat_new_submit" src="{CON_IMAGES}but_ok.gif">
             </div>
@@ -101,7 +101,7 @@
 
     <!-- hidelayer for catnewlayer -->
     <div id="cat_new_layer_disable" class="cat_new_layer_disable" style="background-color:transparent">
-        <img src="{CON_IMAGES}spacer.gif" id="cat_new_layer_disable_image">
+        <img src="{CON_IMAGES}spacer.gif" alt="" id="cat_new_layer_disable_image">
     </div>
 
     <!-- layer for template selection when a new category is created -->
@@ -114,9 +114,9 @@
         <div class="cat_spacer"></div>
 
         <div style="text-align:right; padding-right:15px;">
-            <a href="javascript:hideTemplateSelect()"><img src="{CON_IMAGES}but_cancel.gif" style="vertical-align:middle" border="0"></a>
+            <a href="javascript:hideTemplateSelect()"><img src="{CON_IMAGES}but_cancel.gif" alt="" style="vertical-align:middle" border="0"></a>
             &nbsp;
-            <img style="vertical-align:middle" src="{CON_IMAGES}but_ok.gif" onmouseover="this.style.cursor = 'pointer'" onclick="hideTemplateSelect(1);">
+            <img style="vertical-align:middle" src="{CON_IMAGES}but_ok.gif" alt="" onmouseover="this.style.cursor = 'pointer'" onclick="hideTemplateSelect(1);">
         </div>
 
         <div class="cat_spacer"></div>
@@ -174,7 +174,7 @@
 
                         <span id="tpl_cfg"><a href="{TEMPLATE_URL}" id="tplcfg_href"><img src="images/template_properties.gif" title="i18n('Configure category')" alt="i18n('Configure category')" border="0" style="vertical-align:middle"> &nbsp; i18n('Configure category')</a><span style="padding-left:15px;">&nbsp;</span></span>
 
-                        <a href="{HREF_CANCEL}"><img src="{SRC_CANCEL}" style="vertical-align:middle" border="0"></a>
+                        <a href="{HREF_CANCEL}"><img src="{SRC_CANCEL}" alt="" style="vertical-align:middle" border="0"></a>
                         &nbsp;
                         <input style="vertical-align:middle" type="image" src="{SRC_OK}">
                     </form>
@@ -322,6 +322,9 @@ function confDel(idcat, idparent, sName) {
          * @param {Object} ui
          */
         function _onSortableStart(event, ui) {
+            // make all items sortable
+            $categoryList.sortable({items: allSort}).sortable('refresh');
+
             // save the old index/idcat of the dragged element
             var start_pos = ui.item.index();
             ui.item.data('start_pos', start_pos);
@@ -415,6 +418,9 @@ function confDel(idcat, idparent, sName) {
          * @private  Not intended to call from public context
          */
         function _onSortableStop(event, ui) {
+            // reset sortable item list
+            $categoryList.sortable({items: toSort}).sortable('refresh');
+
             // fix: fold categories after drag event with no change of position
             var start_pos = ui.item.data('start_pos');
             var end_pos = ui.item.index();
@@ -555,7 +561,7 @@ function confDel(idcat, idparent, sName) {
                 var postid = attr['data-postid'];
                 var idcat = attr['data-idcat'];
 
-                // get posistion of selected element
+                // get position of selected element
                 if (idcat_elem == idcat) {
                     var j = i + 1;
 
@@ -588,6 +594,7 @@ function confDel(idcat, idparent, sName) {
         // allow to drag and drop the table rows
         var sortItems = $categoryList.find('> tr:not(.fixed)');
         var toSort = [];
+        var allSort = [];
         var exludedElements = [];
         sortItems.each(function(i, item) {
             var idcat = sortItems[i].getAttribute('data-idcat');
@@ -600,8 +607,11 @@ function confDel(idcat, idparent, sName) {
                 }
             }
 
+            allSort.push(item);
+
             var idParts = item.id.split('_');
             var parentId = item.getAttribute('data-parentid');
+            // category trees must not be moved
             if (parentId == 0) {
                 item.removeAttribute('class');
             }
@@ -609,7 +619,6 @@ function confDel(idcat, idparent, sName) {
                 toSort.push(item);
             }
         });
-
 
         $categoryList.sortable({
             // only allow to drag&drop rows that do not have the 'fixed' class

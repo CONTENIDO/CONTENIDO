@@ -45,7 +45,8 @@ class cHTMLHiddenField extends cHTMLFormElement {
      * Sets the value for the field
      *
      * @param string $value Value of the field
-     * @return cHTMLHiddenField $this
+     * @return cHTMLHiddenField
+     *         $this for chaining
      */
     public function setValue($value) {
         $this->updateAttribute('value', $value);

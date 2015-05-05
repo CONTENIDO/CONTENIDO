@@ -48,7 +48,7 @@ class cUriBuilderCustomPath extends cUriBuilder {
 
     /**
      * Get instance of self
-     * @return obj cUriBuilderFrontcontent
+     * @return cUriBuilderCustomPath
      */
     public static function getInstance() {
         if (self::$_instance == NULL) {
@@ -63,11 +63,11 @@ class cUriBuilderCustomPath extends cUriBuilder {
      * For creating the location string $aParams needs to have keys idcat, level, lang and at least one custom key.
      * If level is not set, level 0 will be used as default.
      *
+     * @todo Somehow get around using prCreateURLNameLocationString()
+     * @throws cInvalidArgumentException
      * @param  array  $aParams  Required keys are: idcat, level, lang and at least one custom key.
      * @param  bool  $bUseAbsolutePath
      * @param  array  $aConfig  If not set, will use UriBuilderConfig::getConfig()
-     * @throws cInvalidArgumentException
-     * @todo Somehow get around using prCreateURLNameLocationString()
      */
     public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array()) {
         if (!isset($aParams['idcat'])) {

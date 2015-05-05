@@ -255,7 +255,6 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     // Used to indicate if the moved article should be online
     global $time_online_move;
     global $timemgmt;
-    
     // CON-2134 check admin permission
     $aAuthPerms = explode(',', $auth->auth['perm']);
     
@@ -379,7 +378,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
                     $artLang->set('published', date('Y-m-d H:i:s'));
                     $artLang->set('publishedby', $author);
                 }
-
+                
                 $artLang->set('datestart', $datestart);
                 $artLang->set('dateend', $dateend);
                 $artLang->set('time_move_cat', $time_move_cat);
@@ -610,6 +609,13 @@ function conMakeOnline($idart, $lang, $online = -1) {
     }
 
     $artLang->store();
+
+    // Execute cec hook
+    cApiCecHook::execute('Contenido.Article.ConMakeOnline', array(
+    'idart' => $idart,
+    'idlang' => $lang,
+    'state' => $online
+    ));
 }
 
 /**
@@ -717,6 +723,12 @@ function conMakeCatOnline($idcat, $lang, $status) {
         $oPathresolveCacheColl = new cApiPathresolveCacheCollection();
         $oPathresolveCacheColl->deleteByCategoryAndLanguage($idcat, $lang);
     }
+
+    // Execute cec hook
+    cApiCecHook::execute('Contenido.Article.ConMakeCatOnline', array(
+    'idcat' => $idcat,
+    'idlang' => $lang,
+    ));
 }
 
 /**
@@ -845,6 +857,10 @@ function conDeleteart($idart) {
     // this will delete all keywords associated with the article
     $search = new cSearchIndex();
     $search->start($idart, array());
+    
+    // delete articles meta tags
+    $metaTagColl = new cApiMetaTagCollection();
+    $metaTagColl->deleteBy('idartlang', (int) $idartlang);
 
     // Contenido Extension Chain
     // @see docs/techref/plugins/Contenido Extension Chainer.pdf
@@ -1109,10 +1125,16 @@ function conMakeStart($idcatart, $isstart) {
         $oArtLang->set('timemgmt', 0);
         $oArtLang->store();
     }
+
+    // Execute cec hook
+    cApiCecHook::execute('Contenido.Article.ConMakeStart', array(
+    'idart' => $oCatArt->get("idart"),
+    'idlang' => $lang,
+    ));
 }
 
 /**
- * Create code for one article in all categorys
+ * Create code for one article in all categories
  *
  * @param int $idart Article ID
  */
@@ -1793,7 +1815,7 @@ function conRemoveOldCategoryArticle($idcat, $idart, $idartlang, $client, $lang)
 
     $idcatart = $oCatArt->get('idcatart');
 
-    // Delete frome code cache and delete corresponding code
+    // Delete from code cache and delete corresponding code
     /**
      * @var $file SplFileInfo
      */

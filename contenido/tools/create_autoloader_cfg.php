@@ -6,7 +6,7 @@
  *
  * Usage:
  * ------
- * 1. Modifiy settings to youre requriements
+ * 1. Modifiy settings to your requirements
  * 2. Call this script from command line as follows:
  *     $ php create_autoloader_cfg.php
  * 3. Check created class map file
@@ -57,6 +57,7 @@ $context->destinationFile = $context->contenidoInstallPath . '/data/config/' . C
 // list of paths from where all class/interface names should be found
 $context->pathsToParse = array(
     $context->contenidoInstallPath . 'contenido/classes/',
+    $context->contenidoInstallPath . 'contenido/external/wysiwyg/tinymce4/contenido/classes/'
 );
 
 // class type finder options

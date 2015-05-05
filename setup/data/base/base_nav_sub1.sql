@@ -81,5 +81,6 @@ INSERT INTO !PREFIX!_nav_sub VALUES('805', '0', '811', '1', 'navigation/administ
 INSERT INTO !PREFIX!_nav_sub VALUES('951', '5', '49', '1', 'navigation/administration/logs/mail_action', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('952', '5', '951', '1', 'navigation/administration/system/main', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('953', '0', '953', '1', 'navigation/administration/system/integrity', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('954', '0', '954', '1', 'navigation/administration/system/wysiwyg', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('10000', '5', '10000', '0', 'pim/xml/pim.xml;plugin/pim', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('97', '1', '97', '0', 'navigation/content/translations/main', '1');

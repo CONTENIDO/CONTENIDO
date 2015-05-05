@@ -35,7 +35,4 @@
         }
     };
 
-    // @deprecated [2013-11-05] Downwards compatibility
-    window.callHelp = Con.Help.show;
-
 })(Con, Con.$);

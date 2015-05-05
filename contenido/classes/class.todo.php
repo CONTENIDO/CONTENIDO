@@ -32,9 +32,19 @@ class TODOCollection extends cApiCommunicationCollection {
     }
 
     /**
-     * (non-PHPdoc)
+     * Selects all entries from the database.
+     * Objects are loaded using their primary key.
      *
-     * @see ItemCollection::select()
+     * @param string $where
+     *         Specifies the where clause.
+     * @param string $group_by
+     *         Specifies the group by clause.
+     * @param string $order_by
+     *         Specifies the order by clause.
+     * @param string $limit
+     *         Specifies the limit by clause.
+     * @return bool
+     *         True on success, otherwhise false
      */
     public function select($where = '', $group_by = '', $order_by = '', $limit = '') {
         if ($where == '') {
@@ -57,7 +67,7 @@ class TODOCollection extends cApiCommunicationCollection {
      * @param unknown_type $notimail
      * @param unknown_type $notibackend
      * @param string $recipient
-     * @return Ambigous <cApiCommunication, Item, object>
+     * @return cApiCommunication
      */
     public function createItem($itemtype, $itemid, $reminderdate, $subject, $content, $notimail, $notibackend, $recipient) {
         $item = parent::create();
@@ -128,10 +138,19 @@ class TODOCollection extends cApiCommunicationCollection {
 class TODOItem extends cApiCommunication {
 
     /**
-     * (non-PHPdoc)
+     * Sets a custom property.
      *
-     * @see Item::setProperty()
      * @todo should return return value of overloaded method
+     * @see Item::setProperty()
+     * @param string $sType
+     *         Specifies the type
+     * @param string $sName
+     *         Specifies the name
+     * @param mixed $mValue
+     *         Specifies the value
+     * @param int $iClient
+     *         Id of client to set property for
+     * @return bool
      */
     public function setProperty($type, $name, $value, $client = 0) {
         if ($type == 'todo' && $name == 'emailnoti') {

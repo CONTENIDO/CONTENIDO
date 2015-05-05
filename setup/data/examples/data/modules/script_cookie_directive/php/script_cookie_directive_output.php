@@ -47,19 +47,40 @@ if (!$contenido) {
             'decline' => mi18n("DECLINE")
         ));
 
+        function script_cookie_directive_add_get_params($uri) {
+            foreach($_GET as $getKey => $getValue) {
+                // do not add already added GET parameters to redirect url
+                if (strpos($uri, '?' . $getKey . '=') !== false
+                        || strpos($uri, '&' . $getKey . '=') !== false) {
+                            continue;
+                        }
+                        if (strpos($uri, '?') === false) {
+                            $uri .= '?';
+                        } else {
+                            $uri .= '&';
+                        }
+                        $uri .= htmlentities($getKey) . '=' . htmlentities($getValue);
+            }
+
+            return $uri;
+        }
+
         // build accept url
-        $tpl->assign('pageUrlAccept', cUri::getInstance()->build(array(
+        $acceptUrl = script_cookie_directive_add_get_params(cUri::getInstance()->build(array(
             'idart' => cRegistry::getArticleId(),
             'lang' => cRegistry::getLanguageId(),
             'acceptCookie' => 1
         ), true));
 
+        $tpl->assign('pageUrlAccept', $acceptUrl);
+
         // build deny url
-        $tpl->assign('pageUrlDeny', cUri::getInstance()->build(array(
+        $denyUrl = script_cookie_directive_add_get_params(cUri::getInstance()->build(array(
             'idart' => cRegistry::getArticleId(),
             'lang' => cRegistry::getLanguageId(),
             'acceptCookie' => 0
         ), true));
+        $tpl->assign('pageUrlDeny', $denyUrl);
 
         $tpl->display('get.tpl');
 

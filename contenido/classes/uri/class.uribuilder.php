@@ -52,8 +52,9 @@ abstract class cUriBuilder {
     }
 
     /**
-     * Set http base path, e.g.
-     * http://contenido.org/
+     * Set http base path, e.g. http://contenido.org/
+     *
+     * @param string $sBasePath
      */
     public function setHttpBasePath($sBasePath) {
         $this->sHttpBasePath = (string) $sBasePath;

@@ -86,4 +86,5 @@ INSERT INTO !PREFIX!_area VALUES ('105', 'con', 'con_content_list', '1', '1', '0
 INSERT INTO !PREFIX!_area VALUES ('10000', '0', 'pim', '1', '1', '1');
 INSERT INTO !PREFIX!_area VALUES ('951', 'logs', 'system_log', '1', '1', '1');
 INSERT INTO !PREFIX!_area VALUES ('953', 'system', 'system_integrity', '1', '1', '0');
+INSERT INTO !PREFIX!_area VALUES ('954', 'system', 'system_wysiwyg', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES('97', '0', 'con_translate', '1', '1', '1');

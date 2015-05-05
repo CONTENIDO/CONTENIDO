@@ -93,6 +93,10 @@
                 url: self.pathBackend + 'ajaxmain.php',
                 data: 'ajax=artsel&name=teaser_art_' + self.id + '&contenido=' + self.session + '&idcat=' + $(this).val(),
                 success: function(msg) {
+					if (Con.checkAjaxResponse(msg) === false)  {
+						return false;
+					}
+
                     $(self.frameId + ' #teaser_art_' + self.id).replaceWith(msg);
                 }
             });
@@ -161,10 +165,6 @@
     };
 
     Con.cContentTypeTeaser = cContentTypeTeaser;
-
-    // @deprecated [2013-11-10] Assign to windows scope (downwards compatibility)
-    window.cContentTypeTeaser = cContentTypeTeaser;
-
 
     $(function() {
         $("#del_art_3").click(function() {

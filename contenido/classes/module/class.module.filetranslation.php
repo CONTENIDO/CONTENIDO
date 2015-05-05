@@ -102,7 +102,8 @@ class cModuleFileTranslation extends cModuleHandler {
      *
      * @param string $type
      * @param string $name
-     * @return string value
+     * @return string
+     *         value
      */
     private function _getValueFromProperties($type, $name) {
         cApiPropertyCollection::reset();
@@ -205,12 +206,12 @@ class cModuleFileTranslation extends cModuleHandler {
             $oriTrans = preg_split('/(?<!\\\\)' . self::$originalTranslationDivider . '/', $value);
 
             if (isset($oriTrans[1])) {
-                $retArray[iconv($this->_fileEncoding, $this->_encoding, $oriTrans[0])] = iconv($this->_fileEncoding, $this->_encoding, str_replace("\=", "=", $oriTrans[1]));
+                $retArray[cApiStrRecodeString($oriTrans[0], $this->_fileEncoding, $this->_encoding)] = cApiStrRecodeString(str_replace("\=", "=", $oriTrans[1]), $this->_fileEncoding, $this->_encoding);
             } else {
                 // CON-1671 never use end(array_keys(...))
                 $keys = array_keys($retArray);
                 $lastKey = end($keys);
-                $newValue = PHP_EOL . iconv($this->_fileEncoding, $this->_encoding, str_replace("\=", "=", $oriTrans[0]));
+                $newValue = PHP_EOL . cApiStrRecodeString(str_replace("\=", "=", $oriTrans[0]), $this->_fileEncoding, $this->_encoding);
                 $retArray[$lastKey] .= $newValue;
             }
         }
@@ -222,7 +223,8 @@ class cModuleFileTranslation extends cModuleHandler {
      * Save the contents of the wordListArray in file.
      *
      * @param array $wordListArray
-     * @return boolean true if success else false
+     * @return bool
+     *         true if success else false
      */
     public function saveTranslationArray($wordListArray) {
         $fileName = $this->_modulePath . $this->_directories['lang'] . self::$fileName;

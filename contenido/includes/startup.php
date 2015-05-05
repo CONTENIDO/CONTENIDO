@@ -78,7 +78,7 @@ if (!defined('CON_ENVIRONMENT')) {
  */
 if (!defined('CON_VERSION')) {
 
-    define('CON_VERSION', '4.9.4');
+    define('CON_VERSION', '4.9.7');
 
 }
 
@@ -86,17 +86,25 @@ if (!defined('CON_VERSION')) {
 $backendPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/..'));
 require_once($backendPath . '/classes/class.filehandler.php');
 
-// (string) Path to folder containing all contenido configuration files
-//          Use environment setting!
+// (string) Path to folder containing all contenido configuration files. Use environment setting!
 $cfg['path']['contenido_config'] = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../..')) . '/data/config/' . CON_ENVIRONMENT . '/';
-if((!cFileHandler::exists($cfg['path']['contenido_config'])) || (!cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php'))) {
+
+// check if config folder & files exist
+if (false === cFileHandler::exists($cfg['path']['contenido_config'])) {
     $msg = "<h1>Fatal Error</h1><br>"
-        . "Could not open the configuration file <b>config.php</b>.<br><br>"
-        . "Please make sure that you saved the file in the setup program and that your CON_ENVIRONMENT is valid."
-        . "If you had to place the file manually on your webserver, make sure that it is placed in your contenido/data/config/{environment}/ directory.";
+        . "The configured <b>environment</b> is not valid.<br><br>"
+        . "Please make sure that your CON_ENVIRONMENT is valid and has an existing directory in contenido/data/config.";
     die($msg);
 }
 
+if (false === cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php')
+|| false === cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
+    $msg = "<h1>Fatal Error</h1><br>"
+        . "Could not open a configuration file <b>config.php</b> or <b>config.clients.php</b>.<br><br>"
+        . "Please make sure that you saved the file in the setup program and that your CON_ENVIRONMENT is valid. "
+        . "If you had to place the file manually on your webserver, make sure that it is placed in your contenido/data/config/{environment}/ directory.";
+    die($msg);
+}
 
 include_once($backendPath . '/includes/functions.php54.php');
 
@@ -177,17 +185,17 @@ cAutoload::initialize($cfg);
 // Author: Martin Horwath
 $localePath = $cfg['path']['contenido_locale'];
 if (is_dir($localePath)) {
-    if ($handle = opendir($localePath)) {
-        while (($locale = readdir($handle)) !== false) {
-            if (is_dir($localePath . $locale) && $locale != '..' && $locale != '.') {
+    if (false !== ($handle = cDirHandler::read($localePath, false, true))) {
+        foreach ($handle as $locale) {
+            if (cFileHandler::fileNameIsDot($locale) === false
+                && is_dir($localePath . $locale)) {
                 if (cFileHandler::exists($localePath . $locale . '/LC_MESSAGES/contenido.po') &&
-                        cFileHandler::exists($localePath . $locale . '/LC_MESSAGES/contenido.mo')) {
+                cFileHandler::exists($localePath . $locale . '/LC_MESSAGES/contenido.mo')) {
                     $cfg['login_languages'][] = $locale;
                     $cfg['lang'][$locale] = 'lang_' . $locale . '.xml';
                 }
             }
         }
-        closedir($handle);
     }
 }
 

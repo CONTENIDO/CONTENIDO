@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend authentication handler class.
  *
@@ -30,18 +31,29 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
      */
     public function __construct() {
         $cfg = cRegistry::getConfig();
-        $this->_lifetime = (int)$cfg['backend']['timeout'];
-
+        $this->_lifetime = (int) $cfg['backend']['timeout'];
         if ($this->_lifetime == 0) {
             $this->_lifetime = 15;
         }
     }
 
+    /**
+     * Handle the pre authorization.
+     * There is no pre authorization in backend so false is returned.
+     *
+     * @see cAuthHandlerAbstract::preAuthorize()
+     * @return false
+     */
     public function preAuthorize() {
-        // there is no pre authorization in backend
         return false;
     }
 
+    /**
+     * Display the login form.
+     * Includes a file which displays the login form.
+     *
+     * @see cAuthHandlerAbstract::displayLoginForm()
+     */
     public function displayLoginForm() {
         // @TODO  We need a better solution for this. One idea could be to set the request/response
         //        type in global $cfg array instead of checking $_REQUEST['ajax'] everywhere...
@@ -54,6 +66,13 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
         }
     }
 
+    /**
+     * Validate the credentials.
+     * Validate the users input against source and return a valid user ID or false.
+     *
+     * @see cAuthHandlerAbstract::validateCredentials()
+     * @return string|false
+     */
     public function validateCredentials() {
         $username = $_POST['username'];
         $password = $_POST['password'];
@@ -125,6 +144,11 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
         return $uid;
     }
 
+    /**
+     * Log the successful authentication.
+     *
+     * @see cAuthHandlerAbstract::logSuccessfulAuth()
+     */
     public function logSuccessfulAuth() {
         global $client, $lang, $saveLoginTime;
 
@@ -168,7 +192,12 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
         $saveLoginTime = true;
     }
 
-
+    /**
+     * Returns true if a user is logged in.
+     *
+     * @see cAuthHandlerAbstract::isLoggedIn()
+     * @return bool
+     */
     public function isLoggedIn() {
         $authInfo = $this->getAuthInfo();
 

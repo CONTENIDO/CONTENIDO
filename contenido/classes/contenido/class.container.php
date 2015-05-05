@@ -26,8 +26,8 @@ class cApiContainerCollection extends ItemCollection {
     /**
      * Create a new collection of items.
      *
-     * @param string $select where clause to use for selection (see
-     *        ItemCollection::select())
+     * @param string $select
+     *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
         global $cfg;
@@ -100,14 +100,6 @@ class cApiContainerCollection extends ItemCollection {
             $this->create($idtpl, $number, $idmod);
         }
     }
-
-    /**
-     * @deprecated [2013-10-12] Use assignModule instead
-     */
-    public function assignModul($idtpl, $number, $idmod) {
-        cDeprecated("The method assignModul() is deprecated. Use assignModule() instead.");
-        $this->assignModule($idtpl, $number, $idmod);
-    }
 }
 
 /**
@@ -121,7 +113,8 @@ class cApiContainer extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -135,10 +128,11 @@ class cApiContainer extends Item {
     /**
      * Userdefined setter for container fields.
      *
+     * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
-     * @todo should return return value of overloaded method
+     * @param bool $bSafe
+     *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {

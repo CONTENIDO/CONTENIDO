@@ -1,37 +1,37 @@
 
 <!-- template.con_content_list.html -->
 <!-- @TODO Similar to template.con_editcontent.html, merge them -->
-<link rel="stylesheet" type="text/css" href="{_PATH_CONTENIDO_FULLHTML_}styles/con_tiny.css">
+<link rel="stylesheet" type="text/css" href="{_PATH_CONTENIDO_TINYMCE_CSS_}con_tiny.css">
 
-<script src="{_PATH_CONTENIDO_FULLHTML_}scripts/con_tiny.js" type="text/javascript"></script>
 <!-- tinyMCE -->
-<script src="{_PATH_CONTENIDO_FULLHTML_}external/wysiwyg/tinymce3/jscripts/tiny_mce/tiny_mce.js" type="text/javascript"></script>
+{_WYSIWYG_JS_TAGS_}
 
+<base href="{FRONTEND}" />
 <script type="text/javascript">
+// base tag is not correct outside head tag but it suppresses initial loading of wrong paths during page rendering
+// remove all base tags from document
+var elements = document.getElementsByTagName('base');
+while (elements[0]) elements[0].parentNode.removeChild(elements[0]);
+
+//write <base href="{FRONTEND}"> into head tag
+baseHref=document.createElement('base');
+baseHref.href='{FRONTEND}';
+document.getElementsByTagName('head')[0].appendChild(baseHref);
 
 (function(Con, $) {
 
     // Configuration of tiny, when tiny is opened set event which stores original
     // content to Con.Tiny.editDataOrg
-    var wysiwygSettings = {
-        document_base_url: '{FRONTEND}',
-        {TINY_OPTIONS},
-        fullscreen_settings: {
-            {TINY_FULLSCREEN}
-        },
-        'setup': function(ed) {
-            ed.onSetContent.add(function(ed, o) {
-                Con.Tiny.updateContent(ed.getContent());
-            });
-        }
-    };
+    var wysiwygSettings = {TINY_OPTIONS};
 
-    // Initilalize/setup TinyMCE editor
+    // Initialize/setup TinyMCE editor
     Con.Tiny.tinymceInit(tinymce, wysiwygSettings, {
         saveTitle: '{SAVE}',
         saveImage: '{_PATH_CONTENIDO_FULLHTML_}images/but_save_tiny.gif',
         closeTitle: '{CLOSE}',
-        closeImage: '{_PATH_CONTENIDO_FULLHTML_}images/but_close_tiny.gif'
+        closeImage: '{_PATH_CONTENIDO_FULLHTML_}images/but_close_tiny.gif',
+        useTiny: '{USE_TINY}',
+        backendUrl: '{BACKEND_URL}'
     });
 
     $(function() {
@@ -39,7 +39,6 @@
         Con.Tiny.init({
             fileUrl: '{FILE}',
             imageUrl: '{IMAGE}',
-            flashUrl: '{FLASH}',
             mediaUrl: '{MEDIA}',
             frontendPath: '{FRONTEND}',
             txtQuestion: '{QUESTION}',
@@ -54,6 +53,7 @@
 
 </script>
 
+{NOTIFICATIONS}
 {CATEGORY}
 <p style="display:block;font-weight:bold;">i18n("Select Article Version")</p>
  <div class="contypeList">
@@ -77,10 +77,7 @@
 <p style="display:block;font-weight:bold;">i18n("Content administration")</p>
 <!-- BEGIN:BLOCK -->
 <div class="contypeList {EXTRA_CLASS}">
-   	<div class="headline">
-            <label>{EXPORT_CONTENT_LABEL}</label>
-            {EXPORT_CONTENT} {NAME}<<{ID_TYPE}>>{FORMATTED_VERSION}
-        </div>
+       <div class="headline"><label>{EXPORT_CONTENT_LABEL}</label>{EXPORT_CONTENT} {NAME}<<{ID_TYPE}>>:</div>
     {NAME}[{ID_TYPE}]
 </div>
 <!-- END:BLOCK -->
@@ -110,7 +107,7 @@ function getVersionNumber() {
             return false;
         });
         $('form[name="exportrawdata"]').submit(function() {
-        	$('form[name="exportrawdata"] div.rawtypes').html("");
+            $('form[name="exportrawdata"] div.rawtypes').html("");
             $('.rawtypes:checked').each(function (index, value) {
                 $('form[name="exportrawdata"] div.rawtypes').append($(this).clone());
             });
@@ -135,21 +132,21 @@ function getVersionNumber() {
 <label class="rawdata">{EXPORT_LABEL}</label>
 <div class="contypeList">
 <form name="exportrawdata" method="post" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=exportrawcontent&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
-	<div class="rawtypes">
-	</div>	
-	<input type="hidden" id="versionnumber" name="versionnumber" value="">
-	<input type="submit" name="export" value="{EXPORT_RAWDATA}" onclick="getVersionNumber()">
+    <div class="rawtypes">
+    </div>	
+    <input type="hidden" id="versionnumber" name="versionnumber" value="">
+    <input type="submit" name="export" value="{EXPORT_RAWDATA}" onclick="getVersionNumber()">
 </form>
 </div>
-<label class="rawdata">{IMPORT_LABEL}</label>
-<div class="contypeList">
+<label class="rawdata" {HIDE}>{IMPORT_LABEL}</label>
+<div class="contypeList" {HIDE}>
 <form name="importrawdata" id="importrawdata" method="post" enctype="multipart/form-data" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=importrawcontent&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
-	<input type="file" name="rawfile" value="" size="40" {DISABLED}>
-	<br />
-	<label class="rawdatalabel">{OVERWRITE_DATA_LABEL}</label>
-	<input type="checkbox" name="overwritecontent" value="1" {DISABLED}>
-	<br />
-	<input type="submit" name="import" value="{IMPORT_RAWDATA}" {DISABLED}>
+    <input type="file" name="rawfile" value="" size="40" {DISABLED}>
+    <br />
+    <label class="rawdatalabel">{OVERWRITE_DATA_LABEL}</label>
+    <input type="checkbox" name="overwritecontent" value="1" {DISABLED}>
+    <br />
+    <input type="submit" name="import" value="{IMPORT_RAWDATA}" {DISABLED}>
 </form>
 </div>
 <!--

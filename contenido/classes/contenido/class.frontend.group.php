@@ -38,7 +38,8 @@ class cApiFrontendGroupCollection extends ItemCollection {
     /**
      * Creates a new group
      *
-     * @param string $groupname Specifies the groupname
+     * @param string $groupname
+     *         Specifies the groupname
      * @return cApiFrontendGroup
      */
     public function create($groupname) {
@@ -67,8 +68,9 @@ class cApiFrontendGroupCollection extends ItemCollection {
      * Overridden delete method to remove groups from groupmember table
      * before deleting group
      *
-     * @param int $itemID specifies the frontend user group
      * @todo should return return value of overloaded method
+     * @param int $itemID
+     *         specifies the frontend user group
      */
     public function delete($itemID) {
         $associations = new cApiFrontendGroupMemberCollection();
@@ -92,7 +94,8 @@ class cApiFrontendGroup extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;

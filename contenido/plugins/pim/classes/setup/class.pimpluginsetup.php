@@ -78,8 +78,11 @@ class PimPluginSetup {
     // CONTENIDO content types: *_type
     public static $XmlContentType;
 
-    // Id of selected / new plugin
+    // Id of selected/new plugin
     protected static $_pluginId = 0;
+
+    // Name of selected plugin
+    protected static $_pluginName;
 
     // GET and SET methods for installation routine
     /**
@@ -181,6 +184,16 @@ class PimPluginSetup {
     }
 
     /**
+     * Set method for PluginName
+     *
+     * @param string $pluginName
+     * @return string
+     */
+    public function setPluginName($pluginName = '') {
+    	return self::$_pluginName = $pluginName;
+    }
+
+    /**
      * Get method for installation / update mode
      *
      * @return int
@@ -196,6 +209,15 @@ class PimPluginSetup {
      */
     protected static function _getPluginId() {
         return self::$_pluginId;
+    }
+
+    /**
+     * Get methos for PluginName
+     *
+     * @return string
+     */
+    protected static function _getPluginName() {
+    	return self::$_pluginName;
     }
 
     /**
@@ -224,6 +246,15 @@ class PimPluginSetup {
             // Path to CONTENIDO temp dir
             $tempArchiveNewPath = $cfg['path']['frontend'] . DIRECTORY_SEPARATOR . $cfg['path']['temp'];
 
+            // Check if temp directory exists, otherwise try to create it
+            if (!cDirHandler::exists($tempArchiveNewPath)) {
+				$success = cDirHandler::create($tempArchiveNewPath);
+
+				// If PIM can not create a temporary directory (if it does not exists), throw an error message
+				if (!$success) {
+					return self::error(sprintf(i18n('Plugin Manager can not found a temporary CONTENIDO directory. Also it is not possible to create a temporary directory at <em>%s</em>. You have to create it manualy.', 'pim'), $tempArchiveNewPath));				}
+            }
+
             // Name of uploaded Zip archive
             $tempArchiveName = cSecurity::escapeString($_FILES['package']['name']);
 
@@ -251,6 +282,82 @@ class PimPluginSetup {
             return self::error(i18n('Invalid Xml document. Please contact the plugin author.', 'pim'));
         }
     }
+
+    /**
+     * Check dependencies to other plugins (dependencies-Tag at plugin.xml)
+     * Global function for uninstall and status mode
+     * Install mode uses an own dependencies function
+     *
+     * @return boolean
+     */
+    public function checkDependencies() {
+
+    	// Initializings
+    	$cfg = cRegistry::getConfig();
+    	$pluginsDir = $cfg['path']['contenido'] . $cfg['path']['plugins'];
+
+    	// Get uuid from plugin to uninstall
+    	$this->_PimPluginCollection->setWhere('idplugin', self::_getPluginId());
+    	$this->_PimPluginCollection->query();
+    	$pimPluginSql = $this->_PimPluginCollection->next();
+    	$uuidUninstall = $pimPluginSql->get('uuid');
+
+    	// Reset query so we can use PimPluginCollection later again...
+    	$this->_PimPluginCollection->resetQuery();
+
+    	// Read all dirs
+    	$dirs = cDirHandler::read($pluginsDir);
+    	foreach ($dirs as $dirname) {
+
+    		// Skip plugin if it has no plugin.xml file
+    		if (!cFileHandler::exists($pluginsDir . $dirname . DIRECTORY_SEPARATOR . self::PLUGIN_XML_FILENAME)) {
+    			continue;
+    		}
+
+    		// Read plugin.xml files from existing plugins at contenido/plugins dir
+    		$tempXmlContent = cFileHandler::read($pluginsDir . $dirname . DIRECTORY_SEPARATOR . self::PLUGIN_XML_FILENAME);
+
+    		// Write plugin.xml content into temporary variable
+    		$tempXml = simplexml_load_string($tempXmlContent);
+
+    		$dependenciesCount = count($tempXml->dependencies);
+    		for ($i = 0; $i < $dependenciesCount; $i++) {
+
+    			// Security check
+    			$depend = cSecurity::escapeString($tempXml->dependencies->depend[$i]);
+
+    			// If is no dependencie name defined please go to next dependencie
+    			if ($depend == "") {
+    				continue;
+    			}
+
+    			// Build uuid variable from attributes
+    			foreach ($tempXml->dependencies->depend[$i]->attributes() as $key => $value) {
+
+    				// We use only uuid attribute and can ignore other attributes
+    				if ($key  == "uuid") {
+    					$uuidTemp = cSecurity::escapeString($value);
+    				}
+    			}
+
+    			// Return false if uuid from plugin to uninstall and depended plugin is the same
+    			// AND depended plugin is active
+    			if ($uuidTemp === $uuidUninstall) {
+
+    				$this->_PimPluginCollection->setWhere('uuid', $tempXml->general->uuid);
+    				$this->_PimPluginCollection->setWhere('active', '1');
+    				$this->_PimPluginCollection->query();
+    				if ($this->_PimPluginCollection->count() != 0) {
+    					self::setPluginName($tempXml->general->plugin_name);
+    					return false;
+    				}
+    			}
+    		}
+    	}
+
+    	return true;
+    }
+
 
     /**
      * Check file type, Plugin Manager accepts only Zip archives
@@ -303,11 +410,11 @@ class PimPluginSetup {
     }
 
     /**
-     * Info function
+     * Info function, used displayOk CONTENIDO method
      * @param string $message
      */
     protected static function info($message = '') {
-        return self::$_GuiPage->displayInfo($message);
+        return self::$_GuiPage->displayOk($message);
     }
 
 }

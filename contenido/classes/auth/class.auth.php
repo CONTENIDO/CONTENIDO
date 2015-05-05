@@ -70,8 +70,8 @@ class cAuth {
     /**
      * Magic getter function for outdated variable names.
      *
-     * @param string $name name of the variable
-     *
+     * @param string $name
+     *         name of the variable
      * @return mixed
      */
     public function __get($name) {
@@ -144,8 +144,9 @@ class cAuth {
     /**
      * Resets the global authentication information.
      *
-     * @param bool $nobody If flag set to true, the default authentication is
-     *        switched to nobody. (optional, default: false)
+     * @param bool $nobody
+     *         If flag set to true, the default authentication is switched to
+     *         nobody. (optional, default: false)
      */
     public function resetAuthInfo($nobody = false) {
         $this->auth['uid'] = ($nobody == false? '' : self::AUTH_UID_NOBODY);
@@ -158,8 +159,8 @@ class cAuth {
      * Logs out the current user, resets the auth information and freezes the
      * session.
      *
-     * @param bool $nobody If flag set to true, nobody is recreated as user.
-     *
+     * @param bool $nobody
+     *         If flag set to true, nobody is recreated as user.
      * @return bool true
      */
     public function logout($nobody = false) {
@@ -245,8 +246,8 @@ class cAuth {
     /**
      * Sets or refreshs the expiration of the authentication.
      *
-     * @param int $expiration new expiration (optional, default: NULL = current
-     *        time plus lifetime minutes)
+     * @param int $expiration
+     *         new expiration (optional, default: NULL = current time plus lifetime minutes)
      */
     protected function _setExpiration($expiration = NULL) {
         if ($expiration === NULL) {
@@ -276,8 +277,10 @@ class cAuth {
     /**
      * Sets the authentication info for a user.
      *
-     * @param string $userId user ID to set
-     * @param int $expiration expiration (optional, default: NULL)
+     * @param string $userId
+     *         user ID to set
+     * @param int $expiration
+     *         expiration (optional, default: NULL)
      */
     protected function _setAuthInfo($userId, $expiration = NULL) {
         $this->auth['uid'] = $userId;

@@ -37,7 +37,8 @@ class cHTMLIFrame extends cHTML {
      *
      * @param string|object $content String with the content or an object to
      *        render.
-     * @return cHTMLIFrame $this
+     * @return cHTMLIFrame
+     *         $this for chaining
      */
     public function setSrc($src) {
         return $this->updateAttribute('src', $src);
@@ -47,7 +48,8 @@ class cHTMLIFrame extends cHTML {
      * Sets this frame's width
      *
      * @param string $width Width of the item
-     * @return cHTMLIFrame $this
+     * @return cHTMLIFrame
+     *         $this for chaining
      */
     public function setWidth($width) {
         return $this->updateAttribute('width', $width);
@@ -57,7 +59,8 @@ class cHTMLIFrame extends cHTML {
      * Sets this frame's height
      *
      * @param string $height Height of the item
-     * @return cHTMLIFrame $this
+     * @return cHTMLIFrame
+     *         $this for chaining
      */
     public function setHeight($height) {
         return $this->updateAttribute('height', $height);
@@ -67,7 +70,8 @@ class cHTMLIFrame extends cHTML {
      * Sets wether this iframe should have a border or not
      *
      * @param string $border If 1 or true, this frame will have a border
-     * @return cHTMLIFrame $this
+     * @return cHTMLIFrame
+     *         $this for chaining
      */
     public function setBorder($border) {
         return $this->updateAttribute('frameborder', intval($border));

@@ -14,10 +14,12 @@
  * @link http://www.contenido.org
  */
 
-if (cRegistry::isBackendEditMode()) {
-    echo '<label class="content_type_label">' . mi18n("LABEL_FORM_CONTACT") . '</label>';
-}
+mi18n("REPLY_HEADLINE");
+mi18n("REPLY_TEXT");
 
+if (cRegistry::isBackendEditMode()) {
+    echo '<label class="content_type_label">' . conHtmlSpecialChars(mi18n("LABEL_FORM_CONTACT")) . '</label>';
+}
 echo "CMS_PIFAFORM[1]";
 
 ?>

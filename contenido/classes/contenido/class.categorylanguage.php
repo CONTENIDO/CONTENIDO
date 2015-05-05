@@ -26,8 +26,8 @@ class cApiCategoryLanguageCollection extends ItemCollection {
     /**
      * Create a new collection of items.
      *
-     * @param string $select where clause to use for selection (see
-     *            ItemCollection::select())
+     * @param string $select
+     *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
         global $cfg;
@@ -126,8 +126,10 @@ class cApiCategoryLanguageCollection extends ItemCollection {
      * Checks if passed idartlang is a start article.
      *
      * @param int $idartlang
-     * @param int $idcat Check category id additionally
-     * @param int $idlang Check language id additionally
+     * @param int $idcat
+     *         Check category id additionally
+     * @param int $idlang
+     *         Check language id additionally
      * @return bool
      */
     public function isStartArticle($idartlang, $idcat = NULL, $idlang = NULL) {
@@ -157,7 +159,8 @@ class cApiCategoryLanguage extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -171,9 +174,12 @@ class cApiCategoryLanguage extends Item {
     /**
      * Load data by category id and language id
      *
-     * @param int $idcat Category id
-     * @param int $idlang Language id
-     * @return bool true on success, otherwhise false
+     * @param int $idcat
+     *         Category id
+     * @param int $idlang
+     *         Language id
+     * @return bool
+     *         true on success, otherwhise false
      */
     public function loadByCategoryIdAndLanguageId($idcat, $idlang) {
         $aProps = array(
@@ -194,10 +200,11 @@ class cApiCategoryLanguage extends Item {
     /**
      * Userdefined setter for article language fields.
      *
+     * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $safe Flag to run defined inFilter on passed value
-     * @todo should return return value of overloaded method
+     * @param bool $safe
+     *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $safe = true) {
         switch ($name) {
@@ -281,8 +288,10 @@ class cApiCategoryLanguage extends Item {
     /**
      * Returns the link to the current object.
      *
-     * @param int $changeLangId change language id for URL (optional)
-     * @return string link
+     * @param int $changeLangId
+     *         change language id for URL (optional)
+     * @return string
+     *         link
      */
     public function getLink($changeLangId = 0) {
         if ($this->isLoaded() === false) {

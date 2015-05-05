@@ -36,7 +36,7 @@ if (($googleAccount = getEffectiveSetting('stats', 'ga_account', '')) != "") {
 if (($piwikUrl = getEffectiveSetting('stats', 'piwik_url', '')) != "") {
     if (($piwikSite = getEffectiveSetting('stats', 'piwik_site', '')) != "") {
         $linkToPiwik = sprintf('<a target="_blank" href="' . $piwikUrl . '">%s</a>', i18n('here'));
-        $piwikNotification = $contenidoNotification->returnNotification('warning', sprintf(i18n("This client has bee configured with Piwik Site %s. Click %s to visit the Piwik installation."), $piwikSite, $linkToPiwik));
+        $piwikNotification = $contenidoNotification->returnNotification('warning', sprintf(i18n("This client has been configured with Piwik Site %s. Click %s to visit the Piwik installation."), $piwikSite, $linkToPiwik));
     }
 }
 

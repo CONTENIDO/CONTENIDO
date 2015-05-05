@@ -39,7 +39,7 @@ if (isset($idnewsletter)) {
     $oNewsletter->loadByPrimaryKey($idnewsletter);
 }
 
-if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client && $oNewsletter->get("idlang") == $lang) {
+if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $client && $oNewsletter->get("idlang") == $lang) {
     // Check and set values
     if (!is_numeric($_REQUEST["selTemplate"])) {
         $_REQUEST["selTemplate"] = 0;
@@ -88,7 +88,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
         }
 
         $oNewsletter->store();
-        $oPage->displayInfo(i18n("Saved changes successfully!", 'newsletter'));
+        $oPage->displayOk(i18n("Saved changes successfully!", 'newsletter'));
     } elseif ($oNewsletter->get("idart") > 0) {
         // Check, if html message article and template article are still
         // available

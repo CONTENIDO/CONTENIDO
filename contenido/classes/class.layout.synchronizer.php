@@ -119,7 +119,7 @@ class cLayoutSynchronizer {
      * @param string $dirNameOld
      * @param string $dirNameNew
      * @param int $client
-     * @return boolean
+     * @return bool
      */
     private function _renameFileAndDir($dir, $dirNameOld, $dirNameNew, $client) {
         if (rename($dir . $dirNameOld, $dir . $dirNameNew) == false) {
@@ -136,7 +136,7 @@ class cLayoutSynchronizer {
      *
      * @param string $alias layout name
      * @param int $idclient client id
-     * @return boolean
+     * @return bool
      */
     private function _isExistInTable($alias, $idclient) {
         // Select depending from idclient all moduls wiht the name $name
@@ -243,20 +243,10 @@ class cLayoutSynchronizer {
     }
 
     /**
-     * If the first char a '.' return false else true
-     *
-     * @param string $file
-     * @return boolean true if the first char !='.' else false
-     */
-    private function _isValidFirstChar($file) {
-        return (!(substr($file, 0, 1) == '.'));
-    }
-
-    /**
      * Synchronize the Layout directory with the lay-table und the lay-table
      * with directory.
      *
-     * @return boolean
+     * @return bool
      */
     public function synchronize() {
         // update file and layout
@@ -270,12 +260,11 @@ class cLayoutSynchronizer {
             return false;
         }
 
-        if (false !== $dh = opendir($dir)) {
-            while (false !== $file = readdir($dh)) {
-
+        if (false !== ($handle = cDirHandler::read($dir))) {
+            foreach ($handle as $file) {
                 // skip dirs to exclude
                 // @todo should use setting for dirs to exclude
-                if (!$this->_isValidFirstChar($file)) {
+                if (cFileHandler::fileNameBeginsWithDot($file)) {
                     continue;
                 }
 
@@ -308,9 +297,6 @@ class cLayoutSynchronizer {
                     }
                 }
             }
-
-            // close dir
-            closedir($dh);
         }
 
         $this->_showOutputMessage();

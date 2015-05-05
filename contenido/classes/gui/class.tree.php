@@ -26,50 +26,93 @@ class cGuiTree extends cTree {
 
     /**
      *
+     * @var unknown_type
+     */
+    const TREEVIEW_GRIDLINE_SOLID = 'solid';
+
+    /**
+     *
+     * @var unknown_type
+     */
+    const TREEVIEW_GRIDLINE_DASHED = 'dashed';
+
+    /**
+     *
+     * @var unknown_type
+     */
+    const TREEVIEW_GRIDLINE_DOTTED = 'dotted';
+
+    /**
+     *
+     * @var unknown_type
+     */
+    const TREEVIEW_GRIDLINE_NONE = 'none';
+
+    /**
+     *
+     * @var unknown_type
+     */
+    const TREEVIEW_BACKGROUND_NONE = 'none';
+
+    /**
+     *
+     * @var unknown_type
+     */
+    const TREEVIEW_BACKGROUND_SHADED = 'shaded';
+
+    /**
+     *
+     * @var unknown_type
+     */
+    const TREEVIEW_MOUSEOVER_NONE = 'none';
+
+    /**
+     *
+     * @var unknown_type
+     */
+    const TREEVIEW_MOUSEOVER_MARK = 'mark';
+
+    /**
+     *
+     * @var unknown_type
      */
     private $_globalActions;
 
     /**
      *
+     * @var unknown_type
      */
     private $_setItemActions;
 
     /**
      *
+     * @var unknown_type
      */
     private $_unsetItemActions;
 
     /**
      *
+     * @var unknown_type
      */
     private $_setAttributeActions;
 
     /**
      *
+     * @var unknown_type
      */
     private $_unsetAttributeActions;
 
     /**
      *
+     * @var unknown_type
      */
     private $_baseLink;
 
-    const TREEVIEW_GRIDLINE_SOLID = 'solid';
-
-    const TREEVIEW_GRIDLINE_DASHED = 'dashed';
-
-    const TREEVIEW_GRIDLINE_DOTTED = 'dotted';
-
-    const TREEVIEW_GRIDLINE_NONE = 'none';
-
-    const TREEVIEW_BACKGROUND_NONE = 'none';
-
-    const TREEVIEW_BACKGROUND_SHADED = 'shaded';
-
-    const TREEVIEW_MOUSEOVER_NONE = 'none';
-
-    const TREEVIEW_MOUSEOVER_MARK = 'mark';
-
+    /**
+     *
+     * @param unknown_type $uuid
+     * @param unknown_type $treename
+     */
     public function __construct($uuid, $treename = false) {
         global $cfg, $auth;
 
@@ -85,6 +128,9 @@ class cGuiTree extends cTree {
         $this->_user = new cApiUser($auth->auth["uid"]);
     }
 
+    /**
+     *
+     */
     public function processParameters() {
         if (($items = $this->_user->getUserProperty("expandstate", $this->_uuid)) !== false) {
             $list = unserialize($items);
@@ -124,23 +170,37 @@ class cGuiTree extends cTree {
         $this->_gridlineMode = $mode;
     }
 
+    /**
+     *
+     * @param unknown_type $mode
+     */
     public function setBackgroundMode($mode) {
         $this->_backgroundMode = $mode;
     }
 
+    /**
+     *
+     * @param unknown_type $mode
+     */
     public function setMouseoverMode($mode) {
         $this->_mouseoverMode = $mode;
     }
 
+    /**
+     *
+     * @param unknown_type $colors
+     */
     public function setBackgroundColors($colors) {
         $this->_backgroundColors = $colors;
     }
 
     /**
+     *
+     * @param bool $with_root
      * @return string
      */
     public function render($with_root = true) {
-        /** @var cTreeItem[] $objects */
+        /* @var $objects cTreeItem[] */
         $objects = $this->flatTraverse(0);
 
         if ($with_root == false) {
@@ -313,6 +373,11 @@ class cGuiTree extends cTree {
         return ('<table cellspacing="0" cellpadding="0" width="100%" border="0"><tr><td>' . $result . '</td></tr></table>');
     }
 
+    /**
+     *
+     * @param unknown_type $object
+     * @return string
+     */
     public function _getExpandCollapseIcon($object) {
         if ($object->getCollapsed() == true) {
             return ($this->_buildImagePath("grid_expand.gif"));
@@ -344,10 +409,19 @@ class cGuiTree extends cTree {
         return ($link);
     }
 
+    /**
+     *
+     * @param unknown_type $image
+     * @return string
+     */
     public function _buildImagePath($image) {
         return ("./images/" . $this->_gridlineMode . "/" . $image);
     }
 
+    /**
+     *
+     * @param unknown_type $link
+     */
     public function setBaseLink($link) {
         $this->_baseLink = $link;
     }

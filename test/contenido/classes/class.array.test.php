@@ -128,11 +128,12 @@ class cArrayTest extends cTestingTestCase {
         $this->assertSame(4, cArray::searchRecursive($data, 'foo', true));
         $this->assertSame(5, cArray::searchRecursive($data, 'bar', true));
         $this->assertSame(5, cArray::searchRecursive($data, 'ba', true));
+
         // @todo ERROR: strpos(): Empty delimiter
-        $this->assertSame(4, cArray::searchRecursive($data, '', true));
-        $this->assertSame(0, cArray::searchRecursive($data, NULL, true));
-        $this->assertSame(false, cArray::searchRecursive($data, 0, true));
-        $this->assertSame(false, cArray::searchRecursive($data, 0.0, true));
+        $this->assertSame(false, cArray::searchRecursive($data, '', true));
+        $this->assertSame(false, cArray::searchRecursive($data, NULL, true));
+        $this->assertSame(1, cArray::searchRecursive($data, 0, true));
+        $this->assertSame(1, cArray::searchRecursive($data, 0.0, true));
         $this->assertSame(false, cArray::searchRecursive($data, false, true));
 
         // strict search

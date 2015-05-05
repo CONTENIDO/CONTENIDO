@@ -338,6 +338,7 @@ class PifaAjaxHandler {
             $label = $_POST['label'];
             $label = cSecurity::unescapeDB($label);
             $label = cSecurity::toString($label);
+            $label = strip_tags($label);
             $label = trim($label);
             $label = substr($label, 0, 1023);
             if ($label !== $pifaField->get('label')) {

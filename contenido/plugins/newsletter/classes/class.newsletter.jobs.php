@@ -192,7 +192,7 @@ class NewsletterJobCollection extends ItemCollection {
 
             // Adds log items for all recipients and returns recipient count
             $oLogs = new NewsletterLogCollection();
-            $iRecipientCount = $oLogs->initializeJob($oItem->get($oItem->primaryKey), $iIDNews);
+            $iRecipientCount = $oLogs->initializeJob($oItem->get($oItem->getPrimaryKeyName()), $iIDNews);
             unset($oLogs);
 
             $oItem->set("rcpcount", $iRecipientCount);
@@ -258,7 +258,7 @@ class NewsletterJob extends Item {
                 $this->set("started", "0000-00-00 00:00:00", false);
 
                 $oLogs = new NewsletterLogCollection();
-                $oLogs->setWhere("idnewsjob", $this->get($this->primaryKey));
+                $oLogs->setWhere("idnewsjob", $this->get($this->getPrimaryKeyName()));
                 $oLogs->setWhere("status", "sending");
                 $oLogs->query();
 
@@ -343,7 +343,7 @@ class NewsletterJob extends Item {
             } else {
                 $oLogs->resetQuery();
             }
-            $oLogs->setWhere("idnewsjob", $this->get($this->primaryKey));
+            $oLogs->setWhere("idnewsjob", $this->get($this->getPrimaryKeyName()));
             $oLogs->setWhere("status", "pending");
 
             if ($bDispatch) {
@@ -361,6 +361,14 @@ class NewsletterJob extends Item {
 
                 $sKey = $oLog->get("rcphash");
                 $sEMail = $oLog->get("rcpemail");
+
+                // do not try to send a message to an invalid email address
+                if (false === isValidMail($sEMail)) {
+                    $oLog->set("status", "error (invalid email)");
+                    $oLog->store();
+                    continue;
+                }
+
                 $bSendHTML = false;
                 if ($oLog->get("rcpnewstype") == 1) {
                     $bSendHTML = true; // Recipient accepts html newsletter
@@ -413,10 +421,18 @@ class NewsletterJob extends Item {
                         $contentType = 'text/html';
                     }
 
-                    $message = Swift_Message::newInstance($sSubject, $body, $contentType, $sEncoding);
-                    $message->setFrom($sFrom, $sFromName);
-                    $message->setTo($to);
-                    $result = $mailer->send($message);
+                    
+                    try {
+                        // this code can throw exceptions like Swift_RfcComplianceException
+                        $message = Swift_Message::newInstance($sSubject, $body, $contentType, $sEncoding);
+                        $message->setFrom($sFrom, $sFromName);
+                        $message->setTo($to);
+                        
+                        // send the email
+                        $result = $mailer->send($message);
+                    } catch (Exception $e) {
+                        $result = false;
+                    }
 
                     if ($result) {
                         $oLog->set("status", "successful");
@@ -439,7 +455,7 @@ class NewsletterJob extends Item {
             } else if ($bDispatch) {
                 // Check, if there are recipients remaining - stops job faster
                 $oLogs->resetQuery();
-                $oLogs->setWhere("idnewsjob", $this->get($this->primaryKey));
+                $oLogs->setWhere("idnewsjob", $this->get($this->getPrimaryKeyName()));
                 $oLogs->setWhere("status", "pending");
                 $oLogs->setLimit(0, $this->get("dispatch_count"));
                 $oLogs->query();

@@ -36,15 +36,16 @@ class cContentTypeDate extends cContentTypeAbstract {
     /**
      * Initialises class attributes and handles store events.
      *
-     * @param string $rawSettings the raw settings in an XML structure or as
-     *        plaintext
-     * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is used
-     * @param array $contentTypes array containing the values of all content
-     *        types
+     * @param string $rawSettings
+     *         the raw settings in an XML structure or as plaintext
+     * @param int $id
+     *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
+     * @param array $contentTypes
+     *         array containing the values of all content types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-        // change attributes from the parent class and call the parent
-        // constructor
+
+        // set props
         $this->_type = 'CMS_DATE';
         $this->_prefix = 'date';
         $this->_settingsType = self::SETTINGS_TYPE_XML;
@@ -52,6 +53,8 @@ class cContentTypeDate extends cContentTypeAbstract {
             'date_timestamp',
             'date_format'
         );
+
+        // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
 
         // set the locale
@@ -116,7 +119,7 @@ class cContentTypeDate extends cContentTypeAbstract {
             } else { // if no date_format is given, set standard value
                 $_POST['date_format'] = '{"dateFormat":"","timeFormat":""}';
             }
-        
+            
             $this->_storeSettings();
         }
         
@@ -184,10 +187,12 @@ class cContentTypeDate extends cContentTypeAbstract {
      * Localises the
      * output.
      *
-     * @param string $format the format string in the PHP date format
-     * @param int $timestamp the timestamp representing the date which should be
-     *        formatted
-     * @return string the formatted, localised date
+     * @param string $format
+     *         the format string in the PHP date format
+     * @param int $timestamp
+     *         the timestamp representing the date which should be formatted
+     * @return string
+     *         the formatted, localised date
      */
     private function _formatDate($format, $timestamp = NULL) {
         $result = '';
@@ -270,6 +275,14 @@ class cContentTypeDate extends cContentTypeAbstract {
             $result = conHtmlentities($result);
         }
 
+        // strftime returns a string in an encoding that is specified by the locale
+        // use iconv extension to get the content encoding of string
+        // use mbstring extension to convert encoding to contenido's target encoding
+        if (extension_loaded('iconv') && extension_loaded('mbstring')) {
+            $result = mb_convert_encoding($result, cRegistry::getEncoding(), iconv_get_encoding('output_encoding'));
+            $result = conHtmlentities($result);
+        }
+
         return $result;
     }
 
@@ -277,8 +290,8 @@ class cContentTypeDate extends cContentTypeAbstract {
      * Generates the code which should be shown if this content type is shown in
      * the frontend.
      *
-     * @return string escaped HTML code which sould be shown if content type is
-     *         shown in frontend
+     * @return string
+     *         escaped HTML code which sould be shown if content type is shown in frontend
      */
     public function generateViewCode() {
         $format = $this->_settings['date_format'];
@@ -304,8 +317,8 @@ class cContentTypeDate extends cContentTypeAbstract {
     /**
      * Generates the code which should be shown if this content type is edited.
      *
-     * @return string escaped HTML code which should be shown if content type is
-     *         edited
+     * @return string
+     *         escaped HTML code which should be shown if content type is edited
      */
     public function generateEditCode() {
         $belang = cRegistry::getBackendLanguage();
@@ -326,7 +339,8 @@ class cContentTypeDate extends cContentTypeAbstract {
     /**
      * Generates the JavaScript needed for CMS_DATE.
      *
-     * @return string HTML code which includes the needed JavaScript
+     * @return string
+     *         HTML code which includes the needed JavaScript
      */
     private function _generateJavaScript() {
         $template = new cTemplate();
@@ -350,7 +364,8 @@ class cContentTypeDate extends cContentTypeAbstract {
     /**
      * Generates the save button.
      *
-     * @return string HTML code for the save button
+     * @return string
+     *         HTML code for the save button
      */
     private function _generateStoreButton() {
         $saveButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_ok.gif', 'save_settings');
@@ -361,7 +376,8 @@ class cContentTypeDate extends cContentTypeAbstract {
     /**
      * Generates a select box for defining the format of the date.
      *
-     * @return string the HTML code of the format select box
+     * @return string
+     *         the HTML code of the format select box
      */
     private function _generateFormatSelect() {
         $formatSelect = new cHTMLSelectElement($this->_prefix . '_format_select_' . $this->_id, '', $this->_prefix . '_format_select_' . $this->_id);

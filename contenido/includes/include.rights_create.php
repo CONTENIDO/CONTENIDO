@@ -71,7 +71,7 @@ if ($action == 'user_createuser') {
 					// Client has one or more assigned language(s)
 		       		foreach ($mlang as $selectedlanguage) {
 
-		       			if (!in_array($selectedlanguage, $availablelanguages)) {
+		       			if (!$clientLanguageCollection->hasLanguageInClients($selectedlanguage, $mclient)) {
 		       				// Selected language are not assigned to selected client
 		       				$sNotification = $notification->returnNotification("warning", i18n("You have to select a client with a language of that client."));
 		       				$bError = true;
@@ -84,7 +84,7 @@ if ($action == 'user_createuser') {
 
     	}
 
-    	// If we have no errors, cpntinue to create a user
+    	// If we have no errors, continue to create a user
 		if ($bError == false) {
 	        $aPerms = buildUserOrGroupPermsFromRequest(true);
 

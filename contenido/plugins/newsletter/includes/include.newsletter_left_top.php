@@ -197,7 +197,7 @@ $bTestTargetFound = false;
 // specific, lang is sufficient
 $iTestDestination = (int) $oUser->getProperty("newsletter", "test_idnewsgrp_lang" . $lang);
 while ($oRcpGroup = $oRcpGroups->next()) {
-    $iID = $oRcpGroup->get($oRcpGroup->primaryKey);
+    $iID = $oRcpGroup->get($oRcpGroup->getPrimaryKeyName());
 
     if ($iTestDestination == $iID) {
         $bTestTargetFound = true;

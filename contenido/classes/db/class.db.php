@@ -69,7 +69,7 @@ class cDb extends cDbDriverHandler {
     /**
      * Returns the query ID resource.
      *
-     * @return NULL resource
+     * @return NULL|resource
      */
     public function getQueryId() {
         return $this->_queryId;
@@ -88,7 +88,7 @@ class cDb extends cDbDriverHandler {
     /**
      * Returns the link ID resource.
      *
-     * @return NULL resource
+     * @return NULL|resource
      */
     public function getLinkId() {
         return $this->_linkId;
@@ -153,7 +153,8 @@ class cDb extends cDbDriverHandler {
     /**
      * Returns error message of last occurred error from database.
      *
-     * @return string database error message
+     * @return string
+     *         database error message
      */
     public function getErrorMessage() {
         return $this->_errorMessage;
@@ -171,7 +172,8 @@ class cDb extends cDbDriverHandler {
     /**
      * Returns error code of last occurred error from database.
      *
-     * @return int database error code
+     * @return int
+     *         database error code
      */
     public function getErrorNumber() {
         return $this->_errorNumber;

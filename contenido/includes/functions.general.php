@@ -269,7 +269,18 @@ function markSubMenuItem($menuitem, $return = false) {
         // CONTENIDO backend but not in preview mode
         $str = <<<JS
 <script type="text/javascript">
-Con.markSubmenuItem('c_{$menuitem}');
+var id = 'c_{$menuitem}';
+if ('undefined' !== typeof(Con)) {
+    Con.markSubmenuItem(id);
+} else {
+    // Contenido backend but with frozen article
+    // Check if submenuItem is existing and mark it
+    if (parent.parent.frames.right.frames.right_top.document.getElementById(id)) {
+        menuItem = parent.parent.frames.right.frames.right_top.document.getElementById(id).getElementsByTagName('a')[0];
+        // load the new tab now
+        parent.parent.frames.right.frames.right_top.Con.Subnav.clicked(menuItem, true);
+    }
+}
 </script>
 JS;
     } else {
@@ -481,14 +492,11 @@ function htmldecode($string) {
  * @param string $frontendpath path the to the frontend
  */
 function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
-    global $cfg, $cfgClient, $errsite_idcat, $errsite_idart, $db;
+
+    global $cfg, $cfgClient, $errsite_idcat, $errsite_idart;
 
     if (!is_array($cfgClient)) {
         $cfgClient = array();
-    }
-
-    if (!is_object($db)) {
-        $db = cRegistry::getDb();
     }
 
     if ($idclient != 0 && $htmlpath != '' && $frontendpath != '') {
@@ -496,9 +504,7 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
         $cfgClient[$idclient]['path']['htmlpath'] = cSecurity::escapeString($htmlpath);
     }
 
-    $sql = 'SELECT idclient, name, errsite_cat, errsite_art FROM ' . $cfg['tab']['clients'];
-    $db->query($sql);
-
+    // remember paths as these will be lost otherwise
     $htmlpaths = array();
     $frontendpaths = array();
     foreach ($cfgClient as $id => $aclient) {
@@ -510,14 +516,33 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
     unset($cfgClient);
     $cfgClient = array();
 
-    foreach ($htmlpaths as $id => $path) {
-        $cfgClient[$id]["path"]["htmlpath"] = $htmlpaths[$id];
-        $cfgClient[$id]["path"]["frontend"] = $frontendpaths[$id];
-    }
+    // don't do that as the set of clients may have changed!
+    // paths will be set in subsequent foreach instead.
+    // foreach ($htmlpaths as $id => $path) {
+    //     $cfgClient[$id]["path"]["htmlpath"] = $htmlpaths[$id];
+    //     $cfgClient[$id]["path"]["frontend"] = $frontendpaths[$id];
+    // }
+
+    // get clients from database
+    $db = cRegistry::getDb();
+    $db->query('
+        SELECT idclient
+            , name
+            , errsite_cat
+            , errsite_art
+        FROM ' . $cfg['tab']['clients']);
 
     while ($db->nextRecord()) {
         $iClient = $db->f('idclient');
         $cfgClient['set'] = 'set';
+
+        // set original paths
+        if (isset($htmlpaths[$iClient])) {
+            $cfgClient[$iClient]["path"]["htmlpath"] = $htmlpaths[$iClient];
+        }
+        if (isset($frontendpaths[$iClient])) {
+            $cfgClient[$iClient]["path"]["frontend"] = $frontendpaths[$iClient];
+        }
 
         $cfgClient[$iClient]['name'] = conHtmlSpecialChars(str_replace(array(
             '*/',
@@ -1032,6 +1057,12 @@ function humanReadableSize($number) {
  * @return number
  */
 function machineReadableSize($sizeString) {
+
+	// If sizeString is a integer value (i. e. 64242880), return it
+	if (cSecurity::isInteger($sizeString)) {
+		return $sizeString;
+	}
+
     $val = trim($sizeString);
     $last = strtolower($val[strlen($val) - 1]);
     $val = (float) substr($val, 0, strlen($val) - 1);
@@ -1104,9 +1135,9 @@ function scanPlugins($entity) {
     if ($lastscantime + 300 < time()) {
         setSystemProperty('plugin', $entity . '-lastscantime', time());
         if (is_dir($basedir)) {
-            if (false !== $dh = opendir($basedir)) {
-                while (($file = readdir($dh)) !== false) {
-                    if (is_dir($basedir . $file) && $file != 'includes' && $file != '.' && $file != '..') {
+            if (false !== ($handle = cDirHandler::read($basedir))) {
+                foreach ($handle as $file) {
+                    if (is_dir($basedir . $file) && $file != 'includes' && cFileHandler::fileNameIsDot($file) === false) {
                         if (!in_array($file, $plugins)) {
                             if (cFileHandler::exists($basedir . $file . '/' . $file . '.php')) {
                                 $plugins[] = $file;
@@ -1114,7 +1145,6 @@ function scanPlugins($entity) {
                         }
                     }
                 }
-                closedir($dh);
             }
         }
 
@@ -1204,14 +1234,6 @@ function createRandomName($nameLength) {
     }
 
     return $Name;
-}
-
-/**
- * @deprecated [2013-10-02]  Use getJsHelpContext() instead
- */
-function setHelpContext($area) {
-    cDeprecated("The function setHelpContext() is deprecated. Use getJsHelpContext() instead.");
-    return getJsHelpContext($area);
 }
 
 /**
@@ -1584,14 +1606,6 @@ function ipMatch($network, $mask, $ip) {
         // fail - this IP is NOT within specified mask
         return false;
     }
-}
-
-/**
- * @deprecated [2013-08-14]  Use cString::endsWith() instead
- */
-function endsWith($haystack, $needle) {
-    cDeprecated("The function endsWith is deprecated. Use cString::endsWith() instead.");
-    return cString::endsWith($haystack, $needle);
 }
 
 /**

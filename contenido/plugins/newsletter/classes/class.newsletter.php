@@ -122,7 +122,7 @@ class NewsletterCollection extends ItemCollection
             $this->properties = new cApiPropertyCollection();
         }
         $this->properties->setWhere("idclient", $client);
-        $this->properties->setWhere("itemtype", $this->primaryKey);
+        $this->properties->setWhere("itemtype", $this->getPrimaryKeyName());
         $this->properties->setWhere("itemid", $iItemID);
         $this->properties->query();
 
@@ -212,7 +212,7 @@ class Newsletter extends Item
 
         return parent::setField($name, $value, $bSafe);
     }
-	
+
     /**
      * Replaces newsletter tag (e.g. MAIL_NAME) with data.
      * If code is just text using str_replace; if it is HTML by using regular expressions
@@ -727,9 +727,13 @@ class Newsletter extends Item
         // Initialization
         $aMessages  = array();
 
+        // Initializing cApiLanguage and get properties for dateformat
         $oLanguage = new cApiLanguage($lang);
+        $sFormatDate = $oLanguage->getProperty("dateformat", "date");
+        $sFormatTime = $oLanguage->getProperty("dateformat", "time");
         unset($oLanguage);
 
+        // If no date- and format defined please set standard values
         if ($sFormatDate == "") {
             $sFormatDate = "%d.%m.%Y";
         }

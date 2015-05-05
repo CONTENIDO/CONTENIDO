@@ -26,8 +26,8 @@ class cApiContainerConfigurationCollection extends ItemCollection {
     /**
      * Create a new collection of items.
      *
-     * @param string $select where clause to use for selection (see
-     *            ItemCollection::select())
+     * @param string $select
+     *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
         global $cfg;
@@ -63,9 +63,11 @@ class cApiContainerConfigurationCollection extends ItemCollection {
     /**
      * Returns list of all configured container by template configuration id
      *
-     * @param  int  $idtplcfg  Template configuration id
-     * @return  array  Assoziative array where the key is the number and
-     *                 value the container configuration.
+     * @param int $idtplcfg
+     *         Template configuration id
+     * @return array
+     *         Assoziative array where the key is the number and value the
+     *         container configuration.
      */
     public function getByTemplateConfiguration($idtplcfg) {
         $configuration = array();
@@ -90,7 +92,8 @@ class cApiContainerConfiguration extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -104,10 +107,11 @@ class cApiContainerConfiguration extends Item {
     /**
      * Userdefined setter for container config fields.
      *
+     * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
-     * @todo should return return value of overloaded method
+     * @param bool $bSafe
+     *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
@@ -123,6 +127,7 @@ class cApiContainerConfiguration extends Item {
     /**
      * Adds a key value pair to passed container string and returns the modified
      * container string
+     *
      * @param string $container
      * @param string $key
      * @param string $value
@@ -135,6 +140,7 @@ class cApiContainerConfiguration extends Item {
 
     /**
      * Parses the container value to its variables
+     *
      * @param string $value
      * @return array
      */

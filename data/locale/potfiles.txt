@@ -105,6 +105,7 @@
 ./classes/contenido/class.type.php
 ./classes/contenido/class.upload.meta.php
 ./classes/contenido/class.upload.php
+./classes/contenido/class.user.passwordrequest.php
 ./classes/contenido/class.user.php
 ./classes/contenido/class.user.property.php
 ./classes/content_types/class.content.type.abstract.php
@@ -124,10 +125,6 @@
 ./classes/content_types/class.content.type.raw.php
 ./classes/content_types/class.content.type.teaser.php
 ./classes/content_types/class.content.type.text.php
-./classes/datatypes/class.datatype.currency.php
-./classes/datatypes/class.datatype.datetime.php
-./classes/datatypes/class.datatype.number.php
-./classes/datatypes/class.datatype.php
 ./classes/db/class.db.driver.abstract.php
 ./classes/db/class.db.driver.handler.php
 ./classes/db/class.db.driver.mysql.php
@@ -245,6 +242,7 @@
 ./classes/swiftmailer/lib/classes/Swift/ByteStream/AbstractFilterableInputStream.php
 ./classes/swiftmailer/lib/classes/Swift/ByteStream/ArrayByteStream.php
 ./classes/swiftmailer/lib/classes/Swift/ByteStream/FileByteStream.php
+./classes/swiftmailer/lib/classes/Swift/ByteStream/TemporaryFileByteStream.php
 ./classes/swiftmailer/lib/classes/Swift/CharacterReader/GenericFixedWidthReader.php
 ./classes/swiftmailer/lib/classes/Swift/CharacterReader/UsAsciiReader.php
 ./classes/swiftmailer/lib/classes/Swift/CharacterReader/Utf8Reader.php
@@ -287,7 +285,6 @@
 ./classes/swiftmailer/lib/classes/Swift/IoException.php
 ./classes/swiftmailer/lib/classes/Swift/KeyCache/ArrayKeyCache.php
 ./classes/swiftmailer/lib/classes/Swift/KeyCache/DiskKeyCache.php
-./classes/swiftmailer/lib/classes/Swift/KeyCache/DummyKeyCache.php
 ./classes/swiftmailer/lib/classes/Swift/KeyCache/KeyCacheInputStream.php
 ./classes/swiftmailer/lib/classes/Swift/KeyCache/NullKeyCache.php
 ./classes/swiftmailer/lib/classes/Swift/KeyCache/SimpleKeyCacheInputStream.php
@@ -305,6 +302,8 @@
 ./classes/swiftmailer/lib/classes/Swift/Mime/ContentEncoder/NativeQpContentEncoder.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/ContentEncoder/PlainContentEncoder.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/ContentEncoder/QpContentEncoder.php
+./classes/swiftmailer/lib/classes/Swift/Mime/ContentEncoder/QpContentEncoderProxy.php
+./classes/swiftmailer/lib/classes/Swift/Mime/ContentEncoder/RawContentEncoder.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/ContentEncoder.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/EmbeddedFile.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/EncodingObserver.php
@@ -318,6 +317,7 @@
 ./classes/swiftmailer/lib/classes/Swift/Mime/Headers/DateHeader.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/Headers/IdentificationHeader.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/Headers/MailboxHeader.php
+./classes/swiftmailer/lib/classes/Swift/Mime/Headers/OpenDKIMHeader.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/Headers/ParameterizedHeader.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/Headers/PathHeader.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/Headers/UnstructuredHeader.php
@@ -358,6 +358,14 @@
 ./classes/swiftmailer/lib/classes/Swift/ReplacementFilterFactory.php
 ./classes/swiftmailer/lib/classes/Swift/RfcComplianceException.php
 ./classes/swiftmailer/lib/classes/Swift/SendmailTransport.php
+./classes/swiftmailer/lib/classes/Swift/SignedMessage.php
+./classes/swiftmailer/lib/classes/Swift/Signer.php
+./classes/swiftmailer/lib/classes/Swift/Signers/BodySigner.php
+./classes/swiftmailer/lib/classes/Swift/Signers/DKIMSigner.php
+./classes/swiftmailer/lib/classes/Swift/Signers/DomainKeySigner.php
+./classes/swiftmailer/lib/classes/Swift/Signers/HeaderSigner.php
+./classes/swiftmailer/lib/classes/Swift/Signers/OpenDKIMSigner.php
+./classes/swiftmailer/lib/classes/Swift/Signers/SMimeSigner.php
 ./classes/swiftmailer/lib/classes/Swift/SmtpTransport.php
 ./classes/swiftmailer/lib/classes/Swift/Spool.php
 ./classes/swiftmailer/lib/classes/Swift/SpoolTransport.php
@@ -369,7 +377,9 @@
 ./classes/swiftmailer/lib/classes/Swift/Transport/AbstractSmtpTransport.php
 ./classes/swiftmailer/lib/classes/Swift/Transport/Esmtp/Auth/CramMd5Authenticator.php
 ./classes/swiftmailer/lib/classes/Swift/Transport/Esmtp/Auth/LoginAuthenticator.php
+./classes/swiftmailer/lib/classes/Swift/Transport/Esmtp/Auth/NTLMAuthenticator.php
 ./classes/swiftmailer/lib/classes/Swift/Transport/Esmtp/Auth/PlainAuthenticator.php
+./classes/swiftmailer/lib/classes/Swift/Transport/Esmtp/Auth/XOAuth2Authenticator.php
 ./classes/swiftmailer/lib/classes/Swift/Transport/Esmtp/Authenticator.php
 ./classes/swiftmailer/lib/classes/Swift/Transport/Esmtp/AuthHandler.php
 ./classes/swiftmailer/lib/classes/Swift/Transport/EsmtpHandler.php
@@ -395,6 +405,7 @@
 ./classes/swiftmailer/lib/dependency_maps/transport_deps.php
 ./classes/swiftmailer/lib/mime_types.php
 ./classes/swiftmailer/lib/preferences.php
+./classes/swiftmailer/lib/swiftmailer_generate_mimes_config.php
 ./classes/swiftmailer/lib/swift_init.php
 ./classes/swiftmailer/lib/swift_required.php
 ./classes/swiftmailer/lib/swift_required_pear.php
@@ -425,6 +436,7 @@
 ./cronjobs/advance_workflow.php
 ./cronjobs/index.php
 ./cronjobs/linkchecker.php
+./cronjobs/maintain_password_reset_requests.php
 ./cronjobs/move_articles.php
 ./cronjobs/move_old_stats.php
 ./cronjobs/optimize_database.php
@@ -455,9 +467,17 @@
 ./external/wysiwyg/tinymce3/editorclass.php
 ./external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/preview/example.html
 ./external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/preview/preview.html
+./external/wysiwyg/tinymce3/jscripts/tiny_mce/tiny_mce_gzip.php
 ./external/wysiwyg/tinymce3/list.php
 ./external/wysiwyg/tinymce3/tinymce.tpl.html
-./external/wysiwyg/tinymce3/tiny_mce_gzip.php
+./external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_list.php
+./external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php
+./external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.editor.php
+./external/wysiwyg/tinymce4/contenido/config.php
+./external/wysiwyg/tinymce4/contenido/editor.php
+./external/wysiwyg/tinymce4/contenido/templates/template.tinymce_tpl.html
+./external/wysiwyg/tinymce4/tinymce/js/tinymce/plugins/example/dialog.html
+./external/wysiwyg/tinymce4/tinymce/js/tinymce/tinymce.gzip.php
 ./frameset.php
 ./frameset_left.php
 ./frameset_right.php
@@ -613,6 +633,7 @@
 ./includes/include.system_log_sysvalues.php
 ./includes/include.system_purge.php
 ./includes/include.system_sysvalues.php
+./includes/include.system_wysiwyg.php
 ./includes/include.todo.popup.php
 ./includes/include.tplcfg_edit.php
 ./includes/include.tplcfg_edit_form.php
@@ -677,7 +698,6 @@
 ./main.loginform.php
 ./main.php
 ./scripts/articleObject.js.php
-./scripts/help.js.php
 ./scripts/index.php
 ./scripts/iZoom.js.php
 ./scripts/langref.php
@@ -696,7 +716,6 @@
 ./templates/standard/index.php
 ./templates/standard/main.loginform.html
 ./templates/standard/submenu.html
-./templates/standard/template.admin_frontend.html
 ./templates/standard/template.backend_search_results.html
 ./templates/standard/template.blank.html
 ./templates/standard/template.breadcrumb.html
@@ -735,7 +754,6 @@
 ./templates/standard/template.debug.visible.html
 ./templates/standard/template.debug.visibleadv.html
 ./templates/standard/template.deco.html
-./templates/standard/template.default_subnav.html
 ./templates/standard/template.error_page.html
 ./templates/standard/template.files_overview.html
 ./templates/standard/template.file_subnav.html
@@ -753,6 +771,7 @@
 ./templates/standard/template.generic_list_row.html
 ./templates/standard/template.generic_menu.html
 ./templates/standard/template.generic_page.html
+./templates/standard/template.generic_page_html5.html
 ./templates/standard/template.generic_source_editor.html
 ./templates/standard/template.generic_table_form.html
 ./templates/standard/template.grouprights_create.html
@@ -814,13 +833,13 @@
 ./templates/standard/template.style_left_top.html
 ./templates/standard/template.subnav.html
 ./templates/standard/template.subnav_blank.html
-./templates/standard/template.subnav_noleft.html
 ./templates/standard/template.symbolhelp.html
 ./templates/standard/template.system_configuration.html
 ./templates/standard/template.system_integrity.html
 ./templates/standard/template.system_purge.html
 ./templates/standard/template.system_variables.html
 ./templates/standard/template.system_variables_block.html
+./templates/standard/template.system_wysiwyg_tinymce4.html
 ./templates/standard/template.tplcfg_edit_form.html
 ./templates/standard/template.tpl_edit_form.html
 ./templates/standard/template.tpl_overview.html

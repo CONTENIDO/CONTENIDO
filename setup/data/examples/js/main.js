@@ -70,124 +70,30 @@ $(function() {
     $("#search_result").link_section();
     $("#searchterm.full").self_labeled_input();
 
-    /* ----- GALERY ----- */
-
-    var imgPerPage = 6,
-            activePage,
-            maxPage = 0;
-
-    //Setting Pagination
-    function iniPagination() {
-        var images = 0;
-        $(".galery .source li").each(function() {
-            images++;
-        });
-        maxPage = Math.ceil(images / imgPerPage);
-        for (x = 1; x <= maxPage; x++) {
-            $(".galery .pagination").append('<li><a href="">' + x + '</a></li>');
-        }
-        // @fixme Translate this
-        $(".galery .pagination").append('<li><a id="forward"  href="">Weiter</a></li>');
-    }
-    iniPagination();
-
-    //Loading function for every single page, with limitation
-    function loadGaleryPage(page) {
-        activePage = page;
-
-        var sliceFrom = (page - 1) * imgPerPage,
-                sliceTo = page * imgPerPage;
-        $(".galery .slider").html("");
-        $(".galery .source li").slice(sliceFrom, sliceTo).each(function() {
-            var $a = $(this).children("a");
-           $(".galery .slider").append('<li><a href="' + $a.attr("href") + '" rel="' + $a.attr("rel") + '" title="' + $a.attr("title") + '"><img src="' + $a.text() + '" alt="" style="' + $a.attr("style") + '" /></a></li>');
-        });
-        $(".galery .slider li:odd").addClass("odd");
-
-        //Setting active pagination element
-        $(".galery .pagination li a.active").removeClass("active");
-        $(".galery .pagination li:eq(" + page + ") a").addClass("active");
-    }
-
-    //initial loading the first page
-    loadGaleryPage(1);
-
-
-    $(".galery .pagination li a").not(".disabled").click(function(e) {
-        e.preventDefault();
-        var page;
-        if ($(this).parent().index() == 0) {
-            page = activePage - 1;
-        } else if ($(this).parent().index() == $(".galery .pagination li").length - 1) {
-            page = activePage + 1;
-        } else {
-            page = $(this).parent().index();
-        }
-        if (page != 0 && page <= maxPage) {
-            loadGaleryPage(page);
-        }
-    });
-    /* ----- GALERY LIGHTBOX ----- */
-    jQuery(window).load(function() {
-        $(".galery .slider, .galery .source").delegate("a", "click", function(e) {
-            e.preventDefault();
-            var left = "", right = "";
-                count = $(this).parent().parent().find("li").length;
-
-
-            if (count > 1) {
-                var index = $(this).parent().index();
-                if (index > 0) {
-                    left = '<a href="' + (index - 1) + '" class="prev_image">&laquo;</a>';
-                }
-                if (index < (count - 1)) {
-                    right = '<a href="' + (index + 1) + '" class="next_image">&raquo;</a>';
-                }
-            }
-
-            var colon = '';
-            if ($(this).attr("rel") != '' && $(this).attr("title") != '') {
-                colon = ':';
-            }
-            $(".galery .lightbox").html(left + right + '<img src="' + $(this).attr("href") + '" alt="" /><p>' + $(this).attr("rel") + colon + $(this).attr("title") + '</p>').dialog({
-                modal: true,
-                width: "auto",
-                height: "auto",
-                closeText: "X",
-                position: {
-                    my: "center",
-                    at: "center",
-                    of: window
-                },
-                close: function() {
-                    $(".galery").prepend('<div class="lightbox"></div>');
-                }
-            });
-        });
-
-        $("body").delegate(".lightbox a", "click", function(e) {
-            e.preventDefault();
-            var index = parseInt($(this).attr("href"));
-            $(".lightbox").dialog("close");
-            $('.galery .source li:eq(' + index + ') a').click();
-
-            // switch pages when image is on other page.
-            if (index % 6 == 0 && e.currentTarget.className == 'next_image') {
-                    $('#forward').click();
-            } else if (index % 6 == 5 && e.currentTarget.className == 'prev_image') {
-                $('#back').click();
-            }
-
-        });
-
-    });
-
 
     /* ----- SLIDER ----- */
     //fix for safer sliding in IE 7/8
     $(".slider .images li").not(".active").css({"opacity": "0"});
 
     var slider = window.setInterval(function() {
+        
+        if ($(window).width() < 769) {
+            return false;
+        }
+
+        $('.slider').trigger('slider.next');
+    }, 7000);
+
+    $(".slider").on('slider.next', function() {
+
+        var _ = $(this);
+
+        if (_.hasClass('animate')) {
+            return false;
+        }
+
+        _.addClass('animate');
+
         var index = $(".slider .images li.active").index();
         $(".slider .pagination li a").removeClass("active");
         $(".slider .images li:eq(" + index + ")").animate({"opacity": "0"}, 500, function() {
@@ -197,14 +103,46 @@ $(function() {
             $(".slider .images li:eq(0)").animate({"opacity": "1"}, 900, function() {
                 $(this).addClass("active");
                 $(".slider .pagination li:eq(0) a").addClass("active");
+                _.removeClass('animate');
             });
         } else {
             $(".slider .images li:eq(" + (index + 1) + ")").animate({"opacity": "1"}, 900, function() {
                 $(this).addClass("active");
                 $(".slider .pagination li:eq(" + (index + 1) + ") a").addClass("active");
+                _.removeClass('animate');
             });
         }
-    }, 7000);
+    });
+
+    $(".slider").on('slider.prev', function() {
+
+        var _ = $(this);
+
+        if (_.hasClass('animate')) {
+            return false;
+        }
+
+        _.addClass('animate');
+
+        var index = $(".slider .images li.active").index();
+        $(".slider .pagination li a").removeClass("active");
+        $(".slider .images li:eq(" + index + ")").animate({"opacity": "0"}, 500, function() {
+            $(this).removeClass("active");
+        });
+        if ((index - 1) == $(".slider .images li").length) {
+            $(".slider .images li:last").animate({"opacity": "1"}, 900, function() {
+                $(this).addClass("active");
+                $(".slider .pagination li:last a").addClass("active");
+                _.removeClass('animate');
+            });
+        } else {
+            $(".slider .images li:eq(" + (index - 1) + ")").animate({"opacity": "1"}, 900, function() {
+                $(this).addClass("active");
+                $(".slider .pagination li:eq(" + (index - 1) + ") a").addClass("active");
+                _.removeClass('animate');
+            });
+        } 
+    });
 
     $(".slider").mouseenter(function() {
         clearTimeout(slider);
@@ -243,6 +181,31 @@ $(function() {
     });
 
     $(".column_quarter.text div.col").css('height', maxHeight + 20 + 'px');
+
+    window.prevMaxColHeight = maxHeight - 20;
+
+    $(window).on('resize', function() {
+        if ($(window).width() > 768 && !$('body').hasClass('init-col-d')) {
+
+            var maxHeight = 0;
+
+            $(".column_quarter.text div.col").each(function() {
+                var h = $(this).height();
+                $(this).css('height', 'auto');
+
+                if (maxHeight < $(this).height()) {
+                    maxHeight = $(this).height();
+                } else {
+                    $(this).css('height', 'h');
+                }
+            });
+
+            if (maxHeight > window.prevMaxColHeight) {
+                $(".column_quarter.text div.col").css('height', maxHeight + 20 + 'px');
+                $('body').addClass('init-col-d');
+            }
+        }
+    });
 
     //make teaser image clickable
     $('.teaser_img').click(function() {

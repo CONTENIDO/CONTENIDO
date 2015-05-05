@@ -21,9 +21,8 @@ $aManagedValues = array(
     'versioning_prune_limit', 'update_check', 'update_news_feed', 'versioning_path', 'versioning_activated',
     'update_check_period', 'system_clickmenu', 'system_mail_host', 'system_mail_sender',
     'system_mail_sender_name', 'pw_request_enable', 'maintenance_mode', 'codemirror_activated',
-    'backend_preferred_idclient', 'generator_basehref', 'generator_xhtml',
-    'system_insite_editing_activated', 'backend_backend_label', 'backend_file_extensions',
-    'versioning_enabled'
+    'backend_preferred_idclient', 'generator_basehref', 'generator_xhtml', 'system_insite_editing_activated',
+    'backend_backend_label', 'backend_file_extensions', 'module_translation_message', 'versioning_enabled'
 );
 
 // @TODO Find a general solution for this!
@@ -43,9 +42,9 @@ if ($action == "systemsettings_save_item") {
         if (!in_array($request['systype'] . '_' . $request['sysname'], $aManagedValues)) {
             setSystemProperty($request['systype'], $request['sysname'], $request['sysvalue'], (int) $request['csidsystemprop']);
             if (isset($x)) {
-                $page->displayInfo(i18n('Saved changes successfully!'), 1);
+                $page->displayOk(i18n('Saved changes successfully!'), 1);
             } else {
-                $page->displayInfo(i18n('Created new item successfully!'), 1);
+                $page->displayOk(i18n('Created new item successfully!'), 1);
             }
         } else {
             $page->displayWarning(i18n('Please set this property in systemsettings directly'), 1);
@@ -58,7 +57,7 @@ if ($action == "systemsettings_delete_item") {
         $page->displayError(i18n("You don't have the permission to make changes here."), 1);
     } else {
         deleteSystemProperty($request['systype'], $request['sysname']);
-        $page->displayInfo(i18n('Deleted item successfully!'), 1);
+        $page->displayOk(i18n('Deleted item successfully!'), 1);
     }
 }
 
@@ -164,7 +163,7 @@ $form->setVar("frame", $frame);
 $form->setVar("action", "systemsettings_save_item");
 $form->addHeader(i18n("Add new variable"));
 $inputbox = new cHTMLTextbox("systype");
-$inputbox->setWidth(10);
+$inputbox->setWidth(30);
 $form->add(i18n("Type"), $inputbox->render());
 
 $inputbox = new cHTMLTextbox("sysname");

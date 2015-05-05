@@ -68,9 +68,10 @@ class cDebugFileAndVisAdv extends cDebugVisibleAdv {
     }
 
     /**
-     * (non-PHPdoc)
+     * Writes a line.
      *
-     * @see cDebugVisibleAdv::out()
+     * @see cDebugInterface::out()
+     * @param string $msg
      */
     public function out($msg) {
         parent::out($msg);
@@ -80,9 +81,15 @@ class cDebugFileAndVisAdv extends cDebugVisibleAdv {
     }
 
     /**
-     * (non-PHPdoc)
+     * Outputs contents of passed variable in a preformatted, readable way.
      *
      * @see cDebugVisibleAdv::show()
+     * @param mixed $mVariable
+     *         The variable to be displayed.
+     * @param string $sVariableDescription
+     *         The variable's name or description.
+     * @param bool $bExit
+     *         If set to true, your app will die() after output of current var.
      */
     public function show($mVariable, $sVariableDescription = '', $bExit = false) {
         parent::show($mVariable, $sVariableDescription, $bExit);

@@ -25,19 +25,21 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cException extends Exception {
 
     /**
+     * Defines if an exception if this type should be logged.
+     * May be defined by any exception individually.
+     *
+     * @see CON-1690
+     * @var bool
+     */
+    protected $_log_exception = false;
+
+    /**
      * Saves an instance of the logger class for logging exceptions in the
      * corresponding log.
      *
      * @var cLog the logger instance
      */
     protected $_logger = NULL;
-
-    /**
-     * Saves whether the exception should be logged - defaults to true.
-     *
-     * @var boolean whether the exception should be logged
-     */
-    protected $_log = true;
 
     /**
      * Constructs the Exception.
@@ -57,8 +59,14 @@ class cException extends Exception {
         ));
         $this->_logger = new cLog($writer);
 
+        // determine if exception should be logged
+        if (false === $this->_log_exception
+        && isset($cfg['debug']['log_exceptions'])) {
+            $this->_log_exception = $cfg['debug']['log_exceptions'];
+        }
+
         // log the exception if it should be logged
-        if ($this->_log) {
+        if (true === $this->_log_exception) {
             $this->log();
         }
     }

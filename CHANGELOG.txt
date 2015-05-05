@@ -1,8 +1,303 @@
 ﻿---------------------------------------------------------------------
 ------------------------ CONTENIDO CHANGELOG ------------------------
 ---------------------------------------------------------------------
+Release 4.9.7
+---------------------------------------------------------------------
+** Bug
+    * [CON-1509] - Util cArray does not work properly
+    * [CON-1716] - Position of lightbox in picture gallery
+    * [CON-1723] - Width alignment of the left frame does not work in backend with Safari 5.1.7
+    * [CON-1813] - TinyMCE searches for templates in contenido/includes
+    * [CON-1856] - Move category to last, empty category tree fails via drag&drop
+    * [CON-1922] - Missing functionality to search inside module context
+    * [CON-1952] - Pifa - import labels with html tags
+    * [CON-1965] - Put a new frontend user into default group fails
+    * [CON-1967] - Search option LIKE does not work
+    * [CON-1970] - PIFA: Error if you create a new form field with empty title
+    * [CON-1972] - Reading client props fails when client hasn't been loaded by ID
+    * [CON-1973] - CMS_FILELIST cannot handle multiple files of same name in different folders
+    * [CON-1978] - Wrong rendering of transparent png files
+    * [CON-1980] - Button for next picture is sometime missing
+    * [CON-1982] - CMS_FILELIST: Manual selection does not work with only one file
+    * [CON-1987] - Module code Validation
+    * [CON-1990] - Redirect url does not contain calling GET params
+    * [CON-1991] - Picture gallery uses wrong path for image scaling
+    * [CON-1992] - Inuse box in backend has wrong style information
+    * [CON-1998] - Missing descriptions for example client modules
+    * [CON-2009] - Articles: Reload right frame after change category template
+    * [CON-2014] - Transparent images: Bug if user used ImageMagick
+    * [CON-2015] - Example client: Wrong article "Blog"
+    * [CON-2016] - Meta Type of new Meta Tag cannot contain spaces
+    * [CON-2017] - duplicated filenames in con_upl
+    * [CON-2024] - Uploading plugins is not possible with missing data/temp folder
+    * [CON-2025] - Error Pifa importer with hidden fields
+    * [CON-2028] - Wrong implementation of client image
+    * [CON-2029] - PIM: Execution order does not works fine at every time
+    * [CON-2030] - Content translations: Wrong module filtering
+    * [CON-2031] - Using CMS_FILELIST may crash page title creation
+    * [CON-2046] - Check UTF8 flag also for false value
+    * [CON-2047] - Cached client logo breaks navigation style
+    * [CON-2048] - PIM: Sometimes you can not delete an plugin (i. e. Smarty Wrapper)
+    * [CON-2049] - Content save fails if a user has CMS_DATE with two or more indexes
+    * [CON-2050] - Wrong image loading in CMS_HTML field at backend raw data tab
+    * [CON-2051] - Fix multiple PHP errors
+    * [CON-2052] - Wrong german translation in frontend user menu
+    * [CON-2053] - Frontend user menu: user icon is not selected per default
+    * [CON-2059] - Module and Template overview: Tooltip display bug at last entry
+    * [CON-2063] - Content: Article: Empty NAME template var
+    * [CON-2064] - Client settings: Wrong display of type with umlauts
+    * [CON-2065] - Default frontend groups lost setting after deselect users
+    * [CON-2069] - Multiple issues with HTML markup and CSS styles
+    * [CON-2070] - pifa.xsd is malformed
+    * [CON-2073] - Newsletter send job fails with more than 200 recipients
+    * [CON-2074] - Umlauts and quotation marks at PIFA
+    * [CON-2075] - Automatically updated online status after save new title with three or more languages
+    * [CON-2077] - Article collector does not respect sort options when loading start articles only
+    * [CON-2078] - Problems with .keep files
+    * [CON-2079] - Test of module code is awfully slow when module is used by many articles
+    * [CON-2080] - System settings: Input field for type is not aligned properly
+    * [CON-2085] - cItemBaseAbstract::isLoaded() is not updated after another load
+    * [CON-2087] - Client specific date-/timeformat leads to wrong public date
+    * [CON-2093] - Rawdata tab does not show all content any longer
+    * [CON-2095] - Pifa import/export with form data
+    * [CON-2096] - AMR rewrites requests to DBFS
+    * [CON-2097] - Tinymce 4 can not include videos in content
+    * [CON-2098] - Misaligned tinymce 4 buttons after saving
+    * [CON-2099] - Cut off confirmation question in Contenido's file and image browser
+    * [CON-2100] - Can not delete fields in raw data tab
+    * [CON-2101] - Ability to reset tinymce4 configuration to default
+    * [CON-2102] - Tinymce 4 button ambiguity
+    * [CON-2103] - Contenido's close button for tinymce 4 does not work in fullscreen mode
+    * [CON-2104] - Left column of CMS_IMGEDITOR redirects page
+    * [CON-2105] - Fix image of confullscreen button
+    * [CON-2106] - Tinymce 4 media plugin may lead to non-editable content fields
+    * [CON-2109] - Caret is lost during tinymce 4 fullscreen switch
+    * [CON-2110] - Unification and integration of buttons
+    * [CON-2111] - Tinymce 4 Youtube integration
+    * [CON-2112] - Tinymce 4 editor window too high
+    * [CON-2113] - Check code cache directory in code generator
+    * [CON-2118] - PIFA: Configure formular assistant at article fails
+    * [CON-2125] - Going back to specific layout history entry is broken
+    * [CON-2126] - Installation of plugins broken
+    * [CON-2127] - Password cronjob file name does not match file name on disk
+    * [CON-2131] - Module content_sitemap_html of example client does not show articles
+    * [CON-2132] - Navigation on left side does not show articles
+    * [CON-2133] - Active tab does not get changed when clicking on an article in overview
+    * [CON-2134] - Disable options to change a frozen article
+    * [CON-2135] - Configuration of frozen article can be edited if no template is specified
+    * [CON-2136] - Frozen article has field to import data
+    * [CON-2137] - Frozen article can be deleted
+    * [CON-2138] - Content escaping for CMS_TEXT incorrect in editor and raw data tab
+    * [CON-2139] - CMS_DATE has erroneous escaping in editor
+    * [CON-2140] - CMS_DATE may output its value using a wrong locale
+    * [CON-2141] - Frontend task: CMS_TEASER may use too much width in example client
+    * [CON-2142] - CMS_FILELIST has wrong escaping of its file list title
+    * [CON-2144] - Check if newly synchronised articles are shown instantly
+    * [CON-2145] - Raw data export does not use file suffix
+    * [CON-2146] - Raw data import not possible in an empty editor
+    * [CON-2148] - Offline category can be visited in frontend
+    * [CON-2151] - Rawdata import relates to given articleId in xml file
+    * [CON-2152] - Escaping of Content -> Translations is not correct
+    * [CON-2153] - Module file changes must trigger a regen of cache
+    * [CON-2154] - Truncating content inside modules gives strange messages or is not possible
+    * [CON-2156] - Empty language name in backend possible
+    * [CON-2157] - Categories can not be configured
+    * [CON-2158] - Tinymce 3 toolbar has wrong styling in content_link_list
+    * [CON-2159] - Module content_map_google utilises wrong localisation variable
+    * [CON-2161] - Module content_rss_creator does not save its output correctly
+    * [CON-2162] - Not correct escaping of CMS_TEXT may break ability to edit content.
+    * [CON-2164] - Module content_user_forum has broken escaping of special chars
+    * [CON-2165] - Module form_contact or pifa form assistant broken.
+    * [CON-2167] - Missing translations in form_contact module
+    * [CON-2169] - CSV export of PIFA contains too many columns
+    * [CON-2170] - German blog article 2 content mistake
+    * [CON-2174] - Module content_socialmedia_googleplus does not check for protocol of entered URL
+    * [CON-2175] - Facebook modules do not escape variables properly
+    * [CON-2176] - Modules script_tracker_google and script_tracker_piwik do not properly escape special chars
+    * [CON-2177] - Newsletter modules have broken newlines in description
+    * [CON-2180] - Module content_rss_creator may create invalid XML
+    * [CON-2181] - CMS_HEAD does not properly deal with input
+    * [CON-2182] - Contact form table of example client does not use table prefix
+    * [CON-2184] - Syntax error in form assistant export page
+    * [CON-2186] - Internal Server error if database information is wrong during setup
+    * [CON-2193] - Invalid filenames cause internal server error when creating client
+    * [CON-2194] - Search terms using example client are not properly escaped
+    * [CON-2196] - Entry in error log when visiting any module with no templates
+    * [CON-2205] - Fresh install without example client and without example modules do not allow accessing backend
+
+** Improvement
+    * [CON-1422] - User settings: Validate date formats
+    * [CON-1454] - PIM: Various changes for GUI
+    * [CON-1536] - Remove all PHP comments on replacing content types and dynamic variables
+    * [CON-1690] - Change exception logging behaviour
+    * [CON-1814] - Rework password forgot system
+    * [CON-1816] - Mailserver password input type should be password instead of text
+    * [CON-1850] - Reload left frame after delete layout
+    * [CON-1855] - Reload left frame after activate/deactivate language at editmodus
+    * [CON-1917] - Do not evaluate modules with syntax errors
+    * [CON-1931] - Add precise error message for missing config files or db connectivity
+    * [CON-1950] - Exclude svg files from rewriting
+    * [CON-1968] - Perform PIM translations
+    * [CON-1975] - Replace all occurencies of readdir, opendir and closedir with methods of cDirHandler
+    * [CON-1976] - Using CMS_FILELIST with not existing files/directories leads to several errors
+    * [CON-1981] - Reload left frame after add new modules
+    * [CON-1989] - CMS_TEXT: Change to cHTMLTextarea
+    * [CON-1994] - Link generation in module script_cookie_directive
+    * [CON-1999] - PIM: Add tooltip to execution order buttons
+    * [CON-2000] - PIM: Force execution order on plugins with dependencies
+    * [CON-2001] - AJAX requests does not handle expired sessions
+    * [CON-2002] - Error in module display on template configuration with fixed containers
+    * [CON-2012] - Turn "Module translation not found"-message off via getEffectiveSetting
+    * [CON-2026] - Add template descriptions to menu as tooltip
+    * [CON-2076] - Performance improvement class.category.helper.php -> getSubcategories
+    * [CON-2089] - Editor for CMS_HTMLHEAD should have less options available for editing than CMS type CMS_HTML has.
+    * [CON-2090] - Add save button in TinyMCE 4 fullscreen mode
+    * [CON-2091] - Add separate configuration for different content types for TinyMCE 4
+    * [CON-2092] - Frontend tests for new TinyMCE 4
+	
+** New feature
+    * [CON-1890] - cArticleCollector: Sort by title
+    * [CON-1919] - Userforum: Show all not moderated comments on start page
+    * [CON-1969] - Add new chains ConMakeOnline, ConMakeStart and ConMakeCatOnline
+    * [CON-1984] - PIM: Show plugin dependencies at overview page
+    * [CON-1997] - language setting for backend user to preselect language
+
+** Task
+    * [CON-2108] - Update copyright year
+    * [CON-2115] - Update Smarty library
+	
+** Technical task
+    * [CON-2018] - Preparation: Remove unused code from current implementation
+    * [CON-2019] - Preparation: Remove flash plugin related code.
+    * [CON-2020] - Check GZip compressor
+    * [CON-2021] - Create initial structure for TinyMCE 4
+    * [CON-2022] - Reimplement the behaviour of TinyMCE callbacks
+    * [CON-2023] - Test the updated TinyMCE 3
+    * [CON-2027] - Make paths and URLs to WYSIWYG editor variable
+    * [CON-2032] - Implementation of TINYMCE 4 in inline Mode
+    * [CON-2033] - System configuration: Respect insite-editing setting in tinymce 4
+    * [CON-2034] - Re-work Tinymce 3 list.php script for tinymce 4
+    * [CON-2036] - Adjust toolbars for tinymce 4
+    * [CON-2037] - Support for DBFS files
+    * [CON-2038] - Reimplement cleanup_callback behaviour
+    * [CON-2039] - Fix / Adopt link list functionality
+    * [CON-2040] - Implement link list submenus
+    * [CON-2041] - Display issues for file browser
+    * [CON-2042] - Allow customization for TinyMCE
+    * [CON-2045] - Update documentation for TinyMCE 4
+    * [CON-2054] - Implement undo in tinymce 4 inline editor.
+    * [CON-2055] - Change the backend loading of urls.
+    * [CON-2057] - Tinymce 4 configuration page
+    * [CON-2060] - TinyMCE4 configuration page: Tiny plugins and save process
+    * [CON-2061] - TinyMCE4: Add chain, change config implementation, add TinyMCE3 page
+    * [CON-2072] - TinyMCE3/4: Wrong HTML entity output
+    * [CON-2083] - Tab overview not correct after choosing not to leave on confirmation question
+
+---------------------------------------------------------------------
+Release 4.9.6
+---------------------------------------------------------------------
+** Bug
+    * [CON-1996] - XSS-vulnerability in request validation
+
+---------------------------------------------------------------------
+Release 4.9.5
+---------------------------------------------------------------------
+** Bug
+    * [CON-1585] - Breadcrumb shows empty element for not synchronized categories
+    * [CON-1588] - Normalize return values in all ItemCollection->create() function
+    * [CON-1589] - Escaping or typecasting in ItemCollection classes
+    * [CON-1623] - Search does not consider special frontend user permissions for categories
+    * [CON-1659] - Generic DB: Don't escape strings in cApi* classes
+    * [CON-1663] - Usage of parent:: instead of $this-> in Item and ItemCollections
+    * [CON-1677] - Usertable: Change valid_from and valid_to columns to datetime
+    * [CON-1693] - PIFA: Dragging form field icons style issues
+    * [CON-1768] - Path to CONTENIDO backend is not custom configurable for clients
+    * [CON-1795] - Wrong publish date after delete article-redirection
+    * [CON-1836] - TinyMCE forgets settings after saving and staying in editor
+    * [CON-1848] - Filemanager: Image opens two times at Firefox
+    * [CON-1861] - Save IMGEDITOR at rawdata redirects to "Editor"
+    * [CON-1873] - Example client: privacy policy link on newsletter form page is missing
+    * [CON-1874] - PIFA: Mail error when client mail template is empty and ignored encoding
+    * [CON-1879] - Error at article properties after submit form and then change client language
+    * [CON-1881] - Can not delete frontend user if I haven't select some existing user
+    * [CON-1882] - Create new article: Wrong preselected category
+    * [CON-1884] - Filelist: Can not select single directory without directory tree
+    * [CON-1885] - Generating keywords does not work correctly
+    * [CON-1886] - cApiLanguageCollection->nextAccessible
+    * [CON-1887] - Multiple issues with mass synchronization
+    * [CON-1888] - Switching languages causes errors in certain situations
+    * [CON-1893] - Failed database connection is not checked properly
+    * [CON-1894] - Login page: Wrong generated url if AMR is active
+    * [CON-1895] - CMS_IMGEDITOR at rawdata tab does not show changes without reload rawdata tab
+    * [CON-1897] - Wrong defined icon at deletefunction css-class
+    * [CON-1898] - AMR: Incomplete error message if user has no rights to write files
+    * [CON-1899] - Bugs with create and delete groups
+    * [CON-1900] - AMR: Missing English translations for ModRewrite_ContentExpertController class
+    * [CON-1901] - Search at file- and imagebrowser
+    * [CON-1902] - Frontend search with single quotation mark throws sql error
+    * [CON-1907] - Article: Show workflow fast search only if workflow plugin is installed and active
+    * [CON-1909] - MOD REWRITE Storage of Config and QUERY STRING Behaviour
+    * [CON-1913] - Perform German translation for module content_sitemap_html
+    * [CON-1914] - PIFA: Add dependence for smarty plugin
+    * [CON-1916] - Usage of multiple CMS_DATE content types with same index will crash page
+    * [CON-1923] - filelist: selction of a file / file doesn't exist
+    * [CON-1925] - Prepared statements get wrong colum values
+    * [CON-1926] - Newsletter groups: Wrong umlauts
+    * [CON-1927] - Style -> HTML: Closing textarea tag breakes text field
+    * [CON-1928] - Mass translation: Several bugs with more than two languages
+    * [CON-1930] - Can not close (open) "Navigation (Members)" box
+    * [CON-1941] - Preconfiguration changes at duplicated templates
+    * [CON-1942] - Content Types: Does not save changes
+    * [CON-1946] - Newsletter: Warning message after delete recipients
+    * [CON-1948] - Wrong cfgTab entry at class.keyword
+    * [CON-1953] - CMS_TEASER manual date setting
+    * [CON-1955] - Warning when fetching table with item collection
+    * [CON-1956] - Switch example client dirs to setup dir
+    * [CON-1958] - Wrong or missing module types
+    * [CON-1960] - Edit CSS for new module
+    * [CON-1962] - Problem with byte-by-byte post_max_size value
+    * [CON-1963] - getLastInsertedId in class.db.driver.handler.php returns wrong value
+    * [CON-1964] - ItemCollection::deleteByWhereClause yields an error w/o matching items
+    * [CON-1966] - CONTENIDO (sometimes) generates a wrong search index
+    * [CON-1977] - Add array check for deleteByWhereClause method
+    * [CON-1985] - Article include module does not load category template configuration
+    * [CON-1986] - Create/edit user: Error if admin select two or more clients and languages
+
+** Improvement
+    * [CON-1517] - Search for all module translations on upgrade
+    * [CON-1601] - Add new convenience methods for cAuth handlers
+    * [CON-1649] - FormAssistant: Form field email
+    * [CON-1683] - CMS_IMGEDITOR: Sort files in select field
+    * [CON-1686] - Add database host, client IDs and encoding to languages on system variables page
+    * [CON-1715] - Rename content list action
+    * [CON-1787] - Add getTimeFormat to cContentTypeDate
+    * [CON-1788] - Add check for config.clients.php before include
+    * [CON-1838] - Various encoding improvements
+    * [CON-1845] - Harmonize notation of "Contenido" at Example Client
+    * [CON-1872] - Make filter for css/js/html files switchable
+    * [CON-1875] - Meta Tags need a key in the layout
+    * [CON-1880] - Show article properties mass synchronisation only if we have three or more client languages
+    * [CON-1892] - Module ArticleInclude: Move Configuration to "Edit-Tab"
+    * [CON-1906] - Layout synchronization: Add a summary with synchronized layouts
+    * [CON-1908] - File manager: Image preview does not support transparent images
+    * [CON-1943] - PIM: Plugin dependencies at uninstall mode
+    * [CON-1949] - Loading Languages for synchonisation check
+    * [CON-1959] - Delete "head"-type for system layout
+
+** New Feature
+    * [CON-1575] - Add CMS_RAW as new content type without frontend display
+    * [CON-1576] - Move configuration of skipped content types on search index to configuration
+    * [CON-1842] - Add new placeholder for layouts to set ressource revisions
+    * [CON-1911] - Add the new article include module to example client
+    * [CON-1932] - Implementing responsive CONTENIDO example client
+
+** Task
+    * [CON-1587] - Disable required registration of chains in CEC registry
+    * [CON-1821] - Check backend resources for usage with HTTPS
+
+---------------------------------------------------------------------
 Release 4.9.4
-----------------------------------------------------------------------
+---------------------------------------------------------------------
 ** Bug
     * [CON-1555] - Umlauts: Multiple encoding problem with iso language
     * [CON-1626] - Missing wrongpass=1 parameter in login error page redirection
@@ -1309,4 +1604,3 @@ Release 4.9.0 Alpha 1
     * [CON-524] - Port HTML_Common to cHTML
     * [CON-545] - Various tasks on localization
     * [CON-551] - Update system requirement checks
-    

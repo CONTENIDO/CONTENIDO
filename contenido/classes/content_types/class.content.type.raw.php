@@ -26,25 +26,38 @@ class cContentTypeRaw extends cContentTypeAbstract {
     /**
      * Initialises class attributes and handles store events.
      *
-     * @param string $rawSettings the raw settings in an XML structure or as
-     *        plaintext
-     * @param int $id ID of the content type, e.g. 3 if CMS_RAW[3] is
-     *        used
-     * @param array $contentTypes array containing the values of all content
-     *        types
+     * @param string $rawSettings
+     *         the raw settings in an XML structure or as plaintext
+     * @param int $id
+     *         ID of the content type, e.g. 3 if CMS_RAW[3] is used
+     * @param array $contentTypes
+     *         array containing the values of all content types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-        // change attributes from the parent class and call the parent
-        // constructor
+
+        // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
+
+        // set props
         $this->_type = 'CMS_RAW';
         $this->_prefix = 'raw';
+
     }
 
-	public function generateViewCode() {
-		return $this->_encodeForOutput($this->_rawSettings);
-	}
+    /**
+     * @see cContentTypeAbstract::generateViewCode()
+     * @return string
+     *         encoded raw settings
+     */
+    public function generateViewCode() {
+        return $this->_encodeForOutput($this->_rawSettings);
+    }
 
+    /**
+     * @see cContentTypeAbstract::generateEditCode()
+     * @return string
+     *         encoded raw settings
+     */
     public function generateEditCode() {
         return $this->_encodeForOutput($this->_rawSettings);
     }

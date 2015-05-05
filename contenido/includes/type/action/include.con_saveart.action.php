@@ -30,9 +30,15 @@ if (!isset($searchable)) {
     $searchable = false;
 }
 
+// if publishing date is not available use false as value
+if (false === isset($publishing_date)) {
+    $publishing_date = false;
+}
+
 $oldData = array();
 
-if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_action_item($area, "con_edit", $idcat))) {
+
+if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_action_item($area, "con_edit", $idcat))  && ((int) $locked === 0 || $admin )) {
     if (1 == $tmp_firstedit) {
         $idart = conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang, $lang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort, 0, $searchable);
         $tmp_notification = $notification->returnNotification("info", i18n("Changes saved"));

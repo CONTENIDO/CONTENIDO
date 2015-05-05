@@ -51,14 +51,14 @@ class NewsletterRecipientCollection extends ItemCollection {
         global $client, $lang, $auth;
 
         /* Check if the e-mail adress already exists */
-        $email = strtolower($email); // e-mail always lower case
+        $email = strtolower($sEMail); // e-mail always lower case
         $this->setWhere("idclient", $client);
         $this->setWhere("idlang", $lang);
-        $this->setWhere("email", $sEMail);
+        $this->setWhere("email", $email);
         $this->query();
 
         if ($this->next()) {
-            return $this->create($sEMail . "_" . substr(md5(rand()), 0, 10), $sName, 0, $sJoinID, $iMessageType); // 0:
+            return $this->create($email . "_" . substr(md5(rand()), 0, 10), $sName, 0, $sJoinID, $iMessageType); // 0:
                                                                                                             // Deactivate
                                                                                                             // 'confirmed'
         }
@@ -66,7 +66,7 @@ class NewsletterRecipientCollection extends ItemCollection {
         $oItem->set("idclient", $client);
         $oItem->set("idlang", $lang);
         $oItem->set("name", $sName);
-        $oItem->set("email", $sEMail);
+        $oItem->set("email", $email);
         $oItem->set("hash", substr(md5(rand()), 0, 17) . uniqid("")); // Generating
                                                                     // UID, 30
                                                                     // characters
@@ -245,7 +245,7 @@ class NewsletterRecipient extends Item {
         $iNewsType = $this->get("news_type");
 
         $oLogs = new NewsletterLogCollection();
-        $oLogs->setWhere("idnewsrcp", $this->get($this->primaryKey));
+        $oLogs->setWhere("idnewsrcp", $this->get($this->getPrimaryKeyName()));
         $oLogs->setWhere("status", "pending");
         $oLogs->query();
 
@@ -278,7 +278,7 @@ class NewsletterRecipient extends Item {
 
         return parent::setField($name, $value, $bSafe);
     }
-	
+
 }
 
 ?>

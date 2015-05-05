@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Generate a XML sitemap.
+ * Generate an XML sitemap.
  *
  * The module configuration allows for the selection of a category which is used
  * as root to determine articles that will be listed in the sitemap.
@@ -225,9 +225,9 @@ function addUrl(SimpleXMLElement $sitemap, array $data) {
     $url->addChild('loc', $data['loc']);
 
     if ($data['lastmod'] == '0000-00-00 00:00:00' || $data['lastmod'] == '') {
-        $url->addChild('lastmod', htmlspecialchars(iso8601Date(mktime())));
+        $url->addChild('lastmod', conHtmlSpecialChars(iso8601Date(mktime())));
     } else {
-        $url->addChild('lastmod', htmlspecialchars(iso8601Date($data['lastmod'])));
+        $url->addChild('lastmod', conHtmlSpecialChars(iso8601Date($data['lastmod'])));
     }
 
     if (!empty($data['changefreq'])) {
@@ -271,9 +271,9 @@ function saveSitemap(SimpleXMLElement $sitemap, $filename = '') {
         header('Content-type: text/xml');
         echo $sitemap->asXML();
     } else if ($sitemap->asXML($cfgClient[$client]['path']['frontend'] . $filename)) {
-        echo mi18n("XML sitemap successfully written to %s", $filename);
+        echo conHtmlSpecialChars(mi18n("XML sitemap successfully written to %s", $filename));
     } else {
-        echo mi18n("XML sitemap could not be written to %s", $filename);
+        echo conHtmlSpecialChars(mi18n("XML sitemap could not be written to %s", $filename));
     }
 }
 

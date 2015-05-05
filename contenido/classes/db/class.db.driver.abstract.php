@@ -42,7 +42,8 @@ abstract class cDbDriverAbstract {
      * Constructor of the database driver.
      * Currently stores the given configuration locally.
      *
-     * @param array $dbCfg database configuration
+     * @param array $dbCfg
+     *         database configuration
      */
     public function __construct($dbCfg) {
         $this->_dbCfg = $dbCfg;
@@ -51,7 +52,8 @@ abstract class cDbDriverAbstract {
     /**
      * Sets the database driver handler.
      *
-     * @param cDbDriverHandler $handler database driver handler instance
+     * @param cDbDriverHandler $handler
+     *         database driver handler instance
      */
     public function setHandler(cDbDriverHandler $handler) {
         $this->_handler = $handler;
@@ -60,7 +62,7 @@ abstract class cDbDriverAbstract {
     /**
      * Returns the database driver handler instance.
      *
-     * @return cDbDriverHandler NULL
+     * @return cDbDriverHandler|NULL
      */
     public function getHandler() {
         return $this->_handler;
@@ -77,41 +79,45 @@ abstract class cDbDriverAbstract {
     /**
      * Connects to the database.
      *
-     * @return object resource int NULL value depends on
-     *         used driver and is NULL in case of an error.
+     * @return object|resource|int|NULL
+     *         value depends on used driver and is NULL in case of an error
      */
     abstract public function connect();
 
     /**
      * Builds a insert query.
-     * String values in passed fields
-     * parameter will be escaped automatically.
+     * String values in passed fields parameter will be escaped automatically.
      *
-     * @param string $tableName The table name
-     * @param array $fields Associative array of fields to insert
-     *
-     * @return string The INSERT SQL query
+     * @param string $tableName
+     *         The table name
+     * @param array $fields
+     *         Associative array of fields to insert
+     * @return string
+     *         The INSERT SQL query
      */
     abstract public function buildInsert($tableName, array $fields);
 
     /**
-     * Builds a update query.
-     * String values in passed fields
-     * and whereClauses parameter will be escaped automatically.
+     * Builds a update query. String values in passed fields and whereClauses
+     * parameter will be escaped automatically.
      *
-     * @param string $tableName The table name
-     * @param array $fields Assoziative array of fields to update
-     * @param array $whereClauses Assoziative array of field in where clause.
-     *        Multiple entries will be concatenated with AND
-     *
-     * @return string The UPDATE query
+     * @param string $tableName
+     *         The table name
+     * @param array $fields
+     *         Assoziative array of fields to update
+     * @param array $whereClauses
+     *         Assoziative array of field in where clause.
+     *         Multiple entries will be concatenated with AND.
+     * @return string
+     *         The UPDATE query
      */
     abstract public function buildUpdate($tableName, array $fields, array $whereClauses);
 
     /**
      * Executes the query.
      *
-     * @param string $statement The query to execute
+     * @param string $statement
+     *         The query to execute
      */
     abstract public function query($statement);
 
@@ -119,16 +125,15 @@ abstract class cDbDriverAbstract {
      * Moves the result to the next record, if exists and returns the status of
      * the movement
      *
-     * @return int Flag about move status 1 on success or 0
+     * @return int
+     *         Flag about move status 1 on success or 0
      */
     abstract public function nextRecord();
 
     /**
      * This method returns the current result set as object or NULL if no result
-     * set is left.
-     * If optional param $className is set, the result object is an instance of
-     * class
-     * $className.
+     * set is left. If optional param $className is set, the result object is an
+     * instance of class $className.
      *
      * @param string $className
      * @return object
@@ -138,21 +143,24 @@ abstract class cDbDriverAbstract {
     /**
      * Returns number of affected rows from last executed query (update, delete)
      *
-     * @return int Number of affected rows
+     * @return int
+     *         Number of affected rows
      */
     abstract public function affectedRows();
 
     /**
      * Returns the number of rows from last executed select query.
      *
-     * @return int The number of rows from last select query result
+     * @return int
+     *         The number of rows from last select query result
      */
     abstract public function numRows();
 
     /**
      * Returns the number of fields (columns) from current record set
      *
-     * @return int Number of fields
+     * @return int
+     *         Number of fields
      */
     abstract public function numFields();
 
@@ -164,24 +172,27 @@ abstract class cDbDriverAbstract {
     /**
      * Escape string for using in SQL-Statement.
      *
-     * @param string $string The string to escape
-     * @return string Escaped string
+     * @param string $string
+     *         The string to escape
+     * @return string
+     *         Escaped string
      */
     abstract public function escape($string);
 
     /**
      * Moves the cursor (position inside current result sets).
      *
-     * @param int $iPos The positon to move to inside the current result set
+     * @param int $iPos
+     *         The positon to move to inside the current result set
+     * @return int
      */
     abstract public function seek($iPos = 0);
 
     /**
-     * Parses te table structure and generates a metadata from it.
+     * Parses the table structure and generates metadata from it.
      *
-     * Due to compatibility problems with Table we changed the behavior
-     * of metadata();
-     * depending on $full, metadata returns the following values:
+     * Due to compatibility problems with table we changed the behavior
+     * of metadata(). Depending on $full, metadata returns the following values:
      *
      * - full is false (default):
      * $result[]:
@@ -203,13 +214,13 @@ abstract class cDbDriverAbstract {
      * This last one could be used if you have a field name, but no index.
      * Test: if (isset($result['meta']['myfield'])) { ...
      *
-     *
-     * @param string $tableName The table to get metadata or empty string to
-     *            retrieve
-     *        metadata of all tables
-     * @param bool $full Flag to load full metadata
-     *
-     * @return array Depends on used database and on parameter $full
+     * @param string $tableName
+     *         The table to get metadata or empty string to retrieve metadata
+     *         of all tables.
+     * @param bool $full
+     *         Flag to load full metadata.
+     * @return array
+     *         Depends on used database and on parameter $full
      */
     abstract public function getMetaData($tableName, $full = false);
 
@@ -245,4 +256,5 @@ abstract class cDbDriverAbstract {
      * Closes the connection and frees the query id.
      */
     abstract public function disconnect();
+
 }

@@ -67,4 +67,26 @@ class cSmartyWrapper extends Smarty {
         $this->fetchGeneral($template, $cache_id, $compile_id, $parent, true);
     }
 
+    /**
+     * Empty cache for a specific template
+     *
+     * @param string  $template_name template name
+     * @param string  $cache_id      cache id
+     * @param string  $compile_id    compile id
+     * @param integer $exp_time      expiration time
+     * @param string  $type          resource type
+     * @return integer number of cache files deleted
+     */
+    public function clearCache($template_name, $cache_id = null, $compile_id = null, $exp_time = null, $type = null) {
+        if ($this->templateExists($template_name) === false) {
+            $moduleId = (int) cRegistry::getCurrentModuleId();
+            if ($moduleId > 0) {
+                $module = new cModuleHandler($moduleId);
+                $template_name = $module->getTemplatePath($template_name);
+            }
+        }
+
+        return parent::clearCache($template_name, $cache_id, $compile_id, $exp_time, $type);
+    }
+
 }

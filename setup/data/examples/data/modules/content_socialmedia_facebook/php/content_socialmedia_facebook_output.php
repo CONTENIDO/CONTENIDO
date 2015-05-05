@@ -21,7 +21,9 @@ $layoutLabel = mi18n("LAYOUT");
 $standardLabel = mi18n("STANDARD");
 $buttonCountLabel = mi18n("BUTTON_COUNT");
 $boxCountLabel = mi18n("BOX_COUNT");
+$buttonLabel = mi18n("BUTTON");
 $showFacesLabel = mi18n("SHOW_FACES");
+$showPostsLabel = mi18n("SHOW_POSTS");
 $widthLabel = mi18n("WIDTH");
 $heightLabel = mi18n("HEIGHT");
 $saveLabel = mi18n("SAVE");
@@ -40,9 +42,10 @@ if (cRegistry::isBackendEditMode() && 'POST' === strtoupper($_SERVER['REQUEST_ME
     conSaveContentEntry($idartlang, "CMS_HTML", 1001, $_POST['plugin']);
     conSaveContentEntry($idartlang, "CMS_HTML", 1002, $_POST['layout']);
     conSaveContentEntry($idartlang, "CMS_HTML", 1003, $_POST['faces']);
-    conSaveContentEntry($idartlang, "CMS_HTML", 1004, $_POST['width']);
-    conSaveContentEntry($idartlang, "CMS_HTML", 1005, $_POST['height']);
-    conSaveContentEntry($idartlang, "CMS_HTML", 1006, $_POST['automaticURL']);
+    conSaveContentEntry($idartlang, "CMS_HTML", 1004, $_POST['posts']);
+    conSaveContentEntry($idartlang, "CMS_HTML", 1005, $_POST['width']);
+    conSaveContentEntry($idartlang, "CMS_HTML", 1006, $_POST['height']);
+    conSaveContentEntry($idartlang, "CMS_HTML", 1007, $_POST['automaticURL']);
 }
 
 //get saved content
@@ -50,9 +53,10 @@ $url = $art->getContent("CMS_HTML", 1000);
 $pluginvalue = $art->getContent("CMS_HTML", 1001);
 $layoutvalue = $art->getContent("CMS_HTML", 1002);
 $facesvalue = $art->getContent("CMS_HTML", 1003);
-$width = $art->getContent("CMS_HTML", 1004);
-$height = $art->getContent("CMS_HTML", 1005);
-$useAutomaticURL = $art->getContent("CMS_HTML", 1006);
+$postsvalue = $art->getContent("CMS_HTML", 1004);
+$width = $art->getContent("CMS_HTML", 1005);
+$height = $art->getContent("CMS_HTML", 1006);
+$useAutomaticURL = $art->getContent("CMS_HTML", 1007);
 if ($useAutomaticURL == "1") {
     $url = cRegistry::getFrontendUrl() . $art->getLink();
 }
@@ -63,6 +67,7 @@ if (cRegistry::isBackendEditMode()) {
     $tpl->assign('pluginvalue', $pluginvalue);
     $tpl->assign('layoutvalue', $layoutvalue);
     $tpl->assign('facesvalue', $facesvalue);
+    $tpl->assign('postsvalue', $postsvalue);
     $tpl->assign('width', $width);
     $tpl->assign('height', $height);
     $tpl->assign('urlLabel', $urlLabel);
@@ -73,21 +78,25 @@ if (cRegistry::isBackendEditMode()) {
     $tpl->assign('standardLabel', $standardLabel);
     $tpl->assign('buttonCountLabel', $buttonCountLabel);
     $tpl->assign('boxCountLabel', $boxCountLabel);
+    $tpl->assign('buttonLabel', $buttonLabel);
     $tpl->assign('showFacesLabel', $showFacesLabel);
+    $tpl->assign('showPostsLabel', $showPostsLabel);
     $tpl->assign('widthLabel', $widthLabel);
     $tpl->assign('heightLabel', $heightLabel);
     $tpl->assign('save', $saveLabel);
     $tpl->assign('label_overview', $label_overview);
     $tpl->assign("automaticURLLabel", $automaticURLLabel);
     $tpl->assign("useAutomaticURL", $useAutomaticURL);
-    
-    $tpl->assign("autoUrlHelp", new cGuiBackendHelpbox(mi18n("AUTO_URL_HELP")));
-    $tpl->assign("likeButtonHelp", new cGuiBackendHelpbox(mi18n("LIKE_BUTTON_HELP")));
-    $tpl->assign("likeBoxHelp", new cGuiBackendHelpbox(mi18n("LIKE_BOX_HELP")));
-    $tpl->assign("standardHelp", new cGuiBackendHelpbox(mi18n("STANDARD_HELP")));
-    $tpl->assign("buttonCountHelp", new cGuiBackendHelpbox(mi18n("BUTTON_COUNT_HELP")));
-    $tpl->assign("boxCountHelp", new cGuiBackendHelpbox(mi18n("BOX_COUNT_HELP")));
-    $tpl->assign("showFacesHelp", new cGuiBackendHelpbox(mi18n("SHOW_FACES_HELP")));
+
+    $tpl->assign("autoUrlHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("AUTO_URL_HELP"))));
+    $tpl->assign("likeButtonHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("LIKE_BUTTON_HELP"))));
+    $tpl->assign("likeBoxHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("LIKE_BOX_HELP"))));
+    $tpl->assign("standardHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("STANDARD_HELP"))));
+    $tpl->assign("buttonCountHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("BUTTON_COUNT_HELP"))));
+    $tpl->assign("boxCountHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("BOX_COUNT_HELP"))));
+    $tpl->assign("buttonHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("BUTTON_HELP"))));
+    $tpl->assign("showFacesHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("SHOW_FACES_HELP"))));
+    $tpl->assign("showPostsHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("SHOW_POSTS_HELP"))));
 
     $tpl->display('facebook_config_view.tpl');
 } else {
@@ -113,7 +122,12 @@ if (cRegistry::isBackendEditMode()) {
         $facesvalue = 'false';
     }
 
+    if ($postsvalue != 'true') {
+    	$postsvalue = 'false';
+    }
+
     $tpl->assign('SHOW_FACES', $facesvalue);
+    $tpl->assign('SHOW_POSTS', $postsvalue);
     $tpl->assign('LOCALE', $locale);
     $tpl->assign('WIDTH', $width);
     $tpl->assign('HEIGHT', $height);

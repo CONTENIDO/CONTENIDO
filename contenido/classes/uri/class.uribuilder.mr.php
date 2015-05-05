@@ -114,7 +114,8 @@ class cUriBuilderMR extends cUriBuilder {
      *        </code>
      * @param bool $bUseAbsolutePath Flag to use absolute path (not used at
      *        the moment)
-     * @return string New build url
+     * @return string
+     *         New build url
      */
     public function buildUrl(array $params, $bUseAbsolutePath = false) {
         ModRewriteDebugger::add($params, 'cUriBuilderMR::buildUrl() $params');
@@ -143,7 +144,8 @@ class cUriBuilderMR extends cUriBuilder {
      * Builds the SEO-URL by analyzing passed arguments (parameter value pairs)
      *
      * @param array $aParams Parameter array
-     * @return string New build pretty url
+     * @return string
+     *         New build pretty url
      */
     private function _buildUrl(array $aParams) {
         // language should changed, set lang parameter
@@ -225,7 +227,7 @@ class cUriBuilderMR extends cUriBuilder {
      * client/%frontend_path%.
      *
      * @param string $configuredRootDir defined rootdir
-     * @return unknown mixed
+     * @return string
      */
     public static function getMultiClientRootDir($configuredRootDir) {
 
@@ -289,8 +291,8 @@ class cUriBuilderMR extends cUriBuilder {
      * All non CONTENIDO related parameter will be excluded from composition.
      *
      * @param array $aArgs Assoziative parameter array
-     * @return string Composed query part for the URL like
-     *         '?foo=bar&amp;param=value'
+     * @return string
+     *         Composed query part for the URL like '?foo=bar&amp;param=value'
      */
     private function _createUrlQueryPart(array $aArgs) {
         // set list of parameter which are to ignore while setting additional
@@ -340,7 +342,8 @@ class cUriBuilderMR extends cUriBuilder {
      * Returns client id or name depending on settings.
      *
      * @param array $aArgs Additional arguments
-     * @return mixed Client id, client name or NULL
+     * @return mixed
+     *         Client id, client name or NULL
      */
     private function _getClientParameter(array $aArgs) {
         global $client;
@@ -362,7 +365,8 @@ class cUriBuilderMR extends cUriBuilder {
      * Returns language id or name depending on settings.
      *
      * @param array $aArgs Additional arguments
-     * @return mixed Language id, language name or NULL
+     * @return mixed
+     *         Language id, language name or NULL
      */
     private function _getLanguageParameter(array $aArgs) {
         global $lang;
@@ -384,7 +388,8 @@ class cUriBuilderMR extends cUriBuilder {
      * Returns composed path of url (normally the category structure)
      *
      * @param array $aPretty Pretty url array
-     * @return string Path
+     * @return string
+     *         Path
      */
     private function _getPath(array $aPretty) {
         $sPath = (isset($aPretty['urlpath'])) ? $aPretty['urlpath'] : '';
@@ -409,7 +414,8 @@ class cUriBuilderMR extends cUriBuilder {
      *
      * @param array $aPretty Pretty url array
      * @param array $aArgs Additional arguments
-     * @return string Articlename
+     * @return string
+     *         Articlename
      */
     private function _getArticleName(array $aPretty, array $aArgs) {
         $sArticle = (isset($aPretty['urlname'])) ? $aPretty['urlname'] : '';

@@ -64,7 +64,8 @@ class cGuiNavigation {
      *                                                       to extract caption from a plugin XML file.
      *                            - "{XPath}": XPath value to extract caption from CONTENIDO XML file
      * @throws cException if XML language files could not be loaded
-     * @return  string  The found caption
+     * @return string
+     *         The found caption
      */
     public function getName($location) {
         global $cfg, $belang;
@@ -262,7 +263,7 @@ class cGuiNavigation {
         $link->setClass('main');
         $link->setTargetFrame('content');
         $link->setLink($sess->url('frameset.php?area=info&frame=4'));
-        $link->setContent('<img class="vAlignMiddle" src="' . $backendUrl . $cfg['path']['images'] . 'info.gif" border="0" alt="Info" title="Info" id="imgInfo">');
+        $link->setContent('<img alt="" class="vAlignMiddle" src="' . $backendUrl . $cfg['path']['images'] . 'info.gif" border="0" alt="Info" title="Info" id="imgInfo">');
         $main->set('s', 'INFO', $link->render());
 
         $main->set('s', 'LOGOUT', $sess->url('logout.php'));
@@ -322,19 +323,21 @@ class cGuiNavigation {
         } else {
             $sClientNameTemplate = '<b>' . i18n("Client") . ':</b> <a href="%s" target="_blank">%s</a>';
 
-            $sClientName = '<span id="chosenclient">' . $clientCollection->getClientName($client) . ' (' . $client . ')</span>';
+            $sClientName = $clientCollection->getClientName($client) . ' (' . $client . ')';
+            $sClientNameWithHtml = '<span id="chosenclient">' .$sClientName . '</span>';
+
             $sClientUrl = cRegistry::getFrontendUrl();
             $frontendPath = cRegistry::getFrontendPath();
 
             if ($clientImage !== false && $clientImage != "" && cFileHandler::exists($frontendPath . $clientImage)) {
-                $sClientImageTemplate = '<img src="%s" alt="%s" title="%s">';
+                $sClientImageTemplate = '<img src="%s" alt="%s" title="%s" style="height: 15px;">';
 
                 $sThumbnailPath = cApiImgScale($frontendPath . $clientImage, 80, 25, 0, 1);
                 $sClientImageTag = sprintf($sClientImageTemplate, $sThumbnailPath, $sClientName, $sClientName);
 
                 $main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientUrl, $sClientImageTag));
             } else {
-                $html = sprintf($sClientNameTemplate, $sClientUrl, $sClientName);
+                $html = sprintf($sClientNameTemplate, $sClientUrl, $sClientNameWithHtml);
                 $html .= $this->_renderClientSelect();
                 $main->set('s', 'CHOSENCLIENT', $html);
             }
@@ -413,7 +416,8 @@ class cGuiNavigation {
     /**
      * Renders a select box where the client can be selected as well as an edit button.
      *
-     * @return string rendered HTML
+     * @return string
+     *         rendered HTML
      */
     protected function _renderClientSelect() {
         $cfg = cRegistry::getConfig();
@@ -429,7 +433,7 @@ class cGuiNavigation {
         $tpl->set('s', 'NAME', 'changeclient');
         $tpl->set('s', 'CLASS', 'vAlignMiddle text_medium nodisplay');
         $tpl->set('s', 'ID', 'cClientSelect');
-        $tpl->set('s', 'OPTIONS', 'onchange="changeContenidoClient(this.value)"');
+        $tpl->set('s', 'OPTIONS', 'onchange="Con.Header.changeContenidoClient(this.value)"');
 
         // add all accessible clients to the select
         foreach ($clients as $idclient => $clientInfo) {
@@ -461,7 +465,7 @@ class cGuiNavigation {
     /**
      * Returns true if the class encountered errors while building the navigation
      *
-     * @return boolean
+     * @return bool
      */
     public function hasErrors() {
         return count($this->errors) > 0;

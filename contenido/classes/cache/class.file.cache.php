@@ -31,7 +31,8 @@ class cFileCache {
     /**
      * Constructor.
      *
-     * @param array $options array with options for the cache (optional, default: empty array)
+     * @param array $options
+     *         array with options for the cache (optional, default: empty array)
      */
     public function __construct($options = array()) {
         $this->setOptions($options);
@@ -40,7 +41,8 @@ class cFileCache {
     /**
      * Setter for the cache options. Validates incoming options and sets the default of the missing options.
      *
-     * @param array $options array with option
+     * @param array $options
+     *         array with option
      */
     public function setOptions($options) {
         // complete all options
@@ -78,10 +80,12 @@ class cFileCache {
     /**
      * Generates the filename based on set options.
      *
-     * @param string $id    cache ID
-     * @param string $group cache group
-     *
-     * @return string filename
+     * @param string $id
+     *         cache ID
+     * @param string $group
+     *         cache group
+     * @return string
+     *         filename
      */
     public function generateFileName($id, $group = '') {
         $id = ($this->_options['fileNameProtection'] === true) ? md5($id) : $id;
@@ -95,6 +99,7 @@ class cFileCache {
 
     /**
      * Validates the caching directory and throws exception on error.
+     *
      * @throws cInvalidArgumentException
      */
     protected function _validateDirectory() {
@@ -115,10 +120,12 @@ class cFileCache {
     /**
      * Returns full destination to the cache file.
      *
-     * @param string $id    cache ID
-     * @param string $group cache group
-     *
-     * @return string full filename
+     * @param string $id
+     *         cache ID
+     * @param string $group
+     *         cache group
+     * @return string
+     *         full filename
      */
     public function getDestination($id, $group = '') {
         $this->_validateDirectory();
@@ -132,10 +139,12 @@ class cFileCache {
     /**
      * Return content of a specific cache stored in filesystem. If not cached, false is returned.
      *
-     * @param string $id    cache ID
-     * @param string $group cache group
-     *
-     * @return bool|string content or false
+     * @param string $id
+     *         cache ID
+     * @param string $group
+     *         cache group
+     * @return bool|string
+     *         content or false
      */
     public function get($id, $group = '') {
         $data = false;
@@ -162,11 +171,14 @@ class cFileCache {
     /**
      * Saves the content of a cache in filesystem.
      *
-     * @param string $data  data to save
-     * @param string $id    cache ID
-     * @param string $group cache group
-     *
-     * @return bool success state
+     * @param string $data
+     *         data to save
+     * @param string $id
+     *         cache ID
+     * @param string $group
+     *         cache group
+     * @return bool
+     *         success state
      */
     public function save($data, $id, $group = '') {
         return cFileHandler::write($this->getDestination($id, $group), $data);
@@ -175,10 +187,12 @@ class cFileCache {
     /**
      * Removes cache from filesystem.
      *
-     * @param string $id    cache ID
-     * @param string $group cache group
-     *
-     * @return bool success state
+     * @param string $id
+     *         cache ID
+     * @param string $group
+     *         cache group
+     * @return bool
+     *         success state
      */
     public function remove($id, $group = '') {
         $destination = $this->getDestination($id, $group);
@@ -192,9 +206,10 @@ class cFileCache {
     /**
      * Generates a ID for the given variables.
      *
-     * @param mixed $variables variables to generate a ID for
-     *
-     * @return string generated ID
+     * @param mixed $variables
+     *         variables to generate a ID for
+     * @return string
+     *         generated ID
      */
     public function generateID($variables) {
         return md5(serialize($variables));

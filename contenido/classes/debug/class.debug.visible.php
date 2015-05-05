@@ -52,9 +52,11 @@ class cDebugVisible implements cDebugInterface {
     }
 
     /**
-     * (non-PHPdoc)
+     * Writes a line.
+     * This method does nothing!
      *
      * @see cDebugInterface::out()
+     * @param string $msg
      */
     public function out($msg) {
     }

@@ -26,36 +26,49 @@ class cVersionFile extends cVersion {
 
     /**
      * Content code of current file.
+     *
+     * @var unknown_type
      */
     public $sCode;
 
     /**
      * Description folder of history sub nav.
      * Its not required to use it.
+     *
+     * @var unknown_type
      */
     public $sDescripion;
 
     /**
      * The path of style file.
+     *
+     * @var unknown_type
      */
     public $sPath;
 
     /**
      * The id of Type.
+     *
+     * @var unknown_type
      */
     public $sFileName;
 
     /**
      * The class versionStyle object constructor, initializes class variables
      *
-     * @param string $iIdOfType The name of style file
-     * @param array $aFileInfo Get FileInformation from table file_information
+     * @param string $iIdOfType
+     *         The name of style file
+     * @param array $aFileInfo
+     *         Get FileInformation from table file_information
+     * @param string $sFileName
+     * @param string $sTypeContent
      * @param array $aCfg
      * @param array $aCfgClient
      * @param object $oDB
      * @param int $iClient
      * @param string $sArea
      * @param int $iFrame
+     * @param string $sVersionFileName
      */
     public function __construct($iIdOfType, $aFileInfo, $sFileName, $sTypeContent, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame, $sVersionFileName = '') {
         // Set globals in super class constructer
@@ -119,9 +132,10 @@ class cVersionFile extends cVersion {
     /**
      * This function read an xml file nodes
      *
-     * @param string $sPath Path to file
-     *
-     * @return {array} returns array width nodes
+     * @param string $sPath
+     *         Path to file
+     * @return array
+     *         returns array width nodes
      */
     public function initXmlReader($sPath) {
         $aResult = array();
@@ -140,9 +154,8 @@ class cVersionFile extends cVersion {
     /**
      * This function reads the path of file
      *
-     * @param string $sPath Path to file
-     *
-     * @return string the path of file
+     * @return string
+     *         the path of file
      */
     public function getPathFile() {
         return $this->sPath;
@@ -154,14 +167,14 @@ class cVersionFile extends cVersion {
      * This is neccessary, if filenames where changed, when a history entry is
      * restored
      *
-     * @param int $iIdClient - id of client which contains this file
-     * @param string $sArea - name of CONTENIDO area in which this procedure
-     *            should be done
-     * @param string $sFilename - new filename of file which should be updated
-     *            in other frames
-     * @param object $sess - CONTENIDO session object
-     *
-     * @return string - Javascript for refrehing frames
+     * @param string $sArea
+     *         name of CONTENIDO area in which this procedure should be done
+     * @param string $sFilename
+     *         new filename of file which should be updated in other frames
+     * @param object $sess
+     *         CONTENIDO session object
+     * @return string
+     *         Javascript for refrehing frames
      */
     public function renderReloadScript($sArea, $sFilename, $sess) {
         $urlRightTop = $sess->url("main.php?area=$sArea&frame=3&file=$sFilename&history=true");

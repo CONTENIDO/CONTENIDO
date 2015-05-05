@@ -112,7 +112,8 @@ class cCategoryHelper {
      *
      * @throws cInvalidArgumentException if no active client ID specified or
      *         found
-     * @return int client ID
+     * @return int
+     *         client ID
      */
     public function getClientId() {
         if ($this->_clientId == 0) {
@@ -141,7 +142,8 @@ class cCategoryHelper {
      *
      * @throws cInvalidArgumentException if no active language ID specified or
      *         found
-     * @return int language ID
+     * @return int
+     *         language ID
      */
     public function getLanguageId() {
         if ($this->_languageId == 0) {
@@ -169,7 +171,8 @@ class cCategoryHelper {
      * Return the ID of the top most category based on a given category ID.
      *
      * @param int $categoryId Base category ID to search on
-     * @return int Top most category ID
+     * @return int
+     *         Top most category ID
      */
     public function getTopMostCategoryId($categoryId) {
         $category = new cApiCategory($categoryId);
@@ -192,7 +195,8 @@ class cCategoryHelper {
      *        start. (optional, default: 1)
      * @param int $maxDepth Amount of the max depth of categories. (optional,
      *        default: 20)
-     * @return array Array with cApiCategoryLanguage objects
+     * @return array
+     *         Array with cApiCategoryLanguage objects
      */
     public function getCategoryPath($categoryId, $startingLevel = 1, $maxDepth = 20) {
         $clientId = $this->getClientId();
@@ -230,7 +234,8 @@ class cCategoryHelper {
      * @param int $categoryId Base category to search on.
      * @param int $maxDepth Amount of the max depth of categories. (optional,
      *        default: 20)
-     * @return array Array with parent category IDs.
+     * @return array
+     *         Array with parent category IDs.
      */
     public function getParentCategoryIds($categoryId, $maxDepth = 20) {
         $categoryIds = array();
@@ -255,7 +260,8 @@ class cCategoryHelper {
      * Fetchs the level of a category by a given category ID.
      *
      * @param int $categoryId Category ID to fetch the level of.
-     * @return int category level
+     * @return int
+     *         category level
      */
     public function getCategoryLevel($categoryId) {
         if (isset($this->_levelCache[$categoryId]) === false) {
@@ -280,12 +286,14 @@ class cCategoryHelper {
      *
      * @param int $categoryId ID of the category to load
      * @param int $depth the maximum depth
-     * @return array array with subcategories
+     * @return array
+     *         array with subcategories
      */
     public function getSubCategories($categoryId, $depth) {
         if ((int) $categoryId <= 0 || (int) $depth < 0) {
             return array();
         }
+        $depth = (int) $depth;
 
         $cfg = cRegistry::getConfig();
 
@@ -326,17 +334,15 @@ class cCategoryHelper {
         $db = cRegistry::getDb();
         $db->query($sql);
 
-        $this->_subCategories = array();
-
         while ($db->nextRecord()) {
             $catId = (int) $db->f('idcat');
             $catLevel = (int) $db->f('level');
 
-            if ($depth > 0 && ($depth < ($catLevel - $depth))) {
-               break;
+            if ($depth > 0 && ($depth > ($catLevel))) {
+                $subCategories = $this->getSubCategories($catId, $depth);
+            } else {
+                $subCategories = array();
             }
-
-            $subCategories = $this->getSubCategories($catId, $depth);
             $categoryLanguage = new cApiCategoryLanguage();
             $categoryLanguage->loadByCategoryIdAndLanguageId($catId, $languageId);
 
@@ -360,7 +366,8 @@ class cCategoryHelper {
      * Checks if set auth object has access to the specific category.
      *
      * @param cApiCategoryLanguage $categoryLanguage category language object
-     * @return bool result of access check
+     * @return bool
+     *         result of access check
      */
     public function hasCategoryAccess(cApiCategoryLanguage $categoryLanguage) {
         $useAuthorization = ($this->_auth !== NULL && $this->_fePermColl !== NULL);

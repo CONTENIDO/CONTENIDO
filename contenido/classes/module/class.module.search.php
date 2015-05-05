@@ -89,7 +89,13 @@ class cModuleSearch extends cModuleHandler {
         echo '<pre>' . print_r($arg) . '</pre>';
     }
 
+    /**
+     *
+     * @param array $searchOptions
+     */
     public function __construct($searchOptions) {
+        parent::__construct();
+
         $this->_elementPerPage = $searchOptions['elementPerPage'];
         $this->_orderBy = $searchOptions['orderBy'];
         $this->_sortOrder = $searchOptions['sortOrder'];
@@ -102,7 +108,8 @@ class cModuleSearch extends cModuleHandler {
     /**
      * Count result
      *
-     * @return int count in result
+     * @return int
+     *         count in result
      */
     public function getModulCount() {
         return count($this->_result);
@@ -112,20 +119,44 @@ class cModuleSearch extends cModuleHandler {
      * Search for modules in db columns and in filesystem (input and output
      * files)
      *
-     * @return array result
+     * @return array
+     *         result
      */
     public function searchForAllModules() {
         global $cfg, $client;
-        $idClient = $client;
 
-        $sql = sprintf("SELECT *, (0) FROM %s WHERE idclient = %s AND (
+        $idClient = $client;
+        // first fetch all modules for client
+        // then apply _filter on input and output from files
+        // then use the whitelisted id's and search for additional filter matches on database
+        $sql = sprintf("SELECT * FROM %s WHERE idclient = %s", $cfg['tab']['mod'], $idClient);
+
+
+        $db = cRegistry::getDb();
+        $db->query($sql);
+        $moduleIds = array();
+
+        // filter modules based on input and output
+        while (($modul = $db->nextRecord()) !== false) {
+            $this->initWithDatabaseRow($db);
+            if (strlen(stripslashes($this->_filter)) === 0
+                    || strpos($this->readInput(), stripslashes($this->_filter)) !== false
+                    || strpos($this->readOutput(), stripslashes($this->_filter)) !== false) {
+                    $moduleIds[] = $db->f('idmod');
+            }
+        }
+
+        // build query using whitelisted id's
+        $idFilter = "";
+        foreach ($moduleIds as $moduleId) {
+            $idFilter .= " OR idmod=" . (int) $moduleId;
+        }
+        $sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND (
                             type LIKE '%s'
                             AND type LIKE '%s'
                             OR description LIKE '%s'
-                            OR name LIKE '%s'
-                            OR input LIKE '%s'
-                            OR output LIKE '%s')
-                            ORDER BY %s %s", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%', $this->_orderBy, $this->_sortOrder);
+                            OR name LIKE  '%s'" . $idFilter . ")
+                            ORDER BY %s %s", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%', $this->_orderBy, $this->_sortOrder);
 
         $db = cRegistry::getDb();
         $db->query($sql);
@@ -149,7 +180,8 @@ class cModuleSearch extends cModuleHandler {
      * Main method for the class. Search for modules in db and in input and
      * outputs files.
      *
-     * @return array result
+     * @return array
+     *         result
      */
     public function getModules() {
         $modules = array();
@@ -193,7 +225,8 @@ class cModuleSearch extends cModuleHandler {
     /**
      * Search for modules in "name" column of modul
      *
-     * @return array result
+     * @return array
+     *         result
      */
     public function findeModulWithName() {
         global $cfg, $client;
@@ -222,66 +255,76 @@ class cModuleSearch extends cModuleHandler {
     /**
      * Search for modules in input file of the module
      *
-     * @return array result
+     * @return array
+     *         result
      */
     public function findModulWithInput() {
         global $cfg, $client;
-        $idClient = $client;
 
-        $sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND (
-                            type LIKE '%s' AND input LIKE '%s')
-                            ORDER BY %s %s ", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', $this->_orderBy, $this->_sortOrder);
+        $idClient = $client;
+        $sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND type LIKE '%s'
+                        ORDER BY %s %s ", $cfg['tab']['mod'], $idClient, $this->_moduleType, $this->_orderBy, $this->_sortOrder);
 
         $db = cRegistry::getDb();
         $db->query($sql);
         $result = array();
-
         while (($module = $db->nextRecord()) !== false) {
             $this->initWithDatabaseRow($db);
-            $result[$db->f('idmod')] = array(
-                    'name' => $db->f('name'),
-                    'description' => $db->f('description'),
-                    'error' => $db->f('error'),
-                    'input' => $this->readInput(),
-                    'output' => $this->readOutput()
-            );
+            if (strlen(stripslashes($this->_filter)) === 0
+                || strpos($this->readInput(), stripslashes($this->_filter)) !== false) {
+                $result[$db->f('idmod')] = array(
+                        'name' => $db->f('name'),
+                        'description' => $db->f('description'),
+                        'error' => $db->f('error'),
+                        'input' => $this->readInput(),
+                        'output' => $this->readOutput()
+                );
+            }
         }
+
         return $result;
     }
 
     /**
-     * Search for modules in output of the module
+     * Search for modules in output of modules of current client
      *
-     * @return array result
+     * @return array
+     *         result
      */
     public function findModulWithOutput() {
-        global $cfg, $client;
-        $idClient = $client;
+         global $cfg, $client;
 
-        $sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND (type LIKE '%s' AND output LIKE '%s' )
-                        ORDER BY %s %s ", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', $this->_orderBy, $this->_sortOrder);
+        $result = array();
+
+        $idClient = $client;
+        $sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND type LIKE '%s'
+                        ORDER BY %s %s ", $cfg['tab']['mod'], $idClient, $this->_moduleType, $this->_orderBy, $this->_sortOrder);
 
         $db = cRegistry::getDb();
         $db->query($sql);
         $result = array();
-
         while (($module = $db->nextRecord()) !== false) {
             $this->initWithDatabaseRow($db);
-            $result[$db->f('idmod')] = array(
-                    'name' => $db->f('name'),
-                    'description' => $db->f('description'),
-                    'error' => $db->f('error'),
-                    'input' => $this->readInput(),
-                    'output' => $this->readOutput()
-            );
+            if (strlen(stripslashes($this->_filter)) === 0
+                || strpos($this->readOutput(), stripslashes($this->_filter)) !== false) {
+                $result[$db->f('idmod')] = array(
+                        'name' => $db->f('name'),
+                        'description' => $db->f('description'),
+                        'error' => $db->f('error'),
+                        'input' => $this->readInput(),
+                        'output' => $this->readOutput()
+                );
+            }
         }
+
         return $result;
     }
 
     /**
      * Search for modules in type column
      *
-     * @return array result
+     * @return array
+     *         result
      */
     public function findModuleWithType() {
         global $cfg, $client;
@@ -306,14 +349,14 @@ class cModuleSearch extends cModuleHandler {
                     'output' => $this->readOutput()
             );
         }
-
         return $result;
     }
 
     /**
      * Search for modules in description column of modules
      *
-     * @return array result
+     * @return array
+     *         result
      */
     public function findModuleWithDescription() {
         global $cfg, $client;
@@ -338,6 +381,7 @@ class cModuleSearch extends cModuleHandler {
                     'output' => $this->readOutput()
             );
         }
+
         return $result;
     }
 

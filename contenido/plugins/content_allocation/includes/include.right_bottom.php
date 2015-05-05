@@ -48,12 +48,12 @@ $oTree = new pApiContentAllocationTreeView('f7771624-4874-4745-8b7e-21a49a71a447
 // store item
 if ($_POST['step'] == 'store') {
     $oTree->storeItem($aPostTreeItem);
-    $oPage->displayInfo(sprintf(i18n("New Category %s successfully stored!", 'content_allocation'), $treeItem['name']));
+    $oPage->displayOk(sprintf(i18n("New Category %s successfully stored!", 'content_allocation'), $treeItem['name']));
 }
 // rename item
 if ($_POST['step'] == 'storeRename') {
     $oTree->storeItem($aPostTreeItem);
-    $oPage->displayInfo(sprintf(i18n("Category %s successfully renamed!", 'content_allocation'), $treeItem['name']));
+    $oPage->displayOk(sprintf(i18n("Category %s successfully renamed!", 'content_allocation'), $treeItem['name']));
 }
 // rename item
 if ($_GET['step'] == 'moveup') {
@@ -61,7 +61,7 @@ if ($_GET['step'] == 'moveup') {
 }
 
 if ($_GET['step'] == 'deleteItem') { // delete item
-    $oPage->displayInfo(i18n("Category successfully deleted!", 'content_allocation'));
+    $oPage->displayOk(i18n("Category successfully deleted!", 'content_allocation'));
     $oTree->deleteItem($_GET['idpica_alloc']);
 }
 if ($_GET['step'] == 'collapse') {
@@ -94,7 +94,7 @@ if ($_GET['step'] == 'createRoot') { // create new root item
         <tr><td colspan="2" class="text_medium">'.i18n("Create new tree", 'content_allocation').'</td></tr>
         <tr>
             <td class="text_medium"><input id="itemname" class="text_medium" type="text" name="treeItemPost[name]" value=""></td>
-            <td>&nbsp;<a href="main.php?action='.$action.'&frame='.$frame.'&area='.$area.'&contenido='.$sess->id.'"><img src="images/but_cancel.gif" border="0"></a>
+            <td>&nbsp;<a href="main.php?action='.$action.'&frame='.$frame.'&area='.$area.'&contenido='.$sess->id.'"><img src="images/but_cancel.gif" alt="" border="0"></a>
             <input type="image" src="images/but_ok.gif"></td>
         </tr>
         </form>

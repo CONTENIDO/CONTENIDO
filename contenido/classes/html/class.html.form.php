@@ -51,7 +51,8 @@ class cHTMLForm extends cHTMLContentElement {
      *
      * @param string $var
      * @param string $value
-     * @return cHTMLForm $this
+     * @return cHTMLForm
+     *         $this for chaining
      */
     public function setVar($var, $value) {
         $this->_vars[$var] = $value;
@@ -62,7 +63,8 @@ class cHTMLForm extends cHTMLContentElement {
     /**
      * Renders the form element
      *
-     * @return string Rendered HTML
+     * @return string
+     *         Rendered HTML
      */
     public function toHTML() {
         $out = '';

@@ -24,7 +24,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 </head>
 <body>
 
-<div id="navcontainer">
+<div class="navcontainer">
 </div>
 
 <script type="text/javascript">

@@ -234,17 +234,6 @@ function imgMark(overColor, markedColor, overMarked, imgOutSrc, imgOverSrc, onCl
 }
 imgMark.prototype = new rowMark;
 
-
-/*
-Sets the path value in the area 'upl'
-@deprecated [2013-10-16] Not in use anymore, see rowMarkUplClick
-*/
-function setPath(obj) {
-    var frame = Con.getFrame('left_top');
-    frame.document.forms[1].path.value = obj.id;
-    frame.document.getElementById("caption2").innerHTML = obj.id;
-}
-
 /**
  * Function for showing and hiding synchronsation options
  *

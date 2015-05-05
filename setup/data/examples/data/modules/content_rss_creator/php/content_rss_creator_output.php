@@ -1,7 +1,7 @@
 <?php
 
 /**
- * description: google map
+ * description: rss creator
  *
  * @package Module
  * @subpackage ContentRssCreator
@@ -39,11 +39,10 @@ $rssSource = $filename;
 $tpl = cSmartyFrontend::getInstance();
 $tpl->assign('label_rss_title', $labelRssTitle);
 $tpl->assign('label_rss_link', $labelRssLink);
-$tpl->assign('label_rss_configuration', $labelRssConfiguration);
 $tpl->assign('label_rss_description', $labelRssDescription);
+$tpl->assign('label_rss_configuration', $labelRssConfiguration);
 $tpl->assign('label_rss_h1', $labelRssH1);
 $tpl->assign('label_rss_logo', $labelRssLogo);
-$tpl->assign('label_rss_link', $labelRssLink);
 $tpl->assign('label_rss_source', $labelRssSource);
 $tpl->assign('rss_title', $rssTitle);
 $tpl->assign('rss_source', $rssSource);
@@ -64,12 +63,18 @@ $articles = $teaser->getConfiguredArticles();
 $configuration = $teaser->getConfiguration();
 
 $xmlString = '<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"></rss>';
+function addCData($cdata_text)
+{
+    $node= dom_import_simplexml($this);
+    $no = $node->ownerDocument;
+    $node->appendChild($no->createCDATASection($cdata_text));
+}
 
 $rssFeed = new SimpleXMLElement($xmlString);
 $rssChannel = $rssFeed->addChild('channel');
-$rssChannel->addChild('title', $art->getContent("CMS_TEXT", 1));
-$rssChannel->addChild('link', $art->getContent("CMS_TEXT", 2));
-$rssChannel->addChild('description', strip_tags($art->getContent("CMS_HTML", 1)));
+$rssChannel->title = $art->getContent("CMS_TEXT", 1);
+$rssChannel->link = $art->getContent("CMS_TEXT", 2);
+$rssChannel->description = conHtmlEntityDecode(strip_tags($art->getContent("CMS_HTML", 1)));;
 
 $imgId = $art->getContent("CMS_IMG", 1);
 
@@ -78,24 +83,39 @@ if ((int) $imgId > 0) {
     $rssLogo = $cfgClient[$client]['path']['htmlpath'] . 'upload/' . $upload->get('dirname') . $upload->get('filename');
 
     $rssImage = $rssChannel->addChild('image');
-    $rssImage->addChild('url', $rssLogo);
-    $rssImage->addChild('title', $art->getContent("CMS_TEXT", 1));
-    $rssImage->addChild('link', $art->getContent("CMS_TEXT", 2));
+    $rssImage->url = $rssLogo;
+    $rssImage->title = $art->getContent("CMS_TEXT", 1);
+    $rssImage->link = $art->getContent("CMS_TEXT", 2);
 }
 
 foreach ($articles as $article) {
     $child = $rssChannel->addChild('item');
     $title = strip_tags($article->getContent('HTMLHEAD', 1));
     $text = strip_tags($article->getContent('HTML', 1));
-    $text = capiStrTrimAfterWord($text, $configuration['teaser_character_limit']);
+    $text = cApiStrTrimAfterWord($text, $configuration['teaser_character_limit']);
     $link = $cfgClient[$client]['path']['htmlpath'] . $article->getLink();
 
-    $child->addChild('title', conHtmlSpecialChars($title));
-    $child->addChild('link', conHtmlSpecialChars($link));
-    $child->addChild('description', conHtmlSpecialChars($text));
-    $child->addChild('pubDate', date('D, d M Y H:i:s T', strtotime($article->getField('published'))));
+    $child->title = conHtmlEntityDecode(conHtmlSpecialChars($title));
+    $child->link = conHtmlEntityDecode($link);
+    $child->description = conHtmlEntityDecode($text);
+    $child->pubDate = date('D, d M Y H:i:s T', strtotime($article->getField('published')));
 }
 
-$success = $rssFeed->asXML($filename);
+$result = mi18n("LABEL_RSS_CREATION_FAILED");
+if (isset($cfgClient[$client]['xml']['frontendpath'])) {
+    if (false === cFileHandler::exists($cfgClient[$client]['xml']['frontendpath'])) {
+        cDirHandler::create($cfgClient[$client]['xml']['frontendpath'], true);
+    }
+    // try to write xml to disk
+    $success = $rssFeed->asXML($filename);
+    if (false !== $success) {
+        $result = mi18n("LABEL_RSS_CREATED");
+    }
+    
+}
+
+$tpl = cSmartyFrontend::getInstance();
+$tpl->assign('RESULT_MSG', $result);
+$tpl->display('result.tpl');
 
 ?>

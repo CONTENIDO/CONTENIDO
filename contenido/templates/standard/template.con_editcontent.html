@@ -5,39 +5,29 @@
 
 {JS_EDITCONTENT}
 
-<link rel="stylesheet" type="text/css" href="{_PATH_CONTENIDO_FULLHTML_}styles/con_tiny.css">
+<link rel="stylesheet" type="text/css" href="{_PATH_CONTENIDO_TINYMCE_CSS_}con_tiny.css">
 <link rel="stylesheet" type="text/css" href="{_PATH_CONTENIDO_FULLHTML_}styles/jquery/plugins/atooltip.css">
 <link rel="stylesheet" type="text/css" href="{_PATH_CONTENIDO_FULLHTML_}styles/includes/con_editcontent.css">
 <script type="text/javascript" src="{_PATH_CONTENIDO_FULLHTML_}scripts/jquery/plugins/atooltip.jquery.js"></script>
 
-<script src="{_PATH_CONTENIDO_FULLHTML_}scripts/con_tiny.js" type="text/javascript"></script>
 <!-- tinyMCE -->
-<script src="{_PATH_CONTENIDO_FULLHTML_}external/wysiwyg/tinymce3/jscripts/tiny_mce/tiny_mce.js" type="text/javascript"></script>
+{_WYSIWYG_JS_TAGS_}
 
 <script type="text/javascript">    
 (function(Con, $) {
 
     // Configuration of tiny, when tiny is opened set event which stores original
     // content to Con.Tiny.editDataOrg
-    var wysiwygSettings = {
-        document_base_url: '{FRONTEND}',
-        {TINY_OPTIONS},
-        fullscreen_settings: {
-            {TINY_FULLSCREEN}
-        },
-        'setup': function(ed) {
-            ed.onSetContent.add(function(ed, o) {
-                Con.Tiny.updateContent(ed.getContent());
-            });
-        }
-    };
+    var wysiwygSettings = {TINY_OPTIONS};
 
-    // Initilalize/setup TinyMCE editor
+    // Initialize/setup TinyMCE editor
     Con.Tiny.tinymceInit(tinymce, wysiwygSettings, {
         saveTitle: '{SAVE}',
         saveImage: '{_PATH_CONTENIDO_FULLHTML_}images/but_save_tiny.gif',
         closeTitle: '{CLOSE}',
-        closeImage: '{_PATH_CONTENIDO_FULLHTML_}images/but_close_tiny.gif'
+        closeImage: '{_PATH_CONTENIDO_FULLHTML_}images/but_close_tiny.gif',
+        useTiny: '{USE_TINY}',
+        backendUrl: '{BACKEND_URL}'
     });
 
     $(function() {
@@ -45,7 +35,6 @@
         Con.Tiny.init({
             fileUrl: '{FILE}',
             imageUrl: '{IMAGE}',
-            flashUrl: '{FLASH}',
             mediaUrl: '{MEDIA}',
             frontendPath: '{FRONTEND}',
             txtQuestion: '{QUESTION}',

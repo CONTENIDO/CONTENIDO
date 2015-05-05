@@ -70,7 +70,7 @@ class cApiGroupMemberCollection extends ItemCollection {
      *
      * @param string $userId
      * @param string $groupId
-     * @return cApiGroupMember NULL
+     * @return cApiGroupMember|NULL
      */
     public function fetchByUserIdAndGroupId($userId, $groupId) {
         $where = "user_id = '" . $this->escape($userId) . "' AND group_id = '" . $this->escape($groupId) . "'";
@@ -94,7 +94,8 @@ class cApiGroupMember extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;

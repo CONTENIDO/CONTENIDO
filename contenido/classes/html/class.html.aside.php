@@ -25,6 +25,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cHTMLAside extends cHTMLContentElement {
 
+    /**
+     * Constructor.
+     *
+     * @param mixed $content
+     *         String or object with the contents
+     * @param string $class
+     *         the class of this element
+     * @param string $id
+     *         the ID of this element
+     */
     public function __construct($content = '', $class = '', $id = '') {
         parent::__construct($content, $class, $id);
         $this->_tag = 'aside';

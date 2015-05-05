@@ -51,7 +51,7 @@ if ((!$readOnly) && $action == "mod_delete") {
     }
 
     // show success message
-    cRegistry::addInfoMessage(i18n("Module was successfully deleted!"));
+    cRegistry::addOkMessage(i18n("Module was successfully deleted!"));
     $page = new cGuiPage('generic_page');
 
     $contenidoModuleHandler->eraseModule();
@@ -128,7 +128,7 @@ if ((!$readOnly) && $action == "mod_new") {
         $page->render();
         die();
     } else {
-        cRegistry::addInfoMessage(i18n("New module created successfuly!"));
+        cRegistry::addOkMessage(i18n("New module created successfuly!"));
     }
 } else {
     $module = new cApiModule($idmod);
@@ -144,7 +144,7 @@ if ((!$readOnly) && $action == "mod_importexport_module") {
                 cRegistry::addErrorMessage(i18n("Could not import module!"));
             } else {
                 // Load the item again (clearing slashes from import)
-                $module->loadByPrimaryKey($module->get($module->primaryKey));
+                $module->loadByPrimaryKey($module->get($module->getPrimaryKeyName()));
                 $contenidoModuleHandler = new cModuleHandler($module->get('idmod'));
             }
         }
@@ -194,7 +194,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     $name = new cHTMLTextbox("name", conHtmlSpecialChars(stripslashes($module->get("name"))), 60);
     $descr = new cHTMLTextarea("descr", str_replace(array(
         '\r\n'
-    ), "\r\n", conHtmlEntityDecode($module->get("description"))), 100, 5);
+    ), "\r\n", conHtmlentities($module->get("description"))), 100, 5);
 
     // Get input and output code; if specified, prepare row fields
     $sInputData = "";

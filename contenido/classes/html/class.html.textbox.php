@@ -68,7 +68,8 @@ class cHTMLTextbox extends cHTMLFormElement {
      * Sets the width of the text box.
      *
      * @param int $width width of the text box
-     * @return cHTMLTextbox $this
+     * @return cHTMLTextbox
+     *         $this for chaining
      */
     public function setWidth($width) {
         $width = intval($width);
@@ -84,7 +85,8 @@ class cHTMLTextbox extends cHTMLFormElement {
      * Sets the maximum input length of the text box.
      *
      * @param int $maxlen maximum input length
-     * @return cHTMLTextbox $this
+     * @return cHTMLTextbox
+     *         $this for chaining
      */
     public function setMaxLength($maxlen) {
         $maxlen = intval($maxlen);
@@ -100,7 +102,8 @@ class cHTMLTextbox extends cHTMLFormElement {
      * Sets the initial value of the text box.
      *
      * @param string $value Initial value
-     * @return cHTMLTextbox $this
+     * @return cHTMLTextbox
+     *         $this for chaining
      */
     public function setValue($value) {
         return $this->updateAttribute('value', $value);

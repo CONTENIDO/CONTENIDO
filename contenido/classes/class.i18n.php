@@ -59,7 +59,9 @@ class cI18n {
                 setlocale(LC_MESSAGES, $langCode);
             }
 
-            setlocale(LC_CTYPE, $langCode);
+            if (false === empty($langCode)) {
+                setlocale(LC_CTYPE, $langCode);
+            }
         }
 
         self::$_i18nData['domains'][$domain] = $localePath;
@@ -71,7 +73,8 @@ class cI18n {
      *
      * @param string $string The string to translate
      * @param string $domain The domain to look up
-     * @return string Returns the translation
+     * @return string
+     *         Returns the translation
      */
     public static function __($string, $domain = 'contenido') {
         return self::translate($string, $domain);
@@ -83,7 +86,8 @@ class cI18n {
      * @param string $string The string to translate
      * @param string $domain The domain to look up
      * @throws cException if this is the backend mode and the $belang is not set
-     * @return string Returns the translation
+     * @return string
+     *         Returns the translation
      */
     public static function translate($string, $domain = 'contenido') {
         global $cfg, $belang, $contenido;
@@ -98,7 +102,22 @@ class cI18n {
                 $belang = false;
             }
 
-            self::init($cfg['path']['contenido_locale'], $belang, $domain);
+            // CON-2165
+            // initialise localisation of plugins correctly in frontend
+            if ($domain === 'contenido') {
+                self::init($cfg['path']['contenido_locale'], $belang, $domain);
+            } else {
+                if (empty($belang)) {
+                    $oApiLang = cRegistry::getLanguage();
+                    $language = $oApiLang->getProperty('language', 'code');
+                    $country = $oApiLang->getProperty('country', 'code');
+
+                    $locale = $language . '_' . strtoupper($country);
+                    self::init($cfg['path']['contenido'] . $cfg['path']['plugins'] . $domain . '/locale/', $locale, $domain);
+                } else {
+                    self::init($cfg['path']['contenido'] . $cfg['path']['plugins'] . $domain . '/locale/', $belang, $domain);
+                }
+            }
         }
 
         // Is emulator to use?
@@ -182,7 +201,8 @@ class cI18n {
      *
      * @param string $string The string to translate
      * @param string $domain The domain to look up
-     * @return string Returns the translation
+     * @return string
+     *         Returns the translation
      */
     public static function emulateGettext($string, $domain = 'contenido') {
         if ($string == '') {
@@ -197,7 +217,6 @@ class cI18n {
         }
 
         $translationFile = self::$_i18nData['domains'][$domain] . self::$_i18nData['language'] . '/LC_MESSAGES/' . $domain . '.po';
-
         if (!cFileHandler::exists($translationFile)) {
             return $string;
         }
@@ -272,7 +291,8 @@ class cI18n {
      * comments on the content.
      *
      * @param string $translationFile
-     * @return string The preparend translation file content
+     * @return string
+     *         The preparend translation file content
      */
     protected static function _loadTranslationFile($translationFile) {
         $content = cFileHandler::read($translationFile);

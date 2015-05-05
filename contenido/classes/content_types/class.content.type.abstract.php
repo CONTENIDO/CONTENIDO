@@ -132,7 +132,7 @@ abstract class cContentTypeAbstract {
     /**
      * Whether to generate XHTML
      *
-     * @var boolean
+     * @var bool
      */
     protected $_useXHTML;
 
@@ -167,14 +167,16 @@ abstract class cContentTypeAbstract {
     /**
      * Initialises class attributes with values from cRegistry.
      *
-     * @param string $rawSettings the raw settings in an XML structure or as
-     *        plaintext
-     * @param int $id ID of the content type, e.g. 3 if CMS_TEASER[3] is
-     *        used
-     * @param array $contentTypes array containing the values of all content
-     *        types
+     * @param string $rawSettings
+     *         the raw settings in an XML structure or as plaintext
+     * @param int $id
+     *         ID of the content type, e.g. 3 if CMS_TEASER[3] is used
+     * @param array $contentTypes
+     *         array containing the values of all content types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
+
+        // set props
         $this->_rawSettings = $rawSettings;
         $this->_id = $id;
         $this->_contentTypes = $contentTypes;
@@ -206,7 +208,6 @@ abstract class cContentTypeAbstract {
         if ($this->_settingsType === self::SETTINGS_TYPE_XML) {
             // if the settings should be interpreted as XML, process them
             // accordingly
-            
             $this->_settings = cXmlBase::xmlStringToArray($this->_rawSettings);
             // add the prefix to the settings array keys
             foreach ($this->_settings as $key => $value) {
@@ -244,8 +245,7 @@ abstract class cContentTypeAbstract {
                 if (isset($_POST[$key])) {
                     $this->_settings[$key] = $_POST[$key];
                 } else if (isset($_POST[$this->_prefix . '_array_' . $keyWithoutPrefix])) {
-                    // key is of type prefix_array_field, so interpret value as
-                    // an array
+                    // key is of type prefix_array_field, so interpret value as an array
                     $this->_settings[$key] = explode(',', $_POST[$this->_prefix . '_array_' . $keyWithoutPrefix]);
                 }
                 $settings[$keyWithoutPrefix] = $this->_settings[$key];
@@ -255,15 +255,18 @@ abstract class cContentTypeAbstract {
         } else {
             $settingsToStore = $this->_settings;
         }
-        // store new settings in the database        
+        
+        // store new settings in the database
         conSaveContentEntry($this->_idArtLang, $this->_type, $this->_id, $settingsToStore);
     }
 
     /**
      * Since the content type code is evaled by php, the code has to be encoded.
      *
-     * @param string $code code to encode
-     * @return string encoded code
+     * @param string $code
+     *         code to encode
+     * @return string
+     *         encoded code
      */
     protected function _encodeForOutput($code) {
         $code = addslashes($code);
@@ -276,10 +279,11 @@ abstract class cContentTypeAbstract {
     /**
      * Builds an array with directory information from the given upload path.
      *
-     * @param string $uploadPath path to upload directory (optional, default:
-     *        root upload path
-     *        of client)
-     * @return array with directory information (keys: name, path, sub)
+     * @param string $uploadPath [optional]
+     *         path to upload directory
+     *         (default: root upload path of client)
+     * @return array
+     *         with directory information (keys: name, path, sub)
      */
     public function buildDirectoryList($uploadPath = '') {
         // make sure the upload path is set and ends with a slash
@@ -296,7 +300,7 @@ abstract class cContentTypeAbstract {
             if (false !== ($handle = cDirHandler::read($uploadPath, false, true))) {
                 foreach ($handle as $entry) {
                     if (cFileHandler::fileNameBeginsWithDot($entry) === false && is_dir($uploadPath . $entry)) {
-            
+                        
                         $directory = array();
                         $directory['name'] = $entry;
                         $directory['path'] = str_replace($this->_uploadPath, '', $uploadPath);
@@ -326,8 +330,10 @@ abstract class cContentTypeAbstract {
      * Generates a directory list from the given directory information (which is
      * typically built by {@link cContentTypeAbstract::buildDirectoryList}).
      *
-     * @param array $dirs directory information
-     * @return string HTML code showing a directory list
+     * @param array $dirs
+     *         directory information
+     * @return string
+     *         HTML code showing a directory list
      */
     public function generateDirectoryList(array $dirs) {
         $template = new cTemplate();
@@ -368,8 +374,10 @@ abstract class cContentTypeAbstract {
      * information is the currently active directory.
      * Overwrite in subclasses if you use generateDirectoryList!
      *
-     * @param array $dirData directory information
-     * @return boolean whether the directory is the currently active directory
+     * @param array $dirData
+     *         directory information
+     * @return bool
+     *         whether the directory is the currently active directory
      */
     protected function _isActiveDirectory(array $dirData) {
         return false;
@@ -380,8 +388,10 @@ abstract class cContentTypeAbstract {
      * should be shown expanded.
      * Overwrite in subclasses if you use getDirectoryList!
      *
-     * @param array $dirData directory information
-     * @return boolean whether the directory should be shown expanded
+     * @param array $dirData
+     *         directory information
+     * @return bool
+     *         whether the directory should be shown expanded
      */
     protected function _shouldDirectoryBeExpanded(array $dirData) {
         return false;
@@ -390,9 +400,12 @@ abstract class cContentTypeAbstract {
     /**
      * Checks whether the given $subDir is a subdirectory of the given $dir.
      *
-     * @param string $subDir the potential subdirectory
-     * @param string $dir the parent directory
-     * @return boolean whether the given $subDir is a subdirectory of $dir
+     * @param string $subDir
+     *         the potential subdirectory
+     * @param string $dir
+     *         the parent directory
+     * @return bool
+     *         whether the given $subDir is a subdirectory of $dir
      */
     protected function _isSubdirectory($subDir, $dir) {
         $dirArray = explode('/', $dir);
@@ -415,22 +428,23 @@ abstract class cContentTypeAbstract {
      * Generates the code which should be shown if this content type is shown in
      * the frontend.
      *
-     * @return string escaped HTML code which sould be shown if content type is
-     *         shown in frontend
+     * @return string
+     *         escaped HTML code which sould be shown if content type is shown in frontend
      */
     public abstract function generateViewCode();
 
     /**
      * Generates the code which should be shown if this content type is edited.
      *
-     * @return string escaped HTML code which should be shown if content type is
-     *         edited
+     * @return string
+     *         escaped HTML code which should be shown if content type is edited
      */
     public abstract function generateEditCode();
 
     /**
      * Checks if this content type can be edited by a WYSIWYG editor
-     * @return boolean
+     *
+     * @return bools
      */
     public function isWysiwygCompatible() {
         return false;

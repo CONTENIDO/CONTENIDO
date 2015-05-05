@@ -50,24 +50,30 @@ class cApiUploadCollection extends ItemCollection {
      */
     public function sync($sDirname, $sFilename, $client = 0) {
         $client = cSecurity::toInteger($client);
+
         if ($client <= 0) {
             global $client;
         }
 
-        if (strstr(strtolower($_ENV['OS']), 'windows') === false) {
-            // Unix style OS distinguish between lower and uppercase file names,
-            // i.e. test.gif is not the same as Test.gif
-            $this->select("dirname = BINARY '$sDirname' AND filename = BINARY '$sFilename' AND idclient = " . (int) $client);
-        } else {
-            // Windows OS doesn't distinguish between lower and uppercase file
-            // names, i.e. test.gif is the same as Test.gif in file system
-            $this->select("dirname = '" . $this->escape($sDirname) . "' AND filename = '" . $this->escape($sFilename) . "' AND idclient = " . cSecurity::toInteger($client));
-        }
+        // build escaped vars for SQL
+        $escClient = cSecurity::toInteger($client);
+        $escDirname = $this->escape($sDirname);
+        $escFilename = $this->escape($sFilename);
 
-        if (($oItem = $this->next()) !== false) {
+        // Unix style OS distinguish between lower and uppercase file names,
+        // i.e. test.gif is not the same as Test.gif
+        // Windows OS doesn't distinguish between lower and uppercase file
+        // names, i.e. test.gif is the same as Test.gif in file system
+        $os = strtolower(getenv('OS'));
+        $isWindows = (false !== strpos($os, 'windows'));
+        $binary = $isWindows ? '' : 'BINARY';
+
+        $this->select("idclient = $escClient AND dirname = $binary '$escDirname' AND filename = $binary '$escFilename'");
+
+        if (false !== $oItem = $this->next()) {
             $oItem->update();
         } else {
-            $sFiletype = (string) uplGetFileExtension($sFilename);
+            $sFiletype = (string) uplGetFileExtension($sFilename, $sDirname);
             $iFilesize = cApiUpload::getFileSize($sDirname, $sFilename);
             $oItem = $this->create($sDirname, $sFilename, $sFiletype, $iFilesize, '');
         }
@@ -111,12 +117,12 @@ class cApiUploadCollection extends ItemCollection {
     /**
      * Deletes upload file and it's properties
      *
+     * @todo Code is similar/redundant to include.upl_files_overview.php 216-230
      * @global cApiCecRegistry $_cecRegistry
      * @global array $cfgClient
      * @global int $client
      * @param int $id
-     * @return bool @fixme Code is similar/redundant to
-     *         include.upl_files_overview.php 216-230
+     * @return bool
      */
     public function delete($id) {
         global $cfgClient, $client;
@@ -199,7 +205,8 @@ class cApiUpload extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;

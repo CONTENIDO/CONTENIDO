@@ -26,32 +26,33 @@ class cContentTypeLinktarget extends cContentTypeLinkeditor {
     /**
      * Initialises class attributes and handles store events.
      *
-     * @param string $rawSettings the raw settings in an XML structure or as
-     *        plaintext
-     * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is
-     *        used
-     * @param array $contentTypes array containing the values of all content
-     *        types
+     * @param string $rawSettings
+     *         the raw settings in an XML structure or as plaintext
+     * @param int $id
+     *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
+     * @param array $contentTypes
+     *         array containing the values of all content types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-        // there are no raw settings here, because the image description is now
-        // saved in con_upl_meta
-        // so compute the appropriate raw settings and call the parent
-        // constructor with them
 
+        // There are no raw settings here, because CMS_LINKEDITOR is now
+        // saved in con_upl_meta. So compute the appropriate raw settings
+        // and call the parent constructor with them.
         if (!cXmlBase::isValidXML($rawSettings)) {
             $rawSettings = $this->_getRawSettings("CMS_LINKEDITOR", $id, $contentTypes);
         }
 
+        // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
+
     }
 
     /**
      * Generates the code which should be shown if this content type is shown in
      * the frontend.
      *
-     * @return string escaped HTML code which sould be shown if content type is
-     *         shown in frontend
+     * @return string
+     *         escaped HTML code which sould be shown if content type is shown in frontend
      */
     public function generateViewCode() {
         $target = ($this->_settings['linkeditor_newwindow'] == 'true') ? '_blank' : '';
@@ -61,8 +62,8 @@ class cContentTypeLinktarget extends cContentTypeLinkeditor {
     /**
      * Generates the code which should be shown if this content type is edited.
      *
-     * @return string escaped HTML code which should be shown if content type is
-     *         edited
+     * @return string
+     *         escaped HTML code which should be shown if content type is edited
      */
     public function generateEditCode() {
         return $this->generateViewCode();

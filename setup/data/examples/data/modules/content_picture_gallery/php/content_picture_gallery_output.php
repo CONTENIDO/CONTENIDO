@@ -27,11 +27,11 @@ $pictures = array();
 
 if (count($files) > 0) {
     foreach ($files as $file) {
-        $path = 'upload/' . $file['path'] . '/' . $file['filename'];
+        $pathThumb = $file['path'] . '/' . $file['filename'];
 
         $record = array();
-        $record['thumb'] = cApiImgScale($path, 319, 199);
-        $record['lightbox'] = $path;
+        $record['thumb'] = cApiImgScale($pathThumb, 319, 199);
+        $record['lightbox'] = $cfgClient[$client]['upload'] . $pathThumb;
         $record['description'] = $file['metadata']['description'];
         $record['copyright'] = $file['metadata']['copyright'];
 
@@ -41,6 +41,11 @@ if (count($files) > 0) {
 
 $tpl = cSmartyFrontend::getInstance();
 $tpl->assign('pictures', $pictures);
+
+// Translations
+$tpl->assign('back', mi18n("Back"));
+$tpl->assign('forward', mi18n("Forward"));
+
 $tpl->display('picture_gallery.tpl');
 
 if (cRegistry::isBackendEditMode()) {

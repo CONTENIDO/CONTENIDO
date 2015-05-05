@@ -117,12 +117,6 @@
          */
         imageUrl: '',
         /**
-         * Url to CONTENIDO flash browser
-         * @property flashUrl
-         * @type {String}
-         */
-        flashUrl: '',
-        /**
          * Url to CONTENIDO media browser
          * @property mediaUrl
          * @type {String}
@@ -221,14 +215,6 @@
                     break;
                 case 'file':
                     Con.Tiny.fbPopupWindow = window.open(Con.Tiny.fileUrl, 'filebrowser', 'dialog=yes,resizable=yes');
-                    Con.Tiny.fbFieldName = fieldName;
-                    Con.Tiny.fbWindow = win;
-                    Con.Tiny.fbIntervalHandle = window.setInterval(function() {
-                        Con.Tiny.updateImageFilebrowser();
-                    }, 250);
-                    break;
-                case 'flash':
-                    Con.Tiny.fbPopupWindow = window.open(Con.Tiny.flashUrl, 'filebrowser', 'dialog=yes,resizable=yes');
                     Con.Tiny.fbFieldName = fieldName;
                     Con.Tiny.fbWindow = win;
                     Con.Tiny.fbIntervalHandle = window.setInterval(function() {
@@ -472,7 +458,7 @@
             Con.Tiny.activeId = obj.id;
             Con.Tiny.activeObject = obj;
 
-            // Show thiny and focus it
+            // Show tiny and focus it
             if (Con.Tiny.activeId) {
                 tinymce.execCommand('mceAddControl', false, Con.Tiny.activeId);
                 Con.Tiny.setFocus();
@@ -589,6 +575,13 @@
 
             // Register plugin with a short name
             tinymce.PluginManager.add('close', tinymce.plugins.ClosePlugin);
+            
+            // inject setup into settings
+            wysiwygSettings.setup = function(ed) {
+                ed.onSetContent.add(function(ed, o) {
+                    Con.Tiny.updateContent(ed.getContent());
+                });
+            }
 
             tinymce.settings = wysiwygSettings;
         },
@@ -621,42 +614,5 @@
             });
         }
     };
-
-
-    // @deprecated [2013-10-25] Assign to windows scope (downwards compatibility)
-    window.myCustomSetupContent = Con.Tiny.customCleanupCallback;
-    window.myCustomFileBrowser = Con.Tiny.customFileBrowserCallback;
-    window.updateImageFilebrowser = Con.Tiny.updateImageFilebrowser;
-    window.CustomCleanupContent = Con.Tiny.customCleanupCallback;
-    window.cutFullpath = Con.Tiny.customSaveCallback;
-    window.storeCurrentTinyContent = Con.Tiny.storeCurrentTinyContent;
-    window.setcontent = Con.Tiny.setContent;
-    window.prepareString = Con.Tiny.prepareString;
-    window.buildDataEntry = Con.Tiny.buildDataEntry;
-    window.addDataEntry = Con.Tiny.addDataEntry;
-    window.closeTiny = Con.Tiny.closeTiny;
-    window.swapTiny = Con.Tiny.swapTiny;
-    window.setFocus = Con.Tiny.setFocus;
-    window.updateContent = Con.Tiny.updateContent;
-    // @deprecated  Use leaveCheck()
-    window.leave_check = Con.Tiny.leaveCheck;
-    window.leaveCheck = Con.Tiny.leaveCheck;
-    window.active_id = Con.Tiny.activeId;
-    window.active_object = Con.Tiny.activeObject;
-    window.aEditdata = Con.Tiny.editData;
-    window.aEditdataOrig = Con.Tiny.editDataOrg;
-    window.bCheckLeave = Con.Tiny.checkOnLeave;
-    window.tinymceConfigs = Con.Tiny.settings;
-    window.fb_fieldname = Con.Tiny.fbFieldName;
-    window.fb_handle = Con.Tiny.fbPopupWindow;
-    window.fb_intervalhandle = Con.Tiny.fbIntervalHandle;
-    window.fb_win = Con.Tiny.fbWindow;
-    window.file_url = Con.Tiny.fileUrl;
-    window.image_url = Con.Tiny.imageUrl;
-    window.flash_url = Con.Tiny.flashUrl;
-    window.media_url = Con.Tiny.mediaUrl;
-    window.frontend_path = Con.Tiny.frontendPath;
-    window.iIdartlang = Con.Tiny.idartlang;
-    window.sQuestion = Con.Tiny.txtQuestion;
 
 })(Con, Con.$);

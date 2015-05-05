@@ -1,4 +1,6 @@
 LABEL_FORM_CONTACT=Kontaktformular
 PIFA_MAIL_ERROR_SUFFIX=E-Mail konnte nicht versendet werden
-PIFA_CLIENT_MAIL=Mandatenmail-Fehler
+PIFA_CLIENT_MAIL=Mandantenmail-Fehler
 PIFA_SYSTEM_MAIL=Systemmail-Fehler
+REPLY_HEADLINE=Vielen Dank für ihre Kontaktanfrage!
+REPLY_TEXT=Wir werden uns zeitnah mit Ihnen in Verbindung setzen.

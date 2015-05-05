@@ -42,7 +42,7 @@ if ((!$readOnly) && $action == 'mod_translation_save') {
     $translationArray[stripslashes($t_orig)] = stripslashes($t_trans);
 
     if ($moduleTranslation->saveTranslationArray($translationArray)) {
-        $page->displayInfo(i18n('Saved translation successfully!'));
+        $page->displayOk(i18n('Saved translation successfully!'));
     } else {
         $page->displayError(i18n("Can't save translation!"));
     }
@@ -111,7 +111,7 @@ if (!isset($row)) {
 $page->set("s", "IDMOD", $idmod);
 $page->set("s", "CURRENT", $current);
 $page->set("s", "ROW", $row);
-$page->set("s", "HEADER", sprintf(i18n("Translate module '%s'"), $module->get('name')));
+$page->set("s", "HEADER", sprintf(i18n("Translate module '%s'"), conHtmlSpecialChars($module->get('name'))));
 $page->set("s", "TRANSLATION_FOR", sprintf(i18n("Translation for %s"), $langstring));
 $page->set("s", "LAST_STRING", conHtmlSpecialChars($lastString));
 $page->set("s", "LAST_TRANSLATION", conHtmlSpecialChars($lastTranslation));

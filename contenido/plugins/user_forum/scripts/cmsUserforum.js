@@ -48,7 +48,4 @@
 
     Con.cContentTypeUserForum = cContentTypeUserForum;
 
-    // @deprecated [2013-11-15] Assign to windows scope (downwards compatibility)
-    window.cContentTypeUserForum = cContentTypeUserForum;
-
 })(Con, Con.$);

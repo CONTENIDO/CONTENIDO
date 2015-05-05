@@ -24,7 +24,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHTMLTableData extends cHTMLContentElement {
 
     /**
-     * Creates an HTML td element.
+     * Constructor.
+     *
+     * @param mixed $content
+     *         String or object with the contents
      */
     public function __construct($content = NULL) {
         parent::__construct($content);
@@ -35,7 +38,8 @@ class cHTMLTableData extends cHTMLContentElement {
      * Sets the table width
      *
      * @param string $width Width
-     * @return cHTMLTableData $this
+     * @return cHTMLTableData
+     *         $this for chaining
      */
     public function setWidth($width) {
         return $this->updateAttribute('width', $width);
@@ -45,7 +49,8 @@ class cHTMLTableData extends cHTMLContentElement {
      * Sets the table height
      *
      * @param string $height Height
-     * @return cHTMLTableData $this
+     * @return cHTMLTableData
+     *         $this for chaining
      */
     public function setHeight($height) {
         return $this->updateAttribute('height', $height);
@@ -55,7 +60,8 @@ class cHTMLTableData extends cHTMLContentElement {
      * Sets the table alignment
      *
      * @param string $alignment Alignment
-     * @return cHTMLTableData $this
+     * @return cHTMLTableData
+     *         $this for chaining
      */
     public function setAlignment($alignment) {
         return $this->updateAttribute('align', $alignment);
@@ -65,7 +71,8 @@ class cHTMLTableData extends cHTMLContentElement {
      * Sets the table vertical alignment
      *
      * @param string $alignment Vertical Alignment
-     * @return cHTMLTableData $this
+     * @return cHTMLTableData
+     *         $this for chaining
      */
     public function setVerticalAlignment($alignment) {
         return $this->updateAttribute('valign', $alignment);
@@ -75,7 +82,8 @@ class cHTMLTableData extends cHTMLContentElement {
      * Sets the table background color
      *
      * @param string $color background color
-     * @return cHTMLTableData $this
+     * @return cHTMLTableData
+     *         $this for chaining
      */
     public function setBackgroundColor($color) {
         return $this->updateAttribute('bgcolor', $color);
@@ -85,7 +93,8 @@ class cHTMLTableData extends cHTMLContentElement {
      * Sets the table colspan
      *
      * @param string $colspan Colspan
-     * @return cHTMLTableData $this
+     * @return cHTMLTableData
+     *         $this for chaining
      */
     public function setColspan($colspan) {
         return $this->updateAttribute('colspan', $colspan);

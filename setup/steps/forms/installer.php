@@ -33,7 +33,7 @@ class cSetupInstaller extends cSetupMask
             case "setup":
                 $this->setHeader(i18n("System Installation", "setup"));
                 $this->_oStepTemplate->set("s", "TITLE", i18n("System Installation", "setup"));
-                $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("CONTENIDO will be installed, please wait. This porcess may take several moments!", "setup"));
+                $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("CONTENIDO will be installed, please wait. This process may take several moments!", "setup"));
                 $this->_oStepTemplate->set("s", "DONEINSTALLATION", i18n("Setup completed installing. Click on next to continue.", "setup"));
                 $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Setup is installing, please wait...", "setup"));
                 $_SESSION["upgrade_nextstep"] = "setup8";
@@ -42,7 +42,7 @@ class cSetupInstaller extends cSetupMask
             case "upgrade":
                 $this->setHeader(i18n("System Upgrade", "setup"));
                 $this->_oStepTemplate->set("s", "TITLE", i18n("System Upgrade", "setup"));
-                $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("CONTENIDO will be upgraded, please wait. This porcess may take several moments!", "setup"));
+                $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("CONTENIDO will be upgraded, please wait. This process may take several moments!", "setup"));
                 $this->_oStepTemplate->set("s", "DONEINSTALLATION", i18n("Setup completed upgrading. Click on next to continue.", "setup"));
                 $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Setup is upgrading, please wait...", "setup"));
                 $_SESSION["upgrade_nextstep"] = "ugprade6";

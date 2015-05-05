@@ -28,21 +28,22 @@ class cHTMLFormElement extends cHTML {
      * This is a generic form element, where
      * specific elements should be inherited from this class.
      *
-     * @param string $name Name of the element
-     * @param string $id ID of the element
-     * @param string $disabled Item disabled flag (non-empty to set disabled)
-     * @param string $tabindex Tab index for form elements
-     * @param string $accesskey Key to access the field
-     * @param string $class CSS class name to set
+     * @todo remove overfluous param class
+     * @param string $name
+     *         Name of the element
+     * @param string $id
+     *         ID of the element
+     * @param string $disabled
+     *         Item disabled flag (non-empty to set disabled)
+     * @param string $tabindex
+     *         Tab index for form elements
+     * @param string $accesskey
+     *         Key to access the field
+     * @param string $class
+     *         CSS class name to set
      */
-    public function __construct($name = '',
-                                $id = '',
-                                $disabled = '',
-                                $tabindex = '',
-                                $accesskey = '',
-                                $class = 'text_medium',
-                                $class = ''
-    ) {
+    public function __construct($name = '', $id = '', $disabled = '',
+            $tabindex = '', $accesskey = '', $class = 'text_medium', $class = '') {
 
         parent::__construct();
 
@@ -74,7 +75,8 @@ class cHTMLFormElement extends cHTML {
      * removes the disabled flag.
      *
      * @param string $disabled Sets the disabled-flag if non-empty
-     * @return cHTMLFormElement $this
+     * @return cHTMLFormElement
+     *         $this for chaining
      */
     public function setDisabled($disabled) {
         if (empty($disabled)) {
@@ -92,7 +94,8 @@ class cHTMLFormElement extends cHTML {
      * index needs to be numeric, bigger than 0 and smaller than 32767.
      *
      * @param int $tabindex Desired tab index
-     * @return cHTMLFormElement $this
+     * @return cHTMLFormElement
+     *         $this for chaining
      */
     public function setTabindex($tabindex) {
         if (is_numeric($tabindex) && $tabindex >= 0 && $tabindex <= 32767) {
@@ -107,7 +110,8 @@ class cHTMLFormElement extends cHTML {
      *
      * @param string $accesskey The length of the access key. May be A-Z and
      *        0-9.
-     * @return cHTMLFormElement $this
+     * @return cHTMLFormElement
+     *         $this for chaining
      */
     public function setAccessKey($accesskey) {
         if ((strlen($accesskey) == 1) && isAlphanumeric($accesskey)) {

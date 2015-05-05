@@ -40,7 +40,8 @@ class cApiNavSubCollection extends ItemCollection {
      * Create new item with given values.
      *
      * @param int $navm
-     * @param int|string  $area  Aread id or area name
+     * @param int|string $area
+     *         AreaId or area name
      * @param int $level
      * @param string $location
      * @param int $online
@@ -74,18 +75,19 @@ class cApiNavSubCollection extends ItemCollection {
 
     /**
      * Returns sub navigation by area name
-     * @param  string  $area
-     * @param  int  $level
-     * @param  int  $online
-     * @return  array  List of assiziative arrays like
-     * <pre>
-     *  $arr[] = array(
-     *      'location' => location xml path
-     *      'caption' => The tanslation of location from XML file
-     *      'name' => area name for sub navigation item
-     *      'menulesss' => Menuless state
-     *  );
-     * </pre>
+     * @param string $area
+     * @param int $level
+     * @param int $online
+     * @return  array
+     *         List of assiziative arrays like
+     *         <pre>
+     *         $arr[] = array(
+     *             'location' => location xml path
+     *             'caption' => The tanslation of location from XML file
+     *             'name' => area name for sub navigation item
+     *             'menulesss' => Menuless state
+     *         );
+     *         </pre>
      */
     public function getSubnavigationsByAreaName($area, $level = 1, $online = 1) {
         global $cfg;
@@ -143,7 +145,8 @@ class cApiNavSub extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -163,7 +166,9 @@ class cApiNavSub extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @param bool $bSafe
+     *         Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {

@@ -3,7 +3,7 @@
     $(function() {
         // replace the text div with an input field if the div or the edit button is clicked
         $('#{PREFIX}_editbutton_{ID}, #{PREFIX}_text_{ID}').click(function() {
-            var text = $('#{PREFIX}_text_{ID}').html();
+            var text = $('#{PREFIX}_text_{ID}').text();
             $('#{PREFIX}_text_{ID}').replaceWith('{TEXTBOX}');
             $('#{PREFIX}_text_{ID}').val(text);
             $('#{PREFIX}_text_{ID}').focus();
@@ -12,11 +12,6 @@
         // submit the form if the save button or enter is clicked
         $(document).on('click', '#{PREFIX}_savebutton_{ID}', function() {
             cContentType{PREFIX}Save{ID}();
-        });
-        $(document).keypress(function(e) {
-            if (e.which == 13 && $('#{PREFIX}_text_{ID}').is(':focus')) {
-                cContentType{PREFIX}Save{ID}();
-            }
         });
 
         /**
@@ -46,6 +41,7 @@
             cContentType{PREFIX}AppendFormField{ID}('{PREFIX}_id', '{ID}');
             var text = $('#{PREFIX}_text_{ID}').val();
             cContentType{PREFIX}AppendFormField{ID}('{PREFIX}_text_{ID}', text);
+            // save changes done in tinymce
             Con.Tiny.setContent('{IDARTLANG}');
         }
     });

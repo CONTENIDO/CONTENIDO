@@ -147,20 +147,6 @@ class cSearch extends cSearchBaseAbstract {
     protected $_index;
 
     /**
-     * array of available cms types
-     *
-     * @var array
-     */
-    protected $_cmsType = array();
-
-    /**
-     * suffix of available cms types
-     *
-     * @var array
-     */
-    protected $_cmsTypeSuffix = array();
-
-    /**
      * the search words
      *
      * @var array
@@ -207,7 +193,7 @@ class cSearch extends cSearchBaseAbstract {
      * If $protected = true => do not search articles which are offline or
      * articles in catgeories which are offline (protected) unless the user has access to them
      *
-     * @var boolean
+     * @var bool
      */
     protected $_protected;
 
@@ -215,7 +201,7 @@ class cSearch extends cSearchBaseAbstract {
      * If $dontshowofflinearticles = false => search offline articles or
      * articles in categories which are offline
      *
-     * @var boolean
+     * @var bool
      */
     protected $_dontshowofflinearticles;
 
@@ -223,7 +209,7 @@ class cSearch extends cSearchBaseAbstract {
      * If $exclude = true => the specified search range is excluded from search,
      * otherwise included
      *
-     * @var boolean
+     * @var bool
      */
     protected $_exclude;
 
@@ -269,16 +255,12 @@ class cSearch extends cSearchBaseAbstract {
 
         $this->_index = new cSearchIndex($db);
 
-        $this->_cmsType = $this->_index->cms_type;
-        $this->_cmsTypeSuffix = $this->_index->cms_type_suffix;
-
         $this->_searchOption = (array_key_exists('db', $options)) ? strtolower($options['db']) : 'regexp';
         $this->_searchCombination = (array_key_exists('combine', $options)) ? strtolower($options['combine']) : 'or';
         $this->_protected = (array_key_exists('protected', $options)) ? $options['protected'] : true;
         $this->_dontshowofflinearticles = (array_key_exists('dontshowofflinearticles', $options)) ? $options['dontshowofflinearticles'] : true;
         $this->_exclude = (array_key_exists('exclude', $options)) ? $options['exclude'] : true;
         $this->_articleSpecs = (array_key_exists('artspecs', $options) && is_array($options['artspecs'])) ? $options['artspecs'] : array();
-        $this->_index->setCmsOptions($this->_cmsTypeSuffix);
 
         if (array_key_exists('searchable_articles', $options) && is_array($options['searchable_articles'])) {
             $this->_searchableArts = $options['searchable_articles'];
@@ -296,7 +278,7 @@ class cSearch extends cSearchBaseAbstract {
      * @param string $searchwords The search words
      * @param string $searchwords_exclude The words, which should be excluded
      *        from search
-     * @return boolean multitype:
+     * @return bool|array
      */
     public function searchIndex($searchwords, $searchwords_exclude = '') {
         if (strlen(trim($searchwords)) > 0) {
@@ -339,11 +321,11 @@ class cSearch extends cSearchBaseAbstract {
         } elseif ($this->_searchOption == 'like') {
             // like search
             $search_like = implode(" OR keyword LIKE ", $tmp_searchwords);
-            $kwSql = "keyword LIKE '" . $search_like;
+            $kwSql = "keyword LIKE " . $search_like;
         } elseif ($this->_searchOption == 'exact') {
             // exact match
             $search_exact = implode(" OR keyword = ", $tmp_searchwords);
-            $kwSql = "keyword LIKE '" . $search_exact;
+            $kwSql = "keyword LIKE " . $search_exact;
         }
 
         $sql = "SELECT keyword, auto FROM " . $this->cfg['tab']['keywords'] . " WHERE idlang=" . cSecurity::toInteger($this->lang) . " AND " . $kwSql . " ";
@@ -458,14 +440,15 @@ class cSearch extends cSearchBaseAbstract {
     /**
      *
      * @param string $searchwords The search-words
-     * @return array of stripped search-words
+     * @return array
+     *         of stripped search-words
      */
     public function stripWords($searchwords) {
         // remove backslash and html tags
         $searchwords = trim(strip_tags(stripslashes($searchwords)));
 
         // split the phrase by any number of commas or space characters
-        $tmp_words = preg_split('/[\s,]+/', $searchwords);
+        $tmp_words = mb_split('[\s,]+', $searchwords);
 
         $tmp_searchwords = array();
 
@@ -487,9 +470,10 @@ class cSearch extends cSearchBaseAbstract {
     /**
      * Returns the category tree array.
      *
-     * @param int $cat_start Root of a category tree
-     * @return array Category Tree
      * @todo This is not the job for search, should be outsourced ...
+     * @param int $cat_start Root of a category tree
+     * @return array
+     *         Category Tree
      */
     public function getSubTree($cat_start) {
         $sql = "SELECT
@@ -547,9 +531,12 @@ class cSearch extends cSearchBaseAbstract {
      * Returns list of searchable article ids.
      *
      * @param array $search_range
-     * @return array Articles in specified search range
+     * @return array
+     *         Articles in specified search range
      */
     public function getSearchableArticles($search_range) {
+        global $auth;
+
         $aCatRange = array();
         if (array_key_exists('cat_tree', $search_range) && is_array($search_range['cat_tree'])) {
             if (count($search_range['cat_tree']) > 0) {
@@ -647,7 +634,8 @@ class cSearch extends cSearchBaseAbstract {
     /**
      * Fetch all article specifications which are online,
      *
-     * @return array Array of article specification Ids
+     * @return array
+     *         Array of article specification Ids
      */
     public function getArticleSpecifications() {
         $sql = "SELECT
@@ -681,7 +669,7 @@ class cSearch extends cSearchBaseAbstract {
      * (client dependent but language independent)
      *
      * @param string $sArtSpecName
-     * @return boolean
+     * @return bool
      */
     public function addArticleSpecificationsByName($sArtSpecName) {
         if (!isset($sArtSpecName) || strlen($sArtSpecName) == 0) {

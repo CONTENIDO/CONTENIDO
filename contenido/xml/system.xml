@@ -185,6 +185,16 @@ i18n("Maximum number of stored versions")
                 <label>Use passwordrequest in Backend</label>
                 <group>Backend</group>
             </enable>
+            <reset_threshold>
+                <values>integer</values>
+                <label>User password reset threshold</label>
+                <group>Backend</group>
+            </reset_threshold>
+            <outdated_threshold>
+                <values>label</values>
+                <label>When to consider a password reset request to be outdated</label>
+                <group>Backend</group>
+            </outdated_threshold>
         </pw_request>
         <maintenance>
             <mode>
@@ -266,6 +276,22 @@ i18n("Maximum number of stored versions")
                 <label>Visible debug</label>
                 <group>Development</group>
             </debug_to_screen>
+            <debug_for_plugins>
+            	<values>
+            		<array_value>true</array_value>
+            		<array_value>false</array_value>
+            	</values>
+            	<label>Debug function for plugins</label>
+            	<group>Development</group>
+            </debug_for_plugins> 
+            <module_translation_message>
+            	<values>
+                    <array_value>true</array_value>
+                    <array_value>false</array_value>
+                </values>
+                <label>Show message for unknown module translations</label>
+                <group>Development</group>
+            </module_translation_message>
         </debug>
     </properties>
 </system>

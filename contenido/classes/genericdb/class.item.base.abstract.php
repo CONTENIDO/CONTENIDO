@@ -81,22 +81,37 @@ abstract class cItemBaseAbstract extends cGenericDb {
     protected $table;
 
     /**
-     * Storage of the primary key
+     * Setting of primaryKey name (deprecated)
+     *
+     * @deprecated [2015-05-04] Class variable primaryKey is deprecated, use getPrimaryKeyName() instead
+     * @var string
+     */
+    private $primaryKey;
+
+    /**
+     * Storage of the primary key name
      *
      * @var string
-     * @todo remove access from public
      */
-    public $primaryKey;
+    protected $_primaryKeyName;
 
     /**
      * Checks for the virginity of created objects.
      * If true, the object
-     * is virgin and no operations on it except load-Functions are allowed.
+     * is virgin and no operations on it except load-functions are allowed.
      *
-     * @todo remove access from public
+     * @deprecated [2015-05-05] Class variable virgin is deprecated, use negated result of isLoaded() instead
      * @var bool
      */
-    public $virgin;
+    private $virgin = true;
+
+    /**
+     * Checks if an object is loaded
+     * If it is true an object is loaded
+     * If it is false then no object is loaded and only load-functions are allowed to be used
+     * @var bool
+     */
+    protected $_loaded = false;
 
     /**
      * Storage of the last occured error
@@ -140,19 +155,95 @@ abstract class cItemBaseAbstract extends cGenericDb {
         $this->_oCache = cItemCache::getInstance($sTable, $aCacheOpt);
 
         $this->table = $sTable;
-        $this->primaryKey = $sPrimaryKey;
-        $this->virgin = true;
+        static::_setPrimaryKeyName($sPrimaryKey);
         $this->_className = $sClassName;
+    }
+
+    /**
+     * Resets class variables back to default
+     * This is handy in case a new item is tried to be loaded into this class instance.
+     */
+    protected function _resetItem() {
+        $this->_setLoaded(false);
+        $this->properties = null;
+        $this->lasterror = '';
     }
 
     /**
      * Escape string for using in SQL-Statement.
      *
      * @param string $sString The string to escape
-     * @return string Escaped string
+     * @return string
+     *         Escaped string
      */
     public function escape($sString) {
         return $this->db->escape($sString);
+    }
+
+    /**
+     * Checks if an object is loaded
+     * If it is true an object is loaded
+     * If it is false then no object is loaded and only load-functions are allowed to be used
+     * @return bool Whether an object has been loaded
+     */
+    public function isLoaded() {
+        return (bool) $this->_loaded;
+    }
+
+    /**
+     * Sets loaded state of class
+     * If it is true an object is loaded
+     * If it is false then no object is loaded and only load-functions are allowed to be used
+     * @param bool $value Whether an object is loaded
+     */
+    protected function _setLoaded($value) {
+        $this->_loaded = (bool) $value;
+    }
+
+    /**
+     * Magic getter function for deprecated variables primaryKey and virgin
+     * This function will be removed when the variables are no longer supported
+     * @param string $name Name of the variable that should be accessed
+     * @return mixed
+     */
+    public function __get($name) {
+        if ('primaryKey' === $name) {
+            return static::getPrimaryKeyName();
+        }
+        if ('virgin' === $name) {
+            return !static::isLoaded();
+        }
+    }
+
+    /**
+     * Magic setter function for deprecated variables primaryKey and virgin
+     * This function will be removed when the variables are no longer supported
+     * @param string $name Name of the variable that should be accessed
+     * @param mixed $value Value that should be assigned to variable
+     */
+    public function __set($name, $value) {
+        if ('primaryKey' === $name) {
+            static::_setPrimaryKeyName($value);
+        } else if ('virgin' === $name) {
+            static::_setLoaded(!(bool) $value);
+        }
+    }
+
+    /**
+     * Get the primary key name in database
+     * @return string
+     *         Name of primary key
+     */
+    public function getPrimaryKeyName() {
+        return (string) $this->_primaryKeyName;
+    }
+
+    /**
+     * Set the primary key name for class
+     * The name must always match the primary key name in database
+     */
+    protected function _setPrimaryKeyName($keyName) {
+        $this->_primaryKeyName = (string) $keyName;
     }
 
     /**

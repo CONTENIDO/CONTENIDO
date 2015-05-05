@@ -52,9 +52,9 @@
         this.SELECTOR_FILELIST_EXTENSIONS = this.frameId + ' #filelist_extensions_' + this.id;
         this.SELECTOR_FILELIST_IGNORE_EXTENSIONS = this.frameId + ' #filelist_ignore_extensions_' + this.id;
         this.SELECTOR_SAVE_SETTINGS = this.frameId + ' .save_settings';
-        this.SELECTOR_DIRLIST = this.frameId + ' #directories #directoryList_' + this.id + ' li li div em a';
-        this.SELECTOR_DIRLIST_LINK = this.frameId + ' #directories #directoryList_' + this.id + ' li li div a';
-        this.SELECTOR_DIRLIST_ACTIVE = this.frameId + ' #directories #directoryList_' + this.id + ' div[class="active"]';
+        this.SELECTOR_DIRLIST = this.frameId + ' .directories #directoryList_' + this.id + ' li li div em a';
+        this.SELECTOR_DIRLIST_LINK = this.frameId + ' .directories #directoryList_' + this.id + ' li li div a';
+        this.SELECTOR_DIRLIST_ACTIVE = this.frameId + ' .directories #directoryList_' + this.id + ' div[class="active"]';
         this.SELECTOR_DIRLIST_MANUAL = this.frameId + ' #manual #directoryList_' + this.id + '_manual li li div';
     }
 
@@ -240,7 +240,11 @@
                     type: 'POST',
                     url: self.pathBackend + 'ajaxmain.php',
                     data: 'ajax=dirlist&dir=' + dirname + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
-                    success: function(msg) {
+                    success: function(msg) {					
+						if (Con.checkAjaxResponse(msg) === false)  {
+							return false;
+						}
+
                         if (msg.length > 0) {
                             $context.after(msg);
                         }
@@ -267,6 +271,10 @@
                 url: self.pathBackend + 'ajaxmain.php',
                 data: 'ajax=filelist&dir=' + dirname + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
                 success: function(msg) {
+					if (Con.checkAjaxResponse(msg) === false)  {
+						return false;
+					}
+
                     $(self.frameId + ' #manual #filelist_filename_' + self.id).replaceWith(msg);
                 }
             });
@@ -323,8 +331,5 @@
 
 
     Con.cContentTypeFilelist = cContentTypeFilelist;
-
-    // @deprecated [2013-11-10] Assign to windows scope (downwards compatibility)
-    window.cContentTypeFilelist = cContentTypeFilelist;
 
 })(Con, Con.$);

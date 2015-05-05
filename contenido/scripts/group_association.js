@@ -187,20 +187,6 @@
         document.onkeydown = _setKeyCode;
 
         // #####################################################################
-        // @deprecated [2013-12-02] Assign to windows scope (downwards compatibility)
-        window.keycode = keycode;
-        window.addAction = addAction;
-        window.deleteAction = deleteAction;
-        window.init = function(add, del) {
-            window.addAction = add;
-            window.deleteAction = del;
-        };
-        window.setAction = _setAction;
-        window.filter = _filter;
-        window.keyHandler = _keyHandler;
-        window.setKeyCode = _setKeyCode;
-
-        // #####################################################################
         // Public interface
 
         return {

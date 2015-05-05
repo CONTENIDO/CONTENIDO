@@ -111,7 +111,8 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
  */
 function renderLabel($text, $name, $width = 280, $seperator = ':') {
     $label = new cHTMLLabel($text . $seperator, $name);
-    $label->setStyle('padding:3px;display:block;float:left;width:' . $width . 'px;');
+    $label->setClass("sys_config_txt_lbl");
+    $label->setStyle('width:' . $width . 'px;');
 
     return $label->render();
 }
@@ -123,9 +124,10 @@ function renderLabel($text, $name, $width = 280, $seperator = ':') {
  * @param string $name the name of the form element
  * @param string $value the value of the text field
  * @param string $label the label text
+ * @param bool $password if the input is a password
  * @return array associative array with the label and the input field
  */
-function renderTextProperty($name, $value, $label) {
+function renderTextProperty($name, $value, $label, $password = false) {
     global $auth;
 
     $textbox = new cHTMLTextbox($name, conHtmlSpecialChars($value), '50', '96');
@@ -134,6 +136,10 @@ function renderTextProperty($name, $value, $label) {
     if (strpos($auth->auth['perm'], 'sysadmin') === false) {
         $textbox->updateAttribute('disabled', 'true');
     }
+    if ($password === true) {
+        $textbox->updateAttribute('type', 'password');
+    }
+
     $return = array();
     $return['input'] = $textbox->render();
     $return['label'] = renderLabel($label, $name);
@@ -194,7 +200,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have
             }
         }
         if ($stored) {
-            $page->displayInfo(i18n('Changes saved'));
+            $page->displayOk(i18n('Changes saved'));
         }
     }
 }
@@ -234,8 +240,12 @@ foreach ($propertyTypes as $type => $properties) {
         $fieldName = $type . '{_}' . $name;
         if (is_array($infos['values'])) {
             $htmlElement = renderSelectProperty($fieldName, $infos['values'], $value, i18n($infos['label']));
-        } else {        
-            $htmlElement = renderTextProperty($fieldName, $value, i18n($infos['label']));
+        } else {
+            if (strlen($name) > 5 && substr($name, -5) === '_pass') {
+                $htmlElement = renderTextProperty($fieldName, $value, i18n($infos['label']), true);
+            } else {
+                $htmlElement = renderTextProperty($fieldName, $value, i18n($infos['label']));
+            }
         }
 
         $groups[$infos['group']] .= new cHTMLDiv($htmlElement['label'] . $htmlElement['input'], 'systemSetting');

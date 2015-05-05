@@ -25,13 +25,16 @@ class cVersionModule extends cVersion {
 
     /**
      * Type of modul
+     *
+     * @var unknown_type
      */
     public $sModType;
 
     /**
      * The class versionStyle object constructor, initializes class variables
      *
-     * @param string $iIdMod The name of style file
+     * @param string $iIdMod
+     *         The name of style file
      * @param array $aCfg
      * @param array $aCfgClient
      * @param cDB $oDB
@@ -45,19 +48,19 @@ class cVersionModule extends cVersion {
 
         // folder layout
         $this->sType = 'module';
-
         $this->iIdentity = $iIdMod;
 
         $this->prune();
-
         $this->initRevisions();
-
         $this->_storeModuleInformation();
     }
 
+    /**
+     *
+     */
     protected function _storeModuleInformation() {
-        $iIdMod = cSecurity::toInteger($this->iIdentity);
 
+        $iIdMod = cSecurity::toInteger($this->iIdentity);
         $oModule = new cApiModule($iIdMod);
 
         // create body node of XML file
@@ -80,9 +83,10 @@ class cVersionModule extends cVersion {
     /**
      * This function read an xml file nodes
      *
-     * @param string $sPath Path to file
-     *
-     * @return array returns array width this four nodes
+     * @param string $sPath
+     *         Path to file
+     * @return array
+     *         returns array width this four nodes
      */
     public function initXmlReader($sPath) {
         $aResult = array();
@@ -110,13 +114,14 @@ class cVersionModule extends cVersion {
      * This is neccessary, if filenames where changed, when a history entry is
      * restored
      *
-     * @param int $iIdClient id of client which contains this file
-     * @param string $sArea name of CONTENIDO area in which this procedure
-     *        should be done
-     * @param int $iIdLayout Id of layout to highlight
-     * @param object $sess CONTENIDO session object
-     *
-     * @return string - Javascript for refrehing frames
+     * @param string $sArea
+     *         name of CONTENIDO area in which this procedure should be done
+     * @param int $iIdLayout
+     *         Id of layout to highlight
+     * @param object $sess
+     *         CONTENIDO session object
+     * @return string
+     *         Javascript for refrehing frames
      */
     public function renderReloadScript($sArea, $iIdModule, $sess) {
         $urlLeftBottom = $sess->url("main.php?area=$sArea&frame=2&idmod=$iIdModule");

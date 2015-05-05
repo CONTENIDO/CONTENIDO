@@ -462,7 +462,7 @@ class PifaField extends Item {
         // get field data
         $idfield = cSecurity::toInteger($this->get('idfield'));
         $fieldType = cSecurity::toInteger($this->get('field_type'));
-        $label = $this->get('label');
+        $label = strip_tags($this->get('label'));
 
         if (NULL === $label) {
             return NULL;
@@ -522,7 +522,7 @@ class PifaField extends Item {
 
         $columnName = $this->get('column_name');
 
-        $label = $this->get('label');
+        $label = strip_tags($this->get('label'));
 
         $uri = $this->get('uri');
 
@@ -566,12 +566,12 @@ class PifaField extends Item {
         // if no current value is given
         if (NULL === $value) {
             // the fields default value is used
-            $value = $this->get('default_value');
+            $value = conHtmlEntities($this->get('default_value'));
             // which could be overwritten by a GET param
             if (array_key_exists($columnName, $_GET)) {
                 $value = $_GET[$columnName];
                 // try to prevent XSS ... the lazy way ...
-                $value = htmlentities($value, ENT_COMPAT | ENT_HTML401, 'UTF-8');
+                $value = conHtmlEntities($value, ENT_COMPAT | ENT_HTML401, 'UTF-8');
             }
         }
 
@@ -812,10 +812,12 @@ class PifaField extends Item {
                 $sel = '#pifa-field-elm-' . $idfield;
                 // dateFormat: 'yy-mm-dd', // could be different
                 // altFormat as ISO_8601
-                $script = "jQuery(function(){ jQuery('$sel').datepicker({
-                    altFormat: 'yy-mm-dd',
-                    altField: '$sel-hidden'
-                });});";
+                $script = "if (typeof jQuery == \"function\") {
+                	jQuery(function(){ jQuery('$sel').datepicker({
+                    	altFormat: 'yy-mm-dd',
+                    	altField: '$sel-hidden'
+                	});});
+                }";
                 break;
             // case self::CAPTCHA:
             // $sel = '#pifa-field-' . $idfield . ' label';

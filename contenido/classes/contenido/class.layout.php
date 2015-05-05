@@ -42,7 +42,8 @@ class cApiLayoutCollection extends ItemCollection {
      * @param int $idclient
      * @param string $alias
      * @param string $description
-     * @param int $deletable Either 1 or 0
+     * @param int $deletable
+     *         Either 1 or 0
      * @param string $author
      * @param string $created
      * @param string $lastmodified
@@ -103,7 +104,8 @@ class cApiLayout extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -117,9 +119,11 @@ class cApiLayout extends Item {
     /**
      * Checks if the layout is in use in any templates.
      *
-     * @param bool $setData Flag to set used templates data structure
+     * @throws cException
+     *         If layout item has not been loaded before
+     * @param bool $setData
+     *         Flag to set used templates data structure
      * @return bool
-     * @throws cException If layout item has not been loaded before
      */
     public function isInUse($setData = false) {
         if (!$this->isLoaded()) {
@@ -148,7 +152,8 @@ class cApiLayout extends Item {
     /**
      * Get the informations of used templates
      *
-     * @return array template data
+     * @return array
+     *         template data
      */
     public function getUsedTemplates() {
         return $this->_aUsedTemplates;
@@ -159,7 +164,9 @@ class cApiLayout extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @param bool $bSafe
+     *         Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {

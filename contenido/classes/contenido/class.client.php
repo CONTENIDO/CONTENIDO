@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the client collection and item class.
  *
@@ -72,7 +73,8 @@ class cApiClientCollection extends ItemCollection {
     /**
      * Returns all clients available in the system
      *
-     * @return array Array with id and name entries
+     * @return array
+     *         Array with id and name entries
      */
     public function getAvailableClients() {
         $clients = array();
@@ -91,7 +93,8 @@ class cApiClientCollection extends ItemCollection {
     /**
      * Returns all clients available in the system
      *
-     * @return array Array with id and name entries
+     * @return array
+     *         Array with id and name entries
      */
     public function getAccessibleClients() {
         global $perm;
@@ -110,7 +113,7 @@ class cApiClientCollection extends ItemCollection {
     /**
      * Returns first client available in the system
      *
-     * @return cApiClient NULL
+     * @return cApiClient|NULL
      */
     public function getFirstAccessibleClient() {
         global $perm;
@@ -127,7 +130,8 @@ class cApiClientCollection extends ItemCollection {
      * Returns the clientname of the given clientid
      *
      * @param int $idClient
-     * @return string Clientname if found, or empty string if not.
+     * @return string
+     *         Clientname if found, or empty string if not.
      */
     public function getClientname($idClient) {
         $this->select("idclient='" . (int) $idClient . "'");
@@ -142,7 +146,8 @@ class cApiClientCollection extends ItemCollection {
      * Returns if the given client has a language
      *
      * @param int $idClient
-     * @return bool true if the client has a language
+     * @return bool
+     *         true if the client has a language
      */
     public function hasLanguageAssigned($idClient) {
         $client = new cApiClient($idClient);
@@ -161,10 +166,12 @@ class cApiClientCollection extends ItemCollection {
 class cApiClient extends Item {
 
     /**
+     * Setting of client ID (deprecated)
      *
+     * @deprecated [2014-12-03] Class variable idclient is deprecated
      * @var int
      */
-    public $idclient;
+     private $idclient;
 
     /**
      * Property collection instance
@@ -174,9 +181,10 @@ class cApiClient extends Item {
     protected $_oPropertyCollection;
 
     /**
-     * Constructor Function
+     * Constructor function.
      *
-     * @param mixed $id Specifies the ID of item to load
+     * @param mixed $id
+     *         Specifies the ID of item to load
      */
     public function __construct($id = false) {
         global $cfg;
@@ -187,11 +195,43 @@ class cApiClient extends Item {
     }
 
     /**
+     * Magic getter method for deprecated idclient variable.
+     *
+     * @param string $name
+     *         only works for "idclient"
+     * @return mixed
+     */
+    public function __get($name) {
+        if ($name === 'idclient') {
+            return $this->get('idclient');
+        } else {
+            return parent::__get($name);
+        }
+    }
+
+    /**
+     * Magic setter method for deprecated idclient variable
+     *
+     * @param string $name
+     *         only works for "idclient"
+     * @param mixed $value
+     *         Value to set
+     */
+    public function __set($name, $value) {
+        if ($name === 'idclient') {
+            $this->set('idclient', cSecurity::toInteger($value));
+        } else {
+            parent::__set($name, $value);
+        }
+    }
+
+    /**
      * Static accessor to the singleton instance.
      *
      * @todo There is no need since caching is available at GenericDB level
      * @param int $client
-     * @return cApiClient Reference to the singleton instance.
+     * @return cApiClient
+     *         Reference to the singleton instance.
      */
     public static function getInstance($client = false) {
         static $currentInstance = array();
@@ -216,7 +256,7 @@ class cApiClient extends Item {
      */
     public function loadByPrimaryKey($idKey) {
         if (parent::loadByPrimaryKey($idKey) == true) {
-            $this->idclient = $idKey;
+            $this->set('idclient', $idKey);
             return true;
         }
         return false;
@@ -225,38 +265,46 @@ class cApiClient extends Item {
     /**
      * Set client property
      *
-     * @param mixed $type Type of the data to store (arbitary data)
-     * @param mixed $name Entry name
-     * @param mixed $value Value
-     * @param mixed $idproperty
      * @todo should return return value as overwritten method
+     * @param mixed $type
+     *         Type of the data to store (arbitary data)
+     * @param mixed $name
+     *         Entry name
+     * @param mixed $value
+     *         Value
+     * @param mixed $idproperty
      */
     public function setProperty($type, $name, $value, $idproperty = 0) {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
-        $oPropertyColl->setValue('clientsetting', $this->idclient, $type, $name, $value, $idproperty);
+        $oPropertyColl->setValue('clientsetting', $this->get('idclient'), $type, $name, $value, $idproperty);
     }
 
     /**
      * Get client property
      *
-     * @param mixed $type Type of the data to get
-     * @param mixed $name Entry name
-     * @param int $client Client id (not used, it's declared because of PHP
-     *            strict warnings)
-     * @return mixed Value
+     * @param mixed $type
+     *         Type of the data to get
+     * @param mixed $name
+     *         Entry name
+     * @param int $client
+     *         Client id (not used, it's declared because of PHP strict warnings)
+     * @return mixed
+     *         Value
      */
     public function getProperty($type, $name, $client = 0) {
         $propertyColl = $this->_getPropertiesCollectionInstance();
-        return $propertyColl->getValue('clientsetting', $this->idclient, $type, $name);
+        return $propertyColl->getValue('clientsetting', $this->get('idclient'), $type, $name);
     }
 
     /**
      * Delete client property
      *
-     * @param int $idProp Id of property
-     * @param string $p2 Not used, is here to prevent PHP Strict warnings
-     * @param int $client Client id (not used, it's declared because of PHP
-     *            strict warnings)
+     * @param int $idProp
+     *         Id of property
+     * @param string $p2
+     *         Not used, is here to prevent PHP Strict warnings
+     * @param int $client
+     *         Client id (not used, it's declared because of PHP strict warnings)
      */
     public function deleteProperty($idProp, $p2 = "", $client = 0) {
         $propertyColl = $this->_getPropertiesCollectionInstance();
@@ -266,24 +314,28 @@ class cApiClient extends Item {
     /**
      * Get client properties by type
      *
-     * @param mixed $type Type of the data to get
-     * @return array Assoziative array
+     * @param mixed $type
+     *         Type of the data to get
+     * @return array
+     *         Assoziative array
      */
     public function getPropertiesByType($type) {
         $propertyColl = $this->_getPropertiesCollectionInstance();
-        return $propertyColl->getValuesByType('clientsetting', $this->idclient, $type);
+        return $propertyColl->getValuesByType('clientsetting', $this->get('idclient'), $type);
     }
 
     /**
      * Get all client properties
      *
-     * @return array false array
-     * @todo return value should be the same as getPropertiesByType(), e.g. an
-     *       empty array instead of false
+     * @todo return value should be the same as getPropertiesByType(),
+     *         e.g. an empty array instead of false
+     * @return array|false
+     *         array
      */
     public function getProperties() {
         $propertyColl = $this->_getPropertiesCollectionInstance();
-        $propertyColl->select("itemid='" . $this->idclient . "' AND itemtype='clientsetting'", "", "type, name, value ASC");
+        $whereString = "itemid='" . $this->get('idclient') . "' AND itemtype='clientsetting'";
+        $propertyColl->select($whereString, "", "type, name, value ASC");
 
         if ($propertyColl->count() > 0) {
             $array = array();
@@ -320,10 +372,11 @@ class cApiClient extends Item {
     /**
      * Userdefined setter for client fields.
      *
+     * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
-     * @todo should return return value of overloaded method
+     * @param bool $bSafe
+     *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
@@ -339,17 +392,17 @@ class cApiClient extends Item {
     /**
      * Lazy instantiation and return of properties object
      *
-     * @param int $client Client id (not used, it's declared because of PHP
-     *            strict warnings)
-     *
+     * @param int $client
+     *         Client id (not used, it's declared because of PHP strict warnings)
      * @return cApiPropertyCollection
      */
     protected function _getPropertiesCollectionInstance($client = 0) {
         // Runtime on-demand allocation of the properties object
         if (!is_object($this->_oPropertyCollection)) {
             $this->_oPropertyCollection = new cApiPropertyCollection();
-            $this->_oPropertyCollection->changeClient($this->idclient);
+            $this->_oPropertyCollection->changeClient($this->get('idclient'));
         }
         return $this->_oPropertyCollection;
     }
+
 }

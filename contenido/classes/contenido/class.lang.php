@@ -105,8 +105,10 @@ class cApiLanguageCollection extends ItemCollection {
     /**
      * Returns the language name of the language with the given ID.
      *
-     * @param int $idlang the ID of the language
-     * @return string the name of the language
+     * @param int $idlang
+     *         the ID of the language
+     * @return string
+     *         the name of the language
      */
     public function getLanguageName($idlang) {
         $item = new cApiLanguage($idlang);
@@ -126,11 +128,23 @@ class cApiLanguageCollection extends ItemCollection {
  * @subpackage GenericDB_Model
  */
 class cApiLanguage extends Item {
+    /**
+     *
+     * @var array
+     */
+    protected static $_propertiesCache = array();
+
+    /**
+     *
+     * @var array
+     */
+    protected static $_propertiesCacheLoaded = array();
 
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -150,12 +164,14 @@ class cApiLanguage extends Item {
         return parent::store();
     }
 
-	/**
+    /**
      * Userdefined setter for lang fields.
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @param bool $bSafe
+     *         Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
@@ -166,5 +182,75 @@ class cApiLanguage extends Item {
 
         return parent::setField($name, $value, $bSafe);
     }
-	
+
+    /**
+     * Loads all languagesettings into an static array.
+     *
+     * @param int $idclient
+     *         Id of client to load properties from
+     */
+    protected function _loadProperties($idclient = 0) {
+
+        if (!isset(self::$_propertiesCacheLoaded[$idclient])) {
+
+            self::$_propertiesCache[$idclient] = array();
+
+            $itemtype = $this->db->escape($this->getPrimaryKeyName());
+            $itemid = $this->db->escape($this->get($this->getPrimaryKeyName()));
+
+            $propColl = $this->_getPropertiesCollectionInstance($idclient);
+            $propColl->select("itemtype='$itemtype' AND itemid='$itemid'", '', 'type, value ASC');
+
+            if (0 < $propColl->count()) {
+
+                while (false !== $item = $propColl->next()) {
+
+                    $type = $item->get('type');
+                    if (!isset(self::$_propertiesCache[$idclient][$type])) {
+                        self::$_propertiesCache[$idclient][$type] = array();
+                    }
+
+                    $name = $item->get('name');
+                    $value = $item->get('value');
+                    self::$_propertiesCache[$idclient][$type][$name] = $value;
+                }
+            }
+        }
+
+        self::$_propertiesCacheLoaded[$idclient] = true;
+    }
+
+    /**
+     * Returns a custom property.
+     *
+     * @param string $type
+     *         Specifies the type
+     * @param string $name
+     *         Specifies the name
+     * @param int $idclient
+     *         Id of client to set property for
+     * @return mixed
+     *         Value of the given property or false if item hasn't been loaded
+     */
+    public function getProperty($type, $name, $idclient = 0) {
+
+        // skip & return false if item hasn't been loaded
+        if (true !== $this->isLoaded()) {
+            $this->lasterror = 'No item loaded';
+            return false;
+        }
+
+        $this->_loadProperties($idclient);
+
+        if (isset(
+            self::$_propertiesCache[$idclient],
+            self::$_propertiesCache[$idclient][$type],
+            self::$_propertiesCache[$idclient][$type][$name]
+        )) {
+            return self::$_propertiesCache[$idclient][$type][$name];
+        } else {
+            return false;
+        }
+    }
+
 }

@@ -55,7 +55,8 @@ class cPermission {
      * Returns all groups of a user
      *
      * @param string $userId
-     * @return array List of group ids
+     * @return array
+     *         List of group ids
      */
     public function getGroupsForUser($userId) {
         $groups = array();
@@ -123,7 +124,8 @@ class cPermission {
      *
      * @param bool $force Flag to force loading, event if they were ccached
      *        before
-     * @return string Returns diffrent values, depending on state:
+     * @return string
+     *         Returns diffrent values, depending on state:
      *         '1' (string) if permissions couldn't loaded
      *         '3' (string) if permissions were successfull loaded
      */
@@ -211,7 +213,7 @@ class cPermission {
      *
      * @param string $area
      * @param string $action
-     * @return boolean
+     * @return bool
      */
     public function have_perm_area_action_anyitem($area, $action = 0) {
         global $item_rights;
@@ -231,7 +233,7 @@ class cPermission {
      * @param string $area
      * @param string $action
      * @param mixed $itemid
-     * @return boolean
+     * @return bool
      */
     public function have_perm_area_action_item($area, $action, $itemid) {
         global $item_rights, $auth, $client, $lang, $cfg;
@@ -285,9 +287,12 @@ class cPermission {
     }
 
     /**
+     * Returns the parent id of passed area
      *
-     * @param string $area
-     * @return Ambigous <string, int|string, mixed, unknown>
+     * @param int|string $area
+     *         Area id or name
+     * @return string|int
+     *         name of parent area or passed area
      */
     public function getParentAreaId($area) {
         $oAreaColl = new cApiAreaCollection();
@@ -298,7 +303,7 @@ class cPermission {
      *
      * @param string $area
      * @param string $action
-     * @return boolean
+     * @return bool
      */
     public function have_perm_area_action($area, $action = 0) {
         global $area_rights, $client, $lang, $cfg;
@@ -335,7 +340,7 @@ class cPermission {
      *
      * @param int $client
      * @param int $lang
-     * @return boolean
+     * @return bool
      */
     public function have_perm_client_lang($client, $lang) {
         global $auth;
@@ -461,7 +466,7 @@ class cPermission {
      * Checks if the given user has sysadmin permission
      *
      * @param object $oUser User object to check against
-     * @return boolean
+     * @return bool
      */
     public function isSysadmin($oUser) {
         $oUser = $this->_checkUserObject($oUser);
@@ -508,7 +513,7 @@ class cPermission {
     /**
      *
      * @param string $p
-     * @return boolean
+     * @return bool
      */
     public function have_perm_client($p = 'x') {
         global $auth, $client;
@@ -646,7 +651,7 @@ class cPermission {
     /**
      *
      * @param string|int $mainarea
-     * @return Ambigous <number, string|int, multitype:, mixed, boolean>
+     * @return int
      */
     public function showareas($mainarea) {
         global $area_tree, $sess, $perm, $cfg;

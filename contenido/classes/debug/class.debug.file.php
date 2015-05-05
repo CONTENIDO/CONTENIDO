@@ -75,9 +75,10 @@ class cDebugFile implements cDebugInterface {
     }
 
     /**
-     * (non-PHPdoc)
+     * Writes a line.
      *
      * @see cDebugInterface::out()
+     * @param string $msg
      */
     public function out($msg) {
         if (cFileHandler::writeable($this->_sPathToFile)) {

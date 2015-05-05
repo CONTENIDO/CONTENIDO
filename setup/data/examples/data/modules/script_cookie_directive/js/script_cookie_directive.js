@@ -9,8 +9,12 @@ $(function() {
         modal : true,
         closeOnEscape : false,
         open: function(event, ui) {
+            
+            var u = $(this).closest('.ui-dialog')
+            u.addClass('cookie_note_dialog');
+
             // hide close icon in upper right corner
-            $(this).closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide();
+            u.find('.ui-dialog-titlebar-close').hide();
         },
 //        close: function(event, ui) {
 //            // fade dialog out

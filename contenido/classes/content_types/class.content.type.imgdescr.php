@@ -35,11 +35,10 @@ class cContentTypeImgdescr extends cContentTypeImgeditor {
      *        types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-        // there are no raw settings here, because the image description is now
-        // saved in con_upl_meta
-        // so compute the appropriate raw settings and call the parent
-        // constructor with them
 
+        // There are no raw settings here, because CMS_IMGEDITOR is now
+        // saved in con_upl_meta. So compute the appropriate raw settings
+        // and call the parent constructor with them.
         if (!cXmlBase::isValidXML($rawSettings)) {
             $rawSettings = $this->_getRawSettings("CMS_IMGEDITOR", $id, $contentTypes);
         }
@@ -51,8 +50,8 @@ class cContentTypeImgdescr extends cContentTypeImgeditor {
      * Generates the code which should be shown if this content type is shown in
      * the frontend.
      *
-     * @return string escaped HTML code which sould be shown if content type is
-     *         shown in frontend
+     * @return string
+     *         escaped HTML code which sould be shown if content type is shown in frontend
      */
     public function generateViewCode() {
         return $this->_encodeForOutput($this->_description);
@@ -61,8 +60,8 @@ class cContentTypeImgdescr extends cContentTypeImgeditor {
     /**
      * Generates the code which should be shown if this content type is edited.
      *
-     * @return string escaped HTML code which should be shown if content type is
-     *         edited
+     * @return string
+     *         escaped HTML code which should be shown if content type is edited
      */
     public function generateEditCode() {
         return $this->generateViewCode();

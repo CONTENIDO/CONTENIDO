@@ -24,19 +24,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cGenericDbDriver {
 
     /**
-     *
      * @var string
      */
     protected $_sEncoding;
 
     /**
-     *
      * @var Item
      */
     protected $_oItemClassInstance;
 
     /**
-     *
      * @param string $sEncoding
      */
     public function setEncoding($sEncoding) {
@@ -44,7 +41,6 @@ class cGenericDbDriver {
     }
 
     /**
-     *
      * @param Item $oInstance
      */
     public function setItemClassInstance($oInstance) {
@@ -52,21 +48,21 @@ class cGenericDbDriver {
     }
 
     /**
-     *
      * @param string $destinationTable
      * @param string $destinationClass
      * @param string $destinationPrimaryKey
      * @param string $sourceClass
      * @param string $primaryKey
+     * @return array
      */
     public function buildJoinQuery($destinationTable, $destinationClass, $destinationPrimaryKey, $sourceClass, $primaryKey) {
     }
 
     /**
-     *
      * @param string $sField
      * @param string $sOperator
      * @param string $sRestriction
+     * @return string
      */
     public function buildOperator($sField, $sOperator, $sRestriction) {
     }

@@ -114,10 +114,12 @@ class cApiModuleCollection extends ItemCollection {
     }
 
     /**
-     * Returns list of all modules used by client id
+     * Returns a list of all modules used by the given client.
+     * By default the modules are ordered by name but can be ordered by any
+     * property.
      *
      * @param int $idclient
-     *
+     * @param string $oderBy
      * @return array
      */
     public function getAllByIdclient($idclient, $oderBy = 'name') {
@@ -139,7 +141,8 @@ class cApiModuleCollection extends ItemCollection {
     /**
      * Checks if any modules are in use and returns the data
      *
-     * @return array Returns all templates for all modules
+     * @return array
+     *         Returns all templates for all modules
      */
     public function getModulesInUse() {
         global $cfg;
@@ -220,7 +223,8 @@ class cApiModule extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg, $cfgClient, $client;
@@ -248,7 +252,8 @@ class cApiModule extends Item {
     /**
      * Returns the translated name of the module if a translation exists.
      *
-     * @return string Translated module name or original
+     * @return string
+     *         Translated module name or original
      */
     public function getTranslatedName() {
         global $lang;
@@ -270,7 +275,8 @@ class cApiModule extends Item {
     /**
      * Sets the translated name of the module
      *
-     * @param string $name Translated name of the module
+     * @param string $name
+     *         Translated name of the module
      */
     public function setTranslatedName($name) {
         global $lang;
@@ -284,7 +290,7 @@ class cApiModule extends Item {
      * @param array $cfg
      * @param int $client
      * @param int $lang
-     * @return bool multitype:
+     * @return bool|array
      */
     function parseModuleForStringsLoadFromFile($cfg, $client, $lang) {
         global $client;
@@ -367,7 +373,8 @@ class cApiModule extends Item {
     /**
      * Parses the module for mi18n strings and returns them in an array
      *
-     * @return array Found strings for this module
+     * @return array
+     *         Found strings for this module
      */
     public function parseModuleForStrings() {
         if (!$this->isLoaded()) {
@@ -453,7 +460,8 @@ class cApiModule extends Item {
      *
      * @param int $module
      * @param bool $bSetData
-     * @return bool true if the module is in use
+     * @return bool
+     *         true if the module is in use
      */
     public function moduleInUse($module, $bSetData = false) {
         global $cfg;
@@ -492,7 +500,8 @@ class cApiModule extends Item {
     /**
      * Get the informations of used templates
      *
-     * @return array template data
+     * @return array
+     *         template data
      */
     public function getUsedTemplates() {
         return $this->aUsedTemplates;
@@ -501,7 +510,8 @@ class cApiModule extends Item {
     /**
      * Checks if the module is a pre-4.3 module
      *
-     * @return bool true if this module is an old one
+     * @return bool
+     *         true if this module is an old one
      */
     public function isOldModule() {
         // Keywords to scan
@@ -525,8 +535,15 @@ class cApiModule extends Item {
     }
 
     /**
+     * Gets the value of a specific field.
      *
      * @see Item::getField()
+     * @param string $sField
+     *         Specifies the field to retrieve
+     * @param bool $bSafe
+     *         Flag to run defined outFilter on passed value
+     * @return mixed
+     *         Value of the field
      */
     public function getField($field, $bSafe = true) {
         $value = parent::getField($field, $bSafe);
@@ -542,9 +559,14 @@ class cApiModule extends Item {
     }
 
     /**
+     * Stores the loaded and modified item to the database.
+     * Also generates the code for all articles using this module
+     * (if not suppressed by giving a true value for $bJustStore).
      *
-     * @param bool $bJustStore
      * @see Item::store()
+     * @param bool $bJustStore
+     *     don't generate code for all articles using this module (default false)
+     * @return bool
      */
     public function store($bJustStore = false) {
         if ($bJustStore) {
@@ -564,9 +586,10 @@ class cApiModule extends Item {
     /**
      * Parse import xml file and returns its values.
      *
-     * @param string $sFile Filename including path of import xml file
-     *
-     * @return array Array with module data from XML file
+     * @param string $sFile
+     *         Filename including path of import xml file
+     * @return array
+     *         Array with module data from XML file
      */
     private function _parseImportFile($sFile) {
         $oXmlReader = new cXmlReader();
@@ -595,7 +618,8 @@ class cApiModule extends Item {
     /**
      * Save the modul properties (description,type...)
      *
-     * @param string $sFile Where is the modul info.xml file
+     * @param string $sFile
+     *         Where is the modul info.xml file
      * @return array
      */
     private function _getModuleProperties($sFile) {
@@ -615,12 +639,14 @@ class cApiModule extends Item {
     }
 
     /**
-     * Imports the a module from a XML file, uses xmlparser and callbacks
+     * Imports the a module from a zip file, uses xmlparser and callbacks
      *
-     * @param string $sFile Filename of data file (full path)
-     * @param string $tempName of archive
-     * @param bool $show_notification standard: true, mode to turn
-     *        notifications off
+     * @param string $sFile
+     *         Filename of data file (full path)
+     * @param string $tempName
+     *         of archive
+     * @param bool $show_notification
+     *         standard: true, mode to turn notifications off
      * @return bool
      */
     function import($sFile, $tempName, $show_notification = true) {
@@ -635,10 +661,10 @@ class cApiModule extends Item {
         $sModulePath = $cfgClient[$client]['module']['path'] . $modulName;
         $sTempPath = $cfg['path']['contenido_temp'] . 'module_import_' . $modulName;
 
-        // exist the modul in directory
+        // does module already exist in directory
         if (is_dir($sModulePath)) {
             if ($show_notification == true) {
-                $notification->displayNotification('error', i18n('Module exist!'));
+                $notification->displayNotification('error', i18n('Module already exists!'));
             }
 
             return false;
@@ -693,7 +719,8 @@ class cApiModule extends Item {
     /**
      * Imports the a module from a XML file, uses xmlparser and callbacks
      *
-     * @param string $sFile Filename of data file (full path)
+     * @param string $sFile
+     *         Filename of data file (full path)
      * @return bool
      */
     function importModuleFromXML($sFile) {
@@ -731,7 +758,7 @@ class cApiModule extends Item {
                 $this->store();
                 $contenidoModuleHandler = new cModuleHandler($this->get('idmod'));
                 if (!$contenidoModuleHandler->createModule($inputOutput['input'], $inputOutput['output'])) {
-                    $notification->displayNotification('error', i18n('Could not make a module!'));
+                    $notification->displayNotification('error', i18n('Could not create a module!'));
                     return false;
                 } else {
                     // save the modul data to modul info file
@@ -750,24 +777,24 @@ class cApiModule extends Item {
     /**
      * Add recursive folder to zip archive
      *
-     * @param string $dir directory name
-     * @param string $zipArchive name of the archive
+     * @param string $dir
+     *         directory name
+     * @param string $zipArchive
+     *         name of the archive
      * @param string $zipdir
      */
     private function _addFolderToZip($dir, $zipArchive, $zipdir = '') {
         if (is_dir($dir)) {
-            if ($dh = opendir($dir)) {
-                // Add the directory
+            if (false !== $handle = cDirHandler::read($dir)) {
                 if (!empty($zipdir)) {
                     $zipArchive->addEmptyDir($zipdir);
                 }
 
-                // Loop through all the files
-                while (($file = readdir($dh)) !== false) {
+                foreach ($handle as $file) {
                     // If it's a folder, run the function again!
                     if (!is_file($dir . $file)) {
                         // Skip parent and root directories
-                        if (($file !== '.') && ($file !== '..')) {
+                        if (false === cFileHandler::fileNameIsDot($file)) {
                             $this->_addFolderToZip($dir . $file . '/', $zipArchive, $zipdir . $file . '/');
                         }
                     } else {
@@ -818,10 +845,11 @@ class cApiModule extends Item {
     /**
      * Userdefined setter for module fields.
      *
+     * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
-     * @todo should return return value of overloaded method
+     * @param bool $bSafe
+     *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
@@ -841,10 +869,12 @@ class cApiModule extends Item {
      * Processes container placeholder (e. g. CMS_VAR[123], CMS_VALUE[123]) in given module input code.
      * Tries to find the proper container tag and replaces its value against
      * container configuration.
-     * @param  int  $containerNr  The container number to process
-     * @param  string  $containerCfg  Container configuration string containing key/values pairs for all containers
-     * @param  string  $moduleInputCode
-     * @return  string
+     * @param int $containerNr
+     *         The container number to process
+     * @param string $containerCfg
+     *         Container configuration string containing key/values pairs for all containers
+     * @param string $moduleInputCode
+     * @return string
      */
     public static function processContainerInputCode($containerNr, $containerCfg, $moduleInputCode) {
         $containerConfigurations = array();
@@ -874,8 +904,18 @@ class cApiModule extends Item {
         return $CiCMS_Values . "\n" . $moduleInputCode;
     }
 
+    /**
+     * Not yet implemented ... does nothing!
+     *
+     * @todo implement me
+     * @param unknown_type $containerNr
+     * @param string $containerCfg
+     * @param unknown_type $moduleInputCode
+     */
     public static function processContainerForOutput($containerNr, $containerCfg, $moduleInputCode) {
-return; // @TODO implement me
+
+        return; //
+
         $containerConfigurations = array();
         if (!empty($containerCfg)) {
             $containerConfigurations = cApiContainerConfiguration::parseContainerValue($containerCfg);

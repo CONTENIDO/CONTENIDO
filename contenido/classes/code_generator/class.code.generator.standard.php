@@ -321,8 +321,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         if ($this->_pageTitle != '') {
             $replaceTag = '{__TITLE__' . md5(rand().time()) . '}';
             $headCode = preg_replace('/<title>.*?<\/title>/is', $replaceTag, $headTag, 1);
-
-            if (false !== strpos($this->_layoutCode, $replaceTag)) {
+            
+            if (false !== strpos($headCode, $replaceTag)) {
                 $headCode = str_ireplace($replaceTag, '<title>' . $this->_pageTitle . '</title>', $headCode);
             } else {
                 $headCode = cString::iReplaceOnce('</head>', '<title>' . $this->_pageTitle . "</title>\n</head>", $headCode);
@@ -344,6 +344,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * meta tags creation.
      *
      * @global array $encoding
+     * @return string
      */
     protected function _processCodeMetaTags() {
         global $encoding;
@@ -413,18 +414,18 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * Saves the generated code (if layout flag is false and save flag is true)
      *
      * @global array $cfgClient
-     * @param int $idcatart Category article id
-     * @param string $code parameter for setting code manually instead of using
-     *        the generated layout code
-     * @param bool $flagCreateCode whether the create code flag in cat_art
-     *        should be set or not (optional)
+     * @param int $idcatart
+     *         Category article id
+     * @param string $code
+     *         parameter for setting code manually instead of using the generated layout code
+     * @param bool $flagCreateCode
+     *         whether the create code flag in cat_art should be set or not (optional)
      */
     protected function _saveGeneratedCode($idcatart, $code = '', $flagCreateCode = true) {
         global $cfgClient;
 
         // Write code in the cache of the client. If the folder does not exist
         // create one.
-        
         // do not write code cache into root directory of client
         if (cRegistry::getFrontendPath() === $cfgClient[$this->_client]['code']['path']) {
             return;
@@ -444,17 +445,17 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                 mkdir($cfgClient[$this->_client]['code']['path']);
                 @chmod($cfgClient[$this->_client]['code']['path'], 0777);
             }
-        
+
             if (true !== cFileHandler::exists($cfgClient[$this->_client]['code']['path'] . '.htaccess')) {
                 cFileHandler::write($cfgClient[$this->_client]['code']['path'] . '.htaccess', "Order Deny,Allow\nDeny from all\n");
             }
-        
+
             if (true === is_dir($cfgClient[$this->_client]['code']['path'])) {
                 $fileCode = ($code == '')? $this->_layoutCode : $code;
-        
+
                 $code = "<?php\ndefined('CON_FRAMEWORK') or die('Illegal call');\n\n?>\n" . $fileCode;
                 cFileHandler::write($cfgClient[$this->_client]['code']['path'] . $this->_client . '.' . $this->_lang . '.' . $idcatart . '.php', $code, false);
-        
+
                 // Update create code flag
                 if ($flagCreateCode == true) {
                     $oCatArtColl = new cApiCategoryArticleCollection();
@@ -468,7 +469,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * Collects and return basic meta tags/elements.
      *
      * @global array $encoding
-     * @return array List of assozative meta tag values
+     * @return array
+     *         List of assozative meta tag values
      */
     protected function _getBasicMetaTags() {
 
@@ -532,9 +534,12 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * overwritten. If article should be indexed and followed, 'all' will be
      * set.
      *
-     * @param array $metaTags array of meta elements to amend
-     * @param bool|NULL $index if article should be indexed
-     * @param bool|NULL $follow if links in article should be followed
+     * @param array $metaTags
+     *         array of meta elements to amend
+     * @param bool|NULL $index
+     *         if article should be indexed
+     * @param bool|NULL $follow
+     *         if links in article should be followed
      * @return array
      */
     protected function _updateMetaRobots(array $metaTags, $index, $follow) {
@@ -604,7 +609,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * could not be found, NULL will be returned in its place.
      *
      * @param array $metaTags
-     * @param string $type either 'name' or 'http-equiv'
+     * @param string $type
+     *         either 'name' or 'http-equiv'
      * @param string $nameOrEquiv
      * @return array
      */

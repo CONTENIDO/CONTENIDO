@@ -1,4 +1,6 @@
 LABEL_RSS_CONFIGURATION=Header: RSS Article selection
+LABEL_RSS_CREATED=Created RSS successfully!
+LABEL_RSS_CREATION_FAILED=Could not create RSS!
 LABEL_RSS_DESCRIPTION=Header: RSS Description
 LABEL_RSS_H1=RSS Creator Configuration
 LABEL_RSS_LINK=RSS Link

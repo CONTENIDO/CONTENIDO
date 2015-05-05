@@ -157,7 +157,7 @@ class cContentVersioning {
      * @param int $selectedArticleId
      * @return cApiArticleLanguage/cApiArticleLanguageVersion $this->selectedArticle
      */	
-    public function getSelectedArticle($idArtLangVersion, $idArtLang, $articleType, $selectedArticleId) {
+    public function getSelectedArticle($idArtLangVersion, $idArtLang, $articleType, $selectedArticleId = NULL) {
 
         $this->editableArticleId = $this->getEditableArticleId($idArtLang);
         $versioningState = $this->getState();

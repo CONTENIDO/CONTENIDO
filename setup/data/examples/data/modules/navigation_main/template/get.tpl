@@ -12,7 +12,7 @@
             {assign var="aClass" value=''}
         {/if}
         <li>
-            <a class="{$aClass}" href="{$url}" title="{$name}">{$name}</a>
+            <a class="{$aClass|escape}" href="{$url|escape}" title="{$name|escape}">{$name|escape}</a>
         {if $idcat|in_array:$path}
             {include file="navigation_main/template/get.tpl"
                 tree=$wrapper.subcats path=$path ulId=""}

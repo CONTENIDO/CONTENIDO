@@ -77,7 +77,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
     $oNewsletter->set("dispatch_delay", $iValue);
     $oNewsletter->store();
     // show message
-    $oPage->displayInfo(i18n("Created newsletter successfully!", 'newsletter'));
+    $oPage->displayOk(i18n("Created newsletter successfully!", 'newsletter'));
 } elseif ($action == "news_duplicate" && $perm->have_perm_area_action($area, "news_create")) {
     // Copy newsletter
     $oNewsletter = $oNewsletters->duplicate($idnewsletter);
@@ -86,7 +86,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
     $oPage->setSubnav("idnewsletter=" . $oNewsletter->get("idnews"), "news");
     $oPage->setReload();
     // show message
-    $oPage->displayInfo(i18n("Dupplicate newsletter successfully!", 'newsletter'));
+    $oPage->displayOk(i18n("Dupplicate newsletter successfully!", 'newsletter'));
 } elseif ($action == "news_delete" && $perm->have_perm_area_action($area, "news_delete")) {
     // Delete newsletter
     // If it is an html newsletter, delete html message article, also
@@ -106,7 +106,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
                                      // this is checked in the _subnav file.
     $oPage->setSubnav("blank", "news");
     $oPage->setReload();
-    $oPage->displayInfo(i18n("Deleted newsletter successfully!", 'newsletter'));
+    $oPage->displayOk(i18n("Deleted newsletter successfully!", 'newsletter'));
 } elseif ($action == "news_add_job" && $perm->have_perm_area_action($area, "news_add_job")) {
     // Create job
     $oJobs = new NewsletterJobCollection();
@@ -114,7 +114,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
     unset($oJobs);
 
     if ($oJob) {
-        $oPage->displayInfo(i18n("Newsletter dispatch job has been added for this newsletter", 'newsletter'));
+        $oPage->displayOk(i18n("Newsletter dispatch job has been added for this newsletter", 'newsletter'));
     } else {
         $oPage->displayError(i18n("Newsletter dispatch job has been not been added! Please check newsletter details", 'newsletter'));
     }
@@ -160,7 +160,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
     unset($oUser);
 
     if ($bSend) {
-        $oPage->displayInfo(i18n("Test newsletter has been sent to:", 'newsletter') . "<br />" . implode("<br />", $aRecipients) . "<br />");
+        $oPage->displayOk(i18n("Test newsletter has been sent to:", 'newsletter') . "<br />" . implode("<br />", $aRecipients) . "<br />");
     } else {
         $oPage->displayWarning(i18n("Test newsletter has not been sent (partly or completely):", 'newsletter') . "<br />" . i18n("Successful:", 'newsletter') . "<br />" . implode("<br />", $aRecipients) . "<br>" . i18n("Error messages:", 'newsletter') . "<br />" . $oNewsletter->_sError, 'newsletter');
     }
@@ -173,7 +173,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
     }
 }
 
-if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client && $oNewsletter->get("idlang") == $lang) {
+if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $client && $oNewsletter->get("idlang") == $lang) {
 
     // Check and set values
     if ($_REQUEST["optSendTo"] == "") {
@@ -222,7 +222,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
             $oNewsletters->setWhere("name", $sName);
             $oNewsletters->setWhere("idclient", $client);
             $oNewsletters->setWhere("idlang", $lang);
-            $oNewsletters->setWhere($oNewsletter->primaryKey, $oNewsletter->get($oNewsletter->primaryKey), "!=");
+            $oNewsletters->setWhere($oNewsletter->getPrimaryKeyName(), $oNewsletter->get($oNewsletter->getPrimaryKeyName()), "!=");
             $oNewsletters->query();
 
             if ($oNewsletters->next()) {
@@ -326,7 +326,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
             $oPage->displayWarning(implode("<br>", $aMessages));
         } else {
             // show message
-            $oPage->displayInfo(i18n("Saved changes successfully!", 'newsletter'));
+            $oPage->displayOk(i18n("Saved changes successfully!", 'newsletter'));
         }
     } else {
         $_REQUEST["selGroup"] = unserialize($oNewsletter->get("send_ids"));

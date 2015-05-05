@@ -12,7 +12,6 @@
  * @link             http://www.4fb.de
  * @link             http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $fegroups = new cApiFrontendGroupCollection();
@@ -66,7 +65,7 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
    $idfrontendgroup= 0;
    $fegroup = new cApiFrontendGroup();
 
-  cRegistry::addInfoMessage(i18n("Deleted group successfully!"));
+  cRegistry::addOkMessage(i18n("Deleted group successfully!"));
 }
 
 if ($action != '') {
@@ -89,7 +88,7 @@ JS;
     $reloadLeftBottom = '';
 }
 
-if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
+if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
     if ($action == "frontendgroup_save_group" && $perm->have_perm_area_action($area, $action)) {
         $messages = array();
 
@@ -106,9 +105,9 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
             }
         }
 
-        //Reset all default groups
+        //Reset all other default groups
         if ($defaultgroup == 1) {
-            $sSql = 'UPDATE '.$cfg["tab"]["frontendgroups"].' SET defaultgroup = 0 WHERE idclient='.$client.';';
+            $sSql = 'UPDATE '.$cfg["tab"]["frontendgroups"].' SET defaultgroup = 0 WHERE idfrontendgroup != ' . cSecurity::toInteger($idfrontendgroup) . ' AND idclient=' . cSecurity::toInteger($client) . ';';
             $db->query($sSql);
         }
         $fegroup->set("defaultgroup", $defaultgroup);
@@ -140,9 +139,9 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
         $notis = $notification->returnNotification("warning", implode("<br>", $messages)) . "<br>";
     } else {
         if (strlen($successMessage) > 0) {
-            cRegistry::addInfoMessage($successMessage);
+            cRegistry::addOkMessage($successMessage);
         } elseif (strlen($action) > 0) {
-            cRegistry::addInfoMessage(i18n("Saved changes successfully!"));
+            cRegistry::addOkMessage(i18n("Saved changes successfully!"));
         }
     }
 

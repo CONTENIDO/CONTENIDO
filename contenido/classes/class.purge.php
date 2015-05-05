@@ -97,8 +97,8 @@ class cSystemPurge {
         if ($perm->isClientAdmin($clientId, $currentuser) === false && $perm->isSysadmin($currentuser) === false) {
             return false;
         }
-
-        /** @var $file SplFileInfo */
+        
+        /* @var $file SplFileInfo */
         foreach (new DirectoryIterator($cfgClient[$clientId]['code']['path']) as $file) {
             if ($file->isFile() === false) {
                 continue;
@@ -420,7 +420,7 @@ class cSystemPurge {
             if (true === $bCanDelete) {
                 cDirHandler::remove($dirPath);
             }
-            
+        
             return true;
         } else {
             return false;
@@ -437,17 +437,17 @@ class cSystemPurge {
     public function emptyFile($dirPath, $types) {
         $count = 0;
         $countCleared = 0;
-        
+
         if (is_dir($dirPath) && false !== ($handle = cDirHandler::read($dirPath))) {
             foreach ($handle as $file) {
                 $fileExt = trim(end(explode('.', $file)));
-        
+
                 if ($file != '.' && $file != '..' && in_array($fileExt, $types)) {
                     $filePath = $dirPath . '/' . $file;
-        
+
                     if (cFileHandler::exists($filePath) && cFileHandler::writeable($filePath)) {
                         $count++;
-        
+
                         if (cFileHandler::truncate($filePath)) {
                             $countCleared++;
                         }
@@ -466,6 +466,7 @@ class cSystemPurge {
      * Get frontend directory name for a client
      *
      * @param int $clientId
+     * 
      * @return string $sClientDir
      */
     public function getClientDir($clientId) {

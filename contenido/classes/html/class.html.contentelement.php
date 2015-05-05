@@ -26,9 +26,12 @@ class cHTMLContentElement extends cHTML {
     /**
      * Constructor.
      *
-     * @param mixed $content String or object with the contents
-     * @param string $class the class of this element
-     * @param string $id the ID of this element
+     * @param mixed $content
+     *         String or object with the contents
+     * @param string $class
+     *         the class of this element
+     * @param string $id
+     *         the ID of this element
      */
     public function __construct($content = '', $class = '', $id = '') {
         parent::__construct();
@@ -41,9 +44,11 @@ class cHTMLContentElement extends cHTML {
     /**
      * Sets the element's content
      *
-     * @param string|object|array $content String with the content or a cHTML
-     *        object to render or an array of strings / objects.
-     * @return cHTMLContentElement $this
+     * @param string|object|array $content
+     *         String with the content or a cHTML object to render or an array
+     *         of strings / objects.
+     * @return cHTMLContentElement
+     *         $this for chaining
      */
     public function setContent($content) {
         return $this->_setContent($content);
@@ -54,7 +59,8 @@ class cHTMLContentElement extends cHTML {
      *
      * @param string|object|array $content String with the content or a cHTML
      *        object to render or an array of strings / objects.
-     * @return cHTMLContentElement $this
+     * @return cHTMLContentElement
+     *         $this for chaining
      */
     public function appendContent($content) {
         return $this->_appendContent($content);

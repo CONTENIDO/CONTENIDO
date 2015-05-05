@@ -539,9 +539,6 @@ $result = array(
 $tpl2 = new cTemplate();
 $infoButton->setHelpText(i18n('Attribute content has to begin with a letter and can be followed by letters, digits or the following chars: . : _ - '));
 $tpl2->set('s', 'METATITLE', i18n('New meta tag') . ' ' . $infoButton->render());
-
-
-
 $sql = "SHOW FIELDS
         FROM `" . $cfg['tab']['meta_type'] . "`";
 $db->query($sql);

@@ -23,6 +23,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cHTMLAlignmentTable extends cHTMLTable {
 
+    /**
+     * Constructor.
+     */
     public function __construct() {
         parent::__construct();
 
@@ -30,6 +33,13 @@ class cHTMLAlignmentTable extends cHTMLTable {
         $this->_contentlessTag = false;
     }
 
+    /**
+     * Generates the markup of the element.
+     *
+     * @see cHTML::render()
+     * @return string
+     *         generated markup
+     */
     public function render() {
         $tr = new cHTMLTableRow();
         $td = new cHTMLTableData();

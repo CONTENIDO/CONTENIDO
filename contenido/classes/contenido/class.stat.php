@@ -80,7 +80,7 @@ class cApiStatCollection extends ItemCollection {
      *
      * @param int $iIdCatArt
      * @param int $iIdLang
-     * @return cApiStat NULL
+     * @return cApiStat|NULL
      */
     public function fetchByCatArtAndLang($iIdCatArt, $iIdLang) {
         $this->select('idcatart=' . (int) $iIdCatArt . ' AND idlang=' . (int) $iIdLang);
@@ -92,7 +92,8 @@ class cApiStatCollection extends ItemCollection {
      *
      * @param int $idcatart
      * @param int $idlang
-     * @return int Number of deleted items
+     * @return int
+     *         Number of deleted items
      */
     public function deleteByCategoryArticleAndLanguage($idcatart, $idlang) {
         $where = 'idcatart = ' . (int) $idcatart . ' AND idlang = ' . (int) $idlang;
@@ -111,7 +112,8 @@ class cApiStat extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -129,31 +131,33 @@ class cApiStat extends Item {
         $this->set('visited', $this->get('visited') + 1);
         $this->store();
     }
-	
-	/**
+
+    /**
      * Userdefined setter for stat fields.
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @param bool $bSafe
+     *         Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
             case 'visited':
                 $value = (int) $value;
                 break;
-			case 'idcatart':
+            case 'idcatart':
                 $value = (int) $value;
                 break;
-			case 'idlang':
+            case 'idlang':
                 $value = (int) $value;
                 break;
-			case 'idclient':
+            case 'idclient':
                 $value = (int) $value;
                 break;
         }
 
         return parent::setField($name, $value, $bSafe);
     }
-	
+
 }

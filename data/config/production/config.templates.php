@@ -38,6 +38,7 @@ $cfg['templates']['generic_menu']         = 'template.generic_menu.html';
 $cfg['templates']['generic_form']         = 'template.generic_form.html';
 $cfg['templates']['generic_table_form']   = 'template.generic_table_form.html';
 $cfg['templates']['generic_page']         = 'template.generic_page.html';
+$cfg['templates']['generic_page_html5']   = 'template.generic_page_html5.html';
 $cfg['templates']['generic_list_row']     = 'template.generic_list_row.html';
 $cfg['templates']['generic_list_head']    = 'template.generic_list_head.html';
 $cfg['templates']['generic_list']         = 'template.generic_list.html';
@@ -47,10 +48,8 @@ $cfg['templates']['left_top']             = 'template.left_top.html';
 $cfg['templates']['left_top_blank']       = 'template.left_top_blank.html';
 $cfg['templates']['right_top_blank']      = 'template.right_top_blank.html';
 
-$cfg['templates']['admin_frontend']           = 'template.admin_frontend.html'; // @deprecated: Use $cfg['templates']['frontend_left_top'], name doesn't follows naming conventions!!!
 $cfg['templates']['frontend_left_top']        = 'template.frontend_left_top.html';
 $cfg['templates']['frontend_left_top_filter'] = 'template.frontend_left_top_filter.html';
-
 
 $cfg['templates']['con_edit_form']        = 'template.con_edit_form.html';
 $cfg['templates']['con_edit_form_cat']    = 'template.con_edit_form_categories.html';
@@ -136,8 +135,6 @@ $cfg['templates']['system_purge']         = 'template.system_purge.html';
 
 $cfg['templates']['inuse_tpl']            = 'template.inuse_tpl.html';
 $cfg['templates']['inuse_lay_mod']        = 'template.inuse_lay_mod.html';
-
-$cfg['templates']['default_subnav']       = 'template.default_subnav.html'; // @deprecated: [2013-10-24] Use $cfg['templates']['subnav']
 
 $cfg['templates']['debug_visibleadv']     = 'template.debug.visibleadv.html';
 $cfg['templates']['debug_header']         = 'template.debug.header.html';

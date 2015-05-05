@@ -28,7 +28,8 @@ class cFileHandler {
      *
      * @param string $filename the name and path of the new file
      * @param string $content optional content of the new file. Optional.
-     * @return bool true on success. Otherwise false.
+     * @return bool
+     *         true on success. Otherwise false.
      */
     public static function create($filename, $content = '') {
         $success = file_put_contents($filename, $content) === strlen($content);
@@ -49,7 +50,8 @@ class cFileHandler {
      *        the file. Optional.
      * @throws cInvalidArgumentException if the file with the given filename
      *         does not exist
-     * @return string bool success it returns the bytes which have been read.
+     * @return string|bool
+     *         On success it returns the bytes which have been read.
      *         Otherwise false.
      */
     public static function read($filename, $length = 0, $offset = 0, $reverse = false) {
@@ -79,7 +81,8 @@ class cFileHandler {
      *        Optional.
      * @throws cInvalidArgumentException if the file with the given filename
      *         does not exist
-     * @return string array bool one line was read the function will return it.
+     * @return string|array|bool
+     *         If one line was read the function will return it.
      *         If more than one line was read the function will return an array
      *         containing the lines. Otherwise false is returned
      */
@@ -129,7 +132,8 @@ class cFileHandler {
      * @param string $content the data which should be written
      * @param bool $append if true the data will be appended to the file.
      *        Optional.
-     * @return bool true on success, false otherwise
+     * @return bool
+     *         true on success, false otherwise
      */
     public static function write($filename, $content, $append = false) {
         $flag = 0;
@@ -153,7 +157,8 @@ class cFileHandler {
      * @param string $filename the name and path to the file
      * @param string $content the data of the line
      * @param bool $append if true the data will be appended to file. Optional.
-     * @return bool true on success, false otherwise
+     * @return bool
+     *         true on success, false otherwise
      */
     public static function writeLine($filename, $content, $append = false) {
         return self::write($filename, $content . "\n", $append);
@@ -163,7 +168,8 @@ class cFileHandler {
      * Checks if a file exists
      *
      * @param string $filename the name and path of the file
-     * @return bool true if the file exists
+     * @return bool
+     *         true if the file exists
      */
     public static function exists($filename) {
         return file_exists($filename);
@@ -173,7 +179,8 @@ class cFileHandler {
      * Checks if the file is writable for the PHP user
      *
      * @param string $filename the name and path of the file
-     * @return bool true if the file can be written
+     * @return bool
+     *         true if the file can be written
      */
     public static function writeable($filename) {
         return is_writable($filename);
@@ -185,7 +192,8 @@ class cFileHandler {
      * @param string $filename the name and path of the file
      * @throws cInvalidArgumentException if the file with the given filename
      *         does not exist
-     * @return bool true if the file is readable
+     * @return bool
+     *         true if the file is readable
      */
     public static function readable($filename) {
         if (!cFileHandler::exists($filename)) {
@@ -201,7 +209,8 @@ class cFileHandler {
      * @param string $filename the name and path of the file
      * @throws cInvalidArgumentException if the file with the given filename
      *         does not exist
-     * @return bool true on success
+     * @return bool
+     *         true on success
      */
     public static function remove($filename) {
         if (!cFileHandler::exists($filename)) {
@@ -217,7 +226,8 @@ class cFileHandler {
      * @param string $filename the name and path of the file
      * @throws cInvalidArgumentException if the file with the given filename
      *         does not exist
-     * @return bool true on success
+     * @return bool
+     *         true on success
      */
     public static function truncate($filename) {
         if (!cFileHandler::exists($filename)) {
@@ -239,7 +249,8 @@ class cFileHandler {
      *        be renamed in the process of moving it
      * @throws cInvalidArgumentException if the file with the given filename
      *         does not exist
-     * @return bool true on success
+     * @return bool
+     *         true on success
      */
     public static function move($filename, $destination) {
         if (!cFileHandler::exists($filename)) {
@@ -260,7 +271,8 @@ class cFileHandler {
      * @param string $new_filename the new name of the file
      * @throws cInvalidArgumentException if the file with the given filename
      *         does not exist
-     * @return bool true on success
+     * @return bool
+     *         true on success
      */
     public static function rename($filename, $new_filename) {
         if (!cFileHandler::exists($filename)) {
@@ -282,7 +294,8 @@ class cFileHandler {
      *        overwritten
      * @throws cInvalidArgumentException if the file with the given filename
      *         does not exist
-     * @return bool true on success
+     * @return bool
+     *         true on success
      */
     public static function copy($filename, $destination) {
         if (!cFileHandler::exists($filename)) {
@@ -303,7 +316,8 @@ class cFileHandler {
      * @param int $mode the new access mode : php chmod needs octal value
      * @throws cInvalidArgumentException if the file with the given filename
      *         does not exist
-     * @return bool true on success
+     * @return bool
+     *         true on success
      */
     public static function chmod($filename, $mode) {
         if (!cFileHandler::exists($filename)) {
@@ -327,7 +341,8 @@ class cFileHandler {
      * @param string $filename the name and path to the file
      * @throws cInvalidArgumentException if the file with the given filename
      *         does not exist
-     * @return array Returns an array containing information about the file
+     * @return array
+     *         Returns an array containing information about the file
      */
     public static function info($filename) {
         if (!cFileHandler::exists($filename)) {
@@ -370,16 +385,15 @@ class cFileHandler {
      * @return string
      */
     public static function getExtension($basename) {
-        $aFileName = explode('.', trim($basename, '.'));
-
-        return (count($aFileName) > 1) ? $aFileName[count($aFileName) - 1] : '';
+        return pathinfo($basename, PATHINFO_EXTENSION);
     }
 
     /**
      * Sets the default file permissions on the given file.
      *
      * @param string $filename the name of the file
-     * @return boolean true on success or false on failure
+     * @return bool
+     *         true on success or false on failure
      */
     public static function setDefaultFilePerms($filename) {
         $cfg = cRegistry::getConfig();
@@ -393,52 +407,13 @@ class cFileHandler {
     }
 
     /**
-     *
-     * @see cDirHandler::recursiveRmdir()
-     * @deprecated 2013-11-11 - Use the class cDirHandler instead.
-     */
-    public static function recursiveRmdir($dirname) {
-        cDeprecated("Use the class cDirHandler instead.");
-        return cDirHandler::recursiveRmdir($dirname);
-    }
-
-    /**
-     *
-     * @see cDirHandler::recursiveCopy()
-     * @deprecated 2013-11-11 - Use the class cDirHandler instead.
-     */
-    public static function recursiveCopy($filename, $destination) {
-        cDeprecated("Use the class cDirHandler instead.");
-        return cDirHandler::recursiveCopy($filename, $destination);
-    }
-
-    /**
-     *
-     * @see cDirHandler::isDirectoryEmpty()
-     * @deprecated 2013-11-11 - Use the class cDirHandler instead.
-     */
-    public static function isDirectoryEmpty($dir) {
-        cDeprecated("Use the class cDirHandler instead.");
-        return cDirHandler::isDirectoryEmpty($dir);
-    }
-
-    /**
-     *
-     * @see cDirHandler::setDefaultDirPerms()
-     * @deprecated 2013-11-11 - Use the class cDirHandler instead.
-     */
-    public static function setDefaultDirPerms($dirname) {
-        cDeprecated("Use the class cDirHandler instead.");
-        return cDirHandler::setDefaultDirPerms($dirname);
-    }
-
-    /**
      * Validates the given filename.
      *
      * @param string $filename the filename to validate
      * @param bool $notifyAndExitOnFailure if set, function will show a
      *        notification and will exit the script
-     * @return bool true if the given filename is valid, false otherwise
+     * @return bool
+     *         true if the given filename is valid, false otherwise
      */
     public static function validateFilename($filename, $notifyAndExitOnFailure = true) {
         // check if filename only contains valid characters
@@ -476,14 +451,24 @@ class cFileHandler {
      * Check if given filename is either '.' or '..'.
      *
      * @param string $fileName
-     * @return boolean
+     * @return bool
      */
     public static function fileNameIsDot($fileName) {
-        if ($fileName != '.' && $fileName != '..') {
+        // bugfix: function must work with full paths of files
+        $name = end(explode('/', $fileName));
+        if ($name != '.' && $name != '..') {
             return false;
         } else {
             return true;
         }
     }
 
+    /**
+     * Check if file name begins with a period
+     *  @param string $fileName
+     *  @return bool
+     */
+    public static function fileNameBeginsWithDot($fileName) {
+        return (strpos(end(explode('/', $fileName)), ".") === 0);
+    }
 }

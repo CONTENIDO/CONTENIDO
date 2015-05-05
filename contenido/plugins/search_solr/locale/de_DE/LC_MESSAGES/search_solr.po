@@ -90,3 +90,6 @@ msgstr "Index nachladen entsprechend seiner Konfiguration in der Datei schema.xm
 msgid "DESCR_REINDEX"
 msgstr "Artikel des aktuellen Mandanten reindizieren. Artikel die offline oder nicht suchbar sind werden dabei übersprungen."
 
+msgid "DESCR_DELETE"
+msgstr "Artikel des aktuellen Mandanten löschen."
+

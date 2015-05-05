@@ -30,6 +30,10 @@ class cTree extends cTreeItem {
      */
     protected $_treeIcon;
 
+    /**
+     *
+     * @param string $name
+     */
     public function __construct($name = "") {
         /*
          * The root item currently has to be a "0". This is a bug, feel free to
@@ -47,6 +51,11 @@ class cTree extends cTreeItem {
         $this->setName($name);
     }
 
+    /**
+     * Tree icon setter
+     *
+     * @param string $path
+     */
     public function setIcon($path) {
         $this->setTreeIcon($path);
     }

@@ -44,7 +44,8 @@ class cHTMLImage extends cHTML {
      * Sets the image's source file
      *
      * @param string $src source location
-     * @return cHTMLImage $this
+     * @return cHTMLImage
+     *         $this for chaining
      */
     public function setSrc($src) {
         if ($src === NULL) {
@@ -58,7 +59,8 @@ class cHTMLImage extends cHTML {
      * Sets the image's width
      *
      * @param int $width Image width
-     * @return cHTMLImage $this
+     * @return cHTMLImage
+     *         $this for chaining
      */
     public function setWidth($width) {
         return $this->updateAttribute('width', $width);
@@ -68,7 +70,8 @@ class cHTMLImage extends cHTML {
      * Sets the image's height
      *
      * @param int $height Image height
-     * @return cHTMLImage $this
+     * @return cHTMLImage
+     *         $this for chaining
      */
     public function setHeight($height) {
         return $this->updateAttribute('height', $height);
@@ -78,7 +81,8 @@ class cHTMLImage extends cHTML {
      * Sets the border size
      *
      * @param int $border Border size
-     * @return cHTMLImage $this
+     * @return cHTMLImage
+     *         $this for chaining
      */
     public function setBorder($border) {
         return $this->updateAttribute('border', $border);

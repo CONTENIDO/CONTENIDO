@@ -56,6 +56,9 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         createRightsForElement('tpl', $idtpl);
     } else {
 
+    	// Define lastmodified variable with actual date
+    	$lastmodified = date('Y-m-d H:i:s');
+
         // Update existing entry in the Template table
         $template = new cApiTemplate($idtpl);
         $template->set('name', $name);
@@ -326,28 +329,29 @@ function tplPreparseLayout($idlay) {
 function tplDuplicateTemplate($idtpl) {
     global $db, $client, $lang, $cfg, $sess, $auth;
 
-    $idtpl = (int) $idtpl;
+    $idtpl = cSecurity::toInteger($idtpl);
     $template = new cApiTemplate($idtpl);
 
     $newidtplcfg = 0;
-    $idtplcfg = (int) $template->get('idtplcfg');
+    $idtplcfg = cSecurity::toInteger($template->get('idtplcfg'));
     if ($idtplcfg) {
         // NB: after inserted new template, we have to update idptl
         $templateConfigColl = new cApiTemplateConfigurationCollection();
         $templateConfig = $templateConfigColl->create(0);
-        $newidtplcfg = (int) $templateConfig->get('idtplcfg');
+        $newidtplcfg = cSecurity::toInteger($templateConfig->get('idtplcfg'));
     }
 
     // Copy template
     $templateColl = new cApiTemplateCollection();
     $newTemplate = $templateColl->copyItem($template, array(
+    	'idtplcfg' => $newidtplcfg,
         'name' => sprintf(i18n("%s (Copy)"), $template->get('name')),
-        'author' => (string) $auth->auth['uname'],
+        'author' => cSecurity::toString($auth->auth['uname']),
         'created' => date('Y-m-d H:i:s'),
         'lastmodified' => date('Y-m-d H:i:s'),
         'defaulttemplate' => 0
     ));
-    $newidtpl = (int) $newTemplate->get('idtpl');
+    $newidtpl = cSecurity::toInteger($newTemplate->get('idtpl'));
 
     // Update template configuration, set idtpl width new value
     if ($idtplcfg) {
@@ -497,7 +501,9 @@ function tplGetInUsedData($idtpl) {
  * @return int new template configuration ID
  */
 function tplcfgDuplicate($idtplcfg) {
-    $templateConfig = new cApiTemplateConfiguration((int) $idtplcfg);
+	global $auth;
+
+    $templateConfig = new cApiTemplateConfiguration(cSecurity::toInteger($idtplcfg));
     if (!$templateConfig->isLoaded()) {
         return 0;
     }

@@ -26,21 +26,26 @@ if (getEffectiveSetting("search", "term_tracking", "on") != "on") {
 
 // the collection we'll be showing
 $termCollection = new cApiSearchTrackingCollection();
+$term = $_GET['term'];
+if (true === cRegistry::getConfigValue('simulate_magic_quotes')) {
+    $term = stripslashes($term);
+}
+$term = conHtmlEntityDecode($term);
 
 // switch between showing information about a single search term or all of them
 if ($action == "show_single_term") {
     // select all entries about one term
-    $termCollection->selectSearchTerm($term);
-    
+    $termCollection->selectSearchTerm(addslashes($term));
+
     $page->set("s", "ADDITIONAL_INFO", i18n('Date'));
     $page->set("s", "RESULTS_HEADER", i18n("Number of Results"));
-                                                                  
+
     // fill template
     $i = 0;
     while ($termItem = $termCollection->next()) {
         $i++;
         $page->set("d", "NUMBER", $i);
-        $page->set("d", "SEARCH_TERM", $term);
+        $page->set("d", "SEARCH_TERM", conHtmlSpecialChars($term));
         $page->set("d", "NUMBER_OF_RESULTS", $termItem->get("results"));
         $page->set("d", "ADDITIONAL_INFO", $termItem->get("datesearched"));
         $page->next();
@@ -73,7 +78,7 @@ if ($action == "show_single_term") {
     while ($termItem = $termCollection->next()) {
         $i++;
         $page->set("d", "NUMBER", $i);
-        $page->set("d", "SEARCH_TERM", $termItem->get('searchterm'));
+        $page->set("d", "SEARCH_TERM", conHtmlSpecialChars($termItem->get('searchterm')));
         $page->set("d", "NUMBER_OF_RESULTS", round($counts[$termItem->get('searchterm')]['avg'], 2));
         $page->set("d", "ADDITIONAL_INFO", $counts[$termItem->get('searchterm')]['count']);
         $page->next();

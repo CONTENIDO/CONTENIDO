@@ -21,7 +21,7 @@ $page = new cGuiPage("workflow_edit", "workflow");
 $page->addStyle('workflow.css');
 
 if ($action == "workflow_delete") {
-    $page->displayInfo(i18n('Deleted workflow successfully!', 'workflow'));
+    $page->displayOk(i18n('Deleted workflow successfully!', 'workflow'));
     $page->render();
     exit();
 }
@@ -34,9 +34,9 @@ $workflow = $workflows->loadItem($idworkflow);
 if ($action == "workflow_save") {
     if ($idworkflow == "-1") {
         $workflow = $workflows->create();
-        $page->displayInfo(i18n("Created new workflow successfully!", 'workflow'));
+        $page->displaOk(i18n("Created new workflow successfully!", 'workflow'));
     } elseif ($idworkflow > 0) {
-        $page->displayInfo(i18n("Saved changes successfully!", 'workflow'));
+        $page->displayOk(i18n("Saved changes successfully!", 'workflow'));
     }
     $workflow->set("name",  str_replace('\\', '', $wfname));
     $workflow->set("description", str_replace('\\', '', $wfdescription));
@@ -75,7 +75,7 @@ $form->setVar("action", "workflow_save");
 $form->setVar("idworkflow", $idworkflow);
 $form->setVar("frame", $frame);
 
-if ($workflow->virgin) {
+if (true !== $workflow->isLoaded()) {
     $name = i18n("New Workflow", "workflow");
     $header = i18n("Create new workflow", "workflow");
 } else {

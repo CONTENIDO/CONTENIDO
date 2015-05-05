@@ -644,7 +644,8 @@ class cUpdateNotifier {
      * Generates the output for the rss informations
      *
      * @param cTemplate $oTpl
-     * @return cTemplate CONTENIDO template object
+     * @return cTemplate
+     *         CONTENIDO template object
      */
     protected function renderRss($oTpl) {
         if (!is_object($oTpl)) {
@@ -711,7 +712,7 @@ class cUpdateNotifier {
      *
      * @todo add a retry counter and a deathpoint with warning in errorlog
      * @param string $sUrl
-     * @return boolean Ambigous string>
+     * @return string|bool
      */
     private function fetchUrl($sUrl) {
         if ($this->bVendorHostReachable != true) {

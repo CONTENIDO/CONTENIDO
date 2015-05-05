@@ -24,10 +24,8 @@
     # Enable rewrite engine
     RewriteEngine on
 
-
     # Specify a base URL-path for the rules
     RewriteBase /cms
-
 
     # Catch some common exploits in query string to get rid of them
     # NOTE: Conditions to prevent protocols (ftp, http[s]) in query string could
@@ -40,10 +38,8 @@
     RewriteCond %{QUERY_STRING} http[s]*://.*$ [NC]
     RewriteRule ^.* - [F,L]  # all matching conditions from above will end in nirvana
 
-
     # Rewrite request to root to front_content.php
     RewriteRule ^$ front_content.php [QSA,L]
-
 
     # Exclude following request from rewriting
     # tests for favicon.ico, valid symlinks (-s), not empty files (-l) and folders (-d)
@@ -53,12 +49,10 @@
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^.*$ - [NC,L]
 
-
     # Pass other requests to front_content.php
     RewriteRule ^.*$ front_content.php [QSA,NC,L]
 
 </IfModule>
-
 
 # Some rules to compress files.
 # NOTE: Following settings are not mod rewrite specific, but enabling mod_deflate

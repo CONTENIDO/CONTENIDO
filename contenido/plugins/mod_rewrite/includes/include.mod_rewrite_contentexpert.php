@@ -64,7 +64,7 @@ $oView->lng_copy_htaccess_type = i18n('Copy/Download .htaccess template', 'mod_r
 $oView->lng_copy_htaccess_type_lbl = i18n('Select .htaccess template', 'mod_rewrite');
 $oView->lng_copy_htaccess_type1 = i18n('Restrictive .htaccess', 'mod_rewrite');
 $oView->lng_copy_htaccess_type2 = i18n('Simple .htaccess', 'mod_rewrite');
-$oView->lng_copy_htaccess_type_info1 = i18n('Contains rules with restrictive settings.<br>All requests pointing to extension avi, css, doc, flv, gif, gzip, ico, jpeg, jpg, js, mov, <br>mp3, pdf, png, ppt, rar, txt, wav, wmv, xml, zip, will be excluded vom rewriting.<br>Remaining requests will be rewritten to front_content.php,<br>except requests to \'contenido/\', \'setup/\', \'cms/upload\', \'cms/front_content.php\', etc.<br>Each resource, which has to be excluded from rewriting must be specified explicitly.', 'mod_rewrite');
+$oView->lng_copy_htaccess_type_info1 = i18n('Contains rules with restrictive settings.<br>All requests pointing to extension avi, css, doc, flv, gif, gzip, ico, jpeg, jpg, js, mov, <br>mp3, pdf, png, ppt, rar, svg, swf, txt, wav, wmv, xml, zip, will be excluded vom rewriting.<br>Remaining requests will be rewritten to front_content.php,<br>except requests to \'contenido/\', \'setup/\', \'cms/upload\', \'cms/front_content.php\', etc.<br>Each resource, which has to be excluded from rewriting must be specified explicitly.', 'mod_rewrite');
 
 $oView->lng_copy_htaccess_type_info2 = i18n('Contains a simple collection of rules. Each requests pointing to valid symlinks, folders or<br>files, will be excluded from rewriting. Remaining requests will be rewritten to front_content.php', 'mod_rewrite');
 

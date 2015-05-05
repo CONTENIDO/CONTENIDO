@@ -23,35 +23,113 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cGuiMenu {
 
+    /**
+     *
+     * @var unknown_type
+     */
     public $link;
+
+    /**
+     *
+     * @var unknown_type
+     */
     public $title;
+
+    /**
+     *
+     * @var unknown_type
+     */
     public $tooltips;
+
+    /**
+     *
+     * @var unknown_type
+     */
     public $caption;
+
+    /**
+     *
+     * @var unknown_type
+     */
     public $type;
+
+    /**
+     *
+     * @var unknown_type
+     */
     public $image;
+
+    /**
+     *
+     * @var unknown_type
+     */
     public $alt;
+
+    /**
+     *
+     * @var unknown_type
+     */
     public $actions;
+
+    /**
+     *
+     * @var unknown_type
+     */
     public $imagewidth;
+
+    /**
+     *
+     * @var unknown_type
+     */
     public $show;
+
+    /**
+     *
+     * @var unknown_type
+     */
     protected $_marked;
 
+
+    /**
+     *
+     */
     public function __construct() {
         $this->rowmark = true;
         $this->_marked = false;
     }
 
+    /**
+     *
+     * @param unknown_type $item
+     * @param unknown_type $title
+     */
     public function setTitle($item, $title) {
         $this->title[$item] = $title;
     }
 
+    /**
+     *
+     * @param unknown_type $item
+     * @param unknown_type $tooltip
+     */
     public function setTooltip($item, $tooltip) {
         $this->tooltips[$item] = $tooltip;
     }
 
+    /**
+     *
+     * @param unknown_type $rowmark
+     */
     public function setRowmark($rowmark = true) {
         $this->rowmark = $rowmark;
     }
 
+    /**
+     *
+     * @param unknown_type $item
+     * @param unknown_type $image
+     * @param unknown_type $maxwidth
+     */
     public function setImage($item, $image, $maxwidth = 0) {
         $show = '';
 
@@ -60,18 +138,38 @@ class cGuiMenu {
         $this->show[$item] = $show; // TODO: what is this variable supposed to be?
     }
 
+    /**
+     *
+     * @param unknown_type $item
+     * @param unknown_type $link
+     */
     public function setLink($item, $link) {
         $this->link[$item] = $link;
     }
 
+    /**
+     *
+     * @param unknown_type $item
+     * @param unknown_type $key
+     * @param unknown_type $action
+     */
     public function setActions($item, $key, $action) {
         $this->actions[$item][$key] = $action;
     }
 
+    /**
+     *
+     * @param unknown_type $item
+     */
     public function setMarked($item) {
         $this->_marked = $item;
     }
 
+    /**
+     *
+     * @param unknown_type $print
+     * @return Ambigous <string, void, mixed>
+     */
     public function render($print = true) {
         global $cfg;
 
@@ -83,10 +181,10 @@ class cGuiMenu {
             foreach ($this->link as $key => $value) {
                 if ($value != NULL) {
                     if ($this->imagewidth[$key] != 0) {
-                        $value->setContent('<img border="0" src="' . $this->image[$key] . '" width="' . $this->imagewidth[$key] . '">');
+                        $value->setContent('<img border="0" alt="" src="' . $this->image[$key] . '" width="' . $this->imagewidth[$key] . '">');
                         $img = $value->render();
                     } else {
-                        $value->setContent('<img border="0" src="' . $this->image[$key] . '">');
+                        $value->setContent('<img border="0" alt="" src="' . $this->image[$key] . '">');
                         $img = $value->render();
                     }
                     $value->setContent($this->title[$key]);
@@ -96,9 +194,9 @@ class cGuiMenu {
 
                     if ($this->image[$key] != "") {
                         if ($this->imagewidth[$key] != 0) {
-                            $img = '<img border="0" src="' . $this->image[$key] . '" width="' . $this->imagewidth[$key] . '">';
+                            $img = '<img border="0" alt="" src="' . $this->image[$key] . '" width="' . $this->imagewidth[$key] . '">';
                         } else {
-                            $img = '<img border="0" src="' . $this->image[$key] . '">';
+                            $img = '<img border="0" alt="" src="' . $this->image[$key] . '">';
                         }
                     } else {
                         $img = "&nbsp;";

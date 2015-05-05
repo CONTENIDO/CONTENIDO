@@ -23,16 +23,34 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cGuiList {
 
+    /**
+     *
+     * @var unknown_type
+     */
     protected $cells;
 
+    /**
+     *
+     */
     public function __construct() {
         $this->cells = array();
     }
 
+    /**
+     *
+     * @param unknown_type $item
+     * @param unknown_type $cell
+     * @param unknown_type $value
+     */
     public function setCell($item, $cell, $value) {
         $this->cells[$item][$cell] = $value;
     }
 
+    /**
+     *
+     * @param unknown_type $print
+     * @return Ambigous <string, void, mixed>
+     */
     public function render($print = false) {
         global $cfg;
 

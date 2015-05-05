@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-31 13:45+0200\n"
+"POT-Creation-Date: 2015-02-06 15:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -471,7 +471,7 @@ msgstr ""
 
 #: steps/forms/installer.php:36
 msgid ""
-"CONTENIDO will be installed, please wait. This porcess may take several "
+"CONTENIDO will be installed, please wait. This process may take several "
 "moments!"
 msgstr ""
 
@@ -489,7 +489,7 @@ msgstr ""
 
 #: steps/forms/installer.php:45
 msgid ""
-"CONTENIDO will be upgraded, please wait. This porcess may take several "
+"CONTENIDO will be upgraded, please wait. This process may take several "
 "moments!"
 msgstr ""
 
@@ -823,4 +823,96 @@ msgstr ""
 
 #: steps/setuptype.php:38
 msgid "Recommended for existing projects."
+msgstr ""
+
+#: templates/setup.tpl:37
+#, c-format
+msgid "Can't write %s"
+msgstr ""
+
+#: templates/setup.tpl:38
+#, c-format
+msgid ""
+"Setup or CONTENIDO can't write to the file %s. Please change the file "
+"permissions to correct this problem."
+msgstr ""
+
+#: templates/setup.tpl:39
+msgid ""
+"Your Server runs Windows. Due to that, Setup can't recommend any file "
+"permissions."
+msgstr ""
+
+#: templates/setup.tpl:40
+#, c-format
+msgid ""
+"Due to a very restrictive environment, an advise is not possible. Ask your "
+"system administrator to enable write access to the file %s, especially in "
+"environments where ACL (Access Control Lists) are used."
+msgstr ""
+
+#: templates/setup.tpl:41
+#, c-format
+msgid ""
+"Your web server and the owner of your files are identical. You need to "
+"enable write access for the owner, e.g. using chmod u+rw %s, setting the "
+"file mask to %s or set the owner to allow writing the file."
+msgstr ""
+
+#: templates/setup.tpl:42
+#, c-format
+msgid ""
+"Your web server's group and the group of your files are identical. You need "
+"to enable write access for the group, e.g. using chmod g+rw %s, setting the "
+"file mask to %s or set the group to allow writing the file."
+msgstr ""
+
+#: templates/setup.tpl:43
+#, c-format
+msgid ""
+"Your web server is not equal to the file owner, and is not in the "
+"webserver's group. It would be highly insecure to allow world write acess to "
+"the files. If you want to install anyways, enable write access for all "
+"others, e.g. using chmod o+rw %s, setting the file mask to %s or set the "
+"others to allow writing the file."
+msgstr ""
+
+#: templates/setup.tpl:44
+msgid ""
+"Your Server runs Windows. Due to that, Setup can't recommend any directory "
+"permissions."
+msgstr ""
+
+#: templates/setup.tpl:45
+#, c-format
+msgid ""
+"Due to a very restrictive environment, an advise is not possible. Ask your "
+"system administrator to enable write access to the file or directory %s, "
+"especially in environments where ACL (Access Control Lists) are used."
+msgstr ""
+
+#: templates/setup.tpl:46
+#, c-format
+msgid ""
+"Your web server and the owner of your directory are identical. You need to "
+"enable write access for the owner, e.g. using chmod u+rw %s, setting the "
+"directory mask to %s or set the owner to allow writing the directory."
+msgstr ""
+
+#: templates/setup.tpl:47
+#, c-format
+msgid ""
+"Your web server's group and the group of your directory are identical. You "
+"need to enable write access for the group, e.g. using chmod g+rw %s, setting "
+"the directory mask to %s or set the group to allow writing the directory."
+msgstr ""
+
+#: templates/setup.tpl:48
+#, c-format
+msgid ""
+"Your web server is not equal to the directory owner, and is not in the "
+"webserver's group. It would be highly insecure to allow world write acess to "
+"the directory. If you want to install anyways, enable write access for all "
+"others, e.g. using chmod o+rw %s, setting the directory mask to %s or set "
+"the others to allow writing the directory."
 msgstr ""

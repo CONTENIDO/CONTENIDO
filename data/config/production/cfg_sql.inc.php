@@ -84,6 +84,7 @@ $cfg['tab']['type'] = $cfg['sql']['sqlprefix'] . '_type';
 $cfg['tab']['upl_meta'] = $cfg['sql']['sqlprefix'] . '_upl_meta';
 $cfg['tab']['upl'] = $cfg['sql']['sqlprefix'] . '_upl';
 $cfg['tab']['user_prop'] = $cfg['sql']['sqlprefix'] . '_user_prop';
+$cfg['tab']['user_pw_request'] = $cfg['sql']['sqlprefix'] . '_user_pw_request';
 $cfg['tab']['iso_639_2'] = $cfg['sql']['sqlprefix'] . '_iso_639_2';
 $cfg['tab']['iso_3166'] = $cfg['sql']['sqlprefix'] . '_iso_3166';
 

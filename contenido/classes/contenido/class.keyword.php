@@ -28,7 +28,7 @@ class cApiKeywordCollection extends ItemCollection {
      */
     public function __construct() {
         global $cfg;
-        parent::__construct($cfg['tab']['keyword'], 'idkeyword');
+        parent::__construct($cfg['tab']['keywords'], 'idkeyword');
         $this->_setItemClass('cApiKeyword');
     }
 
@@ -68,11 +68,12 @@ class cApiKeyword extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
-        parent::__construct($cfg['tab']['keyword'], 'idkeyword');
+        parent::__construct($cfg['tab']['keywords'], 'idkeyword');
         $this->setFilters(array(
             'addslashes'
         ), array(
@@ -83,16 +84,18 @@ class cApiKeyword extends Item {
         }
     }
 
-	/**
+    /**
      * Userdefined setter for keyword fields.
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @param bool $bSafe
+     *         Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
-			case 'idlang':
+            case 'idlang':
                 $value = (int) $value;
                 break;
         }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the abstract authentication handler class.
  *
@@ -25,10 +26,10 @@ abstract class cAuthHandlerAbstract extends cAuth {
 
     /**
      * Handle the pre authorization.
-     * Let return this method a valid user ID to set before the login form is
+     * Let return this method a valid user ID to be set before the login form is
      * handled, otherwise false.
      *
-     * @return string false
+     * @return string|false
      */
     abstract public function preAuthorize();
 
@@ -43,14 +44,13 @@ abstract class cAuthHandlerAbstract extends cAuth {
      * Let this method validate the users input against source and return a
      * valid user ID or false.
      *
-     * @return string false
+     * @return string|false
      */
     abstract public function validateCredentials();
 
     /**
      * Log the successful authentication.
-     * If wished, this method can be executed for logging an successful
-     * authentication.
+     * If wished, this method can be executed to log a successful login.
      */
     abstract public function logSuccessfulAuth();
 

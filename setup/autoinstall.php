@@ -14,7 +14,7 @@
  */
 
 // first, check if the file is being called by the CLI
-if (PHP_SAPI != 'cli') {
+if ('cli' !== PHP_SAPI) {
     die('This program is suppsoed to be run from the command line.');
 }
 
@@ -22,8 +22,6 @@ if (PHP_SAPI != 'cli') {
 set_time_limit(0);
 // some systems also report notices to the console which is rather annoying
 error_reporting(E_ALL ^ E_NOTICE);
-
-echo('startup...');
 
 if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
@@ -41,6 +39,8 @@ $cliSetup = new cCLISetup($args);
 define('CON_SETUP_PATH', str_replace('\\', '/', realpath(dirname(__FILE__))));
 define('CON_FRONTEND_PATH', str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')));
 include_once('lib/startup.php');
+
+echo('startup...');
 
 // initialize the variables we will need to make sure they are all set to an empty value or their standard value
 initializeVariables();

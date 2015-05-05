@@ -15,6 +15,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+cInclude('includes', 'functions.lay.php');
 cInclude('external', 'codemirror/class.codemirror.php');
 cInclude('classes', 'class.layout.synchronizer.php');
 
@@ -134,9 +135,9 @@ if ($sSelectBox != "") {
     ));
 } else {
     if ($bDeleteFile) {
-        $oPage->displayInfo(i18n("Version history was cleared"));
+        $oPage->displayOk(i18n("Version history was cleared"));
     } else {
-        $oPage->displayWarning(i18n("No layout history available"));
+        $oPage->displayInfo(i18n("No layout history available"));
     }
 
     $oPage->abortRendering();

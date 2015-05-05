@@ -10,7 +10,7 @@
 
 /**
  * Stores Messages in memory.
- * @package Swift
+ *
  * @author  Fabien Potencier
  */
 class Swift_MemorySpool implements Swift_Spool
@@ -19,7 +19,8 @@ class Swift_MemorySpool implements Swift_Spool
 
     /**
      * Tests if this Transport mechanism has started.
-     * @return boolean
+     *
+     * @return bool
      */
     public function isStarted()
     {
@@ -45,11 +46,12 @@ class Swift_MemorySpool implements Swift_Spool
      *
      * @param Swift_Mime_Message $message The message to store
      *
-     * @return boolean Whether the operation has succeeded
+     * @return bool    Whether the operation has succeeded
      */
     public function queueMessage(Swift_Mime_Message $message)
     {
-        $this->messages[] = $message;
+        //clone the message to make sure it is not changed while in the queue
+        $this->messages[] = clone $message;
 
         return true;
     }
@@ -57,10 +59,10 @@ class Swift_MemorySpool implements Swift_Spool
     /**
      * Sends messages using the given transport instance.
      *
-     * @param Swift_Transport $transport A transport instance
-     * @param string[]        &$failedRecipients An array of failures by-reference
+     * @param Swift_Transport $transport        A transport instance
+     * @param string[]        $failedRecipients An array of failures by-reference
      *
-     * @return int The number of sent emails
+     * @return int     The number of sent emails
      */
     public function flushQueue(Swift_Transport $transport, &$failedRecipients = null)
     {

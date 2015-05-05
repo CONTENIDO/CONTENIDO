@@ -37,6 +37,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GUI
  */
 class cGuiNotification {
+
     /**
      * Error message level
      * @var string
@@ -54,6 +55,12 @@ class cGuiNotification {
      * @var string
      */
     const LEVEL_INFO = 'info';
+
+    /**
+     * Ok message level
+     * @var string
+     */
+    const LEVEL_OK = 'ok';
 
     /**
      * Notification message level
@@ -98,6 +105,11 @@ class cGuiNotification {
                 $sHeadClass = 'alertbox_info';
                 $sMessage = '<span>' . $sMessage . '</span>';
                 break;
+            case self::LEVEL_OK:
+            	$sHead = i18n('Ok');
+            	$sHeadClass = 'alertbox_ok';
+            	$sMessage = '<span>' . $sMessage . '</span>';
+            	break;
             default:
                 $sHead = i18n('Notification');
                 $sHeadClass = 'alertbox_notification';
@@ -144,6 +156,9 @@ class cGuiNotification {
             case self::LEVEL_INFO:
                 $oNotifySpan->setClass('notify_general notify_info');
                 break;
+            case self::LEVEL_OK:
+            	$oNotifySpan->setClass('notify_general notify_ok');
+            	break;
             default:
                 $oNotifySpan->setClass('notify_general notify_default');
                 break;

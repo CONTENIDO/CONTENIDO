@@ -61,7 +61,7 @@ if ($action == "recipientgroup_create" && $perm->have_perm_area_action($area, $a
     $oRGroup->loadByPrimaryKey($_REQUEST["idrecipientgroup"]);
 }
 
-if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGroup->get("idlang") == $lang) {
+if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oRGroup->get("idlang") == $lang) {
     if ($action == "recipientgroup_save_group" && $perm->have_perm_area_action($area, $action)) {
         // Saving changes
         $aMessages = array();
@@ -73,7 +73,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
             $oRGroups->setWhere("groupname", stripslashes($sGroupName));
             $oRGroups->setWhere("idclient", $client);
             $oRGroups->setWhere("idlang", $lang);
-            $oRGroups->setWhere($oRGroup->primaryKey, $oRGroup->get($oRGroup->primaryKey), "!=");
+            $oRGroups->setWhere($oRGroup->getPrimaryKeyName(), $oRGroup->get($oRGroup->getPrimaryKeyName()), "!=");
             $oRGroups->query();
 
             if ($oRGroups->next()) {
@@ -291,7 +291,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 
         if ($oInsiders->count() > 0) {
             while ($oInsider = $oInsiders->next()) {
-                $aInsiders[] = $oInsider->get($oInsider->primaryKey);
+                $aInsiders[] = $oInsider->get($oInsider->getPrimaryKeyName());
             }
         }
 

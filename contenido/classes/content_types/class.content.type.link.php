@@ -34,15 +34,15 @@ class cContentTypeLink extends cContentTypeLinkeditor {
      *        types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-        // there are no raw settings here, because CMS_LINK is not saved
-        // separately any more
-        // so compute the appropriate raw settings and call the parent
-        // constructor with them
 
+        // There are no raw settings here, because CMS_LINK is not saved
+        // separately any more. So compute the appropriate raw settings
+        // and call the parent constructor with them.
         if (!cXmlBase::isValidXML($rawSettings)) {
             $rawSettings = $this->_getRawSettings("CMS_LINKEDITOR", $id, $contentTypes);
         }
 
+        // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
     }
 
@@ -50,8 +50,8 @@ class cContentTypeLink extends cContentTypeLinkeditor {
      * Generates the code which should be shown if this content type is shown in
      * the frontend.
      *
-     * @return string escaped HTML code which sould be shown if content type is
-     *         shown in frontend
+     * @return string
+     *         escaped HTML code which sould be shown if content type is shown in frontend
      */
     public function generateViewCode() {
         return $this->_encodeForOutput($this->_generateHref());
@@ -60,8 +60,8 @@ class cContentTypeLink extends cContentTypeLinkeditor {
     /**
      * Generates the code which should be shown if this content type is edited.
      *
-     * @return string escaped HTML code which should be shown if content type is
-     *         edited
+     * @return string
+     *         escaped HTML code which should be shown if content type is edited
      */
     public function generateEditCode() {
         return $this->generateViewCode();

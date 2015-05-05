@@ -97,7 +97,8 @@ class cPager {
     /**
      * Returns if the currentPage pointer is the first page.
      *
-     * @return boolean True if we're on the first page.
+     * @return bool
+     *         True if we're on the first page.
      */
     public function isFirstPage() {
         if ($this->_currentPage == 1) {
@@ -110,7 +111,8 @@ class cPager {
     /**
      * Returns if the currentPage pointer is the last page.
      *
-     * @return boolean True if we're on the last page.
+     * @return bool
+     *         True if we're on the last page.
      */
     public function isLastPage() {
         if ($this->_currentPage == $this->getMaxPages()) {
@@ -123,7 +125,8 @@ class cPager {
     /**
      * Returns the amount of pages.
      *
-     * @return int Page count
+     * @return int
+     *         Page count
      */
     public function getMaxPages() {
         if ($this->_items == 0) {
@@ -142,7 +145,8 @@ class cPager {
      * Key : Page Number
      * Value: | for "...", "current" for the current item, page number otherwise
      *
-     * @return array Pager structure
+     * @return array
+     *         Pager structure
      */
     public function getPagesInRange() {
         $items = array();

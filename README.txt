@@ -1,11 +1,12 @@
-﻿CONTENIDO Version 4.9.4
+﻿CONTENIDO Version 4.9.7
 Lizenz:        GNU General Public Licence (GPL)
-Copyright:     (c) 2003-2013, four for business AG
+Copyright:     (c) 2003-2015, four for business AG
 
 <take care>
 WARNUNG: Versionen, die mit Alpha, Beta oder RC markiert sind,
 sind definitiv nicht für den produktiven Einsatz gedacht!
 </take care>
+
 
 Keine Haftung und Gewährleistung für mittelbare und unmittelbare
 Schäden. Weitere Infos finden Sie in der GPL-Lizenz.
@@ -68,16 +69,20 @@ Lizenzen von verwendeten Produkten / Licenses of used third party products:
   Lizenz:      GNU General Public Licence (GPL)
   Information: http://www.bitfolge.de/?l=en&s=pseudocron
 
-- Smarty 3.1.14
+- Smarty 3.1.21
   Lizenz:      GNU Lesser General Public License 2.1 or later
   Information: http://www.smarty.net/
 
-- SwiftMailer 4.2.1
-  Lizenz:      GNU Lesser General Public License v3
+- SwiftMailer 5.4.0
+  Lizenz:      MIT License
   Information: http://swiftmailer.org/
 
-- TinyMCE 3.5.8
+- TinyMCE 3.5.10
   Lizenz:      GNU Lesser General Public License
+  Information: http://www.tinymce.com/
+  
+- TinyMCE 4.1.7
+  Lizenz:      GNU Lesser General Public License 2.1
   Information: http://www.tinymce.com/
 
 - tipsy, facebook style tooltips for jquery 1.0.0a

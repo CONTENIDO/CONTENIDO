@@ -67,7 +67,7 @@
 		height: 16px;
 		width: 16px;
 		border: 0px;
-	    background-color: none;
+	    /*background-color: none;*/
 	    cursor: pointer;
 	    outline: 0;
 		font-size: 0;
@@ -161,8 +161,8 @@
             <tr valign="top" style="display:{NEWARTSTYLE};">
                 <td class="text_medium">{PUBLISHING_DATE_LABEL}</td>
                 <td class="text_medium">
-                	<input type="text" name="publishing_date" id="publishing_date" value="{PUBLISHING_DATE}" size="20" maxlength="40" class="text_medium" {DISABLED} style="width: 130px;">
-				</td>                
+                    <input type="text" name="publishing_date" id="publishing_date" value="{PUBLISHING_DATE}" size="20" maxlength="40" class="text_medium" {DISABLED} style="width: 130px;">
+		</td>
                 <td class="text_medium">{PUBLISHER}</td>
                 <td class="text_medium">{PUBLISHER_NAME}</td>
             </tr>
@@ -301,7 +301,14 @@ function removeAssignments(idart, idcat) {
 }
 
 function disableFunctionsOnTimeControl() {
-    // Timecontrol enabled => disable Online and Startaticle
+    // CON-2134
+    // do not enable online and start article elements on frozen article
+    if (true === document.getElementById("timemgmt").disabled
+    && true === document.getElementById("online").disabled) {
+        return;
+    }
+
+    // Timecontrol enabled => disable Online and Startarticle
     if (document.getElementById("timemgmt").checked == true) {
         document.getElementById("is_start").checked = false;
         document.getElementById("is_start").disabled = true;

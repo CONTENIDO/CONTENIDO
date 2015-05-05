@@ -73,8 +73,10 @@ $tpl->display('get.tpl');
  */
 function addArticlesToTree(array $tree) {
 
+	$startidartlang = getStartIdArtLang();
+
     foreach ($tree as $key => $wrapper) {
-        $tree[$key]['articles'] = getArticlesFromCategory($wrapper['idcat']);
+        $tree[$key]['articles'] = getArticlesFromCategory($wrapper['idcat'], $startidartlang);
         $tree[$key]['subcats'] = addArticlesToTree($tree[$key]['subcats']);
     }
 
@@ -83,11 +85,32 @@ function addArticlesToTree(array $tree) {
 }
 
 /**
+ * Get startidartlang as array
+ *
+ * @return array startidartlang
+ */
+function getStartIdArtLang() {
+	$cfg = cRegistry::getConfig();
+	$db = cRegistry::getDb();
+
+	// get all startidartlangs
+	$startidartlang = array();
+
+	$sql = 'SELECT startidartlang FROM  `' . $cfg['tab']['cat_lang'] . '` WHERE visible = 1 AND public = 1';
+	$ret = $db->query($sql);
+	while ($db->next_record()) {
+		$startidartlang[] = $db->f('startidartlang');
+	}
+
+	return $startidartlang;
+}
+
+/**
  * Add all online and searchable articles of theses categories to the sitemap.
  *
  * @param int $categoryId
  */
-function getArticlesFromCategory($categoryId) {
+function getArticlesFromCategory($categoryId, $startidartlang) {
 
     $cfg = cRegistry::getConfig();
     $db = cRegistry::getDb();
@@ -96,7 +119,7 @@ function getArticlesFromCategory($categoryId) {
     // needed fields: idart, lastmodified, sitemapprio, changefreq
     $sql = '-- getArticlesFromCategory()
         SELECT
-            al.idart
+            al.idartlang
             , UNIX_TIMESTAMP(al.lastmodified) AS lastmod
             , al.changefreq
             , al.sitemapprio
@@ -117,9 +140,13 @@ function getArticlesFromCategory($categoryId) {
     $array = array();
     if (false !== $ret) {
         while ($db->next_record()) {
-            $article = new cApiArticleLanguage();
-            $article->loadByPrimaryKey($db->f('idart'));
-            $array[] = $article;
+
+        	if (!in_array($db->f('idartlang'), $startidartlang)) {
+
+	            $article = new cApiArticleLanguage();
+	            $article->loadByPrimaryKey($db->f('idartlang'));
+	            $array[] = $article;
+        	}
         }
     }
 

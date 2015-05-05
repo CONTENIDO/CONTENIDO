@@ -35,12 +35,17 @@ class cApiSearchTrackingCollection extends ItemCollection {
     /**
      * Create a new tracking row
      *
-     * @param string $searchTerm Term the user searched for
-     * @param int $searchResults Number of results
-     * @param string $timestamp [optional] Timestamp of the search
-     * @param number $idclient [optional] Client
-     * @param number $idlang [optional] Language
-     * @return boolean
+     * @param string $searchTerm
+     *         Term the user searched for
+     * @param int $searchResults
+     *         Number of results
+     * @param string $timestamp [optional]
+     *         Timestamp of the search
+     * @param number $idclient [optional]
+     *         Client
+     * @param number $idlang [optional]
+     *         Language
+     * @return bool
      */
     public function create($searchTerm, $searchResults, $timestamp = "", $idclient = 0, $idlang = 0) {
         $item = $this->createNewItem();
@@ -56,9 +61,11 @@ class cApiSearchTrackingCollection extends ItemCollection {
     /**
      * Track a search if the setting allows it.
      *
-     * @param string $searchTerm Term the user searched for
-     * @param int $resultCount Number of results
-     * @return boolean
+     * @param string $searchTerm
+     *         Term the user searched for
+     * @param int $resultCount
+     *         Number of results
+     * @return bool
      */
     public function trackSearch($searchTerm, $resultCount) {
         if (getEffectiveSetting("search", "term_tracking", "on") != "on") {
@@ -72,11 +79,11 @@ class cApiSearchTrackingCollection extends ItemCollection {
      * Select all search terms of this client and language and sort them by
      * popularity
      *
-     * @param number $idclient [optional] Use this client instead of the current
-     *            one
-     * @param number $idlang [optional] Use this language instead of the current
-     *            one
-     * @return boolean
+     * @param number $idclient [optional]
+     *         Use this client instead of the current one
+     * @param number $idlang [optional]
+     *         Use this language instead of the current one
+     * @return bool
      */
     public function selectPopularSearchTerms($idclient = 0, $idlang = 0) {
         return $this->select('idclient=' . (($idclient == 0) ? cRegistry::getClientId() : $idclient) . ' AND idlang=' . (($idlang == 0) ? cRegistry::getLanguageId() : $idlang), 'searchterm', 'COUNT(searchterm) DESC');
@@ -86,15 +93,16 @@ class cApiSearchTrackingCollection extends ItemCollection {
      * Select all entries about one search term for this client and language
      * sorted by the date
      *
-     * @param string $term Term the user searched for
-     * @param number $idclient [optional] Use this client instead of the current
-     *            one
-     * @param number $idlang [optional] Use this language instead of the current
-     *            one
-     * @return boolean
+     * @param string $term
+     *         Term the user searched for
+     * @param number $idclient [optional]
+     *         Use this client instead of the current one
+     * @param number $idlang [optional]
+     *         Use this language instead of the current one
+     * @return bool
      */
     public function selectSearchTerm($term, $idclient = 0, $idlang = 0) {
-        return $this->select('searchterm=\'' . $term . '\' AND idclient=' . (($idclient == 0) ? cRegistry::getClientId() : $idclient) . ' AND idlang=' . (($idlang == 0) ? cRegistry::getLanguageId() : $idlang), '', 'datesearched DESC');
+        return $this->select('searchterm=\'' . addslashes($term) . '\' AND idclient=' . (($idclient == 0) ? cRegistry::getClientId() : $idclient) . ' AND idlang=' . (($idlang == 0) ? cRegistry::getLanguageId() : $idlang), '', 'datesearched DESC');
     }
 
 }
@@ -110,7 +118,8 @@ class cApiSearchTracking extends Item {
     /**
      * Default constructor
      *
-     * @param string $mId Item Id
+     * @param string $mId
+     *         Item Id
      */
     public function __construct($mId = false) {
         global $cfg;

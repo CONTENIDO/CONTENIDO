@@ -34,7 +34,7 @@ abstract class Item extends cItemBaseAbstract {
 
     /**
      * Storage of the fields which were modified, where the keys are the
-     * fieldnames and the values just simple booleans.
+     * fieldnames and the values just simple bools.
      *
      * @var array
      */
@@ -85,32 +85,54 @@ abstract class Item extends cItemBaseAbstract {
     /**
      * Constructor function
      *
-     * @param string $sTable The table to use as information source
-     * @param string $sPrimaryKey The primary key to use
-     * @param int $iLifetime
+     * @param string $sTable
+     *         The table to use as information source
+     * @param string $sPrimaryKey
+     *         The primary key to use
      */
     public function __construct($sTable, $sPrimaryKey) {
         parent::__construct($sTable, $sPrimaryKey, get_parent_class($this));
     }
 
     /**
+     * Resets class variables back to default
+     * This is handy in case a new item is tried to be loaded into this class instance.
+     */
+    protected function _resetItem() {
+        parent::_resetItem();
+
+        // make sure not to reset filters because then default filters would always be used for loading
+        $this->values = null;
+        $this->modifiedValues = null;
+        $this->_metaObject = null;
+        $this->_lastSQL = null;
+    }
+
+    /**
      * Loads an item by colum/field from the database.
      *
-     * @param string $sField Specifies the field
-     * @param mixed $mValue Specifies the value
-     * @param bool $bSafe Use inFilter or not
-     * @throws cException if more than one item has been found matching the
-     *         given arguments
-     * @return bool True if the load was successful
+     * @param string $sField
+     *         Specifies the field
+     * @param mixed $mValue
+     *         Specifies the value
+     * @param bool $bSafe
+     *         Use inFilter or not
+     * @throws cException
+     *         if more than one item has been found matching the given arguments
+     * @return bool
+     *         True if the load was successful
      */
     public function loadBy($sField, $mValue, $bSafe = true) {
+        // reset class variables back to default before loading
+        $this->_resetItem();
+
         if ($bSafe) {
             $mValue = $this->_inFilter($mValue);
         }
 
         // check, if cache contains a matching entry
         $aRecordSet = NULL;
-        if ($sField === $this->primaryKey) {
+        if ($sField === $this->_primaryKeyName) {
             $aRecordSet = $this->_oCache->getItem($mValue);
         } else {
             $aRecordSet = $this->_oCache->getItemByProperty($sField, $mValue);
@@ -142,27 +164,34 @@ abstract class Item extends cItemBaseAbstract {
         }
 
         $this->loadByRecordSet($this->db->toArray());
+        $this->_setLoaded(true);
         return true;
     }
 
     /**
      * Loads an item by colums/fields from the database.
      *
-     * @param array $aAttributes associative array with field / value pairs
-     * @param bool $bSafe Use inFilter or not
-     * @throws cException if more than one item could be found matching the
-     *         given arguments
-     * @return bool True if the load was successful
+     * @param array $aAttributes
+     *         associative array with field / value pairs
+     * @param bool $bSafe
+     *         Use inFilter or not
+     * @throws cException
+     *         if more than one item could be found matching the given arguments
+     * @return bool
+     *         True if the load was successful
      */
     public function loadByMany(array $aAttributes, $bSafe = true) {
+        // reset class variables back to default before loading
+        $this->_resetItem();
+
         if ($bSafe) {
             $aAttributes = $this->_inFilter($aAttributes);
         }
 
         // check, if cache contains a matching entry
         $aRecordSet = NULL;
-        if (count($aAttributes) == 1 && isset($aAttributes[$this->primaryKey])) {
-            $aRecordSet = $this->_oCache->getItem($aAttributes[$this->primaryKey]);
+        if (count($aAttributes) == 1 && isset($aAttributes[$this->getPrimaryKeyName()])) {
+            $aRecordSet = $this->_oCache->getItem($aAttributes[$this->getPrimaryKeyName()]);
         } else {
             $aRecordSet = $this->_oCache->getItemByProperties($aAttributes);
         }
@@ -205,6 +234,7 @@ abstract class Item extends cItemBaseAbstract {
         }
 
         $this->loadByRecordSet($this->db->toArray());
+        $this->_setLoaded(true);
         return true;
     }
 
@@ -216,15 +246,17 @@ abstract class Item extends cItemBaseAbstract {
      * NOTE: Passed value has to be escaped before. This will not be done by
      * this function.
      *
-     * @param string $sWhere The where clause like 'idart = 123 AND idlang = 1'
-     * @throws cException if more than one item could be found matching the
-     *         given where clause
-     * @return bool True if the load was successful
+     * @param string $sWhere
+     *         The where clause like 'idart = 123 AND idlang = 1'
+     * @throws cException
+     *         if more than one item could be found matching the given where clause
+     * @return bool
+     *         True if the load was successful
      */
     protected function _loadByWhereClause($sWhere) {
         // SQL-Statement to select by whee clause
         $sql = "SELECT %s AS pk FROM `%s` WHERE " . (string) $sWhere;
-        $sql = $this->db->prepare($sql, $this->primaryKey, $this->table);
+        $sql = $this->db->prepare($sql, $this->getPrimaryKeyName(), $this->table);
 
         // Query the database
         $this->db->query($sql);
@@ -248,11 +280,13 @@ abstract class Item extends cItemBaseAbstract {
     /**
      * Loads an item by ID from the database.
      *
-     * @param string $mValue Specifies the primary key value
-     * @return bool True if the load was successful
+     * @param string $mValue
+     *         Specifies the primary key value
+     * @return bool
+     *         True if the load was successful
      */
     public function loadByPrimaryKey($mValue) {
-        $bSuccess = $this->loadBy($this->primaryKey, $mValue);
+        $bSuccess = $this->loadBy($this->_primaryKeyName, $mValue);
 
         if ($bSuccess == true && method_exists($this, '_onLoad')) {
             $this->_onLoad();
@@ -264,26 +298,18 @@ abstract class Item extends cItemBaseAbstract {
     /**
      * Loads an item by it's recordset.
      *
-     * @param array $aRecordSet The recordset of the item
+     * @param array $aRecordSet
+     *         The recordset of the item
      */
     public function loadByRecordSet(array $aRecordSet) {
         $this->values = $aRecordSet;
-        $this->oldPrimaryKey = $this->values[$this->primaryKey];
-        $this->virgin = false;
+        $this->oldPrimaryKey = $this->values[$this->getPrimaryKeyName()];
+        $this->_setLoaded(true);
         $this->_oCache->addItem($this->oldPrimaryKey, $this->values);
 
         if (method_exists($this, '_onLoad')) {
             $this->_onLoad();
         }
-    }
-
-    /**
-     * Checks if a the item is already loaded.
-     *
-     * @return bool
-     */
-    public function isLoaded() {
-        return !$this->virgin;
     }
 
     /**
@@ -296,18 +322,21 @@ abstract class Item extends cItemBaseAbstract {
     /**
      * Gets the value of a specific field.
      *
-     * @param string $sField Specifies the field to retrieve
-     * @param bool $bSafe Flag to run defined outFilter on passed value
-     * @return mixed Value of the field
+     * @param string $sField
+     *         Specifies the field to retrieve
+     * @param bool $bSafe
+     *         Flag to run defined outFilter on passed value
+     * @return mixed
+     *         Value of the field
      */
     public function getField($sField, $bSafe = true) {
-        if ($this->virgin == true) {
+        if (true !== $this->isLoaded()) {
             $this->lasterror = 'No item loaded';
             return false;
         }
 
         if (true == $bSafe) {
-            return $this->_outFilter($this->values[$sField]);
+            return $this->outFilter($this->values[$sField]);
         } else {
             return $this->values[$sField];
         }
@@ -316,9 +345,12 @@ abstract class Item extends cItemBaseAbstract {
     /**
      * Wrapper for getField (less to type).
      *
-     * @param string $sField Specifies the field to retrieve
-     * @param bool $bSafe Flag to run defined outFilter on passed value
-     * @return mixed Value of the field
+     * @param string $sField
+     *         Specifies the field to retrieve
+     * @param bool $bSafe
+     *         Flag to run defined outFilter on passed value
+     * @return mixed
+     *         Value of the field
      */
     public function get($sField, $bSafe = true) {
         return $this->getField($sField, $bSafe);
@@ -327,18 +359,21 @@ abstract class Item extends cItemBaseAbstract {
     /**
      * Sets the value of a specific field.
      *
-     * @param string $sField Field name
-     * @param string $mValue Value to set
-     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @param string $sField
+     *         Field name
+     * @param string $mValue
+     *         Value to set
+     * @param bool $bSafe
+     *         Flag to run defined inFilter on passed value
      * @return bool
      */
     public function setField($sField, $mValue, $bSafe = true) {
-        if ($this->virgin == true) {
+        if (true !== $this->isLoaded()) {
             $this->lasterror = 'No item loaded';
             return false;
         }
 
-        if ($sField == $this->primaryKey) {
+        if ($sField == $this->getPrimaryKeyName()) {
             $this->oldPrimaryKey = $this->values[$sField];
         }
 
@@ -361,9 +396,13 @@ abstract class Item extends cItemBaseAbstract {
     /**
      * Shortcut to setField.
      *
-     * @param string $sField Field name
-     * @param string $mValue Value to set
-     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @param string $sField
+     *         Field name
+     * @param mixed $mValue
+     *         Value to set
+     * @param bool $bSafe
+     *         Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function set($sField, $mValue, $bSafe = true) {
         return $this->setField($sField, $mValue, $bSafe);
@@ -379,7 +418,7 @@ abstract class Item extends cItemBaseAbstract {
             $this
         ));
 
-        if ($this->virgin == true) {
+        if (true !== $this->isLoaded()) {
             $this->lasterror = 'No item loaded';
             $this->_executeCallbacks(self::STORE_FAILURE, get_class($this), array(
                 $this
@@ -411,7 +450,7 @@ abstract class Item extends cItemBaseAbstract {
             }
         }
 
-        $sql .= " WHERE " . $this->primaryKey . " = '" . $this->oldPrimaryKey . "'";
+        $sql .= " WHERE " . $this->getPrimaryKeyName() . " = '" . $this->oldPrimaryKey . "'";
 
         $this->db->query($sql);
 
@@ -434,10 +473,10 @@ abstract class Item extends cItemBaseAbstract {
     /**
      * Returns current item data as an assoziative array.
      *
-     * @return array false
+     * @return array|false
      */
     public function toArray() {
-        if ($this->virgin == true) {
+        if (true !== $this->isLoaded()) {
             $this->lasterror = 'No item loaded';
             return false;
         }
@@ -452,7 +491,7 @@ abstract class Item extends cItemBaseAbstract {
     /**
      * Returns current item data as an object.
      *
-     * @return stdClass false
+     * @return stdClass|false
      */
     public function toObject() {
         $return = $this->toArray();
@@ -462,71 +501,83 @@ abstract class Item extends cItemBaseAbstract {
     /**
      * Sets a custom property.
      *
-     * @param string $sType Specifies the type
-     * @param string $sName Specifies the name
-     * @param mixed $mValue Specifies the value
-     * @param int $iClient Id of client to set property for
+     * @param string $sType
+     *         Specifies the type
+     * @param string $sName
+     *         Specifies the name
+     * @param mixed $mValue
+     *         Specifies the value
+     * @param int $iClient
+     *         Id of client to set property for
      * @return bool
      */
     public function setProperty($sType, $sName, $mValue, $iClient = 0) {
         // If this object wasn't loaded before, return false
-        if ($this->virgin == true) {
+        if (true !== $this->isLoaded()) {
             $this->lasterror = 'No item loaded';
             return false;
         }
 
         // Set the value
         $oProperties = $this->_getPropertiesCollectionInstance($iClient);
-        $bResult = $oProperties->setValue($this->primaryKey, $this->get($this->primaryKey), $sType, $sName, $mValue);
+        $bResult = $oProperties->setValue($this->getPrimaryKeyName(), $this->get($this->getPrimaryKeyName()), $sType, $sName, $mValue);
         return $bResult;
     }
 
     /**
      * Returns a custom property.
      *
-     * @param string $sType Specifies the type
-     * @param string $sName Specifies the name
-     * @param int $iClient Id of client to set property for
-     * @return mixed Value of the given property or false
+     * @param string $sType
+     *         Specifies the type
+     * @param string $sName
+     *         Specifies the name
+     * @param int $iClient
+     *         Id of client to set property for
+     * @return mixed
+     *         Value of the given property or false
      */
     public function getProperty($sType, $sName, $iClient = 0) {
         // If this object wasn't loaded before, return false
-        if ($this->virgin == true) {
+        if (true !== $this->isLoaded()) {
             $this->lasterror = 'No item loaded';
             return false;
         }
 
         // Return the value
         $oProperties = $this->_getPropertiesCollectionInstance($iClient);
-        $mValue = $oProperties->getValue($this->primaryKey, $this->get($this->primaryKey), $sType, $sName);
+        $mValue = $oProperties->getValue($this->getPrimaryKeyName(), $this->get($this->getPrimaryKeyName()), $sType, $sName);
         return $mValue;
     }
 
     /**
      * Deletes a custom property.
      *
-     * @param string $sType Specifies the type
-     * @param string $sName Specifies the name
-     * @param int $iClient Id of client to delete properties
+     * @param string $sType
+     *         Specifies the type
+     * @param string $sName
+     *         Specifies the name
+     * @param int $iClient
+     *         Id of client to delete properties
      * @return bool
      */
     public function deleteProperty($sType, $sName, $iClient = 0) {
         // If this object wasn't loaded before, return false
-        if ($this->virgin == true) {
+        if (true !== $this->isLoaded()) {
             $this->lasterror = 'No item loaded';
             return false;
         }
 
         // Delete the value
         $oProperties = $this->_getPropertiesCollectionInstance($iClient);
-        $bResult = $oProperties->deleteValue($this->primaryKey, $this->get($this->primaryKey), $sType, $sName);
+        $bResult = $oProperties->deleteValue($this->getPrimaryKeyName(), $this->get($this->getPrimaryKeyName()), $sType, $sName);
         return $bResult;
     }
 
     /**
      * Deletes a custom property by its id.
      *
-     * @param int $idprop Id of property
+     * @param int $idprop
+     *         Id of property
      * @return bool
      */
     public function deletePropertyById($idprop) {
@@ -536,11 +587,10 @@ abstract class Item extends cItemBaseAbstract {
 
     ///**
     // * Deletes the current item
+    // * Method doesn't work, remove in future versions.
     // */
-    // Method doesn't work, remove in future versions
-    // function delete()
-    // {
-    // $this->_collectionInstance->delete($item->get($this->primaryKey));
+    // function delete() {
+    // $this->_collectionInstance->delete($item->get($this->getPrimaryKeyName()));
     // }
 
     /**
@@ -554,8 +604,10 @@ abstract class Item extends cItemBaseAbstract {
      * 'htmlencode'));
      * </pre>
      *
-     * @param array $aInFilters Array with function names
-     * @param array $aOutFilters Array with function names
+     * @param array $aInFilters
+     *         Array with function names
+     * @param array $aOutFilters
+     *         Array with function names
      */
     public function setFilters($aInFilters = array(), $aOutFilters = array()) {
         $this->_arrInFilters = $aInFilters;
@@ -566,10 +618,12 @@ abstract class Item extends cItemBaseAbstract {
      * Filters the passed data using the functions defines in the _arrInFilters
      * array.
      *
-     * @param mixed $mData Data to filter
-     * @return mixed Filtered data
      * @todo This method is used from public scope, but it should be protected
-     * @see setFilters()
+     * @see Item::setFilters()
+     * @param mixed $mData
+     *         Data to filter
+     * @return mixed
+     *         Filtered data
      */
     public function _inFilter($mData) {
         foreach ($this->_arrInFilters as $_function) {
@@ -590,12 +644,13 @@ abstract class Item extends cItemBaseAbstract {
      * Filters the passed data using the functions defines in the _arrOutFilters
      * array.
      *
-     *
-     * @param mixed $mData Data to filter
-     * @return mixed Filtered data
-     * @see setFilters()
+     * @see Item::setFilters()
+     * @param mixed $mData
+     *         Data to filter
+     * @return mixed
+     *         Filtered data
      */
-    protected function _outFilter($mData) {
+    public function outFilter($mData) {
         foreach ($this->_arrOutFilters as $_function) {
             if (function_exists($_function)) {
                 if (is_array($mData)) {
