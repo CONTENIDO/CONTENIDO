@@ -137,14 +137,9 @@ if (($action == 'savecontype' || $action == 10)) {
         $page->displayError(i18n("Permission denied"));
     }
 } else if ($action == 'deletecontype') {
-<<<<<<< HEAD
-    if ($perm->have_perm_area_action($Area, "deletecontype") || $perm->have_perm_area_action_item($area, "deletecontype", $idcat)) {
-        if (isset($_REQUEST['idcontent']) && is_numeric($_REQUEST['idcontent'])) {
-=======
     if ($perm->have_perm_area_action($area, "deletecontype") || $perm->have_perm_area_action_item($area, "deletecontype", $idcat)) {
        if (isset($_REQUEST['idcontent']) && is_numeric($_REQUEST['idcontent'])) {
             $oContentColl = new cApiContentCollection();
->>>>>>> origin/develop
 
             $linkedTypes = array(
                 4 => 22, // if a CMS_IMG is deleted, the corresponding
@@ -209,13 +204,9 @@ if (($action == 'savecontype' || $action == 10)) {
                 default:
                     break;
             }
-<<<<<<< HEAD
-
-            $notification->displayNotification("info", i18n("Changes saved"));
-=======
+            
             $oContentColl->delete((int) $_REQUEST['idcontent']);
             $aNotifications[] = $notification->returnNotification("info", i18n("Changes saved"));
->>>>>>> origin/develop
 
             conGenerateCodeForArtInAllCategories($idart);
         }
@@ -438,13 +429,9 @@ if (($action == 'savecontype' || $action == 10)) {
                     $error = true;
                 }
             }
-<<<<<<< HEAD
-            if ($error === false) {
-                $page->displayInfo(i18n("Raw data was imported successfully"));
-=======
+            
             if($error === false) {
                 $page->displayOk(i18n("Raw data was imported successfully"));
->>>>>>> origin/develop
             }
         } catch (Exception $e) {
             $page->displayError(i18n("Error: The XML file is not valid"));
@@ -452,9 +439,8 @@ if (($action == 'savecontype' || $action == 10)) {
     } else {
         $page->displayWarning(i18n("Please choose a file"));
     }
-<<<<<<< HEAD
-=======
 }
+
 if (count($aNotifications) > 0) {
     $sNotifications = '';
     foreach ($aNotifications as $curNotification) {
@@ -463,7 +449,6 @@ if (count($aNotifications) > 0) {
     $page->set('s', 'NOTIFICATIONS', $sNotifications);
 } else {
     $page->set('s', 'NOTIFICATIONS', '');
->>>>>>> origin/develop
 }
 
 if (count($aNotifications) > 0) {
@@ -505,27 +490,11 @@ switch ($versioningState) {
             }
         }
 
-<<<<<<< HEAD
         // Get Content or Content Version
         if ($articleType == 'current' || $articleType == 'editable') {
             $selectedArticle->loadArticleContent();
         } else if ($articleType == 'version') {
             $selectedArticle->loadArticleVersionContent();
-=======
-foreach ($sortID as $name) {
-    // $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id,
-    // a.value as value FROM " . $cfg["tab"]["content"] . " as a, " .
-    // $cfg["tab"]["type"] . " as b WHERE a.idartlang = " .
-    // cSecurity::toInteger($_REQUEST["idartlang"]) . " AND a.idtype = b.idtype
-    // AND b.type = '" . cSecurity::toString($name) . "' ORDER BY idtype,
-    // typeid, idcontent";
-    $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM %s AS a, %s AS b " . "WHERE a.idartlang = %d AND a.idtype = b.idtype AND b.type = '%s' ORDER BY idtype, typeid, idcontent";
-    $db->query($sql, $cfg["tab"]["content"], $cfg["tab"]["type"], $_REQUEST["idartlang"], $name);
-    while ($db->nextRecord()) {
-        $result[$db->f("name")][$db->f("id")] = $db->f("value");
-        if (!in_array($db->f("name"), $aList)) {
-            $aList[$db->f("idtype")] = $db->f("name");
->>>>>>> origin/develop
         }
         $result = array_change_key_case($selectedArticle->content, CASE_UPPER);
         $result = $versioning->sortResults($result);
@@ -820,19 +789,11 @@ $page->set('s', 'QUESTION', html_entity_decode(i18n('You have unsaved changes.')
 $page->set('s', 'BACKEND_URL', cRegistry::getBackendUrl());
 
 // Add export and import translations
-<<<<<<< HEAD
-$page->set('s', 'EXPORT_RAWDATA', i18n('Export raw data'));
-$page->set('s', 'IMPORT_RAWDATA', i18n('Import raw data'));
-$page->set('s', 'EXPORT_LABEL', i18n('Raw data export'));
-$page->set('s', 'IMPORT_LABEL', i18n('Raw data import'));
-$page->set('s', 'OVERWRITE_DATA_LABEL', i18n('Overwrite data'));
-=======
 $page->set('s', 'EXPORT_RAWDATA', i18n("Export raw data"));
 $page->set('s', 'IMPORT_RAWDATA', i18n("Import raw data"));
 $page->set('s', 'EXPORT_LABEL', i18n("Raw data export"));
 $page->set('s', 'IMPORT_LABEL', i18n("Raw data import"));
 $page->set('s', 'OVERWRITE_DATA_LABEL', i18n("Overwrite data"));
->>>>>>> origin/develop
 
 //CON-2151 check if article is locked
 $aAuthPerms = explode(',', $auth->auth['perm']);
@@ -856,52 +817,23 @@ if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false'
 $breadcrumb = renderBackendBreadcrumb($syncoptions, true, true);
 $page->set('s', 'CATEGORY', $breadcrumb);
 if (count($result) <= 0) {
-<<<<<<< HEAD
     $page->displayInfo(i18n('Article has no raw data'));
 } else {
     foreach ($result AS $type => $typeIdValue) {
         foreach ($typeIdValue AS $typeId => $value) {
             if (($articleType == 'editable' || $articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple'))) {
                 $class = '';
-                $formattedVersion = '';
             } else if ($articleType == 'current' || $articleType == 'version') {
-                $class = ' noactive';
-                $formattedVersion = '';
-=======
-    $page->displayInfo(i18n("Article has no raw data"));
-//    $page->abortRendering();
-    // $layoutcode .= '<div>--- ' . i18n("none") . ' ---</div>';
-} else {
-    foreach ($aIdtype as $idtype) {
-        foreach ($sortID as $name) {
-            if (in_array($name, array_keys($result)) && isset($result[$name][$idtype])) {
-                if (in_array($name . "[" . $idtype . "]", $currentTypes)) {
-                    $class = '';
-                } else {
-                    $class = ' noactive';
-                }
-                $page->set("d", "EXTRA_CLASS", $class);
-                $page->set("d", "NAME", $name);
-                $page->set("d", "ID_TYPE", $idtype);
-                if(in_array($name, $allowedContentTypes)) {
-                    $page->set("d", "EXPORT_CONTENT",  '<input type="checkbox" class="rawtypes" name="' . $name .'" value="' .$idtype .'" checked="checked">');
-                    $page->set('d', 'EXPORT_CONTENT_LABEL', i18n("Export"));
-                } else {
-                    $page->set("d", "EXPORT_CONTENT", '');
-                    $page->set('d', 'EXPORT_CONTENT_LABEL', '');
-                }
-                $page->next();
->>>>>>> origin/develop
+                $class = ' noactive'; 
             }
-            $page->set('d', 'EXTRA_CLASS', $class);
-            $page->set('d', 'NAME', $type);
-            $page->set('d', 'ID_TYPE', $typeId);
-            $page->set('d', 'FORMATTED_VERSION', $formattedVersion);
-            if (in_array($type, $allowedContentTypes)) {
-                $page->set('d', 'EXPORT_CONTENT', '<input type="checkbox" class="rawtypes" name="' . $type . $typeId . '" value="' . $typeId . '" checked="checked">');
+            $page->set("d", "EXTRA_CLASS", $class);
+            $page->set("d", "NAME", $name);
+            $page->set("d", "ID_TYPE", $idtype);
+            if(in_array($name, $allowedContentTypes)) {
+                $page->set("d", "EXPORT_CONTENT",  '<input type="checkbox" class="rawtypes" name="' . $name .'" value="' .$idtype .'" checked="checked">');
                 $page->set('d', 'EXPORT_CONTENT_LABEL', i18n("Export"));
             } else {
-                $page->set('d', 'EXPORT_CONTENT', '');
+                $page->set("d", "EXPORT_CONTENT", '');
                 $page->set('d', 'EXPORT_CONTENT_LABEL', '');
             }
             $page->next();
@@ -1061,26 +993,12 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
             $num = $val;
             $search[$num] = sprintf('%s[%s]', $type, $val);
 
-<<<<<<< HEAD
             $path = $backendUrl . 'main.php?area=con_content_list&action=deletecontype&changeview=edit&idart=' . $idart . '&idartlang=' . $idartlang . '&idcat=' . $idcat . '&client=' . $client . '&lang=' . $lang . '&frame=4&contenido=' . $contenido . '&idcontent=' . $idcontent;
             if ($_typeItem->idtype == 20 || $_typeItem->idtype == 21) {
                 $tmp = str_replace('";?>', '', $tmp);
                 $tmp = str_replace('<?php echo "', '', $tmp);
                 // echo
                 // "<textarea>"."?".">\n".stripslashes($tmp)."\n\";?"."><"."?php\n"."</textarea>";
-=======
-                if ($locked == 0) { // No freeze
-                    $replacements[$val] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); }); return false;">
-                <img alt="" border="0" src="' . $backendUrl . 'images/delete.gif">
-                </a>';
-                    $keycode[$type][$val] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); }); return false;">
-                <img alt="" border="0" src="' . $backendUrl . 'images/delete.gif">
-                </a>';
-                } else { // Freeze status
-                    $replacements[$val] = $tmp;
-                    $keycode[$type][$val] = $tmp;
-                }
->>>>>>> origin/develop
             }
 
             if ($locked == 0 && $articleType == 'editable' || $articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple')) { // No freeze				
