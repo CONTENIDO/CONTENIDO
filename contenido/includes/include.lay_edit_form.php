@@ -35,9 +35,6 @@ if ($idlay != 0) {
     $layout->loadByPrimaryKey($idlay);
 }
 
-// whether layout should be deleted
-$deleteLayout = false;
-
 // check the readOnly boolean to see if changes should be made
 if ((!$readOnly) && $action == "lay_new") {
     if (!$perm->have_perm_area_action_anyitem($area, $action)) {
@@ -70,8 +67,7 @@ if ((!$readOnly) && $action == "lay_new") {
     if (!$perm->have_perm_area_action_anyitem("lay", $action)) {
         $page->displayError(i18n("Permission denied"));
     } else {
-        // delete layout later
-        $deleteLayout = true;
+        $layout = new cApiLayout();
         $page->displayOk(i18n("Layout deleted"));
     }
 } elseif ($action == "lay_sync") {
@@ -102,7 +98,7 @@ if ($refreshtemplates != "") {
     }
 }
 
-if (true === $deleteLayout) {
+if (true === $layout->isLoaded()) {
     $msg = '';
 
     $idlay = $layout->get("idlay");
