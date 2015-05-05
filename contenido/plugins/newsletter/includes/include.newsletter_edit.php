@@ -173,7 +173,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
     }
 }
 
-if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client && $oNewsletter->get("idlang") == $lang) {
+if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $client && $oNewsletter->get("idlang") == $lang) {
 
     // Check and set values
     if ($_REQUEST["optSendTo"] == "") {

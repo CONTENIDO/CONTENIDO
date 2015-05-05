@@ -88,7 +88,7 @@ JS;
     $reloadLeftBottom = '';
 }
 
-if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
+if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
     if ($action == "frontendgroup_save_group" && $perm->have_perm_area_action($area, $action)) {
         $messages = array();
 

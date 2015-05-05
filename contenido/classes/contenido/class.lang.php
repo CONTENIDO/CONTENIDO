@@ -235,7 +235,7 @@ class cApiLanguage extends Item {
     public function getProperty($type, $name, $idclient = 0) {
 
         // skip & return false if item hasn't been loaded
-        if ($this->virgin == true) {
+        if (true !== $this->isLoaded()) {
             $this->lasterror = 'No item loaded';
             return false;
         }

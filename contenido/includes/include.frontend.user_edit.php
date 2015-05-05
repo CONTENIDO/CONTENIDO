@@ -87,7 +87,7 @@ if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "fr
     $page->displayOk(i18n("Delteted user successfully!"));
 }
 
-if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
+if (true === $feuser->isLoaded() && $feuser->get("idclient") == $client) {
     $username = conHtmlentities(stripslashes(trim($username)));
 
     if ($action == "frontend_save_user" && strlen($username) == 0) {
@@ -247,7 +247,7 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
 }
 
 if (!isset($form)) {
-	$page->abortRendering();
+    $page->abortRendering();
 }
 
 $page->render();

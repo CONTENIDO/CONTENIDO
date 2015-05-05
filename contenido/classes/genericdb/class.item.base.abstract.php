@@ -164,7 +164,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * This is handy in case a new item is tried to be loaded into this class instance.
      */
     protected function _resetItem() {
-        $this->virgin = true;
+        $this->_setLoaded(false);
         $this->properties = null;
         $this->lasterror = '';
     }

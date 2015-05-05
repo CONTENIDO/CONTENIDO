@@ -53,7 +53,7 @@ if ($action == "recipients_create" && $perm->have_perm_area_action($area, $actio
     $recipient = new NewsletterRecipient($idrecipient);
 }
 
-if ($recipient->virgin == false && $recipient->get("idclient") == $client && $recipient->get("idlang") == $lang) {
+if (true === $recipient->isLoaded() && $recipient->get("idclient") == $client && $recipient->get("idlang") == $lang) {
     if ($action == "recipients_save" && $perm->have_perm_area_action($area, $action)) {
         $oPage->setReload();
         $aMessages = array();

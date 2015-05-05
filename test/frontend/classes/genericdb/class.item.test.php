@@ -63,7 +63,7 @@ class ItemTest extends PHPUnit_Framework_TestCase {
 
         // this is no virgin anymore
         $this->_testItemNonVirgin = new TestItem();
-        $this->_testItemNonVirgin->virgin = false;
+        $this->_testItemNonVirgin->setLoaded(true);
         $this->_testItemNonVirgin->values = array(
             'foo' => 'bar',
             'spam' => 'eggs'
@@ -117,7 +117,7 @@ class ItemTest extends PHPUnit_Framework_TestCase {
      */
     public function testLoadBy() {
         $this->_testItemVirgin->loadBy('ID', '1');
-        $this->assertSame(false, $this->_testItemVirgin->virgin);
+        $this->assertSame(true, $this->_testItemVirgin->isLoaded());
         $this->assertSame('Kabul', $this->_testItemVirgin->get('Name'));
         $this->markTestIncomplete('incomplete implementation');
     }
@@ -126,7 +126,7 @@ class ItemTest extends PHPUnit_Framework_TestCase {
      */
     public function testLoadByTrue() {
         $this->_testItemVirgin->loadBy('ID', '1', true);
-        $this->assertSame(false, $this->_testItemVirgin->virgin);
+        $this->assertSame(true, $this->_testItemVirgin->isLoaded());
         $this->assertSame('Kabul', $this->_testItemVirgin->get('Name'));
         $this->markTestIncomplete('incomplete implementation');
     }
@@ -135,7 +135,7 @@ class ItemTest extends PHPUnit_Framework_TestCase {
      */
     public function testLoadByFalse() {
         $this->_testItemVirgin->loadBy('ID', '1', false);
-        $this->assertSame(false, $this->_testItemVirgin->virgin);
+        $this->assertSame(true, $this->_testItemVirgin->isLoaded());
         $this->assertSame('Kabul', $this->_testItemVirgin->get('Name'));
         $this->markTestIncomplete('incomplete implementation');
     }
@@ -147,7 +147,7 @@ class ItemTest extends PHPUnit_Framework_TestCase {
             'ID' => '1',
             'CountryCode' => 'AFG'
         ));
-        $this->assertSame(false, $this->_testItemVirgin->virgin);
+        $this->assertSame(true, $this->_testItemVirgin->isLoaded());
         $this->assertSame('Kabul', $this->_testItemVirgin->get('Name'));
         $this->markTestIncomplete('incomplete implementation');
     }
@@ -159,7 +159,7 @@ class ItemTest extends PHPUnit_Framework_TestCase {
             'ID' => '1',
             'CountryCode' => 'AFG'
         ), true);
-        $this->assertSame(false, $this->_testItemVirgin->virgin);
+        $this->assertSame(true, $this->_testItemVirgin->isLoaded());
         $this->assertSame('Kabul', $this->_testItemVirgin->get('Name'));
         $this->markTestIncomplete('incomplete implementation');
     }
@@ -171,7 +171,7 @@ class ItemTest extends PHPUnit_Framework_TestCase {
             'ID' => '1',
             'CountryCode' => 'AFG'
         ), false);
-        $this->assertSame(false, $this->_testItemVirgin->virgin);
+        $this->assertSame(true, $this->_testItemVirgin->isLoaded());
         $this->assertSame('Kabul', $this->_testItemVirgin->get('Name'));
         $this->markTestIncomplete('incomplete implementation');
     }
