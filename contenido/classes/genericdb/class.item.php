@@ -165,7 +165,7 @@ abstract class Item extends cItemBaseAbstract {
         }
 
         $this->loadByRecordSet($this->db->toArray());
-        $this->virgin = false;
+        $this->_setLoaded(true);
         return true;
     }
 
@@ -235,7 +235,7 @@ abstract class Item extends cItemBaseAbstract {
         }
 
         $this->loadByRecordSet($this->db->toArray());
-        $this->virgin = false;
+        $this->_setLoaded(true);
         return true;
     }
 
@@ -305,21 +305,12 @@ abstract class Item extends cItemBaseAbstract {
     public function loadByRecordSet(array $aRecordSet) {
         $this->values = $aRecordSet;
         $this->oldPrimaryKey = $this->values[$this->getPrimaryKeyName()];
-        $this->virgin = false;
+        $this->_setLoaded(true);
         $this->_oCache->addItem($this->oldPrimaryKey, $this->values);
 
         if (method_exists($this, '_onLoad')) {
             $this->_onLoad();
         }
-    }
-
-    /**
-     * Checks if the item is already loaded.
-     *
-     * @return bool
-     */
-    public function isLoaded() {
-        return !$this->virgin;
     }
 
     /**
@@ -340,7 +331,7 @@ abstract class Item extends cItemBaseAbstract {
      *         Value of the field
      */
     public function getField($sField, $bSafe = true) {
-        if ($this->virgin == true) {
+        if (true !== $this->isLoaded()) {
             $this->lasterror = 'No item loaded';
             return false;
         }
@@ -378,7 +369,7 @@ abstract class Item extends cItemBaseAbstract {
      * @return bool
      */
     public function setField($sField, $mValue, $bSafe = true) {
-        if ($this->virgin == true) {
+        if (true !== $this->isLoaded()) {
             $this->lasterror = 'No item loaded';
             return false;
         }
@@ -428,7 +419,7 @@ abstract class Item extends cItemBaseAbstract {
             $this
         ));
 
-        if ($this->virgin == true) {
+        if (true !== $this->isLoaded()) {
             $this->lasterror = 'No item loaded';
             $this->_executeCallbacks(self::STORE_FAILURE, get_class($this), array(
                 $this
@@ -486,7 +477,7 @@ abstract class Item extends cItemBaseAbstract {
      * @return array|false
      */
     public function toArray() {
-        if ($this->virgin == true) {
+        if (true !== $this->isLoaded()) {
             $this->lasterror = 'No item loaded';
             return false;
         }
@@ -523,7 +514,7 @@ abstract class Item extends cItemBaseAbstract {
      */
     public function setProperty($sType, $sName, $mValue, $iClient = 0) {
         // If this object wasn't loaded before, return false
-        if ($this->virgin == true) {
+        if (true !== $this->isLoaded()) {
             $this->lasterror = 'No item loaded';
             return false;
         }
@@ -548,7 +539,7 @@ abstract class Item extends cItemBaseAbstract {
      */
     public function getProperty($sType, $sName, $iClient = 0) {
         // If this object wasn't loaded before, return false
-        if ($this->virgin == true) {
+        if (true !== $this->isLoaded()) {
             $this->lasterror = 'No item loaded';
             return false;
         }
@@ -572,7 +563,7 @@ abstract class Item extends cItemBaseAbstract {
      */
     public function deleteProperty($sType, $sName, $iClient = 0) {
         // If this object wasn't loaded before, return false
-        if ($this->virgin == true) {
+        if (true !== $this->isLoaded()) {
             $this->lasterror = 'No item loaded';
             return false;
         }

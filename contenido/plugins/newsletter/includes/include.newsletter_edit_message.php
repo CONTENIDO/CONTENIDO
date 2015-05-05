@@ -39,7 +39,7 @@ if (isset($idnewsletter)) {
     $oNewsletter->loadByPrimaryKey($idnewsletter);
 }
 
-if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client && $oNewsletter->get("idlang") == $lang) {
+if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $client && $oNewsletter->get("idlang") == $lang) {
     // Check and set values
     if (!is_numeric($_REQUEST["selTemplate"])) {
         $_REQUEST["selTemplate"] = 0;

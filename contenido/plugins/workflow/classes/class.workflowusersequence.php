@@ -207,7 +207,7 @@ class WorkflowUserSequence extends Item {
      * @param none
      */
     public function getWorkflowItem() {
-        if (!$this->virgin) {
+        if ($this->isLoaded()) {
             $workflowItem = new WorkflowItem();
             $workflowItem->loadByPrimaryKey($this->values["idworkflowitem"]);
             return ($workflowItem);

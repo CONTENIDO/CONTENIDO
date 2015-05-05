@@ -216,7 +216,7 @@ class WorkflowItem extends Item {
      *         or position
      */
     public function setField($field, $value, $safe = true) {
-        if ($this->virgin == true) {
+        if (true !== $this->isLoaded()) {
             $this->lasterror = i18n("No item loaded", "workflow");
             return false;
         }

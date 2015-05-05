@@ -67,7 +67,7 @@ if ((!$readOnly) && $action == "lay_new") {
     if (!$perm->have_perm_area_action_anyitem("lay", $action)) {
         $page->displayError(i18n("Permission denied"));
     } else {
-        $layout->virgin = true;
+        $layout = new cApiLayout();
         $page->displayOk(i18n("Layout deleted"));
     }
 } elseif ($action == "lay_sync") {
@@ -98,7 +98,7 @@ if ($refreshtemplates != "") {
     }
 }
 
-if (!$layout->virgin) {
+if (true === $layout->isLoaded()) {
     $msg = '';
 
     $idlay = $layout->get("idlay");

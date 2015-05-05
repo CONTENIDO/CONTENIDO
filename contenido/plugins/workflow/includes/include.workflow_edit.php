@@ -75,7 +75,7 @@ $form->setVar("action", "workflow_save");
 $form->setVar("idworkflow", $idworkflow);
 $form->setVar("frame", $frame);
 
-if ($workflow->virgin) {
+if (true !== $workflow->isLoaded()) {
     $name = i18n("New Workflow", "workflow");
     $header = i18n("Create new workflow", "workflow");
 } else {

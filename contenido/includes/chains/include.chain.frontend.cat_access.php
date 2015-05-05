@@ -25,7 +25,7 @@ function cecFrontendCategoryAccess($idlang, $idcat, $user)
     $frontendUser = new cApiFrontendUser();
     $frontendUser->loadByPrimaryKey($user);
 
-    if ($frontendUser->virgin) {
+    if (true !== $frontendUser->isLoaded()) {
         return false;
     }
 

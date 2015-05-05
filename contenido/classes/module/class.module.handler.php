@@ -309,7 +309,7 @@ class cModuleHandler {
 
         $cApiModule = new cApiModule($idmod);
 
-        if ($cApiModule->virgin == false) {
+        if (true === $cApiModule->isLoaded()) {
             $this->_idmod = $idmod;
             $this->_client = $cApiModule->get('idclient');
             $this->_description = $cApiModule->get('description');

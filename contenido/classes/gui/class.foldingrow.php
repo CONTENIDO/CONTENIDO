@@ -96,7 +96,7 @@ class cGuiFoldingRow extends cHTML {
 
         if ($bExpanded == NULL) {
             // Check for expandstate
-            if (!$user->virgin) {
+            if ($user->isLoaded()) {
                 if ($user->getProperty("expandstate", $uuid) == "true") {
                     $this->setExpanded($user->getProperty("expandstate", $uuid));
                 }

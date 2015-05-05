@@ -21,4 +21,11 @@ class TestItem extends Item {
         }
     }
 
+    /**
+     * Mapper function to expose ability to set loaded variable for unit tests
+     * @param bool $value Whether an item has been loaded
+     */
+    public function setLoaded($value) {
+        static::_setLoaded($value);
+    }
 }
