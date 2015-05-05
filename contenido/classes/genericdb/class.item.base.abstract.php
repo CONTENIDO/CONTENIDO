@@ -98,12 +98,20 @@ abstract class cItemBaseAbstract extends cGenericDb {
     /**
      * Checks for the virginity of created objects.
      * If true, the object
-     * is virgin and no operations on it except load-Functions are allowed.
+     * is virgin and no operations on it except load-functions are allowed.
      *
-     * @todo remove access from public
+     * @deprecated [2015-05-05] Class variable virgin is deprecated, use negated result of isLoaded() instead
      * @var bool
      */
-    public $virgin = true;
+    private $virgin = true;
+
+    /**
+     * Checks if an object is loaded
+     * If it is true an object is loaded
+     * If it is false then no object is loaded and only load-functions are allowed to be used
+     * @var bool
+     */
+    protected $_loaded = false;
 
     /**
      * Storage of the last occured error
@@ -172,14 +180,52 @@ abstract class cItemBaseAbstract extends cGenericDb {
         return $this->db->escape($sString);
     }
 
+    /**
+     * Checks if an object is loaded
+     * If it is true an object is loaded
+     * If it is false then no object is loaded and only load-functions are allowed to be used
+     * @return bool Whether an object has been loaded
+     */
+    public function isLoaded() {
+        return (bool) $this->_loaded;
+    }
+
+    /**
+     * Sets loaded state of class
+     * If it is true an object is loaded
+     * If it is false then no object is loaded and only load-functions are allowed to be used
+     * @param bool $value Whether an object is loaded
+     */
+    protected function _setLoaded($value) {
+        $this->_loaded = (bool) $value;
+    }
+
+    /**
+     * Magic getter function for deprecated variables primaryKey and virgin
+     * This function will be removed when the variables are no longer supported
+     * @param string $name Name of the variable that should be accessed
+     * @return mixed
+     */
     public function __get($name) {
         if ('primaryKey' === $name) {
             return static::getPrimaryKeyName();
         }
+        if ('virgin' === $name) {
+            return !static::isLoaded();
+        }
     }
+
+    /**
+     * Magic setter function for deprecated variables primaryKey and virgin
+     * This function will be removed when the variables are no longer supported
+     * @param string $name Name of the variable that should be accessed
+     * @param mixed $value Value that should be assigned to variable
+     */
     public function __set($name, $value) {
         if ('primaryKey' === $name) {
             static::_setPrimaryKeyName($value);
+        } else if ('virgin' === $name) {
+            static::_setLoaded(!(bool) $value);
         }
     }
 
@@ -189,7 +235,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
      *         Name of primary key
      */
     public function getPrimaryKeyName() {
-        return $this->_primaryKeyName;
+        return (string) $this->_primaryKeyName;
     }
 
     /**
@@ -197,7 +243,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * The name must always match the primary key name in database
      */
     protected function _setPrimaryKeyName($keyName) {
-        $this->_primaryKeyName = $keyName;
+        $this->_primaryKeyName = (string) $keyName;
     }
 
     /**
