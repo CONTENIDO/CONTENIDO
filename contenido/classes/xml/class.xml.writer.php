@@ -28,10 +28,10 @@ class cXmlWriter extends cXmlBase {
      * Class constructor of cXmlWriter.
      * Creates the XML document.
      *
-     * @param string $version
-     *         version of XML document (optional, default: 1.0)
-     * @param string $encoding
-     *         encoding of XML document (optional, default: UTF-8)
+     * @param string $version [optional, default: 1.0]
+     *         version of XML document
+     * @param string $encoding [optional, default: UTF-8]
+     *         encoding of XML document
      */
     public function __construct($version = '', $encoding = '') {
         $this->_createDocument($version, $encoding);
@@ -44,14 +44,14 @@ class cXmlWriter extends cXmlBase {
      *
      * @param string $name
      *         name of the element
-     * @param string $value
-     *         value of the element (optional)
-     * @param DOMElement $rootElement
-     *         root element (optional)
-     * @param array $attributes (optional)
+     * @param string $value [optional]
+     *         value of the element
+     * @param DOMElement $rootElement [optional]
+     *         root element
+     * @param array $attributes [optional]
      *         array of attributes added to this element
-     * @param bool $cdata
-     *         whether the value is surround by CDATA blocks (optional)
+     * @param bool $cdata [optional]
+     *         whether the value is surround by CDATA blocks
      * @return DOMElement
      *         created DOM element
      */

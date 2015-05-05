@@ -27,13 +27,13 @@ class cHTMLTime extends cHTMLContentElement {
     /**
      * Constructor.
      *
-     * @param mixed $content
+     * @param mixed $content [optional]
      *         String or object with the contents
-     * @param string $class
+     * @param string $class [optional]
      *         the class of this element
-     * @param string $id
+     * @param string $id [optional]
      *         the ID of this element
-     * @param string $datetime
+     * @param string $datetime [optional]
      */
     public function __construct($content = '', $class = '', $id = '', $datetime = '') {
         parent::__construct($content, $class, $id);

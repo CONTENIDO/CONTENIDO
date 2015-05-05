@@ -69,9 +69,13 @@ class cVersionFile extends cVersion {
      * @param int $iClient
      * @param string $sArea
      * @param int $iFrame
-     * @param string $sVersionFileName
+     * @param string $sVersionFileName [optional]
      */
-    public function __construct($iIdOfType, $aFileInfo, $sFileName, $sTypeContent, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame, $sVersionFileName = '') {
+    public function __construct(
+        $iIdOfType, $aFileInfo, $sFileName, $sTypeContent, $aCfg, $aCfgClient,
+        $oDB, $iClient, $sArea, $iFrame, $sVersionFileName = ''
+    ) {
+
         // Set globals in super class constructer
         parent::__construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame);
 

@@ -189,7 +189,7 @@ class cRegistry {
     /**
      * Returns the article id stored in the global variable "idart".
      *
-     * @param bool $autoDetect (optional, default: false)
+     * @param bool $autoDetect [optional, default: false]
      *         If true, the value is tried to detected automatically.
      * @return int
      */
@@ -211,7 +211,7 @@ class cRegistry {
      * Returns the article language id stored in the global variable
      * "idartlang".
      *
-     * @param bool $autoDetect  (optional, default: false)
+     * @param bool $autoDetect [optional, default: false]
      *         If true, the value is tried to detected automatically.
      * @return int
      */
@@ -232,7 +232,7 @@ class cRegistry {
     /**
      * Returns the category id stored in the global variable "idcat".
      *
-     * @param bool $autoDetect (optional, default: false)
+     * @param bool $autoDetect [optional, default: false]
      *         If true, the value is tried to detected automatically.
      * @return int
      */
@@ -254,7 +254,7 @@ class cRegistry {
      * Returns the category language id stored in the global variable
      * "idcatlang".
      *
-     * @param bool $autoDetect (optional, default: false)
+     * @param bool $autoDetect [optional, default: false]
      *         If true, the value is tried to detected automatically.
      * @return int
      */
@@ -415,9 +415,9 @@ class cRegistry {
      * In this case a $default value can be given which will be returned if this
      * option is not defined.
      *
-     * @param string $sectionName
-     * @param string $optionName optional
-     * @param string $defaultValue optional
+     * @param string $sectionName [optional]
+     * @param string $optionName [optional]
+     * @param string $defaultValue [optional]
      * @return array string
      */
     public static function getConfigValue($sectionName = NULL, $optionName = NULL, $defaultValue = NULL) {
@@ -449,7 +449,7 @@ class cRegistry {
      * "cfgClient".
      * If no client ID is specified or is 0 the complete array is returned.
      *
-     * @param int $clientId (optional)
+     * @param int $clientId [optional]
      *         Client ID
      * @return array
      */
@@ -520,7 +520,7 @@ class cRegistry {
      * Getter for an application variable.
      *
      * @param string $key
-     * @param mixed $default
+     * @param mixed $default [optional]
      *         Default value to return, if the application variable doesn't exists
      * @return mixed
      */
@@ -545,7 +545,7 @@ class cRegistry {
      *
      * @param string $variableName
      *         name of the global variable
-     * @param mixed $defaultValue
+     * @param mixed $defaultValue [optional]
      *         default value
      * @return mixed
      */
@@ -634,7 +634,7 @@ class cRegistry {
      * Shutdowns the CONTENIDO framework on page close.
      *
      * @author frederik.schneider
-     * @param bool $debugShowAll
+     * @param bool $debugShowAll [optional]
      */
     public final static function shutdown($debugShowAll = true) {
         if ($debugShowAll == true) {

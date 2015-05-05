@@ -70,8 +70,8 @@ class cUriBuilderFrontcontent extends cUriBuilder {
      * front_content.php?idcatart=1
      *
      * @param array $aParams
-     * @param bool $bUseAbsolutePath
-     * @param array $aConfig
+     * @param bool $bUseAbsolutePath [optional]
+     * @param array $aConfig [optional]
      *         Is not used at the moment
      * @throws cInvalidArgumentException
      * @throws cException

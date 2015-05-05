@@ -183,7 +183,7 @@ class cPasswordRequest {
      * password is submitted this function also starts the
      * passwort reset request and sending process
      *
-     * @param bool $return
+     * @param bool $return [optional]
      *         Return or print template
      * @return string
      *         rendered HTML code

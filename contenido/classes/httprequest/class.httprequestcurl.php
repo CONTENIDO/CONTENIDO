@@ -62,9 +62,10 @@ class cHttpRequestCurl extends cHttpRequest {
     /**
      * Basic constructor
      *
-     * @param string $url URL for the request
      * @see cHttpRequest::__construct()
      * @see cHttpRequest::getHttpRequest()
+     * @param string $url [optional]
+     *         URL for the request
      */
     public function __construct($url = '') {
         $this->curl = curl_init(($url == '') ? NULL : $url);
@@ -214,9 +215,9 @@ class cHttpRequestCurl extends cHttpRequest {
      * Peform the request using POST
      *
      * @see cHttpRequest::postRequest()
-     * @param bool $return
+     * @param bool $return [optional]
      *         If true, response of the server gets returned as string
-     * @param bool $returnHeaders
+     * @param bool $returnHeaders [optional]
      *         If true, headers will be included in the response
      * @return string|bool
      *         False on error, response otherwise
@@ -229,9 +230,9 @@ class cHttpRequestCurl extends cHttpRequest {
      * Peform the request using GET
      *
      * @see cHttpRequest::getRequest()
-     * @param bool $return
+     * @param bool $return [optional]
      *         If true, response of the server gets returned as string
-     * @param bool $returnHeaders
+     * @param bool $returnHeaders [optional]
      *         If true, headers will be included in the response
      * @return string|bool
      *         False on error, response otherwise
@@ -244,9 +245,9 @@ class cHttpRequestCurl extends cHttpRequest {
      * Peform the request using POST AND append all GET parameters
      *
      * @see cHttpRequest::request()
-     * @param bool $return
+     * @param bool $return [optional]
      *         If true, response of the server gets returned as string
-     * @param bool $returnHeaders
+     * @param bool $returnHeaders [optional]
      *         If true, headers will be included in the response
      * @return string|bool
      *         False on error, response otherwise

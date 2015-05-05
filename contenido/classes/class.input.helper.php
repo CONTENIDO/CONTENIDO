@@ -504,7 +504,7 @@ try {
 
     /**
      *
-     * @param unknown_type $bPrint
+     * @param unknown_type $bPrint [optional]
      * @return string|void
      *         Complete template string or nothing
      */

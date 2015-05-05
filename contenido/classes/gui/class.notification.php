@@ -90,7 +90,7 @@ class cGuiNotification {
      *         Message level, one of cGuiNotification::LEVEL_* constants
      * @param string $sMessage
      *         The message to display
-     * @param int $iStyle
+     * @param int $iStyle [optional]
      *         Flag tp use styles for display or not (feasible 1 or 0)
      * @return string
      */
@@ -196,7 +196,7 @@ class cGuiNotification {
      *         Message level, one of cGuiNotification::LEVEL_* constants
      * @param string $sMessage
      *         The message to display
-     * @param int $iStyle
+     * @param int $iStyle [optional]
      *         Flag tp use styles for display or not (feasible 1 or 0)
      */
     public function displayMessageBox($sLevel, $sMessage, $iStyle = 1) {

@@ -33,13 +33,13 @@ class cHTMLForm extends cHTMLContentElement {
     /**
      * Creates an HTML form element.
      *
-     * @param string $name
+     * @param string $name [optional]
      *         the name of the form
-     * @param string $action
+     * @param string $action [optional]
      *         the action which should be performed when this form is submitted
-     * @param string $method
+     * @param string $method [optional]
      *         the method to use - post or get
-     * @param string $class
+     * @param string $class [optional]
      *         the class of this element
      */
     public function __construct($name = '', $action = 'main.php', $method = 'post', $class = '') {

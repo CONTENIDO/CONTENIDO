@@ -387,7 +387,7 @@ class cVersion {
     /**
      * This function deletes files and the the folder, for given path.
      *
-     * @param string $sFirstFile
+     * @param string $sFirstFile [optional]
      * @return bool
      *         return true if successful
      */
@@ -527,7 +527,7 @@ class cVersion {
      *         The Label of SelectBox Widget
      * @param string $sIdOfSelectBox
      *         Id of Select Box
-     * @param bool $disabled
+     * @param bool $disabled [optional]
      *         If true, show disabled buttons for deleting
      * @return string
      *         if is exists Revision, then returns HTML Code of full SelectBox
@@ -629,8 +629,8 @@ class cVersion {
      *         width of Textarea
      * @param int $iHeight
      *         height of Textarea
-     * @param bool $sId
-     * @param bool $disabled
+     * @param bool $sId [optional]
+     * @param bool $disabled [optional]
      *         Disabled Textarea
      * @return string
      *         HTML Code of Textarea
@@ -663,7 +663,7 @@ class cVersion {
      *         The value of Input Textfield
      * @param int $iWidth
      *         width of Input Textfield
-     * @param bool $bDisabled
+     * @param bool $bDisabled [optional]
      *         Disabled TextBox
      * @return string
      *         HTML Code of Input Textfield

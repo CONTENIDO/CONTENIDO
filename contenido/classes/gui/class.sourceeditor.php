@@ -63,12 +63,12 @@ class cGuiSourceEditor extends cGuiPage {
      * The default constructor. Initializes the class and its parent
      * @param string $filename
      *         Name of the edited file
-     * @param bool $versioning
+     * @param bool $versioning [optional]
      *         Is versioning activated or not. Defaults to true
-     * @param string $filetype
+     * @param string $filetype [optional]
      *         The type of the file. If ommited the class tries to determine
      *         the type from the area
-     * @param string $filepath
+     * @param string $filepath [optional]
      *         Path to the file. If ommited the class tries to determine the
      *         path from the type and the area
      */

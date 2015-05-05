@@ -50,8 +50,8 @@ class cGuiFileOverview extends cGuiPage {
     /**
      * Default constructor. Initializes the class for the directory
      * @param string $dir
-     * @param string $markedFile
-     * @param string $fileInfoType
+     * @param string $markedFile [optional]
+     * @param string $fileInfoType [optional]
      */
     public function __construct($dir, $markedFile = '', $fileInfoType = '') {
         parent::__construct('generic_file_overview');

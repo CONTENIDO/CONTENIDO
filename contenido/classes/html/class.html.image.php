@@ -28,9 +28,9 @@ class cHTMLImage extends cHTML {
      * Constructor.
      * Creates an HTML IMG element.
      *
-     * @param mixed $content
-     *         String or object with the contents
-     * @param string $class
+     * @param mixed $src [optional]
+     *         image source
+     * @param string $class [optional]
      *         the class of this element
      */
     public function __construct($src = NULL, $class = '') {

@@ -44,7 +44,7 @@ class cModuleLog extends cLog {
     /**
      * Constructor of the module log.
      *
-     * @param mixed $writer
+     * @param mixed $writer [optional]
      *         Writer object (any subclass of cLogWriter),
      *         or false if cLog should handle the writer creation
      *

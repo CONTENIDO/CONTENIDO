@@ -335,8 +335,8 @@ class cSystemPurge {
      * @param string $dirPath
      * @param string $tmpDirPath
      *         root directory not deleted
-     * @param bool $keep
-     * @param array $tmpFileList
+     * @param bool $keep [optional]
+     * @param array $tmpFileList [optional]
      *         files are temporarily saved
      * @return bool
      */

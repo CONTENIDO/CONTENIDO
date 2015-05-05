@@ -30,7 +30,7 @@ class cArray {
      *
      * @param array $arr
      *         Array of strings that will be trimmed.
-     * @param string $charlist Optionally
+     * @param string $charlist [optional]
      *         Optionally the stripped characters can also be specified using
      *         the charlist parameter. Simply list all characters that you want
      *         to be stripped. With .. you can specify a range of characters.
@@ -74,9 +74,9 @@ class cArray {
      *         array to search
      * @param mixed $search
      *         value to search for
-     * @param bool $partial
+     * @param bool $partial [optional]
      *         if values are tested to contain $search
-     * @param bool $strict
+     * @param bool $strict [optional]
      *         if values are tested for identity
      * @return mixed
      *         key of the array containing the searched value or false
@@ -189,7 +189,7 @@ class cArray {
      *
      * @param array $aArray
      * @param string $sKey
-     * @param mixed $mDefault
+     * @param mixed $mDefault [optional]
      * @return bool
      */
     public static function initializeKey(&$aArray, $sKey, $mDefault = '') {

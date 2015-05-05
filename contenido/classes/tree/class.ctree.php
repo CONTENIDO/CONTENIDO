@@ -34,7 +34,8 @@ class cTree extends cTreeItem {
     /**
      * @todo The root item currently has to be a "0".
      * This is a bug, feel free to fix it.
-     * @param string $name
+     *
+     * @param string $name [optional]
      */
     public function __construct($name = "") {
         parent::__construct(0, $name);

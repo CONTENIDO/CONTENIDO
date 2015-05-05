@@ -26,23 +26,23 @@ abstract class cXmlBase {
 
     /**
      *
-     * @var unknown_type
+     * @var DOMDocument
      */
     protected $_dom = NULL;
 
     /**
      *
-     * @var unknown_type
+     * @var DOMXpath
      */
     protected $_xpath = NULL;
 
     /**
      * Creates a new XML document using DOMDocument.
      *
-     * @param string $version
-     *         version of DOMDocument (optional, default: 1.0)
-     * @param string $encoding
-     *         encoding of DOMDocumen (optional, default: UTF-8)
+     * @param string $version [optional, default: 1.0]
+     *         version of DOMDocument
+     * @param string $encoding [optional, default: UTF-8]
+     *         encoding of DOMDocument
      */
     protected function _createDocument($version = '', $encoding = '') {
         if ($version == '') {

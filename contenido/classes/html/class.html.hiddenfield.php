@@ -31,9 +31,9 @@ class cHTMLHiddenField extends cHTMLFormElement {
      *
      * @param string $name
      *         Name of the element
-     * @param string $value
+     * @param string $value [optional]
      *         Title of the button
-     * @param string $id
+     * @param string $id [optional]
      *         ID of the element
      */
     public function __construct($name, $value = '', $id = '') {

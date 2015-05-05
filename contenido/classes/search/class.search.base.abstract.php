@@ -61,9 +61,9 @@ abstract class cSearchBaseAbstract {
     /**
      * Initialises some properties
      *
-     * @param cDb $oDB
+     * @param cDb $oDB [optional]
      *         Optional database instance
-     * @param bool $bDebug
+     * @param bool $bDebug [optional]
      *         Optional, flag to enable debugging (no longer needed)
      */
     protected function __construct($oDB = NULL, $bDebug = false) {

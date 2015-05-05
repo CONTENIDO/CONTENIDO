@@ -28,7 +28,7 @@ class cDirHandler {
      *
      * @param string $pathname
      *         the name and path of the new dir
-     * @param bool $recursive
+     * @param bool $recursive [optional]
      * @return bool
      *         Returns true on success or false on failure.
      */
@@ -260,11 +260,11 @@ class cDirHandler {
      *
      * @param string $dirName
      *         directory
-     * @param bool $recursive
+     * @param bool $recursive [optional]
      *         flag to read recursive
-     * @param bool $dirOnly
+     * @param bool $dirOnly [optional]
      *         flag to list only directories
-     * @param bool $fileOnly
+     * @param bool $fileOnly [optional]
      *         flag to list only files if $dirOnly is set to false
      * @return array|bool
      *         array containing file names as string, false on error

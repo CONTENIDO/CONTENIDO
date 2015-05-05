@@ -39,11 +39,11 @@ class cHTMLOptionElement extends cHTMLFormElement {
      *         Displayed title of the element
      * @param string $value
      *         Value of the option
-     * @param bool $selected
+     * @param bool $selected [optional]
      *         If true, element is selected
-     * @param bool $disabled
+     * @param bool $disabled [optional]
      *         If true, element is disabled
-     * @param string $class
+     * @param string $class [optional]
      *         the class of this element
      */
     public function __construct($title, $value, $selected = false, $disabled = false, $class = '') {

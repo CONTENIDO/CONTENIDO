@@ -28,11 +28,11 @@ class cHTMLFieldset extends cHTMLContentElement {
      * Constructor.
      * Creates an HTML fieldset element.
      *
-     * @param mixed $content
+     * @param mixed $content [optional]
      *         String or object with the contents
-     * @param string $class
+     * @param string $class [optional]
      *         the class of this element
-     * @param string $id
+     * @param string $id [optional]
      *         the ID of this element
      */
     public function __construct($content = '', $class = '', $id = '') {

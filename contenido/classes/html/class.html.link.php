@@ -62,7 +62,7 @@ class cHTMLLink extends cHTMLContentElement {
      * Constructor.
      * Creates an HTML link.
      *
-     * @param string $href
+     * @param string $href [optional]
      *         String with the location to link to
      */
     public function __construct($href = '') {

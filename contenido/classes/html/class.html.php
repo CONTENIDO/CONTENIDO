@@ -118,7 +118,7 @@ class cHTML {
     /**
      * Constructor Function.
      *
-     * @param array $attributes
+     * @param array $attributes [optional]
      *         Associative array of table tag attributes
      */
     public function __construct(array $attributes = NULL) {
@@ -206,7 +206,7 @@ class cHTML {
      *
      * @param string $alt
      *         Text to set as the "alt" and "title" attribute
-     * @param bool $setTitle
+     * @param bool $setTitle [optional]
      *         Whether title attribute should be set, too (optional, default: true)
      * @return cHTML
      *         $this for chaining
@@ -509,7 +509,7 @@ class cHTML {
      *
      * @param string $attributeName
      *         Name of the attribute
-     * @param string $value
+     * @param string $value [optional]
      *         Value of the attribute
      * @return cHTML
      *         $this for chaining
@@ -658,7 +658,7 @@ class cHTML {
     /**
      * Returns the assoc array(default) or string of attributes
      *
-     * @param bool $returnAsString
+     * @param bool $returnAsString [optional]
      *         Whether to return the attributes as string
      * @return array|string
      */

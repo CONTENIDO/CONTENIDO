@@ -86,7 +86,7 @@ class cZipArchive {
      * @param string $file zip file
      * @param string $extractPath
      *         extraction path
-     * @param string $extractPathUserInput
+     * @param string $extractPathUserInput [optional]
      *         user specified extraction path
      */
     public static function extractOverRide($file, $extractPath, $extractPathUserInput = NULL) {
@@ -124,7 +124,7 @@ class cZipArchive {
      *         zip file
      * @param string $extractPath
      *         extraction path
-     * @param string $extractPathUserInput
+     * @param string $extractPathUserInput [optional]
      *         user specified extraction path
      */
     public static function extract($file, $extractPath, $extractPathUserInput = NULL) {

@@ -322,7 +322,7 @@ class cAutoload {
      * Loads the desired file by invoking require_once method
      *
      * @param string $filePathName
-     * @param bool $beQuiet
+     * @param bool $beQuiet [optional]
      *         Flag to prevent thrown warnings/errors by using the error control
      *         operator @
      */

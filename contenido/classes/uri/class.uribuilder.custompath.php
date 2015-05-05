@@ -68,8 +68,8 @@ class cUriBuilderCustomPath extends cUriBuilder {
      * @throws cInvalidArgumentException
      * @param array $aParams
      *         Required keys are: idcat, level, lang and at least one custom key.
-     * @param bool $bUseAbsolutePath
-     * @param array $aConfig
+     * @param bool $bUseAbsolutePath [optional]
+     * @param array $aConfig [optional]
      *         If not set, will use UriBuilderConfig::getConfig()
      */
     public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array()) {

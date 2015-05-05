@@ -57,10 +57,10 @@ class cModuleFileTranslation extends cModuleHandler {
 
     /**
      *
-     * @param int $idmodul
-     * @param bool $static
+     * @param int $idmodul [optional]
+     * @param bool $static [optional]
      *         if true it will load once the translation from file
-     * @param int $overrideIdlang
+     * @param int $overrideIdlang [optional]
      *         use different language if not NULL
      */
     public function __construct($idmodul = NULL, $static = false, $overrideIdlang = NULL) {

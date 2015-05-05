@@ -122,7 +122,7 @@ class cPermission {
      * Loads all permissions of groups where current logged in user is a member
      * and saves them in session.
      *
-     * @param bool $force
+     * @param bool $force [optional]
      *         Flag to force loading, event if they were cached before
      * @return string
      *         Returns diffrent values, depending on state:
@@ -213,7 +213,7 @@ class cPermission {
     /**
      *
      * @param string $area
-     * @param string $action
+     * @param string $action [optional]
      * @return bool
      */
     public function have_perm_area_action_anyitem($area, $action = 0) {
@@ -303,7 +303,7 @@ class cPermission {
     /**
      *
      * @param string $area
-     * @param string $action
+     * @param string $action [optional]
      * @return bool
      */
     public function have_perm_area_action($area, $action = 0) {
@@ -377,9 +377,9 @@ class cPermission {
     /**
      * Checks if a user has access rights for a specific client.
      *
-     * @param int $iClient
+     * @param int $iClient [optional]
      *         idclient to check, or false for the current client
-     * @param object $oUser
+     * @param object $oUser [optional]
      *         User object to check against, or false for the current user
      * @return bool
      */
@@ -522,7 +522,7 @@ class cPermission {
 
     /**
      *
-     * @param string $p
+     * @param string $p [optional]
      * @return bool
      */
     public function have_perm_client($p = 'x') {
@@ -555,7 +555,7 @@ class cPermission {
      * - Sysadmin has allways permission
      * - Client admin has allways permission
      *
-     * @param string $perm
+     * @param string $perm [optional]
      *         Permissions (comma separated list of perms) to check
      * @return bool
      */

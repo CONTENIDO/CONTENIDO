@@ -145,7 +145,7 @@ class cLog {
      * percentage sign (%) and contain one or more characters. Each placeholder is handled by an own function which
      * decides what to do.
      *
-     * @param mixed $writer
+     * @param mixed $writer [optional]
      *         Writer object (any subclass of cLogWriter), or false if cLog
      *         should handle the writer creation
      */
@@ -256,7 +256,7 @@ class cLog {
      *
      * @param string $message
      *         Message to buffer
-     * @param mixed $priority
+     * @param mixed $priority [optional]
      *         Priority of the log entry (optional)
      */
     public function buffer($message, $priority = NULL) {
@@ -266,7 +266,7 @@ class cLog {
     /**
      * Commits all buffered messages and empties the message buffer if parameter is not false.
      *
-     * @param bool $revoke
+     * @param bool $revoke [optional]
      *         Flag, whether the buffer is cleared or not (optional, default: true)
      * @return bool|void
      */
@@ -297,7 +297,7 @@ class cLog {
      *
      * @param string $message
      *         Message to log
-     * @param mixed $priority
+     * @param mixed $priority [optional]
      *         Priority of the log entry (optional)
      */
     public function log($message, $priority = NULL) {

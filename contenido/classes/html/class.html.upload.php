@@ -33,19 +33,19 @@ class cHTMLUpload extends cHTMLFormElement {
      *
      * @param string $name
      *         Name of the element
-     * @param int $width
+     * @param int $width [optional]
      *         width of the text box
-     * @param int $maxlength
+     * @param int $maxlength [optional]
      *         maximum input length of the box
-     * @param string $id
+     * @param string $id [optional]
      *         ID of the element
-     * @param string $disabled
+     * @param string $disabled [optional]
      *         Item disabled flag (non-empty to set disabled)
-     * @param string $tabindex
+     * @param string $tabindex [optional]
      *         Tab index for form elements
-     * @param string $accesskey
+     * @param string $accesskey [optional]
      *         Key to access the field
-     * @param string $class
+     * @param string $class [optional]
      *         the class of this element
      */
     public function __construct($name, $width = '', $maxlength = '', $id = '', $disabled = false, $tabindex = NULL, $accesskey = '', $class = '') {

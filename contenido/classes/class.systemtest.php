@@ -272,7 +272,7 @@ class cSystemtest {
     /**
      * Runs all available tests and stores the resuls in the messages array
      *
-     * @param bool $testFileSystem
+     * @param bool $testFileSystem [optional]
      *         If this is true the file system checks will be performed too
      *         with standard settings.
      */
@@ -360,13 +360,13 @@ class cSystemtest {
      *         true for success, false otherwise
      * @param int $severity
      *         One one of the C_SEVERITY constants
-     * @param string $errorHeadline
+     * @param string $errorHeadline [optional]
      *         The headline which will be stored in the case that $result is false
-     * @param string $errorMessage
+     * @param string $errorMessage [optional]
      *         The message which will be stored in the case that $result is false
-     * @param string $successHeadline
+     * @param string $successHeadline [optional]
      *         The headline which will be stored in the case that $result is true
-     * @param string $successMessage
+     * @param string $successMessage [optional]
      *         The message which will be stored in the case that $result is true
      */
     public function storeResult($result, $severity, $errorHeadline = "", $errorMessage = "", $successHeadline = "", $successMessage = "") {
@@ -1065,8 +1065,8 @@ class cSystemtest {
 
     /**
      *
-     * @param bool $testConfig
-     * @param bool $testFrontend
+     * @param bool $testConfig [optional]
+     * @param bool $testFrontend [optional]
      * @return bool
      *         true if the test passed and false if not
      */
@@ -1214,7 +1214,7 @@ class cSystemtest {
      *         The file
      * @param int $severity
      *         The resulting C_SEVERITY constant should the test fail
-     * @param bool $dir
+     * @param bool $dir [optional]
      *         True if the $filename is a directory
      * @throws Exception
      *         Throws a generic Exception in the event that the permissions are wrong
@@ -1419,8 +1419,8 @@ class cSystemtest {
      * @param string $setupType
      * @param string $databaseName
      * @param string $databasePrefix
-     * @param string $charset
-     * @param string $collation
+     * @param string $charset [optional]
+     * @param string $collation [optional]
      */
     public function checkSetupMysql($setupType, $databaseName, $databasePrefix, $charset = '', $collation = '') {
         switch ($setupType) {

@@ -112,7 +112,7 @@ class cGuiTree extends cTree {
     /**
      *
      * @param unknown_type $uuid
-     * @param unknown_type $treename
+     * @param unknown_type $treename [optional]
      */
     public function __construct($uuid, $treename = false) {
         global $cfg, $auth;

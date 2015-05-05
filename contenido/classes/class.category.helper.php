@@ -132,7 +132,7 @@ class cCategoryHelper {
     /**
      * Sets the client ID to store it locally in the class.
      *
-     * @param int $clientId
+     * @param int $clientId [optional]
      *         client ID
      */
     public function setClientId($clientId = 0) {
@@ -163,7 +163,7 @@ class cCategoryHelper {
     /**
      * Sets the language ID to store it locally in the class.
      *
-     * @param int $languageId
+     * @param int $languageId [optional]
      *         language ID
      */
     public function setLanguageId($languageId = 0) {
@@ -196,9 +196,9 @@ class cCategoryHelper {
      *
      * @param int $categoryId
      *         Last category ID in list.
-     * @param int $startingLevel (optional, default: 1)
+     * @param int $startingLevel [optional, default: 1]
      *         Define here, at which level the list should start.
-     * @param int $maxDepth (optional, default: 20)
+     * @param int $maxDepth [optional, default: 20]
      *         Amount of the max depth of categories.
      * @return array
      *         Array with cApiCategoryLanguage objects
@@ -238,7 +238,7 @@ class cCategoryHelper {
      *
      * @param int $categoryId
      *         Base category to search on.
-     * @param int $maxDepth (optional, default: 20)
+     * @param int $maxDepth [optional, default: 20]
      *         Amount of the max depth of categories.
      * @return array
      *         Array with parent category IDs.

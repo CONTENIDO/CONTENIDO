@@ -61,7 +61,7 @@ class cBackend {
     /**
      * Set the frame number in which the file is loaded.
      *
-     * @param int $frame
+     * @param int $frame [optional]
      *         as number
      */
     public function setFrame($frame = 0) {

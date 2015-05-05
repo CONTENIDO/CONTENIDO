@@ -163,14 +163,12 @@ class cModuleHandler {
 
     /**
      * Constructor for the class cModuleHandler.
-     * With this class you can
-     * create a new module, rename a module. You can save a Output from modules and
-     * Input in a
-     * file. The save rules are [Modulname] (is unique) the files input and
-     * output will be named
-     * [Modulname]_input.php , [Modulname]_output.php
+     * With this class you can create a new module, rename a module.
+     * You can save a Output from modules and Input in a file.
+     * The save rules are [Modulname] (is unique) the files input and output
+     * will be named [Modulname]_input.php , [Modulname]_output.php
      *
-     * @param int $idmod
+     * @param int $idmod [optional]
      *         the id of the module
      * @throws cException if the module directory can not be created
      */
@@ -196,7 +194,7 @@ class cModuleHandler {
 
     /**
      *
-     * @param int $overrideLanguageId
+     * @param int $overrideLanguageId [optional]
      * @return mixed
      */
     public static function getEncoding($overrideLanguageId = 0) {
@@ -239,10 +237,10 @@ class cModuleHandler {
     /**
      * Save a content in the file, use for css/js
      *
-     * @param string $frontendPath
      * @param string $templateName
      * @param string $fileType
      * @param string $fileContent
+     * @param string $saveDirectory [optional]
      * @return bool|string
      */
     public function saveContentToFile($templateName, $fileType, $fileContent, $saveDirectory = 'cache') {
@@ -270,7 +268,7 @@ class cModuleHandler {
      *
      * @param string $name
      *         mod name
-     * @param string $defaultChar
+     * @param string $defaultChar [optional]
      *         default character
      * @return string
      */
@@ -301,7 +299,7 @@ class cModuleHandler {
     /**
      * Init the vars of the class, make a query to the Db
      *
-     * @param int $idmod
+     * @param int $idmod [optional]
      *         the id of the modul
      */
     protected function _initByModule($idmod = NULL) {
@@ -340,7 +338,7 @@ class cModuleHandler {
      * If file is set it will
      * return the complete path + file
      *
-     * @param string $file
+     * @param string $file [optional]
      * @return string
      */
     public function getTemplatePath($file = '') {
@@ -432,9 +430,9 @@ class cModuleHandler {
      *
      * @param string $type
      *         css | js | template directory of the file
-     * @param string $fileName
+     * @param string $fileName [optional]
      *         file name
-     * @param string $content
+     * @param string $content [optional]
      *         content of the file
      * @return bool
      *         true if file can be created, and false otherwise
@@ -528,7 +526,7 @@ class cModuleHandler {
      *         where in module should we look
      * @param string $fileTyp
      *         css or js
-     * @param string $fileName
+     * @param string $fileName [optional]
      * @return string|bool
      */
     public function getFilesContent($directory, $fileTyp, $fileName = NULL) {
@@ -611,7 +609,7 @@ class cModuleHandler {
     /**
      * Read the input of the file _input.php
      *
-     * @param bool $issource
+     * @param bool $issource [optional]
      * @return bool|string
      *         Contents of the Module file (_input.php)
      */
@@ -632,7 +630,7 @@ class cModuleHandler {
     /**
      * Read the output of the file _output.php
      *
-     * @param bool $issource
+     * @param bool $issource [optional]
      * @return bool|string
      *         Contents of the Module file( _output.php)
      */
@@ -719,7 +717,7 @@ class cModuleHandler {
     /**
      * Save a string into the file (_output.php).
      *
-     * @param string $output
+     * @param string $output [optional]
      * @return bool
      *         if the action (save contents into the file _output.php) is
      *         successful return true else false
@@ -750,7 +748,7 @@ class cModuleHandler {
     /**
      * Save a string into the file (_input.php)
      *
-     * @param string $input
+     * @param string $input [optional]
      * @return bool
      *         if the action (save contents into the file _input.php) is
      *         successful return true else false
@@ -782,13 +780,13 @@ class cModuleHandler {
      * This method save a xml file with modul information.
      * If the params not set, get the value from this
      *
-     * @param string $moduleName
+     * @param string $moduleName [optional]
      *         name of the modul
-     * @param string $description
+     * @param string $description [optional]
      *         description of the modul
-     * @param string $type
+     * @param string $type [optional]
      *         type of the modul
-     * @param string $alias
+     * @param string $alias [optional]
      * @return true
      *         if success else false
      */
@@ -824,8 +822,8 @@ class cModuleHandler {
      * Make a new module into the modul dir.
      * The modul name will be [ModulName] example Contact_Form or GoogleMaps2.
      *
-     * @param string $input
-     * @param string $output
+     * @param string $input [optional]
+     * @param string $output [optional]
      * @return bool
      *         if modul exist or mkdir and saveInput and saveOutput success
      *         return true. Else if the mkdir or saveInput or saveOutput not
@@ -1060,9 +1058,8 @@ class cModuleHandler {
      *         Code to evaluate
      * @param string $id
      *         Unique ID for the test function
-     * @param string $mode
+     * @param string $output [optional]
      *         true if start in php mode, otherwise false
-     *
      * @return array
      *         bool state, string errorMessage
      */

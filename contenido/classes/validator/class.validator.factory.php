@@ -42,7 +42,7 @@ class cValidatorFactory {
      *
      * @param string $validator
      *         Validator to get
-     * @param array $options
+     * @param array $options [optional]
      *         Options to use for the validator. Any passed option overwrites
      *         the related option in global validator configuration.
      * @throws cInvalidArgumentException

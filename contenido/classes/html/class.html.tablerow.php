@@ -27,7 +27,7 @@ class cHTMLTableRow extends cHTMLContentElement {
     /**
      * Creates an HTML tr element.
      *
-     * @param mixed $content
+     * @param mixed $content [optional]
      *         String or object with the contents
      */
     public function __construct($content = NULL) {

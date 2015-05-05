@@ -133,9 +133,9 @@ class cSecurity {
      *
      * @param string $sString
      *         Input string
-     * @param bool $bHTML
+     * @param bool $bHTML [optional]
      *         If true check with strip_tags and stripslashes
-     * @param string $sAllowableTags
+     * @param string $sAllowableTags [optional]
      *         Allowable tags if $bHTML is true
      * @return string
      *         Converted string
@@ -155,7 +155,7 @@ class cSecurity {
      *         Input string
      * @param cDb $oDB
      *         CONTENIDO database object
-     * @param bool $bUndoAddSlashes
+     * @param bool $bUndoAddSlashes [optional]
      *         Flag for undo addslashes (optional, default: true)
      * @return string
      *         Converted string

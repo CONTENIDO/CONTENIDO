@@ -83,7 +83,7 @@ class cArticleCollector implements SeekableIterator, Countable {
      * Constructor. If options are defined, the loading process is automatically
      * initiated.
      *
-     * @param array $options (optional, default: empty array)
+     * @param array $options [optional, default: empty array]
      *         array with options for the collector
      */
     public function __construct($options = array()) {

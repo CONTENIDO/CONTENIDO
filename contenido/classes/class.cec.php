@@ -133,7 +133,7 @@ class cApiCecRegistry {
      *         This method is deprecated and is not needed any longer
      * @param string $sChainName
      *         Chain name
-     * @param array $aParameters
+     * @param array $aParameters [optional]
      *         Chain parameter
      * @return NULL
      */
@@ -441,7 +441,7 @@ class cApiCecChainItem {
     /**
      * Another way to set the arguments before invoking execute() method.
      *
-     * @param array $args
+     * @param array $args [optional]
      */
     public function setTemporaryArguments(array $args = array()) {
         $this->_mTemporaryArguments = $args;

@@ -121,11 +121,11 @@ class TreeItem {
      * Constructor Function
      * Creates a new, independant tree item.
      *
-     * @param string $name
+     * @param string $name [optional]
      *         The name of that item
-     * @param string $id
+     * @param string $id [optional]
      *         The unique ID of that item
-     * @param bool $collapsed
+     * @param bool $collapsed [optional]
      *         Is this item collapsed by default
      */
     public function __construct($name = "", $id = "", $collapsed = false) {
@@ -263,7 +263,7 @@ class TreeItem {
     /**
      * Expands all items, starting from the $start item.
      *
-     * @param string $start
+     * @param string $start [optional]
      *         the ID to start expanding from
      */
     function expandAll($start = -2) {
@@ -279,7 +279,7 @@ class TreeItem {
     /**
      * Collapses all items, starting from the $start item.
      *
-     * @param string $start
+     * @param string $start [optional]
      *         the ID to start collapsing from
      */
     function collapseAll($start = -2) {
@@ -317,7 +317,7 @@ class TreeItem {
      *
      * @param object $objects
      *         all found objects
-     * @param int $level
+     * @param int $level [optional]
      *         Level to start on
      */
     function traverse(&$objects, $level = 0) {

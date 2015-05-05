@@ -153,7 +153,7 @@ class cSearchIndex extends cSearchBaseAbstract {
     /**
      * Constructor, set object properties
      *
-     * @param cDb $db
+     * @param cDb $db [optional]
      *         CONTENIDO database object
      */
     public function __construct($db = NULL) {
@@ -179,11 +179,11 @@ class cSearchIndex extends cSearchBaseAbstract {
      *                 [1] => Die Inhalte auf dieser Website ...
      *             )
      *         )
-     * @param string $place
+     * @param string $place [optional]
      *         The field where to store the index information in db.
-     * @param array $cms_options
+     * @param array $cms_options [optional]
      *         One can specify explicitly cms types which should not be indexed.
-     * @param array $aStopwords
+     * @param array $aStopwords [optional]
      *         Array with words which should not be indexed.
      */
     public function start($idart, $aContent, $place = 'auto', $cms_options = array(), $aStopwords = array()) {

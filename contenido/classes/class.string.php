@@ -93,7 +93,7 @@ class cString {
      *         String to search in
      * @param string $needle
      *         String to search for
-     * @param int $start
+     * @param int $start [optional]
      *         Offset
      * @return string
      *         Processed string
@@ -177,7 +177,7 @@ class cString {
      *         String to be searched
      * @param string $needle
      *         String to search for
-     * @param string $beforeNeedle
+     * @param string $beforeNeedle [optional]
      *         If true, return everything BEFORE needle
      * @return string
      * @link http://php.net/manual/de/function.strstr.php

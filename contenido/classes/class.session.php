@@ -58,7 +58,7 @@ class cSession {
     /**
      * Starts the session
      *
-     * @param string $prefix
+     * @param string $prefix [optional]
      *         The prefix for the session variables
      */
     public function __construct($prefix = 'backend') {

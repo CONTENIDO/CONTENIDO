@@ -77,8 +77,7 @@ abstract class cUriBuilder {
      * in this sample.
      *
      * @param array $aParams
-     * @param bool $bUseAbsolutePath
-     * @param string $sSeparator
+     * @param bool $bUseAbsolutePath [optional]
      * @throws cInvalidArgumentException
      */
     abstract public function buildUrl(array $aParams, $bUseAbsolutePath = false);

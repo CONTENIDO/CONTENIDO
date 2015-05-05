@@ -138,7 +138,7 @@ class cSearchResult extends cSearchBaseAbstract {
      *         Number of items per page
      * @param cDb $oDB [optional]
      *         db instance
-     * @param bool $bDebug
+     * @param bool $bDebug [optional]
      *         Optional flag to enable debugging
      */
     public function __construct($search_result, $result_per_page, $oDB = NULL, $bDebug = false) {
@@ -186,7 +186,7 @@ class cSearchResult extends cSearchBaseAbstract {
      * @param int $art_id
      *         Id of an article
      * @param string $cms_type
-     * @param int $id
+     * @param int $id [optional]
      * @return string
      *         Content of an article, specified by it's content type
      */
@@ -202,7 +202,7 @@ class cSearchResult extends cSearchBaseAbstract {
      *         Id of an article
      * @param string $cms_type
      *         Content type
-     * @param int $cms_nr
+     * @param int $cms_nr [optional]
      * @return string
      *         Content of an article in search result, specified by its type
      */

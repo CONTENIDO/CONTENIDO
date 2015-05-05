@@ -32,7 +32,7 @@ abstract class cLogWriter {
 
     /**
      * Constructor of the writer instance.
-     * @param array $options
+     * @param array $options [optional]
      *         Array with options for the writer instance (optional)
      */
     public function __construct($options = array()) {
@@ -98,7 +98,7 @@ abstract class cLogWriter {
      *         Name of the option
      * @param mixed $value
      *         Value of the option
-     * @param bool $force
+     * @param bool $force [optional]
      *         Flag to force setting the option value (optional, default: false)
      */
     public function setOption($option, $value, $force = false) {

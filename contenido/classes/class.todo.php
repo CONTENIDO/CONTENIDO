@@ -35,13 +35,13 @@ class TODOCollection extends cApiCommunicationCollection {
      * Selects all entries from the database.
      * Objects are loaded using their primary key.
      *
-     * @param string $where
+     * @param string $where [optional]
      *         Specifies the where clause.
-     * @param string $group_by
+     * @param string $group_by [optional]
      *         Specifies the group by clause.
-     * @param string $order_by
+     * @param string $order_by [optional]
      *         Specifies the order by clause.
-     * @param string $limit
+     * @param string $limit [optional]
      *         Specifies the limit by clause.
      * @return bool
      *         True on success, otherwhise false
@@ -148,8 +148,8 @@ class TODOItem extends cApiCommunication {
      *         Specifies the name
      * @param mixed $mValue
      *         Specifies the value
-     * @param int $iClient
-     *         Id of client to set property for
+     * @param int $client [optional]
+     *         unused (should be "Id of client to set property for")
      * @return bool
      */
     public function setProperty($type, $name, $value, $client = 0) {

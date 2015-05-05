@@ -42,7 +42,7 @@ class cI18n {
      *         Path to the locales
      * @param string $langCode
      *         Language code to set
-     * @param string $domain
+     * @param string $domain [optional]
      *         Language domain
      */
     public static function init($localePath, $langCode, $domain = 'contenido') {
@@ -76,7 +76,7 @@ class cI18n {
      *
      * @param string $string
      *         The string to translate
-     * @param string $domain
+     * @param string $domain [optional]
      *         The domain to look up
      * @return string
      *         Returns the translation
@@ -90,7 +90,7 @@ class cI18n {
      *
      * @param string $string
      *         The string to translate
-     * @param string $domain
+     * @param string $domain [optional]
      *         The domain to look up
      * @throws cException
      *         if this is the backend mode and the $belang is not set
@@ -209,7 +209,7 @@ class cI18n {
      *
      * @param string $string
      *         The string to translate
-     * @param string $domain
+     * @param string $domain [optional]
      *         The domain to look up
      * @return string
      *         Returns the translation

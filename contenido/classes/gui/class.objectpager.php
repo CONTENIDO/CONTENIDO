@@ -44,7 +44,7 @@ class cGuiObjectPager extends cGuiFoldingRow {
      * @param unknown_type $currentpage
      * @param unknown_type $link
      * @param unknown_type $parameterToAdd
-     * @param unknown_type $id
+     * @param unknown_type $id [optional]
      * @throws cException if the given link is not an object
      * @return bool
      */
@@ -70,7 +70,7 @@ class cGuiObjectPager extends cGuiFoldingRow {
 
     /**
      * @see cGuiFoldingRow::render()
-     * @param bool $bContentOnly
+     * @param bool $bContentOnly [optional]
      * @return string
      *         Generated markup
      */

@@ -62,10 +62,10 @@ class cGuiFoldingRow extends cHTML {
 
     /**
      *
-     * @param unknown_type $uuid
-     * @param unknown_type $caption
-     * @param unknown_type $linkId
-     * @param unknown_type $bExpanded
+     * @param string $uuid
+     * @param string $caption [optional]
+     * @param string $linkId [optional]
+     * @param bool|NULL $bExpanded [optional]
      */
     public function __construct($uuid, $caption = "", $linkId = "", $bExpanded = NULL) {
         global $auth;
@@ -112,7 +112,7 @@ class cGuiFoldingRow extends cHTML {
 
     /**
      *
-     * @param unknown_type $expanded
+     * @param bool $expanded [optional]
      */
     public function setExpanded($expanded = false) {
         if ($expanded == true) {
@@ -131,23 +131,25 @@ class cGuiFoldingRow extends cHTML {
 
     /**
      *
-     * @param unknown_type $caption
+     * @param string $caption
      */
     public function setCaption($caption) {
         $this->_caption = $caption;
     }
 
     /**
+     * Unused.
      *
-     * @param unknown_type $context
+     * @param mixed $context [optional]
      */
     public function setHelpContext($context = false) {
         $this->_helpContext = $context;
     }
 
     /**
+     * Unused.
      *
-     * @param unknown_type $indent
+     * @param int $indent [optional]
      */
     public function setIndent($indent = 0) {
         $this->_indent = $indent;
@@ -155,7 +157,7 @@ class cGuiFoldingRow extends cHTML {
 
     /**
      *
-     * @param unknown_type $content
+     * @param string|object|array $content
      */
     function setContentData($content) {
         $this->_contentData->setContent($content);

@@ -44,7 +44,7 @@ class cGuiBackendHelpbox {
      *
      * @param string $helpText
      *         the text that will appear in the tooltip
-     * @param string $imageURL
+     * @param string $imageURL [optional]
      *         This image will be used for the tooltip
      */
     public function __construct($helpText, $imageURL = '') {
@@ -77,7 +77,7 @@ class cGuiBackendHelpbox {
      * Please make sure that the atooltip.jquery.js and the
      * atooltip.css are embedded on the site
      *
-     * @param string $returnAsString
+     * @param string $returnAsString [optional]
      *         if true the rendered button will be returned.
      *         Otherwise it will be echoed
      * @return string|NULL

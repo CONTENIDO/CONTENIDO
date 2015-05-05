@@ -46,17 +46,17 @@ class cHTMLCheckbox extends cHTMLFormElement {
      *         Name of the element
      * @param string $value
      *         Value of the checkbox
-     * @param string $id
+     * @param string $id [optional]
      *         ID of the element
-     * @param bool $checked
+     * @param bool $checked [optional]
      *         Is element checked?
-     * @param string $disabled
+     * @param string $disabled [optional]
      *         Item disabled flag (non-empty to set disabled)
-     * @param string $tabindex
+     * @param string $tabindex [optional]
      *         Tab index for form elements
-     * @param string $accesskey
+     * @param string $accesskey [optional]
      *         Key to access the field
-     * @param string $class
+     * @param string $class [optional]
      *         the class of this element
      */
     public function __construct($name, $value, $id = '', $checked = false, $disabled = false, $tabindex = NULL, $accesskey = '', $class = '') {
@@ -110,7 +110,7 @@ class cHTMLCheckbox extends cHTMLFormElement {
      * as regular text. Displaying the value can be turned off via the
      * parameter.
      *
-     * @param bool $renderlabel
+     * @param bool $renderlabel [optional]
      *         If true, renders a label
      * @return string
      *         Rendered HTML

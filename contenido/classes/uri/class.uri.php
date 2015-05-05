@@ -73,9 +73,9 @@ class cUri {
      *         - url: front_content.php?idcat=12&lang=1
      *         - params: array('idcat' => 12, 'lang' => 1)
      *         Required values depend on used UriBuilder, but a must have is 'lang'.
-     * @param bool $bUseAbsolutePath
+     * @param bool $bUseAbsolutePath [optional]
      *         Flag to create absolute Urls
-     * @param array $aConfig
+     * @param array $aConfig [optional]
      *         If not set, cUriBuilderConfig::getConfig() will be used by the UriBuilder
      * @throws cInvalidArgumentException
      *         if the given params do not contain the lang
@@ -143,7 +143,7 @@ class cUri {
      *         - url: front_content.php?idcat=12&lang=1
      *         - params: array('idcat' => 12, 'lang' => 1)
      *         Required values depend on used UriBuilder, but a must have is 'lang'.
-     * @param array $aConfig
+     * @param array $aConfig [optional]
      *         If not set, cUriBuilderConfig::getConfig() will be used by the UriBuilder
      * @return string
      *         The redirect Url build by cUriBuilder

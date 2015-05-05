@@ -180,9 +180,9 @@ class cGuiPage {
      * @param string $pageName
      *         The name of the page which will be used to load corresponding
      *         stylesheets, templates and scripts.
-     * @param string $pluginName
+     * @param string $pluginName [optional]
      *         The name of the plugin in which the site is run
-     * @param string $subMenu
+     * @param string $subMenu [optional]
      *         The number of the submenu which should be highlighted when this
      *         page is shown.
      */
@@ -407,10 +407,10 @@ class cGuiPage {
     /**
      * Loads the subnavigation of the current area upon rendering.
      *
-     * @param string $additional
+     * @param string $additional [optional]
      *         Additional parameters the subnavigation might need.
      *         These have to look like "key=value&key2=value2..."
-     * @param string $aarea
+     * @param string $aarea [optional]
      *         The area of the subnavigation.
      *         If none is given the current area will be loaded.
      */
@@ -440,7 +440,7 @@ class cGuiPage {
      *
      * @param string $frameName
      *         Name of the frame
-     * @param string|array $updatedParameters
+     * @param string|array $updatedParameters [optional]
      *         Either an array with keys that will be passed to
      *         Con.UtilUrl.replaceParams OR a string containing
      *         the new href of the frame.
@@ -515,7 +515,7 @@ class cGuiPage {
     /**
      * Function to specify the file used to generate the page template
      *
-     * @param string $filename
+     * @param string $filename [optional]
      *         the page base file
      */
     public function setPageBase($filename = '') {
@@ -636,9 +636,9 @@ class cGuiPage {
     /**
      * Renders the page and either prints it or returns it
      *
-     * @param cTemplate|NULL $template
+     * @param cTemplate|NULL $template [optional]
      *         If set, use this content template instead of the default one
-     * @param bool $return
+     * @param bool $return [optional]
      *         If true, the page will be returned instead of echoed
      * @return string|void
      *         either the webpage or nothing

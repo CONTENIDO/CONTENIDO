@@ -114,8 +114,8 @@ class cXmlReader extends cXmlBase {
      *
      * @param string $path
      *         xpath string
-     * @param int $nodeKey
-     *         node key (optional, default: 0)
+     * @param int $nodeKey [optional, default: 0]
+     *         node key
      * @return string
      *         value of DOMNode
      */

@@ -30,7 +30,7 @@ abstract class cHttpRequest {
      * Creates a new cHttpRequest object. The function determines the best
      * extension to use and returns an object accordingly
      *
-     * @param string $url
+     * @param string $url [optional]
      *         URL of the HTTP request
      * @return cHttpRequest
      */
@@ -46,7 +46,7 @@ abstract class cHttpRequest {
     /**
      * Basic constructor
      *
-     * @param string $url
+     * @param string $url [optional]
      *         URL of the HTTP request
      */
     abstract public function __construct($url = '');
@@ -54,9 +54,9 @@ abstract class cHttpRequest {
     /**
      * Peform the request using POST
      *
-     * @param bool $return
+     * @param bool $return [optional]
      *         If true, response of the server gets returned as string
-     * @param bool $returnHeaders
+     * @param bool $returnHeaders [optional]
      *         If true, headers will be included in the response
      * @return string|bool
      *         False on error, response otherwise
@@ -66,9 +66,9 @@ abstract class cHttpRequest {
     /**
      * Peform the request using GET
      *
-     * @param bool $return
+     * @param bool $return [optional]
      *         If true, response of the server gets returned as string
-     * @param bool $returnHeaders
+     * @param bool $returnHeaders [optional]
      *         If true, headers will be included in the response
      * @return string|bool
      *         False on error, response otherwise
@@ -78,9 +78,9 @@ abstract class cHttpRequest {
     /**
      * Peform the request using POST AND append all GET parameters
      *
-     * @param bool $return
+     * @param bool $return [optional]
      *         If true, response of the server gets returned as string
-     * @param bool $returnHeaders
+     * @param bool $returnHeaders [optional]
      *         If true, headers will be included in the response
      * @return string|bool
      *         False on error, response otherwise

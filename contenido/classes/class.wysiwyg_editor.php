@@ -103,7 +103,7 @@ abstract class cWYSIWYGEditor {
      *         of setting to set
      * @param string $sValue
      *         of setting to set
-     * @param bool $bForceSetting
+     * @param bool $bForceSetting [optional]
      *         to overwrite defined setting
      */
     protected function _setSetting($sKey, $sValue, $bForceSetting = false) {

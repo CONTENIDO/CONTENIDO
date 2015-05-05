@@ -102,7 +102,7 @@ class cApiCecHook {
      * value.
      *
      * @param mixed $condition
-     * @param mixed $defaultReturnValue
+     * @param mixed $defaultReturnValue [optional]
      */
     public static function setBreakCondition($condition, $defaultReturnValue = NULL) {
         self::$_breakCondition = $condition;
@@ -279,7 +279,7 @@ class cApiCecHook {
      *
      * @param mixed $var
      *         The variable to dump
-     * @param string $msg
+     * @param string $msg [optional]
      *         Additional message
      */
     private static function _debug($var, $msg = '') {

@@ -28,8 +28,8 @@ class cFileHandler {
      *
      * @param string $filename
      *         the name and path of the new file
-     * @param string $content optional
-     *         content of the new file. Optional.
+     * @param string $content [optional]
+     *         content of the new file
      * @return bool
      *         true on success. Otherwise false.
      */
@@ -47,11 +47,11 @@ class cFileHandler {
      *
      * @param string $filename
      *         the name and path of the file
-     * @param int $length
-     *         the number of bytes to read. Optional.
-     * @param int $offset
-     *         this will be the first byte which is read. Optional.
-     * @param bool $reverse Optional
+     * @param int $length [optional]
+     *         the number of bytes to read.
+     * @param int $offset [optional]
+     *         this will be the first byte which is read.
+     * @param bool $reverse [optional]
      *         if true, the function will start from the back of the file.
      * @throws cInvalidArgumentException
      *         if the file with the given filename does not exist
@@ -437,7 +437,7 @@ class cFileHandler {
      *
      * @param string $filename
      *         the filename to validate
-     * @param bool $notifyAndExitOnFailure
+     * @param bool $notifyAndExitOnFailure [optional]
      *         if set, function will show a notification and will exit the script
      * @return bool
      *         true if the given filename is valid, false otherwise

@@ -38,13 +38,13 @@ class NoteCollection extends cApiCommunicationCollection {
      * original function for the parameters.
      *
      * @see ItemCollection::select()
-     * @param string $sWhere
+     * @param string $sWhere [optional]
      *         Specifies the where clause.
-     * @param string $sGroupBy
+     * @param string $sGroupBy [optional]
      *         Specifies the group by clause.
-     * @param string $sOrderBy
+     * @param string $sOrderBy [optional]
      *         Specifies the order by clause.
-     * @param string $sLimit
+     * @param string $sLimit [optional]
      *         Specifies the limit by clause.
      * @return bool
      *         True on success, otherwhise false
@@ -70,7 +70,7 @@ class NoteCollection extends cApiCommunicationCollection {
      *         Language-ID
      * @param string $message
      *         Message to store
-     * @param string $category
+     * @param string $category [optional]
      * @return object
      *         The new item
      */
@@ -243,7 +243,7 @@ class NoteListItem extends cHTMLDiv {
 
     /**
      *
-     * @param string $dark
+     * @param string $dark [optional]
      */
     public function setBackground($dark = false) {
     }
@@ -417,7 +417,7 @@ class NoteLink extends cHTMLLink {
     /**
      * @see cHTML::render()
      * @todo fix unused param $return
-     * @param bool $return
+     * @param bool $return [optional]
      *         this param is unused
      * @return string
      *         Generated markup

@@ -89,9 +89,9 @@ class cTreeItem {
 
     /**
      *
-     * @param unknown_type $id
-     * @param unknown_type $name
-     * @param unknown_type $collapsed
+     * @param unknown_type $id [optional]
+     * @param unknown_type $name [optional]
+     * @param unknown_type $collapsed [optional]
      */
     public function __construct($id = "", $name = "", $collapsed = false) {
         $this->_id = $id;
@@ -423,7 +423,7 @@ class cTreeItem {
     /**
      *
      * @param unknown_type $attributeName
-     * @param unknown_type $bRecursive
+     * @param unknown_type $bRecursive [optional]
      * @return bool
      */
     public function hasAttribute($attributeName, $bRecursive = false) {
@@ -536,7 +536,7 @@ class cTreeItem {
     /**
      *
      * @param string $id
-     * @param bool $found
+     * @param bool $found [optional]
      */
     protected function _expandBelowID($id, $found = false) {
         if ($found === true) {
@@ -556,7 +556,7 @@ class cTreeItem {
     /**
      *
      * @param string $id
-     * @param bool $found
+     * @param bool $found [optional]
      */
     protected function _collapseBelowID($id, $found = false) {
         if ($found === true) {
@@ -641,7 +641,7 @@ class cTreeItem {
      *
      * @param object $objects
      *         all found objects
-     * @param int $level
+     * @param int $level [optional]
      *         Level to start on
      */
     public function traverse(&$objects, $level = 0) {
@@ -660,7 +660,7 @@ class cTreeItem {
      * traverses the tree starting from this item, and returning
      * all objects as $objects in a flat array.
      *
-     * @param int $level
+     * @param int $level [optional]
      *         Level to start on
      * @return array
      */

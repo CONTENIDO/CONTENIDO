@@ -281,7 +281,7 @@ class cSearch extends cSearchBaseAbstract {
      *
      * @param string $searchwords
      *         The search words
-     * @param string $searchwords_exclude
+     * @param string $searchwords_exclude [optional]
      *         The words, which should be excluded from search
      * @return bool|array
      */
