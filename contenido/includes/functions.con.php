@@ -523,7 +523,7 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
     
     if (! $content->isLoaded()) {
         $contentColl = new cApiContentCollection();
-        $content = $contentColl->create($idartlang, $idtype, $typeid);
+        $content = $contentColl->create($idartlang, $idtype, $typeid, NULL, NULL);
     }
 	
     // save content and versions
