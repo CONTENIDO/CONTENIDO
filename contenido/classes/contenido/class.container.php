@@ -26,7 +26,7 @@ class cApiContainerCollection extends ItemCollection {
     /**
      * Create a new collection of items.
      *
-     * @param string $select
+     * @param string $select [optional]
      *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
@@ -113,7 +113,7 @@ class cApiContainer extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -131,7 +131,7 @@ class cApiContainer extends Item {
      * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $bSafe = true) {

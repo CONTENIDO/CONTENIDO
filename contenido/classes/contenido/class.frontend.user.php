@@ -58,7 +58,7 @@ class cApiFrontendUserCollection extends ItemCollection {
      *
      * @param string $username
      *         Specifies the username
-     * @param string $password
+     * @param string $password [optional]
      *         Specifies the password (optional)
      * @return cApiFrontendUser
      */
@@ -132,7 +132,7 @@ class cApiFrontendUser extends Item {
     /**
      * Constructor function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -151,7 +151,7 @@ class cApiFrontendUser extends Item {
      *         Specifies the field to set
      * @param string $value
      *         Specifies the value to set
-     * @param bool $safe
+     * @param bool $safe [optional]
      *         Flag to use defined inFilter
      * @return bool
      */

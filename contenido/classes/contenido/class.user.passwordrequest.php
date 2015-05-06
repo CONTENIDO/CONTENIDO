@@ -26,7 +26,7 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
      * Constructor function.
      *
      * @global array $cfg
-     * @param string|bool $where
+     * @param string|bool $where [optional]
      *         The where clause in the select, usable to run select by creating
      *         the instance.
      */
@@ -42,7 +42,9 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
     /**
      * Create a user password request by user id.
      *
-     * @param int $userid
+     * @param string|array $data [optional]
+     *         optional parameter for direct input of primary key value
+     *         (string) or multiple column name - value pairs
      * @return cApiUserPasswordRequest
      */
     public function createNewItem($data = NULL) {
@@ -89,9 +91,9 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
     /**
      * Returns all password requests available in the system
      *
-     * @param string $userid
+     * @param string $userid [optional]
      *         search for a specific user id
-     * @param string $orderBy
+     * @param string $orderBy [optional]
      *         SQL order by part
      * @return array
      */
@@ -113,7 +115,7 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
     /**
      * Returns all non expired password requests
      *
-     * @param string $userid
+     * @param string $userid [optional]
      *         search for a specific user id
      * @return array
      */
@@ -145,7 +147,7 @@ class cApiUserPasswordRequest extends Item {
     /**
      * Constructor function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {

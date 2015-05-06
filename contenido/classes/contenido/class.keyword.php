@@ -33,11 +33,11 @@ class cApiKeywordCollection extends ItemCollection {
     }
 
     /**
-     *
+     * @todo params w/ defaults should be relocated
      * @param string $keyword
-     * @param string $exp
+     * @param string $exp [optional]
      * @param string $auto
-     * @param string $self
+     * @param string $self [optional]
      * @param int $idlang
      * @return cApiKeyword
      */
@@ -68,7 +68,7 @@ class cApiKeyword extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -89,7 +89,7 @@ class cApiKeyword extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      * @return bool
      */

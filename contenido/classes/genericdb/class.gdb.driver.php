@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the root database driver for the generic db.
  *

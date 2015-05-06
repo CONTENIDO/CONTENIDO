@@ -37,11 +37,11 @@ class cApiTypeCollection extends ItemCollection {
      *
      * @param string $type
      * @param string $description
-     * @param string $code
-     * @param int $status
-     * @param string $author
-     * @param string $created
-     * @param string $lastmodified
+     * @param string $code [optional]
+     * @param int $status [optional]
+     * @param string $author [optional]
+     * @param string $created [optional]
+     * @param string $lastmodified [optional]
      * @return cApiType
      */
     public function create($type, $description, $code = '', $status = 0, $author = '', $created = '', $lastmodified = '') {
@@ -84,7 +84,7 @@ class cApiType extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $id
+     * @param mixed $id [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($id = false) {
@@ -124,7 +124,7 @@ class cApiType extends Item {
      * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $safe
+     * @param bool $safe [optional]
      *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $safe = true) {

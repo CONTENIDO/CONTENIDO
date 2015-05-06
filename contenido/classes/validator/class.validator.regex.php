@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the regular expression validator class.
  *
@@ -31,8 +32,8 @@ class cValidatorRegex extends cValidatorAbstract {
     /**
      *
      * @see cValidatorAbstract::_isValid()
-     * @param   mixed  $value
-     * @return  bool
+     * @param mixed $value
+     * @return bool
      */
     protected function _isValid($value) {
         if (!is_string($value)) {

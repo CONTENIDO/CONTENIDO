@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the list GUI class.
  *
@@ -25,7 +26,7 @@ class cGuiList {
 
     /**
      *
-     * @var unknown_type
+     * @var array
      */
     protected $cells;
 
@@ -38,9 +39,9 @@ class cGuiList {
 
     /**
      *
-     * @param unknown_type $item
-     * @param unknown_type $cell
-     * @param unknown_type $value
+     * @param string|int $item
+     * @param string|int $cell
+     * @param string $value
      */
     public function setCell($item, $cell, $value) {
         $this->cells[$item][$cell] = $value;
@@ -48,7 +49,7 @@ class cGuiList {
 
     /**
      *
-     * @param unknown_type $print
+     * @param bool $print [optional]
      * @return Ambigous <string, void, mixed>
      */
     public function render($print = false) {
@@ -98,5 +99,3 @@ class cGuiList {
     }
 
 }
-
-?>

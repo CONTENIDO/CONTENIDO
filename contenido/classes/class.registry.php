@@ -35,6 +35,7 @@ class cRegistry {
     /**
      * Container for ok messages.
      *
+     * @author frederik.schneider
      * @var array
      */
     protected static $_okMessages = array();
@@ -42,6 +43,7 @@ class cRegistry {
     /**
      * Container for information messages.
      *
+     * @author konstantinos.katikakis
      * @var array
      */
     protected static $_infoMessages = array();
@@ -49,6 +51,7 @@ class cRegistry {
     /**
      * Container for error messages.
      *
+     * @author konstantinos.katikakis
      * @var array
      */
     protected static $_errMessages = array();
@@ -56,6 +59,7 @@ class cRegistry {
     /**
      * Container for warning messages.
      *
+     * @author konstantinos.katikakis
      * @var array
      */
     protected static $_warnMessages = array();
@@ -64,6 +68,7 @@ class cRegistry {
      * Function wich returns path after the last possible place changing via
      * configuration file.
      *
+     * @author konstantinos.katikakis
      * @return string
      *         path
      */
@@ -76,6 +81,7 @@ class cRegistry {
      * Function wich returns the backend URL after the last possible place
      * changing via configuration file.
      *
+     * @author konstantinos.katikakis
      * @return string
      *         URL
      */
@@ -89,6 +95,7 @@ class cRegistry {
      * configuration file.
      * The path point to the current client
      *
+     * @author konstantinos.katikakis
      * @return string
      *         path
      */
@@ -103,6 +110,7 @@ class cRegistry {
      * configuration file.
      * The path point to the current client
      *
+     * @author konstantinos.katikakis
      * @return string
      *         URL
      */
@@ -181,8 +189,8 @@ class cRegistry {
     /**
      * Returns the article id stored in the global variable "idart".
      *
-     * @param bool $autoDetect If true, the value is tried to detected
-     *        automatically. (default: false)
+     * @param bool $autoDetect [optional, default: false]
+     *         If true, the value is tried to detected automatically.
      * @return int
      */
     public static function getArticleId($autoDetect = false) {
@@ -203,8 +211,8 @@ class cRegistry {
      * Returns the article language id stored in the global variable
      * "idartlang".
      *
-     * @param bool $autoDetect If true, the value is tried to detected
-     *        automatically. (default: false)
+     * @param bool $autoDetect [optional, default: false]
+     *         If true, the value is tried to detected automatically.
      * @return int
      */
     public static function getArticleLanguageId($autoDetect = false) {
@@ -224,8 +232,8 @@ class cRegistry {
     /**
      * Returns the category id stored in the global variable "idcat".
      *
-     * @param bool $autoDetect If true, the value is tried to detected
-     *        automatically. (default: false)
+     * @param bool $autoDetect [optional, default: false]
+     *         If true, the value is tried to detected automatically.
      * @return int
      */
     public static function getCategoryId($autoDetect = false) {
@@ -246,8 +254,8 @@ class cRegistry {
      * Returns the category language id stored in the global variable
      * "idcatlang".
      *
-     * @param bool $autoDetect If true, the value is tried to detected
-     *        automatically. (default: false)
+     * @param bool $autoDetect [optional, default: false]
+     *         If true, the value is tried to detected automatically.
      * @return int
      */
     public static function getCategoryLanguageId($autoDetect = false) {
@@ -268,8 +276,8 @@ class cRegistry {
      * Returns the category/article relation id stored in the global variable
      * "idcatart".
      *
-     * @param bool $autoDetect If true, the value is tried to detected
-     *        automatically. (default: false)
+     * @param bool $autoDetect [optional; default: false]
+     *         If true, the value is tried to detected automatically.
      * @return int
      */
     public static function getCategoryArticleId($autoDetect = false) {
@@ -310,6 +318,7 @@ class cRegistry {
     /**
      * Returns the current frame id stored in the global variable "frame".
      *
+     * @author thomas.stauer
      * @return string
      */
     public static function getFrame() {
@@ -337,6 +346,7 @@ class cRegistry {
     /**
      * Returns the area stored in the global variable "area".
      *
+     * @author thomas.stauer
      * @return string
      */
     public static function getArea() {
@@ -346,6 +356,7 @@ class cRegistry {
    /**
      * Returns the action stored in the global variable "action".
      *
+     * @author jann.diekmann
      * @return string
      */
     public static function getAction() {
@@ -356,6 +367,7 @@ class cRegistry {
      * Returns the language when switching languages. Must be set for URL-Build.
      * Stored in the global variable "changelang".
      *
+     * @author jann.diekmann
      * @return string
      */
     public static function getChangeLang() {
@@ -366,6 +378,7 @@ class cRegistry {
      * Returns the global "idcat" and "idart" of the Error-Site stored in the
      * Client Configurations
      *
+     * @author jann.diekmann
      * @return array
      */
     public static function getErrSite() {
@@ -402,9 +415,9 @@ class cRegistry {
      * In this case a $default value can be given which will be returned if this
      * option is not defined.
      *
-     * @param string $sectionName
-     * @param string $optionName optional
-     * @param string $defaultValue optional
+     * @param string $sectionName [optional]
+     * @param string $optionName [optional]
+     * @param string $defaultValue [optional]
      * @return array string
      */
     public static function getConfigValue($sectionName = NULL, $optionName = NULL, $defaultValue = NULL) {
@@ -436,7 +449,8 @@ class cRegistry {
      * "cfgClient".
      * If no client ID is specified or is 0 the complete array is returned.
      *
-     * @param int $clientId Client ID (optional)
+     * @param int $clientId [optional]
+     *         Client ID
      * @return array
      */
     public static function getClientConfig($clientId = 0) {
@@ -469,7 +483,8 @@ class cRegistry {
     /**
      * Fetches the database table name with its prefix.
      *
-     * @param string $index name of the index
+     * @param string $index
+     *         name of the index
      * @return string
      */
     public static function getDbTableName($index) {
@@ -505,8 +520,8 @@ class cRegistry {
      * Getter for an application variable.
      *
      * @param string $key
-     * @param mixed $default Default value to return, if the application
-     *        variable doesn't exists
+     * @param mixed $default [optional]
+     *         Default value to return, if the application variable doesn't exists
      * @return mixed
      */
     public static function getAppVar($key, $default = NULL) {
@@ -528,8 +543,10 @@ class cRegistry {
      * Fetches the global variable requested.
      * If variable is not set, the default value is returned.
      *
-     * @param string $variableName name of the global variable
-     * @param mixed $defaultValue default value
+     * @param string $variableName
+     *         name of the global variable
+     * @param mixed $defaultValue [optional]
+     *         default value
      * @return mixed
      */
     protected final static function _fetchGlobalVariable($variableName, $defaultValue = NULL) {
@@ -544,10 +561,12 @@ class cRegistry {
      * Fetches the corresponding Item object for the specific class name and its
      * primary key value.
      *
-     * @param string $apiClassName name of the api class
-     * @param int $objectId primary key value
-     * @throws cInvalidArgumentException if the given objectId is not greater
-     *         than 0 or the given class does not exist
+     * @param string $apiClassName
+     *         name of the api class
+     * @param int $objectId
+     *         primary key value
+     * @throws cInvalidArgumentException
+     *         if the given objectId is not greater than 0 or the given class does not exist
      * @return Item
      */
     protected final static function _fetchItemObject($apiClassName, $objectId) {
@@ -566,7 +585,8 @@ class cRegistry {
      * Bootstraps the CONTENIDO framework and initializes the global variables
      * sess, auth and perm.
      *
-     * @param array $features array with class name definitions
+     * @param array $features
+     *         array with class name definitions
      */
     public final static function bootstrap($features) {
         $cfg = self::getConfig();
@@ -613,7 +633,8 @@ class cRegistry {
     /**
      * Shutdowns the CONTENIDO framework on page close.
      *
-     * @param bool $debugShowAll
+     * @author frederik.schneider
+     * @param bool $debugShowAll [optional]
      */
     public final static function shutdown($debugShowAll = true) {
         if ($debugShowAll == true) {
@@ -629,16 +650,18 @@ class cRegistry {
     /**
      * Stores an ok massage in the cRegistry.
      *
+     * @author frederik.schneider
      * @param string $message
      */
     public static function addOkMessage($message) {
-    	array_push(self::$_okMessages, $message);
+        array_push(self::$_okMessages, $message);
     }
 
 
     /**
      * Stores an information massage in the cRegistry.
      *
+     * @author konstantinos.katikakis
      * @param string $message
      */
     public static function addInfoMessage($message) {
@@ -648,6 +671,7 @@ class cRegistry {
     /**
      * Stores an error massage in the cRegistry.
      *
+     * @author konstantinos.katikakis
      * @param string $message
      */
     public static function addErrorMessage($message) {
@@ -657,6 +681,7 @@ class cRegistry {
     /**
      * Stores an warning massage in the cRegistry.
      *
+     * @author konstantinos.katikakis
      * @param string $message
      */
     public static function addWarningMessage($message) {
@@ -666,22 +691,24 @@ class cRegistry {
     /**
      * Appends the last ok message that will be outputted
      *
+     * @author frederik.schneider
      * @param string $message
      */
     public static function appendLastOkMessage($message) {
-    	if(count(self::$_okMessages) == 0) {
-    		self::$_okMessages[] = $message;
-    		return;
-    	}
-    	end(self::$_okMessages);
-    	$lastKey = key(self::$_okMessages);
-    	self::$_okMessages[$lastKey] .= "<br>" . $message;
-    	reset(self::$_okMessages);
+        if(count(self::$_okMessages) == 0) {
+            self::$_okMessages[] = $message;
+            return;
+        }
+        end(self::$_okMessages);
+        $lastKey = key(self::$_okMessages);
+        self::$_okMessages[$lastKey] .= "<br>" . $message;
+        reset(self::$_okMessages);
     }
 
     /**
      * Appends the last info message that will be outputted
      *
+     * @author mischa.holz
      * @param string $message
      */
     public static function appendLastInfoMessage($message) {
@@ -698,6 +725,7 @@ class cRegistry {
     /**
      * Appends the last error message that will be outputted
      *
+     * @author mischa.holz
      * @param string $message
      */
     public static function appendLastErrorMessage($message) {
@@ -714,6 +742,7 @@ class cRegistry {
     /**
      * Appends the last warning that will be outputted
      *
+     * @author mischa.holz
      * @param string $message
      */
     public static function appendLastWarningMessage($message) {
@@ -730,15 +759,17 @@ class cRegistry {
     /**
      * Return an array with ok message
      *
+     * @author frederik.schneider
      * @return array
      */
     public static function getOkMessages() {
-    	return self::$_okMessages;
+        return self::$_okMessages;
     }
 
     /**
      * Returns an array with information messages.
      *
+     * @author konstantinos.katikakis
      * @return array
      */
     public static function getInfoMessages() {
@@ -748,6 +779,7 @@ class cRegistry {
     /**
      * Returns an array with error messages.
      *
+     * @author konstantinos.katikakis
      * @return array
      */
     public static function getErrorMessages() {
@@ -757,6 +789,7 @@ class cRegistry {
     /**
      * Returns an array with warning messages.
      *
+     * @author konstantinos.katikakis
      * @return array
      */
     public static function getWarningMessages() {

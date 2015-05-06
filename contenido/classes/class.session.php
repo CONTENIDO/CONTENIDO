@@ -58,7 +58,8 @@ class cSession {
     /**
      * Starts the session
      *
-     * @param string $prefix The prefix for the session variables
+     * @param string $prefix [optional]
+     *         The prefix for the session variables
      */
     public function __construct($prefix = 'backend') {
         $this->_pt = array();
@@ -101,7 +102,8 @@ class cSession {
     /**
      * Registers a global variable which will become persistent
      *
-     * @param string $things The name of the variable (e.g. "idclient")
+     * @param string $things
+     *         The name of the variable (e.g. "idclient")
      */
     public function register($things) {
         $things = explode(',', $things);
@@ -117,7 +119,8 @@ class cSession {
     /**
      * Unregisters a variable
      *
-     * @param string $name The name of the variable (e.g. "idclient")
+     * @param string $name
+     *         The name of the variable (e.g. "idclient")
      */
     public function unregister($name) {
         $this->_pt[$name] = false;
@@ -126,7 +129,8 @@ class cSession {
     /**
      * Checks if a variable is registered
      *
-     * @param string $name The name of the variable (e.g. "idclient")
+     * @param string $name
+     *         The name of the variable (e.g. "idclient")
      * @return bool
      */
     public function isRegistered($name) {
@@ -141,7 +145,8 @@ class cSession {
      * This is no longer needed to make sessions work but some CONTENIDO
      * functions/classes rely on it
      *
-     * @param string $url A URL
+     * @param string $url
+     *         a URL
      * @return mixed
      */
     public function url($url) {
@@ -189,7 +194,8 @@ class cSession {
      * it.
      * This will work recursevly on arrays
      *
-     * @param mixed $var A variable which should get serialized.
+     * @param mixed $var
+     *         A variable which should get serialized.
      * @return string
      *         the PHP code which can be evaluated.
      */
@@ -203,8 +209,10 @@ class cSession {
      * This function will go recursevly through arrays and objects to serialize
      * them.
      *
-     * @param mixed $var The variable
-     * @param string $str The PHP code will be attached to this string
+     * @param mixed $var
+     *         The variable
+     * @param string $str
+     *         The PHP code will be attached to this string
      */
     protected function _rSerialize($var, &$str) {
         static $t, $l, $k;
@@ -307,7 +315,8 @@ class cFrontendSession extends cSession {
      * attached to the URL for the frontend
      *
      * @see cSession::url()
-     * @param string $url A URL
+     * @param string $url
+     *         a URL
      * @return mixed
      */
     public function url($url) {

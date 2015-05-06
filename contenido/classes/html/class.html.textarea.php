@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cHTMLTextarea class.
  *
@@ -32,15 +33,24 @@ class cHTMLTextarea extends cHTMLFormElement {
      * If no additional parameters are specified, the
      * default width is 60 chars, and the height is 5 chars.
      *
-     * @param string $name Name of the element
-     * @param string $initvalue Initial value of the textarea
-     * @param int $width width of the textarea
-     * @param int $height height of the textarea
-     * @param string $id ID of the element
-     * @param string $disabled Item disabled flag (non-empty to set disabled)
-     * @param string $tabindex Tab index for form elements
-     * @param string $accesskey Key to access the field
-     * @param string $class the class of this element
+     * @param string $name
+     *         Name of the element
+     * @param string $initvalue [optional]
+     *         Initial value of the textarea
+     * @param int $width [optional]
+     *         width of the textarea
+     * @param int $height [optional]
+     *         height of the textarea
+     * @param string $id [optional]
+     *         ID of the element
+     * @param string $disabled [optional]
+     *         Item disabled flag (non-empty to set disabled)
+     * @param string $tabindex [optional]
+     *         Tab index for form elements
+     * @param string $accesskey [optional]
+     *         Key to access the field
+     * @param string $class [optional]
+     *         the class of this element
      */
     public function __construct($name, $initvalue = '', $width = '', $height = '', $id = '', $disabled = false, $tabindex = NULL, $accesskey = '', $class = '') {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
@@ -55,7 +65,8 @@ class cHTMLTextarea extends cHTMLFormElement {
     /**
      * Sets the width of the text box.
      *
-     * @param int $width width of the text box
+     * @param int $width
+     *         width of the text box
      * @return cHTMLTextarea
      *         $this for chaining
      */
@@ -72,7 +83,8 @@ class cHTMLTextarea extends cHTMLFormElement {
     /**
      * Sets the maximum input length of the text box.
      *
-     * @param int $maxlen maximum input length
+     * @param int $maxlen
+     *         maximum input length
      * @return cHTMLTextarea
      *         $this for chaining
      */
@@ -89,7 +101,8 @@ class cHTMLTextarea extends cHTMLFormElement {
     /**
      * Sets the initial value of the text box.
      *
-     * @param string $value Initial value
+     * @param string $value
+     *         Initial value
      * @return cHTMLTextarea
      *         $this for chaining
      */

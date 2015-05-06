@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cHTMLTable class.
  *
@@ -38,7 +39,8 @@ class cHTMLTable extends cHTMLContentElement {
     /**
      * Sets the spacing between cells
      *
-     * @param string $cellspacing Spacing
+     * @param string $cellspacing
+     *         Spacing
      * @return cHTMLTable
      *         $this for chaining
      */
@@ -60,7 +62,8 @@ class cHTMLTable extends cHTMLContentElement {
     /**
      * Sets the padding between cells
      *
-     * @param string $cellpadding Padding
+     * @param string $cellpadding
+     *         Padding
      * @return cHTMLTable
      *         $this for chaining
      */
@@ -82,7 +85,8 @@ class cHTMLTable extends cHTMLContentElement {
     /**
      * Sets the table's border
      *
-     * @param string $border Border size
+     * @param string $border
+     *         Border size
      * @return cHTMLTable
      *         $this for chaining
      */
@@ -93,7 +97,8 @@ class cHTMLTable extends cHTMLContentElement {
     /**
      * setWidth: Sets the table width
      *
-     * @param string $width Width
+     * @param string $width
+     *         Width
      * @return cHTMLTable
      *         $this for chaining
      */

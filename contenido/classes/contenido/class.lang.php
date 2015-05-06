@@ -143,7 +143,7 @@ class cApiLanguage extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -169,7 +169,7 @@ class cApiLanguage extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
@@ -186,7 +186,7 @@ class cApiLanguage extends Item {
     /**
      * Loads all languagesettings into an static array.
      *
-     * @param int $idclient
+     * @param int $idclient [optional]
      *         Id of client to load properties from
      */
     protected function _loadProperties($idclient = 0) {
@@ -227,7 +227,7 @@ class cApiLanguage extends Item {
      *         Specifies the type
      * @param string $name
      *         Specifies the name
-     * @param int $idclient
+     * @param int $idclient [optional]
      *         Id of client to set property for
      * @return mixed
      *         Value of the given property or false if item hasn't been loaded

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the tree class.
  *
@@ -31,21 +32,20 @@ class cTree extends cTreeItem {
     protected $_treeIcon;
 
     /**
+     * @todo The root item currently has to be a "0".
+     * This is a bug, feel free to fix it.
      *
-     * @param string $name
+     * @param string $name [optional]
      */
     public function __construct($name = "") {
-        /*
-         * The root item currently has to be a "0". This is a bug, feel free to
-         * fix it.
-         */
         parent::__construct(0, $name);
     }
 
     /**
      * sets a new name for the tree.
      *
-     * @param string $name Name of the tree
+     * @param string $name
+     *         Name of the tree
      */
     public function setTreeName($name) {
         $this->setName($name);

@@ -102,7 +102,7 @@ class cApiCecHook {
      * value.
      *
      * @param mixed $condition
-     * @param mixed $defaultReturnValue
+     * @param mixed $defaultReturnValue [optional]
      */
     public static function setBreakCondition($condition, $defaultReturnValue = NULL) {
         self::$_breakCondition = $condition;
@@ -121,8 +121,8 @@ class cApiCecHook {
     /**
      * Temporaly setting of position in argument to return.
      *
-     * @param int $pos Position, feasible value greater 0
-     *
+     * @param int $pos
+     *         Position, feasible value greater 0
      * @throws cInvalidArgumentException if the given position is less than 1
      */
     public static function setReturnArgumentPos($pos) {
@@ -277,8 +277,10 @@ class cApiCecHook {
      *       Writes the debug value into a logfile (see
      *       contenido/data/log/cec_hook_debug.log).
      *
-     * @param mixed $var The variable to dump
-     * @param string $msg Additional message
+     * @param mixed $var
+     *         The variable to dump
+     * @param string $msg [optional]
+     *         Additional message
      */
     private static function _debug($var, $msg = '') {
         global $cfg;

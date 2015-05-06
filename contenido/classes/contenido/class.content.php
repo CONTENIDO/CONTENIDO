@@ -44,9 +44,9 @@ class cApiContentCollection extends ItemCollection {
      * @param int $typeId
      * @param string $value
      * @param int $version
-     * @param string $author
-     * @param string $created
-     * @param string $lastmodified
+     * @param string $author [optional]
+     * @param string $created [optional]
+     * @param string $lastmodified [optional]
      * @return cApiContent
      */
     public function create($idArtLang, $idType, $typeId, $value, $version, $author = '', $created = '', $lastmodified = '') {
@@ -91,7 +91,7 @@ class cApiContent extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -109,7 +109,7 @@ class cApiContent extends Item {
      * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $bSafe = true) {

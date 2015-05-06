@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cHTMLAudio class.
  *
@@ -26,13 +27,13 @@ class cHTMLAudio extends cHTMLContentElement {
     /**
      * Constructor.
      *
-     * @param mixed $content
+     * @param mixed $content [optional]
      *         String or object with the contents
-     * @param string $class
+     * @param string $class [optional]
      *         the class of this element
-     * @param string $id
+     * @param string $id [optional]
      *         the ID of this element
-     * @param string $src
+     * @param string $src [optional]
      */
     public function __construct($content = '', $class = '', $id = '', $src = '') {
         parent::__construct($content, $class, $id);

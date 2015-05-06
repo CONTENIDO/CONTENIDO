@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the MySQLi database driver class.
  *
@@ -12,6 +13,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
@@ -154,8 +156,10 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      * String values in passed fields parameter will be escaped automatically.
      *
      * @see cDbDriverAbstract::buildInsert()
-     * @param string $tableName The table name
-     * @param array $fields Associative array of fields to insert
+     * @param string $tableName
+     *         The table name
+     * @param array $fields
+     *         Associative array of fields to insert
      * @return string
      *         The INSERT SQL query
      */
@@ -263,7 +267,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      * instance of class $className.
      *
      * @see cDbDriverAbstract::getResultObject()
-     * @param string $className
+     * @param string $className [optional]
      * @return Ambigous <NULL, object, false>
      */
     public function getResultObject($className = NULL) {
@@ -353,7 +357,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      * Moves the cursor (position inside current result sets).
      *
      * @see cDbDriverAbstract::seek()
-     * @param int $iPos
+     * @param int $pos [optional]
      *         The positon to move to inside the current result set
      * @return int
      */
@@ -400,7 +404,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      * @param string $tableName
      *         The table to get metadata or empty string to retrieve metadata
      *         of all tables.
-     * @param bool $full
+     * @param bool $full [optional]
      *         Flag to load full metadata.
      * @return array
      *         Depends on used database and on parameter $full

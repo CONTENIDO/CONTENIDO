@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cContentTypeLinkeditor class.
  *
@@ -12,6 +13,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.con.php');
@@ -116,13 +118,13 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      */
     public function getConfiguredData() {
         $data = array(
-            'type' => $this->_settings['linkeditor_type'],
-            'externallink' => $this->_settings['linkeditor_externallink'],
-            'title' => $this->_settings['linkeditor_title'],
-            'newwindow' => $this->_settings['linkeditor_newwindow'],
-            'idart' => $this->_settings['linkeditor_idart'],
-            'filename' => $this->_settings['linkeditor_filename'],
-            'href' => $this->_generateHref()
+            'type'          => $this->_settings['linkeditor_type'],
+            'externallink'  => $this->_settings['linkeditor_externallink'],
+            'title'         => $this->_settings['linkeditor_title'],
+            'newwindow'     => $this->_settings['linkeditor_newwindow'],
+            'idart'         => $this->_settings['linkeditor_idart'],
+            'filename'      => $this->_settings['linkeditor_filename'],
+            'href'          => $this->_generateHref()
         );
 
         return $data;
@@ -300,6 +302,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     /**
      * Generates code for the basic settings "tab" in which the link title and
      * target can be specified.
+     *
      * This tab is always shown.
      *
      * @return string
@@ -364,8 +367,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     /**
      * Builds an array with category information.
      *
-     * @param int $level
-     * @param int $parentid
+     * @param int $level [optional]
+     * @param int $parentid [optional]
      * @return array
      *         with directory information
      */
@@ -486,7 +489,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      *
      * @param int $idcat
      *         the current idcat
-     * @param array $idcats
+     * @param array $idcats [optional]
      *         the array of idcats to which all idcats should be added
      * @return array
      *         the given idcats array with the given idcat and all parent idcats
@@ -508,7 +511,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     /**
      * Generate a select box for all articles of the given idcat.
      *
-     * @param int $idCat
+     * @param int $idCat [optional]
      *         idcat of the category from which all articles should be shown
      * @return string
      *         rendered cHTMLSelectElement
@@ -674,7 +677,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     /**
      * Generates a select box for the manual files.
      *
-     * @param string $directoryPath
+     * @param string $directoryPath [optional]
      *         to directory of the files
      * @return string|int
      */
@@ -742,6 +745,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     /**
      * Checks whether the directory defined by the given directory
      * information is the currently active directory.
+     *
      * Overwrite in subclasses if you use getDirectoryList!
      *
      * @param array $dirData
@@ -756,6 +760,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     /**
      * Checks whether the directory defined by the given directory information
      * should be shown expanded.
+     *
      * Overwrite in subclasses if you use getDirectoryList!
      *
      * @param array $dirData

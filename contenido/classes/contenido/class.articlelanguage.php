@@ -26,7 +26,7 @@ class cApiArticleLanguageCollection extends ItemCollection {
     /**
      * Create a new collection of items.
      *
-     * @param string $select
+     * @param string $select [optional]
      *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
@@ -54,35 +54,42 @@ class cApiArticleLanguageCollection extends ItemCollection {
      * @param string $urlname
      * @param string $pagetitle
      * @param string $summary
-     * @param int $artspec
-     * @param string $created
-     * @param string $author
-     * @param string $lastmodified
-     * @param string $modifiedby
-     * @param string $published
-     * @param string $publishedby
-     * @param int $online
-     * @param int $redirect
-     * @param string $redirect_url
-     * @param int $external_redirect
-     * @param int $artsort
-     * @param int $timemgmt
-     * @param string $datestart
-     * @param string $dateend
-     * @param int $status
-     * @param int $time_move_cat
-     * @param int $time_target_cat
-     * @param int $time_online_move
-     * @param int $locked
-     * @param mixed $free_use_01
-     * @param mixed $free_use_02
-     * @param mixed $free_use_03
-     * @param int $searchable
-     * @param float $sitemapprio
-     * @param string $changefreq
+     * @param int $artspec [optional]
+     * @param string $created [optional]
+     * @param string $author [optional]
+     * @param string $lastmodified [optional]
+     * @param string $modifiedby [optional]
+     * @param string $published [optional]
+     * @param string $publishedby [optional]
+     * @param int $online [optional]
+     * @param int $redirect [optional]
+     * @param string $redirect_url [optional]
+     * @param int $external_redirect [optional]
+     * @param int $artsort [optional]
+     * @param int $timemgmt [optional]
+     * @param string $datestart [optional]
+     * @param string $dateend [optional]
+     * @param int $status [optional]
+     * @param int $time_move_cat [optional]
+     * @param int $time_target_cat [optional]
+     * @param int $time_online_move [optional]
+     * @param int $locked [optional]
+     * @param mixed $free_use_01 [optional]
+     * @param mixed $free_use_02 [optional]
+     * @param mixed $free_use_03 [optional]
+     * @param int $searchable [optional]
+     * @param float $sitemapprio [optional]
+     * @param string $changefreq [optional]
      * @return cApiArticleLanguage
      */
-    public function create($idart, $idlang, $title, $urlname, $pagetitle, $summary, $artspec = 0, $created = '', $author = '', $lastmodified = '', $modifiedby = '', $published = '', $publishedby = '', $online = 0, $redirect = 0, $redirect_url = '', $external_redirect = 0, $artsort = 0, $timemgmt = 0, $datestart = '', $dateend = '', $status = 0, $time_move_cat = 0, $time_target_cat = 0, $time_online_move = 0, $locked = 0, $free_use_01 = '', $free_use_02 = '', $free_use_03 = '', $searchable = 1, $sitemapprio = 0.5, $changefreq = '') {
+    public function create($idart, $idlang, $title, $urlname, $pagetitle,
+            $summary, $artspec = 0, $created = '', $author = '',
+            $lastmodified = '', $modifiedby = '', $published = '',
+            $publishedby = '', $online = 0, $redirect = 0, $redirect_url = '',
+            $external_redirect = 0, $artsort = 0, $timemgmt = 0, $datestart = '',
+            $dateend = '', $status = 0, $time_move_cat = 0, $time_target_cat = 0,
+            $time_online_move = 0, $locked = 0, $free_use_01 = '', $free_use_02 = '',
+            $free_use_03 = '', $searchable = 1, $sitemapprio = 0.5, $changefreq = '') {
         global $auth;
 
         if (empty($author)) {
@@ -257,9 +264,9 @@ class cApiArticleLanguage extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
-     * @param bool $fetchContent
+     * @param bool $fetchContent [optional]
      *         Flag to fetch content
      */
     public function __construct($mId = false, $fetchContent = false) {
@@ -281,7 +288,7 @@ class cApiArticleLanguage extends Item {
      *         Article id
      * @param int $idlang
      *         Language id
-     * @param bool $fetchContent
+     * @param bool $fetchContent [optional]
      *         Flag to fetch content
      * @return bool
      *         true on success, otherwhise false
@@ -398,7 +405,7 @@ class cApiArticleLanguage extends Item {
      * sitemapprio - The priority for the sitemap
      *
      * @param string $name
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined outFilter on passed value
      *         NOTE: It's not used ATM!
      * @return string
@@ -414,7 +421,7 @@ class cApiArticleLanguage extends Item {
      * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $bSafe = true) {
@@ -474,7 +481,7 @@ class cApiArticleLanguage extends Item {
      *
      * @param string $type
      *         CMS_TYPE - Legal cms type string
-     * @param int|NULL $id
+     * @param int|NULL $id [optional]
      *         Id of the content
      * @return string|array
      *         data
@@ -562,7 +569,7 @@ class cApiArticleLanguage extends Item {
     /**
      * Returns the link to the current object.
      *
-     * @param int $changeLangId
+     * @param int $changeLangId [optional]
      *         change language id for URL (optional)
      * @return string
      *         link

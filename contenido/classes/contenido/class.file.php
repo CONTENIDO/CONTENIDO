@@ -39,7 +39,7 @@ class cApiFileCollection extends ItemCollection {
      * Creates a file item entry
      * @param string $area
      * @param string $filename
-     * @param string $filetype
+     * @param string $filetype [optional]
      * @return cApiFile
      */
     public function create($area, $filename, $filetype = 'main') {
@@ -83,7 +83,7 @@ class cApiFile extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {

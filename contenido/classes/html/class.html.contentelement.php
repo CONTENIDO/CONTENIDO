@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cHTMLContentElement class.
  *
@@ -26,11 +27,11 @@ class cHTMLContentElement extends cHTML {
     /**
      * Constructor.
      *
-     * @param mixed $content
+     * @param mixed $content [optional]
      *         String or object with the contents
-     * @param string $class
+     * @param string $class [optional]
      *         the class of this element
-     * @param string $id
+     * @param string $id [optional]
      *         the ID of this element
      */
     public function __construct($content = '', $class = '', $id = '') {
@@ -57,8 +58,9 @@ class cHTMLContentElement extends cHTML {
     /**
      * Appends code / objects to the content.
      *
-     * @param string|object|array $content String with the content or a cHTML
-     *        object to render or an array of strings / objects.
+     * @param string|object|array $content
+     *         String with the content or a cHTML object to render
+     *         or an array of strings / objects.
      * @return cHTMLContentElement
      *         $this for chaining
      */

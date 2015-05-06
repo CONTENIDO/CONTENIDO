@@ -133,7 +133,7 @@ class cApiCecRegistry {
      *         This method is deprecated and is not needed any longer
      * @param string $sChainName
      *         Chain name
-     * @param array $aParameters
+     * @param array $aParameters [optional]
      *         Chain parameter
      * @return NULL
      */
@@ -145,19 +145,20 @@ class cApiCecRegistry {
     /**
      * Adds a chain function which is to invoke.
      *
-     * @param string $sChainName Chain name
-     * @param string $sFunctionName Name of function/callback to invoke.
-     *        Feasible values are:
-     *        - "ClassName->methodName" to invoke a method of a ClassName
-     *        instance.
-     *        A instance of the clas will be created here.
-     *        - "ClassName::methodName" to invoke a static method of ClassName.
-     *        - "FunctionName" to invoke a function.
-     *        NOTE: Necessary files must be manually included before or by
-     *        defined autoloader.
-     *
-     * @throws cInvalidArgumentException if the given chain is not registered or
-     *         the given callback is not callable
+     * @param string $sChainName
+     *         Chain name
+     * @param string $sFunctionName
+     *         Name of function/callback to invoke.
+     *         Feasible values are:
+     *         - "ClassName->methodName" to invoke a method of a ClassName
+     *         instance.
+     *         A instance of the clas will be created here.
+     *         - "ClassName::methodName" to invoke a static method of ClassName.
+     *         - "FunctionName" to invoke a function.
+     *         NOTE: Necessary files must be manually included before or by
+     *         defined autoloader.
+     * @throws cInvalidArgumentException
+     *         if the given chain is not registered or the given callback is not callable
      * @return bool
      *         True on success, otherwhise false
      */
@@ -225,9 +226,10 @@ class cApiCecRegistry {
     /**
      * Checks if a chain function exists.
      *
-     * @param string $sChainName Chain name
-     * @param string $sFunctionName Name of function to check
-     *
+     * @param string $sChainName
+     *         Chain name
+     * @param string $sFunctionName
+     *         Name of function to check
      * @return bool
      */
     public function chainFunctionExists($sChainName, $sFunctionName) {
@@ -245,8 +247,10 @@ class cApiCecRegistry {
     /**
      * Removes a chain function.
      *
-     * @param string $sChainName Chain name
-     * @param string $sFunctionName Name of function to remove from chain.
+     * @param string $sChainName
+     *         Chain name
+     * @param string $sFunctionName
+     *         Name of function to remove from chain.
      */
     public function removeChainFunction($sChainName, $sFunctionName) {
         $this->_resetIterator($sChainName);
@@ -267,8 +271,8 @@ class cApiCecRegistry {
      *       http://www.php.net/spl)
      *       but ArrayIterator uses rewind() instead of reset()...
      *
-     * @param string $sChainName Chain name
-     *
+     * @param string $sChainName
+     *         Chain name
      * @return cIterator
      */
     public function getIterator($sChainName) {
@@ -437,7 +441,7 @@ class cApiCecChainItem {
     /**
      * Another way to set the arguments before invoking execute() method.
      *
-     * @param array $args
+     * @param array $args [optional]
      */
     public function setTemporaryArguments(array $args = array()) {
         $this->_mTemporaryArguments = $args;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the uri class.
  *
@@ -54,7 +55,8 @@ class cUri {
 
     /**
      * Returns self instance
-     * @return  cUri
+     *
+     * @return cUri
      */
     public static function getInstance() {
         if (self::$_instance == NULL) {
@@ -66,13 +68,17 @@ class cUri {
     /**
      * Creates a URL to frontend page.
      *
-     * @param   mixed    $param   Either url or assoziative array containing parameter:
-     *                            - url: front_content.php?idcat=12&lang=1
-     *                            - params: array('idcat' => 12, 'lang' => 1)
-     *                            Required values depend on used UriBuilder, but a must have is 'lang'.
-     * @param   bool  $bUseAbsolutePath  Flag to create absolute Urls
-     * @param   array    $aConfig  If not set, cUriBuilderConfig::getConfig() will be used by the UriBuilder
-     * @throws cInvalidArgumentException if the given params do not contain the lang
+     * @param mixed $param
+     *         Either url or assoziative array containing parameter:
+     *         - url: front_content.php?idcat=12&lang=1
+     *         - params: array('idcat' => 12, 'lang' => 1)
+     *         Required values depend on used UriBuilder, but a must have is 'lang'.
+     * @param bool $bUseAbsolutePath [optional]
+     *         Flag to create absolute Urls
+     * @param array $aConfig [optional]
+     *         If not set, cUriBuilderConfig::getConfig() will be used by the UriBuilder
+     * @throws cInvalidArgumentException
+     *         if the given params do not contain the lang
      * @return string
      *         The Url build by cUriBuilder
      */
@@ -132,11 +138,13 @@ class cUri {
     /**
      * Creates a URL used to redirect to frontend page.
      *
-     * @param   mixed    $param   Either url or assoziative array containing parameter:
-     *                            - url: front_content.php?idcat=12&lang=1
-     *                            - params: array('idcat' => 12, 'lang' => 1)
-     *                            Required values depend on used UriBuilder, but a must have is 'lang'.
-     * @param   array    $aConfig  If not set, cUriBuilderConfig::getConfig() will be used by the UriBuilder
+     * @param mixed $param
+     *         Either url or assoziative array containing parameter:
+     *         - url: front_content.php?idcat=12&lang=1
+     *         - params: array('idcat' => 12, 'lang' => 1)
+     *         Required values depend on used UriBuilder, but a must have is 'lang'.
+     * @param array $aConfig [optional]
+     *         If not set, cUriBuilderConfig::getConfig() will be used by the UriBuilder
      * @return string
      *         The redirect Url build by cUriBuilder
      */
@@ -148,7 +156,8 @@ class cUri {
     /**
      * Splits passed url into its components
      *
-     * @param   string  $sUrl  The Url to strip down
+     * @param string $sUrl
+     *         The Url to strip down
      * @return array
      *         Assoziative array created by using parse_url()
      *         having the key 'params' which includes the parameter value pairs.
@@ -168,7 +177,8 @@ class cUri {
     /**
      * Composes a url using passed components array
      *
-     * @param   array   %aComponents Assoziative array created by parse_url()
+     * @param array $aComponents
+     *         Assoziative array created by parse_url()
      * @return string
      *         The composed Url
      */
@@ -187,7 +197,8 @@ class cUri {
     /**
      * Checks, if passed url is an external url while performing hostname check
      *
-     * @param   string  $sUrl  Url to check
+     * @param string $sUrl
+     *         Url to check
      * @return bool
      *         True if url is a external url, otherwhise false
      */
@@ -223,7 +234,8 @@ class cUri {
      * Other Urls, even internal Urls like /unknown/path/to/some/page.html will not be identified as
      * internal url event if they are real working clean URLs.
      *
-     * @param   string  $sUrl  Url to check
+     * @param string $sUrl
+     *         Url to check
      * @return bool
      *         True if url is identifiable internal url, otherwhise false
      */

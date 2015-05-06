@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains an implementation of HttpRequest using fsockopen
  *
@@ -75,9 +76,10 @@ class cHttpRequestSocket extends cHttpRequest {
     /**
      * Basic constructor
      *
-     * @param string $url URL for the request
      * @see cHttpRequest::__construct()
      * @see cHttpRequest::getHttpRequest()
+     * @param string $url [optional]
+     *         URL for the request
      */
     public function __construct($url = '') {
         $this->url = $url;
@@ -195,9 +197,12 @@ class cHttpRequestSocket extends cHttpRequest {
     /**
      * Send the request to the server
      *
-     * @param bool $return Wether the function should return the servers response
-     * @param string $method GET or PUT
-     * @param bool $returnHeaders Wether the headers should be included in the response
+     * @param bool $return
+     *         Wether the function should return the servers response
+     * @param string $method
+     *         GET or PUT
+     * @param bool $returnHeaders [optional]
+     *         Wether the headers should be included in the response
      * @return string|bool
      */
     protected function sendRequest($return, $method, $returnHeaders = false) {
@@ -255,9 +260,9 @@ class cHttpRequestSocket extends cHttpRequest {
      * Peform the request using POST
      *
      * @see cHttpRequest::postRequest()
-     * @param bool $return
+     * @param bool $return [optional]
      *         If true, response of the server gets returned as string
-     * @param bool $returnHeaders
+     * @param bool $returnHeaders [optional]
      *         If true, headers will be included in the response
      * @return string|bool
      *         False on error, response otherwise
@@ -272,9 +277,9 @@ class cHttpRequestSocket extends cHttpRequest {
      * Peform the request using GET
      *
      * @see cHttpRequest::getRequest()
-     * @param bool $return
+     * @param bool $return [optional]
      *         If true, response of the server gets returned as string
-     * @param bool $returnHeaders
+     * @param bool $returnHeaders [optional]
      *         If true, headers will be included in the response
      * @return string|bool
      *         False on error, response otherwise
@@ -289,9 +294,9 @@ class cHttpRequestSocket extends cHttpRequest {
      * Peform the request using POST AND append all GET parameters
      *
      * @see cHttpRequest::request()
-     * @param bool $return
+     * @param bool $return [optional]
      *         If true, response of the server gets returned as string
-     * @param bool $returnHeaders
+     * @param bool $returnHeaders [optional]
      *         If true, headers will be included in the response
      * @return string|bool
      *         False on error, response otherwise
@@ -303,5 +308,3 @@ class cHttpRequestSocket extends cHttpRequest {
         return $this->sendRequest($return, 'POST', $returnHeaders);
     }
 }
-
-?>

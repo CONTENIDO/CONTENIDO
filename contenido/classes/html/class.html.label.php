@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cHTMLLabel class.
  *
@@ -39,9 +40,12 @@ class cHTMLLabel extends cHTMLContentElement {
      * since if a user clicks a label, the linked form element receives
      * the focus (if supported by the user agent).
      *
-     * @param string $text Name of the element
-     * @param string $for ID of the form element to link to.
-     * @param string $class the class of this element
+     * @param string $text
+     *         Name of the element
+     * @param string $for
+     *         ID of the form element to link to.
+     * @param string $class [optional]
+     *         the class of this element
      */
     public function __construct($text, $for, $class = '') {
         parent::__construct('', $class);

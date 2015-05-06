@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the debug interface.
  *
@@ -31,15 +32,15 @@ interface cDebugInterface {
     /**
      *
      * @param mixed $mVariable
-     * @param string $sVariableDescription
-     * @param bool $bExit
+     * @param string $sVariableDescription [optional]
+     * @param bool $bExit [optional]
      */
     public function show($mVariable, $sVariableDescription = '', $bExit = false);
 
     /**
      *
      * @param mixed $mVariable
-     * @param string $sVariableDescription
+     * @param string $sVariableDescription [optional]
      */
     public function add($mVariable, $sVariableDescription = '');
 

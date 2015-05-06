@@ -38,10 +38,14 @@ class NoteCollection extends cApiCommunicationCollection {
      * original function for the parameters.
      *
      * @see ItemCollection::select()
-     * @param string $sWhere Specifies the where clause.
-     * @param string $sGroupBy Specifies the group by clause.
-     * @param string $sOrderBy Specifies the order by clause.
-     * @param string $sLimit Specifies the limit by clause.
+     * @param string $sWhere [optional]
+     *         Specifies the where clause.
+     * @param string $sGroupBy [optional]
+     *         Specifies the group by clause.
+     * @param string $sOrderBy [optional]
+     *         Specifies the order by clause.
+     * @param string $sLimit [optional]
+     *         Specifies the limit by clause.
      * @return bool
      *         True on success, otherwhise false
      */
@@ -58,11 +62,15 @@ class NoteCollection extends cApiCommunicationCollection {
     /**
      * Creates a new note item.
      *
-     * @param string $itemtype Item type (usually the class name)
-     * @param mixed $itemid Item ID (usually the primary key)
-     * @param int $idlang Language-ID
-     * @param string $message Message to store
-     * @param string $category
+     * @param string $itemtype
+     *         Item type (usually the class name)
+     * @param mixed $itemid
+     *         Item ID (usually the primary key)
+     * @param int $idlang
+     *         Language-ID
+     * @param string $message
+     *         Message to store
+     * @param string $category [optional]
      * @return object
      *         The new item
      */
@@ -235,7 +243,7 @@ class NoteListItem extends cHTMLDiv {
 
     /**
      *
-     * @param string $dark
+     * @param string $dark [optional]
      */
     public function setBackground($dark = false) {
     }
@@ -356,8 +364,10 @@ class NoteLink extends cHTMLLink {
      * This link is used to show the popup from any position within the system.
      * The link contains the note image.
      *
-     * @param string $sItemType Item type (usually the class name)
-     * @param mixed $sItemID Item ID (usually the primary key)
+     * @param string $sItemType
+     *         Item type (usually the class name)
+     * @param mixed $sItemID
+     *         Item ID (usually the primary key)
      */
     public function NoteLink($sItemType, $sItemID) {
         parent::__construct();
@@ -407,7 +417,8 @@ class NoteLink extends cHTMLLink {
     /**
      * @see cHTML::render()
      * @todo fix unused param $return
-     * @param bool $return this param is unused
+     * @param bool $return [optional]
+     *         this param is unused
      * @return string
      *         Generated markup
      */

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the scrollable lists GUI class.
  *
@@ -108,9 +109,9 @@ class cGuiScrollList {
     /**
      * Creates a new FrontendList object.
      *
-     * @param bool $defaultstyle
+     * @param bool $defaultstyle [optional]
      *         use the default style for object initializing?
-     * @param unknown_type $action
+     * @param unknown_type $action [optional]
      */
     public function __construct($defaultstyle = true, $action = "") {
         global $cfg, $area, $frame;
@@ -158,9 +159,9 @@ class cGuiScrollList {
      *
      * $obj->setCustom($key, $custom);
      *
-     * @param $key
+     * @param unknown_type $key
      *         Custom entry key
-     * @param $custom
+     * @param unknown_type $custom
      *         Custom entry value
      */
     public function setCustom($key, $custom) {
@@ -170,7 +171,7 @@ class cGuiScrollList {
     /**
      * Is called when a new row is rendered
      *
-     * @param $row
+     * @param unknown_type $row
      *         The current row which is being rendered
      */
     public function onRenderRow($row) {
@@ -180,7 +181,7 @@ class cGuiScrollList {
     /**
      * Is called when a new column is rendered
      *
-     * @param $row
+     * @param unknown_type $column
      *         The current column which is being rendered
      */
     public function onRenderColumn($column) {
@@ -347,7 +348,7 @@ class cGuiScrollList {
     /**
      * Outputs or optionally returns
      *
-     * @param bool $return
+     * @param bool $return [optional]
      *         If true, returns the list
      * @return string|void
      */

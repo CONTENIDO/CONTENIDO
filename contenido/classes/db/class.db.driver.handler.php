@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the database driver handler class.
  *
@@ -131,19 +132,20 @@ abstract class cDbDriverHandler {
      * Uses default connection settings, passed $options['connection'] settings
      * will overwrite connection settings for current instance.
      *
-     * @param array $options Assoziative options as follows:
-     *        - $options['haltBehavior'] (string) Optional, halt behavior on
-     *                       occured errors
-     *        - $options['haltMsgPrefix'] (string) Optional, Text to prepend to
-     *                       the halt message
-     *        - $options['enableProfiling'] (bool) Optional, flag to enable
-     *                       profiling
-     *        - $options['connection'] (array) Optional, assoziative connection
-     *                       settings
-     *        - $options['connection']['host'] (string) Hostname or ip
-     *        - $options['connection']['database'] (string) Database name
-     *        - $options['connection']['user'] (string) User name
-     *        - $options['connection']['password'] (string) User password
+     * @param array $options [optional]
+     *         Assoziative options as follows:
+     *         - $options['haltBehavior'] (string) Optional, halt behavior on
+     *             occured errors
+     *         - $options['haltMsgPrefix'] (string) Optional, Text to prepend to
+     *             the halt message
+     *         - $options['enableProfiling'] (bool) Optional, flag to enable
+     *             profiling
+     *         - $options['connection'] (array) Optional, assoziative connection
+     *             settings
+     *         - $options['connection']['host'] (string) Hostname or ip
+     *         - $options['connection']['database'] (string) Database name
+     *         - $options['connection']['user'] (string) User name
+     *         - $options['connection']['password'] (string) User password
      * @throws cDbException
      */
     public function __construct($options = array()) {
@@ -267,7 +269,8 @@ abstract class cDbDriverHandler {
     /**
      * Returns connection from connection cache
      *
-     * @param mixed $data Connection data array or variable
+     * @param mixed $data
+     *         Connection data array or variable
      * @return mixed
      *         Either The connection (object, resource, integer) or NULL
      */
@@ -280,8 +283,10 @@ abstract class cDbDriverHandler {
     /**
      * Stores connection in connection cache
      *
-     * @param mixed $data       Connection data array
-     * @param mixed $connection The connection to store in cache
+     * @param mixed $data
+     *         Connection data array
+     * @param mixed $connection
+     *         The connection to store in cache
      */
     protected function _setConnection($data, $connection) {
         $hash = md5($this->_driverType . '-' . (is_array($data) ? implode('-', $data) : (string)$data));
@@ -291,7 +296,8 @@ abstract class cDbDriverHandler {
     /**
      * Removes connection from cache
      *
-     * @param mixed $connection The connection to remove in cache
+     * @param mixed $connection
+     *         The connection to remove in cache
      */
     protected function _removeConnection($connection) {
         foreach (self::$_connectionCache as $hash => $res) {
@@ -361,8 +367,8 @@ abstract class cDbDriverHandler {
      * Accepts additional unlimited parameter, where the parameter will be
      * replaced against formatting sign in query.
      *
-     * @param string $statement The sql statement to prepare.
-     *
+     * @param string $statement
+     *         The sql statement to prepare.
      * @return string
      *         The prepared sql statement
      * @throws Exception
@@ -422,9 +428,9 @@ abstract class cDbDriverHandler {
      * </pre>
      *
      * @param string $statement
-     * @param array  $arguments Arguments array containing the query with
-     *                          formatting
-     *                          signs and the entries.
+     * @param array  $arguments
+     *         Arguments array containing the query with formatting signs and
+     *         the entries.
      *
      * @return string
      */
@@ -454,8 +460,9 @@ abstract class cDbDriverHandler {
      * </pre>
      *
      * @param string $statement
-     * @param array  $arguments Arguments array containing the query with named
-     *                          parameter and assoziative entries array
+     * @param array  $arguments
+     *         Arguments array containing the query with named parameter and
+     *         assoziative entries array
      *
      * @return string
      */
@@ -515,9 +522,10 @@ abstract class cDbDriverHandler {
      * $result = $db->insert($cfg['tab']['code'], $fields);
      * </pre>
      *
-     * @param string $tableName The table name
-     * @param array  $fields    Assoziative array of fields to insert
-     *
+     * @param string $tableName
+     *         The table name
+     * @param array  $fields
+     *         Assoziative array of fields to insert
      * @return bool
      */
     public function insert($tableName, array $fields) {
@@ -545,8 +553,10 @@ abstract class cDbDriverHandler {
      * $db->query($statement);
      * </pre>
      *
-     * @param string $tableName The table name
-     * @param array  $fields    Assoziative array of fields to insert
+     * @param string $tableName
+     *         The table name
+     * @param array  $fields
+     *         Assoziative array of fields to insert
      *
      * @return string
      */
@@ -567,11 +577,13 @@ abstract class cDbDriverHandler {
      * $result = $db->update($cfg['tab']['code'], $fields, $whereClauses);
      * </pre>
      *
-     * @param string $tableName    The table name
-     * @param array  $fields       Assoziative array of fields to update
-     * @param array  $whereClauses Assoziative array of field in where clause.
-     *                             Multiple entries will be concatenated with AND
-     *
+     * @param string $tableName
+     *         The table name
+     * @param array  $fields
+     *         Assoziative array of fields to update
+     * @param array  $whereClauses
+     *         Assoziative array of field in where clause.
+     *         Multiple entries will be concatenated with AND
      * @return bool
      */
     public function update($tableName, array $fields, array $whereClauses) {
@@ -595,11 +607,13 @@ abstract class cDbDriverHandler {
      * $db->query($statement);
      * </pre>
      *
-     * @param string $tableName    The table name
-     * @param array  $fields       Assoziative array of fields to update
-     * @param array  $whereClauses Assoziative array of field in where clause.
-     *                             Multiple entries will be concatenated with AND
-     *
+     * @param string $tableName
+     *         The table name
+     * @param array  $fields
+     *         Assoziative array of fields to update
+     * @param array  $whereClauses
+     *         Assoziative array of field in where clause.
+     *         Multiple entries will be concatenated with AND
      * @return string
      */
     public function buildUpdate($tableName, array $fields, array $whereClauses) {
@@ -642,8 +656,8 @@ abstract class cDbDriverHandler {
      * Accepts additional unlimited parameter, where the parameter will be
      * replaced against formatting sign in query.
      *
-     * @param string $statement The SQL statement to execute.
-     *
+     * @param string $statement
+     *         The SQL statement to execute.
      * @return resource|int|object|bool
      *         database driver, false on error
      */
@@ -717,7 +731,7 @@ abstract class cDbDriverHandler {
      * If optional param $className is set, the result object is an instance of
      * class $className.
      *
-     * @param string $className
+     * @param string $className [optional]
      * @return object
      */
     public function getResultObject($className = NULL) {
@@ -766,7 +780,8 @@ abstract class cDbDriverHandler {
     /**
      * Escape string for using in SQL-Statement.
      *
-     * @param string $string The string to escape
+     * @param string $string
+     *         The string to escape
      * @return string
      *         Escaped string
      */
@@ -814,11 +829,11 @@ abstract class cDbDriverHandler {
     /**
      * Parses te table structure and generates a metadata from it.
      *
-     * @param string $tableName The table to get metadata or empty string to
-     *                          retrieve
-     *                          metadata of all tables
-     * @param bool   $full      Flag to load full metadata
-     *
+     * @param string $tableName [optional]
+     *         The table to get metadata or empty string to retrieve metadata
+     *         of all tables
+     * @param bool $full [optional]
+     *         Flag to load full metadata
      * @return array
      *         Depends on used database and on parameter $full
      */
@@ -887,8 +902,10 @@ abstract class cDbDriverHandler {
     /**
      * Returns the desired field value from current record set.
      *
-     * @param mixed $name    The field name or index position
-     * @param mixed $default The default value to return
+     * @param mixed $name
+     *         The field name or index position
+     * @param mixed $default [optional]
+     *         The default value to return
      * @return mixed
      *         The value of field
      */
@@ -901,7 +918,8 @@ abstract class cDbDriverHandler {
     /**
      * Returns current record set as a associative and/or indexed array.
      *
-     * @param string $fetchMode One of cDbDriverHandler::FETCH_* constants
+     * @param string $fetchMode [optional]
+     *         One of cDbDriverHandler::FETCH_* constants
      * @return array
      */
     public function toArray($fetchMode = self::FETCH_ASSOC) {

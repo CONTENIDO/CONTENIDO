@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the module template handler class.
  * TODO: Rework comments of this class.
@@ -465,7 +466,7 @@ class cModuleTemplateHandler extends cModuleHandler {
      * This method test the code if the client setting htmlvalidator
      * is not set to false.
      *
-     * @param {cGuiNotification} $notification
+     * @param cGuiNotification $notification
      */
     private function _validateHTML($notification) {
         // Try to validate html
@@ -633,8 +634,10 @@ class cModuleTemplateHandler extends cModuleHandler {
      *
      * @param cPermission $perm
      * @param cGuiNotification $notification
-     * @param string Backend language (not sure about this...)
-     * @param bool render in read only mode
+     * @param string $belang
+     *         Backend language (not sure about this...)
+     * @param bool $readOnly
+     *         render in read only mode
      */
     public function display($perm, $notification, $belang, $readOnly) {
         $myAction = $this->_getAction();

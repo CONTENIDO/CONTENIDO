@@ -1,4 +1,5 @@
 <?php
+
 /**
  * A class to render helpful information next to a form element
  *
@@ -12,6 +13,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
@@ -24,7 +26,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cGuiBackendHelpbox {
 
     /**
-     * the text that will appear in the tooltip
+     * Text that will appear in the tooltip.
      *
      * @var string
      */
@@ -32,7 +34,7 @@ class cGuiBackendHelpbox {
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
     protected $imageURL;
 
@@ -40,8 +42,10 @@ class cGuiBackendHelpbox {
      * Basic constructor.
      * Assigns a help text
      *
-     * @param string $helpText the text that will appear in the tooltip
-     * @param string $imageURL This image will be used for the tooltip
+     * @param string $helpText
+     *         the text that will appear in the tooltip
+     * @param string $imageURL [optional]
+     *         This image will be used for the tooltip
      */
     public function __construct($helpText, $imageURL = '') {
         $this->setHelpText($helpText);
@@ -51,7 +55,8 @@ class cGuiBackendHelpbox {
     /**
      * Set the help text to a new value
      *
-     * @param string $helpText the text that will appear in the tooltip
+     * @param string $helpText
+     *         the text that will appear in the tooltip
      */
     public function setHelpText($helpText) {
         $this->helpText = $helpText;
@@ -60,7 +65,8 @@ class cGuiBackendHelpbox {
     /**
      * Set the image for the tooltip
      *
-     * @param string $imageURL the image file
+     * @param string $imageURL
+     *         the image file
      */
     public function setImageURL($imageURL) {
         $this->imageURL = $imageURL;
@@ -71,8 +77,9 @@ class cGuiBackendHelpbox {
      * Please make sure that the atooltip.jquery.js and the
      * atooltip.css are embedded on the site
      *
-     * @param string $returnAsString if true the rendered button will be
-     *        returned. Otherwise it will be echoed
+     * @param string $returnAsString [optional]
+     *         if true the rendered button will be returned.
+     *         Otherwise it will be echoed
      * @return string|NULL
      *         rendered button or nothing if it's been printed
      */
@@ -95,5 +102,3 @@ class cGuiBackendHelpbox {
         }
     }
 }
-
-?>

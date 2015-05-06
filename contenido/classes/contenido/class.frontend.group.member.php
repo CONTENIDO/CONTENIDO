@@ -83,7 +83,7 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
      *
      * @param int $idfrontendgroup
      *         specifies the frontend group
-     * @param bool $asObjects
+     * @param bool $asObjects [optional]
      *         Specifies if the function should return objects
      * @return array
      *         List of frontend user ids or cApiFrontendUser items
@@ -118,7 +118,7 @@ class cApiFrontendGroupMember extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {

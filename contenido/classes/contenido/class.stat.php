@@ -60,7 +60,7 @@ class cApiStatCollection extends ItemCollection {
      * @param int $iIdCatArt
      * @param int $iIdLang
      * @param int $iIdClient
-     * @param int $iVisited
+     * @param int $iVisited [optional]
      * @return cApiStat
      */
     public function create($iIdCatArt, $iIdLang, $iIdClient, $iVisited = 1) {
@@ -112,7 +112,7 @@ class cApiStat extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -137,7 +137,7 @@ class cApiStat extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      * @return bool
      */

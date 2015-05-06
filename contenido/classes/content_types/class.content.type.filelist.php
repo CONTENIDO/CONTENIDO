@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cContentTypeFilelist class.
  *
@@ -12,6 +13,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.con.php');
@@ -618,8 +620,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      *         the code for the directories tab
      */
     private function _generateTabDirectories() {
-        // define a wrapper which contains the whole content of the directories
-        // tab
+        // wrapper containing content of directories tab
         $wrapper = new cHTMLDiv();
         $wrapperContent = array();
 
@@ -648,7 +649,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      *         the code for the general link tab
      */
     private function _generateTabGeneral() {
-        // define a wrapper which contains the whole content of the general tab
+        // wrapper containing content of general tab
         $wrapper = new cHTMLDiv();
         $wrapperContent = array();
 
@@ -776,7 +777,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      *         the code for the filter link tab
      */
     private function _generateTabFilter() {
-        // define a wrapper which contains the whole content of the filter tab
+        // wrapper containing content of filter tab
         $wrapper = new cHTMLDiv();
         $wrapperContent = array();
 
@@ -897,7 +898,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      *         the code for the manual link tab
      */
     private function _generateTabManual() {
-        // define a wrapper which contains the whole content of the manual tab
+        // wrapper containing content of manual tab
         $wrapper = new cHTMLDiv();
         $wrapperContent = array();
 
@@ -956,21 +957,19 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
         // Check if manual selected file exists, otherwise ignore them
         // Write only existing files into selectedFiles array
-//        if (is_array($tempSelectedFiles)) {
-//            foreach ($tempSelectedFiles as $filename) {
-//                if (cFileHandler::exists($this->_uploadPath . $filename)) {
-//                    $selectedFiles[] = $filename;
-//                }
-//            }
-//        }
-
+        // if (is_array($tempSelectedFiles)) {
+        //     foreach ($tempSelectedFiles as $filename) {
+        //         if (cFileHandler::exists($this->_uploadPath . $filename)) {
+        //             $selectedFiles[] = $filename;
+        //         }
+        //     }
+        // }
 
         // If we have wasted selected files, update settings
-//        if (count($tempSelectedFiles) != count($selectedFiles)) {
-//        	$this->_settings['filelist_manual_files'] = $selectedFiles;
-//
-//        	$this->_storeSettings();
-//        }
+        // if (count($tempSelectedFiles) != count($selectedFiles)) {
+        //     $this->_settings['filelist_manual_files'] = $selectedFiles;
+        //     $this->_storeSettings();
+        // }
 
         $htmlSelect = new cHTMLSelectElement('filelist_manual_files_' . $this->_id, '', 'filelist_manual_files_' . $this->_id, false, '', '', 'manual');
 
@@ -1002,7 +1001,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     /**
      * Generate a select box containing all files for the manual tab.
      *
-     * @param string $directoryPath
+     * @param string $directoryPath [optional]
      *         Path to directory of the files
      * @return string
      *         rendered cHTMLSelectElement

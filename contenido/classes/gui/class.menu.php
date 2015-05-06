@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the menu GUI class.
  *
@@ -118,7 +119,7 @@ class cGuiMenu {
 
     /**
      *
-     * @param unknown_type $rowmark
+     * @param unknown_type $rowmark [optional]
      */
     public function setRowmark($rowmark = true) {
         $this->rowmark = $rowmark;
@@ -128,7 +129,7 @@ class cGuiMenu {
      *
      * @param unknown_type $item
      * @param unknown_type $image
-     * @param unknown_type $maxwidth
+     * @param unknown_type $maxwidth [optional]
      */
     public function setImage($item, $image, $maxwidth = 0) {
         $show = '';
@@ -167,7 +168,7 @@ class cGuiMenu {
 
     /**
      *
-     * @param unknown_type $print
+     * @param unknown_type $print [optional]
      * @return Ambigous <string, void, mixed>
      */
     public function render($print = true) {
@@ -249,5 +250,3 @@ class cGuiMenu {
     }
 
 }
-
-?>

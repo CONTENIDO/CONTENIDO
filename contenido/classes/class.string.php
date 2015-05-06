@@ -28,9 +28,12 @@ class cString {
      *
      * Caution: This function only takes strings as parameters, not arrays!
      *
-     * @param  string  $find  String to find
-     * @param  string  $replace  String to replace
-     * @param  string  $subject String to process
+     * @param string $find
+     *         String to find
+     * @param string $replace
+     *         String to replace
+     * @param string $subject
+     *         String to process
      * @return string
      *         Processed string
      */
@@ -55,9 +58,12 @@ class cString {
      *
      * Caution: This function only takes strings as parameters, not arrays!
      *
-     * @param  string  $find  String to find
-     * @param  string  $replace  String to replace
-     * @param  string  $subject  String to process
+     * @param string $find
+     *         String to find
+     * @param string $replace
+     *         String to replace
+     * @param string $subject
+     *         String to process
      * @return string
      *         Processed string
      */
@@ -83,9 +89,12 @@ class cString {
      *
      * NOTE: The original strrpos-Function of PHP4 only finds a single character as needle.
      *
-     * @param  string  $haystack   String to search in
-     * @param  string  $needle     String to search for
-     * @param  int     $start     Offset
+     * @param string $haystack
+     *         String to search in
+     * @param string $needle
+     *         String to search for
+     * @param int $start [optional]
+     *         Offset
      * @return string
      *         Processed string
      */
@@ -109,8 +118,9 @@ class cString {
     /**
      * Adds slashes to passed variable or array.
      *
-     * @param   string|array  $value  Either a string or a multi-dimensional array of values
-     * @return  string|array
+     * @param string|array $value
+     *         Either a string or a multi-dimensional array of values
+     * @return string|array
      */
     public static function addSlashes($value) {
         $value = is_array($value) ? array_map(array('cString', 'addSlashes'), $value) : addslashes($value);
@@ -120,8 +130,9 @@ class cString {
     /**
      * Removes slashes from passed variable or array.
      *
-     * @param   string|array  $value  Either a string or a multi-dimensional array of values
-     * @return  string|array
+     * @param string|array  $value
+     *         Either a string or a multi-dimensional array of values
+     * @return string|array
      */
     public static function stripSlashes($value) {
         $value = is_array($value) ? array_map(array('cString', 'stripSlashes'), $value) : stripslashes($value);
@@ -131,9 +142,11 @@ class cString {
     /**
      * Checks if the string haystack ends with needle
      *
-     * @param   string  $haystack  The string to check
-     * @param   string  $needle    The string with which it should end
-     * @return  bool
+     * @param string $haystack
+     *         The string to check
+     * @param string $needle
+     *         The string with which it should end
+     * @return bool
      */
     public static function endsWith($haystack, $needle) {
         $length = strlen($needle);
@@ -147,8 +160,10 @@ class cString {
     /**
      * Returns true if needle can be found in haystack
      *
-     * @param string $haystack String to be searched
-     * @param string $needle String to search for
+     * @param string $haystack
+     *         String to be searched
+     * @param string $needle
+     *         String to search for
      * @return bool
      */
     public static function contains($haystack, $needle) {
@@ -158,9 +173,12 @@ class cString {
     /**
      * Implementation of PHP 5.3's strstr with beforeNeedle
      *
-     * @param string $haystack String to be searched
-     * @param string $needle String to search for
-     * @param string $beforeNeedle If true, return everything BEFORE needle
+     * @param string $haystack
+     *         String to be searched
+     * @param string $needle
+     *         String to search for
+     * @param string $beforeNeedle [optional]
+     *         If true, return everything BEFORE needle
      * @return string
      * @link http://php.net/manual/de/function.strstr.php
      */
@@ -174,7 +192,8 @@ class cString {
 
     /**
      * This function checks if a given format is accepted by php's date function
-     * @param string $format format according to date function specification
+     * @param string $format
+     *         format according to date function specification
      * @return bool
      *         true if format is correct, false otherwise
      */

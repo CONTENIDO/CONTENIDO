@@ -101,21 +101,21 @@ class HtmlParser {
 
     /**
      *
-     * @var unknown_type
+     * @var string
      * @todo should be private
      */
     var $iHtmlText;
 
     /**
      *
-     * @var unknown_type
+     * @var int
      * @todo should be private
      */
     var $iHtmlTextLength;
 
     /**
      *
-     * @var unknown_type
+     * @var int
      * @todo should be private
      */
     var $iHtmlTextIndex = 0;

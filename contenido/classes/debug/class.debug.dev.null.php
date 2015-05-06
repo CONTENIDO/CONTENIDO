@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cDebugDevNull class.
  *
@@ -63,10 +64,12 @@ class cDebugDevNull implements cDebugInterface {
     /**
      * Outputs contents of passed variable to /dev/null
      *
-     * @param mixed $mVariable The variable to be displayed
-     * @param string $sVariableDescription The variable's name or description
-     * @param bool $bExit If set to true, your app will NOT die() after
-     *        output of current var
+     * @param mixed $mVariable
+     *         The variable to be displayed
+     * @param string $sVariableDescription [optional]
+     *         The variable's name or description
+     * @param bool $bExit [optional]
+     *         If set to true, your app will NOT die() after output of current var
      */
     public function show($mVariable, $sVariableDescription = '', $bExit = false) {
     }
@@ -75,7 +78,7 @@ class cDebugDevNull implements cDebugInterface {
      * Interface implementation
      *
      * @param mixed $mVariable
-     * @param string $sVariableDescription
+     * @param string $sVariableDescription [optional]
      */
     public function add($mVariable, $sVariableDescription = '') {
     }

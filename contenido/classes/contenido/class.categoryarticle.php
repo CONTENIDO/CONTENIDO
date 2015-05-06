@@ -26,7 +26,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
     /**
      * Create a new collection of items.
      *
-     * @param string $select
+     * @param string $select [optional]
      *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
@@ -48,11 +48,11 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *
      * @param int $idcat
      * @param int $idart
-     * @param int $status
-     * @param string $author
-     * @param string $created
-     * @param string $lastmodified
-     * @param int $createcode
+     * @param int $status [optional]
+     * @param string $author [optional]
+     * @param string $created [optional]
+     * @param string $lastmodified [optional]
+     * @param int $createcode [optional]
      * @return cApiCategoryArticle
      */
     public function create($idcat, $idart, $status = 0, $author = "", $created = "", $lastmodified = "", $createcode = 1) {
@@ -228,7 +228,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *
      * @param int|array $idcatart
      *         One category article id or list of category article ids
-     * @param int $createcode
+     * @param int $createcode [optional]
      *         Create code state, either 1 or 0.
      * @return int
      *         Number of updated entries
@@ -267,7 +267,7 @@ class cApiCategoryArticle extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -284,7 +284,7 @@ class cApiCategoryArticle extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      * @return bool
      */

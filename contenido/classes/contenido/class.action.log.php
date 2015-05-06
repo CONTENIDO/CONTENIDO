@@ -47,7 +47,7 @@ class cApiActionlogCollection extends ItemCollection {
      * @param int $idlang
      * @param int $idaction
      * @param int $idcatart
-     * @param string $logtimestamp
+     * @param string $logtimestamp [optional]
      *
      * @return cApiActionlog
      */
@@ -83,7 +83,7 @@ class cApiActionlog extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -100,7 +100,7 @@ class cApiActionlog extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      * @return bool
      */

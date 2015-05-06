@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cHTMLListItem class.
  *
@@ -26,8 +27,10 @@ class cHTMLListItem extends cHTMLContentElement {
     /**
      * Creates an HTML li element.
      *
-     * @param string $id the ID of this list item
-     * @param string $class the class of this list item
+     * @param string $id [optional]
+     *         the ID of this list item
+     * @param string $class [optional]
+     *         the class of this list item
      */
     public function __construct($id = '', $class = '') {
         parent::__construct('', $class, $id);

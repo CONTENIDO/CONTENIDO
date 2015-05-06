@@ -153,10 +153,13 @@ class cEffectiveSetting {
      * NOTE: If you provide a default value (other than empty string), then it will be returned back
      *       in case of not existing or empty setting.
      *
-     * @param  string  $type  The type of the item
-     * @param  string  $name  The name of the item
-     * @param  string  $default  Optional default value
-     * @return  bool|string
+     * @param string $type
+     *         The type of the item
+     * @param string $name
+     *         The name of the item
+     * @param string $default [optional]
+     *         default value
+     * @return bool|string
      *         Setting value or false
      */
     public static function get($type, $name, $default = '') {
@@ -194,7 +197,8 @@ class cEffectiveSetting {
      * System properties can be overridden by the group, and group
      * properties can be overridden by the user.
      *
-     * @param string $type The type of the item
+     * @param string $type
+     *         The type of the item
      * @return array
      *         Assoziative array like $arr[name] = value
      */
@@ -221,9 +225,12 @@ class cEffectiveSetting {
      * Note:
      * The setting will be set only in cache, not in persistency layer.
      *
-     * @param string $type The type of the item
-     * @param string $name The name of the item
-     * @param string $value The value of the setting
+     * @param string $type
+     *         The type of the item
+     * @param string $name
+     *         The name of the item
+     * @param string $value
+     *         The value of the setting
      */
     public static function set($type, $name, $value) {
         $key = self::_makeKey($type, $name);
@@ -236,8 +243,10 @@ class cEffectiveSetting {
      * Note:
      * The setting will be deleted only from cache, not from persistency layer.
      *
-     * @param string $type The type of the item
-     * @param string $name The name of the item
+     * @param string $type
+     *         The type of the item
+     * @param string $name
+     *         The name of the item
      */
     public static function delete($type, $name) {
         $keySuffix = '_' . $type . '_' . $name;
@@ -316,7 +325,8 @@ class cEffectiveSetting {
     /**
      * Setting getter.
      *
-     * @param string $key The setting key
+     * @param string $key
+     *         The setting key
      * @return string
      *         bool setting value or false
      */
@@ -327,8 +337,10 @@ class cEffectiveSetting {
     /**
      * Setting setter.
      *
-     * @param string $key The setting key
-     * @param string $value Value to store
+     * @param string $key
+     *         The setting key
+     * @param string $value
+     *         Value to store
      */
     protected static function _set($key, $value) {
         self::$_settings[$key] = $value;
@@ -337,8 +349,10 @@ class cEffectiveSetting {
     /**
      * Setting key getter.
      *
-     * @param string $type The type of the item
-     * @param string $name Name of the item
+     * @param string $type
+     *         The type of the item
+     * @param string $name
+     *         Name of the item
      * @return string
      *         The setting key
      */

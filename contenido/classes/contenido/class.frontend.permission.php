@@ -107,7 +107,7 @@ class cApiFrontendPermissionCollection extends ItemCollection {
      *         Specifies the action
      * @param string $item
      *         Specifies the item
-     * @param bool $useLang
+     * @param bool $useLang [optional]
      *         Flag to use language (Not used!)
      * @return bool
      */
@@ -143,7 +143,7 @@ class cApiFrontendPermissionCollection extends ItemCollection {
      *         Specifies the action
      * @param string $item
      *         Specifies the item
-     * @param bool $useLang
+     * @param bool $useLang [optional]
      *         Flag to use language (Not used!)
      * @return bool
      */
@@ -176,7 +176,7 @@ class cApiFrontendPermission extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {

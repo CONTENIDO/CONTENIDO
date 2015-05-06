@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the generic db item collection class.
  *
@@ -259,7 +260,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
     /**
      * Initializes the driver to use with GenericDB.
      *
-     * @param bool $bForceInit
+     * @param bool $bForceInit [optional]
      *         If true, forces the driver to initialize, even if it already exists.
      */
     protected function _initializeDriver($bForceInit = false) {
@@ -311,7 +312,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *
      * @param string $sField
      * @param mixed $mRestriction
-     * @param string $sOperator
+     * @param string $sOperator [optional]
      */
     public function setWhere($sField, $mRestriction, $sOperator = '=') {
         $sField = strtolower($sField);
@@ -324,7 +325,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *
      * @param string $sField
      * @param mixed $mRestriction
-     * @param string $sOperator
+     * @param string $sOperator [optional]
      */
     public function deleteWhere($sField, $mRestriction, $sOperator = '=') {
         $sField = strtolower($sField);
@@ -341,7 +342,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param string $sGroup
      * @param string $sField
      * @param mixed $mRestriction
-     * @param string $sOperator
+     * @param string $sOperator [optional]
      */
     public function setWhereGroup($sGroup, $sField, $mRestriction, $sOperator = '=') {
         $sField = strtolower($sField);
@@ -356,7 +357,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param string $sGroup
      * @param string $sField
      * @param mixed $mRestriction
-     * @param string $sOperator
+     * @param string $sOperator [optional]
      */
     public function deleteWhereGroup($sGroup, $sField, $mRestriction, $sOperator = '=') {
         $sField = strtolower($sField);
@@ -371,7 +372,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * Defines how relations in one group are linked each together
      *
      * @param string $sGroup
-     * @param string $sCondition
+     * @param string $sCondition [optional]
      */
     public function setInnerGroupCondition($sGroup, $sCondition = 'AND') {
         $this->_innerGroupConditions[$sGroup] = $sCondition;
@@ -382,7 +383,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *
      * @param string $sGroup1
      * @param string $sGroup2
-     * @param string $sCondition
+     * @param string $sCondition [optional]
      */
     public function setGroupCondition($sGroup1, $sGroup2, $sCondition = 'AND') {
         $this->_groupConditions[$sGroup1][$sGroup2] = $sCondition;
@@ -732,13 +733,13 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * Selects all entries from the database.
      * Objects are loaded using their primary key.
      *
-     * @param string $sWhere
+     * @param string $sWhere [optional]
      *         Specifies the where clause.
-     * @param string $sGroupBy
+     * @param string $sGroupBy [optional]
      *         Specifies the group by clause.
-     * @param string $sOrderBy
+     * @param string $sOrderBy [optional]
      *         Specifies the order by clause.
-     * @param string $sLimit
+     * @param string $sLimit [optional]
      *         Specifies the limit by clause.
      * @return bool
      *         True on success, otherwhise false
@@ -781,19 +782,19 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * Selects all entries from the database.
      * Objects are loaded using their primary key.
      *
-     * @param string $sDistinct
+     * @param string $sDistinct [optional]
      *         Specifies if distinct will be added to the SQL statement
      *         ($sDistinct !== '' -> DISTINCT)
-     * @param string $sFrom
+     * @param string $sFrom [optional]
      *         Specifies the additional from clause (e.g.
      *         'con_news_groups AS groups, con_news_groupmembers AS groupmembers').
-     * @param string $sWhere
+     * @param string $sWhere [optional]
      *         Specifies the where clause.
-     * @param string $sGroupBy
+     * @param string $sGroupBy [optional]
      *         Specifies the group by clause.
-     * @param string $sOrderBy
+     * @param string $sOrderBy [optional]
      *         Specifies the order by clause.
-     * @param string $sLimit
+     * @param string $sLimit [optional]
      *         Specifies the limit by clause.
      * @return bool
      *         True on success, otherwhise false
@@ -904,9 +905,9 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * keys, the key will be used as alias for the object. If you specify more
      * than one object with the same key, the array will be multi-dimensional.
      *
-     * @param array $aFields
+     * @param array $aFields [optional]
      *         array with the fields to fetch
-     * @param array $aObjects
+     * @param array $aObjects [optional]
      * @return array
      */
     public function fetchTable(array $aFields = array(), array $aObjects = array()) {
@@ -1071,7 +1072,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
     /**
      * Creates a new item in the table and loads it afterwards.
      *
-     * @param string|array $data
+     * @param string|array $data [optional]
      *         optional parameter for direct input of primary key value
      *         (string) or multiple column name - value pairs
      * @return Item
@@ -1121,7 +1122,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *
      * @param object $srcItem
      *         Source Item instance to copy
-     * @param array $fieldsToOverwrite
+     * @param array $fieldsToOverwrite [optional]
      *         Assoziative list of fields to overwrite.
      * @throws cInvalidArgumentException
      *         If Item class doesn't match the defined _itemClass property

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the table form GUI class.
  *
@@ -116,9 +117,12 @@ class cGuiTableForm {
     /**
      * Creates a new cGuiTableForm with given name, action & method of form.
      *
-     * @param string $name of form
-     * @param string $action of form defaults to 'main.php'
-     * @param string $method of form defaults to 'post'
+     * @param string $name
+     *         of form
+     * @param string $action [optional]
+     *         of form defaults to 'main.php'
+     * @param string $method [optional]
+     *         of form defaults to 'post'
      */
     public function __construct($name, $action = 'main.php', $method = 'post') {
 
@@ -149,7 +153,7 @@ class cGuiTableForm {
      *
      * @param string $caption
      * @param array|object|string $item
-     * @param string $rowname
+     * @param string $rowname [optional]
      */
     public function add($caption, $item, $rowname = "") {
 
@@ -249,9 +253,9 @@ class cGuiTableForm {
      *
      * @param unknown_type $id
      * @param unknown_type $image
-     * @param unknown_type $description
-     * @param unknown_type $accesskey
-     * @param unknown_type $action
+     * @param unknown_type $description [optional]
+     * @param unknown_type $accesskey [optional]
+     * @param unknown_type $action [optional]
      */
     public function setActionButton($id, $image, $description = "", $accesskey = false, $action = false) {
         $this->custom[$id]["image"] = $image;
@@ -293,7 +297,8 @@ class cGuiTableForm {
      * Renders this cGuiTableForm and either returs ist markup or echoes it
      * immediately.
      *
-     * @param bool $return if true then return markup, else echo immediately
+     * @param bool $return [optional]
+     *         if true then return markup, else echo immediately
      * @return Ambigous <string, mixed>
      */
     public function render($return = true) {

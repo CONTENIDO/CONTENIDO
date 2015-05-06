@@ -118,7 +118,7 @@ class cApiSearchTracking extends Item {
     /**
      * Default constructor
      *
-     * @param string $mId
+     * @param string $mId [optional]
      *         Item Id
      */
     public function __construct($mId = false) {

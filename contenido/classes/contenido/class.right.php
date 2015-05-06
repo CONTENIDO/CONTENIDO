@@ -123,7 +123,7 @@ class cApiRight extends Item {
     /**
      * Constructor function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -140,7 +140,8 @@ class cApiRight extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @param bool $bSafe [optional]
+     *         Flag to run defined inFilter on passed value
      * @return bool
      */
     public function setField($name, $value, $bSafe = true) {

@@ -98,7 +98,7 @@ class cApiPropertyCollection extends ItemCollection {
 
     /**
      * Constructor function
-     * @param int $idclient
+     * @param int $idclient [optional]
      *         Client id
      */
     public function __construct($idclient = 0) {
@@ -171,8 +171,8 @@ class cApiPropertyCollection extends ItemCollection {
      *         Entry name
      * @param mixed $value
      *         Value
-     * @param bool $bDontEscape
-     *         Optionally default false (on internal call do not escape parameters again
+     * @param bool $bDontEscape [optional; default false]
+     *         on internal call do not escape parameters again
      *         NOTE: This parameter is deprecated since 2013-11-26
      * @return cApiProperty
      */
@@ -216,7 +216,7 @@ class cApiPropertyCollection extends ItemCollection {
      *         Type of the data to store (arbitary data)
      * @param mixed $name
      *         Entry name
-     * @param mixed $default
+     * @param mixed $default [optional]
      *         to be returned if no item was found
      * @return mixed Value
      */
@@ -331,7 +331,7 @@ class cApiPropertyCollection extends ItemCollection {
      *         Entry name
      * @param mixed $value
      *         Value
-     * @param int $idProp
+     * @param int $idProp [optional]
      *         Id of database record (if set, update on this basis
      *         (possiblity to update name value and type))
      */
@@ -439,7 +439,7 @@ class cApiPropertyCollection extends ItemCollection {
      *         Field to search in
      * @param mixed $fieldValue
      *         Value to search for
-     * @param cAuth $auth
+     * @param cAuth $auth [optional]
      *         Narrow result down to user in auth objext
      * @return array
      *         For each given item
@@ -568,8 +568,8 @@ class cApiPropertyCollection extends ItemCollection {
 
     /**
      *
-     * @param string $itemtype
-     * @param int $itemid
+     * @param string $itemtype [optional]
+     * @param int $itemid [optional]
      * @return bool
      */
     protected function _useCache($itemtype = NULL, $itemid = NULL) {
@@ -648,7 +648,7 @@ class cApiPropertyCollection extends ItemCollection {
      *         Type of the data to store (arbitary data)
      * @param mixed $name
      *         Entry name
-     * @param mixed $default
+     * @param mixed $default [optional]
      *         to be returned if no item was found
      * @return mixed
      *         Value
@@ -739,7 +739,7 @@ class cApiProperty extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -778,7 +778,7 @@ class cApiProperty extends Item {
      *
      * @param string $field
      * @param string $value
-     * @param bool $safe
+     * @param bool $safe [optional]
      *         Flag to run filter on passed value
      * @return bool
      * @throws cInvalidArgumentException

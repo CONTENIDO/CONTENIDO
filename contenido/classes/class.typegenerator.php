@@ -73,7 +73,8 @@ class cTypeGenerator {
     /**
      * Returns the classname for a content type.
      *
-     * @param string $type Content type, e. g. CMS_HTMLHEAD
+     * @param string $type
+     *         Content type, e. g. CMS_HTMLHEAD
      * @return string
      *         The classname e. g. cContentTypeHtmlhead for content type CMS_HTMLHEAD
      */
