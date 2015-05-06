@@ -627,6 +627,23 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             || strpos($redirect_url, '&amp;' . $getKey . '=') !== false) {
             continue;
         }
+
+        // CON-2231: Do not add reserved get parameters to redirect url
+        switch ($getKey) {
+            case 'client':
+                continue 2;
+            case 'idart':
+                continue 2;
+            case 'idcat';
+                continue 2;
+            case 'idartlang':
+                continue 2;
+            case 'lang':
+                continue 2;
+            case 'error':
+                continue 2;
+        }
+
         if (strpos($redirect_url, '?') === false) {
             $redirect_url .= '?';
         } else {
