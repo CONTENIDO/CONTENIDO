@@ -212,8 +212,6 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
                 'changefreq' => $changefreq
             );
             
-            $versioning->createArticleLanguageVersion($parameters);     
-            
             $versioning->createArticleLanguageVersion($parameters);			
             break;
         case 'disabled': 
