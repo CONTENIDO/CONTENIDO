@@ -827,8 +827,8 @@ if (count($result) <= 0) {
                 $class = ' noactive'; 
             }
             $page->set("d", "EXTRA_CLASS", $class);
-            $page->set("d", "NAME", $name);
-            $page->set("d", "ID_TYPE", $idtype);
+            $page->set("d", "NAME", $type);
+            $page->set("d", "ID_TYPE", $typeId);
             if(in_array($name, $allowedContentTypes)) {
                 $page->set("d", "EXPORT_CONTENT",  '<input type="checkbox" class="rawtypes" name="' . $name .'" value="' .$idtype .'" checked="checked">');
                 $page->set('d', 'EXPORT_CONTENT_LABEL', i18n("Export"));

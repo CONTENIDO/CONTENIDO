@@ -67,7 +67,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
     if (!is_array($idcatnew)) {
         $idcatnew[0] = 0;
     }
-
+    
     $versioning = new cContentVersioning();
     // Create article entry
     $oArtColl = new cApiArticleCollection();
@@ -181,12 +181,13 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
     }
 	
     $versioningState = $versioning->getState();
-
+    
     switch ($versioningState) {
         case 'simple':
         case 'advanced':
             // Create new Article Language Version Entry
             $parameters = array(
+                'published' => $published_value,
                 'idcat' => $idcat,
                 'idcatnew' => $idcatnew,
                 'idart' => $idart,
@@ -210,6 +211,8 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
                 'sitemapprio' => $sitemapprio,
                 'changefreq' => $changefreq
             );
+            
+            $versioning->createArticleLanguageVersion($parameters);     
             
             $versioning->createArticleLanguageVersion($parameters);			
             break;
@@ -298,14 +301,14 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
 	// Get idtplcfg
     $idTplCfg = $artLang->get('idtplcfg'); 
     
-    // Get all idcats that contain art     //TODOJ: ???
+    // Get all idcats that contain art
     $oCatArtColl = new cApiCategoryArticleCollection();
     $aCatsForArt = $oCatArtColl->getCategoryIdsByArticleId($idart);
     if (count($aCatsForArt) == 0) {
         $aCatsForArt[0] = 0;
     }
 
-    foreach ($idcatnew as $value) { //TODOJ: ???
+    foreach ($idcatnew as $value) {
         if (!in_array($value, $aCatsForArt)) {
             // New category article entry
             $oCatArtColl = new cApiCategoryArticleCollection();
@@ -339,7 +342,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     if ($title == '') {
         $title = '--- ' . i18n('Default title') . ' ---';
     }
-			
+    
     $versioning = new cContentVersioning();
     $versioningState = $versioning->getState();
 
@@ -394,6 +397,10 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
             $artLang->store();
         case 'advanced':
             // Create new Article Language Version Entry
+            if ((int) $online == 1 && $oldOnline == 0) {
+                    $published = date('Y-m-d H:i:s');
+                    $publishedby = $author;
+            }
             $parameters = array(
                 'idcat' => $idcat,
                 'idcatnew' => $idcatnew,
@@ -408,6 +415,8 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
                 'created' => $created,
                 'iscurrentversion' => 1,
                 'lastmodified' => $lastmodified,
+                'published' => $published,
+                'publishedby' => $publishedby,
                 'author' => $author,
                 'online' => $online,
                 'artsort' => $artsort,
@@ -418,8 +427,8 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
                 'sitemapprio' => $sitemapprio,
                 'changefreq' => $changefreq
             );
-            $versioning->createArticleLanguageVersion($parameters);
             
+            $versioning->createArticleLanguageVersion($parameters);            
              			
             break;
         case 'disabled':

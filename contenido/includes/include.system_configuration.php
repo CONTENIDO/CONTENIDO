@@ -27,9 +27,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @param string $label the label text which should be rendered
  * @return array associative array with the label and the input field
  */
-function renderSelectProperty($name, $possibleValues, $value, $label, $width = 322) {
+function renderSelectProperty($name, $possibleValues, $value, $label, $width = 328) {
     global $auth;
-
+    
     $return = array();
     
     if (count($possibleValues) === 2 && (in_array('true', $possibleValues) && in_array('false', $possibleValues) || in_array('enabled', $possibleValues) && in_array('disabled', $possibleValues) || in_array('0', $possibleValues) && in_array('1', $possibleValues))) {
@@ -49,12 +49,13 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
             $html->appendOptionElement($element);
         }
         
-        if (in_array($value, array('disabled', 'simple', 'advanced'))) {
-            $html->setStyle('padding:3px;width:' . $width . 'px;');            
+        //if (in_array($value, array('disabled', 'simple', 'advanced'))) {
+        if ($name == 'versioning{_}enabled') {
+            $html->setStyle('float:left;padding:3px;width:' . $width . 'px;');
             $return['label'] = 
                 ' <div>
-                    <span style="width: 280px; display: inline-block; padding: 0px 0px 0px 2px;">
-                        <span style="margin: 0px 10px 0px 0px;">' . i18n("Article Versioning") . '</span>
+                    <span style="width: 284px; display: inline-block; padding: 0px 0px 0px 2px; float:left;">
+                        <span style="margin: 0px 10px 0px 0px;">' . i18n("Article Versioning") . ':' . '</span>
                         <a 
                             href="#" 
                             id="pluginInfoDetails-link" 
@@ -82,7 +83,7 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
                   . '</div>');
         } else {
             $html->setStyle('padding:3px;display:block;float:left;width:' . $width . 'px;');   
-            $return['label'] = renderLabel($label, $name);
+            $return['label'] = renderLabel($label, $name, 280, ':', 'left');
         }
         
     }
@@ -92,7 +93,8 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
         $html->updateAttribute('disabled', 'true');
     }
     
-    if (!in_array($value, array('disabled', 'simple', 'advanced'))) {
+    //if (!in_array($value, array('disabled', 'simple', 'advanced'))) {
+    if ($name != 'versioning{_}enabled') {
         $return['input'] = $html->render();
     }
     
@@ -109,10 +111,16 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
  *            label
  * @return string the rendered cHTMLLabel element
  */
-function renderLabel($text, $name, $width = 280, $seperator = ':') {
+function renderLabel($text, $name, $width = 280, $seperator = ':', $float = '') {
     $label = new cHTMLLabel($text . $seperator, $name);
     $label->setClass("sys_config_txt_lbl");
-    $label->setStyle('width:' . $width . 'px;');
+    if ($float != '') {
+        $label->setStyle('width:' . $width . 'px;' . 'float:' . $float . ';');
+    } else {
+        $label->setStyle('width:' . $width . 'px;');
+    }
+    
+    
 
     return $label->render();
 }

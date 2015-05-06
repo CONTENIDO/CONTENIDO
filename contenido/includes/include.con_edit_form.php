@@ -493,8 +493,9 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     
     $tmp_cat_art = $db->f("idcatart");
     
-    if ($versioningState == 'disabled' || $versioningState == 'simple' 
-        && ($articleType == 'current' || $articleType == 'editable'))  {
+    if (($versioningState == 'disabled' || $versioningState == 'simple' 
+        && ($articleType == 'current' || $articleType == 'editable'))
+        || $versioningState == 'advanced' && $articleType == 'current')  {
         $sql = "SELECT
                 *
             FROM
@@ -504,18 +505,24 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
                 AND idlang = " . cSecurity::toInteger($lang);
     } else if ($action != 'con_newart' && ($selectedArticleId == 'current' || $selectedArticleId == 'editable')
         || $selectedArticleId == NULL) {
-        $sql = "SELECT *
+        if (is_numeric($versioning->getEditableArticleId($idartlang))) {
+            $sql = "SELECT *
                 FROM " . $cfg["tab"]["art_lang_version"] . "
                 WHERE idartlangversion = " . $versioning->getEditableArticleId($idartlang);
-    } else {
-        $sql = "SELECT *
+        } else $sql = '';
+    } else {   
+        if (is_numeric((int) $selectedArticleId)) {
+            $sql = "SELECT *
                 FROM " . $cfg["tab"]["art_lang_version"] . "
                 WHERE idartlangversion = " . (int) $selectedArticleId;//cSecurity::toInteger($_REQUEST['idArtLangVersion']);     
+        } else $sql = '';
     }
-        
-    $db->query($sql);
-    $db->nextRecord();
-
+    
+    if ($sql != '') {
+       $db->query($sql);
+       $db->nextRecord(); 
+    }
+    
     $tmp_is_start = isStartArticle($db->f("idartlang"), $idcat, $lang);
 
     if ($db->f("created")) {
@@ -769,7 +776,12 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     if ($tmp_online) {
         $publishingDateTextbox = new cHTMLTextbox('publishing_date', $tmp2_published, 20, 40, 'publishing_date', false, null, '', 'text_medium');
         $publishingDateTextbox->setStyle('width: 130px;');
-        $page->set('s', 'PUBLISHING_DATE', $publishingDateTextbox->render());
+        if (!($versioningState == 'simple' && ($articleType == 'current' || $articleType == 'editable')
+        || $versioningState == 'advanced' && $articleType == 'editable' || $versioningState == 'disabled')) {
+            $publishingDateTextbox->setAttribute('disabled', 'disabled');
+        }
+        
+        $page->set('s', 'PUBLISHING_DATE', $publishingDateTextbox->render());//var_export($publishingDateTextbox->render());
     } else {
         $descriptionTextDiv = new cHTMLDiv(i18n("not yet published"));
         // set overflow to auto so that user can scroll if translation is too long in current language
