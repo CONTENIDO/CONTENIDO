@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the tree item class.
  *
@@ -54,7 +55,7 @@ class cTreeItem {
     /**
      * Contains the level of this item
      *
-     * @var integer
+     * @var int
      */
     var $_level;
 
@@ -88,9 +89,9 @@ class cTreeItem {
 
     /**
      *
-     * @param unknown_type $id
-     * @param unknown_type $name
-     * @param unknown_type $collapsed
+     * @param unknown_type $id [optional]
+     * @param unknown_type $name [optional]
+     * @param unknown_type $collapsed [optional]
      */
     public function __construct($id = "", $name = "", $collapsed = false) {
         $this->_id = $id;
@@ -264,8 +265,10 @@ class cTreeItem {
     /**
      * adds an item to a specific ID
      *
-     * @param string $id ID to add the item to
-     * @param cTreeItem $item Item to add
+     * @param string $id
+     *         ID to add the item to
+     * @param cTreeItem $item
+     *         Item to add
      * @return bool
      */
     public function addItemToID($id, &$item) {
@@ -294,8 +297,10 @@ class cTreeItem {
     /**
      * moves an item to another object
      *
-     * @param cTreeItem targetItem Item to move the subitem to
-     * @param mixed itemToMove cTreeItem-Object or id of object to move
+     * @param cTreeItem $targetItem
+     *         Item to move the subitem to
+     * @param mixed $itemToMove
+     *         cTreeItem-Object or id of object to move
      */
     public function moveItem($targetItem, $itemToMove) {
     }
@@ -347,7 +352,8 @@ class cTreeItem {
      * Note that this
      * function traverses all subitems to find the correct item.
      *
-     * @param string $id ID to retrieve
+     * @param string $id
+     *         ID to retrieve
      * @return cTreeItem
      */
     public function &getItemByID($id) {
@@ -369,7 +375,8 @@ class cTreeItem {
      * sets a custom attribute for this TreeItem
      *
      * @param string $attributeName
-     * @param array $attributeValue The value(s) of the attribute
+     * @param array $attributeValue
+     *         The value(s) of the attribute
      */
     public function setAttribute($attributeName, $attributeValue) {
         $this->_attributes[$attributeName] = $attributeValue;
@@ -416,7 +423,7 @@ class cTreeItem {
     /**
      *
      * @param unknown_type $attributeName
-     * @param unknown_type $bRecursive
+     * @param unknown_type $bRecursive [optional]
      * @return bool
      */
     public function hasAttribute($attributeName, $bRecursive = false) {
@@ -511,8 +518,8 @@ class cTreeItem {
 
     /**
      *
-     * @param int leveloffset Level offset. Ignores all expand operations below
-     *        the offset.
+     * @param int leveloffset
+     *         Level offset. Ignores all expand operations below the offset.
      */
     protected function _collapseBelowLevel($leveloffset) {
         if ($leveloffset > 0) {
@@ -529,7 +536,7 @@ class cTreeItem {
     /**
      *
      * @param string $id
-     * @param bool $found
+     * @param bool $found [optional]
      */
     protected function _expandBelowID($id, $found = false) {
         if ($found === true) {
@@ -549,7 +556,7 @@ class cTreeItem {
     /**
      *
      * @param string $id
-     * @param bool $found
+     * @param bool $found [optional]
      */
     protected function _collapseBelowID($id, $found = false) {
         if ($found === true) {
@@ -570,7 +577,8 @@ class cTreeItem {
      * getCollapsedList
      * Returns all items (as ID array) which are collapsed.
      *
-     * @param array $list Contains the list with all collapsed items
+     * @param array $list
+     *         Contains the list with all collapsed items
      */
     public function getCollapsedList(&$list) {
         if (!is_array($list)) {
@@ -590,7 +598,8 @@ class cTreeItem {
      * getExpandedList
      * Returns all items (as ID array) which are expanded.
      *
-     * @param array $list Contains the list with all expanded items
+     * @param array $list
+     *         Contains the list with all expanded items
      */
     public function getExpandedList(&$list) {
         if (!is_array($list)) {
@@ -609,7 +618,8 @@ class cTreeItem {
     /**
      * sets a payload object for later reference
      *
-     * @param object payload The object to payload
+     * @param object $payload
+     *         The object to payload
      */
     public function setPayloadObject($payload) {
         $this->payload = $payload;
@@ -629,8 +639,10 @@ class cTreeItem {
      * traverses the tree starting from this item, and returning
      * all objects as $objects in a nested array.
      *
-     * @param object $objects all found objects
-     * @param int $level Level to start on
+     * @param object $objects
+     *         all found objects
+     * @param int $level [optional]
+     *         Level to start on
      */
     public function traverse(&$objects, $level = 0) {
         $objects[count($objects)] = &$this;
@@ -648,7 +660,8 @@ class cTreeItem {
      * traverses the tree starting from this item, and returning
      * all objects as $objects in a flat array.
      *
-     * @param int $level Level to start on
+     * @param int $level [optional]
+     *         Level to start on
      * @return array
      */
     public function flatTraverse($level = 0) {
@@ -668,7 +681,8 @@ class cTreeItem {
      * setName
      * sets the Name for this item.
      *
-     * @param string $name New name for this item
+     * @param string $name
+     *         New name for this item
      * @return none
      */
     public function setName($name) {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cFileNotFoundException class.
  *
@@ -18,5 +19,4 @@
  * This exception type is logged to data/logs/exception.txt.
  */
 class cFileNotFoundException extends cRuntimeException {
-
 }

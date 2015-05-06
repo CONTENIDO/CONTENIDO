@@ -38,9 +38,12 @@ class cI18n {
     /**
      * Initializes the i18n.
      *
-     * @param string $localePath Path to the locales
-     * @param string $langCode Language code to set
-     * @param string $domain Language domain
+     * @param string $localePath
+     *         Path to the locales
+     * @param string $langCode
+     *         Language code to set
+     * @param string $domain [optional]
+     *         Language domain
      */
     public static function init($localePath, $langCode, $domain = 'contenido') {
         if (function_exists('bindtextdomain')) {
@@ -71,8 +74,10 @@ class cI18n {
     /**
      * Returns translation of a specific text, wrapper for translate().
      *
-     * @param string $string The string to translate
-     * @param string $domain The domain to look up
+     * @param string $string
+     *         The string to translate
+     * @param string $domain [optional]
+     *         The domain to look up
      * @return string
      *         Returns the translation
      */
@@ -83,9 +88,12 @@ class cI18n {
     /**
      * Returns translation of a specific text
      *
-     * @param string $string The string to translate
-     * @param string $domain The domain to look up
-     * @throws cException if this is the backend mode and the $belang is not set
+     * @param string $string
+     *         The string to translate
+     * @param string $domain [optional]
+     *         The domain to look up
+     * @throws cException
+     *         if this is the backend mode and the $belang is not set
      * @return string
      *         Returns the translation
      */
@@ -199,8 +207,10 @@ class cI18n {
     /**
      * Emulates GNU gettext
      *
-     * @param string $string The string to translate
-     * @param string $domain The domain to look up
+     * @param string $string
+     *         The string to translate
+     * @param string $domain [optional]
+     *         The domain to look up
      * @return string
      *         Returns the translation
      */
@@ -275,8 +285,10 @@ class cI18n {
     /**
      * Registers a new i18n domain.
      *
-     * @param string $localePath Path to the locales
-     * @param string $domain Domain to bind to
+     * @param string $localePath
+     *         Path to the locales
+     * @param string $domain
+     *         Domain to bind to
      */
     public static function registerDomain($domain, $localePath) {
         if (function_exists('bindtextdomain')) {

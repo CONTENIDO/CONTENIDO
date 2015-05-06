@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the module file translation class.
  * TODO: Rework comments of this class.
@@ -56,9 +57,11 @@ class cModuleFileTranslation extends cModuleHandler {
 
     /**
      *
-     * @param int $idmodul
-     * @param bool $static if true it will load once the translation from file
-     * @param int $overrideIdlang use different language if not NULL
+     * @param int $idmodul [optional]
+     * @param bool $static [optional]
+     *         if true it will load once the translation from file
+     * @param int $overrideIdlang [optional]
+     *         use different language if not NULL
      */
     public function __construct($idmodul = NULL, $static = false, $overrideIdlang = NULL) {
         parent::__construct($idmodul);
@@ -194,7 +197,8 @@ class cModuleFileTranslation extends cModuleHandler {
      * If divider is =
      * Example: Hello World=Hallo Welt
      *
-     * @param string $string the contents of the file
+     * @param string $string
+     *         the contents of the file
      * @return array
      */
     private function _unserializeArray($string) {

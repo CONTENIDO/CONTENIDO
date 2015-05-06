@@ -26,7 +26,8 @@ class cAjaxRequest {
     /**
      * Function for handling requested ajax data
      *
-     * @param string $action - name of requested ajax action
+     * @param string $action
+     *         name of requested ajax action
      * @return string
      */
     public function handle($action) {
@@ -263,7 +264,7 @@ class cAjaxRequest {
                 $idArtLang = (int) $_REQUEST['idartlang'];
                 $path = (string) $_REQUEST['path'];
                 if ($path == '/') {
-                	$path = '';
+                    $path = '';
                 }
 
                 $art = new cApiArticleLanguage($idArtLang, true);
@@ -343,7 +344,7 @@ class cAjaxRequest {
                     $plugin = new PimPlugin($pluginId);
                     $result = $plugin->updateExecOrder($newOrder);
                     if ($result === true) {
-                    	$string = 'ok';
+                        $string = 'ok';
                     }
                 } else {
                     $string = 'Unknown Ajax Action';
@@ -394,7 +395,7 @@ class cAjaxRequest {
                     'state' => 'error',
                     'code' => 401,
                     'message' => 'Unauthorized',
-					'type' => 'authentication_failure'
+                    'type' => 'authentication_failure'
                 );
                 $string = json_encode($result);
                 break;

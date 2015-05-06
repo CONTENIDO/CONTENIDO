@@ -26,8 +26,9 @@ class cDirHandler {
     /**
      * Creates a new dir.
      *
-     * @param string $pathname the name and path of the new dir
-     * @param bool $recursive
+     * @param string $pathname
+     *         the name and path of the new dir
+     * @param bool $recursive [optional]
      * @return bool
      *         Returns true on success or false on failure.
      */
@@ -51,9 +52,10 @@ class cDirHandler {
     /**
      * Removes a dir from the filesystem
      *
-     * @param string $dirname The path to the directory
-     * @throws cInvalidArgumentException if the dir with the given dirname
-     *         does not exist
+     * @param string $dirname
+     *         The path to the directory
+     * @throws cInvalidArgumentException
+     *         if the dir with the given dirname does not exist
      * @return bool
      *         Returns true on success or false on failure.
      */
@@ -67,11 +69,13 @@ class cDirHandler {
     /**
      * Moves a dir
      *
-     * @param string $dirname The path and name of the directory
-     * @param string $destination the destination. Note that the dir can also
-     *        be renamed in the process of moving it
-     * @throws cInvalidArgumentException if the dir with the given dirname
-     *         does not exist
+     * @param string $dirname
+     *         The path and name of the directory
+     * @param string $destination
+     *         the destination. Note that the dir can also be renamed in the
+     *         process of moving it
+     * @throws cInvalidArgumentException
+     *         if the dir with the given dirname does not exist
      * @return bool
      *         Returns true on success or false on failure.
      */
@@ -92,8 +96,10 @@ class cDirHandler {
     /**
      * Renames a dir
      *
-     * @param string $dirname the name and path of the dir
-     * @param string $new_dirname the new name of the dir
+     * @param string $dirname
+     *         the name and path of the dir
+     * @param string $new_dirname
+     *         the new name of the dir
      */
     public static function rename($dirname, $new_dirname) {
         self::move($dirname, $new_dirname);
@@ -102,10 +108,12 @@ class cDirHandler {
     /**
      * Changes the dir permissions
      *
-     * @param string $dirname the name and path of the dir
-     * @param int $mode the new access mode : php chmod needs octal value
-     * @throws cInvalidArgumentException if the dir with the given dirname
-     *         does not exist
+     * @param string $dirname
+     *         the name and path of the dir
+     * @param int $mode
+     *         the new access mode : php chmod needs octal value
+     * @throws cInvalidArgumentException
+     *         if the dir with the given dirname does not exist
      * @return bool
      *         Returns true on success or false on failure.
      */
@@ -121,7 +129,8 @@ class cDirHandler {
     /**
      * Sets the default directory permissions on the given directory.
      *
-     * @param string $dirname the name of the directory
+     * @param string $dirname
+     *         the name of the directory
      * @return bool
      *         Returns true on success or false on failure.
      */
@@ -135,8 +144,10 @@ class cDirHandler {
     /**
      * Deletes a directory and all of its content.
      *
-     * @param string $dirname the name of the directory which should be deleted
-     * @throws cInvalidArgumentException if dirname is empty
+     * @param string $dirname
+     *         the name of the directory which should be deleted
+     * @throws cInvalidArgumentException
+     *         if dirname is empty
      * @return bool
      *         Returns true on success or false on failure.
      */
@@ -167,11 +178,12 @@ class cDirHandler {
     /**
      * Copies a directory and all of its subfolders.
      *
-     * @param string $dirname the name and path of the file
-     * @param string $destination the destination. Note that existing files get
-     *        overwritten
-     * @throws cInvalidArgumentException if the file with the given filename
-     *         does not exist
+     * @param string $dirname
+     *         the name and path of the file
+     * @param string $destination
+     *         the destination. Note that existing files get overwritten
+     * @throws cInvalidArgumentException
+     *         if the file with the given filename does not exist
      * @return bool
      *         true on success
      */
@@ -219,7 +231,8 @@ class cDirHandler {
     /**
      * Checks if a directory is empty
      *
-     * @param string $dir Name of the directory
+     * @param string $dir
+     *         Name of the directory
      * @return bool
      *         true if the directory is empty
      */
@@ -245,10 +258,14 @@ class cDirHandler {
      * Optionally options are to read the directory recursive or to list only
      * directories.
      *
-     * @param string $dirName directory
-     * @param bool $recursive flag to read recursive
-     * @param bool $dirOnly flag to list only directories
-     * @param bool $fileOnly flag to list only files if $dirOnly is set to false
+     * @param string $dirName
+     *         directory
+     * @param bool $recursive [optional]
+     *         flag to read recursive
+     * @param bool $dirOnly [optional]
+     *         flag to list only directories
+     * @param bool $fileOnly [optional]
+     *         flag to list only files if $dirOnly is set to false
      * @return array|bool
      *         array containing file names as string, false on error
      */
@@ -307,7 +324,8 @@ class cDirHandler {
     /**
      * Checks if a directory exists
      *
-     * @param string $dirname the name and path of the directory
+     * @param string $dirname
+     *         the name and path of the directory
      * @return bool
      *         true if the directory exists
      */

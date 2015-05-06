@@ -28,7 +28,7 @@ class cApiArticleCollection extends ItemCollection {
     /**
      * Create a new collection of items.
      *
-     * @param string $select
+     * @param string $select [optional]
      *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
@@ -87,7 +87,7 @@ class cApiArticle extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -102,7 +102,7 @@ class cApiArticle extends Item {
     /**
      * Returns the link to the current object.
      *
-     * @param int $changeLangId
+     * @param int $changeLangId [optional]
      *         change language id for URL (optional)
      * @return string
      *         link
@@ -127,7 +127,7 @@ class cApiArticle extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      * @return bool
      */

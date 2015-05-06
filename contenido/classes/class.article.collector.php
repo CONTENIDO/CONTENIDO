@@ -83,8 +83,8 @@ class cArticleCollector implements SeekableIterator, Countable {
      * Constructor. If options are defined, the loading process is automatically
      * initiated.
      *
-     * @param array $options array with options for the collector (optional,
-     *            default: empty array)
+     * @param array $options [optional, default: empty array]
+     *         array with options for the collector
      */
     public function __construct($options = array()) {
         $this->setOptions($options);
@@ -95,7 +95,8 @@ class cArticleCollector implements SeekableIterator, Countable {
      * Setter for the collector options. Validates incoming options and sets the
      * default of the missing options.
      *
-     * @param array $options array with option
+     * @param array $options
+     *         array with option
      */
     public function setOptions($options) {
         if (isset($options['idcat']) && !isset($options['categories'])) {
@@ -303,7 +304,8 @@ class cArticleCollector implements SeekableIterator, Countable {
      * // Iterate through all articles of page two while ($art =
      * $collection->nextArticle()) { ... }
      *
-     * @param int $page The page of the article collection
+     * @param int $page
+     *         The page of the article collection
      */
     public function setPage($page) {
         if (is_array($this->_pages[$page])) {
@@ -314,7 +316,8 @@ class cArticleCollector implements SeekableIterator, Countable {
     /**
      * Seeks a specific position in the loaded articles.
      *
-     * @param int $position position to load
+     * @param int $position
+     *         position to load
      * @throws cOutOfBoundsException
      */
     public function seek($position) {

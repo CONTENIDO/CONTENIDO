@@ -52,11 +52,14 @@ class cFrontendHelper {
     /**
      * Fetches the requested category tree.
      *
-     * @param int $baseCategoryId root category ID
-     * @param int $depth maximum depth
-     * @param int $currentCategoryId the current category ID
-     * @throws cUnexpectedValueException if given category ID is not greater
-     *         than 0
+     * @param int $baseCategoryId
+     *         root category ID
+     * @param int $depth
+     *         maximum depth
+     * @param int $currentCategoryId
+     *         the current category ID
+     * @throws cUnexpectedValueException
+     *         if given category ID is not greater than 0
      * @return array
      *         category tree
      */
@@ -103,9 +106,12 @@ class cFrontendHelper {
     /**
      * Helper function to render the navigation.
      *
-     * @param int $baseCategoryId root category ID
-     * @param int $depth maximum depth
-     * @param int $currentCategoryId the current category ID
+     * @param int $baseCategoryId
+     *         root category ID
+     * @param int $depth
+     *         maximum depth
+     * @param int $currentCategoryId
+     *         the current category ID
      * @return array
      *         category tree
      */
@@ -118,9 +124,12 @@ class cFrontendHelper {
     /**
      * Helper function to render the sitemap.
      *
-     * @param int $baseCategoryId root category ID
-     * @param int $depth maximum depth
-     * @param cTemplate $tpl template reference
+     * @param int $baseCategoryId
+     *         root category ID
+     * @param int $depth
+     *         maximum depth
+     * @param cTemplate $tpl
+     *         template reference
      */
     public function renderSitemap($baseCategoryId, $depth, cTemplate &$tpl) {
         $tree = $this->_fetchCategoryTree($baseCategoryId, $depth, 0);

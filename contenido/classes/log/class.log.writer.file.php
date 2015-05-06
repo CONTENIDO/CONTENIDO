@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the log file writer class.
  *
@@ -32,7 +33,7 @@ class cLogWriterFile extends cLogWriter {
     /**
      * Constructor of the writer instance.
      *
-     * @param array $options
+     * @param array $options [optional]
      *         Array with options for the writer instance (optional)
      */
     public function __construct($options = array()) {

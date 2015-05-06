@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cOutOfRangeException class.
  *
@@ -21,5 +22,4 @@
  * This exception type is logged to data/logs/exception.txt.
  */
 class cOutOfRangeException extends cLogicException {
-
 }

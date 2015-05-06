@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the XML writer class.
  *
@@ -27,9 +28,10 @@ class cXmlWriter extends cXmlBase {
      * Class constructor of cXmlWriter.
      * Creates the XML document.
      *
-     * @param string $version version of XML document (optional, default: 1.0)
-     * @param string $encoding encoding of XML document (optional, default:
-     *        UTF-8)
+     * @param string $version [optional, default: 1.0]
+     *         version of XML document
+     * @param string $encoding [optional, default: UTF-8]
+     *         encoding of XML document
      */
     public function __construct($version = '', $encoding = '') {
         $this->_createDocument($version, $encoding);
@@ -40,13 +42,16 @@ class cXmlWriter extends cXmlBase {
      * If no root element is given the element will be appended to the root
      * node.
      *
-     * @param string $name name of the element
-     * @param string $value value of the element (optional)
-     * @param DOMElement $rootElement root element (optional)
-     * @param array $attributes array of attributes added to this element
-     *        (optional)
-     * @param bool $cdata whether the value is surround by CDATA blocks (optional)
-     *
+     * @param string $name
+     *         name of the element
+     * @param string $value [optional]
+     *         value of the element
+     * @param DOMElement $rootElement [optional]
+     *         root element
+     * @param array $attributes [optional]
+     *         array of attributes added to this element
+     * @param bool $cdata [optional]
+     *         whether the value is surround by CDATA blocks
      * @return DOMElement
      *         created DOM element
      */
@@ -74,8 +79,10 @@ class cXmlWriter extends cXmlBase {
     /**
      * Adds an array of attributes to a specific DOM element.
      *
-     * @param DOMElement $element DOM element to add attributes
-     * @param array $attributes array of attributes
+     * @param DOMElement $element
+     *         DOM element to add attributes
+     * @param array $attributes
+     *         array of attributes
      * @return DOMElement
      *         DOM element with assigned attributes
      */
@@ -104,9 +111,12 @@ class cXmlWriter extends cXmlBase {
     /**
      * Saves the XML tree into a file.
      *
-     * @param string $directory path to destination directory
-     * @param string $fileName name of the written file
-     * @throws cException if the directory is not writable
+     * @param string $directory
+     *         path to destination directory
+     * @param string $fileName
+     *         name of the written file
+     * @throws cException
+     *         if the directory is not writable
      * @return bool
      *         state of saving process (true if file was created, false otherwise)
      */

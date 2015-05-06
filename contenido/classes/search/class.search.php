@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the class for content search.
  *
@@ -12,6 +13,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.encoding.php');
@@ -226,6 +228,7 @@ class cSearch extends cSearchBaseAbstract {
     /**
      * Constructor
      *
+     * @todo fix docblock
      * @param array $options $options['db'] 'regexp' => DB search with REGEXP;
      *        'like' => DB search with LIKE; 'exact' => exact match;
      *        $options['combine'] 'and', 'or' Combination of search words with
@@ -248,7 +251,8 @@ class cSearch extends cSearchBaseAbstract {
      *        articles or articles in categories which are offline
      *        $options['searchable_articles'] array of article ID's which should
      *        be searchable
-     * @param cDb $db Optional database instance
+     * @param cDb $db [optional]
+     *         database instance
      */
     public function __construct($options, $db = NULL) {
         parent::__construct($db);
@@ -275,9 +279,10 @@ class cSearch extends cSearchBaseAbstract {
     /**
      * indexed fulltext search
      *
-     * @param string $searchwords The search words
-     * @param string $searchwords_exclude The words, which should be excluded
-     *        from search
+     * @param string $searchwords
+     *         The search words
+     * @param string $searchwords_exclude [optional]
+     *         The words, which should be excluded from search
      * @return bool|array
      */
     public function searchIndex($searchwords, $searchwords_exclude = '') {
@@ -427,9 +432,9 @@ class cSearch extends cSearchBaseAbstract {
 
     /**
      *
-     * @param mixed $cms_options The cms-types (htmlhead, html, ...) which
-     *            should
-     *        explicitly be searched
+     * @param mixed $cms_options
+     *         The cms-types (htmlhead, html, ...) which should explicitly be
+     *         searched.
      */
     public function setCmsOptions($cms_options) {
         if (is_array($cms_options) && count($cms_options) > 0) {
@@ -439,7 +444,8 @@ class cSearch extends cSearchBaseAbstract {
 
     /**
      *
-     * @param string $searchwords The search-words
+     * @param string $searchwords
+     *         The search-words
      * @return array
      *         of stripped search-words
      */
@@ -471,7 +477,8 @@ class cSearch extends cSearchBaseAbstract {
      * Returns the category tree array.
      *
      * @todo This is not the job for search, should be outsourced ...
-     * @param int $cat_start Root of a category tree
+     * @param int $cat_start
+     *         Root of a category tree
      * @return array
      *         Category Tree
      */

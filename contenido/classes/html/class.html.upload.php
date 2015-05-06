@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cHTMLUpload class.
  *
@@ -30,14 +31,22 @@ class cHTMLUpload extends cHTMLFormElement {
      * If no additional parameters are specified, the
      * default width is 20 units.
      *
-     * @param string $name Name of the element
-     * @param int $width width of the text box
-     * @param int $maxlength maximum input length of the box
-     * @param string $id ID of the element
-     * @param string $disabled Item disabled flag (non-empty to set disabled)
-     * @param string $tabindex Tab index for form elements
-     * @param string $accesskey Key to access the field
-     * @param string $class the class of this element
+     * @param string $name
+     *         Name of the element
+     * @param int $width [optional]
+     *         width of the text box
+     * @param int $maxlength [optional]
+     *         maximum input length of the box
+     * @param string $id [optional]
+     *         ID of the element
+     * @param string $disabled [optional]
+     *         Item disabled flag (non-empty to set disabled)
+     * @param string $tabindex [optional]
+     *         Tab index for form elements
+     * @param string $accesskey [optional]
+     *         Key to access the field
+     * @param string $class [optional]
+     *         the class of this element
      */
     public function __construct($name, $width = '', $maxlength = '', $id = '', $disabled = false, $tabindex = NULL, $accesskey = '', $class = '') {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
@@ -54,7 +63,8 @@ class cHTMLUpload extends cHTMLFormElement {
     /**
      * Sets the width of the text box.
      *
-     * @param int $width width of the text box
+     * @param int $width
+     *         width of the text box
      * @return cHTMLUpload
      *         $this for chaining
      */
@@ -71,7 +81,8 @@ class cHTMLUpload extends cHTMLFormElement {
     /**
      * Sets the maximum input length of the text box.
      *
-     * @param int $maxlen maximum input length
+     * @param int $maxlen
+     *         maximum input length
      * @return cHTMLUpload
      *         $this for chaining
      */

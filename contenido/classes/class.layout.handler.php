@@ -91,10 +91,10 @@ class cLayoutHandler {
      * Construct of the class
      *
      * @param int $layoutId
-     * @param string $layoutCode
-     * @param array $cfg
-     * @param int $lang
-     * @param cDb $db
+     * @param string $layoutCode [optional]
+     * @param array $cfg [optional]
+     * @param int $lang [optional]
+     * @param cDb $db [optional]
      */
     public function __construct($layoutId = 0, $layoutCode = "", array $cfg = array(), $lang = 0, cDb $db = NULL) {
         if ($db === NULL) {
@@ -266,8 +266,10 @@ class cLayoutHandler {
     /**
      * Can write/create a file
      *
-     * @param string $fileName file name
-     * @param string $directory directory where is the file
+     * @param string $fileName
+     *         file name
+     * @param string $directory
+     *         directory where is the file
      * @return bool
      *         true on success else false
      */
@@ -288,8 +290,7 @@ class cLayoutHandler {
     /**
      * Save Layout
      *
-     * @param string $layoutCode
-     *
+     * @param string $layoutCode [optional]
      * @return bool
      */
     public function saveLayout($layoutCode = '') {
@@ -306,7 +307,7 @@ class cLayoutHandler {
      * Save the layout only if layout doesn't exist in filesystem!
      * Use it for upgrade!
      *
-     * @param string $layoutCode
+     * @param string $layoutCode [optional]
      * @return bool
      */
     public function saveLayoutByUpgrade($layoutCode = '') {
@@ -320,7 +321,7 @@ class cLayoutHandler {
 
     /**
      *
-     * @param string $layoutCode
+     * @param string $layoutCode [optional]
      * @return bool
      */
     private function _save($layoutCode = '') {
@@ -425,8 +426,10 @@ class cLayoutHandler {
      * Use it for upgrade.
      *
      * @throws cException if the layout could not be saved
-     * @param cDb $adb database object
-     * @param array $cfg CONTENIDO config array
+     * @param cDb $adb
+     *         database object
+     * @param array $cfg
+     *         CONTENIDO config array
      * @param int $clientId
      */
     public static function upgrade($adb, $cfg, $clientId) {

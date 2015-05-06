@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cHTMLIFrame class.
  *
@@ -35,8 +36,8 @@ class cHTMLIFrame extends cHTML {
     /**
      * Sets this frame's source
      *
-     * @param string|object $content String with the content or an object to
-     *        render.
+     * @param string|object $content
+     *         String with the content or an object to render.
      * @return cHTMLIFrame
      *         $this for chaining
      */
@@ -47,7 +48,8 @@ class cHTMLIFrame extends cHTML {
     /**
      * Sets this frame's width
      *
-     * @param string $width Width of the item
+     * @param string $width
+     *         Width of the item
      * @return cHTMLIFrame
      *         $this for chaining
      */
@@ -58,7 +60,8 @@ class cHTMLIFrame extends cHTML {
     /**
      * Sets this frame's height
      *
-     * @param string $height Height of the item
+     * @param string $height
+     *         Height of the item
      * @return cHTMLIFrame
      *         $this for chaining
      */
@@ -69,7 +72,8 @@ class cHTMLIFrame extends cHTML {
     /**
      * Sets wether this iframe should have a border or not
      *
-     * @param string $border If 1 or true, this frame will have a border
+     * @param string $border
+     *         If 1 or true, this frame will have a border
      * @return cHTMLIFrame
      *         $this for chaining
      */

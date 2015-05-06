@@ -28,7 +28,7 @@ class cApiUserCollection extends ItemCollection {
      * Constructor function.
      *
      * @global array $cfg
-     * @param string|bool $where
+     * @param string|bool $where [optional]
      *         The where clause in the select, usable to run select by creating
      *         the instance
      */
@@ -80,9 +80,9 @@ class cApiUserCollection extends ItemCollection {
      *
      * @param array $perms
      *         Permissions array
-     * @param bool $includeAdmins
+     * @param bool $includeAdmins [optional]
      *         Flag to get admins (admin and sysadmin) too
-     * @param string $orderBy
+     * @param string $orderBy [optional]
      *         Order by rule, uses 'realname, username' by default
      * @return array
      *         Array of user objects
@@ -138,9 +138,9 @@ class cApiUserCollection extends ItemCollection {
      *
      * @param array $perms
      *         Permissions array
-     * @param bool $includeAdmins
+     * @param bool $includeAdmins [optional]
      *         Flag to get admins (admin and sysadmin) too
-     * @param string $orderBy
+     * @param string $orderBy [optional]
      *         Order by rule, uses 'realname, username' by default
      * @return array
      *         Array of user like $arr[user_id][username], $arr[user_id][realname]
@@ -160,7 +160,7 @@ class cApiUserCollection extends ItemCollection {
     /**
      * Returns all users available in the system
      *
-     * @param string $orderBy
+     * @param string $orderBy [optional]
      *         SQL order by part
      * @return array
      */
@@ -178,7 +178,7 @@ class cApiUserCollection extends ItemCollection {
     /**
      * Returns all system admins available in the system
      *
-     * @param bool $forceActive
+     * @param bool $forceActive [optional]
      *         flag if only active sysadmins should be returned
      * @return array
      *         Array of user objects
@@ -370,7 +370,7 @@ class cApiUser extends Item {
     /**
      * Constructor function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -531,7 +531,7 @@ class cApiUser extends Item {
      *         Field name
      * @param string $mValue
      *         Value to set
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
@@ -937,7 +937,7 @@ class cApiUser extends Item {
      *
      * @param string $userid [optional]
      *         user id, uses id of loaded user by default.
-     * @param bool $bAddDescription
+     * @param bool $bAddDescription [optional]
      *         Flag to add description like "groupname (description)"
      * @return array
      */
@@ -995,7 +995,7 @@ class cApiUser extends Item {
      *         Type (class, category etc) for the property to retrieve
      * @param string $name
      *         Name of the property to retrieve
-     * @param bool $group
+     * @param bool $group [optional]
      *         Flag to search in groups
      * @return string|bool
      *         value of the retrieved property or false
@@ -1039,7 +1039,7 @@ class cApiUser extends Item {
      *
      * @param string $type
      *         Type (class, category etc) of the properties to retrieve
-     * @param bool $group
+     * @param bool $group [optional]
      *         Flag to retrieve in group properties. If enabled, group
      *         properties will be merged with user properties where the user
      *         poperties will overwrite group properties

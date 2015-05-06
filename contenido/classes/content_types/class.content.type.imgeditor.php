@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cContentTypeImgeditor class.
  *
@@ -99,12 +100,12 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     /**
      * Initialises class attributes and handles store events.
      *
-     * @param string $rawSettings the raw settings in an XML structure or as
-     *        plaintext
-     * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is
-     *        used
-     * @param array $contentTypes array containing the values of all content
-     *        types
+     * @param string $rawSettings
+     *         the raw settings in an XML structure or as plaintext
+     * @param int $id
+     *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
+     * @param array $contentTypes
+     *         array containing the values of all content types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
 
@@ -608,7 +609,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     /**
      * Generate a select box containing all files in the given directory.
      *
-     * @param string $directoryPath directory of the files
+     * @param string $directoryPath [optional]
+     *         directory of the files
      * @return string
      *         rendered cHTMLSelectElement
      */
@@ -679,7 +681,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * information is the currently active directory.
      * Overwrite in subclasses if you use getDirectoryList!
      *
-     * @param array $dirData directory information
+     * @param array $dirData
+     *         directory information
      * @return bool
      *         whether the directory is the currently active directory
      */
@@ -692,7 +695,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * should be shown expanded.
      * Overwrite in subclasses if you use getDirectoryList!
      *
-     * @param array $dirData directory information
+     * @param array $dirData
+     *         directory information
      * @return bool
      *         whether the directory should be shown expanded
      */
@@ -703,8 +707,10 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     /**
      * Gets the meta data of the image with the given filename/dirname.
      *
-     * @param string $filename the filename of the image
-     * @param string $dirname the dirname of the image
+     * @param string $filename
+     *         the filename of the image
+     * @param string $dirname
+     *         the dirname of the image
      * @return string
      *         JSON-encoded array with meta data
      */
@@ -737,10 +743,11 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * Creates an upload directory.
      * Wrapper function for uplmkdir in functions.upl.php.
      *
-     * @param string $path Path to directory to create, either path from client
-     *        upload
-     *        directory or a dbfs path
-     * @param string $name Name of directory to create
+     * @param string $path
+     *         Path to directory to create, either path from client upload
+     *         directory or a dbfs path
+     * @param string $name
+     *         Name of directory to create
      * @return string|void
      *         value of filemode as string ('0702') or nothing
      */
@@ -751,7 +758,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     /**
      * Uploads the transmitted files saved in the $_FILES array.
      *
-     * @param string $path the path to which the file should be uploaded
+     * @param string $path
+     *         the path to which the file should be uploaded
      * @return string
      *         the filename of the uploaded file
      */

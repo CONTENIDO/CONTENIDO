@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CONTENIDO code generator abstract class
  *
@@ -159,11 +160,11 @@ abstract class cCodeGeneratorAbstract {
     }
 
     /**
-     * Setter for frontend debug options (see $frontend_debug in
-     * __FRONTEND_PATH__/data/config/config.php
-     * located in clients frontend directory)
+     * Setter for frontend debug options.
+     * See $frontend_debug in __FRONTEND_PATH__/data/config/config.php
+     * (located in clients frontend directory).
      *
-     * @param bool $debug
+     * @param array $debugOptions
      */
     public function setFrontendDebugOptions(array $debugOptions) {
         $this->_feDebugOptions = $debugOptions;
@@ -177,13 +178,14 @@ abstract class cCodeGeneratorAbstract {
      * @param int $idart
      * @param int $lang
      * @param int $client
-     * @param bool $layout
-     * @param bool $save
-     *         Flag to persist generated code
-     * @param bool $contype
-     *         Flag to enable/disable replacement of CMS_TAGS[]
+     * @param bool $layout [optional]
+     *         This params purpose is unclear.
+     * @param bool $save [optional]
+     *         Flag to persist generated code.
+     * @param bool $contype [optional]
+     *         Flag to enable/disable replacement of CMS_TAGS[].
      * @throws cInvalidArgumentException
-     *         if an article with the given idart and idlang can not be loaded
+     *         If an article with the given idart and idlang can not be loaded.
      * @return string
      *         Generated code or error code '0601' if no template configuration
      *         was found for category or article.
@@ -197,9 +199,9 @@ abstract class cCodeGeneratorAbstract {
         $this->_save = (bool) $save;
 
         $this->_oArtLang = new cApiArticleLanguage();
-        $this->_oArtLang->loadByArticleAndLanguageId($idart, $lang);
+        $this->_oArtLang->loadByArticleAndLanguageId($this->_idart, $this->_lang);
         if (!$this->_oArtLang->isLoaded()) {
-            throw new cInvalidArgumentException('Couldn\'t load article language for idart=' . $idart . 'AND idlang=' . $lang);
+            throw new cInvalidArgumentException('Couldn\'t load article language for idart=' . $this->_idart . 'AND idlang=' . $this->_lang);
         }
 
         $this->_idartlang = $this->_oArtLang->get('idartlang');
@@ -212,30 +214,30 @@ abstract class cCodeGeneratorAbstract {
      * Generates the code for a specific article (article for a client in a
      * language).
      *
-     * @param bool $contype
-     *         Flag to enable/disable replacement of CMS_TAGS[]
+     * @param bool $contype [optional]
+     *         Flag to enable/disable replacement of CMS_TAGS[].
      * @return string
-     *         The generated code
+     *         The generated code.
      */
     abstract function _generate($contype = true, $editable = true, $version = NULL);
 
     /**
-     * Returns the template configuration id, either by configured article or by
-     * configured category.
+     * Returns the template configuration id,
+     * either by configured article or by configured category.
      *
      * @return int|NULL
      */
     protected function _getTemplateConfigurationId() {
-        // Get configuration for article
+        // get configuration for article
         $idtplcfg = conGetTemplateConfigurationIdForArticle($this->_idart, $this->_idcat, $this->_lang, $this->_client);
         if (is_numeric($idtplcfg) && $idtplcfg != 0) {
-            // Article is configured
+            // article is configured
             cDebug::out("configuration for article found: $idtplcfg<br><br>");
         } else {
-            // Check whether category is configured
+            // check whether category is configured
             $idtplcfg = conGetTemplateConfigurationIdForCategory($this->_idcat, $this->_lang, $this->_client);
             if (NULL !== $idtplcfg) {
-                // Category is configured
+                // category is configured
                 cDebug::out("configuration for category found: $idtplcfg<br><br>");
             }
         }
@@ -244,13 +246,17 @@ abstract class cCodeGeneratorAbstract {
     }
 
     /**
+     * Will be invoked, if code generation wasn't able to find a configured
+     * article or category.
      *
+     * @todo This method is not required as it is only used in the standard code generator.
      * @param int $idcatart
+     *         Category article id
      */
     abstract protected function _processNoConfigurationError($idcatart);
 
     /**
-     * Returns array containing used layout, template and template name
+     * Returns array containing used layout, template and template name.
      *
      * @global array $cfg
      * @return array
@@ -292,12 +298,11 @@ abstract class cCodeGeneratorAbstract {
     }
 
     /**
-     * Processes replacements of all existing CMS_...
-     * tags within passed code
+     * Processes replacements of all existing CMS_* tags within passed code.
      *
      * @param array $contentList
-     *         Assoziative list of CMS variables
-     * @param bool $saveKeywords
+     *         Assoziative list of CMS variables.
+     * @param bool $saveKeywords [optional]
      *         Flag to save collected keywords during replacement process.
      */
     protected function _processCmsTags($contentList, $saveKeywords = true, $editable = true) {
@@ -385,12 +390,12 @@ abstract class cCodeGeneratorAbstract {
     }
 
     /**
-     * Processes title tag in page code (layout)
+     * Processes and adds or replaces title tag for an article.
      */
     abstract protected function _processCodeTitleTag();
 
     /**
-     * Processes all meta tags in page code (layout)
+     * Processes and adds or replaces all meta tags for an article.
      */
     abstract protected function _processCodeMetaTags();
 
@@ -411,17 +416,20 @@ abstract class cCodeGeneratorAbstract {
 
         $containerCfg = preg_replace('/(&\$)/', '', $containerCfg);
         parse_str($containerCfg, $containerCfgList);
-        /*
-         * $tmp1 = preg_split('/&/', $containerCfg); foreach ($tmp1 as $key1 =>
-         * $value1) { $tmp2 = explode('=', $value1); foreach ($tmp2 as $key2 =>
-         * $value2) { $containerCfgList["$tmp2[0]"] = $tmp2[1]; } }
-         */
+
+        // $tmp1 = preg_split('/&/', $containerCfg);
+        // foreach ($tmp1 as $key1 => $value1) {
+        //     $tmp2 = explode('=', $value1);
+        //     foreach ($tmp2 as $key2 => $value2) {
+        //         $containerCfgList["$tmp2[0]"] = $tmp2[1];
+        //     }
+        // }
 
         $CiCMS_Var = '$C' . $containerNumber . 'CMS_VALUE';
         $CiCMS_Values = array();
 
         foreach ($containerCfgList as $key3 => $value3) {
-            // Convert special characters and escape backslashes!
+            // convert special characters and escape backslashes!
             $tmp = conHtmlSpecialChars($value3);
             $tmp = str_replace('\\', '\\\\', $tmp);
             $CiCMS_Values[] = $CiCMS_Var . '[' . $key3 . '] = "' . $tmp . '"; ';
@@ -441,9 +449,9 @@ abstract class cCodeGeneratorAbstract {
      * configured.
      *
      * @param int $containerNumber
-     *         Container number (The id attribute in container tag)
+     *         Container number (the id attribute in container tag).
      * @param array $module
-     *         Recordset as assoziative array of related module (container code)
+     *         Recordset as assoziative array of related module (container code).
      */
     protected function _processFrontendDebug($containerNumber, array $module) {
         global $containerinf;
@@ -485,19 +493,18 @@ abstract class cCodeGeneratorAbstract {
      * (module code).
      *
      * @param int $containerNumber
-     *         Container number (The id attribute in container tag)
+     *         Container number (the id attribute in container tag).
      */
     protected function _processCmsContainer($containerNumber) {
         $cmsContainer = "CMS_CONTAINER[$containerNumber]";
 
-        // Replace new container (<container id="n"..>) against old one
+        // replace new container (<container id="n"..>) against old one
         // (CMS_CONTAINER[n])
         $this->_layoutCode = preg_replace("/<container( +)id=\\\"$containerNumber\\\"(.*)>(.*)<\/container>/Uis", $cmsContainer, $this->_layoutCode);
         $this->_layoutCode = preg_replace("/<container( +)id=\\\"$containerNumber\\\"(.*)\/>/i", $cmsContainer, $this->_layoutCode);
 
-        // Concatenate final container/module output code, but generate PHP code
-        // only
-        // if there is something to generate
+        // concatenate final container/module output code,
+        // but generate PHP code only if there is something to generate
         $modulePrefix = trim(implode("\n", $this->_modulePrefix));
         if (!empty($modulePrefix)) {
             $modulePrefix = "<?php\n" . $modulePrefix . "\n?>";
@@ -508,14 +515,13 @@ abstract class cCodeGeneratorAbstract {
         }
         $moduleOutput = $modulePrefix . $this->_moduleCode . $moduleSuffix;
 
-        // Replace container (CMS_CONTAINER[n]) against the container code
+        // replace container (CMS_CONTAINER[n]) against the container code
         $this->_layoutCode = str_ireplace($cmsContainer, $moduleOutput, $this->_layoutCode);
         // $this->_layoutCode = addslashes($this->_layoutCode);
     }
 
     /**
-     * Returns array of all CMS_...
-     * vars being used by current article and language
+     * Returns array of all CMS_* vars being used by current article and language
      *
      * @return array
      *         like $arr[type][typeid] = value;

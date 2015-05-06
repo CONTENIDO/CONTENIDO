@@ -44,7 +44,7 @@ class cApiNavSubCollection extends ItemCollection {
      *         AreaId or area name
      * @param int $level
      * @param string $location
-     * @param int $online
+     * @param int $online [optional]
      * @return cApiNavSub
      */
     public function create($navm, $area, $level, $location, $online = 1) {
@@ -76,9 +76,9 @@ class cApiNavSubCollection extends ItemCollection {
     /**
      * Returns sub navigation by area name
      * @param string $area
-     * @param int $level
-     * @param int $online
-     * @return  array
+     * @param int $level [optional]
+     * @param int $online [optional]
+     * @return array
      *         List of assiziative arrays like
      *         <pre>
      *         $arr[] = array(
@@ -145,7 +145,7 @@ class cApiNavSub extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -166,7 +166,7 @@ class cApiNavSub extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      * @return bool
      */

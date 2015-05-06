@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the module search class.
  * TODO: Rework comments of this class.

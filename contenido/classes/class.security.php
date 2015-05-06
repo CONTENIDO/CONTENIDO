@@ -38,8 +38,10 @@ class cSecurity {
     /**
      * Escapes string using CONTENIDO urlencoding method and escapes string for inserting
      *
-     * @param   string        $sString  Input string
-     * @param   cDb  $oDb      CONTENIDO database object
+     * @param string $sString
+     *         Input string
+     * @param cDb $oDb
+     *         CONTENIDO database object
      * @return string
      *         Filtered string
      */
@@ -54,7 +56,8 @@ class cSecurity {
     /**
      * Reverts effect of method filter()
      *
-     * @param   string  $sString  Input string
+     * @param string $sString
+     *         Input string
      * @return string
      *         Unfiltered string
      */
@@ -66,8 +69,9 @@ class cSecurity {
     /**
      * Check: Has the variable an bool value?
      *
-     * @param   string   $sVar  Input string
-     * @return  bool
+     * @param string $sVar
+     *         Input string
+     * @return bool
      *         Check state
      */
     public static function isBoolean($sVar) {
@@ -79,8 +83,9 @@ class cSecurity {
     /**
      * Check: Is the variable an integer?
      *
-     * @param   string   $sVar  Input string
-     * @return  bool
+     * @param string $sVar
+     *         Input string
+     * @return bool
      *         Check state
      */
     public static function isInteger($sVar) {
@@ -90,8 +95,9 @@ class cSecurity {
     /**
      * Check: Is the variable an string?
      *
-     * @param   string   $sVar  Input string
-     * @return  bool
+     * @param string $sVar
+     *         Input string
+     * @return bool
      *         Check state
      */
     public static function isString($sVar) {
@@ -101,8 +107,9 @@ class cSecurity {
     /**
      * Convert an string to an bool
      *
-     * @param   string   $sString   Input string
-     * @return  bool
+     * @param string $sString
+     *         Input string
+     * @return bool
      *         Type casted input string
      */
     public static function toBoolean($sString) {
@@ -112,8 +119,9 @@ class cSecurity {
     /**
      * Convert an string to an integer
      *
-     * @param   string   $sString   Input string
-     * @return  int
+     * @param string $sString
+     *         Input string
+     * @return int
      *         Type casted input string
      */
     public static function toInteger($sString) {
@@ -123,10 +131,13 @@ class cSecurity {
     /**
      * Convert an string
      *
-     * @param   string   $sString         Input string
-     * @param   bool  $bHTML           If true check with strip_tags and stripslashes
-     * @param   string   $sAllowableTags  Allowable tags if $bHTML is true
-     * @return  string
+     * @param string $sString
+     *         Input string
+     * @param bool $bHTML [optional]
+     *         If true check with strip_tags and stripslashes
+     * @param string $sAllowableTags [optional]
+     *         Allowable tags if $bHTML is true
+     * @return string
      *         Converted string
      */
     public static function toString($sString, $bHTML = false, $sAllowableTags = '') {
@@ -140,10 +151,13 @@ class cSecurity {
     /**
      * Escaped an query-string with mysql_real_escape_string
      *
-     * @param   string        $sString          Input string
-     * @param   cDb  $oDB              CONTENIDO database object
-     * @param   bool       $bUndoAddSlashes  Flag for undo addslashes (optional, default: true)
-     * @return  string
+     * @param string $sString
+     *         Input string
+     * @param cDb $oDB
+     *         CONTENIDO database object
+     * @param bool $bUndoAddSlashes [optional]
+     *         Flag for undo addslashes (optional, default: true)
+     * @return string
      *         Converted string
      */
     public static function escapeDB($sString, $oDB, $bUndoAddSlashes = true) {
@@ -160,8 +174,9 @@ class cSecurity {
     /**
      * Escaped an query-string with addslashes
      *
-     * @param   string  $sString  Input string
-     * @return  string
+     * @param string $sString
+     *         Input string
+     * @return string
      *         Converted string
      */
     public static function escapeString($sString) {
@@ -175,8 +190,9 @@ class cSecurity {
     /**
      * Un-quote string quoted with escapeDB()
      *
-     * @param   string  $sString  Input string
-     * @return  string
+     * @param string $sString
+     *         Input string
+     * @return string
      *         Converted string
      */
     public static function unescapeDB($sString) {

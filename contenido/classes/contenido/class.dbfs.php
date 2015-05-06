@@ -122,8 +122,8 @@ class cApiDbfsCollection extends ItemCollection {
      * Writes dbfs file, creates if if not exists.
      *
      * @param string $file
-     * @param string $content
-     * @param string $mimetype
+     * @param string $content [optional]
+     * @param string $mimetype [optional]
      */
     public function write($file, $content = '', $mimetype = '') {
         $file = cApiDbfs::stripPath($file);
@@ -239,9 +239,9 @@ class cApiDbfsCollection extends ItemCollection {
     /**
      * Creates a dbfs item entry
      * @param string $path
-     * @param string $mimetype
-     * @param string $content
-     * @return  cApiDbfs|false
+     * @param string $mimetype [optional]
+     * @param string $content [optional]
+     * @return cApiDbfs|false
      */
     public function create($path, $mimetype = '', $content = '') {
         global $client, $auth;
@@ -454,7 +454,7 @@ class cApiDbfs extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -489,7 +489,7 @@ class cApiDbfs extends Item {
      *         Field name
      * @param string $mValue
      *         Value to set
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
@@ -508,7 +508,7 @@ class cApiDbfs extends Item {
      *
      * @param string $sField
      *         Specifies the field to retrieve
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined outFilter on passed value
      * @return mixed
      *         Value of the field

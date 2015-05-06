@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the uri builder factory class.
  *
@@ -26,16 +27,16 @@ class cUriBuilderFactory {
     /**
      * Returns desired cUriBuilder object.
      *
-     * @param string $sBuilder For now, those are valid: front_content, custom,
-     *            custom_path or a
-     *        Userdefined cUriBuilder name. The name must be a subpart of the
-     *        cUriBuilder class, e. g. 'MyUriBuilder' for
-     *            cUriBuilderMyUriBuilder.
-     *        The classfile must be named like class.uribuilder.myuribuilder.php
-     *        and it must be reside in /contenido/classes/uri/ folder.
+     * @param string $sBuilder
+     *         For now, those are valid: front_content, custom, custom_path
+     *         or a Userdefined cUriBuilder name.
+     *         The name must be a subpart of the cUriBuilder class,
+     *         e. g. 'MyUriBuilder' for cUriBuilderMyUriBuilder.
+     *         The classfile must be named like class.uribuilder.myuribuilder.php
+     *         and it must be reside in /contenido/classes/uri/ folder.
      * @return cUriBuilder
-     * @throws cInvalidArgumentException In case unknown type of builder is
-     *         requested you'll get an Exception
+     * @throws cInvalidArgumentException
+     *         In case unknown type of builder is requested you'll get an Exception
      */
     public static function getUriBuilder($sBuilder) {
         switch ($sBuilder) {

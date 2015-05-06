@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cContentTypeAbstract class.
  *
@@ -12,6 +13,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
@@ -31,21 +33,20 @@ abstract class cContentTypeAbstract {
 
     /**
      * Constant defining that the settings should be interpreted as XML.
+     *
      * @var string
      */
     const SETTINGS_TYPE_XML = 'xml';
 
     /**
-     * Name of the content type, e.g.
-     * 'CMS_TEASER'.
+     * Name of the content type, e.g. 'CMS_TEASER'.
      *
      * @var string
      */
     protected $_type = '';
 
     /**
-     * Prefix of the content type, e.g.
-     * 'teaser'.
+     * Prefix of the content type, e.g. 'teaser'.
      *
      * @var string
      */
@@ -59,10 +60,9 @@ abstract class cContentTypeAbstract {
     protected $_settingsType = self::SETTINGS_TYPE_PLAINTEXT;
 
     /**
-     * ID of the content type, e.g.
-     * 3 if CMS_TEASER[3] is used.
+     * ID of the content type, e.g. 3 if CMS_TEASER[3] is used.
      *
-     * @var integer
+     * @var int
      */
     protected $_id;
 
@@ -83,35 +83,35 @@ abstract class cContentTypeAbstract {
     /**
      * idartlang of corresponding article
      *
-     * @var integer
+     * @var int
      */
     protected $_idArtLang;
 
     /**
      * idart of corresponding article
      *
-     * @var integer
+     * @var int
      */
     protected $_idArt;
 
     /**
      * idcat of corresponding article
      *
-     * @var integer
+     * @var int
      */
     protected $_idCat;
 
     /**
      * CONTENIDO client id
      *
-     * @var integer
+     * @var int
      */
     protected $_client;
 
     /**
      * CONTENIDO language id
      *
-     * @var integer
+     * @var int
      */
     protected $_lang;
 
@@ -153,7 +153,7 @@ abstract class cContentTypeAbstract {
     /**
      * The parsed settings.
      *
-     * @var array string
+     * @var array|string
      */
     protected $_settings = array();
 
@@ -223,7 +223,7 @@ abstract class cContentTypeAbstract {
     /**
      * Function returns current content type configuration as array
      *
-     * @return array
+     * @return array|string
      */
     public function getConfiguration() {
         return $this->_settings;
@@ -449,4 +449,5 @@ abstract class cContentTypeAbstract {
     public function isWysiwygCompatible() {
         return false;
     }
+
 }

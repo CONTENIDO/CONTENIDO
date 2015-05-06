@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cHTMLImage class.
  *
@@ -27,8 +28,10 @@ class cHTMLImage extends cHTML {
      * Constructor.
      * Creates an HTML IMG element.
      *
-     * @param mixed $content String or object with the contents
-     * @param string $class the class of this element
+     * @param mixed $src [optional]
+     *         image source
+     * @param string $class [optional]
+     *         the class of this element
      */
     public function __construct($src = NULL, $class = '') {
         parent::__construct();
@@ -43,7 +46,8 @@ class cHTMLImage extends cHTML {
     /**
      * Sets the image's source file
      *
-     * @param string $src source location
+     * @param string $src
+     *         source location
      * @return cHTMLImage
      *         $this for chaining
      */
@@ -58,7 +62,8 @@ class cHTMLImage extends cHTML {
     /**
      * Sets the image's width
      *
-     * @param int $width Image width
+     * @param int $width
+     *         Image width
      * @return cHTMLImage
      *         $this for chaining
      */
@@ -69,7 +74,8 @@ class cHTMLImage extends cHTML {
     /**
      * Sets the image's height
      *
-     * @param int $height Image height
+     * @param int $height
+     *         Image height
      * @return cHTMLImage
      *         $this for chaining
      */
@@ -80,7 +86,8 @@ class cHTMLImage extends cHTML {
     /**
      * Sets the border size
      *
-     * @param int $border Border size
+     * @param int $border
+     *         Border size
      * @return cHTMLImage
      *         $this for chaining
      */

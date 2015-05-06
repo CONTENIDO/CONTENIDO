@@ -26,7 +26,7 @@ class cApiTemplateCollection extends ItemCollection {
     /**
      * Create a new collection of items.
      *
-     * @param string $select
+     * @param string $select [optional]
      *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
@@ -53,15 +53,17 @@ class cApiTemplateCollection extends ItemCollection {
      *         Either a valid template configuration id or an empty string
      * @param string $name
      * @param string $description
-     * @param int $deletable
-     * @param int $status
-     * @param int $defaulttemplate
-     * @param string $author
-     * @param string $created
-     * @param string $lastmodified
+     * @param int $deletable [optional]
+     * @param int $status [optional]
+     * @param int $defaulttemplate [optional]
+     * @param string $author [optional]
+     * @param string $created [optional]
+     * @param string $lastmodified [optional]
      * @return cApiTemplate
      */
-    public function create($idclient, $idlay, $idtplcfg, $name, $description, $deletable = 1, $status = 0, $defaulttemplate = 0, $author = '', $created = '', $lastmodified = '') {
+    public function create($idclient, $idlay, $idtplcfg, $name, $description,
+            $deletable = 1, $status = 0, $defaulttemplate = 0, $author = '',
+            $created = '', $lastmodified = '') {
         if (empty($author)) {
             $auth = cRegistry::getAuth();
             $author = $auth->auth['uname'];
@@ -129,7 +131,7 @@ class cApiTemplate extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -184,7 +186,7 @@ class cApiTemplate extends Item {
      * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $bSafe = true) {

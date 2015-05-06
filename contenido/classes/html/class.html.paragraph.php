@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cHTMLParagraph class.
  *
@@ -27,8 +28,10 @@ class cHTMLParagraph extends cHTMLContentElement {
      * Constructor.
      * Creates an HTML p element.
      *
-     * @param mixed $content String or object with the contents
-     * @param string $class class of this element
+     * @param mixed $content [optional]
+     *         String or object with the contents
+     * @param string $class [optional]
+     *         class of this element
      */
     public function __construct($content = '', $class = '') {
         parent::__construct($content, $class);

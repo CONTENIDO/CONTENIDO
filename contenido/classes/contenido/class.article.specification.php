@@ -37,7 +37,7 @@ class cApiArticleSpecificationCollection extends ItemCollection {
      *
      * @param int $client
      * @param int $lang
-     * @param string $orderby
+     * @param string $orderby [optional]
      *         Order statement, like "artspec ASC"
      * @return array
      */
@@ -63,7 +63,7 @@ class cApiArticleSpecification extends Item {
     /**
      * Constructor function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {

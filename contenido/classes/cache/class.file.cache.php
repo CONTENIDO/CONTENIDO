@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the file cache class.
  *
@@ -22,8 +23,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage Cache
  */
 class cFileCache {
+
     /**
      * Options for the cache.
+     *
      * @var array
      */
     protected $_options = array();
@@ -31,7 +34,7 @@ class cFileCache {
     /**
      * Constructor.
      *
-     * @param array $options
+     * @param array $options [optional]
      *         array with options for the cache (optional, default: empty array)
      */
     public function __construct($options = array()) {
@@ -82,7 +85,7 @@ class cFileCache {
      *
      * @param string $id
      *         cache ID
-     * @param string $group
+     * @param string $group [optional]
      *         cache group
      * @return string
      *         filename
@@ -122,7 +125,7 @@ class cFileCache {
      *
      * @param string $id
      *         cache ID
-     * @param string $group
+     * @param string $group [optional]
      *         cache group
      * @return string
      *         full filename
@@ -137,11 +140,12 @@ class cFileCache {
     }
 
     /**
-     * Return content of a specific cache stored in filesystem. If not cached, false is returned.
+     * Return content of a specific cache stored in filesystem.
+     * If not cached, false is returned.
      *
      * @param string $id
      *         cache ID
-     * @param string $group
+     * @param string $group [optional]
      *         cache group
      * @return bool|string
      *         content or false
@@ -175,7 +179,7 @@ class cFileCache {
      *         data to save
      * @param string $id
      *         cache ID
-     * @param string $group
+     * @param string $group [optional]
      *         cache group
      * @return bool
      *         success state
@@ -189,7 +193,7 @@ class cFileCache {
      *
      * @param string $id
      *         cache ID
-     * @param string $group
+     * @param string $group [optional]
      *         cache group
      * @return bool
      *         success state
@@ -214,4 +218,5 @@ class cFileCache {
     public function generateID($variables) {
         return md5(serialize($variables));
     }
+
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the uri builder mod rewrite class.
  *
@@ -108,12 +109,13 @@ class cUriBuilderMR extends cUriBuilder {
     /**
      * Builds a URL based on defined mod rewrite settings.
      *
-     * @param array $params Parameter array, provides only following parameters:
-     *        <code>
-     *        $params[0] = 'front_content.php?idart=123...'
-     *        </code>
-     * @param bool $bUseAbsolutePath Flag to use absolute path (not used at
-     *        the moment)
+     * @param array $params
+     *         Parameter array, provides only following parameters:
+     *         <code>
+     *         $params[0] = 'front_content.php?idart=123...'
+     *         </code>
+     * @param bool $bUseAbsolutePath [optional]
+     *         Flag to use absolute path (not used at the moment)
      * @return string
      *         New build url
      */
@@ -143,7 +145,8 @@ class cUriBuilderMR extends cUriBuilder {
     /**
      * Builds the SEO-URL by analyzing passed arguments (parameter value pairs)
      *
-     * @param array $aParams Parameter array
+     * @param array $aParams
+     *         Parameter array
      * @return string
      *         New build pretty url
      */
@@ -226,7 +229,8 @@ class cUriBuilderMR extends cUriBuilder {
      * Allows for root dir being alternativly defined as path of setting
      * client/%frontend_path%.
      *
-     * @param string $configuredRootDir defined rootdir
+     * @param string $configuredRootDir
+     *         defined rootdir
      * @return string
      */
     public static function getMultiClientRootDir($configuredRootDir) {
@@ -290,7 +294,8 @@ class cUriBuilderMR extends cUriBuilder {
      * Loops thru passed parameter array and creates the query part of the URL.
      * All non CONTENIDO related parameter will be excluded from composition.
      *
-     * @param array $aArgs Assoziative parameter array
+     * @param array $aArgs
+     *         Assoziative parameter array
      * @return string
      *         Composed query part for the URL like '?foo=bar&amp;param=value'
      */
@@ -341,7 +346,8 @@ class cUriBuilderMR extends cUriBuilder {
     /**
      * Returns client id or name depending on settings.
      *
-     * @param array $aArgs Additional arguments
+     * @param array $aArgs
+     *         Additional arguments
      * @return mixed
      *         Client id, client name or NULL
      */
@@ -364,7 +370,8 @@ class cUriBuilderMR extends cUriBuilder {
     /**
      * Returns language id or name depending on settings.
      *
-     * @param array $aArgs Additional arguments
+     * @param array $aArgs
+     *         Additional arguments
      * @return mixed
      *         Language id, language name or NULL
      */
@@ -387,7 +394,8 @@ class cUriBuilderMR extends cUriBuilder {
     /**
      * Returns composed path of url (normally the category structure)
      *
-     * @param array $aPretty Pretty url array
+     * @param array $aPretty
+     *         Pretty url array
      * @return string
      *         Path
      */
@@ -412,8 +420,10 @@ class cUriBuilderMR extends cUriBuilder {
     /**
      * Returns articlename depending on current setting
      *
-     * @param array $aPretty Pretty url array
-     * @param array $aArgs Additional arguments
+     * @param array $aPretty
+     *         Pretty url array
+     * @param array $aArgs
+     *         Additional arguments
      * @return string
      *         Articlename
      */

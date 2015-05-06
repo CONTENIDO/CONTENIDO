@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the uri builder front content class.
  *
@@ -69,8 +70,9 @@ class cUriBuilderFrontcontent extends cUriBuilder {
      * front_content.php?idcatart=1
      *
      * @param array $aParams
-     * @param bool $bUseAbsolutePath
-     * @param array $aConfig Is not used at the moment
+     * @param bool $bUseAbsolutePath [optional]
+     * @param array $aConfig [optional]
+     *         Is not used at the moment
      * @throws cInvalidArgumentException
      * @throws cException
      */

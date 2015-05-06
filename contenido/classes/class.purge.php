@@ -334,7 +334,8 @@ class cSystemPurge {
      * Clears the article cache of the article which is defined by the given
      * parameters.
      *
-     * @param int $idartlang the idartlang of the article
+     * @param int $idartlang
+     *         the idartlang of the article
      */
     public function clearArticleCache($idartlang) {
         $cfgClient = cRegistry::getClientConfig();
@@ -360,9 +361,11 @@ class cSystemPurge {
      * Delete all files and sub directories in a directory
      *
      * @param string $dirPath
-     * @param string $tmpDirPath - root directory not deleted
-     * @param bool $keep
-     * @param array $tmpFileList - files are temporarily saved
+     * @param string $tmpDirPath
+     *         root directory not deleted
+     * @param bool $keep [optional]
+     * @param array $tmpFileList [optional]
+     *         files are temporarily saved
      * @return bool
      */
     public function clearDir($dirPath, $tmpDirPath, $keep = false, &$tmpFileList = array()) {

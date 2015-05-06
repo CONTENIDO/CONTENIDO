@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains some sample scripts how to use the debug classes.
  *

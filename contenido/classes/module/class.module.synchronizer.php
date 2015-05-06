@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the module synchronizer class.
  * TODO: Rework comments of this class.
@@ -87,10 +88,14 @@ class cModuleSynchronizer extends cModuleHandler {
     /**
      * Rename the Modul files and Modul dir
      *
-     * @param string $dir path the the moduls
-     * @param string $dirNameOld old dir name
-     * @param string $dirNameNew new dir name
-     * @param int $client idclient
+     * @param string $dir
+     *         path the the moduls
+     * @param string $dirNameOld
+     *         old dir name
+     * @param string $dirNameNew
+     *         new dir name
+     * @param int $client
+     *         idclient
      * @return bool
      *         true if succes (rename file and directories)
      */
@@ -284,8 +289,8 @@ class cModuleSynchronizer extends cModuleHandler {
      * If the modul name exist it will return true
      *
      * @param $alias
-     * @param int $idclient idclient
-     * @internal param string $name name ot the modul
+     * @param int $idclient
+     *         idclient
      * @return bool
      *         if a modul with the $name exist in the $cfg['tab']['mod'] table
      *         return true else false
@@ -309,9 +314,12 @@ class cModuleSynchronizer extends cModuleHandler {
     /**
      * Update the name of module (if the name not allowes)
      *
-     * @param string $oldName old name
-     * @param string $newName new module name
-     * @param int $idclient id of client
+     * @param string $oldName
+     *         old name
+     * @param string $newName
+     *         new module name
+     * @param int $idclient
+     *         id of client
      */
     private function _updateModulnameInDb($oldName, $newName, $idclient) {
         $db = cRegistry::getDb();
@@ -332,8 +340,10 @@ class cModuleSynchronizer extends cModuleHandler {
     /**
      * This method add a new Modul in the table $cfg['tab']['mod'].
      *
-     * @param string $name neme of the new module
-     * @param int $idclient mandant of the module
+     * @param string $name
+     *         name of the new module
+     * @param int $idclient
+     *         client of the module
      */
     private function _addModul($name, $idclient) {
         // insert new modul in con_mod
@@ -348,8 +358,10 @@ class cModuleSynchronizer extends cModuleHandler {
     /**
      * Update the con_mod, the field lastmodified
      *
-     * @param int $timestamp timestamp of last modification
-     * @param int $idmod id of modul
+     * @param int $timestamp
+     *         timestamp of last modification
+     * @param int $idmod
+     *         id of module
      */
     public function setLastModified($timestamp, $idmod) {
         $oMod = new cApiModule((int) $idmod);

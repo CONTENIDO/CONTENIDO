@@ -26,7 +26,7 @@ class cApiCategoryLanguageCollection extends ItemCollection {
     /**
      * Create a new collection of items.
      *
-     * @param string $select
+     * @param string $select [optional]
      *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
@@ -51,15 +51,15 @@ class cApiCategoryLanguageCollection extends ItemCollection {
      * @param int $idlang
      * @param string $name
      * @param string $urlname
-     * @param string $urlpath
-     * @param int $idtplcfg
-     * @param int $visible
-     * @param int $public
-     * @param int $status
-     * @param string $author
-     * @param int $startidartlang
-     * @param string $created
-     * @param string $lastmodified
+     * @param string $urlpath [optional]
+     * @param int $idtplcfg [optional]
+     * @param int $visible [optional]
+     * @param int $public [optional]
+     * @param int $status [optional]
+     * @param string $author [optional]
+     * @param int $startidartlang [optional]
+     * @param string $created [optional]
+     * @param string $lastmodified [optional]
      * @return cApiCategoryLanguage
      */
     public function create($idcat, $idlang, $name, $urlname, $urlpath = '', $idtplcfg = 0, $visible = 0, $public = 0, $status = 0, $author = '', $startidartlang = 0, $created = '', $lastmodified = '') {
@@ -126,9 +126,9 @@ class cApiCategoryLanguageCollection extends ItemCollection {
      * Checks if passed idartlang is a start article.
      *
      * @param int $idartlang
-     * @param int $idcat
+     * @param int $idcat [optional]
      *         Check category id additionally
-     * @param int $idlang
+     * @param int $idlang [optional]
      *         Check language id additionally
      * @return bool
      */
@@ -159,7 +159,7 @@ class cApiCategoryLanguage extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -203,7 +203,7 @@ class cApiCategoryLanguage extends Item {
      * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $safe
+     * @param bool $safe [optional]
      *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $safe = true) {
@@ -288,7 +288,7 @@ class cApiCategoryLanguage extends Item {
     /**
      * Returns the link to the current object.
      *
-     * @param int $changeLangId
+     * @param int $changeLangId [optional]
      *         change language id for URL (optional)
      * @return string
      *         link

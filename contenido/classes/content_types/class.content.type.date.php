@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cContentTypeDate class.
  *
@@ -184,12 +185,11 @@ class cContentTypeDate extends cContentTypeAbstract {
 
     /**
      * Formats the given timestamp according to the given format.
-     * Localises the
-     * output.
+     * Localises the output.
      *
      * @param string $format
      *         the format string in the PHP date format
-     * @param int $timestamp
+     * @param int $timestamp [optional]
      *         the timestamp representing the date which should be formatted
      * @return string
      *         the formatted, localised date
