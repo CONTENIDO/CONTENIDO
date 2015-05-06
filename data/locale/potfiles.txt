@@ -429,7 +429,6 @@
 ./classes/version/class.version.module.php
 ./classes/version/class.version.php
 ./classes/versioning/class.contentversioning.php
-./classes/widgets/class.widgets.actionbutton.php
 ./classes/xml/class.xml.base.php
 ./classes/xml/class.xml.reader.php
 ./classes/xml/class.xml.writer.php
