@@ -819,13 +819,13 @@ class cModuleHandler {
     }
 
     /**
-     * Make a new module into the modul dir.
-     * The modul name will be [ModulName] example Contact_Form or GoogleMaps2.
+     * Create a new module in the module dir.
+     * The module name will be [ModuleName] example Contact_Form or GoogleMaps2.
      *
      * @param string $input [optional]
      * @param string $output [optional]
      * @return bool
-     *         if modul exist or mkdir and saveInput and saveOutput success
+     *         if module exist or mkdir and saveInput and saveOutput success
      *         return true. Else if the mkdir or saveInput or saveOutput not
      *         success return false.
      */
@@ -848,7 +848,7 @@ class cModuleHandler {
             cDirHandler::setDefaultDirPerms($this->_modulePath);
         }
 
-        // make others directorys
+        // create other directories
         foreach ($this->_directories as $directory) {
             if (!is_dir($this->_modulePath . $directory)) {
                 if (mkdir($this->_modulePath . $directory) == false) {
