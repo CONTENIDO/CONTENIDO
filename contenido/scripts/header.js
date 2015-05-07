@@ -138,7 +138,7 @@
                 frame.location.href = Con.UtilUrl.replaceParams(frame.location.href,
                     {
                         changelang: idlang,
-                        active_submenu: Con.HeaderDelayMenu.getActiveSubMenu(),
+                        active_submenu: Con.Registry.get("headerMenu").getActiveSubMenu(),
                         active_submenuitem: jQuery(".activemenu").prop("id")
                     });
             }

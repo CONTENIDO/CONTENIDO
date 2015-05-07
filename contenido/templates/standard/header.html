@@ -123,9 +123,9 @@
             });
 
             if ('undefined' !== typeof(Con.UtilUrl.getParams().active_submenu)) {
-                jQuery(window).on("load", function() {
-                    Con.HeaderDelayMenu.activate(jQuery("#" + Con.UtilUrl.getParams().active_submenu).get(0));
-                    Con.HeaderDelayMenu.markActive(jQuery("#" + Con.UtilUrl.getParams().active_submenuitem).get(0));
+                jQuery(window).on("load", function() {debugger;
+                    {HEADER_MENU_OBJ}.activate(jQuery("#" + Con.UtilUrl.getParams().active_submenu).get(0));
+                    {HEADER_MENU_OBJ}.markActive(jQuery("#" + Con.UtilUrl.getParams().active_submenuitem).get(0));
                 });
             }
         });
