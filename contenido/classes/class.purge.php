@@ -97,7 +97,7 @@ class cSystemPurge {
         if ($perm->isClientAdmin($clientId, $currentuser) === false && $perm->isSysadmin($currentuser) === false) {
             return false;
         }
-
+        
         /* @var $file SplFileInfo */
         foreach (new DirectoryIterator($cfgClient[$clientId]['code']['path']) as $file) {
             if ($file->isFile() === false) {
@@ -216,6 +216,34 @@ class cSystemPurge {
                 return true;
             }
             return false;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * Clear the clients content versioning
+     *
+     * @param int $clientId
+     * @param bool $keep
+     * @param int $fileNumber
+     * @return bool
+     */
+    public function clearClientContentVersioning($clientId) {
+        global $perm, $currentuser;
+        
+        if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
+            
+            $artLangVersionColl = new cApiArticleLanguageVersionCollection();
+            $artLangVersionColl->deleteByWhereClause('idartlangversion != 0');
+            
+            $contentVersionColl = new cApiContentVersionCollection();
+            $contentVersionColl->deleteByWhereClause('idcontentversion != 0');
+            
+            $metaTagVersionColl = new cApiMetaTagVersionCollection();
+            $metaTagVersionColl->deleteByWhereClause('idmetatagversion != 0');
+            
+            return true;
         } else {
             return false;
         }
@@ -395,7 +423,7 @@ class cSystemPurge {
             if (true === $bCanDelete) {
                 cDirHandler::remove($dirPath);
             }
-
+        
             return true;
         } else {
             return false;
@@ -441,7 +469,8 @@ class cSystemPurge {
      * Get frontend directory name for a client
      *
      * @param int $clientId
-     * @return string
+     * 
+     * @return string $sClientDir
      */
     public function getClientDir($clientId) {
         $cfgClient = cRegistry::getClientConfig();

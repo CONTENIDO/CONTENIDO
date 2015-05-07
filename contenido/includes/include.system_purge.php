@@ -100,11 +100,20 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
                 }
 
                 if (isset($_POST['clientHistory']) && $_POST['clientHistory'] == 1) {
+                    echo "dasfs";
                     $bKeep = ($_POST['keepHistory'] == 1 && (int) $_POST['keepHistoryNumber'] > 0) ? true : false;
                     if (!$oPurge->clearClientHistory($iClientId, $bKeep, (int) $_POST['keepHistoryNumber'])) {
                         $bError = true;
                         $sErrorMsg .= i18n('Client ') . $aClientName[$iClientId] . ': ' .
                                i18n('The history is not deleted!') . '<br>';
+                    }
+                }
+                
+                if (isset($_POST['clearVersioning']) && $_POST['clearVersioning'] == 1) {
+                    if (!$oPurge->clearClientContentVersioning($iClientId)) {
+                        $bError = true;
+                        $sErrorMsg .= i18n('Client ') . $aClientName[$iClientId] . ': ' .
+                                i18n('The content versioning is not deleted!') . '<br>';
                     }
                 }
 
@@ -115,7 +124,7 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
             }
         }
     }
-
+    
     $sContenido = i18n('CONTENIDO: ');
 
     if (isset($_POST['conInuse']) && $_POST['conInuse'] == 1) {
@@ -180,8 +189,9 @@ $tpl->set('s', 'CON_CAT_ART', i18n('Force code generation'));
 $tpl->set('s', 'CON_INUSE', sprintf(i18n('Reset the table %s'), $cfg['tab']['inuse']));
 $tpl->set('s', 'CLIENT_CACHE', i18n('Clear client cache'));
 $tpl->set('s', 'CLIENT_LOG', i18n('Clear client log file'));
-$tpl->set('s', 'CLIENT_HISTORY', i18n('Clear client history'));
-$tpl->set('s', 'NUMBER_OF_HISTORY', i18n('Keep last histories'));
+$tpl->set('s', 'CLIENT_HISTORY', i18n('Clear client style history'));
+$tpl->set('s', 'NUMBER_OF_HISTORY', i18n('Keep last style histories'));
+$tpl->set('s', 'CLEAR_CONTENT_VERSIONING', i18n('Delete content versions'));
 
 $tpl->set('s', 'GROUP_CONTENIDO', i18n('CONTENIDO'));
 $tpl->set('s', 'CON_LOG', i18n('Clear CONTENIDO log file'));

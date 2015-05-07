@@ -191,7 +191,7 @@ abstract class cContentTypeAbstract {
         $this->_session = cRegistry::getSession();
         $this->_useXHTML = cSecurity::toBoolean(getEffectiveSetting('generator', 'xhtml', 'false'));
         $this->_uploadPath = $this->_cfgClient[$this->_client]['upl']['path'];
-
+        
         $this->_readSettings();
     }
 
@@ -206,7 +206,8 @@ abstract class cContentTypeAbstract {
             return;
         }
         if ($this->_settingsType === self::SETTINGS_TYPE_XML) {
-            // if the settings should be interpreted as XML, process them accordingly
+            // if the settings should be interpreted as XML, process them
+            // accordingly
             $this->_settings = cXmlBase::xmlStringToArray($this->_rawSettings);
             // add the prefix to the settings array keys
             foreach ($this->_settings as $key => $value) {
@@ -254,6 +255,7 @@ abstract class cContentTypeAbstract {
         } else {
             $settingsToStore = $this->_settings;
         }
+        
         // store new settings in the database
         conSaveContentEntry($this->_idArtLang, $this->_type, $this->_id, $settingsToStore);
     }
@@ -270,7 +272,7 @@ abstract class cContentTypeAbstract {
         $code = addslashes($code);
         $code = str_replace("\\'", "'", $code);
         $code = str_replace('\$', '\\$', $code);
-
+        
         return $code;
     }
 
@@ -299,6 +301,7 @@ abstract class cContentTypeAbstract {
             if (false !== ($handle = cDirHandler::read($uploadPath, false, true))) {
                 foreach ($handle as $entry) {
                     if (cFileHandler::fileNameBeginsWithDot($entry) === false && is_dir($uploadPath . $entry)) {
+                        
                         $directory = array();
                         $directory['name'] = $entry;
                         $directory['path'] = str_replace($this->_uploadPath, '', $uploadPath);
@@ -442,7 +445,7 @@ abstract class cContentTypeAbstract {
     /**
      * Checks if this content type can be edited by a WYSIWYG editor
      *
-     * @return bool
+     * @return bools
      */
     public function isWysiwygCompatible() {
         return false;

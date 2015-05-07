@@ -10,7 +10,7 @@
 </head>
 
 <body style="margin: 10px;">
-
+    
 <div id="system_clear_info_box">
     {INFO_MSG_BOX}
 </div>
@@ -23,7 +23,6 @@
       <div class="system_clear_header">
         {TITLE}
       </div>
-
       <div class="system_clear_group clearfix">
         <div class="leftCol">
             {GROUP_CLIENT}
@@ -74,10 +73,14 @@
                 <label for="checkbox_clearhistory" class="label_middle">{NUMBER_OF_HISTORY}: </label>
                 <input class="input" name="keepHistoryNumber" type="text" value="10" style="width: 25px;" maxlength="5">
             </div>
+            
+            <div class="system_clear_form_row clearfix">
+                <input id="checkbox_clearversioning" class="input" name="clearVersioning" type="checkbox" value="1">
+                <label for="checkbox_clearversioning" class="label_middle">{CLEAR_CONTENT_VERSIONING}</label>
+            </div>
 
         </div>
-      </div>
-
+      </div>        
       <div class="system_clear_group clearfix">
         <div class="leftCol">
             {GROUP_CONTENIDO}

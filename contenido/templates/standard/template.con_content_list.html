@@ -55,7 +55,25 @@ document.getElementsByTagName('head')[0].appendChild(baseHref);
 
 {NOTIFICATIONS}
 {CATEGORY}
-
+<p style="display:block;font-weight:bold;">i18n("Select Article Version")</p>
+ <div class="contypeList">
+    <div>
+        <span style="width: 280px; display: inline; padding: 0px 0px 0px 2px;">
+            <span style="margin: 0px 0px 0px 0px;">
+                {ARTICLE_VERSION_SELECTION} {SET_AS_CURRENT_VERSION}
+            </span>
+            <a 
+                href="#" 
+                id="pluginInfoDetails-link" 
+                class="main i-link infoButton" 
+                title="">                    
+            </a>
+        </span>                  
+        </div>
+        <div id="pluginInfoDetails" class="nodisplay">
+           {VERSIONING_INFO_TEXT}
+      </div>
+</div>
 <p style="display:block;font-weight:bold;">i18n("Content administration")</p>
 <!-- BEGIN:BLOCK -->
 <div class="contypeList {EXTRA_CLASS}">
@@ -64,10 +82,20 @@ document.getElementsByTagName('head')[0].appendChild(baseHref);
 </div>
 <!-- END:BLOCK -->
 
+
 <script type='text/javascript'>
+/** 
+ * Set version number as post-parameter for rawdata export
+ * $_POST['versionnumber] = 'current' if version is current, 
+ * else $_POST['versionnumber] = version number
+ */
+function getVersionNumber() {
+    document.getElementById("versionnumber").value = $('#selectVersionElement option:selected').val();
+}
+
 (function(Con, $) {
     $(function() {
-        $('div#categorypath > a').click(function() {
+        $('div#categorypath +> a').click(function() {
             var url = $(this).attr('href');
             var params = Con.UtilUrl.getParams(url);
             var path = url.split('?');
@@ -89,6 +117,14 @@ document.getElementsByTagName('head')[0].appendChild(baseHref);
 })(Con, Con.$);
 </script>
 
+<form name="copyto" method="post" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=copyto&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
+    <input type="hidden" name="copyTo" value="">
+    <input type="hidden" name="idArtLangVersion" value="">
+</form>
+<form name="versionselected" method="post" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=versionselected&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
+    <input type="hidden" name="idArtLangVersion" value="">
+    <input type="hidden" name="copyTo" value="">
+</form>
 <form name="editcontent" method="post" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=savecontype&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
     <input type="hidden" name="changeview" value="edit">
     <input type="hidden" name="data" value="">
@@ -97,20 +133,20 @@ document.getElementsByTagName('head')[0].appendChild(baseHref);
 <div class="contypeList">
 <form name="exportrawdata" method="post" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=exportrawcontent&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
     <div class="rawtypes">
-
-    </div>
-    <input type="submit" name="export" value="{EXPORT_RAWDATA}">
+    </div>	
+    <input type="hidden" id="versionnumber" name="versionnumber" value="">
+    <input type="submit" name="export" value="{EXPORT_RAWDATA}" onclick="getVersionNumber()">
 </form>
 </div>
 <label class="rawdata" {HIDE}>{IMPORT_LABEL}</label>
 <div class="contypeList" {HIDE}>
 <form name="importrawdata" id="importrawdata" method="post" enctype="multipart/form-data" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=importrawcontent&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
-    <input type="file" name="rawfile" value="" size="40">
+    <input type="file" name="rawfile" value="" size="40" {DISABLED}>
     <br />
     <label class="rawdatalabel">{OVERWRITE_DATA_LABEL}</label>
-    <input type="checkbox" name="overwritecontent" value="1">
+    <input type="checkbox" name="overwritecontent" value="1" {DISABLED}>
     <br />
-    <input type="submit" name="import" value="{IMPORT_RAWDATA}">
+    <input type="submit" name="import" value="{IMPORT_RAWDATA}" {DISABLED}>
 </form>
 </div>
 <!--

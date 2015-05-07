@@ -35,9 +35,83 @@ if (!$perm->have_perm_area_action($area, 'con_meta_edit') && !$perm->have_perm_a
     return;
 }
 
-// Get article data
+$versioning = new cContentVersioning();
+
+// Get article (version) data
 $art = new cApiArticleLanguage();
 $art->loadByArticleAndLanguageId(cSecurity::toInteger($idart), cSecurity::toInteger($lang));
+
+if ($_REQUEST['idArtLangVersion'] == NULL && $versioning->getState() == 'advanced') {
+    
+    $art = new cApiArticleLanguageVersion($versioning->getEditableArticleId($art->getField('idartlang')));
+    //$art = new cApiArticleLanguageVersion($versioning->getEditableArticleId($idArtLang));
+    
+} else if ($versioning->getState() == 'advanced' && $_REQUEST['idArtLangVersion'] != 'current'
+    || $versioning->getState() == 'simple' && ($_REQUEST['idArtLangVersion'] != NULL 
+    && is_numeric ($_REQUEST['idArtLangVersion']) || is_numeric ($_REQUEST['idArtLangVersion']))) {
+    
+    $art = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+    
+}
+
+// if there is no (editable) version yet, output the published version
+if (!$art->isLoaded()) {
+    $art = new cApiArticleLanguage();
+    $art->loadByArticleAndLanguageId(cSecurity::toInteger($idart), cSecurity::toInteger($lang));
+}
+global $selectedArticleId;
+if ($_REQUEST['idArtLangVersion'] != NULL) {
+    $selectedArticleId = $_REQUEST['idArtLangVersion'];
+}
+$articleType = $versioning->getArticleType(
+    $_REQUEST['idArtLangVersion'],
+    $art->getField('idartlang'),
+    $action,
+    $selectedArticleId
+);
+
+
+// Set as current/editable
+switch ($versioning->getState()) {
+    case 'advanced' :
+        if ($action == 'copyto') {
+            if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'current') {
+                // editable->current
+                $artLangVersion = NULL;                
+                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+                if (isset($artLangVersion)) {
+                    $artLangVersion->markAsCurrent('meta');
+                    $selectedArticleId = 'current';
+                }
+
+            } else if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
+                // version->editable
+                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+                $artLangVersion->markAsEditable('meta');
+                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action, $selectedArticleId);
+                $selectedArticleId = 'editable';
+            } else if ($_REQUEST['idArtLangVersion'] == 'current') {
+                // current->editable
+                $artLang = new cApiArticleLanguage((int) $_REQUEST['idartlang']);
+                $artLang->markAsEditable('meta');
+                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action, $selectedArticleId);
+                $selectedArticleId = 'editable';
+            }
+        }
+        
+        break;
+    case 'simple' :
+        if ($action == 'copyto') {            
+            if (is_numeric($_REQUEST['idArtLangVersion'])) {                
+                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+                $artLangVersion->markAsCurrent('meta');
+                $selectedArticleId = 'current';
+            }            
+        }
+        
+    default:
+        break;
+}
 
 // Check is form edit available
 $disabled = '';
@@ -68,11 +142,16 @@ if ($art->getField('created')) {
         $tpl->set('s', 'DISABLED', ' ' . $disabled);
         $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
         $tpl->set("s", "REASON", i18n('This article is currently frozen and can not be edited!'));
-    } else {
+    } else if ($versioning->getState() == 'advanced' && $articleType == 'editable'
+        || $versioning->getState() == 'simple' && $articleType != 'version'
+        || $versioning->getState() == 'disabled'){
         $tpl->set('s', 'DISABLED', '');
         $tpl->set("s", "REASON", "");
+    } else {
+        $disabled = 'disabled="disabled"';
+        $tpl->set('s', 'DISABLED', ' ' . $disabled);
     }
-
+    
     if ($disabled == '') {
         $tpl->set('s', 'IS_DATETIMEPICKER_DISABLED', 0);
         $tpl->set('s', 'BUTTONIMAGE', 'but_ok.gif');
@@ -83,7 +162,8 @@ if ($art->getField('created')) {
         $tpl->set('s', 'BUTTONIMAGE', 'but_ok_off.gif');
         $tpl->set('s', 'BUTTONDISABLE', $disabled);
         $tpl->set("s", "REASON", "");
-    }
+    }    
+    
 }
 
 // Assign head values to page
@@ -114,7 +194,7 @@ $tpl->set('s', 'IDARTLANG', $art->getField('idartlang'));
 $tpl->set('s', 'TITEL', i18n('SEO administration'));
 
 // Assign notification
-if (isset($tmp_notification)) {
+if (isset($tmp_notification)) {       
     $tpl->set('s', 'NOTIFICATION', '<tr><td colspan="4">' . $tmp_notification . '<br></td></tr>');
 } else {
     $tpl->set('s', 'NOTIFICATION', '');
@@ -143,13 +223,13 @@ $managedTypes = array(
 $metaPreview = array();
 
 // Set meta tags values
-foreach ($availableTags as $key => $value) {
+foreach ($availableTags as $key => $value) {  
     $metaPreview[] = array(
         'fieldname' => $value['fieldname'],
         'name' => $value['metatype'],
-        'content' => cSecurity::unFilter(stripslashes(conGetMetaValue($art->getField('idartlang'), $key)))
+        'content' => cSecurity::unFilter(stripslashes(conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version'))))
     );
-
+    
     // Set meta values to inputs
     if (in_array($value['metatype'], $managedTypes)) {
         if ($value['metatype'] == 'robots') {
@@ -168,22 +248,22 @@ foreach ($availableTags as $key => $value) {
             }
 
             // Set robots checkboxes
-            $robot_array = explode(', ', conHtmlSpecialChars(conGetMetaValue($art->getField('idartlang'), $key)));
+            $robot_array = explode(', ', conHtmlSpecialChars(conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version'))));
             foreach ($robot_array as $instruction) {
                 $tpl->set('s', strtoupper($instruction), 'checked');
             }
         } else {
-            $metaType = conHtmlSpecialChars(cSecurity::unFilter(stripslashes(conGetMetaValue($art->getField('idartlang'), $key))));
+            $metaType = conHtmlSpecialChars(cSecurity::unFilter(stripslashes(conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version')))));
             $tpl->set('s', strtoupper($value['metatype']), str_replace('\\', '', $metaType));
         }
-
-        continue;
+        
+        continue;        
     }
-
+    
     // Create add and edit MetaTag form BLOCK
     $tpl->set('d', 'METAINPUT', 'META' . $value);
     switch ($value['fieldtype']) {
-        case 'text':
+        case 'text': 
             $element = '<input ' . $disabled . '
                             class="metaTag"
                             type="text"
@@ -191,11 +271,11 @@ foreach ($availableTags as $key => $value) {
                             id="META' . $value['metatype'] . '"
                             size="24"
                             maxlength=' . $value['maxlength'] . '
-                            value="' . conHtmlSpecialChars(conGetMetaValue($art->getField('idartlang'), $key)) . '">';
+                            value="' . conHtmlSpecialChars(conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version'))) . '">';
 
             break;
         case 'textarea':
-            $textValue = cSecurity::unFilter(stripslashes(conGetMetaValue($art->getField('idartlang'), $key)));
+            $textValue = cSecurity::unFilter(stripslashes(conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version'))));
             $element = '<textarea ' . $disabled . '
                             class="metaTag"
                             name="META' . $value['metatype'] . '"
@@ -211,7 +291,7 @@ foreach ($availableTags as $key => $value) {
                             id="META' . $value['metatype'] . '"
                             size="24"
                             maxlength=' . $value['maxlength'] . '
-                            value="' . conHtmlSpecialChars(conGetMetaValue($art->getField('idartlang'), $key)) . '">';
+                            value="' . conHtmlSpecialChars(conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version'))) . '">';
 
             break;
     }
@@ -220,14 +300,185 @@ foreach ($availableTags as $key => $value) {
     $tpl->set('d', 'ARTICLE_ID', $idart);
     $tpl->set('d', 'CAT_ID', $idcat);
     $tpl->set('d', 'METAFIELDTYPE', $element);
-    $tpl->set('d', 'IDMETATYPE', $value['idmetatype']);
     $tpl->set('d', 'METATITLE', $value['metatype'] . ':');
-    $tpl->set('d', 'DELETE_META_CONFIRM', i18n('Are you sure to delete this Meta tag?'));
-
+    if ($versioning->getState() == 'simple' && $articleType == 'current'
+            || $versioning->getState() == 'advanced' && $articleType == 'editable'
+            || $versioning->getState() == 'disabled') {
+        
+        $tpl->set('d', 'DELETE_META', 
+            "Con.showConfirmation('" .
+                    i18n('Are you sure to delete this Meta tag?') . "' ,
+                    function() { 
+                        deleteMetaTag(" . $value['idmetatype'] . "," . $idart . "," . $idcat . "," . $art->getField('idartlang') . ");                 
+                    }
+            ); "
+        );
+        
+    } else {
+        
+        $tpl->set('d', 'DELETE_META', '');
+        
+    }
     $tpl->next();
 }
 
 $tpl->set('s', 'SITEMAP_PRIO', $art->getField('sitemapprio'));
+
+switch ($versioning->getState()) {
+    
+    case 'advanced':
+    
+        $optionElementParameters = $versioning->getDataForSelectElement($art->getField('idartlang'), 'seo');
+
+        // set editable element 
+        $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
+        if (isset($versioning->editableArticleId)) {
+            $optionElement = new cHTMLOptionElement(i18n('Draft'), $versioning->getEditableArticleId($art->getField('idartlang'))); //key($optionElementParameters[max(array_keys($optionElementParameters))]));
+            if ($articleType == 'editable') {
+                $optionElement->setSelected(true);
+            }
+            $selectElement->appendOptionElement($optionElement);
+            if (count($optionElementParameters) > 0) {
+                unset($optionElementParameters[max(array_keys($optionElementParameters))]);
+            }
+            
+        }
+
+        // check if selected version is availible, else select the next lower version
+        $temp_id = $selectedArticleId;
+        $temp_ids = array ();
+        
+        foreach (array_values($optionElementParameters) AS $key => $value) {
+            $temp_ids[] = key($value);
+        }
+        if (!in_array($selectedArticleId, $temp_ids) && $selectedArticleId != 'current'
+            && $selectedArticleId != 'editable' && $articleType != 'current' && $articleType != 'editable') {
+            foreach ($temp_ids AS $key => $value) {
+                if ($value < $selectedArticleId) {
+                    $temp_id = $value;
+                    break;
+                }
+            }
+        }
+            
+        // Create Metatag Version Option Elements
+        $optionElement = new cHTMLOptionElement(i18n('Published Version'), 'current');
+        if ($articleType == 'current') {
+            $optionElement->setSelected(true);
+        }
+        $selectElement->appendOptionElement($optionElement);
+
+        foreach ($optionElementParameters AS $key => $value) {
+            $lastModified = $versioning->getTimeDiff($value[key($value)]);
+            $optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));
+            //if ($articleType == 'version') {
+                if ($selectedArticleId == key($value)) {
+                    $optionElement->setSelected(true);
+                }
+            //}
+            $selectElement->appendOptionElement($optionElement);
+        }
+        $selectElement->setEvent("onchange", "selectVersion.idArtLangVersion.value=$('#selectVersionElement option:selected').val();selectVersion.submit()");
+
+        $tpl->set('s', 'SELECT_ELEMENT', $selectElement->toHtml());
+        $tpl->set("s", "ACTION2", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=con_meta_change_version'));
+        $tpl->set("s", "ACTION3", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=copyto'));
+
+        // Create markAsCurrent Button
+        if ($articleType == 'current' || $articleType == 'version') {
+            $buttonTitle = i18n('Copy to Draft');
+        } else if ($articleType == 'editable') {
+            $buttonTitle = i18n('Publish Draft');
+        }
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle, 'copytobutton');
+        $tpl->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
+        
+        $infoButton =  new cGuiBackendHelpbox(i18n('<strong>Advanced-Mode:</strong> '
+                . 'Older SEO Versions can be reviewed and restored. Unpublished drafts can be created (For further configurations please go to Administration/System/System configuration).<br/><br/>'
+                . 'Changes are only related to SEO!'));
+        $tpl->set("s", "INFO_BUTTON_VERSION_SELECTION", $infoButton->render());
+        
+        break;
+    case 'simple' :
+        
+        $optionElementParameters = $versioning->getDataForSelectElement($art->getField('idartlang'), 'seo');
+        
+        // Create Metatag Version Option Elements
+        $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
+        $optionElement = new cHTMLOptionElement(i18n('Published Version'), 'current');
+        if ($articleType == 'current') {
+            $optionElement->setSelected(true);
+        }
+        $selectElement->appendOptionElement($optionElement);
+
+        // check if selected version is availible, else select the next lower version
+        $temp_id = $selectedArticleId;
+        $temp_ids = array ();
+        
+        foreach (array_values($optionElementParameters) AS $key => $value) {
+            $temp_ids[] = key($value);
+        }
+        if (!in_array($selectedArticleId, $temp_ids) && $selectedArticleId != 'current' 
+            && $selectedArticleId != 'editable') {
+            foreach ($temp_ids AS $key => $value) {
+                if ($value < $selectedArticleId) {
+                    $temp_id = $value;
+                    break;
+                }
+            }        
+        }
+        
+        foreach ($optionElementParameters AS $key => $value) {
+            $lastModified = $versioning->getTimeDiff($value[key($value)]);
+            $optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));
+            //if ($articleType == 'version') {
+                if ($temp_id == key($value)) {
+                    $optionElement->setSelected(true);
+                }
+            //}
+            $selectElement->appendOptionElement($optionElement);
+        }
+        $selectElement->setEvent("onchange", "selectVersion.idArtLangVersion.value=$('#selectVersionElement option:selected').val();selectVersion.submit()");
+
+        $tpl->set('s', 'SELECT_ELEMENT', $selectElement->toHtml());
+        $tpl->set("s", "ACTION2", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=con_meta_change_version'));
+        $tpl->set("s", "ACTION3", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=copyto'));
+
+
+        // Create markAsCurrent Button
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to Published Version'), 'copytobutton');
+        if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
+            $markAsCurrentButton->setAttribute('DISABLED');
+        }
+        $tpl->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
+        
+        $infoButton =  new cGuiBackendHelpbox(i18n('<strong>Simple-Mode:</strong> '
+                . 'Older SEO Versions can be reviewed and restored (For further configurations please go to Administration/System/System configuration).<br/><br/>'
+                . 'Changes are only related to SEO!'));
+        $tpl->set("s", "INFO_BUTTON_VERSION_SELECTION", $infoButton->render());
+    
+        break;        
+    case 'disabled' :
+
+        // Create Sample Metatag Version Option Element
+        $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
+        $optionElement = new cHTMLOptionElement('Version 10: 11.12.13 14:15:16', '');
+        $selectElement->appendOptionElement($optionElement);
+        $selectElement->setAttribute('disabled', 'disabled');
+        $tpl->set('s', 'SELECT_ELEMENT', $selectElement->toHtml());
+
+        $buttonTitle = i18n('Copy to Published Version');
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
+        $markAsCurrentButton->setAttribute('disabled', 'disabled');
+        $tpl->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
+
+        $infoButton = new cGuiBackendHelpbox(i18n('For reviewing and restoring older Article Versions activate the Article Versioning under Administration/System/System configuration.'));
+        $tpl->set('s', 'INFO_BUTTON_VERSION_SELECTION', $infoButton->render());  
+        
+    default :
+        break;
+    
+}
 
 $infoButton = new cGuiBackendHelpbox(i18n('The title-tag is one of the most important on-page factors for SEO and is not longer than 60 characters. It includes top keywords and the branding.'));
 $tpl->set("s", "INFO_BUTTON_PAGE_TITLE", $infoButton->render());
@@ -348,7 +599,13 @@ while ($db->nextRecord()) {
 $aUserPerm = explode(',', $auth->auth['perm']);
 
 if (in_array('sysadmin', $aUserPerm)) {
-    $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new.gif" alt="" id="addMeta">');
+    // disable/grey out button if a non-editable version is selected 
+    if ($versioning->getState() == 'simple' && $articleType != 'current'
+            || $versioning->getState() == 'advanced' && $articleType != 'editable') {
+        $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new_off.png" id="addMetaDisabled">'); 
+    } else {
+        $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new.gif" id="addMeta">');        
+    }
     $tpl->set('s', 'ADDNEWMETA', $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['con_meta_addnew'], true));
 } else {
     $tpl->set('s', 'ADDMETABTN', '&nbsp;');

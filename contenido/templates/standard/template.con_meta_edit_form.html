@@ -31,23 +31,50 @@
 <body>
 
     {CATEGORY}
-
+    
+    <form method="post" name="selectVersion" action="{ACTION2}">
+        <input type="hidden" name="idart" value="{IDART}">
+        <input type="hidden" name="idcat" value="{IDCAT}">
+        <input type="hidden" name="idartlang" value="{IDARTLANG}">
+        <input type="hidden" name="idArtLangVersion" value="">
+    </form>
+    
+    <form method="post" name="copyto" action="{ACTION3}">
+        <input type="hidden" name="idart" value="{IDART}">
+        <input type="hidden" name="idcat" value="{IDCAT}">
+        <input type="hidden" name="idartlang" value="{IDARTLANG}">
+        <input type="hidden" name="idArtLangVersion" value="">
+    </form>    
+       
     <form method="post" name="art_props" action="{ACTION}">
-
         <input type="hidden" name="action" value="con_meta_saveart">
         <input type="hidden" name="send" value="1">
         <input type="hidden" name="tmp_firstedit" value="{TMP_FIRSTEDIT}">
         <input type="hidden" name="idart" value="{IDART}">
         <input type="hidden" name="idcat" value="{IDCAT}">
         <input type="hidden" name="idartlang" value="{IDARTLANG}">
-
+        
         <table class="generic" cellspacing="0" cellpadding="2" border="0">
 
+            <!-- BEGIN -->
+            <tr>
+                <th colspan="2">i18n('Select Article Version')</th>
+            </tr>
+            
+                        <tr>
+                <td class="leftData">i18n("Select Article Version")</td>
+                <td>{SELECT_ELEMENT}
+                    {SET_AS_CURRENT_VERSION}                    
+                    {INFO_BUTTON_VERSION_SELECTION}
+                </td>
+            </tr>
+            <!-- END -->
+            
             <tr>
                 <th colspan="2">{TITEL}</th>
             </tr>
-
-            {NOTIFICATION}
+            
+           {NOTIFICATION}
 
             <tr>
                 <td class="leftData">i18n("Link")</td>
@@ -176,13 +203,18 @@
                 <td>{METATITLE}</td>
                 <td class="text_medium">
                     {METAFIELDTYPE}
-                    <a href="javascript://" onclick="Con.showConfirmation('{DELETE_META_CONFIRM}', function() { deleteMetaTag({IDMETATYPE}, {ARTICLE_ID}, {CAT_ID}, {ARTICLE_LANGUAGE_ID}); }); return false;" title="Delete Meta tag">
-                        <img class="vAlignMiddle" style="float: right" src="images/delete.gif" alt="">
+                    <a href="javascript://" onclick="{DELETE_META}return false;" title="Delete Meta tag">
+                        <img class="vAlignMiddle" style="float: right" src="images/delete.gif">
                     </a>
                 </td>
             </tr>
             <!-- END:BLOCK -->
 
+            <!--
+            <a href="javascript://" onclick="{DELETE_META}return false;" title="Delete Meta tag">
+            <a href="javascript://" onclick="Con.showConfirmation('{DELETE_META_CONFIRM}', function() { deleteMetaTag({IDMETATYPE}, {ARTICLE_ID}, {CAT_ID}, {ARTICLE_LANGUAGE_ID}); });  return false;" title="Delete Meta tag">
+            -->
+            
             {ADDNEWMETA}
 
             <tr>
@@ -255,6 +287,12 @@ function deleteMetaTag(idMetaType, articleId, catId, idartlang) {
 (function(Con, $) {
     $(function() {
 
+        $('#copytobutton').on('click', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            copyto.idArtLangVersion.value=$('#selectVersionElement option:selected').val();copyto.submit();
+        });
+        
         $('img#addMeta').hover(function() {
             $(this).css('cursor', 'pointer');
         }).click(function() {
