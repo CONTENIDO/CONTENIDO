@@ -30,6 +30,7 @@
 
 
 return array(
+    'cContentVersioning' => 'contenido/classes/versioning/class.contentversioning.php',
     'cAuthHandlerAbstract' => 'contenido/classes/auth/class.auth.handler.abstract.php',
     'cAuthHandlerBackend' => 'contenido/classes/auth/class.auth.handler.backend.php',
     'cAuthHandlerFrontend' => 'contenido/classes/auth/class.auth.handler.frontend.php',
@@ -102,6 +103,8 @@ return array(
     'cApiArticleSpecification' => 'contenido/classes/contenido/class.article.specification.php',
     'cApiArticleLanguageCollection' => 'contenido/classes/contenido/class.articlelanguage.php',
     'cApiArticleLanguage' => 'contenido/classes/contenido/class.articlelanguage.php',
+    'cApiArticleLanguageVersionCollection' => 'contenido/classes/contenido/class.articlelanguageversion.php',
+    'cApiArticleLanguageVersion' => 'contenido/classes/contenido/class.articlelanguageversion.php',	
     'cApiCategoryCollection' => 'contenido/classes/contenido/class.category.php',
     'cApiCategory' => 'contenido/classes/contenido/class.category.php',
     'cApiCategoryArticleCollection' => 'contenido/classes/contenido/class.categoryarticle.php',
@@ -122,6 +125,8 @@ return array(
     'cApiContainerConfiguration' => 'contenido/classes/contenido/class.containerconfig.php',
     'cApiContentCollection' => 'contenido/classes/contenido/class.content.php',
     'cApiContent' => 'contenido/classes/contenido/class.content.php',
+    'cApiContentVersionCollection' => 'contenido/classes/contenido/class.contentversion.php',
+    'cApiContentVersion' => 'contenido/classes/contenido/class.contentversion.php',
     'cApiDbfsCollection' => 'contenido/classes/contenido/class.dbfs.php',
     'cApiDbfs' => 'contenido/classes/contenido/class.dbfs.php',
     'cApiFileCollection' => 'contenido/classes/contenido/class.file.php',
@@ -161,7 +166,9 @@ return array(
     'cApiMailLogSuccessCollection' => 'contenido/classes/contenido/class.maillogsuccess.php',
     'cApiMailLogSuccess' => 'contenido/classes/contenido/class.maillogsuccess.php',
     'cApiMetaTagCollection' => 'contenido/classes/contenido/class.meta.tag.php',
+    'cApiMetaTagVersionCollection' => 'contenido/classes/contenido/class.metatagversion.php',
     'cApiMetaTag' => 'contenido/classes/contenido/class.meta.tag.php',
+    'cApiMetaTagVersion' => 'contenido/classes/contenido/class.metatagversion.php',
     'cApiMetaTypeCollection' => 'contenido/classes/contenido/class.meta.type.php',
     'cApiMetaType' => 'contenido/classes/contenido/class.meta.type.php',
     'cApiModuleCollection' => 'contenido/classes/contenido/class.module.php',

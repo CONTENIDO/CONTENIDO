@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-06 17:14+0200\n"
+"POT-Creation-Date: 2015-05-07 17:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,11 +22,11 @@ msgid "Thank you for saving this search from extinction!"
 msgstr ""
 
 #: backend_search.php:485
-#: classes/content_types/class.content.type.imgeditor.php:455
+#: classes/content_types/class.content.type.imgeditor.php:506
 #: classes/content_types/class.content.type.linkeditor.php:317
-#: includes/include.con_art_overview.php:78
-#: includes/include.con_art_overview.php:717
-#: includes/include.con_edit_form.php:411
+#: includes/include.con_art_overview.php:82
+#: includes/include.con_art_overview.php:721
+#: includes/include.con_edit_form.php:666
 #: includes/include.stat_overview.php:87
 #: templates/standard/template.mycontenido_lastarticles.html:73
 #: templates/standard/template.mycontenido_lastarticles.html:113
@@ -35,18 +35,18 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: backend_search.php:488 includes/include.con_art_overview.php:79
+#: backend_search.php:488 includes/include.con_art_overview.php:83
 msgid "Changed"
 msgstr ""
 
-#: backend_search.php:491 includes/include.con_art_overview.php:80
+#: backend_search.php:491 includes/include.con_art_overview.php:84
 msgid "Published"
 msgstr ""
 
 #: backend_search.php:494
 #: classes/content_types/class.content.type.filelist.php:664
 #: classes/content_types/class.content.type.teaser.php:714
-#: includes/include.con_art_overview.php:81
+#: includes/include.con_art_overview.php:85
 #: templates/standard/template.frontend_left_top_filter.html:16
 #: templates/standard/template.frontend_left_top_filter.html:43
 #: templates/standard/template.mod_left_top_filter.html:17
@@ -61,7 +61,7 @@ msgstr ""
 
 #: backend_search.php:513 classes/class.ajax.php:157
 #: classes/content_types/class.content.type.teaser.php:864
-#: includes/include.con_art_overview.php:77
+#: includes/include.con_art_overview.php:81
 #: includes/include.con_subnav.php:113 includes/include.logs.php:268
 #: templates/standard/template.symbolhelp.html:18
 #: templates/standard/template.symbolhelp.html:100
@@ -71,7 +71,7 @@ msgstr ""
 msgid "Article"
 msgstr ""
 
-#: backend_search.php:518 includes/include.con_art_overview.php:82
+#: backend_search.php:518 includes/include.con_art_overview.php:86
 #: includes/include.con_translate.php:481
 #: includes/include.con_translate.php:587
 #: includes/include.pretplcfg_edit_form.php:37
@@ -83,7 +83,7 @@ msgstr ""
 msgid "Template"
 msgstr ""
 
-#: backend_search.php:519 includes/include.con_art_overview.php:83
+#: backend_search.php:519 includes/include.con_art_overview.php:87
 #: includes/include.frontend.left_top.php:144
 #: includes/include.mycontenido.tasks.php:250
 #: includes/include.upl_files_overview.php:494
@@ -100,39 +100,39 @@ msgstr ""
 msgid "No article found."
 msgstr ""
 
-#: backend_search.php:662 includes/include.con_art_overview.php:515
+#: backend_search.php:662 includes/include.con_art_overview.php:519
 msgid "Flag as normal article"
 msgstr ""
 
-#: backend_search.php:665 includes/include.con_art_overview.php:513
+#: backend_search.php:665 includes/include.con_art_overview.php:517
 msgid "Flag as start article"
 msgstr ""
 
 #: backend_search.php:678 includes/include.client_artspec.php:124
-#: includes/include.con_art_overview.php:560
+#: includes/include.con_art_overview.php:564
 #: includes/include.str_overview.php:682 scripts/langref.php:8
 #: templates/standard/template.str_overview.html:656
 msgid "Make offline"
 msgstr ""
 
 #: backend_search.php:682 includes/include.client_artspec.php:121
-#: includes/include.con_art_overview.php:566
+#: includes/include.con_art_overview.php:570
 #: includes/include.str_overview.php:684 includes/include.str_overview.php:903
 #: includes/include.str_overview.php:905 scripts/langref.php:9
 #: templates/standard/template.str_overview.html:657
 msgid "Make online"
 msgstr ""
 
-#: backend_search.php:688 includes/include.con_art_overview.php:391
+#: backend_search.php:688 includes/include.con_art_overview.php:395
 msgid "Unfreeze article"
 msgstr ""
 
-#: backend_search.php:691 includes/include.con_art_overview.php:394
+#: backend_search.php:691 includes/include.con_art_overview.php:398
 #: ../data/config/production/cfg_actions.inc.php:22
 msgid "Freeze article"
 msgstr ""
 
-#: backend_search.php:717 includes/include.con_art_overview.php:483
+#: backend_search.php:717 includes/include.con_art_overview.php:487
 #: includes/include.con_left_top.php:303
 #: includes/include.mycontenido_lastarticles.php:107
 #: includes/include.upl_search_results.php:38
@@ -148,14 +148,14 @@ msgstr ""
 msgid "Set reminder / add to todo list"
 msgstr ""
 
-#: backend_search.php:722 includes/include.con_art_overview.php:536
+#: backend_search.php:722 includes/include.con_art_overview.php:540
 #: templates/standard/template.symbolhelp.html:143
 #: templates/standard/template.symbolhelp.html:687
 #: ../data/config/production/cfg_actions.inc.php:32
 msgid "Duplicate article"
 msgstr ""
 
-#: backend_search.php:723 includes/include.con_art_overview.php:422
+#: backend_search.php:723 includes/include.con_art_overview.php:426
 msgid "Article properties"
 msgstr ""
 
@@ -165,7 +165,7 @@ msgstr ""
 msgid "Configure template"
 msgstr ""
 
-#: backend_search.php:725 includes/include.con_art_overview.php:586
+#: backend_search.php:725 includes/include.con_art_overview.php:590
 #: templates/standard/template.symbolhelp.html:147
 #: templates/standard/template.symbolhelp.html:688
 #: ../data/config/production/cfg_actions.inc.php:30
@@ -200,7 +200,7 @@ msgstr ""
 #: classes/class.ajax.php:141
 #: classes/content_types/class.content.type.teaser.php:862
 #: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_list.php:197
-#: includes/include.con_edit_form.php:875
+#: includes/include.con_edit_form.php:1145
 #: includes/include.grouprights_con.php:78
 #: includes/include.grouprights_str.php:79 includes/include.logs.php:267
 #: includes/include.note.popup.php:72 includes/include.rights_con.php:79
@@ -1288,7 +1288,7 @@ msgid "File list settings"
 msgstr ""
 
 #: classes/content_types/class.content.type.filelist.php:587
-#: classes/content_types/class.content.type.imgeditor.php:332
+#: classes/content_types/class.content.type.imgeditor.php:383
 msgid "Directories"
 msgstr ""
 
@@ -1442,31 +1442,31 @@ msgstr ""
 msgid "File"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:1047
 #: classes/content_types/class.content.type.filelist.php:1048
-#: classes/content_types/class.content.type.imgeditor.php:611
-#: classes/content_types/class.content.type.imgeditor.php:612
+#: classes/content_types/class.content.type.filelist.php:1049
+#: classes/content_types/class.content.type.imgeditor.php:663
+#: classes/content_types/class.content.type.imgeditor.php:664
 #: includes/include.upl_search_results.php:320
 msgid "No files found"
 msgstr ""
 
-#: classes/content_types/class.content.type.imgeditor.php:328
+#: classes/content_types/class.content.type.imgeditor.php:379
 msgid "Image settings"
 msgstr ""
 
-#: classes/content_types/class.content.type.imgeditor.php:333
+#: classes/content_types/class.content.type.imgeditor.php:384
 msgid "Meta"
 msgstr ""
 
-#: classes/content_types/class.content.type.imgeditor.php:334
+#: classes/content_types/class.content.type.imgeditor.php:385
 msgid "Upload"
 msgstr ""
 
-#: classes/content_types/class.content.type.imgeditor.php:452
+#: classes/content_types/class.content.type.imgeditor.php:503
 msgid "Selected file"
 msgstr ""
 
-#: classes/content_types/class.content.type.imgeditor.php:457
+#: classes/content_types/class.content.type.imgeditor.php:508
 #: includes/include.grouprights_create.php:81
 #: includes/include.grouprights_lay.php:84
 #: includes/include.grouprights_mod.php:84
@@ -1482,7 +1482,7 @@ msgstr ""
 #: includes/include.tplcfg_edit_form.php:418
 #: includes/include.tpl_edit_form.php:118 includes/include.upl_edit.php:72
 #: scripts/langref.php:28
-#: templates/standard/template.con_meta_edit_form.html:78
+#: templates/standard/template.con_meta_edit_form.html:105
 #: templates/standard/template.generic_source_editor.html:23
 #: templates/standard/template.tpl_edit_form.html:28
 #: templates/standard/template.tpl_edit_form.html:100
@@ -1491,29 +1491,29 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: classes/content_types/class.content.type.imgeditor.php:459
+#: classes/content_types/class.content.type.imgeditor.php:510
 #: includes/include.upl_edit.php:73
-#: templates/standard/template.con_meta_edit_form.html:86
+#: templates/standard/template.con_meta_edit_form.html:113
 msgid "Keywords"
 msgstr ""
 
-#: classes/content_types/class.content.type.imgeditor.php:461
+#: classes/content_types/class.content.type.imgeditor.php:512
 #: includes/include.upl_edit.php:74
 msgid "Internal notes"
 msgstr ""
 
-#: classes/content_types/class.content.type.imgeditor.php:463
+#: classes/content_types/class.content.type.imgeditor.php:514
 #: includes/include.upl_edit.php:75
-#: templates/standard/template.con_meta_edit_form.html:94
+#: templates/standard/template.con_meta_edit_form.html:121
 msgid "Copyright"
 msgstr ""
 
-#: classes/content_types/class.content.type.imgeditor.php:489
+#: classes/content_types/class.content.type.imgeditor.php:540
 #: classes/content_types/class.content.type.linkeditor.php:581
 msgid "Create a directory in"
 msgstr ""
 
-#: classes/content_types/class.content.type.imgeditor.php:534
+#: classes/content_types/class.content.type.imgeditor.php:585
 #: classes/content_types/class.content.type.linkeditor.php:626
 #: includes/functions.stat.php:302 includes/functions.stat.php:392
 #: includes/functions.stat.php:615 includes/functions.stat.php:684
@@ -1739,17 +1739,17 @@ msgstr ""
 
 #: classes/gui/class.navigation.php:325 classes/gui/class.navigation.php:328
 #: includes/include.logs.php:262 includes/include.mail_log.php:87
-#: includes/include.system_purge.php:174
+#: includes/include.system_purge.php:183
 #: includes/include.system_sysvalues.php:177
 #: templates/standard/template.log_main.html:21
 #: templates/standard/template.log_main.html:95
 msgid "Client"
 msgstr ""
 
-#: classes/gui/class.navigation.php:350 includes/include.con_edit_form.php:117
+#: classes/gui/class.navigation.php:350 includes/include.con_edit_form.php:342
 #: includes/include.logs.php:265 includes/include.system_sysvalues.php:225
 #: templates/standard/template.log_main.html:30
-#: templates/standard/template.symbolhelp.html:610 xml/system.xml:23
+#: templates/standard/template.symbolhelp.html:610 xml/system.xml:20
 msgid "User"
 msgstr ""
 
@@ -1825,10 +1825,10 @@ msgstr ""
 #: includes/include.client_artspec.php:30
 #: includes/include.client_artspec.php:38
 #: includes/include.client_artspec.php:46 includes/include.client_edit.php:18
-#: includes/include.con_art_overview.php:984
-#: includes/include.con_content_list.php:132
-#: includes/include.con_content_list.php:158
-#: includes/include.con_edit_form.php:1096
+#: includes/include.con_art_overview.php:988
+#: includes/include.con_content_list.php:137
+#: includes/include.con_content_list.php:214
+#: includes/include.con_edit_form.php:1371
 #: includes/include.con_meta_form.php:34
 #: includes/include.con_translate.php:138
 #: includes/include.grouprights_area.php:50
@@ -1866,7 +1866,7 @@ msgstr ""
 #: includes/type/action/include.con_makepublic.action.php:23
 #: includes/type/action/include.con_makestart.action.php:23
 #: includes/type/action/include.con_meta_deletetype.action.php:34
-#: includes/type/action/include.con_meta_saveart.action.php:112
+#: includes/type/action/include.con_meta_saveart.action.php:128
 #: includes/type/action/include.con_newart.action.php:44
 #: includes/type/action/include.lang_activatelanguage.action.php:22
 #: includes/type/action/include.lang_deactivatelanguage.action.php:22
@@ -2040,7 +2040,7 @@ msgstr ""
 #: classes/module/class.module.template.handler.php:598
 #: classes/module/class.module.template.handler.php:601
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:134
-#: includes/include.con_edit_form.php:125 includes/include.logs.php:266
+#: includes/include.con_edit_form.php:350 includes/include.logs.php:266
 #: includes/include.mail_log.php:88 includes/include.mail_log.php:218
 #: includes/include.systemsettings.php:72
 #: templates/standard/template.log_main.html:34
@@ -2145,6 +2145,18 @@ msgstr ""
 msgid "Note: This only affects the current history."
 msgstr ""
 
+#: classes/versioning/class.contentversioning.php:114
+#, php-format
+msgid "%d minutes ago"
+msgstr ""
+
+#: classes/versioning/class.contentversioning.php:282
+#: templates/standard/template.con_content_list.html:58
+#: templates/standard/template.con_edit_form.html:110
+#: templates/standard/template.con_meta_edit_form.html:65
+msgid "Select Article Version"
+msgstr ""
+
 #: cronjobs/send_reminder.php:76
 #, php-format
 msgid ""
@@ -2202,7 +2214,7 @@ msgid "Syntax error, malformed JSON"
 msgstr ""
 
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:488
-#: includes/include.system_configuration.php:225
+#: includes/include.system_configuration.php:274
 msgid "Access denied"
 msgstr ""
 
@@ -2260,7 +2272,7 @@ msgid "Additional parameters (JSON passed to tinymce constructor)"
 msgstr ""
 
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:617
-#: includes/include.system_configuration.php:176
+#: includes/include.system_configuration.php:225
 msgid "You are not sysadmin. You can't change these settings."
 msgstr ""
 
@@ -2273,20 +2285,20 @@ msgid "Reset Configuration"
 msgstr ""
 
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.editor.php:552
-#: includes/include.con_content_list.php:468
-#: includes/include.con_editcontent.php:174
+#: includes/include.con_content_list.php:786
+#: includes/include.con_editcontent.php:176
 msgid "Close editor"
 msgstr ""
 
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.editor.php:553
-#: includes/include.con_content_list.php:469
-#: includes/include.con_editcontent.php:175
+#: includes/include.con_content_list.php:787
+#: includes/include.con_editcontent.php:177
 msgid "Close editor and save changes"
 msgstr ""
 
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.editor.php:554
-#: includes/include.con_content_list.php:470
-#: includes/include.con_editcontent.php:176
+#: includes/include.con_content_list.php:788
+#: includes/include.con_editcontent.php:178
 msgid "You have unsaved changes."
 msgstr ""
 
@@ -2304,9 +2316,10 @@ msgid "Error article/category not found!"
 msgstr ""
 
 #: includes/frontend/include.front_content.php:374
-#: includes/include.con_edit_form.php:339
-#: includes/include.con_edit_form.php:343
-#: includes/include.con_meta_form.php:61 includes/include.con_meta_form.php:63
+#: includes/include.con_edit_form.php:592
+#: includes/include.con_edit_form.php:596
+#: includes/include.con_meta_form.php:135
+#: includes/include.con_meta_form.php:137
 #: includes/include.tplcfg_edit_form.php:42
 #, php-format
 msgid "Article is in use by %s (%s)"
@@ -2327,16 +2340,16 @@ msgstr ""
 msgid "FATAL ERROR"
 msgstr ""
 
-#: includes/functions.con.php:147 includes/functions.con.php:301
+#: includes/functions.con.php:148 includes/functions.con.php:341
 msgid "Default title"
 msgstr ""
 
-#: includes/functions.con.php:891 includes/functions.pathresolver.php:251
+#: includes/functions.con.php:1021 includes/functions.pathresolver.php:251
 #: templates/standard/template.con_left_top_art_search.html:72
 msgid "Lost and found"
 msgstr ""
 
-#: includes/functions.con.php:1412 includes/functions.str.php:1110
+#: includes/functions.con.php:1542 includes/functions.str.php:1110
 #: includes/functions.tpl.php:348
 #, php-format
 msgid "%s (Copy)"
@@ -2419,7 +2432,7 @@ msgid "Sunday"
 msgstr ""
 
 #: includes/functions.general.php:1639
-#: templates/standard/template.con_content_list.html:119
+#: templates/standard/template.con_content_list.html:155
 msgid "You are here"
 msgstr ""
 
@@ -2541,12 +2554,12 @@ msgid "Open category"
 msgstr ""
 
 #: includes/functions.stat.php:372 includes/functions.stat.php:664
-#: includes/include.con_art_overview.php:568
+#: includes/include.con_art_overview.php:572
 #: includes/include.mycontenido_lastarticles.php:145
 msgid "Article is offline"
 msgstr ""
 
-#: includes/functions.stat.php:374 includes/include.con_art_overview.php:562
+#: includes/functions.stat.php:374 includes/include.con_art_overview.php:566
 #: includes/include.mycontenido_lastarticles.php:143
 msgid "Article is online"
 msgstr ""
@@ -2571,7 +2584,7 @@ msgid "Top 30"
 msgstr ""
 
 #: includes/functions.stat.php:874 includes/functions.stat.php:904
-#: includes/include.con_art_overview.php:832
+#: includes/include.con_art_overview.php:836
 #: includes/include.grouprights.php:134
 #: includes/include.grouprights_left_top.php:38
 #: includes/include.rights.php:150 includes/include.rights_left_top.php:52
@@ -2928,7 +2941,7 @@ msgid "Add new variable"
 msgstr ""
 
 #: includes/include.client_artspec.php:60
-#: includes/include.con_edit_form.php:443
+#: includes/include.con_edit_form.php:703
 msgid "Article specification"
 msgstr ""
 
@@ -2952,7 +2965,7 @@ msgid "This is the default article specification"
 msgstr ""
 
 #: includes/include.client_artspec.php:141
-#: includes/include.con_edit_form.php:437
+#: includes/include.con_edit_form.php:697
 msgid "No article specifications found!"
 msgstr ""
 
@@ -2998,8 +3011,8 @@ msgid ""
 msgstr ""
 
 #: includes/include.client_edit.php:172
-#: includes/include.con_content_list.php:127
-#: includes/include.con_content_list.php:153
+#: includes/include.con_content_list.php:132
+#: includes/include.con_content_list.php:209
 #: includes/include.grouprights_area.php:42
 #: includes/include.grouprights_con.php:39
 #: includes/include.grouprights_lay.php:38
@@ -3013,10 +3026,10 @@ msgstr ""
 #: includes/include.rights_lay.php:39 includes/include.rights_mod.php:38
 #: includes/include.rights_overview.php:164 includes/include.rights_str.php:38
 #: includes/include.rights_tpl.php:38
-#: includes/include.system_configuration.php:162
-#: includes/type/action/include.con_meta_saveart.action.php:107
-#: includes/type/action/include.con_saveart.action.php:44
-#: includes/type/action/include.con_saveart.action.php:151
+#: includes/include.system_configuration.php:211
+#: includes/type/action/include.con_meta_saveart.action.php:123
+#: includes/type/action/include.con_saveart.action.php:43
+#: includes/type/action/include.con_saveart.action.php:162
 msgid "Changes saved"
 msgstr ""
 
@@ -3040,51 +3053,51 @@ msgstr ""
 msgid "Client name"
 msgstr ""
 
-#: includes/include.client_edit.php:230
+#: includes/include.client_edit.php:231
 msgid "Server path"
 msgstr ""
 
-#: includes/include.client_edit.php:241
+#: includes/include.client_edit.php:242
 msgid "Web address"
 msgstr ""
 
-#: includes/include.client_edit.php:248
+#: includes/include.client_edit.php:249
 msgid "Error page category"
 msgstr ""
 
-#: includes/include.client_edit.php:255
+#: includes/include.client_edit.php:256
 msgid "Error page article"
 msgstr ""
 
-#: includes/include.client_edit.php:263
+#: includes/include.client_edit.php:264
 msgid "Client logo"
 msgstr ""
 
-#: includes/include.client_edit.php:272
+#: includes/include.client_edit.php:273
 msgid "No"
 msgstr ""
 
-#: includes/include.client_edit.php:273
+#: includes/include.client_edit.php:274
 msgid "Yes"
 msgstr ""
 
-#: includes/include.client_edit.php:285 xml/system.xml:36
+#: includes/include.client_edit.php:286 xml/system.xml:33
 msgid "Generate XHTML"
 msgstr ""
 
-#: includes/include.client_edit.php:293
+#: includes/include.client_edit.php:294
 msgid "On"
 msgstr ""
 
-#: includes/include.client_edit.php:294
+#: includes/include.client_edit.php:295
 msgid "Off"
 msgstr ""
 
-#: includes/include.client_edit.php:306
+#: includes/include.client_edit.php:307
 msgid "Statistic"
 msgstr ""
 
-#: includes/include.client_edit.php:314
+#: includes/include.client_edit.php:315
 msgid "Copy frontend template"
 msgstr ""
 
@@ -3114,215 +3127,306 @@ msgstr ""
 msgid "Save and close editor"
 msgstr ""
 
-#: includes/include.con_art_overview.php:76 includes/include.mail_log.php:83
+#: includes/include.con_art_overview.php:80 includes/include.mail_log.php:83
 #: includes/include.upl_files_overview.php:489
 msgid "Mark"
 msgstr ""
 
-#: includes/include.con_art_overview.php:300
+#: includes/include.con_art_overview.php:304
 msgid "not modified yet"
 msgstr ""
 
-#: includes/include.con_art_overview.php:312
-#: includes/include.con_art_overview.php:625
-#: includes/include.con_edit_form.php:520
+#: includes/include.con_art_overview.php:316
+#: includes/include.con_art_overview.php:629
+#: includes/include.con_edit_form.php:786
 msgid "not yet published"
 msgstr ""
 
-#: includes/include.con_art_overview.php:340
+#: includes/include.con_art_overview.php:344
 msgid "Article is in use"
 msgstr ""
 
-#: includes/include.con_art_overview.php:341
+#: includes/include.con_art_overview.php:345
 #, php-format
 msgid "Article in use by %s (%s)"
 msgstr ""
 
-#: includes/include.con_art_overview.php:379
+#: includes/include.con_art_overview.php:383
 msgid "Article with time control online"
 msgstr ""
 
-#: includes/include.con_art_overview.php:381
+#: includes/include.con_art_overview.php:385
 msgid "Article with time control offline"
 msgstr ""
 
-#: includes/include.con_art_overview.php:400
+#: includes/include.con_art_overview.php:404
 msgid "Article is frozen"
 msgstr ""
 
-#: includes/include.con_art_overview.php:403
+#: includes/include.con_art_overview.php:407
 msgid "Article is not frozen"
 msgstr ""
 
-#: includes/include.con_art_overview.php:433
-#: includes/include.con_art_overview.php:780
+#: includes/include.con_art_overview.php:437
+#: includes/include.con_art_overview.php:784
 #: templates/standard/template.con_art_overview.html:363
 msgid "Copy article to the current language"
 msgstr ""
 
-#: includes/include.con_art_overview.php:519
-#: includes/include.con_edit_form.php:593
+#: includes/include.con_art_overview.php:523
+#: includes/include.con_edit_form.php:863
 msgid "Start article"
 msgstr ""
 
-#: includes/include.con_art_overview.php:521
+#: includes/include.con_art_overview.php:525
 msgid "Normal article"
 msgstr ""
 
-#: includes/include.con_art_overview.php:550
+#: includes/include.con_art_overview.php:554
 #, php-format
 msgid "Reminder for article '%s'"
 msgstr ""
 
-#: includes/include.con_art_overview.php:553
+#: includes/include.con_art_overview.php:557
 #, php-format
 msgid ""
 "Reminder for article '%s'\n"
 "Category: %s"
 msgstr ""
 
-#: includes/include.con_art_overview.php:585
+#: includes/include.con_art_overview.php:589
 #, php-format
 msgid "Are you sure to delete the following article:<br><br><b>%s</b>"
 msgstr ""
 
-#: includes/include.con_art_overview.php:682
+#: includes/include.con_art_overview.php:686
 #: includes/include.upl_files_overview.php:608
 msgid "Display properties"
 msgstr ""
 
-#: includes/include.con_art_overview.php:758
+#: includes/include.con_art_overview.php:762
 #, php-format
 msgid "Go to page: %s"
 msgstr ""
 
-#: includes/include.con_art_overview.php:763
+#: includes/include.con_art_overview.php:767
 msgid "Click on a row to select an article for editing"
 msgstr ""
 
-#: includes/include.con_art_overview.php:768
+#: includes/include.con_art_overview.php:772
 #: templates/standard/template.con_art_overview.html:359
 msgid "Set articles online"
 msgstr ""
 
-#: includes/include.con_art_overview.php:771
+#: includes/include.con_art_overview.php:775
 #: templates/standard/template.con_art_overview.html:360
 msgid "Set articles offline"
 msgstr ""
 
-#: includes/include.con_art_overview.php:774
+#: includes/include.con_art_overview.php:778
 #: templates/standard/template.con_art_overview.html:361
 msgid "Freeze articles"
 msgstr ""
 
-#: includes/include.con_art_overview.php:777
+#: includes/include.con_art_overview.php:781
 #: templates/standard/template.con_art_overview.html:362
 msgid "Unfreeze articles"
 msgstr ""
 
-#: includes/include.con_art_overview.php:783
+#: includes/include.con_art_overview.php:787
 #: templates/standard/template.con_art_overview.html:364
 msgid "Delete articles"
 msgstr ""
 
-#: includes/include.con_art_overview.php:783
+#: includes/include.con_art_overview.php:787
 msgid "Are you sure to delete the selected articles"
 msgstr ""
 
-#: includes/include.con_art_overview.php:787
+#: includes/include.con_art_overview.php:791
 msgid "Your permissions do not allow any actions here"
 msgstr ""
 
-#: includes/include.con_art_overview.php:824
-#: includes/include.con_art_overview.php:895
+#: includes/include.con_art_overview.php:828
+#: includes/include.con_art_overview.php:899
 msgid "No articles found"
 msgstr ""
 
-#: includes/include.con_art_overview.php:854
+#: includes/include.con_art_overview.php:858
 #: includes/include.con_translate.php:440
 msgid "Items per page:"
 msgstr ""
 
-#: includes/include.con_art_overview.php:942
+#: includes/include.con_art_overview.php:946
 msgid "This category does not have a configured start article."
 msgstr ""
 
-#: includes/include.con_art_overview.php:948
-#: includes/include.con_art_overview.php:949
+#: includes/include.con_art_overview.php:952
+#: includes/include.con_art_overview.php:953
 #: templates/standard/template.symbolhelp.html:115
 #: templates/standard/template.symbolhelp.html:680
 msgid "Create new article"
 msgstr ""
 
-#: includes/include.con_art_overview.php:952
+#: includes/include.con_art_overview.php:956
 msgid ""
 "Creation of articles is only possible if the category has a assigned "
 "template."
 msgstr ""
 
-#: includes/include.con_content_list.php:333
+#: includes/include.con_content_list.php:424
 msgid "Can not load article"
 msgstr ""
 
-#: includes/include.con_content_list.php:337
+#: includes/include.con_content_list.php:428
 msgid "Can not find article"
 msgstr ""
 
-#: includes/include.con_content_list.php:343
+#: includes/include.con_content_list.php:434
 msgid "Raw data was imported successfully"
 msgstr ""
 
-#: includes/include.con_content_list.php:347
+#: includes/include.con_content_list.php:437
 msgid "Error: The XML file is not valid"
 msgstr ""
 
-#: includes/include.con_content_list.php:350
+#: includes/include.con_content_list.php:440
 msgid "Please choose a file"
 msgstr ""
 
-#: includes/include.con_content_list.php:474
+#: includes/include.con_content_list.php:510
+#: includes/include.con_content_list.php:627
+#: includes/include.con_editcontent.php:239
+#: includes/include.con_editcontent.php:348
+#: includes/include.con_edit_form.php:123
+#: includes/include.con_edit_form.php:179
+#: includes/include.con_meta_form.php:365
+#: includes/include.con_meta_form.php:408
+msgid "Published Version"
+msgstr ""
+
+#: includes/include.con_content_list.php:558
+#: includes/include.con_content_list.php:670
+msgid "Copy Version"
+msgstr ""
+
+#: includes/include.con_content_list.php:559
+#: includes/include.con_content_list.php:704
+#: includes/include.con_editcontent.php:278
+#: includes/include.con_editcontent.php:420
+#: includes/include.con_edit_form.php:225
+#: includes/include.con_edit_form.php:243
+#: includes/include.con_meta_form.php:449
+#: includes/include.con_meta_form.php:470
+msgid "Copy to Published Version"
+msgstr ""
+
+#: includes/include.con_content_list.php:566
+#: includes/include.con_editcontent.php:284
+msgid ""
+"<strong>Mode simple:</strong> Older Content Versions can be restored and "
+"reviewed (Configurations under Administration/System configuration).<br/><br/"
+">Changes only refer to contents itself!"
+msgstr ""
+
+#: includes/include.con_content_list.php:618
+#: includes/include.con_editcontent.php:338
+#: includes/include.con_edit_form.php:93
+#: includes/include.con_meta_form.php:336
+msgid "Draft"
+msgstr ""
+
+#: includes/include.con_content_list.php:680
+#: includes/include.con_editcontent.php:390
+#: includes/include.con_edit_form.php:148
+#: includes/include.con_meta_form.php:389
+msgid "Copy to Draft"
+msgstr ""
+
+#: includes/include.con_content_list.php:682
+#: includes/include.con_editcontent.php:392
+#: includes/include.con_edit_form.php:150
+#: includes/include.con_meta_form.php:391
+msgid "Publish Draft"
+msgstr ""
+
+#: includes/include.con_content_list.php:689
+#: includes/include.con_editcontent.php:399
+msgid ""
+"<strong>Mode advanced:</strong> Older Content Versions can be reviewd and "
+"restored. Unpublished drafts can be created (For further configurations "
+"please go to Administration/System/System configuration).<br/><br/>Changes "
+"are only related to Contents!"
+msgstr ""
+
+#: includes/include.con_content_list.php:709
+#: includes/include.con_editcontent.php:425
+#: includes/include.con_edit_form.php:248
+#: includes/include.con_meta_form.php:475
+msgid ""
+"For reviewing and restoring older Article Versions activate the Article "
+"Versioning under Administration/System/System configuration."
+msgstr ""
+
+#: includes/include.con_content_list.php:792
 msgid "Export raw data"
 msgstr ""
 
-#: includes/include.con_content_list.php:475
+#: includes/include.con_content_list.php:793
 msgid "Import raw data"
 msgstr ""
 
-#: includes/include.con_content_list.php:476
+#: includes/include.con_content_list.php:794
 msgid "Raw data export"
 msgstr ""
 
-#: includes/include.con_content_list.php:477
+#: includes/include.con_content_list.php:795
 msgid "Raw data import"
 msgstr ""
 
-#: includes/include.con_content_list.php:478
+#: includes/include.con_content_list.php:796
 msgid "Overwrite data"
 msgstr ""
 
-#: includes/include.con_content_list.php:503
+#: includes/include.con_content_list.php:820
 msgid "Article has no raw data"
 msgstr ""
 
-#: includes/include.con_content_list.php:520
+#: includes/include.con_content_list.php:834
 msgid "Export"
 msgstr ""
 
-#: includes/include.con_content_list.php:600
-#: includes/include.con_edit_form.php:332
-#: includes/include.con_edit_form.php:333
-#: includes/include.con_meta_form.php:69 includes/include.con_meta_form.php:70
+#: includes/include.con_content_list.php:911
+#: includes/include.con_edit_form.php:585
+#: includes/include.con_edit_form.php:586
+#: includes/include.con_meta_form.php:143
+#: includes/include.con_meta_form.php:144
 #: includes/include.tplcfg_edit_form.php:102
 #: includes/include.tplcfg_edit_form.php:136
 msgid "This article is currently frozen and can not be edited!"
 msgstr ""
 
-#: includes/include.con_content_list.php:684
-#: includes/include.con_content_list.php:687
+#: includes/include.con_content_list.php:1005
+#: includes/include.con_content_list.php:1008
 msgid "Are you sure you want to delete this content type from this article?"
 msgstr ""
 
-#: includes/include.con_edit_form.php:114
+#: includes/include.con_edit_form.php:159
+msgid ""
+"<strong>Advanced-Mode:</strong>  Former Article Versions can be reviewed and "
+"restored. Unpublished drafts can be created. (For further configurations "
+"please go to Administration/System/System configuration).<br/><br/>Changes "
+"are related to Article Properties, SEO's and Contents!"
+msgstr ""
+
+#: includes/include.con_edit_form.php:220
+msgid ""
+"<strong>Simple-Mode:</strong> Older Article Versions can be reviewed and "
+"restored (For further configurations please go to Administration/System/"
+"System configuration).<br/><br/>Changes are related to Article Properties, "
+"SEO's and Contents!"
+msgstr ""
+
+#: includes/include.con_edit_form.php:339
 #: includes/include.con_translate.php:509 includes/include.lang_edit.php:207
 #: includes/include.lang_edit.php:211 includes/include.logs.php:263
 #: main.loginform.php:84 templates/standard/template.log_main.html:26
@@ -3330,60 +3434,60 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: includes/include.con_edit_form.php:121 includes/include.logs.php:264
+#: includes/include.con_edit_form.php:346 includes/include.logs.php:264
 #: includes/include.mail_log.php:86 includes/include.mail_log.php:181
 #: includes/include.stat_search_overview.php:40
 #: templates/standard/template.con_left_top_art_search.html:26
 msgid "Date"
 msgstr ""
 
-#: includes/include.con_edit_form.php:327
+#: includes/include.con_edit_form.php:580
 #: ../data/config/production/cfg_actions.inc.php:37
 msgid "Save article"
 msgstr ""
 
-#: includes/include.con_edit_form.php:414
+#: includes/include.con_edit_form.php:669
 #: includes/include.str_overview.php:495
-#: templates/standard/template.con_meta_edit_form.html:71
+#: templates/standard/template.con_meta_edit_form.html:98
 #: templates/standard/template.str_overview.html:53
 #: templates/standard/template.str_overview.html:148
 #: templates/standard/template.str_overview.html:647
 msgid "Alias"
 msgstr ""
 
-#: includes/include.con_edit_form.php:455
+#: includes/include.con_edit_form.php:715
 msgid "Article link"
 msgstr ""
 
-#: includes/include.con_edit_form.php:465
+#: includes/include.con_edit_form.php:726
 msgid "Select an entry to display link"
 msgstr ""
 
-#: includes/include.con_edit_form.php:466
+#: includes/include.con_edit_form.php:727
 msgid "Article only"
 msgstr ""
 
-#: includes/include.con_edit_form.php:467
+#: includes/include.con_edit_form.php:728
 msgid "Article with category"
 msgstr ""
 
-#: includes/include.con_edit_form.php:468
+#: includes/include.con_edit_form.php:729
 msgid "Article with category and language"
 msgstr ""
 
-#: includes/include.con_edit_form.php:469
+#: includes/include.con_edit_form.php:730
 msgid "Article with language"
 msgstr ""
 
-#: includes/include.con_edit_form.php:477
+#: includes/include.con_edit_form.php:738
 msgid "open"
 msgstr ""
 
-#: includes/include.con_edit_form.php:483
+#: includes/include.con_edit_form.php:744
 msgid "Author (Creator)"
 msgstr ""
 
-#: includes/include.con_edit_form.php:505
+#: includes/include.con_edit_form.php:766
 #: includes/include.frontend.left_top.php:43
 #: includes/include.frontend.user_menu.php:43
 #: includes/include.mycontenido.tasks.php:249
@@ -3394,108 +3498,108 @@ msgstr ""
 msgid "Created"
 msgstr ""
 
-#: includes/include.con_edit_form.php:509
+#: includes/include.con_edit_form.php:770
 msgid "Author (Modifier)"
 msgstr ""
 
-#: includes/include.con_edit_form.php:510
+#: includes/include.con_edit_form.php:771
 msgid "Last modified"
 msgstr ""
 
-#: includes/include.con_edit_form.php:514
+#: includes/include.con_edit_form.php:775
 msgid "Publishing date"
 msgstr ""
 
-#: includes/include.con_edit_form.php:527
+#: includes/include.con_edit_form.php:793
 msgid "Publisher"
 msgstr ""
 
-#: includes/include.con_edit_form.php:538
+#: includes/include.con_edit_form.php:804
 msgid "Redirect"
 msgstr ""
 
-#: includes/include.con_edit_form.php:549
+#: includes/include.con_edit_form.php:815
 msgid "Status code"
 msgstr ""
 
-#: includes/include.con_edit_form.php:552
+#: includes/include.con_edit_form.php:818
 msgid "Articlelog"
 msgstr ""
 
-#: includes/include.con_edit_form.php:561
+#: includes/include.con_edit_form.php:827
 msgid "Temporary"
 msgstr ""
 
-#: includes/include.con_edit_form.php:562
+#: includes/include.con_edit_form.php:828
 msgid "Permanently"
 msgstr ""
 
-#: includes/include.con_edit_form.php:571
+#: includes/include.con_edit_form.php:837
 msgid "New window"
 msgstr ""
 
-#: includes/include.con_edit_form.php:599
+#: includes/include.con_edit_form.php:869
 msgid "Searchable"
 msgstr ""
 
-#: includes/include.con_edit_form.php:603
+#: includes/include.con_edit_form.php:873
 msgid "Sort key"
 msgstr ""
 
-#: includes/include.con_edit_form.php:635
+#: includes/include.con_edit_form.php:905
 msgid ""
 "The called article is synchronized. If you want to move it please make sure "
 "that the target category of this article exist in all languages."
 msgstr ""
 
-#: includes/include.con_edit_form.php:648
+#: includes/include.con_edit_form.php:918
 #: ../data/config/production/cfg_actions.inc.php:38
 msgid "Remove assignments"
 msgstr ""
 
-#: includes/include.con_edit_form.php:650
+#: includes/include.con_edit_form.php:920
 msgid "Remove multiple category assignments"
 msgstr ""
 
-#: includes/include.con_edit_form.php:651
+#: includes/include.con_edit_form.php:921
 msgid ""
 "Do you really want to remove the assignments to all categories except the "
 "current one?"
 msgstr ""
 
-#: includes/include.con_edit_form.php:773
+#: includes/include.con_edit_form.php:1043
 msgid "Take the article in this language offline"
 msgstr ""
 
-#: includes/include.con_edit_form.php:773
+#: includes/include.con_edit_form.php:1043
 msgid "Make the article in this language online"
 msgstr ""
 
-#: includes/include.con_edit_form.php:778
+#: includes/include.con_edit_form.php:1048
 #, php-format
 msgid ""
 "There is no synchronized article in the language '%s' to take offline/bring "
 "online"
 msgstr ""
 
-#: includes/include.con_edit_form.php:784
+#: includes/include.con_edit_form.php:1054
 #, php-format
 msgid "This article is synchronized to '%s'"
 msgstr ""
 
-#: includes/include.con_edit_form.php:784
+#: includes/include.con_edit_form.php:1054
 #, php-format
 msgid "Synchronize this article to '%s'"
 msgstr ""
 
-#: includes/include.con_edit_form.php:789
+#: includes/include.con_edit_form.php:1059
 #, php-format
 msgid ""
 "This article can't be synchronized to '%s' since the category '%s' does not "
 "exist in that language."
 msgstr ""
 
-#: includes/include.con_edit_form.php:808
+#: includes/include.con_edit_form.php:1078
 msgid ""
 "In this menu you can change the synchronization settings of this article. "
 "You will find a list of all available languages and can copy this article to "
@@ -3503,17 +3607,17 @@ msgid ""
 "synchronized languages online or offline."
 msgstr ""
 
-#: includes/include.con_edit_form.php:847
+#: includes/include.con_edit_form.php:1117
 msgid ""
 "You can not move an article into a category, which does not have an assigned "
 "template!"
 msgstr ""
 
-#: includes/include.con_edit_form.php:970
+#: includes/include.con_edit_form.php:1243
 msgid "Summary"
 msgstr ""
 
-#: includes/include.con_edit_form.php:1076
+#: includes/include.con_edit_form.php:1351
 msgid "Please fill in the start date and/or the end date!"
 msgstr ""
 
@@ -3568,37 +3672,52 @@ msgstr ""
 msgid "Legend"
 msgstr ""
 
-#: includes/include.con_meta_form.php:114
+#: includes/include.con_meta_form.php:194
 msgid "SEO administration"
 msgstr ""
 
-#: includes/include.con_meta_form.php:225
+#: includes/include.con_meta_form.php:310
 msgid "Are you sure to delete this Meta tag?"
 msgstr ""
 
-#: includes/include.con_meta_form.php:232
+#: includes/include.con_meta_form.php:396
+msgid ""
+"<strong>Advanced-Mode:</strong> Older SEO Versions can be reviewed and "
+"restored. Unpublished drafts can be created (For further configurations "
+"please go to Administration/System/System configuration).<br/><br/>Changes "
+"are only related to SEO!"
+msgstr ""
+
+#: includes/include.con_meta_form.php:455
+msgid ""
+"<strong>Simple-Mode:</strong> Older SEO Versions can be reviewed and "
+"restored (For further configurations please go to Administration/System/"
+"System configuration).<br/><br/>Changes are only related to SEO!"
+msgstr ""
+
+#: includes/include.con_meta_form.php:483
 msgid ""
 "The title-tag is one of the most important on-page factors for SEO and is "
 "not longer than 60 characters. It includes top keywords and the branding."
 msgstr ""
 
-#: includes/include.con_meta_form.php:235
+#: includes/include.con_meta_form.php:486
 msgid ""
 "The description-tag describes the article in a short way (not more than 150 "
 "characters). The content should be related to the title-tag and the H1-tag."
 msgstr ""
 
-#: includes/include.con_meta_form.php:238
+#: includes/include.con_meta_form.php:489
 msgid "No more than 6 Keywords should be used."
 msgstr ""
 
-#: includes/include.con_meta_form.php:241
+#: includes/include.con_meta_form.php:492
 msgid ""
 "The frequency of the revisit after tag depends on new publications of the "
 "content. Nevertheless the robots decide on their own when to visit."
 msgstr ""
 
-#: includes/include.con_meta_form.php:244
+#: includes/include.con_meta_form.php:495
 msgid ""
 "The robot-tag sets certain rules for search engines. You can tell it to not "
 "index certain articles or to keep pictures in this article out of its index. "
@@ -3606,39 +3725,39 @@ msgid ""
 "should be indexed."
 msgstr ""
 
-#: includes/include.con_meta_form.php:247
+#: includes/include.con_meta_form.php:498
 msgid ""
 "The avarage value for the sitemap priority is 0.5. Only important articels "
 "should have a value no more than 0.8."
 msgstr ""
 
-#: includes/include.con_meta_form.php:250
+#: includes/include.con_meta_form.php:501
 msgid "The refresh rate is focused on the content."
 msgstr ""
 
-#: includes/include.con_meta_form.php:289
+#: includes/include.con_meta_form.php:540
 msgid ""
 "Attribute content has to begin with a letter and can be followed by letters, "
 "digits or the following chars: . : _ - "
 msgstr ""
 
-#: includes/include.con_meta_form.php:290
+#: includes/include.con_meta_form.php:541
 msgid "New meta tag"
 msgstr ""
 
-#: includes/include.con_meta_form.php:303
+#: includes/include.con_meta_form.php:554
 msgid "Field Type"
 msgstr ""
 
-#: includes/include.con_meta_form.php:307
+#: includes/include.con_meta_form.php:558
 msgid "Attribute content"
 msgstr ""
 
-#: includes/include.con_meta_form.php:311
+#: includes/include.con_meta_form.php:562
 msgid "Max Length"
 msgstr ""
 
-#: includes/include.con_meta_form.php:315
+#: includes/include.con_meta_form.php:566
 msgid "Meta Attribute"
 msgstr ""
 
@@ -3953,7 +4072,7 @@ msgstr ""
 #: includes/include.frontend.user_edit.php:239
 #: includes/include.upl_edit.php:79
 #: templates/standard/template.con_left_top_art_search.html:50
-#: templates/standard/template.con_meta_edit_form.html:101
+#: templates/standard/template.con_meta_edit_form.html:128
 msgid "Author"
 msgstr ""
 
@@ -4676,11 +4795,11 @@ msgid "No permission to synchronize modules"
 msgstr ""
 
 #: includes/include.mod_new.php:42
-msgid "No language selected"
+msgid "No client selected"
 msgstr ""
 
 #: includes/include.mod_new.php:45
-msgid "No client selected"
+msgid "No language selected"
 msgstr ""
 
 #: includes/include.mod_new.php:58 includes/include.mod_new.php:69
@@ -4835,8 +4954,8 @@ msgstr ""
 
 #: includes/include.mycontenido.tasks.edit.php:54
 #: includes/include.todo.popup.php:57 includes/include.upl_edit.php:232
-#: templates/standard/template.con_edit_form.html:177
-#: templates/standard/template.con_edit_form.html:407
+#: templates/standard/template.con_edit_form.html:200
+#: templates/standard/template.con_edit_form.html:438
 #: templates/standard/template.log_main.html:46
 #: templates/standard/template.log_main.html:99
 msgid "End date"
@@ -5330,7 +5449,7 @@ msgstr ""
 #: includes/include.systemsettings.php:40
 #: includes/include.systemsettings.php:57
 #: includes/include.systemsettings.php:184
-#: includes/include.system_configuration.php:122
+#: includes/include.system_configuration.php:171
 msgid "You don't have the permission to make changes here."
 msgstr ""
 
@@ -5342,11 +5461,29 @@ msgstr ""
 msgid "Please set this property in systemsettings directly"
 msgstr ""
 
-#: includes/include.system_configuration.php:144
+#: includes/include.system_configuration.php:58 xml/system.xml:46
+msgid "Article Versioning"
+msgstr ""
+
+#: includes/include.system_configuration.php:69
+msgid ""
+"<p><strong>Article Versioning:</strong></p><ul style=\"list-style:none;"
+"\"><li>Review and restore older versions (simple) and create drafts "
+"(advanced). Versions are generated automatically by changing an article.</"
+"li></ul><p><strong>Modes:</strong></p><ul class=\"list\"><li class=\"first"
+"\"><strong>disabled: </strong> The Article Versioning is disabled.</"
+"li><li><strong>simple: </strong>Older Article Versions can be reviewed and "
+"restored.</li><li><strong>advanced: </strong>Additional to the Simple-Mode, "
+"unpublished drafts can be created.</li></ul><p><strong>Further informations</"
+"strong> can be found in related tabs (Content/Articles/Properties|SEO|Raw "
+"data|Editor).</p></div>"
+msgstr ""
+
+#: includes/include.system_configuration.php:193
 msgid "Update check period must be at least 60 minutes."
 msgstr ""
 
-#: includes/include.system_configuration.php:169
+#: includes/include.system_configuration.php:218
 #: includes/include.system_sysvalues.php:49 xml/navigation.xml:82
 msgid "System configuration"
 msgstr ""
@@ -5383,11 +5520,11 @@ msgstr ""
 
 #: includes/include.system_purge.php:73 includes/include.system_purge.php:81
 #: includes/include.system_purge.php:89 includes/include.system_purge.php:97
-#: includes/include.system_purge.php:106
+#: includes/include.system_purge.php:107 includes/include.system_purge.php:115
 msgid "Client "
 msgstr ""
 
-#: includes/include.system_purge.php:74 includes/include.system_purge.php:124
+#: includes/include.system_purge.php:74 includes/include.system_purge.php:133
 #, php-format
 msgid "The entries of %s table are not deleted!"
 msgstr ""
@@ -5405,116 +5542,124 @@ msgstr ""
 msgid "The log is not deleted!"
 msgstr ""
 
-#: includes/include.system_purge.php:107
+#: includes/include.system_purge.php:108
 msgid "The history is not deleted!"
 msgstr ""
 
-#: includes/include.system_purge.php:119
+#: includes/include.system_purge.php:116
+msgid "The content versioning is not deleted!"
+msgstr ""
+
+#: includes/include.system_purge.php:128
 msgid "CONTENIDO: "
 msgstr ""
 
-#: includes/include.system_purge.php:131
+#: includes/include.system_purge.php:140
 msgid "The CONTENIDO log is not cleaned!"
 msgstr ""
 
-#: includes/include.system_purge.php:138
+#: includes/include.system_purge.php:147
 msgid "The CONTENIDO cache is not deleted!"
 msgstr ""
 
-#: includes/include.system_purge.php:145
+#: includes/include.system_purge.php:154
 msgid "The CONTENIDO cronjobs are not cleaned!"
 msgstr ""
 
-#: includes/include.system_purge.php:150
+#: includes/include.system_purge.php:159
 msgid "The changes were successfully executed."
 msgstr ""
 
-#: includes/include.system_purge.php:152
+#: includes/include.system_purge.php:161
 msgid "The changes were not all successfully completed."
 msgstr ""
 
-#: includes/include.system_purge.php:169 includes/include.system_purge.php:191
+#: includes/include.system_purge.php:178 includes/include.system_purge.php:201
 msgid "System purge"
 msgstr ""
 
-#: includes/include.system_purge.php:170
+#: includes/include.system_purge.php:179
 msgid "No Client selected!"
 msgstr ""
 
-#: includes/include.system_purge.php:175
+#: includes/include.system_purge.php:184
 msgid "all clients"
 msgstr ""
 
-#: includes/include.system_purge.php:176
+#: includes/include.system_purge.php:185
 msgid "from list"
 msgstr ""
 
-#: includes/include.system_purge.php:177
+#: includes/include.system_purge.php:186
 msgid "Select clients"
 msgstr ""
 
-#: includes/include.system_purge.php:178
+#: includes/include.system_purge.php:187
 msgid "Delete the code cache"
 msgstr ""
 
-#: includes/include.system_purge.php:179
+#: includes/include.system_purge.php:188
 msgid "Force code generation"
 msgstr ""
 
-#: includes/include.system_purge.php:180
+#: includes/include.system_purge.php:189
 #, php-format
 msgid "Reset the table %s"
 msgstr ""
 
-#: includes/include.system_purge.php:181
+#: includes/include.system_purge.php:190
 msgid "Clear client cache"
 msgstr ""
 
-#: includes/include.system_purge.php:182
+#: includes/include.system_purge.php:191
 msgid "Clear client log file"
 msgstr ""
 
-#: includes/include.system_purge.php:183
-msgid "Clear client history"
+#: includes/include.system_purge.php:192
+msgid "Clear client style history"
 msgstr ""
 
-#: includes/include.system_purge.php:184
-msgid "Keep last histories"
+#: includes/include.system_purge.php:193
+msgid "Keep last style histories"
 msgstr ""
 
-#: includes/include.system_purge.php:186
+#: includes/include.system_purge.php:194
+msgid "Delete content versions"
+msgstr ""
+
+#: includes/include.system_purge.php:196
 msgid "CONTENIDO"
 msgstr ""
 
-#: includes/include.system_purge.php:187
+#: includes/include.system_purge.php:197
 msgid "Clear CONTENIDO log file"
 msgstr ""
 
-#: includes/include.system_purge.php:188
+#: includes/include.system_purge.php:198
 msgid "Clear CONTENIDO cache"
 msgstr ""
 
-#: includes/include.system_purge.php:189
+#: includes/include.system_purge.php:199
 msgid "Reset cronjobs"
 msgstr ""
 
-#: includes/include.system_purge.php:192
+#: includes/include.system_purge.php:202
 msgid "These changes can not be cancelled."
 msgstr ""
 
-#: includes/include.system_purge.php:192
+#: includes/include.system_purge.php:202
 msgid "Do you really want to complete it?"
 msgstr ""
 
-#: includes/include.system_purge.php:197
+#: includes/include.system_purge.php:207
 msgid "No action selected!"
 msgstr ""
 
-#: includes/include.system_purge.php:199
+#: includes/include.system_purge.php:209
 msgid "Send"
 msgstr ""
 
-#: includes/include.system_purge.php:200
+#: includes/include.system_purge.php:210
 msgid "Please select a client or all clients."
 msgstr ""
 
@@ -5654,7 +5799,7 @@ msgstr ""
 msgid "Database configuration"
 msgstr ""
 
-#: includes/include.system_sysvalues.php:223 xml/system.xml:22
+#: includes/include.system_sysvalues.php:223 xml/system.xml:19
 msgid "Host"
 msgstr ""
 
@@ -5842,8 +5987,8 @@ msgid "Protection"
 msgstr ""
 
 #: includes/include.upl_edit.php:77
-#: templates/standard/template.con_edit_form.html:156
-#: templates/standard/template.con_edit_form.html:404
+#: templates/standard/template.con_edit_form.html:179
+#: templates/standard/template.con_edit_form.html:435
 msgid "Time control"
 msgstr ""
 
@@ -5871,14 +6016,14 @@ msgid "Protected for non-logged in users"
 msgstr ""
 
 #: includes/include.upl_edit.php:224
-#: templates/standard/template.con_edit_form.html:164
-#: templates/standard/template.con_edit_form.html:405
+#: templates/standard/template.con_edit_form.html:187
+#: templates/standard/template.con_edit_form.html:436
 msgid "Use time control"
 msgstr ""
 
 #: includes/include.upl_edit.php:229
-#: templates/standard/template.con_edit_form.html:170
-#: templates/standard/template.con_edit_form.html:406
+#: templates/standard/template.con_edit_form.html:193
+#: templates/standard/template.con_edit_form.html:437
 #: templates/standard/template.log_main.html:38
 #: templates/standard/template.log_main.html:98
 msgid "Start date"
@@ -5978,7 +6123,7 @@ msgstr ""
 msgid "Article deleted"
 msgstr ""
 
-#: includes/type/action/include.con_meta_saveart.action.php:109
+#: includes/type/action/include.con_meta_saveart.action.php:125
 msgid "Attribute content not valid; attend information button"
 msgstr ""
 
@@ -6005,7 +6150,7 @@ msgstr ""
 msgid "Invalid login or password!"
 msgstr ""
 
-#: main.loginform.php:93 xml/system.xml:24
+#: main.loginform.php:93 xml/system.xml:21
 msgid "Password"
 msgstr ""
 
@@ -6097,7 +6242,7 @@ msgid "Flash Movie"
 msgstr ""
 
 #: scripts/langref.php:31
-#: templates/standard/template.con_meta_edit_form.html:53
+#: templates/standard/template.con_meta_edit_form.html:80
 msgid "Link"
 msgstr ""
 
@@ -6105,16 +6250,16 @@ msgstr ""
 msgid "Frame"
 msgstr ""
 
-#: templates/standard/template.client_edit.html:73
+#: templates/standard/template.client_edit.html:78
 msgid ""
 "Please enter a valid URL. It has to start with http://... or https://..."
 msgstr ""
 
-#: templates/standard/template.client_edit.html:74
+#: templates/standard/template.client_edit.html:79
 msgid "The client must have a name!"
 msgstr ""
 
-#: templates/standard/template.client_edit.html:75
+#: templates/standard/template.client_edit.html:80
 msgid ""
 "The client must have a frontend path. This is where the client's files will "
 "be stored."
@@ -6132,30 +6277,30 @@ msgstr ""
 msgid "Apply to all selected articles"
 msgstr ""
 
-#: templates/standard/template.con_content_list.html:59
-#: templates/standard/template.con_content_list.html:120
+#: templates/standard/template.con_content_list.html:77
+#: templates/standard/template.con_content_list.html:156
 msgid "Content administration"
 msgstr ""
 
-#: templates/standard/template.con_edit_form.html:187
-#: templates/standard/template.con_edit_form.html:408
+#: templates/standard/template.con_edit_form.html:210
+#: templates/standard/template.con_edit_form.html:439
 msgid "When expired, move to category"
 msgstr ""
 
-#: templates/standard/template.con_edit_form.html:196
-#: templates/standard/template.con_edit_form.html:409
+#: templates/standard/template.con_edit_form.html:219
+#: templates/standard/template.con_edit_form.html:440
 msgid "Make online after move"
 msgstr ""
 
-#: templates/standard/template.con_edit_form.html:410
+#: templates/standard/template.con_edit_form.html:441
 msgid "Synchronize this article to all selected languages"
 msgstr ""
 
-#: templates/standard/template.con_edit_form.html:411
+#: templates/standard/template.con_edit_form.html:442
 msgid "Bring this article in the selected languages online"
 msgstr ""
 
-#: templates/standard/template.con_edit_form.html:412
+#: templates/standard/template.con_edit_form.html:443
 msgid "Take this article in the selected languages offline"
 msgstr ""
 
@@ -6230,35 +6375,35 @@ msgstr ""
 msgid "Also copy subcategories"
 msgstr ""
 
-#: templates/standard/template.con_meta_edit_form.html:63
+#: templates/standard/template.con_meta_edit_form.html:90
 msgid "Page title"
 msgstr ""
 
-#: templates/standard/template.con_meta_edit_form.html:108
+#: templates/standard/template.con_meta_edit_form.html:135
 msgid "Expires"
 msgstr ""
 
-#: templates/standard/template.con_meta_edit_form.html:115
+#: templates/standard/template.con_meta_edit_form.html:142
 msgid "Revisit after"
 msgstr ""
 
-#: templates/standard/template.con_meta_edit_form.html:124
+#: templates/standard/template.con_meta_edit_form.html:151
 msgid "Robots"
 msgstr ""
 
-#: templates/standard/template.con_meta_edit_form.html:142
+#: templates/standard/template.con_meta_edit_form.html:169
 msgid "Sitemap Priority"
 msgstr ""
 
-#: templates/standard/template.con_meta_edit_form.html:151
+#: templates/standard/template.con_meta_edit_form.html:178
 msgid "Sitemap change frequency"
 msgstr ""
 
-#: templates/standard/template.con_meta_edit_form.html:171
+#: templates/standard/template.con_meta_edit_form.html:198
 msgid "Custom meta tags"
 msgstr ""
 
-#: templates/standard/template.con_meta_edit_form.html:198
+#: templates/standard/template.con_meta_edit_form.html:230
 msgid "HTML-View"
 msgstr ""
 
@@ -7086,135 +7231,147 @@ msgid "Search Terms"
 msgstr ""
 
 #: xml/system.xml:9
-msgid "Versioning activated"
-msgstr ""
-
-#: xml/system.xml:10
 msgid "Versioning"
 msgstr ""
 
-#: xml/system.xml:11
-msgid "Serverpath to version files"
-msgstr ""
-
-#: xml/system.xml:12
-msgid "Maximum number of stored versions"
-msgstr ""
-
-#: xml/system.xml:13
+#: xml/system.xml:10
 msgid "Check for updates"
 msgstr ""
 
-#: xml/system.xml:14
+#: xml/system.xml:11
 msgid "Update notifier"
 msgstr ""
 
-#: xml/system.xml:15
+#: xml/system.xml:12
 msgid "Get news from contenido.org"
 msgstr ""
 
-#: xml/system.xml:16
+#: xml/system.xml:13
 msgid "Update check period (minutes)"
 msgstr ""
 
-#: xml/system.xml:17
+#: xml/system.xml:14
 msgid "Clickable menu in backend"
 msgstr ""
 
-#: xml/system.xml:18
+#: xml/system.xml:15
 msgid "Backend"
 msgstr ""
 
-#: xml/system.xml:19
+#: xml/system.xml:16
 msgid "Use TinyMce as insite editor"
 msgstr ""
 
-#: xml/system.xml:20
+#: xml/system.xml:17
 msgid "Log mails"
 msgstr ""
 
-#: xml/system.xml:21
+#: xml/system.xml:18
 msgid "Mailserver"
 msgstr ""
 
-#: xml/system.xml:25
+#: xml/system.xml:22
 msgid "Encryption (empty, ssl or tls)"
 msgstr ""
 
-#: xml/system.xml:26
+#: xml/system.xml:23
 msgid "Port"
 msgstr ""
 
-#: xml/system.xml:27
+#: xml/system.xml:24
 msgid "Sender mail"
 msgstr ""
 
-#: xml/system.xml:28
+#: xml/system.xml:25
 msgid "Sender name"
 msgstr ""
 
-#: xml/system.xml:29
+#: xml/system.xml:26
 msgid "Use passwordrequest in Backend"
 msgstr ""
 
-#: xml/system.xml:30
+#: xml/system.xml:27
 msgid "User password reset threshold"
 msgstr ""
 
-#: xml/system.xml:31
+#: xml/system.xml:28
 msgid "When to consider a password reset request to be outdated"
 msgstr ""
 
-#: xml/system.xml:32
+#: xml/system.xml:29
 msgid "Activate maintenance mode"
 msgstr ""
 
-#: xml/system.xml:33
+#: xml/system.xml:30
 msgid "Use CodeMirror for code highlighting"
 msgstr ""
 
-#: xml/system.xml:34
+#: xml/system.xml:31
 msgid "Default client (ID)"
 msgstr ""
 
-#: xml/system.xml:35
+#: xml/system.xml:32
 msgid "Maximum log size in MiB (0 = infinite)"
 msgstr ""
 
-#: xml/system.xml:37
+#: xml/system.xml:34
 msgid "Development"
 msgstr ""
 
-#: xml/system.xml:38
+#: xml/system.xml:35
 msgid "Use image magic (if available)"
 msgstr ""
 
-#: xml/system.xml:39
+#: xml/system.xml:36
 msgid "Debug to file"
 msgstr ""
 
-#: xml/system.xml:40
+#: xml/system.xml:37
 msgid "Visible debug"
 msgstr ""
 
-#: xml/system.xml:41
+#: xml/system.xml:38
 msgid "Allow all HTML tags and attributes in TinyMCE"
 msgstr ""
 
-#: xml/system.xml:42
+#: xml/system.xml:39
 msgid "Optional backend label"
 msgstr ""
 
-#: xml/system.xml:43
+#: xml/system.xml:40
 msgid "Show only CSS/JS/HTML files at areas CSS/JS/HTML"
 msgstr ""
 
-#: xml/system.xml:44
+#: xml/system.xml:41
 msgid "Show message for unknown module translations"
 msgstr ""
 
-#: xml/system.xml:45
+#: xml/system.xml:42
 msgid "Debug function for plugins"
+msgstr ""
+
+#: xml/system.xml:43
+msgid "Serverpath to style version files"
+msgstr ""
+
+#: xml/system.xml:44
+msgid "Style versioning activated"
+msgstr ""
+
+#: xml/system.xml:45
+msgid "Maximum number of stored style versions"
+msgstr ""
+
+#: xml/system.xml:49
+msgid "Versioning activated"
+msgstr ""
+
+#: xml/system.xml:50
+msgid "Serverpath to version files"
+msgstr ""
+
+#: xml/system.xml:51
+msgid "Maximum number of stored versions"
 msgstr ""
 
 #: ../data/config/production/cfg_actions.inc.php:23

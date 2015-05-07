@@ -123,7 +123,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             'image_internal_notice',
             'image_copyright'
         );
-
+        
         // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
 
@@ -154,6 +154,54 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $this->_internalNotice = ($uploadMeta->get('internal_notice') !== false) ? $uploadMeta->get('internal_notice') : '';
         $this->_copyright = ($uploadMeta->get('copyright') !== false) ? $uploadMeta->get('copyright') : '';
 
+    }
+	
+	/**
+     * Return the raw settings of a content type
+     *
+     * @param string $contentTypeName Content type name
+     * @param int $id ID of the content type
+     * @param array $contentTypes Content type array
+     * @return mixed
+     */
+    protected function _getRawSettings($contentTypeName, $id, array $contentTypes, $editable = false) {
+		global $cfg;
+		
+        if (!isset($contentTypes[$contentTypeName][$id])) {
+            $idArtLang = cRegistry::getArticleLanguageId();
+            // get the idtype of the content type
+            $typeItem = new cApiType();
+            $typeItem->loadByType($contentTypeName);
+            $idtype = $typeItem->get('idtype');
+            // first load the appropriate content entry in order to get the
+            // settings
+			if ($editable = false) { 
+				$content = new cApiContent();
+				$content->loadByMany(array(
+					'idartlang' => $idArtLang,
+					'idtype' => $idtype,
+					'typeid' => $id
+				));
+				return $content->get('value');
+			} else if ($editable = true) {
+				$db = cRegistry::getDb();
+				$sql = "SELECT max(version) AS max
+						FROM " . $cfg["tab"]["content_version"]	. " WHERE idartlang = " . $idArtLang . " AND typeid = " . $id . 
+						" AND idtype = '" . $idtype . "'";
+				$db->query($sql);
+				while($db->nextRecord()) {
+					$idContentVersion = $db->f('max');
+				}
+				
+				$contentVersion = new cApiContentVersion($idContentVersion);
+				
+				if ($contentVersion->get('deleted') != 1) {
+					return $contentVersion->get('value');
+				}				
+			}
+        } else {
+            return $contentTypes[$contentTypeName][$id];
+        }
     }
 
     /**
@@ -266,7 +314,10 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
 
         // save the content types
         conSaveContentEntry($this->_idArtLang, 'CMS_IMGEDITOR', $this->_id, $this->_rawSettings);
-        conMakeArticleIndex($this->_idArtLang, $this->_idArt);
+        $versioning = new cContentVersioning();
+        if ($versioning->getState() != 'advanced') {
+            conMakeArticleIndex($this->_idartlang, $this->_idart);
+        }
         conGenerateCodeForArtInAllCategories($this->_idArt);
 
         // insert / update meta data

@@ -126,6 +126,23 @@ class cApiContent extends Item {
     }
 
     /**
+     * Creates a new, editable Version with same properties as this Content
+     *
+     * @param string $version
+     * @param mixed $deleted
+     */	
+    public function markAsEditable($version, $deleted) {
+            $parameters = $this->values;
+            $parameters['version'] = $version;
+            $contentVersionColl = new cApiContentVersionCollection();
+            $contentVersion = $contentVersionColl->create($parameters);
+            if ($deleted == 1) {
+                    $contentVersion->set('deleted', $deleted);
+            }
+            $contentVersion->store();
+    }
+	
+    /**
      * Loads an content entry by its article language id, idtype and type id.
      *
      * @param int $idartlang

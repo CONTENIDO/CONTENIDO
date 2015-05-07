@@ -17,19 +17,19 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 if ($perm->have_perm_area_action($area, "con_meta_deletetype") || $perm->have_perm_area_action_item($area, "con_meta_deletetype", $idcat)) {
 
-    // Get metavalue for selected metatype
-    $metaTagColl = new cApiMetaTagCollection();
-    $metaTagColl->select('idmetatype=' . cSecurity::toInteger($idmetatype));
+        $metaTagColl = new cApiMetaTagCollection();
+        $metaTagColl->select('idmetatype=' . cSecurity::toInteger($idmetatype));
 
-    // If CONTENIDO found only one entry, delete this metatag
-    if ($metaTagColl->count() == 1) {
-        $metaTag = $metaTagColl->next();
-        $metaTagColl->delete($metaTag->getField('idmetatag'));
-    }
+        // If CONTENIDO found only one entry, delete this metatag
+        if ($metaTagColl->count() == 1) {
+            $metaTag = $metaTagColl->next();
+            $metaTagColl->delete($metaTag->getField('idmetatag'));
+        }
 
-    // Delete metatype
-    $metaTypeColl = new cApiMetaTypeCollection();
-    $metaTypeColl->delete(cSecurity::toInteger($idmetatype));
+        // Delete metatype
+        $metaTypeColl = new cApiMetaTypeCollection();
+        $metaTypeColl->delete(cSecurity::toInteger($idmetatype));
+        
 } else {
     $notification->displayNotification("error", i18n("Permission denied"));
 }

@@ -6,10 +6,7 @@ NOTE: Comments below with i18n() are used for translation purposes and the are
       required for the parser to detect/extract text to translate.
 
 gettext:
-i18n("Versioning activated")
 i18n("Versioning")
-i18n("Serverpath to version files")
-i18n("Maximum number of stored versions")
 i18n("Check for updates")
 i18n("Update notifier")
 i18n("Get news from contenido.org")
@@ -43,7 +40,15 @@ i18n("Optional backend label")
 i18n("Show only CSS/JS/HTML files at areas CSS/JS/HTML")
 i18n("Show message for unknown module translations");
 i18n("Debug function for plugins");
+i18n("Serverpath to style version files")
+i18n("Style versioning activated")
+i18n("Maximum number of stored style versions")
+i18n("Article Versioning")
 
+// old text
+i18n("Versioning activated")
+i18n("Serverpath to version files")
+i18n("Maximum number of stored versions")
 -->
 
 <system>
@@ -54,19 +59,28 @@ i18n("Debug function for plugins");
                     <array_value>true</array_value>
                     <array_value>false</array_value>
                 </values>
-                <label>Versioning activated</label>
+                <label>Style versioning activated</label>
                 <group>Versioning</group>
-            </activated>
+            </activated>            
             <path>
                 <values/>
-                <label>Serverpath to version files</label>
+                <label>Serverpath to style version files</label>
                 <group>Versioning</group>
             </path>
             <prune_limit>
                 <values>integer</values>
-                <label>Maximum number of stored versions</label>
+                <label>Maximum number of stored style versions</label>
                 <group>Versioning</group>
             </prune_limit>
+            <enabled>
+                <values>
+                    <array_value>disabled</array_value>
+                    <array_value>simple</array_value>
+                    <array_value>advanced</array_value>
+                </values>
+                <label>Content versioning</label>
+                <group>Versioning</group>
+            </enabled>
         </versioning>
         <update>
             <check>

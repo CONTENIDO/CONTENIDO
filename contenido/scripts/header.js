@@ -135,7 +135,12 @@
 
             frame = Con.getFrame('header');
             if (frame) {
-                frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {changelang: idlang});
+                frame.location.href = Con.UtilUrl.replaceParams(frame.location.href,
+                    {
+                        changelang: idlang,
+                        active_submenu: Con.Registry.get("headerMenu").getActiveSubMenu(),
+                        active_submenuitem: jQuery(".activemenu").prop("id")
+                    });
             }
         },
 
@@ -505,7 +510,7 @@
         },
 
         /**
-         * Activates a menue.
+         * Activates a menu.
          * @method activate
          * @param  {Object}  obj  Main menu item object
          */
