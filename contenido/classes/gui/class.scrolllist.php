@@ -198,8 +198,7 @@ class cGuiScrollList {
      * Make sure that the amount of parameters stays the same for all
      * setData calls in a single object.
      *
-     * @param int $index
-     *         Numeric index
+     * @SuppressWarnings docBlocks
      * @param Additional parameters (data)
      */
     public function setHeader() {
@@ -224,6 +223,7 @@ class cGuiScrollList {
      *
      * @param int $index
      *         Numeric index
+     * @SuppressWarnings docBlocks
      * @param Additional parameters (data)
      */
     public function setData($index) {
@@ -248,6 +248,7 @@ class cGuiScrollList {
      *
      * @param int $index
      *         Numeric index
+     * @SuppressWarnings docBlocks
      * @param Additional parameters (data)
      */
     public function setHiddenData($index) {

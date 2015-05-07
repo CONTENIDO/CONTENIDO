@@ -1001,6 +1001,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     /**
      * Generate a select box containing all files for the manual tab.
      *
+     * @SuppressWarnings docBlocks
      * @param string $directoryPath [optional]
      *         Path to directory of the files
      * @return string

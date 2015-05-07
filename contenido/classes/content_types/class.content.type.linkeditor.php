@@ -677,6 +677,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     /**
      * Generates a select box for the manual files.
      *
+     * @SuppressWarnings docBlocks
      * @param string $directoryPath [optional]
      *         to directory of the files
      * @return string|int
