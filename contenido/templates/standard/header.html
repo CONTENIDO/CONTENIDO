@@ -125,7 +125,6 @@
             if ('undefined' !== typeof(Con.UtilUrl.getParams().active_submenu)) {
                 jQuery(window).on("load", function() {
                     Con.HeaderDelayMenu.activate(jQuery("#" + Con.UtilUrl.getParams().active_submenu).get(0));
-//                    jQuery("#" + Con.UtilUrl.getParams().active_submenuitem).addClass("activemenu");
                     Con.HeaderDelayMenu.markActive(jQuery("#" + Con.UtilUrl.getParams().active_submenuitem).get(0));
                 });
             }
