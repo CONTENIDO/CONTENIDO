@@ -39,6 +39,10 @@ require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 
 $sess->register('belang');
 
+//test
+$sess->register('selectedArticleId');
+//test
+
 // create global CONTENIDO class instances
 $db = cRegistry::getDb();
 $tpl = new cTemplate();

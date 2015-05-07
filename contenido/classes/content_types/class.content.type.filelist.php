@@ -146,7 +146,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                 }
                 $_POST[$dateFormField] = $timestamp;
             }
-
+            
             $this->getConfiguredFiles();
             $this->_storeSettings();
         }
@@ -376,7 +376,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                 }
             }
         }
-
+        
         return $directories;
     }
 

@@ -27,17 +27,20 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @param string $label the label text which should be rendered
  * @return array associative array with the label and the input field
  */
-function renderSelectProperty($name, $possibleValues, $value, $label) {
+function renderSelectProperty($name, $possibleValues, $value, $label, $width = 328) {
     global $auth;
-
+    
+    $return = array();
+    
     if (count($possibleValues) === 2 && (in_array('true', $possibleValues) && in_array('false', $possibleValues) || in_array('enabled', $possibleValues) && in_array('disabled', $possibleValues) || in_array('0', $possibleValues) && in_array('1', $possibleValues))) {
         // render a checkbox if there are only the values true and false
         $checked = $value == 'true' || $value == '1' || $value == 'enabled';
         $html = new cHTMLCheckbox($name, $possibleValues[0], $name, $checked);
         $html->setLabelText($label);
+        $return['label'] = '';
     } else {
         // otherwise render a select box with the possible values
-        $html = new cHTMLSelectElement('');
+        $html = new cHTMLSelectElement($name);
         foreach ($possibleValues as $possibleValue) {
             $element = new cHTMLOptionElement($possibleValue, $possibleValue);
             if ($possibleValue == $value) {
@@ -45,17 +48,56 @@ function renderSelectProperty($name, $possibleValues, $value, $label) {
             }
             $html->appendOptionElement($element);
         }
+        
+        //if (in_array($value, array('disabled', 'simple', 'advanced'))) {
+        if ($name == 'versioning{_}enabled') {
+            $html->setStyle('float:left;padding:3px;width:' . $width . 'px;');
+            $return['label'] = 
+                ' <div>
+                    <span style="width: 284px; display: inline-block; padding: 0px 0px 0px 2px; float:left;">
+                        <span style="margin: 0px 10px 0px 0px;">' . i18n("Article Versioning") . ':' . '</span>
+                        <a 
+                            href="#" 
+                            id="pluginInfoDetails-link" 
+                            class="main i-link infoButton" 
+                            title="">
+                        </a>
+                    </span>
+                    ' . $html->render() . '                    
+                  </div>
+                  <div id="pluginInfoDetails" class="nodisplay">'
+                  . i18n('<p><strong>Article Versioning:</strong></p>'
+                      . '<ul style="list-style:none;">'
+                        . '<li>'
+                            . 'Review and restore older versions (simple) and create drafts (advanced).' 
+                            . ' Versions are generated automatically by changing an article.'
+                        . '</li>'
+                    . '</ul>'
+                  . '<p><strong>Modes:</strong></p>'    
+                      . '<ul class="list">'
+                          . '<li class="first"><strong>disabled: </strong> The Article Versioning is disabled.</li>'
+                          . '<li><strong>simple: </strong>Older Article Versions can be reviewed and restored.</li>'
+                          . '<li><strong>advanced: </strong>Additional to the Simple-Mode, unpublished drafts can be created.</li>'
+                      . '</ul>'
+                  . '<p><strong>Further informations</strong> can be found in related tabs (Content/Articles/Properties|SEO|Raw data|Editor).</p>'                
+                  . '</div>');
+        } else {
+            $html->setStyle('padding:3px;display:block;float:left;width:' . $width . 'px;');   
+            $return['label'] = renderLabel($label, $name, 280, ':', 'left');
+        }
+        
     }
 
     // disable the HTML element if user is not a sysadmin
     if (strpos($auth->auth['perm'], 'sysadmin') === false) {
         $html->updateAttribute('disabled', 'true');
     }
-
-    $return = array();
-    $return['input'] = $html->render();
-    $return['label'] = '';
-
+    
+    //if (!in_array($value, array('disabled', 'simple', 'advanced'))) {
+    if ($name != 'versioning{_}enabled') {
+        $return['input'] = $html->render();
+    }
+    
     return $return;
 }
 
@@ -69,10 +111,16 @@ function renderSelectProperty($name, $possibleValues, $value, $label) {
  *            label
  * @return string the rendered cHTMLLabel element
  */
-function renderLabel($text, $name, $width = 250, $seperator = ':') {
+function renderLabel($text, $name, $width = 280, $seperator = ':', $float = '') {
     $label = new cHTMLLabel($text . $seperator, $name);
     $label->setClass("sys_config_txt_lbl");
-    $label->setStyle('width:' . $width . 'px;');
+    if ($float != '') {
+        $label->setStyle('width:' . $width . 'px;' . 'float:' . $float . ';');
+    } else {
+        $label->setStyle('width:' . $width . 'px;');
+    }
+    
+    
 
     return $label->render();
 }
@@ -91,6 +139,7 @@ function renderTextProperty($name, $value, $label, $password = false) {
     global $auth;
 
     $textbox = new cHTMLTextbox($name, conHtmlSpecialChars($value), '50', '96');
+    $textbox->updateAttribute('style', 'width:322px');
     // disable the textbox if user is not a sysadmin
     if (strpos($auth->auth['perm'], 'sysadmin') === false) {
         $textbox->updateAttribute('disabled', 'true');
@@ -194,7 +243,7 @@ foreach ($propertyTypes as $type => $properties) {
         } else {
             $value = '';
         }
-
+        
         // render the HTML and add it to the groups array
         $fieldName = $type . '{_}' . $name;
         if (is_array($infos['values'])) {

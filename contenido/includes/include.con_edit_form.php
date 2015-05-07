@@ -19,7 +19,7 @@ cInclude("includes", "functions.str.php");
 cInclude("includes", "functions.pathresolver.php");
 
 // ugly globals that are used in this script
-global $tpl, $cfg, $db, $perm, $sess;
+global $tpl, $cfg, $db, $perm, $sess, $selectedArticleId;
 global $frame, $area, $action, $contenido, $notification;
 global $client, $lang, $belang;
 global $idcat, $idart, $idcatlang, $idartlang, $idcatart, $idtpl;
@@ -27,6 +27,231 @@ global $tplinputchanged, $idcatnew, $newart, $syncoptions, $tmp_notification, $b
 
 $page = new cGuiPage("con_edit_form", "", "con_editart");
 $tpl = null;
+
+if (isset($idart)) {
+    if (!isset($idartlang) || 0 == $idartlang) {
+        $sql = "SELECT
+                    idartlang
+                FROM
+                    " . $cfg["tab"]["art_lang"] . "
+                WHERE
+                    idart = " . cSecurity::toInteger($idart) . "
+                    AND idlang = " . cSecurity::toInteger($lang);
+        $db->query($sql);
+        $db->nextRecord();
+        $idartlang = $db->f("idartlang");
+    }
+}
+
+    
+if ($_REQUEST['idArtLangVersion'] != NULL) {
+    $selectedArticleId = $_REQUEST['idArtLangVersion'];
+}
+$versioning = new cContentVersioning();
+$versioningState = $versioning->getState();
+$articleType = $versioning->getArticleType(
+    $_REQUEST['idArtLangVersion'],
+    $idartlang,
+    $action,
+    $selectedArticleId
+);
+
+switch ($versioningState) {
+    
+    case 'advanced' :
+         // Set as current/editable
+        if ($action == 'copyto') {
+            if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'current') {
+                // editable->current
+                $artLangVersion = NULL;                
+                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+                if (isset($artLangVersion)) {
+                    $artLangVersion->markAsCurrent('complete');
+                    $selectedArticleId = 'current';
+                }
+                
+            } else if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
+                // version->editable
+                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+                $artLangVersion->markAsEditable('complete');
+                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action, $selectedArticleId);
+                $selectedArticleId = 'editable';
+            } else if ($_REQUEST['idArtLangVersion'] == 'current') {
+                // current->editable
+                $artLang = new cApiArticleLanguage((int) $_REQUEST['idartlang']);
+                $artLang->markAsEditable('complete');
+                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action, $selectedArticleId);
+                $selectedArticleId = 'editable';
+            }
+        }
+        
+        $optionElementParameters = $versioning->getDataForSelectElement($idartlang, 'config');
+
+        // set editable element 
+        $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
+        if (isset($versioning->editableArticleId) || $action == 'con_newart') {
+            $optionElement = new cHTMLOptionElement(i18n('Draft'), $versioning->getEditableArticleId($idartlang));
+            if ($articleType == 'editable') {
+                $optionElement->setSelected(true);
+            }
+            $selectElement->appendOptionElement($optionElement);
+            if (count($optionElementParameters)>0){
+                unset($optionElementParameters[max(array_keys($optionElementParameters))]);
+            }
+            
+        }
+        
+        // check if selected version is availible, else select the next lower version
+        $temp_id = $selectedArticleId;
+        $temp_ids = array ();
+        
+        foreach (array_values($optionElementParameters) AS $key => $value) {
+            $temp_ids[] = key($value);
+        }
+        if (!in_array($selectedArticleId, $temp_ids) && $selectedArticleId != 'current'
+            && $selectedArticleId != 'editable' && $articleType != 'current' && $articleType != 'editable') {
+                foreach ($temp_ids AS $key => $value) {
+                    if ($value < $selectedArticleId) {
+                        $temp_id = $value;
+                        break;
+                    }
+                }
+            }
+
+        // Create Metatag Version Option Elements
+        if ($action != 'con_newart') {
+            $optionElement = new cHTMLOptionElement(i18n('Published Version'), 'current');
+            if ($articleType == 'current') {
+                $optionElement->setSelected(true);
+            }
+            $selectElement->appendOptionElement($optionElement);
+        }
+        
+        foreach ($optionElementParameters AS $key => $value) {
+            $lastModified = $versioning->getTimeDiff($value[key($value)]);
+            $optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));
+            //if ($articleType == 'version') {
+                if ($temp_id == key($value)) {
+                    $optionElement->setSelected(true);
+                }
+            //}
+            $selectElement->appendOptionElement($optionElement);
+        }
+        $selectElement->setEvent("onchange", "selectVersion.idArtLangVersion.value=$('#selectVersionElement option:selected').val();selectVersion.submit()");
+
+        $page->set('s', 'SELECT_ELEMENT', $selectElement->toHtml());
+        $page->set("s", "ACTION2", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=con_meta_change_version'));
+        $page->set("s", "ACTION3", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=copyto'));
+
+        // Create markAsCurrent Button
+        if ($articleType == 'current' || $articleType == 'version') {
+            $buttonTitle = i18n('Copy to Draft');
+        } else if ($articleType == 'editable') {
+            $buttonTitle = i18n('Publish Draft');
+        }
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle, 'copytobutton');
+        if ($action == 'con_newart') {
+            $markAsCurrentButton->setDisabled('disabled');
+        }
+        $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
+        
+        $infoButton = new cGuiBackendHelpbox(i18n(
+                '<strong>Advanced-Mode:</strong>  '
+                . 'Former Article Versions can be reviewed and restored. Unpublished drafts can be created.'
+                . ' (For further configurations please go to Administration/System/System configuration).<br/><br/>'
+                . 'Changes are related to Article Properties, SEO\'s and Contents!'));
+        $page->set('s', 'INFO_BUTTON_VERSION_SELECTION', $infoButton->render());
+        
+        break;
+    case 'simple' :
+        
+         if ($action == 'copyto') {            
+            if (is_numeric($_REQUEST['idArtLangVersion'])) {                
+                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+                $artLangVersion->markAsCurrent('complete');      
+                $selectedArticleId = 'current';
+            }            
+        }
+        
+        $optionElementParameters = $versioning->getDataForSelectElement($idartlang, 'config');
+        // Create Article Version Option Elements
+        $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
+        $optionElement = new cHTMLOptionElement(i18n('Published Version'), 'current');
+        if ($articleType == 'current') {
+            $optionElement->setSelected(true);
+        }
+        $selectElement->appendOptionElement($optionElement);
+        
+        // check if selected version is availible, else select the next lower version
+        $temp_id = $selectedArticleId;
+        $temp_ids = array ();
+        
+        foreach (array_values($optionElementParameters) AS $key => $value) {
+            $temp_ids[] = key($value);        
+        }
+        if (!in_array($selectedArticleId, $temp_ids) && $selectedArticleId != 'current' 
+            && $selectedArticleId != 'editable' && $articleType != 'current' && $articleType != 'editable') {
+            foreach ($temp_ids AS $key => $value) {
+                if ($selectedArticleId < $value) {
+                    $temp_id = $value;
+                    break;
+                }
+            }        
+        }
+        
+        foreach ($optionElementParameters AS $key => $value) {
+            $lastModified = $versioning->getTimeDiff($value[key($value)]);
+            $optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));
+            //if ($articleType == 'version') {
+                //if ($selectedArticleId == key($value)) {
+                    //$optionElement->setSelected(true);
+                //}   
+                             
+                //if ($selectedArticleId < key($value) || $selectedArticleId == key($value)) {
+                if ($temp_id == key($value)) {
+                    $optionElement->setSelected(true);
+                }                
+            //}
+            $selectElement->appendOptionElement($optionElement);
+        }
+
+        $selectElement->setEvent("onchange", "selectVersion.idArtLangVersion.value=$('#selectVersionElement option:selected').val();selectVersion.submit()");
+
+        $infoButton = new cGuiBackendHelpbox(i18n('<strong>Simple-Mode:</strong>' 
+            . ' Older Article Versions can be reviewed and restored (For further configurations please go to'
+            . ' Administration/System/System configuration).<br/><br/>'
+            . 'Changes are related to Article Properties, SEO\'s and Contents!'));
+        // Create markAsCurrent Button
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to Published Version'), 'copytobutton');
+        if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
+            $markAsCurrentButton->setAttribute('DISABLED');
+        }
+        
+        $page->set('s', 'INFO_BUTTON_VERSION_SELECTION', $infoButton->render());
+        $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
+        $page->set('s', 'SELECT_ELEMENT', $selectElement->toHtml());
+        break;
+    case 'disabled' :
+
+        // Create Sample Article Version Option Element
+        $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
+        $optionElement = new cHTMLOptionElement('Version 10: 11.12.13 14:15:16', '');
+        $selectElement->appendOptionElement($optionElement);
+        $selectElement->setAttribute('disabled', 'disabled');
+        $page->set('s', 'SELECT_ELEMENT', $selectElement->toHtml());
+
+        $buttonTitle = i18n('Copy to Published Version');
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
+        $markAsCurrentButton->setAttribute('disabled', 'disabled');
+        $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
+
+        $infoButton = new cGuiBackendHelpbox(i18n('For reviewing and restoring older Article Versions activate the Article Versioning under Administration/System/System configuration.'));
+        $page->set('s', 'INFO_BUTTON_VERSION_SELECTION', $infoButton->render());  
+        
+    default:
+        break;        
+    
+}
 
 // build log view
 // ------------------
@@ -184,7 +409,12 @@ if ($action == "con_newart" && $newart != true) {
     return;
 }
 
-$disabled = '';
+if ($versioningState == 'simple' && $articleType == 'version'
+    || $versioningState == 'advanced' && $articleType != 'editable') {
+    $disabled = 'disabled="disabled"';
+} else {
+    $disabled = '';
+}
 
 if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_action_item($area, "con_edit", $idcat)) {
 
@@ -260,19 +490,39 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
                 AND idcat = " . cSecurity::toInteger($idcat);
     $db->query($sql);
     $db->nextRecord();
-
+    
     $tmp_cat_art = $db->f("idcatart");
-
-    $sql = "SELECT
+    
+    if (($versioningState == 'disabled' || $versioningState == 'simple' 
+        && ($articleType == 'current' || $articleType == 'editable'))
+        || $versioningState == 'advanced' && $articleType == 'current')  {
+        $sql = "SELECT
                 *
             FROM
                 " . $cfg["tab"]["art_lang"] . "
             WHERE
                 idart = " . cSecurity::toInteger($idart) . "
                 AND idlang = " . cSecurity::toInteger($lang);
-    $db->query($sql);
-    $db->nextRecord();
-
+    } else if ($action != 'con_newart' && ($selectedArticleId == 'current' || $selectedArticleId == 'editable')
+        || $selectedArticleId == NULL) {
+        if (is_numeric($versioning->getEditableArticleId($idartlang))) {
+            $sql = "SELECT *
+                FROM " . $cfg["tab"]["art_lang_version"] . "
+                WHERE idartlangversion = " . $versioning->getEditableArticleId($idartlang);
+        } else $sql = '';
+    } else {   
+        if (is_numeric((int) $selectedArticleId)) {
+            $sql = "SELECT *
+                FROM " . $cfg["tab"]["art_lang_version"] . "
+                WHERE idartlangversion = " . (int) $selectedArticleId;//cSecurity::toInteger($_REQUEST['idArtLangVersion']);     
+        } else $sql = '';
+    }
+    
+    if ($sql != '') {
+       $db->query($sql);
+       $db->nextRecord(); 
+    }
+    
     $tmp_is_start = isStartArticle($db->f("idartlang"), $idcat, $lang);
 
     if ($db->f("created")) {
@@ -323,7 +573,10 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         if ((($obj = $col->checkMark("article", $tmp_idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) && $tmp_locked != 1) {
             $col->markInUse("article", $tmp_idartlang, $sess->id, $auth->auth["uid"]);
             $inUse = false;
-            $disabled = '';
+            if ($versioningState == 'simple' && ($articleType == 'current' || $articleType == 'editable')
+            || $versioningState == 'advanced' && $articleType == 'editable' || $versioningState == 'disabled') {
+                $disabled = '';
+            }
             $page->set("s", "REASON", i18n('Save article'));
         } else if ((($obj = $col->checkMark("article", $tmp_idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) && $tmp_locked == 1) {
             $col->markInUse("article", $tmp_idartlang, $sess->id, $auth->auth["uid"]);
@@ -392,6 +645,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $tmp2_published = date($dateformat, strtotime($tmp_published));
 
     $page->set('s', 'ACTION', $sess->url("main.php?area=$area&frame=$frame&action=con_saveart&idart=$idart"));
+    $page->set('s', 'ACTION2', $sess->url("main.php?area=$area&frame=$frame&action=con_change_version&idart=$idart"));
+    $page->set("s", "ACTION3", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=copyto'));
     $page->set('s', 'TMP_FIRSTEDIT', $tmp_firstedit);
     $page->set('s', 'IDART', $idart);
     $page->set('s', 'IDCAT', $idcat);
@@ -431,6 +686,11 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
             $iAvariableSpec++;
         }
     }
+    // disable select element if a non-editable version is selected
+    if ($versioning->getState() == 'simple' && $articleType != 'current'
+        || $versioning->getState() == 'advanced' && $articleType != 'editable') {
+            $inputArtSortSelect->setDisabled('disabled');
+    }
     $tmp_inputArtSort .= $inputArtSortSelect->toHTML();
 
     if ($iAvariableSpec == 0) {
@@ -456,7 +716,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     $select = new cHTMLSelectElement("directlink");
     $select->setEvent("change", "var sVal=this.form.directlink.options[this.form.directlink.options.selectedIndex].value; document.getElementById('linkhint').value = sVal; if(sVal)document.getElementById('linkhintA').style.display='inline-block'; else document.getElementById('linkhintA').style.display='none';");
-    if (cSecurity::toInteger($idart) == 0) {
+    if (cSecurity::toInteger($idart) == 0 || ($versioning->getState() == 'simple' && ($articleType != 'current' && $articleType != 'editable')
+            || $versioning->getState() == 'advanced' && $articleType != 'editable')) {
         $select->setEvent("disabled", "disabled");
     }
 
@@ -509,13 +770,18 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $page->set('s', 'AUTHOR_MODIFIER', i18n("Author (Modifier)"));
     $page->set('s', 'LETZTE-AENDERUNG', i18n("Last modified"));
     $page->set('s', 'AENDERUNGS-DATUM', $tmp2_lastmodified . '<input type="hidden" name="lastmodified" value="' . date("Y-m-d H:i:s") . '">');
-
+    
     // Publishing date
     $page->set('s', 'PUBLISHING_DATE_LABEL', i18n("Publishing date"));
     if ($tmp_online) {
         $publishingDateTextbox = new cHTMLTextbox('publishing_date', $tmp2_published, 20, 40, 'publishing_date', false, null, '', 'text_medium');
         $publishingDateTextbox->setStyle('width: 130px;');
-        $page->set('s', 'PUBLISHING_DATE', $publishingDateTextbox->render());
+        if (!($versioningState == 'simple' && ($articleType == 'current' || $articleType == 'editable')
+        || $versioningState == 'advanced' && $articleType == 'editable' || $versioningState == 'disabled')) {
+            $publishingDateTextbox->setAttribute('disabled', 'disabled');
+        }
+        
+        $page->set('s', 'PUBLISHING_DATE', $publishingDateTextbox->render());//var_export($publishingDateTextbox->render());
     } else {
         $descriptionTextDiv = new cHTMLDiv(i18n("not yet published"));
         // set overflow to auto so that user can scroll if translation is too long in current language
@@ -572,10 +838,12 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     } else {
         $page->set('s', 'CHECKBOX-NEWWINDOW', '&nbsp;');
     }
-
+    
     // Online
     $tmp_ochecked = $tmp_online == 1? 'checked="checked"' : '';
-    if ($perm->have_perm_area_action('con', 'con_makeonline') || $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat)) {
+    if (($perm->have_perm_area_action('con', 'con_makeonline') || $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat))
+        && ($versioningState == 'simple' && $articleType == ($articleType == 'current' || $articleType == 'editable')
+         || $versioningState == 'advanced' && $articleType == 'editable' || $versioningState == 'disabled') ) {
         $tmp_ocheck = '<input type="checkbox" ' . $disabled . ' id="online" name="online" value="1" ' . $tmp_ochecked . '>';
     } else {
         $tmp_ocheck = '<input disabled="disabled" type="checkbox" name="" value="1" ' . $tmp_ochecked . '>';
@@ -585,7 +853,9 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     // Startarticle
     $tmp_start_checked = $tmp_is_start? 'checked="checked"' : '';
-    if ($perm->have_perm_area_action("con", "con_makestart") || $perm->have_perm_area_action_item("con", "con_makestart", $idcat)) {
+    if (($perm->have_perm_area_action("con", "con_makestart") || $perm->have_perm_area_action_item("con", "con_makestart", $idcat))
+        && ($versioningState == 'simple' && ($articleType == 'current' || $articleType == 'editable')
+        || $versioningState == 'advanced' && $articleType == 'editable' || $versioningState == 'disabled')) {
         $tmp_start = '<input ' . $disabled . ' type="checkbox" name="is_start" id="is_start" value="1" ' . $tmp_start_checked . '>';
     } else {
         $tmp_start = '<input disabled="disabled" type="checkbox" name="" value="1" ' . $tmp_start_checked . '>';
@@ -881,14 +1151,17 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         $page->set('s', 'NOTIFICATION', '');
     }
 
-    if (($perm->have_perm_area_action("con", "con_makeonline") || $perm->have_perm_area_action_item("con", "con_makeonline", $idcat)) && $inUse == false) {
+    if ((($perm->have_perm_area_action("con", "con_makeonline") || 
+        $perm->have_perm_area_action_item("con", "con_makeonline", $idcat)) && $inUse == false)
+        && ($versioningState == 'simple' && ($articleType == 'current' || $articleType == 'editable')
+        || $versioningState == 'advanced' && $articleType == 'editable' || $versioningState == 'disabled')) {
         $allow_usetimemgmt = '';
         $page->set('s', 'IS_DATETIMEPICKER_DISABLED', 0);
     } else {
         $allow_usetimemgmt = ' disabled="disabled"';
         $page->set('s', 'IS_DATETIMEPICKER_DISABLED', 1);
     }
-
+    
     $page->set('s', 'SDOPTS', $allow_usetimemgmt);
     $page->set('s', 'EDOPTS', $allow_usetimemgmt);
 
@@ -1057,7 +1330,9 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     $page->set('s', 'BUTTONDISABLE', $disabled);
 
-    if ($inUse == true) {
+    // disable/grey out button if article is in use or a non-editable version is selected
+    if ($inUse == true || ($versioning->getState() == 'simple' && $articleType != 'current'
+            || $versioning->getState() == 'advanced' && $articleType != 'editable')) {
         $page->set('s', 'BUTTONIMAGE', 'but_ok_off.gif');
     } else {
         $page->set('s', 'BUTTONIMAGE', 'but_ok.gif');
@@ -1088,7 +1363,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $page->set('s', 'iIdtpl', $idtpl);
     $page->set('s', 'SYNCOPTIONS', -1);
     $page->set('s', 'DISPLAY_MENU', 1);
-
+    
     // Genereate the template
     $page->render();
 } else {
