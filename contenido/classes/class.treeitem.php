@@ -450,5 +450,3 @@ class TreeItem {
         }
     }
 }
-
-?>

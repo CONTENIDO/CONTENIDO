@@ -925,5 +925,3 @@ class cApiModule extends Item {
     }
 
 }
-
-?>

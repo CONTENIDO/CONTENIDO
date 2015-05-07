@@ -594,7 +594,9 @@ function strDeeperCategoriesArray($startIdcat) {
  * Only categories having no child categories and having no articles will be
  * deleted!
  *
- * @param int $idcat Id of category to delete
+ * @param int $idcat
+ *         Id of category to delete
+ * @return void|string
  */
 function strDeleteCategory($idcat) {
     global $lang, $lang;
@@ -865,6 +867,7 @@ function strMoveDownCategory($idcat) {
  * @param int $newParentId Id of destination parent category
  * @param int $newPreId Id of new previous category
  * @param int $newPostId Id of new post category
+ * @return boolean
  */
 function strMoveSubtree($idcat, $newParentId, $newPreId = NULL, $newPostId = NULL) {
     global $movesubtreeidcat, $notification;
@@ -1014,6 +1017,7 @@ function strMoveCatTargetallowed($idcat, $source) {
  * @param int $sourcelang Id of source language
  * @param int $targetlang Id of target language
  * @param bool $bMultiple Flag to synchronize child languages
+ * @return boolean
  */
 function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = false) {
     $bMultiple = (bool) $bMultiple;
@@ -1081,6 +1085,7 @@ function strHasStartArticle($idcat, $idlang) {
  * @param int $destidcat Id of destination category
  * @param bool $remakeTree Flag to rebuild category tree
  * @param bool $bUseCopyLabel Flag to add copy label to the new categories
+ * @return void|int
  */
 function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel = true) {
     global $cfg, $lang;

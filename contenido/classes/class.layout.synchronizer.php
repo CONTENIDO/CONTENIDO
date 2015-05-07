@@ -312,5 +312,3 @@ class cLayoutSynchronizer {
         $this->_showOutputMessage();
     }
 }
-
-?>

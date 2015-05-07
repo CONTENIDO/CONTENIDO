@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains fix functions for PHP 5.4 support (encoding related).
  *
@@ -17,6 +18,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 if (function_exists('conPhp54Check') == false) {
 
+    /**
+     *
+     * @return string
+     */
     function conPhp54Check() {
         if (!defined('CON_PHP54')) {
             define('CON_PHP54', version_compare(PHP_VERSION, '5.4.0', '<') ? 0 : 1);
@@ -29,6 +34,13 @@ if (function_exists('conPhp54Check') == false) {
 
 if (function_exists('conHtmlSpecialChars') == false) {
 
+    /**
+     *
+     * @param unknown_type $value
+     * @param unknown_type $flags
+     * @param unknown_type $encoding
+     * @return string
+     */
     function conHtmlSpecialChars($value, $flags = '', $encoding = '') {
         $isPhp54 = conPhp54Check();
 
@@ -55,6 +67,13 @@ if (function_exists('conHtmlSpecialChars') == false) {
 
 if (function_exists('conHtmlEntityDecode') == false) {
 
+    /**
+     *
+     * @param unknown_type $value
+     * @param unknown_type $flags
+     * @param unknown_type $encoding
+     * @return string
+     */
     function conHtmlEntityDecode($value, $flags = '', $encoding = '') {
         $isPhp54 = conPhp54Check();
 
@@ -76,6 +95,13 @@ if (function_exists('conHtmlEntityDecode') == false) {
 
 if (function_exists('conHtmlentities') == false) {
 
+    /**
+     *
+     * @param unknown_type $value
+     * @param unknown_type $flags
+     * @param unknown_type $encoding
+     * @return string
+     */
     function conHtmlentities($value, $flags = '', $encoding = '') {
         $isPhp54 = conPhp54Check();
 
@@ -97,6 +123,12 @@ if (function_exists('conHtmlentities') == false) {
 
 if (function_exists('conGetHtmlTranslationTable') == false) {
 
+    /**
+     *
+     * @param unknown_type $table
+     * @param unknown_type $flags
+     * @return multitype:
+     */
     function conGetHtmlTranslationTable($table = '', $flags = '') {
         $isPhp54 = conPhp54Check();
 
@@ -111,4 +143,5 @@ if (function_exists('conGetHtmlTranslationTable') == false) {
     }
 
 }
+
 ?>

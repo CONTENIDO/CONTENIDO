@@ -100,5 +100,3 @@ class cIterator {
         return count($this->_aIteratorItems);
     }
 }
-
-?>

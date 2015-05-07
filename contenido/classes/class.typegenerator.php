@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains content type generator class.
  * TODO: This class needs more documentation.
@@ -183,5 +184,3 @@ class cTypeGenerator {
         return $this->_processCmsTags($type, $index);
     }
 }
-
-?>

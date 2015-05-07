@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for displaying structure (category tree)
  * overview.
@@ -41,8 +42,8 @@ if ($action == 'str_duplicate' && ($perm->have_perm_area_action('str', 'str_dupl
 $oDirectionDb = cRegistry::getDb();
 
 /**
- * Build a Category select Box containg all categories which user is allowed to
- * create new categories
+ * Build a Category select box containg all categories which user is allowed to
+ * create new categories.
  *
  * @return string HTML
  */
@@ -107,6 +108,12 @@ function buildCategorySelectRights() {
     return $oHtmlSelect->toHtml();
 }
 
+/**
+ *
+ * @param object $item
+ * @param string $catName
+ * @return string
+ */
 function getStrExpandCollapseButton($item, $catName) {
     global $sess, $frame, $area;
     $selflink = 'main.php';
@@ -146,6 +153,10 @@ function getStrExpandCollapseButton($item, $catName) {
     }
 }
 
+/**
+ *
+ * @return string
+ */
 function getTemplateSelect() {
     global $client, $cfg, $db;
 
@@ -167,6 +178,10 @@ function getTemplateSelect() {
     return $oHtmlSelect->toHtml();
 }
 
+/**
+ *
+ * @param array $listColumns
+ */
 function insertEmptyStrRow($listColumns) {
     global $tpl;
 
@@ -246,6 +261,11 @@ if (!isset($action)) {
     $action = 0;
 }
 
+/**
+ *
+ * @param unknown_type $rootItem
+ * @param unknown_type $items
+ */
 function buildTree(&$rootItem, &$items) {
     global $nextItem, $perm, $tmp_area;
 

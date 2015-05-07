@@ -432,5 +432,3 @@ class NoteLink extends cHTMLLink {
         return parent::render($return);
     }
 }
-
-?>

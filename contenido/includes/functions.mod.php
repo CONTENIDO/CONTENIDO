@@ -164,9 +164,16 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
     return $idmod;
 }
 
-// @fixme: Document me!
+/**
+ * Deletes the module of the given ID for the current client.
+ * Furthermore the rights for this module are deleted.
+ *
+ * @todo some global vars seem to be overfluous
+ * @param int $idmod
+ */
 function modDeleteModule($idmod) {
-    global $db, $sess, $client, $cfg, $area_tree, $perm;
+    global $db, $client, $cfg;
+    global $sess, $area_tree, $perm;
 
     $sql = 'DELETE FROM ' . $cfg['tab']['mod'] . ' WHERE idmod = ' . (int) $idmod . ' AND idclient = ' . (int) $client;
     $db->query($sql);

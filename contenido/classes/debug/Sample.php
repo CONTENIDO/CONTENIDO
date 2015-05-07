@@ -70,5 +70,3 @@ $oDbgDevnull = cDebug::getDebugger(cDebug::DEBUGGER_DEVNULL);
 $oDbgDevnull->show($oMyObj, 'some comments if needed');
 $oDbgDevnull->show($aMyArray, 'some comments if needed');
 $oDbgDevnull->show($fMyFloat, 'some comments if needed');
-
-?>

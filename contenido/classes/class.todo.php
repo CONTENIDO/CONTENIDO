@@ -200,5 +200,3 @@ class TODOLink extends cHTMLLink {
         $this->setAlt(i18n('Set reminder / add to todo list'));
     }
 }
-
-?>

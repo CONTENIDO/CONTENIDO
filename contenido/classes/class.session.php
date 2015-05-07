@@ -341,5 +341,3 @@ class cFrontendSession extends cSession {
         return $url;
     }
 }
-
-?>

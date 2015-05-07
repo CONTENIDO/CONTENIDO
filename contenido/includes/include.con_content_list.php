@@ -37,7 +37,7 @@ $allowedContentTypes = array(
     "CMS_LINKDESCR",
     "CMS_HEAD",
     "CMS_DATE",
-	"CMS_RAW"
+    "CMS_RAW"
 );
 
 $page = new cGuiPage("con_content_list");
@@ -159,10 +159,19 @@ if (($action == 'savecontype' || $action == 10)) {
     }
 } else if ($action == 'exportrawcontent') {
 
-    // extended class to add CDATA to content
-    class SimpleXMLExtended extends SimpleXMLElement{
+    /**
+     * Extended class to add CDATA to content.
+     *
+     * @todo should be moved into own class
+     */
+    class SimpleXMLExtended extends SimpleXMLElement {
+
+        /**
+         * @param string $cdata_text
+         */
         public function addCData($cdata_text){
-            $node= dom_import_simplexml($this);
+
+            $node = dom_import_simplexml($this);
             $no = $node->ownerDocument;
             $node->appendChild($no->createCDATASection($cdata_text));
         }
@@ -380,7 +389,7 @@ $sortID = array(
     "CMS_DATE",
     "CMS_TEASER",
     "CMS_FILELIST",
-	"CMS_RAW"
+    "CMS_RAW"
 );
 
 $aIdtype = array();
@@ -564,16 +573,19 @@ eval("?>\n" . $code . "\n<?php\n");
 cRegistry::shutdown();
 
 /**
- * Processes replacements of all existing CMS_...
- * tags within passed code
+ * Processes replacements of all existing CMS_... tags within passed code.
  *
- * @param array $aList CMS_...tags list
- * @param array $contentList all CMS variables
- * @param bool $saveKeywords Flag to save collected keywords during replacement
- *        process.
- * @param array $contentList Assoziative list of CMS variables
+ * @todo comppare to cCodeGeneratorAbstract::_processCmsTags and unify
+ * @param array $aList
+ *         CMS_...tags list
+ * @param array $contentList
+ *         Assoziative list of all CMS variables
+ * @param bool $saveKeywords
+ *         Flag to save collected keywords during replacement process.
+ * @param string $layoutCode
+ * @return string
  */
-function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode) {
+function _processCmsTags($aList, $contentList, $saveKeywords, $layoutCode) {
     // #####################################################################
     // NOTE: Variables below are required in included/evaluated content type
     // codes!
@@ -589,7 +601,6 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
     $client = $_REQUEST['client'];
     $idartlang = $_REQUEST['idartlang'];
     $contenido = $_REQUEST['contenido'];
-
 
     // Get locked status (article freeze)
     $cApiArticleLanguage = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
@@ -705,10 +716,13 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
 }
 
 /**
- * Processes get all existing active CMS_... tags within passed code
+ * Processes get all existing active CMS_... tags within passed code.
  *
- * @param array $r active CMS variables
- * @param array $aList CMS_...tags list
+ * @param array $r
+ *         active CMS variables
+ * @param array $aList
+ *         CMS_...tags list
+ * @return array
  */
 function _getCurrentTypes($r, $aList) {
     $idcat = $_REQUEST['idcat'];

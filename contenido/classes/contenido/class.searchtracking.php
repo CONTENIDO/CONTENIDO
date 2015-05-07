@@ -137,5 +137,3 @@ class cApiSearchTracking extends Item {
     }
 
 }
-
-?>
