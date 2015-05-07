@@ -180,7 +180,7 @@ if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && 
         $cApiClient->setProperty('generator', 'xhtml', 'true');
     }
 
-    // Is statistc on/off
+    // Is statistic on/off
     if ($request['statistic'] == 'on') {
         $cApiClient->setProperty('stats', 'tracking', 'on');
     } else {
@@ -223,7 +223,8 @@ $page->set('d', 'BRDRT', 0);
 $page->set('d', 'BRDRB', 1);
 $page->next();
 
-if ($serverpath == '') {
+// if no serverpath set use default root server path where all frontends reside
+if (false === isset($serverpath)) {
     $serverpath = $cfg['path']['frontend'];
 }
 
