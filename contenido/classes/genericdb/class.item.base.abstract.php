@@ -247,6 +247,8 @@ abstract class cItemBaseAbstract extends cGenericDb {
     /**
      * Set the primary key name for class
      * The name must always match the primary key name in database
+     *
+     * @param string $keyName
      */
     protected function _setPrimaryKeyName($keyName) {
         $this->_primaryKeyName = (string) $keyName;

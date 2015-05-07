@@ -558,6 +558,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     /**
      * Generate a select box containing all files in the given directory.
      *
+     * @SuppressWarnings docBlocks
      * @param string $directoryPath [optional]
      *         directory of the files
      * @return string

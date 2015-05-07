@@ -277,6 +277,7 @@ abstract class cContentTypeAbstract {
     /**
      * Builds an array with directory information from the given upload path.
      *
+     * @SuppressWarnings docBlocks
      * @param string $uploadPath [optional]
      *         path to upload directory
      *         (default: root upload path of client)
