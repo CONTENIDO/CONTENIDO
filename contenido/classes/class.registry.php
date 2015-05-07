@@ -648,7 +648,7 @@ class cRegistry {
     }
 
     /**
-     * Stores an ok massage in the cRegistry.
+     * Stores an ok message in the cRegistry.
      *
      * @author frederik.schneider
      * @param string $message
