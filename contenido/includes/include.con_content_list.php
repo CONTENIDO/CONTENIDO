@@ -53,8 +53,7 @@ $aNotifications = array();
 // Include wysiwyg editor class
 $wysiwygeditor = cWYSIWYGEditor::getCurrentWysiwygEditorName();
 
-// tinymce 3 not autoloaded, tinymce 4 is
-// use blacklist in case customer has own editor that is not autoloaded
+// tinymce 3 not autoloaded, tinymce 4 and all custom editor classes must be
 if ('tinymce3' === $wysiwygeditor) {
     include($cfg['path'][$wysiwygeditor . '_editorclass']);
 }
@@ -273,7 +272,7 @@ if (($action == 'savecontype' || $action == 10)) {
         $contentIds = $conVersionColl->getIdsByWhereClause($where);
     }
     
-    // iterate through content and add get data	
+    // iterate through content and add get data    
     foreach ($contentIds as $contentId) {
         // load content object
         if ($_POST['versionnumber'] == 'current' || $_POST['versionnumber'] == 'undefined') {
@@ -955,7 +954,7 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
         //$tmp = preg_match_all('/(' . $type . '\[+(\d)+\]' . '\[+(\d)+\])/i', $layoutCode, $match);
         //$b_[$key] = $match[3]; //version numbers
         //$c = array_combine($a_[$key],$b_[$key]); //key=unique=nur neueste version
-        //$a_[$key] = $match[0];	
+        //$a_[$key] = $match[0];    
         //$success = array_walk($a_[$key], 'extractNumber');
 
         $search = array();
@@ -1001,13 +1000,13 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
                 // "<textarea>"."?".">\n".stripslashes($tmp)."\n\";?"."><"."?php\n"."</textarea>";
             }
 
-            if ($locked == 0 && $articleType == 'editable' || $articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple')) { // No freeze				
+            if ($locked == 0 && $articleType == 'editable' || $articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple')) { // No freeze                
                 $replacements[$num] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); }); return false;">
-			<img border="0" src="' . $backendUrl . 'images/delete.gif">
-			</a>';
+            <img border="0" src="' . $backendUrl . 'images/delete.gif">
+            </a>';
                 $keycode[$type][$num] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); }); return false;">
-			<img border="0" src="' . $backendUrl . 'images/delete.gif">
-			</a>';
+            <img border="0" src="' . $backendUrl . 'images/delete.gif">
+            </a>';
             } else { // Freeze status
                 $replacements[$num] = $tmp;
                 $keycode[$type][$num] = $tmp;
