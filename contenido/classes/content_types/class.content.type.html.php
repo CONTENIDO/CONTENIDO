@@ -94,15 +94,16 @@ class cContentTypeHtml extends cContentTypeAbstract {
 
         // construct edit button
         $editLink = $this->_session->url($this->_cfg['path']['contenido_fullhtml'] . 'external/backendedit/' . 'front_content.php?action=10&idcat=' . $this->_idCat . '&idart=' . $this->_idArt . '&idartlang=' . $this->_idArtLang . '&type=' . $this->_type . '&typenr=' . $this->_id. '&client=' . $this->_client);
-        $editAnchor = new cHTMLLink("javascript:Con.Tiny.setContent('" . $this->_idArtLang . "','" . $editLink . "');");
+        $editAnchor = new cHTMLLink('#');
+        $editAnchor->setAttribute('onclick', "javascript:Con.Tiny.setContent('" . $this->_idArtLang . "','" . $editLink . "'); return false;");
         $editButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_edithtml.gif');
         $editButton->appendStyleDefinition('margin-right', '2px');
         $editButton->setClass('content_type_zindex');
         $editAnchor->setContent($editButton);
 
         // construct save button
-        $saveAnchor = new cHTMLLink();
-        $saveAnchor->setLink("javascript:Con.Tiny.setContent('" . $this->_idArtLang . "', '0');");
+        $saveAnchor = new cHTMLLink('#');
+        $saveAnchor->setAttribute('onclick', "javascript:Con.Tiny.setContent('" . $this->_idArtLang . "', '0'); return false;");
         $saveButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_ok.gif');
         $saveAnchor->setContent($saveButton);
 
