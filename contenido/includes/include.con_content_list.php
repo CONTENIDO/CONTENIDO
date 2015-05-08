@@ -51,8 +51,7 @@ $aNotifications = array();
 // Include wysiwyg editor class
 $wysiwygeditor = cWYSIWYGEditor::getCurrentWysiwygEditorName();
 
-// tinymce 3 not autoloaded, tinymce 4 is
-// use blacklist in case customer has own editor that is not autoloaded
+// tinymce 3 not autoloaded, tinymce 4 and all custom editor classes must be
 if ('tinymce3' === $wysiwygeditor) {
     include($cfg['path'][$wysiwygeditor . '_editorclass']);
 }
