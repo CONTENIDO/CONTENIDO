@@ -255,9 +255,10 @@ if (($action == 'savecontype' || $action == 10)) {
 
     $seoauthorNode = $articleNode->addChild("seo_author");
     $seoauthorNode->addCData(conGetMetaValue($cApiArticleLanguage->get('idartlang'), 1));
-
+    
     // load content id's for article
-    if ($_POST['versionnumber'] == 'current' || $_POST['versionnumber'] == 'undefined') {
+    if ($_POST['versionnumber'] == 'current' || $_POST['versionnumber'] == 'undefined' 
+            || $_POST['versionnumber'] == "''" || $_POST['versionnumber'] == "") {
         $conColl = new cApiContentCollection();
         $contentIds = $conColl->getIdsByWhereClause('idartlang = "' . $cApiArticleLanguage->get("idartlang") . '"');
     } else {
@@ -275,7 +276,8 @@ if (($action == 'savecontype' || $action == 10)) {
     // iterate through content and add get data    
     foreach ($contentIds as $contentId) {
         // load content object
-        if ($_POST['versionnumber'] == 'current' || $_POST['versionnumber'] == 'undefined') {
+        if ($_POST['versionnumber'] == 'current' || $_POST['versionnumber'] == 'undefined' 
+            || $_POST['versionnumber'] == "''" || $_POST['versionnumber'] == "") {
             $content = new cApiContent($contentId);
         } else {
             $content = new cApiContentVersion($contentId);
@@ -283,25 +285,20 @@ if (($action == 'savecontype' || $action == 10)) {
         // if loaded get data and add to xml
         if ($content->isLoaded()) {
             $type = new cApiType($content->get("idtype"));
-
             if ($type->isLoaded() && in_array($type->get("type"), $allowedContentTypes)) {
-                foreach ($_POST as $key => $contentType) {
-                    $key = str_replace($contentType, '', $key);
-                    if ($key == $type->get("type") && $contentType == $content->get("typeid")) {
-                        // create content element
-                        $contentNode = $articleNode->addChild("content");
-                        $contentNode->addCData($content->get("value"));
-                        $contentNode->addAttribute("type", $type->get("type"));
-                        $contentNode->addAttribute("id", $content->get("typeid"));
-                    }
-                }
+                // create content element
+                $contentNode = $articleNode->addChild("content");
+                $contentNode->addCData($content->get("value"));
+                $contentNode->addAttribute("type", $type->get("type"));
+                $contentNode->addAttribute("id", $content->get("typeid"));
             }
         }
     }
     
     // output data as xml
     header('Content-Type: application/xml;');
-    header('Content-Disposition: attachment; filename='.$cApiArticleLanguage->get('title').'.xml;');
+    $filename = str_replace(" ", "_", $cApiArticleLanguage->get('title'));
+    header('Content-Disposition: attachment; filename='.$filename.'.xml;');
     ob_clean();
     echo $articleElement->asXML();
     exit;
@@ -569,7 +566,12 @@ switch ($versioningState) {
 
         break;
     case 'advanced':
-
+        
+        // update selected article id after import or change
+        if (isset($_POST['changeview']) || isset($_POST['import'])) {
+            $selectedArticleId = $versioning->getEditableArticleId($_REQUEST['idartlang']);
+        }
+        
         // Set as current/editable
         if ($action == 'copyto') {
             if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'current') {
@@ -636,8 +638,9 @@ switch ($versioningState) {
         foreach (array_values($optionElementParameters) AS $key => $value) {
             $temp_ids[] = key($value);
         }
-        if (!in_array($selectedArticleId, $temp_ids) && $selectedArticleId != 'current'
-            && $selectedArticleId != 'editable') {
+        
+        if ($_POST['changeview'] != 'edit' && !in_array($selectedArticleId, $temp_ids) && $selectedArticleId != 'current'
+            && $selectedArticleId != 'editable' && $selectedArticleId != $versioning->editableArticleId) {
             foreach ($temp_ids AS $key => $value) {
                 if ($value < $selectedArticleId) {
                     $temp_id = $value;
@@ -645,23 +648,17 @@ switch ($versioningState) {
                 }
             }
         }
-            
+        
         // Create Content Version Option Elements
         foreach ($optionElementParameters AS $key => $value) {
             $lastModified = $versioning->getTimeDiff($value[key($value)]);
-            $optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));
-            //if ($articleType == 'version') {
-                //if ($selectedArticle->get('version') == $key) {
-                    //$optionElement->setSelected(true);
-                //}
+            $optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));            
                 if (key($value) == $temp_id) {
                     $optionElement->setSelected(true);
                 }
-            //}
             $selectElement->appendOptionElement($optionElement);
         }
         $selectElement->setEvent("onchange", "versionselected.idArtLangVersion.value=$('#selectVersionElement option:selected').val();versionselected.submit()");
-
 
         // Create code/output
         $page->set('s', 'ARTICLE_VERSION_SELECTION', $selectElement->toHtml());
