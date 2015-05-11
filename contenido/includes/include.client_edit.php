@@ -80,7 +80,7 @@ if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && 
                     var url_right_bottom  = Con.UtilUrl.build('main.php', {area: 'lang', frame: 4});
                         url_right_top  = Con.UtilUrl.build('main.php', {area: 'lang', frame: 3});
                         url_left_bottom  = Con.UtilUrl.build('main.php', {area: 'lang', frame: 2, targetclient: " . $idclient . "});
-                        url_left_top  = Con.UtilUrl.build('main.php', {area: 'lang', frame: 1, client: " . $idclient . "});
+                        url_left_top  = Con.UtilUrl.build('main.php', {area: 'lang', frame: 1, targetclient: " . $idclient . "});
                     Con.multiLink('right_top', url_right_top, 'right_bottom', url_right_bottom, 'left_top', url_left_top, 'left_bottom', url_left_bottom);";
         $sLangNotificationLink = sprintf(i18n('Please click %shere%s to create a new language.'), '<a href="javascript://" onclick="' . $sJsLink . '">', '</a>');
         $sNewNotification = '<br>' . $sLangNotification . '<br>' . $sLangNotificationLink;

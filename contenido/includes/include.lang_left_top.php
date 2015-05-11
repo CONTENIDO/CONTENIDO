@@ -30,7 +30,7 @@ $tpl2->set('s', 'OPTIONS', '');
 
 $iClientcount = count($clients);
 
-$selectedClient = isset($_GET['client']) ? $_GET['client'] : cRegistry::getClientId();
+$selectedClient = isset($_GET['targetclient']) ? $_GET['targetclient'] : cRegistry::getClientId();
 foreach ($clients as $key => $value) {
     $selected = ($selectedClient == $key) ? 'selected' : '';
 

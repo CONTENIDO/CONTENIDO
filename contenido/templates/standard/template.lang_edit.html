@@ -1,8 +1,9 @@
 <script type="text/javascript">
 (function(Con, $) {
-    var frame = Con.getFrame('left_bottom');
     if ({RELOAD_LEFT_BOTTOM}) {
-		var href = 'main.php?area=lang&frame=2&contenido={CONTENIDO}';
+        var frame = Con.getFrame('left_bottom');
+        // do not remove the targetclient parameter so language list shows currently selected client
+        var href = Con.UtilUrl.replaceParams(Con.getFrame('left_bottom').location.href, {action: null});
         frame.location.href = href;
     }
 })(Con, Con.$);
@@ -10,21 +11,21 @@
 <script type="text/javascript">
 (function(Con, $) {
     if({ADD_LANG}) {
-    	Con.getFrame('header').languageSelectAdd("{NEW_LANG}", {IDLANG});
+        Con.getFrame('header').languageSelectAdd("{NEW_LANG}", {IDLANG});
     }
 })(Con, Con.$);
 </script>
 <script type="text/javascript">
 (function(Con, $) {
     if({REMOVE_LANG}) {
-    	Con.getFrame('header').languageSelectRemove({IDLANG});
+        Con.getFrame('header').languageSelectRemove({IDLANG});
     }
 })(Con, Con.$);
 </script>
 <script type="text/javascript">
 (function(Con, $) {
     if({UPDATE_LANG}) {
-    	Con.getFrame('header').languageSelectUpdate("{NEW_LANG_NAME}", {IDLANG});
+        Con.getFrame('header').languageSelectUpdate("{NEW_LANG_NAME}", {IDLANG});
     }
 })(Con, Con.$);
 </script>
