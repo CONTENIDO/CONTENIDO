@@ -30,8 +30,9 @@ $tpl2->set('s', 'OPTIONS', '');
 
 $iClientcount = count($clients);
 
+$selectedClient = isset($_GET['client']) ? $_GET['client'] : cRegistry::getClientId();
 foreach ($clients as $key => $value) {
-    $selected = ($client == $key) ? 'selected' : '';
+    $selected = ($selectedClient == $key) ? 'selected' : '';
 
     if (strlen($value['name']) > 15) {
         $value['name'] = substr($value['name'], 0, 12) . '...';

@@ -66,10 +66,22 @@ if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && 
 
     if ($new == true && ($validPath == true || cFileHandler::exists($request['frontendpath']))) {
 
+        // Create new client entry in clients table
+        $cApiClientColl = new cApiClientCollection();
+        $cApiClient = $cApiClientColl->create($clientname, $errsite_cat, $errsite_art);
+
+        $idclient = $cApiClient->get('idclient');
+        $cfgClient[$idclient]["name"] = $clientname;
+
+
         $sLangNotification = i18n('Notice: In order to use this client, you must create a new language for it.');
-        $sTarget = $sess->url('frameset.php?area=lang');
-        $sJsLink = "parent.parent.location.href='" . $sTarget . "';
-                    Con.getFrame('header').markActive(Con.getFrame('header').document.getElementById('sub_lang'));";
+        $sTarget = $sess->url('frameset.php?area=lang&targetclient=' . $idclient);
+        $sJsLink = "Con.getFrame('header').Con.HeaderMenu.markActive(Con.getFrame('header').document.getElementById('sub_lang'));
+                    var url_right_bottom  = Con.UtilUrl.build('main.php', {area: 'lang', frame: 4});
+                        url_right_top  = Con.UtilUrl.build('main.php', {area: 'lang', frame: 3});
+                        url_left_bottom  = Con.UtilUrl.build('main.php', {area: 'lang', frame: 2, targetclient: " . $idclient . "});
+                        url_left_top  = Con.UtilUrl.build('main.php', {area: 'lang', frame: 1, client: " . $idclient . "});
+                    Con.multiLink('right_top', url_right_top, 'right_bottom', url_right_bottom, 'left_top', url_left_top, 'left_bottom', url_left_bottom);";
         $sLangNotificationLink = sprintf(i18n('Please click %shere%s to create a new language.'), '<a href="javascript://" onclick="' . $sJsLink . '">', '</a>');
         $sNewNotification = '<br>' . $sLangNotification . '<br>' . $sLangNotificationLink;
         if (substr($frontendpath, strlen($frontendpath) - 1) != '/') {
@@ -80,13 +92,6 @@ if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && 
             $htmlpath .= '/';
         }
 
-        // Create new client entry in clients table
-        $cApiClientColl = new cApiClientCollection();
-        $cApiClient = $cApiClientColl->create($clientname, $errsite_cat, $errsite_art);
-
-        $idclient = $cApiClient->get('idclient');
-        $cfgClient[$idclient]["name"] = $clientname;
-        updateClientCache();
 
         $cApiPropertyColl->setValue('idclient', $idclient, 'backend', 'clientimage', $clientlogo);
 
