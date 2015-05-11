@@ -255,7 +255,7 @@ if (($action == 'savecontype' || $action == 10)) {
 
     $seoauthorNode = $articleNode->addChild("seo_author");
     $seoauthorNode->addCData(conGetMetaValue($cApiArticleLanguage->get('idartlang'), 1));
-    
+
     // load content id's for article
     if ($_POST['versionnumber'] == 'current' || $_POST['versionnumber'] == 'undefined' 
             || $_POST['versionnumber'] == "''" || $_POST['versionnumber'] == "") {
@@ -337,9 +337,9 @@ if (($action == 'savecontype' || $action == 10)) {
                         $artLangVersion = $versioning->createArticleLanguageVersion($articleLanguage->toArray());
                         $artLangVersion->markAsCurrentVersion(1);
                         $version = $artLangVersion->get('version');
-                    }                    
-                    
-                    
+                    }
+
+
                     // check is article loaded
                     if ($articleLanguage->isLoaded()) {
 
@@ -506,7 +506,7 @@ switch ($versioningState) {
         $optionElement = new cHTMLOptionElement(i18n('Published Version'), 'current');
         if ($articleType == 'current') {
             $optionElement->setSelected(true);
-        }        
+        }
         $selectElement->appendOptionElement($optionElement);
 
         // check if selected version is availible, else select the next lower version
@@ -538,7 +538,7 @@ switch ($versioningState) {
                     $optionElement->setSelected(true);
                 }
             //}
-            $selectElement->appendOptionElement($optionElement);            
+            $selectElement->appendOptionElement($optionElement);
         }
         $selectElement->setEvent("onchange", "versionselected.idArtLangVersion.value=$('#selectVersionElement option:selected').val();versionselected.submit()");
 
@@ -696,12 +696,12 @@ switch ($versioningState) {
         $selectElement->appendOptionElement($optionElement);
         $selectElement->setAttribute('disabled', 'disabled');
         $page->set('s', 'ARTICLE_VERSION_SELECTION', $selectElement->toHtml());
-        
+
         $buttonTitle = i18n('Copy to Published Version');
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
         $markAsCurrentButton->setAttribute('disabled', 'disabled');
         $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
-        
+
         $versioning_info_text = i18n('For reviewing and restoring older Article Versions activate the Article Versioning under Administration/System/System configuration.');
         $page->set('s', 'VERSIONING_INFO_TEXT', $versioning_info_text);  
 
@@ -921,7 +921,7 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
 
     // Select  cms_type entries existing in selected article
     if (empty($list)) {
-        $list[0] = 0;       
+        $list[0] = 0;
     }
     
     $_typeList = array();
@@ -997,7 +997,7 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
                 // "<textarea>"."?".">\n".stripslashes($tmp)."\n\";?"."><"."?php\n"."</textarea>";
             }
 
-            if ($locked == 0 && $articleType == 'editable' || $articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple')) { // No freeze                
+            if ($locked == 0 && $articleType == 'editable' || $articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple')) { // No freeze
                 $replacements[$num] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); }); return false;">
             <img border="0" src="' . $backendUrl . 'images/delete.gif">
             </a>';
