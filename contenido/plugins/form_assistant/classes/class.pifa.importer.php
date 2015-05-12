@@ -167,12 +167,14 @@ class PifaImporter {
             $data['default_value'] = $fieldElem->getAttribute('default');
         }
 
-		// import label
-		$label = $this->_reader->getXpathValue($fieldPath . '/label');
-		$data['label'] = strip_tags($label);
-		$labelElem = $this->_reader->getXpathNode($fieldPath . '/label');
-		if ($labelElem)
-		{ $display = (int) ('true' === $labelElem->getAttribute('display')); $data['display_label'] = $display; }
+        // import label
+        $label = $this->_reader->getXpathValue($fieldPath . '/label');
+        $data['label'] = strip_tags($label);
+        $labelElem = $this->_reader->getXpathNode($fieldPath . '/label');
+        if ($labelElem) {
+            $display = (int) ('true' === $labelElem->getAttribute('display'));
+            $data['display_label'] = $display;
+        }
 
         // import help (optional)
         if (0 < $this->_reader->countXpathNodes($fieldPath . '/help')) {

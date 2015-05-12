@@ -789,7 +789,7 @@ class PifaForm extends Item {
             // append value
             foreach ($columns as $index => $columnName) {
                 $out .= 0 === $index? "\n" : ';';
-				$out .= $row[$columnName];
+                $out .= $row[$columnName];
             }
         }
 

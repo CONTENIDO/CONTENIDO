@@ -216,8 +216,8 @@ class Pifa {
             }
 
             $extensionClasses[] = array(
-                    'value' => $optionClass,
-                    'label' => $optionClass
+                'value' => $optionClass,
+                'label' => $optionClass
             );
         }
 
@@ -264,8 +264,8 @@ class Pifa {
             }
 
             $templates[] = array(
-                    'value' => $file,
-                    'label' => $file
+                'value' => $file,
+                'label' => $file
             );
         }
 
