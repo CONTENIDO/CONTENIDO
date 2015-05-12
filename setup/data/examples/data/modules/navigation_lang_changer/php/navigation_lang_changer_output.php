@@ -55,10 +55,13 @@ if (empty($allLanguages)) {
     // else check if there more as one language
     $currentLanguage = cRegistry::getLanguageId();
 
-    // set next language is exists
+    // set next language if exists
     foreach ($allLanguages as $langs) {
         if ($langs > $currentLanguage) {
             $langName = conHtmlSpecialChars($languageCollectionInstance->getLanguageName((int) $langs));
+            if ('' === trim($langName)) {
+                $langName = mi18n("LANGUAGE_NAME_EMPTY");
+            }
             $tpl->set('s', 'label', $langName);
             $tpl->set('s', 'title', $langName);
 
@@ -71,6 +74,9 @@ if (empty($allLanguages)) {
     // otherwise set first language
     if ($nextLang === false) {
         $languageName = conHtmlSpecialChars($languageCollectionInstance->getLanguageName(reset($allLanguages)));
+        if ('' === trim($langName)) {
+            $langName = mi18n("LANGUAGE_NAME_EMPTY");
+        }
 
         $tpl->set('s', 'label', $languageName);
         $tpl->set('s', 'title', $languageName);
