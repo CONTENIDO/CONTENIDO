@@ -148,7 +148,7 @@ class cApiLanguage extends Item {
     protected $_arrInFilters = array();
 
     /**
-     * List of funcion names of the filtersused when data is retrieved from the
+     * List of funcion names of the filters used when data is retrieved from the
      * db
      *
      * @var array
