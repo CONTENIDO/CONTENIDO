@@ -1,19 +1,21 @@
 <?php
+
 /**
  * This file contains the TestSuite for chains.
  *
- * @package          Testing
- * @subpackage       Test_Chains
- * @version          SVN Revision $Rev:$
+ * @package Testing
+ * @subpackage Test_Chains
+ * @version SVN Revision $Rev:$
  *
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-require_once('bootstrap.php');
+require_once 'bootstrap.php';
+
 TestSuiteHelper::loadFeSuite('Chains');
 
 /**
@@ -22,14 +24,16 @@ TestSuiteHelper::loadFeSuite('Chains');
  * Call this from cmd-line as follows:
  * ...>phpunit ChainsTestSuite
  *
- * @package          Testing
- * @subpackage       Test_Chains
+ * @package Testing
+ * @subpackage Test_Chains
  */
-class ContenidoChainsAllTest
-{
+class ContenidoChainsAllTest {
 
-    public static function suite()
-    {
+    /**
+     *
+     * @return PHPUnit_Framework_TestSuite
+     */
+    public static function suite() {
         $suite = new PHPUnit_Framework_TestSuite('Contenido Chains');
         $suite->addTestSuite('cApiCecRegistryTest');
         $suite->addTestSuite('ContenidoFrontendAllowEditTest');
@@ -52,5 +56,4 @@ class ContenidoChainsAllTest
         $suite->addTestSuite('ContenidoContentCopyArticleTest');
         return $suite;
     }
-
 }

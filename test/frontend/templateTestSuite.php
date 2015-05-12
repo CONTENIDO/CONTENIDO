@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Template TestSuite
  *
@@ -13,7 +14,9 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-require_once ('bootstrap.php');
+
+require_once 'bootstrap.php';
+
 // foldername of the test
 TestSuiteHelper::loadFeSuite('Template');
 

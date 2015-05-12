@@ -1,7 +1,16 @@
 <?php
 
+/**
+ *
+ * @author marcus.gnass
+ */
 class SqlItem {
 
+    /**
+     *
+     * @param array $tables
+     * @return string
+     */
     public static function getDeleteStatement(array $tables) {
         $sql = 'DROP TABLE IF EXISTS';
 
@@ -12,6 +21,10 @@ class SqlItem {
         return $sql . ';';
     }
 
+    /**
+     *
+     * @return string
+     */
     public static function getCreateConTestStatement() {
         return "
             CREATE TABLE `con_test` (
@@ -24,6 +37,10 @@ class SqlItem {
             ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;";
     }
 
+    /**
+     *
+     * @return string
+     */
     public static function getInsertConTestStatement() {
         return "
             INSERT INTO `con_test` VALUES
@@ -33,6 +50,10 @@ class SqlItem {
             ;";
     }
 
+    /**
+     *
+     * @return string
+     */
     public static function getCreateDogStatement() {
         return "
             CREATE TABLE `con_test_dog` (
@@ -45,6 +66,10 @@ class SqlItem {
             ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;";
     }
 
+    /**
+     *
+     * @return string
+     */
     public static function getInserDogStatement() {
         return "
             INSERT INTO `con_test_dog` (`id`, `name`, `descr`, `size`, `date`) VALUES
@@ -54,6 +79,10 @@ class SqlItem {
             ;";
     }
 
+    /**
+     *
+     * @return string
+     */
     public static function getCreateDogRfidStatement() {
         return "
             CREATE TABLE `con_test_rfid_dog` (
@@ -66,6 +95,10 @@ class SqlItem {
             ) ENGINE=MyISAM DEFAULT CHARSET=latin1;";
     }
 
+    /**
+     *
+     * @return string
+     */
     public static function getInserDogRfidStatement() {
         return "
             INSERT INTO `con_test_rfid_dog` (`dog_id`, `bar_code`, `notes`, `iso_compliant`, `date`) VALUES
@@ -77,21 +110,40 @@ class SqlItem {
 
 }
 
+// /**
+//  *
+//  * @author marcus.gnass
+//  */
 // class ITCollection extends ItemCollection {
-// public function __construct($where = false) {
-// parent::__construct('', 'ID');
-// $this->_setItemClass('TestItem');
-// if (false !== $where) {
-// $this->select($where);
+
+//     /**
+//      *
+//      * @param unknown_type $where
+//      */
+//     public function __construct($where = false) {
+//         parent::__construct('', 'ID');
+//         $this->_setItemClass('TestItem');
+//         if (false !== $where) {
+//             $this->select($where);
+//         }
+//     }
 // }
-// }
-// }
+
+// /**
+//  *
+//  * @author marcus.gnass
+//  */
 // class TITCollection extends ItemCollection {
-// public function __construct($where = false) {
-// parent::__construct('ID', '');
-// $this->_setItemClass('TestItem');
-// if (false !== $where) {
-// $this->select($where);
-// }
-// }
+
+//     /**
+//      *
+//      * @param unknown_type $where
+//      */
+//     public function __construct($where = false) {
+//         parent::__construct('ID', '');
+//         $this->_setItemClass('TestItem');
+//         if (false !== $where) {
+//             $this->select($where);
+//         }
+//     }
 // }
