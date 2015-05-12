@@ -123,7 +123,7 @@
             });
 
             if ('undefined' !== typeof(Con.UtilUrl.getParams().active_submenu)) {
-                jQuery(window).on("load", function() {debugger;
+                jQuery(window).on("load", function() {
                     {HEADER_MENU_OBJ}.activate(jQuery("#" + Con.UtilUrl.getParams().active_submenu).get(0));
                     {HEADER_MENU_OBJ}.markActive(jQuery("#" + Con.UtilUrl.getParams().active_submenuitem).get(0));
                 });

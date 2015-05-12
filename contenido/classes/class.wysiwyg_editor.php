@@ -161,7 +161,7 @@ abstract class cWYSIWYGEditor {
      */
     public static function getCurrentWysiwygEditorName() {
         // define fallback WYSIWYG editor
-        define('DEFAULT_WYSIWYG_EDITOR', 'tinymce3');
+        define('DEFAULT_WYSIWYG_EDITOR', cRegistry::getConfigValue('wysiwyg', 'editor', 'tinymce3'));
 
         $curWysiwygEditor = getEffectiveSetting('wysiwyg', 'editor', constant('DEFAULT_WYSIWYG_EDITOR'));
 

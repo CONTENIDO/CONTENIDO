@@ -508,8 +508,8 @@
 
         /**
          * Function checks if content has changed if user leaves page.
-         * Then he has the possiblity to save this content. So there is no
-         * guess, that changes get lost.
+         * The user then has the possiblity to save this content. So there is no
+         * chance, that changes get lost.
          * @method leaveCheck
          * @static
          */
@@ -859,7 +859,14 @@
                 tinymce.init(settings);
                 jQuery(document).ready(function() {
                     // copy settings into global variable for later access
-                    Con.Tiny.tinySettings[jQuery(settings.selector).attr("id")] = settings;
+                    jQuery(settings.selector).each(function(idx, elem) {
+                        if ("undefined" === typeof(elem.id)) {
+                            // use fallback based on second and millisecond if id does not exist
+                            var d = new Date();
+                            elem.id = d.getSeconds() + "_" + d.getMilliseconds();
+                        }
+                        Con.Tiny.tinySettings[elem.id] = settings;
+                    });
                 });
             });
         },

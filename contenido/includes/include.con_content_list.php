@@ -12,7 +12,6 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 $backendPath = cRegistry::getBackendPath();
 $backendUrl = cRegistry::getBackendUrl();
@@ -40,6 +39,9 @@ $allowedContentTypes = array(
     "CMS_RAW"
 );
 
+$versioning = new cContentVersioning();
+$versioningState = $versioning->getState();
+
 $page = new cGuiPage("con_content_list");
 
 $templateFile = cRegistry::getConfigValue('path', 'templates', '') . cRegistry::getConfigValue('templates', 'generic_page_html5');
@@ -51,8 +53,7 @@ $aNotifications = array();
 // Include wysiwyg editor class
 $wysiwygeditor = cWYSIWYGEditor::getCurrentWysiwygEditorName();
 
-// tinymce 3 not autoloaded, tinymce 4 is
-// use blacklist in case customer has own editor that is not autoloaded
+// tinymce 3 not autoloaded, tinymce 4 and all custom editor classes must be
 if ('tinymce3' === $wysiwygeditor) {
     include($cfg['path'][$wysiwygeditor . '_editorclass']);
 }
@@ -103,7 +104,7 @@ if (!($perm->have_perm_area_action($area, "savecontype") || $perm->have_perm_are
     die();
 }
 
-// save / set value
+// save / set value from content
 if (($action == 'savecontype' || $action == 10)) {
     if ($perm->have_perm_area_action($area, "savecontype") || $perm->have_perm_area_action_item($area, "savecontype", $idcat)) {
         if ($data != '') {
@@ -118,7 +119,10 @@ if (($action == 'savecontype' || $action == 10)) {
                 conSaveContentEntry($value[0], 'CMS_' . $value[1], $value[2], $value[3]);
             }
 
-            conMakeArticleIndex($idartlang, $idart);
+            $versioning = new cContentVersioning();
+            if ($versioning->getState() != 'advanced') {
+                conMakeArticleIndex($idartlang, $idart);
+            }
 
             // restore orginal values
             $data = $_REQUEST['data'];
@@ -138,17 +142,68 @@ if (($action == 'savecontype' || $action == 10)) {
 
             $linkedTypes = array(
                 4 => 22, // if a CMS_IMG is deleted, the corresponding
-                         // CMS_IMAGEEDITOR will be deleted too
+                // CMS_IMAGEEDITOR will be deleted too
                 22 => 4 // the same goes for the other way round
             );
 
-            $contentItem = new cApiContent((int) $_REQUEST["idcontent"]);
-            if (isset($linkedTypes[$contentItem->get("idtype")])) {
-                $linkedIds = $oContentColl->getIdsByWhereClause("`idartlang`='" . $idartlang . "' AND `idtype`='" . $linkedTypes[$contentItem->get("idtype")] . "' AND `value`='" . $contentItem->get("value") . "'");
-                foreach ($linkedIds as $linkedId) {
-                    $oContentColl->delete($linkedId);
-                }
+            switch ($versioningState) {
+                case 'simple':
+                    $oContentColl = new cApiContentCollection();
+                    $content = new cApiContent();
+                    $contentVersionColl = new cApiContentVersionCollection();
+                    $contentItem = new cApiContent((int) $_REQUEST["idcontent"]);
+                    if (isset($linkedTypes[$contentItem->get("idtype")])) {
+                        $linkedIds = $oContentColl->getIdsByWhereClause("`idartlang`='" . $idartlang . "' AND `idtype`='" . $linkedTypes[$contentItem->get("idtype")] . "' AND `value`='" . $contentItem->get("value") . "'");
+                        foreach ($linkedIds as $linkedId) {
+                            $oContentColl->delete($linkedId);
+                        }
+                    }
+                   
+                    $artLang = new cApiArticleLanguage($idartlang);
+                    $artLangVersion = $versioning->createArticleLanguageVersion($artLang->toArray());
+                    $artLangVersion->markAsCurrentVersion(1);
+                    
+                    $content->loadByPrimaryKey((int) $_REQUEST["idcontent"]);
+                    $parameters = $content->toArray();
+                    $parameters['deleted'] = 1;
+                    $parameters['version'] = $artLangVersion->get('version');
+                    $contentVersionColl->create($parameters);
+                    $oContentColl->delete((int) $_REQUEST['idcontent']);
+                    
+                    break;
+                case 'advanced':
+                    $oContentVersionColl = new cApiContentVersionCollection();
+                    $contentVersionItem = new cApiContentVersion((int) $_REQUEST["idcontent"]);
+                    /*if (isset($linkedTypes[$contentVersionItem->get("idtype")])) {                      
+                        $linkedIds = $oContentVersionColl->getIdsByWhereClause("`idcontent`='" . (int) $_REQUEST["idcontent"] . "' AND `idartlang`='" . $idartlang . "' AND `idtype`='" . $linkedTypes[$contentVersionItem->get("idtype")] . "' AND `value`='" . $contentVersionItem->get("value") . "'");
+                      foreach ($linkedIds as $linkedId) {
+                        $contentVersionItem->delete($linkedId);
+                      }
+                     }*/
+                    
+                    $contentParameters = $contentVersionItem->values;
+                    $contentParameters['version'] = $contentParameters['version'] + 1;
+                    $contentParameters['deleted'] = 1;
+                    unset($contentParameters['idcontentversion']);
+                                        
+                    $versioning->createContentVersion($contentParameters);
+            
+                    break;
+                case 'disabled':
+                    $oContentColl = new cApiContentCollection();
+                    $contentItem = new cApiContent((int) $_REQUEST["idcontent"]);
+                    if (isset($linkedTypes[$contentItem->get("idtype")])) {
+                        $linkedIds = $oContentColl->getIdsByWhereClause("`idartlang`='" . $idartlang . "' AND `idtype`='" . $linkedTypes[$contentItem->get("idtype")] . "' AND `value`='" . $contentItem->get("value") . "'");
+                        foreach ($linkedIds as $linkedId) {
+                            $oContentColl->delete($linkedId);
+                        }
+                    }
+                    $oContentColl->delete((int) $_REQUEST['idcontent']);
+
+                default:
+                    break;
             }
+            
             $oContentColl->delete((int) $_REQUEST['idcontent']);
             $aNotifications[] = $notification->returnNotification("info", i18n("Changes saved"));
 
@@ -159,22 +214,15 @@ if (($action == 'savecontype' || $action == 10)) {
     }
 } else if ($action == 'exportrawcontent') {
 
-    /**
-     * Extended class to add CDATA to content.
-     *
-     * @todo should be moved into own class
-     */
+    // extended class to add CDATA to content
     class SimpleXMLExtended extends SimpleXMLElement {
 
-        /**
-         * @param string $cdata_text
-         */
-        public function addCData($cdata_text){
-
+        public function addCData($cdata_text) {
             $node = dom_import_simplexml($this);
             $no = $node->ownerDocument;
             $node->appendChild($no->createCDATASection($cdata_text));
         }
+
     }
 
     // load article language object
@@ -209,40 +257,53 @@ if (($action == 'savecontype' || $action == 10)) {
     $seoauthorNode->addCData(conGetMetaValue($cApiArticleLanguage->get('idartlang'), 1));
 
     // load content id's for article
-    $conColl = new cApiContentCollection();
-    $contentIds = $conColl->getIdsByWhereClause('idartlang="'. $cApiArticleLanguage->get("idartlang") .'"');
-
-    // iterate through content and add get data
+    if ($_POST['versionnumber'] == 'current' || $_POST['versionnumber'] == 'undefined' 
+            || $_POST['versionnumber'] == "''" || $_POST['versionnumber'] == "") {
+        $conColl = new cApiContentCollection();
+        $contentIds = $conColl->getIdsByWhereClause('idartlang = "' . $cApiArticleLanguage->get("idartlang") . '"');
+    } else {
+        $artLangVersion = new cApiArticleLanguageVersion((int) $_POST['versionnumber']);
+        $conVersionColl = new cApiContentVersionCollection();
+        $where = "(idcontent, version) IN (
+                SELECT idcontent, max(version)
+                FROM " . $cfg['tab']['content_version'] 
+                . " WHERE idartlang = " . $cApiArticleLanguage->get("idartlang") 
+                . " AND version <= " . $artLangVersion->get('version') 
+                . " GROUP BY idtype, typeid)";
+        $contentIds = $conVersionColl->getIdsByWhereClause($where);
+    }
+    
+    // iterate through content and add get data    
     foreach ($contentIds as $contentId) {
-        //load content object
-        $content = new cApiContent($contentId);
+        // load content object
+        if ($_POST['versionnumber'] == 'current' || $_POST['versionnumber'] == 'undefined' 
+            || $_POST['versionnumber'] == "''" || $_POST['versionnumber'] == "") {
+            $content = new cApiContent($contentId);
+        } else {
+            $content = new cApiContentVersion($contentId);
+        }
         // if loaded get data and add to xml
-        if($content->isLoaded()) {
+        if ($content->isLoaded()) {
             $type = new cApiType($content->get("idtype"));
-
-            if($type->isLoaded() && in_array($type->get("type"), $allowedContentTypes)) {
-                foreach ($_POST as $key => $contentType) {
-                    if($key == $type->get("type") && $contentType == $content->get("typeid")) {
-                        //create content element
-                        $contentNode = $articleNode->addChild("content");
-                        $contentNode->addCData($content->get("value"));
-                        $contentNode->addAttribute("type", $type->get("type"));
-                        $contentNode->addAttribute("id", $content->get("typeid"));
-                    }
-                }
+            if ($type->isLoaded() && in_array($type->get("type"), $allowedContentTypes)) {
+                // create content element
+                $contentNode = $articleNode->addChild("content");
+                $contentNode->addCData($content->get("value"));
+                $contentNode->addAttribute("type", $type->get("type"));
+                $contentNode->addAttribute("id", $content->get("typeid"));
             }
-
         }
     }
+    
     // output data as xml
     header('Content-Type: application/xml;');
-    header('Content-Disposition: attachment; filename='.$cApiArticleLanguage->get('title').'.xml;');
+    $filename = str_replace(" ", "_", $cApiArticleLanguage->get('title'));
+    header('Content-Disposition: attachment; filename='.$filename.'.xml;');
     ob_clean();
     echo $articleElement->asXML();
     exit;
 } else if ($action == "importrawcontent") {
     // import raw data into article
-
     // init vars
     $error = false;
 
@@ -250,7 +311,7 @@ if (($action == 'savecontype' || $action == 10)) {
     $rawDataFile = $_FILES['rawfile']['tmp_name'];
 
     // check file exist
-    if(strlen($rawDataFile) > 0 && isset($_FILES['rawfile'])) {
+    if (strlen($rawDataFile) > 0 && isset($_FILES['rawfile'])) {
 
         // read file from tmp upload folder
         $rawData = file_get_contents($rawDataFile);
@@ -263,18 +324,27 @@ if (($action == 'savecontype' || $action == 10)) {
                 $articleId = cRegistry::getArticleId();
 
                 // check article id exists in xml
-                if($articleId > 0) {
+                if ($articleId > 0) {
 
                     // load article by artice id and language
                     $articleLanguage = new cApiArticleLanguage();
                     $articleLanguage->loadByMany(array("idart" => $articleId, "idlang" => cRegistry::getLanguageId()));
 
+                    $versioning = new cContentVersioning();  
+                    $version = NULL;
+                    if ($versioning->getState() != 'disabled') {
+                        // create article version
+                        $artLangVersion = $versioning->createArticleLanguageVersion($articleLanguage->toArray());
+                        $artLangVersion->markAsCurrentVersion(1);
+                        $version = $artLangVersion->get('version');
+                    }
+
+
                     // check is article loaded
-                    if($articleLanguage->isLoaded()) {
+                    if ($articleLanguage->isLoaded()) {
 
                         // read xml childrens
                         foreach ($articleNode->children() as $key => $child) {
-
                             // switch xml tag and exec business logic
                             switch ($key) {
                                 case 'title':
@@ -293,51 +363,59 @@ if (($action == 'savecontype' || $action == 10)) {
 
                                     break;
                                 case 'seo_description':
-                                    conSetMetaValue($articleLanguage->get('idartlang'), 3, $child);
+                                    conSetMetaValue($articleLanguage->get('idartlang'), 3, $child, $version);
 
                                     break;
                                 case 'seo_keywords':
-                                    conSetMetaValue($articleLanguage->get('idartlang'), 5, $child);
+                                    conSetMetaValue($articleLanguage->get('idartlang'), 5, $child, $child, $version);
 
                                     break;
                                 case 'seo_copyright':
-                                    conSetMetaValue($articleLanguage->get('idartlang'), 8, $child);
+                                    conSetMetaValue($articleLanguage->get('idartlang'), 8, $child, $child, $version);
 
                                     break;
                                 case 'seo_author':
-                                    conSetMetaValue($articleLanguage->get('idartlang'), 1, $child);
+                                    conSetMetaValue($articleLanguage->get('idartlang'), 1, $child, $child, $version);
 
                                     break;
                                 case 'content':
                                     $type = $child->attributes()->type;
-                                    $typeid  = $child->attributes()->id;
+                                    $typeid = $child->attributes()->id;
 
                                     $typeEntry = new cApiType();
                                     $typeEntry->loadBy("type", $type);
 
-                                    if(strlen($type) > 0 && $typeid > 0 && in_array($typeEntry->get("type"), $allowedContentTypes)) {
-                                        if(isset($_POST['overwritecontent']) && $_POST['overwritecontent'] == 1) {
+                                    if (strlen($type) > 0 && $typeid > 0 && in_array($typeEntry->get("type"), $allowedContentTypes)) {
+                                        if (isset($_POST['overwritecontent']) && $_POST['overwritecontent'] == 1) {
                                             conSaveContentEntry($articleLanguage->get('idartlang'), $type, $typeid, $child);
                                         } else {
-
-                                            $contentEntry = new cApiContent();
-
-                                            $contentEntry->loadByMany(array("idtype" => $typeEntry->get("idtype"), "typeid" => $typeid, "idartlang" => $articleLanguage->get('idartlang')));
-                                            if(!$contentEntry->isLoaded()) {
+                                            if ($versioningState == 'simple' || $versioningState == 'disabled') {
+                                                $contentEntry = new cApiContent();
+                                                $contentEntry->loadByMany(array("idtype" => $typeEntry->get("idtype"), "typeid" => $typeid, "idartlang" => $articleLanguage->get('idartlang')));
+                                            } else if ($versioningState == 'advanced') {
+                                                $contentEntryVersionCollection = new cApiContentVersionCollection();
+                                                $where = 'idtype = ' . $typeEntry->get("idtype") . ' AND typeid = ' . $typeid . ' AND idartlang = ' . $articleLanguage->get('idartlang');
+                                                $ids = $contentEntryVersionCollection->getIdsByWhereClause($where);
+                                                $contentEntry = new cApiContentVersion(max($ids));
+                                                if ($contentEntry->isLoaded()) {
+                                                    if ($contentEntry->get('deleted')) {
+                                                        $contentEntry = new cApiContent();
+                                                    }
+                                                }
+                                            }
+                                            if (!$contentEntry->isLoaded()) {
                                                 conSaveContentEntry($articleLanguage->get('idartlang'), $type, $typeid, $child);
                                             }
                                         }
                                     } else {
-
+                                        
                                     }
 
                                     break;
                                 case 'default':
                                     break;
                             }
-
                         }
-
                     } else {
                         $page->displayError(i18n("Can not load article"));
                         $error = true;
@@ -345,13 +423,12 @@ if (($action == 'savecontype' || $action == 10)) {
                 } else {
                     $page->displayError(i18n("Can not find article"));
                     $error = true;
-
                 }
             }
+            
             if($error === false) {
                 $page->displayOk(i18n("Raw data was imported successfully"));
             }
-
         } catch (Exception $e) {
             $page->displayError(i18n("Error: The XML file is not valid"));
         }
@@ -359,6 +436,7 @@ if (($action == 'savecontype' || $action == 10)) {
         $page->displayWarning(i18n("Please choose a file"));
     }
 }
+
 if (count($aNotifications) > 0) {
     $sNotifications = '';
     foreach ($aNotifications as $curNotification) {
@@ -369,54 +447,282 @@ if (count($aNotifications) > 0) {
     $page->set('s', 'NOTIFICATIONS', '');
 }
 
-// get active value
+if (count($aNotifications) > 0) {
+    $sNotifications = '';
+    foreach ($aNotifications as $curNotification) {
+        $sNotifications .= $curNotification . '<br />';
+    }
+    $page->set('s', 'NOTIFICATIONS', $sNotifications);
+} else {
+    $page->set('s', 'NOTIFICATIONS', '');
+}
 
+$selectedArticle = NULL;
+$editableArticleId = NULL;
+global $selectedArticleId;
+if ($_REQUEST['idArtLangVersion'] != NULL) {
+    $selectedArticleId = $_REQUEST['idArtLangVersion'];
+}
 $result = array();
-$aList = array();
-$currentTypes = array();
-$sortID = array(
-    "CMS_HTMLHEAD",
-    "CMS_HEAD",
-    "CMS_HTML",
-    "CMS_TEXT",
-    "CMS_IMG",
-    "CMS_IMGDESCR",
-    "CMS_IMGEDITOR",
-    "CMS_LINK",
-    "CMS_LINKTARGET",
-    "CMS_LINKDESCR",
-    "CMS_LINKEDITOR",
-    "CMS_DATE",
-    "CMS_TEASER",
-    "CMS_FILELIST",
-    "CMS_RAW"
+$list = array();
+$articleType = $versioning->getArticleType(
+    $_REQUEST['idArtLangVersion'],
+    (int) $_REQUEST['idartlang'],
+    $action,
+    $selectedArticleId
 );
 
-$aIdtype = array();
-$sql = "SELECT DISTINCT typeid FROM %s WHERE idartlang = %d ORDER BY typeid";
-$db->query($sql, $cfg["tab"]["content"], $_REQUEST["idartlang"]);
-while ($db->nextRecord()) {
-    $aIdtype[] = $db->f("typeid");
-}
+switch ($versioningState) {
+    case 'simple':
+        // get selected article
+        $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $articleType, $selectedArticleId);
 
-foreach ($sortID as $name) {
-    // $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id,
-    // a.value as value FROM " . $cfg["tab"]["content"] . " as a, " .
-    // $cfg["tab"]["type"] . " as b WHERE a.idartlang = " .
-    // cSecurity::toInteger($_REQUEST["idartlang"]) . " AND a.idtype = b.idtype
-    // AND b.type = '" . cSecurity::toString($name) . "' ORDER BY idtype,
-    // typeid, idcontent";
-    $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM %s AS a, %s AS b " . "WHERE a.idartlang = %d AND a.idtype = b.idtype AND b.type = '%s' ORDER BY idtype, typeid, idcontent";
-    $db->query($sql, $cfg["tab"]["content"], $cfg["tab"]["type"], $_REQUEST["idartlang"], $name);
-    while ($db->nextRecord()) {
-        $result[$db->f("name")][$db->f("id")] = $db->f("value");
-        if (!in_array($db->f("name"), $aList)) {
-            $aList[$db->f("idtype")] = $db->f("name");
+        // Set as current/editable
+        if ($action == 'copyto') {
+            if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
+                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+                $artLangVersion->markAsCurrent('content');
+                $selectedArticleId = 'current';
+            }
         }
-    }
+
+        // Get Content or Content Version
+        if ($articleType == 'current' || $articleType == 'editable') {
+            $selectedArticle->loadArticleContent();
+        } else if ($articleType == 'version') {
+            $selectedArticle->loadArticleVersionContent();
+        }
+        $result = array_change_key_case($selectedArticle->content, CASE_UPPER);
+        $result = $versioning->sortResults($result);
+        
+        // Set $list
+        $list = $versioning->getList((int) $_REQUEST['idartlang'], $articleType);
+
+        // Get version numbers for Select Element
+        $optionElementParameters = $versioning->getDataForSelectElement((int) $_REQUEST['idartlang'], 'content');
+                
+        // Create Current and Editable Content Option Element
+        $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
+        $optionElement = new cHTMLOptionElement(i18n('Published Version'), 'current');
+        if ($articleType == 'current') {
+            $optionElement->setSelected(true);
+        }
+        $selectElement->appendOptionElement($optionElement);
+
+        // check if selected version is availible, else select the next lower version
+        $temp_id = $selectedArticleId;
+        $temp_ids = array ();
+        
+        foreach (array_values($optionElementParameters) AS $key => $value) {
+            $temp_ids[] = key($value);
+        }
+        if (!in_array($selectedArticleId, $temp_ids) && $selectedArticleId != 'current' 
+            && $selectedArticleId != 'editable' && $articleType != 'current' && $articleType != 'editable') {
+            foreach ($temp_ids AS $key => $value) {
+                if ($value < $selectedArticleId) {
+                    $temp_id = $value;
+                    break;
+                }
+            }        
+        }
+        
+        // Create Content Version Option Elements
+        foreach ($optionElementParameters AS $key => $value) {
+            $lastModified = $versioning->getTimeDiff($value[key($value)]);
+            $optionElement = new cHTMLOptionElement('Version ' . $key . ': ' . $lastModified, key($value));
+            //if ($articleType == 'version') {
+                //if ($selectedArticle->get('version') == $key) {
+                    //$optionElement->setSelected(true);
+                //}
+                if (key($value) == $temp_id) {
+                    $optionElement->setSelected(true);
+                }
+            //}
+            $selectElement->appendOptionElement($optionElement);
+        }
+        $selectElement->setEvent("onchange", "versionselected.idArtLangVersion.value=$('#selectVersionElement option:selected').val();versionselected.submit()");
+
+        // Create code/output
+        $page->set('s', 'ARTICLE_VERSION_SELECTION', $selectElement->toHtml());
+        // Set import labels
+        if ($articleType != 'version') {
+            $page->set('s', 'DISABLED', '');
+        } else {
+            $page->set('s', 'DISABLED', 'DISABLED');
+        }
+        // Create markAsCurrent Button/Label
+        $page->set('s', 'COPY_LABEL', i18n('Copy Version'));
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to Published Version'));
+        $markAsCurrentButton->setEvent('onclick', "copyto.idArtLangVersion.value=$('#selectVersionElement option:selected').val();copyto.submit()");
+        if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
+            $markAsCurrentButton->setAttribute('DISABLED');
+        }
+        $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
+
+        $versioning_info_text = i18n("<strong>Mode simple:</strong> Older Content Versions can be restored and reviewed "
+                . "(Configurations under Administration/System configuration).<br/><br/>Changes only refer to contents itself!");
+
+        $page->set('s', 'VERSIONING_INFO_TEXT', $versioning_info_text);
+
+        break;
+    case 'advanced':
+        
+        // update selected article id after import or change
+        if (isset($_POST['changeview']) || isset($_POST['import'])) {
+            $selectedArticleId = $versioning->getEditableArticleId($_REQUEST['idartlang']);
+        }
+        
+        // Set as current/editable
+        if ($action == 'copyto') {
+            if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'current') {
+                $artLangVersion = NULL;                
+                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+                if (isset($artLangVersion)) {
+                    $artLangVersion->markAsCurrent('content');
+                    $selectedArticleId = 'current';
+                }
+            } else if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
+                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+                $artLangVersion->markAsEditable('content');
+                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action, $selectedArticleId);
+                $selectedArticleId = 'editable';
+            } else if ($_REQUEST['idArtLangVersion'] == 'current') {
+                $artLang = new cApiArticleLanguage((int) $_REQUEST['idartlang']);
+                $artLang->markAsEditable('content');
+                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action, $selectedArticleId);
+                $selectedArticleId = 'editable';
+            }
+        }
+    
+        // get selected article
+        $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $articleType);
+
+        // Get Content or Content Version and make sort
+        if ($articleType == 'current') {
+            $selectedArticle->loadArticleContent();
+        } else if ($articleType == 'editable' || $articleType == 'version') {
+            $selectedArticle->loadArticleVersionContent();
+        }
+        $result = array_change_key_case($selectedArticle->content, CASE_UPPER);
+        $result = $versioning->sortResults($result);
+
+        // Set $list
+        $list = $versioning->getList((int) $_REQUEST['idartlang'], $articleType);
+        
+        // Get version numbers for Select Element
+        $optionElementParameters = $versioning->getDataForSelectElement((int) $_REQUEST['idartlang'], 'content');
+
+        // Create Current and Editable Content Option Element and Select Element
+        $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
+
+        if (isset($versioning->editableArticleId)) {
+            $optionElement = new cHTMLOptionElement(i18n('Draft'), $versioning->getEditableArticleId((int) $_REQUEST['idartlang']));
+            if ($articleType == 'editable') {
+                $optionElement->setSelected(true);
+            }
+            $selectElement->appendOptionElement($optionElement);
+            unset($optionElementParameters[max(array_keys($optionElementParameters))]);
+        }
+
+
+        $optionElement = new cHTMLOptionElement(i18n('Published Version'), 'current');
+        if ($articleType == 'current') {
+            $optionElement->setSelected(true);
+        }
+        $selectElement->appendOptionElement($optionElement);
+
+        // check if selected version is availible, else select the next lower version
+        $temp_id = $selectedArticleId;
+        $temp_ids = array ();
+        
+        foreach (array_values($optionElementParameters) AS $key => $value) {
+            $temp_ids[] = key($value);
+        }
+        
+        if ($_POST['changeview'] != 'edit' && !in_array($selectedArticleId, $temp_ids) && $selectedArticleId != 'current'
+            && $selectedArticleId != 'editable' && $selectedArticleId != $versioning->editableArticleId) {
+            foreach ($temp_ids AS $key => $value) {
+                if ($value < $selectedArticleId) {
+                    $temp_id = $value;
+                    break;
+                }
+            }
+        }
+        
+        // Create Content Version Option Elements
+        foreach ($optionElementParameters AS $key => $value) {
+            $lastModified = $versioning->getTimeDiff($value[key($value)]);
+            $optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));            
+                if (key($value) == $temp_id) {
+                    $optionElement->setSelected(true);
+                }
+            $selectElement->appendOptionElement($optionElement);
+        }
+        $selectElement->setEvent("onchange", "versionselected.idArtLangVersion.value=$('#selectVersionElement option:selected').val();versionselected.submit()");
+
+        // Create code/output
+        $page->set('s', 'ARTICLE_VERSION_SELECTION', $selectElement->toHtml());
+
+        $page->set('s', 'COPY_LABEL', i18n('Copy Version'));
+        // Set import labels
+        if ($articleType == 'editable') {
+            $page->set('s', 'DISABLED', '');
+        } else {
+            $page->set('s', 'DISABLED', 'DISABLED');
+        }
+
+        // Create markAsCurrent Button
+        if ($articleType == 'current' || $articleType == 'version') {
+            $buttonTitle = i18n('Copy to Draft');
+        } else if ($articleType == 'editable') {
+            $buttonTitle = i18n('Publish Draft');
+        }
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
+        $markAsCurrentButton->setEvent('onclick', "copyto.idArtLangVersion.value=$('#selectVersionElement option:selected').val();copyto.submit()");
+        $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
+
+        $versioning_info_text = i18n(
+                '<strong>Mode advanced:</strong> '
+                . 'Older Content Versions can be reviewd and restored. Unpublished drafts'
+                . ' can be created (For further configurations please go to Administration/System/System configuration).<br/><br/>'
+                . 'Changes are only related to Contents!');
+        $page->set('s', 'VERSIONING_INFO_TEXT', $versioning_info_text);
+
+        break;
+    case 'disabled':
+        
+        $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
+        $optionElement = new cHTMLOptionElement('Version 10: 11.12.13 14:15:16', '');
+        $selectElement->appendOptionElement($optionElement);
+        $selectElement->setAttribute('disabled', 'disabled');
+        $page->set('s', 'ARTICLE_VERSION_SELECTION', $selectElement->toHtml());
+
+        $buttonTitle = i18n('Copy to Published Version');
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
+        $markAsCurrentButton->setAttribute('disabled', 'disabled');
+        $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
+
+        $versioning_info_text = i18n('For reviewing and restoring older Article Versions activate the Article Versioning under Administration/System/System configuration.');
+        $page->set('s', 'VERSIONING_INFO_TEXT', $versioning_info_text);  
+
+        // get selected article
+        $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $articleType);
+
+        // Get Content/set $result
+        $selectedArticle->loadArticleContent();
+        $result = array_change_key_case($selectedArticle->content, CASE_UPPER);
+        $result = $versioning->sortResults($result);
+
+        // Set $list
+        $list = $versioning->getList((int) $_REQUEST['idartlang'], $articleType);
+
+        // Set import labels
+        $page->set('s', 'DISABLED', '');
+    default:
+        break;
 }
 
-$currentTypes = _getCurrentTypes($currentTypes, $aList);
+//$currentTypes = _getCurrentTypes($currentTypes, $aList);
 // print_r($currentTypes);
 // create Layoutcode
 // if ($action == 'con_content') {
@@ -427,7 +733,6 @@ $markSubItem = markSubMenuItem(4, true);
 
 
 // Replace vars in Script
-
 // Set urls to file browsers
 $page->set('s', 'IMAGE', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
 $page->set('s', 'FILE', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=filebrowser');
@@ -507,32 +812,27 @@ if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false'
 // Show path of selected category to user
 $breadcrumb = renderBackendBreadcrumb($syncoptions, true, true);
 $page->set('s', 'CATEGORY', $breadcrumb);
-
 if (count($result) <= 0) {
-    $page->displayInfo(i18n("Article has no raw data"));
-//    $page->abortRendering();
-    // $layoutcode .= '<div>--- ' . i18n("none") . ' ---</div>';
+    $page->displayInfo(i18n('Article has no raw data'));
 } else {
-    foreach ($aIdtype as $idtype) {
-        foreach ($sortID as $name) {
-            if (in_array($name, array_keys($result)) && isset($result[$name][$idtype])) {
-                if (in_array($name . "[" . $idtype . "]", $currentTypes)) {
-                    $class = '';
-                } else {
-                    $class = ' noactive';
-                }
-                $page->set("d", "EXTRA_CLASS", $class);
-                $page->set("d", "NAME", $name);
-                $page->set("d", "ID_TYPE", $idtype);
-                if(in_array($name, $allowedContentTypes)) {
-                    $page->set("d", "EXPORT_CONTENT",  '<input type="checkbox" class="rawtypes" name="' . $name .'" value="' .$idtype .'" checked="checked">');
-                    $page->set('d', 'EXPORT_CONTENT_LABEL', i18n("Export"));
-                } else {
-                    $page->set("d", "EXPORT_CONTENT", '');
-                    $page->set('d', 'EXPORT_CONTENT_LABEL', '');
-                }
-                $page->next();
+    foreach ($result AS $type => $typeIdValue) {
+        foreach ($typeIdValue AS $typeId => $value) {
+            if (($articleType == 'editable' || $articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple'))) {
+                $class = '';
+            } else if ($articleType == 'current' || $articleType == 'version') {
+                $class = ' noactive'; 
             }
+            $page->set("d", "EXTRA_CLASS", $class);
+            $page->set("d", "NAME", $type);
+            $page->set("d", "ID_TYPE", $typeId);
+            if(in_array($name, $allowedContentTypes)) {
+                $page->set("d", "EXPORT_CONTENT",  '<input type="checkbox" class="rawtypes" name="' . $name .'" value="' .$idtype .'" checked="checked">');
+                $page->set('d', 'EXPORT_CONTENT_LABEL', i18n("Export"));
+            } else {
+                $page->set("d", "EXPORT_CONTENT", '');
+                $page->set('d', 'EXPORT_CONTENT_LABEL', '');
+            }
+            $page->next();
         }
     }
 }
@@ -542,26 +842,25 @@ if (!isset($syncfrom)) {
     $syncfrom = -1;
 }
 $syncoptions = $syncfrom;
-$page->set("s", "SYNCHOPTIONS", $syncoptions);
+$page->set('s', 'SYNCHOPTIONS', $syncoptions);
 
-$page->set("s", "IDART", $idart);
-$page->set("s", "IDCAT", $idcat);
-$page->set("s", "IDLANG", $lang);
-$page->set("s", "IDARTLANG", $idartlang);
-$page->set("s", "IDCLIENT", $client);
+$page->set('s', 'IDART', $idart);
+$page->set('s', 'IDCAT', $idcat);
+$page->set('s', 'IDLANG', $lang);
+$page->set('s', 'IDARTLANG', $idartlang);
+$page->set('s', 'IDCLIENT', $client);
 
-// generate code
-$code = _processCmsTags($aList, $result, true, $page->render(NULL, true));
+$code = _processCmsTags($list, $result, true, $page->render(NULL, true), $articleType, $versioningState, $selectedArticle->get('version'));
 
-if ($code == "0601") {
-    markSubMenuItem("1");
+if ($code == '0601') {
+    markSubMenuItem('1');
     $code = "<script type='text/javascript'>location.href = '" . $backendUrl . "main.php?frame=4&area=con_content_list&action=con_content&idart=" . $idart . "&idcat=" . $idcat . "&contenido=" . $contenido . "'; /*console.log(location.href);*/</script>";
 } else {
     // inject some additional markup
     $code = cString::iReplaceOnce("</head>", "$markSubItem $scripts\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=$encoding[$lang]\"></head>", $code);
 }
 
-if ($cfg["debug"]["codeoutput"]) {
+if ($cfg['debug']['codeoutput']) {
     cDebug::out(conHtmlSpecialChars($code));
 }
 
@@ -569,23 +868,19 @@ if ($cfg["debug"]["codeoutput"]) {
 chdir(cRegistry::getFrontendPath());
 eval("?>\n" . $code . "\n<?php\n");
 // }
-
 cRegistry::shutdown();
 
 /**
- * Processes replacements of all existing CMS_... tags within passed code.
+ * Processes replacements of all existing CMS_...
+ * tags within passed code
  *
- * @todo comppare to cCodeGeneratorAbstract::_processCmsTags and unify
- * @param array $aList
- *         CMS_...tags list
- * @param array $contentList
- *         Assoziative list of all CMS variables
- * @param bool $saveKeywords
- *         Flag to save collected keywords during replacement process.
- * @param string $layoutCode
- * @return string
+ * @param array $list CMS_...tags list
+ * @param array $contentList all CMS variables
+ * @param bool $saveKeywords Flag to save collected keywords during replacement
+ *        process.
+ * @param array $contentList Assoziative list of CMS variables
  */
-function _processCmsTags($aList, $contentList, $saveKeywords, $layoutCode) {
+function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode, $articleType, $versioningState, $version) {
     // #####################################################################
     // NOTE: Variables below are required in included/evaluated content type
     // codes!
@@ -601,6 +896,7 @@ function _processCmsTags($aList, $contentList, $saveKeywords, $layoutCode) {
     $client = $_REQUEST['client'];
     $idartlang = $_REQUEST['idartlang'];
     $contenido = $_REQUEST['contenido'];
+
 
     // Get locked status (article freeze)
     $cApiArticleLanguage = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
@@ -623,135 +919,102 @@ function _processCmsTags($aList, $contentList, $saveKeywords, $layoutCode) {
     // $a_content is used by included/evaluated content type codes below
     $a_content = $contentList;
 
-    // Select all cms_type entries
+    // Select  cms_type entries existing in selected article
+    if (empty($list)) {
+        $list[0] = 0;
+    }
+    
     $_typeList = array();
     $oTypeColl = new cApiTypeCollection();
-    $oTypeColl->select();
-    while ($oType = $oTypeColl->next()) {
-        $_typeList[] = $oType->toObject();
+    $oTypeColl->select('idtype IN (' . implode(',', array_map(function($i) {
+                            return (int) $i;
+                        }, array_keys($list))) . ')');
+    if (0 < $oTypeColl->count()) {
+        while ($oType = $oTypeColl->next()) {
+            $_typeList[] = $oType->toObject();
+        }       
     }
+
 
     // Replace all CMS_TAGS[]
     foreach ($_typeList as $_typeItem) {
+
         $key = strtolower($_typeItem->type);
         $type = $_typeItem->type;
-        if (in_array($type, $aList)) {
-            // Try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
-            // $tmp = preg_match_all('/(' . $type . ')\[+([a-z0-9_]+)+\]/i',
-            // $this->_layoutCode, $match);
-            $tmp = preg_match_all('/(' . $type . '\[+(\d)+\])/i', $layoutCode, $match);
 
-            $a_[$key] = $match[0];
+        // Try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
+        // $tmp = preg_match_all('/(' . $type . ')\[+([a-z0-9_]+)+\]/i',
+        // $this->_layoutCode, $match);
+        $tmp = preg_match_all('/(' . $type . '\[+(\d)+\])/i', $layoutCode, $match);
 
-            $success = array_walk($a_[$key], 'extractNumber');
+        $a_[$key] = $match[2]; //all typeids
+        //$tmp = preg_match_all('/(' . $type . '\[+(\d)+\]' . '\[+(\d)+\])/i', $layoutCode, $match);
+        //$b_[$key] = $match[3]; //version numbers
+        //$c = array_combine($a_[$key],$b_[$key]); //key=unique=nur neueste version
+        //$a_[$key] = $match[0];    
+        //$success = array_walk($a_[$key], 'extractNumber');
 
-            $search = array();
-            $replacements = array();
+        $search = array();
+        $replacements = array();
 
-            $backendPath = cRegistry::getBackendPath();
+        $backendPath = cRegistry::getBackendPath();
 
-            $typeCodeFile = $backendPath . 'includes/type/code/include.' . $type . '.code.php';
-            $cTypeClassFile = $backendPath . 'classes/content_types/class.content.type.' . strtolower(str_replace('CMS_', '', $type)) . '.php';
-            // classname format: CMS_HTMLHEAD -> cContentTypeHtmlhead
-            $className = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $type)));
+        $typeCodeFile = $backendPath . 'includes/type/code/include.' . $type . '.code.php';
+        $cTypeClassFile = $backendPath . 'classes/content_types/class.content.type.' . strtolower(str_replace('CMS_', '', $type)) . '.php';
+        // classname format: CMS_HTMLHEAD -> cContentTypeHtmlhead
+        $className = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $type)));
 
-            foreach ($a_[$key] as $val) {
-                if (cFileHandler::exists($cTypeClassFile)) {
-                    $tmp = $a_content[$_typeItem->type][$val];
-                    $cTypeObject = new $className($tmp, $val, $a_content);
-                    if (cRegistry::isBackendEditMode() && $locked == 0) {
-                        $tmp = $cTypeObject->generateEditCode();
-                    } else {
-                        $tmp = $cTypeObject->generateViewCode();
-                    }
-                } else if (cFileHandler::exists($typeCodeFile)) {
-                    // include CMS type code
-                    include($typeCodeFile);
-                } elseif (!empty($_typeItem->code)) {
-                    // old version, evaluate CMS type code
-                    cDeprecated("Move code for $type from table into file system (contenido/includes/type/code/)");
-                    eval($_typeItem->code);
+        foreach ($a_[$key] as $val) {
+            if (cFileHandler::exists($cTypeClassFile)) {
+                $tmp = $a_content[$_typeItem->type][$val];
+                $cTypeObject = new $className($tmp, $val, $a_content);
+                if (cRegistry::isBackendEditMode() && $locked == 0 && $articleType == 'editable' || ($articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple'))) {
+                    $tmp = $cTypeObject->generateEditCode();
+                } else if ($articleType == 'current' || $articleType == 'version') {
+                    $tmp = $cTypeObject->generateViewCode();
                 }
-                $sql = "SELECT a.idcontent
-                    FROM " . $cfg["tab"]["content"] . " as a, " . $cfg["tab"]["type"] . " as b
-                    WHERE a.idartlang=" . cSecurity::toInteger($_REQUEST["idartlang"]) . " AND a.idtype=b.idtype AND a.typeid = " . cSecurity::toInteger($val) . " AND b.type = '" . cSecurity::toString($type) . "'
-                    ORDER BY a.idartlang, a.idtype, a.typeid";
-                $db->query($sql);
-                while ($db->nextRecord()) {
-                    $idcontent = $db->f("idcontent");
-                }
-                $backendUrl = cRegistry::getBackendUrl();
-
-                $search[$val] = sprintf('%s[%s]', $type, $val);
-                $path = $backendUrl . 'main.php?area=con_content_list&action=deletecontype&changeview=edit&idart=' . $idart . '&idartlang=' . $idartlang . '&idcat=' . $idcat . '&client=' . $client . '&lang=' . $lang . '&frame=4&contenido=' . $contenido . '&idcontent=' . $idcontent;
-                if ($_typeItem->idtype == 20 || $_typeItem->idtype == 21) {
-                    $tmp = str_replace('";?>', '', $tmp);
-                    $tmp = str_replace('<?php echo "', '', $tmp);
-                    // echo
-                    // "<textarea>"."?".">\n".stripslashes($tmp)."\n\";?"."><"."?php\n"."</textarea>";
-                }
-
-                if ($locked == 0) { // No freeze
-                    $replacements[$val] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); }); return false;">
-                <img alt="" border="0" src="' . $backendUrl . 'images/delete.gif">
-                </a>';
-                    $keycode[$type][$val] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); }); return false;">
-                <img alt="" border="0" src="' . $backendUrl . 'images/delete.gif">
-                </a>';
-                } else { // Freeze status
-                    $replacements[$val] = $tmp;
-                    $keycode[$type][$val] = $tmp;
-                }
+            } else if (cFileHandler::exists($typeCodeFile)) {
+                // include CMS type code
+                include($typeCodeFile);
+            } elseif (!empty($_typeItem->code)) {
+                // old version, evaluate CMS type code
+                cDeprecated("Move code for $type from table into file system (contenido/includes/type/code/)");
+                eval($_typeItem->code);
             }
 
-            $code = str_ireplace($search, $replacements, $layoutCode);
-            // execute CEC hook
-            $code = cApiCecHook::executeAndReturn('Contenido.Content.conGenerateCode', $code);
-            $layoutCode = stripslashes($code);
+            $versioning = new cContentVersioning(); //als Parameter ï¿½bergeben oder einzelne Strings/Ints ï¿½bergeben?
+            $idcontent = $versioning->getContentId(cSecurity::toInteger($_REQUEST["idartlang"]), cSecurity::toInteger($val), cSecurity::toString($type), $versioningState, $articleType, $version);
+
+            $backendUrl = cRegistry::getBackendUrl();
+            $num = $val;
+            $search[$num] = sprintf('%s[%s]', $type, $val);
+
+            $path = $backendUrl . 'main.php?area=con_content_list&action=deletecontype&changeview=edit&idart=' . $idart . '&idartlang=' . $idartlang . '&idcat=' . $idcat . '&client=' . $client . '&lang=' . $lang . '&frame=4&contenido=' . $contenido . '&idcontent=' . $idcontent;
+            if ($_typeItem->idtype == 20 || $_typeItem->idtype == 21) {
+                $tmp = str_replace('";?>', '', $tmp);
+                $tmp = str_replace('<?php echo "', '', $tmp);
+                // echo
+                // "<textarea>"."?".">\n".stripslashes($tmp)."\n\";?"."><"."?php\n"."</textarea>";
+            }
+
+            if ($locked == 0 && $articleType == 'editable' || $articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple')) { // No freeze
+                $replacements[$num] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); }); return false;">
+            <img border="0" src="' . $backendUrl . 'images/delete.gif">
+            </a>';
+                $keycode[$type][$num] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); }); return false;">
+            <img border="0" src="' . $backendUrl . 'images/delete.gif">
+            </a>';
+            } else { // Freeze status
+                $replacements[$num] = $tmp;
+                $keycode[$type][$num] = $tmp;
+            }
         }
+        $code = str_ireplace($search, $replacements, $layoutCode);
+        // execute CEC hook
+        $code = cApiCecHook::executeAndReturn('Contenido.Content.conGenerateCode', $code);
+        $layoutCode = stripslashes($code);
     }
     $layoutCode = str_ireplace("<<", "[", $layoutCode);
     $layoutCode = str_ireplace(">>", "]", $layoutCode);
     return $layoutCode;
-}
-
-/**
- * Processes get all existing active CMS_... tags within passed code.
- *
- * @param array $r
- *         active CMS variables
- * @param array $aList
- *         CMS_...tags list
- * @return array
- */
-function _getCurrentTypes($r, $aList) {
-    $idcat = $_REQUEST['idcat'];
-    $idart = $_REQUEST['idart'];
-    $lang = $_REQUEST['lang'];
-    $client = $_REQUEST['client'];
-    global $db, $db2, $sess, $cfg, $code, $cfgClient, $encoding;
-
-    // Select all cms_type entries
-    $_typeList = array();
-    $oTypeColl = new cApiTypeCollection();
-    $oTypeColl->select();
-    while ($oType = $oTypeColl->next()) {
-        $_typeList[] = $oType->toObject();
-    }
-
-    // generate code
-    $code = conGenerateCode($idcat, $idart, $lang, $client, false, false, false);
-    foreach ($_typeList as $_typeItem) {
-        $type = $_typeItem->type;
-        if (in_array($type, $aList)) {
-            // Try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
-            $tmp = preg_match_all('/(' . $type . '\[+(\d)+\])/i', $code, $match);
-            foreach ($match[0] as $s) {
-                if (!in_array($s, $r)) {
-                    array_push($r, $s);
-                }
-            }
-        }
-    }
-    return $r;
 }

@@ -90,12 +90,16 @@ ob_start();
             <div class="cms_edit_row">
 
 <?php
-// either load default editor or a user selected one
-if (false === ($editor = getEffectiveSetting('wysiwyg', 'editor', false))) {
-    include($cfg['path'][$cfg['wysiwyg']['editor'] . '_editor']);
-} else {
-    include($cfg['path'][$editor . '_editor']);
+// Include wysiwyg editor class
+$wysiwygeditor = cWYSIWYGEditor::getCurrentWysiwygEditorName();
+
+// tinymce 3 not autoloaded, tinymce 4 and all custom editor classes must be
+if ('tinymce3' === $wysiwygeditor) {
+    include($cfg['path'][$wysiwygeditor . '_editorclass']);
 }
+
+// load editor
+include($cfg['path'][$wysiwygeditor . '_editor']);
 ?>
 
             </div>

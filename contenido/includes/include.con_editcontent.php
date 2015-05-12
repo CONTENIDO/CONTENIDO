@@ -79,7 +79,7 @@ $oScriptTpl = new cTemplate();
 // Include wysiwyg editor class
 $wysiwygeditor = cWYSIWYGEditor::getCurrentWysiwygEditorName();
 
-// tinymce 3 not autoloaded, tinymce 4 and all custom editors must be
+// tinymce 3 not autoloaded, tinymce 4 and all custom editor classes must be
 if ('tinymce3' === $wysiwygeditor) {
     include($cfg['path'][$wysiwygeditor . '_editorclass']);
 }

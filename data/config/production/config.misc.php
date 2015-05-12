@@ -432,3 +432,11 @@ $cfg['search_index']['excluded_content_types'] = array(
 	'imgeditor',
 	'linkeditor'
 );
+
+/* WYSIWYG editor classes
+ * -----------------------------------------------------------------------------
+ */
+
+/* The name of WYSIWYG editor classes */
+$cfg['wysiwyg']['tinymce3_editorclass'] = 'cTinyMCEEditor';
+$cfg['wysiwyg']['tinymce4_editorclass'] = 'cTinyMCE4Editor';

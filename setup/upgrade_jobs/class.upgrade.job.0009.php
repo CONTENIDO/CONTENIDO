@@ -89,6 +89,13 @@ class cUpgradeJob_0009 extends cUpgradeJobAbstract {
                     cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "data/modules", 0777);
                 }
                 cDirHandler::recursiveCopy("data/examples/data/modules", $this->_aCfgClient[1]["path"]["frontend"] . "data/modules");
+                
+                // copy the template folder to the cms folder for the example client
+                if (cFileHandler::exists($this->_aCfgClient[1]["path"]["frontend"] . "templates")) {
+                    cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "templates");
+                    cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "templates");
+                }
+                cDirHandler::recursiveCopy("data/examples/templates", $this->_aCfgClient[1]["path"]["frontend"] . "templates");
         }
     }
 

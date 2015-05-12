@@ -62,16 +62,6 @@ function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
         case 'frontend':
             $sInclude = cRegistry::getFrontendPath() . $sWhat;
             break;
-        case 'wysiwyg':
-            if (false === ($editor = getEffectiveSetting('wysiwyg', 'editor', false))) {
-                $sInclude = $cfg['path']['wysiwyg'] . $sWhat;
-            } else {
-                $sInclude = $cfg['path']['all_wysiwyg'] . $editor;
-            }
-            break;
-        case 'all_wysiwyg':
-            $sInclude = $cfg['path']['all_wysiwyg'] . $sWhat;
-            break;
         case 'classes':
             if (cAutoload::isAutoloadable($cfg['path'][$sWhere] . $sWhat)) {
                 // The class file will be loaded automatically by the autoloader - get out here
