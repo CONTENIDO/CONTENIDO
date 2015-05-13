@@ -62,7 +62,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
     public function __construct($sEditorName, $sEditorContent) {
         global $idart;
-        
+
         $belang = cRegistry::getBackendLanguage();
         $cfg = cRegistry::getConfig();
         $client = cRegistry::getClientId();
@@ -670,8 +670,8 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * @param array Array with configuration values for the current WYSIWYG editor to save
      * @return array Array with values that were not accepted
      */
-    public static function safeConfig($config) {
-        parent::safeConfig($config['tinymce4']);
+    public static function saveConfig($config) {
+        parent::saveConfig($config['tinymce4']);
     }
 }
 

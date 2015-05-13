@@ -187,8 +187,7 @@ abstract class cWYSIWYGEditor {
      * @return array
      *         Array with values that were not accepted
      */
-    public static function safeConfig($config) {
-        $erroneousSettings = array();
+    public static function saveConfig($config) {
 
         // specify filename scheme
         // for tinymce 4 this will be config.wysiwyg_tinymce4.php
@@ -206,6 +205,8 @@ abstract class cWYSIWYGEditor {
 
         // first try to write then check what went wrong in case of error
         if (true !== cFileHandler::write($configPath . $configFile, $content)) {
+            $erroneousSettings = array();
+
             // just pass back that the file could not be written
             $erroneusSettings['saving'] = array('config_file' => 'wysiwyg config file could not be written');
             // write more detailed information with sensitive information such as full path into error log
@@ -213,6 +214,10 @@ abstract class cWYSIWYGEditor {
             return $erroneusSettings;
         }
 
-        return $erroneousSettings;
+        // apply changes to current config
+        global $cfg;
+        $cfg['wysiwyg'][static::getCurrentWysiwygEditorName()] = $config;
+
+        return array();
     }
 }
