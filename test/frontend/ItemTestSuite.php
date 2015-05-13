@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Template TestSuite
  *
@@ -13,7 +14,9 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-require_once ('bootstrap.php');
+
+require_once 'bootstrap.php';
+
 // foldername of the test
 TestSuiteHelper::loadFeSuite('Item');
 
@@ -22,6 +25,10 @@ TestSuiteHelper::loadFeSuite('Item');
  */
 class ContenidoSecurityAllTest {
 
+    /**
+     *
+     * @return PHPUnit_Framework_TestSuite
+     */
     public static function suite() {
         $suite = new PHPUnit_Framework_TestSuite('Item xTests');
         // class name of the test
