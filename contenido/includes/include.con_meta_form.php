@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for editing meta tags.
  *
@@ -31,7 +32,7 @@ $tpl->reset();
 // Check permissions
 if (!$perm->have_perm_area_action($area, 'con_meta_edit') && !$perm->have_perm_area_action_item($area, 'con_meta_edit', $idcat)) {
     // User has no permission to see this form
-    $notification->displayNotification('error', i18n('Permission denied'));
+    $notifications[] = $notification->returnNotification('error', i18n('Permission denied'));
     return;
 }
 
@@ -69,7 +70,6 @@ $articleType = $versioning->getArticleType(
     $action,
     $selectedArticleId
 );
-
 
 // Set as current/editable
 switch ($versioning->getState()) {
@@ -133,14 +133,14 @@ if ($art->getField('created')) {
         $disabled = 'disabled="disabled"';
 
         $message = sprintf(i18n('Article is in use by %s (%s)'), $inUseUser, $inUseUserRealName);
-        $notification->displayNotification('warning', $message);
+        $notifications[] = $notification->returnNotification('warning', $message);
         $tpl->set("s", "REASON", sprintf(i18n('Article is in use by %s (%s)'), $inUseUser, $inUseUserRealName));
     }
 
     if ($art->getField('locked') == 1) {
         $disabled = 'disabled="disabled"';
         $tpl->set('s', 'DISABLED', ' ' . $disabled);
-        $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
+        $notifications[] = $notification->returnNotification('warning', i18n('This article is currently frozen and can not be edited!'));
         $tpl->set("s", "REASON", i18n('This article is currently frozen and can not be edited!'));
     } else if ($versioning->getState() == 'advanced' && $articleType == 'editable'
         || $versioning->getState() == 'simple' && $articleType != 'version'
@@ -198,6 +198,12 @@ if (isset($tmp_notification)) {
     $tpl->set('s', 'NOTIFICATION', '<tr><td colspan="4">' . $tmp_notification . '<br></td></tr>');
 } else {
     $tpl->set('s', 'NOTIFICATION', '');
+}
+if (!empty($notifications)) {
+        error_log(implode('', $notifications));
+    $tpl->set('s', 'NOTIFICATIONS', implode('', $notifications));
+} else {
+    $tpl->set('s', 'NOTIFICATIONS', '');
 }
 
 // Assign form page seo elements values
@@ -295,16 +301,19 @@ foreach ($availableTags as $key => $value) {
 
             break;
     }
-
+    
     $tpl->set('d', 'ARTICLE_LANGUAGE_ID', $art->getField('idartlang'));
     $tpl->set('d', 'ARTICLE_ID', $idart);
     $tpl->set('d', 'CAT_ID', $idcat);
     $tpl->set('d', 'METAFIELDTYPE', $element);
     $tpl->set('d', 'METATITLE', $value['metatype'] . ':');
+    
+    $aUserPerm = explode(',', $auth->auth['perm']);
+    
     if ($versioning->getState() == 'simple' && $articleType == 'current'
             || $versioning->getState() == 'advanced' && $articleType == 'editable'
-            || $versioning->getState() == 'disabled') {
-        
+            || $versioning->getState() == 'disabled' && ($art->getField('locked') != 1 || in_array('sysadmin', $aUserPerm))) {
+        $tpl->set('d', 'CURSOR', 'pointer');
         $tpl->set('d', 'DELETE_META', 
             "Con.showConfirmation('" .
                     i18n('Are you sure to delete this Meta tag?') . "' ,
@@ -315,7 +324,7 @@ foreach ($availableTags as $key => $value) {
         );
         
     } else {
-        
+        $tpl->set('d', 'CURSOR', 'default');
         $tpl->set('d', 'DELETE_META', '');
         
     }
@@ -596,8 +605,6 @@ while ($db->nextRecord()) {
 }
 
 // accessible by the current user (sysadmin client admin) anymore.
-$aUserPerm = explode(',', $auth->auth['perm']);
-
 if (in_array('sysadmin', $aUserPerm)) {
     // disable/grey out button if a non-editable version is selected 
     if ($versioning->getState() == 'simple' && $articleType != 'current'
