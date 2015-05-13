@@ -141,21 +141,6 @@ class cApiLanguage extends Item {
     protected static $_propertiesCacheLoaded = array();
 
     /**
-     * List of funcion names of the filters used when data is stored to the db.
-     *
-     * @var array
-     */
-    protected $_arrInFilters = array();
-
-    /**
-     * List of funcion names of the filters used when data is retrieved from the
-     * db
-     *
-     * @var array
-    */
-    protected $_arrOutFilters = array();
-
-    /**
      * Constructor Function
      *
      * @param mixed $mId [optional]
@@ -164,6 +149,7 @@ class cApiLanguage extends Item {
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['lang'], 'idlang');
+        $this->setFilters(array(), array());
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
