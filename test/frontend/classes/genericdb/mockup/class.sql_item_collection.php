@@ -1,6 +1,16 @@
 <?php
+
+/**
+ *
+ * @author marcus.gnass
+ */
 class SqlItemCollection {
 
+    /**
+     *
+     * @param array $tables
+     * @return string
+     */
     public static function getDeleteStatement(array $tables) {
         $sql = 'DROP TABLE IF EXISTS';
 
@@ -11,10 +21,18 @@ class SqlItemCollection {
         return $sql . ';';
     }
 
+    /**
+     *
+     * @return string
+     */
     public static function getInsertConTestStatement() {
         return "INSERT INTO `con_test` VALUES (1, 'Kabul', 'AFG', 'Kabol', 1780000), (2, 'Qandahar', 'AFG', 'Qandahar', 237500), (3, 'Herat', 'AFG', 'Herat', 186800);";
     }
 
+    /**
+     *
+     * @return string
+     */
     public static function getInserDogStatement() {
         return "INSERT INTO `con_test_dog` (`id`, `name`, `descr`, `size`, `date`) VALUES
                     (1, 'Max', 'Its distinctive appearance and deep foghorn voice make it stand out in a crowd.', 'medium', '2013-09-26 12:14:28'),
@@ -22,6 +40,10 @@ class SqlItemCollection {
                     (3, 'Buster', 'Short-legged but surprisingly strong and agile.', 'small', '2013-09-26 12:14:28');";
     }
 
+    /**
+     *
+     * @return string
+     */
     public static function getInserDogRfidStatement() {
         return "INSERT INTO `con_test_rfid_dog` (`dog_id`, `bar_code`, `notes`, `iso_compliant`, `date`) VALUES
                 (1, '234k34340ll2342323022', 'This is a RFID tag for the Max', 'y', '2013-09-26 12:14:28'),
@@ -29,6 +51,10 @@ class SqlItemCollection {
                 (3, '30id8383837210jndal20', 'This is a RFID tag for the Buster', 'y', '2013-09-26 12:14:28');";
     }
 
+    /**
+     *
+     * @return string
+     */
     public static function getCreateDogStatement() {
         return "CREATE TABLE `con_test_dog` (
                         `id` int(11) NOT NULL auto_increment,
@@ -40,6 +66,10 @@ class SqlItemCollection {
                 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;";
     }
 
+    /**
+     *
+     * @return string
+     */
     public static function getCreateConTestStatement() {
         return "CREATE TABLE `con_test` (
                      `ID` int(11) NOT NULL auto_increment,
@@ -51,6 +81,10 @@ class SqlItemCollection {
                 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;";
     }
 
+    /**
+     *
+     * @return string
+     */
     public static function getCreateDogRfidStatement() {
         return "CREATE TABLE `con_test_rfid_dog` (
                       `dog_id` int(11) NOT NULL,
@@ -61,11 +95,25 @@ class SqlItemCollection {
                       PRIMARY KEY  (`dog_id`)
                 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;";
     }
+
+    // /**
+    //  *
+    //  */
     // public static function getInsertStatement() {
     // }
+
 }
+
+/**
+ *
+ * @author marcus.gnass
+ */
 class TFCollection extends ItemCollection {
 
+    /**
+     *
+     * @param unknown_type $where
+     */
     public function __construct($where = false) {
         parent::__construct(cRegistry::getDbTableName('con_test'), 'ID');
         // $this->_setItemClass('TItem');
@@ -75,8 +123,17 @@ class TFCollection extends ItemCollection {
     }
 
 }
+
+/**
+ *
+ * @author marcus.gnass
+ */
 class TFItem extends Item {
 
+    /**
+     *
+     * @param unknown_type $id
+     */
     public function __construct($id = false) {
         $cfg = cRegistry::getConfig();
         parent::__construct(cRegistry::getDbTableName('con_test'), 'ID');
@@ -86,8 +143,17 @@ class TFItem extends Item {
     }
 
 }
+
+/**
+ *
+ * @author marcus.gnass
+ */
 class TCollection extends ItemCollection {
 
+    /**
+     *
+     * @param unknown_type $where
+     */
     public function __construct($where = false) {
         parent::__construct(cRegistry::getDbTableName('con_test'), 'ID');
         $this->_setItemClass('TItem');
@@ -97,8 +163,17 @@ class TCollection extends ItemCollection {
     }
 
 }
+
+/**
+ *
+ * @author marcus.gnass
+ */
 class TItem extends Item {
 
+    /**
+     *
+     * @param unknown_type $id
+     */
     public function __construct($id = false) {
         $cfg = cRegistry::getConfig();
         parent::__construct(cRegistry::getDbTableName('con_test'), 'ID');
@@ -108,8 +183,17 @@ class TItem extends Item {
     }
 
 }
+
+/**
+ *
+ * @author marcus.gnass
+ */
 class ITCollection extends ItemCollection {
 
+    /**
+     *
+     * @param unknown_type $where
+     */
     public function __construct($where = false) {
         parent::__construct('', 'ID');
         $this->_setItemClass('TItem');
@@ -119,8 +203,17 @@ class ITCollection extends ItemCollection {
     }
 
 }
+
+/**
+ *
+ * @author marcus.gnass
+ */
 class TITCollection extends ItemCollection {
 
+    /**
+     *
+     * @param unknown_type $where
+     */
     public function __construct($where = false) {
         parent::__construct('ID', '');
         $this->_setItemClass('TItem');
@@ -130,8 +223,17 @@ class TITCollection extends ItemCollection {
     }
 
 }
+
+/**
+ *
+ * @author marcus.gnass
+ */
 class DogCollection extends ItemCollection {
 
+    /**
+     *
+     * @param unknown_type $where
+     */
     public function __construct($where = false) {
         parent::__construct(cRegistry::getDbTableName('con_test_dog'), 'id');
         $this->_setItemClass('DogItem');
@@ -141,8 +243,17 @@ class DogCollection extends ItemCollection {
     }
 
 }
+
+/**
+ *
+ * @author marcus.gnass
+ */
 class DogItem extends Item {
 
+    /**
+     *
+     * @param unknown_type $id
+     */
     public function __construct($id = false) {
         $cfg = cRegistry::getConfig();
         parent::__construct(cRegistry::getDbTableName('con_test_dog'), 'id');
@@ -152,8 +263,17 @@ class DogItem extends Item {
     }
 
 }
+
+/**
+ *
+ * @author marcus.gnass
+ */
 class DogRfidCollection extends ItemCollection {
 
+    /**
+     *
+     * @param unknown_type $where
+     */
     public function __construct($where = false) {
         parent::__construct(cRegistry::getDbTableName('con_test_rfid_dog'), 'dog_id');
         $this->_setItemClass('DogRfidItem');
@@ -163,8 +283,17 @@ class DogRfidCollection extends ItemCollection {
     }
 
 }
+
+/**
+ *
+ * @author marcus.gnass
+ */
 class DogRfidItem extends Item {
 
+    /**
+     *
+     * @param unknown_type $id
+     */
     public function __construct($id = false) {
         $cfg = cRegistry::getConfig();
         parent::__construct(cRegistry::getDbTableName('con_test_rfid_dog'), 'dog_id');
@@ -174,5 +303,3 @@ class DogRfidItem extends Item {
     }
 
 }
-
-?>

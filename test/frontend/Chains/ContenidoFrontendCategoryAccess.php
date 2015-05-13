@@ -1,58 +1,93 @@
 <?php
+
 /**
- * This file contains tests for Contenido chain Contenido.Frontend.CategoryAccess
+ * This file contains tests for Contenido chain
+ * Contenido.Frontend.CategoryAccess
  *
- * @package          Testing
- * @subpackage       Test_Chains
- * @version          SVN Revision $Rev:$
+ * @package Testing
+ * @subpackage Test_Chains
+ * @version SVN Revision $Rev:$
  *
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 /**
  * 1. chain function to check if the user has permission to access a category
+ *
+ * @param unknown_type $lang
+ * @param unknown_type $idcat
+ * @param unknown_type $uid
+ * @return boolean
  */
-function chain_ContenidoFrontendCategoryAccess_Test($lang, $idcat, $uid)
-{
+function chain_ContenidoFrontendCategoryAccess_Test($lang, $idcat, $uid) {
     return false;
 }
 
 /**
  * 2. chain function to check if the user has permission to access a category
+ *
+ * @param unknown_type $lang
+ * @param unknown_type $idcat
+ * @param unknown_type $uid
+ * @return boolean
  */
-function chain_ContenidoFrontendCategoryAccess_Test2($lang, $idcat, $uid)
-{
+function chain_ContenidoFrontendCategoryAccess_Test2($lang, $idcat, $uid) {
     return true;
 }
 
 /**
  * 3. chain function to check if the user has permission to access a category
+ *
+ * @param unknown_type $lang
+ * @param unknown_type $idcat
+ * @param unknown_type $uid
+ * @return boolean
  */
-function chain_ContenidoFrontendCategoryAccess_Test3($lang, $idcat, $uid)
-{
+function chain_ContenidoFrontendCategoryAccess_Test3($lang, $idcat, $uid) {
     return false;
 }
 
-
 /**
  * Class to test Contenido chain Contenido.Frontend.CategoryAccess
- * @package          Testing
- * @subpackage       Test_Chains
+ *
+ * @package Testing
+ * @subpackage Test_Chains
  */
-class ContenidoFrontendCategoryAccessTest extends PHPUnit_Framework_TestCase
-{
+class ContenidoFrontendCategoryAccessTest extends PHPUnit_Framework_TestCase {
+
+    /**
+     *
+     * @var string
+     */
     private $_chain = 'Contenido.Frontend.CategoryAccess';
+
+    /**
+     *
+     * @var int
+     */
     private $_lang;
-    private $_idcat = 10; // Hauptnavigation/Features-dieser-Website/Geschlossener-Bereich/Vertraulich/
+
+    /**
+     * Hauptnavigation/Features-dieser-Website/Geschlossener-Bereich/Vertraulich/
+     *
+     * @var int
+     */
+    private $_idcat = 10;
+
+    /**
+     *
+     * @var unknown_type
+     */
     private $_uid = null;
 
-
-    protected function setUp()
-    {
+    /**
+     *
+     */
+    protected function setUp() {
         $this->_lang = $GLOBALS['lang'];
 
         if (!$user = cTestingTestHelper::getUserByUsername('sysadmin')) {
@@ -62,25 +97,22 @@ class ContenidoFrontendCategoryAccessTest extends PHPUnit_Framework_TestCase
         $this->_uid = $user->user_id;
     }
 
-
     /**
      * Test Contenido.Frontend.CategoryAccess chain
      */
-    public function testNoChain()
-    {
+    public function testNoChain() {
         // set n' execute chain
-        cApiCecHook::setBreakCondition(true, false); // break at "true", default value "false"
+        // break at "true", default value "false"
+        cApiCecHook::setBreakCondition(true, false);
         $allow = cApiCecHook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_uid);
 
         $this->assertEquals(false, $allow);
     }
 
-
     /**
      * Test Contenido.Frontend.CategoryAccess chain
      */
-    public function testOneChain()
-    {
+    public function testOneChain() {
         // get cec registry instance
         $cecReg = cApiCecRegistry::getInstance();
 
@@ -88,7 +120,8 @@ class ContenidoFrontendCategoryAccessTest extends PHPUnit_Framework_TestCase
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendCategoryAccess_Test');
 
         // set n' execute chain
-        cApiCecHook::setBreakCondition(true, false); // break at "true", default value "false"
+        // break at "true", default value "false"
+        cApiCecHook::setBreakCondition(true, false);
         $allow = cApiCecHook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_uid);
 
         // remove chain functions
@@ -97,12 +130,10 @@ class ContenidoFrontendCategoryAccessTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(false, $allow);
     }
 
-
     /**
      * Test Contenido.Frontend.CategoryAccess chain
      */
-    public function testTwoChains()
-    {
+    public function testTwoChains() {
         // get cec registry instance
         $cecReg = cApiCecRegistry::getInstance();
 
@@ -112,7 +143,8 @@ class ContenidoFrontendCategoryAccessTest extends PHPUnit_Framework_TestCase
         $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendCategoryAccess_Test3');
 
         // set n' execute chain
-        cApiCecHook::setBreakCondition(true, false); // break at "true", default value "false"
+        // break at "true", default value "false"
+        cApiCecHook::setBreakCondition(true, false);
         $allow = cApiCecHook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_uid);
 
         // remove chain functions

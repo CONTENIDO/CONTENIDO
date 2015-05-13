@@ -26,12 +26,12 @@ define('CON_UNITTEST_LIB_DIR', '');
 define('CON_TEST_PATH', dirname(__FILE__));
 
 // UnitTest sources
-require_once(CON_UNITTEST_LIB_DIR . 'PHPUnit/Framework/TestCase.php');
+require_once CON_UNITTEST_LIB_DIR . 'PHPUnit/Framework/TestCase.php';
 
 // CONTENIDO test related classes
-require_once(CON_TEST_PATH . '/lib/class.testing.exception.php');
-require_once(CON_TEST_PATH . '/lib/class.testing.test.case.php');
-require_once(CON_TEST_PATH . '/lib/class.testing.test.helper.php');
+require_once CON_TEST_PATH . '/lib/class.testing.exception.php';
+require_once CON_TEST_PATH . '/lib/class.testing.test.case.php';
+require_once CON_TEST_PATH . '/lib/class.testing.test.helper.php';
 
 if (!defined('CON_ENVIRONMENT')) {
     if (getenv('CONTENIDO_ENVIRONMENT')) {
@@ -77,7 +77,7 @@ include_once($contenido_path.'includes/startup.php');
 // overwrite the SQL table prefix and reload the database table definitions
 cTestingTestCase::setOriginalSqlPrefix($cfg['sql']['sqlprefix']);
 $cfg['sql']['sqlprefix'] = 'test';
-require($cfg['path']['contenido_config'] . 'cfg_sql.inc.php');
+require $cfg['path']['contenido_config'] . 'cfg_sql.inc.php';
 
 cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.con2.php');
@@ -102,7 +102,7 @@ if ($contenido) {
     ));
 }
 
-require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php');
+require_once $cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php';
 
 cApiCecHook::execute('Contenido.Frontend.AfterLoadPlugins');
 

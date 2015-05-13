@@ -14,7 +14,7 @@
 
 // $path = str_replace('\\', '/', realpath(dirname(__FILE__) .
 // '/../ItemCollection/'));
-// require_once ($path . '/sqlStatements.php');
+// require_once $path . '/sqlStatements.php';
 
 require_once 'mockup/class.sql_item.php';
 
@@ -347,6 +347,9 @@ class ItemTest extends PHPUnit_Framework_TestCase {
  */
 class DummyItem extends Item {
 
+    /**
+     *
+     */
     public function __construct() {
         parent::__construct('table', 'primaryKey');
     }
