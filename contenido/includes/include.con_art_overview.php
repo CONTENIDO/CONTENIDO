@@ -948,12 +948,20 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         // New Article link
         if (($perm->have_perm_area_action('con_editart', 'con_newart') || $perm->have_perm_area_action_item('con_editart', 'con_newart', $idcat)) && $foreignlang == false) {
+            // check if category has an assigned template
             if ($idcat != 0 && $cat_idtpl != 0) {
                 $tpl->set('s', 'NEWARTICLE_TEXT', '<a id="newArtTxt" href="' . $sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat") . '">' . i18n("Create new article") . '</a>');
                 $tpl->set('s', 'NEWARTICLE_IMG', '<a id="newArtImg" href="' . $sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat") . '" title="' . i18n("Create new article") . '"><img src="images/but_art_new.gif" border="0" alt="' . i18n("Create new article") . '"></a>');
                 $tpl->set('s', 'CATTEMPLATE', $warningBox);
             } else {
-                $notification_text = $notification->returnNotification("error", i18n("Creation of articles is only possible if the category has a assigned template."));
+                // category is either not in sync or does not exist
+                // check if category does not exist for current language if syncoptions is turned on to find out if current category is unsynchronized
+                $oArtLang = new cApiArticleLanguage($idcat);
+                if (0 < $syncoptions && false === $oArtLang->isLoaded()) {
+                    $notification_text = $notification->returnNotification("error", i18n("Creation of articles is only possible if the category has is synchronized."));
+                } else {
+                    $notification_text = $notification->returnNotification("error", i18n("Creation of articles is only possible if the category has a assigned template."));
+                }
                 $tpl->set('s', 'CATTEMPLATE', $notification_text);
                 $tpl->set('s', 'NEWARTICLE_TEXT', '&nbsp;');
                 $tpl->set('s', 'NEWARTICLE_IMG', '&nbsp;');
