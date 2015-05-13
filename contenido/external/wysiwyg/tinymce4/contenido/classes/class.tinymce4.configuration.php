@@ -246,6 +246,7 @@ class cTinymce4Configuration {
      */
     public static function get($default) {
         $cfg = cRegistry::getConfig();
+
         if (false === isset($cfg['wysiwyg'])
         || false === isset($cfg['wysiwyg']['tinymce4'])) {
             $configPath = cRegistry::getConfigValue('path', 'contenido_config') . 'config.wysiwyg_tinymce4.php';
@@ -258,7 +259,7 @@ class cTinymce4Configuration {
                 return $default;
             }
             // Include configuration file
-            require_once($configPath);
+            require $configPath;
         }
 
         // check number of keys passed to function
@@ -293,7 +294,7 @@ class cTinymce4Configuration {
     /**
      * Function to validate form from showConfigurationForm() 
      * @param array $config The post parameters of submitted form
-     * @return multitype:string |boolean
+     * @return boolean|array False if data should not be saved, otherwise data to save
      */
     public function validateForm($config) {
         // Checks for cross site requests and cross site scripting are omitted due to time constraints
@@ -309,11 +310,16 @@ class cTinymce4Configuration {
         unset($config['frame']);
         // remove not used contenido field
         unset($config['contenido']);
-        
+
         // remove x and y values from image submit button in in form
         unset($config['submit_x']);
         unset($config['submit_y']);
 
+        // form action (added in showConfigurationForm() inside this class) is not used for saving config
+        if ('system_wysiwyg_tinymce4_delete_item' === $_GET['action']) {
+            return $this->removeExternalPluginLoad($_GET);
+        }
+        unset($config['action']);
 
         // check if config should be deleted
         if (isset($_POST['reset'])) {
@@ -397,7 +403,7 @@ class cTinymce4Configuration {
             $config[$key]['custom'] = stripslashes($config[$key]['custom']);
         }
 
-        // unescape strings then build
+        // unescape strings then build config
         $customConfig = (array) json_decode($config[$key]['custom'], true);
         switch(json_last_error()) {
             case JSON_ERROR_DEPTH:
@@ -438,6 +444,7 @@ class cTinymce4Configuration {
     /**
      * Do not load external plugin if user has permission to request that 
      * @param array $form get parameters from deletion link
+     * @return boolean|array False if data should not be saved, otherwise data to save
      */
     public function removeExternalPluginLoad($form) {
         // abort if user has not sufficient permissions
@@ -445,6 +452,11 @@ class cTinymce4Configuration {
             return;
         }
 
+        // check if a CMS-type has been specified
+        if (false === isset($form['cmstype'])) {
+            // form data is invalid, abort
+            return false;
+        }
         $pluginToRemoveIdx = (int) $form['external_plugin_idx'];
 
         // load config through usage of get function
@@ -452,26 +464,22 @@ class cTinymce4Configuration {
 
         // no config or no external plugins or no plugin with that index means nothing to remove
         if (false === $settings
-        || false === isset($settings['raw']['externalplugins'])
-        || false === isset($settings['raw']['externalplugins'])
-        || false === isset($settings['raw']['externalplugins'][$pluginToRemoveIdx])) {
-            return;
+        || false === isset($settings['raw'])
+        || false === isset($settings['raw'][$form['cmstype']])
+        || false === isset($settings['raw'][$form['cmstype']]['externalplugins'])
+        || false === isset($settings['raw'][$form['cmstype']]['externalplugins'][$pluginToRemoveIdx])) {
+            return false;
         }
 
         // remove value from raw settings
-        unset($settings['raw']['externalplugins'][$pluginToRemoveIdx]);
+        unset($settings['raw'][$form['cmstype']]['externalplugins'][$pluginToRemoveIdx]);
         // re-index array
-        $settings['raw']['externalplugins'] = array_values($settings['raw']['externalplugins']);
+        $settings['raw'][$form['cmstype']]['externalplugins'] = array_values($settings['raw'][$form['cmstype']]['externalplugins']);
 
         // apply raw settings to computed settings
-        $settings['tinymce4']['externalplugins'] = $settings['raw']['externalplugins'];
+        $settings['tinymce4'][$form['cmstype']]['externalplugins'] = $settings['raw'][$form['cmstype']]['externalplugins'];
 
-        // apply changes to current config
-        global $cfg;
-        $cfg['wysiwyg']['tinymce4'] = $settings;
-
-        // save altered config under tinymce4 key
-        cTinyMCE4Editor::safeConfig(array('tinymce4' => $settings));
+        return array('tinymce4' => $settings);
     }
 
     /**
@@ -531,15 +539,15 @@ class cTinymce4Configuration {
 
             $containerDiv = new cHTMLDiv();
             if ('CMS_HTMLHEAD' === $curType) {
-                $defaultToolbar1 = static::get('undo redo | consave conclose', 'raw','tinymce4_full', 'toolbar1');
-                $defaultToolbar2 = static::get('', 'raw','tinymce4_full', 'toolbar2');
-                $defaultToolbar3 = static::get('', 'raw','tinymce4_full', 'toolbar3');
-                $defaultPlugins = static::get('conclose', 'raw','tinymce4_full', 'plugins');
+                $defaultToolbar1 = static::get('undo redo | consave conclose', 'raw', $curType, 'tinymce4_full', 'toolbar1');
+                $defaultToolbar2 = static::get('', 'raw', $curType, 'tinymce4_full', 'toolbar2');
+                $defaultToolbar3 = static::get('', 'raw', $curType, 'tinymce4_full', 'toolbar3');
+                $defaultPlugins = static::get('conclose', 'raw', $curType, 'tinymce4_full', 'plugins');
             } else {
-                $defaultToolbar1 = static::get('cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', 'raw','tinymce4_full', 'toolbar1');
-                $defaultToolbar2 = static::get('link unlink anchor image media hr | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', 'raw','tinymce4_full', 'toolbar2');
-                $defaultToolbar3 = static::get('table | formatselect fontselect fontsizeselect | consave conclose', 'raw','tinymce4_full', 'toolbar3');
-                $defaultPlugins = static::get('charmap code table conclose hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'raw','tinymce4_full', 'plugins');
+                $defaultToolbar1 = static::get('cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', 'raw', $curType, 'tinymce4_full', 'toolbar1');
+                $defaultToolbar2 = static::get('link unlink anchor image media hr | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', 'raw', $curType, 'tinymce4_full', 'toolbar2');
+                $defaultToolbar3 = static::get('table | formatselect fontselect fontsizeselect | consave conclose', 'raw', $curType, 'tinymce4_full', 'toolbar3');
+                $defaultPlugins = static::get('charmap code table conclose hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'raw', $curType, 'tinymce4_full', 'plugins');
             }
             $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 1:', $curType . '[tinymce4_full][toolbar1]', $defaultToolbar1));
             $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 2:', $curType . '[tinymce4_full][toolbar2]', $defaultToolbar2));
@@ -549,15 +557,15 @@ class cTinymce4Configuration {
 
             $containerDiv = new cHTMLDiv();
             if ('CMS_HTMLHEAD' === $curType) {
-                $defaultToolbar1 = static::get('undo redo | consave conclose', 'raw','tinymce4_inline', 'toolbar1');
-                $defaultToolbar2 = static::get('', 'raw','tinymce4_inline', 'toolbar2');
-                $defaultToolbar3 = static::get('', 'raw','tinymce4_inline', 'toolbar3');
-                $defaultPlugins = static::get('conclose', 'raw','tinymce4_inline', 'plugins');
+                $defaultToolbar1 = static::get('undo redo | consave conclose', 'raw', $curType, 'tinymce4_inline', 'toolbar1');
+                $defaultToolbar2 = static::get('', 'raw', $curType, 'tinymce4_inline', 'toolbar2');
+                $defaultToolbar3 = static::get('', 'raw', $curType, 'tinymce4_inline', 'toolbar3');
+                $defaultPlugins = static::get('conclose', 'raw', $curType, 'tinymce4_inline', 'plugins');
             } else {
-                $defaultToolbar1 = static::get('bold italic underline strikethrough | undo redo | bullist numlist separator forecolor backcolor | alignleft aligncenter alignright | confullscreen | consave conclose', 'raw', 'tinymce4_inline', 'toolbar1');
-                $defaultToolbar2 = static::get('', 'raw', 'tinymce4_inline', 'toolbar2');
-                $defaultToolbar3 = static::get('', 'raw', 'tinymce4_inline', 'toolbar3');
-                $defaultPlugins = static::get('conclose confullscreen media table textcolor', 'raw', 'tinymce4_inline', 'plugins');
+                $defaultToolbar1 = static::get('bold italic underline strikethrough | undo redo | bullist numlist separator forecolor backcolor | alignleft aligncenter alignright | confullscreen | consave conclose', 'raw', $curType, 'tinymce4_inline', 'toolbar1');
+                $defaultToolbar2 = static::get('', 'raw', $curType, 'tinymce4_inline', 'toolbar2');
+                $defaultToolbar3 = static::get('', 'raw', $curType, 'tinymce4_inline', 'toolbar3');
+                $defaultPlugins = static::get('conclose confullscreen media table textcolor', 'raw', $curType, 'tinymce4_inline', 'plugins');
             }
             $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 1:', $curType . '[tinymce4_inline][toolbar1]', $defaultToolbar1));
             $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 2:', $curType . '[tinymce4_inline][toolbar2]', $defaultToolbar2));
@@ -567,15 +575,15 @@ class cTinymce4Configuration {
 
             $containerDiv = new cHTMLDiv();
             if ('CMS_HTMLHEAD' === $curType) {
-                $defaultToolbar1 = static::get('undo redo | consave conclose', 'raw','tinymce4_fullscreen', 'toolbar1');
-                $defaultToolbar2 = static::get('', 'raw','tinymce4_fullscreen', 'toolbar2');
-                $defaultToolbar3 = static::get('', 'raw','tinymce4_fullscreen', 'toolbar3');
-                $defaultPlugins = static::get('conclose', 'raw','tinymce4_fullscreen', 'plugins');
+                $defaultToolbar1 = static::get('undo redo | consave conclose', 'raw', $curType, 'tinymce4_fullscreen', 'toolbar1');
+                $defaultToolbar2 = static::get('', 'raw', $curType, 'tinymce4_fullscreen', 'toolbar2');
+                $defaultToolbar3 = static::get('', 'raw', $curType, 'tinymce4_fullscreen', 'toolbar3');
+                $defaultPlugins = static::get('conclose', 'raw', $curType, 'tinymce4_fullscreen', 'plugins');
             } else {
-                $defaultToolbar1 = static::get('cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', 'raw', 'tinymce4_fullscreen', 'toolbar1');
-                $defaultToolbar2 = static::get('link unlink anchor image media | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', 'raw', 'tinymce4_fullscreen', 'toolbar2');
-                $defaultToolbar3 = static::get('table | formatselect fontselect fontsizeselect | consave conclose', 'raw','tinymce4_fullscreen', 'toolbar3');
-                $defaultPlugins = static::get('charmap code conclose table hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'raw', 'tinymce4_fullscreen', 'plugins');
+                $defaultToolbar1 = static::get('cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', 'raw', $curType, 'tinymce4_fullscreen', 'toolbar1');
+                $defaultToolbar2 = static::get('link unlink anchor image media | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', 'raw', $curType, 'tinymce4_fullscreen', 'toolbar2');
+                $defaultToolbar3 = static::get('table | formatselect fontselect fontsizeselect | consave conclose', 'raw', $curType, 'tinymce4_fullscreen', 'toolbar3');
+                $defaultPlugins = static::get('charmap code conclose table hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'raw', $curType, 'tinymce4_fullscreen', 'plugins');
             }
             $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 1:', $curType . '[tinymce4_fullscreen][toolbar1]', $defaultToolbar1));
             $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 2:', $curType . '[tinymce4_fullscreen][toolbar2]', $defaultToolbar2));

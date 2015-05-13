@@ -30,6 +30,7 @@ if ('tinymce3' === $curWysiwygEditor) {
 }
 
 // prepare to output template
+// example config class name: cTinymce4Configuration
 $configClass = 'c' . strtoupper($curWysiwygEditor[0]) . substr($curWysiwygEditor, 1) . 'Configuration';
 
 if (class_exists($configClass)) {
@@ -40,26 +41,21 @@ if (class_exists($configClass)) {
         $configClassInstance = new $configClass();
 
         // check if form has been sent
-        $formMainSubmitBtn = isset($_POST['action']) && 'edit_tinymce4' === $_POST['action'];
-        $deleteExternalPluginBtn = isset($_GET['action']) && 'system_wysiwyg_tinymce4_delete_item' === $_GET['action'];
-        if ($formMainSubmitBtn || $deleteExternalPluginBtn) {
+        $formSubmitBtn = isset($_POST['action']) || isset($_GET['action']);
+        // if config should be saved
+        if ($formSubmitBtn) {
             // we got form data
 
-            // clean form from form_sent marker
+            // pass post data to configuration class to validate content
             $formData = $_POST;
-            unset($formData['action']);
 
-            if ($formMainSubmitBtn) {
-                // check form data is correct
-                if (false !== ($formData = $configClassInstance->validateForm($formData))) {
-                    // input is processed inside WYSIWYG editor class
-                    // call used implementation to save input
-                    $wysiwygEditorClass = cRegistry::getConfigValue('wysiwyg', $curWysiwygEditor . '_editorclass');
-                    $wysiwygEditorClass::safeConfig($formData);
-                }
-            } else {
-                // delete external plugin button
-                $configClassInstance->removeExternalPluginLoad($_GET);
+            // check form data is correct
+            // validation function must also sanitise form data thus use its return value
+            if (false !== ($formData = $configClassInstance->validateForm($formData))) {
+                // input is processed inside WYSIWYG editor class
+                // call used implementation to save input
+                $wysiwygEditorClass = cRegistry::getConfigValue('wysiwyg', $curWysiwygEditor . '_editorclass');
+                $wysiwygEditorClass::saveConfig($formData);
             }
         }
 
