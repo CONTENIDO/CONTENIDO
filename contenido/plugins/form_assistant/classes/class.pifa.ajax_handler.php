@@ -448,15 +448,15 @@ class PifaAjaxHandler {
                 $pifaField->set('error_message', $errorMessage);
             }
         }
-
+        
         if ($pifaField->showField('css_class') && array_key_exists('css_class', $_POST) && is_array($_POST['css_class'])) {
             $cssClass = implode(',', array_map($string_cast_deep, $_POST['css_class']));
             $cssClass = substr($cssClass, 0, 1023);
-            if ($cssClass !== $pifaField->get('css_class')) {
-                $pifaField->set('css_class', $cssClass);
-            }
         }
-
+        if ($cssClass !== $pifaField->get('css_class')) {
+            $pifaField->set('css_class', $cssClass);
+        }
+            
         if ($pifaField->showField('option_class')) {
             $optionClass = $_POST['option_class'];
             $optionClass = cSecurity::unescapeDB($optionClass);
