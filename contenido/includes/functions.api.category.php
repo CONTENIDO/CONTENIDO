@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains CONTENIDO Category API functions.
  *
@@ -38,9 +39,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * The example would return "Category A" (idcat 15). If you specify an invalid level,
  * the results are undefined.
  *
- * @param  int  $idcat     The category number
- * @param  int  $minLevel  The level to extract
- * @return int  The category node on a specific level
+ * @param int $idcat
+ *         The category number
+ * @param int $minLevel
+ *         The level to extract
+ * @return int
+ *         The category node on a specific level
  */
 function cApiCatGetLevelNode($idcat, $minLevel = 0) {
     global $cfg, $client, $lang;
@@ -75,4 +79,3 @@ function cApiCatGetLevelNode($idcat, $minLevel = 0) {
         return $idcat;
     }
 }
-

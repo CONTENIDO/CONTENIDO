@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains CONTENIDO String API functions.
  *
@@ -35,9 +36,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * This would output "This is a", since this function respects word boundaries
  * and doesn't operate beyond the limit given by $maxlen.
  *
- * @param string $string The string to operate on
- * @param int $maxlen The maximum number of characters
- * @return string The resulting string
+ * @param string $string
+ *         The string to operate on
+ * @param int $maxlen
+ *         The maximum number of characters
+ * @return string
+ *         The resulting string
  */
 function cApiStrTrimAfterWord($string, $maxlen) {
     // If the string is smaller than the maximum lenght, it makes no sense to
@@ -73,9 +77,12 @@ function cApiStrTrimAfterWord($string, $maxlen) {
  * This would output "This is a si...", since the string is longer than $maxlen
  * and the resulting string matches 15 characters including the dots.
  *
- * @param string $string The string to operate on
- * @param int $maxlen The maximum number of characters
- * @return string The resulting string
+ * @param string $string
+ *         The string to operate on
+ * @param int $maxlen
+ *         The maximum number of characters
+ * @return string
+ *         The resulting string
  */
 function cApiStrTrimHard($string, $maxlen, $fillup = '...') {
     // If the string is smaller than the maximum lenght, it makes no sense to
@@ -147,10 +154,14 @@ function cApiStrTrimHard($string, $maxlen, $fillup = '...') {
  *
  * This function ensures that at least one sentence is returned.
  *
- * @param string $string The string to operate on
- * @param int $approxlen The approximate number of characters
- * @param bool $hard If true, use a hard limit for the number of characters
- * @return string The resulting string
+ * @param string $string
+ *         The string to operate on
+ * @param int $approxlen
+ *         The approximate number of characters
+ * @param bool $hard
+ *         If true, use a hard limit for the number of characters
+ * @return string
+ *         The resulting string
  */
 function cApiStrTrimSentence($string, $approxlen, $hard = false) {
     // If the string is smaller than the maximum lenght, it makes no sense to
@@ -216,10 +227,14 @@ function cApiStrTrimSentence($string, $approxlen, $hard = false) {
  *
  * For other languages, the diacritic marks are removed, if possible.
  *
- * @param string $sString The string to operate on
- * @param string $sourceEncoding The source encoding (default: UTF-8)
- * @param string $targetEncoding The target encoding (default: UTF-8)
- * @return string The resulting string
+ * @param string $sString
+ *         The string to operate on
+ * @param string $sourceEncoding
+ *         The source encoding (default: UTF-8)
+ * @param string $targetEncoding
+ *         The target encoding (default: UTF-8)
+ * @return string
+ *         The resulting string
  */
 function cApiStrReplaceDiacritics($sString, $sourceEncoding = 'UTF-8', $targetEncoding = 'UTF-8') {
     if ($sourceEncoding != 'UTF-8') {
@@ -341,11 +356,14 @@ function cApiStrReplaceDiacritics($sString, $sourceEncoding = 'UTF-8', $targetEn
  * @todo Check if the charset names are the same for both converters
  * @todo Implement a converter and charset checker to ensure compilance.
  *
- * @param string $sString The string to operate on
- * @param string $sourceEncoding The source encoding (default: ISO-8859-1)
- * @param string $targetEncoding The target encoding (if false, use source
- *            encoding)
- * @return string The resulting string
+ * @param string $sString
+ *         The string to operate on
+ * @param string $sourceEncoding
+ *         The source encoding (default: ISO-8859-1)
+ * @param string $targetEncoding
+ *         The target encoding (if false, use source encoding)
+ * @return string
+ *         The resulting string
  */
 function cApiStrRecodeString($sString, $sourceEncoding, $targetEncoding) {
     // If sourceEncoding and targetEncoding are the same, return
@@ -379,9 +397,12 @@ function cApiStrRecodeString($sString, $sourceEncoding, $targetEncoding) {
  * - All characters between 32 and 126 which are not alphanumeric and
  * aren't one of the following: _-.
  *
- * @param string $sString The string to operate on
- * @param bool $bReplace If true, all "unclean" characters are replaced
- * @return string The resulting string
+ * @param string $sString
+ *         The string to operate on
+ * @param bool $bReplace
+ *         If true, all "unclean" characters are replaced
+ * @return string
+ *         The resulting string
  */
 function cApiStrCleanURLCharacters($sString, $bReplace = false) {
     $sString = cApiStrReplaceDiacritics($sString);
@@ -413,7 +434,8 @@ function cApiStrCleanURLCharacters($sString, $bReplace = false) {
  * Normalizes line endings in passed string.
  *
  * @param string $sString
- * @param string $sLineEnding Feasible values are "\n", "\r" or "\r\n"
+ * @param string $sLineEnding
+ *         Feasible values are "\n", "\r" or "\r\n"
  * @return string
  */
 function cApiStrNormalizeLineEndings($sString, $sLineEnding = "\n") {

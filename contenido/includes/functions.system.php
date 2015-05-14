@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the CONTENIDO system related functions.
  *
@@ -17,7 +18,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Clears CONTENIDO standard errorlog.txt
- * @return  string   Message if clearing was successfull or not
+ *
+ * @return string
+ *         Message if clearing was successfull or not
  */
 function emptyLogFile() {
     global $cfg, $notification, $auth;
@@ -44,7 +47,8 @@ function emptyLogFile() {
 /**
  * Grabs phpinfo() output.
  *
- * @return string  HTML output of phpinfo()
+ * @return string
+ *         HTML output of phpinfo()
  */
 function phpInfoToHtml() {
     // get output
@@ -59,8 +63,10 @@ function phpInfoToHtml() {
 /**
  * Check if the user has a right for a defined client.
  *
- * @param  int  $client client id
- * @return  bool  Wether user has access or not
+ * @param int $client
+ *         client id
+ * @return bool
+ *         Wether user has access or not
  */
 function systemHavePerm($client) {
     global $auth;
@@ -84,8 +90,10 @@ function systemHavePerm($client) {
 /**
  * Check for valid ip adress
  *
- * @param   string  $strHostAdress  IP adress
- * @return  bool If string is a valid ip or not
+ * @param string $strHostAdress
+ *         IP adress
+ * @return bool
+ *         If string is a valid ip or not
  */
 function isIPv4($strHostAdress) {
     // ip pattern needed for validation
@@ -99,9 +107,12 @@ function isIPv4($strHostAdress) {
 /**
  * must be done
  *
- * @param string  $strConUrl  CONTENIDO fullhtmlPath
- * @param string  $strBrowserUrl  current browser string
- * @return string  Status of path comparement
+ * @param string $strConUrl
+ *         CONTENIDO fullhtmlPath
+ * @param string $strBrowserUrl
+ *         current browser string
+ * @return string
+ *         Status of path comparement
  */
 function checkPathInformation($strConUrl, $strBrowserUrl) {
     // parse url
@@ -152,9 +163,9 @@ function checkPathInformation($strConUrl, $strBrowserUrl) {
 }
 
 /**
- * check path informations
+ * Check path informations.
  *
- * checks two path informations against each other to get potential nonconformities
+ * Checks two path informations against each other to get potential nonconformities.
  */
 function compareUrlStrings($arrConUrl, $arrBrowserUrl, $isIP = false) {
     // && $isIP == false

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the CONTENIDO layout functions.
  *
@@ -22,11 +23,16 @@ cInclude('classes', 'class.layout.handler.php');
 /**
  * Edit or Create a new layout
  *
- * @param int $idlay Id of the Layout
- * @param string $name Name of the Layout
- * @param string $description Description of the Layout
- * @param string $code Layout HTML Code
- * @return int $idlay Id of the new or edited Layout
+ * @param int $idlay
+ *         Id of the Layout
+ * @param string $name
+ *         Name of the Layout
+ * @param string $description
+ *         Description of the Layout
+ * @param string $code
+ *         Layout HTML Code
+ * @return int
+ *         Id of the new or edited layout
  */
 function layEditLayout($idlay, $name, $description, $code) {
     global $client, $auth, $cfg, $sess, $lang, $area_tree, $perm, $area, $frame, $cfgClient;
@@ -139,8 +145,10 @@ function layEditLayout($idlay, $name, $description, $code) {
 /**
  * Deletes the layout with the given ID from the database and the file system.
  *
- * @param int $idlay the ID of the layout
- * @return string an error code if the layout is still in use
+ * @param int $idlay
+ *         the ID of the layout
+ * @return string
+ *         an error code if the layout is still in use
  */
 function layDeleteLayout($idlay) {
     global $client, $cfg, $area_tree, $perm, $cfgClient;

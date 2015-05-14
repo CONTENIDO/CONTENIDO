@@ -143,5 +143,3 @@ if (function_exists('conGetHtmlTranslationTable') == false) {
     }
 
 }
-
-?>

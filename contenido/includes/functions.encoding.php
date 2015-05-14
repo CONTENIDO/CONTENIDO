@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains some little function to retrieving current encoding.
  *
@@ -25,7 +26,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * return
  * false, otherwise the encoding as string like it is stored in database.
  *
- * @param cDb $db not used any more!
+ * @param cDb $db
+ *         not used any more!
  * @param int $lang
  * @return string
  */

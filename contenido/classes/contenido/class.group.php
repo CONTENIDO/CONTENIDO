@@ -272,7 +272,7 @@ class cApiGroup extends Item {
      *
      * @param bool $removePrefix [optional]
      *         Flag to remove "grp_" prefix from group name
-     * @return Ambigous <string, mixed, bool>
+     * @return string
      */
     public function getGroupName($removePrefix = false) {
         $groupname = $this->get('groupname');
