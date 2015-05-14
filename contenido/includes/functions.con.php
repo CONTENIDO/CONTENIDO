@@ -251,6 +251,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
  * @param unknown_type $searchable
  * @param unknown_type $sitemapprio
  * @param unknown_type $changefreq
+ * @return int|void
  */
 function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $published, $artsort, $keyart = 0, $searchable = 1, $sitemapprio = -1, $changefreq = 'nothing') {
     global $client, $lang, $redirect, $redirect_url, $external_redirect, $perm;
@@ -1488,6 +1489,7 @@ function conMoveArticles() {
  * Copies template configuration entry from source template configuration.
  *
  * @param int $srcidtplcfg
+ * @return int|NULL
  */
 function conCopyTemplateConfiguration($srcidtplcfg) {
     $oTemplateConf = new cApiTemplateConfiguration((int) $srcidtplcfg);
@@ -1501,11 +1503,12 @@ function conCopyTemplateConfiguration($srcidtplcfg) {
 }
 
 /**
- * Copies container configuration entries from source container configuration to
- * destination container configuration.
+ * Copies container configuration entries from source container configuration
+ * to destination container configuration.
  *
  * @param int $srcidtplcfg
  * @param int $dstidtplcfg
+ * @return boolean
  */
 function conCopyContainerConf($srcidtplcfg, $dstidtplcfg) {
     $counter = 0;
