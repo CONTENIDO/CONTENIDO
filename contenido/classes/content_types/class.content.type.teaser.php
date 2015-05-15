@@ -308,7 +308,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
                 'direction' => $this->_settings['teaser_sort_order'],
                 'limit' => $this->_settings['teaser_count'],
                 'start' => false,
-                'offline' => $contenido != ""
+                'offline' => false
             );
 
             if ($this->_settings['teaser_start'] == 'true') {
