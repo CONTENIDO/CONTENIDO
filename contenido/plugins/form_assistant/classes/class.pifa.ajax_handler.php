@@ -220,7 +220,8 @@ class PifaAjaxHandler {
             'styling' => Pifa::i18n('STYLING'),
             'cssClass' => Pifa::i18n('CSS_CLASS'),
             'uri' => Pifa::i18n('URI'),
-            'externalOptionsDatasource' => Pifa::i18n('EXTERNAL_OPTIONS_DATASOURCE')
+            'externalOptionsDatasource' => Pifa::i18n('EXTERNAL_OPTIONS_DATASOURCE'),            
+            'deleteAll' => Pifa::i18n('DELETE_CSS_CLASSES')
         ));
 
         // hidden form values (requires right to store form field)

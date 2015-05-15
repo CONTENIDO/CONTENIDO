@@ -351,7 +351,19 @@
                 }
             });
         });
+        console.log($('#pifa-form-field-dialog'));
+        $('#pifa-form-field-dialog').find('input#deselectCss').click( function() {
+            e.preventDefault();
+            e.stopPropagation();
 
+            var elements = document.getElementById("cssClass").options;
+
+            for(var i = 0; i < elements.length; i++){
+              elements[i].selected = false;
+            }
+
+        });
+            
     });
 
 })(Con, Con.$);

@@ -145,7 +145,7 @@ msgid "COLUMN_NAME"
 msgstr "Spaltenname"
 
 #: classes/class.pifa.ajax_handler.php:207
-#: classes/class.pifa.ajax_handler.php:687
+#: classes/class.pifa.ajax_handler.php:689
 msgid "LABEL"
 msgstr "Beschriftung"
 
@@ -169,6 +169,10 @@ msgstr "Validierungsregel"
 msgid "ERROR_MESSAGE"
 msgstr "Fehlermeldung"
 
+#: classes/class.pifa.ajax_handler.php:224
+msgid "DELETE_CSS_CLASSES"
+msgstr "Alle deselektieren"
+
 #: classes/class.pifa.ajax_handler.php:213
 msgid "DATABASE"
 msgstr "Datenbank"
@@ -182,12 +186,12 @@ msgid "GENERAL"
 msgstr "Allgemein"
 
 #: classes/class.pifa.ajax_handler.php:216
-#: classes/class.pifa.ajax_handler.php:534 classes/class.pifa.gui.php:700
+#: classes/class.pifa.ajax_handler.php:536 classes/class.pifa.gui.php:700
 msgid "OBLIGATORY"
 msgstr "Pflichtfeld"
 
 #: classes/class.pifa.ajax_handler.php:217
-#: classes/class.pifa.ajax_handler.php:688
+#: classes/class.pifa.ajax_handler.php:690
 msgid "VALUE"
 msgstr "Wert"
 
@@ -216,24 +220,24 @@ msgstr "URI"
 msgid "EXTERNAL_OPTIONS_DATASOURCE"
 msgstr "externe Datenquelle für Optionen"
 
-#: classes/class.pifa.ajax_handler.php:283 classes/class.pifa.field.php:931
+#: classes/class.pifa.ajax_handler.php:284 classes/class.pifa.field.php:931
 #: classes/class.pifa.field.php:1027 classes/class.pifa.form.php:1045
 msgid "FIELD_LOAD_ERROR"
 msgstr "Feld konnte nicht gelesen werden"
 
-#: classes/class.pifa.ajax_handler.php:488
+#: classes/class.pifa.ajax_handler.php:490
 msgid "FIELD_STORE_ERROR"
 msgstr "Feld konnte nicht gespeichert werden: '%s'"
 
-#: classes/class.pifa.ajax_handler.php:532 classes/class.pifa.gui.php:698
+#: classes/class.pifa.ajax_handler.php:534 classes/class.pifa.gui.php:698
 msgid "EDIT"
 msgstr "Bearbeiten"
 
-#: classes/class.pifa.ajax_handler.php:533 classes/class.pifa.gui.php:699
+#: classes/class.pifa.ajax_handler.php:535 classes/class.pifa.gui.php:699
 msgid "DELETE"
 msgstr "Löschen"
 
-#: classes/class.pifa.ajax_handler.php:553
+#: classes/class.pifa.ajax_handler.php:555
 msgid "MISSING_IDFIELD"
 msgstr "Angabe zum Feld fehlt"
 
