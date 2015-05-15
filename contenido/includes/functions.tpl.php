@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the CONTENIDO template functions.
  *
@@ -19,6 +20,15 @@ cInclude("includes", "functions.con.php");
 
 /**
  * Edit or create a new Template
+ *
+ * @param unknown_type $changelayout
+ * @param unknown_type $idtpl
+ * @param unknown_type $name
+ * @param unknown_type $description
+ * @param unknown_type $idlay
+ * @param unknown_type $c
+ * @param unknown_type $default
+ * @return number|Ambigous <mixed, boolean, multitype:>
  */
 function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c, $default) {
     global $db, $sess, $auth, $client, $cfg;
@@ -26,8 +36,8 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
     $author = (string) $auth->auth['uname'];
 
     //******** entry in 'tpl'-table ***************
-#    set_magic_quotes_gpc($name);
-#    set_magic_quotes_gpc($description);
+    // set_magic_quotes_gpc($name);
+    // set_magic_quotes_gpc($description);
 
     $template = new cApiTemplate();
     $template->loadByMany(array('idclient' => $client, 'name' => $name));
@@ -56,8 +66,8 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         createRightsForElement('tpl', $idtpl);
     } else {
 
-    	// Define lastmodified variable with actual date
-    	$lastmodified = date('Y-m-d H:i:s');
+        // Define lastmodified variable with actual date
+        $lastmodified = date('Y-m-d H:i:s');
 
         // Update existing entry in the Template table
         $template = new cApiTemplate($idtpl);
@@ -106,7 +116,8 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
 /**
  * Delete a template
  *
- * @param int $idtpl ID of the template to duplicate
+ * @param int $idtpl
+ *         ID of the template to duplicate
  */
 function tplDeleteTemplate($idtpl) {
 
@@ -142,9 +153,10 @@ function tplDeleteTemplate($idtpl) {
 /**
  * Browse a specific layout for containers
  *
- * @param int $idtpl Layout number to browse
- *
- * @return string &-seperated String of all containers
+ * @param int $idtpl
+ *         Layout number to browse
+ * @return string
+ *         &-separated string of all containers
  */
 function tplBrowseLayoutForContainers($idlay) {
     global $db, $cfg, $containerinf, $lang;
@@ -189,7 +201,8 @@ function tplBrowseLayoutForContainers($idlay) {
  * Wrapper for tplPreparseLayout() and tplBrowseLayoutForContainers().
  * Calls both functions to get the container numbers from layout and return
  * the list of found container numbers.
- * @param  int  $idlay
+ *
+ * @param int $idlay
  * @return array
  */
 function tplGetContainerNumbersInLayout($idlay) {
@@ -207,10 +220,12 @@ function tplGetContainerNumbersInLayout($idlay) {
 /**
  * Retrieve the container name
  *
- * @param int $idtpl Layout number to browse
- * @param int $container Container number
- *
- * @return string Container name
+ * @param int $idtpl
+ *         Layout number to browse
+ * @param int $container
+ *         Container number
+ * @return string
+ *         Container name
  */
 function tplGetContainerName($idlay, $container) {
     global $db, $cfg, $containerinf;
@@ -225,10 +240,12 @@ function tplGetContainerName($idlay, $container) {
 /**
  * Retrieve the container mode
  *
- * @param int $idtpl Layout number to browse
- * @param int $container Container number
- *
- * @return string Container name
+ * @param int $idtpl
+ *         Layout number to browse
+ * @param int $container
+ *         Container number
+ * @return string
+ *         Container name
  */
 function tplGetContainerMode($idlay, $container) {
     global $db, $cfg, $containerinf;
@@ -243,10 +260,12 @@ function tplGetContainerMode($idlay, $container) {
 /**
  * Retrieve the allowed container types
  *
- * @param int $idtpl Layout number to browse
- * @param int $container Container number
- *
- * @return array Allowed container types
+ * @param int $idtpl
+ *         Layout number to browse
+ * @param int $container
+ *         Container number
+ * @return array
+ *         Allowed container types
  */
 function tplGetContainerTypes($idlay, $container) {
     global $db, $cfg, $containerinf;
@@ -268,10 +287,12 @@ function tplGetContainerTypes($idlay, $container) {
 /**
  * Retrieve the default module
  *
- * @param int $idtpl Layout number to browse
- * @param int $container Container number
- *
- * @return array Allowed container types
+ * @param int $idtpl
+ *         Layout number to browse
+ * @param int $container
+ *         Container number
+ * @return array
+ *         Allowed container types
  */
 function tplGetContainerDefault($idlay, $container) {
     global $db, $cfg, $containerinf;
@@ -286,7 +307,8 @@ function tplGetContainerDefault($idlay, $container) {
 /**
  * Preparse the layout for caching purposes
  *
- * @param int $idtpl Layout number to browse
+ * @param int $idtpl
+ *         Layout number to browse
  */
 function tplPreparseLayout($idlay) {
     global $db, $cfg, $containerinf, $lang;
@@ -322,9 +344,10 @@ function tplPreparseLayout($idlay) {
 /**
  * Duplicate a template
  *
- * @param int $idtpl ID of the template to duplicate
- *
- * @return  int  ID of the duplicated template
+ * @param int $idtpl
+ *         ID of the template to duplicate
+ * @return int
+ *         ID of the duplicated template
  */
 function tplDuplicateTemplate($idtpl) {
     global $db, $client, $lang, $cfg, $sess, $auth;
@@ -344,7 +367,7 @@ function tplDuplicateTemplate($idtpl) {
     // Copy template
     $templateColl = new cApiTemplateCollection();
     $newTemplate = $templateColl->copyItem($template, array(
-    	'idtplcfg' => $newidtplcfg,
+        'idtplcfg' => $newidtplcfg,
         'name' => sprintf(i18n("%s (Copy)"), $template->get('name')),
         'author' => cSecurity::toString($auth->auth['uname']),
         'created' => date('Y-m-d H:i:s'),
@@ -386,9 +409,10 @@ function tplDuplicateTemplate($idtpl) {
 /**
  * Checks if a template is in use
  *
- * @param int $idtpl Template ID
- *
- * @return bool is template in use
+ * @param int $idtpl
+ *         Template ID
+ * @return bool
+ *         is template in use
  */
 function tplIsTemplateInUse($idtpl) {
     global $cfg, $client, $lang;
@@ -434,9 +458,10 @@ function tplIsTemplateInUse($idtpl) {
 /**
  * Get used datas if a template is in use
  *
- * @param int $idtpl Template ID
- *
- * @return array - category name, article name
+ * @param int $idtpl
+ *         Template ID
+ * @return array
+ *         category name, article name
  */
 function tplGetInUsedData($idtpl) {
     global $cfg, $client, $lang;
@@ -497,11 +522,13 @@ function tplGetInUsedData($idtpl) {
 /**
  * Copies a complete template configuration
  *
- * @param int $idtplcfg Template Configuration ID
- * @return int new template configuration ID
+ * @param int $idtplcfg
+ *         Template Configuration ID
+ * @return int
+ *         new template configuration ID
  */
 function tplcfgDuplicate($idtplcfg) {
-	global $auth;
+    global $auth;
 
     $templateConfig = new cApiTemplateConfiguration(cSecurity::toInteger($idtplcfg));
     if (!$templateConfig->isLoaded()) {
@@ -530,16 +557,18 @@ function tplcfgDuplicate($idtplcfg) {
     return $newidtplcfg;
 }
 
-/*
+/**
  * This function fills in modules automatically using this logic:
  *
  * - If the container mode is fixed, insert the named module (if exists)
  * - If the container mode is mandatory, insert the "default" module (if exists)
  *
- * TODO: The default module is only inserted in mandatory mode if the container
- *       is empty. We need a better logic for handling "changes".
+ * @todo The default module is only inserted in mandatory mode if the container
+ *        is empty. We need a better logic for handling "changes".
+ *
+ * @param int $idtpl
+ * @return boolean
  */
-
 function tplAutoFillModules($idtpl) {
     global $cfg, $db_autofill, $containerinf, $_autoFillcontainerCache;
 
@@ -622,9 +651,11 @@ function tplAutoFillModules($idtpl) {
 /**
  * Takes over send container configuration data, stores send data (via POST) by article
  * or template configuration in container configuration table.
+ *
  * @param int $idtpl
- * @param int  $idtplcfg
- * @param array $postData  Usually $_POST
+ * @param int $idtplcfg
+ * @param array $postData
+ *         Usually $_POST
  */
 function tplProcessSendContainerConfiguration($idtpl, $idtplcfg, array $postData) {
 

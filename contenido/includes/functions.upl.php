@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the CONTENIDO upload functions.
  *
@@ -12,6 +13,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.file.php');
@@ -20,10 +22,13 @@ cInclude('includes', 'functions.file.php');
  * Function reduces long path names and creates a dynamic tooltipp which shows
  * the full path name on mouseover
  *
- * @param string $sDisplayPath Original filepath
- * @param int $iLimit Limit of chars which were displayed directly. If the path
- *        string is shorter there will be no tooltipp
- * @return string Contains short path name and tooltipp if neccessary
+ * @param string $sDisplayPath
+ *         Original filepath
+ * @param int $iLimit
+ *         Limit of chars which were displayed directly.
+ *         If the path string is shorter there will be no tooltip
+ * @return string
+ *         Contains short path name and tooltipp if neccessary
  */
 function generateDisplayFilePath($sDisplayPath, $iLimit) {
     $sDisplayPath = (string) $sDisplayPath;
@@ -63,13 +68,18 @@ function generateDisplayFilePath($sDisplayPath, $iLimit) {
  * Parses the directory recursively and
  * collects informations about found subdirectories.
  *
- * @param string $sCurrentDir Directory to parse
- * @param string $sStartDir Start directory. Will be used by recursion.
- * @param array $aFiles Files array structure. Will be used by recursion.
- * @param int $iDepth Nesting depth of found files. Will be used by recursion.
- * @param string $sPathString Path used to create full path to files. Will be
- *        used by recursion.
- * @return array Indexed arraay containing assoziative directory informations
+ * @param string $sCurrentDir
+ *         Directory to parse
+ * @param string $sStartDir
+ *         Start directory. Will be used by recursion.
+ * @param array $aFiles
+ *         Files array structure. Will be used by recursion.
+ * @param int $iDepth
+ *         Nesting depth of found files. Will be used by recursion.
+ * @param string $sPathString
+ *         Path used to create full path to files. Will be used by recursion.
+ * @return array
+ *         Indexed arraay containing assoziative directory informations
  */
 function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = array(), $iDepth = -1, $sPathString = '') {
     $iDepth++;
@@ -119,9 +129,9 @@ function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = arra
 /**
  * Checks if passed upload directory contains at least one file or directory
  *
+ * @todo Function name is misleading, should be renamed to uplIsEmpty
  * @param string $sDir
  * @return bool
- * @todo Function name is misleading, should be renamed to uplIsEmpty
  */
 function uplHasFiles($sDir) {
     global $client, $cfgClient;
@@ -177,7 +187,8 @@ function uplHasSubdirs($sDir) {
  * - Removes all db entries pointing to non existing upload files
  * - Syncs found files in passed path with the database
  *
- * @param string $sPath Specifies the path to scan
+ * @param string $sPath
+ *         Specifies the path to scan
  */
 function uplSyncDirectory($sPath) {
     global $cfgClient, $client, $cfg, $db;
@@ -231,7 +242,8 @@ function uplSyncDirectory($sPath) {
 /**
  * Sync database contents with DBFS
  *
- * @param string $sPath Specifies the path to scan
+ * @param string $sPath
+ *         Specifies the path to scan
  */
 function uplSyncDirectoryDBFS($sPath) {
     global $cfgClient, $client, $cfg, $db;
@@ -270,10 +282,11 @@ function uplSyncDirectoryDBFS($sPath) {
 /**
  * Creates a upload directory, either in filesystem or in dbfs.
  *
- * @param string $sPath Path to directory to create, either path from client
- *        upload
- *        directory or a dbfs path
- * @param string $sName Name of directory to create
+ * @param string $sPath
+ *         Path to directory to create.
+ *         Either path from client upload directory or a dbfs path.
+ * @param string $sName
+ *         Name of directory to create
  * @return string|void
  *         value of filemode as string ('0702') or nothing
  */
@@ -318,7 +331,8 @@ function uplmkdir($sPath, $sName) {
  * @param string $sOldName
  * @param string $sNewName
  * @param string $sParent
- * @throws cException if the upload path can not be renamed
+ * @throws cException
+ *         if the upload path can not be renamed
  */
 function uplRenameDirectory($sOldName, $sNewName, $sParent) {
     global $cfgClient, $client, $cfg, $db;
@@ -363,7 +377,8 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent) {
  * @param int $iLevel
  * @param string $sParent
  * @param int $iRenameLevel
- * @return array List of invalid directories
+ * @return array
+ *         List of invalid directories
  */
 function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $sParent = '', $iRenameLevel = 0) {
     $aInvalidDirectories = array();
@@ -419,9 +434,11 @@ function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $s
 /**
  * Collects informations about all available dbfs directories stored in TreeItem
  *
- * @param string $directory Not used at te moment!
+ * @param string $directory
+ *         Not used at the moment!
  * @param TreeItem $oRootItem
- * @param int $level Not used at te moment!
+ * @param int $level
+ *         Not used at the moment!
  */
 function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $client) {
     $dbfs = new cApiDbfsCollection();
@@ -473,8 +490,10 @@ function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $c
 /**
  * Returns thumbnail for a specific upload file
  *
- * @param string $sFile Filename to retrieve the thumbnail for
- * @param int $iMaxSize Thumb dimension (size of with and heigth)
+ * @param string $sFile
+ *         Filename to retrieve the thumbnail for
+ * @param int $iMaxSize
+ *         Thumb dimension (size of with and heigth)
  * @return string
  */
 function uplGetThumbnail($sFile, $iMaxSize) {
@@ -517,8 +536,10 @@ function uplGetThumbnail($sFile, $iMaxSize) {
 /**
  * Returns the icon for a file type
  *
- * @param string $sFile Filename to retrieve the extension for
- * @return string Icon for the file type
+ * @param string $sFile
+ *         Filename to retrieve the extension for
+ * @return string
+ *         Icon for the file type
  */
 function uplGetFileIcon($sFile) {
     global $cfg;
@@ -654,8 +675,10 @@ function uplGetFileIcon($sFile) {
 /**
  * Returns the description for a file type
  *
- * @param string $sExtension Extension to use
- * @return string Text for the file type
+ * @param string $sExtension
+ *         Extension to use
+ * @return string
+ *         Text for the file type
  */
 function uplGetFileTypeDescription($sExtension) {
     global $cfg;
@@ -825,6 +848,11 @@ function uplCreateFriendlyName($filename) {
     return $filename;
 }
 
+/**
+ *
+ * @param unknown_type $searchfor
+ * @return multitype:number
+ */
 function uplSearch($searchfor) {
     $client = cRegistry::getClientId();
     $client = cSecurity::toInteger($client);

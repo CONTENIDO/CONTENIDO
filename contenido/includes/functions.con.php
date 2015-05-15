@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Defines the 'con' related functions in CONTENIDO
  *
@@ -13,6 +14,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // Compatibility: Include new functions.con2.php
@@ -43,7 +45,8 @@ cInclude('includes', 'functions.con2.php');
  * @param unknown_type $searchable
  * @param unknown_type $sitemapprio
  * @param unknown_type $changefreq
- * @return int Id of the new article
+ * @return int
+ *         Id of the new article
  */
 function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort, $keyart = 0, $searchable = 1, $sitemapprio = 0.5, $changefreq = '') {
     global $client, $lang, $auth, $urlname, $page_title;
@@ -67,7 +70,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
     if (!is_array($idcatnew)) {
         $idcatnew[0] = 0;
     }
-    
+
     $versioning = new cContentVersioning();
     // Create article entry
     $oArtColl = new cApiArticleCollection();
@@ -179,9 +182,9 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
         $oArtLang->set('dateend', $dateend);
         $oArtLang->store();
     }
-	
+
     $versioningState = $versioning->getState();
-    
+
     switch ($versioningState) {
         case 'simple':
         case 'advanced':
@@ -211,10 +214,10 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
                 'sitemapprio' => $sitemapprio,
                 'changefreq' => $changefreq
             );
-            
-            $versioning->createArticleLanguageVersion($parameters);			
+
+            $versioning->createArticleLanguageVersion($parameters);
             break;
-        case 'disabled': 
+        case 'disabled':
         default:
             break;
     }
@@ -223,8 +226,8 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
 }
 
 /**
- * Edit an existing article; create a version if versioning state 
- * is simple or advanced
+ * Edit an existing article.
+ * Create a version if versioning state is simple or advanced.
  *
  * @param int $idcat
  * @param int $idcatnew
@@ -248,6 +251,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
  * @param unknown_type $searchable
  * @param unknown_type $sitemapprio
  * @param unknown_type $changefreq
+ * @return int|void
  */
 function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $published, $artsort, $keyart = 0, $searchable = 1, $sitemapprio = -1, $changefreq = 'nothing') {
     global $client, $lang, $redirect, $redirect_url, $external_redirect, $perm;
@@ -258,25 +262,25 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     global $timemgmt;
     // CON-2134 check admin permission
     $aAuthPerms = explode(',', $auth->auth['perm']);
-    
+
     $admin = false;
     if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
         $admin = true;
     }
     $oArtLang = new cApiArticleLanguage($idartlang);
     $locked = (int) $oArtLang->get('locked');
-    
+
     // abort editing if article is locked and user user no admin
     if (1 === $locked
         && false === $admin) {
             return $idart;
     }
-    
+
     // Add slashes because single quotes will crash the db
     $page_title = addslashes($page_title);
     $title = stripslashes($title);
     $redirect_url = stripslashes($redirect_url);
-    
+
     $urlname = (trim($urlname) == '')? trim($title) : trim($urlname);
     $usetimemgmt = ((int) $timemgmt == 1)? 1 : 0;
     if ($timemgmt == '1' && (($datestart == '' && $dateend == '') || ($datestart == '0000-00-00 00:00:00' && $dateend == '0000-00-00 00:00:00'))) {
@@ -295,10 +299,10 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     if (!$artLang->isLoaded()) {
         return;
     }
-	
-	// Get idtplcfg
-    $idTplCfg = $artLang->get('idtplcfg'); 
-    
+
+    // Get idtplcfg
+    $idTplCfg = $artLang->get('idtplcfg');
+
     // Get all idcats that contain art
     $oCatArtColl = new cApiCategoryArticleCollection();
     $aCatsForArt = $oCatArtColl->getCategoryIdsByArticleId($idart);
@@ -340,7 +344,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     if ($title == '') {
         $title = '--- ' . i18n('Default title') . ' ---';
     }
-    
+
     $versioning = new cContentVersioning();
     $versioningState = $versioning->getState();
 
@@ -379,7 +383,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
                     $artLang->set('published', date('Y-m-d H:i:s'));
                     $artLang->set('publishedby', $author);
                 }
-                
+
                 $artLang->set('datestart', $datestart);
                 $artLang->set('dateend', $dateend);
                 $artLang->set('time_move_cat', $time_move_cat);
@@ -390,7 +394,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
             // Update idtplcfg
             if (!empty($newIdTplCfg) && $idTplCfg != $newIdTplCfg) {
                 $artLang->set('idtplcfg', $newIdTplCfg);
-            }	
+            }
 
             $artLang->store();
         case 'advanced':
@@ -425,9 +429,9 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
                 'sitemapprio' => $sitemapprio,
                 'changefreq' => $changefreq
             );
-            
-            $versioning->createArticleLanguageVersion($parameters);            
-             			
+
+            $versioning->createArticleLanguageVersion($parameters);
+
             break;
         case 'disabled':
             $artLang->set('title', $title);
@@ -473,38 +477,42 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
             // Update idtplcfg
             if (!empty($newIdTplCfg) && $idTplCfg != $newIdTplCfg) {
                 $artLang->set('idtplcfg', $newIdTplCfg);
-            }	
+            }
 
-            $artLang->store(); 
+            $artLang->store();
         default:
             break;
-	}
-	
+    }
+
     // article has been saved, so clear the article cache
     $purge = new cSystemPurge();
     $purge->clearArticleCache($idartlang);
 }
 
 /**
- * Save a content element and generate index; create content version if 
+ * Save a content element and generate index; create content version if
  * versioning state is simple or advanced
  *
- * @param int $idartlang idartlang of the article
- * @param string $type Type of content element
- * @param int $typeid Serial number of the content element
- * @param string $value Content
- * @param bool $bForce Not used: Was a flag to use existing db instance in
- *        global scope
+ * @param int $idartlang
+ *         idartlang of the article
+ * @param string $type
+ *         Type of content element
+ * @param int $typeid
+ *         Serial number of the content element
+ * @param string $value
+ *         Content
+ * @param bool $bForce
+ *         Not used: Was a flag to use existing db instance in global scope
  */
 function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false) {
     global $auth, $cfgClient, $client, $_cecRegistry, $lang;
-    
+
     $oType = new cApiType();
     if (!$oType->loadByType($type)) {
         // Couldn't load type...
         return;
     }
-    
+
     $value = str_replace(cRegistry::getFrontendUrl(), '', $value);
     $value = stripslashes($value);
 
@@ -514,20 +522,20 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
     }
 
     $idtype = $oType->get('idtype');
-    
+
     // instantiate content
     $content = new cApiContent();
     $content->loadByArticleLanguageIdTypeAndTypeId($idartlang, $idtype, $typeid);
-    
+
     if (! $content->isLoaded()) {
         $contentColl = new cApiContentCollection();
         $content = $contentColl->create($idartlang, $idtype, $typeid, NULL, NULL);
     }
-	
+
     // save content and versions
     $versioning = new cContentVersioning();
     $versioning->prepareContentForSaving($idartlang, $content, $value);
-		
+
     // content entry has been saved, so clear the article cache
     $purge = new cSystemPurge();
     $purge->clearArticleCache($idartlang);
@@ -538,8 +546,10 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
  *
  * This is done by calling the hook 'Contenido.Content.AfterStore'.
  *
- * @param int $idartlang of article to index
- * @param int $idart of article to index
+ * @param int $idartlang
+ *         of article to index
+ * @param int $idart
+ *         of article to index
  */
 function conMakeArticleIndex($idartlang, $idart) {
 
@@ -590,15 +600,18 @@ function conMakeArticleIndex($idartlang, $idart) {
     while (false !== $chainEntry = $iterator->next()) {
         $chainEntry->execute($articleIds);
     }
-    
+
 }
 
 /**
  * Toggle the online status of an article
  *
- * @param int $idart Article Id
- * @param int $lang Language Id
- * @param int $online optional, if 0 the article will be offline, if 1 article will be online
+ * @param int $idart
+ *         Article Id
+ * @param int $lang
+ *         Language Id
+ * @param int $online [optional]
+ *         if 0 the article will be offline, if 1 article will be online
  */
 function conMakeOnline($idart, $lang, $online = -1) {
     $auth = cRegistry::getAuth();
@@ -634,7 +647,8 @@ function conMakeOnline($idart, $lang, $online = -1) {
 /**
  * Set the status from articles to online or offline.
  *
- * @param array $idarts All articles
+ * @param array $idarts
+ *         All articles
  * @param int $idlang
  * @param bool $online
  */
@@ -661,8 +675,10 @@ function conMakeOnlineBulkEditing($idarts, $idlang, $online) {
 /**
  * Toggle the lock status of an article
  *
- * @param int $idart Article Id
- * @param int $lang Language Id
+ * @param int $idart
+ *         Article Id
+ * @param int $lang
+ *         Language Id
  */
 function conLock($idart, $lang) {
     $artLang = new cApiArticleLanguage();
@@ -679,7 +695,8 @@ function conLock($idart, $lang) {
 /**
  * Freeze/Lock more articles.
  *
- * @param array $idarts All articles
+ * @param array $idarts
+ *         All articles
  * @param int $idlang
  * @param bool $lock
  */
@@ -699,8 +716,10 @@ function conLockBulkEditing($idarts, $idlang, $lock) {
 /**
  * Checks if a article is locked or not
  *
- * @param int $idart Article Id
- * @param int $lang Language Id
+ * @param int $idart
+ *         Article Id
+ * @param int $lang
+ *         Language Id
  * @return bool
  */
 function conIsLocked($idart, $lang) {
@@ -714,9 +733,12 @@ function conIsLocked($idart, $lang) {
 /**
  * Toggle the online status of a category
  *
- * @param int $idcat Id of the category
- * @param int $lang Id of the language
- * @param int $status Status of the category
+ * @param int $idcat
+ *         Id of the category
+ * @param int $lang
+ *         Id of the language
+ * @param int $status
+ *         Status of the category
  */
 function conMakeCatOnline($idcat, $lang, $status) {
     global $cfg;
@@ -749,9 +771,12 @@ function conMakeCatOnline($idcat, $lang, $status) {
  * strMakePublic in functions.str.php (conDeeperCategoriesArray instead of
  * strDeeperCategoriesArray)
  *
- * @param int $idcat Category Id
- * @param int $lang Language Id
- * @param bool $public Public status of the Article
+ * @param int $idcat
+ *         Category Id
+ * @param int $lang
+ *         Language Id
+ * @param bool $public
+ *         Public status of the Article
  */
 function conMakePublic($idcat, $lang, $public) {
     // $catLang = new cApiCategoryLanguage();
@@ -777,11 +802,12 @@ function conMakePublic($idcat, $lang, $public) {
 /**
  * Delete an Article and all other related entries
  *
- * @param int $idart Article Id
+ * @param int $idart
+ *         Article Id
  */
 function conDeleteart($idart) {
     global $lang, $_cecRegistry, $cfgClient, $client;
-    
+
     // Get article language
     $artLang = new cApiArticleLanguage();
     if (!$artLang->loadByArticleAndLanguageId($idart, $lang)) {
@@ -796,13 +822,13 @@ function conDeleteart($idart) {
 
     // Fetch idcat
     foreach ($cats as $idcat) {
-	    // Reset startidartlang
-	    if (isStartArticle($idartlang, $idcat, $lang)) {
-	        $catLang = new cApiCategoryLanguage();
-	        $catLang->loadByCategoryIdAndLanguageId($idcat, $lang);
-	        $catLang->set('startidartlang', 0);
-	        $catLang->store();
-	    }
+        // Reset startidartlang
+        if (isStartArticle($idartlang, $idcat, $lang)) {
+            $catLang = new cApiCategoryLanguage();
+            $catLang->loadByCategoryIdAndLanguageId($idcat, $lang);
+            $catLang->set('startidartlang', 0);
+            $catLang->store();
+        }
     }
 
     $contentColl = new cApiContentCollection();
@@ -870,7 +896,7 @@ function conDeleteart($idart) {
     // this will delete all keywords associated with the article
     $search = new cSearchIndex();
     $search->start($idart, array());
-    
+
     // delete articles meta tags
     $metaTagColl = new cApiMetaTagCollection();
     $metaTagColl->deleteBy('idartlang', (int) $idartlang);
@@ -881,11 +907,11 @@ function conDeleteart($idart) {
     while (($chainEntry = $iterator->next()) !== false) {
         $chainEntry->execute($idart);
     }
-    
-    // delete meta tags 
+
+    // delete meta tags
     $metaTagColl = new cApiMetaTagCollection();
     $metaTagColl->deleteBy('idartlang', (int) $idartlang);
-    
+
     // delete article, content and meta tag versions
     $contentVersionColl = new cApiContentVersionCollection();
     $contentVersionColl->deleteBy('idartlang', (int) $idartlang);
@@ -898,7 +924,8 @@ function conDeleteart($idart) {
 /**
  * Extract a number from a string
  *
- * @param string $string String var by reference
+ * @param string $string
+ *         String var by reference
  */
 function extractNumber(&$string) {
     $string = preg_replace('/[^0-9]/', '', $string);
@@ -907,8 +934,10 @@ function extractNumber(&$string) {
 /**
  * Change the template of a category
  *
- * @param int $idcat Category Id
- * @param int $idtpl Template Id
+ * @param int $idcat
+ *         Category Id
+ * @param int $idtpl
+ *         Template Id
  */
 function conChangeTemplateForCat($idcat, $idtpl) {
     global $lang;
@@ -966,8 +995,10 @@ function conChangeTemplateForCat($idcat, $idtpl) {
 /**
  * Returns category tree structure.
  *
- * @param int $client Uses global set client if not set
- * @param int $lang Uses global set language if not set
+ * @param int $client
+ *         Uses global set client if not set
+ * @param int $lang
+ *         Uses global set language if not set
  * @return array
  */
 function conFetchCategoryTree($client = false, $lang = false) {
@@ -987,8 +1018,10 @@ function conFetchCategoryTree($client = false, $lang = false) {
 /**
  * Fetch all deeper categories by a given id
  *
- * @param int $idcat Id of category
- * @return array Array with all deeper categories
+ * @param int $idcat
+ *         Id of category
+ * @return array
+ *         Array with all deeper categories
  */
 function conDeeperCategoriesArray($idcat) {
     global $client;
@@ -1002,17 +1035,25 @@ function conDeeperCategoriesArray($idcat) {
 /**
  * Recursive function to create an location string
  *
- * @param int $idcat ID of the starting category
- * @param string $seperator Seperation string
- * @param string $catStr Category location string (by reference)
- * @param bool $makeLink Create location string with links
- * @param string $linkClass Stylesheet class for the links
- * @param int $firstTreeElementToUse First navigation Level location string
- *        should be printed out (first level = 0!!)
- * @param int $uselang Id of language
+ * @param int $idcat
+ *         ID of the starting category
+ * @param string $seperator
+ *         Seperation string
+ * @param string $catStr
+ *         Category location string (by reference)
+ * @param bool $makeLink
+ *         Create location string with links
+ * @param string $linkClass
+ *         Stylesheet class for the links
+ * @param int $firstTreeElementToUse
+ *         First navigation Level location string should be printed out
+ *         (first level = 0!!)
+ * @param int $uselang
+ *         Id of language
  * @param bool $final
  * @param bool $usecache
- * @return string Location string
+ * @return string
+ *         Location string
  */
 function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false, $linkClass = '', $firstTreeElementToUse = 0, $uselang = 0, $final = true, $usecache = false) {
     global $cfg, $client, $cfgClient, $lang, $sess;
@@ -1101,8 +1142,10 @@ function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false
  * The old start
  * compatibility has already been removed...
  *
- * @param int $idcatart Idcatart of the article
- * @param bool $isstart Start article flag
+ * @param int $idcatart
+ *         Idcatart of the article
+ * @param bool $isstart
+ *         Start article flag
  */
 function conMakeStart($idcatart, $isstart) {
     global $lang;
@@ -1149,7 +1192,8 @@ function conMakeStart($idcatart, $isstart) {
 /**
  * Create code for one article in all categories
  *
- * @param int $idart Article ID
+ * @param int $idart
+ *         Article ID
  */
 function conGenerateCodeForArtInAllCategories($idart) {
     $oCatArtColl = new cApiCategoryArticleCollection();
@@ -1160,7 +1204,8 @@ function conGenerateCodeForArtInAllCategories($idart) {
 /**
  * Generate code for all articles in a category
  *
- * @param int $idcat Category ID
+ * @param int $idcat
+ *         Category ID
  */
 function conGenerateCodeForAllArtsInCategory($idcat) {
     $oCatArtColl = new cApiCategoryArticleCollection();
@@ -1181,7 +1226,8 @@ function conGenerateCodeForClient() {
 /**
  * Create code for all arts using the same layout
  *
- * @param int $idlay Layout-ID
+ * @param int $idlay
+ *         Layout Id
  */
 function conGenerateCodeForAllartsUsingLayout($idlay) {
     global $cfg;
@@ -1198,7 +1244,8 @@ function conGenerateCodeForAllartsUsingLayout($idlay) {
 /**
  * Create code for all articles using the same module
  *
- * @param int $idmod Module id
+ * @param int $idmod
+ *         Module Id
  */
 function conGenerateCodeForAllartsUsingMod($idmod) {
     $oContainerColl = new cApiContainerCollection();
@@ -1213,7 +1260,8 @@ function conGenerateCodeForAllartsUsingMod($idmod) {
 /**
  * Generate code for all articles using one template
  *
- * @param int $idtpl Template-Id
+ * @param int $idtpl
+ *         Template Id
  */
 function conGenerateCodeForAllArtsUsingTemplate($idtpl) {
     global $cfg, $client;
@@ -1287,7 +1335,8 @@ function conGenerateCodeForAllArts() {
 /**
  * Set code creation flag for one category article id to true
  *
- * @param int $idcatart Category article id
+ * @param int $idcatart
+ *         Category article id
  */
 function conSetCodeFlag($idcatart) {
     global $client, $cfgClient;
@@ -1321,7 +1370,8 @@ function conSetCodeFlag($idcatart) {
 /**
  * Set code creation flag for several category article ids to true
  *
- * @param array $idcatarts List of category article ids
+ * @param array $idcatarts
+ *         List of category article ids
  */
 function conSetCodeFlagBulkEditing(array $idcatarts) {
     global $client, $cfgClient;
@@ -1439,6 +1489,7 @@ function conMoveArticles() {
  * Copies template configuration entry from source template configuration.
  *
  * @param int $srcidtplcfg
+ * @return int|NULL
  */
 function conCopyTemplateConfiguration($srcidtplcfg) {
     $oTemplateConf = new cApiTemplateConfiguration((int) $srcidtplcfg);
@@ -1452,11 +1503,12 @@ function conCopyTemplateConfiguration($srcidtplcfg) {
 }
 
 /**
- * Copies container configuration entries from source container configuration to
- * destination container configuration.
+ * Copies container configuration entries from source container configuration
+ * to destination container configuration.
  *
  * @param int $srcidtplcfg
  * @param int $dstidtplcfg
+ * @return boolean
  */
 function conCopyContainerConf($srcidtplcfg, $dstidtplcfg) {
     $counter = 0;
@@ -1603,7 +1655,7 @@ function conCopyArticle($srcidart, $targetcat = 0, $newtitle = '', $useCopyLabel
         return false;
     }
     $idclient = $oSrcArt->get('idclient');
-    
+
     // Create destination article
     $oArtCollection = new cApiArticleCollection();
     $oNewArt = $oArtCollection->create($idclient);
@@ -1691,9 +1743,12 @@ function conGetTopmostCat($idcat, $minLevel = 0) {
 /**
  * Synchronizes an article from source language to destination language.
  *
- * @param int $idart Article id
- * @param int $srclang Source language id
- * @param int $dstlang Destination language id
+ * @param int $idart
+ *         Article id
+ * @param int $srclang
+ *         Source language id
+ * @param int $dstlang
+ *         Destination language id
  */
 function conSyncArticle($idart, $srclang, $dstlang) {
     $auth = cRegistry::getAuth();
@@ -1772,7 +1827,8 @@ function conSyncArticle($idart, $srclang, $dstlang) {
  * @param int $idartlang
  * @param int $idcat
  * @param int $idlang
- * @param cDb|NULL $db (NOT used)
+ * @param cDb $db [optional]
+ *         If specified, uses the given db object (NOT used)
  * @return bool
  */
 function isStartArticle($idartlang, $idcat, $idlang, $db = NULL) {
@@ -1783,16 +1839,19 @@ function isStartArticle($idartlang, $idcat, $idlang, $db = NULL) {
 /**
  * Returns all categories in which the given article is in.
  *
- * @param int $idart Article ID
- * @param cDb|NULL $db If specified, uses the given db object (NOT used)
- * @return array Flat array which contains all category id's
+ * @param int $idart
+ *         Article ID
+ * @param cDb $db [optional]
+ *         If specified, uses the given db object (NOT used)
+ * @return array
+ *         Flat array which contains all category id's
  */
 function conGetCategoryAssignments($idart, $db = NULL) {
 
-	// Return empty array if idart is null (or empty)
-	if (empty($idart)) {
-		return array();
-	}
+    // Return empty array if idart is null (or empty)
+    if (empty($idart)) {
+        return array();
+    }
 
     $categories = array();
     $oCatArtColl = new cApiCategoryArticleCollection();
@@ -1872,5 +1931,3 @@ function conRemoveOldCategoryArticle($idcat, $idart, $idartlang, $client, $lang)
         $oTplCfgColl->delete($oArtLang->get('idtplcfg'));
     }
 }
-
-?>

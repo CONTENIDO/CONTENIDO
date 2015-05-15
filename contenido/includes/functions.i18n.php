@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Defines the I18N CONTENIDO functions
  *
@@ -17,11 +18,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * gettext wrapper (for future extensions).
+ *
  * Usage:
  * trans('Your text which has to be translated');
  *
- * @param $string string The string to translate
- * @return string Returns the translation
+ * @param $string string
+ *         The string to translate
+ * @return string
+ *         Returns the translation
  */
 function trans($string) {
     return cI18n::__($string);
@@ -29,12 +33,16 @@ function trans($string) {
 
 /**
  * gettext wrapper (for future extensions).
+ *
  * Usage:
  * i18n('Your text which has to be translated');
  *
- * @param string $string The string to translate
- * @param string $domain The domain to look up
- * @return string Returns the translation
+ * @param string $string
+ *         The string to translate
+ * @param string $domain
+ *         The domain to look up
+ * @return string
+ *         Returns the translation
  */
 function i18n($string, $domain = 'contenido') {
     return cI18n::__($string, $domain);
@@ -43,9 +51,12 @@ function i18n($string, $domain = 'contenido') {
 /**
  * Emulates GNU gettext
  *
- * @param string $string The string to translate
- * @param string $domain The domain to look up
- * @return string Returns the translation
+ * @param string $string
+ *         The string to translate
+ * @param string $domain
+ *         The domain to look up
+ * @return string
+ *         Returns the translation
  */
 function i18nEmulateGettext($string, $domain = 'contenido') {
     return cI18n::emulateGettext($string, $domain);
@@ -54,9 +65,12 @@ function i18nEmulateGettext($string, $domain = 'contenido') {
 /**
  * Initializes the i18n stuff.
  *
- * @param string $localePath Path to the locales
- * @param string $langCode Language code to set
- * @param string $domain Language domain
+ * @param string $localePath
+ *         Path to the locales
+ * @param string $langCode
+ *         Language code to set
+ * @param string $domain
+ *         Language domain
  */
 function i18nInit($localePath, $langCode, $domain = 'contenido') {
     cI18n::init($localePath, $langCode, $domain);
@@ -65,9 +79,12 @@ function i18nInit($localePath, $langCode, $domain = 'contenido') {
 /**
  * Registers a new i18n domain.
  *
- * @param string $localePath Path to the locales
- * @param string $domain Domain to bind to
- * @return string Returns the translation
+ * @param string $localePath
+ *         Path to the locales
+ * @param string $domain
+ *         Domain to bind to
+ * @return string
+ *         Returns the translation
  */
 function i18nRegisterDomain($domain, $localePath) {
     cI18n::registerDomain($domain, $localePath);
@@ -77,8 +94,10 @@ function i18nRegisterDomain($domain, $localePath) {
  * Strips all unnecessary information from the $accept string.
  * Example: de,nl;q=0.7,en-us;q=0.3 would become an array with de,nl,en-us
  *
- * @param string $accept Comma searated list of languages to accept
- * @return array array with the short form of the accept languages
+ * @param string $accept
+ *         Comma searated list of languages to accept
+ * @return array
+ *         array with the short form of the accept languages
  */
 function i18nStripAcceptLanguages($accept) {
     $languages = explode(',', $accept);
@@ -95,8 +114,10 @@ function i18nStripAcceptLanguages($accept) {
  * Tries to match the language given by $accept to
  * one of the languages in the system.
  *
- * @param string $accept Language to accept
- * @return string The locale key for the given accept string
+ * @param string $accept
+ *         Language to accept
+ * @return string
+ *         The locale key for the given accept string
  */
 function i18nMatchBrowserAccept($accept) {
     $available_languages = i18nGetAvailableLanguages();
@@ -130,7 +151,8 @@ function i18nMatchBrowserAccept($accept) {
 /**
  * Returns the available_languages array to prevent globals.
  *
- * @return array All available languages
+ * @return array
+ *         All available languages
  */
 function i18nGetAvailableLanguages() {
     /*
@@ -401,8 +423,10 @@ function i18nGetAvailableLanguages() {
  * e.g. echo mi18n("May the %s be with %s", 'force', 'you');
  * will output: May the force be with you
  *
- * @param string $key the string to translate
- * @return string the translated string
+ * @param string $key
+ *         the string to translate
+ * @return string
+ *         the translated string
  */
 function mi18n($key) {
 
@@ -430,7 +454,7 @@ function mi18n($key) {
     // Don't trim translation, so that a string can be translated as ' '!
     // Show message only if module_translation_message mode is turn on
     if (0 === strlen($translation)) {
-    	$translation = $moduleTranslationMessage ? 'Module translation not found: ' : '';
+        $translation = $moduleTranslationMessage ? 'Module translation not found: ' : '';
         $translation .= $key;
     }
 
@@ -443,5 +467,3 @@ function mi18n($key) {
 
     return trim($translation);
 }
-
-?>

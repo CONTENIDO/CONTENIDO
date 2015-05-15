@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the CONTENIDO module functions.
  *
@@ -20,14 +21,23 @@ cInclude('includes', 'functions.con.php');
 
 /**
  * Saves changes of modules and regenerates code cache if required
- * @param int $idmod module id
- * @param string $name name of the module
- * @param string $description module description text
- * @param string $input module input content
- * @param string $output module output content
- * @param string $template template field in module's database entry (seems deprecated)
- * @param string $type module type (common values are '', 'content', 'head', 'layout', 'navigation' and 'script')
- * @return mixed idmod or nothing
+ *
+ * @param int $idmod
+ *         module id
+ * @param string $name
+ *         name of the module
+ * @param string $description
+ *         module description text
+ * @param string $input
+ *         module input content
+ * @param string $output
+ *         module output content
+ * @param string $template
+ *         template field in module's database entry (seems deprecated)
+ * @param string $type
+ *         module type (common values are '', 'content', 'head', 'layout', 'navigation' and 'script')
+ * @return mixed
+ *         idmod or nothing
  */
 function modEditModule($idmod, $name, $description, $input, $output, $template, $type = '') {
     global $db, $client, $cfgClient, $auth, $cfg, $sess, $area, $area_tree, $perm, $frame;

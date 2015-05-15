@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the CONTENIDO language functions.
  *
@@ -22,9 +23,11 @@ cInclude('includes', 'functions.str.php');
  * Edit a language
  *
  * @param int $idlang
- * @param string $langname Name of the language
+ * @param string $langname
+ *         Name of the language
  * @param string $encoding
- * @param int $active Flag for active state, 1 or 0
+ * @param int $active
+ *         Flag for active state, 1 or 0
  * @param string $direction
  * @return bool
  */
@@ -46,9 +49,12 @@ function langEditLanguage($idlang, $langname, $encoding, $active, $direction = '
 /**
  * Create a new language
  *
- * @param string $name Name of the language
- * @param int $client Id of client
- * @return int New language id
+ * @param string $name
+ *         Name of the language
+ * @param int $client
+ *         Id of client
+ * @return int
+ *         New language id
  */
 function langNewLanguage($name, $client) {
     global $cfgClient, $notification;
@@ -82,8 +88,10 @@ function langNewLanguage($name, $client) {
 /**
  * Rename a language
  *
- * @param int $idlang Id of the language
- * @param string $name Name of the language
+ * @param int $idlang
+ *         Id of the language
+ * @param string $name
+ *         Name of the language
  * @return bool
  */
 function langRenameLanguage($idlang, $name) {
@@ -98,8 +106,10 @@ function langRenameLanguage($idlang, $name) {
 /**
  * Delete a language
  *
- * @param int $iIdLang Id of the language
- * @param int $iIdClient Id of the client, uses global client id by default
+ * @param int $iIdLang
+ *         Id of the language
+ * @param int $iIdClient
+ *         Id of the client, uses global client id by default
  */
 function langDeleteLanguage($iIdLang, $iIdClient = 0) {
     global $db, $sess, $client, $cfg, $notification, $cfgClient;
@@ -270,8 +280,10 @@ function langActivateDeactivateLanguage($idlang, $active) {
  * by language id
  *
  * @param int $idlang
- * @param cDb $db Is not in use
- * @return string 'ltr' or 'rtl'
+ * @param cDb $db
+ *         Is not in use
+ * @return string
+ *         'ltr' or 'rtl'
  */
 function langGetTextDirection($idlang, $db = NULL) {
     static $oLang;
@@ -287,5 +299,3 @@ function langGetTextDirection($idlang, $db = NULL) {
     }
     return $direction;
 }
-
-?>

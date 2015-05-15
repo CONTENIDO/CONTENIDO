@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the CONTENIDO rights functions.
  *
@@ -19,13 +20,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Function checks if a language is associated with a given list of clients
  *
- * @param array $aClients - array of clients to check
- * @param int $iLang - language id which should be checked
- * @param array $aCfg - CONTENIDO configruation array (no more needed)
- * @param object $oDb - CONTENIDO database object (no more needed)
- *
- * @return boolean - status (if language id corresponds to list of clients true
- *         otherwise false)
+ * @param array $aClients
+ *         array of clients to check
+ * @param int $iLang
+ *         language id which should be checked
+ * @param array $aCfg
+ *         CONTENIDO configruation array (no more needed)
+ * @param object $oDb
+ *         CONTENIDO database object (no more needed)
+ * @return boolean
+ *         status
+ *         If language id corresponds to list of clients true otherwise false.
  */
 function checkLangInClients($aClients, $iLang, $aCfg, $oDb) {
     $oClientLanguageCollection = new cApiClientLanguageCollection();
@@ -35,12 +40,17 @@ function checkLangInClients($aClients, $iLang, $aCfg, $oDb) {
 /**
  * Duplicate rights for any element.
  *
- * @param string $area Main area name (e. g. 'lay', 'mod', 'str', 'tpl', etc.)
- * @param int $iditem ID of element to copy
- * @param int $newiditem ID of the new element
- * @param int $idlang ID of language, if passed only rights for this language
- *            will be created, otherwhise for all existing languages
- * @return bool True on success otherwhise false
+ * @param string $area
+ *         Main area name (e. g. 'lay', 'mod', 'str', 'tpl', etc.)
+ * @param int $iditem
+ *         ID of element to copy
+ * @param int $newiditem
+ *         ID of the new element
+ * @param int $idlang
+ *         ID of language, if passed only rights for this language
+ *         will be created, otherwhise for all existing languages
+ * @return bool
+ *         True on success otherwhise false
  */
 function copyRightsForElement($area, $iditem, $newiditem, $idlang = false) {
     global $perm, $auth, $area_tree;
@@ -104,11 +114,15 @@ function copyRightsForElement($area, $iditem, $newiditem, $idlang = false) {
 /**
  * Create rights for any element
  *
- * @param string $area Main area name (e. g. 'lay', 'mod', 'str', 'tpl', etc.)
- * @param int $iditem ID of new element
- * @param int $idlang ID of language, if passed only rights for this language
- *            will be created, otherwhise for all existing languages
- * @return bool True on success otherwhise false
+ * @param string $area
+ *         Main area name (e. g. 'lay', 'mod', 'str', 'tpl', etc.)
+ * @param int $iditem
+ *         ID of new element
+ * @param int $idlang
+ *         ID of language, if passed only rights for this language
+ *         will be created, otherwhise for all existing languages
+ * @return bool
+ *         True on success otherwhise false
  */
 function createRightsForElement($area, $iditem, $idlang = false) {
     global $perm, $auth, $area_tree, $client;
@@ -171,9 +185,12 @@ function createRightsForElement($area, $iditem, $idlang = false) {
 /**
  * Delete rights for any element
  *
- * @param string $area main area name
- * @param int $iditem ID of new element
- * @param int $idlang ID of lang parameter
+ * @param string $area
+ *         main area name
+ * @param int $iditem
+ *         ID of new element
+ * @param int $idlang
+ *         ID of lang parameter
  */
 function deleteRightsForElement($area, $iditem, $idlang = false) {
     global $perm, $area_tree, $client;
@@ -200,8 +217,8 @@ function deleteRightsForElement($area, $iditem, $idlang = false) {
  *
  * @todo Do we really need to add other perms, if the user/group gets the
  *       'sysadmin' permission?
- * @param bool $bAddUserToClient Flag to add current user to current client,
- *        if no client is specified.
+ * @param bool $bAddUserToClient
+ *         Flag to add current user to current client, if no client is specified.
  * @return array
  */
 function buildUserOrGroupPermsFromRequest($bAddUserToClient = false) {
@@ -273,6 +290,10 @@ function buildUserOrGroupPermsFromRequest($bAddUserToClient = false) {
     return $aPerms;
 }
 
+/**
+ *
+ * @return boolean
+ */
 function saveRights() {
     global $perm, $notification, $db, $userid;
     global $rights_list, $rights_list_old, $rights_client, $rights_lang;
@@ -330,6 +351,10 @@ function saveRights() {
 
 }
 
+/**
+ *
+ * @return boolean
+ */
 function saveGroupRights() {
     global $perm, $notification, $db, $groupid;
     global $rights_list, $rights_list_old, $rights_client, $rights_lang;
