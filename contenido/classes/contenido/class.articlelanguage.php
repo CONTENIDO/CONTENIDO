@@ -276,7 +276,7 @@ class cApiArticleLanguage extends Item {
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
             if (true === $fetchContent) {
-                $this->_getArticleContent();
+                $this->_loadArticleContent();
             }
         }
     }
@@ -307,7 +307,7 @@ class cApiArticleLanguage extends Item {
             $artLangVersion->loadArticleVersionContent();
             $contentVersion = new cApiContent();
             $oType = new cApiType();	
-            $this->loadArticleContent();
+            $this->_loadArticleContent();
 
             // get all Contents/Versions
             $mergedContent = array();
@@ -377,12 +377,11 @@ class cApiArticleLanguage extends Item {
      *         Article id
      * @param int $idlang
      *         Language id
-     * @param bool $fetchContent [optional]
      *         Flag to fetch content
      * @return bool
      *         true on success, otherwhise false
      */
-    public function loadByArticleAndLanguageId($idart, $idlang, $fetchContent = false) {
+    public function loadByArticleAndLanguageId($idart, $idlang) {
         $result = true;
         if (!$this->isLoaded()) {
             $aProps = array(
@@ -397,10 +396,6 @@ class cApiArticleLanguage extends Item {
                 $idartlang = $this->_getIdArtLang($idart, $idlang);
                 $result = $this->loadByPrimaryKey($idartlang);
             }
-        }
-
-        if (true === $fetchContent) {
-            $this->_getArticleContent();
         }
 
         return $result;
@@ -427,13 +422,25 @@ class cApiArticleLanguage extends Item {
     }
 
     /**
+     * @deprecated [2015-05-15] use _loadArticleContent
      * Load the articles content and stores it in the 'content' property of the
      * article object.
      *
      * $article->content[type][number] = value;
      */
     public function loadArticleContent() {
-        $this->_getArticleContent();
+        cDeprecated('This method is deprecated and is not needed any longer');
+    }
+
+    /**
+     * @deprecated [2015-05-15] use _loadArticleContent
+     * Load the articles content and stores it in the 'content' property of the
+     * article object.
+     *
+     * $article->content[type][number] = value;
+     */
+    protected function _getArticleContent() {
+        cDeprecated('This method is deprecated and is not needed any longer');
     }
 
     /**
@@ -442,7 +449,7 @@ class cApiArticleLanguage extends Item {
      *
      * $article->content[type][number] = value;
      */
-    protected function _getArticleContent() {
+    protected function _loadArticleContent() {
         global $cfg;
 
         if (NULL !== $this->content) {
@@ -577,7 +584,7 @@ class cApiArticleLanguage extends Item {
      */
     public function getContent($type, $id = NULL) {
         if (NULL === $this->content) {
-            $this->_getArticleContent();
+            $this->_loadArticleContent();
         }
 
         if (empty($this->content)) {
@@ -649,6 +656,9 @@ class cApiArticleLanguage extends Item {
      * @return array
      */
     public function getContentTypes() {
+
+        $this->_loadArticleContent();
+
         if (empty($this->content)) {
             throw new cException('getContentTypes() No content loaded');
         }
