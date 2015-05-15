@@ -28,7 +28,7 @@
 
     /**
      * Group association class
-     * @class  GoupAssociation
+     * @class  GroupAssociation
      * @constructor
      * @param {Object}  options  Configuration properties as follows
      * <pre>
@@ -37,7 +37,7 @@
      *    del  (String)
      * </pre>
      */
-    Con.GoupAssociation = function(options) {
+    Con.GroupAssociation = function(options) {
 
         // #####################################################################
         // Setup and private variables
@@ -216,5 +216,19 @@
         };
 
     };
+
+    /**
+     * Goup association class
+     * @class  GoupAssociation
+     * @constructor
+     * @param {Object}  options  Configuration properties as follows
+     * <pre>
+     *    selectorForm  (String)
+     *    add  (String)
+     *    del  (String)
+     * </pre>
+     * @deprecated [2015-05-15] Use GroupAssociation class instead
+     */
+    Con.GoupAssociation = Con.GroupAssociation;
 
 })(Con, Con.$);
