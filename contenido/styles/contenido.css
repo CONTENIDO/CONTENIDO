@@ -14,8 +14,10 @@
  * @link       http: //www.contenido.org
  */
 
-@import "notifications.css"; /* @see CON-1992 */
 
+.page_system_configuration input, .page_system_configuration select {
+    box-sizing: border-box;
+}
 
 /* some reset */
 form, h1, h2, h3, h4 {
@@ -361,14 +363,89 @@ li#kontakt.welcome {
 
 /**
  * #############################################################################
- * @section system_configuration
- * @extends generic_table_form
+ * @section Notification
  */
-label.sys_config_txt_lbl {
-	padding:3px;
-	display:inline-block;
-	white-space:normal;
-	vertical-align:middle;
+.alertbox {
+    border: 1px solid;
+    border-top: 0;
+    margin-left: 260px;
+    width: 275px;
+}
+.alertbox_line {
+    border: 1px solid;
+    width: 275px;
+}
+.alertbox_head {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 11px;
+    line-height: 30px;
+    font-weight: bold;
+    border-bottom: 1px solid;
+    padding-left: 40px;
+}
+
+.alertbox_error_color {
+    border-color: #d73211;
+    color: #d73211;
+}
+
+.alertbox_error {
+    background: #fff url(../images/icon_fatalerror.gif) no-repeat 10px 7px;
+}
+
+.alertbox_warning_color {
+    border-color: #fea513;
+    color: #fea513;
+}
+
+.alertbox_warning {
+    background: #fff url(../images/icon_warning.gif) no-repeat 10px 7px;
+}
+
+.alertbox_info_color {
+    border-color: #bfcf00;
+    color: #bfcf00;
+}
+
+.alertbox_info {
+    background: #fff url(../images/info.gif) no-repeat 10px 7px;
+}
+.alertbox_message {
+    padding: 5px 20px 10px 10px;
+    line-height: 1.9em;
+}
+
+.notify_general {
+    border: 1px solid;
+    padding: 4px 4px 4px 22px;
+    background: no-repeat 2px 2px;
+}
+
+.notify_default {
+    border-color: #060;
+    background-image: url(../images/but_ok.gif);
+    color: #435d06;
+}
+
+.notify_info {
+    border-color: #bfcf00;
+    background-image: url(../images/but_ok.gif);
+    color: #435d06;
+    display: inline-block;
+}
+
+.notify_warning {
+    border-color: #fea513;
+    background-image: url(../images/icon_warning.gif);
+    color: #fea513;
+    display: inline-block;
+}
+
+.notify_error {
+    border-color: #d73211;
+    background-image: url(../images/icon_fatalerror.gif);
+    color: #d73211;
+    display: inline-block;
 }
 
 /**
@@ -829,6 +906,13 @@ input.textbox_readonly {
  * @section Foldingrow
  */
 
+/* @deprecated, not in use anymore */
+div.folding_content {
+    border-right: 1px solid #b3b3b3;
+    padding-left: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
 td.foldingrow {
     background-color: #e2e2e2;
     border-top: 1px solid #b3b3b3;
@@ -886,14 +970,14 @@ td#m197 {
  * #############################################################################
  * @section Subnavigation
  */
-div.navcontainer {
+div#navcontainer {
     height: 28px;
     background-color: #e2e2e2;
     border-bottom: 1px solid #b3b3b3;
     text-align: left;
 }
 
-div.navcontainer ul#navlist {
+div#navcontainer ul#navlist {
     background-color: #e2e2e2;
     padding: 12px 0 3px 0;
     margin-left: 0;
@@ -901,7 +985,7 @@ div.navcontainer ul#navlist {
     margin-bottom: 0;
 }
 
-div.navcontainer ul#navlist li {
+div#navcontainer ul#navlist li {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -909,7 +993,7 @@ div.navcontainer ul#navlist li {
     border: none;
 }
 
-div.navcontainer ul#navlist li a {
+div#navcontainer ul#navlist li a {
     padding: 2px .6em 3px .5em;
     margin-left: 3px;
     text-decoration: none;
@@ -920,13 +1004,13 @@ div.navcontainer ul#navlist li a {
     cursor: pointer;
 }
 
-div.navcontainer ul#navlist li a:hover {
+div#navcontainer ul#navlist li a:hover {
     color: #0060b1;
 }
 
-div.navcontainer ul#navlist li a.current,
-div.navcontainer ul#navlist li a:link.current,
-div.navcontainer ul#navlist li a:visited.current {
+div#navcontainer ul#navlist li a.current,
+div#navcontainer ul#navlist li a:link.current,
+div#navcontainer ul#navlist li a:visited.current {
     background-color: white;
     border: 1px solid #b3b3b3;
     border-bottom-color: white;
@@ -940,15 +1024,14 @@ div.navcontainer ul#navlist li a:visited.current {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
-* html div.navcontainer ul#navlist li a.current {
+* html div#navcontainer ul#navlist li a.current {
     position: relative;
 }
 
-div.navcontainer ul#navlist li a:link,
-div.navcontainer ul#navlist li a:visited {
+div#navcontainer ul#navlist li a:link,
+div#navcontainer ul#navlist li a:visited {
     color: black;
 }
-
 .categorypath {
     font-family: verdana;
     font-size: 10px;
