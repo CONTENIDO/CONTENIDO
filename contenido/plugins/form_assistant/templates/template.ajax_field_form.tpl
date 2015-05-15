@@ -166,6 +166,8 @@ CSS CLASSES
         <option{if false !== $selected} selected="selected"{/if}>{$cssClass}</option>
         {/foreach}
     </select>
+    <label for="css_class"></label>
+    <input type="button" id="deselectCss" value="{$trans.deleteAll}" >
 </div>
 {/if}
 

@@ -16,7 +16,6 @@
 
 @import "notifications.css"; /* @see CON-1992 */
 
-
 /* some reset */
 form, h1, h2, h3, h4 {
     margin: 0;
@@ -365,10 +364,10 @@ li#kontakt.welcome {
  * @extends generic_table_form
  */
 label.sys_config_txt_lbl {
-	padding:3px;
-	display:inline-block;
-	white-space:normal;
-	vertical-align:middle;
+    padding:3px;
+    display:inline-block;
+    white-space:normal;
+    vertical-align:middle;
 }
 
 /**

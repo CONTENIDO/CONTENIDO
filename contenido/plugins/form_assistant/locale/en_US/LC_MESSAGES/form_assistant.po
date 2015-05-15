@@ -145,7 +145,7 @@ msgid "COLUMN_NAME"
 msgstr "column name"
 
 #: classes/class.pifa.ajax_handler.php:207
-#: classes/class.pifa.ajax_handler.php:687
+#: classes/class.pifa.ajax_handler.php:689
 msgid "LABEL"
 msgstr "label"
 
@@ -182,12 +182,12 @@ msgid "GENERAL"
 msgstr "general"
 
 #: classes/class.pifa.ajax_handler.php:216
-#: classes/class.pifa.ajax_handler.php:534 classes/class.pifa.gui.php:700
+#: classes/class.pifa.ajax_handler.php:536 classes/class.pifa.gui.php:700
 msgid "OBLIGATORY"
 msgstr "obligatory"
 
 #: classes/class.pifa.ajax_handler.php:217
-#: classes/class.pifa.ajax_handler.php:688
+#: classes/class.pifa.ajax_handler.php:690
 msgid "VALUE"
 msgstr "value"
 
@@ -216,24 +216,28 @@ msgstr "URI"
 msgid "EXTERNAL_OPTIONS_DATASOURCE"
 msgstr "external options datasource"
 
-#: classes/class.pifa.ajax_handler.php:283 classes/class.pifa.field.php:931
+#: classes/class.pifa.ajax_handler.php:224
+msgid "DELETE_CSS_CLASSES"
+msgstr "Deselect all"
+
+#: classes/class.pifa.ajax_handler.php:284 classes/class.pifa.field.php:931
 #: classes/class.pifa.field.php:1027 classes/class.pifa.form.php:1045
 msgid "FIELD_LOAD_ERROR"
 msgstr "could not load field"
 
-#: classes/class.pifa.ajax_handler.php:488
+#: classes/class.pifa.ajax_handler.php:490
 msgid "FIELD_STORE_ERROR"
 msgstr "could not store field: %s"
 
-#: classes/class.pifa.ajax_handler.php:532 classes/class.pifa.gui.php:698
+#: classes/class.pifa.ajax_handler.php:534 classes/class.pifa.gui.php:698
 msgid "EDIT"
 msgstr "edit"
 
-#: classes/class.pifa.ajax_handler.php:533 classes/class.pifa.gui.php:699
+#: classes/class.pifa.ajax_handler.php:535 classes/class.pifa.gui.php:699
 msgid "DELETE"
 msgstr "delete"
 
-#: classes/class.pifa.ajax_handler.php:553
+#: classes/class.pifa.ajax_handler.php:555
 msgid "MISSING_IDFIELD"
 msgstr "no given field"
 
