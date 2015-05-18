@@ -89,8 +89,8 @@ INSERT INTO `!PREFIX!_type` (idtype, `type`, code, description, status, author, 
 INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10103, 10061, '', 'pifa_show_form', '', '', 1);
 INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10104, 10061, '', 'pifa_store_form', '', '', 1);
 INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10105, 10061, '', 'pifa_delete_form', '', '', 1);
-INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10106, 10061, '', 'pifa_show_fields', '', '', 1);
-INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10107, 10061, '', 'pifa_show_data', '', '', 1);
+INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10106, 10062, '', 'pifa_show_fields', '', '', 1);
+INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10107, 10063, '', 'pifa_show_data', '', '', 1);
 INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10108, 10064, '', 'pifa_get_field_form', '', '', 1);
 INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10109, 10064, '', 'pifa_post_field_form', '', '', 1);
 INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10110, 10064, '', 'pifa_reorder_fields', '', '', 1);
