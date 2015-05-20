@@ -7,7 +7,7 @@
 }
 
 .cms_linkeditor {
-    width: 430px;
+    width: 550px;
 }
 
 .cms_linkeditor .directoryFile {
@@ -21,7 +21,7 @@
     color: #000;
     font-size: 11px;
     height: 170px;
-    width: 210px;
+    width: 330px;
 }
 
 .cms_linkeditor #basic-settings {
