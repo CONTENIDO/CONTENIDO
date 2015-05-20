@@ -474,7 +474,7 @@ class cContentVersioning {
         $author = $auth->auth['uname'];
 
         // through a contenido bug filelists save each of their changes multiple times. 
-        // therefor its nececcary to check if the same change already has been saved and
+        // therefore its nececcary to check if the same change already has been saved and
         // prevent multiple savings
         static $savedTypes = array ();
         $isAlreadySaved = false;
