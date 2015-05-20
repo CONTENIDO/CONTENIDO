@@ -266,18 +266,13 @@ class cApiArticleLanguage extends Item {
      *
      * @param mixed $mId [optional]
      *         Specifies the ID of item to load
-     * @param bool $fetchContent [optional]
-     *         Flag to fetch content
      */
-    public function __construct($mId = false, $fetchContent = false) {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['art_lang'], 'idartlang');
         $this->setFilters(array(), array());
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
-            if (true === $fetchContent) {
-                $this->_loadArticleContent();
-            }
         }
     }
 	
@@ -441,11 +436,12 @@ class cApiArticleLanguage extends Item {
      */
     protected function _getArticleContent() {
         cDeprecated('This method is deprecated and is not needed any longer');
+        $this->_loadArticleContent();
     }
 
     /**
      * Load the articles content and stores it in the 'content' property of the
-     * article object.
+     * article object, whenever it is needed to get the content of the article.
      *
      * $article->content[type][number] = value;
      */
@@ -656,13 +652,11 @@ class cApiArticleLanguage extends Item {
      * @return array
      */
     public function getContentTypes() {
-
-        $this->_loadArticleContent();
-
         if (empty($this->content)) {
-            throw new cException('getContentTypes() No content loaded');
+            $this->_loadArticleContent();
         }
-        return array_keys($this->content);
+
+        return (is_array($this->content)) ? array_keys($this->content) : array();
     }
 
     /**
