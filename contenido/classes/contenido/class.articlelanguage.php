@@ -275,7 +275,7 @@ class cApiArticleLanguage extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
-	
+
     /**
      * Create a version of this article language with its contents/metatags;
      * the version is the new editable articlel language version
@@ -298,10 +298,10 @@ class cApiArticleLanguage extends Item {
         $artLangVersionColl = new cApiArticleLanguageVersionCollection();
         $artLangVersion = $artLangVersionColl->create($parameters);
         
-        if ($type == 'content' || $type == 'complete') {                    
+        if ($type == 'content' || $type == 'complete') {
             $artLangVersion->loadArticleVersionContent();
             $contentVersion = new cApiContent();
-            $oType = new cApiType();	
+            $oType = new cApiType();
             $this->_loadArticleContent();
 
             // get all Contents/Versions
@@ -335,8 +335,8 @@ class cApiArticleLanguage extends Item {
                                 'author' => $this->get('author'),
                                 'deleted' => 1
                         );
-                        $contentVersionColl = new cApiContentVersionCollection();					
-                        $contentVersionColl->create($contentParameters);				
+                        $contentVersionColl = new cApiContentVersionCollection();
+                        $contentVersionColl->create($contentParameters);
                     }
                 }
             }
@@ -425,6 +425,7 @@ class cApiArticleLanguage extends Item {
      */
     public function loadArticleContent() {
         cDeprecated('This method is deprecated and is not needed any longer');
+        $this->_loadArticleContent();
     }
 
     /**
@@ -556,7 +557,7 @@ class cApiArticleLanguage extends Item {
      * 'con_type'.
      * Default content types are:
      *
-     * NOTE: Parameter is case insesitive, you can use html or cms_HTML or
+     * NOTE: Parameter is case insensitive, you can use html or cms_HTML or
      * CmS_HtMl.
      * Your don't need start with cms, but it won't crash if you do so.
      *

@@ -36,7 +36,7 @@ $data = cSecurity::toString($_REQUEST['data']);
 
 if (($action == 20 || $action == 10) && $_REQUEST['filelist_action'] != 'store') {
     if ($data != '') {
-        $data = explode('||', substr($data, 0, -2));		
+        $data = explode('||', substr($data, 0, -2));
         foreach ($data as $value) {
             $value = explode('|', $value);
             if ($value[3] == '%$%EMPTY%$%') {
@@ -46,7 +46,7 @@ if (($action == 20 || $action == 10) && $_REQUEST['filelist_action'] != 'store')
             }
             conSaveContentEntry($value[0], 'CMS_' . $value[1], $value[2], $value[3]);
         }
-       
+
         $versioning = new cContentVersioning();
         if ($versioning->getState() != 'advanced') {
             conMakeArticleIndex($idartlang, $idart);
