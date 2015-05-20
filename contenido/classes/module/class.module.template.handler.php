@@ -143,7 +143,7 @@ class cModuleTemplateHandler extends cModuleHandler {
     private $_actionDelete = 'htmltpl_delete';
 
     /**
-     * In template we test if we have premission for htmltpl.
+     * In template we test if we have permission for htmltpl.
      *
      * @var string
      */

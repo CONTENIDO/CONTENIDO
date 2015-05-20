@@ -34,7 +34,7 @@ $workflow = $workflows->loadItem($idworkflow);
 if ($action == "workflow_save") {
     if ($idworkflow == "-1") {
         $workflow = $workflows->create();
-        $page->displaOk(i18n("Created new workflow successfully!", 'workflow'));
+        $page->displayOk(i18n("Created new workflow successfully!", 'workflow'));
     } elseif ($idworkflow > 0) {
         $page->displayOk(i18n("Saved changes successfully!", 'workflow'));
     }

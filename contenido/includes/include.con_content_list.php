@@ -272,8 +272,8 @@ if (($action == 'savecontype' || $action == 10)) {
                 . " GROUP BY idtype, typeid)";
         $contentIds = $conVersionColl->getIdsByWhereClause($where);
     }
-    
-    // iterate through content and add get data    
+
+    // iterate through content and add get data
     foreach ($contentIds as $contentId) {
         // load content object
         if ($_POST['versionnumber'] == 'current' || $_POST['versionnumber'] == 'undefined' 
@@ -294,7 +294,7 @@ if (($action == 'savecontype' || $action == 10)) {
             }
         }
     }
-    
+
     // output data as xml
     header('Content-Type: application/xml;');
     $filename = str_replace(" ", "_", $cApiArticleLanguage->get('title'));
@@ -652,7 +652,7 @@ switch ($versioningState) {
         // Create Content Version Option Elements
         foreach ($optionElementParameters AS $key => $value) {
             $lastModified = $versioning->getTimeDiff($value[key($value)]);
-            $optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));            
+            $optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));
                 if (key($value) == $temp_id) {
                     $optionElement->setSelected(true);
                 }
