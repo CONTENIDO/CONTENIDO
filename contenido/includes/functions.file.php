@@ -23,6 +23,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
+ * @deprecated [2015-05-21] This methos is not longer supported (no replacement)
  * Function removes file meta information from database (used when a file is
  * deleted)
  *
@@ -37,6 +38,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 function removeFileInformation($iIdClient, $sFilename, $sType, $oDb) {
     global $cfg;
+
+    cDeprecated('This method is deprecated and is not needed any longer');
 
     if (!isset($oDb) || !is_object($oDb)) {
         $oDb = cRegistry::getDb();
@@ -53,6 +56,7 @@ function removeFileInformation($iIdClient, $sFilename, $sType, $oDb) {
 }
 
 /**
+ * @deprecated [2015-05-21] This method is not longer supported (no replacement)
  * Function returns file meta information from database (used when files were
  * versionned or description is displayed)
  *
@@ -76,6 +80,8 @@ function removeFileInformation($iIdClient, $sFilename, $sType, $oDb) {
  */
 function getFileInformation($iIdClient, $sFilename, $sType, $oDb) {
     global $cfg;
+
+    cDeprecated('This method is deprecated and is not needed any longer');
 
     if (!isset($oDb) || !is_object($oDb)) {
         $oDb = cRegistry::getDb();
@@ -104,6 +110,7 @@ function getFileInformation($iIdClient, $sFilename, $sType, $oDb) {
 }
 
 /**
+ * @deprecated [2015-05-21] This method is not longer supported (no replacement)
  * Function updates file meta information (used when files were created or
  * edited).
  * It creates new database record for file meta informations if database record
@@ -127,6 +134,8 @@ function getFileInformation($iIdClient, $sFilename, $sType, $oDb) {
  */
 function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescription, $oDb, $sFilenameNew = '') {
     global $cfg;
+
+    cDeprecated('This method is deprecated and is not needed any longer');
 
     if (!isset($oDb) || !is_object($oDb)) {
         $oDb = cRegistry::getDb();
@@ -182,6 +191,7 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
 }
 
 /**
+ * @deprecated [2015-05-21] use cFileHandler::getExtension
  * Returns the filetype (extension).
  *
  * @param string $filename
@@ -190,10 +200,12 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
  *         Filetype
  */
 function getFileType($filename) {
+	cDeprecated('This method is deprecated and is not needed any longer');
     return cFileHandler::getExtension($filename);
 }
 
 /**
+ * @deprecated [2015-05-21] use cDirHandler::getDirectorySize
  * Returns the size of a directory.
  * AKA the combined filesizes of all files within it.
  * Note that this function uses filesize(). There could be problems with files
@@ -207,21 +219,12 @@ function getFileType($filename) {
  *         false in case of an error or the size
  */
 function getDirectorySize($sDirectory, $bRecursive = false) {
-    $ret = 0;
-    $files = scanDirectory($sDirectory, $bRecursive);
-    if ($files === false) {
-        return false;
-    }
-
-    foreach ($files as $file) {
-        $temp = cFileHandler::info($file);
-        $ret += $temp['size'];
-    }
-
-    return $ret;
+    cDeprecated('This method is deprecated and is not needed any longer');
+    return cDirHandler::getDirectorySize($sDirectory, $bRecursive);
 }
 
 /**
+ * @deprecated [2015-05-21] use cDirHandler::read with parameter fileOnly true
  * Scans passed directory and collects all found files
  *
  * @param string $sDirectory
@@ -230,7 +233,7 @@ function getDirectorySize($sDirectory, $bRecursive = false) {
  *         array of found files (full path and name) or false
  */
 function scanDirectory($sDirectory, $bRecursive = false) {
-    if (substr($sDirectory, strlen($sDirectory) - 1, 1) == '/') {
+    /*if (substr($sDirectory, strlen($sDirectory) - 1, 1) == '/') {
         $sDirectory = substr($sDirectory, 0, strlen($sDirectory) - 1);
     }
 
@@ -264,10 +267,14 @@ function scanDirectory($sDirectory, $bRecursive = false) {
         array_push($closedDirs, $sDirectory);
     }
 
-    return $aFiles;
+    return $aFiles;*/
+
+	cDeprecated('This method is deprecated and is not needed any longer');
+	return cFileHandler::read($sDirectory, $bRecursive, false, true);
 }
 
 /**
+ * @deprecated [2015-05-21] use cDirHandler::recursiveCopy
  * Copies source directory to destination directory.
  *
  * @param string $sourcePath
@@ -280,37 +287,9 @@ function scanDirectory($sDirectory, $bRecursive = false) {
  *         $options['force_overwrite'] (bool) Flag to overwrite existing
  *             destination file, default value is false
  *         </pre>
+ * @return cDirHandler::recursiceCopy method (bool)
  */
 function recursiveCopy($sourcePath, $destinationPath, $mode = 0777, array $options = array()) {
-    if (!is_dir($destinationPath)) {
-        mkdir($destinationPath, $mode);
-    }
-
-    $forceOverwrite = (isset($options['force_overwrite'])) ? (bool) $options['force_overwrite'] : false;
-    $oldPath = getcwd();
-
-    if (is_dir($sourcePath)) {
-        chdir($sourcePath);
-
-        if (false !== ($handle = cDirHandler::read('.'))) {
-            foreach ($handle as $file) {
-                if (cFileHandler::fileNameIsDot($file) === false && is_dir($file)) {
-                    // Copy directory
-                    recursiveCopy($sourcePath . $file . '/', $destinationPath . $file . '/', $mode, $options);
-                    chdir($sourcePath);
-                } elseif (cFileHandler::exists($sourcePath . $file)) {
-                    // Copy file
-                    if (cFileHandler::exists($destinationPath . $file)) {
-                        if ($forceOverwrite) {
-                            copy($sourcePath . $file, $destinationPath . $file);
-                        }
-                    } else {
-                        copy($sourcePath . $file, $destinationPath . $file);
-                    }
-                }
-            }
-        }
-    }
-
-    chdir($oldPath);
+    cDeprecated('This method is deprecated and is not needed any longer');
+    return cDirHandler::recursiveCopy($sourcePath, $destinationPath, $mode);
 }

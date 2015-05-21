@@ -22,6 +22,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
+ * @deprecated [2015-05-21] This method is not longer supported (no replacement)
  * Seeks through the category tree and returns the node on a specific level.
  *
  * Example:
@@ -48,6 +49,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 function cApiCatGetLevelNode($idcat, $minLevel = 0) {
     global $cfg, $client, $lang;
+
+    cDeprecated('This method is deprecated and is not needed any longer');
 
     $db = cRegistry::getDb();
 

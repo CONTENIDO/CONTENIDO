@@ -1,4 +1,5 @@
 /**
+ * @deprecated [2015-05-21] This file is not longer supported
  * infoBox Class
  *
  * Displays some text somewhere =/
@@ -9,6 +10,9 @@ function infoBox(objId) {
     this.oldText = this.obj.innerHTML;
 }
 
+/**
+ * @deprecated [2015-05-21] This file is not longer supported
+ */
 infoBox.prototype.show = function (text) {
     this.obj.innerHTML = text || this.oldText;
 };

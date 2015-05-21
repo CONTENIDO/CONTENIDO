@@ -78,7 +78,7 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage')) {
 
         // There is a need for renaming file
         if ($sFileName != $sHTMLName) {
-            if (getFileType($sHTMLName) != 'html' and strlen(stripslashes(trim($sHTMLName))) > 0) {
+            if (cFileHandler::getExtension($sHTMLName) != 'html' and strlen(stripslashes(trim($sHTMLName))) > 0) {
                 $sHTMLName = stripslashes($sHTMLName) . '.html';
             }
 

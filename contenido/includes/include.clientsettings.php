@@ -120,17 +120,17 @@ if ($aItems !== false) {
             $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
 
            	if (strlen($aValue['type']) > 35) {
-                $sShort = cApiStrTrimHard($aValue['type'], 35);
+                $sShort = cString::trimHard($aValue['type'], 35);
                 $aValue['type'] = sprintf($sMouseoverTemplate, $aValue['type'], $sShort);
             }
 
             if (strlen($aValue['name']) > 35) {
-            	$sShort = cApiStrTrimHard($aValue['name'], 35);
+            	$sShort = cString::trimHard($aValue['name'], 35);
             	$aValue['name'] = sprintf($sMouseoverTemplate, $aValue['name'], $sShort);
             }
 
             if (strlen($aValue['value']) > 35) {
-                $sShort = cApiStrTrimHard($aValue['value'], 35);
+                $sShort = cString::trimHard($aValue['value'], 35);
                 $aValue['value'] = sprintf($sMouseoverTemplate, $aValue['value'], $sShort);
             }
 

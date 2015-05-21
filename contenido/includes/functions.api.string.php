@@ -22,6 +22,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
+ * @deprecated [2015-05-21] use cString::trimAfterWord
  * Trims a string to a given length and makes sure that all words up to $maxlen
  * are preserved, without exceeding $maxlen.
  *
@@ -44,28 +45,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *         The resulting string
  */
 function cApiStrTrimAfterWord($string, $maxlen) {
-    // If the string is smaller than the maximum lenght, it makes no sense to
-    // process it any further. Return it.
-    if (strlen($string) < $maxlen) {
-        return $string;
-    }
-
-    // If the character after the $maxlen position is a space, we can return
-    // the string until $maxlen.
-    if (substr($string, $maxlen, 1) == ' ') {
-        return substr($string, 0, $maxlen);
-    }
-
-    // Cut the string up to $maxlen so we can use strrpos (reverse str position)
-    $cutted_string = substr($string, 0, $maxlen);
-
-    // Extract the end of the last word
-    $last_word_position = strrpos($cutted_string, ' ');
-
-    return (substr($cutted_string, 0, $last_word_position));
+	cDeprecated('This method is deprecated and is not needed any longer');
+	return cString::trimAfterWord($string, $maxlen);
 }
 
 /**
+ * @deprecated [2015-05-21] use cString::trimHard
  * Trims a string to a specific length.
  * If the string is longer than $maxlen,
  * dots are inserted ("...") right before $maxlen.
@@ -85,35 +70,12 @@ function cApiStrTrimAfterWord($string, $maxlen) {
  *         The resulting string
  */
 function cApiStrTrimHard($string, $maxlen, $fillup = '...') {
-    // If the string is smaller than the maximum lenght, it makes no sense to
-    // process it any further. Return it.
-    if (strlen($string) < $maxlen) {
-        return $string;
-    }
-
-    // Calculate the maximum text length
-    $maximum_text_length = $maxlen - strlen($fillup);
-
-    // If text length is over zero cut it
-    if ($maximum_text_length > 0) {
-        if (preg_match('/(*UTF8)^.{0,' . $maximum_text_length . '}/', $string, $result_array)) {
-            $cutted_string = $result_array[0];
-        } else if (preg_match('/^.{0,' . $maximum_text_length . '}/u', $string, $result_array)) {
-            $cutted_string = $result_array[0];
-        } else {
-            $cutted_string = substr($string, 0, $maximum_text_length);
-        }
-    } else {
-        $cutted_string = $string;
-    }
-
-    // Append the fillup string
-    $cutted_string .= $fillup;
-
-    return ($cutted_string);
+	cDeprecated('This method is deprecated and is not needed any longer');
+	return cString::trimHard($string, $maxlen, fillup);
 }
 
 /**
+ * @deprecated [2015-05-21] use cString::trimSentence
  * Trims a string to a approximate length.
  * Sentence boundaries are preserved.
  *
@@ -164,60 +126,13 @@ function cApiStrTrimHard($string, $maxlen, $fillup = '...') {
  *         The resulting string
  */
 function cApiStrTrimSentence($string, $approxlen, $hard = false) {
-    // If the string is smaller than the maximum lenght, it makes no sense to
-    // process it any further. Return it.
-    if (strlen($string) < $approxlen) {
-        return $string;
-    }
-
-    // Find out the start of the next sentence
-    $next_sentence_start = strpos($string, '.', $approxlen);
-
-    // If there's no next sentence (somebody forgot the dot?), set it to the end
-    // of the string.
-    if ($next_sentence_start === false) {
-        $next_sentence_start = strlen($string);
-    }
-
-    // Cut the previous sentence so we can use strrpos
-    $previous_sentence_cutted = substr($string, 0, $approxlen);
-
-    // Get out the previous sentence start
-    $previous_sentence_start = strrpos($previous_sentence_cutted, '.');
-
-    // If the sentence doesn't contain a dot, use the text start.
-    if ($previous_sentence_start === false) {
-        $previous_sentence_start = 0;
-    }
-
-    // If we have a hard limit, we only want to process everything before
-    // $approxlen
-    if (($hard == true) && ($next_sentence_start > $approxlen)) {
-        return (substr($string, 0, $previous_sentence_start + 1));
-    }
-
-    // Calculate next and previous sentence distances
-    $distance_previous_sentence = $approxlen - $previous_sentence_start;
-    $distance_next_sentence = $next_sentence_start - $approxlen;
-
-    // Sanity: Return at least one sentence.
-    $sanity = substr($string, 0, $previous_sentence_start + 1);
-
-    if (strpos($sanity, '.') === false) {
-        return (substr($string, 0, $next_sentence_start + 1));
-    }
-
-    // Decide wether the next or previous sentence is nearer
-    if ($distance_previous_sentence > $distance_next_sentence) {
-        return (substr($string, 0, $next_sentence_start + 1));
-    } else {
-        return (substr($string, 0, $previous_sentence_start + 1));
-    }
+    cDeprecated('This method is deprecated and is not needed any longer');
+	return cString::trimSentence($string, $approxlen, $hard);
 }
 
 /**
- * cApiStrReplaceDiacritics: Converts diactritics to english characters whenever
- * possible.
+ * @deprecated [2015-05-21] use cString::replaceDiacritics
+ * Converts diactritics to english characters whenever possible.
  *
  * For german umlauts, this function converts the umlauts to their ASCII
  * equalients (e.g. ä => ae).
@@ -237,101 +152,12 @@ function cApiStrTrimSentence($string, $approxlen, $hard = false) {
  *         The resulting string
  */
 function cApiStrReplaceDiacritics($sString, $sourceEncoding = 'UTF-8', $targetEncoding = 'UTF-8') {
-    if ($sourceEncoding != 'UTF-8') {
-        $sString = cApiStrRecodeString($sString, $sourceEncoding, "UTF-8");
-    }
-
-    // replace regular german umlauts and other common characters with
-    // diacritics
-    static $aSearch, $aReplace;
-    if (!isset($aSearch)) {
-        $aSearch = array(
-            'Ä',
-            'Ö',
-            'Ü',
-            'ä',
-            'ö',
-            'ü',
-            'ß',
-            'Á',
-            'À',
-            'Â',
-            'á',
-            'à',
-            'â',
-            'É',
-            'È',
-            'Ê',
-            'é',
-            'è',
-            'ê',
-            'Í',
-            'Ì',
-            'Î',
-            'í',
-            'ì',
-            'î',
-            'Ó',
-            'Ò',
-            'Ô',
-            'ó',
-            'ò',
-            'ô',
-            'Ú',
-            'Ù',
-            'Û',
-            'ú',
-            'ù',
-            'û'
-        );
-        $aReplace = array(
-            'Ae',
-            'Oe',
-            'Ue',
-            'ae',
-            'oe',
-            'ue',
-            'ss',
-            'A',
-            'A',
-            'A',
-            'a',
-            'a',
-            'a',
-            'E',
-            'E',
-            'E',
-            'e',
-            'e',
-            'e',
-            'I',
-            'I',
-            'I',
-            'i',
-            'i',
-            'i',
-            'O',
-            'O',
-            'O',
-            'o',
-            'o',
-            'o',
-            'U',
-            'U',
-            'U',
-            'u',
-            'u',
-            'u'
-        );
-    }
-    $sString = str_replace($aSearch, $aReplace, $sString);
-
-    // TODO: Additional converting
-
-    return cApiStrRecodeString($sString, "UTF-8", $targetEncoding);
+    cDeprecated('This method is deprecated and is not needed any longer');
+	return cString::replaceDiacritics($sString, $sourceEncoding, $targetEncoding);
 }
 
 /**
+ * @deprecated [2015-05-21] use cString::recodeString
  * Converts a string to another encoding.
  * This function tries to detect which function
  * to use (either recode or iconv).
@@ -366,29 +192,12 @@ function cApiStrReplaceDiacritics($sString, $sourceEncoding = 'UTF-8', $targetEn
  *         The resulting string
  */
 function cApiStrRecodeString($sString, $sourceEncoding, $targetEncoding) {
-    // If sourceEncoding and targetEncoding are the same, return
-    if ($sourceEncoding == $targetEncoding) {
-        return $sString;
-    }
-
-    // Check for the "recode" support
-    if (function_exists('recode')) {
-        $sResult = recode_string("$sourceEncoding..$targetEncoding", $sString);
-        return $sResult;
-    }
-
-    // Check for the "iconv" support
-    if (function_exists('iconv')) {
-        $sResult = iconv($sourceEncoding, $targetEncoding, $sString);
-        return $sResult;
-    }
-
-    // No charset converters found; return with warning
-    cWarning(__FILE__, __LINE__, 'cApiStrRecodeString could not find either recode or iconv to do charset conversion.');
-    return $sString;
+    cDeprecated('This method is deprecated and is not needed any longer');
+	return cString::recodeString($sString, $sourceEncoding, $targetEncoding);
 }
 
 /**
+ * @deprecated [2015-05-21] use cString::cleanURLCharacters
  * Removes or converts all "evil" URL characters.
  * This function removes or converts
  * all characters which can make an URL invalid.
@@ -405,32 +214,12 @@ function cApiStrRecodeString($sString, $sourceEncoding, $targetEncoding) {
  *         The resulting string
  */
 function cApiStrCleanURLCharacters($sString, $bReplace = false) {
-    $sString = cApiStrReplaceDiacritics($sString);
-    $sString = str_replace(' ', '-', $sString);
-    $sString = str_replace('/', '-', $sString);
-    $sString = str_replace('&', '-', $sString);
-    $sString = str_replace('+', '-', $sString);
-
-    $iStrLen = strlen($sString);
-
-    $sResultString = '';
-
-    for ($i = 0; $i < $iStrLen; $i++) {
-        $sChar = substr($sString, $i, 1);
-
-        if (preg_match('/^[a-z0-9]*$/i', $sChar) || $sChar == '-' || $sChar == '_' || $sChar == '.') {
-            $sResultString .= $sChar;
-        } else {
-            if ($bReplace == true) {
-                $sResultString .= '_';
-            }
-        }
-    }
-
-    return $sResultString;
+    cDeprecated('This method is deprecated and is not needed any longer');
+	return cString::cleanURLCharacters($sString, $bReplace);
 }
 
 /**
+ * @deprecated [2015-05-21] use cString::normalizeLineEndings
  * Normalizes line endings in passed string.
  *
  * @param string $sString
@@ -439,15 +228,6 @@ function cApiStrCleanURLCharacters($sString, $bReplace = false) {
  * @return string
  */
 function cApiStrNormalizeLineEndings($sString, $sLineEnding = "\n") {
-    if ($sLineEnding !== "\n" && $sLineEnding !== "\r" && $sLineEnding !== "\r\n") {
-        $sLineEnding = "\n";
-    }
-
-    $sString = str_replace("\r\n", "\n", $sString);
-    $sString = str_replace("\r", "\n", $sString);
-    if ($sLineEnding !== "\n") {
-        $sString = str_replace("\n", $sLineEnding, $sString);
-    }
-
-    return $sString;
+    cDeprecated('This method is deprecated and is not needed any longer');
+	return cString::normalizeLineEndings($sString, $sLineEnding);
 }

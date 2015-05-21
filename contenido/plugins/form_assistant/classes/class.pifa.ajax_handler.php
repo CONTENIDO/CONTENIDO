@@ -220,7 +220,7 @@ class PifaAjaxHandler {
             'styling' => Pifa::i18n('STYLING'),
             'cssClass' => Pifa::i18n('CSS_CLASS'),
             'uri' => Pifa::i18n('URI'),
-            'externalOptionsDatasource' => Pifa::i18n('EXTERNAL_OPTIONS_DATASOURCE'),            
+            'externalOptionsDatasource' => Pifa::i18n('EXTERNAL_OPTIONS_DATASOURCE'),
             'deleteAll' => Pifa::i18n('DELETE_CSS_CLASSES')
         ));
 
@@ -327,7 +327,7 @@ class PifaAjaxHandler {
             $columnName = trim($columnName);
             $columnName = strtolower($columnName);
             // does not seem to work
-            // $columnName = cApiStrReplaceDiacritics($columnName);
+            // $columnName = cString::replaceDiacritics($columnName);
             $columnName = preg_replace('/[^a-z0-9_]/', '_', $columnName);
             $columnName = substr($columnName, 0, 64);
             if ($columnName !== $pifaField->get('column_name')) {

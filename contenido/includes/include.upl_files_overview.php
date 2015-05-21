@@ -350,7 +350,7 @@ class UploadList extends FrontendList {
 
         if ($field == 2) {
             // If this file is an image, try to open
-            $fileType = strtolower(getFileType($data));
+            $fileType = strtolower(cFileHandler::getExtension($data));
             switch ($fileType) {
                 case 'png':
                 case 'gif':
@@ -582,7 +582,7 @@ while ($item = $uploads->next()) {
     if ($appendparameters == 'imagebrowser') {
         $restrictvar = 'restrict_' . $appendparameters;
         if (array_key_exists($restrictvar, $browserparameters)) {
-            $fileType = strtolower(getFileType($filename));
+            $fileType = strtolower(cFileHandler::getExtension($filename));
             if (count($browserparameters[$restrictvar]) > 0) {
                 $bAddFile = false;
                 if (in_array($fileType, $browserparameters[$restrictvar])) {
@@ -624,7 +624,7 @@ while ($item = $uploads->next()) {
 
     if ($bAddFile == true) {
         // 'bgcolor' is just a placeholder...
-        $list2->setData($rownum, $mark, $dirname . $filename, $showfilename, $filesize, strtolower(getFileType($filename)), $todo->render() . $actions);
+        $list2->setData($rownum, $mark, $dirname . $filename, $showfilename, $filesize, strtolower(cFileHandler::getExtension($filename)), $todo->render() . $actions);
         $rownum++;
     }
 }

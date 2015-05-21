@@ -922,13 +922,14 @@ function conDeleteart($idart) {
 }
 
 /**
+ * @deprecated [2015-05-21] use cString::extractNumber
  * Extract a number from a string
  *
  * @param string $string
  *         String var by reference
  */
 function extractNumber(&$string) {
-    $string = preg_replace('/[^0-9]/', '', $string);
+	return cString::extractNumber($string);
 }
 
 /**

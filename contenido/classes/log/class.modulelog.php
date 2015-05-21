@@ -17,6 +17,8 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
+ * @deprecated [2015-05-21] This class is not longer supported
+ *
  * This class contains the main functionalities for the module logging in
  * CONTENIDO.
  * The funcationality is almost the same like normal logging with the exception,
@@ -42,6 +44,7 @@ class cModuleLog extends cLog {
     private $_module;
 
     /**
+     * @deprecated [2015-05-21] This method is not longer supported (no replacement)
      * Constructor of the module log.
      *
      * @param mixed $writer [optional]
@@ -50,6 +53,8 @@ class cModuleLog extends cLog {
      *
      */
     public function __construct($writer = false) {
+    	cDeprecated("The cModuleLog classes are not longer supported.");
+
         parent::__construct($writer);
 
         $this->setShortcutHandler('module', array(
@@ -60,6 +65,7 @@ class cModuleLog extends cLog {
     }
 
     /**
+     * @deprecated [2015-05-21] This method is not longer supported (no replacement)
      * Sets the module to use.
      *
      * setModule automatically buffers basic module information to the log to
@@ -71,6 +77,8 @@ class cModuleLog extends cLog {
      *         if the module with the given idmod could not be loaded
      */
     public function setModule($idmod) {
+    	cDeprecated("The cModuleLog setModule method are not longer supported.");
+
         $this->_module = new cApiModule($idmod);
         if ($this->_module->isLoaded() == false) {
             throw new cException('Could not load module information.');
@@ -78,6 +86,7 @@ class cModuleLog extends cLog {
     }
 
     /**
+     * @deprecated [2015-05-21] This method is not longer supported (no replacement)
      * Shortcut Handler Module.
      * Returns the ID and the name of the module.
      *
@@ -85,6 +94,8 @@ class cModuleLog extends cLog {
      *         ID and name of the module
      */
     public function shModule() {
+    	cDeprecated("The cModuleLog shModule method are not longer supported.");
+
         if ($this->_module->isLoaded() == false) {
             return '';
         }

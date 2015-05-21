@@ -400,7 +400,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
             $title = trim(strip_tags($title));
             $text = trim(strip_tags($text));
             if (strlen($text) > $this->_settings['teaser_character_limit']) {
-                $text = capiStrTrimAfterWord($text, $this->_settings['teaser_character_limit']) . '...';
+                $text = cString::trimAfterWord($text, $this->_settings['teaser_character_limit']) . '...';
             }
 
             // try to get a teaser image directly from cms_img or try to extract

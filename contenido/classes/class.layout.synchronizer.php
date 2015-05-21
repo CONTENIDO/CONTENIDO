@@ -283,7 +283,7 @@ class cLayoutSynchronizer {
                     continue;
                 }
 
-                $newFile = strtolower(cApiStrCleanURLCharacters($file));
+                $newFile = strtolower(cString::cleanURLCharacters($file));
 
                 if ($newFile == $file) {
                     // dir is ok

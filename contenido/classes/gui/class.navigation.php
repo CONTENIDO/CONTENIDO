@@ -317,7 +317,7 @@ class cGuiNavigation {
 
         $sClientName = $clientCollection->getClientName($client);
         if (strlen($sClientName) > 25) {
-            $sClientName = cApiStrTrimHard($sClientName, 25);
+            $sClientName = cString::trimHard($sClientName, 25);
         }
 
         $client = cSecurity::toInteger($client);
@@ -399,7 +399,7 @@ class cGuiNavigation {
                         }
 
                         if (strlen($value) > 20) {
-                            $value = cApiStrTrimHard($value, 20);
+                            $value = cString::trimHard($value, 20);
                         }
 
                         $tpl->set('d', 'VALUE', $key);
@@ -449,7 +449,7 @@ class cGuiNavigation {
             }
 
             if (strlen($name) > 20) {
-                $name = cApiStrTrimHard($name, 20);
+                $name = cString::trimHard($name, 20);
             }
 
             $tpl->set('d', 'VALUE', $idclient);

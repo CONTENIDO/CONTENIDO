@@ -77,7 +77,7 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage')) {
 
         // There is a need for renaming file
         if ($sFileName != $sJScriptName) {
-            if (getFileType($sJScriptName) != 'js' and strlen(stripslashes(trim($sJScriptName))) > 0) {
+            if (cFileHandler::getExtension($sJScriptName) != 'js' and strlen(stripslashes(trim($sJScriptName))) > 0) {
                 $sJScriptName = stripslashes($sJScriptName) . '.js';
             }
 

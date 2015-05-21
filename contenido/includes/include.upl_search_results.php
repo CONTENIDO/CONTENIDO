@@ -85,7 +85,7 @@ class UploadSearchResultList extends FrontendList {
             $this->pathdata = $data;
 
             // If this file is an image, try to open
-            $this->_fileType = strtolower(getFileType($data));
+            $this->_fileType = strtolower(cFileHandler::getExtension($data));
             switch ($this->_fileType) {
                 case "png":
                 case "psd":
@@ -310,7 +310,7 @@ foreach ($files as $idupl => $rating) {
     }
     $description = $upl->get('description');
 
-    $fileType = strtolower(getFileType($filename));
+    $fileType = strtolower(cFileHandler::getExtension($filename));
     $list2->setData($rownum, $dirname . $filename, $filename, $dirname, $filesize, $fileType, $rating / 10, $dirname . $filename);
 
     $rownum++;

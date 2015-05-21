@@ -75,7 +75,7 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage')) {
 
         // Edit File, there is a need for renaming file
         if ($sFileName != $sStyleName) {
-            if (getFileType($sStyleName) != 'css' and strlen(stripslashes(trim($sStyleName))) > 0) {
+            if (cFileHandler::getExtension($sStyleName) != 'css' and strlen(stripslashes(trim($sStyleName))) > 0) {
                 $sStyleName = stripslashes($sStyleName) . '.css';
             }
 

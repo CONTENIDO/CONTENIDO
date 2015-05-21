@@ -100,7 +100,7 @@ function buildCategorySelectRights() {
         }
 
         $sCategoryname = $props['name'];
-        $sCategoryname = cApiStrTrimHard($sCategoryname, 30);
+        $sCategoryname = cString::trimHard($sCategoryname, 30);
         $oHtmlSelectOption = new cHTMLOptionElement($spaces . ">" . conHtmlSpecialChars($sCategoryname), $tmpidcat, false, !$props['perm']);
         $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
     }
@@ -598,7 +598,7 @@ foreach ($objects as $key => $value) {
         $tpl->set('d', 'INDENT', ($value->custom['level'] * 16) . "px");
         $sCategoryname = $value->name;
         if (strlen($value->name) > 30) {
-            $sCategoryname = cApiStrTrimHard($sCategoryname, 30);
+            $sCategoryname = cString::trimHard($sCategoryname, 30);
         }
 
         // $tpl->set('d', 'CATEGORY', $sCategoryname);
@@ -612,7 +612,7 @@ foreach ($objects as $key => $value) {
         if ($value->custom['alias']) {
             $sCategoryalias = $value->custom['alias'];
             if (strlen($value->custom['alias']) > 30) {
-                $sCategoryalias = cApiStrTrimHard($sCategoryalias, 30);
+                $sCategoryalias = cString::trimHard($sCategoryalias, 30);
             }
             $tpl->set('d', 'ALIAS', $sCategoryalias);
             if (strlen($value->custom['alias']) > 30) {
@@ -643,7 +643,7 @@ foreach ($objects as $key => $value) {
 
         $sTemplatename = $template;
         if (strlen($template) > 20) {
-            $sTemplatename = cApiStrTrimHard($sTemplatename, 20);
+            $sTemplatename = cString::trimHard($sTemplatename, 20);
         }
 
         $tpl->set('d', 'TPLNAME', $sTemplatename);

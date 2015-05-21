@@ -744,8 +744,8 @@ class cApiModule extends Item {
                 }
             }
 
-            $moduleName = cApiStrCleanURLCharacters($this->get('name'));
-            $moduleAlias = cApiStrCleanURLCharacters($this->get('alias'));
+            $moduleName = cString::cleanURLCharacters($this->get('name'));
+            $moduleAlias = cString::cleanURLCharacters($this->get('alias'));
 
             // Is alias empty? Use module name as alias
             if ($this->get('alias') == '') {

@@ -35,7 +35,7 @@ function generateDisplayFilePath($sDisplayPath, $iLimit) {
     $iLimit = (int) $iLimit;
 
     if (strlen($sDisplayPath) > $iLimit) {
-        $sDisplayPathShort = cApiStrTrimHard($sDisplayPath, $iLimit);
+        $sDisplayPathShort = cString::trimHard($sDisplayPath, $iLimit);
 
         $sTooltippString = '';
         $iCharcount = 0;
@@ -45,7 +45,7 @@ function generateDisplayFilePath($sDisplayPath, $iLimit) {
         foreach ($aPathFragments as $sFragment) {
             if ($sFragment != '') {
                 if (strlen($sFragment) > ($iLimit - 5)) {
-                    $sFragment = cApiStrTrimHard($sFragment, $iLimit);
+                    $sFragment = cString::trimHard($sFragment, $iLimit);
                 }
 
                 if ($iCharcount + strlen($sFragment) + 1 > $iLimit) {
@@ -64,6 +64,7 @@ function generateDisplayFilePath($sDisplayPath, $iLimit) {
 }
 
 /**
+ * @deprecated [2015-05-21] This method is not longer supported (no replacement) *
  * Returns array structure of passed directory.
  * Parses the directory recursively and
  * collects informations about found subdirectories.
@@ -82,6 +83,8 @@ function generateDisplayFilePath($sDisplayPath, $iLimit) {
  *         Indexed arraay containing assoziative directory informations
  */
 function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = array(), $iDepth = -1, $sPathString = '') {
+	cDeprecated('This method is deprecated and is not needed any longer');
+
     $iDepth++;
 
     $aDirsToExclude = uplGetDirectoriesToExclude();
@@ -503,7 +506,7 @@ function uplGetThumbnail($sFile, $iMaxSize) {
         return uplGetFileIcon($sFile);
     }
 
-    $sFileType = strtolower(getFileType($sFile));
+    $sFileType = strtolower(cFileHandler::getExtension($sFile));
 
     switch ($sFileType) {
         case "png":
@@ -545,7 +548,7 @@ function uplGetFileIcon($sFile) {
     global $cfg;
 
     $sPathFiletypes = cRegistry::getBackendUrl() . $cfg['path']['images'] . 'filetypes/';
-    $sFileType = strtolower(getFileType($sFile));
+    $sFileType = strtolower(cFileHandler::getExtension($sFile));
 
     switch ($sFileType) {
         case "sxi":
@@ -842,7 +845,7 @@ function uplCreateFriendlyName($filename) {
         ), '', $chars);
     }
 
-    $filename = cApiStrReplaceDiacritics($filename, strtoupper($oLang->getField('encoding')));
+    $filename = cString::replaceDiacritics($filename, strtoupper($oLang->getField('encoding')));
     $filename = preg_replace("/[^A-Za-z0-9._\-" . $chars . "]/i", '', $filename);
 
     return $filename;
@@ -930,6 +933,7 @@ function uplSearch($searchfor) {
 }
 
 /**
+ * @deprecated [2015-05-21] use cFileHandler::getExtension
  * Returns file extension
  *
  * @param string $sFile
@@ -937,23 +941,8 @@ function uplSearch($searchfor) {
  * @return string
  */
 function uplGetFileExtension($sFile, $sDirname = '') {
-    // Fetch the dot position
-    $iDotPosition = strrpos($sFile, '.');
-    if (false === $iDotPosition) {
-        // set file type to be empty in case of directory
-        // to avoid conflicts with files ending with directory for instance
-        $cfgClient = cRegistry::getClientConfig(cRegistry::getClientId());
-        if (cDirHandler::exists($cfgClient["upl"]["path"] . $sDirname . $sFile)) {
-            return '';
-        }
-        $iDotPosition = -1;
-    }
-    $sExtension = substr($sFile, $iDotPosition + 1);
-    if (strpos($sExtension, '/') !== false) {
-        return false;
-    } else {
-        return $sExtension;
-    }
+	cDeprecated('This method is deprecated and is not needed any longer');
+    return cFileHandler::getExtension($sDirname . $sFile);
 }
 
 /**

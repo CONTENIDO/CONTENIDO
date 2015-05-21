@@ -17,6 +17,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
+ * @deprecated [2015-05-21] This method is not longer supported (no replacement)
  * gettext wrapper (for future extensions).
  *
  * Usage:
@@ -28,6 +29,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *         Returns the translation
  */
 function trans($string) {
+	cDeprecated('This method is deprecated and is not needed any longer');
     return cI18n::__($string);
 }
 

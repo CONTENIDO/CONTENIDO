@@ -71,6 +71,7 @@ class cPermission {
     }
 
     /**
+     * @deprecated [2015-05-21] This method is not longer supported (no replacement)
      * Returns the id of an area.
      * If passed area is numeric, it will returned directly.
      *
@@ -288,6 +289,7 @@ class cPermission {
     }
 
     /**
+     * @deprecated [2015-05-21] This method is not longer supported (no replacement)
      * Returns the parent id of passed area
      *
      * @param int|string $area

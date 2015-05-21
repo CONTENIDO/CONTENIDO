@@ -60,7 +60,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         $data = $this->_getTemplateData();
         $idlay = $data['idlay'];
         $idtpl = $data['idtpl'];
-        $this->_tplName = cApiStrCleanURLCharacters($data['name']);
+        $this->_tplName = cString::cleanURLCharacters($data['name']);
 
         // List of used modules
         $containerModules = conGetUsedModules($idtpl);
@@ -68,7 +68,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         // Load layout code from file
         $layoutInFile = new cLayoutHandler($idlay, '', $cfg, $this->_lang);
         $this->_layoutCode = $layoutInFile->getLayoutCode();
-        $this->_layoutCode = cApiStrNormalizeLineEndings($this->_layoutCode, "\n");
+        $this->_layoutCode = cString::normalizeLineEndings($this->_layoutCode, "\n");
 
         $moduleHandler = new cModuleHandler();
 
@@ -113,7 +113,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                     } else {
                         continue;
                     }
-                    
+
                     // Load css and js content of the js/css files
                     if ($moduleHandler->getFilesContent('css', 'css') !== false) {
                         $this->_cssData .= $moduleHandler->getFilesContent('css', 'css');
@@ -262,7 +262,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         // Save the generated code even if there are faulty modules.
         // if one does not do so a non existing cache file will be tried to be loaded in frontend
         $this->_saveGeneratedCode($idcatart);
-        
+
         return $this->_layoutCode;
     }
 
@@ -296,7 +296,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             cApiCecHook::setDefaultReturnValue($this->_pageTitle);
             $this->_pageTitle = cApiCecHook::executeAndReturn('Contenido.Content.CreateTitletag');
         }
-        
+
         $headTag = array();
         // find head tags in layout code (case insensitive, search across linebreaks)
         if (false === preg_match_all('/<head>.*?<\/head>/is', $this->_layoutCode, $headTag)) {
@@ -317,7 +317,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         if ($this->_pageTitle != '') {
             $replaceTag = '{__TITLE__' . md5(rand().time()) . '}';
             $headCode = preg_replace('/<title>.*?<\/title>/is', $replaceTag, $headTag, 1);
-            
+
             if (false !== strpos($headCode, $replaceTag)) {
                 $headCode = str_ireplace($replaceTag, '<title>' . $this->_pageTitle . '</title>', $headCode);
             } else {
@@ -426,14 +426,14 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         if (cRegistry::getFrontendPath() === $cfgClient[$this->_client]['code']['path']) {
             return;
         }
-        
+
         // parent directory must be named cache
         $directoryName = basename(dirname($cfgClient[$this->_client]['code']['path']));
         if ('cache' !== $directoryName) {
             // directory name is not cache -> abort
             return;
         }
-        
+
         // CON-2113
         // Do not overwrite an existing .htaccess file to prevent misconfiguring permissions
         if ($this->_layout == false && $this->_save == true && isset($cfgClient[$this->_client]['code']['path'])) {

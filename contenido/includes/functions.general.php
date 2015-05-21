@@ -69,6 +69,7 @@ function isArtInMultipleUse($idart) {
 }
 
 /**
+ * @deprecated [2015-05-21] use cString::isAlphanumeric
  * Checks if a value is alphanumeric
  *
  * @param mixed $test
@@ -79,51 +80,18 @@ function isArtInMultipleUse($idart) {
  *         Value is alphanumeric
  */
 function isAlphanumeric($test, $umlauts = true) {
-    if ($umlauts == true) {
-        $match = "/^[a-z0-9ÄäÖöÜüß ]+$/i";
-    } else {
-        $match = "/^[a-z0-9 ]+$/i";
-    }
-
-    return (preg_match($match, $test));
+    return cString::isAlphanumeric($test, $umlauts);
 }
 
 /**
+ * @deprecated [2015-05-21] use cString::isUtf8
  * Returns whether a string is UTF-8 encoded or not
  *
  * @param string $input
  * @return bool
  */
 function isUtf8($input) {
-    $len = strlen($input);
-
-    for ($i = 0; $i < $len; $i++) {
-        $char = ord($input[$i]);
-        $n = 0;
-
-        if ($char < 0x80) { // ASCII char
-            continue;
-        } else if (($char & 0xE0) === 0xC0 && $char > 0xC1) { // 2 byte long
-            // char
-            $n = 1;
-        } else if (($char & 0xF0) === 0xE0) { // 3 byte long char
-            $n = 2;
-        } else if (($char & 0xF8) === 0xF0 && $char < 0xF5) { // 4 byte long
-            // char
-            $n = 3;
-        } else {
-            return false;
-        }
-
-        for ($j = 0; $j < $n; $j++) {
-            $i++;
-
-            if ($i == $len || (ord($input[$i]) & 0xC0) !== 0x80) {
-                return false;
-            }
-        }
-    }
-    return true;
+    return cString::isUtf8($input);
 }
 
 /**
@@ -399,12 +367,15 @@ function getLanguageNamesByClient($client) {
 }
 
 /**
+ * @deprecated [2015-05-21] This method is not longer supported (no replacement)
  * Adds slashes to passed string if PHP setting for magic quotes is disabled
  *
  * @param string $code
  *         String by reference
  */
 function set_magic_quotes_gpc(&$code) {
+	cDeprecated('This method is deprecated and is not needed any longer');
+
     global $cfg;
     if (!$cfg['simulate_magic_quotes']) {
         if (get_magic_quotes_gpc() == 0) {
@@ -1525,6 +1496,7 @@ function cDeprecated($message = '') {
 }
 
 /**
+ * @deprecated [2015-05-21] This method is not longer supported (no replacement)
  * Returns the name of the numeric frame given
  *
  * @param int $frame
@@ -1533,6 +1505,8 @@ function cDeprecated($message = '') {
  *         Canonical name of the frame
  */
 function getNamedFrame($frame) {
+	cDeprecated('This method is deprecated and is not needed any longer');
+
     switch ($frame) {
         case 1:
             return 'left_top';

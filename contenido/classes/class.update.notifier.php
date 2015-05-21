@@ -671,7 +671,7 @@ class cUpdateNotifier {
                 $sText = utf8_encode($description);
 
                 if (strlen($sText) > 150) {
-                    $sText = cApiStrTrimAfterWord($sText, 150) . '...';
+                    $sText = cString::trimAfterWord($sText, 150) . '...';
                 }
 
                 $date = date(getEffectiveSetting("dateformat", "full", "Y-m-d H:i:s"), strtotime($date));

@@ -87,7 +87,7 @@ foreach ($containerNumbers as $containerNr) {
         foreach ($modules as $key => $val) {
             if ($val['name'] == $default) {
                 if (strlen($val['name']) > 20) {
-                    $shortName = cApiStrTrimHard($val['name'], 20);
+                    $shortName = cString::trimHard($val['name'], 20);
                     $option = new cHTMLOptionElement($shortName, $key);
                     $option->setAttribute('title', "Container $containerNr ({$name}) {$val['name']}");
                 } else {
@@ -123,7 +123,7 @@ foreach ($containerNumbers as $containerNr) {
         foreach ($modules as $key => $val) {
             $short_name = $val['name'];
             if (strlen($val['name']) > 20) {
-                $short_name = cApiStrTrimHard($val['name'], 20);
+                $short_name = cString::trimHard($val['name'], 20);
             }
 
             $option = new cHTMLOptionElement($short_name, $key);

@@ -56,7 +56,7 @@ if ($max_log_size === false) {
     $max_log_size = 10;
 }
 if (in_array('sysadmin', explode(',', $vuser->getEffectiveUserPerms())) && $max_log_size > 0) {
-    $log_size = getDirectorySize($cfg['path']['contenido_logs']);
+	$log_size = cDirHandler::getDirectorySize($cfg['path']['contenido_logs']);
     if ($log_size > $max_log_size * 1024 * 1024) {
         $page->displayWarning(i18n('The log directory is bigger than') . ' ' . humanReadableSize($max_log_size * 1024 * 1024) . '. ' . i18n('Current size') . ': ' . humanReadableSize($log_size));
     }

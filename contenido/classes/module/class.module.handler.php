@@ -274,7 +274,7 @@ class cModuleHandler {
      */
     public static function getCleanName($name, $defaultChar = '_') {
         // the first character of modul/Layut name should be [a-zA-Z0-9]|_|-
-        $name = cApiStrCleanURLCharacters($name);
+        $name = cString::cleanURLCharacters($name);
         // get the first charcte
         $firstChar = substr($name, 0, 1);
         if (!preg_match('/^[a-zA-Z0-9]|_|-$/', $firstChar)) {
@@ -457,7 +457,7 @@ class cModuleHandler {
         // create and save file contents
         if ($type == 'css' || $type == 'js' || $type == 'template') {
             if (!$this->existFile($type, $fileName)) {
-                $content = cApiStrRecodeString($content, $this->_encoding, $this->_fileEncoding);
+                $content = cString::recodeString($content, $this->_encoding, $this->_fileEncoding);
                 if (!$this->isWritable($this->_modulePath . $this->_directories[$type] . $fileName, $this->_modulePath . $this->_directories[$type])) {
                     return false;
                 }
@@ -468,7 +468,7 @@ class cModuleHandler {
                     return false;
                 }
             } else {
-                $content = cApiStrRecodeString($content, $this->_encoding, $this->_fileEncoding);
+                $content = cString::recodeString($content, $this->_encoding, $this->_fileEncoding);
                 if (!$this->isWritable($this->_modulePath . $this->_directories[$type] . $fileName, $this->_modulePath . $this->_directories[$type])) {
                     return false;
                 }
@@ -733,7 +733,7 @@ class cModuleHandler {
             $output = $this->_output;
         }
 
-        $output = cApiStrRecodeString($output, $this->_encoding, $this->_fileEncoding);
+        $output = cString::recodeString($output, $this->_encoding, $this->_fileEncoding);
 
         $fileOperation = cFileHandler::write($fileName, $output);
 
@@ -764,7 +764,7 @@ class cModuleHandler {
             $input = $this->_input;
         }
 
-        $input = cApiStrRecodeString($input, $this->_encoding, $this->_fileEncoding);
+        $input = cString::recodeString($input, $this->_encoding, $this->_fileEncoding);
 
         $fileOperation = cFileHandler::write($fileName, $input);
 

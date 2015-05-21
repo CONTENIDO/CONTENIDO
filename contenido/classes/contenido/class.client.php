@@ -226,6 +226,7 @@ class cApiClient extends Item {
     }
 
     /**
+     * @deprecated [2015-05-21] This method is not longer supported (no replacement)
      * Static accessor to the singleton instance.
      *
      * @todo There is no need since caching is available at GenericDB level
@@ -235,6 +236,8 @@ class cApiClient extends Item {
      */
     public static function getInstance($client = false) {
         static $currentInstance = array();
+
+        cDeprecated('This method is deprecated and is not needed any longer');
 
         if (!$client) {
             // Use global $client

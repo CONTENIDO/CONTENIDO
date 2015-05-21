@@ -182,12 +182,14 @@ class cDirHandler {
      *         the name and path of the file
      * @param string $destination
      *         the destination. Note that existing files get overwritten
+     * @param string $chmod
+     * 			chmod mode, standard: 0777
      * @throws cInvalidArgumentException
      *         if the file with the given filename does not exist
      * @return bool
      *         true on success
      */
-    public static function recursiveCopy($dirname, $destination) {
+    public static function recursiveCopy($dirname, $destination, $chmod = 0777) {
         if (!self::exists($dirname)) {
             throw new cInvalidArgumentException('The directory ' . $dirname . ' could not be accessed because it does not exist.');
         }
@@ -196,7 +198,7 @@ class cDirHandler {
             if (!mkdir($destination)) {
                 return false;
             }
-            if (!self::chmod($destination, "777")) {
+            if (!self::chmod($destination, $chmod)) {
                 return false;
             }
         }
@@ -212,14 +214,14 @@ class cDirHandler {
                 if (!mkdir($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName())) {
                     return false;
                 }
-                if (!self::chmod($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName(), "777")) {
+                if (!self::chmod($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName(), $chmod)) {
                     return false;
                 }
             } else {
                 if (!copy($item, $destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName())) {
                     return false;
                 }
-                if (!self::chmod($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName(), "777")) {
+                if (!self::chmod($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName(), $chmod)) {
                     return false;
                 }
             }
@@ -269,27 +271,27 @@ class cDirHandler {
      * @return array|bool
      *         array containing file names as string, false on error
      */
-    public static function read($dirName, $recursive = false, $dirOnly = false, $fileOnly = false) {
-        if (!self::exists($dirName)) {
+    public static function read($dirname, $recursive = false, $dirOnly = false, $fileOnly = false) {
+        if (!self::exists($dirname)) {
             return false;
         }
 
         $dirContent = array();
         if ($recursive == false) {
-            $dirHandle = opendir($dirName);
+            $dirHandle = opendir($dirname);
             $dirContent = array();
             while (false !== ($file = readdir($dirHandle))) {
                 if (!cFileHandler::fileNameIsDot($file)) {
 
                     if ($dirOnly == true) { // get only directories
 
-                        if (is_dir($dirName . $file)) {
+                        if (is_dir($dirname . $file)) {
                             $dirContent[] = $file;
                         }
                     // bugfix: is_dir only checked file name without path, thus returning everything most of the time
                     } else if ($fileOnly === true) { // get only files
 
-                        if (is_file($dirName . $file)) {
+                        if (is_file($dirname . $file)) {
                             $dirContent[] = $file;
                         }
                     } else { // get everything
@@ -299,7 +301,7 @@ class cDirHandler {
             }
             closedir($dirHandle);
         } else {
-            $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dirName), RecursiveIteratorIterator::SELF_FIRST);
+            $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dirname), RecursiveIteratorIterator::SELF_FIRST);
             foreach ($objects as $name => $file) {
 
                 if (!cFileHandler::fileNameIsDot($file)) {
@@ -308,7 +310,7 @@ class cDirHandler {
                     // get only directories
                     if ($dirOnly === true && is_dir($fileName)) {
                         $dirContent[] = $fileName;
-                    // get only files
+                    // get only
                     } else if ($fileOnly === true && is_file($fileName)) {
                         $dirContent[] = $fileName;
                     } else {
@@ -333,4 +335,31 @@ class cDirHandler {
         return is_dir($dirname);
     }
 
+    /**
+     * Returns the size of a directory.
+     * AKA the combined filesizes of all files within it.
+     * Note that this function uses filesize(). There could be problems with files
+     * that are larger than 2GiB
+     *
+     * @param string $dirname
+     *         The directory name
+     * @param bool $recursive
+     *         true if all the subdirectories should be included in the calculation
+     * @return int|bool
+     *         false in case of an error or the size
+     */
+    public static function getDirectorySize($dirname, $recursive = false) {
+    	$ret = 0;
+    	$files = self::read($dirname, $recursive, false, true);
+    	if ($files === false) {
+    		return false;
+    	}
+
+    	foreach ($files as $file) {
+    		$temp = cFileHandler::info($dirname . $file);
+    		$ret += $temp['size'];
+    	}
+
+    	return $ret;
+    }
 }

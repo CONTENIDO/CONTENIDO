@@ -72,7 +72,7 @@ if (!$contenidoModulHandler->moduleWriteable('css')) {
 $sTempFilename = stripslashes($tmp_file);
 $sOrigFileName = $sTempFilename;
 
-if (getFileType($file) != $sFileType && strlen(stripslashes(trim($file))) > 0) {
+if (cFileHandler::getExtension($file) != $sFileType && strlen(stripslashes(trim($file))) > 0) {
     $sFilename .= stripslashes($file) . '.' . $sFileType;
 } else {
     $sFilename .= stripslashes($file);
@@ -176,7 +176,7 @@ if (isset($actionRequest)) {
         if ($sCode === false) {
             exit();
         }
-        $sCode = cApiStrRecodeString($sCode, $fileEncoding, cModuleHandler::getEncoding());
+        $sCode = cString::recodeString($sCode, $fileEncoding, cModuleHandler::getEncoding());
     } else {
         // stripslashes is required here in case of creating a new file
         $sCode = stripslashes($_REQUEST['code']);

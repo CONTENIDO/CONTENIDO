@@ -212,7 +212,7 @@ class cApiCategoryLanguage extends Item {
                 $this->setField('urlname', conHtmlSpecialChars($value, ENT_QUOTES), $safe);
                 break;
             case 'urlname':
-                $value = conHtmlSpecialChars(cApiStrCleanURLCharacters($value), ENT_QUOTES);
+                $value = conHtmlSpecialChars(cString::cleanURLCharacters($value), ENT_QUOTES);
                 break;
             case 'visible':
             case 'public':

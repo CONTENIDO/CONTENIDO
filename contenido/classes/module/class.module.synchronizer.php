@@ -253,7 +253,7 @@ class cModuleSynchronizer extends cModuleHandler {
             if (false !== ($handle = cDirHandler::read($dir))) {
                 foreach ($handle as $file) {
                     if (false === cFileHandler::fileNameBeginsWithDot($file) && is_dir($dir . $file . '/')) {
-                        $newFile = cApiStrCleanURLCharacters($file);
+                        $newFile = cString::cleanURLCharacters($file);
                         // dir is ok
                         if ($newFile == $file) {
                             $this->_syncModule($dir, $file, $newFile);

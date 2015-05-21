@@ -104,7 +104,7 @@ if ((!$readOnly) && ($action == "mod_new") && (!$perm->have_perm_area_action_any
 if ((!$readOnly) && $action == "mod_new") {
     $modules = new cApiModuleCollection();
 
-    $alias = cApiStrCleanURLCharacters(i18n("- Unnamed module -"));
+    $alias = cString::cleanURLCharacters(i18n("- Unnamed module -"));
     $contenidoModuleHandler = new cModuleHandler();
     if ($contenidoModuleHandler->modulePathExistsInDirectory($alias)) {
         cRegistry::addErrorMessage(i18n("The given module name already exists. Please enter another module name."));

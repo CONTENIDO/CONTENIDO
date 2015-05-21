@@ -19,6 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude("includes", "functions.database.php");
 
 /**
+ * @deprecated [2015-05-21] This method is not longer supported (no replacement)
  * Displays statistic information layer (a div Tag)
  *
  * @param int $id
@@ -37,6 +38,8 @@ cInclude("includes", "functions.database.php");
  *         Composed info layer
  */
 function statsDisplayInfo($id, $type, $x, $y, $w, $h) {
+	cDeprecated('This method is deprecated and is not needed any longer');
+
     if (strcmp($type, "article" == 0)) {
         $text = i18n("Info about article") . " " . $id;
     } else {

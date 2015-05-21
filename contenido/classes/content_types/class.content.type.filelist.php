@@ -146,7 +146,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                 }
                 $_POST[$dateFormField] = $timestamp;
             }
-            
+
             $this->getConfiguredFiles();
             $this->_storeSettings();
         }
@@ -303,7 +303,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                             // is active and the string length is more than the
                             // setting
                             if ($this->_settings['filelist_md_' . $identName . '_limit'] > 0 && strlen($string) > $this->_settings['filelist_md_' . $identName . '_limit']) {
-                                $metaData[$identName] = cApiStrTrimAfterWord(cSecurity::unFilter($string), $this->_settings['filelist_md_' . $identName . '_limit']) . '...';
+                                $metaData[$identName] = ccString::trimAfterWord(cSecurity::unFilter($string), $this->_settings['filelist_md_' . $identName . '_limit']) . '...';
                             } else {
                                 $metaData[$identName] = cSecurity::unFilter($string);
                             }
@@ -376,7 +376,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                 }
             }
         }
-        
+
         return $directories;
     }
 
@@ -394,7 +394,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
             $directoryName = str_replace('/' . $filename, '', $fullname);
 
             // checking the extension stuff
-            $extensionName = uplGetFileExtension($filename);
+            $extensionName = cFileHandler::getExtension($filename);
             $extensions = $this->_settings['filelist_extensions'];
             if(!is_array($extensions)) {
                 $extensions = array($extensions);

@@ -1,5 +1,6 @@
 <?php
 /**
+ * @deprecated [2015-05-21] This file is not longer supported
  * Project:
  * CONTENIDO Content Management System
  *
@@ -78,6 +79,7 @@ $aCustomTabs['bar'] = array(
 
 ?>
 /**
+ * @deprecated [2015-05-21] This file is not longer supported
  * Article related logic module
  *
  * @module     article-object

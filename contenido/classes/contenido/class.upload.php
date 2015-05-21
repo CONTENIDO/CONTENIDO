@@ -73,7 +73,7 @@ class cApiUploadCollection extends ItemCollection {
         if (false !== $oItem = $this->next()) {
             $oItem->update();
         } else {
-            $sFiletype = (string) uplGetFileExtension($sFilename, $sDirname);
+        	$sFiletype = cFileHandler::getExtension($sDirname . $sFilename);
             $iFilesize = cApiUpload::getFileSize($sDirname, $sFilename);
             $oItem = $this->create($sDirname, $sFilename, $sFiletype, $iFilesize, '');
         }
@@ -223,7 +223,7 @@ class cApiUpload extends Item {
     public function update() {
         $sDirname = $this->get('dirname');
         $sFilename = $this->get('filename');
-        $sExtension = (string) uplGetFileExtension($sFilename);
+        $sExtension = cFileHandler::getExtension($sDirname . $sFilename);
         $iFileSize = self::getFileSize($sDirname, $sFilename);
 
         $bTouched = false;

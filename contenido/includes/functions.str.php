@@ -104,7 +104,7 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
     );
     foreach ($aLanguages as $curLang) {
         $name = $catname;
-        $urlname = conHtmlSpecialChars(cApiStrCleanURLCharacters($catalias), ENT_QUOTES);
+        $urlname = conHtmlSpecialChars(cString::cleanURLCharacters($catalias), ENT_QUOTES);
 
         // Insert new category language entry
         $oCatLangColl = new cApiCategoryLanguageCollection();
@@ -215,7 +215,7 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
     );
     foreach ($aLanguages as $curLang) {
         $name = $catname;
-        $urlname = conHtmlSpecialChars(cApiStrCleanURLCharacters($catalias), ENT_QUOTES);
+        $urlname = conHtmlSpecialChars(cString::cleanURLCharacters($catalias), ENT_QUOTES);
 
         // Insert new category language entry
         $oCatLangColl = new cApiCategoryLanguageCollection();

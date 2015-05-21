@@ -279,10 +279,10 @@ class cApiArticleLanguage extends Item {
     /**
      * Create a version of this article language with its contents/metatags;
      * the version is the new editable articlel language version
-     * 
+     *
      * @param String $type meta, content or complete
      *
-     */	
+     */
     public function markAsEditable($type = '') {
         global $cfg;
 
@@ -297,7 +297,7 @@ class cApiArticleLanguage extends Item {
         $parameters['version'] = $maxVersion + 1;
         $artLangVersionColl = new cApiArticleLanguageVersionCollection();
         $artLangVersion = $artLangVersionColl->create($parameters);
-        
+
         if ($type == 'content' || $type == 'complete') {
             $artLangVersion->loadArticleVersionContent();
             $contentVersion = new cApiContent();
@@ -325,7 +325,7 @@ class cApiArticleLanguage extends Item {
                         $contentVersion->loadByArticleLanguageIdTypeAndTypeId($this->get('idartlang'), $oType->get('idtype'), $typeid);
                         if (isset($contentVersion)) {
                                 $contentVersion->markAsEditable($artLangVersion->get('version'), 0);
-                        } 
+                        }
                     } else {
                         $contentParameters = array(
                                 'idartlang' => $artLangVersion->get('idartlang'),
@@ -341,7 +341,7 @@ class cApiArticleLanguage extends Item {
                 }
             }
         }
-        
+
         if ($type == 'meta' || $type == 'complete') {
             // set new meta tag versions
             $metaTag = new cApiMetaTag();
@@ -520,7 +520,7 @@ class cApiArticleLanguage extends Item {
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
             case 'urlname':
-                $value = conHtmlSpecialChars(cApiStrCleanURLCharacters($value), ENT_QUOTES);
+                $value = conHtmlSpecialChars(cSTring::cleanURLCharacters($value), ENT_QUOTES);
                 break;
             case 'timemgmt':
             case 'time_move_cat':

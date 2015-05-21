@@ -16,6 +16,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
+ * @deprecated [2015-05-21] This class is not longer supported
  * This class contains functions for the frontend helper class in CONTENIDO.
  *
  * @package Core
@@ -31,11 +32,14 @@ class cFrontendHelper {
     private static $_instance = NULL;
 
     /**
+     * @deprecated [2015-05-21] This method is not longer supported (no replacement)
      * Returns the instance of this class.
      *
      * @return cFrontendHelper
      */
     public static function getInstance() {
+    	cDeprecated("The cFrontendHelper getInstance method are not longer supported.");
+
         if (self::$_instance === NULL) {
             self::$_instance = new self();
         }
@@ -44,12 +48,15 @@ class cFrontendHelper {
     }
 
     /**
+     * @deprecated [2015-05-21] This method is not longer supported (no replacement)
      * Constructor of the class.
      */
     protected function __construct() {
+    	cDeprecated("The cFrontendHelper classes are not longer supported.");
     }
 
     /**
+     * @deprecated [2015-05-21] This method is not longer supported (no replacement)
      * Fetches the requested category tree.
      *
      * @param int $baseCategoryId
@@ -64,6 +71,8 @@ class cFrontendHelper {
      *         category tree
      */
     protected function _fetchCategoryTree($baseCategoryId, $depth, $currentCategoryId) {
+    	cDeprecated("The cFrontendHelper _fetchCategoryTree method are not longer supported.");
+
         if ((int) $baseCategoryId == 0) {
             throw new cUnexpectedValueException("Expect category ID greater than 0.");
         }
@@ -104,6 +113,7 @@ class cFrontendHelper {
     }
 
     /**
+     * @deprecated [2015-05-21] This method is not longer supported (no replacement)
      * Helper function to render the navigation.
      *
      * @param int $baseCategoryId
@@ -116,12 +126,15 @@ class cFrontendHelper {
      *         category tree
      */
     public function renderNavigation($baseCategoryId, $depth, $currentCategoryId) {
+    	cDeprecated("The cFrontendHelper renderNavigation method are not longer supported.");
+
         $tree = $this->_fetchCategoryTree($baseCategoryId, $depth, $currentCategoryId);
 
         return $tree;
     }
 
     /**
+     * @deprecated [2015-05-21] This method is not longer supported (no replacement)
      * Helper function to render the sitemap.
      *
      * @param int $baseCategoryId
@@ -132,6 +145,8 @@ class cFrontendHelper {
      *         template reference
      */
     public function renderSitemap($baseCategoryId, $depth, cTemplate &$tpl) {
+    	cDeprecated("The cFrontendHelper renderSitemap method are not longer supported.");
+
         $tree = $this->_fetchCategoryTree($baseCategoryId, $depth, 0);
 
         foreach ($tree as $treeItem) {

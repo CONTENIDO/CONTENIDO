@@ -803,7 +803,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                         $templateDescription = $artitem['templateDescription'];
                         $descString = '<b>' . $artitem[$key] . '</b>';
 
-                        $sTemplatename = cApiStrTrimHard($artitem[$key], 20);
+                        $sTemplatename = cString::trimHard($artitem[$key], 20);
                         if (strlen($artitem[$key]) > 20) {
                             $cells[] = '<td nowrap="nowrap" class="bordercell tooltip" title="' . $descString . '">' . $sTemplatename . '</td>';
                         } else {

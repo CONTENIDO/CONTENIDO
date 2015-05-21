@@ -57,7 +57,7 @@ class cApiLayoutCollection extends ItemCollection {
         }
 
         if (empty($alias)) {
-            $alias = strtolower(cApiStrCleanURLCharacters(i18n("-- New layout --")));
+            $alias = strtolower(cString::cleanURLCharacters(i18n("-- New layout --")));
         }
 
         if (empty($author)) {

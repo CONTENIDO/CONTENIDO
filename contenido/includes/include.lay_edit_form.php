@@ -40,7 +40,7 @@ if ((!$readOnly) && $action == "lay_new") {
     if (!$perm->have_perm_area_action_anyitem($area, $action)) {
         $page->displayError(i18n("Permission denied"));
     } else {
-        $layoutAlias = strtolower(cApiStrCleanURLCharacters(i18n("-- New layout --")));
+        $layoutAlias = strtolower(cString::cleanURLCharacters(i18n("-- New layout --")));
 
         if (cLayoutHandler::existLayout($layoutAlias, $cfgClient, $client)) {
             $page->displayError(i18n("Layout name exist, rename the layout!"));
