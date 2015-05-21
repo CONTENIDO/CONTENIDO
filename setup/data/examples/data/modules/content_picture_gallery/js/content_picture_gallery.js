@@ -112,13 +112,29 @@ jQuery(window).load(function() {
 			colon = ':';
 		}
 
+
+                /* distinguish between different browsers
+                 * needed for some stupid ie/chrome incomatibilities */
+                function isIE () {
+                  var myNav = navigator.userAgent.toLowerCase();
+                  return (myNav.indexOf('msie') != -1) ? parseInt(myNav.split('msie')[1]) : false;
+                }
+                
+                if (isIE() < 9) {
+                    var timeout = 0;
+                    var dialogClass = 'dialog-gallery'; 
+                } else {
+                    var timeout = 5;
+                    var dialogClass = 'dialog-gallery invisible';
+                }
+                
 		var lb = $(".gallery .lightbox").html(left + right + '<img src="' + $(this).attr("href") + '" alt="" /><p>' + $(this).attr("rel") + colon + $(this).attr("title") + '</p>').dialog({
 			modal: true,
 			width: "auto",
 			height: "auto",
 			closeText: "X",
-			dialogClass: 'dialog-gallery invisible',
-			position: dialogPosition,
+                        dialogClass: dialogClass, 
+                        position: dialogPosition,
 			open: function(event) {
 				$('.ui-widget-overlay').on('click', function() {
 					$(".ui-dialog-content").dialog("destroy");
@@ -152,7 +168,7 @@ jQuery(window).load(function() {
 			dialogPosition = lb.dialog( "option", "position" );
 			lb.dialog( "option", "position", dialogPosition);
 			$('.dialog-gallery.invisible').removeClass('invisible');
-		}, 0);
+		}, timeout);
 	});
 
 	$("body").delegate(".lightbox a", "click", function(e) {
