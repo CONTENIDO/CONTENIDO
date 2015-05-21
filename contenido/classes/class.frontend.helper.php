@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage Frontend_Util
- * @deprecated [2015-05-21] This class is no longer supported
+ * @deprecated [2015-05-21]
+ *         This class is no longer supported
  */
 class cFrontendHelper {
 
@@ -34,7 +35,8 @@ class cFrontendHelper {
     /**
      * Returns the instance of this class.
      *
-     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
+     * @deprecated [2015-05-21]
+     *         This method is no longer supported (no replacement)
      * @return cFrontendHelper
      */
     public static function getInstance() {
@@ -48,8 +50,10 @@ class cFrontendHelper {
     }
 
     /**
-     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
      * Constructor of the class.
+     *
+     * @deprecated [2015-05-21]
+     *         This method is no longer supported (no replacement)
      */
     protected function __construct() {
         cDeprecated("The cFrontendHelper classes are no longer supported.");
@@ -58,7 +62,8 @@ class cFrontendHelper {
     /**
      * Fetches the requested category tree.
      *
-     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
+     * @deprecated [2015-05-21]
+     *         This method is no longer supported (no replacement)
      * @param int $baseCategoryId
      *         root category ID
      * @param int $depth
@@ -115,7 +120,8 @@ class cFrontendHelper {
     /**
      * Helper function to render the navigation.
      *
-     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
+     * @deprecated [2015-05-21]
+     *         This method is no longer supported (no replacement)
      * @param int $baseCategoryId
      *         root category ID
      * @param int $depth
@@ -136,7 +142,8 @@ class cFrontendHelper {
     /**
      * Helper function to render the sitemap.
      *
-     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
+     * @deprecated [2015-05-21]
+     *         This method is no longer supported (no replacement)
      * @param int $baseCategoryId
      *         root category ID
      * @param int $depth

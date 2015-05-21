@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for search results in upload section.
  *
@@ -20,16 +21,47 @@ cInclude('includes', 'functions.upl.php');
 cInclude('includes', 'functions.file.php');
 
 $appendparameters = $_REQUEST["appendparameters"];
+
+/**
+ *
+ */
 class UploadSearchResultList extends FrontendList {
 
-    var $dark;
+    /**
+     * Seems to be unused.
+     *
+     * @var unknown_type
+     */
+    private $dark;
 
-    var $size;
+    /**
+     *
+     * @var unknown_type
+     */
+    private $_pathdata;
 
-    var $pathdata;
-
+    /**
+     *
+     * @var unknown_type
+     */
     private $_fileType;
 
+    /**
+     *
+     * @var unknown_type
+     */
+    public $size;
+
+    /**
+     * Field converting facility.
+     *
+     * @see FrontendList::convert()
+     * @param int $field
+     *         Field index
+     * @param mixed $value
+     *         Field value
+     * @return mixed
+     */
     function convert($field, $data) {
         global $cfg, $sess, $client, $cfgClient, $appendparameters;
 
@@ -52,10 +84,10 @@ class UploadSearchResultList extends FrontendList {
 
         if ($field == 2) {
 
-        	// OK icon
-        	$icon = "<img src=\"images/but_ok.gif\" alt=\"\" />&nbsp;";
+            // OK icon
+            $icon = "<img src=\"images/but_ok.gif\" alt=\"\" />&nbsp;";
 
-            $vpath = str_replace($cfgClient[$client]["upl"]["path"], "", $this->pathdata);
+            $vpath = str_replace($cfgClient[$client]["upl"]["path"], "", $this->_pathdata);
             $slashpos = strrpos($vpath, "/");
             if ($slashpos === false) {
                 $file = $vpath;
@@ -82,7 +114,7 @@ class UploadSearchResultList extends FrontendList {
         }
 
         if ($field == 1) {
-            $this->pathdata = $data;
+            $this->_pathdata = $data;
 
             // If this file is an image, try to open
             $this->_fileType = strtolower(cFileHandler::getExtension($data));

@@ -17,7 +17,6 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * @deprecated [2015-05-21] use cRegistry::getEncoding
  * Returns encoding for language with ID $iLang (global $lang in CONTENIDO
  * style).
  * The parameter $db has to be an instance of cDb (global $db in con)
@@ -27,14 +26,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * return
  * false, otherwise the encoding as string like it is stored in database.
  *
+ * @deprecated [2015-05-21]
+ *         use cRegistry::getEncoding
  * @param cDb $db
  *         not used any more!
  * @param int $lang
  * @return string|boolean
  */
 function getEncodingByLanguage($db, $lang) {
-	cDeprecated('This method is deprecated and is not needed any longer');
-	return cRegistry::getEncoding();
+    cDeprecated('This method is deprecated and is not needed any longer');
+    return cRegistry::getEncoding();
 }
 
 /**

@@ -110,6 +110,7 @@ function langRenameLanguage($idlang, $name) {
  *         Id of the language
  * @param int $iIdClient
  *         Id of the client, uses global client id by default
+ * @return void|string
  */
 function langDeleteLanguage($iIdLang, $iIdClient = 0) {
     global $db, $sess, $client, $cfg, $notification, $cfgClient;

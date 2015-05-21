@@ -68,7 +68,8 @@ function generateDisplayFilePath($sDisplayPath, $iLimit) {
  * Parses the directory recursively and
  * collects informations about found subdirectories.
  *
- * @deprecated [2015-05-21] This method is no longer supported (no replacement) *
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement) *
  * @param string $sCurrentDir
  *         Directory to parse
  * @param string $sStartDir
@@ -197,7 +198,8 @@ function uplSyncDirectory($sPath) {
     global $cfgClient, $client, $cfg, $db;
 
     if (cApiDbfs::isDbfs($sPath)) {
-        return uplSyncDirectoryDBFS($sPath);
+        uplSyncDirectoryDBFS($sPath);
+        return;
     }
 
     $oUploadsColl = new cApiUploadCollection();
@@ -279,7 +281,6 @@ function uplSyncDirectoryDBFS($sPath) {
         }
     }
 
-    return;
 }
 
 /**
@@ -933,9 +934,10 @@ function uplSearch($searchfor) {
 }
 
 /**
- * @deprecated [2015-05-21] use cFileHandler::getExtension
  * Returns file extension
  *
+ * @deprecated [2015-05-21]
+ *         use cFileHandler::getExtension
  * @param string $sFile
  * @param string sDirname
  * @return string
@@ -946,8 +948,7 @@ function uplGetFileExtension($sFile, $sDirname = '') {
 }
 
 /**
- * Returns list of directory names to exclude e.
- * g. from directory listings.
+ * Returns list of directory names to exclude e.g. from directory listings.
  *
  * @return array
  */

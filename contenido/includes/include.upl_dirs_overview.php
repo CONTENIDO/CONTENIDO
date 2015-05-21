@@ -26,6 +26,11 @@ if (!(int) $client > 0) {
     return;
 }
 
+/**
+ *
+ * @param unknown_type $item
+ * @return string
+ */
 function getUplExpandCollapseButton($item) {
     global $sess, $PHP_SELF, $frame, $area, $appendparameters;
     $selflink = 'main.php';

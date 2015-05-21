@@ -22,7 +22,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Usage:
  * trans('Your text which has to be translated');
  *
- * @deprecated [2015-05-21] This method is no longer supported (no replacement)
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
  * @param $string string
  *         The string to translate
  * @return string

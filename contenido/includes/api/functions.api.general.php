@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains CONTENIDO General API functions.
  *
@@ -40,10 +41,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *       class files, there is no need to load CONTENIDO class files of by using
  *       cInclude().
  *
- * @param   string  $sWhere       The area which should be included
- * @param   string  $sWhat        The filename of the include
- * @param   bool    $bForce       If true, force the file to be included
- * @param   string  $bReturnPath  Flag to return the path instead of including the file
+ * @param string $sWhere
+ *         The area which should be included
+ * @param string $sWhat
+ *         The filename of the include
+ * @param bool $bForce
+ *         If true, force the file to be included
+ * @param string $bReturnPath
+ *         Flag to return the path instead of including the file
+ * @return bool|string|NULL
  */
 function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
     $backendPath = cRegistry::getBackendPath();
@@ -113,8 +119,10 @@ function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
  * Example:
  * plugin_include('formedit', 'classes/class.formedit.php');
  *
- * @param   string  $sWhere  The name of the plugin
- * @param   string  $sWhat   The filename of the include
+ * @param string $sWhere
+ *         The name of the plugin
+ * @param string $sWhat
+ *         The filename of the include
  */
 function plugin_include($sWhere, $sWhat) {
     global $cfg;
@@ -123,4 +131,5 @@ function plugin_include($sWhere, $sWhat) {
 
     include_once($sInclude);
 }
+
 ?>

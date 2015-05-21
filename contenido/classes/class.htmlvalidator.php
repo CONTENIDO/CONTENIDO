@@ -51,8 +51,9 @@ class cHTMLValidator {
 
     /**
      *
+     * @deprecated
+     *         not used anymore
      * @var string
-     * @deprecated not used anymore
      */
     public $iNodeName;
 
@@ -191,8 +192,9 @@ class cHTMLValidator {
 
     /**
      *
+     * @deprecated
+     *         not used anymore
      * @return string
-     * @deprecated not used anymore
      */
     protected function _returnErrorMap() {
         $html = "<pre>";

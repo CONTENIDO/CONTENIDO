@@ -417,11 +417,13 @@ class cApiArticleLanguage extends Item {
     }
 
     /**
-     * @deprecated [2015-05-15] use _loadArticleContent
      * Load the articles content and stores it in the 'content' property of the
      * article object.
      *
      * $article->content[type][number] = value;
+     *
+     * @deprecated [2015-05-15]
+     *         use _loadArticleContent
      */
     public function loadArticleContent() {
         cDeprecated('This method is deprecated and is not needed any longer');
@@ -429,11 +431,13 @@ class cApiArticleLanguage extends Item {
     }
 
     /**
-     * @deprecated [2015-05-15] use _loadArticleContent
      * Load the articles content and stores it in the 'content' property of the
      * article object.
      *
      * $article->content[type][number] = value;
+     *
+     * @deprecated [2015-05-15]
+     *         use _loadArticleContent
      */
     protected function _getArticleContent() {
         cDeprecated('This method is deprecated and is not needed any longer');

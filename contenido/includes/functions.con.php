@@ -922,14 +922,15 @@ function conDeleteart($idart) {
 }
 
 /**
- * @deprecated [2015-05-21] use cString::extractNumber
  * Extract a number from a string
  *
+ * @deprecated [2015-05-21]
+ *         use cString::extractNumber
  * @param string $string
  *         String var by reference
  */
 function extractNumber(&$string) {
-	return cString::extractNumber($string);
+    return cString::extractNumber($string);
 }
 
 /**

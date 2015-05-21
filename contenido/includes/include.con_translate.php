@@ -20,6 +20,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cGuiScrollListAlltranslations extends cGuiScrollList {
 
+    /**
+     *
+     */
     function __construct() {
         parent::__construct(false);
         $this->objTable->setClass("generic alltranslations");
@@ -566,8 +569,8 @@ foreach ($allTranslations as $hash => $translationArray) {
 
             $idExtraLangCount = 0;
             foreach ($extraLanguages as $idExtraLangTemp) {
-            	$linkEdit->setCustom("extralang[$idExtraLangCount]", $idExtraLangTemp);
-            	$idExtraLangCount++;
+                $linkEdit->setCustom("extralang[$idExtraLangCount]", $idExtraLangTemp);
+                $idExtraLangCount++;
             }
 
             $sLinkEdit = ' ' . $linkEdit->render();
@@ -621,8 +624,8 @@ foreach ($allTranslations as $hash => $translationArray) {
 
                 $idExtraLangCount = 0;
                 foreach ($extraLanguages as $idExtraLangTemp) {
-                	$linkEdit->setCustom("extralang[$idExtraLangCount]", $idExtraLangTemp);
-                	$idExtraLangCount++;
+                    $linkEdit->setCustom("extralang[$idExtraLangCount]", $idExtraLangTemp);
+                    $idExtraLangCount++;
                 }
 
                 $sLinkEdit = ' ' . $linkEdit->render();
@@ -687,8 +690,8 @@ $form->setVar("filter", $filter);
 
 $idExtraLangCount = 0;
 foreach ($extraLanguages as $idExtraLangTemp) {
-	$form->setVar("extralang[$idExtraLangCount]", $idExtraLangTemp);
-	$idExtraLangCount++;
+    $form->setVar("extralang[$idExtraLangCount]", $idExtraLangTemp);
+    $idExtraLangCount++;
 }
 
 $form->setVar('contenido', $contenido);
@@ -710,8 +713,8 @@ $pagerLink->setCustom("filter", $filter);
 
 $idExtraLangCount = 0;
 foreach ($extraLanguages as $idExtraLangTemp) {
-	$pagerLink->setCustom("extralang[$idExtraLangCount]", $idExtraLangTemp);
-	$idExtraLangCount++;
+    $pagerLink->setCustom("extralang[$idExtraLangCount]", $idExtraLangTemp);
+    $idExtraLangCount++;
 }
 
 $pagerLink->setCustom("contenido", $sess->id);
@@ -731,8 +734,8 @@ $delLangLink->setCustom("contenido", $sess->id);
 
 $idExtraLangCount = 0;
 foreach ($extraLanguages as $idExtraLangTemp) {
-	$delLangLink->setCustom("extralang[$idExtraLangCount]", $idExtraLangTemp);
-	$idExtraLangCount++;
+    $delLangLink->setCustom("extralang[$idExtraLangCount]", $idExtraLangTemp);
+    $idExtraLangCount++;
 }
 
 $delLangLink->setCustom("dellang", '');

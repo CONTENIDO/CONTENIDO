@@ -19,6 +19,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * @deprecated [2014-07-30]
- *
- * This file is empty as of 2014-07-30. You can find the classes that used to be here in the search/ folder
+ *         This file is empty as of 2014-07-30.
+ *         You can find the classes that used to be here in the search/ folder.
  */

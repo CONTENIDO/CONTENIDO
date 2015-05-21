@@ -300,7 +300,7 @@ function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL) {
  *         Client
  * @param int $lang
  *         Language of a client
- * @deprecated 2014-07-24
+ * @deprecated [2014-07-24]
  *         Not used anymore
  */
 function conGenerateKeywords($client, $lang) {

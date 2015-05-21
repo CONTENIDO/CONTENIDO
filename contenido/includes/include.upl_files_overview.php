@@ -313,11 +313,34 @@ if ($action == 'upl_renamefile' && $bDirectoryIsWritable == true) {
     rename($cfgClient[$client]['upl']['path'] . $path . $oldname, $cfgClient[$client]['upl']['path'] . $path . $newname);
 }
 
+/**
+ *
+ * @author marcus.gnass
+ */
 class UploadList extends FrontendList {
 
+    /**
+     *
+     * @var unknown_type
+     */
     var $dark;
+
+    /**
+     *
+     * @var unknown_type
+     */
     var $size;
 
+    /**
+     * Field converting facility.
+     *
+     * @see FrontendList::convert()
+     * @param int $field
+     *         Field index
+     * @param mixed $value
+     *         Field value
+     * @return mixed
+     */
     function convert($field, $data) {
         global $cfg, $path, $sess, $cfgClient, $client, $appendparameters;
 
@@ -567,14 +590,14 @@ $properties = new cApiPropertyCollection();
 
 while ($item = $uploads->next()) {
 
-	// Get name of directory, filename and size of file
-	$dirname = $item->get('dirname');
+    // Get name of directory, filename and size of file
+    $dirname = $item->get('dirname');
     $filename = $item->get('filename');
     $filesize = $item->get('size');
 
     // Do not display directories and "filenames" begin with a dot
     if (true === cDirHandler::exists($cfgClient[$client]['upl']['path'] . $dirname . $filename) || strpos($filename, ".") === 0) {
-    	continue;
+        continue;
     }
 
     $bAddFile = true;

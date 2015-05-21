@@ -164,8 +164,11 @@ class FrontendList {
      * Field converting facility.
      * Needs to be overridden in the child class to work properbly.
      *
-     * @param $field Field index
-     * @param $value Field value
+     * @param int $field
+     *         Field index
+     * @param mixed $value
+     *         Field value
+     * @return mixed
      */
     function convert($field, $value) {
         return $value;

@@ -21,7 +21,8 @@ cInclude("includes", "functions.database.php");
 /**
  * Displays statistic information layer (a div Tag)
  *
- * @deprecated [2015-05-21] This method is no longer supported (no replacement)
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
  * @param int $id
  *         Either article or directory id
  * @param string $type

@@ -69,9 +69,10 @@ function isArtInMultipleUse($idart) {
 }
 
 /**
- * @deprecated [2015-05-21] use cString::isAlphanumeric
  * Checks if a value is alphanumeric
  *
+ * @deprecated [2015-05-21]
+ *         use cString::isAlphanumeric
  * @param mixed $test
  *         Value to test
  * @param bool $umlauts [optional]
@@ -84,9 +85,10 @@ function isAlphanumeric($test, $umlauts = true) {
 }
 
 /**
- * @deprecated [2015-05-21] use cString::isUtf8
  * Returns whether a string is UTF-8 encoded or not
  *
+ * @deprecated [2015-05-21]
+ *         use cString::isUtf8
  * @param string $input
  * @return bool
  */
@@ -369,7 +371,8 @@ function getLanguageNamesByClient($client) {
 /**
  * Adds slashes to passed string if PHP setting for magic quotes is disabled
  *
- * @deprecated [2015-05-21] This method is no longer supported (no replacement)
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
  * @param string $code
  *         String by reference
  */
@@ -1498,7 +1501,8 @@ function cDeprecated($message = '') {
 /**
  * Returns the name of the numeric frame given
  *
- * @deprecated [2015-05-21] This method is no longer supported (no replacement)
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
  * @param int $frame
  *         Frame number
  * @return string

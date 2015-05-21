@@ -26,7 +26,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Function removes file meta information from database (used when a file is
  * deleted)
  *
- * @deprecated [2015-05-21] This methos is no longer supported (no replacement)
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
  * @param int $iIdClient
  *         id of client which contains this file
  * @param string $sFilename
@@ -59,7 +60,8 @@ function removeFileInformation($iIdClient, $sFilename, $sType, $oDb) {
  * Function returns file meta information from database (used when files were
  * versionned or description is displayed)
  *
- * @deprecated [2015-05-21] This method is no longer supported (no replacement)
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
  * @param int $iIdClient
  *         id of client which contains this file
  * @param string $sFilename
@@ -116,7 +118,8 @@ function getFileInformation($iIdClient, $sFilename, $sType, $oDb) {
  * does
  * not exist. Otherwise, existing record will be updated
  *
- * @deprecated [2015-05-21] This method is no longer supported (no replacement)
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
  * @param int $iIdClient
  *         id of client which contains this file
  * @param string $sFilename
@@ -191,9 +194,10 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
 }
 
 /**
- * @deprecated [2015-05-21] use cFileHandler::getExtension
  * Returns the filetype (extension).
  *
+ * @deprecated [2015-05-21]
+ *         use cFileHandler::getExtension
  * @param string $filename
  *         The file to get the type
  * @return string
@@ -205,12 +209,13 @@ function getFileType($filename) {
 }
 
 /**
- * @deprecated [2015-05-21] use cDirHandler::getDirectorySize
  * Returns the size of a directory.
  * AKA the combined filesizes of all files within it.
  * Note that this function uses filesize(). There could be problems with files
  * that are larger than 2GiB
  *
+ * @deprecated [2015-05-21]
+ *         use cDirHandler::getDirectorySize
  * @param string $sDirectory
  *         The directory
  * @param bool $bRecursive
@@ -224,59 +229,58 @@ function getDirectorySize($sDirectory, $bRecursive = false) {
 }
 
 /**
- * @deprecated [2015-05-21] use cDirHandler::read with parameter fileOnly true
  * Scans passed directory and collects all found files
  *
+ * @deprecated [2015-05-21]
+ *         use cDirHandler::read with parameter fileOnly true
  * @param string $sDirectory
  * @param bool $bRecursive
  * @return array|bool
  *         array of found files (full path and name) or false
  */
 function scanDirectory($sDirectory, $bRecursive = false) {
-    /*if (substr($sDirectory, strlen($sDirectory) - 1, 1) == '/') {
-        $sDirectory = substr($sDirectory, 0, strlen($sDirectory) - 1);
-    }
-
-    if (!is_dir($sDirectory)) {
-        return false;
-    }
-
-    $aFiles = array();
-    $openDirs = array();
-    $closedDirs = array();
-    array_push($openDirs, $sDirectory);
-
-    while (count(($openDirs)) >= 1) {
-        $sDirectory = array_pop($openDirs);
-        if (is_dir($sDirectory)) {
-            if (false !== $handle = cDirHandler::read($sDirectory)) {
-                foreach ($handle as $sFile) {
-                    if (cFileHandler::fileNameIsDot($sFile) === false) {
-                        $sFullpathFile = $sDirectory . '/' . $sFile;
-                        if (is_file($sFullpathFile) && cFileHandler::readable($sFullpathFile)) {
-                            array_push($aFiles, $sFullpathFile);
-                        } elseif (is_dir($sFullpathFile) && $bRecursive == true) {
-                            if (!in_array($sFullpathFile, $closedDirs)) {
-                                array_push($openDirs, $sFullpathFile);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        array_push($closedDirs, $sDirectory);
-    }
-
-    return $aFiles;*/
 
     cDeprecated('This method is deprecated and is not needed any longer');
     return cFileHandler::read($sDirectory, $bRecursive, false, true);
+
+    // if (substr($sDirectory, strlen($sDirectory) - 1, 1) == '/') {
+    //     $sDirectory = substr($sDirectory, 0, strlen($sDirectory) - 1);
+    // }
+    // if (!is_dir($sDirectory)) {
+    //     return false;
+    // }
+    // $aFiles = array();
+    // $openDirs = array();
+    // $closedDirs = array();
+    // array_push($openDirs, $sDirectory);
+    // while (count(($openDirs)) >= 1) {
+    //     $sDirectory = array_pop($openDirs);
+    //     if (is_dir($sDirectory)) {
+    //         if (false !== $handle = cDirHandler::read($sDirectory)) {
+    //             foreach ($handle as $sFile) {
+    //                 if (cFileHandler::fileNameIsDot($sFile) === false) {
+    //                     $sFullpathFile = $sDirectory . '/' . $sFile;
+    //                     if (is_file($sFullpathFile) && cFileHandler::readable($sFullpathFile)) {
+    //                         array_push($aFiles, $sFullpathFile);
+    //                     } elseif (is_dir($sFullpathFile) && $bRecursive == true) {
+    //                         if (!in_array($sFullpathFile, $closedDirs)) {
+    //                             array_push($openDirs, $sFullpathFile);
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     array_push($closedDirs, $sDirectory);
+    // }
+    // return $aFiles;
 }
 
 /**
- * @deprecated [2015-05-21] use cDirHandler::recursiveCopy
  * Copies source directory to destination directory.
  *
+ * @deprecated [2015-05-21]
+ *         use cDirHandler::recursiveCopy
  * @param string $sourcePath
  * @param string $destinationPath
  * @param int $mode

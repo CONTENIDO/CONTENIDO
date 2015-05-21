@@ -298,7 +298,8 @@ function dbGetColumns($db, $table) {
 /**
  * Returns the primary key column of a table
  *
- * @deprecated [2015-05-21] This method is no longer supported (no replacement)
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
  * @param cDb $db
  * @param string $table
  * @return string

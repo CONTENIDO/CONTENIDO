@@ -885,6 +885,7 @@ cRegistry::shutdown();
  * @param bool $saveKeywords Flag to save collected keywords during replacement
  *        process.
  * @param array $contentList Assoziative list of CMS variables
+ * @SuppressWarnings docBlocks
  */
 function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode, $articleType, $versioningState, $version) {
     // #####################################################################

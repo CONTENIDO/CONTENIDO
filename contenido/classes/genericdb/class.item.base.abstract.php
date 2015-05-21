@@ -84,7 +84,8 @@ abstract class cItemBaseAbstract extends cGenericDb {
     /**
      * Setting of primaryKey name (deprecated)
      *
-     * @deprecated [2015-05-04] Class variable primaryKey is deprecated, use getPrimaryKeyName() instead
+     * @deprecated [2015-05-04]
+     *         Class variable primaryKey is deprecated, use getPrimaryKeyName() instead
      * @var string
      */
     private $primaryKey;
@@ -101,7 +102,8 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * If true, the object
      * is virgin and no operations on it except load-functions are allowed.
      *
-     * @deprecated [2015-05-05] Class variable virgin is deprecated, use negated result of isLoaded() instead
+     * @deprecated [2015-05-05]
+     *         Class variable virgin is deprecated, use negated result of isLoaded() instead
      * @var bool
      */
     private $virgin = true;

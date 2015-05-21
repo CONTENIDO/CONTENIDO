@@ -168,7 +168,8 @@ class cApiClient extends Item {
     /**
      * Setting of client ID (deprecated)
      *
-     * @deprecated [2014-12-03] Class variable idclient is deprecated
+     * @deprecated [2014-12-03]
+     *         Class variable idclient is deprecated
      * @var int
      */
      private $idclient;
@@ -228,7 +229,8 @@ class cApiClient extends Item {
     /**
      * Static accessor to the singleton instance.
      *
-     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
+     * @deprecated [2015-05-21]
+     *         This method is no longer supported (no replacement)
      * @todo There is no need since caching is available at GenericDB level
      * @param int $client [optional]
      * @return cApiClient
