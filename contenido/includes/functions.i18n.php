@@ -29,7 +29,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *         Returns the translation
  */
 function trans($string) {
-	cDeprecated('This method is deprecated and is not needed any longer');
     return cI18n::__($string);
 }
 

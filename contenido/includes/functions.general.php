@@ -1505,8 +1505,6 @@ function cDeprecated($message = '') {
  *         Canonical name of the frame
  */
 function getNamedFrame($frame) {
-	cDeprecated('This method is deprecated and is not needed any longer');
-
     switch ($frame) {
         case 1:
             return 'left_top';
