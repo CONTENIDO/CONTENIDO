@@ -23,10 +23,10 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * @deprecated [2015-05-21] This methos is not longer supported (no replacement)
  * Function removes file meta information from database (used when a file is
  * deleted)
  *
+ * @deprecated [2015-05-21] This methos is no longer supported (no replacement)
  * @param int $iIdClient
  *         id of client which contains this file
  * @param string $sFilename
@@ -56,10 +56,10 @@ function removeFileInformation($iIdClient, $sFilename, $sType, $oDb) {
 }
 
 /**
- * @deprecated [2015-05-21] This method is not longer supported (no replacement)
  * Function returns file meta information from database (used when files were
  * versionned or description is displayed)
  *
+ * @deprecated [2015-05-21] This method is no longer supported (no replacement)
  * @param int $iIdClient
  *         id of client which contains this file
  * @param string $sFilename
@@ -110,13 +110,13 @@ function getFileInformation($iIdClient, $sFilename, $sType, $oDb) {
 }
 
 /**
- * @deprecated [2015-05-21] This method is not longer supported (no replacement)
  * Function updates file meta information (used when files were created or
  * edited).
  * It creates new database record for file meta informations if database record
  * does
  * not exist. Otherwise, existing record will be updated
  *
+ * @deprecated [2015-05-21] This method is no longer supported (no replacement)
  * @param int $iIdClient
  *         id of client which contains this file
  * @param string $sFilename
@@ -200,7 +200,7 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
  *         Filetype
  */
 function getFileType($filename) {
-	cDeprecated('This method is deprecated and is not needed any longer');
+    cDeprecated('This method is deprecated and is not needed any longer');
     return cFileHandler::getExtension($filename);
 }
 
@@ -269,8 +269,8 @@ function scanDirectory($sDirectory, $bRecursive = false) {
 
     return $aFiles;*/
 
-	cDeprecated('This method is deprecated and is not needed any longer');
-	return cFileHandler::read($sDirectory, $bRecursive, false, true);
+    cDeprecated('This method is deprecated and is not needed any longer');
+    return cFileHandler::read($sDirectory, $bRecursive, false, true);
 }
 
 /**

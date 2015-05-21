@@ -64,11 +64,11 @@ function generateDisplayFilePath($sDisplayPath, $iLimit) {
 }
 
 /**
- * @deprecated [2015-05-21] This method is not longer supported (no replacement) *
  * Returns array structure of passed directory.
  * Parses the directory recursively and
  * collects informations about found subdirectories.
  *
+ * @deprecated [2015-05-21] This method is no longer supported (no replacement) *
  * @param string $sCurrentDir
  *         Directory to parse
  * @param string $sStartDir
@@ -83,7 +83,7 @@ function generateDisplayFilePath($sDisplayPath, $iLimit) {
  *         Indexed arraay containing assoziative directory informations
  */
 function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = array(), $iDepth = -1, $sPathString = '') {
-	cDeprecated('This method is deprecated and is not needed any longer');
+    cDeprecated('This method is deprecated and is not needed any longer');
 
     $iDepth++;
 
@@ -941,7 +941,7 @@ function uplSearch($searchfor) {
  * @return string
  */
 function uplGetFileExtension($sFile, $sDirname = '') {
-	cDeprecated('This method is deprecated and is not needed any longer');
+    cDeprecated('This method is deprecated and is not needed any longer');
     return cFileHandler::getExtension($sDirname . $sFile);
 }
 

@@ -22,7 +22,6 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * @deprecated [2015-05-21] This method is not longer supported (no replacement)
  * Seeks through the category tree and returns the node on a specific level.
  *
  * Example:
@@ -40,6 +39,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * The example would return "Category A" (idcat 15). If you specify an invalid level,
  * the results are undefined.
  *
+ * @deprecated [2015-05-21] This method is no longer supported (no replacement)
  * @param int $idcat
  *         The category number
  * @param int $minLevel

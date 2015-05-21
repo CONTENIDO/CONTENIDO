@@ -367,14 +367,14 @@ function getLanguageNamesByClient($client) {
 }
 
 /**
- * @deprecated [2015-05-21] This method is not longer supported (no replacement)
  * Adds slashes to passed string if PHP setting for magic quotes is disabled
  *
+ * @deprecated [2015-05-21] This method is no longer supported (no replacement)
  * @param string $code
  *         String by reference
  */
 function set_magic_quotes_gpc(&$code) {
-	cDeprecated('This method is deprecated and is not needed any longer');
+    cDeprecated('This method is deprecated and is not needed any longer');
 
     global $cfg;
     if (!$cfg['simulate_magic_quotes']) {
@@ -1496,9 +1496,9 @@ function cDeprecated($message = '') {
 }
 
 /**
- * @deprecated [2015-05-21] This method is not longer supported (no replacement)
  * Returns the name of the numeric frame given
  *
+ * @deprecated [2015-05-21] This method is no longer supported (no replacement)
  * @param int $frame
  *         Frame number
  * @return string

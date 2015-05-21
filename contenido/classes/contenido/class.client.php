@@ -226,9 +226,9 @@ class cApiClient extends Item {
     }
 
     /**
-     * @deprecated [2015-05-21] This method is not longer supported (no replacement)
      * Static accessor to the singleton instance.
      *
+     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
      * @todo There is no need since caching is available at GenericDB level
      * @param int $client [optional]
      * @return cApiClient

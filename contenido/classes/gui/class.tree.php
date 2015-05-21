@@ -173,29 +173,29 @@ class cGuiTree extends cTree {
     }
 
     /**
-     * @deprecated [2015-05-21] This method is not longer supported (no replacement)
+     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
      * @param unknown_type $mode
      */
     public function setBackgroundMode($mode) {
-    	cDeprecated('This method is deprecated and is not needed any longer');
+        cDeprecated('This method is deprecated and is not needed any longer');
         $this->_backgroundMode = $mode;
     }
 
     /**
-     * @deprecated [2015-05-21] This method is not longer supported (no replacement)
+     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
      * @param unknown_type $mode
      */
     public function setMouseoverMode($mode) {
-    	cDeprecated('This method is deprecated and is not needed any longer');
+        cDeprecated('This method is deprecated and is not needed any longer');
         $this->_mouseoverMode = $mode;
     }
 
     /**
-     * @deprecated [2015-05-21] This method is not longer supported (no replacement)
+     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
      * @param unknown_type $colors
      */
     public function setBackgroundColors($colors) {
-    	cDeprecated('This method is deprecated and is not needed any longer');
+        cDeprecated('This method is deprecated and is not needed any longer');
         $this->_backgroundColors = $colors;
     }
 

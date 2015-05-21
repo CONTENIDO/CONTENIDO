@@ -45,14 +45,14 @@ function emptyLogFile() {
 }
 
 /**
- * @deprecated [2015-05-21] This method is not longer supported (no replacement)
  * Grabs phpinfo() output.
  *
+ * @deprecated [2015-05-21] This method is no longer supported (no replacement)
  * @return string
  *         HTML output of phpinfo()
  */
 function phpInfoToHtml() {
-	cDeprecated('This method is deprecated and is not needed any longer');
+    cDeprecated('This method is deprecated and is not needed any longer');
 
     // get output
     ob_start();
@@ -108,9 +108,9 @@ function isIPv4($strHostAdress) {
 }
 
 /**
- * @deprecated [2015-05-21] This method is not longer supported (no replacement)
  * must be done
  *
+ * @deprecated [2015-05-21] This method is no longer supported (no replacement)
  * @param string $strConUrl
  *         CONTENIDO fullhtmlPath
  * @param string $strBrowserUrl
@@ -119,7 +119,7 @@ function isIPv4($strHostAdress) {
  *         Status of path comparement
  */
 function checkPathInformation($strConUrl, $strBrowserUrl) {
-	cDeprecated('This method is deprecated and is not needed any longer');
+    cDeprecated('This method is deprecated and is not needed any longer');
 
     // parse url
     $arrConUrl = parse_url($strConUrl);
@@ -169,13 +169,14 @@ function checkPathInformation($strConUrl, $strBrowserUrl) {
 }
 
 /**
- * @deprecated [2015-05-21] This method is not longer supported (no replacement)
  * Check path informations.
  *
  * Checks two path informations against each other to get potential nonconformities.
+ *
+ * @deprecated [2015-05-21] This method is no longer supported (no replacement)
  */
 function compareUrlStrings($arrConUrl, $arrBrowserUrl, $isIP = false) {
-	cDeprecated('This method is deprecated and is not needed any longer');
+    cDeprecated('This method is deprecated and is not needed any longer');
 
     // && $isIP == false
     // remove 'www.' if needed

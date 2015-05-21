@@ -1,6 +1,5 @@
 <?php
 /**
- * @deprecated [2015-05-21] This file is not longer supported
  * Project:
  * CONTENIDO Content Management System
  *
@@ -15,6 +14,7 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release 4.8.7
+ * @deprecated [2015-05-21] This file is no longer supported
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -79,7 +79,6 @@ $aCustomTabs['bar'] = array(
 
 ?>
 /**
- * @deprecated [2015-05-21] This file is not longer supported
  * Article related logic module
  *
  * @module     article-object
@@ -94,6 +93,7 @@ $aCustomTabs['bar'] = array(
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
+ * @deprecated [2015-05-21] This file is no longer supported
  */
 
 (function(Con, $) {

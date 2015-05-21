@@ -296,15 +296,15 @@ function dbGetColumns($db, $table) {
 }
 
 /**
- * @deprecated [2015-05-21] This method is not longer supported (no replacement)
  * Returns the primary key column of a table
  *
+ * @deprecated [2015-05-21] This method is no longer supported (no replacement)
  * @param cDb $db
  * @param string $table
  * @return string
  */
 function dbGetPrimaryKeyName($db, $table) {
-	cDeprecated('This method is deprecated and is not needed any longer');
+    cDeprecated('This method is deprecated and is not needed any longer');
 
     $sReturn = '';
     $structure = dbGetColumns($db, $table);

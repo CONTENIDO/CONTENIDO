@@ -17,7 +17,6 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * @deprecated [2015-05-21] This class is not longer supported
  *
  * This class contains the main functionalities for the module logging in
  * CONTENIDO.
@@ -34,6 +33,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage Log
+ * @deprecated [2015-05-21] This class is no longer supported
  */
 class cModuleLog extends cLog {
 
@@ -44,16 +44,16 @@ class cModuleLog extends cLog {
     private $_module;
 
     /**
-     * @deprecated [2015-05-21] This method is not longer supported (no replacement)
      * Constructor of the module log.
      *
+     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
      * @param mixed $writer [optional]
      *         Writer object (any subclass of cLogWriter),
      *         or false if cLog should handle the writer creation
      *
      */
     public function __construct($writer = false) {
-    	cDeprecated("The cModuleLog classes are not longer supported.");
+        cDeprecated("The cModuleLog classes are no longer supported.");
 
         parent::__construct($writer);
 
@@ -65,19 +65,19 @@ class cModuleLog extends cLog {
     }
 
     /**
-     * @deprecated [2015-05-21] This method is not longer supported (no replacement)
      * Sets the module to use.
      *
      * setModule automatically buffers basic module information to the log to
      * assist the developer in debugging his modules.
      *
+     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
      * @param int $idmod
      *         The module ID to use
      * @throws cException
      *         if the module with the given idmod could not be loaded
      */
     public function setModule($idmod) {
-    	cDeprecated("The cModuleLog setModule method are not longer supported.");
+        cDeprecated("The cModuleLog setModule method are no longer supported.");
 
         $this->_module = new cApiModule($idmod);
         if ($this->_module->isLoaded() == false) {
@@ -86,7 +86,7 @@ class cModuleLog extends cLog {
     }
 
     /**
-     * @deprecated [2015-05-21] This method is not longer supported (no replacement)
+     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
      * Shortcut Handler Module.
      * Returns the ID and the name of the module.
      *
@@ -94,7 +94,7 @@ class cModuleLog extends cLog {
      *         ID and name of the module
      */
     public function shModule() {
-    	cDeprecated("The cModuleLog shModule method are not longer supported.");
+        cDeprecated("The cModuleLog shModule method are no longer supported.");
 
         if ($this->_module->isLoaded() == false) {
             return '';

@@ -1,5 +1,4 @@
-/*
- * @deprecated [2015-05-21] This file is not longer supported
+/**
  *  md5.jvs 1.0b 27/06/96
  *
  * Javascript implementation of the RSA Data Security, Inc. MD5
@@ -17,9 +16,8 @@
  *
  * $Id$
  *
+ * @deprecated [2015-05-21] This file is no longer supported
  */
-
-
 
 function array(n) {
   for(i=0;i<n;i++) this[i]=0;

@@ -307,14 +307,18 @@ class cDirHandler {
                 if (!cFileHandler::fileNameIsDot($file)) {
                     $fileName = str_replace("\\", "/", $file->getPathName());
 
-                    // get only directories
                     if ($dirOnly === true && is_dir($fileName)) {
+                        // get only directories
                         $dirContent[] = $fileName;
-                    // get only
+
                     } else if ($fileOnly === true && is_file($fileName)) {
+                        // get only files
                         $dirContent[] = $fileName;
+
                     } else {
+                        // get everything
                         $dirContent[] = $fileName;
+
                     }
                 }
             }
@@ -349,17 +353,17 @@ class cDirHandler {
      *         false in case of an error or the size
      */
     public static function getDirectorySize($dirname, $recursive = false) {
-    	$ret = 0;
-    	$files = self::read($dirname, $recursive, false, true);
-    	if ($files === false) {
-    		return false;
-    	}
+        $ret = 0;
+        $files = self::read($dirname, $recursive, false, true);
+        if ($files === false) {
+            return false;
+        }
 
-    	foreach ($files as $file) {
-    		$temp = cFileHandler::info($dirname . $file);
-    		$ret += $temp['size'];
-    	}
+        foreach ($files as $file) {
+            $temp = cFileHandler::info($dirname . $file);
+            $ret += $temp['size'];
+        }
 
-    	return $ret;
+        return $ret;
     }
 }
