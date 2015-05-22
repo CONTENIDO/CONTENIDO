@@ -13,6 +13,20 @@
  * @link http://www.contenido.org
  */
 
+/*
+ * wrapper class to set _idCounter
+ */
+class cHTMLProxy extends cHTML {
+    /**
+     * Setter for static $_idCounter property
+     *
+     * @param int $value
+     */
+    public static function setIdCounter($value) {
+        self::$_idCounter = $value;
+    }
+}
+
 /**
  * This class tests the class methods of the cHTML class.
  *
@@ -23,6 +37,9 @@ class cHTMLTest extends cTestingTestCase {
     public function setUp() {
         // create XHTML
         cHTML::setGenerateXHTML(true);
+        
+        
+        cHTMLProxy::setIdCounter(0);
     }
 
     /**
@@ -30,7 +47,7 @@ class cHTMLTest extends cTestingTestCase {
      * with arbitrary character.
      */
     public function testConstruct() {
-        $html = new cHTML();
+        $html = new cHTMLProxy();
         $this->assertClassHasAttribute('_generateXHTML', 'cHTML');
         $this->assertClassHasAttribute('_skeletonOpen', 'cHTML');
         $this->assertClassHasAttribute('_skeletonSingle', 'cHTML');
@@ -47,54 +64,55 @@ class cHTMLTest extends cTestingTestCase {
     }
 
     public function testAdvanceID() {
-        $html = new cHTML();
-        $this->assertSame('m2', $html->getID());
+        $html = new cHTMLProxy();
+        $this->assertSame('m1', $html->getID());
         $html->advanceID();
-        $this->assertSame('m3', $html->getID());
+        $this->assertSame('m2', $html->getID());
     }
 
     public function testGetID() {
-        $html = new cHTML();
-        $this->assertSame('m4', $html->getID());
+        $html = new cHTMLProxy();
+        $this->assertSame('m1', $html->getID());
     }
 
     public function testSetTag() {
-        $html = new cHTML();
+        $html = new cHTMLProxy();
         $html->setTag('foo');
-        $this->assertSame('<foo id="m5" />', $html->render());
+        $this->assertSame('<foo id="m1" />', $html->render());
         $html->setTag('bar');
-        $this->assertSame('<bar id="m5" />', $html->render());
+        $this->assertSame('<bar id="m1" />', $html->render());
     }
 
     public function testSetAlt() {
 
         // set alt w/ default setting for title
-        $html = new cHTML();
+        $html = new cHTMLProxy();
         $html->setAlt('foobar');
-        $this->assertSame('< id="m6" alt="foobar" title="foobar" />', $html->render());
+        $this->assertSame('< id="m1" alt="foobar" title="foobar" />', $html->render());
 
         // set alt w/ title
-        $html = new cHTML();
+        $html = new cHTMLProxy();
         $html->setAlt('foobar', true);
-        $this->assertSame('< id="m7" alt="foobar" title="foobar" />', $html->render());
+        $this->assertSame('< id="m2" alt="foobar" title="foobar" />', $html->render());
 
         // set alt w/o title
-        $html = new cHTML();
+        $html = new cHTMLProxy();
         $html->setAlt('foobar', false);
-        $this->assertSame('< id="m8" alt="foobar" />', $html->render());
+        $this->assertSame('< id="m3" alt="foobar" />', $html->render());
 
         // set alt w/ title & reset alt w/o title
-        $html = new cHTML();
+        $html = new cHTMLProxy();
         $html->setAlt('foo', true);
         $html->setAlt('bar', false);
-        $this->assertSame('< id="m9" alt="bar" />', $html->render());
+        $this->assertSame('< id="m4" alt="bar" title="foo" />', $html->render());
     }
 
     public function testSetID() {
-        $html = new cHTML();
+        $html = new cHTMLProxy();
         $html->setID('foobar');
         $this->assertSame('foobar', $html->getID());
         $this->assertSame('< id="foobar" />', $html->render());
+        // an emtpy string should remove the id-tag but it does nothing!
         $html->setID('');
         $this->assertSame('', $html->getID());
         $this->assertSame('< id="" />', $html->render());
@@ -104,12 +122,13 @@ class cHTMLTest extends cTestingTestCase {
     }
 
     public function testSetClass() {
-        $html = new cHTML();
+        $html = new cHTMLProxy();
         $html->setClass('foobar');
-        $this->assertSame('< id="m11" class="foobar" />', $html->render());
+        $this->assertSame('< id="m1" class="foobar" />', $html->render());
+        // set class emtpy should remove class-tag!!
         $html->setClass('');
-        $this->assertSame('< id="m11" class="" />', $html->render());
+        $this->assertSame('< id="m1" class="" />', $html->render());
         $html->setClass(NULL);
-        $this->assertSame('< id="m11" />', $html->render());
+        $this->assertSame('< id="m1" />', $html->render());
     }
 }
