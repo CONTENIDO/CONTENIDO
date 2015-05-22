@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the system property collection and item class.
  *
  * @package Core
  * @subpackage GenericDB_Model
- * @version SVN Revision $Rev:$
- *
  * @author Bjoern Behrens
  * @author Holger Librenz
  * @copyright four for business AG <www.4fb.de>

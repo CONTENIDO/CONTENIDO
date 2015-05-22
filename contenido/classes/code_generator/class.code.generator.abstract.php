@@ -5,8 +5,6 @@
  *
  * @package Core
  * @subpackage ContentType
- * @version SVN Revision $Rev:$
- *
  * @author Murat Purc <murat@purc.de>
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -80,7 +78,7 @@ abstract class cCodeGeneratorAbstract {
      * @var int
      */
     protected $_lang;
-	
+
     /**
      * Client id
      *
@@ -310,7 +308,7 @@ abstract class cCodeGeneratorAbstract {
         // NOTE: Variables below are required in included/evaluated content type
         // codes!
         global $db, $db2, $sess, $cfg, $code, $cfgClient, $encoding;
-        
+
         // NOTE: Variables below are additionally required in included/evaluated
         // content type codes within backend edit mode!
         global $edit, $editLink, $belang;
@@ -320,7 +318,7 @@ abstract class cCodeGeneratorAbstract {
         $lang = $this->_lang;
         $client = $this->_client;
         $idartlang = $this->_idartlang;
-        
+
         if (!is_object($db2)) {
             $db2 = cRegistry::getDb();
         }
@@ -329,7 +327,7 @@ abstract class cCodeGeneratorAbstract {
 
         $match = array();
         $keycode = array();
-		
+
         // NOTE: $a_content is used by included/evaluated content type codes
         // below
         $a_content = $contentList;
@@ -337,7 +335,7 @@ abstract class cCodeGeneratorAbstract {
         $_typeList = array();
         $oTypeColl = new cApiTypeCollection();
         $oTypeColl->select();
-	    while ($oType = $oTypeColl->next()) {
+        while ($oType = $oTypeColl->next()) {
             $_typeList[] = $oType->toObject();
         }
 
@@ -359,14 +357,14 @@ abstract class cCodeGeneratorAbstract {
 
             $typeClassName = $this->_getContentTypeClassName($type);
             $typeCodeFile = $this->_getContentTypeCodeFilePathName($type);
-            
+
             foreach ($a_[$key] as $val) {
                 if (class_exists($typeClassName)) {
                     // We have a class for the content type, use it
-                    $tmp = $a_content[$_typeItem->type][$val];                   
+                    $tmp = $a_content[$_typeItem->type][$val];
                     $cTypeObject = new $typeClassName($tmp, $val, $a_content);
                     global $edit;
-                    
+
                     if (cRegistry::isBackendEditMode()) {
                         //if ($editable) {
                             $tmp = $cTypeObject->generateEditCode();
@@ -528,10 +526,10 @@ abstract class cCodeGeneratorAbstract {
      */
     protected function _getUsedCmsTypesData($editable = true, $version = NULL) {
         global $cfg;
-        
+
         $return = array();
-        
-        // Find out what kind of CMS_... Vars are in use        
+
+        // Find out what kind of CMS_... Vars are in use
         if ($version == NULL) {
             $sql = "SELECT * FROM `%s` AS A, `%s` AS B, `%s` AS C
                     WHERE A.idtype = C.idtype AND A.idartlang = B.idartlang AND B.idart = %d AND B.idlang = %d";
@@ -546,14 +544,14 @@ abstract class cCodeGeneratorAbstract {
         } else if (is_numeric($version)) {
             $sql = 'SELECT b.type as type, a.typeid as typeid, a.value as value
                     FROM `%s` AS a
-                    INNER JOIN `%s` as b 
+                    INNER JOIN `%s` as b
                             ON b.idtype = a.idtype
                     WHERE (a.idtype, a.typeid, a.version) IN
                             (SELECT idtype, typeid, max(version)
                             FROM %s
                             WHERE idartlang = %d AND version <= %d
                             GROUP BY idtype, typeid)
-                    AND a.idartlang = %d 
+                    AND a.idartlang = %d
                     AND (a.deleted < 1 OR a.deleted IS NULL)
                     ORDER BY a.idtype, a.typeid;';
             $sql = $this->_db->prepare(
@@ -565,13 +563,13 @@ abstract class cCodeGeneratorAbstract {
                     $version,
                     $this->_idartlang
             );
-        }        
+        }
 
         $this->_db->query($sql);
         while ($this->_db->nextRecord()) {
             $return[$this->_db->f('type')][$this->_db->f('typeid')] = $this->_db->f('value');
         }
-        
+
         return $return;
     }
 

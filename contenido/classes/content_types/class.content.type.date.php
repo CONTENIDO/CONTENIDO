@@ -5,8 +5,9 @@
  *
  * @package Core
  * @subpackage ContentType
- * @version SVN Revision $Rev:$
- * @author Bilal Arslan, Timo Trautmann, Simon Sprankel
+ * @author Bilal Arslan
+ * @author Timo Trautmann
+ * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
@@ -120,10 +121,10 @@ class cContentTypeDate extends cContentTypeAbstract {
             } else { // if no date_format is given, set standard value
                 $_POST['date_format'] = '{"dateFormat":"","timeFormat":""}';
             }
-            
+
             $this->_storeSettings();
         }
-        
+
         // CON-2049
         // reset specific date variable
         // $_POST[$this->_prefix . '_action'] = '';
@@ -266,7 +267,7 @@ class cContentTypeDate extends cContentTypeAbstract {
                 $result .= $char;
             }
         }
-        
+
         // strftime returns a string in an encoding that is specified by the locale
         // use iconv extension to get the content encoding of string
         // use mbstring extension to convert encoding to contenido's target encoding
@@ -332,7 +333,7 @@ class cContentTypeDate extends cContentTypeAbstract {
         $code .= $this->_generateFormatSelect();
         $code .= $this->_generateStoreButton();
         $code = new cHTMLDiv($code, 'cms_date', 'cms_' . $this->_prefix . '_' . $this->_id . '_settings');
-        
+
         return $this->_encodeForOutput($code);
     }
 
@@ -357,7 +358,7 @@ class cContentTypeDate extends cContentTypeAbstract {
         }
         $template->set('s', 'SETTINGS', json_encode($setting));
         $template->set('s', 'BELANG', cRegistry::getBackendLanguage());
-        
+
         return $template->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_date.html', true);
     }
 
@@ -369,7 +370,7 @@ class cContentTypeDate extends cContentTypeAbstract {
      */
     private function _generateStoreButton() {
         $saveButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_ok.gif', 'save_settings');
-        
+
         return $saveButton->render();
     }
 

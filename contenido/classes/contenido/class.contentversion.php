@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the content version collection and item class.
  *
  * @package          Core
  * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
- *
  * @author           Jann Dieckmann
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -22,7 +21,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiContentVersionCollection extends ItemCollection {
-    
+
     /**
      * Create a new collection of items.
      */
@@ -63,18 +62,18 @@ class cApiContentVersionCollection extends ItemCollection {
         if (empty($lastmodified)) {
             $lastmodified = date('Y-m-d H:i:s');
         }
-		
+
         $item = $this->createNewItem();
-        
+
         // populate item w/ values
         foreach (array_keys($parameters) as $key) {
             $item->set($key, $parameters[$key]);
         }
-	$item->store();
-        
+    $item->store();
+
         return $item;
     }
-	
+
     /**
      * Gets idcontentversions by where clause
      *
@@ -92,7 +91,7 @@ class cApiContentVersionCollection extends ItemCollection {
         return $ids;
 
     }
-    
+
 }
 
 /**
@@ -129,8 +128,8 @@ class cApiContentVersion extends Item {
     }
 
     /**
-     * Mark this Content Version as current Content 
-     */	
+     * Mark this Content Version as current Content
+     */
     public function markAsCurrent() {
 
         // try to get item from database
@@ -155,18 +154,18 @@ class cApiContentVersion extends Item {
         $content->set('author', $this->get('author'));
         $content->set('created', $this->get('created'));
         $content->set('lastmodified', $this->get('lastmodified'));
-        
+
         // store item
         $content->store();
-        
+
     }
-	
+
     /**
      * Creates a new, editable Version with same properties as this Content Version
      *
      * @param string $version
      * @param mixed $deleted
-     */		
+     */
     public function markAsEditable($version, $deleted) {
 
         // get parameters for editable version
@@ -184,7 +183,7 @@ class cApiContentVersion extends Item {
         $contentVersion->store();
 
     }
-	
+
     /**
      * Loads a content entry by its article language id, idtype, type id and version.
      *
@@ -209,11 +208,11 @@ class cApiContentVersion extends Item {
             // entry in cache found, load entry from cache
             $this->loadByRecordSet($recordSet);
             return true;
-        } else {		
+        } else {
             $where = $this->db->prepare('idartlang = %d AND idtype = %d AND typeid = %d AND version <= %d GROUP BY pk desc LIMIT 1', $contentParameters['idartlang'], $contentParameters['idtype'], $contentParameters['typeid'], $contentParameters['version']);
             return $this->_loadByWhereClause($where);
         }
-		
+
     }
 
 }

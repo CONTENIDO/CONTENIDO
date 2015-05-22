@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the content collection and item class.
  *
  * @package          Core
  * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
- *
  * @author           Dominik Ziegler
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -130,7 +129,7 @@ class cApiContent extends Item {
      *
      * @param string $version
      * @param mixed $deleted
-     */	
+     */
     public function markAsEditable($version, $deleted) {
             $parameters = $this->values;
             $parameters['version'] = $version;
@@ -141,7 +140,7 @@ class cApiContent extends Item {
             }
             $contentVersion->store();
     }
-	
+
     /**
      * Loads an content entry by its article language id, idtype and type id.
      *

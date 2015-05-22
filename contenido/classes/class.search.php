@@ -1,6 +1,8 @@
 <?php
+
 /**
  * This file contains various classes for content search.
+ *
  * API to index a CONTENIDO article
  * API to search in the index structure
  * API to display the searchresults
@@ -14,11 +16,9 @@
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
  * @link http://www.contenido.org
- */
-defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
-
-/**
  * @deprecated [2014-07-30]
  *         This file is empty as of 2014-07-30.
  *         You can find the classes that used to be here in the search/ folder.
  */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');

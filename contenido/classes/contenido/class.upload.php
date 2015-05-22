@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the upload collection and item class.
  *
@@ -6,8 +7,6 @@
  *
  * @package Core
  * @subpackage GenericDB_Model
- * @version SVN Revision $Rev:$
- *
  * @author Timo Hummel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -73,7 +72,7 @@ class cApiUploadCollection extends ItemCollection {
         if (false !== $oItem = $this->next()) {
             $oItem->update();
         } else {
-        	$sFiletype = cFileHandler::getExtension($sDirname . $sFilename);
+            $sFiletype = cFileHandler::getExtension($sDirname . $sFilename);
             $iFilesize = cApiUpload::getFileSize($sDirname, $sFilename);
             $oItem = $this->create($sDirname, $sFilename, $sFiletype, $iFilesize, '');
         }

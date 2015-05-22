@@ -5,8 +5,6 @@
  *
  * @package Core
  * @subpackage ContentType
- * @version SVN Revision $Rev:$
- *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -191,7 +189,7 @@ abstract class cContentTypeAbstract {
         $this->_session = cRegistry::getSession();
         $this->_useXHTML = cSecurity::toBoolean(getEffectiveSetting('generator', 'xhtml', 'false'));
         $this->_uploadPath = $this->_cfgClient[$this->_client]['upl']['path'];
-        
+
         $this->_readSettings();
     }
 
@@ -255,7 +253,7 @@ abstract class cContentTypeAbstract {
         } else {
             $settingsToStore = $this->_settings;
         }
-        
+
         // store new settings in the database
         conSaveContentEntry($this->_idArtLang, $this->_type, $this->_id, $settingsToStore);
     }
@@ -272,7 +270,7 @@ abstract class cContentTypeAbstract {
         $code = addslashes($code);
         $code = str_replace("\\'", "'", $code);
         $code = str_replace('\$', '\\$', $code);
-        
+
         return $code;
     }
 
@@ -301,7 +299,7 @@ abstract class cContentTypeAbstract {
             if (false !== ($handle = cDirHandler::read($uploadPath, false, true))) {
                 foreach ($handle as $entry) {
                     if (cFileHandler::fileNameBeginsWithDot($entry) === false && is_dir($uploadPath . $entry)) {
-                        
+
                         $directory = array();
                         $directory['name'] = $entry;
                         $directory['path'] = str_replace($this->_uploadPath, '', $uploadPath);

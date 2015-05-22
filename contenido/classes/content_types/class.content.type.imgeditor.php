@@ -5,8 +5,6 @@
  *
  * @package Core
  * @subpackage ContentType
- * @version SVN Revision $Rev:$
- *
  * @author Fulai Zhang, Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -123,7 +121,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             'image_internal_notice',
             'image_copyright'
         );
-        
+
         // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
 
@@ -155,8 +153,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $this->_copyright = ($uploadMeta->get('copyright') !== false) ? $uploadMeta->get('copyright') : '';
 
     }
-	
-	/**
+
+    /**
      * Return the raw settings of a content type
      *
      * @param string $contentTypeName Content type name
@@ -165,8 +163,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * @return mixed
      */
     protected function _getRawSettings($contentTypeName, $id, array $contentTypes, $editable = false) {
-		global $cfg;
-		
+        global $cfg;
+
         if (!isset($contentTypes[$contentTypeName][$id])) {
             $idArtLang = cRegistry::getArticleLanguageId();
             // get the idtype of the content type
@@ -175,30 +173,30 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             $idtype = $typeItem->get('idtype');
             // first load the appropriate content entry in order to get the
             // settings
-			if ($editable = false) { 
-				$content = new cApiContent();
-				$content->loadByMany(array(
-					'idartlang' => $idArtLang,
-					'idtype' => $idtype,
-					'typeid' => $id
-				));
-				return $content->get('value');
-			} else if ($editable = true) {
-				$db = cRegistry::getDb();
-				$sql = "SELECT max(version) AS max
-						FROM " . $cfg["tab"]["content_version"]	. " WHERE idartlang = " . $idArtLang . " AND typeid = " . $id . 
-						" AND idtype = '" . $idtype . "'";
-				$db->query($sql);
-				while($db->nextRecord()) {
-					$idContentVersion = $db->f('max');
-				}
-				
-				$contentVersion = new cApiContentVersion($idContentVersion);
-				
-				if ($contentVersion->get('deleted') != 1) {
-					return $contentVersion->get('value');
-				}				
-			}
+            if ($editable = false) {
+                $content = new cApiContent();
+                $content->loadByMany(array(
+                    'idartlang' => $idArtLang,
+                    'idtype' => $idtype,
+                    'typeid' => $id
+                ));
+                return $content->get('value');
+            } else if ($editable = true) {
+                $db = cRegistry::getDb();
+                $sql = "SELECT max(version) AS max
+                        FROM " . $cfg["tab"]["content_version"]	. " WHERE idartlang = " . $idArtLang . " AND typeid = " . $id .
+                        " AND idtype = '" . $idtype . "'";
+                $db->query($sql);
+                while($db->nextRecord()) {
+                    $idContentVersion = $db->f('max');
+                }
+
+                $contentVersion = new cApiContentVersion($idContentVersion);
+
+                if ($contentVersion->get('deleted') != 1) {
+                    return $contentVersion->get('value');
+                }
+            }
         } else {
             return $contentTypes[$contentTypeName][$id];
         }

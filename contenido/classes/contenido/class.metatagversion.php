@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the meta tag version collection and item class.
  *
  * @package          Core
  * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
- *
  * @author           Jann Dieckmann
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -46,7 +45,7 @@ class cApiMetaTagVersionCollection extends ItemCollection {
      * @return cApiMetaTagVersion
      */
     public function create($idMetaTag, $idArtLang, $idMetaType, $metaValue, $version) {
-        
+
         // create item
         $item = $this->createNewItem();
 
@@ -58,7 +57,7 @@ class cApiMetaTagVersionCollection extends ItemCollection {
         $item->store();
 
         return $item;
-        
+
     }
 
     /**
@@ -71,12 +70,12 @@ class cApiMetaTagVersionCollection extends ItemCollection {
      */
     public function fetchByArtLangMetaTypeAndVersion($idArtLang, $idMetaType, $version) {
         $sql = 'SELECT idmetatagversion FROM %s
-                WHERE (idmetatype, version) 
-                    IN (SELECT idmetatype, max(version) 
+                WHERE (idmetatype, version)
+                    IN (SELECT idmetatype, max(version)
                     FROM %s
                     WHERE idartlang = %d AND version <= %d AND idmetatype = %d group by idmetatype)
                 AND idartlang = %d';
-                
+
         $this->db->query(
             $sql,
             cRegistry::getDbTableName('meta_tag_version'),
@@ -84,15 +83,15 @@ class cApiMetaTagVersionCollection extends ItemCollection {
             (int) $idArtLang,
             (int) $version,
             (int) $idMetaType,
-            (int) $idArtLang    
+            (int) $idArtLang
         );
-       
-        $this->db->nextRecord();  
-        
+
+        $this->db->nextRecord();
+
         return new cApiMetaTagVersion($this->db->f('idmetatagversion'));
     }
-    
-    
+
+
     /**
      * Returns idmetatagversions by where-clause
      *
@@ -156,11 +155,11 @@ class cApiMetaTagVersion extends Item {
             $metaTag->set('metavalue', $this->get('metavalue'), false);
             return $metaTag->store();
         } else {
-            $metaTag = new cApiMetaTagCollection(); 
-            $metaTag->create($this->get('idartlang'), $this->get('idmetatype'), $this->get('metavalue'));            
+            $metaTag = new cApiMetaTagCollection();
+            $metaTag->create($this->get('idartlang'), $this->get('idmetatype'), $this->get('metavalue'));
         }
     }
-    
+
     /**
      * Marks this meta value as editable
      *
@@ -169,7 +168,7 @@ class cApiMetaTagVersion extends Item {
         $metaTagVersionColl = new cApiMetaTagVersionCollection();
         $metaTagVersionColl->create($this->get('idmetatag'), $this->get('idartlang'), $this->get('idmetatype'), $this->get('metavalue'), $version);
     }
-    
+
     /**
      * Userdefined setter for meta tag fields.
      *
@@ -182,7 +181,7 @@ class cApiMetaTagVersion extends Item {
             case 'idartlang':
                 $value = (int) $value;
                 break;
-			case 'idmetatype':
+            case 'idmetatype':
                 $value = (int) $value;
                 break;
         }

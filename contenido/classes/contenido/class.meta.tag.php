@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the meta tag collection and item class.
  *
  * @package          Core
  * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
- *
  * @author           Murat Purc <murat@purc.de>
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -124,12 +123,12 @@ class cApiMetaTag extends Item {
 
         return parent::setField($name, $value, $bSafe);
     }
-    
+
     /**
-     * Creates a new, editable Version with same properties 
+     * Creates a new, editable Version with same properties
      *
      * @param string $version
-     */	
+     */
     public function markAsEditable($version) {
         //var_export($this->values);
         //$parameters = $this->values;
@@ -142,7 +141,7 @@ class cApiMetaTag extends Item {
             $this->getField('metavalue'),
             $version
         );
-        
+
     }
 
 }

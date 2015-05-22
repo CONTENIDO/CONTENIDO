@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the ISO3166 collection and item class.
  *
  * @package Core
  * @subpackage GenericDB_Model
- * @version SVN Revision $Rev:$
- *
  * @author Alexander Scheider
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
