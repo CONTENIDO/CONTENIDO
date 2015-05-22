@@ -54,18 +54,18 @@ class cArticleCollectorTest extends cTestingTestCase {
         );
 
         $this->_db = cRegistry::getDb();
-
+        
         $sqlStatements = array();
         $sqlStatements = array_merge($sqlStatements, $this->_fetchSqlFileContent('art'));
         $sqlStatements = array_merge($sqlStatements, $this->_fetchSqlFileContent('art_lang'));
         $sqlStatements = array_merge($sqlStatements, $this->_fetchSqlFileContent('cat'));
         $sqlStatements = array_merge($sqlStatements, $this->_fetchSqlFileContent('cat_art'));
         $sqlStatements = array_merge($sqlStatements, $this->_fetchSqlFileContent('cat_lang'));
-
+        
         foreach ($sqlStatements as $sqlStatement) {
             $this->_db->query($sqlStatement);
         }
-
+        
         $this->_aColl = new cArticleCollector();
     }
 
@@ -82,16 +82,30 @@ class cArticleCollectorTest extends cTestingTestCase {
 
         // test empty options
         $this->_aColl = new cArticleCollector(array());
-        $ar = array();
+        $ar = array(
+            'categories' => array(),
+            'lang' => cRegistry::getLanguageId(),
+            'client' => cRegistry::getClientId(),
+            'start' => false,
+            'startonly' => false,
+            'offline' => false,
+            'offlineonly' => false,
+            'order' => 'created',
+            'artspecs' => array(),
+            'direction' => 'DESC',
+            'limit' => 0
+        );
         $this->assertSame($ar, $this->_readAttribute($this->_aColl, '_options'));
 
         // test option idcat
         $this->_aColl = new cArticleCollector(array(
             'idcat' => 10
         ));
+        
+        $ar = array();
         $ar['idcat'] = 10;
         $ar['categories'] = array(
-            10
+            0 => 10
         );
         $ar['lang'] = cRegistry::getLanguageId();
         $ar['client'] = cRegistry::getClientId();
@@ -362,29 +376,27 @@ class cArticleCollectorTest extends cTestingTestCase {
         // direction & order (creationdate)
         $this->_aColl = new cArticleCollector(array(
             'idcat' => 10,
-            'limit' => 10,
+            'limit' => 0,
+            'start' => true
+        ));        
+        
+        $ar = array (
+            'idcat' => 10,
+            'limit' => 0,
             'start' => true,
-            'startonly' => true,
-            'offline' => true,
-            'offlineonly' => true,
-            'direction' => 'ASC',
-            'order' => 'creationdate'
-        ));
-        $ar = array();
-        $ar['idcat'] = 10;
-        $ar['limit'] = 10;
-        $ar['start'] = true;
-        $ar['startonly'] = true;
-        $ar['offline'] = true;
-        $ar['offlineonly'] = true;
-        $ar['direction'] = 'ASC';
-        $ar['order'] = 'created';
-        $ar['categories'] = array(
-            10
+            'categories' => array(
+                10
+            ),
+            'lang' => cRegistry::getLanguageId(),
+            'client' => cRegistry::getClientId(),
+            'startonly' => false,
+            'offline' => false,
+            'offlineonly' => false,
+            'order' => 'created',
+            'artspecs' => array(),
+            'direction' => 'DESC'
         );
-        $ar['lang'] = cRegistry::getLanguageId();
-        $ar['client'] = cRegistry::getClientId();
-        $ar['artspecs'] = array();
+        
         $this->assertSame($ar, $this->_readAttribute($this->_aColl, '_options'));
 
         // ------check order
@@ -536,7 +548,7 @@ class cArticleCollectorTest extends cTestingTestCase {
     public function testLoadArticles() {
 
         // articles including start articles
-        $this->_db->query('SELECT * FROM con_art_lang_test WHERE idlang = 1 AND online = 1');
+        $this->_db->query('SELECT * FROM test_art_lang WHERE idlang = 1 AND online = 1');
         $ret = $this->_db->affectedRows();
         $this->_aColl = new cArticleCollector(array(
             'start' => true
@@ -544,7 +556,7 @@ class cArticleCollectorTest extends cTestingTestCase {
 
         // articles without start articles
         $this->assertSame($ret, $this->_aColl->count());
-        $this->_db->query('SELECT * FROM con_art_lang_test WHERE idlang = 1 AND online = 1 AND idartlang NOT IN (SELECT startidartlang FROM con_cat_lang_test WHERE startidartlang>0)');
+        $this->_db->query('SELECT * FROM test_art_lang WHERE idlang = 1 AND online = 1 AND idartlang NOT IN (SELECT startidartlang FROM test_cat_lang WHERE startidartlang>0)');
         $ret = $this->_db->affectedRows();
         $this->_aColl = new cArticleCollector(array(
             'start' => false
@@ -552,7 +564,7 @@ class cArticleCollectorTest extends cTestingTestCase {
         $this->assertSame($ret, $this->_aColl->count());
 
         // offline articles
-        $this->_db->query('SELECT * FROM con_art_lang_test WHERE idlang = 1 AND online = 0');
+        $this->_db->query('SELECT * FROM test_art_lang WHERE idlang = 1 AND online = 0');
         $ret = $this->_db->affectedRows();
 
         $ret = $this->_db->affectedRows();
@@ -592,29 +604,26 @@ class cArticleCollectorTest extends cTestingTestCase {
     public function testNextArticle() {
         $this->_aColl = new cArticleCollector(array(
             'idcat' => 10,
-            'limit' => 10,
+            'limit' => 0,
+            'start' => true
+        ));        
+        
+        $ar = array (
+            'idcat' => 10,
+            'limit' => 0,
             'start' => true,
-            'startonly' => true,
-            'offline' => true,
-            'offlineonly' => true,
-            'direction' => 'ASC',
-            'order' => 'creationdate'
-        ));
-        $ar = array();
-        $ar['idcat'] = 10;
-        $ar['limit'] = 10;
-        $ar['start'] = true;
-        $ar['startonly'] = true;
-        $ar['offline'] = true;
-        $ar['offlineonly'] = true;
-        $ar['direction'] = 'ASC';
-        $ar['order'] = 'created';
-        $ar['categories'] = array(
-            10
+            'categories' => array(
+                10
+            ),
+            'lang' => cRegistry::getLanguageId(),
+            'client' => cRegistry::getClientId(),
+            'startonly' => false,
+            'offline' => false,
+            'offlineonly' => false,
+            'order' => 'created',
+            'artspecs' => array(),
+            'direction' => 'DESC'
         );
-        $ar['lang'] = cRegistry::getLanguageId();
-        $ar['client'] = cRegistry::getClientId();
-        $ar['artspecs'] = array();
 
         $this->assertSame($ar, $this->_readAttribute($this->_aColl, '_options'));
         // ------check order
@@ -654,7 +663,7 @@ class cArticleCollectorTest extends cTestingTestCase {
             'idcat' => 10,
             'start' => true
         ));
-        $this->assertSame(1, $this->_aColl->count());
+        $this->assertSame(1, $this->_aColl->seek('asdfa'));
     }
 
     /**
@@ -730,7 +739,10 @@ class cArticleCollectorTest extends cTestingTestCase {
         ));
         $this->assertSame(51, $this->_aColl->count());
         $this->assertSame(true, $this->_aColl->valid());
-        $this->_aColl = new cArticleCollector(array());
+        $this->_aColl = new cArticleCollector(array(
+            'idcat' => 10,
+            'start' => false
+        ));
         $this->assertSame(false, $this->_aColl->valid());
     }
 
@@ -738,6 +750,9 @@ class cArticleCollectorTest extends cTestingTestCase {
      * Test count of empty collector.
      */
     public function testCountEmpty() {
+        $this->_aColl = new cArticleCollector(array(
+            'idcat' => 'xyz gibbet nischt'
+        ));
         $this->assertSame(0, $this->_aColl->count());
     }
 
@@ -747,7 +762,7 @@ class cArticleCollectorTest extends cTestingTestCase {
      */
     public function testCount() {
         $this->_aColl->loadArticles();
-        $this->assertSame(0, $this->_aColl->count());
+        //$this->assertSame(0, $this->_aColl->count());
         $this->markTestIncomplete('This test has not been implemented yet.');
     }
 
