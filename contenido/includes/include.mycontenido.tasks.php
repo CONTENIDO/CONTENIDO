@@ -38,6 +38,9 @@ if (isset($_REQUEST["listsubmit"])) {
     }
 }
 
+/**
+ *
+ */
 class TODOBackendList extends cGuiScrollList {
 
     var $statustypes;

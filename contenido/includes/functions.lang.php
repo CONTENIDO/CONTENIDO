@@ -215,7 +215,7 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0) {
 
         // ********** delete from 'code'-cache
         if (cFileHandler::exists($cfgClient[$iIdClient]['code']['path'])) {
-            /** @var $file SplFileInfo */
+            /* @var $file SplFileInfo */
             foreach (new DirectoryIterator($cfgClient[$iIdClient]['code']['path']) as $file) {
                 if ($file->isFile() === false) {
                     continue;

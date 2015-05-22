@@ -155,10 +155,7 @@ if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && 
 
     // Clear the code cache
     if (cFileHandler::exists($cfgClient[$idclient]['code']['path']) === true) {
-        /**
-         *
-         * @var $file SplFileInfo
-         */
+        /* @var $file SplFileInfo */
         foreach (new DirectoryIterator($cfgClient[$idclient]['code']['path']) as $file) {
             if ($file->isFile() === false) {
                 continue;

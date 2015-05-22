@@ -767,36 +767,28 @@ function conMakeCatOnline($idcat, $lang, $status) {
 }
 
 /**
- * Toggle the public status of a category Almost the same function as
- * strMakePublic in functions.str.php (conDeeperCategoriesArray instead of
- * strDeeperCategoriesArray)
+ * Sets the public status of the given category and its children
+ * for the given language.
+ *
+ * This is almost the same function as strMakePublic.
  *
  * @param int $idcat
- *         Category Id
+ *         category id
  * @param int $lang
- *         Language Id
+ *         language id
  * @param bool $public
- *         Public status of the Article
+ *         public status of the article to set
  */
 function conMakePublic($idcat, $lang, $public) {
-    // $catLang = new cApiCategoryLanguage();
-    // if (!$catLang->loadByCategoryIdAndLanguageId($idcat, $lang)) {
-    // return;
-    // }
 
-    // $public = (1 == $public) ? 1 : 0;
-
-    // $catLang->set('public', $public);
-    // $catLang->set('lastmodified', date('Y-m-d H:i:s'));
-    // $catLang->store();
-    $categories = conDeeperCategoriesArray($idcat);
-    foreach ($categories as $value) {
+    foreach (conDeeperCategoriesArray($idcat) as $tmpIdcat) {
         $oCatLang = new cApiCategoryLanguage();
-        $oCatLang->loadByCategoryIdAndLanguageId($value, $lang);
+        $oCatLang->loadByCategoryIdAndLanguageId($tmpIdcat, $lang);
         $oCatLang->set('public', $public);
         $oCatLang->set('lastmodified', date('Y-m-d H:i:s'));
         $oCatLang->store();
     }
+
 }
 
 /**
@@ -857,9 +849,7 @@ function conDeleteart($idart) {
     while (($oCatArtItem = $catArtColl->next()) !== false) {
         // Delete from code cache
         if (cFileHandler::exists($cfgClient[$client]['code']['path'])) {
-            /**
-             * @var $file SplFileInfo
-             */
+            /* @var $file SplFileInfo */
             foreach (new DirectoryIterator($cfgClient[$client]['code']['path']) as $file) {
                 if ($file->isFile() === false) {
                     continue;
@@ -925,9 +915,10 @@ function conDeleteart($idart) {
  * Extract a number from a string
  *
  * @deprecated [2015-05-21]
- *         use cString::extractNumber
+ *         use cString::extractNumber() instead
  * @param string $string
  *         String var by reference
+ * @return string
  */
 function extractNumber(&$string) {
     return cString::extractNumber($string);
@@ -1018,20 +1009,20 @@ function conFetchCategoryTree($client = false, $lang = false) {
 }
 
 /**
- * Fetch all deeper categories by a given id
+ * Return a list of idcats of all scions of given category.
  *
  * @param int $idcat
- *         Id of category
+ *         category ID to start at
  * @return array
- *         Array with all deeper categories
+ *         idcats of all scions
  */
 function conDeeperCategoriesArray($idcat) {
     global $client;
 
-    $oCatColl = new cApiCategoryCollection();
-    $aCatIds = $oCatColl->getAllCategoryIdsRecursive($idcat, $client);
+    $coll = new cApiCategoryCollection();
+    $idcats = $coll->getAllCategoryIdsRecursive($idcat, $client);
 
-    return $aCatIds;
+    return $idcats;
 }
 
 /**
@@ -1338,20 +1329,18 @@ function conGenerateCodeForAllArts() {
  * Set code creation flag for one category article id to true
  *
  * @param int $idcatart
- *         Category article id
+ *         category article ID
  */
 function conSetCodeFlag($idcatart) {
     global $client, $cfgClient;
 
     // Set 'createcode' flag
-    $oCatArtColl = new cApiCategoryArticleCollection();
-    $oCatArtColl->setCreateCodeFlag($idcatart);
+    $coll = new cApiCategoryArticleCollection();
+    $coll->setCreateCodeFlag($idcatart);
 
     // Delete also generated code files from file system
     if (cFileHandler::exists($cfgClient[$client]['code']['path'])) {
-        /**
-         * @var $file SplFileInfo
-         */
+        /* @var $file SplFileInfo */
         foreach (new DirectoryIterator($cfgClient[$client]['code']['path']) as $file) {
             if ($file->isFile() === false) {
                 continue;
@@ -1392,9 +1381,7 @@ function conSetCodeFlagBulkEditing(array $idcatarts) {
 
     // Delete also generated code files from file system
     foreach ($idcatarts as $id) {
-        /**
-         * @var $file SplFileInfo
-         */
+        /* @var $file SplFileInfo */
         foreach (new DirectoryIterator($cfgClient[$client]['code']['path']) as $file) {
             if ($file->isFile() === false) {
                 continue;
@@ -1890,9 +1877,7 @@ function conRemoveOldCategoryArticle($idcat, $idart, $idartlang, $client, $lang)
     $idcatart = $oCatArt->get('idcatart');
 
     // Delete from code cache and delete corresponding code
-    /**
-     * @var $file SplFileInfo
-     */
+    /* @var $file SplFileInfo */
     foreach (new DirectoryIterator($cfgClient[$client]['code']['path']) as $file) {
         if ($file->isFile() === false) {
             continue;

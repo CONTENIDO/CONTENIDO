@@ -588,39 +588,45 @@ function strMakeVisible($idcat, $lang, $visible) {
 }
 
 /**
- * Sets the public status of the category and its childs
+ * Sets the public status of the given category and its children
+ * for the given language.
+ *
+ * This is almost the same function as conMakePublic.
  *
  * @param int $idcat
- *         Category id
+ *         category id
  * @param int $lang
- *         Language id
+ *         language id
  * @param int $public
- *         Public status
+ *         public status of the article to set
  */
 function strMakePublic($idcat, $lang, $public) {
-    $categories = strDeeperCategoriesArray($idcat);
-    foreach ($categories as $value) {
+
+    foreach (strDeeperCategoriesArray($idcat) as $tmpIdcat) {
         $oCatLang = new cApiCategoryLanguage();
-        $oCatLang->loadByCategoryIdAndLanguageId($value, $lang);
+        $oCatLang->loadByCategoryIdAndLanguageId($tmpIdcat, $lang);
         $oCatLang->set('public', $public);
         $oCatLang->set('lastmodified', date('Y-m-d H:i:s'));
         $oCatLang->store();
     }
+
 }
 
 /**
- * Returns all childs and childchilds of passed category
+ * Return a list of idcats of all scions of given category.
  *
- * @param int $startIdcat
- *         The start category
+ * @param int $idcat
+ *         category ID to start at
  * @return array
- *         Contains all childs of $startIdcat and $startIdcat start itself
+ *         idcats of all scions
  */
-function strDeeperCategoriesArray($startIdcat) {
+function strDeeperCategoriesArray($idcat) {
     global $client;
 
-    $oCatColl = new cApiCategoryCollection();
-    return $oCatColl->getAllCategoryIdsRecursive($startIdcat, $client);
+    $coll = new cApiCategoryCollection();
+    $idcats = $coll->getAllCategoryIdsRecursive($idcat, $client);
+
+    return $idcats;
 }
 
 /**
