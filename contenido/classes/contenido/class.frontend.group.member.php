@@ -102,7 +102,7 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
             }
         }
 
-        return ($objects);
+        return $objects;
     }
 }
 

@@ -50,7 +50,7 @@ class cXmlReader extends cXmlBase {
 
         $this->setDomDocument($doc);
 
-        return ($this->_dom instanceof DOMDocument);
+        return $this->_dom instanceof DOMDocument;
     }
 
     /**
@@ -74,7 +74,7 @@ class cXmlReader extends cXmlBase {
         $this->_dom = $oDoc;
         $this->_initXpathInstance();
 
-        return ($this->_dom instanceof DOMDocument);
+        return $this->_dom instanceof DOMDocument;
     }
 
     /**

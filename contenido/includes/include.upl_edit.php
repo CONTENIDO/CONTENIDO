@@ -281,6 +281,11 @@ if ($upload = $uploads->next()) {
 
 $page->render();
 
+/**
+ *
+ * @param string $fileName
+ * @return boolean
+ */
 function isArchive($fileName) {
 
     if (substr(strrchr($fileName, '.'), 1) === 'zip') {

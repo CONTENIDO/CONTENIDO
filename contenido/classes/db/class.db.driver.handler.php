@@ -202,7 +202,7 @@ abstract class cDbDriverHandler {
      * @return bool
      */
     public function isProfilingEnabled() {
-        return (bool)$this->_dbCfg['enableProfiling'];
+        return (bool) $this->_dbCfg['enableProfiling'];
     }
 
     /**
@@ -954,7 +954,7 @@ abstract class cDbDriverHandler {
      * @return stdClass
      */
     public function toObject() {
-        return (object)$this->toArray(self::FETCH_ASSOC);
+        return (object) $this->toArray(self::FETCH_ASSOC);
     }
 
     /**

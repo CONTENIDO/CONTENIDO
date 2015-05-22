@@ -63,11 +63,12 @@ function cApiStrTrimAfterWord($string, $maxlen) {
  * and the resulting string matches 15 characters including the dots.
  *
  * @deprecated [2015-05-21]
- *         use cString::trimHard
+ *         use cString::trimHard() instead
  * @param string $string
  *         The string to operate on
  * @param int $maxlen
  *         The maximum number of characters
+ * @param string $fillup
  * @return string
  *         The resulting string
  */

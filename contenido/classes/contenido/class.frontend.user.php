@@ -189,7 +189,7 @@ class cApiFrontendUser extends Item {
         $pass = $this->get('password');
         $salt = $this->get('salt');
 
-        return (hash('sha256', md5($password) . $salt) == $pass);
+        return hash('sha256', md5($password) . $salt) == $pass;
     }
 
     /**

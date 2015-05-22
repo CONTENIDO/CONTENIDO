@@ -484,7 +484,7 @@ class cSystemtest {
         $aFileinfo["others"]["write"] = ($oiFilePermissions & 0x0002) ? true : false;
         $aFileinfo["owner"]["id"] = fileowner($sFilename);
         $aFileinfo["group"]["id"] = filegroup($sFilename);
-        return ($aFileinfo);
+        return $aFileinfo;
     }
 
     /**
@@ -533,14 +533,14 @@ class cSystemtest {
             $iUserId = fileowner($sFilename);
             cFileHandler::remove($sFilename);
 
-            return ($iUserId);
+            return $iUserId;
         } else {
             if (is_writeable("/tmp/")) {
                 cFileHandler::create("/tmp/" . $sFilename, "w");
                 $iUserId = fileowner("/tmp/" . $sFilename);
                 cFileHandler::remove("/tmp/" . $sFilename);
 
-                return ($iUserId);
+                return $iUserId;
             }
             return false;
         }
@@ -564,7 +564,7 @@ class cSystemtest {
             $iUserId = filegroup($sFilename);
             cFileHandler::remove($sFilename);
 
-            return ($iUserId);
+            return $iUserId;
         } else {
             return false;
         }

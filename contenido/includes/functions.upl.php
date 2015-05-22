@@ -442,7 +442,8 @@ function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $s
  *         Not used at the moment!
  * @param TreeItem $oRootItem
  * @param int $level
- *         Not used at the moment!
+ * @param int $client
+ *         client ID
  */
 function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $client) {
     $dbfs = new cApiDbfsCollection();
@@ -451,8 +452,10 @@ function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $c
     $lastlevel = 0;
     $item['.'] = $oRootItem;
 
-    $prevobj = array(); // TODO: what was this array supposed to be?
-    $lprevobj = new stdClass(); // TODO: what was this object supposed to be?
+    // TODO what was this array supposed to be?
+    $prevobj = array();
+    // TODO what was this object supposed to be?
+    $lprevobj = new stdClass();
 
     while (($dbitem = $dbfs->next()) !== false) {
         $dirname = $dbitem->get('dirname');

@@ -89,9 +89,9 @@ class cTreeItem {
 
     /**
      *
-     * @param unknown_type $id [optional]
-     * @param unknown_type $name [optional]
-     * @param unknown_type $collapsed [optional]
+     * @param string $id [optional]
+     * @param string $name [optional]
+     * @param bool $collapsed [optional]
      */
     public function __construct($id = "", $name = "", $collapsed = false) {
         $this->_id = $id;
@@ -189,7 +189,7 @@ class cTreeItem {
 
     /**
      *
-     * @param unknown_type $array
+     * @param array $array
      */
     public function importStructuredArray($array) {
         $i = array();
@@ -204,10 +204,10 @@ class cTreeItem {
 
     /**
      *
-     * @param unknown_type $sourcearray
-     * @param unknown_type $destarray
-     * @param unknown_type $lastid
-     * @param unknown_type $level
+     * @param array $sourcearray
+     * @param array $destarray
+     * @param int $lastid
+     * @param int $level
      * @return bool
      */
     protected function _flattenArray($sourcearray, &$destarray, &$lastid, &$level) {
@@ -422,8 +422,8 @@ class cTreeItem {
 
     /**
      *
-     * @param unknown_type $attributeName
-     * @param unknown_type $bRecursive [optional]
+     * @param string $attributeName
+     * @param bool $bRecursive [optional]
      * @return bool
      */
     public function hasAttribute($attributeName, $bRecursive = false) {
@@ -574,7 +574,6 @@ class cTreeItem {
     }
 
     /**
-     * getCollapsedList
      * Returns all items (as ID array) which are collapsed.
      *
      * @param array $list
@@ -656,8 +655,7 @@ class cTreeItem {
     }
 
     /**
-     * flatTraverse
-     * traverses the tree starting from this item, and returning
+     * Traverses the tree starting from this item, and returning
      * all objects as $objects in a flat array.
      *
      * @param int $level [optional]
@@ -678,8 +676,7 @@ class cTreeItem {
     }
 
     /**
-     * setName
-     * sets the Name for this item.
+     * Sets the name for this item.
      *
      * @param string $name
      *         New name for this item

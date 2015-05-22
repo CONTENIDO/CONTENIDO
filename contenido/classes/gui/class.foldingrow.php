@@ -206,7 +206,7 @@ $output = <<<HTML
 <!-- /cGuiFoldingRow -->
 HTML;
 
-        return ($output);
+        return $output;
     }
 
 }

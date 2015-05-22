@@ -1,6 +1,7 @@
 <?php
 
-/* * *************************************************************************
+/**
+ * *************************************************************************
 
   pseudo-cron v1.2.1.con // modified version for CONTENIDO
   (c) 2003 Kai Blankenhorn
@@ -22,7 +23,6 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
  * ***************************************************************************
-
 
   Usually regular tasks like backup up the site's database are run using cron
   jobs. With cron jobs, you can exactly plan when a certain command is to be
@@ -186,6 +186,13 @@ if ($PC_debug) {
     echo "\n</pre>";
 }
 
+/**
+ *
+ * @param unknown_type $msg
+ * @param unknown_type $PC_writeDir
+ * @param unknown_type $PC_useLog
+ * @param unknown_type $PC_debug
+ */
 function logMessage($msg, $PC_writeDir, $PC_useLog, $PC_debug) {
     if ($PC_useLog == 1) {
         $logfile = $PC_writeDir . "pseudo-cron.log";
@@ -204,6 +211,11 @@ function logMessage($msg, $PC_writeDir, $PC_useLog, $PC_debug) {
     }
 }
 
+/**
+ *
+ * @param unknown_type $number
+ * @return string
+ */
 function lTrimZeros($number) {
     while ($number[0] == '0') {
         $number = substr($number, 1);
@@ -211,6 +223,12 @@ function lTrimZeros($number) {
     return $number;
 }
 
+/**
+ *
+ * @param unknown_type $element
+ * @param unknown_type $targetArray
+ * @param unknown_type $numberOfElements
+ */
 function parseElement($element, &$targetArray, $numberOfElements) {
     $subelements = explode(",", $element);
     for ($i = 0; $i < $numberOfElements; $i++) {
@@ -239,6 +257,13 @@ function parseElement($element, &$targetArray, $numberOfElements) {
     }
 }
 
+/**
+ *
+ * @param unknown_type $dateArr
+ * @param unknown_type $amount
+ * @param unknown_type $unit
+ * @param unknown_type $PC_debug
+ */
 function decDate(&$dateArr, $amount, $unit, $PC_debug) {
     if ($PC_debug) {
         echo sprintf("Decreasing from %02d.%02d. %02d:%02d by %d %6s ", $dateArr['mday'], $dateArr['mon'], $dateArr['hours'], $dateArr['minutes'], $amount, $unit);
@@ -300,6 +325,12 @@ function decDate(&$dateArr, $amount, $unit, $PC_debug) {
     }
 }
 
+/**
+ *
+ * @param unknown_type $job
+ * @param unknown_type $PC_debug
+ * @return number
+ */
 function getLastScheduledRunTime($job, $PC_debug) {
     $dateArr = getdate();
     $minutesBack = 0;
@@ -334,11 +365,23 @@ function getLastScheduledRunTime($job, $PC_debug) {
     return mktime($dateArr["hours"], $dateArr["minutes"], 0, $dateArr["mon"], $dateArr["mday"], $dateArr["year"]);
 }
 
+/**
+ *
+ * @param unknown_type $jobname
+ * @param unknown_type $PC_writeDir
+ * @return string
+ */
 function getJobFileName($jobname, $PC_writeDir) {
     $jobfile = $PC_writeDir . urlencode($jobname) . ".job";
     return $jobfile;
 }
 
+/**
+ *
+ * @param unknown_type $jobname
+ * @param unknown_type $PC_writeDir
+ * @return string|number
+ */
 function getLastActialRunTime($jobname, $PC_writeDir) {
     $jobfile = getJobFileName($jobname, $PC_writeDir);
     if (cFileHandler::exists($jobfile)) {
@@ -352,6 +395,12 @@ function getLastActialRunTime($jobname, $PC_writeDir) {
     return 0;
 }
 
+/**
+ *
+ * @param unknown_type $jobname
+ * @param unknown_type $lastRun
+ * @param unknown_type $PC_writeDir
+ */
 function markLastRun($jobname, $lastRun, $PC_writeDir) {
     $jobfile = getJobFileName($jobname, $PC_writeDir);
 
@@ -363,6 +412,15 @@ function markLastRun($jobname, $lastRun, $PC_writeDir) {
     }
 }
 
+/**
+ *
+ * @param unknown_type $job
+ * @param unknown_type $PC_jobDir
+ * @param unknown_type $PC_writeDir
+ * @param unknown_type $PC_useLog
+ * @param unknown_type $PC_debug
+ * @return boolean
+ */
 function runJob($job, $PC_jobDir, $PC_writeDir, $PC_useLog, $PC_debug = false) {
     global $cfg, $sess;
     $extjob = Array();
@@ -407,6 +465,12 @@ function runJob($job, $PC_jobDir, $PC_writeDir, $PC_useLog, $PC_debug = false) {
     }
 }
 
+/**
+ *
+ * @param unknown_type $PC_cronTabFile
+ * @param unknown_type $PC_debug
+ * @return Ambigous <multitype:multitype: , unknown>
+ */
 function parseCronFile($PC_cronTabFile, $PC_debug) {
     $file = @file($PC_cronTabFile);
     $job = Array();
@@ -432,5 +496,3 @@ function parseCronFile($PC_cronTabFile, $PC_debug) {
     }
     return $jobs;
 }
-
-?>

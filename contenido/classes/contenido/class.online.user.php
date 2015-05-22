@@ -95,7 +95,7 @@ class cApiOnlineUserCollection extends ItemCollection {
      */
     public function findUser($userId) {
         $oUser = new cApiOnlineUser((string) $userId);
-        return ($oUser->isLoaded());
+        return $oUser->isLoaded();
     }
 
     /**

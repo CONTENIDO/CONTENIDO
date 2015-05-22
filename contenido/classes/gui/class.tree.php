@@ -378,20 +378,19 @@ class cGuiTree extends cTree {
             unset($out);
         }
 
-        return ('<table cellspacing="0" cellpadding="0" width="100%" border="0"><tr><td>' . $result . '</td></tr></table>');
+        return '<table cellspacing="0" cellpadding="0" width="100%" border="0"><tr><td>' . $result . '</td></tr></table>';
     }
 
     /**
      *
-     * @param unknown_type $object
+     * @param cTreeItem $object
      * @return string
      */
     public function _getExpandCollapseIcon($object) {
-        if ($object->getCollapsed() == true) {
-            return ($this->_buildImagePath("grid_expand.gif"));
-        } else {
-            return ($this->_buildImagePath("grid_collapse.gif"));
-        }
+
+        $img = $object->getCollapsed() ? "grid_expand.gif" : "grid_collapse.gif";
+
+        return $this->_buildImagePath($img);
     }
 
     /**
@@ -414,7 +413,7 @@ class cGuiTree extends cTree {
             $link->setCustom($treename . "collapse", $object->getId());
         }
 
-        return ($link);
+        return $link;
     }
 
     /**
@@ -423,7 +422,7 @@ class cGuiTree extends cTree {
      * @return string
      */
     public function _buildImagePath($image) {
-        return ("./images/" . $this->_gridlineMode . "/" . $image);
+        return "./images/" . $this->_gridlineMode . "/" . $image;
     }
 
     /**

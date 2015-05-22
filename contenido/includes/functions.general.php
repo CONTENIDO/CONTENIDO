@@ -246,6 +246,7 @@ function getParentAreaId($area) {
  *         Which menuitem to mark
  * @param bool $return
  *         Return or echo script
+ * @return string
  */
 function markSubMenuItem($menuitem, $return = false) {
     global $changeview;
@@ -304,10 +305,9 @@ JS;
 /**
  * Creates a inline script wrapped with a self executing function
  *
- * @param int $menuitem
- *         Which menuitem to mark
- * @param bool $return
- *         Return or echo script
+ * @param string $content
+ *         to wrap
+ * @return string
  */
 function conMakeInlineScript($content) {
     $script = <<<JS
@@ -477,6 +477,7 @@ function getGroupOrUserName($uid) {
  * @param string $email
  * @param bool $strict
  *         No more used!
+ * @return boolean
  */
 function isValidMail($email, $strict = false) {
     $validator = cValidatorFactory::getInstance('email');
@@ -507,6 +508,8 @@ function htmldecode($string) {
  *         new HTML path. Starting with "http://"
  * @param string $frontendpath
  *         path the to the frontend
+ * @return array
+ *         client configuration
  */
 function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
 
@@ -700,6 +703,7 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
  * @param int $idsystemprop
  *         The sysprop id, use optional.
  *         If set it allows to modify type name and value
+ * @return void|boolean
  */
 function setSystemProperty($type, $name, $value, $idsystemprop = 0) {
     if ($type == '' || $name == '') {
@@ -1382,6 +1386,7 @@ function buildStackString($startlevel = 2) {
  * </pre>
  *
  * @param Multiple parameters
+ * @SuppressWarnings docBlocks
  */
 function cWarning() {
     global $cfg;
@@ -1716,7 +1721,10 @@ function isFunctionDisabled($functionName) {
  *         syncstate of backend
  * @param string $showArticle
  *         show also current article or categories only (optional)
- * @return NULL
+ * @param bool $return [optional]
+ *         Return or print template
+ * @return string|void
+ *         Complete template string or nothing
  */
 function renderBackendBreadcrumb($syncoptions, $showArticle = true, $return = false) {
     $tplBread = new cTemplate();

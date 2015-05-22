@@ -182,12 +182,12 @@ class TreeItem {
      */
     function &getItemByID($id) {
         if ($this->id == $id) {
-            return ($this);
+            return $this;
         } else {
             foreach (array_keys($this->subitems) as $key) {
                 $retObj = &$this->subitems[$key]->getItemByID($id);
                 if ($retObj->id == $id) {
-                    return ($retObj);
+                    return $retObj;
                 }
             }
         }

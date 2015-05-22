@@ -137,7 +137,7 @@ class cPager {
         } else if ($this->_itemsPerPage == 0) {
             return 1;
         } else {
-            return (ceil($this->_items / $this->_itemsPerPage));
+            return ceil($this->_items / $this->_itemsPerPage);
         }
     }
 
@@ -191,6 +191,6 @@ class cPager {
 
         $items[$this->_currentPage] = 'current';
 
-        return ($items);
+        return $items;
     }
 }

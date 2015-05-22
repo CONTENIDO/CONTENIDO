@@ -43,8 +43,15 @@ if (isset($_REQUEST["listsubmit"])) {
  */
 class TODOBackendList extends cGuiScrollList {
 
+    /**
+     *
+     * @var unknown_type
+     */
     var $statustypes;
 
+    /**
+     *
+     */
     function TODOBackendList() {
         global $todoitems;
 
@@ -54,6 +61,13 @@ class TODOBackendList extends cGuiScrollList {
         $this->prioritytypes = $todoitems->getPriorityTypes();
     }
 
+    /**
+     * Is called when a new column is rendered.
+     *
+     * @see cGuiScrollList::onRenderColumn()
+     * @param unknown_type $column
+     *         The current column which is being rendered
+     */
     function onRenderColumn($column) {
         if ($column == 6 || $column == 5) {
             $this->objItem->updateAttributes(array("align" => "center"));
@@ -68,6 +82,18 @@ class TODOBackendList extends cGuiScrollList {
         }
     }
 
+    /**
+     * Field converting facility.
+     * Needs to be overridden in the child class to work properbly.
+     *
+     * @see cGuiScrollList::convert()
+     * @param unknown_type $field
+     *         Field index
+     * @param unknown_type $value
+     *         Field value
+     * @param unknown_type $hiddendata
+     * @return unknown
+     */
     function convert($key, $value, $hidden) {
         global $link, $dateformat, $cfg;
 

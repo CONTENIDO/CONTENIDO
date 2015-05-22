@@ -167,7 +167,7 @@ class cApiDbfsCollection extends ItemCollection {
      * @return string
      */
     public function read($file) {
-        return ($this->getContent($file));
+        return $this->getContent($file);
     }
 
     /**
@@ -367,7 +367,7 @@ class cApiDbfsCollection extends ItemCollection {
 
         $this->select("dirname = '" . $dirname . "' AND filename = '" . $filename . "' AND idclient = " . $client . " LIMIT 1");
         if (($item = $this->next()) !== false) {
-            return ($item->get("content"));
+            return $item->get("content");
         }
     }
 
@@ -555,6 +555,6 @@ class cApiDbfs extends Item {
      * @return bool
      */
     public static function isDbfs($file) {
-        return (substr($file, 0, 5) == self::PROTOCOL_DBFS);
+        return substr($file, 0, 5) == self::PROTOCOL_DBFS;
     }
 }

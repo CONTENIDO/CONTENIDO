@@ -204,7 +204,7 @@ class NoteList extends cHTMLDiv {
 
         $result = parent::toHTML();
 
-        return ('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td>' . $result . '</td></tr></table>');
+        return '<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td>' . $result . '</td></tr></table>';
     }
 }
 

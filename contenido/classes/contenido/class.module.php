@@ -556,7 +556,7 @@ class cApiModule extends Item {
                 }
         }
 
-        return ($value);
+        return $value;
     }
 
     /**

@@ -270,10 +270,7 @@ class cApiInUseCollection extends ItemCollection {
         }
 
         if ($returnWarning == true) {
-            return (array(
-                    $inUse,
-                    $noti
-            ));
+            return array($inUse, $noti);
         } else {
             return $inUse;
         }

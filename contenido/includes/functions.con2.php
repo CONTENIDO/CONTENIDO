@@ -31,14 +31,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *         Id of language
  * @param int $client
  *         Id of client
- * @param bool $editable
- *         deprecated?
- * @param int|NULL $version
- *         version number if article is a revision, else NULL;
- * @param int $layout
+ * @param int $layout [optional]
  *         Layout-ID of alternate Layout (if false, use associated layout)
- * @param bool $save
+ * @param bool $save [optional]
  *         Flag to persist generated code in database
+ * @param bool $contype [optional]
+ *         Flag to enable/disable replacement of CMS_TAGS[].
+ * @param bool $editable [optional]
+ *         deprecated?
+ * @param int|NULL $version [optional]
+ *         version number if article is a revision, else NULL;
  * @return string
  *         The generated code or "0601" if neither article
  *         nor category configuration was found.

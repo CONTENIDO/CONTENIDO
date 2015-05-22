@@ -77,7 +77,7 @@ class cSecurity {
     public static function isBoolean($sVar) {
         $sTempVar = $sVar;
         $sTemp2Var = self::toBoolean($sVar);
-        return ($sTempVar === $sTemp2Var);
+        return $sTempVar === $sTemp2Var;
     }
 
     /**
@@ -89,7 +89,7 @@ class cSecurity {
      *         Check state
      */
     public static function isInteger($sVar) {
-        return (preg_match('/^[0-9]+$/', $sVar));
+        return preg_match('/^[0-9]+$/', $sVar);
     }
 
     /**
@@ -101,7 +101,7 @@ class cSecurity {
      *         Check state
      */
     public static function isString($sVar) {
-        return (is_string($sVar));
+        return is_string($sVar);
     }
 
     /**

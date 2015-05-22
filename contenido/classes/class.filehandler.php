@@ -497,6 +497,6 @@ class cFileHandler {
      * @return bool
      */
     public static function fileNameBeginsWithDot($fileName) {
-        return (strpos(end(explode('/', $fileName)), ".") === 0);
+        return strpos(end(explode('/', $fileName)), ".") === 0;
     }
 }

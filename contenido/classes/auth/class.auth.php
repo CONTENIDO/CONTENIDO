@@ -206,7 +206,7 @@ class cAuth {
     public function isLoginForm() {
         $authInfo = $this->getAuthInfo();
 
-        return (isset($authInfo['uid']) && $authInfo['uid'] == self::AUTH_UID_FORM);
+        return isset($authInfo['uid']) && $authInfo['uid'] == self::AUTH_UID_FORM;
     }
 
     /**

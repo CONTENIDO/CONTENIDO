@@ -179,7 +179,7 @@ class cGuiScrollList {
     }
 
     /**
-     * Is called when a new column is rendered
+     * Is called when a new column is rendered.
      *
      * @param unknown_type $column
      *         The current column which is being rendered
@@ -290,7 +290,7 @@ class cGuiScrollList {
             return 1;
         }
 
-        return ($this->listStart);
+        return $this->listStart;
     }
 
     /**
@@ -300,7 +300,7 @@ class cGuiScrollList {
      *         Amount of pages
      */
     public function getNumPages() {
-        return (ceil(count($this->data) / $this->resultsPerPage));
+        return ceil(count($this->data) / $this->resultsPerPage);
     }
 
     /**

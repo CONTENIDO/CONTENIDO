@@ -72,6 +72,6 @@ class cLogWriterFile extends cLogWriter {
      *         State of the write process
      */
     public function write($message, $priority) {
-        return (fwrite($this->_handle, $message) != false);
+        return fwrite($this->_handle, $message) != false;
     }
 }

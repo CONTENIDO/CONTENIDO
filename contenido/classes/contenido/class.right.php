@@ -93,7 +93,7 @@ class cApiRightCollection extends ItemCollection {
 
         $sql = $this->db->prepare($sql, $params);
         $this->db->query($sql);
-        return ($this->db->nextRecord());
+        return $this->db->nextRecord();
     }
 
     /**

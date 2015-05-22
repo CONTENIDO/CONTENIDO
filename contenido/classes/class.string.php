@@ -81,7 +81,7 @@ class cString {
 
         $result = $first . $replace . $last;
 
-        return ($result);
+        return $result;
     }
 
     /**
@@ -154,7 +154,7 @@ class cString {
             return true;
         }
 
-        return (substr($haystack, -$length) === $needle);
+        return substr($haystack, -$length) === $needle;
     }
 
     /**
@@ -211,8 +211,8 @@ class cString {
      * @return string
      */
     public static function extractNumber(&$string) {
-    	$string = preg_replace('/[^0-9]/', '', $string);
-    	return $string;
+        $string = preg_replace('/[^0-9]/', '', $string);
+        return $string;
     }
 
 
@@ -223,35 +223,35 @@ class cString {
      * @return bool
      */
     public static function isUtf8($input) {
-    	$len = strlen($input);
+        $len = strlen($input);
 
-    	for ($i = 0; $i < $len; $i++) {
-    		$char = ord($input[$i]);
-    		$n = 0;
+        for ($i = 0; $i < $len; $i++) {
+            $char = ord($input[$i]);
+            $n = 0;
 
-    		if ($char < 0x80) { // ASCII char
-    			continue;
-    		} else if (($char & 0xE0) === 0xC0 && $char > 0xC1) { // 2 byte long
-    			// char
-    			$n = 1;
-    		} else if (($char & 0xF0) === 0xE0) { // 3 byte long char
-    			$n = 2;
-    		} else if (($char & 0xF8) === 0xF0 && $char < 0xF5) { // 4 byte long
-    			// char
-    			$n = 3;
-    		} else {
-    			return false;
-    		}
+            if ($char < 0x80) { // ASCII char
+                continue;
+            } else if (($char & 0xE0) === 0xC0 && $char > 0xC1) { // 2 byte long
+                // char
+                $n = 1;
+            } else if (($char & 0xF0) === 0xE0) { // 3 byte long char
+                $n = 2;
+            } else if (($char & 0xF8) === 0xF0 && $char < 0xF5) { // 4 byte long
+                // char
+                $n = 3;
+            } else {
+                return false;
+            }
 
-    		for ($j = 0; $j < $n; $j++) {
-    			$i++;
+            for ($j = 0; $j < $n; $j++) {
+                $i++;
 
-    			if ($i == $len || (ord($input[$i]) & 0xC0) !== 0x80) {
-    				return false;
-    			}
-    		}
-    	}
-    	return true;
+                if ($i == $len || (ord($input[$i]) & 0xC0) !== 0x80) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
 
@@ -266,13 +266,13 @@ class cString {
      *         Value is alphanumeric
      */
     public static function isAlphanumeric($test, $umlauts = true) {
-    	if ($umlauts == true) {
-    		$match = "/^[a-z0-9ÄäÖöÜüß ]+$/i";
-    	} else {
-    		$match = "/^[a-z0-9 ]+$/i";
-    	}
+        if ($umlauts == true) {
+            $match = "/^[a-z0-9ÄäÖöÜüß ]+$/i";
+        } else {
+            $match = "/^[a-z0-9 ]+$/i";
+        }
 
-    	return (preg_match($match, $test));
+        return preg_match($match, $test);
     }
 
     /**
@@ -298,25 +298,25 @@ class cString {
      *         The resulting string
      */
     public static function trimAfterWord($string, $maxlen) {
-    	// If the string is smaller than the maximum lenght, it makes no sense to
-    	// process it any further. Return it.
-    	if (strlen($string) < $maxlen) {
-    		return $string;
-    	}
+        // If the string is smaller than the maximum lenght, it makes no sense to
+        // process it any further. Return it.
+        if (strlen($string) < $maxlen) {
+            return $string;
+        }
 
-    	// If the character after the $maxlen position is a space, we can return
-    	// the string until $maxlen.
-    	if (substr($string, $maxlen, 1) == ' ') {
-    		return substr($string, 0, $maxlen);
-    	}
+        // If the character after the $maxlen position is a space, we can return
+        // the string until $maxlen.
+        if (substr($string, $maxlen, 1) == ' ') {
+            return substr($string, 0, $maxlen);
+        }
 
-    	// Cut the string up to $maxlen so we can use strrpos (reverse str position)
-    	$cutted_string = substr($string, 0, $maxlen);
+        // Cut the string up to $maxlen so we can use strrpos (reverse str position)
+        $cutted_string = substr($string, 0, $maxlen);
 
-    	// Extract the end of the last word
-    	$last_word_position = strrpos($cutted_string, ' ');
+        // Extract the end of the last word
+        $last_word_position = strrpos($cutted_string, ' ');
 
-    	return (substr($cutted_string, 0, $last_word_position));
+        return substr($cutted_string, 0, $last_word_position);
     }
 
     /**
@@ -335,36 +335,37 @@ class cString {
      *         The string to operate on
      * @param int $maxlen
      *         The maximum number of characters
+     * @param string $fillup
      * @return string
      *         The resulting string
      */
     public static function trimHard($string, $maxlen, $fillup = '...') {
-    	// If the string is smaller than the maximum lenght, it makes no sense to
-    	// process it any further. Return it.
-    	if (strlen($string) < $maxlen) {
-    		return $string;
-    	}
+        // If the string is smaller than the maximum lenght, it makes no sense to
+        // process it any further. Return it.
+        if (strlen($string) < $maxlen) {
+            return $string;
+        }
 
-    	// Calculate the maximum text length
-    	$maximum_text_length = $maxlen - strlen($fillup);
+        // Calculate the maximum text length
+        $maximum_text_length = $maxlen - strlen($fillup);
 
-    	// If text length is over zero cut it
-    	if ($maximum_text_length > 0) {
-    		if (preg_match('/(*UTF8)^.{0,' . $maximum_text_length . '}/', $string, $result_array)) {
-    			$cutted_string = $result_array[0];
-    		} else if (preg_match('/^.{0,' . $maximum_text_length . '}/u', $string, $result_array)) {
-    			$cutted_string = $result_array[0];
-    		} else {
-    			$cutted_string = substr($string, 0, $maximum_text_length);
-    		}
-    	} else {
-    		$cutted_string = $string;
-    	}
+        // If text length is over zero cut it
+        if ($maximum_text_length > 0) {
+            if (preg_match('/(*UTF8)^.{0,' . $maximum_text_length . '}/', $string, $result_array)) {
+                $cutted_string = $result_array[0];
+            } else if (preg_match('/^.{0,' . $maximum_text_length . '}/u', $string, $result_array)) {
+                $cutted_string = $result_array[0];
+            } else {
+                $cutted_string = substr($string, 0, $maximum_text_length);
+            }
+        } else {
+            $cutted_string = $string;
+        }
 
-    	// Append the fillup string
-    	$cutted_string .= $fillup;
+        // Append the fillup string
+        $cutted_string .= $fillup;
 
-    	return ($cutted_string);
+        return $cutted_string;
     }
 
     /**
@@ -418,55 +419,55 @@ class cString {
      *         The resulting string
      */
     public static function trimSentence($string, $approxlen, $hard = false) {
-    	// If the string is smaller than the maximum lenght, it makes no sense to
-    	// process it any further. Return it.
-    	if (strlen($string) < $approxlen) {
-    		return $string;
-    	}
+        // If the string is smaller than the maximum lenght, it makes no sense to
+        // process it any further. Return it.
+        if (strlen($string) < $approxlen) {
+            return $string;
+        }
 
-    	// Find out the start of the next sentence
-    	$next_sentence_start = strpos($string, '.', $approxlen);
+        // Find out the start of the next sentence
+        $next_sentence_start = strpos($string, '.', $approxlen);
 
-    	// If there's no next sentence (somebody forgot the dot?), set it to the end
-    	// of the string.
-    	if ($next_sentence_start === false) {
-    		$next_sentence_start = strlen($string);
-    	}
+        // If there's no next sentence (somebody forgot the dot?), set it to the end
+        // of the string.
+        if ($next_sentence_start === false) {
+            $next_sentence_start = strlen($string);
+        }
 
-    	// Cut the previous sentence so we can use strrpos
-    	$previous_sentence_cutted = substr($string, 0, $approxlen);
+        // Cut the previous sentence so we can use strrpos
+        $previous_sentence_cutted = substr($string, 0, $approxlen);
 
-    	// Get out the previous sentence start
-    	$previous_sentence_start = strrpos($previous_sentence_cutted, '.');
+        // Get out the previous sentence start
+        $previous_sentence_start = strrpos($previous_sentence_cutted, '.');
 
-    	// If the sentence doesn't contain a dot, use the text start.
-    	if ($previous_sentence_start === false) {
-    		$previous_sentence_start = 0;
-    	}
+        // If the sentence doesn't contain a dot, use the text start.
+        if ($previous_sentence_start === false) {
+            $previous_sentence_start = 0;
+        }
 
-    	// If we have a hard limit, we only want to process everything before
-    	// $approxlen
-    	if (($hard == true) && ($next_sentence_start > $approxlen)) {
-    		return (substr($string, 0, $previous_sentence_start + 1));
-    	}
+        // If we have a hard limit, we only want to process everything before
+        // $approxlen
+        if (($hard == true) && ($next_sentence_start > $approxlen)) {
+            return substr($string, 0, $previous_sentence_start + 1);
+        }
 
-    	// Calculate next and previous sentence distances
-    	$distance_previous_sentence = $approxlen - $previous_sentence_start;
-    	$distance_next_sentence = $next_sentence_start - $approxlen;
+        // Calculate next and previous sentence distances
+        $distance_previous_sentence = $approxlen - $previous_sentence_start;
+        $distance_next_sentence = $next_sentence_start - $approxlen;
 
-    	// Sanity: Return at least one sentence.
-    	$sanity = substr($string, 0, $previous_sentence_start + 1);
+        // Sanity: Return at least one sentence.
+        $sanity = substr($string, 0, $previous_sentence_start + 1);
 
-    	if (strpos($sanity, '.') === false) {
-    		return (substr($string, 0, $next_sentence_start + 1));
-    	}
+        if (strpos($sanity, '.') === false) {
+            return substr($string, 0, $next_sentence_start + 1);
+        }
 
-    	// Decide wether the next or previous sentence is nearer
-    	if ($distance_previous_sentence > $distance_next_sentence) {
-    		return (substr($string, 0, $next_sentence_start + 1));
-    	} else {
-    		return (substr($string, 0, $previous_sentence_start + 1));
-    	}
+        // Decide wether the next or previous sentence is nearer
+        if ($distance_previous_sentence > $distance_next_sentence) {
+            return substr($string, 0, $next_sentence_start + 1);
+        } else {
+            return substr($string, 0, $previous_sentence_start + 1);
+        }
     }
 
     /**
@@ -491,98 +492,98 @@ class cString {
      *         The resulting string
      */
     public static function replaceDiacritics($string, $sourceEncoding = 'UTF-8', $targetEncoding = 'UTF-8') {
-    	if ($sourceEncoding != 'UTF-8') {
-    		$string = self::rRecodeString($string, $sourceEncoding, "UTF-8");
-    	}
+        if ($sourceEncoding != 'UTF-8') {
+            $string = self::rRecodeString($string, $sourceEncoding, "UTF-8");
+        }
 
-    	// replace regular german umlauts and other common characters with
-    	// diacritics
-    	static $search, $replace;
-    	if (!isset($search)) {
-    		$search = array(
-    				'Ä',
-    				'Ö',
-    				'Ü',
-    				'ä',
-    				'ö',
-    				'ü',
-    				'ß',
-    				'Á',
-    				'À',
-    				'Â',
-    				'á',
-    				'à',
-    				'â',
-    				'É',
-    				'È',
-    				'Ê',
-    				'é',
-    				'è',
-    				'ê',
-    				'Í',
-    				'Ì',
-    				'Î',
-    				'í',
-    				'ì',
-    				'î',
-    				'Ó',
-    				'Ò',
-    				'Ô',
-    				'ó',
-    				'ò',
-    				'ô',
-    				'Ú',
-    				'Ù',
-    				'Û',
-    				'ú',
-    				'ù',
-    				'û'
-    		);
-    		$replace = array(
-    				'Ae',
-    				'Oe',
-    				'Ue',
-    				'ae',
-    				'oe',
-    				'ue',
-    				'ss',
-    				'A',
-    				'A',
-    				'A',
-    				'a',
-    				'a',
-    				'a',
-    				'E',
-    				'E',
-    				'E',
-    				'e',
-    				'e',
-    				'e',
-    				'I',
-    				'I',
-    				'I',
-    				'i',
-    				'i',
-    				'i',
-    				'O',
-    				'O',
-    				'O',
-    				'o',
-    				'o',
-    				'o',
-    				'U',
-    				'U',
-    				'U',
-    				'u',
-    				'u',
-    				'u'
-    		);
-    	}
-    	$string = str_replace($search, $replace, $string);
+        // replace regular german umlauts and other common characters with
+        // diacritics
+        static $search, $replace;
+        if (!isset($search)) {
+            $search = array(
+                    'Ä',
+                    'Ö',
+                    'Ü',
+                    'ä',
+                    'ö',
+                    'ü',
+                    'ß',
+                    'Á',
+                    'À',
+                    'Â',
+                    'á',
+                    'à',
+                    'â',
+                    'É',
+                    'È',
+                    'Ê',
+                    'é',
+                    'è',
+                    'ê',
+                    'Í',
+                    'Ì',
+                    'Î',
+                    'í',
+                    'ì',
+                    'î',
+                    'Ó',
+                    'Ò',
+                    'Ô',
+                    'ó',
+                    'ò',
+                    'ô',
+                    'Ú',
+                    'Ù',
+                    'Û',
+                    'ú',
+                    'ù',
+                    'û'
+            );
+            $replace = array(
+                    'Ae',
+                    'Oe',
+                    'Ue',
+                    'ae',
+                    'oe',
+                    'ue',
+                    'ss',
+                    'A',
+                    'A',
+                    'A',
+                    'a',
+                    'a',
+                    'a',
+                    'E',
+                    'E',
+                    'E',
+                    'e',
+                    'e',
+                    'e',
+                    'I',
+                    'I',
+                    'I',
+                    'i',
+                    'i',
+                    'i',
+                    'O',
+                    'O',
+                    'O',
+                    'o',
+                    'o',
+                    'o',
+                    'U',
+                    'U',
+                    'U',
+                    'u',
+                    'u',
+                    'u'
+            );
+        }
+        $string = str_replace($search, $replace, $string);
 
-    	// TODO: Additional converting
+        // TODO: Additional converting
 
-    	return self::recodeString($string, "UTF-8", $targetEncoding);
+        return self::recodeString($string, "UTF-8", $targetEncoding);
     }
 
     /**
@@ -620,26 +621,26 @@ class cString {
      *         The resulting string
      */
     public static function recodeString($string, $sourceEncoding, $targetEncoding) {
-    	// If sourceEncoding and targetEncoding are the same, return
-    	if ($sourceEncoding == $targetEncoding) {
-    		return $string;
-    	}
+        // If sourceEncoding and targetEncoding are the same, return
+        if ($sourceEncoding == $targetEncoding) {
+            return $string;
+        }
 
-    	// Check for the "recode" support
-    	if (function_exists('recode')) {
-    		$sResult = recode_string("$sourceEncoding..$targetEncoding", $string);
-    		return $sResult;
-    	}
+        // Check for the "recode" support
+        if (function_exists('recode')) {
+            $sResult = recode_string("$sourceEncoding..$targetEncoding", $string);
+            return $sResult;
+        }
 
-    	// Check for the "iconv" support
-    	if (function_exists('iconv')) {
-    		$sResult = iconv($sourceEncoding, $targetEncoding, $string);
-    		return $sResult;
-    	}
+        // Check for the "iconv" support
+        if (function_exists('iconv')) {
+            $sResult = iconv($sourceEncoding, $targetEncoding, $string);
+            return $sResult;
+        }
 
-    	// No charset converters found; return with warning
-    	cWarning(__FILE__, __LINE__, 'cString::recodeString could not find either recode or iconv to do charset conversion.');
-    	return $string;
+        // No charset converters found; return with warning
+        cWarning(__FILE__, __LINE__, 'cString::recodeString could not find either recode or iconv to do charset conversion.');
+        return $string;
     }
 
     /**
@@ -659,29 +660,29 @@ class cString {
      *         The resulting string
      */
     public static function cleanURLCharacters($string, $replace = false) {
-    	$string = self::replaceDiacritics($string);
-    	$string = str_replace(' ', '-', $string);
-    	$string = str_replace('/', '-', $string);
-    	$string = str_replace('&', '-', $string);
-    	$string = str_replace('+', '-', $string);
+        $string = self::replaceDiacritics($string);
+        $string = str_replace(' ', '-', $string);
+        $string = str_replace('/', '-', $string);
+        $string = str_replace('&', '-', $string);
+        $string = str_replace('+', '-', $string);
 
-    	$iStrLen = strlen($string);
+        $iStrLen = strlen($string);
 
-    	$sResultString = '';
+        $sResultString = '';
 
-    	for ($i = 0; $i < $iStrLen; $i++) {
-    		$sChar = substr($string, $i, 1);
+        for ($i = 0; $i < $iStrLen; $i++) {
+            $sChar = substr($string, $i, 1);
 
-    		if (preg_match('/^[a-z0-9]*$/i', $sChar) || $sChar == '-' || $sChar == '_' || $sChar == '.') {
-    			$sResultString .= $sChar;
-    		} else {
-    			if ($replace == true) {
-    				$sResultString .= '_';
-    			}
-    		}
-    	}
+            if (preg_match('/^[a-z0-9]*$/i', $sChar) || $sChar == '-' || $sChar == '_' || $sChar == '.') {
+                $sResultString .= $sChar;
+            } else {
+                if ($replace == true) {
+                    $sResultString .= '_';
+                }
+            }
+        }
 
-    	return $sResultString;
+        return $sResultString;
     }
 
     /**
@@ -693,16 +694,16 @@ class cString {
      * @return string
      */
     public static function normalizeLineEndings($string, $lineEnding = "\n") {
-    	if ($lineEnding !== "\n" && $lineEnding !== "\r" && $lineEnding !== "\r\n") {
-    		$lineEnding = "\n";
-    	}
+        if ($lineEnding !== "\n" && $lineEnding !== "\r" && $lineEnding !== "\r\n") {
+            $lineEnding = "\n";
+        }
 
-    	$string = str_replace("\r\n", "\n", $string);
-    	$string = str_replace("\r", "\n", $string);
-    	if ($lineEnding !== "\n") {
-    		$string = str_replace("\n", $lineEnding, $string);
-    	}
+        $string = str_replace("\r\n", "\n", $string);
+        $string = str_replace("\r", "\n", $string);
+        if ($lineEnding !== "\n") {
+            $string = str_replace("\n", $lineEnding, $string);
+        }
 
-    	return $string;
+        return $string;
     }
 }

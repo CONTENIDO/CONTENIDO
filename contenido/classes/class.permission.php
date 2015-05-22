@@ -228,7 +228,7 @@ class cPermission {
         $area = $this->getIDForArea($area);
         $action = $this->getIDForAction($action);
 
-        return (isset($item_rights[$area][$action]));
+        return isset($item_rights[$area][$action]);
     }
 
     /**
@@ -326,7 +326,7 @@ class cPermission {
             if ($action == 0 && $area_rights[$area]) {
                 // If have action for area + action check right for client and
                 // lang
-                return ($this->have_perm_client_lang($client, $lang));
+                return $this->have_perm_client_lang($client, $lang);
             }
 
             // check rights for the action in this area
@@ -353,7 +353,7 @@ class cPermission {
         // Changed back to a full featured function, as have_perm
         // needs $client as global variable - not provided by this
         // function
-        // return ($this->have_perm("client[$client],lang[$lang]"));
+        // return $this->have_perm("client[$client],lang[$lang]");
 
         if (!isset($auth->auth['perm'])) {
             $auth->auth['perm'] = '';

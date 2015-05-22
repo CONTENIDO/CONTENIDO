@@ -468,7 +468,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
             $aWheres[] = $this->_driver->buildOperator($field, $item['operator'], $item['restriction']);
         }
 
-        return (implode(' AND ', $aWheres));
+        return implode(' AND ', $aWheres);
     }
 
     /**
@@ -722,7 +722,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
                         'sourceclass' => $sParentClass,
                         'key' => $obj->getPrimaryKeyName()
                     );
-                    return ($returns);
+                    return $returns;
                 }
             }
         }
@@ -1018,7 +1018,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *         Number of rows
      */
     public function count() {
-        return ($this->db->numRows());
+        return $this->db->numRows();
     }
 
     /**
@@ -1080,9 +1080,9 @@ abstract class ItemCollection extends cItemBaseAbstract {
      */
     public function createNewItem($data = NULL) {
         $this->_executeCallbacks(self::CREATE_BEFORE, get_class($this), array());
-        
+
         $db = $this->_getSecondDBInstance();
-        
+
         $primaryKeyValue = NULL;
         // prepare the primary key value and the data depending on the type of
         // $data
@@ -1100,7 +1100,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
 
         // build the insert statement and execute it
         $sql = $db->buildInsert($this->table, $data);
-        
+
         $db->query($sql);
 
         if ($primaryKeyValue === NULL) {
