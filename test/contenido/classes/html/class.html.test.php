@@ -38,7 +38,6 @@ class cHTMLTest extends cTestingTestCase {
         // create XHTML
         cHTML::setGenerateXHTML(true);
         
-        
         cHTMLProxy::setIdCounter(0);
     }
 

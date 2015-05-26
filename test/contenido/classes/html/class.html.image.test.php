@@ -90,7 +90,7 @@ class cHtmlImageTest extends cTestingTestCase {
     public function testConstructClass() {
         // class of image w/o data
         $act = $this->_imageEmpty->getAttribute('class');
-        $exp = '';
+        $exp = NULL;
         $this->assertSame($exp, $act);
 
         // class of image w/ data

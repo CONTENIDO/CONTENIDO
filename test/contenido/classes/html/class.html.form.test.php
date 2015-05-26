@@ -22,6 +22,7 @@ class cHtmlFormTest extends cTestingTestCase {
      */
     public function setUp() {
         $this->_form = new cHTMLForm();
+        $this->_form->setID('1');
     }
 
     /**
@@ -66,7 +67,7 @@ class cHtmlFormTest extends cTestingTestCase {
      */
     public function testToHtml() {
         $act = $this->_form->toHTML();
-        $exp = '<form id="" name="" method="post" action="main.php"></form>';
+        $exp = '<form id="1" name="" method="post" action="main.php"></form>';
         $this->assertSame($exp, $act);
     }
 

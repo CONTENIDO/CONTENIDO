@@ -24,12 +24,23 @@ class cHtmlCheckBoxTest extends cTestingTestCase {
      * @var cHTMLCheckbox
      */
     private $_checkbox;
-
+    
+    /*
+     * remove tag-ids (otherwhise you only could use the testsuite or a single test but not both) 
+     * 
+     * @param $string the string to search
+     */
+    private function removeIds($string) {
+        $regEx[] = '( id="[a-z0-9"]*)';
+        $regEx[] = '( for="[a-z0-9"]*)';
+        return preg_replace($regEx, '', $string);
+    }
+    
     /**
      */
     protected function setUp() {
         $this->_checkbox = new cHTMLCheckbox('name', 'value');
-        $this->_checkbox->setID('');
+        $this->_checkbox->setID('m1');
     }
 
     /**
@@ -76,11 +87,19 @@ class cHtmlCheckBoxTest extends cTestingTestCase {
         $this->_checkbox->setLabelText('label');
         $act = $this->_readAttribute($this->_checkbox, '_labelText');
         $exp = 'label';
+        
+        $exp = $this->removeIds($exp);
+        $act = $this->removeIds($act);
+        
         $this->assertSame($exp, $act);
         // unset label
         $this->_checkbox->setLabelText('');
         $act = $this->_readAttribute($this->_checkbox, '_labelText');
         $exp = '';
+        
+        $exp = $this->removeIds($exp);
+        $act = $this->removeIds($act);
+        
         $this->assertSame($exp, $act);
     }
 
@@ -89,7 +108,11 @@ class cHtmlCheckBoxTest extends cTestingTestCase {
      */
     public function testToHtmlFalse() {
         $act = $this->_checkbox->toHtml(false);
-        $exp = '<input id="" name="name" type="checkbox" value="value" />';
+        $exp = '<input id="m1" name="name" type="checkbox" value="value">';
+        
+        $exp = $this->removeIds($exp);
+        $act = $this->removeIds($act);
+        
         $this->assertSame($exp, $act);
     }
 
@@ -98,7 +121,11 @@ class cHtmlCheckBoxTest extends cTestingTestCase {
      */
     public function testToHtmlTrue() {
         $act = $this->_checkbox->toHtml(true);
-        $exp = '<div id="" class="checkbox_wrapper"><input id="" name="name" type="checkbox" value="value" />value</div>';
+        $exp = '<div id="m135" class="checkbox_wrapper"><input id="m1" name="name" type="checkbox" value="value">value</div>';
+        
+        $exp = $this->removeIds($exp);
+        $act = $this->removeIds($act);
+        
         $this->assertSame($exp, $act);
     }
 
@@ -108,9 +135,11 @@ class cHtmlCheckBoxTest extends cTestingTestCase {
     public function testToHtml() {
         $this->_checkbox->setLabelText('label');
         $act = $this->_checkbox->toHtml(true);
-        $exp = '<div id="" class="checkbox_wrapper"><input id="" name="name" type="checkbox" value="value" /><label id="" for="">label</label></div>';
+        $exp = '<div id="m138" class="checkbox_wrapper"><input id="m136" name="name" type="checkbox" value="value"><label id="m137" for="m136">label</label></div>';
+        
+        $exp = $this->removeIds($exp);
+        $act = $this->removeIds($act);
+        
         $this->assertSame($exp, $act);
     }
 }
-
-?>
