@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Backend action file str_makepublic
  *
@@ -22,4 +23,5 @@ if ($perm->have_perm_area_action("str", "str_makepublic") || $perm->have_perm_ar
 } else {
     $notification->displayNotification("error", i18n("Permission denied"));
 }
+
 ?>

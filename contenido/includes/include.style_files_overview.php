@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for style files overview.
  *
@@ -21,7 +22,7 @@ $files = new cGuiFileOverview($cfgClient[$client]['css']['path'], stripslashes($
 $backend_file_extensions = getSystemProperty('backend', 'backend_file_extensions');
 
 if ($backend_file_extensions == "enabled") {
-	$files->setFileExtension('css');
+    $files->setFileExtension('css');
 }
 
 // Render file overview

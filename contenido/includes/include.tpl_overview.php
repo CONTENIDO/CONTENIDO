@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the menu frame (overview) backend page for template management.
  *

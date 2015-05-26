@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for the editor of frontend group details.
  *
@@ -49,7 +50,7 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
     }
 
     $successMessage = i18n("Removed user from group successfully!");
-    # also save other variables
+    // also save other variables
     $action = "frontendgroup_save_group";
 } else if ($action == "frontendgroup_user_add" && $perm->have_perm_area_action($area, $action)) {
     if (count($newmember) > 0) {
@@ -58,7 +59,7 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
         }
     }
     $successMessage = i18n("Added user to group successfully!");
-    # also save other variables
+    // also save other variables
     $action = "frontendgroup_save_group";
 } else if ($action == "frontendgroup_delete" && $perm->have_perm_area_action($area, $action)) {
    $fegroups->delete($idfrontendgroup);
@@ -258,4 +259,5 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
 
     $page->render();
 }
+
 ?>

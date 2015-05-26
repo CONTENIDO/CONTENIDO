@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for the directory overview in upload
  * section.
@@ -52,11 +53,8 @@ function getUplExpandCollapseButton($item) {
     }
 }
 
-// ###############
 // Create Folder
-// ###############
-// ixxed by Timo Trautmann double database entries also called by action
-// upl_mkdir
+// ixxed by Timo Trautmann double database entries also called by action upl_mkdir
 // Use remembered path from upl_last_path (from session)
 if (!isset($path) && $sess->isRegistered('upl_last_path')) {
     $path = $upl_last_path;
@@ -124,7 +122,6 @@ if ($errno === '0703') {
     $tpl->set('s', 'WARNING', $notification->returnNotification('error', i18n('Directories with special characters and spaces are not allowed.')));
 }
 
-// #############################################################################
 // Uploadfiles tree on file system
 
 $file = 'Upload';
@@ -272,7 +269,7 @@ if (is_array($objects)) {
         // Indent for every level
         $indent = 18 + (($depth - 1) * 18);
 
-        // create javascript multilink # -> better create meaningful comments
+        // create javascript multilink
         $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
         $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"), 'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"), '<img class="vAlignMiddle" src="images/grid_folder.gif" border="0" alt=""><img src="images/spacer.gif" align="middle" width="5" border="0">' . $file);
 
@@ -339,7 +336,6 @@ $tpl->set('d', 'EDITBUTTON', '');
 $tpl->set('d', 'COLLAPSE', "");
 $tpl->next();
 
-// #############################################################################
 // Database-based filesystem (DBFS)
 
 $idDbfsPathPrefix = 'dbfs_';

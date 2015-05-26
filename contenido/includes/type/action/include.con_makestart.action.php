@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Backend action file con_makestart
  *
@@ -22,4 +23,5 @@ if ($perm->have_perm_area_action("con", "con_makestart") || $perm->have_perm_are
 } else {
     $notification->displayNotification("error", i18n("Permission denied"));
 }
+
 ?>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for displaying all content of an article.
  *
@@ -12,7 +13,9 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
 $backendPath = cRegistry::getBackendPath();
 $backendUrl = cRegistry::getBackendUrl();
 
@@ -888,9 +891,10 @@ cRegistry::shutdown();
  * @SuppressWarnings docBlocks
  */
 function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode, $articleType, $versioningState, $version) {
-    // #####################################################################
-    // NOTE: Variables below are required in included/evaluated content type
-    // codes!
+
+    /*
+     * NOTE: Variables below are required in included/evaluated content type codes!
+     */
     global $db, $db2, $sess, $cfg, $code, $cfgClient, $encoding, $notification;
 
     // NOTE: Variables below are additionally required in included/evaluated
@@ -917,8 +921,9 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
     if (!is_object($db2)) {
         $db2 = cRegistry::getDb();
     }
-    // End: Variables required in content type codes
-    // #####################################################################
+    /*
+     * End: Variables required in content type codes
+     */
 
     $match = array();
     $keycode = array();

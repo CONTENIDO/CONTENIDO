@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for managing module style files.
  *
@@ -12,6 +13,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('external', 'codemirror/class.codemirror.php');

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the system configuration backend page.
  *
@@ -17,21 +18,29 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Renders a select element with a label.
+ *
  * If there are only two possible values which are called true/false,
  * enabled/disabled or 0/1, a checkbox is rendered.
+ *
  * Returns an associative array with the label and the input field.
  *
- * @param string $name the name of the form element
- * @param array $possibleValues the possible values
- * @param string $value the value which should be selected
- * @param string $label the label text which should be rendered
- * @return array associative array with the label and the input field
+ * @param string $name
+ *         the name of the form element
+ * @param array $possibleValues
+ *         the possible values
+ * @param string $value
+ *         the value which should be selected
+ * @param string $label
+ *         the label text which should be rendered
+ * @param int $width
+ * @return array
+ *         associative array with the label and the input field
  */
 function renderSelectProperty($name, $possibleValues, $value, $label, $width = 328) {
     global $auth;
-    
+
     $return = array();
-    
+
     if (count($possibleValues) === 2 && (in_array('true', $possibleValues) && in_array('false', $possibleValues) || in_array('enabled', $possibleValues) && in_array('disabled', $possibleValues) || in_array('0', $possibleValues) && in_array('1', $possibleValues))) {
         // render a checkbox if there are only the values true and false
         $checked = $value == 'true' || $value == '1' || $value == 'enabled';
@@ -48,68 +57,73 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
             }
             $html->appendOptionElement($element);
         }
-        
+
         //if (in_array($value, array('disabled', 'simple', 'advanced'))) {
         if ($name == 'versioning{_}enabled') {
             $html->setStyle('float:left;padding:3px;width:' . $width . 'px;');
-            $return['label'] = 
+            $return['label'] =
                 ' <div>
                     <span style="width: 284px; display: inline-block; padding: 0px 0px 0px 2px; float:left;">
                         <span style="margin: 0px 10px 0px 0px;">' . i18n("Article Versioning") . ':' . '</span>
-                        <a 
-                            href="#" 
-                            id="pluginInfoDetails-link" 
-                            class="main i-link infoButton" 
+                        <a
+                            href="#"
+                            id="pluginInfoDetails-link"
+                            class="main i-link infoButton"
                             title="">
                         </a>
                     </span>
-                    ' . $html->render() . '                    
+                    ' . $html->render() . '
                   </div>
                   <div id="pluginInfoDetails" class="nodisplay">'
                   . i18n('<p><strong>Article Versioning:</strong></p>'
                       . '<ul style="list-style:none;">'
                         . '<li>'
-                            . 'Review and restore older versions (simple) and create drafts (advanced).' 
+                            . 'Review and restore older versions (simple) and create drafts (advanced).'
                             . ' Versions are generated automatically by changing an article.'
                         . '</li>'
                     . '</ul>'
-                  . '<p><strong>Modes:</strong></p>'    
+                  . '<p><strong>Modes:</strong></p>'
                       . '<ul class="list">'
                           . '<li class="first"><strong>disabled: </strong> The Article Versioning is disabled.</li>'
                           . '<li><strong>simple: </strong>Older Article Versions can be reviewed and restored.</li>'
                           . '<li><strong>advanced: </strong>Additional to the Simple-Mode, unpublished drafts can be created.</li>'
                       . '</ul>'
-                  . '<p><strong>Further informations</strong> can be found in related tabs (Content/Articles/Properties|SEO|Raw data|Editor).</p>'                
+                  . '<p><strong>Further informations</strong> can be found in related tabs (Content/Articles/Properties|SEO|Raw data|Editor).</p>'
                   . '</div>');
         } else {
-            $html->setStyle('padding:3px;display:block;float:left;width:' . $width . 'px;');   
+            $html->setStyle('padding:3px;display:block;float:left;width:' . $width . 'px;');
             $return['label'] = renderLabel($label, $name, 280, ':', 'left');
         }
-        
+
     }
 
     // disable the HTML element if user is not a sysadmin
     if (strpos($auth->auth['perm'], 'sysadmin') === false) {
         $html->updateAttribute('disabled', 'true');
     }
-    
+
     //if (!in_array($value, array('disabled', 'simple', 'advanced'))) {
     if ($name != 'versioning{_}enabled') {
         $return['input'] = $html->render();
     }
-    
+
     return $return;
 }
 
 /**
  * Renders a cHTMLLabel.
  *
- * @param string $text the label text
- * @param string $name the name of the corresponding input element
- * @param string $width the width in pixel
- * @param string $seperator the seperator which is written at the end of the
- *            label
- * @return string the rendered cHTMLLabel element
+ * @param string $text
+ *         the label text
+ * @param string $name
+ *         the name of the corresponding input element
+ * @param string $width
+ *         the width in pixel
+ * @param string $seperator
+ *         the seperator which is written at the end of the label
+ * @param string $float
+ * @return string
+ *         the rendered cHTMLLabel element
  */
 function renderLabel($text, $name, $width = 280, $seperator = ':', $float = '') {
     $label = new cHTMLLabel($text . $seperator, $name);
@@ -119,21 +133,27 @@ function renderLabel($text, $name, $width = 280, $seperator = ':', $float = '') 
     } else {
         $label->setStyle('width:' . $width . 'px;');
     }
-    
-    
+
+
 
     return $label->render();
 }
 
 /**
  * Renders a cHTMLTextbox.
+ *
  * Returns an associative array with the label and the input field.
  *
- * @param string $name the name of the form element
- * @param string $value the value of the text field
- * @param string $label the label text
- * @param bool $password if the input is a password
- * @return array associative array with the label and the input field
+ * @param string $name
+ *         the name of the form element
+ * @param string $value
+ *         the value of the text field
+ * @param string $label
+ *         the label text
+ * @param bool $password
+ *         if the input is a password
+ * @return array
+ *         associative array with the label and the input field
  */
 function renderTextProperty($name, $value, $label, $password = false) {
     global $auth;
@@ -243,7 +263,7 @@ foreach ($propertyTypes as $type => $properties) {
         } else {
             $value = '';
         }
-        
+
         // render the HTML and add it to the groups array
         $fieldName = $type . '{_}' . $name;
         if (is_array($infos['values'])) {
@@ -275,4 +295,3 @@ if ($perm->have_perm_area_action($area, 'edit_sysconf')) {
 }
 
 $page->render();
-

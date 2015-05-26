@@ -48,9 +48,9 @@ function cecParseTemplate($template, cTemplate $templateObj) {
     $sessid = (string) cRegistry::getBackendSessionId();
     $backendPath = cRegistry::getBackendUrl();
     $backendLang = cRegistry::getBackendLanguage();
-# Fixme: Creates an error on backend login form, since we have no language there, see main.loginform.php
-#        $oLanguage = cRegistry::getLanguage();
-#        $encoding = $oLanguage->get("encoding");
+    // Fixme: Creates an error on backend login form, since we have no language there, see main.loginform.php
+    // $oLanguage = cRegistry::getLanguage();
+    // $encoding = $oLanguage->get("encoding");
     $languageid = cRegistry::getLanguageId();
     if ($languageid) {
         $oLanguage = cRegistry::getLanguage();

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for the personal user settings.
  *
@@ -12,6 +13,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $cpage = new cGuiPage("mycontenido_settings", "", "2");

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for module group rights management.
  *

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Central CONTENIDO file to initialize the application. Performs following steps:
  * - Initial PHP setting

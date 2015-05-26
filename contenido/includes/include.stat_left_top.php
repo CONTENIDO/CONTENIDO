@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the left top frame backend page for statistics area.
  *
@@ -16,4 +17,5 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['stat_left_top']);
+
 ?>

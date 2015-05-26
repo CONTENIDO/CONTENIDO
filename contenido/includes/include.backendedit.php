@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend edit include.
  *
@@ -12,7 +13,6 @@
  * @link             http://www.4fb.de
  * @link             http://www.contenido.org
  */
-
 
 if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);

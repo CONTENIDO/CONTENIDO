@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for displaying files of a directory in upload section.
  *

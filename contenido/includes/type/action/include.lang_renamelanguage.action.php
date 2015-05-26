@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Backend action file lang_renamelanguage
  *
@@ -19,4 +20,5 @@ cInclude('includes', 'functions.lang.php');
 
 // There is no action for this in the database
 $errno = langRenameLanguage($idlang, $name);
+
 ?>

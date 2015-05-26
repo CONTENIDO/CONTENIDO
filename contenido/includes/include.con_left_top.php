@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the left top frame backend page for content area.
  *
@@ -372,6 +373,13 @@ $tpl->set('s', 'HELPSCRIPT', getJsHelpContext("con"));
 $tpl->set('s', 'DISPLAY', class_exists('Workflows')?'' : 'display:none;');
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_left_top']);
 
+/**
+ *
+ * @param string $filename
+ * @param array $aData
+ * @param array $aInformation
+ * @return array
+ */
 function xmlFileToArray($filename, $aData = array(), $aInformation) {
     $_dom = simplexml_load_file($filename);
     for ($i = 0, $size = count($_dom); $i < $size; $i++) {

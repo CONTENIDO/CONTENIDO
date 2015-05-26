@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the menu frame (overview) backend page for language management.
  *
@@ -109,7 +110,7 @@ if ($tmp_notification) {
 $tpl->set('s', 'LANG_COUNT', $iLangCount);
 
 if ($action == 'lang_deactivatelanguage' || $action == 'lang_activatelanguage') {
-	$sReloadScript = <<<JS
+    $sReloadScript = <<<JS
 <script type="text/javascript">
 (function(Con, $) {
     var frame = Con.getFrame('right_bottom');
@@ -124,7 +125,7 @@ if ($action == 'lang_deactivatelanguage' || $action == 'lang_activatelanguage') 
 </script>
 JS;
 } else {
-	$sReloadScript = "";
+    $sReloadScript = "";
 }
 
 $tpl->set('s', 'RELOAD_SCRIPT', $sReloadScript);

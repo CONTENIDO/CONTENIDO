@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Backend action file con_lock
  *
@@ -28,6 +29,5 @@ if ($perm->have_perm_area_action("con", "con_lock") || $perm->have_perm_area_act
 } else {
     $notification->displayNotification("error", i18n("Permission denied"));
 }
-
 
 ?>

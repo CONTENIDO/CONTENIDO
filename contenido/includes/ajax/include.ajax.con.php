@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains some AJAX function of the backend area "con".
  *
@@ -65,4 +66,5 @@ if ($action == 'toggle') {
 }
 
 $currentuser->setUserProperty("system", "con_cat_expandstate", serialize($aConexpandedList));
+
 ?>

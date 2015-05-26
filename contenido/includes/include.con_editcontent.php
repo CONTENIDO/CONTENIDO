@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for editing articles content.
  *
@@ -199,7 +200,7 @@ $contentform .= '
 <input type="hidden" name="changeview" value="edit">
 <input type="hidden" name="idArtLangVersion" value="">
 <input type="hidden" name="data" value="">
-</form>        
+</form>
 ';
 
 global $selectedArticleId;
@@ -209,8 +210,8 @@ if ($_REQUEST['idArtLangVersion'] != NULL) {
 $versioning = new cContentVersioning();
 $versioningState = $versioning->getState();
 $articleType = $versioning->getArticleType(
-                    $_REQUEST['idArtLangVersion'], 
-                    (int) $idartlang, 
+                    $_REQUEST['idArtLangVersion'],
+                    (int) $idartlang,
                     $action,
                     $selectedArticleId
                 );
@@ -220,10 +221,10 @@ $versioningElement = '';
 
 
 switch ($versioningState) {
-    case 'simple' :        
+    case 'simple' :
         // Set as current
         if ($action == 'copyto') {
-            if (is_numeric($_REQUEST['idArtLangVersion']) && $versioningState == 'simple' 
+            if (is_numeric($_REQUEST['idArtLangVersion']) && $versioningState == 'simple'
                 && ($articleType == 'current' || $articleType == 'editable')) {
                 $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
                 $artLangVersion->markAsCurrent('content');
@@ -241,13 +242,13 @@ switch ($versioningState) {
             $optionElement->setSelected(true);
         }
         $selectElement->appendOptionElement($optionElement);
-        
+
         // check if selected version is availible, else select the next lower version
         $temp_id = $selectedArticleId;
         $temp_ids = array ();
-        
+
         foreach (array_values($optionElementParameters) AS $key => $value) {
-            $temp_ids[] = key($value);        
+            $temp_ids[] = key($value);
         }
         if (!in_array($selectedArticleId, $temp_ids) && $selectedArticleId != 'current'
             && $selectedArticleId != 'editable' && $articleType != 'current' && $articleType != 'editable') {
@@ -256,34 +257,34 @@ switch ($versioningState) {
                     $temp_id = $value;
                     break;
                 }
-            }        
+            }
         }
-        
+
         // Create Content Version Option Elements
         foreach ($optionElementParameters AS $key => $value) {
             $lastModified = $versioning->getTimeDiff($value[key($value)]);
             $optionElement = new cHTMLOptionElement('Version ' . $key . ': ' . $lastModified, key($value));
-            //if ($_REQUEST['idArtLangVersion'] == key($value) && $articleType != 'current') { 
+            //if ($_REQUEST['idArtLangVersion'] == key($value) && $articleType != 'current') {
                 //$optionElement->setSelected(true);
             //}
             //if (key($value) == $selectedArticleId) {
             if (key($value) == $temp_id) {
                 $optionElement->setSelected(true);
             }
-            $selectElement->appendOptionElement($optionElement);            
-        } 
+            $selectElement->appendOptionElement($optionElement);
+        }
         $selectElement->setEvent("onchange", "editcontent.idArtLangVersion.value=$('#selectVersionElement option:selected').val();editcontent.submit()");
-        
+
         // Create markAsCurrent Button/Label
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to Published Version'));
         $markAsCurrentButton->setEvent('onclick', "copyto.idArtLangVersion.value=$('#selectVersionElement option:selected').val();copyto.submit()");
         if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
-        
+
         $versioning_info_text = i18n("<strong>Mode simple:</strong> Older Content Versions can be restored and reviewed "
                 . "(Configurations under Administration/System configuration).<br/><br/>Changes only refer to contents itself!");
-        
+
         // add code
         $versioningElement .=    $versioning->getVersionSelectionField(
                         'editcontentList',
@@ -291,14 +292,14 @@ switch ($versioningState) {
                         $markAsCurrentButton,
                         $versioning_info_text
                     );
-        
+
         break;
     case 'advanced' :
-        
+
         // Set as current/editable
         if ($action == 'copyto') {
             if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'current') {
-                $artLangVersion = NULL;                
+                $artLangVersion = NULL;
                 $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
                 if (isset($artLangVersion)) {
                     $artLangVersion->markAsCurrent('content');
@@ -308,8 +309,8 @@ switch ($versioningState) {
                 $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
                 $artLangVersion->markAsEditable('content');
                 $articleType = $versioning->getArticleType(
-                    $_REQUEST['idArtLangVersion'], 
-                    (int) $idartlang, 
+                    $_REQUEST['idArtLangVersion'],
+                    (int) $idartlang,
                     $action,
                     $selectedArticleId
                 );
@@ -318,21 +319,21 @@ switch ($versioningState) {
                 $artLang = new cApiArticleLanguage($idartlang);
                 $artLang->markAsEditable('content');
                 $articleType = $versioning->getArticleType(
-                    $_REQUEST['idArtLangVersion'], 
-                    (int) $idartlang, 
+                    $_REQUEST['idArtLangVersion'],
+                    (int) $idartlang,
                     $action,
                     $selectedArticleId
                 );
                 $selectedArticleId = 'editable';
-            }     
+            }
         }
-        
+
         // load selected article
         $selectedArticle = $versioning->getSelectedArticle((int) $_REQUEST['idArtLangVersion'], $idartlang, $articleType);
 
          // Get version numbers for Select Element
         $optionElementParameters = $versioning->getDataForSelectElement((int) $idartlang, 'content');
-                
+
         // set elements/buttons
         if (isset($versioning->editableArticleId)) {
             $optionElement = new cHTMLOptionElement(i18n('Draft'), $versioning->getEditableArticleId((int) $idartlang));
@@ -344,7 +345,7 @@ switch ($versioningState) {
                 unset($optionElementParameters[max(array_keys($optionElementParameters))]);
             }
         }
-        
+
         $optionElement = new cHTMLOptionElement(i18n('Published Version'), 'current');
         if ($articleType == 'current') {
             $optionElement->setSelected(true);
@@ -354,7 +355,7 @@ switch ($versioningState) {
         // check if selected version is availible, else select the next lower version
         $temp_id = $selectedArticleId;
         $temp_ids = array ();
-        
+
         foreach (array_values($optionElementParameters) AS $key => $value) {
             $temp_ids[] = key($value);
         }
@@ -367,7 +368,7 @@ switch ($versioningState) {
                 }
             }
         }
-            
+
         // Create Content Version Option Elements
         foreach ($optionElementParameters AS $key => $value) {
             $lastModified = $versioning->getTimeDiff($value[key($value)]);
@@ -375,16 +376,16 @@ switch ($versioningState) {
             //if ($articleType == 'version') {
                 //if ($_REQUEST['idArtLangVersion'] == key($value)) {
                     //$optionElement->setSelected(true);
-                //}                
+                //}
                 if (key($value) == $temp_id) {
                     $optionElement->setSelected(true);
                 }
             //}
             $selectElement->appendOptionElement($optionElement);
         }
-        
+
         $selectElement->setEvent("onchange", "editcontent.idArtLangVersion.value=$('#selectVersionElement option:selected').val();editcontent.submit()");
-        
+
         // Create markAsCurrent Button
         if ($articleType == 'current' || $articleType == 'version') {
             $buttonTitle = i18n('Copy to Draft');
@@ -400,7 +401,7 @@ switch ($versioningState) {
                 . 'Older Content Versions can be reviewd and restored. Unpublished drafts'
                 . ' can be created (For further configurations please go to Administration/System/System configuration).<br/><br/>'
                 . 'Changes are only related to Contents!');
-        
+
         // add code
         $versioningElement .=    $versioning->getVersionSelectionField(
                         'editcontentList',
@@ -411,19 +412,19 @@ switch ($versioningState) {
 
         break;
     case 'disabled' :
-        
+
         // set elements/buttons
         $optionElement = new cHTMLOptionElement('Version 10: 11.12.13 14:15:16', '');
         $selectElement->appendOptionElement($optionElement);
         $selectElement->setAttribute('disabled', 'disabled');
-        
+
         $buttonTitle = i18n('Copy to Published Version');
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
         $markAsCurrentButton->setAttribute('disabled', 'disabled');
-        
+
         // set info text
         $versioning_info_text = i18n('For reviewing and restoring older Article Versions activate the Article Versioning under Administration/System/System configuration.');
- 
+
         // add code
         $versioningElement .=    $versioning->getVersionSelectionField(
                         'editcontentList',
@@ -431,7 +432,7 @@ switch ($versioningState) {
                         $markAsCurrentButton,
                         $versioning_info_text
                     );
-        
+
         // load selected article
         $selectedArticle = $versioning->getSelectedArticle((int) $_REQUEST['idArtLangVersion'], $idartlang, $articleType);
 
@@ -441,7 +442,7 @@ switch ($versioningState) {
 
 // generate article code
 if ($selectedArticle != NULL) {
-    
+
     switch ($versioningState) {
         case 'advanced':
             if ($articleType == 'editable') {
@@ -471,7 +472,7 @@ if ($selectedArticle != NULL) {
         default:
             throw new cException('unknown');
             break;
-    }    
+    }
 
     // sets global $edit = false; needed for edit/view output in editor
     if (!$editable) {
@@ -479,7 +480,7 @@ if ($selectedArticle != NULL) {
         $edit = false;
     }
 
-    $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, $editable, $version); 
+    $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, $editable, $version);
 
 }
 

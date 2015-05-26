@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for the form of editing template
  * configurations.

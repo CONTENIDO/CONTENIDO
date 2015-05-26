@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Backend action file con_tplcfg_edit
  *
@@ -17,4 +18,5 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 // rights are being checked by the include file itself
 include($cfg["path"]["includes"] . "include.tplcfg_edit_form.php");
+
 ?>

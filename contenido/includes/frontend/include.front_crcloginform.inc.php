@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Login form for client
  *
@@ -50,7 +51,7 @@ if ($err_catart != '') {
 }
 
 if ($bRedirect) {
-	$aUrl = $oUrl->parse($sess->url($sErrorUrl));
+    $aUrl = $oUrl->parse($sess->url($sErrorUrl));
     $aUrl['params']['wrongpass'] = 1;
     $sErrorUrl = $oUrl->buildRedirect($aUrl['params']);
     header('Location: ' . $sErrorUrl);

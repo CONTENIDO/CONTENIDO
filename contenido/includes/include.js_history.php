@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for javascript history.
  *
@@ -26,7 +27,7 @@ $sFileName = $_REQUEST['file'];
 
 $readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
 if($readOnly) {
-	cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
+    cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
 }
 
 $sType = 'js';

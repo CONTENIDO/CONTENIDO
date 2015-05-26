@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for creating layouts.
  *
@@ -38,4 +39,5 @@ if (!$perm->have_perm_area_action($area, $action)) {
 }
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['lay_left_top']);
+
 ?>

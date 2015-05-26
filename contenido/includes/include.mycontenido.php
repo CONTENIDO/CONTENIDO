@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for the backend start page known as "My CONTENIDO".
  *
@@ -56,7 +57,7 @@ if ($max_log_size === false) {
     $max_log_size = 10;
 }
 if (in_array('sysadmin', explode(',', $vuser->getEffectiveUserPerms())) && $max_log_size > 0) {
-	$log_size = cDirHandler::getDirectorySize($cfg['path']['contenido_logs']);
+    $log_size = cDirHandler::getDirectorySize($cfg['path']['contenido_logs']);
     if ($log_size > $max_log_size * 1024 * 1024) {
         $page->displayWarning(i18n('The log directory is bigger than') . ' ' . humanReadableSize($max_log_size * 1024 * 1024) . '. ' . i18n('Current size') . ': ' . humanReadableSize($log_size));
     }
@@ -251,9 +252,9 @@ $page->set('s', 'NUMBER', $iNumberOfUsers);
 $oUpdateNotifier = new cUpdateNotifier($cfg, $vuser, $perm, $sess, $belang);
 $sUpdateNotifierOutput = $oUpdateNotifier->displayOutput();
 try {
-	$page->set('s', 'UPDATENOTIFICATION', mb_convert_encoding($sUpdateNotifierOutput, cRegistry::getLanguage()->get('encoding')));
+    $page->set('s', 'UPDATENOTIFICATION', mb_convert_encoding($sUpdateNotifierOutput, cRegistry::getLanguage()->get('encoding')));
 } catch (cInvalidArgumentException $e) {
-	$page->set('s', 'UPDATENOTIFICATION', $sUpdateNotifierOutput);
+    $page->set('s', 'UPDATENOTIFICATION', $sUpdateNotifierOutput);
 }
 
 $page->render();

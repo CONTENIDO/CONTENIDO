@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the menu frame (category tree) backend page for article list.
  *
@@ -19,6 +20,12 @@ cInclude("includes", "functions.str.php");
 cInclude("includes", "functions.tpl.php");
 cInclude('includes', 'functions.lang.php');
 
+/**
+ *
+ * @param unknown_type $iIdcat
+ * @param unknown_type $aWholelist
+ * @return Ambigous <string, void, mixed>
+ */
 function showTree($iIdcat, &$aWholelist) {
     global $check_global_rights, $sess, $cfg, $perm, $db, $db2, $db3, $area, $client, $lang, $navigationTree;
 
@@ -32,7 +39,7 @@ function showTree($iIdcat, &$aWholelist) {
         $cfgdata = '';
         $aCssClasses = array();
 
-        #Check rights per cat
+        // Check rights per cat
         if (!$check_global_rights) {
             $check_rights = false;
         } else {

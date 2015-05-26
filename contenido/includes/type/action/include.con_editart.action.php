@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Backend action file con_editart
  *
@@ -24,4 +25,3 @@ if ($tmpchangelang != $lang) {
 }
 
 header("location: $path$url");
-

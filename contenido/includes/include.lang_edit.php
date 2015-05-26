@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for editing language.
  *
@@ -12,6 +13,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 includePlugins('languages');
@@ -206,7 +208,7 @@ if ($action == "lang_newlanguage") {
 
             $form->addSubHeader(i18n("Language"));
 
-			$form->add(i18n("Encoding"), $eselect);
+            $form->add(i18n("Encoding"), $eselect);
 
             $form->add(i18n("Language"), $languagecode->render());
             $form->add(i18n("Country"), $countrycode->render());
@@ -237,7 +239,7 @@ if ($action == "lang_newlanguage") {
             }
 
             if ($_REQUEST['action'] != '') {
-            	$page->set('s', 'CONTENIDO', $contenido);
+                $page->set('s', 'CONTENIDO', $contenido);
                 $page->set("s", "RELOAD_LEFT_BOTTOM", "true");
             } else {
                 $page->set("s", "RELOAD_LEFT_BOTTOM", "false");

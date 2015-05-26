@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Backend action file con_expand
  *
@@ -17,4 +18,5 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 // TODO: conExpand is not defined in the system. Where does this come from?!
 // conExpand($idcat, $lang, $expanded);
+
 ?>

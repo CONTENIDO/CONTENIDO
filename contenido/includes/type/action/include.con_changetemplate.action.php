@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Backend action file con_changetemplate
  *
@@ -21,4 +22,5 @@ if ($perm->have_perm_area_action("con", "con_changetemplate") || $perm->have_per
 } else {
     $notification->displayNotification("error", i18n("Permission denied"));
 }
+
 ?>

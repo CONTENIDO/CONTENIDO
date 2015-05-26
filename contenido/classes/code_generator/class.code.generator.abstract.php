@@ -304,9 +304,9 @@ abstract class cCodeGeneratorAbstract {
      *         Flag to save collected keywords during replacement process.
      */
     protected function _processCmsTags($contentList, $saveKeywords = true, $editable = true) {
-        // #####################################################################
-        // NOTE: Variables below are required in included/evaluated content type
-        // codes!
+        /*
+         * NOTE: Variables below are required in included/evaluated content type codes!
+         */
         global $db, $db2, $sess, $cfg, $code, $cfgClient, $encoding;
 
         // NOTE: Variables below are additionally required in included/evaluated
@@ -322,8 +322,9 @@ abstract class cCodeGeneratorAbstract {
         if (!is_object($db2)) {
             $db2 = cRegistry::getDb();
         }
-        // End: Variables required in content type codes
-        // #####################################################################
+        /*
+         * End: Variables required in content type codes
+         */
 
         $match = array();
         $keycode = array();

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for html template history.
  *
@@ -31,7 +32,7 @@ if ($sFileName == '') {
 
 $readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
 if($readOnly) {
-	cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
+    cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
 }
 
 $sType = 'templates';

@@ -177,6 +177,10 @@ function checkPathInformation($strConUrl, $strBrowserUrl) {
  *
  * @deprecated [2015-05-21]
  *         This method is no longer supported (no replacement)
+ * @param array $arrConUrl
+ * @param array $arrBrowserUrl
+ * @param bool $isIP
+ * @return bool
  */
 function compareUrlStrings($arrConUrl, $arrBrowserUrl, $isIP = false) {
     cDeprecated('This method is deprecated and is not needed any longer');

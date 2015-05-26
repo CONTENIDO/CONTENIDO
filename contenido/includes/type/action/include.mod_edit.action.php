@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Backend action file mod_edit
  *
@@ -26,10 +27,10 @@ if ($perm->have_perm_area_action($area, "mod_edit")) {
     if($readOonly) {
         cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
     } else {
-    	// this is used to determine if the left bottom frame has to be reloaded
+        // this is used to determine if the left bottom frame has to be reloaded
         $cApiModule = new cApiModule($idmod);
         $moduleNameChanged = $cApiModule->get('name') != stripslashes($name);
-        
+
         $idmod = modEditModule($idmod, $name, $descr, $input, $output, $template, $type);
     }
 

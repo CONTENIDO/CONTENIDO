@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for the visual template editor.
  *
@@ -44,7 +45,7 @@ $bIsDefault = $db->f('defaulttemplate');
 $moduleColl = new cApiModuleCollection();
 $modules = $moduleColl->getAllByIdclient($client);
 
-#$code = $db->f('code');
+// $code = $db->f('code');
 $layoutInFile = new cLayoutHandler($idlay, "", $cfg, $lang);
 $code = $layoutInFile->getLayoutCode();
 

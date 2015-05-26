@@ -35,7 +35,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
 
     $author = (string) $auth->auth['uname'];
 
-    //******** entry in 'tpl'-table ***************
+    // entry in 'tpl'-table
     // set_magic_quotes_gpc($name);
     // set_magic_quotes_gpc($description);
 
@@ -104,11 +104,11 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         $template->store();
     }
 
-    //******** if layout is changed stay at 'tpl_edit' otherwise go to 'tpl'
-    //if ($changelayout != 1) {
-    //   $url = $sess->url("main.php?area=tpl_edit&idtpl=$idtpl&frame=4&blubi=blubxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-    //  header("location: $url");
-    //}
+    // if layout is changed stay at 'tpl_edit' otherwise go to 'tpl'
+    // if ($changelayout != 1) {
+    //     $url = $sess->url("main.php?area=tpl_edit&idtpl=$idtpl&frame=4&blubi=blubxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+    //     header("location: $url");
+    // }
 
     return $idtpl;
 }

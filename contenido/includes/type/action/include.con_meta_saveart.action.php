@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Backend action file con_meta_saveart
  *
@@ -12,6 +13,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.con2.php');
@@ -55,8 +57,8 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
     }
 
     $newData = array();
-    
-    $versioning = new cContentVersioning();  
+
+    $versioning = new cContentVersioning();
     $version = NULL;
     if ($versioning->getState() != 'disabled') {
         // safe original version
@@ -69,15 +71,15 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
                 $artLangVersion->markAsCurrentVersion(1);
                 $version = $artLangVersion->get('version');
             }
-        }        
+        }
         // create article version
         $artLangVersion = $versioning->createArticleLanguageVersion($artLang->toArray());
         $artLangVersion->markAsCurrentVersion(1);
         $version = $artLangVersion->get('version');
-    } 
+    }
 
     foreach ($availableTags as $key => $value) {
-        if ($value['metatype'] == 'robots') {            
+        if ($value['metatype'] == 'robots') {
             conSetMetaValue($idartlang, $key, $robots);//, $version);
             $newData[$value['metatype']] = $robots;
         } elseif ($value["metatype"] == "date" || $value["metatype"] == "expires") {
@@ -90,7 +92,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
             $atime = $dateValue;
             conSetMetaValue($idartlang, $key, $atime, $version);
             $newData[$value['metatype']] = $atime;
-        } else {            
+        } else {
             conSetMetaValue($idartlang, $key, $_POST['META' . $value['metatype']], $version);
             $newData[$value['metatype']] = $_POST['META' . $value['metatype']];
         }
@@ -102,7 +104,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
 
     // Add a new Meta Tag in DB
     $validMeta = true;
-    if (!empty($METAmetatype) && preg_match('/^([a-zA-Z])([a-zA-Z0-9\.\:\-\_]*$)/', $METAmetatype)) {        
+    if (!empty($METAmetatype) && preg_match('/^([a-zA-Z])([a-zA-Z0-9\.\:\-\_]*$)/', $METAmetatype)) {
         $sql = "INSERT INTO `" . $cfg['tab']['meta_type'] . "` (
                     `metatype` ,
                     `fieldtype` ,
@@ -116,7 +118,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
     } else if (!empty($METAmetatype)) {
         $validMeta = false;
     }
-    
+
     cApiCecHook::execute('Contenido.Action.con_meta_saveart.AfterCall', $idart, $newData, $oldData);
 
     if ($validMeta) {

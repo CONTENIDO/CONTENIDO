@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the menu frame backend page for statistics area.
  *

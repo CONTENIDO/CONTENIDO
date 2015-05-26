@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the system integrity backend page.
  *
@@ -14,7 +15,6 @@
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
-
 
 // find out what the current WYSIWYG editor is
 $curWysiwygEditor = cWYSIWYGEditor::getCurrentWysiwygEditorName();

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the system integrity backend page.
  *
@@ -42,4 +43,5 @@ foreach ($results as $result) {
 
 $page->set("s", "RESULTS", i18n("Results"));
 $page->render();
+
 ?>

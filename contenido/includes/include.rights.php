@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Project: CONTENIDO Content Management System Description: CONTENIDO User
  * Rights

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the frontend list class.
  *
@@ -13,71 +14,69 @@
  * @link             http://www.contenido.org
  */
 
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Class FrontendList
- * Class for scrollable frontend lists
- *
- * @package          Core
- * @subpackage       Backend
+ * Class FrontendList for scrollable frontend lists.
  */
 class FrontendList {
 
     /**
-     * Wrap for a single item
+     * Wrap for a single item.
      *
      * @var string
      */
     var $itemwrap;
 
     /**
-     * Wrap for table start
+     * Wrap for table start.
      *
      * @var string
      */
     var $startwrap;
 
     /**
-     * Wrap for table end
+     * Wrap for table end.
      *
      * @var string
      */
     var $endwrap;
 
     /**
-     * Data container
+     * Data container.
      *
      * @var array
      */
     var $data = Array();
 
     /**
-     * Number of records displayed per page
+     * Number of records displayed per page.
      *
-     * @var string
+     * @var int
      */
     var $resultsPerPage;
 
     /**
-     * Start page
+     * Start page.
      *
-     * @var string
+     * @var int
      */
     var $listStart;
 
     /**
      * Creates a new FrontendList object.
      *
-     * The placeholder for item wraps are the same as for
-     * sprintf. See the documentation for sprintf.
+     * The placeholder for item wraps are the same as for sprintf.
+     * See the documentation for sprintf.
      *
      * Caution: Make sure that percentage signs are written as %%.
      *
-     * @param $startwrap Wrap for the list start
-     * @param $endwrap Wrap for the list end
-     * @param $itemwrap Wrap for a single item
+     * @param string $startwrap
+     *         Wrap for the list start
+     * @param string $endwrap
+     *         Wrap for the list end
+     * @param string $itemwrap
+     *         Wrap for a single item
      */
     function FrontendList($startwrap, $endwrap, $itemwrap) {
         $this->resultsPerPage = 0;
@@ -99,8 +98,10 @@ class FrontendList {
      * Make sure that the amount of parameters stays the same for all
      * setData calls in a single object.
      *
-     * @param $index int Numeric index
+     * @param int $index
+     *         Numeric index
      * @param ... Additional parameters (data)
+     * @SuppressWarnings docBlocks
      */
     function setData($index) {
         $numargs = func_num_args();
@@ -113,48 +114,55 @@ class FrontendList {
     /**
      * Sets the number of records per page.
      *
-     * @param $numresults int Amount of records per page
+     * @param int $resultsPerPage
+     *         Amount of records per page
      */
-    function setResultsPerPage($numresults) {
-        $this->resultsPerPage = $numresults;
+    function setResultsPerPage($resultsPerPage) {
+        $this->resultsPerPage = $resultsPerPage;
     }
 
     /**
      * Sets the starting page number.
      *
-     * @param $startpage int Page number on which the list display starts
+     * @param int $listStart
+     *         Page number on which the list display starts
      */
-    function setListStart($startpage) {
-        $this->listStart = $startpage;
+    function setListStart($listStart) {
+        $this->listStart = $listStart;
     }
 
     /**
      * Returns the current page.
      *
-     * @return int Current page number
+     * @return int
+     *         Current page number
      */
     function getCurrentPage() {
         if ($this->resultsPerPage == 0) {
             return 1;
         }
 
-        return ($this->listStart);
+        return $this->listStart;
     }
 
     /**
      * Returns the amount of pages.
      *
-     * @return int Amount of pages
+     * @return int
+     *         Amount of pages
      */
     function getNumPages() {
-        return (ceil(count($this->data) / $this->resultsPerPage));
+        return ceil(count($this->data) / $this->resultsPerPage);
     }
 
     /**
      * Sorts the list by a given field and a given order.
      *
-     * @param $field Field index
-     * @param $order Sort order (see php's sort documentation)
+     * @param string $field
+     *         name of field to sort for
+     * @param int $order
+     *         Sort order (see php's sort documentation)
+     *         one of SORT_ASC, SORT_DESC, SORT_REGULAR, SORT_NUMERIC, SORT_STRING
      */
     function sort($field, $order) {
         $this->data = cArray::csort($this->data, "$field", $order);
@@ -177,7 +185,9 @@ class FrontendList {
     /**
      * Outputs or optionally returns
      *
-     * @param $return If true, returns the list
+     * @param bool $return
+     *         if true, returns the list
+     * @return string
      */
     function output($return = false) {
         $output = $this->startwrap;

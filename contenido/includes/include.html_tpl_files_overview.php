@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for html template files overview.
  *
@@ -21,9 +22,8 @@ $files = new cGuiFileOverview($cfgClient[$client]['tpl']['path'], stripslashes($
 $backend_file_extensions = getSystemProperty('backend', 'backend_file_extensions');
 
 if ($backend_file_extensions == "enabled") {
-	$files->setFileExtension(array('html', 'tpl'));
+    $files->setFileExtension(array('html', 'tpl'));
 }
 
 // Render file overview
 $files->render();
-

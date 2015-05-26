@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for editing meta information of file in upload section.
  *

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the left top frame backend page for javascript management.
  *

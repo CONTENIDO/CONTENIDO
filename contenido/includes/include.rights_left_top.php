@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the left top frame backend page for rights management.
  *
@@ -78,9 +79,9 @@ if ($perm->have_perm_area_action('user_create', "user_createuser")) {
 }
 $tpl->set('s', 'CAPTION', '');
 
-#################
-# List Options
-#################
+/*
+ * List Options
+ */
 $aSortByOptions = array("username" => i18n("User name"), "realname" => i18n("Name"));
 
 $aSortOrderOptions = array("asc" => i18n("Ascending"), "desc" => i18n("Descending"));
@@ -113,9 +114,9 @@ $tplFilter->set("s", "FILTER_USER", $oTextboxFilter->render());
 $oListOptionRow->setContentData($tplFilter->generate($cfg["path"]["templates"] . $cfg["templates"]["rights_left_top_filter"], true));
 $tpl->set('s', 'LISTOPTIONS', $oListOptionRow->render());
 
-#########
-# Paging
-#########
+/*
+ * Paging
+ */
 $cApiUserCollection = new cApiUserCollection;
 $cApiUserCollection->query();
 $iItemCount = $cApiUserCollection->count();

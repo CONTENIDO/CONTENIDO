@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the system log display backend page.
  *

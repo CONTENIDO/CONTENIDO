@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for group rights management.
  *
@@ -214,5 +215,3 @@ $dataSync['NOTIFICATION'] = '';
 $dataSync['OB_CONTENT'] = '';
 //$oTpl->set('s', 'NOTIFICATION', '');
 //$oTpl->set('s', 'OB_CONTENT', '');
-
-

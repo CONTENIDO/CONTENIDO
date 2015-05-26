@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Backend action file mod_delete
  *
@@ -17,4 +18,5 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 // apparently this does nothing?
 //modDeleteModule($idmod);
+
 ?>

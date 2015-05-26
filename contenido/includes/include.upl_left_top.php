@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the left top frame backend page in upload section.
  *
@@ -27,7 +28,6 @@ if (isset($_REQUEST['path'])) {
     $sDisplayPath = $sCurrentPathInfo;
 }
 
-//##echo "<pre>$sDisplayPath</pre>";
 $sDisplayPath = generateDisplayFilePath($sDisplayPath, 35);
 $tpl->set('s', 'CAPTION2', $sDisplayPath);
 

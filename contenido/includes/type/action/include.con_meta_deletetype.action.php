@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Backend action file con_meta_deletetype
  *
@@ -29,7 +30,7 @@ if ($perm->have_perm_area_action($area, "con_meta_deletetype") || $perm->have_pe
         // Delete metatype
         $metaTypeColl = new cApiMetaTypeCollection();
         $metaTypeColl->delete(cSecurity::toInteger($idmetatype));
-        
+
 } else {
     $notification->displayNotification("error", i18n("Permission denied"));
 }

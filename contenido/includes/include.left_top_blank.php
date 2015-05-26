@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the blank lef top frame backend page.
  *
@@ -17,4 +18,5 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $tpl->reset();
 $tpl->generate($cfg["path"]["templates"] . $cfg['templates']['left_top_blank']);
+
 ?>

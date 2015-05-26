@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the CONTENIDO structure/category functions.
  *

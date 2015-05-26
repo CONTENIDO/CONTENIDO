@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the editor page for content type CMS_TEXT.
  *

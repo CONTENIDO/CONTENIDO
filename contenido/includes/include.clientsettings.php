@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for client settings.
  *
@@ -105,11 +106,11 @@ if ($aItems !== false) {
 
         if (($_GET['action'] == "clientsettings_edit_item") && ($_GET['idprop'] == $iKey)) {
 
-        	$oInputboxType = new cHTMLTextbox("cstype", $aValue['type']);
-        	$oInputboxType->setWidth(15);
-        	$oInputboxName = new cHTMLTextbox("csname", $aValue['name']);
-        	$oInputboxName->setWidth(15);
-        	$oInputboxValue = new cHTMLTextbox("csvalue", $aValue['value']);
+            $oInputboxType = new cHTMLTextbox("cstype", $aValue['type']);
+            $oInputboxType->setWidth(15);
+            $oInputboxName = new cHTMLTextbox("csname", $aValue['name']);
+            $oInputboxName->setWidth(15);
+            $oInputboxValue = new cHTMLTextbox("csvalue", $aValue['value']);
             $oInputboxValue->setWidth(30);
 
             $hidden = '<input type="hidden" name="csidproperty" value="' . $iKey . '">';
@@ -119,14 +120,14 @@ if ($aItems !== false) {
         } else {
             $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
 
-           	if (strlen($aValue['type']) > 35) {
+               if (strlen($aValue['type']) > 35) {
                 $sShort = cString::trimHard($aValue['type'], 35);
                 $aValue['type'] = sprintf($sMouseoverTemplate, $aValue['type'], $sShort);
             }
 
             if (strlen($aValue['name']) > 35) {
-            	$sShort = cString::trimHard($aValue['name'], 35);
-            	$aValue['name'] = sprintf($sMouseoverTemplate, $aValue['name'], $sShort);
+                $sShort = cString::trimHard($aValue['name'], 35);
+                $aValue['name'] = sprintf($sMouseoverTemplate, $aValue['name'], $sShort);
             }
 
             if (strlen($aValue['value']) > 35) {

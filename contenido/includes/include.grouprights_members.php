@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for user to group assigment.
  *
@@ -159,4 +160,3 @@ $page->set('s', 'RELOADSCRIPT', '');
 
 // Generate template
 $page->render();
-

@@ -2,9 +2,9 @@
 /**
  * This file contains the versioning class
  *
- * @package         Core   
- * @subpackage      Versioning  
- * @version          
+ * @package         Core
+ * @subpackage      Versioning
+ * @version
  *
  * @author           Jann Dieckmann
  * @copyright        four for business AG <www.4fb.de>
@@ -22,7 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage       Versioning
  */
 class cContentVersioning {
-     
+
     /**
      * db instance
      *
@@ -97,11 +97,11 @@ class cContentVersioning {
     }
 
     /**
-     * Return date for select box 
+     * Return date for select box
      * if current time - lastModified < 1 hour return "%d minutes ago"
      * else return "Y-M-D H:I:S"
-     * 
-     * @param $lastModified 
+     *
+     * @param $lastModified
      * @return string
      */
     public function getTimeDiff($lastModified) {
@@ -113,7 +113,7 @@ class cContentVersioning {
         if ($diff2 === 0) {
             return sprintf(i18n("%d minutes ago"), $diff->format('%i'));
         } else {
-            return date('d.m.Y, H:i\h', strtotime($lastModified)); 
+            return date('d.m.Y, H:i\h', strtotime($lastModified));
         }
 
     }
@@ -182,7 +182,7 @@ class cContentVersioning {
 
     /**
      * Returns $list[1] = CMS_HTMLHEAD for every content
-     * existing in article/version with $idArtLang 
+     * existing in article/version with $idArtLang
      *
      * @param int $idArtLang
      * @param string $articleType
@@ -215,7 +215,7 @@ class cContentVersioning {
      * Return max idcontent
      *
      * @return int
-     */    
+     */
     public function getMaxIdContent() {
         $sql = 'SELECT max(idcontent) AS max FROM %s';
         $this->db->query($sql, cRegistry::getDbTableName('content'));
@@ -233,18 +233,18 @@ class cContentVersioning {
      * @param string $action
      * @param mixed $selectedArticleId
      * @return string $this->articleType
-     * 
+     *
      */
     public function getArticleType($idArtLangVersion, $idArtLang, $action, $selectedArticleId) {
 
         $this->editableArticleId = $this->getEditableArticleId($idArtLang);
 
-        if ($this->getState() == 'disabled' // disabled               
-            || ($this->getState() == 'simple' && ($selectedArticleId == 'current' 
-                || $selectedArticleId == NULL) 
+        if ($this->getState() == 'disabled' // disabled
+            || ($this->getState() == 'simple' && ($selectedArticleId == 'current'
+                || $selectedArticleId == NULL)
                 && ($action == 'con_meta_deletetype' || $action == 'copyto'
                  || $action == 'con_content' || $idArtLangVersion == NULL
-                 || $action == 'con_saveart' || $action == 'con_edit' || $action == 'con_meta_edit' || $action == 'con_editart')) 
+                 || $action == 'con_saveart' || $action == 'con_edit' || $action == 'con_meta_edit' || $action == 'con_editart'))
             || $idArtLangVersion == 'current' && $action != 'copyto'
             || $action == 'copyto' && $idArtLangVersion == $this->editableArticleId
             || $action == 'con_meta_change_version' && $idArtLang == 'current'
@@ -252,7 +252,7 @@ class cContentVersioning {
             || $this->editableArticleId == NULL
             && $action != 'con_meta_saveart' && $action != 'con_newart') { // advanced
             $this->articleType = 'current';
-        } else if ($this->getState() == 'advanced' && ($selectedArticleId == 'editable' 
+        } else if ($this->getState() == 'advanced' && ($selectedArticleId == 'editable'
             || $selectedArticleId == NULL)
             && ($action == 'con_content' || $action == 'con_meta_deletetype'
                 || $action == 'con_meta_edit' || $action == 'con_edit' || $action == 'con_editart')
@@ -262,8 +262,8 @@ class cContentVersioning {
             || $action == 'con_editart' && $this->getState() == 'advanced' && $selectedArticleId == 'editable'
             || $action == 'con_edit' && $this->getState() == 'advanced' && $selectedArticleId == NULL
             || $action == '20' && $idArtLangVersion == NULL
-            || $action == 'con_meta_saveart' || $action == 'con_saveart' 
-            || $action == 'con_newart' || $action == 'con_meta_change_version' 
+            || $action == 'con_meta_saveart' || $action == 'con_saveart'
+            || $action == 'con_newart' || $action == 'con_meta_change_version'
             && $idArtLangVersion == $this->editableArticleId) {
             $this->articleType = 'editable';
         } else {
@@ -282,10 +282,10 @@ class cContentVersioning {
                         <span style="font-weight:bold;color:black;">' . i18n('Select Article Version') . '</span>
                         <span style="margin: 0px 0px 0px 0px;"> %s %s
                         </span>
-                        <a 
-                            href="#" 
-                            id="pluginInfoDetails-link" 
-                            class="main i-link infoButton" 
+                        <a
+                            href="#"
+                            id="pluginInfoDetails-link"
+                            class="main i-link infoButton"
                             title="">
                         </a>
                     </span>
@@ -339,7 +339,7 @@ class cContentVersioning {
      * @param int $articleType
      * @param int $version
      * @return array $idContent
-     */    
+     */
     public function getContentId($idArtLang, $typeId, $type, $versioningState, $articleType, $version) {
 
         $idContent = array();
@@ -372,7 +372,7 @@ class cContentVersioning {
 
     /**
      * Returns $artLangVersionMap[version][idartlangversion] = lastmodified
-     * either from each article-/content- or metatag-version 
+     * either from each article-/content- or metatag-version
      *
      * @param int $idArtLang
      * @param string $selectElementType either 'content', 'seo' or 'config'
@@ -446,7 +446,7 @@ class cContentVersioning {
 
         $fields['idartlangversion'] = 'idartlangversion';
         $fields['version'] = 'version';
-        $fields['lastmodified'] = 'lastmodified';        
+        $fields['lastmodified'] = 'lastmodified';
 
         if (0 < $artLangVersionColl->count()) {
             $table = $artLangVersionColl->fetchTable($fields);
@@ -454,7 +454,7 @@ class cContentVersioning {
             foreach ($table AS $key => $item) {
                 $artLangVersionMap[$item['version']][$item['idartlangversion']] = $item['lastmodified'];
             }
-        }        
+        }
 
         return $artLangVersionMap;
 
@@ -473,7 +473,7 @@ class cContentVersioning {
         $date = date('Y-m-d H:i:s');
         $author = $auth->auth['uname'];
 
-        // through a contenido bug filelists save each of their changes multiple times. 
+        // through a contenido bug filelists save each of their changes multiple times.
         // therefore its nececcary to check if the same change already has been saved and
         // prevent multiple savings
         static $savedTypes = array ();
@@ -485,7 +485,7 @@ class cContentVersioning {
             $isAlreadySaved = true;
         }
 
-       if ($isAlreadySaved == false) { 
+       if ($isAlreadySaved == false) {
         switch ($versioningState) {
             case 'simple':
                 // Create Content Version
@@ -641,7 +641,7 @@ class cContentVersioning {
                 $parametersToCheck['created']
         );
 
-        // if there already is a content type like this in this version, 
+        // if there already is a content type like this in this version,
         // create a new article version, too (needed for storing a version after
         // first change in simple-mode)
         $contentVersion = new cApiContentVersion();
@@ -840,7 +840,7 @@ class cContentVersioning {
                     $parameters['idmetatype'],
                     $parameters['value'],
                     $parameters['version']
-                ); 
-        
+                );
+
     }
 }

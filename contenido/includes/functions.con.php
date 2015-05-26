@@ -27,28 +27,34 @@ cInclude('includes', 'functions.con2.php');
  * @param int $idcat
  * @param int $idcatnew
  * @param int $idart
- * @param unknown_type $isstart
+ * @param int $isstart
  * @param int $idtpl
  * @param int $idartlang
  * @param int $idlang
- * @param unknown_type $title
- * @param unknown_type $summary
- * @param unknown_type $artspec
- * @param unknown_type $created
- * @param unknown_type $lastmodified
- * @param unknown_type $author
- * @param unknown_type $online
- * @param unknown_type $datestart
- * @param unknown_type $dateend
- * @param unknown_type $artsort
+ * @param string $title
+ * @param string $summary
+ * @param int $artspec
+ * @param string $created
+ * @param string $lastmodified
+ * @param string $author
+ * @param int $online
+ * @param string $datestart
+ * @param string $dateend
+ * @param int $artsort
  * @param unknown_type $keyart
- * @param unknown_type $searchable
- * @param unknown_type $sitemapprio
- * @param unknown_type $changefreq
+ * @param int $searchable
+ * @param float $sitemapprio
+ * @param string $changefreq
  * @return int
  *         Id of the new article
  */
-function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort, $keyart = 0, $searchable = 1, $sitemapprio = 0.5, $changefreq = '') {
+function conEditFirstTime(
+    $idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang, $title,
+    $summary, $artspec, $created, $lastmodified, $author, $online, $datestart,
+    $dateend, $artsort, $keyart = 0, $searchable = 1, $sitemapprio = 0.5,
+    $changefreq = ''
+) {
+
     global $client, $lang, $auth, $urlname, $page_title;
     // Some stuff for the redirect
     global $redirect, $redirect_url, $external_redirect;
@@ -238,7 +244,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
  * @param int $idlang
  * @param string $title
  * @param string $summary
- * @param unknown_type $artspec
+ * @param int $artspec
  * @param unknown_type $created
  * @param unknown_type $lastmodified
  * @param unknown_type $author

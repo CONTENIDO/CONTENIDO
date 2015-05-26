@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the menu frame (overview) backend page for module management.
  *
@@ -147,12 +148,12 @@ foreach ($allModules as $idmod => $module) {
                 $delTitle = i18n("Delete module");
                 $delDescr = sprintf(i18n("Do you really want to delete the following module:<br /><br />%s<br />"), $sName);
                 if(getEffectiveSetting('client', 'readonly', 'false') == 'true') {
-                	$deletebutton = '<img src="' . $cfg['path']['images'] . 'delete_inact.gif" border="0" title="' . i18n('This area is read only! The administrator disabled edits!') . '" alt="' . i18n('This area is read only! The administrator disabled edits!') . '">';
+                    $deletebutton = '<img src="' . $cfg['path']['images'] . 'delete_inact.gif" border="0" title="' . i18n('This area is read only! The administrator disabled edits!') . '" alt="' . i18n('This area is read only! The administrator disabled edits!') . '">';
                 } else {
-	                $deletebutton = '
-	                    <a title="' . $delTitle . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteModule(' . $idmod . '); });return false;" >
-	                        <img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '">
-	                    </a>';
+                    $deletebutton = '
+                        <a title="' . $delTitle . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteModule(' . $idmod . '); });return false;" >
+                            <img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '">
+                        </a>';
                 }
             } else {
                 $delDescription = i18n("No permissions");

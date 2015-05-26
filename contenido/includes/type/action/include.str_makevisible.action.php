@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Backend action file str_makevisible
  *
@@ -24,4 +25,5 @@ if ($perm->have_perm_area_action("str", "str_makevisible") || $perm->have_perm_a
 } else {
     $notification->displayNotification("error", i18n("Permission denied"));
 }
+
 ?>

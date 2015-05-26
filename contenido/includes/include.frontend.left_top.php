@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the left top frame backend page in frontend user management.
  *
@@ -97,9 +98,9 @@ $aSortOrderOptions = array(
     "desc" => i18n("Descending")
 );
 
-// #########
-// Buttons
-// #########
+/*
+ * Buttons
+ */
 $userlink = new cHTMLLink();
 $userlink->setCLink("frontend", 2, "");
 
@@ -135,9 +136,9 @@ if (isset($_GET['view']) && $_GET['view'] == $imgGroupId) {
     $tpl->set('s', 'IINIT', $imgUserId);
 }
 
-// ##############
-// Users Actions
-// ##############
+/*
+ * Users Actions
+ */
 $actionLink = "actionlink";
 $sActionUuid = '28cf9b31-e6d7-4657-a9a7-db31478e7a5c';
 
@@ -168,10 +169,9 @@ $oLink->setClass("addfunction");
 $oLink->setStyle('margin-left: 17px;margin-top:5px');
 $oActionRow->setContentData($oLink->render());
 
-// ####################
-// Users List Options
-// ####################
-
+/*
+ * Users List Options
+ */
 $sListOptionId = 'f081b6ab-370d-4fd8-984f-6b38590fe48b';
 $listOptionLink = "listoptionlink";
 $oListOptionRow = new cGuiFoldingRow($sListOptionId, i18n("List options"), $listOptionLink);
@@ -239,9 +239,9 @@ $oListOptionRow->setContentData($tplFilter->generate($cfg['path']['templates'] .
 $oFEUsers = new cApiFrontendUserCollection();
 $oFEUsers->setWhere("cApiFrontendUserCollection.idclient", $client);
 
-// ############################
-// Process request parameters
-// ############################
+/*
+ * Process request parameters
+ */
 if (strlen($_REQUEST["filter"]) > 0 && $bUsePlugins == false) {
     $oFEUsers->setWhere("cApiFrontendUserCollection.username", $_REQUEST["filter"], "diacritics");
 }
@@ -358,9 +358,9 @@ if ($bUsePlugins == false) {
     $iItemCount = $iFullTableCount;
 }
 
-// #############
-// Users Paging
-// #############
+/*
+ * Users Paging
+ */
 $pagingLink = "paginglink";
 $tpl->set('s', 'PAGINGLINK', $pagingLink);
 
@@ -381,9 +381,9 @@ $oPagerLink->setCustom("contenido", $sess->id);
 $oPager = new cGuiObjectPager("25c6a67d-a3f1-4ea4-8391-446c131952c9", $iItemCount, $_REQUEST['elemperpage'], $mPage, $oPagerLink, "page", $pagingLink);
 $oPager->setExpanded(true);
 
-// ####################
-// Groups create Groups
-// ####################
+/*
+ * Groups create Groups
+ */
 $link = new cHTMLLink();
 $menu = new cGuiMenu();
 if ((int) $client > 0) {
@@ -405,9 +405,9 @@ $menu->setTitle("10", "");
 $menu->setImage("10", "");
 $menu->setRowmark(false);
 
-// #####################
-// Container Users
-// #####################
+/*
+ * Container Users
+ */
 $containerUsersId = 'cont_users';
 $containerUsers = '<div id="' . $containerUsersId . '">';
 $containerUsers .= '<table class="foldingrow">';
@@ -419,9 +419,9 @@ $containerUsers .= '</div>';
 $tpl->set('s', 'CUSERS', $containerUsers);
 $tpl->set('s', 'ID_USERS', $containerUsersId);
 
-// #####################
-// Container Groups
-// #####################
+/*
+ * Container Groups
+ */
 $containerGroupsId = 'cont_groups';
 $containerGroups = '<div id="' . $containerGroupsId . '"';
 $containerGroups .= '<span>' . $menu->render(false) . '</span>';

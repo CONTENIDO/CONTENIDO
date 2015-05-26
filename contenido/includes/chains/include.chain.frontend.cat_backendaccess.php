@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CONTENIDO Chain.
  * Category backend access feature.
@@ -16,8 +17,14 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-function cecFrontendCategoryAccess_Backend($idlang, $idcat, $user)
-{
+/**
+ *
+ * @param int $idlang
+ * @param int $idcat
+ * @param unknown_type $user
+ * @return boolean
+ */
+function cecFrontendCategoryAccess_Backend($idlang, $idcat, $user) {
     global $cfg, $perm;
 
     if ($perm->have_perm()) {

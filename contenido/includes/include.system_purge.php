@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the system purge backend page.
  *
@@ -108,7 +109,7 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
                                i18n('The history is not deleted!') . '<br>';
                     }
                 }
-                
+
                 if (isset($_POST['clearVersioning']) && $_POST['clearVersioning'] == 1) {
                     if (!$oPurge->clearClientContentVersioning($iClientId)) {
                         $bError = true;
@@ -124,7 +125,7 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
             }
         }
     }
-    
+
     $sContenido = i18n('CONTENIDO: ');
 
     if (isset($_POST['conInuse']) && $_POST['conInuse'] == 1) {

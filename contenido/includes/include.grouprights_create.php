@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for creating new groups.
  *
@@ -37,7 +38,7 @@ if ($action == 'group_create') {
     }
 
     $groupname = stripcslashes(preg_replace("/\"/", "", ($groupname)));
-	$description = stripcslashes(preg_replace("/\"/", "", ($description)));
+    $description = stripcslashes(preg_replace("/\"/", "", ($description)));
 
     $oGroup = new cApiGroup();
     $oGroup->loadGroupByGroupname($groupname);
@@ -48,7 +49,7 @@ if ($action == 'group_create') {
         $oGroupColl = new cApiGroupCollection();
         $oGroup = $oGroupColl->create($groupname, implode(',', $aPerms), $description);
         if (is_object($oGroup)) {
-			$groupId = $oGroup->getGroupId();
+            $groupId = $oGroup->getGroupId();
         } else {
             $sNotification = $notification->returnNotification("error", i18n("Group couldn't created"));
             $bError = true;

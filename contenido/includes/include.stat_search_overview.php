@@ -1,11 +1,12 @@
 <?php
+
 /**
  * This file contains the backend page for displaying search statistic
  *
  * @package Core
  * @subpackage Backend
  * @version SVN Revision $Rev:$
- *         
+ *
  * @author Mischa Holz
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -53,7 +54,7 @@ if ($action == "show_single_term") {
 } else {
     // select all search terms and sort them by popularity
     $termCollection->selectPopularSearchTerms();
-    
+
     $db = cRegistry::getDb();
     // select all search terms, count their occurence and calculate the average
     // number of results
@@ -69,10 +70,10 @@ if ($action == "show_single_term") {
             'avg' => $db->f('AVG(results)')
         );
     }
-    
+
     $page->set("s", "ADDITIONAL_INFO", i18n('Count'));
     $page->set("s", "RESULTS_HEADER", i18n("Average Number of Results"));
-    
+
     // fill template
     $i = 0;
     while ($termItem = $termCollection->next()) {
@@ -86,4 +87,5 @@ if ($action == "show_single_term") {
 }
 
 $page->render();
+
 ?>

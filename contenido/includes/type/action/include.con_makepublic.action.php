@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Backend action file con_makepublic
  *

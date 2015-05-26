@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Backend action file con_saveart
  *
@@ -12,6 +13,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 if (!isset($idtpl)) {
@@ -85,25 +87,25 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
                 conSetCodeFlag($db->f("idcatart"));
             }
         }
-        
+
         $availableTags = conGetAvailableMetaTagTypes();
-        
+
         $versioning = new cContentVersioning();
         $version = NULL;
         if ($versioning->getState() != 'disabled') {
             // get parameters for article version
             //$artLang = new cApiArticleLanguage($idartlang);
-            
-            // create article version            
+
+            // create article version
             //$artLangVersion = $versioning->createArticleLanguageVersion($artLang->toArray());
             //$artLangVersion->markAsCurrentVersion(1);
-            
+
             foreach ($availableTags as $key => $value) {
                 if ($value["metatype"] == "robots") {
-                    conSetMetaValue($idartlang, $key, "index, follow"); 
+                    conSetMetaValue($idartlang, $key, "index, follow");
                     break;
-                }            
-            } 
+                }
+            }
         }
     } else {
 
@@ -111,7 +113,7 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
         // Contenido.Action.con_saveart.AfterCall chain handler
         $oArtLang = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
         if ($oArtLang->isLoaded()) {
-            
+
             // get array of idcats this article was related to
             $oCatArtColl = new cApiCategoryArticleCollection();
             $idcatold = $oCatArtColl->getCategoryIdsByArticleId($oArtLang->get('idart'));

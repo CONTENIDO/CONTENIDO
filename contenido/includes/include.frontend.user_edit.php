@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for the editor of frontend users.
  *
@@ -251,4 +252,5 @@ if (!isset($form)) {
 }
 
 $page->render();
+
 ?>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for javascript files overview.
  *
@@ -21,7 +22,7 @@ $files = new cGuiFileOverview($cfgClient[$client]['js']['path'], stripslashes($_
 $backend_file_extensions = getSystemProperty('backend', 'backend_file_extensions');
 
 if ($backend_file_extensions == "enabled") {
-	$files->setFileExtension('js');
+    $files->setFileExtension('js');
 }
 
 // Render file overview
