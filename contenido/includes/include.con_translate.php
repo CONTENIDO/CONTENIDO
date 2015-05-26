@@ -671,7 +671,7 @@ foreach ($allTranslations as $hash => $translationArray) {
     $counter++;
 }
 
-// Count all founded translations
+// Count all found translations
 // Important to calculate needed pages
 $counter = count($allTranslations);
 
