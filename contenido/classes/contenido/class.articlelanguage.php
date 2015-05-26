@@ -278,8 +278,8 @@ class cApiArticleLanguage extends Item {
      * Create a version of this article language with its contents/metatags;
      * the version is the new editable articlel language version
      *
-     * @param String $type meta, content or complete
-     *
+     * @param string $type
+     *         meta, content or complete
      */
     public function markAsEditable($type = '') {
         global $cfg;

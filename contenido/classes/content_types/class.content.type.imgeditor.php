@@ -157,9 +157,12 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     /**
      * Return the raw settings of a content type
      *
-     * @param string $contentTypeName Content type name
-     * @param int $id ID of the content type
-     * @param array $contentTypes Content type array
+     * @param string $contentTypeName
+     *         Content type name
+     * @param int $id
+     *         ID of the content type
+     * @param array $contentTypes
+     *         Content type array
      * @return mixed
      */
     protected function _getRawSettings($contentTypeName, $id, array $contentTypes, $editable = false) {

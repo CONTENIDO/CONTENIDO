@@ -1005,11 +1005,16 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 /**
  * Creates HTML code for the bulk editing functions in the article overview.
  *
- * @param string $class the class for the link
- * @param string $imageSrc the path to the image
- * @param string $alt the alt tag for the image
- * @param string $onclick [optional] the onlick attribute for the link
- * @return string rendered HTML code
+ * @param string $class
+ *         the class for the link
+ * @param string $imageSrc
+ *         the path to the image
+ * @param string $alt
+ *         the alt tag for the image
+ * @param string $onclick [optional]
+ *         the onlick attribute for the link
+ * @return string
+ *         rendered HTML code
  */
 function createBulkEditingFunction($class, $imageSrc, $alt, $onclick = '') {
     $function = new cHTMLLink();

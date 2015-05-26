@@ -502,7 +502,7 @@ function htmldecode($string) {
  * Reinitializes the $cfgClient array and fills it wih updated information if
  * provided.
  *
- * @param number $idclient
+ * @param int $idclient
  *         client id which will be updated
  * @param string $htmlpath
  *         new HTML path. Starting with "http://"
@@ -1232,7 +1232,7 @@ function scanPlugins($entity) {
 /**
  * Includes plugins for a given entity.
  *
- * @param $entity
+ * @param unknown_type $entity
  *         string Name of the directory to scan
  */
 function includePlugins($entity) {
@@ -1434,6 +1434,7 @@ function cWarning() {
  * cWarning(__FILE__, __LINE__, 'Some error message');
  * </pre>
  *
+ * @param unknown_type $message
  * @param Multiple parameters
  */
 function cError($message) {

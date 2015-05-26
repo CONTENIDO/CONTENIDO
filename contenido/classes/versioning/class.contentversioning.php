@@ -101,7 +101,7 @@ class cContentVersioning {
      * if current time - lastModified < 1 hour return "%d minutes ago"
      * else return "Y-M-D H:I:S"
      *
-     * @param $lastModified
+     * @param unknown_type $lastModified
      * @return string
      */
     public function getTimeDiff($lastModified) {
@@ -375,8 +375,9 @@ class cContentVersioning {
      * either from each article-/content- or metatag-version
      *
      * @param int $idArtLang
-     * @param string $selectElementType either 'content', 'seo' or 'config'
-     * @return array $artLangVersionMap
+     * @param string $selectElementType
+     *         either 'content', 'seo' or 'config'
+     * @return array
      */
     public function getDataForSelectElement($idArtLang, $selectElementType = '') {
 
@@ -463,9 +464,12 @@ class cContentVersioning {
     /**
      * Prepares content for saving (consider versioning-mode; prevents multiple storings for filelists e.g.)
      *
-     * @param $idartlang the contents idartlang
-     * @param cApiContent $content the content to store
-     * @param $value the contents value to store
+     * @param unknown_type $idartlang
+     *         the contents idartlang
+     * @param cApiContent $content
+     *         the content to store
+     * @param unknown_type
+     *         the contents value to store
      *
      */
     public function prepareContentForSaving($idartlang, cApiContent $content, $value) {

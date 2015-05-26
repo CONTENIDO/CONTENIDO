@@ -207,7 +207,7 @@ class cModuleSynchronizer extends cModuleHandler {
      * fileystem but if not
      * clear it from filesystem.
      *
-     * @param $db
+     * @param unknown_type $db
      * @return int
      *         id of last update module
      */
@@ -288,7 +288,7 @@ class cModuleSynchronizer extends cModuleHandler {
      * name.
      * If the modul name exist it will return true
      *
-     * @param $alias
+     * @param unknown_type $alias
      * @param int $idclient
      *         idclient
      * @return bool

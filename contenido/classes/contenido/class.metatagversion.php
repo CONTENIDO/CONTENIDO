@@ -122,7 +122,8 @@ class cApiMetaTagVersion extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $id Specifies the ID of item to load
+     * @param mixed $id
+     *         Specifies the ID of item to load
      */
     public function __construct($id = false) {
         global $cfg;
@@ -174,7 +175,8 @@ class cApiMetaTagVersion extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $safe Flag to run defined inFilter on passed value
+     * @param bool $safe
+     *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $safe = true) {
         switch ($name) {

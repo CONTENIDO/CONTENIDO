@@ -362,7 +362,7 @@ function strSortPrePost($arr) {
 /**
  * Builds values part of the SQL used to recreate the category tree table
  *
- * @param array|?? $aCats
+ * @param array $aCats
  *         Assoziative categories array or something else, but what?
  * @param string $sInsertQuery
  *         The insert statement

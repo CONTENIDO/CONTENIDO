@@ -454,7 +454,8 @@ class cSearchIndex extends cSearchBaseAbstract {
 
     /**
      *
-     * @param string $key Keyword
+     * @param string $key
+     *         Keyword
      * @return string
      */
     public function addSpecialUmlauts($key) {

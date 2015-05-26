@@ -50,7 +50,8 @@ class cIterator {
      * This function initializes the constructor, adds the passed items
      * and moves the iterator to the first element.
      *
-     * @param array $aItems Items to add
+     * @param array $aItems
+     *         Items to add
      */
     public function __construct($aItems) {
         if (is_array($aItems)) {

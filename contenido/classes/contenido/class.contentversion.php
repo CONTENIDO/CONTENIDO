@@ -105,7 +105,8 @@ class cApiContentVersion extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $id Specifies the ID of item to load
+     * @param mixed $id
+     *         Specifies the ID of item to load
      */
     public function __construct($id = false) {
         parent::__construct(cRegistry::getDbTableName('content_version'), 'idcontentversion');
@@ -118,10 +119,11 @@ class cApiContentVersion extends Item {
     /**
      * Userdefined setter for item fields.
      *
+     * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $safe Flag to run defined inFilter on passed value
-     * @todo should return return value of overloaded method
+     * @param bool $safe
+     *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $safe = true) {
         parent::setField($name, $value, $safe);

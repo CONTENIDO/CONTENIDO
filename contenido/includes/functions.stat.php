@@ -61,7 +61,7 @@ function statsDisplayInfo($id, $type, $x, $y, $w, $h) {
 /**
  * Archives the current statistics
  *
- * @param $yearmonth
+ * @param unknown_type $yearmonth
  *         String with the desired archive date (YYYYMM)
  */
 function statsArchive($yearmonth) {
@@ -122,7 +122,7 @@ function statsArchive($yearmonth) {
 /**
  * Generates a statistics page
  *
- * @param $yearmonth
+ * @param unknown_type $yearmonth
  *         Specifies the year and month from which to retrieve the statistics,
  *         specify "current" to retrieve the current entries.
  */
@@ -486,7 +486,7 @@ function statsOverviewAll($yearmonth) {
 /**
  * Generates a statistics page for a given year
  *
- * @param $year
+ * @param unknown_type $year
  *         Specifies the year to retrieve the statistics for
  */
 function statsOverviewYear($year) {
@@ -777,10 +777,10 @@ function statsOverviewYear($year) {
 /**
  * Generates a top<n> statistics page
  *
- * @param $yearmonth
+ * @param unknown_type $yearmonth
  *         Specifies the year and month from which to retrieve the statistics,
  *         specify "current" to retrieve the current entries.
- * @param $top
+ * @param unknown_type $top
  *         Specifies the amount of pages to display
  */
 function statsOverviewTop($yearmonth, $top) {

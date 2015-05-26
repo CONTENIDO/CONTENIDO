@@ -960,7 +960,7 @@ class cModuleHandler {
     /**
      * Test module code
      *
-     * @param $inputType
+     * @param unknown_type $inputType
      *         string code field type
      * @return array
      *         bool state, string errorMessage

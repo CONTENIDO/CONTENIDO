@@ -139,7 +139,7 @@ class cFileHandler {
      *         the name and path of the file
      * @param string $content
      *         the data which should be written
-     * @param bool $append  [optional]
+     * @param bool $append [optional]
      *         if true the data will be appended to the file.
      * @return bool
      *         true on success, false otherwise

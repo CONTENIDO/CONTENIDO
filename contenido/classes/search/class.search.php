@@ -228,29 +228,36 @@ class cSearch extends cSearchBaseAbstract {
     /**
      * Constructor
      *
-     * @todo fix docblock
-     * @param array $options $options['db'] 'regexp' => DB search with REGEXP;
-     *        'like' => DB search with LIKE; 'exact' => exact match;
-     *        $options['combine'] 'and', 'or' Combination of search words with
-     *        AND, OR
-     *        $options['exclude'] 'true' => searchrange specified in 'cat_tree',
-     *        'categories' and 'articles' is excluded; 'false' =>
-     *        searchrange specified in 'cat_tree', 'categories' and
-     *        'articles' is included
-     *        $options['cat_tree'] e.g. array(8) => The complete tree with root
-     *        8 is in/excluded from search
-     *        $options['categories'] e.g. array(10, 12) => Categories 10, 12
-     *        in/excluded
-     *        $options['articles'] e.g. array(23) => Article 33 in/excluded
-     *        $options['artspecs'] => e.g. array(2, 3) => search only articles
-     *        with certain article specifications
-     *        $options['protected'] 'true' => do not search articles which are
-     *        offline (locked) or articles in catgeories which are offline
-     *        (protected)
-     *        $options['dontshowofflinearticles'] 'false' => search offline
-     *        articles or articles in categories which are offline
-     *        $options['searchable_articles'] array of article ID's which should
-     *        be searchable
+     * @param array $options
+     *         $options['db']
+     *             'regexp' => DB search with REGEXP
+     *             'like' => DB search with LIKE
+     *             'exact' => exact match;
+     *         $options['combine']
+     *             'and', 'or' Combination of search words with AND, OR
+     *         $options['exclude']
+     *             'true' => searchrange specified in 'cat_tree', 'categories'
+     *             and 'articles' is excluded;
+     *             'false' => searchrange specified in 'cat_tree', 'categories'
+     *             and 'articles' is included
+     *         $options['cat_tree']
+     *             e.g. array(8) => The complete tree with root 8 is in/excluded
+     *             from search
+     *         $options['categories']
+     *             e.g. array(10, 12) => Categories 10, 12 in/excluded
+     *         $options['articles']
+     *             e.g. array(23) => Article 33 in/excluded
+     *         $options['artspecs']
+     *             e.g. array(2, 3) => search only articles with certain article
+     *             specifications
+     *         $options['protected']
+     *             'true' => do not search articles which are offline (locked)
+     *             or articles in catgeories which are offline (protected)
+     *         $options['dontshowofflinearticles']
+     *             'false' => search offline articles or articles in categories
+     *             which are offline
+     *         $options['searchable_articles']
+     *             array of article ID's which should be searchable
      * @param cDb $db [optional]
      *         database instance
      */

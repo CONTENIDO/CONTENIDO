@@ -21,8 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Generate index of article content entries.
  *
- * @param array $articleIds containing keys idclient, idlang, idcat, idcatlang,
- *            idart, idartlang
+ * @param array $articleIds
+ *         containing keys idclient, idlang, idcat, idcatlang, idart, idartlang
  */
 function cecIndexArticle(array $articleIds) {
 

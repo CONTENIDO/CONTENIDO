@@ -26,7 +26,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *         language id which should be checked
  * @param array $aCfg
  *         CONTENIDO configruation array (no more needed)
- * @param object $oDb
+ * @param cDb $oDb
  *         CONTENIDO database object (no more needed)
  * @return boolean
  *         status

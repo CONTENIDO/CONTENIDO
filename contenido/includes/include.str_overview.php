@@ -111,7 +111,7 @@ function buildCategorySelectRights() {
 
 /**
  *
- * @param object $item
+ * @param unknown_type $item
  * @param string $catName
  * @return string
  */

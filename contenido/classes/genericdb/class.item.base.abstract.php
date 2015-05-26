@@ -202,7 +202,9 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * Sets loaded state of class
      * If it is true an object is loaded
      * If it is false then no object is loaded and only load-functions are allowed to be used
-     * @param bool $value Whether an object is loaded
+     *
+     * @param bool $value
+     *         Whether an object is loaded
      */
     protected function _setLoaded($value) {
         $this->_loaded = (bool) $value;
@@ -211,7 +213,9 @@ abstract class cItemBaseAbstract extends cGenericDb {
     /**
      * Magic getter function for deprecated variables primaryKey and virgin
      * This function will be removed when the variables are no longer supported
-     * @param string $name Name of the variable that should be accessed
+     *
+     * @param string $name
+     *         Name of the variable that should be accessed
      * @return mixed
      */
     public function __get($name) {
@@ -226,8 +230,11 @@ abstract class cItemBaseAbstract extends cGenericDb {
     /**
      * Magic setter function for deprecated variables primaryKey and virgin
      * This function will be removed when the variables are no longer supported
-     * @param string $name Name of the variable that should be accessed
-     * @param mixed $value Value that should be assigned to variable
+     *
+     * @param string $name
+     *         Name of the variable that should be accessed
+     * @param mixed $value
+     *         Value that should be assigned to variable
      */
     public function __set($name, $value) {
         if ('primaryKey' === $name) {

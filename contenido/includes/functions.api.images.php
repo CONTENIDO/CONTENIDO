@@ -370,7 +370,8 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
  *         If false, the image will only be made smaller.
  * @param int $cacheTime
  *         The number of minutes to cache the image, use 0 for unlimited
- * @param int $quality The quality of the output file
+ * @param int $quality
+ *         The quality of the output file
  * @param bool $keepType
  *         If true and a png file is source, output file is also png
  * @return string

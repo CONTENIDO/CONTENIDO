@@ -83,7 +83,8 @@ class cZipArchive {
      * This function contains the functionality to extract archive and overwrite
      * existing files.
      *
-     * @param string $file zip file
+     * @param string $file
+     *         zip file
      * @param string $extractPath
      *         extraction path
      * @param string $extractPathUserInput [optional]

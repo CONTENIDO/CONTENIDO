@@ -24,8 +24,9 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
     /**
      * Create a new collection of items.
      *
-     * @param string $select where clause to use for selection (see
-     *        ItemCollection::select())
+     * @param string $select
+     *         where clause to use for selection
+     * @see ItemCollection::select()
      */
     public function __construct($select = false) {
         parent::__construct(cRegistry::getDbTableName('art_lang_version'), 'idartlangversion');
@@ -258,8 +259,10 @@ class cApiArticleLanguageVersion extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $id Specifies the ID of item to load
-     * @param bool $fetchContent Flag to fetch content
+     * @param mixed $id
+     *         Specifies the ID of item to load
+     * @param bool $fetchContent
+     *         Flag to fetch content
      */
     public function __construct($id = false, $fetchContent = false) {
         parent::__construct(cRegistry::getDbTableName('art_lang_version'), 'idartlangversion');
@@ -275,7 +278,8 @@ class cApiArticleLanguageVersion extends Item {
     /**
      * Set iscurrentversion = 0 in the current version and set iscurrentversion = 1 in this version
      *
-     * @param int $iscurrentversion 0 = false, 1 = true
+     * @param int $iscurrentversion
+     *         0 = false, 1 = true
      */
     public function markAsCurrentVersion($isCurrentVersion){
         $attributes = array(
@@ -303,7 +307,8 @@ class cApiArticleLanguageVersion extends Item {
      * Set property iscurrentversion = 1 in this ArticleLanguageVersion
      * and 0 in the current ArticleLanguageVersions
      *
-     * @param String $type meta, content or complete
+     * @param string $type
+     *         meta, content or complete
      */
     public function markAsCurrent($type = ''){
 
@@ -411,8 +416,8 @@ class cApiArticleLanguageVersion extends Item {
      * Create a copy of this article language version with its contents,
      * the copy is the new editable article language version
      *
-     * @param String $type meta, content or complete
-     *
+     * @param string $type
+     *         meta, content or complete
      */
     public function markAsEditable($type = '') {
 
@@ -516,10 +521,14 @@ class cApiArticleLanguageVersion extends Item {
     /**
      * Load data by article language id and version
      *
-     * @param int $idArtLang Article language id
-     * @param int $version version number
-     * @param bool $fetchContent Flag to fetch content
-     * @return bool true on success, otherwhise false
+     * @param int $idArtLang
+     *         Article language id
+     * @param int $version
+     *         version number
+     * @param bool $fetchContent
+     *         Flag to fetch content
+     * @return bool
+     *         true on success, otherwhise false
      */
     public function loadByArticleLanguageIdAndVersion($idArtLang, $version, $fetchContent = false) {
         $result = true;
@@ -548,9 +557,12 @@ class cApiArticleLanguageVersion extends Item {
     /**
      * Extract 'idartlangversion' for a specified 'idartlang' and 'version'
      *
-     * @param int $idArtLang Article language id
-     * @param int $version version number
-     * @return int Article language version id
+     * @param int $idArtLang
+     *         Article language id
+     * @param int $version
+     *         version number
+     * @return int
+     *         Article language version id
      */
     protected function _getIdArtLangVersion($idArtLang, $version) {
 
@@ -656,9 +668,11 @@ class cApiArticleLanguageVersion extends Item {
      * sitemapprio - The priority for the sitemap
      *
      * @param string $name
-     * @param bool $safe Flag to run defined outFilter on passed value
-     *        NOTE: It's not used ATM!
-     * @return string Value of property
+     * @param bool $safe
+     *         Flag to run defined outFilter on passed value
+     *         NOTE: It's not used ATM!
+     * @return string
+     *         Value of property
      */
     public function getField($name, $safe = true) {
         return $this->values[$name];
@@ -667,10 +681,11 @@ class cApiArticleLanguageVersion extends Item {
     /**
      * Userdefined setter for article language version fields.
      *
+     * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $safe Flag to run defined inFilter on passed value
-     * @todo should return return value of overloaded method
+     * @param bool $safe
+     *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $safe = true) {
 
@@ -729,9 +744,12 @@ class cApiArticleLanguageVersion extends Item {
      * linkdescr - Linkdescription
      * swf - Upload id of the element
      *
-     * @param string $type CMS_TYPE - Legal cms type string
-     * @param int|NULL $id Id of the content
-     * @return string array data
+     * @param string $type
+     *         CMS_TYPE - Legal cms type string
+     * @param int|NULL $id
+     *         Id of the content
+     * @return string|array
+     *         data
      */
     public function getContent($type = '', $id = NULL) {
 
@@ -766,9 +784,12 @@ class cApiArticleLanguageVersion extends Item {
     /**
      * Similar to getContent this function returns the cContentType object
      *
-     * @param string $type Name of the content type
-     * @param int $id Id of the content type in this article
-     * @return boolean|cContenType Returns false if the name was invalid
+     * @param string $type
+     *         Name of the content type
+     * @param int $id
+     *         Id of the content type in this article
+     * @return bool|cContenType
+     *         Returns false if the name was invalid
      */
     public function getContentObject($type, $id) {
         $typeClassName = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $type)));
@@ -782,8 +803,11 @@ class cApiArticleLanguageVersion extends Item {
 
     /**
      * Similar to getContent this function returns the view voce of the cContentType object
-     * @param string $type Name of the content type
-     * @param int  $id Id of the content type in this article
+     *
+     * @param string $type
+     *         Name of the content type
+     * @param int  $id
+     *         Id of the content type in this article
      * @return string
      */
     public function getContentViewCode($type, $id) {
@@ -813,7 +837,8 @@ class cApiArticleLanguageVersion extends Item {
     /**
      * Returns the link to the current object.
      *
-     * @param int $changeLangId change language id for URL (optional)
+     * @param int $changeLangId
+     *         change language id for URL (optional)
      * @return string link
      */
     public function getLink($changeLangId = 0) {

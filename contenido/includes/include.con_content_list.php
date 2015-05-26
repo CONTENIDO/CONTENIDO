@@ -883,11 +883,14 @@ cRegistry::shutdown();
  * Processes replacements of all existing CMS_...
  * tags within passed code
  *
- * @param array $list CMS_...tags list
- * @param array $contentList all CMS variables
- * @param bool $saveKeywords Flag to save collected keywords during replacement
- *        process.
- * @param array $contentList Assoziative list of CMS variables
+ * @param array $list
+ *         CMS_...tags list
+ * @param array $contentList
+ *         all CMS variables
+ * @param bool $saveKeywords
+ *         Flag to save collected keywords during replacement process.
+ * @param array $contentList
+ *         Assoziative list of CMS variables
  * @SuppressWarnings docBlocks
  */
 function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode, $articleType, $versioningState, $version) {

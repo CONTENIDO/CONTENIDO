@@ -35,7 +35,8 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
     /**
      * Is called when a new row is rendered
      *
-     * @param $row The current row which is being rendered
+     * @param unknown_type $row
+     *         The current row which is being rendered
      */
     public function onRenderRow($row) {
     }
@@ -43,7 +44,8 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
     /**
      * Is called when a new column is rendered
      *
-     * @param $column The current column which is being rendered
+     * @param unknown_type $column
+     *         The current column which is being rendered
      */
     public function onRenderColumn($column) {
         $iColums = count($this->data[0]);
@@ -73,8 +75,10 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
     /**
      * Sorts the list by a given field and a given order.
      *
-     * @param $field Field index
-     * @param $order Sort order (see php's sort documentation)
+     * @param unknown_type $field
+     *         Field index
+     * @param unknown_type $order
+     *         Sort order (see php's sort documentation)
      */
     public function sort($field, $order) {
         if ($order == "") {

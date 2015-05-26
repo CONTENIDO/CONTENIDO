@@ -40,7 +40,8 @@ class cApiActionlogCollection extends ItemCollection {
     /**
      * Creates a actionlog item entry
      *
-     * @param string $userId User id
+     * @param string $userId
+     *         User id
      * @param int $idclient
      * @param int $idlang
      * @param int $idaction

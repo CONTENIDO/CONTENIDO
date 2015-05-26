@@ -30,8 +30,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Does some replacements in the given template.
  * Replaces some CONTENIDO specific placeholders against their values.
  *
- * @param  string  $template  Template string to preprocess
- * @param cTemplate $templateObj  The current template instance
+ * @param string $template
+ *         Template string to preprocess
+ * @param cTemplate $templateObj
+ *         The current template instance
  * @return string
  */
 function cecParseTemplate($template, cTemplate $templateObj) {
