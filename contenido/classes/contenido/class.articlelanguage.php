@@ -523,7 +523,7 @@ class cApiArticleLanguage extends Item {
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
             case 'urlname':
-                $value = conHtmlSpecialChars(cSTring::cleanURLCharacters($value), ENT_QUOTES);
+                $value = conHtmlSpecialChars(cString::cleanURLCharacters($value), ENT_QUOTES);
                 break;
             case 'timemgmt':
             case 'time_move_cat':
