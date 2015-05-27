@@ -934,7 +934,7 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
                             return (int) $i;
                         }, array_keys($list))) . ')');
     if (0 < $oTypeColl->count()) {
-        while ($oType = $oTypeColl->next()) {
+        while (false !== ($oType = $oTypeColl->next())) {
             $_typeList[] = $oType->toObject();
         }
     }
@@ -1016,10 +1016,14 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
                 $keycode[$type][$num] = $tmp;
             }
         }
+        // remove slashes (legacy) on replacements only to avoid
+        // stripping slashes repeatedly times on already stripped string
+        foreach ($replacements as $replacementIdx => $curReplacement) {
+            $replacements[$replacementIdx] = stripslashes($curReplacement);
+        }
         $code = str_ireplace($search, $replacements, $layoutCode);
         // execute CEC hook
-        $code = cApiCecHook::executeAndReturn('Contenido.Content.conGenerateCode', $code);
-        $layoutCode = stripslashes($code);
+        $layoutCode = cApiCecHook::executeAndReturn('Contenido.Content.conGenerateCode', $code);
     }
     $layoutCode = str_ireplace("<<", "[", $layoutCode);
     $layoutCode = str_ireplace(">>", "]", $layoutCode);
