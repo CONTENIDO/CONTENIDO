@@ -254,7 +254,8 @@ class cApiArticleLanguage extends Item {
 
     /**
      * Article content
-     *
+     * 
+     * @deprecated [2015-05-27]
      * @var array
      */
     public $content = NULL;
@@ -561,7 +562,7 @@ class cApiArticleLanguage extends Item {
      *
      * NOTE: Parameter is case insensitive, you can use html or cms_HTML or
      * CmS_HtMl.
-     * Your don't need start with cms, but it won't crash if you do so.
+     * You don't need to start with cms, but it won't crash if you do so.
      *
      * htmlhead - HTML Headline
      * html - HTML Text
@@ -581,7 +582,7 @@ class cApiArticleLanguage extends Item {
      * @return string|array
      *         data
      */
-    public function getContent($type, $id = NULL) {
+    public function getContent($type = '', $id = NULL) {
         if (NULL === $this->content) {
             $this->_loadArticleContent();
         }
@@ -591,12 +592,12 @@ class cApiArticleLanguage extends Item {
         }
 
         if ($type == '') {
-            return 'Class ' . get_class($this) . ': content-type must be specified!';
+            return $this->content;
         }
 
         $type = strtolower($type);
 
-        if (!strstr($type, 'cms_')) {
+        if (false === stripos($type, 'cms_')) {
             $type = 'cms_' . $type;
         }
 

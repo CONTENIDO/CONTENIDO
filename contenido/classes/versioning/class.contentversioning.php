@@ -785,10 +785,9 @@ class cContentVersioning {
 
         if (empty($contentVersions)) {
             $artLang = new cApiArticleLanguage($parameters['idartlang']);
-            $artLang->loadArticleContent();
             $conType = new cApiType();
             $content = new cApiContent();
-            foreach ($artLang->content AS $type => $typeids) {
+            foreach ($artLang->getContent() AS $type => $typeids) {
                 foreach ($typeids AS $typeid => $value) {
                     $conType->loadByType($type);
                     $content->loadByArticleLanguageIdTypeAndTypeId(
