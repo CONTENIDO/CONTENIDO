@@ -202,7 +202,8 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                     $fileList = new cContentTypeFilelist(\'%s\', %s, %s);
                     echo $fileList->generateFileListCode();
                  ?><?php echo "';
-        $code = sprintf($code, $this->_rawSettings, $this->_id, 'array()');
+        // escape ' to avoid accidently ending the string in $code
+        $code = sprintf($code, str_replace('\'', '\\\'', $this->_rawSettings), $this->_id, 'array()');
 
         return $code;
     }

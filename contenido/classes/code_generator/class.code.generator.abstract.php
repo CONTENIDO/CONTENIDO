@@ -299,7 +299,7 @@ abstract class cCodeGeneratorAbstract {
      * Processes replacements of all existing CMS_* tags within passed code.
      *
      * @param array $contentList
-     *         Assoziative list of CMS variables.
+     *         Associative list of CMS variables.
      * @param bool $saveKeywords [optional]
      *         Flag to save collected keywords during replacement process.
      */
@@ -336,7 +336,7 @@ abstract class cCodeGeneratorAbstract {
         $_typeList = array();
         $oTypeColl = new cApiTypeCollection();
         $oTypeColl->select();
-        while ($oType = $oTypeColl->next()) {
+        while (false !== ($oType = $oTypeColl->next())) {
             $_typeList[] = $oType->toObject();
         }
 

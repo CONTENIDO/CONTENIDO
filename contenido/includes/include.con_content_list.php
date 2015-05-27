@@ -879,7 +879,7 @@ cRegistry::shutdown();
  * @param bool $saveKeywords
  *         Flag to save collected keywords during replacement process.
  * @param array $contentList
- *         Assoziative list of CMS variables
+ *         Associative list of CMS variables
  * @SuppressWarnings docBlocks
  */
 function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode, $articleType, $versioningState, $version) {
@@ -977,6 +977,9 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
                 } else if ($articleType == 'current' || $articleType == 'version') {
                     $tmp = $cTypeObject->generateViewCode();
                 }
+                // double escape the generated code string to avoid violating string syntax
+                // e.g. when title of cContentTypeFilelist contains a ' character
+                $tmp = str_replace('\'', '\\\'', $tmp);
             } else if (cFileHandler::exists($typeCodeFile)) {
                 // include CMS type code
                 include($typeCodeFile);
