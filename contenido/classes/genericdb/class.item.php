@@ -362,7 +362,7 @@ abstract class Item extends cItemBaseAbstract {
      *
      * @param string $sField
      *         Field name
-     * @param string $mValue
+     * @param mixed $mValue
      *         Value to set
      * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value

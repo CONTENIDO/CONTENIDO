@@ -38,6 +38,7 @@ class cApiMetaTagVersionCollection extends ItemCollection {
     /**
      * Creates a meta tag entry.
      *
+     * @param int $idMetaTag
      * @param int $idArtLang
      * @param int $idMetaType
      * @param string $metaValue
@@ -146,8 +147,9 @@ class cApiMetaTagVersion extends Item {
     }
 
     /**
-     * Marks this meta value as current
+     * Marks this meta value as current.
      *
+     * @return boolean|void
      */
     public function markAsCurrent() {
         $metaTagColl = new cApiMetaTagCollection();
@@ -162,8 +164,9 @@ class cApiMetaTagVersion extends Item {
     }
 
     /**
-     * Marks this meta value as editable
+     * Marks this meta value as editable.
      *
+     * @param unknown_type $version
      */
     public function markAsEditable($version) {
         $metaTagVersionColl = new cApiMetaTagVersionCollection();
@@ -173,10 +176,14 @@ class cApiMetaTagVersion extends Item {
     /**
      * Userdefined setter for meta tag fields.
      *
+     * @see Item::setField()
      * @param string $name
+     *         Field name
      * @param mixed $value
+     *         Value to set
      * @param bool $safe
      *         Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function setField($name, $value, $safe = true) {
         switch ($name) {

@@ -21,10 +21,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package Setup
  * @subpackage Form
  */
-class cSetupConfigMode extends cSetupMask
-{
-    function cSetupConfigMode($step, $previous, $next)
-    {
+class cSetupConfigMode extends cSetupMask {
+
+    /**
+     *
+     * @param unknown_type $step
+     * @param unknown_type $previous
+     * @param unknown_type $next
+     */
+    function cSetupConfigMode($step, $previous, $next) {
         global $cfg;
 
         if ($_SESSION["setuptype"] == "setup") {
@@ -62,8 +67,11 @@ class cSetupConfigMode extends cSetupMask
         $this->setNavigation($previous, $next);
     }
 
-    function _createNavigation()
-    {
+    /**
+     * (non-PHPdoc)
+     * @see cSetupMask::_createNavigation()
+     */
+    function _createNavigation() {
         $link = new cHTMLLink("#");
 
         if ($this->_bNextstep == "doinstall") {
@@ -82,6 +90,7 @@ class cSetupConfigMode extends cSetupMask
         $backlink->setContent("<span>&raquo;</span>");
         $this->_oStepTemplate->set("s", "BACK", $backlink->render());
     }
+
 }
 
 ?>

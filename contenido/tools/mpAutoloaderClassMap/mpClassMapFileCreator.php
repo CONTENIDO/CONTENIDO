@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Contains class to create a class map file.
  *
@@ -84,9 +85,11 @@ class mpClassMapFileCreator {
     /**
      * Creates classmap file with passed data list
      *
-     * @param array $data Assoziative list which contains class type tokens and
-     *        the related path to the class file.
-     * @param string $file Destination class map file
+     * @param array $data
+     *         Assoziative list which contains class type tokens
+     *         and the related path to the class file.
+     * @param string $file
+     *         Destination class map file
      * @return bool
      */
     public function create(array $data, $file) {
@@ -98,7 +101,8 @@ class mpClassMapFileCreator {
     /**
      * Fills template replacement variable with generated assoziative PHP array
      *
-     * @var array $data Assoziative list with class type tokens and files
+     * @param array $data
+     *         Assoziative list with class type tokens and files
      */
     protected function _createClassMap(array $data) {
         $classMapTpl = "\r\nreturn array(\r\n%s\r\n);\r\n";
@@ -114,7 +118,8 @@ class mpClassMapFileCreator {
     /**
      * Replaces all wildcards in template with related template variables.
      *
-     * @return string Replaced template
+     * @return string
+     *         Replaced template
      */
     protected function _renderTemplate() {
         $template = $this->_template;

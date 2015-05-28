@@ -1,25 +1,26 @@
 <?php
+
 /**
- * This file contains the versioning class
+ * This file contains the versioning class.
  *
- * @package         Core
- * @subpackage      Versioning
+ * @package Core
+ * @subpackage Versioning
  * @version
  *
- * @author           Jann Dieckmann
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Jann Dieckmann
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Versioning
+ * Versioning.
  *
- * @package          Core
- * @subpackage       Versioning
+ * @package Core
+ * @subpackage Versioning
  */
 class cContentVersioning {
 
@@ -53,15 +54,15 @@ class cContentVersioning {
 
     /**
      * Create new versioning class
-     *
      */
     public function __construct() {
-            $this->db = cRegistry::getDb();
+        $this->db = cRegistry::getDb();
     }
 
     /**
-     * cms type sort function for article output
+     * Cms type sort function for article output.
      *
+     * @SuppressWarnings docBlocks
      * @param array $result[cms type][typeId] = value
      * @return array $result[cms type][typeId] = value
      */
@@ -97,9 +98,9 @@ class cContentVersioning {
     }
 
     /**
-     * Return date for select box
-     * if current time - lastModified < 1 hour return "%d minutes ago"
-     * else return "Y-M-D H:I:S"
+     * Return date for select box.
+     * If current time - lastModified < 1 hour return "%d minutes ago"
+     * else return "Y-M-D H:I:S".
      *
      * @param unknown_type $lastModified
      * @return string
@@ -119,7 +120,7 @@ class cContentVersioning {
     }
 
     /**
-     * Returns the current versioning state (disabled (default), simple, advanced)
+     * Returns the current versioning state (disabled (default), simple, advanced).
      *
      * @return string $versioningState
      */
@@ -148,9 +149,9 @@ class cContentVersioning {
     }
 
     /**
-     * Returns selected article
-     * TODO $idArtlangVersion <-> $selectedArticleId
+     * Returns selected article.
      *
+     * @todo $idArtlangVersion <-> $selectedArticleId
      * @param int $idArtLangVersion
      * @param int $idArtLang
      * @param string $articleType
@@ -166,8 +167,8 @@ class cContentVersioning {
             $idArtLangVersion = $selectedArticleId;
         }
 
-        if (($articleType == 'version' || $articleType == 'editable')  && ($versioningState == 'advanced')
-            || ($articleType == 'version' && $versioningState == 'simple')) {
+        if (($articleType == 'version' || $articleType == 'editable') && ($versioningState == 'advanced')
+        || ($articleType == 'version' && $versioningState == 'simple')) {
             if (is_numeric($idArtLangVersion) && $articleType == 'version') {
                 $this->selectedArticle = new cApiArticleLanguageVersion($idArtLangVersion);
             } else if (isset($this->editableArticleId)) {
@@ -176,21 +177,20 @@ class cContentVersioning {
         } else if ($articleType == 'current' || $articleType == 'editable') {
             $this->selectedArticle = new cApiArticleLanguage($idArtLang);
         }
+
         return $this->selectedArticle;
 
     }
 
     /**
-     * Returns $list[1] = CMS_HTMLHEAD for every content
-     * existing in article/version with $idArtLang
+     * Returns $list[1] = CMS_HTMLHEAD for every content existing
+     * in article/version with $idArtLang.
      *
      * @param int $idArtLang
      * @param string $articleType
      * @return array $list
      */
     public function getList($idArtLang, $articleType) {
-
-        $list = array();
 
         $sql = 'SELECT DISTINCT b.idtype as idtype, b.type as name
                 FROM %s AS a, %s AS b
@@ -203,6 +203,8 @@ class cContentVersioning {
         } else if ($articleType == 'current' || $articleType == 'editable' && $this->getState() != 'advanced') {
             $this->db->query($sql, cRegistry::getDbTableName('content'), cRegistry::getDbTableName('type'), $idArtLang);
         }
+
+        $list = array();
         while ($this->db->nextRecord()) {
             $list[$this->db->f('idtype')] = $this->db->f('name');
         }
@@ -212,21 +214,21 @@ class cContentVersioning {
     }
 
     /**
-     * Return max idcontent
+     * Return max idcontent.
      *
      * @return int
      */
     public function getMaxIdContent() {
+
         $sql = 'SELECT max(idcontent) AS max FROM %s';
         $this->db->query($sql, cRegistry::getDbTableName('content'));
-
         $this->db->nextRecord();
 
         return $this->db->f('max');
     }
 
     /**
-     * Returns type of article (current, version or editable)
+     * Returns type of article (current, version or editable).
      *
      * @param int $idArtLangVersion
      * @param int $idArtLang
@@ -274,13 +276,23 @@ class cContentVersioning {
 
     }
 
+    /**
+     *
+     * @param unknown_type $class
+     * @param unknown_type $selectElement
+     * @param unknown_type $copyToButton
+     * @param unknown_type $infoText
+     * @return string
+     */
     public function getVersionSelectionField($class, $selectElement, $copyToButton, $infoText) {
+
+        // TODO avoid inline CSS!!!
         $versionselection = '
             <div class="%s">
                 <div>
                     <span style="width: 280px; display: inline; padding: 0px 0px 0px 2px;">
                         <span style="font-weight:bold;color:black;">' . i18n('Select Article Version') . '</span>
-                        <span style="margin: 0px 0px 0px 0px;"> %s %s
+                        <span style="margin: 0;"> %s %s
                         </span>
                         <a
                             href="#"
@@ -293,19 +305,19 @@ class cContentVersioning {
                 <div id="pluginInfoDetails" style="display:none;" class="nodisplay">
                        %s
                 </div>
-            </div>
-            ';
+            </div>';
+
         return sprintf(
-                    $versionselection,
-                    $class,
-                    $selectElement,
-                    $copyToButton,
-                    $infoText
-                );
+            $versionselection,
+            $class,
+            $selectElement,
+            $copyToButton,
+            $infoText
+        );
     }
 
     /**
-     * Returns idartlangversion of editable article
+     * Returns idartlangversion of editable article.
      *
      * @param int $idArtLang
      * @return int $editableArticleId
@@ -313,25 +325,34 @@ class cContentVersioning {
     public function getEditableArticleId($idArtLang) {
 
         if ($this->getState() == 'advanced') {
-            $sql = 'SELECT max(idartlangversion) AS max FROM %s WHERE idartlang = %d';
+
             $this->db->query(
-                $sql,
+                'SELECT
+                    max(idartlangversion) AS max
+                FROM
+                    %s
+                WHERE
+                    idartlang = %d',
                 cRegistry::getDbTableName('art_lang_version'),
                 $idArtLang
             );
             $this->db->nextRecord();
             $this->editableArticleId = $this->db->f('max');
+
             return $this->editableArticleId;
 
         } else if ($this->getState() == 'simple' || $this->getState() == 'disabled') {
+
             return $idArtLang;
+
         }
 
     }
 
     /**
-     * Returns idcontent or idcontentversion
+     * Returns idcontent or idcontentversion.
      *
+     * @todo check datatype of return value
      * @param int $idArtLang
      * @param int $typeId
      * @param int $type
@@ -340,27 +361,47 @@ class cContentVersioning {
      * @param int $version
      * @return array $idContent
      */
-    public function getContentId($idArtLang, $typeId, $type, $versioningState, $articleType, $version) {
+    public function getContentId(
+        $idArtLang, $typeId, $type, $versioningState, $articleType, $version
+    ) {
 
         $idContent = array();
         $type = addslashes($type);
+
         if ($versioningState == 'simple' && $articleType != 'version'
-            || $versioningState == 'advanced' && $articleType == 'current'
-            || $versioningState == 'disabled') {
-            $sql = "SELECT a.idcontent
-            FROM " . cRegistry::getDbTableName('content') . " as a, " . cRegistry::getDbTableName('type') . " as b
-            WHERE a.idartlang=" . $idArtLang . " AND a.idtype=b.idtype AND a.typeid = " . $typeId . " AND b.type = '" . $type . "'
-            ORDER BY a.idartlang, a.idtype, a.typeid";
-            $this->db->query($sql);
+        || $versioningState == 'advanced' && $articleType == 'current'
+        || $versioningState == 'disabled') {
+            $this->db->query("
+                SELECT
+                    a.idcontent
+                FROM
+                    " . cRegistry::getDbTableName('content') . " as a,
+                    " . cRegistry::getDbTableName('type') . " as b
+                WHERE
+                    a.idartlang=" . $idArtLang . "
+                    AND a.idtype=b.idtype
+                    AND a.typeid = " . $typeId . "
+                    AND b.type = '" . $type . "'
+                ORDER BY
+                    a.idartlang, a.idtype, a.typeid");
             while ($this->db->nextRecord()) {
-                    $idContent = $this->db->f('idcontent');
+                $idContent = $this->db->f('idcontent');
             }
         } else {
-            $sql = "SELECT a.idcontentversion
-            FROM " . cRegistry::getDbTableName('content_version') . " as a, " . cRegistry::getDbTableName('type') . " as b
-            WHERE a.version <= " . $version . " AND a.idartlang = " . $idArtLang . " AND a.idtype = b.idtype AND a.typeid = " . $typeId . " AND b.type = '" . $type . "'
-            ORDER BY a.version DESC, a.idartlang, a.idtype, a.typeid LIMIT 1";
-            $this->db->query($sql);
+            $this->db->query("
+                SELECT
+                    a.idcontentversion
+                FROM
+                    " . cRegistry::getDbTableName('content_version') . " as a,
+                    " . cRegistry::getDbTableName('type') . " as b
+                WHERE
+                    a.version <= " . $version . "
+                    AND a.idartlang = " . $idArtLang . "
+                    AND a.idtype = b.idtype
+                    AND a.typeid = " . $typeId . "
+                    AND b.type = '" . $type . "'
+                ORDER BY
+                    a.version DESC, a.idartlang, a.idtype, a.typeid LIMIT 1");
             while ($this->db->nextRecord()) {
                 $idContent = $this->db->f('idcontentversion');
             }
@@ -372,7 +413,7 @@ class cContentVersioning {
 
     /**
      * Returns $artLangVersionMap[version][idartlangversion] = lastmodified
-     * either from each article-/content- or metatag-version
+     * either from each article-/content- or metatag-version.
      *
      * @param int $idArtLang
      * @param string $selectElementType
@@ -390,7 +431,9 @@ class cContentVersioning {
         $artLangVersionColl->setOrder('version desc');
 
         try {
+
             if ($selectElementType == 'content') {
+
                 // select only versions with different content versions
                 $contentVersionColl = new cApiContentVersionCollection();
                 $contentVersionColl->addResultField('version');
@@ -414,6 +457,7 @@ class cContentVersioning {
                 $artLangVersionColl->setWhere('version', $contentVersionMap, 'IN');
 
             } else if ($selectElementType == 'seo') {
+
                 // select only versions with different seo versions
                 $metaVersionColl = new cApiMetaTagVersionCollection();
                 $metaVersionColl->addResultField('version');
@@ -437,8 +481,11 @@ class cContentVersioning {
                 $artLangVersionColl->setWhere('version', $metaVersionMap, 'IN');
 
             } else if ($selectElementType == 'config') {
+
                 // select all versions
+
             }
+
         } catch (cException $e) {
             return $artLangVersionMap;
         }
@@ -462,7 +509,8 @@ class cContentVersioning {
     }
 
     /**
-     * Prepares content for saving (consider versioning-mode; prevents multiple storings for filelists e.g.)
+     * Prepares content for saving (consider versioning-mode; prevents multiple
+     * storings for filelists e.g.).
      *
      * @param unknown_type $idartlang
      *         the contents idartlang
@@ -473,23 +521,20 @@ class cContentVersioning {
      *
      */
     public function prepareContentForSaving($idartlang, cApiContent $content, $value) {
+
+        // Through a CONTENIDO bug filelists save each of their changes multiple
+        // times. Therefore its necessary to check if the same change already
+        // has been saved and prevent multiple savings.
+        static $savedTypes = array();
+        if (isset($savedTypes[$content->get('idtype') . $content->get('typeid')])) {
+            return;
+        }
+        $savedTypes[$content->get('idtype').$content->get('typeid')] = $value;
+
         $versioningState = $this->getState();
         $date = date('Y-m-d H:i:s');
         $author = $auth->auth['uname'];
 
-        // through a contenido bug filelists save each of their changes multiple times.
-        // therefore its nececcary to check if the same change already has been saved and
-        // prevent multiple savings
-        static $savedTypes = array ();
-        $isAlreadySaved = false;
-
-        if (!array_key_exists($content->get('idtype').$content->get('typeid'), $savedTypes)) {
-            $savedTypes[$content->get('idtype').$content->get('typeid')] = $value;
-        } else {
-            $isAlreadySaved = true;
-        }
-
-       if ($isAlreadySaved == false) {
         switch ($versioningState) {
             case 'simple':
                 // Create Content Version
@@ -570,31 +615,28 @@ class cContentVersioning {
             default:
                 break;
         }
-       }
     }
 
-
-
     /**
-     * Create new Content Version
+     * Create new content version.
      *
      * @param mixed[] $parameters {
-     *  @type int $idContent
-     *  @type int $idArtLang
-     *  @type int $idType
-     *  @type int $typeId
-     *  @type string $value
-     *  @type string $author
-     *  @type string $created
-     *  @type string $lastModified
+     *     @type int $idContent
+     *     @type int $idArtLang
+     *     @type int $idType
+     *     @type int $typeId
+     *     @type string $value
+     *     @type string $author
+     *     @type string $created
+     *     @type string $lastModified
      * }
     */
     public function createContentVersion(array $parameters) {
-        // Create new Article Language Version and get the version number
 
-        // set parameters for Article Language Version
+        // set parameters for article language version
         $currentArticle = cRegistry::getArticleLanguage();
 
+        // create new article language version and get the version number
         $parametersArticleVersion = array(
             'idartlang' => $currentArticle->getField('idartlang'),
             'idart' => $currentArticle->getField('idart'),
@@ -634,15 +676,15 @@ class cContentVersioning {
 
         $artLangVersion = $this->createArticleLanguageVersion($parametersArticleVersion);
 
-        // Get the version number of the new Article Language Version that belongs to the Content
+        // get the version number of the new article language version that belongs to the content
         $parameters['version'] = $artLangVersion->getField('version');
 
         $parametersToCheck = $parameters;
         unset(
-                $parametersToCheck['lastmodified'],
-                $parametersToCheck['author'],
-                $parametersToCheck['value'],
-                $parametersToCheck['created']
+            $parametersToCheck['lastmodified'],
+            $parametersToCheck['author'],
+            $parametersToCheck['value'],
+            $parametersToCheck['created']
         );
 
         // if there already is a content type like this in this version,
@@ -668,46 +710,46 @@ class cContentVersioning {
     }
 
     /**
-     * Create new Article Language Version
+     * Create new article language version.
      *
      * @global int $lang
      * @global object $auth
      * @global string $urlname
      * @global string $page_title
      * @param mixed[] $parameters {
-     *  @type int $idart
-     *  @type int $idlang
-     *  @type string $title
-     *  @type string $urlname
-     *  @type string $pagetitle
-     *  @type string $summary
-     *  @type int $artspec
-     *  @type string $created
-     *  @type int $iscurrentverseion
-     *  @type string $author
-     *  @type string $lastmodified
-     *  @type string $modifiedby
-     *  @type string $published
-     *  @type string $publishedby
-     *  @type int $online
-     *  @type int $redirect
-     *  @type string $redirect_url
-     *  @type int $external_redirect
-     *  @type int $artsort
-     *  @type int $timemgmt
-     *  @type string $datestart
-     *  @type string $dateend
-     *  @type int $status
-     *  @type int $time_move_cat
-     *  @type int $time_target_cat
-     *  @type int $time_online_move
-     *  @type int $locked
-     *  @type mixed $free_use_01
-     *  @type mixed $free_use_02
-     *  @type mixed $free_use_03
-     *  @type int $searchable
-     *  @type float $sitemapprio
-     *  @type string $changefreq
+     *     @type int $idart
+     *     @type int $idlang
+     *     @type string $title
+     *     @type string $urlname
+     *     @type string $pagetitle
+     *     @type string $summary
+     *     @type int $artspec
+     *     @type string $created
+     *     @type int $iscurrentverseion
+     *     @type string $author
+     *     @type string $lastmodified
+     *     @type string $modifiedby
+     *     @type string $published
+     *     @type string $publishedby
+     *     @type int $online
+     *     @type int $redirect
+     *     @type string $redirect_url
+     *     @type int $external_redirect
+     *     @type int $artsort
+     *     @type int $timemgmt
+     *     @type string $datestart
+     *     @type string $dateend
+     *     @type int $status
+     *     @type int $time_move_cat
+     *     @type int $time_target_cat
+     *     @type int $time_online_move
+     *     @type int $locked
+     *     @type mixed $free_use_01
+     *     @type mixed $free_use_02
+     *     @type mixed $free_use_03
+     *     @type int $searchable
+     *     @type float $sitemapprio
+     *     @type string $changefreq
      * }
      * @return cApiArticleLanguageVersion
     */
@@ -822,28 +864,29 @@ class cContentVersioning {
     }
 
     /**
-     * Create new Meta Tag Version
+     * Create new Meta Tag Version.
      *
      * @param mixed[] $parameters {
-     *  @type int $idmetatag
-     *  @type int $idartlang
-     *  @type string $idmetatype
-     *  @type string $value
-     *  @type int version
+     *     @type int $idmetatag
+     *     @type int $idartlang
+     *     @type string $idmetatype
+     *     @type string $value
+     *     @type int version
      * }
      * @return cApiMetaTagVersion
     */
     public function createMetaTagVersion(array $parameters) {
 
-        $metaTagVersionColl = new cApiMetaTagVersionCollection();
+        $coll = new cApiMetaTagVersionCollection();
+        $item = $coll->create(
+            $parameters['idmetatag'],
+            $parameters['idartlang'],
+            $parameters['idmetatype'],
+            $parameters['value'],
+            $parameters['version']
+        );;
 
-        return $metaTagVersionColl->create(
-                    $parameters['idmetatag'],
-                    $parameters['idartlang'],
-                    $parameters['idmetatype'],
-                    $parameters['value'],
-                    $parameters['version']
-                );
+        return $item;
 
     }
 }

@@ -182,13 +182,19 @@ abstract class cCodeGeneratorAbstract {
      *         Flag to persist generated code.
      * @param bool $contype [optional]
      *         Flag to enable/disable replacement of CMS_TAGS[].
+     * @param bool $editable [optional]
+     * @param unknown_type $version [optional]
      * @throws cInvalidArgumentException
      *         If an article with the given idart and idlang can not be loaded.
      * @return string
      *         Generated code or error code '0601' if no template configuration
      *         was found for category or article.
      */
-    public function generate($idcat, $idart, $lang, $client, $layout = false, $save = true, $contype = true, $editable = true, $version = NULL) {
+    public function generate(
+        $idcat, $idart, $lang, $client, $layout = false, $save = true,
+        $contype = true, $editable = true, $version = NULL
+    ) {
+
         $this->_idcat = (int) $idcat;
         $this->_idart = (int) $idart;
         $this->_lang = (int) $lang;
@@ -302,6 +308,7 @@ abstract class cCodeGeneratorAbstract {
      *         Associative list of CMS variables.
      * @param bool $saveKeywords [optional]
      *         Flag to save collected keywords during replacement process.
+     * @param bool $editable [optional]
      */
     protected function _processCmsTags($contentList, $saveKeywords = true, $editable = true) {
         /*
@@ -522,6 +529,9 @@ abstract class cCodeGeneratorAbstract {
     /**
      * Returns array of all CMS_* vars being used by current article and language
      *
+     *
+     * @param bool $editable [optional]
+     * @param unknown_type $version [optional]
      * @return array
      *         like $arr[type][typeid] = value;
      */

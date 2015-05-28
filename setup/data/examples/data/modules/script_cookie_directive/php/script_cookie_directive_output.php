@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Description: Cookie Directive
  *
@@ -14,7 +15,7 @@
  * @link http://www.contenido.org
  */
 
-if (!$contenido) {
+if (!cRegistry::getBackendSessionId()) {
 
     $session = cRegistry::getSession();
 
@@ -47,19 +48,24 @@ if (!$contenido) {
             'decline' => mi18n("DECLINE")
         ));
 
+        /**
+         *
+         * @param string $uri
+         * @return string
+         */
         function script_cookie_directive_add_get_params($uri) {
-            foreach($_GET as $getKey => $getValue) {
+            foreach ($_GET as $getKey => $getValue) {
                 // do not add already added GET parameters to redirect url
                 if (strpos($uri, '?' . $getKey . '=') !== false
-                        || strpos($uri, '&' . $getKey . '=') !== false) {
-                            continue;
-                        }
-                        if (strpos($uri, '?') === false) {
-                            $uri .= '?';
-                        } else {
-                            $uri .= '&';
-                        }
-                        $uri .= htmlentities($getKey) . '=' . htmlentities($getValue);
+                || strpos($uri, '&' . $getKey . '=') !== false) {
+                    continue;
+                }
+                if (strpos($uri, '?') === false) {
+                    $uri .= '?';
+                } else {
+                    $uri .= '&';
+                }
+                $uri .= htmlentities($getKey) . '=' . htmlentities($getValue);
             }
 
             return $uri;
@@ -86,4 +92,5 @@ if (!$contenido) {
 
     }
 }
+
 ?>

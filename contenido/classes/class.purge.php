@@ -66,7 +66,7 @@ class cSystemPurge {
     );
 
     /**
-     * Constructor of class
+     * Constructor of class.
      */
     public function __construct() {
         // check and set the system directories to exclude from purge
@@ -81,7 +81,7 @@ class cSystemPurge {
     }
 
     /**
-     * Deletes the PHP files in cms/cache/code
+     * Deletes the PHP files in cms/cache/code.
      *
      * @param int $clientId
      * @return bool
@@ -97,7 +97,7 @@ class cSystemPurge {
         if ($perm->isClientAdmin($clientId, $currentuser) === false && $perm->isSysadmin($currentuser) === false) {
             return false;
         }
-        
+
         /* @var $file SplFileInfo */
         foreach (new DirectoryIterator($cfgClient[$clientId]['code']['path']) as $file) {
             if ($file->isFile() === false) {
@@ -118,7 +118,7 @@ class cSystemPurge {
     }
 
     /**
-     * Reset the table con_cat_art for a client
+     * Reset the table con_cat_art for a client.
      *
      * @param int $clientId
      * @return bool
@@ -129,8 +129,18 @@ class cSystemPurge {
         $cfg = cRegistry::getConfig();
 
         if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-            $sSql = ' UPDATE ' . $cfg['tab']['cat_art'] . ' cca, ' . $cfg['tab']['cat'] . ' cc, ' . $cfg['tab']['art'] . ' ca ' . ' SET cca.createcode=1 ' . ' WHERE cc.idcat = cca.idcat ' . ' AND ca.idart = cca.idart ' . ' AND cc.idclient = ' . (int) $clientId . ' AND ca.idclient = ' . (int) $clientId;
-            $db->query($sSql);
+            $db->query('
+                UPDATE
+                    ' . $cfg['tab']['cat_art'] . ' cca,
+                    ' . $cfg['tab']['cat'] . ' cc,
+                    ' . $cfg['tab']['art'] . ' ca
+                SET
+                    cca.createcode=1
+                WHERE
+                    cc.idcat = cca.idcat
+                    AND ca.idart = cca.idart
+                    AND cc.idclient = ' . (int) $clientId . '
+                    AND ca.idclient = ' . (int) $clientId);
 
             return ($db->getErrorMessage() == '') ? true : false;
         } else {
@@ -139,7 +149,7 @@ class cSystemPurge {
     }
 
     /**
-     * Reset the table con_inuse
+     * Reset the table con_inuse.
      *
      * @return bool
      */
@@ -159,7 +169,7 @@ class cSystemPurge {
     }
 
     /**
-     * Clear the cache directory for a client
+     * Clear the cache directory for a client.
      *
      * @param int $clientId
      * @return bool
@@ -180,7 +190,7 @@ class cSystemPurge {
     }
 
     /**
-     * Clear the cache directory for a client
+     * Clear the cache directory for a client.
      *
      * @param int $clientId
      * @param bool $keep
@@ -220,29 +230,27 @@ class cSystemPurge {
             return false;
         }
     }
-    
+
     /**
-     * Clear the clients content versioning
+     * Clear the clients content versioning.
      *
-     * @param int $clientId
-     * @param bool $keep
-     * @param int $fileNumber
+     * @param int $idclient
      * @return bool
      */
-    public function clearClientContentVersioning($clientId) {
+    public function clearClientContentVersioning($idclient) {
         global $perm, $currentuser;
-        
-        if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-            
+
+        if ($perm->isClientAdmin($idclient, $currentuser) || $perm->isSysadmin($currentuser)) {
+
             $artLangVersionColl = new cApiArticleLanguageVersionCollection();
             $artLangVersionColl->deleteByWhereClause('idartlangversion != 0');
-            
+
             $contentVersionColl = new cApiContentVersionCollection();
             $contentVersionColl->deleteByWhereClause('idcontentversion != 0');
-            
+
             $metaTagVersionColl = new cApiMetaTagVersionCollection();
             $metaTagVersionColl->deleteByWhereClause('idmetatagversion != 0');
-            
+
             return true;
         } else {
             return false;
@@ -250,17 +258,17 @@ class cSystemPurge {
     }
 
     /**
-     * Clear client log file
+     * Clear client log file.
      *
-     * @param int $clientId
+     * @param int $idclient
      * @return bool
      */
-    public function clearClientLog($clientId) {
+    public function clearClientLog($idclient) {
         global $perm, $currentuser;
         $cfgClient = cRegistry::getClientConfig();
 
-        if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-            $logDir = $cfgClient[$clientId]['log']['path'];
+        if ($perm->isClientAdmin($idclient, $currentuser) || $perm->isSysadmin($currentuser)) {
+            $logDir = $cfgClient[$idclient]['log']['path'];
             if (is_dir($logDir)) {
                 return $this->emptyFile($logDir, $this->_logFileTypes);
             }
@@ -271,7 +279,7 @@ class cSystemPurge {
     }
 
     /**
-     * Clear CONTENIDO log files
+     * Clear CONTENIDO log files.
      *
      * @return bool
      */
@@ -291,7 +299,7 @@ class cSystemPurge {
     }
 
     /**
-     * Clear the cronjob directory
+     * Clear the cronjob directory.
      *
      * @return bool
      */
@@ -311,7 +319,7 @@ class cSystemPurge {
     }
 
     /**
-     * Clear the cache directory for a client
+     * Clear the cache directory for a client.
      *
      * @return bool
      */
@@ -358,7 +366,7 @@ class cSystemPurge {
     }
 
     /**
-     * Delete all files and sub directories in a directory
+     * Delete all files and sub directories in a directory.
      *
      * @param string $dirPath
      * @param string $tmpDirPath
@@ -423,7 +431,7 @@ class cSystemPurge {
             if (true === $bCanDelete) {
                 cDirHandler::remove($dirPath);
             }
-        
+
             return true;
         } else {
             return false;
@@ -431,7 +439,7 @@ class cSystemPurge {
     }
 
     /**
-     * Empty a file content
+     * Empty a file content.
      *
      * @param string $dirPath
      * @param array $types
@@ -466,11 +474,10 @@ class cSystemPurge {
     }
 
     /**
-     * Get frontend directory name for a client
+     * Get frontend directory name for a client.
      *
      * @param int $clientId
-     * 
-     * @return string $sClientDir
+     * @return string
      */
     public function getClientDir($clientId) {
         $cfgClient = cRegistry::getClientConfig();
@@ -479,7 +486,7 @@ class cSystemPurge {
     }
 
     /**
-     * Set log file types
+     * Set log file types.
      *
      * @param array $types
      */
@@ -492,7 +499,7 @@ class cSystemPurge {
     }
 
     /**
-     * Set cronjob file types
+     * Set cronjob file types.
      *
      * @param array $types
      */

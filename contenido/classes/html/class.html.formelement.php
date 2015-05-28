@@ -43,8 +43,10 @@ class cHTMLFormElement extends cHTML {
      * @param string $class [optional]
      *         CSS class name to set
      */
-    public function __construct($name = '', $id = '', $disabled = '',
-            $tabindex = '', $accesskey = '', $class = 'text_medium', $class = '') {
+    public function __construct(
+        $name = '', $id = '', $disabled = '', $tabindex = '', $accesskey = '',
+        $class = 'text_medium', $class = ''
+    ) {
 
         parent::__construct();
 
