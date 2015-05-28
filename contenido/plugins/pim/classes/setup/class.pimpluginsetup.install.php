@@ -346,7 +346,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
             $attributes = array(
                     'uuid' => cSecurity::escapeString($attributes['uuid']),
                     'minversion' => cSecurity::escapeString($attributes['min_version']),
-                    'maxversion' => cSecurity::escapeSTring($attributes['max_version'])
+                    'maxversion' => cSecurity::escapeString($attributes['max_version'])
             );
 
 
@@ -391,7 +391,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
         // Set pluginId
         parent::setPluginId($pluginId);
-        
+
         // Set foldername of new plugin
         $this->_setPluginFoldername(parent::$XmlGeneral->plugin_foldername);
     }
