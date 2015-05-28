@@ -33,11 +33,13 @@ while (($fegroup = $fegroups->next()) !== false) {
     $delTitle = i18n("Delete frontend group");
     $delDescr = sprintf(i18n("Do you really want to delete the following frontend group:<br><b>%s</b>"), conHtmlSpecialChars($groupname));
     $delete = '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteFrontendGroup(' . $idfegroup . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
+    $delTooltip = sprintf(i18n('Id of this group: %s'), $idfegroup);
 
     $menu->setTitle($idfegroup, conHtmlSpecialChars($groupname));
     $menu->setLink($idfegroup, $link);
     $menu->setImage($idfegroup, "", 0);
     $menu->setActions($idfegroup, 'delete', $delete);
+    $menu->setTooltip($idfegroup, $delTooltip);
 
     if ($_GET['idfrontendgroup'] == $idfegroup) {
         $menu->setMarked($idfegroup);
