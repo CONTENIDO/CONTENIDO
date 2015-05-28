@@ -939,7 +939,6 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
         }
     }
 
-
     // Replace all CMS_TAGS[]
     foreach ($_typeList as $_typeItem) {
 
@@ -947,16 +946,10 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
         $type = $_typeItem->type;
 
         // Try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
-        // $tmp = preg_match_all('/(' . $type . ')\[+([a-z0-9_]+)+\]/i',
-        // $this->_layoutCode, $match);
-        $tmp = preg_match_all('/(' . $type . '\[+(\d)+\])/i', $layoutCode, $match);
+		// At $match[2] you found your typeid
+        $tmp = preg_match_all('/(' . $type . '\[+(\d+)\])/i', $layoutCode, $match);
 
         $a_[$key] = $match[2]; //all typeids
-        //$tmp = preg_match_all('/(' . $type . '\[+(\d)+\]' . '\[+(\d)+\])/i', $layoutCode, $match);
-        //$b_[$key] = $match[3]; //version numbers
-        //$c = array_combine($a_[$key],$b_[$key]); //key=unique=nur neueste version
-        //$a_[$key] = $match[0];
-        //$success = array_walk($a_[$key], 'extractNumber');
 
         $search = array();
         $replacements = array();
@@ -968,6 +961,7 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
         // classname format: CMS_HTMLHEAD -> cContentTypeHtmlhead
         $className = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $type)));
 
+        // Indexes of content typ fields
         foreach ($a_[$key] as $val) {
             if (cFileHandler::exists($cTypeClassFile)) {
                 $tmp = $a_content[$_typeItem->type][$val];
@@ -993,7 +987,7 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
             $idcontent = $versioning->getContentId(cSecurity::toInteger($_REQUEST["idartlang"]), cSecurity::toInteger($val), cSecurity::toString($type), $versioningState, $articleType, $version);
 
             $backendUrl = cRegistry::getBackendUrl();
-            $num = $val;
+            $num = (int) $val;
             $search[$num] = sprintf('%s[%s]', $type, $val);
 
             $path = $backendUrl . 'main.php?area=con_content_list&action=deletecontype&changeview=edit&idart=' . $idart . '&idartlang=' . $idartlang . '&idcat=' . $idcat . '&client=' . $client . '&lang=' . $lang . '&frame=4&contenido=' . $contenido . '&idcontent=' . $idcontent;
@@ -1004,7 +998,7 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
                 // "<textarea>"."?".">\n".stripslashes($tmp)."\n\";?"."><"."?php\n"."</textarea>";
             }
 
-            if ($locked == 0 && $articleType == 'editable' || $articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple')) { // No freeze
+            if ($locked == 0 && ($articleType == 'editable' || $articleType == 'current') && ($versioningState == 'disabled' || $versioningState == 'simple')) { // No freeze
                 $replacements[$num] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); }); return false;">
             <img border="0" src="' . $backendUrl . 'images/delete.gif">
             </a>';
@@ -1015,7 +1009,7 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
                 $replacements[$num] = $tmp;
                 $keycode[$type][$num] = $tmp;
             }
-        }
+        }//var_dump($search);echo "<hr />";
         // remove slashes (legacy) on replacements only to avoid
         // stripping slashes repeatedly times on already stripped string
         foreach ($replacements as $replacementIdx => $curReplacement) {
