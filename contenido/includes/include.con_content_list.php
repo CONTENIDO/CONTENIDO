@@ -708,8 +708,11 @@ switch ($versioningState) {
         $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $articleType);
 
         // Get Content/set $result
-        $result = array_change_key_case($selectedArticle->getContent(), CASE_UPPER);
-        $result = $versioning->sortResults($result);
+        $content = $selectedArticle->getContent();
+        if ($selectedArticle->isLoaded() && is_array($content)) {
+	        $result = array_change_key_case($content, CASE_UPPER);
+	        $result = $versioning->sortResults($result);
+        }
 
         // Set $list
         $list = $versioning->getList((int) $_REQUEST['idartlang'], $articleType);

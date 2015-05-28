@@ -254,7 +254,7 @@ class cApiArticleLanguage extends Item {
 
     /**
      * Article content
-     * 
+     *
      * @deprecated [2015-05-27]
      * @var array
      */
