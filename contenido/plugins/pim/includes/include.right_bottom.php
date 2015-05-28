@@ -139,7 +139,7 @@ while (($plugin = $oItem->next()) !== false) {
     $pagePlugins->set('s', 'LANG_UPDATE', i18n('Update', 'pim'));
     $pagePlugins->set('s', 'LANG_UPDATE_CHOOSE', i18n('Please choose your new file', 'pim'));
     $pagePlugins->set('s', 'LANG_UPDATE_UPLOAD', i18n('Update', 'pim'));
-    $pagePlugins->set('s', 'LANG_REMOVE_SQL', i18n('Execute uninstall.sql', 'pim'));
+    $pagePlugins->set('s', 'LANG_REMOVE_SQL', i18n('Execute plugin_uninstall.sql', 'pim'));
 
     $pagePlugins->set('s', 'LANG_DEPENDENCIES', i18n('Dependencies', 'pim'));
 

@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO Plugin Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-03 17:02+0100\n"
-"PO-Revision-Date: 2015-03-03 17:04+0100\n"
-"Last-Translator: Thomas Stauer <thomas.stauer@4fb.de>\n"
+"POT-Creation-Date: 2015-05-28 10:31+0200\n"
+"PO-Revision-Date: 2015-05-28 10:32+0100\n"
+"Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: i18n\n"
 "X-Poedit-Basepath: .\n"
-"X-Generator: Poedit 1.7.3\n"
+"X-Generator: Poedit 1.7.5\n"
 "X-Poedit-SearchPath-0: C:\\projects\\workspace\\contenido\\contenido\\plugins"
 "\\pim\n"
 
@@ -210,16 +210,16 @@ msgstr ""
 msgid "This plugin has no dependencies to other plugins"
 msgstr "Dieses Plugin hat keine Abh&auml;ngigkeit zu anderen Plugins"
 
-#: classes/view/class.pimpluginview.navsub.php:128
-#: classes/view/class.pimpluginview.navsub.php:147
+#: classes/view/class.pimpluginview.navsub.php:157
+#: classes/view/class.pimpluginview.navsub.php:176
 msgid "No navigation configuration founded"
 msgstr "Keine Men&uuml;konfigurationen gefunden"
 
-#: classes/view/class.pimpluginview.navsub.php:296
+#: classes/view/class.pimpluginview.navsub.php:347
 msgid "You find this plugin at navigation section"
 msgstr "Sie finden dieses Plugin unter dem Men&uuml;punkt"
 
-#: classes/view/class.pimpluginview.navsub.php:296
+#: classes/view/class.pimpluginview.navsub.php:347
 msgid "as"
 msgstr "als"
 
@@ -268,8 +268,8 @@ msgid "Please choose your new file"
 msgstr "Plugin-Paket auswählen"
 
 #: includes/include.right_bottom.php:142
-msgid "Execute uninstall.sql"
-msgstr "uninstall.sql ausführen"
+msgid "Execute plugin_uninstall.sql"
+msgstr "plugin_uninstall.sql ausführen"
 
 #: includes/include.right_bottom.php:144 includes/include.right_bottom.php:191
 msgid "Dependencies"
@@ -320,45 +320,45 @@ msgstr "Vom Dateisystem entfernen"
 msgid "Writeable"
 msgstr "Schreibbar"
 
-#: includes/include.right_bottom.php:208
+#: includes/include.right_bottom.php:209
 msgid "Everything looks fine"
 msgstr "Keine Fehler"
 
-#: includes/include.right_bottom.php:211
+#: includes/include.right_bottom.php:212
 msgid "This plugin is not writeable, please set the rights manually"
 msgstr ""
 "Dieses Plugin ist nicht beschreibbar, bitte setzen Sie die Dateirechte "
 "manuell"
 
-#: includes/include.right_bottom.php:223
+#: includes/include.right_bottom.php:224
 msgid "No entries"
 msgstr "Keine Eintr&auml;ge"
 
-#: includes/include.right_bottom.php:227
+#: includes/include.right_bottom.php:228
 msgid "Upload a new plugin"
 msgstr "Neues Plugin hochladen"
 
-#: includes/include.right_bottom.php:228
+#: includes/include.right_bottom.php:229
 msgid "Please choose a plugin package"
 msgstr "Plugin-Paket auswählen"
 
-#: includes/include.right_bottom.php:229
+#: includes/include.right_bottom.php:230
 msgid "Upload plugin package"
 msgstr "Plugin-Paket hochladen"
 
-#: includes/include.right_bottom.php:230
+#: includes/include.right_bottom.php:231
 msgid "Installed Plugins"
 msgstr "Installierte Plugins"
 
-#: includes/include.right_bottom.php:231
+#: includes/include.right_bottom.php:232
 msgid "Not installed Plugins"
 msgstr "Noch nicht installierte Plugins"
 
-#: includes/include.right_bottom.php:232
+#: includes/include.right_bottom.php:233
 msgid "Execution order"
 msgstr "Ausf&uuml;hrungsreihenfolge"
 
-#: includes/include.right_bottom.php:233
+#: includes/include.right_bottom.php:234
 msgid ""
 "If you click on following arrows you can manage the execution order of "
 "plugins. The first plugin (at first position) will be executed first from "

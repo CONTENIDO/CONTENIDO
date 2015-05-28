@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-05 10:16+0100\n"
+"POT-Creation-Date: 2015-05-28 10:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -128,7 +128,7 @@ msgstr ""
 #: classes/setup/class.pimpluginsetup.status.php:146
 #, php-format
 msgid ""
-"This plugin are required by the plugin <strong>%s</strong>, so you can not "
+"This plugin is required by the plugin <strong>%s</strong>, so you can not "
 "deactivate it."
 msgstr ""
 
@@ -142,7 +142,7 @@ msgstr ""
 #: classes/setup/class.pimpluginsetup.uninstall.php:280
 #, php-format
 msgid ""
-"This plugin are required by the plugin <strong>%s</strong>, so you can not "
+"This plugin is required by the plugin <strong>%s</strong>, so you can not "
 "remove it."
 msgstr ""
 
@@ -175,16 +175,16 @@ msgstr ""
 msgid "This plugin has no dependencies to other plugins"
 msgstr ""
 
-#: classes/view/class.pimpluginview.navsub.php:128
-#: classes/view/class.pimpluginview.navsub.php:147
+#: classes/view/class.pimpluginview.navsub.php:157
+#: classes/view/class.pimpluginview.navsub.php:176
 msgid "No navigation configuration founded"
 msgstr ""
 
-#: classes/view/class.pimpluginview.navsub.php:296
+#: classes/view/class.pimpluginview.navsub.php:347
 msgid "You find this plugin at navigation section"
 msgstr ""
 
-#: classes/view/class.pimpluginview.navsub.php:296
+#: classes/view/class.pimpluginview.navsub.php:347
 msgid "as"
 msgstr ""
 
@@ -233,7 +233,7 @@ msgid "Please choose your new file"
 msgstr ""
 
 #: includes/include.right_bottom.php:142
-msgid "Execute uninstall.sql"
+msgid "Execute plugin_uninstall.sql"
 msgstr ""
 
 #: includes/include.right_bottom.php:144 includes/include.right_bottom.php:191
@@ -281,43 +281,43 @@ msgstr ""
 msgid "Writeable"
 msgstr ""
 
-#: includes/include.right_bottom.php:208
+#: includes/include.right_bottom.php:209
 msgid "Everything looks fine"
 msgstr ""
 
-#: includes/include.right_bottom.php:211
+#: includes/include.right_bottom.php:212
 msgid "This plugin is not writeable, please set the rights manually"
 msgstr ""
 
-#: includes/include.right_bottom.php:223
+#: includes/include.right_bottom.php:224
 msgid "No entries"
 msgstr ""
 
-#: includes/include.right_bottom.php:227
+#: includes/include.right_bottom.php:228
 msgid "Upload a new plugin"
 msgstr ""
 
-#: includes/include.right_bottom.php:228
+#: includes/include.right_bottom.php:229
 msgid "Please choose a plugin package"
 msgstr ""
 
-#: includes/include.right_bottom.php:229
+#: includes/include.right_bottom.php:230
 msgid "Upload plugin package"
 msgstr ""
 
-#: includes/include.right_bottom.php:230
+#: includes/include.right_bottom.php:231
 msgid "Installed Plugins"
 msgstr ""
 
-#: includes/include.right_bottom.php:231
+#: includes/include.right_bottom.php:232
 msgid "Not installed Plugins"
 msgstr ""
 
-#: includes/include.right_bottom.php:232
+#: includes/include.right_bottom.php:233
 msgid "Execution order"
 msgstr ""
 
-#: includes/include.right_bottom.php:233
+#: includes/include.right_bottom.php:234
 msgid ""
 "If you click on following arrows you can manage the execution order of "
 "plugins. The first plugin (at first position) will be executed first from "
