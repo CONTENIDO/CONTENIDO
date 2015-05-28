@@ -590,16 +590,6 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
     }
 
     /**
-     * Load the articles version content and stores it in the 'content' property of the
-     * article object.
-     *
-     * $article->content[type][number] = value;
-     */
-    public function loadArticleVersionContent() {
-        $this->_getArticleVersionContent();
-    }
-
-    /**
      * Load the articles version content and store it in the 'content' property of the
      * article version object: $article->content[type][number] = value;
      *
