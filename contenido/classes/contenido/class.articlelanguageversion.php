@@ -244,7 +244,7 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiArticleLanguageVersion extends Item {
+class cApiArticleLanguageVersion extends cApiArticleLanguage {
 
     /**
      * Config array
@@ -269,7 +269,11 @@ class cApiArticleLanguageVersion extends Item {
      *         Flag to fetch content
      */
     public function __construct($id = false, $fetchContent = false) {
-        parent::__construct(cRegistry::getDbTableName('art_lang_version'), 'idartlangversion');
+
+    	$sTable = cRegistry::getDbTableName('art_lang_version');
+    	$sPrimaryKey = 'idartlangversion';
+    	Item::__construct($sTable, $sPrimaryKey);
+
         $this->setFilters(array(), array());
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
