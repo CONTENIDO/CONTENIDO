@@ -496,8 +496,11 @@ switch ($versioningState) {
         }
 
         // Get Content or Content Version
-        $result = array_change_key_case($selectedArticle->getContent(), CASE_UPPER);
-        $result = $versioning->sortResults($result);
+        $content = $selectedArticle->getContent();
+        if ($selectedArticle->isLoaded() && is_array($content)) {
+        	$result = array_change_key_case($selectedArticle->getContent(), CASE_UPPER);
+        	$result = $versioning->sortResults($result);
+        }
 
         // Set $list
         $list = $versioning->getList((int) $_REQUEST['idartlang'], $articleType);
@@ -602,8 +605,11 @@ switch ($versioningState) {
         $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $articleType);
 
         // Get Content or Content Version and sort
-        $result = array_change_key_case($selectedArticle->getContent(), CASE_UPPER);
-        $result = $versioning->sortResults($result);
+        $content = $selectedArticle->getContent();
+        if ($selectedArticle->isLoaded() && is_array($content)) {
+        	$result = array_change_key_case($selectedArticle->getContent(), CASE_UPPER);
+        	$result = $versioning->sortResults($result);
+        }
 
         // Set $list
         $list = $versioning->getList((int) $_REQUEST['idartlang'], $articleType);
