@@ -19,7 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiArticleLanguageVersionCollection extends cApiArticleLanguage {
+class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection {
 
     /**
      * Create a new collection of items.
@@ -29,7 +29,11 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguage {
      * @see ItemCollection::select()
      */
     public function __construct($select = false) {
-        parent::__construct(cRegistry::getDbTableName('art_lang_version'), 'idartlangversion');
+
+    	$sTable = cRegistry::getDbTableName('art_lang_version');
+    	$sPrimaryKey = 'idartlangversion';
+    	ItemCollection::__construct($sTable, $sPrimaryKey);
+
         $this->_setItemClass('cApiArticleLanguageVersion');
 
         // set the join partners so that joins can be used via link() method
