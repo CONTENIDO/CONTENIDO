@@ -55,6 +55,10 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
     private $_bUseGZIP = false;
 
     /**
+     * Shortcut to content types tinymce is mapped to
+     */
+    private $_cmsTypes = array();
+    /**
      * Access key under which the wysiwyg editor settings will be stored
      * @var string
      */
@@ -95,6 +99,8 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             if (false === isset($this->_aSettings[$curType])) {
                 $this->_aSettings[$curType] = array();
             }
+            // cache allowed cms types
+            $this->_cmsTypes[$curType] = true;
         }
 
         // CEC for template pre processing
@@ -105,6 +111,10 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
         // process settings for each cms type
         foreach ($this->_aSettings as $cmsType => $setting) {
+            // ignore any non cms type (do not process global settings)
+            if (false === isset($this->_cmsTypes[$cmsType])) {
+                continue;
+            }
             $this->_setSetting($cmsType, "article_url_suffix", 'front_content.php?idart=' . $idart, true);
 
             // Default values
@@ -616,7 +626,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
     public function getConfigInlineEdit() {
         $sConfig = '';
 
-        foreach($this->_aSettings as $cmsType => $setting) {
+        foreach ($this->_cmsTypes as $cmsType => $setting) {
             $this->setToolbar($cmsType, 'inline_edit');
         }
 
@@ -645,7 +655,8 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
     public function getConfigFullscreen() {
         $sConfig = '';
-        foreach($this->_aSettings as $cmsType => $setting) {
+
+        foreach ($this->_cmsTypes as $cmsType => $setting) {
             $this->setToolbar($cmsType, 'fullscreen');
         }
 

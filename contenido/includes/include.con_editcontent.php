@@ -134,8 +134,6 @@ $oScriptTpl->set('s', 'MEDIA', $backendUrl . 'frameset.php?area=upl&contenido=' 
 $oScriptTpl->set('s', 'FRONTEND', cRegistry::getFrontendUrl());
 
 // Add tiny options
-//var_dump(json_encode($sConfigInlineEdit));
-
 if ('tinymce4' === $wysiwygeditor) {
     // set toolbar options for each CMS type that can be edited using a WYSIWYG editor
     $aTinyOptions = array();

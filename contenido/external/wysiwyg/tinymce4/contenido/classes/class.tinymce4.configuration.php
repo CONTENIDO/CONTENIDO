@@ -466,6 +466,7 @@ class cTinymce4Configuration {
         unset($settings['raw']['externalplugins'][$pluginToRemoveIdx]);
         // remove stray custom setting
         unset($settings['raw']['externalplugins']['custom']);
+
         // re-index array
         $settings['raw']['externalplugins'] = array_values($settings['raw']['externalplugins']);
 
