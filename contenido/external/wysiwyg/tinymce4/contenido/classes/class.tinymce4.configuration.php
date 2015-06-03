@@ -69,7 +69,7 @@ class cTinymce4Configuration {
         }
 
         return $checkBox;
-    }    
+    }
 
     /**
      * Check if a type pattern matches value
@@ -104,13 +104,12 @@ class cTinymce4Configuration {
     }
 
     /**
-     * This function lists all external plugins that should be loaded in a table
-     * @param string $cmsType The CMS type (e.g. 'CMS_HTML') used to access the variable
+     * This function lists all external plugins that should be shown in a table
      * @return string
      */
-    private function _listExternalPlugins($cmsType) {
+    private function _listExternalPlugins() {
         /// TODO: use a preference loading function for plugins to list
-        $externalPlugins = static::get(array(), 'raw', $cmsType, 'externalplugins');
+        $externalPlugins = static::get(array(), 'raw', 'externalplugins');
 
         // build a table
         $table = new cHTMLTable();
@@ -140,7 +139,7 @@ class cTinymce4Configuration {
         // build table body
         $tbody = new cHTMLTableBody();
         $i = 0;
-        $n = count($externalPlugins);
+        $n = count($externalPlugins) -1;
         for ($i; $i < $n; $i++) {
             // new tr
             $row = new cHTMLTableRow();
@@ -148,11 +147,11 @@ class cTinymce4Configuration {
             // create new td
             $td = new cHTMLTableData();
             $td->appendContent($externalPlugins[$i]['name']);
- 
+
             // insert hidden input field
             $input = new cHTMLFormElement();
             $input->setAttribute('type', 'hidden');
-            $input->setAttribute('name', $cmsType . '[externalplugins][' . $i . '][name]');
+            $input->setAttribute('name', 'externalplugins[' . $i . '][name]');
             $input->setAttribute('value', $externalPlugins[$i]['name']);
             $td->appendContent($input);
 
@@ -166,7 +165,7 @@ class cTinymce4Configuration {
             // insert hidden input field
             $input = new cHTMLFormElement();
             $input->setAttribute('type', 'hidden');
-            $input->setAttribute('name', $cmsType . '[externalplugins][' . $i . '][url]');
+            $input->setAttribute('name', 'externalplugins[' . $i . '][url]');
             $input->setAttribute('value', $externalPlugins[$i]['url']);
             $td->appendContent($input);
 
@@ -180,7 +179,6 @@ class cTinymce4Configuration {
                 $oLinkDelete = new cHTMLLink();
                 $oLinkDelete->setCLink(cRegistry::getArea(), cRegistry::getFrame(), "system_wysiwyg_tinymce4_delete_item");
                 $oLinkDelete->setCustom("external_plugin_idx", urlencode($i));
-                $oLinkDelete->setCustom('cmstype', $cmsType);
                 $img = new cHTMLImage(cRegistry::getBackendUrl() . cRegistry::getConfigValue('path', 'images') . 'delete.gif');
                 $img->setAttribute('alt', i18n("Delete"));
                 $img->setAttribute('title', i18n("Delete"));
@@ -199,13 +197,13 @@ class cTinymce4Configuration {
 
         // create new td for plugin name
         $td = new cHTMLTableData();
-        $input = new cHTMLFormElement($cmsType . '[externalplugins][' . $i . '][name]');
+        $input = new cHTMLFormElement('externalplugins[' . $i . '][name]');
         $td->appendContent($input);
         $row->appendContent($td);
 
         // create new td for plugin url
         $td = new cHTMLTableData();
-        $input = new cHTMLFormElement($cmsType . '[externalplugins][' . $i . '][url]');
+        $input = new cHTMLFormElement('externalplugins[' . $i . '][url]');
         $td->appendContent($input);
         $row->appendContent($td);
 
@@ -292,7 +290,7 @@ class cTinymce4Configuration {
     }
 
     /**
-     * Function to validate form from showConfigurationForm() 
+     * Function to validate form from showConfigurationForm()
      * @param array $config The post parameters of submitted form
      * @return boolean|array False if data should not be saved, otherwise data to save
      */
@@ -361,21 +359,20 @@ class cTinymce4Configuration {
             'contenido_lists',
             'contenido_gzip',
             'custom',
-            'externalplugins'
         );
         // get name of first key
         reset($config);
         $key = key($config);
 
-        if (false === $this->_checkIsset($config[$key]['tinymce4_full'], $shouldArrayStructure['tinymce4_full'])) {
+        if (false === isset($_POST['externalplugins']) && false === $this->_checkIsset($config[$key]['tinymce4_full'], $shouldArrayStructure['tinymce4_full'])) {
             $this->_configErrors[] = i18n('Fullscreen config of inline editor is erroneous.');
             return false;
         }
-        if (false === $this->_checkIsset($config[$key]['tinymce4_fullscreen'], $shouldArrayStructure['tinymce4_fullscreen'])) {
+        if (false === isset($_POST['externalplugins']) && false === $this->_checkIsset($config[$key]['tinymce4_fullscreen'], $shouldArrayStructure['tinymce4_fullscreen'])) {
             $this->_configErrors[] = i18n('Config of editor on separate editor page is erroneous.');
             return false;
         }
-        if (false === isset($config[$key]['custom'])) {
+        if (false === isset($_POST['externalplugins']) && false === isset($config[$key]['custom'])) {
             $this->_configErrors[] = i18n('Custom configuration of tinyMCE 4 is not set.');
             return false;
         }
@@ -442,7 +439,7 @@ class cTinymce4Configuration {
     }
 
     /**
-     * Do not load external plugin if user has permission to request that 
+     * Do not load external plugin if user has permission to request that
      * @param array $form get parameters from deletion link
      * @return boolean|array False if data should not be saved, otherwise data to save
      */
@@ -452,11 +449,6 @@ class cTinymce4Configuration {
             return;
         }
 
-        // check if a CMS-type has been specified
-        if (false === isset($form['cmstype'])) {
-            // form data is invalid, abort
-            return false;
-        }
         $pluginToRemoveIdx = (int) $form['external_plugin_idx'];
 
         // load config through usage of get function
@@ -465,19 +457,20 @@ class cTinymce4Configuration {
         // no config or no external plugins or no plugin with that index means nothing to remove
         if (false === $settings
         || false === isset($settings['raw'])
-        || false === isset($settings['raw'][$form['cmstype']])
-        || false === isset($settings['raw'][$form['cmstype']]['externalplugins'])
-        || false === isset($settings['raw'][$form['cmstype']]['externalplugins'][$pluginToRemoveIdx])) {
+        || false === isset($settings['raw']['externalplugins'])
+        || false === isset($settings['raw']['externalplugins'][$pluginToRemoveIdx])) {
             return false;
         }
 
         // remove value from raw settings
-        unset($settings['raw'][$form['cmstype']]['externalplugins'][$pluginToRemoveIdx]);
+        unset($settings['raw']['externalplugins'][$pluginToRemoveIdx]);
+        // remove stray custom setting
+        unset($settings['raw']['externalplugins']['custom']);
         // re-index array
-        $settings['raw'][$form['cmstype']]['externalplugins'] = array_values($settings['raw'][$form['cmstype']]['externalplugins']);
+        $settings['raw']['externalplugins'] = array_values($settings['raw']['externalplugins']);
 
         // apply raw settings to computed settings
-        $settings['tinymce4'][$form['cmstype']]['externalplugins'] = $settings['raw'][$form['cmstype']]['externalplugins'];
+        $settings['tinymce4']['externalplugins'] = $settings['raw']['externalplugins'];
 
         return array('tinymce4' => $settings);
     }
@@ -605,11 +598,6 @@ class cTinymce4Configuration {
             $containerDiv->appendContent($this->_addLabelWithCheckbox(i18n('Provide jump lists in link insertion dialog'), $curType . '[contenido_lists][link]', 'link', $checked));
             $form->add(i18n('contenido_lists'), $containerDiv->render());
 
-            // external plugins
-            $containerDiv = new cHTMLDiv();
-            $containerDiv->appendContent($this->_listExternalPlugins($curType));
-            $form->add(i18n('External plugins to load'), $containerDiv);
-
             //add textarea for custom tinymce 4 settings
             $textarea = new cHTMLTextarea($curType . '[custom]');
             $textarea->setAttribute('style', 'width: 99%;');
@@ -627,6 +615,19 @@ class cTinymce4Configuration {
             $result .= '<p>' . $form->render() . '</p>';
         }
 
+        // external plugins (can not be configured per CMS-type)
+        $form = new cGuiTableForm('system_wysiwyg_tinymce4_external_plugins');
+        $form->setAcceptCharset('UTF-8');
+        $form->addHeader(i18n('TinyMCE 4 configuration for external plugins'));
+
+        $form->setVar('area', $area);
+        $form->setVar('frame', $frame);
+        $form->setVar('action', 'edit_tinymce4');
+        $containerDiv = new cHTMLDiv();
+        $containerDiv->appendContent($this->_listExternalPlugins());
+        $form->add(i18n('External plugins to load'), $containerDiv);
+        $result .= '<p>' . $form->render() . '</p>';
+
         $configPath = cRegistry::getConfigValue('path', 'contenido_config');
         $configPath .= 'config.wysiwyg_tinymce4.php';
         if (cFileHandler::exists($configPath)
@@ -637,7 +638,7 @@ class cTinymce4Configuration {
             $resetForm->setVar('action', 'edit_tinymce4');
             $oResetButton = new cHTMLButton('reset', i18n('Reset configuration back to default'));
             $oResetButton->setAttribute('value', i18n('Reset Configuration'));
-            
+
             $resetForm = $resetForm->appendContent($oResetButton);
             $result .= $resetForm->render();
         }
