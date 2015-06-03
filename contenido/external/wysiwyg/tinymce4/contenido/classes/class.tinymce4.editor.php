@@ -73,7 +73,9 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         $this->_setEditor("tinymce4");
         $this->_aSettings = array();
 
-        // Retrieve all settings for tinymce 4, depending on CMS types
+        // Retrieve all settings for tinymce 4
+        $this->_aSettings = cTinymce4Configuration::get(array(), 'tinymce4');
+
         // define empty arrays for all CMS types that can be edited using a WYSIWYG editor
         $oTypeColl = new cApiTypeCollection();
         $oTypeColl->select();
@@ -89,7 +91,10 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             if (false === $cContentType->isWysiwygCompatible()) {
                 continue;
             }
-            $this->_aSettings[$curType] = cTinymce4Configuration::get(array(), 'tinymce4');
+
+            if (false === isset($this->_aSettings[$curType])) {
+                $this->_aSettings[$curType] = array();
+            }
         }
 
         // CEC for template pre processing
@@ -197,7 +202,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             $validElements .= "iframe[src|width|height],object[data|width|height|type],audio[controls|src],source[src|type],script[src],video[width|height|poster|controls]";
 
             // pass valid elements to tinymce
-            $this->_setSetting($cmsType, "valid_elements", $validElements); 
+            $this->_setSetting($cmsType, "valid_elements", $validElements);
 
             // Extended valid elements, for compatibility also accepts "tinymce-extended-valid-elements"
             if (!array_key_exists("extended_valid_elements", $this->_aSettings[$cmsType]) && array_key_exists("tinymce-extended-valid-elements", $this->_aSettings[$cmsType])) {
@@ -298,7 +303,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
     }
 
     /**
-     * 
+     *
      * @return boolean if editor is loaded using gzip compression
      */
     public function getGZIPMode() {
@@ -324,7 +329,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         // http://www.tinymce.com/wiki.php/Configuration:toolbar
         // instead of
         // http://www.tinymce.com/wiki.php/Configuration:toolbar%3CN%3E
-        // 
+        //
         // This would allow users to specify more than just 3 toolbars in total
 
         switch ($sMode) {
@@ -375,6 +380,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $this->_setSetting($cmsType, 'plugins', $defaultPlugins, true);
 
                 $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', $cmsType, 'tinymce4_fullscreen');
+
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($cmsType, $sKey, $sValue, true);
                 }
@@ -569,7 +575,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
     /**
      * Sets given setting if setting was not yet defined.
      * Overwriting defined setting can be achieved with $bForceSetting = true.
-     * 
+     *
      * @param string $sType CMS type where setting should apply
      * @param string $sKey of setting to set
      * @param string $sValue of setting to set
@@ -605,7 +611,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         // remove key from array
         unset($result);
     }
-    
+
 
     public function getConfigInlineEdit() {
         $sConfig = '';
@@ -648,7 +654,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
     }
 
     /**
-     * function to obtain a comma separated list of plugins that are tried to be loaded 
+     * function to obtain a comma separated list of plugins that are tried to be loaded
      * @return string plugins the plugins
      */
     public function getPlugins() {
