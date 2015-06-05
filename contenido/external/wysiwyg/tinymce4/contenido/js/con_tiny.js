@@ -670,13 +670,12 @@
                 }
 
                 // check which plugins should be loaded
-                if ('undefined' !== typeof(wysiwygSettings.externalplugins)) {
+                if ('undefined' !== typeof(settings.externalplugins)) {
                     // check if setting is an array
                     // Array.isArray() can not be used because IE 8 does not implement it
-                    if ('[object Array]' === Object.prototype.toString.call(wysiwygSettings.externalplugins)) {
-                        wysiwygSettings.externalplugins.forEach(function (plugin) {
+                    if ('[object Array]' === Object.prototype.toString.call(settings.externalplugins)) {
+                        settings.externalplugins.forEach(function (plugin) {
                             // if plugin is not loaded
-                            debugger;
 
                             // http://www.tinymce.com/wiki.php/api4:method.tinymce.AddOnManager.load
                             customPluginsLoaded[plugin.name] = plugin.url;

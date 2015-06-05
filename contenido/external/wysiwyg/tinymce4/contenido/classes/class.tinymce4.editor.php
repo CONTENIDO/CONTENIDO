@@ -103,6 +103,25 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             $this->_cmsTypes[$curType] = true;
         }
 
+        // apply global settings to all cms-types
+        foreach ($this->_aSettings as $curSettingKey => $curSetting) {
+            // if current setting is not a cms type
+            if (false === array_key_exists($curSettingKey, $this->_cmsTypes)) {
+                // copy current setting into all cms types
+                // if there is such setting already set for the cms type
+                // (already set cms type specific values override global config values)
+                foreach ($this->_cmsTypes as $curTypeKey => $curType) {
+                    if (false === isset($this->_aSettings[$curType])) {
+                        $this->_aSettings[$curTypeKey][$curSettingKey] = $curSetting;
+                   }
+                }
+                // remove global setting for further processing in con_tiny.js
+                // that js-code assumes each setting key maps a cms type
+                unset($this->_aSettings[$curSettingKey]);
+            }
+        }
+
+
         // CEC for template pre processing
         $this->_aSettings = cApiCecHook::executeAndReturn('Contenido.WYSIWYG.LoadConfiguration', $this->_aSettings, $this->_sEditor);
 
