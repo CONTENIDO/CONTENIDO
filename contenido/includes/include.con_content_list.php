@@ -1022,7 +1022,6 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
             <img border="0" src="' . $backendUrl . 'images/delete.gif">
             </a>';
             } else { // Freeze status
-                echo "gah";
                 $replacements[$num] = $tmp;
                 $keycode[$type][$num] = $tmp;
             }
