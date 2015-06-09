@@ -366,7 +366,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
                 }
                 $contentVersion = new cApiContentVersion();
                 $ctype = new cApiType();
-                $this->loadArticleVersionContent();
+                $this->_getArticleVersionContent();
                 foreach ($this->content AS $typeName => $typeids) {
                     foreach ($typeids AS $typeid => $value) {
                         $ctype->loadByType($typeName);
@@ -436,10 +436,11 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
         $artLangVersion = $artLangVersionColl->create($parameters);
 
         if ($type == 'content' || $type == 'complete') {
-            $artLangVersion->loadArticleVersionContent();
+            // fetch content for new editable version
+            $artLangVersion->loadByArticleLanguageIdAndVersion($artLangVersion->get('idartlang'), $artLangVersion->get('version'), true);
             $contentVersion = new cApiContentVersion();
             $apiType = new cApiType();
-            $this->loadArticleVersionContent();
+            $this->_getArticleVersionContent();
 
             // get all Content Versions
             $mergedContent = array();
@@ -626,6 +627,67 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
             $this->content[strtolower($this->db->f('type'))][$this->db->f('typeid')] = $this->db->f('value');
         }
 
+    }
+
+    /**
+     * Get content(s) from an article version.
+     *
+     * Returns the specified content element or an array("id"=>"value") if the
+     * second parameter is omitted.
+     *
+     * Legal content type string are defined in the CONTENIDO system table
+     * 'con_type'.
+     * Default content types are:
+     *
+     * NOTE: Parameter is case insensitive, you can use html or cms_HTML or
+     * CmS_HtMl.
+     * You don't need to start with cms, but it won't crash if you do so.
+     *
+     * htmlhead - HTML Headline
+     * html - HTML Text
+     * headline - Headline (no HTML)
+     * text - Text (no HTML)
+     * img - Upload id of the element
+     * imgdescr - Image description
+     * link - Link (URL)
+     * linktarget - Linktarget (_self, _blank, _top ...)
+     * linkdescr - Linkdescription
+     * swf - Upload id of the element
+     *
+     * @param string $type
+     *         CMS_TYPE - Legal cms type string
+     * @param int|NULL $id
+     *         Id of the content
+     * @return string|array
+     *         data
+     */
+    public function getContent($type = '', $id = NULL) {
+        if (NULL === $this->content) {
+            // get content for the loaded article version
+            $this->_getArticleVersionContent();
+        }
+
+        if (empty($this->content)) {
+            return '';
+        }
+
+        if ($type == '') {
+            return $this->content;
+        }
+
+        $type = strtolower($type);
+
+        if (false === stripos($type, 'cms_')) {
+            $type = 'cms_' . $type;
+        }
+
+        if (is_null($id)) {
+            // return Array
+            return $this->content[$type];
+        }
+
+        // return String
+        return (isset($this->content[$type][$id])) ? $this->content[$type][$id] : '';
     }
 
 }

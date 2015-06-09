@@ -498,8 +498,8 @@ switch ($versioningState) {
         // Get Content or Content Version
         $content = $selectedArticle->getContent();
         if ($selectedArticle->isLoaded() && is_array($content)) {
-        	$result = array_change_key_case($selectedArticle->getContent(), CASE_UPPER);
-        	$result = $versioning->sortResults($result);
+            $result = array_change_key_case($selectedArticle->getContent(), CASE_UPPER);
+            $result = $versioning->sortResults($result);
         }
 
         // Set $list
@@ -603,12 +603,12 @@ switch ($versioningState) {
 
         // get selected article
         $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $articleType);
-
         // Get Content or Content Version and sort
         $content = $selectedArticle->getContent();
+
         if ($selectedArticle->isLoaded() && is_array($content)) {
-        	$result = array_change_key_case($selectedArticle->getContent(), CASE_UPPER);
-        	$result = $versioning->sortResults($result);
+            $result = array_change_key_case($content, CASE_UPPER);
+            $result = $versioning->sortResults($result);
         }
 
         // Set $list
@@ -716,8 +716,8 @@ switch ($versioningState) {
         // Get Content/set $result
         $content = $selectedArticle->getContent();
         if ($selectedArticle->isLoaded() && is_array($content)) {
-	        $result = array_change_key_case($content, CASE_UPPER);
-	        $result = $versioning->sortResults($result);
+            $result = array_change_key_case($content, CASE_UPPER);
+            $result = $versioning->sortResults($result);
         }
 
         // Set $list
@@ -955,7 +955,7 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
         $type = $_typeItem->type;
 
         // Try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
-		// At $match[2] you found your typeid
+        // At $match[2] you found your typeid
         $tmp = preg_match_all('/(' . $type . '\[+(\d+)\])/i', $layoutCode, $match);
 
         $a_[$key] = $match[2]; //all typeids

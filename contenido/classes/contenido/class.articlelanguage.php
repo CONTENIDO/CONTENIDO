@@ -277,7 +277,7 @@ class cApiArticleLanguage extends Item {
 
     /**
      * Create a version of this article language with its contents/metatags;
-     * the version is the new editable articlel language version
+     * the version is the new editable article language version
      *
      * @param string $type
      *         meta, content or complete
@@ -298,7 +298,8 @@ class cApiArticleLanguage extends Item {
         $artLangVersion = $artLangVersionColl->create($parameters);
 
         if ($type == 'content' || $type == 'complete') {
-            $artLangVersion->loadArticleVersionContent();
+            // load content of article language version into $artLangVersion->content
+            $artLangVersion->loadByArticleLanguageIdAndVersion($artLangVersion->get('idartlang'), $artLangVersion->get('version'), true);
             $contentVersion = new cApiContent();
             $oType = new cApiType();
             $this->_loadArticleContent();
