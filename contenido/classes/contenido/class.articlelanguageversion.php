@@ -105,8 +105,7 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
 
         // set version
         $parameters['version'] = 1;
-
-        $sql = 'SELECT MAX(version) AS maxversion FROM con_art_lang_version WHERE idartlang = %d;'; // geht mit cfg nicht?!
+        $sql = 'SELECT MAX(version) AS maxversion FROM ' . cRegistry::getDbTableName('art_lang_version') . ' WHERE idartlang = %d;';
         $sql = $this->db->prepare($sql, $parameters['idartlang']);
         $this->db->query($sql);
         if ($this->db->nextRecord()) {
