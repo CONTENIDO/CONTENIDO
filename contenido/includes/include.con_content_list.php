@@ -799,7 +799,7 @@ $page->set('s', 'IMPORT_LABEL', i18n("Raw data import"));
 $page->set('s', 'OVERWRITE_DATA_LABEL', i18n("Overwrite data"));
 
 //CON-2151 check if article is locked
-$aAuthPerms = explode(',', $auth->auth['perm']);
+$aAuthPerms = explode(',', cRegistry::getAuth()->auth['perm']);
 
 $admin = false;
 if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
@@ -913,9 +913,16 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
     // Get locked status (article freeze)
     $cApiArticleLanguage = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
     $locked = $cApiArticleLanguage->getField('locked');
+    // admin can edit article despite its locked status
+    $aAuthPerms = explode(',', cRegistry::getAuth()->auth['perm']);
+
+    $admin = false;
+    if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
+        $admin = true;
+    }
 
     // If article is locked show notification
-    if ($locked == 1) {
+    if ($locked == 1 && false === $admin) {
         $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
     }
 
@@ -1007,7 +1014,7 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
                 // "<textarea>"."?".">\n".stripslashes($tmp)."\n\";?"."><"."?php\n"."</textarea>";
             }
 
-            if ($locked == 0 && ($articleType == 'editable' || $articleType == 'current') && ($versioningState == 'disabled' || $versioningState == 'simple')) { // No freeze
+            if (($locked == 0 || true === $admin) && ($articleType == 'editable' || $articleType == 'current') && ($versioningState == 'disabled' || $versioningState == 'simple')) { // No freeze
                 $replacements[$num] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); }); return false;">
             <img border="0" src="' . $backendUrl . 'images/delete.gif">
             </a>';
@@ -1015,6 +1022,7 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
             <img border="0" src="' . $backendUrl . 'images/delete.gif">
             </a>';
             } else { // Freeze status
+                echo "gah";
                 $replacements[$num] = $tmp;
                 $keycode[$type][$num] = $tmp;
             }
