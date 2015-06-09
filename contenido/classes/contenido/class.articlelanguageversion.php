@@ -667,27 +667,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
             $this->_getArticleVersionContent();
         }
 
-        if (empty($this->content)) {
-            return '';
-        }
-
-        if ($type == '') {
-            return $this->content;
-        }
-
-        $type = strtolower($type);
-
-        if (false === stripos($type, 'cms_')) {
-            $type = 'cms_' . $type;
-        }
-
-        if (is_null($id)) {
-            // return Array
-            return $this->content[$type];
-        }
-
-        // return String
-        return (isset($this->content[$type][$id])) ? $this->content[$type][$id] : '';
+        return parent::getContent($type, $id);
     }
 
 }
