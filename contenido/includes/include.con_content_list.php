@@ -999,7 +999,7 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
                 eval($_typeItem->code);
             }
 
-            $versioning = new cContentVersioning(); //als Parameter ï¿½bergeben oder einzelne Strings/Ints ï¿½bergeben?
+            $versioning = new cContentVersioning();
             $idcontent = $versioning->getContentId(cSecurity::toInteger($_REQUEST["idartlang"]), cSecurity::toInteger($val), cSecurity::toString($type), $versioningState, $articleType, $version);
 
             $backendUrl = cRegistry::getBackendUrl();
@@ -1014,7 +1014,10 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
                 // "<textarea>"."?".">\n".stripslashes($tmp)."\n\";?"."><"."?php\n"."</textarea>";
             }
 
-            if (($locked == 0 || true === $admin) && ($articleType == 'editable' || $articleType == 'current') && ($versioningState == 'disabled' || $versioningState == 'simple')) { // No freeze
+            // can delete article content if all conditions are fulfilled:
+            // article is not frozen or admin accesses page (admin can do everything, even when article is frozen)
+            // article can be edited or (article is published version and versioning is turned off or set to simple mode)
+            if (($locked == 0 || true === $admin) && ($articleType == 'editable' || ($articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple')))) { // No freeze
                 $replacements[$num] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); }); return false;">
             <img border="0" src="' . $backendUrl . 'images/delete.gif">
             </a>';
