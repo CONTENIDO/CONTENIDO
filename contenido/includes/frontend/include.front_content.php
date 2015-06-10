@@ -387,8 +387,16 @@ if ($contenido) {
     $oArtLang->loadByArticleAndLanguageId($idart, $lang);
     $locked = $oArtLang->get('locked');
     if ($locked == 1) {
-        $inUse = true;
-        $disabled = 'disabled="disabled"';
+        // admin can edit article despite its locked status
+        $aAuthPerms = explode(',', cRegistry::getAuth()->auth['perm']);
+        $admin = false;
+        if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
+            $admin = true;
+        }
+        if (false === $admin) {
+            $inUse = true;
+            $disabled = 'disabled="disabled"';
+        }
     }
 
     // do not load erroneous modules

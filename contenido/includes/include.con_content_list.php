@@ -913,9 +913,9 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
     // Get locked status (article freeze)
     $cApiArticleLanguage = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
     $locked = $cApiArticleLanguage->getField('locked');
+
     // admin can edit article despite its locked status
     $aAuthPerms = explode(',', cRegistry::getAuth()->auth['perm']);
-
     $admin = false;
     if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
         $admin = true;
