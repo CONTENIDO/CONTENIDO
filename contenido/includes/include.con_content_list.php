@@ -982,7 +982,7 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
             if (cFileHandler::exists($cTypeClassFile)) {
                 $tmp = $a_content[$_typeItem->type][$val];
                 $cTypeObject = new $className($tmp, $val, $a_content);
-                if (cRegistry::isBackendEditMode() && $locked == 0 && $articleType == 'editable' || ($articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple'))) {
+                if (cRegistry::isBackendEditMode() && ($locked == 0 || true === $admin) && $articleType == 'editable' || ($articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple'))) {
                     $tmp = $cTypeObject->generateEditCode();
                 } else if ($articleType == 'current' || $articleType == 'version') {
                     $tmp = $cTypeObject->generateViewCode();
