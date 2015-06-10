@@ -549,10 +549,21 @@ switch ($versioningState) {
         }
         $selectElement->setEvent("onchange", "versionselected.idArtLangVersion.value=$('#selectVersionElement option:selected').val();versionselected.submit()");
 
+        $cApiArticleLanguage = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
+        $locked = $cApiArticleLanguage->getField('locked');
+
+        //CON-2151 check if article is locked
+        $aAuthPerms = explode(',', cRegistry::getAuth()->auth['perm']);
+
+        $admin = false;
+        if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
+            $admin = true;
+        }
+
         // Create code/output
         $page->set('s', 'ARTICLE_VERSION_SELECTION', $selectElement->toHtml());
         // Set import labels
-        if ($articleType != 'version') {
+        if ($articleType != 'version' && $locked == 0 && true === $admin) {
             $page->set('s', 'DISABLED', '');
         } else {
             $page->set('s', 'DISABLED', 'DISABLED');
@@ -561,7 +572,7 @@ switch ($versioningState) {
         $page->set('s', 'COPY_LABEL', i18n('Copy Version'));
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to Published Version'));
         $markAsCurrentButton->setEvent('onclick', "copyto.idArtLangVersion.value=$('#selectVersionElement option:selected').val();copyto.submit()");
-        if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
+        if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple' || ($locked == 1 && false === $admin)) {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
         $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
@@ -798,16 +809,7 @@ $page->set('s', 'EXPORT_LABEL', i18n("Raw data export"));
 $page->set('s', 'IMPORT_LABEL', i18n("Raw data import"));
 $page->set('s', 'OVERWRITE_DATA_LABEL', i18n("Overwrite data"));
 
-//CON-2151 check if article is locked
-$aAuthPerms = explode(',', cRegistry::getAuth()->auth['perm']);
 
-$admin = false;
-if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
-    $admin = true;
-}
-
-$cApiArticleLanguage = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
-$locked = $cApiArticleLanguage->getField('locked');
 $page->set('s', 'HIDE', ($admin || (int)$locked === 0)? '' : 'style="display:none;"');
 
 if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false') {
