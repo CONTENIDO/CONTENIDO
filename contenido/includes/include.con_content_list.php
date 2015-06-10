@@ -986,7 +986,7 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
                 $cTypeObject = new $className($tmp, $val, $a_content);
                 if (cRegistry::isBackendEditMode() && ($locked == 0 || true === $admin) && $articleType == 'editable' || ($articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple'))) {
                     $tmp = $cTypeObject->generateEditCode();
-                } else if ($articleType == 'current' || $articleType == 'version') {
+                } else {
                     $tmp = $cTypeObject->generateViewCode();
                 }
                 // double escape the generated code string to avoid violating string syntax
