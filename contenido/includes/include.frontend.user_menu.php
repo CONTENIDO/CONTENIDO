@@ -169,11 +169,12 @@ if ($bUsePlugins == false) {
         $oSelectSortBy->getDefault(),
         $oSelectSortOrder->getDefault()
     )));
-    $oFEUsers->setLimit($elemperpage * ($mPage - 1), $elemperpage);
 } else {
     $oFEUsers->query();
     $iFullTableCount = $oFEUsers->count();
 }
+
+$oFEUsers->setLimit($elemperpage * ($mPage - 1), $elemperpage);
 
 if ($_REQUEST["elemperpage"] * ($_REQUEST["page"]) >= $iFullTableCount + $_REQUEST["elemperpage"] && $_REQUEST["page"] != 1) {
     $_REQUEST["page"]--;
@@ -184,7 +185,7 @@ $oFEUsers->query();
 
 $aUserTable = array();
 
-while ($feuser = $oFEUsers->next()) {
+while ($feuser = $oFEUsers->next()) {echo $feuser->get("idfrontenduser") . "<br />";
     foreach ($aFieldSources as $key => $field) {
         $idfrontenduser = $feuser->get("idfrontenduser");
 
