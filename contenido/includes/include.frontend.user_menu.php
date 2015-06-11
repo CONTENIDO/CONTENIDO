@@ -185,7 +185,7 @@ $oFEUsers->query();
 
 $aUserTable = array();
 
-while ($feuser = $oFEUsers->next()) {echo $feuser->get("idfrontenduser") . "<br />";
+while ($feuser = $oFEUsers->next()) {
     foreach ($aFieldSources as $key => $field) {
         $idfrontenduser = $feuser->get("idfrontenduser");
 
