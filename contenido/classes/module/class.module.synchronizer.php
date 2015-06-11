@@ -51,7 +51,7 @@ class cModuleSynchronizer extends cModuleHandler {
         if ($this->_isExistInTable($oldModulName, $client) == false) {
             // add new Module in db-tablle
             $this->_addModul($newModulName, $client);
-            cRegistry::appendLastInfoMessage(sprintf(i18n('Module %s successfully synchronized'), $newModulName));
+            cRegistry::appendLastOkMessage(sprintf(i18n('Module %s successfully synchronized'), $newModulName));
         } else {
             // update the name of the module
             if ($oldModulName != $newModulName) {
