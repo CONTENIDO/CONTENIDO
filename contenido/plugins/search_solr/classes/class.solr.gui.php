@@ -191,7 +191,7 @@ class SolrRightBottomPage extends cGuiPage {
             }
         }
         $cGuiNotification = new cGuiNotification();
-        return $cGuiNotification->returnNotification(cGuiNotification::LEVEL_INFO, 'client options were stored');
+        return $cGuiNotification->returnNotification(cGuiNotification::LEVEL_OK, 'client options were stored');
     }
 
     /**
@@ -272,7 +272,7 @@ class SolrRightBottomPage extends cGuiPage {
         }
 
         $cGuiNotification = new cGuiNotification();
-        return $cGuiNotification->returnNotification(cGuiNotification::LEVEL_INFO, 'core was reloaded');
+        return $cGuiNotification->returnNotification(cGuiNotification::LEVEL_OK, 'core was reloaded');
     }
 
     /**
@@ -336,7 +336,7 @@ class SolrRightBottomPage extends cGuiPage {
         $indexer->updateArticles();
 
         $cGuiNotification = new cGuiNotification();
-        return $cGuiNotification->returnNotification(cGuiNotification::LEVEL_INFO, 'core was reindexed');
+        return $cGuiNotification->returnNotification(cGuiNotification::LEVEL_OK, 'core was reindexed');
     }
 
     /**
@@ -392,7 +392,7 @@ class SolrRightBottomPage extends cGuiPage {
         $indexer->deleteArticles();
 
         $cGuiNotification = new cGuiNotification();
-        return $cGuiNotification->returnNotification(cGuiNotification::LEVEL_INFO, 'core was deleted');
+        return $cGuiNotification->returnNotification(cGuiNotification::LEVEL_OK, 'core was deleted');
     }
 
 }

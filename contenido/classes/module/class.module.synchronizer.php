@@ -188,7 +188,7 @@ class cModuleSynchronizer extends cModuleHandler {
             }
 
             if ($showMessage) {
-                cRegistry::appendLastInfoMessage(sprintf(i18n('Module %s successfully synchronized'), $db->f('name')));
+                cRegistry::appendLastOkMessage(sprintf(i18n('Module %s successfully synchronized'), $db->f('name')));
             }
         }
 

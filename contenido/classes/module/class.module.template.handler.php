@@ -327,7 +327,7 @@ class cModuleTemplateHandler extends cModuleHandler {
             $ret = $this->createModuleFile('template', $this->_file, $this->_code);
             // show message
             if (true === $ret) {
-                $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Saved changes successfully!'));
+                $this->_notification->displayNotification(cGuiNotification::LEVEL_OK, i18n('Saved changes successfully!'));
             }
         }
     }
@@ -350,7 +350,7 @@ class cModuleTemplateHandler extends cModuleHandler {
             throw new cException(i18n('Rename of the file failed!'));
         } else {
             $this->createModuleFile('template', $this->_file, $this->_code);
-            $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Renamed the template file successfully!'));
+            $this->_notification->displayNotification(cGuiNotification::LEVEL_OK, i18n('Renamed the template file successfully!'));
             $this->_tmpFile = $this->_file;
         }
     }
@@ -367,7 +367,7 @@ class cModuleTemplateHandler extends cModuleHandler {
             $fileName = $this->_newFileName . $this->getRandomCharacters(5) . '.' . $this->_templateFileEnding;
         }
         $this->createModuleFile('template', $fileName, '');
-        $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Created a new template file successfully!'));
+        $this->_notification->displayNotification(cGuiNotification::LEVEL_OK, i18n('Created a new template file successfully!'));
 
         // trigger a smarty cache rebuild for new template file
         // you need a installed and active smarty plugin (example client)
@@ -394,7 +394,7 @@ class cModuleTemplateHandler extends cModuleHandler {
 
         $ret = $this->deleteFile('template', $this->_tmpFile);
         if ($ret == true) {
-            $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Deleted the template file successfully!'));
+            $this->_notification->displayNotification(cGuiNotification::LEVEL_OK, i18n('Deleted the template file successfully!'));
         }
         $files = $this->getAllFilesFromDirectory('template');
 
