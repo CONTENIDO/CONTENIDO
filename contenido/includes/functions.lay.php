@@ -42,11 +42,11 @@ function layEditLayout($idlay, $name, $description, $code) {
 
     $date = date('Y-m-d H:i:s');
     $author = (string) $auth->auth['uname'];
-    $description = (string) stripslashes($description);
-    set_magic_quotes_gpc($name);
-    set_magic_quotes_gpc($description);
-
-    set_magic_quotes_gpc($code);
+    if (true === cRegistry::getConfigValue('simulate_magic_quotes')) {
+        $name = stripslashes($name);
+        $description = stripslashes($description);
+        $code = stripslashes($code);
+    }
 
     if (strlen(trim($name)) == 0) {
         $name = i18n('-- Unnamed layout --');
@@ -56,7 +56,7 @@ function layEditLayout($idlay, $name, $description, $code) {
     $layoutAlias = cModuleHandler::getCleanName(strtolower($name));
 
     // Constructor for the layout in filesystem
-    $layoutInFile = new cLayoutHandler($idlay, stripslashes($code), $cfg, $lang);
+    $layoutInFile = new cLayoutHandler($idlay, $code, $cfg, $lang);
 
     // Track version
     $oVersion = new cVersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
@@ -70,7 +70,7 @@ function layEditLayout($idlay, $name, $description, $code) {
         $layout = $layoutCollection->create($name, $client, $layoutAlias, $description, '1', $author);
         $idlay = $layout->get('idlay');
 
-        if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
+        if ($layoutInFile->saveLayout($code) == false) {
             cRegistry::addErrorMessage(i18n("Can't save layout in file"));
         } else {
             cRegistry::addOkMessage(i18n("Saved layout succsessfully!"));
@@ -83,13 +83,13 @@ function layEditLayout($idlay, $name, $description, $code) {
         return $idlay;
     } else {
         // Save the layout in file system
-        $layoutInFile = new cLayoutHandler($idlay, stripslashes($code), $cfg, $lang);
+        $layoutInFile = new cLayoutHandler($idlay, $code, $cfg, $lang);
         // Name changed
         if ($layoutAlias != $layoutInFile->getLayoutName()) {
             // Exist layout in directory
             if (cLayoutHandler::existLayout($layoutAlias, $cfgClient, $client) == true) {
                 // Save in old directory
-                if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
+                if ($layoutInFile->saveLayout($code) == false) {
                     cRegistry::addErrorMessage(i18n("Can't save layout in file!"));
                 }
 
@@ -100,7 +100,7 @@ function layEditLayout($idlay, $name, $description, $code) {
 
             // Rename the directory
             if ($layoutInFile->rename($layoutInFile->getLayoutName(), $layoutAlias)) {
-                if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
+                if ($layoutInFile->saveLayout($code) == false) {
                     cRegistry::addWarningMessage(sprintf(i18n("The file %s has no write permissions. Saving only database changes!"), $layoutInFile->_getFileName()));
                 } else {
                     cRegistry::addOkMessage(i18n("Renamed layout succsessfully!"));
@@ -115,13 +115,13 @@ function layEditLayout($idlay, $name, $description, $code) {
             } else {
                 // Rename not successfully
                 // Save layout
-                if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
+                if ($layoutInFile->saveLayout($code) == false) {
                     cRegistry::addErrorMessage(i18n("Can't save layout file!"));
                 }
             }
         } else {
             // Name dont changed
-            if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
+            if ($layoutInFile->saveLayout($code) == false) {
                 cRegistry::addWarningMessage(sprintf(i18n("The file %s has no write permissions. Saving only database changes!"), $layoutInFile->_getFileName()));
             } else {
                 cRegistry::addOkMessage(i18n("Saved layout succsessfully!"));

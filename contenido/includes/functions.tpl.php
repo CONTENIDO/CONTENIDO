@@ -36,9 +36,6 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
     $author = (string) $auth->auth['uname'];
 
     // entry in 'tpl'-table
-    // set_magic_quotes_gpc($name);
-    // set_magic_quotes_gpc($description);
-
     $template = new cApiTemplate();
     $template->loadByMany(array('idclient' => $client, 'name' => $name));
     if ($template->isLoaded() && $template->get('idtpl') != $idtpl) {
