@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-06-12 13:35+0200\n"
-"PO-Revision-Date: 2015-06-12 13:36+0100\n"
+"PO-Revision-Date: 2015-06-12 13:40+0100\n"
 "Last-Translator: Thomas Stauer <thomas.stauer@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: en_US\n"
@@ -3556,7 +3556,7 @@ msgstr ""
 #: includes/include.con_edit_form.php:908
 msgid ""
 "The called article is synchronized. If you want to move it please make sure "
-"that the target category of this article exist in all languages."
+"that the target category of this article exists in all languages."
 msgstr ""
 
 #: includes/include.con_edit_form.php:921

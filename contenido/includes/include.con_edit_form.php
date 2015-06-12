@@ -905,7 +905,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         $db->query($sql);
 
         if ($db->numRows() > 0) {
-            $page->set('s', 'NOTIFICATION_SYNCHRON', '<tr><td colspan="4">' . $notification->returnNotification('warning', i18n("The called article is synchronized. If you want to move it please make sure that the target category of this article exist in all languages.")) . '</td></tr>');
+            $page->set('s', 'NOTIFICATION_SYNCHRON', '<tr><td colspan="4">' . $notification->returnNotification('warning', i18n("The called article is synchronized. If you want to move it please make sure that the target category of this article exists in all languages.")) . '</td></tr>');
         } else {
             $page->set('s', 'NOTIFICATION_SYNCHRON', '');
         }

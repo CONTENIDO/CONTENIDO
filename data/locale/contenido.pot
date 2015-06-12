@@ -3558,7 +3558,7 @@ msgstr ""
 #: includes/include.con_edit_form.php:908
 msgid ""
 "The called article is synchronized. If you want to move it please make sure "
-"that the target category of this article exist in all languages."
+"that the target category of this article exists in all languages."
 msgstr ""
 
 #: includes/include.con_edit_form.php:921
