@@ -33,6 +33,7 @@ if (function_exists('get_magic_quotes_gpc')) {
 // Simulate get_magic_quotes_gpc on if turned off
 if (CON_STRIPSLASHES) {
 
+    // class cString is not loaded here as autoloader wasn't called yet
     if (false === class_exists('cString')) {
         include_once dirname(__DIR__) . '/classes/class.string.php';
     }
