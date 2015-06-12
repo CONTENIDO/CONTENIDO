@@ -48,9 +48,9 @@ function checkLangInClients($aClients, $iLang, $aCfg, $oDb) {
  *         ID of the new element
  * @param int $idlang
  *         ID of language, if passed only rights for this language
- *         will be created, otherwhise for all existing languages
+ *         will be created, otherwise for all existing languages
  * @return bool
- *         True on success otherwhise false
+ *         True on success otherwise false
  */
 function copyRightsForElement($area, $iditem, $newiditem, $idlang = false) {
     global $perm, $auth, $area_tree;
@@ -120,9 +120,9 @@ function copyRightsForElement($area, $iditem, $newiditem, $idlang = false) {
  *         ID of new element
  * @param int $idlang
  *         ID of language, if passed only rights for this language
- *         will be created, otherwhise for all existing languages
+ *         will be created, otherwise for all existing languages
  * @return bool
- *         True on success otherwhise false
+ *         True on success otherwise false
  */
 function createRightsForElement($area, $iditem, $idlang = false) {
     global $perm, $auth, $area_tree, $client;

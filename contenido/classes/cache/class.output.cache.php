@@ -270,7 +270,7 @@ VALID UNTIL: %s
      * enabled.
      *
      * @return string
-     *         Information about cache if caching is enabled, otherwhise nothing.
+     *         Information about cache if caching is enabled, otherwise nothing.
      */
     public function getInfo() {
         if (!$this->_bEnableCaching) {
@@ -539,7 +539,7 @@ class cOutputCacheHandler extends cOutputCache {
      *         State of create code (0 or 1).
      *         The state will be loaded from database if value is NULL
      * @return bool
-     *         True if code is to create, otherwhise false.
+     *         True if code is to create, otherwise false.
      */
     protected function _isCode2Create($iCreateCode) {
         if ($this->_bEnableCaching == false) {

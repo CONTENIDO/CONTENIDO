@@ -374,7 +374,7 @@ class cApiArticleLanguage extends Item {
      *         Language id
      *         Flag to fetch content
      * @return bool
-     *         true on success, otherwhise false
+     *         true on success, otherwise false
      */
     public function loadByArticleAndLanguageId($idart, $idlang) {
         $result = true;

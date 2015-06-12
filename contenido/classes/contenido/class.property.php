@@ -102,7 +102,7 @@ class cApiPropertyCollection extends ItemCollection {
         global $cfg, $client, $lang;
 
         if (0 === $idclient) {
-            // @todo Make client id parameter mandatory, otherwhise using the global variable
+            // @todo Make client id parameter mandatory, otherwise using the global variable
             // may lead to unwanted issues!
             $idclient = $client;
         }

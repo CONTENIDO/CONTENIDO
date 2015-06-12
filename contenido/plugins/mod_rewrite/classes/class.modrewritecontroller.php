@@ -511,7 +511,7 @@ class ModRewriteController extends ModRewriteBase {
             $this->_setError(self::ERROR_CATEGORY);
             $idcat = NULL;
         } else {
-            // unset $this->_sPath if $idcat could set, otherwhise it would be resolved again.
+            // unset $this->_sPath if $idcat could set, otherwise it would be resolved again.
             unset($this->_sPath);
         }
 

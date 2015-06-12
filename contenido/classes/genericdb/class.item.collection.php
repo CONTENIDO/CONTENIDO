@@ -742,7 +742,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param string $sLimit [optional]
      *         Specifies the limit by clause.
      * @return bool
-     *         True on success, otherwhise false
+     *         True on success, otherwise false
      */
     public function select($sWhere = '', $sGroupBy = '', $sOrderBy = '', $sLimit = '') {
         unset($this->objects);
@@ -797,7 +797,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param string $sLimit [optional]
      *         Specifies the limit by clause.
      * @return bool
-     *         True on success, otherwhise false
+     *         True on success, otherwise false
      */
     public function flexSelect($sDistinct = '', $sFrom = '', $sWhere = '', $sGroupBy = '', $sOrderBy = '', $sLimit = '') {
         unset($this->objects);

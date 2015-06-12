@@ -200,7 +200,7 @@ class cUri {
      * @param string $sUrl
      *         Url to check
      * @return bool
-     *         True if url is a external url, otherwhise false
+     *         True if url is a external url, otherwise false
      */
     public function isExternalUrl($sUrl) {
         $aComponents = $this->parse($sUrl);
@@ -237,7 +237,7 @@ class cUri {
      * @param string $sUrl
      *         Url to check
      * @return bool
-     *         True if url is identifiable internal url, otherwhise false
+     *         True if url is identifiable internal url, otherwise false
      */
     public function isIdentifiableFrontContentUrl($sUrl) {
         if ($this->isExternalUrl($sUrl)) {

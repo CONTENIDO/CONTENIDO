@@ -536,7 +536,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
      * @param bool $fetchContent
      *         Flag to fetch content
      * @return bool
-     *         true on success, otherwhise false
+     *         true on success, otherwise false
      */
     public function loadByArticleLanguageIdAndVersion($idArtLang, $version, $fetchContent = false) {
         $result = true;

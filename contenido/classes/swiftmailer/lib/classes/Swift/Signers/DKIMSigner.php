@@ -101,7 +101,7 @@ class Swift_Signers_DKIMSigner implements Swift_Signers_HeaderSigner
 
     /**
      * When will the signature expires false means not embedded, if sigTimestamp is auto
-     * Expiration is relative, otherwhise it's absolute
+     * Expiration is relative, otherwise it's absolute
      *
      * @var int
      */
