@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-12 13:35+0200\n"
-"PO-Revision-Date: 2015-06-12 13:40+0100\n"
+"POT-Creation-Date: 2015-06-12 14:18+0200\n"
+"PO-Revision-Date: 2015-06-12 14:18+0100\n"
 "Last-Translator: Thomas Stauer <thomas.stauer@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: de_DE\n"
@@ -289,27 +289,27 @@ msgstr "Bitte Dateinamen angeben."
 
 #: classes/class.layout.synchronizer.php:90
 #, php-format
-msgid "Synchronization successfully layout name: %s"
+msgid "Layout synchronization successful: %s"
 msgstr "Layout wurde synchronisiert: %s"
 
 #: classes/class.layout.synchronizer.php:213
-msgid "Synchronization successfully layout name: "
+msgid "Layout synchronization successful: "
 msgstr "Layout erfolgreich synchronisiert: "
 
 #: classes/class.layout.synchronizer.php:224
-msgid "Synchronization successfully layout name made: "
+msgid "Layout synchronization successful, created: "
 msgstr "Layout wurde erfolgreich synchronisiert: "
 
 #: classes/class.layout.synchronizer.php:229
-msgid "Synchronization successfully layout deleted: "
+msgid "Layout synchronization successful, deleted: "
 msgstr "Layout erfolgreich synchronisiert, Layout gelöscht: "
 
 #: classes/class.layout.synchronizer.php:231
-msgid "Synchronization faild cold not delate layout: "
+msgid "Synchronization failed cold not delete layout: "
 msgstr "Synchronisation fehlgeschlagen, konnte das Layout nicht löschen: "
 
 #: classes/class.layout.synchronizer.php:251
-msgid "Synchronization successfully!"
+msgid "Synchronization successful!"
 msgstr "Sychronisierung war erfolgreich!"
 
 #: classes/class.note.php:378 classes/class.note.php:381
@@ -2680,7 +2680,7 @@ msgid "Can't save layout in file"
 msgstr "Konnte Datei %s nicht öffnen"
 
 #: includes/functions.lay.php:76 includes/functions.lay.php:127
-msgid "Saved layout succsessfully!"
+msgid "Saved layout successfully!"
 msgstr "Änderungen wurden erfolgreich gespeichert!"
 
 #: includes/functions.lay.php:93

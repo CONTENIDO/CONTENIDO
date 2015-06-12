@@ -87,7 +87,7 @@ class cLayoutSynchronizer {
             }
 
             // set output message
-            $this->_outputMessage['info'][] = sprintf(i18n("Synchronization successfully layout name: %s"), $newLayoutName);
+            $this->_outputMessage['info'][] = sprintf(i18n("Layout synchronization successful: %s"), $newLayoutName);
         } else {
             // update the name of the layout
             if ($oldLayoutName != $newLayoutName) {
@@ -210,7 +210,7 @@ class cLayoutSynchronizer {
                         $layout = new cLayoutHandler($db->f('idlay'), ' ', $this->_cfg, $this->_lang);
                         // Update CODE table
                         conGenerateCodeForAllartsUsingLayout($db->f('idlay'));
-                        $this->_outputMessage['info'][] = i18n("Synchronization successfully layout name: ") . $db->f('name');
+                        $this->_outputMessage['info'][] = i18n("Layout synchronization successful: ") . $db->f('name');
                     }
                 }
             } else {
@@ -221,14 +221,14 @@ class cLayoutSynchronizer {
                 if ($oLayout->isInUse()) {
                     // make layout file
                     $layout->saveLayout('');
-                    $this->_outputMessage['info'][] = i18n("Synchronization successfully layout name made: ") . $db->f('name');
+                    $this->_outputMessage['info'][] = i18n("Layout synchronization successful, created: ") . $db->f('name');
                 } else {
                     // if not in use delete layout
                     if ($layout->eraseLayout()) {
                         layDeleteLayout($db->f('idlay'));
-                        $this->_outputMessage['info'][] = i18n("Synchronization successfully layout deleted: ") . $db->f('name');
+                        $this->_outputMessage['info'][] = i18n("Layout synchronization successful, deleted: ") . $db->f('name');
                     } else {
-                        $this->_outputMessage['error'][] = i18n("Synchronization faild cold not delate layout: ") . $db->f('name');
+                        $this->_outputMessage['error'][] = i18n("Synchronization failed cold not delete layout: ") . $db->f('name');
                     }
                 }
             }
@@ -248,7 +248,7 @@ class cLayoutSynchronizer {
             }
         }
         if ($emptyMessage) {
-            $notification->displayNotification('info', i18n("Synchronization successfully!"));
+            $notification->displayNotification('info', i18n("Synchronization successful!"));
         }
     }
 

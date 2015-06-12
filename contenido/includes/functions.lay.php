@@ -73,7 +73,7 @@ function layEditLayout($idlay, $name, $description, $code) {
         if ($layoutInFile->saveLayout($code) == false) {
             cRegistry::addErrorMessage(i18n("Can't save layout in file"));
         } else {
-            cRegistry::addOkMessage(i18n("Saved layout succsessfully!"));
+            cRegistry::addOkMessage(i18n("Saved layout successfully!"));
         }
 
         // Set correct rights for element
@@ -124,7 +124,7 @@ function layEditLayout($idlay, $name, $description, $code) {
             if ($layoutInFile->saveLayout($code) == false) {
                 cRegistry::addWarningMessage(sprintf(i18n("The file %s has no write permissions. Saving only database changes!"), $layoutInFile->_getFileName()));
             } else {
-                cRegistry::addOkMessage(i18n("Saved layout succsessfully!"));
+                cRegistry::addOkMessage(i18n("Saved layout successfully!"));
             }
             $layout = new cApiLayout(cSecurity::toInteger($idlay));
             $layout->set('name', $name);

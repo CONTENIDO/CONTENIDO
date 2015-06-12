@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-12 13:35+0200\n"
+"POT-Creation-Date: 2015-06-12 14:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -290,27 +290,27 @@ msgstr ""
 
 #: classes/class.layout.synchronizer.php:90
 #, php-format
-msgid "Synchronization successfully layout name: %s"
+msgid "Layout synchronization successful: %s"
 msgstr ""
 
 #: classes/class.layout.synchronizer.php:213
-msgid "Synchronization successfully layout name: "
+msgid "Layout synchronization successful: "
 msgstr ""
 
 #: classes/class.layout.synchronizer.php:224
-msgid "Synchronization successfully layout name made: "
+msgid "Layout synchronization successful, created: "
 msgstr ""
 
 #: classes/class.layout.synchronizer.php:229
-msgid "Synchronization successfully layout deleted: "
+msgid "Layout synchronization successful, deleted: "
 msgstr ""
 
 #: classes/class.layout.synchronizer.php:231
-msgid "Synchronization faild cold not delate layout: "
+msgid "Synchronization failed cold not delete layout: "
 msgstr ""
 
 #: classes/class.layout.synchronizer.php:251
-msgid "Synchronization successfully!"
+msgid "Synchronization successful!"
 msgstr ""
 
 #: classes/class.note.php:378 classes/class.note.php:381
@@ -2470,7 +2470,7 @@ msgid "Can't save layout in file"
 msgstr ""
 
 #: includes/functions.lay.php:76 includes/functions.lay.php:127
-msgid "Saved layout succsessfully!"
+msgid "Saved layout successfully!"
 msgstr ""
 
 #: includes/functions.lay.php:93
