@@ -341,15 +341,15 @@ class SearchResultModule {
 
             // get headlines
             $headlines = $this->_searchResults->getSearchContent($idart, 'HTMLHEAD', 1);
-            $headline = cApiStrTrimAfterWord($headlines[0], $this->_maxTeaserTextLen);
+            $headline = cString::trimAfterWord($headlines[0], $this->_maxTeaserTextLen);
 
             // get subheadlines
             $subheadlines = $this->_searchResults->getSearchContent($idart, 'HTMLHEAD', 2);
-            $subheadline = cApiStrTrimAfterWord($subheadlines[0], $this->_maxTeaserTextLen);
+            $subheadline = cString::trimAfterWord($subheadlines[0], $this->_maxTeaserTextLen);
 
             // get paragraphs
             $paragraphs = $this->_searchResults->getSearchContent($idart, 'HTML', 1);
-            $paragraph = cApiStrTrimAfterWord($paragraphs[0], $this->_maxTeaserTextLen);
+            $paragraph = cString::trimAfterWord($paragraphs[0], $this->_maxTeaserTextLen);
 
             // get similarity
             $similarity = $this->_searchResults->getSimilarity($idart);
