@@ -148,9 +148,9 @@ switch ($versioningState) {
 
         // Create markAsCurrent Button
         if ($articleType == 'current' || $articleType == 'version') {
-            $buttonTitle = i18n('Copy to Draft');
+            $buttonTitle = i18n('Copy to draft');
         } else if ($articleType == 'editable') {
-            $buttonTitle = i18n('Publish Draft');
+            $buttonTitle = i18n('Publish draft');
         }
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle, 'copytobutton');
         if ($action == 'con_newart') {
@@ -159,10 +159,10 @@ switch ($versioningState) {
         $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
 
         $infoButton = new cGuiBackendHelpbox(i18n(
-                '<strong>Advanced-Mode:</strong>  '
-                . 'Former Article Versions can be reviewed and restored. Unpublished drafts can be created.'
+                '<strong>Advanced-mode:</strong>  '
+                . 'Former article versions can be reviewed and restored. Unpublished drafts can be created.'
                 . ' (For further configurations please go to Administration/System/System configuration).<br/><br/>'
-                . 'Changes are related to Article Properties, SEO\'s and Contents!'));
+                . 'Changes are related to article properties, SEO\'s and contents!'));
         $page->set('s', 'INFO_BUTTON_VERSION_SELECTION', $infoButton->render());
 
         break;
@@ -220,12 +220,12 @@ switch ($versioningState) {
 
         $selectElement->setEvent("onchange", "selectVersion.idArtLangVersion.value=$('#selectVersionElement option:selected').val();selectVersion.submit()");
 
-        $infoButton = new cGuiBackendHelpbox(i18n('<strong>Simple-Mode:</strong>'
-            . ' Older Article Versions can be reviewed and restored (For further configurations please go to'
+        $infoButton = new cGuiBackendHelpbox(i18n('<strong>Simple-mode:</strong>'
+            . ' Older article versions can be reviewed and restored (For further configurations please go to'
             . ' Administration/System/System configuration).<br/><br/>'
-            . 'Changes are related to Article Properties, SEO\'s and Contents!'));
+            . 'Changes are related to article properties, SEO\'s and contents!'));
         // Create markAsCurrent Button
-        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to Published Version'), 'copytobutton');
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to published version'), 'copytobutton');
         if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
@@ -243,12 +243,12 @@ switch ($versioningState) {
         $selectElement->setAttribute('disabled', 'disabled');
         $page->set('s', 'SELECT_ELEMENT', $selectElement->toHtml());
 
-        $buttonTitle = i18n('Copy to Published Version');
+        $buttonTitle = i18n('Copy to published version');
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
         $markAsCurrentButton->setAttribute('disabled', 'disabled');
         $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
 
-        $infoButton = new cGuiBackendHelpbox(i18n('For reviewing and restoring older Article Versions activate the Article Versioning under Administration/System/System configuration.'));
+        $infoButton = new cGuiBackendHelpbox(i18n('For reviewing and restoring older article versions activate the article versioning under Administration/System/System configuration.'));
         $page->set('s', 'INFO_BUTTON_VERSION_SELECTION', $infoButton->render());
 
     default:

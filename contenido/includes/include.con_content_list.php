@@ -570,14 +570,14 @@ switch ($versioningState) {
         }
         // Create markAsCurrent Button/Label
         $page->set('s', 'COPY_LABEL', i18n('Copy Version'));
-        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to Published Version'));
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to published version'));
         $markAsCurrentButton->setEvent('onclick', "copyto.idArtLangVersion.value=$('#selectVersionElement option:selected').val();copyto.submit()");
         if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple' || ($locked == 1 && false === $admin)) {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
         $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
 
-        $versioning_info_text = i18n("<strong>Mode simple:</strong> Older Content Versions can be restored and reviewed "
+        $versioning_info_text = i18n("<strong>Simple-mode:</strong> Older content versions can be restored and reviewed "
                 . "(Configurations under Administration/System configuration).<br/><br/>Changes only refer to contents itself!");
 
         $page->set('s', 'VERSIONING_INFO_TEXT', $versioning_info_text);
@@ -689,9 +689,9 @@ switch ($versioningState) {
 
         // Create markAsCurrent Button
         if ($articleType == 'current' || $articleType == 'version') {
-            $buttonTitle = i18n('Copy to Draft');
+            $buttonTitle = i18n('Copy to draft');
         } else if ($articleType == 'editable') {
-            $buttonTitle = i18n('Publish Draft');
+            $buttonTitle = i18n('Publish draft');
         }
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
         $markAsCurrentButton->setEvent('onclick', "copyto.idArtLangVersion.value=$('#selectVersionElement option:selected').val();copyto.submit()");
@@ -699,7 +699,7 @@ switch ($versioningState) {
 
         $versioning_info_text = i18n(
                 '<strong>Mode advanced:</strong> '
-                . 'Older Content Versions can be reviewd and restored. Unpublished drafts'
+                . 'Older content versions can be reviewed and restored. Unpublished drafts'
                 . ' can be created (For further configurations please go to Administration/System/System configuration).<br/><br/>'
                 . 'Changes are only related to Contents!');
         $page->set('s', 'VERSIONING_INFO_TEXT', $versioning_info_text);
@@ -713,12 +713,12 @@ switch ($versioningState) {
         $selectElement->setAttribute('disabled', 'disabled');
         $page->set('s', 'ARTICLE_VERSION_SELECTION', $selectElement->toHtml());
 
-        $buttonTitle = i18n('Copy to Published Version');
+        $buttonTitle = i18n('Copy to published version');
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
         $markAsCurrentButton->setAttribute('disabled', 'disabled');
         $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
 
-        $versioning_info_text = i18n('For reviewing and restoring older Article Versions activate the Article Versioning under Administration/System/System configuration.');
+        $versioning_info_text = i18n('For reviewing and restoring older article versions activate the article versioning under Administration/System/System configuration.');
         $page->set('s', 'VERSIONING_INFO_TEXT', $versioning_info_text);
 
         // get selected article

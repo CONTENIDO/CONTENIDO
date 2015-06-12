@@ -396,15 +396,15 @@ switch ($versioning->getState()) {
 
         // Create markAsCurrent Button
         if ($articleType == 'current' || $articleType == 'version') {
-            $buttonTitle = i18n('Copy to Draft');
+            $buttonTitle = i18n('Copy to draft');
         } else if ($articleType == 'editable') {
-            $buttonTitle = i18n('Publish Draft');
+            $buttonTitle = i18n('Publish draft');
         }
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle, 'copytobutton');
         $tpl->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
 
-        $infoButton =  new cGuiBackendHelpbox(i18n('<strong>Advanced-Mode:</strong> '
-                . 'Older SEO Versions can be reviewed and restored. Unpublished drafts can be created (For further configurations please go to Administration/System/System configuration).<br/><br/>'
+        $infoButton =  new cGuiBackendHelpbox(i18n('<strong>Advanced-mode:</strong> '
+                . 'Older SEO versions can be reviewed and restored. Unpublished drafts can be created (For further configurations please go to Administration/System/System configuration).<br/><br/>'
                 . 'Changes are only related to SEO!'));
         $tpl->set("s", "INFO_BUTTON_VERSION_SELECTION", $infoButton->render());
 
@@ -456,14 +456,14 @@ switch ($versioning->getState()) {
 
 
         // Create markAsCurrent Button
-        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to Published Version'), 'copytobutton');
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to published version'), 'copytobutton');
         if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
         $tpl->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
 
-        $infoButton =  new cGuiBackendHelpbox(i18n('<strong>Simple-Mode:</strong> '
-                . 'Older SEO Versions can be reviewed and restored (For further configurations please go to Administration/System/System configuration).<br/><br/>'
+        $infoButton =  new cGuiBackendHelpbox(i18n('<strong>Simple-mode:</strong> '
+                . 'Older SEO versions can be reviewed and restored (For further configurations please go to Administration/System/System configuration).<br/><br/>'
                 . 'Changes are only related to SEO!'));
         $tpl->set("s", "INFO_BUTTON_VERSION_SELECTION", $infoButton->render());
 
@@ -477,12 +477,12 @@ switch ($versioning->getState()) {
         $selectElement->setAttribute('disabled', 'disabled');
         $tpl->set('s', 'SELECT_ELEMENT', $selectElement->toHtml());
 
-        $buttonTitle = i18n('Copy to Published Version');
+        $buttonTitle = i18n('Copy to published version');
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
         $markAsCurrentButton->setAttribute('disabled', 'disabled');
         $tpl->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
 
-        $infoButton = new cGuiBackendHelpbox(i18n('For reviewing and restoring older Article Versions activate the Article Versioning under Administration/System/System configuration.'));
+        $infoButton = new cGuiBackendHelpbox(i18n('For reviewing and restoring older article versions activate the article versioning under Administration/System/System configuration.'));
         $tpl->set('s', 'INFO_BUTTON_VERSION_SELECTION', $infoButton->render());
 
     default :

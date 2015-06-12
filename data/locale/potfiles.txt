@@ -872,3 +872,4 @@
 ../data/config/production/config.path.php
 ../data/config/production/config.php
 ../data/config/production/config.templates.php
+../data/config/production/config.wysiwyg_tinymce4.php

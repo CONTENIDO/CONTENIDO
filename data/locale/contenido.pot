@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-28 10:40+0200\n"
+"POT-Creation-Date: 2015-06-12 13:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,7 +22,7 @@ msgid "Thank you for saving this search from extinction!"
 msgstr ""
 
 #: backend_search.php:485
-#: classes/content_types/class.content.type.imgeditor.php:507
+#: classes/content_types/class.content.type.imgeditor.php:508
 #: classes/content_types/class.content.type.linkeditor.php:315
 #: includes/include.con_art_overview.php:83
 #: includes/include.con_art_overview.php:722
@@ -226,7 +226,7 @@ msgstr ""
 
 #: classes/class.ajax.php:150 classes/class.ajax.php:166
 #: classes/module/class.module.template.handler.php:611
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:124
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:123
 #: includes/include.clientsettings.php:79
 #: includes/include.clientsettings.php:163
 #: includes/include.html_tpl_history.php:158
@@ -1288,7 +1288,7 @@ msgid "File list settings"
 msgstr ""
 
 #: classes/content_types/class.content.type.filelist.php:586
-#: classes/content_types/class.content.type.imgeditor.php:384
+#: classes/content_types/class.content.type.imgeditor.php:385
 msgid "Directories"
 msgstr ""
 
@@ -1444,29 +1444,29 @@ msgstr ""
 
 #: classes/content_types/class.content.type.filelist.php:1047
 #: classes/content_types/class.content.type.filelist.php:1048
-#: classes/content_types/class.content.type.imgeditor.php:664
 #: classes/content_types/class.content.type.imgeditor.php:665
+#: classes/content_types/class.content.type.imgeditor.php:666
 #: includes/include.upl_search_results.php:352
 msgid "No files found"
 msgstr ""
 
-#: classes/content_types/class.content.type.imgeditor.php:380
+#: classes/content_types/class.content.type.imgeditor.php:381
 msgid "Image settings"
 msgstr ""
 
-#: classes/content_types/class.content.type.imgeditor.php:385
+#: classes/content_types/class.content.type.imgeditor.php:386
 msgid "Meta"
 msgstr ""
 
-#: classes/content_types/class.content.type.imgeditor.php:386
+#: classes/content_types/class.content.type.imgeditor.php:387
 msgid "Upload"
 msgstr ""
 
-#: classes/content_types/class.content.type.imgeditor.php:504
+#: classes/content_types/class.content.type.imgeditor.php:505
 msgid "Selected file"
 msgstr ""
 
-#: classes/content_types/class.content.type.imgeditor.php:509
+#: classes/content_types/class.content.type.imgeditor.php:510
 #: includes/include.grouprights_create.php:82
 #: includes/include.grouprights_lay.php:85
 #: includes/include.grouprights_mod.php:85
@@ -1491,29 +1491,29 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: classes/content_types/class.content.type.imgeditor.php:511
+#: classes/content_types/class.content.type.imgeditor.php:512
 #: includes/include.upl_edit.php:74
 #: templates/standard/template.con_meta_edit_form.html:116
 msgid "Keywords"
 msgstr ""
 
-#: classes/content_types/class.content.type.imgeditor.php:513
+#: classes/content_types/class.content.type.imgeditor.php:514
 #: includes/include.upl_edit.php:75
 msgid "Internal notes"
 msgstr ""
 
-#: classes/content_types/class.content.type.imgeditor.php:515
+#: classes/content_types/class.content.type.imgeditor.php:516
 #: includes/include.upl_edit.php:76
 #: templates/standard/template.con_meta_edit_form.html:124
 msgid "Copyright"
 msgstr ""
 
-#: classes/content_types/class.content.type.imgeditor.php:541
+#: classes/content_types/class.content.type.imgeditor.php:542
 #: classes/content_types/class.content.type.linkeditor.php:579
 msgid "Create a directory in"
 msgstr ""
 
-#: classes/content_types/class.content.type.imgeditor.php:586
+#: classes/content_types/class.content.type.imgeditor.php:587
 #: classes/content_types/class.content.type.linkeditor.php:624
 #: includes/functions.stat.php:322 includes/functions.stat.php:418
 #: includes/functions.stat.php:654 includes/functions.stat.php:729
@@ -1632,8 +1632,8 @@ msgid "Unknown article"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:891
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:185
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:186
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:183
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:184
 #: includes/include.clientsettings.php:92
 #: includes/include.client_artspec.php:72
 #: includes/include.con_translate.php:755
@@ -2039,7 +2039,7 @@ msgstr ""
 
 #: classes/module/class.module.template.handler.php:598
 #: classes/module/class.module.template.handler.php:601
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:134
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:133
 #: includes/include.con_edit_form.php:353 includes/include.logs.php:267
 #: includes/include.mail_log.php:91 includes/include.mail_log.php:221
 #: includes/include.systemsettings.php:73
@@ -2145,12 +2145,12 @@ msgstr ""
 msgid "Note: This only affects the current history."
 msgstr ""
 
-#: classes/versioning/class.contentversioning.php:114
+#: classes/versioning/class.contentversioning.php:115
 #, php-format
 msgid "%d minutes ago"
 msgstr ""
 
-#: classes/versioning/class.contentversioning.php:282
+#: classes/versioning/class.contentversioning.php:294
 #: templates/standard/template.con_content_list.html:58
 #: templates/standard/template.con_edit_form.html:110
 #: templates/standard/template.con_meta_edit_form.html:67
@@ -2173,132 +2173,136 @@ msgstr ""
 msgid "The given client's frontend directory (%s) is not a directory."
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:129
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:128
 msgid "URL"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:334
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:332
 msgid "TinyMCE 4 configuration got reset back to default"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:337
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:335
 msgid "Can not delete config file"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:371
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:368
 msgid "Fullscreen config of inline editor is erroneous."
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:375
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:372
 msgid "Config of editor on separate editor page is erroneous."
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:379
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:376
 msgid "Custom configuration of tinyMCE 4 is not set."
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:390
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:387
 msgid "Toolbar(s) of editor contain erroneous data."
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:410
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:407
 msgid "Maximum stack depth exceeded while decoding json"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:413
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:410
 msgid "Unexpected control character found"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:416
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:413
 msgid "Syntax error, malformed JSON"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:496
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:490
 #: includes/include.system_configuration.php:294
 msgid "Access denied"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:502
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:496
 msgid "The following errors occurred when trying to verify configuration:"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:510
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:504
 msgid "Currently active WYSIWYG editor: "
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:533
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:527
 msgid "TinyMCE 4 configuration for "
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:556
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:550
 msgid "Settings of editor in separate editor page"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:574
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:568
 msgid "Settings of inline editor in inline mode"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:592
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:586
 msgid "Settings of inline editor in fullscreen mode"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:597
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:591
 msgid ""
 "GZIP TinyMCE (only activate if server does not compress content already)"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:598
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:592
 msgid "contenido_gzip"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:603
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:597
 msgid "Provide jump lists in image insertion dialog"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:605
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:599
 msgid "Provide jump lists in link insertion dialog"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:606
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:600
 msgid "contenido_lists"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:611
-msgid "External plugins to load"
-msgstr ""
-
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:621
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:610
 msgid "Additional parameters (JSON passed to tinymce constructor)"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:625
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:614
 #: includes/include.system_configuration.php:245
 msgid "You are not sysadmin. You can't change these settings."
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:638
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:622
+msgid "TinyMCE 4 configuration for external plugins"
+msgstr ""
+
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:629
+msgid "External plugins to load"
+msgstr ""
+
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:640
 msgid "Reset configuration back to default"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:639
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:641
 msgid "Reset Configuration"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.editor.php:552
-#: includes/include.con_content_list.php:780
-#: includes/include.con_editcontent.php:177
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.editor.php:587
+#: includes/include.con_content_list.php:800
+#: includes/include.con_editcontent.php:175
 msgid "Close editor"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.editor.php:553
-#: includes/include.con_content_list.php:781
-#: includes/include.con_editcontent.php:178
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.editor.php:588
+#: includes/include.con_content_list.php:801
+#: includes/include.con_editcontent.php:176
 msgid "Close editor and save changes"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.editor.php:554
-#: includes/include.con_content_list.php:782
-#: includes/include.con_editcontent.php:179
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.editor.php:589
+#: includes/include.con_content_list.php:802
+#: includes/include.con_editcontent.php:177
 msgid "You have unsaved changes."
 msgstr ""
 
@@ -2325,18 +2329,18 @@ msgstr ""
 msgid "Article is in use by %s (%s)"
 msgstr ""
 
-#: includes/frontend/include.front_content.php:416
+#: includes/frontend/include.front_content.php:424
 msgid ""
 "The following modules are erroneus and are therefore not executed:<br>\n"
 msgstr ""
 
-#: includes/frontend/include.front_content.php:445
+#: includes/frontend/include.front_content.php:453
 msgid ""
 "Editing is not possible because there is no template assigned to this "
 "category."
 msgstr ""
 
-#: includes/frontend/include.front_content.php:446
+#: includes/frontend/include.front_content.php:454
 msgid "FATAL ERROR"
 msgstr ""
 
@@ -2350,7 +2354,7 @@ msgid "Lost and found"
 msgstr ""
 
 #: includes/functions.con.php:1589 includes/functions.str.php:1175
-#: includes/functions.tpl.php:371
+#: includes/functions.tpl.php:368
 #, php-format
 msgid "%s (Copy)"
 msgstr ""
@@ -2672,7 +2676,7 @@ msgstr ""
 msgid "Error log successfully cleared!"
 msgstr ""
 
-#: includes/functions.tpl.php:45
+#: includes/functions.tpl.php:42
 msgid "Template name already exists"
 msgstr ""
 
@@ -3298,10 +3302,10 @@ msgstr ""
 msgid "Please choose a file"
 msgstr ""
 
-#: includes/include.con_content_list.php:510
-#: includes/include.con_content_list.php:627
-#: includes/include.con_editcontent.php:240
-#: includes/include.con_editcontent.php:349
+#: includes/include.con_content_list.php:513
+#: includes/include.con_content_list.php:644
+#: includes/include.con_editcontent.php:238
+#: includes/include.con_editcontent.php:347
 #: includes/include.con_edit_form.php:126
 #: includes/include.con_edit_form.php:182
 #: includes/include.con_meta_form.php:375
@@ -3309,98 +3313,98 @@ msgstr ""
 msgid "Published Version"
 msgstr ""
 
-#: includes/include.con_content_list.php:558
-#: includes/include.con_content_list.php:665
+#: includes/include.con_content_list.php:572
+#: includes/include.con_content_list.php:682
 msgid "Copy Version"
 msgstr ""
 
-#: includes/include.con_content_list.php:559
-#: includes/include.con_content_list.php:699
-#: includes/include.con_editcontent.php:279
-#: includes/include.con_editcontent.php:421
+#: includes/include.con_content_list.php:573
+#: includes/include.con_content_list.php:716
+#: includes/include.con_editcontent.php:277
+#: includes/include.con_editcontent.php:419
 #: includes/include.con_edit_form.php:228
 #: includes/include.con_edit_form.php:246
 #: includes/include.con_meta_form.php:459
 #: includes/include.con_meta_form.php:480
-msgid "Copy to Published Version"
+msgid "Copy to published version"
 msgstr ""
 
-#: includes/include.con_content_list.php:566
-#: includes/include.con_editcontent.php:285
+#: includes/include.con_content_list.php:580
+#: includes/include.con_editcontent.php:283
 msgid ""
-"<strong>Mode simple:</strong> Older Content Versions can be restored and "
+"<strong>Simple-mode:</strong> Older content versions can be restored and "
 "reviewed (Configurations under Administration/System configuration).<br/><br/"
 ">Changes only refer to contents itself!"
 msgstr ""
 
-#: includes/include.con_content_list.php:618
-#: includes/include.con_editcontent.php:339
+#: includes/include.con_content_list.php:635
+#: includes/include.con_editcontent.php:337
 #: includes/include.con_edit_form.php:96
 #: includes/include.con_meta_form.php:346
 msgid "Draft"
 msgstr ""
 
-#: includes/include.con_content_list.php:675
-#: includes/include.con_editcontent.php:391
+#: includes/include.con_content_list.php:692
+#: includes/include.con_editcontent.php:389
 #: includes/include.con_edit_form.php:151
 #: includes/include.con_meta_form.php:399
-msgid "Copy to Draft"
+msgid "Copy to draft"
 msgstr ""
 
-#: includes/include.con_content_list.php:677
-#: includes/include.con_editcontent.php:393
+#: includes/include.con_content_list.php:694
+#: includes/include.con_editcontent.php:391
 #: includes/include.con_edit_form.php:153
 #: includes/include.con_meta_form.php:401
-msgid "Publish Draft"
+msgid "Publish draft"
 msgstr ""
 
-#: includes/include.con_content_list.php:684
-#: includes/include.con_editcontent.php:400
+#: includes/include.con_content_list.php:701
+#: includes/include.con_editcontent.php:398
 msgid ""
-"<strong>Mode advanced:</strong> Older Content Versions can be reviewd and "
+"<strong>Mode advanced:</strong> Older content versions can be reviewed and "
 "restored. Unpublished drafts can be created (For further configurations "
 "please go to Administration/System/System configuration).<br/><br/>Changes "
 "are only related to Contents!"
 msgstr ""
 
-#: includes/include.con_content_list.php:704
-#: includes/include.con_editcontent.php:426
+#: includes/include.con_content_list.php:721
+#: includes/include.con_editcontent.php:424
 #: includes/include.con_edit_form.php:251
 #: includes/include.con_meta_form.php:485
 msgid ""
-"For reviewing and restoring older Article Versions activate the Article "
-"Versioning under Administration/System/System configuration."
+"For reviewing and restoring older article versions activate the article "
+"versioning under Administration/System/System configuration."
 msgstr ""
 
-#: includes/include.con_content_list.php:786
+#: includes/include.con_content_list.php:806
 msgid "Export raw data"
 msgstr ""
 
-#: includes/include.con_content_list.php:787
+#: includes/include.con_content_list.php:807
 msgid "Import raw data"
 msgstr ""
 
-#: includes/include.con_content_list.php:788
+#: includes/include.con_content_list.php:808
 msgid "Raw data export"
 msgstr ""
 
-#: includes/include.con_content_list.php:789
+#: includes/include.con_content_list.php:809
 msgid "Raw data import"
 msgstr ""
 
-#: includes/include.con_content_list.php:790
+#: includes/include.con_content_list.php:810
 msgid "Overwrite data"
 msgstr ""
 
-#: includes/include.con_content_list.php:814
+#: includes/include.con_content_list.php:825
 msgid "Article has no raw data"
 msgstr ""
 
-#: includes/include.con_content_list.php:828
+#: includes/include.con_content_list.php:839
 msgid "Export"
 msgstr ""
 
-#: includes/include.con_content_list.php:910
+#: includes/include.con_content_list.php:928
 #: includes/include.con_edit_form.php:588
 #: includes/include.con_edit_form.php:589
 #: includes/include.con_meta_form.php:144
@@ -3410,25 +3414,25 @@ msgstr ""
 msgid "This article is currently frozen and can not be edited!"
 msgstr ""
 
-#: includes/include.con_content_list.php:1008
-#: includes/include.con_content_list.php:1011
+#: includes/include.con_content_list.php:1023
+#: includes/include.con_content_list.php:1026
 msgid "Are you sure you want to delete this content type from this article?"
 msgstr ""
 
 #: includes/include.con_edit_form.php:162
 msgid ""
-"<strong>Advanced-Mode:</strong>  Former Article Versions can be reviewed and "
+"<strong>Advanced-mode:</strong>  Former article versions can be reviewed and "
 "restored. Unpublished drafts can be created. (For further configurations "
 "please go to Administration/System/System configuration).<br/><br/>Changes "
-"are related to Article Properties, SEO's and Contents!"
+"are related to article properties, SEO's and contents!"
 msgstr ""
 
 #: includes/include.con_edit_form.php:223
 msgid ""
-"<strong>Simple-Mode:</strong> Older Article Versions can be reviewed and "
+"<strong>Simple-mode:</strong> Older article versions can be reviewed and "
 "restored (For further configurations please go to Administration/System/"
-"System configuration).<br/><br/>Changes are related to Article Properties, "
-"SEO's and Contents!"
+"System configuration).<br/><br/>Changes are related to article properties, "
+"SEO's and contents!"
 msgstr ""
 
 #: includes/include.con_edit_form.php:342
@@ -3687,7 +3691,7 @@ msgstr ""
 
 #: includes/include.con_meta_form.php:406
 msgid ""
-"<strong>Advanced-Mode:</strong> Older SEO Versions can be reviewed and "
+"<strong>Advanced-mode:</strong> Older SEO versions can be reviewed and "
 "restored. Unpublished drafts can be created (For further configurations "
 "please go to Administration/System/System configuration).<br/><br/>Changes "
 "are only related to SEO!"
@@ -3695,7 +3699,7 @@ msgstr ""
 
 #: includes/include.con_meta_form.php:465
 msgid ""
-"<strong>Simple-Mode:</strong> Older SEO Versions can be reviewed and "
+"<strong>Simple-mode:</strong> Older SEO versions can be reviewed and "
 "restored (For further configurations please go to Administration/System/"
 "System configuration).<br/><br/>Changes are only related to SEO!"
 msgstr ""
@@ -4005,14 +4009,14 @@ msgid "-- All Groups --"
 msgstr ""
 
 #: includes/include.frontend.left_top.php:345
-#: includes/include.frontend.user_menu.php:274
+#: includes/include.frontend.user_menu.php:275
 #: includes/include.rights_menu.php:103
 #, php-format
 msgid "Do you really want to delete the user %s?"
 msgstr ""
 
 #: includes/include.frontend.left_top.php:347
-#: includes/include.frontend.user_menu.php:252
+#: includes/include.frontend.user_menu.php:253
 #: includes/include.rights_menu.php:107
 #: ../data/config/production/cfg_actions.inc.php:103
 msgid "Delete user"
@@ -5472,18 +5476,18 @@ msgid "Please set this property in systemsettings directly"
 msgstr ""
 
 #: includes/include.system_configuration.php:67 xml/system.xml:44
-msgid "Article Versioning"
+msgid "Article versioning"
 msgstr ""
 
 #: includes/include.system_configuration.php:78
 msgid ""
-"<p><strong>Article Versioning:</strong></p><ul style=\"list-style:none;"
+"<p><strong>Article versioning:</strong></p><ul style=\"list-style:none;"
 "\"><li>Review and restore older versions (simple) and create drafts "
 "(advanced). Versions are generated automatically by changing an article.</"
 "li></ul><p><strong>Modes:</strong></p><ul class=\"list\"><li class=\"first"
-"\"><strong>disabled: </strong> The Article Versioning is disabled.</"
-"li><li><strong>simple: </strong>Older Article Versions can be reviewed and "
-"restored.</li><li><strong>advanced: </strong>Additional to the Simple-Mode, "
+"\"><strong>disabled: </strong> The article versioning is disabled.</"
+"li><li><strong>simple: </strong>Older article versions can be reviewed and "
+"restored.</li><li><strong>advanced: </strong>Additional to the simple-mode, "
 "unpublished drafts can be created.</li></ul><p><strong>Further informations</"
 "strong> can be found in related tabs (Content/Articles/Properties|SEO|Raw "
 "data|Editor).</p></div>"
