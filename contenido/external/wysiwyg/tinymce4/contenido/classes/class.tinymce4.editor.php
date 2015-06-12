@@ -292,7 +292,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
         $aLists = array();
         if (array_key_exists("contenido_lists", $this->_aSettings[$sType])) {
-            $aLists = json_decode($this->_aSettings[$sType]["contenido_lists"], true);
+            $aLists = $this->_aSettings[$sType]["contenido_lists"];
         }
 
         // check if link list is activated
