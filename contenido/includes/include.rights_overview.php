@@ -162,7 +162,7 @@ if ($action == 'user_edit') {
 
     if (!$bError && (strlen($password) == 0 || $bPassOk == true)) {
         if ($ocApiUser->store()) {
-            $sNotification = $notification->returnNotification("info", i18n("Changes saved"));
+            $sNotification = $notification->returnNotification("ok", i18n("Changes saved"));
             $bError = true;
         } else {
             $sNotification = $notification->returnNotification("error", i18n("An error occured while saving user info."));

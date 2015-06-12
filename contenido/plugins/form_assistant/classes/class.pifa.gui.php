@@ -326,7 +326,7 @@ class PifaRightBottomFormPage extends cGuiPage {
                 try {
                     $this->_deleteForm();
                     $cGuiNotification = new cGuiNotification();
-                    $this->set('s', 'notification', $cGuiNotification->returnNotification(cGuiNotification::LEVEL_INFO, Pifa::i18n('FORM_DELETED')));
+                    $this->set('s', 'notification', $cGuiNotification->returnNotification(cGuiNotification::LEVEL_OK, Pifa::i18n('FORM_DELETED')));
                     $this->set('s', 'content', '');
                     $this->setReload();
                 } catch (Exception $e) {
@@ -980,7 +980,7 @@ class PifaRightBottomFormExportPage extends cGuiPage {
         $this->addStyle('right_bottom.css');
         $this->addScript('form_assistant.js');
         $this->addScript('right_bottom.js');
-        
+
         // add translations to template
         $this->set('s', 'I18N', json_encode(array(
             'cancel' => Pifa::i18n('CANCEL'),
@@ -1243,7 +1243,7 @@ class PifaRightBottomFormImportPage extends cGuiPage {
 
             // display success message
             $note = Pifa::i18n('IMPORT_SUCCESS');
-            $out = $cGuiNotification->returnNotification(cGuiNotification::LEVEL_INFO, $note);
+            $out = $cGuiNotification->returnNotification(cGuiNotification::LEVEL_OK, $note);
         } catch (PifaDatabaseException $e) {
             $out = $this->_importFormGet(true);
         }

@@ -43,7 +43,7 @@ if (($action == "group_deletemember") && ($perm->have_perm_area_action($area, $a
         $groupMemberColl->delete((int) $idgroupuser);
     }
 
-    $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Removed member from group successfully!"));
+    $notification->displayNotification(cGuiNotification::LEVEL_OK, i18n("Removed member from group successfully!"));
 }
 
 if (($action == "group_addmember") && ($perm->have_perm_area_action($area, $action))) {
@@ -80,7 +80,7 @@ if (($action == "group_addmember") && ($perm->have_perm_area_action($area, $acti
             }
         }
 
-        $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Added user to group successfully!"));
+        $notification->displayNotification(cGuiNotification::LEVEL_OK, i18n("Added user to group successfully!"));
     }
 }
 

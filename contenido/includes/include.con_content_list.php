@@ -131,7 +131,7 @@ if (($action == 'savecontype' || $action == 10)) {
             $data = $_REQUEST['data'];
             $value = $_REQUEST['value'];
 
-            $aNotifications[] = $notification->returnNotification("info", i18n("Changes saved"));
+            $aNotifications[] = $notification->returnNotification("ok", i18n("Changes saved"));
         }
 
         conGenerateCodeForArtInAllCategories($idart);
@@ -208,7 +208,7 @@ if (($action == 'savecontype' || $action == 10)) {
             }
 
             $oContentColl->delete((int) $_REQUEST['idcontent']);
-            $aNotifications[] = $notification->returnNotification("info", i18n("Changes saved"));
+            $aNotifications[] = $notification->returnNotification("ok", i18n("Changes saved"));
 
             conGenerateCodeForArtInAllCategories($idart);
         }

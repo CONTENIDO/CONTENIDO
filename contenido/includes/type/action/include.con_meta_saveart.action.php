@@ -122,7 +122,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
     cApiCecHook::execute('Contenido.Action.con_meta_saveart.AfterCall', $idart, $newData, $oldData);
 
     if ($validMeta) {
-        $notification->displayNotification('info', i18n('Changes saved'));
+        $notification->displayNotification('ok', i18n('Changes saved'));
     } else {
         $notification->displayNotification("error", i18n("Attribute content not valid; attend information button"));
     }

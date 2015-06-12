@@ -117,7 +117,7 @@ if ($action == 'user_createuser') {
 
                 if ($oUser->store()) {
                     // show success message and clean "old" values
-                    $sNotification = $notification->returnNotification("info", i18n("User created"));
+                    $sNotification = $notification->returnNotification("ok", i18n("User created"));
                     $username = '';
                     $realname = '';
                     $email = '';

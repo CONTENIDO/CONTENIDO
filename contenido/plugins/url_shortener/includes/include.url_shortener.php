@@ -60,7 +60,7 @@ if ($action === 'url_shortener_delete' && !empty($_POST['idshorturl']) && $perm-
         if ($shortUrlItem->isLoaded() && $valid) {
             $shortUrlItem->set('shorturl', $_POST['newshorturl']);
             if ($shortUrlItem->store()) {
-                $page->displayInfo(i18n('Short URL successfully edited!', 'url_shortener'));
+                $page->displayOk(i18n('Short URL successfully edited!', 'url_shortener'));
             } else {
                 $page->displayError(i18n('Short URL could not be saved!', 'url_shortener'));
             }
@@ -78,7 +78,7 @@ if ($action === 'url_shortener_delete' && !empty($_POST['idshorturl']) && $perm-
         if (cFileHandler::exists($dest)) {
             $page->displayError(i18n('The .htaccess file already exists, so that it has not been copied!', 'url_shortener'));
         } else if (cFileHandler::copy($source, $dest)) {
-            $page->displayInfo(i18n('The .htaccess file has been successfully copied to the client path!', 'url_shortener'));
+            $page->displayOk(i18n('The .htaccess file has been successfully copied to the client path!', 'url_shortener'));
         } else {
             $page->displayError(i18n('The .htaccess file could not be copied to the client path!', 'url_shortener'));
         }

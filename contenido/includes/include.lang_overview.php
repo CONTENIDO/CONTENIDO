@@ -102,7 +102,7 @@ if ($tmp_notification) {
     $noti_html = '<tr><td colspan="3">' . $tmp_notification . '</td></tr>';
     $tpl->set('s', 'NOTIFICATION', $noti_html);
 } else {
-    $tmp_notification = $notification->returnNotification("info", i18n("Language deleted"));
+    $tmp_notification = $notification->returnNotification("ok", i18n("Language deleted"));
     $noti_html = '<tr><td colspan="3">' . $tmp_notification . '</td></tr>';
     $tpl->set('s', 'NOTIFICATION', '');
 }
