@@ -225,7 +225,9 @@ class cPermission {
             return true;
         }
 
-        $area = $this->getIDForArea($area);
+        $oAreaColl = new cApiAreaCollection();
+        $area = $oAreaColl->getAreaID($area);
+
         $action = $this->getIDForAction($action);
 
         return isset($item_rights[$area][$action]);
@@ -245,7 +247,8 @@ class cPermission {
             return true;
         }
 
-        $area = $this->getIDForArea($area);
+        $oAreaColl = new cApiAreaCollection();
+        $area = $oAreaColl->getAreaID($area);
         $action = $this->getIDForAction($action);
 
         // If the user has a right on this action in this area check for the
@@ -313,7 +316,8 @@ class cPermission {
     public function have_perm_area_action($area, $action = 0) {
         global $area_rights, $client, $lang, $cfg;
 
-        $area = $this->getIDForArea($area);
+        $oAreaColl = new cApiAreaCollection();
+        $area = $oAreaColl->getAreaID($area);
         $action = $this->getIDForAction($action);
 
         if ($action == 0) {
@@ -601,7 +605,8 @@ class cPermission {
     public function have_perm_item($mainarea, $itemid) {
         global $cfg, $item_rights, $cfg, $client, $lang, $auth, $area_tree, $sess;
 
-        $mainarea = $this->getIDForArea($mainarea);
+        $oAreaColl = new cApiAreaCollection();
+        $mainarea = $oAreaColl->getAreaID($mainarea);
 
         // If is admin or sysadmin
         if ($this->have_perm()) {
@@ -675,7 +680,8 @@ class cPermission {
             $this->db = cRegistry::getDb();
         }
 
-        $mainarea = $this->getIDForArea($mainarea);
+        $oAreaColl = new cApiAreaCollection();
+        $mainarea = $oAreaColl->getAreaID($mainarea);
 
         // If $area_tree for this area is not register
         if (!isset($area_tree[$mainarea])) {

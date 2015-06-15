@@ -308,11 +308,12 @@ function saveRights() {
 
     // Search all checks which are not in the rights_list_old for saving
     $arraysave = array_diff(array_keys($rights_list), array_keys($rights_list_old));
+    $oAreaColl = new cApiAreaCollection();
 
     if (is_array($arraydel)) {
         foreach ($arraydel as $value) {
             $data = explode('|', $value);
-            $data[0] = $perm->getIDForArea($data[0]);
+            $data[0] = $oAreaColl->getAreaID($data[0]);
             $data[1] = $perm->getIDForAction($data[1]);
 
             $where = "user_id = '" . $db->escape($userid) . "' AND idclient = " . (int) $rights_client . " AND idlang = " . (int) $rights_lang . " AND idarea = " . (int) $data[0] . " AND idcat = " . (int) $data[2] . " AND idaction = " . (int) $data[1] . " AND type = 0";
@@ -332,7 +333,7 @@ function saveRights() {
             // Since areas are stored in a numeric form in the rights table, we
             // have
             // to convert them from strings into numbers
-            $data[0] = $perm->getIDForArea($data[0]);
+            $data[0] = $oAreaColl->getAreaID($data[0]);
             $data[1] = $perm->getIDForAction($data[1]);
 
             if (!isset($data[1])) {
