@@ -729,8 +729,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $option[0] = new cHTMLOptionElement(i18n("Select an entry to display link"), '');
     $option[1] = new cHTMLOptionElement(i18n("Article only"), $baselink);
     $option[2] = new cHTMLOptionElement(i18n("Article with category"), $baselink . "&idcat=$idcat");
-    $option[3] = new cHTMLOptionElement(i18n("Article with category and language"), $baselink . "&idcat=$idcat&lang=$lang");
-    $option[4] = new cHTMLOptionElement(i18n("Article with language"), $baselink . "&lang=$lang");
+    $option[3] = new cHTMLOptionElement(i18n("Article with category and language"), $baselink . "&idcat=$idcat&changelang=$lang");
+    $option[4] = new cHTMLOptionElement(i18n("Article with language"), $baselink . "&changelang=$lang");
 
     $select->appendOptionElement($option[0]);
     $select->appendOptionElement($option[1]);
