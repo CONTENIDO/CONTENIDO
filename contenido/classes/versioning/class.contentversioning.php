@@ -255,7 +255,7 @@ class cContentVersioning {
             && $action != 'con_meta_saveart' && $action != 'con_newart') { // advanced
             $this->articleType = 'current';
         } else if ($this->getState() == 'advanced' && ($selectedArticleId == 'editable'
-            || $selectedArticleId == NULL)
+            || $selectedArticleId == NULL || $this->editableArticleId === $selectedArticleId)
             && ($action == 'con_content' || $action == 'con_meta_deletetype'
                 || $action == 'con_meta_edit' || $action == 'con_edit' || $action == 'con_editart')
             || $action == 'copyto' || $idArtLangVersion == 'current'
