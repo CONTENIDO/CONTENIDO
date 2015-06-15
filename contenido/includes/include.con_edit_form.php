@@ -142,7 +142,6 @@ switch ($versioningState) {
         }
         $selectElement->setEvent("onchange", "selectVersion.idArtLangVersion.value=$('#selectVersionElement option:selected').val();selectVersion.submit()");
 
-        $page->set('s', 'SELECT_ELEMENT', $selectElement->toHtml());
         $page->set("s", "ACTION2", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=con_meta_change_version'));
         $page->set("s", "ACTION3", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=copyto'));
 
@@ -156,14 +155,34 @@ switch ($versioningState) {
         if ($action == 'con_newart') {
             $markAsCurrentButton->setDisabled('disabled');
         }
-        $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
 
         $infoButton = new cGuiBackendHelpbox(i18n(
                 '<strong>Advanced-mode:</strong>  '
                 . 'Former article versions can be reviewed and restored. Unpublished drafts can be created.'
                 . ' (For further configurations please go to Administration/System/System configuration).<br/><br/>'
                 . 'Changes are related to article properties, SEO\'s and contents!'));
-        $page->set('s', 'INFO_BUTTON_VERSION_SELECTION', $infoButton->render());
+
+        // box to select article version
+        $versioningBox = new cHTMLTableRow();
+        $versioningBox = $versioningBox->setAttribute('valign', 'top');
+
+        $versionBoxDescription = new cHTMLTableData(i18n("Select Article Version"));
+        $versionBoxDescription->setClass('text_medium');
+        $versionBoxDescription->setStyle('border-top:1px solid #B3B3B3;');
+        $versioningBox->appendContent($versionBoxDescription);
+
+        $versionBoxData = new cHTMLTableData();
+        $versionBoxData->setClass('text_medium');
+        $versionBoxData->setStyle('border-top:1px solid #B3B3B3;');
+        $versionBoxData->setAttribute('colspan', 3);
+        $versionBoxData->appendContent($selectElement);
+        $versionBoxData->appendContent(' ');
+        $versionBoxData->appendContent($markAsCurrentButton);
+        $versionBoxData->appendContent(' ');
+        $versionBoxData->appendContent($infoButton);
+        $versioningBox->appendContent($versionBoxData);
+
+        $page->set('s', 'ARTICLE_VERSIONING_BOX', $versioningBox);
 
         break;
     case 'simple' :
@@ -230,26 +249,34 @@ switch ($versioningState) {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
 
-        $page->set('s', 'INFO_BUTTON_VERSION_SELECTION', $infoButton->render());
-        $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
-        $page->set('s', 'SELECT_ELEMENT', $selectElement->toHtml());
+        // box to select article version
+        $versioningBox = new cHTMLTableRow();
+        $versioningBox = $versioningBox->setAttribute('valign', 'top');
+
+        $versionBoxDescription = new cHTMLTableData(i18n("Select Article Version"));
+        $versionBoxDescription->setClass('text_medium');
+        $versionBoxDescription->setStyle('border-top:1px solid #B3B3B3;');
+        $versioningBox->appendContent($versionBoxDescription);
+
+        $versionBoxData = new cHTMLTableData();
+        $versionBoxData->setClass('text_medium');
+        $versionBoxData->setStyle('border-top:1px solid #B3B3B3;');
+        $versionBoxData->setAttribute('colspan', 3);
+        $versionBoxData->appendContent($selectElement);
+        $versionBoxData->appendContent(' ');
+        $versionBoxData->appendContent($markAsCurrentButton);
+        $versionBoxData->appendContent(' ');
+        $versionBoxData->appendContent($infoButton);
+        $versioningBox->appendContent($versionBoxData);
+
+        $page->set('s', 'ARTICLE_VERSIONING_BOX', $versioningBox);
+
         break;
     case 'disabled' :
 
-        // Create Sample Article Version Option Element
-        $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
-        $optionElement = new cHTMLOptionElement('Version 10: 11.12.13 14:15:16', '');
-        $selectElement->appendOptionElement($optionElement);
-        $selectElement->setAttribute('disabled', 'disabled');
-        $page->set('s', 'SELECT_ELEMENT', $selectElement->toHtml());
 
-        $buttonTitle = i18n('Copy to published version');
-        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
-        $markAsCurrentButton->setAttribute('disabled', 'disabled');
-        $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
-
-        $infoButton = new cGuiBackendHelpbox(i18n('For reviewing and restoring older article versions activate the article versioning under Administration/System/System configuration.'));
-        $page->set('s', 'INFO_BUTTON_VERSION_SELECTION', $infoButton->render());
+        // do not show box to select article version when article versioning is disabled
+        $page->set('s', 'ARTICLE_VERSIONING_BOX', '');
 
     default:
         break;

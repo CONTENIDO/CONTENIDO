@@ -423,13 +423,6 @@ switch ($versioningState) {
         // set info text
         $versioning_info_text = i18n('For reviewing and restoring older article versions activate the article versioning under Administration/System/System configuration.');
 
-        // add code
-        $versioningElement .=    $versioning->getVersionSelectionField(
-                        'editcontentList',
-                        $selectElement->toHtml(),
-                        $markAsCurrentButton,
-                        $versioning_info_text
-                    );
 
         // load selected article
         $selectedArticle = $versioning->getSelectedArticle((int) $_REQUEST['idArtLangVersion'], $idartlang, $articleType);

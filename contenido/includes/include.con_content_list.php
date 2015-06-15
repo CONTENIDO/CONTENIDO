@@ -561,7 +561,6 @@ switch ($versioningState) {
         }
 
         // Create code/output
-        $page->set('s', 'ARTICLE_VERSION_SELECTION', $selectElement->toHtml());
         // Set import labels
         if ($articleType != 'version' && $locked == 0 && true === $admin) {
             $page->set('s', 'DISABLED', '');
@@ -575,12 +574,54 @@ switch ($versioningState) {
         if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple' || ($locked == 1 && false === $admin)) {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
-        $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
 
         $versioning_info_text = i18n("<strong>Simple-mode:</strong> Older content versions can be restored and reviewed "
                 . "(Configurations under Administration/System configuration).<br/><br/>Changes only refer to contents itself!");
 
-        $page->set('s', 'VERSIONING_INFO_TEXT', $versioning_info_text);
+
+        $versioningBox = new cHTMLParagraph();
+        $versioningBox->setContent(i18n("Select Article Version"));
+
+        $versioningBoxContent = new cHTMLDiv();
+        $versioningBoxContent->setClass('contypeList');
+
+        $versioningBoxContentChooser = new cHTMLDiv();
+
+        $versioningBoxContentChooserSpan = new cHTMLSpan();
+        $versioningBoxContentChooserSpan->setStyle('width: 280px; display: inline; padding: 0px 0px 0px 2px;');
+
+        $versioningBoxContentChooserSpanSpan = new cHTMLSpan();
+        $versioningBoxContentChooserSpanSpan->appendContent($selectElement);
+        $versioningBoxContentChooserSpanSpan->appendContent(' ');
+        $versioningBoxContentChooserSpanSpan->appendContent($markAsCurrentButton);
+        $versioningBoxContentChooserSpan->appendContent($versioningBoxContentChooserSpanSpan);
+
+        // info button
+        $versioningBoxInfoBtn = new cHTMLLink();
+        $versioningBoxInfoBtn->setAttributes(array(
+                'href'  => '#',
+                'id'    => 'pluginInfoDetails-link',
+                'class' => 'main i-link infoButton',
+                'title' => ''
+        ));
+        $versioningBoxContentChooserSpan->appendContent(' ');
+        $versioningBoxContentChooserSpan->appendContent($versioningBoxInfoBtn);
+
+        $versioningBoxContentChooser->appendContent($versioningBoxContentChooserSpan);
+
+        // tanslations for info button
+        $versioningBoxInfo = new cHTMLDiv();
+        $versioningBoxInfo->setContent($versioning_info_text);
+        $versioningBoxInfo->setID('pluginInfoDetails');
+        $versioningBoxInfo->setClass('nodisplay');
+        $versioningBoxContent->appendContent($versioningBoxInfo);
+
+        $versioningBoxContent->appendContent($versioningBoxContentChooser);
+
+        $versioningBox->appendContent($versioningBoxContent);
+        $versioningBox->setStyle('display:block;font-weight:bold;');
+
+        $page->set('s', 'ARTICLE_VERSIONING_BOX', $versioningBox);
 
         break;
     case 'advanced':
@@ -677,7 +718,6 @@ switch ($versioningState) {
         $selectElement->setEvent("onchange", "versionselected.idArtLangVersion.value=$('#selectVersionElement option:selected').val();versionselected.submit()");
 
         // Create code/output
-        $page->set('s', 'ARTICLE_VERSION_SELECTION', $selectElement->toHtml());
 
         $page->set('s', 'COPY_LABEL', i18n('Copy Version'));
         // Set import labels
@@ -695,14 +735,56 @@ switch ($versioningState) {
         }
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
         $markAsCurrentButton->setEvent('onclick', "copyto.idArtLangVersion.value=$('#selectVersionElement option:selected').val();copyto.submit()");
-        $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
 
         $versioning_info_text = i18n(
                 '<strong>Mode advanced:</strong> '
                 . 'Older content versions can be reviewed and restored. Unpublished drafts'
                 . ' can be created (For further configurations please go to Administration/System/System configuration).<br/><br/>'
                 . 'Changes are only related to Contents!');
-        $page->set('s', 'VERSIONING_INFO_TEXT', $versioning_info_text);
+
+        $versioningBox = new cHTMLParagraph();
+        $versioningBox->setContent(i18n("Select Article Version"));
+
+        $versioningBoxContent = new cHTMLDiv();
+        $versioningBoxContent->setClass('contypeList');
+
+        $versioningBoxContentChooser = new cHTMLDiv();
+
+        $versioningBoxContentChooserSpan = new cHTMLSpan();
+        $versioningBoxContentChooserSpan->setStyle('width: 280px; display: inline; padding: 0px 0px 0px 2px;');
+
+        $versioningBoxContentChooserSpanSpan = new cHTMLSpan();
+        $versioningBoxContentChooserSpanSpan->appendContent($selectElement);
+        $versioningBoxContentChooserSpanSpan->appendContent(' ');
+        $versioningBoxContentChooserSpanSpan->appendContent($markAsCurrentButton);
+        $versioningBoxContentChooserSpan->appendContent($versioningBoxContentChooserSpanSpan);
+
+        // info button
+        $versioningBoxInfoBtn = new cHTMLLink();
+        $versioningBoxInfoBtn->setAttributes(array(
+                'href'  => '#',
+                'id'    => 'pluginInfoDetails-link',
+                'class' => 'main i-link infoButton',
+                'title' => ''
+        ));
+        $versioningBoxContentChooserSpan->appendContent(' ');
+        $versioningBoxContentChooserSpan->appendContent($versioningBoxInfoBtn);
+
+        $versioningBoxContentChooser->appendContent($versioningBoxContentChooserSpan);
+
+        // tanslations for info button
+        $versioningBoxInfo = new cHTMLDiv();
+        $versioningBoxInfo->setContent($versioning_info_text);
+        $versioningBoxInfo->setID('pluginInfoDetails');
+        $versioningBoxInfo->setClass('nodisplay');
+        $versioningBoxContent->appendContent($versioningBoxInfo);
+
+        $versioningBoxContent->appendContent($versioningBoxContentChooser);
+
+        $versioningBox->appendContent($versioningBoxContent);
+        $versioningBox->setStyle('display:block;font-weight:bold;');
+
+        $page->set('s', 'ARTICLE_VERSIONING_BOX', $versioningBox);
 
         break;
     case 'disabled':
@@ -711,15 +793,12 @@ switch ($versioningState) {
         $optionElement = new cHTMLOptionElement('Version 10: 11.12.13 14:15:16', '');
         $selectElement->appendOptionElement($optionElement);
         $selectElement->setAttribute('disabled', 'disabled');
-        $page->set('s', 'ARTICLE_VERSION_SELECTION', $selectElement->toHtml());
 
         $buttonTitle = i18n('Copy to published version');
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
         $markAsCurrentButton->setAttribute('disabled', 'disabled');
-        $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
 
         $versioning_info_text = i18n('For reviewing and restoring older article versions activate the article versioning under Administration/System/System configuration.');
-        $page->set('s', 'VERSIONING_INFO_TEXT', $versioning_info_text);
 
         // get selected article
         $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $articleType);
@@ -734,6 +813,8 @@ switch ($versioningState) {
         // Set $list
         $list = $versioning->getList((int) $_REQUEST['idartlang'], $articleType);
 
+        // do not show box to select article version when article versioning is disabled
+        $page->set('s', 'ARTICLE_VERSIONING_BOX', '');
         // Set import labels
         $page->set('s', 'DISABLED', '');
     default:
