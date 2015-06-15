@@ -228,7 +228,7 @@ class cLayoutSynchronizer {
                         layDeleteLayout($db->f('idlay'));
                         $this->_outputMessage['info'][] = i18n("Layout synchronization successful, deleted: ") . $db->f('name');
                     } else {
-                        $this->_outputMessage['error'][] = i18n("Synchronization failed cold not delete layout: ") . $db->f('name');
+                        $this->_outputMessage['error'][] = i18n("Synchronization failed could not delete layout: ") . $db->f('name');
                     }
                 }
             }

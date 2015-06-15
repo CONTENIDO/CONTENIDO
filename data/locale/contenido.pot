@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-12 14:18+0200\n"
+"POT-Creation-Date: 2015-06-15 12:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -306,7 +306,7 @@ msgid "Layout synchronization successful, deleted: "
 msgstr ""
 
 #: classes/class.layout.synchronizer.php:231
-msgid "Synchronization failed cold not delete layout: "
+msgid "Synchronization failed could not delete layout: "
 msgstr ""
 
 #: classes/class.layout.synchronizer.php:251
@@ -1853,8 +1853,8 @@ msgstr ""
 #: includes/include.style_history.php:40 includes/include.system_purge.php:31
 #: includes/include.tplcfg_edit_form.php:155
 #: includes/include.tpl_edit_form.php:31
-#: includes/include.upl_dirs_overview.php:299
-#: includes/include.upl_dirs_overview.php:435
+#: includes/include.upl_dirs_overview.php:297
+#: includes/include.upl_dirs_overview.php:433
 #: includes/include.upl_files_overview.php:306
 #: includes/include.upl_files_upload.php:24
 #: includes/type/action/include.con_changetemplate.action.php:23
@@ -2348,12 +2348,12 @@ msgstr ""
 msgid "Default title"
 msgstr ""
 
-#: includes/functions.con.php:1061 includes/functions.pathresolver.php:267
+#: includes/functions.con.php:1067 includes/functions.pathresolver.php:267
 #: templates/standard/template.con_left_top_art_search.html:72
 msgid "Lost and found"
 msgstr ""
 
-#: includes/functions.con.php:1589 includes/functions.str.php:1175
+#: includes/functions.con.php:1595 includes/functions.str.php:1175
 #: includes/functions.tpl.php:368
 #, php-format
 msgid "%s (Copy)"
@@ -5968,23 +5968,23 @@ msgstr ""
 msgid "Categories"
 msgstr ""
 
-#: includes/include.upl_dirs_overview.php:292
-#: includes/include.upl_dirs_overview.php:293
-#: includes/include.upl_dirs_overview.php:428
-#: includes/include.upl_dirs_overview.php:429
+#: includes/include.upl_dirs_overview.php:290
+#: includes/include.upl_dirs_overview.php:291
+#: includes/include.upl_dirs_overview.php:426
+#: includes/include.upl_dirs_overview.php:427
 msgid "Delete directory"
 msgstr ""
 
-#: includes/include.upl_dirs_overview.php:297
-#: includes/include.upl_dirs_overview.php:433
+#: includes/include.upl_dirs_overview.php:295
+#: includes/include.upl_dirs_overview.php:431
 msgid "Directory contains files"
 msgstr ""
 
-#: includes/include.upl_dirs_overview.php:342
+#: includes/include.upl_dirs_overview.php:340
 msgid "Database file system"
 msgstr ""
 
-#: includes/include.upl_dirs_overview.php:478
+#: includes/include.upl_dirs_overview.php:476
 msgid "Do you really want to delete the following directory:"
 msgstr ""
 

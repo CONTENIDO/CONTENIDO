@@ -852,6 +852,7 @@
 ./templates/standard/template.welcome_update.html
 ./templates/standard/white.html
 ./templates/standard/widgets/template.widgets.left_top.html
+./test.php
 ./tools/create_autoloader_cfg.php
 ./tools/mpAutoloaderClassMap/mpClassMapFileCreator.php
 ./tools/mpAutoloaderClassMap/mpClassMapFileCreatorContenido.php
@@ -872,4 +873,3 @@
 ../data/config/production/config.path.php
 ../data/config/production/config.php
 ../data/config/production/config.templates.php
-../data/config/production/config.wysiwyg_tinymce4.php
