@@ -95,6 +95,6 @@ $tpl = new cTemplate();
 $tpl->set("s", "USERNAME", (isset($this->auth['uname'])) ? $this->auth['uname'] : '');
 $tpl->set("s", "LOGINBUTTON", $sLoginButton);
 
-$tpl->generate($cfg["templates"]["front_loginform"]);
+$tpl->generate($cfg['path']['contenido'] . $cfg["path"]["templates"] . $cfg["templates"]["front_loginform"]);
 
 ?>
