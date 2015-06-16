@@ -139,8 +139,17 @@ class cApiAreaCollection extends ItemCollection {
      *         Integer with the ID for the area
      */
     public function getAreaID($area) {
+        // if area name is numeric (legacy areas)
+        if (is_numeric($area)) {
+            return $area;
+        }
+
         $oItem = new cApiArea();
         $oItem->loadBy('name', $area);
+
+        if ($oItem->isLoaded() === false) {
+            return $area;
+        }
 
         return $oItem->get('idarea');
     }
