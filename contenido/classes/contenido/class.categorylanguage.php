@@ -177,7 +177,7 @@ class cApiCategoryLanguage extends Item {
      * @param int $idlang
      *         Language id
      * @return bool
-     *         true on success, otherwhise false
+     *         true on success, otherwise false
      */
     public function loadByCategoryIdAndLanguageId($idcat, $idlang) {
         $aProps = array(

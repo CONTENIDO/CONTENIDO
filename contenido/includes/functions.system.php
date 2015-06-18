@@ -36,7 +36,7 @@ function emptyLogFile() {
 
     if (cFileHandler::exists($filename) && is_writeable($filename)) {
         cFileHandler::truncate($filename);
-        $tmp_notification = $notification->returnNotification("info", i18n("Error log successfully cleared!"));
+        $tmp_notification = $notification->returnNotification("ok", i18n("Error log successfully cleared!"));
     } else if (cFileHandler::exists($filename) && !is_writeable($filename)) {
         $tmp_notification = $notification->returnNotification("error", i18n("Can't clear error log : Access is denied!"));
     }

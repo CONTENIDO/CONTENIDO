@@ -45,7 +45,7 @@ $aPerms = array();
 
 // Info message for a new group
 if ($_REQUEST['created'] == 1) {
-    $sNotification = $notification->returnNotification("info", i18n("New group created. Now you can edit and configure your new group."));
+    $sNotification = $notification->returnNotification("ok", i18n("New group created. Now you can edit and configure your new group."));
 }
 
 // Action edit group
@@ -73,7 +73,7 @@ if (($action == 'group_edit')) {
         $oGroup->setField('perms', implode(',', $aPerms));
 
         if ($oGroup->store()) {
-            $sNotification = $notification->returnNotification("info", i18n("Changes saved"));
+            $sNotification = $notification->returnNotification("ok", i18n("Changes saved"));
         } else {
             $sNotification = $notification->returnNotification("error", i18n("Changes couldn't be saved"));
             $bError = true;

@@ -47,7 +47,7 @@ class NoteCollection extends cApiCommunicationCollection {
      * @param string $sLimit [optional]
      *         Specifies the limit by clause.
      * @return bool
-     *         True on success, otherwhise false
+     *         True on success, otherwise false
      */
     public function select($where = '', $group_by = '', $order_by = '', $limit = '') {
         if ($where == '') {

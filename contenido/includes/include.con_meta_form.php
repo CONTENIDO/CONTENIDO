@@ -390,23 +390,47 @@ switch ($versioning->getState()) {
         }
         $selectElement->setEvent("onchange", "selectVersion.idArtLangVersion.value=$('#selectVersionElement option:selected').val();selectVersion.submit()");
 
-        $tpl->set('s', 'SELECT_ELEMENT', $selectElement->toHtml());
         $tpl->set("s", "ACTION2", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=con_meta_change_version'));
         $tpl->set("s", "ACTION3", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=copyto'));
 
         // Create markAsCurrent Button
         if ($articleType == 'current' || $articleType == 'version') {
-            $buttonTitle = i18n('Copy to Draft');
+            $buttonTitle = i18n('Copy to draft');
         } else if ($articleType == 'editable') {
-            $buttonTitle = i18n('Publish Draft');
+            $buttonTitle = i18n('Publish draft');
         }
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle, 'copytobutton');
-        $tpl->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
 
-        $infoButton =  new cGuiBackendHelpbox(i18n('<strong>Advanced-Mode:</strong> '
-                . 'Older SEO Versions can be reviewed and restored. Unpublished drafts can be created (For further configurations please go to Administration/System/System configuration).<br/><br/>'
+        $infoButton =  new cGuiBackendHelpbox(i18n('<strong>Advanced-mode:</strong> '
+                . 'Older SEO versions can be reviewed and restored. Unpublished drafts can be created (For further configurations please go to Administration/System/System configuration).<br/><br/>'
                 . 'Changes are only related to SEO!'));
-        $tpl->set("s", "INFO_BUTTON_VERSION_SELECTION", $infoButton->render());
+
+        // box to select article version
+        $versioningBox = new cHTMLTableRow();
+
+        $versioningHeadRow = new cHTMLTableRow();
+        $versioningHeadText = new cHTMLTableHead();
+        $versioningHeadText->setContent(i18n('Select Article Version'));
+        $versioningHeadText->setAttribute('colspan', 2);
+        $versioningHeadRow->appendContent($versioningHeadText);
+        $versioningBox->appendContent($versioningHeadRow);
+
+        $versionBoxDescription = new cHTMLTableData(i18n("Select Article Version"));
+        $versionBoxDescription->setClass('leftData');
+        $versionBoxDescription->setStyle('border-top:1px solid #B3B3B3;');
+        $versioningBox->appendContent($versionBoxDescription);
+
+        $versionBoxData = new cHTMLTableData();
+        $versionBoxData->setStyle('border-top:1px solid #B3B3B3;');
+        $versionBoxData->setAttribute('colspan', 3);
+        $versionBoxData->appendContent($selectElement);
+        $versionBoxData->appendContent(' ');
+        $versionBoxData->appendContent($markAsCurrentButton);
+        $versionBoxData->appendContent(' ');
+        $versionBoxData->appendContent($infoButton);
+        $versioningBox->appendContent($versionBoxData);
+
+        $tpl->set('s', 'ARTICLE_VERSIONING_BOX', $versioningBox);
 
         break;
     case 'simple' :
@@ -450,41 +474,53 @@ switch ($versioning->getState()) {
         }
         $selectElement->setEvent("onchange", "selectVersion.idArtLangVersion.value=$('#selectVersionElement option:selected').val();selectVersion.submit()");
 
-        $tpl->set('s', 'SELECT_ELEMENT', $selectElement->toHtml());
         $tpl->set("s", "ACTION2", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=con_meta_change_version'));
         $tpl->set("s", "ACTION3", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=copyto'));
 
 
         // Create markAsCurrent Button
-        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to Published Version'), 'copytobutton');
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to published version'), 'copytobutton');
         if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
-        $tpl->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
 
-        $infoButton =  new cGuiBackendHelpbox(i18n('<strong>Simple-Mode:</strong> '
-                . 'Older SEO Versions can be reviewed and restored (For further configurations please go to Administration/System/System configuration).<br/><br/>'
+        $infoButton =  new cGuiBackendHelpbox(i18n('<strong>Simple-mode:</strong> '
+                . 'Older SEO versions can be reviewed and restored (For further configurations please go to Administration/System/System configuration).<br/><br/>'
                 . 'Changes are only related to SEO!'));
-        $tpl->set("s", "INFO_BUTTON_VERSION_SELECTION", $infoButton->render());
+
+        // box to select article version
+        $versioningBox = new cHTMLTableRow();
+
+        $versioningHeadRow = new cHTMLTableRow();
+        $versioningHeadText = new cHTMLTableHead();
+        $versioningHeadText->setContent(i18n('Select Article Version'));
+        $versioningHeadText->setAttribute('colspan', 2);
+        $versioningHeadRow->appendContent($versioningHeadText);
+        $versioningBox->appendContent($versioningHeadRow);
+
+        $versionBoxDescription = new cHTMLTableData(i18n("Select Article Version"));
+        $versionBoxDescription->setClass('leftData');
+        $versionBoxDescription->setStyle('border-top:1px solid #B3B3B3;');
+        $versioningBox->appendContent($versionBoxDescription);
+
+        $versionBoxData = new cHTMLTableData();
+        $versionBoxData->setStyle('border-top:1px solid #B3B3B3;');
+        $versionBoxData->setAttribute('colspan', 3);
+        $versionBoxData->appendContent($selectElement);
+        $versionBoxData->appendContent(' ');
+        $versionBoxData->appendContent($markAsCurrentButton);
+        $versionBoxData->appendContent(' ');
+        $versionBoxData->appendContent($infoButton);
+        $versioningBox->appendContent($versionBoxData);
+
+        $tpl->set('s', 'ARTICLE_VERSIONING_BOX', $versioningBox);
 
         break;
     case 'disabled' :
 
-        // Create Sample Metatag Version Option Element
-        $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
-        $optionElement = new cHTMLOptionElement('Version 10: 11.12.13 14:15:16', '');
-        $selectElement->appendOptionElement($optionElement);
-        $selectElement->setAttribute('disabled', 'disabled');
-        $tpl->set('s', 'SELECT_ELEMENT', $selectElement->toHtml());
 
-        $buttonTitle = i18n('Copy to Published Version');
-        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
-        $markAsCurrentButton->setAttribute('disabled', 'disabled');
-        $tpl->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
-
-        $infoButton = new cGuiBackendHelpbox(i18n('For reviewing and restoring older Article Versions activate the Article Versioning under Administration/System/System configuration.'));
-        $tpl->set('s', 'INFO_BUTTON_VERSION_SELECTION', $infoButton->render());
-
+         // do not show box to select article version when article versioning is disabled
+        $tpl->set('s', 'ARTICLE_VERSIONING_BOX', '');
     default :
         break;
 

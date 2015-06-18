@@ -273,7 +273,7 @@ class cModuleHandler {
      * @return string
      */
     public static function getCleanName($name, $defaultChar = '_') {
-        // the first character of modul/Layut name should be [a-zA-Z0-9]|_|-
+        // the first character of module/layout name should be [a-zA-Z0-9]|_|-
         $name = cString::cleanURLCharacters($name);
         // get the first charcte
         $firstChar = substr($name, 0, 1);

@@ -48,9 +48,9 @@ function checkLangInClients($aClients, $iLang, $aCfg, $oDb) {
  *         ID of the new element
  * @param int $idlang
  *         ID of language, if passed only rights for this language
- *         will be created, otherwhise for all existing languages
+ *         will be created, otherwise for all existing languages
  * @return bool
- *         True on success otherwhise false
+ *         True on success otherwise false
  */
 function copyRightsForElement($area, $iditem, $newiditem, $idlang = false) {
     global $perm, $auth, $area_tree;
@@ -120,9 +120,9 @@ function copyRightsForElement($area, $iditem, $newiditem, $idlang = false) {
  *         ID of new element
  * @param int $idlang
  *         ID of language, if passed only rights for this language
- *         will be created, otherwhise for all existing languages
+ *         will be created, otherwise for all existing languages
  * @return bool
- *         True on success otherwhise false
+ *         True on success otherwise false
  */
 function createRightsForElement($area, $iditem, $idlang = false) {
     global $perm, $auth, $area_tree, $client;
@@ -308,11 +308,12 @@ function saveRights() {
 
     // Search all checks which are not in the rights_list_old for saving
     $arraysave = array_diff(array_keys($rights_list), array_keys($rights_list_old));
+    $oAreaColl = new cApiAreaCollection();
 
     if (is_array($arraydel)) {
         foreach ($arraydel as $value) {
             $data = explode('|', $value);
-            $data[0] = $perm->getIDForArea($data[0]);
+            $data[0] = $oAreaColl->getAreaID($data[0]);
             $data[1] = $perm->getIDForAction($data[1]);
 
             $where = "user_id = '" . $db->escape($userid) . "' AND idclient = " . (int) $rights_client . " AND idlang = " . (int) $rights_lang . " AND idarea = " . (int) $data[0] . " AND idcat = " . (int) $data[2] . " AND idaction = " . (int) $data[1] . " AND type = 0";
@@ -332,7 +333,7 @@ function saveRights() {
             // Since areas are stored in a numeric form in the rights table, we
             // have
             // to convert them from strings into numbers
-            $data[0] = $perm->getIDForArea($data[0]);
+            $data[0] = $oAreaColl->getAreaID($data[0]);
             $data[1] = $perm->getIDForAction($data[1]);
 
             if (!isset($data[1])) {
@@ -370,10 +371,12 @@ function saveGroupRights() {
     // Search all checks which are not in the rights_list_old for saving
     $arraysave = array_diff(array_keys($rights_list), array_keys($rights_list_old));
 
+    $oAreaColl = new cApiAreaCollection();
+
     if (is_array($arraydel)) {
         foreach ($arraydel as $value) {
             $data = explode('|', $value);
-            $data[0] = $perm->getIDForArea($data[0]);
+            $data[0] = $oAreaColl->getAreaID($data[0]);
             $data[1] = $perm->getIDForAction($data[1]);
 
             $where = "user_id = '" . $db->escape($groupid) . "' AND idclient = " . (int) $rights_client . " AND idlang = " . (int) $rights_lang . " AND idarea = " . (int) $data[0] . " AND idcat = " . (int) $data[2] . " AND idaction = " . (int) $data[1] . " AND type = 1";
@@ -393,7 +396,7 @@ function saveGroupRights() {
             // Since areas are stored in a numeric form in the rights table, we
             // have
             // to convert them from strings into numbers
-            $data[0] = $perm->getIDForArea($data[0]);
+            $data[0] = $oAreaColl->getAreaID($data[0]);
             $data[1] = $perm->getIDForAction($data[1]);
 
             if (!isset($data[1])) {

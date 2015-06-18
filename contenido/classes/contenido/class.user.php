@@ -642,7 +642,7 @@ class cApiUser extends Item {
     }
 
     /**
-     * Returns effective user name (if exists realname , otherwhise username)
+     * Returns effective user name (if exists realname , otherwise username)
      *
      * @return string
      *         Realname or username of user

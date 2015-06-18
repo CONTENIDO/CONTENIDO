@@ -134,8 +134,6 @@ $oScriptTpl->set('s', 'MEDIA', $backendUrl . 'frameset.php?area=upl&contenido=' 
 $oScriptTpl->set('s', 'FRONTEND', cRegistry::getFrontendUrl());
 
 // Add tiny options
-//var_dump(json_encode($sConfigInlineEdit));
-
 if ('tinymce4' === $wysiwygeditor) {
     // set toolbar options for each CMS type that can be edited using a WYSIWYG editor
     $aTinyOptions = array();
@@ -276,13 +274,13 @@ switch ($versioningState) {
         $selectElement->setEvent("onchange", "editcontent.idArtLangVersion.value=$('#selectVersionElement option:selected').val();editcontent.submit()");
 
         // Create markAsCurrent Button/Label
-        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to Published Version'));
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to published version'));
         $markAsCurrentButton->setEvent('onclick', "copyto.idArtLangVersion.value=$('#selectVersionElement option:selected').val();copyto.submit()");
         if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
 
-        $versioning_info_text = i18n("<strong>Mode simple:</strong> Older Content Versions can be restored and reviewed "
+        $versioning_info_text = i18n("<strong>Simple-mode:</strong> Older content versions can be restored and reviewed "
                 . "(Configurations under Administration/System configuration).<br/><br/>Changes only refer to contents itself!");
 
         // add code
@@ -388,9 +386,9 @@ switch ($versioningState) {
 
         // Create markAsCurrent Button
         if ($articleType == 'current' || $articleType == 'version') {
-            $buttonTitle = i18n('Copy to Draft');
+            $buttonTitle = i18n('Copy to draft');
         } else if ($articleType == 'editable') {
-            $buttonTitle = i18n('Publish Draft');
+            $buttonTitle = i18n('Publish draft');
         }
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
         $markAsCurrentButton->setEvent('onclick', "copyto.idArtLangVersion.value=$('#selectVersionElement option:selected').val();copyto.submit()");
@@ -398,7 +396,7 @@ switch ($versioningState) {
         // set info text
         $versioning_info_text = i18n(
                 '<strong>Mode advanced:</strong> '
-                . 'Older Content Versions can be reviewd and restored. Unpublished drafts'
+                . 'Older content versions can be reviewed and restored. Unpublished drafts'
                 . ' can be created (For further configurations please go to Administration/System/System configuration).<br/><br/>'
                 . 'Changes are only related to Contents!');
 
@@ -418,20 +416,13 @@ switch ($versioningState) {
         $selectElement->appendOptionElement($optionElement);
         $selectElement->setAttribute('disabled', 'disabled');
 
-        $buttonTitle = i18n('Copy to Published Version');
+        $buttonTitle = i18n('Copy to published version');
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
         $markAsCurrentButton->setAttribute('disabled', 'disabled');
 
         // set info text
-        $versioning_info_text = i18n('For reviewing and restoring older Article Versions activate the Article Versioning under Administration/System/System configuration.');
+        $versioning_info_text = i18n('For reviewing and restoring older article versions activate the article versioning under Administration/System/System configuration.');
 
-        // add code
-        $versioningElement .=    $versioning->getVersionSelectionField(
-                        'editcontentList',
-                        $selectElement->toHtml(),
-                        $markAsCurrentButton,
-                        $versioning_info_text
-                    );
 
         // load selected article
         $selectedArticle = $versioning->getSelectedArticle((int) $_REQUEST['idArtLangVersion'], $idartlang, $articleType);

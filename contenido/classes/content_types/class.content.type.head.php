@@ -34,8 +34,16 @@ class cContentTypeHead extends cContentTypeText {
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
 
-        // call parent constructor
-        parent::__construct($rawSettings, $id, $contentTypes);
+        // try to call constructor of parent of parent to avoid overwriting of $this->_settings
+        // this can happen in case of POST-data
+        if (false === get_parent_class($this) || false === get_parent_class(get_parent_class($this))) {
+            // can not get parent of parent class, call parent constructor as fallback
+            parent::__construct($rawSettings, $id, $contentTypes);
+        }
+
+        // call constructor of parent of parent class
+        $nameParentParentClass = get_parent_class(get_parent_class($this));
+        $nameParentParentClass::__construct($rawSettings, $id, $contentTypes);
 
         // set props
         $this->_type = 'CMS_HEAD';

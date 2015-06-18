@@ -629,6 +629,10 @@
             // Register plugin with a short name
             tinymce.PluginManager.add('confullscreen', tinymce.plugins.ConFullscreenPlugin);
 
+            // custom tinymce plugins can only be loaded globally, not per content type
+            // remember loaded plugins to avoid loading plugins multiple times
+            var customPluginsLoaded = [];
+
             // iterate through wysiwygSettings array and process its content
             Object.keys(wysiwygSettings).forEach(function(val, idx) {
                 // create copy of object to avoid side effects
@@ -671,9 +675,15 @@
                     // Array.isArray() can not be used because IE 8 does not implement it
                     if ('[object Array]' === Object.prototype.toString.call(settings.externalplugins)) {
                         settings.externalplugins.forEach(function (plugin) {
-                            // load current add-on
+                            // if plugin is not loaded
+
                             // http://www.tinymce.com/wiki.php/api4:method.tinymce.AddOnManager.load
-                            tinymce.PluginManager.load(plugin.name, plugin.url);
+                            customPluginsLoaded[plugin.name] = plugin.url;
+                            if (customPluginsLoaded[plugin.name] === plugin.url) {
+                                // load current plugin
+                                tinymce.PluginManager.load(plugin.name, plugin.url);
+                            }
+
                             // exclude plugin from later loading
                             settings.plugins += (' -' + plugin.name);
                             settings.fullscreen_settings.plugins += (' -' + plugin.name);

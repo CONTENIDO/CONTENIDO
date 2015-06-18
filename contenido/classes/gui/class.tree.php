@@ -50,25 +50,30 @@ class cGuiTree extends cTree {
     const TREEVIEW_GRIDLINE_NONE = 'none';
 
     /**
-     *
+     * @deprecated [2015-05-21]
+     *    This constant is no longer supported (no replacement)
      * @var unknown_type
      */
     const TREEVIEW_BACKGROUND_NONE = 'none';
 
     /**
-     *
+     * @deprecated [2015-05-21]
+     *         This constant is no longer supported (no replacement)
      * @var unknown_type
      */
     const TREEVIEW_BACKGROUND_SHADED = 'shaded';
 
     /**
      *
+     * @deprecated [2015-05-21]
+     *         This constant is no longer supported (no replacement)
      * @var unknown_type
      */
     const TREEVIEW_MOUSEOVER_NONE = 'none';
 
     /**
-     *
+     * @deprecated [2015-05-21]
+     *         This constant is no longer supported (no replacement)
      * @var unknown_type
      */
     const TREEVIEW_MOUSEOVER_MARK = 'mark';

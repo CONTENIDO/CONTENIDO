@@ -358,7 +358,7 @@ abstract class cCodeGeneratorAbstract {
 
             $a_[$key] = $match[0];
 
-            $success = array_walk($a_[$key], 'extractNumber');
+            $success = array_walk($a_[$key], 'cString::extractNumber');
 
             $search = array();
             $replacements = array();

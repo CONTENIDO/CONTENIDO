@@ -131,7 +131,7 @@ if (($action == 'savecontype' || $action == 10)) {
             $data = $_REQUEST['data'];
             $value = $_REQUEST['value'];
 
-            $aNotifications[] = $notification->returnNotification("info", i18n("Changes saved"));
+            $aNotifications[] = $notification->returnNotification("ok", i18n("Changes saved"));
         }
 
         conGenerateCodeForArtInAllCategories($idart);
@@ -208,7 +208,7 @@ if (($action == 'savecontype' || $action == 10)) {
             }
 
             $oContentColl->delete((int) $_REQUEST['idcontent']);
-            $aNotifications[] = $notification->returnNotification("info", i18n("Changes saved"));
+            $aNotifications[] = $notification->returnNotification("ok", i18n("Changes saved"));
 
             conGenerateCodeForArtInAllCategories($idart);
         }
@@ -498,8 +498,8 @@ switch ($versioningState) {
         // Get Content or Content Version
         $content = $selectedArticle->getContent();
         if ($selectedArticle->isLoaded() && is_array($content)) {
-        	$result = array_change_key_case($selectedArticle->getContent(), CASE_UPPER);
-        	$result = $versioning->sortResults($result);
+            $result = array_change_key_case($selectedArticle->getContent(), CASE_UPPER);
+            $result = $versioning->sortResults($result);
         }
 
         // Set $list
@@ -549,27 +549,79 @@ switch ($versioningState) {
         }
         $selectElement->setEvent("onchange", "versionselected.idArtLangVersion.value=$('#selectVersionElement option:selected').val();versionselected.submit()");
 
+        $cApiArticleLanguage = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
+        $locked = $cApiArticleLanguage->getField('locked');
+
+        //CON-2151 check if article is locked
+        $aAuthPerms = explode(',', cRegistry::getAuth()->auth['perm']);
+
+        $admin = false;
+        if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
+            $admin = true;
+        }
+
         // Create code/output
-        $page->set('s', 'ARTICLE_VERSION_SELECTION', $selectElement->toHtml());
         // Set import labels
-        if ($articleType != 'version') {
+        if ($articleType != 'version' && $locked == 0 && true === $admin) {
             $page->set('s', 'DISABLED', '');
         } else {
             $page->set('s', 'DISABLED', 'DISABLED');
         }
         // Create markAsCurrent Button/Label
         $page->set('s', 'COPY_LABEL', i18n('Copy Version'));
-        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to Published Version'));
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to published version'));
         $markAsCurrentButton->setEvent('onclick', "copyto.idArtLangVersion.value=$('#selectVersionElement option:selected').val();copyto.submit()");
-        if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
+        if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple' || ($locked == 1 && false === $admin)) {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
-        $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
 
-        $versioning_info_text = i18n("<strong>Mode simple:</strong> Older Content Versions can be restored and reviewed "
+        $versioning_info_text = i18n("<strong>Simple-mode:</strong> Older content versions can be restored and reviewed "
                 . "(Configurations under Administration/System configuration).<br/><br/>Changes only refer to contents itself!");
 
-        $page->set('s', 'VERSIONING_INFO_TEXT', $versioning_info_text);
+
+        $versioningBox = new cHTMLParagraph();
+        $versioningBox->setContent(i18n("Select Article Version"));
+
+        $versioningBoxContent = new cHTMLDiv();
+        $versioningBoxContent->setClass('contypeList');
+
+        $versioningBoxContentChooser = new cHTMLDiv();
+
+        $versioningBoxContentChooserSpan = new cHTMLSpan();
+        $versioningBoxContentChooserSpan->setStyle('width: 280px; display: inline; padding: 0px 0px 0px 2px;');
+
+        $versioningBoxContentChooserSpanSpan = new cHTMLSpan();
+        $versioningBoxContentChooserSpanSpan->appendContent($selectElement);
+        $versioningBoxContentChooserSpanSpan->appendContent(' ');
+        $versioningBoxContentChooserSpanSpan->appendContent($markAsCurrentButton);
+        $versioningBoxContentChooserSpan->appendContent($versioningBoxContentChooserSpanSpan);
+
+        // info button
+        $versioningBoxInfoBtn = new cHTMLLink();
+        $versioningBoxInfoBtn->setAttributes(array(
+                'href'  => '#',
+                'id'    => 'pluginInfoDetails-link',
+                'class' => 'main i-link infoButton',
+                'title' => ''
+        ));
+        $versioningBoxContentChooserSpan->appendContent(' ');
+        $versioningBoxContentChooserSpan->appendContent($versioningBoxInfoBtn);
+
+        $versioningBoxContentChooser->appendContent($versioningBoxContentChooserSpan);
+
+        // tanslations for info button
+        $versioningBoxInfo = new cHTMLDiv();
+        $versioningBoxInfo->setContent($versioning_info_text);
+        $versioningBoxInfo->setID('pluginInfoDetails');
+        $versioningBoxInfo->setClass('nodisplay');
+        $versioningBoxContent->appendContent($versioningBoxInfo);
+
+        $versioningBoxContent->appendContent($versioningBoxContentChooser);
+
+        $versioningBox->appendContent($versioningBoxContent);
+        $versioningBox->setStyle('display:block;font-weight:bold;');
+
+        $page->set('s', 'ARTICLE_VERSIONING_BOX', $versioningBox);
 
         break;
     case 'advanced':
@@ -603,12 +655,12 @@ switch ($versioningState) {
 
         // get selected article
         $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $articleType);
-
         // Get Content or Content Version and sort
         $content = $selectedArticle->getContent();
+
         if ($selectedArticle->isLoaded() && is_array($content)) {
-        	$result = array_change_key_case($selectedArticle->getContent(), CASE_UPPER);
-        	$result = $versioning->sortResults($result);
+            $result = array_change_key_case($content, CASE_UPPER);
+            $result = $versioning->sortResults($result);
         }
 
         // Set $list
@@ -666,7 +718,6 @@ switch ($versioningState) {
         $selectElement->setEvent("onchange", "versionselected.idArtLangVersion.value=$('#selectVersionElement option:selected').val();versionselected.submit()");
 
         // Create code/output
-        $page->set('s', 'ARTICLE_VERSION_SELECTION', $selectElement->toHtml());
 
         $page->set('s', 'COPY_LABEL', i18n('Copy Version'));
         // Set import labels
@@ -678,20 +729,62 @@ switch ($versioningState) {
 
         // Create markAsCurrent Button
         if ($articleType == 'current' || $articleType == 'version') {
-            $buttonTitle = i18n('Copy to Draft');
+            $buttonTitle = i18n('Copy to draft');
         } else if ($articleType == 'editable') {
-            $buttonTitle = i18n('Publish Draft');
+            $buttonTitle = i18n('Publish draft');
         }
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
         $markAsCurrentButton->setEvent('onclick', "copyto.idArtLangVersion.value=$('#selectVersionElement option:selected').val();copyto.submit()");
-        $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
 
         $versioning_info_text = i18n(
                 '<strong>Mode advanced:</strong> '
-                . 'Older Content Versions can be reviewd and restored. Unpublished drafts'
+                . 'Older content versions can be reviewed and restored. Unpublished drafts'
                 . ' can be created (For further configurations please go to Administration/System/System configuration).<br/><br/>'
                 . 'Changes are only related to Contents!');
-        $page->set('s', 'VERSIONING_INFO_TEXT', $versioning_info_text);
+
+        $versioningBox = new cHTMLParagraph();
+        $versioningBox->setContent(i18n("Select Article Version"));
+
+        $versioningBoxContent = new cHTMLDiv();
+        $versioningBoxContent->setClass('contypeList');
+
+        $versioningBoxContentChooser = new cHTMLDiv();
+
+        $versioningBoxContentChooserSpan = new cHTMLSpan();
+        $versioningBoxContentChooserSpan->setStyle('width: 280px; display: inline; padding: 0px 0px 0px 2px;');
+
+        $versioningBoxContentChooserSpanSpan = new cHTMLSpan();
+        $versioningBoxContentChooserSpanSpan->appendContent($selectElement);
+        $versioningBoxContentChooserSpanSpan->appendContent(' ');
+        $versioningBoxContentChooserSpanSpan->appendContent($markAsCurrentButton);
+        $versioningBoxContentChooserSpan->appendContent($versioningBoxContentChooserSpanSpan);
+
+        // info button
+        $versioningBoxInfoBtn = new cHTMLLink();
+        $versioningBoxInfoBtn->setAttributes(array(
+                'href'  => '#',
+                'id'    => 'pluginInfoDetails-link',
+                'class' => 'main i-link infoButton',
+                'title' => ''
+        ));
+        $versioningBoxContentChooserSpan->appendContent(' ');
+        $versioningBoxContentChooserSpan->appendContent($versioningBoxInfoBtn);
+
+        $versioningBoxContentChooser->appendContent($versioningBoxContentChooserSpan);
+
+        // tanslations for info button
+        $versioningBoxInfo = new cHTMLDiv();
+        $versioningBoxInfo->setContent($versioning_info_text);
+        $versioningBoxInfo->setID('pluginInfoDetails');
+        $versioningBoxInfo->setClass('nodisplay');
+        $versioningBoxContent->appendContent($versioningBoxInfo);
+
+        $versioningBoxContent->appendContent($versioningBoxContentChooser);
+
+        $versioningBox->appendContent($versioningBoxContent);
+        $versioningBox->setStyle('display:block;font-weight:bold;');
+
+        $page->set('s', 'ARTICLE_VERSIONING_BOX', $versioningBox);
 
         break;
     case 'disabled':
@@ -700,15 +793,12 @@ switch ($versioningState) {
         $optionElement = new cHTMLOptionElement('Version 10: 11.12.13 14:15:16', '');
         $selectElement->appendOptionElement($optionElement);
         $selectElement->setAttribute('disabled', 'disabled');
-        $page->set('s', 'ARTICLE_VERSION_SELECTION', $selectElement->toHtml());
 
-        $buttonTitle = i18n('Copy to Published Version');
+        $buttonTitle = i18n('Copy to published version');
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
         $markAsCurrentButton->setAttribute('disabled', 'disabled');
-        $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
 
-        $versioning_info_text = i18n('For reviewing and restoring older Article Versions activate the Article Versioning under Administration/System/System configuration.');
-        $page->set('s', 'VERSIONING_INFO_TEXT', $versioning_info_text);
+        $versioning_info_text = i18n('For reviewing and restoring older article versions activate the article versioning under Administration/System/System configuration.');
 
         // get selected article
         $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $articleType);
@@ -716,13 +806,15 @@ switch ($versioningState) {
         // Get Content/set $result
         $content = $selectedArticle->getContent();
         if ($selectedArticle->isLoaded() && is_array($content)) {
-	        $result = array_change_key_case($content, CASE_UPPER);
-	        $result = $versioning->sortResults($result);
+            $result = array_change_key_case($content, CASE_UPPER);
+            $result = $versioning->sortResults($result);
         }
 
         // Set $list
         $list = $versioning->getList((int) $_REQUEST['idartlang'], $articleType);
 
+        // do not show box to select article version when article versioning is disabled
+        $page->set('s', 'ARTICLE_VERSIONING_BOX', '');
         // Set import labels
         $page->set('s', 'DISABLED', '');
     default:
@@ -798,16 +890,7 @@ $page->set('s', 'EXPORT_LABEL', i18n("Raw data export"));
 $page->set('s', 'IMPORT_LABEL', i18n("Raw data import"));
 $page->set('s', 'OVERWRITE_DATA_LABEL', i18n("Overwrite data"));
 
-//CON-2151 check if article is locked
-$aAuthPerms = explode(',', $auth->auth['perm']);
 
-$admin = false;
-if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
-    $admin = true;
-}
-
-$cApiArticleLanguage = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
-$locked = $cApiArticleLanguage->getField('locked');
 $page->set('s', 'HIDE', ($admin || (int)$locked === 0)? '' : 'style="display:none;"');
 
 if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false') {
@@ -914,8 +997,15 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
     $cApiArticleLanguage = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
     $locked = $cApiArticleLanguage->getField('locked');
 
+    // admin can edit article despite its locked status
+    $aAuthPerms = explode(',', cRegistry::getAuth()->auth['perm']);
+    $admin = false;
+    if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
+        $admin = true;
+    }
+
     // If article is locked show notification
-    if ($locked == 1) {
+    if ($locked == 1 && false === $admin) {
         $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
     }
 
@@ -955,7 +1045,7 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
         $type = $_typeItem->type;
 
         // Try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
-		// At $match[2] you found your typeid
+        // At $match[2] you found your typeid
         $tmp = preg_match_all('/(' . $type . '\[+(\d+)\])/i', $layoutCode, $match);
 
         $a_[$key] = $match[2]; //all typeids
@@ -975,9 +1065,9 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
             if (cFileHandler::exists($cTypeClassFile)) {
                 $tmp = $a_content[$_typeItem->type][$val];
                 $cTypeObject = new $className($tmp, $val, $a_content);
-                if (cRegistry::isBackendEditMode() && $locked == 0 && $articleType == 'editable' || ($articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple'))) {
+                if (cRegistry::isBackendEditMode() && ($locked == 0 || true === $admin) && $articleType == 'editable' || ($articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple'))) {
                     $tmp = $cTypeObject->generateEditCode();
-                } else if ($articleType == 'current' || $articleType == 'version') {
+                } else {
                     $tmp = $cTypeObject->generateViewCode();
                 }
                 // double escape the generated code string to avoid violating string syntax
@@ -992,7 +1082,7 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
                 eval($_typeItem->code);
             }
 
-            $versioning = new cContentVersioning(); //als Parameter ï¿½bergeben oder einzelne Strings/Ints ï¿½bergeben?
+            $versioning = new cContentVersioning();
             $idcontent = $versioning->getContentId(cSecurity::toInteger($_REQUEST["idartlang"]), cSecurity::toInteger($val), cSecurity::toString($type), $versioningState, $articleType, $version);
 
             $backendUrl = cRegistry::getBackendUrl();
@@ -1007,7 +1097,10 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
                 // "<textarea>"."?".">\n".stripslashes($tmp)."\n\";?"."><"."?php\n"."</textarea>";
             }
 
-            if ($locked == 0 && ($articleType == 'editable' || $articleType == 'current') && ($versioningState == 'disabled' || $versioningState == 'simple')) { // No freeze
+            // can delete article content if all conditions are fulfilled:
+            // article is not frozen or admin accesses page (admin can do everything, even when article is frozen)
+            // article can be edited or (article is published version and versioning is turned off or set to simple mode)
+            if (($locked == 0 || true === $admin) && ($articleType == 'editable' || ($articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple')))) { // No freeze
                 $replacements[$num] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); }); return false;">
             <img border="0" src="' . $backendUrl . 'images/delete.gif">
             </a>';

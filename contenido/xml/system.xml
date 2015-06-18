@@ -41,7 +41,7 @@ i18n("Debug function for plugins");
 i18n("Serverpath to style version files")
 i18n("Style versioning activated")
 i18n("Maximum number of stored style versions")
-i18n("Article Versioning")
+i18n("Article versioning")
 
 // old text
 i18n("Versioning activated")

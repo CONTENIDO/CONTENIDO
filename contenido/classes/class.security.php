@@ -27,7 +27,7 @@ class cSecurity {
      * Checks some CONTENIDO core related request parameters against XSS
      *
      * @return bool
-     *         True on success otherwhise nothing.
+     *         True on success otherwise nothing.
      */
     public static function checkRequests() {
         $requestValidator = cRequestValidator::getInstance();

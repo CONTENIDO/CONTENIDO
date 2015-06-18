@@ -74,7 +74,7 @@ class cUpgradeJob_0006 extends cUpgradeJobAbstract {
                             continue;
                         }
 
-                        recursiveCopy($source, $destination, self::MODE);
+                        cDirHandler::recursiveCopy($source, $destination, self::MODE);
                     } elseif (cFileHandler::exists($source) && cFileHandler::exists($destination)) {
                         if (cFileHandler::move($source, $destination)) {
                             cFileHandler::chmod($destination, self::MODE);

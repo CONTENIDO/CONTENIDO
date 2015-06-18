@@ -235,7 +235,7 @@ if (!$db->nextRecord()) {
     }
 }
 if (count($_POST) > 0 && $message == '') {
-    $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Save change successfully!"));
+    $notification->displayNotification(cGuiNotification::LEVEL_OK, i18n("Save change successfully!"));
 }
 
 $tmp_area = 'tplcfg';

@@ -162,7 +162,7 @@ class cApiCecRegistry {
      * @throws cInvalidArgumentException
      *         if the given chain is not registered or the given callback is not callable
      * @return bool
-     *         True on success, otherwhise false
+     *         True on success, otherwise false
      */
     public function addChainFunction($sChainName, $sFunctionName) {
         $cfg = cRegistry::getConfig();

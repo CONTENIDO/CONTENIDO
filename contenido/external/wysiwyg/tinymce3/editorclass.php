@@ -263,7 +263,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
             $this->_bUseGZIP = false;
         }
     }
-    
+
     function getGZIPMode() {
         return (bool) $this->_bUseGZIP;
     }
@@ -570,7 +570,7 @@ JS;
 
         return $sConfig;
     }
-    
+
     function getPlugins() {
         return $this->_aSettings['plugins'];
     }

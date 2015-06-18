@@ -55,6 +55,10 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
     private $_bUseGZIP = false;
 
     /**
+     * Shortcut to content types tinymce is mapped to
+     */
+    private $_cmsTypes = array();
+    /**
      * Access key under which the wysiwyg editor settings will be stored
      * @var string
      */
@@ -73,7 +77,9 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         $this->_setEditor("tinymce4");
         $this->_aSettings = array();
 
-        // Retrieve all settings for tinymce 4, depending on CMS types
+        // Retrieve all settings for tinymce 4
+        $this->_aSettings = cTinymce4Configuration::get(array(), 'tinymce4');
+
         // define empty arrays for all CMS types that can be edited using a WYSIWYG editor
         $oTypeColl = new cApiTypeCollection();
         $oTypeColl->select();
@@ -89,8 +95,32 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             if (false === $cContentType->isWysiwygCompatible()) {
                 continue;
             }
-            $this->_aSettings[$curType] = cTinymce4Configuration::get(array(), 'tinymce4');
+
+            if (false === isset($this->_aSettings[$curType])) {
+                $this->_aSettings[$curType] = array();
+            }
+            // cache allowed cms types
+            $this->_cmsTypes[$curType] = true;
         }
+
+        // apply global settings to all cms-types
+        foreach ($this->_aSettings as $curSettingKey => $curSetting) {
+            // if current setting is not a cms type
+            if (false === array_key_exists($curSettingKey, $this->_cmsTypes)) {
+                // copy current setting into all cms types
+                // if there is such setting already set for the cms type
+                // (already set cms type specific values override global config values)
+                foreach ($this->_cmsTypes as $curTypeKey => $curType) {
+                    if (false === isset($this->_aSettings[$curType])) {
+                        $this->_aSettings[$curTypeKey][$curSettingKey] = $curSetting;
+                   }
+                }
+                // remove global setting for further processing in con_tiny.js
+                // that js-code assumes each setting key maps a cms type
+                unset($this->_aSettings[$curSettingKey]);
+            }
+        }
+
 
         // CEC for template pre processing
         $this->_aSettings = cApiCecHook::executeAndReturn('Contenido.WYSIWYG.LoadConfiguration', $this->_aSettings, $this->_sEditor);
@@ -100,6 +130,10 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
         // process settings for each cms type
         foreach ($this->_aSettings as $cmsType => $setting) {
+            // ignore any non cms type (do not process global settings)
+            if (false === isset($this->_cmsTypes[$cmsType])) {
+                continue;
+            }
             $this->_setSetting($cmsType, "article_url_suffix", 'front_content.php?idart=' . $idart, true);
 
             // Default values
@@ -197,7 +231,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             $validElements .= "iframe[src|width|height],object[data|width|height|type],audio[controls|src],source[src|type],script[src],video[width|height|poster|controls]";
 
             // pass valid elements to tinymce
-            $this->_setSetting($cmsType, "valid_elements", $validElements); 
+            $this->_setSetting($cmsType, "valid_elements", $validElements);
 
             // Extended valid elements, for compatibility also accepts "tinymce-extended-valid-elements"
             if (!array_key_exists("extended_valid_elements", $this->_aSettings[$cmsType]) && array_key_exists("tinymce-extended-valid-elements", $this->_aSettings[$cmsType])) {
@@ -258,7 +292,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
         $aLists = array();
         if (array_key_exists("contenido_lists", $this->_aSettings[$sType])) {
-            $aLists = json_decode($this->_aSettings[$sType]["contenido_lists"], true);
+            $aLists = $this->_aSettings[$sType]["contenido_lists"];
         }
 
         // check if link list is activated
@@ -298,7 +332,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
     }
 
     /**
-     * 
+     *
      * @return boolean if editor is loaded using gzip compression
      */
     public function getGZIPMode() {
@@ -324,7 +358,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         // http://www.tinymce.com/wiki.php/Configuration:toolbar
         // instead of
         // http://www.tinymce.com/wiki.php/Configuration:toolbar%3CN%3E
-        // 
+        //
         // This would allow users to specify more than just 3 toolbars in total
 
         switch ($sMode) {
@@ -375,6 +409,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $this->_setSetting($cmsType, 'plugins', $defaultPlugins, true);
 
                 $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', $cmsType, 'tinymce4_fullscreen');
+
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($cmsType, $sKey, $sValue, true);
                 }
@@ -569,7 +604,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
     /**
      * Sets given setting if setting was not yet defined.
      * Overwriting defined setting can be achieved with $bForceSetting = true.
-     * 
+     *
      * @param string $sType CMS type where setting should apply
      * @param string $sKey of setting to set
      * @param string $sValue of setting to set
@@ -605,12 +640,12 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         // remove key from array
         unset($result);
     }
-    
+
 
     public function getConfigInlineEdit() {
         $sConfig = '';
 
-        foreach($this->_aSettings as $cmsType => $setting) {
+        foreach ($this->_cmsTypes as $cmsType => $setting) {
             $this->setToolbar($cmsType, 'inline_edit');
         }
 
@@ -639,7 +674,8 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
     public function getConfigFullscreen() {
         $sConfig = '';
-        foreach($this->_aSettings as $cmsType => $setting) {
+
+        foreach ($this->_cmsTypes as $cmsType => $setting) {
             $this->setToolbar($cmsType, 'fullscreen');
         }
 
@@ -648,7 +684,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
     }
 
     /**
-     * function to obtain a comma separated list of plugins that are tried to be loaded 
+     * function to obtain a comma separated list of plugins that are tried to be loaded
      * @return string plugins the plugins
      */
     public function getPlugins() {

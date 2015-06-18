@@ -106,7 +106,7 @@ if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && 
 
         if ($copytemplate) {
             if ($validPath && !$pathExisted) {
-                recursiveCopy($sourcePath, $destPath);
+                cDirHandler::recursiveCopy($sourcePath, $destPath);
                 $buffer = cFileHandler::read($destPath . $dataPath . 'config.php');
                 $outbuf = str_replace('!CLIENT!', $idclient, $buffer);
                 $outbuf = str_replace('!PATH!', $backendPath, $outbuf);

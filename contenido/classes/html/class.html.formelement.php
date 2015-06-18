@@ -119,7 +119,7 @@ class cHTMLFormElement extends cHTML {
      *         $this for chaining
      */
     public function setAccessKey($accesskey) {
-        if ((strlen($accesskey) == 1) && isAlphanumeric($accesskey)) {
+        if ((strlen($accesskey) == 1) && cString::isAlphanumeric($accesskey)) {
             $this->updateAttribute('accesskey', $accesskey);
         } else {
             $this->removeAttribute('accesskey');

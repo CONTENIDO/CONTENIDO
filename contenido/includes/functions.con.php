@@ -804,7 +804,8 @@ function conMakePublic($idcat, $lang, $public) {
  *         Article Id
  */
 function conDeleteart($idart) {
-    global $lang, $_cecRegistry, $cfgClient, $client;
+    global $_cecRegistry, $cfgClient, $client;
+    $lang = cRegistry::getLanguageId();
 
     // Get article language
     $artLang = new cApiArticleLanguage();
@@ -832,8 +833,13 @@ function conDeleteart($idart) {
     $contentColl = new cApiContentCollection();
     $contentColl->deleteBy('idartlang', (int) $idartlang);
 
+    // delete article in language itself
     $artLangColl = new cApiArticleLanguageCollection();
     $artLangColl->delete((int) $idartlang);
+
+    // delete all versioning information for article in language
+    $oArtLangVersColl = new cApiArticleLanguageVersionCollection();
+    $oArtLangVersColl->deleteBy('idartlang', (int) $idartlang);
 
     if ($idtplcfg != 0) {
         $containerConfColl = new cApiContainerConfigurationCollection();

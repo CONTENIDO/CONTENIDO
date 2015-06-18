@@ -79,6 +79,14 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
         $password = $_POST['password'];
         $formtimestamp = $_POST['formtimestamp'];
 
+        // add slashes if they are not automatically added
+        if (cRegistry::getConfigValue('simulate_magic_quotes') !== true) {
+            // backward compatiblity of passwords
+            $password = addslashes($password);
+            // avoid sql injection in query by username on cApiUserCollection select string
+            $username = addslashes($username);
+        }
+
         $groupPerm = array();
 
         if ($password == '') {

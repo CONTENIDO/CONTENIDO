@@ -81,7 +81,7 @@ Lizenzen von verwendeten Produkten / Licenses of used third party products:
   Lizenz:      GNU Lesser General Public License
   Information: http://www.tinymce.com/
   
-- TinyMCE 4.1.7
+- TinyMCE 4.1.10
   Lizenz:      GNU Lesser General Public License 2.1
   Information: http://www.tinymce.com/
 

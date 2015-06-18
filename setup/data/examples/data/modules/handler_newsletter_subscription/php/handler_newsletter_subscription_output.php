@@ -220,7 +220,7 @@ if (!class_exists('NewsletterJobCollection')) {
         } else {
             $sMessage = mi18n("EMAIL_NOT_FOUND");
         }
-    } elseif (strlen($_GET['confirm']) == 30 && isAlphanumeric($_GET['confirm'])) {
+    } elseif (strlen($_GET['confirm']) == 30 && cString::isAlphanumeric($_GET['confirm'])) {
         $oRecipients->setWhere("idclient", $client);
         $oRecipients->setWhere("idlang", $lang);
         $oRecipients->setWhere("hash", $_GET['confirm']);
@@ -289,7 +289,7 @@ _BR ") . $sPassword;
         } else {
             $sMessage = mi18n("PROBLEM_CONFIRMING_SUBSCRIPTION");
         }
-    } elseif (strlen($_GET['stop']) == 30 && isAlphanumeric($_GET['stop'])) {
+    } elseif (strlen($_GET['stop']) == 30 && cString::isAlphanumeric($_GET['stop'])) {
         $oRecipients->setWhere("idclient", $client);
         $oRecipients->setWhere("idlang", $lang);
         $oRecipients->setWhere("hash", $_GET['stop']);
@@ -302,7 +302,7 @@ _BR ") . $sPassword;
         } else {
             $sMessage = mi18n("PROBLEM_PAUSING_NEWSLETTER_SUBSCRIPTION");
         }
-    } elseif (strlen($_GET['goon']) == 30 && isAlphanumeric($_GET['goon'])) {
+    } elseif (strlen($_GET['goon']) == 30 && cString::isAlphanumeric($_GET['goon'])) {
         $oRecipients->setWhere("idclient", $client);
         $oRecipients->setWhere("idlang", $lang);
         $oRecipients->setWhere("hash", $_GET['goon']);
@@ -315,7 +315,7 @@ _BR ") . $sPassword;
         } else {
             $sMessage = mi18n("PROBLEM_RESUMING_NEWSLETTER_SUBSCRIPTION");
         }
-    } elseif (strlen($_GET['unsubscribe']) == 30 && isAlphanumeric($_GET['unsubscribe'])) {
+    } elseif (strlen($_GET['unsubscribe']) == 30 && cString::isAlphanumeric($_GET['unsubscribe'])) {
         $oRecipients->setWhere("idclient", $client);
         $oRecipients->setWhere("idlang", $lang);
         $oRecipients->setWhere("hash", $_GET['unsubscribe']);

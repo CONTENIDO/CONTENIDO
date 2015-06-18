@@ -245,7 +245,7 @@ class cTemplate {
 //        if ('templates/standard/template.con_meta_edit_form.html' == $template) {
 //            error_log($content);
 //        }
-        
+
         if ($return) {
             return $content;
         } else {

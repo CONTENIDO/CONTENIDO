@@ -128,6 +128,12 @@ if ($action == 'user_edit') {
     // is a password set?
     $password = $request['password'];
     $passwordagain = $request['passwordagain'];
+
+    // add slashes for compatiblity with old password hashes that included
+    // magic quotes before the hashes where build
+    $password = addslashes($password);
+    $passwordagain = addslashes($passwordagain);
+
     $bPassOk = false;
     if (strlen($password) > 0) {
         // yes --> check it...
@@ -162,7 +168,7 @@ if ($action == 'user_edit') {
 
     if (!$bError && (strlen($password) == 0 || $bPassOk == true)) {
         if ($ocApiUser->store()) {
-            $sNotification = $notification->returnNotification("info", i18n("Changes saved"));
+            $sNotification = $notification->returnNotification("ok", i18n("Changes saved"));
             $bError = true;
         } else {
             $sNotification = $notification->returnNotification("error", i18n("An error occured while saving user info."));

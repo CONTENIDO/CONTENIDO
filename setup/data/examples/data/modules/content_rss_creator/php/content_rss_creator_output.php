@@ -92,7 +92,7 @@ foreach ($articles as $article) {
     $child = $rssChannel->addChild('item');
     $title = strip_tags($article->getContent('HTMLHEAD', 1));
     $text = strip_tags($article->getContent('HTML', 1));
-    $text = cApiStrTrimAfterWord($text, $configuration['teaser_character_limit']);
+    $text = cString::trimAfterWord($text, $configuration['teaser_character_limit']);
     $link = $cfgClient[$client]['path']['htmlpath'] . $article->getLink();
 
     $child->title = conHtmlEntityDecode(conHtmlSpecialChars($title));
@@ -111,7 +111,7 @@ if (isset($cfgClient[$client]['xml']['frontendpath'])) {
     if (false !== $success) {
         $result = mi18n("LABEL_RSS_CREATED");
     }
-    
+
 }
 
 $tpl = cSmartyFrontend::getInstance();

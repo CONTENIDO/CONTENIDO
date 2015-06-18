@@ -33,9 +33,14 @@ if (function_exists('get_magic_quotes_gpc')) {
 // Simulate get_magic_quotes_gpc on if turned off
 if (CON_STRIPSLASHES) {
 
-    $_POST = array_map(call_user_func('cString::addSlashes'), $_POST);
-    $_GET = array_map(call_user_func('cString::addSlashes'), $_GET);
-    $_COOKIE = array_map(call_user_func('cString::addSlashes'), $_COOKIE);
+    // class cString is not loaded here as autoloader wasn't called yet
+    if (false === class_exists('cString')) {
+        include_once dirname(__DIR__) . '/classes/class.string.php';
+    }
+
+    $_POST = array_map(array('cString', 'addSlashes'), $_POST);
+    $_GET = array_map(array('cString', 'addSlashes'), $_GET);
+    $_COOKIE = array_map(array('cString', 'addSlashes'), $_COOKIE);
 
     $cfg['simulate_magic_quotes'] = true;
 } else {
