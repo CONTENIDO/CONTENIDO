@@ -632,7 +632,7 @@ class cApiArticleLanguage extends Item {
     }
 
     /**
-     * Similar to getContent this function returns the view voce of the cContentType object
+     * Similar to getContent this function returns the view code of the cContentType object
      *
      * @param string $type
      *         Name of the content type

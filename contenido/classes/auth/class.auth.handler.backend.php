@@ -15,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This class contains the methods for the backend authentication in CONTENIDO.
+ * This class is the backend authentication handler for CONTENIDO.
  *
  * @package    Core
  * @subpackage Authentication
@@ -23,7 +23,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cAuthHandlerBackend extends cAuthHandlerAbstract {
 
     /**
-     * Constructor of the backend auth handler.
+     * Constructor of the backend authentication handler.
+     *
      * Automatically sets the lifetime of the authentication to the configured
      * value.
      */
@@ -36,8 +37,9 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
     }
 
     /**
-     * Handle the pre authorization.
-     * There is no pre authorization in backend so false is returned.
+     * Handle the pre authentication.
+     *
+     * There is no pre authentication in backend so false is returned.
      *
      * @see cAuthHandlerAbstract::preAuthorize()
      * @return false
@@ -66,6 +68,7 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
 
     /**
      * Validate the credentials.
+     *
      * Validate the users input against source and return a valid user ID or false.
      *
      * @see cAuthHandlerAbstract::validateCredentials()
