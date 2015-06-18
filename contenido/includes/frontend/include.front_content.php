@@ -311,7 +311,7 @@ $public = $oCatLang->get('public');
 // CON-2148
 // check if category is online, allow access if article is specified for loading
 $online = true;
-if (false === isset($_REQUEST['idart'])) {
+if (false === isset($idart)) {
     $online = ('0' !== $oCatLang->get('visible'));
 }
 $idartlang = getArtLang($idart, $lang);
