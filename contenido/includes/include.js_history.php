@@ -177,7 +177,7 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage')) {
         $oPage->render();
     } else {
         if ($bDeleteFile) {
-            $oPage->displayWarning(i18n('Version history was cleared'));
+            $oPage->displayOk(i18n('Version history was cleared'));
         } else {
             $oPage->displayWarning(i18n('No jscript history available'));
         }
