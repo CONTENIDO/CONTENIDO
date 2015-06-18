@@ -157,7 +157,7 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
     }
 
     if ($bError === false || $sErrorMsg == '') {
-        $sInfoMsg = $notification->returnNotification('info', i18n('The changes were successfully executed.'));
+        $sInfoMsg = $notification->returnNotification('ok', i18n('The changes were successfully executed.'));
     } else {
         $sErrorComplete = i18n('The changes were not all successfully completed.') . '<br><br>' . $sErrorMsg;
         $sInfoMsg = $notification->returnNotification('error', $sErrorComplete);
