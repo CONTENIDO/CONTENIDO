@@ -15,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This class contains the methods for the frontend authentication in CONTENIDO.
+ * This class is the frontend authentication handler for CONTENIDO.
  *
  * @package    Core
  * @subpackage Authentication
