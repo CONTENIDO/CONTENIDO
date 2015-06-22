@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-06-18 11:24+0200\n"
-"PO-Revision-Date: 2015-06-22 11:15+0100\n"
+"PO-Revision-Date: 2015-06-22 12:47+0100\n"
 "Last-Translator: Thomas Stauer <thomas.stauer@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: de_DE\n"
@@ -5947,7 +5947,7 @@ msgstr "Keine Log-Dateien gefunden / vorhanden."
 #: includes/include.system_purge.php:90 includes/include.system_purge.php:98
 #: includes/include.system_purge.php:108 includes/include.system_purge.php:116
 msgid "Client "
-msgstr "Mandant"
+msgstr "Mandant "
 
 #: includes/include.system_purge.php:75 includes/include.system_purge.php:134
 #, php-format
