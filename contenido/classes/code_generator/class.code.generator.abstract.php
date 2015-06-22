@@ -408,7 +408,7 @@ abstract class cCodeGeneratorAbstract {
 
     /**
      * Replaces all container/module configuration tags (CMS_VALUE[n] values)
-     * against their settings.
+     * by their settings.
      *
      * @param int $containerNumber
      *         Container number
@@ -496,7 +496,7 @@ abstract class cCodeGeneratorAbstract {
     }
 
     /**
-     * Replaces container tag in layout against the parsed container code
+     * Replaces container tag in layout by the parsed container code
      * (module code).
      *
      * @param int $containerNumber
@@ -529,7 +529,6 @@ abstract class cCodeGeneratorAbstract {
 
     /**
      * Returns array of all CMS_* vars being used by current article and language
-     *
      *
      * @param bool $editable [optional]
      * @param unknown_type $version [optional]
@@ -586,7 +585,7 @@ abstract class cCodeGeneratorAbstract {
     }
 
     /**
-     * Resets module related variables
+     * Resets module related variables.
      */
     protected function _resetModule() {
         $this->_modulePrefix = array();
@@ -626,7 +625,9 @@ abstract class cCodeGeneratorAbstract {
     }
 
     /**
+     * Getter for article language.
      *
+     * @todo deprecate me
      * @return cApiArticleLanguage
      *         the artlang object
      */
