@@ -176,7 +176,7 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage')) {
         }
     } else {
         if ($bDeleteFile) {
-            $oPage->displayWarning(i18n('Version history was cleared'));
+            $oPage->displayOk(i18n('Version history was cleared'));
         } else {
             $oPage->displayWarning(i18n('No style history available'));
         }

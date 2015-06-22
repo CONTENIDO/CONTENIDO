@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $encoding[$lang] ?>">
+    <meta http-equiv="Content-Type" content="text/html; charset={CHARSET}">
     <title>:: :: :: :: CONTENIDO Login</title>
     <script type="text/javascript"><!--
     if (top != self) {
@@ -29,10 +29,10 @@
 <body>
 
 <div id="loginPageWrap">
-    <form id="login" name="login" method="post" action="<?php echo $sFormAction; ?>">
+    <form id="login" name="login" method="post" action="{FORM_ACTION}">
         <input type="hidden" name="vaction" value="login">
-        <input type="hidden" name="formtimestamp" value="<?php echo time(); ?>">
-        <input type="hidden" name="idcat" value="<?php echo (int) $idcat; ?>">
+        <input type="hidden" name="formtimestamp" value="{FORM_TIMESTAMP}">
+        <input type="hidden" name="idcat" value="{IDCAT}">
         <div class="formHeader">Login</div>
         <div class="formRow">
             <label for="username">Username:</label><input type="text" class="text" name="username" id="username" size="20" maxlength="32" value="{USERNAME}"><br class="clear">

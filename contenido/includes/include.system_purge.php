@@ -101,7 +101,6 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
                 }
 
                 if (isset($_POST['clientHistory']) && $_POST['clientHistory'] == 1) {
-                    echo "dasfs";
                     $bKeep = ($_POST['keepHistory'] == 1 && (int) $_POST['keepHistoryNumber'] > 0) ? true : false;
                     if (!$oPurge->clearClientHistory($iClientId, $bKeep, (int) $_POST['keepHistoryNumber'])) {
                         $bError = true;
@@ -157,7 +156,7 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
     }
 
     if ($bError === false || $sErrorMsg == '') {
-        $sInfoMsg = $notification->returnNotification('info', i18n('The changes were successfully executed.'));
+        $sInfoMsg = $notification->returnNotification('ok', i18n('The changes were successfully executed.'));
     } else {
         $sErrorComplete = i18n('The changes were not all successfully completed.') . '<br><br>' . $sErrorMsg;
         $sInfoMsg = $notification->returnNotification('error', $sErrorComplete);

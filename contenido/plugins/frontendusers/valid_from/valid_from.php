@@ -42,7 +42,6 @@ function frontendusers_valid_from_display() {
 
     $sValidFrom = '
         <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/timepicker.css">
-        <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
 {_JS_HEAD_CONTENIDO_}
         <script type="text/javascript" src="scripts/jquery/plugins/timepicker.js"></script>';
     $sValidFrom .= $langscripts;

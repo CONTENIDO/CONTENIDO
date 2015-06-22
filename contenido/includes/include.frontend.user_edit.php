@@ -85,7 +85,7 @@ if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "fr
     if (!empty($sReloadScript)) {
         $page->addScript($sReloadScript);
     }
-    $page->displayOk(i18n("Delteted user successfully!"));
+    $page->displayOk(i18n("Deleted user successfully!"));
 }
 
 if (true === $feuser->isLoaded() && $feuser->get("idclient") == $client) {
