@@ -92,6 +92,7 @@ if (cFileHandler::exists(cRegistry::getFrontendPath() . 'images/but_ok.gif')) {
 
 $tpl = new cTemplate();
 
+$tpl->set('s', 'CHARSET', $encoding[$lang]);
 $tpl->set('s', 'FORM_ACTION', $sFormAction);
 $tpl->set('s', 'FORM_TIMESTAMP', time());
 $tpl->set('s', 'IDCAT', $idcat);
