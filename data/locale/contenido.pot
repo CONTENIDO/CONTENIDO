@@ -3731,13 +3731,13 @@ msgstr ""
 msgid ""
 "The robot-tag sets certain rules for search engines. You can tell it to not "
 "index certain articles or to keep pictures in this article out of its index. "
-"It has a high relevance for SEO. Only relevant and most visited articels "
+"It has a high relevance for SEO. Only relevant and most visited articles "
 "should be indexed."
 msgstr ""
 
 #: includes/include.con_meta_form.php:544
 msgid ""
-"The avarage value for the sitemap priority is 0.5. Only important articels "
+"The avarage value for the sitemap priority is 0.5. Only important articles "
 "should have a value no more than 0.8."
 msgstr ""
 
