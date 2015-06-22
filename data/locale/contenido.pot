@@ -4043,7 +4043,7 @@ msgid "Created new user successfully!"
 msgstr ""
 
 #: includes/include.frontend.user_edit.php:88
-msgid "Delteted user successfully!"
+msgid "Deleted user successfully!"
 msgstr ""
 
 #: includes/include.frontend.user_edit.php:105

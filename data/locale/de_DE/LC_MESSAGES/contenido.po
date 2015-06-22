@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-06-18 11:24+0200\n"
-"PO-Revision-Date: 2015-06-19 16:21+0100\n"
+"PO-Revision-Date: 2015-06-22 11:15+0100\n"
 "Last-Translator: Thomas Stauer <thomas.stauer@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: de_DE\n"
@@ -4369,7 +4369,7 @@ msgid "Created new user successfully!"
 msgstr "Neuer Frontendbenutzer wurde erfolgreich angelegt!"
 
 #: includes/include.frontend.user_edit.php:88
-msgid "Delteted user successfully!"
+msgid "Deleted user successfully!"
 msgstr "Benutzer erfolgreich gelöscht!"
 
 #: includes/include.frontend.user_edit.php:105
