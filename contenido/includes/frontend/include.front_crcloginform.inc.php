@@ -92,6 +92,9 @@ if (cFileHandler::exists(cRegistry::getFrontendPath() . 'images/but_ok.gif')) {
 
 $tpl = new cTemplate();
 
+$tpl->set('s', 'FORM_ACTION', $sFormAction);
+$tpl->set('s', 'FORM_TIMESTAMP', time());
+$tpl->set('s', 'IDCAT', $idcat);
 $tpl->set("s", "USERNAME", (isset($this->auth['uname'])) ? $this->auth['uname'] : '');
 $tpl->set("s", "LOGINBUTTON", $sLoginButton);
 
