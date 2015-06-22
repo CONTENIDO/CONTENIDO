@@ -229,7 +229,7 @@ class cApiInUseCollection extends ItemCollection {
      *         Value to append to the override lock button
      * @return bool array
      *         returnWarning is false, returns a bool value wether the object
-     *         is locked. If returnWarning is true, returns a 2 item array
+     *         is locked. If returnWarning is true, returns a 2-item array
      *         (bool inUse, string errormessage).
      */
     public function checkAndMark($type, $objectid, $returnWarning = false, $warningTemplate = '', $allowOverride = false, $location = '') {
