@@ -101,7 +101,6 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
                 }
 
                 if (isset($_POST['clientHistory']) && $_POST['clientHistory'] == 1) {
-                    echo "dasfs";
                     $bKeep = ($_POST['keepHistory'] == 1 && (int) $_POST['keepHistoryNumber'] > 0) ? true : false;
                     if (!$oPurge->clearClientHistory($iClientId, $bKeep, (int) $_POST['keepHistoryNumber'])) {
                         $bError = true;
