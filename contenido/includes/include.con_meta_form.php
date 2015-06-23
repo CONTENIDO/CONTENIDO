@@ -538,10 +538,10 @@ $tpl->set("s", "INFO_BUTTON_KEYWORDS", $infoButton->render());
 $infoButton->setHelpText(i18n('The frequency of the revisit after tag depends on new publications of the content. Nevertheless the robots decide on their own when to visit.'));
 $tpl->set("s", "INFO_BUTTON_REVISIT", $infoButton->render());
 
-$infoButton->setHelpText(i18n('The robot-tag sets certain rules for search engines. You can tell it to not index certain articles or to keep pictures in this article out of its index. It has a high relevance for SEO. Only relevant and most visited articels should be indexed.'));
+$infoButton->setHelpText(i18n('The robot-tag sets certain rules for search engines. You can tell it to not index certain articles or to keep pictures in this article out of its index. It has a high relevance for SEO. Only relevant and most visited articles should be indexed.'));
 $tpl->set("s", "INFO_BUTTON_ROBOTS", $infoButton->render());
 
-$infoButton->setHelpText(i18n('The avarage value for the sitemap priority is 0.5. Only important articels should have a value no more than 0.8.'));
+$infoButton->setHelpText(i18n('The avarage value for the sitemap priority is 0.5. Only important articles should have a value no more than 0.8.'));
 $tpl->set("s", "INFO_BUTTON_SITEMAP_PRIORITY", $infoButton->render());
 
 $infoButton->setHelpText(i18n('The refresh rate is focused on the content.'));
