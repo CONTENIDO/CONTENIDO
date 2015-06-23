@@ -3,21 +3,21 @@
 /**
  * This file contains the file cache class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Cache
- * @author     Dominik Ziegler
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Dominik Ziegler
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This class contains functions for the file cache in CONTENIDO.
+ * This class contains functions for the CONTENIDO file cache.
  *
- * @package    Core
+ * @package Core
  * @subpackage Cache
  */
 class cFileCache {
@@ -40,7 +40,8 @@ class cFileCache {
     }
 
     /**
-     * Setter for the cache options. Validates incoming options and sets the default of the missing options.
+     * Setter for the cache options.
+     * Validates incoming options and sets the default of the missing options.
      *
      * @param array $options
      *         array with option
@@ -119,7 +120,7 @@ class cFileCache {
     }
 
     /**
-     * Returns full destination to the cache file.
+     * Returns full destination to the cached file.
      *
      * @param string $id
      *         cache ID
@@ -157,7 +158,7 @@ class cFileCache {
             return false;
         }
 
-        $refreshTime = ($this->_options['lifetime'] == 0) ? 0 : time() - (int)$this->_options['lifetime'];
+        $refreshTime = ($this->_options['lifetime'] == 0) ? 0 : time() - (int) $this->_options['lifetime'];
 
         clearstatcache();
         $info = cFileHandler::info($destination);

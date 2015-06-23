@@ -15,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This class contains functions for the output cache in CONTENIDO.
+ * This class contains functions for the CONTENIDO output cache.
  *
  * @package Core
  * @subpackage Cache
@@ -23,14 +23,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cOutputCache {
 
     /**
-     * File Cache Object
+     * File cache object.
      *
      * @var cFileCache
      */
     protected $_fileCache;
 
     /**
-     * Flag 2 activate caching.
+     * Flag to activate caching.
      *
      * @var bool
      */
@@ -44,7 +44,7 @@ class cOutputCache {
     protected $_bDebug = false;
 
     /**
-     * Flag 2 print html comment including some debug informations.
+     * Flag to print html comment including some debug informations.
      *
      * @var bool
      */
@@ -58,22 +58,22 @@ class cOutputCache {
     protected $_iStartTime;
 
     /**
-     * Option array 4 generating cache identifier (e.
-     * g. $_GET,$_POST, $_COOKIE, ...).
+     * Option array for generating cache identifier
+     * (e.g. $_GET,$_POST, $_COOKIE, ...).
      *
      * @var array
      */
     protected $_aIDOptions;
 
     /**
-     * Option array 4 pear caching.
+     * Option array for pear caching.
      *
      * @var array
      */
     protected $_aCacheOptions;
 
     /**
-     * Handler array 2 store code, beeing executed on some hooks.
+     * Handler array to store code, beeing executed on some hooks.
      * We have actually two hooks:
      * - 'beforeoutput': code to execute before doing the output
      * - 'afteroutput' code to execute after output
@@ -90,21 +90,21 @@ class cOutputCache {
     protected $_sID;
 
     /**
-     * Directory 2 store cached output.
+     * Directory to store cached output.
      *
      * @var string
      */
     protected $_sDir = 'cache/';
 
     /**
-     * Subdirectory 2 store cached output.
+     * Subdirectory to store cached output.
      *
      * @var string
      */
     protected $_sGroup = 'default';
 
     /**
-     * Substring 2 add as prefix to cache-filename.
+     * Substring to add as prefix to cache-filename.
      *
      * @var string
      */
@@ -118,7 +118,7 @@ class cOutputCache {
     protected $_iLifetime = 3600;
 
     /**
-     * Used 2 store debug message.
+     * Used to store debug message.
      *
      * @var string
      */
@@ -145,14 +145,14 @@ VALID UNTIL: %s
 ';
 
     /**
-     * Constructor of cOutputCache
+     * Constructor.
      *
      * @param string $cachedir [optional]
-     *         Directory 2 cache files
+     *         Directory to cache files
      * @param string $cachegroup [optional]
-     *         Subdirectory 2 cache files
+     *         Subdirectory to cache files
      * @param string $cacheprefix [optional]
-     *         Prefixname 2 add 2 cached files
+     *         Prefixname to add to cached files
      */
     public function __construct($cachedir = NULL, $cachegroup = NULL, $cacheprefix = NULL) {
         // wherever you want the cache files
@@ -178,10 +178,10 @@ VALID UNTIL: %s
     }
 
     /**
-     * Set/Get the flag 2 enable caching.
+     * Get/Set the flag to enable caching.
      *
      * @param bool $enable [optional]
-     *         True 2 enable caching or false
+     *         True to enable caching or false
      * @return mixed
      *         Enable flag or void
      */
@@ -194,11 +194,11 @@ VALID UNTIL: %s
     }
 
     /**
-     * Set/Get the flag 2 debug cache object (prints out miss/hit state with
+     * Get/Set the flag to debug cache object (prints out miss/hit state with
      * execution time).
      *
      * @param bool $debug
-     *         True 2 activate debugging or false.
+     *         True to activate debugging or false.
      * @return mixed
      *         Debug flag or void
      */
@@ -211,7 +211,7 @@ VALID UNTIL: %s
     }
 
     /**
-     * Set/Get flag 2 print out cache info as html comment.
+     * Get/Set flag to print out cache info as html comment.
      *
      * @param bool $htmlcomment
      *         True debugging or false.
@@ -227,7 +227,7 @@ VALID UNTIL: %s
     }
 
     /**
-     * Set/Get caching lifetime in seconds.
+     * Get/Set caching lifetime in seconds.
      *
      * @param int $seconds [optional]
      *         New Lifetime in seconds
@@ -243,7 +243,7 @@ VALID UNTIL: %s
     }
 
     /**
-     * Set/Get template to use on printing the chache info.
+     * Get/Set template to use on printing the chache info.
      *
      * @param string $template
      *         Template string including the '%s' format definition.
@@ -253,8 +253,8 @@ VALID UNTIL: %s
     }
 
     /**
-     * Add option 4 caching (e.
-     * g. $_GET,$_POST, $_COOKIE, ...). Used 2 generate the id for caching.
+     * Add option for caching (e.g. $_GET,$_POST, $_COOKIE, ...).
+     * Used to generate the id for caching.
      *
      * @param string $name
      *         Name of option
@@ -403,7 +403,7 @@ VALID UNTIL: %s
      * Raises any defined event code by using eval().
      *
      * @param string $name
-     *         Name of event 2 raise
+     *         Name of event to raise
      */
     protected function _raiseEvent($name) {
         // check if event exists, get out if not
@@ -418,7 +418,7 @@ VALID UNTIL: %s
     }
 
     /**
-     * Returns microtime (Unix-Timestamp), used to calculate time of execution.
+     * Returns microtime (UNIX timestamp), used to calculate time of execution.
      *
      * @return float
      *         Timestamp
@@ -532,7 +532,7 @@ class cOutputCacheHandler extends cOutputCache {
 
     /**
      * Checks, if the create code flag is set.
-     * Output will be loaded from cache, if no code is 2 create.
+     * Output will be loaded from cache, if no code is to create.
      * It also checks the state of global variable $force.
      *
      * @param mixed $iCreateCode

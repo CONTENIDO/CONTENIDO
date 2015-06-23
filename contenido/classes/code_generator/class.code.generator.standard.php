@@ -269,7 +269,6 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
     /**
      * Will be invoked, if code generation wasn't able to find a configured
      * article or category.
-     *
      * Creates a error message and writes this into the code cache.
      *
      * @param int $idcatart
@@ -284,9 +283,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
     /**
      * Processes and adds or replaces title tag for an article.
-     *
-     * Also calls the CEC 'Contenido.Content.CreateTitletag'
-     * for user defined title creation.
+     * Also calls the CEC 'Contenido.Content.CreateTitletag' for user defined
+     * title creation.
      *
      * @see cCodeGeneratorAbstract::_processCodeTitleTag()
      * @return string
@@ -335,9 +333,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
     /**
      * Processes and adds or replaces all meta tags for an article.
-     *
-     * Also calls the CEC 'Contenido.Content.CreateMetatags'
-     * for user defined meta tags creation.
+     * Also calls the CEC 'Contenido.Content.CreateMetatags' for user defined
+     * meta tags creation.
      *
      * @global array $encoding
      * @return string
@@ -407,7 +404,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
     }
 
     /**
-     * Saves the generated code (if layout flag is false and save flag is true)
+     * Saves the generated code if layout flag is false and save flag is true.
      *
      * @global array $cfgClient
      * @param int $idcatart
@@ -525,7 +522,6 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
     /**
      * This method allows to set new values for the robots meta element.
-     *
      * If NULL is given for $index or $follow, existing settings are *not*
      * overwritten. If article should be indexed and followed, 'all' will be
      * set.
@@ -599,7 +595,6 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * Extracts a meta element of type $type (either 'name' or 'http-equiv') and
      * name or HTTP header equivalent $nameOrEquiv from the given array of meta
      * elements.
-     *
      * Both, the reduced array of meta elements and the meta element to be
      * extracted are returned as an array. If the meta element to be extracted
      * could not be found, NULL will be returned in its place.

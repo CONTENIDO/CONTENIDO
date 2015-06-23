@@ -14,7 +14,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Action collection
+ * Action collection.
  *
  * @package Core
  * @subpackage GenericDB_Model
@@ -22,7 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiActionCollection extends ItemCollection {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct() {
         global $cfg;
@@ -34,7 +34,7 @@ class cApiActionCollection extends ItemCollection {
     }
 
     /**
-     * Creates an action entry
+     * Creates an action entry.
      *
      * @param string|int $area
      * @param string|int $name
@@ -82,7 +82,7 @@ class cApiActionCollection extends ItemCollection {
     }
 
     /**
-     * Returns all actions available in the system
+     * Returns all actions available in the system.
      *
      * @return array
      *         Array with id and name entries
@@ -141,7 +141,7 @@ class cApiActionCollection extends ItemCollection {
 }
 
 /**
- * Action item
+ * Action item.
  *
  * @package Core
  * @subpackage GenericDB_Model
@@ -149,7 +149,7 @@ class cApiActionCollection extends ItemCollection {
 class cApiAction extends Item {
 
     /**
-     * Constructor Function
+     * Constructor.
      *
      * @param mixed $mId [optional]
      *         Specifies the ID of item to load

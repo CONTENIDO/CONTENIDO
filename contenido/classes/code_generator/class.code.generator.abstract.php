@@ -1,7 +1,7 @@
 <?php
 
 /**
- * CONTENIDO code generator abstract class
+ * This file contains the abstract CONTENIDO code generator class.
  *
  * @package Core
  * @subpackage ContentType
@@ -15,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * CONTENIDO abstract code generator class.
+ * Abstract CONTENIDO code generator class.
  *
  * @package Core
  * @subpackage ContentType
@@ -23,92 +23,93 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 abstract class cCodeGeneratorAbstract {
 
     /**
-     * CONTENIDO database instance
+     * CONTENIDO database instance.
      *
      * @var cDb
      */
     protected $_db;
 
     /**
-     * Frontend debug options, see $frontend_debug in
-     * __FRONTEND_PATH__/data/config/config.php
+     * Frontend debug options.
      *
+     * @see $frontend_debug in __FRONTEND_PATH__/data/config/config.php
      * @var array
      */
     protected $_feDebugOptions = array();
 
     /**
-     * Collected CSS data for current template
+     * Collected CSS data for current template.
      *
      * @var string
      */
     protected $_cssData = '';
 
     /**
-     * Collected JS data for current template
+     * Collected JS data for current template.
      *
      * @var string
      */
     protected $_jsData = '';
 
     /**
-     * Template name
+     * Template name.
      *
      * @var string
      */
     protected $_tplName = '';
 
     /**
-     * Category id
+     * Category id.
      *
      * @var int
      */
     protected $_idcat;
 
     /**
-     * Article id
+     * Article id.
      *
      * @var int
      */
     protected $_idart;
 
     /**
-     * Language id
+     * Language id.
      *
      * @var int
      */
     protected $_lang;
 
     /**
-     * Client id
+     * Client id.
      *
      * @var int
      */
     protected $_client;
 
     /**
-     * Flag to process layout
+     * Flag to process layout.
      *
      * @var bool
      */
     protected $_layout;
 
     /**
-     * Flag to persist generated code
+     * Flag to persist generated code.
      *
      * @var bool
      */
     protected $_save;
 
     /**
-     * Article language id
+     * Article language id.
      *
      * @var int
      */
     protected $_idartlang;
 
     /**
-     * Page title (generally from article language table)
+     * Page title.
+     * Usually from article language table.
      *
      * @var string
      */
@@ -116,42 +117,42 @@ abstract class cCodeGeneratorAbstract {
 
     /**
      * Layout code.
-     * Initially with container tags which will be replaced against module
-     * outputs.
+     * Initially with container tags which will be replaced by module output.
      *
      * @var string
      */
     protected $_layoutCode = '';
 
     /**
-     * Module output code prefix
+     * Module output code prefix.
      *
      * @var array
      */
     protected $_modulePrefix = array();
 
     /**
-     * Module output code
+     * Module output code.
      *
      * @var string
      */
     protected $_moduleCode = '';
 
     /**
-     * Module output code suffix
+     * Module output code suffix.
      *
      * @var array
      */
     protected $_moduleSuffix = array();
 
     /**
-     * Module output code suffix
+     * Article language.
      *
      * @var cApiArticleLanguage
      */
     protected $_oArtLang;
 
     /**
+     * Constructor.
      */
     public function __construct() {
         $this->_db = cRegistry::getDb();
@@ -159,9 +160,9 @@ abstract class cCodeGeneratorAbstract {
 
     /**
      * Setter for frontend debug options.
-     * See $frontend_debug in __FRONTEND_PATH__/data/config/config.php
-     * (located in clients frontend directory).
      *
+     * @see $frontend_debug in __FRONTEND_PATH__/data/config/config.php
+     *         located in clients frontend directory
      * @param array $debugOptions
      */
     public function setFrontendDebugOptions(array $debugOptions) {
@@ -407,7 +408,7 @@ abstract class cCodeGeneratorAbstract {
 
     /**
      * Replaces all container/module configuration tags (CMS_VALUE[n] values)
-     * against their settings.
+     * by their settings.
      *
      * @param int $containerNumber
      *         Container number
@@ -495,7 +496,7 @@ abstract class cCodeGeneratorAbstract {
     }
 
     /**
-     * Replaces container tag in layout against the parsed container code
+     * Replaces container tag in layout by the parsed container code
      * (module code).
      *
      * @param int $containerNumber
@@ -528,7 +529,6 @@ abstract class cCodeGeneratorAbstract {
 
     /**
      * Returns array of all CMS_* vars being used by current article and language
-     *
      *
      * @param bool $editable [optional]
      * @param unknown_type $version [optional]
@@ -585,7 +585,7 @@ abstract class cCodeGeneratorAbstract {
     }
 
     /**
-     * Resets module related variables
+     * Resets module related variables.
      */
     protected function _resetModule() {
         $this->_modulePrefix = array();
@@ -625,7 +625,9 @@ abstract class cCodeGeneratorAbstract {
     }
 
     /**
+     * Getter for article language.
      *
+     * @todo deprecate me
      * @return cApiArticleLanguage
      *         the artlang object
      */

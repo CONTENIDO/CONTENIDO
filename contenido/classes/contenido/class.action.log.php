@@ -14,7 +14,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Actionlog collection
+ * Actionlog collection.
  *
  * @package    Core
  * @subpackage GenericDB_Model
@@ -22,7 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiActionlogCollection extends ItemCollection {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct() {
         global $cfg;
@@ -38,7 +38,7 @@ class cApiActionlogCollection extends ItemCollection {
     }
 
     /**
-     * Creates a actionlog item entry
+     * Creates an actionlog item.
      *
      * @param string $userId
      *         User id
@@ -72,7 +72,7 @@ class cApiActionlogCollection extends ItemCollection {
 }
 
 /**
- * Actionlog item
+ * Actionlog item.
  *
  * @package    Core
  * @subpackage GenericDB_Model
@@ -80,7 +80,7 @@ class cApiActionlogCollection extends ItemCollection {
 class cApiActionlog extends Item {
 
     /**
-     * Constructor Function
+     * Constructor.
      *
      * @param mixed $mId [optional]
      *         Specifies the ID of item to load

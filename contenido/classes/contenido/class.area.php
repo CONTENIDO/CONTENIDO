@@ -14,7 +14,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Area collection
+ * Area collection.
  *
  * @package Core
  * @subpackage GenericDB_Model
@@ -22,7 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiAreaCollection extends ItemCollection {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct() {
         global $cfg;
@@ -31,7 +31,7 @@ class cApiAreaCollection extends ItemCollection {
     }
 
     /**
-     * Creates a area item entry
+     * Creates an area item entry.
      *
      * @param string $name
      *         Name
@@ -62,7 +62,7 @@ class cApiAreaCollection extends ItemCollection {
     }
 
     /**
-     * Returns the parent id of passed area
+     * Returns the parent id of passed area.
      *
      * @param int|string $area
      *         Area id or name
@@ -80,7 +80,7 @@ class cApiAreaCollection extends ItemCollection {
     }
 
     /**
-     * Returns all area ids having passed area as name or as parent id
+     * Returns all area ids having passed area as name or as parent id.
      *
      * @param int|string $nameOrId
      *         Area name or parent id
@@ -100,7 +100,7 @@ class cApiAreaCollection extends ItemCollection {
     }
 
     /**
-     * Returns all areas available in the system
+     * Returns all areas available in the system.
      *
      * @return array
      *         Array with id and name entries
@@ -120,7 +120,7 @@ class cApiAreaCollection extends ItemCollection {
     }
 
     /**
-     * Returns the name for a given areaid
+     * Returns the name for a given area id.
      *
      * @param string $area
      * @return string
@@ -132,7 +132,7 @@ class cApiAreaCollection extends ItemCollection {
     }
 
     /**
-     * Returns the idarea for a given area name
+     * Returns the idarea for a given area name.
      *
      * @param string $area
      * @return int
@@ -156,7 +156,7 @@ class cApiAreaCollection extends ItemCollection {
 }
 
 /**
- * Area item
+ * Area item.
  *
  * @package Core
  * @subpackage GenericDB_Model
@@ -164,7 +164,7 @@ class cApiAreaCollection extends ItemCollection {
 class cApiArea extends Item {
 
     /**
-     * Constructor Function
+     * Constructor.
      *
      * @param mixed $mId [optional]
      *         Specifies the ID of item to load
