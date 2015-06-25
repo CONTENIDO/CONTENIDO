@@ -281,6 +281,7 @@ function fetchMySQLCollations($db = null, $charset = "") {
 				'latin5_turkish_ci',
 				'armscii8_general_ci',
 				'utf8_general_ci',
+				'utf8_unicode_ci',
 				'ucs2_general_ci',
 				'cp866_general_ci',
 				'keybcs2_general_ci',

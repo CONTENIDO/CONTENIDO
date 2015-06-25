@@ -107,40 +107,42 @@ class cSetupSystemData extends cSetupMask {
         $dbcollation = new cHTMLSelectElement('collationSelect', '1', 'collationSelect');
         $dbcollation->setAttribute("onchange", "comboBox('collationSelect', 'collationText')");
 
-        // Compose charset select box, only if CONUTF8 flag is not set
-        if (!defined('CON_UTF8') || (defined('CON_UTF8') && CON_UTF8 === false)) {
-            $pos = 0;
-            $option = new cHTMLOptionElement('-- ' . i18n("No character set", "setup") . ' --', '');
-            $dbcharset->addOptionElement(++$pos, $option);
-            $selectedCharset = (!empty($_SESSION['dbcharset'])) ? $_SESSION['dbcharset'] : '';
-            $aCharsets = fetchMySQLCharsets();
-            foreach ($aCharsets as $p => $charset) {
-                $selected = ($selectedCharset == $charset);
-                $option = new cHTMLOptionElement($charset, $charset, $selected);
-                $dbcharset->addOptionElement(++$pos, $option);
-            }
-            $dbcharsetTextbox = $dbcharset->render();
-        } else {
+        // Compose charset and collation select box, only if CONUTF8 flag is not set
+        if (!cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php') || (defined('CON_UTF8') && CON_UTF8 === true)) {
+        	// database charset
         	$hiddenFieldDbCharset = new cHTMLHiddenField('dbcharset', 'utf8');
-            $dbcharsetTextbox = $hiddenFieldDbCharset . 'utf8';
-        }
+        	$dbcharsetTextbox = $hiddenFieldDbCharset . 'utf8';
 
-        // Compose collation select box, only if CONUTF8 flag is not set
-        if (!defined('CON_UTF8') || (defined('CON_UTF8') && CON_UTF8 === false)) {
-            $pos = 0;
-            $noOp = new cHTMLOptionElement('-- ' . i18n("Other", "setup") . ' --', '');
-            $dbcollation->addOptionElement(++$pos, $noOp);
-            $selectedCollation = (!empty($_SESSION['dbcollation'])) ? $_SESSION['dbcollation'] : 'utf8_general_ci';
-            $collations = fetchMySQLCollations();
-            foreach ($collations as $p => $collation) {
-                $selected = ($selectedCollation == $collation);
-                $option = new cHTMLOptionElement($collation, $collation, $selected);
-                $dbcollation->addOptionElement(++$pos, $option);
-            }
-            $dbCollationTextbox = new cHTMLTextbox('dbcollation', $selectedCollation, '', '', 'collationText'). $dbcollation->render();
-        } else {
+        	// database collation
         	$hiddenFieldDbCollation = new cHTMLHiddenField('dbcollation', 'utf8_general_ci');
         	$dbCollationTextbox = $hiddenFieldDbCollation . 'utf8_general_ci';
+        } else {
+
+        	// database charset
+        	$pos = 0;
+        	$option = new cHTMLOptionElement('-- ' . i18n("No character set", "setup") . ' --', '');
+        	$dbcharset->addOptionElement(++$pos, $option);
+        	$selectedCharset = (!empty($_SESSION['dbcharset'])) ? $_SESSION['dbcharset'] : '';
+        	$aCharsets = fetchMySQLCharsets();
+        	foreach ($aCharsets as $p => $charset) {
+        		$selected = ($selectedCharset == $charset);
+        		$option = new cHTMLOptionElement($charset, $charset, $selected);
+        		$dbcharset->addOptionElement(++$pos, $option);
+        	}
+        	$dbcharsetTextbox = $dbcharset->render();
+
+        	// database collation
+        	$pos = 0;
+        	$noOp = new cHTMLOptionElement('-- ' . i18n("Other", "setup") . ' --', '');
+        	$dbcollation->addOptionElement(++$pos, $noOp);
+        	$selectedCollation = (!empty($_SESSION['dbcollation'])) ? $_SESSION['dbcollation'] : 'utf8_general_ci';
+        	$collations = fetchMySQLCollations();
+        	foreach ($collations as $p => $collation) {
+        		$selected = ($selectedCollation == $collation);
+        		$option = new cHTMLOptionElement($collation, $collation, $selected);
+        		$dbcollation->addOptionElement(++$pos, $option);
+        	}
+        	$dbCollationTextbox = new cHTMLTextbox('dbcollation', $selectedCollation, '', '', 'collationText'). $dbcollation->render();
         }
 
         $this->_oStepTemplate->set('s', 'LABEL_DBHOST', i18n("Database Server (IP or name)", "setup"));
