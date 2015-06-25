@@ -763,9 +763,14 @@ class cContentVersioning {
                                   // online
         global $timemgmt;
 
-        $page_title = addslashes($page_title);
+        $page_title = (empty($parameters['pagetitle'])) ? addslashes($page_title) : $parameters['pagetitle'];
+
         $parameters['title'] = stripslashes($parameters['title']);
-        $redirect_url = stripslashes($redirect_url);
+
+        $redirect = (empty($parameters['redirect'])) ? cSecurity::toInteger($redirect) : $parameters['redirect'];
+        $redirect_url = (empty($parameters['page_title'])) ? stripslashes($redirect_url) : stripslashes($parameters['redirect_url']);
+        $external_redirect = (empty($parameters['external_redirect'])) ? stripslashes($external_redirect) : stripslashes($parameters['external_redirect']);
+
         $urlname = (trim($urlname) == '')? trim($parameters['title']) : trim($urlname);
 
         if ($parameters['isstart'] == 1) {
