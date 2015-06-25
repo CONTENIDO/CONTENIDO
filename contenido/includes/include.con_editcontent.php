@@ -371,14 +371,14 @@ switch ($versioningState) {
         foreach ($optionElementParameters AS $key => $value) {
             $lastModified = $versioning->getTimeDiff($value[key($value)]);
             $optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));
-            //if ($articleType == 'version') {
-                //if ($_REQUEST['idArtLangVersion'] == key($value)) {
-                    //$optionElement->setSelected(true);
-                //}
+            if ($articleType == 'version') {
+                if ($_REQUEST['idArtLangVersion'] == key($value)) {
+                    $optionElement->setSelected(true);
+                }
                 if (key($value) == $temp_id) {
                     $optionElement->setSelected(true);
                 }
-            //}
+            }
             $selectElement->appendOptionElement($optionElement);
         }
 
