@@ -303,19 +303,24 @@ if (0 != $idart && 0 != $idcat) {
     }
 }
 
-// Check if category is public
+// Initializing CategoryLanguage class
 $oCatLang = new cApiCategoryLanguage();
 $oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang);
-$public = $oCatLang->get('public');
+
+// Get idartlang
+$idartlang = getArtLang($idart, $lang);
 
 // CON-2148
 // check if category is online, allow access if article is specified for loading
-$online = true;
 if (false === isset($idart)) {
     $online = ('0' !== $oCatLang->get('visible'));
+} else {
+	$oArtLang = new cApiArticleLanguage($idartlang);
+	$online = $oArtLang->get('online');
 }
+
 $idartlang = getArtLang($idart, $lang);
-if ($idartlang === false || $online === false) {
+if ($idartlang === false || $online != true) {
     if ($_GET['display_errorpage']) {
         // show only if $idart > 0
         if ($idart > 0) {
