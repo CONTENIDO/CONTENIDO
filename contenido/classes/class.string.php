@@ -493,7 +493,7 @@ class cString {
      */
     public static function replaceDiacritics($string, $sourceEncoding = 'UTF-8', $targetEncoding = 'UTF-8') {
         if ($sourceEncoding != 'UTF-8') {
-            $string = self::rRecodeString($string, $sourceEncoding, "UTF-8");
+            $string = self::recodeString($string, $sourceEncoding, "UTF-8");
         }
 
         // replace regular german umlauts and other common characters with
