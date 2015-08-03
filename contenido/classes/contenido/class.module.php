@@ -203,8 +203,8 @@ class cApiModule extends Item {
     private $_translationReplacement = 'mi18n("';
 
     /**
-     *
-     * @var unknown_type
+     * @todo check if this property is still required
+     * @var string
      */
     protected $_error;
 
@@ -909,13 +909,13 @@ class cApiModule extends Item {
      * Not yet implemented ... does nothing!
      *
      * @todo implement me
-     * @param unknown_type $containerNr
+     * @param int $containerNr
      * @param string $containerCfg
-     * @param unknown_type $moduleInputCode
+     * @param string $moduleInputCode
      */
     public static function processContainerForOutput($containerNr, $containerCfg, $moduleInputCode) {
 
-        return; //
+        return;
 
         $containerConfigurations = array();
         if (!empty($containerCfg)) {

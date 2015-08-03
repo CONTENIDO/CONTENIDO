@@ -30,7 +30,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * @param bool $contype [optional]
      *         Flag to enable/disable replacement of CMS_TAGS[]
      * @param bool $editable [optional]
-     * @param unknown_type $version [optional]
+     * @param int|NULL $version [optional]
      * @return string
      *         The generated code
      */

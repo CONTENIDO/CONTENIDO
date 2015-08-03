@@ -26,37 +26,25 @@ class cGuiMenu {
 
     /**
      *
-     * @var unknown_type
+     * @var array
      */
     public $link;
 
     /**
      *
-     * @var unknown_type
+     * @var array
      */
     public $title;
 
     /**
      *
-     * @var unknown_type
+     * @var array
      */
     public $tooltips;
 
     /**
      *
-     * @var unknown_type
-     */
-    public $caption;
-
-    /**
-     *
-     * @var unknown_type
-     */
-    public $type;
-
-    /**
-     *
-     * @var unknown_type
+     * @var array
      */
     public $image;
 
@@ -68,41 +56,55 @@ class cGuiMenu {
 
     /**
      *
-     * @var unknown_type
+     * @var array
      */
     public $actions;
 
     /**
      *
-     * @var unknown_type
+     * @var array
      */
     public $imagewidth;
 
     /**
      *
+     * @todo what is this property supposed to be?
+     * @var unknown_type
+     */
+    public $caption;
+
+    /**
+     *
+     * @todo what is this property supposed to be?
+     * @var unknown_type
+     */
+    public $type;
+
+    /**
+     *
+     * @todo what is this property supposed to be?
      * @var unknown_type
      */
     public $show;
 
     /**
+     * The marked item.
      *
-     * @var unknown_type
+     * @var mixed
      */
-    protected $_marked;
-
+    protected $_marked = false;
 
     /**
      *
      */
     public function __construct() {
         $this->rowmark = true;
-        $this->_marked = false;
     }
 
     /**
      *
-     * @param unknown_type $item
-     * @param unknown_type $title
+     * @param mixed $item
+     * @param string $title
      */
     public function setTitle($item, $title) {
         $this->title[$item] = $title;
@@ -110,8 +112,8 @@ class cGuiMenu {
 
     /**
      *
-     * @param unknown_type $item
-     * @param unknown_type $tooltip
+     * @param mixed $item
+     * @param string $tooltip
      */
     public function setTooltip($item, $tooltip) {
         $this->tooltips[$item] = $tooltip;
@@ -119,7 +121,7 @@ class cGuiMenu {
 
     /**
      *
-     * @param unknown_type $rowmark [optional]
+     * @param bool $rowmark [optional]
      */
     public function setRowmark($rowmark = true) {
         $this->rowmark = $rowmark;
@@ -127,22 +129,20 @@ class cGuiMenu {
 
     /**
      *
-     * @param unknown_type $item
-     * @param unknown_type $image
-     * @param unknown_type $maxwidth [optional]
+     * @param mixed $item
+     * @param string $image
+     * @param int $maxwidth [optional]
      */
     public function setImage($item, $image, $maxwidth = 0) {
-        $show = '';
-
         $this->image[$item] = $image;
         $this->imagewidth[$item] = $maxwidth;
-        $this->show[$item] = $show; // TODO: what is this variable supposed to be?
+        $this->show[$item] = '';
     }
 
     /**
      *
-     * @param unknown_type $item
-     * @param unknown_type $link
+     * @param mixed $item
+     * @param cHTMLContentElement $link
      */
     public function setLink($item, $link) {
         $this->link[$item] = $link;
@@ -150,9 +150,9 @@ class cGuiMenu {
 
     /**
      *
-     * @param unknown_type $item
-     * @param unknown_type $key
-     * @param unknown_type $action
+     * @param mixed $item
+     * @param mixed $key
+     * @param string $action
      */
     public function setActions($item, $key, $action) {
         $this->actions[$item][$key] = $action;
@@ -160,7 +160,7 @@ class cGuiMenu {
 
     /**
      *
-     * @param unknown_type $item
+     * @param mixed $item
      */
     public function setMarked($item) {
         $this->_marked = $item;
@@ -168,7 +168,7 @@ class cGuiMenu {
 
     /**
      *
-     * @param unknown_type $print [optional]
+     * @param bool $print [optional]
      * @return Ambigous <string, void, mixed>
      */
     public function render($print = true) {

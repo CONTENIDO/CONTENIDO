@@ -166,7 +166,7 @@ class cApiMetaTagVersion extends Item {
     /**
      * Marks this meta value as editable.
      *
-     * @param unknown_type $version
+     * @param int $version
      */
     public function markAsEditable($version) {
         $metaTagVersionColl = new cApiMetaTagVersionCollection();

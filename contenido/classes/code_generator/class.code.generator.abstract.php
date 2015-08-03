@@ -184,7 +184,7 @@ abstract class cCodeGeneratorAbstract {
      * @param bool $contype [optional]
      *         Flag to enable/disable replacement of CMS_TAGS[].
      * @param bool $editable [optional]
-     * @param unknown_type $version [optional]
+     * @param int|NULL $version [optional]
      * @throws cInvalidArgumentException
      *         If an article with the given idart and idlang can not be loaded.
      * @return string
@@ -221,6 +221,8 @@ abstract class cCodeGeneratorAbstract {
      *
      * @param bool $contype [optional]
      *         Flag to enable/disable replacement of CMS_TAGS[].
+     * @param bool $editable [optional]
+     * @param bool $version [optional]
      * @return string
      *         The generated code.
      */
@@ -531,7 +533,7 @@ abstract class cCodeGeneratorAbstract {
      * Returns array of all CMS_* vars being used by current article and language
      *
      * @param bool $editable [optional]
-     * @param unknown_type $version [optional]
+     * @param int|NULL $version [optional]
      * @return array
      *         like $arr[type][typeid] = value;
      */
