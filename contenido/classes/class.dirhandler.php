@@ -182,8 +182,8 @@ class cDirHandler {
      *         the name and path of the file
      * @param string $destination
      *         the destination. Note that existing files get overwritten
-     * @param string $chmod
-     * 			chmod mode, standard: 0777
+     * @param string $chmod [optional; default: 0777]
+     * 			chmod mode
      * @throws cInvalidArgumentException
      *         if the file with the given filename does not exist
      * @return bool
@@ -347,7 +347,7 @@ class cDirHandler {
      *
      * @param string $dirname
      *         The directory name
-     * @param bool $recursive
+     * @param bool $recursive [optional]
      *         true if all the subdirectories should be included in the calculation
      * @return int|bool
      *         false in case of an error or the size

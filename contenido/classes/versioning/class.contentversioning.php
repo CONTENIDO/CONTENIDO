@@ -155,7 +155,7 @@ class cContentVersioning {
      * @param int $idArtLangVersion
      * @param int $idArtLang
      * @param string $articleType
-     * @param int $selectedArticleId
+     * @param int $selectedArticleId [optional]
      * @return cApiArticleLanguage|cApiArticleLanguageVersion $this->selectedArticle
      */
     public function getSelectedArticle($idArtLangVersion, $idArtLang, $articleType, $selectedArticleId = NULL) {
@@ -416,7 +416,7 @@ class cContentVersioning {
      * either from each article-/content- or metatag-version.
      *
      * @param int $idArtLang
-     * @param string $selectElementType
+     * @param string $selectElementType [optional]
      *         either 'content', 'seo' or 'config'
      * @return array
      */
@@ -754,13 +754,21 @@ class cContentVersioning {
      * @return cApiArticleLanguageVersion
     */
     public function createArticleLanguageVersion(array $parameters) {
+
         global $lang, $auth, $urlname, $page_title;
+
         // Some stuff for the redirect
         global $redirect, $redirect_url, $external_redirect;
-        global $time_move_cat; // Used to indicate "move to cat"
-        global $time_target_cat; // Used to indicate the target category
-        global $time_online_move; // Used to indicate if the moved article should be
-                                  // online
+
+        // Used to indicate "move to cat"
+        global $time_move_cat;
+
+        // Used to indicate the target category
+        global $time_target_cat;
+
+        // Used to indicate if the moved article should be online
+        global $time_online_move;
+
         global $timemgmt;
 
         $page_title = (empty($parameters['pagetitle'])) ? addslashes($page_title) : $parameters['pagetitle'];

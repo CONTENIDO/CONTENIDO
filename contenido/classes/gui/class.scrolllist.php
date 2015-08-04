@@ -62,7 +62,7 @@ class cGuiScrollList {
     /**
      * sortlink
      *
-     * @var string
+     * @var cHTMLLink
      */
     public $sortlink;
 
@@ -111,7 +111,7 @@ class cGuiScrollList {
      *
      * @param bool $defaultstyle [optional]
      *         use the default style for object initializing?
-     * @param unknown_type $action [optional]
+     * @param string $action [optional]
      */
     public function __construct($defaultstyle = true, $action = "") {
         global $cfg, $area, $frame;

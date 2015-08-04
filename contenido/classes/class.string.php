@@ -335,7 +335,7 @@ class cString {
      *         The string to operate on
      * @param int $maxlen
      *         The maximum number of characters
-     * @param string $fillup
+     * @param string $fillup [optional]
      * @return string
      *         The resulting string
      */
@@ -413,7 +413,7 @@ class cString {
      *         The string to operate on
      * @param int $approxlen
      *         The approximate number of characters
-     * @param bool $hard
+     * @param bool $hard [optional]
      *         If true, use a hard limit for the number of characters
      * @return string
      *         The resulting string
@@ -484,10 +484,10 @@ class cString {
      *
      * @param string $string
      *         The string to operate on
-     * @param string $sourceEncoding
-     *         The source encoding (default: UTF-8)
-     * @param string $targetEncoding
-     *         The target encoding (default: UTF-8)
+     * @param string $sourceEncoding [optional; default: UTF-8]
+     *         The source encoding
+     * @param string $targetEncoding [optional; default: UTF-8]
+     *         The target encoding
      * @return string
      *         The resulting string
      */
@@ -654,7 +654,7 @@ class cString {
      *
      * @param string $string
      *         The string to operate on
-     * @param bool $replace
+     * @param bool $replace [optional]
      *         If true, all "unclean" characters are replaced
      * @return string
      *         The resulting string
@@ -689,7 +689,7 @@ class cString {
      * Normalizes line endings in passed string.
      *
      * @param string $string
-     * @param string $lineEnding
+     * @param string $lineEnding [optional]
      *         Feasible values are "\n", "\r" or "\r\n"
      * @return string
      */

@@ -81,7 +81,7 @@ class cXmlWriter extends cXmlBase {
      *
      * @param DOMElement $element
      *         DOM element to add attributes
-     * @param array $attributes
+     * @param array $attributes [optional]
      *         array of attributes
      * @return DOMElement
      *         DOM element with assigned attributes

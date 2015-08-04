@@ -98,7 +98,8 @@ class cUri {
         $aHookParams = array(
             'param' => $param, 'bUseAbsolutePath' => $bUseAbsolutePath, 'aConfig' => $aConfig
         );
-        if ($aResult = cApiCecHook::executeAndReturn('Contenido.Frontend.PreprocessUrlBuilding', $aHookParams)) {
+        $aResult = cApiCecHook::executeAndReturn('Contenido.Frontend.PreprocessUrlBuilding', $aHookParams);
+        if ($aResult) {
             $param = (isset($aResult['param'])) ? $aResult['param'] : '';
             if (isset($aResult['bUseAbsolutePath'])) {
                 $bUseAbsolutePath = (bool) $aResult['bUseAbsolutePath'];
@@ -128,7 +129,8 @@ class cUri {
         $url = $this->_oUriBuilder->getUrl();
 
         // execute postprocess hook
-        if ($result = cApiCecHook::executeAndReturn('Contenido.Frontend.PostprocessUrlBuilding', $url)) {
+        $result = cApiCecHook::executeAndReturn('Contenido.Frontend.PostprocessUrlBuilding', $url);
+        if ($result) {
             $url = (string) $result;
         }
 

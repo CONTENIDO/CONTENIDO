@@ -137,7 +137,7 @@ class cHTMLLink extends cHTMLContentElement {
      *         Target backend area
      * @param string $targetframe
      *         Target frame (1-4)
-     * @param string $targetaction
+     * @param string $targetaction [optional]
      *         Target action
      * @return cHTMLLink
      *         $this for chaining

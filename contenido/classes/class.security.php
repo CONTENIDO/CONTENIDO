@@ -155,8 +155,8 @@ class cSecurity {
      *         Input string
      * @param cDb $oDB
      *         CONTENIDO database object
-     * @param bool $bUndoAddSlashes [optional]
-     *         Flag for undo addslashes (optional, default: true)
+     * @param bool $bUndoAddSlashes [optional; default: true]
+     *         Flag for undo addslashes
      * @return string
      *         Converted string
      */

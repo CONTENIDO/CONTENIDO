@@ -293,7 +293,7 @@ class cVersion {
      * This function creats an xml file.
      * XML Writer helps for create this file.
      *
-     * @param unknown_type $sDirectory
+     * @param string $sDirectory
      * @param string $sFileName
      *         name of xml file to create
      * @return bool
@@ -629,7 +629,7 @@ class cVersion {
      *         width of Textarea
      * @param int $iHeight
      *         height of Textarea
-     * @param bool $sId [optional]
+     * @param string $sId [optional]
      * @param bool $disabled [optional]
      *         Disabled Textarea
      * @return string
@@ -642,7 +642,7 @@ class cVersion {
             $oHTMLTextarea = new cHTMLTextarea($sName, $sInitValue, $iWidth, $iHeight);
         }
 
-        if($disabled) {
+        if ($disabled) {
             $oHTMLTextarea->setDisabled('disabled');
         }
 

@@ -26,25 +26,28 @@ class cGuiObjectPager extends cGuiFoldingRow {
 
     /**
      *
-     * @var unknown_type
+     * @var cHTMLLink
      */
     public $_pagerLink;
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
     public $_parameterToAdd;
 
     /**
      *
-     * @param unknown_type $uuid
-     * @param unknown_type $items
-     * @param unknown_type $itemsperpage
-     * @param unknown_type $currentpage
-     * @param unknown_type $link
-     * @param unknown_type $parameterToAdd
-     * @param unknown_type $id [optional]
+     * @param string $uuid
+     * @param int $items
+     *         Amount of items
+     * @param int $itemsperpage
+     *         Items displayed per page
+     * @param int $currentpage
+     *         Defines the current page
+     * @param cHTMLLink $link
+     * @param string $parameterToAdd
+     * @param string $id [optional]
      * @throws cException if the given link is not an object
      * @return bool
      */

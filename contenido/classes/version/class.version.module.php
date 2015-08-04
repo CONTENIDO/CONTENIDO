@@ -111,20 +111,19 @@ class cVersionModule extends cVersion {
 
     /**
      * Function returns javascript which refreshes CONTENIDO frames for file
-     * list an subnavigation.
-     * This is neccessary, if filenames where changed, when a history entry is
-     * restored
+     * list an subnavigation. This is neccessary, if filenames where changed,
+     * when a history entry is restored.
      *
      * @param string $sArea
      *         name of CONTENIDO area in which this procedure should be done
-     * @param int $iIdLayout
-     *         Id of layout to highlight
-     * @param object $sess
+     * @param int $iIdModule
+     *         Id of module
+     * @param cSession $sess
      *         CONTENIDO session object
      * @return string
-     *         Javascript for refrehing frames
+     *         Javascript for refreshing left_bottom frame
      */
-    public function renderReloadScript($sArea, $iIdModule, $sess) {
+    public function renderReloadScript($sArea, $iIdModule, cSession $sess) {
         $urlLeftBottom = $sess->url("main.php?area=$sArea&frame=2&idmod=$iIdModule");
         $sReloadScript = <<<JS
 <script type="text/javascript">

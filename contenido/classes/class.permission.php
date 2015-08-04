@@ -534,7 +534,7 @@ class cPermission {
      * @param string $p [optional]
      * @return bool
      */
-    public function have_perm_client($p = 'x') {
+    public function have_perm_client($perm = 'x') {
         global $auth, $client;
 
         if (!isset($auth->auth['perm'])) {
@@ -550,7 +550,7 @@ class cPermission {
         }
 
         // If there are more permissions to ask split them
-        $pageperm = explode(',', $p);
+        $pageperm = explode(',', $perm);
         foreach ($pageperm as $value) {
             if (!in_array($value, $userperm)) {
                 return false;

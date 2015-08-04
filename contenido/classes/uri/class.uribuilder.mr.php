@@ -170,12 +170,14 @@ class cUriBuilderMR extends cUriBuilder {
         $aParts = array();
 
         // add client id/name if desired
-        if ($param = $this->_getClientParameter($aParams)) {
+        $param = $this->_getClientParameter($aParams);
+        if ($param) {
             $aParts[] = $param;
         }
 
         // add language id/name if desired
-        if ($param = $this->_getLanguageParameter($aParams)) {
+        $param = $this->_getLanguageParameter($aParams);
+        if ($param) {
             $aParts[] = $param;
         }
 

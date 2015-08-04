@@ -209,7 +209,7 @@ class cGuiTree extends cTree {
 
     /**
      *
-     * @param bool $with_root
+     * @param bool $with_root [optional]
      * @return string
      */
     public function render($with_root = true) {

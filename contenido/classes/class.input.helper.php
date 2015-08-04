@@ -34,15 +34,15 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      *
      * @param string $sName
      *         Name of the element
-     * @param int $iWidth
+     * @param int $iWidth [optional]
      *         Width of the select element
-     * @param string $sID
+     * @param string $sID [optional]
      *         ID of the element
-     * @param string $bDisabled
+     * @param string $bDisabled [optional]
      *         Item disabled flag (non-empty to set disabled)
-     * @param int $iTabIndex
+     * @param int $iTabIndex [optional]
      *         Tab index for form elements
-     * @param string $sAccessKey
+     * @param string $sAccessKey [optional]
      *         Key to access the field
      */
     public function __construct($sName, $iWidth = '', $sID = '', $bDisabled = false, $iTabIndex = NULL, $sAccessKey = '') {
