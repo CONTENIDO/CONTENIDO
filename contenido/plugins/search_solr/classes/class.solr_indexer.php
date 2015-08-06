@@ -152,7 +152,7 @@ class SolrIndexer {
     /**
      * Destroy aggregated client instance.
      *
-     * Destroys Solr client to free memory. Is this really neccessary?
+     * Destroys Solr client to free memory. Is this really necessary?
      * As SolClient has a method __destruct() this seems to be correct.
      */
     public function __destruct() {

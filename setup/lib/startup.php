@@ -67,7 +67,7 @@ function checkAndInclude($filename) {
         include_once($filename);
     } else {
         echo "<pre>";
-        echo "Setup was unable to include neccessary files. The file $filename was not found. Solutions:\n\n";
+        echo "Setup was unable to include necessary files. The file $filename was not found. Solutions:\n\n";
         echo "- Make sure that all files are correctly uploaded to the server.\n";
         echo "- Make sure that include_path is set to '.' (of course, it can contain also other directories). Your include path is: " . ini_get("include_path") . "\n";
         echo "</pre>";
