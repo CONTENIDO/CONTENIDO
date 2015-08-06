@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-06 13:05+0200\n"
+"POT-Creation-Date: 2015-08-06 13:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -226,7 +226,7 @@ msgstr ""
 
 #: classes/class.ajax.php:150 classes/class.ajax.php:166
 #: classes/module/class.module.template.handler.php:611
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:123
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:124
 #: includes/include.clientsettings.php:79
 #: includes/include.clientsettings.php:163
 #: includes/include.html_tpl_history.php:158
@@ -1632,8 +1632,8 @@ msgid "Unknown article"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:891
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:183
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:184
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:185
 #: includes/include.clientsettings.php:92
 #: includes/include.client_artspec.php:72
 #: includes/include.con_translate.php:764
@@ -1925,6 +1925,7 @@ msgid "Couldn't rename file. Does it exist already?"
 msgstr ""
 
 #: classes/gui/class.sourceeditor.php:291
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:505
 msgid "Changes saved successfully!"
 msgstr ""
 
@@ -2039,7 +2040,7 @@ msgstr ""
 
 #: classes/module/class.module.template.handler.php:598
 #: classes/module/class.module.template.handler.php:601
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:133
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:134
 #: includes/include.con_edit_form.php:380 includes/include.logs.php:267
 #: includes/include.mail_log.php:91 includes/include.mail_log.php:221
 #: includes/include.systemsettings.php:73
@@ -2178,118 +2179,119 @@ msgstr ""
 msgid "The given client's frontend directory (%s) is not a directory."
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:128
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:129
 msgid "URL"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:332
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:333
 msgid "TinyMCE 4 configuration got reset back to default"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:335
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:336
 msgid "Can not delete config file"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:368
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:369
 msgid "Fullscreen config of inline editor is erroneous."
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:372
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:373
 msgid "Config of editor on separate editor page is erroneous."
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:376
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:377
 msgid "Custom configuration of tinyMCE 4 is not set."
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:387
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:388
 msgid "Toolbar(s) of editor contain erroneous data."
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:407
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:408
 msgid "Maximum stack depth exceeded while decoding json"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:410
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:411
 msgid "Unexpected control character found"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:413
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:414
 msgid "Syntax error, malformed JSON"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:490
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:491
 #: includes/include.system_configuration.php:294
 msgid "Access denied"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:496
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:497
 msgid "The following errors occurred when trying to verify configuration:"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:504
-msgid "Currently active WYSIWYG editor: "
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:507
+#, php-format
+msgid "Currently active WYSIWYG editor: %s"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:527
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:529
 msgid "TinyMCE 4 configuration for "
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:550
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:552
 msgid "Settings of editor in separate editor page"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:568
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:570
 msgid "Settings of inline editor in inline mode"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:586
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:588
 msgid "Settings of inline editor in fullscreen mode"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:591
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:593
 msgid ""
 "GZIP TinyMCE (only activate if server does not compress content already)"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:592
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:594
 msgid "contenido_gzip"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:597
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:599
 msgid "Provide jump lists in image insertion dialog"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:599
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:601
 msgid "Provide jump lists in link insertion dialog"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:600
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:602
 msgid "contenido_lists"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:610
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:612
 msgid "Additional parameters (JSON passed to tinymce constructor)"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:614
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:616
 #: includes/include.system_configuration.php:245
 msgid "You are not sysadmin. You can't change these settings."
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:622
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:624
 msgid "TinyMCE 4 configuration for external plugins"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:629
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:631
 msgid "External plugins to load"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:640
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:642
 msgid "Reset configuration back to default"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:641
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:643
 msgid "Reset Configuration"
 msgstr ""
 

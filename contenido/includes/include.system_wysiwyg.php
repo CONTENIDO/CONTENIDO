@@ -56,6 +56,7 @@ if (class_exists($configClass)) {
                 // call used implementation to save input
                 $wysiwygEditorClass = cRegistry::getConfigValue('wysiwyg', $curWysiwygEditor . '_editorclass');
                 $wysiwygEditorClass::saveConfig($formData);
+                $configClassInstance->successfully = true;
             }
         }
 
