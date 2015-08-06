@@ -616,10 +616,6 @@ ul.link_list li {
     margin: 0 0 18px;
 }
 
-ul.link_list li:hover a.link_list:first-child {
-	background
-}
-
 ul.link_list li a.link_list:first-child {
     background: url('../images/misc/sprite.png') no-repeat 0 -196px;
 }
