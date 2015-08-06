@@ -887,6 +887,7 @@ class PifaRightBottomFormDataPage extends cGuiPage {
         // translations
         $tpl->assign('trans', array(
             'legend' => Pifa::i18n('data'),
+        	'nodata' => Pifa::i18n('NODATA'),
             'pleaseSaveFirst' => Pifa::i18n('please save first'),
             'export' => Pifa::i18n('download data as CSV')
         ));
