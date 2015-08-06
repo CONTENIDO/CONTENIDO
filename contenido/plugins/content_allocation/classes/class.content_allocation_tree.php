@@ -126,6 +126,11 @@ class pApiTree {
         while ($this->db->nextRecord()) { // walk resultset
             $item = $this->_fetchItemNameLang($this->db->f('idpica_alloc'));
 
+            // If no translation founded, continue
+            if ($item === false) {
+            	continue;
+            }
+
             $itemStatus = 'expanded';
 
             if ($bUseTreeStatus) # modified 27.10.2005
@@ -441,31 +446,7 @@ class pApiTree {
             $aResult['online'] = $oDB->f('online');
 
         } else { // no item in this language found
-            // fetch alternative language name
-            // HerrB, 2008-04-21: Get all translations, try to use defaultLang translation, use
-            // first available, otherwise. Only using defaultLang results in "ghost" elements, if
-            // created in a non-default language. See CON-110 for details.
-
-            $sSQL = "SELECT name, idlang, online FROM " . $this->table['pica_lang'] . " WHERE idpica_alloc = " . cSecurity::toInteger($idpica_alloc) . " ORDER BY idlang";
-            $oDB->query($sSQL);
-
-            $aNames = array();
-            while ($oDB->nextRecord()) {
-                $sKey = "k" . $oDB->f('idlang');
-
-                $aNames[$sKey]                 = array();
-                $aNames[$sKey]['name']        = $this->_outFilter($oDB->f('name'));
-                $aNames[$sKey]['idlang']    = $oDB->f('idlang');
-                $aNames[$sKey]['online']    = $oDB->f('online');
-            }
-
-            if ($aNames["k" . $this->defaultLang]) {
-                // defaultLang translation available
-                $aResult = $aNames["k" . $this->defaultLang];
-            } else {
-                // no defaultLang translation available, use first in line (reset returns first element)
-                $aResult = reset($aNames);
-            }
+			return false;
         }
         unset($oDB);
         unset($aNames);
