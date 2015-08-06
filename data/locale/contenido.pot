@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-18 11:24+0200\n"
+"POT-Creation-Date: 2015-08-06 12:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -869,25 +869,25 @@ msgstr ""
 msgid "CONTENIDO has all the necessary permissions to read and write files"
 msgstr ""
 
-#: classes/class.systemtest.php:1238
+#: classes/class.systemtest.php:1239
 #, php-format
 msgid "Can't write %s"
 msgstr ""
 
-#: classes/class.systemtest.php:1239
+#: classes/class.systemtest.php:1240
 #, php-format
 msgid ""
 "Setup or CONTENIDO can't write to the file %s. Please change the file "
 "permissions to correct this problem."
 msgstr ""
 
-#: classes/class.systemtest.php:1247
+#: classes/class.systemtest.php:1248
 msgid ""
 "Your Server runs Windows. Due to that, Setup can't recommend any file "
 "permissions."
 msgstr ""
 
-#: classes/class.systemtest.php:1250
+#: classes/class.systemtest.php:1251
 #, php-format
 msgid ""
 "Due to a very restrictive environment, an advise is not possible. Ask your "
@@ -895,7 +895,7 @@ msgid ""
 "environments where ACL (Access Control Lists) are used."
 msgstr ""
 
-#: classes/class.systemtest.php:1255
+#: classes/class.systemtest.php:1256
 #, php-format
 msgid ""
 "Your web server and the owner of your files are identical. You need to "
@@ -903,7 +903,7 @@ msgid ""
 "file mask to %s or set the owner to allow writing the file."
 msgstr ""
 
-#: classes/class.systemtest.php:1260
+#: classes/class.systemtest.php:1261
 #, php-format
 msgid ""
 "Your web server's group and the group of your files are identical. You need "
@@ -911,7 +911,7 @@ msgid ""
 "file mask to %s or set the group to allow writing the file."
 msgstr ""
 
-#: classes/class.systemtest.php:1265
+#: classes/class.systemtest.php:1266
 #, php-format
 msgid ""
 "Your web server is not equal to the file owner, and is not in the "
@@ -921,13 +921,13 @@ msgid ""
 "others to allow writing the file."
 msgstr ""
 
-#: classes/class.systemtest.php:1275
+#: classes/class.systemtest.php:1276
 msgid ""
 "Your Server runs Windows. Due to that, Setup can't recommend any directory "
 "permissions."
 msgstr ""
 
-#: classes/class.systemtest.php:1278
+#: classes/class.systemtest.php:1279
 #, php-format
 msgid ""
 "Due to a very restrictive environment, an advise is not possible. Ask your "
@@ -935,7 +935,7 @@ msgid ""
 "especially in environments where ACL (Access Control Lists) are used."
 msgstr ""
 
-#: classes/class.systemtest.php:1283
+#: classes/class.systemtest.php:1284
 #, php-format
 msgid ""
 "Your web server and the owner of your directory are identical. You need to "
@@ -943,7 +943,7 @@ msgid ""
 "directory mask to %s or set the owner to allow writing the directory."
 msgstr ""
 
-#: classes/class.systemtest.php:1288
+#: classes/class.systemtest.php:1289
 #, php-format
 msgid ""
 "Your web server's group and the group of your directory are identical. You "
@@ -951,7 +951,7 @@ msgid ""
 "the directory mask to %s or set the group to allow writing the directory."
 msgstr ""
 
-#: classes/class.systemtest.php:1293
+#: classes/class.systemtest.php:1294
 #, php-format
 msgid ""
 "Your web server is not equal to the directory owner, and is not in the "
@@ -961,22 +961,22 @@ msgid ""
 "the others to allow writing the directory."
 msgstr ""
 
-#: classes/class.systemtest.php:1337 classes/class.systemtest.php:1341
+#: classes/class.systemtest.php:1338 classes/class.systemtest.php:1342
 #, php-format
 msgid "Could not find or create directory %s"
 msgstr ""
 
-#: classes/class.systemtest.php:1337 classes/class.systemtest.php:1341
+#: classes/class.systemtest.php:1338 classes/class.systemtest.php:1342
 msgid ""
 "The frontend expects certain directories to exist and it needs to be able to "
 "write to these directories."
 msgstr ""
 
-#: classes/class.systemtest.php:1443
+#: classes/class.systemtest.php:1444
 msgid "MySQL database already exists and seems to be filled"
 msgstr ""
 
-#: classes/class.systemtest.php:1443
+#: classes/class.systemtest.php:1444
 #, php-format
 msgid ""
 "Setup checked the database %s and found the table %s. It seems that you "
@@ -985,22 +985,22 @@ msgid ""
 "previous version, choose 'upgrade' as setup type."
 msgstr ""
 
-#: classes/class.systemtest.php:1450
+#: classes/class.systemtest.php:1451
 msgid "MySQL test table already exists in the database"
 msgstr ""
 
-#: classes/class.systemtest.php:1450
+#: classes/class.systemtest.php:1451
 #, php-format
 msgid ""
 "Setup checked the database %s and found the test table %s. Please remove it "
 "before continuing."
 msgstr ""
 
-#: classes/class.systemtest.php:1457 classes/class.systemtest.php:1478
+#: classes/class.systemtest.php:1458 classes/class.systemtest.php:1479
 msgid "Unable to create tables in the selected MySQL database"
 msgstr ""
 
-#: classes/class.systemtest.php:1457 classes/class.systemtest.php:1478
+#: classes/class.systemtest.php:1458 classes/class.systemtest.php:1479
 #, php-format
 msgid ""
 "Setup tried to create a test table in the database %s and failed. Please "
@@ -1008,40 +1008,40 @@ msgid ""
 "an administrator to do so."
 msgstr ""
 
-#: classes/class.systemtest.php:1464 classes/class.systemtest.php:1485
+#: classes/class.systemtest.php:1465 classes/class.systemtest.php:1486
 msgid "Unable to remove the test table"
 msgstr ""
 
-#: classes/class.systemtest.php:1464 classes/class.systemtest.php:1485
+#: classes/class.systemtest.php:1465 classes/class.systemtest.php:1486
 #, php-format
 msgid ""
 "Setup tried to remove the test table %s in the database %s and failed due to "
 "insufficient permissions. Please remove the table %s manually."
 msgstr ""
 
-#: classes/class.systemtest.php:1471
+#: classes/class.systemtest.php:1472
 msgid "Unable to create the database in the MySQL server"
 msgstr ""
 
-#: classes/class.systemtest.php:1471
+#: classes/class.systemtest.php:1472
 msgid ""
 "Setup tried to create a test database and failed. Please assign database "
 "creation permissions to the database user you entered, ask an administrator "
 "to do so, or create the database manually."
 msgstr ""
 
-#: classes/class.systemtest.php:1495 classes/class.systemtest.php:1505
+#: classes/class.systemtest.php:1496 classes/class.systemtest.php:1506
 msgid "No data found for the upgrade"
 msgstr ""
 
-#: classes/class.systemtest.php:1495
+#: classes/class.systemtest.php:1496
 #, php-format
 msgid ""
 "Setup tried to locate the data for the upgrade, however, the database %s "
 "doesn't exist. You need to copy your database first before running setup."
 msgstr ""
 
-#: classes/class.systemtest.php:1505
+#: classes/class.systemtest.php:1506
 #, php-format
 msgid ""
 "Setup tried to locate the data for the upgrade, however, the database %s "
@@ -1739,7 +1739,7 @@ msgstr ""
 
 #: classes/gui/class.navigation.php:325 classes/gui/class.navigation.php:328
 #: includes/include.logs.php:263 includes/include.mail_log.php:90
-#: includes/include.system_purge.php:184
+#: includes/include.system_purge.php:183
 #: includes/include.system_sysvalues.php:178
 #: templates/standard/template.log_main.html:21
 #: templates/standard/template.log_main.html:95
@@ -1781,28 +1781,28 @@ msgstr ""
 msgid "Notification"
 msgstr ""
 
-#: classes/gui/class.objectpager.php:57 classes/gui/class.objectpager.php:59
+#: classes/gui/class.objectpager.php:60 classes/gui/class.objectpager.php:62
 msgid "Paging"
 msgstr ""
 
-#: classes/gui/class.objectpager.php:92
+#: classes/gui/class.objectpager.php:95
 msgid "First page"
 msgstr ""
 
-#: classes/gui/class.objectpager.php:99
+#: classes/gui/class.objectpager.php:102
 msgid "Previous page"
 msgstr ""
 
-#: classes/gui/class.objectpager.php:113
+#: classes/gui/class.objectpager.php:116
 #, php-format
 msgid "Page %s"
 msgstr ""
 
-#: classes/gui/class.objectpager.php:129
+#: classes/gui/class.objectpager.php:132
 msgid "Next page"
 msgstr ""
 
-#: classes/gui/class.objectpager.php:139
+#: classes/gui/class.objectpager.php:142
 msgid "Last page"
 msgstr ""
 
@@ -2316,15 +2316,15 @@ msgstr ""
 msgid "No start article for this category"
 msgstr ""
 
-#: includes/frontend/include.front_content.php:324
+#: includes/frontend/include.front_content.php:329
 msgid "Error page"
 msgstr ""
 
-#: includes/frontend/include.front_content.php:325
+#: includes/frontend/include.front_content.php:330
 msgid "Error article/category not found!"
 msgstr ""
 
-#: includes/frontend/include.front_content.php:375
+#: includes/frontend/include.front_content.php:380
 #: includes/include.con_edit_form.php:622
 #: includes/include.con_edit_form.php:626
 #: includes/include.con_meta_form.php:136
@@ -2334,18 +2334,18 @@ msgstr ""
 msgid "Article is in use by %s (%s)"
 msgstr ""
 
-#: includes/frontend/include.front_content.php:424
+#: includes/frontend/include.front_content.php:429
 msgid ""
 "The following modules are erroneus and are therefore not executed:<br>\n"
 msgstr ""
 
-#: includes/frontend/include.front_content.php:453
+#: includes/frontend/include.front_content.php:458
 msgid ""
 "Editing is not possible because there is no template assigned to this "
 "category."
 msgstr ""
 
-#: includes/frontend/include.front_content.php:454
+#: includes/frontend/include.front_content.php:459
 msgid "FATAL ERROR"
 msgstr ""
 
@@ -5535,11 +5535,11 @@ msgstr ""
 
 #: includes/include.system_purge.php:74 includes/include.system_purge.php:82
 #: includes/include.system_purge.php:90 includes/include.system_purge.php:98
-#: includes/include.system_purge.php:108 includes/include.system_purge.php:116
+#: includes/include.system_purge.php:107 includes/include.system_purge.php:115
 msgid "Client "
 msgstr ""
 
-#: includes/include.system_purge.php:75 includes/include.system_purge.php:134
+#: includes/include.system_purge.php:75 includes/include.system_purge.php:133
 #, php-format
 msgid "The entries of %s table are not deleted!"
 msgstr ""
@@ -5557,124 +5557,124 @@ msgstr ""
 msgid "The log is not deleted!"
 msgstr ""
 
-#: includes/include.system_purge.php:109
+#: includes/include.system_purge.php:108
 msgid "The history is not deleted!"
 msgstr ""
 
-#: includes/include.system_purge.php:117
+#: includes/include.system_purge.php:116
 msgid "The content versioning is not deleted!"
 msgstr ""
 
-#: includes/include.system_purge.php:129
+#: includes/include.system_purge.php:128
 msgid "CONTENIDO: "
 msgstr ""
 
-#: includes/include.system_purge.php:141
+#: includes/include.system_purge.php:140
 msgid "The CONTENIDO log is not cleaned!"
 msgstr ""
 
-#: includes/include.system_purge.php:148
+#: includes/include.system_purge.php:147
 msgid "The CONTENIDO cache is not deleted!"
 msgstr ""
 
-#: includes/include.system_purge.php:155
+#: includes/include.system_purge.php:154
 msgid "The CONTENIDO cronjobs are not cleaned!"
 msgstr ""
 
-#: includes/include.system_purge.php:160
+#: includes/include.system_purge.php:159
 msgid "The changes were successfully executed."
 msgstr ""
 
-#: includes/include.system_purge.php:162
+#: includes/include.system_purge.php:161
 msgid "The changes were not all successfully completed."
 msgstr ""
 
-#: includes/include.system_purge.php:179 includes/include.system_purge.php:202
+#: includes/include.system_purge.php:178 includes/include.system_purge.php:201
 msgid "System purge"
 msgstr ""
 
-#: includes/include.system_purge.php:180
+#: includes/include.system_purge.php:179
 msgid "No Client selected!"
 msgstr ""
 
-#: includes/include.system_purge.php:185
+#: includes/include.system_purge.php:184
 msgid "all clients"
 msgstr ""
 
-#: includes/include.system_purge.php:186
+#: includes/include.system_purge.php:185
 msgid "from list"
 msgstr ""
 
-#: includes/include.system_purge.php:187
+#: includes/include.system_purge.php:186
 msgid "Select clients"
 msgstr ""
 
-#: includes/include.system_purge.php:188
+#: includes/include.system_purge.php:187
 msgid "Delete the code cache"
 msgstr ""
 
-#: includes/include.system_purge.php:189
+#: includes/include.system_purge.php:188
 msgid "Force code generation"
 msgstr ""
 
-#: includes/include.system_purge.php:190
+#: includes/include.system_purge.php:189
 #, php-format
 msgid "Reset the table %s"
 msgstr ""
 
-#: includes/include.system_purge.php:191
+#: includes/include.system_purge.php:190
 msgid "Clear client cache"
 msgstr ""
 
-#: includes/include.system_purge.php:192
+#: includes/include.system_purge.php:191
 msgid "Clear client log file"
 msgstr ""
 
-#: includes/include.system_purge.php:193
+#: includes/include.system_purge.php:192
 msgid "Clear client style history"
 msgstr ""
 
-#: includes/include.system_purge.php:194
+#: includes/include.system_purge.php:193
 msgid "Keep last style histories"
 msgstr ""
 
-#: includes/include.system_purge.php:195
+#: includes/include.system_purge.php:194
 msgid "Delete content versions"
 msgstr ""
 
-#: includes/include.system_purge.php:197
+#: includes/include.system_purge.php:196
 msgid "CONTENIDO"
 msgstr ""
 
-#: includes/include.system_purge.php:198
+#: includes/include.system_purge.php:197
 msgid "Clear CONTENIDO log file"
 msgstr ""
 
-#: includes/include.system_purge.php:199
+#: includes/include.system_purge.php:198
 msgid "Clear CONTENIDO cache"
 msgstr ""
 
-#: includes/include.system_purge.php:200
+#: includes/include.system_purge.php:199
 msgid "Reset cronjobs"
 msgstr ""
 
-#: includes/include.system_purge.php:203
+#: includes/include.system_purge.php:202
 msgid "These changes can not be cancelled."
 msgstr ""
 
-#: includes/include.system_purge.php:203
+#: includes/include.system_purge.php:202
 msgid "Do you really want to complete it?"
 msgstr ""
 
-#: includes/include.system_purge.php:208
+#: includes/include.system_purge.php:207
 msgid "No action selected!"
 msgstr ""
 
-#: includes/include.system_purge.php:210
+#: includes/include.system_purge.php:209
 msgid "Send"
 msgstr ""
 
-#: includes/include.system_purge.php:211
+#: includes/include.system_purge.php:210
 msgid "Please select a client or all clients."
 msgstr ""
 

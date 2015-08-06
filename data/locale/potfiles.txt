@@ -1,5 +1,6 @@
 ./ajaxmain.php
 ./backend_search.php
+./check.php
 ./classes/auth/class.auth.handler.abstract.php
 ./classes/auth/class.auth.handler.backend.php
 ./classes/auth/class.auth.handler.frontend.php
