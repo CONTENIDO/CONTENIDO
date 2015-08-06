@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-08-06 13:42+0200\n"
-"PO-Revision-Date: 2015-08-06 13:43+0100\n"
+"PO-Revision-Date: 2015-08-06 13:45+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: de_DE\n"
@@ -5517,7 +5517,7 @@ msgstr "WYSIWYG-Editor benutzen"
 
 #: includes/include.mycontenido_settings.php:169
 msgid "The format is equal to PHP's date() function."
-msgstr "Das Format stimmt mit dem der PHP date()-Funktion überein"
+msgstr "Das Format stimmt mit der PHP date()-Funktion überein."
 
 #: includes/include.mycontenido_settings.php:171
 msgid "Common date formattings"
