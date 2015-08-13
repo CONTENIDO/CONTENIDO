@@ -445,7 +445,9 @@ $oUser2 = new cApiUser();
 $aGroups = $oUser2->getGroupNamesByUserID($request['userid']);
 if (count($aGroups) > 0) {
     asort($aGroups);
-    $sGroups = implode("<br>", $aGroups);
+    foreach ($aGroups as $groupname) {
+    	$sGroups .= conHtmlSpecialChars($groupname) . "<br />";
+    }
 } else {
     $sGroups = i18n("none");
 }

@@ -74,7 +74,7 @@ $tpl->set('s', 'PROPERTY', i18n("Property"));
 $tpl->set('s', 'VALUE', i18n("Value"));
 
 $tpl->set('d', 'CATNAME', i18n("Group name"));
-$oTxtName = new cHTMLTextbox('groupname', $groupname, 40, 255);
+$oTxtName = new cHTMLTextbox('groupname', conHtmlSpecialChars($groupname), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtName->render());
 
 $tpl->next();

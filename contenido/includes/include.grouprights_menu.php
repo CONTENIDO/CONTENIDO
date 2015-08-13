@@ -106,7 +106,7 @@ while ($db->nextRecord()) {
 
     if ($allow == true) {
         $groupid = $db->f("group_id");
-        $groupname = $db->f("groupname");
+        $groupname = conHtmlSpecialChars($db->f("groupname"));
 
         $groupname = substr($groupname, 4);
 
