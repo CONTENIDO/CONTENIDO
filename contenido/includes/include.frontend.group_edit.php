@@ -164,7 +164,7 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
 
     $sInGroupOptions = '';
     foreach ($cells as $idfrontenduser => $name) {
-        $sInGroupOptions .= '<option value="'.$idfrontenduser.'">'.$name.'</option>'."\n";
+        $sInGroupOptions .= '<option value="'.$idfrontenduser.'">'.conHtmlSpecialChars($name).'</option>'."\n";
     }
     $page->set('s', 'IN_GROUP_OPTIONS', $sInGroupOptions);
 
@@ -184,7 +184,7 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
 
     $sNonGroupOptions = '';
     foreach ($items as $idfrontenduser => $name) {
-        $sNonGroupOptions .= '<option value="'.$idfrontenduser.'">'.$name.'</option>'."\n";
+        $sNonGroupOptions .= '<option value="'.$idfrontenduser.'">'.conHtmlSpecialChars($name).'</option>'."\n";
     }
     $page->set('s', 'NON_GROUP_OPTIONS', $sNonGroupOptions);
 
