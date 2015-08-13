@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-13 16:05+0200\n"
+"POT-Creation-Date: 2015-08-13 17:17+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3659,7 +3659,7 @@ msgstr ""
 
 #: includes/include.con_left_top.php:262
 #: includes/include.frontend.user_edit.php:234
-#: includes/include.rights_overview.php:450
+#: includes/include.rights_overview.php:452
 #: includes/include.str_overview.php:166 includes/include.str_overview.php:641
 #: includes/include.tplcfg_edit_form.php:281
 #: includes/include.tpl_edit_form.php:68 includes/include.tpl_edit_form.php:73
@@ -4086,7 +4086,7 @@ msgid ""
 msgstr ""
 
 #: includes/include.frontend.user_edit.php:237
-#: includes/include.rights_overview.php:454
+#: includes/include.rights_overview.php:456
 msgid "Group membership"
 msgstr ""
 

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO Plugin Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-28 10:31+0200\n"
-"PO-Revision-Date: 2015-05-28 10:32+0100\n"
+"POT-Creation-Date: 2015-08-13 17:19+0200\n"
+"PO-Revision-Date: 2015-08-13 17:19+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language: de_DE\n"
@@ -223,10 +223,6 @@ msgstr "Sie finden dieses Plugin unter dem Men&uuml;punkt"
 msgid "as"
 msgstr "als"
 
-#: includes/config.plugin.php:20
-msgid "Run Plugin Manager"
-msgstr "Plugin Manager ausf&uuml;hren"
-
 #: includes/include.right_bottom.php:23
 msgid "Permission denied"
 msgstr "Zugriff verweigert"
@@ -385,6 +381,9 @@ msgstr "Dieses Plugin ist schon unten!"
 #: templates/template.pim_overview.html:4
 msgid "Error"
 msgstr "Fehler"
+
+#~ msgid "Run Plugin Manager"
+#~ msgstr "Plugin Manager ausf&uuml;hren"
 
 #~ msgid ""
 #~ "The plugin <strong>%s</strong> has been successfully uninstalled. To "
