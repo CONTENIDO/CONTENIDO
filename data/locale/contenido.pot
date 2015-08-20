@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-13 17:17+0200\n"
+"POT-Creation-Date: 2015-08-20 13:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1949,17 +1949,17 @@ msgstr ""
 msgid "Save changes"
 msgstr ""
 
-#: classes/module/class.module.handler.php:467
-#: classes/module/class.module.handler.php:477
+#: classes/module/class.module.handler.php:476
+#: classes/module/class.module.handler.php:486
 msgid "Can't make file: "
 msgstr ""
 
-#: classes/module/class.module.handler.php:1138
+#: classes/module/class.module.handler.php:1147
 #, php-format
 msgid "Error in module. Error location: %s"
 msgstr ""
 
-#: classes/module/class.module.handler.php:1146
+#: classes/module/class.module.handler.php:1155
 msgid "Please do not use short open tags. (Use <?php instead of <?)."
 msgstr ""
 
@@ -1978,8 +1978,8 @@ msgid "Can not create module"
 msgstr ""
 
 #: classes/module/class.module.template.handler.php:243
-#: includes/include.mod_edit_form.php:206
-msgid "You have no write permissions for this module"
+#, php-format
+msgid "You have no write permissions for this module: %s"
 msgstr ""
 
 #: classes/module/class.module.template.handler.php:287
@@ -4729,6 +4729,10 @@ msgstr ""
 #: includes/include.mod_edit_form.php:193 includes/include.mod_history.php:86
 #: ../data/config/production/cfg_actions.inc.php:87
 msgid "Edit module"
+msgstr ""
+
+#: includes/include.mod_edit_form.php:206
+msgid "You have no write permissions for this module"
 msgstr ""
 
 #: includes/include.mod_edit_form.php:324

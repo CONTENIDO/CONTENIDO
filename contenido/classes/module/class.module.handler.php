@@ -325,6 +325,15 @@ class cModuleHandler {
     }
 
     /**
+     * Get the name of module
+     *
+     * @return string
+     */
+    public function getModuleName() {
+    	return $this->_moduleName;
+    }
+
+    /**
      * Get the Modul Path also cms path + module + module name.
      *
      * @return string
