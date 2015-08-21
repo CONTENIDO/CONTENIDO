@@ -315,12 +315,14 @@ $idartlang = getArtLang($idart, $lang);
 if (false === isset($idart)) {
     $online = ('0' !== $oCatLang->get('visible'));
 } else {
-	$oArtLang = new cApiArticleLanguage($idartlang);
-	$online = $oArtLang->get('online');
+    $oArtLang = new cApiArticleLanguage($idartlang);
+    $online = $oArtLang->get('online');
 }
 
 $idartlang = getArtLang($idart, $lang);
-if ($idartlang === false || $online != true) {
+
+// always allow editing article in backend
+if (!isset($contenido) && ($idartlang === false || $online != true)) {
     if ($_GET['display_errorpage']) {
         // show only if $idart > 0
         if ($idart > 0) {
