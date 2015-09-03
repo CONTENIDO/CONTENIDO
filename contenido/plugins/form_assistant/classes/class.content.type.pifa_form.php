@@ -126,7 +126,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         // interpreted
         $tplBottom->set('s', 'SETTINGS', json_encode(str_replace('$', '&#36;', $this->_settings)));
         $tplBottom->set('s', 'JS_CLASS_SCRIPT', Pifa::getUrl() . 'scripts/cmsPifaform.js');
-        $tplBottom->set('s', 'JS_CLASS_NAME', get_class($this));
+        $tplBottom->set('s', 'JS_CLASS_NAME', 'Con.' . get_class($this));
 
         $codeBottom = $tplBottom->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_bottom.html', true);
 
