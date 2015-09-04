@@ -217,6 +217,22 @@ class cAjaxRequest {
                 $string = $image->generateFileSelect($dirName);
                 break;
 
+            case 'inlineeditart':
+
+            	$languageCollection = new cApiArticleLanguageCollection();
+
+            	for ($i = 0; $i < count($_REQUEST['fields']); $i++) {
+
+            		$idartlang = $languageCollection->getIdByArticleIdAndLanguageId(cSecurity::toInteger($_REQUEST['fields'][$i]['idart']), cRegistry::getLanguageId());
+
+            		$artLang = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
+            		$artLang->set('title', cSecurity::escapeString($_REQUEST['fields'][$i]['title']));
+            		$artLang->set('artsort', cSecurity::escapeString($_REQUEST['fields'][$i]['index']));
+            		$artLang->store();
+            	}
+
+            	break;
+
             case 'loadImageMeta':
                 $imageId = (int) $_REQUEST['id'];
                 $idArtLang = (int) $_REQUEST['idartlang'];
