@@ -288,8 +288,7 @@ function doInlineEditArt(thisObject) {
 
 	            $(this).closest('tr').find('input').each(function() {
 	                
-	                if ($(this).attr('name') === 'title') {
-	                    
+	                if ($(this).attr('name') === 'title') {	                    
 	                    $(this).prev().show();
 	                    $(this).remove();
 	                } else if ($(this).attr('name') === 'index') {
