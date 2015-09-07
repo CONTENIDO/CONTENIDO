@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the actionlog collection and item class.
  *
@@ -23,6 +24,9 @@ class cApiActionlogCollection extends ItemCollection {
 
     /**
      * Constructor.
+     *
+     * Tables user, client, language, action & category_article are allowed as
+     * join partners
      */
     public function __construct() {
         global $cfg;
@@ -47,7 +51,6 @@ class cApiActionlogCollection extends ItemCollection {
      * @param int $idaction
      * @param int $idcatart
      * @param string $logtimestamp [optional]
-     *
      * @return cApiActionlog
      */
     public function create($userId, $idclient, $idlang, $idaction, $idcatart, $logtimestamp = '') {

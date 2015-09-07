@@ -6,7 +6,7 @@
  * If you are planning to add a function, please make sure that:
  * 1.) The function is in the correct place
  * 2.) The function is documented
- * 3.) The function makes sense and is generically usable
+ * 3.) The function makes sense and is generally usable
  *
  * @package Core
  * @subpackage Backend
@@ -31,7 +31,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * Example:
  * $string = "This is a simple test";
- * echo cApiStrTrimAfterWord ($string, 15);
+ * echo cApiStrTrimAfterWord($string, 15);
  *
  * This would output "This is a", since this function respects word boundaries
  * and doesn't operate beyond the limit given by $maxlen.
@@ -68,7 +68,7 @@ function cApiStrTrimAfterWord($string, $maxlen) {
  *         The string to operate on
  * @param int $maxlen
  *         The maximum number of characters
- * @param string $fillup
+ * @param string $fillup [optional]
  * @return string
  *         The resulting string
  */
@@ -81,7 +81,7 @@ function cApiStrTrimHard($string, $maxlen, $fillup = '...') {
  * Trims a string to a approximate length.
  * Sentence boundaries are preserved.
  *
- * The algorythm inside calculates the sentence length to the previous and next
+ * The algorithm inside calculates the sentence length to the previous and next
  * sentences. The distance to the next sentence which is smaller will be taken
  * to
  * trim the string to match the approximate length parameter.
@@ -124,7 +124,7 @@ function cApiStrTrimHard($string, $maxlen, $fillup = '...') {
  *         The string to operate on
  * @param int $approxlen
  *         The approximate number of characters
- * @param bool $hard
+ * @param bool $hard [optional]
  *         If true, use a hard limit for the number of characters
  * @return string
  *         The resulting string
@@ -138,7 +138,7 @@ function cApiStrTrimSentence($string, $approxlen, $hard = false) {
  * Converts diactritics to english characters whenever possible.
  *
  * For german umlauts, this function converts the umlauts to their ASCII
- * equalients (e.g. ä => ae).
+ * equivalents (e.g. ä => ae).
  *
  * For more information about diacritics, refer to
  * http://en.wikipedia.org/wiki/Diacritic
@@ -149,10 +149,10 @@ function cApiStrTrimSentence($string, $approxlen, $hard = false) {
  *         use cString::replaceDiacritics
  * @param string $sString
  *         The string to operate on
- * @param string $sourceEncoding
- *         The source encoding (default: UTF-8)
- * @param string $targetEncoding
- *         The target encoding (default: UTF-8)
+ * @param string $sourceEncoding [optional; default: UTF-8]
+ *         The source encoding
+ * @param string $targetEncoding [optional; default: UTF-8]
+ *         The target encoding
  * @return string
  *         The resulting string
  */
@@ -214,7 +214,7 @@ function cApiStrRecodeString($sString, $sourceEncoding, $targetEncoding) {
  *         use cString::cleanURLCharacters
  * @param string $sString
  *         The string to operate on
- * @param bool $bReplace
+ * @param bool $bReplace [optional]
  *         If true, all "unclean" characters are replaced
  * @return string
  *         The resulting string

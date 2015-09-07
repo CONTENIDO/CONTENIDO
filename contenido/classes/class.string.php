@@ -24,7 +24,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cString {
 
     /**
-     * Replaces a string only once
+     * Replaces a string only once.
      *
      * Caution: This function only takes strings as parameters, not arrays!
      *
@@ -54,7 +54,7 @@ class cString {
     }
 
     /**
-     * Replaces a string only once, in reverse direction
+     * Replaces a string only once, in reverse direction.
      *
      * Caution: This function only takes strings as parameters, not arrays!
      *
@@ -85,9 +85,10 @@ class cString {
     }
 
     /**
-     * Finds a string position in reverse direction
+     * Finds a string position in reverse direction.
      *
-     * NOTE: The original strrpos-Function of PHP4 only finds a single character as needle.
+     * NOTE: The original strrpos-function of PHP4 only finds a single character
+     * as needle.
      *
      * @param string $haystack
      *         String to search in
@@ -140,7 +141,7 @@ class cString {
     }
 
     /**
-     * Checks if the string haystack ends with needle
+     * Checks if the string haystack ends with needle.
      *
      * @param string $haystack
      *         The string to check
@@ -158,7 +159,7 @@ class cString {
     }
 
     /**
-     * Returns true if needle can be found in haystack
+     * Returns true if needle can be found in haystack.
      *
      * @param string $haystack
      *         String to be searched
@@ -171,7 +172,7 @@ class cString {
     }
 
     /**
-     * Implementation of PHP 5.3's strstr with beforeNeedle
+     * Implementation of PHP 5.3's strstr with beforeNeedle.
      *
      * @param string $haystack
      *         String to be searched
@@ -191,7 +192,8 @@ class cString {
     }
 
     /**
-     * This function checks if a given format is accepted by php's date function
+     * This function checks if a given format is accepted by php's date function.
+     *
      * @param string $format
      *         format according to date function specification
      * @return bool
@@ -204,7 +206,7 @@ class cString {
     }
 
     /**
-     * Extract a number from a string
+     * Extract a number from a string.
      *
      * @param string $string
      *         String var by reference
@@ -217,7 +219,7 @@ class cString {
 
 
     /**
-     * Returns whether a string is UTF-8 encoded or not
+     * Returns whether a string is UTF-8 encoded or not.
      *
      * @param string $input
      * @return bool
@@ -229,15 +231,17 @@ class cString {
             $char = ord($input[$i]);
             $n = 0;
 
-            if ($char < 0x80) { // ASCII char
+            if ($char < 0x80) {
+                // ASCII char
                 continue;
-            } else if (($char & 0xE0) === 0xC0 && $char > 0xC1) { // 2 byte long
-                // char
+            } else if (($char & 0xE0) === 0xC0 && $char > 0xC1) {
+                // 2 byte long char
                 $n = 1;
-            } else if (($char & 0xF0) === 0xE0) { // 3 byte long char
+            } else if (($char & 0xF0) === 0xE0) {
+                // 3 byte long char
                 $n = 2;
-            } else if (($char & 0xF8) === 0xF0 && $char < 0xF5) { // 4 byte long
-                // char
+            } else if (($char & 0xF8) === 0xF0 && $char < 0xF5) {
+                // 4 byte long char
                 $n = 3;
             } else {
                 return false;
@@ -256,7 +260,7 @@ class cString {
 
 
     /**
-     * Checks if a value is alphanumeric
+     * Checks if a value is alphanumeric.
      *
      * @param mixed $test
      *         Value to test
@@ -276,19 +280,19 @@ class cString {
     }
 
     /**
-     * Trims a string to a given length and makes sure that all words up to $maxlen
-     * are preserved, without exceeding $maxlen.
+     * Trims a string to a given length and makes sure that all words up to
+     * $maxlen are preserved, without exceeding $maxlen.
      *
-     * Warning: Currently, this function uses a regular ASCII-Whitespace to do the
-     * separation test. If you are using '&nbsp' to create spaces, this function
-     * will fail.
+     * Warning: Currently, this function uses a regular ASCII-Whitespace to do
+     * the separation test. If you are using '&nbsp' to create spaces, this
+     * function will fail.
      *
      * Example:
      * $string = "This is a simple test";
-     * echo cString::trimAfterWord ($string, 15);
+     * echo cString::trimAfterWord($string, 15);
      *
-     * This would output "This is a", since this function respects word boundaries
-     * and doesn't operate beyond the limit given by $maxlen.
+     * This would output "This is a", since this function respects word
+     * boundaries and doesn't operate beyond the limit given by $maxlen.
      *
      * @param string $string
      *         The string to operate on
@@ -321,15 +325,16 @@ class cString {
 
     /**
      * Trims a string to a specific length.
-     * If the string is longer than $maxlen,
-     * dots are inserted ("...") right before $maxlen.
+     *
+     * If the string is longer than $maxlen, dots are inserted ("...") right
+     * before $maxlen.
      *
      * Example:
      * $string = "This is a simple test";
      * echo cString::trimHard ($string, 15);
      *
-     * This would output "This is a si...", since the string is longer than $maxlen
-     * and the resulting string matches 15 characters including the dots.
+     * This would output "This is a si...", since the string is longer than
+     * $maxlen and the resulting string matches 15 characters including the dots.
      *
      * @param string $string
      *         The string to operate on
@@ -369,13 +374,11 @@ class cString {
     }
 
     /**
-     * Trims a string to a approximate length.
-     * Sentence boundaries are preserved.
+     * Trims a string to a approximate length preserving sentence boundaries.
      *
-     * The algorythm inside calculates the sentence length to the previous and next
-     * sentences. The distance to the next sentence which is smaller will be taken
-     * to
-     * trim the string to match the approximate length parameter.
+     * The algorithm inside calculates the sentence length to the previous and
+     * next sentences. The distance to the next sentence which is smaller will
+     * be taken to trim the string to match the approximate length parameter.
      *
      * Example:
      *
@@ -385,27 +388,23 @@ class cString {
      * echo cString::trimSentence($string, 40);
      * echo cString::trimSentence($string, 50);
      *
-     * The first example would only output the first sentence, the second example
-     * both
-     * sentences.
+     * The first example would only output the first sentence, the second
+     * example both sentences.
      *
      * Explanation:
      *
-     * To match the given max length closely, the function calculates the distance
-     * to
-     * the next and previous sentences. Using the maxlength of 40 characters, the
-     * distance to the previous sentence would be 8 characters, and to the next
-     * sentence
-     * it would be 19 characters. Therefore, only the previous sentence is
-     * displayed.
+     * To match the given max length closely, the function calculates the
+     * distance to the next and previous sentences. Using the maxlength of 40
+     * characters, the distance to the previous sentence would be 8 characters,
+     * and to the next sentence it would be 19 characters. Therefore, only the
+     * previous sentence is displayed.
      *
-     * The second example displays the second sentence also, since the distance to
-     * the
-     * next sentence is only 9 characters, but to the previous it is 18 characters.
+     * The second example displays the second sentence also, since the distance
+     * to the next sentence is only 9 characters, but to the previous it is 18
+     * characters.
      *
-     * If you specify the boolean flag "$hard", the limit parameter creates a hard
-     * limit
-     * instead of calculating the distance.
+     * If you specify the boolean flag "$hard", the limit parameter creates a
+     * hard limit instead of calculating the distance.
      *
      * This function ensures that at least one sentence is returned.
      *
@@ -471,11 +470,10 @@ class cString {
     }
 
     /**
-     * Converts diactritics to english characters whenever
-     * possible.
+     * Converts diactritics to english characters whenever possible.
      *
      * For german umlauts, this function converts the umlauts to their ASCII
-     * equalients (e.g. ä => ae).
+     * equivalents (e.g. ä => ae).
      *
      * For more information about diacritics, refer to
      * http://en.wikipedia.org/wiki/Diacritic
@@ -588,11 +586,12 @@ class cString {
 
     /**
      * Converts a string to another encoding.
-     * This function tries to detect which function
-     * to use (either recode or iconv).
      *
-     * If $sourceEncoding and $targetEncoding are the same, this function returns
-     * immediately.
+     * This function tries to detect which function to use (either recode or
+     * iconv).
+     *
+     * If $sourceEncoding and $targetEncoding are the same, this function
+     * returns immediately.
      *
      * For more information about encodings, refer to
      * http://en.wikipedia.org/wiki/Character_encoding
@@ -600,9 +599,9 @@ class cString {
      * For more information about the supported encodings in recode, refer to
      * http://www.delorie.com/gnu/docs/recode/recode_toc.html
      *
-     * Note: depending on whether recode or iconv is used, the supported charsets
-     * differ. The following ones are commonly used and are most likely supported by
-     * both converters:
+     * Note: depending on whether recode or iconv is used, the supported
+     * charsets differ. The following ones are commonly used and are most likely
+     * supported by both converters:
      *
      * - ISO-8859-1 to ISO-8859-15
      * - ASCII
@@ -610,11 +609,10 @@ class cString {
      *
      * @todo Check if the charset names are the same for both converters
      * @todo Implement a converter and charset checker to ensure compilance.
-     *
      * @param string $string
      *         The string to operate on
      * @param string $sourceEncoding
-     *         The source encoding (default: ISO-8859-1)
+     *         The source encoding
      * @param string $targetEncoding
      *         The target encoding (if false, use source encoding)
      * @return string
@@ -645,8 +643,9 @@ class cString {
 
     /**
      * Removes or converts all "evil" URL characters.
-     * This function removes or converts
-     * all characters which can make an URL invalid.
+     *
+     * This function removes or converts all characters which can make an URL
+     * invalid.
      *
      * Clean characters include:
      * - All characters between 32 and 126 which are not alphanumeric and

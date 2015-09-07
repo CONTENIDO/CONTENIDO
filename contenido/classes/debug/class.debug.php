@@ -5,7 +5,6 @@
  *
  * @package Core
  * @subpackage Debug
- * @version SVN Revision $Rev:$
  *
  * @author Rudi Bieller
  * @author Murat Purc <murat@purc.de>

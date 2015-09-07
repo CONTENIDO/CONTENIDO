@@ -423,7 +423,7 @@ function markLastRun($jobname, $lastRun, $PC_writeDir) {
  */
 function runJob($job, $PC_jobDir, $PC_writeDir, $PC_useLog, $PC_debug = false) {
     global $cfg, $sess;
-    $extjob = Array();
+    $extjob = array();
     $jobfile = getJobFileName($job[PC_CMD], $PC_writeDir);
     parseElement($job[PC_MINUTE], $extjob[PC_MINUTE], 60);
     parseElement($job[PC_HOUR], $extjob[PC_HOUR], 24);
@@ -473,8 +473,8 @@ function runJob($job, $PC_jobDir, $PC_writeDir, $PC_useLog, $PC_debug = false) {
  */
 function parseCronFile($PC_cronTabFile, $PC_debug) {
     $file = @file($PC_cronTabFile);
-    $job = Array();
-    $jobs = Array();
+    $job = array();
+    $jobs = array();
     for ($i = 0; $i < count($file); $i++) {
         if ($file[$i][0] != '#') {
 //         old regex, without dow abbreviations:
@@ -484,7 +484,7 @@ function parseCronFile($PC_cronTabFile, $PC_debug) {
                 $jobs[$jobNumber] = $job;
                 if ($jobs[$jobNumber][PC_DOW][0] != '*' AND !is_numeric($jobs[$jobNumber][PC_DOW])) {
                     $jobs[$jobNumber][PC_DOW] = str_replace(
-                            Array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"), Array(0, 1, 2, 3, 4, 5, 6), $jobs[$jobNumber][PC_DOW]);
+                            array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"), array(0, 1, 2, 3, 4, 5, 6), $jobs[$jobNumber][PC_DOW]);
                 }
                 $jobs[$jobNumber][PC_CMD] = trim($job[PC_CMD]);
                 $jobs[$jobNumber][PC_CRONLINE] = $file[$i];

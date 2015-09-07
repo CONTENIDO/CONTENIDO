@@ -6,7 +6,7 @@
  * If you are planning to add a function, please make sure that:
  * 1.) The function is in the correct place
  * 2.) The function is documented
- * 3.) The function makes sense and is generically usable
+ * 3.) The function makes sense and is generally usable
  *
  * @package Core
  * @subpackage Backend
@@ -77,7 +77,7 @@ function cApiImgScaleGetMD5CacheFile($sImg, $iMaxX, $iMaxY, $bCrop, $bExpand) {
  * Note that this function does some very poor caching;
  * it calculates an md5 hash out of the image plus the
  * maximum X and Y sizes, and uses that as the file name.
- * If the file is older than 10 minutes, regenerate it.
+ * If the file is older than 10 minutes it will be regenerated.
  *
  * @param string $img
  *         The path to the image (relative to the frontend)
@@ -85,16 +85,16 @@ function cApiImgScaleGetMD5CacheFile($sImg, $iMaxX, $iMaxY, $bCrop, $bExpand) {
  *         The maximum size in x-direction
  * @param int $maxY
  *         The maximum size in y-direction
- * @param bool $crop
+ * @param bool $crop [optional]
  *         If true, the image is cropped and not scaled.
- * @param bool $expand
+ * @param bool $expand [optional]
  *         If true, the image is expanded (e.g. really scaled).
  *         If false, the image will only be made smaller.
- * @param int $cacheTime
+ * @param int $cacheTime [optional]
  *         The number of minutes to cache the image, use 0 for unlimited
- * @param int $quality
+ * @param int $quality [optional]
  *         The quality of the output file
- * @param bool $keepType
+ * @param bool $keepType [optional]
  *         If true and a png file is source, output file is also png
  * @return string
  *         url to the resulting image (http://...
@@ -182,12 +182,12 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
     if ($keepType) {
         switch (strtolower($filetype)) {
             case 'png':
-                imagepng($targetImage, $cacheFile); // no quality option
-                                                    // available
+                // no quality option available
+                imagepng($targetImage, $cacheFile);
                 break;
             case 'gif':
-                imagegif($targetImage, $cacheFile); // no quality option
-                                                    // available
+                // no quality option available
+                imagegif($targetImage, $cacheFile);
                 break;
             default:
                 imagejpeg($targetImage, $cacheFile, $quality);
@@ -219,16 +219,16 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
  *         The maximum size in x-direction
  * @param int $maxY
  *         The maximum size in y-direction
- * @param bool $crop
+ * @param bool $crop [optional]
  *         If true, the image is cropped and not scaled.
- * @param bool $expand
+ * @param bool $expand [optional]
  *         If true, the image is expanded (e.g. really scaled).
  *         If false, the image will only be made smaller.
- * @param int $cacheTime
+ * @param int $cacheTime [optional]
  *         The number of minutes to cache the image, use 0 for unlimited
- * @param int $quality
+ * @param int $quality [optional]
  *         The quality of the output file
- * @param bool $keepType
+ * @param bool $keepType [optional]
  *         If true and a png file is source, output file is also png
  * @return string
  *         Url to the resulting image (http://...)
@@ -328,8 +328,8 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
     if ($keepType) {
         switch (strtolower($filetype)) {
             case 'png':
-                imagepng($targetImage, $cacheFile); // no quality option
-                                                    // available
+                // no quality option available
+                imagepng($targetImage, $cacheFile);
                 break;
             case 'gif':
                 imagegif($targetImage, $cacheFile);
@@ -363,16 +363,16 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
  *         The maximum size in x-direction
  * @param int $maxY
  *         The maximum size in y-direction
- * @param bool $crop
+ * @param bool $crop [optional]
  *         If true, the image is cropped and not scaled.
- * @param bool $expand
+ * @param bool $expand [optional]
  *         If true, the image is expanded (e.g. really scaled).
  *         If false, the image will only be made smaller.
- * @param int $cacheTime
+ * @param int $cacheTime [optional]
  *         The number of minutes to cache the image, use 0 for unlimited
- * @param int $quality
+ * @param int $quality [optional]
  *         The quality of the output file
- * @param bool $keepType
+ * @param bool $keepType [optional]
  *         If true and a png file is source, output file is also png
  * @return string
  *         Url to the resulting image (http://...)
@@ -453,6 +453,11 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
 /**
  * Check if gif is animated, uses "identify" of ImageMagick.
  *
+ * If the PHP functions "escapeshellarg" or "exec" are not available false will
+ * be returned.
+ *
+ * If ImageMagick is not available false will be returned.
+ *
  * @param string $sFile
  *         file path
  * @return bool
@@ -461,11 +466,13 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
 function cApiImageIsAnimGif($sFile) {
     global $cfg;
 
+    // check if functions escapeshellarg or exec are disabled
     if (isFunctionDisabled('escapeshellarg') || isFunctionDisabled('exec')) {
-        // Function escapeshellarg or exec is disabled
         return false;
-    } elseif ('im' != cApiImageCheckImageEditingPosibility()) {
-        // ImageMagick ist not available
+    }
+
+    // check if ImageMagick is available
+    if ('im' != cApiImageCheckImageEditingPosibility()) {
         return false;
     }
 
@@ -503,18 +510,18 @@ function cApiImageIsAnimGif($sFile) {
  *         The maximum size in x-direction
  * @param int $maxY
  *         The maximum size in y-direction
- * @param bool $crop
+ * @param bool $crop [optional]
  *         If true, the image is cropped and not scaled.
- * @param bool $expand
+ * @param bool $expand [optional]
  *         If true, the image is expanded (e.g. really scaled).
  *         If false, the image will only be made smaller.
- * @param int $cacheTime
+ * @param int $cacheTime [optional]
  *         The number of minutes to cache the image, use 0 for unlimited
- * @param bool $wantHQ
+ * @param bool $wantHQ [optional]
  *         If true, try to force high quality mode
- * @param int $quality
+ * @param int $quality [optional]
  *         The quality of the output file
- * @param bool $keepType
+ * @param bool $keepType [optional]
  *         If true and a png file is source, output file is also png
  * @return string
  *         Path to the resulting image
@@ -701,8 +708,10 @@ function cApiImageGetTargetDimensions($x, $y, $maxX, $maxY, $expand) {
  */
 function cApiImageGetCacheFileName($md5, $filetype, $keepType) {
     // Create the target file names for web and server
+
+    // Should we keep the file type?
     if ($keepType) {
-        // Should we keep the file type?
+
         // Just using switch if someone likes to add other types
         switch (strtolower($filetype)) {
             case 'png':
@@ -714,9 +723,14 @@ function cApiImageGetCacheFileName($md5, $filetype, $keepType) {
             default:
                 $fileName = $md5 . '.jpg';
         }
-    } else { // No... use .jpg
+
+    } else {
+
+        // No... use .jpg
         $fileName = $md5 . '.jpg';
+
     }
+
     return $fileName;
 }
 
@@ -729,12 +743,17 @@ function cApiImageGetCacheFileName($md5, $filetype, $keepType) {
  *         Returns true, if cache file exists and7or is still valid or false
  */
 function cApiImageCheckCachedImageValidity($cacheFile, $cacheTime) {
+
     // Check if the file exists. If it does, check if the file is valid.
     if (cFileHandler::exists($cacheFile)) {
+
         if ($cacheTime == 0) {
+
             // Do not check expiration date
             return true;
+
         } else if (!function_exists('md5_file')) {
+
             // TODO: Explain why this is still needed ... or remove it
             if ((filemtime($cacheFile) + (60 * $cacheTime)) < time()) {
                 // Cache time expired, unlink the file
@@ -743,16 +762,21 @@ function cApiImageCheckCachedImageValidity($cacheFile, $cacheTime) {
                 // Return the web file name
                 return true;
             }
+
         } else {
+
             return true;
         }
+
     }
 
     return false;
 }
 
 /**
- * Checks if ImageMagick is available
+ * Checks if ImageMagick is available.
+ *
+ * This info will be cached after being detected once.
  *
  * @return bool
  *         true if ImageMagick is available
@@ -773,23 +797,20 @@ function cApiIsImageMagickAvailable() {
     }
 
     // otherwise execute the IM check
+    $program = escapeshellarg($cfg['images']['image_magick']['path'] . 'convert');
     $output = array();
     $retval = 0;
-    $imPath = $cfg['images']['image_magick']['path'];
-    $program = escapeshellarg($cfg['images']['image_magick']['path'] . 'convert');
     @exec("'{$program}' -version", $output, $retval);
 
+    // exec is probably disabled, so we assume IM to be unavailable
+    // otherwise output contains the output of the command "convert version"
+    // if IM is available, it contains the string "ImageMagick"
     if (!is_array($output) || count($output) == 0) {
-        // exec is probably disabled, so we assume IM to be unavailable
+        $imagemagickAvailable = false;
+    } else if (false === strpos($output[0], 'ImageMagick')) {
         $imagemagickAvailable = false;
     } else {
-        // otherwise output contains the output of the command "convert version"
-        // if IM is available, it contains the string "ImageMagick"
-        if (strpos($output[0], 'ImageMagick') !== false) {
-            $imagemagickAvailable = true;
-        } else {
-            $imagemagickAvailable = false;
-        }
+        $imagemagickAvailable = true;
     }
 
     return $imagemagickAvailable;

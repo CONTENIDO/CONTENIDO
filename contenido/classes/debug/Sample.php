@@ -18,7 +18,6 @@
  *
  * @package    Core
  * @subpackage Debug
- * @version    SVN Revision $Rev:$
  *
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>

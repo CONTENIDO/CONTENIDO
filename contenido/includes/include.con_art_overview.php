@@ -247,7 +247,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         // No article
         $no_article = true;
 
-        $aArticles = Array();
+        $aArticles = array();
 
         while ($db->nextRecord()) {
             $sItem = "k" . $db->f("idart");

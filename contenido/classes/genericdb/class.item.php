@@ -5,7 +5,6 @@
  *
  * @package Core
  * @subpackage GenericDB
- * @version SVN Revision $Rev:$
  *
  * @author Timo Hummel
  * @author Murat Purc <murat@purc.de>

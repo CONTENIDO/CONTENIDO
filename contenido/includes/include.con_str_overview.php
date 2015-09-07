@@ -399,7 +399,7 @@ while ($db->nextRecord()) {
 
     if ($db->f("idlang") == $lang) {
 
-        $arts = Array();
+        $arts = array();
 
         if (isset($arrArtCache[$db->f("idcat")])) {
             foreach ($arrArtCache[$db->f("idcat")] as $key => $value) {

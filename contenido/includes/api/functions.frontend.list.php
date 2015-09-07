@@ -22,13 +22,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class FrontendList {
 
     /**
-     * Wrap for a single item.
-     *
-     * @var string
-     */
-    var $itemwrap;
-
-    /**
      * Wrap for table start.
      *
      * @var string
@@ -43,25 +36,32 @@ class FrontendList {
     var $endwrap;
 
     /**
+     * Wrap for a single item.
+     *
+     * @var string
+     */
+    var $itemwrap;
+
+    /**
      * Data container.
      *
      * @var array
      */
-    var $data = Array();
+    var $data = array();
 
     /**
      * Number of records displayed per page.
      *
      * @var int
      */
-    var $resultsPerPage;
+    var $resultsPerPage = 0;
 
     /**
      * Start page.
      *
      * @var int
      */
-    var $listStart;
+    var $listStart = 1;
 
     /**
      * Creates a new FrontendList object.
@@ -79,12 +79,9 @@ class FrontendList {
      *         Wrap for a single item
      */
     function FrontendList($startwrap, $endwrap, $itemwrap) {
-        $this->resultsPerPage = 0;
-        $this->listStart = 1;
-
-        $this->itemwrap = $itemwrap;
         $this->startwrap = $startwrap;
         $this->endwrap = $endwrap;
+        $this->itemwrap = $itemwrap;
     }
 
     /**

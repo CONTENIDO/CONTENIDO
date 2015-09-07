@@ -5,7 +5,6 @@
  *
  * @package Core
  * @subpackage GUI
- * @version SVN Revision $Rev:$
  *
  * @author Mischa Holz
  * @copyright four for business AG <www.4fb.de>
@@ -29,14 +28,14 @@ class cGuiScrollList {
      *
      * @var array
      */
-    public $data = Array();
+    public $data = array();
 
     /**
      * Header container
      *
      * @var array
      */
-    public $header = Array();
+    public $header = array();
 
     /**
      * Number of records displayed per page

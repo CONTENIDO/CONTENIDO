@@ -5,7 +5,6 @@
  *
  * @package Core
  * @subpackage GUI_HTML
- * @version SVN Revision $Rev:$
  *
  * @author Marcus Gnaß
  * @copyright four for business AG <www.4fb.de>

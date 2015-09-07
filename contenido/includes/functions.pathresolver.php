@@ -73,7 +73,7 @@ function prResolvePathViaURLNames($path) {
         $catlevels[$db->f('idcat')] = $db->f('level');
     }
 
-    // Compare strings using the similar_text algorythm
+    // Compare strings using the similar_text algorithm
     $percent = 0;
     foreach ($catpath as $key => $value) {
         $value = strtolower(str_replace(' ', '', $value));
@@ -208,7 +208,7 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck) {
         }
     }
 
-    // Compare strings using the similar_text algorythm
+    // Compare strings using the similar_text algorithm
     $percent = 0;
     foreach ($catpath as $key => $value) {
         $value = strtolower(str_replace(' ', '', $value));

@@ -5,7 +5,6 @@
  *
  * @package Core
  * @subpackage GUI
- * @version SVN Revision $Rev:$
  *
  * @author Mischa Holz
  * @copyright four for business AG <www.4fb.de>

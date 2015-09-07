@@ -5,7 +5,6 @@
  *
  * @package Core
  * @subpackage GenericDB
- * @version SVN Revision $Rev:$
  *
  * @author Murat Purc <murat@purc.de>
  * @copyright four for business AG <www.4fb.de>

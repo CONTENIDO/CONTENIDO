@@ -6,7 +6,7 @@
  * If you are planning to add a function, please make sure that:
  * 1.) The function is in the correct place
  * 2.) The function is documented
- * 3.) The function makes sense and is generically usable
+ * 3.) The function makes sense and is generally usable
  *
  * @package          Core
  * @subpackage       Backend
@@ -43,7 +43,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *         This method is no longer supported (no replacement)
  * @param int $idcat
  *         The category number
- * @param int $minLevel
+ * @param int $minLevel [optional]
  *         The level to extract
  * @return int
  *         The category node on a specific level

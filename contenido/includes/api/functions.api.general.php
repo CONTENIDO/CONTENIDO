@@ -6,7 +6,7 @@
  * If you are planning to add a function, please make sure that:
  * 1.) The function is in the correct place
  * 2.) The function is documented
- * 3.) The function makes sense and is generically usable
+ * 3.) The function makes sense and is generally usable
  *
  * @package          Core
  * @subpackage       Backend
