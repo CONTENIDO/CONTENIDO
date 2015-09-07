@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-18 11:24+0200\n"
-"PO-Revision-Date: 2015-06-22 17:12+0100\n"
-"Last-Translator: Thomas Stauer <thomas.stauer@4fb.de>\n"
+"POT-Creation-Date: 2015-09-04 13:49+0200\n"
+"PO-Revision-Date: 2015-09-04 13:50+0100\n"
+"Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
@@ -14,7 +14,7 @@ msgstr ""
 "X-Poedit-Keywords: i18n,trans\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Basepath: ../../../\n"
-"X-Generator: Poedit 1.7.6\n"
+"X-Generator: Poedit 1.7.5\n"
 
 #: backend_search.php:321
 msgid "Thank you for saving this search from extinction!"
@@ -24,7 +24,7 @@ msgstr "Vielen Dank für die Speicherung dieser Suche!"
 #: classes/content_types/class.content.type.imgeditor.php:508
 #: classes/content_types/class.content.type.linkeditor.php:315
 #: includes/include.con_art_overview.php:83
-#: includes/include.con_art_overview.php:722
+#: includes/include.con_art_overview.php:725
 #: includes/include.con_edit_form.php:696
 #: includes/include.stat_overview.php:88
 #: templates/standard/template.mycontenido_lastarticles.html:73
@@ -71,8 +71,8 @@ msgid "Article"
 msgstr "Artikel"
 
 #: backend_search.php:518 includes/include.con_art_overview.php:87
-#: includes/include.con_translate.php:489
-#: includes/include.con_translate.php:595
+#: includes/include.con_translate.php:498
+#: includes/include.con_translate.php:604
 #: includes/include.pretplcfg_edit_form.php:38
 #: includes/include.tplcfg_edit_form.php:264
 #: templates/standard/template.mycontenido_lastarticles.html:77
@@ -99,39 +99,39 @@ msgstr "Suchwert fehlt."
 msgid "No article found."
 msgstr "Keine Artikel gefunden."
 
-#: backend_search.php:662 includes/include.con_art_overview.php:520
+#: backend_search.php:662 includes/include.con_art_overview.php:523
 msgid "Flag as normal article"
 msgstr "Als normalen Artikel markieren"
 
-#: backend_search.php:665 includes/include.con_art_overview.php:518
+#: backend_search.php:665 includes/include.con_art_overview.php:521
 msgid "Flag as start article"
 msgstr "Als Startartikel markieren"
 
 #: backend_search.php:678 includes/include.client_artspec.php:125
-#: includes/include.con_art_overview.php:565
-#: includes/include.str_overview.php:703 scripts/langref.php:8
+#: includes/include.con_art_overview.php:568
+#: includes/include.str_overview.php:709 scripts/langref.php:8
 #: templates/standard/template.str_overview.html:656
 msgid "Make offline"
 msgstr "Offline setzen"
 
 #: backend_search.php:682 includes/include.client_artspec.php:122
-#: includes/include.con_art_overview.php:571
-#: includes/include.str_overview.php:705 includes/include.str_overview.php:924
-#: includes/include.str_overview.php:926 scripts/langref.php:9
+#: includes/include.con_art_overview.php:574
+#: includes/include.str_overview.php:711 includes/include.str_overview.php:930
+#: includes/include.str_overview.php:932 scripts/langref.php:9
 #: templates/standard/template.str_overview.html:657
 msgid "Make online"
 msgstr "Online setzen"
 
-#: backend_search.php:688 includes/include.con_art_overview.php:396
+#: backend_search.php:688 includes/include.con_art_overview.php:399
 msgid "Unfreeze article"
 msgstr "Artikel auftauen"
 
-#: backend_search.php:691 includes/include.con_art_overview.php:399
+#: backend_search.php:691 includes/include.con_art_overview.php:402
 #: ../data/config/production/cfg_actions.inc.php:22
 msgid "Freeze article"
 msgstr "Artikel einfrieren"
 
-#: backend_search.php:717 includes/include.con_art_overview.php:488
+#: backend_search.php:717 includes/include.con_art_overview.php:491
 #: includes/include.con_left_top.php:304
 #: includes/include.mycontenido_lastarticles.php:108
 #: includes/include.upl_search_results.php:70
@@ -147,14 +147,14 @@ msgstr "Erinnerung"
 msgid "Set reminder / add to todo list"
 msgstr "Wiedervorlage setzen / zur ToDo-Liste hinzufügen"
 
-#: backend_search.php:722 includes/include.con_art_overview.php:541
+#: backend_search.php:722 includes/include.con_art_overview.php:544
 #: templates/standard/template.symbolhelp.html:143
 #: templates/standard/template.symbolhelp.html:687
 #: ../data/config/production/cfg_actions.inc.php:32
 msgid "Duplicate article"
 msgstr "Artikel duplizieren"
 
-#: backend_search.php:723 includes/include.con_art_overview.php:427
+#: backend_search.php:723 includes/include.con_art_overview.php:430
 msgid "Article properties"
 msgstr "Artikeleigenschaften"
 
@@ -164,7 +164,7 @@ msgstr "Artikeleigenschaften"
 msgid "Configure template"
 msgstr "Vorlage konfigurieren"
 
-#: backend_search.php:725 includes/include.con_art_overview.php:591
+#: backend_search.php:725 includes/include.con_art_overview.php:594
 #: templates/standard/template.symbolhelp.html:147
 #: templates/standard/template.symbolhelp.html:688
 #: ../data/config/production/cfg_actions.inc.php:30
@@ -225,7 +225,7 @@ msgstr "idlang"
 
 #: classes/class.ajax.php:150 classes/class.ajax.php:166
 #: classes/module/class.module.template.handler.php:611
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:123
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:124
 #: includes/include.clientsettings.php:79
 #: includes/include.clientsettings.php:163
 #: includes/include.html_tpl_history.php:158
@@ -251,31 +251,31 @@ msgstr "Name"
 msgid "idart"
 msgstr "idart"
 
-#: classes/class.ajax.php:254
+#: classes/class.ajax.php:270
 msgid "Directory already exist."
 msgstr "Verzeichnis bereits vorhanden."
 
-#: classes/class.ajax.php:257 includes/include.upl_dirs_overview.php:122
+#: classes/class.ajax.php:273 includes/include.upl_dirs_overview.php:122
 msgid "Directories with special characters and spaces are not allowed."
 msgstr "Verzeichnisse mit Sonderzeichen und Leerzeichen sind nicht erlaubt."
 
-#: classes/class.ajax.php:316
+#: classes/class.ajax.php:332
 msgid "Confirmation Required"
 msgstr "Bestätigung erforderlich"
 
-#: classes/class.ajax.php:317 includes/include.str_overview.php:521
+#: classes/class.ajax.php:333 includes/include.str_overview.php:527
 msgid "OK"
 msgstr "O. K."
 
-#: classes/class.ajax.php:318 includes/include.CMS_HTML.php:109
-#: includes/include.CMS_HTMLHEAD.php:109 includes/include.str_overview.php:522
+#: classes/class.ajax.php:334 includes/include.CMS_HTML.php:109
+#: includes/include.CMS_HTMLHEAD.php:109 includes/include.str_overview.php:528
 #: scripts/langref.php:21 templates/standard/template.symbolhelp.html:66
 #: templates/standard/template.symbolhelp.html:674
 #: templates/standard/template.upl_files_upload.html:57
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: classes/class.ajax.php:382
+#: classes/class.ajax.php:398
 msgid "Module successfully compiled"
 msgstr "Modul erfolgreich kompiliert"
 
@@ -319,7 +319,7 @@ msgstr "Notizen anzeigen / erstellen"
 #: classes/class.password.request.php:226
 #: classes/class.password.request.php:276
 #: classes/class.password.request.php:277
-#: includes/include.con_translate.php:459
+#: includes/include.con_translate.php:468
 #: templates/standard/template.symbolhelp.html:71
 #: templates/standard/template.symbolhelp.html:675
 msgid "Submit"
@@ -976,12 +976,12 @@ msgid "CONTENIDO has all the necessary permissions to read and write files"
 msgstr ""
 "CONTENIDO hat alle nötigen Rechte, um Dateien zu lesen und zu schreiben"
 
-#: classes/class.systemtest.php:1238
+#: classes/class.systemtest.php:1239
 #, php-format
 msgid "Can't write %s"
 msgstr "Kann %s nicht beschreiben"
 
-#: classes/class.systemtest.php:1239
+#: classes/class.systemtest.php:1240
 #, php-format
 msgid ""
 "Setup or CONTENIDO can't write to the file %s. Please change the file "
@@ -990,7 +990,7 @@ msgstr ""
 "Der Systemtest oder CONTENIDO konnten nicht die Datei %s beschreiben. Um das "
 "Problem zu lösen, ändern Sie bitte die Dateiberechtigungen."
 
-#: classes/class.systemtest.php:1247
+#: classes/class.systemtest.php:1248
 msgid ""
 "Your Server runs Windows. Due to that, Setup can't recommend any file "
 "permissions."
@@ -998,7 +998,7 @@ msgstr ""
 "Ihr Server läuft unter dem Betriebssystem Windows. Daher kann die "
 "Systemintegrität keine Dateiberechtigungen empfehlen."
 
-#: classes/class.systemtest.php:1250
+#: classes/class.systemtest.php:1251
 #, php-format
 msgid ""
 "Due to a very restrictive environment, an advise is not possible. Ask your "
@@ -1010,7 +1010,7 @@ msgstr ""
 "Systemadministrator nach Schreibrechten für die Datei %s, vor allem in "
 "Umgebungen, in denen ACL's (Access Control Lists) verwendet werden."
 
-#: classes/class.systemtest.php:1255
+#: classes/class.systemtest.php:1256
 #, php-format
 msgid ""
 "Your web server and the owner of your files are identical. You need to "
@@ -1021,7 +1021,7 @@ msgstr ""
 "Schreibzugriff aktivieren, z. B. mit chmod u+rw %s oder durch das Setzen der "
 "Rechtemaske auf %s."
 
-#: classes/class.systemtest.php:1260
+#: classes/class.systemtest.php:1261
 #, php-format
 msgid ""
 "Your web server's group and the group of your files are identical. You need "
@@ -1032,7 +1032,7 @@ msgstr ""
 "bitte den Schreibzugriff für die Gruppe, z. B. mit chmod g+rw %s oder durch "
 "das Setzen der Rechtemaske auf %s."
 
-#: classes/class.systemtest.php:1265
+#: classes/class.systemtest.php:1266
 #, php-format
 msgid ""
 "Your web server is not equal to the file owner, and is not in the "
@@ -1047,7 +1047,7 @@ msgstr ""
 "Sie bitte den Schreibzugriff für Jedermann (world), z. B. mit chmod o+rw %s "
 "oder durch das Setzen der Rechtemaske auf %s."
 
-#: classes/class.systemtest.php:1275
+#: classes/class.systemtest.php:1276
 msgid ""
 "Your Server runs Windows. Due to that, Setup can't recommend any directory "
 "permissions."
@@ -1055,7 +1055,7 @@ msgstr ""
 "Ihr Webserver läuft unter dem Betriebssystem Windows. Daher kann die "
 "Systemintegrität keine Verzeichnisberechtigungen empfehlen."
 
-#: classes/class.systemtest.php:1278
+#: classes/class.systemtest.php:1279
 #, php-format
 msgid ""
 "Due to a very restrictive environment, an advise is not possible. Ask your "
@@ -1068,7 +1068,7 @@ msgstr ""
 "%s, vor allem bei Systemen, bei denen ACL's (Access Control Lists) verwendet "
 "werden."
 
-#: classes/class.systemtest.php:1283
+#: classes/class.systemtest.php:1284
 #, php-format
 msgid ""
 "Your web server and the owner of your directory are identical. You need to "
@@ -1079,7 +1079,7 @@ msgstr ""
 "müssen Schreibzugriff für den Besitzer aktivieren, z. B. mit chmod u+rw %s "
 "oder durch das Setzen der Rechtemaske auf %s."
 
-#: classes/class.systemtest.php:1288
+#: classes/class.systemtest.php:1289
 #, php-format
 msgid ""
 "Your web server's group and the group of your directory are identical. You "
@@ -1090,7 +1090,7 @@ msgstr ""
 "müssen den Schreibzugriff für die Gruppe aktivieren, z. B. mit chmod g+rw %s "
 "oder durch das Setzen der Rechtemaske auf %s."
 
-#: classes/class.systemtest.php:1293
+#: classes/class.systemtest.php:1294
 #, php-format
 msgid ""
 "Your web server is not equal to the directory owner, and is not in the "
@@ -1105,13 +1105,13 @@ msgstr ""
 "Sie bitte den Schreibzugriff für Jedermann (world), z. B. mit chmod o+rw %s "
 "oder durch das Setzen der Rechtemaske auf %s."
 
-#: classes/class.systemtest.php:1337 classes/class.systemtest.php:1341
+#: classes/class.systemtest.php:1338 classes/class.systemtest.php:1342
 #, php-format
 msgid "Could not find or create directory %s"
 msgstr ""
 "Das folgende Verzeichnis konnte weder gefunden, noch erstellt werden: %s"
 
-#: classes/class.systemtest.php:1337 classes/class.systemtest.php:1341
+#: classes/class.systemtest.php:1338 classes/class.systemtest.php:1342
 msgid ""
 "The frontend expects certain directories to exist and it needs to be able to "
 "write to these directories."
@@ -1119,11 +1119,11 @@ msgstr ""
 "Das Frontend braucht Schreibrechte für bestimmte Verzeichnisse, um Dateien "
 "zu speichern."
 
-#: classes/class.systemtest.php:1443
+#: classes/class.systemtest.php:1444
 msgid "MySQL database already exists and seems to be filled"
 msgstr "MySQL Datenbank existiert bereits!"
 
-#: classes/class.systemtest.php:1443
+#: classes/class.systemtest.php:1444
 #, php-format
 msgid ""
 "Setup checked the database %s and found the table %s. It seems that you "
@@ -1137,11 +1137,11 @@ msgstr ""
 "Sie ein Upgrade durchführen wollen, wählen sie \"Upgrade\" am Anfang des "
 "Setups."
 
-#: classes/class.systemtest.php:1450
+#: classes/class.systemtest.php:1451
 msgid "MySQL test table already exists in the database"
 msgstr "MySQL Test Tabelle existiert bereits in dieser Datenbank"
 
-#: classes/class.systemtest.php:1450
+#: classes/class.systemtest.php:1451
 #, php-format
 msgid ""
 "Setup checked the database %s and found the test table %s. Please remove it "
@@ -1150,11 +1150,11 @@ msgstr ""
 "Setup hat die Datenbank %s überprüft und die Tabelle %s gefunden. Bitte "
 "löschen Sie sie."
 
-#: classes/class.systemtest.php:1457 classes/class.systemtest.php:1478
+#: classes/class.systemtest.php:1458 classes/class.systemtest.php:1479
 msgid "Unable to create tables in the selected MySQL database"
 msgstr "Setup kann keine Tabellen erstellen"
 
-#: classes/class.systemtest.php:1457 classes/class.systemtest.php:1478
+#: classes/class.systemtest.php:1458 classes/class.systemtest.php:1479
 #, php-format
 msgid ""
 "Setup tried to create a test table in the database %s and failed. Please "
@@ -1165,11 +1165,11 @@ msgstr ""
 "gescheitert. Bitte überprüfen Sie die Berechtigungen des Datenbankbenutzers "
 "für diese Datenbank."
 
-#: classes/class.systemtest.php:1464 classes/class.systemtest.php:1485
+#: classes/class.systemtest.php:1465 classes/class.systemtest.php:1486
 msgid "Unable to remove the test table"
 msgstr "Konnte die Test Tabelle nicht löschen"
 
-#: classes/class.systemtest.php:1464 classes/class.systemtest.php:1485
+#: classes/class.systemtest.php:1465 classes/class.systemtest.php:1486
 #, php-format
 msgid ""
 "Setup tried to remove the test table %s in the database %s and failed due to "
@@ -1178,11 +1178,11 @@ msgstr ""
 "Das Setup konnte die Test Tabelle %s nicht aus der Datenbank %s löschen. "
 "Bitte löschen Sie '%s' manuell."
 
-#: classes/class.systemtest.php:1471
+#: classes/class.systemtest.php:1472
 msgid "Unable to create the database in the MySQL server"
 msgstr "Konnte keine Datenbank auf diesem MySQL Server erstellen"
 
-#: classes/class.systemtest.php:1471
+#: classes/class.systemtest.php:1472
 msgid ""
 "Setup tried to create a test database and failed. Please assign database "
 "creation permissions to the database user you entered, ask an administrator "
@@ -1192,11 +1192,11 @@ msgstr ""
 "Bitte überprüfen Sie die Berechtigungen des Datenbankbenutzers oder "
 "erstellen Sie die Datenbank manuell."
 
-#: classes/class.systemtest.php:1495 classes/class.systemtest.php:1505
+#: classes/class.systemtest.php:1496 classes/class.systemtest.php:1506
 msgid "No data found for the upgrade"
 msgstr "Keine Daten für das Upgrade gefunden"
 
-#: classes/class.systemtest.php:1495
+#: classes/class.systemtest.php:1496
 #, php-format
 msgid ""
 "Setup tried to locate the data for the upgrade, however, the database %s "
@@ -1205,7 +1205,7 @@ msgstr ""
 "Das Setup hat versucht die Daten für das Upgrade zu finden, aber die "
 "Datenbank %s existiert nicht."
 
-#: classes/class.systemtest.php:1505
+#: classes/class.systemtest.php:1506
 #, php-format
 msgid ""
 "Setup tried to locate the data for the upgrade, however, the database %s "
@@ -1799,7 +1799,7 @@ msgid "Manual teaser"
 msgstr "Manueller Teaser"
 
 #: classes/content_types/class.content.type.teaser.php:865
-#: includes/include.con_translate.php:427
+#: includes/include.con_translate.php:436
 msgid "Add"
 msgstr "Hinzufügen"
 
@@ -1813,11 +1813,11 @@ msgid "Unknown article"
 msgstr "Unbekannter Artikel"
 
 #: classes/content_types/class.content.type.teaser.php:891
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:183
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:184
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:185
 #: includes/include.clientsettings.php:92
 #: includes/include.client_artspec.php:72
-#: includes/include.con_translate.php:755
+#: includes/include.con_translate.php:764
 #: includes/include.grouprights_overview.php:198
 #: includes/include.rights_overview.php:366
 #: includes/include.rights_overview.php:375
@@ -1920,7 +1920,7 @@ msgstr "Einige Plugin Menüs können nicht angezeigt werden."
 
 #: classes/gui/class.navigation.php:325 classes/gui/class.navigation.php:328
 #: includes/include.logs.php:263 includes/include.mail_log.php:90
-#: includes/include.system_purge.php:184
+#: includes/include.system_purge.php:183
 #: includes/include.system_sysvalues.php:178
 #: templates/standard/template.log_main.html:21
 #: templates/standard/template.log_main.html:95
@@ -1962,28 +1962,28 @@ msgstr "O. K."
 msgid "Notification"
 msgstr "Hinweis"
 
-#: classes/gui/class.objectpager.php:57 classes/gui/class.objectpager.php:59
+#: classes/gui/class.objectpager.php:60 classes/gui/class.objectpager.php:62
 msgid "Paging"
 msgstr "Seitennavigation"
 
-#: classes/gui/class.objectpager.php:92
+#: classes/gui/class.objectpager.php:95
 msgid "First page"
 msgstr "Erste Seite"
 
-#: classes/gui/class.objectpager.php:99
+#: classes/gui/class.objectpager.php:102
 msgid "Previous page"
 msgstr "Vorherige Seite"
 
-#: classes/gui/class.objectpager.php:113
+#: classes/gui/class.objectpager.php:116
 #, php-format
 msgid "Page %s"
 msgstr "Seite %s"
 
-#: classes/gui/class.objectpager.php:129
+#: classes/gui/class.objectpager.php:132
 msgid "Next page"
 msgstr "Nächste Seite"
 
-#: classes/gui/class.objectpager.php:139
+#: classes/gui/class.objectpager.php:142
 msgid "Last page"
 msgstr "Letzte Seite"
 
@@ -2006,7 +2006,7 @@ msgstr "wurde nicht gefunden"
 #: includes/include.client_artspec.php:31
 #: includes/include.client_artspec.php:39
 #: includes/include.client_artspec.php:47 includes/include.client_edit.php:20
-#: includes/include.con_art_overview.php:997
+#: includes/include.con_art_overview.php:1003
 #: includes/include.con_content_list.php:139
 #: includes/include.con_content_list.php:216
 #: includes/include.con_edit_form.php:1401
@@ -2087,7 +2087,7 @@ msgstr "Zugriff verweigert"
 #: includes/type/action/include.mod_edit.action.php:28
 msgid "This area is read only! The administrator disabled edits!"
 msgstr ""
-"Dieser Bereich kann nur gelesen werden! Der Administrator hat das Editieren "
+"Dieser Bereich kann nur gelesen werden! Der Administrator hat das Bearbeiten "
 "deaktiviert!"
 
 #: classes/gui/class.sourceeditor.php:199
@@ -2108,6 +2108,7 @@ msgid "Couldn't rename file. Does it exist already?"
 msgstr "Die Datei konnte nicht umbenannt werden. Existiert sie bereits?"
 
 #: classes/gui/class.sourceeditor.php:291
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:505
 msgid "Changes saved successfully!"
 msgstr "Die Änderungen wurden erfolgreich gespeichert!"
 
@@ -2118,7 +2119,7 @@ msgstr ""
 
 #: classes/gui/class.sourceeditor.php:329
 msgid "The administratos has disabled edits"
-msgstr "Der Administrator hat das Editieren deaktiviert"
+msgstr "Der Administrator hat das Bearbeiten deaktiviert"
 
 #: classes/gui/class.sourceeditor.php:332 classes/gui/class.tableform.php:139
 #: includes/include.client_edit.php:209
@@ -2132,17 +2133,17 @@ msgstr "Der Administrator hat das Editieren deaktiviert"
 msgid "Save changes"
 msgstr "Änderungen speichern"
 
-#: classes/module/class.module.handler.php:467
-#: classes/module/class.module.handler.php:477
+#: classes/module/class.module.handler.php:476
+#: classes/module/class.module.handler.php:486
 msgid "Can't make file: "
 msgstr "Konnte Datei %s nicht erstellen: "
 
-#: classes/module/class.module.handler.php:1138
+#: classes/module/class.module.handler.php:1147
 #, php-format
 msgid "Error in module. Error location: %s"
 msgstr "Fehler im Modul. Fehlerquelle: %s"
 
-#: classes/module/class.module.handler.php:1146
+#: classes/module/class.module.handler.php:1155
 msgid "Please do not use short open tags. (Use <?php instead of <?)."
 msgstr ""
 "Bitte benutzen Sie keine Short Open Tags. (Nutzen Sie <?php anstelle von <?)"
@@ -2162,9 +2163,9 @@ msgid "Can not create module"
 msgstr "Konnte das Modul nicht erstellen"
 
 #: classes/module/class.module.template.handler.php:243
-#: includes/include.mod_edit_form.php:206
-msgid "You have no write permissions for this module"
-msgstr "Ihnen fehlen die Schreibberechtigungen für dieses Modul"
+#, php-format
+msgid "You have no write permissions for this module: %s"
+msgstr "Ihnen fehlen die Schreibberechtigungen für dieses Modul: %s"
 
 #: classes/module/class.module.template.handler.php:287
 msgid "Field of the file name is empty!"
@@ -2226,7 +2227,7 @@ msgstr "Neues HTML-Template"
 
 #: classes/module/class.module.template.handler.php:598
 #: classes/module/class.module.template.handler.php:601
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:133
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:134
 #: includes/include.con_edit_form.php:380 includes/include.logs.php:267
 #: includes/include.mail_log.php:91 includes/include.mail_log.php:221
 #: includes/include.systemsettings.php:73
@@ -2374,127 +2375,128 @@ msgid "The given client's frontend directory (%s) is not a directory."
 msgstr ""
 "Das eingegebene Frontend Verzeichnis des Mandanten (%s) ist kein Verzeichnis."
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:128
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:129
 msgid "URL"
 msgstr "URL"
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:332
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:333
 msgid "TinyMCE 4 configuration got reset back to default"
 msgstr "TinyMCE 4 Einstellungen wurden zu den Werkseinstellungen zurückgesetzt"
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:335
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:336
 msgid "Can not delete config file"
 msgstr "Konfigurationsdatei konnte nicht gelöscht werden"
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:368
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:369
 msgid "Fullscreen config of inline editor is erroneous."
 msgstr "Die Einstellungen für Vollbildmodus vom Inline-Editor sind fehlerhaft."
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:372
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:373
 msgid "Config of editor on separate editor page is erroneous."
 msgstr ""
 "Die Einstellungen für Editor auf separater Bearbeiten-Seite sind fehlerhaft"
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:376
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:377
 msgid "Custom configuration of tinyMCE 4 is not set."
 msgstr "Es wurde keine zusätzlichen Parameter für TinyMCE 4 konfiguriert."
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:387
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:388
 msgid "Toolbar(s) of editor contain erroneous data."
 msgstr "Werkzeugleisten vom Editor enthalten fehlerhafte Daten."
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:407
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:408
 msgid "Maximum stack depth exceeded while decoding json"
 msgstr ""
 "Maximal zulässige Rekursionstiefe während der JSON-Dekodierung überschritten"
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:410
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:411
 msgid "Unexpected control character found"
 msgstr "Unerwartetes Steuerzeichen gefunden"
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:413
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:414
 msgid "Syntax error, malformed JSON"
 msgstr "Syntaxfehler, fehlerhaftes JSON"
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:490
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:491
 #: includes/include.system_configuration.php:294
 msgid "Access denied"
 msgstr "Zugriff verweigert"
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:496
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:497
 msgid "The following errors occurred when trying to verify configuration:"
 msgstr ""
 "Die folgenden Fehler sind beim Versuch die Einstellungen zu überprüfen "
 "aufgetreten:"
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:504
-msgid "Currently active WYSIWYG editor: "
-msgstr "Derzeitig aktiver WYSIWYG-Editor:"
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:507
+#, php-format
+msgid "Currently active WYSIWYG editor: %s"
+msgstr "Derzeit aktiver WYSIWYG-Editor: %s"
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:527
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:529
 msgid "TinyMCE 4 configuration for "
 msgstr "TinyMCE 4-Konfiguration für "
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:550
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:552
 msgid "Settings of editor in separate editor page"
 msgstr "Einstellungen des Editors auf separater Bearbeiten-Seite"
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:568
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:570
 msgid "Settings of inline editor in inline mode"
 msgstr "Einstellungen vom Inline-Editor im Inline-Modus"
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:586
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:588
 msgid "Settings of inline editor in fullscreen mode"
 msgstr "Einstellungen des Inline-Editors im Vollbildmodus"
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:591
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:593
 msgid ""
 "GZIP TinyMCE (only activate if server does not compress content already)"
 msgstr ""
 "Gzip-Kompression für TinyMCE (nur aktivieren, wenn der Server den Inhalt "
 "nicht schon komprimiert ausliefert)"
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:592
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:594
 msgid "contenido_gzip"
 msgstr "contenido_gzip"
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:597
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:599
 msgid "Provide jump lists in image insertion dialog"
 msgstr "Sprunglisten im Einfügen-Dialog für Bilder bereitstellen"
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:599
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:601
 msgid "Provide jump lists in link insertion dialog"
 msgstr "Sprunglisten im Einfügen-Dialog für Verknüpfungen bereitstellen"
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:600
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:602
 msgid "contenido_lists"
 msgstr "contenido_lists"
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:610
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:612
 msgid "Additional parameters (JSON passed to tinymce constructor)"
 msgstr ""
 "Zusätzliche Parameter (JSON, das an Tinymce bei der Initalisierung übergeben "
 "wird)"
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:614
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:616
 #: includes/include.system_configuration.php:245
 msgid "You are not sysadmin. You can't change these settings."
 msgstr ""
 "Sie sind nicht der SysAdmin. Sie können daher keine Einstellungen ändern."
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:622
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:624
 msgid "TinyMCE 4 configuration for external plugins"
 msgstr "TinyMCE 4-Einstellungen für externe Plugins"
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:629
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:631
 msgid "External plugins to load"
 msgstr "Zu ladende externe Plugins"
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:640
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:642
 msgid "Reset configuration back to default"
 msgstr "Setze Einstellen auf Werkseinstellungen zurück"
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:641
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:643
 msgid "Reset Configuration"
 msgstr "Einstellungen zurücksetzen"
 
@@ -2521,15 +2523,15 @@ msgstr "Sie haben ungesicherte Änderungen."
 msgid "No start article for this category"
 msgstr "Kein Startartikel für diese Kategorie"
 
-#: includes/frontend/include.front_content.php:324
+#: includes/frontend/include.front_content.php:331
 msgid "Error page"
 msgstr "Fehlerseite"
 
-#: includes/frontend/include.front_content.php:325
+#: includes/frontend/include.front_content.php:332
 msgid "Error article/category not found!"
 msgstr "Fehler: Artikel / Kategorie nicht gefunden!"
 
-#: includes/frontend/include.front_content.php:375
+#: includes/frontend/include.front_content.php:382
 #: includes/include.con_edit_form.php:622
 #: includes/include.con_edit_form.php:626
 #: includes/include.con_meta_form.php:136
@@ -2539,20 +2541,20 @@ msgstr "Fehler: Artikel / Kategorie nicht gefunden!"
 msgid "Article is in use by %s (%s)"
 msgstr "Artikel wird benutzt von %s (%s)"
 
-#: includes/frontend/include.front_content.php:424
+#: includes/frontend/include.front_content.php:431
 msgid ""
 "The following modules are erroneus and are therefore not executed:<br>\n"
 msgstr ""
 "Die folgenden Module sind fehlerhaft und werden deshalb nicht ausgeführt:"
 "<br>\n"
 
-#: includes/frontend/include.front_content.php:453
+#: includes/frontend/include.front_content.php:460
 msgid ""
 "Editing is not possible because there is no template assigned to this "
 "category."
 msgstr "Die Bearbeitung ist nicht möglich, weil der Kategorie keine Vorlage "
 
-#: includes/frontend/include.front_content.php:454
+#: includes/frontend/include.front_content.php:461
 msgid "FATAL ERROR"
 msgstr "SYSTEMFEHLER!"
 
@@ -2778,12 +2780,12 @@ msgid "Open category"
 msgstr "Kategorie öffnen"
 
 #: includes/functions.stat.php:398 includes/functions.stat.php:709
-#: includes/include.con_art_overview.php:573
+#: includes/include.con_art_overview.php:576
 #: includes/include.mycontenido_lastarticles.php:146
 msgid "Article is offline"
 msgstr "Der Artikel ist offline"
 
-#: includes/functions.stat.php:400 includes/include.con_art_overview.php:567
+#: includes/functions.stat.php:400 includes/include.con_art_overview.php:570
 #: includes/include.mycontenido_lastarticles.php:144
 msgid "Article is online"
 msgstr "Der Artikel ist online"
@@ -2808,7 +2810,7 @@ msgid "Top 30"
 msgstr "Top 30"
 
 #: includes/functions.stat.php:930 includes/functions.stat.php:961
-#: includes/include.con_art_overview.php:837
+#: includes/include.con_art_overview.php:843
 #: includes/include.grouprights.php:135
 #: includes/include.grouprights_left_top.php:39
 #: includes/include.rights.php:151 includes/include.rights_left_top.php:53
@@ -3169,9 +3171,9 @@ msgstr "Wert"
 
 #: includes/include.clientsettings.php:98
 #: includes/include.client_artspec.php:68
-#: includes/include.con_translate.php:565
-#: includes/include.con_translate.php:620
-#: includes/include.con_translate.php:649
+#: includes/include.con_translate.php:574
+#: includes/include.con_translate.php:629
+#: includes/include.con_translate.php:658
 #: includes/include.systemsettings.php:86 includes/include.upl_edit.php:46
 #: xml/navigation.xml:23 xml/navigation.xml:27 xml/navigation.xml:31
 #: xml/navigation.xml:39
@@ -3389,62 +3391,62 @@ msgstr "Speichern und Editor schließen"
 msgid "Mark"
 msgstr "Markieren"
 
-#: includes/include.con_art_overview.php:305
+#: includes/include.con_art_overview.php:306
 msgid "not modified yet"
 msgstr "noch nicht modifiziert"
 
-#: includes/include.con_art_overview.php:317
-#: includes/include.con_art_overview.php:630
+#: includes/include.con_art_overview.php:318
+#: includes/include.con_art_overview.php:633
 #: includes/include.con_edit_form.php:816
 msgid "not yet published"
 msgstr "noch nicht veröffentlicht"
 
-#: includes/include.con_art_overview.php:345
+#: includes/include.con_art_overview.php:348
 msgid "Article is in use"
 msgstr "Artikel wird benutzt"
 
-#: includes/include.con_art_overview.php:346
+#: includes/include.con_art_overview.php:349
 #, php-format
 msgid "Article in use by %s (%s)"
 msgstr "Artikel wird benutzt von %s (%s)"
 
-#: includes/include.con_art_overview.php:384
+#: includes/include.con_art_overview.php:387
 msgid "Article with time control online"
 msgstr "Artikel mit Zeitsteuerung offline"
 
-#: includes/include.con_art_overview.php:386
+#: includes/include.con_art_overview.php:389
 msgid "Article with time control offline"
 msgstr "Artikel mit Zeitsteuerung offline"
 
-#: includes/include.con_art_overview.php:405
+#: includes/include.con_art_overview.php:408
 msgid "Article is frozen"
 msgstr "Artikel ist gefroren"
 
-#: includes/include.con_art_overview.php:408
+#: includes/include.con_art_overview.php:411
 msgid "Article is not frozen"
 msgstr "Artikel ist nicht gefroren"
 
-#: includes/include.con_art_overview.php:438
-#: includes/include.con_art_overview.php:785
-#: templates/standard/template.con_art_overview.html:363
+#: includes/include.con_art_overview.php:441
+#: includes/include.con_art_overview.php:788
+#: templates/standard/template.con_art_overview.html:437
 msgid "Copy article to the current language"
 msgstr "Artikel in die aktuelle Sprache kopieren"
 
-#: includes/include.con_art_overview.php:524
+#: includes/include.con_art_overview.php:527
 #: includes/include.con_edit_form.php:893
 msgid "Start article"
 msgstr "Startartikel"
 
-#: includes/include.con_art_overview.php:526
+#: includes/include.con_art_overview.php:529
 msgid "Normal article"
 msgstr "Normaler Artikel"
 
-#: includes/include.con_art_overview.php:555
+#: includes/include.con_art_overview.php:558
 #, php-format
 msgid "Reminder for article '%s'"
 msgstr "Wiedervorlage für Artikel '%s'"
 
-#: includes/include.con_art_overview.php:558
+#: includes/include.con_art_overview.php:561
 #, php-format
 msgid ""
 "Reminder for article '%s'\n"
@@ -3453,88 +3455,92 @@ msgstr ""
 "Wiedervorlage für Artikel '%s'\n"
 "Kategorie: %s"
 
-#: includes/include.con_art_overview.php:590
+#: includes/include.con_art_overview.php:593
 #, php-format
 msgid "Are you sure to delete the following article:<br><br><b>%s</b>"
 msgstr ""
 "Möchten Sie den folgenden Artikel wirklich löschen:<br /><br /><b>%s</b>"
 
-#: includes/include.con_art_overview.php:687
+#: includes/include.con_art_overview.php:690
 #: includes/include.upl_files_overview.php:632
 msgid "Display properties"
 msgstr "Eigenschaften anzeigen"
 
-#: includes/include.con_art_overview.php:763
+#: includes/include.con_art_overview.php:766
 #, php-format
 msgid "Go to page: %s"
 msgstr "Gehe zu Seite: %s"
 
-#: includes/include.con_art_overview.php:768
+#: includes/include.con_art_overview.php:771
 msgid "Click on a row to select an article for editing"
 msgstr "Klicken Sie auf einen Artikel, um ihn zu bearbeiten"
 
-#: includes/include.con_art_overview.php:773
-#: templates/standard/template.con_art_overview.html:359
+#: includes/include.con_art_overview.php:776
+#: templates/standard/template.con_art_overview.html:433
 msgid "Set articles online"
 msgstr "Artikel online stellen"
 
-#: includes/include.con_art_overview.php:776
-#: templates/standard/template.con_art_overview.html:360
+#: includes/include.con_art_overview.php:779
+#: templates/standard/template.con_art_overview.html:434
 msgid "Set articles offline"
 msgstr "Artikel offline stellen"
 
-#: includes/include.con_art_overview.php:779
-#: templates/standard/template.con_art_overview.html:361
+#: includes/include.con_art_overview.php:782
+#: templates/standard/template.con_art_overview.html:435
 msgid "Freeze articles"
 msgstr "Artikel einfrieren"
 
-#: includes/include.con_art_overview.php:782
-#: templates/standard/template.con_art_overview.html:362
+#: includes/include.con_art_overview.php:785
+#: templates/standard/template.con_art_overview.html:436
 msgid "Unfreeze articles"
 msgstr "Artikel auftauen"
 
-#: includes/include.con_art_overview.php:788
-#: templates/standard/template.con_art_overview.html:364
+#: includes/include.con_art_overview.php:791
+#: templates/standard/template.con_art_overview.html:438
 msgid "Delete articles"
 msgstr "Artikel löschen"
 
-#: includes/include.con_art_overview.php:788
+#: includes/include.con_art_overview.php:791
 msgid "Are you sure to delete the selected articles"
 msgstr "Sind Sie sich sicher, dass Sie die gewählten Artikel löschen wollen?"
 
-#: includes/include.con_art_overview.php:792
+#: includes/include.con_art_overview.php:794
+msgid "Edit articles"
+msgstr "Bearbeite Artikel"
+
+#: includes/include.con_art_overview.php:798
 msgid "Your permissions do not allow any actions here"
 msgstr "Ihre Berechtigungen erlauben keine Aktionen hier"
 
-#: includes/include.con_art_overview.php:829
-#: includes/include.con_art_overview.php:900
+#: includes/include.con_art_overview.php:835
+#: includes/include.con_art_overview.php:906
 msgid "No articles found"
 msgstr "Keine Artikel gefunden"
 
-#: includes/include.con_art_overview.php:859
-#: includes/include.con_translate.php:448
+#: includes/include.con_art_overview.php:865
+#: includes/include.con_translate.php:457
 msgid "Items per page:"
 msgstr "Elemente / Seite"
 
-#: includes/include.con_art_overview.php:947
+#: includes/include.con_art_overview.php:953
 msgid "This category does not have a configured start article."
 msgstr "Diese Kategorie hat keinen konfigurierten Startartikel."
 
-#: includes/include.con_art_overview.php:954
-#: includes/include.con_art_overview.php:955
+#: includes/include.con_art_overview.php:960
+#: includes/include.con_art_overview.php:961
 #: templates/standard/template.symbolhelp.html:115
 #: templates/standard/template.symbolhelp.html:680
 msgid "Create new article"
 msgstr "Neuen Artikel erstellen"
 
-#: includes/include.con_art_overview.php:962
+#: includes/include.con_art_overview.php:968
 msgid ""
 "Creation of articles is only possible if the category has is synchronized."
 msgstr ""
 "Neue Artikel können nur in einer Kategorie angelegt werden, wenn die "
 "Kategorie synchronisiert ist."
 
-#: includes/include.con_art_overview.php:964
+#: includes/include.con_art_overview.php:970
 msgid ""
 "Creation of articles is only possible if the category has a assigned "
 "template."
@@ -3594,10 +3600,10 @@ msgid ""
 "reviewed (Configurations under Administration/System configuration).<br/><br/"
 ">Changes only refer to contents itself!"
 msgstr ""
-"<strong>Konfigurationsstufe simple:</strong> Ältere Content Versionen lassen "
-"sich wiederherstellen (Einstellungen sind in Administration/System/System-"
-"Konfiguration möglich).<br/><br/>Hier durchgeführte Aktionen beziehen sich "
-"nur auf Contents!"
+"<strong>Konfigurationsstufe 'einfach':</strong>: Ältere Content Versionen "
+"lassen sich wiederherstellen (Einstellungen sind in Administration/System/"
+"System-Konfiguration möglich).<br/><br/>Hier durchgeführte Aktionen beziehen "
+"sich nur auf Contents!"
 
 #: includes/include.con_content_list.php:676
 #: includes/include.con_editcontent.php:337
@@ -3628,11 +3634,11 @@ msgid ""
 "please go to Administration/System/System configuration).<br/><br/>Changes "
 "are only related to Contents!"
 msgstr ""
-"<strong>Konfigurationsstufe advanced:</strong> Es kann auf frühere Content "
-"Versionen zurückgegriffen werden. Es können Außerdem Entwürfe erstellt und "
-"zeitunabhängig veröffentlicht werden (Einstellungen sind in Administration/"
-"System/System-Konfiguration möglich).<br/><br/>Hier durchgeführte Aktionen "
-"beziehen sich nur auf Contents!"
+"<strong>Konfigurationsstufe 'erweitert'</strong>: Es kann auf frühere "
+"Content Versionen zurückgegriffen werden. Es können außerdem Entwürfe "
+"erstellt und zeitunabhängig veröffentlicht werden (Einstellungen sind in "
+"Administration/System/System-Konfiguration möglich).<br/><br/>Hier "
+"durchgeführte Aktionen beziehen sich nur auf Contents!"
 
 #: includes/include.con_content_list.php:801
 #: includes/include.con_editcontent.php:424
@@ -3696,7 +3702,7 @@ msgid ""
 "please go to Administration/System/System configuration).<br/><br/>Changes "
 "are related to article properties, SEO's and contents!"
 msgstr ""
-"<strong>Konfigurationsstufe 'advanced':</strong> Es kann auf frühere "
+"<strong>Konfigurationsstufe 'erweitert':</strong>: Es kann auf frühere "
 "Artikelversionen zurückgegriffen werden. Es können außerdem Entwürfe "
 "erstellt und zeitunabhängig veröffentlicht werden (Einstellungen sind in "
 "Administration/System/System-Konfiguration möglich).<br/><br/>Hier "
@@ -3710,13 +3716,13 @@ msgid ""
 "System configuration).<br/><br/>Changes are related to article properties, "
 "SEO's and contents!"
 msgstr ""
-"<strong>Konfigurationsstufe 'simple':</strong> Ältere Artikelversionen "
+"<strong>Konfigurationsstufe 'einfach':</strong>: Ältere Artikelversionen "
 "lassen sich wiederherstellen (Einstellungen sind in Administration/System/"
 "System-Konfiguration möglich).<br/><br/> Hier durchgeführte Aktionen "
 "beziehen sich sowohl auf Artikeleigenschaften, SEO sowie Contents!"
 
 #: includes/include.con_edit_form.php:369
-#: includes/include.con_translate.php:517 includes/include.lang_edit.php:209
+#: includes/include.con_translate.php:526 includes/include.lang_edit.php:209
 #: includes/include.lang_edit.php:213 includes/include.logs.php:264
 #: main.loginform.php:84 templates/standard/template.log_main.html:26
 #: templates/standard/template.log_main.html:96
@@ -3736,7 +3742,7 @@ msgid "Save article"
 msgstr "Artikel speichern"
 
 #: includes/include.con_edit_form.php:699
-#: includes/include.str_overview.php:516
+#: includes/include.str_overview.php:522
 #: templates/standard/template.con_meta_edit_form.html:91
 #: templates/standard/template.str_overview.html:53
 #: templates/standard/template.str_overview.html:148
@@ -3951,8 +3957,8 @@ msgstr "Vorlage wählen"
 
 #: includes/include.con_left_top.php:262
 #: includes/include.frontend.user_edit.php:234
-#: includes/include.rights_overview.php:450
-#: includes/include.str_overview.php:166 includes/include.str_overview.php:635
+#: includes/include.rights_overview.php:452
+#: includes/include.str_overview.php:166 includes/include.str_overview.php:641
 #: includes/include.tplcfg_edit_form.php:281
 #: includes/include.tpl_edit_form.php:68 includes/include.tpl_edit_form.php:73
 #: includes/include.tpl_edit_form.php:153
@@ -3962,7 +3968,7 @@ msgstr "Vorlage wählen"
 msgid "none"
 msgstr "kein"
 
-#: includes/include.con_left_top.php:267 includes/include.str_overview.php:679
+#: includes/include.con_left_top.php:267 includes/include.str_overview.php:685
 #: templates/standard/template.str_overview.html:645
 #: ../data/config/production/cfg_actions.inc.php:64
 msgid "Edit category"
@@ -3991,7 +3997,7 @@ msgid ""
 "please go to Administration/System/System configuration).<br/><br/>Changes "
 "are only related to SEO!"
 msgstr ""
-"<strong>Konfigurationsstufe advanced:</strong> Ältere Metadatenversionen "
+"<strong>Konfigurationsstufe 'erweitert':</strong>: Ältere Metadatenversionen "
 "lassen sich wiederherstellen. Es können unveröffentlichte Entwürfe erstellt "
 "werden (Einstellungen sind in Administration/System/System-Konfiguration "
 "möglich).<br/><br/>Hier durchgeführte Aktionen beziehen sich nur auf die SEO!"
@@ -4002,7 +4008,7 @@ msgid ""
 "restored (For further configurations please go to Administration/System/"
 "System configuration).<br/><br/>Changes are only related to SEO!"
 msgstr ""
-"<strong>Konfigurationsstufe simple:</strong> Ältere SEO Versionen lassen "
+"<strong>Konfigurationsstufe 'einfach':</strong>: Ältere SEO Versionen lassen "
 "sich wiederherstellen (Einstellungen sind in Administration/System/System-"
 "Konfiguration möglich).<br/><br/>Hier durchgeführte Aktionen beziehen sich "
 "nur auf die SEO!"
@@ -4094,7 +4100,7 @@ msgid "Meta Attribute"
 msgstr "Meta Attribut"
 
 #: includes/include.con_str_overview.php:520
-#: includes/include.str_overview.php:501 includes/include.str_overview.php:502
+#: includes/include.str_overview.php:507 includes/include.str_overview.php:508
 #: templates/standard/template.con_left_top.html:342
 #: templates/standard/template.stat_overview.html:23
 #: templates/standard/template.stat_overview.html:172
@@ -4102,7 +4108,7 @@ msgid "Close all categories"
 msgstr "Alle Kategorien schliessen"
 
 #: includes/include.con_str_overview.php:521
-#: includes/include.str_overview.php:503 includes/include.str_overview.php:504
+#: includes/include.str_overview.php:509 includes/include.str_overview.php:510
 #: templates/standard/template.con_left_top.html:341
 #: templates/standard/template.stat_overview.html:25
 #: templates/standard/template.stat_overview.html:173
@@ -4119,57 +4125,61 @@ msgstr "Sortieren"
 msgid "Translations are used by %s (%s)"
 msgstr "Übersetzungen werden benutzt von %s (%s)"
 
-#: includes/include.con_translate.php:263
+#: includes/include.con_translate.php:266
 #: includes/include.mod_translate.php:46
 msgid "Saved translation successfully!"
 msgstr "Übersetzung wurde gespeichert!"
 
-#: includes/include.con_translate.php:265
+#: includes/include.con_translate.php:268
 #: includes/include.mod_translate.php:48
 msgid "Can't save translation!"
 msgstr "Kann Übersetzung nicht speichern!"
 
-#: includes/include.con_translate.php:399
+#: includes/include.con_translate.php:384
+msgid "Can not find some module translations for your selection."
+msgstr "Für Ihre Auswahl gibt es leider keine Modul-Übersetzungen."
+
+#: includes/include.con_translate.php:408
 msgid "New language for editing"
 msgstr "Neue Sprache zur Bearbeitung"
 
-#: includes/include.con_translate.php:475
+#: includes/include.con_translate.php:484
 msgid "-- filter by --"
 msgstr "-- filtern --"
 
-#: includes/include.con_translate.php:477
-#: includes/include.con_translate.php:510
+#: includes/include.con_translate.php:486
+#: includes/include.con_translate.php:519
 #: includes/include.grouprights_mod.php:82 includes/include.mod_new.php:71
 #: includes/include.rights_mod.php:79
 msgid "Module name"
 msgstr "Modulname"
 
-#: includes/include.con_translate.php:511
+#: includes/include.con_translate.php:520
 msgid "In use by"
 msgstr "Verwendet von"
 
-#: includes/include.con_translate.php:512
+#: includes/include.con_translate.php:521
 msgid "Translation ID"
 msgstr "Übersetzungsvariable"
 
-#: includes/include.con_translate.php:513
+#: includes/include.con_translate.php:522
 msgid "Current language"
 msgstr "Aktuelle Sprache"
 
-#: includes/include.con_translate.php:520
+#: includes/include.con_translate.php:529
 msgid "Edit row"
 msgstr "Zeile bearbeiten"
 
-#: includes/include.con_translate.php:591
+#: includes/include.con_translate.php:600
 msgid "No template"
 msgstr "Keine Vorlage"
 
-#: includes/include.con_translate.php:594 includes/include.lay_overview.php:63
+#: includes/include.con_translate.php:603 includes/include.lay_overview.php:63
 #: includes/include.tpl_overview.php:69
 msgid "Click for more information about usage"
 msgstr "Klicken Sie für mehr Information über die Verwendung"
 
-#: includes/include.con_translate.php:595
+#: includes/include.con_translate.php:604
 #: templates/standard/template.symbolhelp.html:25
 #: templates/standard/template.symbolhelp.html:334
 #: templates/standard/template.symbolhelp.html:659 xml/navigation.xml:38
@@ -4177,12 +4187,12 @@ msgstr "Klicken Sie für mehr Information über die Verwendung"
 msgid "Templates"
 msgstr "Vorlagen"
 
-#: includes/include.con_translate.php:757
+#: includes/include.con_translate.php:766
 #, php-format
 msgid "The module &quot;%s&quot; is used for following templates"
 msgstr "Das Modul  '%s' wird in folgenden Vorlagen benutzt"
 
-#: includes/include.con_translate.php:758
+#: includes/include.con_translate.php:769
 msgid ""
 "WARNING: Translations have effects on every article that uses the module!"
 msgstr ""
@@ -4412,7 +4422,7 @@ msgstr ""
 "kein Array für die Inhalte."
 
 #: includes/include.frontend.user_edit.php:237
-#: includes/include.rights_overview.php:454
+#: includes/include.rights_overview.php:456
 msgid "Group membership"
 msgstr "Gruppenzugehörigkeit"
 
@@ -4890,7 +4900,7 @@ msgstr "Layouts synchronisieren"
 msgid "No permission to synchronize layouts"
 msgstr "Keine Berechtigung"
 
-#: includes/include.lay_overview.php:58 includes/include.str_overview.php:727
+#: includes/include.lay_overview.php:58 includes/include.str_overview.php:733
 msgid "No permission"
 msgstr "Kein Zugriff"
 
@@ -5078,6 +5088,10 @@ msgstr "Das Modul wird benutzt von %s (%s)"
 #: ../data/config/production/cfg_actions.inc.php:87
 msgid "Edit module"
 msgstr "Modul bearbeiten"
+
+#: includes/include.mod_edit_form.php:206
+msgid "You have no write permissions for this module"
+msgstr "Ihnen fehlen die Schreibberechtigungen für dieses Modul"
 
 #: includes/include.mod_edit_form.php:324
 #: includes/include.mod_edit_form.php:328
@@ -5511,7 +5525,7 @@ msgstr "WYSIWYG-Editor benutzen"
 
 #: includes/include.mycontenido_settings.php:169
 msgid "The format is equal to PHP's date() function."
-msgstr "Das Format stimmt mit dem der PHP date()-Funktion überein"
+msgstr "Das Format stimmt mit der PHP date()-Funktion überein."
 
 #: includes/include.mycontenido_settings.php:171
 msgid "Common date formattings"
@@ -5696,7 +5710,7 @@ msgstr "Hits in dieser Sprache"
 
 #: includes/include.stat_search_overview.php:23
 msgid "You disabled search tracking in the client settings."
-msgstr "Such Statistiken sind in den Mandanten Einstellungen deaktiviert."
+msgstr "Such-Statistiken sind in den Mandanten Einstellungen deaktiviert."
 
 #: includes/include.stat_search_overview.php:42
 msgid "Number of Results"
@@ -5718,7 +5732,16 @@ msgstr ""
 "Vorsicht! Weiteres Bearbeiten des Kategoriebaumes könnte zu größeren Fehlern "
 "führen. Bitte beheben Sie die Probleme bevor Sie fortfahren."
 
-#: includes/include.str_overview.php:518
+#: includes/include.str_overview.php:384
+msgid ""
+"You have no categories for this client. Please create a new root category "
+"with your categories. Without categories, you can't create some articles."
+msgstr ""
+"Sie haben keine Kategorien für diesen Mandanten angelegt. Bitte erzeugen Sie "
+"einen neuen Kategoriebaum mit Ihren Kategorien. Ohne Kategorie können Sie "
+"keine Artikel erstellen."
+
+#: includes/include.str_overview.php:524
 #, php-format
 msgid ""
 "Do you really want to duplicate the following category:<br><br><b>%s</"
@@ -5729,18 +5752,18 @@ msgstr ""
 "b><br /><br />Hinweis: Der Duplizierungsprozess kann mehrere Minuten in "
 "Anspruch nehmen, abhängig von der Anzahl der Artikel und Unterkategorien."
 
-#: includes/include.str_overview.php:520
+#: includes/include.str_overview.php:526
 #, php-format
 msgid "Do you really want to delete the following category:<br><br><b>%s</b>"
 msgstr ""
 "Möchten Sie die folgende Kategorie wirklich löschen:<br /><br /><b>%s</b>"
 
-#: includes/include.str_overview.php:523
+#: includes/include.str_overview.php:529
 msgid "Do you really want to move the category?"
 msgstr "Möchten Sie die Kategorie wirklich verschieben?"
 
-#: includes/include.str_overview.php:713 includes/include.str_overview.php:930
-#: includes/include.str_overview.php:932
+#: includes/include.str_overview.php:719 includes/include.str_overview.php:936
+#: includes/include.str_overview.php:938
 #: templates/standard/template.str_overview.html:59
 #: templates/standard/template.str_overview.html:667
 #: ../data/config/production/cfg_actions.inc.php:29
@@ -5748,18 +5771,18 @@ msgstr "Möchten Sie die Kategorie wirklich verschieben?"
 msgid "Protect category"
 msgstr "Kategorie schützen"
 
-#: includes/include.str_overview.php:715
+#: includes/include.str_overview.php:721
 #: templates/standard/template.str_overview.html:669
 msgid "Unprotect category"
 msgstr "Kategorieschutz aufheben"
 
-#: includes/include.str_overview.php:724
+#: includes/include.str_overview.php:730
 #: templates/standard/template.str_overview.html:652
 #: ../data/config/production/cfg_actions.inc.php:57
 msgid "Delete category"
 msgstr "Kategorie löschen"
 
-#: includes/include.str_overview.php:731
+#: includes/include.str_overview.php:737
 #: templates/standard/template.str_overview.html:662
 msgid ""
 "One or more subtrees and one or more articles are existing, unable to delete."
@@ -5767,50 +5790,50 @@ msgstr ""
 "Löschen ist nicht möglich, da noch Unterkategorien und Artikel vorhanden "
 "sind."
 
-#: includes/include.str_overview.php:736 includes/include.str_overview.php:740
+#: includes/include.str_overview.php:742 includes/include.str_overview.php:746
 #: templates/standard/template.str_overview.html:661
 msgid "One or more articles are existing, unable to delete."
 msgstr ""
 "Löschen ist nicht möglich, da noch Artikel in dieser Kategorie vorhanden "
 "sind."
 
-#: includes/include.str_overview.php:749 includes/include.str_overview.php:754
+#: includes/include.str_overview.php:755 includes/include.str_overview.php:760
 msgid "This category is already at the top"
 msgstr "Diese Kategorie ist bereits an ganz oben."
 
-#: includes/include.str_overview.php:752
+#: includes/include.str_overview.php:758
 #: templates/standard/template.str_overview.html:659
 #: ../data/config/production/cfg_actions.inc.php:58
 msgid "Move category up"
 msgstr "Eine Kategorie nach oben verschieben"
 
-#: includes/include.str_overview.php:764
+#: includes/include.str_overview.php:770
 msgid "This category is already at the bottom"
 msgstr "Diese Kategorie ist bereits ganz unten."
 
-#: includes/include.str_overview.php:766
+#: includes/include.str_overview.php:772
 #: templates/standard/template.str_overview.html:658
 #: ../data/config/production/cfg_actions.inc.php:59
 msgid "Move category down"
 msgstr "Eine Kategorie nach unten verschieben"
 
-#: includes/include.str_overview.php:775 includes/include.str_overview.php:790
+#: includes/include.str_overview.php:781 includes/include.str_overview.php:796
 #: templates/standard/template.str_overview.html:660
 msgid "Move tree"
 msgstr "Baum bewegen"
 
-#: includes/include.str_overview.php:779
+#: includes/include.str_overview.php:785
 #: templates/standard/template.str_overview.html:664
 msgid "Place tree here"
 msgstr "Baum hier einfügen"
 
-#: includes/include.str_overview.php:792
+#: includes/include.str_overview.php:798
 msgid "This category can't be moved since it is already a root category"
 msgstr ""
 "Diese Kategorie kann nicht bewegt werden, da sie bereits eine Wurzel-"
 "Kategorie ist."
 
-#: includes/include.str_overview.php:800
+#: includes/include.str_overview.php:806
 #: templates/standard/template.str_overview.html:653
 #: templates/standard/template.symbolhelp.html:240
 #: templates/standard/template.symbolhelp.html:700
@@ -5818,11 +5841,11 @@ msgstr ""
 msgid "Duplicate category"
 msgstr "Kategorie duplizieren"
 
-#: includes/include.str_overview.php:888
+#: includes/include.str_overview.php:894
 msgid "Create new category"
 msgstr "Neue Kategorie erstellen"
 
-#: includes/include.str_overview.php:916 includes/include.str_overview.php:919
+#: includes/include.str_overview.php:922 includes/include.str_overview.php:925
 #: templates/standard/template.con_left_top_cat_edit.html:12
 #: templates/standard/template.con_left_top_cat_edit.html:34
 #: templates/standard/template.str_overview.html:68
@@ -5834,7 +5857,7 @@ msgstr "Neue Kategorie erstellen"
 msgid "Configure category"
 msgstr "Kategorie konfigurieren"
 
-#: includes/include.str_overview.php:960
+#: includes/include.str_overview.php:966
 #, php-format
 msgid "Cancel moving %s"
 msgstr "Verschieben von %s abbrechen"
@@ -5890,15 +5913,16 @@ msgid ""
 msgstr ""
 "<p><strong>Artikel-Versionierung:</strong></p> <ul style=\"list-style:none;"
 "\"> <li> Es kann auf frühere Artikelversionen zurückgegriffen werden "
-"(simple). Es können Außerdem unveröffentlichte Entwürfe erstellt werden "
-"(advanced). Artikelversionen werden automatisch generiert, sobald der User "
+"(einfach). Es können außerdem unveröffentlichte Entwürfe erstellt werden "
+"(erweitert). Artikelversionen werden automatisch generiert, sobald der User "
 "eine Änderung im Editor speichert. Standardmäßig ist die "
 "Artikelversionierung deaktiviert. </li> </ul> "
 "<p><strong>Konfigurationsstufen:</strong></p> <ul class=\"list\"> <li class="
-"\"first\"><strong>disabled: </strong> Auf frühere Artikelversionen kann "
-"nicht zugegriffen werden.</li> <li><strong>simple: </strong> Ältere "
-"Artikelversionen lassen sich wiederherstellen. Gehe im Artikel zum Reiter "
-"Rohdaten.</li> <li><strong>advanced: </strong> Ein Artikelentwurf kann "
+"\"first\"><strong>deaktiviert (disabled): </strong> Auf frühere "
+"Artikelversionen kann nicht zugegriffen werden.</li> <li><strong>einfacher "
+"Modus (simple): </strong> Ältere Artikelversionen lassen sich "
+"wiederherstellen. Gehe im Artikel zum Reiter Rohdaten.</li> "
+"<li><strong>erweiterter Modus (advanced): </strong> Ein Artikelentwurf kann "
 "erstellt werden. Und zeitunabhängig veröffentlicht werden. Vergangene "
 "Versionen lassen sich wiederherstellen bzw. nutzen.</li> </ul> "
 "<p><strong>Weitere Informationen</strong> sind in den entsprechenden Reitern "
@@ -5909,7 +5933,7 @@ msgid "Update check period must be at least 60 minutes."
 msgstr "Die Aktualisierungsperiode muss mindestens 60 Minuten betragen."
 
 #: includes/include.system_configuration.php:238
-#: includes/include.system_sysvalues.php:50 xml/navigation.xml:82
+#: includes/include.system_sysvalues.php:50
 msgid "System configuration"
 msgstr "System-Konfiguration"
 
@@ -5945,11 +5969,11 @@ msgstr "Keine Log-Dateien gefunden / vorhanden."
 
 #: includes/include.system_purge.php:74 includes/include.system_purge.php:82
 #: includes/include.system_purge.php:90 includes/include.system_purge.php:98
-#: includes/include.system_purge.php:108 includes/include.system_purge.php:116
+#: includes/include.system_purge.php:107 includes/include.system_purge.php:115
 msgid "Client "
 msgstr "Mandant "
 
-#: includes/include.system_purge.php:75 includes/include.system_purge.php:134
+#: includes/include.system_purge.php:75 includes/include.system_purge.php:133
 #, php-format
 msgid "The entries of %s table are not deleted!"
 msgstr "Einträge von der Tabelle %s wurden nicht gelöscht!"
@@ -5967,124 +5991,124 @@ msgstr "Cache wurde nicht gelöscht"
 msgid "The log is not deleted!"
 msgstr "Log-Datei wurde nicht geleert"
 
-#: includes/include.system_purge.php:109
+#: includes/include.system_purge.php:108
 msgid "The history is not deleted!"
 msgstr "Versionierung wurde nicht gelöscht!"
 
-#: includes/include.system_purge.php:117
+#: includes/include.system_purge.php:116
 msgid "The content versioning is not deleted!"
 msgstr "Die Content Versionierung wurde nicht gelöscht!"
 
-#: includes/include.system_purge.php:129
+#: includes/include.system_purge.php:128
 msgid "CONTENIDO: "
 msgstr "CONTENIDO: "
 
-#: includes/include.system_purge.php:141
+#: includes/include.system_purge.php:140
 msgid "The CONTENIDO log is not cleaned!"
 msgstr "CONTENIDO Log-Datei wurde nicht geleert"
 
-#: includes/include.system_purge.php:148
+#: includes/include.system_purge.php:147
 msgid "The CONTENIDO cache is not deleted!"
 msgstr "CONTENIDO Cache wurde nicht gelöscht!"
 
-#: includes/include.system_purge.php:155
+#: includes/include.system_purge.php:154
 msgid "The CONTENIDO cronjobs are not cleaned!"
 msgstr "CONTENIDO Cronjob-Dateien wurden nicht geleert!"
 
-#: includes/include.system_purge.php:160
+#: includes/include.system_purge.php:159
 msgid "The changes were successfully executed."
 msgstr "Die Änderungen wurden erfolgreich ausgeführt."
 
-#: includes/include.system_purge.php:162
+#: includes/include.system_purge.php:161
 msgid "The changes were not all successfully completed."
 msgstr "Die Änderungen wurden teilweise nicht erfolgreich ausgeführt."
 
-#: includes/include.system_purge.php:179 includes/include.system_purge.php:202
+#: includes/include.system_purge.php:178 includes/include.system_purge.php:201
 msgid "System purge"
 msgstr "System bereinigen"
 
-#: includes/include.system_purge.php:180
+#: includes/include.system_purge.php:179
 msgid "No Client selected!"
 msgstr "Kein Mandant ausgewählt!"
 
-#: includes/include.system_purge.php:185
+#: includes/include.system_purge.php:184
 msgid "all clients"
 msgstr "alle Mandanten"
 
-#: includes/include.system_purge.php:186
+#: includes/include.system_purge.php:185
 msgid "from list"
 msgstr "aus Liste"
 
-#: includes/include.system_purge.php:187
+#: includes/include.system_purge.php:186
 msgid "Select clients"
 msgstr "Mandantenauswahl"
 
-#: includes/include.system_purge.php:188
+#: includes/include.system_purge.php:187
 msgid "Delete the code cache"
 msgstr "Code-Cache löschen"
 
-#: includes/include.system_purge.php:189
+#: includes/include.system_purge.php:188
 msgid "Force code generation"
 msgstr "Erzwinge Codegenerierung"
 
-#: includes/include.system_purge.php:190
+#: includes/include.system_purge.php:189
 #, php-format
 msgid "Reset the table %s"
 msgstr "Tabelle %s leeren"
 
-#: includes/include.system_purge.php:191
+#: includes/include.system_purge.php:190
 msgid "Clear client cache"
 msgstr "Cache-Dateien löschen"
 
-#: includes/include.system_purge.php:192
+#: includes/include.system_purge.php:191
 msgid "Clear client log file"
 msgstr "Log-Datei leeren"
 
-#: includes/include.system_purge.php:193
+#: includes/include.system_purge.php:192
 msgid "Clear client style history"
 msgstr "Style-Versionierung löschen"
 
-#: includes/include.system_purge.php:194
+#: includes/include.system_purge.php:193
 msgid "Keep last style histories"
 msgstr "Letzten Style-Versionierungen beibehalten"
 
-#: includes/include.system_purge.php:195
+#: includes/include.system_purge.php:194
 msgid "Delete content versions"
 msgstr "Artikel-Versionierung löschen"
 
-#: includes/include.system_purge.php:197
+#: includes/include.system_purge.php:196
 msgid "CONTENIDO"
 msgstr "CONTENIDO"
 
-#: includes/include.system_purge.php:198
+#: includes/include.system_purge.php:197
 msgid "Clear CONTENIDO log file"
 msgstr "CONTENIDO Log-Datei leeren"
 
-#: includes/include.system_purge.php:199
+#: includes/include.system_purge.php:198
 msgid "Clear CONTENIDO cache"
 msgstr "CONTENIDO Cache löschen"
 
-#: includes/include.system_purge.php:200
+#: includes/include.system_purge.php:199
 msgid "Reset cronjobs"
 msgstr "job-Dateien von Cronjob leeren"
 
-#: includes/include.system_purge.php:203
+#: includes/include.system_purge.php:202
 msgid "These changes can not be cancelled."
 msgstr "Die Änderungen können Sie nicht wiederherstellen."
 
-#: includes/include.system_purge.php:203
+#: includes/include.system_purge.php:202
 msgid "Do you really want to complete it?"
 msgstr "Wollen Sie diese Aktion wirklich ausführen?"
 
-#: includes/include.system_purge.php:208
+#: includes/include.system_purge.php:207
 msgid "No action selected!"
 msgstr "Keine Aktion ausgewählt!"
 
-#: includes/include.system_purge.php:210
+#: includes/include.system_purge.php:209
 msgid "Send"
 msgstr "Gesendet"
 
-#: includes/include.system_purge.php:211
+#: includes/include.system_purge.php:210
 msgid "Please select a client or all clients."
 msgstr "Bitte wählen Sie einen oder alle Mandanten aus."
 
@@ -6715,13 +6739,13 @@ msgstr ""
 
 #: templates/standard/template.con_art_overview.html:71
 #: templates/standard/template.con_art_overview.html:107
-#: templates/standard/template.con_art_overview.html:357
+#: templates/standard/template.con_art_overview.html:431
 msgid "Flip selection"
 msgstr "Markierung umkehren"
 
 #: templates/standard/template.con_art_overview.html:73
 #: templates/standard/template.con_art_overview.html:109
-#: templates/standard/template.con_art_overview.html:358
+#: templates/standard/template.con_art_overview.html:432
 msgid "Apply to all selected articles"
 msgstr "Anwenden für ausgewählte Artikel"
 
@@ -7552,7 +7576,7 @@ msgstr "Editor"
 msgid "Properties"
 msgstr "Eigenschaften"
 
-#: xml/navigation.xml:14
+#: xml/navigation.xml:14 xml/navigation.xml:82
 msgid "Configuration"
 msgstr "Konfiguration"
 
@@ -7638,8 +7662,8 @@ msgid "Expert settings"
 msgstr "Experteneinstellungen"
 
 #: xml/navigation.xml:81
-msgid "System variables"
-msgstr "Systemvariablen"
+msgid "Variables"
+msgstr "Variablen"
 
 #: xml/navigation.xml:83
 msgid "Purge"
@@ -7666,8 +7690,8 @@ msgid "Mailing"
 msgstr "Mailing"
 
 #: xml/navigation.xml:96
-msgid "System integrity"
-msgstr "Systemintegrität"
+msgid "Integrity"
+msgstr "Integrität"
 
 #: xml/navigation.xml:97
 msgid "WYSIWYG"
@@ -8281,6 +8305,24 @@ msgstr "Falsche Zugriffsrechte"
 #: ../data/config/production/cfg_actions.inc.php:216
 msgid "User login"
 msgstr "Benutzer login"
+
+#~ msgid "System variables"
+#~ msgstr "Systemvariablen"
+
+#~ msgid "System integrity"
+#~ msgstr "Systemintegrität"
+
+#~ msgid "Currently active WYSIWYG editor: "
+#~ msgstr "Derzeitig aktiver WYSIWYG-Editor:"
+
+#~ msgid "disabled"
+#~ msgstr "deaktiviert"
+
+#~ msgid "simple"
+#~ msgstr "einfach"
+
+#~ msgid "advanced"
+#~ msgstr "erweitert"
 
 #~ msgid "Clear client history"
 #~ msgstr "Versionierung löschen"

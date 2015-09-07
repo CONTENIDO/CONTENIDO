@@ -380,114 +380,120 @@ $sql = "SELECT
 
 $db->query($sql);
 
-$bIgnore = false;
-$iIgnoreLevel = 0;
-
-$items = array();
-while ($db->nextRecord()) {
-    $bSkip = false;
-
-    if ($bIgnore == true && $iIgnoreLevel >= $db->f('level')) {
-        $bIgnore = false;
-    }
-
-    if ($db->f('idcat') == $movesubtreeidcat) {
-        $bIgnore = true;
-        $iIgnoreLevel = $db->f('level');
-        $sMoveSubtreeCatName = $db->f('name');
-    }
-
-    if ($iCurLevel == $db->f('level')) {
-        if ($iCurParent != $db->f('parentid')) {
-            $bSkip = true;
-        }
-    } else {
-        $iCurLevel = $db->f('level');
-        $iCurParent = $db->f('parentid');
-    }
-
-    if ($bIgnore == false && $bSkip == false) {
-        $entry = array();
-        $entry['idtree'] = $db->f('idtree');
-        $entry['idcat'] = $db->f('idcat');
-        $entry['level'] = $db->f('level');
-        $entry['name'] = htmldecode($db->f('name'));
-        $entry['alias'] = htmldecode($db->f('alias'));
-        $entry['parentid'] = $db->f('parentid');
-        $entry['preid'] = $db->f('preid');
-        $entry['postid'] = $db->f('postid');
-        $entry['visible'] = $db->f('visible');
-        $entry['public'] = $db->f('public');
-        $entry['idtplcfg'] = $db->f('idtplcfg');
-
-        $items[] = $entry;
-    }
-}
-
-$rootStrItem = new TreeItem('root', -1);
-$rootStrItem->collapsed_icon = 'images/open_all.gif';
-$rootStrItem->expanded_icon = 'images/close_all.gif';
-
-buildTree($rootStrItem, $items);
-
-$expandedList = unserialize($currentuser->getUserProperty('system', 'cat_expandstate'));
-
-if (is_array($expandedList[$client])) {
-    $rootStrItem->markExpanded($expandedList[$client]);
-}
-
-if (isset($collapse) && is_numeric($collapse)) {
-    $rootStrItem->markCollapsed($collapse);
-}
-
-if (isset($expand) && is_numeric($expand)) {
-    $rootStrItem->markExpanded($expand);
-}
-
-if (isset($expand) && $expand == 'all') {
-    $rootStrItem->expandAll(-1);
-}
-
-if (isset($collapse) && $collapse == 'all') {
-    $rootStrItem->collapseAll(-1);
-}
-
-if ($action === 'str_newcat') {
-    $rootStrItem->markExpanded($idcat);
-}
-
-$expandedList[$client] = array();
-$objects = array();
-
-$rootStrItem->traverse($objects);
-
-$rootStrItem->getExpandedList($expandedList[$client]);
-$currentuser->setUserProperty('system', 'cat_expandstate', serialize($expandedList));
-
-// Reset Template
-$tpl->reset();
-$tpl->set('s', 'AREA', $area);
-$tpl->set('s', 'FRAME', $frame);
-
-$_cecIterator = $_cecRegistry->getIterator('Contenido.CategoryList.Columns');
-
-$listColumns = array();
-if ($_cecIterator->count() > 0) {
-    while ($chainEntry = $_cecIterator->next()) {
-        $tmplistColumns = $chainEntry->execute(array());
-        if (is_array($tmplistColumns)) {
-            $listColumns = array_merge($listColumns, $tmplistColumns);
-        }
-    }
-
-    foreach ($listColumns as $content) {
-        // Header for additional columns
-        $additionalheaders[] = '<th class="header nowrap" nowrap="nowrap">' . $content . '</th>';
-    }
-
-    $additionalheader = implode('', $additionalheaders);
+if ($db->num_rows() == 0) { // If we have no categories, display warning message
+	$additionalheader = $notification->returnNotification("warning", i18n("You have no categories for this client. Please create a new root category with your categories. Without categories, you can't create some articles.")) . "<br />";
 } else {
-    $additionalheader = '';
+
+	$bIgnore = false;
+	$iIgnoreLevel = 0;
+
+	$items = array();
+	while ($db->nextRecord()) {
+	    $bSkip = false;
+
+	    if ($bIgnore == true && $iIgnoreLevel >= $db->f('level')) {
+	        $bIgnore = false;
+	    }
+
+	    if ($db->f('idcat') == $movesubtreeidcat) {
+	        $bIgnore = true;
+	        $iIgnoreLevel = $db->f('level');
+	        $sMoveSubtreeCatName = $db->f('name');
+	    }
+
+	    if ($iCurLevel == $db->f('level')) {
+	        if ($iCurParent != $db->f('parentid')) {
+	            $bSkip = true;
+	        }
+	    } else {
+	        $iCurLevel = $db->f('level');
+	        $iCurParent = $db->f('parentid');
+	    }
+
+	    if ($bIgnore == false && $bSkip == false) {
+	        $entry = array();
+	        $entry['idtree'] = $db->f('idtree');
+	        $entry['idcat'] = $db->f('idcat');
+	        $entry['level'] = $db->f('level');
+	        $entry['name'] = htmldecode($db->f('name'));
+	        $entry['alias'] = htmldecode($db->f('alias'));
+	        $entry['parentid'] = $db->f('parentid');
+	        $entry['preid'] = $db->f('preid');
+	        $entry['postid'] = $db->f('postid');
+	        $entry['visible'] = $db->f('visible');
+	        $entry['public'] = $db->f('public');
+	        $entry['idtplcfg'] = $db->f('idtplcfg');
+
+	        $items[] = $entry;
+	    }
+	}
+
+	$rootStrItem = new TreeItem('root', -1);
+	$rootStrItem->collapsed_icon = 'images/open_all.gif';
+	$rootStrItem->expanded_icon = 'images/close_all.gif';
+
+	buildTree($rootStrItem, $items);
+
+	$expandedList = unserialize($currentuser->getUserProperty('system', 'cat_expandstate'));
+
+	if (is_array($expandedList[$client])) {
+	    $rootStrItem->markExpanded($expandedList[$client]);
+	}
+
+	if (isset($collapse) && is_numeric($collapse)) {
+	    $rootStrItem->markCollapsed($collapse);
+	}
+
+	if (isset($expand) && is_numeric($expand)) {
+	    $rootStrItem->markExpanded($expand);
+	}
+
+	if (isset($expand) && $expand == 'all') {
+	    $rootStrItem->expandAll(-1);
+	}
+
+	if (isset($collapse) && $collapse == 'all') {
+	    $rootStrItem->collapseAll(-1);
+	}
+
+	if ($action === 'str_newcat') {
+	    $rootStrItem->markExpanded($idcat);
+	}
+
+	$expandedList[$client] = array();
+	$objects = array();
+
+	$rootStrItem->traverse($objects);
+
+	$rootStrItem->getExpandedList($expandedList[$client]);
+	$currentuser->setUserProperty('system', 'cat_expandstate', serialize($expandedList));
+
+	// Reset Template
+	$tpl->reset();
+	$tpl->set('s', 'AREA', $area);
+	$tpl->set('s', 'FRAME', $frame);
+
+	$_cecIterator = $_cecRegistry->getIterator('Contenido.CategoryList.Columns');
+
+	$listColumns = array();
+	if ($_cecIterator->count() > 0) {
+	    while ($chainEntry = $_cecIterator->next()) {
+	        $tmplistColumns = $chainEntry->execute(array());
+	        if (is_array($tmplistColumns)) {
+	            $listColumns = array_merge($listColumns, $tmplistColumns);
+	        }
+	    }
+
+	    foreach ($listColumns as $content) {
+	        // Header for additional columns
+	        $additionalheaders[] = '<th class="header nowrap" nowrap="nowrap">' . $content . '</th>';
+	    }
+
+	    $additionalheader = implode('', $additionalheaders);
+	} else {
+	    $additionalheader = '';
+	}
+
 }
 
 $tpl->set('s', 'ADDITIONALHEADERS', $additionalheader);

@@ -282,6 +282,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         $articlesUnlocked = 0;
         $articlesToSync = 0;
         $articlesToRemove = 0;
+        $articlesToEdit = 0;
 
         foreach ($aArticles as $sart) {
             $idart = $sart["idart"];
@@ -317,6 +318,8 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $published = ($published != '0000-00-00 00:00:00') ? date($dateformat, strtotime($published)) : i18n("not yet published");
             $created = date($dateformat, strtotime($created));
             $alttitle = "idart" . '&#58; ' . $idart . ' ' . "idcatart" . '&#58; ' . $idcatart . ' ' . "idartlang" . '&#58; ' . $idartlang;
+
+            $articlesToEdit++;
 
             if ($idlang != $lang) {
                 $articlesToSync++;
@@ -786,6 +789,9 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         }
         if ($articlesToRemove > 0 && ($perm->have_perm_area_action("con", "con_deleteart") || $perm->have_perm_area_action_item("con", "con_deleteart", $idcat))) {
             $bulkEditingFunctions .= createBulkEditingFunction('con_deleteart', 'images/delete.gif', i18n('Delete articles'), 'Con.showConfirmation("' . i18n('Are you sure to delete the selected articles') . '", deleteArticles)');
+        }
+        if ($articlesToEdit > 0 && ($perm->have_perm_area_action("con", "con_editart") || $perm->have_perm_area_action_item("con", "con_editart", $idcat))) {
+        	$bulkEditingFunctions .= createBulkEditingFunction('con_inlineeditart', 'images/editieren.gif', i18n('Edit articles'));
         }
 
         if ($bulkEditingFunctions == "") {

@@ -41,7 +41,7 @@ AUTHOR marcus.gnass@4fb.de
         </tr>
     {if 0 eq $data|count}
         <tr>
-            <td colspan="{$fields|count}">no data</td>
+            <td colspan="{$fields|count}">{$trans.nodata}</td>
         </tr>
     {else}
         {foreach from=$data item=row}

@@ -153,7 +153,7 @@ class cVersionLayout extends cVersion {
     /**
      * Function returns javascript which refreshes CONTENIDO frames for file
      * list an subnavigation.
-     * This is neccessary, if filenames where changed, when a history entry is
+     * This is necessary, if filenames where changed, when a history entry is
      * restored
      *
      * @param string $sArea

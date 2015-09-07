@@ -496,10 +496,10 @@ class cSystemtest {
      */
     protected function canWriteFile($filename) {
         clearstatcache();
-        if (is_file($filename)) {
-            return is_writable($filename);
+        if (cFileHandler::exists($filename)) {
+            return cFileHandler::writeable($filename);
         } else {
-            return is_writable(dirname($filename));
+            return cFileHandler::writeable(dirname($filename));
         }
     }
 
@@ -512,7 +512,7 @@ class cSystemtest {
      */
     protected function canWriteDir($dirname) {
         clearstatcache();
-        return is_dir($dirname) && is_writable($dirname);
+        return cDirHandler::exists($dirname) && is_writable($dirname);
     }
 
     /**
@@ -589,7 +589,7 @@ class cSystemtest {
         // Check if the file is read- and writeable. If yes, we don't need to do
         // any
         // further checks.
-        if (is_writable($file) && is_readable($file)) {
+        if (cFileHandler::writeable($file) && cFileHandler::readable($file)) {
             return self::CON_PREDICT_SUFFICIENT;
         }
 
@@ -1191,7 +1191,8 @@ class cSystemtest {
 
                     // If data/layouts or data/modules not exist, do not display an error message
                     // Cause: At CONTENIDO 4.8 both folders do not exist
-                    if (($file == "data/layouts" || $file == "data/modules") && !is_dir($oneClient["path"]["frontend"] . $file)) {
+
+                    if (($file == "data/layouts" || $file == "data/modules") && !cDirHandler::exists($oneClient["path"]["frontend"] . $file)) {
                         continue;
                     } else {
                         $ret = $this->testSingleFile($oneClient["path"]["frontend"] . $file, self::C_SEVERITY_WARNING, true);

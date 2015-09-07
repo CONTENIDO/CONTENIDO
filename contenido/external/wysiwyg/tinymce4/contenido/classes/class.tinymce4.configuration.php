@@ -16,6 +16,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 class cTinymce4Configuration {
+	public $successfully = false;
     private $_perm = false;
     private $_configErrors = array();
 
@@ -501,8 +502,9 @@ class cTinymce4Configuration {
             $page->displayError($errorMessage);
         }
 
-        $page->displayInfo(i18n('Currently active WYSIWYG editor: ' . cWYSIWYGEditor::getCurrentWysiwygEditorName()));
+        if ($this->successfully === true) $page->displayOk(i18n("Changes saved successfully!"));
 
+        $page->displayInfo(sprintf(i18n('Currently active WYSIWYG editor: %s'), cWYSIWYGEditor::getCurrentWysiwygEditorName()));
 
         $oTypeColl = new cApiTypeCollection();
         $oTypeColl->select();

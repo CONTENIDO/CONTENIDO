@@ -1,5 +1,6 @@
 ./ajaxmain.php
 ./backend_search.php
+./check.php
 ./classes/auth/class.auth.handler.abstract.php
 ./classes/auth/class.auth.handler.backend.php
 ./classes/auth/class.auth.handler.frontend.php
@@ -872,3 +873,4 @@
 ../data/config/production/config.path.php
 ../data/config/production/config.php
 ../data/config/production/config.templates.php
+../data/config/production/config.wysiwyg_tinymce4.php

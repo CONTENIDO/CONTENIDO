@@ -263,6 +263,79 @@ function doAction(thisObject) {
     $('form.bulk_editing_form').submit();
 }
 
+function doInlineEditArt(thisObject) {
+    
+    $('input.mark_articles:checked').each(function() {
+		
+		// dom path to td
+        var tds = $(this).closest('tr').find('td');
+		
+        // edit title
+        var title = tds.eq(2).find('a');
+        if (!title.next().length) {
+            title.hide();
+            title.parent().append($('<input type="text" name="title" value="' + title.html() + '" />'));
+        }
+        
+        // edit index
+        var index = tds.eq(5); 
+        if (!index.find('input').length) {
+            index.html('<input type="text" name="index" data-value="'+index.html()+'" value="' + index.html() + '" />');            
+        }
+        
+	    $(this).off('click.markarticles').on('click.markarticles', function() {
+	        if ($(this).prop('checked') === false) {
+
+	            $(this).closest('tr').find('input').each(function() {
+	                
+	                if ($(this).attr('name') === 'title') {	                    
+	                    $(this).prev().show();
+	                    $(this).remove();
+	                } else if ($(this).attr('name') === 'index') {
+	                    $(this).parent().html($(this).attr('data-value'));
+	                }
+	            });
+	        }
+	    });
+  	 });    
+ 
+    $('.generic.generic_art_overwiew').off('keypress').on('keypress', function (event) {
+        
+        if(event.which === 13){
+            
+            var inlinedata = [];
+            
+            $('input.mark_articles:checked').each(function(index, value) {
+                
+        		var tempData = [];
+        		
+        		var tr = $(this).closest('tr');
+        		        		
+        		tempData['idart'] = $(this).val();
+        		
+                tempData['title'] = $.trim(tr.find('input[name="title"]').val());
+                tempData['index'] = $.trim(tr.find('input[name="index"]').val());
+
+                inlinedata.push(tempData);
+            });
+            
+            var params = "";
+            
+            for (var i = 0; i<inlinedata.length; i++) {
+                params += "&fields["+i+"][idart] = " + inlinedata[i]['idart'];
+                params += "&fields["+i+"][title] = " + inlinedata[i]['title'];
+                params += "&fields["+i+"][index] = " + inlinedata[i]['index'];
+            }
+            
+            params += '&ajax=inlineeditart'
+                        
+            $.post("ajaxmain.php", params, function(data) {
+                document.location = document.location;
+            });
+        }
+	});
+    
+}
 
 (function(Con, $) {
 
@@ -306,8 +379,9 @@ function doAction(thisObject) {
 
         // On bulk editing functions click
         $('div.bulk_editing_functions a').click(function() {
-            // action delete article has a security prompt, so do nothing here
-            if (!$(this).hasClass('con_deleteart')) {
+            if ($(this).hasClass('con_inlineeditart')) { //inline editing
+            	doInlineEditArt($(this));	
+        	} else if (!$(this).hasClass('con_deleteart')) { // action delete article has a security prompt, so do nothing here
                 doAction($(this));
             }
             return false;

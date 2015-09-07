@@ -262,7 +262,7 @@ echo $cutomTabsJs;
                             url = this.sessUrl(this.filename + 'area=' + str + '&action=con_edit&idart=' + this.idart + '&idcat=' + this.idcat);
                             doAction = true;
                         } else {
-                            // There is no selected article, we do not have the neccessary
+                            // There is no selected article, we do not have the necessary
                             // data to display the Article- properties mask
                             error = "<?php echo i18n("Article can't be displayed") . '<br>' . i18n("No article was selected"); ?>";
                             Con.markSubmenuItem('c_0');
@@ -281,7 +281,7 @@ echo $cutomTabsJs;
                             url = this.sessUrl(this.filename + 'area=' + str + '&action=tplcfg_edit&idart=' + this.idart + '&idcat=' + this.idcat);
                             doAction = true;
                         } else {
-                            // There is no selected article, we do not have the neccessary
+                            // There is no selected article, we do not have the necessary
                             // data to display the Template- configuration mask
                             error = "<?php echo i18n("Template configuration can't be displayed") . '<br>' . i18n("No article was selected"); ?>";
                             Con.markSubmenuItem('c_0');
@@ -300,7 +300,7 @@ echo $cutomTabsJs;
                             url = this.sessUrl(this.filename + 'area=' + str + '&action=con_editart&changeview=edit&idart=' + this.idart + '&idartlang=' + this.idartlang + '&idcat=' + this.idcat);
                             doAction = true;
                         } else {
-                            // There is no selected article, we do not have the neccessary data to display the Editor
+                            // There is no selected article, we do not have the necessary data to display the Editor
                             error = "<?php echo i18n("Editor can't be displayed") . '<br>' . i18n("No article was selected"); ?>";
                             Con.markSubmenuItem('c_0');
                         }
@@ -314,7 +314,7 @@ echo $cutomTabsJs;
                         url = this.sessUrl(this.filename + 'area=con_editcontent&action=con_editart&changeview=prev&idart=' + this.idart + '&idartlang=' + this.idartlang + '&idcat=' + this.idcat + '&tmpchangelang='+ this.idlang);
                         doAction = true;
                     } else {
-                        // There is no selected article, we do not have the neccessary
+                        // There is no selected article, we do not have the necessary
                         // data to display the Editor
                         error = "<?php echo i18n("Preview can't be displayed") . '<br>' . i18n("No article was selected"); ?>";
                         Con.markSubmenuItem('c_0');
@@ -332,7 +332,7 @@ echo $cutomTabsJs;
                             url = this.sessUrl(this.filename + 'area=' + str + '&action=con_meta_edit&idart=' + this.idart + '&idcat=' + this.idcat);
                             doAction = true;
                         } else {
-                            // There is no selected article, we do not have the neccessary
+                            // There is no selected article, we do not have the necessary
                             // data to display the Article- properties mask
                             error = "<?php echo i18n("Article can't be displayed") . '<br>' . i18n("No article was selected"); ?>";
                             Con.markSubmenuItem('c_0');
@@ -351,7 +351,7 @@ echo $cutomTabsJs;
                             url = this.sessUrl(this.filename + 'area=' + str + '&action=con_content&changeview=edit&idart=' + this.idart + '&idartlang=' + this.idartlang + '&idcat=' + this.idcat + '&client=' + this.client + '&lang=' + this.lang);
                             doAction = true;
                         } else {
-                            // There is no selected article, we do not have the neccessary
+                            // There is no selected article, we do not have the necessary
                             // data to display the Editor
                             error = "<?php echo i18n("Editor can't be displayed") . '<br>' . i18n("No article was selected"); ?>";
                             Con.markSubmenuItem('c_0');
@@ -366,7 +366,7 @@ echo $cutomTabsJs;
                             url = this.sessUrl(this.filename + 'area=' + obj.area + '&action=' + obj.action + '&idart=' + this.idart + '&idartlang=' + this.idartlang + '&idcat=' + this.idcat + '&tmpchangelang='+ this.idlang + '&' + obj.custom);
                             doAction = true;
                         } else {
-                            // There is no selected article, we do not have the neccessary
+                            // There is no selected article, we do not have the necessary
                             // data to display the Editor
                             error = "<?php echo i18n("Tab can't be displayed") . '<br>' . i18n("No article was selected"); ?>";
                             Con.markSubmenuItem('c_0');

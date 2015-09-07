@@ -1,6 +1,140 @@
 ﻿---------------------------------------------------------------------
 ------------------------ CONTENIDO CHANGELOG ------------------------
 ---------------------------------------------------------------------
+Release 4.9.8
+---------------------------------------------------------------------
+
+**Bug
+    * [CON-1993] - Responsive mandant navmenu
+    * [CON-2067] - By deleting an Article, its Meta Tags won't be deleted, too
+    * [CON-2082] - cGuiPage does not show info button when using displayInfo function
+    * [CON-2084] - Add method getPrimaryKeyName to cItemBaseAbstract
+    * [CON-2086] - Replace the usage of cItemBaseAbstract::$virgin
+    * [CON-2088] - Wrong stylesheet after copied module from client to client
+    * [CON-2094] - IE 9 asks for save confirmation when clicking save or edit button
+    * [CON-2117] - PIM: Sometimes wrong navigation path displayed
+    * [CON-2119] - PIFA: Datepicker does not work
+    * [CON-2120] - PIFA: Wrong imported data with same table name
+    * [CON-2121] - PIFA: Wrong German translation "Mandantenmail-Fehler"
+    * [CON-2123] - Module creating erroneous on client with no language
+    * [CON-2124] - Tinymce 4 undo history is not correct
+    * [CON-2128] - Newsletter plugin recipient import warnings are broken
+    * [CON-2130] - Sending newsletters in blocks does not show any status
+    * [CON-2143] - GUI for CMS_FILELIST editor is slightly misaligned
+    * [CON-2147] - Categories show misleading message during synchronisation process
+    * [CON-2150] - Changing content language does not restore main menu
+    * [CON-2160] - Module content_picture_gallery does not localise buttons and always shows buttons
+    * [CON-2163] - Sitemap does not indicate if an article is an article or a category
+    * [CON-2166] - Module form_login passes unused variables
+    * [CON-2171] - Info box overlaps settings for facebook embedded content
+    * [CON-2172] - Facebook page uses jQuery before jQuery is loaded
+    * [CON-2173] - Module content_socialmedia_facebook: like box and like button templates are outdated
+    * [CON-2178] - Newsletter emails are logged even if email logging is turned off
+    * [CON-2183] - Save image for form field editor is not correct
+    * [CON-2185] - Big picture does not come up when clicking on thumbnail in example gallery module
+    * [CON-2187] - Configuration tab of frozen article page brings up incorrect warning
+    * [CON-2188] - Deletion question for meta tags does not come up in IE 8 for frozen article
+    * [CON-2189] - Tab highlight does not change when clicking on frozen article in list
+    * [CON-2190] - SEO tab of articles not rendered good in IE 8
+    * [CON-2191] - Searching and opening article does not change active tab highlight
+    * [CON-2192] - Changing language in backend login form send form
+    * [CON-2195] - Language chooser does not properly deal with special chars
+    * [CON-2198] - Redirect on frontend URIs not correctly escaped
+    * [CON-2199] - Characters aren't converted to html entities at Administration->Users
+    * [CON-2201] - Title setting in CMS-type editors can break XML markup
+    * [CON-2203] - Delete table charset at plugin sql files
+    * [CON-2207] - Newsletter: br-tag at confirmation email will not be interpreted as HTML
+    * [CON-2208] - Add new module template need active Smarty plugin
+    * [CON-2211] - Doesn't safe original meta tag version after first change
+    * [CON-2217] - New module template names are not escaped properly
+    * [CON-2218] - Renaming a module template is inconsistent with creating templates
+    * [CON-2219] - Content injection in backend using module template filenames
+    * [CON-2220] - Escaping in module description broken
+    * [CON-2221] - Module names are inconsistent escaped
+    * [CON-2222] - Plugin manager: Website info is broken
+    * [CON-2223] - Check autoinstall logic
+    * [CON-2224] - Client settings are not reliably displayed
+    * [CON-2226] - TinyMCE 4 settings page does not show current settings after saving
+    * [CON-2227] - Missing newsletter job send confirmation message
+    * [CON-2228] - AMR crashes frontend page when too many upload links are used
+    * [CON-2229] - File manager search: Could not load file
+    * [CON-2230] - Content -> Article: Wrong display of entities
+    * [CON-2231] - Article redirect to idcat and idcatart does not work
+    * [CON-2232] - Example client: Missing head-tag at standard layout
+    * [CON-2233] - Code generator fails with head tag and SEO site title
+    * [CON-2234] - Client specific date-/timeformat leads to wrong public date
+    * [CON-2235] - Example client: Missing english translation for pifa form
+    * [CON-2237] - Fix unit tests
+    * [CON-2241] - Can not switch between clients at backend
+    * [CON-2244] - Wrong tooltip icon
+    * [CON-2246] - Teaser displays offline articles in backend but not in frontend
+    * [CON-2247] - PIFA: No right to display form fields and form data
+    * [CON-2249] - Missing templates after installation with example modules without example content
+    * [CON-2251] - Linklist: document name
+    * [CON-2252] - Tinymce 4 fullscreen mode does partly not work
+    * [CON-2253] - Test versioning in develop branch
+    * [CON-2254] - WYSIWYG editor fallback on separate editor page not correct
+    * [CON-2255] - Tinymce 4 can not be used when updating from 4.9.6 to 4.9.7
+    * [CON-2257] - Upgrading old installation fails when editing database related fields
+    * [CON-2263] - Plugin manager: Uninstall choice mentions wrong sql file
+    * [CON-2265] - cApiArticleLanguageVersion duplicates a lot of code from cApiArticleLanguage
+    * [CON-2266] - Some content can not be deleted in raw data tab
+    * [CON-2267] - AMR: Links to articles from offline categories does not work
+    * [CON-2269] - Empty rawdata crashs with versioning
+    * [CON-2272] - CMS_TEXT and CMS_HEAD are not compatible with each other
+    * [CON-2274] - TinyMCE 4 plugins specified in WYSIWYG config page are not loaded
+    * [CON-2275] - Test CONTENIDO to prepare 4.9.8 release
+    * [CON-2276] - Article versioning does not use configured database table prefix
+    * [CON-2277] - Ability to set a password that can never be used to login
+    * [CON-2278] - Teaser config dialog for frozen article is misplaced in Google Chrome
+    * [CON-2279] - Can not edit content of frozen article as sysadmin
+    * [CON-2280] - Article versioning does not work anymore due to code cleanup
+    * [CON-2281] - Content of frozen article can not be deleted as sysadmin
+    * [CON-2282] - Creating a new client creates an entry in deprecation log
+    * [CON-2293] - Slow loading of frontend-user-paging
+    * [CON-2295] - Articles links to specific languages are broken
+    * [CON-2296] - Code cache generation seems buggy in combination with auth code
+    * [CON-2297] - Deprecated function set_magic_quotes_gpc is called in CONTENIDO code
+    * [CON-2298] - Deleting an article does not delete its versioning info
+    * [CON-2299] - Searching for articles in backend calls deprecated cApiStrTrimAfterWord function
+    * [CON-2300] - Jump lists for images and links do not work for tinymce 4
+    * [CON-2301] - Article versioning header is always shown
+    * [CON-2302] - Several typos / grammar problems in backend messages
+    * [CON-2307] - Used TinyMCE 4 version is outdated, update to 4.1.10
+    * [CON-2310] - Error regarding template.deco.html in browser console
+    * [CON-2318] - Missing German translation at system configuration
+    * [CON-2336] - cDebug graphical output of variables does not work
+    * [CON-2337] - Delete dialog GUI strange when a frontend user is loaded
+    * [CON-2338] - front loginform fallback template is broken
+    * [CON-2341] - Article versioning page title not versioned correctly
+    * [CON-2342] - Editor tab of article does not display loaded version correctly
+    * [CON-2346] - Setup for new installations allows choosing database settings
+    * [CON-2350] - Time control: Offline articles are online at frontend
+    * [CON-2352] - Linkchecker Error
+
+**Improvement
+    * [CON-1343] - Change usage of iconv to cApiRecodeString
+    * [CON-1602] - Minor changes in cApiArticleLanguage for content handling
+    * [CON-1891] - HTML-tags in category and article names
+    * [CON-2058] - PIFA: Deselected CSS class is not removed from field
+    * [CON-2168] - PIFA add configurable logging
+    * [CON-2202] - Versioning: Remember selected article version when switching tabs
+    * [CON-2238] - Performance Improvement: Settings
+    * [CON-2239] - Make often required backend variables accessible via cRegistry-Functions
+    * [CON-2250] - Optimize creation handling for (new) languages
+    * [CON-2268] - Add a title at frontend groups overview
+
+**New Feature
+    * [CON-1068] - Add content versioning feature
+
+** Task
+    * [CON-1764] - Deprecate various resources
+    * [CON-1876] - Remove deprecations of version 4.9.1 and 4.9.3
+    * [CON-1979] - No contact form at English example client
+    * [CON-2114] - Update SwiftMailer
+    * [CON-2200] - Test CONTENIDO Versioning
+
+---------------------------------------------------------------------
 Release 4.9.7
 ---------------------------------------------------------------------
 ** Bug

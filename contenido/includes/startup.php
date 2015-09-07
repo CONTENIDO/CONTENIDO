@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Central CONTENIDO file to initialize the application. Performs following steps:
  * - Initial PHP setting
@@ -79,7 +78,7 @@ if (!defined('CON_ENVIRONMENT')) {
  */
 if (!defined('CON_VERSION')) {
 
-    define('CON_VERSION', '4.9.7');
+    define('CON_VERSION', '4.9.8');
 
 }
 

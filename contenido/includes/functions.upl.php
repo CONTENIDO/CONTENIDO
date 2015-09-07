@@ -28,7 +28,7 @@ cInclude('includes', 'functions.file.php');
  *         Limit of chars which were displayed directly.
  *         If the path string is shorter there will be no tooltip
  * @return string
- *         Contains short path name and tooltipp if neccessary
+ *         Contains short path name and tooltipp if necessary
  */
 function generateDisplayFilePath($sDisplayPath, $iLimit) {
     $sDisplayPath = (string) $sDisplayPath;

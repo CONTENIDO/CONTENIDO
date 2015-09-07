@@ -112,7 +112,7 @@ $page->set('s', 'PROPERTY', i18n("Property"));
 $page->set('s', 'VALUE', i18n("Value"));
 
 $page->set('d', 'CATNAME', i18n("Groupname"));
-$page->set('d', 'CATFIELD', stripslashes($oGroup->getGroupName(true)));
+$page->set('d', 'CATFIELD', stripslashes(conHtmlSpecialChars($oGroup->getGroupName(true))));
 $page->next();
 
 $page->set('d', 'CATNAME', i18n("Description"));

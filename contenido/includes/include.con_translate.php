@@ -167,6 +167,9 @@ $elemPerPage = array(
     50 => "50"
 );
 
+// Set noResults variable standard to false (= results available)
+$noResults = false;
+
 $db = cRegistry::getDb();
 
 $langobj = new cApiLanguage($lang);
@@ -286,6 +289,7 @@ while ($db->nextRecord()) {
         // Get the strings from translation file
         $contenidoTranslateFromFile = new cModuleFileTranslation($idmod, false, $idlang);
         $fileTranslations = $contenidoTranslateFromFile->getTranslationArray();
+
         $translations = array();
         foreach ($fileTranslations as $key => $value) {
             $hash = $idmod . '_' . md5($key);
@@ -374,6 +378,11 @@ if ($search != '' || ($filter != '' && $filter != -1)) {
             unset($allTranslations[$hash]);
         }
     }
+}
+
+if (empty($allTranslations)) {
+	$page->displayInfo(i18n("Can not find some module translations for your selection."));
+	$noResults = true;
 }
 
 unset($strings);
@@ -755,7 +764,13 @@ $page->set("s", "DELLANGIMG", $cfg["path"]["contenido_fullhtml"] . $cfg['path'][
 $page->set("s", "DELLANGALT", i18n("Delete"));
 $page->set("s", "DELLANGHREF", $delLangHref);
 $page->set("s", "MODULEINUSETEXT", i18n("The module &quot;%s&quot; is used for following templates"));
-$page->set("s", "INFO", $message . '<p class="notify_general notify_warning">' . i18n("WARNING: Translations have effects on every article that uses the module!") . '</p>');
+
+if (!$noResults) {
+	$page->set("s", "INFO", $message . '<p class="notify_general notify_warning">' . i18n("WARNING: Translations have effects on every article that uses the module!") . '</p>');
+} else {
+	$page->set("s", "INFO", "");
+}
+
 $page->setMarkScript(2);
 $page->setEncoding($langobj->get('encoding'));
 $page->render();

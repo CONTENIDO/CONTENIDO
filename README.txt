@@ -1,4 +1,4 @@
-﻿CONTENIDO Version 4.9.7
+﻿CONTENIDO Version 4.9.8
 Lizenz:        GNU General Public Licence (GPL)
 Copyright:     (c) 2003-2015, four for business AG
 
@@ -73,15 +73,15 @@ Lizenzen von verwendeten Produkten / Licenses of used third party products:
   Lizenz:      GNU Lesser General Public License 2.1 or later
   Information: http://www.smarty.net/
 
-- SwiftMailer 5.4.0
-  Lizenz:      MIT License
+- SwiftMailer 4.2.1
+  Lizenz:      GNU Lesser General Public License v3
   Information: http://swiftmailer.org/
 
 - TinyMCE 3.5.10
   Lizenz:      GNU Lesser General Public License
   Information: http://www.tinymce.com/
   
-- TinyMCE 4.1.10
+- TinyMCE 4.1.7
   Lizenz:      GNU Lesser General Public License 2.1
   Information: http://www.tinymce.com/
 

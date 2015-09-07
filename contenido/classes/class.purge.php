@@ -180,7 +180,7 @@ class cSystemPurge {
 
         if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
             $cacheDir = $cfgClient[$clientId]['cache']['path'];
-            if (is_dir($cacheDir)) {
+            if (cDirHandler::exists($cacheDir)) {
                 return ($this->clearDir($cacheDir, $cacheDir) ? true : false);
             }
             return false;
@@ -203,7 +203,7 @@ class cSystemPurge {
 
         if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
             $versionDir = $cfgClient[$clientId]['version']['path'];
-            if (is_dir($versionDir)) {
+            if (cDirHandler::exists($versionDir)) {
                 $tmpFile = array();
                 $this->clearDir($versionDir, $versionDir, $keep, $tmpFile);
                 if (count($tmpFile) > 0) {
@@ -269,7 +269,7 @@ class cSystemPurge {
 
         if ($perm->isClientAdmin($idclient, $currentuser) || $perm->isSysadmin($currentuser)) {
             $logDir = $cfgClient[$idclient]['log']['path'];
-            if (is_dir($logDir)) {
+            if (cDirHandler::Exists($logDir)) {
                 return $this->emptyFile($logDir, $this->_logFileTypes);
             }
             return false;
@@ -289,7 +289,7 @@ class cSystemPurge {
 
         $logDir = $cfg['path']['contenido_logs'];
         if ($perm->isSysadmin($currentuser)) {
-            if (is_dir($logDir)) {
+            if (cDirHandler::exists($logDir)) {
                 return $this->emptyFile($logDir, $this->_logFileTypes);
             }
             return false;
@@ -309,7 +309,7 @@ class cSystemPurge {
 
         $cronjobDir = $cfg['path']['contenido_cronlog'];
         if ($perm->isSysadmin($currentuser)) {
-            if (is_dir($cronjobDir)) {
+            if (cDirHandler::exists($cronjobDir)) {
                 return $this->emptyFile($cronjobDir, $this->_cronjobFileTypes);
             }
             return false;
@@ -329,7 +329,7 @@ class cSystemPurge {
 
         $cacheDir = $cfg['path']['contenido_cache'];
         if ($perm->isSysadmin($currentuser)) {
-            if (is_dir($cacheDir)) {
+            if (cDirHandler::exists($cacheDir)) {
                 return ($this->clearDir($cacheDir, $cacheDir) ? true : false);
             }
             return false;
@@ -377,7 +377,7 @@ class cSystemPurge {
      * @return bool
      */
     public function clearDir($dirPath, $tmpDirPath, $keep = false, &$tmpFileList = array()) {
-        if (is_dir($dirPath) && false !== ($handle = cDirHandler::read($dirPath))) {
+        if (cDirHandler::exists($dirPath) && false !== ($handle = cDirHandler::read($dirPath))) {
             $tmp = str_replace(array(
                 '/',
                 '..'
@@ -386,7 +386,7 @@ class cSystemPurge {
                 if (!in_array($file, $this->_dirsExcludedWithFiles)) {
                     $filePath = $dirPath . '/' . $file;
                     $filePath = str_replace('//', '/', $filePath);
-                    if (is_dir($filePath)) {
+                    if (cDirHandler::exists($filePath)) {
                         $this->clearDir($filePath, $tmpDirPath, $keep, $tmpFileList);
                     } else {
                         if ($keep === false) {
@@ -449,7 +449,7 @@ class cSystemPurge {
         $count = 0;
         $countCleared = 0;
 
-        if (is_dir($dirPath) && false !== ($handle = cDirHandler::read($dirPath))) {
+        if (cDirHandler::exists($dirPath) && false !== ($handle = cDirHandler::read($dirPath))) {
             foreach ($handle as $file) {
                 $fileExt = trim(end(explode('.', $file)));
 
