@@ -63,8 +63,12 @@ $articles = $teaser->getConfiguredArticles();
 $configuration = $teaser->getConfiguration();
 
 $xmlString = '<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"></rss>';
-function addCData($cdata_text)
-{
+
+/**
+ *
+ * @param string $cdata_text
+ */
+function addCData($cdata_text) {
     $node= dom_import_simplexml($this);
     $no = $node->ownerDocument;
     $node->appendChild($no->createCDATASection($cdata_text));

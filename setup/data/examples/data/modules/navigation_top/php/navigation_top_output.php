@@ -28,9 +28,14 @@ $tree = $categoryHelper->getSubCategories($rootIdcat, $depth);
 
 // get path (breadcrumb) of current category
 if (!function_exists("navigation_top_filter")) {
-	function navigation_top_filter(cApiCategoryLanguage $categoryLanguage) {
-		return $categoryLanguage->get('idcat');
-	}
+    /**
+     *
+     * @param cApiCategoryLanguage $categoryLanguage
+     * @return int
+     */
+    function navigation_top_filter(cApiCategoryLanguage $categoryLanguage) {
+        return $categoryLanguage->get('idcat');
+    }
 }
 $path = array_map('navigation_top_filter', $categoryHelper->getCategoryPath(cRegistry::getCategoryId(), 1));
 

@@ -136,8 +136,11 @@ function checkJobRerun($jobname) {
  * Add all online and searchable articles of theses categories to the sitemap.
  *
  * @param SimpleXMLElement $sitemap
+ * @param array $categoryIds
+ * @param int $lang
+ * @return int
  */
-function addArticlesToSitemap(SimpleXMLElement $sitemap, $categoryIds, $lang) {
+function addArticlesToSitemap(SimpleXMLElement $sitemap, array $categoryIds, $lang) {
     $itemCount = 0;
 
     // check if there are categories

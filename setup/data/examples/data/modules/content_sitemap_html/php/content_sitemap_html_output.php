@@ -4,9 +4,6 @@
  *
  * @package Module
  * @subpackage ContentSitemapHtml
- * @version SVN Revision $Rev:$
- *
- * @version SVN Revision $Rev:$
  * @author marcus.gnass@4fb.de
  * @author alexander.scheider@4fb.de
  * @copyright four for business AG
@@ -19,11 +16,12 @@ $lang = cRegistry::getLanguageId();
 $idart = cRegistry::getArticleId();
 
 // get content of current article
-$art = new cApiArticleLanguage();
-$art->loadByArticleAndLanguageId($idart, $lang);
-$content = $art->getContent('CMS_TEXT', 1);
-$level = $art->getContent('CMS_TEXT', 2);
-$article = $art->getContent('CMS_TEXT', 3);
+$artLang = new cApiArticleLanguage();
+$artLang->loadByArticleAndLanguageId($idart, $lang);
+
+$content = $artLang->getContent('CMS_TEXT', 1);
+$level = $artLang->getContent('CMS_TEXT', 2);
+$article = $artLang->getContent('CMS_TEXT', 3);
 
 // get smarty template instance
 $tpl = cSmartyFrontend::getInstance();
@@ -73,7 +71,7 @@ $tpl->display('get.tpl');
  */
 function addArticlesToTree(array $tree) {
 
-	$startidartlang = getStartIdArtLang();
+    $startidartlang = getStartIdArtLang();
 
     foreach ($tree as $key => $wrapper) {
         $tree[$key]['articles'] = getArticlesFromCategory($wrapper['idcat'], $startidartlang);
@@ -85,72 +83,89 @@ function addArticlesToTree(array $tree) {
 }
 
 /**
- * Get startidartlang as array
+ * Read the IDs of all article languages that are used as start article
+ * of their respective category.
  *
- * @return array startidartlang
+ * @return array
+ *         of article language IDs
  */
 function getStartIdArtLang() {
-	$cfg = cRegistry::getConfig();
-	$db = cRegistry::getDb();
-
-	// get all startidartlangs
-	$startidartlang = array();
-
-	$sql = 'SELECT startidartlang FROM  `' . $cfg['tab']['cat_lang'] . '` WHERE visible = 1 AND public = 1';
-	$ret = $db->query($sql);
-	while ($db->next_record()) {
-		$startidartlang[] = $db->f('startidartlang');
-	}
-
-	return $startidartlang;
-}
-
-/**
- * Add all online and searchable articles of theses categories to the sitemap.
- *
- * @param int $categoryId
- */
-function getArticlesFromCategory($categoryId, $startidartlang) {
 
     $cfg = cRegistry::getConfig();
     $db = cRegistry::getDb();
 
-    // get articles from DB
-    // needed fields: idart, lastmodified, sitemapprio, changefreq
-    $sql = '-- getArticlesFromCategory()
+    // get all startidartlangs
+
+    $ret = $db->query('-- getStartIdArtLang()
         SELECT
-            al.idartlang
-            , UNIX_TIMESTAMP(al.lastmodified) AS lastmod
-            , al.changefreq
-            , al.sitemapprio
-            , al.title
+            startidartlang
         FROM
-            `' . $cfg['tab']['art_lang'] . '` AS al
-            , `' . $cfg['tab']['cat_art'] . '` AS ca
+            `' . $cfg['tab']['cat_lang'] . '`
         WHERE
-            al.idart = ca.idart
-            AND al.idlang = ' . cSecurity::toInteger(cRegistry::getLanguageId()) . '
-            AND ca.idcat IN (' . $categoryId . ')
-            AND al.online = 1
-            AND al.searchable = 1
-        ;';
+            visible = 1
+            AND public = 1
+        ;');
 
-    $ret = $db->query($sql);
-
-    $array = array();
-    if (false !== $ret) {
-        while ($db->next_record()) {
-
-        	if (!in_array($db->f('idartlang'), $startidartlang)) {
-
-	            $article = new cApiArticleLanguage();
-	            $article->loadByPrimaryKey($db->f('idartlang'));
-	            $array[] = $article;
-        	}
-        }
+    $result = array();
+    while ($db->nextRecord()) {
+        $result[] = $db->f('startidartlang');
     }
 
-    return $array;
+    return $result;
+
+}
+
+/**
+ * Read article languages of given category and the current language.
+ * Only online articles that are searchable are considered.
+ * Optionally an array of article language IDs to exclude can be given.
+ * If no article languages were found an empty array will be returned.
+ *
+ * @param int $idcat
+ *         ID of category to search in
+ * @param array $excludedIdartlangs [optional]
+ *         ID of article languages to exclude
+ * @return array
+ *         of article languages
+ */
+function getArticlesFromCategory($idcat, array $excludedIdartlangs = array()) {
+
+    $cfg = cRegistry::getConfig();
+    $db = cRegistry::getDb();
+    $idlang = cRegistry::getLanguageId();
+
+    $ret = $db->query('-- getArticlesFromCategory()
+        SELECT
+            art_lang.idartlang
+        FROM
+            `' . $cfg['tab']['art_lang'] . '` AS art_lang
+            , `' . $cfg['tab']['cat_art'] . '` AS ca
+        WHERE
+            art_lang.idart = cat_art.idart
+            AND art_lang.idlang = ' . cSecurity::toInteger($idlang) . '
+            AND art_lang.online = 1
+            AND art_lang.searchable = 1
+            AND cat_art.idcat = ' . cSecurity::toInteger($idcat) . '
+        ;');
+
+    if (false === $ret) {
+        return array();
+    }
+
+    $result = array();
+    while ($db->nextRecord()) {
+
+        // skip article languages to exclude
+        if (in_array($db->f('idartlang'), $excludedIdartlangs)) {
+            continue;
+        }
+
+        // add article languages to result
+        $result[] = new cApiArticleLanguage($db->f('idartlang'));
+
+    }
+
+    return $result;
 
 }
 

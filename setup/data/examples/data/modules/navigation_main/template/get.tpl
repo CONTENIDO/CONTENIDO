@@ -13,12 +13,12 @@
         {/if}
         <li>
             <a class="{$aClass|escape}" href="{$url|escape}" title="{$name|escape}">{$name|escape}</a>
-        {if $idcat|in_array:$path}
+        {if $idcat|in_array:$path and !empty($wrapper.subcats)}
             {include file="navigation_main/template/get.tpl"
                 tree=$wrapper.subcats path=$path ulId=""}
         {/if}
         </li>
-     {/foreach}
+    {/foreach}
 </ul>
 
 {if 0 lt $ulId|strlen}<!-- /navigation_main/template/get.tpl -->{/if}
