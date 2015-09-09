@@ -263,31 +263,93 @@ function doAction(thisObject) {
     $('form.bulk_editing_form').submit();
 }
 
-function doInlineEditArt(thisObject) {
+function saveInlineEditArt() {
     
-    $('input.mark_articles:checked').each(function() {
+    var inlinedata = [];
+
+    $('input.mark_articles:checked').each(function(index, value) {
+
+		var tempData = [];
+
+		var tr = $(this).closest('tr');
 		
+		tempData['idart'] = $(this).val();
+
+        tempData['title'] = $.trim(tr.find('input[name="title"]').val());
+        tempData['index'] = $.trim(tr.find('input[name="index"]').val());
+
+        inlinedata.push(tempData);
+    });
+    
+    var params = "";
+
+    for (var i = 0; i<inlinedata.length; i++) {
+        params += "&fields["+i+"][idart] = " + inlinedata[i]['idart'];
+        params += "&fields["+i+"][title] = " + inlinedata[i]['title'];
+        params += "&fields["+i+"][index] = " + inlinedata[i]['index'];
+    }
+
+    params += '&ajax=inlineeditart'
+  
+    $.post("ajaxmain.php", params, function(data) {
+        document.location = document.location;
+    });
+}
+
+$('input.mark_articles').on('change', function() {
+    
+    if ($(this).is(':checked')) {
+
+        if ($('.bulk_editing_functions .con_inlineeditart').hasClass('con_inlinesaveart')) {            
+            doInlineEditArt();
+        }
+    }
+});
+
+function doInlineEditArt() {
+
+    $('input.mark_articles:checked').each(function() {
+ 
+        if (!$('.bulk_editing_functions .con_inlineeditart').hasClass('con_inlinesaveart')) {
+            
+            $('.bulk_editing_functions .con_inlineeditart')
+	        	.addClass('con_inlinesaveart')
+	        	.find('img')
+	        		.addClass('img-edit')
+	        		.hide();
+
+	        var saveImg = $('<img />').attr({
+	            'class': 'img-save',
+	            'src': 'images/save.gif',
+	            'alt': '{SAVE_ARTICLES}',
+	            'title': '{SAVE_ARTICLES}'
+	        });
+
+	        $('.bulk_editing_functions .con_inlineeditart').append(saveImg);
+        }
+
 		// dom path to td
         var tds = $(this).closest('tr').find('td');
-		
-        // edit title
+
+		// edit title
         var title = tds.eq(2).find('a');
         if (!title.next().length) {
             title.hide();
             title.parent().append($('<input type="text" name="title" value="' + title.html() + '" />'));
         }
-        
+
         // edit index
         var index = tds.eq(5); 
         if (!index.find('input').length) {
             index.html('<input type="text" name="index" data-value="'+index.html()+'" value="' + index.html() + '" />');            
         }
-        
+
 	    $(this).off('click.markarticles').on('click.markarticles', function() {
+
 	        if ($(this).prop('checked') === false) {
 
 	            $(this).closest('tr').find('input').each(function() {
-	                
+   
 	                if ($(this).attr('name') === 'title') {	                    
 	                    $(this).prev().show();
 	                    $(this).remove();
@@ -295,46 +357,32 @@ function doInlineEditArt(thisObject) {
 	                    $(this).parent().html($(this).attr('data-value'));
 	                }
 	            });
+
+	            var cbChecked = false;
+	            $(this).closest('table').find('input.mark_articles').each(function() {
+	                if ($(this).is(':checked')) {
+	                    cbChecked = true;
+	                    return false;
+	                }
+	            });
+
+	            if (cbChecked === false) {
+	                var inlineEditArt = $('.bulk_editing_functions .con_inlineeditart'); 
+	                inlineEditArt.removeClass('con_inlinesaveart');
+	                inlineEditArt.find('img.img-save').remove();
+	                inlineEditArt.find('img.img-edit').show();
+	            }
 	        }
 	    });
   	 });    
  
     $('.generic.generic_art_overwiew').off('keypress').on('keypress', function (event) {
-        
-        if(event.which === 13){
-            
-            var inlinedata = [];
-            
-            $('input.mark_articles:checked').each(function(index, value) {
-                
-        		var tempData = [];
-        		
-        		var tr = $(this).closest('tr');
-        		        		
-        		tempData['idart'] = $(this).val();
-        		
-                tempData['title'] = $.trim(tr.find('input[name="title"]').val());
-                tempData['index'] = $.trim(tr.find('input[name="index"]').val());
 
-                inlinedata.push(tempData);
-            });
-            
-            var params = "";
-            
-            for (var i = 0; i<inlinedata.length; i++) {
-                params += "&fields["+i+"][idart] = " + inlinedata[i]['idart'];
-                params += "&fields["+i+"][title] = " + inlinedata[i]['title'];
-                params += "&fields["+i+"][index] = " + inlinedata[i]['index'];
-            }
-            
-            params += '&ajax=inlineeditart'
-                        
-            $.post("ajaxmain.php", params, function(data) {
-                document.location = document.location;
-            });
+        if(event.which === 13) {
+            saveInlineEditArt();
         }
 	});
-    
+
 }
 
 (function(Con, $) {
@@ -379,9 +427,11 @@ function doInlineEditArt(thisObject) {
 
         // On bulk editing functions click
         $('div.bulk_editing_functions a').click(function() {
-            if ($(this).hasClass('con_inlineeditart')) { //inline editing
-            	doInlineEditArt($(this));	
-        	} else if (!$(this).hasClass('con_deleteart')) { // action delete article has a security prompt, so do nothing here
+            if ($(this).hasClass('con_inlinesaveart')) { // inline editing (save)
+                saveInlineEditArt();
+        	} else if ($(this).hasClass('con_inlineeditart')) { //inline editing
+            	doInlineEditArt();
+            } else if (!$(this).hasClass('con_deleteart')) { // action delete article has a security prompt, so do nothing here
                 doAction($(this));
             }
             return false;

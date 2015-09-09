@@ -797,7 +797,9 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         if ($bulkEditingFunctions == "") {
             $bulkEditingFunctions = i18n("Your permissions do not allow any actions here");
         }
+
         $tpl->set('s', 'BULK_EDITING_FUNCTIONS', $bulkEditingFunctions);
+		$tpl->set('s', 'SAVE_ARTICLES', i18n('Save articles'));
 
         if (count($artlist) > 0) {
             foreach ($artlist as $key2 => $artitem) {
