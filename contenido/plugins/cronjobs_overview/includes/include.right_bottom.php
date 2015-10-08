@@ -53,9 +53,9 @@ switch ($_REQUEST['action']) {
         if (!empty($_POST['crontab_contents'])) {
             //save contents
             if ($cronjobs->saveCrontabFile($_POST['crontab_contents']) === FALSE) {
-                $notification-> displayNotification('info', i18n('Could not be saved!', 'cronjobs_overview'));
+                $notification-> displayNotification('warning', i18n('Could not be saved!', 'cronjobs_overview'));
             } else {
-                $notification-> displayNotification('info', i18n('Successfully saved!', 'cronjobs_overview'));
+                $notification-> displayNotification('ok', i18n('Successfully saved!', 'cronjobs_overview'));
             }
         }
         $tpl->set('s', 'HEADER', i18n('Edit cronjob: ', 'cronjobs_overview').$cronjobs->getCronlogDirectory(). Cronjobs::$CRONTAB_FILE);

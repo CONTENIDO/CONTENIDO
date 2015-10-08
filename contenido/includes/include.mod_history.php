@@ -139,7 +139,7 @@ if ($sSelectBox != "") {
     $oPage->set("s", "FORM", $sSelectBox . $oForm->render());
 } else {
     if ($bDeleteFile) {
-        $oPage->displayWarning(i18n("Version history was cleared"));
+        $oPage->displayOk(i18n("Version history was cleared"));
     } else {
         $oPage->displayWarning(i18n("No module history available"));
     }
