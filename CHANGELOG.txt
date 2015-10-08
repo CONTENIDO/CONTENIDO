@@ -1,0 +1,1740 @@
+﻿---------------------------------------------------------------------
+------------------------ CONTENIDO CHANGELOG ------------------------
+---------------------------------------------------------------------
+Release 4.9.8
+---------------------------------------------------------------------
+
+**Bug
+    * [CON-1993] - Responsive mandant navmenu
+    * [CON-2067] - By deleting an Article, its Meta Tags won't be deleted, too
+    * [CON-2082] - cGuiPage does not show info button when using displayInfo function
+    * [CON-2084] - Add method getPrimaryKeyName to cItemBaseAbstract
+    * [CON-2086] - Replace the usage of cItemBaseAbstract::$virgin
+    * [CON-2088] - Wrong stylesheet after copied module from client to client
+    * [CON-2094] - IE 9 asks for save confirmation when clicking save or edit button
+    * [CON-2117] - PIM: Sometimes wrong navigation path displayed
+    * [CON-2119] - PIFA: Datepicker does not work
+    * [CON-2120] - PIFA: Wrong imported data with same table name
+    * [CON-2121] - PIFA: Wrong German translation "Mandantenmail-Fehler"
+    * [CON-2123] - Module creating erroneous on client with no language
+    * [CON-2124] - Tinymce 4 undo history is not correct
+    * [CON-2128] - Newsletter plugin recipient import warnings are broken
+    * [CON-2130] - Sending newsletters in blocks does not show any status
+    * [CON-2143] - GUI for CMS_FILELIST editor is slightly misaligned
+    * [CON-2147] - Categories show misleading message during synchronisation process
+    * [CON-2150] - Changing content language does not restore main menu
+    * [CON-2160] - Module content_picture_gallery does not localise buttons and always shows buttons
+    * [CON-2163] - Sitemap does not indicate if an article is an article or a category
+    * [CON-2166] - Module form_login passes unused variables
+    * [CON-2171] - Info box overlaps settings for facebook embedded content
+    * [CON-2172] - Facebook page uses jQuery before jQuery is loaded
+    * [CON-2173] - Module content_socialmedia_facebook: like box and like button templates are outdated
+    * [CON-2178] - Newsletter emails are logged even if email logging is turned off
+    * [CON-2183] - Save image for form field editor is not correct
+    * [CON-2185] - Big picture does not come up when clicking on thumbnail in example gallery module
+    * [CON-2187] - Configuration tab of frozen article page brings up incorrect warning
+    * [CON-2188] - Deletion question for meta tags does not come up in IE 8 for frozen article
+    * [CON-2189] - Tab highlight does not change when clicking on frozen article in list
+    * [CON-2190] - SEO tab of articles not rendered good in IE 8
+    * [CON-2191] - Searching and opening article does not change active tab highlight
+    * [CON-2192] - Changing language in backend login form send form
+    * [CON-2195] - Language chooser does not properly deal with special chars
+    * [CON-2198] - Redirect on frontend URIs not correctly escaped
+    * [CON-2199] - Characters aren't converted to html entities at Administration->Users
+    * [CON-2201] - Title setting in CMS-type editors can break XML markup
+    * [CON-2203] - Delete table charset at plugin sql files
+    * [CON-2207] - Newsletter: br-tag at confirmation email will not be interpreted as HTML
+    * [CON-2208] - Add new module template need active Smarty plugin
+    * [CON-2211] - Doesn't safe original meta tag version after first change
+    * [CON-2217] - New module template names are not escaped properly
+    * [CON-2218] - Renaming a module template is inconsistent with creating templates
+    * [CON-2219] - Content injection in backend using module template filenames
+    * [CON-2220] - Escaping in module description broken
+    * [CON-2221] - Module names are inconsistent escaped
+    * [CON-2222] - Plugin manager: Website info is broken
+    * [CON-2223] - Check autoinstall logic
+    * [CON-2224] - Client settings are not reliably displayed
+    * [CON-2226] - TinyMCE 4 settings page does not show current settings after saving
+    * [CON-2227] - Missing newsletter job send confirmation message
+    * [CON-2228] - AMR crashes frontend page when too many upload links are used
+    * [CON-2229] - File manager search: Could not load file
+    * [CON-2230] - Content -> Article: Wrong display of entities
+    * [CON-2231] - Article redirect to idcat and idcatart does not work
+    * [CON-2232] - Example client: Missing head-tag at standard layout
+    * [CON-2233] - Code generator fails with head tag and SEO site title
+    * [CON-2234] - Client specific date-/timeformat leads to wrong public date
+    * [CON-2235] - Example client: Missing english translation for pifa form
+    * [CON-2237] - Fix unit tests
+    * [CON-2241] - Can not switch between clients at backend
+    * [CON-2244] - Wrong tooltip icon
+    * [CON-2246] - Teaser displays offline articles in backend but not in frontend
+    * [CON-2247] - PIFA: No right to display form fields and form data
+    * [CON-2249] - Missing templates after installation with example modules without example content
+    * [CON-2251] - Linklist: document name
+    * [CON-2252] - Tinymce 4 fullscreen mode does partly not work
+    * [CON-2253] - Test versioning in develop branch
+    * [CON-2254] - WYSIWYG editor fallback on separate editor page not correct
+    * [CON-2255] - Tinymce 4 can not be used when updating from 4.9.6 to 4.9.7
+    * [CON-2257] - Upgrading old installation fails when editing database related fields
+    * [CON-2263] - Plugin manager: Uninstall choice mentions wrong sql file
+    * [CON-2265] - cApiArticleLanguageVersion duplicates a lot of code from cApiArticleLanguage
+    * [CON-2266] - Some content can not be deleted in raw data tab
+    * [CON-2267] - AMR: Links to articles from offline categories does not work
+    * [CON-2269] - Empty rawdata crashs with versioning
+    * [CON-2272] - CMS_TEXT and CMS_HEAD are not compatible with each other
+    * [CON-2274] - TinyMCE 4 plugins specified in WYSIWYG config page are not loaded
+    * [CON-2275] - Test CONTENIDO to prepare 4.9.8 release
+    * [CON-2276] - Article versioning does not use configured database table prefix
+    * [CON-2277] - Ability to set a password that can never be used to login
+    * [CON-2278] - Teaser config dialog for frozen article is misplaced in Google Chrome
+    * [CON-2279] - Can not edit content of frozen article as sysadmin
+    * [CON-2280] - Article versioning does not work anymore due to code cleanup
+    * [CON-2281] - Content of frozen article can not be deleted as sysadmin
+    * [CON-2282] - Creating a new client creates an entry in deprecation log
+    * [CON-2293] - Slow loading of frontend-user-paging
+    * [CON-2295] - Articles links to specific languages are broken
+    * [CON-2296] - Code cache generation seems buggy in combination with auth code
+    * [CON-2297] - Deprecated function set_magic_quotes_gpc is called in CONTENIDO code
+    * [CON-2298] - Deleting an article does not delete its versioning info
+    * [CON-2299] - Searching for articles in backend calls deprecated cApiStrTrimAfterWord function
+    * [CON-2300] - Jump lists for images and links do not work for tinymce 4
+    * [CON-2301] - Article versioning header is always shown
+    * [CON-2302] - Several typos / grammar problems in backend messages
+    * [CON-2307] - Used TinyMCE 4 version is outdated, update to 4.1.10
+    * [CON-2310] - Error regarding template.deco.html in browser console
+    * [CON-2318] - Missing German translation at system configuration
+    * [CON-2336] - cDebug graphical output of variables does not work
+    * [CON-2337] - Delete dialog GUI strange when a frontend user is loaded
+    * [CON-2338] - front loginform fallback template is broken
+    * [CON-2341] - Article versioning page title not versioned correctly
+    * [CON-2342] - Editor tab of article does not display loaded version correctly
+    * [CON-2346] - Setup for new installations allows choosing database settings
+    * [CON-2350] - Time control: Offline articles are online at frontend
+    * [CON-2352] - Linkchecker Error
+
+**Improvement
+    * [CON-1343] - Change usage of iconv to cApiRecodeString
+    * [CON-1602] - Minor changes in cApiArticleLanguage for content handling
+    * [CON-1891] - HTML-tags in category and article names
+    * [CON-2058] - PIFA: Deselected CSS class is not removed from field
+    * [CON-2168] - PIFA add configurable logging
+    * [CON-2202] - Versioning: Remember selected article version when switching tabs
+    * [CON-2238] - Performance Improvement: Settings
+    * [CON-2239] - Make often required backend variables accessible via cRegistry-Functions
+    * [CON-2250] - Optimize creation handling for (new) languages
+    * [CON-2268] - Add a title at frontend groups overview
+
+**New Feature
+    * [CON-1068] - Add content versioning feature
+
+** Task
+    * [CON-1764] - Deprecate various resources
+    * [CON-1876] - Remove deprecations of version 4.9.1 and 4.9.3
+    * [CON-1979] - No contact form at English example client
+    * [CON-2114] - Update SwiftMailer
+    * [CON-2200] - Test CONTENIDO Versioning
+
+---------------------------------------------------------------------
+Release 4.9.7
+---------------------------------------------------------------------
+** Bug
+    * [CON-1509] - Util cArray does not work properly
+    * [CON-1716] - Position of lightbox in picture gallery
+    * [CON-1723] - Width alignment of the left frame does not work in backend with Safari 5.1.7
+    * [CON-1813] - TinyMCE searches for templates in contenido/includes
+    * [CON-1856] - Move category to last, empty category tree fails via drag&drop
+    * [CON-1922] - Missing functionality to search inside module context
+    * [CON-1952] - Pifa - import labels with html tags
+    * [CON-1965] - Put a new frontend user into default group fails
+    * [CON-1967] - Search option LIKE does not work
+    * [CON-1970] - PIFA: Error if you create a new form field with empty title
+    * [CON-1972] - Reading client props fails when client hasn't been loaded by ID
+    * [CON-1973] - CMS_FILELIST cannot handle multiple files of same name in different folders
+    * [CON-1978] - Wrong rendering of transparent png files
+    * [CON-1980] - Button for next picture is sometime missing
+    * [CON-1982] - CMS_FILELIST: Manual selection does not work with only one file
+    * [CON-1987] - Module code Validation
+    * [CON-1990] - Redirect url does not contain calling GET params
+    * [CON-1991] - Picture gallery uses wrong path for image scaling
+    * [CON-1992] - Inuse box in backend has wrong style information
+    * [CON-1998] - Missing descriptions for example client modules
+    * [CON-2009] - Articles: Reload right frame after change category template
+    * [CON-2014] - Transparent images: Bug if user used ImageMagick
+    * [CON-2015] - Example client: Wrong article "Blog"
+    * [CON-2016] - Meta Type of new Meta Tag cannot contain spaces
+    * [CON-2017] - duplicated filenames in con_upl
+    * [CON-2024] - Uploading plugins is not possible with missing data/temp folder
+    * [CON-2025] - Error Pifa importer with hidden fields
+    * [CON-2028] - Wrong implementation of client image
+    * [CON-2029] - PIM: Execution order does not works fine at every time
+    * [CON-2030] - Content translations: Wrong module filtering
+    * [CON-2031] - Using CMS_FILELIST may crash page title creation
+    * [CON-2046] - Check UTF8 flag also for false value
+    * [CON-2047] - Cached client logo breaks navigation style
+    * [CON-2048] - PIM: Sometimes you can not delete an plugin (i. e. Smarty Wrapper)
+    * [CON-2049] - Content save fails if a user has CMS_DATE with two or more indexes
+    * [CON-2050] - Wrong image loading in CMS_HTML field at backend raw data tab
+    * [CON-2051] - Fix multiple PHP errors
+    * [CON-2052] - Wrong german translation in frontend user menu
+    * [CON-2053] - Frontend user menu: user icon is not selected per default
+    * [CON-2059] - Module and Template overview: Tooltip display bug at last entry
+    * [CON-2063] - Content: Article: Empty NAME template var
+    * [CON-2064] - Client settings: Wrong display of type with umlauts
+    * [CON-2065] - Default frontend groups lost setting after deselect users
+    * [CON-2069] - Multiple issues with HTML markup and CSS styles
+    * [CON-2070] - pifa.xsd is malformed
+    * [CON-2073] - Newsletter send job fails with more than 200 recipients
+    * [CON-2074] - Umlauts and quotation marks at PIFA
+    * [CON-2075] - Automatically updated online status after save new title with three or more languages
+    * [CON-2077] - Article collector does not respect sort options when loading start articles only
+    * [CON-2078] - Problems with .keep files
+    * [CON-2079] - Test of module code is awfully slow when module is used by many articles
+    * [CON-2080] - System settings: Input field for type is not aligned properly
+    * [CON-2085] - cItemBaseAbstract::isLoaded() is not updated after another load
+    * [CON-2087] - Client specific date-/timeformat leads to wrong public date
+    * [CON-2093] - Rawdata tab does not show all content any longer
+    * [CON-2095] - Pifa import/export with form data
+    * [CON-2096] - AMR rewrites requests to DBFS
+    * [CON-2097] - Tinymce 4 can not include videos in content
+    * [CON-2098] - Misaligned tinymce 4 buttons after saving
+    * [CON-2099] - Cut off confirmation question in Contenido's file and image browser
+    * [CON-2100] - Can not delete fields in raw data tab
+    * [CON-2101] - Ability to reset tinymce4 configuration to default
+    * [CON-2102] - Tinymce 4 button ambiguity
+    * [CON-2103] - Contenido's close button for tinymce 4 does not work in fullscreen mode
+    * [CON-2104] - Left column of CMS_IMGEDITOR redirects page
+    * [CON-2105] - Fix image of confullscreen button
+    * [CON-2106] - Tinymce 4 media plugin may lead to non-editable content fields
+    * [CON-2109] - Caret is lost during tinymce 4 fullscreen switch
+    * [CON-2110] - Unification and integration of buttons
+    * [CON-2111] - Tinymce 4 Youtube integration
+    * [CON-2112] - Tinymce 4 editor window too high
+    * [CON-2113] - Check code cache directory in code generator
+    * [CON-2118] - PIFA: Configure formular assistant at article fails
+    * [CON-2125] - Going back to specific layout history entry is broken
+    * [CON-2126] - Installation of plugins broken
+    * [CON-2127] - Password cronjob file name does not match file name on disk
+    * [CON-2131] - Module content_sitemap_html of example client does not show articles
+    * [CON-2132] - Navigation on left side does not show articles
+    * [CON-2133] - Active tab does not get changed when clicking on an article in overview
+    * [CON-2134] - Disable options to change a frozen article
+    * [CON-2135] - Configuration of frozen article can be edited if no template is specified
+    * [CON-2136] - Frozen article has field to import data
+    * [CON-2137] - Frozen article can be deleted
+    * [CON-2138] - Content escaping for CMS_TEXT incorrect in editor and raw data tab
+    * [CON-2139] - CMS_DATE has erroneous escaping in editor
+    * [CON-2140] - CMS_DATE may output its value using a wrong locale
+    * [CON-2141] - Frontend task: CMS_TEASER may use too much width in example client
+    * [CON-2142] - CMS_FILELIST has wrong escaping of its file list title
+    * [CON-2144] - Check if newly synchronised articles are shown instantly
+    * [CON-2145] - Raw data export does not use file suffix
+    * [CON-2146] - Raw data import not possible in an empty editor
+    * [CON-2148] - Offline category can be visited in frontend
+    * [CON-2151] - Rawdata import relates to given articleId in xml file
+    * [CON-2152] - Escaping of Content -> Translations is not correct
+    * [CON-2153] - Module file changes must trigger a regen of cache
+    * [CON-2154] - Truncating content inside modules gives strange messages or is not possible
+    * [CON-2156] - Empty language name in backend possible
+    * [CON-2157] - Categories can not be configured
+    * [CON-2158] - Tinymce 3 toolbar has wrong styling in content_link_list
+    * [CON-2159] - Module content_map_google utilises wrong localisation variable
+    * [CON-2161] - Module content_rss_creator does not save its output correctly
+    * [CON-2162] - Not correct escaping of CMS_TEXT may break ability to edit content.
+    * [CON-2164] - Module content_user_forum has broken escaping of special chars
+    * [CON-2165] - Module form_contact or pifa form assistant broken.
+    * [CON-2167] - Missing translations in form_contact module
+    * [CON-2169] - CSV export of PIFA contains too many columns
+    * [CON-2170] - German blog article 2 content mistake
+    * [CON-2174] - Module content_socialmedia_googleplus does not check for protocol of entered URL
+    * [CON-2175] - Facebook modules do not escape variables properly
+    * [CON-2176] - Modules script_tracker_google and script_tracker_piwik do not properly escape special chars
+    * [CON-2177] - Newsletter modules have broken newlines in description
+    * [CON-2180] - Module content_rss_creator may create invalid XML
+    * [CON-2181] - CMS_HEAD does not properly deal with input
+    * [CON-2182] - Contact form table of example client does not use table prefix
+    * [CON-2184] - Syntax error in form assistant export page
+    * [CON-2186] - Internal Server error if database information is wrong during setup
+    * [CON-2193] - Invalid filenames cause internal server error when creating client
+    * [CON-2194] - Search terms using example client are not properly escaped
+    * [CON-2196] - Entry in error log when visiting any module with no templates
+    * [CON-2205] - Fresh install without example client and without example modules do not allow accessing backend
+
+** Improvement
+    * [CON-1422] - User settings: Validate date formats
+    * [CON-1454] - PIM: Various changes for GUI
+    * [CON-1536] - Remove all PHP comments on replacing content types and dynamic variables
+    * [CON-1690] - Change exception logging behaviour
+    * [CON-1814] - Rework password forgot system
+    * [CON-1816] - Mailserver password input type should be password instead of text
+    * [CON-1850] - Reload left frame after delete layout
+    * [CON-1855] - Reload left frame after activate/deactivate language at editmodus
+    * [CON-1917] - Do not evaluate modules with syntax errors
+    * [CON-1931] - Add precise error message for missing config files or db connectivity
+    * [CON-1950] - Exclude svg files from rewriting
+    * [CON-1968] - Perform PIM translations
+    * [CON-1975] - Replace all occurencies of readdir, opendir and closedir with methods of cDirHandler
+    * [CON-1976] - Using CMS_FILELIST with not existing files/directories leads to several errors
+    * [CON-1981] - Reload left frame after add new modules
+    * [CON-1989] - CMS_TEXT: Change to cHTMLTextarea
+    * [CON-1994] - Link generation in module script_cookie_directive
+    * [CON-1999] - PIM: Add tooltip to execution order buttons
+    * [CON-2000] - PIM: Force execution order on plugins with dependencies
+    * [CON-2001] - AJAX requests does not handle expired sessions
+    * [CON-2002] - Error in module display on template configuration with fixed containers
+    * [CON-2012] - Turn "Module translation not found"-message off via getEffectiveSetting
+    * [CON-2026] - Add template descriptions to menu as tooltip
+    * [CON-2076] - Performance improvement class.category.helper.php -> getSubcategories
+    * [CON-2089] - Editor for CMS_HTMLHEAD should have less options available for editing than CMS type CMS_HTML has.
+    * [CON-2090] - Add save button in TinyMCE 4 fullscreen mode
+    * [CON-2091] - Add separate configuration for different content types for TinyMCE 4
+    * [CON-2092] - Frontend tests for new TinyMCE 4
+	
+** New feature
+    * [CON-1890] - cArticleCollector: Sort by title
+    * [CON-1919] - Userforum: Show all not moderated comments on start page
+    * [CON-1969] - Add new chains ConMakeOnline, ConMakeStart and ConMakeCatOnline
+    * [CON-1984] - PIM: Show plugin dependencies at overview page
+    * [CON-1997] - language setting for backend user to preselect language
+
+** Task
+    * [CON-2108] - Update copyright year
+    * [CON-2115] - Update Smarty library
+	
+** Technical task
+    * [CON-2018] - Preparation: Remove unused code from current implementation
+    * [CON-2019] - Preparation: Remove flash plugin related code.
+    * [CON-2020] - Check GZip compressor
+    * [CON-2021] - Create initial structure for TinyMCE 4
+    * [CON-2022] - Reimplement the behaviour of TinyMCE callbacks
+    * [CON-2023] - Test the updated TinyMCE 3
+    * [CON-2027] - Make paths and URLs to WYSIWYG editor variable
+    * [CON-2032] - Implementation of TINYMCE 4 in inline Mode
+    * [CON-2033] - System configuration: Respect insite-editing setting in tinymce 4
+    * [CON-2034] - Re-work Tinymce 3 list.php script for tinymce 4
+    * [CON-2036] - Adjust toolbars for tinymce 4
+    * [CON-2037] - Support for DBFS files
+    * [CON-2038] - Reimplement cleanup_callback behaviour
+    * [CON-2039] - Fix / Adopt link list functionality
+    * [CON-2040] - Implement link list submenus
+    * [CON-2041] - Display issues for file browser
+    * [CON-2042] - Allow customization for TinyMCE
+    * [CON-2045] - Update documentation for TinyMCE 4
+    * [CON-2054] - Implement undo in tinymce 4 inline editor.
+    * [CON-2055] - Change the backend loading of urls.
+    * [CON-2057] - Tinymce 4 configuration page
+    * [CON-2060] - TinyMCE4 configuration page: Tiny plugins and save process
+    * [CON-2061] - TinyMCE4: Add chain, change config implementation, add TinyMCE3 page
+    * [CON-2072] - TinyMCE3/4: Wrong HTML entity output
+    * [CON-2083] - Tab overview not correct after choosing not to leave on confirmation question
+
+---------------------------------------------------------------------
+Release 4.9.6
+---------------------------------------------------------------------
+** Bug
+    * [CON-1996] - XSS-vulnerability in request validation
+
+---------------------------------------------------------------------
+Release 4.9.5
+---------------------------------------------------------------------
+** Bug
+    * [CON-1585] - Breadcrumb shows empty element for not synchronized categories
+    * [CON-1588] - Normalize return values in all ItemCollection->create() function
+    * [CON-1589] - Escaping or typecasting in ItemCollection classes
+    * [CON-1623] - Search does not consider special frontend user permissions for categories
+    * [CON-1659] - Generic DB: Don't escape strings in cApi* classes
+    * [CON-1663] - Usage of parent:: instead of $this-> in Item and ItemCollections
+    * [CON-1677] - Usertable: Change valid_from and valid_to columns to datetime
+    * [CON-1693] - PIFA: Dragging form field icons style issues
+    * [CON-1768] - Path to CONTENIDO backend is not custom configurable for clients
+    * [CON-1795] - Wrong publish date after delete article-redirection
+    * [CON-1836] - TinyMCE forgets settings after saving and staying in editor
+    * [CON-1848] - Filemanager: Image opens two times at Firefox
+    * [CON-1861] - Save IMGEDITOR at rawdata redirects to "Editor"
+    * [CON-1873] - Example client: privacy policy link on newsletter form page is missing
+    * [CON-1874] - PIFA: Mail error when client mail template is empty and ignored encoding
+    * [CON-1879] - Error at article properties after submit form and then change client language
+    * [CON-1881] - Can not delete frontend user if I haven't select some existing user
+    * [CON-1882] - Create new article: Wrong preselected category
+    * [CON-1884] - Filelist: Can not select single directory without directory tree
+    * [CON-1885] - Generating keywords does not work correctly
+    * [CON-1886] - cApiLanguageCollection->nextAccessible
+    * [CON-1887] - Multiple issues with mass synchronization
+    * [CON-1888] - Switching languages causes errors in certain situations
+    * [CON-1893] - Failed database connection is not checked properly
+    * [CON-1894] - Login page: Wrong generated url if AMR is active
+    * [CON-1895] - CMS_IMGEDITOR at rawdata tab does not show changes without reload rawdata tab
+    * [CON-1897] - Wrong defined icon at deletefunction css-class
+    * [CON-1898] - AMR: Incomplete error message if user has no rights to write files
+    * [CON-1899] - Bugs with create and delete groups
+    * [CON-1900] - AMR: Missing English translations for ModRewrite_ContentExpertController class
+    * [CON-1901] - Search at file- and imagebrowser
+    * [CON-1902] - Frontend search with single quotation mark throws sql error
+    * [CON-1907] - Article: Show workflow fast search only if workflow plugin is installed and active
+    * [CON-1909] - MOD REWRITE Storage of Config and QUERY STRING Behaviour
+    * [CON-1913] - Perform German translation for module content_sitemap_html
+    * [CON-1914] - PIFA: Add dependence for smarty plugin
+    * [CON-1916] - Usage of multiple CMS_DATE content types with same index will crash page
+    * [CON-1923] - filelist: selction of a file / file doesn't exist
+    * [CON-1925] - Prepared statements get wrong colum values
+    * [CON-1926] - Newsletter groups: Wrong umlauts
+    * [CON-1927] - Style -> HTML: Closing textarea tag breakes text field
+    * [CON-1928] - Mass translation: Several bugs with more than two languages
+    * [CON-1930] - Can not close (open) "Navigation (Members)" box
+    * [CON-1941] - Preconfiguration changes at duplicated templates
+    * [CON-1942] - Content Types: Does not save changes
+    * [CON-1946] - Newsletter: Warning message after delete recipients
+    * [CON-1948] - Wrong cfgTab entry at class.keyword
+    * [CON-1953] - CMS_TEASER manual date setting
+    * [CON-1955] - Warning when fetching table with item collection
+    * [CON-1956] - Switch example client dirs to setup dir
+    * [CON-1958] - Wrong or missing module types
+    * [CON-1960] - Edit CSS for new module
+    * [CON-1962] - Problem with byte-by-byte post_max_size value
+    * [CON-1963] - getLastInsertedId in class.db.driver.handler.php returns wrong value
+    * [CON-1964] - ItemCollection::deleteByWhereClause yields an error w/o matching items
+    * [CON-1966] - CONTENIDO (sometimes) generates a wrong search index
+    * [CON-1977] - Add array check for deleteByWhereClause method
+    * [CON-1985] - Article include module does not load category template configuration
+    * [CON-1986] - Create/edit user: Error if admin select two or more clients and languages
+
+** Improvement
+    * [CON-1517] - Search for all module translations on upgrade
+    * [CON-1601] - Add new convenience methods for cAuth handlers
+    * [CON-1649] - FormAssistant: Form field email
+    * [CON-1683] - CMS_IMGEDITOR: Sort files in select field
+    * [CON-1686] - Add database host, client IDs and encoding to languages on system variables page
+    * [CON-1715] - Rename content list action
+    * [CON-1787] - Add getTimeFormat to cContentTypeDate
+    * [CON-1788] - Add check for config.clients.php before include
+    * [CON-1838] - Various encoding improvements
+    * [CON-1845] - Harmonize notation of "Contenido" at Example Client
+    * [CON-1872] - Make filter for css/js/html files switchable
+    * [CON-1875] - Meta Tags need a key in the layout
+    * [CON-1880] - Show article properties mass synchronisation only if we have three or more client languages
+    * [CON-1892] - Module ArticleInclude: Move Configuration to "Edit-Tab"
+    * [CON-1906] - Layout synchronization: Add a summary with synchronized layouts
+    * [CON-1908] - File manager: Image preview does not support transparent images
+    * [CON-1943] - PIM: Plugin dependencies at uninstall mode
+    * [CON-1949] - Loading Languages for synchonisation check
+    * [CON-1959] - Delete "head"-type for system layout
+
+** New Feature
+    * [CON-1575] - Add CMS_RAW as new content type without frontend display
+    * [CON-1576] - Move configuration of skipped content types on search index to configuration
+    * [CON-1842] - Add new placeholder for layouts to set ressource revisions
+    * [CON-1911] - Add the new article include module to example client
+    * [CON-1932] - Implementing responsive CONTENIDO example client
+
+** Task
+    * [CON-1587] - Disable required registration of chains in CEC registry
+    * [CON-1821] - Check backend resources for usage with HTTPS
+
+---------------------------------------------------------------------
+Release 4.9.4
+---------------------------------------------------------------------
+** Bug
+    * [CON-1555] - Umlauts: Multiple encoding problem with iso language
+    * [CON-1626] - Missing wrongpass=1 parameter in login error page redirection
+    * [CON-1666] - PIFA generates empty export file if no data content exists
+    * [CON-1676] - Implement validation for assigned languages for a user
+    * [CON-1678] - Setting title in CodeGenerator
+    * [CON-1698] - Remove deprecated inline JS for backend pages
+    * [CON-1706] - Prevent unnecessary reload of left_bottom frame in file manager
+    * [CON-1720] - Setup fails because of missing write permissions
+    * [CON-1732] - Can't change sometimes picture in CMS_IMGEDITOR and same JS error with PIFA
+    * [CON-1748] - Article duplication causes PHP-warning in error log
+    * [CON-1759] - Removal of the deprecated warning for inline JS
+    * [CON-1763] - Uploads to upload root folder
+    * [CON-1766] - Revision of the social media modules / Bugfixing
+    * [CON-1767] - Implement check for valid environment variable
+    * [CON-1769] - Link selection shows empty lines for articles in category
+    * [CON-1770] - Newsletter - mail job details are not displayed
+    * [CON-1771] - PIM: Can not install plugins via Zip archives
+    * [CON-1772] - Wrong generated meta tags
+    * [CON-1773] - Misleading translation in german
+    * [CON-1774] - Menu icons are not aligned properly
+    * [CON-1777] - cCategoryHelper: Depth for subcategories is not based on requested category
+    * [CON-1778] - Code generator standard replaced title-tag in not only in head area of layout
+    * [CON-1779] - Add upgrade job to switch AMR and url_shortener plugin from "Content" to "Extras" navigation
+    * [CON-1780] - Blank page at PHP version 5.4 or higher with Smarty plugin
+    * [CON-1781] - Perform display of CMS_TEASER
+    * [CON-1784] - Improper check of modified values in Generic DB
+    * [CON-1785] - Many bugs with (HTML) newsletter plugin
+    * [CON-1786] - Tagging plugin: Can not open tree after closing
+    * [CON-1789] - Fatal error in CMS_FILELIST for configured but not existing files
+    * [CON-1791] - Small issues with the CMS_LINKEDITOR
+    * [CON-1792] - Escaped seqeuences in module input lead to errors
+    * [CON-1794] - Upload articelist: Backend displayed not existing articles
+    * [CON-1796] - Password reset message could be slightly improved :-)
+    * [CON-1797] - Problems with magic_quotes in some file editors
+    * [CON-1798] - Frontend user: Empty FORM template variable at right_bottom frame
+    * [CON-1802] - No permission for simple user with frontend group create right
+    * [CON-1806] - Multiselect deletion for multi assigned articles failes
+    * [CON-1808] - PIFA: overfluous "for"-attribute for main label of radio buttons
+    * [CON-1809] - PIFA: missing "alt"-attribute of captcha image
+    * [CON-1810] - CONTENIDO displays an Internal Server Error after installing without client
+    * [CON-1811] - Auto generated Metatags are not valid
+    * [CON-1817] - Generic DB class ItemCollection may return wrong value on a delete actions
+    * [CON-1822] - PIFA: Failed translation at contact formular
+    * [CON-1823] - PIFA: Empty header template variables after delete an formular
+    * [CON-1825] - PIFA: Encoding problems with umlauts at CSV export
+    * [CON-1827] - PIFA: Load Xml failes after define new form table name
+    * [CON-1828] - Userforum: Can not find right_bottom template
+    * [CON-1829] - Sometimes backend displayed it can not find css and js files
+    * [CON-1831] - Newsletter: No log entries via jobs
+    * [CON-1834] - Directory contenido/cache is missing
+    * [CON-1835] - Encoding problems with client settings
+    * [CON-1840] - Timed moving of articles does not work
+    * [CON-1844] - Reminder emails are always being sent from "info@contenido.org"
+    * [CON-1852] - Create new CSS/JS/HTML: CONTENIDO displayed error message, but it works
+    * [CON-1853] - CSS and JS edit: Switch from history to file-edit produces error
+    * [CON-1858] - Formular assistant: Backend does not find jquery file
+    * [CON-1859] - AMR-Plugin: Wrong icon is displayed in info message when a copy action fails
+    * [CON-1860] - Empty template var at editing article and category options for groups
+    * [CON-1862] - CONTENIDO shows error messages sometimes more than one time
+    * [CON-1864] - Content - Article - Tagging: Prevent warning messages for css- and js-files
+    * [CON-1868] - Mail log: Prevent warning message for not founded template
+    * [CON-1870] - Articles don't get properly deleted
+    * [CON-1871] - Filtering of logs by action does not work
+
+** Improvement
+    * [CON-1625] - Add high z-index to all content type icons
+    * [CON-1683] - CMS_IMGEDITOR: Sort files in select field
+    * [CON-1689] - Implement article import and export on rawdata tab
+    * [CON-1691] - Do not longer lock move function for articles when they are synchronized
+    * [CON-1710] - Prevent moving articles into categories which have no assigned template
+    * [CON-1775] - cGuiPage: extend searching for CSS and JS for plugins
+    * [CON-1799] - cGuiFileOverview: Add file extension filter
+    * [CON-1800] - Add session timeout for frontend login
+    * [CON-1805] - Improve multi assignments for (new) articles
+    * [CON-1819] - Display synchronization of module only for changed modules
+    * [CON-1826] - PIFA: Change filename for CSV and Xml export
+
+** New feature
+    * [CON-1603] - PIFA: Add inuse functionality
+    * [CON-1656] - Implement readonly mode for data in filesystem
+    * [CON-1692] - Implement synchronization status for article
+    * [CON-1776] - cGuiPage: Implement warning message for not existing resources
+    * [CON-1801] - Add option to define collations for database
+
+** Task
+    * [CON-1638] - Search keywords generation: Check problems with multi-encoding keywords
+    * [CON-1762] - Update copyright year
+    * [CON-1765] - Review guides and split upgrade guide in two articles
+
+
+---------------------------------------------------------------------
+Release 4.9.3
+----------------------------------------------------------------------
+** Bug
+    * [CON-808] - JavaScript namespacing in backend
+    * [CON-1511] - Method advanceID in cHTML replaces possible set ID attribute from cHTML constructor
+    * [CON-1520] - Equal signs (=) in stored CMS_VALUE's aren't escaped
+    * [CON-1528] - Keywords of an article are not deleted when article is removed
+    * [CON-1530] - Lost and found entries breaks editor due to missing category id
+    * [CON-1534] - Filemanager: Can not change into dbfs after delete a directory
+    * [CON-1548] - Manual teaser entries can not be removed via delete button
+    * [CON-1550] - Content: Articles: Editor does not save CMS_DATE changes with time
+    * [CON-1551] - setAlt overwrites previously set title attribute value
+    * [CON-1557] - Expand state for categories is not saved correctly
+    * [CON-1561] - Fix doctype declarations in backend
+    * [CON-1564] - Module test control images are not aligned with text
+    * [CON-1566] - PIFA does not dynamically create upload folder for files
+    * [CON-1567] - Synchronized categories can not be deleted unless they are empty in all languages
+    * [CON-1569] - Issue with used path in module import/export
+    * [CON-1572] - Fix translation identifier TEASER_START_ARTICLE in CMS_TEASER
+    * [CON-1577] - PIM: Can not create new content types
+    * [CON-1579] - Delete articles without a start article is not possible in IE8
+    * [CON-1581] - Invalid ternary operator expression for PHP lower than version 5.3
+    * [CON-1582] - Invalid retrieving of system property in cAjaxRequest
+    * [CON-1592] - Double quotes (") in stored CMS_VALUE's aren't escaped
+    * [CON-1593] - Empty page on failed FE login
+    * [CON-1595] - Reloading of module detail on hovering navigation
+    * [CON-1596] - Local configuration files for clients are not loaded
+    * [CON-1597] - JavaScript error in empty upload directories
+    * [CON-1598] - Fallback for not found validator class names rely on wrong filenames
+    * [CON-1599] - JavaScript error while initializing CodeMirror in empty histories
+    * [CON-1600] - Don't return login page for unauthorized AJAX calls
+    * [CON-1605] - Plugin workflow: Render menu in left_bottom frame within body tag
+    * [CON-1622] - Issue with loading multiple jQuery versions in Backend edit view
+    * [CON-1624] - SEO administration does not log proper idaction
+    * [CON-1628] - Directory permission check on upgrade for data/layouts although not existing
+    * [CON-1640] - Can not delete content types at rawdata
+    * [CON-1641] - Can not add a new article as user without adminrights
+    * [CON-1642] - SEO: Can not delete meta tag types
+    * [CON-1643] - System configuration "Clickable menu in backend" does not work
+    * [CON-1644] - Parseerror when loading timepicker-de.js via Ajax
+    * [CON-1646] - PHP Warning open_basedir in cModuleHandler
+    * [CON-1648] - FormAssistant: Error in CSV building function
+    * [CON-1650] - Upload in DBFS
+    * [CON-1651] - cGuiPage can't handle JS or CSS files with query path
+    * [CON-1652] - Some jQuery selectors do not work in special IE configurations
+    * [CON-1653] - Disabling usage of CodeMirror doesn't work
+    * [CON-1654] - CodeMirror: Finalize full screen support
+    * [CON-1657] - Client settings: Escaping values
+    * [CON-1658] - Multiple issues with scroll properties in IE 11
+    * [CON-1660] - Missing cache folder in new created clients
+    * [CON-1661] - Editor and raw data tab have confusing behaviour
+    * [CON-1664] - Example client contains lost and found articles
+    * [CON-1667] - Simple user without sysadmin- and adminrights can not enter some areas
+    * [CON-1668] - Remove function to rename dirs at filemanager
+    * [CON-1669] - Reload left frame after execute actions
+    * [CON-1670] - Duplicated template can not set automatically as default template
+    * [CON-1671] - Strict warning in class.module.filetranslation.php
+    * [CON-1672] - Form Assistant import does not work after new installation
+    * [CON-1673] - CMS_LINKEDITOR: Creating new upload folder in popup dialog
+    * [CON-1700] - Forwarded content types are not displayed in select list for CMS_TEASER
+    * [CON-1701] - Files do not have "/" in column dirname when uploaded or synchronized
+    * [CON-1702] - File manager - Can' delete folder
+    * [CON-1705] - Incorrect content type recognition
+    * [CON-1712] - CMS_FILELIST: Can not define only one fileextension
+    * [CON-1713] - CMS_FILELIST: Script ignore filelimit
+    * [CON-1714] - CMS_FILELIST: Manual selected file missing at filelist
+    * [CON-1717] - Problem with moving categories
+    * [CON-1718] - Deleting a directory in the file management does not work properly
+    * [CON-1719] - Synchronizing categories does not work
+    * [CON-1721] - Visual Editing of templates prevents deleting
+    * [CON-1722] - Deletion of content at article list (rawdata) does not work.
+    * [CON-1724] - Error handling offline/not present language in the frontend
+    * [CON-1725] - It is not possible to remove a new created folder at the file management page with IE7
+    * [CON-1726] - Button to create new Templates is missing with IE7
+    * [CON-1727] - Deinstallation of plugins using PIM is not possible with IE7
+    * [CON-1728] - Users are not shown at the group membership management page using IE7
+    * [CON-1729] - Creating a new language does not work using IE7
+    * [CON-1730] - Tinymce does not work in IE 11
+    * [CON-1732] - Can't change sometimes picture in CMS_IMGEDITOR
+    * [CON-1733] - Can't set link on the uploaded picture first time(CMS_LINKEDITOR).
+    * [CON-1734] - CMS_TEASER CSS-problem in IE 7
+    * [CON-1735] - IE7 does not load sometimes the content frame
+    * [CON-1736] - CMS_LINKEDITOR checkbox label placed in a wrong line
+    * [CON-1737] - Selection of one file extension in CMS_FILELIST causes PHP-warning in errorlog.txt
+    * [CON-1738] - PIFA: rename to existing table
+    * [CON-1739] - Can't edit frontendusers in IE 7
+    * [CON-1740] - Can't delete client in IE 7 if edit frame is loaded
+    * [CON-1741] - Can't delete layout after edit in IE 7
+    * [CON-1742] - Can't change category template in article area twice
+    * [CON-1745] - Article synchronisation does not work in any browsers.
+    * [CON-1746] - Can't remove folder in IE 7
+    * [CON-1747] - Javascript errors while changing language in article area
+    * [CON-1749] - Display locked categories at article overview list
+    * [CON-1750] - Layout navigation flickers on hover
+    * [CON-1751] - Switching to cGuiPage for page rendering to provide full IE7 support.
+    * [CON-1752] - Double duplication of Article
+    * [CON-1753] - Enabling the backend debuging has no effect
+    * [CON-1754] - IE7: Strange visual glitch after upgrade from 4.8.19
+    * [CON-1755] - IE7 always displays an error when editing client settings
+    * [CON-1756] - Inconsistent behavoir: toggle categories online/offline at article overview and categorie overview page
+    * [CON-1757] - Edit todo-entries: Missing datetimepicker
+    * [CON-1758] - Module importer should show a notification for invalid XML-files
+
+** Improvement
+    * [CON-1408] - PIFA: Add functions to import and export forms
+    * [CON-1412] - One right for edit/save translations
+    * [CON-1439] - Make quality of image scaling configurable
+    * [CON-1493] - Add switch for HTTP status code on article redirect
+    * [CON-1538] - Fix smarty classes used in CONTENIDO
+    * [CON-1554] - Minimize options for not-synchronized articles
+    * [CON-1563] - Specify "other configuration files" in upgrade process
+    * [CON-1568] - Move directory related methods from cFileHandler to cDirHandler
+    * [CON-1580] - Do not break the header navigation on missing plugin navigation entries
+    * [CON-1608] - Linkchecker: Translate and specificate error types at error overview page
+    * [CON-1609] - Simplify resizing top left frame in backend
+    * [CON-1610] - Simplify accessing frames via JS in backend
+    * [CON-1611] - JavaScript: Application properties/configuration for the backend pages.
+    * [CON-1612] - Standardise toggling left frame
+    * [CON-1613] - Standardise markup/css in frame "left_top".
+    * [CON-1614] - Move JavaScript code in templates to the bottom of the pages.
+    * [CON-1615] - JavaScript: Move common startup related logic to a separate module
+    * [CON-1616] - Extend CONTENIDO backend templates handling.
+    * [CON-1617] - New feature to cGuiPage to to add body class attribute values.
+    * [CON-1618] - JavaScript: Port some backend scripts to modules
+    * [CON-1619] - Rework include.CMS_*.php files
+    * [CON-1620] - Fix URL detection in client web address
+    * [CON-1621] - Simplify code to get subnavigations in all subnav includes
+    * [CON-1636] - JavaScript: Rework dependency loader
+    * [CON-1637] - Move includes (pages) related assets (css, js) to a separate folder
+    * [CON-1655] - Form assistant should support the type button as form element
+    * [CON-1665] - PIM: Save plugin-specific actions at relations database table
+    * [CON-1699] - Add tabindexes for new usercomment
+    * [CON-1703] - Improve content type handling in article language objects
+    * [CON-1704] - Add convenience methods for some content types
+    * [CON-1743] - Performe German translations for action-userrights
+    * [CON-1744] - Change German "Hinzufügen" and "Entfernen"
+
+** New feature
+    * [CON-684] - Implement search term tracking
+    * [CON-1163] - Article related log entries should be displayed in a table on properties page
+    * [CON-1170] - Content - Article: Position of the tabs
+    * [CON-1184] - AMR Plugin in Content Area
+    * [CON-1199] - Linkchecker: Repair common mistakes in links
+
+** Task
+    * [CON-1224] - Write unit tests for all Generic DB classes and methods
+    * [CON-1383] - Remove redundant code in cContentType classes
+    * [CON-1456] - PIM: Show plugin specific navigation entries at PIM overview page
+    * [CON-1507] - Write unit tests for all cHTML classes
+    * [CON-1508] - Write unit tests for cArticleCollector
+    * [CON-1584] - Replace usage of exif_imagetype in CMS_FILELIST
+    * [CON-1681] - Check necessity of various upgrade jobs
+
+---------------------------------------------------------------------
+Release 4.9.2
+----------------------------------------------------------------------
+** Bug
+    * [CON-1521] - Users can not be deleted on rights management pages
+    * [CON-1541] - Path to uploads is not properly replaced when using classes in TinyMCE
+    * [CON-1543] - The module "content_auto_indexing" is added via SQL although it is not part of example client
+    * [CON-1544] - Single page TinyMCE editor loads tiny_mce.js with relative path
+    * [CON-1545] - Deleting articles with IE8 is not possible
+    * [CON-1546] - Two PHP errors in workflow plugin
+    * [CON-1547] - Saving the default template once again will remove its default flag
+    * [CON-1556] - Can not create new category tree with parentId 0 at new client
+    * [CON-1559] - Wrong display of modules with umlauts after upgrade
+    * [CON-1560] - Upgrade: Database error with module translations
+    * [CON-1562] - Setup process does not find cfgClient variable
+
+---------------------------------------------------------------------
+Release 4.9.1
+----------------------------------------------------------------------
+** Bug
+    * [CON-1268] - Different layout of tables on system settings page
+    * [CON-1294] - Tooltip for action workflow_inherit_down in category overview
+    * [CON-1404] - Administration User: Problems with special characters
+    * [CON-1405] - Administration Frontend: Problems with user name and "
+    * [CON-1406] - Administration System: 2nd level Categories disappear
+    * [CON-1418] - Right frames are not updated correctly when user was created
+    * [CON-1419] - Password field is autocompleted when editing own user account
+    * [CON-1424] - Edit articles: Display bug with mouseover images
+    * [CON-1426] - Article redirects: Bug with umlaut domains on Mozilla Firefox
+    * [CON-1427] - ToDo: Can not edit time with date / time selector
+    * [CON-1429] - Invalid validation of article redirect URL
+    * [CON-1430] - Invalid validation of SEO fields
+    * [CON-1433] - PIFA: Method was not selected
+    * [CON-1435] - Layout: comment - Text runs out of the gray box
+    * [CON-1436] - Freezing article does not totally prevent editing
+    * [CON-1440] - Invocation of chmod in class.filehandler.php may throw a warning
+    * [CON-1442] - Rework category renaming logic (action str_renamecat)
+    * [CON-1446] - AMR Controller - Multiple Domains
+    * [CON-1449] - Some database queries do not respect table prefix
+    * [CON-1450] - Missing login action in database
+    * [CON-1451] - AMR plug-in: Replacement of server variable REQUEST_URI breaks plug-in logic
+    * [CON-1452] - Multiple issues with SEO tab
+    * [CON-1453] - Code generator ignores fieldname on custom meta tags
+    * [CON-1455] - PIFA: rights for formfield and form data tabs
+    * [CON-1457] - Convert letters with accents & umlauts to ascii equivalents
+    * [CON-1458] - Leftover of old class name Contenido_Auth in effective setting class
+    * [CON-1462] - Fix magic_quotes_gpc handling in globals_off.inc.php
+    * [CON-1463] - Missing German translation for "All modules already synchronized"
+    * [CON-1464] - Some trouble with module import / export, module names and deleting modules
+    * [CON-1465] - Module synchronization: Misrepresentation for write authorisation
+    * [CON-1468] - No fallback and error message when calling database driver handler without options
+    * [CON-1472] - CMS_LINKEDITOR does not use cUriBuilder for internal links
+    * [CON-1478] - Module translation: ALT+SHIFT+S doesn't jump to next line
+    * [CON-1481] - Duplicate entries by template's renaming
+    * [CON-1483] - Article bulk editing does not check permissions
+    * [CON-1484] - Missing permission checks in action code files
+    * [CON-1488] - Wrong logic in function autoFill by class.html.selectelement.php
+    * [CON-1489] - Content-edit, WYSIWYG editor: Align management has no effect
+    * [CON-1495] - cRequestValidator::CHECK_BELANG is hard coded
+    * [CON-1499] - Tricky problem with wrong php syntax at module input / output
+    * [CON-1500] - Can not create same template name at two difference clients
+    * [CON-1501] - Userforum: User can see post titles from other clients at backend
+    * [CON-1503] - Userforum: Cite function does not work correct
+    * [CON-1504] - Implode and error bug with test newsletter
+    * [CON-1505] - Backend want to include right_top frame, but can not find include.right_top.php
+    * [CON-1506] - Add plausibility check on moving categories
+    * [CON-1510] - Retrieval of database table metadata does not work
+    * [CON-1512] - Linkchecker cronjob does not work
+    * [CON-1513] - Upgrade fails for client folder not named "cms"
+    * [CON-1518] - Check missing teaser image CMS_IMG
+    * [CON-1519] - Possible security vulnerability in example modules
+    * [CON-1522] - Restore removed action "front_allow"
+    * [CON-1523] - Invalid PHP version check in setup
+    * [CON-1524] - Setting "Mailserver encryption" under "System configuration"
+    * [CON-1525] - Fix retrieving of value for settings having value '0' or empty string ''
+    * [CON-1526] - Active url_shortener plugin breaks SEO tab
+    * [CON-1527] - Module translation: Wrong mark for active string
+    * [CON-1529] - Encoding problem with utf8 and password request
+    * [CON-1531] - PIM: You can not use backticks for tablenames
+    * [CON-1534] - Filemanager: Can not change into dbfs after delete a directory
+    * [CON-1535] - Content: Translations: Wrong pages
+    * [CON-1542] - New templates are assigned to client 0
+
+** Improvement
+    * [CON-933] - PIM: Move the installationRoutine function into classes
+    * [CON-1110] - picture gallery of the example client: Improve navigation within pictures
+    * [CON-1188] - Content - File Manager: Special character in file name
+    * [CON-1335] - Add validation for server path and web address at client settings
+    * [CON-1358] - PIM: Optimize method for specific sql files to update plugins
+    * [CON-1361] - PIM: Add checkbox whether uninstall SQL file should be executed or not
+    * [CON-1409] - PIM: Add attribute "relevant" for actions to plugin XML file
+    * [CON-1443] - Change usage of $cfg['version'] to new constant CON_VERSION
+    * [CON-1444] - Do not show buttons for actions the current user has no permissions
+    * [CON-1445] - All grey icons should have title attribute with explanation for unavailable action
+    * [CON-1459] - Setting for ImageMagic usage
+    * [CON-1460] - PIM: Add a message for updated plugins
+    * [CON-1461] - PIM: Add a message for installed plugins
+    * [CON-1473] - Add confirmation dialog when deleting content from tab "raw data"
+    * [CON-1474] - Make height of CodeMirror editor boxes changable
+    * [CON-1475] - Adapt the AMR styled help boxes to core and replace all previous help boxes
+    * [CON-1476] - Connect labels with their checkboxes on system purge and article properties page
+    * [CON-1477] - Display cancel button on template configuration when no template is selected
+    * [CON-1479] - Reset backend menu activity state when clicking on the logo or MyCONTENIDO icon
+    * [CON-1485] - Include jQuery to legacy content type files for CMS_HTML and CMS_HTMLHEAD
+    * [CON-1487] - Remove invalid mail address noreply@contenido-passwordservice.de
+    * [CON-1497] - Image URLs are not properly replaced in inline TinyMCE after save
+    * [CON-1498] - Setup: Add support for typing host + socket for DB connection
+
+** New Feature
+    * [CON-1149] - Add new frontend debugging
+    * [CON-1209] - Implement (unattended) setup via console
+    * [CON-1366] - PIM: Add up and down arrow buttons for new execution order
+
+** Task
+    * [CON-568] - Implement a function to handle HTTP-Requests
+    * [CON-1447] - Replace usage of escapeshellcmd() against escapeshellarg()
+    * [CON-1467] - Please update German language file before release
+    * [CON-1470] - Implement the new facebook embedded post modules into example client
+    * [CON-1480] - PIM: Optimize update routine
+
+
+---------------------------------------------------------------------
+Release 4.9.0
+---------------------------------------------------------------------
+** Bug
+    * [CON-321] - Search index generates no keyword entries for keywords with encodings like utf-8
+    * [CON-870] - Extras-Workflow: problems with special characters
+    * [CON-893] - Some problems with = or new lines in module translations
+    * [CON-994] - redundant code in function addNaviActions() in cmsLinkeditor.js
+    * [CON-1009] - Normalize id and class selectors in the styles of the example client
+    * [CON-1024] - Language chooser and icons are not on one line
+    * [CON-1025] - CMS_LINK without proper configuration creates wrong URLs
+    * [CON-1026] - Catchable fatal error on empty file lists
+    * [CON-1027] - German umlauts in title of CMS_LINKEDITOR cause problems with XML structure
+    * [CON-1028] - PIM: Use reg_exp for parsing specific sql-queries
+    * [CON-1030] - Usage of deprecated Classes
+    * [CON-1031] - Synchronizing modules does not update the module description
+    * [CON-1032] - Double quotes in module description are escaped too often
+    * [CON-1034] - Editing of TPL client templates
+    * [CON-1035] - is_dir() check error with open_basedir restriction setting
+    * [CON-1038] - Undefined function stripslashes_deep()
+    * [CON-1041] - Different field lengths in tables.txt
+    * [CON-1042] - Parsing mi18n in large files can cause segmentation fault
+    * [CON-1043] - Full display mode in Content - Article - Content does not work
+    * [CON-1049] - Deleting files in TinyMCE media popup is not working
+    * [CON-1052] - Linkchecker: MultiLink function for (marked) article does not work
+    * [CON-1055] - PIM: plugins are not uninstallable if folder is not writable
+    * [CON-1057] - Fix display error at ToDo
+    * [CON-1058] - Renaming a folder leads to unwanted permissions
+    * [CON-1060] - Multiple URL parameter values for "contenido"
+    * [CON-1061] - PIFA: Trailing comma issue in IE
+    * [CON-1064] - Missing title tag value for start page
+    * [CON-1066] - CMS_LINKEDITOR JS error
+    * [CON-1067] - Change isTrackingAllowed behaviour
+    * [CON-1069] - Repair existing unit tests
+    * [CON-1070] - Wrong behaviour of language changer
+    * [CON-1072] - Editing a translatable client setting duplicates it
+    * [CON-1074] - Replace used anonymous functions
+    * [CON-1075] - Illegal string offsets when using workflow
+    * [CON-1076] - Check saved search of workflow plugin
+    * [CON-1078] - Integration of new picture in content after upload is not possible
+    * [CON-1079] - Replace usage of DirectoryIterator::getExtension
+    * [CON-1080] - Add missing HTML comments for I18N strings in templates
+    * [CON-1083] - Wrong translation variable for missing javascript history
+    * [CON-1084] - Link problems in Content - Article
+    * [CON-1086] - Salting passwords for frontend users does not work properly
+    * [CON-1087] - Template Picture Gallery
+    * [CON-1088] - Alt + Shift + S does not mark next line after saving module translation
+    * [CON-1089] - PIFA breaks CONTENIDO backend
+    * [CON-1090] - cInvalidArgumentException by clicking on CSS tab in a module.
+    * [CON-1091] - Cached CSS files with umlauts are not found
+    * [CON-1093] - Setup does not list all filesystem check results
+    * [CON-1095] - Problems fetching RSS feed content
+    * [CON-1096] - Whitespaces and missing characters in module translations
+    * [CON-1097] - Usage of MySQL/MySQLi extensions in setup
+    * [CON-1098] - Manual filelist does not work
+    * [CON-1099] - Content Allocation
+    * [CON-1100] - Display error on edit frontend user
+    * [CON-1101] - Url to clients directory won't be detected as frontend urls
+    * [CON-1102] - Cannot append array as content to cGuiPage
+    * [CON-1103] - Styles are not added automagically to cGuiPage
+    * [CON-1106] - Changing template of article affects duplicates
+    * [CON-1111] - Module script_cookie_directive is missing
+    * [CON-1112] - Synchronization does not work
+    * [CON-1114] - Names of saved searches are missing
+    * [CON-1115] - Activated debug mode leads to errors
+    * [CON-1116] - All english module translations are missing due to mismatching locale
+    * [CON-1118] - Error when delete empty dir on filemanager
+    * [CON-1119] - Error on fetching translations on debug mode
+    * [CON-1120] - No integration of Content - Translations in rights system
+    * [CON-1121] - {CATTEMPLATE} is shown when no right to create articles / categories
+    * [CON-1122] - Administration - Users - Content - Plugin rights: labels are not well
+    * [CON-1123] - Administration - Languages: Editors language select box changes
+    * [CON-1127] - Content - Category: Moving categories by drag and drop does not work
+    * [CON-1128] - Layout problems in contact form
+    * [CON-1129] - Fixes for content type styles
+    * [CON-1133] - Imprint (footer navigation) leaves breadcrumb empty
+    * [CON-1136] - IE7: Navigation left is missing
+    * [CON-1137] - Various problems with cookie directive module
+    * [CON-1138] - IE7/IE8: Texts and sliding feature on the home page are missing
+    * [CON-1139] - Wegbeschreibung: Label missing letter
+    * [CON-1140] - contact form: error messages
+    * [CON-1141] - Search field is not proper aligned
+    * [CON-1143] - Breadcrumb: click effect
+    * [CON-1144] - Search: long search texts
+    * [CON-1147] - IE8: Layout Picturegallery
+    * [CON-1155] - Synchronization of categories does not work
+    * [CON-1156] - Deleting on the Content-Tab
+    * [CON-1167] - Article search in backend is broken
+    * [CON-1168] - Content - Article - Editor: Cookie Acceptance
+    * [CON-1174] - left_navigation field is to small
+    * [CON-1175] - PIFA: Some missing translations
+    * [CON-1176] - PIFA: Labels for overlay configuration too long
+    * [CON-1178] - AMR should use REDIRECT_URL and REDIRECT_QUERY_STRING instead of REQUEST_URI if set
+    * [CON-1179] - Fallback for username on empty realname is missing
+    * [CON-1180] - Workflow with special characters in name
+    * [CON-1181] - Typo in Englisch UI: "Form assistant" instead of "form assistant"
+    * [CON-1182] - enabled link for file selection if export is selected
+    * [CON-1183] - Value of days is not shown in modal dialog at newsletter plugin when you want to clear the recipients.
+    * [CON-1185] - Text for max log file size at system settings is too long
+    * [CON-1189] - Content - File Manager: Sorting deletes search results
+    * [CON-1190] - User_forum Plugin does not work.
+    * [CON-1191] - After new installation the search does not match with umlauts.
+    * [CON-1194] - Wrong contents for Imprint and Privacy in english example client
+    * [CON-1195] - Newsletter handler always says the plugin is not installed
+    * [CON-1196] - Plus signs in front of phone numbers are missing in example client
+    * [CON-1198] - Display error for slider bubbles on tab change
+    * [CON-1201] - Data of example client remains even if not installed
+    * [CON-1202] - Missing file jquery.validate.js
+    * [CON-1208] - Change german translation for "more" in example client
+    * [CON-1211] - Default sitemap integration is missing
+    * [CON-1212] - Remove default value for RSS icon in footer
+    * [CON-1216] - Can not delete manual uploaded CSS, HTML and JS files for example clients
+    * [CON-1220] - Missing host causes problems getting update notifier files
+    * [CON-1221] - Display of inherited category template is missing in search results
+    * [CON-1225] - Article ID in AMR plugin is searched for all languages in some cases
+    * [CON-1228] - System purge fails on clients without modules
+    * [CON-1230] - Link to XING in social media module cannot be changed
+    * [CON-1232] - Can not delete logfiles successfully
+    * [CON-1233] - Update password generation with salt and check mail dispatch
+    * [CON-1234] - No image display when uploading new picture in main dir via image module (article -> editing)
+    * [CON-1235] - System integrity check does not rely on client paths
+    * [CON-1238] - System setting "Use image magick" does not seem to have any effect
+    * [CON-1239] - Lang changer does not work for articles in service navigation
+    * [CON-1240] - Wrong check for encoding leads to misbehaviour of cApiStrReplaceDiacritics
+    * [CON-1241] - Deleting current language does not change language in session
+    * [CON-1242] - Empty values for inherited content types will not load their parent correct
+    * [CON-1249] - Alter article indexing process to allow other indexers to be used
+    * [CON-1251] - File manager left bottom frame does not load sometimes
+    * [CON-1253] - Wrong element Id for tinyMCE Editor in con_tiny.js
+    * [CON-1262] - PIM: Change installed column
+    * [CON-1265] - cGuiPage does not render multiple types of feedback messages at once
+    * [CON-1267] - Article: SEO: Two problems with date and expires fields
+    * [CON-1269] - Wrong translation for table header in System settings page
+    * [CON-1270] - Category edit breaks layout in IE10
+    * [CON-1272] - Link on author of installed plugin opens in current frame
+    * [CON-1275] - New files: File manager do not save correct upload date
+    * [CON-1276] - Cannot edit newsletter w/o name
+    * [CON-1277] - Category edit causes js error, category name and alias fields are empty
+    * [CON-1278] - Content - File Manager: Sorting files does not work
+    * [CON-1279] - Cannot edit module w/o name
+    * [CON-1280] - Missing notification when renaming a module to used name
+    * [CON-1281] - Cannot delete module when just renamed to an used name
+    * [CON-1282] - Duplicate names for templates are not prohibitted
+    * [CON-1283] - Creating Article - white page
+    * [CON-1284] - Renaming a CSS file to a used name overwrites file
+    * [CON-1285] - Missing notification when renaming a CSS file to äöüß@€~^°`''#'
+    * [CON-1286] - Workflow timestamp is not correct
+    * [CON-1287] - Solr: missing configuration leads to error when creating an article
+    * [CON-1288] - can't edit whole article content
+    * [CON-1289] - Userforum email configuration is missing in setup routine
+    * [CON-1290] - Administration - Users - Areas: Missing labels for plugin rights
+    * [CON-1291] - Article and category names with single or double quotes are doubly escaped
+    * [CON-1292] - Newsletter plugin throw HTTP 500 error
+    * [CON-1293] - Administration - Users - Content: one label missing
+    * [CON-1295] - Content - Article: Icon Freeze Article moves up when no rights
+    * [CON-1296] - CMS_IMAGEDITOR Images in root of upload were not selectable
+    * [CON-1297] - Preview of an article: Accept Cookie leads to an error
+    * [CON-1298] - Contact form - Example client - fields jump on mouseover
+    * [CON-1299] - Missing module translation at blog system
+    * [CON-1300] - URL shortener overview bugs
+    * [CON-1301] - Black line on login screen
+    * [CON-1305] - No iframe refrash after folder delete
+    * [CON-1306] - Duplicate links for adding new template
+    * [CON-1307] - Delete action does not work for new created JavaScript file
+    * [CON-1309] - Creating new client fails moving configuration file
+    * [CON-1311] - !LANG! does not get replaced due to incorrect client config path
+    * [CON-1312] - Synchronizing layouts fails updating layout alias
+    * [CON-1313] - Deleting a non-existant folder leads to warning
+    * [CON-1314] - Storing group properties w/o selected language leads to warning
+    * [CON-1315] - Check backend translations used by abstract identifier name
+    * [CON-1316] - JS error when opening Content > File manager > Upload files
+    * [CON-1317] - Error message in file manager when switching client
+    * [CON-1318] - Fileupload for Image content type don't work
+    * [CON-1319] - No confirm Flyout for Article delete, id Flyout closed by cancel button
+    * [CON-1321] - Adding category to a new created client will crash category tree
+    * [CON-1322] - Pagination don't work on search result page in filemanager
+    * [CON-1323] - Hook Contenido.Upl_edit.Delete is executed twice when deleting files in file manager
+    * [CON-1324] - Pifa Form: There is no way to remove options for select and regExp for fields in flyout
+    * [CON-1325] - Wrong translate stringlist at Content: Modules
+    * [CON-1326] - Groups: Modules: Missing default &nbsp; for empty description
+    * [CON-1327] - Can not delete languages if code cache dir does not exists
+    * [CON-1328] - Wrong display at systemtest for dirs
+    * [CON-1330] - Update fails when clients data directory does not contain modules and layouts subfolder
+    * [CON-1331] - Converting upload descriptions only work for client with ID 1
+    * [CON-1332] - When database connection encoding is empty, an other value is displayed in disabled select box
+    * [CON-1333] - Make user_forum module independent from example client
+    * [CON-1334] - Improve translation at raw data view
+    * [CON-1336] - Escape values in config.clients.php
+    * [CON-1339] - Modules, layouts and module translations ignoring language encoding
+    * [CON-1340] - CONTENIDO removes .gitignore files on system purge
+    * [CON-1341] - File management for DBFS does not work
+    * [CON-1342] - Layout changes for mass translation page
+    * [CON-1348] - Linkchecker: Wrong tooltip display with umlauts and special characters
+    * [CON-1349] - After upgrade container without module assignments are printed as HTML code
+    * [CON-1354] - Upgrade between 4.9.X renames module and layout aliases
+    * [CON-1359] - Value of CMS_LINKTARGET cannot be parsed by cContentTypeLinktarget
+    * [CON-1362] - Warning when scanning plugins
+    * [CON-1363] - After a new contenido installation the form assistant does not work as normal
+    * [CON-1364] - Link + Upload of a new document
+    * [CON-1365] - Prevent moving categories to root via drag an drop
+    * [CON-1368] - Special Chars breaks Content Type Config XML
+    * [CON-1369] - Red X button in editor forwards to preview instead of editor
+    * [CON-1370] - AMR: No article detection for start page
+    * [CON-1373] - Deleting synchronized article will delete article in all other languages too
+    * [CON-1374] - Upgrade only converts external links for CMS_LINKEDITOR
+    * [CON-1375] - Breadcrumb for categories in backend uses path resolver
+    * [CON-1377] - Length of session ID is not 32 characters any longer
+    * [CON-1378] - cApiCategoryCollection::getAllChildCategoryIds() does not work with given language ID
+    * [CON-1379] - cApiFrontendUser::checkPassword() checks with old logic
+    * [CON-1381] - Setup: Remove usage of cHTMLAlphaImage (IE alpha filter)
+    * [CON-1384] - Entries in old newsletter tables are not converted to new tables on upgrade
+    * [CON-1385] - Changing HTML template name will cause wrong entries in database
+    * [CON-1386] - Warnings of insufficient write permissions have wrong conditions
+    * [CON-1388] - Backend logout only destroys session data, but not session cookie
+    * [CON-1390] - Managed system properties forces usage of true/false values
+    * [CON-1391] - Default templates of PIFA have wrong name
+    * [CON-1394] - Newsletter: Name of newsletter with "
+    * [CON-1395] - Tagging: Trees with multiple subtrees don't open
+    * [CON-1396] - Blog Administration: Encoding Problem
+    * [CON-1397] - PIFA: Comma in checkbox label produces multiple values
+    * [CON-1398] - PIFA: Elements are rendered with title="title"
+    * [CON-1399] - After registration of the newsletter form i get the startpage
+    * [CON-1400] - "select all" has no impact of the rights
+    * [CON-1401] - rights of Content - Translation has no impact
+    * [CON-1402] - PIFA: Form name starting with "
+    * [CON-1403] - PIFA: Create forms not possible with Google Chrome
+    * [CON-1407] - Extras User Forum: New style for lists on the left
+    * [CON-1410] - Setup error message translations missing
+    * [CON-1411] - Area for "Translation" in the user-rights
+    * [CON-1413] - Edit frontenduser is broken if the name contains quotes
+    * [CON-1414] - content alocation plugin, edit is broken if the name contains quotes
+    * [CON-1415] - newsletter plugin, edit group is broken if the name contains quotes
+    * [CON-1416] - Text appears where it doesnt belong
+    * [CON-1420] - Error message comes with wrong font
+    * [CON-1421] - Creating user with invalid user name
+    * [CON-1423] - Category: Can not change category templates on category configuration
+    * [CON-1428] - ToDo: I can manipulate progress (more then 100%)
+    * [CON-1431] - Article: SEO: Delete "333"
+    * [CON-1432] - Fix missing spacer.gif on contact form (frontend)
+    * [CON-1437] - Tagging: Save the level 3 is not possible
+    * [CON-1438] - cFileHandler::recursiveCopy uses PHP 5.3+ functionality
+    * [CON-1441] - Check error handling and notifications for css, js and template menu
+
+** Improvement
+    * [CON-572] - Move inline CSS into stylesheet file
+    * [CON-855] - Admin: User Management - JavaScript the Sysadmin/Admin section
+    * [CON-899] - Add support for configurable document extensions in CMS_LINKEDIT
+    * [CON-952] - Implement handling for adding content types via plugins
+    * [CON-1017] - Redesign module HTML section
+    * [CON-1018] - Check for write permission when saving entries in menu "Style"
+    * [CON-1019] - Provide infobox when article is synchronized and can not be moved to another category
+    * [CON-1020] - Rename menu entries in "Style"
+    * [CON-1021] - Move number of lines and search log file extensions to configuration
+    * [CON-1022] - Change glob to directory iteration
+    * [CON-1023] - Change direct usage of REQUEST variable in system log page
+    * [CON-1029] - PIM: Add a function to add content types
+    * [CON-1050] - Checking upload size depending on PHP settings
+    * [CON-1051] - Set image mode automatically when using cHTMLButton::setImageSource
+    * [CON-1054] - cInclude should return value of include/include_once
+    * [CON-1056] - PIM: Check for installed areas
+    * [CON-1062] - Improve quality of generated meta tag keywords
+    * [CON-1063] - Move languages and countries from array to database
+    * [CON-1117] - Lock display of log files which are bigger than memory limit
+    * [CON-1135] - Writable error message shows wrong path
+    * [CON-1151] - Rename "Sortierreihenfolge" to "Index"
+    * [CON-1152] - Add the ID of category and article to log display
+    * [CON-1153] - Warning message for categories without start article
+    * [CON-1154] - Extend CMS_TEASER to support offline articles
+    * [CON-1206] - Add functionality to extract .zip files at the file management page
+    * [CON-1207] - Create a class to encapsulate zip functionalities
+    * [CON-1213] - Improvements for SEO tab
+    * [CON-1215] - Install default plugins even if example content is not installed
+    * [CON-1217] - Use relative path for example client module templates
+    * [CON-1222] - Mixed behaviour of links in "edit category" section
+    * [CON-1223] - Display breadcrumb to article in search results
+    * [CON-1227] - Add warning when editing fails due to missing template
+    * [CON-1243] - Add switch to turn off automatic set of title on cHTML::setAlt
+    * [CON-1261] - Improve configuration dialog for CMS_TEASER
+    * [CON-1266] - AMR: URLs to lowercase
+    * [CON-1320] - Extend "Hook Contenido.Upl_edit.Delete" to support deletion of multiple files
+    * [CON-1337] - Improvements for setup: Increase max_execution_time and additional text on progress screen
+    * [CON-1344] - Implement check for country and language code in setup
+    * [CON-1345] - Display error if provided idart and idcat does not match
+    * [CON-1346] - Add new method for reading files in dirs and checks of existing directories
+    * [CON-1347] - Adding user forum inserts and plugin relations for content types to standard modules
+    * [CON-1350] - Move error_page.html to contenido template directory
+    * [CON-1352] - PIFA: add actions & rights
+    * [CON-1367] - Add method to get configured data from CMS_LINKEDITOR
+    * [CON-1380] - cHTMLSelect::setMultiple() should change name of select element
+    * [CON-1417] - On creating new Backend Users, checkbox for Tiny should be checked by default
+    * [CON-1434] - PIFA: Message in english
+
+** New Feature
+    * [CON-830] - Implementation of the cookie confirmation
+    * [CON-989] - Add notice if category has no assigned template
+    * [CON-990] - Unify "Insite"/"In-Site"/"Inside"/"Insight" to "Insite"
+    * [CON-1014] - Add tooltip with description of an entry for each item below "Style" menu
+    * [CON-1048] - Add checkbox for special TinyMCE option allowing all valid elements
+    * [CON-1082] - Make publish date editable in article properties
+    * [CON-1124] - Administration - Languages: Difference between Date/Time Format, Date Format, Time Format is not clear
+    * [CON-1177] - Prevent deletion of last system administrator
+    * [CON-1210] - Change default tracking modules to not track in backend edit or preview mode
+    * [CON-1248] - Add functionality to remove manually added meta tags
+    * [CON-1250] - Add help texts in SEO tab
+    * [CON-1255] - PIM should allow installation of modules
+    * [CON-1256] - PIM should support list of requirements in plugin.xml
+    * [CON-1257] - Solr: Creation of Configuration & Core
+    * [CON-1258] - Solr: develop indexer
+    * [CON-1259] - Solr: develop searcher
+    * [CON-1260] - Solr: display search results
+    * [CON-1357] - PIM: Make difference between full uninstall sql file and update uninstall sql file
+
+** Story
+    * [CON-1000] - Thank you for everything!
+
+** Task
+    * [CON-440] - Removal of internal blocks and @con_php_req from file headers and change of @version value
+    * [CON-972] - Remove deprecated sources
+    * [CON-1003] - Fix remaining deprecation calls
+    * [CON-1013] - Removed audio and examples files in securimage extension of form assistant
+    * [CON-1015] - Check behaviour of CMS_LINK and CMS_LINKEDITOR
+    * [CON-1016] - Creating module CSS and JS with insufficient rights causing problems
+    * [CON-1037] - Check setting of CON_STRIPSLASHES constant
+    * [CON-1059] - Final check for translations
+    * [CON-1073] - Test update with multiple clients having various modules and layouts
+    * [CON-1092] - Make attribute "frameId" in plugins XML file required
+    * [CON-1094] - Set the default setting value for PHP display_errors to false
+    * [CON-1107] - Integration of social media modules in example client
+    * [CON-1109] - Replace social media icons with official images
+    * [CON-1145] - Demo installation contains test and invalid data
+    * [CON-1146] - Check database connection on upgrade too
+    * [CON-1166] - Replace client skeleton
+    * [CON-1169] - Content - Article - Content: Name of the tab
+    * [CON-1193] - Fix default locale for english language
+    * [CON-1197] - AMR Plugin empty aliases check
+    * [CON-1204] - Check complete GUI design
+    * [CON-1237] - Replace all DATETIME field values with "NOW()"
+    * [CON-1245] - Environment based configurations for clients
+    * [CON-1246] - Change of form assistant plugin
+    * [CON-1264] - Check CONTENIDO backend with Internet Explorer versions 7 to 10
+    * [CON-1274] - Please translate "Directions"
+    * [CON-1303] - Dialog lightbox should block page content
+    * [CON-1338] - Check all upgrade jobs
+    * [CON-1351] - Check module type save and read process
+    * [CON-1376] - Review example client data
+    * [CON-1389] - Remove usage of deprecated preg_replace modifier /e
+
+** Technical task
+    * [CON-1162] - Preview of meta tags for article on Meta tab
+    * [CON-1165] - Add article alias also to tab SEO
+    * [CON-1200] - Position of SEO-Tags
+    * [CON-1214] - Split and change searchable and indexable feature
+
+---------------------------------------------------------------------
+Release 4.9.0 RC 1
+----------------------------------------------------------------------
+** Bug
+    * [CON-806] - Linkchecker: Update of results do not refresh cache
+    * [CON-809] - Broken module description output
+    * [CON-810] - Directories get default permissions for files when moved, renamed, copied with cFileHandler
+    * [CON-811] - conLoadScript is only available with at least one TinyMCE editor
+    * [CON-814] - Object of class cApiRightCollection could not be converted to string
+    * [CON-839] - Login without any clients not possible
+    * [CON-840] - Admin: Create User - Valid fields populate incorrectly
+    * [CON-841] - Admin: Create User - Valid date and time - time does not show up
+    * [CON-842] - Admin: PlugIn Manager - delete PlugIns
+    * [CON-844] - Style-Modules: List options are not working properly
+    * [CON-846] - Content:File management: .mov and .mp4 can not be uploaded
+    * [CON-848] - File management: pictures are not displayed correctly in the database system
+    * [CON-849] - Admin: PIM - not able to upload new plugin
+    * [CON-851] - Style-Layout/Modules: " Sign changes name
+    * [CON-852] - Content: Category: Language change; in the content is not changed in the language
+    * [CON-853] - Category: the second level in the tree can´t edited
+    * [CON-854] - Style-Java Script Editor: Typo when creating new js file
+    * [CON-856] - Content: URL Shortener: short url does not work
+    * [CON-858] - Content: Articles: articles can not be tagged
+    * [CON-859] - Style-Modules: Selecting search results after using the list doesn't work properly
+    * [CON-860] - Content: Article: when the workflow is enabled, there two icon for "Properties"
+    * [CON-862] - Content: article: The category of a "frozen" artikels can be edited in the properties
+    * [CON-863] - Content: Article: Edit: Content Type (Image): The metadata of the image on slide when deleted
+    * [CON-865] - Content: Article: Edit: Content Type (Image) : Upload not work
+    * [CON-866] - Content: Article: Edit: ContentType (Image): does not create a directory
+    * [CON-867] - Content: Article: Edit: the TinyMCE will not work with Safari
+    * [CON-870] - Extras-Workflow: problems with special characters
+    * [CON-871] - Content: Article: Edit: Contenttype (Teaser) : With Firefox, the teaser settings are not displayed correctly.
+    * [CON-872] - Style: Layouts: History: source code will not be saved to history
+    * [CON-873] - Administration-Groups: Areas are not saved (white page)
+    * [CON-875] - Content: AMR: AMR-Plugin does not remain activated
+    * [CON-876] - Article Tree will fold up after log out
+    * [CON-877] - Content-Article-Legende: Typo in German: Inktive synchronisierte Kategorie
+    * [CON-878] - Content: Categories: Unfold more than 2 Trees not possible
+    * [CON-879] - Content: Categories: moving a category it will fold up tree
+    * [CON-880] - Content:Article: Editor: Video in TinyMCE
+    * [CON-881] - Style: Module-Templates History does not show up
+    * [CON-885] - Missing whitespace in german translation for max log size
+    * [CON-887] - Template configurations gets lost on moving article to another category
+    * [CON-888] - Content: Category: Tree will be deleted when moved
+    * [CON-889] - Stats: Hits - More then 20 shows blank page in 'test'
+    * [CON-891] - Metadata in CMS_FILELIST is not loaded
+    * [CON-892] - Deletion of layout does not delete layout in filesystem
+    * [CON-896] - Problems with database names containing hyphen
+    * [CON-897] - Add full German translation
+    * [CON-902] - Saving category expanded state may not work
+    * [CON-903] - Uncaught exeption when parsing XML to array
+    * [CON-904] - Style-Modules: Deleting template-histories not possible
+    * [CON-905] - Upgrade creates invalid values for empty CMS_FILELIST
+    * [CON-906] - Linkchecker: Sql error if $aCats is null
+    * [CON-907] - Linkchecker: Action Id is hardcoded
+    * [CON-908] - Style-Layouts: Can not delete layouts with quotation mark
+    * [CON-909] - Style-Layouts: Can not delete layouts (IE)
+    * [CON-911] - Linkchecker: Whitelist does not work (Active Cache)
+    * [CON-912] - Ajax request to get translations does not contain BackendSessionId
+    * [CON-913] - template specific CSS & JS files are always requested via HTTP
+    * [CON-916] - Style-Modules: Modules per page navigation does not work
+    * [CON-917] - Style-Modules: Error when synchronize modules one behind the other
+    * [CON-918] - Style-Templates: Display error when duplicate one template
+    * [CON-922] - Article nav sub does not work
+    * [CON-923] - Create Layouts: Force alias value
+    * [CON-926] - Embedding SWF files via DBFS
+    * [CON-927] - Rights for the URL Shortener don't work
+    * [CON-928] - Short-URL from mandant a is visible in mandant b with different links
+    * [CON-930] - Groups: Permissions aren't saved
+    * [CON-931] - User: Permissions aren't saved
+    * [CON-932] - Article: Can't open articles (IE)
+    * [CON-937] - i18n: Remove the backslash from double quotes in translation strings
+    * [CON-939] - Error in search class if db search option is set to 'like' or 'exact'
+    * [CON-940] - PHP-Warning at generateViewCode()
+    * [CON-941] - Session problems due to missing client ID
+    * [CON-942] - Language update fails for languages not assigned to the current client
+    * [CON-946] - Transformation of modules und layouts does not work with multiple clients
+    * [CON-947] - Single and double quotes in clients settings are escaped too often
+    * [CON-953] - Content of copied articles is not stored
+    * [CON-955] - cArticleCollector: Removal of start articles conflicts with configured article limit
+    * [CON-956] - Article Collection: Wrong teaser display with startarticle option
+    * [CON-957] - System-Purage: Submit button has no effect
+    * [CON-958] - Style-Modules: Add standard order for module-list
+    * [CON-959] - CMS_TYPE: Display error when force is active
+    * [CON-961] - Content: Articles: Assigned template get lost when edited article properties
+    * [CON-962] - Content: Article: Insite-editing: Entities bug for close and save icon
+    * [CON-963] - Content: Article: No articles displayed at Link -> Article searching (Memory bug at _fetchJoinTables function)
+    * [CON-964] - Content: Article: Wrong image path setted via insite-editing
+    * [CON-965] - Content: New Category: Selected template aren't saved
+    * [CON-966] - Style: Modules: &nbsp; replaced at editor with space
+    * [CON-968] - Module translations are not found if they are created as formatted strings
+    * [CON-969] - Session destroyed after click on preview image at file management
+    * [CON-974] - Login in backend with IE is not possible
+    * [CON-976] - Encoding and size problem in todo popup
+    * [CON-977] - Workflow integration in category management does not work any longer
+    * [CON-978] - PIM: Enabling and disabling plugins must enable/disable the corresponding menu entries
+    * [CON-979] - Special javascript code crashes history XML file
+    * [CON-981] - Content editing in small tiny not possible
+    * [CON-982] - Uploads in root directory not possible
+    * [CON-983] - Downloading config.php in setup is not possible
+    * [CON-984] - "You are here" does not show any information unless template is configured
+    * [CON-985] - Layout name is sanitized too
+    * [CON-986] - Navigation does not reload after creating new article
+    * [CON-992] - Untranslated error on creating first category
+    * [CON-997] - Missing backend style in tab "Content"
+    * [CON-1001] - Too much categories in left navigation are marked as active
+    * [CON-1002] - Protected categories are accessible for unauthorized users
+    * [CON-1005] - changing client action seems to be unaware of users login state
+    * [CON-1007] - broken function cApiStrReplaceDiacritics
+    * [CON-1008] - security.txt will be created w/o permissions
+    * [CON-1010] - Switching language does not work with activated AMR plugin
+    * [CON-1011] - MailedFormProcessor cannot send system mails
+    * [CON-1012] - Check for writable directories does not work properly
+
+** Improvement
+    * [CON-752] - Change smarty template calls
+    * [CON-834] - Respect "Do Not Track" (DNT) configuration of users browser on tracking
+    * [CON-843] - Admin: PIM - Allow to delete uninstalled plugins
+    * [CON-850] - Admin: PIM - Please rename the upload process from 'Installation' to 'Upload'
+    * [CON-861] - Admin: Rights - Do not show drop-down-list with one value
+    * [CON-864] - Admin: Client Properties box should be bigger
+    * [CON-882] - Content-Article: Rename Tab Meta in SEO
+    * [CON-884] - Content-Article: Legend: offline category is missing
+    * [CON-910] - PIM: Tooltips for icons
+    * [CON-919] - Added cDirHandler-Class
+    * [CON-920] - Admin-User: Cache problems with user properties (not displayed)
+    * [CON-924] - PIM: Implement enable / disable functionality
+    * [CON-934] - Highlight newest CONTENIDO rss news at welcome page
+    * [CON-936] - PIM: Order installed plugins by pluginname
+    * [CON-943] - Replace the TinyMCE icons for save and cancel with existing CONTENIDO icons
+    * [CON-944] - Add deletion notice to CMS_FILELIST
+    * [CON-948] - Add switch to turn off stack trace in logfiles
+    * [CON-949] - Check $contenido_path before inclusion
+    * [CON-951] - Implement cHTML class for optgroup tag
+    * [CON-954] - Implement check of version before perfoming upgrade steps
+    * [CON-980] - Do not render empty class attributes in cHtml
+    * [CON-988] - Multiple changes for mass translation page
+    * [CON-991] - Add log directory path to log display
+
+** New Feature
+    * [CON-803] - Implement new log display
+    * [CON-813] - Add support to set default charset for PHP and Database
+    * [CON-815] - Integration of the new example client
+    * [CON-816] - Integration of the form assistant plugin
+    * [CON-835] - Update of cHTML classes with support for HTML5
+    * [CON-847] - Implement getter method for configured articles in CMS_TEASER
+    * [CON-857] - Add method getConfiguration to abstract content type class
+    * [CON-890] - Add getter to fetch all configured files from content type CMS_FILELIST
+    * [CON-900] - Implementing mass translations for CONTENIDO
+    * [CON-935] - PIM: Add con_main entries to Plugin Manager functionality
+    * [CON-945] - Add optional system property for backend label
+
+** Story
+    * [CON-868] - As a backend user I want a streamlined wording to be less confused and get an better overall impression
+    * [CON-894] - As a editor I want the system to unlock all articles, which are in use, to allow modifications by others.
+
+** Task
+    * [CON-838] - PIM: Make "copyright" mandatory field and set maxOccurs for general-fields to “1”
+    * [CON-901] - Check user rights
+    * [CON-915] - Add more configurable filetypes to CMS_LINKEDIT
+    * [CON-971] - Removal of outdated character converter
+    * [CON-973] - Add item and item collection classes for database table con_keywords
+    * [CON-975] - German typos "Modul" and "Vorlage"
+    * [CON-987] - Remove translated module name from module translation
+    * [CON-996] - Add new cHTMLFieldset and cHTMLLegend classes
+
+** Activity
+    * [CON-869] - Rename all entries from 'erzeugen' to 'erstellen'
+
+** Defect
+    * [CON-895] - Remove the locks from articles when the user leaves the system.
+
+** Technical task
+    * [CON-817] - New Example Client: Implementation of the header
+    * [CON-818] - New Example Client: Implementation of the footer
+    * [CON-819] - New Example Client: Implementation of the menu and breadcrumb
+    * [CON-820] - New Example Client: Implementation of the default content page
+    * [CON-821] - New Example Client: Implementation of the slider
+    * [CON-822] - New Example Client: Implementation of search and search results page
+    * [CON-823] - New Example Client: Implementation of the downloads page
+    * [CON-824] - New Example Client: Implementation of the linklist page
+    * [CON-825] - New Example Client: Implementation of the news teaser
+    * [CON-826] - New Example Client: Implementation of the lightbox
+    * [CON-827] - New Example Client: Implementation of the new picture gallery
+    * [CON-828] - New Example Client: Implementation of the newsletter handler
+    * [CON-829] - New Example Client: Implementation of the error page
+    * [CON-831] - New Example Client: Implementation of the RSS creator
+    * [CON-832] - New Example Client: Configuration and implementation of the contact form
+    * [CON-833] - Integration in setup process
+    * [CON-883] - New Example Client: Implementation of title element module
+
+---------------------------------------------------------------------
+Release 4.9.0 Beta 1
+----------------------------------------------------------------------
+** Bug
+    * [CON-666] - Invalid code in contenido/scripts/boxes.upl_files_overview.js
+    * [CON-689] - Invalid usage of cGuiPage->addScript() in Newsletter plugin and todo popup.
+    * [CON-693] - Duplicated articles get wrong lastmodify time
+    * [CON-696] - Missing hover effects on bulk editing links in article overview
+    * [CON-697] - Messed up design for tagging table in Content - Articles
+    * [CON-699] - Category configuration with trailing arrow in breadcrumb and misbehaviour on tabs
+    * [CON-700] - Module versioning issues
+    * [CON-702] - Untranslated and not existing actions
+    * [CON-703] - Various bugs in workflow plugin
+    * [CON-705] - Debug classes directory begins with uppercase character
+    * [CON-709] - Language chooser executes actions twice
+    * [CON-712] - Update of url retrieval in TinyMCE due to removed support for link generator
+    * [CON-713] - Password forgot mail displays html entities
+    * [CON-716] - Wrong item reference after calling createNewItem(), select() and next() of ItemCollection
+    * [CON-719] - cApiIsImageMagickAvailable() returns true although IM is not installed
+    * [CON-720] - PHP Warning on area tab of rights management page
+    * [CON-729] - Changing the property "show debug messages"does not work properly
+    * [CON-730] - Two recurring PHP warnings after new installation
+    * [CON-738] - Check content type CMS_DATE completely
+    * [CON-740] - Malformed meta elements created by CONTENIDO
+    * [CON-743] - module xml_sitemap uses 100% CPU
+    * [CON-746] - Bad module CSS positioning
+    * [CON-749] - Multiple declared functions and classes with same name
+    * [CON-757] - Wrong Entry After Deleting an Item from the ItemCollection
+    * [CON-758] - modified META title of an article is not displayed before code cache is cleaned
+    * [CON-759] - User is created although password is marked as insecure
+    * [CON-760] - client settings are displayed escaped
+    * [CON-761] - client settings cannot store JSON expressions
+    * [CON-762] - AMR prevents display of error pages under certain circumstances
+    * [CON-763] - Unsetting attributes of cHTMLImage
+    * [CON-768] - Backend File Search Does Not Work Properly
+    * [CON-773] - Layout descriptions are not escaped
+    * [CON-776] - Mail Logging Encoding Problem
+    * [CON-792] - typo in function name (cApiImageGetTragetDimensions)
+    * [CON-798] - Creating default object from empty value in file management
+    * [CON-807] - Url shortener Error while creating a new article
+
+** Improvement
+    * [CON-504] - Global mailer class
+    * [CON-640] - Update of third party libraries
+    * [CON-656] - Cleanup old data folder
+    * [CON-657] - Move global variables $errsite_idcat and $errsite_idart to global variable $cfgClient.
+    * [CON-658] - Optimize filling/setup of $cfgClient.
+    * [CON-678] - Unify code of rights pages
+    * [CON-681] - Port remaining PHP4 classes to PHP5
+    * [CON-695] - Add 10 as new default setting for items per page in article overview and file management
+    * [CON-698] - Redirection to file upload if directory is empty
+    * [CON-701] - Add new configurations for disabling hook and plugin system
+    * [CON-711] - Implement exception handling
+    * [CON-717] - Versioning files should be deleted when the corresponding component is deleted
+    * [CON-718] - Improvements for creating new meta tags
+    * [CON-721] - Improvements on cRequestValidator
+    * [CON-722] - Move cInitializeArrayKey to cArray::initializeKey
+    * [CON-739] - Replace message box popups with jQuery UI Dialog
+    * [CON-741] - Implement an empty format for CMS_DATE
+    * [CON-745] - Do not show left frame on Extras - Tagging page
+    * [CON-764] - Merge log pages
+    * [CON-777] - CMS_TEASER Delete Old/Outdated Content Types
+    * [CON-783] - Change behaviour of untranslated module translations
+    * [CON-796] - Add feature to load case insensitive class name files to autoloader
+
+** New Feature
+    * [CON-633] - Rewrite of the existent Contenido_Category classes
+    * [CON-635] - Port auth conlib classes to new cAuth classes
+    * [CON-636] - Port database conlib classes to new cDb classes
+    * [CON-652] - Implement new checkbox "Searchable / Indexable" for articles
+    * [CON-653] - URL Shortener
+    * [CON-686] - Drag and drop for category management page
+    * [CON-687] - Implement getter functions for paths and URLs
+    * [CON-692] - mi18n should support %s
+    * [CON-710] - Client switcher in backend header
+    * [CON-714] - Add synchronizing to bulk editing
+    * [CON-715] - Check password forgot functionality
+    * [CON-724] - Reload left menu frame if deletion of file in file management causes empty folder
+    * [CON-725] - Implement a system integrity check page in backend
+    * [CON-726] - Implement cApiFileInformation and cApiFileInformationCollection
+    * [CON-727] - Replace PEAR package RSS Reader
+    * [CON-728] - Rework getEncodingByLanguage to use cApiLanguage
+    * [CON-731] - PIM: Implement setup and uninstall plugin routine
+    * [CON-732] - PIM: Implement generic db classes for con_plugins and con_plugins_rel
+    * [CON-733] - Implement generic db classes for con_nav_main and con_nav_sub
+    * [CON-734] - PIM: Implement backend views for displaying plugins and related actions
+    * [CON-735] - PIM: Implement update routine for plugins
+    * [CON-736] - PIM: Implement possibility to execute custom SQL queries
+    * [CON-737] - PIM: Add installation of plugin manager into setup and update process
+    * [CON-747] - Automatic code cache refresh
+    * [CON-750] - Integration of salted passwords
+    * [CON-772] - Add possibility to add backend notifications statically
+    * [CON-775] - CONTENIDO should generate a meta tag which outputs INDEX or NOINDEX
+    * [CON-785] - Implement a link getter for articles and categories
+    * [CON-786] - Implement configuration flag for logging deprecations
+    * [CON-793] - Implement setting of administrator password in setup
+    * [CON-794] - Rename database table con_phplib_auth_user_md5 to con_user
+    * [CON-804] - Display refresh button in setup process if system test fails
+
+** Task
+    * [CON-427] - Move definition of managed system properties to XML file
+    * [CON-539] - Separate Workflow to plugin
+    * [CON-603] - Check of include.grouprights_details.php
+    * [CON-682] - Deprecate class Article_Property
+    * [CON-683] - Deprecate outdated classes
+    * [CON-704] - Rename Contenido_Url and Contenido_UrlBuilder to cUri and cUriBuilder
+    * [CON-707] - Unify systems constant name prefixes
+    * [CON-723] - Port Contenido_UpgradeJob to upgrade steps folder
+    * [CON-751] - Rename LayoutInFile and SynchronizeLayouts to cLayoutHandler and cLayoutSynchronizer
+    * [CON-765] - Restore older version of phpmailer
+    * [CON-771] - Remove meta tag file cache
+    * [CON-774] - PIM: Upgrade script for existing fields in con_plugins
+    * [CON-779] - PIM: Display errors and infos
+    * [CON-780] - Add support for PHP 5.4 installations
+    * [CON-781] - PIM: Installation without archive files
+    * [CON-782] - PIM: Remove plugin installation from setup process
+    * [CON-787] - Add default module translations
+    * [CON-797] - Remove migration type completely from setup
+    * [CON-802] - PIM: Update structure of existing plugins for new PIM logic
+    * [CON-805] - Move chains from plugin folder to includes
+
+
+Release 4.9.0 Alpha 3
+----------------------------------------------------------------------
+** Bug
+    * [CON-651] - Check setup process for database host reachability check
+    * [CON-667] - Updated layout code is not shown
+    * [CON-668] - Image titles show HTML entities
+    * [CON-673] - Usage of htmlentities() with wrong encoding
+    * [CON-674] - Some translations are missing
+    * [CON-676] - Single table head of article specifications
+    * [CON-688] - Content editor does not work any longer
+    * [CON-691] - Setup does not check write permissions properly
+    * [CON-694] - Exception on duplicating start article
+    * [CON-706] - Uploads ignoring current directory
+
+** Improvement
+    * [CON-650] - Extend createNewItem for array with insert data
+    * [CON-663] - Error message for external backend front_content.php if frontend path is not valid
+    * [CON-670] - Add check for availability of function "iconv" in setup process
+    * [CON-677] - Page navigation for Content - Articles also on top of article list
+
+** New Feature
+    * [CON-669] - Search should respect searchable/indexable field
+    * [CON-672] - Implement new default xml sitemap generation
+
+
+Release 4.9.0 Alpha 2
+----------------------------------------------------------------------
+** Bug
+    * [CON-356] - Encoding problem on UTF-8 client language in backend
+    * [CON-368] - Clientadmin can change systemsettings reserved to sysadmin
+    * [CON-483] - Redirection error on visiting frontend without data
+    * [CON-526] - Layout problem in setup process with IE9
+    * [CON-555] - Function is_utf8() returns true for ascii encoded text
+    * [CON-556] - Number of online users is not displayed
+    * [CON-558] - SQL Statement Bug in clients languages
+    * [CON-594] - PHP warning in strict mode for ContenidoXmlReader
+    * [CON-597] - Error on login of user w/o any permissions
+    * [CON-600] - Setup process displays PHP notices
+    * [CON-602] - Problems with ImageMagick in windows installations
+    * [CON-606] - Unexpected appearance and behaviour of CodeMirror editor
+    * [CON-608] - No fallback for username if real name is not entered
+    * [CON-609] - Unnecessary "," in online user display on dashboard
+    * [CON-610] - Missing design for error boxes in style history
+    * [CON-611] - Missing information for username on article properties page
+    * [CON-612] - Display error for backend user properties
+    * [CON-614] - Various typos and translation errors
+    * [CON-615] - Groups cannot be assigned a language after their creation
+    * [CON-617] - Invalid article searches can be saved
+    * [CON-618] - Unused module could not be deleted
+    * [CON-619] - Client settings table too large
+    * [CON-620] - Too many slashes in paths
+    * [CON-621] - Permissions of new layout folders and files
+    * [CON-631] - Undefined variable: moduleHandler
+    * [CON-649] - Error on editing system property
+    * [CON-661] - Notice for moving configurations to data directory in upgrade process
+
+Improvement
+
+    * [CON-514] - Move meta information of article to new tab
+    * [CON-543] - Move storage of page code from con_code to filesystem
+    * [CON-544] - Save date and time values in database uniform
+    * [CON-559] - Merge all versions of front_content.php into one single file
+    * [CON-560] - Refactor functions.str.php
+    * [CON-564] - Make charset of database connection configurable
+    * [CON-574] - Mark current client in log display per default
+    * [CON-576] - Language switcher in backend should save the current position
+    * [CON-589] - Provide template for main.loginform.php
+    * [CON-599] - Removal of url encoding support on interaction with database
+    * [CON-601] - New implementation of session component
+    * [CON-613] - The error pages should return actual HTTP error codes instead of 200
+    * [CON-616] - Setup directory contains an old version of the template class
+    * [CON-622] - Improvements for statistics page
+    * [CON-623] - Improvement for article breadcrumb view
+    * [CON-624] - Improve display of inherited templates
+    * [CON-625] - Harmonize sort behaviour
+    * [CON-626] - Hide page navigation on lists with only one page
+    * [CON-629] - Legend for symbols in Content - Articles
+    * [CON-630] - Recode implementation of session support for native PHP support
+    * [CON-632] - Unify the backend GUI classes
+    * [CON-637] - Changes in tabset navigation in Content - Articles
+    * [CON-641] - "Display properties" icon for article overview
+    * [CON-645] - Reduced view on article creation
+    * [CON-646] - Article properties: changes for time management and article link
+    * [CON-647] - Refactor functions.con.php
+    * [CON-654] - Storage of content should update articles last modify time
+    * [CON-662] - Rework debug related functions
+
+New Feature
+
+    * [CON-458] - Moving writable directories into new data directory
+    * [CON-520] - Provide possibility to add PHP settings via configuration
+    * [CON-561] - Add display and filter of language in logs
+    * [CON-562] - Display template description on all configuration views
+    * [CON-563] - Provide possibility to change personal information in backend
+    * [CON-565] - Implementation of cronjob overview
+    * [CON-567] - Support for PNG transparency in scaling feature
+    * [CON-569] - Lost & Found
+    * [CON-570] - Edit Tab
+    * [CON-577] - Bulk editing for articles
+    * [CON-581] - New client property for turning off statistic tracking
+    * [CON-582] - Unify client properties for stats and message boxes for external integration
+    * [CON-596] - Implementation of new class cFileHandler
+    * [CON-604] - Force set of date.timezone
+    * [CON-605] - Further information in Content -> Categories
+    * [CON-642] - Extendable generic db
+    * [CON-652] - Implement new checkbox "Searchable / Indexable" for articles
+    * [CON-664] - New field for article sitemap priority
+    * [CON-665] - New cfg property for file and folder permissions
+    * [CON-671] - Implement helper classes cString and cArray
+
+Task
+
+    * [CON-400] - Check frontend URL detection in Contenido_Url::isIdentifiableFrontContentUrl()
+    * [CON-428] - Merge functionality from HTTP input validator and security class
+    * [CON-449] - Validate and takeover provided patches from a CONTENIDO member
+    * [CON-492] - Rework content type classes
+    * [CON-500] - Removal of $cfg[color] support
+    * [CON-535] - Move cConCache from clients folder to CONTENIDO classes
+    * [CON-536] - Move Util classes to CONTENIDO classes
+    * [CON-537] - Move input helper classes to CONTENIDO classes
+    * [CON-538] - Renaming of "Content Allocation" to "Tagging"
+    * [CON-540] - Change CMS_IMG and CMS_LINK to CMS_IMAGE and CMS_LINKEDITOR
+    * [CON-542] - Move executable code from con_action to PHP files
+    * [CON-547] - Remove sequence table dependencies in database layer
+    * [CON-557] - Replace SQL statements in front_content.php against usage of cApi classes
+    * [CON-566] - Change integration of JSCalendar with jQuery UI Datepicker
+    * [CON-578] - Remove not needed template array entries
+    * [CON-579] - Remove old database tables from setup
+    * [CON-580] - Remove not needed entries in database
+    * [CON-584] - Remove con_upl.description
+    * [CON-587] - Replace usage of class Table
+    * [CON-588] - Replace usage of functions formGenerateCheckbox and formGenerateField
+    * [CON-590] - Replace all occurencies of DB_Contenido with new registry call
+    * [CON-591] - Move version classes to new subfolder
+    * [CON-592] - Rename RequestPassword
+    * [CON-595] - Improvements for cHTML
+    * [CON-598] - Remove support for database configuration options "nolock" and "sequenceTable"
+    * [CON-634] - Unify class names
+    * [CON-639] - Check select list style in backend
+    * [CON-648] - Load items by more than one attribute
+    * [CON-655] - Update/Check CONTENIDO requirements because of the usage of Multibyte String functions
+
+
+Release 4.9.0 Alpha 1
+----------------------------------------------------------------------
+** Bug
+    * [CON-266] - Upgrade/Migration not possible without xmlwriter extension
+    * [CON-306] - Inconsistent configuration of integrated caching feature
+    * [CON-331] - Newsletter recipients import and diacritics
+    * [CON-334] - Generic DB does not handle NOT NULL fields
+    * [CON-348] - Garbled con_cat_tree caused by generating a new tree
+    * [CON-354] - PHP-Error in Area Modul-Package if css/js/tpl-dir not exists
+    * [CON-357] - You can't use two instances of CMS-FILELIST within same article
+    * [CON-358] - CMS_TEASER: no output if sort by publisheddate is selected
+    * [CON-359] - Using more than one CMS_TYPE causes multiple jQuery script calls
+    * [CON-362] - Custom file extensions in CMS_FILELIST are ignored
+    * [CON-363] - german umlaute are not replaced in filemanager
+    * [CON-365] - Only logins are logged in administration->logs
+    * [CON-366] - class.update.notifier.php throws multiple fopen errors
+    * [CON-369] - Wrong datatype for in_array haystack in linkchecker
+    * [CON-371] - No reset of template object in some example client modules
+    * [CON-372] - Limited check period of update notifier is displayed wrong in backend settings page when set under 60 minutes
+    * [CON-373] - Multiple replacements of title tags
+    * [CON-374] - Newsletter encoding is ignored due to wrong parameter values
+    * [CON-375] - purgetools: cleaning only one client causes Illegal Call
+    * [CON-378] - Error while trying to get the frontend path of a non existing client in backend header
+    * [CON-380] - MySQL 5.5 is not supported due to deprecated CREATE TABLE syntax
+    * [CON-381] - Various bugs in versioning feature
+    * [CON-385] - Fallback login page front_crcloginform.inc.php does not work
+    * [CON-386] - Redirections in front_content.php are not forced with exit
+    * [CON-391] - CMS_DATE error after Update to 4.8.14
+    * [CON-392] - Article Timeschedule problem in Release: 4.8.12
+    * [CON-395] - Unneeded code in include.lay_overview.inc.php
+    * [CON-396] - CSS issue with CMS_TEASER/CMS_FILELIST within absolute positioned nodes
+    * [CON-399] - Wrong condition in Contenido_Url::parse() function
+    * [CON-401] - Check reported issue with synchronization of renamed/deleted upload folder via FTP
+    * [CON-402] - Groupname shown for frontenduser are broken with german umlaute
+    * [CON-404] - Missing dbfs URL creation in CMS type CMS_IMG
+    * [CON-405] - FEUser-Plugins valide_to and valide_from saving wrong time
+    * [CON-406] - TinyMCE: Idart is missing in url using anchor-feature of TinyMCE
+    * [CON-413] - Item class method loadBy() does not find filtered id values
+    * [CON-414] - Not workings links and not filled template variable in backend statistic
+    * [CON-421] - Users can be added without password
+    * [CON-423] - Empty array breaks SQL query for content allocation matching
+    * [CON-444] - Inconsistent return value store() function in classes extending GenericDB Item
+    * [CON-445] - Calling system overview in BE may throw a db connect error
+    * [CON-446] - Linkchecker whitelist works not correct
+    * [CON-451] - Deleting upload item doesn't deletes entries in upload meta table
+    * [CON-452] - class.request.php transforms arrays to NULL values as of PHP 5.3.0
+    * [CON-453] - Multiple categories switch on/off if one category is toggled
+    * [CON-454] - Special characters in files can cause duplication of entries in con_upl
+    * [CON-463] - Searching for article ID 0 leads into display error
+    * [CON-464] - Removal of upgrade error log display
+    * [CON-470] - Ampersand is displayed wrong in category creation
+    * [CON-471] - Display problem with headline in language creation
+    * [CON-481] - Gettext extension is never used
+    * [CON-496] - Menu frame in tab "Logs" contains image for left frame
+    * [CON-497] - Multple tab selection on dashboard links
+    * [CON-523] - Special characters in Content Allocation
+
+** Improvement
+    * [CON-251] - Checking write permissions in cms-folder during migration setup
+    * [CON-301] - Reduction of database queries for category tree in "Content -> categories"
+    * [CON-327] - Inconsistent and not performant retrieving of properties
+    * [CON-332] - Old password is overwritten with new one using password-request
+    * [CON-376] - Display error message on database connection failure
+    * [CON-379] - Info in backend home is missing when no clients are available for dropdown box
+    * [CON-382] - Remove integration of old unspported java module editor
+    * [CON-383] - Remove old compatibility functions for PHP versions older 4.3.0
+    * [CON-384] - Move function declaration of IP_match from front_content.php
+    * [CON-387] - Provide error message on database failures
+    * [CON-403] - Show info in dashboard if maintenance is active
+    * [CON-407] - Relabeling from Contenido to CONTENIDO
+    * [CON-416] - Change german translation for template from "Template" to "Vorlage"
+    * [CON-417] - Cleanup of conlib database drivers
+    * [CON-430] - Change default definition for path and url configuration
+    * [CON-456] - Separate DBFS for each client
+    * [CON-457] - Move client path and URL to filesystem
+    * [CON-472] - config.local.php is included too late in frontend
+    * [CON-474] - Replace Tip Baloon and wztooltip with jQuery plugin Tipsy
+    * [CON-477] - Delete offline articles and invisible categories on language deletion, too
+    * [CON-482] - Extend memory_limit check in setup process to 32M
+    * [CON-484] - Merge cApiUser with class ConUser
+    * [CON-485] - Improve error logging
+    * [CON-495] - Redesign of system variable page
+    * [CON-505] - Global debug mode for backend
+    * [CON-506] - Remove own inuse-entries in editor for current object
+    * [CON-507] - Include config.local.php and config.after.php also in dbfs.php
+    * [CON-510] - Return of rendered code in cHTML classes by calling their object as string
+    * [CON-517] - Remove unused entries from cfg_language_de.inc.php
+    * [CON-518] - Change behaviour of example module Title_Tag
+    * [CON-519] - Limit the year selection to current year in log view
+    * [CON-553] - Normalization of API classes
+
+** New Feature
+    * [CON-84] - Integration of mod_rewrite
+    * [CON-335] - Autoloader for contenido classes
+    * [CON-361] - Check permission for FE-User in Navigation_Meta
+    * [CON-412] - Move modules from database to filesystem
+    * [CON-418] - Add new content type CMS_IMAGE
+    * [CON-419] - Add new content type CMS_LINKEDITOR
+    * [CON-462] - Integration of social media modules into example client
+    * [CON-466] - Inconsistent behaviour of feedback messages
+    * [CON-476] - Extend setup checks with maximum PHP version support
+    * [CON-480] - Implement new function cDeprecated
+    * [CON-501] - New standard modules: Piwik and Google Analytics Support
+    * [CON-503] - Notice on big logfiles
+    * [CON-516] - Drag and drop feature for file manager
+    * [CON-534] - Integration of frontend groupmember selection
+
+** Task
+    * [CON-278] - Checkup of whole setup procedure
+    * [CON-355] - delete old SubNavigation-Files and DB-Elements
+    * [CON-360] - Identify the "inuse"-tabledata as a title by Itemname
+    * [CON-367] - Setup: Additional link to Contenido FAQ on resultpage
+    * [CON-389] - Updates of localization
+    * [CON-394] - Check setting include_path configuration for PEAR
+    * [CON-420] - Update of jQuery and jQuery UI
+    * [CON-422] - Remove unused file config.xml.php
+    * [CON-425] - Move newsletter related resources to plugin folder
+    * [CON-426] - Porting cDatatype classes to PHP5
+    * [CON-429] - Move database connectivity check to class constructor
+    * [CON-432] - Removal of con_sequence
+    * [CON-436] - Replacing syntax highlighting editor Editarea with CodeMirror
+    * [CON-439] - Changes in module import and export and removal of package overview
+    * [CON-460] - Removal of is_start compatibility mode
+    * [CON-461] - Removal of "he_SS" as backend language
+    * [CON-473] - Porting cHTML classes to PHP5
+    * [CON-479] - Footnotes in english demo client are not translated
+    * [CON-498] - Removal of old module file storage support
+    * [CON-513] - Test and fix upgrade from 4.8.15 to 4.9.0-alpha1
+    * [CON-524] - Port HTML_Common to cHTML
+    * [CON-545] - Various tasks on localization
+    * [CON-551] - Update system requirement checks
