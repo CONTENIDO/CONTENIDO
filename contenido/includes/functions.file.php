@@ -241,7 +241,7 @@ function getDirectorySize($sDirectory, $bRecursive = false) {
 function scanDirectory($sDirectory, $bRecursive = false) {
 
     cDeprecated('This method is deprecated and is not needed any longer');
-    return cFileHandler::read($sDirectory, $bRecursive, false, true);
+    return cDirHandler::read($sDirectory, $bRecursive, false, true);
 
     // if (substr($sDirectory, strlen($sDirectory) - 1, 1) == '/') {
     //     $sDirectory = substr($sDirectory, 0, strlen($sDirectory) - 1);
