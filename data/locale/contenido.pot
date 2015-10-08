@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-09 11:16+0200\n"
+"POT-Creation-Date: 2015-10-08 11:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1721,23 +1721,23 @@ msgstr ""
 msgid "Date source"
 msgstr ""
 
-#: classes/gui/class.backendhelpbox.php:94
+#: classes/gui/class.backendhelpbox.php:93
 msgid "More information"
 msgstr ""
 
-#: classes/gui/class.navigation.php:166
+#: classes/gui/class.navigation.php:165
 msgid "Unable to load "
 msgstr ""
 
-#: classes/gui/class.navigation.php:262 xml/navigation.xml:87
+#: classes/gui/class.navigation.php:261 xml/navigation.xml:87
 msgid "My CONTENIDO"
 msgstr ""
 
-#: classes/gui/class.navigation.php:311
+#: classes/gui/class.navigation.php:310
 msgid "Some plugin menus can not be shown because of these errors."
 msgstr ""
 
-#: classes/gui/class.navigation.php:325 classes/gui/class.navigation.php:328
+#: classes/gui/class.navigation.php:324 classes/gui/class.navigation.php:327
 #: includes/include.logs.php:263 includes/include.mail_log.php:90
 #: includes/include.system_purge.php:183
 #: includes/include.system_sysvalues.php:178
@@ -1746,78 +1746,78 @@ msgstr ""
 msgid "Client"
 msgstr ""
 
-#: classes/gui/class.navigation.php:350 includes/include.con_edit_form.php:372
+#: classes/gui/class.navigation.php:349 includes/include.con_edit_form.php:372
 #: includes/include.logs.php:266 includes/include.system_sysvalues.php:226
 #: templates/standard/template.log_main.html:30
 #: templates/standard/template.symbolhelp.html:610 xml/system.xml:20
 msgid "User"
 msgstr ""
 
-#: classes/gui/class.navigation.php:413
+#: classes/gui/class.navigation.php:412
 msgid "-- No Language available --"
 msgstr ""
 
-#: classes/gui/class.notification.php:100 scripts/articleObject.js.php:228
+#: classes/gui/class.notification.php:99 scripts/articleObject.js.php:228
 #: scripts/articleObject.js.php:231 scripts/langref.php:14
 msgid "Error"
 msgstr ""
 
-#: classes/gui/class.notification.php:104
+#: classes/gui/class.notification.php:103
 msgid "Warning"
 msgstr ""
 
-#: classes/gui/class.notification.php:108
+#: classes/gui/class.notification.php:107
 #: templates/standard/template.mycontenido_lastarticles.html:78
 #: templates/standard/template.mycontenido_lastarticles.html:118
 #: xml/navigation.xml:94
 msgid "Info"
 msgstr ""
 
-#: classes/gui/class.notification.php:113
+#: classes/gui/class.notification.php:112
 msgid "Ok"
 msgstr ""
 
-#: classes/gui/class.notification.php:118
+#: classes/gui/class.notification.php:117
 msgid "Notification"
 msgstr ""
 
-#: classes/gui/class.objectpager.php:60 classes/gui/class.objectpager.php:62
+#: classes/gui/class.objectpager.php:59 classes/gui/class.objectpager.php:61
 msgid "Paging"
 msgstr ""
 
-#: classes/gui/class.objectpager.php:95
+#: classes/gui/class.objectpager.php:94
 msgid "First page"
 msgstr ""
 
-#: classes/gui/class.objectpager.php:102
+#: classes/gui/class.objectpager.php:101
 msgid "Previous page"
 msgstr ""
 
-#: classes/gui/class.objectpager.php:116
+#: classes/gui/class.objectpager.php:115
 #, php-format
 msgid "Page %s"
 msgstr ""
 
-#: classes/gui/class.objectpager.php:132
+#: classes/gui/class.objectpager.php:131
 msgid "Next page"
 msgstr ""
 
-#: classes/gui/class.objectpager.php:142
+#: classes/gui/class.objectpager.php:141
 msgid "Last page"
 msgstr ""
 
-#: classes/gui/class.page.php:298 classes/gui/class.page.php:347
-#: classes/gui/class.page.php:845
+#: classes/gui/class.page.php:297 classes/gui/class.page.php:346
+#: classes/gui/class.page.php:844
 msgid "The requested resource"
 msgstr ""
 
-#: classes/gui/class.page.php:298 classes/gui/class.page.php:347
-#: classes/gui/class.page.php:845
+#: classes/gui/class.page.php:297 classes/gui/class.page.php:346
+#: classes/gui/class.page.php:844
 msgid "was not found"
 msgstr ""
 
-#: classes/gui/class.sourceeditor.php:83
-#: classes/gui/class.sourceeditor.php:141
+#: classes/gui/class.sourceeditor.php:82
+#: classes/gui/class.sourceeditor.php:140
 #: classes/module/class.module.template.handler.php:442
 #: classes/module/class.module.template.handler.php:449
 #: classes/module/class.module.template.handler.php:455
@@ -1825,7 +1825,7 @@ msgstr ""
 #: includes/include.client_artspec.php:31
 #: includes/include.client_artspec.php:39
 #: includes/include.client_artspec.php:47 includes/include.client_edit.php:20
-#: includes/include.con_art_overview.php:1004
+#: includes/include.con_art_overview.php:1005
 #: includes/include.con_content_list.php:139
 #: includes/include.con_content_list.php:216
 #: includes/include.con_edit_form.php:1401
@@ -1892,7 +1892,7 @@ msgstr ""
 msgid "Permission denied"
 msgstr ""
 
-#: classes/gui/class.sourceeditor.php:115
+#: classes/gui/class.sourceeditor.php:114
 #: includes/include.html_tpl_history.php:35 includes/include.js_history.php:30
 #: includes/include.lay_edit_form.php:29 includes/include.lay_history.php:25
 #: includes/include.lay_overview.php:75 includes/include.mod_edit_form.php:32
@@ -1907,37 +1907,37 @@ msgstr ""
 msgid "This area is read only! The administrator disabled edits!"
 msgstr ""
 
-#: classes/gui/class.sourceeditor.php:199
+#: classes/gui/class.sourceeditor.php:198
 msgid "File deleted successfully!"
 msgstr ""
 
-#: classes/gui/class.sourceeditor.php:212
-#: classes/gui/class.sourceeditor.php:255
+#: classes/gui/class.sourceeditor.php:211
+#: classes/gui/class.sourceeditor.php:254
 msgid "Not a valid filename!"
 msgstr ""
 
-#: classes/gui/class.sourceeditor.php:217
+#: classes/gui/class.sourceeditor.php:216
 msgid "A file with this name exists already"
 msgstr ""
 
-#: classes/gui/class.sourceeditor.php:273
+#: classes/gui/class.sourceeditor.php:272
 msgid "Couldn't rename file. Does it exist already?"
 msgstr ""
 
-#: classes/gui/class.sourceeditor.php:291
+#: classes/gui/class.sourceeditor.php:290
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:505
 msgid "Changes saved successfully!"
 msgstr ""
 
-#: classes/gui/class.sourceeditor.php:293
+#: classes/gui/class.sourceeditor.php:292
 msgid "Couldn't save the changes! Check the file system permissions."
 msgstr ""
 
-#: classes/gui/class.sourceeditor.php:329
+#: classes/gui/class.sourceeditor.php:328
 msgid "The administratos has disabled edits"
 msgstr ""
 
-#: classes/gui/class.sourceeditor.php:332 classes/gui/class.tableform.php:139
+#: classes/gui/class.sourceeditor.php:331 classes/gui/class.tableform.php:138
 #: includes/include.client_edit.php:209
 #: includes/include.grouprights_create.php:71
 #: includes/include.grouprights_overview.php:108
@@ -2595,7 +2595,7 @@ msgid "Top 30"
 msgstr ""
 
 #: includes/functions.stat.php:930 includes/functions.stat.php:961
-#: includes/include.con_art_overview.php:844
+#: includes/include.con_art_overview.php:845
 #: includes/include.grouprights.php:135
 #: includes/include.grouprights_left_top.php:39
 #: includes/include.rights.php:151 includes/include.rights_left_top.php:53
@@ -3180,7 +3180,7 @@ msgstr ""
 
 #: includes/include.con_art_overview.php:441
 #: includes/include.con_art_overview.php:788
-#: templates/standard/template.con_art_overview.html:441
+#: templates/standard/template.con_art_overview.html:487
 msgid "Copy article to the current language"
 msgstr ""
 
@@ -3225,27 +3225,27 @@ msgid "Click on a row to select an article for editing"
 msgstr ""
 
 #: includes/include.con_art_overview.php:776
-#: templates/standard/template.con_art_overview.html:437
+#: templates/standard/template.con_art_overview.html:483
 msgid "Set articles online"
 msgstr ""
 
 #: includes/include.con_art_overview.php:779
-#: templates/standard/template.con_art_overview.html:438
+#: templates/standard/template.con_art_overview.html:484
 msgid "Set articles offline"
 msgstr ""
 
 #: includes/include.con_art_overview.php:782
-#: templates/standard/template.con_art_overview.html:439
+#: templates/standard/template.con_art_overview.html:485
 msgid "Freeze articles"
 msgstr ""
 
 #: includes/include.con_art_overview.php:785
-#: templates/standard/template.con_art_overview.html:440
+#: templates/standard/template.con_art_overview.html:486
 msgid "Unfreeze articles"
 msgstr ""
 
 #: includes/include.con_art_overview.php:791
-#: templates/standard/template.con_art_overview.html:442
+#: templates/standard/template.con_art_overview.html:488
 msgid "Delete articles"
 msgstr ""
 
@@ -3261,37 +3261,37 @@ msgstr ""
 msgid "Your permissions do not allow any actions here"
 msgstr ""
 
-#: includes/include.con_art_overview.php:801
+#: includes/include.con_art_overview.php:802
 msgid "Save articles"
 msgstr ""
 
-#: includes/include.con_art_overview.php:836
-#: includes/include.con_art_overview.php:907
+#: includes/include.con_art_overview.php:837
+#: includes/include.con_art_overview.php:908
 msgid "No articles found"
 msgstr ""
 
-#: includes/include.con_art_overview.php:866
+#: includes/include.con_art_overview.php:867
 #: includes/include.con_translate.php:457
 msgid "Items per page:"
 msgstr ""
 
-#: includes/include.con_art_overview.php:954
+#: includes/include.con_art_overview.php:955
 msgid "This category does not have a configured start article."
 msgstr ""
 
-#: includes/include.con_art_overview.php:961
 #: includes/include.con_art_overview.php:962
+#: includes/include.con_art_overview.php:963
 #: templates/standard/template.symbolhelp.html:115
 #: templates/standard/template.symbolhelp.html:680
 msgid "Create new article"
 msgstr ""
 
-#: includes/include.con_art_overview.php:969
+#: includes/include.con_art_overview.php:970
 msgid ""
 "Creation of articles is only possible if the category has is synchronized."
 msgstr ""
 
-#: includes/include.con_art_overview.php:971
+#: includes/include.con_art_overview.php:972
 msgid ""
 "Creation of articles is only possible if the category has a assigned "
 "template."
@@ -6306,13 +6306,13 @@ msgstr ""
 
 #: templates/standard/template.con_art_overview.html:71
 #: templates/standard/template.con_art_overview.html:107
-#: templates/standard/template.con_art_overview.html:435
+#: templates/standard/template.con_art_overview.html:481
 msgid "Flip selection"
 msgstr ""
 
 #: templates/standard/template.con_art_overview.html:73
 #: templates/standard/template.con_art_overview.html:109
-#: templates/standard/template.con_art_overview.html:436
+#: templates/standard/template.con_art_overview.html:482
 msgid "Apply to all selected articles"
 msgstr ""
 
@@ -6477,6 +6477,17 @@ msgstr ""
 #: templates/standard/template.frontend_left_top_filter.html:47
 #: templates/standard/template.mod_left_top_filter.html:48
 msgid "Apply"
+msgstr ""
+
+#: templates/standard/template.generic_file_overview.html:45
+#: templates/standard/template.upl_files_overview.html:186
+#: templates/standard/template.upl_search_results.html:142
+#: ../data/config/production/cfg_actions.inc.php:73
+msgid "Delete file"
+msgstr ""
+
+#: templates/standard/template.generic_file_overview.html:46
+msgid "Do you really want to delete the following file?"
 msgstr ""
 
 #: templates/standard/template.generic_source_editor.html:29
@@ -7011,12 +7022,6 @@ msgstr ""
 #: templates/standard/template.upl_files_overview.html:185
 #: templates/standard/template.upl_search_results.html:141
 msgid "Close"
-msgstr ""
-
-#: templates/standard/template.upl_files_overview.html:186
-#: templates/standard/template.upl_search_results.html:142
-#: ../data/config/production/cfg_actions.inc.php:73
-msgid "Delete file"
 msgstr ""
 
 #: templates/standard/template.upl_files_overview.html:187
