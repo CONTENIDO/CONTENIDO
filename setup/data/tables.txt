@@ -323,6 +323,7 @@
 "mod";"created";"datetime";"";"";"0000-00-00 00:00:00";"";""
 "mod";"lastmodified";"datetime";"";"";"0000-00-00 00:00:00";"";""
 "nav_main";"idnavm";"int(11)";"";"PRI";"0";"";"1"
+"nav_main";"name";"varchar(255)";"";"MUL";"";"";""
 "nav_main";"location";"varchar(255)";"";"";"";"";""
 "nav_sub";"idnavs";"int(11)";"";"PRI";"0";"";"1"
 "nav_sub";"idnavm";"int(11)";"";"";"0";"";""
