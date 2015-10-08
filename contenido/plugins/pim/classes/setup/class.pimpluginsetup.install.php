@@ -434,16 +434,21 @@ class PimPluginSetupInstall extends PimPluginSetup {
             // Add attributes "parent" and "menuless" to an array
             $attributes = array(
                 'parent' => cSecurity::escapeString($attributes['parent']),
+            	'relevant' => cSecurity::toInteger($attributes['relevant']),
                 'menuless' => cSecurity::toInteger($attributes['menuless'])
             );
 
-            // Fix for parent attribute
+            // Fix for parent and relevant attributes
             if (empty($attributes['parent'])) {
                 $attributes['parent'] = 0;
             }
 
+            if (empty($attributes['relevant'])) {
+            	$attributes['relevant'] = 1;
+            }
+
             // Create a new entry
-            $item = $this->_ApiAreaCollection->create($area, $attributes['parent'], 1, 1, $attributes['menuless']);
+            $item = $this->_ApiAreaCollection->create($area, $attributes['parent'], $attributes['relevant'], 1, $attributes['menuless']);
 
             // Set a relation
             $this->_PimPluginRelationsCollection->create($item->get('idarea'), $pluginId, 'area');

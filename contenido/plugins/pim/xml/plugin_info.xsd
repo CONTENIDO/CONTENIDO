@@ -88,7 +88,8 @@
                     <xsd:simpleContent>
                         <xsd:extension base="xsd:string">
                             <xsd:attribute name="parent" type="xsd:string" />
-                            <xsd:attribute name="menuless" type="xsd:integer" default="0" />
+                            <xsd:attribute name="relevant" type="xsd:integer" default="1" />
+                            <xsd:attribute name="menuless" type="xsd:integer" default="0" />                            
                         </xsd:extension>
                     </xsd:simpleContent>
                 </xsd:complexType>
