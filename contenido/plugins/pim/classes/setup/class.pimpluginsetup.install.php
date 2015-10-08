@@ -431,7 +431,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
             // Security check
             $area = cSecurity::escapeString(parent::$XmlArea->area[$i]);
 
-            // Add attributes "parent" and "menuless" to an array
+            // Add attributes "parent", "relevant" and "menuless" to an array
             $attributes = array(
                 'parent' => cSecurity::escapeString($attributes['parent']),
             	'relevant' => cSecurity::toInteger($attributes['relevant']),
