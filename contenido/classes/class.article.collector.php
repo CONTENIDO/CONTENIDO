@@ -181,10 +181,10 @@ class cArticleCollector implements SeekableIterator, Countable {
 
         $cfg = cRegistry::getConfig();
 
-        $sqlCat = (count($this->_options['categories']) > 0) ? " idcat IN ('" . implode("','", $this->_options['categories']) . "') AND " : '';
+        $sqlCatLang = (count($this->_options['categories']) > 0) ? " idcat IN ('" . implode("','", $this->_options['categories']) . "') AND " : '';
 
         $db = cRegistry::getDb();
-        $sql = "SELECT startidartlang, idcat FROM " . $cfg['tab']['cat_lang'] . " WHERE " . $sqlCat . " idlang=" . $this->_options['lang'];
+        $sql = "SELECT startidartlang, idcat FROM " . $cfg['tab']['cat_lang'] . " WHERE " . $sqlCatLang . " idlang=" . $this->_options['lang'];
         $db->query($sql);
 
         while ($db->nextRecord()) {
@@ -194,7 +194,9 @@ class cArticleCollector implements SeekableIterator, Countable {
             }
         }
 
-        $sqlCat = (count($this->_options['categories']) > 0) ? " c.idcat IN ('" . implode("','", $this->_options['categories']) . "') AND b.idart = c.idart AND " : '';
+        // This sql-line uses cat_art table with alias c. If no categories found, it writes only "WHERE" into sql-query
+        $sqlCat = (count($this->_options['categories']) > 0) ? ", " . $cfg['tab']['cat_art'] . " AS c WHERE c.idcat IN ('" . implode("','", $this->_options['categories']) . "') AND b.idart = c.idart AND " : ' WHERE ';
+
         $sqlArtSpecs = (count($this->_options['artspecs']) > 0) ? " a.artspec IN ('" . implode("','", $this->_options['artspecs']) . "') AND " : '';
 
         if (count($this->_startArticles) > 0) {
@@ -212,7 +214,7 @@ class cArticleCollector implements SeekableIterator, Countable {
         }
 
         $sql = "SELECT DISTINCT a.idartlang FROM " . $cfg['tab']['art_lang'] . " AS a, ";
-        $sql .= $cfg['tab']['art'] . " AS b, " . $cfg['tab']['cat_art'] . " AS c " . " WHERE ";
+        $sql .= $cfg['tab']['art'] . " AS b";
         $sql .= $sqlCat . $sqlStartArticles . $sqlArtSpecs . "b.idclient = '" . $this->_options['client'] . "' AND ";
         $sql .= "a.idlang = '" . $this->_options['lang'] . "' AND " . "a.idart = b.idart";
 
