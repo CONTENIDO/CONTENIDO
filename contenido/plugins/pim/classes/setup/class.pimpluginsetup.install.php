@@ -512,6 +512,9 @@ class PimPluginSetupInstall extends PimPluginSetup {
         // Initializing attribute array
         $attributes = array();
 
+        // Get Id of plugin
+        $pluginId = parent::_getPluginId();
+
         $frameCount = count(parent::$XmlFrames->frame);
         for ($i = 0; $i < $frameCount; $i++) {
 
@@ -530,7 +533,10 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
             // Create a new entry at *_frame_files
             if (!empty($attributes['frameId'])) {
-                $this->_ApiFrameFileCollection->create($attributes['area'], $attributes['frameId'], $file->get('idfile'));
+                $item = $this->_ApiFrameFileCollection->create($attributes['area'], $attributes['frameId'], $file->get('idfile'));
+
+				// Set a relation
+				$this->_PimPluginRelationsCollection->create($item->get('idframefile'), $pluginId, 'framefl');
             }
         }
     }

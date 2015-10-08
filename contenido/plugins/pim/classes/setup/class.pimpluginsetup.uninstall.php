@@ -213,6 +213,11 @@ class PimPluginSetupUninstall extends PimPluginSetup {
             $this->_ApiActionCollection->deleteByWhereClause("idaction IN('" . join("', '", $relations['action']) . "')");
         }
 
+        // Delete entries with relations to *_frame_files
+        if (!empty($relations['framefl'])) {
+        	$this->_ApiFrameFileCollection->deleteByWhereClause("idframefile IN('" . join("', '", $relations['framefl']) . "')");
+        }
+
         // Delete entries with relations to *_area
         if (!empty($relations['area'])) {
             $this->_ApiFileCollection->deleteByWhereClause("idarea IN('" . join("', '", $relations['area']) . "')");
