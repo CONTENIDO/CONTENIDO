@@ -401,8 +401,14 @@ if ($contenido) {
             $admin = true;
         }
         if (false === $admin) {
-            $inUse = true;
-            $disabled = 'disabled="disabled"';
+            $notification = new cGuiNotification();
+	    	$modErrorMessage = i18n('This article is currently frozen and can not be edited!');
+	    	foreach ($erroneousModules as $erroneousModule) {
+	    		$modErrorMessage .= "- " . $erroneousModule . "<br />\n";
+	    	}
+	    	$inUse = true;
+	    	$sHtmlInUseCss = '<link rel="stylesheet" type="text/css" href="' . $backendUrl . 'styles/inuse.css">';
+	    	$sHtmlInUseMessage = $notification->returnMessageBox('warning', $modErrorMessage, 0);
         }
     }
 

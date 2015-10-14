@@ -992,7 +992,6 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
     $idartlang = $_REQUEST['idartlang'];
     $contenido = $_REQUEST['contenido'];
 
-
     // Get locked status (article freeze)
     $cApiArticleLanguage = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
     $locked = $cApiArticleLanguage->getField('locked');

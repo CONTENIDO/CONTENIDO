@@ -138,7 +138,7 @@ if ($art->getField('created')) {
         $tpl->set("s", "REASON", sprintf(i18n('Article is in use by %s (%s)'), $inUseUser, $inUseUserRealName));
     }
 
-    if ($art->getField('locked') == 1) {
+    if ($art->getField('locked') == 1 && false === $admin) {
         $disabled = 'disabled="disabled"';
         $tpl->set('s', 'DISABLED', ' ' . $disabled);
         $notifications[] = $notification->returnNotification('warning', i18n('This article is currently frozen and can not be edited!'));
