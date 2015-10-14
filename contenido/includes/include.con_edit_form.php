@@ -606,7 +606,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
         // Remove all own marks
         $col->removeSessionMarks($sess->id);
-var_dump($admin);
+
         if (false === $admin) {
 
 	        if ((($obj = $col->checkMark("article", $tmp_idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) && $tmp_locked != 1) {
