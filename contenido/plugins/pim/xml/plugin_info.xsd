@@ -131,7 +131,15 @@
 
     <xsd:complexType name="ContenidoNavMainTyp">
         <xsd:sequence minOccurs="0" maxOccurs="unbounded">
-            <xsd:element name="nav" type="xsd:string" />
+            <xsd:element name="nav">
+                <xsd:complexType>
+                    <xsd:simpleContent>
+                        <xsd:extension base="xsd:string">
+                            <xsd:attribute name="name" type="xsd:string" use="required" />
+                        </xsd:extension>
+                    </xsd:simpleContent>
+                </xsd:complexType>
+            </xsd:element>
         </xsd:sequence>
     </xsd:complexType>
 
