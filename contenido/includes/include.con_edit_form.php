@@ -31,6 +31,13 @@ global $tplinputchanged, $idcatnew, $newart, $syncoptions, $tmp_notification, $b
 $page = new cGuiPage("con_edit_form", "", "con_editart");
 $tpl = null;
 
+// Admin rights
+$aAuthPerms = explode(',', cRegistry::getAuth()->auth['perm']);
+$admin = false;
+if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
+	$admin = true;
+}
+
 if (isset($idart)) {
     if (!isset($idartlang) || 0 == $idartlang) {
         $sql = "SELECT
@@ -599,7 +606,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
         // Remove all own marks
         $col->removeSessionMarks($sess->id);
-
+var_dump($admin);
         if (false === $admin) {
 
 	        if ((($obj = $col->checkMark("article", $tmp_idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) && $tmp_locked != 1) {

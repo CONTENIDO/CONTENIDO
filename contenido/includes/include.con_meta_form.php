@@ -30,6 +30,13 @@ global $syncoptions, $tmp_notification;
 // Reset template
 $tpl->reset();
 
+// Admin rights
+$aAuthPerms = explode(',', cRegistry::getAuth()->auth['perm']);
+$admin = false;
+if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
+	$admin = true;
+}
+
 // Check permissions
 if (!$perm->have_perm_area_action($area, 'con_meta_edit') && !$perm->have_perm_area_action_item($area, 'con_meta_edit', $idcat)) {
     // User has no permission to see this form
