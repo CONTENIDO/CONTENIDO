@@ -374,7 +374,7 @@ class cAjaxRequest {
 
                 // NOTE: The default setting is to check the modules
                 $moduleCheck = getSystemProperty('system', 'modulecheck');
-                $moduleCheck = $moduleCheck == '' || $moduleCheck == 'true';
+                $moduleCheck = ($moduleCheck == '' && $moduleCheck != "false") || ($moduleCheck == 'true' || $moduleCheck == "1");
 
                 $result = array(
                     'state' => 'error',
