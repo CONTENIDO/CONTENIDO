@@ -749,10 +749,6 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     $select = new cHTMLSelectElement("directlink");
     $select->setEvent("change", "var sVal=this.form.directlink.options[this.form.directlink.options.selectedIndex].value; document.getElementById('linkhint').value = sVal; if(sVal)document.getElementById('linkhintA').style.display='inline-block'; else document.getElementById('linkhintA').style.display='none';");
-    if (cSecurity::toInteger($idart) == 0 || ($versioning->getState() == 'simple' && ($articleType != 'current' && $articleType != 'editable')
-            || $versioning->getState() == 'advanced' && $articleType != 'editable')) {
-        $select->setEvent("disabled", "disabled");
-    }
 
     $baselink = cRegistry::getFrontendUrl() . "front_content.php?idart=$idart";
 
@@ -768,7 +764,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $select->appendOptionElement($option[3]);
     $select->appendOptionElement($option[4]);
 
-    $page->set('s', 'DIRECTLINK', $select->render() . '<br><br><input class="text_medium" type="text" id="linkhint" readonly="readonly" ' . $disabled . '> <input id="linkhintA" type="button" value="' . i18n("open") . '" style="display: none;" onclick="window.open(document.getElementById(\'linkhint\').value);">');
+    $page->set('s', 'DIRECTLINK', $select->render() . '<br><br><input class="text_medium" type="text" id="linkhint" readonly="readonly"> <input id="linkhintA" type="button" value="' . i18n("open") . '" style="display: none;" onclick="window.open(document.getElementById(\'linkhint\').value);">');
 
     $page->set('s', 'ZUORDNUNGSID', "idcatart");
     $page->set('s', 'ALLOCID', $tmp_cat_art? $tmp_cat_art : '&nbsp;');
