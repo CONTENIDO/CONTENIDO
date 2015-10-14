@@ -373,15 +373,16 @@ class cAjaxRequest {
                 $inputType = isset($_POST['type']) ? $_POST['type'] : NULL;
 
                 // NOTE: The default setting is to check the modules
-                $moduleCheck = getSystemProperty('system', 'modulecheck');
-                $moduleCheck = ($moduleCheck == '' && $moduleCheck != "false") || ($moduleCheck == 'true' || $moduleCheck == "1");
+                // @see CON-2425
+                $moduleCheck = getSystemProperty('system', 'modulecheck', 'true');
+                $moduleCheck = ($moduleCheck == '' && $moduleCheck != 'false') || $moduleCheck == 'true' || $moduleCheck == '1';
 
                 $result = array(
-                    'state' => 'error',
-                    'message' => 'No cModuleHandler for ' . $idmod . ', or wrong code type: ' . $inputType
+                    'state' => 'ok',
+                	'message' => i18n("Module successfully compiled")
                 );
 
-                if ($idmod && $inputType && $moduleCheck === true) {
+                if ($idmod && $inputType && $moduleCheck) {
                     $contenidoModuleHandler = new cModuleHandler($idmod);
                     switch ($inputType) {
                         case 'input':
@@ -390,6 +391,11 @@ class cAjaxRequest {
                         case 'output':
                             $result = $contenidoModuleHandler->testOutput();
                             break;
+                        default:
+			                $result = array(
+			                    'state' => 'error',
+			                    'message' => 'No cModuleHandler for ' . $idmod . ', or wrong code type: ' . $inputType
+			                );
                     }
 
                     //create answer

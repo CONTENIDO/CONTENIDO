@@ -34,11 +34,13 @@ class cApiNavMainCollection extends ItemCollection {
     /**
      * Create new item with given values.
      *
+     * @param string name
      * @param string $location
      * @return cApiNavMain
      */
-    public function create($location) {
+    public function create($name, $location) {
         $item = $this->createNewItem();
+        $item->set('name', $name);
         $item->set('location', $location);
         $item->store();
         return $item;

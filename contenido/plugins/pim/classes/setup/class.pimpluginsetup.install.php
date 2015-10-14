@@ -567,16 +567,31 @@ class PimPluginSetupInstall extends PimPluginSetup {
      */
     private function _installAddNavMain() {
 
+    	// Initializing attribute array
+    	$attributes = array();
+
         // Get Id of plugin
         $pluginId = parent::_getPluginId();
 
         $navCount = count(parent::$XmlNavMain->nav);
         for ($i = 0; $i < $navCount; $i++) {
-            // Security check
-            $location = cSecurity::escapeString(parent::$XmlNavMain->nav[$i]);
+
+        	// Security check for location
+        	$location = cSecurity::escapeString(parent::$XmlNavMain->nav[$i]);
+
+        	// Build attributes with security checks
+            foreach (parent::$XmlNavMain->nav[$i]->attributes() as $sKey => $sValue) {
+                $attributes[$sKey] = cSecurity::escapeString($sValue);
+            }
+
+            // Fallback for older plugins
+            if (!$attributes['name']) {
+            	$attributes['name'] = strtolower($location);
+            	$attributes['name'] = str_replace('/', '', $attributes['name']);
+            }
 
             // Create a new entry at *_nav_main
-            $navMain = $this->_ApiNavMainCollection->create($location);
+            $navMain = $this->_ApiNavMainCollection->create($attributes['name'], $location);
 
             // Set a relation
             $this->_PimPluginRelationsCollection->create($navMain->get('idnavm'), $pluginId, 'navm');
