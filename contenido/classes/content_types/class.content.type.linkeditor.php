@@ -142,7 +142,6 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
             return '';
         }
         $linktext = $this->_settings['linkeditor_title'];
-        $alt = $linktext;
         // if the linktext is empty, use the link as the link text
         if (empty($linktext)) {
             $linktext = $href;
@@ -151,7 +150,6 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
 
         $link = new cHTMLLink($href);
         $link->setClass('link_list');
-        $link->setAlt($alt);
         $link->setTargetFrame($target);
         $link->setContent($linktext);
 
