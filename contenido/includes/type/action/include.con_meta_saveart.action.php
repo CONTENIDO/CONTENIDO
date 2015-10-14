@@ -49,7 +49,9 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
     if (in_array('noarchive', $robotArray)) {
         $robots .= 'noarchive, ';
     }
-
+    if (in_array('noodp', $robotArray)) {
+    	$robots .= 'noodp, ';
+    }
     if (in_array('nofollow', $robotArray)) {
         $robots .= 'nofollow';
     } else {
