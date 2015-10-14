@@ -29,7 +29,7 @@
             <frame area="con_contentallocation" filetype="main" name="content_allocation/includes/include.contentallocation_article.php" frameId="4" />
         </frames>
         <nav_sub>
-            <nav area="content_allocation" level="0" navm="3">content_allocation/xml/;navigation/extra/content_allocation/main</nav>
+            <nav area="content_allocation" level="0" navm="extra">content_allocation/xml/;navigation/extra/content_allocation/main</nav>
             <nav area="con_contentallocation" level="1" navm="0">content_allocation/xml/;navigation/contenido/article/content_allocation</nav>
         </nav_sub>
     </contenido>

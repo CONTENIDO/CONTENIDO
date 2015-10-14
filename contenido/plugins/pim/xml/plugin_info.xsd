@@ -143,7 +143,7 @@
                         <xsd:extension base="xsd:string">
                             <xsd:attribute name="area" type="xsd:string" use="required" />
                             <xsd:attribute name="level" type="xsd:integer" use="required" />
-                            <xsd:attribute name="navm" type="xsd:integer" />
+                            <xsd:attribute name="navm" />
                         </xsd:extension>
                     </xsd:simpleContent>
                 </xsd:complexType>

@@ -170,6 +170,28 @@ class PimPluginSetupInstall extends PimPluginSetup {
         return $this->PluginInstalledAreas;
     }
 
+    /**
+     * Get id of nav_main entry
+     * @param string $navm
+     * @return boolean|integer
+     */
+    protected function _getNavMainId($navm = '') {
+
+    	if (!$navm) {
+    		return false;
+    	}
+
+    	$this->_ApiNavMainCollection->setWhere('name', cSecurity::escapeString($navm));
+    	$this->_ApiNavMainCollection->query();
+
+    	if ($this->_ApiNavMainCollection->count() == 0) {
+    		return false;
+    	} else {
+	    	$entry = $this->_ApiNavMainCollection->next();
+	    	return $entry->get('idnavm');
+    	}
+    }
+
     // Begin of installation routine
     /**
      * Construct function
@@ -400,7 +422,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * Get all area names from database
      */
     private function _installFillAreas() {
-        $oItem = $this->_ApiAreaCollection;
         $this->_ApiAreaCollection->select(NULL, NULL, 'name');
         while (($areas = $this->_ApiAreaCollection->next()) !== false) {
             $this->PluginInstalledAreas[] = $areas->get('name');
@@ -587,6 +608,17 @@ class PimPluginSetupInstall extends PimPluginSetup {
             // Check for valid area
             if (!in_array($attributes['area'], $this->_getInstalledAreas())) {
                 parent::error(sprintf(i18n('Defined area <strong>%s</strong> are not found on your CONTENIDO installation. Please contact your plugin author.', 'pim'), $attributes['area']));
+            }
+
+            // If navm attribute is an string get it's id
+            if (!preg_match('/[^a-zA-Z]/u', $attributes['navm'])) {
+
+            	$navm = $this->_getNavMainId($attributes['navm']);;
+            	if ($navm === false) {
+            		parent::error(sprintf(i18n('Can not find <strong>%s</strong> entry at nav_main table on your CONTENIDO installation. Please contact your plugin author.', 'pim'), $attributes['navm']));
+            	} else {
+            		$attributes['navm'] = $navm;
+            	}
             }
 
             // Create a new entry at *_nav_sub
