@@ -159,6 +159,35 @@ foreach ($aCustomTabs as $key => $params) {
 echo $cutomTabsJs;
 ?>
 
+         // try to get nav and action frames if async frames loading don't work
+         if (   typeof this.navFrame === 'undefined'
+             || typeof this.actionFrame === 'undefined'
+         ) {
+
+             var self = this;
+             var maxIntervalCounter = 20;
+             var interval = setInterval(
+                 function() {
+
+                     if (typeof self.navFrame === 'undefined') {
+                         self.navFrame = Con.getFrame('right_top');
+                     }
+                     if (typeof self.actionFrame === 'undefined') {
+                         self.actionFrame = Con.getFrame(self.actionFrameName);
+                     }
+
+                     if (   (   typeof self.navFrame !== 'undefined'
+                         && typeof self.actionFrame !== 'undefined')
+                         || maxIntervalCounter <= 0
+                     ) {
+                         clearInterval(interval);
+                     }
+
+                     maxIntervalCounter--;
+                 }
+                 ,250);
+         }
+
     };
 
     Con.ArticleObject.prototype = {
