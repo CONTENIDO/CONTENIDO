@@ -24,8 +24,8 @@ if (!isset($artspec)) {
     $artspec = '';
 }
 
-if (!isset($online)) {
-    $online = false;
+if (!isset($online) && !isset($timemgmt)) {
+	$online = false;
 }
 
 if (!isset($searchable)) {
@@ -39,17 +39,20 @@ if (false === isset($publishing_date)) {
 
 $oldData = array();
 
+
 if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_action_item($area, "con_edit", $idcat))  && ((int) $locked === 0 || $admin )) {
+
+	// Get idartlang
+	if (!isset($idartlang) || $idartlang == 0) {
+		$sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idart = $idart AND idlang = $lang";
+		$db->query($sql);
+		$db->nextRecord();
+		$idartlang = $db->f("idartlang");
+	}
+
     if (1 == $tmp_firstedit) {
         $idart = conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang, $lang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort, 0, $searchable);
         $tmp_notification = $notification->returnNotification("ok", i18n("Changes saved"));
-
-        if (!isset($idartlang) || $idartlang == 0) {
-            $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idart = $idart AND idlang = $lang";
-            $db->query($sql);
-            $db->nextRecord();
-            $idartlang = $db->f("idartlang");
-        }
 
         if (in_array($idcat, $idcatnew)) {
             $sql = "SELECT idcatart FROM " . $cfg["tab"]["cat_art"] . " WHERE idcat = '" . $idcat . "' AND idart = '" . $idart . "'";
@@ -162,13 +165,6 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
         conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang, $lang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $publishing_date, $artsort, 0, $searchable);
 
         $tmp_notification = $notification->returnNotification("ok", i18n("Changes saved"));
-
-        if (!isset($idartlang)) {
-            $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idart = $idart AND idlang = $lang";
-            $db->query($sql);
-            $db->nextRecord();
-            $idartlang = $db->f("idartlang");
-        }
 
         if (is_array($idcatnew)) {
             if (in_array($idcat, $idcatnew)) {
