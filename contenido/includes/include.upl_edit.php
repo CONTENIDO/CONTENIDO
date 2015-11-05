@@ -240,7 +240,7 @@ if ($upload = $uploads->next()) {
 
             case 'preview':
                 if (cApiDbfs::isDbfs($_REQUEST['path'])) {
-                    $sCell = '<a target="_blank" href="' . $sess->url(cRegistry::getFrontendUrl() . "dbfs.php?file=" . $qpath . $_REQUEST['file']) . '"><img alt="" class="bordered" src="' . uplGetThumbnail($qpath . $_REQUEST['file'], 350) . '"></a>';
+                    $sCell = '<a target="_blank" href="' . cRegistry::getFrontendUrl() . "dbfs.php?file=" . $qpath . $_REQUEST['file'] . '"><img alt="" class="bordered" src="' . uplGetThumbnail($qpath . $_REQUEST['file'], 350) . '"></a>';
                 } else {
                     $sCell = '<a target="_blank" href="' . $cfgClient[$client]['upl']['htmlpath'] . $qpath . $_REQUEST['file'] . '"><img alt="" class="bordered" src="' . uplGetThumbnail($qpath . $_REQUEST['file'], 350) . '"></a>';
                 }
