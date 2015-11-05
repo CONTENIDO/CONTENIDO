@@ -35,7 +35,7 @@ class cRegistry {
     /**
      * Container for ok messages.
      *
-     * @author frederik.schneider
+     * @author frederic.schneider
      * @var array
      */
     protected static $_okMessages = array();
@@ -691,7 +691,7 @@ class cRegistry {
     /**
      * Appends the last ok message that will be outputted
      *
-     * @author frederik.schneider
+     * @author frederic.schneider
      * @param string $message
      */
     public static function appendLastOkMessage($message) {
@@ -759,7 +759,7 @@ class cRegistry {
     /**
      * Return an array with ok message
      *
-     * @author frederik.schneider
+     * @author frederic.schneider
      * @return array
      */
     public static function getOkMessages() {
