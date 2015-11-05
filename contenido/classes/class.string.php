@@ -620,7 +620,7 @@ class cString {
      */
     public static function recodeString($string, $sourceEncoding, $targetEncoding) {
         // If sourceEncoding and targetEncoding are the same, return
-        if ($sourceEncoding == $targetEncoding) {
+        if (strtolower($sourceEncoding) == strtolower($targetEncoding)) {
             return $string;
         }
 
