@@ -650,7 +650,7 @@ class cRegistry {
     /**
      * Stores an ok message in the cRegistry.
      *
-     * @author frederik.schneider
+     * @author frederic.schneider
      * @param string $message
      */
     public static function addOkMessage($message) {
