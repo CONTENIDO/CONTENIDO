@@ -633,7 +633,7 @@ class cRegistry {
     /**
      * Shutdowns the CONTENIDO framework on page close.
      *
-     * @author frederik.schneider
+     * @author frederic.schneider
      * @param bool $debugShowAll [optional]
      */
     public final static function shutdown($debugShowAll = true) {
