@@ -203,9 +203,10 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $select = new cHTMLSelectElement($id, '', $id);
         $select->addOptionElement($index = 0, new cHTMLOptionElement(Pifa::i18n('none'), ''));
 
-        // get all forms of current client & validate result
+        // get all forms of current client & language
         $idclient = cRegistry::getClientId();
-        $forms = PifaFormCollection::getByClient($idclient);
+        $idlang = cRegistry::getLanguageId();
+        $forms = PifaFormCollection::getByClientAndLang($idclient, $idlang);
         if (false === $forms) {
             return $select;
         }
