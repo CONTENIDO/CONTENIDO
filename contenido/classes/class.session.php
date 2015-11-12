@@ -62,6 +62,7 @@ class cSession {
      *         The prefix for the session variables
      */
     public function __construct($prefix = 'backend') {
+    	$cfg = cRegistry::getConfig();
         $this->_pt = array();
         $this->_prefix = $prefix;
 
@@ -87,10 +88,10 @@ class cSession {
             $start = strpos($path, '/');
             if (false !== $start) {
                 $path = substr($path, $start);
-                session_set_cookie_params(0, $path);
+                session_set_cookie_params(0, $path, null, $cfg['secure'], true);
             } else {
                 // fall back to entire domain if no path can be computed
-                session_set_cookie_params(0, '/');
+                session_set_cookie_params(0, '/', null, $cfg['secure'], true);
             }
 
             session_name($this->_prefix);

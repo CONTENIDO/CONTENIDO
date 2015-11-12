@@ -18,11 +18,12 @@
 if (!cRegistry::getBackendSessionId()) {
 
     $session = cRegistry::getSession();
+    $params = session_get_cookie_params();
 
     if (array_key_exists('acceptCookie', $_GET)) {
         // Check value in get, if js is off
         $allowCookie = $_GET['acceptCookie'] === '1'? 1 : 0;
-        setcookie('allowCookie', $allowCookie);
+        setcookie('allowCookie', $allowCookie, 0, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
 
         // Save value
         $session->register('allowCookie');
