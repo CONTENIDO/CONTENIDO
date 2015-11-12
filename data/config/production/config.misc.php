@@ -35,7 +35,7 @@ $cfg['backend']['timeout'] = 60;
 // (int) Frontend timeout
 $cfg['frontend']['timeout'] = 15;
 
-// (bool) Use secure HTTPS connections for every time?
+// (bool) Enforce HTTPS for cookies
 $cfg['secure'] = false;
 
 // (bool) Use Pseudo-Cron?
