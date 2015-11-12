@@ -89,7 +89,7 @@ if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "fr
 }
 
 if (true === $feuser->isLoaded() && $feuser->get("idclient") == $client) {
-    $username = conHtmlentities(stripslashes(trim($username)));
+    $username = stripslashes(trim($username));
 
     if ($action == "frontend_save_user" && strlen($username) == 0) {
         $page->displayError(i18n("Username can't be empty"));

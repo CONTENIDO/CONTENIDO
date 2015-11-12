@@ -80,7 +80,7 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
      * @return string|false
      */
     public function validateCredentials() {
-        $username = $_POST['username'];
+        $username = conHtmlentities(stripslashes(trim($_POST['username'])));
         $password = $_POST['password'];
 
         $groupPerm = array();

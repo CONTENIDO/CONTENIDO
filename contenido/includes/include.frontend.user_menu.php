@@ -253,7 +253,7 @@ foreach ($aUserTable as $mkey => $params) {
         $delTitle = i18n("Delete user");
         $deletebutton = '<a title="' . $delTitle . '" data-username="' . conHtmlSpecialChars($params["username"]) . '" data-idfrontenduser="' . $idfrontenduser . '" class="jsDelete" href="javascript:void(0)"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
 
-        $mlist->setTitle($iMenu, $params["username"]);
+        $mlist->setTitle($iMenu, conHtmlentities($params["username"]));
         $mlist->setLink($iMenu, $link);
         $mlist->setActions($iMenu, "delete", $deletebutton);
         $mlist->setImage($iMenu, "");
