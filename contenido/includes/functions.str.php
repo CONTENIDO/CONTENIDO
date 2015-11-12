@@ -397,7 +397,7 @@ function strBuildSqlValues($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0) {
  * @return int
  */
 function strNextDeeper($idcat, $ignoreLang = false) {
-    global $lang;
+	$lang = cRegistry::getLanguageId();
 
     $languageId = (true == $ignoreLang) ? NULL : $lang;
     $oCatColl = new cApiCategoryCollection();
@@ -412,7 +412,7 @@ function strNextDeeper($idcat, $ignoreLang = false) {
  * @return bool
  */
 function strHasArticles($idcat) {
-    global $lang;
+    $lang = cRegistry::getLanguageId();
 
     $oCatArtColl = new cApiCategoryArticleCollection();
     return $oCatArtColl->getHasArticles($idcat, $lang);
@@ -641,7 +641,7 @@ function strDeeperCategoriesArray($idcat) {
  * @return void|string
  */
 function strDeleteCategory($idcat) {
-    global $lang, $lang;
+    $lang = cRegistry::getLanguageId();
 
     // Flag to rebuild the category table
     global $remakeCatTable, $remakeStrTable;

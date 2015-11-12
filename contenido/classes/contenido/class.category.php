@@ -227,24 +227,18 @@ class cApiCategoryCollection extends ItemCollection {
     public function getFirstChildCategoryId($idcat, $idlang = NULL) {
         global $cfg;
 
-        $sql = "SELECT idcat FROM `%s` WHERE parentid = %d AND preid = 0";
-        $sql = $this->db->prepare($sql, $this->table, $idcat);
+        $sql = "SELECT c.idcat
+        		FROM `%s` AS c
+        		LEFT JOIN `%s` AS l ON (l.idcat = c.idcat)
+        		WHERE c.parentid = %d AND l.idlang = %d";
+        $sql = $this->db->prepare($sql, $this->table, $cfg['tab']['cat_lang'], $idcat, $idlang);
         $this->db->query($sql);
-        if ($this->db->nextRecord()) {
-            $midcat = (int) $this->db->f('idcat');
-            if (NULL == $idlang) {
-                return $midcat;
-            }
 
-            // Deeper element exists, check for language dependent part
-            $sql = "SELECT idcatlang FROM `%s` WHERE idcat = %d AND idlang = %d";
-            $sql = $this->db->prepare($sql, $cfg['tab']['cat_lang'], $idcat, $idlang);
-            $this->db->query($sql);
-            return ($this->db->nextRecord()) ? $midcat : 0;
-        } else {
-            // Deeper element does not exist
-            return 0;
+        if ($this->db->nextRecord()) {
+        	return $this->db->f('idcat');
         }
+
+        return 0;
     }
 
     /**
