@@ -233,7 +233,7 @@ if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST['page']) || $_REQUEST['pa
 if ($action == 'con_translate_edit') {
     $error = false;
 
-    $savetranslations = $_REQUEST["modtrans"];
+    $savetranslations = $_REQUEST['modtrans'];
     if (is_array($savetranslations)) {
         foreach ($savetranslations as $idmod => $savemodtranslations) {
 
@@ -262,10 +262,12 @@ if ($action == 'con_translate_edit') {
         }
     }
 
-    if (!$error) {
-        $page->displayOk(i18n('Saved translation successfully!'));
-    } else {
-        $page->displayError(i18n("Can't save translation!"));
+    if (!empty($_POST['modtrans'])) {
+	    if (!$error) {
+	        $page->displayOk(i18n('Saved translation successfully!'));
+	    } else {
+	        $page->displayError(i18n("Can't save translation!"));
+	    }
     }
 }
 
