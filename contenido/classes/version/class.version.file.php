@@ -38,7 +38,7 @@ class cVersionFile extends cVersion {
      *
      * @var unknown_type
      */
-    public $sDescripion;
+    public $sDescription;
 
     /**
      * The path of style file.
@@ -86,10 +86,10 @@ class cVersionFile extends cVersion {
         $this->sFileName = $sFileName;
 
         // File Information, set for class Version to generate head xml nodes
-        $this->sDescripion = $aFileInfo["description"];
-        $this->sAuthor = $aFileInfo["author"];
-        $this->dLastModified = $aFileInfo["lastmodified"];
-        $this->dCreated = $aFileInfo["created"];
+        $this->sDescription = $aFileInfo['description'];
+        $this->sAuthor = $aFileInfo['author'];
+        $this->dLastModified = $aFileInfo['lastmodified'];
+        $this->dCreated = $aFileInfo['created'];
 
         // Frontendpath to files
         if ($sTypeContent == "templates") {
@@ -120,7 +120,7 @@ class cVersionFile extends cVersion {
         // Create Body Node of Xml File
         $this->setData("name", $sVersionFileName);
         $this->setData("code", $this->sCode);
-        $this->setData("description", $this->sDescripion);
+        $this->setData("description", $this->sDescription);
     }
 
     /**

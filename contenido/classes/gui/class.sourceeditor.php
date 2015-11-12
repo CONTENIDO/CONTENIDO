@@ -29,6 +29,14 @@ class cGuiSourceEditor extends cGuiPage {
     protected $filename;
 
     /**
+     * Name of the file that is being edited
+     * This variable is be different to $filename
+     * only if you rename your file
+     * @var string
+     */
+    protected $versionfilename;
+
+    /**
      * Full path to the file that is being edited
      * @var string
      */
@@ -204,6 +212,9 @@ class cGuiSourceEditor extends cGuiPage {
             return;
         }
 
+        // Set version filename
+        $this->versionfilename = $this->filename;
+
         // if the filename is empty, display an empty editor and create a new file
         if(is_dir($this->filepath) && cFileHandler::writeable($this->filepath)) {
             // validate the file name
@@ -277,8 +288,8 @@ class cGuiSourceEditor extends cGuiPage {
 
         // if the versioning should be updated and the code changed, create a versioning instance and update it
         if($this->versioning && $oldCode != $req['code']) {
-            $fileInfoArray = $fileInfos->getFileInformation($this->filename, $dbFileType);
-            $oVersion = new cVersionFile($fileInfo->get('idsfi'), $fileInfoArray, $req['file'], $dbFileType, $cfg, $cfgClient, $db, $client, $area, $frame, $this->filename);
+            $fileInfoArray = $fileInfos->getFileInformation($this->versionfilename, $dbFileType);
+            $oVersion = new cVersionFile($fileInfo->get('idsfi'), $fileInfoArray, $req['file'], $dbFileType, $cfg, $cfgClient, $db, $client, $area, $frame, $this->versionfilename);
             // Create new Layout Version in cms/version/css/ folder
             $oVersion->createNewVersion();
         }
