@@ -448,7 +448,7 @@ class SearchResultModule {
         );
         // add optional params if given
         if (NULL !== $searchTerm) {
-            $params['search_term'] = $searchTerm;
+            $params['search_term'] = conHtmlEntityDecode($searchTerm);
         }
         if (NULL !== $page) {
             $params['page'] = $page . $this->_artSpecs;
