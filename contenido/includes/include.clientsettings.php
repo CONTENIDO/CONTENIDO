@@ -132,7 +132,7 @@ if ($aItems !== false) {
 
             if (strlen($aValue['value']) > 35) {
                 $sShort = cString::trimHard($aValue['value'], 35);
-                $aValue['value'] = sprintf($sMouseoverTemplate, $aValue['value'], $sShort);
+                $aValue['value'] = sprintf($sMouseoverTemplate, conHtmlentities($aValue['value']), $sShort);
             }
 
             $oList->setData($iCounter, $aValue['type'], $aValue['name'], $aValue['value'], $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render());
