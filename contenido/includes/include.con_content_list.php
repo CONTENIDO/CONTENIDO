@@ -39,7 +39,10 @@ $allowedContentTypes = array(
     "CMS_LINKDESCR",
     "CMS_HEAD",
     "CMS_DATE",
-    "CMS_RAW"
+    "CMS_RAW",
+	"CMS_IMG",
+	"CMS_IMGDESCR",
+	"CMS_TEASER"
 );
 
 $versioning = new cContentVersioning();
@@ -293,7 +296,7 @@ if (($action == 'savecontype' || $action == 10)) {
         }
         // if loaded get data and add to xml
         if ($content->isLoaded()) {
-            $type = new cApiType($content->get("idtype"));
+            $type = new cApiType($content->get("idtype"));echo $type->get("type") . "<br />";
             if ($type->isLoaded() && in_array($type->get("type"), $allowedContentTypes)) {
                 // create content element
                 $contentNode = $articleNode->addChild("content");
