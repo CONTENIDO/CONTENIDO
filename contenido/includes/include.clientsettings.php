@@ -110,7 +110,7 @@ if ($aItems !== false) {
             $oInputboxType->setWidth(15);
             $oInputboxName = new cHTMLTextbox("csname", $aValue['name']);
             $oInputboxName->setWidth(15);
-            $oInputboxValue = new cHTMLTextbox("csvalue", $aValue['value']);
+            $oInputboxValue = new cHTMLTextbox("csvalue", conHtmlentities($aValue['value']));
             $oInputboxValue->setWidth(30);
 
             $hidden = '<input type="hidden" name="csidproperty" value="' . $iKey . '">';
