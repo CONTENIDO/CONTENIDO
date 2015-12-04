@@ -52,7 +52,7 @@ try {
     // check if this is a rerun (a cException will then be thrown)
     // check is skipped when 'rerun' is forced
     if (!empty($filename) && !array_key_exists('rerun', $_REQUEST)) {
-        checkJobRerun('xml_sitemap_' . cRegistry::getClient()->get('name') . '_' . cRegistry::getLanguage()->get('name'));
+        checkJobRerun('xml_sitemap_' . cRegistry::getClient()->get('name') . '_' . cRegistry::getLanguage()->get('name') . '_' . cRegistry::getArticleLanguageId() );
     }
 
     // get all categories recursively
