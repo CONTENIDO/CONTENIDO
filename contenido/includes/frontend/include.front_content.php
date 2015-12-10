@@ -322,7 +322,7 @@ if (false === isset($idart)) {
 $idartlang = getArtLang($idart, $lang);
 
 // always allow editing article in backend
-if (!isset($contenido) && ($idartlang === false || $online != true)) {
+if (!cRegistry::isBackendEditMode() && ($idartlang === false || $online != true)) {
     if ($_GET['display_errorpage']) {
         // show only if $idart > 0
         if ($idart > 0) {
