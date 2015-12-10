@@ -296,7 +296,7 @@ if (($action == 'savecontype' || $action == 10)) {
         }
         // if loaded get data and add to xml
         if ($content->isLoaded()) {
-            $type = new cApiType($content->get("idtype"));echo $type->get("type") . "<br />";
+            $type = new cApiType($content->get("idtype"));
             if ($type->isLoaded() && in_array($type->get("type"), $allowedContentTypes)) {
                 // create content element
                 $contentNode = $articleNode->addChild("content");
