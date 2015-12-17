@@ -302,7 +302,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                             // is active and the string length is more than the
                             // setting
                             if ($this->_settings['filelist_md_' . $identName . '_limit'] > 0 && strlen($string) > $this->_settings['filelist_md_' . $identName . '_limit']) {
-                                $metaData[$identName] = ccString::trimAfterWord(cSecurity::unFilter($string), $this->_settings['filelist_md_' . $identName . '_limit']) . '...';
+                                $metaData[$identName] = cString::trimAfterWord(cSecurity::unFilter($string), $this->_settings['filelist_md_' . $identName . '_limit']) . '...';
                             } else {
                                 $metaData[$identName] = cSecurity::unFilter($string);
                             }
