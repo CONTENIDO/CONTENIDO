@@ -357,14 +357,30 @@ class cEffectiveSetting {
      *         The setting key
      */
     protected static function _makeKey($type, $name) {
-        global $auth;
+        $key = self::_getKeyPrefix() . '_' . $type . '_' . $name;
 
-        if ($auth instanceof cAuth) {
-            $key = $auth->auth['uid'] . '_' . $type . '_' . $name;
-        } else {
-            $key = '_' . $type . '_' . $name;
-        }
         return $key;
+    }
+
+    /**
+     * Returns the prefix for the internal key.
+     *
+     * @return string
+     */
+    protected static function _getKeyPrefix() {
+    	global $auth;
+
+    	$prefix = '';
+
+    	if ($auth instanceof cAuth) {
+    		if (!self::_isAuthenticated()) {
+    			$prefix = cAuth::AUTH_UID_NOBODY;
+    		} else {
+    			$prefix = $auth->auth['uid'];
+    		}
+    	}
+
+    	return $prefix;
     }
 
     /**
