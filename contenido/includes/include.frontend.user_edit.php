@@ -154,6 +154,14 @@ if (true === $feuser->isLoaded() && $feuser->get("idclient") == $client) {
             }
         }
 
+        $iterator = $_cecRegistry->getIterator('Contenido.Permissions.FrontendUser.BeforeStore');
+
+        if ($iterator->count() > 0) {
+        	while (false !== $chainEntry = $iterator->next()) {
+        		$chainEntry->execute($varArray);
+        	}
+        }
+
         $feuser->store();
         $page->displayOk(i18n("Saved changes successfully!"));
     }
