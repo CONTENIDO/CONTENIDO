@@ -1214,8 +1214,15 @@ function scanPlugins($entity) {
 
         sort($plugins);
 
-        $pluginorder = implode(',', $plugins);
-        setSystemProperty('plugin', $entity . '-pluginorder', $pluginorder);
+        $oldPlugins = explode(',', getSystemProperty('plugin', 'frontendusers-pluginorder'));
+        sort($oldPlugins);
+
+        $diff = array_diff($oldPlugins, $plugins);
+
+        if (!empty($diff)) {
+        	$pluginorder = implode(',', $plugins);
+        	setSystemProperty('plugin', $entity . '-pluginorder', $pluginorder);
+        }
     }
 
     foreach ($plugins as $key => $value) {
