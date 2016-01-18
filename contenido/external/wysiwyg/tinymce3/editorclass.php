@@ -44,14 +44,26 @@ cInclude('includes', 'functions.lang.php');
  * @subpackage Backend
  */
 class cTinyMCEEditor extends cWYSIWYGEditor {
-    /** Stores base url of page
+
+    /**
+     * Stores base url of page
+     *
+     * @var string
      */
     var $_sBaseURL;
 
-    /** Stores, if GZIP compression will be used
+    /**
+     * Stores, if GZIP compression will be used
+     *
+     * @var bool
      */
     var $_bUseGZIP = false;
 
+    /**
+     *
+     * @param string $sEditorName
+     * @param string $sEditorContent
+     */
     function cTinyMCEEditor($sEditorName, $sEditorContent) {
         global $belang, $cfg, $cfgClient, $client, $lang, $idart;
 
@@ -64,7 +76,8 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         // For compatibility, read settings in previous syntax also (< V4.7, type "wysiwyg" vs. "tinymce")
         $this->_aSettings = array_merge(getEffectiveSettingsByType("wysiwyg"), $this->_aSettings);
 
-        $this->_setSetting("article_url_suffix", 'front_content.php?idart=' . $idart, true); # modified 23.10.2006
+        // modified 23.10.2006
+        $this->_setSetting("article_url_suffix", 'front_content.php?idart=' . $idart, true);
 
         // Default values
         $this->_setSetting("mode", "exact");
@@ -192,6 +205,11 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         unset($this->_aSettings["tinymce-stylesheet-file"], $this->_aSettings["tinymce-valid-elements"], $this->_aSettings["tinymce-extended-valid-elements"], $this->_aSettings["tinymce-lists"], $this->_aSettings["tinymce-styles"], $this->_aSettings["tinymce-toolbar-mode"], $this->_aSettings["tinymce-toolbar1"], $this->_aSettings["tinymce-toolbar2"], $this->_aSettings["tinymce-toolbar3"], $this->_aSettings["tinymce-plugins"]);
     }
 
+    /**
+     *
+     * @param string $sInput
+     * @return string
+     */
     function convertFormat($sInput) {
         $aFormatCodes = array(
             "y" => "%y", "Y" => "%Y", "d" => "%d", "m" => "%m", "H" => "%H", "h" => "%I", "i" => "%M", "s" => "%S", "a" => "%P", "A" => "%P"
@@ -201,9 +219,12 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
             $sInput = str_replace($sFormatCode, $sReplacement, $sInput);
         }
 
-        return ($sInput);
+        return $sInput;
     }
 
+    /**
+     *
+     */
     function setUserDefinedStyles() {
         $sStyles = "";
 
@@ -219,9 +240,11 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
     }
 
     /**
-     * The special name "contenido_lists", for compatibility also accepts "tinymce-lists"
+     * The special name "contenido_lists", for compatibility also
+     * accepts "tinymce-lists".
      *
-     * @param string    sLists    Deprecated, for compatibility, only
+     * @param string $sLists
+     *        Deprecated, for compatibility, only
      */
     function setLists($sLists = "") {
         global $lang, $client;
@@ -248,6 +271,10 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         }
     }
 
+    /**
+     *
+     * @param bool $bEnabled
+     */
     function setXHTMLMode($bEnabled = true) {
         if ($bEnabled) {
             $this->_setSetting("cleanup_callback", "", true);
@@ -256,6 +283,10 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         }
     }
 
+    /**
+     *
+     * @param bool $bEnabled
+     */
     function setGZIPMode($bEnabled = true) {
         if ($bEnabled) {
             $this->_bUseGZIP = true;
@@ -264,12 +295,18 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         }
     }
 
+    /**
+     *
+     * @return bool
+     */
     function getGZIPMode() {
         return (bool) $this->_bUseGZIP;
     }
 
     /**
      * For compatibility also accepts "tinymce-toolbar-mode", "tinymce-toolbar1-3" and "tinymce-plugins"
+     *
+     * @param string $sMode
      */
     function setToolbar($sMode = "") {
         global $cfg, $cfgClient, $client;
@@ -400,6 +437,9 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         }
     }
 
+    /**
+     *
+     */
     function cleanURLs() {
         global $sess;
 
@@ -431,6 +471,11 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         }
     }
 
+    /**
+     *
+     * @param string $sFile
+     * @return string
+     */
     function addPath($sFile) {
         global $cfgClient, $client;
 
@@ -446,10 +491,18 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         return $sFile;
     }
 
+    /**
+     *
+     * @param string $sBaseUrl
+     */
     function setBaseURL($sBaseUrl) {
         $this->_sBaseURL = $sBaseUrl;
     }
 
+    /**
+     *
+     * @return string
+     */
     function _getScripts() {
         if ($this->_bUseGZIP) {
             $sReturn = "\n<!-- tinyMCE -->\n" . '<script language="javascript" type="text/javascript" src="' . $this->_sBaseURL . 'jscripts/tiny_mce/tiny_mce_gzip.js"></script>';
@@ -460,6 +513,10 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         return $sReturn;
     }
 
+    /**
+     *
+     * @return string
+     */
     function _getEditor() {
         global $sess, $cfg, $lang, $client, $idart, $cfgClient;
 
@@ -532,6 +589,10 @@ JS;
         return $sReturn;
     }
 
+    /**
+     *
+     * @return string
+     */
     function getConfigInlineEdit() {
         $sConfig = '';
         $this->setToolbar('inline_edit');
@@ -558,6 +619,10 @@ JS;
         return $sConfig;
     }
 
+    /**
+     *
+     * @return string
+     */
     function getConfigFullscreen() {
         $sConfig = '';
         $this->setToolbar('fullscreen');
@@ -571,12 +636,20 @@ JS;
         return $sConfig;
     }
 
+    /**
+     *
+     * @return array
+     */
     function getPlugins() {
         return $this->_aSettings['plugins'];
     }
+
+    /**
+     *
+     * @return array
+     */
     function getThemes() {
         return $this->_aSettings['theme'];
     }
-}
 
-?>
+}

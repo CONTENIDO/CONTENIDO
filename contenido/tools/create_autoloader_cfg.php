@@ -38,9 +38,8 @@ if (!defined('CON_ENVIRONMENT')) {
     define('CON_ENVIRONMENT', $environment);
 }
 
-
-################################################################################
-##### Initialization/Settings
+// /////////////////////////////////////////////////////////////////////
+// Initialization/Settings
 
 // create a page context class, better than spamming global scope
 $context = new stdClass();
@@ -74,9 +73,8 @@ $context->options = array(
 // list to collect class maps
 $context->classMapList = array();
 
-
-################################################################################
-##### Proccess
+// /////////////////////////////////////////////////////////////////////
+// Proccess
 
 // include required classes
 include_once($context->currentPath . 'mpAutoloaderClassMap/mpClassTypeFinder.php');
@@ -98,8 +96,7 @@ foreach ($context->pathsToParse as $pos => $dir) {
 $context->classMapCreator = new mpClassMapFileCreatorContenido($context->contenidoInstallPath);
 $context->classMapCreator->create($context->classMapList, $context->destinationFile);
 
-
-################################################################################
-##### Shutdown
+// /////////////////////////////////////////////////////////////////////
+// Shutdown
 
 unset($context);

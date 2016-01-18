@@ -2,15 +2,13 @@
 /**
  * This file contains the WYSIWYG editor class for TinyMCE.
  *
- * @package    Core
- * @subpackage Backend
- * @version    SVN Revision $Rev:$
- *
- * @author     Thomas Stauer
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @package          Core
+ * @subpackage       Backend
+ * @author           Thomas Stauer
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,52 +16,77 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('includes', 'functions.lang.php');
 
 /**
- * The object cTinyMCE4Editor is a wrapper class to the TinyMCE WYSIWYG Editor.
- * Attributes can be defined to generate JavaScript options and functions to initialise the global
- * tinymce object in file ./contenido/external/wysiwyg/tinymce4/contenido/templates/template.tinymce_tpl.html.
+ * The object cTinyMCE4Editor is a wrapper class to the TinyMCE WYSIWYG
+ * Editor.
  *
- * All settings accepted by tinyMCE and its plugins may be specified using system, client
- * group or user property/setting.
+ * Attributes can be defined to generate JavaScript options and
+ * functions to initialise the global tinymce object in file
+ * ./contenido/external/wysiwyg/tinymce4/contenido/templates/template.tinymce_tpl.html.
  *
- * The following parameters will be always set on initialization (even, if they have been specified
- * as property. They can be set using setSetting later on, if needed):
- * document_base_url
- * cleanup_callback (-> XHTML)
- * file_browser_callback
- * external_link_list_url
- * external_image_list_url
+ * All settings accepted by tinyMCE and its plugins may be specified
+ * using system, client, group or user property/setting.
+ *
+ * The following parameters will be always set on initialization
+ * (even, if they have been specified as property.
+ * They can be set using setSetting later on, if needed):
+ *
+ * <ul>
+ * <li>document_base_url
+ * <li>cleanup_callback (-> XHTML)
+ * <li>file_browser_callback
+ * <li>external_link_list_url
+ * <li>external_image_list_url
+ * </ul>
  *
  * The following settings are only used in CONTENIDO:
- * contenido_toolbar_mode: full, simple, mini, custom
- * contenido_lists: link,image
- * contenido_height_html
- * contenido_height_head
+ *
+ * <ul>
+ * <li>contenido_toolbar_mode: full, simple, mini, custom
+ * <li>contenido_lists: link,image
+ * <li>contenido_height_html
+ * <li>contenido_height_head
+ * </ul>
+ *
  * See backend.customizing.html for details
  *
  * @package    Core
  * @subpackage Backend
  */
 class cTinyMCE4Editor extends cWYSIWYGEditor {
+
     /**
      * Stores base url of page
+     *
+     * @var string
      */
     private $_sBaseURL;
 
     /**
      * Stores, if GZIP compression will be used
+     *
+     * @var bool
      */
     private $_bUseGZIP = false;
 
     /**
      * Shortcut to content types tinymce is mapped to
+     *
+     * @var array
      */
     private $_cmsTypes = array();
+
     /**
      * Access key under which the wysiwyg editor settings will be stored
+     *
      * @var string
      */
     protected static $_sConfigPrefix = '[\'wysiwyg\'][\'tinymce4\']';
 
+    /**
+     *
+     * @param string $sEditorName
+     * @param string $sEditorContent
+     */
     public function __construct($sEditorName, $sEditorContent) {
         global $idart;
 
@@ -250,6 +273,11 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         }
     }
 
+    /**
+     *
+     * @param string $sInput
+     * @return string
+     */
     function convertFormat($sInput) {
         $aFormatCodes = array(
             "y" => "%y", "Y" => "%Y", "d" => "%d", "m" => "%m", "H" => "%H", "h" => "%I", "i" => "%M", "s" => "%S", "a" => "%P", "A" => "%P"
@@ -259,9 +287,13 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             $sInput = str_replace($sFormatCode, $sReplacement, $sInput);
         }
 
-        return ($sInput);
+        return $sInput;
     }
 
+    /**
+     *
+     * @param string $sType
+     */
     function setUserDefinedStyles($sType) {
         $sStyles = "";
 
@@ -284,7 +316,8 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
     /**
      * The special name "contenido_lists"
      *
-     * @param string $sType CMS type where XHTML mode setting wil be applies
+     * @param string $sType
+     *        CMS type where XHTML mode setting wil be applies
      */
     function setLists($sType) {
         $client = cRegistry::getClientId();
@@ -308,8 +341,11 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
     /**
      * Turn XHTML mode on or off
-     * @param string $sType CMS type where XHTML mode setting wil be applies
-     * @param string $bEnabled Whether to turn on XHTML mode
+     *
+     * @param string $sType
+     *        CMS type where XHTML mode setting wil be applies
+     * @param string
+     *        $bEnabled Whether to turn on XHTML mode
      */
     function setXHTMLMode($sType, $bEnabled = true) {
         if ($bEnabled) {
@@ -321,6 +357,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
     /**
      * Set if editor should be loaded using tinymce4's gzip compression
+     *
      * @param string $bEnabled
      */
     private function setGZIPMode($bEnabled = true) {
@@ -333,14 +370,19 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
     /**
      *
-     * @return boolean if editor is loaded using gzip compression
+     * @return boolean
+     *         if editor is loaded using gzip compression
      */
     public function getGZIPMode() {
         return (bool) $this->_bUseGZIP;
     }
 
     /**
-     * For compatibility also accepts "tinymce-toolbar-mode", "tinymce-toolbar1-3" and "tinymce4-plugins"
+     * For compatibility also accepts "tinymce-toolbar-mode",
+     * "tinymce-toolbar1-3" and "tinymce4-plugins".
+     *
+     * @param string $cmsType
+     * @param string $sMode
      */
     public function setToolbar($cmsType, $sMode = "") {
         $cfg = cRegistry::getConfig();
@@ -391,7 +433,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 // fullscreen of inline-editor
                 if ('CMS_HTMLHEAD' === $cmsType) {
                     $defaultToolbar1 = cTinymce4Configuration::get('undo redo | consave conclose', 'tinymce4', $cmsType, 'tinymce4_fullscreen', 'toolbar1');
-                    $defaultToolbar2 = cTinymce4Configuration::get('', 'tinymce4',$cmsType, 'tinymce4_fullscreen', 'toolbar2');
+                    $defaultToolbar2 = cTinymce4Configuration::get('', 'tinymce4', $cmsType, 'tinymce4_fullscreen', 'toolbar2');
                     $defaultToolbar3 = cTinymce4Configuration::get('', 'tinymce4', $cmsType, 'tinymce4_fullscreen', 'toolbar3');
                     $defaultPlugins = cTinymce4Configuration::get('conclose', 'tinymce4', $cmsType, 'tinymce4_fullscreen', 'plugins');
                 } else {
@@ -505,6 +547,10 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         }
     }
 
+    /**
+     *
+     * @param string $cmsType
+     */
     function cleanURLs($cmsType) {
         global $sess;
 
@@ -536,6 +582,11 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         }
     }
 
+    /**
+     *
+     * @param string $sFile
+     * @return string
+     */
     function addPath($sFile) {
         global $cfgClient, $client;
 
@@ -551,10 +602,18 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         return $sFile;
     }
 
+    /**
+     *
+     * @param string $sBaseUrl
+     */
     function setBaseURL($sBaseUrl) {
         $this->_sBaseURL = $sBaseUrl;
     }
 
+    /**
+     *
+     * @return string
+     */
     public function _getScripts() {
         if ($this->_bUseGZIP) {
             $sReturn = "\n<!-- tinyMCE -->\n" . '<script language="javascript" type="text/javascript" src="' . $this->_sBaseURL . 'tinymce/js/tinymce/tinymce.gzip.js"></script>';
@@ -565,6 +624,10 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         return $sReturn;
     }
 
+    /**
+     *
+     * @return string
+     */
     public function _getEditor() {
         global $sess, $cfg, $lang, $client, $idart, $cfgClient;
 
@@ -603,12 +666,17 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
     /**
      * Sets given setting if setting was not yet defined.
-     * Overwriting defined setting can be achieved with $bForceSetting = true.
+     * Overwriting defined setting can be achieved with
+     * $bForceSetting = true.
      *
-     * @param string $sType CMS type where setting should apply
-     * @param string $sKey of setting to set
-     * @param string $sValue of setting to set
-     * @param bool $bForceSetting to overwrite defined setting
+     * @param string $sType
+     *        CMS type where setting should apply
+     * @param string $sKey
+     *        of setting to set
+     * @param string $sValue
+     *        of setting to set
+     * @param bool $bForceSetting
+     *      to overwrite defined setting
      */
     protected function _setSetting($sType, $sKey, $sValue, $bForceSetting = false) {
         if ($bForceSetting || !array_key_exists($sKey, $this->_aSettings[$sType])) {
@@ -617,8 +685,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
     }
 
     /**
-     * Variadic function to unset a setting using multiple key values
-     * @param string $sKey
+     * Variadic function to unset a setting using multiple key values.
      */
     protected function _unsetSetting() {
         $numargs = func_num_args();
@@ -642,6 +709,10 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
     }
 
 
+    /**
+     *
+     * @return string
+     */
     public function getConfigInlineEdit() {
         $sConfig = '';
 
@@ -672,6 +743,10 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         return $sConfig;
     }
 
+    /**
+     *
+     * @return array
+     */
     public function getConfigFullscreen() {
         $sConfig = '';
 
@@ -684,31 +759,41 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
     }
 
     /**
-     * function to obtain a comma separated list of plugins that are tried to be loaded
-     * @return string plugins the plugins
+     * Function to obtain a comma separated list of plugins that are
+     * tried to be loaded.
+     *
+     * @return string
+     *        plugins the plugins
      */
     public function getPlugins() {
         return (string) $this->_aSettings['plugins'];
     }
 
     /**
-     * function to obtain a comma separated list of themes that are tried to be loaded
-     * @return string themes the themes
+     * Function to obtain a comma separated list of themes that are
+     * tried to be loaded.
+     *
+     * @return string
+     *        themes the themes
      */
     function getThemes() {
         return (string) $this->_aSettings['theme'];
     }
 
     /**
-     * Saves configuration of WYSIWYG editor into a file
-     * This function does not validate input! This has to be done by classes that extend cWYSIWYGEditor
-     * because this class does not know what each WYSIWYG editor expects.
-     * @param array Array with configuration values for the current WYSIWYG editor to save
-     * @return array Array with values that were not accepted
+     * Saves configuration of WYSIWYG editor into a file.
+     *
+     * This function does not validate input! This has to be done by
+     * classes that extend cWYSIWYGEditor because this class does not
+     * know what each WYSIWYG editor expects.
+     *
+     * @param array $config
+     *        Array with configuration values for the current WYSIWYG
+     *        editor to save
+     * @return array
+     *        Array with values that were not accepted
      */
     public static function saveConfig($config) {
         parent::saveConfig($config['tinymce4']);
     }
 }
-
-?>

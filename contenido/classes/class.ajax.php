@@ -1,11 +1,10 @@
 <?php
 /**
- * This file contains the backend ajax handler class.
+ * This file contains the class cAjaxRequest which handles ajax requests
+ * for the CONTENIDO backend.
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Timo Trautmann
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -24,59 +23,102 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cAjaxRequest {
 
     /**
-     * Function for handling requested ajax data
+     * Handles AJAX requests for certain data. Which data is returned
+     * depends upon the given $action. If the $action is unknown an
+     * error message is generated. Available actions are:
      *
+     * <ul>
+     *     <li>artsel
+     *          Return a select box containing articles of a category.
+     *          All params (name, idcat & value) are required.
+     *          name = name of select box
+     *          idcat = category ID whose articles should be contained
+     *          value = selected article
+     *     <li>dirlist
+     *     <li>filelist
+     *     <li>inused_layout
+     *          List templates using a given layout.
+     *     <li>inused_module
+     *          List templates using a given module.
+     *     <li>inused_template
+     *          List categories and articles using a given template.
+     *     <li>scaleImage
+     *     <li>imagelist
+     *     <li>inlineeditart
+     *     <li>loadImageMeta
+     *     <li>upl_mkdir
+     *     <li>upl_upload
+     *     <li>linkeditorfilelist
+     *     <li>linkeditordirlist
+     *     <li>linkeditorimagelist
+     *     <li>generaljstranslations
+     *     <li>logfilecontent
+     *     <li>updatepluginorder
+     *          only sysadmins can do this
+     *     <li>verify_module
+     *          check module syntax
+     *          modules are checked by default
+     *          This can be deactivated when the system property
+     *          system/modulecheck is set accordingly.
+     *          TODO Describe what "accordingly" means. The rules are a mess!
+     *     <li>authentication_fail
+     *          Returns a static answer for a not authenticated AJAX
+     *          request, e.g. due to an invalid or expired session.
+     * </ul>
+     *
+     * @todo split functionality into seperate methods
+     * @todo use registry instead of globals where possible
      * @param string $action
      *         name of requested ajax action
      * @return string
      */
     public function handle($action) {
         $backendPath = cRegistry::getBackendPath();
-        $string = '';
-
         $frontendURL = cRegistry::getFrontendUrl();
         $frontendPath = cRegistry::getFrontendPath();
 
+        $string = '';
         switch ($action) {
-            // case to get an article select box param name value and idcat were
-            // neded (name= name of select box value=selected item)
             case 'artsel':
                 $name = (string) $_REQUEST['name'];
+                $idcat = (int) $_REQUEST['idcat'];
                 $value = (int) $_REQUEST['value'];
-                $idCat = (int) $_REQUEST['idcat'];
-                $string = buildArticleSelect($name, $idCat, $value);
+
+                $string = buildArticleSelect($name, $idcat, $value);
                 break;
 
             case 'dirlist':
-                global $cfgClient, $client;
 
-                $dirName = (string) $_REQUEST['dir'];
+                $idartlang = (int) $_REQUEST['idartlang'];
                 $fileListId = (int) $_REQUEST['id'];
-                $idArtLang = (int) $_REQUEST['idartlang'];
+                $dirname = (string) $_REQUEST['dir'];
 
-                $art = new cApiArticleLanguage($idArtLang, true);
-                $artReturn = $art->getContent('CMS_FILELIST', $fileListId);
-                $fileList = new cContentTypeFilelist($artReturn, $fileListId, array());
+                global $cfgClient, $client;
+                $uplPath = $cfgClient[$client]['upl']['path'];
 
-                $string = $fileList->generateDirectoryList($fileList->buildDirectoryList($cfgClient[$client]['upl']['path'] . $dirName));
+                $art = new cApiArticleLanguage($idartlang, true);
+                $content = $art->getContent('CMS_FILELIST', $fileListId);
+
+                $fileList = new cContentTypeFilelist($content, $fileListId, array());
+                $directoryList = $fileList->buildDirectoryList($uplPath . $dirname);
+                $string = $fileList->generateDirectoryList($directoryList);
                 break;
 
             case 'filelist':
-                $dirName = (string) $_REQUEST['dir'];
+                $idartlang = (int) $_REQUEST['idartlang'];
                 $fileListId = (int) $_REQUEST['id'];
-                $idArtLang = (int) $_REQUEST['idartlang'];
+                $dirname = (string) $_REQUEST['dir'];
 
-                $art = new cApiArticleLanguage($idArtLang, true);
-                $artReturn = $art->getContent('CMS_FILELIST', $fileListId);
-                $fileList = new cContentTypeFilelist($artReturn, $fileListId, array());
+                $art = new cApiArticleLanguage($idartlang, true);
+                $content = $art->getContent('CMS_FILELIST', $fileListId);
 
-                $string = $fileList->generateFileSelect($dirName);
+                $fileList = new cContentTypeFilelist($content, $fileListId, array());
+                $string = $fileList->generateFileSelect($dirname);
                 break;
 
             case 'inused_layout':
-                // list of used templates for a layout
                 global $cfg;
-                if ((int) $_REQUEST['id'] > 0) {
+                if (0 < (int) $_REQUEST['id']) {
                     $layout = new cApiLayout((int) $_REQUEST['id']);
                     if ($layout->isInUse(true)) {
                         $template = new cTemplate();
@@ -102,7 +144,6 @@ class cAjaxRequest {
                 break;
 
             case 'inused_module':
-                // list of used templates for a module
                 global $cfg;
                 $module = new cApiModule();
                 if ((int) $_REQUEST['id'] > 0 && $module->moduleInUse((int) $_REQUEST['id'], true)) {
@@ -128,7 +169,6 @@ class cAjaxRequest {
                 break;
 
             case 'inused_template':
-                // list of used category and art
                 global $cfg;
                 cInclude('backend', 'includes/functions.tpl.php');
 
@@ -197,8 +237,8 @@ class cAjaxRequest {
                         $string = $filename_a;
                         break;
                 }
-                // if can not scale, so $sString is NULL, then show the original
-                // image.
+                // if can not scale, so $string is NULL, then show the
+                // original image
                 if ($string == '') {
                     $filename = str_replace($frontendPath, $frontendURL, $filename_a);
                     $string = $filename;
@@ -219,19 +259,19 @@ class cAjaxRequest {
 
             case 'inlineeditart':
 
-            	$languageCollection = new cApiArticleLanguageCollection();
+                $languageCollection = new cApiArticleLanguageCollection();
 
-            	for ($i = 0; $i < count($_REQUEST['fields']); $i++) {
+                for ($i = 0; $i < count($_REQUEST['fields']); $i++) {
 
-            		$idartlang = $languageCollection->getIdByArticleIdAndLanguageId(cSecurity::toInteger($_REQUEST['fields'][$i]['idart']), cRegistry::getLanguageId());
+                    $idartlang = $languageCollection->getIdByArticleIdAndLanguageId(cSecurity::toInteger($_REQUEST['fields'][$i]['idart']), cRegistry::getLanguageId());
 
-            		$artLang = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
-            		$artLang->set('title', cSecurity::escapeString($_REQUEST['fields'][$i]['title']));
-            		$artLang->set('artsort', cSecurity::escapeString($_REQUEST['fields'][$i]['index']));
-            		$artLang->store();
-            	}
+                    $artLang = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
+                    $artLang->set('title', cSecurity::escapeString($_REQUEST['fields'][$i]['title']));
+                    $artLang->set('artsort', cSecurity::escapeString($_REQUEST['fields'][$i]['index']));
+                    $artLang->store();
+                }
 
-            	break;
+                break;
 
             case 'loadImageMeta':
                 $imageId = (int) $_REQUEST['id'];
@@ -347,7 +387,8 @@ class cAjaxRequest {
                 break;
 
             case 'updatepluginorder':
-                if (cRegistry::getPerm()->have_perm()) { // only sysadmins can do this
+                // only sysadmins can do this
+                if (cRegistry::getPerm()->have_perm()) {
                     $newOrder = cSecurity::toInteger($_POST['neworder']);
                     $pluginColl = new PimPluginCollection();
                     $pluginColl->select();
@@ -368,18 +409,16 @@ class cAjaxRequest {
                 break;
 
             case 'verify_module':
-                // Module syntax check
                 $idmod = isset($_POST['idmod']) ? $_POST['idmod'] : NULL;
                 $inputType = isset($_POST['type']) ? $_POST['type'] : NULL;
 
-                // NOTE: The default setting is to check the modules
-                // @see CON-2425
+                // @see CON-2425 modules are checked by default
                 $moduleCheck = getSystemProperty('system', 'modulecheck', 'true');
                 $moduleCheck = ($moduleCheck == '' && $moduleCheck != 'false') || $moduleCheck == 'true' || $moduleCheck == '1';
 
                 $result = array(
                     'state' => 'ok',
-                	'message' => i18n("Module successfully compiled")
+                    'message' => i18n("Module successfully compiled")
                 );
 
                 if ($idmod && $inputType && $moduleCheck) {
@@ -392,13 +431,13 @@ class cAjaxRequest {
                             $result = $contenidoModuleHandler->testOutput();
                             break;
                         default:
-			                $result = array(
-			                    'state' => 'error',
-			                    'message' => 'No cModuleHandler for ' . $idmod . ', or wrong code type: ' . $inputType
-			                );
+                            $result = array(
+                                'state' => 'error',
+                                'message' => 'No cModuleHandler for ' . $idmod . ', or wrong code type: ' . $inputType
+                            );
                     }
 
-                    //create answer
+                    // create answer
                     if ($result['state']) {
                         $result['state'] = 'ok';
                         $result['message'] = i18n("Module successfully compiled");
@@ -412,14 +451,12 @@ class cAjaxRequest {
                 break;
 
             case 'authentication_fail':
-                // Not authenticated AJAX request, e. g. invalid or expired session
-                $result = array(
+                $string = json_encode(array(
                     'state' => 'error',
                     'code' => 401,
                     'message' => 'Unauthorized',
                     'type' => 'authentication_failure'
-                );
-                $string = json_encode($result);
+                ));
                 break;
 
             default:

@@ -18,8 +18,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 // uncomment following line 4 debugging any occured errors and warnings
-#error_reporting(E_ALL);
-
+// error_reporting(E_ALL);
 
 /**
  * configuration array of frontend caching
