@@ -7,7 +7,6 @@
  * @submodule  content-type-cms-teaser
  * @package    Core
  * @subpackage Content Type
- * @version    SVN Revision $Rev$
  * @author     Timo Trautmann, Simon Sprankel, Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt

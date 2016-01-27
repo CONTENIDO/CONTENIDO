@@ -4,7 +4,6 @@
  *
  * @package     Plugin
  * @subpackage  ModRewrite
- * @version     SVN Revision $Rev:$
  * @id          $Id$:
  * @author      Murat Purc <murat@purc.de>
  * @copyright   four for business AG <www.4fb.de>

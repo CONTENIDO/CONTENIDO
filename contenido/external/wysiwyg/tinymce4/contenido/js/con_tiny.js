@@ -4,7 +4,6 @@
  * Integration of TinyMCE to handle it as an insight-editor
  *
  * @module     tiny
- * @version    SVN Revision $Rev$
  * @requires   jQuery, Con
  * @package    CONTENIDO Backend includes
  * @author     Timo Trautmann
@@ -178,7 +177,7 @@
          * 'LoadContent'. It is called after the editor initialised.
          * When retrieving the content w/ getContent(), cleaned up content will be returned
          * that eventually will be reinserted into the editor.
-         * 
+         *
          * @see http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.LoadContent
          * @method customSetupContentCallback
          * @param  {String}  editorId
@@ -460,7 +459,7 @@
                         }
 
                         // fire blur event to set current editor to be not focussed
-                        
+
                         jQuery("#" + tmpId).blur();
                     }
                 }, 0);
@@ -650,7 +649,7 @@
                     // load current add-on
                     // http://www.tinymce.com/wiki.php/api4:method.tinymce.AddOnManager.load
                     tinymce.PluginManager.load(plugin.name, plugin.path);
-                    
+
                     if ('undefined' === typeof(settings.plugins)) {
                         settings.plugins = "";
                     }
@@ -663,7 +662,7 @@
                 });
 
                 if ('undefined' === typeof(settings['file_browser_callback'])) {
-                    settings['file_browser_callback'] = 
+                    settings['file_browser_callback'] =
                         function(field_name, url, type, win) {
                             Con.Tiny.customFileBrowserCallback(field_name, url, type, win);
                     }
@@ -707,7 +706,7 @@
 
                                 // compute allowed height for tinymce editor
                                 // subtract 20 pixels to leave some space to page bottom
-                                // window.innerHeight does not work in IE 8 -> use jQuery 
+                                // window.innerHeight does not work in IE 8 -> use jQuery
                                 var allowedHeight = jQuery(window).height() - edNode.offset().top - buttonNode.outerHeight() -20
                                 // substract editor node border, padding and margin
                                 allowedHeight -= edNode.innerHeight() - edNode.outerHeight()
@@ -796,7 +795,7 @@
                                 tmp.push(k);
                             }
                         });
-                        
+
                         ed.undoManager.data = tmp;
                         Con.Tiny.typingUndo[ed.id] = true;
                     });

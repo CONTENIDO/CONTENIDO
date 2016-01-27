@@ -49,7 +49,8 @@ class cGuiList {
     /**
      *
      * @param bool $print [optional]
-     * @return Ambigous <string, void, mixed>
+     * @return string|void
+     *         Complete template string or nothing
      */
     public function render($print = false) {
         global $cfg;

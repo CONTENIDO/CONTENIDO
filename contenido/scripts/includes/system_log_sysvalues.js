@@ -1,7 +1,6 @@
 /**
  * CONTENIDO JavaScript system_log_sysvalues.js module
  *
- * @version    SVN Revision $Rev: 5937 $
  * @author     ???
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,7 +23,7 @@
 					if (Con.checkAjaxResponse(msg) === false)  {
 						return false;
 					}
-					
+
                     $('textarea[name="logfile-content"]').val(msg);
                 }
             });

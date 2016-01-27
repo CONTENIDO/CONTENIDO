@@ -7,7 +7,6 @@
  * @submodule  content-type-cms-linkeditor
  * @package    Core
  * @subpackage Content Type
- * @version    SVN Revision $Rev$
  * @author     Fulai Zhang, Simon Sprankel, Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -305,7 +304,7 @@
 						if (Con.checkAjaxResponse(msg) === false)  {
 							return false;
 						}
-	
+
                         $(self.frameId + ' img.loading').hide();
                         $(self.frameId + ' input.jqueryAjaxUpload').css('visibility', 'visible');
                         $(self.frameId + ' #file #directoryFile_' + self.id).html(msg);

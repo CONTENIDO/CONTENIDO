@@ -4,8 +4,6 @@
  *
  * @package    Core
  * @subpackage GUI
- * @version    SVN Revision $Rev:$
- *
  * @author     Jan Lengowski, Stefan Jelner
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -241,10 +239,6 @@ class cTemplate {
         if ($this->_encoding != '') {
 //            $content = str_replace("</head>", '<meta http-equiv="Content-Type" content="text/html; charset=' . $this->_encoding . '">' . "\n" . '</head>', $content);
         }
-
-//        if ('templates/standard/template.con_meta_edit_form.html' == $template) {
-//            error_log($content);
-//        }
 
         if ($return) {
             return $content;

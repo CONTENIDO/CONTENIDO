@@ -11,8 +11,6 @@
  *
  * @package          Core
  * @subpackage       Chain
- * @version          SVN Revision $Rev:$
- *
  * @author           Andreas Lindner
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt

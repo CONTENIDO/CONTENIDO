@@ -4,8 +4,6 @@
  *
  * @package    Core
  * @subpackage Security
- * @version    SVN Revision $Rev:$
- *
  * @author     Mischa Holz, Andreas Kummer
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt

@@ -5,7 +5,6 @@
  *
  * @package Module
  * @subpackage ContentArticleInclude
- * @version SVN Revision $Rev:$
  * @author Willi Man
  * @author alexander.scheider
  * @author frederic.schneider

@@ -4,8 +4,6 @@
  *
  * @package Plugin
  * @subpackage UserForum
- * @version SVN Revision $Rev:$
- *
  * @author Claus Schunk
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt

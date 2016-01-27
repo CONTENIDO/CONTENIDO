@@ -1,8 +1,7 @@
 /**
  * CONTENIDO JavaScript folding row helper module
  *
- * @version    SVN Revision $Rev$
- * @author     ???
+ * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de

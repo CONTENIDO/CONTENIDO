@@ -2,8 +2,6 @@
 /**
  * This file is a template for unit tests
  *
- * @version SVN Revision $Rev:$
- *
  * @author claus schunk <claus.schun@4fb.de>
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt

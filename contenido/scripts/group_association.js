@@ -7,7 +7,6 @@
  *
  * @module     goup-association
  * @package    CONTENIDO Backend Scripts
- * @version    SVN Revision $Rev$
  * @author     Timo Trautmann
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>

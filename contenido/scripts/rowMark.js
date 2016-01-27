@@ -1,7 +1,6 @@
 /**
  * CONTENIDO JavaScript rowMark module
  *
- * @version    SVN Revision $Rev$
  * @author     Jan Lengowski <Jan.Lengowski@4fb.de>, Timo Trautmann <timo.trautmann@4fb.de>
  * @copyright  Jan Lengowski 2002
  * @copyright  four for business AG <www.4fb.de>

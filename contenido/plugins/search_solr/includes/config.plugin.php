@@ -4,7 +4,6 @@
  *
  * @package Plugin
  * @subpackage SearchSolr
- * @version SVN Revision $Rev:$
  * @author marcus.gnass
  * @copyright four for business AG
  * @link http://www.4fb.de

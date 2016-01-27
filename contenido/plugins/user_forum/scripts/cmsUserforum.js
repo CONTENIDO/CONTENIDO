@@ -3,7 +3,6 @@
  * @submodule  content-type-user-forum
  * @package    Core
  * @subpackage Content Type
- * @version    SVN Revision $Rev:$
  * @author     Fulai Zhang, Simon Sprankel, Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt

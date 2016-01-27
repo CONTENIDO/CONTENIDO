@@ -7,9 +7,6 @@
  *
  * @package Module
  * @subpackage ContentSearchResult
- * @version SVN Revision $Rev:$
- *
- * @version SVN Revision $Rev:$
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG
  * @link http://www.4fb.de

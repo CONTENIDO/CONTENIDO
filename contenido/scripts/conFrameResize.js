@@ -4,7 +4,6 @@
  * FrameResize class, controls the CONTENIDO frame toggling and resizing
  *
  * @module     frame-resize
- * @version    SVN Revision $Rev$
  * @requires   jQuery, Con
  * @author     Jan Lengowski <Jan.Lengowski@4fb.de>, Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>

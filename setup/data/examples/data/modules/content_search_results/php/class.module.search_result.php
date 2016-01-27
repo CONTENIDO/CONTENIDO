@@ -4,7 +4,6 @@
  *
  * @package Module
  * @subpackage search_result
- * @version SVN Revision $Rev:$
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG
  * @link http://www.4fb.de

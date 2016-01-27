@@ -7,8 +7,6 @@
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Willi Man
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt

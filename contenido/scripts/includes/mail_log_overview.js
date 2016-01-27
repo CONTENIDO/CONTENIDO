@@ -1,7 +1,6 @@
 /**
  * CONTENIDO mail_log.js JavaScript module.
  *
- * @version    SVN Revision $Rev: 5937 $
  * @requires   jQuery, Con
  * @author     ???
  * @copyright  four for business AG <www.4fb.de>

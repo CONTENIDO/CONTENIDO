@@ -5,8 +5,6 @@
  *
  * @package Module
  * @subpackage ScriptCookieDirective
- * @version SVN Revision $Rev:$
- *
  * @author ilia.schwarz
  * @author claus.schunk@4fb.de
  * @copyright four for business AG <www.4fb.de>

@@ -4,7 +4,6 @@
  * FoldingRow JavaScript helper module
  *
  * @module     folding-row
- * @version    SVN Revision $Rev$
  * @requires   jQuery, Con
  * @author     Unknown
  * @author     Murat Purc <murat@purc.de>

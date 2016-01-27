@@ -4,8 +4,6 @@
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Starnetsys, LLC.
  * @copyright Starnetsys, LLC.
  * @link http://starnetsys.com

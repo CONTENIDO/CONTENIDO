@@ -4,8 +4,6 @@
  *
  * @package Core
  * @subpackage CEC
- * @version SVN Revision $Rev:$
- *
  * @author Timo A. Hummel
  * @author Murat Purc <murat@purc.de>
  * @copyright four for business AG <www.4fb.de>

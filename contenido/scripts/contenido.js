@@ -6,7 +6,6 @@
  * @module     contenido
  * @main       contenido
  * @submodule  base
- * @version    SVN Revision $Rev$
  * @requires   jQuery
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>

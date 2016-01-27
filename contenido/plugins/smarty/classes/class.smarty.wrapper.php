@@ -4,8 +4,6 @@
  *
  * @package Plugin
  * @subpackage SmartyWrapper
- * @version SVN Revision $Rev:$
- *
  * @author Andreas Dieter
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt

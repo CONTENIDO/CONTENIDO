@@ -7,7 +7,6 @@
  * FrameLeftTop
  *
  * @module contenido
- * @version SVN Revision $Rev$
  * @requires jQuery, Con
  * @author Murat Purc <murat@purc.de>
  * @copyright four for business AG <www.4fb.de>
@@ -1175,7 +1174,7 @@
     Con.checkAjaxResponse = function(response) {
 
         if (typeof response == 'string' && response.indexOf('authentication_failure') > -1) {
-        
+
             json = $.parseJSON(response);
 
             if (json !== null && json.state == "error" && json.code == 401) {

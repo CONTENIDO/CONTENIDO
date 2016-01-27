@@ -1,7 +1,6 @@
 /**
  * CONTENIDO include.upl_edit.js JavaScript module.
  *
- * @version    SVN Revision $Rev$
  * @requires   jQuery, Con
  * @author     ???
  * @copyright  four for business AG <www.4fb.de>

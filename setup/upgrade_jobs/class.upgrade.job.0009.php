@@ -4,8 +4,6 @@
  *
  * @package Setup
  * @subpackage UpgradeJob
- * @version SVN Revision $Rev:$
- *
  * @author Mischa Holz
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -89,7 +87,7 @@ class cUpgradeJob_0009 extends cUpgradeJobAbstract {
                     cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "data/modules", 0777);
                 }
                 cDirHandler::recursiveCopy("data/examples/data/modules", $this->_aCfgClient[1]["path"]["frontend"] . "data/modules");
-                
+
                 // copy the template folder to the cms folder for the example client
                 if (cFileHandler::exists($this->_aCfgClient[1]["path"]["frontend"] . "templates")) {
                     cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "templates");

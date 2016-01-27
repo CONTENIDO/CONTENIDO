@@ -5,7 +5,6 @@
  * functionality.
  *
  * @module     subnav
- * @version    SVN Revision $Rev$
  * @requires   jQuery, Con
  * @author     dirk.eschler, Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>

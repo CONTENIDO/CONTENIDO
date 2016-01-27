@@ -4,8 +4,6 @@
  *
  * @package Plugin
  * @subpackage Newsletter
- * @version SVN Revision $Rev:$
- *
  * @author Bjoern Behrens
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -421,13 +419,13 @@ class NewsletterJob extends Item {
                         $contentType = 'text/html';
                     }
 
-                    
+
                     try {
                         // this code can throw exceptions like Swift_RfcComplianceException
                         $message = Swift_Message::newInstance($sSubject, $body, $contentType, $sEncoding);
                         $message->setFrom($sFrom, $sFromName);
                         $message->setTo($to);
-                        
+
                         // send the email
                         $result = $mailer->send($message);
                     } catch (Exception $e) {

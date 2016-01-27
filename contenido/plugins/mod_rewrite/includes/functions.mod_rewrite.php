@@ -12,7 +12,6 @@
  *
  * @package     Plugin
  * @subpackage  ModRewrite
- * @version     SVN Revision $Rev:$
  * @id          $Id$:
  * @author      Stefan Seifarth / stese
  * @author      Murat Purc <murat@purc.de>

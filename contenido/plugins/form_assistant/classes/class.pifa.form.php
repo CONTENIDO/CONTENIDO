@@ -4,7 +4,6 @@
  *
  * @package Plugin
  * @subpackage FormAssistant
- * @version SVN Revision $Rev:$
  * @author marcus.gnass
  * @copyright four for business AG
  * @link http://www.4fb.de
@@ -576,7 +575,7 @@ class PifaForm extends Item {
                     }
                 }
             }
-    
+
             // add attachments by string
             if (array_key_exists('attachmentStrings', $opt)) {
                 if (is_array($opt['attachmentStrings'])) {
@@ -587,7 +586,7 @@ class PifaForm extends Item {
                     }
                 }
             }
-    
+
             // add sender
             $message->addFrom($opt['from'], $opt['fromName']);
 

@@ -5,7 +5,6 @@
  *
  * @module     plugin
  * @submodule  mod-rewrite
- * @version    SVN Revision $Rev: $
  * @requires   jQuery, Con
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>

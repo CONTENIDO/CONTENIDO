@@ -5,8 +5,6 @@
  *
  * @package    Core
  * @subpackage Frontend_URI
- * @version    SVN Revision $Rev:$
- *
  * @author     Murat Purc
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt

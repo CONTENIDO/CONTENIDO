@@ -4,7 +4,6 @@
  * Main CONTENIDO application startup script, bootstraps the page.
  * Should be loaded after setting the configuration!
  *
- * @version    SVN Revision $Rev$
  * @requires   jQuery, Con
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>

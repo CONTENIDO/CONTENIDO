@@ -4,7 +4,6 @@
  * Integration of TinyMCE to handle it as an insight-editor
  *
  * @module     tiny
- * @version    SVN Revision $Rev$
  * @requires   jQuery, Con
  * @package    CONTENIDO Backend includes
  * @author     Timo Trautmann
@@ -575,7 +574,7 @@
 
             // Register plugin with a short name
             tinymce.PluginManager.add('close', tinymce.plugins.ClosePlugin);
-            
+
             // inject setup into settings
             wysiwygSettings.setup = function(ed) {
                 ed.onSetContent.add(function(ed, o) {

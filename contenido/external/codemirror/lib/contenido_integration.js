@@ -3,9 +3,7 @@
  *
  * @package    TODO
  * @subpackage TODO
- * @version    SVN Revision $Rev:$
  * @requires   jQuery
- *
  * @author     Unknown
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>

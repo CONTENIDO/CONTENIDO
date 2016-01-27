@@ -6,7 +6,6 @@
  * Header frame related JavaScript
  *
  * @module     header
- * @version    SVN Revision $Rev$
  * @requires   jQuery
  * @author     Timo Hummel, Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>

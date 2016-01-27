@@ -5,8 +5,6 @@
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Fulai Zhang
  * @author ilja.schwarz@4fb.de
  * @copyright four for business AG <www.4fb.de>

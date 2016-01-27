@@ -5,7 +5,6 @@
  *
  * @package Plugin
  * @subpackage FormAssistant
- * @version SVN Revision $Rev:$
  * @author marcus.gnass
  * @copyright four for business AG
  * @link http://www.4fb.de
