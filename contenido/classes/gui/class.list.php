@@ -3,14 +3,13 @@
 /**
  * This file contains the list GUI class.
  *
- * @package          Core
- * @subpackage       GUI
- *
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package Core
+ * @subpackage GUI
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -25,6 +24,7 @@ class cGuiList {
 
     /**
      *
+     * @todo names of protected members should have a leading underscore
      * @var array
      */
     protected $cells;

@@ -92,6 +92,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
             $this->_handler->halt('Database connection settings incomplete');
             return NULL;
         }
+
         // set existing option flags
         if (isset($connectConfig['options']) && is_array($connectConfig['options'])) {
             foreach ($connectConfig['options'] as $optKey => $optVal) {

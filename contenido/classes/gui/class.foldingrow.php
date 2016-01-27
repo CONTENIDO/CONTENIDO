@@ -5,7 +5,6 @@
  *
  * @package          Core
  * @subpackage       GUI
- *
  * @author           Bjoern Behrens
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -16,7 +15,11 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Foldable table row GUI class
+ * Foldable table row GUI class.
+ *
+ * <strong>JavaScript requirements</strong>
+ * Requires the class Con.FoldingRow from cfoldingrow.js
+ * as well as parameterCollector.js.
  *
  * @package    Core
  * @subpackage GUI
@@ -24,37 +27,43 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cGuiFoldingRow extends cHTML {
 
     /**
-     * Table row with the header
+     * Table row with the header.
+     *
      * @var cHTMLTableRow
      */
     protected $_headerRow;
 
     /**
-     * Table header data
+     * Table header data.
+     *
      * @var cHTMLTableHead
      */
     protected $_headerData;
 
     /**
-     * Table row with the content
+     * Table row with the content.
+     *
      * @var cHTMLTableRow
      */
     protected $_contentRow;
 
     /**
-     * ID for link that triggers expandCollapse
+     * ID for link that triggers expandCollapse.
+     *
      * @var string
      */
     protected $_linkId;
 
     /**
-     * Link
+     * Link.
+     *
      * @var cHTMLLink
      */
     protected $_link;
 
     /**
-     * Table content data
+     * Table content data.
+     *
      * @var cHTMLTableData
      */
     protected $_contentData;
@@ -69,18 +78,23 @@ class cGuiFoldingRow extends cHTML {
     public function __construct($uuid, $caption = "", $linkId = "", $bExpanded = NULL) {
         global $auth;
 
+        $this->_uuid = $uuid;
+
         $this->setCaption($caption);
 
         $this->_headerRow = new cHTMLTableRow();
+
         $this->_headerData = new cHTMLTableHead();
+        $this->_headerData->setClass("foldingrow");
+
         $this->_contentRow = new cHTMLTableRow();
         $this->_contentRow->updateAttributes(array("id" => $uuid));
-        $this->_contentData = new cHTMLTableData();
-        $this->_uuid = $uuid;
-        $this->_link = new cHTMLLink();
-        $this->_linkId = $linkId;
 
-        $this->_headerData->setClass("foldingrow");
+        $this->_contentData = new cHTMLTableData();
+
+        $this->_link = new cHTMLLink();
+
+        $this->_linkId = $linkId;
 
         $this->_hiddenField = new cHTMLHiddenField("expandstate_" . $this->_contentRow->getID());
 
@@ -190,7 +204,7 @@ class cGuiFoldingRow extends cHTML {
         $output = $this->_headerRow->render();
         $output .= $this->_contentRow->render();
 
-$output = <<<HTML
+        $output = <<<HTML
 <!-- cGuiFoldingRow -->
 {$output}
 <script type="text/javascript">

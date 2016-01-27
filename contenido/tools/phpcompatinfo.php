@@ -33,7 +33,6 @@ if (substr(PHP_SAPI, 0, 3) != 'cli') {
     die('Illegal call');
 }
 
-
 // /////////////////////////////////////////////////////////////////////
 // Initialization/Settings
 
@@ -43,14 +42,12 @@ $context = new stdClass();
 // CONTENIDO installation path (folder which contains "cms", "contenido", "docs", "setup", etc...)
 $context->contenidoInstallPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../../')) . '/';
 
-
 // /////////////////////////////////////////////////////////////////////
 // Proccess
 
 require_once 'PHP/CompatInfo.php';
 $context->info = new PHP_CompatInfo();
 $context->info->parseDir($context->contenidoInstallPath);
-
 
 // /////////////////////////////////////////////////////////////////////
 // Shutdown

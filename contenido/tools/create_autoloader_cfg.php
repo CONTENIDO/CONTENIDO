@@ -90,7 +90,7 @@ foreach ($context->pathsToParse as $pos => $dir) {
 }
 
 // uncomment following line to get some debug messages
-#echo $context->classTypeFinder->getFormattedDebugMessages();
+// echo $context->classTypeFinder->getFormattedDebugMessages();
 
 // write the class map configuration
 $context->classMapCreator = new mpClassMapFileCreatorContenido($context->contenidoInstallPath);

@@ -181,7 +181,8 @@ if (isset($actionRequest)) {
         }
         $sCode = cString::recodeString($sCode, $fileEncoding, cModuleHandler::getEncoding());
     } else {
-        $sCode = stripslashes($_REQUEST['code']); # stripslashes is required here in case of creating a new file
+        // stripslashes is required here in case of creating a new file
+        $sCode = stripslashes($_REQUEST['code']);
     }
 
     $form = new cGuiTableForm('file_editor');

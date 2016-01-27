@@ -236,9 +236,6 @@ class cHTMLValidator {
         $line = substr_count($mangled, "\n") + 1;
         $char = $charpos - strrpos($mangled, "\n");
 
-        return array(
-            $line,
-            $char
-        );
+        return array($line, $char);
     }
 }

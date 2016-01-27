@@ -173,7 +173,7 @@ class cContentVersioning {
                 $this->selectedArticle = new cApiArticleLanguageVersion($idArtLangVersion);
             } else if (isset($this->editableArticleId)) {
                 $this->selectedArticle = new cApiArticleLanguageVersion($this->editableArticleId);
-             }
+            }
         } else if ($articleType == 'current' || $articleType == 'editable') {
             $this->selectedArticle = new cApiArticleLanguage($idArtLang);
         }
@@ -361,9 +361,7 @@ class cContentVersioning {
      * @param int $version
      * @return array $idContent
      */
-    public function getContentId(
-        $idArtLang, $typeId, $type, $versioningState, $articleType, $version
-    ) {
+    public function getContentId($idArtLang, $typeId, $type, $versioningState, $articleType, $version) {
 
         $idContent = array();
         $type = addslashes($type);
@@ -688,20 +686,15 @@ class cContentVersioning {
         );
 
         // if there already is a content type like this in this version,
-        // create a new article version, too (needed for storing a version after
-        // first change in simple-mode)
+        // create a new article version, too (needed for storing
+        // a version after first change in simple-mode)
         $contentVersion = new cApiContentVersion();
-        //$contentVersion->loadByMany($parameters);
         $contentVersion->loadByMany($parametersToCheck);
         if ($contentVersion->isLoaded()) {
-            //foreach ($parameters AS $key => $value) {
-                //$contentVersion->set($key, $value);
-                $artLangVersion = $this->createArticleLanguageVersion($parametersArticleVersion);
-                $parameters['version'] = $artLangVersion->getField('version');
-                $contentVersionColl = new cApiContentVersionCollection();
-                $contentVersionColl->create($parameters);
-            //}
-            //$contentVersion->store();
+            $artLangVersion = $this->createArticleLanguageVersion($parametersArticleVersion);
+            $parameters['version'] = $artLangVersion->getField('version');
+            $contentVersionColl = new cApiContentVersionCollection();
+            $contentVersionColl->create($parameters);
         } else {
             // if there is no content type like this in this version, create one
             $contentVersionColl = new cApiContentVersionCollection();

@@ -34,8 +34,8 @@ $oFEGroupMemberCollection->setWhere('idfrontenduser', $idfrontenduser);
 $oFEGroupMemberCollection->addResultField('idfrontendgroup');
 $oFEGroupMemberCollection->query();
 
-# Fetch all groups the user belongs to (no goup, one group, more than one group).
-# The array $aFEGroup can be used in frontenduser plugins to display selfdefined user properties group dependent.
+// Fetch all groups the user belongs to (no goup, one group, more than one group).
+// The array $aFEGroup can be used in frontenduser plugins to display selfdefined user properties group dependent.
 $aFEGroup = array();
 while ($oFEGroup = $oFEGroupMemberCollection->next()) {
     $aFEGroup[] = $oFEGroup->get("idfrontendgroup");

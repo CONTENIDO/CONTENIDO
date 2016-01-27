@@ -34,10 +34,12 @@ $aSettings = array(
     'JoinMultiple'    => $oClientLang->getProperty('newsletter', 'joinmultiple'),
     'JoinGroups'      => $oClientLang->getProperty('newsletter', 'joingroups'),
     'JoinMessageType' => $oClientLang->getProperty('newsletter', 'joinmessagetype'),
-    'FrontendLink'    => $oClient->getProperty('newsletter', 'frontendlink'), # Note: Stored for client, as frontendusers are language independent
+    // Note: Stored for client, as frontendusers are language independent
+    'FrontendLink'    => $oClient->getProperty('newsletter', 'frontendlink'),
     'FrontendConfirm' => "CMS_VALUE[5]",
     'FrontendDel'     => "CMS_VALUE[6]",
-    'SenderEMail'     => $oClient->getProperty('global', 'sender-email'), # This one could be recycled by other modules...
+    // This one could be recycled by other modules...
+    'SenderEMail'     => $oClient->getProperty('global', 'sender-email')
 );
 
 // Setting default values

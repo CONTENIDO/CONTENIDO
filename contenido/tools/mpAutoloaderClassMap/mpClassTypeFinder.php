@@ -214,9 +214,9 @@ class mpClassTypeFinder
             if ($token[0] == T_INTERFACE) {
                 $this->_debug('findInFile: T_INTERFACE token found (token pos ' . $p . ')');
                 $prevTokenFound = true;
-#            } elseif ($token[0] == T_ABSTRACT) {
-#                $this->_debug('findInFile: T_ABSTRACT token found (token pos ' . $p . ')');
-#                $prevTokenFound = true;
+            // } elseif ($token[0] == T_ABSTRACT) {
+            //     $this->_debug('findInFile: T_ABSTRACT token found (token pos ' . $p . ')');
+            //     $prevTokenFound = true;
             } elseif ($token[0] == T_CLASS) {
                 $this->_debug('findInFile: T_CLASS token found (token pos ' . $p . ')');
                 $prevTokenFound = true;
