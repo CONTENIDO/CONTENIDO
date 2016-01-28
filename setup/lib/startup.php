@@ -28,12 +28,6 @@ if (version_compare(PHP_VERSION, '5.0.0', '<')) {
     die("You need PHP >= 5.0.0 for CONTENIDO. Sorry, even the setup doesn't work otherwise. Your version: " . PHP_VERSION . "\n");
 }
 
-// Check version
-//PHP >= 5.0.0 and < 6.0.0
-if (version_compare(PHP_VERSION, '6.0.0', '>=')) {
-    die("You need PHP >= 5.0.0  < 6.0.0 for CONTENIDO. Sorry, even the setup doesn't work otherwise. Your version: " . PHP_VERSION . "\n");
-}
-
 /*
  * Do not edit this value!
  *
