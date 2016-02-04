@@ -1098,7 +1098,7 @@ function humanReadableSize($number) {
     }
 
     $places = 2 - floor(log10($n));
-    $places = max($places, 0);
+    $places = intval(max($places, 0));
     $retval = number_format($n, $places, '.', '') . ' ' . $suffixes[$usesuf];
     return $retval;
 }
