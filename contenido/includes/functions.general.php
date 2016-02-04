@@ -1098,8 +1098,8 @@ function humanReadableSize($number) {
     }
 
     $places = 2 - floor(log10($n));
-    $places = intval(max($places, 0));
-    $retval = number_format($n, $places, '.', '') . ' ' . $suffixes[$usesuf];
+    $places = max($places, 0);
+    $retval = number_format($n, cSecurity::toInteger($places), '.', '') . ' ' . $suffixes[$usesuf];
     return $retval;
 }
 
