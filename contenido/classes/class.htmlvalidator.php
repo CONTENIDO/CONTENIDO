@@ -111,7 +111,7 @@ class cHTMLValidator {
                     $nestingLevel++;
 
                     $this->_nestingNodes[$nodeName][intval($this->_nestingLevel[$nodeName])]["name"] = $htmlParser->getNodeAttributes('name');
-                    $this->_nestingNodes[$nodeName][intval($this->_nestingLevel[$nodeName])]["id"] = $htmlParser->getNodeAttributes('id'];
+                    $this->_nestingNodes[$nodeName][intval($this->_nestingLevel[$nodeName])]["id"] = $htmlParser->getNodeAttributes('id');
                     $this->_nestingNodes[$nodeName][intval($this->_nestingLevel[$nodeName])]["level"] = $nestingLevel;
                     $this->_nestingNodes[$nodeName][intval($this->_nestingLevel[$nodeName])]["char"] = $htmlParser->getHtmlTextIndex();
                     $this->_nestingLevel[$nodeName]++;
