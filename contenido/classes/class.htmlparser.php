@@ -234,7 +234,7 @@ class HtmlParser {
 	/**
 	 * Get method for _NodeAttributes with specific attribute
 	 *
-	 * @param string attribute
+	 * @param string $attribute
 	 * @return string
 	*/
 	public function getNodeAttributes($attribute) {
@@ -253,7 +253,7 @@ class HtmlParser {
 	/**
 	 * Increae HtmlTextIndex 
 	 *
-	 * @return booleadn
+	 * @return boolean
 	*/
 	protected function increaseHtmlTextIndex() {
 		return $this->_HtmlTextIndex++;
@@ -373,7 +373,7 @@ class HtmlParser {
 
     /**
      *
-     * @return bool
+     * @return boolean
      */
     protected function _skipBlanksInTag() {
         return "" != ($this->_skipInTag(array(
@@ -470,7 +470,7 @@ class HtmlParser {
 
     /**
      *
-     * @return bool
+     * @return boolean
      */
     protected function _moveNext() {
         if ($this->getHtmlTextIndex() < $this->getHtmlTextLength()) {
