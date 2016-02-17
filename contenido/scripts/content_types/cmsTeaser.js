@@ -163,14 +163,12 @@
                 $(this).remove();
             });
         });
+
+        $(self.frameId + ' #del_art_' + self.id).on('click', function() {
+            $(self.frameId + ' #teaser_manual_art_' + self.id + ' option').remove();
+        });
     };
 
     Con.cContentTypeTeaser = cContentTypeTeaser;
-
-    $(function() {
-        $("#del_art_3").click(function() {
-            $("#teaser_manual_art_3 option:selected").remove();
-        });
-    });
 
 })(Con, Con.$);

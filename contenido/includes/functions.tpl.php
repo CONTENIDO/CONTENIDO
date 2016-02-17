@@ -315,24 +315,25 @@ function tplPreparseLayout($idlay) {
 
     $parser = new HtmlParser($code);
     $bIsBody = false;
+
     while ($parser->parse()) {
-        if (strtolower($parser->iNodeName) == 'body') {
+        if (strtolower($parser->getNodeName()) == 'body') {
             $bIsBody = true;
         }
 
-        if ($parser->iNodeName == "container" && $parser->iNodeType == HtmlParser::NODE_TYPE_ELEMENT) {
-            $idcontainer = $parser->iNodeAttributes["id"];
+        if ($parser->getNodeName() == "container" && $parser->getNodeType() == HtmlParser::NODE_TYPE_ELEMENT) {
+            $idcontainer = $parser->getNodeAttributes('id');
 
-            $mode = $parser->iNodeAttributes["mode"];
+            $mode = $parser->getNodeAttributes('mode');
 
             if ($mode == "") {
                 $mode = "optional";
             }
 
-            $containerinf[$idlay][$idcontainer]["name"] = $parser->iNodeAttributes["name"];
+            $containerinf[$idlay][$idcontainer]["name"] = $parser->getNodeAttributes('name');
             $containerinf[$idlay][$idcontainer]["mode"] = $mode;
-            $containerinf[$idlay][$idcontainer]["default"] = $parser->iNodeAttributes["default"];
-            $containerinf[$idlay][$idcontainer]["types"] = $parser->iNodeAttributes["types"];
+            $containerinf[$idlay][$idcontainer]["default"] = $parser->getNodeAttributes('default');
+            $containerinf[$idlay][$idcontainer]["types"] = $parser->getNodeAttributes('types');
             $containerinf[$idlay][$idcontainer]["is_body"] = $bIsBody;
         }
     }

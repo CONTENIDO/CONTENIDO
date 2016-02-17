@@ -44,7 +44,7 @@ class cHTMLFormElement extends cHTML {
      */
     public function __construct(
         $name = '', $id = '', $disabled = '', $tabindex = '', $accesskey = '',
-        $class = 'text_medium', $class = ''
+        $class = 'text_medium'
     ) {
 
         parent::__construct();

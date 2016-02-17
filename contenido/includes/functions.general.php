@@ -1099,7 +1099,7 @@ function humanReadableSize($number) {
 
     $places = 2 - floor(log10($n));
     $places = max($places, 0);
-    $retval = number_format($n, $places, '.', '') . ' ' . $suffixes[$usesuf];
+    $retval = number_format($n, cSecurity::toInteger($places), '.', '') . ' ' . $suffixes[$usesuf];
     return $retval;
 }
 

@@ -1,6 +1,6 @@
-﻿CONTENIDO Version 4.9.8
+﻿CONTENIDO Version 4.9.9
 Lizenz:        GNU General Public Licence (GPL)
-Copyright:     (c) 2003-2015, four for business AG
+Copyright:     (c) 2003-2016, four for business AG
 
 <take care>
 WARNUNG: Versionen, die mit Alpha, Beta oder RC markiert sind,

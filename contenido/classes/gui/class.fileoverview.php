@@ -205,7 +205,7 @@ class cGuiFileOverview extends cGuiPage {
         $fileInfos = new cApiFileInformationCollection();
         foreach($files as $file) {
             if($this->fileInfoType != '') {
-                $fileInfo = $fileInfos->getFileInformation($file, $this->fileInfoTyp);
+                $fileInfo = $fileInfos->getFileInformation($file, $this->fileInfoType);
                 $this->set('d', 'DESCRIPTION', $fileInfo['description']);
             } else {
                 $this->set('d', 'DESCRIPTION', '');
