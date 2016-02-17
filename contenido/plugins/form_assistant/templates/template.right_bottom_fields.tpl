@@ -1,11 +1,5 @@
 <!-- form_assistant/templates/template.right_bottom_fields.tpl -->
 
-{*
-
-AUTHOR marcus.gnass@4fb.de
-
-*}
-
 {if $email_notification}{$email_notification}<br />{/if}
 
 {if NULL eq $idform}

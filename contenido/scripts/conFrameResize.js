@@ -5,7 +5,8 @@
  *
  * @module     frame-resize
  * @requires   jQuery, Con
- * @author     Jan Lengowski <Jan.Lengowski@4fb.de>, Murat Purc <murat@purc.de>
+ * @author     Jan Lengowski <Jan.Lengowski@4fb.de>
+ * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  */
 

@@ -4,7 +4,7 @@
  *
  * @package Plugin
  * @subpackage SearchSolr
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  * @copyright four for business AG
  * @link http://www.4fb.de
  */
@@ -15,7 +15,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Helper class for this plugin.
  *
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
 class Solr {
 

@@ -4,7 +4,8 @@
  *
  * @package          Core
  * @subpackage       Backend
- * @author           Olaf Niemann, Jan Lengowski
+ * @author           Olaf Niemann
+ * @author           Jan Lengowski
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
  * @link             http://www.4fb.de

@@ -3,7 +3,9 @@
  * @submodule  content-type-user-forum
  * @package    Core
  * @subpackage Content Type
- * @author     Fulai Zhang, Simon Sprankel, Murat Purc <murat@purc.de>
+ * @author     Fulai Zhang
+ * @author     Simon Sprankel
+ * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de

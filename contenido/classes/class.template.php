@@ -4,7 +4,8 @@
  *
  * @package    Core
  * @subpackage GUI
- * @author     Jan Lengowski, Stefan Jelner
+ * @author     Jan Lengowski
+ * @author     Stefan Jelner
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de

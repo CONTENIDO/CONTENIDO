@@ -4,7 +4,7 @@
  *
  * @package Plugin
  * @subpackage FormAssistant
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  * @copyright four for business AG
  * @link http://www.4fb.de
  */
@@ -22,7 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * preprocess the data read from the request before it's going to be validated
  * and to be postprocessed after it's been persisted into the database.
  *
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
 abstract class PifaAbstractFormProcessor {
 

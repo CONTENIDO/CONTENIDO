@@ -5,7 +5,8 @@
  *
  * @package Core
  * @subpackage Backend
- * @author Olaf Niemann, Willi Man
+ * @author Olaf Niemann
+ * @author Willi Man
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de

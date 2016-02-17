@@ -4,7 +4,7 @@
  *
  * @package Plugin
  * @subpackage SearchSolr
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  * @copyright four for business AG
  * @link http://www.4fb.de
  */
@@ -22,7 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * <server>:8080/solr/admin/cores?action=RENAME&core=collection1&other=contenido
  * <server>:8080/solr/admin/cores?action=RELOAD&core=contenido
  *
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
 class SolrIndexer {
 

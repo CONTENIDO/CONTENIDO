@@ -314,7 +314,7 @@ if ($action == 'upl_renamefile' && $bDirectoryIsWritable == true) {
 
 /**
  *
- * @author marcus.gnass
+ * @author unknown
  */
 class UploadList extends FrontendList {
 

@@ -7,7 +7,8 @@
  *
  * @module     header
  * @requires   jQuery
- * @author     Timo Hummel, Murat Purc <murat@purc.de>
+ * @author     Timo Hummel
+ * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de

@@ -1,10 +1,5 @@
 <!-- form_assistant/templates/template.right_bottom_data.tpl -->
 
-{*
-
-AUTHOR marcus.gnass@4fb.de
-
-*}
 <fieldset>
     <legend>{$trans.legend}</legend>
 {if true neq $form->isLoaded()}

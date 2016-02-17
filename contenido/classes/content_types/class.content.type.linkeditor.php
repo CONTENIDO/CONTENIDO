@@ -5,7 +5,8 @@
  *
  * @package Core
  * @subpackage ContentType
- * @author Fulai Zhang, Simon Sprankel
+ * @author Fulai Zhang
+ * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de

@@ -6,7 +6,8 @@
  *
  * @module     subnav
  * @requires   jQuery, Con
- * @author     dirk.eschler, Murat Purc <murat@purc.de>
+ * @author     dirk.eschler
+ * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de

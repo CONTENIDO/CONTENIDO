@@ -5,7 +5,9 @@
  *
  * @package Core
  * @subpackage ContentType
- * @author Dominik Ziegler, Timo Trautmann, Simon Sprankel
+ * @author Dominik Ziegler
+ * @author Timo Trautmann
+ * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de

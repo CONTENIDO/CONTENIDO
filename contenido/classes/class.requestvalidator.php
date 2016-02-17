@@ -4,7 +4,8 @@
  *
  * @package    Core
  * @subpackage Security
- * @author     Mischa Holz, Andreas Kummer
+ * @author     Mischa Holz
+ * @author     Andreas Kummer
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de

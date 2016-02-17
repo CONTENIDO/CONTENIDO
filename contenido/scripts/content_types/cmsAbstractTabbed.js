@@ -7,7 +7,8 @@
  * @submodule  content-type-cms-abstract-tabbed
  * @package    Core
  * @subpackage Content Type
- * @author     Simon Sprankel, Murat Purc <murat@purc.de>
+ * @author     Simon Sprankel
+ * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de

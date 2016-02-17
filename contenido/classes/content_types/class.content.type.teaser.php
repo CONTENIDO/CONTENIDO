@@ -5,7 +5,8 @@
  *
  * @package Core
  * @subpackage ContentType
- * @author Timo Trautmann, Simon Sprankel
+ * @author Timo Trautmann
+ * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de

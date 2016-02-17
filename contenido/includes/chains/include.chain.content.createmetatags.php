@@ -7,7 +7,8 @@
  *
  * @package          Core
  * @subpackage       Chain
- * @author           Andreas Lindner, Unknown
+ * @author           Andreas Lindner
+ * @author           Unknown
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
  * @link             http://www.4fb.de

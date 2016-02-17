@@ -4,7 +4,7 @@
  *
  * @package Plugin
  * @subpackage FormAssistant
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  * @copyright four for business AG
  * @link http://www.4fb.de
  */
@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * It provides a navigation for all forms defined for the current client and the
  * current language.
  *
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
 class PifaLeftBottomPage extends cGuiPage {
 
@@ -169,7 +169,7 @@ class PifaLeftBottomPage extends cGuiPage {
 /**
  * Page for area "form" to be displayed in the right bottom frame.
  *
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
 class PifaRightBottomFormPage extends cGuiPage {
 
@@ -521,7 +521,7 @@ class PifaRightBottomFormPage extends cGuiPage {
 /**
  * Page for area "form_fields" to be displayed in the right bottom frame.
  *
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
 class PifaRightBottomFormFieldsPage extends cGuiPage {
 
@@ -752,7 +752,7 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
 /**
  * Page for area "form_data" to be displayed in the right bottom frame.
  *
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
 class PifaRightBottomFormDataPage extends cGuiPage {
 
@@ -934,7 +934,7 @@ class PifaRightBottomFormDataPage extends cGuiPage {
  * Page for area "form_export" to be displayed in the right bottom frame.
  * This page allows for exporting a form as XML.
  *
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
 class PifaRightBottomFormExportPage extends cGuiPage {
 
@@ -1080,7 +1080,7 @@ class PifaRightBottomFormExportPage extends cGuiPage {
  * Page for area "form_import" to be displayed in the right bottom frame.
  * This page allows for importing a form that is available as XML.
  *
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
 class PifaRightBottomFormImportPage extends cGuiPage {
 

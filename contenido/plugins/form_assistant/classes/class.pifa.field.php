@@ -4,7 +4,7 @@
  *
  * @package Plugin
  * @subpackage FormAssistant
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  * @copyright four for business AG
  * @link http://www.4fb.de
  */
@@ -16,7 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * PIFA field item collection class.
  * It's a kind of a model.
  *
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
 class PifaFieldCollection extends ItemCollection {
 
@@ -57,7 +57,7 @@ class PifaFieldCollection extends ItemCollection {
  * PIFA field item class.
  * It's a kind of a model.
  *
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
 class PifaField extends Item {
 

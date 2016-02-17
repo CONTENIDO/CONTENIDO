@@ -1,7 +1,8 @@
 /**
  * CONTENIDO JavaScript rowMark module
  *
- * @author     Jan Lengowski <Jan.Lengowski@4fb.de>, Timo Trautmann <timo.trautmann@4fb.de>
+ * @author     Jan Lengowski <Jan.Lengowski@4fb.de>
+ * @author     Timo Trautmann <timo.trautmann@4fb.de>
  * @copyright  Jan Lengowski 2002
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt

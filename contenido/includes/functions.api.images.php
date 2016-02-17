@@ -457,10 +457,10 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
 }
 
 /**
- * Check if gif is animated, uses "identify" of ImageMagick.
+ * Check if gif is animated using ImageMagicks "identify".
  *
- * If the PHP functions "escapeshellarg" or "exec" are not available false will
- * be returned.
+ * If the PHP functions "escapeshellarg" or "exec" are not available
+ * false will be returned.
  *
  * If ImageMagick is not available false will be returned.
  *
@@ -618,7 +618,7 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false, $cache
 }
 
 /**
- * Check possible image editing functionality
+ * Check possible image editing functionality.
  *
  * @return mixed
  *         Information about installed image editing extensions/tools

@@ -4,7 +4,7 @@
  *
  * @package Plugin
  * @subpackage FormAssistant
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  * @copyright four for business AG
  * @link http://www.4fb.de
  */
@@ -33,7 +33,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * ssl_cainfo
  * ssl_capath
  *
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
 class SolrRightBottomPage extends cGuiPage {
 

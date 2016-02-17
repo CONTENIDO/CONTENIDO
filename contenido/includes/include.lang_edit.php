@@ -5,7 +5,8 @@
  *
  * @package Core
  * @subpackage Backend
- * @author Timo Hummel, Jan Lengowski
+ * @author Timo Hummel
+ * @author Jan Lengowski
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de

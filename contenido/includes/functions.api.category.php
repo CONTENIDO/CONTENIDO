@@ -23,19 +23,21 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Seeks through the category tree and returns the node on a specific level.
  *
  * Example:
+ * <pre>
  * + Category A (15)
  * |-+ News (16)
  * | |- News A (17)
  * + Category B (18)
  * |-+ Internal (19)
+ * </pre>
  *
- * Given you are in the leaf "News A" (idcat 17), and you want to get out in which
- * "main" tree you are, you can call the function like this:
+ * Given you are in the leaf "News A" (idcat 17), and you want to find
+ * out in which "main" tree you are, you can call the function like this:
  *
- * cApiCatGetLevelNode(17,1);
+ * <code>cApiCatGetLevelNode(17, 1);</code>
  *
- * The example would return "Category A" (idcat 15). If you specify an invalid level,
- * the results are undefined.
+ * The example would return "Category A" (idcat 15). If you specify an
+ * invalid level the results are undefined.
  *
  * @deprecated [2015-05-21]
  *         This method is no longer supported (no replacement)
@@ -47,6 +49,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *         The category node on a specific level
  */
 function cApiCatGetLevelNode($idcat, $minLevel = 0) {
+
     global $cfg, $client, $lang;
 
     cDeprecated('This method is deprecated and is not needed any longer');

@@ -4,7 +4,7 @@
  *
  * @package Plugin
  * @subpackage FormAssistant
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  * @copyright four for business AG
  * @link http://www.4fb.de
  */
@@ -16,7 +16,7 @@
  * valid data is displayed in the form and error messages (if defined) are
  * displayed for all invalid form fields.
  *
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
 class DefaultFormModule extends PifaAbstractFormModule {
 

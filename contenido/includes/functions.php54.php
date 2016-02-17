@@ -5,7 +5,8 @@
  *
  * @package Core
  * @subpackage Backend
- * @author Dominik Ziegler, Timo Trautmann
+ * @author Dominik Ziegler
+ * @author Timo Trautmann
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
@@ -17,8 +18,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 if (function_exists('conPhp54Check') == false) {
 
     /**
+     * Checks if at least PHP 5.4.0 is available. If so 1 is returned,
+     * 0 otherwise. The check is only performed once and stored as
+     * constant CON_PHP54.
      *
-     * @return string
+     * @return int
      */
     function conPhp54Check() {
         if (!defined('CON_PHP54')) {
@@ -34,9 +38,9 @@ if (function_exists('conHtmlSpecialChars') == false) {
 
     /**
      *
-     * @param unknown_type $value
-     * @param unknown_type $flags
-     * @param unknown_type $encoding
+     * @param string $value
+     * @param int $flags
+     * @param string $encoding
      * @return string
      */
     function conHtmlSpecialChars($value, $flags = '', $encoding = '') {
@@ -67,9 +71,9 @@ if (function_exists('conHtmlEntityDecode') == false) {
 
     /**
      *
-     * @param unknown_type $value
-     * @param unknown_type $flags
-     * @param unknown_type $encoding
+     * @param string $value
+     * @param int $flags
+     * @param string $encoding
      * @return string
      */
     function conHtmlEntityDecode($value, $flags = '', $encoding = '') {
@@ -95,9 +99,9 @@ if (function_exists('conHtmlentities') == false) {
 
     /**
      *
-     * @param unknown_type $value
-     * @param unknown_type $flags
-     * @param unknown_type $encoding
+     * @param string $value
+     * @param int $flags
+     * @param string $encoding
      * @return string
      */
     function conHtmlentities($value, $flags = '', $encoding = '') {
@@ -123,9 +127,9 @@ if (function_exists('conGetHtmlTranslationTable') == false) {
 
     /**
      *
-     * @param unknown_type $table
-     * @param unknown_type $flags
-     * @return multitype:
+     * @param int $table
+     * @param int $flags
+     * @return array
      */
     function conGetHtmlTranslationTable($table = '', $flags = '') {
         $isPhp54 = conPhp54Check();
