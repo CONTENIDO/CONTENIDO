@@ -24,7 +24,7 @@ abstract class cWYSIWYGEditor {
      * Access key under which the wysiwyg editor settings will be stored
      * @var string
      */
-    protected static $_sConfigPrefix = '[\'wysiwyg\']';
+    protected static $_configPrefix = '[\'wysiwyg\']';
 
     /**
      *
@@ -95,27 +95,28 @@ abstract class cWYSIWYGEditor {
 
     /**
      * Sets given setting if setting was not yet defined.
-     * Overwriting defined setting can be achieved with $bForceSetting = true.
+     * Overwriting defined setting can be achieved with $forceSetting = true.
      *
-     * @param string $sKey
+     * @param string $key
      *         of setting to set
-     * @param string $sValue
+     * @param string $value
      *         of setting to set
-     * @param bool $bForceSetting [optional]
+     * @param bool $forceSetting [optional]
      *         to overwrite defined setting
+     * @param bool $type Normally unused (counterpart of cTinyMCE4Editor::setSetting)
      */
-    protected function _setSetting($sKey, $sValue, $bForceSetting = false) {
-        if ($bForceSetting || !array_key_exists($sKey, $this->_aSettings)) {
-            $this->_aSettings[$sKey] = $sValue;
+    public function setSetting($type = null, $key, $value, $forceSetting = false) {
+        if ($forceSetting || !array_key_exists($key, $this->_aSettings)) {
+            $this->_aSettings[$key] = $value;
         }
     }
 
     /**
      *
-     * @param string $sKey
+     * @param string $key
      */
-    protected function _unsetSetting($sKey) {
-        unset($this->_aSettings[$sKey]);
+    protected function _unsetSetting($key) {
+        unset($this->_aSettings[$key]);
     }
 
     /**
@@ -148,7 +149,7 @@ abstract class cWYSIWYGEditor {
      * @throws cBadMethodCallException if this method is not overridden in the
      *         subclass
      */
-    protected function _getEditor() {
+    protected function getEditor() {
         throw new cBadMethodCallException('You need to override the method _getEditor');
     }
 
@@ -199,7 +200,7 @@ abstract class cWYSIWYGEditor {
         $filePrefix .= "defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');\n";
         $filePrefix .= 'global $cfg;' . PHP_EOL . PHP_EOL;
 
-        $content = $filePrefix . '$cfg' . static::$_sConfigPrefix . ' = ' . var_export($config, true) . ';' . PHP_EOL;
+        $content = $filePrefix . '$cfg' . static::$_configPrefix . ' = ' . var_export($config, true) . ';' . PHP_EOL;
 
         // first try to write then check what went wrong in case of error
         if (true !== cFileHandler::write($configPath . $configFile, $content)) {

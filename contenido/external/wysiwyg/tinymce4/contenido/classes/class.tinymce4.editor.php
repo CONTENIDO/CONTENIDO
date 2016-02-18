@@ -59,14 +59,14 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      *
      * @var string
      */
-    private $_sBaseURL;
+    private $_baseURL;
 
     /**
      * Stores, if GZIP compression will be used
      *
      * @var bool
      */
-    private $_bUseGZIP = false;
+    private $_useGZIP = false;
 
     /**
      * Shortcut to content types tinymce is mapped to
@@ -80,7 +80,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      *
      * @var string
      */
-    protected static $_sConfigPrefix = '[\'wysiwyg\'][\'tinymce4\']';
+    protected static $_configPrefix = '[\'wysiwyg\'][\'tinymce4\']';
 
     /**
      *
@@ -88,13 +88,12 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * @param string $editorContent
      */
     public function __construct($editorName, $editorContent) {
-        global $idart;
 
         $belang = cRegistry::getBackendLanguage();
-        $cfg = cRegistry::getConfig();
         $client = cRegistry::getClientId();
         $cfgClient = cRegistry::getClientConfig();
         $lang = cRegistry::getLanguageId();
+        $idart = cRegistry::getArticleId();
 
         parent::__construct($editorName, $editorContent);
         $this->_setEditor("tinymce4");
@@ -157,36 +156,36 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             if (false === isset($this->_cmsTypes[$cmsType])) {
                 continue;
             }
-            $this->_setSetting($cmsType, "article_url_suffix", 'front_content.php?idart=' . $idart, true);
+            $this->setSetting($cmsType, "article_url_suffix", 'front_content.php?idart=' . $idart, true);
 
             // Default values
 
             // apply editor to any cms type provided in preferences
-            $this->_setSetting($cmsType, 'selector', ('.' . $cmsType), true);
+            $this->setSetting($cmsType, 'selector', ('.' . $cmsType), true);
 
-            $this->_setSetting($cmsType, "content_css", $cfgClient[$client]["path"]["htmlpath"] . "css/style_tiny.css");
+            $this->setSetting($cmsType, "content_css", $cfgClient[$client]["path"]["htmlpath"] . "css/style_tiny.css");
 
-            $this->_setSetting($cmsType, "theme", "modern");
-            $this->_setSetting($cmsType, "remove_script_host", false);
+            $this->setSetting($cmsType, "theme", "modern");
+            $this->setSetting($cmsType, "remove_script_host", false);
 
-            $this->_setSetting($cmsType, "urlconverter_callback", "Con.Tiny.customURLConverterCallback");
+            $this->setSetting($cmsType, "urlconverter_callback", "Con.Tiny.customURLConverterCallback");
             // New in V3.x
-            $this->_setSetting($cmsType, "pagebreak_separator", "<!-- my page break -->"); // needs pagebreak plugin
+            $this->setSetting($cmsType, "pagebreak_separator", "<!-- my page break -->"); // needs pagebreak plugin
             // Source formatting (ugh!)
-            $this->_setSetting($cmsType, "remove_linebreaks", false); // Remove linebreaks - GREAT idea...
+            $this->setSetting($cmsType, "remove_linebreaks", false); // Remove linebreaks - GREAT idea...
 
             // Convert URLs and Relative URLs default
-            $this->_setSetting($cmsType, "convert_urls", false);
-            $this->_setSetting($cmsType, "relative_urls", false);
+            $this->setSetting($cmsType, "convert_urls", false);
+            $this->setSetting($cmsType, "relative_urls", false);
 
             // Editor language
             $aLangs = i18nGetAvailableLanguages();
-            $this->_setSetting($cmsType, "language", $aLangs[$belang][4]);
+            $this->setSetting($cmsType, "language", $aLangs[$belang][4]);
             unset($aLangs);
 
             // Set document base URL for all relative URLs
             // http://www.tinymce.com/wiki.php/Configuration:document_base_url
-            $this->_setSetting($cmsType, 'document_base_url', cRegistry::getFrontendUrl(), true);
+            $this->setSetting($cmsType, 'document_base_url', cRegistry::getFrontendUrl(), true);
 
             // The following "base URL" is the URL used to reference JS script files
             // - it is not the base href value
@@ -215,16 +214,16 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             $this->setUserDefinedStyles($cmsType);
 
             // Width and height
-            $this->_setSetting($cmsType, "width", "100%");
-            $this->_setSetting($cmsType, "height", "480px");
+            $this->setSetting($cmsType, "width", "100%");
+            $this->setSetting($cmsType, "height", "480px");
 
             // Text direction (rtl = right to left)
             $sDirection = langGetTextDirection($lang);
-            $this->_setSetting($cmsType, "directionality", $sDirection);
+            $this->setSetting($cmsType, "directionality", $sDirection);
 
             // Date and time formats
-            $this->_setSetting($cmsType, "plugin_insertdate_dateFormat", $this->convertFormat(getEffectiveSetting("dateformat", "date", "Y-m-d")));
-            $this->_setSetting($cmsType, "plugin_insertdate_timeFormat", $this->convertFormat(getEffectiveSetting("dateformat", "time", "H:i:s")));
+            $this->setSetting($cmsType, "plugin_insertdate_dateFormat", $this->convertFormat(getEffectiveSetting("dateformat", "date", "Y-m-d")));
+            $this->setSetting($cmsType, "plugin_insertdate_timeFormat", $this->convertFormat(getEffectiveSetting("dateformat", "time", "H:i:s")));
 
             // Setting the toolbar (toolbar_mode and tinymce-toolbar-mode accepted)
             $sMode = "full";
@@ -242,8 +241,8 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
             // allow any element
             if ($autoFullElements === 'true') {
-                $this->_setSetting($cmsType, 'valid_elements', '*[*]');
-                $this->_setSetting($cmsType, 'extended_valid_elements', '*[*]');
+                $this->setSetting($cmsType, 'valid_elements', '*[*]');
+                $this->setSetting($cmsType, 'extended_valid_elements', '*[*]');
             }
 
             // default valid elements that tinymce is allowed to write
@@ -254,14 +253,14 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             $validElements .= "iframe[src|width|height],object[data|width|height|type],audio[controls|src],source[src|type],script[src],video[width|height|poster|controls]";
 
             // pass valid elements to tinymce
-            $this->_setSetting($cmsType, "valid_elements", $validElements);
+            $this->setSetting($cmsType, "valid_elements", $validElements);
 
             // Extended valid elements, for compatibility also accepts "tinymce-extended-valid-elements"
             if (!array_key_exists("extended_valid_elements", $this->_aSettings[$cmsType]) && array_key_exists("tinymce-extended-valid-elements", $this->_aSettings[$cmsType])) {
-                $this->_setSetting($cmsType, "extended_valid_elements", $this->_aSettings["tinymce-extended-valid-elements"]);
+                $this->setSetting($cmsType, "extended_valid_elements", $this->_aSettings["tinymce-extended-valid-elements"]);
             }
 
-            $this->_setSetting($cmsType, "extended_valid_elements", "form[name|action|method],textarea[name|style|cols|rows],input[type|name|value|style|onclick],a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|style|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|style]");
+            $this->setSetting($cmsType, "extended_valid_elements", "form[name|action|method],textarea[name|style|cols|rows],input[type|name|value|style|onclick],a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|style|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|style]");
 
             // Clean all possible URLs
             $this->cleanURLs($cmsType);
@@ -278,7 +277,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * @param string $sInput
      * @return string
      */
-    function convertFormat($sInput) {
+    public function convertFormat($sInput) {
         $aFormatCodes = array(
             "y" => "%y", "Y" => "%Y", "d" => "%d", "m" => "%m", "H" => "%H", "h" => "%I", "i" => "%M", "s" => "%S", "a" => "%P", "A" => "%P"
         );
@@ -294,7 +293,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      *
      * @param string $sType
      */
-    function setUserDefinedStyles($sType) {
+    public function setUserDefinedStyles($sType) {
         $sStyles = "";
 
         // convert tinymce's style formats from string to required JSON value
@@ -306,7 +305,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 if (strlen($sStyles) > 0) {
                     // if json can be decoded
                     if (null !== json_decode($sStyles)) {
-                        $this->_setSetting($sType, 'style_formats', json_decode($sStyles), true);
+                        $this->setSetting($sType, 'style_formats', json_decode($sStyles), true);
                     }
                 }
             }
@@ -319,7 +318,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * @param string $sType
      *        CMS type where XHTML mode setting wil be applies
      */
-    function setLists($sType) {
+    public function setLists($sType) {
         $client = cRegistry::getClientId();
         $lang = cRegistry::getLanguageId();
 
@@ -330,11 +329,11 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
         // check if link list is activated
         if (true === isset($aLists['link'])) {
-            $this->_setSetting($sType, 'link_list', $this->_sBaseURL . 'contenido/ajax/class.tinymce_list.php?mode=link&lang=' . $lang . '&client=' . $client . '#', true);
+            $this->setSetting($sType, 'link_list', $this->_baseURL . 'contenido/ajax/class.tinymce_list.php?mode=link&lang=' . $lang . '&client=' . $client . '#', true);
         }
         // check if image list is activated
         if (true === isset($aLists['image'])) {
-            $this->_setSetting($sType, 'image_list', $this->_sBaseURL . 'contenido/ajax/class.tinymce_list.php?mode=image&lang=' . $lang . '&client=' . $client . '#', true);
+            $this->setSetting($sType, 'image_list', $this->_baseURL . 'contenido/ajax/class.tinymce_list.php?mode=image&lang=' . $lang . '&client=' . $client . '#', true);
         }
         // media list does not exist in tinymce 4, media plugin still available though
     }
@@ -347,11 +346,11 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * @param string
      *        $bEnabled Whether to turn on XHTML mode
      */
-    function setXHTMLMode($sType, $bEnabled = true) {
+    public function setXHTMLMode($sType, $bEnabled = true) {
         if ($bEnabled) {
-            $this->_setSetting($sType, 'cleanup_callback', '', true);
+            $this->setSetting($sType, 'cleanup_callback', '', true);
         } else {
-            $this->_setSetting($sType, 'cleanup_callback', 'Con.Tiny.customCleanupCallback', true);
+            $this->setSetting($sType, 'cleanup_callback', 'Con.Tiny.customCleanupCallback', true);
         }
     }
 
@@ -362,9 +361,9 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      */
     private function setGZIPMode($bEnabled = true) {
         if ($bEnabled) {
-            $this->_bUseGZIP = true;
+            $this->_useGZIP = true;
         } else {
-            $this->_bUseGZIP = false;
+            $this->_useGZIP = false;
         }
     }
 
@@ -374,7 +373,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      *         if editor is loaded using gzip compression
      */
     public function getGZIPMode() {
-        return (bool) $this->_bUseGZIP;
+        return (bool) $this->_useGZIP;
     }
 
     /**
@@ -382,10 +381,10 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * "tinymce-toolbar1-3" and "tinymce4-plugins".
      *
      * @param string $cmsType
-     * @param string $sMode
+     * @param string $mode
      */
-    public function setToolbar($cmsType, $sMode = "") {
-        $cfg = cRegistry::getConfig();
+    public function setToolbar($cmsType, $mode = "") {
+
         $cfgClient = cRegistry::getClientConfig();
         $client = cRegistry::getClientId();
 
@@ -403,29 +402,29 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         //
         // This would allow users to specify more than just 3 toolbars in total
 
-        switch ($sMode) {
+        switch ($mode) {
             case "full": // Show all options
                 if ('CMS_HTMLHEAD' === $cmsType) {
                     $defaultToolbar1 = cTinymce4Configuration::get('undo redo | consave conclose', 'tinymce4', $cmsType, 'tinymce4_full', 'toolbar1');
                     $defaultToolbar2 = cTinymce4Configuration::get('', 'tinymce4', $cmsType, 'tinymce4_full', 'toolbar2');
                     $defaultToolbar3 = cTinymce4Configuration::get('', 'tinymce4', $cmsType, 'tinymce4_full', 'toolbar3');
                     $defaultPlugins = cTinymce4Configuration::get('conclose', 'tinymce4', $cmsType, 'tinymce4_full', 'plugins');
-                    $this->_setSetting($cmsType, 'menubar', false, true);
+                    $this->setSetting($cmsType, 'menubar', false, true);
                 } else {
                     $defaultToolbar1 = cTinymce4Configuration::get('cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', 'tinymce4', $cmsType, 'tinymce4_full', 'toolbar1');
                     $defaultToolbar2 = cTinymce4Configuration::get('link unlink anchor image media hr | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', 'tinymce4', $cmsType, 'tinymce4_full', 'toolbar2');
                     $defaultToolbar3 = cTinymce4Configuration::get('table | formatselect fontselect fontsizeselect | consave conclose', 'tinymce4', $cmsType, 'tinymce4_full', 'toolbar3');
                     $defaultPlugins = cTinymce4Configuration::get('charmap code conclose table conclose hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'tinymce4', $cmsType, 'tinymce4_full', 'plugins');
                 }
-                $this->_setSetting($cmsType, 'inline', false, true);
-                $this->_setSetting($cmsType, 'toolbar1', $defaultToolbar1, true);
-                $this->_setSetting($cmsType, 'toolbar2', $defaultToolbar2, true);
-                $this->_setSetting($cmsType, 'toolbar3', $defaultToolbar3, true);
-                $this->_setSetting($cmsType, 'plugins',  $defaultPlugins,  true);
+                $this->setSetting($cmsType, 'inline', false, true);
+                $this->setSetting($cmsType, 'toolbar1', $defaultToolbar1, true);
+                $this->setSetting($cmsType, 'toolbar2', $defaultToolbar2, true);
+                $this->setSetting($cmsType, 'toolbar3', $defaultToolbar3, true);
+                $this->setSetting($cmsType, 'plugins',  $defaultPlugins,  true);
 
                 $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', $cmsType, 'tinymce4_full');
-                foreach ($aCustSettings as $sKey => $sValue) {
-                    $this->_setSetting($cmsType, $sKey, $sValue, true);
+                foreach ($aCustSettings as $key => $value) {
+                    $this->setSetting($cmsType, $key, $value, true);
                 }
                 break;
 
@@ -442,54 +441,54 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                     $defaultToolbar3 = cTinymce4Configuration::get('table | formatselect fontselect fontsizeselect | consave conclose', 'tinymce4', $cmsType, 'tinymce4_fullscreen', 'toolbar3');
                     $defaultPlugins = cTinymce4Configuration::get('charmap code table conclose hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'tinymce4', $cmsType, 'tinymce4_fullscreen', 'plugins');
                 }
-                $this->_setSetting($cmsType, 'inline', false, true);
-                $this->_setSetting($cmsType, 'menubar', true, true);
-                $this->_setSetting($cmsType, 'toolbar1', $defaultToolbar1, true);
-                $this->_setSetting($cmsType, 'toolbar2', $defaultToolbar2, true);
-                $this->_setSetting($cmsType, 'toolbar3', $defaultToolbar3, true);
+                $this->setSetting($cmsType, 'inline', false, true);
+                $this->setSetting($cmsType, 'menubar', true, true);
+                $this->setSetting($cmsType, 'toolbar1', $defaultToolbar1, true);
+                $this->setSetting($cmsType, 'toolbar2', $defaultToolbar2, true);
+                $this->setSetting($cmsType, 'toolbar3', $defaultToolbar3, true);
                 // load some plugins
-                $this->_setSetting($cmsType, 'plugins', $defaultPlugins, true);
+                $this->setSetting($cmsType, 'plugins', $defaultPlugins, true);
 
                 $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', $cmsType, 'tinymce4_fullscreen');
 
-                foreach ($aCustSettings as $sKey => $sValue) {
-                    $this->_setSetting($cmsType, $sKey, $sValue, true);
+                foreach ($aCustSettings as $key => $value) {
+                    $this->setSetting($cmsType, $key, $value, true);
                 }
 
                 break;
 
             case "simple": // Does not show font and table options
-                $this->_setSetting($cmsType, "toolbar1", "cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview", true);
-                $this->_setSetting($cmsType, "toolbar2", "link unlink anchor image | bullist numlist | outdent indent | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code", true);
-                $this->_setSetting($cmsType, "toolbar3", "", true);
+                $this->setSetting($cmsType, "toolbar1", "cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview", true);
+                $this->setSetting($cmsType, "toolbar2", "link unlink anchor image | bullist numlist | outdent indent | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code", true);
+                $this->setSetting($cmsType, "toolbar3", "", true);
 
-                $this->_setSetting($cmsType, "plugins", "anchor charmap code insertdatetime preview searchreplace print contextmenu paste directionality textcolor", true);
+                $this->setSetting($cmsType, "plugins", "anchor charmap code insertdatetime preview searchreplace print contextmenu paste directionality textcolor", true);
 
                 $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', $cmsType, 'tinymce4_simple');
-                foreach ($aCustSettings as $sKey => $sValue) {
-                    $this->_setSetting($cmsType, $sKey, $sValue, true);
+                foreach ($aCustSettings as $key => $value) {
+                    $this->setSetting($cmsType, $key, $value, true);
                 }
 
                 break;
 
             case "mini": // Minimal toolbar
-                $this->_setSetting($cmsType, "toolbar1", "undo redo | bold italic underline strikethrough | link", true);
-                $this->_setSetting($cmsType, "toolbar2", "", true);
-                $this->_setSetting($cmsType, "toolbar3", "", true);
+                $this->setSetting($cmsType, "toolbar1", "undo redo | bold italic underline strikethrough | link", true);
+                $this->setSetting($cmsType, "toolbar2", "", true);
+                $this->setSetting($cmsType, "toolbar3", "", true);
 
-                $this->_setSetting($cmsType, "plugins", "contextmenu", true);
+                $this->setSetting($cmsType, "plugins", "contextmenu", true);
 
                 $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', $cmsType, 'tinymce4_mini');
-                foreach ($aCustSettings as $sKey => $sValue) {
-                    $this->_setSetting($cmsType, $sKey, $sValue, true);
+                foreach ($aCustSettings as $key => $value) {
+                    $this->setSetting($cmsType, $key, $value, true);
                 }
 
                 break;
 
             case "custom": // Custom toolbar
                 $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', $cmsType, 'tinymce4_custom');
-                foreach ($aCustSettings as $sKey => $sValue) {
-                    $this->_setSetting($cmsType, $sKey, $sValue, true);
+                foreach ($aCustSettings as $key => $value) {
+                    $this->setSetting($cmsType, $key, $value, true);
                 }
 
                 break;
@@ -506,43 +505,43 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                     $defaultToolbar3 = cTinymce4Configuration::get('', 'tinymce4', $cmsType, 'tinymce4_inline', 'toolbar3');
                     $defaultPlugins = cTinymce4Configuration::get('conclose confullscreen media table textcolor', 'tinymce4', $cmsType, 'tinymce4_inline', 'plugins');
                 }
-                $this->_setSetting($cmsType, 'inline', true, true);
-                $this->_setSetting($cmsType, 'menubar', false, true);
-                $this->_setSetting($cmsType, 'toolbar1', $defaultToolbar1, true);
-                $this->_setSetting($cmsType, 'toolbar2', $defaultToolbar2, true);
-                $this->_setSetting($cmsType, 'toolbar3', $defaultToolbar3, true);
+                $this->setSetting($cmsType, 'inline', true, true);
+                $this->setSetting($cmsType, 'menubar', false, true);
+                $this->setSetting($cmsType, 'toolbar1', $defaultToolbar1, true);
+                $this->setSetting($cmsType, 'toolbar2', $defaultToolbar2, true);
+                $this->setSetting($cmsType, 'toolbar3', $defaultToolbar3, true);
 
 
                 $this->_unsetSetting($cmsType, "width");
-                $this->_setSetting($cmsType, "height", "210px", true);
+                $this->setSetting($cmsType, "height", "210px", true);
 
                 // use custom plugins
                 // they are specified in con_tiny.js
                 // close plugin: save and close button
                 // confullscreen plugin: switches inline mode to off and adjusts toolbar in fullscreen mode
-                $this->_setSetting($cmsType, "plugins", $defaultPlugins, true);
+                $this->setSetting($cmsType, "plugins", $defaultPlugins, true);
 
                 // fullscreen plugin does not work with inline turned on, custom plugin confullscreen required for this
-                $this->_setSetting($cmsType, 'inline', true);
-                $this->_setSetting($cmsType, 'menubar', false);
-                $this->_setSetting($cmsType, "content_css", $cfgClient[$client]["path"]["htmlpath"] . "css/style_tiny.css", true);
+                $this->setSetting($cmsType, 'inline', true);
+                $this->setSetting($cmsType, 'menubar', false);
+                $this->setSetting($cmsType, "content_css", $cfgClient[$client]["path"]["htmlpath"] . "css/style_tiny.css", true);
 
                 $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', $cmsType, 'tinymce4_inline');
-                foreach ($aCustSettings as $sKey => $sValue) {
-                    $this->_setSetting($cmsType, $sKey, $sValue, true);
+                foreach ($aCustSettings as $key => $value) {
+                    $this->setSetting($cmsType, $key, $value, true);
                 }
 
                 break;
 
             default: // Default options
-                $this->_setSetting($cmsType, 'toolbar1', 'undo redo | bold italic underline strikethrough | link unlink anchor image | table', true);
-                $this->_setSetting($cmsType, 'toolbar2', 'styleselect | bullist numlist | outdent indent | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | subscript superscript | code', true);
-                $this->_setSetting($cmsType, 'toolbar3', "", true);
-                $this->_setSetting($cmsType, 'plugins', "anchor code contextmenu media paste table searchreplace textcolor", true);
+                $this->setSetting($cmsType, 'toolbar1', 'undo redo | bold italic underline strikethrough | link unlink anchor image | table', true);
+                $this->setSetting($cmsType, 'toolbar2', 'styleselect | bullist numlist | outdent indent | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | subscript superscript | code', true);
+                $this->setSetting($cmsType, 'toolbar3', "", true);
+                $this->setSetting($cmsType, 'plugins', "anchor code contextmenu media paste table searchreplace textcolor", true);
 
                 $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', $cmsType, 'tinymce_default');
-                foreach ($aCustSettings as $sKey => $sValue) {
-                    $this->_setSetting($cmsType, $sKey, $sValue, true);
+                foreach ($aCustSettings as $key => $value) {
+                    $this->setSetting($cmsType, $key, $value, true);
                 }
         }
     }
@@ -551,8 +550,9 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      *
      * @param string $cmsType
      */
-    function cleanURLs($cmsType) {
-        global $sess;
+    public function cleanURLs($cmsType) {
+
+        $sess = cRegistry::getBackendSessionId();
 
         // Add the path to the following values
         $aParameters = array(
@@ -565,7 +565,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
         foreach ($aParameters as $sParameter) {
             if (array_key_exists($sParameter, $this->_aSettings[$cmsType])) {
-                $this->_setSetting($cmsType, $sParameter, $this->addPath($this->_aSettings[$cmsType][$sParameter]), true);
+                $this->setSetting($cmsType, $sParameter, $this->addPath($this->_aSettings[$cmsType][$sParameter]), true);
             }
         }
 
@@ -577,37 +577,39 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
         foreach ($aParameters as $sParameter) {
             if (array_key_exists($sParameter, $this->_aSettings[$cmsType]) && preg_match('/\\.php$/i', $this->_aSettings[$cmsType][$sParameter])) {
-                $this->_setSetting($cmsType, $sParameter, $this->_aSettings[$cmsType][$sParameter] . '?contenido=' . $sess->id, true);
+                $this->setSetting($cmsType, $sParameter, $this->_aSettings[$cmsType][$sParameter] . '?contenido=' . $sess->id, true);
             }
         }
     }
 
     /**
      *
-     * @param string $sFile
+     * @param string $file
      * @return string
      */
-    function addPath($sFile) {
-        global $cfgClient, $client;
+    public function addPath($file) {
+
+        $cfgClient = cRegistry::getClientConfig();
+        $client = cRegistry::getClientId();
 
         // Quick and dirty hack
-        if (!preg_match('/^(http|https):\/\/((?:[a-zA-Z0-9_-]+\.?)+):?(\d*)/', $sFile)) {
-            if (preg_match('/^\//', $sFile)) {
-                $sFile = "http://" . $_SERVER['HTTP_HOST'] . $sFile;
+        if (!preg_match('/^(http|https):\/\/((?:[a-zA-Z0-9_-]+\.?)+):?(\d*)/', $file)) {
+            if (preg_match('/^\//', $file)) {
+                $file = "http://" . $_SERVER['HTTP_HOST'] . $file;
             } else {
-                $sFile = $cfgClient[$client]["htmlpath"]["frontend"] . $sFile;
+                $file = $cfgClient[$client]["htmlpath"]["frontend"] . $file;
             }
         }
 
-        return $sFile;
+        return $file;
     }
 
     /**
      *
-     * @param string $sBaseUrl
+     * @param string $baseUrl
      */
-    function setBaseURL($sBaseUrl) {
-        $this->_sBaseURL = $sBaseUrl;
+    public function setBaseURL($baseUrl) {
+        $this->_baseURL = $baseUrl;
     }
 
     /**
@@ -615,53 +617,55 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * @return string
      */
     public function getScripts() {
-        if ($this->_bUseGZIP) {
-            $sReturn = "\n<!-- tinyMCE -->\n" . '<script language="javascript" type="text/javascript" src="' . $this->_sBaseURL . 'tinymce/js/tinymce/tinymce.gzip.js"></script>';
+        if ($this->_useGZIP) {
+            $return = "\n<!-- tinyMCE -->\n" . '<script language="javascript" type="text/javascript" src="' . $this->_baseURL . 'tinymce/js/tinymce/tinymce.gzip.js"></script>';
         } else {
-            $sReturn = "\n<!-- tinyMCE -->\n" . '<script language="javascript" type="text/javascript" src="' . $this->_sBaseURL . 'tinymce/js/tinymce/tinymce.min.js"></script>';
+            $return = "\n<!-- tinyMCE -->\n" . '<script language="javascript" type="text/javascript" src="' . $this->_baseURL . 'tinymce/js/tinymce/tinymce.min.js"></script>';
         }
 
-        return $sReturn;
+        return $return;
     }
 
     /**
      *
      * @return string
      */
-    public function _getEditor() {
-        global $sess, $cfg, $lang, $client, $idart, $cfgClient;
+    public function getEditor() {
+
+        $sess = cRegistry::getBackendSessionId();
+        $cfg = cRegistry::getConfig();
+        $client = cRegistry::getClientId();
+        $cfgClient = cRegistry::getClientConfig();
 
         // TODO: Check functionality - doesn't seem to have any effect...
-        $browserparameters = array("restrict_imagebrowser" => array("jpg", "gif", "jpeg", "png"));
         $sess->register("browserparameters");
-
 
         // Set browser windows
         // Difference between file and image browser is with (file) or without categories/articles (image)
-        $oTemplate = new cTemplate();
+        $template = new cTemplate();
 
-        $oTemplate->set('s', 'CONFIG', json_encode($this->_aSettings));
+        $template->set('s', 'CONFIG', json_encode($this->_aSettings));
 
-        $oTemplate->set('s', 'PATH_CONTENIDO_FULLHTML', cRegistry::getConfigValue('path', 'contenido_fullhtml'));
-        $oTemplate->set('s', 'IMAGEBROWSER', $cfg["path"]["contenido_fullhtml"] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
-        $oTemplate->set('s', 'FILEBROWSER', $cfg["path"]["contenido_fullhtml"] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=filebrowser');
-        $oTemplate->set('s', 'MEDIABROWSER', $cfg["path"]["contenido_fullhtml"] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
-        $oTemplate->set('s', 'FRONTEND_PATH', $cfgClient[$client]["path"]["htmlpath"]);
-        $oTemplate->set('s', 'CLOSE', html_entity_decode(i18n('Close editor'), ENT_COMPAT | ENT_HTML401, cRegistry::getEncoding()));
-        $oTemplate->set('s', 'SAVE', html_entity_decode(i18n('Close editor and save changes'), ENT_COMPAT | ENT_HTML401, cRegistry::getEncoding()));
-        $oTemplate->set('s', 'QUESTION', html_entity_decode(i18n('You have unsaved changes.'), ENT_COMPAT | ENT_HTML401, cRegistry::getEncoding()));
-        $oTemplate->set('s', 'BACKEND_URL', cRegistry::getBackendUrl());
+        $template->set('s', 'PATH_CONTENIDO_FULLHTML', cRegistry::getConfigValue('path', 'contenido_fullhtml'));
+        $template->set('s', 'IMAGEBROWSER', $cfg["path"]["contenido_fullhtml"] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
+        $template->set('s', 'FILEBROWSER', $cfg["path"]["contenido_fullhtml"] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=filebrowser');
+        $template->set('s', 'MEDIABROWSER', $cfg["path"]["contenido_fullhtml"] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
+        $template->set('s', 'FRONTEND_PATH', $cfgClient[$client]["path"]["htmlpath"]);
+        $template->set('s', 'CLOSE', html_entity_decode(i18n('Close editor'), ENT_COMPAT | ENT_HTML401, cRegistry::getEncoding()));
+        $template->set('s', 'SAVE', html_entity_decode(i18n('Close editor and save changes'), ENT_COMPAT | ENT_HTML401, cRegistry::getEncoding()));
+        $template->set('s', 'QUESTION', html_entity_decode(i18n('You have unsaved changes.'), ENT_COMPAT | ENT_HTML401, cRegistry::getEncoding()));
+        $template->set('s', 'BACKEND_URL', cRegistry::getBackendUrl());
 
-        $oTxtEditor = new cHTMLTextarea($this->_sEditorName, $this->_sEditorContent);
-        $oTxtEditor->setId($this->_sEditorName);
-        $oTxtEditor->setClass(htmlentities($this->_sEditorName));
+        $txtEditor = new cHTMLTextarea($this->_sEditorName, $this->_sEditorContent);
+        $txtEditor->setId($this->_sEditorName);
+        $txtEditor->setClass(htmlentities($this->_sEditorName));
 
-        $oTxtEditor->setStyle("width: " . $this->_aSettings["width"] . "; height: " . $this->_aSettings["height"] . ";");
+        $txtEditor->setStyle("width: " . $this->_aSettings['width'] . "; height: " . $this->_aSettings['height'] . ";");
 
-        $sReturn = $oTemplate->generate($cfg['path']['all_wysiwyg'] . $this->_sEditor . "contenido/templates/template.tinymce_tpl.html", true);
-        $sReturn .= $oTxtEditor->render();
+        $return = $template->generate($cfg['path']['all_wysiwyg'] . $this->_sEditor . "contenido/templates/template.tinymce_tpl.html", true);
+        $return .= $txtEditor->render();
 
-        return $sReturn;
+        return $return;
     }
 
     /**
@@ -669,25 +673,27 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * Overwriting defined setting can be achieved with
      * $bForceSetting = true.
      *
-     * @param string $sType
+     * @param string $type
      *        CMS type where setting should apply
-     * @param string $sKey
+     * @param string $key
      *        of setting to set
-     * @param string $sValue
+     * @param string $value
      *        of setting to set
-     * @param bool $bForceSetting
+     * @param bool $forceSetting
      *      to overwrite defined setting
      */
-    protected function _setSetting($sType, $sKey, $sValue, $bForceSetting = false) {
-        if ($bForceSetting || !array_key_exists($sKey, $this->_aSettings[$sType])) {
-            $this->_aSettings[$sType][$sKey] = $sValue;
+    public function setSetting($type, $key, $value, $forceSetting = false) {
+        if ($forceSetting || !array_key_exists($key, $this->_aSettings[$type])) {
+            $this->_aSettings[$type][$key] = $value;
         }
     }
 
     /**
      * Variadic function to unset a setting using multiple key values.
+     *
+     * @param string $key Normaly unused (counterpart of cWYSIWYGEditor::_unsetSetting)
      */
-    protected function _unsetSetting() {
+    protected function _unsetSetting($key = '') {
         $numargs = func_num_args();
         // if no args passed there is nothing to do
         if (0 === $numargs) {
@@ -714,33 +720,36 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * @return string
      */
     public function getConfigInlineEdit() {
-        $sConfig = '';
+        // Unused
+        // $config = '';
 
         foreach ($this->_cmsTypes as $cmsType => $setting) {
             $this->setToolbar($cmsType, 'inline_edit');
         }
-
         return $this->_aSettings;
 
-        foreach ($this->_aSettings as $sKey => $sValue) {
-            if (is_bool($sValue)) {
-                if ($sValue === true) {
-                    $sValue = 'true';
+        /*
+         * Unused
+       foreach ($this->_aSettings as $key => $value) {
+            if (is_bool($value)) {
+                if ($value === true) {
+                    $value = 'true';
                 } else {
-                    $sValue = 'false';
+                    $value = 'false';
                 }
             }
 
-            if ($sValue == "true" || $sValue == "false" || $sKey == "oninit" || $sKey == "onpageload" || $sKey == 'style_formats') {
-                $sConfig .= "'$sKey': " . $sValue;
+            if ($value == "true" || $value == "false" || $key == "oninit" || $key == "onpageload" || $key == 'style_formats') {
+                $config .= "'$key': " . $value;
             } else {
-                $sConfig .= "'$sKey': '" . $sValue . "'";
+                $config .= "'$key': '" . $value . "'";
             }
-            $sConfig .= ",\n\t";
+            $config .= ",\n\t";
         }
 
-        $sConfig = substr($sConfig, 0, -3);
-        return $sConfig;
+        $config = substr($config, 0, -3);
+        return $config;
+        */
     }
 
     /**
@@ -748,7 +757,6 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * @return array
      */
     public function getConfigFullscreen() {
-        $sConfig = '';
 
         foreach ($this->_cmsTypes as $cmsType => $setting) {
             $this->setToolbar($cmsType, 'fullscreen');
@@ -766,7 +774,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      *        plugins the plugins
      */
     public function getPlugins() {
-        return (string) $this->_aSettings['plugins'];
+        return cSecurity::toString($this->_aSettings['plugins']);
     }
 
     /**
@@ -777,7 +785,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      *        themes the themes
      */
     function getThemes() {
-        return (string) $this->_aSettings['theme'];
+        return cSecurity::toString($this->_aSettings['theme']);
     }
 
     /**
