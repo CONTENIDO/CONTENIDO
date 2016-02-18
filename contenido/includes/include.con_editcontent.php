@@ -100,7 +100,7 @@ switch ($wysiwygeditor) {
 
 $jslibs = '';
 // get scripts from editor class
-$jslibs .= $oEditor->_getScripts();
+$jslibs .= $oEditor->getScripts();
 if ('tinymce3' === substr($wysiwygeditor, 0, 8)
 && true === $oEditor->getGZIPMode()) {
     // tinyMCE_GZ.init call must be placed in its own script tag

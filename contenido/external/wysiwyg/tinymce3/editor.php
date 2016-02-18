@@ -73,7 +73,7 @@ TODO:
 $currentuser = new cApiUser($auth->auth['uid']);
 
 if ($currentuser->getField('wysi') == 1) {
-    echo $cTinyMCEEditor->_getScripts();
+    echo $cTinyMCEEditor->getScripts();
     echo $cTinyMCEEditor->_getEditor();
 } else {
     $oTextarea = new cHTMLTextarea($editor_name, $editor_content);

@@ -84,10 +84,10 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
     /**
      *
-     * @param string $sEditorName
-     * @param string $sEditorContent
+     * @param string $editorName
+     * @param string $editorContent
      */
-    public function __construct($sEditorName, $sEditorContent) {
+    public function __construct($editorName, $editorContent) {
         global $idart;
 
         $belang = cRegistry::getBackendLanguage();
@@ -96,7 +96,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         $cfgClient = cRegistry::getClientConfig();
         $lang = cRegistry::getLanguageId();
 
-        parent::__construct($sEditorName, $sEditorContent);
+        parent::__construct($editorName, $editorContent);
         $this->_setEditor("tinymce4");
         $this->_aSettings = array();
 
@@ -614,7 +614,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      *
      * @return string
      */
-    public function _getScripts() {
+    public function getScripts() {
         if ($this->_bUseGZIP) {
             $sReturn = "\n<!-- tinyMCE -->\n" . '<script language="javascript" type="text/javascript" src="' . $this->_sBaseURL . 'tinymce/js/tinymce/tinymce.gzip.js"></script>';
         } else {

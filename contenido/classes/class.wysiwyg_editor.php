@@ -58,15 +58,15 @@ abstract class cWYSIWYGEditor {
 
     /**
      *
-     * @param string $sEditorName
-     * @param string $sEditorContent
+     * @param string $editorName
+     * @param string $editorContent
      */
-    public function __construct($sEditorName, $sEditorContent) {
+    public function __construct($editorName, $editorContent) {
         $cfg = cRegistry::getConfig();
 
         $this->_sPath = $cfg['path']['all_wysiwyg_html'];
-        $this->_setEditorName($sEditorName);
-        $this->_setEditorContent($sEditorContent);
+        $this->_setEditorName($editorName);
+        $this->_setEditorContent($editorContent);
     }
 
     /**
@@ -139,7 +139,7 @@ abstract class cWYSIWYGEditor {
      * @throws cBadMethodCallException if this method is not overridden in the
      *         subclass
      */
-    protected function _getScripts() {
+    protected function getScripts() {
         throw new cBadMethodCallException('You need to override the method _getScripts');
     }
 
