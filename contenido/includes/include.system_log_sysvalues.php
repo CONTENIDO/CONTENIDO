@@ -41,8 +41,7 @@ if ($action == 'deletelog' && !empty($logfile)) {
 
 $files = array();
 foreach (new DirectoryIterator($path) as $filename) {
-    $extension = substr($filename, strpos($filename->getBasename(), '.') + 1);
-    if (in_array($extension, $cfg['system_log']['file_extensions'])) {
+    if (in_array($filename, $cfg['system_log']['allowed_filenames'])) {
         $files[] = $path . $filename->getFilename();
     }
 }

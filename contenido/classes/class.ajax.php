@@ -378,7 +378,7 @@ class cAjaxRequest {
                 $type = cSecurity::escapeString($_REQUEST['logfile']);
                 $numberOfLines = cSecurity::toInteger($_REQUEST['numberOfLines']);
                 $cfg = cRegistry::getConfig();
-                if (in_array($type, $cfg['sytem_log']['allowed_filenames'])) {
+                if (in_array($type, $cfg['system_log']['allowed_filenames'])) {
                     $filename = $cfg['path']['frontend'] . DIRECTORY_SEPARATOR . $cfg['path']['logs'] . $type;
                     $lines = file($filename);
                     $lines = array_splice($lines, $numberOfLines * -1);
