@@ -420,6 +420,10 @@ $cfg['system_log']['number_of_lines'] = 100;
 // Searched file extensions
 $cfg['system_log']['file_extensions'] = array('txt', 'log');
 
+// Allowed log file names
+$cfg['sytem_log']['allowed_filenames'] = array('deprecations.txt', 'errorlog.txt', 'exception.txt', 'setuplog.txt');
+
+
 /* Search index settings
  * -----------------------------------------------------------------------------
  */

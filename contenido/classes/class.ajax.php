@@ -124,7 +124,6 @@ class cAjaxRequest {
                         $template = new cTemplate();
                         $usedTemplates = $layout->getUsedTemplates();
                         if (count($usedTemplates) > 0) {
-                            $response = '<br>';
                             foreach ($usedTemplates as $i => $usedTemplate) {
                                 if ($i % 2 == 0) {
                                     $template->set('d', 'CLASS', 'grey');
@@ -376,14 +375,15 @@ class cAjaxRequest {
                 break;
 
             case 'logfilecontent':
-                $type = $_REQUEST['logfile'];
-                $numberOfLines = $_REQUEST['numberOfLines'];
+                $type = cSecurity::escapeString($_REQUEST['logfile']);
+                $numberOfLines = cSecurity::toInteger($_REQUEST['numberOfLines']);
                 $cfg = cRegistry::getConfig();
-                $filename = $cfg['path']['frontend'] . DIRECTORY_SEPARATOR . $cfg['path']['logs'] . $type;
-                $string = cFileHandler::read($filename);
-                $lines = file($filename);
-                $lines = array_splice($lines, $numberOfLines * -1);
-                $string = implode('', $lines);
+                if (in_array($type, $cfg['sytem_log']['allowed_filenames'])) {
+                    $filename = $cfg['path']['frontend'] . DIRECTORY_SEPARATOR . $cfg['path']['logs'] . $type;
+                    $lines = file($filename);
+                    $lines = array_splice($lines, $numberOfLines * -1);
+                    $string = implode('', $lines);
+                }
                 break;
 
             case 'updatepluginorder':

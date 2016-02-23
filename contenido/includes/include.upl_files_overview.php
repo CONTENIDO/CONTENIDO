@@ -19,7 +19,7 @@ $backendPath = cRegistry::getBackendPath();
 cInclude('includes', 'api/functions.frontend.list.php');
 cInclude('includes', 'functions.file.php');
 cInclude('classes', 'class.cziparchive.php');
-
+if (!class_exists('FrontendList')) exit();
 //cInclude('includes', 'class.ziparchive.php');
 
 if (!(int) $client > 0) {
@@ -32,7 +32,7 @@ if (!(int) $client > 0) {
 $page = new cGuiPage('upl_files_overview', '', 0);
 
 $appendparameters = $_REQUEST['appendparameters'];
-$file = $_REQUEST['file'];
+$file = cSecurity::escapeString($_REQUEST['file']);
 
 if (!is_array($browserparameters) && ($appendparameters != 'imagebrowser' || $appendparameters != 'filebrowser')) {
     $browserparameters = array();
@@ -76,19 +76,19 @@ if ($action == 'upl_modify_file') {
     $uplPath = $cfgClient[$client]['upl']['path'];
 
     if (isset($_REQUEST['path']) && $_REQUEST['path'] != NULL) {
-        $uplPath .= $_REQUEST['path'];
+        $uplPath .= cSecurity::escapeString($_REQUEST['path']);
     }
 
     if (isset($_REQUEST['efolder']) && $_REQUEST['efolder'] != NULL) {
-        $extractFolder = $_REQUEST['efolder'];
+        $extractFolder = cSecurity::escapeString($_REQUEST['efolder']);
     }
 
     if (isset($_REQUEST['extractZip']) && !isset($_REQUEST['overwrite'])) {
-        $zipFile = $uplPath . $_REQUEST['file'];
+        $zipFile = $uplPath . cSecurity::escapeString($_REQUEST['file']);
         cZipArchive::extract($zipFile, $uplPath, $extractFolder);
     }
     if (isset($_REQUEST['extractZip']) && isset($_REQUEST['overwrite'])) {
-        $zipFile = $uplPath . $_REQUEST['file'];
+        $zipFile = $uplPath . cSecurity::escapeString($_REQUEST['file']);
         cZipArchive::extractOverRide($zipFile, $uplPath, $extractFolder);
     }
     // Did the user upload a new file?
@@ -146,8 +146,8 @@ if ($action == 'upl_modify_file') {
     $bTimeMng = (isset($_REQUEST['timemgmt']) && strlen($_REQUEST['timemgmt']) > 1);
     $properties->setValue('upload', $qpath . $file, 'file', 'timemgmt', ($bTimeMng) ? 1 : 0);
     if ($bTimeMng) {
-        $properties->setValue('upload', $qpath . $file, 'file', 'datestart', $_REQUEST['datestart']);
-        $properties->setValue('upload', $qpath . $file, 'file', 'dateend', $_REQUEST['dateend']);
+        $properties->setValue('upload', $qpath . $file, 'file', 'datestart', cSecurity::escapeString($_REQUEST['datestart']));
+        $properties->setValue('upload', $qpath . $file, 'file', 'dateend', cSecurity::escapeString($_REQUEST['dateend']));
     }
 
     $author = $auth->auth['uid'];
@@ -361,7 +361,7 @@ class UploadList extends FrontendList {
                 }
             } else {
                 $tmp_mstr = '<a onmouseover="this.style.cursor=\'pointer\'" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
-                $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$data&appendparameters=$appendparameters&startpage=" . $_REQUEST['startpage'] . "&sortby=" . $_REQUEST['sortby'] . "&sortmode=" . $_REQUEST['sortmode'] . "&thumbnailmode=" . $_REQUEST['thumbnailmode']), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$data"), $data);
+                $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$data&appendparameters=$appendparameters&startpage=" . cSecurity::toInteger($_REQUEST['startpage']) . "&sortby=" . cSecurity::escapeString($_REQUEST['sortby']) . "&sortmode=" . cSecurity::escapeString($_REQUEST['sortmode']) . "&thumbnailmode=" . cSecurity::escapeString($_REQUEST['thumbnailmode'])), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$data"), $data);
             }
             return $mstr;
         }
