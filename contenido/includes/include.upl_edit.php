@@ -17,7 +17,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('includes', 'functions.upl.php');
 
 // Define local filename variable
-$filename = $_REQUEST['file'];
+$filename = cSecurity::escapeString($_REQUEST['file']);
+$filename = str_replace('"', '', $filename);
+$filename = str_replace("'", '', $filename);
+
+// Define local pathname variable
+$pathname = cSecurity::escapeString($_REQUEST['path']);
+$pathname = str_replace('"', '', $pathname);
+$pathname = str_replace("'", '', $pathname);
 
 $isZipFile = isArchive($filename);
 
@@ -36,7 +43,7 @@ if (($lang_short = substr(strtolower($belang), 0, 2)) != 'en') {
 $form = new cGuiTableForm('properties');
 $form->setVar('frame', $frame);
 $form->setVar('area', 'upl');
-$form->setVar('path', $_REQUEST['path']);
+$form->setVar('path', $pathname);
 $form->setVar('file', $filename);
 $form->setVar('action', 'upl_modify_file');
 $form->setVar('startpage', cSecurity::toInteger($_REQUEST['startpage']));

@@ -19,7 +19,7 @@ $backendPath = cRegistry::getBackendPath();
 cInclude('includes', 'api/functions.frontend.list.php');
 cInclude('includes', 'functions.file.php');
 cInclude('classes', 'class.cziparchive.php');
-if (!class_exists('FrontendList')) exit();
+
 //cInclude('includes', 'class.ziparchive.php');
 
 if (!(int) $client > 0) {
@@ -32,7 +32,11 @@ if (!(int) $client > 0) {
 $page = new cGuiPage('upl_files_overview', '', 0);
 
 $appendparameters = $_REQUEST['appendparameters'];
+
+// Define local variable file
 $file = cSecurity::escapeString($_REQUEST['file']);
+$file = str_replace('..', '', $file);
+$file = str_replace('/', '', $file);
 
 if (!is_array($browserparameters) && ($appendparameters != 'imagebrowser' || $appendparameters != 'filebrowser')) {
     $browserparameters = array();
@@ -45,6 +49,7 @@ if (!$sess->isRegistered('upl_last_path')) {
     // if no path is given the last path is used
     $path = $upl_last_path;
 }
+
 // if path doesn't exist use root path
 // this might happen when the last path is that of another client or deleted outside CONTENIDO
 if (!cApiDbfs::isDbfs($path) && !cFileHandler::exists($cfgClient[$client]['upl']['path'] . $path)) {
