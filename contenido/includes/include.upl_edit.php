@@ -57,9 +57,9 @@ $properties = new cApiPropertyCollection();
 $uploads = new cApiUploadCollection();
 
 if (cApiDbfs::isDbfs($_REQUEST['path'])) {
-    $qpath = cSecurity::escapeString($_REQUEST['path']) . '/';
+    $qpath = $pathname . '/';
 } else {
-    $qpath = cSecurity::escapeString($_REQUEST['path']);
+    $qpath = $pathname;
 }
 
 if ((is_writable($cfgClient[$client]['upl']['path'] . $path) || cApiDbfs::isDbfs($path)) && (int) $client > 0) {
