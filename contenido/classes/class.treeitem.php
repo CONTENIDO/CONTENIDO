@@ -138,6 +138,61 @@ class TreeItem {
     }
 
     /**
+     * Get method for _collapsed_icon variable
+     *
+     * @return string
+     */
+    public function getCollapsedIcon() {
+        return $this->_collapsed_icon;
+    }
+
+    /**
+     * Get method for _costum variable
+     *
+     * @param string $key
+     * @return string mixed
+     */
+    public function getCustom($key) {
+        return $this->_custom[$key];
+    }
+
+    /**
+     * Get method for _expanded_icon variable
+     *
+     * @return string
+     */
+    public function getExpandedIcon() {
+        return $this->_expanded_icon;
+    }
+
+    /**
+     * Get method for _id variable
+     *
+     * @return string
+     */
+    public function getId() {
+        return $this->_id;
+    }
+
+    /**
+     * Get method for _name variable
+     *
+     * @return string
+     */
+    public function getName() {
+        return $this->_name;
+    }
+
+    /**
+     * Get method for _subitems array
+     *
+     * @return array
+     */
+    public function getSubItems() {
+        return $this->_subitems;
+    }
+
+    /**
      * Set method for custom array
      *
      * @param string $key
@@ -187,6 +242,15 @@ class TreeItem {
      */
     public function setName($name) {
         $this->_name = $name;
+    }
+
+    /**
+     * Get status of collapsed (_collapsed variable)
+     *
+     * @return bool
+     */
+    public function isCollapsed() {
+        return $this->_collapsed;
     }
 
     /**
