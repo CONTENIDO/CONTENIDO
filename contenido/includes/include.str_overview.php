@@ -314,22 +314,22 @@ function buildTree(&$rootItem, &$items) {
             $newItem = new TreeItem($item['name'], $item['idcat'], false);
         }
 
-        $newItem->collapsed_icon = 'images/open_all.gif';
-        $newItem->expanded_icon = 'images/close_all.gif';
-        $newItem->custom['idtree'] = $item['idtree'];
-        $newItem->custom['level'] = $item['level'];
-        $newItem->custom['idcat'] = $item['idcat'];
-        $newItem->custom['idtree'] = $item['idtree'];
-        $newItem->custom['parentid'] = $item['parentid'];
-        $newItem->custom['alias'] = $item['alias'];
-        $newItem->custom['preid'] = $item['preid'];
-        $newItem->custom['postid'] = $item['postid'];
-        $newItem->custom['visible'] = $item['visible'];
-        $newItem->custom['idtplcfg'] = $item['idtplcfg'];
-        $newItem->custom['public'] = $item['public'];
+        $newItem->setCollapsedIcon('images/open_all.gif');
+        $newItem->setExpandedIcon('images/close_all.gif');
+        $newItem->setCustom('idtree', $item['idtree']);
+        $newItem->setCustom('level', $item['level']);
+        $newItem->setCustom('idcat', $item['idcat']);
+        $newItem->setCustom('idtree', $item['idtree']);
+        $newItem->setCustom('parentid', $item['parentid']);
+        $newItem->setCustom('alias', $item['alias']);
+        $newItem->setCustom('preid', $item['preid']);
+        $newItem->setCustom('postid', $item['postid']);
+        $newItem->setCustom('visible', $item['visible']);
+        $newItem->setCustom('idtplcfg', $item['idtplcfg']);
+        $newItem->setCustom('public', $item['public']);
 
         if ($perm->have_perm_item('str', $item['idcat'])) {
-            $newItem->custom['forcedisplay'] = 1;
+            $newItem->setCustom('forcedisplay', 1);
         }
 
         if (array_key_exists($key + 1, $items)) {
@@ -427,8 +427,8 @@ if ($db->num_rows() == 0) { // If we have no categories, display warning message
 	}
 
 	$rootStrItem = new TreeItem('root', -1);
-	$rootStrItem->collapsed_icon = 'images/open_all.gif';
-	$rootStrItem->expanded_icon = 'images/close_all.gif';
+	$rootStrItem->setCollapsedIcon('images/open_all.gif');
+	$rootStrItem->setExpandedIcon('images/close_all.gif');
 
 	buildTree($rootStrItem, $items);
 

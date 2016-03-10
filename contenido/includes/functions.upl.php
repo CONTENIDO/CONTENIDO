@@ -420,9 +420,9 @@ function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $s
         sort($aFiles);
         foreach ($aFiles as $key => $file) {
             $oItem = new TreeItem($file, $sDirectory . $file . '/', true);
-            $oItem->custom['level'] = $iLevel;
-            $oItem->custom['lastitem'] = ($key == count($aFiles) - 1);
-            $oItem->custom['parent'] = $sDirectory;
+            $oItem->setCustom('level', $iLevel);
+            $oItem->setCustom('lastitem', ($key == count($aFiles) - 1));
+            $oItem->setCustom('parent', $sDirectory);
 
             $oRootItem->addItem($oItem);
             $aArrayTemp = uplRecursiveDirectoryList($sDirectory . $file . '/', $oItem, $iLevel + 1, $sParent . $file . '/', $iRenameLevel);
@@ -464,9 +464,9 @@ function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $c
 
         if ($dirname != '.' && $file != '.') {
             $item[$dirname] = new TreeItem($file, cApiDbfs::PROTOCOL_DBFS . '/' . $dirname, true);
-            $item[$dirname]->custom['level'] = $level;
-            $item[$dirname]->custom['parent'] = $parent;
-            $item[$dirname]->custom['lastitem'] = true;
+            $item[$dirname]->setCustom('level', $level);
+            $item[$dirname]->setCustom('parent', $parent);
+            $item[$dirname]->setCustom('lastitem', true);
 
             if ($prevobj[$level]->custom['level'] == $level) {
                 if (is_object($prevobj[$level])) {

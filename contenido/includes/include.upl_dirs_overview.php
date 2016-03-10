@@ -126,8 +126,8 @@ $file = 'Upload';
 $pathstring = '';
 
 $rootTreeItem = new TreeItem();
-$rootTreeItem->custom['level'] = 0;
-$rootTreeItem->name = i18n("Upload directory");
+$rootTreeItem->setCustom('level', 0);
+$rootTreeItem->setName(i18n("Upload directory"));
 $aInvalidDirectories = uplRecursiveDirectoryList($cfgClient[$client]["upl"]["path"], $rootTreeItem, 2);
 if (count($aInvalidDirectories) > 0) {
     $sWarningInfo = i18n('The following directories contains invalid characters and were ignored: ');
@@ -338,7 +338,7 @@ $idDbfsPathPrefix = 'dbfs_';
 $file = i18n("Database file system");
 $pathstring = cApiDbfs::PROTOCOL_DBFS;
 $rootTreeItem = new TreeItem();
-$rootTreeItem->custom['level'] = 0;
+$rootTreeItem->setCustom('level', 0);
 
 uplRecursiveDBDirectoryList('', $rootTreeItem, 2, $client);
 
