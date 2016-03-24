@@ -41,9 +41,6 @@ $cfg['path']['contenido']               = $cfg['path']['frontend'] . '/contenido
 /* The root server path to the data directory */
 $cfg['path']['data']                    = $cfg['path']['frontend'] . '/data/';
 
-/* The root server path to the pear directory */
-$cfg['path']['pear']                    = $cfg['path']['frontend'] . '/pear/';
-
 /* The server path to all WYSIWYG-Editors */
 $cfg['path']['all_wysiwyg']             = $cfg['path']['contenido']  . 'external/wysiwyg/';
 
