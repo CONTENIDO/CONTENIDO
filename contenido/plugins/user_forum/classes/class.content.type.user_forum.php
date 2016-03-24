@@ -103,7 +103,7 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
         $tplBottom->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
         $tplBottom->set('s', 'SETTINGS', json_encode($this->_settings));
         $tplBottom->set('s', 'JS_CLASS_SCRIPT', UserForum::getUrl() . 'scripts/cmsUserforum.js');
-        $tplBottom->set('s', 'JS_CLASS_NAME', get_class($this));
+        $tplBottom->set('s', 'JS_CLASS_NAME', 'Con.' . get_class($this));
         $codeBottom = $tplBottom->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_bottom.html', true);
 
         // build template code
