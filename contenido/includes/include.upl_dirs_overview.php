@@ -43,7 +43,7 @@ function getUplExpandCollapseButton($item) {
             return ('<a href="' . $collapselink . '" alt="' . i18n('Close category') . '" title="' . i18n('Close category') . '"><img src="' . $item->expanded_icon . '" alt="" border="0" align="middle" width="18"></a>');
         }
     } else {
-        if ($item->custom['lastitem']) {
+        if ($item->getCustom('lastitem')) {
             return '<img class="vAlignMiddle" alt="" src="images/but_lastnode.gif" width="18" height="18">';
         } else {
             return '<img class="vAlignMiddle" alt="" src="images/grid_collapse.gif" width="18" height="18">';
@@ -252,12 +252,12 @@ $tpl->next();
 
 if (is_array($objects)) {
     foreach ($objects as $a_file) {
-        $file = $a_file->name;
-        $depth = $a_file->custom['level'] - 1;
-        $pathstring = str_replace($cfgClient[$client]['upl']['path'], '', $a_file->id);
-        $a_file->collapsed_icon = 'images/grid_expand.gif';
-        $a_file->expanded_icon = 'images/grid_collapse.gif';
-        $dlevels[$depth] = $a_file->custom['lastitem'];
+        $file = $a_file->getName();
+        $depth = $a_file->getCustom('level') - 1;
+        $pathstring = str_replace($cfgClient[$client]['upl']['path'], '', $a_file->getId());
+        $a_file->setCollapsedIcon('images/grid_expand.gif');
+        $a_file->setExpandedIcon('images/grid_collapse.gif');
+        $dlevels[$depth] = $a_file->getCustom('lastitem');
         $imgcollapse = getUplExpandCollapseButton($a_file);
         $fileurl = rawurlencode($path . $file . '/');
         $pathurl = rawurlencode($path);
@@ -306,7 +306,7 @@ if (is_array($objects)) {
             }
         }
 
-        $parent = str_replace($cfgClient[$client]['upl']['path'], '', $a_file->custom['parent']);
+        $parent = str_replace($cfgClient[$client]['upl']['path'], '', $a_file->getCustom('parent'));
 
         $idAttrPath = str_replace(array(
             '/',
@@ -384,12 +384,12 @@ $dlevels = array();
 
 if (is_array($objects)) {
     foreach ($objects as $a_file) {
-        $file = $a_file->name;
-        $depth = $a_file->custom['level'] - 1;
-        $pathstring = $a_file->id;
-        $a_file->collapsed_icon = 'images/grid_expand.gif';
-        $a_file->expanded_icon = 'images/grid_collapse.gif';
-        $dlevels[$depth] = $a_file->custom['lastitem'];
+        $file = $a_file->getName();
+        $depth = $a_file->getCustom('level') - 1;
+        $pathstring = $a_file->getId();
+        $a_file->setCollapsedIcon('images/grid_expand.gif');
+        $a_file->setExpandedIcon('images/grid_collapse.gif');
+        $dlevels[$depth] = $a_file->getCustom('lastitem');
         $collapse = getUplExpandCollapseButton($a_file);
         $fileurl = rawurlencode($path . $file . '/');
         $pathurl = rawurlencode($path);
@@ -442,7 +442,7 @@ if (is_array($objects)) {
             }
         }
 
-        $parent = str_replace($cfgClient[$client]['upl']['path'], '', $a_file->custom['parent']);
+        $parent = str_replace($cfgClient[$client]['upl']['path'], '', $a_file->getCustom('parent'));
 
         $idAttrPath = str_replace(array(
             '/',

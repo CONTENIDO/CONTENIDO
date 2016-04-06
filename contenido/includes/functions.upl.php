@@ -194,7 +194,11 @@ function uplHasSubdirs($sDir) {
  *         Specifies the path to scan
  */
 function uplSyncDirectory($sPath) {
-    global $cfgClient, $client, $cfg, $db;
+
+    $cfg = cRegistry::getConfig();
+    $db = cRegistry::getDb();
+    $client = cRegistry::getClientId();
+    $cfgClient = cRegistry::getClientConfig($client);
 
     if (cApiDbfs::isDbfs($sPath)) {
         uplSyncDirectoryDBFS($sPath);
@@ -205,7 +209,7 @@ function uplSyncDirectory($sPath) {
 
     // get current upload directory, it's subdirectories and remove all database
     // entries pointing to a non existing upload directory on the file system
-    $sql = 'SELECT DISTINCT(dirname) AS dirname FROM ' . $cfg['tab']['upl'] . ' WHERE ' . 'idclient=' . (int) $client . ' AND dirname LIKE "' . $db->escape($sPath) . '%"';
+    $sql = 'SELECT DISTINCT(dirname) AS dirname FROM ' . $cfg['tab']['upl'] . ' WHERE ' . 'idclient=' . cSecurity::toInteger($client) . ' AND dirname LIKE "' . $db->escape($sPath) . '%"';
     $db->query($sql);
     while ($db->nextRecord()) {
         $sCurrDirname = $db->f('dirname');
@@ -250,7 +254,8 @@ function uplSyncDirectory($sPath) {
  *         Specifies the path to scan
  */
 function uplSyncDirectoryDBFS($sPath) {
-    global $cfgClient, $client, $cfg, $db;
+
+    $client = cRegistry::getClientId();
 
     $oUploadsColl = new cApiUploadCollection();
     $oPropertiesColl = new cApiPropertyCollection();
@@ -338,7 +343,9 @@ function uplmkdir($sPath, $sName) {
  *         if the upload path can not be renamed
  */
 function uplRenameDirectory($sOldName, $sNewName, $sParent) {
-    global $cfgClient, $client, $cfg, $db;
+
+    $client = cRegistry::getClientId();
+    $cfgClient = cRegistry::getClientConfig($client);
 
     // rename directory
     $sOldUplPath = $cfgClient[$client]['upl']['path'] . $sParent . $sOldName;
@@ -350,7 +357,7 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent) {
     // fetch all directory strings starting with the old path, and replace them
     // with the new path
     $oUploadColl = new cApiUploadCollection();
-    $oUploadColl->select("idclient=" . (int) $client . " AND dirname LIKE '" . $oUploadColl->escape($sParent . $sOldName) . "%'");
+    $oUploadColl->select("idclient=" . cSecurity::toInteger($client) . " AND dirname LIKE '" . $oUploadColl->escape($sParent . $sOldName) . "%'");
     while (($oUpload = $oUploadColl->next()) !== false) {
         $sDirName = $oUpload->get('dirname');
         $sJunk = substr($sDirName, strlen($sParent) + strlen($sOldName));
@@ -468,15 +475,15 @@ function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $c
             $item[$dirname]->setCustom('parent', $parent);
             $item[$dirname]->setCustom('lastitem', true);
 
-            if ($prevobj[$level]->custom['level'] == $level) {
+            if ($prevobj[$level]->getCustom('level') == $level) {
                 if (is_object($prevobj[$level])) {
-                    $prevobj[$level]->custom['lastitem'] = false;
+                    $prevobj[$level]->setCustom('lastitem', false);
                 }
             }
 
             if ($lastlevel > $level) {
                 unset($prevobj[$lastlevel]);
-                $lprevobj->custom['lastitem'] = true;
+                $lprevobj->setCustom('lastitem', true);
             }
 
             $prevobj[$level] = $item[$dirname];
@@ -503,7 +510,9 @@ function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $c
  * @return string
  */
 function uplGetThumbnail($sFile, $iMaxSize) {
-    global $client, $cfgClient;
+
+    $client = cRegistry::getClientId();
+    $cfgClient = cRegistry::getClientId($client);
 
     if ($iMaxSize == -1) {
         return uplGetFileIcon($sFile);
@@ -548,7 +557,8 @@ function uplGetThumbnail($sFile, $iMaxSize) {
  *         Icon for the file type
  */
 function uplGetFileIcon($sFile) {
-    global $cfg;
+
+    $cfg = cRegistry::getConfig();
 
     $sPathFiletypes = cRegistry::getBackendUrl() . $cfg['path']['images'] . 'filetypes/';
     $sFileType = strtolower(cFileHandler::getExtension($sFile));
@@ -687,7 +697,6 @@ function uplGetFileIcon($sFile) {
  *         Text for the file type
  */
 function uplGetFileTypeDescription($sExtension) {
-    global $cfg;
 
     switch ($sExtension) {
         // Presentation files

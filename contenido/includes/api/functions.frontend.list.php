@@ -24,42 +24,42 @@ class FrontendList {
      *
      * @var string
      */
-    var $startwrap;
+    protected $_startwrap;
 
     /**
      * Wrap for table end.
      *
      * @var string
      */
-    var $endwrap;
+    protected $_endwrap;
 
     /**
      * Wrap for a single item.
      *
      * @var string
      */
-    var $itemwrap;
+    protected $_itemwrap;
 
     /**
      * Data container.
      *
      * @var array
      */
-    var $data = array();
+    protected $_data = array();
 
     /**
      * Number of records displayed per page.
      *
      * @var int
      */
-    var $resultsPerPage = 0;
+    protected $_resultsPerPage = 0;
 
     /**
      * Start page.
      *
      * @var int
      */
-    var $listStart = 1;
+    protected $_listStart = 1;
 
     /**
      * Creates a new FrontendList object.
@@ -76,10 +76,22 @@ class FrontendList {
      * @param string $itemwrap
      *         Wrap for a single item
      */
-    function FrontendList($startwrap, $endwrap, $itemwrap) {
-        $this->startwrap = $startwrap;
-        $this->endwrap = $endwrap;
-        $this->itemwrap = $itemwrap;
+    public function __construct($startwrap, $endwrap, $itemwrap) {
+        $this->_startwrap = $startwrap;
+        $this->_endwrap = $endwrap;
+        $this->_itemwrap = $itemwrap;
+    }
+
+    /**
+     * Old FrontendList constructor.
+     * @param $startwrap
+     * @param $endwrap
+     * @param $itemwrap
+     * @deprecated [2016-04-06] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     * @return __construct()
+     */
+    public function FrontendList($startwrap, $endwrap, $itemwrap) {
+        return $this->__construct($startwrap, $endwrap, $itemwrap);
     }
 
     /**
@@ -98,11 +110,11 @@ class FrontendList {
      * @param ... Additional parameters (data)
      * @SuppressWarnings docBlocks
      */
-    function setData($index) {
+    public function setData($index) {
         $numargs = func_num_args();
 
         for ($i = 1; $i < $numargs; $i++) {
-            $this->data[$index][$i] = func_get_arg($i);
+            $this->_data[$index][$i] = func_get_arg($i);
         }
     }
 
@@ -112,8 +124,8 @@ class FrontendList {
      * @param int $resultsPerPage
      *         Amount of records per page
      */
-    function setResultsPerPage($resultsPerPage) {
-        $this->resultsPerPage = $resultsPerPage;
+    public function setResultsPerPage($resultsPerPage) {
+        $this->_resultsPerPage = $resultsPerPage;
     }
 
     /**
@@ -122,8 +134,8 @@ class FrontendList {
      * @param int $listStart
      *         Page number on which the list display starts
      */
-    function setListStart($listStart) {
-        $this->listStart = $listStart;
+    public function setListStart($listStart) {
+        $this->_listStart = $listStart;
     }
 
     /**
@@ -132,12 +144,12 @@ class FrontendList {
      * @return int
      *         Current page number
      */
-    function getCurrentPage() {
-        if ($this->resultsPerPage == 0) {
+    public function getCurrentPage() {
+        if ($this->_resultsPerPage == 0) {
             return 1;
         }
 
-        return $this->listStart;
+        return $this->_listStart;
     }
 
     /**
@@ -146,8 +158,8 @@ class FrontendList {
      * @return int
      *         Amount of pages
      */
-    function getNumPages() {
-        return ceil(count($this->data) / $this->resultsPerPage);
+    public function getNumPages() {
+        return ceil(count($this->_data) / $this->_resultsPerPage);
     }
 
     /**
@@ -159,8 +171,8 @@ class FrontendList {
      *         Sort order (see php's sort documentation)
      *         one of SORT_ASC, SORT_DESC, SORT_REGULAR, SORT_NUMERIC, SORT_STRING
      */
-    function sort($field, $order) {
-        $this->data = cArray::csort($this->data, "$field", $order);
+    public function sort($field, $order) {
+        $this->_data = cArray::csort($this->_data, "$field", $order);
     }
 
     /**
@@ -173,7 +185,7 @@ class FrontendList {
      *         Field value
      * @return mixed
      */
-    function convert($field, $value) {
+    protected function convert($field, $value) {
         return $value;
     }
 
@@ -184,36 +196,36 @@ class FrontendList {
      *         if true, returns the list
      * @return string
      */
-    function output($return = false) {
-        $output = $this->startwrap;
+    public function output($return = false) {
+        $output = $this->_startwrap;
 
         $currentpage = $this->getCurrentPage();
 
-        $itemstart = (($currentpage - 1) * $this->resultsPerPage) + 1;
+        $itemstart = (($currentpage - 1) * $this->_resultsPerPage) + 1;
 
-        if ($this->resultsPerPage == 0) {
-            $itemend = count($this->data) - ($itemstart - 1);
+        if ($this->_resultsPerPage == 0) {
+            $itemend = count($this->_data) - ($itemstart - 1);
         } else {
-            $itemend = $currentpage * $this->resultsPerPage;
+            $itemend = $currentpage * $this->_resultsPerPage;
         }
 
-        if ($itemend > count($this->data)) {
-            $itemend = count($this->data);
+        if ($itemend > count($this->_data)) {
+            $itemend = count($this->_data);
         }
 
         for ($i = $itemstart; $i < $itemend + 1; $i++) {
-            if (is_array($this->data[$i - 1])) {
+            if (is_array($this->_data[$i - 1])) {
                 $items = "";
-                foreach ($this->data[$i - 1] as $key => $value) {
+                foreach ($this->_data[$i - 1] as $key => $value) {
                     $items .= ", '" . addslashes($this->convert($key, $value)) . "'";
                 }
 
-                $execute = '$output .= sprintf($this->itemwrap ' . $items . ');';
+                $execute = '$output .= sprintf($this->_itemwrap ' . $items . ');';
                 eval($execute);
             }
         }
 
-        $output .= $this->endwrap;
+        $output .= $this->_endwrap;
 
         $output = stripslashes($output);
 

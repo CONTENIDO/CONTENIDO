@@ -325,15 +325,15 @@ class UploadList extends FrontendList {
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
-    var $dark;
+    protected $_dark;
 
     /**
      *
-     * @var unknown_type
+     * @var integer
      */
-    var $size;
+    protected $_size;
 
     /**
      * Field converting facility.
@@ -345,9 +345,13 @@ class UploadList extends FrontendList {
      *         Field value
      * @return mixed
      */
-    function convert($field, $data) {
-        global $cfg, $path, $sess, $cfgClient, $client, $appendparameters;
+    public function convert($field, $data) {
+        global $path, $appendparameters;
 
+        $cfg = cRegistry::getConfig();
+        $sess = cRegistry::getSession();
+        $client = cRegistry::getClientId();
+        $cfgClient = cRegistry::getClientConfig($client);
         $backendUrl = cRegistry::getBackendUrl();
 
         if ($field == 4) {
@@ -420,6 +424,20 @@ class UploadList extends FrontendList {
         }
 
         return $data;
+    }
+
+    /**
+     * @return integer $size
+     */
+    public function getSize() {
+        return $this->_size;
+    }
+
+    /**
+     * @param unknown_type $size
+     */
+    public function setSize($size) {
+        $this->_size = $size;
     }
 
 }
@@ -586,7 +604,7 @@ $user->setUserProperty('upload_folder_thumbnailmode', md5($path), $thumbnailmode
 
 $list2->setResultsPerPage($numpics);
 
-$list2->size = $thumbnailmode;
+$list2->setSize($thumbnailmode);
 
 $rownum = 0;
 

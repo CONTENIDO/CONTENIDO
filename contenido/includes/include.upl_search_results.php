@@ -46,9 +46,9 @@ class UploadSearchResultList extends FrontendList {
 
     /**
      *
-     * @var unknown_type
+     * @var integer
      */
-    public $size;
+    protected $_size;
 
     /**
      * Field converting facility.
@@ -60,7 +60,7 @@ class UploadSearchResultList extends FrontendList {
      *         Field value
      * @return mixed
      */
-    function convert($field, $data) {
+    public function convert($field, $data) {
         global $cfg, $sess, $client, $cfgClient, $appendparameters;
 
         if ($field == 5) {
@@ -166,6 +166,21 @@ class UploadSearchResultList extends FrontendList {
         }
 
         return $data;
+    }
+
+
+    /**
+     * @return integer $size
+     */
+    public function getSize() {
+        return $this->_size;
+    }
+
+    /**
+     * @param integer $size
+     */
+    public function setSize($size) {
+        $this->_size = $size;
     }
 
 }
@@ -316,7 +331,7 @@ $currentuser->setUserProperty('upload_folder_thumbnailmode', md5('search_results
 
 $list2->setResultsPerPage($numpics);
 
-$list2->size = $thumbnailmode;
+$list2->setSize($thumbnailmode);
 
 $rownum = 0;
 if (!is_array($files)) {
