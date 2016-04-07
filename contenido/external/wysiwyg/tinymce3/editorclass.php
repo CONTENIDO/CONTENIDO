@@ -552,7 +552,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
      */
     public function getEditor() {
 
-        $sess = cRegistry::getBackendSessionId();
+        $sess = cRegistry::getSession();
         $cfg = cRegistry::getConfig();
         $client = cRegistry::getClientId();
         $cfgClient = cRegistry::getClientConfig();
