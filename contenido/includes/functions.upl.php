@@ -137,16 +137,18 @@ function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = arra
  * @return bool
  */
 function uplHasFiles($sDir) {
-    global $client, $cfgClient;
 
-    $handle = cDirHandler::read($cfgClient[$client]['upl']['path'] . $sDir);
+    $client = cRegistry::getClientId();
+    $cfgClient = cRegistry::getClientConfig($client);
+
+    $handle = cDirHandler::read($cfgClient['upl']['path'] . $sDir);
 
     if (!$handle) {
         return false;
     }
 
     $bHasContent = false;
-    if (is_dir($cfgClient[$client]['upl']['path'] . $sDir)) {
+    if (is_dir($cfgClient['upl']['path'] . $sDir)) {
         foreach ($handle as $sDirEntry) {
             if (cFileHandler::fileNameIsDot($sDirEntry) === false) {
                 $bHasContent = true;
@@ -164,15 +166,17 @@ function uplHasFiles($sDir) {
  * @return bool
  */
 function uplHasSubdirs($sDir) {
-    global $client, $cfgClient;
 
-    $handle = cDirHandler::read($cfgClient[$client]['upl']['path'] . $sDir);
+    $client = cRegistry::getClientId();
+    $cfgClient = cRegistry::getClientConfig($client);
+
+    $handle = cDirHandler::read($cfgClient['upl']['path'] . $sDir);
     if (!$handle) {
         return false;
     }
 
     $bHasSubdir = false;
-    if (is_dir($cfgClient[$client]['upl']['path'] . $sDir)) {
+    if (is_dir($cfgClient['upl']['path'] . $sDir)) {
         foreach ($handle as $sDirEntry) {
             if (cFileHandler::fileNameIsDot($sDirEntry) === false) {
                 $bHasSubdir = true;
@@ -216,7 +220,7 @@ function uplSyncDirectory($sPath) {
         $sSubDir = substr($sCurrDirname, strlen($sPath));
         if (substr_count($sSubDir, '/') <= 1 && !cApiDbfs::isDbfs($sCurrDirname)) {
             // subdirectory is a direct descendant, process this directory too
-            $sFullPath = $cfgClient[$client]['upl']['path'] . $sCurrDirname;
+            $sFullPath = $cfgClient['upl']['path'] . $sCurrDirname;
             if (!is_dir($sFullPath)) {
                 $oUploadsColl->deleteByDirname($sCurrDirname);
             }
@@ -227,13 +231,13 @@ function uplSyncDirectory($sPath) {
     // on file system
     $oUploadsColl->select("dirname='" . $oUploadsColl->escape($sPath) . "' AND idclient=" . (int) $client);
     while (($oUpload = $oUploadsColl->next()) !== false) {
-        if (!cFileHandler::exists($cfgClient[$client]['upl']['path'] . $oUpload->get('dirname') . $oUpload->get('filename'))) {
+        if (!cFileHandler::exists($cfgClient['upl']['path'] . $oUpload->get('dirname') . $oUpload->get('filename'))) {
             $oUploadsColl->delete($oUpload->get('idupl'));
         }
     }
 
     // sync all files in current directory with database
-    $sFullPath = $cfgClient[$client]['upl']['path'] . $sPath;
+    $sFullPath = $cfgClient['upl']['path'] . $sPath;
     if (is_dir($sFullPath)) {
         $aDirsToExclude = uplGetDirectoriesToExclude();
         if (false !== ($handle = cDirHandler::read($sFullPath))) {
@@ -299,7 +303,10 @@ function uplSyncDirectoryDBFS($sPath) {
  *         value of filemode as string ('0702') or nothing
  */
 function uplmkdir($sPath, $sName) {
-    global $cfgClient, $client, $action;
+
+    $client = cRegistry::getClientId();
+    $cfgClient = cRegistry::getClientConfig($client);
+    $action = cRegistry::getAction();
 
     // Check DB filesystem
     if (cApiDbfs::isDbfs($sPath)) {
@@ -320,7 +327,7 @@ function uplmkdir($sPath, $sName) {
     }
 
     // Check dir or create new
-    $dPath = $cfgClient[$client]['upl']['path'] . $sPath . $dName;
+    $dPath = $cfgClient['upl']['path'] . $sPath . $dName;
     if (cDirHandler::read($dPath) === false) {
         // Create new dir
         return cDirHandler::create($dPath);
@@ -348,8 +355,8 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent) {
     $cfgClient = cRegistry::getClientConfig($client);
 
     // rename directory
-    $sOldUplPath = $cfgClient[$client]['upl']['path'] . $sParent . $sOldName;
-    $sNewUplPath = $cfgClient[$client]['upl']['path'] . $sParent . $sNewName . '/';
+    $sOldUplPath = $cfgClient['upl']['path'] . $sParent . $sOldName;
+    $sNewUplPath = $cfgClient['upl']['path'] . $sParent . $sNewName . '/';
     if (!$bResult = rename($sOldUplPath, $sNewUplPath)) {
         throw new cException("Couldn't rename upload path {$sOldUplPath} to {$sNewUplPath}");
     }
@@ -512,7 +519,7 @@ function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $c
 function uplGetThumbnail($sFile, $iMaxSize) {
 
     $client = cRegistry::getClientId();
-    $cfgClient = cRegistry::getClientId($client);
+    $cfgClient = cRegistry::getClientConfig($client);
 
     if ($iMaxSize == -1) {
         return uplGetFileIcon($sFile);
@@ -531,7 +538,7 @@ function uplGetThumbnail($sFile, $iMaxSize) {
         case "iff":
         case "xbm":
         case "wbmp":
-            $img = cApiImgScale($cfgClient[$client]['upl']['path'] . $sFile, $iMaxSize, $iMaxSize, false, false, 50);
+            $img = cApiImgScale($cfgClient['upl']['path'] . $sFile, $iMaxSize, $iMaxSize, false, false, 50);
             if ($img !== false) {
                 return $img;
             }
