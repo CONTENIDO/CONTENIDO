@@ -30,6 +30,20 @@ cRegistry::bootstrap(array(
     'perm' => 'cPermission'
 ));
 
+// The following lines load hooks (CON-2491)
+// It is a duplicated of the hook execution code of include.front_content.php (TODO)
+// this is done because in this file the loading process includes include.front_content.php
+// after this file, therefore some hooks can never be executed
+$backendPath = cRegistry::getBackendPath();
+
+// Include plugins
+require_once($backendPath . $cfg['path']['includes'] . 'functions.includePluginConf.php');
+
+// Call hook after plugins are loaded
+cApiCecHook::execute('Contenido.Frontend.AfterLoadPlugins');
+
+// - End of loading hooks
+
 i18nInit($cfg['path']['contenido_locale'], $belang);
 
 require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
