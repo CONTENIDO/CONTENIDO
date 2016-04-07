@@ -96,7 +96,9 @@ class cApiUploadCollection extends ItemCollection {
      */
     public function create($sDirname, $sFilename, $sFiletype = '', $iFileSize = 0,
             $sDescription = '', $iStatus = 0) {
-        global $client, $cfg, $auth;
+
+        $client = cRegistry::getClientId();
+        $auth = cRegistry::getAuth();
 
         $oItem = $this->createNewItem();
 
@@ -125,7 +127,9 @@ class cApiUploadCollection extends ItemCollection {
      * @return bool
      */
     public function delete($id) {
-        global $cfgClient, $client;
+
+        $client = cRegistry::getClientId();
+        $cfgClient = cRegistry::getClientConfig($client);
 
         $oUpload = new cApiUpload();
         $oUpload->loadByPrimaryKey($id);
