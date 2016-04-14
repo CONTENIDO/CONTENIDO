@@ -27,63 +27,63 @@ class cTreeItem {
      *
      * @var array
      */
-    var $_subitems = array();
+    protected $_subitems = array();
 
     /**
      * Determinates if this tree item is collapsed
      *
      * @var bool
      */
-    var $_collapsed;
+    protected $_collapsed;
 
     /**
      * ID for this item
      *
      * @var string
      */
-    var $_id;
+    protected $_id;
 
     /**
      * Name for this item
      *
      * @var string
      */
-    var $_name;
+    protected $_name;
 
     /**
      * Contains the level of this item
      *
      * @var int
      */
-    var $_level;
+    protected $_level;
 
     /**
      * Contains custom entries
      *
      * @var array
      */
-    var $_attributes = array();
+    protected $_attributes = array();
 
     /**
      * Contains the parent of this item
      *
      * @var array
      */
-    var $_parent = false;
+    protected $_parent = false;
 
     /**
      * Contains the next item
      *
      * @var array
      */
-    var $_next = false;
+    protected $_next = false;
 
     /**
      * Contains the previous item
      *
      * @var array
      */
-    var $_previous = false;
+    protected $_previous = false;
 
     /**
      *
