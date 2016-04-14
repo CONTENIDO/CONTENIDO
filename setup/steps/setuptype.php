@@ -61,6 +61,7 @@ class cSetupTypeChooser extends cSetupMask
      * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
      */
     public function cSetupTypeChooser() {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
         $this->__construct();
     }
 

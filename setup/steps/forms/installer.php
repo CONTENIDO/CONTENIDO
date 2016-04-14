@@ -56,6 +56,7 @@ class cSetupInstaller extends cSetupMask
      * @param $step
      */
     public function cSetupInstaller($step) {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
         $this->__construct($step);
     }
 }

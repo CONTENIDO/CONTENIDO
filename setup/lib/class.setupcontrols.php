@@ -42,6 +42,7 @@ class cHTMLAlphaImage extends cHTMLImage {
      * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
      */
     public function cHTMLAlphaImage() {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
         $this->__construct();
     }
 
@@ -99,6 +100,7 @@ class cHTMLErrorMessageList extends cHTMLDiv {
      * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
      */
     public function cHTMLErrorMessageList() {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
         $this->__construct();
     }
 
@@ -189,6 +191,7 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow {
      * @param bool $iconText
      */
     public function cHTMLFoldableErrorMessage($title, $message, $icon = false, $iconText = false) {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
         $this->__construct($title, $message, $icon, $iconText);
     }
 
@@ -238,6 +241,7 @@ class cHTMLInfoMessage extends cHTMLTableRow {
      * @param $message
      */
     public function cHTMLInfoMessage($title, $message) {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
         $this->__construct($title, $message);
     }
 
@@ -289,6 +293,7 @@ class cHTMLLanguageLink extends cHTMLDiv {
      * @param $stepnumber
      */
     public function cHTMLLanguageLink($langcode, $langname, $stepnumber) {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
         $this->__construct($langcode, $langname, $stepnumber);
     }
 
@@ -328,6 +333,7 @@ class cHTMLButtonLink extends cHTMLDiv {
      * @param $title
      */
     function cHTMLButtonLink($href, $title) {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
         $this->__construct($href, $title);
     }
 

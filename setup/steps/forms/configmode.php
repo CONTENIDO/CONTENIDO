@@ -73,6 +73,7 @@ class cSetupConfigMode extends cSetupMask {
      * @param unknown_type $next
      */
     public function cSetupConfigMode($step, $previous, $next) {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
         $this->__construct($step, $previous, $next);
     }
 

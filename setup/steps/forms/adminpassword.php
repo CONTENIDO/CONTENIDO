@@ -84,6 +84,7 @@ class cSetupAdminPassword extends cSetupMask {
      * @param $next
      */
     public function cSetupAdminPassword($step, $previous, $next) {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
         $this->__construct($step, $previous, $next);
     }
 

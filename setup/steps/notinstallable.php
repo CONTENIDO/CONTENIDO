@@ -47,6 +47,7 @@ class cSetupNotInstallable extends cSetupMask
      * @param $srason
      */
     public function cSetupNotInstallable($reason) {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
         $this->__construct($reason);
     }
 }

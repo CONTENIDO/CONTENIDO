@@ -56,6 +56,7 @@ class cSetupMask
      * @param bool $step
      */
     public function cSetupMask($stepTemplate, $step = false) {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
         $this->__construct($stepTemplate, $step);
     }
 
