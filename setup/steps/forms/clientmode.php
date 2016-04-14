@@ -29,7 +29,7 @@ class cSetupClientMode extends cSetupMask {
      */
     public function __construct($step, $previous, $next) {
 
-        cSetupMask::cSetupMask("templates/setup/forms/clientmode.tpl", $step);
+        cSetupMask::__construct("templates/setup/forms/clientmode.tpl", $step);
         $this->setHeader(i18n("Example Client", "setup"));
         $this->_stepTemplateClass->set("s", "TITLE", i18n("Example Client", "setup"));
         $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("If you are new to CONTENIDO, you should create an example client to start working with.", "setup"));

@@ -21,10 +21,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cSetupClientAdjust extends cSetupMask {
 
-    function cSetupClientAdjust($step, $previous, $next) {
-        global $db, $cfg, $cfgClient;
+    /**
+     * cSetupClientAdjust constructor.
+     * @param string $step
+     * @param bool $previous
+     * @param $next
+     */
+    public function __construct($step, $previous, $next) {
+        $cfg = cRegistry::getConfig();
+        $client = cRegistry::getClientId();
+        $cfgClient = cRegistry::getClientConfig($client);
 
-        cSetupMask::cSetupMask("templates/setup/forms/pathinfo.tpl", $step);
+        cSetupMask::__construct("templates/setup/forms/pathinfo.tpl", $step);
         $this->setHeader(i18n("Client Settings", "setup"));
         $this->_stepTemplateClass->set("s", "TITLE", i18n("Client Settings", "setup"));
         $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("Please check the directories identified by the system. If you need to change a client path, click on the name and enter your new path in the available input box.", "setup"));
@@ -34,7 +42,6 @@ class cSetupClientAdjust extends cSetupMask {
         $aClients = listClients($db, $cfg['tab']['clients']);
 
         $cHTMLErrorMessageList = new cHTMLErrorMessageList();
-        $cHTMLFoldableErrorMessages = array();
 
         $aPathList = array();
 
@@ -106,6 +113,17 @@ class cSetupClientAdjust extends cSetupMask {
         $this->_stepTemplateClass->set("s", "CONTROL_PATHINFO", $cHTMLErrorMessageList->render());
 
         $this->setNavigation($previous, $next);
+    }
+
+    /**
+     * Old constructor
+     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     * @param $step
+     * @param $previous
+     * @param $next
+     */
+    public function cSetupClientAdjust($step, $previous, $next) {
+        $this->__construct($step, $previous, $next);
     }
 
 }

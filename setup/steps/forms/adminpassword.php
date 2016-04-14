@@ -29,7 +29,7 @@ class cSetupAdminPassword extends cSetupMask {
      */
     public function __construct($step, $previous, $next) {
 
-        cSetupMask::cSetupMask("templates/setup/forms/adminpassword.tpl", $step);
+        cSetupMask::__construct("templates/setup/forms/adminpassword.tpl", $step);
 
         cArray::initializeKey($_SESSION, "adminmail", "");
         cArray::initializeKey($_SESSION, "adminpass", "");

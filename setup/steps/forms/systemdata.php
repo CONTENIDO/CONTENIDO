@@ -21,10 +21,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cSetupSystemData extends cSetupMask {
 
-    function cSetupSystemData($step, $previous, $next) {
-        global $cfg;
+    /**
+     * cSetupSystemData constructor.
+     * @param string $step
+     * @param bool $previous
+     * @param $next
+     */
+    public function __construct($step, $previous, $next) {
+        $cfg = cRegistry::getConfig();
 
-        cSetupMask::cSetupMask('templates/setup/forms/systemdata.tpl', $step);
+        cSetupMask::__construct('templates/setup/forms/systemdata.tpl', $step);
 
         cArray::initializeKey($_SESSION, 'dbprefix', '');
         cArray::initializeKey($_SESSION, 'dbhost', '');
@@ -107,40 +113,40 @@ class cSetupSystemData extends cSetupMask {
 
         // Compose charset and collation select box, only if CONUTF8 flag is not set
         if (!cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php') || (defined('CON_UTF8') && CON_UTF8 === true)) {
-        	// database charset
-        	$hiddenFieldDbCharset = new cHTMLHiddenField('dbcharset', 'utf8');
-        	$dbcharsetTextbox = $hiddenFieldDbCharset . 'utf8';
+            // database charset
+            $hiddenFieldDbCharset = new cHTMLHiddenField('dbcharset', 'utf8');
+            $dbcharsetTextbox = $hiddenFieldDbCharset . 'utf8';
 
-        	// database collation
-        	$hiddenFieldDbCollation = new cHTMLHiddenField('dbcollation', 'utf8_general_ci');
-        	$dbCollationTextbox = $hiddenFieldDbCollation . 'utf8_general_ci';
+            // database collation
+            $hiddenFieldDbCollation = new cHTMLHiddenField('dbcollation', 'utf8_general_ci');
+            $dbCollationTextbox = $hiddenFieldDbCollation . 'utf8_general_ci';
         } else {
 
-        	// database charset
-        	$pos = 0;
-        	$option = new cHTMLOptionElement('-- ' . i18n("No character set", "setup") . ' --', '');
-        	$dbcharset->addOptionElement(++$pos, $option);
-        	$selectedCharset = (!empty($_SESSION['dbcharset'])) ? $_SESSION['dbcharset'] : '';
-        	$aCharsets = fetchMySQLCharsets();
-        	foreach ($aCharsets as $p => $charset) {
-        		$selected = ($selectedCharset == $charset);
-        		$option = new cHTMLOptionElement($charset, $charset, $selected);
-        		$dbcharset->addOptionElement(++$pos, $option);
-        	}
-        	$dbcharsetTextbox = $dbcharset->render();
+            // database charset
+            $pos = 0;
+            $option = new cHTMLOptionElement('-- ' . i18n("No character set", "setup") . ' --', '');
+            $dbcharset->addOptionElement(++$pos, $option);
+            $selectedCharset = (!empty($_SESSION['dbcharset'])) ? $_SESSION['dbcharset'] : '';
+            $aCharsets = fetchMySQLCharsets();
+            foreach ($aCharsets as $p => $charset) {
+                $selected = ($selectedCharset == $charset);
+                $option = new cHTMLOptionElement($charset, $charset, $selected);
+                $dbcharset->addOptionElement(++$pos, $option);
+            }
+            $dbcharsetTextbox = $dbcharset->render();
 
-        	// database collation
-        	$pos = 0;
-        	$noOp = new cHTMLOptionElement('-- ' . i18n("Other", "setup") . ' --', '');
-        	$dbcollation->addOptionElement(++$pos, $noOp);
-        	$selectedCollation = (!empty($_SESSION['dbcollation'])) ? $_SESSION['dbcollation'] : 'utf8_general_ci';
-        	$collations = fetchMySQLCollations();
-        	foreach ($collations as $p => $collation) {
-        		$selected = ($selectedCollation == $collation);
-        		$option = new cHTMLOptionElement($collation, $collation, $selected);
-        		$dbcollation->addOptionElement(++$pos, $option);
-        	}
-        	$dbCollationTextbox = new cHTMLTextbox('dbcollation', $selectedCollation, '', '', 'collationText'). $dbcollation->render();
+            // database collation
+            $pos = 0;
+            $noOp = new cHTMLOptionElement('-- ' . i18n("Other", "setup") . ' --', '');
+            $dbcollation->addOptionElement(++$pos, $noOp);
+            $selectedCollation = (!empty($_SESSION['dbcollation'])) ? $_SESSION['dbcollation'] : 'utf8_general_ci';
+            $collations = fetchMySQLCollations();
+            foreach ($collations as $p => $collation) {
+                $selected = ($selectedCollation == $collation);
+                $option = new cHTMLOptionElement($collation, $collation, $selected);
+                $dbcollation->addOptionElement(++$pos, $option);
+            }
+            $dbCollationTextbox = new cHTMLTextbox('dbcollation', $selectedCollation, '', '', 'collationText'). $dbcollation->render();
         }
 
         $this->_stepTemplateClass->set('s', 'LABEL_DBHOST', i18n("Database Server (IP or name)", "setup"));
@@ -170,7 +176,18 @@ class cSetupSystemData extends cSetupMask {
         $this->setNavigation($previous, $next);
     }
 
-    function _createNavigation() {
+    /**
+     * Old constructor
+     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     * @param $step
+     * @param $previous
+     * @param $next
+     */
+    public function cSetupSystemData($step, $previous, $next) {
+        $this->__construct($step, $previous, $next);
+    }
+
+    protected function _createNavigation() {
         $link = new cHTMLLink('#');
 
         if ($_SESSION['setuptype'] == 'setup') {
@@ -184,7 +201,6 @@ class cSetupSystemData extends cSetupMask {
         }
         $link->setClass("nav");
         $link->setContent("<span>&raquo;</span>");
-
 
         $this->_stepTemplateClass->set('s', 'NEXT', $link->render());
 

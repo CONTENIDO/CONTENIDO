@@ -22,18 +22,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cSetupConfigMode extends cSetupMask {
 
     /**
-     *
-     * @param unknown_type $step
-     * @param unknown_type $previous
-     * @param unknown_type $next
+     * cSetupConfigMode constructor.
+     * @param string $step
+     * @param bool $previous
+     * @param $next
      */
-    function cSetupConfigMode($step, $previous, $next) {
-        global $cfg;
+    public function __construct($step, $previous, $next) {
+        $cfg = cRegistry::getConfig();
 
         if ($_SESSION["setuptype"] == "setup") {
-            cSetupMask::cSetupMask("templates/setup/forms/configmode.tpl", $step);
+            cSetupMask::__construct("templates/setup/forms/configmode.tpl", $step);
         } else {
-            cSetupMask::cSetupMask("templates/setup/forms/configmodewopass.tpl", $step);
+            cSetupMask::__construct("templates/setup/forms/configmodewopass.tpl", $step);
         }
         $this->setHeader(i18n("config.php mode", "setup"));
         $this->_stepTemplateClass->set("s", "TITLE", i18n("config.php mode", "setup"));
@@ -66,10 +66,21 @@ class cSetupConfigMode extends cSetupMask {
     }
 
     /**
+     * Old constructor
+     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     * @param unknown_type $step
+     * @param unknown_type $previous
+     * @param unknown_type $next
+     */
+    public function cSetupConfigMode($step, $previous, $next) {
+        $this->__construct($step, $previous, $next);
+    }
+
+    /**
      * (non-PHPdoc)
      * @see cSetupMask::_createNavigation()
      */
-    function _createNavigation() {
+    protected function _createNavigation() {
         $link = new cHTMLLink("#");
 
         if ($this->_nextstep == "doinstall") {
