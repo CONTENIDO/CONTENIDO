@@ -47,46 +47,9 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
     }
 
     /**
-     * Creates an article language item entry.
-     *
-     * @global object $auth
-     * @param mixed[] $parameters{
-     *  @type int $idart
-     *  @type int $idlang
-     *  @type int $idartlang
-     *  @type string $title
-     *  @type string $urlname
-     *  @type string $pagetitle
-     *  @type string $summary
-     *  @type int $artspec
-     *  @type string $created
-     *  @type int $iscurrentverseion
-     *  @type string $author
-     *  @type string $lastmodified
-     *  @type string $modifiedby
-     *  @type string $published
-     *  @type string $publishedby
-     *  @type int $online
-     *  @type int $redirect
-     *  @type string $redirect_url
-     *  @type int $external_redirect
-     *  @type int $artsort
-     *  @type int $timemgmt
-     *  @type string $datestart
-     *  @type string $dateend
-     *  @type int $status
-     *  @type int $time_move_cat
-     *  @type int $time_target_cat
-     *  @type int $time_online_move
-     *  @type int $locked
-     *  @type mixed $free_use_01
-     *  @type mixed $free_use_02
-     *  @type mixed $free_use_03
-     *  @type int $searchable
-     *  @type float $sitemapprio
-     *  @type string $changefreq
-     * }
-     * @return cApiArticleLanguageVersion
+     * @param array $parameters
+     * @return Item
+     * @throws cDbException
      */
     public function create(array $parameters) {
         global $auth;
