@@ -171,11 +171,12 @@ class cGuiFileOverview extends cGuiPage {
     }
 
     /**
-     * Renders the page.
+     * Renders the page
      *
-     * @see cGuiPage::render()
+     * @param cTemplate|null $template
+     * @param bool $return
      */
-    public function render() {
+    public function render($template = NULL, $return = false) {
 
         $cfg = cRegistry::getConfig();
         $area = cRegistry::getArea();

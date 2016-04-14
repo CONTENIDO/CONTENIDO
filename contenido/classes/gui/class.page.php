@@ -634,16 +634,12 @@ class cGuiPage {
 
     /**
      * Renders the page and either prints it or returns it
-     *
-     * @param cTemplate|NULL $template [optional]
-     *         If set, use this content template instead of the default one
-     * @param bool $return [optional]
-     *         If true, the page will be returned instead of echoed
+     * 
+     * @param cTemplate|null $template
+     * @param bool $return
      * @return string|void
-     *         either the webpage or nothing
      */
     public function render($template = NULL, $return = false) {
-        global $cfg;
 
         if ($template == NULL) {
             $template = $this->_contentTemplate;

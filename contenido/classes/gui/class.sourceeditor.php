@@ -80,11 +80,10 @@ class cGuiSourceEditor extends cGuiPage {
      *         path from the type and the area
      */
     public function __construct($filename, $versioning = true, $filetype = '', $filepath = '') {
-        global $belang;
+        global $belang, $cfgClient;
 
         $cfg = cRegistry::getConfig();
         $client = cRegistry::getClientId();
-        $cfgClient = cRegistry::getClientConfig($client);
         $perm = cRegistry::getPerm();
         $area = cRegistry::getArea();
         $action = cRegistry::getAction();
@@ -148,10 +147,10 @@ class cGuiSourceEditor extends cGuiPage {
      *         Request array. Usually _REQUEST
      */
     protected function update($req) {
+        global $cfgClient;
 
         $cfg = cRegistry::getConfig();
         $client = cRegistry::getClientId();
-        $cfgClient = cRegistry::getClientConfig($client);
         $db = cRegistry::getDb();
         $frame = cRegistry::getFrame();
         $perm = cRegistry::getPerm();
@@ -321,9 +320,12 @@ class cGuiSourceEditor extends cGuiPage {
 
     /**
      * Renders the page
-     * @see cGuiPage::render()
+     *
+     * @param cTemplate|null $template
+     * @param bool $return
+     * @throws cInvalidArgumentException
      */
-    public function render() {
+    public function render($template = NULL, $return = false) {
 
         $cfg = cRegistry::getConfig();
         $area = cRegistry::getArea();
