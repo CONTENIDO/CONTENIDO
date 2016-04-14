@@ -30,8 +30,8 @@ class cSetupSystemtest extends cSetupMask {
         $errors = false;
 
         $this->setHeader(i18n("System Test", "setup"));
-        $this->_oStepTemplate->set("s", "TITLE", i18n("System Test", "setup"));
-        $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Your system has been tested for compatibility with CONTENIDO:", "setup"));
+        $this->_stepTemplateClass->set("s", "TITLE", i18n("System Test", "setup"));
+        $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("Your system has been tested for compatibility with CONTENIDO:", "setup"));
 
         // reload i18n for contenido locale
         i18nInit('../data/locale/', $_SESSION['language']);
@@ -104,7 +104,7 @@ class cSetupSystemtest extends cSetupMask {
 
         $cHTMLErrorMessageList->setContent($cHTMLFoldableErrorMessages);
 
-        $this->_oStepTemplate->set("s", "CONTROL_TESTRESULTS", $cHTMLErrorMessageList->render());
+        $this->_stepTemplateClass->set("s", "CONTROL_TESTRESULTS", $cHTMLErrorMessageList->render());
 
         if ($errors == true) {
             $this->setNavigation($previous, "");
@@ -126,7 +126,7 @@ class cSetupSystemtest extends cSetupMask {
             $link->setContent("<span>R</span>"); // @todo traslation for
                                                  // "refresh"
 
-            $this->_oStepTemplate->set("s", "NEXT", $link->render());
+            $this->_stepTemplateClass->set("s", "NEXT", $link->render());
         } else {
             $this->setNavigation($previous, $next);
         }

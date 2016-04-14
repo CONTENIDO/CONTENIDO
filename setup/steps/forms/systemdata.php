@@ -59,14 +59,14 @@ class cSetupSystemData extends cSetupMask {
         }
 
         $this->setHeader(i18n("Database Parameters", "setup"));
-        $this->_oStepTemplate->set('s', 'TITLE', i18n("Database Parameters", "setup"));
+        $this->_stepTemplateClass->set('s', 'TITLE', i18n("Database Parameters", "setup"));
 
         switch ($_SESSION['setuptype']) {
             case 'setup':
-                $this->_oStepTemplate->set('s', 'DESCRIPTION', i18n("Please enter the required database information. If you are unsure about the data, ask your provider or administrator.", "setup") . " " . i18n("If the database does not exist and your database user has the sufficient permissions, setup will create the database automatically.", "setup"));
+                $this->_stepTemplateClass->set('s', 'DESCRIPTION', i18n("Please enter the required database information. If you are unsure about the data, ask your provider or administrator.", "setup") . " " . i18n("If the database does not exist and your database user has the sufficient permissions, setup will create the database automatically.", "setup"));
                 break;
             case 'upgrade':
-                $this->_oStepTemplate->set('s', 'DESCRIPTION', i18n("Please enter the required database information. If the database data of your previous installation could have been read, the data will be inserted automatically. If you are unsure about the data, please ask your provider or administrator.", "setup"));
+                $this->_stepTemplateClass->set('s', 'DESCRIPTION', i18n("Please enter the required database information. If the database data of your previous installation could have been read, the data will be inserted automatically. If you are unsure about the data, please ask your provider or administrator.", "setup"));
                 break;
         }
 
@@ -143,29 +143,29 @@ class cSetupSystemData extends cSetupMask {
         	$dbCollationTextbox = new cHTMLTextbox('dbcollation', $selectedCollation, '', '', 'collationText'). $dbcollation->render();
         }
 
-        $this->_oStepTemplate->set('s', 'LABEL_DBHOST', i18n("Database Server (IP or name)", "setup"));
+        $this->_stepTemplateClass->set('s', 'LABEL_DBHOST', i18n("Database Server (IP or name)", "setup"));
 
         if ($_SESSION['setuptype'] == 'setup') {
-            $this->_oStepTemplate->set('s', 'LABEL_DBNAME', i18n("Database Name", "setup") . '<br>' . i18n("(use empty or non-existant database)", "setup"));
+            $this->_stepTemplateClass->set('s', 'LABEL_DBNAME', i18n("Database Name", "setup") . '<br>' . i18n("(use empty or non-existant database)", "setup"));
         } else {
-            $this->_oStepTemplate->set('s', 'LABEL_DBNAME', i18n("Database Name", "setup"));
+            $this->_stepTemplateClass->set('s', 'LABEL_DBNAME', i18n("Database Name", "setup"));
             $dbcharset->setDisabled(true);
         }
 
-        $this->_oStepTemplate->set('s', 'LABEL_DBUSERNAME', i18n("Database Username", "setup"));
-        $this->_oStepTemplate->set('s', 'LABEL_DBPASSWORD', i18n("Database Password", "setup"));
-        $this->_oStepTemplate->set('s', 'LABEL_DBPREFIX', i18n("Table Prefix", "setup"));
-        $this->_oStepTemplate->set('s', 'LABEL_DBADVANCED', i18n("Advanced Settings", "setup"));
-        $this->_oStepTemplate->set('s', 'LABEL_DBCHARSET', i18n("Database character set", "setup"));
-        $this->_oStepTemplate->set('s', 'LABEL_DBCOLLATION', i18n("Database collation", "setup"));
+        $this->_stepTemplateClass->set('s', 'LABEL_DBUSERNAME', i18n("Database Username", "setup"));
+        $this->_stepTemplateClass->set('s', 'LABEL_DBPASSWORD', i18n("Database Password", "setup"));
+        $this->_stepTemplateClass->set('s', 'LABEL_DBPREFIX', i18n("Table Prefix", "setup"));
+        $this->_stepTemplateClass->set('s', 'LABEL_DBADVANCED', i18n("Advanced Settings", "setup"));
+        $this->_stepTemplateClass->set('s', 'LABEL_DBCHARSET', i18n("Database character set", "setup"));
+        $this->_stepTemplateClass->set('s', 'LABEL_DBCOLLATION', i18n("Database collation", "setup"));
 
-        $this->_oStepTemplate->set('s', 'INPUT_DBHOST', $dbhost->render());
-        $this->_oStepTemplate->set('s', 'INPUT_DBNAME', $dbname->render());
-        $this->_oStepTemplate->set('s', 'INPUT_DBUSERNAME', $dbuser->render());
-        $this->_oStepTemplate->set('s', 'INPUT_DBPASSWORD', $dbpass->render() . $dbpass_hidden->render());
-        $this->_oStepTemplate->set('s', 'INPUT_DBPREFIX', $dbprefix->render());
-        $this->_oStepTemplate->set('s', 'INPUT_DBCHARSET', $dbcharsetTextbox);
-        $this->_oStepTemplate->set('s', 'INPUT_DBCOLLATION', $dbCollationTextbox);
+        $this->_stepTemplateClass->set('s', 'INPUT_DBHOST', $dbhost->render());
+        $this->_stepTemplateClass->set('s', 'INPUT_DBNAME', $dbname->render());
+        $this->_stepTemplateClass->set('s', 'INPUT_DBUSERNAME', $dbuser->render());
+        $this->_stepTemplateClass->set('s', 'INPUT_DBPASSWORD', $dbpass->render() . $dbpass_hidden->render());
+        $this->_stepTemplateClass->set('s', 'INPUT_DBPREFIX', $dbprefix->render());
+        $this->_stepTemplateClass->set('s', 'INPUT_DBCHARSET', $dbcharsetTextbox);
+        $this->_stepTemplateClass->set('s', 'INPUT_DBCOLLATION', $dbCollationTextbox);
 
         $this->setNavigation($previous, $next);
     }
@@ -177,23 +177,23 @@ class cSetupSystemData extends cSetupMask {
             $checkScript = sprintf(
                 "var msg = ''; if (document.setupform.dbhost.value == '') { msg += '%s '; } if (document.setupform.dbname.value == '') { msg += '%s '; } if (document.setupform.dbuser.value == '') { msg += '%s '; } if (document.setupform.dbhost.value != '' && document.setupform.dbname.value != '' && document.setupform.dbuser.value != '') { document.setupform.submit(); } else { alert(msg); }", i18n("You need to enter a database host."), i18n("You need to enter a database name."), i18n("You need to enter a database user.")
             );
-            $link->attachEventDefinition('pageAttach', 'onclick', "document.setupform.step.value = '" . $this->_bNextstep . "';");
+            $link->attachEventDefinition('pageAttach', 'onclick', "document.setupform.step.value = '" . $this->_nextstep . "';");
             $link->attachEventDefinition('submitAttach', 'onclick', $checkScript);
         } else {
-            $link->attachEventDefinition('pageAttach', 'onclick', "document.setupform.step.value = '" . $this->_bNextstep . "'; document.setupform.submit();");
+            $link->attachEventDefinition('pageAttach', 'onclick', "document.setupform.step.value = '" . $this->_nextstep . "'; document.setupform.submit();");
         }
         $link->setClass("nav");
         $link->setContent("<span>&raquo;</span>");
 
 
-        $this->_oStepTemplate->set('s', 'NEXT', $link->render());
+        $this->_stepTemplateClass->set('s', 'NEXT', $link->render());
 
         $backlink = new cHTMLLink('#');
-        $backlink->attachEventDefinition('pageAttach', 'onclick', "document.setupform.step.value = '" . $this->_bBackstep . "';");
+        $backlink->attachEventDefinition('pageAttach', 'onclick', "document.setupform.step.value = '" . $this->_backstep . "';");
         $backlink->attachEventDefinition('submitAttach', 'onclick', 'document.setupform.submit();');
         $backlink->setClass("nav navBack");
         $backlink->setContent("<span>&raquo;</span>");
-        $this->_oStepTemplate->set('s', 'BACK', $backlink->render());
+        $this->_stepTemplateClass->set('s', 'BACK', $backlink->render());
     }
 
 }

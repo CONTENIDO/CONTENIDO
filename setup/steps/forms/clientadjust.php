@@ -26,8 +26,8 @@ class cSetupClientAdjust extends cSetupMask {
 
         cSetupMask::cSetupMask("templates/setup/forms/pathinfo.tpl", $step);
         $this->setHeader(i18n("Client Settings", "setup"));
-        $this->_oStepTemplate->set("s", "TITLE", i18n("Client Settings", "setup"));
-        $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Please check the directories identified by the system. If you need to change a client path, click on the name and enter your new path in the available input box.", "setup"));
+        $this->_stepTemplateClass->set("s", "TITLE", i18n("Client Settings", "setup"));
+        $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("Please check the directories identified by the system. If you need to change a client path, click on the name and enter your new path in the available input box.", "setup"));
 
         $db = getSetupMySQLDBConnection();
 
@@ -103,7 +103,7 @@ class cSetupClientAdjust extends cSetupMask {
 
         $cHTMLErrorMessageList->setContent($aPathList);
 
-        $this->_oStepTemplate->set("s", "CONTROL_PATHINFO", $cHTMLErrorMessageList->render());
+        $this->_stepTemplateClass->set("s", "CONTROL_PATHINFO", $cHTMLErrorMessageList->render());
 
         $this->setNavigation($previous, $next);
     }

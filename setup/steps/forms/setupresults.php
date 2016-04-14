@@ -21,48 +21,51 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cSetupResults extends cSetupMask
 {
-    function cSetupResults($step)
-    {
+
+    /**
+     * cSetupResults constructor.
+     * @param string $step
+     */
+    public function __construct($step) {
         $this->setHeader(i18n("Results", "setup"));
 
-        if (!isset($_SESSION["install_failedchunks"]) && !isset($_SESSION["install_failedupgradetable"]) && !isset($_SESSION["configsavefailed"]))
-        {
-            cSetupMask::cSetupMask("templates/setup/forms/setupresults.tpl", $step);
-            $this->_oStepTemplate->set("s", "TITLE", i18n("Results", "setup"));
-            $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("CONTENIDO was installed and configured successfully on your server.", "setup"));
+        if (!isset($_SESSION["install_failedchunks"]) && !isset($_SESSION["install_failedupgradetable"]) && !isset($_SESSION["configsavefailed"])) {
+            cSetupMask::__construct("templates/setup/forms/setupresults.tpl", $step);
+            $this->_stepTemplateClass->set("s", "TITLE", i18n("Results", "setup"));
+            $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("CONTENIDO was installed and configured successfully on your server.", "setup"));
             if ($_SESSION["setuptype"] == 'setup') {
-                $this->_oStepTemplate->set("s", "LOGIN_INFO", '<p>'.i18n("Please use username <b>sysadmin</b> and the configured password to login into CONTENIDO Backend.", "setup").'</p>');
+                $this->_stepTemplateClass->set("s", "LOGIN_INFO", '<p>'.i18n("Please use username <b>sysadmin</b> and the configured password to login into CONTENIDO Backend.", "setup").'</p>');
             } else {
-                $this->_oStepTemplate->set("s", "LOGIN_INFO", '');
+                $this->_stepTemplateClass->set("s", "LOGIN_INFO", '');
             }
-            $this->_oStepTemplate->set("s", "CHOOSENEXTSTEP", i18n("Please choose an item to start working:", "setup"));
-            $this->_oStepTemplate->set("s", "FINISHTEXT", i18n("You can now start using CONTENIDO. Please delete the folder named 'setup'!", "setup"));
+            $this->_stepTemplateClass->set("s", "CHOOSENEXTSTEP", i18n("Please choose an item to start working:", "setup"));
+            $this->_stepTemplateClass->set("s", "FINISHTEXT", i18n("You can now start using CONTENIDO. Please delete the folder named 'setup'!", "setup"));
 
             list($rootPath, $rootHttpPath) = getSystemDirectories();
 
             $cHTMLButtonLink = new cHTMLButtonLink($rootHttpPath . "/contenido/", "Backend - CMS");
-            $this->_oStepTemplate->set("s", "BACKEND", $cHTMLButtonLink->render());
+            $this->_stepTemplateClass->set("s", "BACKEND", $cHTMLButtonLink->render());
 
             if ($_SESSION["setuptype"] == "setup" && $_SESSION["clientmode"] == "CLIENTEXAMPLES") {
                 $cHTMLButtonLink = new cHTMLButtonLink($rootHttpPath . "/cms/", "Frontend - Web");
-                $this->_oStepTemplate->set("s", "FRONTEND", $cHTMLButtonLink->render());
+                $this->_stepTemplateClass->set("s", "FRONTEND", $cHTMLButtonLink->render());
             } else {
-                $this->_oStepTemplate->set("s", "FRONTEND", "");
+                $this->_stepTemplateClass->set("s", "FRONTEND", "");
             }
 
             $cHTMLButtonLink = new cHTMLButtonLink("http://www.contenido.org/", "CONTENIDO Website");
-            $this->_oStepTemplate->set("s", "WEBSITE", $cHTMLButtonLink->render());
+            $this->_stepTemplateClass->set("s", "WEBSITE", $cHTMLButtonLink->render());
 
             $cHTMLButtonLink = new cHTMLButtonLink("http://forum.contenido.org/", "CONTENIDO Forum");
-            $this->_oStepTemplate->set("s", "FORUM", $cHTMLButtonLink->render());
+            $this->_stepTemplateClass->set("s", "FORUM", $cHTMLButtonLink->render());
 
             $cHTMLButtonLink = new cHTMLButtonLink("http://faq.contenido.org/", "CONTENIDO FAQ");
-            $this->_oStepTemplate->set("s", "FAQ", $cHTMLButtonLink->render());
+            $this->_stepTemplateClass->set("s", "FAQ", $cHTMLButtonLink->render());
         } else {
-            cSetupMask::cSetupMask("templates/setup/forms/setupresultsfail.tpl", $step);
-            $this->_oStepTemplate->set("s", "TITLE", i18n("Setup Results", "setup"));
+            cSetupMask::__construct("templates/setup/forms/setupresultsfail.tpl", $step);
+            $this->_stepTemplateClass->set("s", "TITLE", i18n("Setup Results", "setup"));
 
-            $this->_oStepTemplate->set("s", "DESCRIPTION", sprintf(i18n("An error occured during installation. Please take a look at the file %s (located in &quot;data/logs/&quot;) for more information.", "setup"), 'setuplog.txt'));
+            $this->_stepTemplateClass->set("s", "DESCRIPTION", sprintf(i18n("An error occured during installation. Please take a look at the file %s (located in &quot;data/logs/&quot;) for more information.", "setup"), 'setuplog.txt'));
 
             switch ($_SESSION["setuptype"]) {
                 case "setup":
@@ -73,6 +76,15 @@ class cSetupResults extends cSetupMask
                     break;
             }
         }
+    }
+
+    /**
+     * Old constructor
+     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     * @param $step
+     */
+    public function cSetupResults($step) {
+        $this->__construct($step);
     }
 }
 

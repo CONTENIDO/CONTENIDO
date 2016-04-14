@@ -110,35 +110,31 @@ class cGuiFileOverview extends cGuiPage {
     /**
      * Path to the directory directory where files to display are located.
      *
-     * @todo names of protected members should have a leading underscore
      * @var string
      */
-    protected $directory;
+    protected $_directory;
 
     /**
      * Basename of file that will be marked as selected.
      *
-     * @todo names of protected members should have a leading underscore
      * @var string
      */
-    protected $markedFile;
+    protected $_markedFile;
 
     /**
      * Type of additional file information that should be displayed as
      * description.
      *
-     * @todo names of protected members should have a leading underscore
      * @var string
      */
-    protected $fileInfoType;
+    protected $_fileInfoType;
 
     /**
      * Selected file extension.
      *
-     * @todo names of protected members should have a leading underscore
      * @var string
      */
-    protected $fileExtension;
+    protected $_fileExtension;
 
     /**
      * Constructor. Initializes the class for the directory.
@@ -156,9 +152,9 @@ class cGuiFileOverview extends cGuiPage {
         parent::__construct('generic_file_overview');
 
         // assign properties
-        $this->directory = $dir;
-        $this->markedFile = $markedFile;
-        $this->fileInfoType = $fileInfoType;
+        $this->_directory = $dir;
+        $this->_markedFile = $markedFile;
+        $this->_fileInfoType = $fileInfoType;
     }
 
     /**
@@ -171,7 +167,7 @@ class cGuiFileOverview extends cGuiPage {
         if (cSecurity::isString($extension)) {
             $extension = array($extension);
         }
-        $this->fileExtension = $extension;
+        $this->_fileExtension = $extension;
     }
 
     /**
@@ -180,15 +176,18 @@ class cGuiFileOverview extends cGuiPage {
      * @see cGuiPage::render()
      */
     public function render() {
-        global $area, $cfg, $perm;
+
+        $cfg = cRegistry::getConfig();
+        $area = cRegistry::getArea();
+        $perm = cRegistry::getPerm();
 
         // create an array of all files in the directory
         $files = array();
-        foreach (new DirectoryIterator($this->directory) as $file) {
+        foreach (new DirectoryIterator($this->_directory) as $file) {
             if ($file->isDir()) {
                 continue;
             }
-            if (!empty($this->fileExtension) && !in_array($file->getExtension(), $this->fileExtension)) {
+            if (!empty($this->_fileExtension) && !in_array($file->getExtension(), $this->_fileExtension)) {
                 continue;
             }
             $files[] = $file->getBasename();
@@ -204,8 +203,8 @@ class cGuiFileOverview extends cGuiPage {
         // assign variables for every file
         $fileInfos = new cApiFileInformationCollection();
         foreach($files as $file) {
-            if($this->fileInfoType != '') {
-                $fileInfo = $fileInfos->getFileInformation($file, $this->fileInfoType);
+            if($this->_fileInfoType != '') {
+                $fileInfo = $fileInfos->getFileInformation($file, $this->_fileInfoType);
                 $this->set('d', 'DESCRIPTION', $fileInfo['description']);
             } else {
                 $this->set('d', 'DESCRIPTION', '');
@@ -213,7 +212,7 @@ class cGuiFileOverview extends cGuiPage {
             $this->set('d', 'AREA', $area);
             $this->set('d', 'ACTION', $area . '_edit');
             $this->set('d', 'FILENAME', $file);
-            if($file == $this->markedFile) {
+            if($file == $this->_markedFile) {
                 $this->set('d', 'MARKED', 'marked');
             } else {
                 $this->set('d', 'MARKED', '');

@@ -25,8 +25,8 @@ class cSetupPath extends cSetupMask
     {
         cSetupMask::cSetupMask("templates/setup/forms/pathinfo.tpl", $step);
         $this->setHeader(i18n("System Directories", "setup"));
-        $this->_oStepTemplate->set("s", "TITLE", i18n("System Directories", "setup"));
-        $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Please check the directories identified by the system. If you need to change a path, click on the name and enter the new path in the available input box.", "setup"));
+        $this->_stepTemplateClass->set("s", "TITLE", i18n("System Directories", "setup"));
+        $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("Please check the directories identified by the system. If you need to change a path, click on the name and enter the new path in the available input box.", "setup"));
 
         list($rootPath, $rootHttpPath) = getSystemDirectories(true);
 
@@ -48,7 +48,7 @@ class cSetupPath extends cSetupMask
 
         $cHTMLErrorMessageList->setContent($cHTMLFoldableErrorMessages);
 
-        $this->_oStepTemplate->set("s", "CONTROL_PATHINFO", $cHTMLErrorMessageList->render());
+        $this->_stepTemplateClass->set("s", "CONTROL_PATHINFO", $cHTMLErrorMessageList->render());
 
         $this->setNavigation($previous, $next);
     }

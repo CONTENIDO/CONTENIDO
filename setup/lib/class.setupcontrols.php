@@ -98,7 +98,7 @@ class cHTMLErrorMessageList extends cHTMLDiv {
      * Old constructor
      * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
      */
-    function cHTMLErrorMessageList() {
+    public function cHTMLErrorMessageList() {
         $this->__construct();
     }
 

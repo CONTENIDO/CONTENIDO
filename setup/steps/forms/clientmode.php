@@ -21,12 +21,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cSetupClientMode extends cSetupMask {
 
-    function cSetupClientMode($step, $previous, $next) {
+    /**
+     * cSetupClientMode constructor.
+     * @param $step
+     * @param $previous
+     * @param $next
+     */
+    public function __construct($step, $previous, $next) {
 
         cSetupMask::cSetupMask("templates/setup/forms/clientmode.tpl", $step);
         $this->setHeader(i18n("Example Client", "setup"));
-        $this->_oStepTemplate->set("s", "TITLE", i18n("Example Client", "setup"));
-        $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("If you are new to CONTENIDO, you should create an example client to start working with.", "setup"));
+        $this->_stepTemplateClass->set("s", "TITLE", i18n("Example Client", "setup"));
+        $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("If you are new to CONTENIDO, you should create an example client to start working with.", "setup"));
 
         cArray::initializeKey($_SESSION, "clientmode", "");
 
@@ -59,8 +65,8 @@ class cSetupClientMode extends cSetupMask {
             }
         }
 
-        $this->_oStepTemplate->set("s", "FOLDER_MESSAGE_EXAMPLES", "");
-        $this->_oStepTemplate->set("s", "FOLDER_MESSAGE_MODULES", "");
+        $this->_stepTemplateClass->set("s", "FOLDER_MESSAGE_EXAMPLES", "");
+        $this->_stepTemplateClass->set("s", "FOLDER_MESSAGE_MODULES", "");
         if (strlen($folders) > 0) {
             $folders = substr($folders, 0, strlen($folders) - 2);
         }
@@ -85,11 +91,22 @@ class cSetupClientMode extends cSetupMask {
 
             $oLabel = new cHTMLLabel($sChoice, $oRadio->getId());
 
-            $this->_oStepTemplate->set("s", "CONTROL_" . $sKey, $oRadio->render());
-            $this->_oStepTemplate->set("s", "LABEL_" . $sKey, $oLabel->render());
+            $this->_stepTemplateClass->set("s", "CONTROL_" . $sKey, $oRadio->render());
+            $this->_stepTemplateClass->set("s", "LABEL_" . $sKey, $oLabel->render());
         }
 
         $this->setNavigation($previous, $next);
+    }
+
+    /**
+     * Old constructor
+     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     * @param $step
+     * @param $previous
+     * @param $next
+     */
+    function cSetupClientMode($step, $previous, $next) {
+        $this->__construct($step, $previous, $next);
     }
 
 }

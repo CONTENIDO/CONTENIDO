@@ -21,32 +21,42 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cSetupInstaller extends cSetupMask
 {
-    function cSetupInstaller($step) {
-        cSetupMask::cSetupMask("templates/setup/forms/installer.tpl", $step);
 
-        $this->_oStepTemplate->set("s", "IFRAMEVISIBILITY", (CON_SETUP_DEBUG) ? 'visible' : 'hidden');
-        $this->_oStepTemplate->set("s", "DBUPDATESCRIPT", "index.php?c=db");
+    public function __construct($step) {
+        cSetupMask::__construct("templates/setup/forms/installer.tpl", $step);
+
+        $this->_stepTemplateClass->set("s", "IFRAMEVISIBILITY", (CON_SETUP_DEBUG) ? 'visible' : 'hidden');
+        $this->_stepTemplateClass->set("s", "DBUPDATESCRIPT", "index.php?c=db");
 
         switch ($_SESSION["setuptype"]) {
             case "setup":
                 $this->setHeader(i18n("System Installation", "setup"));
-                $this->_oStepTemplate->set("s", "TITLE", i18n("System Installation", "setup"));
-                $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("CONTENIDO will be installed, please wait. This process may take several moments!", "setup"));
-                $this->_oStepTemplate->set("s", "DONEINSTALLATION", i18n("Setup completed installing. Click on next to continue.", "setup"));
-                $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Setup is installing, please wait...", "setup"));
+                $this->_stepTemplateClass->set("s", "TITLE", i18n("System Installation", "setup"));
+                $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("CONTENIDO will be installed, please wait. This process may take several moments!", "setup"));
+                $this->_stepTemplateClass->set("s", "DONEINSTALLATION", i18n("Setup completed installing. Click on next to continue.", "setup"));
+                $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("Setup is installing, please wait...", "setup"));
                 $_SESSION["upgrade_nextstep"] = "setup8";
                 $this->setNavigation("", "setup8");
                 break;
             case "upgrade":
                 $this->setHeader(i18n("System Upgrade", "setup"));
-                $this->_oStepTemplate->set("s", "TITLE", i18n("System Upgrade", "setup"));
-                $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("CONTENIDO will be upgraded, please wait. This process may take several moments!", "setup"));
-                $this->_oStepTemplate->set("s", "DONEINSTALLATION", i18n("Setup completed upgrading. Click on next to continue.", "setup"));
-                $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Setup is upgrading, please wait...", "setup"));
+                $this->_stepTemplateClass->set("s", "TITLE", i18n("System Upgrade", "setup"));
+                $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("CONTENIDO will be upgraded, please wait. This process may take several moments!", "setup"));
+                $this->_stepTemplateClass->set("s", "DONEINSTALLATION", i18n("Setup completed upgrading. Click on next to continue.", "setup"));
+                $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("Setup is upgrading, please wait...", "setup"));
                 $_SESSION["upgrade_nextstep"] = "ugprade6";
                 $this->setNavigation("", "upgrade6");
                 break;
         }
+    }
+
+    /**
+     * Old constructor
+     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     * @param $step
+     */
+    public function cSetupInstaller($step) {
+        $this->__construct($step);
     }
 }
 
