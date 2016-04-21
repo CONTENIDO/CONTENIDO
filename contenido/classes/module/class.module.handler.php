@@ -1172,7 +1172,7 @@ class cModuleHandler {
      *         string
      */
     protected static function _getModulePath() {
-         return self::_modulePath;
+         return self::$_modulePath;
     }
 
 }
