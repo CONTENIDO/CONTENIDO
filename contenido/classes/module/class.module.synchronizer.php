@@ -342,8 +342,6 @@ class cModuleSynchronizer extends cModuleHandler {
      * @param int $client
      *         client of the new module
      *          ToDo: Remove it, because we use cRegisty class
-     * @param string $type
-     *         type of the new module
      */
     private function _addModul($name, $client = 0) {
 
