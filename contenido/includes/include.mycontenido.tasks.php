@@ -43,21 +43,34 @@ if (isset($_REQUEST["listsubmit"])) {
 class TODOBackendList extends cGuiScrollList {
 
     /**
-     *
-     * @var unknown_type
+     * @var array
      */
-    var $statustypes;
+    protected $_statustypes;
 
     /**
-     *
+     * @var array
      */
-    function TODOBackendList() {
+    protected $_prioritytypes;
+
+    /**
+     * TODOBackendList constructor.
+     */
+    public function __construct() {
         global $todoitems;
 
         parent::__construct();
 
-        $this->statustypes = $todoitems->getStatusTypes();
-        $this->prioritytypes = $todoitems->getPriorityTypes();
+        $this->_statustypes = $todoitems->getStatusTypes();
+        $this->_prioritytypes = $todoitems->getPriorityTypes();
+    }
+
+
+    /**
+     * Old constructor
+     */
+    public function TODOBackendList() {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
+        $this->__construct();
     }
 
     /**
@@ -67,7 +80,7 @@ class TODOBackendList extends cGuiScrollList {
      * @param unknown_type $column
      *         The current column which is being rendered
      */
-    function onRenderColumn($column) {
+    public function onRenderColumn($column) {
         if ($column == 6 || $column == 5) {
             $this->objItem->updateAttributes(array("align" => "center"));
         } else {
@@ -93,7 +106,7 @@ class TODOBackendList extends cGuiScrollList {
      * @param unknown_type $hiddendata
      * @return unknown
      */
-    function convert($key, $value, $hidden) {
+    public function convert($key, $value, $hidden) {
         global $link, $dateformat, $cfg;
 
         $backendUrl = cRegistry::getBackendUrl();
@@ -129,18 +142,18 @@ class TODOBackendList extends cGuiScrollList {
                     break;
             }
 
-            if (!array_key_exists($value, $this->statustypes)) {
+            if (!array_key_exists($value, $this->_statustypes)) {
                 return i18n("No status type set");
             }
 
             $backendUrl = cRegistry::getBackendUrl();
 
             $image = new cHTMLImage($backendUrl . $cfg["path"]["images"] . "reminder/" . $img);
-            $image->setAlt($this->statustypes[$value]);
+            $image->setAlt($this->_statustypes[$value]);
 
             //Do not display statuicon, only show statustext
             //return $image->render();
-            return $this->statustypes[$value];
+            return $this->_statustypes[$value];
         }
 
         if ($key == 7) {
@@ -194,7 +207,7 @@ class TODOBackendList extends cGuiScrollList {
             }
 
             $image = new cHTMLImage($backendUrl . $cfg["path"]["images"] . "reminder/" . $img);
-            $image->setAlt($this->prioritytypes[$p]);
+            $image->setAlt($this->_prioritytypes[$p]);
             return $image->render();
         }
 
