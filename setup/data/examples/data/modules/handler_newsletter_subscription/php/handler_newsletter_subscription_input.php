@@ -15,6 +15,7 @@
 // Initialisation
 $oClientLang = new cApiClientLanguage(false, $client, $lang);
 $oClient     = new cApiClient($client);
+$cnumber     = 1;
 
 /*
  *  Used variables:
@@ -29,6 +30,8 @@ $oClient     = new cApiClient($client);
  *  HandlerID:       ID of handler article
  *  ChangeEMailID:   ID of change e-mail handler article
  */
+
+echo 'module handler_newsletter_subscription';
 $aSettings = array(
     'JoinSel'         => $oClientLang->getProperty('newsletter', 'joinsel'),
     'JoinMultiple'    => $oClientLang->getProperty('newsletter', 'joinmultiple'),
@@ -44,8 +47,11 @@ $aSettings = array(
 
 // Setting default values
 // If there is no selection option set or if no groups has been selected, activate option Default
-if ($aSettings['JoinSel'] == '' || $aSettings['JoinGroups'] == '') {
+/*if ($aSettings['JoinSel'] == '' || $aSettings['JoinGroups'] == '') {
     $aSettings['JoinSel'] = "Default";
+}*/
+if ($aSettings['JoinSel'] == '' || ($aSettings['JoinSel'] == 'UserSelected' && $aSettings['JoinGroups'] == '')) {
+    $aSettings['JoinSel'] = 'Default';
 }
 if ($aSettings['FrontendConfirm'] == '') {
     $aSettings['FrontendConfirm'] = "ActivateUser";
@@ -59,7 +65,7 @@ if (!is_numeric($_REQUEST['selHandlerCatArt'.$cnumber]) || $_REQUEST['selHandler
 
 // Saving changes, if any
 if ($_REQUEST['hidAction'.$cnumber] == 'save') {
-    if ($_REQUEST['radJoin'.$cnumber] != '' && $_REQUEST['radJoin'.$cnumber] != $aSettings['JoinSel']) {
+    if ($_REQUEST['radJoin'.$cnumber] != '') {
         $aSettings['JoinSel'] = $_REQUEST['radJoin'.$cnumber];
         $oClientLang->setProperty('newsletter', 'joinsel', $aSettings['JoinSel']);
     }
@@ -67,8 +73,8 @@ if ($_REQUEST['hidAction'.$cnumber] == 'save') {
         $aSettings['JoinMultiple'] = $_REQUEST['ckbJoinMultiple'.$cnumber];
         $oClientLang->setProperty('newsletter', 'joinmultiple', $aSettings['JoinMultiple']);
     }
-    if ($_REQUEST['hidJoinGroups'.$cnumber] != '' && $_REQUEST['hidJoinGroups'.$cnumber] != $aSettings['JoinGroups']) {
-        $aSettings['JoinGroups'] = $_REQUEST['hidJoinGroups'.$cnumber];
+    if (isset($_REQUEST['selGroup'.$cnumber]) && is_array($_REQUEST['selGroup'.$cnumber])) {
+        $aSettings['JoinGroups'] = implode(',', $_REQUEST['selGroup'.$cnumber]);
         $oClientLang->setProperty('newsletter', 'joingroups', $aSettings['JoinGroups']);
     }
     if ($_REQUEST['selMessageType'.$cnumber] != $aSettings['JoinMessageType']) {
@@ -144,16 +150,17 @@ if ($oRcpGroups->Count() == 0) {
     } else {
         $oRadJoinDefault = new cHTMLRadioButton('radJoin'.$cnumber, 'Default');
     }
-    $oRadJoinDefault->setEvent('click', "document.forms[0].elements['ckbJoinMultiple".$cnumber."'].disabled = true; document.forms[0].selGroup".$cnumber.".disabled = true;");
+    //$oRadJoinDefault->setEvent('click', "document.forms[0].elements['ckbJoinMultiple".$cnumber."'].disabled = true; document.forms[0].selGroup".$cnumber.".disabled = true;");
     $oCfgTable->setCell('join_01', 1, $oRadJoinDefault->toHTML(false).mi18n("DEFAULT_GROUP"));
 
     // Join admin selected groups automatically
     if ($aSettings['JoinSel'] == 'Selected') {
+        echo 'yahshasdfhsadfhasdhfhs';
         $oRadJoinSelected = new cHTMLRadioButton('radJoin'.$cnumber, 'Selected', '', true);
     } else {
         $oRadJoinSelected = new cHTMLRadioButton('radJoin'.$cnumber, 'Selected');
     }
-    $oRadJoinSelected->setEvent('click', "document.forms[0].elements['ckbJoinMultiple".$cnumber."'].disabled = false; document.forms[0].selGroup".$cnumber.".disabled = false;");
+    //$oRadJoinSelected->setEvent('click', "document.forms[0].elements['ckbJoinMultiple".$cnumber."'].disabled = false; document.forms[0].selGroup".$cnumber.".disabled = false;");
     $oCfgTable->setCell('join_02', 0, '');
     $oCfgTable->setCell('join_02', 1, $oRadJoinSelected->toHTML(false).mi18n("SELECTED_GROUP_S"));
 
@@ -165,7 +172,7 @@ if ($oRcpGroups->Count() == 0) {
         $oRadJoinUserSel  = new cHTMLRadioButton('radJoin'.$cnumber, 'UserSelected');
         $oCkbJoinMultiple = new cHTMLCheckbox('ckbJoinMultiple'.$cnumber, 'enabled', '', false, true);
     }
-    $oRadJoinUserSel->setEvent('click', "document.forms[0].elements['ckbJoinMultiple".$cnumber."'].disabled = false; document.forms[0].selGroup".$cnumber.".disabled = false;");
+    //$oRadJoinUserSel->setEvent('click', "document.forms[0].elements['ckbJoinMultiple".$cnumber."'].disabled = false; document.forms[0].selGroup".$cnumber.".disabled = false;");
     $oCfgTable->setCell('join_03', 0, '');
     $oCfgTable->setCell('join_03', 1, $oRadJoinUserSel->toHTML(false).mi18n("GROUP_S_USER_SELECTED").'<br />'."\n".$oCkbJoinMultiple->toHTML(false).mi18n("GROUP_SELECTION_MULTIPLE"));
 
@@ -245,7 +252,7 @@ $sSkript = "if (this.checked) {
               document.forms[0].elements['CMS_VAR[6]'][0].disabled = true;
               document.forms[0].elements['CMS_VAR[6]'][1].disabled = true;
               document.forms[0].elements['CMS_VAR[6]'][2].disabled = true;}";
-$oCkbLink->setEvent("click", $sSkript);
+//$oCkbLink->setEvent("click", $sSkript);
 
 $oCfgTable->setCell('link_01', 1, $oCkbLink->toHTML(false).mi18n("ACTIVATE_LINK"));
 
@@ -287,16 +294,16 @@ if ($aSettings['FrontendLink'] == '') {
     $oRadDelNothing->setDisabled(true);
 }
 $oCfgTable->setCell('link_02', 1, mi18n("CONFIRMATION_MEANS_COLON").'<br />'.
-                    $oRadActivateUser->toHTML(false).mi18n("ACTIVATE").
-                    $oRadActivateNothing->toHTML(false).mi18n("NO_CHANGES"));
+    $oRadActivateUser->toHTML(false).mi18n("ACTIVATE").
+    $oRadActivateNothing->toHTML(false).mi18n("NO_CHANGES"));
 
 // Link: Cancellation options
 $oCfgTable->setCell('link_03', 0, '');
 
 $oCfgTable->setCell('link_03', 1, mi18n("CANCELLATION_MEANS_COLON").'<br />'.
-                    $oRadDelDelete->toHTML(false).mi18n("DELETE").
-                    $oRadDelDisable->toHTML(false).mi18n("DISABLE").
-                    $oRadDelNothing->toHTML(false).mi18n("NO_CHANGES"));
+    $oRadDelDelete->toHTML(false).mi18n("DELETE").
+    $oRadDelDisable->toHTML(false).mi18n("DISABLE").
+    $oRadDelNothing->toHTML(false).mi18n("NO_CHANGES"));
 
 $oCfgTable->render(true);
 

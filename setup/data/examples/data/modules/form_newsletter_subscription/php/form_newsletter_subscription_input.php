@@ -14,7 +14,7 @@
 
 // Initialisation
 $oClientLang = new cApiClientLanguage(false, $client, $lang);
-
+$cnumber     = 2;
 /*
  *  Used variables:
  *  JoinSel:         Selection, which group will be joined (Default, Selected, UserSelected)
@@ -58,8 +58,8 @@ if ($_REQUEST['hidAction'.$cnumber] == 'save') {
         $aSettings['JoinMultiple'] = $_REQUEST['ckbJoinMultiple'.$cnumber];
         $oClientLang->setProperty('newsletter', 'joinmultiple', $aSettings['JoinMultiple']);
     }
-    if ($_REQUEST['hidJoinGroups'.$cnumber] != '' && $_REQUEST['hidJoinGroups'.$cnumber] != $aSettings['JoinGroups']) {
-        $aSettings['JoinGroups'] = $_REQUEST['hidJoinGroups'.$cnumber];
+    if (isset($_REQUEST['selGroup'.$cnumber]) && is_array($_REQUEST['selGroup'.$cnumber])) {
+        $aSettings['JoinGroups'] = implode(',', $_REQUEST['selGroup'.$cnumber]);
         $oClientLang->setProperty('newsletter', 'joingroups', $aSettings['JoinGroups']);
     }
     if ($_REQUEST['selMessageType'.$cnumber] != $aSettings['JoinMessageType']) {
@@ -148,6 +148,8 @@ if ($oRcpGroups->Count() == 0) {
     $oCfgTable->setCell('join_03', 1, $oRadJoinUserSel->toHTML(false).mi18n("GROUP_USER_SELECTED").'<br />'."\n".$oCkbJoinMultiple->toHTML(false).mi18n("MULTIPLE_GROUP_SELECTION"));
 
     $oCfgTable->setCell('groups', 0, mi18n("SELECT_GROUP_S_COLON"));
+
+
 
     // Show groups
     // Trick: To save multiple selections in <select>-Element, add some JS which saves the
