@@ -422,7 +422,7 @@ class UI_Config_Table {
      *
      * @param string $code
      */
-    protected function setCellTemplate($code) {
+    public function setCellTemplate($code) {
         $this->_TplCellCode = $code;
     }
 
@@ -430,7 +430,7 @@ class UI_Config_Table {
      *
      * @param string $path
      */
-    protected function setTableTemplateFile($path) {
+    public function setTableTemplateFile($path) {
         $this->_TplTableFile = $path;
     }
 
@@ -441,7 +441,7 @@ class UI_Config_Table {
      * @param string $cell
      * @param string $content
      */
-    protected function setCell($row, $cell, $content) {
+    public function setCell($row, $cell, $content) {
         $this->_Cells[$row][$cell] = $content;
         $this->_CellAlignment[$row][$cell] = "";
     }
@@ -453,7 +453,7 @@ class UI_Config_Table {
      * @param unknown_type $cell
      * @param unknown_type $alignment
      */
-    protected function setCellAlignment($row, $cell, $alignment) {
+    public function setCellAlignment($row, $cell, $alignment) {
         $this->_CellAlignment[$sRow][$sCell] = $sAlignment;
     }
 
@@ -464,7 +464,7 @@ class UI_Config_Table {
      * @param unknown_type $cell
      * @param unknown_type $alignment
      */
-    protected function setCellVAlignment($row, $cell, $alignment) {
+    public function setCellVAlignment($row, $cell, $alignment) {
         $this->_CellVAlignment[$row][$cell] = $alignment;
     }
 
@@ -475,7 +475,7 @@ class UI_Config_Table {
      * @param unknown_type $cell
      * @param unknown_type $class
      */
-    function setCellClass($row, $cell, $class) {
+    public function setCellClass($row, $cell, $class) {
         $this->_CellClass[$row][$cell] = $class;
     }
 
