@@ -31,7 +31,6 @@ $cnumber     = 1;
  *  ChangeEMailID:   ID of change e-mail handler article
  */
 
-echo 'module handler_newsletter_subscription';
 $aSettings = array(
     'JoinSel'         => $oClientLang->getProperty('newsletter', 'joinsel'),
     'JoinMultiple'    => $oClientLang->getProperty('newsletter', 'joinmultiple'),
@@ -47,9 +46,6 @@ $aSettings = array(
 
 // Setting default values
 // If there is no selection option set or if no groups has been selected, activate option Default
-/*if ($aSettings['JoinSel'] == '' || $aSettings['JoinGroups'] == '') {
-    $aSettings['JoinSel'] = "Default";
-}*/
 if ($aSettings['JoinSel'] == '' || ($aSettings['JoinSel'] == 'UserSelected' && $aSettings['JoinGroups'] == '')) {
     $aSettings['JoinSel'] = 'Default';
 }
