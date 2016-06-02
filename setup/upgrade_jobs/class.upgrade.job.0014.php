@@ -28,7 +28,6 @@ class cUpgradeJob_0014 extends cUpgradeJobAbstract {
     public $maxVersion = "4.9.4";
 
     public function _execute() {
-        $cfg = cRegistry::getConfig();
 
         if ($_SESSION['setuptype'] == 'upgrade') {
 
