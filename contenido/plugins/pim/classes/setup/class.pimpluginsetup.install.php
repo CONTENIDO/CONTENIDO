@@ -285,9 +285,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
      */
     private function _installCheckRequirements() {
 
-        // Get config variables
-        $cfg = cRegistry::getConfig();
-
         // Check min CONTENIDO version
         if (version_compare(CON_VERSION, parent::$XmlRequirements->contenido->attributes()->minversion, '<')) {
             parent::error(sprintf(i18n('You have to install CONTENIDO <strong>%s</strong> or higher to install this plugin!', 'pim'), parent::$XmlRequirements->contenido->attributes()->minversion));
