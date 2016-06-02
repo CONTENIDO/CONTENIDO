@@ -146,17 +146,14 @@ if ($oRcpGroups->Count() == 0) {
     } else {
         $oRadJoinDefault = new cHTMLRadioButton('radJoin'.$cnumber, 'Default');
     }
-    //$oRadJoinDefault->setEvent('click', "document.forms[0].elements['ckbJoinMultiple".$cnumber."'].disabled = true; document.forms[0].selGroup".$cnumber.".disabled = true;");
     $oCfgTable->setCell('join_01', 1, $oRadJoinDefault->toHTML(false).mi18n("DEFAULT_GROUP"));
 
     // Join admin selected groups automatically
     if ($aSettings['JoinSel'] == 'Selected') {
-        echo 'yahshasdfhsadfhasdhfhs';
         $oRadJoinSelected = new cHTMLRadioButton('radJoin'.$cnumber, 'Selected', '', true);
     } else {
         $oRadJoinSelected = new cHTMLRadioButton('radJoin'.$cnumber, 'Selected');
     }
-    //$oRadJoinSelected->setEvent('click', "document.forms[0].elements['ckbJoinMultiple".$cnumber."'].disabled = false; document.forms[0].selGroup".$cnumber.".disabled = false;");
     $oCfgTable->setCell('join_02', 0, '');
     $oCfgTable->setCell('join_02', 1, $oRadJoinSelected->toHTML(false).mi18n("SELECTED_GROUP_S"));
 
@@ -248,7 +245,6 @@ $sSkript = "if (this.checked) {
               document.forms[0].elements['CMS_VAR[6]'][0].disabled = true;
               document.forms[0].elements['CMS_VAR[6]'][1].disabled = true;
               document.forms[0].elements['CMS_VAR[6]'][2].disabled = true;}";
-//$oCkbLink->setEvent("click", $sSkript);
 
 $oCfgTable->setCell('link_01', 1, $oCkbLink->toHTML(false).mi18n("ACTIVATE_LINK"));
 
