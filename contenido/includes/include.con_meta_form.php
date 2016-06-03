@@ -90,18 +90,36 @@ switch ($versioning->getState()) {
                     $selectedArticleId = 'current';
                 }
 
+                // Execute cec hook
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
+                    'idart' => $artLangVersion->get("idart"),
+                    'idlang' => cRegistry::getLanguageId()
+                ));
+
             } else if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
                 // version->editable
                 $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
                 $artLangVersion->markAsEditable('meta');
                 $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action, $selectedArticleId);
                 $selectedArticleId = 'editable';
+
+                // Execute cec hook
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
+                    'idart' => $artLangVersion->get("idart"),
+                    'idlang' => cRegistry::getLanguageId()
+                ));
             } else if ($_REQUEST['idArtLangVersion'] == 'current') {
                 // current->editable
                 $artLang = new cApiArticleLanguage((int) $_REQUEST['idartlang']);
                 $artLang->markAsEditable('meta');
                 $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action, $selectedArticleId);
                 $selectedArticleId = 'editable';
+
+                // Execute cec hook
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
+                    'idart' => $artLangVersion->get("idart"),
+                    'idlang' => cRegistry::getLanguageId()
+                ));
             }
         }
 
