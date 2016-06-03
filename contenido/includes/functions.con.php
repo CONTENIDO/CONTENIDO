@@ -1437,6 +1437,10 @@ function conFlagOnOffline() {
         $sql = "UPDATE " . $cfg['tab']['art_lang'] . " SET online = 0 WHERE idartlang = " . (int) $id;
         $db->query($sql);
     }
+    if(count($ids) > 0) {
+        // Execute cec hook
+        cApiCecHook::execute('Contenido.Article.conFlagOnOffline', $ids);
+    }
 
     // Set all articles which are in between of our start/endtime to online
     $where = "NOW() > datestart AND (NOW() < dateend OR dateend = '0000-00-00 00:00:00') AND " . "online = 0 AND timemgmt = 1";
@@ -1446,6 +1450,10 @@ function conFlagOnOffline() {
         $sql = "UPDATE " . $cfg['tab']['art_lang'] . " SET online = 1, published = datestart WHERE idartlang = " . (int) $id;
         $db->query($sql);
     }
+    if(count($ids) > 0) {
+        // Execute cec hook
+        cApiCecHook::execute('Contenido.Article.conFlagOnOffline', $ids);
+    }
 
     // Set all articles after our endtime to offline
     $where = "NOW() > dateend AND dateend != '0000-00-00 00:00:00' AND timemgmt = 1";
@@ -1454,6 +1462,10 @@ function conFlagOnOffline() {
     foreach ($ids as $id) {
         $sql = "UPDATE " . $cfg['tab']['art_lang'] . " SET online = 0 WHERE idartlang = " . (int) $id;
         $db->query($sql);
+    }
+    if(count($ids) > 0) {
+        // Execute cec hook
+        cApiCecHook::execute('Contenido.Article.conFlagOnOffline', $ids);
     }
 }
 
