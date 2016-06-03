@@ -200,6 +200,7 @@ if (is_dir($localePath)) {
 // Some general includes
 cInclude('includes', 'functions.general.php');
 cInclude('includes', 'functions.i18n.php');
+cInclude('includes', 'functions.lang.php');
 
 // Initialization of CEC
 $_cecRegistry = cApiCecRegistry::getInstance();
