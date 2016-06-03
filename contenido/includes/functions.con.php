@@ -1456,7 +1456,7 @@ function conFlagOnOffline() {
     }
 
     // Set all articles after our endtime to offline
-    $where = "NOW() > dateend AND dateend != '0000-00-00 00:00:00' AND timemgmt = 1";
+    $where = "NOW() > dateend AND dateend != '0000-00-00 00:00:00' AND timemgmt = 1 AND online = 1";
     $oArtLangColl->resetQuery();
     $ids = $oArtLangColl->getIdsByWhereClause($where);
     foreach ($ids as $id) {
