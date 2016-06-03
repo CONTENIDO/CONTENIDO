@@ -458,7 +458,12 @@ class cAjaxRequest {
                     'type' => 'authentication_failure'
                 ));
                 break;
-
+            case 'custom':
+                $string = cApiCecHook::executeAndReturn('Contenido.AjaxMain.CustomCall', $_REQUEST['method']);
+                if($string === NULL) {
+                    $string = 'Unknown Custom Ajax Action';
+                }
+                break;
             default:
                 // If action is unknown generate error message
                 $string = 'Unknown Ajax Action';
