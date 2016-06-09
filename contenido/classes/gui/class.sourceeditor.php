@@ -27,7 +27,7 @@ class cGuiSourceEditor extends cGuiPage {
      *
      * @var string
      */
-    protected $filename;
+    protected $_filename;
 
     /**
      * Name of the file that is being edited.
@@ -37,42 +37,42 @@ class cGuiSourceEditor extends cGuiPage {
      *
      * @var string
      */
-    protected $versionfilename;
+    protected $_versionfilename;
 
     /**
      * Full path to the file that is being edited.
      *
      * @var string
      */
-    protected $filepath;
+    protected $_filepath;
 
     /**
      * CodeMirror type of the file that is being edited.
      *
      * @var string
      */
-    protected $filetype;
+    protected $_filetype;
 
     /**
      * CodeMirror instance.
      *
      * @var object
      */
-    protected $codeMirror;
+    protected $_codeMirror;
 
     /**
      * Read-only mode or not.
      *
      * @var bool
      */
-    protected $readOnly;
+    protected $_readOnly;
 
     /**
      * Versioning or not.
      *
      * @var bool
      */
-    protected $versioning;
+    protected $_versioning;
 
     /**
      * Constructor to create an instance of this class.
@@ -91,7 +91,13 @@ class cGuiSourceEditor extends cGuiPage {
      *         path from the type and the area
      */
     public function __construct($filename, $versioning = true, $filetype = '', $filepath = '') {
-        global $cfg, $cfgClient, $client, $perm, $area, $action, $belang;
+        global $belang, $cfgClient;
+
+        $cfg = cRegistry::getConfig();
+        $client = cRegistry::getClientId();
+        $perm = cRegistry::getPerm();
+        $area = cRegistry::getArea();
+        $action = cRegistry::getAction();
 
         // call parent constructor
         parent::__construct("generic_source_editor");
@@ -125,21 +131,21 @@ class cGuiSourceEditor extends cGuiPage {
         }
 
         // assign variables
-        $this->filetype = $filetype;
-        $this->filepath = $filepath;
+        $this->_filetype = $filetype;
+        $this->_filepath = $filepath;
 
-        $this->readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
-        if($this->readOnly) {
+        $this->_readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
+        if($this->_readOnly) {
             cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
         }
 
-        $this->filename = $filename;
+        $this->_filename = $filename;
 
         // include the class and create the codemirror instance
         cInclude('external', 'codemirror/class.codemirror.php');
-        $this->codeMirror = new CodeMirror('code', $this->filetype, substr(strtolower($belang), 0, 2), true, $cfg, !$this->readOnly);
+        $this->_codeMirror = new CodeMirror('code', $this->_filetype, substr(strtolower($belang), 0, 2), true, $cfg, !$this->_readOnly);
 
-        $this->versioning = $versioning;
+        $this->_versioning = $versioning;
 
         // update the edited file by using the super global _REQUEST
         $this->update($_REQUEST);
@@ -152,7 +158,15 @@ class cGuiSourceEditor extends cGuiPage {
      *         Request array. Usually _REQUEST
      */
     protected function update($req) {
-        global $cfg, $cfgClient, $db, $client, $area, $frame, $perm, $action;
+        global $cfgClient;
+
+        $cfg = cRegistry::getConfig();
+        $client = cRegistry::getClientId();
+        $db = cRegistry::getDb();
+        $frame = cRegistry::getFrame();
+        $perm = cRegistry::getPerm();
+        $area = cRegistry::getArea();
+        $action = cRegistry::getAction();
 
         // check permissions
         if (!$perm->have_perm_area_action($area, $action)) {
@@ -160,7 +174,7 @@ class cGuiSourceEditor extends cGuiPage {
         }
 
         // if read only is activated or no data has been sent, skip the update step
-        if( ($this->readOnly || ($req['status'] != 'send')) && $req['delfile'] == '') {
+        if( ($this->_readOnly || ($req['status'] != 'send')) && $req['delfile'] == '') {
             if($req['action'] == '') {
                $this->abortRendering();
             }
@@ -191,7 +205,7 @@ class cGuiSourceEditor extends cGuiPage {
         // delete the specified file
         if($req['delfile'] != '') {
             // check if it exists
-            if(cFileHandler::exists($this->filepath . $req['delfile'])) {
+            if(cFileHandler::exists($this->_filepath . $req['delfile'])) {
                 // load information
                 $fileInfos = new cApiFileInformationCollection();
                 $fileInfos->select('filename = \'' . $req['delfile'] . '\'');
@@ -206,7 +220,7 @@ class cGuiSourceEditor extends cGuiPage {
                 }
 
                 // remove the file
-                cFileHandler::remove($this->filepath . $req['delfile']);
+                cFileHandler::remove($this->_filepath . $req['delfile']);
 
                 // remove the file information
                 $fileInfos->removeFileInformation(array(
@@ -224,25 +238,25 @@ class cGuiSourceEditor extends cGuiPage {
         }
 
         // Set version filename
-        $this->versionfilename = $this->filename;
+        $this->_versionfilename = $this->_filename;
 
         // if the filename is empty, display an empty editor and create a new file
-        if(is_dir($this->filepath) && cFileHandler::writeable($this->filepath)) {
+        if(is_dir($this->_filepath) && cFileHandler::writeable($this->_filepath)) {
             // validate the file name
             if(!cFileHandler::validateFilename($req['file'], false)) {
                 $this->displayError(i18n('Not a valid filename!'));
                 return;
             }
             // check if the file exists already
-            if(cFileHandler::exists($this->filepath . '/' . $req['file'])) {
+            if(cFileHandler::exists($this->_filepath . '/' . $req['file'])) {
                 $this->displayError(i18n('A file with this name exists already'));
                 return;
             }
             // set the variables and create the file. Reload frames
-            $this->filepath = $this->filepath . '/' . $req['file'];
-            $this->filename = $req['file'];
+            $this->_filepath = $this->_filepath . '/' . $req['file'];
+            $this->_filename = $req['file'];
 
-            cFileHandler::write($this->filepath, '');
+            cFileHandler::write($this->_filepath, '');
 
             $this->reloadFrame('left_bottom', array(
                     'file' => $req['file']
@@ -251,17 +265,17 @@ class cGuiSourceEditor extends cGuiPage {
         }
 
         // save the old code and the old name
-        $oldCode = cFileHandler::read($this->filepath);
-        $oldName = $this->filename;
+        $oldCode = cFileHandler::read($this->_filepath);
+        $oldName = $this->_filename;
 
         // load the file information and update the description
         $fileInfos = new cApiFileInformationCollection();
-        $fileInfos->select('filename = \'' . $this->filename . '\'');
+        $fileInfos->select('filename = \'' . $this->_filename . '\'');
         $fileInfo = $fileInfos->next();
         $oldDesc = '';
         if($fileInfo == null) {
             // file information does not exist yet. Create the row
-            $fileInfo = $fileInfos->create($dbFileType, $this->filename, $req['description']);
+            $fileInfo = $fileInfos->create($dbFileType, $this->_filename, $req['description']);
         } else {
             $oldDesc = $fileInfo->get('description');
             if($oldDesc != $req['description']) {
@@ -270,17 +284,17 @@ class cGuiSourceEditor extends cGuiPage {
         }
 
         // rename the file
-        if($req['file'] != $this->filename) {
+        if($req['file'] != $this->_filename) {
             // validate the file name
             if(!cFileHandler::validateFilename($req['file'], false)) {
                 $this->displayError(i18n('Not a valid filename!'));
             } else {
                 // check if a file with that name exists already
-                if(!cFileHandler::exists(dirname($this->filepath) . '/' . $req['file'])) {
+                if(!cFileHandler::exists(dirname($this->_filepath) . '/' . $req['file'])) {
                     // rename the file and set the variables accordingly
-                    cFileHandler::rename($this->filepath, $req['file']);
-                    $this->filepath = dirname($this->filepath) . '/' . $req['file'];
-                    $this->filename = $req['file'];
+                    cFileHandler::rename($this->_filepath, $req['file']);
+                    $this->_filepath = dirname($this->_filepath) . '/' . $req['file'];
+                    $this->_filename = $req['file'];
 
                     // update the file information
                     $fileInfo->set('filename', $req['file']);
@@ -298,15 +312,15 @@ class cGuiSourceEditor extends cGuiPage {
         }
 
         // if the versioning should be updated and the code changed, create a versioning instance and update it
-        if($this->versioning && $oldCode != $req['code']) {
-            $fileInfoArray = $fileInfos->getFileInformation($this->versionfilename, $dbFileType);
-            $oVersion = new cVersionFile($fileInfo->get('idsfi'), $fileInfoArray, $req['file'], $dbFileType, $cfg, $cfgClient, $db, $client, $area, $frame, $this->versionfilename);
+        if($this->_versioning && $oldCode != $req['code']) {
+            $fileInfoArray = $fileInfos->getFileInformation($this->_versionfilename, $dbFileType);
+            $oVersion = new cVersionFile($fileInfo->get('idsfi'), $fileInfoArray, $req['file'], $dbFileType, $cfg, $cfgClient, $db, $client, $area, $frame, $this->_versionfilename);
             // Create new Layout Version in cms/version/css/ folder
             $oVersion->createNewVersion();
         }
 
         // write the code changes and display an error message or success message
-        if(cFileHandler::write($this->filepath, $req['code'])) {
+        if(cFileHandler::write($this->_filepath, $req['code'])) {
             // store the file information
             $fileInfo->store();
             $this->displayOk(i18n('Changes saved successfully!'));
@@ -319,13 +333,19 @@ class cGuiSourceEditor extends cGuiPage {
      * Renders the page.
      *
      * @see cGuiPage::render()
+     * @param cTemplate|null $template
+     * @param bool $return
+     * @throws cInvalidArgumentException
      */
-    public function render() {
-        global $area, $action, $cfg;
+    public function render($template = NULL, $return = false) {
+
+        $cfg = cRegistry::getConfig();
+        $area = cRegistry::getArea();
+        $action = cRegistry::getAction();
 
         // load the file information
         $fileInfos = new cApiFileInformationCollection();
-        $fileInfos->select('filename = \'' . $this->filename . '\'');
+        $fileInfos->select('filename = \'' . $this->_filename . '\'');
         $fileInfo = $fileInfos->next();
         $desc = '';
         if($fileInfo != null) {
@@ -336,16 +356,16 @@ class cGuiSourceEditor extends cGuiPage {
         $this->set('s', 'DESCRIPTION', $desc);
 
         // assign the codemirror script, and other variables
-        $this->set('s', 'CODEMIRROR_SCRIPT', $this->codeMirror->renderScript());
+        $this->set('s', 'CODEMIRROR_SCRIPT', $this->_codeMirror->renderScript());
         $this->set('s', 'AREA', $area);
         $this->set('s', 'ACTION', $action);
-        $this->set('s', 'FILENAME', $this->filename);
-        if(cFileHandler::readable($this->filepath) && $this->filename != '') {
-            $this->set('s', 'SOURCE', conHtmlentities(cFileHandler::read($this->filepath)));
+        $this->set('s', 'FILENAME', $this->_filename);
+        if(cFileHandler::readable($this->_filepath) && $this->_filename != '') {
+            $this->set('s', 'SOURCE', conHtmlentities(cFileHandler::read($this->_filepath)));
         } else {
             $this->set('s', 'SOURCE', '');
         }
-        if($this->readOnly) {
+        if($this->_readOnly) {
             // if the read only mode is activated, display a greyed out icon
             $this->set('s', 'SAVE_BUTTON_IMAGE', $cfg['path']['images'] . 'but_ok_off.gif');
             $this->set('s', 'SAVE_BUTTON_DESC', i18n('The administratos has disabled edits'));

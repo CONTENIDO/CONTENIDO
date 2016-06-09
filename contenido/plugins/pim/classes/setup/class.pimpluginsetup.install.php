@@ -285,9 +285,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
      */
     private function _installCheckRequirements() {
 
-        // Get config variables
-        $cfg = cRegistry::getConfig();
-
         // Check min CONTENIDO version
         if (version_compare(CON_VERSION, parent::$XmlRequirements->contenido->attributes()->minversion, '<')) {
             parent::error(sprintf(i18n('You have to install CONTENIDO <strong>%s</strong> or higher to install this plugin!', 'pim'), parent::$XmlRequirements->contenido->attributes()->minversion));
@@ -564,12 +561,27 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * Add entries at *_nav_main
      */
     private function _installAddNavMain() {
+        $cfg = cRegistry::getConfig();
+        $db = cRegistry::getDb();
 
     	// Initializing attribute array
     	$attributes = array();
 
         // Get Id of plugin
         $pluginId = parent::_getPluginId();
+
+        // Get idnavm informations to build an new id
+        $sql = 'SELECT MAX(idnavm) AS id FROM ' . $cfg['tab']['nav_main'];
+        $db->query($sql);
+
+        if ($db->nextRecord()) {
+            $idnavm = $db->f('id');
+
+            // id must be over 10.000
+            if ($idnavm < 10000) {
+                $idnavm = 10000;
+            }
+        }
 
         $navCount = count(parent::$XmlNavMain->nav);
         for ($i = 0; $i < $navCount; $i++) {
@@ -588,11 +600,20 @@ class PimPluginSetupInstall extends PimPluginSetup {
             	$attributes['name'] = str_replace('/', '', $attributes['name']);
             }
 
+            // Create new idnavm
+            $idnavm = $idnavm + 10;
+
+            // Removed the last number at idnavm
+            $idnavm = substr($idnavm, 0, strlen($idnavm) - 1);
+
+            // Last number is always a zero
+            $idnavm = cSecurity::toInteger($idnavm . 0);
+
             // Create a new entry at *_nav_main
-            $navMain = $this->_ApiNavMainCollection->create($attributes['name'], $location);
+            $this->_ApiNavMainCollection->create($attributes['name'], $location, $idnavm);
 
             // Set a relation
-            $this->_PimPluginRelationsCollection->create($navMain->get('idnavm'), $pluginId, 'navm');
+            $this->_PimPluginRelationsCollection->create($idnavm, $pluginId, 'navm');
         }
     }
 

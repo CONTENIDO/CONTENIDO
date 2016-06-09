@@ -76,7 +76,7 @@ class PimPluginCollection extends ItemCollection {
      * @return int
      */
     protected function _getNextId() {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
 
         $sql = 'SELECT MAX(idplugin) AS id FROM ' . $cfg['tab']['plugins'];
         $this->db->query($sql);

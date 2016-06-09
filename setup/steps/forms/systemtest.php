@@ -20,18 +20,24 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cSetupSystemtest extends cSetupMask {
 
-    private $systemtest;
+    private $_systemtest;
 
-    function cSetupSystemtest($step, $previous, $next) {
-        global $cfg;
+    /**
+     * cSetupSystemtest constructor.
+     * @param string $step
+     * @param bool $previous
+     * @param $next
+     */
+    public function __construct($step, $previous, $next) {
+        $cfg = cRegistry::getConfig();
 
-        cSetupMask::cSetupMask("templates/setup/forms/systemtest.tpl", $step);
+        cSetupMask::__construct("templates/setup/forms/systemtest.tpl", $step);
 
         $errors = false;
 
         $this->setHeader(i18n("System Test", "setup"));
-        $this->_oStepTemplate->set("s", "TITLE", i18n("System Test", "setup"));
-        $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Your system has been tested for compatibility with CONTENIDO:", "setup"));
+        $this->_stepTemplateClass->set("s", "TITLE", i18n("System Test", "setup"));
+        $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("Your system has been tested for compatibility with CONTENIDO:", "setup"));
 
         // reload i18n for contenido locale
         i18nInit('../data/locale/', $_SESSION['language']);
@@ -41,18 +47,18 @@ class cSetupSystemtest extends cSetupMask {
             setupInitializeCfgClient(true);
         }
 
-        $this->systemtest = new cSystemtest($cfg);
-        $this->systemtest->runTests(false);
-        $this->systemtest->testFilesystem($_SESSION["configmode"] == "save", $_SESSION['setuptype'] == 'upgrade');
+        $this->_systemtest = new cSystemtest($cfg);
+        $this->_systemtest->runTests(false);
+        $this->_systemtest->testFilesystem($_SESSION["configmode"] == "save", $_SESSION['setuptype'] == 'upgrade');
         if ($_SESSION['setuptype'] == 'setup') {
-            $this->systemtest->testFrontendFolderCreation();
+            $this->_systemtest->testFrontendFolderCreation();
         }
 
         $cHTMLErrorMessageList = new cHTMLErrorMessageList();
 
         if (is_null(getMySQLDatabaseExtension())) {
-            $this->systemtest->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("PHP MySQL Extension missing", "setup"), i18n("CONTENIDO requires the MySQL or MySQLi extension to access MySQL databases. Please configure PHP to use either MySQL or MySQLi.", "setup"));
-        } else if ($this->systemtest->testMySQL($_SESSION["dbhost"], $_SESSION["dbuser"], $_SESSION["dbpass"]) == cSystemtest::CON_MYSQL_OK) {
+            $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("PHP MySQL Extension missing", "setup"), i18n("CONTENIDO requires the MySQL or MySQLi extension to access MySQL databases. Please configure PHP to use either MySQL or MySQLi.", "setup"));
+        } else if ($this->_systemtest->testMySQL($_SESSION["dbhost"], $_SESSION["dbuser"], $_SESSION["dbpass"]) == cSystemtest::CON_MYSQL_OK) {
             $this->initDB();
         }
 
@@ -70,10 +76,10 @@ class cSetupSystemtest extends cSetupMask {
         }
 
         if ((int) ini_get('max_execution_time') < 60) {
-            $this->systemtest->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Unable to set max_execution_time", "setup"), i18n("Your PHP configuration for max_execution_time can not be changed via this script. We recommend setting the value for the installation or upgrade process to 60 seconds. You can try to execute the process with your current configuration. If the process is stopped, the system is not usable (any longer)", "setup"));
+            $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Unable to set max_execution_time", "setup"), i18n("Your PHP configuration for max_execution_time can not be changed via this script. We recommend setting the value for the installation or upgrade process to 60 seconds. You can try to execute the process with your current configuration. If the process is stopped, the system is not usable (any longer)", "setup"));
         }
 
-        $results = $this->systemtest->getResults();
+        $results = $this->_systemtest->getResults();
 
         foreach ($results as $result) {
             if ($result["result"]) {
@@ -104,7 +110,7 @@ class cSetupSystemtest extends cSetupMask {
 
         $cHTMLErrorMessageList->setContent($cHTMLFoldableErrorMessages);
 
-        $this->_oStepTemplate->set("s", "CONTROL_TESTRESULTS", $cHTMLErrorMessageList->render());
+        $this->_stepTemplateClass->set("s", "CONTROL_TESTRESULTS", $cHTMLErrorMessageList->render());
 
         if ($errors == true) {
             $this->setNavigation($previous, "");
@@ -124,15 +130,27 @@ class cSetupSystemtest extends cSetupMask {
             $link->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
             $link->setClass("nav navRefresh");
             $link->setContent("<span>R</span>"); // @todo traslation for
-                                                 // "refresh"
+            // "refresh"
 
-            $this->_oStepTemplate->set("s", "NEXT", $link->render());
+            $this->_stepTemplateClass->set("s", "NEXT", $link->render());
         } else {
             $this->setNavigation($previous, $next);
         }
     }
 
-    function doExistingOldPluginTests() {
+    /**
+     * Old constructor
+     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     * @param $step
+     * @param $previous
+     * @param $next
+     */
+    public function cSetupSystemtest($step, $previous, $next) {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
+       $this->__construct($step, $previous, $next);
+    }
+
+    public function doExistingOldPluginTests() {
         $db = getSetupMySQLDBConnection(false);
         $message = '';
 
@@ -184,12 +202,12 @@ class cSetupSystemtest extends cSetupMask {
         if ($message) {
             $message .= '<br>' . i18n('Please remove all old plugins before you continue. To transfer old plugin data, please copy the old plugin data tables into the new plugin data tables after the installation. The new plugintable names are the same, but contains the table prefix of CONTENIDO. Also delete the old plugin tables after data transfer.', "setup");
 
-            $this->systemtest->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Old Plugins are still installed", "setup"), $message);
+            $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Old Plugins are still installed", "setup"), $message);
         }
     }
 
-    function doChangedDirsFilesTest() {
-        global $cfg;
+    public function doChangedDirsFilesTest() {
+        $cfg = cRegistry::getConfig();
 
         $db = getSetupMySQLDBConnection(false);
         $version = getContenidoVersion($db, $cfg['tab']['system_prop']);
@@ -200,11 +218,11 @@ class cSetupSystemtest extends cSetupMask {
             $message = i18n("You are updating a previous version of CONTENIDO to %s. Some directories/files have been moved to other sections in %s.\n\nPlease ensure to copy contenido/includes/config.php to data/config/production/config.php and also other configuration files within contenido/includes/ to data/config/production/.", "setup");
             $message = sprintf($message, '4.9', '4.9');
             $message = nl2br($message);
-            $this->systemtest->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Attention: Some directories/files have been moved", "setup"), $message);
+            $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Attention: Some directories/files have been moved", "setup"), $message);
         }
     }
 
-    function checkCountryLanguageCode() {
+    public function checkCountryLanguageCode() {
         if ($_SESSION["setuptype"] != 'upgrade') {
             return;
         }
@@ -241,12 +259,12 @@ class cSetupSystemtest extends cSetupMask {
         }
 
         if (count($errors) > 0) {
-            $this->systemtest->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("The ISO codes are necessary to convert module translations.", "setup"), implode('<br/>', $errors));
+            $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("The ISO codes are necessary to convert module translations.", "setup"), implode('<br/>', $errors));
         }
     }
 
-    function initDB() {
-        $this->systemtest->checkSetupMysql($_SESSION['setuptype'], $_SESSION['dbname'], $_SESSION['dbprefix'], $_SESSION['dbcharset'], $_SESSION['dbcollation']);
+    public function initDB() {
+        $this->_systemtest->checkSetupMysql($_SESSION['setuptype'], $_SESSION['dbname'], $_SESSION['dbprefix'], $_SESSION['dbcharset'], $_SESSION['dbcollation']);
     }
 
 }

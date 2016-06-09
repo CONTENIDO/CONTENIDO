@@ -21,12 +21,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cSetupPath extends cSetupMask
 {
-    function cSetupPath($step, $previous, $next)
-    {
-        cSetupMask::cSetupMask("templates/setup/forms/pathinfo.tpl", $step);
+
+    /**
+     * cSetupPath constructor.
+     * @param string $step
+     * @param bool $previous
+     * @param $next
+     */
+    public function __construct($step, $previous, $next) {
+        cSetupMask::__construct("templates/setup/forms/pathinfo.tpl", $step);
         $this->setHeader(i18n("System Directories", "setup"));
-        $this->_oStepTemplate->set("s", "TITLE", i18n("System Directories", "setup"));
-        $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Please check the directories identified by the system. If you need to change a path, click on the name and enter the new path in the available input box.", "setup"));
+        $this->_stepTemplateClass->set("s", "TITLE", i18n("System Directories", "setup"));
+        $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("Please check the directories identified by the system. If you need to change a path, click on the name and enter the new path in the available input box.", "setup"));
 
         list($rootPath, $rootHttpPath) = getSystemDirectories(true);
 
@@ -48,9 +54,21 @@ class cSetupPath extends cSetupMask
 
         $cHTMLErrorMessageList->setContent($cHTMLFoldableErrorMessages);
 
-        $this->_oStepTemplate->set("s", "CONTROL_PATHINFO", $cHTMLErrorMessageList->render());
+        $this->_stepTemplateClass->set("s", "CONTROL_PATHINFO", $cHTMLErrorMessageList->render());
 
         $this->setNavigation($previous, $next);
+    }
+
+    /**
+     * Old constructor
+     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     * @param $step
+     * @param $previous
+     * @param $next
+     */
+    public function cSetupPath($step, $previous, $next) {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
+        $this->__construct($step, $previous, $next);
     }
 }
 ?>

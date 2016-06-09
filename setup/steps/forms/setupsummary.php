@@ -21,12 +21,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cSetupSetupSummary extends cSetupMask
 {
-    function cSetupSetupSummary($step, $previous, $next)
-    {
-        cSetupMask::cSetupMask("templates/setup/forms/setupsummary.tpl", $step);
+
+    /**
+     * cSetupSetupSummary constructor.
+     * @param $step
+     * @param $previuous
+     * @param $next
+     */
+    public function __construct($step, $previuous, $next) {
+        cSetupMask::__construct("templates/setup/forms/setupsummary.tpl", $step);
         $this->setHeader(i18n("Summary", "setup"));
-        $this->_oStepTemplate->set("s", "TITLE", i18n("Summary", "setup"));
-        $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Please check your settings and click on the next button to start the installation", "setup"));
+        $this->_stepTemplateClass->set("s", "TITLE", i18n("Summary", "setup"));
+        $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("Please check your settings and click on the next button to start the installation", "setup"));
 
         $cHTMLErrorMessageList = new cHTMLErrorMessageList();
 
@@ -42,10 +48,10 @@ class cSetupSetupSummary extends cSetupMask
         $messages = array(
             i18n("Installation type", "setup") . ":" => $sType,
             i18n("Database parameters", "setup") . ":" => i18n("Database host", "setup") . ": " . $_SESSION["dbhost"] . "<br>" .
-                                                 i18n("Database name", "setup") . ": " . $_SESSION["dbname"] . "<br>" .
-                                                 i18n("Database username", "setup") . ": " . $_SESSION["dbuser"] . "<br>" .
-                                                 i18n("Table prefix", "setup") . ": " . $_SESSION["dbprefix"] . "<br>" .
-                                                 i18n("Database character set", "setup") . ": " . $_SESSION["dbcharset"]
+                i18n("Database name", "setup") . ": " . $_SESSION["dbname"] . "<br>" .
+                i18n("Database username", "setup") . ": " . $_SESSION["dbuser"] . "<br>" .
+                i18n("Table prefix", "setup") . ": " . $_SESSION["dbprefix"] . "<br>" .
+                i18n("Database character set", "setup") . ": " . $_SESSION["dbcharset"]
         );
 
         if ($_SESSION["setuptype"] == "setup") {
@@ -65,9 +71,21 @@ class cSetupSetupSummary extends cSetupMask
 
         $cHTMLErrorMessageList->setContent($cHTMLFoldableErrorMessages);
 
-        $this->_oStepTemplate->set("s", "CONTROL_SETUPSUMMARY", $cHTMLErrorMessageList->render());
+        $this->_stepTemplateClass->set("s", "CONTROL_SETUPSUMMARY", $cHTMLErrorMessageList->render());
 
         $this->setNavigation($previous, $next);
+    }
+
+    /**
+     * Old constructor
+     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     * @param $step
+     * @param $previous
+     * @param $next
+     */
+    public function cSetupSetupSummary($step, $previous, $next) {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
+        $this->__construct($step, $previous, $next);
     }
 }
 

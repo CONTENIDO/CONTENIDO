@@ -24,7 +24,6 @@ class cUpgradeJob_0017 extends cUpgradeJobAbstract {
     public $maxVersion = "4.9.8";
 
     public function _execute() {
-        global $db, $cfg;
 
         if ($_SESSION['setuptype'] == 'upgrade') {
 

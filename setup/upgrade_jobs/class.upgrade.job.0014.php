@@ -28,7 +28,6 @@ class cUpgradeJob_0014 extends cUpgradeJobAbstract {
     public $maxVersion = "4.9.4";
 
     public function _execute() {
-        global $cfg;
 
         if ($_SESSION['setuptype'] == 'upgrade') {
 
@@ -83,6 +82,16 @@ class cUpgradeJob_0014 extends cUpgradeJobAbstract {
             if ($navsub !== null) {
             	$navsub->set('location', 'url_shortener/xml/;navigation/extra/url_shortener/main');
             	$navsub->store();
+            }
+
+            // mod_rewrite
+            // Get informations for mod_rewrite/xml;navigation/content/mod_rewrite
+            $navsub->loadBy('location', 'mod_rewrite/xml/;navigation/content/mod_rewrite');
+
+            // If entry exist, please delete it
+            if ($navsub !== null) {
+                $navsubColl = new cApiNavSubCollection();
+                $navsubColl->deleteByWhereClause("location = 'mod_rewrite/xml/;navigation/content/mod_rewrite'");
             }
 
         }

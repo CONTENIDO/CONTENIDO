@@ -846,7 +846,7 @@ class cSystemtest {
      *         true if the test passed and false if not
      */
     public function testMaxExecutionTime() {
-        return intval($this->getPHPIniSetting('max_execution_time')) >= 30;
+        return (intval($this->getPHPIniSetting('max_execution_time') == 0) || (intval($this->getPHPIniSetting('max_execution_time')) >= 30));
     }
 
     /**
@@ -1166,7 +1166,6 @@ class cSystemtest {
 
             $name = $file['filename'];
             $severity = $file['severity'];
-            $dir = $file['dir'];
             $frontend = $file['frontend'];
             $config = $file['config'];
 
@@ -1191,8 +1190,9 @@ class cSystemtest {
 
                     // If data/layouts or data/modules not exist, do not display an error message
                     // Cause: At CONTENIDO 4.8 both folders do not exist
+                    // Only for upgrade mode
 
-                    if (($file == "data/layouts" || $file == "data/modules") && !cDirHandler::exists($oneClient["path"]["frontend"] . $file)) {
+                    if ($_SESSION['setuptype'] == 'upgrade' && ($file == "data/layouts" || $file == "data/modules") && !cDirHandler::exists($oneClient["path"]["frontend"] . $file)) {
                         continue;
                     } else {
                         $ret = $this->testSingleFile($oneClient["path"]["frontend"] . $file, self::C_SEVERITY_WARNING, true);

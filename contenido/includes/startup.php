@@ -76,7 +76,7 @@ if (!defined('CON_ENVIRONMENT')) {
  */
 if (!defined('CON_VERSION')) {
 
-    define('CON_VERSION', '4.9.9');
+    define('CON_VERSION', '4.9.10');
 
 }
 
@@ -200,6 +200,7 @@ if (is_dir($localePath)) {
 // Some general includes
 cInclude('includes', 'functions.general.php');
 cInclude('includes', 'functions.i18n.php');
+cInclude('includes', 'functions.lang.php');
 
 // Initialization of CEC
 $_cecRegistry = cApiCecRegistry::getInstance();

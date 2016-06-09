@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-08 11:53+0200\n"
-"PO-Revision-Date: 2015-10-08 11:53+0100\n"
+"PO-Revision-Date: 2016-04-28 09:32+0200\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: de_DE\n"
@@ -13,8 +13,8 @@ msgstr ""
 "X-Poedit-KeywordsList: i18n\n"
 "X-Poedit-Keywords: i18n,trans\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-Basepath: ../../../\n"
-"X-Generator: Poedit 1.7.5\n"
+"X-Poedit-Basepath: ../../..\n"
+"X-Generator: Poedit 1.8.7\n"
 
 #: backend_search.php:321
 msgid "Thank you for saving this search from extinction!"
@@ -25,8 +25,7 @@ msgstr "Vielen Dank für die Speicherung dieser Suche!"
 #: classes/content_types/class.content.type.linkeditor.php:315
 #: includes/include.con_art_overview.php:83
 #: includes/include.con_art_overview.php:725
-#: includes/include.con_edit_form.php:696
-#: includes/include.stat_overview.php:88
+#: includes/include.con_edit_form.php:696 includes/include.stat_overview.php:88
 #: templates/standard/template.mycontenido_lastarticles.html:73
 #: templates/standard/template.mycontenido_lastarticles.html:113
 #: templates/standard/template.upl_artlist.html:30
@@ -60,9 +59,8 @@ msgstr "Suchergebnisse"
 
 #: backend_search.php:513 classes/class.ajax.php:157
 #: classes/content_types/class.content.type.teaser.php:862
-#: includes/include.con_art_overview.php:82
-#: includes/include.con_subnav.php:114 includes/include.logs.php:269
-#: templates/standard/template.symbolhelp.html:18
+#: includes/include.con_art_overview.php:82 includes/include.con_subnav.php:114
+#: includes/include.logs.php:269 templates/standard/template.symbolhelp.html:18
 #: templates/standard/template.symbolhelp.html:100
 #: templates/standard/template.symbolhelp.html:653
 #: templates/standard/template.upl_artlist.html:29
@@ -142,8 +140,7 @@ msgstr "Kein"
 msgid "Reminder"
 msgstr "Erinnerung"
 
-#: backend_search.php:721 classes/class.todo.php:197
-#: classes/class.todo.php:200
+#: backend_search.php:721 classes/class.todo.php:197 classes/class.todo.php:200
 msgid "Set reminder / add to todo list"
 msgstr "Wiedervorlage setzen / zur ToDo-Liste hinzufügen"
 
@@ -1389,8 +1386,7 @@ msgstr "-- Neues Layout --"
 
 #: classes/contenido/class.module.php:555
 #: includes/include.mod_edit_form.php:108
-#: includes/include.mod_edit_form.php:118
-#: includes/include.mod_overview.php:112
+#: includes/include.mod_edit_form.php:118 includes/include.mod_overview.php:112
 msgid "- Unnamed module -"
 msgstr "- Unbenanntes Modul -"
 
@@ -1699,8 +1695,7 @@ msgstr "Erstelle Verzeichnis in"
 #: includes/functions.stat.php:322 includes/functions.stat.php:418
 #: includes/functions.stat.php:654 includes/functions.stat.php:729
 #: includes/functions.stat.php:829 includes/functions.stat.php:896
-#: includes/include.upl_edit.php:70
-#: includes/include.upl_search_results.php:198
+#: includes/include.upl_edit.php:70 includes/include.upl_search_results.php:198
 #: includes/include.upl_search_results.php:201
 #: includes/include.upl_search_results.php:203
 #: templates/standard/template.upl_files_upload.html:23
@@ -1997,8 +1992,7 @@ msgstr "Die gesuchte Quelle"
 msgid "was not found"
 msgstr "wurde nicht gefunden"
 
-#: classes/gui/class.sourceeditor.php:82
-#: classes/gui/class.sourceeditor.php:140
+#: classes/gui/class.sourceeditor.php:82 classes/gui/class.sourceeditor.php:140
 #: classes/module/class.module.template.handler.php:442
 #: classes/module/class.module.template.handler.php:449
 #: classes/module/class.module.template.handler.php:455
@@ -2010,8 +2004,7 @@ msgstr "wurde nicht gefunden"
 #: includes/include.con_content_list.php:139
 #: includes/include.con_content_list.php:216
 #: includes/include.con_edit_form.php:1401
-#: includes/include.con_meta_form.php:36
-#: includes/include.con_translate.php:146
+#: includes/include.con_meta_form.php:36 includes/include.con_translate.php:146
 #: includes/include.grouprights_area.php:51
 #: includes/include.grouprights_con.php:44
 #: includes/include.grouprights_create.php:23
@@ -2771,9 +2764,8 @@ msgstr "Die Kategorie ist offline"
 #: includes/functions.stat.php:305 includes/functions.stat.php:306
 #: includes/functions.stat.php:637 includes/functions.stat.php:638
 #: includes/include.grouprights_con.php:293
-#: includes/include.grouprights_str.php:299
-#: includes/include.rights_con.php:293 includes/include.rights_str.php:300
-#: includes/include.str_overview.php:144
+#: includes/include.grouprights_str.php:299 includes/include.rights_con.php:293
+#: includes/include.rights_str.php:300 includes/include.str_overview.php:144
 #: includes/include.upl_dirs_overview.php:42
 #: templates/standard/template.stat_overview.html:170
 msgid "Open category"
@@ -2812,8 +2804,8 @@ msgstr "Top 30"
 #: includes/functions.stat.php:930 includes/functions.stat.php:961
 #: includes/include.con_art_overview.php:845
 #: includes/include.grouprights.php:135
-#: includes/include.grouprights_left_top.php:39
-#: includes/include.rights.php:151 includes/include.rights_left_top.php:53
+#: includes/include.grouprights_left_top.php:39 includes/include.rights.php:151
+#: includes/include.rights_left_top.php:53
 msgid "All"
 msgstr "Alle"
 
@@ -3154,8 +3146,7 @@ msgid "Type"
 msgstr "Typ"
 
 #: includes/include.clientsettings.php:79
-#: includes/include.clientsettings.php:167
-#: includes/include.client_edit.php:213
+#: includes/include.clientsettings.php:167 includes/include.client_edit.php:213
 #: includes/include.grouprights_create.php:74
 #: includes/include.grouprights_overview.php:112
 #: includes/include.grouprights_overview.php:208
@@ -3611,8 +3602,7 @@ msgstr ""
 
 #: includes/include.con_content_list.php:676
 #: includes/include.con_editcontent.php:337
-#: includes/include.con_edit_form.php:96
-#: includes/include.con_meta_form.php:346
+#: includes/include.con_edit_form.php:96 includes/include.con_meta_form.php:346
 msgid "Draft"
 msgstr "Entwurf"
 
@@ -3745,8 +3735,7 @@ msgstr "Datum"
 msgid "Save article"
 msgstr "Artikel speichern"
 
-#: includes/include.con_edit_form.php:699
-#: includes/include.str_overview.php:522
+#: includes/include.con_edit_form.php:699 includes/include.str_overview.php:522
 #: templates/standard/template.con_meta_edit_form.html:91
 #: templates/standard/template.str_overview.html:53
 #: templates/standard/template.str_overview.html:148
@@ -4129,13 +4118,11 @@ msgstr "Sortieren"
 msgid "Translations are used by %s (%s)"
 msgstr "Übersetzungen werden benutzt von %s (%s)"
 
-#: includes/include.con_translate.php:266
-#: includes/include.mod_translate.php:46
+#: includes/include.con_translate.php:266 includes/include.mod_translate.php:46
 msgid "Saved translation successfully!"
 msgstr "Übersetzung wurde gespeichert!"
 
-#: includes/include.con_translate.php:268
-#: includes/include.mod_translate.php:48
+#: includes/include.con_translate.php:268 includes/include.mod_translate.php:48
 msgid "Can't save translation!"
 msgstr "Kann Übersetzung nicht speichern!"
 
@@ -4430,15 +4417,13 @@ msgstr ""
 msgid "Group membership"
 msgstr "Gruppenzugehörigkeit"
 
-#: includes/include.frontend.user_edit.php:240
-#: includes/include.upl_edit.php:80
+#: includes/include.frontend.user_edit.php:240 includes/include.upl_edit.php:80
 #: templates/standard/template.con_left_top_art_search.html:50
 #: templates/standard/template.con_meta_edit_form.html:121
 msgid "Author"
 msgstr "Autor"
 
-#: includes/include.frontend.user_edit.php:242
-#: includes/include.upl_edit.php:81
+#: includes/include.frontend.user_edit.php:242 includes/include.upl_edit.php:81
 msgid "Last modified by"
 msgstr "Zuletzt geändert von"
 
@@ -4469,16 +4454,16 @@ msgstr ""
 #: includes/include.grouprights_lay.php:111
 #: includes/include.grouprights_mod.php:113
 #: includes/include.grouprights_str.php:118
-#: includes/include.grouprights_tpl.php:114
-#: includes/include.rights_area.php:85 includes/include.rights_con.php:118
-#: includes/include.rights_lay.php:108 includes/include.rights_mod.php:107
-#: includes/include.rights_str.php:118 includes/include.rights_tpl.php:110
+#: includes/include.grouprights_tpl.php:114 includes/include.rights_area.php:85
+#: includes/include.rights_con.php:118 includes/include.rights_lay.php:108
+#: includes/include.rights_mod.php:107 includes/include.rights_str.php:118
+#: includes/include.rights_tpl.php:110
 msgid "Check all"
 msgstr "Alle markieren"
 
 #: includes/include.grouprights_con.php:221
-#: includes/include.grouprights_str.php:229
-#: includes/include.rights_con.php:221 includes/include.rights_str.php:230
+#: includes/include.grouprights_str.php:229 includes/include.rights_con.php:221
+#: includes/include.rights_str.php:230
 msgid ""
 "Apply rights for this category to all categories on the same level or above"
 msgstr ""
@@ -4486,17 +4471,16 @@ msgstr ""
 "zuweisen"
 
 #: includes/include.grouprights_con.php:221
-#: includes/include.grouprights_str.php:229
-#: includes/include.rights_con.php:221 includes/include.rights_str.php:230
+#: includes/include.grouprights_str.php:229 includes/include.rights_con.php:221
+#: includes/include.rights_str.php:230
 msgid ""
 "Apply rights for this category to all categories below the current category"
 msgstr ""
 "Rechte dieser Kategorie allen Kategorien unter dieser Kategorie zuweisen"
 
 #: includes/include.grouprights_con.php:293
-#: includes/include.grouprights_str.php:299
-#: includes/include.rights_con.php:293 includes/include.rights_str.php:300
-#: includes/include.str_overview.php:149
+#: includes/include.grouprights_str.php:299 includes/include.rights_con.php:293
+#: includes/include.rights_str.php:300 includes/include.str_overview.php:149
 #: includes/include.upl_dirs_overview.php:45
 #: templates/standard/template.stat_overview.html:171
 msgid "Close category"
@@ -4619,8 +4603,7 @@ msgid "Template name"
 msgstr "Vorlagenname"
 
 #: includes/include.html_tpl_edit_form.php:31
-#: includes/include.js_edit_form.php:31
-#: includes/include.style_edit_form.php:31
+#: includes/include.js_edit_form.php:31 includes/include.style_edit_form.php:31
 #, php-format
 msgid ""
 "Currently only files with the extension %s are displayed in the menu. If you "
@@ -5246,7 +5229,7 @@ msgstr "Die neue CSS-Datei wurde erfolgreich angelegt!"
 
 #: includes/include.mod_style.php:124
 msgid "Could not create a new css file!"
-msgstr "Konnte neue CSS-Datei nicht erstellen!"
+msgstr "Konnte die neue CSS-Datei nicht erstellen!"
 
 #: includes/include.mod_style.php:162
 msgid "Can't save file!"
@@ -6459,8 +6442,7 @@ msgstr "Schutz"
 msgid "Time control"
 msgstr "Zeitsteuerung"
 
-#: includes/include.upl_edit.php:79
-#: includes/include.upl_files_overview.php:514
+#: includes/include.upl_edit.php:79 includes/include.upl_files_overview.php:514
 #: includes/include.upl_search_results.php:263 xml/navigation.xml:15
 #: xml/navigation.xml:28
 msgid "Preview"
@@ -8072,27 +8054,27 @@ msgstr "Whitelist des Linkcheckers"
 
 #: ../data/config/production/cfg_actions.inc.php:127
 msgid "Install/Remove plugins"
-msgstr "Installiere / entferne Plugins"
+msgstr "Installiere/entferne Plugins"
 
 #: ../data/config/production/cfg_actions.inc.php:129
 msgid "Modify CSS"
-msgstr "Bearbeite CSS"
+msgstr "Bearbeite eine CSS-Datei"
 
 #: ../data/config/production/cfg_actions.inc.php:130
 msgid "Create CSS"
-msgstr "Erstelle ein CSS"
+msgstr "Erstelle eine CSS-Datei"
 
 #: ../data/config/production/cfg_actions.inc.php:131
 msgid "Delete CSS"
-msgstr "Entferne ein CSS"
+msgstr "Entferne eine CSS-Datei"
 
 #: ../data/config/production/cfg_actions.inc.php:135
 msgid "Edit script"
-msgstr "Bearbeite ein JavaScript"
+msgstr "Bearbeite eine JavaScript-Datei"
 
 #: ../data/config/production/cfg_actions.inc.php:136
 msgid "Delete script"
-msgstr "Entferne ein JavaScript"
+msgstr "Entferne eine JavaScript-Datei"
 
 #: ../data/config/production/cfg_actions.inc.php:141
 msgid "Modify HTML template"

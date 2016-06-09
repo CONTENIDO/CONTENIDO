@@ -248,7 +248,7 @@ $db->query($sql);
 $tpl->set('s', 'ID', 'oTplSel');
 $tpl->set('s', 'NAME', 'oTplSel');
 $tpl->set('s', 'CLASS', 'text_medium');
-$tpl->set('s', 'OPTIONS', '');
+$tpl->set('s', 'OPTIONS', 'style="width:85%;"');
 $tpl->set('s', 'BELANG', $belang);
 
 $tpl->set('d', 'VALUE', '0');
@@ -267,9 +267,6 @@ $editCategory = new cGuiFoldingRow("3498dbbb-ed4a-4618-8e49-3a3635396e22", i18n(
 while ($db->nextRecord()) {
     $tplname = $db->f('name');
 
-    if (strlen($tplname) > 18) {
-        $tplname = substr($tplname, 0, 15) . "...";
-    }
     $tpl->set('d', 'VALUE', $db->f('idtpl'));
     $tpl->set('d', 'CAPTION', $tplname);
     $tpl->set('d', 'SELECTED', '');

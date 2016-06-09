@@ -170,7 +170,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * @return mixed
      */
     protected function _getRawSettings($contentTypeName, $id, array $contentTypes, $editable = false) {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
 
         if (!isset($contentTypes[$contentTypeName][$id])) {
             $idArtLang = cRegistry::getArticleLanguageId();
@@ -180,7 +180,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             $idtype = $typeItem->get('idtype');
             // first load the appropriate content entry in order to get the
             // settings
-            if ($editable = false) {
+            if ($editable == false) {
                 $content = new cApiContent();
                 $content->loadByMany(array(
                     'idartlang' => $idArtLang,
@@ -188,7 +188,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
                     'typeid' => $id
                 ));
                 return $content->get('value');
-            } else if ($editable = true) {
+            } else if ($editable == true) {
                 $db = cRegistry::getDb();
                 $sql = "SELECT max(version) AS max
                         FROM " . $cfg["tab"]["content_version"]	. " WHERE idartlang = " . $idArtLang . " AND typeid = " . $id .

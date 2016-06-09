@@ -40,7 +40,7 @@ class cIterator {
      *
      * @var array
      */
-    var $_aIteratorItems;
+    protected $_aIteratorItems;
 
     /**
      * Constructor to create an instance of this class.

@@ -650,10 +650,8 @@ class cGuiPage {
      * @param bool $return [optional]
      *         If true, the page will be returned instead of echoed
      * @return string|void
-     *         either the webpage or nothing
      */
     public function render($template = NULL, $return = false) {
-        global $cfg;
 
         if ($template == NULL) {
             $template = $this->_contentTemplate;

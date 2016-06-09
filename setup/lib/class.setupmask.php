@@ -21,105 +21,129 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cSetupMask
 {
-    function cSetupMask($sStepTemplate, $iStep = false)
-    {
-        $this->_oTpl = new cTemplate();
-        $this->_oStepTemplate = new cTemplate();
 
-        $this->_sStepTemplate = $sStepTemplate;
-        $this->_iStep = $iStep;
-        $this->_bNavigationEnabled = false;
+    protected $_tpl = null;
+
+    protected $_stepTemplateClass = null;
+
+    protected $_stepTemplate = '';
+
+    protected $_step = 0;
+
+    protected $_navigationEnabled = false;
+
+    protected $_backstep;
+
+    protected $_nextstep;
+
+    /**
+     * cSetupMask constructor.
+     * @param string $stepTemplate
+     * @param bool $step
+     */
+    public function __construct($stepTemplate, $step = false) {
+        $this->_tpl = new cTemplate();
+        $this->_stepTemplateClass = new cTemplate();
+
+        $this->_stepTemplate = $stepTemplate;
+        $this->_step = $step;
     }
 
-    function setNavigation($sBackstep, $sNextstep)
-    {
-        $this->_bNavigationEnabled = true;
-        $this->_bBackstep = $sBackstep;
-        $this->_bNextstep = $sNextstep;
+    /**
+     * Old constructor
+     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     * @param string $stepTemplate
+     * @param bool $step
+     */
+    public function cSetupMask($stepTemplate, $step = false) {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
+        $this->__construct($stepTemplate, $step);
     }
 
-    function setHeader($sHeader)
-    {
+    public function setNavigation($backstep, $nextstep) {
+        $this->_navigationEnabled = true;
+        $this->_backstep = $backstep;
+        $this->_nextstep = $nextstep;
+    }
+
+    public function setHeader($header) {
         if (isset($_SESSION['setuptype'])) {
-            $sSetupType = $_SESSION['setuptype'];
+            $setupType = $_SESSION['setuptype'];
         } else {
-            $sSetupType = '';
+            $setupType = '';
         }
 
-        switch ($sSetupType) {
+        switch ($setupType) {
             case "setup":
-                $this->_sHeader = 'Setup - ' . $sHeader;
+                $this->_sHeader = 'Setup - ' . $header;
                 break;
             case "upgrade":
-                $this->_sHeader = 'Upgrade - ' . $sHeader;
+                $this->_sHeader = 'Upgrade - ' . $header;
                 break;
             default:
-                $this->_sHeader = $sHeader;
+                $this->_sHeader = $header;
                 break;
         }
     }
 
-    function _createNavigation()
-    {
+    protected function _createNavigation() {
         $link = new cHTMLLink("#");
 
-        $link->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '".$this->_bNextstep."';");
+        $link->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '".$this->_nextstep."';");
         $link->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
         $link->setClass("nav");
         $link->setContent("<span>&raquo;</span>");
 
-        if ($this->_bNextstep != "") {
-            $this->_oStepTemplate->set("s", "NEXT", $link->render());
+        if ($this->_nextstep != "") {
+            $this->_stepTemplateClass->set("s", "NEXT", $link->render());
         } else {
-            $this->_oStepTemplate->set("s", "NEXT", '');
+            $this->_stepTemplateClass->set("s", "NEXT", '');
         }
 
         $backlink = new cHTMLLink("#");
-        $backlink->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '".$this->_bBackstep."';");
+        $backlink->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '".$this->_backstep."';");
         $backlink->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
         $backlink->setClass("nav navBack");
         $backlink->setContent("<span>&laquo;</span>");
-        $this->_oStepTemplate->set("s", "BACK", $backlink->render());
+        $this->_stepTemplateClass->set("s", "BACK", $backlink->render());
     }
 
-    function render()
-    {
-        if ($this->_bNavigationEnabled) {
+    public function render() {
+        if ($this->_navigationEnabled) {
             $this->_createNavigation();
         }
 
-        if ($this->_iStep !== false) {
-            $this->_oTpl->set("s", "STEPS", cGenerateSetupStepsDisplay($this->_iStep));
+        if ($this->_step !== false) {
+            $this->_tpl->set("s", "STEPS", cGenerateSetupStepsDisplay($this->_step));
         } else {
-            $this->_oTpl->set("s", "STEPS", "");
+            $this->_tpl->set("s", "STEPS", "");
         }
 
-        $this->_oTpl->set("s", "HEADER", $this->_sHeader);
-        $this->_oTpl->set("s", "TITLE", "CONTENIDO Setup - " . $this->_sHeader);
+        $this->_tpl->set("s", "HEADER", $this->_sHeader);
+        $this->_tpl->set("s", "TITLE", "CONTENIDO Setup - " . $this->_sHeader);
 
-        $this->_oTpl->set("s", "CONTENT", $this->_oStepTemplate->generate($this->_sStepTemplate, true, false));
+        $this->_tpl->set("s", "CONTENT", $this->_stepTemplateClass->generate($this->_stepTemplate, true, false));
 
-        $this->_oTpl->generate("templates/setup.tpl", false, false);
+        $this->_tpl->generate("templates/setup.tpl", false, false);
     }
 
-    function renderSystemCheck()
-    {
-        if ($this->_bNavigationEnabled) {
+    public function renderSystemCheck() {
+        if ($this->_navigationEnabled) {
             $this->_createNavigation();
         }
 
-        if ($this->_iStep !== false) {
-            $this->_oTpl->set("s", "STEPS", '');
+        if ($this->_step !== false) {
+            $this->_tpl->set("s", "STEPS", '');
         } else {
-            $this->_oTpl->set("s", "STEPS", '');
+            $this->_tpl->set("s", "STEPS", '');
         }
 
-        $this->_oTpl->set("s", "HEADER", '');
-        $this->_oTpl->set("s", "TITLE", '');
+        $this->_tpl->set("s", "HEADER", '');
+        $this->_tpl->set("s", "TITLE", '');
 
-        $this->_oTpl->set("s", "CONTENT", $this->_oStepTemplate->generate($this->_sStepTemplate, true, false));
+        $this->_tpl->set("s", "CONTENT", $this->_stepTemplateClass->generate($this->_stepTemplate, true, false));
 
-        $this->_oTpl->generate("templates/systemcheck/setup.tpl", false, false);
+        $this->_tpl->generate("templates/systemcheck/setup.tpl", false, false);
     }
 }
 

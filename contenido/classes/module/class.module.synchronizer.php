@@ -49,7 +49,7 @@ class cModuleSynchronizer extends cModuleHandler {
         // if modul dont exist in the $cfg['tab']['mod'] table.
         if ($this->_isExistInTable($oldModulName, $client) == false) {
             // add new Module in db-tablle
-            $this->_addModul($newModulName, $client);
+            $this->_addModul($newModulName);
             cRegistry::appendLastOkMessage(sprintf(i18n('Module %s successfully synchronized'), $newModulName));
         } else {
             // update the name of the module
@@ -115,12 +115,11 @@ class cModuleSynchronizer extends cModuleHandler {
      *         id of last update module
      */
     public function compareFileAndModuleTimestamp() {
-        global $cfg, $cfgClient;
+        global $cfgClient;
 
         $synchLock = 0;
 
         $sql = sprintf('SELECT UNIX_TIMESTAMP(mod1.lastmodified) AS lastmodified,mod1.idclient,description,type, mod1.name, mod1.alias, mod1.idmod FROM %s AS mod1 WHERE mod1.idclient = %s', $this->_cfg['tab']['mod'], $this->_client);
-        $notification = new cGuiNotification();
 
         $db = cRegistry::getDb();
         $db->query($sql);
@@ -243,7 +242,7 @@ class cModuleSynchronizer extends cModuleHandler {
      *         last id of synchronized module
      */
     public function synchronize() {
-        global $cfg, $cfgClient;
+        global $cfgClient;
 
         // get the path to the modul dir from the client
         $dir = $cfgClient[$this->_client]['module']['path'];
@@ -341,16 +340,31 @@ class cModuleSynchronizer extends cModuleHandler {
      *
      * @param string $name
      *         name of the new module
-     * @param int $idclient
-     *         client of the module
+     * @param int $client
+     *         client of the new module
+     *          ToDo: Remove it, because we use cRegisty class
      */
-    private function _addModul($name, $idclient) {
-        // insert new modul in con_mod
+    private function _addModul($name, $client = 0) {
+
+        // initializing variables
+        $client = cRegistry::getClientId();
+        $cfgClient = cRegistry::getClientConfig($client);
+
+        // initializing module class
         $oModColl = new cApiModuleCollection();
-        $oMod = $oModColl->create($name, $idclient, $name);
-        if (is_object($oMod)) {
+
+        // get module path
+        $modulePath = $cfgClient['module']['path'] . $name . '/';
+
+        // get module type
+        $modInfo = cXmlBase::xmlStringToArray(cFileHandler::read($modulePath . 'info.xml'));
+
+        // create mew module
+        $mod = $oModColl->create($modInfo['name'], $client, $modInfo['alias'], $modInfo['type']);
+
+        if (is_object($mod)) {
             // save the last id from modul
-            $this->_lastIdMod = $oMod->get('idmod');
+            $this->_lastIdMod = $mod->get('idmod');
         }
     }
 
