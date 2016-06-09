@@ -43,7 +43,7 @@ class cIterator {
     var $_aIteratorItems;
 
     /**
-     * Iterator constructor
+     * Constructor to create an instance of this class.
      *
      * This function initializes the constructor, adds the passed items
      * and moves the iterator to the first element.

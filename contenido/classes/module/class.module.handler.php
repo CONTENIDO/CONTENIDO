@@ -2,7 +2,8 @@
 
 /**
  * This file contains the module handler class.
- * TODO: Rework comments of this class.
+ *
+ * @todo refactor documentation
  *
  * @package Core
  * @subpackage Backend
@@ -16,11 +17,10 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Class for new modul structere.
- * Saves the Modul-Input in a file (input.php)
- * and
- * Modul-Output in a file(output.php).
- * All moduls of a clients are in [frontend]/modules/.
+ * Class for new modul structure.
+ *
+ * Saves the Modul-Input in file "input.php" and Modul-Output in file
+ * "output.php". All modules of a client are in [frontend]/modules/.
  *
  * @package Core
  * @subpackage Backend
@@ -28,28 +28,29 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cModuleHandler {
 
     /**
-     * Path to a modul dir
+     * Path to a modul dir.
      *
      * @var string
      */
     private $_modulePath;
 
     /**
-     * Path to the modul dir where are all the moduls of a client (frontendpath)
+     * Path to the modul dir where are all the moduls of a client
+     * (frontendpath).
      *
      * @var string
      */
     private $_path;
 
     /**
-     * Id of the Modul
+     * Id of the Modul.
      *
      * @var int
      */
     protected $_idmod = NULL;
 
     /**
-     * The name of the modul
+     * The name of the modul.
      *
      * @var string
      */
@@ -70,7 +71,7 @@ class cModuleHandler {
     protected $_type;
 
     /**
-     * The alias name of the modul
+     * The alias name of the modul.
      *
      * @var string
      */
@@ -91,42 +92,42 @@ class cModuleHandler {
     );
 
     /**
-     * CONTENIDO cfg
+     * CONTENIDO cfg.
      *
      * @var array
      */
     protected $_cfg = NULL;
 
     /**
-     * Contenido cfgClient
+     * CONTENIDO cfgClient.
      *
      * @var array
      */
     protected $_cfgClient = NULL;
 
     /**
-     * id of the Client
+     * id of the Client.
      *
      * @var int
      */
     protected $_client = '0';
 
     /**
-     * The code of the modul input
+     * The code of the modul input.
      *
      * @var string
      */
     protected $_input = '';
 
     /**
-     * The code of the modul output
+     * The code of the modul output.
      *
      * @var string
      */
     protected $_output = '';
 
     /**
-     * Encoding oft the site
+     * Encoding oft the site.
      *
      * @var string
      */
@@ -134,6 +135,7 @@ class cModuleHandler {
 
     /**
      * Which format of encoding should be files (input/output/translation...)
+     *
      * getEffectiveSetting('encoding', 'file_encoding', 'UTF-8')
      *
      * @var string
@@ -141,7 +143,7 @@ class cModuleHandler {
     protected $_fileEncoding = '';
 
     /**
-     * The id of the lang
+     * The id of the lang.
      *
      * @var int
      */
@@ -160,15 +162,18 @@ class cModuleHandler {
     protected static $_encodingStore = array();
 
     /**
-     * Constructor for the class cModuleHandler.
+     * Constructor to create an instance of this class.
+     *
      * With this class you can create a new module, rename a module.
      * You can save a Output from modules and Input in a file.
-     * The save rules are [Modulname] (is unique) the files input and output
-     * will be named [Modulname]_input.php , [Modulname]_output.php
+     * The save rules are [Modulname] (is unique) the files input and
+     * output will be named [Modulname]_input.php,
+     * and [Modulname]_output.php respectivly.
      *
      * @param int $idmod [optional]
      *         the id of the module
-     * @throws cException if the module directory can not be created
+     * @throws cException
+     *         if the module directory can not be created
      */
     public function __construct($idmod = NULL) {
         global $cfg, $cfgClient, $lang, $client;
@@ -223,7 +228,7 @@ class cModuleHandler {
     }
 
     /**
-     * Exist the modulname in directory
+     * Exist the modulname in directory.
      *
      * @param string $name
      * @return bool
@@ -233,13 +238,14 @@ class cModuleHandler {
     }
 
     /**
-     * Save a content in the file, use for css/js
+     * Save a content in the file, use for css/js.
      *
      * @param string $templateName
      * @param string $fileType
      * @param string $fileContent
      * @param string $saveDirectory [optional]
-     * @return bool|string
+     * @return string|bool
+     *         URL on success or false on failure
      */
     public function saveContentToFile($templateName, $fileType, $fileContent, $saveDirectory = 'cache') {
         $sSaveDirectory = $this->_cfgClient[$this->_client]['path']['frontend'] . $saveDirectory . '/';
@@ -262,7 +268,7 @@ class cModuleHandler {
     }
 
     /**
-     * Get the cleaned name
+     * Get the cleaned name.
      *
      * @param string $name
      *         mod name
@@ -295,7 +301,7 @@ class cModuleHandler {
     }
 
     /**
-     * Init the vars of the class, make a query to the Db
+     * Init the vars of the class, make a query to the Db.
      *
      * @param int $idmod [optional]
      *         the id of the modul
@@ -323,7 +329,7 @@ class cModuleHandler {
     }
 
     /**
-     * Get the name of module
+     * Get the name of module.
      *
      * @return string
      */
@@ -342,8 +348,8 @@ class cModuleHandler {
 
     /**
      * Get the template path.
-     * If file is set it will
-     * return the complete path + file
+     *
+     * If file is set it will return the complete path + file.
      *
      * @param string $file [optional]
      * @return string
@@ -353,7 +359,7 @@ class cModuleHandler {
     }
 
     /**
-     * Get the css path of the modul
+     * Get the css path of the modul.
      *
      * @return string
      */
@@ -362,7 +368,7 @@ class cModuleHandler {
     }
 
     /**
-     * Get the php path of the modul
+     * Get the php path of the modul.
      *
      * @return string
      */
@@ -371,7 +377,7 @@ class cModuleHandler {
     }
 
     /**
-     * Get the js path of the modul
+     * Get the js path of the modul.
      *
      * @return string
      */
@@ -380,7 +386,7 @@ class cModuleHandler {
     }
 
     /**
-     * Get the main css file modulenam.css
+     * Get the main css file modulenam.css.
      *
      * @return string
      */
@@ -389,7 +395,7 @@ class cModuleHandler {
     }
 
     /**
-     * Returns random characters
+     * Returns random characters.
      *
      * @param int $count
      *         amount of characters
@@ -403,7 +409,7 @@ class cModuleHandler {
     }
 
     /**
-     * Check if exist a file
+     * Check if exist a file.
      *
      * @param string $type
      *         js | template | css the directory of the file
@@ -416,7 +422,7 @@ class cModuleHandler {
     }
 
     /**
-     * Delete file
+     * Delete file.
      *
      * @param string $type
      *         js |template | css directory of the file
@@ -433,7 +439,7 @@ class cModuleHandler {
     }
 
     /**
-     * Create and save new file
+     * Create and save new file.
      *
      * @param string $type
      *         css | js | template directory of the file
@@ -442,7 +448,7 @@ class cModuleHandler {
      * @param string $content [optional]
      *         content of the file
      * @return bool
-     *         true if file can be created, and false otherwise
+     *         true on success or false on failure
      */
     public function createModuleFile($type, $fileName = NULL, $content = '') {
         // create directory if not exist
@@ -493,7 +499,7 @@ class cModuleHandler {
     }
 
     /**
-     * Rename a file
+     * Rename a file.
      *
      * @param string $type
      *         css | js | template directory of the file
@@ -502,7 +508,7 @@ class cModuleHandler {
      * @param string $newFileName
      *         the new name of the file
      * @return bool
-     *         by success return true
+     *         true on success or false on failure
      */
     public function renameModuleFile($type, $oldFileName, $newFileName) {
         if ($this->existFile($type, $newFileName)) {
@@ -517,7 +523,7 @@ class cModuleHandler {
     }
 
     /**
-     * Get the name of the main js file (modulname.js)
+     * Get the name of the main js file (modulname.js).
      *
      * @return string
      *         the name of the js file
@@ -527,7 +533,7 @@ class cModuleHandler {
     }
 
     /**
-     * Get the content of file, modul js or css or template or php
+     * Get the content of file, modul js or css or template or php.
      *
      * @param string $directory
      *         where in module should we look
@@ -554,6 +560,7 @@ class cModuleHandler {
      * Make main module directory.
      *
      * @return bool
+     *         true on success or false on failure
      */
     protected function _makeModuleDirectory() {
         // Do not display error on login page
@@ -576,7 +583,7 @@ class cModuleHandler {
     }
 
     /**
-     * Get all files from a module directory
+     * Get all files from a module directory.
      *
      * @param string $moduleDirectory
      *         template css or js...
@@ -614,11 +621,11 @@ class cModuleHandler {
     }
 
     /**
-     * Read the input of the file _input.php
+     * Read the input of the file _input.php.
      *
      * @param bool $issource [optional]
-     * @return bool|string
-     *         Contents of the Module file (_input.php)
+     * @return string|bool
+     *         content of module input file or false on failure
      */
     public function readInput($issource = false) {
         if (cFileHandler::exists($this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_input.php') == false) {
@@ -635,11 +642,11 @@ class cModuleHandler {
     }
 
     /**
-     * Read the output of the file _output.php
+     * Read the output of the file _output.php.
      *
      * @param bool $issource [optional]
      * @return bool|string
-     *         Contents of the Module file( _output.php)
+     *         content of module output file or false on failure
      */
     public function readOutput($issource = false) {
         if (cFileHandler::exists($this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_output.php') == false) {
@@ -656,10 +663,11 @@ class cModuleHandler {
     }
 
     /**
-     * Make a directory template/css/image/js/php if not exist
+     * Make a directory template/css/image/js/php if not exist.
      *
      * @param string $type
      * @return bool
+     *         true on success or false on failure
      */
     protected function createModuleDirectory($type) {
         if (array_key_exists($type, $this->_directories)) {
@@ -677,14 +685,14 @@ class cModuleHandler {
     }
 
     /**
-     * Can write/create a file
+     * Can write/create a file.
      *
      * @param string $fileName
      *         file name
      * @param string $directory
      *         directory where is the file
      * @return bool
-     *         success true else false
+     *         true on success or false on failure
      */
     public function isWritable($fileName, $directory) {
         if (cFileHandler::exists($fileName)) {
@@ -700,12 +708,11 @@ class cModuleHandler {
     }
 
     /**
-     * Check write permissions for this module
+     * Check write permissions for this module.
      *
      * @param string $type
      *         php oder template
      * @return bool
-     *         true or false
      */
     public function moduleWriteable($type) {
         // check if type directory inside module folder exists and has write permissions
@@ -726,8 +733,7 @@ class cModuleHandler {
      *
      * @param string $output [optional]
      * @return bool
-     *         if the action (save contents into the file _output.php) is
-     *         successful return true else false
+     *         true on success or false on failure
      */
     public function saveOutput($output = NULL) {
         $fileName = $this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_output.php';
@@ -753,12 +759,11 @@ class cModuleHandler {
     }
 
     /**
-     * Save a string into the file (_input.php)
+     * Save a string into the file (_input.php).
      *
      * @param string $input [optional]
      * @return bool
-     *         if the action (save contents into the file _input.php) is
-     *         successful return true else false
+     *         true on success or false on failure
      */
     public function saveInput($input = NULL) {
         $fileName = $this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_input.php';
@@ -785,7 +790,7 @@ class cModuleHandler {
 
     /**
      * This method save a xml file with modul information.
-     * If the params not set, get the value from this
+     * If the params not set, get the value from this.
      *
      * @param string $moduleName [optional]
      *         name of the modul
@@ -827,7 +832,9 @@ class cModuleHandler {
 
     /**
      * Create a new module in the module dir.
-     * The module name will be [ModuleName] example Contact_Form or GoogleMaps2.
+     *
+     * The module name will be [ModuleName] example Contact_Form or
+     * GoogleMaps2.
      *
      * @param string $input [optional]
      * @param string $output [optional]
@@ -871,8 +878,8 @@ class cModuleHandler {
             return false;
         }
 
-        // Save empty strings into the modul files, if someone trying to read
-        // contents bevore save into the files
+        // Save empty strings into the modul files, if someone trying to
+        // read contents before save into the files
         $retInput = $this->saveInput();
         $retOutput = $this->saveOutput();
 
@@ -890,9 +897,8 @@ class cModuleHandler {
      *         old name of the modul
      * @param string $new
      *         new name of the modul
-     *
      * @return bool
-     *         true if success
+     *         true on success or false on failure
      */
     public function renameModul($old, $new) {
         // try to rename the dir
@@ -941,7 +947,7 @@ class cModuleHandler {
     }
 
     /**
-     * Test input code
+     * Test input code.
      *
      * @return array
      *         bool state, string errorMessage
@@ -953,7 +959,7 @@ class cModuleHandler {
     }
 
     /**
-     * Test output code
+     * Test output code.
      *
      * @return array
      *         bool state, string errorMessage
@@ -965,10 +971,10 @@ class cModuleHandler {
     }
 
     /**
-     * Test module code
+     * Test module code.
      *
-     * @param unknown_type $inputType
-     *         string code field type
+     * @param string $inputType
+     *         code field type, 'input' or 'output'
      * @return array
      *         bool state, string errorMessage
      */
@@ -987,17 +993,16 @@ class cModuleHandler {
         //Set code as error before checking, if fatal exist
         switch ($module->get("error")) {
             case 'none';
-            $toCheck = $inputType;
-            break;
+                $toCheck = $inputType;
+                break;
             case 'input';
-            if ($inputType == 'output') $toCheck = 'both';
-            break;
+                if ($inputType == 'output') $toCheck = 'both';
+                break;
             case 'output';
-            if ($inputType == 'input') $toCheck = 'both';
-            break;
+                if ($inputType == 'input') $toCheck = 'both';
+                break;
             case 'both';
-
-            break;
+                break;
         }
         if ($toCheck !== $module->get("error")) {
             $module->set("error", $toCheck);
@@ -1010,38 +1015,33 @@ class cModuleHandler {
         //check code
         switch($inputType) {
             case 'input':
-
                 $code       = $this->readInput();
                 $result = $this->_verifyCode($code, $this->_idmod . "i");
                 if ($result['state'] !== true) $isError = 'input';
-
                 break;
             case 'output':
-
                 $code       = $this->readOutput();
                 $result = $this->_verifyCode($code, $this->_idmod . "o", true);
                 if ($result['state'] !== true) $isError = 'output';
-
                 break;
         }
 
         //update error value for input and output
         switch ($module->get("error")) {
             case 'none';
-
-            break;
+                break;
             case 'input';
-            if ($isError == 'none' && $inputType == 'output') $isError = 'input';
-            if ($isError == 'output') $isError = 'both';
-            break;
+                if ($isError == 'none' && $inputType == 'output') $isError = 'input';
+                if ($isError == 'output') $isError = 'both';
+                break;
             case 'output';
-            if ($isError == 'none' && $inputType == 'input') $isError = 'output';
-            if ($isError == 'input') $isError = 'both';
-            break;
+                if ($isError == 'none' && $inputType == 'input') $isError = 'output';
+                if ($isError == 'input') $isError = 'both';
+                break;
             case 'both';
-            if ($isError == 'none' && $inputType == 'input') $isError = 'output';
-            if ($isError == 'none' && $inputType == 'output') $isError = 'input';
-            break;
+                if ($isError == 'none' && $inputType == 'input') $isError = 'output';
+                if ($isError == 'none' && $inputType == 'output') $isError = 'input';
+                break;
         }
 
         //Store error information in the database (to avoid re-eval for module
@@ -1059,7 +1059,7 @@ class cModuleHandler {
     }
 
     /**
-     * Check module php code
+     * Check module php code.
      *
      * @param string $code
      *         Code to evaluate
@@ -1118,9 +1118,9 @@ class cModuleHandler {
 
         // Remove the prepend and append settings
         /*
-         * 19.09.2006: Following lines have been disabled, as ini_restore has been
-         * disabled by some hosters as there is a security leak in PHP (PHP <= 5.1.6
-         * & <= 4.4.4)
+         * 19.09.2006: Following lines have been disabled, as ini_restore
+         * has been disabled by some hosters as there is a security leak
+         * in PHP (PHP <= 5.1.6 & <= 4.4.4)
          */
         // ini_restore('error_prepend_string');
         // ini_restore('error_append_string');
@@ -1132,8 +1132,8 @@ class cModuleHandler {
             $isError = strpos($output, '<phperror>');
         }
 
-        // More stripping: Users shouldnt see where the file is located, but they
-        // should see the error line
+        // More stripping: Users shouldnt see where the file is located,
+        // but they should see the error line
         if ($isError !== false) {
             if (isset($modErrorMessage) === false) {
                 $pattern         = '/(<phperror>|<\/phperror>|<b>|<\/b>|<br>|<br \/>)/im';
@@ -1165,8 +1165,8 @@ class cModuleHandler {
     }
 
     /**
-     * Get method for module path value
-     * Path to a module dir
+     * Get method for module path value.
+     * Path to a module dir.
      *
      * @return $modulePath
      *         string

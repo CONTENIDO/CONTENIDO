@@ -69,6 +69,7 @@ class cGuiFoldingRow extends cHTML {
     protected $_contentData;
 
     /**
+     * Constructor to create an instance of this class.
      *
      * @param string $uuid
      * @param string $caption [optional]

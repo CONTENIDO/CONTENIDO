@@ -40,7 +40,7 @@ cInclude('includes', 'functions.con2.php');
  * @param string $datestart
  * @param string $dateend
  * @param int $artsort
- * @param unknown_type $keyart
+ * @param int $keyart
  * @param int $searchable
  * @param float $sitemapprio
  * @param string $changefreq
@@ -252,7 +252,7 @@ function conEditFirstTime(
  * @param unknown_type $dateend
  * @param unknown_type $published
  * @param unknown_type $artsort
- * @param unknown_type $keyart
+ * @param int $keyart
  * @param unknown_type $searchable
  * @param unknown_type $sitemapprio
  * @param unknown_type $changefreq
@@ -469,11 +469,11 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
             $artLang->set('published', date("Y-m-d H:i:s", strtotime($published)));
 
             // If the user has right for makeonline, update some properties.
-    		if ($perm->have_perm_area_action('con', 'con_makeonline') || $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat)) {
-        		$oldOnline = $artLang->get('online');
-       			if (isset($online)) {
-           			$artLang->set('online', $online);
-       			}
+            if ($perm->have_perm_area_action('con', 'con_makeonline') || $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat)) {
+                $oldOnline = $artLang->get('online');
+                if (isset($online)) {
+                    $artLang->set('online', $online);
+                }
 
                 // Check if old online value was 0, update published data if value
                 // changed from 0 to 1

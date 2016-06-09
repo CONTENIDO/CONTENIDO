@@ -23,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiTypeCollection extends ItemCollection {
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -81,7 +81,7 @@ class cApiTypeCollection extends ItemCollection {
 class cApiType extends Item {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
      * @param mixed $id [optional]
      *         Specifies the ID of item to load
@@ -99,7 +99,7 @@ class cApiType extends Item {
      * Loads an type entry by its type.
      *
      * @param string $type
-     *         e. g. CMS_HTML, CMS_TEXT, etc.
+     *         e.g. CMS_HTML, CMS_TEXT, etc.
      * @return bool
      */
     public function loadByType($type) {

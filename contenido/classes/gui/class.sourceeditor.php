@@ -5,7 +5,6 @@
  *
  * @package Core
  * @subpackage GUI
- *
  * @author Mischa Holz
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -16,58 +15,70 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Source editor class
+ * Source editor class.
+ *
  * @package Core
  * @subpackage GUI
  */
 class cGuiSourceEditor extends cGuiPage {
 
     /**
-     * Name of the file that is being edited
+     * Name of the file that is being edited.
+     *
      * @var string
      */
     protected $filename;
 
     /**
-     * Name of the file that is being edited
-     * This variable is be different to $filename
-     * only if you rename your file
+     * Name of the file that is being edited.
+     *
+     * This variable is different to $filename only if you rename your
+     * file.
+     *
      * @var string
      */
     protected $versionfilename;
 
     /**
-     * Full path to the file that is being edited
+     * Full path to the file that is being edited.
+     *
      * @var string
      */
     protected $filepath;
 
     /**
-     * CodeMirror type of the file that is being edited
+     * CodeMirror type of the file that is being edited.
+     *
      * @var string
      */
     protected $filetype;
 
     /**
-     * CodeMirror instance
+     * CodeMirror instance.
+     *
      * @var object
      */
     protected $codeMirror;
 
     /**
-     * Read-only mode or not
+     * Read-only mode or not.
+     *
      * @var bool
      */
     protected $readOnly;
 
     /**
-     * Versioning or not
+     * Versioning or not.
+     *
      * @var bool
      */
     protected $versioning;
 
     /**
-     * The default constructor. Initializes the class and its parent
+     * Constructor to create an instance of this class.
+     *
+     * Initializes the class and its parent.
+     *
      * @param string $filename
      *         Name of the edited file
      * @param bool $versioning [optional]
@@ -135,7 +146,7 @@ class cGuiSourceEditor extends cGuiPage {
     }
 
     /**
-     * Updates the file according to the options in the array
+     * Updates the file according to the options in the array.
      *
      * @param array $req
      *         Request array. Usually _REQUEST
@@ -305,7 +316,8 @@ class cGuiSourceEditor extends cGuiPage {
     }
 
     /**
-     * Renders the page
+     * Renders the page.
+     *
      * @see cGuiPage::render()
      */
     public function render() {
@@ -345,4 +357,5 @@ class cGuiSourceEditor extends cGuiPage {
         // call the render method of cGuiPage
         parent::render();
     }
+
 }

@@ -63,7 +63,7 @@ class cItemCache {
     protected $_bEnable = false;
 
     /**
-     * Contructor of cItemCache
+     * Constructor to create an instance of this class.
      *
      * @param string $sTable
      *         Table name

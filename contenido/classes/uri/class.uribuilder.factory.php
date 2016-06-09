@@ -15,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Factory for retrieving required cUriBuilder object
+ * Factory for retrieving required cUriBuilder object.
  *
  * @package    Core
  * @subpackage Frontend_URI
@@ -29,7 +29,7 @@ class cUriBuilderFactory {
      *         For now, those are valid: front_content, custom, custom_path
      *         or a Userdefined cUriBuilder name.
      *         The name must be a subpart of the cUriBuilder class,
-     *         e. g. 'MyUriBuilder' for cUriBuilderMyUriBuilder.
+     *         e.g. 'MyUriBuilder' for cUriBuilderMyUriBuilder.
      *         The classfile must be named like class.uribuilder.myuribuilder.php
      *         and it must be reside in /contenido/classes/uri/ folder.
      * @return cUriBuilder

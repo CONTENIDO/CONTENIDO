@@ -36,6 +36,7 @@ class cGuiObjectPager extends cGuiFoldingRow {
     public $_parameterToAdd;
 
     /**
+     * Constructor to create an instance of this class.
      *
      * @param string $uuid
      * @param int $items
@@ -71,13 +72,15 @@ class cGuiObjectPager extends cGuiFoldingRow {
     }
 
     /**
+     *
      * @see cGuiFoldingRow::render()
      * @param bool $bContentOnly [optional]
      * @return string
      *         Generated markup
      */
     public function render($bContentOnly = false) {
-        // Do not display Page navigation if there is only one Page and we are not in newsletter section
+        // Do not display Page navigation if there is only one Page
+        // and we are not in newsletter section.
         if ($this->_cPager->getMaxPages() == 1) {
             $this->_headerRow->setStyle("display:none");
             $this->_contentRow->setStyle("display:none");
@@ -151,7 +154,8 @@ class cGuiObjectPager extends cGuiFoldingRow {
         $this->_contentData->setAlignment("center");
         $this->_contentData->setClass("foldingrow_content");
 
-        // Do not display Page navigation if there is only one Page and we are not in newsletter section
+        // Do not display Page navigation if there is only one Page
+        // and we are not in newsletter section.
         if ($this->_cPager->getMaxPages() == 1) {
             $output = '';
         }

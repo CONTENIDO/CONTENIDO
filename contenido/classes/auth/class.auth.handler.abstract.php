@@ -53,8 +53,8 @@ abstract class cAuthHandlerAbstract extends cAuth {
     abstract public function validateCredentials();
 
     /**
-     * Log the successful authentication.
-     * If wished, this method can be executed to log a successful login.
+     * Log a successful authentication.
+     * This method can be executed to log a successful login.
      */
     abstract public function logSuccessfulAuth();
 

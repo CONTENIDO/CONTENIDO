@@ -18,12 +18,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * This class contains the main functionalities for the logging in CONTENIDO.
  *
  * Examples:
- *
  * $writer = cLogWriter::factory("File", array('destination' => 'contenido.log'));
  * $log = new cLog($writer);
  *
  * $log->addPriority("CONTENIDO", 10);
- * $log->log("Contenido Log Message.", "CONTENIDO");
+ * $log->log("CONTENIDO Log Message.", "CONTENIDO");
  * $log->contenido("Same log entry in short notation.");
  * $log->removePriority("CONTENIDO");
  *
@@ -103,49 +102,50 @@ class cLog {
     protected $_writer;
 
     /**
-     * Contains all shortcut handlers
+     * Contains all shortcut handlers.
      *
      * @var array
      */
     protected $_shortcutHandlers = array();
 
     /**
-     * Contains all available priorities
+     * Contains all available priorities.
      *
      * @var array
      */
     protected $_priorities = array();
 
     /**
-     * Contains all default priorities
+     * Contains all default priorities.
      *
      * @var array
      */
     protected $_defaultPriorities = array();
 
     /**
-     * Contains all buffered messages
+     * Contains all buffered messages.
      *
      * @var array
      */
     protected $_buffer = array();
 
     /**
-     * Creates a new instance of the CONTENIDO Log mechanism.
+     * Constructor to create an instance of this class.
      *
-     * The log format interface of cLog is capable of being extended by subclasses. See the note about
-     * the log shortcuts below.
+     * The log format interface of cLog is capable of being extended by
+     * subclasses. See the note about the log shortcuts below.
      *
      *
      * About Log Shortcuts
      * -------------------
-     * Log shortcuts are placeholders which are replaced when a log entry is created. Placeholders start with a
-     * percentage sign (%) and contain one or more characters. Each placeholder is handled by an own function which
-     * decides what to do.
+     * Log shortcuts are placeholders which are replaced when a log
+     * entry is created. Placeholders start with a percentage sign (%)
+     * and contain one or more characters. Each placeholder is handled
+     * by an own function which decides what to do.
      *
      * @param mixed $writer [optional]
-     *         Writer object (any subclass of cLogWriter), or false if cLog
-     *         should handle the writer creation
+     *         Writer object (any subclass of cLogWriter), or false if
+     *         cLog should handle the writer creation
      */
     public function __construct($writer = false) {
         global $cfg;
@@ -177,6 +177,7 @@ class cLog {
 
     /**
      * Returns the local writer instance.
+     *
      * @return cLogWriter
      */
     public function getWriter() {
@@ -196,8 +197,8 @@ class cLog {
     /**
      * Defines a custom shortcut handler.
      *
-     * Each shortcut handler receives an array with the
-     * message and the priority of the entry.
+     * Each shortcut handler receives an array with the message and the
+     * priority of the entry.
      *
      * @param string $shortcut
      *         Shortcut name
@@ -262,7 +263,8 @@ class cLog {
     }
 
     /**
-     * Commits all buffered messages and empties the message buffer if parameter is not false.
+     * Commits all buffered messages and empties the message buffer if
+     * parameter is not false.
      *
      * @param bool $revoke [optional]
      *         Flag, whether the buffer is cleared or not (optional, default: true)
@@ -291,7 +293,7 @@ class cLog {
     }
 
     /**
-     * Logs a message using the local writer instance
+     * Logs a message using the local writer instance.
      *
      * @param string $message
      *         Message to log
@@ -406,7 +408,7 @@ class cLog {
 
     /**
      * Shortcut Handler Date.
-     * Returns the current date
+     * Returns the current date.
      *
      * @return string
      *     The current date
@@ -418,7 +420,8 @@ class cLog {
     /**
      * Shortcut Handler Level.
      * Returns the canonical name of the priority.
-     * The canonical name is padded to 10 characters to achieve a better formatting.
+     * The canonical name is padded to 10 characters to achieve a better
+     * formatting.
      *
      * @param array $info
      * @return string

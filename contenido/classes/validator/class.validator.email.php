@@ -49,7 +49,9 @@ class cValidatorEmail extends cValidatorAbstract {
     protected static $_filterVarExists;
 
     /**
-     * Constructor function, sets some predefined options
+     * Constructor to create an instance of this class.
+     *
+     * Sets some predefined options.
      */
     public function __construct() {
         // Some default options to exclude tld or host

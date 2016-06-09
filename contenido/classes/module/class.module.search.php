@@ -2,7 +2,8 @@
 
 /**
  * This file contains the module search class.
- * TODO: Rework comments of this class.
+ *
+ * @todo refactor documentation
  *
  * @package    Core
  * @subpackage Backend
@@ -24,71 +25,63 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cModuleSearch extends cModuleHandler {
 
     /**
-     * Items/Element per page
+     * Items/Element per page.
      *
      * @var int
      */
     protected $_elementPerPage = '';
 
     /**
-     * Order by
+     * Order by.
      *
      * @var string
      */
     protected $_orderBy = '';
 
     /**
-     * Sort order
+     * Sort order.
      *
      * @var string
      */
     protected $_sortOrder = '';
 
     /**
-     * Module type
+     * Module type.
      *
      * @var string
      */
     protected $_moduleType = '';
 
     /**
-     * Filter string
+     * Filter string.
      *
      * @var string
      */
     protected $_filter = '';
 
     /**
-     * Where should be searched (all, description, type, input, output)
+     * Where should be searched (all, description, type, input, output).
      *
      * @var string
      */
     protected $_searchIn = '';
 
     /**
-     * Selected page
+     * Selected page.
      *
      * @var int
      */
     protected $_selectedPage = 1;
 
     /**
-     * Result saved in a array
+     * Result saved in a array.
      *
      * @var array
      */
     protected $_result = array();
 
     /**
-     * Print a array
-     *
-     * @param array $arg
-     */
-    private function _echo($arg) {
-        echo '<pre>' . print_r($arg) . '</pre>';
-    }
-
-    /**
+     * Constructor to create an instance of this class.
      *
      * @param array $searchOptions
      */
@@ -105,7 +98,16 @@ class cModuleSearch extends cModuleHandler {
     }
 
     /**
-     * Count result
+     * Print a array.
+     *
+     * @param array $arg
+     */
+    private function _echo($arg) {
+        echo '<pre>' . print_r($arg) . '</pre>';
+    }
+
+    /**
+     * Count result.
      *
      * @return int
      *         count in result
@@ -115,11 +117,10 @@ class cModuleSearch extends cModuleHandler {
     }
 
     /**
-     * Search for modules in db columns and in filesystem (input and output
-     * files)
+     * Search for modules in db columns and in filesystem (input and
+     * output files).
      *
      * @return array
-     *         result
      */
     public function searchForAllModules() {
         global $cfg, $client;
@@ -180,7 +181,6 @@ class cModuleSearch extends cModuleHandler {
      * outputs files.
      *
      * @return array
-     *         result
      */
     public function getModules() {
         $modules = array();
@@ -222,10 +222,9 @@ class cModuleSearch extends cModuleHandler {
     }
 
     /**
-     * Search for modules in "name" column of modul
+     * Search for modules in "name" column of modul.
      *
      * @return array
-     *         result
      */
     public function findeModulWithName() {
         global $cfg, $client;
@@ -252,10 +251,9 @@ class cModuleSearch extends cModuleHandler {
     }
 
     /**
-     * Search for modules in input file of the module
+     * Search for modules in input file of the module.
      *
      * @return array
-     *         result
      */
     public function findModulWithInput() {
         global $cfg, $client;
@@ -285,10 +283,9 @@ class cModuleSearch extends cModuleHandler {
     }
 
     /**
-     * Search for modules in output of modules of current client
+     * Search for modules in output of modules of current client.
      *
      * @return array
-     *         result
      */
     public function findModulWithOutput() {
          global $cfg, $client;
@@ -320,10 +317,9 @@ class cModuleSearch extends cModuleHandler {
     }
 
     /**
-     * Search for modules in type column
+     * Search for modules in type column.
      *
      * @return array
-     *         result
      */
     public function findModuleWithType() {
         global $cfg, $client;
@@ -352,10 +348,9 @@ class cModuleSearch extends cModuleHandler {
     }
 
     /**
-     * Search for modules in description column of modules
+     * Search for modules in description column of modules.
      *
      * @return array
-     *         result
      */
     public function findModuleWithDescription() {
         global $cfg, $client;

@@ -86,7 +86,7 @@ class cLayoutHandler {
     protected $_fileName = "";
 
     /**
-     * Construct of the class
+     * Constructor to create an instance of this class.
      *
      * @param int $layoutId
      * @param string $layoutCode [optional]

@@ -144,8 +144,8 @@ class cAuth {
      * Resets the global authentication information.
      *
      * @param bool $nobody [optional]
-     *         If flag set to true, the default authentication is switched to
-     *         nobody. (optional, default: false)
+     *         If flag set to true, the default authentication is
+     *         switched to nobody. (optional, default: false)
      */
     public function resetAuthInfo($nobody = false) {
         $this->auth['uid'] = ($nobody == false? '' : self::AUTH_UID_NOBODY);
@@ -155,8 +155,8 @@ class cAuth {
     }
 
     /**
-     * Logs out the current user, resets the auth information and freezes the
-     * session.
+     * Logs out the current user, resets the auth information and
+     * freezes the session.
      *
      * @param bool $nobody [optional]
      *         If flag set to true, nobody is recreated as user.

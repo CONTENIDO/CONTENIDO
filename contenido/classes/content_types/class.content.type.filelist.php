@@ -81,6 +81,8 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     );
 
     /**
+     * Constructor to create an instance of this class.
+     *
      * Initialises class attributes and handles store events.
      *
      * @param string $rawSettings

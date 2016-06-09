@@ -116,7 +116,8 @@ class TreeItem {
     protected $_parent;
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
+     *
      * Creates a new, independant tree item.
      *
      * @param string $name [optional]
@@ -196,7 +197,7 @@ class TreeItem {
      * Set method for custom array
      *
      * @param string $key
-     * @param string|integer $content
+     * @param string|int $content
      */
     public function setCustom($key, $content) {
         $this->_custom[$key] = $content;
@@ -449,7 +450,7 @@ class TreeItem {
      * Starts iterating at root node and flattens the tree into an array
      *
      * @param unknown_type $item
-     * @param unknown_type $flat_tree
+     * @param array $flat_tree
      */
     public function getFlatTree($item, &$flat_tree) {
         foreach ($item->subitems as $curItem) {

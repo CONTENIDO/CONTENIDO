@@ -44,7 +44,7 @@ class cApiUserPropertyCollection extends ItemCollection {
     protected static $_enableCache;
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      *
      * @param string $userId
      */
@@ -369,7 +369,7 @@ class cApiUserPropertyCollection extends ItemCollection {
 class cApiUserProperty extends Item {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
      *         Specifies the ID of item to load

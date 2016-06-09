@@ -2,7 +2,8 @@
 
 /**
  * This file contains the module template handler class.
- * TODO: Rework comments of this class.
+ *
+ * @todo refactor documentation
  *
  * @package Core
  * @subpackage Backend
@@ -29,67 +30,67 @@ class cModuleTemplateHandler extends cModuleHandler {
     /**
      * Form fields
      *
-     * @var unknown_type
+     * @var string
      */
     private $_code;
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
     private $_file;
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
     private $_tmpFile;
 
     /**
      *
-     * @var unknown_type
+     * @var int
      */
     private $_area;
 
     /**
      *
-     * @var unknown_type
+     * @var int
      */
     private $_frame;
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
     private $_status;
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
     private $_action;
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
     private $_new;
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
     private $_delete;
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
     private $_selectedFile;
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
     private $_reloadScript;
 
@@ -148,6 +149,7 @@ class cModuleTemplateHandler extends cModuleHandler {
     private $_testArea = 'htmltpl';
 
     /**
+     * Constructor to create an instance of this class.
      *
      * @param int $idmod
      * @param cGuiPage $page
@@ -290,10 +292,9 @@ class cModuleTemplateHandler extends cModuleHandler {
     }
 
     /**
-     * Has the selected file changed.
+     * Checks if the selected file has changed.
      *
      * @return bool
-     *         is the filename changed
      */
     private function _hasSelectedFileChanged() {
         if ($this->_file != $this->_selectedFile) {
@@ -502,8 +503,8 @@ class cModuleTemplateHandler extends cModuleHandler {
 
     /**
      *
-     * @param unknown_type $belang
-     * @param unknown_type $readOnly
+     * @param string $belang
+     * @param bool $readOnly
      */
     private function _makeFormular($belang, $readOnly) {
         $fileForm = new cGuiTableForm("file__chooser");

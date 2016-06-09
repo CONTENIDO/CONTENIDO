@@ -288,6 +288,9 @@ class SolrIndexer {
     }
 
     /**
+     * Gets path to upload.
+     *
+     * @param int $idupl
      */
     private function _getImageUrlByIdupl($idupl) {
         $upload = new cApiUpload($idupl);

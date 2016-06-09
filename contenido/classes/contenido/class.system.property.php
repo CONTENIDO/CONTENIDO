@@ -42,7 +42,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
     protected static $_enableCache;
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -385,7 +385,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
 class cApiSystemProperty extends Item {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
      *         Specifies the ID of item to load

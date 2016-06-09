@@ -84,7 +84,7 @@ class cCategoryHelper {
     }
 
     /**
-     * Constructor of the class.
+     * Constructor to create an instance of this class.
      */
     protected function __construct() {
     }

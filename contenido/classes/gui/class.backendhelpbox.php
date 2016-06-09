@@ -44,6 +44,8 @@ class cGuiBackendHelpbox {
     protected $imageURL;
 
     /**
+     * Constructor to create an instance of this class.
+     *
      * Create a new backend help box containing a help text and an
      * optional image URL.
      *

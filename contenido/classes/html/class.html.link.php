@@ -26,13 +26,15 @@ class cHTMLLink extends cHTMLContentElement {
     /**
      * Stores the link location
      *
-     * @var unknown_type
+     * @var string
      */
     protected $_link;
 
     /**
      * Stores the content
      *
+     * @todo this property overloads cHTML::$_content
+     *          and should be removed if unittests are available
      * @var unknown_type
      */
     protected $_content;
@@ -40,25 +42,26 @@ class cHTMLLink extends cHTMLContentElement {
     /**
      * Stores the anchor
      *
-     * @var unknown_type
+     * @var string
      */
     protected $_anchor;
 
     /**
      * Stores the custom entries
      *
-     * @var unknown_type
+     * @var array
      */
     protected $_custom;
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
     protected $_image;
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
+     *
      * Creates an HTML link.
      *
      * @param string $href [optional]
@@ -194,7 +197,7 @@ class cHTMLLink extends cHTMLContentElement {
 
     /**
      *
-     * @param unknown_type $src
+     * @param string $src
      * @return cHTMLLink
      *         $this for chaining
      */

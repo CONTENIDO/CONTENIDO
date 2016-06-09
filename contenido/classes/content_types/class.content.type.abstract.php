@@ -163,6 +163,8 @@ abstract class cContentTypeAbstract {
     protected $_formFields = array();
 
     /**
+     * Constructor to create an instance of this class.
+     *
      * Initialises class attributes with values from cRegistry.
      *
      * @param string $rawSettings

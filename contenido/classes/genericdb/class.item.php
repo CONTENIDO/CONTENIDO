@@ -83,7 +83,7 @@ abstract class Item extends cItemBaseAbstract {
     protected $_lastSQL;
 
     /**
-     * Constructor function
+     * Constructor to create an instance of this class.
      *
      * @param string $sTable
      *         The table to use as information source

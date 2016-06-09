@@ -23,6 +23,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHTMLTableRow extends cHTMLContentElement {
 
     /**
+     * Constructor to create an instance of this class.
+     *
      * Creates an HTML tr element.
      *
      * @param mixed $content [optional]

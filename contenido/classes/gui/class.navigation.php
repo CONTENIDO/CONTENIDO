@@ -5,7 +5,6 @@
  *
  * @package          Core
  * @subpackage       GUI
- *
  * @author           Jan Lengowski
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -19,7 +18,9 @@ cInclude('includes', 'functions.api.string.php');
 cInclude('includes', 'functions.api.images.php');
 
 /**
- * Backend navigaton class. Renders the header navigation document containing the navigtion structure.
+ * Backend navigaton class.
+ *
+ * Renders the header navigation document containing the navigtion structure.
  *
  * @package    Core
  * @subpackage GUI
@@ -27,19 +28,23 @@ cInclude('includes', 'functions.api.images.php');
 class cGuiNavigation {
 
     /**
-     * Array storing all data
+     * Array storing all data.
+     *
      * @var  array
      */
     public $data = array();
 
     /**
-     * Array storing all errors
+     * Array storing all errors.
+     *
      * @var  array
      */
     protected $errors = array();
 
     /**
-     * Constructor. Loads the XML language file using cXmlReader.
+     * Constructor to create an instance of this class.
+     *
+     * Loads the XML language file using cXmlReader.
      *
      * @throws cException if XML language files could not be loaded
      */
@@ -56,14 +61,16 @@ class cGuiNavigation {
     }
 
     /**
-     * Extracts caption from the XML language file including plugins extended multilang version.
+     * Extracts caption from the XML language file including plugins
+     * extended multilang version.
      *
      * @param string $location
      *         The location of navigation item caption. Feasible values are
-     *         - "{xmlFilePath};{XPath}": Path to XML File and the XPath value
-     *         separated by semicolon. This type is used
-     *         to extract caption from a plugin XML file.
-     *         - "{XPath}": XPath value to extract caption from CONTENIDO XML file
+     *         - "{xmlFilePath};{XPath}": Path to XML File and the XPath
+     *         value separated by semicolon. This type is used to extract
+     *         caption from a plugin XML file.
+     *         - "{XPath}": XPath value to extract caption from CONTENIDO
+     *         XML file
      * @throws cException
      *         if XML language files could not be loaded
      * @return string
@@ -72,8 +79,8 @@ class cGuiNavigation {
     public function getName($location) {
         global $cfg, $belang;
 
-        // If a ";" is found entry is from a plugin -> explode location, first is xml file path,
-        // second is xpath location in xml file
+        // If a ";" is found entry is from a plugin -> explode location,
+        // first is xml file path, second is xpath location in xml file.
         if (strstr($location, ';')) {
             $locs = explode(';', $location);
             $file = trim($locs[0]);
@@ -175,7 +182,7 @@ class cGuiNavigation {
     }
 
     /**
-     * Function to build the CONTENIDO header document for backend
+     * Function to build the CONTENIDO header document for backend.
      *
      * @param int $lang
      *         The language to use for header doc creation
@@ -360,7 +367,7 @@ class cGuiNavigation {
     }
 
     /**
-     * Renders the language select box
+     * Renders the language select box.
      *
      * @return string
      */
@@ -417,7 +424,8 @@ class cGuiNavigation {
     }
 
     /**
-     * Renders a select box where the client can be selected as well as an edit button.
+     * Renders a select box where the client can be selected as well as
+     * an edit button.
      *
      * @return string
      *         rendered HTML
@@ -466,7 +474,8 @@ class cGuiNavigation {
     }
 
     /**
-     * Returns true if the class encountered errors while building the navigation
+     * Returns true if the class encountered errors while building the
+     * navigation-
      *
      * @return bool
      */
@@ -475,7 +484,7 @@ class cGuiNavigation {
     }
 
     /**
-     * Returns an array of localized error messages
+     * Returns an array of localized error messages.
      *
      * @return array
      */

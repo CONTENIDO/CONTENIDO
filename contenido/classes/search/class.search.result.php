@@ -20,9 +20,10 @@ cInclude('includes', 'functions.encoding.php');
 /**
  * CONTENIDO API - SearchResult Object
  *
- * This object ranks and displays the result of the indexed fulltext search.
- * If you are not comfortable with this API feel free to use your own methods to
- * display the search results.
+ * This object ranks and displays the result of the indexed fulltext
+ * search.
+ * If you are not comfortable with this API feel free to use your own
+ * methods to display the search results.
  * The search result is basically an array with article ID's.
  *
  * If $search_result = $search->searchIndex($searchword, $searchwordex);
@@ -31,24 +32,25 @@ cInclude('includes', 'functions.encoding.php');
  *
  * $oSearchResults = new cSearchResult($search_result, 10);
  *
- * $oSearchResults->setReplacement('<span style="color:red">', '</span>'); //
- * html-tags to emphasize the located searchwords
+ * // html-tags to emphasize the located searchwords
+ * $oSearchResults->setReplacement('<span style="color:red">', '</span>');
  *
  * $num_res = $oSearchResults->getNumberOfResults();
  * $num_pages = $oSearchResults->getNumberOfPages();
- * $res_page = $oSearchResults->getSearchResultPage(1); // first result page
+ * // first result page
+ * $res_page = $oSearchResults->getSearchResultPage(1);
+ *
  * foreach ($res_page as $key => $val) {
- * $headline = $oSearchResults->getSearchContent($key, 'HTMLHEAD');
- * $first_headline = $headline[0];
- * $text = $oSearchResults->getSearchContent($key, 'HTML');
- * $first_text = $text[0];
- * $similarity = $oSearchResults->getSimilarity($key);
- * $iOccurrence = $oSearchResults->getOccurrence($key);
+ *      $headline = $oSearchResults->getSearchContent($key, 'HTMLHEAD');
+ *      $first_headline = $headline[0];
+ *      $text = $oSearchResults->getSearchContent($key, 'HTML');
+ *      $first_text = $text[0];
+ *      $similarity = $oSearchResults->getSimilarity($key);
+ *      $iOccurrence = $oSearchResults->getOccurrence($key);
  * }
  *
  * @package Core
  * @subpackage Frontend_Search
- *
  */
 class cSearchResult extends cSearchBaseAbstract {
 
@@ -112,23 +114,24 @@ class cSearchResult extends cSearchBaseAbstract {
      * Array of article id's with information about cms-types, occurence of
      * keyword/searchword, similarity .
      *
-     *
-     *
-     *
      * @var array
      */
     protected $_searchResult = array();
 
     /**
-     * Compute ranking factor for each search result and order the search
-     * results by ranking factor
-     * NOTE: The ranking factor is the sum of occurences of matching searchterms
-     * weighted by similarity (in %) between searchword
+     * Constructor to create an instance of this class.
+     *
+     * Compute ranking factor for each search result and order the
+     * search results by ranking factor.
+     *
+     * NOTE: The ranking factor is the sum of occurences of matching
+     * searchterms weighted by similarity (in %) between searchword
      * and matching word in the article.
-     * TODO: One can think of more sophisticated ranking strategies. One could
-     * use the content type information for example
-     * because a matching word in the headline (CMS_HEADLINE[1]) could be
-     * weighted more than a matching word in the text (CMS_HTML[1]).
+     *
+     * TODO: One can think of more sophisticated ranking strategies.
+     * The content type information could be used for example because a
+     * matching word in the headline (CMS_HEADLINE[1]) could be weighted
+     * more than a matching word in the text (CMS_HTML[1]).
      *
      * @param array $search_result
      *         List of article ids
@@ -302,7 +305,7 @@ class cSearchResult extends cSearchBaseAbstract {
     }
 
     /**
-     * Returns number of result pages
+     * Returns number of result pages.
      *
      * @return int
      */
@@ -311,7 +314,7 @@ class cSearchResult extends cSearchBaseAbstract {
     }
 
     /**
-     * Returns number of results
+     * Returns number of results.
      *
      * @return int
      */
@@ -363,7 +366,7 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @todo Is not job of search, should be outsourced!
+     * @todo refactor this because it shouldn't be the Search's job
      * @param int $artid
      * @return int
      *         Category Id

@@ -23,10 +23,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiActionlogCollection extends ItemCollection {
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
      *
-     * Tables user, client, language, action & category_article are allowed as
-     * join partners
+     * Tables user, client, language, action & category_article
+     * are allowed as join partners.
      */
     public function __construct() {
         global $cfg;
@@ -83,7 +83,7 @@ class cApiActionlogCollection extends ItemCollection {
 class cApiActionlog extends Item {
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
      *         Specifies the ID of item to load

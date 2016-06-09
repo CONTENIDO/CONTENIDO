@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the html parser class.
  *
@@ -13,10 +14,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Class HtmlParser.
- * To use, create an instance of the class passing
- * HTML text. Then invoke parse() until it's false.
- * When parse() returns true, $_NodeType, $_NodeName
- * $_NodeValue and $_NodeAttributes are updated.
+ *
+ * To use, create an instance of the class passing HTML text.
+ *
+ * Then invoke parse() until it's false.
+ *
+ * When parse() returns true, $_NodeType, $_NodeName $_NodeValue and
+ * $_NodeAttributes are updated.
  *
  * Copyright (c) 2003 Starnetsys, LLC. All rights reserved.
  * Redistribution of source must retain this copyright notice.
@@ -30,35 +34,35 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class HtmlParser {
 
     /**
-     * node type ID for elements
+     * Node type ID for elements.
      *
      * @var int
      */
     const NODE_TYPE_ELEMENT = 1;
 
     /**
-     * node type ID for endelements
+     * Node type ID for endelements.
      *
      * @var int
      */
     const NODE_TYPE_ENDELEMENT = 2;
 
     /**
-     * node type ID for texts
+     * Node type ID for texts.
      *
      * @var int
      */
     const NODE_TYPE_TEXT = 3;
 
     /**
-     * node type ID for comments
+     * Node type ID for comments.
      *
      * @var int
      */
     const NODE_TYPE_COMMENT = 4;
 
     /**
-     * node type ID when done
+     * Node type ID when done.
      *
      * @var int
      */
@@ -66,6 +70,7 @@ class HtmlParser {
 
     /**
      * Field iNodeType.
+     *
      * May be one of the NODE_TYPE_* constants above.
      *
      * @var int
@@ -74,6 +79,7 @@ class HtmlParser {
 
     /**
      * Field iNodeName.
+     *
      * For elements, it's the name of the element.
      *
      * @var string
@@ -82,6 +88,7 @@ class HtmlParser {
 
     /**
      * Field iNodeValue.
+     *
      * For text nodes, it's the text.
      *
      * @var string
@@ -90,6 +97,7 @@ class HtmlParser {
 
     /**
      * Field iNodeAttributes.
+     *
      * A string-indexed array containing attribute values
      * of the current node. Indexes are always lowercase.
      *
@@ -116,9 +124,9 @@ class HtmlParser {
     protected $_HtmlTextIndex = 0;
 
     /**
-     * Constructor.
-     * Constructs an HtmlParser instance with
-     * the HTML text given.
+     * Constructor to create an instance of this class.
+     *
+     * Constructs an HtmlParser instance with the HTML text given.
      *
      * @param string $HtmlText
      */
@@ -128,141 +136,144 @@ class HtmlParser {
     }
 
     /**
-     * Old constructor
+     * Old constructor.
      *
      * @deprecated [2016-02-04]
-     * 				This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     *          This method is deprecated and is not needed any longer.
+     *          Please use __construct() as constructor function.
      * @param string $HtmlText
      * @return __construct()
      */
     public function HtmlParser($HtmlText) {
-    	cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
-    	return $this->__construct($HtmlText);
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
+        return $this->__construct($HtmlText);
     }
 
     /**
-     * Set method for HtmlText variable
+     * Set method for HtmlText variable.
      *
      * @param string $htmlText
      * @return string
      */
     public function setHtmlText($HtmlText) {
-    	return $this->_HtmlText = $HtmlText;
+        return $this->_HtmlText = $HtmlText;
     }
 
     /**
-     * Set method for HtmlTextLength variable
+     * Set method for HtmlTextLength variable.
      *
      * @param int $htmlText
      * @return int
      */
     public function setHtmlTextLength($HtmlTextLength) {
-    	return $this->_HtmlTextLength = $HtmlTextLength;
+        return $this->_HtmlTextLength = $HtmlTextLength;
     }
 
-	/**
-     * Set method for HtmlTextIndex variable
+    /**
+     * Set method for HtmlTextIndex variable.
      *
      * @param int $HtmlTextIndex
      * @return int
      */
     public function setHtmlTextIndex($HtmlTextIndex) {
-    	return $this->_HtmlTextIndex = $HtmlTextIndex;
-    }
-	
-	 /**
-     * Set method for NodeAttributes
-     * To clear this array please use _clearAttributes function
-     *
-     * @param array $NodeAttributes
-     * @return boolean|array
-     */
-    public function _setNodeAttributes($NodeAttributes) {
-
-    	if (!is_array($NodeAttributes)) {
-    		return false;
-    	}
-
-    	return $this->_NodeAttributes = $NodeAttributes;
+        return $this->_HtmlTextIndex = $HtmlTextIndex;
     }
 
     /**
-     * Get method for _HtmlText
+     * Set method for NodeAttributes.
+     *
+     * To clear this array please use _clearAttributes function.
+     *
+     * @param array $NodeAttributes
+     * @return bool|array
+     */
+    public function _setNodeAttributes($NodeAttributes) {
+
+        if (!is_array($NodeAttributes)) {
+            return false;
+        }
+
+        return $this->_NodeAttributes = $NodeAttributes;
+    }
+
+    /**
+     * Get method for _HtmlText.
      *
      * @return string
      */
     public function getHtmlText() {
-    	return $this->_HtmlText;
+        return $this->_HtmlText;
     }
 
     /**
-     * Get method for _HtmlTextLength
+     * Get method for _HtmlTextLength.
      *
      * @return int
      */
     public function getHtmlTextLength() {
-    	return $this->_HtmlTextLength;
+        return $this->_HtmlTextLength;
     }
 
-	/**
-	 * Get method for _NodeType
-	 *
-	 * @return string
-	*/
-	public function getNodeType() {
-		return $this->_NodeType;
-	}
+    /**
+     * Get method for _NodeType.
+     *
+     * @return string
+     */
+    public function getNodeType() {
+        return $this->_NodeType;
+    }
 
-	/**
-	 * Get method for _NodeName
-	 *
-	 * @return string
-	*/
-	public function getNodeName() {
-		return $this->_NodeName;
-	}
+    /**
+     * Get method for _NodeName.
+     *
+     * @return string
+     */
+    public function getNodeName() {
+        return $this->_NodeName;
+    }
 
-	/**
-	 * Getmethod for _NodeAttributes
-	 *
-	 * @return array
-	 */
-	public function getNodeAttributesArray() {
-		return $this->_NodeAttributes;
-	}
-	
-	/**
-	 * Get method for _NodeAttributes with specific attribute
-	 *
-	 * @param string $attribute
-	 * @return string
-	*/
-	public function getNodeAttributes($attribute) {
-		return $this->_NodeAttributes[$attribute];
-	}
+    /**
+     * Getmethod for _NodeAttributes.
+     *
+     * @return array
+     */
+    public function getNodeAttributesArray() {
+        return $this->_NodeAttributes;
+    }
 
-	/**
-	 * Get method for _HtmlTextIndex
-	 *
-	 * @return integer
-	*/
-	public function getHtmlTextIndex() {
-		return $this->_HtmlTextIndex;
-	}   
+    /**
+     * Get method for _NodeAttributes with specific attribute.
+     *
+     * @param string $attribute
+     * @return string
+     */
+    public function getNodeAttributes($attribute) {
+        return $this->_NodeAttributes[$attribute];
+    }
 
-	/**
-	 * Increae HtmlTextIndex 
-	 *
-	 * @return boolean
-	*/
-	protected function increaseHtmlTextIndex() {
-		return $this->_HtmlTextIndex++;
-	}
-	
+    /**
+     * Get method for _HtmlTextIndex.
+     *
+     * @return int
+     */
+    public function getHtmlTextIndex() {
+        return $this->_HtmlTextIndex;
+    }
+
+    /**
+     * Increase HtmlTextIndex.
+     *
+     * @return bool
+     */
+    protected function increaseHtmlTextIndex() {
+        return $this->_HtmlTextIndex++;
+    }
+
     /**
      * Method parse.
-     * Parses the next node. Returns false only if the end of the HTML text has
-     * been reached. Updates values of iNode* fields.
+     *
+     * Parses the next node. Returns false only if the end of the HTML
+     * text has been reached. Updates values of iNode* fields.
      *
      * @return bool
      */
@@ -278,12 +289,12 @@ class HtmlParser {
     }
 
     /**
-     * Clear (reset) _NodeAttributes array
+     * Clear (reset) _NodeAttributes array.
      *
      * @return array
      */
     protected function _clearAttributes() {
-    	return $this->_NodeAttributes = array();
+        return $this->_NodeAttributes = array();
     }
 
     /**
@@ -350,9 +361,9 @@ class HtmlParser {
                     $value = $this->_readValueInTag();
 
                     $NodeAttributes[strtolower($attrName)] = $value;
-					$this->_setNodeAttributes($NodeAttributes);
+                    $this->_setNodeAttributes($NodeAttributes);
                 } else {
-                	$NodeAttributes[strtolower($attrName)] = "";
+                    $NodeAttributes[strtolower($attrName)] = "";
                     $this->_setNodeAttributes($NodeAttributes);
                 }
             }
@@ -373,7 +384,7 @@ class HtmlParser {
 
     /**
      *
-     * @return boolean
+     * @return bool
      */
     protected function _skipBlanksInTag() {
         return "" != ($this->_skipInTag(array(
@@ -470,7 +481,7 @@ class HtmlParser {
 
     /**
      *
-     * @return boolean
+     * @return bool
      */
     protected function _moveNext() {
         if ($this->getHtmlTextIndex() < $this->getHtmlTextLength()) {
@@ -569,11 +580,11 @@ class HtmlParser {
     }
 
     /**
-     * Returns text between current position and $needle,
-     * inclusive, or "" if not found.
-     * The current index is moved to a point
-     * after the location of $needle, or not moved at all
-     * if nothing is found.
+     * Returns text between current position and $needle, inclusive, or
+     * "" if not found.
+     *
+     * The current index is moved to a point after the location of
+     * $needle, or not moved at all if nothing is found.
      *
      * @param string $needle
      * @return string

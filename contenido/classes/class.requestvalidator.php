@@ -23,14 +23,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cRequestValidator {
 
     /**
-     * Instance of this class
+     * Instance of this class.
      *
      * @var cRequestValidator
      */
     private static $_instance = NULL;
 
     /**
-     * Path and filename of logfile
+     * Path and filename of logfile.
      *
      * @var string
      */
@@ -52,6 +52,7 @@ class cRequestValidator {
 
     /**
      * Array with all possible parameters and parameter formats.
+     *
      * Structure has to be:
      *
      * <code>
@@ -67,7 +68,8 @@ class cRequestValidator {
 
     /**
      * Array with forbidden parameters.
-     * If any of these is set the request will be invalid
+     *
+     * If any of these is set the request will be invalid.
      *
      * @var array
      */
@@ -81,7 +83,7 @@ class cRequestValidator {
     protected $_failure = '';
 
     /**
-     * Current mode
+     * Current mode.
      *
      * @var string
      */
@@ -137,6 +139,8 @@ class cRequestValidator {
     const CHECK_PATHSTRING = '!([*]*\/)|(dbfs:\/[*]*)|(dbfs:)|(^)$!';
 
     /**
+     * Constructor to create an instance of this class.
+     *
      * The constructor sets up the singleton object and reads the config from
      *     'data/config/' . CON_ENVIRONMENT . '/config.http_check.php'
      * It also reads existing local config from
@@ -199,8 +203,9 @@ class cRequestValidator {
 
     /**
      * Checks every given parameter.
-     * Parameters which aren't defined in config.http_check.php are considered
-     * to be fine
+     *
+     * Parameters which aren't defined in config.http_check.php
+     * are considered to be fine.
      *
      * @return bool
      *         True if every parameter is fine
@@ -284,7 +289,7 @@ class cRequestValidator {
     }
 
     /**
-     * Returns the first bad parameter
+     * Returns the first bad parameter.
      *
      * @return string
      *         the key of the bad parameter
@@ -294,8 +299,8 @@ class cRequestValidator {
     }
 
     /**
-     * Writes a log entry containing information about the request which led to
-     * the halt of the execution
+     * Writes a log entry containing information about the request which
+     * led to the halt of the execution.
      */
     protected function logHackTrial() {
         if ($this->_log === true && !empty($this->_logPath)) {

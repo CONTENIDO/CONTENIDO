@@ -24,7 +24,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHTMLAlignmentTable extends cHTMLTable {
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         parent::__construct();

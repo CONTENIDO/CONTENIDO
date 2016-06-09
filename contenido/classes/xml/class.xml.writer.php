@@ -23,7 +23,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cXmlWriter extends cXmlBase {
 
     /**
-     * Class constructor of cXmlWriter.
+     * Constructor to create an instance of this class.
+     *
      * Creates the XML document.
      *
      * @param string $version [optional, default: 1.0]

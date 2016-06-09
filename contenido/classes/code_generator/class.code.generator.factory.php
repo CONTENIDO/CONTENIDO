@@ -26,7 +26,7 @@ class cCodeGeneratorFactory {
      * Returns code generator instance by it's name.
      *
      * @param string $name [optional]
-     *         The generator name, e. g. 'Standard' to retrieve instance of
+     *         The generator name, e.g. 'Standard' to retrieve instance of
      *         cCodeGeneratorStandard.
      * @throws cInvalidArgumentException
      *         If name is invalid, class file is missing or class isn't available.

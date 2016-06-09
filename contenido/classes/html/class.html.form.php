@@ -30,6 +30,8 @@ class cHTMLForm extends cHTMLContentElement {
     protected $_method;
 
     /**
+     * Constructor to create an instance of this class.
+     *
      * Creates an HTML form element.
      *
      * @param string $name [optional]

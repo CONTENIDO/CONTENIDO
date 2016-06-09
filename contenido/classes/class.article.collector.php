@@ -78,7 +78,9 @@ class cArticleCollector implements SeekableIterator, Countable {
     protected $_currentPosition = 0;
 
     /**
-     * Constructor. If options are defined, the loading process is automatically
+     * Constructor to create an instance of this class.
+     *
+     * If options are defined, the loading process is automatically
      * initiated.
      *
      * @param array $options [optional, default: empty array]

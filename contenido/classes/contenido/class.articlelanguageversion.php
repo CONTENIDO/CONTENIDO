@@ -22,7 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection {
 
     /**
-     * Create a new collection of items.
+     * Constructor to create an instance of this class.
      *
      * @param string $select
      *         where clause to use for selection
@@ -30,9 +30,9 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
      */
     public function __construct($select = false) {
 
-    	$sTable = cRegistry::getDbTableName('art_lang_version');
-    	$sPrimaryKey = 'idartlangversion';
-    	ItemCollection::__construct($sTable, $sPrimaryKey);
+        $sTable = cRegistry::getDbTableName('art_lang_version');
+        $sPrimaryKey = 'idartlangversion';
+        ItemCollection::__construct($sTable, $sPrimaryKey);
 
         $this->_setItemClass('cApiArticleLanguageVersion');
 
@@ -260,7 +260,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
     public $content = NULL;
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
      * @param mixed $id
      *         Specifies the ID of item to load
@@ -269,9 +269,9 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
      */
     public function __construct($id = false, $fetchContent = false) {
 
-    	$sTable = cRegistry::getDbTableName('art_lang_version');
-    	$sPrimaryKey = 'idartlangversion';
-    	Item::__construct($sTable, $sPrimaryKey);
+        $sTable = cRegistry::getDbTableName('art_lang_version');
+        $sPrimaryKey = 'idartlangversion';
+        Item::__construct($sTable, $sPrimaryKey);
 
         $this->setFilters(array(), array());
         if ($id !== false) {

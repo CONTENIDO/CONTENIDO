@@ -99,7 +99,9 @@ class cPasswordRequest {
     protected $_sendername;
 
     /**
-     * Constructor of RequestPassword initializes class variables
+     * Constructor to create an instance of this class.
+     *
+     * Initializes class variables.
      *
      * @param cDb $db
      *         The CONTENIDO database object

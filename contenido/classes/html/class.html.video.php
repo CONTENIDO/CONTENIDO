@@ -23,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHTMLVideo extends cHTMLContentElement {
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
      *
      * @param mixed $content [optional]
      *         String or object with the contents

@@ -258,6 +258,8 @@ class cSystemtest {
     protected $_config;
 
     /**
+     * Constructor to create an instance of this class.
+     *
      * Caches the given config array for later use.
      *
      * @param array $config

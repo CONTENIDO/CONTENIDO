@@ -54,7 +54,9 @@ class cSession {
     public $name;
 
     /**
-     * Starts the session
+     * Constructor to create an instance of this class.
+     *
+     * Starts the session.
      *
      * @param string $prefix [optional]
      *         The prefix for the session variables
@@ -301,7 +303,9 @@ class cSession {
 class cFrontendSession extends cSession {
 
     /**
-     * Starts the session and initilializes the class
+     * Constructor to create an instance of this class.
+     *
+     * Starts the session and initilializes the class.
      */
     public function __construct() {
         $client = cRegistry::getClientId();

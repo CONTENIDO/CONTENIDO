@@ -30,7 +30,7 @@ class cGuiList {
     protected $cells;
 
     /**
-     *
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         $this->cells = array();

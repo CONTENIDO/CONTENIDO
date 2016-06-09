@@ -18,46 +18,47 @@ cInclude('includes', 'functions.encoding.php');
 
 /**
  * Abstract base search class.
- * Provides general properties and functions
- * for child implementations.
+ *
+ * Provides general properties and functions for child implementations.
  *
  * @author Murat Purc <murat@purc.de>
- *
  * @package Core
  * @subpackage Frontend_Search
  */
 abstract class cSearchBaseAbstract {
 
     /**
-     * CONTENIDO database object
+     * CONTENIDO database object.
      *
      * @var cDb
      */
     protected $oDB;
 
     /**
-     * CONTENIDO configuration data
+     * CONTENIDO configuration data.
      *
      * @var array
      */
     protected $cfg;
 
     /**
-     * Language id of a client
+     * Language id of a client.
      *
      * @var int
      */
     protected $lang;
 
     /**
-     * Client id
+     * Client id.
      *
      * @var int
      */
     protected $client;
 
     /**
-     * Initialises some properties
+     * Constructor to create an instance of this class.
+     *
+     * Initialises some properties.
      *
      * @param cDb $oDB [optional]
      *         Optional database instance
@@ -81,7 +82,8 @@ abstract class cSearchBaseAbstract {
     }
 
     /**
-     * Main debug function, prints dumps parameter if debugging is enabled
+     * Main debug function, prints dumps parameter if debugging is
+     * enabled.
      *
      * @param string $msg
      *         Some text

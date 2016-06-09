@@ -176,7 +176,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
     protected $_links;
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
      * @param string $sTable
      *         The table to use as information source

@@ -24,11 +24,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHTMLPasswordbox extends cHTMLFormElement {
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
+     *
      * Creates an HTML password box.
      *
-     * If no additional parameters are specified, the
-     * default width is 20 units.
+     * If no additional parameters are specified, the default width is
+     * 20 units.
      *
      * @param string $name
      *         Name of the element

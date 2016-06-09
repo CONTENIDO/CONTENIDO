@@ -27,7 +27,7 @@ class cVersionFile extends cVersion {
     /**
      * Content code of current file.
      *
-     * @var unknown_type
+     * @var string
      */
     public $sCode;
 
@@ -35,26 +35,28 @@ class cVersionFile extends cVersion {
      * Description folder of history sub nav.
      * Its not required to use it.
      *
-     * @var unknown_type
+     * @var string
      */
     public $sDescription;
 
     /**
      * The path of style file.
      *
-     * @var unknown_type
+     * @var string
      */
     public $sPath;
 
     /**
      * The id of Type.
      *
-     * @var unknown_type
+     * @var string
      */
     public $sFileName;
 
     /**
-     * The class versionStyle object constructor, initializes class variables
+     * Constructor to create an instance of this class.
+     *
+     * Initializes class variables.
      *
      * @param string $iIdOfType
      *         The name of style file

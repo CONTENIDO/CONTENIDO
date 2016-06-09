@@ -26,33 +26,35 @@ class cVersionLayout extends cVersion {
     /**
      * The name of Layout
      *
-     * @var unknown_type
+     * @var string
      */
     private $sName;
 
     /**
      * The code of Layout
      *
-     * @var unknown_type
+     * @var string
      */
     private $sCode;
 
     /**
      * The Description of Layout
      *
-     * @var unknown_type
+     * @var string
      */
     private $sDescripion;
 
     /**
      * The Metainformation about layout
      *
-     * @var unknown_type
+     * @var string
      */
     private $sDeletabel;
 
     /**
-     * The class versionLayout object constructor, initializes class variables
+     * Constructor to create an instance of this class.
+     *
+     * Initializes class variables.
      *
      * @param string $iIdLayout
      *         The name of style file

@@ -62,7 +62,7 @@ class FrontendList {
     protected $_listStart = 1;
 
     /**
-     * Creates a new FrontendList object.
+     * Constructor to create an instance of this class.
      *
      * The placeholder for item wraps are the same as for sprintf.
      * See the documentation for sprintf.

@@ -23,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiModuleCollection extends ItemCollection {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -222,7 +222,7 @@ class cApiModule extends Item {
     private $aUsedTemplates = array();
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
      *         Specifies the ID of item to load
@@ -867,7 +867,7 @@ class cApiModule extends Item {
     }
 
     /**
-     * Processes container placeholder (e. g. CMS_VAR[123], CMS_VALUE[123]) in given module input code.
+     * Processes container placeholder (e.g. CMS_VAR[123], CMS_VALUE[123]) in given module input code.
      * Tries to find the proper container tag and replaces its value against
      * container configuration.
      * @param int $containerNr

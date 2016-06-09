@@ -39,43 +39,49 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cGuiNotification {
 
     /**
-     * Error message level
+     * Error message level.
+     *
      * @var string
      */
     const LEVEL_ERROR = 'error';
 
     /**
-     * Warning message level
+     * Warning message level.
+     *
      * @var string
      */
     const LEVEL_WARNING = 'warning';
 
     /**
-     * Info message level
+     * Info message level.
+     *
      * @var string
      */
     const LEVEL_INFO = 'info';
 
     /**
-     * Ok message level
+     * Ok message level.
+     *
      * @var string
      */
     const LEVEL_OK = 'ok';
 
     /**
-     * Notification message level
+     * Notification message level.
+     *
      * @var string
      */
     const LEVEL_NOTIFICATION = 'notification';
 
     /**
-     * HTML path to images
+     * HTML path to images.
+     *
      * @var string
      */
     protected $_sPathImages;
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;

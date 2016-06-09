@@ -65,8 +65,9 @@ class cPager {
     private $_itemsPerPage;
 
     /**
-     * Constructor Function
-     * Initializes the pager
+     * Constructor to create an instance of this class.
+     *
+     * Initializes the pager.
      *
      * @param int $items
      *         Amount of items

@@ -54,7 +54,7 @@ class cTypeGenerator {
     private $_idlang = NULL;
 
     /**
-     * Constructor function
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         $this->_idart = cRegistry::getArticleId(true);
@@ -73,9 +73,9 @@ class cTypeGenerator {
      * Returns the classname for a content type.
      *
      * @param string $type
-     *         Content type, e. g. CMS_HTMLHEAD
+     *         Content type, e.g. CMS_HTMLHEAD
      * @return string
-     *         The classname e. g. cContentTypeHtmlhead for content type CMS_HTMLHEAD
+     *         The classname e.g. cContentTypeHtmlhead for content type CMS_HTMLHEAD
      */
     protected function _getContentTypeClassName($type) {
         $typeClassName = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $type)));
@@ -96,9 +96,9 @@ class cTypeGenerator {
      * Returns the full path to the include file name of a content type.
      *
      * @param string $type
-     *         Content type, e. g. CMS_HTMLHEAD
+     *         Content type, e.g. CMS_HTMLHEAD
      * @return string
-     *         The full path e. g.
+     *         The full path e.g.
      *         {path_to_contenido_includes}/type/code/include.CMS_HTMLHEAD.code.php
      *         for content type CMS_HTMLHEAD
      */

@@ -25,7 +25,7 @@ cInclude('includes', 'functions.file.php');
 class cApiFileInformationCollection extends ItemCollection {
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -173,6 +173,7 @@ class cApiFileInformationCollection extends ItemCollection {
 class cApiFileInformation extends Item {
 
     /**
+     * Constructor to create an instance of this class.
      *
      * @param string $id [optional]
      */

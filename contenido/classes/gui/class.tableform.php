@@ -5,7 +5,6 @@
  *
  * @package Core
  * @subpackage GUI
- *
  * @author Mischa Holz
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -25,6 +24,7 @@ class cGuiTableForm {
 
     /**
      * accept charset of form tag
+     *
      * @var string
      */
     private $_acceptCharset = '';
@@ -114,6 +114,8 @@ class cGuiTableForm {
     public $custom = array();
 
     /**
+     * Constructor to create an instance of this class.
+     *
      * Creates a new cGuiTableForm with given name, action & method of form.
      *
      * @param string $name
@@ -232,7 +234,8 @@ class cGuiTableForm {
     }
 
     /**
-     * Sets the accept-charset attribute of form tag
+     * Sets the accept-charset attribute of form tag.
+     *
      * @param string $charset
      */
     public function setAcceptCharset($charset) {
@@ -293,8 +296,8 @@ class cGuiTableForm {
     }
 
     /**
-     * Renders this cGuiTableForm and either returs ist markup or echoes it
-     * immediately.
+     * Renders this cGuiTableForm and either returs ist markup or echoes
+     * it immediately.
      *
      * @param bool $return [optional]
      *         if true then return markup, else echo immediately

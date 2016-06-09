@@ -94,7 +94,8 @@ class cApiPropertyCollection extends ItemCollection {
     protected static $_cacheItemtypes;
 
     /**
-     * Constructor function
+     * Constructor to create an instance of this class.
+     *
      * @param int $idclient [optional]
      *         Client id
      */
@@ -734,7 +735,7 @@ class cApiProperty extends Item {
     public $maximumLength;
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
      *         Specifies the ID of item to load

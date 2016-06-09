@@ -24,35 +24,40 @@ class cUri {
 
     /**
      * Self instance.
-     * @var  cUri
+     *
+     * @var cUri
      */
     static private $_instance;
 
     /**
      * UriBuilder instance.
-     * @var  cUriBuilder
+     *
+     * @var cUriBuilder
      */
     private $_oUriBuilder;
 
     /**
      * UriBuilder name.
-     * @var  string
+     *
+     * @var string
      */
     private $_sUriBuilderName;
 
     /**
-     * Constructor of cUri. Is not callable from outside.
-     * Gets the UriBuilder configuration and creates an UriBuilder instance.
+     * Constructor to create an instance of this class.
+     *
+     * Is not callable from outside.
+     *
+     * Gets the UriBuilder configuration and creates an UriBuilder
+     * instance.
      */
     private function __construct() {
         $this->_sUriBuilderName = cUriBuilderConfig::getUriBuilderName();
-        $this->_oUriBuilder = cUriBuilderFactory::getUriBuilder(
-                        $this->_sUriBuilderName
-        );
+        $this->_oUriBuilder = cUriBuilderFactory::getUriBuilder($this->_sUriBuilderName);
     }
 
     /**
-     * Returns self instance
+     * Returns self instance.
      *
      * @return cUri
      */
@@ -144,9 +149,9 @@ class cUri {
      *         - params: array('idcat' => 12, 'lang' => 1)
      *         Required values depend on used UriBuilder, but a must have is 'lang'.
      * @param array $aConfig [optional]
-     *         If not set, cUriBuilderConfig::getConfig() will be used by the UriBuilder
+     *         If not set, cUriBuilderConfig::getConfig() will be used by the UriBuilder.
      * @return string
-     *         The redirect Url build by cUriBuilder
+     *         The redirect Url build by cUriBuilder.
      */
     public function buildRedirect($param, array $aConfig = array()) {
         $url = $this->build($param, true, $aConfig);
@@ -154,28 +159,31 @@ class cUri {
     }
 
     /**
-     * Splits passed url into its components
+     * Splits passed url into its components.
      *
      * @param string $sUrl
-     *         The Url to strip down
+     *         The Url to strip down.
      * @return array
      *         Assoziative array created by using parse_url()
      *         having the key 'params' which includes the parameter value pairs.
      */
     public function parse($sUrl) {
         $aUrl = @parse_url($sUrl);
+
         if (isset($aUrl['query'])) {
             $aUrl['query'] = str_replace('&amp;', '&', $aUrl['query']);
             parse_str($aUrl['query'], $aUrl['params']);
         }
+
         if (!isset($aUrl['params']) || !is_array($aUrl['params'])) {
             $aUrl['params'] = array();
         }
+
         return $aUrl;
     }
 
     /**
-     * Composes a url using passed components array
+     * Composes a url using passed components array.
      *
      * @param array $aComponents
      *         Assoziative array created by parse_url()
@@ -195,12 +203,13 @@ class cUri {
     }
 
     /**
-     * Checks, if passed url is an external url while performing hostname check
+     * Checks, if passed url is an external url while performing
+     * hostname check.
      *
      * @param string $sUrl
-     *         Url to check
+     *         Url to check.
      * @return bool
-     *         True if url is a external url, otherwise false
+     *         True if url is a external url, otherwise false.
      */
     public function isExternalUrl($sUrl) {
         $aComponents = $this->parse($sUrl);
@@ -223,21 +232,24 @@ class cUri {
      * Checks, if passed url is an identifiable internal url.
      *
      * Following urls will be identified as a internal url:
+     *
      * - "/", "/?idart=123", "/?idcat=123", ...
      * - "front_content.php", "front_content.php?idart=123", "front_content.php?idcat=123", ...
      * - "/front_content.php", "/front_content.php?idart=123", "/front_content.php?idcat=123", ...
-     * - The path component of an client HTML base path: e. g. "/cms/", "/cms/?idart=123", "/cms/?idcat=123"
+     * - The path component of an client HTML base path: e.g. "/cms/", "/cms/?idart=123", "/cms/?idcat=123"
      * - Also possible: "/cms/front_content.php", "/cms/front_content.php?idart=123", "/cms/front_content.php?idcat=123"
-     * All of them prefixed with protocol and client host (e. g. http://host/) will also be identified
+     *
+     * All of them prefixed with protocol and client host (e.g. http://host/) will also be identified
      * as a internal Url.
      *
-     * Other Urls, even internal Urls like /unknown/path/to/some/page.html will not be identified as
-     * internal url event if they are real working clean URLs.
+     * Other Urls, even internal Urls like /unknown/path/to/some/page.html
+     * will not be identified as internal url event if they are real
+     * working clean URLs.
      *
      * @param string $sUrl
-     *         Url to check
+     *         Url to check.
      * @return bool
-     *         True if url is identifiable internal url, otherwise false
+     *         True if url is identifiable internal url, otherwise false.
      */
     public function isIdentifiableFrontContentUrl($sUrl) {
         if ($this->isExternalUrl($sUrl)) {
@@ -276,7 +288,7 @@ class cUri {
         } elseif (($path == $clientPath && ($baseName == 'front_content.php' || $baseName == ''))) {
             return true;
         } elseif ($path == '' && $baseName !== 'front_content.php' && $baseName == $clientPath) {
-            // If url is e. g. "/cms/"
+            // If url is e.g. "/cms/"
             return true;
         } else {
             return false;

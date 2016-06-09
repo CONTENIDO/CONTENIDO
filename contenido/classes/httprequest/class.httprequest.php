@@ -17,7 +17,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Abstract HttpRequest class
+ * Abstract HttpRequest class.
  *
  * @package Core
  * @subpackage Core
@@ -25,8 +25,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 abstract class cHttpRequest {
 
     /**
-     * Creates a new cHttpRequest object. The function determines the best
-     * extension to use and returns an object accordingly
+     * Creates a new cHttpRequest object. The function determines the
+     * best extension to use and returns an object accordingly.
      *
      * @param string $url [optional]
      *         URL of the HTTP request
@@ -42,7 +42,7 @@ abstract class cHttpRequest {
     }
 
     /**
-     * Basic constructor
+     * Constructor to create an instance of this class.
      *
      * @param string $url [optional]
      *         URL of the HTTP request
@@ -50,7 +50,7 @@ abstract class cHttpRequest {
     abstract public function __construct($url = '');
 
     /**
-     * Peform the request using POST
+     * Perform the request using POST.
      *
      * @param bool $return [optional]
      *         If true, response of the server gets returned as string
@@ -62,7 +62,7 @@ abstract class cHttpRequest {
     abstract public function postRequest($return = true, $returnHeaders = false);
 
     /**
-     * Peform the request using GET
+     * Perform the request using GET.
      *
      * @param bool $return [optional]
      *         If true, response of the server gets returned as string
@@ -74,7 +74,7 @@ abstract class cHttpRequest {
     abstract public function getRequest($return = true, $returnHeaders = false);
 
     /**
-     * Peform the request using POST AND append all GET parameters
+     * Perform the request using POST AND append all GET parameters.
      *
      * @param bool $return [optional]
      *         If true, response of the server gets returned as string
@@ -86,7 +86,7 @@ abstract class cHttpRequest {
     abstract public function request($return = true, $returnHeaders = false);
 
     /**
-     * Set the GET parameters
+     * Set the GET parameters.
      *
      * @param array $array
      *         associative array containing keys and values of the GET parameters
@@ -95,7 +95,7 @@ abstract class cHttpRequest {
     abstract public function setGetParams($array);
 
     /**
-     * Set the POST parameters
+     * Set the POST parameters.
      *
      * @param array $array
      *         associative array containing keys and values of the POST parameters
@@ -104,7 +104,7 @@ abstract class cHttpRequest {
     abstract public function setPostParams($array);
 
     /**
-     * Set the HTTP headers
+     * Set the HTTP headers.
      *
      * @param array $array
      *         associative array containing the HTTP headers
@@ -113,7 +113,7 @@ abstract class cHttpRequest {
     abstract public function setHeaders($array);
 
     /**
-     * Set the request URL
+     * Set the request URL.
      *
      * @param string $url
      *         the URL

@@ -49,7 +49,7 @@ class cApiCecRegistry {
     private static $_instance = NULL;
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     protected function __construct() {
         $this->_aChains = array();
@@ -345,7 +345,9 @@ class cApiCecChainItem {
     protected $_mTemporaryArguments;
 
     /**
-     * Constructor, sets the CEC chain item properties.
+     * Constructor to create an instance of this class.
+     *
+     * Sets the CEC chain item properties.
      *
      * @param string $sChainName
      * @param string $sFunctionName

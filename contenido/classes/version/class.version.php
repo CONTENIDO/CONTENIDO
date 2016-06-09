@@ -163,7 +163,9 @@ class cVersion {
     public static $iDisplayNotification;
 
     /**
-     * The Version object constructor, initializes class variables
+     * Constructor to create an instance of this class.
+     *
+     * Initializes class variables.
      *
      * @param array $aCfg
      * @param array $aCfgClient

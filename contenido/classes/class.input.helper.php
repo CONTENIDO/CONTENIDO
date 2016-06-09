@@ -27,7 +27,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHTMLInputSelectElement extends cHTMLSelectElement {
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
+     *
      * Creates an HTML select field (aka 'DropDown').
      *
      * @param string $sName
@@ -382,18 +383,18 @@ class UI_Config_Table {
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
     protected $_ColorLight = '';
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
     protected $_ColorDark = '';
 
     /**
-     * Create a config table instance.
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         $cfg = cRegistry::getConfig();
@@ -411,7 +412,8 @@ class UI_Config_Table {
      * Old constructor
      *
      * @deprecated [2016-02-11]
-     * 				This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     *              This method is deprecated and is not needed any longer.
+     *              Please use __construct() as constructor function.
      */
     public function UI_Config_Table() {
         cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
@@ -449,19 +451,19 @@ class UI_Config_Table {
     /**
      * Set method for cell alignment
      *
-     * @param unknown_type $row
-     * @param unknown_type $cell
+     * @param string $row
+     * @param string $cell
      * @param unknown_type $alignment
      */
     protected function setCellAlignment($row, $cell, $alignment) {
-        $this->_CellAlignment[$sRow][$sCell] = $sAlignment;
+        $this->_CellAlignment[$row][$cell] = $alignment;
     }
 
     /**
      * Set method for cell vertical alignment
      *
-     * @param unknown_type $row
-     * @param unknown_type $cell
+     * @param string $row
+     * @param string $cell
      * @param unknown_type $alignment
      */
     protected function setCellVAlignment($row, $cell, $alignment) {
@@ -471,8 +473,8 @@ class UI_Config_Table {
     /**
      * Set method for cell class
      *
-     * @param unknown_type $row
-     * @param unknown_type $cell
+     * @param string $row
+     * @param string $cell
      * @param unknown_type $class
      */
     function setCellClass($row, $cell, $class) {
@@ -485,12 +487,11 @@ class UI_Config_Table {
      * @return string
      */
     protected function _addMultiSelJS() {
-        // Trick: To save multiple selections in <select>-Element, add some JS
-        // which saves the
-        // selection, comma separated in a hidden input field on change.
-        // Try ... catch prevents error messages, if function is added more than
-        // once
-        // if (!fncUpdateSel) in JS has not worked...
+        // Trick: To save multiple selections in <select>-Element,
+        // add some JS which saves the selection, comma separated
+        // in a hidden input field on change.
+        // Try ... catch prevents error messages, if function is added
+        // more than once if (!fncUpdateSel) in JS has not worked ...
         $script = '
 <script type="text/javascript"><!--
 try {
@@ -520,7 +521,7 @@ try {
     /**
      * Rendering function
      *
-     * @param boolean $print [optional]
+     * @param bool $print [optional]
      * @return string|void
      *         Complete template string or nothing
      */

@@ -23,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiClientLanguageCollection extends ItemCollection {
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -174,7 +174,7 @@ class cApiClientLanguage extends Item {
     protected $_oPropertyCollection;
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      *
      * @param int $iIdClientsLang [optional]
      *         If specified, load item

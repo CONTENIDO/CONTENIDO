@@ -22,7 +22,7 @@
 class cErrorException extends cException {
 
     /**
-     * Constructs the Exception.
+     * Constructor to create an instance of this class.
      *
      * @param string $message
      *         The Exception message to throw.

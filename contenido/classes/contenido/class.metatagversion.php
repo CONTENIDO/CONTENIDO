@@ -23,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiMetaTagVersionCollection extends ItemCollection {
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -121,7 +121,7 @@ class cApiMetaTagVersionCollection extends ItemCollection {
 class cApiMetaTagVersion extends Item {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
      * @param mixed $id
      *         Specifies the ID of item to load
@@ -149,7 +149,7 @@ class cApiMetaTagVersion extends Item {
     /**
      * Marks this meta value as current.
      *
-     * @return boolean|void
+     * @return bool|void
      */
     public function markAsCurrent() {
         $metaTagColl = new cApiMetaTagCollection();

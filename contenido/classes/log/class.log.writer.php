@@ -15,7 +15,8 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This class contains the main functionalities for the logging writer in CONTENIDO.
+ * This class contains the main functionalities for the logging writer
+ * in CONTENIDO.
  *
  * @package    Core
  * @subpackage Log
@@ -23,13 +24,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 abstract class cLogWriter {
 
     /**
+     * Contains all options of the current writer instance.
+     *
      * @var array
-     *         Contains all options of the current writer instance.
      */
     protected $_options = array();
 
     /**
-     * Constructor of the writer instance.
+     * Constructor to create an instance of this class.
+     *
      * @param array $options [optional]
      *         Array with options for the writer instance (optional)
      */
@@ -89,8 +92,8 @@ abstract class cLogWriter {
     }
 
     /**
-     * Sets a option.
-     * If option was set previously, it must be forced to overwrite the value.
+     * Sets an option. If option was set previously, it must be forced
+     * to overwrite the value.
      *
      * @param string $option
      *         Name of the option

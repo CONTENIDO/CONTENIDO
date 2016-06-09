@@ -22,7 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiSearchTrackingCollection extends ItemCollection {
 
     /**
-     * Basic constructor
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -115,7 +115,7 @@ class cApiSearchTrackingCollection extends ItemCollection {
 class cApiSearchTracking extends Item {
 
     /**
-     * Default constructor
+     * Constructor to create an instance of this class.
      *
      * @param string $mId [optional]
      *         Item Id

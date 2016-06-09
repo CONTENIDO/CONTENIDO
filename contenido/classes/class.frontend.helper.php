@@ -48,7 +48,7 @@ class cFrontendHelper {
     }
 
     /**
-     * Constructor of the class.
+     * Constructor to create an instance of this class.
      *
      * @deprecated [2015-05-21]
      *         This method is no longer supported (no replacement)

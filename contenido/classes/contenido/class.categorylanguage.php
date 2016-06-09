@@ -22,7 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiCategoryLanguageCollection extends ItemCollection {
 
     /**
-     * Create a new collection of items.
+     * Constructor to create an instance of this class.
      *
      * @param string $select [optional]
      *         where clause to use for selection (see ItemCollection::select())
@@ -155,7 +155,7 @@ class cApiCategoryLanguageCollection extends ItemCollection {
 class cApiCategoryLanguage extends Item {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
      *         Specifies the ID of item to load

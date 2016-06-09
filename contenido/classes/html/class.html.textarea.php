@@ -25,11 +25,12 @@ class cHTMLTextarea extends cHTMLFormElement {
     protected $_value;
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
+     *
      * Creates an HTML text area.
      *
-     * If no additional parameters are specified, the
-     * default width is 60 chars, and the height is 5 chars.
+     * If no additional parameters are specified, the default width is
+     * 60 chars, and the height is 5 chars.
      *
      * @param string $name
      *         Name of the element

@@ -248,9 +248,9 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck) {
  *         stylesheet class for the links
  * @param int $firstTreeElementToUse
  *         first navigation level location string should be printed out (first level = 0!!)
- * @param unknown_type $uselang
- * @param unknown_type $final
- * @param unknown_type $usecache
+ * @param int $uselang
+ * @param bool $final
+ * @param bool $usecache
  * @return string
  *         location string
  */

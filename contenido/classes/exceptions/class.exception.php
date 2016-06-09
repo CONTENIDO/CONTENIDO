@@ -42,7 +42,7 @@ class cException extends Exception {
     protected $_logger = NULL;
 
     /**
-     * Constructs the Exception.
+     * Constructor to create an instance of this class.
      *
      * @param string $message
      *         The Exception message to throw.

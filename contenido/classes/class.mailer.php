@@ -143,7 +143,7 @@ class cMailer extends Swift_Mailer {
     private $_mailPass = '';
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
      *
      * System properties to define the default mail sender are read and
      * aggregated.

@@ -30,7 +30,7 @@ class cFileCache {
     protected $_options = array();
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
      *
      * @param array $options [optional]
      *         array with options for the cache (optional, default: empty array)
@@ -41,6 +41,7 @@ class cFileCache {
 
     /**
      * Setter for the cache options.
+     *
      * Validates incoming options and sets the default of the missing options.
      *
      * @param array $options
@@ -140,6 +141,7 @@ class cFileCache {
 
     /**
      * Return content of a specific cache stored in filesystem.
+     *
      * If not cached, false is returned.
      *
      * @param string $id

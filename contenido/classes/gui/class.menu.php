@@ -94,7 +94,7 @@ class cGuiMenu {
     protected $_marked = false;
 
     /**
-     *
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         $this->rowmark = true;

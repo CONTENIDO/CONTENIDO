@@ -51,6 +51,7 @@ class cLayoutSynchronizer {
     private $_outputMessage = array();
 
     /**
+     * Constructor to create an instance of this class.
      *
      * @param array $cfg
      * @param array $cfgClient

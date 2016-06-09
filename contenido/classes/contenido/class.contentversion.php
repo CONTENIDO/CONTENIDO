@@ -23,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiContentVersionCollection extends ItemCollection {
 
     /**
-     * Create a new collection of items.
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         parent::__construct(cRegistry::getDbTableName('content_version'), 'idcontentversion');
@@ -103,7 +103,7 @@ class cApiContentVersionCollection extends ItemCollection {
 class cApiContentVersion extends Item {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
      * @param mixed $id
      *         Specifies the ID of item to load

@@ -38,8 +38,9 @@ abstract class cDbDriverAbstract {
     protected $_handler = NULL;
 
     /**
-     * Constructor of the database driver.
-     * Currently stores the given configuration locally.
+     * Constructor to create an instance of this class.
+     *
+     * The given configuration will be aggregated.
      *
      * @param array $dbCfg
      *         database configuration

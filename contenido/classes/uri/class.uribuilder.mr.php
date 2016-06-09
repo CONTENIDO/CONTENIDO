@@ -16,7 +16,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Class to build frontend urls for advandced mod rewrite plugin.
- * Extends abstract Contenido_UriBuilder class and implements singleton pattern.
+ *
+ * Extends abstract Contenido_UriBuilder class and implements the
+ * singleton pattern.
  *
  * Usage:
  * <pre>
@@ -27,8 +29,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * $newUrl = $mrUriBuilder->getUrl();
  * </pre>
  *
- * @todo Add handling of absolute paths, standardize handling of fragments
- *
+ * @todo add handling of absolute paths
+ * @todo standardize handling of fragments
  * @package Plugin
  * @subpackage ModRewrite
  */
@@ -43,6 +45,7 @@ class cUriBuilderMR extends cUriBuilder {
 
     /**
      * Cached rootdir.
+     *
      * The rootdir can differ from the configured one if an alternate
      * frontendpath is configured as client setting. In order to determine the
      * current rootdir only once this is cached as static class member.
@@ -52,7 +55,7 @@ class cUriBuilderMR extends cUriBuilder {
     private static $_cachedRootDir;
 
     /**
-     * Ampersant used for composing several parameter value pairs
+     * Ampersand used for composing several parameter value pairs
      *
      * @var string
      */
@@ -80,7 +83,9 @@ class cUriBuilderMR extends cUriBuilder {
     private $_aMrCfg = NULL;
 
     /**
-     * Constructor, tries to set some member variables.
+     * Constructor to create an instance of this class.
+     *
+     * Tries to set some member variables.
      */
     private function __construct() {
         $this->sHttpBasePath = '';
@@ -93,7 +98,7 @@ class cUriBuilderMR extends cUriBuilder {
     }
 
     /**
-     * Returns a instance of cUriBuilderMR
+     * Returns a instance of cUriBuilderMR.
      *
      * @return cUriBuilderMR
      */
@@ -141,7 +146,8 @@ class cUriBuilderMR extends cUriBuilder {
     }
 
     /**
-     * Builds the SEO-URL by analyzing passed arguments (parameter value pairs)
+     * Builds the SEO-URL by analyzing passed arguments
+     * (parameter value pairs).
      *
      * @param array $aParams
      *         Parameter array
@@ -196,8 +202,9 @@ class cUriBuilderMR extends cUriBuilder {
         }
 
         $sPathAndArticle = $sPath . $sArticle . $sFileExt;
+
+        // use lowercase url
         if ($this->_aMrCfg['use_lowercase_uri'] == 1) {
-            // use lowercase url
             $sPathAndArticle = strtolower($sPathAndArticle);
         }
 
@@ -226,6 +233,7 @@ class cUriBuilderMR extends cUriBuilder {
 
     /**
      * Returns the defined rootdir.
+     *
      * Allows for root dir being alternativly defined as path of setting
      * client/%frontend_path%.
      *
@@ -291,13 +299,17 @@ class cUriBuilderMR extends cUriBuilder {
     }
 
     /**
-     * Loops thru passed parameter array and creates the query part of the URL.
-     * All non CONTENIDO related parameter will be excluded from composition.
+     * Loops through given parameter array and creates the query part of
+     * the URL.
+     *
+     * All non CONTENIDO related parameters will be excluded from
+     * composition.
      *
      * @param array $aArgs
-     *         Assoziative parameter array
+     *         associative parameter array
      * @return string
-     *         Composed query part for the URL like '?foo=bar&amp;param=value'
+     *         composed query part for the URL
+     *         like '?foo=bar&amp;param=value'
      */
     private function _createUrlQueryPart(array $aArgs) {
         // set list of parameter which are to ignore while setting additional
@@ -392,7 +404,7 @@ class cUriBuilderMR extends cUriBuilder {
     }
 
     /**
-     * Returns composed path of url (normally the category structure)
+     * Returns composed path of url (normally the category structure).
      *
      * @param array $aPretty
      *         Pretty url array
@@ -418,7 +430,7 @@ class cUriBuilderMR extends cUriBuilder {
     }
 
     /**
-     * Returns articlename depending on current setting
+     * Returns articlename depending on current setting.
      *
      * @param array $aPretty
      *         Pretty url array

@@ -43,43 +43,43 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
         cDebug::out("conGenerateCode($this->_idcat, $this->_idart, $this->_lang, $this->_client, $this->_layout);<br>");
 
-        // Set category article id
+        // set category article id
         $idcatart = conGetCategoryArticleId($this->_idcat, $this->_idart);
 
-        // Set configuration for article
+        // set configuration for article
         $this->_idtplcfg = $this->_getTemplateConfigurationId();
         if (NULL === $this->_idtplcfg) {
             $this->_processNoConfigurationError($idcatart);
             return '0601';
         }
 
-        // List of configured container
+        // list of configured container
         $containerConfigurations = conGetContainerConfiguration($this->_idtplcfg);
 
-        // Set idlay and idmod array
+        // set idlay and idmod array
         $data = $this->_getTemplateData();
         $idlay = $data['idlay'];
         $idtpl = $data['idtpl'];
         $this->_tplName = cString::cleanURLCharacters($data['name']);
 
-        // List of used modules
+        // list of used modules
         $containerModules = conGetUsedModules($idtpl);
 
-        // Load layout code from file
+        // load layout code from file
         $layoutInFile = new cLayoutHandler($idlay, '', $cfg, $this->_lang);
         $this->_layoutCode = $layoutInFile->getLayoutCode();
         $this->_layoutCode = cString::normalizeLineEndings($this->_layoutCode, "\n");
 
         $moduleHandler = new cModuleHandler();
 
-        // Create code for all containers
+        // create code for all containers
         if ($idlay) {
             cInclude('includes', 'functions.tpl.php');
             $containerNumbers = tplGetContainerNumbersInLayout($idlay);
 
             foreach ($containerNumbers as $containerNr) {
+                // if there's no configured module in this container
                 if (!isset($containerModules[$containerNr]) || !is_numeric($containerModules[$containerNr])) {
-                    // No configured module in this container
                     // reset current module state and process empty container
                     $this->_resetModule();
                     $this->_processCmsContainer($containerNr);
@@ -102,8 +102,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                 $input = '';
                 $this->_moduleCode = '';
 
-                // Get the contents of input and output from files and not from
-                // db-table
+                // get contents of input and output from files and not from db
                 if ($moduleHandler->modulePathExists() == true) {
                     // do not execute faulty modules
                     // caution: if no module is bound to a container then idmod of $oModule is false
@@ -114,7 +113,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                         continue;
                     }
 
-                    // Load css and js content of the js/css files
+                    // load css and js content of the js/css files
                     if ($moduleHandler->getFilesContent('css', 'css') !== false) {
                         $this->_cssData .= $moduleHandler->getFilesContent('css', 'css');
                     }
@@ -126,7 +125,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                     $input = $moduleHandler->readInput();
                 }
 
-                // strip comments from module code, see CON-1536
+                // CON-1536 strip comments from module code
                 // regex is not enough to correctly remove comments
                 // use php_strip_whitespace instead of writing own parser
                 // downside: php_strip_whitespace requires a file as parameter
@@ -141,37 +140,37 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                     cFileHandler::remove($tmpFile);
                 }
 
-                // Process CMS value tags
+                // process CMS value tags
                 $containerCmsValues = $this->_processCmsValueTags($containerNr, $containerConfigurations[$containerNr]);
 
-                // Add CMS value code to module prefix code
+                // add CMS value code to module prefix code
                 if ($containerCmsValues) {
                     $this->_modulePrefix[] = $containerCmsValues;
                 }
 
-                // Process frontend debug
+                // process frontend debug
                 $this->_processFrontendDebug($containerNr, $module);
 
-                // Replace new containers
+                // replace new containers
                 $this->_processCmsContainer($containerNr);
             }
         }
 
-        // Find out what kind of CMS_... Vars are in use
+        // find out what kind of CMS_... Vars are in use
         $a_content = $this->_getUsedCmsTypesData($editable, $version);
 
-        // Replace all CMS_TAGS[]
+        // replace all CMS_TAGS[]
         if ($contype) {
             $this->_processCmsTags($a_content, true, $editable);
         }
 
-        // Add/replace title tag
+        // add/replace title tag
         $this->_processCodeTitleTag();
 
-        // Add/replace meta tags
+        // add/replace meta tags
         $this->_processCodeMetaTags();
 
-        // Save the collected css/js data and save it under the template name
+        // save the collected css/js data and save it under the template name
         // ([templatename].css , [templatename].js in cache dir
         $cssFile = '';
         if (strlen($this->_cssData) > 0) {
@@ -193,8 +192,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             }
         }
 
-        // add module CSS at {CSS} position, after title or after opening head
-        // tag
+        // add module CSS at {CSS} position, after title
+        // or after opening head tag
         if (strpos($this->_layoutCode, '{CSS}') !== false) {
             $this->_layoutCode = cString::iReplaceOnce('{CSS}', $cssFile, $this->_layoutCode);
         } else if (!empty($cssFile)) {
@@ -211,8 +210,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             $this->_layoutCode = cString::iReplaceOnce('{REV}', ((int) getEffectiveSetting("ressource", "revision", 0)), $this->_layoutCode);
         }
 
-        // add module JS at {JS} position or before closing body tag if there is
-        // no {JS}
+        // add module JS at {JS} position
+        // or before closing body tag if there is no {JS}
         if (strpos($this->_layoutCode, '{JS}') !== false) {
             $this->_layoutCode = cString::iReplaceOnce('{JS}', $jsFile, $this->_layoutCode);
         } else if (!empty($jsFile)) {
@@ -259,16 +258,18 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             $this->_layoutCode = $debugPrefix . $this->_layoutCode;
         }
 
-        // Save the generated code even if there are faulty modules.
-        // if one does not do so a non existing cache file will be tried to be loaded in frontend
+        // save the generated code even if there are faulty modules
+        // if one does not do so, a non existing cache file
+        // will be tried to be loaded in frontend
         $this->_saveGeneratedCode($idcatart);
 
         return $this->_layoutCode;
     }
 
     /**
-     * Will be invoked, if code generation wasn't able to find a configured
-     * article or category.
+     * Will be invoked, if code generation wasn't able to find a
+     * configured article or category.
+     *
      * Creates a error message and writes this into the code cache.
      *
      * @param int $idcatart
@@ -283,8 +284,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
     /**
      * Processes and adds or replaces title tag for an article.
-     * Also calls the CEC 'Contenido.Content.CreateTitletag' for user defined
-     * title creation.
+     * Also calls the CEC 'Contenido.Content.CreateTitletag'
+     * for user defined title creation.
      *
      * @see cCodeGeneratorAbstract::_processCodeTitleTag()
      * @return string
@@ -311,7 +312,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         // but user supplied markup might be incorrect)
         $headTag = $headTag[0][0];
 
-        // Add or replace title
+        // add or replace title
         if ($this->_pageTitle != '') {
             $replaceTag = '{__TITLE__' . md5(rand().time()) . '}';
             $headCode = preg_replace('/<title>.*?<\/title>/is', $replaceTag, $headTag, 1);

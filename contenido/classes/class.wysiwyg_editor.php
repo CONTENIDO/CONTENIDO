@@ -57,6 +57,7 @@ abstract class cWYSIWYGEditor {
     protected $_aSettings;
 
     /**
+     * Constructor to create an instance of this class.
      *
      * @param string $editorName
      * @param string $editorContent

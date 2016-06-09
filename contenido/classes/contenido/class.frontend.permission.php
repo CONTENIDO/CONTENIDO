@@ -30,7 +30,7 @@ class cApiFrontendPermissionCollection extends ItemCollection {
     protected $_frontendPermission;
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -173,7 +173,7 @@ class cApiFrontendPermissionCollection extends ItemCollection {
 class cApiFrontendPermission extends Item {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
      *         Specifies the ID of item to load

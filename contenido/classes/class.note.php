@@ -23,6 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class NoteCollection extends cApiCommunicationCollection {
 
     /**
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         parent::__construct();
@@ -132,6 +133,7 @@ class NoteList extends cHTMLDiv {
     protected $_bDeleteable;
 
     /**
+     * Constructor to create an instance of this class.
      *
      * @param string $sItemType
      * @param string $sItemId
@@ -215,6 +217,7 @@ class NoteList extends cHTMLDiv {
 class NoteListItem extends cHTMLDiv {
 
     /**
+     * Constructor to create an instance of this class.
      *
      * @param string $sItemType
      * @param string $sItemId

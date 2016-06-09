@@ -19,7 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * Configurable via global $cfg['db']['connection'] configuration as follows:
  * <pre>
- * - host      (string)  Hostname or ip (with port, e. g. "example.com:3307")
+ * - host      (string)  Hostname or ip (with port, e.g. "example.com:3307")
  * - database  (string)  Database name
  * - user      (string)  User name
  * - password  (string)  User password

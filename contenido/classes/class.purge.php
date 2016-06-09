@@ -64,7 +64,7 @@ class cSystemPurge {
     );
 
     /**
-     * Constructor of class.
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         // check and set the system directories to exclude from purge

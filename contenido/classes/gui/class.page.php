@@ -17,6 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Generic page GUI class.
+ *
  * Manages HTML pages and provides functions for rendering them.
  *
  * @package Core
@@ -47,30 +48,31 @@ class cGuiPage {
     protected $_pageTemplate;
 
     /**
-     * The file used generate the page
+     * The file used generate the page.
+     *
      * @var string
      */
     protected $_pageBase;
 
     /**
      * The template for everything that is inside the body.
-     * (Usually template.PAGENAME.html)
+     * This is usually template.PAGENAME.html.
      *
      * @var cTemplate
      */
     protected $_contentTemplate;
 
     /**
-     * An array of script names (inside /scripts/) which will be included in the
-     * final page.
+     * An array of script names (inside /scripts/) which will be
+     * included in the final page.
      *
      * @var array
      */
     protected $_scripts;
 
     /**
-     * An array of stylesheets (inside /styles/) which will be included in the
-     * final page.
+     * An array of stylesheets (inside /styles/) which will be included
+     * in the final page.
      *
      * @var array
      */
@@ -93,8 +95,8 @@ class cGuiPage {
     protected $_markScript;
 
     /**
-     * An error message which will be used to display an error with the help of
-     * cGuiNotification
+     * An error message which will be used to display an error with the
+     * help of cGuiNotification.
      *
      * @var string
      */
@@ -102,7 +104,7 @@ class cGuiPage {
 
     /**
      * A warning which will be used to display an error with the help of
-     * cGuiNotification
+     * cGuiNotification.
      *
      * @var string
      */
@@ -110,7 +112,7 @@ class cGuiPage {
 
     /**
      * An info which will be used to display an error with the help of
-     * cGuiNotification
+     * cGuiNotification.
      *
      * @var string
      */
@@ -118,29 +120,30 @@ class cGuiPage {
 
     /**
      * A ok which will be used to display an error with the help of
-     * cGuiNotification
+     * cGuiNotification.
      *
      * @var string
      */
     protected $_ok;
 
     /**
-     * If true, just display the message and don't render the template
+     * If true, just display the message and don't render the template.
      *
      * @var bool
      */
     protected $_abort;
 
     /**
-     * An array of cHTML objects which will be rendered instead of filling a
-     * template.
+     * An array of cHTML objects which will be rendered instead of
+     * filling a template.
      *
      * @var array
      */
     protected $_objects;
 
     /**
-     * Array of arrays where each array contains information about a meta tag.
+     * Array of arrays where each array contains information about a
+     * meta tag.
      *
      * @var array
      */
@@ -155,7 +158,7 @@ class cGuiPage {
 
 
     /**
-     * Scripts and styles subfolder for cGuiPage objects
+     * Scripts and styles subfolder for cGuiPage objects.
      *
      * @var string
      */
@@ -169,21 +172,23 @@ class cGuiPage {
     protected $_skipTemplateCheck = false;
 
     /**
-     * The constructor initializes the class and tries to get the encoding from
-     * the currently selected language.
-     * It will also add every script in the form of /scripts/*.PAGENAME.js and
-     * every stylesheet in the form
-     * of/styles/*.PAGENAME.css to the page as well as /scripts/PAGENAME.js and
-     * /styles/PAGENAME.css.
+     * Constructor to create an instance of this class.
+     *
+     * The constructor initializes the class and tries to get the
+     * encoding from the currently selected language.
+     *
+     * It will also add every script in the form of /scripts/*.PAGENAME.js
+     * and every stylesheet in the form of /styles/*.PAGENAME.css to the
+     * page as well as /scripts/PAGENAME.js and /styles/PAGENAME.css.
      *
      * @param string $pageName
-     *         The name of the page which will be used to load corresponding
-     *         stylesheets, templates and scripts.
+     *         The name of the page which will be used to load
+     *         corresponding stylesheets, templates and scripts.
      * @param string $pluginName [optional]
      *         The name of the plugin in which the site is run
      * @param string $subMenu [optional]
-     *         The number of the submenu which should be highlighted when this
-     *         page is shown.
+     *         The number of the submenu which should be highlighted
+     *         when this page is shown.
      */
     public function __construct($pageName, $pluginName = '', $subMenu = '') {
         global $lang, $cfg, $sess;
@@ -263,15 +268,16 @@ class cGuiPage {
     }
 
     /**
-     * Adds a script to the website - path can be absolute, relative to the
-     * plugin scripts folder and relative to the CONTENIDO scripts folder.
-     * NOTE: This function will also add inline JavaScript in the form of
-     * "<script...". However this shouldn't be used.
+     * Adds a script to the website - path can be absolute, relative to
+     * the plugin scripts folder and relative to the CONTENIDO scripts
+     * folder.
      *
-     * If the page was constructed in a plugin and the plugin name was given
-     * in the constructor it will find the JS script in
-     * plugins/PLUGINNAME/scripts/
-     * too.
+     * NOTE: This function will also add inline JavaScript in the form
+     * of "<script...". However this shouldn't be used.
+     *
+     * If the page was constructed in a plugin and the plugin name was
+     * given in the constructor it will find the JS script in
+     * plugins/PLUGINNAME/scripts/ too.
      *
      * @param string $script
      *         The filename of the script. It has to reside in /scripts/
@@ -319,13 +325,13 @@ class cGuiPage {
     }
 
     /**
-     * Adds a stylesheet to the website - path can be absolute, relative to the
-     * plugin stylesheets folder and relative to the CONTENIDO stylesheets
-     * folder.
+     * Adds a stylesheet to the website - path can be absolute, relative
+     * to the plugin stylesheets folder and relative to the CONTENIDO
+     * stylesheets folder.
      *
      * @param string $stylesheet
-     *         The filename of the stylesheet. It has to reside in /styles/
-     *         in order to be found.
+     *         The filename of the stylesheet. It has to reside in
+     *         /styles/ in order to be found.
      */
     public function addStyle($stylesheet) {
         global $perm, $currentuser;
@@ -428,7 +434,7 @@ class cGuiPage {
     }
 
     /**
-     * Adds the reload script for the left_bottom frame to the website
+     * Adds the reload script for the left_bottom frame to the website.
      */
     public function setReload() {
         $this->_scripts[] = 'reload.js';
@@ -471,7 +477,7 @@ class cGuiPage {
     }
 
     /**
-     * Sets the markscript
+     * Sets the markscript.
      *
      * @param string $item
      *         The number of the submenu which should be marked.
@@ -481,7 +487,7 @@ class cGuiPage {
     }
 
     /**
-     * Sets the encoding of the website
+     * Sets the encoding of the website.
      *
      * @param string $encoding
      *         An encoding which should be valid to use in the meta tag
@@ -512,7 +518,7 @@ class cGuiPage {
     }
 
     /**
-     * Function to specify the file used to generate the page template
+     * Function to specify the file used to generate the page template.
      *
      * @param string $filename [optional]
      *         the page base file
@@ -536,17 +542,19 @@ class cGuiPage {
     }
 
     /**
-     * After calling this the page will only display messages and not render the
-     * content template.
-     * NOTE: You still have to call render() to actually show any messages
+     * After calling this the page will only display messages and not
+     * render the content template.
+     *
+     * NOTE: You still have to call render() to actually show any messages.
      */
     public function abortRendering() {
         $this->_abort = true;
     }
 
     /**
-     * Displays an error message and aborts rendering after that
-     * NOTE: You still have to call render() to actually show any messages
+     * Displays an error message and aborts rendering after that.
+     *
+     * NOTE: You still have to call render() to actually show any messages.
      *
      * @param string $msg
      *         A message
@@ -568,7 +576,7 @@ class cGuiPage {
     }
 
     /**
-     * Displays a warning
+     * Displays a warning.
      *
      * @param string $msg
      *         The warning
@@ -578,7 +586,7 @@ class cGuiPage {
     }
 
     /**
-     * Displays an info
+     * Displays an info.
      *
      * @param string $msg
      *         The info message
@@ -588,7 +596,7 @@ class cGuiPage {
     }
 
     /**
-     * Display a ok
+     * Display a ok.
      *
      * @param string $msg
      *         The ok message
@@ -600,8 +608,9 @@ class cGuiPage {
     /**
      * Sets an array (or a single object) of cHTML objects which build up the
      * site instead of a content template.
-     * NOTE: All these objects must have a render() method or else they won't be
-     * shown
+     *
+     * NOTE: All these objects must have a render() method or else they
+     * won't be shown.
      *
      * @param array|object $objects
      *         An array of objects
@@ -616,10 +625,11 @@ class cGuiPage {
     }
 
     /**
-     * Appends all cHTML objects in an array (or a single object) which build up
-     * the site instead of a content template.
-     * NOTE: All these objects must have a render() method or else they won't be
-     * shown
+     * Appends all cHTML objects in an array (or a single object) which
+     * build up the site instead of a content template.
+     *
+     * NOTE: All these objects must have a render() method or else they
+     * won't be shown.
      *
      * @param array|object $objects
      *         An array of objects or a single object
@@ -633,7 +643,7 @@ class cGuiPage {
     }
 
     /**
-     * Renders the page and either prints it or returns it
+     * Renders the page and either prints it or returns it.
      *
      * @param cTemplate|NULL $template [optional]
      *         If set, use this content template instead of the default one
@@ -737,9 +747,8 @@ class cGuiPage {
     }
 
     /**
-     * Renders text for all available content messages and returns the assembled
-     * message
-     * string.
+     * Renders text for all available content messages and returns the
+     * assembled message string.
      *
      * @return string
      */
@@ -797,6 +806,7 @@ class cGuiPage {
             if (is_string($obj)) {
                 $output .= $obj;
             }
+
             if (!method_exists($obj, 'render')) {
                 continue;
             }
@@ -805,10 +815,12 @@ class cGuiPage {
             // code if the parameter is true and some return the
             // code if the parameter is false.
             $oldOutput = $output;
-            ob_start(); // We don't want any code outside the body
-                        // (in case the object outputs directly we
-                        // will catch this output)
+
+            // We don't want any code outside the body (in case the
+            // object outputs directly we will catch this output).
+            ob_start();
             $output .= $obj->render(false);
+
             // We get the code either directly or via the output
             $output .= ob_get_contents();
             if ($oldOutput == $output) {
@@ -821,7 +833,7 @@ class cGuiPage {
     }
 
     /**
-     * Renders template of a page or of a plugin and returns the output back
+     * Renders template of a page or of a plugin and returns the output back.
      *
      * @param cTemplate $template
      * @return string
@@ -855,10 +867,10 @@ class cGuiPage {
 
     /**
      * Returns only the path and name of the given file.
+     *
      * Some JS or CSS file URLs may contain a query part, like
-     * "/path/to/file.js.php?contenido=12234"
-     * and this function returns only the path part "/path/to/file.js.php" of
-     * it.
+     * "/path/to/file.js.php?contenido=12234" and this function returns
+     * only the path part "/path/to/file.js.php" of it.
      *
      * @param string $file
      * @return string

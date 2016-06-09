@@ -331,7 +331,7 @@ class UploadList extends FrontendList {
 
     /**
      *
-     * @var integer
+     * @var int
      */
     protected $_size;
 
@@ -427,14 +427,14 @@ class UploadList extends FrontendList {
     }
 
     /**
-     * @return integer $size
+     * @return int $size
      */
     public function getSize() {
         return $this->_size;
     }
 
     /**
-     * @param unknown_type $size
+     * @param int $size
      */
     public function setSize($size) {
         $this->_size = $size;

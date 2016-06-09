@@ -23,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiFrontendUserCollection extends ItemCollection {
 
     /**
-     * Constructor function
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -129,7 +129,7 @@ class cApiFrontendUserCollection extends ItemCollection {
 class cApiFrontendUser extends Item {
 
     /**
-     * Constructor function
+     * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
      *         Specifies the ID of item to load

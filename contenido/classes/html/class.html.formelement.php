@@ -24,9 +24,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHTMLFormElement extends cHTML {
 
     /**
-     * Constructor.
-     * This is a generic form element, where
-     * specific elements should be inherited from this class.
+     * Constructor to create an instance of this class.
+     *
+     * This is a generic form element, where specific elements should be
+     * inherited from this class.
      *
      * @todo remove overfluous param class
      * @param string $name [optional]

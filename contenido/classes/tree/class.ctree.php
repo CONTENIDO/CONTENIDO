@@ -15,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Tree class
+ * Tree class.
  *
  * @package    Core
  * @subpackage GUI
@@ -30,6 +30,8 @@ class cTree extends cTreeItem {
     protected $_treeIcon;
 
     /**
+     * Constructor to create an instance of this class.
+     *
      * @todo The root item currently has to be a "0".
      * This is a bug, feel free to fix it.
      *
@@ -40,7 +42,7 @@ class cTree extends cTreeItem {
     }
 
     /**
-     * sets a new name for the tree.
+     * Sets a new name for the tree.
      *
      * @param string $name
      *         Name of the tree
@@ -50,7 +52,8 @@ class cTree extends cTreeItem {
     }
 
     /**
-     * Tree icon setter
+     * Tree icon setter.
+     * Short form for setTreeIcon().
      *
      * @param string $path
      */
@@ -59,7 +62,7 @@ class cTree extends cTreeItem {
     }
 
     /**
-     * Tree icon setter
+     * Tree icon setter.
      *
      * @param string $path
      */
@@ -68,7 +71,7 @@ class cTree extends cTreeItem {
     }
 
     /**
-     * Tree icon getter
+     * Tree icon getter.
      *
      * @return string
      */

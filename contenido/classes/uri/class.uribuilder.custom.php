@@ -15,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Custom uri builder class
+ * Custom uri builder class.
  *
  * @package    Core
  * @subpackage Frontend_URI
@@ -37,14 +37,14 @@ class cUriBuilderCustom extends cUriBuilder {
     private $aConfig;
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     private function __construct() {
         $this->sHttpBasePath = '';
     }
 
     /**
-     * Get instance of self
+     * Get instance of self.
      *
      * @return cUriBuilderCustom
      */
@@ -57,8 +57,9 @@ class cUriBuilderCustom extends cUriBuilder {
 
     /**
      * Builds a URL in index-a-1.html style.
-     * Index keys of $aParams will be used as "a", corresponding values as "1"
-     * in this sample.
+     *
+     * Index keys of $aParams will be used as "a", corresponding values
+     * as "1" in this sample.
      *
      * @param array $aParams
      * @param bool $bUseAbsolutePath [optional]

@@ -24,7 +24,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiUserCollection extends ItemCollection {
 
     /**
-     * Constructor function.
+     * Constructor to create an instance of this class.
      *
      * @global array $cfg
      * @param string|bool $where [optional]
@@ -367,7 +367,7 @@ class cApiUser extends Item {
     const MIN_PASS_LENGTH_DEFAULT = 8;
 
     /**
-     * Constructor function
+     * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
      *         Specifies the ID of item to load
@@ -588,9 +588,11 @@ class cApiUser extends Item {
 
     /**
      * This method saves the given password $password.
-     * The password
-     * has to be checked, before it is set to the database. The resulting
-     * integer value represents the result code.
+     *
+     * The password has to be checked, before it is set to the database.
+     *
+     * The resulting integer value represents the result code.
+     *
      * Use the PASS_* constants to check what happens.
      *
      * @param string $password

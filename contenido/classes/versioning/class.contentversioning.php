@@ -48,12 +48,12 @@ class cContentVersioning {
     /**
      * editable article language version id
      *
-     * @var integer
+     * @var int
      */
     public $editableArticleId;
 
     /**
-     * Create new versioning class
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         $this->db = cRegistry::getDb();
@@ -102,7 +102,7 @@ class cContentVersioning {
      * If current time - lastModified < 1 hour return "%d minutes ago"
      * else return "Y-M-D H:I:S".
      *
-     * @param unknown_type $lastModified
+     * @param string $lastModified
      * @return string
      */
     public function getTimeDiff($lastModified) {
@@ -278,10 +278,10 @@ class cContentVersioning {
 
     /**
      *
-     * @param unknown_type $class
-     * @param unknown_type $selectElement
-     * @param unknown_type $copyToButton
-     * @param unknown_type $infoText
+     * @param string $class
+     * @param string $selectElement
+     * @param string $copyToButton
+     * @param string $infoText
      * @return string
      */
     public function getVersionSelectionField($class, $selectElement, $copyToButton, $infoText) {
@@ -510,13 +510,12 @@ class cContentVersioning {
      * Prepares content for saving (consider versioning-mode; prevents multiple
      * storings for filelists e.g.).
      *
-     * @param unknown_type $idartlang
+     * @param int $idartlang
      *         the contents idartlang
      * @param cApiContent $content
      *         the content to store
-     * @param unknown_type
+     * @param unknown_type $value
      *         the contents value to store
-     *
      */
     public function prepareContentForSaving($idartlang, cApiContent $content, $value) {
 

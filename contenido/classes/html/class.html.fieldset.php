@@ -24,7 +24,8 @@ defined('CON_FRAMEWORK') || die('Illegal call');
 class cHTMLFieldset extends cHTMLContentElement {
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
+     *
      * Creates an HTML fieldset element.
      *
      * @param mixed $content [optional]

@@ -23,13 +23,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cLogWriterFile extends cLogWriter {
 
     /**
+     * Destination handle.
+     *
      * @var resource
-     *         Destination handle
      */
     protected $_handle = NULL;
 
     /**
-     * Constructor of the writer instance.
+     * Constructor to create an instance of this class.
      *
      * @param array $options [optional]
      *         Array with options for the writer instance (optional)

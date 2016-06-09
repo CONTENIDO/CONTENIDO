@@ -23,14 +23,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cVersionModule extends cVersion {
 
     /**
-     * Type of modul
+     * Module type.
      *
-     * @var unknown_type
+     * @var string
      */
     public $sModType;
 
     /**
-     * The class versionStyle object constructor, initializes class variables
+     * Constructor to create an instance of this class.
+     *
+     * Initializes class variables.
      *
      * @param string $iIdMod
      *         The name of style file

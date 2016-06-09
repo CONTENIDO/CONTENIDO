@@ -22,9 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class NewsletterJobCollection extends ItemCollection {
 
     /**
-     * Constructor Function
-     *
-     * @param none
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;

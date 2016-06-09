@@ -20,7 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cGuiScrollListAlltranslations extends cGuiScrollList {
 
     /**
-     *
+     * Constructor to create an instance of this class.
      */
     function __construct() {
         parent::__construct(false);
@@ -42,7 +42,7 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
     /**
      * Is called when a new column is rendered
      *
-     * @param unknown_type $column
+     * @param int $column
      *         The current column which is being rendered
      */
     public function onRenderColumn($column) {
@@ -261,11 +261,11 @@ if ($action == 'con_translate_edit') {
     }
 
     if (!empty($_POST['modtrans'])) {
-	    if (!$error) {
-	        $page->displayOk(i18n('Saved translation successfully!'));
-	    } else {
-	        $page->displayError(i18n("Can't save translation!"));
-	    }
+        if (!$error) {
+            $page->displayOk(i18n('Saved translation successfully!'));
+        } else {
+            $page->displayError(i18n("Can't save translation!"));
+        }
     }
 }
 
@@ -766,9 +766,9 @@ $page->set("s", "DELLANGHREF", $delLangHref);
 $page->set("s", "MODULEINUSETEXT", i18n("The module &quot;%s&quot; is used for following templates"));
 
 if (!$noResults) {
-	$page->set("s", "INFO", $message . '<p class="notify_general notify_warning">' . i18n("WARNING: Translations have effects on every article that uses the module!") . '</p>');
+    $page->set("s", "INFO", $message . '<p class="notify_general notify_warning">' . i18n("WARNING: Translations have effects on every article that uses the module!") . '</p>');
 } else {
-	$page->set("s", "INFO", "");
+    $page->set("s", "INFO", "");
 }
 
 $page->setMarkScript(2);

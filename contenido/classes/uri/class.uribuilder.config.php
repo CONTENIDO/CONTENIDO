@@ -24,12 +24,12 @@ if (!class_exists('NotInitializedException')) {
 /**
  * Configure cUriBuilder URL style. Per default, configures for style
  * index-a-1.html.
- * If you need another style, extend this class to your needs and pass it to
- * desired cUriBuilder.
+ *
+ * If you need another style, extend this class to your needs and pass
+ * it to desired cUriBuilder.
  *
  * The cUriBuilderConfig::setConfig() must be called at least once to
- * initialize the desired
- * UriBuilder.
+ * initialize the desired UriBuilder.
  *
  * Usage:
  * ------
@@ -65,7 +65,7 @@ class cUriBuilderConfig {
     );
 
     /**
-     * Set cUriBuilder configuration
+     * Set cUriBuilder configuration.
      *
      * @param array $cfg
      *         Assoziative configuration array as follows:
@@ -88,7 +88,7 @@ class cUriBuilderConfig {
     }
 
     /**
-     * Returns cUriBuilder name
+     * Returns cUriBuilder name.
      *
      * @throws cException
      *         If cUriBuilder configuration wasn't initialized before
@@ -104,7 +104,7 @@ class cUriBuilderConfig {
     }
 
     /**
-     * Returns cUriBuilder configuration
+     * Returns cUriBuilder configuration.
      *
      * @throws cException
      *         If cUriBuilder configuration wasn't initialized before

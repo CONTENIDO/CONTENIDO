@@ -16,7 +16,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Scrollable lists GUI class
+ * Scrollable lists GUI class.
  *
  * @package Core
  * @subpackage GUI
@@ -24,28 +24,28 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cGuiScrollList {
 
     /**
-     * Data container
+     * Data container.
      *
      * @var array
      */
     public $data = array();
 
     /**
-     * Header container
+     * Header container.
      *
      * @var array
      */
     public $header = array();
 
     /**
-     * Number of records displayed per page
+     * Number of records displayed per page.
      *
      * @var string
      */
     public $resultsPerPage;
 
     /**
-     * Start page
+     * Start page.
      *
      * @var string
      */
@@ -68,35 +68,35 @@ class cGuiScrollList {
     /**
      * Table item
      *
-     * @var unknown_type
+     * @var cHTMLTable
      */
     public $objTable;
 
     /**
      * Header row
      *
-     * @var unknown_type
+     * @var cHTMLTableRow
      */
     public $objHeaderRow;
 
     /**
      * Header item
      *
-     * @var unknown_type
+     * @var cHTMLTableHead
      */
     public $objHeaderItem;
 
     /**
      * Header item
      *
-     * @var unknown_type
+     * @var cHTMLTableRow
      */
     public $objRow;
 
     /**
      * Header item
      *
-     * @var unknown_type
+     * @var cHTMLTableData
      */
     public $objItem;
 
@@ -106,7 +106,7 @@ class cGuiScrollList {
      */
 
     /**
-     * Creates a new FrontendList object.
+     * Constructor to create an instance of this class.
      *
      * @param bool $defaultstyle [optional]
      *         use the default style for object initializing?
@@ -154,7 +154,7 @@ class cGuiScrollList {
     }
 
     /**
-     * Sets the custom parameters for sortable links
+     * Sets the custom parameters for sortable links.
      *
      * $obj->setCustom($key, $custom);
      *
@@ -168,7 +168,7 @@ class cGuiScrollList {
     }
 
     /**
-     * Is called when a new row is rendered
+     * Is called when a new row is rendered.
      *
      * @param unknown_type $row
      *         The current row which is being rendered
@@ -346,7 +346,7 @@ class cGuiScrollList {
     }
 
     /**
-     * Outputs or optionally returns
+     * Outputs or optionally returns.
      *
      * @param bool $return [optional]
      *         If true, returns the list
@@ -362,7 +362,7 @@ class cGuiScrollList {
         $headeroutput = "";
         $output = "";
 
-        /* Render header */
+        // Render header
         foreach ($this->header as $key => $value) {
             if (is_array($this->sortable)) {
                 if (array_key_exists($key, $this->sortable) && $this->sortable[$key] == true) {

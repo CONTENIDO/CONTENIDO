@@ -25,7 +25,7 @@ cInclude('includes', 'functions.file.php');
 class cApiDbfsCollection extends ItemCollection {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -451,7 +451,7 @@ class cApiDbfs extends Item {
     const PROTOCOL_DBFS = 'dbfs:';
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
      *         Specifies the ID of item to load

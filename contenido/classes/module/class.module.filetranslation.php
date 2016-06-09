@@ -2,7 +2,8 @@
 
 /**
  * This file contains the module file translation class.
- * TODO: Rework comments of this class.
+ *
+ * @todo refactor documentation
  *
  * @package    Core
  * @subpackage Backend
@@ -16,8 +17,8 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This class save the translations from a modul in a file
- * and get it from file.
+ * This class save the translations from a modul in a file and get it
+ * from file.
  *
  * @package    Core
  * @subpackage Backend
@@ -25,14 +26,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cModuleFileTranslation extends cModuleHandler {
 
     /**
-     * Path to the modul directory
+     * Path to the modul directory.
      *
      * @var string
      */
     private $_modulePath;
 
     /**
-     * Name of the translations file
+     * Name of the translations file.
      *
      * @var string
      */
@@ -46,7 +47,7 @@ class cModuleFileTranslation extends cModuleHandler {
     static $langArray = array();
 
     /**
-     * The id of the modul
+     * The id of the modul.
      *
      * @var int
      */
@@ -54,6 +55,7 @@ class cModuleFileTranslation extends cModuleHandler {
     static $originalTranslationDivider = '=';
 
     /**
+     * Constructor to create an instance of this class.
      *
      * @param int $idmodul [optional]
      * @param bool $static [optional]
@@ -172,7 +174,8 @@ class cModuleFileTranslation extends cModuleHandler {
     }
 
     /**
-     * This method serialize a array.
+     * This method serialize an array.
+     *
      * $key.[Divider].$value."\r\n"
      *
      * @param array $wordListArray
@@ -190,10 +193,12 @@ class cModuleFileTranslation extends cModuleHandler {
 
     /**
      * This method unserialize a string.
-     * The contents of file looks like original String [Divider] Translation
-     * String.
-     * If divider is =
-     * Example: Hello World=Hallo Welt
+     * The contents of file looks like
+     * <Original String><Divider><Translation String>.
+     *
+     * Example:
+     * If divider is "="
+     * Hello World=Hallo Welt
      *
      * @param string $string
      *         the contents of the file
@@ -226,7 +231,7 @@ class cModuleFileTranslation extends cModuleHandler {
      *
      * @param array $wordListArray
      * @return bool
-     *         true if success else false
+     *         true on success or false on failure
      */
     public function saveTranslationArray($wordListArray) {
         $fileName = $this->_modulePath . $this->_directories['lang'] . self::$fileName;

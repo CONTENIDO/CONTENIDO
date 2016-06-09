@@ -15,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Tree item class
+ * Tree item class.
  *
  * @package    Core
  * @subpackage GUI
@@ -23,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cTreeItem {
 
     /**
-     * Sub Items for this tree item
+     * Sub Items of this tree item
      *
      * @var array
      */
@@ -37,21 +37,21 @@ class cTreeItem {
     var $_collapsed;
 
     /**
-     * ID for this item
+     * ID of this tree item
      *
      * @var string
      */
     var $_id;
 
     /**
-     * Name for this item
+     * Name of this tree item
      *
      * @var string
      */
     var $_name;
 
     /**
-     * Contains the level of this item
+     * level of this tree item
      *
      * @var int
      */
@@ -65,27 +65,28 @@ class cTreeItem {
     var $_attributes = array();
 
     /**
-     * Contains the parent of this item
+     * parent of this tree item
      *
      * @var array
      */
     var $_parent = false;
 
     /**
-     * Contains the next item
+     * next sibling of this tree item
      *
      * @var array
      */
     var $_next = false;
 
     /**
-     * Contains the previous item
+     * previous sibling of this tree item
      *
      * @var array
      */
     var $_previous = false;
 
     /**
+     * Constructor to create an instance of this class.
      *
      * @param string $id [optional]
      * @param string $name [optional]
@@ -98,7 +99,7 @@ class cTreeItem {
     }
 
     /**
-     * Id getter
+     * Id getter.
      *
      * @return string
      */
@@ -107,7 +108,7 @@ class cTreeItem {
     }
 
     /**
-     * Name getter
+     * Name getter.
      *
      * @return string
      */
@@ -116,7 +117,7 @@ class cTreeItem {
     }
 
     /**
-     * Collapsed state getter
+     * Collapsed state getter.
      *
      * @return bool
      */
@@ -244,7 +245,7 @@ class cTreeItem {
     }
 
     /**
-     * adds an item as a subitem to the current item
+     * Adds an item as a subitem to the current item.
      *
      * @param cTreeItem $item
      *         item object to add
@@ -261,7 +262,7 @@ class cTreeItem {
     }
 
     /**
-     * adds an item to a specific ID
+     * Adds an item to a specific ID.
      *
      * @param string $id
      *         ID to add the item to
@@ -293,7 +294,7 @@ class cTreeItem {
     }
 
     /**
-     * moves an item to another object
+     * Moves an item to another object.
      *
      * @param cTreeItem $targetItem
      *         Item to move the subitem to
@@ -304,7 +305,7 @@ class cTreeItem {
     }
 
     /**
-     * deletes a subitem
+     * Deletes a subitem.
      *
      * @param mixed $id
      *         item object or ID to delete
@@ -347,8 +348,9 @@ class cTreeItem {
 
     /**
      * Retrieves a specific item by its ID.
-     * Note that this
-     * function traverses all subitems to find the correct item.
+     *
+     * Note that this function traverses all subitems to find the
+     * correct item.
      *
      * @param string $id
      *         ID to retrieve
@@ -370,7 +372,7 @@ class cTreeItem {
     }
 
     /**
-     * sets a custom attribute for this TreeItem
+     * Sets a custom attribute for this TreeItem.
      *
      * @param string $attributeName
      * @param array $attributeValue
@@ -381,7 +383,7 @@ class cTreeItem {
     }
 
     /**
-     * sets a bunch of attributes
+     * Sets a bunch of attributes.
      *
      * @param array $aAttributeArray
      */
@@ -390,7 +392,7 @@ class cTreeItem {
     }
 
     /**
-     * returns an attribute
+     * Returns an attribute.
      *
      * @param string attributeName
      * @return mixed
@@ -404,7 +406,7 @@ class cTreeItem {
     }
 
     /**
-     * deletes an attribute
+     * Deletes an attribute.
      *
      * @param string attributeName
      * @return bool
@@ -446,6 +448,7 @@ class cTreeItem {
     }
 
     /**
+     *
      * @param mixed $id
      *         expand ID of item to expand or array of item ID's to expand
      * @return bool
@@ -472,6 +475,7 @@ class cTreeItem {
     }
 
     /**
+     *
      * @param mixed $id
      *         collapse ID to collapse or an array with items to collapse
      * @return void|bool
@@ -592,7 +596,6 @@ class cTreeItem {
     }
 
     /**
-     * getExpandedList
      * Returns all items (as ID array) which are expanded.
      *
      * @param array $list
@@ -613,7 +616,7 @@ class cTreeItem {
     }
 
     /**
-     * sets a payload object for later reference
+     * Sets a payload object for later reference.
      *
      * @param object $payload
      *         The object to payload
@@ -623,7 +626,7 @@ class cTreeItem {
     }
 
     /**
-     * unsets a payload object
+     * Unsets a payload object.
      *
      * @return object
      */
@@ -632,9 +635,8 @@ class cTreeItem {
     }
 
     /**
-     * traverse
-     * traverses the tree starting from this item, and returning
-     * all objects as $objects in a nested array.
+     * Traverses the tree starting from this item, and returning all
+     * objects as $objects in a nested array.
      *
      * @param object $objects
      *         all found objects

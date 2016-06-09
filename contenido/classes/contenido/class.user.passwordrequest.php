@@ -22,7 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiUserPasswordRequestCollection extends ItemCollection {
 
     /**
-     * Constructor function.
+     * Constructor to create an instance of this class.
      *
      * @global array $cfg
      * @param string|bool $where [optional]
@@ -144,7 +144,7 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
 class cApiUserPasswordRequest extends Item {
 
     /**
-     * Constructor function
+     * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
      *         Specifies the ID of item to load

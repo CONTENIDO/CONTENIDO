@@ -78,7 +78,7 @@ class cTemplate {
     protected $_sDomain = 'contenido';
 
     /**
-     * Constructor function
+     * Constructor to create an instance of this class.
      *
      * @param array|bool $tags [optional]
      */

@@ -31,9 +31,10 @@ class cHTMLLabel extends cHTMLContentElement {
     public $text;
 
     /**
-     * Constructor.
-     * Creates an HTML label which can be linked
-     * to any form element (specified by their ID).
+     * Constructor to create an instance of this class.
+     *
+     * Creates an HTML label which can be linked to any form element
+     * (specified by their ID).
      *
      * A label can be used to link to elements. This is very useful
      * since if a user clicks a label, the linked form element receives

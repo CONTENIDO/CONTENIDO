@@ -24,7 +24,8 @@ defined('CON_FRAMEWORK') || die('Illegal call');
 class cHTMLLegend extends cHTMLContentElement {
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
+     *
      * Creates an HTML legend element.
      *
      * @param mixed $content [optional]

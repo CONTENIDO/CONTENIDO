@@ -141,7 +141,9 @@ class cGuiFileOverview extends cGuiPage {
     protected $fileExtension;
 
     /**
-     * Constructor. Initializes the class for the directory.
+     * Constructor to create an instance of this class.
+     *
+     * Initializes the class for the directory.
      *
      * @param string $dir
      *        path to the directory directory where files to display are

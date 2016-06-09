@@ -23,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiMailLogCollection extends ItemCollection {
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -80,7 +80,7 @@ class cApiMailLogCollection extends ItemCollection {
 class cApiMailLog extends Item {
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      *
      * @param mixed $mId
      */

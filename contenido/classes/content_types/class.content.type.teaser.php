@@ -78,6 +78,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
     protected $iteration = 0;
 
     /**
+     * Constructor to create an instance of this class.
+     *
      * Initialises class attributes and handles store events.
      *
      * @param string $rawSettings

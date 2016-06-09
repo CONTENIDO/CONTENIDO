@@ -15,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * fsockopen implementation of HttpRequest
+ * fsockopen implementation of HttpRequest.
  *
  * @package Core
  * @subpackage Core
@@ -23,56 +23,56 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHttpRequestSocket extends cHttpRequest {
 
     /**
-     * Array for the post parameters
+     * Array for the post parameters.
      *
      * @var array
      */
     protected $postArray;
 
     /**
-     * Array for the get parameters
+     * Array for the get parameters.
      *
      * @var array
      */
     protected $getArray;
 
     /**
-     * Array for the HTTP-headers
+     * Array for the HTTP-headers.
      *
      * @var array
      */
     protected $headerArray;
 
     /**
-     * Request URL
+     * Request URL.
      *
      * @var string
      */
     protected $url;
 
     /**
-     * Boundary for the multipart from-data
+     * Boundary for the multipart from-data.
      *
      * @var string
      */
     protected $boundary;
 
     /**
-     * The HTTP header
+     * The HTTP header.
      *
      * @var string
      */
     protected $header;
 
     /**
-     * The HTTP body
+     * The HTTP body.
      *
      * @var string
      */
     protected $body;
 
     /**
-     * Basic constructor
+     * Constructor to create an instance of this class.
      *
      * @see cHttpRequest::__construct()
      * @see cHttpRequest::getHttpRequest()
@@ -84,7 +84,7 @@ class cHttpRequestSocket extends cHttpRequest {
     }
 
     /**
-     * Set the request URL
+     * Set the request URL.
      *
      * @see cHttpRequest::setURL()
      * @param string $url
@@ -98,7 +98,7 @@ class cHttpRequestSocket extends cHttpRequest {
     }
 
     /**
-     * Set the GET parameters
+     * Set the GET parameters.
      *
      * @see cHttpRequest::setGetParams()
      * @param array $array
@@ -112,7 +112,7 @@ class cHttpRequestSocket extends cHttpRequest {
     }
 
     /**
-     * Set the POST parameters
+     * Set the POST parameters.
      *
      * @see cHttpRequest::setPostParams()
      * @param array $array
@@ -126,7 +126,7 @@ class cHttpRequestSocket extends cHttpRequest {
     }
 
     /**
-     * Set the HTTP headers
+     * Set the HTTP headers.
      *
      * @see cHttpRequest::setHeaders()
      * @param array $array
@@ -140,7 +140,7 @@ class cHttpRequestSocket extends cHttpRequest {
     }
 
     /**
-     * Inserts the custom headers into the header string
+     * Inserts the custom headers into the header string.
      */
     protected function prepareHeaders() {
         $this->header = '';
@@ -159,7 +159,7 @@ class cHttpRequestSocket extends cHttpRequest {
     }
 
     /**
-     * Appends teh GET array to the URL
+     * Appends teh GET array to the URL.
      */
     protected function prepareGetRequest() {
         if (is_array($this->getArray)) {
@@ -176,7 +176,7 @@ class cHttpRequestSocket extends cHttpRequest {
     }
 
     /**
-     * Prepares the headers to send a POST request and encodes the data
+     * Prepares the headers to send a POST request and encodes the data.
      */
     protected function preparePostRequest() {
         $this->boundary = md5(time()) . md5(time() * rand());
@@ -193,7 +193,7 @@ class cHttpRequestSocket extends cHttpRequest {
     }
 
     /**
-     * Send the request to the server
+     * Send the request to the server.
      *
      * @param bool $return
      *         Wether the function should return the servers response
@@ -255,7 +255,7 @@ class cHttpRequestSocket extends cHttpRequest {
     }
 
     /**
-     * Peform the request using POST
+     * Perform the request using POST.
      *
      * @see cHttpRequest::postRequest()
      * @param bool $return [optional]
@@ -272,7 +272,7 @@ class cHttpRequestSocket extends cHttpRequest {
     }
 
     /**
-     * Peform the request using GET
+     * Perform the request using GET.
      *
      * @see cHttpRequest::getRequest()
      * @param bool $return [optional]
@@ -289,7 +289,7 @@ class cHttpRequestSocket extends cHttpRequest {
     }
 
     /**
-     * Peform the request using POST AND append all GET parameters
+     * Perform the request using POST AND append all GET parameters.
      *
      * @see cHttpRequest::request()
      * @param bool $return [optional]

@@ -25,7 +25,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiUploadCollection extends ItemCollection {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
      * @global array $cfg
      */
@@ -207,7 +207,7 @@ class cApiUpload extends Item {
     protected $_oPropertyCollection;
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
      *         Specifies the ID of item to load

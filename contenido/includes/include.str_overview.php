@@ -41,8 +41,8 @@ if ($action == 'str_duplicate' && ($perm->have_perm_area_action('str', 'str_dupl
 $oDirectionDb = cRegistry::getDb();
 
 /**
- * Build a Category select box containg all categories which user is allowed to
- * create new categories.
+ * Build a category select box containg all categories which the current
+ * user is allowed to create new categories.
  *
  * @return string HTML
  */
@@ -56,10 +56,14 @@ function buildCategorySelectRights() {
     $oHtmlSelectOption = new cHTMLOptionElement(i18n("Please choose"), '', true);
     $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
 
-    $sql = "SELECT a.idcat AS idcat, b.name AS name, c.level FROM
-           " . $cfg["tab"]["cat"] . " AS a, " . $cfg["tab"]["cat_lang"] . " AS b,
-           " . $cfg["tab"]["cat_tree"] . " AS c WHERE a.idclient = '" . cSecurity::toInteger($client) . "'
-            AND b.idlang = '" . cSecurity::toInteger($lang) . "' AND b.idcat = a.idcat AND c.idcat = a.idcat
+    $sql = "SELECT a.idcat AS idcat, b.name AS name, c.level
+            FROM " . $cfg["tab"]["cat"] . " AS a
+            , " . $cfg["tab"]["cat_lang"] . " AS b
+            , " . $cfg["tab"]["cat_tree"] . " AS c
+            WHERE a.idclient = '" . cSecurity::toInteger($client) . "'
+            AND b.idlang = '" . cSecurity::toInteger($lang) . "'
+            AND b.idcat = a.idcat
+            AND c.idcat = a.idcat
             ORDER BY c.idtree";
 
     $db->query($sql);
@@ -109,7 +113,7 @@ function buildCategorySelectRights() {
 
 /**
  *
- * @param unknown_type $item
+ * @param TreeItem $item
  * @param string $catName
  * @return string
  */
@@ -122,8 +126,8 @@ function getStrExpandCollapseButton($item, $catName) {
         'style' => 'padding:4px;'
     ));
 
-    // if current user is admin or sysadmin, show additional information as
-    // tooltip
+    // show additional information as tooltip
+    // if current user is admin or sysadmin
     $auth = cRegistry::getAuth();
     $currentUser = new cApiUser($auth->auth['uid']);
     $userPerms = $currentUser->getPerms();
@@ -164,7 +168,10 @@ function getTemplateSelect() {
     $oHtmlSelectOption = new cHTMLOptionElement('--- ' . i18n("none") . ' ---', 0, false);
     $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
 
-    $sql = "SELECT idtpl, name, defaulttemplate FROM " . $cfg['tab']['tpl'] . " WHERE idclient = '" . $client . "' ORDER BY name";
+    $sql = "SELECT idtpl, name, defaulttemplate
+            FROM " . $cfg['tab']['tpl'] . "
+            WHERE idclient = '" . $client . "'
+            ORDER BY name";
 
     if ($db->query($sql)) {
         while ($db->nextRecord()) {
@@ -220,12 +227,13 @@ function insertEmptyStrRow($listColumns) {
     $tpl->set('d', 'HEIGHT', 'height:15px;');
     $tpl->set('d', 'BORDER_CLASS', 'str-style-b');
 
+    // content rows
     $additionalColumns = array();
     foreach ($listColumns as $content) {
-        // Content rows
         $additionalColumns[] = '<td class="emptyCell2" nowrap="nowrap">&nbsp;</td>';
     }
-    $tpl->set('d', 'ADDITIONALCOLUMNS', implode("", $additionalColumns));
+    $tpl->set('d', 'ADDITIONALCOLUMNS', implode('', $additionalColumns));
+
     $tpl->next();
 }
 getTemplateSelect();
@@ -262,8 +270,8 @@ if (!isset($action)) {
 
 /**
  *
- * @param unknown_type $rootItem
- * @param unknown_type $items
+ * @param TreeItem $rootItem
+ * @param array $items
  */
 function buildTree(&$rootItem, &$items) {
     global $nextItem, $perm, $tmp_area;
@@ -373,118 +381,118 @@ $sql = "SELECT
 $db->query($sql);
 
 if ($db->num_rows() == 0) { // If we have no categories, display warning message
-	$additionalheader = $notification->returnNotification("warning", i18n("You have no categories for this client. Please create a new root category with your categories. Without categories, you can't create some articles.")) . "<br />";
+    $additionalheader = $notification->returnNotification("warning", i18n("You have no categories for this client. Please create a new root category with your categories. Without categories, you can't create some articles.")) . "<br />";
 } else {
 
-	$bIgnore = false;
-	$iIgnoreLevel = 0;
+    $bIgnore = false;
+    $iIgnoreLevel = 0;
 
-	$items = array();
-	while ($db->nextRecord()) {
-	    $bSkip = false;
+    $items = array();
+    while ($db->nextRecord()) {
+        $bSkip = false;
 
-	    if ($bIgnore == true && $iIgnoreLevel >= $db->f('level')) {
-	        $bIgnore = false;
-	    }
+        if ($bIgnore == true && $iIgnoreLevel >= $db->f('level')) {
+            $bIgnore = false;
+        }
 
-	    if ($db->f('idcat') == $movesubtreeidcat) {
-	        $bIgnore = true;
-	        $iIgnoreLevel = $db->f('level');
-	        $sMoveSubtreeCatName = $db->f('name');
-	    }
+        if ($db->f('idcat') == $movesubtreeidcat) {
+            $bIgnore = true;
+            $iIgnoreLevel = $db->f('level');
+            $sMoveSubtreeCatName = $db->f('name');
+        }
 
-	    if ($iCurLevel == $db->f('level')) {
-	        if ($iCurParent != $db->f('parentid')) {
-	            $bSkip = true;
-	        }
-	    } else {
-	        $iCurLevel = $db->f('level');
-	        $iCurParent = $db->f('parentid');
-	    }
+        if ($iCurLevel == $db->f('level')) {
+            if ($iCurParent != $db->f('parentid')) {
+                $bSkip = true;
+            }
+        } else {
+            $iCurLevel = $db->f('level');
+            $iCurParent = $db->f('parentid');
+        }
 
-	    if ($bIgnore == false && $bSkip == false) {
-	        $entry = array();
-	        $entry['idtree'] = $db->f('idtree');
-	        $entry['idcat'] = $db->f('idcat');
-	        $entry['level'] = $db->f('level');
-	        $entry['name'] = htmldecode($db->f('name'));
-	        $entry['alias'] = htmldecode($db->f('alias'));
-	        $entry['parentid'] = $db->f('parentid');
-	        $entry['preid'] = $db->f('preid');
-	        $entry['postid'] = $db->f('postid');
-	        $entry['visible'] = $db->f('visible');
-	        $entry['public'] = $db->f('public');
-	        $entry['idtplcfg'] = $db->f('idtplcfg');
+        if ($bIgnore == false && $bSkip == false) {
+            $entry = array();
+            $entry['idtree'] = $db->f('idtree');
+            $entry['idcat'] = $db->f('idcat');
+            $entry['level'] = $db->f('level');
+            $entry['name'] = htmldecode($db->f('name'));
+            $entry['alias'] = htmldecode($db->f('alias'));
+            $entry['parentid'] = $db->f('parentid');
+            $entry['preid'] = $db->f('preid');
+            $entry['postid'] = $db->f('postid');
+            $entry['visible'] = $db->f('visible');
+            $entry['public'] = $db->f('public');
+            $entry['idtplcfg'] = $db->f('idtplcfg');
 
-	        $items[] = $entry;
-	    }
-	}
+            $items[] = $entry;
+        }
+    }
 
-	$rootStrItem = new TreeItem('root', -1);
-	$rootStrItem->setCollapsedIcon('images/open_all.gif');
-	$rootStrItem->setExpandedIcon('images/close_all.gif');
+    $rootStrItem = new TreeItem('root', -1);
+    $rootStrItem->setCollapsedIcon('images/open_all.gif');
+    $rootStrItem->setExpandedIcon('images/close_all.gif');
 
-	buildTree($rootStrItem, $items);
+    buildTree($rootStrItem, $items);
 
-	$expandedList = unserialize($currentuser->getUserProperty('system', 'cat_expandstate'));
+    $expandedList = unserialize($currentuser->getUserProperty('system', 'cat_expandstate'));
 
-	if (is_array($expandedList[$client])) {
-	    $rootStrItem->markExpanded($expandedList[$client]);
-	}
+    if (is_array($expandedList[$client])) {
+        $rootStrItem->markExpanded($expandedList[$client]);
+    }
 
-	if (isset($collapse) && is_numeric($collapse)) {
-	    $rootStrItem->markCollapsed($collapse);
-	}
+    if (isset($collapse) && is_numeric($collapse)) {
+        $rootStrItem->markCollapsed($collapse);
+    }
 
-	if (isset($expand) && is_numeric($expand)) {
-	    $rootStrItem->markExpanded($expand);
-	}
+    if (isset($expand) && is_numeric($expand)) {
+        $rootStrItem->markExpanded($expand);
+    }
 
-	if (isset($expand) && $expand == 'all') {
-	    $rootStrItem->expandAll(-1);
-	}
+    if (isset($expand) && $expand == 'all') {
+        $rootStrItem->expandAll(-1);
+    }
 
-	if (isset($collapse) && $collapse == 'all') {
-	    $rootStrItem->collapseAll(-1);
-	}
+    if (isset($collapse) && $collapse == 'all') {
+        $rootStrItem->collapseAll(-1);
+    }
 
-	if ($action === 'str_newcat') {
-	    $rootStrItem->markExpanded($idcat);
-	}
+    if ($action === 'str_newcat') {
+        $rootStrItem->markExpanded($idcat);
+    }
 
-	$expandedList[$client] = array();
-	$objects = array();
+    $expandedList[$client] = array();
+    $objects = array();
 
-	$rootStrItem->traverse($objects);
+    $rootStrItem->traverse($objects);
 
-	$rootStrItem->getExpandedList($expandedList[$client]);
-	$currentuser->setUserProperty('system', 'cat_expandstate', serialize($expandedList));
+    $rootStrItem->getExpandedList($expandedList[$client]);
+    $currentuser->setUserProperty('system', 'cat_expandstate', serialize($expandedList));
 
-	// Reset Template
-	$tpl->reset();
-	$tpl->set('s', 'AREA', $area);
-	$tpl->set('s', 'FRAME', $frame);
+    // Reset Template
+    $tpl->reset();
+    $tpl->set('s', 'AREA', $area);
+    $tpl->set('s', 'FRAME', $frame);
 
-	$_cecIterator = $_cecRegistry->getIterator('Contenido.CategoryList.Columns');
+    $_cecIterator = $_cecRegistry->getIterator('Contenido.CategoryList.Columns');
 
-	$listColumns = array();
-	if ($_cecIterator->count() > 0) {
-	    while ($chainEntry = $_cecIterator->next()) {
-	        $tmplistColumns = $chainEntry->execute(array());
-	        if (is_array($tmplistColumns)) {
-	            $listColumns = array_merge($listColumns, $tmplistColumns);
-	        }
-	    }
+    $listColumns = array();
+    if ($_cecIterator->count() > 0) {
+        while ($chainEntry = $_cecIterator->next()) {
+            $tmplistColumns = $chainEntry->execute(array());
+            if (is_array($tmplistColumns)) {
+                $listColumns = array_merge($listColumns, $tmplistColumns);
+            }
+        }
 
-	    foreach ($listColumns as $content) {
-	        // Header for additional columns
-	        $additionalheaders[] = '<th class="header nowrap" nowrap="nowrap">' . $content . '</th>';
-	    }
+        foreach ($listColumns as $content) {
+            // Header for additional columns
+            $additionalheaders[] = '<th class="header nowrap" nowrap="nowrap">' . $content . '</th>';
+        }
 
-	    $additionalheader = implode('', $additionalheaders);
-	} else {
-	    $additionalheader = '';
-	}
+        $additionalheader = implode('', $additionalheaders);
+    } else {
+        $additionalheader = '';
+    }
 
 }
 

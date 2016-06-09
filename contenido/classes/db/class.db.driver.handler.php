@@ -124,8 +124,9 @@ abstract class cDbDriverHandler {
     protected static $_profileData = array();
 
     /**
-     * Constructor, sets passed options and connects to the DBMS, if not done
-     * before.
+     * Constructor to create an instance of this class.
+     *
+     * Sets passed options and connects to the DBMS, if not done before.
      *
      * Uses default connection settings, passed $options['connection'] settings
      * will overwrite connection settings for current instance.

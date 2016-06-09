@@ -55,7 +55,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
     protected static $_maxGroups = 3;
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      *
      * @param string $groupId
      */
@@ -399,7 +399,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
 class cApiGroupProperty extends Item {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
      *         Specifies the ID of item to load

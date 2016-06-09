@@ -46,7 +46,7 @@ class cDebugVisible implements cDebugInterface {
     }
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     private function __construct() {
     }

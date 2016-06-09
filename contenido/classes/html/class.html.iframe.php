@@ -24,6 +24,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHTMLIFrame extends cHTML {
 
     /**
+     * Constructor to create an instance of this class.
+     *
      * Creates an HTML iframe element.
      */
     public function __construct() {

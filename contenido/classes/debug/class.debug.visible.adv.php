@@ -64,7 +64,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
     }
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     private function __construct() {
         $this->_aItems = array();

@@ -16,10 +16,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  *
- * This class contains the main functionalities for the module logging in
- * CONTENIDO.
- * The funcationality is almost the same like normal logging with the exception,
- * that log entries contains an additional information about the used module.
+ * This class contains the main functionalities for the module logging
+ * in CONTENIDO.
+ * The funcationality is almost the same like normal logging with the
+ * exception, that log entries contains an additional information about
+ * the used module.
  *
  * Example:
  * $writer = cLogWriter::factory("File", array('destination' =>
@@ -37,13 +38,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cModuleLog extends cLog {
 
     /**
+     * instance of module model
+     *
      * @var cApiModule
-     *         instance of module model
      */
     private $_module;
 
     /**
-     * Constructor of the module log.
+     * Constructor to create an instance of this class.
      *
      * @deprecated [2015-05-21]
      *         This method is no longer supported (no replacement)
@@ -67,8 +69,8 @@ class cModuleLog extends cLog {
     /**
      * Sets the module to use.
      *
-     * setModule automatically buffers basic module information to the log to
-     * assist the developer in debugging his modules.
+     * setModule automatically buffers basic module information to the
+     * log to assist the developer in debugging his modules.
      *
      * @deprecated [2015-05-21]
      *         This method is no longer supported (no replacement)

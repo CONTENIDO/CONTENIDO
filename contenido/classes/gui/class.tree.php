@@ -26,54 +26,57 @@ class cGuiTree extends cTree {
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
     const TREEVIEW_GRIDLINE_SOLID = 'solid';
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
     const TREEVIEW_GRIDLINE_DASHED = 'dashed';
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
     const TREEVIEW_GRIDLINE_DOTTED = 'dotted';
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
     const TREEVIEW_GRIDLINE_NONE = 'none';
 
     /**
+     *
+     * @var string
      * @deprecated [2015-05-21]
      *    This constant is no longer supported (no replacement)
-     * @var unknown_type
      */
     const TREEVIEW_BACKGROUND_NONE = 'none';
 
     /**
+     *
+     * @var string
      * @deprecated [2015-05-21]
      *         This constant is no longer supported (no replacement)
-     * @var unknown_type
      */
     const TREEVIEW_BACKGROUND_SHADED = 'shaded';
 
     /**
      *
+     * @var string
      * @deprecated [2015-05-21]
      *         This constant is no longer supported (no replacement)
-     * @var unknown_type
      */
     const TREEVIEW_MOUSEOVER_NONE = 'none';
 
     /**
+     *
+     * @var string
      * @deprecated [2015-05-21]
      *         This constant is no longer supported (no replacement)
-     * @var unknown_type
      */
     const TREEVIEW_MOUSEOVER_MARK = 'mark';
 
@@ -114,6 +117,7 @@ class cGuiTree extends cTree {
     private $_baseLink;
 
     /**
+     * Constructor to create an instance of this class.
      *
      * @param unknown_type $uuid
      * @param unknown_type $treename [optional]
@@ -177,9 +181,10 @@ class cGuiTree extends cTree {
     }
 
     /**
+     *
+     * @param unknown_type $mode
      * @deprecated [2015-05-21]
      *         This method is no longer supported (no replacement)
-     * @param unknown_type $mode
      */
     public function setBackgroundMode($mode) {
         cDeprecated('This method is deprecated and is not needed any longer');
@@ -187,9 +192,10 @@ class cGuiTree extends cTree {
     }
 
     /**
+     *
+     * @param unknown_type $mode
      * @deprecated [2015-05-21]
      *         This method is no longer supported (no replacement)
-     * @param unknown_type $mode
      */
     public function setMouseoverMode($mode) {
         cDeprecated('This method is deprecated and is not needed any longer');
@@ -197,9 +203,10 @@ class cGuiTree extends cTree {
     }
 
     /**
+     *
+     * @param unknown_type $colors
      * @deprecated [2015-05-21]
      *         This method is no longer supported (no replacement)
-     * @param unknown_type $colors
      */
     public function setBackgroundColors($colors) {
         cDeprecated('This method is deprecated and is not needed any longer');
@@ -212,6 +219,7 @@ class cGuiTree extends cTree {
      * @return string
      */
     public function render($with_root = true) {
+
         /* @var $objects cTreeItem[] */
         $objects = $this->flatTraverse(0);
 
@@ -315,9 +323,9 @@ class cGuiTree extends cTree {
                 }
             }
 
-            /* Fetch Render icon from the meta object */
+            // Fetch Render icon from the meta object
             if (is_object($object->payload)) {
-                /* Fetch payload object */
+                // Fetch payload object
                 $meta = $object->payload->getMetaObject();
 
                 if (is_object($meta)) {
@@ -329,7 +337,7 @@ class cGuiTree extends cTree {
                     $img->setAlt($meta->getDescription());
                     $img->advanceID();
 
-                    /* Check if we've got an edit link */
+                    // Check if we've got an edit link
                     if (count($meta->_editAction) > 0) {
                         $meta->defineActions();
 
@@ -354,7 +362,7 @@ class cGuiTree extends cTree {
                     $renderedIcon = $img->render();
                     $renderedName = $object->getName();
                 } else {
-                    /* Fetch tree icon */
+                    // Fetch tree icon
                     if ($object->getId() == 0) {
                         $icon = $object->getTreeIcon();
                         $img->setSrc($icon);
@@ -398,7 +406,8 @@ class cGuiTree extends cTree {
     }
 
     /**
-     * Sets collapsed state
+     * Sets collapsed state.
+     *
      * @param cHTMLLink  $link
      * @param cTreeItem  $object
      * @return cHTMLLink

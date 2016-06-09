@@ -31,7 +31,8 @@ class cHTMLOptionElement extends cHTMLFormElement {
     protected $_title;
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
+     *
      * Creates an HTML option element.
      *
      * @param string $title

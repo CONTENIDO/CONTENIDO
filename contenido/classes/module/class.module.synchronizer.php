@@ -2,7 +2,8 @@
 
 /**
  * This file contains the module synchronizer class.
- * TODO: Rework comments of this class.
+ *
+ * @todo refactor documentation
  *
  * @package    Core
  * @subpackage Backend
@@ -95,7 +96,7 @@ class cModuleSynchronizer extends cModuleHandler {
      * @param int $client
      *         idclient
      * @return bool
-     *         true if succes (rename file and directories)
+     *         true on success or false on failure
      */
     private function _renameFileAndDir($dir, $dirNameOld, $dirNameNew, $client) {
         if (rename($dir . $dirNameOld, $dir . $dirNameNew) == FALSE) {
@@ -205,7 +206,7 @@ class cModuleSynchronizer extends cModuleHandler {
      * fileystem but if not
      * clear it from filesystem.
      *
-     * @param unknown_type $db
+     * @param cDb $db
      * @return int
      *         id of last update module
      */
@@ -286,7 +287,7 @@ class cModuleSynchronizer extends cModuleHandler {
      * name.
      * If the modul name exist it will return true
      *
-     * @param unknown_type $alias
+     * @param string $alias
      * @param int $idclient
      *         idclient
      * @return bool

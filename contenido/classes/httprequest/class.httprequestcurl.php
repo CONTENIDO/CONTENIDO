@@ -15,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Curl implementation of HttpRequest
+ * Curl implementation of HttpRequest.
  *
  * @package Core
  * @subpackage Core
@@ -23,42 +23,42 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHttpRequestCurl extends cHttpRequest {
 
     /**
-     * the curl instance
+     * The curl instance.
      *
      * @var $curl ressource
      */
     protected $curl;
 
     /**
-     * Array for the post parameters
+     * Array for the post parameters.
      *
      * @var array
      */
     protected $postArray;
 
     /**
-     * Array for the get parameters
+     * Array for the get parameters.
      *
      * @var array
      */
     protected $getArray;
 
     /**
-     * Array for the HTTP-headers
+     * Array for the HTTP-headers.
      *
      * @var array
      */
     protected $headerArray;
 
     /**
-     * Request URL
+     * Request URL.
      *
      * @var string
      */
     protected $url;
 
     /**
-     * Basic constructor
+     * Constructor to create an instance of this class.
      *
      * @see cHttpRequest::__construct()
      * @see cHttpRequest::getHttpRequest()
@@ -71,7 +71,7 @@ class cHttpRequestCurl extends cHttpRequest {
     }
 
     /**
-     * Set the GET parameters
+     * Set the GET parameters.
      *
      * @see cHttpRequest::setGetParams()
      * @param array $array
@@ -85,7 +85,7 @@ class cHttpRequestCurl extends cHttpRequest {
     }
 
     /**
-     * Set the POST parameters
+     * Set the POST parameters.
      *
      * @see cHttpRequest::setPostParams()
      * @param array $array
@@ -99,7 +99,7 @@ class cHttpRequestCurl extends cHttpRequest {
     }
 
     /**
-     * Set the HTTP headers
+     * Set the HTTP headers.
      *
      * @see cHttpRequest::setHeaders()
      * @param array $array
@@ -113,7 +113,7 @@ class cHttpRequestCurl extends cHttpRequest {
     }
 
     /**
-     * Set the request URL
+     * Set the request URL.
      *
      * @see cHttpRequest::setURL()
      * @param string $url
@@ -127,7 +127,7 @@ class cHttpRequestCurl extends cHttpRequest {
     }
 
     /**
-     * Inserts the POST array into the headers and encodes it
+     * Inserts the POST array into the headers and encodes it.
      */
     protected function preparePostRequest() {
         if (is_array($this->postArray)) {
@@ -137,7 +137,7 @@ class cHttpRequestCurl extends cHttpRequest {
     }
 
     /**
-     * Appends the GET array to the URL
+     * Appends the GET array to the URL.
      */
     protected function prepareGetRequest() {
         if (is_array($this->getArray)) {
@@ -155,7 +155,7 @@ class cHttpRequestCurl extends cHttpRequest {
     }
 
     /**
-     * Reads all the custom headers and add them to the header string
+     * Reads all the custom headers and add them to the header string.
      */
     protected function prepareHeaders() {
         $curlHeaderArray = array();
@@ -176,7 +176,7 @@ class cHttpRequestCurl extends cHttpRequest {
     }
 
     /**
-     * Send the request to the server
+     * Send the request to the server.
      *
      * @param bool $return
      *         Wether the function should return the servers response
@@ -210,7 +210,7 @@ class cHttpRequestCurl extends cHttpRequest {
     }
 
     /**
-     * Peform the request using POST
+     * Perform the request using POST.
      *
      * @see cHttpRequest::postRequest()
      * @param bool $return [optional]
@@ -225,7 +225,7 @@ class cHttpRequestCurl extends cHttpRequest {
     }
 
     /**
-     * Peform the request using GET
+     * Perform the request using GET.
      *
      * @see cHttpRequest::getRequest()
      * @param bool $return [optional]
@@ -240,7 +240,7 @@ class cHttpRequestCurl extends cHttpRequest {
     }
 
     /**
-     * Peform the request using POST AND append all GET parameters
+     * Perform the request using POST AND append all GET parameters.
      *
      * @see cHttpRequest::request()
      * @param bool $return [optional]
@@ -255,7 +255,7 @@ class cHttpRequestCurl extends cHttpRequest {
     }
 
     /**
-     * Sets CURL options
+     * Sets CURL options.
      *
      * @see curl_setopt()
      * @param int $curlOpt
@@ -271,7 +271,7 @@ class cHttpRequestCurl extends cHttpRequest {
     }
 
     /**
-     * Returns the curl reference
+     * Returns the curl reference.
      *
      * @return curl
      */

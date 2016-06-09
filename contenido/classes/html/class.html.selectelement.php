@@ -31,7 +31,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
     protected $_options = array();
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
+     *
      * Creates an HTML select field (aka "DropDown").
      *
      * @param string $name

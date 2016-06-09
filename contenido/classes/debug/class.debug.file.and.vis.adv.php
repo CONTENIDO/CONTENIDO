@@ -59,7 +59,7 @@ class cDebugFileAndVisAdv extends cDebugVisibleAdv {
     }
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     private function __construct() {
         global $cfg;

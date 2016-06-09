@@ -14,7 +14,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This object makes CONTENIDO more secure
+ * This object makes CONTENIDO more secure.
  *
  * @package    Core
  * @subpackage Security
@@ -22,7 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cSecurity {
 
     /**
-     * Checks some CONTENIDO core related request parameters against XSS
+     * Checks some CONTENIDO core related request parameters against XSS.
      *
      * @return bool
      *         True on success otherwise nothing.
@@ -34,7 +34,7 @@ class cSecurity {
     }
 
     /**
-     * Escapes string using CONTENIDO urlencoding method and escapes string for inserting
+     * Escapes string using CONTENIDO urlencoding method and escapes string for inserting.
      *
      * @param string $sString
      *         Input string
@@ -52,7 +52,7 @@ class cSecurity {
     }
 
     /**
-     * Reverts effect of method filter()
+     * Reverts effect of method filter().
      *
      * @param string $sString
      *         Input string
@@ -103,7 +103,7 @@ class cSecurity {
     }
 
     /**
-     * Convert an string to an bool
+     * Convert an string to an bool.
      *
      * @param string $sString
      *         Input string
@@ -115,7 +115,7 @@ class cSecurity {
     }
 
     /**
-     * Convert an string to an integer
+     * Convert an string to an integer.
      *
      * @param string $sString
      *         Input string
@@ -127,7 +127,7 @@ class cSecurity {
     }
 
     /**
-     * Convert an string
+     * Convert an string.
      *
      * @param string $sString
      *         Input string
@@ -147,7 +147,7 @@ class cSecurity {
     }
 
     /**
-     * Escaped an query-string with mysql_real_escape_string
+     * Escaped an query-string with mysql_real_escape_string.
      *
      * @param string $sString
      *         Input string
@@ -170,7 +170,7 @@ class cSecurity {
     }
 
     /**
-     * Escaped an query-string with addslashes
+     * Escaped an query-string with addslashes.
      *
      * @param string $sString
      *         Input string
@@ -186,7 +186,7 @@ class cSecurity {
     }
 
     /**
-     * Un-quote string quoted with escapeDB()
+     * Un-quote string quoted with escapeDB().
      *
      * @param string $sString
      *         Input string

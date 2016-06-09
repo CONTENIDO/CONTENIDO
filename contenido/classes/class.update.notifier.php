@@ -247,7 +247,7 @@ class cUpdateNotifier {
     protected $aCfg = array();
 
     /**
-     * Constructor of Contenido_UpdateNotifier
+     * Constructor to create an instance of this class.
      *
      * @param array $aCfg
      * @param cApiUser $oUser

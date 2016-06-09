@@ -325,7 +325,7 @@ class cI18n {
          * erhalten für den Mandanten '%s' at\n%s:\n\n%s"
          */
         // assemble broken long message lines (remove double quotes with a line
-        // break in between, e. g. "\n")
+        // break in between, e.g. "\n")
         $content = preg_replace('/(""\\s+")/m', '"', $content);
         // replace line breaks followed by a whitespace character against a line
         // break

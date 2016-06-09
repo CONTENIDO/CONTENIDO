@@ -18,6 +18,7 @@ cInclude('includes', 'functions.pathresolver.php');
 
 /**
  * Custom path uri builder class.
+ *
  * Implementation to build URL in style index-a-1.html
  * with category path (/category/subcategory/index-a-1.html).
  *
@@ -28,25 +29,28 @@ class cUriBuilderCustomPath extends cUriBuilder {
 
     /**
      * Self instance
+     *
      * @var  cUriBuilderCustomPath
      */
     static private $_instance;
 
     /**
      * Configuration
+     *
      * @var array
      */
     private $aConfig;
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     private function __construct() {
         $this->sHttpBasePath = '';
     }
 
     /**
-     * Get instance of self
+     * Get instance of self.
+     *
      * @return cUriBuilderCustomPath
      */
     public static function getInstance() {
@@ -58,14 +62,20 @@ class cUriBuilderCustomPath extends cUriBuilder {
 
     /**
      * Builds a URL in index-a-1.html style.
-     * Index keys of $aParams will be used as "a", corresponding values as "1" in this sample.
-     * For creating the location string $aParams needs to have keys idcat, level, lang and at least one custom key.
+     *
+     * Index keys of $aParams will be used as "a", corresponding values
+     * as "1" in this sample.
+     *
+     * For creating the location string $aParams needs to have keys
+     * idcat, level, lang and at least one custom key.
+     *
      * If level is not set, level 0 will be used as default.
      *
      * @todo Somehow get around using prCreateURLNameLocationString()
      * @throws cInvalidArgumentException
      * @param array $aParams
-     *         Required keys are: idcat, level, lang and at least one custom key.
+     *         Required keys are: idcat, level, lang and at least one
+     *         custom key.
      * @param bool $bUseAbsolutePath [optional]
      * @param array $aConfig [optional]
      *         If not set, will use UriBuilderConfig::getConfig()

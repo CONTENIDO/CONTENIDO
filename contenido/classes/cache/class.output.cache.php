@@ -145,7 +145,7 @@ VALID UNTIL: %s
 ';
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
      *
      * @param string $cachedir [optional]
      *         Directory to cache files
@@ -194,8 +194,8 @@ VALID UNTIL: %s
     }
 
     /**
-     * Get/Set the flag to debug cache object (prints out miss/hit state with
-     * execution time).
+     * Get/Set the flag to debug cache object (prints out miss/hit state
+     * with execution time).
      *
      * @param bool $debug
      *         True to activate debugging or false.
@@ -254,6 +254,7 @@ VALID UNTIL: %s
 
     /**
      * Add option for caching (e.g. $_GET,$_POST, $_COOKIE, ...).
+     *
      * Used to generate the id for caching.
      *
      * @param string $name
@@ -266,8 +267,8 @@ VALID UNTIL: %s
     }
 
     /**
-     * Returns information cache hit/miss and execution time if caching is
-     * enabled.
+     * Returns information cache hit/miss and execution time if caching
+     * is enabled.
      *
      * @return string
      *         Information about cache if caching is enabled, otherwise nothing.
@@ -289,8 +290,8 @@ VALID UNTIL: %s
         $id = $this->_sID;
         $group = $this->_sGroup;
 
-        // this is already cached return it from the cache so that the user
-        // can use the cache content and stop script execution
+        // this is already cached return it from the cache so that the
+        // user can use the cache content and stop script execution
         if ($content = $this->_fileCache->get($id, $group)) {
             return $content;
         }
@@ -304,11 +305,12 @@ VALID UNTIL: %s
 
     /**
      * Handles PEAR caching.
+     *
      * The script will be terminated by calling die(), if any cached
      * content is found.
      *
      * @param int $iPageStartTime [optional]
-     *         Optional start time, e. g. start time of main script
+     *         Optional start time, e.g. start time of main script
      */
     public function start($iPageStartTime = NULL) {
         if (!$this->_bEnableCaching) {
@@ -373,6 +375,7 @@ VALID UNTIL: %s
 
     /**
      * Removes any cached content if exists.
+     *
      * This is nesessary to delete cached articles, if they are changed on
      * backend.
      */
@@ -383,16 +386,15 @@ VALID UNTIL: %s
     }
 
     /**
-     * Creates one-time a instance of PEAR cache output object and also the
-     * unique id,
-     * if propery $this->_oPearCache is not set.
+     * Creates one-time a instance of PEAR cache output object and also
+     * the unique id, if propery $this->_oPearCache is not set.
      */
     protected function _initFileCache() {
         if (is_object($this->_fileCache)) {
             return;
         }
 
-        // create a output cache object mode - file storage
+        // create an output cache object mode - file storage
         $this->_fileCache = new cFileCache($this->_aCacheOptions);
 
         // generate an ID from whatever might influence the script behaviour
@@ -406,7 +408,7 @@ VALID UNTIL: %s
      *         Name of event to raise
      */
     protected function _raiseEvent($name) {
-        // check if event exists, get out if not
+        // skip if event does not exist
         if (!isset($this->_aEventCode[$name]) && !is_array($this->_aEventCode[$name])) {
             return;
         }
@@ -440,14 +442,15 @@ VALID UNTIL: %s
 class cOutputCacheHandler extends cOutputCache {
 
     /**
-     * Constructor of cOutputCacheHandler.
+     * Constructor to create an instance of this class.
+     *
      * Does some checks and sets the configuration of cache object.
      *
      * @param array $aConf
      *         Configuration of caching as follows:
      *         - $a['excludecontenido'] bool
      *             don't cache output, if we have a CONTENIDO variable,
-     *             e. g. on calling frontend preview from backend
+     *             e.g. on calling frontend preview from backend
      *         - $a['enable'] bool
      *             activate caching of frontend output
      *         - $a['debug'] bool
@@ -466,7 +469,7 @@ class cOutputCacheHandler extends cOutputCache {
      *             add prefix to stored filenames
      *         - $a['idoptions'] array
      *             several variables to create a unique id,
-     *             if the output depends on them. e. g.
+     *             if the output depends on them. e.g.
      *             array(
      *                 'uri' => $_SERVER['REQUEST_URI'],
      *                 'post' => $_POST, 'get' => $_GET

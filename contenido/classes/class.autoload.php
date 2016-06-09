@@ -223,7 +223,7 @@ class cAutoload {
      * autoloader.
      *
      * @param string $file
-     *         Filename or Filename with a part of the path, e. g.
+     *         Filename or Filename with a part of the path, e.g.
      *         - class.foobar.php
      *         - classes/class.foobar.php
      *         - contenido/classes/class.foobar.php

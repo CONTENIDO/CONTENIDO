@@ -38,7 +38,8 @@ class cHTMLRadiobutton extends cHTMLFormElement {
     protected $_labelText;
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
+     *
      * Creates an HTML radio button element.
      *
      * @param string $name

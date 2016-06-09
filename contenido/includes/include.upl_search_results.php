@@ -34,19 +34,19 @@ class UploadSearchResultList extends FrontendList {
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
     private $_pathdata;
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
     private $_fileType;
 
     /**
      *
-     * @var integer
+     * @var int
      */
     protected $_size;
 
@@ -170,14 +170,14 @@ class UploadSearchResultList extends FrontendList {
 
 
     /**
-     * @return integer $size
+     * @return int $size
      */
     public function getSize() {
         return $this->_size;
     }
 
     /**
-     * @param integer $size
+     * @param int $size
      */
     public function setSize($size) {
         $this->_size = $size;

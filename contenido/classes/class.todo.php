@@ -23,6 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class TODOCollection extends cApiCommunicationCollection {
 
     /**
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         parent::__construct();
@@ -59,7 +60,9 @@ class TODOCollection extends cApiCommunicationCollection {
      *
      * @param unknown_type $itemtype
      * @param unknown_type $itemid
-     * @param unknown_type $reminderdate
+     * @param int|string $reminderdate
+     *          if not given as timestamp it is expected to be a string
+     *          using the English date format
      * @param string $subject
      * @param string $content
      * @param unknown_type $notimail
@@ -173,6 +176,7 @@ class TODOItem extends cApiCommunication {
 class TODOLink extends cHTMLLink {
 
     /**
+     * Constructor to create an instance of this class.
      *
      * @param unknown_type $itemtype
      * @param unknown_type $itemid

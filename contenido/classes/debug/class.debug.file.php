@@ -64,8 +64,9 @@ class cDebugFile implements cDebugInterface {
     }
 
     /**
-     * Constructor
-     * Opens filehandle for debug-logfile
+     * Constructor to create an instance of this class.
+     *
+     * Opens filehandle for debug logfile.
      */
     private function __construct() {
         global $cfg; // omfg, I know... TODO

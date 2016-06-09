@@ -130,7 +130,9 @@ abstract class cItemBaseAbstract extends cGenericDb {
     protected $_className;
 
     /**
-     * Sets some common properties
+     * Constructor to create an instance of this class.
+     *
+     * Sets some common properties.
      *
      * @param string $sTable
      *         Name of table
