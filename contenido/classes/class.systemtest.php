@@ -844,7 +844,7 @@ class cSystemtest {
      *         true if the test passed and false if not
      */
     public function testMaxExecutionTime() {
-        return intval($this->getPHPIniSetting('max_execution_time')) >= 30;
+        return (intval($this->getPHPIniSetting('max_execution_time') == 0) || (intval($this->getPHPIniSetting('max_execution_time')) >= 30));
     }
 
     /**
