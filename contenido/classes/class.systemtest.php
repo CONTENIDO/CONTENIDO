@@ -1164,7 +1164,6 @@ class cSystemtest {
 
             $name = $file['filename'];
             $severity = $file['severity'];
-            $dir = $file['dir'];
             $frontend = $file['frontend'];
             $config = $file['config'];
 
