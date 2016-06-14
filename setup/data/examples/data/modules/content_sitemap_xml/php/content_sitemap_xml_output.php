@@ -270,7 +270,7 @@ function saveSitemap(SimpleXMLElement $sitemap, $filename = '') {
     if (empty($filename)) {
         header('Content-type: text/xml');
         echo $sitemap->asXML();
-    } else if ($sitemap->asXML($cfgClient[$client]['path']['frontend'] . $filename)) {
+    } else if ($sitemap->asXML(cRegistry::getFrontendPath() . $filename)) {
         echo conHtmlSpecialChars(mi18n("XML sitemap successfully written to %s", $filename));
     } else {
         echo conHtmlSpecialChars(mi18n("XML sitemap could not be written to %s", $filename));
