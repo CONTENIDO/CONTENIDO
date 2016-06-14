@@ -149,33 +149,31 @@ if (strlen($_REQUEST["filter"]) > 0 && $bUsePlugins == false) {
     $oFEUsers->setWhere("cApiFrontendUserCollection.username", $_REQUEST["filter"], "diacritics");
 }
 
-if ($_REQUEST["restrictgroup"] != "" && $_REQUEST["restrictgroup"] != "--all--") {
+if ($_REQUEST['restrictgroup'] != "" && $_REQUEST['restrictgroup'] != "--all--") {
     $oFEUsers->link("cApiFrontendGroupMemberCollection");
     $oFEUsers->setWhere("cApiFrontendGroupMemberCollection.idfrontendgroup", $_REQUEST["restrictgroup"]);
 }
 
-$mPage = $_REQUEST["page"];
-$elemperpage = $_REQUEST["elemperpage"];
+// initializing fullTableCount variable
+$fullTableCount = 0;
 
-$iFullTableCount = 0;
+// get number of users
+$oFEUsers->query();
+$fullTableCount = $oFEUsers->count();
+
+$mPage = $_REQUEST['page'];
+$elemperpage = $_REQUEST['elemperpage'];
+
 if ($bUsePlugins == false) {
-    $oFEUsers->query();
-
-    $iFullTableCount = $oFEUsers->count();
-
     $oFEUsers->setOrder(implode(" ", array(
         $oSelectSortBy->getDefault(),
         $oSelectSortOrder->getDefault()
     )));
-} else {
-    $oFEUsers->query();
-    $iFullTableCount = $oFEUsers->count();
+    $oFEUsers->setLimit($elemperpage * ($mPage - 1), $elemperpage);
 }
 
-$oFEUsers->setLimit($elemperpage * ($mPage - 1), $elemperpage);
-
-if ($_REQUEST["elemperpage"] * ($_REQUEST["page"]) >= $iFullTableCount + $_REQUEST["elemperpage"] && $_REQUEST["page"] != 1) {
-    $_REQUEST["page"]--;
+if ($_REQUEST['elemperpage'] * ($_REQUEST['page']) >= $fullTableCount + $_REQUEST['elemperpage'] && $_REQUEST['page'] != 1) {
+    $_REQUEST['page']--;
     $mPage--;
 }
 
@@ -187,7 +185,7 @@ while ($feuser = $oFEUsers->next()) {
     foreach ($aFieldSources as $key => $field) {
         $idfrontenduser = $feuser->get("idfrontenduser");
 
-        $aUserTable[$idfrontenduser]["idfrontenduser"] = $idfrontenduser;
+        $aUserTable[$idfrontenduser]['idfrontenduser'] = $idfrontenduser;
 
         switch ($field) {
             case "base":
@@ -200,19 +198,19 @@ while ($feuser = $oFEUsers->next()) {
                 $aUserTable[$idfrontenduser][$key] = $feuser->get("modified");
                 break;
             default:
-                if ($_REQUEST["filter"] != "") {
+                if ($_REQUEST['filter'] != "") {
                     $aUserTable[$idfrontenduser][$key] = call_user_func("frontendusers_" . $field . "_getvalue", $key);
                 }
                 break;
         }
     }
 
-    if ($_REQUEST["filter"] != "") {
-        if ($_REQUEST["searchin"] == "--all--" || $_REQUEST["searchin"] == "") {
+    if ($_REQUEST['filter'] != "") {
+        if ($_REQUEST['searchin'] == "--all--" || $_REQUEST['searchin'] == "") {
             $found = false;
 
             foreach ($aUserTable[$idfrontenduser] as $key => $value) {
-                if (stripos($value, $_REQUEST["filter"]) !== false) {
+                if (stripos($value, $_REQUEST['filter']) !== false) {
                     $found = true;
                 }
             }
@@ -221,15 +219,15 @@ while ($feuser = $oFEUsers->next()) {
                 unset($aUserTable[$idfrontenduser]);
             }
         } else {
-            if (stripos($aUserTable[$idfrontenduser][$_REQUEST["searchin"]], $_REQUEST["filter"]) === false) {
+            if (stripos($aUserTable[$idfrontenduser][$_REQUEST['searchin']], $_REQUEST['filter']) === false) {
                 unset($aUserTable[$idfrontenduser]);
             }
         }
     }
 }
 
-$sortorder = ($_REQUEST["sortorder"] == "desc") ? SORT_DESC : SORT_ASC;
-$sortby = ($_REQUEST["sortby"]) ? $_REQUEST["sortby"] : "username";
+$sortorder = ($_REQUEST['sortorder'] == "desc") ? SORT_DESC : SORT_ASC;
+$sortby = ($_REQUEST['sortby']) ? $_REQUEST["sortby"] : "username";
 
 $aUserTable = cArray::csort($aUserTable, $sortby, $sortorder);
 
@@ -249,7 +247,7 @@ foreach ($aUserTable as $mkey => $params) {
         $iMenu++;
 
         $delTitle = i18n("Delete user");
-        $deletebutton = '<a title="' . $delTitle . '" data-username="' . conHtmlSpecialChars($params["username"]) . '" data-idfrontenduser="' . $idfrontenduser . '" class="jsDelete" href="javascript:void(0)"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
+        $deletebutton = '<a title="' . $delTitle . '" data-username="' . conHtmlSpecialChars($params['username']) . '" data-idfrontenduser="' . $idfrontenduser . '" class="jsDelete" href="javascript:void(0)"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
 
         $mlist->setTitle($iMenu, conHtmlentities($params["username"]));
         $mlist->setLink($iMenu, $link);
@@ -263,7 +261,7 @@ foreach ($aUserTable as $mkey => $params) {
 }
 
 if ($bUsePlugins == false) {
-    $iItemCount = $iFullTableCount;
+    $iItemCount = $fullTableCount;
 }
 
 // $oPage->addScript('cfoldingrow.js', '<script type="text/javascript"
@@ -278,11 +276,11 @@ $oPagerLink = new cHTMLLink();
 $oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setLink("main.php");
 $oPagerLink->setCustom("elemperpage", $elemperpage);
-$oPagerLink->setCustom("filter", $_REQUEST["filter"]);
-$oPagerLink->setCustom("sortby", $_REQUEST["sortby"]);
-$oPagerLink->setCustom("sortorder", $_REQUEST["sortorder"]);
-$oPagerLink->setCustom("searchin", $_REQUEST["searchin"]);
-$oPagerLink->setCustom("restrictgroup", $_REQUEST["restrictgroup"]);
+$oPagerLink->setCustom("filter", $_REQUEST['filter']);
+$oPagerLink->setCustom("sortby", $_REQUEST['sortby']);
+$oPagerLink->setCustom("sortorder", $_REQUEST['sortorder']);
+$oPagerLink->setCustom("searchin", $_REQUEST['searchin']);
+$oPagerLink->setCustom("restrictgroup", $_REQUEST['restrictgroup']);
 $oPagerLink->setCustom("frame", $frame);
 $oPagerLink->setCustom("area", $area);
 $oPagerLink->enableAutomaticParameterAppend();

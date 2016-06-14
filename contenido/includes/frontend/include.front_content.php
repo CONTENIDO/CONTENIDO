@@ -72,8 +72,7 @@ if ($cfg['use_pseudocron'] == true) {
 // Initialize the database abstraction layer, the session, authentication and
 // permissions handler of the PHPLIB application development toolkit
 // @see http://sourceforge.net/projects/phplib
-// TODO better use cRegistry::getBackendSessionId()?
-if ($contenido) {
+if (cRegistry::getBackendSessionId()) {
     // Backend
     cRegistry::bootstrap(array(
         'sess' => 'cSession',
@@ -323,7 +322,7 @@ if (false === isset($idart)) {
 $idartlang = getArtLang($idart, $lang);
 
 // always allow editing article in backend
-if (!cRegistry::isBackendEditMode() && ($idartlang === false || $online != true)) {
+if (!cRegistry::getBackendSessionId() && ($idartlang === false || $online != true)) {
     if ($_GET['display_errorpage']) {
         // show only if $idart > 0
         if ($idart > 0) {
@@ -638,7 +637,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     // Time management, redirect
     $oArtLang = new cApiArticleLanguage();
     $oArtLang->loadByArticleAndLanguageId($idart, $lang);
-    $online = (int) $oArtLang->get('online');
+    $online = cSecurity::toInteger($oArtLang->get('online'));
     $redirect = $oArtLang->get('redirect');
     $redirect_url = $oArtLang->get('redirect_url');
 
