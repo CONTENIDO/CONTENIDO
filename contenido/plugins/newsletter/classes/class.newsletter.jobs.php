@@ -22,7 +22,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class NewsletterJobCollection extends ItemCollection {
 
     /**
-     * Constructor to create an instance of this class.
+     * Constructor Function
+     *
+     * @param none
      */
     public function __construct() {
         global $cfg;
@@ -38,8 +40,8 @@ class NewsletterJobCollection extends ItemCollection {
      * @param $idnews integer Newsletter id
      */
     public function create($iIDNews, $iIDCatArt, $sName = "") {
-        global $client, $lang, $cfg, $cfgClient, $auth;
 
+        global $client, $lang, $cfg, $cfgClient, $auth;
         $oNewsletter = new Newsletter();
         if ($oNewsletter->loadByPrimaryKey($iIDNews)) {
             $iIDNews = cSecurity::toInteger($iIDNews);
@@ -65,7 +67,6 @@ class NewsletterJobCollection extends ItemCollection {
             $oLang = new cApiLanguage($lang);
             $oItem->set("encoding", $oLang->get("encoding"));
             unset($oLang);
-
             $oItem->set("idart", $oNewsletter->get("idart"));
             $oItem->set("subject", $oNewsletter->get("subject"));
 
@@ -125,6 +126,7 @@ class NewsletterJobCollection extends ItemCollection {
                     // There was a problem getting html message (maybe article
                     // deleted)
                     // Cancel job generation
+                    $this->delete($oItem->get($oItem->getPrimaryKeyName()));
                     return false;
                 }
             }

@@ -377,22 +377,51 @@ class Newsletter extends Item
         $iEOLLen = strlen($sEOL);
 
         $sBuffer = '';
+
+        // workaround:
+        // others and i don't understand this part, thats why i made a workaround
+        // seems as it is chunked, but reveived data isn't, thats why hexdec() produces an error
         if (isset($aHeader['transfer-encoding']) && $aHeader['transfer-encoding'] == 'chunked') {
+            $isHex = true;
+
             do {
                 $sBody    = ltrim ($sBody);
                 $iPos     = strpos($sBody, $sEOL);
-                $iDataLen = hexdec (substr($sBody, 0, $iPos));
+                $nextChunkLength =  substr($sBody, 0, (int) $iPos);
+
+                // workaround begin
+                preg_match('/^[0-9A-F]$/', $nextChunkLength, $isHex);
+                if (empty($isHex)) {
+                    $isHex = false;
+                    break;
+                }
+                // workarround end
+
+                $iDataLen = hexdec($nextChunkLength);
 
                 if (isset($aHeader['content-encoding'])) {
-                    $sBuffer .= gzinflate(substr($sBody, ($iPos + $iEOLLen + 10), $iDataLen));
+                    $sBuffer .= gzinflate(substr($sBody, ((int) $iPos + (int) $iEOLLen + 10), (int) $iDataLen));
                 } else {
-                    $sBuffer .= substr($sBody, ($iPos + $iEOLLen), $iDataLen);
+                    $sBuffer .= substr($sBody, ((int) $iPos + (int) $iEOLLen), (int) $iDataLen);
                 }
 
-                $sBody      = substr ($sBody, ($iPos + $iDataLen + $iEOLLen));
-                $sRemaining = trim ($sBody);
+                $sBody      = substr ($sBody, ((int) $iPos + (int) $iDataLen + (int) $iEOLLen));
 
-            } while (!empty($sRemaining));
+
+
+                $sRemaining = trim ($sBody);
+            } while ($sRemaining != '');
+
+            // workarround begin
+            if ($isHex === false) {
+                if (isset($aHeader['content-encoding'])) {
+                    $sBuffer = gzinflate(substr($sBody, 10));
+                } else {
+                    $sBuffer = $sBody; // Not chunked, not compressed
+                }
+            }
+            // workarround end
+
         } else if (isset($aHeader['content-encoding'])) {
             $sBuffer = gzinflate(substr($sBody, 10));
         } else {
@@ -411,7 +440,6 @@ class Newsletter extends Item
     {
         global $lang, $client, $contenido;
         $frontendURL = cRegistry::getFrontendUrl();
-
         if ($this->get("type") == "html" && $this->get("idart") > 0 && $this->htmlArticleExists()) {
 
             // Article ID
@@ -427,7 +455,6 @@ class Newsletter extends Item
             $sHTTPUserName = $oClient->getProperty("newsletter", "html_username");
             $sHTTPPassword = $oClient->getProperty("newsletter", "html_password");
             unset($oClient);
-
             // Get HTML
             if ($iIDArt > 0 && $iIDCat > 0) {
                 // Check, if newsletter is online and set temporarely online, otherwise
@@ -596,7 +623,7 @@ class Newsletter extends Item
                 // There was a problem getting the html message (maybe article
                 // deleted). Exit with error instead of sending as text message only
 
-                if ($contenido) { // Use i18n only in backend
+                if (cRegistry::getBackendSessionId()) { // Use i18n only in backend
                     $sError = i18n("Newsletter to %s could not be sent: No html message available");
                 } else {
                     $sError = "Newsletter to %s could not be sent: No html message available";
@@ -758,7 +785,7 @@ class Newsletter extends Item
                 // There was a problem getting the html message (maybe article
                 // deleted). Exit with error instead of sending as text message only
 
-                if ($contenido) { // Use i18n only in backend
+                if (cRegistry::getBackendSessionId()) { // Use i18n only in backend
                     $sError = i18n("Newsletter could not be sent: No html message available");
                 } else {
                     $sError = "Newsletter could not be sent: No html message available";

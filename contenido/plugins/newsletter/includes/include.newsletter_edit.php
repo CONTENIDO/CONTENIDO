@@ -10,7 +10,6 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 cInclude("includes", "functions.con.php");
 // Initialization
@@ -23,6 +22,7 @@ $oNewsletters = new NewsletterCollection();
 if (isset($idnewsletter)) {
     $idnewsletter = (int) $idnewsletter;
 }
+//die('testll9ala');
 
 // Include plugins
 if (is_array($cfg['plugins']['newsletters'])) {
@@ -128,6 +128,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
     // Get test destination
     if ($perm->have_perm_area_action($area, "news_send_test")) {
         $iTestIDNewsGroup = (int) $oUser->getProperty("newsletter", "test_idnewsgrp_lang" . $lang);
+//        $iTestIDNewsGroup = 0;
     } else {
         $iTestIDNewsGroup = 0; // If user doesn't have the news_send_test right,
                                // just send to himself
@@ -141,6 +142,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
     // Send test newsletter
     $oNewsletter = new Newsletter($idnewsletter);
     $aRecipients = array();
+
     if ($iTestIDNewsGroup == 0) {
         // Send test newsletter to current user email address
         $sName = $oUser->get("realname");

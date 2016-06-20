@@ -199,7 +199,9 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
         $oForm->add(i18n("HTML Template", 'newsletter'), $oSelTemplate->render() . "&nbsp;" . i18n("Note, that changing the template discards the current html message content", 'newsletter'));
 
         if ($iTplIDArt != 0) {
-            $sFrameSrc = cRegistry::getFrontendUrl() . "front_content.php?changeview=edit&action=con_editart&idart=" . $oNewsletter->get("idart") . "&idcat=" . $oClientLang->getProperty("newsletter", "html_newsletter_idcat") . "&lang=" . $lang . "&contenido=" . $sess->id;
+            $sFrameSrc = "main.php?area=con_editcontent&action=con_editart&changeview=edit&idart=" . $oNewsletter->get("idart") . "&idcat=" . $oClientLang->getProperty("newsletter", "html_newsletter_idcat") . "&lang=" . $lang . "&contenido=" . $sess->id;
+//            $sFrameSrc = "main.php?area=con_editcontent&action=con_editart&changeview=edit&idart=13&idcat=5&lang=1&contenido=" . $sess->id;
+
             $oForm->add(i18n("HTML Message", 'newsletter'), '<iframe width="100%" height="600" src="' . $sFrameSrc . '"></iframe><br>' . $sTagInfoHTML);
         } else {
             // Add a real note, that a template has to be specified
