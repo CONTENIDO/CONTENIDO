@@ -201,7 +201,7 @@ class cMailer extends Swift_Mailer {
         } elseif ('1' == $mail_encryption) {
             $this->_mailEncryption = 'ssl';
         } else {
-            $this->_mailEncryption = 'tls';
+            $this->_mailEncryption = NULL;
         }
 
         // get name and password of mail host user
