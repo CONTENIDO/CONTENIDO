@@ -418,7 +418,7 @@ $cfg['client_template']['default_extension'] = 'html';
 $cfg['system_log']['number_of_lines'] = 100;
 
 // Allowed log file names
-$cfg['system_log']['allowed_filenames'] = array('deprecatedlog.txt', 'errorlog.txt', 'exception.txt', 'setuplog.txt');
+$cfg['system_log']['allowed_filenames'] = array('deprecatedlog.txt', 'errorlog.txt', 'exception.txt', 'security.txt', 'setuplog.txt');
 
 
 /* Search index settings
