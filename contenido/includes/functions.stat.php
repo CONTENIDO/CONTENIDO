@@ -572,7 +572,7 @@ function statsOverviewYear($year) {
         $numberOfArticles = $db2->f(0);
         $sumNumberOfArticles += $numberOfArticles;
         $sql = "SELECT SUM(visited) FROM " . $cfg["tab"]["cat_art"] . " AS A, " . $cfg["tab"]["stat_archive"] . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . cSecurity::toInteger($idcat) . "
-                AND B.idclient=" . cSecurity::toInteger($client) . " AND SUBSTRING(B.archived,1,4)=" . cSecurity::toInteger($year, $db2) . " GROUP BY SUBSTRING(B.archived,1,4)";
+                AND B.idclient=" . cSecurity::toInteger($client) . " AND SUBSTRING(B.archived,1,4)=" . cSecurity::toInteger($year) . " GROUP BY SUBSTRING(B.archived,1,4)";
         $db2->query($sql);
         $db2->nextRecord();
 

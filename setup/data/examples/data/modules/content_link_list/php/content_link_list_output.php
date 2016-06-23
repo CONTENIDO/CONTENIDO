@@ -21,8 +21,8 @@ $typeid = 500;
 
 $idartlang = cRegistry::getArticleLanguageId(true);
 $artId = cRegistry::getArticleId(true);
-$client = cRegistry::getClientId(true);
-$lang = cRegistry::getLanguageId(true);
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
 
 // create art object
 $art = new cApiArticleLanguage();

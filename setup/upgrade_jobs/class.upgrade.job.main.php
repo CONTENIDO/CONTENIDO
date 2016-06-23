@@ -54,8 +54,7 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
         $this->_jobConvertOldStartArticlesToNewOne();
 
         // Update Keys
-        $aNothing = array();
-        injectSQL($this->_oDb, $cfg['sql']['sqlprefix'], 'data/indexes.sql', array(), $aNothing);
+        injectSQL($this->_oDb, $cfg['sql']['sqlprefix'], 'data/indexes.sql', array());
 
         // Update to autoincrement
         addAutoIncrementToTables($this->_oDb, $cfg);

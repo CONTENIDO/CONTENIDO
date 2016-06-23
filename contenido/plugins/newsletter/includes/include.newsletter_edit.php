@@ -470,7 +470,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     $oCkbDispatch->setChecked($oNewsletter->get("dispatch"));
     $oTxtDispatchCount = new cHTMLTextbox("txtDispatchCount", $oNewsletter->get("dispatch_count"), 4);
     $oTxtDispatchDelay = new cHTMLTextbox("txtDispatchDelay", $oNewsletter->get("dispatch_delay"), 4);
-    $oTxtDispatchDelay->setAlt(i18n("Note: Set to 0 to send chunks manually.", 'newsletter', 'newsletter'));
+    $oTxtDispatchDelay->setAlt(i18n("Note: Set to 0 to send chunks manually.", 'newsletter'));
     $oCkbSaveAsDefault = new cHTMLCheckbox("ckbSetDefault", "1");
 
     $oForm->add(i18n("Options", 'newsletter'), $ckbWelcome->toHTML(false) . "&nbsp;" . i18n("Welcome-Newsletter", 'newsletter') . "<br>" . $ckbCronJob->toHTML(false) . "&nbsp;" . i18n("Use cronjob", 'newsletter') . "<br>" . $oCkbDispatch->toHTML(false) . "&nbsp;" . i18n("Send in blocks:", 'newsletter') . "&nbsp;&nbsp;&nbsp;" . i18n("Recipients per block:", 'newsletter') . "&nbsp;" . $oTxtDispatchCount->render() . "&nbsp;" . i18n("Delay between blocks:", 'newsletter') . "&nbsp;" . $oTxtDispatchDelay->render() . "&nbsp;" . i18n("sec.", 'newsletter') . "<br>" . $oCkbSaveAsDefault->toHTML(false) . "&nbsp;" . i18n("Save option settings as default", 'newsletter'));

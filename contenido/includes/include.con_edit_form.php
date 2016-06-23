@@ -930,7 +930,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     // Fetch setting
     $oClient = new cApiClient($client);
     $cValue = $oClient->getProperty("system", "multiassign", true);
-    $sValue = getSystemProperty("system", "multiassign", true);
+    $sValue = getSystemProperty("system", "multiassign");
 
     $tpl2 = new cTemplate();
     $button = '';

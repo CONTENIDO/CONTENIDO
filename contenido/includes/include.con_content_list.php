@@ -382,15 +382,15 @@ if (($action == 'savecontype' || $action == 10)) {
 
                                     break;
                                 case 'seo_keywords':
-                                    conSetMetaValue($articleLanguage->get('idartlang'), 5, $child, $child, $version);
+                                    conSetMetaValue($articleLanguage->get('idartlang'), 5, $child, $version);
 
                                     break;
                                 case 'seo_copyright':
-                                    conSetMetaValue($articleLanguage->get('idartlang'), 8, $child, $child, $version);
+                                    conSetMetaValue($articleLanguage->get('idartlang'), 8, $child, $version);
 
                                     break;
                                 case 'seo_author':
-                                    conSetMetaValue($articleLanguage->get('idartlang'), 1, $child, $child, $version);
+                                    conSetMetaValue($articleLanguage->get('idartlang'), 1, $child, $version);
 
                                     break;
                                 case 'content':

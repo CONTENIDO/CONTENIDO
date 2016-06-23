@@ -58,7 +58,7 @@ class cTypeGenerator {
      */
     public function __construct() {
         $this->_idart = cRegistry::getArticleId(true);
-        $this->_idlang = cRegistry::getLanguageId(true);
+        $this->_idlang = cRegistry::getLanguageId();
         $this->cfg = cRegistry::getConfig();
 
         if (self::$db === NULL) {

@@ -345,7 +345,7 @@ if ($sClientCheckboxes != '') {
 }
 
 // user properties
-$aProperties = $oUser->getUserProperties(false);
+$aProperties = $oUser->getUserProperties();
 $sPropRows = '';
 foreach ($aProperties as $entry) {
     // ommit system props
