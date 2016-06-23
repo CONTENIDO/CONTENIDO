@@ -13,9 +13,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-// Don't display errors
-@ini_set('display_errors', false);
-
 // Report all errors except warnings
 error_reporting(E_ALL ^E_NOTICE);
 
@@ -69,6 +66,42 @@ function checkAndInclude($filename) {
 // Include security class and check request variables
 checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.filehandler.php');
 checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.requestvalidator.php');
+
+/**
+ * Check configuration path for the environment
+ * If no configuration for environment found, copy from production
+ */
+$installationPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../..'));
+$configPath = $installationPath . '/data/config/' . CON_ENVIRONMENT;
+if (!cFileHandler::exists($configPath)) {
+    // create environment config
+    mkdir($configPath);
+    // if not successful throw exception
+    if (!cFileHandler::exists($configPath)) {
+        throw new cException('Can not set create environment directory: data folder is not writable');
+    }
+    // get config source path
+    $configPathProduction = $installationPath . '/data/config/production/';
+    // load config source directory
+    $directoryIterator = new DirectoryIterator($configPathProduction);
+    // iterate through files
+    foreach ($directoryIterator as $dirContent) {
+        // check file is not dot and file
+        if ($dirContent->isFile() && !$dirContent->isDot()) {
+            // get filename
+            $configFileName = $dirContent->getFilename();
+            // build source string
+            $source = $configPathProduction . $configFileName;
+            // build target string
+            $target = $configPath . '/' . $configFileName;
+            // try to copy from source to target, if not successful throw exception
+            if(!copy($source, $target)) {
+                throw new cException('Can not set copy configuration files for the environment: environment folder is not writable');
+            }
+        }
+    }
+}
+
 try {
     $requestValidator = cRequestValidator::getInstance();
     $requestValidator->checkParams();
