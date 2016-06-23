@@ -11,7 +11,7 @@
             </div>
             <div class="contact_row contact_rowNlOptions">
                 <label for="action">&nbsp;</label>
-                <select name="action" class="column1" maxlength="100">
+                <select name="action" class="column1">
                     <option value="subscribe" selected>{$SUBSCRIBE|escape}</option>
                     <option value="delete">{$DELETE|escape}</option>
                 </select>
@@ -22,7 +22,7 @@
                 <label class="label" for="email"> {$PRIVACY_TEXT_PART1|escape} {$LINKEDITOR}  {$PRIVACY_TEXT_PART2|escape}</label>
             </div>
 
-            <div class="hr" /><hr /></div>
+            <div class="hr"><hr /></div>
             <div id="contact_form_submit" class="clearfix">
                 <div id="contact_form_submit_left">
                     <input type="reset" value="{$LOESCHEN|escape}" class="button grey"/>
