@@ -52,7 +52,6 @@ class SolrRightBottomPage extends cGuiPage {
 
         parent::__construct('right_bottom', Solr::getName());
 
-        $this->addStyle('smoothness/jquery-ui-1.8.20.custom.css');
         $this->addStyle('right_bottom.css');
         $this->addScript('right_bottom.js');
 
