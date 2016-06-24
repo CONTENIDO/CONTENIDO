@@ -162,7 +162,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
     if ($bSend) {
         $oPage->displayOk(i18n("Test newsletter has been sent to:", 'newsletter') . "<br />" . implode("<br />", $aRecipients) . "<br />");
     } else {
-        $oPage->displayWarning(i18n("Test newsletter has not been sent (partly or completely):", 'newsletter') . "<br />" . i18n("Successful:", 'newsletter') . "<br />" . implode("<br />", $aRecipients) . "<br>" . i18n("Error messages:", 'newsletter') . "<br />" . $oNewsletter->_sError, 'newsletter');
+        $oPage->displayWarning(i18n("Test newsletter has not been sent (partly or completely):", 'newsletter') . "<br />" . i18n("Successful:", 'newsletter') . "<br />" . implode("<br />", $aRecipients) . "<br />" . i18n("Error messages:", 'newsletter') . "<br />" . $oNewsletter->_sError);
     }
 } else {
     // No action, just get selected newsletter (if any newsletter was selected)
@@ -414,7 +414,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     $oSelGroup = new cHTMLSelectElement("selGroup[]", "", "groupselect");
     $oSelGroup->setSize(10);
     $oSelGroup->setStyle("width: 350px; margin-top: 5px; margin-bottom: 5px; margin-left: 25px;");
-    $oSelGroup->setMultiSelect();
+    $oSelGroup->setMultiselect();
     $oSelGroup->setAlt(i18n("Note: Hold <Ctrl> to select multiple items.", 'newsletter'));
     $oSelGroup->autoFill($aItems);
 
@@ -442,7 +442,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     }
 
     // Recipients
-    $oForm->add(i18n("Recipients", 'newsletter'), $oSendToAll->toHTML(false) . "&nbsp;" . i18n("Send newsletter to all recipients", 'newsletter') . "<br>" . chr(10) . $oSendToDefault->toHTML(false) . "&nbsp;" . i18n("Send newsletter to the members of the default group", 'newsletter') . "<br>" . chr(10) . $oSendToGroups->toHTML(false) . "&nbsp;" . i18n("Send newsletter to the members of the selected group(s):", 'newsletter') . "<br>" . chr(10) . $oSelGroup->render());
+    $oForm->add(i18n("Recipients", 'newsletter'), $oSendToAll->toHtml(false) . "&nbsp;" . i18n("Send newsletter to all recipients", 'newsletter') . "<br>" . chr(10) . $oSendToDefault->toHtml(false) . "&nbsp;" . i18n("Send newsletter to the members of the default group", 'newsletter') . "<br>" . chr(10) . $oSendToGroups->toHtml(false) . "&nbsp;" . i18n("Send newsletter to the members of the selected group(s):", 'newsletter') . "<br>" . chr(10) . $oSelGroup->render());
 
     // Options
     $ckbWelcome = new cHTMLCheckbox("ckbWelcome", "1");
@@ -473,7 +473,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     $oTxtDispatchDelay->setAlt(i18n("Note: Set to 0 to send chunks manually.", 'newsletter'));
     $oCkbSaveAsDefault = new cHTMLCheckbox("ckbSetDefault", "1");
 
-    $oForm->add(i18n("Options", 'newsletter'), $ckbWelcome->toHTML(false) . "&nbsp;" . i18n("Welcome-Newsletter", 'newsletter') . "<br>" . $ckbCronJob->toHTML(false) . "&nbsp;" . i18n("Use cronjob", 'newsletter') . "<br>" . $oCkbDispatch->toHTML(false) . "&nbsp;" . i18n("Send in blocks:", 'newsletter') . "&nbsp;&nbsp;&nbsp;" . i18n("Recipients per block:", 'newsletter') . "&nbsp;" . $oTxtDispatchCount->render() . "&nbsp;" . i18n("Delay between blocks:", 'newsletter') . "&nbsp;" . $oTxtDispatchDelay->render() . "&nbsp;" . i18n("sec.", 'newsletter') . "<br>" . $oCkbSaveAsDefault->toHTML(false) . "&nbsp;" . i18n("Save option settings as default", 'newsletter'));
+    $oForm->add(i18n("Options", 'newsletter'), $ckbWelcome->toHtml(false) . "&nbsp;" . i18n("Welcome-Newsletter", 'newsletter') . "<br>" . $ckbCronJob->toHtml(false) . "&nbsp;" . i18n("Use cronjob", 'newsletter') . "<br>" . $oCkbDispatch->toHtml(false) . "&nbsp;" . i18n("Send in blocks:", 'newsletter') . "&nbsp;&nbsp;&nbsp;" . i18n("Recipients per block:", 'newsletter') . "&nbsp;" . $oTxtDispatchCount->render() . "&nbsp;" . i18n("Delay between blocks:", 'newsletter') . "&nbsp;" . $oTxtDispatchDelay->render() . "&nbsp;" . i18n("sec.", 'newsletter') . "<br>" . $oCkbSaveAsDefault->toHtml(false) . "&nbsp;" . i18n("Save option settings as default", 'newsletter'));
 
     $oUser = new cApiUser($oNewsletter->get("author"));
     $oForm->add(i18n("Author", 'newsletter'), $oUser->get('username') . " (" . displayDatetime($oNewsletter->get("created")) . ")");

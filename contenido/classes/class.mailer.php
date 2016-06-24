@@ -414,7 +414,7 @@ class cMailer extends Swift_Mailer {
         if (is_array($value)) {
             for ($i = 0; $i < count($value); $i++) {
                 if (!empty($value[$i])) {
-                    $value[$i] = conHtmlEntities($value[$i], ENT_COMPAT, $charset, false);
+                    $value[$i] = conHtmlentities($value[$i], ENT_COMPAT, $charset, false);
                 }
             }
             return $value;

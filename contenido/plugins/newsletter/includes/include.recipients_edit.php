@@ -40,9 +40,9 @@ if ($action == "recipients_create" && $perm->have_perm_area_action($area, $actio
     $purgedrecipients = $oRecipients->purge($timeframe);
     /* backslashdollar: There is a problem translating \$ - it is either not recognized or translated correctly (using poEdit) */
     if ($purgedrecipients > 0) {
-        $oPage->displayOk(sprintf(str_replace("backslashdollar", "\$", i18n("%1backslashdollard recipients, which hasn't been confirmed since more than %2backslashdollard days has been removed.", 'newsletter')),$purgedrecipients,$timeframe),0);
+        $oPage->displayOk(sprintf(str_replace("backslashdollar", "\$", i18n("%1backslashdollard recipients, which hasn't been confirmed since more than %2backslashdollard days has been removed.", 'newsletter')),$purgedrecipients,$timeframe));
     } else {
-        $oPage->displayInfo(sprintf(str_replace("backslashdollar", "\$", i18n("There are no recipients, which hasn't been confirmed since more than %2backslashdollard days has been removed.", 'newsletter')), 0, $timeframe),0);
+        $oPage->displayInfo(sprintf(str_replace("backslashdollar", "\$", i18n("There are no recipients, which hasn't been confirmed since more than %2backslashdollard days has been removed.", 'newsletter')), 0, $timeframe));
     }
 
     $recipient = new NewsletterRecipient;
@@ -153,8 +153,8 @@ if (true === $recipient->isLoaded() && $recipient->get("idclient") == $client &&
 
     $oForm->add(i18n("Name", 'newsletter'), $oTxtName->render());
     $oForm->add(i18n("E-Mail"), $oTxtEMail->render());
-    $oForm->add(i18n("Confirmed", 'newsletter'), $oCkbConfirmed->toHTML(false) . " (" . $recipient->get("confirmeddate") . ")");
-    $oForm->add(i18n("Deactivated", 'newsletter'),  $oCkbDeactivated->toHTML(false));
+    $oForm->add(i18n("Confirmed", 'newsletter'), $oCkbConfirmed->toHtml(false) . " (" . $recipient->get("confirmeddate") . ")");
+    $oForm->add(i18n("Deactivated", 'newsletter'),  $oCkbDeactivated->toHtml(false));
     $oForm->add(i18n("Message type", 'newsletter'), $oSelNewsType->render());
 
     $aPluginOrder = cArray::trim(explode(',', getSystemProperty('plugin', 'recipients-pluginorder')));
@@ -204,7 +204,7 @@ if (true === $recipient->isLoaded() && $recipient->get("idclient") == $client &&
 
             $oCkbRemove = new cHTMLCheckbox("ckbRemove[]", $oAssocGroup->get("idnewsgroupmember"));
             $oGroupList->setCell($oAssocGroup->get("idnewsgroupmember"), 1, $oGroup->get("groupname"));
-            $oGroupList->setCell($oAssocGroup->get("idnewsgroupmember"), 2, $oCkbRemove->toHTML(false));
+            $oGroupList->setCell($oAssocGroup->get("idnewsgroupmember"), 2, $oCkbRemove->toHtml(false));
         }
     }
 

@@ -100,11 +100,6 @@ class cGuiScrollList {
      */
     public $objItem;
 
-    /*
-     * TODO: Shouldn't $area and $frame be parameters instead of global
-     * variables?
-     */
-
     /**
      * Constructor to create an instance of this class.
      *
@@ -145,7 +140,7 @@ class cGuiScrollList {
      *
      * $obj->setSortable(true);
      *
-     * @param unknown_type $key
+     * @param int $key
      * @param bool $sortable
      *         true or false
      */
@@ -158,9 +153,9 @@ class cGuiScrollList {
      *
      * $obj->setCustom($key, $custom);
      *
-     * @param unknown_type $key
+     * @param string $key
      *         Custom entry key
-     * @param unknown_type $custom
+     * @param string $custom
      *         Custom entry value
      */
     public function setCustom($key, $custom) {

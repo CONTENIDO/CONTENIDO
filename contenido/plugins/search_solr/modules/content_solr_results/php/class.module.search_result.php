@@ -17,13 +17,13 @@ class SearchResultModule {
 
     /**
      *
-     * @var unknown_type
+     * @var int
      */
     protected $_countValues;
 
     /**
      *
-     * @var unknown_type
+     * @var int
      */
     protected $_searchResultCount = 0;
 

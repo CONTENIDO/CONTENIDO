@@ -872,8 +872,8 @@ function uplCreateFriendlyName($filename) {
 
 /**
  *
- * @param unknown_type $searchfor
- * @return multitype:number
+ * @param string $searchfor
+ * @return array
  */
 function uplSearch($searchfor) {
     $client = cRegistry::getClientId();
@@ -957,7 +957,7 @@ function uplSearch($searchfor) {
  * @deprecated [2015-05-21]
  *         use cFileHandler::getExtension
  * @param string $sFile
- * @param string sDirname
+ * @param string $sDirname
  * @return string
  */
 function uplGetFileExtension($sFile, $sDirname = '') {

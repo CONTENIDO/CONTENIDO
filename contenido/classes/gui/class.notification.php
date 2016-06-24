@@ -176,7 +176,7 @@ class cGuiNotification {
         }
 
         $sNoti = '<div id="contenido_notification">';
-        $sNoti .= $oNotifySpan->toHTML();
+        $sNoti .= $oNotifySpan->toHtml();
         $sNoti .= '</div>';
 
         return $sNoti;

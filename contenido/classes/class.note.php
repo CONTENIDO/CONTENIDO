@@ -130,7 +130,20 @@ class NoteView extends cHTMLIFrame {
  * @subpackage GUI
  */
 class NoteList extends cHTMLDiv {
+    /**
+     * @var bool
+     */
     protected $_bDeleteable;
+
+    /**
+     * @var string
+     */
+    protected $_sItemType;
+
+    /**
+     * @var string
+     */
+    protected $_sItemId;
 
     /**
      * Constructor to create an instance of this class.
@@ -158,11 +171,11 @@ class NoteList extends cHTMLDiv {
     /**
      * (non-PHPdoc)
      *
-     * @see cHTML::toHTML()
+     * @see cHTML::toHtml()
      * @return string
      *     generated markup
      */
-    public function toHTML() {
+    public function toHtml() {
         global $cfg, $lang;
 
         $sItemType = $this->_sItemType;
@@ -202,7 +215,7 @@ class NoteList extends cHTMLDiv {
 
         $this->setContent($i);
 
-        $result = parent::toHTML();
+        $result = parent::toHtml();
 
         return '<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td>' . $result . '</td></tr></table>';
     }
@@ -417,19 +430,16 @@ class NoteLink extends cHTMLLink {
 
     /**
      * @see cHTML::render()
-     * @todo fix unused param $return
-     * @param bool $return [optional]
-     *         this param is unused
      * @return string
      *         Generated markup
      */
-    public function render($return = false) {
+    public function render() {
         global $sess;
 
         $itemtype = $this->_sItemType;
         $itemid = $this->_sItemID;
 
         $this->setEvent('click', 'javascript:window.open(' . "'" . $sess->url("main.php?area=note&frame=1&itemtype=$itemtype&itemid=$itemid") . "', 'todo', 'resizable=yes,scrollbars=yes,height=360,width=550');");
-        return parent::render($return);
+        return parent::render();
     }
 }

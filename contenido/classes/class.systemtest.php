@@ -744,9 +744,7 @@ class cSystemtest {
 
         if ($value === true) {
             return self::CON_EXTENSION_AVAILABLE;
-        }
-
-        if ($value === false) {
+        } else {
             return self::CON_EXTENSION_UNAVAILABLE;
         }
     }
@@ -1404,7 +1402,7 @@ class cSystemtest {
         } else {
             cInclude('includes', 'functions.api.images.php');
         }
-        if (capiIsImageMagickAvailable()) {
+        if (cApiIsImageMagickAvailable()) {
             return self::CON_IMAGERESIZE_IMAGEMAGICK;
         }
 

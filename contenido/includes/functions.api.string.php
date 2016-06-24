@@ -72,7 +72,7 @@ function cApiStrTrimAfterWord($string, $maxlen) {
  */
 function cApiStrTrimHard($string, $maxlen, $fillup = '...') {
     cDeprecated('This method is deprecated and is not needed any longer');
-    return cString::trimHard($string, $maxlen, fillup);
+    return cString::trimHard($string, $maxlen, $fillup);
 }
 
 /**

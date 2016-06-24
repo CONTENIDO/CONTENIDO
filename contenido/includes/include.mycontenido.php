@@ -86,7 +86,7 @@ foreach ($faultyFolders as $folder) {
 
 $userid = $auth->auth['uid'];
 
-$page->set('s', 'WELCOME', '<b>' . i18n('Welcome') . ' </b>' . ($vuser->getRealname() ? $vuser->getRealname() : $vuser->getUserName()) . '.');
+$page->set('s', 'WELCOME', '<b>' . i18n('Welcome') . ' </b>' . ($vuser->getRealName() ? $vuser->getRealName() : $vuser->getUserName()) . '.');
 $page->set('s', 'LASTLOGIN', i18n('Last login') . ': ' . $lastlogin);
 
 $clientCollection = new cApiClientCollection();

@@ -120,7 +120,7 @@ class cHTMLTextarea extends cHTMLFormElement {
     public function toHtml() {
         $this->_setContent($this->_value);
 
-        return parent::toHTML();
+        return parent::toHtml();
     }
 
 }

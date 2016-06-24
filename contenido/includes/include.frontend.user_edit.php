@@ -186,7 +186,7 @@ if (true === $feuser->isLoaded() && $feuser->get("idclient") == $client) {
     $form->add(i18n("User name"), $username->render());
     $form->add(i18n("New password"), $newpw->render());
     $form->add(i18n("New password (again)"), $newpw2->render());
-    $form->add(i18n("Active"), $active->toHTML(false));
+    $form->add(i18n("Active"), $active->toHtml(false));
 
     $pluginOrder = cArray::trim(explode(',', getSystemProperty('plugin', 'frontendusers-pluginorder')));
 

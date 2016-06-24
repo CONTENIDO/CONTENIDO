@@ -203,7 +203,7 @@ if ($action == "lang_newlanguage") {
             $oTxtLang = new cHTMLTextBox("langname", conHtmlSpecialChars($db->f("name")), 40, 255);
             $form->add(i18n("Language name"), $oTxtLang->render());
             $oCheckbox = new cHTMLCheckbox("active", "1", "active1", $db->f("active"));
-            $form->add(i18n("Active"), $oCheckbox->toHTML(false));
+            $form->add(i18n("Active"), $oCheckbox->toHtml(false));
 
             $form->addSubHeader(i18n("Language"));
 

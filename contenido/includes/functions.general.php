@@ -484,7 +484,7 @@ function isValidMail($email, $strict = false) {
 
 /**
  *
- * @param unknown_type $string
+ * @param string $string
  * @return string
  */
 function htmldecode($string) {
@@ -989,7 +989,7 @@ function buildArticleSelect($sName, $iIdCat, $sValue) {
         }
     }
 
-    return $selectElem->toHTML();
+    return $selectElem->toHtml();
 }
 
 /**
@@ -1068,7 +1068,7 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
         }
     }
 
-    return $selectElem->toHTML();
+    return $selectElem->toHtml();
 }
 
 /**
@@ -1237,7 +1237,7 @@ function scanPlugins($entity) {
 /**
  * Includes plugins for a given entity.
  *
- * @param unknown_type $entity
+ * @param string $entity
  *         string Name of the directory to scan
  */
 function includePlugins($entity) {
@@ -1439,8 +1439,8 @@ function cWarning() {
  * cWarning(__FILE__, __LINE__, 'Some error message');
  * </pre>
  *
- * @param unknown_type $message
- * @param Multiple parameters
+ * @param string $message
+ * @param Multiple
  */
 function cError($message) {
     global $cfg;
@@ -1546,14 +1546,14 @@ function getNamedFrame($frame) {
  *         Name of the function
  * @param array $parameters
  *         All parameters for the function to measure
- * @return int
+ * @return string
  *         uuid for this measure process
  */
 function startTiming($function, $parameters = array()) {
     global $_timings, $cfg;
 
     if ($cfg['debug']['functiontiming'] == false) {
-        return;
+        return '';
     }
 
     // Create (almost) unique ID

@@ -186,7 +186,7 @@ if (isset($actionRequest)) {
     $aFileInfo = $fileInfoCollection->getFileInformation($sTempFilename, 'css');
 
     $form = new cGuiTableForm('file_editor');
-    $form->setTableid('mod_style');
+    $form->setTableID('mod_style');
     $form->addHeader(i18n('Edit file'));
     $form->setVar('area', $area);
     $form->setVar('action', $sAction);

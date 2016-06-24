@@ -125,7 +125,7 @@ $aAuthPerms = explode(',', $auth->auth['perm']);
 if (in_array('sysadmin', $aAuthPerms)) {
     $page->set('d', 'CATNAME', i18n("System administrator"));
     $oCheckbox = new cHTMLCheckbox('msysadmin', '1', 'msysadmin1', in_array('sysadmin', $aPerms));
-    $page->set('d', 'CATFIELD', $oCheckbox->toHTML(false));
+    $page->set('d', 'CATFIELD', $oCheckbox->toHtml(false));
     $page->next();
 }
 
@@ -137,7 +137,7 @@ foreach ($aClients as $idclient => $item) {
     if (in_array("admin[" . $idclient . "]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms)) {
         $oCheckbox = new cHTMLCheckbox("madmin[" . $idclient . "]", $idclient, "madmin[" . $idclient . "]" . $idclient, in_array("admin[" . $idclient . "]", $aPerms));
         $oCheckbox->setLabelText($item['name'] . " (" . $idclient . ")");
-        $sClientCheckboxes .= $oCheckbox->toHTML();
+        $sClientCheckboxes .= $oCheckbox->toHtml();
     }
 }
 
@@ -153,7 +153,7 @@ foreach ($aClients as $idclient => $item) {
     if ((in_array("client[" . $idclient . "]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms) || in_array("admin[" . $idclient . "]", $aAuthPerms)) && !in_array("admin[" . $idclient . "]", $aPerms)) {
         $oCheckbox = new cHTMLCheckbox("mclient[" . $idclient . "]", $idclient, "mclient[" . $idclient . "]" . $idclient, in_array("client[" . $idclient . "]", $aPerms));
         $oCheckbox->setLabelText($item['name'] . " (" . $idclient . ")");
-        $sClientCheckboxes .= $oCheckbox->toHTML();
+        $sClientCheckboxes .= $oCheckbox->toHtml();
     }
 }
 
@@ -170,7 +170,7 @@ foreach ($aClientsLanguages as $item) {
     if (($perm->have_perm_client("lang[" . $item['idlang'] . "]") || $perm->have_perm_client("admin[" . $item['idclient'] . "]")) && !in_array("admin[" . $item['idclient'] . "]", $aPerms)) {
         $oCheckbox = new cHTMLCheckbox("mlang[" . $item['idlang'] . "]", $item['idlang'], "mlang[" . $item['idlang'] . "]" . $item['idlang'], in_array("lang[" . $item['idlang'] . "]", $aPerms));
         $oCheckbox->setLabelText($item['langname'] . " (" . $item['clientname'] . ")");
-        $sClientCheckboxes .= $oCheckbox->toHTML();
+        $sClientCheckboxes .= $oCheckbox->toHtml();
     }
 }
 

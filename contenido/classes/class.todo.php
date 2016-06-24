@@ -58,15 +58,15 @@ class TODOCollection extends cApiCommunicationCollection {
     /**
      * Creates a new communication item
      *
-     * @param unknown_type $itemtype
-     * @param unknown_type $itemid
+     * @param string $itemtype
+     * @param int $itemid
      * @param int|string $reminderdate
      *          if not given as timestamp it is expected to be a string
      *          using the English date format
      * @param string $subject
      * @param string $content
-     * @param unknown_type $notimail
-     * @param unknown_type $notibackend
+     * @param string $notimail
+     * @param string $notibackend
      * @param string $recipient
      * @return cApiCommunication
      */
@@ -141,7 +141,6 @@ class TODOItem extends cApiCommunication {
     /**
      * Sets a custom property.
      *
-     * @todo should return return value of overloaded method
      * @see Item::setProperty()
      * @param string $sType
      *         Specifies the type
@@ -163,7 +162,7 @@ class TODOItem extends cApiCommunication {
             }
         }
 
-        parent::setProperty($type, $name, $value);
+        return parent::setProperty($type, $name, $value);
     }
 }
 
@@ -178,10 +177,10 @@ class TODOLink extends cHTMLLink {
     /**
      * Constructor to create an instance of this class.
      *
-     * @param unknown_type $itemtype
-     * @param unknown_type $itemid
-     * @param unknown_type $subject
-     * @param unknown_type $message
+     * @param string $itemtype
+     * @param int $itemid
+     * @param string $subject
+     * @param string $message
      */
     public function __construct($itemtype, $itemid, $subject, $message) {
         global $sess;

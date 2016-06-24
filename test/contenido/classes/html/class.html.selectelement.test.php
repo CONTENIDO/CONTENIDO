@@ -282,7 +282,7 @@ class cHTMLSelectElementTest extends cTestingTestCase {
     /**
      */
     public function testToHtml() {
-        $this->assertSame($this->_selectData->toHtml(), $this->_selectData->toHTML());
+        $this->assertSame($this->_selectData->toHtml(), $this->_selectData->toHtml());
     }
 }
 

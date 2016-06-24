@@ -282,7 +282,7 @@ function editWorkflowStep($idworkflowitem) {
     foreach ($availableWorkflowActions as $key => $value) {
         $oCheckbox = new cHTMLCheckbox("wfactions[" . $key . "]", "1", "wfactions[" . $key . "]1", $workflowactions->get($id, $key));
         $oCheckbox->setLabelText($value);
-        $actions .= $oCheckbox->toHTML();
+        $actions .= $oCheckbox->toHtml();
     }
 
     $form->add(i18n("Actions", "workflow"), $actions);
@@ -345,10 +345,10 @@ function getWorkflowUsers($idworkflowitem) {
         $altnoti = i18n("Escalate to this user via E-Mail", "workflow");
 
         $oCheckbox = new cHTMLCheckbox("wfemailnoti[" . $id . "]", "1", "wfemailnoti[" . $id . "]1", $email);
-        $title .= $oCheckbox->toHTML(false) . '<label for="wfemailnoti[' . $id . ']1"><img alt="' . $altmail . '" title="' . $altmail . '" border="0" src="' . $backendUrl . $cfg["path"]["plugins"] . 'workflow/images/workflow_email_noti.gif"></label>';
+        $title .= $oCheckbox->toHtml(false) . '<label for="wfemailnoti[' . $id . ']1"><img alt="' . $altmail . '" title="' . $altmail . '" border="0" src="' . $backendUrl . $cfg["path"]["plugins"] . 'workflow/images/workflow_email_noti.gif"></label>';
 
         $oCheckbox = new cHTMLCheckbox("wfescalnoti[" . $id . "]", "1", "wfescalnoti[" . $id . "]1", $escalation);
-        $title .= $oCheckbox->toHTML(false) . '<label for="wfescalnoti[' . $id . ']1"><img alt="' . $altnoti . '" title="' . $altnoti . '" border="0" src="' . $backendUrl . $cfg["path"]["plugins"] . 'workflow/images/workflow_escal_noti.gif"></label>';
+        $title .= $oCheckbox->toHtml(false) . '<label for="wfescalnoti[' . $id . ']1"><img alt="' . $altnoti . '" title="' . $altnoti . '" border="0" src="' . $backendUrl . $cfg["path"]["plugins"] . 'workflow/images/workflow_escal_noti.gif"></label>';
 
         $ui->setTitle($id, $title);
         $ui->setLink($id, NULL);

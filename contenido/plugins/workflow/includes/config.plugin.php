@@ -403,7 +403,7 @@ function piworkflowRenderColumn($idcat, $idart, $idartlang, $column) {
             $form->appendContent('<input type="image" src="' . $cfg["path"]["htmlpath"] . $cfg["path"]["images"] . "submit.gif" . '"></tr></table>');
 
             if ($mayEdit == true) {
-                return ($form->render(true));
+                return ($form->render());
             } else {
                 return '--- ' . i18n("None") . ' ---';
             }

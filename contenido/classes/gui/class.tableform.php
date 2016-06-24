@@ -143,7 +143,7 @@ class cGuiTableForm {
     /**
      *
      * @param string $name
-     * @param mixed $value
+     * @param string $value
      */
     public function setVar($name, $value) {
         $this->formvars[$name] = $value;
@@ -244,8 +244,8 @@ class cGuiTableForm {
 
     /**
      *
-     * @param unknown_type $id
-     * @param unknown_type $event
+     * @param string $id
+     * @param string $event
      */
     public function setActionEvent($id, $event) {
         $this->custom[$id]["event"] = $event;
@@ -253,11 +253,11 @@ class cGuiTableForm {
 
     /**
      *
-     * @param unknown_type $id
-     * @param unknown_type $image
-     * @param unknown_type $description [optional]
-     * @param unknown_type $accesskey [optional]
-     * @param unknown_type $action [optional]
+     * @param string $id
+     * @param string $image
+     * @param string $description [optional]
+     * @param bool $accesskey [optional]
+     * @param bool $action [optional]
      */
     public function setActionButton($id, $image, $description = "", $accesskey = false, $action = false) {
         $this->custom[$id]["image"] = $image;
@@ -270,9 +270,9 @@ class cGuiTableForm {
 
     /**
      *
-     * @param unknown_type $id
-     * @param unknown_type $title
-     * @param unknown_type $description
+     * @param string $id
+     * @param string $title
+     * @param string $description
      */
     public function setConfirm($id, $title, $description) {
         $this->custom[$id]["confirmtitle"] = $title;
@@ -289,7 +289,7 @@ class cGuiTableForm {
 
     /**
      *
-     * @param unknown_type $id
+     * @param string $id
      */
     public function unsetActionButton($id) {
         unset($this->custom[$id]);
@@ -301,7 +301,7 @@ class cGuiTableForm {
      *
      * @param bool $return [optional]
      *         if true then return markup, else echo immediately
-     * @return Ambigous <string, mixed>
+     * @return string
      */
     public function render($return = true) {
         global $sess, $cfg;

@@ -71,7 +71,7 @@ if ($action == 'note_save_item') {
     $ui->add(i18n('Category'), array($cselect, $centry));
     $ui->setWidth('100%');
 
-    $cpage->setcontent(array($list, $ui));
+    $cpage->setContent(array($list, $ui));
 }
 
 $cpage->render();

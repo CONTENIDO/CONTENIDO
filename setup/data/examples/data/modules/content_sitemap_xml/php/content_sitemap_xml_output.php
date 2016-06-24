@@ -108,7 +108,7 @@ EOD;
  * If last run is less than 23h ago this script will be aborted. Elsethe
  * current timestamp is stored into job file.
  *
- * @param unknown_type $jobname
+ * @param string $jobname
  * @throws cException if job was already executed within last 23h
  */
 function checkJobRerun($jobname) {

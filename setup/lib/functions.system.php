@@ -29,7 +29,6 @@ function checkExistingPlugin($db, $sPluginname) {
 
     $sPluginname = (string) $sPluginname;
     $sTable = $cfg['tab']['nav_sub'];
-    $sSql = '';
 
     switch ($sPluginname) {
         case 'plugin_cronjob_overview':

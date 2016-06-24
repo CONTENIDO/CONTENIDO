@@ -90,12 +90,6 @@ class cModuleTemplateHandler extends cModuleHandler {
 
     /**
      *
-     * @var string
-     */
-    private $_reloadScript;
-
-    /**
-     *
      * @var cGuiPage
      */
     private $_page = NULL;
@@ -509,7 +503,7 @@ class cModuleTemplateHandler extends cModuleHandler {
     private function _makeFormular($belang, $readOnly) {
         $fileForm = new cGuiTableForm("file__chooser");
         $fileForm->addHeader(i18n('Choose file'));
-        $fileForm->setTableid('choose_mod_template_file');
+        $fileForm->setTableID('choose_mod_template_file');
         $fileForm->setVar('area', $this->_area);
         $fileForm->setVar('action', $this->_action);
         $fileForm->setVar('frame', $this->_frame);
@@ -519,7 +513,7 @@ class cModuleTemplateHandler extends cModuleHandler {
         $fileForm->setVar('file', conHtmlSpecialChars($this->_file));
 
         $form = new cGuiTableForm('file_editor');
-        $form->setTableid('mod_template');
+        $form->setTableID('mod_template');
         $form->addHeader(i18n('Edit file'));
         $form->setVar('area', $this->_area);
         $form->setVar('action', $this->_action);
@@ -559,7 +553,7 @@ class cModuleTemplateHandler extends cModuleHandler {
         }
 
         $aDelete = new cHTMLLink('main.php');
-        $aDelete->setId("deleteLink");
+        $aDelete->setID("deleteLink");
         $aDelete->setContent(i18n("Delete HTML-template"));
         $aDelete->setClass('deletefunction');
         $aDelete->setCustom("deleteModTpl", "1");
@@ -594,10 +588,10 @@ class cModuleTemplateHandler extends cModuleHandler {
             'wrap' => getEffectiveSetting('html_editor', 'wrap', 'off')
         ));
 
-        $fileForm->add(i18n('Action'), $aAdd->toHTML());
+        $fileForm->add(i18n('Action'), $aAdd->toHtml());
         // show only if file exists
         if ($this->_file) {
-            $fileForm->add(i18n('Action'), $aDelete->toHTML());
+            $fileForm->add(i18n('Action'), $aDelete->toHtml());
             $fileForm->add(i18n('File'), $selectFile);
         }
 

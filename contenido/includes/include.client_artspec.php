@@ -44,7 +44,7 @@ if ($action == "client_artspec_default") {
     if (!$perm->have_perm_area_action($area, "client_artspec_save")) {
         $notification->displayNotification("error", i18n("Permission denied"));
     } else {
-        setArtspecDefault($_GET['idartspec'], $online);
+        setArtspecDefault($_GET['idartspec']);
     }
 }
 
@@ -110,7 +110,7 @@ if (!empty($artspec)) {
                 $form->appendContent($inputbox->render());
                 $form->appendContent('<input type="image" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif" alt="' . i18n('Save') . '" title="' . i18n('Save') . '">');
 
-                $list->setCell($count, 1, $form->render(true));
+                $list->setCell($count, 1, $form->render());
             } else {
                 $list->setCell($count, 1, $artspec[$id]['artspec']);
             }
@@ -131,7 +131,7 @@ if (!empty($artspec)) {
                 $standardImage = new cHTMLImage($backendUrl . $cfg['path']['images'] . 'artikel_spez_akt.gif');
                 $standardImage->setAttribute("title", i18n("This is the default article specification"));
                 $standardImage->appendStyleDefinition("padding-left", "3px");
-                $list->setCell($count, 2, $link->render() . $dlink->render() . $olink->render() . $standardImage->toHTML());
+                $list->setCell($count, 2, $link->render() . $dlink->render() . $olink->render() . $standardImage->toHtml());
             }
 
             $count++;

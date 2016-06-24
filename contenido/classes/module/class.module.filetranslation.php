@@ -146,8 +146,8 @@ class cModuleFileTranslation extends cModuleHandler {
 
             $translations = array();
             while ($db->nextRecord()) {
-                $original = mb_convert_encoding(urldecode(cSecurity::unfilter($db->f('original'))), "UTF-8");
-                $translation = mb_convert_encoding(urldecode(cSecurity::unfilter($db->f('translation'))), "UTF-8");
+                $original = mb_convert_encoding(urldecode(cSecurity::unFilter($db->f('original'))), "UTF-8");
+                $translation = mb_convert_encoding(urldecode(cSecurity::unFilter($db->f('translation'))), "UTF-8");
                 $translations[$original] = $translation;
             }
 

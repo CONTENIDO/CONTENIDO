@@ -42,12 +42,4 @@ class cUpgradeJob_0011 extends cUpgradeJobAbstract {
                     COMMENT \'URI for image buttons\';');
         }
     }
-
-    private function _addColumnToPifa() {
-
-    }
-
-    private function _generatePluginRelations() {
-
-    }
 }

@@ -235,7 +235,7 @@ $sContent = '
         <input type="hidden" name="action_html" value="save_newsletter_properties">
         <table>
             <tr>
-                <td>' . $oCkbHTMLNewsletter->toHTML(false) . ' <label for="' . $oCkbHTMLNewsletter->getID() . '">' . i18n("Enable HTML newsletter", 'newsletter') . '</label></td>
+                <td>' . $oCkbHTMLNewsletter->toHtml(false) . ' <label for="' . $oCkbHTMLNewsletter->getID() . '">' . i18n("Enable HTML newsletter", 'newsletter') . '</label></td>
             </tr>
             <tr>
                 <td><label for="' . $oSelHTMLTemplateIDCat->getID() . '">' . i18n("HTML template category:", 'newsletter') . '</label><br> ' . $oSelHTMLTemplateIDCat->render() . '</td>

@@ -44,25 +44,25 @@ class UserForumArticle {
 
     /**
      *
-     * @var unknown_type
+     * @var bool
      */
     protected $_allowDeleting;
 
     /**
      *
-     * @var unknown_type
+     * @var bool
      */
     protected $_userLoggedIn;
 
     /**
      *
-     * @var unknown_type
+     * @var bool
      */
     protected $_allowedToEditForum;
 
     /**
      *
-     * @var unknown_type
+     * @var bool
      */
     protected $_modMode;
 
@@ -148,10 +148,8 @@ class UserForumArticle {
 
     /**
      * main method for controlling different actions received from $_REQUEST[]
-     *
-     * @param  array  $request  received $_REQUEST[]
      */
-    public function receiveData(array $request) {
+    public function receiveData() {
         $this->_checkCookie();
 
         $auth = cRegistry::getAuth();
@@ -593,5 +591,5 @@ class UserForumArticle {
 
 // generate object
 $userForumArticle = new UserForumArticle();
-$userForumArticle->receiveData($_REQUEST);
+$userForumArticle->receiveData();
 ?>

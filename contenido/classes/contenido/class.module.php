@@ -578,7 +578,7 @@ class cApiModule extends Item {
 
             $success = parent::store();
 
-            conGenerateCodeForAllArtsUsingMod($this->get('idmod'));
+            conGenerateCodeForAllartsUsingMod($this->get('idmod'));
         }
 
         return $success;
@@ -904,23 +904,4 @@ class cApiModule extends Item {
 
         return $CiCMS_Values . "\n" . $moduleInputCode;
     }
-
-    /**
-     * Not yet implemented ... does nothing!
-     *
-     * @todo implement me
-     * @param int $containerNr
-     * @param string $containerCfg
-     * @param string $moduleInputCode
-     */
-    public static function processContainerForOutput($containerNr, $containerCfg, $moduleInputCode) {
-
-        return;
-
-        $containerConfigurations = array();
-        if (!empty($containerCfg)) {
-            $containerConfigurations = cApiContainerConfiguration::parseContainerValue($containerCfg);
-        }
-    }
-
 }

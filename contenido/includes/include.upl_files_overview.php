@@ -665,7 +665,7 @@ while ($item = $uploads->next()) {
 
     $check = new cHTMLCheckbox('fdelete[]', $filename);
 
-    $mark = $check->toHTML(false);
+    $mark = $check->toHtml(false);
 
     if ($bAddFile == true) {
         // 'bgcolor' is just a placeholder...

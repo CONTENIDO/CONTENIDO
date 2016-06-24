@@ -1003,7 +1003,7 @@ function conChangeTemplateForCat($idcat, $idtpl) {
         }
     }
 
-    conGenerateCodeForAllartsInCategory($idcat);
+    conGenerateCodeForAllArtsInCategory($idcat);
 }
 
 /**
@@ -1251,7 +1251,7 @@ function conGenerateCodeForAllartsUsingLayout($idlay) {
     $sql = "SELECT idtpl FROM " . $cfg["tab"]["tpl"] . " WHERE idlay='" . cSecurity::toInteger($idlay) . "'";
     $db->query($sql);
     while ($db->nextRecord()) {
-        conGenerateCodeForAllartsUsingTemplate($db->f("idtpl"));
+        conGenerateCodeForAllArtsUsingTemplate($db->f("idtpl"));
     }
 }
 

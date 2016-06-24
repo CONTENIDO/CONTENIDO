@@ -263,11 +263,11 @@ class ArticleForumCollection extends ItemCollection {
 
     /**
      *
-     * @param unknown_type $id_user_forum
-     * @param unknown_type $name
-     * @param unknown_type $email
-     * @param unknown_type $like
-     * @param unknown_type $dislike
+     * @param int $id_user_forum
+     * @param string $name
+     * @param string $email
+     * @param int $like
+     * @param int $dislike
      * @param unknown_type $forum
      * @param int $online
      *
@@ -419,11 +419,13 @@ class ArticleForumCollection extends ItemCollection {
     }
 
     /**
-     * @return ArticleForumRightBottom
+     * @return array
      */
     public function getExistingforum() {
         $userColl = new cApiUserCollection();
         $userColl->query();
+
+        $arrUsers = array();
 
         while (($field = $userColl->next()) != false) {
             $arrUsers[$field->get('user_id')]['email']    = $field->get('email');
@@ -435,9 +437,9 @@ class ArticleForumCollection extends ItemCollection {
 
     /**
      *
-     * @param unknown_type $idquote
+     * @param int $idquote
      *
-     * @return multitype:NULL
+     * @return array
      */
     function selectNameAndNameByForumId($idquote) {
         $ar = array();
@@ -460,7 +462,7 @@ class ArticleForumCollection extends ItemCollection {
      * this function increments the actual value of likes from a comment and
      * persists it.
      *
-     * @param $forum_user_id identifies a comment.
+     * @param $forum_user_id int identifies a comment.
      */
     public function incrementLike($forum_user_id) {
         $db = cRegistry::getDb();
@@ -486,7 +488,7 @@ class ArticleForumCollection extends ItemCollection {
      * this function inkrements the actual value of dislikes from a comment and
      * persists it.
      *
-     * @param $forum_user_id identifies a comment.
+     * @param $forum_user_id int identifies a comment.
      */
     public function incrementDislike($forum_user_id) {
         $db = cRegistry::getDb();
@@ -562,7 +564,7 @@ class ArticleForumCollection extends ItemCollection {
     /**
      * this function deletes all comments related to the same articleId
      *
-     * @param articleId $idart
+     * @param int $idart
      */
     public function deleteAllCommentsById($idart) {
         $this->deleteBy('idart', (int)$idart);
@@ -570,12 +572,12 @@ class ArticleForumCollection extends ItemCollection {
 
     /**
      *
-     * @param unknown_type $id_cat
-     * @param unknown_type $id_art
-     * @param unknown_type $id_lang
-     * @param unknown_type $frontend
+     * @param int $id_cat
+     * @param int $id_art
+     * @param int $id_lang
+     * @param bool $frontend
      *
-     * @return multitype:
+     * @return array
      */
     public function getExistingforumFrontend($id_cat, $id_art, $id_lang, $frontend) {
         $userColl = new cApiUserCollection();
@@ -598,7 +600,7 @@ class ArticleForumCollection extends ItemCollection {
     /**
      * returns the emailadress from the moderator for this article
      *
-     * @param articleid $idart
+     * @param int $idart
      *
      * @return string
      */
@@ -616,7 +618,7 @@ class ArticleForumCollection extends ItemCollection {
     /**
      * returns if moderator mode is active for this article
      *
-     * @param articleid $idart
+     * @param int $idart
      *
      * @return bool
      */
@@ -636,7 +638,7 @@ class ArticleForumCollection extends ItemCollection {
     /**
      * returns if quotes for comments are allowed in this article
      *
-     * @param articleid $idart
+     * @param int $idart
      *
      * @return bool
      */
@@ -665,14 +667,16 @@ class ArticleForumCollection extends ItemCollection {
         // get variables from global context
         $idtype = $this->idContentType;
 
+        $array = array();
+
         try {
             $this->db->query("-- ArticleForumCollection->readXML()
                 SELECT
                     art_lang.idart
                     , content.value
                 FROM
-                    `{$this->cfg[tab][art_lang]}` AS art_lang
-                    , `{$this->cfg[tab][content]}` AS content
+                    `{$this->cfg['tab']['art_lang']}` AS art_lang
+                    , `{$this->cfg['tab']['content']}` AS content
                 WHERE
                     art_lang.idartlang = content.idartlang
                     AND content.idtype = $idtype
@@ -721,9 +725,9 @@ class ArticleForumCollection extends ItemCollection {
 
     /**
      *
-     * @param unknown_type $id_user_forum
+     * @param int $id_user_forum
      *
-     * @return multitype:NULL Ambigous <mixed, boolean>
+     * @return array
      */
     public function getCommentContent($id_user_forum) {
         $item = $this->loadItem($id_user_forum);
@@ -736,14 +740,14 @@ class ArticleForumCollection extends ItemCollection {
 
     /**
      *
-     * @return Ambigous <mixed, unknown>|boolean
+     * @return int|boolean
      */
     protected function getIdUserForumContenType() {
         $this->db->query("-- ArticleForumCollection->getIdUserForumContenType()
             SELECT
                 idtype
             FROM
-                `{$this->cfg[tab][type]}`
+                `{$this->cfg['tab']['type']}`
             WHERE
                 type = 'CMS_USERFORUM'
             ;");

@@ -53,13 +53,13 @@ function statsDisplayInfo($id, $type, $x, $y, $w, $h) {
     $div->appendStyleDefinition("width", $w . "px");
     $div->appendStyleDefinition("height", $h . "px");
 
-    return $div->toHTML();
+    return $div->toHtml();
 }
 
 /**
  * Archives the current statistics
  *
- * @param unknown_type $yearmonth
+ * @param string $yearmonth
  *         String with the desired archive date (YYYYMM)
  */
 function statsArchive($yearmonth) {
@@ -120,7 +120,7 @@ function statsArchive($yearmonth) {
 /**
  * Generates a statistics page
  *
- * @param unknown_type $yearmonth
+ * @param string $yearmonth
  *         Specifies the year and month from which to retrieve the statistics,
  *         specify "current" to retrieve the current entries.
  */
@@ -484,7 +484,7 @@ function statsOverviewAll($yearmonth) {
 /**
  * Generates a statistics page for a given year
  *
- * @param unknown_type $year
+ * @param string $year
  *         Specifies the year to retrieve the statistics for
  */
 function statsOverviewYear($year) {
@@ -775,10 +775,10 @@ function statsOverviewYear($year) {
 /**
  * Generates a top<n> statistics page
  *
- * @param unknown_type $yearmonth
+ * @param string $yearmonth
  *         Specifies the year and month from which to retrieve the statistics,
  *         specify "current" to retrieve the current entries.
- * @param unknown_type $top
+ * @param int $top
  *         Specifies the amount of pages to display
  */
 function statsOverviewTop($yearmonth, $top) {
@@ -938,6 +938,8 @@ function statDisplayTopChooser($default) {
  *         Returns a drop down string
  */
 function statDisplayYearlyTopChooser($default) {
+    $defaultAll = $defaultTop10 = $defaultTop20 = $defaultTop30 = '';
+    
     if ($default == "top10") {
         $defaultTop10 = "selected";
     }

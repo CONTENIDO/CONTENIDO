@@ -155,8 +155,6 @@ class cCLISetup {
 
     /**
      * Read the settings from various parameters from the command line
-     *
-     * @param array $args the parsed command line
      */
     public function getSettingsFromCommandLine() {
         $this->_settings['db']['host'] = ($this->_args['dbhost'] == '') ? $this->_settings['db']['host'] : $this->_args['dbhost'];

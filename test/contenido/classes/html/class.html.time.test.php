@@ -55,7 +55,7 @@ class cHtmlTimeTest extends cTestingTestCase {
         $exp = 'testDateTime';
         $this->assertSame($exp, $act);
 
-        $act = $this->_time->toHTML();
+        $act = $this->_time->toHtml();
         $exp = '<time id="testId" class="testClass" datetime="testDateTime">testContent</time>';
         $this->assertSame($exp, $act);
     }

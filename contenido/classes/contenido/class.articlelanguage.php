@@ -618,7 +618,7 @@ class cApiArticleLanguage extends Item {
      *         Name of the content type
      * @param int $id
      *         Id of the content type in this article
-     * @return bool|cContentType
+     * @return bool|cContentTypeAbstract
      *         Returns false if the name was invalid
      */
     public function getContentObject($type, $id) {

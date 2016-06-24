@@ -2062,7 +2062,6 @@ input[type=image].vAlignMiddle {
     margin-left: 15px;
 }
 
-/* @TODO: Rename to left_top_action */
 .leftTopAction {
     min-height: 2em;
     border: 1px solid #b3b3b3;

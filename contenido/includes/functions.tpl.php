@@ -87,7 +87,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         }
 
         // Generate code
-        conGenerateCodeForAllartsUsingTemplate($idtpl);
+        conGenerateCodeForAllArtsUsingTemplate($idtpl);
     }
 
     if ($default == 1) {

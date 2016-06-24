@@ -34,7 +34,7 @@ class cApiNavMainCollection extends ItemCollection {
     /**
      * Create new item with given values.
      *
-     * @param string name
+     * @param string $name
      * @param string $location
      * @return cApiNavMain
      */

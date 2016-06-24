@@ -21,20 +21,45 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cSetupMask
 {
-
+    /**
+     * @var cTemplate|null
+     */
     protected $_tpl = null;
 
+    /**
+     * @var cTemplate|null
+     */
     protected $_stepTemplateClass = null;
 
+    /**
+     * @var string
+     */
     protected $_stepTemplate = '';
 
+    /**
+     * @var bool|int
+     */
     protected $_step = 0;
 
+    /**
+     * @var bool
+     */
     protected $_navigationEnabled = false;
 
+    /**
+     * @var string
+     */
     protected $_backstep;
 
+    /**
+     * @var string
+     */
     protected $_nextstep;
+
+    /**
+     * @var string
+     */
+    protected $_sHeader;
 
     /**
      * cSetupMask constructor.
@@ -60,12 +85,19 @@ class cSetupMask
         $this->__construct($stepTemplate, $step);
     }
 
+    /**
+     * @param $backstep string
+     * @param $nextstep string
+     */
     public function setNavigation($backstep, $nextstep) {
         $this->_navigationEnabled = true;
         $this->_backstep = $backstep;
         $this->_nextstep = $nextstep;
     }
 
+    /**
+     * @param $header string
+     */
     public function setHeader($header) {
         if (isset($_SESSION['setuptype'])) {
             $setupType = $_SESSION['setuptype'];

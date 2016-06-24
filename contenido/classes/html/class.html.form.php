@@ -22,12 +22,25 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GUI_HTML
  */
 class cHTMLForm extends cHTMLContentElement {
-
+    /**
+     * @var string
+     */
     protected $_name;
 
+    /**
+     * @var string
+     */
     protected $_action;
 
+    /**
+     * @var string
+     */
     protected $_method;
+
+    /**
+     * @var array
+     */
+    protected $_vars;
 
     /**
      * Constructor to create an instance of this class.
@@ -71,7 +84,7 @@ class cHTMLForm extends cHTMLContentElement {
      * @return string
      *         Rendered HTML
      */
-    public function toHTML() {
+    public function toHtml() {
         $out = '';
         if (is_array($this->_vars)) {
             foreach ($this->_vars as $var => $value) {

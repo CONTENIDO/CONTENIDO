@@ -177,7 +177,7 @@ class cModuleSynchronizer extends cModuleHandler {
                 // update
                 $synchLock = 1;
                 $this->setLastModified($lastmodabsolute, $db->f('idmod'));
-                conGenerateCodeForAllArtsUsingMod($db->f('idmod'));
+                conGenerateCodeForAllartsUsingMod($db->f('idmod'));
                 $showMessage = true;
             }
 

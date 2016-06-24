@@ -63,7 +63,7 @@ class cHtmlFormTest extends cTestingTestCase {
      * @todo
      */
     public function testToHtml() {
-        $act = $this->_form->toHTML();
+        $act = $this->_form->toHtml();
         $exp = '<form id="" name="" method="post" action="main.php"></form>';
         $this->assertSame($exp, $act);
     }

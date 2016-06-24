@@ -17,8 +17,8 @@ class cHtmlHeaderTest extends PHPUnit_Framework_TestCase {
 
     public function testConstruct() {
         $header = new cHTMLHeader('testContent', 'testClass', 'testId');
-        $this->assertSame('<header id="testId" class="testClass">testContent</header>', $header->toHTML());
-        $this->assertSame('<header id=""></header>', $this->_cHeader->toHTML());
+        $this->assertSame('<header id="testId" class="testClass">testContent</header>', $header->toHtml());
+        $this->assertSame('<header id=""></header>', $this->_cHeader->toHtml());
     }
 
 }
