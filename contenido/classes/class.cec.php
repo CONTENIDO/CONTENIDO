@@ -164,9 +164,10 @@ class cApiCecRegistry {
      */
     public function addChainFunction($sChainName, $sFunctionName) {
         $cfg = cRegistry::getConfig();
+
         // do not add the chain if the chain system is disabled
         if ($cfg['debug']['disable_chains']) {
-            return;
+            return false;
         }
 
         if (strpos($sFunctionName, '->') > 0) {
@@ -254,7 +255,7 @@ class cApiCecRegistry {
      */
     public function removeChainFunction($sChainName, $sFunctionName) {
         $this->_resetIterator($sChainName);
-        $chainFunctions = $this->_aChains[$sChainName]['functions'];
+
         foreach ($this->_aChains[$sChainName]['functions'] as $pos => $item) {
             if ($item->getFunctionName() == $sFunctionName) {
                 unset($this->_aChains[$sChainName]['functions'][$pos]);
@@ -266,10 +267,6 @@ class cApiCecRegistry {
 
     /**
      * Returns the iterator for a desired chain.
-     *
-     * @todo : cIterator should be replaced by ArrayIterator (@see
-     *       http://www.php.net/spl)
-     *       but ArrayIterator uses rewind() instead of reset()...
      *
      * @param string $sChainName
      *         Chain name
