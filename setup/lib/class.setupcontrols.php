@@ -147,9 +147,10 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow {
     protected $_oFolding;
 
     /**
+     * TODO: this should not be public
      * @var cHTMLTableData
      */
-    protected $_oContent;
+    public $_oContent;
 
     /**
      * @var cHTMLAlphaImage
