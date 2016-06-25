@@ -13,7 +13,17 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-// @FIXME: Comment me plz!
+/**
+ * Executes a file of SQL queries
+ * 
+ * @param       $db
+ * @param       $prefix
+ * @param       $file
+ * @param array $replacements
+ *
+ * @return bool
+ * @throws cInvalidArgumentException
+ */
 function injectSQL($db, $prefix, $file, $replacements = array()) {
     $file = trim($file);
 

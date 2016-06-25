@@ -564,9 +564,8 @@ class UserForumArticle {
     /**
      * this function sets a cookie when receiving a click on like/dislike -
      * buttons.
-     * After the first click the user can�t add likes/dislikes for the same
+     * After the first click the user can't add likes/dislikes for the same
      * comment for a fixed time intervall (value in cookie).
-     * @TODO: Use $_REQUEST passed to receiveData()
      */
     private function _checkCookie() {
         $ip = $_SERVER['REMOTE_ADDR'];

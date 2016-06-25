@@ -75,8 +75,6 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
      *
      * This function takes the start articles from con_cat_art.is_start and
      * sets them in con_cat_lang.startidartlang for all available languages.
-     *
-     * @todo Move this to an upgrade job
      */
     protected function _jobConvertOldStartArticlesToNewOne() {
         global $cfg;

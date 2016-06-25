@@ -21,8 +21,7 @@ if (!$perm->have_perm_area_action($area, 'cronjob_overview')) {
 include_once(dirname(__FILE__).'/config.plugin.php');
 
 $tpl = new cTemplate();
-$contenidoVars = array('cfg' => $cfg);
-$cronjobs = new Cronjobs($contenidoVars);
+$cronjobs = new Cronjobs();
 
 //include(cRegistry::getBackendPath() . $cfg['path']['templates'] . 'template.left_top_blank.html');
 foreach ($cronjobs->getAllCronjobs() as $row) {

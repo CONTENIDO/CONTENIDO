@@ -2,8 +2,6 @@
 /**
  * This file contains the main class for the plugin content allocation.
  *
- * TODO: this file needs refactoring.
- *
  * @package    Plugin
  * @subpackage CronjobOverview
  * @author     Rusmir Jusufovic
@@ -24,32 +22,22 @@ plugin_include('repository', 'custom/FrontendNavigation.php');
  * @subpackage CronjobOverview
  */
 class Cronjobs {
-
-
-    /**
-     *
-     * All Contenido vars (contenido,lang,cfg,cfgClients ...)
-     * @var array
-     */
-    protected $_conVars = array();
-
-
     public static $CRONTAB_FILE = 'crontab.txt';
 
     public static $JOB_ENDING = '.job';
 
     public static $LOG_ENDING = '.log';
 
+    /**
+     * @var string
+     */
     protected $_phpFile = '';
 
     /**
-     *
      * Filename without the mimetype
      * @var string
      */
     private $_fileName = '';
-
-    protected $_cfg = array();
 
     /**
      * Path to the cronjob Directory
@@ -64,8 +52,7 @@ class Cronjobs {
     protected $_cronlogDirectory = '';
 
 
-    public function __construct(array $contenidoVars, $phpFile = '') {
-        $this->_conVars = $contenidoVars;
+    public function __construct($phpFile = '') {
         $this->_phpFile = $phpFile;
 
         //get the name of the file withouth the mime type
@@ -73,9 +60,9 @@ class Cronjobs {
             $this->_fileName = substr($phpFile, 0, -4);
         }
 
-        $this->_cfg = $this->_conVars['cfg'];
-        $this->_cronjobDirectory = $this->_cfg['path']['contenido'] . $this->_cfg['path']['cronjobs'];
-        $this->_cronlogDirectory = $this->_cfg['path']['contenido_cronlog'];
+        $cfg = cRegistry::getConfig();
+        $this->_cronjobDirectory = $cfg['path']['contenido'] . $cfg['path']['cronjobs'];
+        $this->_cronlogDirectory = $cfg['path']['contenido_cronlog'];
     }
 
     /**
@@ -84,7 +71,6 @@ class Cronjobs {
      * @return string filename
      */
     public function getFile() {
-
         return $this->_phpFile;
     }
 
@@ -122,7 +108,6 @@ class Cronjobs {
         return $timestamp;
     }
 
-
     /**
      * Get the contents of the crontab.txt file
      *
@@ -145,23 +130,18 @@ class Cronjobs {
      * @return mixed file_put_contents
      */
     public function saveCrontabFile($data) {
-
         return cFileHandler::write($this->_cronlogDirectory . self::$CRONTAB_FILE, $data);
-
     }
 
     /**
-     *
      * Set the execute-time to $this->_phpFile.job file.
      *
      * @param int $timestamp
      */
     public function setRunTime($timestamp) {
-
         cFileHandler::write($this->_cronlogDirectory . $this->_phpFile . self::$JOB_ENDING, $timestamp);
     }
-
-
+    
     /**
      * Get the last lines of log file
      *
@@ -207,8 +187,8 @@ class Cronjobs {
      * Get all Cronjobs in directory cronjobs from contenido
      */
     public function getAllCronjobs() {
-
         $retArray = array();
+        
         if (is_dir($this->_cronjobDirectory)) {
             // get only files
             if (false !== ($handle = cDirHandler::read($this->_cronjobDirectory, false, false, true))) {
@@ -222,9 +202,7 @@ class Cronjobs {
         }
 
         return $retArray;
-
     }
-
 }
 
 ?>

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file contains the module file translation class.
  *
