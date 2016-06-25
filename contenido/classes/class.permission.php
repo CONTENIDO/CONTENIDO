@@ -320,10 +320,9 @@ class cPermission {
         $action = $this->getIDForAction($action);
 
         if ($action == 0) {
-            $area = $this->getParentAreaId($area);
+            $area = $oAreaColl->getParentAreaID($area);
         }
 
-        $oAreaColl = new cApiAreaCollection();
         $area = $oAreaColl->getAreaID($area);
 
         if (!$this->have_perm()) {
@@ -342,6 +341,7 @@ class cPermission {
 
             return false;
         }
+
         return true;
     }
 
