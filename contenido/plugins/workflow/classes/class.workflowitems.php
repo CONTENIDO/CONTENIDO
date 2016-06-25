@@ -23,8 +23,6 @@ class WorkflowItems extends ItemCollection {
 
     /**
      * Constructor Function
-     *
-     * @param string $table The table to use as information source
      */
     public function __construct() {
         global $cfg;
@@ -181,8 +179,6 @@ class WorkflowItem extends Item {
 
     /**
      * Constructor Function
-     *
-     * @param string $table The table to use as information source
      */
     public function __construct() {
         global $cfg;
@@ -249,6 +245,9 @@ class WorkflowItem extends Item {
      * only be called by the create function.
      *
      * @param int $idworkflow The workflow to set the item to
+     * @param int $idposition Position of workflow item
+     *                        
+     * @return bool
      */
     public function init($idworkflow, $idposition) {
         global $cfg;

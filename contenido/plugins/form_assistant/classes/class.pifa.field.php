@@ -286,7 +286,7 @@ class PifaField extends Item {
 
     /**
      *
-     * @param mixed $_value
+     * @param mixed $value
      */
     public function setValue($value) {
         $this->_value = $value;
@@ -506,7 +506,6 @@ class PifaField extends Item {
      * has to be the fields column name which is set if the form is displayed
      * for the first time and user hasn't entered another value.
      *
-     * @param bool $error if field elem should be displayed as erroneous
      * @throws PifaNotImplementedException if field type is not implemented
      * @return cHTMLTextbox cHTMLTextarea cHTMLPasswordbox cHTMLSpan
      *         cHTMLSelectElement NULL cHTMLButton
@@ -894,7 +893,7 @@ class PifaField extends Item {
     /**
      * Return the field type name for the given field type id.
      *
-     * @param int $fieldType
+     * @param int $fieldTypeId
      * @return string
      */
     public static function getFieldTypeName($fieldTypeId) {
@@ -913,7 +912,6 @@ class PifaField extends Item {
     /**
      * Return this fields type name.
      *
-     * @param int $fieldType
      * @return string
      */
     public function getMyFieldTypeName() {

@@ -59,7 +59,6 @@ class PimPluginViewDependencies {
 	/**
 	 * Get dependencies
 	 *
-	 * @param string $tempXml
 	 * @return boolean|string
 	 */
 	private function _getPluginDependencies() {
@@ -102,10 +101,10 @@ class PimPluginViewDependencies {
 	 * @param integer $idplugin Id of defined plugin
 	 * @return string Plugin dependencies
 	 */
-	public function getPluginDependenciesInstalled($idplugin = '') {
+	public function getPluginDependenciesInstalled($idplugin = 0) {
 
 		// Return false if no idplugin variable is defined
-		if ($idplugin == '') {
+		if ($idplugin == 0) {
 			return false;
 		}
 

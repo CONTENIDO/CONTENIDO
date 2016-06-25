@@ -33,11 +33,23 @@ class PimPluginCollection extends ItemCollection {
         $this->_setItemClass('PimPlugin');
     }
 
-    /**
-     * Create a new plugin
-     *
-     * @param none
-     */
+	/**
+	 * Create a new plugin
+	 * 
+	 * @param     $name
+	 * @param     $description
+	 * @param     $author
+	 * @param     $copyright
+	 * @param     $mail
+	 * @param     $website
+	 * @param     $version
+	 * @param     $foldername
+	 * @param     $uuId
+	 * @param     $active
+	 * @param int $execOrder
+	 *
+	 * @return Item
+	 */
     public function create($name, $description, $author, $copyright, $mail, $website, $version, $foldername, $uuId, $active, $execOrder = 0) {
         global $client;
 

@@ -227,7 +227,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      * Executes the query.
      *
      * @see cDbDriverAbstract::query()
-     * @param string $statement
+     * @param string $query
      *         The query to execute
      */
     public function query($query) {

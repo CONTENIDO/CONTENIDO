@@ -839,7 +839,7 @@ function uplGetFileTypeDescription($sExtension) {
 /**
  * Removes unwanted characters from passed filename.
  *
- * @param string $sFilename
+ * @param string $filename
  * @return string
  */
 function uplCreateFriendlyName($filename) {

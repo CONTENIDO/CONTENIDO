@@ -142,11 +142,11 @@ class TODOItem extends cApiCommunication {
      * Sets a custom property.
      *
      * @see Item::setProperty()
-     * @param string $sType
+     * @param string $type
      *         Specifies the type
-     * @param string $sName
+     * @param string $name
      *         Specifies the name
-     * @param mixed $mValue
+     * @param mixed $value
      *         Specifies the value
      * @param int $client [optional]
      *         unused (should be "Id of client to set property for")

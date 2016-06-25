@@ -103,9 +103,9 @@ class ArticleForumRightBottom extends cGuiPage {
      *
      * @param $key
      * @param $cont
-     *
-     *
      * @param $cfg
+     * @param $mod
+     * 
      * @return array with buttons
      */
     protected function buildOnlineButtonBackendListMode(&$key, &$cont, &$cfg, $mod = null) {

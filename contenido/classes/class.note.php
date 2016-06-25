@@ -37,13 +37,13 @@ class NoteCollection extends cApiCommunicationCollection {
      * original function for the parameters.
      *
      * @see ItemCollection::select()
-     * @param string $sWhere [optional]
+     * @param string $where [optional]
      *         Specifies the where clause.
-     * @param string $sGroupBy [optional]
+     * @param string $group_by [optional]
      *         Specifies the group by clause.
-     * @param string $sOrderBy [optional]
+     * @param string $order_by [optional]
      *         Specifies the order by clause.
-     * @param string $sLimit [optional]
+     * @param string $limit [optional]
      *         Specifies the limit by clause.
      * @return bool
      *         True on success, otherwise false

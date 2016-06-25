@@ -330,8 +330,9 @@ class ArticleForumCollection extends ItemCollection {
     /**
      * toggles the given input with update in db.
      *
-     * @param     $onlineState
+     * @param int $onlineState
      * @param int $id_user_forum primary key
+     * @param int $idart article ID [optional]
      */
     public function toggleOnlineState($onlineState, $id_user_forum, $idart = NULL) {
 

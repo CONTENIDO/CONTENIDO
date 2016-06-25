@@ -341,7 +341,7 @@ class UploadList extends FrontendList {
      * @see FrontendList::convert()
      * @param int $field
      *         Field index
-     * @param mixed $value
+     * @param mixed $data
      *         Field value
      * @return mixed
      */

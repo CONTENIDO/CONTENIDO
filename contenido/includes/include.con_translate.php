@@ -113,7 +113,7 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
  * Adds sorting images to string
  *
  * @param int $index
- * @param string $sText
+ * @param string $text
  * @return string
  */
 function addSortImages($index, $text) {
