@@ -78,7 +78,7 @@ if (!cFileHandler::exists($configPath)) {
     mkdir($configPath);
     // if not successful throw exception
     if (!cFileHandler::exists($configPath)) {
-        throw new cException('Can not set create environment directory: data folder is not writable');
+        throw new cException('Can not create environment directory: data folder is not writable');
     }
     // get config source path
     $configPathProduction = $installationPath . '/data/config/production/';
@@ -96,7 +96,7 @@ if (!cFileHandler::exists($configPath)) {
             $target = $configPath . '/' . $configFileName;
             // try to copy from source to target, if not successful throw exception
             if(!copy($source, $target)) {
-                throw new cException('Can not set copy configuration files for the environment: environment folder is not writable');
+                throw new cException('Can not copy configuration files for the environment: environment folder is not writable');
             }
         }
     }
