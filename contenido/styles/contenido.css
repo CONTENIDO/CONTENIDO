@@ -2234,6 +2234,13 @@ input[type=image].vAlignMiddle {
     background-position: -97px -127px;
 }
 
+.ui-widget-header .ui-datepicker-prev.ui-state-hover span {
+    background-position: -80px -192px;
+}
+
+.ui-widget-header .ui-datepicker-next.ui-state-hover span {
+    background-position: -48px -192px;
+}
 
 .ui-widget-overlay {
     background: #333 none;
