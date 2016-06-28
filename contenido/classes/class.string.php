@@ -94,8 +94,8 @@ class cString {
      *         String to search for
      * @param int $start [optional]
      *         Offset
-     * @return string
-     *         Processed string
+     * @return int
+     *         String position
      */
     public static function posReverse($haystack, $needle, $start = 0) {
         $tempPos = strpos($haystack, $needle, $start);

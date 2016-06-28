@@ -176,8 +176,6 @@ $cfg['php_error_reporting'] = E_ALL & ~(E_STRICT | E_NOTICE);
  *
  * So, if you want to enable frontend caching, set $cfg['cache']['disable'] to false and configure
  * the rest in cms/includes/concache.php!
- *
- * @TODO: Need a caching solution with better integration in CONTENIDO core
  */
 
 // (bool) Enable/disable caching
@@ -418,7 +416,7 @@ $cfg['client_template']['default_extension'] = 'html';
 $cfg['system_log']['number_of_lines'] = 100;
 
 // Allowed log file names
-$cfg['system_log']['allowed_filenames'] = array('deprecatedlog.txt', 'errorlog.txt', 'exception.txt', 'setuplog.txt');
+$cfg['system_log']['allowed_filenames'] = array('deprecatedlog.txt', 'errorlog.txt', 'exception.txt', 'security.txt', 'setuplog.txt');
 
 
 /* Search index settings

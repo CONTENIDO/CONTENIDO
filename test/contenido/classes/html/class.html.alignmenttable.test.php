@@ -137,7 +137,7 @@ class cHTMLAlignmentTableTest extends cTestingTestCase {
      */
     public function testRenderEmpty() {
         // $table = new cHTMLAlignmentTable();
-        // $this->assertSame($table->render(), $table->toHTML());
+        // $this->assertSame($table->render(), $table->toHtml());
         $act = $this->_tableEmpty->render();
         $exp = '<table id="" cellpadding="0" cellspacing="0"><tr id=""></tr></table>';
         $this->assertSame($exp, $act);

@@ -134,11 +134,12 @@ class cApiUploadMeta extends Item {
     /**
      * Userdefined setter for upload meta fields.
      *
-     * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
      * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
+     *
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
@@ -148,6 +149,6 @@ class cApiUploadMeta extends Item {
                 break;
         }
 
-        parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $bSafe);
     }
 }

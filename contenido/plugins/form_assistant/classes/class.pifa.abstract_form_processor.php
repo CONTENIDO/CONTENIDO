@@ -49,6 +49,7 @@ abstract class PifaAbstractFormProcessor {
      * and thus no idform. Thats why optionally the idform gan be given
      * explicitly. This shoud be removed when all processors are refactored.
      *
+     * @param PifaAbstractFormModule $module
      * @param int $idform
      * @throws PifaException if id of form could not be determined from module
      *         or param

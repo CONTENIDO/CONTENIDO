@@ -89,7 +89,7 @@ class cSetupClientMode extends cSetupMask {
                 $oRadio->setChecked("checked");
             }
 
-            $oLabel = new cHTMLLabel($sChoice, $oRadio->getId());
+            $oLabel = new cHTMLLabel($sChoice, $oRadio->getID());
 
             $this->_stepTemplateClass->set("s", "CONTROL_" . $sKey, $oRadio->render());
             $this->_stepTemplateClass->set("s", "LABEL_" . $sKey, $oLabel->render());

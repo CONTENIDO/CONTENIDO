@@ -145,7 +145,6 @@ class cApiTemplate extends Item {
     /**
      * Load a template based on article, category, language and client id
      *
-     * @todo avoid returning void
      * @param int $idart
      *         article id
      * @param int $idcat
@@ -154,7 +153,7 @@ class cApiTemplate extends Item {
      *         language id
      * @param int $client
      *         client id
-     * @return void|bool
+     * @return bool
      */
     public function loadByArticleOrCategory($idart, $idcat, $lang, $client) {
 
@@ -171,22 +170,25 @@ class cApiTemplate extends Item {
         // load template configuration to get its template ID
         $templateConfiguration = new cApiTemplateConfiguration($idtplcfg);
         if (!$templateConfiguration->isLoaded()) {
-            return;
+            return false;
         }
 
         // try to load template by determined ID
         $idtpl = $templateConfiguration->get('idtpl');
         $this->loadByPrimaryKey($idtpl);
+        
+        return true;
     }
 
     /**
      * Userdefined setter for template fields.
      *
-     * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
      * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
+     *
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
@@ -206,7 +208,7 @@ class cApiTemplate extends Item {
                 break;
         }
 
-        parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $bSafe);
     }
 
 }

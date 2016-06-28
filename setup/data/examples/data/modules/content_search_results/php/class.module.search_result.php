@@ -77,9 +77,14 @@ class SearchResultModule {
 
     /**
      *
-     * @var unknown_type
+     * @var int
      */
     protected $_numberOfPages = NULL;
+
+    /**
+     * @var int
+     */
+    protected $_page = 0;
 
     /**
      *
@@ -218,8 +223,7 @@ class SearchResultModule {
         ));
         if (strlen($this->_prepSearchTerm) > 1) {
             $searchResultArray = $search->searchIndex($this->_prepSearchTerm, '');
-
-            $searchResultCount = 0;
+            
             if (false !== $searchResultArray) {
 
                 $this->_searchResultCount = count($searchResultArray);
@@ -253,8 +257,8 @@ class SearchResultModule {
 
     /**
      *
-     * @param unknown_type $count
-     * @param unknown_type $countIdarts
+     * @param int $count
+     * @param int $countIdarts
      */
     protected function _setMsgResult($count, $countIdarts) {
         $this->_countValues = $count;

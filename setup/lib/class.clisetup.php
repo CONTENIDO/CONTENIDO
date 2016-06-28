@@ -99,7 +99,7 @@ class cCLISetup {
             // the settings from the command line overwrite the settings but the UI settings overwrite everything
             // settings from the command line and the file (if existent) will be provided to the user as standard values for the questions
             $this->getSettingsFromFile($this->_settingsFile);
-            $this->getSettingsFromCommandLine($this->_args);
+            $this->getSettingsFromCommandLine();
             $this->getUserInputSettings();
         } else if ($this->_args['noninteractive']) {
             // user does not want the setup to be interactive - look for the file
@@ -110,7 +110,7 @@ class cCLISetup {
                 prntln(i18n('CONTENIDO will use the specified settings from ', 'setup') . $this->_settingsFile);
                 prntln();
                 $this->getSettingsFromFile($this->_settingsFile);
-                $this->getSettingsFromCommandLine($this->_args);
+                $this->getSettingsFromCommandLine();
                 $this->printSettings();
             } else {
                 // file not found - print error message and exit, since the user specifically said he wanted to use the file
@@ -128,7 +128,7 @@ class cCLISetup {
                 prntln(i18n('CONTENIDO will use the specified settings from ', 'setup') . $this->_settingsFile);
                 prntln();
                 $this->getSettingsFromFile($this->_settingsFile);
-                $this->getSettingsFromCommandLine($this->_args);
+                $this->getSettingsFromCommandLine();
                 $this->printSettings();
             } else {
                 // start the interactive setup
@@ -136,7 +136,7 @@ class cCLISetup {
                 prntln();
                 prntln();
                 $this->getSettingsFromFile($this->_settingsFile);
-                $this->getSettingsFromCommandLine($this->_args);
+                $this->getSettingsFromCommandLine();
                 $this->getUserInputSettings();
             }
         }
@@ -155,8 +155,6 @@ class cCLISetup {
 
     /**
      * Read the settings from various parameters from the command line
-     *
-     * @param array $args the parsed command line
      */
     public function getSettingsFromCommandLine() {
         $this->_settings['db']['host'] = ($this->_args['dbhost'] == '') ? $this->_settings['db']['host'] : $this->_args['dbhost'];

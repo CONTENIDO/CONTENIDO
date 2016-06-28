@@ -316,7 +316,7 @@ $page->next();
 if ($new == true) {
     $page->set('d', 'CATNAME', i18n('Copy frontend template'));
     $defaultform = new cHTMLCheckbox('copytemplate', 'checked', 'copytemplatechecked', true);
-    $page->set('d', 'CATFIELD', $defaultform->toHTML(false));
+    $page->set('d', 'CATFIELD', $defaultform->toHtml(false));
     $page->next();
 }
 $page->set('s', 'IDCLIENT', $idclient);

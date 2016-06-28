@@ -279,7 +279,7 @@ class mpClassTypeFinder
     /**
      * Returns directory iterator depending on $recursive parameter value
      *
-     * @param   SplFileInfo  $file
+     * @param   SplFileInfo  $fileInfo
      * @param   bool         $recursive
      * @return  RecursiveIteratorIterator|DirectoryIterator
      */

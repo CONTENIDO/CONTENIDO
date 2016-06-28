@@ -25,7 +25,7 @@ class cHttpRequestCurl extends cHttpRequest {
     /**
      * The curl instance.
      *
-     * @var $curl ressource
+     * @var $curl resource
      */
     protected $curl;
 
@@ -273,7 +273,7 @@ class cHttpRequestCurl extends cHttpRequest {
     /**
      * Returns the curl reference.
      *
-     * @return curl
+     * @return resource
      */
     public function getCurl() {
         return $this->curl;

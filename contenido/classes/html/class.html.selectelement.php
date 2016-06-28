@@ -141,7 +141,7 @@ class cHTMLSelectElement extends cHTMLFormElement {
     /**
      * Defines the size of this select element.
      *
-     * @param unknown_type $size
+     * @param int $size
      * @return cHTMLSelectElement
      *         $this for chaining
      */
@@ -227,7 +227,7 @@ class cHTMLSelectElement extends cHTMLFormElement {
      */
     public function toHtml() {
         $this->_setContent($this->_options);
-        return parent::toHTML();
+        return parent::toHtml();
     }
 
 }

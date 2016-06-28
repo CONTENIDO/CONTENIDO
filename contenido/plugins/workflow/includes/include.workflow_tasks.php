@@ -101,7 +101,7 @@ if ($perm->have_perm_area_action($area, "workflow_task_user_select")) {
     $form->appendContent(i18n("Show users") . ": " . getUsers("show", $usershow));
     $form->appendContent('<input class="vAlignMiddle" type="image" src="' . $cfg["path"]["htmlpath"] . $cfg["path"]["images"] . "submit.gif" . '">');
 
-    $tpl->set('s', 'USERSELECT', $form->render(true));
+    $tpl->set('s', 'USERSELECT', $form->render());
 } else {
     $tpl->set('s', 'USERSELECT', '');
 }

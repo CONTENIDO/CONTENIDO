@@ -55,7 +55,7 @@ class cHTMLAlphaImage extends cHTMLImage {
         $this->_sMouseoverClickImage = $sMouseoverClickSrc;
     }
 
-    public function toHTML() {
+    public function toHtml() {
         $imageLocations = "this.imgnormal = '%s'; this.imgover = '%s'; this.clickimgnormal = '%s'; this.clickimgover = '%s';";
 
         $this->attachEventDefinition("imagelocs", "onload", sprintf($imageLocations, $this->getAttribute('src'), $this->_sMouseoverSrc, $this->_sClickImage, $this->_sMouseoverClickImage));
@@ -72,7 +72,7 @@ class cHTMLAlphaImage extends cHTMLImage {
             }
         }
 
-        return parent::toHTML();
+        return parent::toHtml();
     }
 
 }
@@ -84,6 +84,10 @@ class cHTMLAlphaImage extends cHTMLImage {
  * @subpackage GUI
  */
 class cHTMLErrorMessageList extends cHTMLDiv {
+    /**
+     * @var cHTMLTable
+     */
+    protected $_oTable;
 
     /**
      * cHTMLErrorMessageList constructor.
@@ -108,9 +112,9 @@ class cHTMLErrorMessageList extends cHTMLDiv {
         $this->_oTable->setContent($content);
     }
 
-    public function toHTML() {
+    public function toHtml() {
         $this->_setContent($this->_oTable->render());
-        return parent::toHTML();
+        return parent::toHtml();
     }
 
 }
@@ -122,6 +126,36 @@ class cHTMLErrorMessageList extends cHTMLDiv {
  * @subpackage GUI
  */
 class cHTMLFoldableErrorMessage extends cHTMLTableRow {
+    /**
+     * @var cHTMLDiv
+     */
+    protected $_oTitle;
+
+    /**
+     * @var cHTMLDiv
+     */
+    protected $_oMessage;
+
+    /**
+     * @var cHTMLTableData
+     */
+    protected $_oIcon;
+
+    /**
+     * @var cHTMLTableData
+     */
+    protected $_oFolding;
+
+    /**
+     * TODO: this should not be public
+     * @var cHTMLTableData
+     */
+    public $_oContent;
+
+    /**
+     * @var cHTMLAlphaImage
+     */
+    protected $_oIconImg;
 
     /**
      * cHTMLFoldableErrorMessage constructor.
@@ -145,11 +179,11 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow {
         $alphaImage->setSrc("images/controls/open_all.gif");
         $alphaImage->setMouseover("images/controls/open_all.gif");
         $alphaImage->setSwapOnClick("images/controls/close_all.gif", "images/controls/close_all.gif");
-        $alphaImage->attachEventDefinition("showhide", "onclick", "aldiv = document.getElementById('" . $this->_oMessage->getId() . "'); showHideMessage(this, aldiv);");
+        $alphaImage->attachEventDefinition("showhide", "onclick", "aldiv = document.getElementById('" . $this->_oMessage->getID() . "'); showHideMessage(this, aldiv);");
 
         $this->_oTitle->setContent($title);
         $this->_oTitle->setStyle("cursor:pointer;");
-        $this->_oTitle->attachEventDefinition("showhide", "onclick", "alimg = document.getElementById('" . $alphaImage->getId() . "'); aldiv = document.getElementById('" . $this->_oMessage->getId() . "'); showHideMessage(alimg, aldiv); clickHandler(alimg);");
+        $this->_oTitle->attachEventDefinition("showhide", "onclick", "alimg = document.getElementById('" . $alphaImage->getID() . "'); aldiv = document.getElementById('" . $this->_oMessage->getID() . "'); showHideMessage(alimg, aldiv); clickHandler(alimg);");
 
         $this->_oMessage->setContent($message);
         $this->_oMessage->setClass("entry_closed");
@@ -195,13 +229,13 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow {
         $this->__construct($title, $message, $icon, $iconText);
     }
 
-    public function toHTML() {
+    public function toHtml() {
         $this->setContent(array(
             $this->_oFolding,
             $this->_oContent,
             $this->_oIcon
         ));
-        return parent::toHTML();
+        return parent::toHtml();
     }
 
 }
@@ -213,6 +247,16 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow {
  * @subpackage GUI
  */
 class cHTMLInfoMessage extends cHTMLTableRow {
+    /**
+     * TODO: this should not be public!
+     * @var cHTMLTableData
+     */
+    public $_oTitle;
+
+    /**
+     * @var cHTMLTableData
+     */
+    protected $_oMessage;
 
     /**
      * cHTMLInfoMessage constructor.
@@ -245,12 +289,12 @@ class cHTMLInfoMessage extends cHTMLTableRow {
         $this->__construct($title, $message);
     }
 
-    public function toHTML() {
+    public function toHtml() {
         $this->setContent(array(
             $this->_oTitle,
             $this->_oMessage
         ));
-        return parent::toHTML();
+        return parent::toHtml();
     }
 
 }

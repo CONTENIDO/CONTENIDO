@@ -81,6 +81,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
 
     $oPage->setSubnav("blank", "news_jobs");
     $oPage->setReload();
+    $oPage->setContent('');
 } elseif ($action == "news_job_details" || $action == "news_job_detail_delete") {
 
     // Show job details (recipients)

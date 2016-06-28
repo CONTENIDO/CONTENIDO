@@ -22,10 +22,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GUI_HTML
  */
 class cHTMLLink extends cHTMLContentElement {
-
     /**
      * Stores the link location
-     *
      * @var string
      */
     protected $_link;
@@ -41,23 +39,55 @@ class cHTMLLink extends cHTMLContentElement {
 
     /**
      * Stores the anchor
-     *
      * @var string
      */
     protected $_anchor;
 
     /**
      * Stores the custom entries
-     *
      * @var array
      */
     protected $_custom;
 
     /**
-     *
      * @var string
      */
     protected $_image;
+
+    /**
+     * @var string
+     */
+    protected $_targetarea;
+
+    /**
+     * @var string
+     */
+    protected $_targetframe;
+
+    /**
+     * @var string
+     */
+    protected $_targetaction;
+
+    /**
+     * @var string
+     */
+    protected $_type;
+
+    /**
+     * @var string
+     */
+    protected $_targetarea2;
+
+    /**
+     * @var string
+     */
+    protected $_targetaction2;
+
+    /**
+     * @var string
+     */
+    protected $_targetframe2;
 
     /**
      * Constructor to create an instance of this class.
@@ -293,7 +323,7 @@ class cHTMLLink extends cHTMLContentElement {
      * @return string
      *         Rendered HTML
      */
-    public function toHTML() {
+    public function toHtml() {
         $this->updateAttribute('href', $this->getHref());
 
         if ($this->_image != '') {
@@ -301,7 +331,7 @@ class cHTMLLink extends cHTMLContentElement {
             $this->setContent($image);
         }
 
-        return parent::toHTML();
+        return parent::toHtml();
     }
 
 }

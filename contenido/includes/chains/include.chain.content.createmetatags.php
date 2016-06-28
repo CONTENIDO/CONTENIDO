@@ -22,7 +22,7 @@ cInclude('plugins', 'repository/keyword_density.php');
 /**
  *
  * @param array $metatags
- * @return Ambigous <boolean, string, multitype:, mixed, unknown>
+ * @return array
  */
 function cecCreateMetatags($metatags) {
     global $cfg, $lang, $idart, $client, $cfgClient, $idcat, $idartlang;
@@ -162,7 +162,7 @@ function cecCreateMetatags($metatags) {
 
                     $lastmodifier = $oArt->getField('modifiedby');
                     $oUser = new cApiUser(md5($lastmodifier));
-                    $lastmodifier_real = $oUser->getRealname();
+                    $lastmodifier_real = $oUser->getRealName();
 
                     $iCheck = CheckIfMetaTagExists($metatags, 'author');
                     $metatags[$iCheck]['name'] = 'author';

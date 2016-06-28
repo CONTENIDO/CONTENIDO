@@ -578,7 +578,7 @@ class cApiModule extends Item {
 
             $success = parent::store();
 
-            conGenerateCodeForAllArtsUsingMod($this->get('idmod'));
+            conGenerateCodeForAllartsUsingMod($this->get('idmod'));
         }
 
         return $success;
@@ -846,11 +846,12 @@ class cApiModule extends Item {
     /**
      * Userdefined setter for module fields.
      *
-     * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
      * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
+     *
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
@@ -863,7 +864,7 @@ class cApiModule extends Item {
                 break;
         }
 
-        parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $bSafe);
     }
 
     /**
@@ -904,23 +905,4 @@ class cApiModule extends Item {
 
         return $CiCMS_Values . "\n" . $moduleInputCode;
     }
-
-    /**
-     * Not yet implemented ... does nothing!
-     *
-     * @todo implement me
-     * @param int $containerNr
-     * @param string $containerCfg
-     * @param string $moduleInputCode
-     */
-    public static function processContainerForOutput($containerNr, $containerCfg, $moduleInputCode) {
-
-        return;
-
-        $containerConfigurations = array();
-        if (!empty($containerCfg)) {
-            $containerConfigurations = cApiContainerConfiguration::parseContainerValue($containerCfg);
-        }
-    }
-
 }

@@ -81,46 +81,30 @@ class cGuiTree extends cTree {
     const TREEVIEW_MOUSEOVER_MARK = 'mark';
 
     /**
-     *
-     * @var unknown_type
+     * @var cApiUser
      */
-    private $_globalActions;
+    protected $_user;
 
     /**
-     *
-     * @var unknown_type
+     * @var string
      */
-    private $_setItemActions;
+    protected $_uuid;
 
     /**
-     *
-     * @var unknown_type
+     * @var string
      */
-    private $_unsetItemActions;
+    protected $_gridlineMode;
 
     /**
-     *
-     * @var unknown_type
-     */
-    private $_setAttributeActions;
-
-    /**
-     *
-     * @var unknown_type
-     */
-    private $_unsetAttributeActions;
-
-    /**
-     *
-     * @var unknown_type
+     * @var string
      */
     private $_baseLink;
 
     /**
      * Constructor to create an instance of this class.
      *
-     * @param unknown_type $uuid
-     * @param unknown_type $treename [optional]
+     * @param string $uuid
+     * @param string $treename [optional]
      */
     public function __construct($uuid, $treename = false) {
         global $cfg, $auth;
@@ -431,7 +415,7 @@ class cGuiTree extends cTree {
 
     /**
      *
-     * @param unknown_type $image
+     * @param string $image
      * @return string
      */
     public function _buildImagePath($image) {
@@ -440,7 +424,7 @@ class cGuiTree extends cTree {
 
     /**
      *
-     * @param unknown_type $link
+     * @param string $link
      */
     public function setBaseLink($link) {
         $this->_baseLink = $link;

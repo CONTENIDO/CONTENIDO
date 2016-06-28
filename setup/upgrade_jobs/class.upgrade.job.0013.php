@@ -45,7 +45,7 @@ class cUpgradeJob_0013 extends cUpgradeJobAbstract {
 
             // If area form_ajax not exist, return false
             if ($area === null) {
-                return false;
+                return;
             }
 
             // Get informations for action pifa_export_form
@@ -53,7 +53,7 @@ class cUpgradeJob_0013 extends cUpgradeJobAbstract {
 
             // If action pifa_export_form not exist, return false
             if ($action === null) {
-                return false;
+                return;
             }
 
             // Change area for action pifa_export_form to form_ajax
@@ -65,7 +65,7 @@ class cUpgradeJob_0013 extends cUpgradeJobAbstract {
 
             // If area form_fields not exist, return false
             if ($area === null) {
-                return false;
+                return;
             }
 
             // Get informations for action pifa_show_fields
@@ -73,7 +73,7 @@ class cUpgradeJob_0013 extends cUpgradeJobAbstract {
 
             // If action pifa_show_fields not exist, return false
             if ($action === null) {
-                return false;
+                return;
             }
 
             // Change area for action pifa_show_fields to form_fields
@@ -85,7 +85,7 @@ class cUpgradeJob_0013 extends cUpgradeJobAbstract {
 
             // If area form_data not exist, return false
             if ($area === null) {
-                return false;
+                return;
             }
 
             // Get informations for action pifa_show_data
@@ -93,7 +93,7 @@ class cUpgradeJob_0013 extends cUpgradeJobAbstract {
 
             // If action pifa_show_data not exist, return false
             if ($action === null) {
-                return false;
+                return;
             }
 
             // Change area for action pifa_show_data to form_data
@@ -101,5 +101,4 @@ class cUpgradeJob_0013 extends cUpgradeJobAbstract {
             $action->store();
         }
     }
-
 }

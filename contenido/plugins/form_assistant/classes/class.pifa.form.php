@@ -198,8 +198,6 @@ class PifaForm extends Item {
 
     /**
      * Read this forms fields from database and aggregate them.
-     *
-     * @param array $_errors
      */
     public function loadFields() {
         $col = new PifaFieldCollection();
@@ -230,7 +228,7 @@ class PifaForm extends Item {
 
     /**
      *
-     * @return $_lastInsertedId
+     * @return int
      */
     public function getLastInsertedId() {
         return $this->_lastInsertedId;

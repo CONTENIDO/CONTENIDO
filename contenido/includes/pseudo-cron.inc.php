@@ -188,10 +188,10 @@ if ($PC_debug) {
 
 /**
  *
- * @param unknown_type $msg
- * @param unknown_type $PC_writeDir
- * @param unknown_type $PC_useLog
- * @param unknown_type $PC_debug
+ * @param string $msg
+ * @param string $PC_writeDir
+ * @param string $PC_useLog
+ * @param int $PC_debug
  */
 function logMessage($msg, $PC_writeDir, $PC_useLog, $PC_debug) {
     if ($PC_useLog == 1) {
@@ -213,7 +213,7 @@ function logMessage($msg, $PC_writeDir, $PC_useLog, $PC_debug) {
 
 /**
  *
- * @param unknown_type $number
+ * @param int $number
  * @return string
  */
 function lTrimZeros($number) {
@@ -225,9 +225,9 @@ function lTrimZeros($number) {
 
 /**
  *
- * @param unknown_type $element
- * @param unknown_type $targetArray
- * @param unknown_type $numberOfElements
+ * @param array $element
+ * @param array $targetArray
+ * @param int $numberOfElements
  */
 function parseElement($element, &$targetArray, $numberOfElements) {
     $subelements = explode(",", $element);
@@ -259,10 +259,10 @@ function parseElement($element, &$targetArray, $numberOfElements) {
 
 /**
  *
- * @param unknown_type $dateArr
- * @param unknown_type $amount
- * @param unknown_type $unit
- * @param unknown_type $PC_debug
+ * @param array $dateArr
+ * @param int $amount
+ * @param string $unit
+ * @param boolean $PC_debug
  */
 function decDate(&$dateArr, $amount, $unit, $PC_debug) {
     if ($PC_debug) {
@@ -321,15 +321,15 @@ function decDate(&$dateArr, $amount, $unit, $PC_debug) {
         }
     }
     if ($PC_debug) {
-        echo sprintf("to %02d.%02d. %02d:%02d\n", $dateArr[mday], $dateArr[mon], $dateArr[hours], $dateArr[minutes]);
+        echo sprintf("to %02d.%02d. %02d:%02d\n", $dateArr['mday'], $dateArr['mon'], $dateArr['hours'], $dateArr['minutes']);
     }
 }
 
 /**
  *
- * @param unknown_type $job
- * @param unknown_type $PC_debug
- * @return number
+ * @param string $job
+ * @param boolean $PC_debug
+ * @return int
  */
 function getLastScheduledRunTime($job, $PC_debug) {
     $dateArr = getdate();
@@ -367,8 +367,8 @@ function getLastScheduledRunTime($job, $PC_debug) {
 
 /**
  *
- * @param unknown_type $jobname
- * @param unknown_type $PC_writeDir
+ * @param string $jobname
+ * @param string $PC_writeDir
  * @return string
  */
 function getJobFileName($jobname, $PC_writeDir) {
@@ -378,8 +378,8 @@ function getJobFileName($jobname, $PC_writeDir) {
 
 /**
  *
- * @param unknown_type $jobname
- * @param unknown_type $PC_writeDir
+ * @param string $jobname
+ * @param string $PC_writeDir
  * @return string|number
  */
 function getLastActialRunTime($jobname, $PC_writeDir) {
@@ -397,9 +397,9 @@ function getLastActialRunTime($jobname, $PC_writeDir) {
 
 /**
  *
- * @param unknown_type $jobname
- * @param unknown_type $lastRun
- * @param unknown_type $PC_writeDir
+ * @param string $jobname
+ * @param int $lastRun
+ * @param string $PC_writeDir
  */
 function markLastRun($jobname, $lastRun, $PC_writeDir) {
     $jobfile = getJobFileName($jobname, $PC_writeDir);
@@ -414,11 +414,11 @@ function markLastRun($jobname, $lastRun, $PC_writeDir) {
 
 /**
  *
- * @param unknown_type $job
- * @param unknown_type $PC_jobDir
- * @param unknown_type $PC_writeDir
- * @param unknown_type $PC_useLog
- * @param unknown_type $PC_debug
+ * @param string $job
+ * @param string $PC_jobDir
+ * @param string $PC_writeDir
+ * @param int $PC_useLog
+ * @param boolean $PC_debug
  * @return boolean
  */
 function runJob($job, $PC_jobDir, $PC_writeDir, $PC_useLog, $PC_debug = false) {
@@ -467,9 +467,9 @@ function runJob($job, $PC_jobDir, $PC_writeDir, $PC_useLog, $PC_debug = false) {
 
 /**
  *
- * @param unknown_type $PC_cronTabFile
- * @param unknown_type $PC_debug
- * @return Ambigous <multitype:multitype: , unknown>
+ * @param string $PC_cronTabFile
+ * @param boolean $PC_debug
+ * @return array
  */
 function parseCronFile($PC_cronTabFile, $PC_debug) {
     $file = @file($PC_cronTabFile);

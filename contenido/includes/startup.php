@@ -11,8 +11,6 @@
  * - Sets/Checks DB connection
  * - Initializes UriBuilder
  *
- * @TODO: Collect all startup (bootstrap) related jobs into this file...
- *
  * @package          Core
  * @subpackage       Backend
  * @author           Unknown

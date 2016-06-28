@@ -127,11 +127,12 @@ class cApiContainer extends Item {
     /**
      * Userdefined setter for container fields.
      *
-     * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
      * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
+     *
+     * @eturn bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
@@ -142,7 +143,7 @@ class cApiContainer extends Item {
                 break;
         }
 
-        parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $bSafe);
     }
 
 }

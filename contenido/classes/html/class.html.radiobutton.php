@@ -110,7 +110,7 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      * as regular text. Displaying the value can be turned off via the
      * parameter.
      *
-     * @param bool $renderlabel [optional]
+     * @param bool $renderLabel [optional]
      *         If true, renders a label
      * @return string
      *         Rendered HTML

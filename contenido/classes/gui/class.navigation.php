@@ -321,7 +321,7 @@ class cGuiNavigation {
             $main->set('s', 'LANG', $this->_renderLanguageSelect());
         }
 
-        $sClientName = $clientCollection->getClientName($client);
+        $sClientName = $clientCollection->getClientname($client);
         if (strlen($sClientName) > 25) {
             $sClientName = cString::trimHard($sClientName, 25);
         }
@@ -333,7 +333,7 @@ class cGuiNavigation {
         } else {
             $sClientNameTemplate = '<b>' . i18n("Client") . ':</b> <a href="%s" target="_blank">%s</a>';
 
-            $sClientName = $clientCollection->getClientName($client) . ' (' . $client . ')';
+            $sClientName = $clientCollection->getClientname($client) . ' (' . $client . ')';
             $sClientNameWithHtml = '<span id="chosenclient">' .$sClientName . '</span>';
 
             $sClientUrl = cRegistry::getFrontendUrl();

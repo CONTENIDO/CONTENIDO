@@ -168,7 +168,7 @@ class cGuiMenu {
     /**
      *
      * @param bool $print [optional]
-     * @return Ambigous <string, void, mixed>
+     * @return string
      */
     public function render($print = true) {
         global $cfg;

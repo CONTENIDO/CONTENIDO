@@ -449,11 +449,11 @@ class TreeItem {
     /**
      * Starts iterating at root node and flattens the tree into an array
      *
-     * @param unknown_type $item
+     * @param TreeItem $item
      * @param array $flat_tree
      */
     public function getFlatTree($item, &$flat_tree) {
-        foreach ($item->subitems as $curItem) {
+        foreach ($item->getSubItems() as $curItem) {
             $curItem->custom['vertline'] = array();
             $flat_tree[] = $curItem;
             $this->getFlatTree($curItem, $flat_tree);
@@ -518,7 +518,7 @@ class TreeItem {
      * getCollapsedList thinks if a node has no subnodes it is collapsed
      * I don't think so
      *
-     * @param unknown_type $list
+     * @param array $list
      */
     public function getRealCollapsedList(&$list) {
         $this->getCollapsedList($list);
@@ -526,7 +526,7 @@ class TreeItem {
 
         // remove all nodes that have no subnodes
         foreach ($list as $key) {
-            $item = $this->_getItemByID($key);
+            $item = $this->getItemByID($key);
             if (sizeof($item->subitems) > 0) {
                 $cleared_list[] = $key;
             }

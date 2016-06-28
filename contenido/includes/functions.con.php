@@ -855,7 +855,7 @@ function conDeleteart($idart) {
         $containerConfColl->deleteBy('idtplcfg', (int) $idtplcfg);
 
         $tplConfColl = new cApiTemplateConfigurationCollection();
-        $tplConfColl->delete('idtplcfg', $idtplcfg);
+        $tplConfColl->delete($idtplcfg);
     }
 
     // Check if there are remaining languages
@@ -968,7 +968,7 @@ function conChangeTemplateForCat($idcat, $idtpl) {
 
         // Delete old template configuration
         $oTplConfColl = new cApiTemplateConfigurationCollection();
-        $oTplConfColl->delete('idtplcfg', (int) $oCatLang->get('idtplcfg'));
+        $oTplConfColl->delete((int) $oCatLang->get('idtplcfg'));
     }
 
     // Parameter $idtpl is 0, reset the template
@@ -1003,7 +1003,7 @@ function conChangeTemplateForCat($idcat, $idtpl) {
         }
     }
 
-    conGenerateCodeForAllartsInCategory($idcat);
+    conGenerateCodeForAllArtsInCategory($idcat);
 }
 
 /**
@@ -1251,7 +1251,7 @@ function conGenerateCodeForAllartsUsingLayout($idlay) {
     $sql = "SELECT idtpl FROM " . $cfg["tab"]["tpl"] . " WHERE idlay='" . cSecurity::toInteger($idlay) . "'";
     $db->query($sql);
     while ($db->nextRecord()) {
-        conGenerateCodeForAllartsUsingTemplate($db->f("idtpl"));
+        conGenerateCodeForAllArtsUsingTemplate($db->f("idtpl"));
     }
 }
 

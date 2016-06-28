@@ -158,7 +158,7 @@ class cHtmlTextAreaTest extends cTestingTestCase {
      */
     public function testToHtml() {
         $area = new cHTMLTextarea('testName', 'testInitValue');
-        $this->assertSame($area->toHtml(), $area->toHTML());
+        $this->assertSame($area->toHtml(), $area->toHtml());
     }
 }
 

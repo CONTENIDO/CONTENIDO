@@ -314,9 +314,6 @@ class PimPluginSetupUninstall extends PimPluginSetup {
 
     /**
      * Delete a installed plugin directory
-     *
-     * @param $foldername name of extracted plugin
-     * @param $page page class for success or error message
      */
     public function uninstallDir() {
         $cfg = cRegistry::getConfig();

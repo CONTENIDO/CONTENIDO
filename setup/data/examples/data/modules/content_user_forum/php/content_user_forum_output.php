@@ -44,25 +44,25 @@ class UserForumArticle {
 
     /**
      *
-     * @var unknown_type
+     * @var bool
      */
     protected $_allowDeleting;
 
     /**
      *
-     * @var unknown_type
+     * @var bool
      */
     protected $_userLoggedIn;
 
     /**
      *
-     * @var unknown_type
+     * @var bool
      */
     protected $_allowedToEditForum;
 
     /**
      *
-     * @var unknown_type
+     * @var bool
      */
     protected $_modMode;
 
@@ -148,10 +148,8 @@ class UserForumArticle {
 
     /**
      * main method for controlling different actions received from $_REQUEST[]
-     *
-     * @param  array  $request  received $_REQUEST[]
      */
-    public function receiveData(array $request) {
+    public function receiveData() {
         $this->_checkCookie();
 
         $auth = cRegistry::getAuth();
@@ -566,9 +564,8 @@ class UserForumArticle {
     /**
      * this function sets a cookie when receiving a click on like/dislike -
      * buttons.
-     * After the first click the user can�t add likes/dislikes for the same
+     * After the first click the user can't add likes/dislikes for the same
      * comment for a fixed time intervall (value in cookie).
-     * @TODO: Use $_REQUEST passed to receiveData()
      */
     private function _checkCookie() {
         $ip = $_SERVER['REMOTE_ADDR'];
@@ -593,5 +590,5 @@ class UserForumArticle {
 
 // generate object
 $userForumArticle = new UserForumArticle();
-$userForumArticle->receiveData($_REQUEST);
+$userForumArticle->receiveData();
 ?>

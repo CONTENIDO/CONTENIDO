@@ -16,7 +16,7 @@ class cHtmlSectionTest extends PHPUnit_Framework_TestCase {
         $this->assertSame('testClass', $section->getAttribute('class'));
         $this->assertSame('testId', $section->getAttribute('id'));
 
-        $this->assertSame('<section id="testId" class="testClass">testContent</section>', $section->toHTML());
+        $this->assertSame('<section id="testId" class="testClass">testContent</section>', $section->toHtml());
     }
 
 }

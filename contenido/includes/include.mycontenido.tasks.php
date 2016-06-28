@@ -77,7 +77,7 @@ class TODOBackendList extends cGuiScrollList {
      * Is called when a new column is rendered.
      *
      * @see cGuiScrollList::onRenderColumn()
-     * @param unknown_type $column
+     * @param int $column
      *         The current column which is being rendered
      */
     public function onRenderColumn($column) {
@@ -99,11 +99,11 @@ class TODOBackendList extends cGuiScrollList {
      * Needs to be overridden in the child class to work properbly.
      *
      * @see cGuiScrollList::convert()
-     * @param unknown_type $field
+     * @param int $key
      *         Field index
-     * @param unknown_type $value
+     * @param string $value
      *         Field value
-     * @param unknown_type $hiddendata
+     * @param array $hidden
      * @return unknown
      */
     public function convert($key, $value, $hidden) {
@@ -185,6 +185,8 @@ class TODOBackendList extends cGuiScrollList {
         }
 
         if ($key == 6) {
+            $p = $img = '';
+            
             switch ($value) {
                 case 0:
                     $img = "prio_low.gif";

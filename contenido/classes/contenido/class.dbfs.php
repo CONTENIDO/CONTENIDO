@@ -329,7 +329,7 @@ class cApiDbfsCollection extends ItemCollection {
     /**
      *
      * @param string $path
-     * @return Ambigous <mixed, bool>
+     * @return int
      */
     public function getSize($path) {
         global $client;
@@ -347,6 +347,8 @@ class cApiDbfsCollection extends ItemCollection {
         if (($item = $this->next()) !== false) {
             return $item->get('size');
         }
+        
+        return 0;
     }
 
     /**

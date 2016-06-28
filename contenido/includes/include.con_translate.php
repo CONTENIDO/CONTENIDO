@@ -73,9 +73,9 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
     /**
      * Sorts the list by a given field and a given order.
      *
-     * @param unknown_type $field
+     * @param int $field
      *         Field index
-     * @param unknown_type $order
+     * @param string $order
      *         Sort order (see php's sort documentation)
      */
     public function sort($field, $order) {
@@ -113,7 +113,7 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
  * Adds sorting images to string
  *
  * @param int $index
- * @param string $sText
+ * @param string $text
  * @return string
  */
 function addSortImages($index, $text) {
@@ -510,7 +510,7 @@ $searchInput = new cHTMLTextbox('search', $search, 20);
 
 $searchSubmit = ' <input type="image" name="searchsubmit" class="vAlignTop" value="submit" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'but_preview.gif">';
 
-$formSearch->SetContent($filterSelect . $searchInput->render() . $searchSubmit);
+$formSearch->setContent($filterSelect . $searchInput->render() . $searchSubmit);
 
 // The list of translations
 $list = new cGuiScrollListAlltranslations();

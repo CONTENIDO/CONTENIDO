@@ -89,7 +89,7 @@ $aAuthPerms = explode(',', $auth->auth['perm']);
 if (in_array('sysadmin', $aAuthPerms)) {
     $tpl->set('d', 'CATNAME', i18n("System administrator"));
     $defaultsysadmin = new cHTMLCheckbox("msysadmin", "1", "msysadmin1", in_array('sysadmin', $aPerms));
-    $tpl->set('d', 'CATFIELD', $defaultsysadmin->toHTML(false));
+    $tpl->set('d', 'CATFIELD', $defaultsysadmin->toHtml(false));
     $tpl->next();
 }
 
@@ -101,7 +101,7 @@ foreach ($aClients as $idclient => $item) {
     if (in_array("admin[".$idclient."]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms)) {
         $defaultadmin = new cHTMLCheckbox("madmin[".$idclient."]", $idclient, "madmin[".$idclient."]".$idclient, in_array("admin[".$idclient."]", $aPerms));
         $defaultadmin->setLabelText($item['name'] . " (".$idclient.")");
-        $sClientCheckboxes .= $defaultadmin->toHTML(true);
+        $sClientCheckboxes .= $defaultadmin->toHtml(true);
     }
 }
 
@@ -117,7 +117,7 @@ foreach ($aClients as $idclient => $item) {
     if (in_array("client[".$idclient."]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms) || in_array("admin[".$idclient."]", $aAuthPerms)) {
         $defaultperms = new cHTMLCheckbox("mclient[".$idclient."]", $idclient, "mclient[".$idclient."]".$idclient, in_array("client[".$idclient."]", $aPerms));
         $defaultperms->setLabelText($item['name'] . " (". $idclient . ")");
-        $sClientCheckboxes .= $defaultperms->toHTML(true);
+        $sClientCheckboxes .= $defaultperms->toHtml(true);
     }
 }
 
@@ -132,7 +132,7 @@ foreach ($aClientsLanguages as $item) {
     if ($perm->have_perm_client("lang[".$item['idlang']."]") || $perm->have_perm_client("admin[".$item['idclient']."]")) {
         $defaultlanguages = new cHTMLCheckbox("mlang[".$item['idlang']."]", $item['idlang'], "mlang[".$item['idlang']."]".$item['idlang'], in_array("lang[".$item['idlang']."]", $aPerms));
         $defaultlanguages->setLabelText($item['langname']." (". $item['clientname'] .")");
-        $sClientCheckboxes .= $defaultlanguages->toHTML(true);
+        $sClientCheckboxes .= $defaultlanguages->toHtml(true);
     }
 }
 

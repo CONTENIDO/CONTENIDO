@@ -81,7 +81,7 @@ $sSelectBox = $oVersion->buildSelectBox("mod_history", i18n("Module History"), i
 
 // Generate Form
 $oForm = new cGuiTableForm("mod_display");
-$oForm->setTableid('mod_history');
+$oForm->setTableID('mod_history');
 $oForm->addHeader(i18n("Edit module"));
 $oForm->setVar("area", "mod_history");
 $oForm->setVar("frame", $frame);

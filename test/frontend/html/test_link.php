@@ -62,7 +62,7 @@ class cHtmlLinkTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testToHtml() {
-        $this->assertSame($this->_link->toHTML(), $this->_link->toHTML());
+        $this->assertSame($this->_link->toHtml(), $this->_link->toHtml());
     }
 
     public function testGetHref() {

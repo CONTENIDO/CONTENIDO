@@ -445,7 +445,7 @@ abstract class cContentTypeAbstract {
     /**
      * Checks if this content type can be edited by a WYSIWYG editor
      *
-     * @return bools
+     * @return bool
      */
     public function isWysiwygCompatible() {
         return false;

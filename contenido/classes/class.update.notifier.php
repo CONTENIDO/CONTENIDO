@@ -191,6 +191,11 @@ class cUpdateNotifier {
     protected $bUpdateNecessity = false;
 
     /**
+     * @var string
+     */
+    protected $sErrorOutput;
+
+    /**
      * Vendor host reachability.
      *
      * @var bool

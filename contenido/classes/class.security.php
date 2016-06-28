@@ -61,7 +61,7 @@ class cSecurity {
      */
     public static function unFilter($sString) {
         $sString = self::toString($sString);
-        return htmldecode(self::unEscapeDB($sString));
+        return htmldecode(self::unescapeDB($sString));
     }
 
     /**

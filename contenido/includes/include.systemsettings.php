@@ -36,27 +36,27 @@ $isSysadmin = (false !== strpos($auth->auth["perm"], "sysadmin"));
 
 if ($action == "systemsettings_save_item") {
     if (false === $isSysadmin) {
-        $page->displayError(i18n("You don't have the permission to make changes here."), 1);
+        $page->displayError(i18n("You don't have the permission to make changes here."));
     } else {
         if (!in_array($request['systype'] . '_' . $request['sysname'], $aManagedValues)) {
             setSystemProperty($request['systype'], $request['sysname'], $request['sysvalue'], (int) $request['csidsystemprop']);
             if (isset($x)) {
-                $page->displayOk(i18n('Saved changes successfully!'), 1);
+                $page->displayOk(i18n('Saved changes successfully!'));
             } else {
-                $page->displayOk(i18n('Created new item successfully!'), 1);
+                $page->displayOk(i18n('Created new item successfully!'));
             }
         } else {
-            $page->displayWarning(i18n('Please set this property in systemsettings directly'), 1);
+            $page->displayWarning(i18n('Please set this property in systemsettings directly'));
         }
     }
 }
 
 if ($action == "systemsettings_delete_item") {
     if (false === $isSysadmin) {
-        $page->displayError(i18n("You don't have the permission to make changes here."), 1);
+        $page->displayError(i18n("You don't have the permission to make changes here."));
     } else {
         deleteSystemProperty($request['systype'], $request['sysname']);
-        $page->displayOk(i18n('Deleted item successfully!'), 1);
+        $page->displayOk(i18n('Deleted item successfully!'));
     }
 }
 
@@ -104,9 +104,9 @@ foreach ($settings as $key => $types) {
                 $hidden = '<input type="hidden" name="csidsystemprop" value="' . $value['idsystemprop'] . '">';
                 $sSubmit = '<input type="image" class="vAlignMiddle" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif">';
 
-                $list->setCell($count, 1, $oInputboxType->render(true));
-                $list->setCell($count, 2, $oInputboxName->render(true));
-                $list->setCell($count, 3, $oInputboxValue->render(true) . $hidden . $sSubmit);
+                $list->setCell($count, 1, $oInputboxType->render());
+                $list->setCell($count, 2, $oInputboxName->render());
+                $list->setCell($count, 3, $oInputboxValue->render() . $hidden . $sSubmit);
             } else {
                 $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
 

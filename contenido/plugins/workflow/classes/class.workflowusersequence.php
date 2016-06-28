@@ -23,8 +23,6 @@ class WorkflowUserSequences extends ItemCollection {
 
     /**
      * Constructor Function
-     *
-     * @param string $table The table to use as information source
      */
     public function __construct() {
         global $cfg;
@@ -145,8 +143,6 @@ class WorkflowUserSequence extends Item {
 
     /**
      * Constructor Function
-     *
-     * @param string $table The table to use as information source
      */
     public function __construct() {
         global $cfg;

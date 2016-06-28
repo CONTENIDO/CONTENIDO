@@ -34,7 +34,7 @@ class NewsletterCollection extends ItemCollection
 
     /**
      * Creates a new newsletter
-     * @param $name string specifies the newsletter name
+     * @param $sName string specifies the newsletter name
      */
     public function create($sName)
     {
@@ -65,7 +65,7 @@ class NewsletterCollection extends ItemCollection
 
     /**
      * Duplicates the newsletter specified by $itemID
-     * @param  int $itemID specifies the newsletter id
+     * @param  int $iItemID specifies the newsletter id
      */
     public function duplicate($iItemID)
     {
@@ -581,7 +581,7 @@ class Newsletter extends Item
      * @param int  $iIDCatArt        idcatart of newsletter handler article
      * @param string   $sEMail           Recipient email address
      * @param string   $sName            Optional: Recipient name
-     * @param bool     $bSimulatePlugin  If recipient plugin activated, include plugins
+     * @param bool     $bSimulatePlugins If recipient plugin activated, include plugins
      *                                   and simulate values from plugins
      * @param string   $sEncoding        Message (and header) encoding, e.g. iso-8859-1
      */

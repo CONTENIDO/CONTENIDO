@@ -17,8 +17,8 @@ class cHtmlHeaderHgroupTest extends PHPUnit_Framework_TestCase {
 
     public function testConstruct() {
         $hgroup = new cHTMLHgroup('testContent', 'testClass', 'testId');
-        $this->assertSame('<hgroup id="testId" class="testClass">testContent</hgroup>', $hgroup->toHTML());
-        $this->assertSame('<hgroup id=""></hgroup>', $this->_cHeaderHgroup->toHTML());
+        $this->assertSame('<hgroup id="testId" class="testClass">testContent</hgroup>', $hgroup->toHtml());
+        $this->assertSame('<hgroup id=""></hgroup>', $this->_cHeaderHgroup->toHtml());
     }
 
 }

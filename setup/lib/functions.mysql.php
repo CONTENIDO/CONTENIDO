@@ -249,8 +249,7 @@ function fetchMySQLCharsets($db = null) {
  * Returns all suppported collations for a specific charset
  *
  * @param cDB|null $db
- * @param
- *        	string The charset for the collation
+ * @param string $charset The charset for the collation
  * @return array
  */
 function fetchMySQLCollations($db = null, $charset = "") {

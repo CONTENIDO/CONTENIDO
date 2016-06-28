@@ -63,7 +63,7 @@ class cHTMLLabel extends cHTMLContentElement {
     public function toHtml() {
         $this->_setContent($this->text);
 
-        return parent::toHTML();
+        return parent::toHtml();
     }
 
 }

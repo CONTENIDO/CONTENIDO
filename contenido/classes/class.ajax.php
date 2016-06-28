@@ -413,7 +413,7 @@ class cAjaxRequest {
                 $inputType = isset($_POST['type']) ? $_POST['type'] : NULL;
 
                 // @see CON-2425 modules are checked by default
-                $moduleCheck = getSystemProperty('system', 'modulecheck', 'true');
+                $moduleCheck = getSystemProperty('system', 'modulecheck');
                 $moduleCheck = ($moduleCheck == '' && $moduleCheck != 'false') || $moduleCheck == 'true' || $moduleCheck == '1';
 
                 $result = array(

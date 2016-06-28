@@ -36,6 +36,11 @@ class cGuiObjectPager extends cGuiFoldingRow {
     public $_parameterToAdd;
 
     /**
+     * @var cPager
+     */
+    protected $_cPager;
+
+    /**
      * Constructor to create an instance of this class.
      *
      * @param string $uuid
@@ -49,7 +54,6 @@ class cGuiObjectPager extends cGuiFoldingRow {
      * @param string $parameterToAdd
      * @param string $id [optional]
      * @throws cException if the given link is not an object
-     * @return bool
      */
     public function __construct($uuid, $items, $itemsperpage, $currentpage, $link, $parameterToAdd, $id = '') {
         if ((int) $currentpage == 0) {
@@ -64,8 +68,8 @@ class cGuiObjectPager extends cGuiFoldingRow {
 
         if (!is_object($link)) {
             throw new cException('Parameter link is not an object');
-            return false;
         }
+        
         $this->_cPager = new cPager($items, $itemsperpage, $currentpage);
         $this->_pagerLink = $link;
         $this->_parameterToAdd = $parameterToAdd;

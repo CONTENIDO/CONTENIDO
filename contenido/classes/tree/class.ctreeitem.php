@@ -394,7 +394,7 @@ class cTreeItem {
     /**
      * Returns an attribute.
      *
-     * @param string attributeName
+     * @param string $attributeName
      * @return mixed
      */
     public function getAttribute($attributeName) {
@@ -408,7 +408,7 @@ class cTreeItem {
     /**
      * Deletes an attribute.
      *
-     * @param string attributeName
+     * @param string $attributeName
      * @return bool
      */
     public function deleteAttribute($attributeName) {
@@ -520,7 +520,7 @@ class cTreeItem {
 
     /**
      *
-     * @param int leveloffset
+     * @param int $leveloffset
      *         Level offset. Ignores all expand operations below the offset.
      */
     protected function _collapseBelowLevel($leveloffset) {
@@ -631,14 +631,13 @@ class cTreeItem {
      * @return object
      */
     public function unsetPayloadObject() {
-        // @todo implement!
     }
 
     /**
      * Traverses the tree starting from this item, and returning all
      * objects as $objects in a nested array.
      *
-     * @param object $objects
+     * @param array $objects
      *         all found objects
      * @param int $level [optional]
      *         Level to start on
@@ -680,7 +679,6 @@ class cTreeItem {
      *
      * @param string $name
      *         New name for this item
-     * @return none
      */
     public function setName($name) {
         $this->_name = $name;

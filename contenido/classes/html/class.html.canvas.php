@@ -40,7 +40,7 @@ class cHTMLCanvas extends cHTMLContentElement {
 
     /**
      *
-     * @param unknown_type $height
+     * @param int $height
      */
     public function setHeight($height) {
         $this->setAttribute('height', $height);
@@ -48,7 +48,7 @@ class cHTMLCanvas extends cHTMLContentElement {
 
     /**
      *
-     * @param unknown_type $width
+     * @param int $width
      */
     public function setWidth($width) {
         $this->setAttribute('width', $width);

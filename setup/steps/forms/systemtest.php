@@ -129,8 +129,7 @@ class cSetupSystemtest extends cSetupMask {
             $link->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '" . $thisStep . "';");
             $link->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
             $link->setClass("nav navRefresh");
-            $link->setContent("<span>R</span>"); // @todo traslation for
-            // "refresh"
+            $link->setContent("<span>R</span>");
 
             $this->_stepTemplateClass->set("s", "NEXT", $link->render());
         } else {

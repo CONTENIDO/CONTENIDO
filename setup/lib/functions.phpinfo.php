@@ -128,13 +128,7 @@ function isPHPExtensionLoaded($extension) {
         return CON_EXTENSION_CANTCHECK;
     }
 
-    if ($value === true) {
-        return CON_EXTENSION_AVAILABLE;
-    }
-
-    if ($value === false) {
-        return CON_EXTENSION_UNAVAILABLE;
-    }
+    return $value === true ? CON_EXTENSION_AVAILABLE : CON_EXTENSION_UNAVAILABLE;
 }
 
 function isRegisterLongArraysActive() {

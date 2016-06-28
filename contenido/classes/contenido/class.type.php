@@ -120,18 +120,19 @@ class cApiType extends Item {
     /**
      * Userdefined setter for item fields.
      *
-     * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
      * @param bool $safe [optional]
      *         Flag to run defined inFilter on passed value
+     *                   
+     * @return bool
      */
     public function setField($name, $value, $safe = true) {
         if ('status' === $name) {
             $value = (int) $value;
         }
 
-        parent::setField($name, $value, $safe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

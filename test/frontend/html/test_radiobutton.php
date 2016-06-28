@@ -72,8 +72,8 @@ class cHtmlRadioButtonTest extends PHPUnit_Framework_TestCase {
 
     public function testToHTMLText() {
         $pwBox = new cHTMLRadiobutton('testName', 'testValue', 'testId');
-        $this->assertSame($pwBox->toHtml(), $pwBox->toHTML());
-        $this->assertSame($pwBox->toHtml(false), $pwBox->toHTML(false));
+        $this->assertSame($pwBox->toHtml(), $pwBox->toHtml());
+        $this->assertSame($pwBox->toHtml(false), $pwBox->toHtml(false));
 
     }
 
