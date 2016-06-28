@@ -193,6 +193,11 @@ class NewsletterJobCollection extends ItemCollection {
             $iRecipientCount = $oLogs->initializeJob($oItem->get($oItem->getPrimaryKeyName()), $iIDNews);
             unset($oLogs);
 
+            // fallback. there's no need to create a newsletter job if no user is selected
+            if ($iRecipientCount == 0 || !is_int($iRecipientCount)) {
+                return false;
+            }
+
             $oItem->set("rcpcount", $iRecipientCount);
             $oItem->set("sendcount", 0);
             $oItem->set("status", 1); // Waiting for sending; note, that status

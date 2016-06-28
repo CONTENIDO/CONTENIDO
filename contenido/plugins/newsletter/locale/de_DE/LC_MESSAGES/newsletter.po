@@ -100,7 +100,7 @@ msgid ""
 "details"
 msgstr ""
 "Versand-Job für diesen Newsletter wurde nicht erzeugt! Bitte die Angaben "
-"überprüfen"
+"überprüfen (Absender Adresse befüllt? Mindestens ein Empfänger?)"
 
 #: includes/include.newsletter_edit.php:155
 msgid "None"
