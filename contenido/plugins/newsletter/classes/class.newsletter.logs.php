@@ -146,7 +146,6 @@ class NewsletterLogCollection extends ItemCollection {
             if ($sDestination == "unknown") {
                 return 0;
             } else {
-                var_dump($sSQL);
                 $oRecipients = new NewsletterRecipientCollection();
                 $oRecipients->flexSelect($sDistinct, $sFrom, $sSQL, "", "", "");
 
