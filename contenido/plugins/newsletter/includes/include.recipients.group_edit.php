@@ -42,7 +42,7 @@ $aFields["deactivated"] = array(
 );
 
 if ($action == "recipientgroup_create" && $perm->have_perm_area_action($area, $action)) {
-    $oRGroup = $oRGroups->create(" " . i18n("-- New group --", 'newsletter'));
+    $oRGroup = $oRGroups->create(" " . i18n("-- New group --", 'newsletter', "newsletter"));
     $_REQUEST["idrecipientgroup"] = $oRGroup->get("idnewsgroup");
     $oPage->setReload();
     $sRefreshLeftTopScript = '<script type="text/javascript">Con.getFrame("left_top").refreshGroupOption(\'' . $_REQUEST["idrecipientgroup"] . '\', \'add\')</script>';
