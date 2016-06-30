@@ -33,16 +33,6 @@ if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST['page']) || $_REQUEST['pa
     $_REQUEST["page"] = 1;
 }
 
-$aFieldsToSearch = array(
-    "--all--" => i18n("-- All fields --"),
-    "username" => i18n("Username")
-);
-$aFieldsToSort = array(
-    "username" => i18n("Username"),
-    "created" => i18n("Created"),
-    "modified" => i18n("Modified")
-);
-
 $aFieldSources = array(
     "username" => "base",
     "created" => "created",
@@ -64,34 +54,44 @@ $aSortOrderOptions = array(
 $bUsePlugins = getEffectiveSetting("frontendusers", "pluginsearch", "true");
 $bUsePlugins = ($bUsePlugins == "false") ? false : true;
 
-// @TODO  Why do we have to include plugins, if they should not be used?
-if (is_array($cfg['plugins']['frontendusers'])) {
+$oFEUsers = new cApiFrontendUserCollection();
+
+$databaseFields = array();
+
+// query the collection and fetch the first available item
+$oFEUsers->query();
+$sampleItem = $oFEUsers->next();
+
+// fetch available fields from database item
+if ($sampleItem !== NULL) {
+    $databaseFields = array_keys($sampleItem->toArray());
+}
+
+if ($bUsePlugins == true && is_array($cfg['plugins']['frontendusers'])) {
     foreach ($cfg['plugins']['frontendusers'] as $plugin) {
         plugin_include("frontendusers", $plugin . "/" . $plugin . ".php");
     }
-}
+    
+    $_sValidPlugins = getEffectiveSetting("frontendusers", "pluginsearch_valid_plugins", '');
+    $_aValidPlugins = array();
 
-if ($bUsePlugins == true) {
-    if (is_array($cfg['plugins']['frontendusers'])) {
-        $_sValidPlugins = getEffectiveSetting("frontendusers", "pluginsearch_valid_plugins", '');
-        $_aValidPlugins = array();
-        if (strlen($_sValidPlugins) > 0) {
-            $_aValidPlugins = explode(',', $_sValidPlugins);
-        }
-        $_iCountValidPlugins = sizeof($_aValidPlugins);
-        foreach ($cfg['plugins']['frontendusers'] as $plugin) {
-            if ($_iCountValidPlugins == 0 || in_array($plugin, $_aValidPlugins)) {
-                if (function_exists("frontendusers_" . $plugin . "_wantedVariables") && function_exists("frontendusers_" . $plugin . "_canonicalVariables")) {
-                    $aVariableNames = call_user_func("frontendusers_" . $plugin . "_canonicalVariables");
+    if (strlen($_sValidPlugins) > 0) {
+        $_aValidPlugins = explode(',', $_sValidPlugins);
+    }
 
-                    if (is_array($aVariableNames)) {
-                        $aTmp = array_merge($aFieldsToSearch, $aVariableNames);
-                        $aFieldsToSearch = $aTmp;
+    $_iCountValidPlugins = sizeof($_aValidPlugins);
 
-                        $aTmp2 = array_merge($aFieldsToSort, $aVariableNames);
-                        $aFieldsToSort = $aTmp2;
+    foreach ($cfg['plugins']['frontendusers'] as $plugin) {
+        if ($_iCountValidPlugins == 0 || in_array($plugin, $_aValidPlugins)) {
+            if (function_exists("frontendusers_" . $plugin . "_wantedVariables")
+                && function_exists("frontendusers_" . $plugin . "_canonicalVariables")
+                && function_exists("frontendusers_" . $plugin . "_getvalue")) {
 
-                        foreach ($aVariableNames as $sVariableName => $name) {
+                $aVariableNames = call_user_func("frontendusers_" . $plugin . "_canonicalVariables");
+
+                if (is_array($aVariableNames)) {
+                    foreach ($aVariableNames as $sVariableName => $name) {
+                        if (in_array($databaseFields, $sVariableName)) {
                             $aFieldSources[$sVariableName] = $plugin;
                         }
                     }
@@ -101,52 +101,23 @@ if ($bUsePlugins == true) {
     }
 }
 
-// Elements per page
-$oSelectItemsPerPage = new cHTMLSelectElement("elemperpage");
-$oSelectItemsPerPage->autoFill($aElementsPerPage);
-$oSelectItemsPerPage->setDefault($_REQUEST["elemperpage"]);
-
-asort($aFieldsToSort);
-asort($aFieldsToSearch);
-
-// Sort by filter
-$oSelectSortBy = new cHTMLSelectElement("sortby");
-$oSelectSortBy->autoFill($aFieldsToSort);
-$oSelectSortBy->setDefault($_REQUEST["sortby"]);
-
-// Sort order filter
-$oSelectSortOrder = new cHTMLSelectElement("sortorder");
-$oSelectSortOrder->autoFill($aSortOrderOptions);
-$oSelectSortOrder->setDefault($_REQUEST["sortorder"]);
-
-// Search in filter
-$oSelectSearchIn = new cHTMLSelectElement("searchin");
-$oSelectSearchIn->autoFill($aFieldsToSearch);
-$oSelectSearchIn->setDefault($_REQUEST["searchin"]);
-
-// Frontend groups filter
-$fegroups = new cApiFrontendGroupCollection();
-$fegroups->setWhere("idclient", $client);
-$fegroups->query();
-$aFEGroups = array(
-    "--all--" => i18n("-- All Groups --")
-);
-while ($fegroup = $fegroups->next()) {
-    $aFEGroups[$fegroup->get("idfrontendgroup")] = $fegroup->get("groupname");
-}
-
-$oSelectRestrictGroup = new cHTMLSelectElement("restrictgroup");
-$oSelectRestrictGroup->autoFill($aFEGroups);
-$oSelectRestrictGroup->setDefault($_REQUEST["restrictgroup"]);
-
-// Search text filter
-$oTextboxFilter = new cHTMLTextbox("filter", $_REQUEST["filter"], 20);
-
-$oFEUsers = new cApiFrontendUserCollection();
 $oFEUsers->setWhere("cApiFrontendUserCollection.idclient", $client);
 
-if (strlen($_REQUEST["filter"]) > 0 && $bUsePlugins == false) {
-    $oFEUsers->setWhere("cApiFrontendUserCollection.username", $_REQUEST["filter"], "diacritics");
+if (strlen($_REQUEST["filter"]) > 0) {
+    if ($_REQUEST['searchin'] == "--all--" || $_REQUEST['searchin'] == "") {
+        foreach ($aFieldSources as $variableName => $source) {
+            $oFEUsers->setWhereGroup("filter", $variableName, $_REQUEST["filter"], "LIKE");
+        }
+
+        $oFEUsers->setInnerGroupCondition("filter", "OR");
+    } else {
+        $searchField = 'username';
+        if (in_array($databaseFields, $_REQUEST['searchin'])) {
+            $searchField = $_REQUEST['searchin'];
+        }
+        
+        $oFEUsers->setWhere("cApiFrontendUserCollection." . $searchField, $_REQUEST["filter"], "LIKE");
+    }
 }
 
 if ($_REQUEST['restrictgroup'] != "" && $_REQUEST['restrictgroup'] != "--all--") {
@@ -154,26 +125,28 @@ if ($_REQUEST['restrictgroup'] != "" && $_REQUEST['restrictgroup'] != "--all--")
     $oFEUsers->setWhere("cApiFrontendGroupMemberCollection.idfrontendgroup", $_REQUEST["restrictgroup"]);
 }
 
-// initializing fullTableCount variable
-$fullTableCount = 0;
+$mPage = (int) $_REQUEST['page'];
+$elemperpage = (int) $_REQUEST['elemperpage'];
 
-// get number of users
 $oFEUsers->query();
 $fullTableCount = $oFEUsers->count();
 
-$mPage = $_REQUEST['page'];
-$elemperpage = $_REQUEST['elemperpage'];
-
-if ($bUsePlugins == false) {
-    $oFEUsers->setOrder(implode(" ", array(
-        $oSelectSortBy->getDefault(),
-        $oSelectSortOrder->getDefault()
-    )));
-    $oFEUsers->setLimit($elemperpage * ($mPage - 1), $elemperpage);
+if (strlen($_REQUEST['sortby']) !== 0 && in_array($_REQUEST['sortby'], array_keys($aFieldSources))) {
+    $sortBy = $_REQUEST['sortby'];
+} else {
+    $sortBy = 'username';
 }
 
-if ($_REQUEST['elemperpage'] * ($_REQUEST['page']) >= $fullTableCount + $_REQUEST['elemperpage'] && $_REQUEST['page'] != 1) {
-    $_REQUEST['page']--;
+if (strlen($_REQUEST['sortorder']) !== 0 && in_array($_REQUEST['sortorder'], array_keys($aSortOrderOptions))) {
+    $sortOrder = $_REQUEST['sortorder'];
+} else {
+    $sortOrder = 'asc';
+}
+
+$oFEUsers->setOrder("cApiFrontendUserCollection." . $sortBy . " " . $sortOrder);
+$oFEUsers->setLimit($elemperpage * ($mPage - 1), $elemperpage);
+
+if ($elemperpage * ($mPage) >= $fullTableCount + $elemperpage && $mPage != 1) {
     $mPage--;
 }
 
@@ -204,36 +177,10 @@ while ($feuser = $oFEUsers->next()) {
                 break;
         }
     }
-
-    if ($_REQUEST['filter'] != "") {
-        if ($_REQUEST['searchin'] == "--all--" || $_REQUEST['searchin'] == "") {
-            $found = false;
-
-            foreach ($aUserTable[$idfrontenduser] as $key => $value) {
-                if (stripos($value, $_REQUEST['filter']) !== false) {
-                    $found = true;
-                }
-            }
-
-            if ($found == false) {
-                unset($aUserTable[$idfrontenduser]);
-            }
-        } else {
-            if (stripos($aUserTable[$idfrontenduser][$_REQUEST['searchin']], $_REQUEST['filter']) === false) {
-                unset($aUserTable[$idfrontenduser]);
-            }
-        }
-    }
 }
-
-$sortorder = ($_REQUEST['sortorder'] == "desc") ? SORT_DESC : SORT_ASC;
-$sortby = ($_REQUEST['sortby']) ? $_REQUEST["sortby"] : "username";
-
-$aUserTable = cArray::csort($aUserTable, $sortby, $sortorder);
 
 $mlist = new cGuiMenu();
 $iMenu = 0;
-$iItemCount = 0;
 
 foreach ($aUserTable as $mkey => $params) {
     $idfrontenduser = $params["idfrontenduser"];
@@ -241,31 +188,21 @@ foreach ($aUserTable as $mkey => $params) {
     $link->setMultiLink($area, "", $area, "");
     $link->setCustom("idfrontenduser", $idfrontenduser);
 
-    $iItemCount++;
+    $iMenu++;
 
-    if (($iItemCount > ($elemperpage * ($mPage - 1)) && $iItemCount < (($elemperpage * $mPage) + 1)) || $bUsePlugins == false) {
-        $iMenu++;
+    $delTitle = i18n("Delete user");
+    $deletebutton = '<a title="' . $delTitle . '" data-username="' . conHtmlSpecialChars($params['username']) . '" data-idfrontenduser="' . $idfrontenduser . '" class="jsDelete" href="javascript:void(0)"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
 
-        $delTitle = i18n("Delete user");
-        $deletebutton = '<a title="' . $delTitle . '" data-username="' . conHtmlSpecialChars($params['username']) . '" data-idfrontenduser="' . $idfrontenduser . '" class="jsDelete" href="javascript:void(0)"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
+    $mlist->setTitle($iMenu, conHtmlentities($params["username"]));
+    $mlist->setLink($iMenu, $link);
+    $mlist->setActions($iMenu, "delete", $deletebutton);
+    $mlist->setImage($iMenu, "");
 
-        $mlist->setTitle($iMenu, conHtmlentities($params["username"]));
-        $mlist->setLink($iMenu, $link);
-        $mlist->setActions($iMenu, "delete", $deletebutton);
-        $mlist->setImage($iMenu, "");
-
-        if ($_GET['frontenduser'] == $idfrontenduser) {
-            $mlist->setMarked($iMenu);
-        }
+    if ($_GET['frontenduser'] == $idfrontenduser) {
+        $mlist->setMarked($iMenu);
     }
 }
 
-if ($bUsePlugins == false) {
-    $iItemCount = $fullTableCount;
-}
-
-// $oPage->addScript('cfoldingrow.js', '<script type="text/javascript"
-// src="scripts/cfoldingrow.js"></script>');
 $oPage->addScript('parameterCollector.js');
 
 $message = i18n("Do you really want to delete the user %s?");
@@ -286,7 +223,7 @@ $oPagerLink->setCustom("area", $area);
 $oPagerLink->enableAutomaticParameterAppend();
 $oPagerLink->setCustom("contenido", $sess->id);
 
-$oPager = new cGuiObjectPager("25c6a67d-a3f1-4ea4-8391-446c131952c9", $iItemCount, $_REQUEST['elemperpage'], $mPage, $oPagerLink, "page", $pagingLink);
+$oPager = new cGuiObjectPager("25c6a67d-a3f1-4ea4-8391-446c131952c9", $fullTableCount, $_REQUEST['elemperpage'], $mPage, $oPagerLink, "page", $pagingLink);
 
 // add slashes, to insert in javascript
 $sPagerContent = $oPager->render(1);
@@ -295,6 +232,6 @@ $sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
 
 $oPage->set("s", "MPAGE", $mpage);
 $oPage->set("s", "PAGER_CONTENT", $sPagerContent);
-$oPage->set("s", "PAGE", $_REQUEST['page']);
+$oPage->set("s", "PAGE", $mPage);
 $oPage->set("s", "FORM", $mlist->render(false));
 $oPage->render();
