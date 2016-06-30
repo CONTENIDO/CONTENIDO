@@ -35,7 +35,7 @@ function checkImageResizer() {
     }
 
     checkAndInclude($cfg['path']['contenido'] . 'includes/functions.api.images.php');
-    if (capiIsImageMagickAvailable()) {
+    if (cApiIsImageMagickAvailable()) {
         return CON_IMAGERESIZE_IMAGEMAGICK;
     }
 

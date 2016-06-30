@@ -392,7 +392,6 @@ class cLog {
      *         Array with the method arguments
      * @throws cInvalidArgumentException
      *         if the given priority is not supported
-     * @return void
      */
     public function __call($method, $arguments) {
         $priorityName = strtoupper($method);
@@ -403,7 +402,7 @@ class cLog {
 
         $priorityIndex = array_search($priorityName, $this->_priorities);
 
-        return $this->log($arguments[0], $priorityIndex);
+        $this->log($arguments[0], $priorityIndex);
     }
 
     /**

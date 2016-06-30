@@ -66,10 +66,11 @@ while (($layout = $oLayouts->next()) !== false) {
         $tpl->set('d', 'INUSE', '');
     }
 
+    $delDescr = sprintf(i18n("Do you really want to delete the following layout:<br><br>%s<br>"), conHtmlentities(conHtmlSpecialChars($name)));
+    
     if ($perm->have_perm_area_action_item('lay', 'lay_delete', $idlay) && !$inUse) {
         $delTitle = i18n("Delete layout");
-        $delDescr = sprintf(i18n("Do you really want to delete the following layout:<br><br>%s<br>"), conHtmlentities(conHtmlSpecialChars($name)));
-        if(getEffectiveSetting('client', 'readonly', 'false') == 'true') {
+        if (getEffectiveSetting('client', 'readonly', 'false') == 'true') {
             $delLink  = '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete_inact.gif" border="0" title="'.i18n('This area is read only! The administrator disabled edits!').'" alt="'.i18n('This area is read only! The administrator disabled edits!').'">';
         } else {
             $delLink  = '<a title="'.$delTitle.'" href="javascript://" onclick="Con.showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteLayout(' . $idlay . '); });return false;">'

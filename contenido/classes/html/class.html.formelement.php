@@ -29,7 +29,6 @@ class cHTMLFormElement extends cHTML {
      * This is a generic form element, where specific elements should be
      * inherited from this class.
      *
-     * @todo remove overfluous param class
      * @param string $name [optional]
      *         Name of the element
      * @param string $id [optional]

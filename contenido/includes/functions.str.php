@@ -463,9 +463,9 @@ function strNextDeeperAll($idcat, $ignoreLang = false) {
  *         Category id
  * @param int $lang
  *         Language id
- * @param string $newcategoryname
+ * @param string $newCategoryName
  *         New category name
- * @param string $newcategoryalias
+ * @param string $newCategoryAlias
  *         New category alias
  */
 function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias) {

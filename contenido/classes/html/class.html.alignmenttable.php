@@ -22,6 +22,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GUI_HTML
  */
 class cHTMLAlignmentTable extends cHTMLTable {
+    /**
+     * @var array
+     */
+    protected $_data;
 
     /**
      * Constructor to create an instance of this class.
@@ -55,7 +59,7 @@ class cHTMLAlignmentTable extends cHTMLTable {
 
         $this->setContent($tr);
 
-        return $this->toHTML();
+        return $this->toHtml();
     }
 
 }

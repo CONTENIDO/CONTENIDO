@@ -57,7 +57,6 @@ class pApiContentAllocationArticle extends pApiTree {
      * @deprecated [2016-02-11]
      * 				This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
      * @param string $uuid
-     * @return __construct()
      */
     public function pApiContentAllocationArticle($uuid) {
         cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
@@ -68,7 +67,7 @@ class pApiContentAllocationArticle extends pApiTree {
      * Builed an render tree
      *
      * @param $tree
-     * @return string
+     * @return array
      */
     protected function _buildRenderTree($tree) {
 

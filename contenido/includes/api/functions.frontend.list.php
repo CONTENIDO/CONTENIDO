@@ -88,7 +88,6 @@ class FrontendList {
      * @param $endwrap
      * @param $itemwrap
      * @deprecated [2016-04-06] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
-     * @return __construct()
      */
     public function FrontendList($startwrap, $endwrap, $itemwrap) {
         cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');

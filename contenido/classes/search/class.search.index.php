@@ -435,7 +435,7 @@ class cSearchIndex extends cSearchBaseAbstract {
         // modified 2007-10-01, H. Librenz - added as hotfix for encoding
         // problems (doesn't find any words with umlaut vowels in it
         // since you turn on UTF-8 as language encoding)
-        $sEncoding == cRegistry::getEncoding();
+        $sEncoding = cRegistry::getEncoding();
 
         if (strtolower($sEncoding) != 'iso-8859-2') {
             $key = conHtmlentities($key, NULL, $sEncoding);

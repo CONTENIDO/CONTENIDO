@@ -42,7 +42,7 @@ $aFields["deactivated"] = array(
 );
 
 if ($action == "recipientgroup_create" && $perm->have_perm_area_action($area, $action)) {
-    $oRGroup = $oRGroups->create(" " . i18n("-- New group --", 'newsletter'));
+    $oRGroup = $oRGroups->create(" " . i18n("-- New group --", 'newsletter', "newsletter"));
     $_REQUEST["idrecipientgroup"] = $oRGroup->get("idnewsgroup");
     $oPage->setReload();
     $sRefreshLeftTopScript = '<script type="text/javascript">Con.getFrame("left_top").refreshGroupOption(\'' . $_REQUEST["idrecipientgroup"] . '\', \'add\')</script>';
@@ -178,7 +178,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
 
     $oCkbDefault = new cHTMLCheckbox("defaultgroup", "1");
     $oCkbDefault->setChecked($oRGroup->get("defaultgroup"));
-    $oForm->add(i18n("Default group", 'newsletter'), $oCkbDefault->toHTML(false));
+    $oForm->add(i18n("Default group", 'newsletter'), $oCkbDefault->toHtml(false));
 
     // Member list options folding row
     $oMemberListOptionRow = new cGuiFoldingRow("a91f5540-52db-11db-b0de-0800200c9a66", i18n("Member list options", "newsletter"), "member");
@@ -354,7 +354,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
 
             if ($perm->have_perm_area_action($area, "recipientgroup_recipient_delete")) {
                 $oCkbDel = new cHTMLCheckbox("deluser[]", $iID);
-                $oAddedRecipientList->setCell($iID, 2, $oCkbDel->toHTML(false));
+                $oAddedRecipientList->setCell($iID, 2, $oCkbDel->toHtml(false));
             } else {
                 $oAddedRecipientList->setCell($iID, 2, "&nbsp;");
             }
@@ -546,7 +546,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
     $oSelUser = new cHTMLSelectElement("adduser[]");
     $oSelUser->setSize(25);
     $oSelUser->setStyle("width: 100%;");
-    $oSelUser->setMultiSelect();
+    $oSelUser->setMultiselect();
     $oSelUser->autoFill($aItems);
 
     // Outsider list pager (-> below data, as iOutsiders is needed)

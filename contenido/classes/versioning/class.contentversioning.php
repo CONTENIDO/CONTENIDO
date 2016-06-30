@@ -530,6 +530,8 @@ class cContentVersioning {
 
         $versioningState = $this->getState();
         $date = date('Y-m-d H:i:s');
+
+        $auth = cRegistry::getAuth();
         $author = $auth->auth['uname'];
 
         switch ($versioningState) {

@@ -23,8 +23,6 @@ class WorkflowArtAllocations extends ItemCollection {
 
     /**
      * Constructor Function
-     *
-     * @param string $table The table to use as information source
      */
     public function __construct() {
         global $cfg;
@@ -73,8 +71,6 @@ class WorkflowArtAllocation extends Item {
 
     /**
      * Constructor Function
-     *
-     * @param string $table The table to use as information source
      */
     public function __construct() {
         global $cfg;
@@ -91,11 +87,6 @@ class WorkflowArtAllocation extends Item {
 
     /**
      * Returns the current item position
-     *
-     * @param string $field Void field since we override the usual setField
-     *            function
-     * @param string $value Void field since we override the usual setField
-     *            function
      */
     public function currentItemPosition() {
         $idworkflowitem = $this->get("idworkflowitem");
@@ -110,11 +101,6 @@ class WorkflowArtAllocation extends Item {
 
     /**
      * Returns the current user position
-     *
-     * @param string $field Void field since we override the usual setField
-     *            function
-     * @param string $value Void field since we override the usual setField
-     *            function
      */
     public function currentUserPosition() {
         return ($this->get("position"));

@@ -103,9 +103,9 @@ class ArticleForumRightBottom extends cGuiPage {
      *
      * @param $key
      * @param $cont
-     *
-     *
      * @param $cfg
+     * @param $mod
+     * 
      * @return array with buttons
      */
     protected function buildOnlineButtonBackendListMode(&$key, &$cont, &$cfg, $mod = null) {
@@ -385,10 +385,10 @@ class ArticleForumRightBottom extends cGuiPage {
         $tr = new cHTMLTableRow();
 
         $th = new cHTMLTableHead();
-        $th->setContent(UserForum::i18n("PARAMETER", "user_forum"));
+        $th->setContent(UserForum::i18n("PARAMETER"));
 
         $th2 = new cHTMLTableHead();
-        $th2->setContent(UserForum::i18n("CONTENT", "user_forum"));
+        $th2->setContent(UserForum::i18n("CONTENT"));
         $th2->setStyle('widht:50px');
         $th2->setAttribute('valign', 'top');
         $tr->appendContent($th);

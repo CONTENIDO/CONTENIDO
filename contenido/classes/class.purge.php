@@ -267,7 +267,7 @@ class cSystemPurge {
 
         if ($perm->isClientAdmin($idclient, $currentuser) || $perm->isSysadmin($currentuser)) {
             $logDir = $cfgClient[$idclient]['log']['path'];
-            if (cDirHandler::Exists($logDir)) {
+            if (cDirHandler::exists($logDir)) {
                 return $this->emptyFile($logDir, $this->_logFileTypes);
             }
             return false;

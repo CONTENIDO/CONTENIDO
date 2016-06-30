@@ -28,8 +28,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * The caller receives the iterator object and can step trough all items using
  * the "next" method.
  *
- * @todo Add more stepping methods, as well as retrieving items
- *
  * @package Core
  * @subpackage Util
  */

@@ -16,7 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Prints some text to the console
  *
  * @param string $str string which should be printed
- * @param number $tab number of tab characters which should preceed the string
+ * @param int $tab number of tab characters which should preceed the string
  */
 function prnt($str = '', $tab = 0) {
     for ($i = 0; $i < $tab; $i++) {
@@ -29,7 +29,7 @@ function prnt($str = '', $tab = 0) {
  * Prints some text and a new line to the console
  *
  * @param string $str string which should be printed
- * @param number $tab number of tab characters which should preceed the string
+ * @param int $tab number of tab characters which should preceed the string
  */
 function prntln($str = '', $tab = 0) {
     prnt($str . "\n\r", $tab);
@@ -50,7 +50,7 @@ function prntst($str = '') {
  * function will print a warning for the user instead.
  *
  * @param string $title label text
- * @param number $tab number of tabs which should preceed the label text
+ * @param int $tab number of tabs which should preceed the label text
  * @return string user entered password
  */
 function passwordPrompt($title, $tab = 0) {

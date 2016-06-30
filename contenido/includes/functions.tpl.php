@@ -87,7 +87,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         }
 
         // Generate code
-        conGenerateCodeForAllartsUsingTemplate($idtpl);
+        conGenerateCodeForAllArtsUsingTemplate($idtpl);
     }
 
     if ($default == 1) {
@@ -257,7 +257,7 @@ function tplGetContainerMode($idlay, $container) {
 /**
  * Retrieve the allowed container types
  *
- * @param int $idtpl
+ * @param int $idlay
  *         Layout number to browse
  * @param int $container
  *         Container number
@@ -284,7 +284,7 @@ function tplGetContainerTypes($idlay, $container) {
 /**
  * Retrieve the default module
  *
- * @param int $idtpl
+ * @param int $idlay
  *         Layout number to browse
  * @param int $container
  *         Container number
@@ -304,7 +304,7 @@ function tplGetContainerDefault($idlay, $container) {
 /**
  * Preparse the layout for caching purposes
  *
- * @param int $idtpl
+ * @param int $idlay
  *         Layout number to browse
  */
 function tplPreparseLayout($idlay) {

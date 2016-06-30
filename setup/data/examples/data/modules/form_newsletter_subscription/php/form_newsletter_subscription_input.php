@@ -91,7 +91,7 @@ $oCkbUpdate = new cHTMLCheckbox('ckbUpdateHandlerID'.$cnumber, 'enabled');
 $oCkbUpdate->setEvent('click', 'if (this.checked) {document.forms[0].selHandlerCatArt'.$cnumber.'.disabled = false;} else {document.forms[0].selHandlerCatArt'.$cnumber.'.disabled = true;}');
 
 $oCfgTable->setCell('handler', 0, mi18n("HANDLER_ARTICLE"));
-$oCfgTable->setCell('handler', 1, $oHidAction->render().$oSelHandlerCatArt->render()."\n ".$oCkbUpdate->toHTML(false).mi18n("UPDATE"));
+$oCfgTable->setCell('handler', 1, $oHidAction->render().$oSelHandlerCatArt->render()."\n ".$oCkbUpdate->toHtml(false).mi18n("UPDATE"));
 
 // Getting newsletter groups (if any)
 $oRcpGroups = new NewsletterRecipientGroupCollection();
@@ -108,11 +108,11 @@ $oRcpGroups->query();
 
 $oCfgTable->setCell('join_01', 0, mi18n("JOIN_COLON"));
 
-if ($oRcpGroups->Count() == 0) {
+if ($oRcpGroups->count() == 0) {
     // No groups available, only default group possible
 
     $oRadJoinDefault = new cHTMLRadioButton('radJoin'.$cnumber, 'Default', '', true);
-    $oCfgTable->setCell('join_01', 1, $oRadJoinDefault->toHTML(false).mi18n("DEFAULT_GROUP"));
+    $oCfgTable->setCell('join_01', 1, $oRadJoinDefault->toHtml(false).mi18n("DEFAULT_GROUP"));
 } else {
     // Groups available, show different group join options
 
@@ -123,7 +123,7 @@ if ($oRcpGroups->Count() == 0) {
         $oRadJoinDefault = new cHTMLRadioButton('radJoin'.$cnumber, 'Default');
     }
     $oRadJoinDefault->setEvent('click', "document.forms[0].elements['ckbJoinMultiple".$cnumber."'].disabled = true; document.forms[0].selGroup".$cnumber.".disabled = true;");
-    $oCfgTable->setCell('join_01', 1, $oRadJoinDefault->toHTML(false).mi18n("DEFAULT_GROUP"));
+    $oCfgTable->setCell('join_01', 1, $oRadJoinDefault->toHtml(false).mi18n("DEFAULT_GROUP"));
 
     // Join admin selected groups automatically
     if ($aSettings['JoinSel'] == 'Selected') {
@@ -133,7 +133,7 @@ if ($oRcpGroups->Count() == 0) {
     }
     $oRadJoinSelected->setEvent('click', "document.forms[0].elements['ckbJoinMultiple".$cnumber."'].disabled = false; document.forms[0].selGroup".$cnumber.".disabled = false;");
     $oCfgTable->setCell('join_02', 0, '');
-    $oCfgTable->setCell('join_02', 1, $oRadJoinSelected->toHTML(false).mi18n("SELECTED_GROUP_S"));
+    $oCfgTable->setCell('join_02', 1, $oRadJoinSelected->toHtml(false).mi18n("SELECTED_GROUP_S"));
 
     // Join the groups the user has selected (-> provide a list for the user), optionally, the user may select more than one group
     if ($aSettings['JoinSel'] == 'UserSelected') {
@@ -145,7 +145,7 @@ if ($oRcpGroups->Count() == 0) {
     }
     $oRadJoinUserSel->setEvent('click', "document.forms[0].elements['ckbJoinMultiple".$cnumber."'].disabled = false; document.forms[0].selGroup".$cnumber.".disabled = false;");
     $oCfgTable->setCell('join_03', 0, '');
-    $oCfgTable->setCell('join_03', 1, $oRadJoinUserSel->toHTML(false).mi18n("GROUP_USER_SELECTED").'<br />'."\n".$oCkbJoinMultiple->toHTML(false).mi18n("MULTIPLE_GROUP_SELECTION"));
+    $oCfgTable->setCell('join_03', 1, $oRadJoinUserSel->toHtml(false).mi18n("GROUP_USER_SELECTED").'<br />'."\n".$oCkbJoinMultiple->toHtml(false).mi18n("MULTIPLE_GROUP_SELECTION"));
 
     $oCfgTable->setCell('groups', 0, mi18n("SELECT_GROUP_S_COLON"));
 
@@ -212,7 +212,7 @@ $oCfgTable->setCell('options_01', 1, mi18n("DEFAULT_MESSAGE_TYPE").' '.$oSelMsgT
 // Options: Open handler article in new window?
 $oCfgTable->setCell('options_02', 0, '');
 $oCkbNewWindow = new cHTMLCheckbox("CMS_VAR[4]", 'enabled', '', "CMS_VALUE[4]");
-$oCfgTable->setCell('options_02', 1, $oCkbNewWindow->toHTML(false).mi18n("HANDLER_NEW_WINDOW"));
+$oCfgTable->setCell('options_02', 1, $oCkbNewWindow->toHtml(false).mi18n("HANDLER_NEW_WINDOW"));
 
 $oCfgTable->render(true);
 

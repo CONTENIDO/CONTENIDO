@@ -94,7 +94,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         $this->setSetting(null, "theme_advanced_toolbar_location", "top");
         $this->setSetting(null, "theme_advanced_path_location", "bottom");
         $this->setSetting(null, "remove_script_host", false);
-        $this->setSetting("file_browser_callback", "Con.Tiny.customFileBrowserCallback", true);
+        $this->setSetting(null, "file_browser_callback", "Con.Tiny.customFileBrowserCallback", true);
         //$this->_setSetting("urlconverter_callback", "Con.Tiny.customURLConverterCallback");
         // New in V3.x
         $this->setSetting(null, "theme_advanced_resizing", true);
@@ -445,7 +445,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
 
                 $aCustSettings = getEffectiveSettingsByType("tinymce_inline");
                 foreach ($aCustSettings as $key => $value) {
-                    $this->setSetting($key, $value, true);
+                    $this->setSetting(null, $key, $value, true);
                 }
 
                 break;

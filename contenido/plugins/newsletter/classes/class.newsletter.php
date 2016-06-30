@@ -34,7 +34,7 @@ class NewsletterCollection extends ItemCollection
 
     /**
      * Creates a new newsletter
-     * @param $name string specifies the newsletter name
+     * @param $sName string specifies the newsletter name
      */
     public function create($sName)
     {
@@ -65,7 +65,7 @@ class NewsletterCollection extends ItemCollection
 
     /**
      * Duplicates the newsletter specified by $itemID
-     * @param  int $itemID specifies the newsletter id
+     * @param  int $iItemID specifies the newsletter id
      */
     public function duplicate($iItemID)
     {
@@ -89,7 +89,7 @@ class NewsletterCollection extends ItemCollection
             if ($oClientLang->getProperty("newsletter", "html_newsletter") == "true") {
                 $iIDArt = conCopyArticle($oBaseItem->get("idart"),
                     $oClientLang->getProperty("newsletter", "html_newsletter_idcat"),
-                    sprintf(i18n("Newsletter: %s"), $oItem->get("name"))
+                    sprintf(i18n("Newsletter: %s", "newsletter"), $oItem->get("name"))
                 );
                 conMakeOnline($iIDArt, $lang); // Article has to be online for sending...
             }
@@ -517,7 +517,7 @@ class Newsletter extends Item
                     $sReturn = $sHTML;
                 } else {
                     if ($contenido) { // Use i18n only in backend
-                        $sErrorText = i18n("There was a problem getting the newsletter article using http. Error: %s (%s)");
+                        $sErrorText = i18n("There was a problem getting the newsletter article using http. Error: %s (%s)", "newsletter");
                     } else {
                         $sErrorText = "There was a problem getting the newsletter article using http. Error: %s (%s)";
                     }
@@ -581,7 +581,7 @@ class Newsletter extends Item
      * @param int  $iIDCatArt        idcatart of newsletter handler article
      * @param string   $sEMail           Recipient email address
      * @param string   $sName            Optional: Recipient name
-     * @param bool     $bSimulatePlugin  If recipient plugin activated, include plugins
+     * @param bool     $bSimulatePlugins If recipient plugin activated, include plugins
      *                                   and simulate values from plugins
      * @param string   $sEncoding        Message (and header) encoding, e.g. iso-8859-1
      */
@@ -624,7 +624,7 @@ class Newsletter extends Item
                 // deleted). Exit with error instead of sending as text message only
 
                 if (cRegistry::getBackendSessionId()) { // Use i18n only in backend
-                    $sError = i18n("Newsletter to %s could not be sent: No html message available");
+                    $sError = i18n("Newsletter to %s could not be sent: No html message available", "newsletter");
                 } else {
                     $sError = "Newsletter to %s could not be sent: No html message available";
                 }
@@ -695,7 +695,7 @@ class Newsletter extends Item
         if (!isValidMail($sEMail) || strtolower($sEMail) == "sysadmin@ihresite.de") {
             // No valid destination mail address specified
             if ($contenido) { // Use i18n only in backend
-                $sError = i18n("Newsletter to %s could not be sent: No valid e-mail address");
+                $sError = i18n("Newsletter to %s could not be sent: No valid e-mail address", "newsletter");
             } else {
                 $sError = "Newsletter to %s could not be sent: No valid e-mail address";
             }
@@ -721,7 +721,7 @@ class Newsletter extends Item
 
             if (!$result) {
                 if ($contenido) { // Use i18n only in backend
-                    $sError = i18n("Newsletter to %s could not be sent");
+                    $sError = i18n("Newsletter to %s could not be sent", "newsletter");
                 } else {
                     $sError = "Newsletter to %s could not be sent";
                 }
@@ -786,7 +786,7 @@ class Newsletter extends Item
                 // deleted). Exit with error instead of sending as text message only
 
                 if (cRegistry::getBackendSessionId()) { // Use i18n only in backend
-                    $sError = i18n("Newsletter could not be sent: No html message available");
+                    $sError = i18n("Newsletter could not be sent: No html message available", "newsletter");
                 } else {
                     $sError = "Newsletter could not be sent: No html message available";
                 }
@@ -898,14 +898,14 @@ class Newsletter extends Item
 
                 if (strlen($sKey) != 30) { // Prevents sending without having a key
                     if ($contenido) { // Use i18n only in backend
-                        $sError = i18n("Newsletter to %s could not be sent: Recipient has an incompatible or empty key");
+                        $sError = i18n("Newsletter to %s could not be sent: Recipient has an incompatible or empty key", "newsletter");
                     } else {
                         $sError = "Newsletter to %s could not be sent: Recipient has an incompatible or empty key";
                     }
                     $aMessages[] = $sName." (".$sEMail."): ".sprintf($sError, $sEMail);
                 } else if (!isValidMail($sEMail)) {
                     if ($contenido) { // Use i18n only in backend
-                        $sError = i18n("Newsletter to %s could not be sent: No valid e-mail address specified");
+                        $sError = i18n("Newsletter to %s could not be sent: No valid e-mail address specified", "newsletter");
                     } else {
                         $sError = "Newsletter to %s could not be sent: No valid e-mail address specified";
                     }
@@ -933,7 +933,7 @@ class Newsletter extends Item
                         $aSendRcps[] = $sName." (".$sEMail.")";
                     } else {
                         if ($contenido) { // Use i18n only in backend
-                            $sError = i18n("Newsletter to %s could not be sent");
+                            $sError = i18n("Newsletter to %s could not be sent", "newsletter");
                         } else {
                             $sError = "Newsletter to %s could not be sent";
                         }
@@ -943,7 +943,7 @@ class Newsletter extends Item
             }
         } else {
             if ($contenido) { // Use i18n only in backend
-                $sError = i18n("No recipient with specified recipient/group id %s/%s found");
+                $sError = i18n("No recipient with specified recipient/group id %s/%s found", "newsletter");
             } else {
                 $sError = "No recipient with specified recpient/group id %s/%s found";
             }

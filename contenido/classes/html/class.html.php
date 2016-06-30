@@ -675,7 +675,7 @@ class cHTML {
      * @return string
      *         generated markup
      */
-    public function toHTML() {
+    public function toHtml() {
         // Fill style definition
         $style = $this->getAttribute('style');
 

@@ -515,11 +515,12 @@ class cApiArticleLanguage extends Item {
     /**
      * Userdefined setter for article language fields.
      *
-     * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
      * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
+     *
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
@@ -548,7 +549,7 @@ class cApiArticleLanguage extends Item {
                 break;
         }
 
-        parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $bSafe);
     }
 
     /**
@@ -618,7 +619,7 @@ class cApiArticleLanguage extends Item {
      *         Name of the content type
      * @param int $id
      *         Id of the content type in this article
-     * @return bool|cContentType
+     * @return bool|cContentTypeAbstract
      *         Returns false if the name was invalid
      */
     public function getContentObject($type, $id) {

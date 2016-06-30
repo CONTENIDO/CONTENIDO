@@ -162,7 +162,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
     /**
      * Get method for installed areas
      *
-     * @return multitype:
+     * @return array
      */
     protected function _getInstalledAreas() {
         return $this->PluginInstalledAreas;

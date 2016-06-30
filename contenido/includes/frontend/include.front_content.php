@@ -191,8 +191,7 @@ if (isset($logout)) {
 if (isset($path) && strlen($path) > 1) {
     // Which resolve method is configured?
     if ($cfg['urlpathresolve'] == true) {
-        $iLangCheck = 0;
-        $idcat = prResolvePathViaURLNames($path, $iLangCheck);
+        $idcat = prResolvePathViaURLNames($path);
     } else {
         $iLangCheck = 0;
         $idcat = prResolvePathViaCategoryNames($path, $iLangCheck);

@@ -193,4 +193,6 @@ function predictCorrectFilepermissions($file) {
 
         return CON_PREDICT_CHANGEPERM_OTHERS;
     }
+
+    return CON_PREDICT_NOTPREDICTABLE;
 }

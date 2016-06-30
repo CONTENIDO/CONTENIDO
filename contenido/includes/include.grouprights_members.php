@@ -50,7 +50,7 @@ if (($action == "group_addmember") && ($perm->have_perm_area_action($area, $acti
             $myUser = new cApiUser();
 
             if (!$myUser->loadByPrimaryKey($value)) {
-                $myUser->loadUserByUserName($value);
+                $myUser->loadUserByUsername($value);
             }
 
             if ($myUser->getField("user_id") == "") {

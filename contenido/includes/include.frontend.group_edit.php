@@ -196,7 +196,7 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
     $page->next();
 
     $page->set('d', 'LABEL', i18n("Default group"));
-    $page->set('d', 'INPUT', $defaultgroup->toHTML(false));
+    $page->set('d', 'INPUT', $defaultgroup->toHtml(false));
     $page->next();
 
     $pluginOrder = cArray::trim(explode(',', getSystemProperty('plugin', 'frontendgroups-pluginorder')));

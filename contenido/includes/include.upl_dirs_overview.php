@@ -27,20 +27,20 @@ if (!(int) $client > 0) {
 
 /**
  *
- * @param unknown_type $item
+ * @param TreeItem $item
  * @return string
  */
 function getUplExpandCollapseButton($item) {
-    global $sess, $PHP_SELF, $frame, $area, $appendparameters;
+    global $sess, $frame, $area, $appendparameters;
     $selflink = 'main.php';
 
-    if (count($item->subitems) > 0) {
-        if ($item->collapsed == true) {
-            $expandlink = $sess->url($selflink . "?area=$area&frame=$frame&appendparameters=$appendparameters&expand=" . $item->id);
-            return ('<a href="' . $expandlink . '" alt="' . i18n('Open category') . '" title="' . i18n('Open category') . '"><img src="' . $item->collapsed_icon . '" alt="" border="0" align="middle" width="18"></a>');
+    if (count($item->getSubItems()) > 0) {
+        if ($item->isCollapsed() == true) {
+            $expandlink = $sess->url($selflink . "?area=$area&frame=$frame&appendparameters=$appendparameters&expand=" . $item->getId());
+            return ('<a href="' . $expandlink . '" alt="' . i18n('Open category') . '" title="' . i18n('Open category') . '"><img src="' . $item->getCollapsedIcon() . '" alt="" border="0" align="middle" width="18"></a>');
         } else {
-            $collapselink = $sess->url($selflink . "?area=$area&appendparameters=$appendparameters&frame=$frame&collapse=" . $item->id);
-            return ('<a href="' . $collapselink . '" alt="' . i18n('Close category') . '" title="' . i18n('Close category') . '"><img src="' . $item->expanded_icon . '" alt="" border="0" align="middle" width="18"></a>');
+            $collapselink = $sess->url($selflink . "?area=$area&appendparameters=$appendparameters&frame=$frame&collapse=" . $item->getId());
+            return ('<a href="' . $collapselink . '" alt="' . i18n('Close category') . '" title="' . i18n('Close category') . '"><img src="' . $item->getExpandedIcon() . '" alt="" border="0" align="middle" width="18"></a>');
         }
     } else {
         if ($item->getCustom('lastitem')) {
@@ -138,7 +138,7 @@ if (count($aInvalidDirectories) > 0) {
     $sRemameLink = '<a href="' . $sRenameHref . '">' . $sRenameString . '</a>';
     $sNotificationString = $sWarningInfo . $sSeperator . $sFiles . $sSeperator . $sSeperator . $sRemameLink;
 
-    $sErrorString = $notification->returnNotification('warning', $sNotificationString, 1);
+    $sErrorString = $notification->returnNotification('warning', $sNotificationString);
     $tpl->set('s', 'WARNING', $sErrorString);
 } else {
     $tpl->set('s', 'WARNING', '');

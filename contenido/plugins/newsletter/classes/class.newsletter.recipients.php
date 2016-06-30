@@ -160,8 +160,8 @@ class NewsletterRecipientCollection extends ItemCollection {
      * checkEMail returns true, if there is no recipient with the same e-mail
      * address; otherwise false
      *
-     * @param $email string e-mail
-     * @return recpient item if item with e-mail exists, false otherwise
+     * @param $sEmail string e-mail
+     * @return NewsletterRecipient|false recpient item if item with e-mail exists, false otherwise
      */
     public function emailExists($sEmail) {
         global $client, $lang;

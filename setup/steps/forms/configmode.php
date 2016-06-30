@@ -24,8 +24,8 @@ class cSetupConfigMode extends cSetupMask {
     /**
      * cSetupConfigMode constructor.
      * @param string $step
-     * @param bool $previous
-     * @param $next
+     * @param string $previous
+     * @param string $next
      */
     public function __construct($step, $previous, $next) {
         $cfg = cRegistry::getConfig();
@@ -54,11 +54,11 @@ class cSetupConfigMode extends cSetupMask {
             $oConfigDownload->setChecked(true);
         }
 
-        $oConfigSaveLabel = new cHTMLLabel(i18n("Save", "setup"), $oConfigSave->getId());
+        $oConfigSaveLabel = new cHTMLLabel(i18n("Save", "setup"), $oConfigSave->getID());
         $this->_stepTemplateClass->set("s", "CONTROL_SAVE", $oConfigSave->render());
         $this->_stepTemplateClass->set("s", "CONTROL_SAVELABEL", $oConfigSaveLabel->render());
 
-        $oConfigDownloadLabel = new cHTMLLabel(i18n("Download", "setup"), $oConfigDownload->getId());
+        $oConfigDownloadLabel = new cHTMLLabel(i18n("Download", "setup"), $oConfigDownload->getID());
         $this->_stepTemplateClass->set("s", "CONTROL_DOWNLOAD", $oConfigDownload->render());
         $this->_stepTemplateClass->set("s", "CONTROL_DOWNLOADLABEL", $oConfigDownloadLabel->render());
 
@@ -68,9 +68,9 @@ class cSetupConfigMode extends cSetupMask {
     /**
      * Old constructor
      * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
-     * @param unknown_type $step
-     * @param unknown_type $previous
-     * @param unknown_type $next
+     * @param string $step
+     * @param string $previous
+     * @param string $next
      */
     public function cSetupConfigMode($step, $previous, $next) {
         cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');

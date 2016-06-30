@@ -193,7 +193,7 @@ class cSearchResult extends cSearchBaseAbstract {
      */
     public function getContent($art_id, $cms_type, $id = 0) {
         $article = new cApiArticleLanguage();
-        $article->loadByArticleAndLanguageId($art_id, $this->lang, true);
+        $article->loadByArticleAndLanguageId($art_id, $this->lang);
         return $article->getContent($cms_type, $id);
     }
 
@@ -222,7 +222,7 @@ class cSearchResult extends cSearchBaseAbstract {
         }
 
         $article = new cApiArticleLanguage();
-        $article->loadByArticleAndLanguageId($art_id, $this->lang, true);
+        $article->loadByArticleAndLanguageId($art_id, $this->lang);
         $content = array();
         if (isset($this->_searchResult[$art_id][$cms_type])) {
             // if searchword occurs in cms_type

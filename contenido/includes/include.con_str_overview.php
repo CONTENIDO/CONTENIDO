@@ -20,9 +20,9 @@ cInclude('includes', 'functions.lang.php');
 
 /**
  *
- * @param unknown_type $iIdcat
- * @param unknown_type $aWholelist
- * @return Ambigous <string, void, mixed>
+ * @param int $iIdcat
+ * @param array $aWholelist
+ * @return string
  */
 function showTree($iIdcat, &$aWholelist) {
     global $check_global_rights, $sess, $cfg, $perm, $db, $db2, $db3, $area, $client, $lang, $navigationTree;

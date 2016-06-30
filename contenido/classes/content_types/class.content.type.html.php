@@ -74,7 +74,7 @@ class cContentTypeHtml extends cContentTypeAbstract {
         $db->query($sql);
         $db->nextRecord();
         $id .= $db->f('idtype') . '_' . $this->_id;
-        $wysiwygDiv->setId($id);
+        $wysiwygDiv->setID($id);
         $wysiwygDiv->setClass(htmlentities($this->_type));
 
         $wysiwygDiv->setEvent('Focus', "this.style.border='1px solid #bb5577';");

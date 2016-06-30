@@ -18,7 +18,7 @@ class cHtmlListItemTest extends PHPUnit_Framework_TestCase {
     public function testConstruct() {
         $cListItem = new cHTMLListItem('testId', 'testClass');
 
-        $this->assertSame('<li id="testId" class="testClass"></li>', $cListItem->toHTML());
+        $this->assertSame('<li id="testId" class="testClass"></li>', $cListItem->toHtml());
     }
 
 }

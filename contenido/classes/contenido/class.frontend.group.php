@@ -67,9 +67,10 @@ class cApiFrontendGroupCollection extends ItemCollection {
      * Overridden delete method to remove groups from groupmember table
      * before deleting group
      *
-     * @todo should return return value of overloaded method
      * @param int $itemID
      *         specifies the frontend user group
+     *
+     * @return bool
      */
     public function delete($itemID) {
         $associations = new cApiFrontendGroupMemberCollection();
@@ -78,7 +79,8 @@ class cApiFrontendGroupCollection extends ItemCollection {
         while (($item = $associations->next()) !== false) {
             $associations->delete($item->get('idfrontendgroupmember'));
         }
-        parent::delete($itemID);
+
+        return parent::delete($itemID);
     }
 }
 

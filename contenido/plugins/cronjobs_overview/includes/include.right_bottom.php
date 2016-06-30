@@ -15,9 +15,8 @@
 include_once(dirname(__FILE__).'/config.plugin.php');
 
 $tpl = new cTemplate();
-$contenidoVars = array('cfg' => $cfg);
 
-$cronjobs = new Cronjobs($contenidoVars, $_REQUEST['file']);
+$cronjobs = new Cronjobs($_REQUEST['file']);
 $notification = new cGuiNotification();
 
 switch ($_REQUEST['action']) {

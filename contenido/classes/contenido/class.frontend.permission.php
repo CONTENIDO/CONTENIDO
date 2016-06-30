@@ -70,10 +70,9 @@ class cApiFrontendPermissionCollection extends ItemCollection {
             $perm->set('item', $item);
 
             $perm->store();
-
-            return $perm;
         }
 
+        return $perm;
     }
 
     /**

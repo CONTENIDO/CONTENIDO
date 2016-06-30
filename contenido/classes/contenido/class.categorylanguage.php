@@ -198,11 +198,12 @@ class cApiCategoryLanguage extends Item {
     /**
      * Userdefined setter for article language fields.
      *
-     * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
      * @param bool $safe [optional]
      *         Flag to run defined inFilter on passed value
+     *
+     * @return bool
      */
     public function setField($name, $value, $safe = true) {
         switch ($name) {
@@ -224,7 +225,7 @@ class cApiCategoryLanguage extends Item {
                 break;
         }
 
-        parent::setField($name, $value, $safe);
+        return parent::setField($name, $value, $safe);
     }
 
     /**

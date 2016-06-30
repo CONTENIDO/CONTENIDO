@@ -341,7 +341,7 @@ class UploadList extends FrontendList {
      * @see FrontendList::convert()
      * @param int $field
      *         Field index
-     * @param mixed $value
+     * @param mixed $data
      *         Field value
      * @return mixed
      */
@@ -665,7 +665,7 @@ while ($item = $uploads->next()) {
 
     $check = new cHTMLCheckbox('fdelete[]', $filename);
 
-    $mark = $check->toHTML(false);
+    $mark = $check->toHtml(false);
 
     if ($bAddFile == true) {
         // 'bgcolor' is just a placeholder...

@@ -24,14 +24,6 @@ $appendparameters = $_REQUEST["appendparameters"];
  *
  */
 class UploadSearchResultList extends FrontendList {
-
-    /**
-     * Seems to be unused.
-     *
-     * @var unknown_type
-     */
-    private $dark;
-
     /**
      *
      * @var string

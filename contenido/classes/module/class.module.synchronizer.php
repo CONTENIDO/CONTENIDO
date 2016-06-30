@@ -49,7 +49,7 @@ class cModuleSynchronizer extends cModuleHandler {
         // if modul dont exist in the $cfg['tab']['mod'] table.
         if ($this->_isExistInTable($oldModulName, $client) == false) {
             // add new Module in db-tablle
-            $this->_addModul($newModulName);
+            $this->_addModule($newModulName);
             cRegistry::appendLastOkMessage(sprintf(i18n('Module %s successfully synchronized'), $newModulName));
         } else {
             // update the name of the module
@@ -177,7 +177,7 @@ class cModuleSynchronizer extends cModuleHandler {
                 // update
                 $synchLock = 1;
                 $this->setLastModified($lastmodabsolute, $db->f('idmod'));
-                conGenerateCodeForAllArtsUsingMod($db->f('idmod'));
+                conGenerateCodeForAllartsUsingMod($db->f('idmod'));
                 $showMessage = true;
             }
 
@@ -340,11 +340,8 @@ class cModuleSynchronizer extends cModuleHandler {
      *
      * @param string $name
      *         name of the new module
-     * @param int $client
-     *         client of the new module
-     *          ToDo: Remove it, because we use cRegisty class
      */
-    private function _addModul($name, $client = 0) {
+    private function _addModule($name) {
 
         // initializing variables
         $client = cRegistry::getClientId();

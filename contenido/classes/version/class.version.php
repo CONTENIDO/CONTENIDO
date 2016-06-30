@@ -102,7 +102,7 @@ class cVersion {
     /**
      * Timestamp
      *
-     * @var unknown_type
+     * @var array
      */
     protected $dTimestamp;
 
@@ -135,6 +135,16 @@ class cVersion {
     protected $iIdentity;
 
     /**
+     * @var string
+     */
+    protected $sDescripion;
+
+    /**
+     * @var string
+     */
+    protected $iVersion;
+
+    /**
      * To take control versioning is switched off
      *
      * @var bool
@@ -144,7 +154,7 @@ class cVersion {
     /**
      * Timestamp
      *
-     * @var unknown_type
+     * @var int
      */
     protected $dActualTimestamp;
 
@@ -171,8 +181,8 @@ class cVersion {
      * @param array $aCfgClient
      * @param object $oDB
      * @param int $iClient
-     * @param object $sArea
-     * @param object $iFrame
+     * @param string $sArea
+     * @param int $iFrame
      */
     public function __construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame) {
         $this->aBodyData = array();
@@ -550,7 +560,7 @@ class cVersion {
                 $oForm->setConfirm('clearhistory', $aMessage['alt'], $aMessage['popup']);
             }
             $oForm->setActionButton('submit', 'images/but_refresh.gif', i18n('Refresh'), 's');
-            $oForm->setTableid("version_selector");
+            $oForm->setTableID("version_selector");
 
             return $oForm->render();
         } else {

@@ -381,7 +381,7 @@ $div->setStyle("height:200px;width:700px;");
 $table = new cHTMLTable();
 $table->setWidth('680px');
 $table->setClass('generic');
-$table->setId('main-table');
+$table->setID('main-table');
 
 $thead = new cHTMLTableHeader();
 $thead->setClass('main-head');
@@ -726,7 +726,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $page->set('s', 'URLNAME', i18n("Alias"));
     // end plugin Advanced Mod Rewrite
 
-    $arrArtSpecs = getArtSpec();
+    $arrArtSpecs = getArtspec();
 
     $inputArtSortSelect = new cHTMLSelectELement("artspec", "400px");
     $inputArtSortSelect->setClass("text_medium");
@@ -748,7 +748,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         || $versioning->getState() == 'advanced' && $articleType != 'editable') {
             $inputArtSortSelect->setDisabled('disabled');
     }
-    $tmp_inputArtSort .= $inputArtSortSelect->toHTML();
+    $tmp_inputArtSort .= $inputArtSortSelect->toHtml();
 
     if ($iAvariableSpec == 0) {
         $tmp_inputArtSort = i18n("No article specifications found!");
@@ -930,7 +930,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     // Fetch setting
     $oClient = new cApiClient($client);
     $cValue = $oClient->getProperty("system", "multiassign", true);
-    $sValue = getSystemProperty("system", "multiassign", true);
+    $sValue = getSystemProperty("system", "multiassign");
 
     $tpl2 = new cTemplate();
     $button = '';

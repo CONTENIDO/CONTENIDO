@@ -117,7 +117,7 @@ $descr = new cHTMLTextarea("description", $description);
 $form->add(i18n("Description"), $descr->render());
 
 $standardcb = new cHTMLCheckbox("vdefault", 1, "", $vdefault);
-$form->add(i18n("Default"), $standardcb->toHTML(false));
+$form->add(i18n("Default"), $standardcb->toHtml(false));
 
 $form->add(i18n("Layout"), $select);
 $form->add(i18n("Layout description"), $laydescription);

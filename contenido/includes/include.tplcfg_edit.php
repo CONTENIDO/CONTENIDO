@@ -51,7 +51,7 @@ if ($idtpl != 0 && $idtplcfg != 0) {
             conGenerateCode($idcat, $idart, $lang, $client);
             //backToMainArea($send);
         } else {
-            conGenerateCodeForAllartsInCategory($idcat);
+            conGenerateCodeForAllArtsInCategory($idcat);
             if ($back == 'true') {
                 backToMainArea($send);
             }
@@ -91,7 +91,7 @@ if ($idtpl != 0 && $idtplcfg != 0) {
         $sql = "UPDATE " . $cfg["tab"]["cat_lang"] . " SET idtplcfg = 0 WHERE idcat = '" . cSecurity::toInteger($idcat) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";
         $db->query($sql);
 
-        conGenerateCodeForAllartsInCategory($idcat);
+        conGenerateCodeForAllArtsInCategory($idcat);
         backToMainArea($send);
     } elseif (isset($idart) && $idart != 0 && $changetemplate == 1) {
 
@@ -110,7 +110,7 @@ if ($idtpl != 0 && $idtplcfg != 0) {
         $sql = "UPDATE " . $cfg["tab"]["art_lang"] . " SET idtplcfg = 0 WHERE idart = '" . cSecurity::toInteger($idart) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";
         $db->query($sql);
 
-        conGenerateCodeForAllartsInCategory($idcat);
+        conGenerateCodeForAllArtsInCategory($idcat);
         //backToMainArea($send);
     }
 
@@ -142,7 +142,7 @@ if ($idtpl != 0 && $idtplcfg != 0) {
         }
     }
 
-    conGenerateCodeForAllartsInCategory($idcat);
+    conGenerateCodeForAllArtsInCategory($idcat);
 }
 
 ?>

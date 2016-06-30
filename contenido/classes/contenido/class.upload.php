@@ -1,9 +1,6 @@
 <?php
-
 /**
  * This file contains the upload collection and item class.
- *
- * @todo Reset in/out filters of parent classes.
  *
  * @package Core
  * @subpackage GenericDB_Model

@@ -15,7 +15,7 @@ class cHtmlSpanTest extends PHPUnit_Framework_TestCase {
         $this->assertSame(NULL, $span->getAttribute('_content'));
         $this->assertSame('testClass', $span->getAttribute('class'));
 
-        $this->assertSame('<span id="" class="testClass">testContent</span>', $span->toHTML());
+        $this->assertSame('<span id="" class="testClass">testContent</span>', $span->toHtml());
     }
 
 }
