@@ -340,7 +340,7 @@ if (!cRegistry::getBackendSessionId() && ($idartlang === false || $online != tru
 
 // Start page cache, if enabled
 if ($cfg['cache']['disable'] != '1') {
-    cInclude('frontend', 'includes/concache.php');
+    cInclude('frontend', 'data/config/' . CON_ENVIRONMENT . '/concache.php');
     $oCacheHandler = new cOutputCacheHandler($GLOBALS['cfgConCache'], $db);
     // $iStartTime ist optional und ist die Startzeit des Scriptes,
     // z.B. am Anfang von fron_content.php
