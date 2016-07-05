@@ -20,10 +20,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage UpgradeJob
  */
 class cUpgradeJob_0009 extends cUpgradeJobAbstract {
-
     public $maxVersion = "4.9.0";
 
     public function _execute() {
+
         if ($this->_setupType !== 'setup') {
             return;
         }
@@ -94,6 +94,19 @@ class cUpgradeJob_0009 extends cUpgradeJobAbstract {
                     cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "templates");
                 }
                 cDirHandler::recursiveCopy("data/examples/templates", $this->_aCfgClient[1]["path"]["frontend"] . "templates");
+
+                // copy concache.php
+                if(!is_dir($this->_aCfgClient[1]["path"]["frontend"] . "data")) {
+                    cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "data", 0777);
+                }
+                if(!is_dir($this->_aCfgClient[1]["path"]["frontend"] . "data/config")) {
+                    cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "data/config", 0777);
+                }
+                if(!is_dir($this->_aCfgClient[1]["path"]["frontend"] . "data/config/" . CON_ENVIRONMENT )) {
+                    cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "data/config/" . CON_ENVIRONMENT, 0777);
+                }
+                copy("data/examples/concache.php", $this->_aCfgClient[1]["path"]["frontend"] . "data/config/" . CON_ENVIRONMENT . "/concache.php");
+
         }
     }
 
