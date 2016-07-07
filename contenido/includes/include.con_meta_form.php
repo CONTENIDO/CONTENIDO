@@ -230,9 +230,24 @@ if (!empty($notifications)) {
     $tpl->set('s', 'NOTIFICATIONS', '');
 }
 
+// CON-2532
+// problem:
+//      "base"-url is e.g. con.local
+//      "contenido-base"-url is con.local/cms
+// therefore: 1)article links are generated relative like "/cms/some-site"
+//                  -> works in browser for "base"-url+articlelink: con.local/cms/some-site
+//            2)is not working if contenido builds absolute urls with its contenido functions
+//                   -> con.local/cms/cms/some-site
+// we don't have the base url stored in contenido (why :(() so i just made one:
+$baseUrl = sprintf(
+    "%s://%s",
+    isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
+    $_SERVER['SERVER_NAME']
+);
+
 // Assign form page seo elements values
 $tpl->set('s', 'LINK', $art->getLink());
-$tpl->set('s', 'FULL_LINK', $cfgClient[$client]['path']['htmlpath'] . $art->getLink());
+$tpl->set('s', 'FULL_LINK', /*$cfgClient[$client]['path']['htmlpath']*/ $baseUrl . $art->getLink());
 
 $tpl->set('s', 'PAGE_TITLE', conHtmlSpecialChars(cSecurity::unFilter(stripslashes($art->getField('pagetitle')))));
 
