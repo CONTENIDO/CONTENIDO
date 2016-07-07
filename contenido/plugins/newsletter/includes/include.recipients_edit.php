@@ -115,7 +115,7 @@ if (true === $recipient->isLoaded() && $recipient->get("idclient") == $client &&
 
         // Remove group associations
         if (isset($_REQUEST["ckbRemove"])) {
-            $oGroupMembers = new NewsletterRecipientGroupMemberCollection;
+            $oGroupMembers = new NewsletterRecipientGroupMemberCollection();
 
             foreach ($_REQUEST["ckbRemove"] as $iGroupMemberID) {
                 if (is_numeric($iGroupMemberID)) {

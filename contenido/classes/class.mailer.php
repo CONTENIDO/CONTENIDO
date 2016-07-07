@@ -210,7 +210,9 @@ class cMailer extends Swift_Mailer {
 
         // build transport
         $transport = self::constructTransport($this->_mailHost, $this->_mailPort, $this->_mailEncryption, $this->_mailUser, $this->_mailPass);
-
+        if($transport == false) {
+            return false;
+        }
         parent::__construct($transport);
     }
 
@@ -263,7 +265,12 @@ class cMailer extends Swift_Mailer {
             $transport->start();
         } catch (Swift_TransportException $e) {
             // if SMTP fails just use PHP's mail() function
-            $transport = Swift_MailTransport::newInstance();
+            // $transport = Swift_MailTransport::newInstance();
+
+            // CON-2540
+            // fallback in constructTransport deleted
+            // parent::send() can't handle it, therefore return null before
+            return false;
         }
 
         return $transport;
@@ -343,6 +350,13 @@ class cMailer extends Swift_Mailer {
     public function send(Swift_Mime_Message $message, &$failedRecipients = NULL, $resend = false) {
         if (!is_array($failedRecipients)) {
             $failedRecipients = array();
+        }
+
+        // CON-2540
+        // fallback in constructTransport deleted
+        // parent::send() can't handle it, therefore return null before
+        if($this->getTransport() == null) {
+            return null;
         }
         $result = parent::send($message, $failedRecipients);
 
