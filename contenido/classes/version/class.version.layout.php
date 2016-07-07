@@ -42,7 +42,7 @@ class cVersionLayout extends cVersion {
      *
      * @var string
      */
-    private $sDescripion;
+    protected $sDescripion;
 
     /**
      * The Metainformation about layout
