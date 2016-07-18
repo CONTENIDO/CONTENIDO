@@ -24,8 +24,15 @@
 
 function reloadRightFrame() {
     try {
-        Con.getFrame('right_bottom').location.reload();
-        Con.getFrame('right_top').location.reload();
+        var frameRightBottom = Con.getFrame('right_bottom');
+        frameRightBottom.location.href = Con.UtilUrl.replaceParams(frameRightBottom.location.href, {action: null});
+
+        // Con.getFrame('right_bottom').location.reload();
+
+        var frameRightTop = Con.getFrame('right_top');
+        frameRightTop.location.href = Con.UtilUrl.replaceParams(frameRightTop.location.href, {action: null});
+
+        // Con.getFrame('right_top').location.reload();
     } catch (e) {
         Con.log(['reloadRightFrame() fail', e], 'template.con_str_overwiew.html', 'warn');
     }
