@@ -449,7 +449,7 @@ if ($contenido) {
     $allow = cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.AllowEdit', $lang, $idcat, $idart, $auth->auth['uid']);
 }
 
-// check if isset parent category template.
+// check if isset parent category template. do not show show error message if user call n article explicit via idart variable at url
 if ($contenido) {
     $sql = "
         SELECT
@@ -490,7 +490,7 @@ while ($db->next_record()) {
     array_push($data, $db->toArray());
 }
 
-if ($data[0]['idtplcfg'] === '0') {
+if ($data[0]['idtplcfg'] === '0' && !isset($_REQUEST['idart'])) {
     $tpl = new cTemplate();
     $tpl->set("s", "ERROR_TITLE", $errorTitle);
     $tpl->set("s", "ERROR_TEXT", $errorText);
