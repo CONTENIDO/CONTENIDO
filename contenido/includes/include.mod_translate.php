@@ -20,7 +20,7 @@ $langstring = $langobj->get('name') . ' (' . $lang . ')';
 
 $readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
 
-if($readOnly) {
+if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
 
@@ -56,7 +56,7 @@ $strings = $module->parseModuleForStringsLoadFromFile($cfg, $client, $lang);
 
 // Get the strings from translation file
 $translationArray = $moduleTranslation->getTranslationArray();
-
+print_r($translationArray);
 $myTrans = array();
 $save = false;
 // Insert new strings
