@@ -212,7 +212,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
         $sFromName = stripslashes($_REQUEST["txtFromName"]);
         $sSubject = stripslashes($_REQUEST["txtSubject"]);
 
-        if ($oNewsletter->get("name") != $sName || $oNewsletter->get("welcome") != $_REQUEST["ckbWelcome"] || !isValidMail($oNewsletter->get("newsfrom")) && isValidMail($sFromEMail)) {
+        if ($oNewsletter->get("name") != $sName || $oNewsletter->get("welcome") != $_REQUEST["ckbWelcome"] || $oNewsletter->get("newsfrom") != $sFromEMail) {
             // Only reload, if something visible has changed
             $oPage->setReload();
         }
