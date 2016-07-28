@@ -29,7 +29,7 @@
                         </p>
                     </div>
                     <p>
-                        {$POST.FORUM|escape}
+                        {$POST.FORUM}
                     </p>
                     {$POST.EDIT_INFORMATION}
                 </div>
