@@ -250,6 +250,7 @@ initData();
                 var oldid = cfg.catId + '-' + cfg.tplId + '-' + cfg.isOnline + '-' + cfg.isPublic + '-' + cfg.hasRight['template'] + '-' + cfg.hasRight['online'] + '-' + cfg.hasRight['public'] + '-' + cfg.hasRight['template_cfg']  + '-' + cfg.hasRight['syncable'];
                 var newid = cfg.catId + '-' + templateid + '-' + cfg.isOnline + '-' + cfg.isPublic + '-' + cfg.hasRight['template'] + '-' + cfg.hasRight['online'] + '-' + cfg.hasRight['public'] + '-' + cfg.hasRight['template_cfg']  + '-' + cfg.hasRight['syncable'];
                 cfg.tplId = templateid;
+
                 left_bottom.$(".con_str_tree li.root ul li#"+oldid).attr("id", newid);
 
                 var frame = Con.getFrame('right_bottom');
