@@ -462,7 +462,7 @@ if ($contenido) {
             AND b.idart = $idart
             AND a.idlang = $lang
         ;";
-    $errorText = i18n("Editing is not possible because there is no template assigned to this category.");
+    $errorText = i18n("Editing/Showing is not possible because there is no template assigned to this category.");
     $errorTitle = i18n("FATAL ERROR");
 } else {
     $article = new cApiArticleLanguage($idartlang);
@@ -478,7 +478,7 @@ if ($contenido) {
                 AND b.idart=$idart
                 AND a.idlang=$lang
             ;";
-    $errorText = 'Editing is not possible because there is no template assigned to this category.';
+    $errorText = 'Editing/Showing is not possible because there is no template assigned to this category.';
     $errorTitle = 'FATAL ERROR!';
 }
 
