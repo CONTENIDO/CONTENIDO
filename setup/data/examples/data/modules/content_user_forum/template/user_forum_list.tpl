@@ -25,7 +25,7 @@
                     </p>
                     <div class="quote_handler">
                         <p>
-                            {$POST.FORUM_QUOTE|escape}
+                            {$POST.FORUM_QUOTE}
                         </p>
                     </div>
                     <p>
