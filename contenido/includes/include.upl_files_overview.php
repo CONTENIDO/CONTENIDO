@@ -351,7 +351,7 @@ class UploadList extends FrontendList {
         $cfg = cRegistry::getConfig();
         $sess = cRegistry::getSession();
         $client = cRegistry::getClientId();
-        $cfgClient = cRegistry::getClientConfig($client);
+        $cfgClient = cRegistry::getClientConfig();
         $backendUrl = cRegistry::getBackendUrl();
 
         if ($field == 4) {

@@ -126,7 +126,7 @@ class cApiUploadCollection extends ItemCollection {
     public function delete($id) {
 
         $client = cRegistry::getClientId();
-        $cfgClient = cRegistry::getClientConfig($client);
+        $cfgClient = cRegistry::getClientConfig();
 
         $oUpload = new cApiUpload();
         $oUpload->loadByPrimaryKey($id);
