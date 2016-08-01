@@ -75,7 +75,8 @@ class cSetupSystemtest extends cSetupMask {
             $this->doChangedDirsFilesTest();
         }
 
-        if ((int) ini_get('max_execution_time') < 60) {
+        $maxExecutionTime = (int) ini_get('max_execution_time');
+        if ($maxExecutionTime < 60 && $maxExecutionTime !== 0) {
             $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Unable to set max_execution_time", "setup"), i18n("Your PHP configuration for max_execution_time can not be changed via this script. We recommend setting the value for the installation or upgrade process to 60 seconds. You can try to execute the process with your current configuration. If the process is stopped, the system is not usable (any longer)", "setup"));
         }
 

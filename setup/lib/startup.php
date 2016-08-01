@@ -123,9 +123,9 @@ if (is_array($_REQUEST)) {
     }
 }
 
-
 // set max_execution_time
-if (ini_get('max_execution_time') < 60 && ini_get('max_execution_time') != 0) {
+$maxExecutionTime = (int) ini_get('max_execution_time');
+if ($maxExecutionTime < 60 && $maxExecutionTime !== 0) {
     ini_set('max_execution_time', 60);
 }
 

@@ -2,13 +2,13 @@
 /**
  * This file contains the upgrade job 9.
  *
- * @package Setup
+ * @package    Setup
  * @subpackage UpgradeJob
- * @author Mischa Holz
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Mischa Holz
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
@@ -16,7 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Upgrade job 9.
  * Copy the example client to cms folder if needed
  *
- * @package Setup
+ * @package    Setup
  * @subpackage UpgradeJob
  */
 class cUpgradeJob_0009 extends cUpgradeJobAbstract {
@@ -41,15 +41,15 @@ class cUpgradeJob_0009 extends cUpgradeJobAbstract {
 
                 // copy the images folder to the cms folder for the example client
                 if (cFileHandler::exists($this->_aCfgClient[1]["path"]["frontend"] . "images")) {
-                	cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "images");
-                	cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "images");
+                    cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "images");
+                    cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "images");
                 }
                 cDirHandler::recursiveCopy("data/examples/images", $this->_aCfgClient[1]["path"]["frontend"] . "images");
 
                 // copy the includes folder to the cms folder for the example client
                 if (cFileHandler::exists($this->_aCfgClient[1]["path"]["frontend"] . "includes")) {
-                	cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "includes");
-                	cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "includes");
+                    cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "includes");
+                    cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "includes");
                 }
                 cDirHandler::recursiveCopy("data/examples/includes", $this->_aCfgClient[1]["path"]["frontend"] . "includes");
 
@@ -80,6 +80,8 @@ class cUpgradeJob_0009 extends cUpgradeJobAbstract {
                     cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "data/layouts");
                 }
                 cDirHandler::recursiveCopy("data/examples/data/layouts", $this->_aCfgClient[1]["path"]["frontend"] . "data/layouts");
+                $this->_copyClientConfigFiles();
+                break;
             case "CLIENTMODULES":
                 // copy the module folder to the cms folder for the example client
                 if (cFileHandler::exists($this->_aCfgClient[1]["path"]["frontend"] . "data/modules")) {
@@ -94,22 +96,32 @@ class cUpgradeJob_0009 extends cUpgradeJobAbstract {
                     cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "templates");
                 }
                 cDirHandler::recursiveCopy("data/examples/templates", $this->_aCfgClient[1]["path"]["frontend"] . "templates");
-
-                // copy concache.php
-                if(!is_dir($this->_aCfgClient[1]["path"]["frontend"] . "data")) {
-                    cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "data", 0777);
-                }
-                if(!is_dir($this->_aCfgClient[1]["path"]["frontend"] . "data/config")) {
-                    cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "data/config", 0777);
-                }
-                if(!is_dir($this->_aCfgClient[1]["path"]["frontend"] . "data/config/" . CON_ENVIRONMENT )) {
-                    cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "data/config/" . CON_ENVIRONMENT, 0777);
-                }
-                copy("data/examples/concache.php", $this->_aCfgClient[1]["path"]["frontend"] . "data/config/" . CON_ENVIRONMENT . "/concache.php");
-
+                $this->_copyClientConfigFiles();
+                break;
         }
     }
 
+    /**
+     * @throws cInvalidArgumentException
+     */
+    private function _copyClientConfigFiles() {
+
+        // copy concache.php
+        if (!is_dir($this->_aCfgClient[1]["path"]["frontend"] . "data")) {
+            cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "data", 0777);
+        }
+        if (!is_dir($this->_aCfgClient[1]["path"]["frontend"] . "data/config")) {
+            cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "data/config", 0777);
+        }
+        if (!is_dir($this->_aCfgClient[1]["path"]["frontend"] . "data/config/" . CON_ENVIRONMENT)) {
+            cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "data/config/" . CON_ENVIRONMENT, 0777);
+        }
+        copy("data/examples/concache.php", $this->_aCfgClient[1]["path"]["frontend"] . "data/config/" . CON_ENVIRONMENT . "/concache.php");
+
+        if (CON_ENVIRONMENT !== 'production' && !cFileHandler::exists($this->_aCfgClient[1]["path"]["frontend"] . 'data/config/' . CON_ENVIRONMENT . '/config.php')) {
+            cFileHandler::copy($this->_aCfgClient[1]["path"]["frontend"] . 'data/config/production/config.php', $this->_aCfgClient[1]["path"]["frontend"] . 'data/config/' . CON_ENVIRONMENT . '/config.php');
+        }
+    }
 }
 
 ?>
