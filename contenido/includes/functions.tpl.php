@@ -76,11 +76,11 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         $template->set('lastmodified', $lastmodified);
         $template->store();
 
-        if (is_array($c)) {
-            // Delete all container assigned to this template
-            $containerColl = new cApiContainerCollection();
-            $containerColl->clearAssignments($idtpl);
+        // Delete all container assigned to this template
+        $containerColl = new cApiContainerCollection();
+        $containerColl->clearAssignments($idtpl);
 
+        if (is_array($c) && (int)$changelayout !== 1) {
             foreach ($c as $idcontainer => $dummyval) {
                 $containerColl2 = new cApiContainerCollection();
                 $containerColl2->create($idtpl, $idcontainer, $c[$idcontainer]);
