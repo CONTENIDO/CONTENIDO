@@ -112,6 +112,10 @@ class cApiShortUrlCollection extends ItemCollection {
     public function isValidShortUrl($shorturl) {
         $cfg = cRegistry::getConfig();
 
+        if (strlen(trim($shorturl)) === 0) {
+            return true;
+        }
+
         // check if given shorturl is a directory in the client folder
         $exclude = scandir(cRegistry::getFrontendPath());
         if (is_array($cfg['url_shortener']['exlude_dirs'])) {
