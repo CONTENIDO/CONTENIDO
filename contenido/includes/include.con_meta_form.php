@@ -347,11 +347,9 @@ foreach ($availableTags as $key => $value) {
     $tpl->set('d', 'METAFIELDTYPE', $element);
     $tpl->set('d', 'METATITLE', $value['metatype'] . ':');
 
-    $aUserPerm = explode(',', $auth->auth['perm']);
-
     if ($versioning->getState() == 'simple' && $articleType == 'current'
             || $versioning->getState() == 'advanced' && $articleType == 'editable'
-            || $versioning->getState() == 'disabled' && ($art->getField('locked') != 1 || in_array('sysadmin', $aUserPerm))) {
+            || $versioning->getState() == 'disabled' && ($art->getField('locked') != 1 || in_array('sysadmin', $aAuthPerms))) {
         $tpl->set('d', 'CURSOR', 'pointer');
         $tpl->set('d', 'DELETE_META',
             "Con.showConfirmation('" .
@@ -680,7 +678,7 @@ while ($db->nextRecord()) {
 }
 
 // accessible by the current user (sysadmin client admin) anymore.
-if (in_array('sysadmin', $aUserPerm)) {
+if (in_array('sysadmin', $aAuthPerms)) {
     // disable/grey out button if a non-editable version is selected
     if ($versioning->getState() == 'simple' && $articleType != 'current'
             || $versioning->getState() == 'advanced' && $articleType != 'editable') {
