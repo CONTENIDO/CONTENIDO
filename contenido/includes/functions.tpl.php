@@ -35,9 +35,9 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
 
     $author = (string) $auth->auth['uname'];
 
-    // entry in 'tpl'-table
     $template = new cApiTemplate();
-    $template->loadByMany(array('idclient' => $client, 'name' => $name));
+    $template->loadByMany(array('idclient' => $client, 'idtpl' => $idtpl));
+
     if ($template->isLoaded() && $template->get('idtpl') != $idtpl) {
         cRegistry::addErrorMessage(i18n("Template name already exists"));
         return -1;
