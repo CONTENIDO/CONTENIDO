@@ -36,6 +36,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
     $author = (string) $auth->auth['uname'];
 
     $template = new cApiTemplate();
+    /*CON-2545: load template by id and not by its name */
     $template->loadByMany(array('idclient' => $client, 'idtpl' => $idtpl));
 
     if ($template->isLoaded() && $template->get('idtpl') != $idtpl) {
