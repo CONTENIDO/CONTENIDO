@@ -316,6 +316,25 @@ class cRequestValidator {
     }
 
     /**
+     * This function removes unwished chars from given string
+     * @param $param
+     *
+     * @return mixed
+     */
+    public static function cleanParameter($param) {
+
+        $charsToReplace = array(
+            '<', '>', '?', '&', '$', '{', '}', '(', ')'
+        );
+
+        foreach ($charsToReplace as $char) {
+            $param = str_replace($char, '', $param);
+        }
+
+        return $param;
+    }
+
+    /**
      * Checks an array for validity.
      *
      * @param array $arr
