@@ -56,7 +56,7 @@ $strings = $module->parseModuleForStringsLoadFromFile($cfg, $client, $lang);
 
 // Get the strings from translation file
 $translationArray = $moduleTranslation->getTranslationArray();
-print_r($translationArray);
+
 $myTrans = array();
 $save = false;
 // Insert new strings
