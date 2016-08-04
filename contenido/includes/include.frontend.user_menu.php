@@ -63,7 +63,7 @@ $oFEUsers->query();
 $sampleItem = $oFEUsers->next();
 
 // fetch available fields from database item
-if ($sampleItem !== NULL) {
+if ($sampleItem) {
     $databaseFields = array_keys($sampleItem->toArray());
 }
 
