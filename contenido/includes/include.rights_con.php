@@ -27,6 +27,7 @@ $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name
         AND idcat != 0 AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
 $db->query($sql);
 $rights_list_old = array();
+
 while ($db->nextRecord()) { // set a new rights list fore this user
     $rights_list_old[$db->f(3) . "|" . $db->f(4) . "|" . $db->f("idcat")] = "x";
 }

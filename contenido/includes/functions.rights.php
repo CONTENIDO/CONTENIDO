@@ -295,6 +295,7 @@ function buildUserOrGroupPermsFromRequest($bAddUserToClient = false) {
 function saveRights() {
     global $perm, $notification, $db, $userid;
     global $rights_list, $rights_list_old, $rights_client, $rights_lang;
+    global $aArticleRights, $aCategoryRights, $aTemplateRights;
 
     // If no checkbox is checked
     if (!is_array($rights_list)) {
@@ -310,7 +311,22 @@ function saveRights() {
 
     if (is_array($arraydel)) {
         foreach ($arraydel as $value) {
+
             $data = explode('|', $value);
+
+            // Do not delete rights that does not display at this moment
+            if (!empty($_REQUEST['filter_rights'])) {
+                if (($_REQUEST['filter_rights'] != 'article' && in_array($data[1], $aArticleRights)) ||
+                    ($_REQUEST['filter_rights'] != 'category' && in_array($data[1], $aCategoryRights)) ||
+                    ($_REQUEST['filter_rights'] != 'template' && in_array($data[1], $aTemplateRights))) {
+                    continue;
+                }
+
+                if ($_REQUEST['filter_rights'] != 'other' && !in_array($data[1], array_merge($aArticleRights, $aCategoryRights, $aTemplateRights))) {
+                    continue;
+                }
+            }
+
             $data[0] = $oAreaColl->getAreaID($data[0]);
             $data[1] = $perm->getIDForAction($data[1]);
 
@@ -357,6 +373,7 @@ function saveRights() {
 function saveGroupRights() {
     global $perm, $notification, $db, $groupid;
     global $rights_list, $rights_list_old, $rights_client, $rights_lang;
+    global $aArticleRights, $aCategoryRights, $aTemplateRights;
 
     // If no checkbox is checked
     if (!is_array($rights_list)) {
@@ -374,6 +391,20 @@ function saveGroupRights() {
     if (is_array($arraydel)) {
         foreach ($arraydel as $value) {
             $data = explode('|', $value);
+
+            // Do not delete grouprights that does not display at this moment
+            if (!empty($_REQUEST['filter_rights'])) {
+                if (($_REQUEST['filter_rights'] != 'article' && in_array($data[1], $aArticleRights)) ||
+                    ($_REQUEST['filter_rights'] != 'category' && in_array($data[1], $aCategoryRights)) ||
+                    ($_REQUEST['filter_rights'] != 'template' && in_array($data[1], $aTemplateRights))) {
+                    continue;
+                }
+
+                if ($_REQUEST['filter_rights'] != 'other' && !in_array($data[1], array_merge($aArticleRights, $aCategoryRights, $aTemplateRights))) {
+                    continue;
+                }
+            }
+
             $data[0] = $oAreaColl->getAreaID($data[0]);
             $data[1] = $perm->getIDForAction($data[1]);
 

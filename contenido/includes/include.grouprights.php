@@ -162,7 +162,7 @@ if ($area != 'groups_content') {
         'con_makecatonline',
         'con_makepublic'
     );
-    $aTempalteRights = array(
+    $aTemplateRights = array(
         'con_changetemplate',
         'con_tplcfg_edit'
     );
@@ -178,10 +178,10 @@ if ($area != 'groups_content') {
                 $aViewRights = $aCategoryRights;
                 break;
             case 'template':
-                $aViewRights = $aTempalteRights;
+                $aViewRights = $aTemplateRights;
                 break;
             case 'other':
-                $aViewRights = array_merge($aArticleRights, $aCategoryRights, $aTempalteRights);
+                $aViewRights = array_merge($aArticleRights, $aCategoryRights, $aTemplateRights);
                 $bExclusive = true;
                 break;
             default:
