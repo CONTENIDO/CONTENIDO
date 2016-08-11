@@ -1042,7 +1042,11 @@ class cSystemtest {
 
         $errorMessage = "";
         if ($this->testMySQLiExtension() && !$this->testMySQLExtension()) {
-            $errorMessage = mysqli_error($handle->getLinkId());
+            if ($handle->getLinkId()) {
+                $errorMessage = mysqli_error($handle->getLinkId());
+            } else {
+                $errorMessage = mysqli_error();
+            }
         } else {
             $errorMessage = mysql_error();
         }
