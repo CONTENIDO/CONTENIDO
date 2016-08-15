@@ -58,6 +58,9 @@ class cContentTypeText extends cContentTypeAbstract {
             $this->_settings = conHtmlSpecialChars($this->_settings);
             $this->_rawSettings = stripslashes($this->_rawSettings);
             $this->_rawSettings = conHtmlSpecialChars($this->_rawSettings);
+
+            // input of text with paragraphs should print text with line breaks
+            $this->_rawSettings = nl2br($this->_rawSettings);
         }
     }
 
