@@ -22,7 +22,6 @@ $oNewsletters = new NewsletterCollection();
 if (isset($idnewsletter)) {
     $idnewsletter = (int) $idnewsletter;
 }
-//die('testll9ala');
 
 // Include plugins
 if (is_array($cfg['plugins']['newsletters'])) {
