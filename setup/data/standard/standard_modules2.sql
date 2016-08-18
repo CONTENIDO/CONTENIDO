@@ -16,7 +16,7 @@ INSERT INTO `!PREFIX!_pifa_field` VALUES (9, 1, 6, 1, 'street_number', 'Hausnumm
 INSERT INTO `!PREFIX!_pifa_field` VALUES (10, 1, 7, 1, 'plz', 'Postleitzahl', 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, 'Bitte geben Sie die Postleitzahl ein', NULL);
 INSERT INTO `!PREFIX!_pifa_field` VALUES (11, 1, 8, 1, 'city', 'Ort', 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, 'Bitte geben Sie den Ort ein', NULL);
 INSERT INTO `!PREFIX!_pifa_field` VALUES (12, 1, 10, 1, 'phone', 'Telefon', 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, 'Bitte geben Sie die Telefonnummer ein', NULL);
-INSERT INTO `!PREFIX!_pifa_field` VALUES (13, 1, 11, 1, 'email', 'E-Mail-Adresse', 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, 'Bitte geben Sie die E-Mail Adresse ein', NULL);
+INSERT INTO `!PREFIX!_pifa_field` VALUES (13, 1, 11, 1, 'email', 'E-Mail-Adresse', 1, NULL, NULL, NULL, NULL, NULL, 1, '/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]+$/', 'Bitte geben Sie eine gültige E-Mail Adresse ein', NULL);
 INSERT INTO `!PREFIX!_pifa_field` VALUES (14, 1, 9, 2, 'message', 'Ihre Nachricht', 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, 'Bitte geben Sie die Nachricht ein', NULL);
 INSERT INTO `!PREFIX!_pifa_field` VALUES (16, 1, 13, 13, '', 'Absenden', 1, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 'button_red');
 INSERT INTO `!PREFIX!_pifa_field` VALUES (17, 1, 14, 14, '', 'Zurücksetzen', 0, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 'button_grey');
