@@ -47,6 +47,7 @@ data/cache/*
 data/config/production/config.autoloader.local.php
 data/config/production/config.clients.php
 data/config/production/config.local.php
+data/config/production/config.wysiwyg_tinymce4.php
 data/config/production/config.php
 data/cronlog/*.job
 data/logs/deprecatedlog.txt
