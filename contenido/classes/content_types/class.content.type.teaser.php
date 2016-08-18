@@ -261,7 +261,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
 
         $template = new cTemplate();
         // set title of teaser
-        $template->set('s', 'TITLE', $this->_settings['teaser_title']);
+        $template->set('s', 'TEASER_TITLE', $this->_settings['teaser_title']);
 
         // decide if it is a manual or category teaser
         if ($this->_settings['teaser_manual'] == 'true' && count($this->_settings['teaser_manual_art']) > 0) {
