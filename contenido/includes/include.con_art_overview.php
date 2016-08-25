@@ -142,16 +142,35 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
     if ((($idcat == 0 || $perm->have_perm_area_action('con')) && $perm->have_perm_item('str', $idcat)) || $perm->have_perm_area_action('con', 'con_makestart') || $perm->have_perm_area_action('con', 'con_makeonline') || $perm->have_perm_area_action('con', 'con_deleteart') || $perm->have_perm_area_action('con', 'con_tplcfg_edit') || $perm->have_perm_area_action('con', 'con_lock') || $perm->have_perm_area_action('con', 'con_makecatonline') || $perm->have_perm_area_action('con', 'con_changetemplate') || $perm->have_perm_area_action('con_editcontent', 'con_editart') || $perm->have_perm_area_action('con_editart', 'con_edit') || $perm->have_perm_area_action('con_editart', 'con_newart') || $perm->have_perm_area_action('con_editart', 'con_saveart') || $perm->have_perm_area_action('con_tplcfg', 'con_tplcfg_edit') || $perm->have_perm_area_action_item('con', 'con_makestart', $idcat) || $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat) || $perm->have_perm_area_action_item('con', 'con_deleteart', $idcat) || $perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat) || $perm->have_perm_area_action_item('con', 'con_lock', $idcat) || $perm->have_perm_area_action_item('con', 'con_makecatonline', $idcat) || $perm->have_perm_area_action_item('con', 'con_changetemplate', $idcat) || $perm->have_perm_area_action_item('con_editcontent', 'con_editart', $idcat) || $perm->have_perm_area_action_item('con_editart', 'con_edit', $idcat) || $perm->have_perm_area_action_item('con_editart', 'con_newart', $idcat) || $perm->have_perm_area_action_item('con_tplcfg', 'con_tplcfg_edit', $idcat) || $perm->have_perm_area_action_item('con_editart', 'con_saveart', $idcat)) {
 
+        // Simple SQL statement to get the number of articles in selected language
+        $sql_count_in_selected_language = "SELECT
+                    COUNT(*) AS article_count
+                 FROM
+                    " . $cfg["tab"]["art_lang"] . " AS a,
+                    " . $cfg["tab"]["art"] . " AS b,
+                    " . $cfg["tab"]["cat_art"] . " AS c
+                 WHERE
+                    a.idlang   = " . cSecurity::toInteger($lang) . "  AND
+                    a.idart     = b.idart AND
+                    b.idclient  = " . cSecurity::toInteger($client) . " AND
+                    b.idart     = c.idart AND
+                    c.idcat     = " . cSecurity::toInteger($idcat);
+
+        $db->query($sql_count_in_selected_language);
+        $db->nextRecord();
+        $articles_in_selected_language = $db->f("article_count");
+
+        // Sortby and sortmode
         $sortby = $currentuser->getUserProperty("system", "sortorder-idlang-$lang-idcat-$idcat");
         $sortmode = $currentuser->getUserProperty("system", "sortmode-idlang-$lang-idcat-$idcat");
 
+        // Main SQL statement
         $sql = "SELECT
                     a.idart AS idart,
                     a.idlang AS idlang,
                     a.idartlang AS idartlang,
                     a.title AS title,
                     c.idcat AS idcat,
-                    {ISSTART}
                     c.idcatart AS idcatart,
                     a.idtplcfg AS idtplcfg,
                     a.published AS published,
@@ -176,27 +195,32 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     c.idcat     = " . $idcat;
 
         // Simple SQL statement to get the number of articles
-        $sql_count = "SELECT
-                    COUNT(*) AS article_count
-                 FROM
-                    " . $cfg["tab"]["art_lang"] . " AS a,
-                    " . $cfg["tab"]["art"] . " AS b,
-                    " . $cfg["tab"]["cat_art"] . " AS c
-                 WHERE
-                    (a.idlang   = " . cSecurity::toInteger($lang) . " {SYNCOPTIONS}) AND
-                    a.idart     = b.idart AND
-                    b.idclient  = " . cSecurity::toInteger($client) . " AND
-                    b.idart     = c.idart AND
-                    c.idcat     = " . cSecurity::toInteger($idcat);
+        // Only with activated synchonization mode
+        if ($syncoptions != -1) {
+            $sql_count = "SELECT
+                        COUNT(*) AS article_count
+                     FROM
+                        " . $cfg["tab"]["art_lang"] . " AS a,
+                        " . $cfg["tab"]["art"] . " AS b,
+                        " . $cfg["tab"]["cat_art"] . " AS c
+                     WHERE
+                        (a.idlang   = " . cSecurity::toInteger($lang) . " {SYNCOPTIONS}) AND
+                        a.idart     = b.idart AND
+                        b.idclient  = " . cSecurity::toInteger($client) . " AND
+                        b.idart     = c.idart AND
+                        c.idcat     = " . cSecurity::toInteger($idcat);
 
-        $sql = str_replace("{ISSTART}", '', $sql);
-
-        if ($syncoptions == -1) {
-            $sql = str_replace("{SYNCOPTIONS}", '', $sql);
-            $sql_count = str_replace("{SYNCOPTIONS}", '', $sql_count);
-        } else {
             $sql = str_replace("{SYNCOPTIONS}", "OR a.idlang = '" . $syncoptions . "'", $sql);
             $sql_count = str_replace("{SYNCOPTIONS}", "OR a.idlang = '" . $syncoptions . "'", $sql_count);
+
+            if ($elemperpage > 1) {
+                $db->query($sql_count);
+                $db->nextRecord();
+                $iArticleCount = $db->f("article_count");
+            }
+        } else {
+            $sql = str_replace("{SYNCOPTIONS}", '', $sql);
+            $iArticleCount = $articles_in_selected_language;
         }
 
         // Article sort
@@ -221,9 +245,12 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         // Getting article count, if necessary
         if ($elemperpage > 0) {
-            $db->query($sql_count);
-            $db->nextRecord();
-            $iArticleCount = $db->f("article_count");
+
+            // If the synchronized mode is on, perhaps we must increase the limit
+            if ($elemperpage < $iArticleCount) {
+                $add = $iArticleCount - $articles_in_selected_language;
+                $elemperpage = $elemperpage + $add;
+            }
 
             // If not beyond scope, limit
             if ($iArticleCount == 0) {
