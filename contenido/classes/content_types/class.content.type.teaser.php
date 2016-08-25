@@ -411,6 +411,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
                 $template->set('d', 'IMAGE', $image['element']);
                 $template->set('d', 'IMAGE_SRC', $image['src']);
             } else if (strip_tags($imageId) != $imageId && strlen($imageId) > 0) {
+
                 $image = $this->_extractImage($imageId);
                 if (strlen($image['src']) > 0) {
                     $template->set('d', 'IMAGE', $image['element']);
@@ -558,7 +559,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
             $upload = new cApiUpload($image);
             $dirname = $upload->get('dirname');
             $filename = $upload->get('filename');
-            if (!empty($dirname) && !empty($filename)) {
+            if (!empty($filename)) {
                 $teaserImage = $this->_cfgClient[$this->_client]['path']['frontend'] . 'upload/' . $dirname . $filename;
             }
         } else {
