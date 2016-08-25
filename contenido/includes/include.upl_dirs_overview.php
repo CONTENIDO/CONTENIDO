@@ -118,6 +118,8 @@ $tpl->reset();
 // Show notification for error in dir name from upl_mkdir.action
 if ($errno === '0703') {
     $tpl->set('s', 'WARNING', $notification->returnNotification('error', i18n('Directories with special characters and spaces are not allowed.')));
+} elseif($errno === '0704') {
+    $tpl->set('s', 'WARNING', $notification->returnNotification('error', i18n('Can not write directory.')));
 }
 
 // Uploadfiles tree on file system

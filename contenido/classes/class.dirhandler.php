@@ -364,4 +364,18 @@ class cDirHandler {
 
         return $ret;
     }
+
+    /**
+     * Checks if you can create in mother directory a new folder
+     *
+     * @param $dirname
+     * @return bool
+     */
+    public static function isCreatable($dirname) {
+            if (cFileHandler::writeable($dirname) === true) {
+                return true;
+            } else {
+                return false;
+            }
+    }
 }

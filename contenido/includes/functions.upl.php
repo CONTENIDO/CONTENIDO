@@ -326,6 +326,13 @@ function uplmkdir($sPath, $sName) {
         return '0703';
     }
 
+    // Checks right to create a new directory
+    $motherDir = $cfgClient['upl']['path'] . $sPath;
+    if (cDirHandler::isCreatable($motherDir) === false) {
+        $action = 'upl_mkdir';
+        return '0704';
+    }
+
     // Check dir or create new
     $dPath = $cfgClient['upl']['path'] . $sPath . $dName;
     if (cDirHandler::read($dPath) === false) {

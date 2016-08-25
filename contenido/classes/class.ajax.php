@@ -311,6 +311,9 @@ class cAjaxRequest {
                     case '0703':
                         $string = i18n('Directories with special characters and spaces are not allowed.');
                         break;
+                    case '0704':
+                        $string = i18n('Can not write directory.');
+                        break;
                 }
                 break;
 
