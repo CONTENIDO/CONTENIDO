@@ -422,8 +422,7 @@ class PifaAjaxHandler {
 
         if ($pifaField->showField('rule')) {
             $rule = $_POST['rule'];
-            $rule = cSecurity::unescapeDB($rule);
-            $rule = cSecurity::toString($rule);
+            $rule = cSecurity::toString($rule, false);
             $rule = trim($rule);
             $rule = substr($rule, 0, 1023);
             // check if rule is valid
