@@ -212,6 +212,14 @@ if (($action == 'savecontype' || $action == 10)) {
             $oContentColl->delete((int)$_REQUEST['idcontent']);
             $aNotifications[] = $notification->returnNotification("ok", i18n("Changes saved"));
 
+            // Execute cec hook
+            cApiCecHook::execute('Contenido.Article.DeletecontentType', array(
+                'idcontent' => (int) $_REQUEST['idcontent'],
+                'idart' => cRegistry::getArticleId(),
+                'idlang' => cRegistry::getArticleLanguageId(),
+                'idartlang' => cRegistry::getArticleLanguageId()
+            ));
+
             conGenerateCodeForArtInAllCategories($idart);
         }
     } else {
