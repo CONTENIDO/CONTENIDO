@@ -5,8 +5,6 @@
  *
  * @package Plugin
  * @subpackage UrlShortener
- * @version SVN Revision $Rev:$
- *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -113,6 +111,10 @@ class cApiShortUrlCollection extends ItemCollection {
      */
     public function isValidShortUrl($shorturl) {
         $cfg = cRegistry::getConfig();
+
+        if (strlen(trim($shorturl)) === 0) {
+            return true;
+        }
 
         // check if given shorturl is a directory in the client folder
         $exclude = scandir(cRegistry::getFrontendPath());

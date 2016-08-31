@@ -1,12 +1,12 @@
 <?php
+
 /**
  * This file contains the backend page for layout history.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
- * @author           Bilal Arslan, Timo Trautmann
+ * @author           Bilal Arslan
+ * @author           Timo Trautmann
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
  * @link             http://www.4fb.de
@@ -135,9 +135,9 @@ if ($sSelectBox != "") {
     ));
 } else {
     if ($bDeleteFile) {
-        $oPage->displayInfo(i18n("Version history was cleared"));
+        $oPage->displayOk(i18n("Version history was cleared"));
     } else {
-        $oPage->displayWarning(i18n("No layout history available"));
+        $oPage->displayInfo(i18n("No layout history available"));
     }
 
     $oPage->abortRendering();

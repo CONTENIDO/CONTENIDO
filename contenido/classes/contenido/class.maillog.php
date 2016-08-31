@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the maillog collection and item class.
  *
  * @package Core
  * @subpackage GenericDB_Model
- * @version SVN Revision $Rev:$
- *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -24,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiMailLogCollection extends ItemCollection {
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -41,7 +40,8 @@ class cApiMailLogCollection extends ItemCollection {
      * @param string|array $bcc
      * @param string $subject
      * @param string $body
-     * @param string $created timestamp!
+     * @param string $created
+     *         timestamp!
      * @param string $charset
      * @param string $contentType
      * @return cApiMailLog
@@ -80,7 +80,7 @@ class cApiMailLogCollection extends ItemCollection {
 class cApiMailLog extends Item {
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      *
      * @param mixed $mId
      */

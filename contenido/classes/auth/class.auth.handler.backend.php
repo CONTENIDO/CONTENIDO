@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend authentication handler class.
  *
  * @package    Core
  * @subpackage Authentication
- * @version    SVN Revision $Rev:$
- *
  * @author     Dominik Ziegler
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -16,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This class contains the methods for the backend authentication in CONTENIDO.
+ * This class is the backend authentication handler for CONTENIDO.
  *
  * @package    Core
  * @subpackage Authentication
@@ -24,27 +23,42 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cAuthHandlerBackend extends cAuthHandlerAbstract {
 
     /**
-     * Constructor of the backend auth handler.
-     * Automatically sets the lifetime of the authentication to the configured
-     * value.
+     * Constructor to create an instance of this class.
+     *
+     * Automatically sets the lifetime of the authentication to the
+     * configured value.
      */
     public function __construct() {
         $cfg = cRegistry::getConfig();
-        $this->_lifetime = (int)$cfg['backend']['timeout'];
-
+        $this->_lifetime = (int) $cfg['backend']['timeout'];
         if ($this->_lifetime == 0) {
             $this->_lifetime = 15;
         }
     }
 
+    /**
+     * Handle the pre authentication.
+     *
+     * There is no pre authentication in backend so false is returned.
+     *
+     * @see cAuthHandlerAbstract::preAuthorize()
+     * @return false
+     */
     public function preAuthorize() {
-        // there is no pre authorization in backend
         return false;
     }
 
+    /**
+     * Display the login form.
+     * Includes a file which displays the login form.
+     *
+     * @see cAuthHandlerAbstract::displayLoginForm()
+     */
     public function displayLoginForm() {
-        // @TODO  We need a better solution for this. One idea could be to set the request/response
-        //        type in global $cfg array instead of checking $_REQUEST['ajax'] everywhere...
+        // @TODO  We need a better solution for this.
+        //        One idea could be to set the request/response type in
+        //        global $cfg array instead of checking $_REQUEST['ajax']
+        //        everywhere...
         if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
             $oAjax = new cAjaxRequest();
             $sReturn = $oAjax->handle('authentication_fail');
@@ -54,10 +68,27 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
         }
     }
 
+    /**
+     * Validate the credentials.
+     *
+     * Validate the users input against source and return a valid user
+     * ID or false.
+     *
+     * @see cAuthHandlerAbstract::validateCredentials()
+     * @return string|false
+     */
     public function validateCredentials() {
         $username = $_POST['username'];
         $password = $_POST['password'];
         $formtimestamp = $_POST['formtimestamp'];
+
+        // add slashes if they are not automatically added
+        if (cRegistry::getConfigValue('simulate_magic_quotes') !== true) {
+            // backward compatiblity of passwords
+            $password = addslashes($password);
+            // avoid sql injection in query by username on cApiUserCollection select string
+            $username = addslashes($username);
+        }
 
         $groupPerm = array();
 
@@ -97,7 +128,8 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
         while (($item = $userColl->next()) !== false) {
             $uid = $item->get('user_id');
             $perm = $item->get('perms');
-            $pass = $item->get('password'); // Password is stored as a sha256 hash
+            // password is stored as a sha256 hash
+            $pass = $item->get('password');
             $salt = $item->get("salt");
         }
 
@@ -125,6 +157,11 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
         return $uid;
     }
 
+    /**
+     * Log the successful authentication.
+     *
+     * @see cAuthHandlerAbstract::logSuccessfulAuth()
+     */
     public function logSuccessfulAuth() {
         global $client, $lang, $saveLoginTime;
 
@@ -168,7 +205,12 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
         $saveLoginTime = true;
     }
 
-
+    /**
+     * Returns true if a user is logged in.
+     *
+     * @see cAuthHandlerAbstract::isLoggedIn()
+     * @return bool
+     */
     public function isLoggedIn() {
         $authInfo = $this->getAuthInfo();
 

@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for managing tasks.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Unknown
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -38,20 +37,50 @@ if (isset($_REQUEST["listsubmit"])) {
     }
 }
 
+/**
+ *
+ */
 class TODOBackendList extends cGuiScrollList {
 
-    var $statustypes;
+    /**
+     * @var array
+     */
+    protected $_statustypes;
 
-    function TODOBackendList() {
+    /**
+     * @var array
+     */
+    protected $_prioritytypes;
+
+    /**
+     * TODOBackendList constructor.
+     */
+    public function __construct() {
         global $todoitems;
 
         parent::__construct();
 
-        $this->statustypes = $todoitems->getStatusTypes();
-        $this->prioritytypes = $todoitems->getPriorityTypes();
+        $this->_statustypes = $todoitems->getStatusTypes();
+        $this->_prioritytypes = $todoitems->getPriorityTypes();
     }
 
-    function onRenderColumn($column) {
+
+    /**
+     * Old constructor
+     */
+    public function TODOBackendList() {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
+        $this->__construct();
+    }
+
+    /**
+     * Is called when a new column is rendered.
+     *
+     * @see cGuiScrollList::onRenderColumn()
+     * @param int $column
+     *         The current column which is being rendered
+     */
+    public function onRenderColumn($column) {
         if ($column == 6 || $column == 5) {
             $this->objItem->updateAttributes(array("align" => "center"));
         } else {
@@ -65,7 +94,19 @@ class TODOBackendList extends cGuiScrollList {
         }
     }
 
-    function convert($key, $value, $hidden) {
+    /**
+     * Field converting facility.
+     * Needs to be overridden in the child class to work properbly.
+     *
+     * @see cGuiScrollList::convert()
+     * @param int $key
+     *         Field index
+     * @param string $value
+     *         Field value
+     * @param array $hidden
+     * @return unknown
+     */
+    public function convert($key, $value, $hidden) {
         global $link, $dateformat, $cfg;
 
         $backendUrl = cRegistry::getBackendUrl();
@@ -101,18 +142,18 @@ class TODOBackendList extends cGuiScrollList {
                     break;
             }
 
-            if (!array_key_exists($value, $this->statustypes)) {
+            if (!array_key_exists($value, $this->_statustypes)) {
                 return i18n("No status type set");
             }
 
             $backendUrl = cRegistry::getBackendUrl();
 
             $image = new cHTMLImage($backendUrl . $cfg["path"]["images"] . "reminder/" . $img);
-            $image->setAlt($this->statustypes[$value]);
+            $image->setAlt($this->_statustypes[$value]);
 
             //Do not display statuicon, only show statustext
             //return $image->render();
-            return $this->statustypes[$value];
+            return $this->_statustypes[$value];
         }
 
         if ($key == 7) {
@@ -144,6 +185,8 @@ class TODOBackendList extends cGuiScrollList {
         }
 
         if ($key == 6) {
+            $p = $img = '';
+            
             switch ($value) {
                 case 0:
                     $img = "prio_low.gif";
@@ -166,7 +209,7 @@ class TODOBackendList extends cGuiScrollList {
             }
 
             $image = new cHTMLImage($backendUrl . $cfg["path"]["images"] . "reminder/" . $img);
-            $image->setAlt($this->prioritytypes[$p]);
+            $image->setAlt($this->_prioritytypes[$p]);
             return $image->render();
         }
 

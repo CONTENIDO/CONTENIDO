@@ -5,8 +5,6 @@
  *
  * @package Plugin
  * @subpackage PluginManager
- * @version SVN Revision $Rev:$
- *
  * @author Frederic Schneider
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -139,7 +137,7 @@ while (($plugin = $oItem->next()) !== false) {
     $pagePlugins->set('s', 'LANG_UPDATE', i18n('Update', 'pim'));
     $pagePlugins->set('s', 'LANG_UPDATE_CHOOSE', i18n('Please choose your new file', 'pim'));
     $pagePlugins->set('s', 'LANG_UPDATE_UPLOAD', i18n('Update', 'pim'));
-    $pagePlugins->set('s', 'LANG_REMOVE_SQL', i18n('Execute uninstall.sql', 'pim'));
+    $pagePlugins->set('s', 'LANG_REMOVE_SQL', i18n('Execute plugin_uninstall.sql', 'pim'));
 
     $pagePlugins->set('s', 'LANG_DEPENDENCIES', i18n('Dependencies', 'pim'));
 
@@ -200,6 +198,7 @@ if (is_dir($cfg['path']['plugins'])) {
                 $pagePlugins->set('s', 'AUTHOR', $tempXml->general->author);
                 $pagePlugins->set('s', 'COPYRIGHT', $tempXml->general->copyright);
                 $pagePlugins->set('s', 'MAIL', $tempXml->general->mail);
+                $pagePlugins->set('s', 'WEBSITE', $tempXml->general->website);
                 $pagePlugins->set('s', 'DEPENDENCIES', $pluginDependenciesView->getPluginDependenciesExtracted($tempXml));
 
                 // uninstall link

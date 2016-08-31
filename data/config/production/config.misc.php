@@ -35,6 +35,9 @@ $cfg['backend']['timeout'] = 60;
 // (int) Frontend timeout
 $cfg['frontend']['timeout'] = 15;
 
+// (bool) Enforce HTTPS for cookies
+$cfg['secure'] = false;
+
 // (bool) Use Pseudo-Cron?
 $cfg['use_pseudocron'] = true;
 
@@ -173,8 +176,6 @@ $cfg['php_error_reporting'] = E_ALL & ~(E_STRICT | E_NOTICE);
  *
  * So, if you want to enable frontend caching, set $cfg['cache']['disable'] to false and configure
  * the rest in cms/includes/concache.php!
- *
- * @TODO: Need a caching solution with better integration in CONTENIDO core
  */
 
 // (bool) Enable/disable caching
@@ -342,7 +343,7 @@ $cfg['images']['image_magick']['use'] = true;
 // (string) Optional, path to ImageMagick binary directory, with ending slash
 //          e. g. C:/Program Files/ImageMagick/
 //          IMPORTANT: use slashes - not backslashes!
-// NOTE: You should set this on a windows os, otherwhise the system could execute
+// NOTE: You should set this on a windows os, otherwise the system could execute
 //       the "convert.exe" from system32 folder. This executable does not belongs
 //       to ImageMagick.
 $cfg['images']['image_magick']['path'] = '';
@@ -414,8 +415,9 @@ $cfg['client_template']['default_extension'] = 'html';
 // Number of lines
 $cfg['system_log']['number_of_lines'] = 100;
 
-// Searched file extensions
-$cfg['system_log']['file_extensions'] = array('txt', 'log');
+// Allowed log file names
+$cfg['system_log']['allowed_filenames'] = array('deprecatedlog.txt', 'errorlog.txt', 'exception.txt', 'security.txt', 'setuplog.txt');
+
 
 /* Search index settings
  * -----------------------------------------------------------------------------
@@ -432,3 +434,11 @@ $cfg['search_index']['excluded_content_types'] = array(
 	'imgeditor',
 	'linkeditor'
 );
+
+/* WYSIWYG editor classes
+ * -----------------------------------------------------------------------------
+ */
+
+/* The name of WYSIWYG editor classes */
+$cfg['wysiwyg']['tinymce3_editorclass'] = 'cTinyMCEEditor';
+$cfg['wysiwyg']['tinymce4_editorclass'] = 'cTinyMCE4Editor';

@@ -2,8 +2,6 @@
 
 /**
  *
- * @version SVN Revision $Rev:$
- *
  * @author claus.schunk@4fb.de
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG <www.4fb.de>
@@ -160,7 +158,7 @@ class cHtmlTextAreaTest extends cTestingTestCase {
      */
     public function testToHtml() {
         $area = new cHTMLTextarea('testName', 'testInitValue');
-        $this->assertSame($area->toHtml(), $area->toHTML());
+        $this->assertSame($area->toHtml(), $area->toHtml());
     }
 }
 

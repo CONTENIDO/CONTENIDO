@@ -1,61 +1,68 @@
 <?php
+
 /**
- * This file contains the base class for building search indices
+ * This file contains the base class for building search indices.
  *
  * @package Core
  * @subpackage Frontend_Search
- * @version SVN Revision $Rev:$
- *
  * @author Willi Man
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.encoding.php');
 
 /**
- * CONTENIDO API - Search Index Object
+ * CONTENIDO API - Search Index Object.
  *
- * This object creates an index of an article
+ * This object creates an index of an article.
  *
- * Create object with
- * $oIndex = new SearchIndex($db); # where $db is the global CONTENIDO database
- * object.
- * Start indexing with
+ * Create object where $db is the global CONTENIDO database object.
+ *
+ * $oIndex = new SearchIndex($db);
+ *
+ * Start indexing where $aContent is the complete content of an article
+ * specified by its content types.
+ *
  * $oIndex->start($idart, $aContent);
- * where $aContent is the complete content of an article specified by its
- * content types.
- * It looks like
+ *
+ * It looks like:
  * Array (
- * [CMS_HTMLHEAD] => Array (
- * [1] => Herzlich Willkommen...
- * [2] => ...auf Ihrer Website!
- * )
- * [CMS_HTML] => Array (
- * [1] => Die Inhalte auf dieser Website ...
+ *      [CMS_HTMLHEAD] => Array (
+ *          [1] => Herzlich Willkommen...
+ *          [2] => ...auf Ihrer Website!
+ *      )
+ *      [CMS_HTML] => Array (
+ *          [1] => Die Inhalte auf dieser Website ...
  *
- * The index for keyword 'willkommen' would look like '&12=1(CMS_HTMLHEAD-1)'
- * which means the keyword 'willkommen' occurs 1 times in article with articleId
- * 12 and content type CMS_HTMLHEAD[1].
+ * The index for keyword 'willkommen' would look like
+ * '&12=1(CMS_HTMLHEAD-1)' which means the keyword 'willkommen' occurs
+ * 1 times in article with articleId 12 and content type CMS_HTMLHEAD[1].
  *
- * TODO: The basic idea of the indexing process is to take the complete content
- * of an article and to generate normalized index terms
- * from the content and to store a specific index structure in the relation
+ * TODO: The basic idea of the indexing process is to take the complete
+ * content of an article and to generate normalized index terms from the
+ * content and to store a specific index structure in the relation
  * 'con_keywords'.
- * To take the complete content is not very flexible. It would be better to
- * differentiate by specific content types or by any content.
- * The &, =, () and - seperated string is not easy to parse to compute the
- * search result set.
+ *
+ * To take the complete content is not very flexible. It would be better
+ * to differentiate by specific content types or by any content.
+ *
+ * The &, =, () and - seperated string is not easy to parse to compute
+ * the search result set.
+ *
  * It would be a better idea (and a lot of work) to extend the relation
- * 'con_keywords' to store keywords by articleId (or content source identifier)
- * and content type.
+ * 'con_keywords' to store keywords by articleId (or content source
+ * identifier) and content type.
+ *
  * The functions removeSpecialChars, setStopwords, setContentTypes and
  * setCmsOptions should be sourced out into a new helper-class.
- * Keep in mind that class Search and SearchResult uses an instance of object
- * Index.
+ *
+ * Keep in mind that class Search and SearchResult uses an instance of
+ * object Index.
  *
  * @package Core
  * @subpackage Frontend_Search
@@ -63,35 +70,35 @@ cInclude('includes', 'functions.encoding.php');
 class cSearchIndex extends cSearchBaseAbstract {
 
     /**
-     * the content of the cms-types of an article
+     * content of the cms-types of an article
      *
      * @var array
      */
     protected $_keycode = array();
 
     /**
-     * the list of keywords of an article
+     * list of keywords of an article
      *
      * @var array
      */
     protected $_keywords = array();
 
     /**
-     * the words, which should not be indexed
+     * words, which should not be indexed
      *
      * @var array
      */
     protected $_stopwords = array();
 
     /**
-     * the keywords of an article stored in the DB
+     * keywords of an article stored in the DB
      *
      * @var array
      */
     protected $_keywordsOld = array();
 
     /**
-     * the keywords to be deleted
+     * keywords to be deleted
      *
      * @var array
      */
@@ -99,12 +106,14 @@ class cSearchIndex extends cSearchBaseAbstract {
 
     /**
      * 'auto' or 'self'
+     *
      * The field 'auto' in table con_keywords is used for automatic indexing.
-     * The value is a string like "&12=2(CMS_HTMLHEAD-1,CMS_HTML-1)", which
-     * means a keyword occurs 2 times in article with $idart 12
+     * The value is a string like "&12=2(CMS_HTMLHEAD-1,CMS_HTML-1)",
+     * which means a keyword occurs 2 times in article with $idart 12
      * and can be found in CMS_HTMLHEAD[1] and CMS_HTML[1].
-     * The field 'self' can be used in the article properties to index the
-     * article manually.
+     *
+     * The field 'self' can be used in the article properties to index
+     * the article manually.
      *
      * @var string
      */
@@ -137,21 +146,25 @@ class cSearchIndex extends cSearchBaseAbstract {
     protected $_cmsType = array();
 
     /**
-     * the suffix of all available cms types
+     * suffix of all available cms types
      *
      * @var array
      */
     protected $_cmsTypeSuffix = array();
 
     /**
+     *
      * @var int
      */
     protected $idart;
 
     /**
-     * Constructor, set object properties
+     * Constructor to create an instance of this class.
      *
-     * @param cDb $db CONTENIDO Database object
+     * Set object properties.
+     *
+     * @param cDb $db [optional]
+     *         CONTENIDO database object
      */
     public function __construct($db = NULL) {
         parent::__construct($db);
@@ -162,23 +175,26 @@ class cSearchIndex extends cSearchBaseAbstract {
     /**
      * Start indexing the article.
      *
-     * @param int $idart Article Id
-     * @param array $aContent The complete content of an article specified by
-     *        its content types.
-     *        It looks like
-     *        Array (
-     *        [CMS_HTMLHEAD] => Array (
-     *        [1] => Herzlich Willkommen...
-     *        [2] => ...auf Ihrer Website!
-     *        )
-     *        [CMS_HTML] => Array (
-     *        [1] => Die Inhalte auf dieser Website ...
-     *
-     * @param string $place The field where to store the index information in
-     *        db.
-     * @param array $cms_options One can specify explicitly cms types which
-     *        should not be indexed.
-     * @param array $aStopwords Array with words which should not be indexed.
+     * @param int $idart
+     *         Article Id
+     * @param array $aContent
+     *         The complete content of an article specified by its content types.
+     *         It looks like:
+     *         Array (
+     *             [CMS_HTMLHEAD] => Array (
+     *                 [1] => Herzlich Willkommen...
+     *                 [2] => ...auf Ihrer Website!
+     *             )
+     *             [CMS_HTML] => Array (
+     *                 [1] => Die Inhalte auf dieser Website ...
+     *             )
+     *         )
+     * @param string $place [optional]
+     *         The field where to store the index information in db.
+     * @param array $cms_options [optional]
+     *         One can specify explicitly cms types which should not be indexed.
+     * @param array $aStopwords [optional]
+     *         Array with words which should not be indexed.
      */
     public function start($idart, $aContent, $place = 'auto', $cms_options = array(), $aStopwords = array()) {
         if (!is_int((int) $idart) || $idart < 0) {
@@ -209,14 +225,15 @@ class cSearchIndex extends cSearchBaseAbstract {
     }
 
     /**
-     * for each cms-type create index structure.
-     * it looks like
+     * For each cms-type create index structure.
+     *
+     * It looks like:
      * Array (
-     * [die] => CMS_HTML-1
-     * [inhalte] => CMS_HTML-1
-     * [auf] => CMS_HTML-1 CMS_HTMLHEAD-2
-     * [dieser] => CMS_HTML-1
-     * [website] => CMS_HTML-1 CMS_HTML-1 CMS_HTMLHEAD-2
+     *     [die] => CMS_HTML-1
+     *     [inhalte] => CMS_HTML-1
+     *     [auf] => CMS_HTML-1 CMS_HTMLHEAD-2
+     *     [dieser] => CMS_HTML-1
+     *     [website] => CMS_HTML-1 CMS_HTML-1 CMS_HTMLHEAD-2
      * )
      */
     public function createKeywords() {
@@ -277,8 +294,8 @@ class cSearchIndex extends cSearchBaseAbstract {
     }
 
     /**
-     * generate index_string from index structure and save keywords
-     * The index_string looks like "&12=2(CMS_HTMLHEAD-1,CMS_HTML-1)"
+     * Generate index_string from index structure and save keywords.
+     * The index_string looks like "&12=2(CMS_HTMLHEAD-1,CMS_HTML-1)".
      */
     public function saveKeywords() {
         $tmp_count = array();
@@ -317,8 +334,8 @@ class cSearchIndex extends cSearchBaseAbstract {
     }
 
     /**
-     * if keywords don't occur in the article anymore, update index_string and
-     * delete keyword if necessary
+     * If keywords don't occur in the article anymore,
+     * update index_string and delete keyword if necessary.
      */
     public function deleteKeywords() {
         foreach ($this->_keywordsDel as $key_del) {
@@ -339,7 +356,7 @@ class cSearchIndex extends cSearchBaseAbstract {
     }
 
     /**
-     * get the keywords of an article
+     * Get the keywords of an article.
      */
     public function getKeywords() {
         $keys = implode("','", array_keys($this->_keywords));
@@ -364,9 +381,10 @@ class cSearchIndex extends cSearchBaseAbstract {
     }
 
     /**
-     * remove special characters from index term
+     * Remove special characters from index term.
      *
-     * @param string $key Keyword
+     * @param string $key
+     *         Keyword
      * @return mixed
      */
     public function removeSpecialChars($key) {
@@ -411,13 +429,13 @@ class cSearchIndex extends cSearchBaseAbstract {
         // $aSpecialChars[] = chr($i);
         // }
 
-        // TODO: The transformation of accented characters must depend on the
-        // selected encoding of the language of
-        // a client and should not be treated in this method.
+        // TODO: The transformation of accented characters must depend
+        // on the selected encoding of the language of a client and
+        // should not be treated in this method.
         // modified 2007-10-01, H. Librenz - added as hotfix for encoding
-        // problems (doesn't find any words with
-        // umlaut vowels in it since you turn on UTF-8 as language encoding)
-        $sEncoding = getEncodingByLanguage($this->db, $this->lang);
+        // problems (doesn't find any words with umlaut vowels in it
+        // since you turn on UTF-8 as language encoding)
+        $sEncoding = cRegistry::getEncoding();
 
         if (strtolower($sEncoding) != 'iso-8859-2') {
             $key = conHtmlentities($key, NULL, $sEncoding);
@@ -447,11 +465,12 @@ class cSearchIndex extends cSearchBaseAbstract {
 
     /**
      *
-     * @param string $key Keyword
+     * @param string $key
+     *         Keyword
      * @return string
      */
     public function addSpecialUmlauts($key) {
-        $key = conHtmlentities($key, NULL, getEncodingByLanguage($this->db, $this->lang));
+        $key = conHtmlentities($key, NULL, cRegistry::getEncoding());
         $aUmlautMap = array(
             'Ue' => '&Uuml;',
             'ue' => '&uuml;',
@@ -471,7 +490,7 @@ class cSearchIndex extends cSearchBaseAbstract {
     }
 
     /**
-     * set the array of stopwords which should not be indexed
+     * Set the array of stopwords which should not be indexed.
      *
      * @param array $aStopwords
      */
@@ -482,7 +501,7 @@ class cSearchIndex extends cSearchBaseAbstract {
     }
 
     /**
-     * set the cms types
+     * Set the cms types.
      */
     public function setContentTypes() {
         $sql = "SELECT type, idtype FROM " . $this->cfg['tab']['type'] . ' ';
@@ -495,7 +514,8 @@ class cSearchIndex extends cSearchBaseAbstract {
     }
 
     /**
-     * set the cms_options array of cms types which should be treated special
+     * Set the cms_options array of cms types which should be treated
+     * special.
      *
      * @param mixed $cms_options
      */
@@ -522,33 +542,36 @@ class cSearchIndex extends cSearchBaseAbstract {
     }
 
     /**
-     * Check if the requested content type should be indexed (false) or not (true)
+     * Check if the requested content type should be indexed (false) or
+     * not (true).
      *
      * @param string $idtype
-     * @return boolean
+     * @return bool
      */
     public function checkCmsType($idtype) {
         $idtype = strtoupper($idtype);
-		
-		// Do not index CMS_RAW
-		if ($idtype == "CMS_RAW") {
-			return true;
-		}
+
+        // Do not index CMS_RAW
+        if ($idtype == "CMS_RAW") {
+            return true;
+        }
 
         return (count($this->_cmsOptions) === 0 || in_array($idtype, $this->_cmsOptions)) ? false : true;
     }
 
     /**
+     * Returns the property _cmsType.
      *
-     * @return array the _cmsType property
+     * @return array
      */
     public function getCmsType() {
         return $this->_cmsType;
     }
 
     /**
+     * Returns the property _cmsTypeSuffix.
      *
-     * @return array the _cmsTypeSuffix property
+     * @return array
      */
     public function getCmsTypeSuffix() {
         return $this->_cmsTypeSuffix;

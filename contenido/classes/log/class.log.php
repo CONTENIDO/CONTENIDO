@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the log class.
  *
  * @package    Core
  * @subpackage Log
- * @version    SVN Revision $Rev:$
- *
  * @author     Dominik Ziegler
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -19,12 +18,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * This class contains the main functionalities for the logging in CONTENIDO.
  *
  * Examples:
- *
  * $writer = cLogWriter::factory("File", array('destination' => 'contenido.log'));
  * $log = new cLog($writer);
  *
  * $log->addPriority("CONTENIDO", 10);
- * $log->log("Contenido Log Message.", "CONTENIDO");
+ * $log->log("CONTENIDO Log Message.", "CONTENIDO");
  * $log->contenido("Same log entry in short notation.");
  * $log->removePriority("CONTENIDO");
  *
@@ -41,84 +39,113 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cLog {
 
     /**
-     * @var int logging level
+     * logging level
+     *
+     * @var int
      */
     const EMERG   = 0;
 
     /**
-     * @var int logging level
+     * logging level
+     *
+     * @var int
      */
     const ALERT   = 1;
 
     /**
-     * @var int logging level
+     * logging level
+     *
+     * @var int
      */
     const CRIT    = 2;
 
     /**
-     * @var int logging level
+     * logging level
+     *
+     * @var int
      */
     const ERR     = 3;
 
     /**
-     * @var int logging level
+     * logging level
+     *
+     * @var int
      */
     const WARN    = 4;
 
     /**
-     * @var int logging level
+     * logging level
+     *
+     * @var int
      */
     const NOTICE  = 5;
 
     /**
-     * @var int logging level
+     * logging level
+     *
+     * @var int
      */
     const INFO    = 6;
 
     /**
-     * @var int logging level
+     * logging level
+     *
+     * @var int
      */
     const DEBUG   = 7;
 
     /**
-     * @var cLogWriter Contains the local log writer instance.
+     * Contains the local log writer instance.
+     *
+     * @var cLogWriter
      */
     protected $_writer;
 
     /**
-     * @var array Contains all shortcut handlers
+     * Contains all shortcut handlers.
+     *
+     * @var array
      */
     protected $_shortcutHandlers = array();
 
     /**
-     * @var array Contains all available priorities
+     * Contains all available priorities.
+     *
+     * @var array
      */
     protected $_priorities = array();
 
     /**
-     * @var array Contains all default priorities
+     * Contains all default priorities.
+     *
+     * @var array
      */
     protected $_defaultPriorities = array();
 
     /**
-     * @var array Contains all buffered messages
+     * Contains all buffered messages.
+     *
+     * @var array
      */
     protected $_buffer = array();
 
     /**
-     * Creates a new instance of the CONTENIDO Log mechanism.
+     * Constructor to create an instance of this class.
      *
-     * The log format interface of cLog is capable of being extended by subclasses. See the note about
-     * the log shortcuts below.
+     * The log format interface of cLog is capable of being extended by
+     * subclasses. See the note about the log shortcuts below.
      *
      *
      * About Log Shortcuts
      * -------------------
-     * Log shortcuts are placeholders which are replaced when a log entry is created. Placeholders start with a
-     * percentage sign (%) and contain one or more characters. Each placeholder is handled by an own function which
-     * decides what to do.
+     * Log shortcuts are placeholders which are replaced when a log
+     * entry is created. Placeholders start with a percentage sign (%)
+     * and contain one or more characters. Each placeholder is handled
+     * by an own function which decides what to do.
      *
-     * @param  mixed  $writer   Writer object (any subclass of cLogWriter), or false if cLog should handle the writer creation
+     * @param mixed $writer [optional]
+     *         Writer object (any subclass of cLogWriter), or false if
+     *         cLog should handle the writer creation
      */
     public function __construct($writer = false) {
         global $cfg;
@@ -150,7 +177,8 @@ class cLog {
 
     /**
      * Returns the local writer instance.
-     * @return    cLogWriter
+     *
+     * @return cLogWriter
      */
     public function getWriter() {
         return $this->_writer;
@@ -159,7 +187,8 @@ class cLog {
     /**
      * Sets the local writer instance.
      *
-     * @param    cLogWriter    $writer    Writer instacne
+     * @param cLogWriter $writer
+     *         Writer instacne
      */
     public function setWriter(cLogWriter $writer) {
         $this->_writer = $writer;
@@ -168,14 +197,18 @@ class cLog {
     /**
      * Defines a custom shortcut handler.
      *
-     * Each shortcut handler receives an array with the
-     * message and the priority of the entry.
+     * Each shortcut handler receives an array with the message and the
+     * priority of the entry.
      *
-     * @param string $shortcut Shortcut name
-     * @param string $handler Name of the function to call
-     * @throws cInvalidArgumentException if the given shortcut is empty or
-     *         already in use or if the handler is not callable
-     * @return bool True if setting was successful
+     * @param string $shortcut
+     *         Shortcut name
+     * @param string $handler
+     *         Name of the function to call
+     * @throws cInvalidArgumentException
+     *         if the given shortcut is empty or already in use or if the
+     *         handler is not callable
+     * @return bool
+     *         True if setting was successful
      */
     public function setShortcutHandler($shortcut, $handler) {
         if ($shortcut == '') {
@@ -202,10 +235,11 @@ class cLog {
     /**
      * Unsets a specific shortcut handler.
      *
-     * @param string $shortcut Name of the shortcut
-     * @throws cInvalidArgumentException if the given shortcut handler does not
-     *         exist
-     * @return boolean
+     * @param string $shortcut
+     *         Name of the shortcut
+     * @throws cInvalidArgumentException
+     *         if the given shortcut handler does not exist
+     * @return bool
      */
     public function unsetShortcutHandler($shortcut) {
         if (!in_array($shortcut, $this->_shortcutHandlers)) {
@@ -219,17 +253,22 @@ class cLog {
     /**
      * Buffers a log message for committing them on a later moment.
      *
-     * @param    string    $message    Message to buffer
-     * @param    mixed    $priority    Priority of the log entry (optional)
+     * @param string $message
+     *         Message to buffer
+     * @param mixed $priority [optional]
+     *         Priority of the log entry (optional)
      */
     public function buffer($message, $priority = NULL) {
         $this->_buffer[] = array($message, $priority);
     }
 
     /**
-     * Commits all buffered messages and empties the message buffer if parameter is not false.
+     * Commits all buffered messages and empties the message buffer if
+     * parameter is not false.
      *
-     * @param    boolean    $revoke    Flag, whether the buffer is cleared or not (optional, default: true)
+     * @param bool $revoke [optional]
+     *         Flag, whether the buffer is cleared or not (optional, default: true)
+     * @return bool|void
      */
     public function commit($revoke = true) {
         if (count($this->_buffer) == 0) {
@@ -254,10 +293,12 @@ class cLog {
     }
 
     /**
-     * Logs a message using the local writer instance
+     * Logs a message using the local writer instance.
      *
-     * @param    string    $message    Message to log
-     * @param    mixed      $priority    Priority of the log entry (optional)
+     * @param string $message
+     *         Message to log
+     * @param mixed $priority [optional]
+     *         Priority of the log entry (optional)
      */
     public function log($message, $priority = NULL) {
         if ($priority && is_int($priority) == false && in_array($priority, $this->_priorities)) {
@@ -292,10 +333,12 @@ class cLog {
     /**
      * Adds a new priority to the log.
      *
-     * @param string $name Name of the log priority
-     * @param int $value Index value of the log priority
-     * @throws cInvalidArgumentException if the given name is empty, already
-     *         exists or the value already exists
+     * @param string $name
+     *         Name of the log priority
+     * @param int $value
+     *         Index value of the log priority
+     * @throws cInvalidArgumentException
+     *         if the given name is empty, already exists or the value already exists
      */
     public function addPriority($name, $value) {
         if ($name == '') {
@@ -317,9 +360,10 @@ class cLog {
      * Removes a priority from log.
      * Default properties can not be removed.
      *
-     * @param string $name Name of the log priority to remove
-     * @throws cInvalidArgumentException if the given name is empty, does not
-     *         exist or is a default priority
+     * @param string $name
+     *         Name of the log priority to remove
+     * @throws cInvalidArgumentException
+     *         if the given name is empty, does not exist or is a default priority
      */
     public function removePriority($name) {
         if ($name == '') {
@@ -342,9 +386,12 @@ class cLog {
     /**
      * Magic call method for direct priority named calls.
      *
-     * @param    string    $method        Name of the method
-     * @param    array    $arguments    Array with the method arguments
-     * @throws cInvalidArgumentException if the given priority is not supported
+     * @param string $method
+     *         Name of the method
+     * @param array $arguments
+     *         Array with the method arguments
+     * @throws cInvalidArgumentException
+     *         if the given priority is not supported
      */
     public function __call($method, $arguments) {
         $priorityName = strtoupper($method);
@@ -355,13 +402,15 @@ class cLog {
 
         $priorityIndex = array_search($priorityName, $this->_priorities);
 
-        return $this->log($arguments[0], $priorityIndex);
+        $this->log($arguments[0], $priorityIndex);
     }
 
     /**
      * Shortcut Handler Date.
-     * Returns the current date
-     * @return    string    The current date
+     * Returns the current date.
+     *
+     * @return string
+     *     The current date
      */
     public function shDate() {
         return date("Y-m-d H:i:s");
@@ -370,8 +419,12 @@ class cLog {
     /**
      * Shortcut Handler Level.
      * Returns the canonical name of the priority.
-     * The canonical name is padded to 10 characters to achieve a better formatting.
-     * @return    string    The canonical log level
+     * The canonical name is padded to 10 characters to achieve a better
+     * formatting.
+     *
+     * @param array $info
+     * @return string
+     *         The canonical log level
      */
     public function shLevel($info) {
         $logLevel = $info['priority'];
@@ -381,11 +434,12 @@ class cLog {
     /**
      * Shortcut Handler Message.
      * Returns the log message.
-     * @return    string    The log message
+     *
+     * @param array $info
+     * @return string
+     *         The log message
      */
     public function shMessage($info) {
         return $info['message'];
     }
 }
-
-?>

@@ -7,7 +7,6 @@
  *
  * @module     goup-association
  * @package    CONTENIDO Backend Scripts
- * @version    SVN Revision $Rev$
  * @author     Timo Trautmann
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
@@ -28,7 +27,7 @@
 
     /**
      * Group association class
-     * @class  GoupAssociation
+     * @class  GroupAssociation
      * @constructor
      * @param {Object}  options  Configuration properties as follows
      * <pre>
@@ -37,7 +36,7 @@
      *    del  (String)
      * </pre>
      */
-    Con.GoupAssociation = function(options) {
+    Con.GroupAssociation = function(options) {
 
         // #####################################################################
         // Setup and private variables
@@ -187,20 +186,6 @@
         document.onkeydown = _setKeyCode;
 
         // #####################################################################
-        // @deprecated [2013-12-02] Assign to windows scope (downwards compatibility)
-        window.keycode = keycode;
-        window.addAction = addAction;
-        window.deleteAction = deleteAction;
-        window.init = function(add, del) {
-            window.addAction = add;
-            window.deleteAction = del;
-        };
-        window.setAction = _setAction;
-        window.filter = _filter;
-        window.keyHandler = _keyHandler;
-        window.setKeyCode = _setKeyCode;
-
-        // #####################################################################
         // Public interface
 
         return {
@@ -230,5 +215,19 @@
         };
 
     };
+
+    /**
+     * Goup association class
+     * @class  GoupAssociation
+     * @constructor
+     * @param {Object}  options  Configuration properties as follows
+     * <pre>
+     *    selectorForm  (String)
+     *    add  (String)
+     *    del  (String)
+     * </pre>
+     * @deprecated [2015-05-15] Use GroupAssociation class instead
+     */
+    Con.GoupAssociation = Con.GroupAssociation;
 
 })(Con, Con.$);

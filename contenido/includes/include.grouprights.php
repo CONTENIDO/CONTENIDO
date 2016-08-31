@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for group rights management.
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Unknown
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -163,7 +162,7 @@ if ($area != 'groups_content') {
         'con_makecatonline',
         'con_makepublic'
     );
-    $aTempalteRights = array(
+    $aTemplateRights = array(
         'con_changetemplate',
         'con_tplcfg_edit'
     );
@@ -179,10 +178,10 @@ if ($area != 'groups_content') {
                 $aViewRights = $aCategoryRights;
                 break;
             case 'template':
-                $aViewRights = $aTempalteRights;
+                $aViewRights = $aTemplateRights;
                 break;
             case 'other':
-                $aViewRights = array_merge($aArticleRights, $aCategoryRights, $aTempalteRights);
+                $aViewRights = array_merge($aArticleRights, $aCategoryRights, $aTemplateRights);
                 $bExclusive = true;
                 break;
             default:
@@ -214,5 +213,3 @@ $dataSync['NOTIFICATION'] = '';
 $dataSync['OB_CONTENT'] = '';
 //$oTpl->set('s', 'NOTIFICATION', '');
 //$oTpl->set('s', 'OB_CONTENT', '');
-
-

@@ -4,8 +4,6 @@
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Timo Hummel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -26,7 +24,7 @@ abstract class cWYSIWYGEditor {
      * Access key under which the wysiwyg editor settings will be stored
      * @var string
      */
-    protected static $_sConfigPrefix = '[\'wysiwyg\']';
+    protected static $_configPrefix = '[\'wysiwyg\']';
 
     /**
      *
@@ -59,16 +57,17 @@ abstract class cWYSIWYGEditor {
     protected $_aSettings;
 
     /**
+     * Constructor to create an instance of this class.
      *
-     * @param string $sEditorName
-     * @param string $sEditorContent
+     * @param string $editorName
+     * @param string $editorContent
      */
-    public function __construct($sEditorName, $sEditorContent) {
+    public function __construct($editorName, $editorContent) {
         $cfg = cRegistry::getConfig();
 
         $this->_sPath = $cfg['path']['all_wysiwyg_html'];
-        $this->_setEditorName($sEditorName);
-        $this->_setEditorContent($sEditorContent);
+        $this->_setEditorName($editorName);
+        $this->_setEditorContent($editorContent);
     }
 
     /**
@@ -97,24 +96,28 @@ abstract class cWYSIWYGEditor {
 
     /**
      * Sets given setting if setting was not yet defined.
-     * Overwriting defined setting can be achieved with $bForceSetting = true.
+     * Overwriting defined setting can be achieved with $forceSetting = true.
      *
-     * @param string $sKey of setting to set
-     * @param string $sValue of setting to set
-     * @param bool $bForceSetting to overwrite defined setting
+     * @param string $key
+     *         of setting to set
+     * @param string $value
+     *         of setting to set
+     * @param bool $forceSetting [optional]
+     *         to overwrite defined setting
+     * @param bool $type Normally unused (counterpart of cTinyMCE4Editor::setSetting)
      */
-    protected function _setSetting($sKey, $sValue, $bForceSetting = false) {
-        if ($bForceSetting || !array_key_exists($sKey, $this->_aSettings)) {
-            $this->_aSettings[$sKey] = $sValue;
+    public function setSetting($type = null, $key, $value, $forceSetting = false) {
+        if ($forceSetting || !array_key_exists($key, $this->_aSettings)) {
+            $this->_aSettings[$key] = $value;
         }
     }
 
     /**
      *
-     * @param string $sKey
+     * @param string $key
      */
-    protected function _unsetSetting($sKey) {
-        unset($this->_aSettings[$sKey]);
+    protected function _unsetSetting($key) {
+        unset($this->_aSettings[$key]);
     }
 
     /**
@@ -138,7 +141,7 @@ abstract class cWYSIWYGEditor {
      * @throws cBadMethodCallException if this method is not overridden in the
      *         subclass
      */
-    protected function _getScripts() {
+    protected function getScripts() {
         throw new cBadMethodCallException('You need to override the method _getScripts');
     }
 
@@ -147,17 +150,18 @@ abstract class cWYSIWYGEditor {
      * @throws cBadMethodCallException if this method is not overridden in the
      *         subclass
      */
-    protected function _getEditor() {
+    protected function getEditor() {
         throw new cBadMethodCallException('You need to override the method _getEditor');
     }
 
     /**
      * Find out which WYSIWYG editor is currently chosen
-     * @return string The name of current WYSIWYG editor
+     * @return string
+     *         The name of current WYSIWYG editor
      */
     public static function getCurrentWysiwygEditorName() {
         // define fallback WYSIWYG editor
-        define('DEFAULT_WYSIWYG_EDITOR', 'tinymce3');
+        define('DEFAULT_WYSIWYG_EDITOR', cRegistry::getConfigValue('wysiwyg', 'editor', 'tinymce3'));
 
         $curWysiwygEditor = getEffectiveSetting('wysiwyg', 'editor', constant('DEFAULT_WYSIWYG_EDITOR'));
 
@@ -178,11 +182,12 @@ abstract class cWYSIWYGEditor {
      * Saves configuration of WYSIWYG editor into a file
      * This function does not validate input! This has to be done by classes that extend cWYSIWYGEditor
      * because this class does not know what each WYSIWYG editor expects.
-     * @param array Array with configuration values for the current WYSIWYG editor to save
-     * @return array Array with values that were not accepted
+     * @param array $config
+     *         Array with configuration values for the current WYSIWYG editor to save
+     * @return array
+     *         Array with values that were not accepted
      */
-    public static function safeConfig($config) {
-        $erroneousSettings = array();
+    public static function saveConfig($config) {
 
         // specify filename scheme
         // for tinymce 4 this will be config.wysiwyg_tinymce4.php
@@ -196,10 +201,12 @@ abstract class cWYSIWYGEditor {
         $filePrefix .= "defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');\n";
         $filePrefix .= 'global $cfg;' . PHP_EOL . PHP_EOL;
 
-        $content = $filePrefix . '$cfg' . static::$_sConfigPrefix . ' = ' . var_export($config, true) . ';' . PHP_EOL;
+        $content = $filePrefix . '$cfg' . static::$_configPrefix . ' = ' . var_export($config, true) . ';' . PHP_EOL;
 
         // first try to write then check what went wrong in case of error
         if (true !== cFileHandler::write($configPath . $configFile, $content)) {
+            $erroneousSettings = array();
+
             // just pass back that the file could not be written
             $erroneusSettings['saving'] = array('config_file' => 'wysiwyg config file could not be written');
             // write more detailed information with sensitive information such as full path into error log
@@ -207,6 +214,10 @@ abstract class cWYSIWYGEditor {
             return $erroneusSettings;
         }
 
-        return $erroneousSettings;
+        // apply changes to current config
+        global $cfg;
+        $cfg['wysiwyg'][static::getCurrentWysiwygEditorName()] = $config;
+
+        return array();
     }
 }

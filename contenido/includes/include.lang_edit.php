@@ -1,17 +1,18 @@
 <?php
+
 /**
  * This file contains the backend page for editing language.
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
- * @author Timo Hummel, Jan Lengowski
+ * @author Timo Hummel
+ * @author Jan Lengowski
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 includePlugins('languages');
@@ -31,7 +32,7 @@ $db2 = cRegistry::getDb();
 
 if ($action == "lang_newlanguage") {
 
-    $page->displayInfo(i18n("Created new language successfully!"));
+    $page->displayOk(i18n("Created new language successfully!"));
 
     // update language dropdown in header, but only for current client
     if ($targetclient == $client) {
@@ -53,7 +54,7 @@ if ($action == "lang_newlanguage") {
     $page->render();
 } elseif ($action == "lang_deletelanguage") {
 
-    $page->displayInfo(i18n("Deleted language successfully!"));
+    $page->displayOk(i18n("Deleted language successfully!"));
 
     // finally delete from dropdown in header, but only for current client
     if ($targetclient == $client) {
@@ -115,9 +116,9 @@ if ($action == "lang_newlanguage") {
 
                 if (false === $invalidData) {
                     if (false === langEditLanguage($idlang, $langname, $sencoding, $active, $direction)) {
-                        $page->displayInfo(i18n("An error occurred during saving the changes"));
+                        $page->displayError(i18n("An error occurred during saving the changes"));
                     } else {
-                        $page->displayInfo(i18n("Changes saved"));
+                        $page->displayOk(i18n("Changes saved"));
                     }
                 }
             }
@@ -202,11 +203,11 @@ if ($action == "lang_newlanguage") {
             $oTxtLang = new cHTMLTextBox("langname", conHtmlSpecialChars($db->f("name")), 40, 255);
             $form->add(i18n("Language name"), $oTxtLang->render());
             $oCheckbox = new cHTMLCheckbox("active", "1", "active1", $db->f("active"));
-            $form->add(i18n("Active"), $oCheckbox->toHTML(false));
+            $form->add(i18n("Active"), $oCheckbox->toHtml(false));
 
             $form->addSubHeader(i18n("Language"));
 
-			$form->add(i18n("Encoding"), $eselect);
+            $form->add(i18n("Encoding"), $eselect);
 
             $form->add(i18n("Language"), $languagecode->render());
             $form->add(i18n("Country"), $countrycode->render());
@@ -237,7 +238,7 @@ if ($action == "lang_newlanguage") {
             }
 
             if ($_REQUEST['action'] != '') {
-            	$page->set('s', 'CONTENIDO', $contenido);
+                $page->set('s', 'CONTENIDO', $contenido);
                 $page->set("s", "RELOAD_LEFT_BOTTOM", "true");
             } else {
                 $page->set("s", "RELOAD_LEFT_BOTTOM", "false");

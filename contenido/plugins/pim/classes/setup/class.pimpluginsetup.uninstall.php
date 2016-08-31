@@ -4,8 +4,6 @@
  *
  * @package Plugin
  * @subpackage PluginManager
- * @version SVN Revision $Rev:$
- *
  * @author Frederic Schneider
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -213,6 +211,11 @@ class PimPluginSetupUninstall extends PimPluginSetup {
             $this->_ApiActionCollection->deleteByWhereClause("idaction IN('" . join("', '", $relations['action']) . "')");
         }
 
+        // Delete entries with relations to *_frame_files
+        if (!empty($relations['framefl'])) {
+        	$this->_ApiFrameFileCollection->deleteByWhereClause("idframefile IN('" . join("', '", $relations['framefl']) . "')");
+        }
+
         // Delete entries with relations to *_area
         if (!empty($relations['area'])) {
             $this->_ApiFileCollection->deleteByWhereClause("idarea IN('" . join("', '", $relations['area']) . "')");
@@ -311,9 +314,6 @@ class PimPluginSetupUninstall extends PimPluginSetup {
 
     /**
      * Delete a installed plugin directory
-     *
-     * @param $foldername name of extracted plugin
-     * @param $page page class for success or error message
      */
     public function uninstallDir() {
         $cfg = cRegistry::getConfig();

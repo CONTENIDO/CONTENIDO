@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for the form of template pre configuration.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Olaf Niemann
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -19,7 +18,7 @@ $tpl->reset();
 
 //Form
 $formaction = $sess->url("main.php");
-#<input type="hidden" name="action" value="tplcfg_edit">
+// <input type="hidden" name="action" value="tplcfg_edit">
 $hidden     = '<input type="hidden" name="area" value="tpl_cfg">
                <input type="hidden" name="frame" value="'.$frame.'">
                <input type="hidden" name="idcat" value="'.$idcat.'">

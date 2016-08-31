@@ -4,8 +4,6 @@
  *
  * @package Plugin
  * @subpackage SmartyWrapper
- * @version SVN Revision $Rev:$
- *
  * @author Andreas Dieter
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -80,7 +78,7 @@ class cSmartyWrapper extends Smarty {
     public function clearCache($template_name, $cache_id = null, $compile_id = null, $exp_time = null, $type = null) {
         if ($this->templateExists($template_name) === false) {
             $moduleId = (int) cRegistry::getCurrentModuleId();
-            if ($moduleId > 0) {error_log($moduleId);
+            if ($moduleId > 0) {
                 $module = new cModuleHandler($moduleId);
                 $template_name = $module->getTemplatePath($template_name);
             }

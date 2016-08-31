@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the global authentication class.
  *
  * @package Core
  * @subpackage Authentication
- * @version SVN Revision $Rev:$
- *
  * @author Dominik Ziegler
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -48,7 +47,7 @@ class cAuth {
      * Lifetime for authenticated users in minutes.
      * After that time the authentication expires.
      *
-     * @var integer
+     * @var int
      */
     protected $_lifetime = 15;
 
@@ -70,8 +69,8 @@ class cAuth {
     /**
      * Magic getter function for outdated variable names.
      *
-     * @param string $name name of the variable
-     *
+     * @param string $name
+     *         name of the variable
      * @return mixed
      */
     public function __get($name) {
@@ -144,8 +143,9 @@ class cAuth {
     /**
      * Resets the global authentication information.
      *
-     * @param bool $nobody If flag set to true, the default authentication is
-     *        switched to nobody. (optional, default: false)
+     * @param bool $nobody [optional]
+     *         If flag set to true, the default authentication is
+     *         switched to nobody. (optional, default: false)
      */
     public function resetAuthInfo($nobody = false) {
         $this->auth['uid'] = ($nobody == false? '' : self::AUTH_UID_NOBODY);
@@ -155,11 +155,11 @@ class cAuth {
     }
 
     /**
-     * Logs out the current user, resets the auth information and freezes the
-     * session.
+     * Logs out the current user, resets the auth information and
+     * freezes the session.
      *
-     * @param bool $nobody If flag set to true, nobody is recreated as user.
-     *
+     * @param bool $nobody [optional]
+     *         If flag set to true, nobody is recreated as user.
      * @return bool true
      */
     public function logout($nobody = false) {
@@ -206,7 +206,7 @@ class cAuth {
     public function isLoginForm() {
         $authInfo = $this->getAuthInfo();
 
-        return (isset($authInfo['uid']) && $authInfo['uid'] == self::AUTH_UID_FORM);
+        return isset($authInfo['uid']) && $authInfo['uid'] == self::AUTH_UID_FORM;
     }
 
     /**
@@ -245,8 +245,8 @@ class cAuth {
     /**
      * Sets or refreshs the expiration of the authentication.
      *
-     * @param int $expiration new expiration (optional, default: NULL = current
-     *        time plus lifetime minutes)
+     * @param int $expiration [optional]
+     *         new expiration (optional, default: NULL = current time plus lifetime minutes)
      */
     protected function _setExpiration($expiration = NULL) {
         if ($expiration === NULL) {
@@ -276,8 +276,10 @@ class cAuth {
     /**
      * Sets the authentication info for a user.
      *
-     * @param string $userId user ID to set
-     * @param int $expiration expiration (optional, default: NULL)
+     * @param string $userId
+     *         user ID to set
+     * @param int $expiration [optional]
+     *         expiration (optional, default: NULL)
      */
     protected function _setAuthInfo($userId, $expiration = NULL) {
         $this->auth['uid'] = $userId;

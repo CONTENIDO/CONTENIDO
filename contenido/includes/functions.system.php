@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the CONTENIDO system related functions.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Unknown
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -17,7 +16,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Clears CONTENIDO standard errorlog.txt
- * @return  string   Message if clearing was successfull or not
+ *
+ * @return string
+ *         Message if clearing was successfull or not
  */
 function emptyLogFile() {
     global $cfg, $notification, $auth;
@@ -33,7 +34,7 @@ function emptyLogFile() {
 
     if (cFileHandler::exists($filename) && is_writeable($filename)) {
         cFileHandler::truncate($filename);
-        $tmp_notification = $notification->returnNotification("info", i18n("Error log successfully cleared!"));
+        $tmp_notification = $notification->returnNotification("ok", i18n("Error log successfully cleared!"));
     } else if (cFileHandler::exists($filename) && !is_writeable($filename)) {
         $tmp_notification = $notification->returnNotification("error", i18n("Can't clear error log : Access is denied!"));
     }
@@ -44,9 +45,14 @@ function emptyLogFile() {
 /**
  * Grabs phpinfo() output.
  *
- * @return string  HTML output of phpinfo()
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
+ * @return string
+ *         HTML output of phpinfo()
  */
 function phpInfoToHtml() {
+    cDeprecated('This method is deprecated and is not needed any longer');
+
     // get output
     ob_start();
     phpinfo();
@@ -59,8 +65,10 @@ function phpInfoToHtml() {
 /**
  * Check if the user has a right for a defined client.
  *
- * @param  int  $client client id
- * @return  bool  Wether user has access or not
+ * @param int $client
+ *         client id
+ * @return bool
+ *         Wether user has access or not
  */
 function systemHavePerm($client) {
     global $auth;
@@ -84,8 +92,10 @@ function systemHavePerm($client) {
 /**
  * Check for valid ip adress
  *
- * @param   string  $strHostAdress  IP adress
- * @return  bool If string is a valid ip or not
+ * @param string $strHostAdress
+ *         IP adress
+ * @return bool
+ *         If string is a valid ip or not
  */
 function isIPv4($strHostAdress) {
     // ip pattern needed for validation
@@ -99,11 +109,18 @@ function isIPv4($strHostAdress) {
 /**
  * must be done
  *
- * @param string  $strConUrl  CONTENIDO fullhtmlPath
- * @param string  $strBrowserUrl  current browser string
- * @return string  Status of path comparement
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
+ * @param string $strConUrl
+ *         CONTENIDO fullhtmlPath
+ * @param string $strBrowserUrl
+ *         current browser string
+ * @return string
+ *         Status of path comparement
  */
 function checkPathInformation($strConUrl, $strBrowserUrl) {
+    cDeprecated('This method is deprecated and is not needed any longer');
+
     // parse url
     $arrConUrl = parse_url($strConUrl);
     $arrBrowserUrl = parse_url($strBrowserUrl);
@@ -152,11 +169,20 @@ function checkPathInformation($strConUrl, $strBrowserUrl) {
 }
 
 /**
- * check path informations
+ * Check path informations.
  *
- * checks two path informations against each other to get potential nonconformities
+ * Checks two path informations against each other to get potential nonconformities.
+ *
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
+ * @param array $arrConUrl
+ * @param array $arrBrowserUrl
+ * @param bool $isIP
+ * @return bool
  */
 function compareUrlStrings($arrConUrl, $arrBrowserUrl, $isIP = false) {
+    cDeprecated('This method is deprecated and is not needed any longer');
+
     // && $isIP == false
     // remove 'www.' if needed
     if (strpos($arrConUrl['host'], 'www.') == 0 || strpos($arrBrowserUrl['host'], 'www.') == 0) {

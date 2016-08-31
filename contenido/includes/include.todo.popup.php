@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for the to-do popup.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Unknown
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -65,7 +64,7 @@ if ($action == 'todo_save_item') {
 
     $path_to_calender_pic = cRegistry::getBackendUrl(). $cfg['path']['images'] . 'calendar.gif';
 
-    $ui->add(i18n('Reminder options'), $notiemail->toHTML());
+    $ui->add(i18n('Reminder options'), $notiemail->toHtml());
     $calscript = '
 <script type="text/javascript">
 (function(Con, $) {
@@ -140,7 +139,7 @@ if ($action == 'todo_save_item') {
         $cpage->addScript($langscript);
     }
     $cpage->addScript($calscript);
-    $cpage->setcontent($ui);
+    $cpage->setContent($ui);
 }
 
 $cpage->render();

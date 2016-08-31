@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the sub navigation frame backend page in frontend group management.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Olaf Niemann
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -14,6 +13,7 @@
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
 if (!isset($_GET['idfrontendgroup'])) {
     $tpl->reset();
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['right_top_blank']);

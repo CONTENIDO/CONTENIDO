@@ -4,8 +4,6 @@
  *
  * @package Plugin
  * @subpackage Newsletter
- * @version SVN Revision $Rev:$
- *
  * @author Bjoern Behrens
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -232,7 +230,7 @@ if ($_REQUEST["selTestDestination"] > 0 && $perm->have_perm_area_action($area, "
     $oRcpGroups = new NewsletterRecipientGroupCollection();
     $oRcpGroups->setWhere("idclient", $client);
     $oRcpGroups->setWhere("idlang", $lang);
-    $oRcpGroups->setWhere($oRcpGroups->primaryKey, $_REQUEST["selTestDestination"]);
+    $oRcpGroups->setWhere($oRcpGroups->getPrimaryKeyName(), $_REQUEST["selTestDestination"]);
     $oRcpGroups->query();
 
     if ($oRcpGroup = $oRcpGroups->next()) {

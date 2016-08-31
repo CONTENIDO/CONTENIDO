@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the cHTMLScript class.
  *
  * @package Core
  * @subpackage GUI_HTML
- * @version SVN Revision $Rev:$
  *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
@@ -26,6 +26,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHTMLScript extends cHTMLContentElement {
 
     /**
+     * Constructor to create an instance of this class.
+     *
      * Creates an HTML script element.
      */
     public function __construct() {

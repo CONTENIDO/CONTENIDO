@@ -1,11 +1,10 @@
 <?php
+
 /**
  * Backend action file str_makevisible
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Dominik Ziegler
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -24,4 +23,5 @@ if ($perm->have_perm_area_action("str", "str_makevisible") || $perm->have_perm_a
 } else {
     $notification->displayNotification("error", i18n("Permission denied"));
 }
+
 ?>

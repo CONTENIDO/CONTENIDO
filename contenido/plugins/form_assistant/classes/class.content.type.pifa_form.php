@@ -5,8 +5,7 @@
  *
  * @package Plugin
  * @subpackage FormAssistant
- * @version SVN Revision $Rev:$
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  * @copyright four for business AG
  * @link http://www.4fb.de
  */
@@ -126,7 +125,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         // interpreted
         $tplBottom->set('s', 'SETTINGS', json_encode(str_replace('$', '&#36;', $this->_settings)));
         $tplBottom->set('s', 'JS_CLASS_SCRIPT', Pifa::getUrl() . 'scripts/cmsPifaform.js');
-        $tplBottom->set('s', 'JS_CLASS_NAME', get_class($this));
+        $tplBottom->set('s', 'JS_CLASS_NAME', 'Con.' . get_class($this));
 
         $codeBottom = $tplBottom->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_bottom.html', true);
 
@@ -203,9 +202,10 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $select = new cHTMLSelectElement($id, '', $id);
         $select->addOptionElement($index = 0, new cHTMLOptionElement(Pifa::i18n('none'), ''));
 
-        // get all forms of current client & validate result
+        // get all forms of current client & language
         $idclient = cRegistry::getClientId();
-        $forms = PifaFormCollection::getByClient($idclient);
+        $idlang = cRegistry::getLanguageId();
+        $forms = PifaFormCollection::getByClientAndLang($idclient, $idlang);
         if (false === $forms) {
             return $select;
         }

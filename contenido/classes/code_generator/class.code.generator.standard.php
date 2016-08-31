@@ -5,14 +5,13 @@
  *
  * @package Core
  * @subpackage ContentType
- * @version SVN Revision $Rev:$
- *
  * @author Murat Purc <murat@purc.de>
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
@@ -22,11 +21,24 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage ContentType
  */
 class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
+    /**
+     * @var int
+     */
+    protected $_idtplcfg;
 
     /**
-     * {@inheritdoc}
+     * Generates the code for a specific article (article for a client in a
+     * language).
+     *
+     * @see cCodeGeneratorAbstract::_generate()
+     * @param bool $contype [optional]
+     *         Flag to enable/disable replacement of CMS_TAGS[]
+     * @param bool $editable [optional]
+     * @param int|NULL $version [optional]
+     * @return string
+     *         The generated code
      */
-    public function _generate($contype = true) {
+    public function _generate($contype = true, $editable = true, $version = NULL) {
         global $cfg, $code;
 
         $this->_cssData = '';
@@ -35,43 +47,43 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
         cDebug::out("conGenerateCode($this->_idcat, $this->_idart, $this->_lang, $this->_client, $this->_layout);<br>");
 
-        // Set category article id
+        // set category article id
         $idcatart = conGetCategoryArticleId($this->_idcat, $this->_idart);
 
-        // Set configuration for article
+        // set configuration for article
         $this->_idtplcfg = $this->_getTemplateConfigurationId();
         if (NULL === $this->_idtplcfg) {
             $this->_processNoConfigurationError($idcatart);
             return '0601';
         }
 
-        // List of configured container
+        // list of configured container
         $containerConfigurations = conGetContainerConfiguration($this->_idtplcfg);
 
-        // Set idlay and idmod array
+        // set idlay and idmod array
         $data = $this->_getTemplateData();
         $idlay = $data['idlay'];
         $idtpl = $data['idtpl'];
-        $this->_tplName = cApiStrCleanURLCharacters($data['name']);
+        $this->_tplName = cString::cleanURLCharacters($data['name']);
 
-        // List of used modules
+        // list of used modules
         $containerModules = conGetUsedModules($idtpl);
 
-        // Load layout code from file
+        // load layout code from file
         $layoutInFile = new cLayoutHandler($idlay, '', $cfg, $this->_lang);
         $this->_layoutCode = $layoutInFile->getLayoutCode();
-        $this->_layoutCode = cApiStrNormalizeLineEndings($this->_layoutCode, "\n");
+        $this->_layoutCode = cString::normalizeLineEndings($this->_layoutCode, "\n");
 
         $moduleHandler = new cModuleHandler();
 
-        // Create code for all containers
+        // create code for all containers
         if ($idlay) {
             cInclude('includes', 'functions.tpl.php');
             $containerNumbers = tplGetContainerNumbersInLayout($idlay);
 
             foreach ($containerNumbers as $containerNr) {
+                // if there's no configured module in this container
                 if (!isset($containerModules[$containerNr]) || !is_numeric($containerModules[$containerNr])) {
-                    // No configured module in this container
                     // reset current module state and process empty container
                     $this->_resetModule();
                     $this->_processCmsContainer($containerNr);
@@ -94,8 +106,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                 $input = '';
                 $this->_moduleCode = '';
 
-                // Get the contents of input and output from files and not from
-                // db-table
+                // get contents of input and output from files and not from db
                 if ($moduleHandler->modulePathExists() == true) {
                     // do not execute faulty modules
                     // caution: if no module is bound to a container then idmod of $oModule is false
@@ -106,7 +117,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                         continue;
                     }
 
-                    // Load css and js content of the js/css files
+                    // load css and js content of the js/css files
                     if ($moduleHandler->getFilesContent('css', 'css') !== false) {
                         $this->_cssData .= $moduleHandler->getFilesContent('css', 'css');
                     }
@@ -118,7 +129,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                     $input = $moduleHandler->readInput();
                 }
 
-                // strip comments from module code, see CON-1536
+                // CON-1536 strip comments from module code
                 // regex is not enough to correctly remove comments
                 // use php_strip_whitespace instead of writing own parser
                 // downside: php_strip_whitespace requires a file as parameter
@@ -133,37 +144,37 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                     cFileHandler::remove($tmpFile);
                 }
 
-                // Process CMS value tags
+                // process CMS value tags
                 $containerCmsValues = $this->_processCmsValueTags($containerNr, $containerConfigurations[$containerNr]);
 
-                // Add CMS value code to module prefix code
+                // add CMS value code to module prefix code
                 if ($containerCmsValues) {
                     $this->_modulePrefix[] = $containerCmsValues;
                 }
 
-                // Process frontend debug
+                // process frontend debug
                 $this->_processFrontendDebug($containerNr, $module);
 
-                // Replace new containers
+                // replace new containers
                 $this->_processCmsContainer($containerNr);
             }
         }
 
-        // Find out what kind of CMS_... Vars are in use
-        $a_content = $this->_getUsedCmsTypesData();
+        // find out what kind of CMS_... Vars are in use
+        $a_content = $this->_getUsedCmsTypesData($editable, $version);
 
-        // Replace all CMS_TAGS[]
+        // replace all CMS_TAGS[]
         if ($contype) {
-            $this->_processCmsTags($a_content, true);
+            $this->_processCmsTags($a_content, true, $editable);
         }
 
-        // Add/replace title tag
+        // add/replace title tag
         $this->_processCodeTitleTag();
 
-        // Add/replace meta tags
+        // add/replace meta tags
         $this->_processCodeMetaTags();
 
-        // Save the collected css/js data and save it under the template name
+        // save the collected css/js data and save it under the template name
         // ([templatename].css , [templatename].js in cache dir
         $cssFile = '';
         if (strlen($this->_cssData) > 0) {
@@ -185,22 +196,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             }
         }
 
-        // // show toolbar with revisions of article This toolbar is only shown
-        // in
-        // // backend in edit mode if revision control is enabled
-        // $revionsToolBar = $this->_revisionControl->getToolbar();
-        // if (NULL !== $revionsToolBar) {
-        // if (false !== strpos($this->_layoutCode, '<body>')) {
-        // $this->_layoutCode = str_ireplace_once('<body>', '<body>' .
-        // $revionsToolBar, $this->_layoutCode);
-        // } else {
-        // // TODO wo füg ich die dann ein?
-        // // $this->_layoutCode .= $revionsToolBar;
-        // }
-        // }
-
-        // add module CSS at {CSS} position, after title or after opening head
-        // tag
+        // add module CSS at {CSS} position, after title
+        // or after opening head tag
         if (strpos($this->_layoutCode, '{CSS}') !== false) {
             $this->_layoutCode = cString::iReplaceOnce('{CSS}', $cssFile, $this->_layoutCode);
         } else if (!empty($cssFile)) {
@@ -217,8 +214,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             $this->_layoutCode = cString::iReplaceOnce('{REV}', ((int) getEffectiveSetting("ressource", "revision", 0)), $this->_layoutCode);
         }
 
-        // add module JS at {JS} position or before closing body tag if there is
-        // no {JS}
+        // add module JS at {JS} position
+        // or before closing body tag if there is no {JS}
         if (strpos($this->_layoutCode, '{JS}') !== false) {
             $this->_layoutCode = cString::iReplaceOnce('{JS}', $jsFile, $this->_layoutCode);
         } else if (!empty($jsFile)) {
@@ -265,21 +262,22 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             $this->_layoutCode = $debugPrefix . $this->_layoutCode;
         }
 
-        // Save the generated code even if there are faulty modules
-        // if one does not do so a non existing cache file will be tried to be loaded in frontend
+        // save the generated code even if there are faulty modules
+        // if one does not do so, a non existing cache file
+        // will be tried to be loaded in frontend
         $this->_saveGeneratedCode($idcatart);
 
         return $this->_layoutCode;
     }
 
     /**
-     * Will be invoked, if code generation wasn't able to find a configured
-     * article
-     * or category.
+     * Will be invoked, if code generation wasn't able to find a
+     * configured article or category.
      *
      * Creates a error message and writes this into the code cache.
      *
-     * @param int $idcatart Category article id
+     * @param int $idcatart
+     *         category article id
      */
     protected function _processNoConfigurationError($idcatart) {
         cDebug::out('Neither CAT or ART are configured!<br><br>');
@@ -290,8 +288,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
     /**
      * Processes and adds or replaces title tag for an article.
-     * Calls also the CEC 'Contenido.Content.CreateTitletag' for user defined
-     * title creation.
+     * Also calls the CEC 'Contenido.Content.CreateTitletag'
+     * for user defined title creation.
      *
      * @see cCodeGeneratorAbstract::_processCodeTitleTag()
      * @return string
@@ -314,15 +312,16 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             // no head tag
             return $this->_layoutCode;
         }
-        // use first head tag found (by definition there must always be only 1 tag but user supplied markup might be incorrect)
+        // use first head tag found (by definition there must always be only 1 tag
+        // but user supplied markup might be incorrect)
         $headTag = $headTag[0][0];
 
-        // Add or replace title
+        // add or replace title
         if ($this->_pageTitle != '') {
             $replaceTag = '{__TITLE__' . md5(rand().time()) . '}';
             $headCode = preg_replace('/<title>.*?<\/title>/is', $replaceTag, $headTag, 1);
 
-            if (false !== strpos($this->_layoutCode, $replaceTag)) {
+            if (false !== strpos($headCode, $replaceTag)) {
                 $headCode = str_ireplace($replaceTag, '<title>' . $this->_pageTitle . '</title>', $headCode);
             } else {
                 $headCode = cString::iReplaceOnce('</head>', '<title>' . $this->_pageTitle . "</title>\n</head>", $headCode);
@@ -339,11 +338,11 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
     /**
      * Processes and adds or replaces all meta tags for an article.
-     *
-     * Calls also the CEC 'Contenido.Content.CreateMetatags' for user defined
+     * Also calls the CEC 'Contenido.Content.CreateMetatags' for user defined
      * meta tags creation.
      *
      * @global array $encoding
+     * @return string
      */
     protected function _processCodeMetaTags() {
         global $encoding;
@@ -410,21 +409,21 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
     }
 
     /**
-     * Saves the generated code (if layout flag is false and save flag is true)
+     * Saves the generated code if layout flag is false and save flag is true.
      *
      * @global array $cfgClient
-     * @param int $idcatart Category article id
-     * @param string $code parameter for setting code manually instead of using
-     *        the generated layout code
-     * @param bool $flagCreateCode whether the create code flag in cat_art
-     *        should be set or not (optional)
+     * @param int $idcatart
+     *         Category article id
+     * @param string $code [optional]
+     *         parameter for setting code manually instead of using the generated layout code
+     * @param bool $flagCreateCode [optional]
+     *         whether the create code flag in cat_art should be set or not (optional)
      */
     protected function _saveGeneratedCode($idcatart, $code = '', $flagCreateCode = true) {
         global $cfgClient;
 
         // Write code in the cache of the client. If the folder does not exist
         // create one.
-
         // do not write code cache into root directory of client
         if (cRegistry::getFrontendPath() === $cfgClient[$this->_client]['code']['path']) {
             return;
@@ -468,7 +467,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * Collects and return basic meta tags/elements.
      *
      * @global array $encoding
-     * @return array List of assozative meta tag values
+     * @return array
+     *         List of assozative meta tag values
      */
     protected function _getBasicMetaTags() {
 
@@ -485,8 +485,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         }
 
         // add generator meta tag
-        // if the version is appended should be configurable due to security
-        // reasons
+        // if the version is appended should be configurable
+        // due to security reasons
         $generator = 'CMS CONTENIDO';
         $addVersion = true;
         if ($addVersion) {
@@ -518,7 +518,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         }
 
         // update (!) index setting of robots meta tag
-        // the follow value will not be changed
+        // the following value will not be changed
         // $index = (bool) $this->getArtLangObject()->get('searchable');
         // $metaTags = $this->_updateMetaRobots($metaTags, $index, NULL);
 
@@ -527,14 +527,16 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
     /**
      * This method allows to set new values for the robots meta element.
-     *
      * If NULL is given for $index or $follow, existing settings are *not*
      * overwritten. If article should be indexed and followed, 'all' will be
      * set.
      *
-     * @param array $metaTags array of meta elements to amend
-     * @param bool|NULL $index if article should be indexed
-     * @param bool|NULL $follow if links in article should be followed
+     * @param array $metaTags
+     *         array of meta elements to amend
+     * @param bool|NULL $index
+     *         if article should be indexed
+     * @param bool|NULL $follow
+     *         if links in article should be followed
      * @return array
      */
     protected function _updateMetaRobots(array $metaTags, $index, $follow) {
@@ -598,13 +600,13 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * Extracts a meta element of type $type (either 'name' or 'http-equiv') and
      * name or HTTP header equivalent $nameOrEquiv from the given array of meta
      * elements.
-     *
      * Both, the reduced array of meta elements and the meta element to be
      * extracted are returned as an array. If the meta element to be extracted
      * could not be found, NULL will be returned in its place.
      *
      * @param array $metaTags
-     * @param string $type either 'name' or 'http-equiv'
+     * @param string $type
+     *         either 'name' or 'http-equiv'
      * @param string $nameOrEquiv
      * @return array
      */

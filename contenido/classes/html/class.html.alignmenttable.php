@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the cHTMLAlignmentTable class.
  *
  * @package Core
  * @subpackage GUI_HTML
- * @version SVN Revision $Rev:$
  *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
@@ -22,7 +22,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GUI_HTML
  */
 class cHTMLAlignmentTable extends cHTMLTable {
+    /**
+     * @var array
+     */
+    protected $_data;
 
+    /**
+     * Constructor to create an instance of this class.
+     */
     public function __construct() {
         parent::__construct();
 
@@ -30,6 +37,13 @@ class cHTMLAlignmentTable extends cHTMLTable {
         $this->_contentlessTag = false;
     }
 
+    /**
+     * Generates the markup of the element.
+     *
+     * @see cHTML::render()
+     * @return string
+     *         generated markup
+     */
     public function render() {
         $tr = new cHTMLTableRow();
         $td = new cHTMLTableData();
@@ -45,7 +59,7 @@ class cHTMLAlignmentTable extends cHTMLTable {
 
         $this->setContent($tr);
 
-        return $this->toHTML();
+        return $this->toHtml();
     }
 
 }

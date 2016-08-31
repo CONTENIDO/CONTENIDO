@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for editing the template pre configuration.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Olaf Niemann
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -36,7 +35,7 @@ if (isset($idtplcfg)) {
 
     // Is form send
     if ($x > 0) {
-        $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Saved changes successfully!"));
+        $notification->displayNotification(cGuiNotification::LEVEL_OK, i18n("Saved changes successfully!"));
     }
 }
 

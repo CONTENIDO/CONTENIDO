@@ -1,17 +1,17 @@
 <?php
+
 /**
  * This file contains the backend page for the personal user settings.
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Unknown
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $cpage = new cGuiPage("mycontenido_settings", "", "2");
@@ -48,7 +48,7 @@ if ($action == "mycontenido_editself") {
 
             if ($iResult == cApiUser::PASS_OK) {
                 $notidisplayed = true;
-                $cpage->displayInfo(i18n("Changes saved"));
+                $cpage->displayOk(i18n("Changes saved"));
             } else {
                 $notidisplayed = true;
                 $cpage->displayError(cApiUser::getErrorString($iResult));
@@ -101,7 +101,7 @@ if ($action == "mycontenido_editself") {
     }
 
     if ($user->store() && !$notidisplayed) {
-        $cpage->displayInfo(i18n("Changes saved"));
+        $cpage->displayOk(i18n("Changes saved"));
     } else if (!$notidisplayed) {
         $cpage->displayError(i18n("An error occured while saving user info."));
     }

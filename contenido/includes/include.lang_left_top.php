@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the left top frame backend page for language management.
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Timo Hummel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -30,8 +29,9 @@ $tpl2->set('s', 'OPTIONS', '');
 
 $iClientcount = count($clients);
 
+$selectedClient = isset($_GET['targetclient']) ? $_GET['targetclient'] : cRegistry::getClientId();
 foreach ($clients as $key => $value) {
-    $selected = ($client == $key) ? 'selected' : '';
+    $selected = ($selectedClient == $key) ? 'selected' : '';
 
     if (strlen($value['name']) > 15) {
         $value['name'] = substr($value['name'], 0, 12) . '...';

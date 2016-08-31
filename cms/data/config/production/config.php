@@ -4,7 +4,6 @@
  *
  * @package Core
  * @subpackage Frontend_ConfigFile
- * @version SVN Revision $Rev:$
  *
  * @author Automatically generated via System
  * @copyright four for business AG <www.4fb.de>

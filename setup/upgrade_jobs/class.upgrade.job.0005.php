@@ -4,8 +4,6 @@
  *
  * @package    Setup
  * @subpackage UpgradeJob
- * @version    SVN Revision $Rev:$
- *
  * @author     Murat Purc <murat@purc>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -53,7 +51,6 @@ class cUpgradeJob_0005 extends cUpgradeJobAbstract {
             $contentCollection->setWhere('idtype', $types['CMS_DATE']);
             $contentCollection->query();
             while (($item = $contentCollection->next()) !== false) {
-                $idcontent = $item->get('idcontent');
                 $oldValue = $item->get('value');
                 // if the value has not the format dd.mm.yyyy, it is possibly the new format, so ignore it
                 $oldValueSplitted = explode('.', $oldValue);

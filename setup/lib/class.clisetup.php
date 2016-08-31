@@ -4,8 +4,6 @@
  *
  * @package Setup
  * @subpackage Setup
- * @version SVN Revision $Rev:$
- *
  * @author Mischa Holz
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -26,19 +24,19 @@ class cCLISetup {
      * holds the setup settings
      * @var array
      */
-    protected $settings;
+    protected $_settings;
 
     /**
      * holds the command line options
      * @var array
      */
-    protected $args;
+    protected $_args;
 
     /**
      * path to the settings files
      * @var string
      */
-    protected $settingsFile;
+    protected $_settingsFile;
 
     /**
      * Initiliazes the class and sets standard values for some settings
@@ -46,29 +44,28 @@ class cCLISetup {
      * @param array $args the parsed command line
      */
     public function __construct($args) {
-        $settings = array();
 
-        $this->settings['db']['host'] = 'localhost';
-        $this->settings['db']['user'] = 'root';
-        $this->settings['db']['password'] = '';
-        $this->settings['db']['charset'] = 'utf8';
-        $this->settings['db']['collation'] = 'utf8_general_ci';
-        $this->settings['db']['database'] = 'contenido';
-        $this->settings['db']['prefix'] = 'con';
+        $this->_settings['db']['host'] = 'localhost';
+        $this->_settings['db']['user'] = 'root';
+        $this->_settings['db']['password'] = '';
+        $this->_settings['db']['charset'] = 'utf8';
+        $this->_settings['db']['collation'] = 'utf8_general_ci';
+        $this->_settings['db']['database'] = 'contenido';
+        $this->_settings['db']['prefix'] = 'con';
 
-        $this->settings['paths']['http_root_path'] = '';
+        $this->_settings['paths']['http_root_path'] = '';
 
-        $this->settings['setup']['client_mode'] = '';
+        $this->_settings['setup']['client_mode'] = '';
 
-        $this->settings['admin_user']['password'] = '';
-        $this->settings['admin_user']['email'] = '';
+        $this->_settings['admin_user']['password'] = '';
+        $this->_settings['admin_user']['email'] = '';
 
-        $this->args = $args;
+        $this->_args = $args;
 
-        $this->args['interactive'] = isset($this->args['interactive']) || isset($this->args['i']); // -i can be used instead of --interactive
+        $this->_args['interactive'] = isset($this->_args['interactive']) || isset($this->_args['i']); // -i can be used instead of --interactive
 
         // the setup will search for autoinstall.ini first or use the file which is passed to the script with the --file switch
-        $this->settingsFile = 'autoinstall.ini';
+        $this->_settingsFile = 'autoinstall.ini';
     }
 
     /**
@@ -77,69 +74,69 @@ class cCLISetup {
     public function interpretCommandline() {
         global $belang;
 
-        $belang = ($this->args['locale']) ? $this->args['locale'] : "en_US"; // setting the language
+        $belang = ($this->_args['locale']) ? $this->_args['locale'] : "en_US"; // setting the language
 
         cI18n::init(CON_SETUP_PATH . '/locale/', $belang, 'setup');
 
         // check if we just need to print the help text
-        if (isset($this->args['h']) || $this->args['help']) {
+        if (isset($this->_args['h']) || $this->_args['help']) {
             printHelpText();
             exit(0);
         }
 
         // set the configuration file
-        if (isset($this->args['file'])) {
-            $this->settingsFile = $this->args['file'];
+        if (isset($this->_args['file'])) {
+            $this->_settingsFile = $this->_args['file'];
         }
 
         prntln("\r" . i18n('This program will install CONTENIDO on this computer.', 'setup'));
 
         // first check for the interactive switch
-        if ($this->args['interactive']) {
+        if ($this->_args['interactive']) {
             // user wants the setup to be interactive - ignore any files and start the configuration
             prntln();
             prntln();
             // the settings from the command line overwrite the settings but the UI settings overwrite everything
             // settings from the command line and the file (if existent) will be provided to the user as standard values for the questions
-            $this->getSettingsFromFile($this->settingsFile);
-            $this->getSettingsFromCommandLine($this->args);
+            $this->getSettingsFromFile($this->_settingsFile);
+            $this->getSettingsFromCommandLine();
             $this->getUserInputSettings();
-        } else if ($this->args['noninteractive']) {
+        } else if ($this->_args['noninteractive']) {
             // user does not want the setup to be interactive - look for the file
-            echo(i18n('Looking for ', 'setup') . $this->settingsFile . '...');
-            if (file_exists($this->settingsFile)) {
+            echo(i18n('Looking for ', 'setup') . $this->_settingsFile . '...');
+            if (file_exists($this->_settingsFile)) {
                 // file found - read the settings and start installing
                 prntln(i18n('found', 'setup'));
-                prntln(i18n('CONTENIDO will use the specified settings from ', 'setup') . $this->settingsFile);
+                prntln(i18n('CONTENIDO will use the specified settings from ', 'setup') . $this->_settingsFile);
                 prntln();
-                $this->getSettingsFromFile($this->settingsFile);
-                $this->getSettingsFromCommandLine($this->args);
+                $this->getSettingsFromFile($this->_settingsFile);
+                $this->getSettingsFromCommandLine();
                 $this->printSettings();
             } else {
                 // file not found - print error message and exit, since the user specifically said he wanted to use the file
                 prntln(i18n('not found', 'setup'));
-                prntln(sprintf(i18n('CONTENIDO was unable to locate the configuration file %s, but you asked to use it.', 'setup'), $this->settingsFile));
+                prntln(sprintf(i18n('CONTENIDO was unable to locate the configuration file %s, but you asked to use it.', 'setup'), $this->_settingsFile));
                 prntln(i18n('Setup can not continue.', 'setup'));
                 exit(1);
             }
         } else {
             // default mode - look for the file. if it's there, use it. Otherwise start the interactive setup
-            echo(i18n('Looking for ', 'setup') . $this->settingsFile . '...');
-            if (file_exists($this->settingsFile)) {
+            echo(i18n('Looking for ', 'setup') . $this->_settingsFile . '...');
+            if (file_exists($this->_settingsFile)) {
                 // read the file
                 prntln(i18n('found', 'setup'));
-                prntln(i18n('CONTENIDO will use the specified settings from ', 'setup') . $this->settingsFile);
+                prntln(i18n('CONTENIDO will use the specified settings from ', 'setup') . $this->_settingsFile);
                 prntln();
-                $this->getSettingsFromFile($this->settingsFile);
-                $this->getSettingsFromCommandLine($this->args);
+                $this->getSettingsFromFile($this->_settingsFile);
+                $this->getSettingsFromCommandLine();
                 $this->printSettings();
             } else {
                 // start the interactive setup
                 prntln(i18n('not found', 'setup'));
                 prntln();
                 prntln();
-                $this->getSettingsFromFile($this->settingsFile);
-                $this->getSettingsFromCommandLine($this->args);
+                $this->getSettingsFromFile($this->_settingsFile);
+                $this->getSettingsFromCommandLine();
                 $this->getUserInputSettings();
             }
         }
@@ -150,7 +147,7 @@ class cCLISetup {
      */
     public function printSettings() {
         prntln(i18n('CONTENIDO will be installed with the following settings: ', 'setup'));
-        $noPasswordArray = $this->settings;
+        $noPasswordArray = $this->_settings;
         $noPasswordArray['db']['password'] = '**********';
         $noPasswordArray['admin_user']['password'] =  '**********';
         prntln(json_encode($noPasswordArray));
@@ -158,32 +155,29 @@ class cCLISetup {
 
     /**
      * Read the settings from various parameters from the command line
-     *
-     * @param array $args the parsed command line
      */
     public function getSettingsFromCommandLine() {
-        $this->settings['db']['host'] = ($this->args['dbhost'] == '') ? $this->settings['db']['host'] : $this->args['dbhost'];
-        $this->settings['db']['user'] = ($this->args['dbuser'] == '') ? $this->settings['db']['user'] : $this->args['dbuser'];
-        $this->settings['db']['password'] = ($this->args['dbpassword'] == '') ? $this->settings['db']['password'] : $this->args['dbpassword'];
-        $this->settings['db']['charset'] = ($this->args['dbcharset'] == '') ? $this->settings['db']['charset'] : $this->args['dbcharset'];
-        $this->settings['db']['collation'] = ($this->args['dbcollation'] == '') ? $this->settings['db']['collation'] : $this->args['dbcollation'];
-        $this->settings['db']['database'] = ($this->args['dbdatabase'] == '') ? $this->settings['db']['database'] : $this->args['dbdatabase'];
-        $this->settings['db']['prefix'] = ($this->args['dbprefix'] == '') ? $this->settings['db']['prefix'] : $this->args['dbprefix'];
+        $this->_settings['db']['host'] = ($this->_args['dbhost'] == '') ? $this->_settings['db']['host'] : $this->_args['dbhost'];
+        $this->_settings['db']['user'] = ($this->_args['dbuser'] == '') ? $this->_settings['db']['user'] : $this->_args['dbuser'];
+        $this->_settings['db']['password'] = ($this->_args['dbpassword'] == '') ? $this->_settings['db']['password'] : $this->_args['dbpassword'];
+        $this->_settings['db']['charset'] = ($this->_args['dbcharset'] == '') ? $this->_settings['db']['charset'] : $this->_args['dbcharset'];
+        $this->_settings['db']['collation'] = ($this->_args['dbcollation'] == '') ? $this->_settings['db']['collation'] : $this->_args['dbcollation'];
+        $this->_settings['db']['database'] = ($this->_args['dbdatabase'] == '') ? $this->_settings['db']['database'] : $this->_args['dbdatabase'];
+        $this->_settings['db']['prefix'] = ($this->_args['dbprefix'] == '') ? $this->_settings['db']['prefix'] : $this->_args['dbprefix'];
 
-        $this->settings['paths']['http_root_path'] = ($this->args['pathshttprootpath'] == '') ? $this->settings['paths']['http_root_path'] : $this->args['pathshttprootpath'];
+        $this->_settings['paths']['http_root_path'] = ($this->_args['pathshttprootpath'] == '') ? $this->_settings['paths']['http_root_path'] : $this->_args['pathshttprootpath'];
 
-        $this->settings['setup']['client_mode'] = ($this->args['setupclientmode'] == '') ? $this->settings['setup']['client_mode'] : $this->args['setupclientmode'];
+        $this->_settings['setup']['client_mode'] = ($this->_args['setupclientmode'] == '') ? $this->_settings['setup']['client_mode'] : $this->_args['setupclientmode'];
 
-        $this->settings['admin_user']['password'] = ($this->args['adminuserpassword'] == '') ? $this->settings['admin_user']['password'] : $this->args['adminuserpassword'];
-        $this->settings['admin_user']['email'] = ($this->args['adminuseremail'] == '') ? $this->settings['admin_user']['email'] : $this->args['adminuseremail'];
-        $this->settings['advanced']['delete_database'] = ($this->args['advanceddeletedatabase'] == '') ? $this->settings['advanced']['delete_database'] : $this->args['advanceddeletedatabase'];
+        $this->_settings['admin_user']['password'] = ($this->_args['adminuserpassword'] == '') ? $this->_settings['admin_user']['password'] : $this->_args['adminuserpassword'];
+        $this->_settings['admin_user']['email'] = ($this->_args['adminuseremail'] == '') ? $this->_settings['admin_user']['email'] : $this->_args['adminuseremail'];
+        $this->_settings['advanced']['delete_database'] = ($this->_args['advanceddeletedatabase'] == '') ? $this->_settings['advanced']['delete_database'] : $this->_args['advanceddeletedatabase'];
     }
 
     /**
      * Start a dialog with the user to get the settings
      */
     public function getUserInputSettings() {
-        $settings = array();
 
         // print welcome message
         prntln('>>>>> '. i18n('Welcome to CONTENIDO', 'setup'). ' <<<<<');
@@ -191,57 +185,57 @@ class cCLISetup {
         prntln(i18n('Database settings:', 'setup'));
 
         // database host
-        prnt(i18n('Host', 'setup') . ' [' . $this->settings['db']['host'] . ']: ', 1);
+        prnt(i18n('Host', 'setup') . ' [' . $this->_settings['db']['host'] . ']: ', 1);
         $line = trim(fgets(STDIN));
-        $this->settings['db']['host'] = ($line == "") ? $this->settings['db']['host'] : $line;
+        $this->_settings['db']['host'] = ($line == "") ? $this->_settings['db']['host'] : $line;
 
         // database user
-        prnt(i18n('User', 'setup') . ' [' . $this->settings['db']['user'] . ']: ', 1);
+        prnt(i18n('User', 'setup') . ' [' . $this->_settings['db']['user'] . ']: ', 1);
         $line = trim(fgets(STDIN));
-        $this->settings['db']['user'] = ($line == "") ? $this->settings['db']['user'] : $line;
+        $this->_settings['db']['user'] = ($line == "") ? $this->_settings['db']['user'] : $line;
 
         // database password
         $dbpw = passwordPrompt(i18n('Password', 'setup'), 1);
-        $this->settings['db']['password'] = ($dbpw == '') ? $this->settings['db']['password'] : $dbpw;
+        $this->_settings['db']['password'] = ($dbpw == '') ? $this->_settings['db']['password'] : $dbpw;
 
         // database name
-        prnt(i18n('Database name', 'setup') .' [' . $this->settings['db']['database'] . ']: ', 1);
+        prnt(i18n('Database name', 'setup') .' [' . $this->_settings['db']['database'] . ']: ', 1);
         $line = trim(fgets(STDIN));
-        $this->settings['db']['database'] = ($line == "") ? $this->settings['db']['database'] : $line;
+        $this->_settings['db']['database'] = ($line == "") ? $this->_settings['db']['database'] : $line;
 
         // database charset
-        prnt(i18n('Charset', 'setup') . ' [' . $this->settings['db']['charset'] . ']: ', 1);
+        prnt(i18n('Charset', 'setup') . ' [' . $this->_settings['db']['charset'] . ']: ', 1);
         $line = trim(fgets(STDIN));
-        $this->settings['db']['charset'] = ($line == "") ? $this->settings['db']['charset'] : $line;
+        $this->_settings['db']['charset'] = ($line == "") ? $this->_settings['db']['charset'] : $line;
 
         // database collation
-        prnt(i18n('Collation', 'setup') . ' [' . $this->settings['db']['collation'] . ']: ', 1);
+        prnt(i18n('Collation', 'setup') . ' [' . $this->_settings['db']['collation'] . ']: ', 1);
         $line = trim(fgets(STDIN));
-        $this->settings['db']['collation'] = ($line == "") ? $this->settings['db']['collation'] : $line;
+        $this->_settings['db']['collation'] = ($line == "") ? $this->_settings['db']['collation'] : $line;
 
         // database prefix
-        prnt(i18n('Prefix', 'setup') . ' [' . $this->settings['db']['prefix'] . ']: ', 1);
+        prnt(i18n('Prefix', 'setup') . ' [' . $this->_settings['db']['prefix'] . ']: ', 1);
         $line = trim(fgets(STDIN));
-        $this->settings['db']['prefix'] = ($line == "") ? $this->settings['db']['prefix'] : $line;
+        $this->_settings['db']['prefix'] = ($line == "") ? $this->_settings['db']['prefix'] : $line;
 
         // http root path
         prntln();
         prntln(i18n('Please enter the http path to where the contenido/ folder resides', 'setup'));
         prntln(i18n('e.g. http://localhost/', 'setup'));
-        prnt(i18n('Backend web path', 'setup') .' [' . $this->settings['paths']['http_root_path'] . ']: ', 1);
+        prnt(i18n('Backend web path', 'setup') .' [' . $this->_settings['paths']['http_root_path'] . ']: ', 1);
         $line = trim(fgets(STDIN));
-        $this->settings['paths']['http_root_path'] = ($line == "") ? $this->settings['paths']['http_root_path'] : $line;
+        $this->_settings['paths']['http_root_path'] = ($line == "") ? $this->_settings['paths']['http_root_path'] : $line;
 
         // ask for the setup mode
         prntln();
         $displayStandard = i18n('yes', 'setup');
-        if ($this->settings['setup']['client_mode'] == 'CLIENTMODULES') {
+        if ($this->_settings['setup']['client_mode'] == 'CLIENTMODULES') {
             $displayStandard = i18n('modules', 'setup');
-        } else if ($this->settings['setup']['client_mode'] == 'NOCLIENT') {
+        } else if ($this->_settings['setup']['client_mode'] == 'NOCLIENT') {
             $displayStandard = i18n('no', 'setup');
         }
         $first = true;
-        while ($this->settings['setup']['client_mode'] == "" || $first) {
+        while ($this->_settings['setup']['client_mode'] == "" || $first) {
             $first = false;
             prntln(i18n('Do you want to install the example client?', 'setup'));
             prntln(i18n('Please choose "yes" (to install the modules AND the content), "modules" (to install only the modules) or "no"', 'setup'));
@@ -251,11 +245,11 @@ class cCLISetup {
                 $line = $displayStandard;
             }
             if ($line == 'yes' || $line == i18n('yes', 'setup')) {
-                $this->settings['setup']['client_mode'] = 'CLIENTEXAMPLES';
+                $this->_settings['setup']['client_mode'] = 'CLIENTEXAMPLES';
             } else if ($line == 'modules' || $line == i18n('modules', 'setup')) {
-                $this->settings['setup']['client_mode'] = 'CLIENTMODULES';
+                $this->_settings['setup']['client_mode'] = 'CLIENTMODULES';
             } else if ($line == 'no' || $line == i18n('no', 'setup')) {
-                $this->settings['setup']['client_mode'] = 'NOCLIENT';
+                $this->_settings['setup']['client_mode'] = 'NOCLIENT';
             }
         }
 
@@ -270,12 +264,12 @@ class cCLISetup {
 
             $password2 = passwordPrompt(i18n('Repeat admin password', 'setup'), 1);
         }
-        $this->settings['admin_user']['password'] = ($password1 == '') ? $this->settings['admin_user']['password'] : $password1;
+        $this->_settings['admin_user']['password'] = ($password1 == '') ? $this->_settings['admin_user']['password'] : $password1;
 
         // admin email
-        prnt(i18n('Admin email', 'setup') . ' [' . $this->settings['admin_user']['email'] . ']: ', 1);
+        prnt(i18n('Admin email', 'setup') . ' [' . $this->_settings['admin_user']['email'] . ']: ', 1);
         $line = trim(fgets(STDIN));
-        $this->settings['admin_user']['email'] = ($line == "") ? $this->settings['admin_user']['email'] : $line;
+        $this->_settings['admin_user']['email'] = ($line == "") ? $this->_settings['admin_user']['email'] : $line;
 
         // print thank you
         prntln(i18n('Thank you.', 'setup'));
@@ -297,7 +291,7 @@ class cCLISetup {
 
         switch ($ext) {
             case 'ini':
-                $this->settings = parse_ini_file($file, true);
+                $this->_settings = parse_ini_file($file, true);
                 break;
             case 'xml':
                 $xml = simplexml_load_file($file);
@@ -305,24 +299,24 @@ class cCLISetup {
                     return;
                 }
 
-                $this->settings['db']['host'] = trim($xml->db->host);
-                $this->settings['db']['user'] = trim($xml->db->user);
-                $this->settings['db']['password'] = trim($xml->db->password);
-                $this->settings['db']['charset'] = trim($xml->db->charset);
-                $this->settings['db']['database'] = trim($xml->db->database);
-                $this->settings['db']['prefix'] = trim($xml->db->prefix);
-                $this->settings['db']['collation'] = trim($xml->db->collation);
+                $this->_settings['db']['host'] = trim($xml->db->host);
+                $this->_settings['db']['user'] = trim($xml->db->user);
+                $this->_settings['db']['password'] = trim($xml->db->password);
+                $this->_settings['db']['charset'] = trim($xml->db->charset);
+                $this->_settings['db']['database'] = trim($xml->db->database);
+                $this->_settings['db']['prefix'] = trim($xml->db->prefix);
+                $this->_settings['db']['collation'] = trim($xml->db->collation);
 
-                $this->settings['paths']['http_root_path'] = trim($xml->path->http_root_path);
+                $this->_settings['paths']['http_root_path'] = trim($xml->path->http_root_path);
 
-                $this->settings['setup']['client_mode'] = trim($xml->client->client_mode);
+                $this->_settings['setup']['client_mode'] = trim($xml->client->client_mode);
 
-                $this->settings['admin_user']['password'] = trim($xml->admin_user->password);
-                $this->settings['admin_user']['email'] = trim($xml->admin_user->email);
-                $this->settings['advanced']['delete_database'] = trim($xml->advanced->delete_database);
+                $this->_settings['admin_user']['password'] = trim($xml->admin_user->password);
+                $this->_settings['admin_user']['email'] = trim($xml->admin_user->email);
+                $this->_settings['advanced']['delete_database'] = trim($xml->advanced->delete_database);
                 break;
             case 'json':
-                $this->settings = json_decode(file_get_contents($file), true);
+                $this->_settings = json_decode(file_get_contents($file), true);
                 break;
         }
 
@@ -335,12 +329,14 @@ class cCLISetup {
      *
      */
     public function executeSystemTests() {
-        global $cfg, $args;
+        global $args, $belang;
 
-        if ($this->settings['advanced']['delete_database'] == '1' || $this->settings['advanced']['delete_database'] == 'YES') {
+        $cfg = cRegistry::getConfig();
+
+        if ($this->_settings['advanced']['delete_database'] == '1' || $this->_settings['advanced']['delete_database'] == 'YES') {
             $answer = '';
             while ($answer != 'Y' && $answer != 'N') {
-                prnt(sprintf(i18n("You chose in the configuration file to delete the database '%s' before installing.\nDO YOU REALLY WANT TO CONTINUE WITH DELETING THIS DATABASE? (Y/N) [N]: ", 'setup'), $this->settings['db']['database']));
+                prnt(sprintf(i18n("You chose in the configuration file to delete the database '%s' before installing.\nDO YOU REALLY WANT TO CONTINUE WITH DELETING THIS DATABASE? (Y/N) [N]: ", 'setup'), $this->_settings['db']['database']));
                 $answer = trim(fgets(STDIN));
                 if ($answer == "") {
                     $answer = "N";
@@ -351,10 +347,10 @@ class cCLISetup {
             }
 
             $db = getSetupMySQLDBConnection(false);
-            $db->query('DROP DATABASE ' . $this->settings['db']['database']);
+            $db->query('DROP DATABASE ' . $this->_settings['db']['database']);
 
             prntln();
-            prntln(sprintf(i18n('THE DATABASE %s HAS BEEN DELETED!!!', 'setup'), $this->settings['db']['database']));
+            prntln(sprintf(i18n('THE DATABASE %s HAS BEEN DELETED!!!', 'setup'), $this->_settings['db']['database']));
             prntln();
         }
 
@@ -424,30 +420,33 @@ class cCLISetup {
      * Take the settings from the settings array and write them to the appropriate places
      */
     public function applySettings() {
-        global $cfg, $_SESSION;
+
+        $cfg = cRegistry::getConfig();
 
         $cfg['db'] = array(
             'connection' => array(
-                'host'     => $this->settings['db']['host'],
-                'user'     => $this->settings['db']['user'],
-                'password' => $this->settings['db']['password'],
-                'charset'  => $this->settings['db']['charset'],
-                'database' => $this->settings['db']['database']
+                'host'     => $this->_settings['db']['host'],
+                'user'     => $this->_settings['db']['user'],
+                'password' => $this->_settings['db']['password'],
+                'charset'  => $this->_settings['db']['charset'],
+                'database' => $this->_settings['db']['database']
             ),
             'haltBehavior'    => 'report',
             'haltMsgPrefix'   => (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] . ' ' : '',
             'enableProfiling' => false
         );
         $_SESSION['setuptype'] = 'setup';
-        $_SESSION['dbname'] = $this->settings['db']['database'];
+        $_SESSION['dbname'] = $this->_settings['db']['database'];
         $_SESSION['configmode'] = 'save';
-        $_SESSION['override_root_http_path'] = $this->settings['paths']['http_root_path'];
-        $_SESSION['clientmode'] = $this->settings['setup']['client_mode'];
-        $_SESSION['adminpass'] = $this->settings['admin_user']['password'];
-        $_SESSION['adminmail'] = $this->settings['admin_user']['email'];
-        $_SESSION['dbprefix'] = $this->settings['db']['prefix'];
-        $_SESSION['dbcollation'] = $this->settings['db']['collation'];
-        $_SESSION['dbcharset'] = $this->settings['db']['charset'];
-        $cfg['sql']['sqlprefix'] = $this->settings['db']['prefix'];
+        $_SESSION['override_root_http_path'] = $this->_settings['paths']['http_root_path'];
+        $_SESSION['clientmode'] = $this->_settings['setup']['client_mode'];
+        $_SESSION['adminpass'] = $this->_settings['admin_user']['password'];
+        $_SESSION['adminmail'] = $this->_settings['admin_user']['email'];
+        $_SESSION['dbprefix'] = $this->_settings['db']['prefix'];
+        $_SESSION['dbcollation'] = $this->_settings['db']['collation'];
+        $_SESSION['dbcharset'] = $this->_settings['db']['charset'];
+        $cfg['sql']['sqlprefix'] = $this->_settings['db']['prefix'];
+        // reload cfg_sql.inc.php because new sql prefix will change resulting array data
+        include($cfg['path']['contenido_config'] . 'cfg_sql.inc.php');
     }
 }

@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the cErrorException class.
  *
  * @package Core
  * @subpackage Exception
- * @version SVN Revision $Rev:$
  *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
@@ -21,6 +21,16 @@
  */
 class cErrorException extends cException {
 
+    /**
+     * Constructor to create an instance of this class.
+     *
+     * @param string $message
+     *         The Exception message to throw.
+     * @param int $code [optional]
+     *         The Exception code.
+     * @param Exception $previous [optional]
+     *         The previous exception used for the exception chaining.
+     */
     public function __construct($message, $code = 0, Exception $previous = NULL) {
         $cfg = cRegistry::getConfig();
 

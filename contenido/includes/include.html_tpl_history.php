@@ -1,12 +1,12 @@
 <?php
+
 /**
  * This file contains the backend page for html template history.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
- * @author           Bilal Arslan, Timo Trautmann
+ * @author           Bilal Arslan
+ * @author           Timo Trautmann
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
  * @link             http://www.4fb.de
@@ -31,7 +31,7 @@ if ($sFileName == '') {
 
 $readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
 if($readOnly) {
-	cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
+    cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
 }
 
 $sType = 'templates';
@@ -78,7 +78,7 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage')) {
 
         // There is a need for renaming file
         if ($sFileName != $sHTMLName) {
-            if (getFileType($sHTMLName) != 'html' and strlen(stripslashes(trim($sHTMLName))) > 0) {
+            if (cFileHandler::getExtension($sHTMLName) != 'html' and strlen(stripslashes(trim($sHTMLName))) > 0) {
                 $sHTMLName = stripslashes($sHTMLName) . '.html';
             }
 
@@ -179,7 +179,7 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage')) {
         $oPage->render();
     } else {
         if ($bDeleteFile) {
-            $oPage->displayWarning(i18n('Version history was cleared'));
+            $oPage->displayOk(i18n('Version history was cleared'));
         } else {
             $oPage->displayWarning(i18n('No template history available'));
         }

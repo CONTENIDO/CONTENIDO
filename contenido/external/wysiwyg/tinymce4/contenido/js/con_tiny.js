@@ -4,7 +4,6 @@
  * Integration of TinyMCE to handle it as an insight-editor
  *
  * @module     tiny
- * @version    SVN Revision $Rev$
  * @requires   jQuery, Con
  * @package    CONTENIDO Backend includes
  * @author     Timo Trautmann
@@ -178,7 +177,7 @@
          * 'LoadContent'. It is called after the editor initialised.
          * When retrieving the content w/ getContent(), cleaned up content will be returned
          * that eventually will be reinserted into the editor.
-         * 
+         *
          * @see http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.LoadContent
          * @method customSetupContentCallback
          * @param  {String}  editorId
@@ -460,7 +459,7 @@
                         }
 
                         // fire blur event to set current editor to be not focussed
-                        
+
                         jQuery("#" + tmpId).blur();
                     }
                 }, 0);
@@ -508,8 +507,8 @@
 
         /**
          * Function checks if content has changed if user leaves page.
-         * Then he has the possiblity to save this content. So there is no
-         * guess, that changes get lost.
+         * The user then has the possiblity to save this content. So there is no
+         * chance, that changes get lost.
          * @method leaveCheck
          * @static
          */
@@ -629,6 +628,10 @@
             // Register plugin with a short name
             tinymce.PluginManager.add('confullscreen', tinymce.plugins.ConFullscreenPlugin);
 
+            // custom tinymce plugins can only be loaded globally, not per content type
+            // remember loaded plugins to avoid loading plugins multiple times
+            var customPluginsLoaded = [];
+
             // iterate through wysiwygSettings array and process its content
             Object.keys(wysiwygSettings).forEach(function(val, idx) {
                 // create copy of object to avoid side effects
@@ -646,7 +649,7 @@
                     // load current add-on
                     // http://www.tinymce.com/wiki.php/api4:method.tinymce.AddOnManager.load
                     tinymce.PluginManager.load(plugin.name, plugin.path);
-                    
+
                     if ('undefined' === typeof(settings.plugins)) {
                         settings.plugins = "";
                     }
@@ -659,7 +662,7 @@
                 });
 
                 if ('undefined' === typeof(settings['file_browser_callback'])) {
-                    settings['file_browser_callback'] = 
+                    settings['file_browser_callback'] =
                         function(field_name, url, type, win) {
                             Con.Tiny.customFileBrowserCallback(field_name, url, type, win);
                     }
@@ -671,9 +674,15 @@
                     // Array.isArray() can not be used because IE 8 does not implement it
                     if ('[object Array]' === Object.prototype.toString.call(settings.externalplugins)) {
                         settings.externalplugins.forEach(function (plugin) {
-                            // load current add-on
+                            // if plugin is not loaded
+
                             // http://www.tinymce.com/wiki.php/api4:method.tinymce.AddOnManager.load
-                            tinymce.PluginManager.load(plugin.name, plugin.url);
+                            customPluginsLoaded[plugin.name] = plugin.url;
+                            if (customPluginsLoaded[plugin.name] === plugin.url) {
+                                // load current plugin
+                                tinymce.PluginManager.load(plugin.name, plugin.url);
+                            }
+
                             // exclude plugin from later loading
                             settings.plugins += (' -' + plugin.name);
                             settings.fullscreen_settings.plugins += (' -' + plugin.name);
@@ -697,7 +706,7 @@
 
                                 // compute allowed height for tinymce editor
                                 // subtract 20 pixels to leave some space to page bottom
-                                // window.innerHeight does not work in IE 8 -> use jQuery 
+                                // window.innerHeight does not work in IE 8 -> use jQuery
                                 var allowedHeight = jQuery(window).height() - edNode.offset().top - buttonNode.outerHeight() -20
                                 // substract editor node border, padding and margin
                                 allowedHeight -= edNode.innerHeight() - edNode.outerHeight()
@@ -786,7 +795,7 @@
                                 tmp.push(k);
                             }
                         });
-                        
+
                         ed.undoManager.data = tmp;
                         Con.Tiny.typingUndo[ed.id] = true;
                     });
@@ -859,7 +868,14 @@
                 tinymce.init(settings);
                 jQuery(document).ready(function() {
                     // copy settings into global variable for later access
-                    Con.Tiny.tinySettings[jQuery(settings.selector).attr("id")] = settings;
+                    jQuery(settings.selector).each(function(idx, elem) {
+                        if ("undefined" === typeof(elem.id)) {
+                            // use fallback based on second and millisecond if id does not exist
+                            var d = new Date();
+                            elem.id = d.getSeconds() + "_" + d.getMilliseconds();
+                        }
+                        Con.Tiny.tinySettings[elem.id] = settings;
+                    });
                 });
             });
         },

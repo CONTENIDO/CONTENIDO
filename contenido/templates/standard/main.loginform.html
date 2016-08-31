@@ -61,7 +61,9 @@
 (function(Con, $) {
     $(function() {
         $("#lang").change(function() {
-            $("#login").submit();
+            if ("" !== $("#username").val() && "" !== $("#passwd").val()) {
+            	$("#login").submit();
+        	}
         });
 
         if ("" === $("#username").val()) {

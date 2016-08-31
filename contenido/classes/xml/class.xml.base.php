@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the base XML class.
  *
  * @package    Core
  * @subpackage XML
- * @version    SVN Revision $Rev:$
- *
  * @author     Dominik Ziegler
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,15 +22,25 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 abstract class cXmlBase {
 
+    /**
+     *
+     * @var DOMDocument
+     */
     protected $_dom = NULL;
 
+    /**
+     *
+     * @var DOMXpath
+     */
     protected $_xpath = NULL;
 
     /**
      * Creates a new XML document using DOMDocument.
      *
-     * @param string $version version of DOMDocument (optional, default: 1.0)
-     * @param string $encoding encoding of DOMDocumen (optional, default: UTF-8)
+     * @param string $version [optional, default: 1.0]
+     *         version of DOMDocument
+     * @param string $encoding [optional, default: UTF-8]
+     *         encoding of DOMDocument
      */
     protected function _createDocument($version = '', $encoding = '') {
         if ($version == '') {
@@ -55,7 +64,9 @@ abstract class cXmlBase {
 
     /**
      * Sets a current DOMDocument object to class.
-     * @param    DOMDocument    $domDocument DOMDocument object
+     *
+     * @param DOMDocument $domDocument
+     *         DOMDocument object
      */
     public function setDomDocument(DOMDocument $domDocument) {
         $this->_dom = $domDocument;
@@ -66,7 +77,8 @@ abstract class cXmlBase {
      * Returns the encoding of the XML document.
      *
      * @throws cException if there is no DOM document
-     * @return string encoding
+     * @return string
+     *     encoding
      */
     public function getEncoding() {
         if ($this->_dom === NULL) {
@@ -101,9 +113,11 @@ abstract class cXmlBase {
     /**
      * Resolves a given path which contains ".." statement for moving up one
      * level in path.
-     * @param string $path path to resolve
      *
-     * @return string resolved path
+     * @param string $path
+     *         path to resolve
+     * @return string
+     *         resolved path
      */
     public static function resolvePath($path) {
         if (substr($path, 0, 1) != '/') {
@@ -131,10 +145,12 @@ abstract class cXmlBase {
     /**
      * Returns given XPath with integrad level definition.
      *
-     * @param string $path XPath to extend
-     * @param int $level level
-     *
-     * @return string extended XPath
+     * @param string $path
+     *         XPath to extend
+     * @param int $level
+     *         level
+     * @return string
+     *         extended XPath
      */
     public static function getLevelXpath($path, $level) {
         $splits = explode('/', $path);
@@ -167,32 +183,34 @@ abstract class cXmlBase {
      * Converts an array to a SimpleXMLElement.
      * Example:
      * array(
-     * 'key1' => 'value1',
-     * 'key2' => array('value21', 'value22'),
-     * 'key3' => array('key31' => 'value31', 'key32' => 'value32')
+     *     'key1' => 'value1',
+     *     'key2' => array('value21', 'value22'),
+     *     'key3' => array('key31' => 'value31', 'key32' => 'value32')
      * );
      *
      * becomes
      *
      * <?xml version="1.0" encoding="utf-8"?>
      * <root>
-     * <key1>value1</key1>
-     * <key2>
-     * <array_value>value21</array_value>
-     * <array_value>value22</array_value>
-     * </key2>
-     * <key3>
-     * <key31>value31</key31>
-     * <key32>value32</key32>
-     * </key3>
+     *     <key1>value1</key1>
+     *     <key2>
+     *         <array_value>value21</array_value>
+     *         <array_value>value22</array_value>
+     *     </key2>
+     *     <key3>
+     *         <key31>value31</key31>
+     *         <key32>value32</key32>
+     *     </key3>
      * </root>
      *
-     * @param array $array the array which should be converted to XML
-     * @param SimpleXMLElement $xml [optional] the element to which the array
-     *            should be added
-     * @param string $rootTagName [optional] the root tag name which should be
-     *            used - is only used when $xml is NULL!
-     * @return SimpleXMLElement the array as a SimpleXMLElement
+     * @param array $array
+     *         the array which should be converted to XML
+     * @param SimpleXMLElement $xml [optional]
+     *         the element to which the array should be added
+     * @param string $rootTagName [optional]
+     *         the root tag name which should be used - is only used when $xml is NULL!
+     * @return SimpleXMLElement
+     *         the array as a SimpleXMLElement
      */
 
     public static function arrayToXml($array, $xml = NULL, $rootTagName = 'root') {
@@ -252,9 +270,10 @@ abstract class cXmlBase {
      * 'key3' => array('key31' => 'value31', 'key32' => 'value32')
      * );
      *
-     * @param string $xmlString contains a valid XML structure
+     * @param string $xmlString
+     *         contains a valid XML structure
+     * @return array
      */
-
     public static function xmlStringToArray($xmlString) {
         return self::xmlToArray(new SimpleXMLElement($xmlString, LIBXML_NOCDATA));
     }
@@ -263,7 +282,8 @@ abstract class cXmlBase {
      * Checks if a string is valid XML
      *
      * @param string $xmlString
-     * @return boolean True if the XML is valid
+     * @return bool
+     *         True if the XML is valid
      */
     public static function isValidXML($xmlString) {
         $testArray = null;
@@ -302,8 +322,8 @@ abstract class cXmlBase {
      * );
      *
      * @param SimpleXMLElement $xml
+     * @return array
      */
-
     public static function xmlToArray($xml) {
         $json = json_encode($xml);
         $array = json_decode($json, true);
@@ -317,8 +337,10 @@ abstract class cXmlBase {
      * Additionally, the function replaces all associative arrays which have
      * only empty values with the array keys of the array.
      *
-     * @param array $array the array to clean
-     * @return array the cleaned array
+     * @param array $array
+     *         the array to clean
+     * @return array
+     *         the cleaned array
      */
     private static function _cleanArray($array) {
         // replace empty arrays with empty strings recursively

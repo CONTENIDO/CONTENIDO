@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the cHTMLPasswordbox class.
  *
  * @package Core
  * @subpackage GUI_HTML
- * @version SVN Revision $Rev:$
  *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
@@ -24,21 +24,31 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHTMLPasswordbox extends cHTMLFormElement {
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
+     *
      * Creates an HTML password box.
      *
-     * If no additional parameters are specified, the
-     * default width is 20 units.
+     * If no additional parameters are specified, the default width is
+     * 20 units.
      *
-     * @param string $name Name of the element
-     * @param string $initvalue Initial value of the box
-     * @param int $width width of the text box
-     * @param int $maxlength maximum input length of the box
-     * @param string $id ID of the element
-     * @param string $disabled Item disabled flag (non-empty to set disabled)
-     * @param string $tabindex Tab index for form elements
-     * @param string $accesskey Key to access the field
-     * @param string $class the class of this element
+     * @param string $name
+     *         Name of the element
+     * @param string $initvalue [optional]
+     *         Initial value of the box
+     * @param int $width [optional]
+     *         width of the text box
+     * @param int $maxlength [optional]
+     *         maximum input length of the box
+     * @param string $id [optional]
+     *         ID of the element
+     * @param string $disabled [optional]
+     *         Item disabled flag (non-empty to set disabled)
+     * @param string $tabindex [optional]
+     *         Tab index for form elements
+     * @param string $accesskey [optional]
+     *         Key to access the field
+     * @param string $class [optional]
+     *         the class of this element
      */
     public function __construct($name, $initvalue = '', $width = '', $maxlength = '', $id = '', $disabled = false, $tabindex = NULL, $accesskey = '', $class = '') {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
@@ -55,8 +65,10 @@ class cHTMLPasswordbox extends cHTMLFormElement {
     /**
      * Sets the width of the text box.
      *
-     * @param int $width width of the text box
-     * @return cHTMLPasswordbox $this
+     * @param int $width
+     *         width of the text box
+     * @return cHTMLPasswordbox
+     *         $this for chaining
      */
     public function setWidth($width) {
         $width = intval($width);
@@ -71,8 +83,10 @@ class cHTMLPasswordbox extends cHTMLFormElement {
     /**
      * Sets the maximum input length of the text box.
      *
-     * @param int $maxlen maximum input length
-     * @return cHTMLPasswordbox $this
+     * @param int $maxlen
+     *         maximum input length
+     * @return cHTMLPasswordbox
+     *         $this for chaining
      */
     public function setMaxLength($maxlen) {
         $maxlen = intval($maxlen);
@@ -87,12 +101,13 @@ class cHTMLPasswordbox extends cHTMLFormElement {
     /**
      * Sets the initial value of the text box.
      *
-     * @param string $value Initial value
-     * @return cHTMLPasswordbox $this
+     * @param string $value
+     *         Initial value
+     * @return cHTMLPasswordbox
+     *         $this for chaining
      */
     public function setValue($value) {
         return $this->updateAttribute('value', $value);
     }
 
 }
-

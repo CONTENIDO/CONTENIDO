@@ -4,7 +4,6 @@
  *
  * @package Core
  * @subpackage Exception
- * @version SVN Revision $Rev:$
  *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>

@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the cContentTypeAbstractTabbed class.
  *
  * @package Core
  * @subpackage ContentType
- * @version SVN Revision $Rev:$
- *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -26,8 +25,10 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
     /**
      * Generates the encoded code for the tab menu.
      *
-     * @param array $tabs associative array mapping the tab IDs to the tab names
-     * @return string - the encoded code for the tab menu
+     * @param array $tabs
+     *         associative array mapping the tab IDs to the tab names
+     * @return string
+     *         the encoded code for the tab menu
      */
     protected function _generateTabMenuCode(array $tabs) {
         $template = new cTemplate();
@@ -46,9 +47,12 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
     /**
      * Return the raw settings of a content type
      *
-     * @param string $contentTypeName Content type name
-     * @param int $id ID of the content type
-     * @param array $contentTypes Content type array
+     * @param string $contentTypeName
+     *         Content type name
+     * @param int $id
+     *         ID of the content type
+     * @param array $contentTypes
+     *         Content type array
      * @return mixed
      */
     protected function _getRawSettings($contentTypeName, $id, array $contentTypes) {
@@ -75,7 +79,8 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
     /**
      * Generates the code for the action buttons (save and cancel).
      *
-     * @return string - the encoded code for the action buttons
+     * @return string
+     *         the encoded code for the action buttons
      */
     protected function _generateActionCode() {
         $template = new cTemplate();

@@ -4,8 +4,6 @@
  *
  * @package    Plugin
  * @subpackage Repository_FrontendNavigation
- * @version    SVN Revision $Rev:$
- *
  * @author     Willi Man
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,53 +22,100 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class FrontendNavigation {
 
     /**
-     * Constructor
+     * References database object
+     *
+     * @var cDb
      */
-    function FrontendNavigation($db, $cfg, $cfgClient, $client, $lang) {
-        $this->_bDebug = false;
-        $this->db = &$db;
-        $this->cfgClient = &$cfgClient;
-        $this->cfg = &$cfg;
-        $this->client = &$client;
-        $this->lang = &$lang;
+    protected $_db = null;
+
+    /*
+     *
+     * @var boolean
+     */
+    protected $_debug = false;
+
+    /**
+     * @var integer
+     */
+    protected $_client = 0;
+
+    /**
+     * @var array
+     */
+    protected $_cfgClient = array();
+
+    /**
+     * @var array
+     */
+    protected $_cfg = array();
+
+    /**
+     * @var integer
+     */
+    protected $_lang = 0;
+
+    /**
+     * FrontendNavigation constructor
+     */
+    public function __construct() {
+        $this->_db = cRegistry::getDb();
+        $this->_cfgClient = cRegistry::getClientConfig();
+        $this->_cfg = cRegistry::getConfig();
+        $this->_client = cRegistry::getClientId();
+        $this->_lang = cRegistry::getLanguageId();
+    }
+
+    /**
+     * Old constructor
+     *
+     * @deprecated [2016-02-11]
+     * 				This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     * @return __construct()
+     */
+    public function FrontendNavigation() {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
+        return $this->__construct();
     }
 
     /**
      * Get child categories by given parent category
+     *
+     * @param integer $parentCategory
+     * @return array
      */
-    function getSubCategories($iParentCategory) {
-        if (!is_int((int) $iParentCategory) AND $iParentCategory < 0 AND !is_array($this->cfg) AND !isset($this->cfg['tab']) AND !is_int((int) $this->client) AND $this->client < 0 AND !is_int((int) $this->lang) AND $this->lang < 0) {
+    public function getSubCategories($parentCategory) {
+        if (!is_int((int) $parentCategory)) {
             return array();
         }
 
         $sql = "SELECT
                     A.idcat
                 FROM
-                    " . $this->cfg["tab"]["cat_tree"] . " AS A,
-                    " . $this->cfg["tab"]["cat"] . " AS B,
-                    " . $this->cfg["tab"]["cat_lang"] . " AS C
+                    " . $this->_cfg["tab"]["cat_tree"] . " AS A,
+                    " . $this->_cfg["tab"]["cat"] . " AS B,
+                    " . $this->_cfg["tab"]["cat_lang"] . " AS C
                 WHERE
                     A.idcat    = B.idcat AND
                     B.idcat    = C.idcat AND
-                    B.idclient = " . $this->client . " AND
-                    C.idlang   = " . $this->lang . " AND
+                    B.idclient = " . $this->_client . " AND
+                    C.idlang   = " . $this->_lang . " AND
                     C.visible  = 1 AND
                     C.public   = 1 AND
-                    B.parentid = " . $iParentCategory . "
+                    B.parentid = " . $parentCategory . "
                 ORDER BY
                     A.idtree ";
 
-        if ($this->_bDebug) {
+        if ($this->_debug) {
             echo "<pre>";
             print_r($sql);
             echo "</pre>";
         }
 
-        $this->db->query($sql);
+        $this->_db->query($sql);
 
         $navigation = array();
-        while ($this->db->nextRecord()) {
-            $navigation[] = $this->db->f("idcat");
+        while ($this->_db->nextRecord()) {
+            $navigation[] = $this->_db->f("idcat");
         }
 
         return $navigation;
@@ -78,34 +123,37 @@ class FrontendNavigation {
 
     /**
      * Check if child categories of a given parent category exist
+     *
+     * @param integer $parentCategory
+     * @return boolean
      */
-    function hasChildren($iParentCategory) {
-        if (!is_int((int) $iParentCategory) AND $iParentCategory < 0 AND !is_array($this->cfg) AND !isset($this->cfg['tab']) AND !is_int((int) $this->client) AND $this->client < 0 AND !is_int((int) $this->lang) AND $this->lang < 0) {
+    public function hasChildren($parentCategory) {
+        if (!is_int((int) $parentCategory)) {
             return false;
         }
 
         $sql = "SELECT
                     B.idcat
                 FROM
-                    " . $this->cfg["tab"]["cat"] . " AS B,
-                    " . $this->cfg["tab"]["cat_lang"] . " AS C
+                    " . $this->_cfg["tab"]["cat"] . " AS B,
+                    " . $this->_cfg["tab"]["cat_lang"] . " AS C
                 WHERE
                     B.idcat    = C.idcat AND
-                    B.idclient = " . $this->client . " AND
-                    C.idlang   = " . $this->lang . " AND
+                    B.idclient = " . $this->_client . " AND
+                    C.idlang   = " . $this->_lang . " AND
                     C.visible  = 1 AND
                     C.public   = 1 AND
-                    B.parentid = " . $iParentCategory . " ";
+                    B.parentid = " . $parentCategory . " ";
 
-        if ($this->_bDebug) {
+        if ($this->_debug) {
             echo "<pre>";
             print_r($sql);
             echo "</pre>";
         }
 
-        $this->db->query($sql);
+        $this->_db->query($sql);
 
-        if ($this->db->nextRecord()) {
+        if ($this->_db->nextRecord()) {
             return true;
         } else {
             return false;
@@ -116,36 +164,39 @@ class FrontendNavigation {
      * Get direct successor of a given category
      * Note: does not work if direct successor (with preid 0) is not visible
      * or not public
+     *
+     * @param integer $category
+     * @return integer
      */
-    function getSuccessor($iCategory) {
-        if (!is_int((int) $iCategory) AND $iCategory < 0 AND !is_array($this->cfg) AND !isset($this->cfg['tab']) AND !is_int((int) $this->client) AND $this->client < 0 AND !is_int((int) $this->lang) AND $this->lang < 0) {
+    public function getSuccessor($category) {
+        if (!is_int((int) $category)) {
             return -1;
         }
 
         $sql = "SELECT
                     B.idcat
                 FROM
-                    " . $this->cfg["tab"]["cat"] . " AS B,
-                    " . $this->cfg["tab"]["cat_lang"] . " AS C
+                    " . $this->_cfg["tab"]["cat"] . " AS B,
+                    " . $this->_cfg["tab"]["cat_lang"] . " AS C
                 WHERE
                     B.idcat    = C.idcat AND
-                    B.idclient = " . $this->client . " AND
-                    C.idlang   = " . $this->lang . " AND
+                    B.idclient = " . $this->_client . " AND
+                    C.idlang   = " . $this->_lang . " AND
                     C.visible  = 1 AND
                     C.public   = 1 AND
                     B.preid    = 0 AND
-                    B.parentid = " . $iCategory . " ";
+                    B.parentid = " . $category . " ";
 
-        if ($this->_bDebug) {
+        if ($this->_debug) {
             echo "<pre>";
             print_r($sql);
             echo "</pre>";
         }
 
-        $this->db->query($sql);
+        $this->_db->query($sql);
 
-        if ($this->db->nextRecord()) {
-            return $this->db->f("idcat");
+        if ($this->_db->nextRecord()) {
+            return $this->_db->f("idcat");
         } else {
             return -1;
         }
@@ -153,35 +204,38 @@ class FrontendNavigation {
 
     /**
      * Check if a given category has a direct successor
+     *
+     * @param integer $category
+     * @return boolean
      */
-    function hasSuccessor($iCategory) {
-        if (!is_int((int) $iCategory) AND $iCategory < 0 AND !is_array($this->cfg) AND !isset($this->cfg['tab']) AND !is_int((int) $this->client) AND $this->client < 0 AND !is_int((int) $this->lang) AND $this->lang < 0) {
+    public function hasSuccessor($category) {
+        if (!is_int((int) $category)) {
             return false;
         }
 
         $sql = "SELECT
                     B.idcat
                 FROM
-                    " . $this->cfg["tab"]["cat"] . " AS B,
-                    " . $this->cfg["tab"]["cat_lang"] . " AS C
+                    " . $this->_cfg["tab"]["cat"] . " AS B,
+                    " . $this->_cfg["tab"]["cat_lang"] . " AS C
                 WHERE
                     B.idcat    = C.idcat AND
-                    B.idclient = " . $this->client . " AND
-                    C.idlang   = " . $this->lang . " AND
+                    B.idclient = " . $this->_client . " AND
+                    C.idlang   = " . $this->_lang . " AND
                     C.visible  = 1 AND
                     C.public   = 1 AND
                     B.preid    = 0 AND
-                    B.parentid = " . $iCategory . " ";
+                    B.parentid = " . $category . " ";
 
-        if ($this->_bDebug) {
+        if ($this->_debug) {
             echo "<pre>";
             print_r($sql);
             echo "</pre>";
         }
 
-        $this->db->query($sql);
+        $this->_db->query($sql);
 
-        if ($this->db->nextRecord()) {
+        if ($this->_db->nextRecord()) {
             return true;
         } else {
             return false;
@@ -190,34 +244,37 @@ class FrontendNavigation {
 
     /**
      * Get category name
+     *
+     * @param integer $cat_id
+     * @return string
      */
-    function getCategoryName($cat_id) {
-        if (!is_int((int) $cat_id) AND $cat_id < 0 AND !is_array($this->cfg) AND !isset($this->cfg['tab']) AND !is_int((int) $this->client) AND $this->client < 0 AND !is_int((int) $this->lang) AND $this->lang < 0) {
+    public function getCategoryName($cat_id) {
+        if (!is_int((int) $cat_id)) {
             return '';
         }
 
         $sql = "SELECT
                     B.name
                 FROM
-                    " . $this->cfg["tab"]["cat"] . " AS A,
-                    " . $this->cfg["tab"]["cat_lang"] . " AS B
+                    " . $this->_cfg["tab"]["cat"] . " AS A,
+                    " . $this->_cfg["tab"]["cat_lang"] . " AS B
                 WHERE
                     A.idcat    = B.idcat AND
                     A.idcat    = $cat_id AND
-                    A.idclient = " . $this->client . " AND
-                    B.idlang   = " . $this->lang . "
+                    A.idclient = " . $this->_client . " AND
+                    B.idlang   = " . $this->_lang . "
                 ";
 
-        if ($this->_bDebug) {
+        if ($this->_debug) {
             echo "<pre>";
             print_r($sql);
             echo "</pre>";
         }
 
-        $this->db->query($sql);
+        $this->_db->query($sql);
 
-        if ($this->db->nextRecord()) {
-            return $this->db->f("name");
+        if ($this->_db->nextRecord()) {
+            return $this->_db->f("name");
         } else {
             return '';
         }
@@ -225,34 +282,37 @@ class FrontendNavigation {
 
     /**
      * Get category urlname
+     *
+     * @param integer $cat_id
+     * @return string
      */
-    function getCategoryURLName($cat_id) {
-        if (!is_int((int) $cat_id) AND $cat_id < 0 AND !is_array($this->cfg) AND !isset($this->cfg['tab']) AND !is_int((int) $this->client) AND $this->client < 0 AND !is_int((int) $this->lang) AND $this->lang < 0) {
+    public function getCategoryURLName($cat_id) {
+        if (!is_int((int) $cat_id)) {
             return '';
         }
 
         $sql = "SELECT
                     B.urlname
                 FROM
-                    " . $this->cfg["tab"]["cat"] . " AS A,
-                    " . $this->cfg["tab"]["cat_lang"] . " AS B
+                    " . $this->_cfg["tab"]["cat"] . " AS A,
+                    " . $this->_cfg["tab"]["cat_lang"] . " AS B
                 WHERE
                     A.idcat    = B.idcat AND
                     A.idcat    = $cat_id AND
-                    A.idclient = " . $this->client . " AND
-                    B.idlang   = " . $this->lang . "
+                    A.idclient = " . $this->_client . " AND
+                    B.idlang   = " . $this->_lang . "
                 ";
 
-        if ($this->_bDebug) {
+        if ($this->_debug) {
             echo "<pre>";
             print_r($sql);
             echo "</pre>";
         }
 
-        $this->db->query($sql);
+        $this->_db->query($sql);
 
-        if ($this->db->nextRecord()) {
-            return $this->db->f("urlname");
+        if ($this->_db->nextRecord()) {
+            return $this->_db->f("urlname");
         } else {
             return '';
         }
@@ -260,34 +320,37 @@ class FrontendNavigation {
 
     /**
      * Check if category is visible
+     *
+     * @param integer $cat_id
+     * @return boolean
      */
-    function isVisible($cat_id) {
-        if (!is_int((int) $cat_id) AND $cat_id < 0 AND !is_array($this->cfg) AND !isset($this->cfg['tab']) AND !is_int((int) $this->client) AND $this->client < 0 AND !is_int((int) $this->lang) AND $this->lang < 0) {
+    public function isVisible($cat_id) {
+        if (!is_int((int) $cat_id)) {
             return false;
         }
 
         $sql = "SELECT
                     B.visible
                 FROM
-                    " . $this->cfg["tab"]["cat"] . " AS A,
-                    " . $this->cfg["tab"]["cat_lang"] . " AS B
+                    " . $this->_cfg["tab"]["cat"] . " AS A,
+                    " . $this->_cfg["tab"]["cat_lang"] . " AS B
                 WHERE
                     A.idcat    = B.idcat AND
                     A.idcat    = $cat_id AND
-                    A.idclient = " . $this->client . " AND
-                    B.idlang   = " . $this->lang . "
+                    A.idclient = " . $this->_client . " AND
+                    B.idlang   = " . $this->_lang . "
                 ";
 
-        if ($this->_bDebug) {
+        if ($this->_debug) {
             echo "<pre>";
             print_r($sql);
             echo "</pre>";
         }
 
-        $this->db->query($sql);
-        $this->db->nextRecord();
+        $this->_db->query($sql);
+        $this->_db->nextRecord();
 
-        if ($this->db->f("visible") == 1) {
+        if ($this->_db->f("visible") == 1) {
             return true;
         } else {
             return false;
@@ -296,34 +359,37 @@ class FrontendNavigation {
 
     /**
      * Check if category is public
+     *
+     * @param integer $cat_id
+     * @return boolean
      */
-    function isPublic($cat_id) {
-        if (!is_int((int) $cat_id) AND $cat_id < 0 AND !is_array($this->cfg) AND !isset($this->cfg['tab']) AND !is_int((int) $this->client) AND $this->client < 0 AND !is_int((int) $this->lang) AND $this->lang < 0) {
+    public function isPublic($cat_id) {
+        if (!is_int((int) $cat_id)) {
             return false;
         }
 
         $sql = "SELECT
                     B.public
                 FROM
-                    " . $this->cfg["tab"]["cat"] . " AS A,
-                    " . $this->cfg["tab"]["cat_lang"] . " AS B
+                    " . $this->_cfg["tab"]["cat"] . " AS A,
+                    " . $this->_cfg["tab"]["cat_lang"] . " AS B
                 WHERE
                     A.idcat    = B.idcat AND
                     A.idcat    = $cat_id AND
-                    A.idclient = " . $this->client . " AND
-                    B.idlang   = " . $this->lang . "
+                    A.idclient = " . $this->_client . " AND
+                    B.idlang   = " . $this->_lang . "
                 ";
 
-        if ($this->_bDebug) {
+        if ($this->_debug) {
             echo "<pre>";
             print_r($sql);
             echo "</pre>";
         }
 
-        $this->db->query($sql);
-        $this->db->nextRecord();
+        $this->_db->query($sql);
+        $this->_db->nextRecord();
 
-        if ($this->db->f("public") == 1) {
+        if ($this->_db->f("public") == 1) {
             return true;
         } else {
             return false;
@@ -332,33 +398,37 @@ class FrontendNavigation {
 
     /**
      * Return true if $parentid is parent of $catid
+     *
+     * @param integer $parentid
+     * @param integer $catid
+     * @return boolean
      */
-    function isParent($parentid, $catid) {
-        if (!is_int((int) $parentid) AND $parentid < 0 AND !is_int((int) $catid) AND $catid < 0 AND !is_array($this->cfg) AND !isset($this->cfg['tab']) AND !is_int((int) $this->client) AND $this->client < 0 AND !is_int((int) $this->lang) AND $this->lang < 0) {
+    public function isParent($parentid, $catid) {
+        if (!is_int((int) $parentid)) {
             return false;
         }
 
         $sql = "SELECT
                 a.parentid
                 FROM
-                    " . $this->cfg["tab"]["cat"] . " AS a,
-                    " . $this->cfg["tab"]["cat_lang"] . " AS b
+                    " . $this->_cfg["tab"]["cat"] . " AS a,
+                    " . $this->_cfg["tab"]["cat_lang"] . " AS b
                 WHERE
-                    a.idclient = " . $this->client . " AND
-                    b.idlang   = " . $this->lang . " AND
+                    a.idclient = " . $this->_client . " AND
+                    b.idlang   = " . $this->_lang . " AND
                     a.idcat    = b.idcat AND
                     a.idcat    = " . $catid . " ";
 
-        $this->db->query($sql);
-        $this->db->nextRecord();
+        $this->_db->query($sql);
+        $this->_db->nextRecord();
 
-        if ($this->_bDebug) {
+        if ($this->_debug) {
             echo "<pre>";
             print_r($sql);
             echo "</pre>";
         }
 
-        $pre = $this->db->f("parentid");
+        $pre = $this->_db->f("parentid");
 
         if ($parentid == $pre) {
             return true;
@@ -369,33 +439,36 @@ class FrontendNavigation {
 
     /**
      * Get parent id of a category
+     *
+     * @param integer $preid
+     * @return integer
      */
-    function getParent($preid) {
-        if (!is_int((int) $preid) AND $preid < 0 AND !is_array($this->cfg) AND !isset($this->cfg['tab']) AND !is_int((int) $this->client) AND $this->client < 0 AND !is_int((int) $this->lang) AND $this->lang < 0) {
+    public function getParent($preid) {
+        if (!is_int((int) $preid)) {
             return -1;
         }
 
         $sql = "SELECT
                 a.parentid
                 FROM
-                    " . $this->cfg["tab"]["cat"] . " AS a,
-                    " . $this->cfg["tab"]["cat_lang"] . " AS b
+                    " . $this->_cfg["tab"]["cat"] . " AS a,
+                    " . $this->_cfg["tab"]["cat_lang"] . " AS b
                 WHERE
-                    a.idclient = " . $this->client . " AND
-                    b.idlang   = " . $this->lang . " AND
+                    a.idclient = " . $this->_client . " AND
+                    b.idlang   = " . $this->_lang . " AND
                     a.idcat    = b.idcat AND
                     a.idcat    = " . $preid . " ";
 
-        $this->db->query($sql);
+        $this->_db->query($sql);
 
-        if ($this->_bDebug) {
+        if ($this->_debug) {
             echo "<pre>";
             print_r($sql);
             echo "</pre>";
         }
 
-        if ($this->db->nextRecord()) {
-            return $this->db->f("parentid");
+        if ($this->_db->nextRecord()) {
+            return $this->_db->f("parentid");
         } else {
             return -1;
         }
@@ -403,32 +476,35 @@ class FrontendNavigation {
 
     /**
      * Check if a category has a parent
+     *
+     * @param integer $preid
+     * @return boolean
      */
-    function hasParent($preid) {
-        if (!is_int((int) $preid) AND $preid < 0 AND !is_array($this->cfg) AND !isset($this->cfg['tab']) AND !is_int((int) $this->client) AND $this->client < 0 AND !is_int((int) $this->lang) AND $this->lang < 0) {
+    public function hasParent($preid) {
+        if (!is_int((int) $preid)) {
             return false;
         }
 
         $sql = "SELECT
                 a.parentid
                 FROM
-                    " . $this->cfg["tab"]["cat"] . " AS a,
-                    " . $this->cfg["tab"]["cat_lang"] . " AS b
+                    " . $this->_cfg["tab"]["cat"] . " AS a,
+                    " . $this->_cfg["tab"]["cat_lang"] . " AS b
                 WHERE
-                    a.idclient = " . $this->client . " AND
-                    b.idlang   = " . $this->lang . " AND
+                    a.idclient = " . $this->_client . " AND
+                    b.idlang   = " . $this->_lang . " AND
                     a.idcat    = b.idcat AND
                     a.idcat    = " . $preid . " ";
 
-        $this->db->query($sql);
+        $this->_db->query($sql);
 
-        if ($this->_bDebug) {
+        if ($this->_debug) {
             echo "<pre>";
             print_r($sql);
             echo "</pre>";
         }
 
-        if ($this->db->nextRecord()) {
+        if ($this->_db->nextRecord()) {
             return true;
         } else {
             return false;
@@ -437,29 +513,32 @@ class FrontendNavigation {
 
     /**
      * Get level of a category
+     *
+     * @param integer $catid
+     * @return integer
      */
-    function getLevel($catid) {
-        if (!is_int((int) $catid) AND $catid < 0 AND !is_array($this->cfg) AND !isset($this->cfg['tab']) AND !is_int((int) $this->client) AND $this->client < 0 AND !is_int((int) $this->lang) AND $this->lang < 0) {
+    public function getLevel($catid) {
+        if (!is_int((int) $catid)) {
             return -1;
         }
 
         $sql = "SELECT
                     level
                 FROM
-                    " . $this->cfg["tab"]["cat_tree"] . "
+                    " . $this->_cfg["tab"]["cat_tree"] . "
                 WHERE
                     idcat = " . $catid . " ";
 
-        $this->db->query($sql);
+        $this->_db->query($sql);
 
-        if ($this->_bDebug) {
+        if ($this->_debug) {
             echo "<pre>";
             print_r($sql);
             echo "</pre>";
         }
 
-        if ($this->db->nextRecord()) {
-            return $this->db->f("level");
+        if ($this->_db->nextRecord()) {
+            return $this->_db->f("level");
         } else {
             return -1;
         }
@@ -468,33 +547,32 @@ class FrontendNavigation {
     /**
      * Get URL by given category in front_content.php style
      *
-     * @param int $iIdcat
-     * @param int $iIdart
-     * @param bool $bAbsolute return absolute path or not
-     * @return string URL
-     * @author Willi Man
+     * @param int $idcat
+     * @param int $idart
+     * @param bool $absolute return absolute path or not [optional]
+     * @return string $url
      */
-    function getFrontContentUrl($iIdcat, $iIdart, $bAbsolute = true) {
-        if (!is_int((int) $iIdcat) AND $iIdcat < 0) {
+    public function getFrontContentUrl($idcat, $idart, $absolute = true) {
+        if (!is_int((int) $idcat) && $idcat < 0) {
             return '';
         }
 
-        if ($bAbsolute === true) {
+        if ($absolute === true) {
             # add absolute web path to urlpath
-            if (is_int((int) $iIdart) AND $iIdart > 0) {
-                $sURL = $this->cfgClient[$this->client]['path']['htmlpath'] . 'front_content.php?idcat=' . $iIdcat . '&idart=' . $iIdart;
+            if (is_int((int) $idart) && $idart > 0) {
+                $url = $this->_cfgClient[$this->_client]['path']['htmlpath'] . 'front_content.php?idcat=' . $idcat . '&idart=' . $idart;
             } else {
-                $sURL = $this->cfgClient[$this->client]['path']['htmlpath'] . 'front_content.php?idcat=' . $iIdcat;
+                $url = $this->_cfgClient[$this->_client]['path']['htmlpath'] . 'front_content.php?idcat=' . $idcat;
             }
         } else {
-            if (is_int((int) $iIdart) AND $iIdart > 0) {
-                $sURL = 'front_content.php?idcat=' . $iIdcat . '&idart=' . $iIdart;
+            if (is_int((int) $idart) && $idart > 0) {
+                $url = 'front_content.php?idcat=' . $idcat . '&idart=' . $idart;
             } else {
-                $sURL = 'front_content.php?idcat=' . $iIdcat;
+                $url = 'front_content.php?idcat=' . $idcat;
             }
         }
 
-        return $sURL;
+        return $url;
     }
 
     /**
@@ -502,38 +580,38 @@ class FrontendNavigation {
      * The urlpath looks like /Home/Product/Support/ where the directory-like string equals a category path.
      *
      * @requires functions.pathresolver.php
-     * @param int $iIdcat
-     * @param int $iIdart
-     * @param bool $bAbsolute return absolute path or not
+     * @param int $idcat
+     * @param int $idart
+     * @param bool $absolute return absolute path or not [optional]
+     * @param integer $level [optional]
+     * @param string $urlSuffix [optional]
      * @return string path information or empty string
-     * @author Marco Jahn (Project www.usa.de)
-     * @modified by Willi Man
      */
-    function getUrlPath($iIdcat, $iIdart, $bAbsolute = true, $iLevel = 0, $sURL_SUFFIX = 'index.html') {
-        if (!is_int((int) $iIdcat) AND $iIdcat < 0) {
+    public function getUrlPath($idcat, $idart, $absolute = true, $level = 0, $urlSuffix = 'index.html') {
+        if (!is_int((int) $idcat) && $idcat < 0) {
             return '';
         }
 
         $cat_str = '';
-        prCreateURLNameLocationString($iIdcat, "/", $cat_str, false, "", $iLevel, $this->lang, true, false);
+        prCreateURLNameLocationString($idcat, "/", $cat_str, false, "", $level, $this->_lang, true, false);
 
         if (strlen($cat_str) <= 1) {
             # return empty string if no url location is available
             return '';
         }
 
-        if ($bAbsolute === true) {
+        if ($absolute === true) {
             # add absolute web path to urlpath
-            if (is_int((int) $iIdart) AND $iIdart > 0) {
-                return $this->cfgClient[$this->client]['path']['htmlpath'] . $cat_str . '/index-d-' . $iIdart . '.html';
+            if (is_int((int) $idart) && $idart > 0) {
+                return $this->_cfgClient[$this->_client]['path']['htmlpath'] . $cat_str . '/index-d-' . $idart . '.html';
             } else {
-                return $this->cfgClient[$this->client]['path']['htmlpath'] . $cat_str . '/' . $sURL_SUFFIX;
+                return $this->_cfgClient[$this->_client]['path']['htmlpath'] . $cat_str . '/' . $urlSuffix;
             }
         } else {
-            if (is_int((int) $iIdart) AND $iIdart > 0) {
-                return $cat_str . '/index-d-' . $iIdart . '.html';
+            if (is_int((int) $idart) && $idart > 0) {
+                return $cat_str . '/index-d-' . $idart . '.html';
             } else {
-                return $cat_str . '/' . $sURL_SUFFIX;
+                return $cat_str . '/' . $urlSuffix;
             }
         }
     }
@@ -542,33 +620,33 @@ class FrontendNavigation {
      * Get urlpath by given category and/or selected param and level.
      *
      * @requires functions.pathresolver.php
-     * @param int $iIdcat
-     * @param int $iSelectedNumber
-     * @param bool $bAbsolute return absolute path or not
+     * @param int $idcat
+     * @param int $selectedNumber
+     * @param bool $absolute return absolute path or not [optional]
+     * @param integer $level [optional]
      * @return string path information or empty string
-     * @author Willi Man
      */
-    function getUrlPathGenParam($iIdcat, $iSelectedNumber, $bAbsolute = true, $iLevel = 0) {
-        if (!is_int((int) $iIdcat) AND $iIdcat < 0) {
+    public function getUrlPathGenParam($idcat, $selectedNumber, $absolute = true, $level = 0) {
+        if (!is_int((int) $idcat) && $idcat < 0) {
             return '';
         }
 
         $cat_str = '';
-        prCreateURLNameLocationString($iIdcat, "/", $cat_str, false, "", $iLevel, $this->lang, true, false);
+        prCreateURLNameLocationString($idcat, "/", $cat_str, false, "", $level, $this->_lang, true, false);
 
         if (strlen($cat_str) <= 1) {
             # return empty string if no url location is available
             return '';
         }
 
-        if ($bAbsolute === true) {
+        if ($absolute === true) {
             # add absolute web path to urlpath
-            if (is_int((int) $iSelectedNumber)) {
-                return $this->cfgClient[$this->client]['path']['htmlpath'] . $cat_str . '/index-g-' . $iSelectedNumber . '.html';
+            if (is_int((int) $selectedNumber)) {
+                return $this->_cfgClient[$this->_client]['path']['htmlpath'] . $cat_str . '/index-g-' . $selectedNumber . '.html';
             }
         } else {
-            if (is_int((int) $iSelectedNumber)) {
-                return $cat_str . '/index-g-' . $iSelectedNumber . '.html';
+            if (is_int((int) $selectedNumber)) {
+                return $cat_str . '/index-g-' . $selectedNumber . '.html';
             }
         }
     }
@@ -576,35 +654,35 @@ class FrontendNavigation {
     /**
      * Get URL by given categoryid and/or articleid
      *
-     * @param int $iIdcat url name to create for
-     * @param int $iIdart
-     * @param bool $bAbsolute return absolute path or not
-     * @return string URL
-     * @author Willi Man
+     * @param int $idcat url name to create for
+     * @param int $idart
+     * @param bool $absolute return absolute path or not [optional]
+     * @param integer $level
+     * @return string $url or empty
      */
-    function getURL($iIdcat, $iIdart, $sType = '', $bAbsolute = true, $iLevel = 0) {
-        if (!is_int((int) $iIdcat) AND $iIdcat < 0) {
+    public function getURL($idcat, $idart, $type = '', $absolute = true, $level = 0) {
+        if (!is_int((int) $idcat) AND $idcat < 0) {
             return '';
         }
 
         #print "type ".$sType."<br>";
 
-        switch ($sType) {
+        switch ($type) {
             case 'urlpath':
-                $sURL = $this->getUrlPath($iIdcat, $iIdart, $bAbsolute, $iLevel);
+                $url = $this->getUrlPath($idcat, $idart, $absolute, $level);
                 break;
             case 'frontcontent':
-                $sURL = $this->getFrontContentUrl($iIdcat, $iIdart, $bAbsolute);
+                $url = $this->getFrontContentUrl($idcat, $idart, $absolute);
                 break;
             case 'index-a':
                 # not implemented
-                $sURL = '';
+                $url = '';
                 break;
             default:
-                $sURL = $this->getFrontContentUrl($iIdcat, $iIdart, $bAbsolute);
+                $url = $this->getFrontContentUrl($idcat, $idart, $absolute);
         }
 
-        return $sURL;
+        return $url;
     }
 
     /**
@@ -613,46 +691,46 @@ class FrontendNavigation {
      * If an article is assigned to more than one category take the first
      * category.
      *
-     * @param  int $iArticleId
-     * @return int category id
+     * @param  int $idart
+     * @return int category id or negative integer
      */
-    function getCategoryOfArticle($iArticleId) {
+    public function getCategoryOfArticle($idart) {
 
         # validate input
-        if (!is_int((int) $iArticleId) OR $iArticleId <= 0) {
+        if (!is_int((int) $idart) || $idart <= 0) {
             return -1;
         }
 
-        $sqlString = '
+        $sql = '
         SELECT
             c.idcat
         FROM
-            ' . $this->cfg['tab']['art_lang'] . ' AS a,
-            ' . $this->cfg['tab']['art'] . ' AS b,
-            ' . $this->cfg['tab']['cat_art'] . ' AS c
+            ' . $this->_cfg['tab']['art_lang'] . ' AS a,
+            ' . $this->_cfg['tab']['art'] . ' AS b,
+            ' . $this->_cfg['tab']['cat_art'] . ' AS c
         WHERE
-            a.idart = ' . $iArticleId . ' AND
-            b.idclient = ' . $this->client . ' AND
-            a.idlang = ' . $this->lang . ' AND
+            a.idart = ' . $idart . ' AND
+            b.idclient = ' . $this->_client . ' AND
+            a.idlang = ' . $this->_lang . ' AND
             b.idart = c.idart AND
             a.idart = b.idart ';
 
-        if ($this->_bDebug) {
-            echo "<pre>" . $sqlString . "</pre>";
+        if ($this->_debug) {
+            echo "<pre>" . $sql . "</pre>";
         }
 
-        $this->db->query($sqlString);
+        $this->_db->query($sql);
 
         # $this->db->getErrorNumber() returns 0 (zero) if no error occurred.
-        if ($this->db->getErrorNumber() == 0) {
-            if ($this->db->nextRecord()) {
-                return $this->db->f('idcat');
+        if ($this->_db->getErrorNumber() == 0) {
+            if ($this->_db->nextRecord()) {
+                return $this->_db->f('idcat');
             } else {
                 return -1;
             }
         } else {
-            if ($this->_bDebug) {
-                echo "<pre>Mysql Error:" . $this->db->getErrorMessage() . "(" . $this->db->getErrorNumber() . ")</pre>";
+            if ($this->_debug) {
+                echo "<pre>Mysql Error:" . $this->_db->getErrorMessage() . "(" . $this->_db->getErrorNumber() . ")</pre>";
             }
             return -1; # error occurred.
         }
@@ -660,9 +738,14 @@ class FrontendNavigation {
 
     /**
      * Get path  of a given category up to a certain level
+     *
+     * @param integer $cat_id
+     * @param integer $level [optional]
+     * @param boolean $reverse
+     * @return array
      */
-    function getCategoryPath($cat_id, $level = 0, $reverse = true) {
-        if (!is_int((int) $cat_id) AND $cat_id < 0) {
+    public function getCategoryPath($cat_id, $level = 0, $reverse = true) {
+        if (!is_int((int) $cat_id) && $cat_id < 0) {
             return array();
         }
 
@@ -670,7 +753,7 @@ class FrontendNavigation {
         array_push($root_path, $cat_id);
         $parent_id = $cat_id;
 
-        while ($this->getLevel($parent_id) >= 0 AND $this->getLevel($parent_id) > $level) {
+        while ($this->getLevel($parent_id) >= 0 && $this->getLevel($parent_id) > $level) {
             $parent_id = $this->getParent($parent_id);
             if ($parent_id >= 0) {
                 array_push($root_path, $parent_id);
@@ -686,20 +769,23 @@ class FrontendNavigation {
 
     /**
      * Get root category of a given category
+     *
+     * @param integer $cat_id
+     * @return array     *
      */
     function getRoot($cat_id) {
-        if (!is_int((int) $cat_id) AND $cat_id < 0) {
+        if (!is_int((int) $cat_id) && $cat_id < 0) {
             return array();
         }
 
         $parent_id = $cat_id;
 
         while ($this->getLevel($parent_id) >= 0) {
-            $iRootCategory = $parent_id;
+            $rootCategory = $parent_id;
             $parent_id = $this->getParent($parent_id);
         }
 
-        return $iRootCategory;
+        return $rootCategory;
     }
 
     /**
@@ -707,54 +793,52 @@ class FrontendNavigation {
      *
      * @param int $idcat_start Id of category
      * @return array Array with subtree
-     *
-     * @copyright four for business AG <www.4fb.de>
      */
     function getSubTree($idcat_start) {
 
-        if (!is_int((int) $idcat_start) AND $idcat_start < 0 AND !is_array($this->cfg) AND !isset($this->cfg['tab']) AND !is_int((int) $this->client) AND $this->client < 0 AND !is_int((int) $this->lang) AND $this->lang < 0) {
+        if (!is_int((int) $idcat_start)) {
             return array();
         }
 
         $sql = "SELECT
                     B.idcat, A.level
                 FROM
-                    " . $this->cfg["tab"]["cat_tree"] . " AS A,
-                    " . $this->cfg["tab"]["cat"] . " AS B
+                    " . $this->_cfg["tab"]["cat_tree"] . " AS A,
+                    " . $this->_cfg["tab"]["cat"] . " AS B
                 WHERE
                     A.idcat  = B.idcat AND
-                    idclient = " . $this->client . "
+                    idclient = " . $this->_client . "
                 ORDER BY
                     idtree";
 
-        if ($this->_bDebug) {
+        if ($this->_debug) {
             echo "<pre>";
             print_r($sql);
             echo "</pre>";
         }
 
-        $this->db->query($sql);
+        $this->_db->query($sql);
 
         $i = false;
+        $curLevel = 0;
 
-        while ($this->db->nextRecord()) {
-            if ($this->db->f("idcat") == $idcat_start) {
-                $curLevel = $this->db->f("level");
+        while ($this->_db->nextRecord()) {
+            if ($this->_db->f("idcat") == $idcat_start) {
+                $curLevel = $this->_db->f("level");
                 $i = true;
             } else {
-                if ($curLevel == $this->db->f("level")) {
+                if ($curLevel == $this->_db->f("level")) {
                     # ending part of tree
                     $i = false;
                 }
             }
 
             if ($i == true) {
-                $deeper_cats[] = $this->db->f("idcat");
+                $deeper_cats[] = $this->_db->f("idcat");
             }
         }
         return $deeper_cats;
     }
 
 }
-
 ?>

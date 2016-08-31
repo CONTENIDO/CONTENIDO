@@ -4,8 +4,6 @@
  *
  * @package Plugin
  * @subpackage UrlShortener
- * @version SVN Revision $Rev:$
- *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -53,7 +51,7 @@ function piUsEditFormAdditionalRows($idart, $idlang, $idclient, $disabled) {
  */
 function piUsConSaveArtAfter($editedIdArt, $values) {
     // if not all parameters have been given, do nothing
-    if (!isset($_POST['url_shortener_shorturl']) || $_POST['url_shortener_shorturl'] == '' || !isset($editedIdArt)) {
+    if (!isset($_POST['url_shortener_shorturl']) || !isset($editedIdArt)) {
         return;
     }
     $shorturl = $_POST['url_shortener_shorturl'];
@@ -99,17 +97,30 @@ function piUsConSaveArtAfter($editedIdArt, $values) {
     if ($_POST['url_shortener_shorturl'] === '') {
         // delete short URL if it exists
         if ($shortUrlItem->isLoaded()) {
+            $item = cApiCecHook::executeAndReturn('ContenidoPlugin.UrlShortener.BeforeRemove', $shortUrlItem);
+            if ($item instanceof cApiShortUrl) {
+                $shortUrlItem = $item;
+            }
+
             $shortUrlColl->delete($shortUrlItem->get('idshorturl'));
         }
     } else {
         // a short URL has been given, so save it
         if ($shortUrlItem->isLoaded()) {
             // short URL already exists, update it
+            $oldShortUrlItem = clone $shortUrlItem;
             $shortUrlItem->set('shorturl', $shorturl);
+
+            $item = cApiCecHook::executeAndReturn('ContenidoPlugin.UrlShortener.BeforeEdit', $shortUrlItem, $oldShortUrlItem);
+            if ($item instanceof cApiShortUrl) {
+                $shortUrlItem = $item;
+            }
+
             $shortUrlItem->store();
         } else {
             // short URL does not exist yet, create a new one
-            $shortUrlColl->create($shorturl, $idart, $idlang, $idclient);
+            $shortUrlItem = $shortUrlColl->create($shorturl, $idart, $idlang, $idclient);
+            cApiCecHook::executeAndReturn('ContenidoPlugin.UrlShortener.AfterCreate', $shortUrlItem);
         }
     }
 }

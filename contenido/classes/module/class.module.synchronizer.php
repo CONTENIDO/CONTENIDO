@@ -1,12 +1,12 @@
 <?php
+
 /**
  * This file contains the module synchronizer class.
- * TODO: Rework comments of this class.
+ *
+ * @todo refactor documentation
  *
  * @package    Core
  * @subpackage Backend
- * @version    SVN Revision $Rev:$
- *
  * @author     Rusmir Jusufovic
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -49,8 +49,8 @@ class cModuleSynchronizer extends cModuleHandler {
         // if modul dont exist in the $cfg['tab']['mod'] table.
         if ($this->_isExistInTable($oldModulName, $client) == false) {
             // add new Module in db-tablle
-            $this->_addModul($newModulName, $client);
-            cRegistry::appendLastInfoMessage(sprintf(i18n('Module %s successfully synchronized'), $newModulName));
+            $this->_addModule($newModulName);
+            cRegistry::appendLastOkMessage(sprintf(i18n('Module %s successfully synchronized'), $newModulName));
         } else {
             // update the name of the module
             if ($oldModulName != $newModulName) {
@@ -87,11 +87,16 @@ class cModuleSynchronizer extends cModuleHandler {
     /**
      * Rename the Modul files and Modul dir
      *
-     * @param string $dir path the the moduls
-     * @param string $dirNameOld old dir name
-     * @param string $dirNameNew new dir name
-     * @param int $client idclient
-     * @return boolean true if succes (rename file and directories)
+     * @param string $dir
+     *         path the the moduls
+     * @param string $dirNameOld
+     *         old dir name
+     * @param string $dirNameNew
+     *         new dir name
+     * @param int $client
+     *         idclient
+     * @return bool
+     *         true on success or false on failure
      */
     private function _renameFileAndDir($dir, $dirNameOld, $dirNameNew, $client) {
         if (rename($dir . $dirNameOld, $dir . $dirNameNew) == FALSE) {
@@ -106,15 +111,15 @@ class cModuleSynchronizer extends cModuleHandler {
      * Compare file change timestemp and the timestemp in ['tab']['mod'].
      * If file had changed make new code :conGenerateCodeForAllArtsUsingMod
      *
-     * @return int id of last update module
+     * @return int
+     *         id of last update module
      */
     public function compareFileAndModuleTimestamp() {
-        global $cfg, $cfgClient;
+        global $cfgClient;
 
         $synchLock = 0;
 
         $sql = sprintf('SELECT UNIX_TIMESTAMP(mod1.lastmodified) AS lastmodified,mod1.idclient,description,type, mod1.name, mod1.alias, mod1.idmod FROM %s AS mod1 WHERE mod1.idclient = %s', $this->_cfg['tab']['mod'], $this->_client);
-        $notification = new cGuiNotification();
 
         $db = cRegistry::getDb();
         $db->query($sql);
@@ -172,7 +177,7 @@ class cModuleSynchronizer extends cModuleHandler {
                 // update
                 $synchLock = 1;
                 $this->setLastModified($lastmodabsolute, $db->f('idmod'));
-                conGenerateCodeForAllArtsUsingMod($db->f('idmod'));
+                conGenerateCodeForAllartsUsingMod($db->f('idmod'));
                 $showMessage = true;
             }
 
@@ -181,7 +186,7 @@ class cModuleSynchronizer extends cModuleHandler {
             }
 
             if ($showMessage) {
-                cRegistry::appendLastInfoMessage(sprintf(i18n('Module %s successfully synchronized'), $db->f('name')));
+                cRegistry::appendLastOkMessage(sprintf(i18n('Module %s successfully synchronized'), $db->f('name')));
             }
         }
 
@@ -200,8 +205,9 @@ class cModuleSynchronizer extends cModuleHandler {
      * fileystem but if not
      * clear it from filesystem.
      *
-     * @param $db
-     * @return int id of last update module
+     * @param cDb $db
+     * @return int
+     *         id of last update module
      */
     private function _synchronizeFilesystemAndDb($db) {
         $returnIdMod = 0;
@@ -232,10 +238,11 @@ class cModuleSynchronizer extends cModuleHandler {
      * a Modul(Dir) that not exist in Db-table this method will
      * insert the Modul in Db-table ([tab][mod]).
      *
-     * @return int last id of synchronized module
+     * @return int
+     *         last id of synchronized module
      */
     public function synchronize() {
-        global $cfg, $cfgClient;
+        global $cfgClient;
 
         // get the path to the modul dir from the client
         $dir = $cfgClient[$this->_client]['module']['path'];
@@ -244,7 +251,7 @@ class cModuleSynchronizer extends cModuleHandler {
             if (false !== ($handle = cDirHandler::read($dir))) {
                 foreach ($handle as $file) {
                     if (false === cFileHandler::fileNameBeginsWithDot($file) && is_dir($dir . $file . '/')) {
-                        $newFile = cApiStrCleanURLCharacters($file);
+                        $newFile = cString::cleanURLCharacters($file);
                         // dir is ok
                         if ($newFile == $file) {
                             $this->_syncModule($dir, $file, $newFile);
@@ -253,7 +260,7 @@ class cModuleSynchronizer extends cModuleHandler {
                                 // name?
                                 // make new dirname
                                 $newDirName = $newFile . substr(md5(time() . rand(0, time())), 0, 4);
-                        
+
                                 // rename
                                 if ($this->_renameFileAndDir($dir, $file, $newDirName, $this->_client) != false) {
                                     $this->_syncModule($dir, $file, $newDirName);
@@ -279,10 +286,11 @@ class cModuleSynchronizer extends cModuleHandler {
      * name.
      * If the modul name exist it will return true
      *
-     * @param $alias
-     * @param int $idclient idclient
-     * @internal param string $name name ot the modul
-     * @return bool if a modul with the $name exist in the $cfg['tab']['mod'] table
+     * @param string $alias
+     * @param int $idclient
+     *         idclient
+     * @return bool
+     *         if a modul with the $name exist in the $cfg['tab']['mod'] table
      *         return true else false
      */
     private function _isExistInTable($alias, $idclient) {
@@ -304,9 +312,12 @@ class cModuleSynchronizer extends cModuleHandler {
     /**
      * Update the name of module (if the name not allowes)
      *
-     * @param string $oldName old name
-     * @param string $newName new module name
-     * @param int $idclient id of client
+     * @param string $oldName
+     *         old name
+     * @param string $newName
+     *         new module name
+     * @param int $idclient
+     *         id of client
      */
     private function _updateModulnameInDb($oldName, $newName, $idclient) {
         $db = cRegistry::getDb();
@@ -327,24 +338,40 @@ class cModuleSynchronizer extends cModuleHandler {
     /**
      * This method add a new Modul in the table $cfg['tab']['mod'].
      *
-     * @param string $name neme of the new module
-     * @param int $idclient mandant of the module
+     * @param string $name
+     *         name of the new module
      */
-    private function _addModul($name, $idclient) {
-        // insert new modul in con_mod
+    private function _addModule($name) {
+
+        // initializing variables
+        $client = cRegistry::getClientId();
+        $cfgClient = cRegistry::getClientConfig($client);
+
+        // initializing module class
         $oModColl = new cApiModuleCollection();
-        $oMod = $oModColl->create($name, $idclient, $name);
-        if (is_object($oMod)) {
+
+        // get module path
+        $modulePath = $cfgClient['module']['path'] . $name . '/';
+
+        // get module type
+        $modInfo = cXmlBase::xmlStringToArray(cFileHandler::read($modulePath . 'info.xml'));
+
+        // create mew module
+        $mod = $oModColl->create($modInfo['name'], $client, $modInfo['alias'], $modInfo['type']);
+
+        if (is_object($mod)) {
             // save the last id from modul
-            $this->_lastIdMod = $oMod->get('idmod');
+            $this->_lastIdMod = $mod->get('idmod');
         }
     }
 
     /**
      * Update the con_mod, the field lastmodified
      *
-     * @param int $timestamp timestamp of last modification
-     * @param int $idmod id of modul
+     * @param int $timestamp
+     *         timestamp of last modification
+     * @param int $idmod
+     *         id of module
      */
     public function setLastModified($timestamp, $idmod) {
         $oMod = new cApiModule((int) $idmod);

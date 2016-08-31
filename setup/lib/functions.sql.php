@@ -4,8 +4,6 @@
  *
  * @package    Setup
  * @subpackage Helper_MySQL
- * @version    SVN Revision $Rev:$
- *
  * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -15,7 +13,17 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-// @FIXME: Comment me plz!
+/**
+ * Executes a file of SQL queries
+ * 
+ * @param       $db
+ * @param       $prefix
+ * @param       $file
+ * @param array $replacements
+ *
+ * @return bool
+ * @throws cInvalidArgumentException
+ */
 function injectSQL($db, $prefix, $file, $replacements = array()) {
     $file = trim($file);
 
@@ -290,7 +298,7 @@ function removeRemarks($sql) {
  * Note: expects trim() to have already been run on $sql.
  * @param   string  $sql
  * @param   string  $delimiter
- * @return  string
+ * @return  array
  */
 function splitSqlFile($sql, $delimiter) {
     // Split up our string into "possible" SQL statements.

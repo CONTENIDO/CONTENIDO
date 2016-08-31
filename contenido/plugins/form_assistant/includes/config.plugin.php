@@ -4,8 +4,7 @@
  *
  * @package Plugin
  * @subpackage FormAssistant
- * @version SVN Revision $Rev:$
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  * @copyright four for business AG
  * @link http://www.4fb.de
  */
@@ -16,7 +15,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Helper class for this plugin.
  *
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
 class Pifa {
 
@@ -112,14 +111,17 @@ class Pifa {
      * @param Exception $e
      */
     public static function logException(Exception $e) {
-        $cfg = cRegistry::getConfig();
 
-        $log = new cLog(cLogWriter::factory('file', array(
-            'destination' => $cfg['path']['contenido_logs'] . 'errorlog.txt'
-        )), cLog::ERR);
+    	if (getSystemProperty('debug', 'debug_for_plugins') == 'true') {
+	        $cfg = cRegistry::getConfig();
 
-        $log->err($e->getMessage());
-        $log->err($e->getTraceAsString());
+	        $log = new cLog(cLogWriter::factory('file', array(
+	            'destination' => $cfg['path']['contenido_logs'] . 'errorlog.txt'
+	        )), cLog::ERR);
+
+	        $log->err($e->getMessage());
+	        $log->err($e->getTraceAsString());
+    	}
     }
 
     /**
@@ -213,8 +215,8 @@ class Pifa {
             }
 
             $extensionClasses[] = array(
-                    'value' => $optionClass,
-                    'label' => $optionClass
+                'value' => $optionClass,
+                'label' => $optionClass
             );
         }
 
@@ -261,8 +263,8 @@ class Pifa {
             }
 
             $templates[] = array(
-                    'value' => $file,
-                    'label' => $file
+                'value' => $file,
+                'label' => $file
             );
         }
 

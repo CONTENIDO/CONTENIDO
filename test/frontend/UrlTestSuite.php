@@ -1,19 +1,19 @@
 <?php
+
 /**
  * This file contains the TestSuite for uri.
  *
- * @package          Testing
- * @subpackage       Test_Url
- * @version          SVN Revision $Rev:$
- *
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package Testing
+ * @subpackage Test_Url
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-require_once('bootstrap.php');
+require_once 'bootstrap.php';
+
 TestSuiteHelper::loadFeSuite('Url');
 
 /**
@@ -22,14 +22,16 @@ TestSuiteHelper::loadFeSuite('Url');
  * Call this from cmd-line as follows:
  * ...>phpunit UrlTestSuite
  *
- * @package          Testing
- * @subpackage       Test_Url
+ * @package Testing
+ * @subpackage Test_Url
  */
-class ContenidoUrlAllTest
-{
+class ContenidoUrlAllTest {
 
-    public static function suite()
-    {
+    /**
+     *
+     * @return PHPUnit_Framework_TestSuite
+     */
+    public static function suite() {
         $suite = new PHPUnit_Framework_TestSuite('Contenido Url');
         $suite->addTestSuite('cUriTest');
         return $suite;

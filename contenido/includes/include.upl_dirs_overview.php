@@ -1,12 +1,11 @@
 <?php
+
 /**
  * This file contains the backend page for the directory overview in upload
  * section.
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Timo Hummel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -26,20 +25,25 @@ if (!(int) $client > 0) {
     return;
 }
 
+/**
+ *
+ * @param TreeItem $item
+ * @return string
+ */
 function getUplExpandCollapseButton($item) {
-    global $sess, $PHP_SELF, $frame, $area, $appendparameters;
+    global $sess, $frame, $area, $appendparameters;
     $selflink = 'main.php';
 
-    if (count($item->subitems) > 0) {
-        if ($item->collapsed == true) {
-            $expandlink = $sess->url($selflink . "?area=$area&frame=$frame&appendparameters=$appendparameters&expand=" . $item->id);
-            return ('<a href="' . $expandlink . '" alt="' . i18n('Open category') . '" title="' . i18n('Open category') . '"><img src="' . $item->collapsed_icon . '" alt="" border="0" align="middle" width="18"></a>');
+    if (count($item->getSubItems()) > 0) {
+        if ($item->isCollapsed() == true) {
+            $expandlink = $sess->url($selflink . "?area=$area&frame=$frame&appendparameters=$appendparameters&expand=" . $item->getId());
+            return ('<a href="' . $expandlink . '" alt="' . i18n('Open category') . '" title="' . i18n('Open category') . '"><img src="' . $item->getCollapsedIcon() . '" alt="" border="0" align="middle" width="18"></a>');
         } else {
-            $collapselink = $sess->url($selflink . "?area=$area&appendparameters=$appendparameters&frame=$frame&collapse=" . $item->id);
-            return ('<a href="' . $collapselink . '" alt="' . i18n('Close category') . '" title="' . i18n('Close category') . '"><img src="' . $item->expanded_icon . '" alt="" border="0" align="middle" width="18"></a>');
+            $collapselink = $sess->url($selflink . "?area=$area&appendparameters=$appendparameters&frame=$frame&collapse=" . $item->getId());
+            return ('<a href="' . $collapselink . '" alt="' . i18n('Close category') . '" title="' . i18n('Close category') . '"><img src="' . $item->getExpandedIcon() . '" alt="" border="0" align="middle" width="18"></a>');
         }
     } else {
-        if ($item->custom['lastitem']) {
+        if ($item->getCustom('lastitem')) {
             return '<img class="vAlignMiddle" alt="" src="images/but_lastnode.gif" width="18" height="18">';
         } else {
             return '<img class="vAlignMiddle" alt="" src="images/grid_collapse.gif" width="18" height="18">';
@@ -47,11 +51,8 @@ function getUplExpandCollapseButton($item) {
     }
 }
 
-// ###############
 // Create Folder
-// ###############
-// ixxed by Timo Trautmann double database entries also called by action
-// upl_mkdir
+// ixxed by Timo Trautmann double database entries also called by action upl_mkdir
 // Use remembered path from upl_last_path (from session)
 if (!isset($path) && $sess->isRegistered('upl_last_path')) {
     $path = $upl_last_path;
@@ -119,15 +120,14 @@ if ($errno === '0703') {
     $tpl->set('s', 'WARNING', $notification->returnNotification('error', i18n('Directories with special characters and spaces are not allowed.')));
 }
 
-// #############################################################################
 // Uploadfiles tree on file system
 
 $file = 'Upload';
 $pathstring = '';
 
 $rootTreeItem = new TreeItem();
-$rootTreeItem->custom['level'] = 0;
-$rootTreeItem->name = i18n("Upload directory");
+$rootTreeItem->setCustom('level', 0);
+$rootTreeItem->setName(i18n("Upload directory"));
 $aInvalidDirectories = uplRecursiveDirectoryList($cfgClient[$client]["upl"]["path"], $rootTreeItem, 2);
 if (count($aInvalidDirectories) > 0) {
     $sWarningInfo = i18n('The following directories contains invalid characters and were ignored: ');
@@ -138,7 +138,7 @@ if (count($aInvalidDirectories) > 0) {
     $sRemameLink = '<a href="' . $sRenameHref . '">' . $sRenameString . '</a>';
     $sNotificationString = $sWarningInfo . $sSeperator . $sFiles . $sSeperator . $sSeperator . $sRemameLink;
 
-    $sErrorString = $notification->returnNotification('warning', $sNotificationString, 1);
+    $sErrorString = $notification->returnNotification('warning', $sNotificationString);
     $tpl->set('s', 'WARNING', $sErrorString);
 } else {
     $tpl->set('s', 'WARNING', '');
@@ -220,8 +220,6 @@ if ($appendparameters == 'filebrowser') {
     $baselink->setCustom('appendparameters', $appendparameters);
 
     $mtree->setBaseLink($baselink);
-    $mtree->setBackgroundMode(TREEVIEW_BACKGROUND_SHADED);
-    $mtree->setMouseoverMode(cGuiTree::TREEVIEW_MOUSEOVER_NONE);
     $mtree->setCollapsed($collapsed);
     $mtree->processParameters();
 
@@ -254,12 +252,12 @@ $tpl->next();
 
 if (is_array($objects)) {
     foreach ($objects as $a_file) {
-        $file = $a_file->name;
-        $depth = $a_file->custom['level'] - 1;
-        $pathstring = str_replace($cfgClient[$client]['upl']['path'], '', $a_file->id);
-        $a_file->collapsed_icon = 'images/grid_expand.gif';
-        $a_file->expanded_icon = 'images/grid_collapse.gif';
-        $dlevels[$depth] = $a_file->custom['lastitem'];
+        $file = $a_file->getName();
+        $depth = $a_file->getCustom('level') - 1;
+        $pathstring = str_replace($cfgClient[$client]['upl']['path'], '', $a_file->getId());
+        $a_file->setCollapsedIcon('images/grid_expand.gif');
+        $a_file->setExpandedIcon('images/grid_collapse.gif');
+        $dlevels[$depth] = $a_file->getCustom('lastitem');
         $imgcollapse = getUplExpandCollapseButton($a_file);
         $fileurl = rawurlencode($path . $file . '/');
         $pathurl = rawurlencode($path);
@@ -267,7 +265,7 @@ if (is_array($objects)) {
         // Indent for every level
         $indent = 18 + (($depth - 1) * 18);
 
-        // create javascript multilink # -> better create meaningful comments
+        // create javascript multilink
         $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
         $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"), 'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"), '<img class="vAlignMiddle" src="images/grid_folder.gif" border="0" alt=""><img src="images/spacer.gif" align="middle" width="5" border="0">' . $file);
 
@@ -308,7 +306,7 @@ if (is_array($objects)) {
             }
         }
 
-        $parent = str_replace($cfgClient[$client]['upl']['path'], '', $a_file->custom['parent']);
+        $parent = str_replace($cfgClient[$client]['upl']['path'], '', $a_file->getCustom('parent'));
 
         $idAttrPath = str_replace(array(
             '/',
@@ -334,14 +332,13 @@ $tpl->set('d', 'EDITBUTTON', '');
 $tpl->set('d', 'COLLAPSE', "");
 $tpl->next();
 
-// #############################################################################
 // Database-based filesystem (DBFS)
 
 $idDbfsPathPrefix = 'dbfs_';
 $file = i18n("Database file system");
 $pathstring = cApiDbfs::PROTOCOL_DBFS;
 $rootTreeItem = new TreeItem();
-$rootTreeItem->custom['level'] = 0;
+$rootTreeItem->setCustom('level', 0);
 
 uplRecursiveDBDirectoryList('', $rootTreeItem, 2, $client);
 
@@ -387,12 +384,12 @@ $dlevels = array();
 
 if (is_array($objects)) {
     foreach ($objects as $a_file) {
-        $file = $a_file->name;
-        $depth = $a_file->custom['level'] - 1;
-        $pathstring = $a_file->id;
-        $a_file->collapsed_icon = 'images/grid_expand.gif';
-        $a_file->expanded_icon = 'images/grid_collapse.gif';
-        $dlevels[$depth] = $a_file->custom['lastitem'];
+        $file = $a_file->getName();
+        $depth = $a_file->getCustom('level') - 1;
+        $pathstring = $a_file->getId();
+        $a_file->setCollapsedIcon('images/grid_expand.gif');
+        $a_file->setExpandedIcon('images/grid_collapse.gif');
+        $dlevels[$depth] = $a_file->getCustom('lastitem');
         $collapse = getUplExpandCollapseButton($a_file);
         $fileurl = rawurlencode($path . $file . '/');
         $pathurl = rawurlencode($path);
@@ -445,7 +442,7 @@ if (is_array($objects)) {
             }
         }
 
-        $parent = str_replace($cfgClient[$client]['upl']['path'], '', $a_file->custom['parent']);
+        $parent = str_replace($cfgClient[$client]['upl']['path'], '', $a_file->getCustom('parent'));
 
         $idAttrPath = str_replace(array(
             '/',

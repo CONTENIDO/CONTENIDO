@@ -7,8 +7,9 @@
  * @submodule  content-type-cms-imgeditor
  * @package    Core
  * @subpackage Content Type
- * @version    SVN Revision $Rev$
- * @author     Fulai Zhang, Simon Sprankel, Murat Purc <murat@purc.de>
+ * @author     Fulai Zhang
+ * @author     Simon Sprankel
+ * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -429,8 +430,5 @@
 
 
     Con.cContentTypeImgeditor = cContentTypeImgeditor;
-
-    // @deprecated [2013-11-10] Assign to windows scope (downwards compatibility)
-    window.cContentTypeImgeditor = cContentTypeImgeditor;
 
 })(Con, Con.$);

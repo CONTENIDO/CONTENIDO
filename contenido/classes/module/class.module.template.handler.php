@@ -1,12 +1,12 @@
 <?php
+
 /**
  * This file contains the module template handler class.
- * TODO: Rework comments of this class.
+ *
+ * @todo refactor documentation
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Rusmir Jusufovic
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -27,31 +27,77 @@ cInclude('includes', 'functions.file.php');
  */
 class cModuleTemplateHandler extends cModuleHandler {
 
-    // Form fields
+    /**
+     * Form fields
+     *
+     * @var string
+     */
     private $_code;
 
+    /**
+     *
+     * @var string
+     */
     private $_file;
 
+    /**
+     *
+     * @var string
+     */
     private $_tmpFile;
 
+    /**
+     *
+     * @var int
+     */
     private $_area;
 
+    /**
+     *
+     * @var int
+     */
     private $_frame;
 
+    /**
+     *
+     * @var string
+     */
     private $_status;
 
+    /**
+     *
+     * @var string
+     */
     private $_action;
 
+    /**
+     *
+     * @var string
+     */
     private $_new;
 
+    /**
+     *
+     * @var string
+     */
     private $_delete;
 
+    /**
+     *
+     * @var string
+     */
     private $_selectedFile;
 
-    private $_reloadScript;
-
+    /**
+     *
+     * @var cGuiPage
+     */
     private $_page = NULL;
 
+    /**
+     *
+     * @var cGuiNotification
+     */
     private $_notification = NULL;
 
     /**
@@ -90,12 +136,18 @@ class cModuleTemplateHandler extends cModuleHandler {
     private $_actionDelete = 'htmltpl_delete';
 
     /**
-     * In template we test if we have premission for htmltpl.
+     * In template we test if we have permission for htmltpl.
      *
      * @var string
      */
     private $_testArea = 'htmltpl';
 
+    /**
+     * Constructor to create an instance of this class.
+     *
+     * @param int $idmod
+     * @param cGuiPage $page
+     */
     public function __construct($idmod, $page) {
         parent::__construct($idmod);
         $this->_page = $page;
@@ -178,12 +230,11 @@ class cModuleTemplateHandler extends cModuleHandler {
     /**
      * Checks write permissions for module template
      *
-     * @return $this warning notification
-     * @return boolean true
+     * @return void|bool
      */
     public function checkWritePermissions() {
-        if ($this->moduleWriteable('template') == false && cFileHandler::exists(parent::getModulePath() . $this->_directories['template'])) {
-            return $this->_notification->displayNotification(cGuiNotification::LEVEL_WARNING, i18n("You have no write permissions for this module"));
+        if ($this->moduleWriteable('template') == true && cFileHandler::exists(parent::getModulePath() . $this->_directories['template'])) {
+        	return $this->_notification->displayNotification(cGuiNotification::LEVEL_WARNING, sprintf(i18n("You have no write permissions for this module: %s"), parent::getModuleName()));
         } else {
             return true;
         }
@@ -193,8 +244,10 @@ class cModuleTemplateHandler extends cModuleHandler {
      * The method decide what action is send from
      * user (form).
      *
-     * @throws cException if one of the filenames is not set
-     * @return string [new, delete,empty,save,rename, default]
+     * @throws cException
+     *         if one of the filenames is not set
+     * @return string
+     *         [new, delete,empty,save,rename, default]
      */
     private function _getAction() {
         global $newModTpl, $deleteModTpl;
@@ -233,9 +286,9 @@ class cModuleTemplateHandler extends cModuleHandler {
     }
 
     /**
-     * Has the selected file changed.
+     * Checks if the selected file has changed.
      *
-     * @return boolean is the filename changed
+     * @return bool
      */
     private function _hasSelectedFileChanged() {
         if ($this->_file != $this->_selectedFile) {
@@ -257,14 +310,17 @@ class cModuleTemplateHandler extends cModuleHandler {
 
         if (isset($this->_code)) {
             // trigger a smarty cache rebuild for template if changes were saved
-            $tpl = cSmartyFrontend::getInstance();
-            $tpl->clearCache($this->getTemplatePath($this->_file));
+            // you need a installed and active smarty plugin (example client)
+            if (class_exists('cSmartyFrontend')) {
+                $tpl = cSmartyFrontend::getInstance();
+                $tpl->clearCache($this->getTemplatePath($this->_file));
+            }
 
             // save the contents of file
             $ret = $this->createModuleFile('template', $this->_file, $this->_code);
             // show message
             if (true === $ret) {
-                $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Saved changes successfully!'));
+                $this->_notification->displayNotification(cGuiNotification::LEVEL_OK, i18n('Saved changes successfully!'));
             }
         }
     }
@@ -276,36 +332,42 @@ class cModuleTemplateHandler extends cModuleHandler {
      */
     private function _rename() {
         // trigger a smarty cache rebuild for old and new template file name
-        $tpl = cSmartyFrontend::getInstance();
-        $tpl->clearCache($this->getTemplatePath($this->_tmpFile));
-        $tpl->clearCache($this->getTemplatePath($this->_file));
+        // you need a installed and active smarty plugin (example client)
+        if (class_exists('cSmartyFrontend')) {
+            $tpl = cSmartyFrontend::getInstance();
+            $tpl->clearCache($this->getTemplatePath($this->_tmpFile));
+            $tpl->clearCache($this->getTemplatePath($this->_file));
+        }
 
         if ($this->renameModuleFile('template', $this->_tmpFile, $this->_file) == false) {
             throw new cException(i18n('Rename of the file failed!'));
         } else {
             $this->createModuleFile('template', $this->_file, $this->_code);
-            $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Renamed the template file successfully!'));
+            $this->_notification->displayNotification(cGuiNotification::LEVEL_OK, i18n('Renamed the template file successfully!'));
             $this->_tmpFile = $this->_file;
         }
     }
 
     /**
-     * Make new file
+     * Create new file
      */
     private function _new() {
         $fileName = $this->_newFileName;
 
         // if target filename already exists insert few random characters into target filename
-        if ($this->existFile('template', $this->_newFileName . '.' . $this->_templateFileEnding)) {
-            $fileName = $this->_newFileName . $this->getRandomCharacters(5);
+        $fileName = $this->_newFileName . '.' . $this->_templateFileEnding;
+        while ($this->existFile('template', $fileName)) {
+            $fileName = $this->_newFileName . $this->getRandomCharacters(5) . '.' . $this->_templateFileEnding;
         }
-        $fileName = $fileName . '.' . $this->_templateFileEnding;
         $this->createModuleFile('template', $fileName, '');
-        $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Created a new template file successfully!'));
+        $this->_notification->displayNotification(cGuiNotification::LEVEL_OK, i18n('Created a new template file successfully!'));
 
         // trigger a smarty cache rebuild for new template file
-        $tpl = cSmartyFrontend::getInstance();
-        $tpl->clearCache($this->getTemplatePath($fileName));
+        // you need a installed and active smarty plugin (example client)
+        if (class_exists('cSmartyFrontend')) {
+            $tpl = cSmartyFrontend::getInstance();
+            $tpl->clearCache($this->getTemplatePath($fileName));
+        }
 
         // set to new fileName
         $this->_file = $fileName;
@@ -317,12 +379,15 @@ class cModuleTemplateHandler extends cModuleHandler {
      */
     private function _delete() {
         // trigger a smarty cache rebuild for template that should be deleted
-        $tpl = cSmartyFrontend::getInstance();
-        $tpl->clearCache($this->getTemplatePath($this->_tmpFile));
+        // you need a installed and active smarty plugin (example client)
+        if (class_exists('cSmartyFrontend')) {
+            $tpl = cSmartyFrontend::getInstance();
+            $tpl->clearCache($this->getTemplatePath($this->_tmpFile));
+        }
 
         $ret = $this->deleteFile('template', $this->_tmpFile);
         if ($ret == true) {
-            $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Deleted the template file successfully!'));
+            $this->_notification->displayNotification(cGuiNotification::LEVEL_OK, i18n('Deleted the template file successfully!'));
         }
         $files = $this->getAllFilesFromDirectory('template');
 
@@ -355,15 +420,15 @@ class cModuleTemplateHandler extends cModuleHandler {
     }
 
     /**
-     * Have the user premissions for the actions.
+     * Have the user permissions for the actions.
      *
      * @param cPermission $perm
      * @param cGuiNotification $notification
      * @param string $action
-     *
-     * @return int if user dont have permission return -1
+     * @return int
+     *         if user doesn't have permission return -1
      */
-    private function _havePremission($perm, $notification, $action) {
+    private function _havePermission($perm, $notification, $action) {
         switch ($action) {
             case 'new':
                 if (!$perm->have_perm_area_action($this->_testArea, $this->_actionCreate)) {
@@ -393,7 +458,8 @@ class cModuleTemplateHandler extends cModuleHandler {
     /**
      * This method test the code if the client setting htmlvalidator
      * is not set to false.
-     * @param {cGuiNotification} $notification
+     *
+     * @param cGuiNotification $notification
      */
     private function _validateHTML($notification) {
         // Try to validate html
@@ -429,29 +495,34 @@ class cModuleTemplateHandler extends cModuleHandler {
         }
     }
 
+    /**
+     *
+     * @param string $belang
+     * @param bool $readOnly
+     */
     private function _makeFormular($belang, $readOnly) {
         $fileForm = new cGuiTableForm("file__chooser");
         $fileForm->addHeader(i18n('Choose file'));
-        $fileForm->setTableid('choose_mod_template_file');
+        $fileForm->setTableID('choose_mod_template_file');
         $fileForm->setVar('area', $this->_area);
         $fileForm->setVar('action', $this->_action);
         $fileForm->setVar('frame', $this->_frame);
         $fileForm->setVar('status', 'send');
-        $fileForm->setVar('tmp_file', $this->_tmpFile);
+        $fileForm->setVar('tmp_file', conHtmlSpecialChars($this->_tmpFile));
         $fileForm->setVar('idmod', $this->_idmod);
-        $fileForm->setVar('file', $this->_file);
+        $fileForm->setVar('file', conHtmlSpecialChars($this->_file));
 
         $form = new cGuiTableForm('file_editor');
-        $form->setTableid('mod_template');
+        $form->setTableID('mod_template');
         $form->addHeader(i18n('Edit file'));
         $form->setVar('area', $this->_area);
         $form->setVar('action', $this->_action);
         $form->setVar('frame', $this->_frame);
         $form->setVar('status', 'send');
-        $form->setVar('tmp_file', $this->_tmpFile);
+        $form->setVar('tmp_file', conHtmlSpecialChars($this->_tmpFile));
         $form->setVar('idmod', $this->_idmod);
-        $form->setVar('file', $this->_file);
-        $form->setVar('selectedFile', $this->_file);
+        $form->setVar('file', conHtmlSpecialChars($this->_file));
+        $form->setVar('selectedFile', conHtmlSpecialChars($this->_file));
 
         $selectFile = new cHTMLSelectElement('selectedFile');
         $selectFile->setClass("fileChooser");
@@ -460,28 +531,29 @@ class cModuleTemplateHandler extends cModuleHandler {
 
         if (true === is_array($filesArray)) {
 
-	        // make options fields
-	        foreach ($filesArray as $key => $file) {
+            // make options fields
+            foreach ($filesArray as $key => $file) {
 
-	            // ignore dirs
-	            if (is_dir($file)) {
-	                continue;
-	            }
+                // ignore dirs
+                if (is_dir($file)) {
+                    continue;
+                }
 
-	            $optionField = new cHTMLOptionElement($file, $file);
+                // escape option elements to prevent JS injection into form
+                $optionField = new cHTMLOptionElement(conHtmlSpecialChars($file), conHtmlSpecialChars($file));
 
-	            // select the current file
-	            if ($file == $this->_file) {
-	                $optionField->setAttribute('selected', 'selected');
-	            }
+                // select the current file
+                if ($file == $this->_file) {
+                    $optionField->setAttribute('selected', 'selected');
+                }
 
-	            $selectFile->addOptionElement($key, $optionField);
-	        }
+                $selectFile->addOptionElement($key, $optionField);
+            }
 
         }
 
         $aDelete = new cHTMLLink('main.php');
-        $aDelete->setId("deleteLink");
+        $aDelete->setID("deleteLink");
         $aDelete->setContent(i18n("Delete HTML-template"));
         $aDelete->setClass('deletefunction');
         $aDelete->setCustom("deleteModTpl", "1");
@@ -490,8 +562,8 @@ class cModuleTemplateHandler extends cModuleHandler {
         $aDelete->setCustom('frame', $this->_frame);
         $aDelete->setCustom('status', 'send');
         $aDelete->setCustom('idmod', $this->_idmod);
-        $aDelete->setCustom('file', $this->_file);
-        $aDelete->setCustom('tmp_file', $this->_tmpFile);
+        $aDelete->setCustom('file', urlencode($this->_file));
+        $aDelete->setCustom('tmp_file', urlencode($this->_tmpFile));
 
         $aAdd = new cHTMLLink('main.php');
         $aAdd->setContent(i18n('New HTML-template'));
@@ -501,12 +573,12 @@ class cModuleTemplateHandler extends cModuleHandler {
         $aAdd->setCustom('action', $this->_actionCreate);
         $aAdd->setCustom('frame', $this->_frame);
         $aAdd->setCustom('status', 'send');
-        $aAdd->setCustom('tmp_file', $this->_tmpFile);
+        $aAdd->setCustom('tmp_file', urlencode($this->_tmpFile));
         $aAdd->setCustom('idmod', $this->_idmod);
-        $aAdd->setCustom('file', $this->_file);
+        $aAdd->setCustom('file', urlencode($this->_file));
 
         // $oName = new cHTMLLabel($sFilename, '');
-        $oName = new cHTMLTextbox('file', $this->_file, 60);
+        $oName = new cHTMLTextbox('file', conHtmlSpecialChars($this->_file), 60);
 
         $oCode = new cHTMLTextarea('code', conHtmlSpecialChars($this->_code), 100, 35, 'code');
 
@@ -516,10 +588,10 @@ class cModuleTemplateHandler extends cModuleHandler {
             'wrap' => getEffectiveSetting('html_editor', 'wrap', 'off')
         ));
 
-        $fileForm->add(i18n('Action'), $aAdd->toHTML());
+        $fileForm->add(i18n('Action'), $aAdd->toHtml());
         // show only if file exists
         if ($this->_file) {
-            $fileForm->add(i18n('Action'), $aDelete->toHTML());
+            $fileForm->add(i18n('Action'), $aDelete->toHtml());
             $fileForm->add(i18n('File'), $selectFile);
         }
 
@@ -555,14 +627,16 @@ class cModuleTemplateHandler extends cModuleHandler {
      *
      * @param cPermission $perm
      * @param cGuiNotification $notification
-     * @param string Backend language (not sure about this...)
-     * @param bool render in read only mode
+     * @param string $belang
+     *         Backend language (not sure about this...)
+     * @param bool $readOnly
+     *         render in read only mode
      */
     public function display($perm, $notification, $belang, $readOnly) {
         $myAction = $this->_getAction();
 
         // if the user doesn't have permissions
-        if ($this->_havePremission($perm, $notification, $myAction) === -1) {
+        if ($this->_havePermission($perm, $notification, $myAction) === -1) {
             return;
         }
 

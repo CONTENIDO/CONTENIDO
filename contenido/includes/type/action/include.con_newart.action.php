@@ -1,11 +1,10 @@
 <?php
+
 /**
  * Backend action file con_newart
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Dominik Ziegler
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt

@@ -4,8 +4,6 @@
  *
  * @package Plugin
  * @subpackage Newsletter
- * @version SVN Revision $Rev:$
- *
  * @author Bjoern Behrens
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -42,8 +40,8 @@ class NewsletterJobCollection extends ItemCollection {
      * @param $idnews integer Newsletter id
      */
     public function create($iIDNews, $iIDCatArt, $sName = "") {
-        global $client, $lang, $cfg, $cfgClient, $auth;
 
+        global $client, $lang, $cfg, $cfgClient, $auth;
         $oNewsletter = new Newsletter();
         if ($oNewsletter->loadByPrimaryKey($iIDNews)) {
             $iIDNews = cSecurity::toInteger($iIDNews);
@@ -69,7 +67,6 @@ class NewsletterJobCollection extends ItemCollection {
             $oLang = new cApiLanguage($lang);
             $oItem->set("encoding", $oLang->get("encoding"));
             unset($oLang);
-
             $oItem->set("idart", $oNewsletter->get("idart"));
             $oItem->set("subject", $oNewsletter->get("subject"));
 
@@ -129,6 +126,7 @@ class NewsletterJobCollection extends ItemCollection {
                     // There was a problem getting html message (maybe article
                     // deleted)
                     // Cancel job generation
+                    $this->delete($oItem->get($oItem->getPrimaryKeyName()));
                     return false;
                 }
             }
@@ -192,8 +190,13 @@ class NewsletterJobCollection extends ItemCollection {
 
             // Adds log items for all recipients and returns recipient count
             $oLogs = new NewsletterLogCollection();
-            $iRecipientCount = $oLogs->initializeJob($oItem->get($oItem->primaryKey), $iIDNews);
+            $iRecipientCount = $oLogs->initializeJob($oItem->get($oItem->getPrimaryKeyName()), $iIDNews);
             unset($oLogs);
+
+            // fallback. there's no need to create a newsletter job if no user is selected
+            if ($iRecipientCount == 0 || !is_int($iRecipientCount)) {
+                return false;
+            }
 
             $oItem->set("rcpcount", $iRecipientCount);
             $oItem->set("sendcount", 0);
@@ -258,7 +261,7 @@ class NewsletterJob extends Item {
                 $this->set("started", "0000-00-00 00:00:00", false);
 
                 $oLogs = new NewsletterLogCollection();
-                $oLogs->setWhere("idnewsjob", $this->get($this->primaryKey));
+                $oLogs->setWhere("idnewsjob", $this->get($this->getPrimaryKeyName()));
                 $oLogs->setWhere("status", "sending");
                 $oLogs->query();
 
@@ -343,7 +346,7 @@ class NewsletterJob extends Item {
             } else {
                 $oLogs->resetQuery();
             }
-            $oLogs->setWhere("idnewsjob", $this->get($this->primaryKey));
+            $oLogs->setWhere("idnewsjob", $this->get($this->getPrimaryKeyName()));
             $oLogs->setWhere("status", "pending");
 
             if ($bDispatch) {
@@ -421,13 +424,13 @@ class NewsletterJob extends Item {
                         $contentType = 'text/html';
                     }
 
-                    
+
                     try {
                         // this code can throw exceptions like Swift_RfcComplianceException
                         $message = Swift_Message::newInstance($sSubject, $body, $contentType, $sEncoding);
                         $message->setFrom($sFrom, $sFromName);
                         $message->setTo($to);
-                        
+
                         // send the email
                         $result = $mailer->send($message);
                     } catch (Exception $e) {
@@ -455,7 +458,7 @@ class NewsletterJob extends Item {
             } else if ($bDispatch) {
                 // Check, if there are recipients remaining - stops job faster
                 $oLogs->resetQuery();
-                $oLogs->setWhere("idnewsjob", $this->get($this->primaryKey));
+                $oLogs->setWhere("idnewsjob", $this->get($this->getPrimaryKeyName()));
                 $oLogs->setWhere("status", "pending");
                 $oLogs->setLimit(0, $this->get("dispatch_count"));
                 $oLogs->query();

@@ -4,8 +4,6 @@
  *
  * @package Plugin
  * @subpackage Workflow
- * @version SVN Revision $Rev:$
- *
  * @author Timo Hummel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -25,8 +23,6 @@ class WorkflowArtAllocations extends ItemCollection {
 
     /**
      * Constructor Function
-     *
-     * @param string $table The table to use as information source
      */
     public function __construct() {
         global $cfg;
@@ -75,8 +71,6 @@ class WorkflowArtAllocation extends Item {
 
     /**
      * Constructor Function
-     *
-     * @param string $table The table to use as information source
      */
     public function __construct() {
         global $cfg;
@@ -93,11 +87,6 @@ class WorkflowArtAllocation extends Item {
 
     /**
      * Returns the current item position
-     *
-     * @param string $field Void field since we override the usual setField
-     *            function
-     * @param string $value Void field since we override the usual setField
-     *            function
      */
     public function currentItemPosition() {
         $idworkflowitem = $this->get("idworkflowitem");
@@ -112,11 +101,6 @@ class WorkflowArtAllocation extends Item {
 
     /**
      * Returns the current user position
-     *
-     * @param string $field Void field since we override the usual setField
-     *            function
-     * @param string $value Void field since we override the usual setField
-     *            function
      */
     public function currentUserPosition() {
         return ($this->get("position"));
@@ -247,7 +231,7 @@ class WorkflowArtAllocation extends Item {
         }
 
         if (parent::store()) {
-            $this->db->query("UPDATE " . $this->table . " SET `starttime`=NOW() WHERE `" . $this->primaryKey . "`='" . $this->get($this->primaryKey) . "'");
+            $this->db->query("UPDATE " . $this->table . " SET `starttime`=NOW() WHERE `" . $this->getPrimaryKeyName() . "`='" . $this->get($this->getPrimaryKeyName()) . "'");
             return true;
         } else {
             return false;

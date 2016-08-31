@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Login form for client
  *
@@ -7,8 +8,6 @@
  *
  * @package          Core
  * @subpackage       Frontend
- * @version          SVN Revision $Rev:$
- *
  * @author           Jan Lengowski
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -50,7 +49,7 @@ if ($err_catart != '') {
 }
 
 if ($bRedirect) {
-	$aUrl = $oUrl->parse($sess->url($sErrorUrl));
+    $aUrl = $oUrl->parse($sess->url($sErrorUrl));
     $aUrl['params']['wrongpass'] = 1;
     $sErrorUrl = $oUrl->buildRedirect($aUrl['params']);
     header('Location: ' . $sErrorUrl);
@@ -91,9 +90,13 @@ if (cFileHandler::exists(cRegistry::getFrontendPath() . 'images/but_ok.gif')) {
 
 $tpl = new cTemplate();
 
+$tpl->set('s', 'CHARSET', $encoding[$lang]);
+$tpl->set('s', 'FORM_ACTION', $sFormAction);
+$tpl->set('s', 'FORM_TIMESTAMP', time());
+$tpl->set('s', 'IDCAT', $idcat);
 $tpl->set("s", "USERNAME", (isset($this->auth['uname'])) ? $this->auth['uname'] : '');
 $tpl->set("s", "LOGINBUTTON", $sLoginButton);
 
-$tpl->generate($cfg["templates"]["front_loginform"]);
+$tpl->generate($cfg['path']['contenido'] . $cfg["path"]["templates"] . $cfg["templates"]["front_loginform"]);
 
 ?>

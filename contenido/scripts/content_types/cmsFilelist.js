@@ -7,8 +7,9 @@
  * @submodule  content-type-cms-filelist
  * @package    Core
  * @subpackage Content Type
- * @version    SVN Revision $Rev$
- * @author     Dominik Ziegler, Simon Sprankel, Murat Purc <murat@purc.de>
+ * @author     Dominik Ziegler
+ * @author     Simon Sprankel
+ * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -240,7 +241,7 @@
                     type: 'POST',
                     url: self.pathBackend + 'ajaxmain.php',
                     data: 'ajax=dirlist&dir=' + dirname + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
-                    success: function(msg) {					
+                    success: function(msg) {
 						if (Con.checkAjaxResponse(msg) === false)  {
 							return false;
 						}
@@ -331,8 +332,5 @@
 
 
     Con.cContentTypeFilelist = cContentTypeFilelist;
-
-    // @deprecated [2013-11-10] Assign to windows scope (downwards compatibility)
-    window.cContentTypeFilelist = cContentTypeFilelist;
 
 })(Con, Con.$);

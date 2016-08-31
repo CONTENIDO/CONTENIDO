@@ -4,8 +4,6 @@
  *
  * @package    Setup
  * @subpackage Helper_MySQL
- * @version    SVN Revision $Rev:$
- *
  * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -251,8 +249,7 @@ function fetchMySQLCharsets($db = null) {
  * Returns all suppported collations for a specific charset
  *
  * @param cDB|null $db
- * @param
- *        	string The charset for the collation
+ * @param string $charset The charset for the collation
  * @return array
  */
 function fetchMySQLCollations($db = null, $charset = "") {
@@ -281,6 +278,7 @@ function fetchMySQLCollations($db = null, $charset = "") {
 				'latin5_turkish_ci',
 				'armscii8_general_ci',
 				'utf8_general_ci',
+				'utf8_unicode_ci',
 				'ucs2_general_ci',
 				'cp866_general_ci',
 				'keybcs2_general_ci',

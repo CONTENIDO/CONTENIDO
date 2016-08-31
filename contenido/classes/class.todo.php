@@ -4,8 +4,6 @@
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Unknown
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -25,6 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class TODOCollection extends cApiCommunicationCollection {
 
     /**
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         parent::__construct();
@@ -32,9 +31,19 @@ class TODOCollection extends cApiCommunicationCollection {
     }
 
     /**
-     * (non-PHPdoc)
+     * Selects all entries from the database.
+     * Objects are loaded using their primary key.
      *
-     * @see ItemCollection::select()
+     * @param string $where [optional]
+     *         Specifies the where clause.
+     * @param string $group_by [optional]
+     *         Specifies the group by clause.
+     * @param string $order_by [optional]
+     *         Specifies the order by clause.
+     * @param string $limit [optional]
+     *         Specifies the limit by clause.
+     * @return bool
+     *         True on success, otherwise false
      */
     public function select($where = '', $group_by = '', $order_by = '', $limit = '') {
         if ($where == '') {
@@ -49,15 +58,17 @@ class TODOCollection extends cApiCommunicationCollection {
     /**
      * Creates a new communication item
      *
-     * @param unknown_type $itemtype
-     * @param unknown_type $itemid
-     * @param unknown_type $reminderdate
+     * @param string $itemtype
+     * @param int $itemid
+     * @param int|string $reminderdate
+     *          if not given as timestamp it is expected to be a string
+     *          using the English date format
      * @param string $subject
      * @param string $content
-     * @param unknown_type $notimail
-     * @param unknown_type $notibackend
+     * @param string $notimail
+     * @param string $notibackend
      * @param string $recipient
-     * @return Ambigous <cApiCommunication, Item, object>
+     * @return cApiCommunication
      */
     public function createItem($itemtype, $itemid, $reminderdate, $subject, $content, $notimail, $notibackend, $recipient) {
         $item = parent::create();
@@ -128,10 +139,18 @@ class TODOCollection extends cApiCommunicationCollection {
 class TODOItem extends cApiCommunication {
 
     /**
-     * (non-PHPdoc)
+     * Sets a custom property.
      *
      * @see Item::setProperty()
-     * @todo should return return value of overloaded method
+     * @param string $type
+     *         Specifies the type
+     * @param string $name
+     *         Specifies the name
+     * @param mixed $value
+     *         Specifies the value
+     * @param int $client [optional]
+     *         unused (should be "Id of client to set property for")
+     * @return bool
      */
     public function setProperty($type, $name, $value, $client = 0) {
         if ($type == 'todo' && $name == 'emailnoti') {
@@ -143,7 +162,7 @@ class TODOItem extends cApiCommunication {
             }
         }
 
-        parent::setProperty($type, $name, $value);
+        return parent::setProperty($type, $name, $value);
     }
 }
 
@@ -156,11 +175,12 @@ class TODOItem extends cApiCommunication {
 class TODOLink extends cHTMLLink {
 
     /**
+     * Constructor to create an instance of this class.
      *
-     * @param unknown_type $itemtype
-     * @param unknown_type $itemid
-     * @param unknown_type $subject
-     * @param unknown_type $message
+     * @param string $itemtype
+     * @param int $itemid
+     * @param string $subject
+     * @param string $message
      */
     public function __construct($itemtype, $itemid, $subject, $message) {
         global $sess;
@@ -181,5 +201,3 @@ class TODOLink extends cHTMLLink {
         $this->setAlt(i18n('Set reminder / add to todo list'));
     }
 }
-
-?>

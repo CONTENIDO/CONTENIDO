@@ -1,8 +1,6 @@
 <?PHP
 /**
  *
- * @version SVN Revision $Rev:$
- *
  * @author claus.schunk@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -74,8 +72,8 @@ class cHtmlRadioButtonTest extends PHPUnit_Framework_TestCase {
 
     public function testToHTMLText() {
         $pwBox = new cHTMLRadiobutton('testName', 'testValue', 'testId');
-        $this->assertSame($pwBox->toHtml(), $pwBox->toHTML());
-        $this->assertSame($pwBox->toHtml(false), $pwBox->toHTML(false));
+        $this->assertSame($pwBox->toHtml(), $pwBox->toHtml());
+        $this->assertSame($pwBox->toHtml(false), $pwBox->toHtml(false));
 
     }
 

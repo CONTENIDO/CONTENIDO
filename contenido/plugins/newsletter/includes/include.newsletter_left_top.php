@@ -4,8 +4,6 @@
  *
  * @package Plugin
  * @subpackage Newsletter
- * @version SVN Revision $Rev:$
- *
  * @author Bjoern Behrens
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -197,7 +195,7 @@ $bTestTargetFound = false;
 // specific, lang is sufficient
 $iTestDestination = (int) $oUser->getProperty("newsletter", "test_idnewsgrp_lang" . $lang);
 while ($oRcpGroup = $oRcpGroups->next()) {
-    $iID = $oRcpGroup->get($oRcpGroup->primaryKey);
+    $iID = $oRcpGroup->get($oRcpGroup->getPrimaryKeyName());
 
     if ($iTestDestination == $iID) {
         $bTestTargetFound = true;
@@ -237,7 +235,7 @@ $sContent = '
         <input type="hidden" name="action_html" value="save_newsletter_properties">
         <table>
             <tr>
-                <td>' . $oCkbHTMLNewsletter->toHTML(false) . ' <label for="' . $oCkbHTMLNewsletter->getID() . '">' . i18n("Enable HTML newsletter", 'newsletter') . '</label></td>
+                <td>' . $oCkbHTMLNewsletter->toHtml(false) . ' <label for="' . $oCkbHTMLNewsletter->getID() . '">' . i18n("Enable HTML newsletter", 'newsletter') . '</label></td>
             </tr>
             <tr>
                 <td><label for="' . $oSelHTMLTemplateIDCat->getID() . '">' . i18n("HTML template category:", 'newsletter') . '</label><br> ' . $oSelHTMLTemplateIDCat->render() . '</td>

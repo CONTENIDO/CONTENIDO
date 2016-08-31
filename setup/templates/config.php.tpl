@@ -8,8 +8,6 @@
  *
  * @package    Core
  * @subpackage Backend_ConfigFile
- * @version    SVN Revision $Rev:$
- *
  * @author     System
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -43,24 +41,14 @@ $cfg['path']['contenido']               = $cfg['path']['frontend'] . '/contenido
 /* The root server path to the data directory */
 $cfg['path']['data']                    = $cfg['path']['frontend'] . '/data/';
 
-/* The root server path to the pear directory */
-$cfg['path']['pear']                    = $cfg['path']['frontend'] . '/pear/';
-
 /* The server path to all WYSIWYG-Editors */
 $cfg['path']['all_wysiwyg']             = $cfg['path']['contenido']  . 'external/wysiwyg/';
 
 /* The selected wysiwyg editor*/
 $cfg['wysiwyg']['editor']               = 'tinymce3';
 
-/* The name of WYSIWYG editor classes */
-$cfg['wysiwyg']['tinymce3_editorclass'] = 'cTinyMCEEditor';
-$cfg['wysiwyg']['tinymce4_editorclass'] = 'cTinyMCE4Editor';
-
 /* The server path to the desired WYSIWYG-Editor */
 $cfg['path']['wysiwyg']                 = $cfg['path']['all_wysiwyg'] . $cfg['wysiwyg']['editor'] . '/';
-
-/* The server path to the desired WYSIWYG-Editor class */
-$cfg['path']['wysiwyg_editorclass']     = $cfg['path']['wysiwyg'] . 'editorclass.php';
 
 /* The web server path to the CONTENIDO backend */
 $cfg['path']['contenido_fullhtml']      = '{CONTENIDO_WEB}/contenido/';

@@ -1,12 +1,12 @@
 <?php
+
 /**
  * This file contains the backend page for javascript history.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
- * @author           Bilal Arslan, Timo Trautmann
+ * @author           Bilal Arslan
+ * @author           Timo Trautmann
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
  * @link             http://www.4fb.de
@@ -26,7 +26,7 @@ $sFileName = $_REQUEST['file'];
 
 $readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
 if($readOnly) {
-	cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
+    cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
 }
 
 $sType = 'js';
@@ -77,7 +77,7 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage')) {
 
         // There is a need for renaming file
         if ($sFileName != $sJScriptName) {
-            if (getFileType($sJScriptName) != 'js' and strlen(stripslashes(trim($sJScriptName))) > 0) {
+            if (cFileHandler::getExtension($sJScriptName) != 'js' and strlen(stripslashes(trim($sJScriptName))) > 0) {
                 $sJScriptName = stripslashes($sJScriptName) . '.js';
             }
 
@@ -176,7 +176,7 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage')) {
         $oPage->render();
     } else {
         if ($bDeleteFile) {
-            $oPage->displayWarning(i18n('Version history was cleared'));
+            $oPage->displayOk(i18n('Version history was cleared'));
         } else {
             $oPage->displayWarning(i18n('No jscript history available'));
         }

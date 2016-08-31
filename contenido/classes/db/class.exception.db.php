@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the database exception class.
  *
  * @package Core
  * @subpackage Database
- * @version    SVN Revision $Rev:$
- *
  * @author Dominik Ziegler
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt

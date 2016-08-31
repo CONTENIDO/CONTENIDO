@@ -1,12 +1,11 @@
 <?php
+
 /**
  * This file contains content type generator class.
  * TODO: This class needs more documentation.
  *
  * @package Core
  * @subpackage ContentType
- * @version SVN Revision $Rev:$
- *
  * @author Alexander Scheider
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -55,11 +54,11 @@ class cTypeGenerator {
     private $_idlang = NULL;
 
     /**
-     * Constructor function
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         $this->_idart = cRegistry::getArticleId(true);
-        $this->_idlang = cRegistry::getLanguageId(true);
+        $this->_idlang = cRegistry::getLanguageId();
         $this->cfg = cRegistry::getConfig();
 
         if (self::$db === NULL) {
@@ -73,15 +72,21 @@ class cTypeGenerator {
     /**
      * Returns the classname for a content type.
      *
-     * @param string $type Content type, e. g. CMS_HTMLHEAD
-     * @return string The classname e. g. cContentTypeHtmlhead for content type
-     *         CMS_HTMLHEAD
+     * @param string $type
+     *         Content type, e.g. CMS_HTMLHEAD
+     * @return string
+     *         The classname e.g. cContentTypeHtmlhead for content type CMS_HTMLHEAD
      */
     protected function _getContentTypeClassName($type) {
         $typeClassName = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $type)));
         return $typeClassName;
     }
 
+    /**
+     *
+     * @param string $type
+     * @return string
+     */
     public static function getContentTypeClassName($type)  {
         $contentType = substr($type, 4);
         return 'cContentType' . strtoupper($contentType[0]) . strtolower(substr($contentType, 1));
@@ -90,9 +95,10 @@ class cTypeGenerator {
     /**
      * Returns the full path to the include file name of a content type.
      *
-     * @param string $type Content type, e. g. CMS_HTMLHEAD
-     * @return string The full path e. g.
-     *
+     * @param string $type
+     *         Content type, e.g. CMS_HTMLHEAD
+     * @return string
+     *         The full path e.g.
      *         {path_to_contenido_includes}/type/code/include.CMS_HTMLHEAD.code.php
      *         for content type CMS_HTMLHEAD
      */
@@ -176,5 +182,3 @@ class cTypeGenerator {
         return $this->_processCmsTags($type, $index);
     }
 }
-
-?>

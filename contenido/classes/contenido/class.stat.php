@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the stat collection and item class.
  *
  * @package Core
  * @subpackage GenericDB_Model
- * @version SVN Revision $Rev:$
- *
  * @author Murat Purc <murat@purc.de>
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -24,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiStatCollection extends ItemCollection {
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -60,7 +59,7 @@ class cApiStatCollection extends ItemCollection {
      * @param int $iIdCatArt
      * @param int $iIdLang
      * @param int $iIdClient
-     * @param int $iVisited
+     * @param int $iVisited [optional]
      * @return cApiStat
      */
     public function create($iIdCatArt, $iIdLang, $iIdClient, $iVisited = 1) {
@@ -80,7 +79,7 @@ class cApiStatCollection extends ItemCollection {
      *
      * @param int $iIdCatArt
      * @param int $iIdLang
-     * @return cApiStat NULL
+     * @return cApiStat|NULL
      */
     public function fetchByCatArtAndLang($iIdCatArt, $iIdLang) {
         $this->select('idcatart=' . (int) $iIdCatArt . ' AND idlang=' . (int) $iIdLang);
@@ -92,7 +91,8 @@ class cApiStatCollection extends ItemCollection {
      *
      * @param int $idcatart
      * @param int $idlang
-     * @return int Number of deleted items
+     * @return int
+     *         Number of deleted items
      */
     public function deleteByCategoryArticleAndLanguage($idcatart, $idlang) {
         $where = 'idcatart = ' . (int) $idcatart . ' AND idlang = ' . (int) $idlang;
@@ -109,9 +109,10 @@ class cApiStatCollection extends ItemCollection {
 class cApiStat extends Item {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId [optional]
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -129,31 +130,33 @@ class cApiStat extends Item {
         $this->set('visited', $this->get('visited') + 1);
         $this->store();
     }
-	
-	/**
+
+    /**
      * Userdefined setter for stat fields.
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @param bool $bSafe [optional]
+     *         Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
             case 'visited':
                 $value = (int) $value;
                 break;
-			case 'idcatart':
+            case 'idcatart':
                 $value = (int) $value;
                 break;
-			case 'idlang':
+            case 'idlang':
                 $value = (int) $value;
                 break;
-			case 'idclient':
+            case 'idclient':
                 $value = (int) $value;
                 break;
         }
 
         return parent::setField($name, $value, $bSafe);
     }
-	
+
 }

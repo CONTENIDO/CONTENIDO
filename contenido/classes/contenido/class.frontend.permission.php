@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the frontend permission collection and item class.
  *
  * @package Core
  * @subpackage GenericDB_Model
- * @version SVN Revision $Rev:$
- *
  * @author Murat Purc <murat@purc.de>
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -31,7 +30,7 @@ class cApiFrontendPermissionCollection extends ItemCollection {
     protected $_frontendPermission;
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -48,10 +47,14 @@ class cApiFrontendPermissionCollection extends ItemCollection {
     /**
      * Creates a new permission entry.
      *
-     * @param int $group Specifies the frontend group
-     * @param string $plugin Specifies the plugin
-     * @param string $action Specifies the action
-     * @param string $item Specifies the item
+     * @param int $group
+     *         Specifies the frontend group
+     * @param string $plugin
+     *         Specifies the plugin
+     * @param string $action
+     *         Specifies the action
+     * @param string $item
+     *         Specifies the item
      * @return cApiFrontendPermission|false
      */
     public function create($group, $plugin, $action, $item) {
@@ -67,19 +70,22 @@ class cApiFrontendPermissionCollection extends ItemCollection {
             $perm->set('item', $item);
 
             $perm->store();
-
-			return $perm;
         }
 
+        return $perm;
     }
 
     /**
      * Sets a permission entry, is a wrapper for create() function
      *
-     * @param int $group Specifies the frontend group
-     * @param string $plugin Specifies the plugin
-     * @param string $action Specifies the action
-     * @param string $item Specifies the item
+     * @param int $group
+     *         Specifies the frontend group
+     * @param string $plugin
+     *         Specifies the plugin
+     * @param string $action
+     *         Specifies the action
+     * @param string $item
+     *         Specifies the item
      */
     public function setPerm($group, $plugin, $action, $item) {
         $this->create($group, $plugin, $action, $item);
@@ -91,11 +97,16 @@ class cApiFrontendPermissionCollection extends ItemCollection {
      * 1.) Checks for global permission
      * 2.) Checks for specific item permission
      *
-     * @param int $group Specifies the frontend group
-     * @param string $plugin Specifies the plugin
-     * @param string $action Specifies the action
-     * @param string $item Specifies the item
-     * @param bool $useLang Flag to use language (Not used!)
+     * @param int $group
+     *         Specifies the frontend group
+     * @param string $plugin
+     *         Specifies the plugin
+     * @param string $action
+     *         Specifies the action
+     * @param string $item
+     *         Specifies the item
+     * @param bool $useLang [optional]
+     *         Flag to use language (Not used!)
      * @return bool
      */
     public function checkPerm($group, $plugin, $action, $item, $useLang = false) {
@@ -122,11 +133,16 @@ class cApiFrontendPermissionCollection extends ItemCollection {
     /**
      * Removes the permission.
      *
-     * @param int $group Specifies the frontend group
-     * @param string $plugin Specifies the plugin
-     * @param string $action Specifies the action
-     * @param string $item Specifies the item
-     * @param bool $useLang Flag to use language (Not used!)
+     * @param int $group
+     *         Specifies the frontend group
+     * @param string $plugin
+     *         Specifies the plugin
+     * @param string $action
+     *         Specifies the action
+     * @param string $item
+     *         Specifies the item
+     * @param bool $useLang [optional]
+     *         Flag to use language (Not used!)
      * @return bool
      */
     public function removePerm($group, $plugin, $action, $item, $useLang = false) {
@@ -156,9 +172,10 @@ class cApiFrontendPermissionCollection extends ItemCollection {
 class cApiFrontendPermission extends Item {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId [optional]
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;

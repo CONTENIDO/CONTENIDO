@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the notification GUI class.
  *
  * @package          Core
  * @subpackage       GUI
- * @version          SVN Revision $Rev:$
  *
  * @author           Timo Hummel
  * @copyright        four for business AG <www.4fb.de>
@@ -37,38 +37,51 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GUI
  */
 class cGuiNotification {
+
     /**
-     * Error message level
+     * Error message level.
+     *
      * @var string
      */
     const LEVEL_ERROR = 'error';
 
     /**
-     * Warning message level
+     * Warning message level.
+     *
      * @var string
      */
     const LEVEL_WARNING = 'warning';
 
     /**
-     * Info message level
+     * Info message level.
+     *
      * @var string
      */
     const LEVEL_INFO = 'info';
 
     /**
-     * Notification message level
+     * Ok message level.
+     *
+     * @var string
+     */
+    const LEVEL_OK = 'ok';
+
+    /**
+     * Notification message level.
+     *
      * @var string
      */
     const LEVEL_NOTIFICATION = 'notification';
 
     /**
-     * HTML path to images
+     * HTML path to images.
+     *
      * @var string
      */
     protected $_sPathImages;
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -78,10 +91,13 @@ class cGuiNotification {
     /**
      * Generates message box and returns it back.
      *
-     * @param   string  $sLevel  Message level, one of cGuiNotification::LEVEL_* constants
-     * @param   string  $sMessage  The message to display
-     * @param   int     $iStyle   Flag tp use styles for display or not (feasible 1 or 0)
-     * @return  string
+     * @param string $sLevel
+     *         Message level, one of cGuiNotification::LEVEL_* constants
+     * @param string $sMessage
+     *         The message to display
+     * @param int $iStyle [optional]
+     *         Flag tp use styles for display or not (feasible 1 or 0)
+     * @return string
      */
     public function returnMessageBox($sLevel, $sMessage, $iStyle = 1) {
         switch ($sLevel) {
@@ -96,6 +112,11 @@ class cGuiNotification {
             case self::LEVEL_INFO:
                 $sHead = i18n('Info');
                 $sHeadClass = 'alertbox_info';
+                $sMessage = '<span>' . $sMessage . '</span>';
+                break;
+            case self::LEVEL_OK:
+                $sHead = i18n('Ok');
+                $sHeadClass = 'alertbox_ok';
                 $sMessage = '<span>' . $sMessage . '</span>';
                 break;
             default:
@@ -126,9 +147,11 @@ class cGuiNotification {
     /**
      * Generates message box and returns it back, uses markup with table.
      *
-     * @param   string  $sLevel  Message level, one of cGuiNotification::LEVEL_* constants
-     * @param   string  $sMessage  The message to display
-     * @return  string
+     * @param string $sLevel
+     *         Message level, one of cGuiNotification::LEVEL_* constants
+     * @param string $sMessage
+     *         The message to display
+     * @return string
      */
     public function returnNotification($sLevel, $sMessage) {
 
@@ -144,13 +167,16 @@ class cGuiNotification {
             case self::LEVEL_INFO:
                 $oNotifySpan->setClass('notify_general notify_info');
                 break;
+            case self::LEVEL_OK:
+                $oNotifySpan->setClass('notify_general notify_ok');
+                break;
             default:
                 $oNotifySpan->setClass('notify_general notify_default');
                 break;
         }
 
         $sNoti = '<div id="contenido_notification">';
-        $sNoti .= $oNotifySpan->toHTML();
+        $sNoti .= $oNotifySpan->toHtml();
         $sNoti .= '</div>';
 
         return $sNoti;
@@ -159,8 +185,10 @@ class cGuiNotification {
     /**
      * Displays small message box directly.
      *
-     * @param   string  $sLevel  Message level, one of cGuiNotification::LEVEL_* constants
-     * @param   string  $sMessage  The message to display
+     * @param string $sLevel
+     *         Message level, one of cGuiNotification::LEVEL_* constants
+     * @param string $sMessage
+     *         The message to display
      */
     public function displayNotification($sLevel, $sMessage) {
         echo $this->returnNotification($sLevel, $sMessage) . '<br>';
@@ -169,14 +197,15 @@ class cGuiNotification {
     /**
      * Displays large message box directly.
      *
-     * @param   string  $sLevel  Message level, one of cGuiNotification::LEVEL_* constants
-     * @param   string  $sMessage  The message to display
-     * @param   int     $iStyle   Flag tp use styles for display or not (feasible 1 or 0)
+     * @param string $sLevel
+     *         Message level, one of cGuiNotification::LEVEL_* constants
+     * @param string $sMessage
+     *         The message to display
+     * @param int $iStyle [optional]
+     *         Flag tp use styles for display or not (feasible 1 or 0)
      */
     public function displayMessageBox($sLevel, $sMessage, $iStyle = 1) {
         echo $this->returnMessageBox($sLevel, $sMessage, $iStyle) . '<br>';
     }
 
 }
-
-?>

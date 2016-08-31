@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for uploading a new file.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Timo Hummel
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -32,7 +31,7 @@ $maxPostSize = 0;
 if (ini_get("max_upload_size") == "") {
     $maxUploadSize = (double) 99999999999999;
 } else {
-	$maxUploadSize = machineReadableSize(ini_get("max_upload_size"));
+    $maxUploadSize = machineReadableSize(ini_get("max_upload_size"));
 }
 
 // max post size

@@ -1,8 +1,6 @@
 <?PHP
 /**
  *
- * @version SVN Revision $Rev:$
- *
  * @author claus.schunk@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -64,7 +62,7 @@ class cHtmlLinkTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testToHtml() {
-        $this->assertSame($this->_link->toHTML(), $this->_link->toHTML());
+        $this->assertSame($this->_link->toHtml(), $this->_link->toHtml());
     }
 
     public function testGetHref() {

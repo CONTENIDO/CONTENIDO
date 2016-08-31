@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the cHTMLImage class.
  *
  * @package Core
  * @subpackage GUI_HTML
- * @version SVN Revision $Rev:$
  *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
@@ -24,11 +24,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHTMLImage extends cHTML {
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
+     *
      * Creates an HTML IMG element.
      *
-     * @param mixed $content String or object with the contents
-     * @param string $class the class of this element
+     * @param mixed $src [optional]
+     *         image source
+     * @param string $class [optional]
+     *         the class of this element
      */
     public function __construct($src = NULL, $class = '') {
         parent::__construct();
@@ -43,8 +46,10 @@ class cHTMLImage extends cHTML {
     /**
      * Sets the image's source file
      *
-     * @param string $src source location
-     * @return cHTMLImage $this
+     * @param string $src
+     *         source location
+     * @return cHTMLImage
+     *         $this for chaining
      */
     public function setSrc($src) {
         if ($src === NULL) {
@@ -57,8 +62,10 @@ class cHTMLImage extends cHTML {
     /**
      * Sets the image's width
      *
-     * @param int $width Image width
-     * @return cHTMLImage $this
+     * @param int $width
+     *         Image width
+     * @return cHTMLImage
+     *         $this for chaining
      */
     public function setWidth($width) {
         return $this->updateAttribute('width', $width);
@@ -67,8 +74,10 @@ class cHTMLImage extends cHTML {
     /**
      * Sets the image's height
      *
-     * @param int $height Image height
-     * @return cHTMLImage $this
+     * @param int $height
+     *         Image height
+     * @return cHTMLImage
+     *         $this for chaining
      */
     public function setHeight($height) {
         return $this->updateAttribute('height', $height);
@@ -77,8 +86,10 @@ class cHTMLImage extends cHTML {
     /**
      * Sets the border size
      *
-     * @param int $border Border size
-     * @return cHTMLImage $this
+     * @param int $border
+     *         Border size
+     * @return cHTMLImage
+     *         $this for chaining
      */
     public function setBorder($border) {
         return $this->updateAttribute('border', $border);

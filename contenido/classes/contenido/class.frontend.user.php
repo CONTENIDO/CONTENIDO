@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the frontend user collection and item class.
  *
  * @package          Core
  * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
- *
  * @author           Murat Purc <murat@purc.de>
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -24,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiFrontendUserCollection extends ItemCollection {
 
     /**
-     * Constructor function
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -38,7 +37,8 @@ class cApiFrontendUserCollection extends ItemCollection {
     /**
      * Checks if a specific user already exists
      *
-     * @param string $sUsername specifies the username to search for
+     * @param string $sUsername
+     *         specifies the username to search for
      * @return bool
      */
     public function userExists($sUsername) {
@@ -55,8 +55,10 @@ class cApiFrontendUserCollection extends ItemCollection {
     /**
      * Creates a new user
      *
-     * @param string $username Specifies the username
-     * @param string $password Specifies the password (optional)
+     * @param string $username
+     *         Specifies the username
+     * @param string $password [optional]
+     *         Specifies the password (optional)
      * @return cApiFrontendUser
      */
     public function create($username, $password = '') {
@@ -100,7 +102,8 @@ class cApiFrontendUserCollection extends ItemCollection {
      * Overridden delete method to remove user from groupmember table
      * before deleting user.
      *
-     * @param int $itemId specifies the frontend user
+     * @param int $itemId
+     *         specifies the frontend user
      * @return bool
      */
     public function delete($itemId) {
@@ -126,9 +129,10 @@ class cApiFrontendUserCollection extends ItemCollection {
 class cApiFrontendUser extends Item {
 
     /**
-     * Constructor function
+     * Constructor to create an instance of this class.
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId [optional]
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -142,9 +146,12 @@ class cApiFrontendUser extends Item {
      * Overridden setField method to md5 the password.
      * Sets the value of a specific field.
      *
-     * @param string $field Specifies the field to set
-     * @param string $value Specifies the value to set
-     * @param bool $safe Flag to use defined inFilter
+     * @param string $field
+     *         Specifies the field to set
+     * @param string $value
+     *         Specifies the value to set
+     * @param bool $safe [optional]
+     *         Flag to use defined inFilter
      * @return bool
      */
     public function setField($field, $value, $safe = true) {
@@ -158,7 +165,8 @@ class cApiFrontendUser extends Item {
     /**
      * Sets the password to a raw value without md5 encoding.
      *
-     * @param string $password Raw password
+     * @param string $password
+     *         Raw password
      * @return bool
      */
     public function setRawPassword($password) {
@@ -168,8 +176,10 @@ class cApiFrontendUser extends Item {
     /**
      * Checks if the given password matches the password in the database
      *
-     * @param string $password Password to check
-     * @return bool True if the password is correct, false otherwise
+     * @param string $password
+     *         Password to check
+     * @return bool
+     *         True if the password is correct, false otherwise
      */
     public function checkPassword($password) {
         if ($this->isLoaded() === false) {
@@ -179,7 +189,7 @@ class cApiFrontendUser extends Item {
         $pass = $this->get('password');
         $salt = $this->get('salt');
 
-        return (hash('sha256', md5($password) . $salt) == $pass);
+        return hash('sha256', md5($password) . $salt) == $pass;
     }
 
     /**
@@ -198,7 +208,8 @@ class cApiFrontendUser extends Item {
     /**
      * Returns list of all groups belonging to current user
      *
-     * @return array List of frontend group ids
+     * @return array
+     *         List of frontend group ids
      */
     public function getGroupsForUser() {
         $feGroupMembers = new cApiFrontendGroupMemberCollection();

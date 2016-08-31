@@ -4,8 +4,7 @@
  *
  * @package Plugin
  * @subpackage SearchSolr
- * @version SVN Revision $Rev:$
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  * @copyright four for business AG
  * @link http://www.4fb.de
  */
@@ -18,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * If the request failed an exception is thrown.
  * This class allows handling of more than one article at once.
  *
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
 class SolrIndexer {
 
@@ -44,7 +43,8 @@ class SolrIndexer {
     /**
      * IDs of articles to be updated / added / deleted.
      *
-     * @var array     */
+     * @var array
+     */
     private $_articleIds = array();
 
     /**
@@ -147,7 +147,7 @@ class SolrIndexer {
     /**
      * Destroy aggregated client instance.
      *
-     * Destroys Solr client to free memory. Is this really neccessary?
+     * Destroys Solr client to free memory. Is this really necessary?
      * As SolClient has a method __destruct() this seems to be correct.
      */
     public function __destruct() {
@@ -283,6 +283,9 @@ class SolrIndexer {
     }
 
     /**
+     * Gets path to upload.
+     *
+     * @param int $idupl
      */
     private function _getImageUrlByIdupl($idupl) {
         $upload = new cApiUpload($idupl);

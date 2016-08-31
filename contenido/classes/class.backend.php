@@ -4,8 +4,6 @@
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Jan Lengowski
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -61,7 +59,8 @@ class cBackend {
     /**
      * Set the frame number in which the file is loaded.
      *
-     * @param int $frame as number
+     * @param int $frame [optional]
+     *         as number
      */
     public function setFrame($frame = 0) {
         $this->_frame = cSecurity::toInteger($frame);
@@ -71,7 +70,8 @@ class cBackend {
      * Loads all required data from the DB and stores it in the $_actions and
      * $_files array.
      *
-     * @param string $area selected area
+     * @param string $area
+     *         selected area
      */
     public function select($area) {
         // Required global vars
@@ -203,8 +203,10 @@ class cBackend {
      * Checks if code file for given action exists. If so, read and return it
      * else return an empty string.
      *
-     * @param string $action action to be read
-     * @return string code for given action
+     * @param string $action
+     *         action to be read
+     * @return string
+     *         code for given action
      */
     public function getCode($action) {
         $actionCodeFile = cRegistry::getBackendPath() . 'includes/type/action/include.' . $action . '.action.php';
@@ -222,7 +224,8 @@ class cBackend {
      * 'inc' => Required file like functions/classes etc.
      * 'main' => Main file
      *
-     * @param string $which 'inc' / 'main'
+     * @param string $which
+     *         'inc' / 'main'
      * @return array
      */
     public function getFile($which) {
@@ -234,11 +237,16 @@ class cBackend {
     /**
      * Creates a log entry for the specified parameters.
      *
-     * @param int $idcat Category-ID
-     * @param int $idart Article-ID
-     * @param int $client Client-ID
-     * @param int $lang Language-ID
-     * @param int|string $idaction Action (ID or canonical name)
+     * @param int $idcat
+     *         Category-ID
+     * @param int $idart
+     *         Article-ID
+     * @param int $client
+     *         Client-ID
+     * @param int $lang
+     *         Language-ID
+     * @param int|string $idaction
+     *         Action (ID or canonical name)
      */
     public function log($idcat, $idart, $client, $lang, $idaction) {
         global $perm, $auth;

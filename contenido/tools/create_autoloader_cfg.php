@@ -6,15 +6,13 @@
  *
  * Usage:
  * ------
- * 1. Modifiy settings to youre requriements
+ * 1. Modifiy settings to your requirements
  * 2. Call this script from command line as follows:
  *     $ php create_autoloader_cfg.php
  * 3. Check created class map file
  *
  * @package          Core
  * @subpackage       Tool
- * @version          SVN Revision $Rev:$
- *
  * @author           Murat Purc <murat@purc.de>
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -38,9 +36,8 @@ if (!defined('CON_ENVIRONMENT')) {
     define('CON_ENVIRONMENT', $environment);
 }
 
-
-################################################################################
-##### Initialization/Settings
+// /////////////////////////////////////////////////////////////////////
+// Initialization/Settings
 
 // create a page context class, better than spamming global scope
 $context = new stdClass();
@@ -74,9 +71,8 @@ $context->options = array(
 // list to collect class maps
 $context->classMapList = array();
 
-
-################################################################################
-##### Proccess
+// /////////////////////////////////////////////////////////////////////
+// Proccess
 
 // include required classes
 include_once($context->currentPath . 'mpAutoloaderClassMap/mpClassTypeFinder.php');
@@ -92,14 +88,13 @@ foreach ($context->pathsToParse as $pos => $dir) {
 }
 
 // uncomment following line to get some debug messages
-#echo $context->classTypeFinder->getFormattedDebugMessages();
+// echo $context->classTypeFinder->getFormattedDebugMessages();
 
 // write the class map configuration
 $context->classMapCreator = new mpClassMapFileCreatorContenido($context->contenidoInstallPath);
 $context->classMapCreator->create($context->classMapList, $context->destinationFile);
 
-
-################################################################################
-##### Shutdown
+// /////////////////////////////////////////////////////////////////////
+// Shutdown
 
 unset($context);

@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the CONTENIDO module functions.
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Jan Lengowski
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -20,14 +19,23 @@ cInclude('includes', 'functions.con.php');
 
 /**
  * Saves changes of modules and regenerates code cache if required
- * @param int $idmod module id
- * @param string $name name of the module
- * @param string $description module description text
- * @param string $input module input content
- * @param string $output module output content
- * @param string $template template field in module's database entry (seems deprecated)
- * @param string $type module type (common values are '', 'content', 'head', 'layout', 'navigation' and 'script')
- * @return mixed idmod or nothing
+ *
+ * @param int $idmod
+ *         module id
+ * @param string $name
+ *         name of the module
+ * @param string $description
+ *         module description text
+ * @param string $input
+ *         module input content
+ * @param string $output
+ *         module output content
+ * @param string $template
+ *         template field in module's database entry (seems deprecated)
+ * @param string $type
+ *         module type (common values are '', 'content', 'head', 'layout', 'navigation' and 'script')
+ * @return mixed
+ *         idmod or nothing
  */
 function modEditModule($idmod, $name, $description, $input, $output, $template, $type = '') {
     global $db, $client, $cfgClient, $auth, $cfg, $sess, $area, $area_tree, $perm, $frame;
@@ -89,7 +97,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 
         // Name of module changed
         if ($change == true) {
-            cRegistry::addInfoMessage(i18n('Renamed module successfully!'));
+            cRegistry::addOkMessage(i18n('Renamed module successfully!'));
             $cApiModule->set('name', $name);
             $cApiModule->set('template', $template);
             $cApiModule->set('description', $description);
@@ -141,7 +149,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
             }
 
             if ($retInput === true && $retOutput === true) {
-                cRegistry::addInfoMessage(i18n('Saved module successfully!'));
+                cRegistry::addOkMessage(i18n('Saved module successfully!'));
             } else {
                 $messageIfError = '<br>' . i18n("Can't save input !");
                 $messageIfError .= '<br>' . i18n("Can't save output !");
@@ -151,9 +159,9 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
     } else {
         // No changes for save
         if ($retInput == true && $retOutput == true) {
-            // regenerate code cache because module input and output got saved 
+            // regenerate code cache because module input and output got saved
             $cApiModule->store();
-            cRegistry::addInfoMessage(i18n('Saved module successfully!'));
+            cRegistry::addOkMessage(i18n('Saved module successfully!'));
         } else {
             $messageIfError = i18n("Can't save input !");
             $messageIfError .= ' ' . i18n("Can't save output !");
@@ -164,9 +172,16 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
     return $idmod;
 }
 
-// @fixme: Document me!
+/**
+ * Deletes the module of the given ID for the current client.
+ * Furthermore the rights for this module are deleted.
+ *
+ * @todo some global vars seem to be overfluous
+ * @param int $idmod
+ */
 function modDeleteModule($idmod) {
-    global $db, $sess, $client, $cfg, $area_tree, $perm;
+    global $db, $client, $cfg;
+    global $sess, $area_tree, $perm;
 
     $sql = 'DELETE FROM ' . $cfg['tab']['mod'] . ' WHERE idmod = ' . (int) $idmod . ' AND idclient = ' . (int) $client;
     $db->query($sql);
@@ -174,12 +189,4 @@ function modDeleteModule($idmod) {
     // Delete rights for element
     cInclude('includes', 'functions.rights.php');
     deleteRightsForElement('mod', $idmod);
-}
-
-/**
- * @deprecated [2013-10-02]  This function is not longer supported and will always return false.
- */
-function modTestModule($code, $id, $output = false) {
-    cDeprecated("This function is not longer supported and will always return false. Use cModuleHandler::testInput() and cModuleHandler::testOutput() instead.");
-    return false;
 }

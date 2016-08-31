@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the uri builder custom class.
  *
  * @package    Core
  * @subpackage Frontend_URI
- * @version    SVN Revision $Rev:$
- *
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -16,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Custom uri builder class
+ * Custom uri builder class.
  *
  * @package    Core
  * @subpackage Frontend_URI
@@ -38,14 +37,14 @@ class cUriBuilderCustom extends cUriBuilder {
     private $aConfig;
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     private function __construct() {
         $this->sHttpBasePath = '';
     }
 
     /**
-     * Get instance of self
+     * Get instance of self.
      *
      * @return cUriBuilderCustom
      */
@@ -58,12 +57,14 @@ class cUriBuilderCustom extends cUriBuilder {
 
     /**
      * Builds a URL in index-a-1.html style.
-     * Index keys of $aParams will be used as "a", corresponding values as "1"
-     * in this sample.
+     *
+     * Index keys of $aParams will be used as "a", corresponding values
+     * as "1" in this sample.
      *
      * @param array $aParams
-     * @param bool $bUseAbsolutePath
-     * @param array $aConfig If not set, will use cUriBuilderConfig::getConfig()
+     * @param bool $bUseAbsolutePath [optional]
+     * @param array $aConfig [optional]
+     *         If not set, will use cUriBuilderConfig::getConfig()
      * @throws cInvalidArgumentException
      */
     public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array()) {

@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the cHTMLListItem class.
  *
  * @package Core
  * @subpackage GUI_HTML
- * @version SVN Revision $Rev:$
  *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
@@ -24,10 +24,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHTMLListItem extends cHTMLContentElement {
 
     /**
+     * Constructor to create an instance of this class.
+     *
      * Creates an HTML li element.
      *
-     * @param string $id the ID of this list item
-     * @param string $class the class of this list item
+     * @param string $id [optional]
+     *         the ID of this list item
+     * @param string $class [optional]
+     *         the class of this list item
      */
     public function __construct($id = '', $class = '') {
         parent::__construct('', $class, $id);

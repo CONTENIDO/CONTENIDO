@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the cOutOfBoundsException class.
  *
  * @package Core
  * @subpackage Exception
- * @version SVN Revision $Rev:$
  *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
@@ -21,5 +21,4 @@
  * This exception type is logged to data/logs/exception.txt.
  */
 class cOutOfBoundsException  extends cRuntimeException {
-
 }

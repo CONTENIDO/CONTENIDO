@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for editing tasks.
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Unknown
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -58,7 +57,7 @@ $notiemail->setLabelText(i18n("E-Mail notification"));
 $notiemail->setChecked($todoitem->getProperty("todo", "emailnoti"));
 $notiemail->setEvent("click", "if (this.checked) { document.forms['reminder'].reminderdate.disabled = false; } else { document.forms['reminder'].reminderdate.disabled = true; }");
 
-$ui->add(i18n("Reminder options"), $notiemail->toHTML());
+$ui->add(i18n("Reminder options"), $notiemail->toHtml());
 
 $remindertimestamp = $todoitem->getProperty("todo", "reminderdate");
 

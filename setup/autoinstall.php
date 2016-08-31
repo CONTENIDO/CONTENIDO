@@ -4,8 +4,6 @@
  *
  * @package Setup
  * @subpackage Setup
- * @version SVN Revision $Rev:$
- *
  * @author Mischa Holz
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -14,7 +12,7 @@
  */
 
 // first, check if the file is being called by the CLI
-if (PHP_SAPI != 'cli') {
+if ('cli' !== PHP_SAPI) {
     die('This program is suppsoed to be run from the command line.');
 }
 

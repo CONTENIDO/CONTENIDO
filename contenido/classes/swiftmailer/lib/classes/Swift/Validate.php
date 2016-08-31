@@ -7,31 +7,35 @@
  */
 
 /**
- * Utility Class allowing users to simply check expressions again Swift Grammar
- * @package Swift
- * @author Xavier De Cock <xdecock@gmail.com>
+ * Utility Class allowing users to simply check expressions again Swift Grammar.
+ *
+ * @author  Xavier De Cock <xdecock@gmail.com>
  */
 class Swift_Validate
 {
     /**
      * Grammar Object
+     *
      * @var Swift_Mime_Grammar
      */
     private static $grammar = null;
 
     /**
-     * Checks if an email matches the current grammars
+     * Checks if an e-mail address matches the current grammars.
+     *
      * @param string $email
+     *
+     * @return bool
      */
     public static function email($email)
     {
-        if (self::$grammar===null) {
+        if (self::$grammar === null) {
             self::$grammar = Swift_DependencyContainer::getInstance()
                 ->lookup('mime.grammar');
         }
 
-        return preg_match(
-                '/^' . self::$grammar->getDefinition('addr-spec') . '$/D',
+        return (bool) preg_match(
+                '/^'.self::$grammar->getDefinition('addr-spec').'$/D',
                 $email
             );
     }

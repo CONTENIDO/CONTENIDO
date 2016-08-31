@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the cHTMLOptionElement class.
  *
  * @package Core
  * @subpackage GUI_HTML
- * @version SVN Revision $Rev:$
  *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
@@ -31,14 +31,20 @@ class cHTMLOptionElement extends cHTMLFormElement {
     protected $_title;
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
+     *
      * Creates an HTML option element.
      *
-     * @param string $title Displayed title of the element
-     * @param string $value Value of the option
-     * @param bool $selected If true, element is selected
-     * @param bool $disabled If true, element is disabled
-     * @param string $class the class of this element
+     * @param string $title
+     *         Displayed title of the element
+     * @param string $value
+     *         Value of the option
+     * @param bool $selected [optional]
+     *         If true, element is selected
+     * @param bool $disabled [optional]
+     *         If true, element is disabled
+     * @param string $class [optional]
+     *         the class of this element
      */
     public function __construct($title, $value, $selected = false, $disabled = false, $class = '') {
         cHTML::__construct();
@@ -56,8 +62,10 @@ class cHTMLOptionElement extends cHTMLFormElement {
     /**
      * Sets the selected flag
      *
-     * @param bool $selected If true, adds the "selected" attribute
-     * @return cHTMLOptionElement $this
+     * @param bool $selected
+     *         If true, adds the "selected" attribute
+     * @return cHTMLOptionElement
+     *         $this for chaining
      */
     public function setSelected($selected) {
         if ($selected == true) {
@@ -70,7 +78,8 @@ class cHTMLOptionElement extends cHTMLFormElement {
     /**
      * Checks whether this option element is selected.
      *
-     * @return bool whether this option element is selected
+     * @return bool
+     *         whether this option element is selected
      */
     public function isSelected() {
         return $this->getAttribute('selected') === 'selected';
@@ -79,8 +88,10 @@ class cHTMLOptionElement extends cHTMLFormElement {
     /**
      * Sets the disabled flag
      *
-     * @param bool $disabled If true, adds the "disabled" attribute
-     * @return cHTMLOptionElement $this
+     * @param bool $disabled
+     *         If true, adds the "disabled" attribute
+     * @return cHTMLOptionElement
+     *         $this for chaining
      */
     public function setDisabled($disabled) {
         if ($disabled == true) {
@@ -95,12 +106,13 @@ class cHTMLOptionElement extends cHTMLFormElement {
      * Note:
      * the cHTMLSelectElement renders the options by itself.
      *
-     * @return string Rendered HTML
+     * @return string
+     *         Rendered HTML
      */
     public function toHtml() {
         $this->_setContent($this->_title);
 
-        return parent::toHTML();
+        return parent::toHtml();
     }
 
 }

@@ -1,4 +1,4 @@
--- author: marcus.gnass@4fb.de
+-- author: Marcus Gnaß <marcus.gnass@4fb.de>
 -- description: install script for PlugIn: FormAssistant (PIFA)
 
 -- areas

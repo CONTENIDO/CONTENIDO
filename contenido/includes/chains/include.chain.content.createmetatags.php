@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CONTENIDO Chain.
  * Generate metatags for current article if they are not set in article
@@ -6,18 +7,23 @@
  *
  * @package          Core
  * @subpackage       Chain
- * @version          SVN Revision $Rev:$
- *
- * @author           Andreas Lindner, Unknown
+ * @author           Andreas Lindner
+ * @author           Unknown
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
  * @link             http://www.4fb.de
  * @link             http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('plugins', 'repository/keyword_density.php');
 
+/**
+ *
+ * @param array $metatags
+ * @return array
+ */
 function cecCreateMetatags($metatags) {
     global $cfg, $lang, $idart, $client, $cfgClient, $idcat, $idartlang;
 
@@ -156,7 +162,7 @@ function cecCreateMetatags($metatags) {
 
                     $lastmodifier = $oArt->getField('modifiedby');
                     $oUser = new cApiUser(md5($lastmodifier));
-                    $lastmodifier_real = $oUser->getRealname();
+                    $lastmodifier_real = $oUser->getRealName();
 
                     $iCheck = CheckIfMetaTagExists($metatags, 'author');
                     $metatags[$iCheck]['name'] = 'author';
@@ -198,10 +204,12 @@ function cecCreateMetatags($metatags) {
 /**
  * Checks if the metatag allready exists inside the metatag list.
  *
- * @param array|mixed $arrMetatags List of metatags or not a list
- * @param string $sCheckForMetaTag The metatag to check
- * @return int Position of metatag inside the metatag list or the next
- *         available position
+ * @param array|mixed $arrMetatags
+ *         List of metatags or not a list
+ * @param string $sCheckForMetaTag
+ *         The metatag to check
+ * @return int
+ *         Position of metatag inside the metatag list or the next available position
  */
 function CheckIfMetaTagExists($arrMetatags, $sCheckForMetaTag) {
     if (!is_array($arrMetatags) || count($arrMetatags) == 0) {

@@ -1,17 +1,18 @@
 <?php
+
 /**
  * This file contains the backend page for importing and exporting modules.
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
- * @author Olaf Niemann, Jan Lengowski
+ * @author Olaf Niemann
+ * @author Jan Lengowski
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $page = new cGuiPage("mod_import_export");

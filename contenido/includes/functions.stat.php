@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the CONTENIDO statistic functions.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Olaf Niemann
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -20,15 +19,26 @@ cInclude("includes", "functions.database.php");
 /**
  * Displays statistic information layer (a div Tag)
  *
- * @param   int     $id    Either article or directory id
- * @param   string  $type  The type
- * @param   int     $x     Style top position
- * @param   int     $y     Style left position
- * @param   int     $w     Style width
- * @param   int     $h     Style height
- * @return  string  Composed info layer
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
+ * @param int $id
+ *         Either article or directory id
+ * @param string $type
+ *         The type
+ * @param int $x
+ *         Style top position
+ * @param int $y
+ *         Style left position
+ * @param int $w
+ *         Style width
+ * @param int $h
+ *         Style height
+ * @return string
+ *         Composed info layer
  */
 function statsDisplayInfo($id, $type, $x, $y, $w, $h) {
+    cDeprecated('This method is deprecated and is not needed any longer');
+
     if (strcmp($type, "article" == 0)) {
         $text = i18n("Info about article") . " " . $id;
     } else {
@@ -43,13 +53,14 @@ function statsDisplayInfo($id, $type, $x, $y, $w, $h) {
     $div->appendStyleDefinition("width", $w . "px");
     $div->appendStyleDefinition("height", $h . "px");
 
-    return $div->toHTML();
+    return $div->toHtml();
 }
 
 /**
  * Archives the current statistics
  *
- * @param $yearmonth String with the desired archive date (YYYYMM)
+ * @param string $yearmonth
+ *         String with the desired archive date (YYYYMM)
  */
 function statsArchive($yearmonth) {
     global $cfg;
@@ -109,9 +120,9 @@ function statsArchive($yearmonth) {
 /**
  * Generates a statistics page
  *
- * @param $yearmonth  Specifies the year and month from which to retrieve the
- *                    statistics, specify "current" to retrieve the current
- *                    entries
+ * @param string $yearmonth
+ *         Specifies the year and month from which to retrieve the statistics,
+ *         specify "current" to retrieve the current entries.
  */
 function statsOverviewAll($yearmonth) {
     global $cfg, $db, $tpl, $client, $lang, $cfgClient;
@@ -200,15 +211,19 @@ function statsOverviewAll($yearmonth) {
             array_push($aRowname, $idcat);
         }
 
-        $db2 = cRegistry::getDb();
-        //************** number of arts **************
+        /*
+         * number of arts
+         */
         $sql = "SELECT COUNT(*) FROM " . $cfg["tab"]["cat_art"] . " WHERE idcat=" . cSecurity::toInteger($idcat);
+        $db2 = cRegistry::getDb();
         $db2->query($sql);
         $db2->nextRecord();
-
         $numberOfArticles = $db2->f(0);
         $sumNumberOfArticles += $numberOfArticles;
-        //************** hits of category total**************
+
+        /*
+         * hits of category total
+         */
         if (strcmp($yearmonth, "current") == 0) {
             $sql = "SELECT SUM(visited) FROM " . $cfg["tab"]["cat_art"] . " AS A, " . $cfg["tab"]["stat"] . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . cSecurity::toInteger($idcat) . " AND B.idclient=" . cSecurity::toInteger($client);
         } else {
@@ -222,10 +237,11 @@ function statsOverviewAll($yearmonth) {
         }
         $db2->query($sql);
         $db2->nextRecord();
-
         $total = $db2->f(0);
 
-        //************** hits of category in this language ***************
+        /*
+         * hits of category in this language
+         */
         if (strcmp($yearmonth, "current") == 0) {
             $sql = "SELECT SUM(visited) FROM " . $cfg["tab"]["cat_art"] . " AS A, " . $cfg["tab"]["stat"] . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . cSecurity::toInteger($idcat) . "
                     AND B.idlang=" . cSecurity::toInteger($lang) . " AND B.idclient=" . cSecurity::toInteger($client);
@@ -238,15 +254,15 @@ function statsOverviewAll($yearmonth) {
                         AND idclient=" . cSecurity::toInteger($client) . " AND archived='" . $db2->escape($yearmonth) . "'";
             }
         }
-
         $db2->query($sql);
         $db2->nextRecord();
-
         $inThisLanguage = $db2->f(0);
 
         $icon = '<img alt="" src="' . $cfg['path']['images'] . 'folder.gif" class="vAlignMiddle">';
 
-        //************ art ********************************
+        /*
+         * art
+         */
         $sql = "SELECT * FROM " . $cfg["tab"]["cat_art"] . " AS A, " . $cfg["tab"]["art"] . " AS B, " . $cfg["tab"]["art_lang"] . " AS C WHERE A.idcat=" . cSecurity::toInteger($idcat) . "
                 AND A.idart=B.idart AND B.idart=C.idart AND C.idlang=" . cSecurity::toInteger($lang) . " ORDER BY B.idart";
         $db2->query($sql);
@@ -261,7 +277,9 @@ function statsOverviewAll($yearmonth) {
             $offonline = '<img src="' . $cfg['path']['images'] . 'offline_off.gif" alt="' . i18n("Category is offline") . '" title="' . i18n("Category is offline") . '">';
         }
 
-        //************check if there are subcategories ******************
+        /*
+         * check if there are subcategories
+         */
         $iSumSubCategories = 0;
         $sSql = "SELECT COUNT(*) AS cat_count FROM " . $cfg["tab"]["cat"] . " WHERE parentid=" . cSecurity::toInteger($idcat) . ";";
         $db3 = cRegistry::getDb();
@@ -326,10 +344,14 @@ function statsOverviewAll($yearmonth) {
             $text = $db2->f("title");
             $online = $db2->f("online");
 
-            //************** number of arts **************
+            /*
+             * number of arts
+             */
             $db3 = cRegistry::getDb();
 
-            //************** hits of art total **************
+            /*
+             * hits of art total
+             */
             if (strcmp($yearmonth, "current") == 0) {
                 $sql = "SELECT SUM(visited) FROM " . $cfg["tab"]["cat_art"] . " AS A, " . $cfg["tab"]["stat"] . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . cSecurity::toInteger($idcat) . "
                      AND A.idart=" . cSecurity::toInteger($idart) . " AND B.idclient=" . cSecurity::toInteger($client);
@@ -348,7 +370,9 @@ function statsOverviewAll($yearmonth) {
 
             $total = $db3->f(0);
 
-            //************** hits of art in this language ***************
+            /*
+             * hits of art in this language
+             */
             if (strcmp($yearmonth, "current") == 0) {
                 $sql = "SELECT visited, idart FROM " . $cfg["tab"]["cat_art"] . " AS A, " . $cfg["tab"]["stat"] . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . cSecurity::toInteger($idcat) . "
                         AND A.idart=" . cSecurity::toInteger($idart) . " AND B.idlang=" . cSecurity::toInteger($lang) . " AND B.idclient=" . cSecurity::toInteger($client);
@@ -398,7 +422,9 @@ function statsOverviewAll($yearmonth) {
         }
     }
 
-    //************** hits total**************
+    /*
+     * hits total
+     */
     if (strcmp($yearmonth, "current") == 0) {
         $sql = "SELECT SUM(visited) FROM " . $cfg["tab"]["cat_art"] . " AS A, " . $cfg["tab"]["stat"] . " AS B WHERE A.idcatart=B.idcatart AND B.idclient=" . cSecurity::toInteger($client);
     } else {
@@ -415,7 +441,9 @@ function statsOverviewAll($yearmonth) {
 
     $total = $db->f(0);
 
-    //************** hits total on this language ***************
+    /*
+     * hits total on this language
+     */
     if (strcmp($yearmonth, "current") == 0) {
         $sql = "SELECT SUM(visited) FROM " . $cfg["tab"]["cat_art"] . " AS A, " . $cfg["tab"]["stat"] . " AS B WHERE A.idcatart=B.idcatart AND B.idlang=" . cSecurity::toInteger($lang) . "
                 AND B.idclient=" . cSecurity::toInteger($client);
@@ -456,7 +484,8 @@ function statsOverviewAll($yearmonth) {
 /**
  * Generates a statistics page for a given year
  *
- * @param $year Specifies the year to retrieve the statistics for
+ * @param string $year
+ *         Specifies the year to retrieve the statistics for
  */
 function statsOverviewYear($year) {
     global $cfg, $db, $tpl, $client, $lang;
@@ -533,7 +562,9 @@ function statsOverviewYear($year) {
         }
 
         $db2 = cRegistry::getDb();
-        //************** number of arts **************
+        /*
+         * number of arts
+         */
         $sql = "SELECT COUNT(*) FROM " . $cfg["tab"]["cat_art"] . " WHERE idcat=" . cSecurity::toInteger($idcat);
         $db2->query($sql);
         $db2->nextRecord();
@@ -541,13 +572,15 @@ function statsOverviewYear($year) {
         $numberOfArticles = $db2->f(0);
         $sumNumberOfArticles += $numberOfArticles;
         $sql = "SELECT SUM(visited) FROM " . $cfg["tab"]["cat_art"] . " AS A, " . $cfg["tab"]["stat_archive"] . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . cSecurity::toInteger($idcat) . "
-                AND B.idclient=" . cSecurity::toInteger($client) . " AND SUBSTRING(B.archived,1,4)=" . cSecurity::toInteger($year, $db2) . " GROUP BY SUBSTRING(B.archived,1,4)";
+                AND B.idclient=" . cSecurity::toInteger($client) . " AND SUBSTRING(B.archived,1,4)=" . cSecurity::toInteger($year) . " GROUP BY SUBSTRING(B.archived,1,4)";
         $db2->query($sql);
         $db2->nextRecord();
 
         $total = $db2->f(0);
 
-        //************** hits of category in this language ***************
+        /*
+         * hits of category in this language
+         */
         $sql = "SELECT SUM(visited) FROM " . $cfg["tab"]["cat_art"] . " AS A, " . $cfg["tab"]["stat_archive"] . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . cSecurity::toInteger($idcat) . "
                 AND B.idlang=" . cSecurity::toInteger($lang) . " AND B.idclient=" . cSecurity::toInteger($client) . " AND SUBSTRING(B.archived,1,4)=" . $db2->escape($year) . "
                 GROUP BY SUBSTRING(B.archived,1,4)";
@@ -558,7 +591,9 @@ function statsOverviewYear($year) {
 
         $icon = '<img alt="" src="' . $cfg['path']['images'] . 'folder.gif" class="vAlignMiddle">';
 
-        //************ art ********************************
+        /*
+         * art
+         */
         $sql = "SELECT * FROM " . $cfg["tab"]["cat_art"] . " AS A, " . $cfg["tab"]["art"] . " AS B, " . $cfg["tab"]["art_lang"] . " AS C WHERE A.idcat=" . cSecurity::toInteger($idcat) . " AND A.idart=B.idart AND B.idart=C.idart
                 AND C.idlang=" . cSecurity::toInteger($lang) . " ORDER BY B.idart";
         $db2->query($sql);
@@ -572,7 +607,9 @@ function statsOverviewYear($year) {
             $offonline = '<img src="' . $cfg['path']['images'] . 'online_off.gif" alt="' . i18n("Category is online") . '" title="' . i18n("Category is online") . '">';
         }
 
-        //************check if there are subcategories ******************
+        /*
+         * check if there are subcategories
+         */
         $iSumSubCategories = 0;
         $sSql = "SELECT count(*) as cat_count from " . $cfg["tab"]["cat"] . " WHERE parentid=" . cSecurity::toInteger($idcat) . ";";
         $db3 = cRegistry::getDb();
@@ -639,10 +676,14 @@ function statsOverviewYear($year) {
             $text = $db2->f("title");
             $online = $db2->f("online");
 
-            //************** number of arts **************
+            /*
+             * number of arts
+             */
             $db3 = cRegistry::getDb();
 
-            //************** hits of art total **************
+            /*
+             * hits of art total
+             */
             $sql = "SELECT SUM(visited) FROM " . $cfg["tab"]["cat_art"] . " AS A, " . $cfg["tab"]["stat_archive"] . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . cSecurity::toInteger($idcat) . "
                     AND A.idart=" . cSecurity::toInteger($idart) . " AND B.idclient=" . cSecurity::toInteger($client) . " AND SUBSTRING(B.archived,1,4)=" . $db3->escape($year) . "
                     GROUP BY SUBSTRING(B.archived,1,4)";
@@ -651,7 +692,9 @@ function statsOverviewYear($year) {
 
             $total = $db3->f(0);
 
-            //************** hits of art in this language ***************
+            /*
+             * hits of art in this language
+             */
             $sql = "SELECT visited FROM " . $cfg["tab"]["cat_art"] . " AS A, " . $cfg["tab"]["stat_archive"] . " AS B WHERE A.idcatart=B.idcatart AND A.idcat=" . cSecurity::toInteger($idcat) . "
                     AND A.idart=" . cSecurity::toInteger($idart) . " AND B.idlang=" . cSecurity::toInteger($lang) . " AND B.idclient=" . cSecurity::toInteger($client) . "
                     AND SUBSTRING(B.archived,1,4)=" . $db3->escape($year) . " GROUP BY SUBSTRING(B.archived,1,4)";
@@ -691,7 +734,9 @@ function statsOverviewYear($year) {
         }
     }
 
-    //************** hits total**************
+    /*
+     * hits total
+     */
     $sql = "SELECT SUM(visited) FROM " . $cfg["tab"]["cat_art"] . " AS A, " . $cfg["tab"]["stat_archive"] . " AS B WHERE A.idcatart=B.idcatart AND B.idclient=" . cSecurity::toInteger($client) . "
             AND SUBSTRING(B.archived,1,4)='" . $db->escape($year) . "' GROUP BY SUBSTRING(B.archived,1,4)";
     $db->query($sql);
@@ -699,7 +744,9 @@ function statsOverviewYear($year) {
 
     $total = $db->f(0);
 
-    //************** hits total on this language ***************
+    /*
+     * hits total on this language
+     */
     $sql = "SELECT SUM(visited) FROM " . $cfg["tab"]["cat_art"] . " AS A, " . $cfg["tab"]["stat_archive"] . " AS B WHERE A.idcatart=B.idcatart AND B.idlang=" . cSecurity::toInteger($lang) . "
             AND B.idclient=" . cSecurity::toInteger($client) . " AND SUBSTRING(B.archived,1,4)='" . $db->escape($year) . "' GROUP BY SUBSTRING(B.archived,1,4)";
     $db->query($sql);
@@ -728,10 +775,11 @@ function statsOverviewYear($year) {
 /**
  * Generates a top<n> statistics page
  *
- * @param $yearmonth  Specifies the year and month from which to retrieve the
- *                    statistics, specify "current" to retrieve the current
- *                    entries
- * @param $top        Specifies the amount of pages to display
+ * @param string $yearmonth
+ *         Specifies the year and month from which to retrieve the statistics,
+ *         specify "current" to retrieve the current entries.
+ * @param int $top
+ *         Specifies the amount of pages to display
  */
 function statsOverviewTop($yearmonth, $top) {
     global $cfg, $db, $tpl, $client, $cfgClient, $lang;
@@ -789,9 +837,12 @@ function statsOverviewTop($yearmonth, $top) {
  *
  * Performs a recursive call, if parent category doesn't matches to 0
  *
- * @param   int  $idcat  The category id
- * @param   string  $seperator  Separator for location string
- * @param   string  $cat_str    The location string variable (reference)
+ * @param int $idcat
+ *         The category id
+ * @param string $seperator
+ *         Separator for location string
+ * @param string $cat_str
+ *         The location string variable (reference)
  */
 function statCreateLocationString($idcat, $seperator, &$cat_str) {
     $cats = array();
@@ -808,8 +859,10 @@ function statCreateLocationString($idcat, $seperator, &$cat_str) {
 /**
  * Generates a top<n> statistics page
  *
- * @param  int  $year  Specifies the year from which to retrieve the statistics
- * @param  int  $top  Specifies the amount of pages to display
+ * @param int $year
+ *         Specifies the year from which to retrieve the statistics
+ * @param int $top
+ *         Specifies the amount of pages to display
  */
 function statsOverviewTopYear($year, $top) {
     global $cfg, $db, $tpl, $client, $lang, $cfgClient;
@@ -849,8 +902,9 @@ function statsOverviewTopYear($year, $top) {
 /**
  * Returns a drop down to choose the stats to display
  *
- * @param  string  $default
- * @return string Returns a drop down string
+ * @param string $default
+ * @return string
+ *         Returns a drop down string
  */
 function statDisplayTopChooser($default) {
     if ($default == "top10") {
@@ -879,10 +933,13 @@ function statDisplayTopChooser($default) {
 /**
  * Returns a drop down to choose the stats to display for yearly summary pages
  *
- * @param string  $default
- * @return string Returns a drop down string
+ * @param string $default
+ * @return string
+ *         Returns a drop down string
  */
 function statDisplayYearlyTopChooser($default) {
+    $defaultAll = $defaultTop10 = $defaultTop20 = $defaultTop30 = '';
+    
     if ($default == "top10") {
         $defaultTop10 = "selected";
     }
@@ -907,70 +964,79 @@ function statDisplayYearlyTopChooser($default) {
 }
 
 /**
- * Return an array with all years which are available as stat files
+ * Return an array with all years which are available as stat files.
  *
- * @param mixed many
- * @return array  Array of strings with years.
+ * @param int $client
+ * @param int $lang
+ * @return array
+ *         Array of strings with years.
+ * @return array
  */
 function statGetAvailableYears($client, $lang) {
     global $cfg, $db;
 
-    $availableYears = array();
-
-    $sql = "SELECT SUBSTRING(`archived`,1,4)
+    $sql = "SELECT
+                SUBSTRING(`archived`, 1, 4)
             FROM
                 " . $cfg["tab"]["stat_archive"] . "
             WHERE
                 idlang = " . cSecurity::toInteger($lang) . " AND
                 idclient = " . cSecurity::toInteger($client) . "
             GROUP BY
-                SUBSTRING(`archived`,1,4)
+                SUBSTRING(`archived`, 1, 4)
             ORDER BY
-                SUBSTRING(`archived`,1,4) DESC";
-
+                SUBSTRING(`archived`, 1, 4) DESC";
     $db->query($sql);
+
+    $availableYears = array();
     while ($db->nextRecord()) {
         $availableYears[] = $db->f(0);
     }
 
-    return($availableYears);
+    return $availableYears;
 }
 
 /**
  * Return an array with all months for a specific year which are available
- * as stat files
+ * as stat files.
  *
- * @param mixed many
- * @return array  Array of strings with months.
+ * @param string $year
+ * @param int $client
+ * @param int $lang
+ * @return array
+ *         Array of strings with months.
  */
 function statGetAvailableMonths($year, $client, $lang) {
     global $cfg, $db;
 
     $availableYears = array();
 
-    $sql = "SELECT SUBSTRING(`archived`,5,2)
+    $sql = "SELECT
+                SUBSTRING(`archived`, 5, 2)
             FROM
                 " . $cfg["tab"]["stat_archive"] . "
             WHERE
                 idlang = " . cSecurity::toInteger($lang) . " AND
                 idclient = " . cSecurity::toInteger($client) . " AND
-                SUBSTRING(`archived`,1,4) = '" . $db->escape($year) . "'
+                SUBSTRING(`archived`, 1, 4) = '" . $db->escape($year) . "'
             GROUP BY
-                SUBSTRING(`archived`,5,2)
-            ORDER BY SUBSTRING(`archived`,5,2) DESC";
+                SUBSTRING(`archived`, 5, 2)
+            ORDER BY
+                SUBSTRING(`archived`, 5, 2) DESC";
 
     $db->query($sql);
     while ($db->nextRecord()) {
         $availableYears[] = $db->f(0);
     }
 
-    return($availableYears);
+    return $availableYears;
 }
 
 /**
  * Resets the statistic for passed client
  *
- * @param   int  $client  Id of client
+ * @param int $client
+ *         Id of client
  */
 function statResetStatistic($client) {
     global $db, $cfg;
@@ -981,8 +1047,10 @@ function statResetStatistic($client) {
 /**
  * Deletes existing heap table (table in memory) and creates it.
  *
- * @param   string  $sHeapTable  Table name
- * @param   cDb  $db  Database object
+ * @param string $sHeapTable
+ *         Table name
+ * @param cDb $db
+ *         Database object
  */
 function buildHeapTable($sHeapTable, $db) {
     global $cfg;
@@ -1009,5 +1077,3 @@ function buildHeapTable($sHeapTable, $db) {
     $sql = "ALTER TABLE `" . $db->escape($sHeapTable) . "` ADD PRIMARY KEY (`idcatart`,`idcat` ,`idart`,`idstatarch` ,`archived`,`idlang`,`idclient` ,`visited`);";
     $db->query($sql);
 }
-
-?>

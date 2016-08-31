@@ -4,8 +4,6 @@
  *
  * @package Core
  * @subpackage GUI
- * @version SVN Revision $Rev:$
- *
  * @author Timo Hummel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -67,12 +65,16 @@ class cPager {
     private $_itemsPerPage;
 
     /**
-     * Constructor Function
-     * Initializes the pager
+     * Constructor to create an instance of this class.
      *
-     * @param int $items Amount of items
-     * @param int $itemsPerPage Items displayed per page
-     * @param int $currentPage Defines the current page
+     * Initializes the pager.
+     *
+     * @param int $items
+     *         Amount of items
+     * @param int $itemsPerPage
+     *         Items displayed per page
+     * @param int $currentPage
+     *         Defines the current page
      */
     public function __construct($items, $itemsPerPage, $currentPage) {
         $this->_items = $items;
@@ -97,7 +99,8 @@ class cPager {
     /**
      * Returns if the currentPage pointer is the first page.
      *
-     * @return boolean True if we're on the first page.
+     * @return bool
+     *         True if we're on the first page.
      */
     public function isFirstPage() {
         if ($this->_currentPage == 1) {
@@ -110,7 +113,8 @@ class cPager {
     /**
      * Returns if the currentPage pointer is the last page.
      *
-     * @return boolean True if we're on the last page.
+     * @return bool
+     *         True if we're on the last page.
      */
     public function isLastPage() {
         if ($this->_currentPage == $this->getMaxPages()) {
@@ -123,7 +127,8 @@ class cPager {
     /**
      * Returns the amount of pages.
      *
-     * @return int Page count
+     * @return int
+     *         Page count
      */
     public function getMaxPages() {
         if ($this->_items == 0) {
@@ -131,7 +136,7 @@ class cPager {
         } else if ($this->_itemsPerPage == 0) {
             return 1;
         } else {
-            return (ceil($this->_items / $this->_itemsPerPage));
+            return ceil($this->_items / $this->_itemsPerPage);
         }
     }
 
@@ -142,7 +147,8 @@ class cPager {
      * Key : Page Number
      * Value: | for "...", "current" for the current item, page number otherwise
      *
-     * @return array Pager structure
+     * @return array
+     *         Pager structure
      */
     public function getPagesInRange() {
         $items = array();
@@ -184,6 +190,6 @@ class cPager {
 
         $items[$this->_currentPage] = 'current';
 
-        return ($items);
+        return $items;
     }
 }

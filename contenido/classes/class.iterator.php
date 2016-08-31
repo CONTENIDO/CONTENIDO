@@ -4,8 +4,6 @@
  *
  * @package Core
  * @subpackage Util
- * @version SVN Revision $Rev:$
- *
  * @author Unknown
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -30,8 +28,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * The caller receives the iterator object and can step trough all items using
  * the "next" method.
  *
- * @todo Add more stepping methods, as well as retrieving items
- *
  * @package Core
  * @subpackage Util
  */
@@ -42,15 +38,16 @@ class cIterator {
      *
      * @var array
      */
-    var $_aIteratorItems;
+    protected $_aIteratorItems;
 
     /**
-     * Iterator constructor
+     * Constructor to create an instance of this class.
      *
      * This function initializes the constructor, adds the passed items
      * and moves the iterator to the first element.
      *
-     * @param array $aItems Items to add
+     * @param array $aItems
+     *         Items to add
      */
     public function __construct($aItems) {
         if (is_array($aItems)) {
@@ -77,7 +74,8 @@ class cIterator {
      * This function returns the item, or false if no
      * items are left.
      *
-     * @return mixed item or false if nothing was found
+     * @return mixed
+     *         item or false if nothing was found
      */
     public function next() {
         $item = each($this->_aIteratorItems);
@@ -92,11 +90,10 @@ class cIterator {
     /**
      * count: Returns the number of items in the iterator
      *
-     * @return int Number of items
+     * @return int
+     *         Number of items
      */
     public function count() {
         return count($this->_aIteratorItems);
     }
 }
-
-?>

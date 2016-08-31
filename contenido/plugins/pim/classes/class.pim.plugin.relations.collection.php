@@ -4,8 +4,6 @@
  *
  * @package Plugin
  * @subpackage PluginManager
- * @version SVN Revision $Rev:$
- *
  * @author Frederic Schneider
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -80,7 +78,7 @@ class PimPluginRelations extends Item {
             $this->loadByPrimaryKey($id);
         }
     }
-	
+
 	/**
      * Userdefined setter for pim relations fields.
      *

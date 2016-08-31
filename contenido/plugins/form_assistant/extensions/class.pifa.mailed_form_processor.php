@@ -4,8 +4,7 @@
  *
  * @package Plugin
  * @subpackage FormAssistant
- * @version SVN Revision $Rev:$
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  * @copyright four for business AG
  * @link http://www.4fb.de
  */
@@ -24,7 +23,7 @@ plugin_include(Pifa::getName(), 'extensions/class.pifa.default_form_processor.ph
  * Any uploads of the given form will be added as attachments to the system
  * mail.
  *
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
 class MailedFormProcessor extends DefaultFormProcessor {
 	const MAIL_MODE_CLIENT = 'client';

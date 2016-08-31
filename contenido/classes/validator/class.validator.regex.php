@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the regular expression validator class.
  *
  * @package    Core
  * @subpackage Validation
- * @version    SVN Revision $Rev:$
- *
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -29,7 +28,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cValidatorRegex extends cValidatorAbstract {
 
     /**
-     * {@inheritdoc}
+     *
+     * @see cValidatorAbstract::_isValid()
+     * @param mixed $value
+     * @return bool
      */
     protected function _isValid($value) {
         if (!is_string($value)) {

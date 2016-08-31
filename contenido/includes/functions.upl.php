@@ -1,17 +1,18 @@
 <?php
+
 /**
  * This file contains the CONTENIDO upload functions.
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
- * @author Jan Lengowski, Timo Trautmann
+ * @author Jan Lengowski
+ * @author Timo Trautmann
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.file.php');
@@ -20,17 +21,20 @@ cInclude('includes', 'functions.file.php');
  * Function reduces long path names and creates a dynamic tooltipp which shows
  * the full path name on mouseover
  *
- * @param string $sDisplayPath Original filepath
- * @param int $iLimit Limit of chars which were displayed directly. If the path
- *        string is shorter there will be no tooltipp
- * @return string Contains short path name and tooltipp if neccessary
+ * @param string $sDisplayPath
+ *         Original filepath
+ * @param int $iLimit
+ *         Limit of chars which were displayed directly.
+ *         If the path string is shorter there will be no tooltip
+ * @return string
+ *         Contains short path name and tooltipp if necessary
  */
 function generateDisplayFilePath($sDisplayPath, $iLimit) {
     $sDisplayPath = (string) $sDisplayPath;
     $iLimit = (int) $iLimit;
 
     if (strlen($sDisplayPath) > $iLimit) {
-        $sDisplayPathShort = cApiStrTrimHard($sDisplayPath, $iLimit);
+        $sDisplayPathShort = cString::trimHard($sDisplayPath, $iLimit);
 
         $sTooltippString = '';
         $iCharcount = 0;
@@ -40,7 +44,7 @@ function generateDisplayFilePath($sDisplayPath, $iLimit) {
         foreach ($aPathFragments as $sFragment) {
             if ($sFragment != '') {
                 if (strlen($sFragment) > ($iLimit - 5)) {
-                    $sFragment = cApiStrTrimHard($sFragment, $iLimit);
+                    $sFragment = cString::trimHard($sFragment, $iLimit);
                 }
 
                 if ($iCharcount + strlen($sFragment) + 1 > $iLimit) {
@@ -63,15 +67,24 @@ function generateDisplayFilePath($sDisplayPath, $iLimit) {
  * Parses the directory recursively and
  * collects informations about found subdirectories.
  *
- * @param string $sCurrentDir Directory to parse
- * @param string $sStartDir Start directory. Will be used by recursion.
- * @param array $aFiles Files array structure. Will be used by recursion.
- * @param int $iDepth Nesting depth of found files. Will be used by recursion.
- * @param string $sPathString Path used to create full path to files. Will be
- *        used by recursion.
- * @return array Indexed arraay containing assoziative directory informations
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement) *
+ * @param string $sCurrentDir
+ *         Directory to parse
+ * @param string $sStartDir
+ *         Start directory. Will be used by recursion.
+ * @param array $aFiles
+ *         Files array structure. Will be used by recursion.
+ * @param int $iDepth
+ *         Nesting depth of found files. Will be used by recursion.
+ * @param string $sPathString
+ *         Path used to create full path to files. Will be used by recursion.
+ * @return array
+ *         Indexed arraay containing assoziative directory informations
  */
 function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = array(), $iDepth = -1, $sPathString = '') {
+    cDeprecated('This method is deprecated and is not needed any longer');
+
     $iDepth++;
 
     $aDirsToExclude = uplGetDirectoriesToExclude();
@@ -119,21 +132,23 @@ function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = arra
 /**
  * Checks if passed upload directory contains at least one file or directory
  *
+ * @todo Function name is misleading, should be renamed to uplIsEmpty
  * @param string $sDir
  * @return bool
- * @todo Function name is misleading, should be renamed to uplIsEmpty
  */
 function uplHasFiles($sDir) {
-    global $client, $cfgClient;
 
-    $handle = cDirHandler::read($cfgClient[$client]['upl']['path'] . $sDir);
-    
+    $client = cRegistry::getClientId();
+    $cfgClient = cRegistry::getClientConfig($client);
+
+    $handle = cDirHandler::read($cfgClient['upl']['path'] . $sDir);
+
     if (!$handle) {
         return false;
     }
-    
+
     $bHasContent = false;
-    if (is_dir($cfgClient[$client]['upl']['path'] . $sDir)) {
+    if (is_dir($cfgClient['upl']['path'] . $sDir)) {
         foreach ($handle as $sDirEntry) {
             if (cFileHandler::fileNameIsDot($sDirEntry) === false) {
                 $bHasContent = true;
@@ -151,15 +166,17 @@ function uplHasFiles($sDir) {
  * @return bool
  */
 function uplHasSubdirs($sDir) {
-    global $client, $cfgClient;
-    
-    $handle = cDirHandler::read($cfgClient[$client]['upl']['path'] . $sDir); 
+
+    $client = cRegistry::getClientId();
+    $cfgClient = cRegistry::getClientConfig($client);
+
+    $handle = cDirHandler::read($cfgClient['upl']['path'] . $sDir);
     if (!$handle) {
         return false;
     }
-    
+
     $bHasSubdir = false;
-    if (is_dir($cfgClient[$client]['upl']['path'] . $sDir)) {
+    if (is_dir($cfgClient['upl']['path'] . $sDir)) {
         foreach ($handle as $sDirEntry) {
             if (cFileHandler::fileNameIsDot($sDirEntry) === false) {
                 $bHasSubdir = true;
@@ -177,27 +194,33 @@ function uplHasSubdirs($sDir) {
  * - Removes all db entries pointing to non existing upload files
  * - Syncs found files in passed path with the database
  *
- * @param string $sPath Specifies the path to scan
+ * @param string $sPath
+ *         Specifies the path to scan
  */
 function uplSyncDirectory($sPath) {
-    global $cfgClient, $client, $cfg, $db;
+
+    $cfg = cRegistry::getConfig();
+    $db = cRegistry::getDb();
+    $client = cRegistry::getClientId();
+    $cfgClient = cRegistry::getClientConfig($client);
 
     if (cApiDbfs::isDbfs($sPath)) {
-        return uplSyncDirectoryDBFS($sPath);
+        uplSyncDirectoryDBFS($sPath);
+        return;
     }
 
     $oUploadsColl = new cApiUploadCollection();
 
     // get current upload directory, it's subdirectories and remove all database
     // entries pointing to a non existing upload directory on the file system
-    $sql = 'SELECT DISTINCT(dirname) AS dirname FROM ' . $cfg['tab']['upl'] . ' WHERE ' . 'idclient=' . (int) $client . ' AND dirname LIKE "' . $db->escape($sPath) . '%"';
+    $sql = 'SELECT DISTINCT(dirname) AS dirname FROM ' . $cfg['tab']['upl'] . ' WHERE ' . 'idclient=' . cSecurity::toInteger($client) . ' AND dirname LIKE "' . $db->escape($sPath) . '%"';
     $db->query($sql);
     while ($db->nextRecord()) {
         $sCurrDirname = $db->f('dirname');
         $sSubDir = substr($sCurrDirname, strlen($sPath));
         if (substr_count($sSubDir, '/') <= 1 && !cApiDbfs::isDbfs($sCurrDirname)) {
             // subdirectory is a direct descendant, process this directory too
-            $sFullPath = $cfgClient[$client]['upl']['path'] . $sCurrDirname;
+            $sFullPath = $cfgClient['upl']['path'] . $sCurrDirname;
             if (!is_dir($sFullPath)) {
                 $oUploadsColl->deleteByDirname($sCurrDirname);
             }
@@ -208,13 +231,13 @@ function uplSyncDirectory($sPath) {
     // on file system
     $oUploadsColl->select("dirname='" . $oUploadsColl->escape($sPath) . "' AND idclient=" . (int) $client);
     while (($oUpload = $oUploadsColl->next()) !== false) {
-        if (!cFileHandler::exists($cfgClient[$client]['upl']['path'] . $oUpload->get('dirname') . $oUpload->get('filename'))) {
+        if (!cFileHandler::exists($cfgClient['upl']['path'] . $oUpload->get('dirname') . $oUpload->get('filename'))) {
             $oUploadsColl->delete($oUpload->get('idupl'));
         }
     }
 
     // sync all files in current directory with database
-    $sFullPath = $cfgClient[$client]['upl']['path'] . $sPath;
+    $sFullPath = $cfgClient['upl']['path'] . $sPath;
     if (is_dir($sFullPath)) {
         $aDirsToExclude = uplGetDirectoriesToExclude();
         if (false !== ($handle = cDirHandler::read($sFullPath))) {
@@ -231,10 +254,12 @@ function uplSyncDirectory($sPath) {
 /**
  * Sync database contents with DBFS
  *
- * @param string $sPath Specifies the path to scan
+ * @param string $sPath
+ *         Specifies the path to scan
  */
 function uplSyncDirectoryDBFS($sPath) {
-    global $cfgClient, $client, $cfg, $db;
+
+    $client = cRegistry::getClientId();
 
     $oUploadsColl = new cApiUploadCollection();
     $oPropertiesColl = new cApiPropertyCollection();
@@ -264,20 +289,24 @@ function uplSyncDirectoryDBFS($sPath) {
         }
     }
 
-    return;
 }
 
 /**
  * Creates a upload directory, either in filesystem or in dbfs.
  *
- * @param string $sPath Path to directory to create, either path from client
- *        upload
- *        directory or a dbfs path
- * @param string $sName Name of directory to create
- * @return string void value of filemode as string ('0702') or nothing
+ * @param string $sPath
+ *         Path to directory to create.
+ *         Either path from client upload directory or a dbfs path.
+ * @param string $sName
+ *         Name of directory to create
+ * @return string|void
+ *         value of filemode as string ('0702') or nothing
  */
 function uplmkdir($sPath, $sName) {
-    global $cfgClient, $client, $action;
+
+    $client = cRegistry::getClientId();
+    $cfgClient = cRegistry::getClientConfig($client);
+    $action = cRegistry::getAction();
 
     // Check DB filesystem
     if (cApiDbfs::isDbfs($sPath)) {
@@ -298,12 +327,12 @@ function uplmkdir($sPath, $sName) {
     }
 
     // Check dir or create new
-    $dPath = $cfgClient[$client]['upl']['path'] . $sPath . $dName;
+    $dPath = $cfgClient['upl']['path'] . $sPath . $dName;
     if (cDirHandler::read($dPath) === false) {
         // Create new dir
         return cDirHandler::create($dPath);
     } else {
-        // Directory already exist
+        // Directory already exists
         $action = 'upl_mkdir';
         return '0702';
     }
@@ -317,14 +346,17 @@ function uplmkdir($sPath, $sName) {
  * @param string $sOldName
  * @param string $sNewName
  * @param string $sParent
- * @throws cException if the upload path can not be renamed
+ * @throws cException
+ *         if the upload path can not be renamed
  */
 function uplRenameDirectory($sOldName, $sNewName, $sParent) {
-    global $cfgClient, $client, $cfg, $db;
+
+    $client = cRegistry::getClientId();
+    $cfgClient = cRegistry::getClientConfig($client);
 
     // rename directory
-    $sOldUplPath = $cfgClient[$client]['upl']['path'] . $sParent . $sOldName;
-    $sNewUplPath = $cfgClient[$client]['upl']['path'] . $sParent . $sNewName . '/';
+    $sOldUplPath = $cfgClient['upl']['path'] . $sParent . $sOldName;
+    $sNewUplPath = $cfgClient['upl']['path'] . $sParent . $sNewName . '/';
     if (!$bResult = rename($sOldUplPath, $sNewUplPath)) {
         throw new cException("Couldn't rename upload path {$sOldUplPath} to {$sNewUplPath}");
     }
@@ -332,7 +364,7 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent) {
     // fetch all directory strings starting with the old path, and replace them
     // with the new path
     $oUploadColl = new cApiUploadCollection();
-    $oUploadColl->select("idclient=" . (int) $client . " AND dirname LIKE '" . $oUploadColl->escape($sParent . $sOldName) . "%'");
+    $oUploadColl->select("idclient=" . cSecurity::toInteger($client) . " AND dirname LIKE '" . $oUploadColl->escape($sParent . $sOldName) . "%'");
     while (($oUpload = $oUploadColl->next()) !== false) {
         $sDirName = $oUpload->get('dirname');
         $sJunk = substr($sDirName, strlen($sParent) + strlen($sOldName));
@@ -362,7 +394,8 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent) {
  * @param int $iLevel
  * @param string $sParent
  * @param int $iRenameLevel
- * @return array List of invalid directories
+ * @return array
+ *         List of invalid directories
  */
 function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $sParent = '', $iRenameLevel = 0) {
     $aInvalidDirectories = array();
@@ -401,9 +434,9 @@ function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $s
         sort($aFiles);
         foreach ($aFiles as $key => $file) {
             $oItem = new TreeItem($file, $sDirectory . $file . '/', true);
-            $oItem->custom['level'] = $iLevel;
-            $oItem->custom['lastitem'] = ($key == count($aFiles) - 1);
-            $oItem->custom['parent'] = $sDirectory;
+            $oItem->setCustom('level', $iLevel);
+            $oItem->setCustom('lastitem', ($key == count($aFiles) - 1));
+            $oItem->setCustom('parent', $sDirectory);
 
             $oRootItem->addItem($oItem);
             $aArrayTemp = uplRecursiveDirectoryList($sDirectory . $file . '/', $oItem, $iLevel + 1, $sParent . $file . '/', $iRenameLevel);
@@ -418,9 +451,12 @@ function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $s
 /**
  * Collects informations about all available dbfs directories stored in TreeItem
  *
- * @param string $directory Not used at te moment!
+ * @param string $directory
+ *         Not used at the moment!
  * @param TreeItem $oRootItem
- * @param int $level Not used at te moment!
+ * @param int $level
+ * @param int $client
+ *         client ID
  */
 function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $client) {
     $dbfs = new cApiDbfsCollection();
@@ -429,8 +465,10 @@ function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $c
     $lastlevel = 0;
     $item['.'] = $oRootItem;
 
-    $prevobj = array(); // TODO: what was this array supposed to be?
-    $lprevobj = new stdClass(); // TODO: what was this object supposed to be?
+    // TODO what was this array supposed to be?
+    $prevobj = array();
+    // TODO what was this object supposed to be?
+    $lprevobj = new stdClass();
 
     while (($dbitem = $dbfs->next()) !== false) {
         $dirname = $dbitem->get('dirname');
@@ -440,19 +478,19 @@ function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $c
 
         if ($dirname != '.' && $file != '.') {
             $item[$dirname] = new TreeItem($file, cApiDbfs::PROTOCOL_DBFS . '/' . $dirname, true);
-            $item[$dirname]->custom['level'] = $level;
-            $item[$dirname]->custom['parent'] = $parent;
-            $item[$dirname]->custom['lastitem'] = true;
+            $item[$dirname]->setCustom('level', $level);
+            $item[$dirname]->setCustom('parent', $parent);
+            $item[$dirname]->setCustom('lastitem', true);
 
-            if ($prevobj[$level]->custom['level'] == $level) {
+            if ($item[$dirname]->getCustom('level') == $level) {
                 if (is_object($prevobj[$level])) {
-                    $prevobj[$level]->custom['lastitem'] = false;
+                    $prevobj[$level]->setCustom('lastitem', false);
                 }
             }
 
             if ($lastlevel > $level) {
                 unset($prevobj[$lastlevel]);
-                $lprevobj->custom['lastitem'] = true;
+                $lprevobj->setCustom('lastitem', true);
             }
 
             $prevobj[$level] = $item[$dirname];
@@ -472,18 +510,22 @@ function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $c
 /**
  * Returns thumbnail for a specific upload file
  *
- * @param string $sFile Filename to retrieve the thumbnail for
- * @param int $iMaxSize Thumb dimension (size of with and heigth)
+ * @param string $sFile
+ *         Filename to retrieve the thumbnail for
+ * @param int $iMaxSize
+ *         Thumb dimension (size of with and heigth)
  * @return string
  */
 function uplGetThumbnail($sFile, $iMaxSize) {
-    global $client, $cfgClient;
+
+    $client = cRegistry::getClientId();
+    $cfgClient = cRegistry::getClientConfig($client);
 
     if ($iMaxSize == -1) {
         return uplGetFileIcon($sFile);
     }
 
-    $sFileType = strtolower(getFileType($sFile));
+    $sFileType = strtolower(cFileHandler::getExtension($sFile));
 
     switch ($sFileType) {
         case "png":
@@ -496,7 +538,7 @@ function uplGetThumbnail($sFile, $iMaxSize) {
         case "iff":
         case "xbm":
         case "wbmp":
-            $img = cApiImgScale($cfgClient[$client]['upl']['path'] . $sFile, $iMaxSize, $iMaxSize, false, false, 50);
+            $img = cApiImgScale($cfgClient['upl']['path'] . $sFile, $iMaxSize, $iMaxSize, false, false, 50);
             if ($img !== false) {
                 return $img;
             }
@@ -516,14 +558,17 @@ function uplGetThumbnail($sFile, $iMaxSize) {
 /**
  * Returns the icon for a file type
  *
- * @param string $sFile Filename to retrieve the extension for
- * @return string Icon for the file type
+ * @param string $sFile
+ *         Filename to retrieve the extension for
+ * @return string
+ *         Icon for the file type
  */
 function uplGetFileIcon($sFile) {
-    global $cfg;
+
+    $cfg = cRegistry::getConfig();
 
     $sPathFiletypes = cRegistry::getBackendUrl() . $cfg['path']['images'] . 'filetypes/';
-    $sFileType = strtolower(getFileType($sFile));
+    $sFileType = strtolower(cFileHandler::getExtension($sFile));
 
     switch ($sFileType) {
         case "sxi":
@@ -653,11 +698,12 @@ function uplGetFileIcon($sFile) {
 /**
  * Returns the description for a file type
  *
- * @param string $sExtension Extension to use
- * @return string Text for the file type
+ * @param string $sExtension
+ *         Extension to use
+ * @return string
+ *         Text for the file type
  */
 function uplGetFileTypeDescription($sExtension) {
-    global $cfg;
 
     switch ($sExtension) {
         // Presentation files
@@ -793,7 +839,7 @@ function uplGetFileTypeDescription($sExtension) {
 /**
  * Removes unwanted characters from passed filename.
  *
- * @param string $sFilename
+ * @param string $filename
  * @return string
  */
 function uplCreateFriendlyName($filename) {
@@ -818,12 +864,17 @@ function uplCreateFriendlyName($filename) {
         ), '', $chars);
     }
 
-    $filename = cApiStrReplaceDiacritics($filename, strtoupper($oLang->getField('encoding')));
+    $filename = cString::replaceDiacritics($filename, strtoupper($oLang->getField('encoding')));
     $filename = preg_replace("/[^A-Za-z0-9._\-" . $chars . "]/i", '', $filename);
 
     return $filename;
 }
 
+/**
+ *
+ * @param string $searchfor
+ * @return array
+ */
 function uplSearch($searchfor) {
     $client = cRegistry::getClientId();
     $client = cSecurity::toInteger($client);
@@ -903,23 +954,19 @@ function uplSearch($searchfor) {
 /**
  * Returns file extension
  *
+ * @deprecated [2015-05-21]
+ *         use cFileHandler::getExtension
  * @param string $sFile
+ * @param string $sDirname
  * @return string
  */
-function uplGetFileExtension($sFile) {
-    // Fetch the dot position
-    $iDotPosition = strrpos($sFile, '.');
-    $sExtension = substr($sFile, $iDotPosition + 1);
-    if (strpos($sExtension, '/') !== false) {
-        return false;
-    } else {
-        return $sExtension;
-    }
+function uplGetFileExtension($sFile, $sDirname = '') {
+    cDeprecated('This method is deprecated and is not needed any longer');
+    return cFileHandler::getExtension($sDirname . $sFile);
 }
 
 /**
- * Returns list of directory names to exclude e.
- * g. from directory listings.
+ * Returns list of directory names to exclude e.g. from directory listings.
  *
  * @return array
  */

@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the system property collection and item class.
  *
  * @package Core
  * @subpackage GenericDB_Model
- * @version SVN Revision $Rev:$
- *
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
@@ -23,11 +22,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiUserPasswordRequestCollection extends ItemCollection {
 
     /**
-     * Constructor function.
+     * Constructor to create an instance of this class.
      *
      * @global array $cfg
-     * @param string|bool $where The where clause in the select, usable to run
-     *        select by creating the instance
+     * @param string|bool $where [optional]
+     *         The where clause in the select, usable to run select by creating
+     *         the instance.
      */
     public function __construct($where = false) {
         global $cfg;
@@ -41,8 +41,10 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
     /**
      * Create a user password request by user id.
      *
-     * @param int $userid
-     * @return cApiUserPasswordRequest false
+     * @param string|array $data [optional]
+     *         optional parameter for direct input of primary key value
+     *         (string) or multiple column name - value pairs
+     * @return cApiUserPasswordRequest
      */
     public function createNewItem($data = NULL) {
         $item = parent::createNewItem($data);
@@ -62,8 +64,10 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
     /**
      * Removes the specified entries from the database by user's id.
      *
-     * @param int $userid Specifies the user id
-     * @return bool True if the delete was successful
+     * @param int $userid
+     *         Specifies the user id
+     * @return bool
+     *         True if the delete was successful
      */
     public function deleteByUserId($userid) {
         $result = $this->deleteBy('user_id', $userid);
@@ -73,8 +77,10 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
     /**
      * Removes the specified entries from the database by token.
      *
-     * @param int $userid Specifies the user id
-     * @return bool True if the delete was successful
+     * @param int $userid
+     *         Specifies the user id
+     * @return bool
+     *         True if the delete was successful
      */
     public function deleteByToken($token) {
         $result = $this->deleteBy('validation_token', $token);
@@ -84,9 +90,11 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
     /**
      * Returns all password requests available in the system
      *
-     * @param string $userid search for a specific user id
-     * @param string $orderBy SQL order by part
-     * @return cApiUser[]
+     * @param string $userid [optional]
+     *         search for a specific user id
+     * @param string $orderBy [optional]
+     *         SQL order by part
+     * @return array
      */
     public function fetchAvailableRequests($userid = false, $orderBy = 'id_pwreq ASC') {
         $requests = array();
@@ -105,12 +113,14 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
 
     /**
      * Returns all non expired password requests
-     * @param string $userid search for a specific user id
-     * @return cApiUser[]
+     *
+     * @param string $userid [optional]
+     *         search for a specific user id
+     * @return array
      */
     public function fetchCurrentRequests($userid = false) {
         $requests = array();
-        
+
         $now = new DateTime('now', new DateTimeZone('UTC'));
         $this->select('expiration > \'' . $this->escape($now->format('Y-m-d H:i:s')) . '\'');
         while (($oItem = $this->next()) !== false) {
@@ -120,7 +130,7 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
                 $requests[] = clone $oItem;
             }
         }
-        
+
         return $requests;
     }
 }
@@ -132,10 +142,12 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
  * @subpackage GenericDB_Model
  */
 class cApiUserPasswordRequest extends Item {
+
     /**
-     * Constructor function
+     * Constructor to create an instance of this class.
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId [optional]
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;

@@ -4,8 +4,6 @@
  *
  * @package    Plugin
  * @subpackage ContentAllocation
- * @version    SVN Revision $Rev:$
- *
  * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -48,12 +46,12 @@ $oTree = new pApiContentAllocationTreeView('f7771624-4874-4745-8b7e-21a49a71a447
 // store item
 if ($_POST['step'] == 'store') {
     $oTree->storeItem($aPostTreeItem);
-    $oPage->displayInfo(sprintf(i18n("New Category %s successfully stored!", 'content_allocation'), $treeItem['name']));
+    $oPage->displayOk(sprintf(i18n("New Category %s successfully stored!", 'content_allocation'), $treeItem['name']));
 }
 // rename item
 if ($_POST['step'] == 'storeRename') {
     $oTree->storeItem($aPostTreeItem);
-    $oPage->displayInfo(sprintf(i18n("Category %s successfully renamed!", 'content_allocation'), $treeItem['name']));
+    $oPage->displayOk(sprintf(i18n("Category %s successfully renamed!", 'content_allocation'), $treeItem['name']));
 }
 // rename item
 if ($_GET['step'] == 'moveup') {
@@ -61,7 +59,7 @@ if ($_GET['step'] == 'moveup') {
 }
 
 if ($_GET['step'] == 'deleteItem') { // delete item
-    $oPage->displayInfo(i18n("Category successfully deleted!", 'content_allocation'));
+    $oPage->displayOk(i18n("Category successfully deleted!", 'content_allocation'));
     $oTree->deleteItem($_GET['idpica_alloc']);
 }
 if ($_GET['step'] == 'collapse') {

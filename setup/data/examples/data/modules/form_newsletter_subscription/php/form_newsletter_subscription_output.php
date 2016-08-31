@@ -4,8 +4,6 @@
  *
  * @package Module
  * @subpackage FormNewsletterSubscription
- * @version SVN Revision $Rev:$
- *
  * @author unknown
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -70,7 +68,7 @@ if (class_exists('NewsletterJobCollection')) {
         // (".$aSettings["JoinGroups"].")","",
         // "groupname ASC");
 
-        if ($oRcpGroups->Count() > 0) {
+        if ($oRcpGroups->count() > 0) {
             $oLblGroupSel = new cHTMLLabel(mi18n("SELECT"), "selNewsletterGroup");
 
             $oSelGroup = new cHTMLSelectElement("selNewsletterGroup[]", "", "selNewsletterGroup");
@@ -87,7 +85,7 @@ if (class_exists('NewsletterJobCollection')) {
                 $oSelGroup->addOptionElement($iID, $oOption);
             }
 
-            $sTmpHTML .= '         ' . $oLblGroupSel->toHTML() . "\n";
+            $sTmpHTML .= '         ' . $oLblGroupSel->toHtml() . "\n";
             $sTmpHTML .= '         ' . $oSelGroup->render() . "\n";
             $sTmpHTML .= '         <br class="y"/>';
         }
@@ -108,7 +106,7 @@ if (class_exists('NewsletterJobCollection')) {
         $oOption = new cHTMLOptionElement(mi18n("HTML"), 1);
         $oSelType->addOptionElement(1, $oOption);
 
-        // $sTmpHTML .= ' '.$oLblType->toHTML()."\n";
+        // $sTmpHTML .= ' '.$oLblType->toHtml()."\n";
         $sTmpHTML .= '         ' . $oSelType->render() . "\n";
         $sTmpHTML .= '         <br class="y"/>';
     }

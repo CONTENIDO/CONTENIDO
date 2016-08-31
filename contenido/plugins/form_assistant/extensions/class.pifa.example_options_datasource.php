@@ -4,8 +4,7 @@
  *
  * @package Plugin
  * @subpackage FormAssistant
- * @version SVN Revision $Rev:$
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  * @copyright four for business AG
  * @link http://www.4fb.de
  */
@@ -18,7 +17,7 @@ plugin_include(Pifa::getName(), 'classes/class.pifa.external_options_datasource_
 /**
  * This is an example for an external options data source.
  *
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
 class ExampleOptionsDatasource extends PifaExternalOptionsDatasourceInterface {
 

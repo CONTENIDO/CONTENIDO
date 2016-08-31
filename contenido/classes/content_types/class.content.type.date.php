@@ -1,11 +1,13 @@
 <?php
+
 /**
  * This file contains the cContentTypeDate class.
  *
  * @package Core
  * @subpackage ContentType
- * @version SVN Revision $Rev:$
- * @author Bilal Arslan, Timo Trautmann, Simon Sprankel
+ * @author Bilal Arslan
+ * @author Timo Trautmann
+ * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
@@ -34,19 +36,20 @@ class cContentTypeDate extends cContentTypeAbstract {
     private $_dateFormatsPhp;
 
     /**
+     * Constructor to create an instance of this class.
+     *
      * Initialises class attributes and handles store events.
      *
-     * @param string $rawSettings the raw settings in an XML structure or as
-     *        plaintext
-     * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is used
-     * @param array $contentTypes array containing the values of all content
-     *        types
+     * @param string $rawSettings
+     *         the raw settings in an XML structure or as plaintext
+     * @param int $id
+     *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
+     * @param array $contentTypes
+     *         array containing the values of all content types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
 
-
-        // change attributes from the parent class and call the parent
-        // constructor
+        // set props
         $this->_type = 'CMS_DATE';
         $this->_prefix = 'date';
         $this->_settingsType = self::SETTINGS_TYPE_XML;
@@ -54,8 +57,9 @@ class cContentTypeDate extends cContentTypeAbstract {
             'date_timestamp',
             'date_format'
         );
-        parent::__construct($rawSettings, $id, $contentTypes);
 
+        // call parent constructor
+        parent::__construct($rawSettings, $id, $contentTypes);
 
         // set the locale
         $locale = cRegistry::getBackendLanguage();
@@ -73,6 +77,7 @@ class cContentTypeDate extends cContentTypeAbstract {
                 setlocale(LC_TIME, $locale);
             }
         }
+
         // initialise the date formats
         $this->_dateFormatsPhp = array(
             conHtmlentities('{"dateFormat":"","timeFormat":""}') => '',
@@ -183,13 +188,14 @@ class cContentTypeDate extends cContentTypeAbstract {
 
     /**
      * Formats the given timestamp according to the given format.
-     * Localises the
-     * output.
+     * Localises the output.
      *
-     * @param string $format the format string in the PHP date format
-     * @param int $timestamp the timestamp representing the date which should be
-     *        formatted
-     * @return string the formatted, localised date
+     * @param string $format
+     *         the format string in the PHP date format
+     * @param int $timestamp [optional]
+     *         the timestamp representing the date which should be formatted
+     * @return string
+     *         the formatted, localised date
      */
     private function _formatDate($format, $timestamp = NULL) {
         $result = '';
@@ -279,8 +285,8 @@ class cContentTypeDate extends cContentTypeAbstract {
      * Generates the code which should be shown if this content type is shown in
      * the frontend.
      *
-     * @return string escaped HTML code which sould be shown if content type is
-     *         shown in frontend
+     * @return string
+     *         escaped HTML code which sould be shown if content type is shown in frontend
      */
     public function generateViewCode() {
         $format = $this->_settings['date_format'];
@@ -306,8 +312,8 @@ class cContentTypeDate extends cContentTypeAbstract {
     /**
      * Generates the code which should be shown if this content type is edited.
      *
-     * @return string escaped HTML code which should be shown if content type is
-     *         edited
+     * @return string
+     *         escaped HTML code which should be shown if content type is edited
      */
     public function generateEditCode() {
         $belang = cRegistry::getBackendLanguage();
@@ -328,7 +334,8 @@ class cContentTypeDate extends cContentTypeAbstract {
     /**
      * Generates the JavaScript needed for CMS_DATE.
      *
-     * @return string HTML code which includes the needed JavaScript
+     * @return string
+     *         HTML code which includes the needed JavaScript
      */
     private function _generateJavaScript() {
         $template = new cTemplate();
@@ -352,7 +359,8 @@ class cContentTypeDate extends cContentTypeAbstract {
     /**
      * Generates the save button.
      *
-     * @return string HTML code for the save button
+     * @return string
+     *         HTML code for the save button
      */
     private function _generateStoreButton() {
         $saveButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_ok.gif', 'save_settings');
@@ -363,7 +371,8 @@ class cContentTypeDate extends cContentTypeAbstract {
     /**
      * Generates a select box for defining the format of the date.
      *
-     * @return string the HTML code of the format select box
+     * @return string
+     *         the HTML code of the format select box
      */
     private function _generateFormatSelect() {
         $formatSelect = new cHTMLSelectElement($this->_prefix . '_format_select_' . $this->_id, '', $this->_prefix . '_format_select_' . $this->_id);

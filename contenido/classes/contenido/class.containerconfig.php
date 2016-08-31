@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the container configuration collection and item class.
  *
  * @package Core
  * @subpackage GenericDB_Model
- * @version SVN Revision $Rev:$
- *
  * @author Timo Hummel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -24,10 +23,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiContainerConfigurationCollection extends ItemCollection {
 
     /**
-     * Create a new collection of items.
+     * Constructor to create an instance of this class.
      *
-     * @param string $select where clause to use for selection (see
-     *            ItemCollection::select())
+     * @param string $select [optional]
+     *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
         global $cfg;
@@ -63,9 +62,11 @@ class cApiContainerConfigurationCollection extends ItemCollection {
     /**
      * Returns list of all configured container by template configuration id
      *
-     * @param  int  $idtplcfg  Template configuration id
-     * @return  array  Assoziative array where the key is the number and
-     *                 value the container configuration.
+     * @param int $idtplcfg
+     *         Template configuration id
+     * @return array
+     *         Assoziative array where the key is the number and value the
+     *         container configuration.
      */
     public function getByTemplateConfiguration($idtplcfg) {
         $configuration = array();
@@ -88,9 +89,10 @@ class cApiContainerConfigurationCollection extends ItemCollection {
 class cApiContainerConfiguration extends Item {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId [optional]
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -106,8 +108,10 @@ class cApiContainerConfiguration extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
-     * @todo should return return value of overloaded method
+     * @param bool $bSafe [optional]
+     *         Flag to run defined inFilter on passed value
+     *
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
@@ -117,12 +121,13 @@ class cApiContainerConfiguration extends Item {
                 break;
         }
 
-        parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $bSafe);
     }
 
     /**
      * Adds a key value pair to passed container string and returns the modified
      * container string
+     *
      * @param string $container
      * @param string $key
      * @param string $value
@@ -135,6 +140,7 @@ class cApiContainerConfiguration extends Item {
 
     /**
      * Parses the container value to its variables
+     *
      * @param string $value
      * @return array
      */

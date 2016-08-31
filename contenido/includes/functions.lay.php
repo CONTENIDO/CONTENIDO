@@ -1,12 +1,12 @@
 <?php
+
 /**
  * This file contains the CONTENIDO layout functions.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
- * @author           Jan Lengowski, Olaf Niemann
+ * @author           Jan Lengowski
+ * @author           Olaf Niemann
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
  * @link             http://www.4fb.de
@@ -22,11 +22,16 @@ cInclude('classes', 'class.layout.handler.php');
 /**
  * Edit or Create a new layout
  *
- * @param int $idlay Id of the Layout
- * @param string $name Name of the Layout
- * @param string $description Description of the Layout
- * @param string $code Layout HTML Code
- * @return int $idlay Id of the new or edited Layout
+ * @param int $idlay
+ *         Id of the Layout
+ * @param string $name
+ *         Name of the Layout
+ * @param string $description
+ *         Description of the Layout
+ * @param string $code
+ *         Layout HTML Code
+ * @return int
+ *         Id of the new or edited layout
  */
 function layEditLayout($idlay, $name, $description, $code) {
     global $client, $auth, $cfg, $sess, $lang, $area_tree, $perm, $area, $frame, $cfgClient;
@@ -36,11 +41,11 @@ function layEditLayout($idlay, $name, $description, $code) {
 
     $date = date('Y-m-d H:i:s');
     $author = (string) $auth->auth['uname'];
-    $description = (string) stripslashes($description);
-    set_magic_quotes_gpc($name);
-    set_magic_quotes_gpc($description);
-
-    set_magic_quotes_gpc($code);
+    if (true === cRegistry::getConfigValue('simulate_magic_quotes')) {
+        $name = stripslashes($name);
+        $description = stripslashes($description);
+        $code = stripslashes($code);
+    }
 
     if (strlen(trim($name)) == 0) {
         $name = i18n('-- Unnamed layout --');
@@ -50,7 +55,7 @@ function layEditLayout($idlay, $name, $description, $code) {
     $layoutAlias = cModuleHandler::getCleanName(strtolower($name));
 
     // Constructor for the layout in filesystem
-    $layoutInFile = new cLayoutHandler($idlay, stripslashes($code), $cfg, $lang);
+    $layoutInFile = new cLayoutHandler($idlay, $code, $cfg, $lang);
 
     // Track version
     $oVersion = new cVersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
@@ -64,10 +69,10 @@ function layEditLayout($idlay, $name, $description, $code) {
         $layout = $layoutCollection->create($name, $client, $layoutAlias, $description, '1', $author);
         $idlay = $layout->get('idlay');
 
-        if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
+        if ($layoutInFile->saveLayout($code) == false) {
             cRegistry::addErrorMessage(i18n("Can't save layout in file"));
         } else {
-            cRegistry::addInfoMessage(i18n("Saved layout succsessfully!"));
+            cRegistry::addOkMessage(i18n("Saved layout successfully!"));
         }
 
         // Set correct rights for element
@@ -77,13 +82,13 @@ function layEditLayout($idlay, $name, $description, $code) {
         return $idlay;
     } else {
         // Save the layout in file system
-        $layoutInFile = new cLayoutHandler($idlay, stripslashes($code), $cfg, $lang);
+        $layoutInFile = new cLayoutHandler($idlay, $code, $cfg, $lang);
         // Name changed
         if ($layoutAlias != $layoutInFile->getLayoutName()) {
             // Exist layout in directory
             if (cLayoutHandler::existLayout($layoutAlias, $cfgClient, $client) == true) {
                 // Save in old directory
-                if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
+                if ($layoutInFile->saveLayout($code) == false) {
                     cRegistry::addErrorMessage(i18n("Can't save layout in file!"));
                 }
 
@@ -94,10 +99,10 @@ function layEditLayout($idlay, $name, $description, $code) {
 
             // Rename the directory
             if ($layoutInFile->rename($layoutInFile->getLayoutName(), $layoutAlias)) {
-                if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
+                if ($layoutInFile->saveLayout($code) == false) {
                     cRegistry::addWarningMessage(sprintf(i18n("The file %s has no write permissions. Saving only database changes!"), $layoutInFile->_getFileName()));
                 } else {
-                    cRegistry::addInfoMessage(i18n("Renamed layout succsessfully!"));
+                    cRegistry::addOkMessage(i18n("Renamed layout succsessfully!"));
                 }
                 $layout = new cApiLayout(cSecurity::toInteger($idlay));
                 $layout->set('name', $name);
@@ -109,16 +114,16 @@ function layEditLayout($idlay, $name, $description, $code) {
             } else {
                 // Rename not successfully
                 // Save layout
-                if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
+                if ($layoutInFile->saveLayout($code) == false) {
                     cRegistry::addErrorMessage(i18n("Can't save layout file!"));
                 }
             }
         } else {
             // Name dont changed
-            if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
+            if ($layoutInFile->saveLayout($code) == false) {
                 cRegistry::addWarningMessage(sprintf(i18n("The file %s has no write permissions. Saving only database changes!"), $layoutInFile->_getFileName()));
             } else {
-                cRegistry::addInfoMessage(i18n("Saved layout succsessfully!"));
+                cRegistry::addOkMessage(i18n("Saved layout successfully!"));
             }
             $layout = new cApiLayout(cSecurity::toInteger($idlay));
             $layout->set('name', $name);
@@ -139,8 +144,10 @@ function layEditLayout($idlay, $name, $description, $code) {
 /**
  * Deletes the layout with the given ID from the database and the file system.
  *
- * @param int $idlay the ID of the layout
- * @return string an error code if the layout is still in use
+ * @param int $idlay
+ *         the ID of the layout
+ * @return string
+ *         an error code if the layout is still in use
  */
 function layDeleteLayout($idlay) {
     global $client, $cfg, $area_tree, $perm, $cfgClient;

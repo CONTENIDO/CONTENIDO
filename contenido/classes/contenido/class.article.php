@@ -4,8 +4,6 @@
  *
  * @package Core
  * @subpackage GenericDB_Model
- * @version SVN Revision $Rev:$
- *
  * @author Timo Hummel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -26,10 +24,10 @@ cInclude('includes', 'functions.str.php');
 class cApiArticleCollection extends ItemCollection {
 
     /**
-     * Create a new collection of items.
+     * Constructor to create an instance of this class.
      *
-     * @param string $select where clause to use for selection (see
-     *            ItemCollection::select())
+     * @param string $select [optional]
+     *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
         global $cfg;
@@ -85,9 +83,10 @@ class cApiArticleCollection extends ItemCollection {
 class cApiArticle extends Item {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId [optional]
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -101,8 +100,10 @@ class cApiArticle extends Item {
     /**
      * Returns the link to the current object.
      *
-     * @param int $changeLangId change language id for URL (optional)
-     * @return string link
+     * @param int $changeLangId [optional]
+     *         change language id for URL (optional)
+     * @return string
+     *         link
      */
     public function getLink($changeLangId = 0) {
         if ($this->isLoaded() === false) {
@@ -119,12 +120,14 @@ class cApiArticle extends Item {
         return cUri::getInstance()->build($options);
     }
 
-	/**
+    /**
      * Userdefined setter for article fields.
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @param bool $bSafe [optional]
+     *         Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {

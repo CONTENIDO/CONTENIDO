@@ -5,7 +5,6 @@
  *
  * @package Module
  * @subpackage ContentArticleInclude
- * @version SVN Revision $Rev:$
  * @author Willi Man
  * @author alexander.scheider
  * @author frederic.schneider
@@ -157,7 +156,7 @@ if ($cms_idcat != "0" && strlen($cms_idcat) > 0) {
 $tpl->assign("id", $curContainerId);
 $tpl->assign("backendUrl", cRegistry::getBackendUrl());
 $tpl->assign("categorySelect", buildCategorySelect("categoryselect_" . $curContainerId, $cms_idcat));
-$tpl->assign("articleSelect", $selectElement->toHTML());
+$tpl->assign("articleSelect", $selectElement->toHtml());
 $tpl->assign("ajaxUrl", cRegistry::getBackendUrl() ."ajaxmain.php");
 $tpl->assign("articleIncludeSettingsLabel", mi18n("ARTICLE_INCLUDE_SETTINGS_LABEL"));
 $tpl->assign("articleIncludeChooseCategoryLabel", mi18n("ARTICLE_INCLUDE_CHOOSE_CATEGORY_LABEL"));

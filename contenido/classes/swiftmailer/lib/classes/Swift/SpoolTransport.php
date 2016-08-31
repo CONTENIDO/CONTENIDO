@@ -10,13 +10,14 @@
 
 /**
  * Stores Messages in a queue.
- * @package Swift
+ *
  * @author  Fabien Potencier
  */
 class Swift_SpoolTransport extends Swift_Transport_SpoolTransport
 {
     /**
      * Create a new SpoolTransport.
+     *
      * @param Swift_Spool $spool
      */
     public function __construct(Swift_Spool $spool)
@@ -34,7 +35,9 @@ class Swift_SpoolTransport extends Swift_Transport_SpoolTransport
 
     /**
      * Create a new SpoolTransport instance.
-     * @param  Swift_Spool          $spool
+     *
+     * @param Swift_Spool $spool
+     *
      * @return Swift_SpoolTransport
      */
     public static function newInstance(Swift_Spool $spool)

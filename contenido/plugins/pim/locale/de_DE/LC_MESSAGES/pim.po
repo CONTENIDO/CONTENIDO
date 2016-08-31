@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO Plugin Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-03 17:02+0100\n"
-"PO-Revision-Date: 2015-03-03 17:04+0100\n"
-"Last-Translator: Thomas Stauer <thomas.stauer@4fb.de>\n"
+"POT-Creation-Date: 2015-10-14 10:12+0200\n"
+"PO-Revision-Date: 2015-10-14 10:13+0100\n"
+"Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
@@ -12,11 +12,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: i18n\n"
 "X-Poedit-Basepath: .\n"
-"X-Generator: Poedit 1.7.3\n"
+"X-Generator: Poedit 1.7.5\n"
 "X-Poedit-SearchPath-0: C:\\projects\\workspace\\contenido\\contenido\\plugins"
 "\\pim\n"
 
-#: classes/setup/class.pimpluginsetup.install.php:248
+#: classes/setup/class.pimpluginsetup.install.php:270
 msgid ""
 "The plugin has been successfully installed. To apply the changes please "
 "login into backend again."
@@ -24,11 +24,11 @@ msgstr ""
 "Das Plugin wurde erfolgreich installiert. Damit die &Auml;nderungen wirksam "
 "werden, melden Sie sich bitte neu im Backend an."
 
-#: classes/setup/class.pimpluginsetup.install.php:259
+#: classes/setup/class.pimpluginsetup.install.php:281
 msgid "You can install this plugin only for one time."
 msgstr "Sie k&ouml;nnen dieses Plugin nur einmal installieren."
 
-#: classes/setup/class.pimpluginsetup.install.php:273
+#: classes/setup/class.pimpluginsetup.install.php:295
 #, php-format
 msgid ""
 "You have to install CONTENIDO <strong>%s</strong> or higher to install this "
@@ -37,13 +37,13 @@ msgstr ""
 "Sie ben&ouml;tigen CONTENIDO <strong>%s</strong> oder h&ouml;her, um dieses "
 "Plugin installieren zu k&ouml;nnen!"
 
-#: classes/setup/class.pimpluginsetup.install.php:280
+#: classes/setup/class.pimpluginsetup.install.php:302
 #, php-format
 msgid "Your current CONTENIDO version is to new - max CONTENIDO version: %s"
 msgstr ""
 "Ihre aktuelle CONTENIDO-Version ist zu neu - maximale CONTENDIO-Version: %s"
 
-#: classes/setup/class.pimpluginsetup.install.php:286
+#: classes/setup/class.pimpluginsetup.install.php:308
 #, php-format
 msgid ""
 "You have to install PHP <strong>%s</strong> or higher to install this plugin!"
@@ -51,7 +51,7 @@ msgstr ""
 "Sie ben&ouml;tigen PHP-Version <strong>%s</strong> oder h&ouml;her, um "
 "dieses Plugin installieren zu k&ouml;nnen!"
 
-#: classes/setup/class.pimpluginsetup.install.php:295
+#: classes/setup/class.pimpluginsetup.install.php:317
 #, php-format
 msgid ""
 "The plugin could not find the PHP extension <strong>%s</strong>. Because "
@@ -60,7 +60,7 @@ msgstr ""
 "Dieses Plugin konnte die PHP-Erweiterung <strong>%s</strong> nicht finden. "
 "Da diese vom Plugin vorausgesetzt wird, kann es nicht installiert werden."
 
-#: classes/setup/class.pimpluginsetup.install.php:306
+#: classes/setup/class.pimpluginsetup.install.php:328
 #, php-format
 msgid ""
 "The plugin could not find the class <strong>%s</strong>. Because this is "
@@ -69,7 +69,7 @@ msgstr ""
 "Dieses Plugin konnte die PHP-Klasse <strong>%s</strong> nicht finden. Da "
 "diese vom Plugin vorausgesetzt wird, kann es nicht installiert werden."
 
-#: classes/setup/class.pimpluginsetup.install.php:317
+#: classes/setup/class.pimpluginsetup.install.php:339
 #, php-format
 msgid ""
 "The plugin could not find the function <strong>%s</strong>. Because this is "
@@ -78,19 +78,19 @@ msgstr ""
 "Dieses Plugin konnte die PHP-Funktion <strong>%s</strong> nicht finden. Da "
 "diese vom Plugin vorausgesetzt wird, kann es nicht installiert werden."
 
-#: classes/setup/class.pimpluginsetup.install.php:357
+#: classes/setup/class.pimpluginsetup.install.php:379
 #, php-format
 msgid "This plugin required the plugin <strong>%s</strong>."
 msgstr "Dieses Plugin setzt das Plugin <strong>%s</strong> voraus."
 
-#: classes/setup/class.pimpluginsetup.install.php:366
+#: classes/setup/class.pimpluginsetup.install.php:388
 msgid ""
 "You have to install<strong>%s %</strong> or higher to install this plugin!"
 msgstr ""
 "Sie ben&ouml;tigen Version <strong>%s</strong> oder h&ouml;her, um dieses "
 "Plugin installieren zu k&ouml;nnen!"
 
-#: classes/setup/class.pimpluginsetup.install.php:374
+#: classes/setup/class.pimpluginsetup.install.php:396
 #, php-format
 msgid ""
 "You have to install <strong>%s %s</strong> or lower to install this plugin!"
@@ -98,9 +98,9 @@ msgstr ""
 "Sie ben&ouml;tigen Version <strong>%s %s</strong> oder niedriger, um dieses "
 "Plugin installieren zu k&ouml;nnen!"
 
-#: classes/setup/class.pimpluginsetup.install.php:491
-#: classes/setup/class.pimpluginsetup.install.php:520
-#: classes/setup/class.pimpluginsetup.install.php:578
+#: classes/setup/class.pimpluginsetup.install.php:517
+#: classes/setup/class.pimpluginsetup.install.php:549
+#: classes/setup/class.pimpluginsetup.install.php:610
 #, php-format
 msgid ""
 "Defined area <strong>%s</strong> are not found on your CONTENIDO "
@@ -108,6 +108,16 @@ msgid ""
 msgstr ""
 "Die definierte Area <strong>%s</strong> konnte nicht in Ihrer CONTENIDO-"
 "Installation gefunden werden. Bitte kontaktieren Sie den Plugin-Entwickler."
+
+#: classes/setup/class.pimpluginsetup.install.php:618
+#, php-format
+msgid ""
+"Can not find <strong>%s</strong> entry at nav_main table on your CONTENIDO "
+"installation. Please contact your plugin author."
+msgstr ""
+"Der Eintrag <strong>%s</strong> konnte nicht in der nav_main-Tabelle in "
+"Ihrer CONTENIDO-Installation gefunden werden.  Bitte kontaktieren Sie den "
+"Plugin-Entwickler."
 
 #: classes/setup/class.pimpluginsetup.php:255
 #, php-format
@@ -160,7 +170,7 @@ msgstr ""
 "Dieses Plugin wird vom Plugin <strong>%s</strong> vorausgesetzt, sodass Sie "
 "es nicht deaktivieren k&ouml;nnen."
 
-#: classes/setup/class.pimpluginsetup.uninstall.php:265
+#: classes/setup/class.pimpluginsetup.uninstall.php:270
 #, php-format
 msgid ""
 "The plugin <strong>%s</strong> has been successfully removed. To apply the "
@@ -169,7 +179,7 @@ msgstr ""
 "Das Plugin <strong>%s</strong> wurde erfolgreich entfernt. Damit die &Auml;"
 "nderungen wirksam werden, melden Sie sich bitte neu im Backend an."
 
-#: classes/setup/class.pimpluginsetup.uninstall.php:280
+#: classes/setup/class.pimpluginsetup.uninstall.php:285
 #, php-format
 msgid ""
 "This plugin is required by the plugin <strong>%s</strong>, so you can not "
@@ -178,12 +188,12 @@ msgstr ""
 "Dieses Plugin wird vom Plugin <strong>%s</strong> vorausgesetzt, sodass Sie "
 "es nicht entfernen k&ouml;nnen."
 
-#: classes/setup/class.pimpluginsetup.uninstall.php:329
+#: classes/setup/class.pimpluginsetup.uninstall.php:334
 #, php-format
 msgid "The pluginfolder <strong>%s</strong> has been successfully uninstalled."
 msgstr "Der Plugin-Ordner <strong>%s</strong> wurde erfolgreich entfernt."
 
-#: classes/setup/class.pimpluginsetup.uninstall.php:331
+#: classes/setup/class.pimpluginsetup.uninstall.php:336
 #, php-format
 msgid "The pluginfolder <strong>%s</strong> could not be uninstalled."
 msgstr "Der Plugin-Ordner <strong>%s</strong> konnte nicht entfernt werden."
@@ -210,22 +220,18 @@ msgstr ""
 msgid "This plugin has no dependencies to other plugins"
 msgstr "Dieses Plugin hat keine Abh&auml;ngigkeit zu anderen Plugins"
 
-#: classes/view/class.pimpluginview.navsub.php:128
-#: classes/view/class.pimpluginview.navsub.php:147
+#: classes/view/class.pimpluginview.navsub.php:157
+#: classes/view/class.pimpluginview.navsub.php:176
 msgid "No navigation configuration founded"
 msgstr "Keine Men&uuml;konfigurationen gefunden"
 
-#: classes/view/class.pimpluginview.navsub.php:296
+#: classes/view/class.pimpluginview.navsub.php:347
 msgid "You find this plugin at navigation section"
 msgstr "Sie finden dieses Plugin unter dem Men&uuml;punkt"
 
-#: classes/view/class.pimpluginview.navsub.php:296
+#: classes/view/class.pimpluginview.navsub.php:347
 msgid "as"
 msgstr "als"
-
-#: includes/config.plugin.php:20
-msgid "Run Plugin Manager"
-msgstr "Plugin Manager ausf&uuml;hren"
 
 #: includes/include.right_bottom.php:23
 msgid "Permission denied"
@@ -268,8 +274,8 @@ msgid "Please choose your new file"
 msgstr "Plugin-Paket auswählen"
 
 #: includes/include.right_bottom.php:142
-msgid "Execute uninstall.sql"
-msgstr "uninstall.sql ausführen"
+msgid "Execute plugin_uninstall.sql"
+msgstr "plugin_uninstall.sql ausführen"
 
 #: includes/include.right_bottom.php:144 includes/include.right_bottom.php:191
 msgid "Dependencies"
@@ -320,45 +326,45 @@ msgstr "Vom Dateisystem entfernen"
 msgid "Writeable"
 msgstr "Schreibbar"
 
-#: includes/include.right_bottom.php:208
+#: includes/include.right_bottom.php:209
 msgid "Everything looks fine"
 msgstr "Keine Fehler"
 
-#: includes/include.right_bottom.php:211
+#: includes/include.right_bottom.php:212
 msgid "This plugin is not writeable, please set the rights manually"
 msgstr ""
 "Dieses Plugin ist nicht beschreibbar, bitte setzen Sie die Dateirechte "
 "manuell"
 
-#: includes/include.right_bottom.php:223
+#: includes/include.right_bottom.php:224
 msgid "No entries"
 msgstr "Keine Eintr&auml;ge"
 
-#: includes/include.right_bottom.php:227
+#: includes/include.right_bottom.php:228
 msgid "Upload a new plugin"
 msgstr "Neues Plugin hochladen"
 
-#: includes/include.right_bottom.php:228
+#: includes/include.right_bottom.php:229
 msgid "Please choose a plugin package"
 msgstr "Plugin-Paket auswählen"
 
-#: includes/include.right_bottom.php:229
+#: includes/include.right_bottom.php:230
 msgid "Upload plugin package"
 msgstr "Plugin-Paket hochladen"
 
-#: includes/include.right_bottom.php:230
+#: includes/include.right_bottom.php:231
 msgid "Installed Plugins"
 msgstr "Installierte Plugins"
 
-#: includes/include.right_bottom.php:231
+#: includes/include.right_bottom.php:232
 msgid "Not installed Plugins"
 msgstr "Noch nicht installierte Plugins"
 
-#: includes/include.right_bottom.php:232
+#: includes/include.right_bottom.php:233
 msgid "Execution order"
 msgstr "Ausf&uuml;hrungsreihenfolge"
 
-#: includes/include.right_bottom.php:233
+#: includes/include.right_bottom.php:234
 msgid ""
 "If you click on following arrows you can manage the execution order of "
 "plugins. The first plugin (at first position) will be executed first from "
@@ -385,6 +391,9 @@ msgstr "Dieses Plugin ist schon unten!"
 #: templates/template.pim_overview.html:4
 msgid "Error"
 msgstr "Fehler"
+
+#~ msgid "Run Plugin Manager"
+#~ msgstr "Plugin Manager ausf&uuml;hren"
 
 #~ msgid ""
 #~ "The plugin <strong>%s</strong> has been successfully uninstalled. To "

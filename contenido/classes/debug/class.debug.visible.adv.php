@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the visible adv debug class.
  *
  * @package Core
  * @subpackage Debug
- * @version SVN Revision $Rev:$
  *
  * @author Rudi Bieller
  * @copyright four for business AG <www.4fb.de>
@@ -64,7 +64,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
     }
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     private function __construct() {
         $this->_aItems = array();
@@ -74,7 +74,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
      * Add a Debug item to internal collection.
      *
      * @param mixed $mVariable
-     * @param string $sVariableDescription
+     * @param string $sVariableDescription [optional]
      */
     public function add($mVariable, $sVariableDescription = '') {
         $oItem = new cDebugVisibleAdvItem();
@@ -91,9 +91,10 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
     }
 
     /**
-     * Writes a line
+     * Writes a line.
      *
-     * @see interface.debug::out()
+     * @see cDebugInterface::out()
+     * @param string $sText
      */
     public function out($sText) {
         $this->_buffer .= $sText . "\n";
@@ -122,7 +123,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
 
                 ++$i;
             }
-            $sHtml .= $tpl->generate($cfg["path"]["templates"] . $cfg["template"]["debug_visibleadv"], true);
+            $sHtml .= $tpl->generate($cfg['path']['contenido'] . $cfg["path"]["templates"] . $cfg['templates']['debug_visibleadv'], true);
         }
 
         $buffer = str_replace("\'", "\\'", $this->_buffer);
@@ -216,12 +217,14 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
     }
 
     /**
-     * Outputs contents of passed variable in a preformatted, readable way
+     * Outputs contents of passed variable in a preformatted, readable way.
      *
-     * @param mixed $mVariable The variable to be displayed
-     * @param string $sVariableDescription The variable's name or description
-     * @param bool $bExit If set to true, your app will die() after output of
-     *        current var
+     * @param mixed $mVariable
+     *         The variable to be displayed.
+     * @param string $sVariableDescription [optional]
+     *         The variable's name or description.
+     * @param bool $bExit [optional]
+     *         If set to true, your app will die() after output of current var.
      */
     public function show($mVariable, $sVariableDescription = '', $bExit = false) {
         try {

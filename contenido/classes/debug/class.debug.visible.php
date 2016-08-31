@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the visible debug class.
  *
  * @package Core
  * @subpackage Debug
- * @version SVN Revision $Rev:$
  *
  * @author Rudi Bieller
  * @copyright four for business AG <www.4fb.de>
@@ -46,15 +46,17 @@ class cDebugVisible implements cDebugInterface {
     }
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     private function __construct() {
     }
 
     /**
-     * (non-PHPdoc)
+     * Writes a line.
+     * This method does nothing!
      *
      * @see cDebugInterface::out()
+     * @param string $msg
      */
     public function out($msg) {
     }
@@ -62,10 +64,12 @@ class cDebugVisible implements cDebugInterface {
     /**
      * Outputs contents of passed variable in a preformatted, readable way
      *
-     * @param mixed $mVariable The variable to be displayed
-     * @param string $sVariableDescription The variable's name or description
-     * @param bool $bExit If set to true, your app will die() after output of
-     *        current var
+     * @param mixed $mVariable
+     *         The variable to be displayed
+     * @param string $sVariableDescription [optional]
+     *         The variable's name or description
+     * @param bool $bExit [optional]
+     *         If set to true, your app will die() after output of current var
      */
     public function show($mVariable, $sVariableDescription = '', $bExit = false) {
         $bTextarea = false;
@@ -131,7 +135,7 @@ class cDebugVisible implements cDebugInterface {
      * Interface implementation
      *
      * @param mixed $mVariable
-     * @param string $sVariableDescription
+     * @param string $sVariableDescription [optional]
      */
     public function add($mVariable, $sVariableDescription = '') {
     }

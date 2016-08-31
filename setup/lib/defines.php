@@ -4,8 +4,6 @@
  *
  * @package    Setup
  * @subpackage Setup
- * @version    SVN Revision $Rev:$
- *
  * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -39,6 +37,6 @@ define('CON_SETUP_MIN_PHP_VERSION', '5.3.0');
 
 define('CON_SETUP_DBCHARSET', 'utf8');
 
-define('CON_SETUP_VERSION', '4.9.7');
+define('CON_SETUP_VERSION', '4.9.11');
 
 ?>

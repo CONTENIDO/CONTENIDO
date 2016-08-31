@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for editing meta information of file in upload section.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Timo Hummel
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -17,7 +16,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 cInclude('includes', 'functions.upl.php');
 
-$isZipFile = isArchive($_REQUEST['file']);
+// Define local filename variable
+$filename = cSecurity::escapeString($_REQUEST['file']);
+$filename = str_replace('"', '', $filename);
+$filename = str_replace("'", '', $filename);
+
+// Define local pathname variable
+$pathname = cSecurity::escapeString($_REQUEST['path']);
+$pathname = str_replace('"', '', $pathname);
+$pathname = str_replace("'", '', $pathname);
+
+$isZipFile = isArchive($filename);
 
 $page = new cGuiPage('upl_edit');
 
@@ -34,23 +43,23 @@ if (($lang_short = substr(strtolower($belang), 0, 2)) != 'en') {
 $form = new cGuiTableForm('properties');
 $form->setVar('frame', $frame);
 $form->setVar('area', 'upl');
-$form->setVar('path', $_REQUEST['path']);
-$form->setVar('file', $_REQUEST['file']);
+$form->setVar('path', $pathname);
+$form->setVar('file', $filename);
 $form->setVar('action', 'upl_modify_file');
-$form->setVar('startpage', $_REQUEST['startpage']);
-$form->setVar('sortby', $_REQUEST['sortby']);
-$form->setVar('sortmode', $_REQUEST['sortmode']);
-$form->setVar('thumbnailmode', $_REQUEST['thumbnailmode']);
-// $form->setVar('zip', (isArchive( $_REQUEST['file'])) ? '1' : '0');
+$form->setVar('startpage', cSecurity::toInteger($_REQUEST['startpage']));
+$form->setVar('sortby', cSecurity::escapeString($_REQUEST['sortby']));
+$form->setVar('sortmode', cSecurity::escapeString($_REQUEST['sortmode']));
+$form->setVar('thumbnailmode', cSecurity::escapeString($_REQUEST['thumbnailmode']));
+// $form->setVar('zip', (isArchive( $filename)) ? '1' : '0');
 $form->addHeader(i18n('Edit'));
 
 $properties = new cApiPropertyCollection();
 $uploads = new cApiUploadCollection();
 
 if (cApiDbfs::isDbfs($_REQUEST['path'])) {
-    $qpath = $_REQUEST['path'] . '/';
+    $qpath = $pathname . '/';
 } else {
-    $qpath = $_REQUEST['path'];
+    $qpath = $pathname;
 }
 
 if ((is_writable($cfgClient[$client]['upl']['path'] . $path) || cApiDbfs::isDbfs($path)) && (int) $client > 0) {
@@ -59,7 +68,7 @@ if ((is_writable($cfgClient[$client]['upl']['path'] . $path) || cApiDbfs::isDbfs
     $bDirectoryIsWritable = false;
 }
 
-$uploads->select("idclient = '" . $client . "' AND dirname = '" . $qpath . "' AND filename='" . $_REQUEST['file'] . "'");
+$uploads->select("idclient = '" . $client . "' AND dirname = '" . $qpath . "' AND filename='" . $filename . "'");
 
 if ($upload = $uploads->next()) {
 
@@ -120,7 +129,7 @@ if ($upload = $uploads->next()) {
         $sCell = '';
         switch ($sListRow) {
             case 'filename':
-                $sCell = $_REQUEST['file'];
+                $sCell = $filename;
                 break;
 
             case 'zip':
@@ -132,7 +141,7 @@ if ($upload = $uploads->next()) {
             case 'extractFolder':
                 $box = new cHTMLTextbox('efolder');
                 $box->setID('extractFolder');
-                $box->setValue(strstr($_REQUEST['file'], '.', TRUE));
+                $box->setValue(strstr($filename, '.', TRUE));
                 $box->setClass('ZipExtract');
                 $sCell = $box;
                 $checkbox = new cHTMLCheckbox('overwrite', i18n('overwrite'));
@@ -157,7 +166,7 @@ if ($upload = $uploads->next()) {
                 if ($uploadMeta->get('medianame')) {
                     $medianame = cSecurity::unFilter($uploadMeta->get('medianame'));
                 } else {
-                    $medianame = $properties->getValue('upload', $qpath . $_REQUEST['file'], 'file', 'medianame');
+                    $medianame = $properties->getValue('upload', $qpath . $filename, 'file', 'medianame');
                 }
 
                 $mnedit = new cHTMLTextbox('medianame', $medianame, 60);
@@ -179,7 +188,7 @@ if ($upload = $uploads->next()) {
                 if ($uploadMeta->get('keywords')) {
                     $keywords = cSecurity::unFilter($uploadMeta->get('keywords'));
                 } else {
-                    $keywords = $properties->getValue('upload', $qpath . $_REQUEST['file'], 'file', 'keywords');
+                    $keywords = $properties->getValue('upload', $qpath . $filename, 'file', 'keywords');
                 }
 
                 $kwedit = new cHTMLTextarea('keywords', $keywords);
@@ -190,7 +199,7 @@ if ($upload = $uploads->next()) {
                 if ($uploadMeta->get('internal_notice')) {
                     $medianotes = cSecurity::unFilter($uploadMeta->get('internal_notice'));
                 } else {
-                    $medianotes = $properties->getValue('upload', $qpath . $_REQUEST['file'], 'file', 'medianotes');
+                    $medianotes = $properties->getValue('upload', $qpath . $filename, 'file', 'medianotes');
                 }
 
                 $moedit = new cHTMLTextarea('medianotes', $medianotes);
@@ -201,7 +210,7 @@ if ($upload = $uploads->next()) {
                 if ($uploadMeta->get('copyright')) {
                     $copyright = cSecurity::unFilter($uploadMeta->get('copyright'));
                 } else {
-                    $copyright = $properties->getValue('upload', $qpath . $_REQUEST['file'], 'file', 'copyright');
+                    $copyright = $properties->getValue('upload', $qpath . $filename, 'file', 'copyright');
                 }
 
                 $copyrightEdit = new cHTMLTextarea('copyright', $copyright);
@@ -209,7 +218,7 @@ if ($upload = $uploads->next()) {
                 break;
 
             case 'protected':
-                $vprotected = $properties->getValue('upload', $qpath . $_REQUEST['file'], 'file', 'protected');
+                $vprotected = $properties->getValue('upload', $qpath . $filename, 'file', 'protected');
                 $protected = new cHTMLCheckbox('protected', '1');
                 $protected->setChecked($vprotected);
                 $protected->setLabelText(i18n('Protected for non-logged in users'));
@@ -217,9 +226,9 @@ if ($upload = $uploads->next()) {
                 break;
 
             case 'timecontrol':
-                $iTimeMng = (int) $properties->getValue('upload', $qpath . $_REQUEST['file'], 'file', 'timemgmt');
-                $sStartDate = $properties->getValue('upload', $qpath . $_REQUEST['file'], 'file', 'datestart');
-                $sEndDate = $properties->getValue('upload', $qpath . $_REQUEST['file'], 'file', 'dateend');
+                $iTimeMng = (int) $properties->getValue('upload', $qpath . $filename, 'file', 'timemgmt');
+                $sStartDate = $properties->getValue('upload', $qpath . $filename, 'file', 'datestart');
+                $sEndDate = $properties->getValue('upload', $qpath . $filename, 'file', 'dateend');
 
                 $oTimeCheckbox = new cHTMLCheckbox('timemgmt', i18n('Use time control'));
                 $oTimeCheckbox->setChecked($iTimeMng);
@@ -239,9 +248,9 @@ if ($upload = $uploads->next()) {
 
             case 'preview':
                 if (cApiDbfs::isDbfs($_REQUEST['path'])) {
-                    $sCell = '<a target="_blank" href="' . $sess->url(cRegistry::getFrontendUrl() . "dbfs.php?file=" . $qpath . $_REQUEST['file']) . '"><img alt="" class="bordered" src="' . uplGetThumbnail($qpath . $_REQUEST['file'], 350) . '"></a>';
+                    $sCell = '<a target="_blank" href="' . cRegistry::getFrontendUrl() . "dbfs.php?file=" . $qpath . $filename . '"><img alt="" class="bordered" src="' . uplGetThumbnail($qpath . $filename, 350) . '"></a>';
                 } else {
-                    $sCell = '<a target="_blank" href="' . $cfgClient[$client]['upl']['htmlpath'] . $qpath . $_REQUEST['file'] . '"><img alt="" class="bordered" src="' . uplGetThumbnail($qpath . $_REQUEST['file'], 350) . '"></a>';
+                    $sCell = '<a target="_blank" href="' . $cfgClient[$client]['upl']['htmlpath'] . $qpath . $filename . '"><img alt="" class="bordered" src="' . uplGetThumbnail($qpath . $filename, 350) . '"></a>';
                 }
                 break;
 
@@ -262,7 +271,7 @@ if ($upload = $uploads->next()) {
                 if ($_cecIterator->count() > 0) {
                     $contents = array();
                     while ($chainEntry = $_cecIterator->next()) {
-                        $contents[] = $chainEntry->execute($iIdupl, $qpath, $_REQUEST['file'], $sListRow);
+                        $contents[] = $chainEntry->execute($iIdupl, $qpath, $filename, $sListRow);
                     }
                 }
                 $sCell = implode('', $contents);
@@ -276,11 +285,16 @@ if ($upload = $uploads->next()) {
 
     $page->set('s', 'FORM', $form->render());
 } else {
-    $page->displayCriticalError(sprintf(i18n('Could not load file %s'), $_REQUEST['file']));
+    $page->displayCriticalError(sprintf(i18n('Could not load file %s'), $filename));
 }
 
 $page->render();
 
+/**
+ *
+ * @param string $fileName
+ * @return boolean
+ */
 function isArchive($fileName) {
 
     if (substr(strrchr($fileName, '.'), 1) === 'zip') {

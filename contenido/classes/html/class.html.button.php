@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the cHTMLButton class.
  *
  * @package Core
  * @subpackage GUI_HTML
- * @version SVN Revision $Rev:$
  *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
@@ -24,20 +24,29 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHTMLButton extends cHTMLFormElement {
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
+     *
      * Creates an HTML button.
      *
      * Creates a submit button by default, can be changed
      * using setMode.
      *
-     * @param string $name Name of the element
-     * @param string $title Title of the button
-     * @param string $id ID of the element
-     * @param string $disabled Item disabled flag (non-empty to set disabled)
-     * @param string $tabindex Tab index for form elements
-     * @param string $accesskey Key to access the field
-     * @param string $mode Mode of button
-     * @param string $class the class of this element
+     * @param string $name
+     *         Name of the element
+     * @param string $title [optional]
+     *         Title of the button
+     * @param string $id [optional]
+     *         ID of the element
+     * @param string $disabled [optional]
+     *         Item disabled flag (non-empty to set disabled)
+     * @param string $tabindex [optional]
+     *         Tab index for form elements
+     * @param string $accesskey [optional]
+     *         Key to access the field
+     * @param string $mode [optional]
+     *         Mode of button
+     * @param string $class [optional]
+     *         the class of this element
      */
     public function __construct($name, $title = '', $id = '', $disabled = false, $tabindex = NULL, $accesskey = '', $mode = 'submit', $class = '') {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
@@ -51,8 +60,10 @@ class cHTMLButton extends cHTMLFormElement {
     /**
      * Sets the title (caption) for the button
      *
-     * @param string $title The title to set
-     * @return cHTMLButton $this
+     * @param string $title
+     *         The title to set
+     * @return cHTMLButton
+     *         $this for chaining
      */
     public function setTitle($title) {
         $this->updateAttribute('value', $title);
@@ -63,8 +74,10 @@ class cHTMLButton extends cHTMLFormElement {
     /**
      * Sets the mode (submit or reset) for the button
      *
-     * @param string $mode Either 'submit', 'reset' or 'image'.
-     * @return cHTMLButton $this
+     * @param string $mode
+     *         Either 'submit', 'reset' or 'image'.
+     * @return cHTMLButton
+     *         $this for chaining
      */
     public function setMode($mode) {
         $modes = array(
@@ -83,8 +96,10 @@ class cHTMLButton extends cHTMLFormElement {
     /**
      * Set the image src if mode type is "image"
      *
-     * @param string $mode Image path.
-     * @return cHTMLButton $this
+     * @param string $src
+     *         Image path.
+     * @return cHTMLButton
+     *         $this for chaining
      */
     public function setImageSource($src) {
         $this->setMode('image');

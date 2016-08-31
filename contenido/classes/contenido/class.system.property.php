@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the system property collection and item class.
  *
  * @package          Core
  * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
- *
  * @author           Murat Purc <murat@purc.de>
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -43,7 +42,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
     protected static $_enableCache;
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -147,8 +146,9 @@ class cApiSystemPropertyCollection extends ItemCollection {
     /**
      * Returns all system properties.
      *
-     * @param string $orderBy Order by clause like "value ASC"
-     * @return cApiSystemProperty[]
+     * @param string $orderBy [optional]
+     *         Order by clause like "value ASC"
+     * @return array
      */
     public function fetchAll($orderBy = '') {
         if (self::$_enableCache) {
@@ -203,7 +203,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * Returns all system properties by type.
      *
      * @param string $type
-     * @return cApiSystemProperty[]
+     * @return array
      */
     public function fetchByType($type) {
         if (self::$_enableCache) {
@@ -286,7 +286,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
     /**
      * Fetches all entries from cache.
      *
-     * @return cApiSystemProperty[]
+     * @return array
      */
     protected function _fetchAllFromCache() {
         $props = array();
@@ -337,7 +337,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * Fetches entries by type from cache.
      *
      * @param string $type
-     * @return cApiSystemProperty[]
+     * @return array
      */
     protected function _fetchByTypeFromCache($type) {
         $props = array();
@@ -385,9 +385,10 @@ class cApiSystemPropertyCollection extends ItemCollection {
 class cApiSystemProperty extends Item {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId [optional]
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;

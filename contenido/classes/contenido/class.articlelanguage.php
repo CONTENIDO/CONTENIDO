@@ -4,8 +4,6 @@
  *
  * @package Core
  * @subpackage GenericDB_Model
- * @version SVN Revision $Rev:$
- *
  * @author Bjoern Behrens
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -24,10 +22,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiArticleLanguageCollection extends ItemCollection {
 
     /**
-     * Create a new collection of items.
+     * Constructor to create an instance of this class.
      *
-     * @param string $select where clause to use for selection (see
-     *        ItemCollection::select())
+     * @param string $select [optional]
+     *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
         global $cfg;
@@ -54,35 +52,42 @@ class cApiArticleLanguageCollection extends ItemCollection {
      * @param string $urlname
      * @param string $pagetitle
      * @param string $summary
-     * @param int $artspec
-     * @param string $created
-     * @param string $author
-     * @param string $lastmodified
-     * @param string $modifiedby
-     * @param string $published
-     * @param string $publishedby
-     * @param int $online
-     * @param int $redirect
-     * @param string $redirect_url
-     * @param int $external_redirect
-     * @param int $artsort
-     * @param int $timemgmt
-     * @param string $datestart
-     * @param string $dateend
-     * @param int $status
-     * @param int $time_move_cat
-     * @param int $time_target_cat
-     * @param int $time_online_move
-     * @param int $locked
-     * @param mixed $free_use_01
-     * @param mixed $free_use_02
-     * @param mixed $free_use_03
-     * @param int $searchable
-     * @param float $sitemapprio
-     * @param string $changefreq
+     * @param int $artspec [optional]
+     * @param string $created [optional]
+     * @param string $author [optional]
+     * @param string $lastmodified [optional]
+     * @param string $modifiedby [optional]
+     * @param string $published [optional]
+     * @param string $publishedby [optional]
+     * @param int $online [optional]
+     * @param int $redirect [optional]
+     * @param string $redirect_url [optional]
+     * @param int $external_redirect [optional]
+     * @param int $artsort [optional]
+     * @param int $timemgmt [optional]
+     * @param string $datestart [optional]
+     * @param string $dateend [optional]
+     * @param int $status [optional]
+     * @param int $time_move_cat [optional]
+     * @param int $time_target_cat [optional]
+     * @param int $time_online_move [optional]
+     * @param int $locked [optional]
+     * @param mixed $free_use_01 [optional]
+     * @param mixed $free_use_02 [optional]
+     * @param mixed $free_use_03 [optional]
+     * @param int $searchable [optional]
+     * @param float $sitemapprio [optional]
+     * @param string $changefreq [optional]
      * @return cApiArticleLanguage
      */
-    public function create($idart, $idlang, $title, $urlname, $pagetitle, $summary, $artspec = 0, $created = '', $author = '', $lastmodified = '', $modifiedby = '', $published = '', $publishedby = '', $online = 0, $redirect = 0, $redirect_url = '', $external_redirect = 0, $artsort = 0, $timemgmt = 0, $datestart = '', $dateend = '', $status = 0, $time_move_cat = 0, $time_target_cat = 0, $time_online_move = 0, $locked = 0, $free_use_01 = '', $free_use_02 = '', $free_use_03 = '', $searchable = 1, $sitemapprio = 0.5, $changefreq = '') {
+    public function create($idart, $idlang, $title, $urlname, $pagetitle,
+            $summary, $artspec = 0, $created = '', $author = '',
+            $lastmodified = '', $modifiedby = '', $published = '',
+            $publishedby = '', $online = 0, $redirect = 0, $redirect_url = '',
+            $external_redirect = 0, $artsort = 0, $timemgmt = 0, $datestart = '',
+            $dateend = '', $status = 0, $time_move_cat = 0, $time_target_cat = 0,
+            $time_online_move = 0, $locked = 0, $free_use_01 = '', $free_use_02 = '',
+            $free_use_03 = '', $searchable = 1, $sitemapprio = 0.5, $changefreq = '') {
         global $auth;
 
         if (empty($author)) {
@@ -250,24 +255,112 @@ class cApiArticleLanguage extends Item {
     /**
      * Article content
      *
+     * @deprecated [2015-05-27]
      * @var array
      */
     public $content = NULL;
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
-     * @param mixed $mId Specifies the ID of item to load
-     * @param bool $fetchContent Flag to fetch content
+     * @param mixed $mId [optional]
+     *         Specifies the ID of item to load
      */
-    public function __construct($mId = false, $fetchContent = false) {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['art_lang'], 'idartlang');
         $this->setFilters(array(), array());
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
-            if (true === $fetchContent) {
-                $this->_getArticleContent();
+        }
+    }
+
+    /**
+     * Create a version of this article language with its contents/metatags;
+     * the version is the new editable article language version
+     *
+     * @param string $type
+     *         meta, content or complete
+     */
+    public function markAsEditable($type = '') {
+        global $cfg;
+
+        // create new editable version
+        $sql = 'SELECT max(version) AS max FROM %s WHERE idartlang = %d';
+        $this->db->query($sql, $cfg['tab']['art_lang_version'], $this->get('idartlang'));
+        while ($this->db->nextRecord()) {
+                $maxVersion = $this->db->f('max');
+        }
+
+        $parameters = $this->values;
+        $parameters['version'] = $maxVersion + 1;
+        $artLangVersionColl = new cApiArticleLanguageVersionCollection();
+        $artLangVersion = $artLangVersionColl->create($parameters);
+
+        if ($type == 'content' || $type == 'complete') {
+            // load content of article language version into $artLangVersion->content
+            $artLangVersion->loadByArticleLanguageIdAndVersion($artLangVersion->get('idartlang'), $artLangVersion->get('version'), true);
+            $contentVersion = new cApiContent();
+            $oType = new cApiType();
+            $this->_loadArticleContent();
+
+            // get all Contents/Versions
+            $mergedContent = array();
+            foreach ($this->content AS $type => $typeids) {
+                foreach ($typeids AS $typeid => $value) {
+                        $mergedContent[$type][$typeid] = '';
+                }
+            }
+            foreach ($artLangVersion->content AS $type => $typeids) {
+                foreach ($typeids AS $typeid => $value) {
+                        $mergedContent[$type][$typeid] = '';
+                }
+            }
+
+            // set new Content Versions
+            foreach ($mergedContent AS $type => $typeids) {
+                foreach ($typeids AS $typeid => $value) {
+                    $oType->loadByType($type);
+                    if (isset($this->content[$type][$typeid])) {
+                        $contentVersion->loadByArticleLanguageIdTypeAndTypeId($this->get('idartlang'), $oType->get('idtype'), $typeid);
+                        if (isset($contentVersion)) {
+                                $contentVersion->markAsEditable($artLangVersion->get('version'), 0);
+                        }
+                    } else {
+                        $contentParameters = array(
+                                'idartlang' => $artLangVersion->get('idartlang'),
+                                'idtype' => $oType->get('idtype'),
+                                'typeid' => $typeid,
+                                'version' => $artLangVersion->get('version'),
+                                'author' => $this->get('author'),
+                                'deleted' => 1
+                        );
+                        $contentVersionColl = new cApiContentVersionCollection();
+                        $contentVersionColl->create($contentParameters);
+                    }
+                }
+            }
+        }
+
+        if ($type == 'meta' || $type == 'complete') {
+            // set new meta tag versions
+            $metaTag = new cApiMetaTag();
+            $sql = 'SELECT idmetatag AS id
+                    FROM `%s`
+                    WHERE idartlang = %d';
+            $this->db->query(
+                $sql,
+                cRegistry::getDbTableName('meta_tag'),
+                $this->get('idartlang')
+            );
+            while ($this->db->nextRecord()) {
+                    $metaTagIds[] = $this->db->f('id');
+            }
+            if(isset($metaTagIds)) {
+                foreach ($metaTagIds AS $id) {
+                    $metaTag->loadBy('idmetatag', $id);
+                    $metaTag->markAsEditable($artLangVersion->get('version'));
+                }
             }
         }
     }
@@ -275,12 +368,15 @@ class cApiArticleLanguage extends Item {
     /**
      * Load data by article and language id
      *
-     * @param int $idart Article id
-     * @param int $idlang Language id
-     * @param bool $fetchContent Flag to fetch content
-     * @return bool true on success, otherwhise false
+     * @param int $idart
+     *         Article id
+     * @param int $idlang
+     *         Language id
+     *         Flag to fetch content
+     * @return bool
+     *         true on success, otherwise false
      */
-    public function loadByArticleAndLanguageId($idart, $idlang, $fetchContent = false) {
+    public function loadByArticleAndLanguageId($idart, $idlang) {
         $result = true;
         if (!$this->isLoaded()) {
             $aProps = array(
@@ -297,19 +393,18 @@ class cApiArticleLanguage extends Item {
             }
         }
 
-        if (true === $fetchContent) {
-            $this->_getArticleContent();
-        }
-
         return $result;
     }
 
     /**
      * Extract 'idartlang' for a specified 'idart' and 'idlang'
      *
-     * @param int $idart Article id
-     * @param int $idlang Language id
-     * @return int Language dependant article id
+     * @param int $idart
+     *         Article id
+     * @param int $idlang
+     *         Language id
+     * @return int
+     *         Language dependant article id
      */
     protected function _getIdArtLang($idart, $idlang) {
         global $cfg;
@@ -326,9 +421,13 @@ class cApiArticleLanguage extends Item {
      * article object.
      *
      * $article->content[type][number] = value;
+     *
+     * @deprecated [2015-05-15]
+     *         use _loadArticleContent, automaticly loaded with getContent()
      */
     public function loadArticleContent() {
-        $this->_getArticleContent();
+        cDeprecated('This method is deprecated and is not needed any longer');
+        $this->_loadArticleContent();
     }
 
     /**
@@ -336,8 +435,22 @@ class cApiArticleLanguage extends Item {
      * article object.
      *
      * $article->content[type][number] = value;
+     *
+     * @deprecated [2015-05-15]
+     *         use _loadArticleContent, automaticly loaded with getContent()
      */
     protected function _getArticleContent() {
+        cDeprecated('This method is deprecated and is not needed any longer');
+        $this->_loadArticleContent();
+    }
+
+    /**
+     * Load the articles content and stores it in the 'content' property of the
+     * article object, whenever it is needed to get the content of the article.
+     *
+     * $article->content[type][number] = value;
+     */
+    protected function _loadArticleContent() {
         global $cfg;
 
         if (NULL !== $this->content) {
@@ -389,9 +502,11 @@ class cApiArticleLanguage extends Item {
      * sitemapprio - The priority for the sitemap
      *
      * @param string $name
-     * @param bool $bSafe Flag to run defined outFilter on passed value
-     *        NOTE: It's not used ATM!
-     * @return string Value of property
+     * @param bool $bSafe [optional]
+     *         Flag to run defined outFilter on passed value
+     *         NOTE: It's not used ATM!
+     * @return string
+     *         Value of property
      */
     public function getField($name, $bSafe = true) {
         return $this->values[$name];
@@ -402,13 +517,15 @@ class cApiArticleLanguage extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
-     * @todo should return return value of overloaded method
+     * @param bool $bSafe [optional]
+     *         Flag to run defined inFilter on passed value
+     *
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
             case 'urlname':
-                $value = conHtmlSpecialChars(cApiStrCleanURLCharacters($value), ENT_QUOTES);
+                $value = conHtmlSpecialChars(cString::cleanURLCharacters($value), ENT_QUOTES);
                 break;
             case 'timemgmt':
             case 'time_move_cat':
@@ -432,7 +549,7 @@ class cApiArticleLanguage extends Item {
                 break;
         }
 
-        parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $bSafe);
     }
 
     /**
@@ -445,9 +562,9 @@ class cApiArticleLanguage extends Item {
      * 'con_type'.
      * Default content types are:
      *
-     * NOTE: Parameter is case insesitive, you can use html or cms_HTML or
+     * NOTE: Parameter is case insensitive, you can use html or cms_HTML or
      * CmS_HtMl.
-     * Your don't need start with cms, but it won't crash if you do so.
+     * You don't need to start with cms, but it won't crash if you do so.
      *
      * htmlhead - HTML Headline
      * html - HTML Text
@@ -460,13 +577,16 @@ class cApiArticleLanguage extends Item {
      * linkdescr - Linkdescription
      * swf - Upload id of the element
      *
-     * @param string $type CMS_TYPE - Legal cms type string
-     * @param int|NULL $id Id of the content
-     * @return string array data
+     * @param string $type
+     *         CMS_TYPE - Legal cms type string
+     * @param int|NULL $id [optional]
+     *         Id of the content
+     * @return string|array
+     *         data
      */
-    public function getContent($type, $id = NULL) {
+    public function getContent($type = '', $id = NULL) {
         if (NULL === $this->content) {
-            $this->_getArticleContent();
+            $this->_loadArticleContent();
         }
 
         if (empty($this->content)) {
@@ -474,12 +594,12 @@ class cApiArticleLanguage extends Item {
         }
 
         if ($type == '') {
-            return 'Class ' . get_class($this) . ': content-type must be specified!';
+            return $this->content;
         }
 
         $type = strtolower($type);
 
-        if (!strstr($type, 'cms_')) {
+        if (false === stripos($type, 'cms_')) {
             $type = 'cms_' . $type;
         }
 
@@ -495,9 +615,12 @@ class cApiArticleLanguage extends Item {
     /**
      * Similar to getContent this function returns the cContentType object
      *
-     * @param string $type Name of the content type
-     * @param int $id Id of the content type in this article
-     * @return boolean|cContenType Returns false if the name was invalid
+     * @param string $type
+     *         Name of the content type
+     * @param int $id
+     *         Id of the content type in this article
+     * @return bool|cContentTypeAbstract
+     *         Returns false if the name was invalid
      */
     public function getContentObject($type, $id) {
         $typeClassName = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $type)));
@@ -510,9 +633,12 @@ class cApiArticleLanguage extends Item {
     }
 
     /**
-     * Similar to getContent this function returns the view voce of the cContentType object
-     * @param string $type Name of the content type
-     * @param int  $id Id of the content type in this article
+     * Similar to getContent this function returns the view code of the cContentType object
+     *
+     * @param string $type
+     *         Name of the content type
+     * @param int  $id
+     *         Id of the content type in this article
      * @return string
      */
     public function getContentViewCode($type, $id) {
@@ -527,21 +653,25 @@ class cApiArticleLanguage extends Item {
     /**
      * Returns all available content types
      *
-     * @throws cException if no content has been loaded
+     * @throws cException
+     *         if no content has been loaded
      * @return array
      */
     public function getContentTypes() {
         if (empty($this->content)) {
-            throw new cException('getContentTypes() No content loaded');
+            $this->_loadArticleContent();
         }
-        return array_keys($this->content);
+
+        return (is_array($this->content)) ? array_keys($this->content) : array();
     }
 
     /**
      * Returns the link to the current object.
      *
-     * @param int $changeLangId change language id for URL (optional)
-     * @return string link
+     * @param int $changeLangId [optional]
+     *         change language id for URL (optional)
+     * @return string
+     *         link
      */
     public function getLink($changeLangId = 0) {
         if ($this->isLoaded() === false) {

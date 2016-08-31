@@ -4,7 +4,6 @@
  * Integration of TinyMCE to handle it as an insight-editor
  *
  * @module     tiny
- * @version    SVN Revision $Rev$
  * @requires   jQuery, Con
  * @package    CONTENIDO Backend includes
  * @author     Timo Trautmann
@@ -575,7 +574,7 @@
 
             // Register plugin with a short name
             tinymce.PluginManager.add('close', tinymce.plugins.ClosePlugin);
-            
+
             // inject setup into settings
             wysiwygSettings.setup = function(ed) {
                 ed.onSetContent.add(function(ed, o) {
@@ -614,41 +613,5 @@
             });
         }
     };
-
-
-    // @deprecated [2013-10-25] Assign to windows scope (downwards compatibility)
-    window.myCustomSetupContent = Con.Tiny.customCleanupCallback;
-    window.myCustomFileBrowser = Con.Tiny.customFileBrowserCallback;
-    window.updateImageFilebrowser = Con.Tiny.updateImageFilebrowser;
-    window.CustomCleanupContent = Con.Tiny.customCleanupCallback;
-    window.cutFullpath = Con.Tiny.customSaveCallback;
-    window.storeCurrentTinyContent = Con.Tiny.storeCurrentTinyContent;
-    window.setcontent = Con.Tiny.setContent;
-    window.prepareString = Con.Tiny.prepareString;
-    window.buildDataEntry = Con.Tiny.buildDataEntry;
-    window.addDataEntry = Con.Tiny.addDataEntry;
-    window.closeTiny = Con.Tiny.closeTiny;
-    window.swapTiny = Con.Tiny.swapTiny;
-    window.setFocus = Con.Tiny.setFocus;
-    window.updateContent = Con.Tiny.updateContent;
-    // @deprecated  Use leaveCheck()
-    window.leave_check = Con.Tiny.leaveCheck;
-    window.leaveCheck = Con.Tiny.leaveCheck;
-    window.active_id = Con.Tiny.activeId;
-    window.active_object = Con.Tiny.activeObject;
-    window.aEditdata = Con.Tiny.editData;
-    window.aEditdataOrig = Con.Tiny.editDataOrg;
-    window.bCheckLeave = Con.Tiny.checkOnLeave;
-    window.tinymceConfigs = Con.Tiny.settings;
-    window.fb_fieldname = Con.Tiny.fbFieldName;
-    window.fb_handle = Con.Tiny.fbPopupWindow;
-    window.fb_intervalhandle = Con.Tiny.fbIntervalHandle;
-    window.fb_win = Con.Tiny.fbWindow;
-    window.file_url = Con.Tiny.fileUrl;
-    window.image_url = Con.Tiny.imageUrl;
-    window.media_url = Con.Tiny.mediaUrl;
-    window.frontend_path = Con.Tiny.frontendPath;
-    window.iIdartlang = Con.Tiny.idartlang;
-    window.sQuestion = Con.Tiny.txtQuestion;
 
 })(Con, Con.$);

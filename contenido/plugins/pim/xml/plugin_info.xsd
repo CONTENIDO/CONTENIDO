@@ -88,7 +88,8 @@
                     <xsd:simpleContent>
                         <xsd:extension base="xsd:string">
                             <xsd:attribute name="parent" type="xsd:string" />
-                            <xsd:attribute name="menuless" type="xsd:integer" default="0" />
+                            <xsd:attribute name="relevant" type="xsd:integer" default="1" />
+                            <xsd:attribute name="menuless" type="xsd:integer" default="0" />                            
                         </xsd:extension>
                     </xsd:simpleContent>
                 </xsd:complexType>
@@ -130,7 +131,15 @@
 
     <xsd:complexType name="ContenidoNavMainTyp">
         <xsd:sequence minOccurs="0" maxOccurs="unbounded">
-            <xsd:element name="nav" type="xsd:string" />
+            <xsd:element name="nav">
+                <xsd:complexType>
+                    <xsd:simpleContent>
+                        <xsd:extension base="xsd:string">
+                            <xsd:attribute name="name" type="xsd:string" />
+                        </xsd:extension>
+                    </xsd:simpleContent>
+                </xsd:complexType>
+            </xsd:element>
         </xsd:sequence>
     </xsd:complexType>
 
@@ -142,7 +151,7 @@
                         <xsd:extension base="xsd:string">
                             <xsd:attribute name="area" type="xsd:string" use="required" />
                             <xsd:attribute name="level" type="xsd:integer" use="required" />
-                            <xsd:attribute name="navm" type="xsd:integer" />
+                            <xsd:attribute name="navm" />
                         </xsd:extension>
                     </xsd:simpleContent>
                 </xsd:complexType>

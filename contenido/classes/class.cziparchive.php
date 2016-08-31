@@ -5,8 +5,6 @@
  *
  * @package Core
  * @subpackage Util
- * @version SVN Revision $Rev:$
- *
  * @author claus.schunk@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -27,9 +25,10 @@ class cZipArchive {
      * dot or are not valid according to CONTENIDO standards
      * (validateFilename()).
      *
-     * @param string $dirPath
-     * @return array of files
      * @see cFileHandler::validateFilename()
+     * @param string $dirPath
+     * @return array
+     *         of files
      */
     public static function readExistingFiles($dirPath) {
 
@@ -42,7 +41,7 @@ class cZipArchive {
         if (false === ($handle = cDirHandler::read($dirPath))) {
             return array();
         }
-        
+
         $array = array();
         foreach ($handle as $file) {
             if (cFileHandler::fileNameBeginsWithDot($file)) {
@@ -66,7 +65,7 @@ class cZipArchive {
      * This function checks if the given path already exists.
      *
      * @param string $dirPath
-     * @return boolean
+     * @return bool
      */
     public static function isExtracted($dirPath) {
         if (!file_exists($dirPath)) {
@@ -82,9 +81,12 @@ class cZipArchive {
      * This function contains the functionality to extract archive and overwrite
      * existing files.
      *
-     * @param string $file zip file
-     * @param string $extractPath extraction path
-     * @param string $extractPathUserInput user specified extraction path
+     * @param string $file
+     *         zip file
+     * @param string $extractPath
+     *         extraction path
+     * @param string $extractPathUserInput [optional]
+     *         user specified extraction path
      */
     public static function extractOverRide($file, $extractPath, $extractPathUserInput = NULL) {
 
@@ -117,9 +119,12 @@ class cZipArchive {
     /**
      * This function contains the functionality to extract archive.
      *
-     * @param string $file zip file
-     * @param string $extractPath extraction path
-     * @param string $extractPathUserInput user specified extraction path
+     * @param string $file
+     *         zip file
+     * @param string $extractPath
+     *         extraction path
+     * @param string $extractPathUserInput [optional]
+     *         user specified extraction path
      */
     public static function extract($file, $extractPath, $extractPathUserInput = NULL) {
         if (isset($extractPathUserInput)) {
@@ -166,9 +171,12 @@ class cZipArchive {
     /**
      * This function contains the functionality to create archives.
      *
-     * @param string $zipFilePath file path
-     * @param string $dirPath directory path
-     * @param array $filePathes files to store in archive
+     * @param string $zipFilePath
+     *         file path
+     * @param string $dirPath
+     *         directory path
+     * @param array $filePathes
+     *         files to store in archive
      */
     public static function createZip($zipFilePath, $dirPath, array $filePathes) {
         $zip = new ZipArchive();

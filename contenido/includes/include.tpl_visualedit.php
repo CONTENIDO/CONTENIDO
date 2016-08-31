@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for the visual template editor.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Timo Hummel
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -44,7 +43,7 @@ $bIsDefault = $db->f('defaulttemplate');
 $moduleColl = new cApiModuleCollection();
 $modules = $moduleColl->getAllByIdclient($client);
 
-#$code = $db->f('code');
+// $code = $db->f('code');
 $layoutInFile = new cLayoutHandler($idlay, "", $cfg, $lang);
 $code = $layoutInFile->getLayoutCode();
 
@@ -87,7 +86,7 @@ foreach ($containerNumbers as $containerNr) {
         foreach ($modules as $key => $val) {
             if ($val['name'] == $default) {
                 if (strlen($val['name']) > 20) {
-                    $shortName = cApiStrTrimHard($val['name'], 20);
+                    $shortName = cString::trimHard($val['name'], 20);
                     $option = new cHTMLOptionElement($shortName, $key);
                     $option->setAttribute('title', "Container $containerNr ({$name}) {$val['name']}");
                 } else {
@@ -123,7 +122,7 @@ foreach ($containerNumbers as $containerNr) {
         foreach ($modules as $key => $val) {
             $short_name = $val['name'];
             if (strlen($val['name']) > 20) {
-                $short_name = cApiStrTrimHard($val['name'], 20);
+                $short_name = cString::trimHard($val['name'], 20);
             }
 
             $option = new cHTMLOptionElement($short_name, $key);

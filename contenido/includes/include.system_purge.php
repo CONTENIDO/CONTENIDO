@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the system purge backend page.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Munkh-Ulzii Balidar
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -108,6 +107,14 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
                     }
                 }
 
+                if (isset($_POST['clearVersioning']) && $_POST['clearVersioning'] == 1) {
+                    if (!$oPurge->clearClientContentVersioning($iClientId)) {
+                        $bError = true;
+                        $sErrorMsg .= i18n('Client ') . $aClientName[$iClientId] . ': ' .
+                                i18n('The content versioning is not deleted!') . '<br>';
+                    }
+                }
+
                 if ($sErrorMsg != '') {
                     $sErrorMsg .= '<br>';
                 }
@@ -147,7 +154,7 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
     }
 
     if ($bError === false || $sErrorMsg == '') {
-        $sInfoMsg = $notification->returnNotification('info', i18n('The changes were successfully executed.'));
+        $sInfoMsg = $notification->returnNotification('ok', i18n('The changes were successfully executed.'));
     } else {
         $sErrorComplete = i18n('The changes were not all successfully completed.') . '<br><br>' . $sErrorMsg;
         $sInfoMsg = $notification->returnNotification('error', $sErrorComplete);
@@ -180,8 +187,9 @@ $tpl->set('s', 'CON_CAT_ART', i18n('Force code generation'));
 $tpl->set('s', 'CON_INUSE', sprintf(i18n('Reset the table %s'), $cfg['tab']['inuse']));
 $tpl->set('s', 'CLIENT_CACHE', i18n('Clear client cache'));
 $tpl->set('s', 'CLIENT_LOG', i18n('Clear client log file'));
-$tpl->set('s', 'CLIENT_HISTORY', i18n('Clear client history'));
-$tpl->set('s', 'NUMBER_OF_HISTORY', i18n('Keep last histories'));
+$tpl->set('s', 'CLIENT_HISTORY', i18n('Clear client style history'));
+$tpl->set('s', 'NUMBER_OF_HISTORY', i18n('Keep last style histories'));
+$tpl->set('s', 'CLEAR_CONTENT_VERSIONING', i18n('Delete content versions'));
 
 $tpl->set('s', 'GROUP_CONTENIDO', i18n('CONTENIDO'));
 $tpl->set('s', 'CON_LOG', i18n('Clear CONTENIDO log file'));

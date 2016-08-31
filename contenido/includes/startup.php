@@ -11,12 +11,8 @@
  * - Sets/Checks DB connection
  * - Initializes UriBuilder
  *
- * @TODO: Collect all startup (bootstrap) related jobs into this file...
- *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Unknown
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -78,7 +74,7 @@ if (!defined('CON_ENVIRONMENT')) {
  */
 if (!defined('CON_VERSION')) {
 
-    define('CON_VERSION', '4.9.7');
+    define('CON_VERSION', '4.9.11');
 
 }
 
@@ -202,6 +198,7 @@ if (is_dir($localePath)) {
 // Some general includes
 cInclude('includes', 'functions.general.php');
 cInclude('includes', 'functions.i18n.php');
+cInclude('includes', 'functions.lang.php');
 
 // Initialization of CEC
 $_cecRegistry = cApiCecRegistry::getInstance();

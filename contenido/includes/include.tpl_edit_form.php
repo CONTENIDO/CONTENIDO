@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for editing templates.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Timo Hummel
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -20,7 +19,7 @@ $tpl2 = new cTemplate();
 $page = new cGuiPage("tpl_edit_form", '', '0');
 
 if ($action == "tpl_delete" && $perm->have_perm_area_action_anyitem($area, $action)) {
-    $page->displayInfo(i18n("Deleted Template succcessfully!"));
+    $page->displayOk(i18n("Deleted Template succcessfully!"));
     $page->abortRendering();
     $page->render();
     exit();
@@ -118,7 +117,7 @@ $descr = new cHTMLTextarea("description", $description);
 $form->add(i18n("Description"), $descr->render());
 
 $standardcb = new cHTMLCheckbox("vdefault", 1, "", $vdefault);
-$form->add(i18n("Default"), $standardcb->toHTML(false));
+$form->add(i18n("Default"), $standardcb->toHtml(false));
 
 $form->add(i18n("Layout"), $select);
 $form->add(i18n("Layout description"), $laydescription);
@@ -212,9 +211,9 @@ $page->setReload();
 $page->setContent(array($form));
 
 if ($_POST["idtpl"] === "" && $idtpl > 0) {
-    $page->displayInfo(i18n("Created new Template successfully!"));
+    $page->displayOk(i18n("Created new Template successfully!"));
 } elseif ($idtpl > 0 && (isset($_POST["submit_x"]) || ($_POST["idtpl"] == $idtpl && $action != 'tpl_new'))) {
-    $page->displayInfo(i18n("Saved changes successfully!"));
+    $page->displayOk(i18n("Saved changes successfully!"));
 }
 
 $page->render();

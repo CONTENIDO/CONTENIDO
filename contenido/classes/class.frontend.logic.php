@@ -4,8 +4,6 @@
  *
  * @package    Plugin
  * @subpackage FrontendLogic
- * @version    SVN Revision $Rev:$
- *
  * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -35,7 +33,8 @@ abstract class FrontendLogic {
      * getFriendlyName: Returns the friendly (e.g. display) name of your
      * objects.
      *
-     * @return string Name of the object
+     * @return string
+     *         Name of the object
      */
     public function getFriendlyName() {
         return "Inherited class *must* override getFriendlyName";
@@ -46,7 +45,8 @@ abstract class FrontendLogic {
      *
      * The returned array has the format $actionname => $actiondescription
      *
-     * @return array Array of all actions
+     * @return array
+     *         Array of all actions
      */
     public function listActions() {
         return array("Inherited class *must* override listActions");
@@ -57,12 +57,11 @@ abstract class FrontendLogic {
      *
      * The returned array has the format $itemid => $itemname
      *
-     * @return array Array of items
+     * @return array
+     *         Array of items
      */
     public function listItems() {
         return array("Inherited class *must* override listItems");
     }
 
 }
-
-?>

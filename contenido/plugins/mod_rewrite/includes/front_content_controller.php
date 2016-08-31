@@ -12,7 +12,6 @@
  *
  * @package     Plugin
  * @subpackage  ModRewrite
- * @version     SVN Revision $Rev:$
  * @id          $Id$:
  * @author      Murat Purc <murat@purc.de>
  * @copyright   four for business AG <www.4fb.de>
@@ -87,12 +86,12 @@ if ($oMRController->errorOccured()) {
 }
 
 // some debugs
-ModRewriteDebugger::add($mr_preprocessedPageError, 'mr $mr_preprocessedPageError', __FILE__);
+ModRewriteDebugger::add($mr_preprocessedPageError, 'mr $mr_preprocessedPageError');
 if ($oMRController->getError()) {
-    ModRewriteDebugger::add($oMRController->getError(), 'mr error', __FILE__);
+    ModRewriteDebugger::add($oMRController->getError(), 'mr error');
 }
-ModRewriteDebugger::add($idart, 'mr $idart', __FILE__);
-ModRewriteDebugger::add($idcat, 'mr $idcat', __FILE__);
-ModRewriteDebugger::add($lang, 'mr $lang', __FILE__);
-ModRewriteDebugger::add($client, 'mr $client', __FILE__);
+ModRewriteDebugger::add($idart, 'mr $idart');
+ModRewriteDebugger::add($idcat, 'mr $idcat');
+ModRewriteDebugger::add($lang, 'mr $lang');
+ModRewriteDebugger::add($client, 'mr $client');
 

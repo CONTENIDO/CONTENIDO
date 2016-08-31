@@ -7,7 +7,6 @@
  * FrameLeftTop
  *
  * @module contenido
- * @version SVN Revision $Rev$
  * @requires jQuery, Con
  * @author Murat Purc <murat@purc.de>
  * @copyright four for business AG <www.4fb.de>
@@ -267,10 +266,6 @@
             delete this._instances[key];
         }
     };
-
-    // @deprecated [2013-10-15] Assign to windows scope (downwards
-    // compatibility)
-    window.ContenidoRegistry = Con.Registry;
 
 })(Con, Con.$);
 
@@ -583,11 +578,6 @@
         }
     };
 
-    // @deprecated [2013-10-15] Assign to windows scope (downwards
-    // compatibility)
-    window.conEvaluateCallbacks = function() {
-        alert('Deprecated conEvaluateCallbacks');
-    };
     window.conLoadFile = Con.Loader.get;
 
 })(Con, Con.$);
@@ -871,11 +861,6 @@
 
         }
     };
-
-    // @deprecated [2013-10-15] Assign to windows scope (downwards
-    // compatibility)
-    window.getUrlParams = Con.UtilUrl.getParams;
-    window.validateURL = Con.UtilUrl.validate;
 
 })(Con, Con.$, window);
 
@@ -1189,7 +1174,7 @@
     Con.checkAjaxResponse = function(response) {
 
         if (typeof response == 'string' && response.indexOf('authentication_failure') > -1) {
-        
+
             json = $.parseJSON(response);
 
             if (json !== null && json.state == "error" && json.code == 401) {
@@ -1237,15 +1222,5 @@
 
         return false;
     };
-
-    // @deprecated [2013-10-15] Assign to windows scope (downwards
-    // compatibility)
-    window.conMultiLink = Con.multiLink;
-    window.getRegistry = Con.getRegistry;
-    window.getContentWindow = Con.getContentWindow;
-    window.getTranslations = Con.getTranslations;
-    window.showConfirmation = Con.showConfirmation;
-    window.showNotification = Con.showNotification;
-    window.conMarkSubmenuItem = Con.markSubmenuItem;
 
 })(Con, Con.$);

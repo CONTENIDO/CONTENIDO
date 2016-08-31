@@ -20,98 +20,95 @@
  *
  * @package Module
  * @subpackage ContentSitemapXml
- * @version SVN Revision $Rev:$
- *
- * @version SVN Revision $Rev:$
  * @author simon.sprankel@4fb.de
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG
  * @link http://www.4fb.de
  * @see http://www.sitemaps.org/
  */
+if(cRegistry::getBackendSessionId() === NULL) {
+    $client = cRegistry::getClientId();
+    $cfgClient = cRegistry::getClientConfig();
 
-$client = cRegistry::getClientId();
-$cfgClient = cRegistry::getClientConfig();
+    // get idcat of category to generate sitemap from
+    $idcatStart = "CMS_VALUE[1]";
+    $idcatStart = cSecurity::toInteger($idcatStart);
 
-// get idcat of category to generate sitemap from
-$idcatStart = "CMS_VALUE[1]";
-$idcatStart = cSecurity::toInteger($idcatStart);
-
-// get filename to save sitemap to (optional)
-$filename = "CMS_VALUE[2]";
-if (!empty($filename)) {
-    $filename = basename($filename);
-    // assert .xml extension
-    if (substr($filename, -4) !== '.xml') {
-        $filename .= '.xml';
-    }
-}
-
-try {
-
-    // check if this is a rerun (a cException will then be thrown)
-    // check is skipped when 'rerun' is forced
-    if (!empty($filename) && !array_key_exists('rerun', $_REQUEST)) {
-        checkJobRerun('xml_sitemap_' . cRegistry::getClient()->get('name') . '_' . cRegistry::getLanguage()->get('name'));
+    // get filename to save sitemap to (optional)
+    $filename = "CMS_VALUE[2]";
+    if (!empty($filename)) {
+        $filename = basename($filename);
+        // assert .xml extension
+        if (substr($filename, -4) !== '.xml') {
+            $filename .= '.xml';
+        }
     }
 
-    // get all categories recursively
-    $categoryCollection = new cApiCategoryCollection();
-    $categoryIds = $categoryCollection->getAllCategoryIdsRecursive($idcatStart, $client);
+    try {
 
-    $xmlString = <<<EOD
+        // check if this is a rerun (a cException will then be thrown)
+        // check is skipped when 'rerun' is forced
+        if (!empty($filename) && !array_key_exists('rerun', $_REQUEST)) {
+            checkJobRerun('xml_sitemap_' . cRegistry::getClient()->get('name') . '_' . cRegistry::getLanguage()->get('name') . '_' . cRegistry::getArticleLanguageId());
+        }
+
+        // get all categories recursively
+        $categoryCollection = new cApiCategoryCollection();
+        $categoryIds = $categoryCollection->getAllCategoryIdsRecursive($idcatStart, $client);
+
+        $xmlString = <<<EOD
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>
 EOD;
 
-    $sitemap = new SimpleXMLElement($xmlString);
+        $sitemap = new SimpleXMLElement($xmlString);
 
-    $itemCount = array();
+        $itemCount = array();
 
-    // loop all languages of current client
-    $clientLanguageCollection = new cApiClientLanguageCollection();
-    foreach ($clientLanguageCollection->getLanguagesByClient($client) as $currentIdlang) {
+        // loop all languages of current client
+        $clientLanguageCollection = new cApiClientLanguageCollection();
+        foreach ($clientLanguageCollection->getLanguagesByClient($client) as $currentIdlang) {
 
-        // skip nonexistant or incative languages
-        $language = new cApiLanguage($currentIdlang);
-        if (!$language->isLoaded() || '1' != $language->get('active')) {
-            continue;
-        }
-
-        // create copy of category ids
-        $arrayObject = new ArrayObject($categoryIds);
-        $currentCategoryIds = $arrayObject->getArrayCopy();
-
-        // filter the categories - category must be visible and public!
-        foreach ($currentCategoryIds as $key => $categoryId) {
-            $categoryLanguage = new cApiCategoryLanguage();
-            $categoryLanguage->loadByCategoryIdAndLanguageId($categoryId, $currentIdlang);
-            if ($categoryLanguage->get('visible') == false || $categoryLanguage->get('public') == false) {
-                unset($currentCategoryIds[$key]);
+            // skip nonexistant or incative languages
+            $language = new cApiLanguage($currentIdlang);
+            if (!$language->isLoaded() || '1' != $language->get('active')) {
+                continue;
             }
+
+            // create copy of category ids
+            $arrayObject = new ArrayObject($categoryIds);
+            $currentCategoryIds = $arrayObject->getArrayCopy();
+
+            // filter the categories - category must be visible and public!
+            foreach ($currentCategoryIds as $key => $categoryId) {
+                $categoryLanguage = new cApiCategoryLanguage();
+                $categoryLanguage->loadByCategoryIdAndLanguageId($categoryId, $currentIdlang);
+                if ($categoryLanguage->get('visible') == false || $categoryLanguage->get('public') == false) {
+                    unset($currentCategoryIds[$key]);
+                }
+            }
+
+            $itemCount[] = addArticlesToSitemap($sitemap, $currentCategoryIds, $currentIdlang);
         }
 
-        $itemCount[] = addArticlesToSitemap($sitemap, $currentCategoryIds, $currentIdlang);
-    }
+        // if there are items
+        if (0 < array_sum($itemCount)) {
+            // provide the possibility to alter the sitemap content
+            $sitemap = cApiCecHook::executeAndReturn('Contenido.Content.XmlSitemapCreate', $sitemap);
+        }
 
-    // if there are items
-    if (0 < array_sum($itemCount)) {
-        // provide the possibility to alter the sitemap content
-        $sitemap = cApiCecHook::executeAndReturn('Contenido.Content.XmlSitemapCreate', $sitemap);
+        // echo sitemap or write it to file with the specified filename
+        saveSitemap($sitemap, $filename);
+    } catch (cException $e) {
+        echo "\n\n[" . date('Y-m-d') . "] " . $e->getMessage() . "\n";
     }
-
-    // echo sitemap or write it to file with the specified filename
-    saveSitemap($sitemap, $filename);
-} catch (cException $e) {
-    echo "\n\n[" . date('Y-m-d') . "] " . $e->getMessage() . "\n";
 }
-
 /**
  * Reads timestamp from last job run and compares it to current timestamp.
  * If last run is less than 23h ago this script will be aborted. Elsethe
  * current timestamp is stored into job file.
  *
- * @param unknown_type $jobname
+ * @param string $jobname
  * @throws cException if job was already executed within last 23h
  */
 function checkJobRerun($jobname) {
@@ -136,8 +133,11 @@ function checkJobRerun($jobname) {
  * Add all online and searchable articles of theses categories to the sitemap.
  *
  * @param SimpleXMLElement $sitemap
+ * @param array $categoryIds
+ * @param int $lang
+ * @return int
  */
-function addArticlesToSitemap(SimpleXMLElement $sitemap, $categoryIds, $lang) {
+function addArticlesToSitemap(SimpleXMLElement $sitemap, array $categoryIds, $lang) {
     $itemCount = 0;
 
     // check if there are categories
@@ -270,7 +270,7 @@ function saveSitemap(SimpleXMLElement $sitemap, $filename = '') {
     if (empty($filename)) {
         header('Content-type: text/xml');
         echo $sitemap->asXML();
-    } else if ($sitemap->asXML($cfgClient[$client]['path']['frontend'] . $filename)) {
+    } else if ($sitemap->asXML(cRegistry::getFrontendPath() . $filename)) {
         echo conHtmlSpecialChars(mi18n("XML sitemap successfully written to %s", $filename));
     } else {
         echo conHtmlSpecialChars(mi18n("XML sitemap could not be written to %s", $filename));

@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the MySQL database driver for the generic db.
  *
  * @package Core
  * @subpackage GenericDB
- * @version SVN Revision $Rev:$
  *
  * @author Bjoern Behrens
  * @copyright four for business AG <www.4fb.de>
@@ -24,9 +24,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cGenericDbDriverMysql extends cGenericDbDriver {
 
     /**
-     * (non-PHPdoc)
-     *
      * @see cGenericDbDriver::buildJoinQuery()
+     * @param string $destinationTable
+     * @param string $destinationClass
+     * @param string $destinationPrimaryKey
+     * @param string $sourceClass
+     * @param string $primaryKey
+     * @return array
      */
     public function buildJoinQuery($destinationTable, $destinationClass, $destinationPrimaryKey, $sourceClass, $primaryKey) {
         // Build a regular LEFT JOIN
@@ -44,9 +48,11 @@ class cGenericDbDriverMysql extends cGenericDbDriver {
     }
 
     /**
-     * (non-PHPdoc)
-     *
      * @see cGenericDbDriver::buildOperator()
+     * @param string $sField
+     * @param string $sOperator
+     * @param string $sRestriction
+     * @return string
      */
     public function buildOperator($sField, $sOperator, $sRestriction) {
         $sOperator = strtolower($sOperator);

@@ -1,12 +1,12 @@
 <?php
+
 /**
  * This file contains the cContentTypeImgeditor class.
  *
  * @package Core
  * @subpackage ContentType
- * @version SVN Revision $Rev:$
- *
- * @author Fulai Zhang, Simon Sprankel
+ * @author Fulai Zhang
+ * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
@@ -97,20 +97,23 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     private $_copyright;
 
     /**
+     * Constructor to create an instance of this class.
+     *
      * Initialises class attributes and handles store events.
      *
-     * @param string $rawSettings the raw settings in an XML structure or as
-     *        plaintext
-     * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is
-     *        used
-     * @param array $contentTypes array containing the values of all content
-     *        types
+     * @param string $rawSettings
+     *         the raw settings in an XML structure or as plaintext
+     * @param int $id
+     *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
+     * @param array $contentTypes
+     *         array containing the values of all content types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-		global $area;
-	
-        // change attributes from the parent class and call the parent
-        // constructor
+
+        // TODO is this required?
+        global $area;
+
+        // set props
         $this->_type = 'CMS_IMGEDITOR';
         $this->_prefix = 'imgeditor';
         $this->_formFields = array(
@@ -121,15 +124,17 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             'image_internal_notice',
             'image_copyright'
         );
+
+        // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
 
-		// if form is submitted, store the current teaser settings
+        // if form is submitted, store the current teaser settings
         // notice: also check the ID of the content type (there could be more
         // than one content type of the same type on the same page!)
         if (isset($_POST[$this->_prefix . '_action']) && $_POST[$this->_prefix . '_action'] === 'store' && isset($_POST[$this->_prefix . '_id']) && (int) $_POST[$this->_prefix . '_id'] == $this->_id) {
             $this->_storeSettings();
         }
-		
+
         // get image information from con_upl from the database
         $upload = new cApiUpload($this->_rawSettings);
         $this->_filename = $upload->get('filename');
@@ -150,6 +155,58 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $this->_internalNotice = ($uploadMeta->get('internal_notice') !== false) ? $uploadMeta->get('internal_notice') : '';
         $this->_copyright = ($uploadMeta->get('copyright') !== false) ? $uploadMeta->get('copyright') : '';
 
+    }
+
+    /**
+     * Return the raw settings of a content type
+     *
+     * @param string $contentTypeName
+     *         Content type name
+     * @param int $id
+     *         ID of the content type
+     * @param array $contentTypes
+     *         Content type array
+     * @param bool $editable [optional]
+     * @return mixed
+     */
+    protected function _getRawSettings($contentTypeName, $id, array $contentTypes, $editable = false) {
+        $cfg = cRegistry::getConfig();
+
+        if (!isset($contentTypes[$contentTypeName][$id])) {
+            $idArtLang = cRegistry::getArticleLanguageId();
+            // get the idtype of the content type
+            $typeItem = new cApiType();
+            $typeItem->loadByType($contentTypeName);
+            $idtype = $typeItem->get('idtype');
+            // first load the appropriate content entry in order to get the
+            // settings
+            if ($editable == false) {
+                $content = new cApiContent();
+                $content->loadByMany(array(
+                    'idartlang' => $idArtLang,
+                    'idtype' => $idtype,
+                    'typeid' => $id
+                ));
+                return $content->get('value');
+            } else if ($editable == true) {
+                $db = cRegistry::getDb();
+                $sql = "SELECT max(version) AS max
+                        FROM " . $cfg["tab"]["content_version"]	. " WHERE idartlang = " . $idArtLang . " AND typeid = " . $id .
+                        " AND idtype = '" . $idtype . "'";
+                $db->query($sql);
+                while($db->nextRecord()) {
+                    $idContentVersion = $db->f('max');
+                }
+
+                $contentVersion = new cApiContentVersion($idContentVersion);
+
+                if ($contentVersion->get('deleted') != 1) {
+                    return $contentVersion->get('value');
+                }
+            }
+        } else {
+            return $contentTypes[$contentTypeName][$id];
+        }
     }
 
     /**
@@ -221,7 +278,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     /**
      * Generates the link to the image for use in the src attribute.
      *
-     * @return string the link to the image
+     * @return string
+     *         the link to the image
      */
     private function _generateImagePath() {
         if (!empty($this->_filename)) {
@@ -238,7 +296,6 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     /**
      * Stores all values from the $_POST array in the $_settings attribute
      * (associative array) and saves them in the database (XML).
-     *
      */
     protected function _storeSettings() {
         // prepare the filename and dirname
@@ -262,7 +319,10 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
 
         // save the content types
         conSaveContentEntry($this->_idArtLang, 'CMS_IMGEDITOR', $this->_id, $this->_rawSettings);
-        conMakeArticleIndex($this->_idArtLang, $this->_idArt);
+        $versioning = new cContentVersioning();
+        if ($versioning->getState() != 'advanced') {
+            conMakeArticleIndex($this->_idartlang, $this->_idart);
+        }
         conGenerateCodeForArtInAllCategories($this->_idArt);
 
         // insert / update meta data
@@ -299,8 +359,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * Generates the code which should be shown if this content type is shown in
      * the frontend.
      *
-     * @return string escaped HTML code which sould be shown if content type is
-     *         shown in frontend
+     * @return string
+     *         escaped HTML code which sould be shown if content type is shown in frontend
      */
     public function generateViewCode() {
         $image = new cHTMLImage($this->_imagePath);
@@ -312,8 +372,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     /**
      * Generates the code which should be shown if this content type is edited.
      *
-     * @return string escaped HTML code which should be shown if content type is
-     *         edited
+     * @return string
+     *         escaped HTML code which should be shown if content type is edited
      */
     public function generateEditCode() {
         // construct the top code of the template
@@ -378,7 +438,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * Generates code for the directories tab in which various settings can be
      * made.
      *
-     * @return string - the code for the directories tab
+     * @return string
+     *         the code for the directories tab
      */
     private function _generateTabDirectories() {
         // define a wrapper which contains the whole content of the directories
@@ -432,7 +493,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * Generates code for the meta tab in which the images's meta data can be
      * edited.
      *
-     * @return string - the code for the meta tab
+     * @return string
+     *         the code for the meta tab
      */
     private function _generateTabMeta() {
         // define a wrapper which contains the whole content of the meta tab
@@ -464,7 +526,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     /**
      * Generates code for the upload tab in which new images can be uploaded.
      *
-     * @return string - the code for the upload tab
+     * @return string
+     *         the code for the upload tab
      */
     private function _generateTabUpload() {
         // define a wrapper which contains the whole content of the upload tab
@@ -551,8 +614,11 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     /**
      * Generate a select box containing all files in the given directory.
      *
-     * @param string $directoryPath directory of the files
-     * @return string rendered cHTMLSelectElement
+     * @SuppressWarnings docBlocks
+     * @param string $directoryPath [optional]
+     *         directory of the files
+     * @return string
+     *         rendered cHTMLSelectElement
      */
     public function generateFileSelect($directoryPath = '') {
         // make sure the path ends with a slash
@@ -593,9 +659,9 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
 
         $i = 1;
         foreach($files as $file) {
-        	$htmlSelectOption = new cHTMLOptionElement($file["name"], $file["path"]);
-        	$htmlSelect->addOptionElement($i, $htmlSelectOption);
-        	$i++;
+            $htmlSelectOption = new cHTMLOptionElement($file["name"], $file["path"]);
+            $htmlSelect->addOptionElement($i, $htmlSelectOption);
+            $i++;
         }
 
         if ($i === 0) {
@@ -621,8 +687,10 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * information is the currently active directory.
      * Overwrite in subclasses if you use getDirectoryList!
      *
-     * @param array $dirData directory information
-     * @return boolean whether the directory is the currently active directory
+     * @param array $dirData
+     *         directory information
+     * @return bool
+     *         whether the directory is the currently active directory
      */
     protected function _isActiveDirectory(array $dirData) {
         return $dirData['path'] . $dirData['name'] . '/' === $this->_dirname;
@@ -633,8 +701,10 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * should be shown expanded.
      * Overwrite in subclasses if you use getDirectoryList!
      *
-     * @param array $dirData directory information
-     * @return boolean whether the directory should be shown expanded
+     * @param array $dirData
+     *         directory information
+     * @return bool
+     *         whether the directory should be shown expanded
      */
     protected function _shouldDirectoryBeExpanded(array $dirData) {
         return $this->_isSubdirectory($dirData['path'] . $dirData['name'], $this->_dirname);
@@ -643,9 +713,12 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     /**
      * Gets the meta data of the image with the given filename/dirname.
      *
-     * @param string $filename the filename of the image
-     * @param string $dirname the dirname of the image
-     * @return string JSON-encoded array with meta data
+     * @param string $filename
+     *         the filename of the image
+     * @param string $dirname
+     *         the dirname of the image
+     * @return string
+     *         JSON-encoded array with meta data
      */
     public function getImageMeta($filename, $dirname) {
         $upload = new cApiUpload();
@@ -676,11 +749,13 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * Creates an upload directory.
      * Wrapper function for uplmkdir in functions.upl.php.
      *
-     * @param string $path Path to directory to create, either path from client
-     *        upload
-     *        directory or a dbfs path
-     * @param string $name Name of directory to create
-     * @return string void value of filemode as string ('0702') or nothing
+     * @param string $path
+     *         Path to directory to create, either path from client upload
+     *         directory or a dbfs path
+     * @param string $name
+     *         Name of directory to create
+     * @return string|void
+     *         value of filemode as string ('0702') or nothing
      */
     public function uplmkdir($path, $name) {
         return uplmkdir($path, $name);
@@ -689,8 +764,10 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     /**
      * Uploads the transmitted files saved in the $_FILES array.
      *
-     * @param string $path the path to which the file should be uploaded
-     * @return string the filename of the uploaded file
+     * @param string $path
+     *         the path to which the file should be uploaded
+     * @return string
+     *         the filename of the uploaded file
      */
     public function uplupload($path) {
         if (count($_FILES) === 1) {

@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for the backend start page known as "My CONTENIDO".
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Jan Lengowski
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -56,7 +55,7 @@ if ($max_log_size === false) {
     $max_log_size = 10;
 }
 if (in_array('sysadmin', explode(',', $vuser->getEffectiveUserPerms())) && $max_log_size > 0) {
-    $log_size = getDirectorySize($cfg['path']['contenido_logs']);
+    $log_size = cDirHandler::getDirectorySize($cfg['path']['contenido_logs']);
     if ($log_size > $max_log_size * 1024 * 1024) {
         $page->displayWarning(i18n('The log directory is bigger than') . ' ' . humanReadableSize($max_log_size * 1024 * 1024) . '. ' . i18n('Current size') . ': ' . humanReadableSize($log_size));
     }
@@ -87,7 +86,7 @@ foreach ($faultyFolders as $folder) {
 
 $userid = $auth->auth['uid'];
 
-$page->set('s', 'WELCOME', '<b>' . i18n('Welcome') . ' </b>' . ($vuser->getRealname($userid, true) ? $vuser->getRealname($userid, true) : $vuser->getUserName($userid, true)) . '.');
+$page->set('s', 'WELCOME', '<b>' . i18n('Welcome') . ' </b>' . ($vuser->getRealName() ? $vuser->getRealName() : $vuser->getUserName()) . '.');
 $page->set('s', 'LASTLOGIN', i18n('Last login') . ': ' . $lastlogin);
 
 $clientCollection = new cApiClientCollection();
@@ -251,9 +250,9 @@ $page->set('s', 'NUMBER', $iNumberOfUsers);
 $oUpdateNotifier = new cUpdateNotifier($cfg, $vuser, $perm, $sess, $belang);
 $sUpdateNotifierOutput = $oUpdateNotifier->displayOutput();
 try {
-	$page->set('s', 'UPDATENOTIFICATION', mb_convert_encoding($sUpdateNotifierOutput, cRegistry::getLanguage()->get('encoding')));
+    $page->set('s', 'UPDATENOTIFICATION', mb_convert_encoding($sUpdateNotifierOutput, cRegistry::getLanguage()->get('encoding')));
 } catch (cInvalidArgumentException $e) {
-	$page->set('s', 'UPDATENOTIFICATION', $sUpdateNotifierOutput);
+    $page->set('s', 'UPDATENOTIFICATION', $sUpdateNotifierOutput);
 }
 
 $page->render();

@@ -19,8 +19,6 @@
  *
  * @package          Core
  * @subpackage       Tool
- * @version          SVN Revision $Rev:$
- *
  * @author           Murat Purc <murat@purc.de>
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -33,9 +31,8 @@ if (substr(PHP_SAPI, 0, 3) != 'cli') {
     die('Illegal call');
 }
 
-
-################################################################################
-##### Initialization/Settings
+// /////////////////////////////////////////////////////////////////////
+// Initialization/Settings
 
 // create a page context class, better than spamming global scope
 $context = new stdClass();
@@ -43,16 +40,14 @@ $context = new stdClass();
 // CONTENIDO installation path (folder which contains "cms", "contenido", "docs", "setup", etc...)
 $context->contenidoInstallPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../../')) . '/';
 
-
-################################################################################
-##### Proccess
+// /////////////////////////////////////////////////////////////////////
+// Proccess
 
 require_once 'PHP/CompatInfo.php';
 $context->info = new PHP_CompatInfo();
 $context->info->parseDir($context->contenidoInstallPath);
 
-
-################################################################################
-##### Shutdown
+// /////////////////////////////////////////////////////////////////////
+// Shutdown
 
 unset($context);

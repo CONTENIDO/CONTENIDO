@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the system settings backend page.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Timo Hummel
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -21,8 +20,8 @@ $aManagedValues = array(
     'versioning_prune_limit', 'update_check', 'update_news_feed', 'versioning_path', 'versioning_activated',
     'update_check_period', 'system_clickmenu', 'system_mail_host', 'system_mail_sender',
     'system_mail_sender_name', 'pw_request_enable', 'maintenance_mode', 'codemirror_activated',
-    'backend_preferred_idclient', 'generator_basehref', 'generator_xhtml',
-    'system_insite_editing_activated', 'backend_backend_label', 'backend_file_extensions', 'module_translation_message'
+    'backend_preferred_idclient', 'generator_basehref', 'generator_xhtml', 'system_insite_editing_activated',
+    'backend_backend_label', 'backend_file_extensions', 'module_translation_message', 'versioning_enabled'
 );
 
 // @TODO Find a general solution for this!
@@ -37,27 +36,27 @@ $isSysadmin = (false !== strpos($auth->auth["perm"], "sysadmin"));
 
 if ($action == "systemsettings_save_item") {
     if (false === $isSysadmin) {
-        $page->displayError(i18n("You don't have the permission to make changes here."), 1);
+        $page->displayError(i18n("You don't have the permission to make changes here."));
     } else {
         if (!in_array($request['systype'] . '_' . $request['sysname'], $aManagedValues)) {
             setSystemProperty($request['systype'], $request['sysname'], $request['sysvalue'], (int) $request['csidsystemprop']);
             if (isset($x)) {
-                $page->displayInfo(i18n('Saved changes successfully!'), 1);
+                $page->displayOk(i18n('Saved changes successfully!'));
             } else {
-                $page->displayInfo(i18n('Created new item successfully!'), 1);
+                $page->displayOk(i18n('Created new item successfully!'));
             }
         } else {
-            $page->displayWarning(i18n('Please set this property in systemsettings directly'), 1);
+            $page->displayWarning(i18n('Please set this property in systemsettings directly'));
         }
     }
 }
 
 if ($action == "systemsettings_delete_item") {
     if (false === $isSysadmin) {
-        $page->displayError(i18n("You don't have the permission to make changes here."), 1);
+        $page->displayError(i18n("You don't have the permission to make changes here."));
     } else {
         deleteSystemProperty($request['systype'], $request['sysname']);
-        $page->displayInfo(i18n('Deleted item successfully!'), 1);
+        $page->displayOk(i18n('Deleted item successfully!'));
     }
 }
 
@@ -105,24 +104,24 @@ foreach ($settings as $key => $types) {
                 $hidden = '<input type="hidden" name="csidsystemprop" value="' . $value['idsystemprop'] . '">';
                 $sSubmit = '<input type="image" class="vAlignMiddle" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif">';
 
-                $list->setCell($count, 1, $oInputboxType->render(true));
-                $list->setCell($count, 2, $oInputboxName->render(true));
-                $list->setCell($count, 3, $oInputboxValue->render(true) . $hidden . $sSubmit);
+                $list->setCell($count, 1, $oInputboxType->render());
+                $list->setCell($count, 2, $oInputboxName->render());
+                $list->setCell($count, 3, $oInputboxValue->render() . $hidden . $sSubmit);
             } else {
                 $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
 
                 if (strlen($type) > 35) {
-                    $sShort = conHtmlSpecialChars(cApiStrTrimHard($type, 35));
+                    $sShort = conHtmlSpecialChars(cString::trimHard($type, 35));
                     $type = sprintf($sMouseoverTemplate, conHtmlSpecialChars(addslashes($type), ENT_QUOTES), $sShort);
                 }
 
                 if (strlen($value['value']) > 35) {
-                    $sShort = conHtmlSpecialChars(cApiStrTrimHard($value['value'], 35));
+                    $sShort = conHtmlSpecialChars(cString::trimHard($value['value'], 35));
                     $value['value'] = sprintf($sMouseoverTemplate, conHtmlSpecialChars(addslashes($value['value']), ENT_QUOTES), $sShort);
                 }
 
                 if (strlen($key) > 35) {
-                    $sShort = conHtmlSpecialChars(cApiStrTrimHard($key, 35));
+                    $sShort = conHtmlSpecialChars(cString::trimHard($key, 35));
                     $key = sprintf($sMouseoverTemplate, conHtmlSpecialChars(addslashes($key), ENT_QUOTES), $sShort);
                 }
                 $sValue = !strlen(trim($value['value'])) ? '&nbsp;' : $value['value'];

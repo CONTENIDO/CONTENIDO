@@ -1,12 +1,11 @@
 <?php
+
 /**
  * This file contains the debug backend page.
  * TODO: check, if this file is used and if not, how it can be reintegrated into the backend
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Unknown
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -22,8 +21,7 @@ $areas = $areaList = $areaList->getAvailableAreas();
 $areaSelectTemplate= new cTemplate;
 $areaSelectTemplate->set('s', 'NAME', 'areaselect');
 
-foreach ($areas as $key => $value)
-{
+foreach ($areas as $key => $value) {
     $areaSelectTemplate->set('d', 'VALUE', $key);
     $areaSelectTemplate->set('d', 'CAPTION', $value['name']);
     $areaSelectTemplate->set('d', 'SELECTED', '');
@@ -38,8 +36,7 @@ $actions = $actionList = $actionList->getAvailableActions();
 $actionSelectTemplate= new cTemplate;
 $actionSelectTemplate->set('s', 'NAME', 'actionselect');
 
-foreach ($actions as $key => $value)
-{
+foreach ($actions as $key => $value) {
     $actionSelectTemplate->set('d', 'VALUE', $key);
     $actionSelectTemplate->set('d', 'CAPTION', $value['name']);
     $actionSelectTemplate->set('d', 'SELECTED','');
@@ -48,35 +45,29 @@ foreach ($actions as $key => $value)
 
 $actionSelector = $actionSelectTemplate->generate($cfg['path']['templates'].$cfg['templates']['generic_select'], true);
 
-if ($querytype == "areaactionitem")
-{
+if ($querytype == "areaactionitem") {
     $res = $perm->have_perm_area_action_item($areaselect, $actionselect, $itemid);
 
-    if ($res)
-    {
+    if ($res) {
         $result = "has right for have_perm_area_action_item($areaselect, $actionselect, $itemid)";
     } else {
         $result = "has no right for have_perm_area_action_item($areaselect, $actionselect, $itemid)";
     }
 }
 
-if ($querytype == "areaaction")
-{
+if ($querytype == "areaaction") {
     $res = $perm->have_perm_area_action($areaselect, $actionselect);
 
-    if ($res)
-    {
+    if ($res) {
         $result = "has right for have_perm_area_action($areaselect, $actionselect)";
     } else {
         $result = "has no right for have_perm_area_action($areaselect, $actionselect)";
     }
 }
-if ($querytype == "area")
-{
+if ($querytype == "area") {
     $res = $perm->have_perm_area_action($areaselect, 0);
 
-    if ($res)
-    {
+    if ($res) {
         $result = "has right for have_perm_area_action($areaselect, 0)";
     } else {
         $result = "has no right for have_perm_area_action($areaselect, 0)";
@@ -102,4 +93,5 @@ echo "<input type='radio' name='querytype' value='areaaction'>have_perm_area_act
 echo "<input type='radio' name='querytype' value='area'>have_perm_area_action without action (i.e. area access right)<br>";
 echo "<input type='submit'><br><br>Result:<br>";
 echo "<textarea rows=20 cols=80>$result</textarea></form>";
+
 ?>

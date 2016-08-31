@@ -1,4 +1,4 @@
-/*
+/**
  *  md5.jvs 1.0b 27/06/96
  *
  * Javascript implementation of the RSA Data Security, Inc. MD5
@@ -16,23 +16,27 @@
  *
  * $Id$
  *
+ * @deprecated [2015-05-21] This file is no longer supported
  */
-
-
 
 function array(n) {
   for(i=0;i<n;i++) this[i]=0;
   this.length=n;
 }
 
-/* Some basic logical functions had to be rewritten because of a bug in
+/**
+ * Some basic logical functions had to be rewritten because of a bug in
  * Javascript.. Just try to compute 0xffffffff >> 4 with it..
  * Of course, these functions are slower than the original would be, but
  * at least, they work!
+ * 
+ * @deprecated [2015-05-21] This file is no longer supported
  */
-
 function integer(n) { return n%(0xffffffff+1); }
 
+/**
+ * @deprecated [2015-05-21] This file is no longer supported
+ */
 function shr(a,b) {
   a=integer(a);
   b=integer(b);
@@ -45,6 +49,9 @@ function shr(a,b) {
   return a;
 }
 
+/**
+ * @deprecated [2015-05-21] This file is no longer supported
+ */
 function shl1(a) {
   a=a%0x80000000;
   if (a&0x40000000==0x40000000)
@@ -57,6 +64,9 @@ function shl1(a) {
   return a;
 }
 
+/**
+ * @deprecated [2015-05-21] This file is no longer supported
+ */
 function shl(a,b) {
   a=integer(a);
   b=integer(b);
@@ -64,6 +74,9 @@ function shl(a,b) {
   return a;
 }
 
+/**
+ * @deprecated [2015-05-21] This file is no longer supported
+ */
 function and(a,b) {
   a=integer(a);
   b=integer(b);
@@ -81,6 +94,9 @@ function and(a,b) {
       return (a&b);
 }
 
+/**
+ * @deprecated [2015-05-21] This file is no longer supported
+ */
 function or(a,b) {
   a=integer(a);
   b=integer(b);
@@ -98,6 +114,9 @@ function or(a,b) {
       return (a|b);
 }
 
+/**
+ * @deprecated [2015-05-21] This file is no longer supported
+ */
 function xor(a,b) {
   a=integer(a);
   b=integer(b);
@@ -115,6 +134,9 @@ function xor(a,b) {
       return (a^b);
 }
 
+/**
+ * @deprecated [2015-05-21] This file is no longer supported
+ */
 function not(a) {
   a=integer(a);
   return (0xffffffff-a);
@@ -345,7 +367,9 @@ function not(a) {
     }
 
 /* End of the MD5 algorithm */
-
+/**
+ * @deprecated [2015-05-21] This file is no longer supported
+ */
 function hexa(n) {
  var hexa_h = "0123456789abcdef";
  var hexa_c="";
@@ -362,6 +386,9 @@ var ascii="01234567890123456789012345678901" +
           " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ"+
           "[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
 
+/**
+ * @deprecated [2015-05-21] This file is no longer supported
+ */
 function MD5(entree)
 {
  var l,s,k,ka,kb,kc,kd;

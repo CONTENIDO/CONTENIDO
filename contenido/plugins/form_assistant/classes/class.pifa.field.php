@@ -4,8 +4,7 @@
  *
  * @package Plugin
  * @subpackage FormAssistant
- * @version SVN Revision $Rev:$
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  * @copyright four for business AG
  * @link http://www.4fb.de
  */
@@ -17,7 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * PIFA field item collection class.
  * It's a kind of a model.
  *
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
 class PifaFieldCollection extends ItemCollection {
 
@@ -58,7 +57,7 @@ class PifaFieldCollection extends ItemCollection {
  * PIFA field item class.
  * It's a kind of a model.
  *
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
 class PifaField extends Item {
 
@@ -287,7 +286,7 @@ class PifaField extends Item {
 
     /**
      *
-     * @param mixed $_value
+     * @param mixed $value
      */
     public function setValue($value) {
         $this->_value = $value;
@@ -507,7 +506,6 @@ class PifaField extends Item {
      * has to be the fields column name which is set if the form is displayed
      * for the first time and user hasn't entered another value.
      *
-     * @param bool $error if field elem should be displayed as erroneous
      * @throws PifaNotImplementedException if field type is not implemented
      * @return cHTMLTextbox cHTMLTextarea cHTMLPasswordbox cHTMLSpan
      *         cHTMLSelectElement NULL cHTMLButton
@@ -566,12 +564,12 @@ class PifaField extends Item {
         // if no current value is given
         if (NULL === $value) {
             // the fields default value is used
-            $value = conHtmlEntities($this->get('default_value'));
+            $value = conHtmlentities($this->get('default_value'));
             // which could be overwritten by a GET param
             if (array_key_exists($columnName, $_GET)) {
                 $value = $_GET[$columnName];
                 // try to prevent XSS ... the lazy way ...
-                $value = conHtmlEntities($value, ENT_COMPAT | ENT_HTML401, 'UTF-8');
+                $value = conHtmlentities($value, ENT_COMPAT | ENT_HTML401, 'UTF-8');
             }
         }
 
@@ -812,10 +810,12 @@ class PifaField extends Item {
                 $sel = '#pifa-field-elm-' . $idfield;
                 // dateFormat: 'yy-mm-dd', // could be different
                 // altFormat as ISO_8601
-                $script = "jQuery(function(){ jQuery('$sel').datepicker({
-                    altFormat: 'yy-mm-dd',
-                    altField: '$sel-hidden'
-                });});";
+                $script = "if (typeof jQuery == \"function\") {
+                	jQuery(function(){ jQuery('$sel').datepicker({
+                    	altFormat: 'yy-mm-dd',
+                    	altField: '$sel-hidden'
+                	});});
+                }";
                 break;
             // case self::CAPTCHA:
             // $sel = '#pifa-field-' . $idfield . ' label';
@@ -893,7 +893,7 @@ class PifaField extends Item {
     /**
      * Return the field type name for the given field type id.
      *
-     * @param int $fieldType
+     * @param int $fieldTypeId
      * @return string
      */
     public static function getFieldTypeName($fieldTypeId) {
@@ -912,7 +912,6 @@ class PifaField extends Item {
     /**
      * Return this fields type name.
      *
-     * @param int $fieldType
      * @return string
      */
     public function getMyFieldTypeName() {

@@ -4,8 +4,6 @@
  *
  * @package    Plugin
  * @subpackage ContentAllocation
- * @version    SVN Revision $Rev:$
- *
  * @author     Marco Jahn
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,21 +23,53 @@ plugin_include('repository', 'custom/FrontendNavigation.php');
  */
 class pApiContentAllocationArticle extends pApiTree {
 
-    var $tpl = NULL;
-    var $template = '';
+    /**
+     * @var object cTemplate
+     */
+    protected $_tpl = null;
 
-    var $load = array();
+    /**
+     * @var string
+     */
+    protected $_template = '';
 
-    function pApiContentAllocationArticle ($uuid) {
-        global $cfg;
+    /**
+     * @var array
+     */
+    protected $_load = array();
 
-        parent::pApiTree($uuid);
-        $this->tpl = new cTemplate;
-        $this->template = $cfg['pica']['treetemplate_article'];
+    /**
+     * pApiContentAllocationArticle constructor
+     *
+     * @param string $uuid
+     */
+    public function __construct($uuid) {
+        $cfg = cRegistry::getConfig();
+
+        parent::__construct($uuid);
+        $this->_tpl = new cTemplate();
+        $this->_template = $cfg['pica']['treetemplate_article'];
     }
 
-    function _buildRenderTree ($tree) {
-        global $action, $frame, $area, $sess, $idart;
+    /**
+     * Old constructor
+     *
+     * @deprecated [2016-02-11]
+     * 				This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     * @param string $uuid
+     */
+    public function pApiContentAllocationArticle($uuid) {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
+        return $this->__construct($uuid);
+    }
+
+    /**
+     * Builed an render tree
+     *
+     * @param $tree
+     * @return array
+     */
+    protected function _buildRenderTree($tree) {
 
         $result = array();
         foreach ($tree as $item_tmp) {
@@ -54,7 +84,7 @@ class pApiContentAllocationArticle extends pApiTree {
 
             // set checked!
             $checked = '';
-            if (in_array($item_tmp['idpica_alloc'], $this->load)) {
+            if (in_array($item_tmp['idpica_alloc'], $this->_load)) {
                 $checked = ' checked="checked"';
             }
             $item['CHECKBOX'] = '<input type="checkbox" name="allocation[]" value="'.$item_tmp['idpica_alloc'].'" '.$checked.'>';
@@ -70,12 +100,23 @@ class pApiContentAllocationArticle extends pApiTree {
         return $result;
     }
 
-    function setChecked($load) {
-        $this->load = $load;
+    /**
+     * Set method for load
+     *
+     * @param array $load
+     */
+    public function setChecked($load) {
+        $this->_load = $load;
     }
 
-    function renderTree ($return = true) {
-        $this->tpl->reset();
+    /**
+     * Render tree
+     *
+     * @param boolean $return
+     * @return boolean|object
+     */
+    function renderTree($return = true) {
+        $this->_tpl->reset();
 
         $tree = $this->fetchTree();
         if ($tree === false) {
@@ -88,21 +129,20 @@ class pApiContentAllocationArticle extends pApiTree {
         foreach ($tree as $item) {
             $even = !$even;
             $bgcolor = ($even) ? '#FFFFFF' : '#F1F1F1';
-            $this->tpl->set('d', 'BACKGROUND_COLOR', $bgcolor);
+            $this->_tpl->set('d', 'BACKGROUND_COLOR', $bgcolor);
             foreach ($item as $key => $value) {
-                $this->tpl->set('d', $key, $value);
+                $this->_tpl->set('d', $key, $value);
             }
-            $this->tpl->next();
+            $this->_tpl->next();
         }
 
-        $this->tpl->set('s', "CATEGORY", i18n("Category", 'content_allocation'));
+        $this->_tpl->set('s', "CATEGORY", i18n("Category", 'content_allocation'));
 
         if ($return === true) {
-            return $this->tpl->generate($this->template, true);
+            return $this->_tpl->generate($this->_template, true);
         } else {
-            $this->tpl->generate($this->template);
+            $this->_tpl->generate($this->_template);
         }
     }
 }
-
 ?>

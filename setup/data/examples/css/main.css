@@ -598,81 +598,6 @@ p+.button.red {
     margin: 5px 0 20px 0;
 }
 
-/* ----- GALERY ----- */
-.galery {
-    width: 700px;
-}
-
-.galery .source {
-    display: none;
-}
-
-.galery .slider,.galery .pagination {
-    display: inline;
-}
-
-.galery .slider li,.galery .pagination li {
-    list-style: none;
-    float: left;
-}
-
-.galery .slider li {
-    width: 319px;
-    height: 194px;
-    border: 3px solid #ccc;
-    margin-bottom: 20px;
-    overflow: hidden;
-    margin-top: 1px;
-}
-
-.galery .slider li img {
-    width: 319px;
-}
-
-.galery .slider li.odd {
-    margin-left: 20px;
-}
-
-.galery .pagination li+li {
-    margin-left: 2px;
-}
-
-.galery .pagination li a {
-    text-decoration: none;
-    padding: 2px 5px;
-    border: 2px solid transparent;
-    display: block;
-    margin-bottom: 20px;
-    color: #797979;
-}
-
-.galery .pagination li a.active {
-    border: 2px solid #ccc;
-    color: #0083cb;
-}
-
-.lightbox .next_image,
-.lightbox .prev_image {
-    position: absolute;
-    outline-style: none;
-    z-index: 1004;
-    display: block;
-    height: 30px;
-    width: 40px;
-    background: #fff;
-    opacity: 0.7;
-    border-radius: 9px;
-    line-height: 30px;
-    text-align: center;
-    top: 50%;
-    margin-top: -18px;
-    margin-left: 5px;
-    text-decoration: none;
-}
-.lightbox .next_image {
-    right: 5px;
-}
-
 /* ----- LINKLIST ----- */
 div.link_list {
     margin-top: 40px;
@@ -689,10 +614,6 @@ ul.link_list {
 ul.link_list li {
     list-style: none;
     margin: 0 0 18px;
-}
-
-ul.link_list li:hover a.link_list:first-child {
-	background
 }
 
 ul.link_list li a.link_list:first-child {

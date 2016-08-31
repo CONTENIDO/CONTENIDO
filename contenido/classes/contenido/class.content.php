@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the content collection and item class.
  *
  * @package          Core
  * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
- *
  * @author           Dominik Ziegler
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -24,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiContentCollection extends ItemCollection {
 
     /**
-     * Create a new collection of items.
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -44,9 +43,9 @@ class cApiContentCollection extends ItemCollection {
      * @param int $typeId
      * @param string $value
      * @param int $version
-     * @param string $author
-     * @param string $created
-     * @param string $lastmodified
+     * @param string $author [optional]
+     * @param string $created [optional]
+     * @param string $lastmodified [optional]
      * @return cApiContent
      */
     public function create($idArtLang, $idType, $typeId, $value, $version, $author = '', $created = '', $lastmodified = '') {
@@ -89,9 +88,10 @@ class cApiContentCollection extends ItemCollection {
 class cApiContent extends Item {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId [optional]
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -107,8 +107,10 @@ class cApiContent extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
-     * @todo should return return value of overloaded method
+     * @param bool $bSafe [optional]
+     *         Flag to run defined inFilter on passed value
+     *
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
@@ -120,7 +122,24 @@ class cApiContent extends Item {
                 break;
         }
 
-        parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $bSafe);
+    }
+
+    /**
+     * Creates a new, editable Version with same properties as this Content
+     *
+     * @param string $version
+     * @param mixed $deleted
+     */
+    public function markAsEditable($version, $deleted) {
+            $parameters = $this->values;
+            $parameters['version'] = $version;
+            $contentVersionColl = new cApiContentVersionCollection();
+            $contentVersion = $contentVersionColl->create($parameters);
+            if ($deleted == 1) {
+                    $contentVersion->set('deleted', $deleted);
+            }
+            $contentVersion->store();
     }
 
     /**

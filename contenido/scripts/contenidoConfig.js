@@ -4,7 +4,6 @@
  * Main CONTENIDO JavaScript module.
  *
  * @module     config
- * @version    SVN Revision $Rev$
  * @requires   jQuery, Con
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
@@ -298,8 +297,5 @@
     };
 
     Con.Config = Config;
-
-    // @deprecated [2013-10-15] Downwards compatibility
-    window.contenidoConfig = Config;
 
 })(Con, Con.$);

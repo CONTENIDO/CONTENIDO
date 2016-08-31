@@ -5,8 +5,6 @@
  *
  * @package Setup
  * @subpackage UpgradeJob
- * @version SVN Revision $Rev:$
- *
  * @author marcus.gnass
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -43,13 +41,5 @@ class cUpgradeJob_0011 extends cUpgradeJobAbstract {
                     DEFAULT NULL
                     COMMENT \'URI for image buttons\';');
         }
-    }
-
-    private function _addColumnToPifa() {
-
-    }
-
-    private function _generatePluginRelations() {
-
     }
 }

@@ -1,7 +1,6 @@
 /**
  * CONTENIDO JavaScript upl_files_overview.js module
  *
- * @version    SVN Revision $Rev: 5937 $
  * @author     ???
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt

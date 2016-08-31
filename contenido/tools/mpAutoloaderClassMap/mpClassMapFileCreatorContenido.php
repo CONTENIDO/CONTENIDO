@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Contains class to create a class map file.
  *
@@ -27,12 +28,20 @@ include_once('mpClassMapFileCreator.php');
  * @package     mpAutoloaderClassMap
  * @author        Murat Purc <murat@purc.de>
  */
-class mpClassMapFileCreatorContenido extends mpClassMapFileCreator
-{
+class mpClassMapFileCreatorContenido extends mpClassMapFileCreator {
+
+    /**
+     *
+     * @var string
+     */
     private $_contenidoInstallPath;
 
-    public function __construct($contenidoInstallPath)
-    {
+    /**
+     *
+     * @param string $contenidoInstallPath
+     */
+    public function __construct($contenidoInstallPath)     {
+
         parent::__construct();
 
         $this->_contenidoInstallPath = $contenidoInstallPath;
@@ -83,18 +92,18 @@ class mpClassMapFileCreatorContenido extends mpClassMapFileCreator
         $this->_data->since         = 'file available since CONTENIDO release >= 4.9.0';
     }
 
-
     /**
      * Creates classmap file with passed data list. Prepares the classmap entries
      * before passing them to parents create function.
      *
-     * @param   array  $data   Assoziative list which contains class type tokens and
-     *                         the related path to the class file.
-     * @param   string  $file  Destination class map file
-     * @return  bool
+     * @param array $data
+     *         Assoziative list which contains class type tokens
+     *         and the related path to the class file.
+     * @param string $file
+     *         Destination class map file
+     * @return bool
      */
-    public function create(array $data, $file)
-    {
+    public function create(array $data, $file) {
         // remove path from root to CONTENIDO installation
         foreach ($data as $k => $v) {
             $data[$k] = str_replace($this->_contenidoInstallPath, '', $v);

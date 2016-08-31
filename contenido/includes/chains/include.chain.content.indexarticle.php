@@ -6,9 +6,7 @@
  *
  * @package Core
  * @subpackage Chain
- * @version SVN Revision $Rev:$
- *
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
@@ -21,8 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Generate index of article content entries.
  *
- * @param array $articleIds containing keys idclient, idlang, idcat, idcatlang,
- *            idart, idartlang
+ * @param array $articleIds
+ *         containing keys idclient, idlang, idcat, idcatlang, idart, idartlang
  */
 function cecIndexArticle(array $articleIds) {
 

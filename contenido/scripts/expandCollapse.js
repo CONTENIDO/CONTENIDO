@@ -1,9 +1,15 @@
+/**
+ * @deprecated [2015-05-21] This file is no longer supported
+ */
 
 var sExpandString = '';
 var sCollapseString = '';
 var sCollapseButton = './images/close_all.gif';
 var sExpandButton = './images/open_all.gif';
 
+/**
+ * @deprecated [2015-05-21] This file is no longer supported
+ */
 function init(transOpen, transClose) {
     sCollapseString = transClose;
     sExpandString = transOpen;
@@ -36,6 +42,9 @@ function init(transOpen, transClose) {
     }
 }
 
+/**
+ * @deprecated [2015-05-21] This file is no longer supported
+ */
 function changeVisibility (sIdClicked, iLevel, iIdCat) {
     var sDisplay = '';
     var aIdsClicked = sIdClicked.split('_');

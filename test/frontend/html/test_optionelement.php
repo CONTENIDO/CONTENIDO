@@ -1,8 +1,6 @@
 <?PHP
 /**
  *
- * @version SVN Revision $Rev:$
- *
  * @author claus.schunk@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -17,19 +15,19 @@ class cHtmlOptionElementTest extends PHPUnit_Framework_TestCase {
         $this->assertSame(2, count($option->getAttributes()));
 
         $option = new cHTMLOptionElement('testTitle', 'testValue', true);
-        $option->toHTML();
+        $option->toHtml();
         $this->assertSame('testValue', $option->getAttribute('value'));
         $this->assertSame('testTitle', PHPUnit_Framework_Assert::readAttribute($option, '_content'));
         $this->assertSame(3, count($option->getAttributes()));
 
         $option = new cHTMLOptionElement('testTitle', 'testValue', false, false);
-        $option->toHTML();
+        $option->toHtml();
         $this->assertSame('testTitle', PHPUnit_Framework_Assert::readAttribute($option, '_content'));
         $this->assertSame('testValue', $option->getAttribute('value'));
         $this->assertSame(2, count($option->getAttributes()));
 
         $option = new cHTMLOptionElement('testTitle', 'testValue', true, true, 'testClass');
-        $option->toHTML();
+        $option->toHtml();
         $this->assertSame(5, count($option->getAttributes()));
         $this->assertSame('testTitle', PHPUnit_Framework_Assert::readAttribute($option, '_content'));
         $this->assertSame('testValue', $option->getAttribute('value'));
@@ -82,7 +80,7 @@ class cHtmlOptionElementTest extends PHPUnit_Framework_TestCase {
 
     public function testToHtml() {
         $option = new cHTMLOptionElement('testTitle', 'testValue', false, false);
-        $this->assertSame($option->toHTML(), $option->toHtml());
+        $this->assertSame($option->toHtml(), $option->toHtml());
     }
 
 }

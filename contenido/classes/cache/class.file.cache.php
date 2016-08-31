@@ -1,46 +1,51 @@
 <?php
+
 /**
  * This file contains the file cache class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Cache
- * @version    SVN Revision $Rev:$
- *
- * @author     Dominik Ziegler
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Dominik Ziegler
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This class contains functions for the file cache in CONTENIDO.
+ * This class contains functions for the CONTENIDO file cache.
  *
- * @package    Core
+ * @package Core
  * @subpackage Cache
  */
 class cFileCache {
+
     /**
      * Options for the cache.
+     *
      * @var array
      */
     protected $_options = array();
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
      *
-     * @param array $options array with options for the cache (optional, default: empty array)
+     * @param array $options [optional]
+     *         array with options for the cache (optional, default: empty array)
      */
     public function __construct($options = array()) {
         $this->setOptions($options);
     }
 
     /**
-     * Setter for the cache options. Validates incoming options and sets the default of the missing options.
+     * Setter for the cache options.
      *
-     * @param array $options array with option
+     * Validates incoming options and sets the default of the missing options.
+     *
+     * @param array $options
+     *         array with option
      */
     public function setOptions($options) {
         // complete all options
@@ -78,10 +83,12 @@ class cFileCache {
     /**
      * Generates the filename based on set options.
      *
-     * @param string $id    cache ID
-     * @param string $group cache group
-     *
-     * @return string filename
+     * @param string $id
+     *         cache ID
+     * @param string $group [optional]
+     *         cache group
+     * @return string
+     *         filename
      */
     public function generateFileName($id, $group = '') {
         $id = ($this->_options['fileNameProtection'] === true) ? md5($id) : $id;
@@ -95,6 +102,7 @@ class cFileCache {
 
     /**
      * Validates the caching directory and throws exception on error.
+     *
      * @throws cInvalidArgumentException
      */
     protected function _validateDirectory() {
@@ -113,12 +121,14 @@ class cFileCache {
     }
 
     /**
-     * Returns full destination to the cache file.
+     * Returns full destination to the cached file.
      *
-     * @param string $id    cache ID
-     * @param string $group cache group
-     *
-     * @return string full filename
+     * @param string $id
+     *         cache ID
+     * @param string $group [optional]
+     *         cache group
+     * @return string
+     *         full filename
      */
     public function getDestination($id, $group = '') {
         $this->_validateDirectory();
@@ -130,12 +140,16 @@ class cFileCache {
     }
 
     /**
-     * Return content of a specific cache stored in filesystem. If not cached, false is returned.
+     * Return content of a specific cache stored in filesystem.
      *
-     * @param string $id    cache ID
-     * @param string $group cache group
+     * If not cached, false is returned.
      *
-     * @return bool|string content or false
+     * @param string $id
+     *         cache ID
+     * @param string $group [optional]
+     *         cache group
+     * @return bool|string
+     *         content or false
      */
     public function get($id, $group = '') {
         $data = false;
@@ -146,7 +160,7 @@ class cFileCache {
             return false;
         }
 
-        $refreshTime = ($this->_options['lifetime'] == 0) ? 0 : time() - (int)$this->_options['lifetime'];
+        $refreshTime = ($this->_options['lifetime'] == 0) ? 0 : time() - (int) $this->_options['lifetime'];
 
         clearstatcache();
         $info = cFileHandler::info($destination);
@@ -162,11 +176,14 @@ class cFileCache {
     /**
      * Saves the content of a cache in filesystem.
      *
-     * @param string $data  data to save
-     * @param string $id    cache ID
-     * @param string $group cache group
-     *
-     * @return bool success state
+     * @param string $data
+     *         data to save
+     * @param string $id
+     *         cache ID
+     * @param string $group [optional]
+     *         cache group
+     * @return bool
+     *         success state
      */
     public function save($data, $id, $group = '') {
         return cFileHandler::write($this->getDestination($id, $group), $data);
@@ -175,10 +192,12 @@ class cFileCache {
     /**
      * Removes cache from filesystem.
      *
-     * @param string $id    cache ID
-     * @param string $group cache group
-     *
-     * @return bool success state
+     * @param string $id
+     *         cache ID
+     * @param string $group [optional]
+     *         cache group
+     * @return bool
+     *         success state
      */
     public function remove($id, $group = '') {
         $destination = $this->getDestination($id, $group);
@@ -192,11 +211,13 @@ class cFileCache {
     /**
      * Generates a ID for the given variables.
      *
-     * @param mixed $variables variables to generate a ID for
-     *
-     * @return string generated ID
+     * @param mixed $variables
+     *         variables to generate a ID for
+     * @return string
+     *         generated ID
      */
     public function generateID($variables) {
         return md5(serialize($variables));
     }
+
 }

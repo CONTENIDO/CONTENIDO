@@ -1,8 +1,6 @@
 <?PHP
 /**
  *
- * @version SVN Revision $Rev:$
- *
  * @author claus.schunk@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -20,7 +18,7 @@ class cHtmlListItemTest extends PHPUnit_Framework_TestCase {
     public function testConstruct() {
         $cListItem = new cHTMLListItem('testId', 'testClass');
 
-        $this->assertSame('<li id="testId" class="testClass"></li>', $cListItem->toHTML());
+        $this->assertSame('<li id="testId" class="testClass"></li>', $cListItem->toHtml());
     }
 
 }

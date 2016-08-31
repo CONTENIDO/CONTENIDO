@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the cHTMLHiddenField class.
  *
  * @package Core
  * @subpackage GUI_HTML
- * @version SVN Revision $Rev:$
  *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
@@ -25,12 +25,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHTMLHiddenField extends cHTMLFormElement {
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
+     *
      * Creates an HTML hidden field.
      *
-     * @param string $name Name of the element
-     * @param string $value Title of the button
-     * @param string $id ID of the element
+     * @param string $name
+     *         Name of the element
+     * @param string $value [optional]
+     *         Title of the button
+     * @param string $id [optional]
+     *         ID of the element
      */
     public function __construct($name, $value = '', $id = '') {
         parent::__construct($name, $id);
@@ -44,8 +48,10 @@ class cHTMLHiddenField extends cHTMLFormElement {
     /**
      * Sets the value for the field
      *
-     * @param string $value Value of the field
-     * @return cHTMLHiddenField $this
+     * @param string $value
+     *         Value of the field
+     * @return cHTMLHiddenField
+     *         $this for chaining
      */
     public function setValue($value) {
         $this->updateAttribute('value', $value);

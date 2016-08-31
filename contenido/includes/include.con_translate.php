@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the mass module translation backend page in content area.
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Ingo van Peeren
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -20,6 +19,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cGuiScrollListAlltranslations extends cGuiScrollList {
 
+    /**
+     * Constructor to create an instance of this class.
+     */
     function __construct() {
         parent::__construct(false);
         $this->objTable->setClass("generic alltranslations");
@@ -31,7 +33,8 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
     /**
      * Is called when a new row is rendered
      *
-     * @param $row The current row which is being rendered
+     * @param unknown_type $row
+     *         The current row which is being rendered
      */
     public function onRenderRow($row) {
     }
@@ -39,7 +42,8 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
     /**
      * Is called when a new column is rendered
      *
-     * @param $column The current column which is being rendered
+     * @param int $column
+     *         The current column which is being rendered
      */
     public function onRenderColumn($column) {
         $iColums = count($this->data[0]);
@@ -69,8 +73,10 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
     /**
      * Sorts the list by a given field and a given order.
      *
-     * @param $field Field index
-     * @param $order Sort order (see php's sort documentation)
+     * @param int $field
+     *         Field index
+     * @param string $order
+     *         Sort order (see php's sort documentation)
      */
     public function sort($field, $order) {
         if ($order == "") {
@@ -107,7 +113,7 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
  * Adds sorting images to string
  *
  * @param int $index
- * @param string $sText
+ * @param string $text
  * @return string
  */
 function addSortImages($index, $text) {
@@ -158,6 +164,9 @@ $elemPerPage = array(
     25 => "25",
     50 => "50"
 );
+
+// Set noResults variable standard to false (= results available)
+$noResults = false;
 
 $db = cRegistry::getDb();
 
@@ -222,7 +231,7 @@ if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST['page']) || $_REQUEST['pa
 if ($action == 'con_translate_edit') {
     $error = false;
 
-    $savetranslations = $_REQUEST["modtrans"];
+    $savetranslations = $_REQUEST['modtrans'];
     if (is_array($savetranslations)) {
         foreach ($savetranslations as $idmod => $savemodtranslations) {
 
@@ -251,10 +260,12 @@ if ($action == 'con_translate_edit') {
         }
     }
 
-    if (!$error) {
-        $page->displayInfo(i18n('Saved translation successfully!'));
-    } else {
-        $page->displayError(i18n("Can't save translation!"));
+    if (!empty($_POST['modtrans'])) {
+        if (!$error) {
+            $page->displayOk(i18n('Saved translation successfully!'));
+        } else {
+            $page->displayError(i18n("Can't save translation!"));
+        }
     }
 }
 
@@ -278,6 +289,7 @@ while ($db->nextRecord()) {
         // Get the strings from translation file
         $contenidoTranslateFromFile = new cModuleFileTranslation($idmod, false, $idlang);
         $fileTranslations = $contenidoTranslateFromFile->getTranslationArray();
+
         $translations = array();
         foreach ($fileTranslations as $key => $value) {
             $hash = $idmod . '_' . md5($key);
@@ -366,6 +378,11 @@ if ($search != '' || ($filter != '' && $filter != -1)) {
             unset($allTranslations[$hash]);
         }
     }
+}
+
+if (empty($allTranslations)) {
+	$page->displayInfo(i18n("Can not find some module translations for your selection."));
+	$noResults = true;
 }
 
 unset($strings);
@@ -493,7 +510,7 @@ $searchInput = new cHTMLTextbox('search', $search, 20);
 
 $searchSubmit = ' <input type="image" name="searchsubmit" class="vAlignTop" value="submit" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'but_preview.gif">';
 
-$formSearch->SetContent($filterSelect . $searchInput->render() . $searchSubmit);
+$formSearch->setContent($filterSelect . $searchInput->render() . $searchSubmit);
 
 // The list of translations
 $list = new cGuiScrollListAlltranslations();
@@ -566,8 +583,8 @@ foreach ($allTranslations as $hash => $translationArray) {
 
             $idExtraLangCount = 0;
             foreach ($extraLanguages as $idExtraLangTemp) {
-            	$linkEdit->setCustom("extralang[$idExtraLangCount]", $idExtraLangTemp);
-            	$idExtraLangCount++;
+                $linkEdit->setCustom("extralang[$idExtraLangCount]", $idExtraLangTemp);
+                $idExtraLangCount++;
             }
 
             $sLinkEdit = ' ' . $linkEdit->render();
@@ -621,8 +638,8 @@ foreach ($allTranslations as $hash => $translationArray) {
 
                 $idExtraLangCount = 0;
                 foreach ($extraLanguages as $idExtraLangTemp) {
-                	$linkEdit->setCustom("extralang[$idExtraLangCount]", $idExtraLangTemp);
-                	$idExtraLangCount++;
+                    $linkEdit->setCustom("extralang[$idExtraLangCount]", $idExtraLangTemp);
+                    $idExtraLangCount++;
                 }
 
                 $sLinkEdit = ' ' . $linkEdit->render();
@@ -668,7 +685,7 @@ foreach ($allTranslations as $hash => $translationArray) {
     $counter++;
 }
 
-// Count all founded translations
+// Count all found translations
 // Important to calculate needed pages
 $counter = count($allTranslations);
 
@@ -687,8 +704,8 @@ $form->setVar("filter", $filter);
 
 $idExtraLangCount = 0;
 foreach ($extraLanguages as $idExtraLangTemp) {
-	$form->setVar("extralang[$idExtraLangCount]", $idExtraLangTemp);
-	$idExtraLangCount++;
+    $form->setVar("extralang[$idExtraLangCount]", $idExtraLangTemp);
+    $idExtraLangCount++;
 }
 
 $form->setVar('contenido', $contenido);
@@ -710,8 +727,8 @@ $pagerLink->setCustom("filter", $filter);
 
 $idExtraLangCount = 0;
 foreach ($extraLanguages as $idExtraLangTemp) {
-	$pagerLink->setCustom("extralang[$idExtraLangCount]", $idExtraLangTemp);
-	$idExtraLangCount++;
+    $pagerLink->setCustom("extralang[$idExtraLangCount]", $idExtraLangTemp);
+    $idExtraLangCount++;
 }
 
 $pagerLink->setCustom("contenido", $sess->id);
@@ -731,8 +748,8 @@ $delLangLink->setCustom("contenido", $sess->id);
 
 $idExtraLangCount = 0;
 foreach ($extraLanguages as $idExtraLangTemp) {
-	$delLangLink->setCustom("extralang[$idExtraLangCount]", $idExtraLangTemp);
-	$idExtraLangCount++;
+    $delLangLink->setCustom("extralang[$idExtraLangCount]", $idExtraLangTemp);
+    $idExtraLangCount++;
 }
 
 $delLangLink->setCustom("dellang", '');
@@ -747,7 +764,13 @@ $page->set("s", "DELLANGIMG", $cfg["path"]["contenido_fullhtml"] . $cfg['path'][
 $page->set("s", "DELLANGALT", i18n("Delete"));
 $page->set("s", "DELLANGHREF", $delLangHref);
 $page->set("s", "MODULEINUSETEXT", i18n("The module &quot;%s&quot; is used for following templates"));
-$page->set("s", "INFO", $message . '<p class="notify_general notify_warning">' . i18n("WARNING: Translations have effects on every article that uses the module!") . '</p>');
+
+if (!$noResults) {
+    $page->set("s", "INFO", $message . '<p class="notify_general notify_warning">' . i18n("WARNING: Translations have effects on every article that uses the module!") . '</p>');
+} else {
+    $page->set("s", "INFO", "");
+}
+
 $page->setMarkScript(2);
 $page->setEncoding($langobj->get('encoding'));
 $page->render();

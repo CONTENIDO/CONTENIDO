@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains some AJAX function of the backend area "con".
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Ingo van Peeren
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -65,4 +64,5 @@ if ($action == 'toggle') {
 }
 
 $currentuser->setUserProperty("system", "con_cat_expandstate", serialize($aConexpandedList));
+
 ?>

@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the path resolve cache collection and item class and its helper.
  *
  * @package          Core
  * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
- *
  * @author           Murat Purc <murat@purc.de>
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -34,7 +33,8 @@ class cApiPathresolveCacheHelper {
      * Checks configuration of heap table creation, it's existance and creates
      * it if needed.
      *
-     * @param array $cfg Global CONTENIDO config array
+     * @param array $cfg
+     *         Global CONTENIDO config array
      */
     public static function setup($cfg) {
         if (true === $cfg['pathresolve_heapcache'] && false === self::$_tableCreated) {
@@ -74,7 +74,7 @@ class cApiPathresolveCacheHelper {
 class cApiPathresolveCacheCollection extends ItemCollection {
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -89,7 +89,7 @@ class cApiPathresolveCacheCollection extends ItemCollection {
      * @param string $path
      * @param int $idcat
      * @param int $idlang
-     * @param string $lastcached
+     * @param string $lastcached [optional]
      * @return cApiPathresolveCache
      */
     public function create($path, $idcat, $idlang, $lastcached = '') {
@@ -144,9 +144,10 @@ class cApiPathresolveCacheCollection extends ItemCollection {
 class cApiPathresolveCache extends Item {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId [optional]
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -170,7 +171,7 @@ class cApiPathresolveCache extends Item {
             throw new cException('Item not loaded!');
         }
         $cacheTime = (isset($cfg['pathresolve_heapcache_time'])) ? $cfg['pathresolve_heapcache_time'] : 60 * 60 * 24;
-        return ($this->get('lastcached') + $cacheTime < time());
+        return $this->get('lastcached') + $cacheTime < time();
     }
 
     /**
@@ -178,8 +179,10 @@ class cApiPathresolveCache extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
-     * @todo should return return value of overloaded method
+     * @param bool $bSafe [optional]
+     *         Flag to run defined inFilter on passed value
+     *
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
@@ -189,7 +192,7 @@ class cApiPathresolveCache extends Item {
                 break;
         }
 
-        parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $bSafe);
     }
 
 }

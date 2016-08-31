@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the uri builder mod rewrite class.
  *
  * @package Plugin
  * @subpackage ModRewrite
- * @version SVN Revision $Rev:$
- *
  * @author Murat Purc <murat@purc.de>
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -17,7 +16,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Class to build frontend urls for advandced mod rewrite plugin.
- * Extends abstract Contenido_UriBuilder class and implements singleton pattern.
+ *
+ * Extends abstract Contenido_UriBuilder class and implements the
+ * singleton pattern.
  *
  * Usage:
  * <pre>
@@ -28,8 +29,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * $newUrl = $mrUriBuilder->getUrl();
  * </pre>
  *
- * @todo Add handling of absolute paths, standardize handling of fragments
- *
+ * @todo add handling of absolute paths
+ * @todo standardize handling of fragments
  * @package Plugin
  * @subpackage ModRewrite
  */
@@ -44,6 +45,7 @@ class cUriBuilderMR extends cUriBuilder {
 
     /**
      * Cached rootdir.
+     *
      * The rootdir can differ from the configured one if an alternate
      * frontendpath is configured as client setting. In order to determine the
      * current rootdir only once this is cached as static class member.
@@ -53,7 +55,7 @@ class cUriBuilderMR extends cUriBuilder {
     private static $_cachedRootDir;
 
     /**
-     * Ampersant used for composing several parameter value pairs
+     * Ampersand used for composing several parameter value pairs
      *
      * @var string
      */
@@ -81,7 +83,9 @@ class cUriBuilderMR extends cUriBuilder {
     private $_aMrCfg = NULL;
 
     /**
-     * Constructor, tries to set some member variables.
+     * Constructor to create an instance of this class.
+     *
+     * Tries to set some member variables.
      */
     private function __construct() {
         $this->sHttpBasePath = '';
@@ -94,7 +98,7 @@ class cUriBuilderMR extends cUriBuilder {
     }
 
     /**
-     * Returns a instance of cUriBuilderMR
+     * Returns a instance of cUriBuilderMR.
      *
      * @return cUriBuilderMR
      */
@@ -108,13 +112,15 @@ class cUriBuilderMR extends cUriBuilder {
     /**
      * Builds a URL based on defined mod rewrite settings.
      *
-     * @param array $params Parameter array, provides only following parameters:
-     *        <code>
-     *        $params[0] = 'front_content.php?idart=123...'
-     *        </code>
-     * @param bool $bUseAbsolutePath Flag to use absolute path (not used at
-     *        the moment)
-     * @return string New build url
+     * @param array $params
+     *         Parameter array, provides only following parameters:
+     *         <code>
+     *         $params[0] = 'front_content.php?idart=123...'
+     *         </code>
+     * @param bool $bUseAbsolutePath [optional]
+     *         Flag to use absolute path (not used at the moment)
+     * @return string
+     *         New build url
      */
     public function buildUrl(array $params, $bUseAbsolutePath = false) {
         ModRewriteDebugger::add($params, 'cUriBuilderMR::buildUrl() $params');
@@ -140,10 +146,13 @@ class cUriBuilderMR extends cUriBuilder {
     }
 
     /**
-     * Builds the SEO-URL by analyzing passed arguments (parameter value pairs)
+     * Builds the SEO-URL by analyzing passed arguments
+     * (parameter value pairs).
      *
-     * @param array $aParams Parameter array
-     * @return string New build pretty url
+     * @param array $aParams
+     *         Parameter array
+     * @return string
+     *         New build pretty url
      */
     private function _buildUrl(array $aParams) {
         // language should changed, set lang parameter
@@ -165,12 +174,14 @@ class cUriBuilderMR extends cUriBuilder {
         $aParts = array();
 
         // add client id/name if desired
-        if ($param = $this->_getClientParameter($aParams)) {
+        $param = $this->_getClientParameter($aParams);
+        if ($param) {
             $aParts[] = $param;
         }
 
         // add language id/name if desired
-        if ($param = $this->_getLanguageParameter($aParams)) {
+        $param = $this->_getLanguageParameter($aParams);
+        if ($param) {
             $aParts[] = $param;
         }
 
@@ -191,8 +202,9 @@ class cUriBuilderMR extends cUriBuilder {
         }
 
         $sPathAndArticle = $sPath . $sArticle . $sFileExt;
+
+        // use lowercase url
         if ($this->_aMrCfg['use_lowercase_uri'] == 1) {
-            // use lowercase url
             $sPathAndArticle = strtolower($sPathAndArticle);
         }
 
@@ -221,11 +233,13 @@ class cUriBuilderMR extends cUriBuilder {
 
     /**
      * Returns the defined rootdir.
+     *
      * Allows for root dir being alternativly defined as path of setting
      * client/%frontend_path%.
      *
-     * @param string $configuredRootDir defined rootdir
-     * @return unknown mixed
+     * @param string $configuredRootDir
+     *         defined rootdir
+     * @return string
      */
     public static function getMultiClientRootDir($configuredRootDir) {
 
@@ -285,12 +299,17 @@ class cUriBuilderMR extends cUriBuilder {
     }
 
     /**
-     * Loops thru passed parameter array and creates the query part of the URL.
-     * All non CONTENIDO related parameter will be excluded from composition.
+     * Loops through given parameter array and creates the query part of
+     * the URL.
      *
-     * @param array $aArgs Assoziative parameter array
-     * @return string Composed query part for the URL like
-     *         '?foo=bar&amp;param=value'
+     * All non CONTENIDO related parameters will be excluded from
+     * composition.
+     *
+     * @param array $aArgs
+     *         associative parameter array
+     * @return string
+     *         composed query part for the URL
+     *         like '?foo=bar&amp;param=value'
      */
     private function _createUrlQueryPart(array $aArgs) {
         // set list of parameter which are to ignore while setting additional
@@ -339,8 +358,10 @@ class cUriBuilderMR extends cUriBuilder {
     /**
      * Returns client id or name depending on settings.
      *
-     * @param array $aArgs Additional arguments
-     * @return mixed Client id, client name or NULL
+     * @param array $aArgs
+     *         Additional arguments
+     * @return mixed
+     *         Client id, client name or NULL
      */
     private function _getClientParameter(array $aArgs) {
         global $client;
@@ -361,8 +382,10 @@ class cUriBuilderMR extends cUriBuilder {
     /**
      * Returns language id or name depending on settings.
      *
-     * @param array $aArgs Additional arguments
-     * @return mixed Language id, language name or NULL
+     * @param array $aArgs
+     *         Additional arguments
+     * @return mixed
+     *         Language id, language name or NULL
      */
     private function _getLanguageParameter(array $aArgs) {
         global $lang;
@@ -381,10 +404,12 @@ class cUriBuilderMR extends cUriBuilder {
     }
 
     /**
-     * Returns composed path of url (normally the category structure)
+     * Returns composed path of url (normally the category structure).
      *
-     * @param array $aPretty Pretty url array
-     * @return string Path
+     * @param array $aPretty
+     *         Pretty url array
+     * @return string
+     *         Path
      */
     private function _getPath(array $aPretty) {
         $sPath = (isset($aPretty['urlpath'])) ? $aPretty['urlpath'] : '';
@@ -405,11 +430,14 @@ class cUriBuilderMR extends cUriBuilder {
     }
 
     /**
-     * Returns articlename depending on current setting
+     * Returns articlename depending on current setting.
      *
-     * @param array $aPretty Pretty url array
-     * @param array $aArgs Additional arguments
-     * @return string Articlename
+     * @param array $aPretty
+     *         Pretty url array
+     * @param array $aArgs
+     *         Additional arguments
+     * @return string
+     *         Articlename
      */
     private function _getArticleName(array $aPretty, array $aArgs) {
         $sArticle = (isset($aPretty['urlname'])) ? $aPretty['urlname'] : '';

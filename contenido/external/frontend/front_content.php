@@ -4,9 +4,10 @@
  *
  * @package          Core
  * @subpackage       Frontend
- * @version          SVN Revision $Rev:$
- *
- * @author           Olaf Niemann, Jan Lengowski, Timo A. Hummel et al.
+ * @author           Olaf Niemann
+ * @author           Jan Lengowski
+ * @author           Timo A. Hummel
+ * @author           et al.
  * @author           Murat Purc <murat@purc.de>
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt

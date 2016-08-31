@@ -1,12 +1,12 @@
 <?php
+
 /**
  * This file contains fix functions for PHP 5.4 support (encoding related).
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
- * @author Dominik Ziegler, Timo Trautmann
+ * @author Dominik Ziegler
+ * @author Timo Trautmann
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
@@ -17,6 +17,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 if (function_exists('conPhp54Check') == false) {
 
+    /**
+     * Checks if at least PHP 5.4.0 is available. If so 1 is returned,
+     * 0 otherwise. The check is only performed once and stored as
+     * constant CON_PHP54.
+     *
+     * @return int
+     */
     function conPhp54Check() {
         if (!defined('CON_PHP54')) {
             define('CON_PHP54', version_compare(PHP_VERSION, '5.4.0', '<') ? 0 : 1);
@@ -29,6 +36,13 @@ if (function_exists('conPhp54Check') == false) {
 
 if (function_exists('conHtmlSpecialChars') == false) {
 
+    /**
+     *
+     * @param string $value
+     * @param int $flags
+     * @param string $encoding
+     * @return string
+     */
     function conHtmlSpecialChars($value, $flags = '', $encoding = '') {
         $isPhp54 = conPhp54Check();
 
@@ -55,6 +69,13 @@ if (function_exists('conHtmlSpecialChars') == false) {
 
 if (function_exists('conHtmlEntityDecode') == false) {
 
+    /**
+     *
+     * @param string $value
+     * @param int $flags
+     * @param string $encoding
+     * @return string
+     */
     function conHtmlEntityDecode($value, $flags = '', $encoding = '') {
         $isPhp54 = conPhp54Check();
 
@@ -76,6 +97,13 @@ if (function_exists('conHtmlEntityDecode') == false) {
 
 if (function_exists('conHtmlentities') == false) {
 
+    /**
+     *
+     * @param string $value
+     * @param int $flags
+     * @param string $encoding
+     * @return string
+     */
     function conHtmlentities($value, $flags = '', $encoding = '') {
         $isPhp54 = conPhp54Check();
 
@@ -97,6 +125,12 @@ if (function_exists('conHtmlentities') == false) {
 
 if (function_exists('conGetHtmlTranslationTable') == false) {
 
+    /**
+     *
+     * @param int $table
+     * @param int $flags
+     * @return array
+     */
     function conGetHtmlTranslationTable($table = '', $flags = '') {
         $isPhp54 = conPhp54Check();
 
@@ -111,4 +145,3 @@ if (function_exists('conGetHtmlTranslationTable') == false) {
     }
 
 }
-?>

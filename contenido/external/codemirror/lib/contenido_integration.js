@@ -3,9 +3,7 @@
  *
  * @package    TODO
  * @subpackage TODO
- * @version    SVN Revision $Rev:$
  * @requires   jQuery
- *
  * @author     Unknown
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
@@ -110,9 +108,4 @@
         }
 
     };
-
-    // @deprecated [2013-10-22] Assign to windows scope (downwards compatibility)
-    window.initCodeMirror = Con.CodeMirrorHelper.init;
-    window.toggleCodeMirrorFullscreenEditor = Con.CodeMirrorHelper.toggleFullscreenEditor;
-
 })(Con, Con.$);

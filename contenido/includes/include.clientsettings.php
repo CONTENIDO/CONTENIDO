@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for client settings.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Unknown
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -67,12 +66,12 @@ if (!is_numeric($request["idclientslang"]) || $request["idclientslang"] == 0) {
 
 if ($_POST['action'] == 'clientsettings_save_item') {
     $oClient->setProperty($request['cstype'], $request['csname'], $request['csvalue'], $request['csidproperty']);
-    $oPage->displayInfo(i18n("Save changes successfully!"));
+    $oPage->displayOk(i18n("Save changes successfully!"));
 }
 
 if ($_GET['action'] == 'clientsettings_delete_item') {
     $oClient->deleteProperty($_GET['idprop']);
-    $oPage->displayInfo(i18n("Deleted item successfully!"));
+    $oPage->displayOk(i18n("Deleted item successfully!"));
 }
 
 $oList->setHeader(i18n('Type'), i18n('Name'), i18n('Value'), '&nbsp;');
@@ -105,11 +104,11 @@ if ($aItems !== false) {
 
         if (($_GET['action'] == "clientsettings_edit_item") && ($_GET['idprop'] == $iKey)) {
 
-        	$oInputboxType = new cHTMLTextbox("cstype", $aValue['type']);
-        	$oInputboxType->setWidth(15);
-        	$oInputboxName = new cHTMLTextbox("csname", $aValue['name']);
-        	$oInputboxName->setWidth(15);
-        	$oInputboxValue = new cHTMLTextbox("csvalue", $aValue['value']);
+            $oInputboxType = new cHTMLTextbox("cstype", $aValue['type']);
+            $oInputboxType->setWidth(15);
+            $oInputboxName = new cHTMLTextbox("csname", $aValue['name']);
+            $oInputboxName->setWidth(15);
+            $oInputboxValue = new cHTMLTextbox("csvalue", conHtmlentities($aValue['value']));
             $oInputboxValue->setWidth(30);
 
             $hidden = '<input type="hidden" name="csidproperty" value="' . $iKey . '">';
@@ -119,19 +118,19 @@ if ($aItems !== false) {
         } else {
             $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
 
-           	if (strlen($aValue['type']) > 35) {
-                $sShort = cApiStrTrimHard($aValue['type'], 35);
+               if (strlen($aValue['type']) > 35) {
+                $sShort = cString::trimHard($aValue['type'], 35);
                 $aValue['type'] = sprintf($sMouseoverTemplate, $aValue['type'], $sShort);
             }
 
             if (strlen($aValue['name']) > 35) {
-            	$sShort = cApiStrTrimHard($aValue['name'], 35);
-            	$aValue['name'] = sprintf($sMouseoverTemplate, $aValue['name'], $sShort);
+                $sShort = cString::trimHard($aValue['name'], 35);
+                $aValue['name'] = sprintf($sMouseoverTemplate, $aValue['name'], $sShort);
             }
 
             if (strlen($aValue['value']) > 35) {
-                $sShort = cApiStrTrimHard($aValue['value'], 35);
-                $aValue['value'] = sprintf($sMouseoverTemplate, $aValue['value'], $sShort);
+                $sShort = cString::trimHard($aValue['value'], 35);
+                $aValue['value'] = sprintf($sMouseoverTemplate, conHtmlentities($aValue['value']), $sShort);
             }
 
             $oList->setData($iCounter, $aValue['type'], $aValue['name'], $aValue['value'], $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render());

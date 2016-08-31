@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the upload meta collection and item class.
  *
  * @package Core
  * @subpackage GenericDB_Model
- * @version SVN Revision $Rev:$
- *
  * @author Dominik Ziegler
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -24,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiUploadMetaCollection extends ItemCollection {
 
     /**
-     * Create a new collection of items.
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -41,18 +40,20 @@ class cApiUploadMetaCollection extends ItemCollection {
      * @global object $auth
      * @param int $idupl
      * @param int $idlang
-     * @param string $medianame
-     * @param string $description
-     * @param string $keywords
-     * @param string $internal_notice
-     * @param string $copyright
-     * @param string $author
-     * @param string $created
-     * @param string $modified
-     * @param string $modifiedby
+     * @param string $medianame [optional]
+     * @param string $description [optional]
+     * @param string $keywords [optional]
+     * @param string $internal_notice [optional]
+     * @param string $copyright [optional]
+     * @param string $author [optional]
+     * @param string $created [optional]
+     * @param string $modified [optional]
+     * @param string $modifiedby [optional]
      * @return cApiUploadMeta
      */
-    public function create($idupl, $idlang, $medianame = '', $description = '', $keywords = '', $internal_notice = '', $copyright = '', $author = '', $created = '', $modified = '', $modifiedby = '') {
+    public function create($idupl, $idlang, $medianame = '', $description = '',
+            $keywords = '', $internal_notice = '', $copyright = '', $author = '',
+            $created = '', $modified = '', $modifiedby = '') {
         global $auth;
 
         if (empty($author)) {
@@ -93,9 +94,10 @@ class cApiUploadMetaCollection extends ItemCollection {
 class cApiUploadMeta extends Item {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId [optional]
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -134,8 +136,10 @@ class cApiUploadMeta extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
-     * @todo should return return value of overloaded method
+     * @param bool $bSafe [optional]
+     *         Flag to run defined inFilter on passed value
+     *
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
@@ -145,6 +149,6 @@ class cApiUploadMeta extends Item {
                 break;
         }
 
-        parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $bSafe);
     }
 }

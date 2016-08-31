@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the XML reader class.
  *
  * @package    Core
  * @subpackage XML
- * @version    SVN Revision $Rev:$
- *
  * @author     Dominik Ziegler
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -27,10 +26,12 @@ class cXmlReader extends cXmlBase {
      * Loads a XML document from file and initializes a corresponding DOMXPath
      * instance.
      *
-     * @param string $filename path to the XML document
-     * @throws cException if file could not be loaded
-     * @return boolean load state (true = successfully loaded, false = not found
-     *         or loaded)
+     * @param string $filename
+     *         path to the XML document
+     * @throws cException
+     *         if file could not be loaded
+     * @return bool
+     *         load state (true = successfully loaded, false = not found or loaded)
      */
     public function load($filename) {
 
@@ -47,17 +48,19 @@ class cXmlReader extends cXmlBase {
 
         $this->setDomDocument($doc);
 
-        return ($this->_dom instanceof DOMDocument);
+        return $this->_dom instanceof DOMDocument;
     }
 
     /**
      * Loads a XML document from file and initializes a corresponding DOMXPath
      * instance.
      *
-     * @param string $sFilename path to the XML document
-     * @throws cException if XML could not be loaded
-     * @return boolean load state (true = successfully loaded, false = not found
-     *         or loaded)
+     * @param string $sFilename
+     *         path to the XML document
+     * @throws cException
+     *         if XML could not be loaded
+     * @return bool
+     *         load state (true = successfully loaded, false = not found or loaded)
      */
     public function loadXML($sXml) {
         // Load document via object method to avoid warning in PHP strict mode.
@@ -69,13 +72,14 @@ class cXmlReader extends cXmlBase {
         $this->_dom = $oDoc;
         $this->_initXpathInstance();
 
-        return ($this->_dom instanceof DOMDocument);
+        return $this->_dom instanceof DOMDocument;
     }
 
     /**
      * Returns a DOMNodeList for a given XPath expression.
      *
-     * @param string $path xpath string
+     * @param string $path
+     *         xpath string
      * @throws cException if there is no xpath
      * @return DOMNodeList
      */
@@ -90,8 +94,10 @@ class cXmlReader extends cXmlBase {
     /**
      * Returns the element of an DOMNodeList read out by a xpath string.
      *
-     * @param string $path xpath string
-     * @param int $nodeKey node key (optional, default: 0)
+     * @param string $path
+     *         xpath string
+     * @param int $nodeKey [optional, default: 0]
+     *         node key
      * @return DOMNode
      */
     public function getXpathNode($path, $nodeKey = 0) {
@@ -104,9 +110,12 @@ class cXmlReader extends cXmlBase {
     /**
      * Returns the value of an DOMNode read out by a xpath string.
      *
-     * @param string $path xpath string
-     * @param int $nodeKey node key (optional, default: 0)
-     * @return string value of DOMNode
+     * @param string $path
+     *         xpath string
+     * @param int $nodeKey [optional, default: 0]
+     *         node key
+     * @return string
+     *         value of DOMNode
      */
     public function getXpathValue($path, $nodeKey = 0) {
 
@@ -117,8 +126,10 @@ class cXmlReader extends cXmlBase {
     /**
      * Returns the amount of nodes in a given XPath string.
      *
-     * @param string $path XPath string
-     * @return int amount of nodes in node list
+     * @param string $path
+     *         XPath string
+     * @return int
+     *         amount of nodes in node list
      */
     public function countXpathNodes($path) {
         $domNodeList = $this->getXpathNodeList($path);
@@ -135,8 +146,10 @@ class cXmlReader extends cXmlBase {
     /**
      * Decodes the value if XML document has not UTF-8 encoding.
      *
-     * @param string $value value to decode
-     * @return string decoded value
+     * @param string $value
+     *         value to decode
+     * @return string
+     *         decoded value
      */
     protected function _decode($value) {
 

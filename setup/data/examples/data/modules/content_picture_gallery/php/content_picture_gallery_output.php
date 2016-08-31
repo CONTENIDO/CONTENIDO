@@ -5,8 +5,6 @@
  *
  * @package Module
  * @subpackage ContentPictureGallery
- * @version SVN Revision $Rev:$
- *
  * @author timo.trautmann@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -41,6 +39,11 @@ if (count($files) > 0) {
 
 $tpl = cSmartyFrontend::getInstance();
 $tpl->assign('pictures', $pictures);
+
+// Translations
+$tpl->assign('back', mi18n("Back"));
+$tpl->assign('forward', mi18n("Forward"));
+
 $tpl->display('picture_gallery.tpl');
 
 if (cRegistry::isBackendEditMode()) {

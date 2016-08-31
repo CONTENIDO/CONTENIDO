@@ -2,8 +2,6 @@
 
 /**
  *
- * @version SVN Revision $Rev:$
- *
  * @author claus.schunk@4fb.de
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG <www.4fb.de>
@@ -57,7 +55,7 @@ class cHtmlTimeTest extends cTestingTestCase {
         $exp = 'testDateTime';
         $this->assertSame($exp, $act);
 
-        $act = $this->_time->toHTML();
+        $act = $this->_time->toHtml();
         $exp = '<time id="testId" class="testClass" datetime="testDateTime">testContent</time>';
         $this->assertSame($exp, $act);
     }

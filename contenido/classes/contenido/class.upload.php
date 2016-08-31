@@ -2,12 +2,8 @@
 /**
  * This file contains the upload collection and item class.
  *
- * @todo Reset in/out filters of parent classes.
- *
  * @package Core
  * @subpackage GenericDB_Model
- * @version SVN Revision $Rev:$
- *
  * @author Timo Hummel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -26,7 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiUploadCollection extends ItemCollection {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
      * @global array $cfg
      */
@@ -45,8 +41,8 @@ class cApiUploadCollection extends ItemCollection {
      * @global int $client
      * @param string $sDirname
      * @param string $sFilename
+     * @param int $clientid [optional]
      * @return cApiUpload
-     * @param int $clientid
      */
     public function sync($sDirname, $sFilename, $client = 0) {
         $client = cSecurity::toInteger($client);
@@ -55,7 +51,7 @@ class cApiUploadCollection extends ItemCollection {
             global $client;
         }
 
-        // build escaped vars for SQL 
+        // build escaped vars for SQL
         $escClient = cSecurity::toInteger($client);
         $escDirname = $this->escape($sDirname);
         $escFilename = $this->escape($sFilename);
@@ -73,7 +69,7 @@ class cApiUploadCollection extends ItemCollection {
         if (false !== $oItem = $this->next()) {
             $oItem->update();
         } else {
-            $sFiletype = (string) uplGetFileExtension($sFilename);
+            $sFiletype = cFileHandler::getExtension($sDirname . $sFilename);
             $iFilesize = cApiUpload::getFileSize($sDirname, $sFilename);
             $oItem = $this->create($sDirname, $sFilename, $sFiletype, $iFilesize, '');
         }
@@ -89,14 +85,17 @@ class cApiUploadCollection extends ItemCollection {
      * @global object $auth
      * @param string $sDirname
      * @param string $sFilename
-     * @param string $sFiletype
-     * @param int $iFileSize
-     * @param string $sDescription
-     * @param int $iStatus
+     * @param string $sFiletype [optional]
+     * @param int $iFileSize [optional]
+     * @param string $sDescription [optional]
+     * @param int $iStatus [optional]
      * @return cApiUpload
      */
-    public function create($sDirname, $sFilename, $sFiletype = '', $iFileSize = 0, $sDescription = '', $iStatus = 0) {
-        global $client, $cfg, $auth;
+    public function create($sDirname, $sFilename, $sFiletype = '', $iFileSize = 0,
+            $sDescription = '', $iStatus = 0) {
+
+        $client = cRegistry::getClientId();
+        $auth = cRegistry::getAuth();
 
         $oItem = $this->createNewItem();
 
@@ -117,15 +116,17 @@ class cApiUploadCollection extends ItemCollection {
     /**
      * Deletes upload file and it's properties
      *
+     * @todo Code is similar/redundant to include.upl_files_overview.php 216-230
      * @global cApiCecRegistry $_cecRegistry
      * @global array $cfgClient
      * @global int $client
      * @param int $id
-     * @return bool @fixme Code is similar/redundant to
-     *         include.upl_files_overview.php 216-230
+     * @return bool
      */
     public function delete($id) {
-        global $cfgClient, $client;
+
+        $client = cRegistry::getClientId();
+        $cfgClient = cRegistry::getClientConfig();
 
         $oUpload = new cApiUpload();
         $oUpload->loadByPrimaryKey($id);
@@ -203,9 +204,10 @@ class cApiUpload extends Item {
     protected $_oPropertyCollection;
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId [optional]
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -221,7 +223,7 @@ class cApiUpload extends Item {
     public function update() {
         $sDirname = $this->get('dirname');
         $sFilename = $this->get('filename');
-        $sExtension = (string) uplGetFileExtension($sFilename);
+        $sExtension = cFileHandler::getExtension($sDirname . $sFilename);
         $iFileSize = self::getFileSize($sDirname, $sFilename);
 
         $bTouched = false;

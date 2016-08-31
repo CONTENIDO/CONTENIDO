@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the left top frame backend page in upload section.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Timo Hummel
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -27,7 +26,6 @@ if (isset($_REQUEST['path'])) {
     $sDisplayPath = $sCurrentPathInfo;
 }
 
-//##echo "<pre>$sDisplayPath</pre>";
 $sDisplayPath = generateDisplayFilePath($sDisplayPath, 35);
 $tpl->set('s', 'CAPTION2', $sDisplayPath);
 

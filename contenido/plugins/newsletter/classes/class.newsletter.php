@@ -4,8 +4,6 @@
  *
  * @package Plugin
  * @subpackage Newsletter
- * @version SVN Revision $Rev:$
- *
  * @author Bjoern Behrens
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -36,7 +34,7 @@ class NewsletterCollection extends ItemCollection
 
     /**
      * Creates a new newsletter
-     * @param $name string specifies the newsletter name
+     * @param $sName string specifies the newsletter name
      */
     public function create($sName)
     {
@@ -67,7 +65,7 @@ class NewsletterCollection extends ItemCollection
 
     /**
      * Duplicates the newsletter specified by $itemID
-     * @param  int $itemID specifies the newsletter id
+     * @param  int $iItemID specifies the newsletter id
      */
     public function duplicate($iItemID)
     {
@@ -91,7 +89,7 @@ class NewsletterCollection extends ItemCollection
             if ($oClientLang->getProperty("newsletter", "html_newsletter") == "true") {
                 $iIDArt = conCopyArticle($oBaseItem->get("idart"),
                     $oClientLang->getProperty("newsletter", "html_newsletter_idcat"),
-                    sprintf(i18n("Newsletter: %s"), $oItem->get("name"))
+                    sprintf(i18n("Newsletter: %s", "newsletter"), $oItem->get("name"))
                 );
                 conMakeOnline($iIDArt, $lang); // Article has to be online for sending...
             }
@@ -122,7 +120,7 @@ class NewsletterCollection extends ItemCollection
             $this->properties = new cApiPropertyCollection();
         }
         $this->properties->setWhere("idclient", $client);
-        $this->properties->setWhere("itemtype", $this->primaryKey);
+        $this->properties->setWhere("itemtype", $this->getPrimaryKeyName());
         $this->properties->setWhere("itemid", $iItemID);
         $this->properties->query();
 
@@ -379,22 +377,51 @@ class Newsletter extends Item
         $iEOLLen = strlen($sEOL);
 
         $sBuffer = '';
+
+        // workaround:
+        // others and i don't understand this part, thats why i made a workaround
+        // seems as it is chunked, but reveived data isn't, thats why hexdec() produces an error
         if (isset($aHeader['transfer-encoding']) && $aHeader['transfer-encoding'] == 'chunked') {
+            $isHex = true;
+
             do {
                 $sBody    = ltrim ($sBody);
                 $iPos     = strpos($sBody, $sEOL);
-                $iDataLen = hexdec (substr($sBody, 0, $iPos));
+                $nextChunkLength =  substr($sBody, 0, (int) $iPos);
+
+                // workaround begin
+                preg_match('/^[0-9A-F]$/', $nextChunkLength, $isHex);
+                if (empty($isHex)) {
+                    $isHex = false;
+                    break;
+                }
+                // workarround end
+
+                $iDataLen = hexdec($nextChunkLength);
 
                 if (isset($aHeader['content-encoding'])) {
-                    $sBuffer .= gzinflate(substr($sBody, ($iPos + $iEOLLen + 10), $iDataLen));
+                    $sBuffer .= gzinflate(substr($sBody, ((int) $iPos + (int) $iEOLLen + 10), (int) $iDataLen));
                 } else {
-                    $sBuffer .= substr($sBody, ($iPos + $iEOLLen), $iDataLen);
+                    $sBuffer .= substr($sBody, ((int) $iPos + (int) $iEOLLen), (int) $iDataLen);
                 }
 
-                $sBody      = substr ($sBody, ($iPos + $iDataLen + $iEOLLen));
-                $sRemaining = trim ($sBody);
+                $sBody      = substr ($sBody, ((int) $iPos + (int) $iDataLen + (int) $iEOLLen));
 
-            } while (!empty($sRemaining));
+
+
+                $sRemaining = trim ($sBody);
+            } while ($sRemaining != '');
+
+            // workarround begin
+            if ($isHex === false) {
+                if (isset($aHeader['content-encoding'])) {
+                    $sBuffer = gzinflate(substr($sBody, 10));
+                } else {
+                    $sBuffer = $sBody; // Not chunked, not compressed
+                }
+            }
+            // workarround end
+
         } else if (isset($aHeader['content-encoding'])) {
             $sBuffer = gzinflate(substr($sBody, 10));
         } else {
@@ -413,7 +440,6 @@ class Newsletter extends Item
     {
         global $lang, $client, $contenido;
         $frontendURL = cRegistry::getFrontendUrl();
-
         if ($this->get("type") == "html" && $this->get("idart") > 0 && $this->htmlArticleExists()) {
 
             // Article ID
@@ -429,7 +455,6 @@ class Newsletter extends Item
             $sHTTPUserName = $oClient->getProperty("newsletter", "html_username");
             $sHTTPPassword = $oClient->getProperty("newsletter", "html_password");
             unset($oClient);
-
             // Get HTML
             if ($iIDArt > 0 && $iIDCat > 0) {
                 // Check, if newsletter is online and set temporarely online, otherwise
@@ -492,7 +517,7 @@ class Newsletter extends Item
                     $sReturn = $sHTML;
                 } else {
                     if ($contenido) { // Use i18n only in backend
-                        $sErrorText = i18n("There was a problem getting the newsletter article using http. Error: %s (%s)");
+                        $sErrorText = i18n("There was a problem getting the newsletter article using http. Error: %s (%s)", "newsletter");
                     } else {
                         $sErrorText = "There was a problem getting the newsletter article using http. Error: %s (%s)";
                     }
@@ -556,7 +581,7 @@ class Newsletter extends Item
      * @param int  $iIDCatArt        idcatart of newsletter handler article
      * @param string   $sEMail           Recipient email address
      * @param string   $sName            Optional: Recipient name
-     * @param bool     $bSimulatePlugin  If recipient plugin activated, include plugins
+     * @param bool     $bSimulatePlugins If recipient plugin activated, include plugins
      *                                   and simulate values from plugins
      * @param string   $sEncoding        Message (and header) encoding, e.g. iso-8859-1
      */
@@ -598,8 +623,8 @@ class Newsletter extends Item
                 // There was a problem getting the html message (maybe article
                 // deleted). Exit with error instead of sending as text message only
 
-                if ($contenido) { // Use i18n only in backend
-                    $sError = i18n("Newsletter to %s could not be sent: No html message available");
+                if (cRegistry::getBackendSessionId()) { // Use i18n only in backend
+                    $sError = i18n("Newsletter to %s could not be sent: No html message available", "newsletter");
                 } else {
                     $sError = "Newsletter to %s could not be sent: No html message available";
                 }
@@ -670,7 +695,7 @@ class Newsletter extends Item
         if (!isValidMail($sEMail) || strtolower($sEMail) == "sysadmin@ihresite.de") {
             // No valid destination mail address specified
             if ($contenido) { // Use i18n only in backend
-                $sError = i18n("Newsletter to %s could not be sent: No valid e-mail address");
+                $sError = i18n("Newsletter to %s could not be sent: No valid e-mail address", "newsletter");
             } else {
                 $sError = "Newsletter to %s could not be sent: No valid e-mail address";
             }
@@ -696,7 +721,7 @@ class Newsletter extends Item
 
             if (!$result) {
                 if ($contenido) { // Use i18n only in backend
-                    $sError = i18n("Newsletter to %s could not be sent");
+                    $sError = i18n("Newsletter to %s could not be sent", "newsletter");
                 } else {
                     $sError = "Newsletter to %s could not be sent";
                 }
@@ -760,8 +785,8 @@ class Newsletter extends Item
                 // There was a problem getting the html message (maybe article
                 // deleted). Exit with error instead of sending as text message only
 
-                if ($contenido) { // Use i18n only in backend
-                    $sError = i18n("Newsletter could not be sent: No html message available");
+                if (cRegistry::getBackendSessionId()) { // Use i18n only in backend
+                    $sError = i18n("Newsletter could not be sent: No html message available", "newsletter");
                 } else {
                     $sError = "Newsletter could not be sent: No html message available";
                 }
@@ -873,14 +898,14 @@ class Newsletter extends Item
 
                 if (strlen($sKey) != 30) { // Prevents sending without having a key
                     if ($contenido) { // Use i18n only in backend
-                        $sError = i18n("Newsletter to %s could not be sent: Recipient has an incompatible or empty key");
+                        $sError = i18n("Newsletter to %s could not be sent: Recipient has an incompatible or empty key", "newsletter");
                     } else {
                         $sError = "Newsletter to %s could not be sent: Recipient has an incompatible or empty key";
                     }
                     $aMessages[] = $sName." (".$sEMail."): ".sprintf($sError, $sEMail);
                 } else if (!isValidMail($sEMail)) {
                     if ($contenido) { // Use i18n only in backend
-                        $sError = i18n("Newsletter to %s could not be sent: No valid e-mail address specified");
+                        $sError = i18n("Newsletter to %s could not be sent: No valid e-mail address specified", "newsletter");
                     } else {
                         $sError = "Newsletter to %s could not be sent: No valid e-mail address specified";
                     }
@@ -908,7 +933,7 @@ class Newsletter extends Item
                         $aSendRcps[] = $sName." (".$sEMail.")";
                     } else {
                         if ($contenido) { // Use i18n only in backend
-                            $sError = i18n("Newsletter to %s could not be sent");
+                            $sError = i18n("Newsletter to %s could not be sent", "newsletter");
                         } else {
                             $sError = "Newsletter to %s could not be sent";
                         }
@@ -918,7 +943,7 @@ class Newsletter extends Item
             }
         } else {
             if ($contenido) { // Use i18n only in backend
-                $sError = i18n("No recipient with specified recipient/group id %s/%s found");
+                $sError = i18n("No recipient with specified recipient/group id %s/%s found", "newsletter");
             } else {
                 $sError = "No recipient with specified recpient/group id %s/%s found";
             }

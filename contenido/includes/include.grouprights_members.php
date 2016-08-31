@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for user to group assigment.
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Timo Hummel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -42,7 +41,7 @@ if (($action == "group_deletemember") && ($perm->have_perm_area_action($area, $a
         $groupMemberColl->delete((int) $idgroupuser);
     }
 
-    $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Removed member from group successfully!"));
+    $notification->displayNotification(cGuiNotification::LEVEL_OK, i18n("Removed member from group successfully!"));
 }
 
 if (($action == "group_addmember") && ($perm->have_perm_area_action($area, $action))) {
@@ -51,7 +50,7 @@ if (($action == "group_addmember") && ($perm->have_perm_area_action($area, $acti
             $myUser = new cApiUser();
 
             if (!$myUser->loadByPrimaryKey($value)) {
-                $myUser->loadUserByUserName($value);
+                $myUser->loadUserByUsername($value);
             }
 
             if ($myUser->getField("user_id") == "") {
@@ -79,7 +78,7 @@ if (($action == "group_addmember") && ($perm->have_perm_area_action($area, $acti
             }
         }
 
-        $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Added user to group successfully!"));
+        $notification->displayNotification(cGuiNotification::LEVEL_OK, i18n("Added user to group successfully!"));
     }
 }
 
@@ -159,4 +158,3 @@ $page->set('s', 'RELOADSCRIPT', '');
 
 // Generate template
 $page->render();
-

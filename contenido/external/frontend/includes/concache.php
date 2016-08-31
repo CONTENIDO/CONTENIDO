@@ -4,8 +4,6 @@
  *
  * @package          Core
  * @subpackage       Frontend_ConfigFile
- * @version          SVN Revision $Rev:$
- *
  * @author           System
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -18,8 +16,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 // uncomment following line 4 debugging any occured errors and warnings
-#error_reporting(E_ALL);
-
+// error_reporting(E_ALL);
 
 /**
  * configuration array of frontend caching

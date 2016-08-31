@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the cHTMLParagraph class.
  *
  * @package Core
  * @subpackage GUI_HTML
- * @version SVN Revision $Rev:$
  *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
@@ -24,11 +24,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHTMLParagraph extends cHTMLContentElement {
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
+     *
      * Creates an HTML p element.
      *
-     * @param mixed $content String or object with the contents
-     * @param string $class class of this element
+     * @param mixed $content [optional]
+     *         String or object with the contents
+     * @param string $class [optional]
+     *         class of this element
      */
     public function __construct($content = '', $class = '') {
         parent::__construct($content, $class);

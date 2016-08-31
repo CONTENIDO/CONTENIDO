@@ -1,12 +1,11 @@
 <?php
 /**
  * This file contains the module file translation class.
- * TODO: Rework comments of this class.
+ *
+ * @todo refactor documentation
  *
  * @package    Core
  * @subpackage Backend
- * @version    SVN Revision $Rev:$
- *
  * @author     Rusmir Jusufovic
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -17,8 +16,8 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This class save the translations from a modul in a file
- * and get it from file.
+ * This class save the translations from a modul in a file and get it
+ * from file.
  *
  * @package    Core
  * @subpackage Backend
@@ -26,14 +25,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cModuleFileTranslation extends cModuleHandler {
 
     /**
-     * Path to the modul directory
+     * Path to the modul directory.
      *
      * @var string
      */
     private $_modulePath;
 
     /**
-     * Name of the translations file
+     * Name of the translations file.
      *
      * @var string
      */
@@ -47,7 +46,7 @@ class cModuleFileTranslation extends cModuleHandler {
     static $langArray = array();
 
     /**
-     * The id of the modul
+     * The id of the modul.
      *
      * @var int
      */
@@ -55,10 +54,13 @@ class cModuleFileTranslation extends cModuleHandler {
     static $originalTranslationDivider = '=';
 
     /**
+     * Constructor to create an instance of this class.
      *
-     * @param int $idmodul
-     * @param bool $static if true it will load once the translation from file
-     * @param int $overrideIdlang use different language if not NULL
+     * @param int $idmodul [optional]
+     * @param bool $static [optional]
+     *         if true it will load once the translation from file
+     * @param int $overrideIdlang [optional]
+     *         use different language if not NULL
      */
     public function __construct($idmodul = NULL, $static = false, $overrideIdlang = NULL) {
         parent::__construct($idmodul);
@@ -102,7 +104,8 @@ class cModuleFileTranslation extends cModuleHandler {
      *
      * @param string $type
      * @param string $name
-     * @return string value
+     * @return string
+     *         value
      */
     private function _getValueFromProperties($type, $name) {
         cApiPropertyCollection::reset();
@@ -142,8 +145,8 @@ class cModuleFileTranslation extends cModuleHandler {
 
             $translations = array();
             while ($db->nextRecord()) {
-                $original = mb_convert_encoding(urldecode(cSecurity::unfilter($db->f('original'))), "UTF-8");
-                $translation = mb_convert_encoding(urldecode(cSecurity::unfilter($db->f('translation'))), "UTF-8");
+                $original = mb_convert_encoding(urldecode(cSecurity::unFilter($db->f('original'))), "UTF-8");
+                $translation = mb_convert_encoding(urldecode(cSecurity::unFilter($db->f('translation'))), "UTF-8");
                 $translations[$original] = $translation;
             }
 
@@ -170,7 +173,8 @@ class cModuleFileTranslation extends cModuleHandler {
     }
 
     /**
-     * This method serialize a array.
+     * This method serialize an array.
+     *
      * $key.[Divider].$value."\r\n"
      *
      * @param array $wordListArray
@@ -188,12 +192,15 @@ class cModuleFileTranslation extends cModuleHandler {
 
     /**
      * This method unserialize a string.
-     * The contents of file looks like original String [Divider] Translation
-     * String.
-     * If divider is =
-     * Example: Hello World=Hallo Welt
+     * The contents of file looks like
+     * <Original String><Divider><Translation String>.
      *
-     * @param string $string the contents of the file
+     * Example:
+     * If divider is "="
+     * Hello World=Hallo Welt
+     *
+     * @param string $string
+     *         the contents of the file
      * @return array
      */
     private function _unserializeArray($string) {
@@ -205,12 +212,12 @@ class cModuleFileTranslation extends cModuleHandler {
             $oriTrans = preg_split('/(?<!\\\\)' . self::$originalTranslationDivider . '/', $value);
 
             if (isset($oriTrans[1])) {
-                $retArray[iconv($this->_fileEncoding, $this->_encoding, $oriTrans[0])] = iconv($this->_fileEncoding, $this->_encoding, str_replace("\=", "=", $oriTrans[1]));
+                $retArray[cString::recodeString($oriTrans[0], $this->_fileEncoding, $this->_encoding)] = cString::recodeString(str_replace("\=", "=", $oriTrans[1]), $this->_fileEncoding, $this->_encoding);
             } else {
                 // CON-1671 never use end(array_keys(...))
                 $keys = array_keys($retArray);
                 $lastKey = end($keys);
-                $newValue = PHP_EOL . iconv($this->_fileEncoding, $this->_encoding, str_replace("\=", "=", $oriTrans[0]));
+                $newValue = PHP_EOL . cString::recodeString(str_replace("\=", "=", $oriTrans[0]), $this->_fileEncoding, $this->_encoding);
                 $retArray[$lastKey] .= $newValue;
             }
         }
@@ -222,7 +229,8 @@ class cModuleFileTranslation extends cModuleHandler {
      * Save the contents of the wordListArray in file.
      *
      * @param array $wordListArray
-     * @return boolean true if success else false
+     * @return bool
+     *         true on success or false on failure
      */
     public function saveTranslationArray($wordListArray) {
         $fileName = $this->_modulePath . $this->_directories['lang'] . self::$fileName;

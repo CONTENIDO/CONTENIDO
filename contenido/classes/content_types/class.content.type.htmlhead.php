@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the cContentTypeHtmlhead class.
  *
  * @package Core
  * @subpackage ContentType
- * @version SVN Revision $Rev:$
- *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -25,21 +24,26 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cContentTypeHtmlhead extends cContentTypeHtml {
 
     /**
+     * Constructor to create an instance of this class.
+     *
      * Initialises class attributes and handles store events.
      *
-     * @param string $rawSettings the raw settings in an XML structure or as
-     *        plaintext
-     * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is
-     *        used
-     * @param array $contentTypes array containing the values of all content
-     *        types
+     * @param string $rawSettings
+     *         the raw settings in an XML structure or as plaintext
+     * @param int $id
+     *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
+     * @param array $contentTypes
+     *         array containing the values of all content types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-        // change attributes from the parent class and call the parent
-        // constructor
+
+        // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
+
+        // set props
         $this->_type = 'CMS_HTMLHEAD';
         $this->_prefix = 'htmlhead';
+
     }
 
 }

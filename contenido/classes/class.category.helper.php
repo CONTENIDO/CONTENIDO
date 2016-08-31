@@ -4,8 +4,6 @@
  *
  * @package Core
  * @subpackage Frontend_Util
- * @version SVN Revision $Rev:$
- *
  * @author Dominik Ziegler
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -86,7 +84,7 @@ class cCategoryHelper {
     }
 
     /**
-     * Constructor of the class.
+     * Constructor to create an instance of this class.
      */
     protected function __construct() {
     }
@@ -94,7 +92,8 @@ class cCategoryHelper {
     /**
      * Sets an auth object to use on category access check.
      *
-     * @param cAuth $auth auth object
+     * @param cAuth $auth
+     *         auth object
      */
     public function setAuth($auth) {
         $this->_auth = $auth;
@@ -112,7 +111,8 @@ class cCategoryHelper {
      *
      * @throws cInvalidArgumentException if no active client ID specified or
      *         found
-     * @return int client ID
+     * @return int
+     *         client ID
      */
     public function getClientId() {
         if ($this->_clientId == 0) {
@@ -130,7 +130,8 @@ class cCategoryHelper {
     /**
      * Sets the client ID to store it locally in the class.
      *
-     * @param int $clientId client ID
+     * @param int $clientId [optional]
+     *         client ID
      */
     public function setClientId($clientId = 0) {
         $this->_clientId = (int) $clientId;
@@ -139,9 +140,10 @@ class cCategoryHelper {
     /**
      * Returns the local stored language ID
      *
-     * @throws cInvalidArgumentException if no active language ID specified or
-     *         found
-     * @return int language ID
+     * @throws cInvalidArgumentException
+     *         if no active language ID specified or found
+     * @return int
+     *         language ID
      */
     public function getLanguageId() {
         if ($this->_languageId == 0) {
@@ -159,7 +161,8 @@ class cCategoryHelper {
     /**
      * Sets the language ID to store it locally in the class.
      *
-     * @param int $languageId language ID
+     * @param int $languageId [optional]
+     *         language ID
      */
     public function setLanguageId($languageId = 0) {
         $this->_languageId = (int) $languageId;
@@ -168,8 +171,10 @@ class cCategoryHelper {
     /**
      * Return the ID of the top most category based on a given category ID.
      *
-     * @param int $categoryId Base category ID to search on
-     * @return int Top most category ID
+     * @param int $categoryId
+     *         Base category ID to search on
+     * @return int
+     *         Top most category ID
      */
     public function getTopMostCategoryId($categoryId) {
         $category = new cApiCategory($categoryId);
@@ -187,12 +192,14 @@ class cCategoryHelper {
      * Returns an array with ordered cApiCategoryLanguage objects e.g.
      * for a breadcrumb.
      *
-     * @param int $categoryId Last category ID in list.
-     * @param int $startingLevel Define here, at which level the list should
-     *        start. (optional, default: 1)
-     * @param int $maxDepth Amount of the max depth of categories. (optional,
-     *        default: 20)
-     * @return array Array with cApiCategoryLanguage objects
+     * @param int $categoryId
+     *         Last category ID in list.
+     * @param int $startingLevel [optional, default: 1]
+     *         Define here, at which level the list should start.
+     * @param int $maxDepth [optional, default: 20]
+     *         Amount of the max depth of categories.
+     * @return array
+     *         Array with cApiCategoryLanguage objects
      */
     public function getCategoryPath($categoryId, $startingLevel = 1, $maxDepth = 20) {
         $clientId = $this->getClientId();
@@ -227,10 +234,12 @@ class cCategoryHelper {
     /**
      * Fetch all parent category IDs of a given category.
      *
-     * @param int $categoryId Base category to search on.
-     * @param int $maxDepth Amount of the max depth of categories. (optional,
-     *        default: 20)
-     * @return array Array with parent category IDs.
+     * @param int $categoryId
+     *         Base category to search on.
+     * @param int $maxDepth [optional, default: 20]
+     *         Amount of the max depth of categories.
+     * @return array
+     *         Array with parent category IDs.
      */
     public function getParentCategoryIds($categoryId, $maxDepth = 20) {
         $categoryIds = array();
@@ -254,8 +263,10 @@ class cCategoryHelper {
     /**
      * Fetchs the level of a category by a given category ID.
      *
-     * @param int $categoryId Category ID to fetch the level of.
-     * @return int category level
+     * @param int $categoryId
+     *         Category ID to fetch the level of.
+     * @return int
+     *         category level
      */
     public function getCategoryLevel($categoryId) {
         if (isset($this->_levelCache[$categoryId]) === false) {
@@ -278,9 +289,12 @@ class cCategoryHelper {
      * Return the subcategories of the given category ID.
      * TODO: Use Generic DB instead of SQL queries
      *
-     * @param int $categoryId ID of the category to load
-     * @param int $depth the maximum depth
-     * @return array array with subcategories
+     * @param int $categoryId
+     *         ID of the category to load
+     * @param int $depth
+     *         the maximum depth
+     * @return array
+     *         array with subcategories
      */
     public function getSubCategories($categoryId, $depth) {
         if ((int) $categoryId <= 0 || (int) $depth < 0) {
@@ -358,8 +372,10 @@ class cCategoryHelper {
     /**
      * Checks if set auth object has access to the specific category.
      *
-     * @param cApiCategoryLanguage $categoryLanguage category language object
-     * @return bool result of access check
+     * @param cApiCategoryLanguage $categoryLanguage
+     *         category language object
+     * @return bool
+     *         result of access check
      */
     public function hasCategoryAccess(cApiCategoryLanguage $categoryLanguage) {
         $useAuthorization = ($this->_auth !== NULL && $this->_fePermColl !== NULL);

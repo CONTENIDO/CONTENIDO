@@ -4,8 +4,6 @@
  *
  * @package Plugin
  * @subpackage Newsletter
- * @version SVN Revision $Rev:$
- *
  * @author Bjoern Behrens
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -25,7 +23,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     $oJob = new NewsletterJob($_REQUEST["idnewsjob"]);
     $iSendCount = $oJob->runJob();
 
-    if ($oJob->get("dispatch") == 1 && $oJob->get("sendcount") < $oJob->get("rcpcount")) {
+    if ($oJob->get("dispatch") == '1' && intval($oJob->get("sendcount")) < intval($oJob->get("rcpcount"))) {
         // Send in chunks
         $sPathNext = $sess->url("main.php?area=$area&action=news_job_run&frame=4&idnewsjob=" . $_REQUEST["idnewsjob"]);
 
@@ -76,14 +74,14 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
         $oPage->setReload();
     }
 
-    $oPage->setContent($notis . $oForm->render(true));
+    $oPage->setContent($oForm);
 } elseif ($action == "news_job_delete" && $perm->have_perm_area_action($area, $action) && is_numeric($_REQUEST["idnewsjob"])) {
     $oJobs = new NewsletterJobCollection();
     $oJobs->delete($_REQUEST["idnewsjob"]);
 
     $oPage->setSubnav("blank", "news_jobs");
     $oPage->setReload();
-    $oPage->setContent($notis);
+    $oPage->setContent('');
 } elseif ($action == "news_job_details" || $action == "news_job_detail_delete") {
 
     // Show job details (recipients)
@@ -245,7 +243,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
             $oLnkRemove = new cHTMLLink();
             $oLnkRemove->setCLink("news_jobs", 4, "news_job_detail_delete");
             $oLnkRemove->setCustom("idnewsjob", $_REQUEST["idnewsjob"]);
-            $oLnkRemove->setCustom("idnewslog", $oLog->get($oLog->primaryKey));
+            $oLnkRemove->setCustom("idnewslog", $oLog->get($oLog->getPrimaryKeyName()));
             $oLnkRemove->setCustom("sortby", $_REQUEST["sortby"]);
             $oLnkRemove->setCustom("sortmode", $_REQUEST["sortmode"]);
             $oLnkRemove->setContent($sImgDelete);

@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the cHTMLVideo class.
  *
  * @package Core
  * @subpackage GUI_HTML
- * @version SVN Revision $Rev:$
- *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +22,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cHTMLVideo extends cHTMLContentElement {
 
+    /**
+     * Constructor to create an instance of this class.
+     *
+     * @param mixed $content [optional]
+     *         String or object with the contents
+     * @param string $class [optional]
+     *         the class of this element
+     * @param string $id [optional]
+     *         the ID of this element
+     * @param string $src [optional]
+     */
     public function __construct($content = '', $class = '', $id = '', $src = '') {
         parent::__construct($content, $class, $id);
         $this->_tag = 'video';

@@ -1,18 +1,16 @@
 <?php
+
 /**
  * This file contains the backend edit include.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Unknown
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
  * @link             http://www.4fb.de
  * @link             http://www.contenido.org
  */
-
 
 if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
@@ -31,6 +29,20 @@ cRegistry::bootstrap(array(
     'auth' => 'cAuthHandlerBackend',
     'perm' => 'cPermission'
 ));
+
+// The following lines load hooks (CON-2491)
+// It is a duplicated of the hook execution code of include.front_content.php (TODO)
+// this is done because in this file the loading process includes include.front_content.php
+// after this file, therefore some hooks can never be executed
+$backendPath = cRegistry::getBackendPath();
+
+// Include plugins
+require_once($backendPath . $cfg['path']['includes'] . 'functions.includePluginConf.php');
+
+// Call hook after plugins are loaded
+cApiCecHook::execute('Contenido.Frontend.AfterLoadPlugins');
+
+// - End of loading hooks
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 

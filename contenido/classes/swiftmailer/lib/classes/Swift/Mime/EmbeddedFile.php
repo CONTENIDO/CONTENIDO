@@ -10,14 +10,14 @@
 
 /**
  * An embedded file, in a multipart message.
- * @package Swift
- * @subpackage Mime
- * @author Chris Corbyn
+ *
+ * @author     Chris Corbyn
  */
 class Swift_Mime_EmbeddedFile extends Swift_Mime_Attachment
 {
     /**
      * Creates a new Attachment with $headers and $encoder.
+     *
      * @param Swift_Mime_HeaderSet      $headers
      * @param Swift_Mime_ContentEncoder $encoder
      * @param Swift_KeyCache            $cache
@@ -33,7 +33,9 @@ class Swift_Mime_EmbeddedFile extends Swift_Mime_Attachment
 
     /**
      * Get the nesting level of this EmbeddedFile.
-     * Returns {@link LEVEL_RELATED}.
+     *
+     * Returns {@see LEVEL_RELATED}.
+     *
      * @return int
      */
     public function getNestingLevel()

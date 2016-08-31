@@ -1,17 +1,17 @@
 <?php
+
 /**
  * This file contains the class for content search results.
  *
  * @package Core
  * @subpackage Frontend_Search
- * @version SVN Revision $Rev:$
- *
  * @author Willi Man
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.encoding.php');
@@ -20,9 +20,10 @@ cInclude('includes', 'functions.encoding.php');
 /**
  * CONTENIDO API - SearchResult Object
  *
- * This object ranks and displays the result of the indexed fulltext search.
- * If you are not comfortable with this API feel free to use your own methods to
- * display the search results.
+ * This object ranks and displays the result of the indexed fulltext
+ * search.
+ * If you are not comfortable with this API feel free to use your own
+ * methods to display the search results.
  * The search result is basically an array with article ID's.
  *
  * If $search_result = $search->searchIndex($searchword, $searchwordex);
@@ -31,24 +32,25 @@ cInclude('includes', 'functions.encoding.php');
  *
  * $oSearchResults = new cSearchResult($search_result, 10);
  *
- * $oSearchResults->setReplacement('<span style="color:red">', '</span>'); //
- * html-tags to emphasize the located searchwords
+ * // html-tags to emphasize the located searchwords
+ * $oSearchResults->setReplacement('<span style="color:red">', '</span>');
  *
  * $num_res = $oSearchResults->getNumberOfResults();
  * $num_pages = $oSearchResults->getNumberOfPages();
- * $res_page = $oSearchResults->getSearchResultPage(1); // first result page
+ * // first result page
+ * $res_page = $oSearchResults->getSearchResultPage(1);
+ *
  * foreach ($res_page as $key => $val) {
- * $headline = $oSearchResults->getSearchContent($key, 'HTMLHEAD');
- * $first_headline = $headline[0];
- * $text = $oSearchResults->getSearchContent($key, 'HTML');
- * $first_text = $text[0];
- * $similarity = $oSearchResults->getSimilarity($key);
- * $iOccurrence = $oSearchResults->getOccurrence($key);
+ *      $headline = $oSearchResults->getSearchContent($key, 'HTMLHEAD');
+ *      $first_headline = $headline[0];
+ *      $text = $oSearchResults->getSearchContent($key, 'HTML');
+ *      $first_text = $text[0];
+ *      $similarity = $oSearchResults->getSimilarity($key);
+ *      $iOccurrence = $oSearchResults->getOccurrence($key);
  * }
  *
  * @package Core
  * @subpackage Frontend_Search
- *
  */
 class cSearchResult extends cSearchBaseAbstract {
 
@@ -112,28 +114,33 @@ class cSearchResult extends cSearchBaseAbstract {
      * Array of article id's with information about cms-types, occurence of
      * keyword/searchword, similarity .
      *
-     *
-     *
-     *
      * @var array
      */
     protected $_searchResult = array();
 
     /**
-     * Compute ranking factor for each search result and order the search
-     * results by ranking factor
-     * NOTE: The ranking factor is the sum of occurences of matching searchterms
-     * weighted by similarity (in %) between searchword
-     * and matching word in the article.
-     * TODO: One can think of more sophisticated ranking strategies. One could
-     * use the content type information for example
-     * because a matching word in the headline (CMS_HEADLINE[1]) could be
-     * weighted more than a matching word in the text (CMS_HTML[1]).
+     * Constructor to create an instance of this class.
      *
-     * @param array $search_result List of article ids
-     * @param int $result_per_page Number of items per page
-     * @param cDb $oDB Optional db instance
-     * @param bool $bDebug Optional flag to enable debugging
+     * Compute ranking factor for each search result and order the
+     * search results by ranking factor.
+     *
+     * NOTE: The ranking factor is the sum of occurences of matching
+     * searchterms weighted by similarity (in %) between searchword
+     * and matching word in the article.
+     *
+     * TODO: One can think of more sophisticated ranking strategies.
+     * The content type information could be used for example because a
+     * matching word in the headline (CMS_HEADLINE[1]) could be weighted
+     * more than a matching word in the text (CMS_HTML[1]).
+     *
+     * @param array $search_result
+     *         List of article ids
+     * @param int $result_per_page
+     *         Number of items per page
+     * @param cDb $oDB [optional]
+     *         db instance
+     * @param bool $bDebug [optional]
+     *         Optional flag to enable debugging
      */
     public function __construct($search_result, $result_per_page, $oDB = NULL, $bDebug = false) {
         parent::__construct($oDB, $bDebug);
@@ -177,24 +184,28 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param int $art_id Id of an article
+     * @param int $art_id
+     *         Id of an article
      * @param string $cms_type
-     * @param int $id
-     * @return string Content of an article, specified by it's content type
+     * @param int $id [optional]
+     * @return string
+     *         Content of an article, specified by it's content type
      */
     public function getContent($art_id, $cms_type, $id = 0) {
         $article = new cApiArticleLanguage();
-        $article->loadByArticleAndLanguageId($art_id, $this->lang, true);
+        $article->loadByArticleAndLanguageId($art_id, $this->lang);
         return $article->getContent($cms_type, $id);
     }
 
     /**
      *
-     * @param int $art_id Id of an article
-     * @param string $cms_type Content type
-     * @param int $cms_nr
-     * @return string Content of an article in search result, specified by its
-     *         type
+     * @param int $art_id
+     *         Id of an article
+     * @param string $cms_type
+     *         Content type
+     * @param int $cms_nr [optional]
+     * @return string
+     *         Content of an article in search result, specified by its type
      */
     public function getSearchContent($art_id, $cms_type, $cms_nr = NULL) {
         $cms_type = strtoupper($cms_type);
@@ -211,7 +222,7 @@ class cSearchResult extends cSearchBaseAbstract {
         }
 
         $article = new cApiArticleLanguage();
-        $article->loadByArticleAndLanguageId($art_id, $this->lang, true);
+        $article->loadByArticleAndLanguageId($art_id, $this->lang);
         $content = array();
         if (isset($this->_searchResult[$art_id][$cms_type])) {
             // if searchword occurs in cms_type
@@ -284,7 +295,8 @@ class cSearchResult extends cSearchBaseAbstract {
      * Returns articles in page.
      *
      * @param int $page_id
-     * @return array Articles in page $page_id
+     * @return array
+     *         Articles in page $page_id
      */
     public function getSearchResultPage($page_id) {
         $this->_resultPage = $page_id;
@@ -293,7 +305,7 @@ class cSearchResult extends cSearchBaseAbstract {
     }
 
     /**
-     * Returns number of result pages
+     * Returns number of result pages.
      *
      * @return int
      */
@@ -302,7 +314,7 @@ class cSearchResult extends cSearchBaseAbstract {
     }
 
     /**
-     * Returns number of results
+     * Returns number of results.
      *
      * @return int
      */
@@ -312,8 +324,10 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param int $art_id Id of an article
-     * @return int Similarity between searchword and matching word in article
+     * @param int $art_id
+     *         Id of an article
+     * @return int
+     *         Similarity between searchword and matching word in article
      */
     public function getSimilarity($art_id) {
         return $this->_searchResult[$art_id]['similarity'];
@@ -321,8 +335,10 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param int $art_id Id of an article
-     * @return number of matching searchwords found in article
+     * @param int $art_id
+     *         Id of an article
+     * @return int
+     *         number of matching searchwords found in article
      */
     public function getOccurrence($art_id) {
         $aOccurence = $this->_searchResult[$art_id]['occurence'];
@@ -336,9 +352,10 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param string $rep1 The opening html-tag to emphasize the searchword e.g.
-     *        '<b>'
-     * @param string $rep2 The closing html-tag e.g. '</b>'
+     * @param string $rep1
+     *         The opening html-tag to emphasize the searchword e.g. '<b>'
+     * @param string $rep2
+     *         The closing html-tag e.g. '</b>'
      */
     public function setReplacement($rep1, $rep2) {
         if (strlen(trim($rep1)) > 0 && strlen(trim($rep2)) > 0) {
@@ -349,9 +366,10 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
+     * @todo refactor this because it shouldn't be the Search's job
      * @param int $artid
-     * @return int Category Id
-     * @todo Is not job of search, should be outsourced!
+     * @return int
+     *         Category Id
      */
     public function getArtCat($artid) {
         $sql = "SELECT idcat FROM " . $this->cfg['tab']['cat_art'] . "
@@ -362,4 +380,3 @@ class cSearchResult extends cSearchBaseAbstract {
         }
     }
 }
-

@@ -1,12 +1,11 @@
 <?php
+
 /**
  * CONTENIDO Chain.
  * Category backend access feature.
  *
  * @package          Core
  * @subpackage       Chain
- * @version          SVN Revision $Rev:$
- *
  * @author           Unknown
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -16,8 +15,14 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-function cecFrontendCategoryAccess_Backend($idlang, $idcat, $user)
-{
+/**
+ *
+ * @param int $idlang
+ * @param int $idcat
+ * @param string $user
+ * @return boolean
+ */
+function cecFrontendCategoryAccess_Backend($idlang, $idcat, $user) {
     global $cfg, $perm;
 
     if ($perm->have_perm()) {

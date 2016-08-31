@@ -4,8 +4,6 @@
  *
  * @package Core
  * @subpackage Session
- * @version SVN Revision $Rev:$
- *
  * @author Frederic Schneider
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -56,11 +54,15 @@ class cSession {
     public $name;
 
     /**
-     * Starts the session
+     * Constructor to create an instance of this class.
      *
-     * @param string $prefix The prefix for the session variables
+     * Starts the session.
+     *
+     * @param string $prefix [optional]
+     *         The prefix for the session variables
      */
     public function __construct($prefix = 'backend') {
+    	$cfg = cRegistry::getConfig();
         $this->_pt = array();
         $this->_prefix = $prefix;
 
@@ -80,16 +82,16 @@ class cSession {
                 $start = strpos($url, '://');
             }
 
-            // url of contenido folder with hostname 
+            // url of contenido folder with hostname
             $path = substr($url, $start + 3);
 
             $start = strpos($path, '/');
             if (false !== $start) {
                 $path = substr($path, $start);
-                session_set_cookie_params(0, $path);
+                session_set_cookie_params(0, $path, null, $cfg['secure'], true);
             } else {
                 // fall back to entire domain if no path can be computed
-                session_set_cookie_params(0, '/');
+                session_set_cookie_params(0, '/', null, $cfg['secure'], true);
             }
 
             session_name($this->_prefix);
@@ -101,7 +103,8 @@ class cSession {
     /**
      * Registers a global variable which will become persistent
      *
-     * @param string $things The name of the variable (e.g. "idclient")
+     * @param string $things
+     *         The name of the variable (e.g. "idclient")
      */
     public function register($things) {
         $things = explode(',', $things);
@@ -117,7 +120,8 @@ class cSession {
     /**
      * Unregisters a variable
      *
-     * @param string $name The name of the variable (e.g. "idclient")
+     * @param string $name
+     *         The name of the variable (e.g. "idclient")
      */
     public function unregister($name) {
         $this->_pt[$name] = false;
@@ -126,8 +130,9 @@ class cSession {
     /**
      * Checks if a variable is registered
      *
-     * @param string $name The name of the variable (e.g. "idclient")
-     * @return boolean
+     * @param string $name
+     *         The name of the variable (e.g. "idclient")
+     * @return bool
      */
     public function isRegistered($name) {
         if (isset($this->_pt[$name]) && $this->_pt[$name] == true) {
@@ -141,7 +146,8 @@ class cSession {
      * This is no longer needed to make sessions work but some CONTENIDO
      * functions/classes rely on it
      *
-     * @param string $url A URL
+     * @param string $url
+     *         a URL
      * @return mixed
      */
     public function url($url) {
@@ -189,8 +195,10 @@ class cSession {
      * it.
      * This will work recursevly on arrays
      *
-     * @param mixed $var A variable which should get serialized.
-     * @return string the PHP code which can be evaluated.
+     * @param mixed $var
+     *         A variable which should get serialized.
+     * @return string
+     *         the PHP code which can be evaluated.
      */
     public function serialize($var) {
         $str = "";
@@ -202,8 +210,10 @@ class cSession {
      * This function will go recursevly through arrays and objects to serialize
      * them.
      *
-     * @param mixed $var The variable
-     * @param string $str The PHP code will be attached to this string
+     * @param mixed $var
+     *         The variable
+     * @param string $str
+     *         The PHP code will be attached to this string
      */
     protected function _rSerialize($var, &$str) {
         static $t, $l, $k;
@@ -293,7 +303,9 @@ class cSession {
 class cFrontendSession extends cSession {
 
     /**
-     * Starts the session and initilializes the class
+     * Constructor to create an instance of this class.
+     *
+     * Starts the session and initilializes the class.
      */
     public function __construct() {
         $client = cRegistry::getClientId();
@@ -306,7 +318,8 @@ class cFrontendSession extends cSession {
      * attached to the URL for the frontend
      *
      * @see cSession::url()
-     * @param string $url A URL
+     * @param string $url
+     *         a URL
      * @return mixed
      */
     public function url($url) {
@@ -331,5 +344,3 @@ class cFrontendSession extends cSession {
         return $url;
     }
 }
-
-?>

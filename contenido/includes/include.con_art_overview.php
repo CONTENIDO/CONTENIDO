@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for displaying articles of a category.
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Jan Lengowski
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -37,6 +36,10 @@ $syncoptions = $syncfrom;
 if (!isset($_SESSION['count_duplicate'])) {
     $_SESSION['count_duplicate'] = 0;
 }
+
+// New Article Selected: Unset Selected Article Id
+global $selectedArticleId;
+$selectedArticleId = NULL;
 
 if ($action == 'con_duplicate' && ($perm->have_perm_area_action("con", "con_duplicate") || $perm->have_perm_area_action_item("con", "con_duplicate", $idcat))) {
 
@@ -242,7 +245,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         // No article
         $no_article = true;
 
-        $aArticles = Array();
+        $aArticles = array();
 
         while ($db->nextRecord()) {
             $sItem = "k" . $db->f("idart");
@@ -277,6 +280,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         $articlesUnlocked = 0;
         $articlesToSync = 0;
         $articlesToRemove = 0;
+        $articlesToEdit = 0;
 
         foreach ($aArticles as $sart) {
             $idart = $sart["idart"];
@@ -312,6 +316,8 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $published = ($published != '0000-00-00 00:00:00') ? date($dateformat, strtotime($published)) : i18n("not yet published");
             $created = date($dateformat, strtotime($created));
             $alttitle = "idart" . '&#58; ' . $idart . ' ' . "idcatart" . '&#58; ' . $idcatart . ' ' . "idartlang" . '&#58; ' . $idartlang;
+
+            $articlesToEdit++;
 
             if ($idlang != $lang) {
                 $articlesToSync++;
@@ -603,7 +609,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $no_article = false;
             $oArtLang = new cApiArticleLanguage();
             foreach ($listColumns as $listColumn => $ctitle) {
-                $oArtLang->loadBy($oArtLang->primaryKey, $idartlang);
+                $oArtLang->loadBy($oArtLang->getPrimaryKeyName(), $idartlang);
 
                 switch ($listColumn) {
                     case "mark":
@@ -782,11 +788,16 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         if ($articlesToRemove > 0 && ($perm->have_perm_area_action("con", "con_deleteart") || $perm->have_perm_area_action_item("con", "con_deleteart", $idcat))) {
             $bulkEditingFunctions .= createBulkEditingFunction('con_deleteart', 'images/delete.gif', i18n('Delete articles'), 'Con.showConfirmation("' . i18n('Are you sure to delete the selected articles') . '", deleteArticles)');
         }
+        if ($articlesToEdit > 0 && ($perm->have_perm_area_action("con", "con_editart") || $perm->have_perm_area_action_item("con", "con_editart", $idcat))) {
+        	$bulkEditingFunctions .= createBulkEditingFunction('con_inlineeditart', 'images/editieren.gif', i18n('Edit articles'));
+        }
 
         if ($bulkEditingFunctions == "") {
             $bulkEditingFunctions = i18n("Your permissions do not allow any actions here");
         }
+
         $tpl->set('s', 'BULK_EDITING_FUNCTIONS', $bulkEditingFunctions);
+		$tpl->set('s', 'SAVE_ARTICLES', i18n('Save articles'));
 
         if (count($artlist) > 0) {
             foreach ($artlist as $key2 => $artitem) {
@@ -799,7 +810,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                         $templateDescription = $artitem['templateDescription'];
                         $descString = '<b>' . $artitem[$key] . '</b>';
 
-                        $sTemplatename = cApiStrTrimHard($artitem[$key], 20);
+                        $sTemplatename = cString::trimHard($artitem[$key], 20);
                         if (strlen($artitem[$key]) > 20) {
                             $cells[] = '<td nowrap="nowrap" class="bordercell tooltip" title="' . $descString . '">' . $sTemplatename . '</td>';
                         } else {
@@ -944,12 +955,20 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         // New Article link
         if (($perm->have_perm_area_action('con_editart', 'con_newart') || $perm->have_perm_area_action_item('con_editart', 'con_newart', $idcat)) && $foreignlang == false) {
+            // check if category has an assigned template
             if ($idcat != 0 && $cat_idtpl != 0) {
                 $tpl->set('s', 'NEWARTICLE_TEXT', '<a id="newArtTxt" href="' . $sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat") . '">' . i18n("Create new article") . '</a>');
                 $tpl->set('s', 'NEWARTICLE_IMG', '<a id="newArtImg" href="' . $sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat") . '" title="' . i18n("Create new article") . '"><img src="images/but_art_new.gif" border="0" alt="' . i18n("Create new article") . '"></a>');
                 $tpl->set('s', 'CATTEMPLATE', $warningBox);
             } else {
-                $notification_text = $notification->returnNotification("error", i18n("Creation of articles is only possible if the category has a assigned template."));
+                // category is either not in sync or does not exist
+                // check if category does not exist for current language if syncoptions is turned on to find out if current category is unsynchronized
+                $oArtLang = new cApiArticleLanguage($idcat);
+                if (0 < $syncoptions && false === $oArtLang->isLoaded()) {
+                    $notification_text = $notification->returnNotification("error", i18n("Creation of articles is only possible if the category has is synchronized."));
+                } else {
+                    $notification_text = $notification->returnNotification("error", i18n("Creation of articles is only possible if the category has a assigned template."));
+                }
                 $tpl->set('s', 'CATTEMPLATE', $notification_text);
                 $tpl->set('s', 'NEWARTICLE_TEXT', '&nbsp;');
                 $tpl->set('s', 'NEWARTICLE_IMG', '&nbsp;');
@@ -992,11 +1011,16 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 /**
  * Creates HTML code for the bulk editing functions in the article overview.
  *
- * @param string $class the class for the link
- * @param string $imageSrc the path to the image
- * @param string $alt the alt tag for the image
- * @param string $onclick [optional] the onlick attribute for the link
- * @return string rendered HTML code
+ * @param string $class
+ *         the class for the link
+ * @param string $imageSrc
+ *         the path to the image
+ * @param string $alt
+ *         the alt tag for the image
+ * @param string $onclick [optional]
+ *         the onlick attribute for the link
+ * @return string
+ *         rendered HTML code
  */
 function createBulkEditingFunction($class, $imageSrc, $alt, $onclick = '') {
     $function = new cHTMLLink();

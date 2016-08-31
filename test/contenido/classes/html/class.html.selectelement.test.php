@@ -2,8 +2,6 @@
 
 /**
  *
- * @version SVN Revision $Rev:$
- *
  * @author claus.schunk@4fb.de
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG <www.4fb.de>
@@ -284,7 +282,7 @@ class cHTMLSelectElementTest extends cTestingTestCase {
     /**
      */
     public function testToHtml() {
-        $this->assertSame($this->_selectData->toHtml(), $this->_selectData->toHTML());
+        $this->assertSame($this->_selectData->toHtml(), $this->_selectData->toHtml());
     }
 }
 

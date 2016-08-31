@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the foldable pager for menus GUI class.
  *
  * @package          Core
  * @subpackage       GUI
- * @version          SVN Revision $Rev:$
  *
  * @author           Timo Hummel
  * @copyright        four for business AG <www.4fb.de>
@@ -23,10 +23,36 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cGuiObjectPager extends cGuiFoldingRow {
 
+    /**
+     *
+     * @var cHTMLLink
+     */
     public $_pagerLink;
+
+    /**
+     *
+     * @var string
+     */
     public $_parameterToAdd;
 
     /**
+     * @var cPager
+     */
+    protected $_cPager;
+
+    /**
+     * Constructor to create an instance of this class.
+     *
+     * @param string $uuid
+     * @param int $items
+     *         Amount of items
+     * @param int $itemsperpage
+     *         Items displayed per page
+     * @param int $currentpage
+     *         Defines the current page
+     * @param cHTMLLink $link
+     * @param string $parameterToAdd
+     * @param string $id [optional]
      * @throws cException if the given link is not an object
      */
     public function __construct($uuid, $items, $itemsperpage, $currentpage, $link, $parameterToAdd, $id = '') {
@@ -42,15 +68,23 @@ class cGuiObjectPager extends cGuiFoldingRow {
 
         if (!is_object($link)) {
             throw new cException('Parameter link is not an object');
-            return false;
         }
+        
         $this->_cPager = new cPager($items, $itemsperpage, $currentpage);
         $this->_pagerLink = $link;
         $this->_parameterToAdd = $parameterToAdd;
     }
 
+    /**
+     *
+     * @see cGuiFoldingRow::render()
+     * @param bool $bContentOnly [optional]
+     * @return string
+     *         Generated markup
+     */
     public function render($bContentOnly = false) {
-        #Do not display Page navigation if there is only one Page and we are not in newsletter section
+        // Do not display Page navigation if there is only one Page
+        // and we are not in newsletter section.
         if ($this->_cPager->getMaxPages() == 1) {
             $this->_headerRow->setStyle("display:none");
             $this->_contentRow->setStyle("display:none");
@@ -124,7 +158,8 @@ class cGuiObjectPager extends cGuiFoldingRow {
         $this->_contentData->setAlignment("center");
         $this->_contentData->setClass("foldingrow_content");
 
-        #Do not display Page navigation if there is only one Page and we are not in newsletter section
+        // Do not display Page navigation if there is only one Page
+        // and we are not in newsletter section.
         if ($this->_cPager->getMaxPages() == 1) {
             $output = '';
         }

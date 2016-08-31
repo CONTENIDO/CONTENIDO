@@ -4,8 +4,6 @@
  *
  * @package Core
  * @subpackage GenericDB_Model
- * @version SVN Revision $Rev:$
- *
  * @author Timo Hummel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -24,10 +22,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiCategoryCollection extends ItemCollection {
 
     /**
-     * Create a new collection of items.
+     * Constructor to create an instance of this class.
      *
-     * @param string $select where clause to use for selection (see
-     *            ItemCollection::select())
+     * @param string $select [optional]
+     *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
         global $cfg;
@@ -46,13 +44,13 @@ class cApiCategoryCollection extends ItemCollection {
      * Creates a category entry.
      *
      * @param int $idclient
-     * @param int $parentid
-     * @param int $preid
-     * @param int $postid
-     * @param int $status
-     * @param string $author
-     * @param string $created
-     * @param string $lastmodified
+     * @param int $parentid [optional]
+     * @param int $preid [optional]
+     * @param int $postid [optional]
+     * @param int $status [optional]
+     * @param string $author [optional]
+     * @param string $created [optional]
+     * @param string $lastmodified [optional]
      * @return cApiCategory
      */
     public function create($idclient, $parentid = 0, $preid = 0, $postid = 0, $status = 0, $author = '', $created = '', $lastmodified = '') {
@@ -89,7 +87,7 @@ class cApiCategoryCollection extends ItemCollection {
      * Last entry has no parentid and no postid.
      *
      * @param int $idclient
-     * @return cApiCategory NULL
+     * @return cApiCategory|NULL
      */
     public function fetchLastCategoryTree($idclient) {
         $where = 'parentid=0 AND postid=0 AND idclient=' . (int) $idclient;
@@ -167,7 +165,8 @@ class cApiCategoryCollection extends ItemCollection {
      * (*) Returned category id
      * </pre>
      *
-     * @param int $idcat Category id
+     * @param int $idcat
+     *         Category id
      * @return int
      */
     public function getParentsNextPostCategoryId($idcat) {
@@ -221,31 +220,25 @@ class cApiCategoryCollection extends ItemCollection {
      *
      * @global array $cfg
      * @param int $idcat
-     * @param int|NULL $idlang If defined, it checks also if there is a next
-     *        deeper category in this language.
+     * @param int|NULL $idlang [optional]
+     *         If defined, it checks also if there is a next deeper category in this language.
      * @return int
      */
     public function getFirstChildCategoryId($idcat, $idlang = NULL) {
         global $cfg;
 
-        $sql = "SELECT idcat FROM `%s` WHERE parentid = %d AND preid = 0";
-        $sql = $this->db->prepare($sql, $this->table, $idcat);
+        $sql = "SELECT c.idcat
+        		FROM `%s` AS c
+        		LEFT JOIN `%s` AS l ON (l.idcat = c.idcat)
+        		WHERE c.parentid = %d AND l.idlang = %d";
+        $sql = $this->db->prepare($sql, $this->table, $cfg['tab']['cat_lang'], $idcat, $idlang);
         $this->db->query($sql);
-        if ($this->db->nextRecord()) {
-            $midcat = (int) $this->db->f('idcat');
-            if (NULL == $idlang) {
-                return $midcat;
-            }
 
-            // Deeper element exists, check for language dependent part
-            $sql = "SELECT idcatlang FROM `%s` WHERE idcat = %d AND idlang = %d";
-            $sql = $this->db->prepare($sql, $cfg['tab']['cat_lang'], $idcat, $idlang);
-            $this->db->query($sql);
-            return ($this->db->nextRecord()) ? $midcat : 0;
-        } else {
-            // Deeper element does not exist
-            return 0;
+        if ($this->db->nextRecord()) {
+        	return $this->db->f('idcat');
         }
+
+        return 0;
     }
 
     /**
@@ -266,7 +259,7 @@ class cApiCategoryCollection extends ItemCollection {
      *
      * @global array $cfg
      * @param int $idcat
-     * @param int|NULL $idlang
+     * @param int|NULL $idlang [optional]
      * @return array
      */
     public function getAllChildCategoryIds($idcat, $idlang = NULL) {
@@ -391,7 +384,8 @@ class cApiCategoryCollection extends ItemCollection {
      * @global array $cfg
      * @param int $idcat
      * @param int $client
-     * @return array Sorted by category id
+     * @return array
+     *         Sorted by category id
      */
     public function getAllCategoryIdsRecursive2($idcat, $idclient) {
         global $cfg;
@@ -433,9 +427,10 @@ class cApiCategoryCollection extends ItemCollection {
 class cApiCategory extends Item {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId [optional]
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -462,8 +457,10 @@ class cApiCategory extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $safe Flag to run defined inFilter on passed value
-     * @todo should return return value of overloaded method
+     * @param bool $safe [optional]
+     *         Flag to run defined inFilter on passed value
+     *
+     * @return bool
      */
     public function setField($name, $value, $safe = true) {
         switch ($name) {
@@ -477,14 +474,16 @@ class cApiCategory extends Item {
                 break;
         }
 
-        parent::setField($name, $value, $safe);
+        return parent::setField($name, $value, $safe);
     }
 
     /**
      * Returns the link to the current object.
      *
-     * @param int $changeLangId change language id for URL (optional)
-     * @return string link
+     * @param int $changeLangId [optional]
+     *         change language id for URL (optional)
+     * @return string
+     *         link
      */
     public function getLink($changeLangId = 0) {
         if ($this->isLoaded() === false) {

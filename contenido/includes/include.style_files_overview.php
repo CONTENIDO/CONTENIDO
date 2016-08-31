@@ -1,12 +1,12 @@
 <?php
+
 /**
  * This file contains the backend page for style files overview.
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
- * @author Willi Man, Olaf Niemann
+ * @author Willi Man
+ * @author Olaf Niemann
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
@@ -21,7 +21,7 @@ $files = new cGuiFileOverview($cfgClient[$client]['css']['path'], stripslashes($
 $backend_file_extensions = getSystemProperty('backend', 'backend_file_extensions');
 
 if ($backend_file_extensions == "enabled") {
-	$files->setFileExtension('css');
+    $files->setFileExtension('css');
 }
 
 // Render file overview

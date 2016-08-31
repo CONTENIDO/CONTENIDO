@@ -6,9 +6,9 @@
  * Header frame related JavaScript
  *
  * @module     header
- * @version    SVN Revision $Rev$
  * @requires   jQuery
- * @author     Timo Hummel, Murat Purc <murat@purc.de>
+ * @author     Timo Hummel
+ * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -135,7 +135,12 @@
 
             frame = Con.getFrame('header');
             if (frame) {
-                frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {changelang: idlang});
+                frame.location.href = Con.UtilUrl.replaceParams(frame.location.href,
+                    {
+                        changelang: idlang,
+                        active_submenu: Con.Registry.get("headerMenu").getActiveSubMenu(),
+                        active_submenuitem: jQuery(".activemenu").prop("id")
+                    });
             }
         },
 
@@ -505,7 +510,7 @@
         },
 
         /**
-         * Activates a menue.
+         * Activates a menu.
          * @method activate
          * @param  {Object}  obj  Main menu item object
          */
@@ -552,22 +557,6 @@
 
 
     // ########################################################################
-
-    // @deprecated [2013-11-13] Assign to windows scope (downwards compatibility)
-    window.conMultiLink = Con.multiLink;
-    window.active_main = Con.Header._activeMain;
-    window.active_sub = Con.Header._activeSub;
-    window.active_link = Con.Header._activeLink;
-    window.active_sub_link = Con.Header._activeSubLink;
-    window.show = Con.Header.show;
-    window.hide = Con.Header.hide;
-    window.changeContenidoLanguage = Con.Header.changeContenidoLanguage;
-    window.changeContenidoClient = Con.Header.changeContenidoClient;
-    window.resetHeaderMenu = Con.Header.resetHeaderMenu;
-    window.HeaderTimer = Con.HeaderTimer;
-    window.HeaderMenu = Con.HeaderMenu;
-    window.HeaderClickMenu = Con.HeaderClickMenu;
-    window.HeaderDelayMenu = Con.HeaderDelayMenu;
 
 })(Con, Con.$);
 

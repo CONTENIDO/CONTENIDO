@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the cContentTypeHtml class.
  *
  * @package Core
  * @subpackage ContentType
- * @version SVN Revision $Rev:$
- *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -25,29 +24,34 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cContentTypeHtml extends cContentTypeAbstract {
 
     /**
+     * Constructor to create an instance of this class.
+     *
      * Initialises class attributes and handles store events.
      *
-     * @param string $rawSettings the raw settings in an XML structure or as
-     *        plaintext
-     * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is
-     *        used
-     * @param array $contentTypes array containing the values of all content
-     *        types
+     * @param string $rawSettings
+     *         the raw settings in an XML structure or as plaintext
+     * @param int $id
+     *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
+     * @param array $contentTypes
+     *         array containing the values of all content types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-        // change attributes from the parent class and call the parent
-        // constructor
+
+        // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
+
+        // set props
         $this->_type = 'CMS_HTML';
         $this->_prefix = 'html';
+
     }
 
     /**
      * Generates the code which should be shown if this content type is shown in
      * the frontend.
      *
-     * @return string escaped HTML code which sould be shown if content type is
-     *         shown in frontend
+     * @return string
+     *         escaped HTML code which sould be shown if content type is shown in frontend
      */
     public function generateViewCode() {
         return $this->_encodeForOutput($this->_rawSettings);
@@ -56,8 +60,8 @@ class cContentTypeHtml extends cContentTypeAbstract {
     /**
      * Generates the code which should be shown if this content type is edited.
      *
-     * @return string escaped HTML code which should be shown if content type is
-     *         edited
+     * @return string
+     *         escaped HTML code which should be shown if content type is edited
      */
     public function generateEditCode() {
         $wysiwygDiv = new cHTMLDiv();
@@ -70,7 +74,7 @@ class cContentTypeHtml extends cContentTypeAbstract {
         $db->query($sql);
         $db->nextRecord();
         $id .= $db->f('idtype') . '_' . $this->_id;
-        $wysiwygDiv->setId($id);
+        $wysiwygDiv->setID($id);
         $wysiwygDiv->setClass(htmlentities($this->_type));
 
         $wysiwygDiv->setEvent('Focus', "this.style.border='1px solid #bb5577';");
@@ -90,15 +94,16 @@ class cContentTypeHtml extends cContentTypeAbstract {
 
         // construct edit button
         $editLink = $this->_session->url($this->_cfg['path']['contenido_fullhtml'] . 'external/backendedit/' . 'front_content.php?action=10&idcat=' . $this->_idCat . '&idart=' . $this->_idArt . '&idartlang=' . $this->_idArtLang . '&type=' . $this->_type . '&typenr=' . $this->_id. '&client=' . $this->_client);
-        $editAnchor = new cHTMLLink("javascript:Con.Tiny.setContent('" . $this->_idArtLang . "','" . $editLink . "');");
+        $editAnchor = new cHTMLLink('#');
+        $editAnchor->setAttribute('onclick', "javascript:Con.Tiny.setContent('" . $this->_idArtLang . "','" . $editLink . "'); return false;");
         $editButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_edithtml.gif');
         $editButton->appendStyleDefinition('margin-right', '2px');
-		$editButton->setClass('content_type_zindex');
+        $editButton->setClass('content_type_zindex');
         $editAnchor->setContent($editButton);
 
         // construct save button
-        $saveAnchor = new cHTMLLink();
-        $saveAnchor->setLink("javascript:Con.Tiny.setContent('" . $this->_idArtLang . "', '0');");
+        $saveAnchor = new cHTMLLink('#');
+        $saveAnchor->setAttribute('onclick', "javascript:Con.Tiny.setContent('" . $this->_idArtLang . "', '0'); return false;");
         $saveButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_ok.gif');
         $saveAnchor->setContent($saveButton);
 
@@ -107,7 +112,8 @@ class cContentTypeHtml extends cContentTypeAbstract {
 
     /**
      * This content type and its derived types can be edited by a WYSIWYG editor
-     * @return boolean
+     *
+     * @return bool
      */
     public function isWysiwygCompatible() {
         return true;

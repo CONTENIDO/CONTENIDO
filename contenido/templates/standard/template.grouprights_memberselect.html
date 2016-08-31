@@ -23,7 +23,7 @@
     <input type="hidden" name="idlang" value="{IDLANG}">
     <table id="stats" class="generic" cellspacing="0" cellpadding="4">
         <tr class="text_medium">
-            <th colspan="2" align="left" valign="top" style="font-weight: normal; padding-left:3px">{CATNAME}</td>
+            <th colspan="2" align="left" valign="top" style="font-weight: normal; padding-left:3px">{CATNAME}</th>
         </tr>
         <!-- BEGIN:BLOCK -->
         <tr class="text_medium">
@@ -84,34 +84,34 @@
 
         var $form = $('#group_properties');
 
-        var goupAssociation = new Con.GoupAssociation({
+        var groupAssociation = new Con.GroupAssociation({
             selectorForm: '#group_properties',
             add: '{ADD_ACTION}',
             del: '{DELETE_ACTION}'
         });
 
-        goupAssociation.filter('user_in_group_filter_value');
-        goupAssociation.filter('newmember_filter_value');
+        groupAssociation.filter('user_in_group_filter_value');
+        groupAssociation.filter('newmember_filter_value');
 
         $('#newmember_button').click(function() {
-            goupAssociation.setAction('{ADD_ACTION}');
+            groupAssociation.setAction('{ADD_ACTION}');
         });
         $('#user_in_group_button').click(function() {
-            goupAssociation.setAction('{DELETE_ACTION}');
+            groupAssociation.setAction('{DELETE_ACTION}');
         });
 
         $('#user_in_group_filter_value').keyup(function() {
-            goupAssociation.keyHandler('user_in_group_filter_value');
+            groupAssociation.keyHandler('user_in_group_filter_value');
         });
         $('#user_in_group_filter_value').next('.submit_image').click(function() {
-            goupAssociation.filter('user_in_group_filter_value');
+            groupAssociation.filter('user_in_group_filter_value');
         });
 
         $('#newmember_filter_value').keyup(function() {
-            goupAssociation.keyHandler('newmember_filter_value');
+            groupAssociation.keyHandler('newmember_filter_value');
         });
         $('#newmember_filter_value').next('.submit_image').click(function() {
-            goupAssociation.filter('newmember_filter_value');
+            groupAssociation.filter('newmember_filter_value');
         });
 
         $('#btn_save_changes').click(function() {

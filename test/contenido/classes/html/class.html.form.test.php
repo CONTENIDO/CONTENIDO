@@ -1,8 +1,6 @@
 <?PHP
 /**
  *
- * @version SVN Revision $Rev:$
- *
  * @author claus.schunk@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -65,7 +63,7 @@ class cHtmlFormTest extends cTestingTestCase {
      * @todo
      */
     public function testToHtml() {
-        $act = $this->_form->toHTML();
+        $act = $this->_form->toHtml();
         $exp = '<form id="" name="" method="post" action="main.php"></form>';
         $this->assertSame($exp, $act);
     }

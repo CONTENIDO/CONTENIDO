@@ -26,7 +26,7 @@
             <frame area="url_shortener" filetype="main" name="url_shortener/includes/include.url_shortener.php" frameId="4" />
         </frames>
         <nav_sub>
-            <nav area="url_shortener" level="0" navm="3">url_shortener/xml/;navigation/extra/url_shortener/main</nav>
+            <nav area="url_shortener" level="0" navm="extra">url_shortener/xml/;navigation/extra/url_shortener/main</nav>
         </nav_sub>
     </contenido>
 </plugin>

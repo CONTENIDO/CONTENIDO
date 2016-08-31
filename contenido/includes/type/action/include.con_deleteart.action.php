@@ -1,11 +1,10 @@
 <?php
+
 /**
  * Backend action file con_deleteart
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Dominik Ziegler
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -28,10 +27,9 @@ if ($perm->have_perm_area_action("con", "con_deleteart") || $perm->have_perm_are
         conDeleteArt($idart);
     }
 
-    $tmp_notification = $notification->returnNotification("info", i18n("Article deleted"));
+    $tmp_notification = $notification->returnNotification("ok", i18n("Article deleted"));
 } else {
     $notification->displayNotification("error", i18n("Permission denied"));
 }
-
 
 ?>

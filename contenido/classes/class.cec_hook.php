@@ -4,8 +4,6 @@
  *
  * @package Core
  * @subpackage CEC
- * @version SVN Revision $Rev:$
- *
  * @author Timo A. Hummel
  * @author Murat Purc <murat@purc.de>
  * @copyright four for business AG <www.4fb.de>
@@ -102,7 +100,7 @@ class cApiCecHook {
      * value.
      *
      * @param mixed $condition
-     * @param mixed $defaultReturnValue
+     * @param mixed $defaultReturnValue [optional]
      */
     public static function setBreakCondition($condition, $defaultReturnValue = NULL) {
         self::$_breakCondition = $condition;
@@ -121,8 +119,8 @@ class cApiCecHook {
     /**
      * Temporaly setting of position in argument to return.
      *
-     * @param int $pos Position, feasible value greater 0
-     *
+     * @param int $pos
+     *         Position, feasible value greater 0
      * @throws cInvalidArgumentException if the given position is less than 1
      */
     public static function setReturnArgumentPos($pos) {
@@ -172,7 +170,8 @@ class cApiCecHook {
      * number of passed parameter. NOTE: If no chain function is registered,
      * $_defaultReturnValue will be returned.
      *
-     * @return mixed Parameter changed/processed by chain functions.
+     * @return mixed
+     *         Parameter changed/processed by chain functions.
      */
     public static function executeAndReturn() {
         // get arguments
@@ -221,7 +220,8 @@ class cApiCecHook {
      * number of passed parameter. NOTE: If no chain function is registered,
      * $_defaultReturnValue will be returned.
      *
-     * @return mixed The break condition or it's default value
+     * @return mixed
+     *         The break condition or it's default value
      */
     public static function executeWhileBreakCondition() {
         // get arguments
@@ -275,8 +275,10 @@ class cApiCecHook {
      *       Writes the debug value into a logfile (see
      *       contenido/data/log/cec_hook_debug.log).
      *
-     * @param mixed $var The variable to dump
-     * @param string $msg Additional message
+     * @param mixed $var
+     *         The variable to dump
+     * @param string $msg [optional]
+     *         Additional message
      */
     private static function _debug($var, $msg = '') {
         global $cfg;

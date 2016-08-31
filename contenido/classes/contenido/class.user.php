@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the system property collection and item class.
  *
  * @package Core
  * @subpackage GenericDB_Model
- * @version SVN Revision $Rev:$
- *
  * @author Bjoern Behrens
  * @author Holger Librenz
  * @copyright four for business AG <www.4fb.de>
@@ -25,11 +24,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiUserCollection extends ItemCollection {
 
     /**
-     * Constructor function.
+     * Constructor to create an instance of this class.
      *
      * @global array $cfg
-     * @param string|bool $where The where clause in the select, usable to run
-     *        select by creating the instance
+     * @param string|bool $where [optional]
+     *         The where clause in the select, usable to run select by creating
+     *         the instance
      */
     public function __construct($where = false) {
         global $cfg;
@@ -44,7 +44,7 @@ class cApiUserCollection extends ItemCollection {
      * Createa a user by user name.
      *
      * @param string $username
-     * @return cApiUser false
+     * @return cApiUser|bool
      */
     public function create($username) {
         $primaryKeyValue = md5($username);
@@ -64,8 +64,10 @@ class cApiUserCollection extends ItemCollection {
     /**
      * Removes the specified user from the database by users name.
      *
-     * @param string $username Specifies the username
-     * @return bool True if the delete was successful
+     * @param string $username
+     *         Specifies the username
+     * @return bool
+     *         True if the delete was successful
      */
     public function deleteUserByUsername($username) {
         $result = $this->deleteBy('username', $username);
@@ -75,11 +77,14 @@ class cApiUserCollection extends ItemCollection {
     /**
      * Returns all users which are accessible by the current user.
      *
-     * @param array $perms Permissions array
-     * @param bool $includeAdmins Flag to get admins (admin and sysadmin) too
-     * @param string $orderBy Order by rule, uses 'realname, username' by
-     *        default
-     * @return cApiUser[] Array of user objects
+     * @param array $perms
+     *         Permissions array
+     * @param bool $includeAdmins [optional]
+     *         Flag to get admins (admin and sysadmin) too
+     * @param string $orderBy [optional]
+     *         Order by rule, uses 'realname, username' by default
+     * @return array
+     *         Array of user objects
      */
     public function fetchAccessibleUsers($perms, $includeAdmins = false, $orderBy = '') {
         $users = array();
@@ -130,12 +135,14 @@ class cApiUserCollection extends ItemCollection {
      * function
      * a multidimensional array instead of a list of objects.
      *
-     * @param array $perms Permissions array
-     * @param bool $includeAdmins Flag to get admins (admin and sysadmin) too
-     * @param string $orderBy Order by rule, uses 'realname, username' by
-     *        default
-     * @return array Array of user like $arr[user_id][username],
-     *         $arr[user_id][realname]
+     * @param array $perms
+     *         Permissions array
+     * @param bool $includeAdmins [optional]
+     *         Flag to get admins (admin and sysadmin) too
+     * @param string $orderBy [optional]
+     *         Order by rule, uses 'realname, username' by default
+     * @return array
+     *         Array of user like $arr[user_id][username], $arr[user_id][realname]
      */
     public function getAccessibleUsers($perms, $includeAdmins = false, $orderBy = '') {
         $users = array();
@@ -152,8 +159,9 @@ class cApiUserCollection extends ItemCollection {
     /**
      * Returns all users available in the system
      *
-     * @param string $orderBy SQL order by part
-     * @return cApiUser[]
+     * @param string $orderBy [optional]
+     *         SQL order by part
+     * @return array
      */
     public function fetchAvailableUsers($orderBy = 'realname ASC') {
         $users = array();
@@ -169,8 +177,10 @@ class cApiUserCollection extends ItemCollection {
     /**
      * Returns all system admins available in the system
      *
-     * @param bool $forceActive flag if only active sysadmins should be returned
-     * @return cApiUser[] Array of user objects
+     * @param bool $forceActive [optional]
+     *         flag if only active sysadmins should be returned
+     * @return array
+     *         Array of user objects
      */
     public function fetchSystemAdmins($forceActive = false) {
         $users = array();
@@ -192,7 +202,8 @@ class cApiUserCollection extends ItemCollection {
      * Returns all system admins available in the system
      *
      * @param int $client
-     * @return cApiUser[] Array of user objects
+     * @return array
+     *         Array of user objects
      */
     public function fetchClientAdmins($client) {
         $client = (int) $client;
@@ -356,9 +367,10 @@ class cApiUser extends Item {
     const MIN_PASS_LENGTH_DEFAULT = 8;
 
     /**
-     * Constructor function
+     * Constructor to create an instance of this class.
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId [optional]
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -372,8 +384,10 @@ class cApiUser extends Item {
     /**
      * Loads a user from the database by its userID.
      *
-     * @param string $userId Specifies the userID
-     * @return bool True if the load was successful
+     * @param string $userId
+     *         Specifies the userID
+     * @return bool
+     *         True if the load was successful
      */
     public function loadUserByUserID($userId) {
         return $this->loadByPrimaryKey($userId);
@@ -382,8 +396,10 @@ class cApiUser extends Item {
     /**
      * Loads a user entry by username.
      *
-     * @param string $userName Specifies the username
-     * @return bool True if the load was successful
+     * @param string $userName
+     *         Specifies the username
+     * @return bool
+     *         True if the load was successful
      */
     public function loadUserByUsername($userName) {
         return $this->loadBy('username', $userName);
@@ -393,7 +409,8 @@ class cApiUser extends Item {
      * Checks if a user with the id $userId exists
      *
      * @param string $userId
-     * @return bool user exists or not
+     * @return bool
+     *         user exists or not
      */
     public static function userExists($userId) {
         $test = new cApiUser();
@@ -404,8 +421,10 @@ class cApiUser extends Item {
     /**
      * Checks if a username exists
      *
-     * @param string $username the name
-     * @return bool username exists or not
+     * @param string $username
+     *         the name
+     * @return bool
+     *         username exists or not
      */
     public static function usernameExists($username) {
         $user = new cApiUser();
@@ -418,9 +437,10 @@ class cApiUser extends Item {
      * length, required special character, etc...
      * This behaviour is configurable in global configuration $cfg['password'].
      *
-     * @param string $password The password check
-     * @return int One of defined PASS_* constants (PASS_OK if everything was
-     *         ok)
+     * @param string $password
+     *         The password check
+     * @return int
+     *         One of defined PASS_* constants (PASS_OK if everything was ok)
      */
     public static function checkPasswordMask($password) {
         global $cfg;
@@ -493,8 +513,10 @@ class cApiUser extends Item {
     /**
      * Encodes a passed password (uses md5 to generate a hash of it).
      *
-     * @param string $password The password to encode
-     * @return string Encoded password
+     * @param string $password
+     *         The password to encode
+     * @return string
+     *         Encoded password
      */
     public function encodePassword($password) {
         return hash("sha256", md5($password) . $this->get("salt"));
@@ -503,11 +525,14 @@ class cApiUser extends Item {
     /**
      * User defined field value setter.
      *
-     * @param string $sField Field name
-     * @param string $mValue Value to set
-     * @param bool $bSafe Flag to run defined inFilter on passed value
-     * @return bool
      * @see Item::setField()
+     * @param string $sField
+     *         Field name
+     * @param string $mValue
+     *         Value to set
+     * @param bool $bSafe [optional]
+     *         Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function setField($sField, $mValue, $bSafe = true) {
         if ('perms' === $sField) {
@@ -563,13 +588,16 @@ class cApiUser extends Item {
 
     /**
      * This method saves the given password $password.
-     * The password
-     * has to be checked, before it is set to the database. The resulting
-     * integer value represents the result code.
+     *
+     * The password has to be checked, before it is set to the database.
+     *
+     * The resulting integer value represents the result code.
+     *
      * Use the PASS_* constants to check what happens.
      *
      * @param string $password
-     * @return int bool PASS_* or false if saving fails
+     * @return int|bool
+     *         PASS_* or false if saving fails
      */
     public function savePassword($password) {
         if ($this->get('password') == $this->encodePassword($password)) {
@@ -608,16 +636,18 @@ class cApiUser extends Item {
     /**
      * Getter method to get user realname
      *
-     * @return string Realname of user
+     * @return string
+     *         Realname of user
      */
     public function getRealName() {
         return $this->get('realname');
     }
 
     /**
-     * Returns effective user name (if exists realname , otherwhise username)
+     * Returns effective user name (if exists realname , otherwise username)
      *
-     * @return string Realname or username of user
+     * @return string
+     *         Realname or username of user
      */
     public function getEffectiveName() {
         $name = trim($this->get('realname'));
@@ -648,7 +678,8 @@ class cApiUser extends Item {
     /**
      * Getter method to get user adress data
      *
-     * @return array Address data array like:
+     * @return array
+     *         Address data array like:
      *         <pre>
      *         $aAddress['street'], $aAddress['city'], $aAddress['country'],
      *         $aAddress['zip']
@@ -824,7 +855,8 @@ class cApiUser extends Item {
     /**
      * Setter method to set valid_to
      *
-     * @param string $sValidateTo TODO add type check
+     * @todo add type check
+     * @param string $sValidateTo
      */
     public function setValidDateTo($sValidateTo) {
         if ('0000-00-00' == $this->get('valid_to') && 0 == strlen(trim($sValidateTo))) {
@@ -838,7 +870,8 @@ class cApiUser extends Item {
     /**
      * Setter method to set valid_from
      *
-     * @param string $sValidateFrom TODO add type checks
+     * @todo add type checks
+     * @param string $sValidateFrom
      */
     public function setValidDateFrom($sValidateFrom) {
         if ('0000-00-00' == $this->get('valid_from') && 0 == strlen(trim($sValidateFrom))) {
@@ -865,7 +898,8 @@ class cApiUser extends Item {
      * string.
      *
      * @author Timo Trautmann
-     * @return string Current users permissions
+     * @return string
+     *         Current users permissions
      */
     public function getEffectiveUserPerms() {
         global $perm;
@@ -902,10 +936,10 @@ class cApiUser extends Item {
     /**
      * Returns group names where the user is in.
      *
-     * @param string $userid Optional user id, uses id of loaded user by
-     *        default.
-     * @param bool $bAddDescription Flag to add description like "groupname
-     *        (description)"
+     * @param string $userid [optional]
+     *         user id, uses id of loaded user by default.
+     * @param bool $bAddDescription [optional]
+     *         Flag to add description like "groupname (description)"
      * @return array
      */
     public function getGroupNamesByUserID($userid = NULL, $bAddDescription = true) {
@@ -936,8 +970,8 @@ class cApiUser extends Item {
     /**
      * Returns group ids where the user is in.
      *
-     * @param string $userid Optional user id, uses id of loaded user by
-     *        default.
+     * @param string $userid [optional]
+     *         user id, uses id of loaded user by default.
      * @return array
      */
     public function getGroupIDsByUserID($userid) {
@@ -958,11 +992,14 @@ class cApiUser extends Item {
     /**
      * Retrieves the effective user property.
      *
-     * @param string $type Type (class, category etc) for the property to
-     *        retrieve
-     * @param string $name Name of the property to retrieve
-     * @param bool $group Flag to search in groups
-     * @return string bool value of the retrieved property or false
+     * @param string $type
+     *         Type (class, category etc) for the property to retrieve
+     * @param string $name
+     *         Name of the property to retrieve
+     * @param bool $group [optional]
+     *         Flag to search in groups
+     * @return string|bool
+     *         value of the retrieved property or false
      */
     public function getUserProperty($type, $name, $group = false) {
         global $perm;
@@ -1001,13 +1038,14 @@ class cApiUser extends Item {
      *
      * @todo return value should be similar to getUserProperties()
      *
-     * @param string $type Type (class, category etc) of the properties to
-     *        retrieve
-     * @param bool $group Flag to retrieve in group properties. If enabled,
-     *        group properties
-     *        will be merged with user properties where the user poperties will
-     *        overwrite group properties
-     * @return array Assoziative properties array as follows:
+     * @param string $type
+     *         Type (class, category etc) of the properties to retrieve
+     * @param bool $group [optional]
+     *         Flag to retrieve in group properties. If enabled, group
+     *         properties will be merged with user properties where the user
+     *         poperties will overwrite group properties
+     * @return array
+     *         Assoziative properties array as follows:
      *         - $arr[name] = value
      */
     public function getUserPropertiesByType($type, $group = false) {
@@ -1044,15 +1082,11 @@ class cApiUser extends Item {
     /**
      * Retrieves all available properties of the user.
      *
-     * @return array bool a array or false in downwards compatible mode,
-     *         otherwhise a array.
+     * @return array
      *         Return value in new mode is:
      *         - $arr[iduserprop][name]
      *         - $arr[iduserprop][type]
      *         - $arr[iduserprop][value]
-     *         Return value in downwards compatible mode is:
-     *         - $arr[pos][name]
-     *         - $arr[pos][type]
      */
     public function getUserProperties() {
         $userPropColl = new cApiUserPropertyCollection($this->values['user_id']);
@@ -1074,10 +1108,12 @@ class cApiUser extends Item {
     /**
      * Stores a property to the database
      *
-     * @param string $type Type (class, category etc) for the property to
-     *        retrieve
-     * @param string $name Name of the property to retrieve
-     * @param string $value Value to insert
+     * @param string $type
+     *         Type (class, category etc) for the property to retrieve
+     * @param string $name
+     *         Name of the property to retrieve
+     * @param string $value
+     *         Value to insert
      */
     public function setUserProperty($type, $name, $value) {
         $userPropColl = new cApiUserPropertyCollection($this->values['user_id']);
@@ -1087,8 +1123,10 @@ class cApiUser extends Item {
     /**
      * Deletes a user property from the table.
      *
-     * @param string $type Type (class, category etc) of property to retrieve
-     * @param string $name Name of property to retrieve
+     * @param string $type
+     *         Type (class, category etc) of property to retrieve
+     * @param string $name
+     *         Name of property to retrieve
      * @return bool
      */
     public function deleteUserProperty($type, $name) {

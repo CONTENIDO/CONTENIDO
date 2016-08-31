@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the XML writer class.
  *
  * @package    Core
  * @subpackage XML
- * @version    SVN Revision $Rev:$
- *
  * @author     Dominik Ziegler
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,12 +23,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cXmlWriter extends cXmlBase {
 
     /**
-     * Class constructor of cXmlWriter.
+     * Constructor to create an instance of this class.
+     *
      * Creates the XML document.
      *
-     * @param string $version version of XML document (optional, default: 1.0)
-     * @param string $encoding encoding of XML document (optional, default:
-     *        UTF-8)
+     * @param string $version [optional, default: 1.0]
+     *         version of XML document
+     * @param string $encoding [optional, default: UTF-8]
+     *         encoding of XML document
      */
     public function __construct($version = '', $encoding = '') {
         $this->_createDocument($version, $encoding);
@@ -40,14 +41,18 @@ class cXmlWriter extends cXmlBase {
      * If no root element is given the element will be appended to the root
      * node.
      *
-     * @param string $name name of the element
-     * @param string $value value of the element (optional)
-     * @param DOMElement $rootElement root element (optional)
-     * @param array $attributes array of attributes added to this element
-     *        (optional)
-     * @param bool $cdata whether the value is surround by CDATA blocks (optional)
-     *
-     * @return DOMElement created DOM element
+     * @param string $name
+     *         name of the element
+     * @param string $value [optional]
+     *         value of the element
+     * @param DOMElement $rootElement [optional]
+     *         root element
+     * @param array $attributes [optional]
+     *         array of attributes added to this element
+     * @param bool $cdata [optional]
+     *         whether the value is surround by CDATA blocks
+     * @return DOMElement
+     *         created DOM element
      */
     public function addElement($name, $value = '', $rootElement = NULL, $attributes = array(), $cdata = false) {
         if ($value == '' || ($value != '' && $cdata == true)) {
@@ -73,9 +78,12 @@ class cXmlWriter extends cXmlBase {
     /**
      * Adds an array of attributes to a specific DOM element.
      *
-     * @param DOMElement $element DOM element to add attributes
-     * @param array $attributes array of attributes
-     * @return DOMElement DOM element with assigned attributes
+     * @param DOMElement $element
+     *         DOM element to add attributes
+     * @param array $attributes [optional]
+     *         array of attributes
+     * @return DOMElement
+     *         DOM element with assigned attributes
      */
     protected function _addElementAttributes(DOMElement $element, array $attributes = array()) {
         if (count($attributes) == 0) {
@@ -92,7 +100,8 @@ class cXmlWriter extends cXmlBase {
     /**
      * Returns the complete XML tree as string.
      *
-     * @return string XML tree
+     * @return string
+     *         XML tree
      */
     public function saveToString() {
         return $this->_dom->saveXML();
@@ -101,11 +110,14 @@ class cXmlWriter extends cXmlBase {
     /**
      * Saves the XML tree into a file.
      *
-     * @param string $directory path to destination directory
-     * @param string $fileName name of the written file
-     * @throws cException if the directory is not writable
-     * @return boolean state of saving process (true if file was created, false
-     *         otherwise)
+     * @param string $directory
+     *         path to destination directory
+     * @param string $fileName
+     *         name of the written file
+     * @throws cException
+     *         if the directory is not writable
+     * @return bool
+     *         state of saving process (true if file was created, false otherwise)
      */
     public function saveToFile($directory, $fileName) {
         if (is_writable($directory) === false) {

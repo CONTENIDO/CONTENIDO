@@ -4,7 +4,6 @@
  * iZoom JavaScript "pipe"
  *
  * @package    CONTENIDO Backend scripts
- * @version    SVN Revision $Rev$
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -35,7 +34,6 @@ i18nInit($cfg['path']['contenido_locale'], $belang);
 /**
  * CONTENIDO iZoom JavaScript module.
  *
- * @version    SVN Revision $Rev$
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt

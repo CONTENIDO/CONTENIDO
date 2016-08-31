@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the cException class.
  *
  * @package Core
  * @subpackage Exception
- * @version SVN Revision $Rev:$
  *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
@@ -27,12 +27,12 @@ class cException extends Exception {
     /**
      * Defines if an exception if this type should be logged.
      * May be defined by any exception individually.
-     * 
+     *
      * @see CON-1690
      * @var bool
      */
     protected $_log_exception = false;
-    
+
     /**
      * Saves an instance of the logger class for logging exceptions in the
      * corresponding log.
@@ -42,14 +42,14 @@ class cException extends Exception {
     protected $_logger = NULL;
 
     /**
-     * Constructs the Exception.
+     * Constructor to create an instance of this class.
      *
-     * @param string $message The Exception message to throw.
-     * @param int $code The Exception code.
-     * @param Exception $previous The previous exception used for the exception
-     *            chaining.
-     * @param array $options exception logging options. By default cExceptions
-     *            are not logged but cErrorExceptions are
+     * @param string $message
+     *         The Exception message to throw.
+     * @param int $code [optional]
+     *         The Exception code.
+     * @param Exception $previous [optional]
+     *         The previous exception used for the exception chaining.
      */
     public function __construct($message, $code = 0, Exception $previous = NULL) {
         parent::__construct($message, $code, $previous);

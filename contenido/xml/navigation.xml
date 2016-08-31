@@ -78,8 +78,8 @@ i18n("Logs")
 i18n("Debug")
 i18n("System")
 i18n("Expert settings")
-i18n("System variables")
-i18n("System configuration")
+i18n("Variables")
+i18n("Configuration")
 i18n("Purge")
 i18n("Error report")
 i18n("Frontend")
@@ -93,7 +93,7 @@ i18n("Extras")
 i18n("Mailing")
 i18n("Info")
 i18n("Login")
-i18n("System integrity")
+i18n("Integrity")
 i18n("WYSIWYG")
 i18n("Translations")
 i18n("HTML")
@@ -212,11 +212,11 @@ i18n("Search Terms")
             <system>
                 <main>System</main>
                 <syssettings>Expert settings</syssettings>
-                <sysvalues>System variables</sysvalues>
-                <configuration>System configuration</configuration>
+                <sysvalues>Variables</sysvalues>
+                <configuration>Configuration</configuration>
                 <purge>Purge</purge>
                 <syserrorreport>Error report</syserrorreport>
-                <integrity>System integrity</integrity>
+                <integrity>Integrity</integrity>
                 <wysiwyg>WYSIWYG</wysiwyg>
             </system>
             <frontend>

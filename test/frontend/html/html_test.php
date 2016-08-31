@@ -1,8 +1,6 @@
 <?PHP
 /**
  *
- * @version SVN Revision $Rev:$
- *
  * @author claus.schunk@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -167,7 +165,7 @@ class cHtmlTest extends PHPUnit_Framework_TestCase {
             'img',
             'alt'
         ));
-        // var_dump($this->_cHtml->toHTML());
+        // var_dump($this->_cHtml->toHtml());
     }
 
     public function testSetTag() {
@@ -274,9 +272,9 @@ class cHtmlTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testTooHtml() {
-        $this->assertSame('< id="m19" />', $this->_cHtml->toHTML());
+        $this->assertSame('< id="m19" />', $this->_cHtml->toHtml());
         $this->_cHtml->setStyle('margin-left:100px;');
-        $this->assertSame('< id="m19" style="margin-left:100px;" />', $this->_cHtml->toHTML());
+        $this->assertSame('< id="m19" style="margin-left:100px;" />', $this->_cHtml->toHtml());
     }
 
     public function testToRender() {
@@ -372,7 +370,7 @@ class cHtmlTest extends PHPUnit_Framework_TestCase {
 
         $cHtml->fillSkeleton('div');
         $cHtml->fillCloseSkeleton();
-       // echo $cHtml->toHTML();
+       // echo $cHtml->toHtml();
 
 
    //     var_dump(PHPUnit_Framework_Assert::readAttribute($cHtml, '_content'));

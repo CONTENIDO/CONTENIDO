@@ -29,7 +29,7 @@
             <frame area="cronjob" filetype="main" name="cronjobs_overview/includes/include.right_bottom.php" frameId="4" />
         </frames>
         <nav_sub>
-            <nav area="cronjob" level="0" navm="5">cronjobs_overview/xml/cronjobs_overview.xml;plugin/cronjob</nav>
+            <nav area="cronjob" level="0" navm="administration">cronjobs_overview/xml/cronjobs_overview.xml;plugin/cronjob</nav>
         </nav_sub>
     </contenido>
 </plugin>

@@ -1,11 +1,10 @@
 <?php
+
 /**
  * Backend action file emptyLog
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Dominik Ziegler
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -18,4 +17,5 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 // the function checks the rights
 cInclude('includes', 'functions.system.php');
 $tmp_notification = emptyLogFile();
+
 ?>

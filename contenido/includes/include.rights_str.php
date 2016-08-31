@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for structure rights management.
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Unknown
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -35,7 +34,7 @@ while ($db->nextRecord()) { // set a new rights list fore this user
 if (($perm->have_perm_area_action("user_overview", $action)) && ($action == "user_edit")) {
     $ret = saveRights();
     if ($ret === true) {
-        $sMessage = $notification->returnNotification('info', i18n('Changes saved'));
+        $sMessage = $notification->returnNotification('ok', i18n('Changes saved'));
     }
 } else {
     if (!$perm->have_perm_area_action("user_overview", $action)) {

@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the frontend authentication handler class.
  *
  * @package    Core
  * @subpackage Authentication
- * @version    SVN Revision $Rev:$
- *
  * @author     Dominik Ziegler
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -16,23 +15,41 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This class contains the methods for the frontend authentication in CONTENIDO.
+ * This class is the frontend authentication handler for CONTENIDO.
  *
  * @package    Core
  * @subpackage Authentication
  */
 class cAuthHandlerFrontend extends cAuthHandlerAbstract {
+
+    /**
+     *
+     * @var bool
+     */
     protected $_defaultNobody = true;
 
+    /**
+     * Constructor to create an instance of this class.
+     *
+     * Automatically sets the lifetime of the authentication to the
+     * configured value.
+     */
     public function __construct() {
-    	$cfg = cRegistry::getConfig();
-    	$this->_lifetime = (int)$cfg['frontend']['timeout'];
-
-    	if ($this->_lifetime == 0) {
-    		$this->_lifetime = 15;
-    	}
+        $cfg = cRegistry::getConfig();
+        $this->_lifetime = (int) $cfg['frontend']['timeout'];
+        if ($this->_lifetime == 0) {
+            $this->_lifetime = 15;
+        }
     }
 
+    /**
+     * Handle the pre authorization.
+     * Returns a valid user ID to be set before the login form is handled,
+     * otherwise false.
+     *
+     * @see cAuthHandlerAbstract::preAuthorize()
+     * @return string|false
+     */
     public function preAuthorize() {
         $password = $_POST['password'];
 
@@ -46,12 +63,27 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
         return $this->validateCredentials();
     }
 
+    /**
+     * Display the login form.
+     * Includes a file which displays the login form.
+     *
+     * @see cAuthHandlerAbstract::displayLoginForm()
+     */
     public function displayLoginForm() {
         include(cRegistry::getFrontendPath() . 'front_crcloginform.inc.php');
     }
 
+    /**
+     * Validate the credentials.
+     *
+     * Validate the users input against source and return a valid user
+     * ID or false.
+     *
+     * @see cAuthHandlerAbstract::validateCredentials()
+     * @return string|false
+     */
     public function validateCredentials() {
-        $username = $_POST['username'];
+        $username = conHtmlentities(stripslashes(trim($_POST['username'])));
         $password = $_POST['password'];
 
         $groupPerm = array();
@@ -102,7 +134,8 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
             while (($item = $userColl->next()) !== false) {
                 $uid = $item->get('user_id');
                 $perm = $item->get('perms');
-                $pass = $item->get('password'); // Password is stored as a sha256 hash
+                // password is stored as a sha256 hash
+                $pass = $item->get('password');
                 $salt = $item->get('salt');
             }
         }
@@ -130,11 +163,23 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
         return $uid;
     }
 
+    /**
+     * Log the successful authentication.
+     *
+     * Frontend logins won't be logged.
+     *
+     * @see cAuthHandlerAbstract::logSuccessfulAuth()
+     */
     public function logSuccessfulAuth() {
         return;
     }
 
-
+    /**
+     * Returns true if a user is logged in.
+     *
+     * @see cAuthHandlerAbstract::isLoggedIn()
+     * @return bool
+     */
     public function isLoggedIn() {
         $authInfo = $this->getAuthInfo();
 

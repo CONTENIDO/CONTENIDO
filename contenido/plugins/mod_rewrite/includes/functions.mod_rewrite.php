@@ -12,7 +12,6 @@
  *
  * @package     Plugin
  * @subpackage  ModRewrite
- * @version     SVN Revision $Rev:$
  * @id          $Id$:
  * @author      Stefan Seifarth / stese
  * @author      Murat Purc <murat@purc.de>
@@ -488,11 +487,12 @@ function mr_buildGeneratedCode($code) {
 //         $sBaseUri = cApiCecHook::execute("Contenido.Frontend.BaseHrefGeneration", $sBaseUri);
 //         $code = preg_replace("/([\"|\'|=])upload\/(.?|.+?)([\"|\'|>])/ie", "stripslashes('\\1{$sBaseUri}upload/\\2\\3')", $code);
 
-        // CON-1389 modifier /e is deprecated as of PHP 5.5
-        $code = preg_replace_callback("/([\"|\'|=])upload\/(.?|.+?)([\"|\'|>])/i", create_function('$m', '
-            $baseUri = cRegistry::getFrontendUrl();
-            $baseUri = cApiCecHook::execute("Contenido.Frontend.BaseHrefGeneration", $baseUri);
-            return stripslashes($m[1] . $baseUri . "upload/" . $m[2] . $m[3]);'), $code);
+        $baseUri = cRegistry::getFrontendUrl();
+		$baseUri = cApiCecHook::execute("Contenido.Frontend.BaseHrefGeneration", $baseUri);
+
+		// CON-1389 modifier /e is deprecated as of PHP 5.5
+		$code = preg_replace_callback("/([\"|\'|=])upload\/(.?|.+?)([\"|\'|>])/i", create_function('$m', '
+        		return stripslashes($m[1] . "' . $baseUri . 'upload/" . $m[2] . $m[3]);'), $code);
 
         // define some preparations to replace /front_content.php & ./front_content.php
         // against front_content.php, because urls should start with front_content.php
@@ -623,20 +623,20 @@ function mr_loadConfiguration($clientId, $forceReload = false) {
  */
 function mr_getConfiguration($clientId) {
     global $cfg;
-    
+
     $clientId = (int) $clientId;
 
     $backendPath = cRegistry::getBackendPath();
-    
+
     $clientConfig = cRegistry::getClientConfig($clientId);
     $fePath = $clientConfig['path']['frontend'];
-    
+
     $file = $fePath . 'data/config/' . CON_ENVIRONMENT . '/config.mod_rewrite.php';
 
     if (!is_file($file) || !is_readable($file)) {
         $file = $backendPath . $cfg['path']['plugins'] . 'mod_rewrite/includes/config.mod_rewrite_' . $clientId . '.php';
     }
-    
+
     if (!is_file($file) || !is_readable($file)) {
         return NULL;
     }
@@ -659,12 +659,12 @@ function mr_getConfiguration($clientId) {
  */
 function mr_setConfiguration($clientId, array $config) {
     global $cfg;
-    
+
     $clientId = (int) $clientId;
 
     $clientConfig = cRegistry::getClientConfig($clientId);
     $fePath = $clientConfig['path']['frontend'];
-    
+
     $file = $fePath . 'data/config/' . CON_ENVIRONMENT . '/config.mod_rewrite.php';
     $result = cFileHandler::write($file, serialize($config));
 
@@ -672,7 +672,7 @@ function mr_setConfiguration($clientId, array $config) {
     if (is_file($file) && is_writeable($file)) {
         cFileHandler::remove($file, serialize($config));
     }
-    
+
     return ($result) ? true : false;
 }
 

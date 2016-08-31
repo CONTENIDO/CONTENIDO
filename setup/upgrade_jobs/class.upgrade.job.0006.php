@@ -4,8 +4,6 @@
  *
  * @package    Setup
  * @subpackage UpgradeJob
- * @version    SVN Revision $Rev:$
- *
  * @author     Murat Purc <murat@purc>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -74,7 +72,7 @@ class cUpgradeJob_0006 extends cUpgradeJobAbstract {
                             continue;
                         }
 
-                        recursiveCopy($source, $destination, self::MODE);
+                        cDirHandler::recursiveCopy($source, $destination, self::MODE);
                     } elseif (cFileHandler::exists($source) && cFileHandler::exists($destination)) {
                         if (cFileHandler::move($source, $destination)) {
                             cFileHandler::chmod($destination, self::MODE);

@@ -1,11 +1,10 @@
 <?php
+
 /**
  * Description: Cookie Directive
  *
  * @package Module
  * @subpackage ScriptCookieDirective
- * @version SVN Revision $Rev:$
- *
  * @author ilia.schwarz
  * @author claus.schunk@4fb.de
  * @copyright four for business AG <www.4fb.de>
@@ -14,14 +13,15 @@
  * @link http://www.contenido.org
  */
 
-if (!$contenido) {
+if (!cRegistry::getBackendSessionId()) {
 
     $session = cRegistry::getSession();
+    $params = session_get_cookie_params();
 
     if (array_key_exists('acceptCookie', $_GET)) {
         // Check value in get, if js is off
         $allowCookie = $_GET['acceptCookie'] === '1'? 1 : 0;
-        setcookie('allowCookie', $allowCookie);
+        setcookie('allowCookie', $allowCookie, 0, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
 
         // Save value
         $session->register('allowCookie');
@@ -47,22 +47,26 @@ if (!$contenido) {
             'decline' => mi18n("DECLINE")
         ));
 
+        /**
+         *
+         * @param string $uri
+         * @return string
+         */
         function script_cookie_directive_add_get_params($uri) {
-            foreach($_GET as $getKey => $getValue) {
+            foreach ($_GET as $getKey => $getValue) {
                 // do not add already added GET parameters to redirect url
                 if (strpos($uri, '?' . $getKey . '=') !== false
-                        || strpos($uri, '&' . $getKey . '=') !== false
-                        || strpos($uri, '&amp;' . $getKey . '=') !== false) {
-                            continue;
-                        }
-                        if (strpos($uri, '?') === false) {
-                            $uri .= '?';
-                        } else {
-                            $uri .= '&amp;';
-                        }
-                        $uri .= htmlentities($getKey) . '=' . htmlentities($getValue);
+                || strpos($uri, '&' . $getKey . '=') !== false) {
+                    continue;
+                }
+                if (strpos($uri, '?') === false) {
+                    $uri .= '?';
+                } else {
+                    $uri .= '&';
+                }
+                $uri .= htmlentities($getKey) . '=' . htmlentities($getValue);
             }
-        
+
             return $uri;
         }
 
@@ -87,4 +91,5 @@ if (!$contenido) {
 
     }
 }
+
 ?>

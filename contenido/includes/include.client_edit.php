@@ -1,17 +1,17 @@
 <?php
+
 /**
  * This file contains the backend page for client management.
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Timo Hummel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 if (!$perm->have_perm_area_action($area)) {
@@ -51,25 +51,37 @@ if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && 
     // Set $validPath = true if path could be created, else false
     $validPath = false;
     $pathExisted = false;
-    
+
     if (!cFileHandler::exists($request['frontendpath'])) {
         $validPath = mkdir($request['frontendpath'], 0777);
     } else {
         $pathExisted = true;
         $validPath = true;
     }
-    
+
     $sNewNotification = '';
     if ($active != '1') {
         $active = '0';
     }
 
     if ($new == true && ($validPath == true || cFileHandler::exists($request['frontendpath']))) {
-        
+
+        // Create new client entry in clients table
+        $cApiClientColl = new cApiClientCollection();
+        $cApiClient = $cApiClientColl->create($clientname, $errsite_cat, $errsite_art);
+
+        $idclient = $cApiClient->get('idclient');
+        $cfgClient[$idclient]["name"] = $clientname;
+
+
         $sLangNotification = i18n('Notice: In order to use this client, you must create a new language for it.');
-        $sTarget = $sess->url('frameset.php?area=lang');
-        $sJsLink = "parent.parent.location.href='" . $sTarget . "';
-                    Con.getFrame('header').markActive(Con.getFrame('header').document.getElementById('sub_lang'));";
+        $sTarget = $sess->url('frameset.php?area=lang&targetclient=' . $idclient);
+        $sJsLink = "Con.getFrame('header').Con.HeaderMenu.markActive(Con.getFrame('header').document.getElementById('sub_lang'));
+                    var url_right_bottom  = Con.UtilUrl.build('main.php', {area: 'lang', frame: 4});
+                        url_right_top  = Con.UtilUrl.build('main.php', {area: 'lang', frame: 3});
+                        url_left_bottom  = Con.UtilUrl.build('main.php', {area: 'lang', frame: 2, targetclient: " . $idclient . "});
+                        url_left_top  = Con.UtilUrl.build('main.php', {area: 'lang', frame: 1, targetclient: " . $idclient . "});
+                    Con.multiLink('right_top', url_right_top, 'right_bottom', url_right_bottom, 'left_top', url_left_top, 'left_bottom', url_left_bottom);";
         $sLangNotificationLink = sprintf(i18n('Please click %shere%s to create a new language.'), '<a href="javascript://" onclick="' . $sJsLink . '">', '</a>');
         $sNewNotification = '<br>' . $sLangNotification . '<br>' . $sLangNotificationLink;
         if (substr($frontendpath, strlen($frontendpath) - 1) != '/') {
@@ -80,13 +92,6 @@ if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && 
             $htmlpath .= '/';
         }
 
-        // Create new client entry in clients table
-        $cApiClientColl = new cApiClientCollection();
-        $cApiClient = $cApiClientColl->create($clientname, $errsite_cat, $errsite_art);
-
-        $idclient = $cApiClient->get('idclient');
-        $cfgClient[$idclient]["name"] = $clientname;
-        updateClientCache();
 
         $cApiPropertyColl->setValue('idclient', $idclient, 'backend', 'clientimage', $clientlogo);
 
@@ -99,14 +104,14 @@ if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && 
 
         if ($copytemplate) {
             if ($validPath && !$pathExisted) {
-                recursiveCopy($sourcePath, $destPath);
+                cDirHandler::recursiveCopy($sourcePath, $destPath);
                 $buffer = cFileHandler::read($destPath . $dataPath . 'config.php');
                 $outbuf = str_replace('!CLIENT!', $idclient, $buffer);
                 $outbuf = str_replace('!PATH!', $backendPath, $outbuf);
                 if (!cFileHandler::write($destPath . $dataPath . 'config.php.new', $outbuf)) {
                     cRegistry::addErrorMessage(i18n("Couldn't write the file config.php."));
                 }
-                
+
                 cFileHandler::remove($destPath . $dataPath . 'config.php');
                 cFileHandler::rename($destPath . $dataPath . 'config.php.new', 'config.php');
             } else {
@@ -119,11 +124,11 @@ if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && 
         if (substr($frontendpath, strlen($frontendpath) - 1) != '/') {
             $frontendpath .= '/';
         }
-        
+
         if (!$validPath) {
             cRegistry::addWarningMessage(i18n("Path could not be created. Please ensure that there are only valid characters and no new nested folders."));
         }
-        
+
         if (substr($htmlpath, strlen($htmlpath) - 1) != '/') {
             $htmlpath .= '/';
         }
@@ -143,17 +148,14 @@ if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && 
     $new = false;
 
     //error_log("updateClientCache($idclient, $htmlpath, $frontendpath)");
-    
+
     $cfgClient = updateClientCache($idclient, $htmlpath, $frontendpath);
 
     $cApiPropertyColl->setValue('idclient', $idclient, 'backend', 'clientimage', $clientlogo);
 
     // Clear the code cache
     if (cFileHandler::exists($cfgClient[$idclient]['code']['path']) === true) {
-        /**
-         *
-         * @var $file SplFileInfo
-         */
+        /* @var $file SplFileInfo */
         foreach (new DirectoryIterator($cfgClient[$idclient]['code']['path']) as $file) {
             if ($file->isFile() === false) {
                 continue;
@@ -167,11 +169,11 @@ if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && 
             cFileHandler::remove($cfgClient[$idclient]['code']['path'] . '/' . $file->getFilename());
         }
     }
-    
+
     if ($validPath || cFileHandler::exists($destPath)) {
-        cRegistry::addInfoMessage(i18n("Changes saved") . $sNewNotification);
+        cRegistry::addOkMessage(i18n("Changes saved") . $sNewNotification);
     }
-    
+
     $cApiClient->loadByPrimaryKey($idclient);
 
     if ($request['generate_xhtml'] == 'no') {
@@ -180,7 +182,7 @@ if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && 
         $cApiClient->setProperty('generator', 'xhtml', 'true');
     }
 
-    // Is statistc on/off
+    // Is statistic on/off
     if ($request['statistic'] == 'on') {
         $cApiClient->setProperty('stats', 'tracking', 'on');
     } else {
@@ -223,7 +225,8 @@ $page->set('d', 'BRDRT', 0);
 $page->set('d', 'BRDRB', 1);
 $page->next();
 
-if ($serverpath == '') {
+// if no serverpath set use default root server path where all frontends reside
+if (false === isset($serverpath)) {
     $serverpath = $cfg['path']['frontend'];
 }
 
@@ -313,7 +316,7 @@ $page->next();
 if ($new == true) {
     $page->set('d', 'CATNAME', i18n('Copy frontend template'));
     $defaultform = new cHTMLCheckbox('copytemplate', 'checked', 'copytemplatechecked', true);
-    $page->set('d', 'CATFIELD', $defaultform->toHTML(false));
+    $page->set('d', 'CATFIELD', $defaultform->toHtml(false));
     $page->next();
 }
 $page->set('s', 'IDCLIENT', $idclient);

@@ -1,11 +1,10 @@
 <?php
+
 /**
  * Defines the general CONTENIDO functions
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Jan Lengowski
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -24,7 +23,8 @@ cInclude('includes', 'functions.file.php');
  * f.e. $a_content['CMS_HTML'][1] = content string
  * Same for array $a_description
  *
- * @param int $idartlang Language specific ID of the arcticle
+ * @param int $idartlang
+ *         Language specific ID of the arcticle
  */
 function getAvailableContentTypes($idartlang) {
     global $db, $cfg, $a_content, $a_description;
@@ -51,8 +51,10 @@ function getAvailableContentTypes($idartlang) {
 /**
  * Checks if an article is assigned to multiple categories
  *
- * @param int $idart Article-Id
- * @return bool Article assigned to multiple categories
+ * @param int $idart
+ *         Article-Id
+ * @return bool
+ *         Article assigned to multiple categories
  */
 function isArtInMultipleUse($idart) {
     global $cfg;
@@ -67,56 +69,29 @@ function isArtInMultipleUse($idart) {
 /**
  * Checks if a value is alphanumeric
  *
- * @param mixed $test Value to test
- * @param bool $umlauts [Use german Umlaute] Optional
- * @return bool Value is alphanumeric
+ * @deprecated [2015-05-21]
+ *         use cString::isAlphanumeric
+ * @param mixed $test
+ *         Value to test
+ * @param bool $umlauts [optional]
+ *         Use german umlauts
+ * @return bool
+ *         Value is alphanumeric
  */
 function isAlphanumeric($test, $umlauts = true) {
-    if ($umlauts == true) {
-        $match = "/^[a-z0-9ÄäÖöÜüß ]+$/i";
-    } else {
-        $match = "/^[a-z0-9 ]+$/i";
-    }
-
-    return (preg_match($match, $test));
+    return cString::isAlphanumeric($test, $umlauts);
 }
 
 /**
  * Returns whether a string is UTF-8 encoded or not
  *
+ * @deprecated [2015-05-21]
+ *         use cString::isUtf8
  * @param string $input
  * @return bool
  */
 function isUtf8($input) {
-    $len = strlen($input);
-
-    for ($i = 0; $i < $len; $i++) {
-        $char = ord($input[$i]);
-        $n = 0;
-
-        if ($char < 0x80) { // ASCII char
-            continue;
-        } else if (($char & 0xE0) === 0xC0 && $char > 0xC1) { // 2 byte long
-            // char
-            $n = 1;
-        } else if (($char & 0xF0) === 0xE0) { // 3 byte long char
-            $n = 2;
-        } else if (($char & 0xF8) === 0xF0 && $char < 0xF5) { // 4 byte long
-            // char
-            $n = 3;
-        } else {
-            return false;
-        }
-
-        for ($j = 0; $j < $n; $j++) {
-            $i++;
-
-            if ($i == $len || (ord($input[$i]) & 0xC0) !== 0x80) {
-                return false;
-            }
-        }
-    }
-    return true;
+    return cString::isUtf8($input);
 }
 
 /**
@@ -169,8 +144,10 @@ function getCanonicalMonth($month) {
 /**
  * Get multi-language day
  *
- * @param int $iDay The day number of date(w)
- * @return string Dayname of current language
+ * @param int $iDay
+ *         The day number of date(w)
+ * @return string
+ *         Dayname of current language
  */
 function getCanonicalDay($iDay) {
     switch ($iDay) {
@@ -203,11 +180,14 @@ function getCanonicalDay($iDay) {
 /**
  * Returns a formatted date and/or timestring according to the current settings
  *
- * @param mixed $timestamp a timestamp. If no value is given the current time
- *        will be used.
- * @param bool $date if true the date will be included in the string
- * @param bool $time if true the time will be included in the string
- * @return string the formatted time string.
+ * @param mixed $timestamp
+ *         a timestamp. If no value is given the current time will be used.
+ * @param bool $date
+ *         if true the date will be included in the string
+ * @param bool $time
+ *         if true the time will be included in the string
+ * @return string
+ *         the formatted time string.
  */
 function displayDatetime($timestamp = "", $date = false, $time = false) {
     if ($timestamp == "") {
@@ -231,8 +211,9 @@ function displayDatetime($timestamp = "", $date = false, $time = false) {
 /**
  * Returns the id of passed area
  *
- * @param int|string $area Area name or id
- * @return int string
+ * @param int|string $area
+ *         Area name or id
+ * @return int|string
  */
 function getIDForArea($area) {
     if (!is_numeric($area)) {
@@ -259,8 +240,11 @@ function getParentAreaId($area) {
 /**
  * Write JavaScript to mark submenu item.
  *
- * @param int $menuitem  Which menuitem to mark
- * @param bool $return Return or echo script
+ * @param int $menuitem
+ *         Which menuitem to mark
+ * @param bool $return
+ *         Return or echo script
+ * @return string
  */
 function markSubMenuItem($menuitem, $return = false) {
     global $changeview;
@@ -269,7 +253,18 @@ function markSubMenuItem($menuitem, $return = false) {
         // CONTENIDO backend but not in preview mode
         $str = <<<JS
 <script type="text/javascript">
-Con.markSubmenuItem('c_{$menuitem}');
+var id = 'c_{$menuitem}';
+if ('undefined' !== typeof(Con)) {
+    Con.markSubmenuItem(id);
+} else {
+    // Contenido backend but with frozen article
+    // Check if submenuItem is existing and mark it
+    if (parent.parent.frames.right.frames.right_top.document.getElementById(id)) {
+        menuItem = parent.parent.frames.right.frames.right_top.document.getElementById(id).getElementsByTagName('a')[0];
+        // load the new tab now
+        parent.parent.frames.right.frames.right_top.Con.Subnav.clicked(menuItem, true);
+    }
+}
 </script>
 JS;
     } else {
@@ -308,8 +303,9 @@ JS;
 /**
  * Creates a inline script wrapped with a self executing function
  *
- * @param int $menuitem Which menuitem to mark
- * @param bool $return Return or echo script
+ * @param string $content
+ *         to wrap
+ * @return string
  */
 function conMakeInlineScript($content) {
     $script = <<<JS
@@ -325,7 +321,8 @@ JS;
 /**
  * Redirect to main area
  *
- * @param bool $send Redirect Yes/No
+ * @param bool $send
+ *         Redirect Yes/No
  */
 function backToMainArea($send) {
     if ($send) {
@@ -360,8 +357,9 @@ function getLanguagesByClient($client) {
  * Returns all languages (language ids and names) of an client
  *
  * @param int $client
- * @return array List of languages where the key is the language id and value
- *         the language name
+ * @return array
+ *         List of languages where the key is the language id
+ *         and value the language name
  */
 function getLanguageNamesByClient($client) {
     $oClientLangColl = new cApiClientLanguageCollection();
@@ -371,9 +369,14 @@ function getLanguageNamesByClient($client) {
 /**
  * Adds slashes to passed string if PHP setting for magic quotes is disabled
  *
- * @param string $code String by reference
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
+ * @param string $code
+ *         String by reference
  */
 function set_magic_quotes_gpc(&$code) {
+    cDeprecated('This method is deprecated and is not needed any longer');
+
     global $cfg;
     if (!$cfg['simulate_magic_quotes']) {
         if (get_magic_quotes_gpc() == 0) {
@@ -385,8 +388,8 @@ function set_magic_quotes_gpc(&$code) {
 /**
  * Returns a list with all clients and languages.
  *
- * @return array Indexed array where the value is an assoziative array as
- *         follows:
+ * @return array
+ *         Indexed array where the value is an assoziative array as follows:
  *         <pre>
  *         - $arr[0]['idlang']
  *         - $arr[0]['langname']
@@ -423,11 +426,20 @@ function getAllClientsAndLanguages() {
     return $aRs;
 }
 
+/**
+ *
+ * @return number
+ */
 function getmicrotime() {
     list($usec, $sec) = explode(' ', microtime());
     return ((float) $usec + (float) $sec);
 }
 
+/**
+ *
+ * @param unknown_type $uid
+ * @return boolean
+ */
 function isGroup($uid) {
     $user = new cApiUser();
     if ($user->loadByPrimaryKey($uid) === false) {
@@ -437,6 +449,11 @@ function isGroup($uid) {
     }
 }
 
+/**
+ *
+ * @param int $uid
+ * @return string|bool
+ */
 function getGroupOrUserName($uid) {
     $user = new cApiUser();
     if ($user->loadByPrimaryKey($uid) === false) {
@@ -456,13 +473,20 @@ function getGroupOrUserName($uid) {
  * Checks if passed email address is valid or not
  *
  * @param string $email
- * @param bool $strict No more used!
+ * @param bool $strict
+ *         No more used!
+ * @return boolean
  */
 function isValidMail($email, $strict = false) {
     $validator = cValidatorFactory::getInstance('email');
     return $validator->isValid($email);
 }
 
+/**
+ *
+ * @param string $string
+ * @return string
+ */
 function htmldecode($string) {
     $trans_tbl = conGetHtmlTranslationTable(HTML_ENTITIES);
     $trans_tbl = array_flip($trans_tbl);
@@ -476,12 +500,17 @@ function htmldecode($string) {
  * Reinitializes the $cfgClient array and fills it wih updated information if
  * provided.
  *
- * @param number $idclient client id which will be updated
- * @param string $htmlpath new HTML path. Starting with "http://"
- * @param string $frontendpath path the to the frontend
+ * @param int $idclient
+ *         client id which will be updated
+ * @param string $htmlpath
+ *         new HTML path. Starting with "http://"
+ * @param string $frontendpath
+ *         path the to the frontend
+ * @return array
+ *         client configuration
  */
 function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
-    
+
     global $cfg, $cfgClient, $errsite_idcat, $errsite_idart;
 
     if (!is_array($cfgClient)) {
@@ -532,7 +561,7 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
         if (isset($frontendpaths[$iClient])) {
             $cfgClient[$iClient]["path"]["frontend"] = $frontendpaths[$iClient];
         }
-        
+
         $cfgClient[$iClient]['name'] = conHtmlSpecialChars(str_replace(array(
             '*/',
             '/*',
@@ -588,7 +617,7 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
         $cfgClient[$iClient]['version']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'data/version/';
         $cfgClient[$iClient]['version']['frontendpath'] = 'data/version/';
     }
-    
+
     $aConfigFileContent = array();
     $aConfigFileContent[] = '<?php';
     $aConfigFileContent[] = 'global $cfgClient;';
@@ -663,11 +692,16 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
  *
  * @modified Timo Trautmann 22.02.2008 Support for editing name and type
  *
- * @param string $type The type of the item
- * @param string $name The name of the item
- * @param string $value The value of the item
- * @param int $idsystemprop The sysprop id, use optional. If set it allows to
- *        modify type name and value
+ * @param string $type
+ *         The type of the item
+ * @param string $name
+ *         The name of the item
+ * @param string $value
+ *         The value of the item
+ * @param int $idsystemprop
+ *         The sysprop id, use optional.
+ *         If set it allows to modify type name and value
+ * @return void|boolean
  */
 function setSystemProperty($type, $name, $value, $idsystemprop = 0) {
     if ($type == '' || $name == '') {
@@ -688,8 +722,10 @@ function setSystemProperty($type, $name, $value, $idsystemprop = 0) {
 /**
  * Remove a system property entry
  *
- * @param string $type The type of the item
- * @param string $name The name of the item
+ * @param string $type
+ *         The type of the item
+ * @param string $name
+ *         The name of the item
  * @return bool
  */
 function deleteSystemProperty($type, $name) {
@@ -709,8 +745,9 @@ function deleteSystemProperty($type, $name) {
  * $array[$type][$name][value] = $value;
  * $array[$type][$name][idsystemprop] = $idsystemprop;
  *
- * @param bool $bGetPropId If true special mode is activated which generates for
- *        each property a third array, which also contains idsystemprop value
+ * @param bool $bGetPropId
+ *         If true special mode is activated which generates for each property
+ *         a third array, which also contains idsystemprop value
  * @return array
  */
 function getSystemProperties($bGetPropId = false) {
@@ -735,9 +772,12 @@ function getSystemProperties($bGetPropId = false) {
 /**
  * Gets a system property entry
  *
- * @param string $type The type of the item
- * @param string $name The name of the item
- * @return string bool property value or false if nothing was found
+ * @param string $type
+ *         The type of the item
+ * @param string $name
+ *         The name of the item
+ * @return string|bool
+ *         property value or false if nothing was found
  */
 function getSystemProperty($type, $name) {
     $systemPropColl = new cApiSystemPropertyCollection();
@@ -748,8 +788,11 @@ function getSystemProperty($type, $name) {
 /**
  * Gets system property entries
  *
- * @param string $type The type of the properties
- * @return array Assoziative array like $arr[name] = value
+ * @param string $type
+ *         The type of the properties
+ * @return array
+ *         Assoziative array like
+ *         - $arr[name] = value
  */
 function getSystemPropertiesByType($type) {
     $return = array();
@@ -776,10 +819,14 @@ function getSystemPropertiesByType($type) {
  * NOTE: If you provide a default value (other than empty string), then it will be returned back
  *       in case of not existing or empty setting.
  *
- * @param  string  $type  The type of the item
- * @param  string  $name  The name of the item
- * @param  string  $default  Optional default value
- * @return  bool|string  Setting value or false
+ * @param string $type
+ *         The type of the item
+ * @param string $name
+ *         The name of the item
+ * @param string $default
+ *         Optional default value
+ * @return bool|string
+ *         Setting value or false
  */
 function getEffectiveSetting($type, $name, $default = '') {
     return cEffectiveSetting::get($type, $name, $default);
@@ -788,13 +835,13 @@ function getEffectiveSetting($type, $name, $default = '') {
 /**
  * Returns the current effective settings for a type of properties.
  *
- * The order is:
- * System => Client => Group => User
+ * The order is: System => Client => Group => User
  *
  * System properties can be overridden by the group, and group
  * properties can be overridden by the user.
  *
- * @param string $type The type of the item
+ * @param string $type
+ *         The type of the item
  * @return array Value
  */
 function getEffectiveSettingsByType($type) {
@@ -804,7 +851,8 @@ function getEffectiveSettingsByType($type) {
 /**
  * Retrieve list of article specifications for current client and language
  *
- * @return array list of article specifications
+ * @return array
+ *         list of article specifications
  */
 function getArtspec() {
     global $db, $cfg, $lang, $client;
@@ -825,8 +873,10 @@ function getArtspec() {
 /**
  * Add new article specification
  *
- * @param string $artspectext specification text
- * @param int $online Online status (1 or 0)
+ * @param string $artspectext
+ *         specification text
+ * @param int $online
+ *         Online status (1 or 0)
  */
 function addArtspec($artspectext, $online) {
     global $db, $cfg, $lang, $client;
@@ -856,7 +906,8 @@ function addArtspec($artspectext, $online) {
 /**
  * Delete specified article specification
  *
- * @param int $idartspec article specification id
+ * @param int $idartspec
+ *         article specification id
  */
 function deleteArtspec($idartspec) {
     global $db, $cfg;
@@ -873,8 +924,10 @@ function deleteArtspec($idartspec) {
  * Flag to switch if an article specification should be shown the frontend or
  * not
  *
- * @param int $idartspec article specification id
- * @param int $online 0/1 switch the status between on an offline
+ * @param int $idartspec
+ *         article specification id
+ * @param int $online
+ *         0/1 switch the status between on an offline
  */
 function setArtspecOnline($idartspec, $online) {
     global $db, $cfg;
@@ -888,7 +941,8 @@ function setArtspecOnline($idartspec, $online) {
  * While creating a new article this defined article specification will be
  * default setting
  *
- * @param int $idartspec Article specification id
+ * @param int $idartspec
+ *         Article specification id
  */
 function setArtspecDefault($idartspec) {
     global $db, $cfg, $lang, $client;
@@ -902,10 +956,14 @@ function setArtspecDefault($idartspec) {
 /**
  * Build a Article select Box
  *
- * @param string $sName Name of the SelectBox
- * @param string $iIdCat category id
- * @param string $sValue Value of the SelectBox
- * @return string HTML
+ * @param string $sName
+ *         Name of the SelectBox
+ * @param string $iIdCat
+ *         Category id
+ * @param string $sValue
+ *         Value of the SelectBox
+ * @return string
+ *         HTML
  */
 function buildArticleSelect($sName, $iIdCat, $sValue) {
     global $cfg, $lang;
@@ -931,17 +989,22 @@ function buildArticleSelect($sName, $iIdCat, $sValue) {
         }
     }
 
-    return $selectElem->toHTML();
+    return $selectElem->toHtml();
 }
 
 /**
  * Build a Category / Article select Box
  *
- * @param string $sName Name of the SelectBox
- * @param string $sValue Value of the SelectBox
- * @param int $Level Value of highest level that should be shown
- * @param string $sClass Optional css class for select
- * @return string HTML
+ * @param string $sName
+ *         Name of the SelectBox
+ * @param string $sValue
+ *         Value of the SelectBox
+ * @param int $sLevel
+ *         Value of highest level that should be shown
+ * @param string $sClass
+ *         Optional css class for select
+ * @return string
+ *         HTML
  */
 function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
     global $cfg, $client, $lang;
@@ -1005,13 +1068,14 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
         }
     }
 
-    return $selectElem->toHTML();
+    return $selectElem->toHtml();
 }
 
 /**
  * Converts a size in bytes in a human readable form
  *
- * @param int $number Some number of bytes
+ * @param int $number
+ *         Some number of bytes
  * @return string
  */
 function humanReadableSize($number) {
@@ -1035,22 +1099,23 @@ function humanReadableSize($number) {
 
     $places = 2 - floor(log10($n));
     $places = max($places, 0);
-    $retval = number_format($n, $places, '.', '') . ' ' . $suffixes[$usesuf];
+    $retval = number_format($n, cSecurity::toInteger($places), '.', '') . ' ' . $suffixes[$usesuf];
     return $retval;
 }
 
 /**
  * Converts a byte size like "8M" to the absolute number of bytes
  *
- * @param string $sizeString contains the size acquired from ini_get for example
+ * @param string $sizeString
+ *         contains the size acquired from ini_get for example
  * @return number
  */
 function machineReadableSize($sizeString) {
 
-	// If sizeString is a integer value (i. e. 64242880), return it
-	if (cSecurity::isInteger($sizeString)) {
-		return $sizeString;
-	}
+    // If sizeString is a integer value (i. e. 64242880), return it
+    if (cSecurity::isInteger($sizeString)) {
+        return $sizeString;
+    }
 
     $val = trim($sizeString);
     $last = strtolower($val[strlen($val) - 1]);
@@ -1070,7 +1135,8 @@ function machineReadableSize($sizeString) {
 /**
  * Checks if the script is being runned from the web
  *
- * @return bool True if the script is running from the web
+ * @return bool
+ *         True if the script is running from the web
  */
 function isRunningFromWeb() {
     if ($_SERVER['PHP_SELF'] == '' || php_sapi_name() == 'cgi' || php_sapi_name() == 'cli') {
@@ -1097,7 +1163,8 @@ function isRunningFromWeb() {
  * function
  * won't find them!
  *
- * @param string $entity Name of the directory to scan
+ * @param string $entity
+ *         Name of the directory to scan
  */
 function scanPlugins($entity) {
     global $cfg;
@@ -1145,8 +1212,15 @@ function scanPlugins($entity) {
 
         sort($plugins);
 
-        $pluginorder = implode(',', $plugins);
-        setSystemProperty('plugin', $entity . '-pluginorder', $pluginorder);
+        $oldPlugins = explode(',', getSystemProperty('plugin', 'frontendusers-pluginorder'));
+        sort($oldPlugins);
+
+        $diff = array_diff($oldPlugins, $plugins);
+
+        if (!empty($diff)) {
+        	$pluginorder = implode(',', $plugins);
+        	setSystemProperty('plugin', $entity . '-pluginorder', $pluginorder);
+        }
     }
 
     foreach ($plugins as $key => $value) {
@@ -1163,7 +1237,8 @@ function scanPlugins($entity) {
 /**
  * Includes plugins for a given entity.
  *
- * @param $entity string Name of the directory to scan
+ * @param string $entity
+ *         string Name of the directory to scan
  */
 function includePlugins($entity) {
     global $cfg;
@@ -1178,7 +1253,8 @@ function includePlugins($entity) {
 /**
  * Calls the plugin's store methods.
  *
- * @param string $entity Name of the directory to scan
+ * @param string $entity
+ *         Name of the directory to scan
  */
 function callPluginStore($entity) {
     global $cfg;
@@ -1204,8 +1280,10 @@ function callPluginStore($entity) {
 /**
  * Creates a random name (example: Passwords).
  *
- * @param int $nameLength Length of the generated string
- * @return string Random name
+ * @param int $nameLength
+ *         Length of the generated string
+ * @return string
+ *         Random name
  */
 function createRandomName($nameLength) {
     $NameChars = 'abcdefghijklmnopqrstuvwxyz';
@@ -1226,17 +1304,12 @@ function createRandomName($nameLength) {
 }
 
 /**
- * @deprecated [2013-10-02]  Use getJsHelpContext() instead
- */
-function setHelpContext($area) {
-    cDeprecated("The function setHelpContext() is deprecated. Use getJsHelpContext() instead.");
-    return getJsHelpContext($area);
-}
-
-/**
  * Returns the JavaScript help context code, if help confuguration is enabled
- * @param string $area  The area name
- * @return The context context JS code
+ *
+ * @param string $area
+ *         The area name
+ * @return string
+ *         The context context JS code
  */
 function getJsHelpContext($area) {
     global $cfg;
@@ -1253,8 +1326,10 @@ function getJsHelpContext($area) {
 /**
  * Defines a constant if not defined before.
  *
- * @param string $constant Name of constant to define
- * @param mixed $value It's value
+ * @param string $constant
+ *         Name of constant to define
+ * @param mixed $value
+ *         It's value
  */
 function defineIfNotDefined($constant, $value) {
     if (!defined($constant)) {
@@ -1266,9 +1341,12 @@ function defineIfNotDefined($constant, $value) {
  * CONTENIDO die-alternative.
  * Logs the message and calls die().
  *
- * @param string $file File name (use __FILE__)
- * @param int $line Line number (use __LINE__)
- * @param string $message Message to display
+ * @param string $file
+ *         File name (use __FILE__)
+ * @param int $line
+ *         Line number (use __LINE__)
+ * @param string $message
+ *         Message to display
  */
 function cDie($file, $line, $message) {
     cError($file, $line, $message);
@@ -1281,8 +1359,9 @@ function cDie($file, $line, $message) {
  * "\tfunction2() called in file $filename($line)"
  * ...
  *
- * @param int $startlevel The startlevel. Note that 0 is always buildStackString
- *        and 1 is the function called buildStackString (e.g. cWarning)
+ * @param int $startlevel
+ *         The startlevel. Note that 0 is always buildStackString
+ *         and 1 is the function called buildStackString (e.g. cWarning)
  * @return string
  */
 function buildStackString($startlevel = 2) {
@@ -1312,6 +1391,7 @@ function buildStackString($startlevel = 2) {
  * </pre>
  *
  * @param Multiple parameters
+ * @SuppressWarnings docBlocks
  */
 function cWarning() {
     global $cfg;
@@ -1359,7 +1439,8 @@ function cWarning() {
  * cWarning(__FILE__, __LINE__, 'Some error message');
  * </pre>
  *
- * @param Multiple parameters
+ * @param string $message
+ * @param Multiple
  */
 function cError($message) {
     global $cfg;
@@ -1399,7 +1480,8 @@ function cError($message) {
 /**
  * Writes a note to deprecatedlog.txt
  *
- * @param string $amsg Optional message (e.g. "Use function XYZ instead")
+ * @param string $message
+ *         Optional message (e.g. "Use function XYZ instead")
  */
 function cDeprecated($message = '') {
     global $cfg;
@@ -1430,8 +1512,12 @@ function cDeprecated($message = '') {
 /**
  * Returns the name of the numeric frame given
  *
- * @param int $frame Frame number
- * @return string Canonical name of the frame
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
+ * @param int $frame
+ *         Frame number
+ * @return string
+ *         Canonical name of the frame
  */
 function getNamedFrame($frame) {
     switch ($frame) {
@@ -1456,15 +1542,18 @@ function getNamedFrame($frame) {
 /**
  * Starts the timing for a specific function
  *
- * @param string $function Name of the function
- * @param array $parameters All parameters for the function to measure
- * @return int uuid for this measure process
+ * @param string $function
+ *         Name of the function
+ * @param array $parameters
+ *         All parameters for the function to measure
+ * @return string
+ *         uuid for this measure process
  */
 function startTiming($function, $parameters = array()) {
     global $_timings, $cfg;
 
     if ($cfg['debug']['functiontiming'] == false) {
-        return;
+        return '';
     }
 
     // Create (almost) unique ID
@@ -1486,7 +1575,8 @@ function startTiming($function, $parameters = array()) {
 /**
  * Ends the timing process and logs it to the timings file
  *
- * @param $uuid int UUID which has been used for timing
+ * @param int $uuid
+ *         UUID which has been used for timing
  */
 function endAndLogTiming($uuid) {
     global $_timings, $cfg;
@@ -1533,10 +1623,14 @@ function endAndLogTiming($uuid) {
  * settings.
  * Based on this informations it will send an HTTP header for right encoding.
  *
- * @param cDb $db NO MORE NEEDED
- * @param array $cfg Global cfg-array
- * @param int $lang Global language id
- * @param string $contentType Mime type
+ * @param cDb $db
+ *         NO MORE NEEDED
+ * @param array $cfg
+ *         Global cfg-array
+ * @param int $lang
+ *         Global language id
+ * @param string $contentType
+ *         Mime type
  */
 function sendEncodingHeader($db, $cfg, $lang, $contentType = 'text/html') {
     if (isset($_GET['use_encoding'])) {
@@ -1606,16 +1700,10 @@ function ipMatch($network, $mask, $ip) {
 }
 
 /**
- * @deprecated [2013-08-14]  Use cString::endsWith() instead
- */
-function endsWith($haystack, $needle) {
-    cDeprecated("The function endsWith is deprecated. Use cString::endsWith() instead.");
-    return cString::endsWith($haystack, $needle);
-}
-
-/**
  * Checks, if a function is disabled or not ('disable_functions' setting in php.ini)
- * @param  string  $functionName  Name of the function to check
+ *
+ * @param string $functionName
+ *         Name of the function to check
  * @return bool
  */
 function isFunctionDisabled($functionName) {
@@ -1635,9 +1723,14 @@ function isFunctionDisabled($functionName) {
 /**
  * Generates category article breadcrumb for backend
  *
- * @param string $syncoptions syncstate of backend
- * @param string $showArticle show also current article or categories only (optional)
- * @return NULL
+ * @param string $syncoptions
+ *         syncstate of backend
+ * @param string $showArticle
+ *         show also current article or categories only (optional)
+ * @param bool $return [optional]
+ *         Return or print template
+ * @return string|void
+ *         Complete template string or nothing
  */
 function renderBackendBreadcrumb($syncoptions, $showArticle = true, $return = false) {
     $tplBread = new cTemplate();
@@ -1699,5 +1792,3 @@ function renderBackendBreadcrumb($syncoptions, $showArticle = true, $return = fa
 
     return $tplBread->generate($cfg['path']['templates'] . $cfg['templates']['breadcrumb'], $return);
 }
-
-?>

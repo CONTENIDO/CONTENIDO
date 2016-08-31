@@ -4,8 +4,6 @@
  *
  * @package Core
  * @subpackage Security
- * @version SVN Revision $Rev:$
- *
  * @author Dominik Ziegler
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -193,6 +191,11 @@ class cUpdateNotifier {
     protected $bUpdateNecessity = false;
 
     /**
+     * @var string
+     */
+    protected $sErrorOutput;
+
+    /**
      * Vendor host reachability.
      *
      * @var bool
@@ -249,7 +252,7 @@ class cUpdateNotifier {
     protected $aCfg = array();
 
     /**
-     * Constructor of Contenido_UpdateNotifier
+     * Constructor to create an instance of this class.
      *
      * @param array $aCfg
      * @param cApiUser $oUser
@@ -644,7 +647,8 @@ class cUpdateNotifier {
      * Generates the output for the rss informations
      *
      * @param cTemplate $oTpl
-     * @return cTemplate CONTENIDO template object
+     * @return cTemplate
+     *         CONTENIDO template object
      */
     protected function renderRss($oTpl) {
         if (!is_object($oTpl)) {
@@ -670,7 +674,7 @@ class cUpdateNotifier {
                 $sText = utf8_encode($description);
 
                 if (strlen($sText) > 150) {
-                    $sText = cApiStrTrimAfterWord($sText, 150) . '...';
+                    $sText = cString::trimAfterWord($sText, 150) . '...';
                 }
 
                 $date = date(getEffectiveSetting("dateformat", "full", "Y-m-d H:i:s"), strtotime($date));
@@ -711,7 +715,7 @@ class cUpdateNotifier {
      *
      * @todo add a retry counter and a deathpoint with warning in errorlog
      * @param string $sUrl
-     * @return boolean Ambigous string>
+     * @return string|bool
      */
     private function fetchUrl($sUrl) {
         if ($this->bVendorHostReachable != true) {

@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for frontend group rights.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Unknown
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -64,7 +63,7 @@ if ($action == 'fegroups_save_perm') {
             }
         }
     }
-    cRegistry::addInfoMessage(i18n("Saved changes successfully!"));
+    cRegistry::addOkMessage(i18n("Saved changes successfully!"));
 }
 
 $rights->addHeader(sprintf(i18n("Permissions for plugin '%s'"), $class->getFriendlyName()));

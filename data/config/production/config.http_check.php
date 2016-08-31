@@ -104,6 +104,30 @@ $aCheck['POST']['catname'] = cRequestValidator::CHECK_PRIMITIVESTRING;
 $aCheck['POST']['belang'] = cRequestValidator::CHECK_BELANG;
 $aCheck['POST']['path'] = cRequestValidator::CHECK_PATHSTRING;
 
+$aCheck['COOKIE']['idart'] = cRequestValidator::CHECK_INTEGER;
+$aCheck['COOKIE']['idcat'] = cRequestValidator::CHECK_INTEGER;
+$aCheck['COOKIE']['idartlang'] = cRequestValidator::CHECK_INTEGER;
+$aCheck['COOKIE']['idcatart'] = cRequestValidator::CHECK_INTEGER;
+$aCheck['COOKIE']['lang'] = cRequestValidator::CHECK_INTEGER;
+$aCheck['COOKIE']['changelang'] = cRequestValidator::CHECK_INTEGER;
+$aCheck['COOKIE']['idcatlang'] = cRequestValidator::CHECK_INTEGER;
+
+$aCheck['COOKIE']['client'] = cRequestValidator::CHECK_INTEGER;
+$aCheck['COOKIE']['area'] = cRequestValidator::CHECK_AREASTRING;
+$aCheck['COOKIE']['frame'] = cRequestValidator::CHECK_INTEGER;
+
+$aCheck['COOKIE']['tmpchangelang'] = cRequestValidator::CHECK_INTEGER;
+$aCheck['COOKIE']['changeview'] = cRequestValidator::CHECK_PRIMITIVESTRING;
+$aCheck['COOKIE']['action'] = cRequestValidator::CHECK_PRIMITIVESTRING;
+$aCheck['COOKIE']['changeclient'] = cRequestValidator::CHECK_INTEGER;
+$aCheck['COOKIE']['page'] = cRequestValidator::CHECK_INTEGER;
+
+$aCheck['COOKIE']['catname'] = cRequestValidator::CHECK_PRIMITIVESTRING;
+//$aCheck['COOKIE']['contenido'] = cRequestValidator::CHECK_HASH32;
+
+$aCheck['COOKIE']['belang'] = cRequestValidator::CHECK_BELANG;
+$aCheck['COOKIE']['path'] = cRequestValidator::CHECK_PATHSTRING;
+
 // If one of these parameters is set (either get or post) the script will halt.
 #### Paramater blacklist ####
 $aBlacklist = array('cfg', 'cfgClient', 'contenido_path', '_PHPLIB', 'db', 'sess');

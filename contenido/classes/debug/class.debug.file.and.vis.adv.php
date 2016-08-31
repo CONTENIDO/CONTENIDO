@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the file and vis adv debug class.
  *
  * @package Core
  * @subpackage Debug
- * @version SVN Revision $Rev:$
  *
  * @author Rudi Bieller
  * @copyright four for business AG <www.4fb.de>
@@ -59,7 +59,7 @@ class cDebugFileAndVisAdv extends cDebugVisibleAdv {
     }
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     private function __construct() {
         global $cfg;
@@ -68,9 +68,10 @@ class cDebugFileAndVisAdv extends cDebugVisibleAdv {
     }
 
     /**
-     * (non-PHPdoc)
+     * Writes a line.
      *
-     * @see cDebugVisibleAdv::out()
+     * @see cDebugInterface::out()
+     * @param string $msg
      */
     public function out($msg) {
         parent::out($msg);
@@ -80,9 +81,15 @@ class cDebugFileAndVisAdv extends cDebugVisibleAdv {
     }
 
     /**
-     * (non-PHPdoc)
+     * Outputs contents of passed variable in a preformatted, readable way.
      *
      * @see cDebugVisibleAdv::show()
+     * @param mixed $mVariable
+     *         The variable to be displayed.
+     * @param string $sVariableDescription [optional]
+     *         The variable's name or description.
+     * @param bool $bExit [optional]
+     *         If set to true, your app will die() after output of current var.
      */
     public function show($mVariable, $sVariableDescription = '', $bExit = false) {
         parent::show($mVariable, $sVariableDescription, $bExit);

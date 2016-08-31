@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the cHTMLDiv class.
  *
  * @package Core
  * @subpackage GUI_HTML
- * @version SVN Revision $Rev:$
  *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
@@ -24,12 +24,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHTMLDiv extends cHTMLContentElement {
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
+     *
      * Creates an HTML Div element.
      *
-     * @param mixed $content String or object with the contents
-     * @param string $class the class of this element
-     * @param string $id the ID of this element
+     * @param mixed $content [optional]
+     *         String or object with the contents
+     * @param string $class [optional]
+     *         the class of this element
+     * @param string $id [optional]
+     *         the ID of this element
      */
     public function __construct($content = '', $class = '', $id = '') {
         parent::__construct($content, $class, $id);

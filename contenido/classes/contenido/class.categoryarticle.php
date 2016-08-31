@@ -4,8 +4,6 @@
  *
  * @package Core
  * @subpackage GenericDB_Model
- * @version SVN Revision $Rev:$
- *
  * @author Timo Hummel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -24,10 +22,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiCategoryArticleCollection extends ItemCollection {
 
     /**
-     * Create a new collection of items.
+     * Constructor to create an instance of this class.
      *
-     * @param string $select where clause to use for selection (see
-     *            ItemCollection::select())
+     * @param string $select [optional]
+     *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
         global $cfg;
@@ -48,11 +46,11 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *
      * @param int $idcat
      * @param int $idart
-     * @param int $status
-     * @param string $author
-     * @param string $created
-     * @param string $lastmodified
-     * @param int $createcode
+     * @param int $status [optional]
+     * @param string $author [optional]
+     * @param string $created [optional]
+     * @param string $lastmodified [optional]
+     * @param int $createcode [optional]
      * @return cApiCategoryArticle
      */
     public function create($idcat, $idart, $status = 0, $author = "", $created = "", $lastmodified = "", $createcode = 1) {
@@ -91,7 +89,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *
      * @param int $client
      * @param int $lang
-     * @return cApiCategoryArticle NULL
+     * @return cApiCategoryArticle|NULL
      */
     public function fetchFirstFromTreeByClientIdAndLangId($client, $lang) {
         global $cfg;
@@ -123,7 +121,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *
      * @param int $idcat
      * @param int $idart
-     * @return cApiCategoryArticle NULL
+     * @return cApiCategoryArticle|NULL
      */
     public function fetchByCategoryIdAndArticleId($idcat, $idart) {
         $aProps = array(
@@ -147,7 +145,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *
      * @param int $idcat
      * @param int $idart
-     * @return int NULL
+     * @return int|NULL
      */
     public function getIdByCategoryIdAndArticleId($idcat, $idart) {
         $where = "idcat = %d AND idart = %d";
@@ -202,8 +200,10 @@ class cApiCategoryArticleCollection extends ItemCollection {
     /**
      * Checks, if passed category contains any articles in specified language.
      *
-     * @param int $idcat Category id
-     * @param int $idlang Language id
+     * @param int $idcat
+     *         Category id
+     * @param int $idlang
+     *         Language id
      * @return bool
      */
     public function getHasArticles($idcat, $idlang) {
@@ -224,10 +224,12 @@ class cApiCategoryArticleCollection extends ItemCollection {
     /**
      * Sets 'createcode' flag for one or more category articles.
      *
-     * @param int|array $idcatart One category article id or list of category
-     *        article ids
-     * @param int $createcode Create code state, either 1 or 0.
-     * @return int Number of updated entries
+     * @param int|array $idcatart
+     *         One category article id or list of category article ids
+     * @param int $createcode [optional]
+     *         Create code state, either 1 or 0.
+     * @return int
+     *         Number of updated entries
      */
     public function setCreateCodeFlag($idcatart, $createcode = 1) {
         $createcode = ($createcode == 1) ? 1 : 0;
@@ -261,9 +263,10 @@ class cApiCategoryArticleCollection extends ItemCollection {
 class cApiCategoryArticle extends Item {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId [optional]
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -274,25 +277,27 @@ class cApiCategoryArticle extends Item {
         }
     }
 
-	/**
+    /**
      * Userdefined setter for category article fields.
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @param bool $bSafe [optional]
+     *         Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
             case 'idcat':
                 $value = cSecurity::toInteger($value);
                 break;
-			case 'idart':
+            case 'idart':
                 $value = cSecurity::toInteger($value);
                 break;
-			case 'status':
+            case 'status':
                 $value = cSecurity::toInteger($value);
                 break;
-			case 'createcode':
+            case 'createcode':
                 $value = ($value == 1) ? 1 : 0;
                 break;
         }

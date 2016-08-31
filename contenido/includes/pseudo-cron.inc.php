@@ -1,6 +1,7 @@
 <?php
 
-/* * *************************************************************************
+/**
+ * *************************************************************************
 
   pseudo-cron v1.2.1.con // modified version for CONTENIDO
   (c) 2003 Kai Blankenhorn
@@ -22,7 +23,6 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
  * ***************************************************************************
-
 
   Usually regular tasks like backup up the site's database are run using cron
   jobs. With cron jobs, you can exactly plan when a certain command is to be
@@ -186,6 +186,13 @@ if ($PC_debug) {
     echo "\n</pre>";
 }
 
+/**
+ *
+ * @param string $msg
+ * @param string $PC_writeDir
+ * @param string $PC_useLog
+ * @param int $PC_debug
+ */
 function logMessage($msg, $PC_writeDir, $PC_useLog, $PC_debug) {
     if ($PC_useLog == 1) {
         $logfile = $PC_writeDir . "pseudo-cron.log";
@@ -204,6 +211,11 @@ function logMessage($msg, $PC_writeDir, $PC_useLog, $PC_debug) {
     }
 }
 
+/**
+ *
+ * @param int $number
+ * @return string
+ */
 function lTrimZeros($number) {
     while ($number[0] == '0') {
         $number = substr($number, 1);
@@ -211,6 +223,12 @@ function lTrimZeros($number) {
     return $number;
 }
 
+/**
+ *
+ * @param array $element
+ * @param array $targetArray
+ * @param int $numberOfElements
+ */
 function parseElement($element, &$targetArray, $numberOfElements) {
     $subelements = explode(",", $element);
     for ($i = 0; $i < $numberOfElements; $i++) {
@@ -239,6 +257,13 @@ function parseElement($element, &$targetArray, $numberOfElements) {
     }
 }
 
+/**
+ *
+ * @param array $dateArr
+ * @param int $amount
+ * @param string $unit
+ * @param boolean $PC_debug
+ */
 function decDate(&$dateArr, $amount, $unit, $PC_debug) {
     if ($PC_debug) {
         echo sprintf("Decreasing from %02d.%02d. %02d:%02d by %d %6s ", $dateArr['mday'], $dateArr['mon'], $dateArr['hours'], $dateArr['minutes'], $amount, $unit);
@@ -296,10 +321,16 @@ function decDate(&$dateArr, $amount, $unit, $PC_debug) {
         }
     }
     if ($PC_debug) {
-        echo sprintf("to %02d.%02d. %02d:%02d\n", $dateArr[mday], $dateArr[mon], $dateArr[hours], $dateArr[minutes]);
+        echo sprintf("to %02d.%02d. %02d:%02d\n", $dateArr['mday'], $dateArr['mon'], $dateArr['hours'], $dateArr['minutes']);
     }
 }
 
+/**
+ *
+ * @param string $job
+ * @param boolean $PC_debug
+ * @return int
+ */
 function getLastScheduledRunTime($job, $PC_debug) {
     $dateArr = getdate();
     $minutesBack = 0;
@@ -334,11 +365,23 @@ function getLastScheduledRunTime($job, $PC_debug) {
     return mktime($dateArr["hours"], $dateArr["minutes"], 0, $dateArr["mon"], $dateArr["mday"], $dateArr["year"]);
 }
 
+/**
+ *
+ * @param string $jobname
+ * @param string $PC_writeDir
+ * @return string
+ */
 function getJobFileName($jobname, $PC_writeDir) {
     $jobfile = $PC_writeDir . urlencode($jobname) . ".job";
     return $jobfile;
 }
 
+/**
+ *
+ * @param string $jobname
+ * @param string $PC_writeDir
+ * @return string|number
+ */
 function getLastActialRunTime($jobname, $PC_writeDir) {
     $jobfile = getJobFileName($jobname, $PC_writeDir);
     if (cFileHandler::exists($jobfile)) {
@@ -352,6 +395,12 @@ function getLastActialRunTime($jobname, $PC_writeDir) {
     return 0;
 }
 
+/**
+ *
+ * @param string $jobname
+ * @param int $lastRun
+ * @param string $PC_writeDir
+ */
 function markLastRun($jobname, $lastRun, $PC_writeDir) {
     $jobfile = getJobFileName($jobname, $PC_writeDir);
 
@@ -363,9 +412,18 @@ function markLastRun($jobname, $lastRun, $PC_writeDir) {
     }
 }
 
+/**
+ *
+ * @param string $job
+ * @param string $PC_jobDir
+ * @param string $PC_writeDir
+ * @param int $PC_useLog
+ * @param boolean $PC_debug
+ * @return boolean
+ */
 function runJob($job, $PC_jobDir, $PC_writeDir, $PC_useLog, $PC_debug = false) {
     global $cfg, $sess;
-    $extjob = Array();
+    $extjob = array();
     $jobfile = getJobFileName($job[PC_CMD], $PC_writeDir);
     parseElement($job[PC_MINUTE], $extjob[PC_MINUTE], 60);
     parseElement($job[PC_HOUR], $extjob[PC_HOUR], 24);
@@ -407,10 +465,16 @@ function runJob($job, $PC_jobDir, $PC_writeDir, $PC_useLog, $PC_debug = false) {
     }
 }
 
+/**
+ *
+ * @param string $PC_cronTabFile
+ * @param boolean $PC_debug
+ * @return array
+ */
 function parseCronFile($PC_cronTabFile, $PC_debug) {
     $file = @file($PC_cronTabFile);
-    $job = Array();
-    $jobs = Array();
+    $job = array();
+    $jobs = array();
     for ($i = 0; $i < count($file); $i++) {
         if ($file[$i][0] != '#') {
 //         old regex, without dow abbreviations:
@@ -420,7 +484,7 @@ function parseCronFile($PC_cronTabFile, $PC_debug) {
                 $jobs[$jobNumber] = $job;
                 if ($jobs[$jobNumber][PC_DOW][0] != '*' AND !is_numeric($jobs[$jobNumber][PC_DOW])) {
                     $jobs[$jobNumber][PC_DOW] = str_replace(
-                            Array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"), Array(0, 1, 2, 3, 4, 5, 6), $jobs[$jobNumber][PC_DOW]);
+                            array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"), array(0, 1, 2, 3, 4, 5, 6), $jobs[$jobNumber][PC_DOW]);
                 }
                 $jobs[$jobNumber][PC_CMD] = trim($job[PC_CMD]);
                 $jobs[$jobNumber][PC_CRONLINE] = $file[$i];
@@ -432,5 +496,3 @@ function parseCronFile($PC_cronTabFile, $PC_debug) {
     }
     return $jobs;
 }
-
-?>

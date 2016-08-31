@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for creating new groups.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Unknown
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -37,7 +36,7 @@ if ($action == 'group_create') {
     }
 
     $groupname = stripcslashes(preg_replace("/\"/", "", ($groupname)));
-	$description = stripcslashes(preg_replace("/\"/", "", ($description)));
+    $description = stripcslashes(preg_replace("/\"/", "", ($description)));
 
     $oGroup = new cApiGroup();
     $oGroup->loadGroupByGroupname($groupname);
@@ -48,7 +47,7 @@ if ($action == 'group_create') {
         $oGroupColl = new cApiGroupCollection();
         $oGroup = $oGroupColl->create($groupname, implode(',', $aPerms), $description);
         if (is_object($oGroup)) {
-			$groupId = $oGroup->getGroupId();
+            $groupId = $oGroup->getGroupId();
         } else {
             $sNotification = $notification->returnNotification("error", i18n("Group couldn't created"));
             $bError = true;
@@ -73,7 +72,7 @@ $tpl->set('s', 'PROPERTY', i18n("Property"));
 $tpl->set('s', 'VALUE', i18n("Value"));
 
 $tpl->set('d', 'CATNAME', i18n("Group name"));
-$oTxtName = new cHTMLTextbox('groupname', $groupname, 40, 255);
+$oTxtName = new cHTMLTextbox('groupname', conHtmlSpecialChars($groupname), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtName->render());
 
 $tpl->next();
@@ -90,7 +89,7 @@ $aAuthPerms = explode(',', $auth->auth['perm']);
 if (in_array('sysadmin', $aAuthPerms)) {
     $tpl->set('d', 'CATNAME', i18n("System administrator"));
     $defaultsysadmin = new cHTMLCheckbox("msysadmin", "1", "msysadmin1", in_array('sysadmin', $aPerms));
-    $tpl->set('d', 'CATFIELD', $defaultsysadmin->toHTML(false));
+    $tpl->set('d', 'CATFIELD', $defaultsysadmin->toHtml(false));
     $tpl->next();
 }
 
@@ -102,7 +101,7 @@ foreach ($aClients as $idclient => $item) {
     if (in_array("admin[".$idclient."]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms)) {
         $defaultadmin = new cHTMLCheckbox("madmin[".$idclient."]", $idclient, "madmin[".$idclient."]".$idclient, in_array("admin[".$idclient."]", $aPerms));
         $defaultadmin->setLabelText($item['name'] . " (".$idclient.")");
-        $sClientCheckboxes .= $defaultadmin->toHTML(true);
+        $sClientCheckboxes .= $defaultadmin->toHtml(true);
     }
 }
 
@@ -118,7 +117,7 @@ foreach ($aClients as $idclient => $item) {
     if (in_array("client[".$idclient."]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms) || in_array("admin[".$idclient."]", $aAuthPerms)) {
         $defaultperms = new cHTMLCheckbox("mclient[".$idclient."]", $idclient, "mclient[".$idclient."]".$idclient, in_array("client[".$idclient."]", $aPerms));
         $defaultperms->setLabelText($item['name'] . " (". $idclient . ")");
-        $sClientCheckboxes .= $defaultperms->toHTML(true);
+        $sClientCheckboxes .= $defaultperms->toHtml(true);
     }
 }
 
@@ -133,7 +132,7 @@ foreach ($aClientsLanguages as $item) {
     if ($perm->have_perm_client("lang[".$item['idlang']."]") || $perm->have_perm_client("admin[".$item['idclient']."]")) {
         $defaultlanguages = new cHTMLCheckbox("mlang[".$item['idlang']."]", $item['idlang'], "mlang[".$item['idlang']."]".$item['idlang'], in_array("lang[".$item['idlang']."]", $aPerms));
         $defaultlanguages->setLabelText($item['langname']." (". $item['clientname'] .")");
-        $sClientCheckboxes .= $defaultlanguages->toHTML(true);
+        $sClientCheckboxes .= $defaultlanguages->toHtml(true);
     }
 }
 

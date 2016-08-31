@@ -1,17 +1,17 @@
 <?php
+
 /**
  * Backend action file con_saveart
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Dominik Ziegler
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 if (!isset($idtpl)) {
@@ -22,8 +22,8 @@ if (!isset($artspec)) {
     $artspec = '';
 }
 
-if (!isset($online)) {
-    $online = false;
+if (!isset($online) && !isset($timemgmt)) {
+	$online = false;
 }
 
 if (!isset($searchable)) {
@@ -39,16 +39,18 @@ $oldData = array();
 
 
 if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_action_item($area, "con_edit", $idcat))  && ((int) $locked === 0 || $admin )) {
+
+	// Get idartlang
+	if (!isset($idartlang) || $idartlang == 0) {
+		$sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idart = $idart AND idlang = $lang";
+		$db->query($sql);
+		$db->nextRecord();
+		$idartlang = $db->f("idartlang");
+	}
+
     if (1 == $tmp_firstedit) {
         $idart = conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang, $lang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort, 0, $searchable);
-        $tmp_notification = $notification->returnNotification("info", i18n("Changes saved"));
-
-        if (!isset($idartlang) || $idartlang == 0) {
-            $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idart = $idart AND idlang = $lang";
-            $db->query($sql);
-            $db->nextRecord();
-            $idartlang = $db->f("idartlang");
-        }
+        $tmp_notification = $notification->returnNotification("ok", i18n("Changes saved"));
 
         if (in_array($idcat, $idcatnew)) {
             $sql = "SELECT idcatart FROM " . $cfg["tab"]["cat_art"] . " WHERE idcat = '" . $idcat . "' AND idart = '" . $idart . "'";
@@ -88,10 +90,22 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
         }
 
         $availableTags = conGetAvailableMetaTagTypes();
-        foreach ($availableTags as $key => $value) {
-            if ($value["metatype"] == "robots") {
-                conSetMetaValue($idartlang, $key, "index, follow");
-                break;
+
+        $versioning = new cContentVersioning();
+        $version = NULL;
+        if ($versioning->getState() != 'disabled') {
+            // get parameters for article version
+            //$artLang = new cApiArticleLanguage($idartlang);
+
+            // create article version
+            //$artLangVersion = $versioning->createArticleLanguageVersion($artLang->toArray());
+            //$artLangVersion->markAsCurrentVersion(1);
+
+            foreach ($availableTags as $key => $value) {
+                if ($value["metatype"] == "robots") {
+                    conSetMetaValue($idartlang, $key, "index, follow");
+                    break;
+                }
             }
         }
     } else {
@@ -148,14 +162,7 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
 
         conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang, $lang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $publishing_date, $artsort, 0, $searchable);
 
-        $tmp_notification = $notification->returnNotification("info", i18n("Changes saved"));
-
-        if (!isset($idartlang)) {
-            $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idart = $idart AND idlang = $lang";
-            $db->query($sql);
-            $db->nextRecord();
-            $idartlang = $db->f("idartlang");
-        }
+        $tmp_notification = $notification->returnNotification("ok", i18n("Changes saved"));
 
         if (is_array($idcatnew)) {
             if (in_array($idcat, $idcatnew)) {

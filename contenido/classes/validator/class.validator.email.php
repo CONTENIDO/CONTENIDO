@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the mail validator class.
  *
  * @package    Core
  * @subpackage Validation
- * @version    SVN Revision $Rev:$
- *
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -50,7 +49,9 @@ class cValidatorEmail extends cValidatorAbstract {
     protected static $_filterVarExists;
 
     /**
-     * Constructor function, sets some predefined options
+     * Constructor to create an instance of this class.
+     *
+     * Sets some predefined options.
      */
     public function __construct() {
         // Some default options to exclude tld or host
@@ -61,7 +62,7 @@ class cValidatorEmail extends cValidatorAbstract {
 
     /**
      * Filter variable function exists setter
-     * @param  bool  $exists
+     * @param bool $exists
      */
     public static function setFilterVarExists($exists) {
         self::$_filterVarExists = (bool) $exists;
@@ -75,7 +76,10 @@ class cValidatorEmail extends cValidatorAbstract {
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @see cValidatorAbstract::_isValid()
+     * @param mixed $value
+     * @return bool
      */
     protected function _isValid($value) {
         if (!is_string($value) || empty($value)) {
@@ -158,8 +162,8 @@ class cValidatorEmail extends cValidatorAbstract {
     /**
      * Check DNS Records for MX type.
      *
-     * @param string $host Host name
-     *
+     * @param string $host
+     *         Host name
      * @return bool
      */
     private function _checkMx($host) {

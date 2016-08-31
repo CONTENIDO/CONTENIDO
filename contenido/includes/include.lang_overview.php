@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the menu frame (overview) backend page for language management.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Olaf Niemann
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -101,7 +100,7 @@ if ($tmp_notification) {
     $noti_html = '<tr><td colspan="3">' . $tmp_notification . '</td></tr>';
     $tpl->set('s', 'NOTIFICATION', $noti_html);
 } else {
-    $tmp_notification = $notification->returnNotification("info", i18n("Language deleted"));
+    $tmp_notification = $notification->returnNotification("ok", i18n("Language deleted"));
     $noti_html = '<tr><td colspan="3">' . $tmp_notification . '</td></tr>';
     $tpl->set('s', 'NOTIFICATION', '');
 }
@@ -109,7 +108,7 @@ if ($tmp_notification) {
 $tpl->set('s', 'LANG_COUNT', $iLangCount);
 
 if ($action == 'lang_deactivatelanguage' || $action == 'lang_activatelanguage') {
-	$sReloadScript = <<<JS
+    $sReloadScript = <<<JS
 <script type="text/javascript">
 (function(Con, $) {
     var frame = Con.getFrame('right_bottom');
@@ -124,7 +123,7 @@ if ($action == 'lang_deactivatelanguage' || $action == 'lang_activatelanguage') 
 </script>
 JS;
 } else {
-	$sReloadScript = "";
+    $sReloadScript = "";
 }
 
 $tpl->set('s', 'RELOAD_SCRIPT', $sReloadScript);

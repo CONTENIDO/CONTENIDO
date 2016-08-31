@@ -1,4 +1,4 @@
-<div class="galery">
+<div class="gallery">
     <div class="lightbox"></div>
     <ul class="source">
         {foreach from=$pictures item=picture}
@@ -14,6 +14,7 @@
 
     <div class="clear"></div>
     <ul class="pagination">
-        <li><a id="back" href="">Zurück</a></li>
+        <li><a id="back" href="">{$back|escape}</a></li>
+        <li><a id="forward" href="">{$forward|escape}</a></li>
     </ul>
 </div>

@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the uri builder front content class.
  *
  * @package    Core
  * @subpackage Frontend_URI
- * @version    SVN Revision $Rev:$
- *
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -16,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Implementation to build front_content.php URL
+ * Implementation to build front_content.php URL.
  *
  * @package    Core
  * @subpackage Frontend_URI
@@ -38,14 +37,14 @@ class cUriBuilderFrontcontent extends cUriBuilder {
     private $_sAmp = '&';
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     private function __construct() {
         $this->sHttpBasePath = '';
     }
 
     /**
-     * Get instance of self
+     * Get instance of self.
      *
      * @return cUriBuilderFrontcontent
      */
@@ -58,19 +57,24 @@ class cUriBuilderFrontcontent extends cUriBuilder {
 
     /**
      * Builds a URL in front_content.php style.
-     * Depending on which array keys of $aParams are set, the URL is built
-     * differently.
+     *
+     * Depending on which array keys of $aParams are set, the URL is
+     * built differently.
+     *
      * Valid array keys are: idcat, idart and idcatart.
+     *
      * Additional array keys will also be added to the generated url.
+     *
      * Internally, the method first tries to create URLs in this order:
-     * front_content.php?idcat=1&idart=1
-     * front_content.php?idcat=1
-     * front_content.php?idart=1
-     * front_content.php?idcatart=1
+     * - front_content.php?idcat=1&idart=1
+     * - front_content.php?idcat=1
+     * - front_content.php?idart=1
+     * - front_content.php?idcatart=1
      *
      * @param array $aParams
-     * @param bool $bUseAbsolutePath
-     * @param array $aConfig Is not used at the moment
+     * @param bool $bUseAbsolutePath [optional]
+     * @param array $aConfig [optional]
+     *         Is not used at the moment
      * @throws cInvalidArgumentException
      * @throws cException
      */

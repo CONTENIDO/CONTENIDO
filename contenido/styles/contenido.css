@@ -16,7 +16,6 @@
 
 @import "notifications.css"; /* @see CON-1992 */
 
-
 /* some reset */
 form, h1, h2, h3, h4 {
     margin: 0;
@@ -365,10 +364,10 @@ li#kontakt.welcome {
  * @extends generic_table_form
  */
 label.sys_config_txt_lbl {
-	padding:3px;
-	display:inline-block;
-	white-space:normal;
-	vertical-align:middle;
+    padding:3px;
+    display:inline-block;
+    white-space:normal;
+    vertical-align:middle;
 }
 
 /**
@@ -829,13 +828,6 @@ input.textbox_readonly {
  * @section Foldingrow
  */
 
-/* @deprecated, not in use anymore */
-div.folding_content {
-    border-right: 1px solid #b3b3b3;
-    padding-left: 15px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
 td.foldingrow {
     background-color: #e2e2e2;
     border-top: 1px solid #b3b3b3;
@@ -1943,16 +1935,16 @@ div.errorlist {
 }
 
 .alltranslations td input.vAlignTop {
-	float: none;
-	display: block;
+    float: none;
+    display: block;
 }
 
 .alltranslations td.actions {
-	text-align: right;
+    text-align: right;
 }
 
 .alltranslations td.actions input {
-	display: inline;
+    display: inline;
 }
 
 .alltranslations td.inuse {
@@ -2032,6 +2024,10 @@ input[type=image].vAlignMiddle {
     max-width: 700px;
 }
 
+.conEditForm tr:first-child td {
+    border-top: 1px solid #B3B3B3;
+}
+
 .conEditForm input.text_medium {
     width: 400px;
 }
@@ -2066,7 +2062,6 @@ input[type=image].vAlignMiddle {
     margin-left: 15px;
 }
 
-/* @TODO: Rename to left_top_action */
 .leftTopAction {
     min-height: 2em;
     border: 1px solid #b3b3b3;
@@ -2239,6 +2234,13 @@ input[type=image].vAlignMiddle {
     background-position: -97px -127px;
 }
 
+.ui-widget-header .ui-datepicker-prev.ui-state-hover span {
+    background-position: -80px -192px;
+}
+
+.ui-widget-header .ui-datepicker-next.ui-state-hover span {
+    background-position: -48px -192px;
+}
 
 .ui-widget-overlay {
     background: #333 none;
@@ -2267,22 +2269,22 @@ table.inuse_tpl {
 }
 
 #con_content_list .rawdata {
-	display: block;
-	margin: 15px 0px 15px 0px;
-	font-weight: bold;
+    display: block;
+    margin: 15px 0px 15px 0px;
+    font-weight: bold;
 }
 #con_content_list div.rawtypes {
-	display: none;
+    display: none;
 }
 
 #con_content_list #importrawdata input[type=file] {
-	display: block;
-	margin: 0px;
+    display: block;
+    margin: 0px;
 }
 
 #con_content_list #importrawdata input[type=submit] {
-	display: block;
-	margin: 10px 0px 5px 0px;
+    display: block;
+    margin: 10px 0px 5px 0px;
 }
 
 a.infoButton,

@@ -1,12 +1,12 @@
 <?php
+
 /**
  * This file contains the file version class.
  *
  * @package    Core
  * @subpackage Versioning
- * @version    SVN Revision $Rev:$
- *
- * @author     Bilal Arslan, Timo Trautmann
+ * @author     Bilal Arslan
+ * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -26,38 +26,57 @@ class cVersionFile extends cVersion {
 
     /**
      * Content code of current file.
+     *
+     * @var string
      */
     public $sCode;
 
     /**
      * Description folder of history sub nav.
      * Its not required to use it.
+     *
+     * @var string
      */
-    public $sDescripion;
+    public $sDescription;
 
     /**
      * The path of style file.
+     *
+     * @var string
      */
     public $sPath;
 
     /**
      * The id of Type.
+     *
+     * @var string
      */
     public $sFileName;
 
     /**
-     * The class versionStyle object constructor, initializes class variables
+     * Constructor to create an instance of this class.
      *
-     * @param string $iIdOfType The name of style file
-     * @param array $aFileInfo Get FileInformation from table file_information
+     * Initializes class variables.
+     *
+     * @param string $iIdOfType
+     *         The name of style file
+     * @param array $aFileInfo
+     *         Get FileInformation from table file_information
+     * @param string $sFileName
+     * @param string $sTypeContent
      * @param array $aCfg
      * @param array $aCfgClient
      * @param object $oDB
      * @param int $iClient
      * @param string $sArea
      * @param int $iFrame
+     * @param string $sVersionFileName [optional]
      */
-    public function __construct($iIdOfType, $aFileInfo, $sFileName, $sTypeContent, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame, $sVersionFileName = '') {
+    public function __construct(
+        $iIdOfType, $aFileInfo, $sFileName, $sTypeContent, $aCfg, $aCfgClient,
+        $oDB, $iClient, $sArea, $iFrame, $sVersionFileName = ''
+    ) {
+
         // Set globals in super class constructer
         parent::__construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame);
 
@@ -68,10 +87,10 @@ class cVersionFile extends cVersion {
         $this->sFileName = $sFileName;
 
         // File Information, set for class Version to generate head xml nodes
-        $this->sDescripion = $aFileInfo["description"];
-        $this->sAuthor = $aFileInfo["author"];
-        $this->dLastModified = $aFileInfo["lastmodified"];
-        $this->dCreated = $aFileInfo["created"];
+        $this->sDescription = $aFileInfo['description'];
+        $this->sAuthor = $aFileInfo['author'];
+        $this->dLastModified = $aFileInfo['lastmodified'];
+        $this->dCreated = $aFileInfo['created'];
 
         // Frontendpath to files
         if ($sTypeContent == "templates") {
@@ -102,7 +121,7 @@ class cVersionFile extends cVersion {
         // Create Body Node of Xml File
         $this->setData("name", $sVersionFileName);
         $this->setData("code", $this->sCode);
-        $this->setData("description", $this->sDescripion);
+        $this->setData("description", $this->sDescription);
     }
 
     /**
@@ -119,9 +138,10 @@ class cVersionFile extends cVersion {
     /**
      * This function read an xml file nodes
      *
-     * @param string $sPath Path to file
-     *
-     * @return {array} returns array width nodes
+     * @param string $sPath
+     *         Path to file
+     * @return array
+     *         returns array width nodes
      */
     public function initXmlReader($sPath) {
         $aResult = array();
@@ -140,9 +160,8 @@ class cVersionFile extends cVersion {
     /**
      * This function reads the path of file
      *
-     * @param string $sPath Path to file
-     *
-     * @return string the path of file
+     * @return string
+     *         the path of file
      */
     public function getPathFile() {
         return $this->sPath;
@@ -151,17 +170,17 @@ class cVersionFile extends cVersion {
     /**
      * Function returns javascript which refreshes CONTENIDO frames for file
      * list an subnavigation.
-     * This is neccessary, if filenames where changed, when a history entry is
+     * This is necessary, if filenames where changed, when a history entry is
      * restored
      *
-     * @param int $iIdClient - id of client which contains this file
-     * @param string $sArea - name of CONTENIDO area in which this procedure
-     *            should be done
-     * @param string $sFilename - new filename of file which should be updated
-     *            in other frames
-     * @param object $sess - CONTENIDO session object
-     *
-     * @return string - Javascript for refrehing frames
+     * @param string $sArea
+     *         name of CONTENIDO area in which this procedure should be done
+     * @param string $sFilename
+     *         new filename of file which should be updated in other frames
+     * @param object $sess
+     *         CONTENIDO session object
+     * @return string
+     *         Javascript for refrehing frames
      */
     public function renderReloadScript($sArea, $sFilename, $sess) {
         $urlRightTop = $sess->url("main.php?area=$sArea&frame=3&file=$sFilename&history=true");

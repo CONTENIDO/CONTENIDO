@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for editing modules.
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Olaf Niemann
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -51,7 +50,7 @@ if ((!$readOnly) && $action == "mod_delete") {
     }
 
     // show success message
-    cRegistry::addInfoMessage(i18n("Module was successfully deleted!"));
+    cRegistry::addOkMessage(i18n("Module was successfully deleted!"));
     $page = new cGuiPage('generic_page');
 
     $contenidoModuleHandler->eraseModule();
@@ -104,7 +103,7 @@ if ((!$readOnly) && ($action == "mod_new") && (!$perm->have_perm_area_action_any
 if ((!$readOnly) && $action == "mod_new") {
     $modules = new cApiModuleCollection();
 
-    $alias = cApiStrCleanURLCharacters(i18n("- Unnamed module -"));
+    $alias = cString::cleanURLCharacters(i18n("- Unnamed module -"));
     $contenidoModuleHandler = new cModuleHandler();
     if ($contenidoModuleHandler->modulePathExistsInDirectory($alias)) {
         cRegistry::addErrorMessage(i18n("The given module name already exists. Please enter another module name."));
@@ -128,7 +127,7 @@ if ((!$readOnly) && $action == "mod_new") {
         $page->render();
         die();
     } else {
-        cRegistry::addInfoMessage(i18n("New module created successfuly!"));
+        cRegistry::addOkMessage(i18n("New module created successfuly!"));
     }
 } else {
     $module = new cApiModule($idmod);
@@ -144,7 +143,7 @@ if ((!$readOnly) && $action == "mod_importexport_module") {
                 cRegistry::addErrorMessage(i18n("Could not import module!"));
             } else {
                 // Load the item again (clearing slashes from import)
-                $module->loadByPrimaryKey($module->get($module->primaryKey));
+                $module->loadByPrimaryKey($module->get($module->getPrimaryKeyName()));
                 $contenidoModuleHandler = new cModuleHandler($module->get('idmod'));
             }
         }
@@ -180,7 +179,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
 
     $page = new cGuiPage("mod_edit_form", "", "0");
     $form = new cGuiTableForm("frm_mod_edit");
-    $form->setTableid('mod_edit');
+    $form->setTableID('mod_edit');
     $form->setVar("area", "mod_edit");
     $form->setVar("frame", $frame);
     $form->setVar("idmod", $idmod);
@@ -194,7 +193,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     $name = new cHTMLTextbox("name", conHtmlSpecialChars(stripslashes($module->get("name"))), 60);
     $descr = new cHTMLTextarea("descr", str_replace(array(
         '\r\n'
-    ), "\r\n", conHtmlEntityDecode($module->get("description"))), 100, 5);
+    ), "\r\n", conHtmlentities($module->get("description"))), 100, 5);
 
     // Get input and output code; if specified, prepare row fields
     $sInputData = "";

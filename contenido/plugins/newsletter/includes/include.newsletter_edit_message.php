@@ -4,8 +4,6 @@
  *
  * @package Plugin
  * @subpackage Newsletter
- * @version SVN Revision $Rev:$
- *
  * @author Bjoern Behrens
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -39,7 +37,7 @@ if (isset($idnewsletter)) {
     $oNewsletter->loadByPrimaryKey($idnewsletter);
 }
 
-if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client && $oNewsletter->get("idlang") == $lang) {
+if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $client && $oNewsletter->get("idlang") == $lang) {
     // Check and set values
     if (!is_numeric($_REQUEST["selTemplate"])) {
         $_REQUEST["selTemplate"] = 0;
@@ -88,7 +86,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
         }
 
         $oNewsletter->store();
-        $oPage->displayInfo(i18n("Saved changes successfully!", 'newsletter'));
+        $oPage->displayOk(i18n("Saved changes successfully!", 'newsletter'));
     } elseif ($oNewsletter->get("idart") > 0) {
         // Check, if html message article and template article are still
         // available
@@ -201,7 +199,9 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
         $oForm->add(i18n("HTML Template", 'newsletter'), $oSelTemplate->render() . "&nbsp;" . i18n("Note, that changing the template discards the current html message content", 'newsletter'));
 
         if ($iTplIDArt != 0) {
-            $sFrameSrc = cRegistry::getFrontendUrl() . "front_content.php?changeview=edit&action=con_editart&idart=" . $oNewsletter->get("idart") . "&idcat=" . $oClientLang->getProperty("newsletter", "html_newsletter_idcat") . "&lang=" . $lang . "&contenido=" . $sess->id;
+            $sFrameSrc = "main.php?area=con_editcontent&action=con_editart&changeview=edit&idart=" . $oNewsletter->get("idart") . "&idcat=" . $oClientLang->getProperty("newsletter", "html_newsletter_idcat") . "&lang=" . $lang . "&contenido=" . $sess->id;
+//            $sFrameSrc = "main.php?area=con_editcontent&action=con_editart&changeview=edit&idart=13&idcat=5&lang=1&contenido=" . $sess->id;
+
             $oForm->add(i18n("HTML Message", 'newsletter'), '<iframe width="100%" height="600" src="' . $sFrameSrc . '"></iframe><br>' . $sTagInfoHTML);
         } else {
             // Add a real note, that a template has to be specified

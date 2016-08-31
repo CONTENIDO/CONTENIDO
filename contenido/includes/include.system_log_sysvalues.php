@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the system log display backend page.
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -27,7 +26,7 @@ $logfile = basename($_REQUEST['logfile']);
 // process the actions delete / clear log
 if ($action == 'deletelog' && !empty($logfile)) {
     if (cFileHandler::remove($path . cSecurity::escapeString($logfile))) {
-        $page->displayInfo(sprintf(i18n('Logfile "%s" deleted successfully'), $logfile));
+        $page->displayOk(sprintf(i18n('Logfile "%s" deleted successfully'), $logfile));
     }
     $logfile = "";
 } else if ($action == 'clearlog' && !empty($logfile)) {
@@ -42,8 +41,7 @@ if ($action == 'deletelog' && !empty($logfile)) {
 
 $files = array();
 foreach (new DirectoryIterator($path) as $filename) {
-    $extension = substr($filename, strpos($filename->getBasename(), '.') + 1);
-    if (in_array($extension, $cfg['system_log']['file_extensions'])) {
+    if (in_array($filename, $cfg['system_log']['allowed_filenames'])) {
         $files[] = $path . $filename->getFilename();
     }
 }

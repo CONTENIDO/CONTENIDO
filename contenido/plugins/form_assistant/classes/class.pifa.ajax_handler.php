@@ -4,8 +4,7 @@
  *
  * @package Plugin
  * @subpackage FormAssistant
- * @version SVN Revision $Rev:$
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  * @copyright four for business AG
  * @link http://www.4fb.de
  */
@@ -16,7 +15,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Class for area "form_ajax" handling all Ajax requests for the PIFA backend.
  *
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
 class PifaAjaxHandler {
 
@@ -220,7 +219,8 @@ class PifaAjaxHandler {
             'styling' => Pifa::i18n('STYLING'),
             'cssClass' => Pifa::i18n('CSS_CLASS'),
             'uri' => Pifa::i18n('URI'),
-            'externalOptionsDatasource' => Pifa::i18n('EXTERNAL_OPTIONS_DATASOURCE')
+            'externalOptionsDatasource' => Pifa::i18n('EXTERNAL_OPTIONS_DATASOURCE'),
+            'deleteAll' => Pifa::i18n('DELETE_CSS_CLASSES')
         ));
 
         // hidden form values (requires right to store form field)
@@ -326,7 +326,7 @@ class PifaAjaxHandler {
             $columnName = trim($columnName);
             $columnName = strtolower($columnName);
             // does not seem to work
-            // $columnName = cApiStrReplaceDiacritics($columnName);
+            // $columnName = cString::replaceDiacritics($columnName);
             $columnName = preg_replace('/[^a-z0-9_]/', '_', $columnName);
             $columnName = substr($columnName, 0, 64);
             if ($columnName !== $pifaField->get('column_name')) {
@@ -452,9 +452,9 @@ class PifaAjaxHandler {
         if ($pifaField->showField('css_class') && array_key_exists('css_class', $_POST) && is_array($_POST['css_class'])) {
             $cssClass = implode(',', array_map($string_cast_deep, $_POST['css_class']));
             $cssClass = substr($cssClass, 0, 1023);
-            if ($cssClass !== $pifaField->get('css_class')) {
-                $pifaField->set('css_class', $cssClass);
-            }
+        }
+        if ($cssClass !== $pifaField->get('css_class')) {
+            $pifaField->set('css_class', $cssClass);
         }
 
         if ($pifaField->showField('option_class')) {

@@ -4,8 +4,6 @@
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Unknown
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -25,6 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class NoteCollection extends cApiCommunicationCollection {
 
     /**
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         parent::__construct();
@@ -37,7 +36,17 @@ class NoteCollection extends cApiCommunicationCollection {
      * This function only extends the where statement. See the
      * original function for the parameters.
      *
-     * @see ItemCollection
+     * @see ItemCollection::select()
+     * @param string $where [optional]
+     *         Specifies the where clause.
+     * @param string $group_by [optional]
+     *         Specifies the group by clause.
+     * @param string $order_by [optional]
+     *         Specifies the order by clause.
+     * @param string $limit [optional]
+     *         Specifies the limit by clause.
+     * @return bool
+     *         True on success, otherwise false
      */
     public function select($where = '', $group_by = '', $order_by = '', $limit = '') {
         if ($where == '') {
@@ -52,12 +61,17 @@ class NoteCollection extends cApiCommunicationCollection {
     /**
      * Creates a new note item.
      *
-     * @param string $itemtype Item type (usually the class name)
-     * @param mixed $itemid Item ID (usually the primary key)
-     * @param int $idlang Language-ID
-     * @param string $message Message to store
-     * @param string $category
-     * @return object The new item
+     * @param string $itemtype
+     *         Item type (usually the class name)
+     * @param mixed $itemid
+     *         Item ID (usually the primary key)
+     * @param int $idlang
+     *         Language-ID
+     * @param string $message
+     *         Message to store
+     * @param string $category [optional]
+     * @return object
+     *         The new item
      */
     public function createItem($itemtype, $itemid, $idlang, $message, $category = '') {
         $item = parent::create();
@@ -116,9 +130,23 @@ class NoteView extends cHTMLIFrame {
  * @subpackage GUI
  */
 class NoteList extends cHTMLDiv {
+    /**
+     * @var bool
+     */
     protected $_bDeleteable;
 
     /**
+     * @var string
+     */
+    protected $_sItemType;
+
+    /**
+     * @var string
+     */
+    protected $_sItemId;
+
+    /**
+     * Constructor to create an instance of this class.
      *
      * @param string $sItemType
      * @param string $sItemId
@@ -143,9 +171,11 @@ class NoteList extends cHTMLDiv {
     /**
      * (non-PHPdoc)
      *
-     * @see cHTML::toHTML()
+     * @see cHTML::toHtml()
+     * @return string
+     *     generated markup
      */
-    public function toHTML() {
+    public function toHtml() {
         global $cfg, $lang;
 
         $sItemType = $this->_sItemType;
@@ -185,9 +215,9 @@ class NoteList extends cHTMLDiv {
 
         $this->setContent($i);
 
-        $result = parent::toHTML();
+        $result = parent::toHtml();
 
-        return ('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td>' . $result . '</td></tr></table>');
+        return '<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td>' . $result . '</td></tr></table>';
     }
 }
 
@@ -199,6 +229,13 @@ class NoteList extends cHTMLDiv {
  */
 class NoteListItem extends cHTMLDiv {
 
+    /**
+     * Constructor to create an instance of this class.
+     *
+     * @param string $sItemType
+     * @param string $sItemId
+     * @param int $iDeleteItem
+     */
     public function __construct($sItemType, $sItemId, $iDeleteItem) {
         parent::__construct();
         $this->appendStyleDefinition('padding', '2px');
@@ -220,7 +257,7 @@ class NoteListItem extends cHTMLDiv {
 
     /**
      *
-     * @param string $dark
+     * @param string $dark [optional]
      */
     public function setBackground($dark = false) {
     }
@@ -263,9 +300,10 @@ class NoteListItem extends cHTMLDiv {
     }
 
     /**
-     * (non-PHPdoc)
      *
      * @see cHTML::render()
+     * @return string
+     *         Generated markup
      */
     public function render() {
         global $sess;
@@ -324,13 +362,13 @@ class NoteLink extends cHTMLLink {
 
     /**
      *
-     * @var boolean If true, shows the note history
+     * @var bool If true, shows the note history
      */
     private $_bShowHistory;
 
     /**
      *
-     * @var boolean If true, history items can be deleted
+     * @var bool If true, history items can be deleted
      */
     private $_bDeleteHistoryItems;
 
@@ -340,8 +378,10 @@ class NoteLink extends cHTMLLink {
      * This link is used to show the popup from any position within the system.
      * The link contains the note image.
      *
-     * @param string $sItemType Item type (usually the class name)
-     * @param mixed $sItemID Item ID (usually the primary key)
+     * @param string $sItemType
+     *         Item type (usually the class name)
+     * @param mixed $sItemID
+     *         Item ID (usually the primary key)
      */
     public function NoteLink($sItemType, $sItemID) {
         parent::__construct();
@@ -390,16 +430,16 @@ class NoteLink extends cHTMLLink {
 
     /**
      * @see cHTML::render()
+     * @return string
+     *         Generated markup
      */
-    public function render($return = false) {
+    public function render() {
         global $sess;
 
         $itemtype = $this->_sItemType;
         $itemid = $this->_sItemID;
 
         $this->setEvent('click', 'javascript:window.open(' . "'" . $sess->url("main.php?area=note&frame=1&itemtype=$itemtype&itemid=$itemid") . "', 'todo', 'resizable=yes,scrollbars=yes,height=360,width=550');");
-        return parent::render($return);
+        return parent::render();
     }
 }
-
-?>

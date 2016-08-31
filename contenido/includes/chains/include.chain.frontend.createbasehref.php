@@ -11,8 +11,6 @@
  *
  * @package          Core
  * @subpackage       Chain
- * @version          SVN Revision $Rev:$
- *
  * @author           Andreas Lindner
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +20,11 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ *
+ * @param string $currentBaseHref
+ * @return string
+ */
 function cecCreateBaseHref($currentBaseHref) {
 
     // get props of current client

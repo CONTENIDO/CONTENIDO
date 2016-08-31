@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the abstract uri builder class.
  *
  * @package    Core
  * @subpackage Frontend_URI
- * @version    SVN Revision $Rev:$
- *
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -16,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * URI builder class
+ * URI builder class.
  *
  * @package    Core
  * @subpackage Frontend_URI
@@ -24,15 +23,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 abstract class cUriBuilder {
 
     /**
-     * Holds final value of built URL
+     * Holds final value of built URL.
      *
      * @var string
      */
     protected $sUrl; // needed in this context
 
     /**
-     * Holds URL that is used as base for an absolute path, e.g.
-     * http://contenido.org/
+     * Holds URL that is used as base for an absolute path
+     * E.g. http://contenido.org/
      *
      * @var string
      */
@@ -40,11 +39,12 @@ abstract class cUriBuilder {
 
     /**
      * Implementation of Singleton.
+     *
      * It is meant to be an abstract function but not declared as abstract,
      * because PHP Strict Standards are against abstract static functions.
      *
-     * @throws cBadMethodCallException If child class has not implemented this
-     *         function
+     * @throws cBadMethodCallException
+     *         if child class has not implemented this function
      */
 
     public static function getInstance() {
@@ -52,16 +52,18 @@ abstract class cUriBuilder {
     }
 
     /**
-     * Set http base path, e.g.
-     * http://contenido.org/
+     * Set http base path.
+     * E.g. http://contenido.org/
+     *
+     * @param string $sBasePath
      */
     public function setHttpBasePath($sBasePath) {
         $this->sHttpBasePath = (string) $sBasePath;
     }
 
     /**
-     * Return http base path, e.g.
-     * http://contenido.org/
+     * Return http base path.
+     * E.g. http://contenido.org/
      *
      * @return string
      */
@@ -71,18 +73,18 @@ abstract class cUriBuilder {
 
     /**
      * Builds a URL in index-a-1.html style.
-     * Index keys of $aParams will be used as "a", corresponding values as "1"
-     * in this sample.
+     *
+     * Index keys of $aParams will be used as "a", corresponding values
+     * as "1" in this sample.
      *
      * @param array $aParams
-     * @param bool $bUseAbsolutePath
-     * @param string $sSeparator
+     * @param bool $bUseAbsolutePath [optional]
      * @throws cInvalidArgumentException
      */
     abstract public function buildUrl(array $aParams, $bUseAbsolutePath = false);
 
     /**
-     * Return built URL
+     * Return built URL.
      *
      * @return string
      */

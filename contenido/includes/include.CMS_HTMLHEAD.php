@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the editor page for content type CMS_HTMLHEAD.
  *
  * @package          Core
  * @subpackage       Backend_ContentType
- * @version          SVN Revision $Rev:$
- *
  * @author           Jan Lengowski
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -29,7 +28,7 @@ if (isset($area) && $area == 'con_content_list') {
     <input type="hidden" name="client" value="' . $client . '">';
 } else {
     $tmp_area = 'con_editcontent';
-    $path1 = $backendUrl . "external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
+    $path1 = $backendUrl . "external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client&lang=$lang";
     $path2 = $backendUrl . "external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client&lang=$lang";
     $inputHTML = "";
 }
@@ -90,12 +89,16 @@ ob_start();
             <div class="cms_edit_row">
 
 <?php
-// either load default editor or a user selected one
-if (false === ($editor = getEffectiveSetting('wysiwyg', 'editor', false))) {
-    include($cfg['path'][$cfg['wysiwyg']['editor'] . '_editor']);
-} else {
-    include($cfg['path'][$editor . '_editor']);
+// Include wysiwyg editor class
+$wysiwygeditor = cWYSIWYGEditor::getCurrentWysiwygEditorName();
+
+// tinymce 3 not autoloaded, tinymce 4 and all custom editor classes must be
+if ('tinymce3' === $wysiwygeditor) {
+    include($cfg['path'][$wysiwygeditor . '_editorclass']);
 }
+
+// load editor
+include($cfg['path'][$wysiwygeditor . '_editor']);
 ?>
 
             </div>

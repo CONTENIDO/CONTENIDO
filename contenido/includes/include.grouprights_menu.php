@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the menu frame backend page for group management.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Timo Hummel
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -105,7 +104,7 @@ while ($db->nextRecord()) {
 
     if ($allow == true) {
         $groupid = $db->f("group_id");
-        $groupname = $db->f("groupname");
+        $groupname = conHtmlSpecialChars($db->f("groupname"));
 
         $groupname = substr($groupname, 4);
 

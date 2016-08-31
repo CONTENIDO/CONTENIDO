@@ -5,9 +5,8 @@
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
- * @author Olaf Niemann, Jan Lengowski
+ * @author Olaf Niemann
+ * @author Jan Lengowski
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
@@ -38,6 +37,10 @@ require_once(cRegistry::getBackendPath() . $cfg['path']['includes'] . 'functions
 require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 
 $sess->register('belang');
+
+//test
+$sess->register('selectedArticleId');
+//test
 
 // create global CONTENIDO class instances
 $db = cRegistry::getDb();

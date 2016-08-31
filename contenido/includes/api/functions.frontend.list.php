@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the frontend list class.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Timo Hummel
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -13,79 +12,86 @@
  * @link             http://www.contenido.org
  */
 
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Class FrontendList
- * Class for scrollable frontend lists
- *
- * @package          Core
- * @subpackage       Backend
+ * Class FrontendList for scrollable frontend lists.
  */
 class FrontendList {
 
     /**
-     * Wrap for a single item
+     * Wrap for table start.
      *
      * @var string
      */
-    var $itemwrap;
+    protected $_startwrap;
 
     /**
-     * Wrap for table start
+     * Wrap for table end.
      *
      * @var string
      */
-    var $startwrap;
+    protected $_endwrap;
 
     /**
-     * Wrap for table end
+     * Wrap for a single item.
      *
      * @var string
      */
-    var $endwrap;
+    protected $_itemwrap;
 
     /**
-     * Data container
+     * Data container.
      *
      * @var array
      */
-    var $data = Array();
+    protected $_data = array();
 
     /**
-     * Number of records displayed per page
+     * Number of records displayed per page.
      *
-     * @var string
+     * @var int
      */
-    var $resultsPerPage;
+    protected $_resultsPerPage = 0;
 
     /**
-     * Start page
+     * Start page.
      *
-     * @var string
+     * @var int
      */
-    var $listStart;
+    protected $_listStart = 1;
 
     /**
-     * Creates a new FrontendList object.
+     * Constructor to create an instance of this class.
      *
-     * The placeholder for item wraps are the same as for
-     * sprintf. See the documentation for sprintf.
+     * The placeholder for item wraps are the same as for sprintf.
+     * See the documentation for sprintf.
      *
      * Caution: Make sure that percentage signs are written as %%.
      *
-     * @param $startwrap Wrap for the list start
-     * @param $endwrap Wrap for the list end
-     * @param $itemwrap Wrap for a single item
+     * @param string $startwrap
+     *         Wrap for the list start
+     * @param string $endwrap
+     *         Wrap for the list end
+     * @param string $itemwrap
+     *         Wrap for a single item
      */
-    function FrontendList($startwrap, $endwrap, $itemwrap) {
-        $this->resultsPerPage = 0;
-        $this->listStart = 1;
+    public function __construct($startwrap, $endwrap, $itemwrap) {
+        $this->_startwrap = $startwrap;
+        $this->_endwrap = $endwrap;
+        $this->_itemwrap = $itemwrap;
+    }
 
-        $this->itemwrap = $itemwrap;
-        $this->startwrap = $startwrap;
-        $this->endwrap = $endwrap;
+    /**
+     * Old FrontendList constructor.
+     * @param $startwrap
+     * @param $endwrap
+     * @param $itemwrap
+     * @deprecated [2016-04-06] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     */
+    public function FrontendList($startwrap, $endwrap, $itemwrap) {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
+        return $this->__construct($startwrap, $endwrap, $itemwrap);
     }
 
     /**
@@ -99,113 +105,127 @@ class FrontendList {
      * Make sure that the amount of parameters stays the same for all
      * setData calls in a single object.
      *
-     * @param $index int Numeric index
+     * @param int $index
+     *         Numeric index
      * @param ... Additional parameters (data)
+     * @SuppressWarnings docBlocks
      */
-    function setData($index) {
+    public function setData($index) {
         $numargs = func_num_args();
 
         for ($i = 1; $i < $numargs; $i++) {
-            $this->data[$index][$i] = func_get_arg($i);
+            $this->_data[$index][$i] = func_get_arg($i);
         }
     }
 
     /**
      * Sets the number of records per page.
      *
-     * @param $numresults int Amount of records per page
+     * @param int $resultsPerPage
+     *         Amount of records per page
      */
-    function setResultsPerPage($numresults) {
-        $this->resultsPerPage = $numresults;
+    public function setResultsPerPage($resultsPerPage) {
+        $this->_resultsPerPage = $resultsPerPage;
     }
 
     /**
      * Sets the starting page number.
      *
-     * @param $startpage int Page number on which the list display starts
+     * @param int $listStart
+     *         Page number on which the list display starts
      */
-    function setListStart($startpage) {
-        $this->listStart = $startpage;
+    public function setListStart($listStart) {
+        $this->_listStart = $listStart;
     }
 
     /**
      * Returns the current page.
      *
-     * @return int Current page number
+     * @return int
+     *         Current page number
      */
-    function getCurrentPage() {
-        if ($this->resultsPerPage == 0) {
+    public function getCurrentPage() {
+        if ($this->_resultsPerPage == 0) {
             return 1;
         }
 
-        return ($this->listStart);
+        return $this->_listStart;
     }
 
     /**
      * Returns the amount of pages.
      *
-     * @return int Amount of pages
+     * @return int
+     *         Amount of pages
      */
-    function getNumPages() {
-        return (ceil(count($this->data) / $this->resultsPerPage));
+    public function getNumPages() {
+        return ceil(count($this->_data) / $this->_resultsPerPage);
     }
 
     /**
      * Sorts the list by a given field and a given order.
      *
-     * @param $field Field index
-     * @param $order Sort order (see php's sort documentation)
+     * @param string $field
+     *         name of field to sort for
+     * @param int $order
+     *         Sort order (see php's sort documentation)
+     *         one of SORT_ASC, SORT_DESC, SORT_REGULAR, SORT_NUMERIC, SORT_STRING
      */
-    function sort($field, $order) {
-        $this->data = cArray::csort($this->data, "$field", $order);
+    public function sort($field, $order) {
+        $this->_data = cArray::csort($this->_data, "$field", $order);
     }
 
     /**
      * Field converting facility.
      * Needs to be overridden in the child class to work properbly.
      *
-     * @param $field Field index
-     * @param $value Field value
+     * @param int $field
+     *         Field index
+     * @param mixed $value
+     *         Field value
+     * @return mixed
      */
-    function convert($field, $value) {
+    protected function convert($field, $value) {
         return $value;
     }
 
     /**
      * Outputs or optionally returns
      *
-     * @param $return If true, returns the list
+     * @param bool $return
+     *         if true, returns the list
+     * @return string
      */
-    function output($return = false) {
-        $output = $this->startwrap;
+    public function output($return = false) {
+        $output = $this->_startwrap;
 
         $currentpage = $this->getCurrentPage();
 
-        $itemstart = (($currentpage - 1) * $this->resultsPerPage) + 1;
+        $itemstart = (($currentpage - 1) * $this->_resultsPerPage) + 1;
 
-        if ($this->resultsPerPage == 0) {
-            $itemend = count($this->data) - ($itemstart - 1);
+        if ($this->_resultsPerPage == 0) {
+            $itemend = count($this->_data) - ($itemstart - 1);
         } else {
-            $itemend = $currentpage * $this->resultsPerPage;
+            $itemend = $currentpage * $this->_resultsPerPage;
         }
 
-        if ($itemend > count($this->data)) {
-            $itemend = count($this->data);
+        if ($itemend > count($this->_data)) {
+            $itemend = count($this->_data);
         }
 
         for ($i = $itemstart; $i < $itemend + 1; $i++) {
-            if (is_array($this->data[$i - 1])) {
+            if (is_array($this->_data[$i - 1])) {
                 $items = "";
-                foreach ($this->data[$i - 1] as $key => $value) {
+                foreach ($this->_data[$i - 1] as $key => $value) {
                     $items .= ", '" . addslashes($this->convert($key, $value)) . "'";
                 }
 
-                $execute = '$output .= sprintf($this->itemwrap ' . $items . ');';
+                $execute = '$output .= sprintf($this->_itemwrap ' . $items . ');';
                 eval($execute);
             }
         }
 
-        $output .= $this->endwrap;
+        $output .= $this->_endwrap;
 
         $output = stripslashes($output);
 

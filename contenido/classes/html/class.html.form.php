@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the cHTMLForm class.
  *
  * @package Core
  * @subpackage GUI_HTML
- * @version SVN Revision $Rev:$
  *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
@@ -22,21 +22,39 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GUI_HTML
  */
 class cHTMLForm extends cHTMLContentElement {
-
+    /**
+     * @var string
+     */
     protected $_name;
 
+    /**
+     * @var string
+     */
     protected $_action;
 
+    /**
+     * @var string
+     */
     protected $_method;
 
     /**
+     * @var array
+     */
+    protected $_vars;
+
+    /**
+     * Constructor to create an instance of this class.
+     *
      * Creates an HTML form element.
      *
-     * @param string $name the name of the form
-     * @param string $action the action which should be performed when this form
-     *        is submitted
-     * @param string $method the method to use - post or get
-     * @param string $class the class of this element
+     * @param string $name [optional]
+     *         the name of the form
+     * @param string $action [optional]
+     *         the action which should be performed when this form is submitted
+     * @param string $method [optional]
+     *         the method to use - post or get
+     * @param string $class [optional]
+     *         the class of this element
      */
     public function __construct($name = '', $action = 'main.php', $method = 'post', $class = '') {
         parent::__construct('', $class);
@@ -51,7 +69,8 @@ class cHTMLForm extends cHTMLContentElement {
      *
      * @param string $var
      * @param string $value
-     * @return cHTMLForm $this
+     * @return cHTMLForm
+     *         $this for chaining
      */
     public function setVar($var, $value) {
         $this->_vars[$var] = $value;
@@ -62,9 +81,10 @@ class cHTMLForm extends cHTMLContentElement {
     /**
      * Renders the form element
      *
-     * @return string Rendered HTML
+     * @return string
+     *         Rendered HTML
      */
-    public function toHTML() {
+    public function toHtml() {
         $out = '';
         if (is_array($this->_vars)) {
             foreach ($this->_vars as $var => $value) {

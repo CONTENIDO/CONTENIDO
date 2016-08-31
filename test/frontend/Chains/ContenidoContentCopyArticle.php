@@ -1,67 +1,87 @@
 <?php
+
 /**
  * This file contains tests for Contenido chain Contenido.Content.CopyArticle
  *
- * @package          Testing
- * @subpackage       Test_Chains
- * @version          SVN Revision $Rev:$
- *
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package Testing
+ * @subpackage Test_Chains
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 /**
  * 1. chain function
+ *
+ * @param int $idart
  */
-function chain_ContenidoContentCopyArticle_Test($idart)
-{
+function chain_ContenidoContentCopyArticle_Test($idart) {
     ContenidoContentCopyArticleTest::$invokeCounter++;
 }
 
 /**
  * 2. chain function
+ *
+ * @param int $idart
  */
-function chain_ContenidoContentCopyArticle_Test2($idart)
-{
+function chain_ContenidoContentCopyArticle_Test2($idart) {
     ContenidoContentCopyArticleTest::$invokeCounter++;
 }
 
-
 /**
  * Class to test Contenido chain Contenido.Content.CopyArticle.
- * @package          Testing
- * @subpackage       Test_Chains
+ *
+ * @package Testing
+ * @subpackage Test_Chains
  */
-class ContenidoContentCopyArticleTest extends PHPUnit_Framework_TestCase
-{
+class ContenidoContentCopyArticleTest extends PHPUnit_Framework_TestCase {
+
+    /**
+     *
+     * @var string
+     */
     private $_chain = 'Contenido.Content.CopyArticle';
+
+    /**
+     *
+     * @var int
+     */
     private $_srcIdart = 123;
+
+    /**
+     *
+     * @var int
+     */
     private $_dstIdart = 234;
 
+    /**
+     *
+     * @var int
+     */
     public static $invokeCounter = 0;
 
-
-    protected function setUp()
-    {
+    /**
+     *
+     */
+    protected function setUp() {
         self::$invokeCounter = 0;
     }
 
-	/**
-	* @deprecated 2014-08-07 - This method is deprecated and is not needed any longer
-	 */
+    /**
+     *
+     * @deprecated 2014-08-07
+     *         This method is deprecated and is not needed any longer
+     */
     public function tearDown() {
         cDeprecated('This method is deprecated and is not needed any longer');
     }
 
-
     /**
      * Test Contenido.Content.CopyArticle chain
      */
-    public function testNoChain()
-    {
+    public function testNoChain() {
         // get cec registry instance
         $cecReg = cApiCecRegistry::getInstance();
 
@@ -73,15 +93,21 @@ class ContenidoContentCopyArticleTest extends PHPUnit_Framework_TestCase
             $chainEntry->execute($srcIdart, $dstIdart);
         }
 
-        $this->assertEquals(array(0, $this->_srcIdart, $this->_dstIdart), array(self::$invokeCounter, $srcIdart, $dstIdart));
+        $this->assertEquals(array(
+            0,
+            $this->_srcIdart,
+            $this->_dstIdart
+        ), array(
+            self::$invokeCounter,
+            $srcIdart,
+            $dstIdart
+        ));
     }
-
 
     /**
      * Test Contenido.Content.CopyArticle chain
      */
-    public function testOneChain()
-    {
+    public function testOneChain() {
         // get cec registry instance
         $cecReg = cApiCecRegistry::getInstance();
 
@@ -99,15 +125,21 @@ class ContenidoContentCopyArticleTest extends PHPUnit_Framework_TestCase
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoContentCopyArticle_Test');
 
-        $this->assertEquals(array(1, $this->_srcIdart, $this->_dstIdart), array(self::$invokeCounter, $srcIdart, $dstIdart));
+        $this->assertEquals(array(
+            1,
+            $this->_srcIdart,
+            $this->_dstIdart
+        ), array(
+            self::$invokeCounter,
+            $srcIdart,
+            $dstIdart
+        ));
     }
-
 
     /**
      * Test Contenido.Content.CopyArticle chain
      */
-    public function testTwoChains()
-    {
+    public function testTwoChains() {
         // get cec registry instance
         $cecReg = cApiCecRegistry::getInstance();
 
@@ -127,7 +159,15 @@ class ContenidoContentCopyArticleTest extends PHPUnit_Framework_TestCase
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoContentCopyArticle_Test');
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoContentCopyArticle_Test2');
 
-        $this->assertEquals(array(2, $this->_srcIdart, $this->_dstIdart), array(self::$invokeCounter, $srcIdart, $dstIdart));
+        $this->assertEquals(array(
+            2,
+            $this->_srcIdart,
+            $this->_dstIdart
+        ), array(
+            self::$invokeCounter,
+            $srcIdart,
+            $dstIdart
+        ));
     }
 
 }

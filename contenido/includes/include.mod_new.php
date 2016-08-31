@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for creating modules.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Olaf Niemann
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -24,7 +23,7 @@ $tpl->reset();
 
 // New module link
 $str = '';
-if ((int) $client > 0) {
+if (0 < (int) $client && 0 < (int) $lang) {
     if ($perm->have_perm_area_action("mod_edit", "mod_new")) {
         $str = '<div class="leftTopAction"><a class="addfunction" target="right_bottom" href="' . $sess->url("main.php?area=mod_edit&frame=4&action=mod_new") . '">' . i18n("New module") . '</a> </div>';
     } else {
@@ -36,10 +35,17 @@ if ((int) $client > 0) {
         $strSync = '<div class="leftTopAction leftTopActionNext"><a class="syncronizefunction_disabled" href="#">' . i18n("No permission to synchronize modules") . '</a> </div>';
     }
 } else {
-    $str = '<div class="leftTopAction">' . i18n('No client selected') . '</div>';
+    // either no client or no language selected
+    if (0 > (int) $lang) {
+        // no client selected
+        $str = '<div class="leftTopAction">' . i18n('No client selected') . '</div>';
+    } else {
+        // no language selected
+        $str = '<div class="leftTopAction">' . i18n('No language selected') . '</div>';
+    }
 }
 
-// Only show other options, if there is a active client
+// Only show other options, if there is an active client
 if ((int) $client > 0) {
     // List Options
     $aSortByOptions = array("name" => i18n("Name"), "type" => i18n("Type"));

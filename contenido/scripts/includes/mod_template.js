@@ -1,7 +1,6 @@
 /**
  * CONTENIDO mod_template.js JavaScript module.
  *
- * @version    SVN Revision $Rev: 5937 $
  * @requires   jQuery, Con
  * @author     ???
  * @copyright  four for business AG <www.4fb.de>
@@ -16,7 +15,7 @@
     $(function() {
         $(".fileChooser").change(function() {
             var link = document.getElementById("deleteLink").href;
-            var newLink = link.substr(0, link.lastIndexOf("=") + 1) + $(".fileChooser option:selected").val();
+            var newLink = link.substr(0, link.lastIndexOf("=") + 1) + encodeURIComponent($(".fileChooser option:selected").val());
             document.getElementById("deleteLink").href = newLink;
         });
     });

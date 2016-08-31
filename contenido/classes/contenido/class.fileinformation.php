@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the file information collection and item class.
  *
  * @package Core
  * @subpackage GenericDB_Model
- * @version SVN Revision $Rev:$
- *
  * @author Konstantinos Katikakis
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -26,7 +25,7 @@ cInclude('includes', 'functions.file.php');
 class cApiFileInformationCollection extends ItemCollection {
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -36,11 +35,16 @@ class cApiFileInformationCollection extends ItemCollection {
 
     /**
      * Creates a new entry in the database
-     * @TODO  Pass additional fields as optional parameters
-     * @param string $typeContent type of the entry
-     * @param string $filename name of the file
-     * @param string $description an optional description
-     * @return cApiFileInformation the new item
+     *
+     * @todo  Pass additional fields as optional parameters
+     * @param string $typeContent
+     *         type of the entry
+     * @param string $filename
+     *         name of the file
+     * @param string $description [optional]
+     *         an optional description
+     * @return cApiFileInformation
+     *         the new item
      */
     public function create($typeContent, $filename, $description = '') {
         $client = cRegistry::getClientId();
@@ -72,13 +76,20 @@ class cApiFileInformationCollection extends ItemCollection {
 
     /**
      * updates a new entry in the database
-     * @TODO  Pass additional fields as optional parameters
-     * @param string $filename name of the file
-     * @param string $typeContent type of the entry
-     * @param string $description an optional description
-     * @param string $newFilename an optional new filename
-     * @param string $author an optional author
-     * @return cApiFileInformation the updated item
+     *
+     * @todo  Pass additional fields as optional parameters
+     * @param string $filename
+     *         name of the file
+     * @param string $typeContent
+     *         type of the entry
+     * @param string $description [optional]
+     *         an optional description
+     * @param string $newFilename [optional]
+     *         an optional new filename
+     * @param string $author [optional]
+     *         an optional author
+     * @return cApiFileInformation
+     *         the updated item
      */
     public function updateFile($filename, $typeContent, $description = '', $newFilename = '', $author = '') {
         $auth = cRegistry::getAuth();
@@ -112,7 +123,8 @@ class cApiFileInformationCollection extends ItemCollection {
      * value.
      * Deletes also cached e entries and any existing properties.
      *
-     * @param array $values with parameters
+     * @param array $values
+     *         with parameters
      * @return bool
      */
     public function removeFileInformation(array $values) {
@@ -125,8 +137,10 @@ class cApiFileInformationCollection extends ItemCollection {
     /**
      * return an array with fileinformations from the database
      *
-     * @param string $filename name of the file
-     * @param string $type type of the entry
+     * @param string $filename
+     *         name of the file
+     * @param string $type
+     *         type of the entry
      * @return array
      */
     public function getFileInformation($filename, $type) {
@@ -159,8 +173,9 @@ class cApiFileInformationCollection extends ItemCollection {
 class cApiFileInformation extends Item {
 
     /**
+     * Constructor to create an instance of this class.
      *
-     * @param string $id
+     * @param string $id [optional]
      */
     public function __construct($id = false) {
         global $cfg;

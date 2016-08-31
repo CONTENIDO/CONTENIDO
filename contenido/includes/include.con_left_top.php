@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the left top frame backend page for content area.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Jan Lengowski
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -249,7 +248,7 @@ $db->query($sql);
 $tpl->set('s', 'ID', 'oTplSel');
 $tpl->set('s', 'NAME', 'oTplSel');
 $tpl->set('s', 'CLASS', 'text_medium');
-$tpl->set('s', 'OPTIONS', '');
+$tpl->set('s', 'OPTIONS', 'style="width:85%;"');
 $tpl->set('s', 'BELANG', $belang);
 
 $tpl->set('d', 'VALUE', '0');
@@ -268,9 +267,6 @@ $editCategory = new cGuiFoldingRow("3498dbbb-ed4a-4618-8e49-3a3635396e22", i18n(
 while ($db->nextRecord()) {
     $tplname = $db->f('name');
 
-    if (strlen($tplname) > 18) {
-        $tplname = substr($tplname, 0, 15) . "...";
-    }
     $tpl->set('d', 'VALUE', $db->f('idtpl'));
     $tpl->set('d', 'CAPTION', $tplname);
     $tpl->set('d', 'SELECTED', '');
@@ -372,6 +368,13 @@ $tpl->set('s', 'HELPSCRIPT', getJsHelpContext("con"));
 $tpl->set('s', 'DISPLAY', class_exists('Workflows')?'' : 'display:none;');
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_left_top']);
 
+/**
+ *
+ * @param string $filename
+ * @param array $aData
+ * @param array $aInformation
+ * @return array
+ */
 function xmlFileToArray($filename, $aData = array(), $aInformation) {
     $_dom = simplexml_load_file($filename);
     for ($i = 0, $size = count($_dom); $i < $size; $i++) {

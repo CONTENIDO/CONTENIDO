@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the menu frame backend page for user management.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Timo Hummel
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -114,9 +113,9 @@ while ($cApiUser = $cApiUserCollection->next()) {
             $iMenu++;
 
             if (($sToday < $cApiUser->get("valid_from") && ($cApiUser->get("valid_from") != '0000-00-00 00:00:00' && $cApiUser->get("valid_from") != '')) || ($sToday > $cApiUser->get("valid_to") && ($cApiUser->get("valid_to") != '0000-00-00 00:00:00') && $cApiUser->get("valid_from") != '')) {
-                $mlist->setTitle($iMenu, '<span class="inactiveUser">' . $cApiUser->get("username") . "<br>" . $cApiUser->get("realname") . '</span>');
+                $mlist->setTitle($iMenu, '<span class="inactiveUser">' . conHtmlSpecialChars($cApiUser->get("username")) . "<br>" . conHtmlSpecialChars($cApiUser->get("realname")) . '</span>');
             } else {
-                $mlist->setTitle($iMenu, $cApiUser->get("username") . "<br>" . $cApiUser->get("realname"));
+                $mlist->setTitle($iMenu, conHtmlSpecialChars($cApiUser->get("username")) . "<br>" . conHtmlSpecialChars($cApiUser->get("realname")));
             }
 
             $mlist->setLink($iMenu, $link);

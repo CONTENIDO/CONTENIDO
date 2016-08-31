@@ -15,8 +15,6 @@
  *
  * @package          Core
  * @subpackage       Chain
- * @version          SVN Revision $Rev$
- *
  * @author           Murat Purc <murat@purc.de>
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -30,8 +28,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Does some replacements in the given template.
  * Replaces some CONTENIDO specific placeholders against their values.
  *
- * @param  string  $template  Template string to preprocess
- * @param cTemplate $templateObj  The current template instance
+ * @param string $template
+ *         Template string to preprocess
+ * @param cTemplate $templateObj
+ *         The current template instance
  * @return string
  */
 function cecParseTemplate($template, cTemplate $templateObj) {
@@ -48,9 +48,9 @@ function cecParseTemplate($template, cTemplate $templateObj) {
     $sessid = (string) cRegistry::getBackendSessionId();
     $backendPath = cRegistry::getBackendUrl();
     $backendLang = cRegistry::getBackendLanguage();
-# Fixme: Creates an error on backend login form, since we have no language there, see main.loginform.php
-#        $oLanguage = cRegistry::getLanguage();
-#        $encoding = $oLanguage->get("encoding");
+    // Fixme: Creates an error on backend login form, since we have no language there, see main.loginform.php
+    // $oLanguage = cRegistry::getLanguage();
+    // $encoding = $oLanguage->get("encoding");
     $languageid = cRegistry::getLanguageId();
     if ($languageid) {
         $oLanguage = cRegistry::getLanguage();

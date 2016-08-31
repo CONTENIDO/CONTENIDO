@@ -1,12 +1,12 @@
 <?php
+
 /**
  * This file contains the backend page for style history.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
- * @author           Bilal Arslan, Timo Trautmann
+ * @author           Bilal Arslan
+ * @author           Timo Trautmann
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
  * @link             http://www.4fb.de
@@ -75,7 +75,7 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage')) {
 
         // Edit File, there is a need for renaming file
         if ($sFileName != $sStyleName) {
-            if (getFileType($sStyleName) != 'css' and strlen(stripslashes(trim($sStyleName))) > 0) {
+            if (cFileHandler::getExtension($sStyleName) != 'css' and strlen(stripslashes(trim($sStyleName))) > 0) {
                 $sStyleName = stripslashes($sStyleName) . '.css';
             }
 
@@ -175,7 +175,7 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage')) {
         }
     } else {
         if ($bDeleteFile) {
-            $oPage->displayWarning(i18n('Version history was cleared'));
+            $oPage->displayOk(i18n('Version history was cleared'));
         } else {
             $oPage->displayWarning(i18n('No style history available'));
         }

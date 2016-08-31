@@ -4,8 +4,6 @@
  *
  * @package    Setup
  * @subpackage Setup
- * @version    SVN Revision $Rev:$
- *
  * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -31,7 +29,6 @@ function checkExistingPlugin($db, $sPluginname) {
 
     $sPluginname = (string) $sPluginname;
     $sTable = $cfg['tab']['nav_sub'];
-    $sSql = '';
 
     switch ($sPluginname) {
         case 'plugin_cronjob_overview':
@@ -90,7 +87,8 @@ function updateSystemProperties($db, $table) {
         array('type' => 'backend', 'name' => 'backend_label', 'value' => ''),
         array('type' => 'generator', 'name' => 'xhtml', 'value' => 'true'),
         array('type' => 'generator', 'name' => 'basehref', 'value' => 'true'),
-    	array('type' => 'debug', 'name' => 'module_translation_message', 'value' => 'true')
+    	array('type' => 'debug', 'name' => 'module_translation_message', 'value' => 'true'),
+    	array('type' => 'debug', 'name' => 'debug_for_plugins', 'value' => 'true')
     );
 
     foreach ($aStandardvalues as $aData) {
@@ -152,7 +150,16 @@ function getContenidoVersion($db, $table) {
     }
 }
 
-// @FIXME: Comment me plz!
+/**
+ * Updates the system administrators password. 
+ * 
+ * @param $db
+ * @param $table
+ * @param $password
+ * @param $mail
+ *
+ * @return bool
+ */
 function updateSysadminPassword($db, $table, $password, $mail) {
     $sql = "SELECT password FROM %s WHERE username='sysadmin'";
     $db->query(sprintf($sql, $db->escape($table)));
@@ -167,7 +174,13 @@ function updateSysadminPassword($db, $table, $password, $mail) {
     }
 }
 
-// @FIXME: Comment me plz!
+/**
+ * Reads and returns the total list of system clients.
+ * @param $db
+ * @param $table
+ *
+ * @return array
+ */
 function listClients($db, $table) {
     global $cfgClient;
 
@@ -186,7 +199,14 @@ function listClients($db, $table) {
     return $clients;
 }
 
-// @FIXME: Comment me plz!
+/**
+ * Updates the path information of a client and refreshs the configuration file.
+ * @param $db
+ * @param $table
+ * @param $idclient
+ * @param $frontendpath
+ * @param $htmlpath
+ */
 function updateClientPath($db, $table, $idclient, $frontendpath, $htmlpath) {
     global $cfg, $cfgClient;
     checkAndInclude($cfg['path']['contenido'] . 'includes/functions.general.php');
@@ -194,7 +214,12 @@ function updateClientPath($db, $table, $idclient, $frontendpath, $htmlpath) {
     updateClientCache($idclient, $htmlpath, $frontendpath);
 }
 
-// @FIXME: Comment me plz!
+/**
+ * Removes the trailing slash of a string.
+ * @param $sInput
+ *
+ * @return string
+ */
 function stripLastSlash($sInput) {
     if (substr($sInput, strlen($sInput) - 1, 1) == "/") {
         $sInput = substr($sInput, 0, strlen($sInput) - 1);
@@ -203,7 +228,12 @@ function stripLastSlash($sInput) {
     return $sInput;
 }
 
-// @FIXME: Comment me plz!
+/**
+ * Returns the paths to the system directory (filesystem and web).
+ * @param bool $bOriginalPath
+ *
+ * @return array
+ */
 function getSystemDirectories($bOriginalPath = false) {
     $root_path = stripLastSlash(CON_FRONTEND_PATH);
 
@@ -245,7 +275,13 @@ function getSystemDirectories($bOriginalPath = false) {
     return array($root_path, $root_http_path);
 }
 
-// @FIXME: Comment me plz!
+/**
+ * Searchs for a string in a given text and returns the position of it.
+ * @param $string1
+ * @param $string2
+ *
+ * @return int
+ */
 function findSimilarText($string1, $string2) {
     for ($i = 0; $i < strlen($string1); $i++) {
         if (substr($string1, 0, $i) != substr($string2, 0, $i)) {

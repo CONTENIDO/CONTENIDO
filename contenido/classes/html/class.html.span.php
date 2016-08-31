@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the cHTMLSpan class.
  *
  * @package Core
  * @subpackage GUI_HTML
- * @version SVN Revision $Rev:$
  *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
@@ -24,10 +24,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHTMLSpan extends cHTMLContentElement {
 
     /**
-     * Constructor.
-     * Creates an HTML Span element.
+     * Constructor to create an instance of this class.
      *
-     * @param mixed $content String or object with the contents
+     * @param mixed $content [optional]
+     *         String or object with the contents
+     * @param string $class [optional]
+     *         the class of this element
      */
     public function __construct($content = '', $class = "") {
         parent::__construct();
@@ -36,4 +38,5 @@ class cHTMLSpan extends cHTMLContentElement {
         $this->_tag = 'span';
         $this->setClass($class);
     }
+
 }

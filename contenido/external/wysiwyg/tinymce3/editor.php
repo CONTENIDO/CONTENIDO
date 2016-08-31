@@ -4,9 +4,7 @@
  *
  * @package    Core
  * @subpackage Backend
- * @version    SVN Revision $Rev:$
- *
- * @author     Martin Horwath, horwath@dayside.net
+ * @author     Martin Horwath <horwath@dayside.net>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -61,7 +59,7 @@ switch ($type) {
 }
 
 if ($editor_height !== false) {
-    $cTinyMCEEditor->_setSetting('height', $editor_height, true);
+    $cTinyMCEEditor->setSetting(null, 'height', $editor_height, true);
 }
 
 /*
@@ -75,8 +73,8 @@ TODO:
 $currentuser = new cApiUser($auth->auth['uid']);
 
 if ($currentuser->getField('wysi') == 1) {
-    echo $cTinyMCEEditor->_getScripts();
-    echo $cTinyMCEEditor->_getEditor();
+    echo $cTinyMCEEditor->getScripts();
+    echo $cTinyMCEEditor->getEditor();
 } else {
     $oTextarea = new cHTMLTextarea($editor_name, $editor_content);
     $oTextarea->setId($editor_name);

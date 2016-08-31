@@ -1,12 +1,12 @@
 <?php
+
 /**
  * This file contains the backend page for module history.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
- * @author           Bilal Arslan, Timo Trautmann
+ * @author           Bilal Arslan
+ * @author           Timo Trautmann
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
  * @link             http://www.4fb.de
@@ -81,7 +81,7 @@ $sSelectBox = $oVersion->buildSelectBox("mod_history", i18n("Module History"), i
 
 // Generate Form
 $oForm = new cGuiTableForm("mod_display");
-$oForm->setTableid('mod_history');
+$oForm->setTableID('mod_history');
 $oForm->addHeader(i18n("Edit module"));
 $oForm->setVar("area", "mod_history");
 $oForm->setVar("frame", $frame);
@@ -138,7 +138,7 @@ if ($sSelectBox != "") {
     $oPage->set("s", "FORM", $sSelectBox . $oForm->render());
 } else {
     if ($bDeleteFile) {
-        $oPage->displayWarning(i18n("Version history was cleared"));
+        $oPage->displayOk(i18n("Version history was cleared"));
     } else {
         $oPage->displayWarning(i18n("No module history available"));
     }

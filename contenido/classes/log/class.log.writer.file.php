@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the log file writer class.
  *
  * @package    Core
  * @subpackage Log
- * @version    SVN Revision $Rev:$
- *
  * @author     Dominik Ziegler
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,14 +21,19 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage Log
  */
 class cLogWriterFile extends cLogWriter {
+
     /**
-     * @var    resource    Destination handle
+     * Destination handle.
+     *
+     * @var resource
      */
     protected $_handle = NULL;
 
     /**
-     * Constructor of the writer instance.
-     * @param    array    $options    Array with options for the writer instance (optional)
+     * Constructor to create an instance of this class.
+     *
+     * @param array $options [optional]
+     *         Array with options for the writer instance (optional)
      */
     public function __construct($options = array()) {
         parent::__construct($options);
@@ -40,8 +44,10 @@ class cLogWriterFile extends cLogWriter {
     /**
      * Checks destination and creates the handle for the write process.
      *
-     * @throws cException if not destination is specified
-     * @throws cFileNotFoundException if the destination file could not be read
+     * @throws cException
+     *         if not destination is specified
+     * @throws cFileNotFoundException
+     *         if the destination file could not be read
      */
     protected function _createHandle() {
         $destination = $this->getOption('destination');
@@ -57,11 +63,14 @@ class cLogWriterFile extends cLogWriter {
     /**
      * Writes the content to file handle.
      *
-     * @param    string    $message    Message to write
-     * @param    int        $priority    Priority of the log entry
-     * @return    boolean    State of the write process
+     * @param string $message
+     *         Message to write
+     * @param int $priority
+     *         Priority of the log entry
+     * @return bool
+     *         State of the write process
      */
     public function write($message, $priority) {
-        return (fwrite($this->_handle, $message) != false);
+        return fwrite($this->_handle, $message) != false;
     }
 }

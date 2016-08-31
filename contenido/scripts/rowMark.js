@@ -1,8 +1,8 @@
 /**
  * CONTENIDO JavaScript rowMark module
  *
- * @version    SVN Revision $Rev$
- * @author     Jan Lengowski <Jan.Lengowski@4fb.de>, Timo Trautmann <timo.trautmann@4fb.de>
+ * @author     Jan Lengowski <Jan.Lengowski@4fb.de>
+ * @author     Timo Trautmann <timo.trautmann@4fb.de>
  * @copyright  Jan Lengowski 2002
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -233,17 +233,6 @@ function imgMark(overColor, markedColor, overMarked, imgOutSrc, imgOverSrc, onCl
 
 }
 imgMark.prototype = new rowMark;
-
-
-/*
-Sets the path value in the area 'upl'
-@deprecated [2013-10-16] Not in use anymore, see rowMarkUplClick
-*/
-function setPath(obj) {
-    var frame = Con.getFrame('left_top');
-    frame.document.forms[1].path.value = obj.id;
-    frame.document.getElementById("caption2").innerHTML = obj.id;
-}
 
 /**
  * Function for showing and hiding synchronsation options

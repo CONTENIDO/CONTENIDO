@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for the group overview.
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Timo Hummel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -44,7 +43,7 @@ $aPerms = array();
 
 // Info message for a new group
 if ($_REQUEST['created'] == 1) {
-    $sNotification = $notification->returnNotification("info", i18n("New group created. Now you can edit and configure your new group."));
+    $sNotification = $notification->returnNotification("ok", i18n("New group created. Now you can edit and configure your new group."));
 }
 
 // Action edit group
@@ -72,7 +71,7 @@ if (($action == 'group_edit')) {
         $oGroup->setField('perms', implode(',', $aPerms));
 
         if ($oGroup->store()) {
-            $sNotification = $notification->returnNotification("info", i18n("Changes saved"));
+            $sNotification = $notification->returnNotification("ok", i18n("Changes saved"));
         } else {
             $sNotification = $notification->returnNotification("error", i18n("Changes couldn't be saved"));
             $bError = true;
@@ -111,7 +110,7 @@ $page->set('s', 'PROPERTY', i18n("Property"));
 $page->set('s', 'VALUE', i18n("Value"));
 
 $page->set('d', 'CATNAME', i18n("Groupname"));
-$page->set('d', 'CATFIELD', stripslashes($oGroup->getGroupName(true)));
+$page->set('d', 'CATFIELD', stripslashes(conHtmlSpecialChars($oGroup->getGroupName(true))));
 $page->next();
 
 $page->set('d', 'CATNAME', i18n("Description"));
@@ -126,7 +125,7 @@ $aAuthPerms = explode(',', $auth->auth['perm']);
 if (in_array('sysadmin', $aAuthPerms)) {
     $page->set('d', 'CATNAME', i18n("System administrator"));
     $oCheckbox = new cHTMLCheckbox('msysadmin', '1', 'msysadmin1', in_array('sysadmin', $aPerms));
-    $page->set('d', 'CATFIELD', $oCheckbox->toHTML(false));
+    $page->set('d', 'CATFIELD', $oCheckbox->toHtml(false));
     $page->next();
 }
 
@@ -138,7 +137,7 @@ foreach ($aClients as $idclient => $item) {
     if (in_array("admin[" . $idclient . "]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms)) {
         $oCheckbox = new cHTMLCheckbox("madmin[" . $idclient . "]", $idclient, "madmin[" . $idclient . "]" . $idclient, in_array("admin[" . $idclient . "]", $aPerms));
         $oCheckbox->setLabelText($item['name'] . " (" . $idclient . ")");
-        $sClientCheckboxes .= $oCheckbox->toHTML();
+        $sClientCheckboxes .= $oCheckbox->toHtml();
     }
 }
 
@@ -154,7 +153,7 @@ foreach ($aClients as $idclient => $item) {
     if ((in_array("client[" . $idclient . "]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms) || in_array("admin[" . $idclient . "]", $aAuthPerms)) && !in_array("admin[" . $idclient . "]", $aPerms)) {
         $oCheckbox = new cHTMLCheckbox("mclient[" . $idclient . "]", $idclient, "mclient[" . $idclient . "]" . $idclient, in_array("client[" . $idclient . "]", $aPerms));
         $oCheckbox->setLabelText($item['name'] . " (" . $idclient . ")");
-        $sClientCheckboxes .= $oCheckbox->toHTML();
+        $sClientCheckboxes .= $oCheckbox->toHtml();
     }
 }
 
@@ -171,7 +170,7 @@ foreach ($aClientsLanguages as $item) {
     if (($perm->have_perm_client("lang[" . $item['idlang'] . "]") || $perm->have_perm_client("admin[" . $item['idclient'] . "]")) && !in_array("admin[" . $item['idclient'] . "]", $aPerms)) {
         $oCheckbox = new cHTMLCheckbox("mlang[" . $item['idlang'] . "]", $item['idlang'], "mlang[" . $item['idlang'] . "]" . $item['idlang'], in_array("lang[" . $item['idlang'] . "]", $aPerms));
         $oCheckbox->setLabelText($item['langname'] . " (" . $item['clientname'] . ")");
-        $sClientCheckboxes .= $oCheckbox->toHTML();
+        $sClientCheckboxes .= $oCheckbox->toHtml();
     }
 }
 

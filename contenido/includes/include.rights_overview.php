@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the backend page for the user overview.
  * TODO error handling!!!
@@ -6,8 +7,6 @@
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Timo Hummel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -63,7 +62,7 @@ if ($action == 'user_delete') {
     $oRightColl = new cApiRightCollection();
     $oRightColl->deleteByUserId($request['userid']);
 
-    $page->displayInfo(i18n("User deleted"));
+    $page->displayOk(i18n("User deleted"));
     $page->setReload();
 
     $page->abortRendering();
@@ -75,40 +74,40 @@ if ($action == 'user_delete') {
 // Action edit user
 if ($action == 'user_edit') {
 
-	if (count($mclient) > 0) {
+    if (count($mclient) > 0) {
 
-		// Prevent setting the permissions for a client without a language of that client
-		foreach ($mclient as $selectedclient) {
+        // Prevent setting the permissions for a client without a language of that client
+        foreach ($mclient as $selectedclient) {
 
-			// Get all available languages for selected client
-			$clientLanguageCollection = new cApiClientLanguageCollection();
-			$availablelanguages = $clientLanguageCollection->getLanguagesByClient($selectedclient);
+            // Get all available languages for selected client
+            $clientLanguageCollection = new cApiClientLanguageCollection();
+            $availablelanguages = $clientLanguageCollection->getLanguagesByClient($selectedclient);
 
-			if (count($mlang) == 0) {
-				// User has no selected language
-				$sNotification = $notification->returnNotification("warning", i18n("Please select a language for your selected client."));
-				$bError = true;
-			} else if ($availablelanguages == false) {
-				// Client has no assigned language(s)
-				$sNotification = $notification->returnNotification("warning", i18n("You can only assign users to a client with languages."));
-				$bError = true;
-			} else {
+            if (count($mlang) == 0) {
+                // User has no selected language
+                $sNotification = $notification->returnNotification("warning", i18n("Please select a language for your selected client."));
+                $bError = true;
+            } else if ($availablelanguages == false) {
+                // Client has no assigned language(s)
+                $sNotification = $notification->returnNotification("warning", i18n("You can only assign users to a client with languages."));
+                $bError = true;
+            } else {
 
-				// Client has one or more assigned language(s)
-				foreach ($mlang as $selectedlanguage) {
+                // Client has one or more assigned language(s)
+                foreach ($mlang as $selectedlanguage) {
 
-					if (!$clientLanguageCollection->hasLanguageInClients($selectedlanguage, $mclient)) {
-						// Selected language are not assigned to selected client
-						$sNotification = $notification->returnNotification("warning", i18n("You have to select a client with a language of that client."));
-						$bError = true;
-					}
-				}
+                    if (!$clientLanguageCollection->hasLanguageInClients($selectedlanguage, $mclient)) {
+                        // Selected language are not assigned to selected client
+                        $sNotification = $notification->returnNotification("warning", i18n("You have to select a client with a language of that client."));
+                        $bError = true;
+                    }
+                }
 
-			}
+            }
 
-		}
+        }
 
-	}
+    }
 
     $aPerms = buildUserOrGroupPermsFromRequest();
 
@@ -127,6 +126,12 @@ if ($action == 'user_edit') {
     // is a password set?
     $password = $request['password'];
     $passwordagain = $request['passwordagain'];
+
+    // add slashes for compatiblity with old password hashes that included
+    // magic quotes before the hashes where build
+    $password = addslashes($password);
+    $passwordagain = addslashes($passwordagain);
+
     $bPassOk = false;
     if (strlen($password) > 0) {
         // yes --> check it...
@@ -161,7 +166,7 @@ if ($action == 'user_edit') {
 
     if (!$bError && (strlen($password) == 0 || $bPassOk == true)) {
         if ($ocApiUser->store()) {
-            $sNotification = $notification->returnNotification("info", i18n("Changes saved"));
+            $sNotification = $notification->returnNotification("ok", i18n("Changes saved"));
             $bError = true;
         } else {
             $sNotification = $notification->returnNotification("error", i18n("An error occured while saving user info."));
@@ -202,7 +207,7 @@ $tpl->set('s', 'VALUE', i18n("Value"));
 
 $tpl->set('d', 'ROW_ID', "username");
 $tpl->set('d', 'CATNAME', i18n("Username"));
-$tpl->set('d', 'CATFIELD', $oUser->getField('username') . '<img align="top" alt="" src="images/spacer.gif" height="20">');
+$tpl->set('d', 'CATFIELD', conHtmlSpecialChars($oUser->getField('username')) . '<img align="top" alt="" src="images/spacer.gif" height="20">');
 $tpl->next();
 
 $tpl->set('d', 'ROW_ID', "name");
@@ -281,7 +286,7 @@ if (in_array('sysadmin', $aAuthPerms)) {
     $tpl->set('d', 'ROW_ID', "rights_sysadmin");
     $tpl->set('d', 'CATNAME', i18n("System administrator"));
     $oCheckbox = new cHTMLCheckbox('msysadmin', '1', 'msysadmin1', in_array('sysadmin', $aPerms));
-    $tpl->set('d', 'CATFIELD', $oCheckbox->toHTML(false));
+    $tpl->set('d', 'CATFIELD', $oCheckbox->toHtml(false));
     $tpl->next();
 }
 
@@ -293,7 +298,7 @@ foreach ($aClients as $idclient => $item) {
     if (in_array("admin[" . $idclient . "]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms)) {
         $oCheckbox = new cHTMLCheckbox("madmin[" . $idclient . "]", $idclient, "madmin[" . $idclient . "]" . $idclient, in_array("admin[" . $idclient . "]", $aPerms));
         $oCheckbox->setLabelText($item['name'] . " (" . $idclient . ")");
-        $sClientCheckboxes .= $oCheckbox->toHTML();
+        $sClientCheckboxes .= $oCheckbox->toHtml();
     }
 }
 
@@ -310,7 +315,7 @@ foreach ($aClients as $idclient => $item) {
     if ((in_array("client[" . $idclient . "]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms) || in_array("admin[" . $idclient . "]", $aAuthPerms)) && !in_array("admin[" . $idclient . "]", $aPerms)) {
         $oCheckbox = new cHTMLCheckbox("mclient[" . $idclient . "]", $idclient, "mclient[" . $idclient . "]" . $idclient, in_array("client[" . $idclient . "]", $aPerms));
         $oCheckbox->setLabelText($item['name'] . " (" . $idclient . ")");
-        $sClientCheckboxes .= $oCheckbox->toHTML();
+        $sClientCheckboxes .= $oCheckbox->toHtml();
     }
 }
 
@@ -328,7 +333,7 @@ foreach ($aClientsLanguages as $item) {
     if (($perm->have_perm_client("lang[" . $item['idlang'] . "]") || $perm->have_perm_client("admin[" . $item['idclient'] . "]")) && !in_array("admin[" . $item['idclient'] . "]", $aPerms)) {
         $oCheckbox = new cHTMLCheckbox("mlang[" . $item['idlang'] . "]", $item['idlang'], "mlang[" . $item['idlang'] . "]" . $item['idlang'], in_array("lang[" . $item['idlang'] . "]", $aPerms));
         $oCheckbox->setLabelText($item['langname'] . " (" . $item['clientname'] . ")");
-        $sClientCheckboxes .= $oCheckbox->toHTML();
+        $sClientCheckboxes .= $oCheckbox->toHtml();
     }
 }
 
@@ -340,7 +345,7 @@ if ($sClientCheckboxes != '') {
 }
 
 // user properties
-$aProperties = $oUser->getUserProperties(false);
+$aProperties = $oUser->getUserProperties();
 $sPropRows = '';
 foreach ($aProperties as $entry) {
     // ommit system props
@@ -385,7 +390,7 @@ $tpl->next();
 $tpl->set('d', 'ROW_ID', "use_wysiwyg");
 $tpl->set('d', 'CATNAME', i18n("Use WYSIWYG-Editor"));
 $oCheckbox = new cHTMLCheckbox('wysi', '1', 'wysi1', $oUser->getField('wysi'));
-$tpl->set('d', 'CATFIELD', $oCheckbox->toHTML(false));
+$tpl->set('d', 'CATFIELD', $oCheckbox->toHtml(false));
 $tpl->next();
 
 // account active data (from-to)
@@ -438,7 +443,9 @@ $oUser2 = new cApiUser();
 $aGroups = $oUser2->getGroupNamesByUserID($request['userid']);
 if (count($aGroups) > 0) {
     asort($aGroups);
-    $sGroups = implode("<br>", $aGroups);
+    foreach ($aGroups as $groupname) {
+    	$sGroups .= conHtmlSpecialChars($groupname) . "<br />";
+    }
 } else {
     $sGroups = i18n("none");
 }

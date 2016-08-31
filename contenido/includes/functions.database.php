@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains CONTENIDO database functions.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Timo Hummel
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -17,9 +16,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Returns existing indexes of a specific table.
- * @param   cDb  $db
- * @param   string  $table
- * @return  array  Assoziative array where the key and the value is the index name
+ *
+ * @param cDb $db
+ * @param string $table
+ * @return array
+ *         Assoziative array where the key and the value is the index name
  */
 function dbGetIndexes($db, $table) {
     if (!is_object($db)) {
@@ -59,22 +60,32 @@ function dbGetIndexes($db, $table) {
  *  - $oldVal might be empty if the field didn't exist
  *  - $tableValues['fieldname'] contains the already existing values
  *
- * @param  cDb  $db  Database instance
- * @param  string  $table  Name of table to create/update
- * @param  string  $field  Name of field to create/update
- * @param  string  $type  Data type of field. Feasible values are all possible data types
- *                        e. g. int(10), varchar(32), datetime, varchar(255), text, tinyint(1)
- * @param  string  $null  Parameter to forbid NULL values, feasible values '', 'NULL' or 'YES'
- *                        where 'NULL' or 'YES' allows NULL values and '' doesn't
- * @param  string  $key   The field will be added as a primary key, if value is 'PRI',
- *                        otherwise the value should be empty ''
- * @param  string  $default  The default value for the field. Feasible is each possible
- *                           value depending on passed $type
- * @param  string  $extra  Additional info for the field, e. g. 'auto_increment', if the
- *                         field should have the AUTO_INCREMENT attribute and empty otherwise.
- * @param  string  $upgradeStatement  NOT USED AT THE MOMENT
- * @param  bool  $bRemoveIndexes  Flag to remove all indexes
- * @return  bool
+ * @param cDb $db
+ *         Database instance
+ * @param string $table
+ *         Name of table to create/update
+ * @param string $field
+ *         Name of field to create/update
+ * @param string $type
+ *         Data type of field. Feasible values are all possible data types
+ *         e. g. int(10), varchar(32), datetime, varchar(255), text, tinyint(1)
+ * @param string $null
+ *         Parameter to forbid NULL values, feasible values '', 'NULL' or 'YES'
+ *         where 'NULL' or 'YES' allows NULL values and '' doesn't
+ * @param string $key
+ *         The field will be added as a primary key, if value is 'PRI',
+ *         otherwise the value should be empty ''
+ * @param string $default
+ *         The default value for the field. Feasible is each possible
+ *         value depending on passed $type
+ * @param string $extra
+ *         Additional info for the field, e. g. 'auto_increment', if the
+ *         field should have the AUTO_INCREMENT attribute and empty otherwise.
+ * @param string $upgradeStatement
+ *         NOT USED AT THE MOMENT
+ * @param bool $bRemoveIndexes
+ *         Flag to remove all indexes
+ * @return bool
  */
 function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extra, $upgradeStatement, $bRemoveIndexes = false) {
     global $columnCache;
@@ -222,9 +233,10 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
 
 /**
  * Checks, if passed table exists in the database
- * @param   cDb  $db
- * @param   string  $table
- * @return  bool
+ *
+ * @param cDb $db
+ * @param string $table
+ * @return bool
  */
 function dbTableExists($db, $table) {
     global $tableCache;
@@ -251,9 +263,11 @@ function dbTableExists($db, $table) {
 
 /**
  * Returns the column structure of a table
- * @param   cDb  $db
- * @param   string  $table
- * @return  array|bool  Either assoziative column array or false
+ *
+ * @param cDb $db
+ * @param string $table
+ * @return array|bool
+ *         Either assoziative column array or false
  */
 function dbGetColumns($db, $table) {
     global $columnCache;
@@ -281,11 +295,16 @@ function dbGetColumns($db, $table) {
 
 /**
  * Returns the primary key column of a table
- * @param   cDb  $db
- * @param   string  $table
- * @return  string
+ *
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
+ * @param cDb $db
+ * @param string $table
+ * @return string
  */
 function dbGetPrimaryKeyName($db, $table) {
+    cDeprecated('This method is deprecated and is not needed any longer');
+
     $sReturn = '';
     $structure = dbGetColumns($db, $table);
 
@@ -299,5 +318,3 @@ function dbGetPrimaryKeyName($db, $table) {
 
     return $sReturn;
 }
-
-?>

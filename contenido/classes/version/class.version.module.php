@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the module version class.
  *
  * @package    Core
  * @subpackage Versioning
- * @version    SVN Revision $Rev:$
- *
  * @author     Bilal Arslan, Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,14 +23,19 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cVersionModule extends cVersion {
 
     /**
-     * Type of modul
+     * Module type.
+     *
+     * @var string
      */
     public $sModType;
 
     /**
-     * The class versionStyle object constructor, initializes class variables
+     * Constructor to create an instance of this class.
      *
-     * @param string $iIdMod The name of style file
+     * Initializes class variables.
+     *
+     * @param string $iIdMod
+     *         The name of style file
      * @param array $aCfg
      * @param array $aCfgClient
      * @param cDB $oDB
@@ -45,19 +49,19 @@ class cVersionModule extends cVersion {
 
         // folder layout
         $this->sType = 'module';
-
         $this->iIdentity = $iIdMod;
 
         $this->prune();
-
         $this->initRevisions();
-
         $this->_storeModuleInformation();
     }
 
+    /**
+     *
+     */
     protected function _storeModuleInformation() {
-        $iIdMod = cSecurity::toInteger($this->iIdentity);
 
+        $iIdMod = cSecurity::toInteger($this->iIdentity);
         $oModule = new cApiModule($iIdMod);
 
         // create body node of XML file
@@ -80,9 +84,10 @@ class cVersionModule extends cVersion {
     /**
      * This function read an xml file nodes
      *
-     * @param string $sPath Path to file
-     *
-     * @return array returns array width this four nodes
+     * @param string $sPath
+     *         Path to file
+     * @return array
+     *         returns array width this four nodes
      */
     public function initXmlReader($sPath) {
         $aResult = array();
@@ -106,19 +111,19 @@ class cVersionModule extends cVersion {
 
     /**
      * Function returns javascript which refreshes CONTENIDO frames for file
-     * list an subnavigation.
-     * This is neccessary, if filenames where changed, when a history entry is
-     * restored
+     * list an subnavigation. This is necessary, if filenames where changed,
+     * when a history entry is restored.
      *
-     * @param int $iIdClient id of client which contains this file
-     * @param string $sArea name of CONTENIDO area in which this procedure
-     *        should be done
-     * @param int $iIdLayout Id of layout to highlight
-     * @param object $sess CONTENIDO session object
-     *
-     * @return string - Javascript for refrehing frames
+     * @param string $sArea
+     *         name of CONTENIDO area in which this procedure should be done
+     * @param int $iIdModule
+     *         Id of module
+     * @param cSession $sess
+     *         CONTENIDO session object
+     * @return string
+     *         Javascript for refreshing left_bottom frame
      */
-    public function renderReloadScript($sArea, $iIdModule, $sess) {
+    public function renderReloadScript($sArea, $iIdModule, cSession $sess) {
         $urlLeftBottom = $sess->url("main.php?area=$sArea&frame=2&idmod=$iIdModule");
         $sReloadScript = <<<JS
 <script type="text/javascript">

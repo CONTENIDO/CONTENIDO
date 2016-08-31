@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for the editor of frontend users.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Unknown
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -33,8 +32,8 @@ $oFEGroupMemberCollection->setWhere('idfrontenduser', $idfrontenduser);
 $oFEGroupMemberCollection->addResultField('idfrontendgroup');
 $oFEGroupMemberCollection->query();
 
-# Fetch all groups the user belongs to (no goup, one group, more than one group).
-# The array $aFEGroup can be used in frontenduser plugins to display selfdefined user properties group dependent.
+// Fetch all groups the user belongs to (no goup, one group, more than one group).
+// The array $aFEGroup can be used in frontenduser plugins to display selfdefined user properties group dependent.
 $aFEGroup = array();
 while ($oFEGroup = $oFEGroupMemberCollection->next()) {
     $aFEGroup[] = $oFEGroup->get("idfrontendgroup");
@@ -47,7 +46,7 @@ if ($action == "frontend_create" && $perm->have_perm_area_action("frontend", "fr
     $_GET['idfrontenduser'] = $idfrontenduser;
     $_REQUEST['idfrontenduser'] = $_GET['idfrontenduser'];
     //show success message
-    $page->displayInfo(i18n("Created new user successfully!"));
+    $page->displayOk(i18n("Created new user successfully!"));
 }
 
 if ($idfrontenduser && $action != '') {
@@ -84,11 +83,11 @@ if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "fr
     if (!empty($sReloadScript)) {
         $page->addScript($sReloadScript);
     }
-    $page->displayInfo(i18n("Delteted user successfully!"));
+    $page->displayOk(i18n("Deleted user successfully!"));
 }
 
-if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
-    $username = conHtmlentities(stripslashes(trim($username)));
+if (true === $feuser->isLoaded() && $feuser->get("idclient") == $client) {
+    $username = stripslashes(trim($username));
 
     if ($action == "frontend_save_user" && strlen($username) == 0) {
         $page->displayError(i18n("Username can't be empty"));
@@ -153,8 +152,16 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
             }
         }
 
+        $iterator = $_cecRegistry->getIterator('Contenido.Permissions.FrontendUser.BeforeStore');
+
+        if ($iterator->count() > 0) {
+        	while (false !== $chainEntry = $iterator->next()) {
+        		$chainEntry->execute($varArray);
+        	}
+        }
+
         $feuser->store();
-        $page->displayInfo(i18n("Saved changes successfully!"));
+        $page->displayOk(i18n("Saved changes successfully!"));
     }
 
     if (count($messages) > 0) {
@@ -179,7 +186,7 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
     $form->add(i18n("User name"), $username->render());
     $form->add(i18n("New password"), $newpw->render());
     $form->add(i18n("New password (again)"), $newpw2->render());
-    $form->add(i18n("Active"), $active->toHTML(false));
+    $form->add(i18n("Active"), $active->toHtml(false));
 
     $pluginOrder = cArray::trim(explode(',', getSystemProperty('plugin', 'frontendusers-pluginorder')));
 
@@ -247,8 +254,9 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
 }
 
 if (!isset($form)) {
-	$page->abortRendering();
+    $page->abortRendering();
 }
 
 $page->render();
+
 ?>

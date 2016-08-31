@@ -1,17 +1,17 @@
 <?php
+
 /**
  * This file renders the main mail log view.
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 global $area, $action, $perm;
@@ -51,6 +51,7 @@ if ($action == 'mail_log_delete') {
 }
 
 $mailLogCollection->query();
+
 // show notification if there no mails have been logged yet
 if ($mailLogCollection->count() === 0) {
     $page->displayInfo(i18n('No mails have been logged yet.'));
@@ -292,15 +293,16 @@ $page->render();
  * Vorname Nachname <vorname.nachname@domain.tld>
  * Vorname2 Nachname2 <vorname2.nachname2@domain2.tld>
  *
- * @param array $addresses associative array containing the mail addresses
- *        as keys and the mailer names as values
- *
- * @return string HTML code showing the given mail addresses and names
+ * @param array $addresses
+ *         associative array containing the mail addresses as keys
+ *         and the mailer names as values
+ * @return string
+ *         HTML code showing the given mail addresses and names
  */
 function mailLogDecodeAddresses($addresses) {
     $result = '';
     $addresses = json_decode($addresses, true);
-    if(!is_array($addresses)) {
+    if (!is_array($addresses)) {
         return "";
     }
     foreach ($addresses as $mail => $name) {
@@ -311,14 +313,22 @@ function mailLogDecodeAddresses($addresses) {
     return $result;
 }
 
+/**
+ *
+ * @return cHTMLTable
+ */
 function mailLogBulkEditingFunctions() {
+
     $table = new cHTMLTable();
     $table->setClass('generic');
     $table->setWidth('100%');
     $table->appendStyleDefinition('margin', '10px 0');
+
     $tr = new cHTMLTableRow();
+
     $th = new cHTMLTableHead();
     $th->appendStyleDefinition('border-bottom', '1px solid #B3B3B3');
+
     // construct the invert selection function
     $link = new cHTMLLink();
     $link->setClass('flip_mark');
@@ -343,4 +353,5 @@ function mailLogBulkEditingFunctions() {
     $table->setContent($tr);
 
     return $table;
+
 }

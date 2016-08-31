@@ -4,7 +4,6 @@
  *
  * @package     Plugin
  * @subpackage  ModRewrite
- * @version     SVN Revision $Rev:$
  * @id          $Id$:
  * @author      Stefan Seifarth / stese
  * @author      Murat Purc <murat@purc.de>
@@ -152,7 +151,7 @@ class ModRewrite extends ModRewriteBase {
         $iCatId = (int) $iCatId;
 
         // get websafe name
-        $sNewName = cApiStrCleanURLCharacters(conHtmlEntityDecode($sName));
+        $sNewName = cString::cleanURLCharacters(conHtmlEntityDecode($sName));
 
         // remove double or more separators
         $sNewName = mr_removeMultipleChars('-', $sNewName);
@@ -193,7 +192,7 @@ class ModRewrite extends ModRewriteBase {
         $iLangId = (int) $iLangId;
 
         // create websafe name
-        $sNewName = cApiStrCleanURLCharacters(conHtmlEntityDecode($sName));
+        $sNewName = cString::cleanURLCharacters(conHtmlEntityDecode($sName));
 
         // remove double or more separators
         $sNewName = mr_removeMultipleChars('-', $sNewName);

@@ -4,8 +4,6 @@
  *
  * @package Plugin
  * @subpackage Workflow
- * @version SVN Revision $Rev:$
- *
  * @author Timo Hummel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -25,8 +23,6 @@ class WorkflowActions extends ItemCollection {
 
     /**
      * Constructor Function
-     *
-     * @param string $table The table to use as information source
      */
     public function __construct() {
         global $cfg;
@@ -97,8 +93,6 @@ class WorkflowAction extends Item {
 
     /**
      * Constructor Function
-     *
-     * @param string $table The table to use as information source
      */
     public function __construct() {
         global $cfg;

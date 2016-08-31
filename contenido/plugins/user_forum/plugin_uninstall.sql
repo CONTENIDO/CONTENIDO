@@ -1,1 +1,1 @@
-DELETE FROM !PREFIX!_user_forum
+DROP TABLE !PREFIX!_user_forum

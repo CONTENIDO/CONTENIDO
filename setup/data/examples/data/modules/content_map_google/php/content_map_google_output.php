@@ -5,8 +5,6 @@
  *
  * @package Module
  * @subpackage ContentMapGoogle
- * @version SVN Revision $Rev:$
- *
  * @author alexander.scheider@4fb.de
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG <www.4fb.de>

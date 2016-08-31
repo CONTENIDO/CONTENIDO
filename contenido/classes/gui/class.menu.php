@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the menu GUI class.
  *
  * @package          Core
  * @subpackage       GUI
- * @version          SVN Revision $Rev:$
  *
  * @author           Mischa Holz
  * @copyright        four for business AG <www.4fb.de>
@@ -23,55 +23,153 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cGuiMenu {
 
+    /**
+     *
+     * @var array
+     */
     public $link;
-    public $title;
-    public $tooltips;
-    public $caption;
-    public $type;
-    public $image;
-    public $alt;
-    public $actions;
-    public $imagewidth;
-    public $show;
-    protected $_marked;
 
+    /**
+     *
+     * @var array
+     */
+    public $title;
+
+    /**
+     *
+     * @var array
+     */
+    public $tooltips;
+
+    /**
+     *
+     * @var array
+     */
+    public $image;
+
+    /**
+     *
+     * @var unknown_type
+     */
+    public $alt;
+
+    /**
+     *
+     * @var array
+     */
+    public $actions;
+
+    /**
+     *
+     * @var array
+     */
+    public $imagewidth;
+
+    /**
+     *
+     * @todo what is this property supposed to be?
+     * @var unknown_type
+     */
+    public $caption;
+
+    /**
+     *
+     * @todo what is this property supposed to be?
+     * @var unknown_type
+     */
+    public $type;
+
+    /**
+     *
+     * @todo what is this property supposed to be?
+     * @var unknown_type
+     */
+    public $show;
+
+    /**
+     * The marked item.
+     *
+     * @var mixed
+     */
+    protected $_marked = false;
+
+    /**
+     * Constructor to create an instance of this class.
+     */
     public function __construct() {
         $this->rowmark = true;
-        $this->_marked = false;
     }
 
+    /**
+     *
+     * @param mixed $item
+     * @param string $title
+     */
     public function setTitle($item, $title) {
         $this->title[$item] = $title;
     }
 
+    /**
+     *
+     * @param mixed $item
+     * @param string $tooltip
+     */
     public function setTooltip($item, $tooltip) {
         $this->tooltips[$item] = $tooltip;
     }
 
+    /**
+     *
+     * @param bool $rowmark [optional]
+     */
     public function setRowmark($rowmark = true) {
         $this->rowmark = $rowmark;
     }
 
+    /**
+     *
+     * @param mixed $item
+     * @param string $image
+     * @param int $maxwidth [optional]
+     */
     public function setImage($item, $image, $maxwidth = 0) {
-        $show = '';
-
         $this->image[$item] = $image;
         $this->imagewidth[$item] = $maxwidth;
-        $this->show[$item] = $show; // TODO: what is this variable supposed to be?
+        $this->show[$item] = '';
     }
 
+    /**
+     *
+     * @param mixed $item
+     * @param cHTMLContentElement $link
+     */
     public function setLink($item, $link) {
         $this->link[$item] = $link;
     }
 
+    /**
+     *
+     * @param mixed $item
+     * @param mixed $key
+     * @param string $action
+     */
     public function setActions($item, $key, $action) {
         $this->actions[$item][$key] = $action;
     }
 
+    /**
+     *
+     * @param mixed $item
+     */
     public function setMarked($item) {
         $this->_marked = $item;
     }
 
+    /**
+     *
+     * @param bool $print [optional]
+     * @return string
+     */
     public function render($print = true) {
         global $cfg;
 
@@ -151,5 +249,3 @@ class cGuiMenu {
     }
 
 }
-
-?>

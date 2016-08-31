@@ -4,8 +4,6 @@
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Frederic Schneider
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -63,9 +61,84 @@ class cEffectiveSetting {
 
     /**
      *
+     * @var bool
+     */
+    protected static $_loaded = false;
+
+    /**
+     *
      * @var cApiLanguage
      */
     protected static $_language;
+
+    /**
+     * Loads all client, clientlanguage an system properties into an static array.
+     *
+     * The order is: System => Client => Client (language)
+     *
+     */
+    private static function _loadSettings() {
+        if (self::$_loaded == false) {
+            global $contenido;
+
+            $typeGroup = array();
+
+            //get all client settings
+            $client = self::_getClientInstance();
+            $settings = $client->getProperties();
+
+            if (is_array($settings)) {
+                foreach ($settings as $setting) {
+                    $key = self::_makeKey($setting['type'], $setting['name']);
+                    self::_set($key, $setting['value']);
+                    if (!isset($typeGroup[$setting['type']])) {
+                        $typeGroup[$setting['type']] = array();
+                    }
+                    $typeGroup[$setting['type']][$setting['name']] = $setting['value'];
+                }
+            }
+
+            //get all clientlang setting
+            $clientlang = self::_getClientLanguageInstance();
+            $settings = $clientlang->getProperties();
+
+            if (is_array($settings)) {
+                foreach ($settings as $setting) {
+                    $key = self::_makeKey($setting['type'], $setting['name']);
+                    self::_set($key, $setting['value']);
+                    if (!isset($typeGroup[$setting['type']])) {
+                        $typeGroup[$setting['type']] = array();
+                    }
+                    $typeGroup[$setting['type']][$setting['name']] = $setting['value'];
+                }
+            }
+
+            //get user settings
+            if (self::_isAuthenticated() && isset($contenido)) {
+                $user = self::_getUserInstance();
+                $settings = $user->getUserProperties();
+
+                if (is_array($settings)) {
+                    foreach ($settings as $setting) {
+                        $key = self::_makeKey($setting['type'], $setting['name']);
+                        self::_set($key, $setting['value']);
+                        if (!isset($typeGroup[$setting['type']])) {
+                            $typeGroup[$setting['type']] = array();
+                        }
+                        $typeGroup[$setting['type']][$setting['name']] = $setting['value'];
+                    }
+                }
+            }
+
+            //write cache by type settings
+            foreach ($typeGroup as $key => $group) {
+                $key = self::_makeKey($key, ' ');
+                self::_set($key, $group);
+            }
+        }
+
+        self::$_loaded = true;
+    }
 
     /**
      * Returns effective setting for a property.
@@ -78,43 +151,23 @@ class cEffectiveSetting {
      * NOTE: If you provide a default value (other than empty string), then it will be returned back
      *       in case of not existing or empty setting.
      *
-     * @param  string  $type  The type of the item
-     * @param  string  $name  The name of the item
-     * @param  string  $default  Optional default value
-     * @return  bool|string  Setting value or false
+     * @param string $type
+     *         The type of the item
+     * @param string $name
+     *         The name of the item
+     * @param string $default [optional]
+     *         default value
+     * @return bool|string
+     *         Setting value or false
      */
     public static function get($type, $name, $default = '') {
-        global $contenido;
-
-        // If the DB object is not available, just return the default value in order
-        // to avoid PHP notices
-        try {
-            $db = new cDb();
-        } catch (cException $e) {
-            return $default;
-        }
+        self::_loadSettings();
 
         $key = self::_makeKey($type, $name);
 
         $value = self::_get($key);
         if (false !== $value) {
             return $value;
-        }
-
-        if (self::_isAuthenticated() && isset($contenido)) {
-            $value = self::_getUserInstance()->getUserProperty($type, $name, true);
-        }
-
-        if (false === $value) {
-            $value = self::_getLanguageInstance()->getProperty($type, $name);
-        }
-
-        if (false === $value) {
-            $value = self::_getClientLanguageInstance()->getProperty($type, $name);
-        }
-
-        if (false === $value) {
-            $value = self::_getClientInstance()->getProperty($type, $name);
         }
 
         if (false === $value) {
@@ -127,8 +180,6 @@ class cEffectiveSetting {
             // NOTE: A non empty default value overrides an empty value
             $value = $default;
         }
-
-        self::_set($key, $value);
 
         return $value;
     }
@@ -144,27 +195,26 @@ class cEffectiveSetting {
      * System properties can be overridden by the group, and group
      * properties can be overridden by the user.
      *
-     * @param string $type The type of the item
-     * @return array Assoziative array like $arr[name] = value
+     * @param string $type
+     *         The type of the item
+     * @return array
+     *         Assoziative array like $arr[name] = value
      */
     public static function getByType($type) {
-        global $contenido;
+        self::_loadSettings();
 
         $settings = getSystemPropertiesByType($type);
-        $settings = array_merge($settings, self::_getClientInstance()->getPropertiesByType($type));
-        $settings = array_merge($settings, self::_getClientLanguageInstance()->getPropertiesByType($type));
-        if (self::_isAuthenticated() && cRegistry::isBackendEditMode()) {
-            $settings = array_merge($settings, self::_getUserInstance()->getUserPropertiesByType($type, true));
+
+        $key = self::_makeKey($type, ' ');
+        if (is_array(self::_get($key))) {
+            $settings = array_merge($settings, self::_get($key));
         }
 
-        // cache all settings, to return them from cache in case of calling
-        // get()
-        foreach ($settings as $setting => $value) {
-            $key = self::_makeKey($type, $setting);
-            self::_set($key, $value);
+        if (isset($settings) && is_array($settings)) {
+            return $settings;
+        } else {
+            return array();
         }
-
-        return $settings;
     }
 
     /**
@@ -173,9 +223,12 @@ class cEffectiveSetting {
      * Note:
      * The setting will be set only in cache, not in persistency layer.
      *
-     * @param string $type The type of the item
-     * @param string $name The name of the item
-     * @param string $value The value of the setting
+     * @param string $type
+     *         The type of the item
+     * @param string $name
+     *         The name of the item
+     * @param string $value
+     *         The value of the setting
      */
     public static function set($type, $name, $value) {
         $key = self::_makeKey($type, $name);
@@ -188,8 +241,10 @@ class cEffectiveSetting {
      * Note:
      * The setting will be deleted only from cache, not from persistency layer.
      *
-     * @param string $type The type of the item
-     * @param string $name The name of the item
+     * @param string $type
+     *         The type of the item
+     * @param string $name
+     *         The name of the item
      */
     public static function delete($type, $name) {
         $keySuffix = '_' . $type . '_' . $name;
@@ -268,8 +323,10 @@ class cEffectiveSetting {
     /**
      * Setting getter.
      *
-     * @param string $key The setting key
-     * @return string bool setting value or false
+     * @param string $key
+     *         The setting key
+     * @return string
+     *         bool setting value or false
      */
     protected static function _get($key) {
         return (isset(self::$_settings[$key])) ? self::$_settings[$key] : false;
@@ -278,8 +335,10 @@ class cEffectiveSetting {
     /**
      * Setting setter.
      *
-     * @param string $key The setting key
-     * @param string $value Value to store
+     * @param string $key
+     *         The setting key
+     * @param string $value
+     *         Value to store
      */
     protected static function _set($key, $value) {
         self::$_settings[$key] = $value;
@@ -288,19 +347,38 @@ class cEffectiveSetting {
     /**
      * Setting key getter.
      *
-     * @param string $type The type of the item
-     * @param string $name Name of the item
-     * @return string The setting key
+     * @param string $type
+     *         The type of the item
+     * @param string $name
+     *         Name of the item
+     * @return string
+     *         The setting key
      */
     protected static function _makeKey($type, $name) {
-        global $auth;
+        $key = self::_getKeyPrefix() . '_' . $type . '_' . $name;
 
-        if ($auth instanceof cAuth) {
-            $key = $auth->auth['uid'] . '_' . $type . '_' . $name;
-        } else {
-            $key = '_' . $type . '_' . $name;
-        }
         return $key;
+    }
+
+    /**
+     * Returns the prefix for the internal key.
+     *
+     * @return string
+     */
+    protected static function _getKeyPrefix() {
+    	global $auth;
+
+    	$prefix = '';
+
+    	if ($auth instanceof cAuth) {
+    		if (!self::_isAuthenticated()) {
+    			$prefix = cAuth::AUTH_UID_NOBODY;
+    		} else {
+    			$prefix = $auth->auth['uid'];
+    		}
+    	}
+
+    	return $prefix;
     }
 
     /**
@@ -310,6 +388,6 @@ class cEffectiveSetting {
      */
     protected static function _isAuthenticated() {
         global $auth;
-        return ($auth instanceof cAuth && $auth->isAuthenticated() && !$auth->isLoginForm());
+        return $auth instanceof cAuth && $auth->isAuthenticated() && !$auth->isLoginForm();
     }
 }

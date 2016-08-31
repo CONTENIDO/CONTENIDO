@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the cHTMLContentElement class.
  *
  * @package Core
  * @subpackage GUI_HTML
- * @version SVN Revision $Rev:$
  *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
@@ -24,11 +24,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHTMLContentElement extends cHTML {
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
      *
-     * @param mixed $content String or object with the contents
-     * @param string $class the class of this element
-     * @param string $id the ID of this element
+     * @param mixed $content [optional]
+     *         String or object with the contents
+     * @param string $class [optional]
+     *         the class of this element
+     * @param string $id [optional]
+     *         the ID of this element
      */
     public function __construct($content = '', $class = '', $id = '') {
         parent::__construct();
@@ -41,9 +44,11 @@ class cHTMLContentElement extends cHTML {
     /**
      * Sets the element's content
      *
-     * @param string|object|array $content String with the content or a cHTML
-     *        object to render or an array of strings / objects.
-     * @return cHTMLContentElement $this
+     * @param string|object|array $content
+     *         String with the content or a cHTML object to render or an array
+     *         of strings / objects.
+     * @return cHTMLContentElement
+     *         $this for chaining
      */
     public function setContent($content) {
         return $this->_setContent($content);
@@ -52,9 +57,11 @@ class cHTMLContentElement extends cHTML {
     /**
      * Appends code / objects to the content.
      *
-     * @param string|object|array $content String with the content or a cHTML
-     *        object to render or an array of strings / objects.
-     * @return cHTMLContentElement $this
+     * @param string|object|array $content
+     *         String with the content or a cHTML object to render
+     *         or an array of strings / objects.
+     * @return cHTMLContentElement
+     *         $this for chaining
      */
     public function appendContent($content) {
         return $this->_appendContent($content);

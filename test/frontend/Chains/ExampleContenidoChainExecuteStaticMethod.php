@@ -1,89 +1,104 @@
 <?php
 /**
- * This file contains tests for Contenido chain Example.Contenido.Chain.ExecuteStaticMethod
+ * This file contains tests for Contenido chain
+ * Example.Contenido.Chain.ExecuteStaticMethod
  *
- * @package          Testing
- * @subpackage       Test_Chains
- * @version          SVN Revision $Rev:$
- *
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package Testing
+ * @subpackage Test_Chains
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 /**
- * 1. chain object
- * @package          Testing
- * @subpackage       Test_Chains
+ * 1.
+ * chain object
+ *
+ * @package Testing
+ * @subpackage Test_Chains
  */
-class chain_ExampleContenidoChainExecuteStaticMethod_Test
-{
-    public static function callMe($obj)
-    {
+class chain_ExampleContenidoChainExecuteStaticMethod_Test {
+
+    /**
+     *
+     * @param unknown_type $obj
+     */
+    public static function callMe($obj) {
         $obj->counter++;
     }
 }
 
 /**
- * 2. chain object
- * @package          Testing
- * @subpackage       Test_Chains
+ * 2.
+ * chain object
+ *
+ * @package Testing
+ * @subpackage Test_Chains
  */
-class chain_ExampleContenidoChainExecuteStaticMethod_Test2
-{
-    public static function callMe($obj)
-    {
+class chain_ExampleContenidoChainExecuteStaticMethod_Test2 {
+
+    /**
+     *
+     * @param unknown_type $obj
+     */
+    public static function callMe($obj) {
         $obj->counter++;
     }
 }
-
 
 /**
  * Class to test Contenido chain Example.Contenido.Chain.ExecuteStaticMethod.
- * @package          Testing
- * @subpackage       Test_Chains
+ *
+ * @package Testing
+ * @subpackage Test_Chains
  */
-class ExampleContenidoChainExecuteStaticMethodTest extends PHPUnit_Framework_TestCase
-{
+class ExampleContenidoChainExecuteStaticMethodTest extends PHPUnit_Framework_TestCase {
+
+    /**
+     *
+     * @var unknown_type
+     */
     private $_chain = 'Example.Contenido.Chain.ExecuteStaticMethod';
 
+    /**
+     *
+     * @var unknown_type
+     */
     private $_obj;
 
-
-    protected function setUp()
-    {
+    /**
+     *
+     */
+    protected function setUp() {
         $this->_obj = new stdClass();
         $this->_obj->counter = 0;
     }
 
-
     /**
-	* @deprecated 2014-08-07 - This method is deprecated and is not needed any longer
-	 */
+     *
+     * @deprecated 2014-08-07
+     *         This method is deprecated and is not needed any longer
+     */
     public function tearDown() {
         cDeprecated('This method is deprecated and is not needed any longer');
     }
 
-
     /**
      * Test Example.Contenido.Chain.ExecuteStaticMethod chain
      */
-    public function testNoChain()
-    {
+    public function testNoChain() {
         // execute chain
         cApiCecHook::execute($this->_chain, $this->_obj);
 
         $this->assertEquals(0, $this->_obj->counter);
     }
 
-
     /**
      * Test Example.Contenido.Chain.ExecuteStaticMethod chain
      */
-    public function testOneChain()
-    {
+    public function testOneChain() {
         // get cec registry instance
         $cecReg = cApiCecRegistry::getInstance();
 
@@ -99,12 +114,10 @@ class ExampleContenidoChainExecuteStaticMethodTest extends PHPUnit_Framework_Tes
         $this->assertEquals(1, $this->_obj->counter);
     }
 
-
     /**
      * Test Example.Contenido.Chain.ExecuteStaticMethod chain
      */
-    public function testTwoChains()
-    {
+    public function testTwoChains() {
         // get cec registry instance
         $cecReg = cApiCecRegistry::getInstance();
 

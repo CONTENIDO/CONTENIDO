@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for the editor of frontend group details.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Unknown
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -49,7 +48,7 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
     }
 
     $successMessage = i18n("Removed user from group successfully!");
-    # also save other variables
+    // also save other variables
     $action = "frontendgroup_save_group";
 } else if ($action == "frontendgroup_user_add" && $perm->have_perm_area_action($area, $action)) {
     if (count($newmember) > 0) {
@@ -58,14 +57,14 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
         }
     }
     $successMessage = i18n("Added user to group successfully!");
-    # also save other variables
+    // also save other variables
     $action = "frontendgroup_save_group";
 } else if ($action == "frontendgroup_delete" && $perm->have_perm_area_action($area, $action)) {
    $fegroups->delete($idfrontendgroup);
    $idfrontendgroup= 0;
    $fegroup = new cApiFrontendGroup();
 
-  cRegistry::addInfoMessage(i18n("Deleted group successfully!"));
+  cRegistry::addOkMessage(i18n("Deleted group successfully!"));
 }
 
 if ($action != '') {
@@ -88,7 +87,7 @@ JS;
     $reloadLeftBottom = '';
 }
 
-if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
+if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
     if ($action == "frontendgroup_save_group" && $perm->have_perm_area_action($area, $action)) {
         $messages = array();
 
@@ -139,9 +138,9 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
         $notis = $notification->returnNotification("warning", implode("<br>", $messages)) . "<br>";
     } else {
         if (strlen($successMessage) > 0) {
-            cRegistry::addInfoMessage($successMessage);
+            cRegistry::addOkMessage($successMessage);
         } elseif (strlen($action) > 0) {
-            cRegistry::addInfoMessage(i18n("Saved changes successfully!"));
+            cRegistry::addOkMessage(i18n("Saved changes successfully!"));
         }
     }
 
@@ -163,7 +162,7 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
 
     $sInGroupOptions = '';
     foreach ($cells as $idfrontenduser => $name) {
-        $sInGroupOptions .= '<option value="'.$idfrontenduser.'">'.$name.'</option>'."\n";
+        $sInGroupOptions .= '<option value="'.$idfrontenduser.'">'.conHtmlSpecialChars($name).'</option>'."\n";
     }
     $page->set('s', 'IN_GROUP_OPTIONS', $sInGroupOptions);
 
@@ -183,7 +182,7 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
 
     $sNonGroupOptions = '';
     foreach ($items as $idfrontenduser => $name) {
-        $sNonGroupOptions .= '<option value="'.$idfrontenduser.'">'.$name.'</option>'."\n";
+        $sNonGroupOptions .= '<option value="'.$idfrontenduser.'">'.conHtmlSpecialChars($name).'</option>'."\n";
     }
     $page->set('s', 'NON_GROUP_OPTIONS', $sNonGroupOptions);
 
@@ -197,7 +196,7 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
     $page->next();
 
     $page->set('d', 'LABEL', i18n("Default group"));
-    $page->set('d', 'INPUT', $defaultgroup->toHTML(false));
+    $page->set('d', 'INPUT', $defaultgroup->toHtml(false));
     $page->next();
 
     $pluginOrder = cArray::trim(explode(',', getSystemProperty('plugin', 'frontendgroups-pluginorder')));
@@ -258,4 +257,5 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
 
     $page->render();
 }
+
 ?>

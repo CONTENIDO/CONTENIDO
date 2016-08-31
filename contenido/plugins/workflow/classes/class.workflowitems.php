@@ -4,8 +4,6 @@
  *
  * @package Plugin
  * @subpackage Workflow
- * @version SVN Revision $Rev:$
- *
  * @author Timo Hummel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -25,8 +23,6 @@ class WorkflowItems extends ItemCollection {
 
     /**
      * Constructor Function
-     *
-     * @param string $table The table to use as information source
      */
     public function __construct() {
         global $cfg;
@@ -183,8 +179,6 @@ class WorkflowItem extends Item {
 
     /**
      * Constructor Function
-     *
-     * @param string $table The table to use as information source
      */
     public function __construct() {
         global $cfg;
@@ -216,7 +210,7 @@ class WorkflowItem extends Item {
      *         or position
      */
     public function setField($field, $value, $safe = true) {
-        if ($this->virgin == true) {
+        if (true !== $this->isLoaded()) {
             $this->lasterror = i18n("No item loaded", "workflow");
             return false;
         }
@@ -251,6 +245,9 @@ class WorkflowItem extends Item {
      * only be called by the create function.
      *
      * @param int $idworkflow The workflow to set the item to
+     * @param int $idposition Position of workflow item
+     *                        
+     * @return bool
      */
     public function init($idworkflow, $idposition) {
         global $cfg;

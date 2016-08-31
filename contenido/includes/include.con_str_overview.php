@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the menu frame (category tree) backend page for article list.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Jan Lengowski
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -19,6 +18,12 @@ cInclude("includes", "functions.str.php");
 cInclude("includes", "functions.tpl.php");
 cInclude('includes', 'functions.lang.php');
 
+/**
+ *
+ * @param int $iIdcat
+ * @param array $aWholelist
+ * @return string
+ */
 function showTree($iIdcat, &$aWholelist) {
     global $check_global_rights, $sess, $cfg, $perm, $db, $db2, $db3, $area, $client, $lang, $navigationTree;
 
@@ -32,7 +37,7 @@ function showTree($iIdcat, &$aWholelist) {
         $cfgdata = '';
         $aCssClasses = array();
 
-        #Check rights per cat
+        // Check rights per cat
         if (!$check_global_rights) {
             $check_rights = false;
         } else {
@@ -51,9 +56,9 @@ function showTree($iIdcat, &$aWholelist) {
 
             $idtpl = ($aValue['idtpl'] != '') ? $aValue['idtpl'] : 0;
 
-            if (($aValue["idlang"] != $lang) || ($aValue['articles'] == true)) {
-                #$aCssClasses[] = 'con_sync';
-            }
+            // if (($aValue["idlang"] != $lang) || ($aValue['articles'] == true)) {
+            //     $aCssClasses[] = 'con_sync';
+            // }
 
             $check_rights = $perm->have_perm_area_action_item("con", "con_changetemplate", $aValue['idcat']);
             if (!$check_rights) {
@@ -94,7 +99,6 @@ function showTree($iIdcat, &$aWholelist) {
             }
 
             // Select the appropriate folder-image depending on the structure properties
-
             if ($aValue['online'] == 1) {
                 // Category is online
 
@@ -392,7 +396,7 @@ while ($db->nextRecord()) {
 
     if ($db->f("idlang") == $lang) {
 
-        $arts = Array();
+        $arts = array();
 
         if (isset($arrArtCache[$db->f("idcat")])) {
             foreach ($arrArtCache[$db->f("idcat")] as $key => $value) {
@@ -416,41 +420,40 @@ while ($db->nextRecord()) {
 
 if ($syncoptions == -1) {
     $sql2 = "SELECT
-                    c.idcat AS idcat,
-                    SUM(a.online) AS online,
-                    d.startidartlang
-                FROM
-                    " . $cfg["tab"]["art_lang"] . " AS a,
-                    " . $cfg["tab"]["art"] . " AS b,
-                    " . $cfg["tab"]["cat_art"] . " AS c,
-                    " . $cfg["tab"]["cat_lang"] . " AS d
-                WHERE
-                    a.idlang = " . cSecurity::toInteger($lang) . " AND
-                    a.idart = b.idart AND
-                    b.idclient = '" . cSecurity::toInteger($client) . "' AND
-                    b.idart = c.idart AND
-                    c.idcat = d.idcat
-                GROUP BY c.idcat
-                        ";
+                c.idcat AS idcat,
+                SUM(a.online) AS online,
+                d.startidartlang
+            FROM
+                " . $cfg["tab"]["art_lang"] . " AS a,
+                " . $cfg["tab"]["art"] . " AS b,
+                " . $cfg["tab"]["cat_art"] . " AS c,
+                " . $cfg["tab"]["cat_lang"] . " AS d
+            WHERE
+                a.idlang = " . cSecurity::toInteger($lang) . " AND
+                a.idart = b.idart AND
+                b.idclient = '" . cSecurity::toInteger($client) . "' AND
+                b.idart = c.idart AND
+                c.idcat = d.idcat
+            GROUP BY c.idcat";
 } else {
     $sql2 = "SELECT
-                    c.idcat AS idcat,
-                    SUM(a.online) AS online,
-                    d.startidartlang
-                FROM
-                    " . $cfg["tab"]["art_lang"] . " AS a,
-                    " . $cfg["tab"]["art"] . " AS b,
-                    " . $cfg["tab"]["cat_art"] . " AS c,
-                    " . $cfg["tab"]["cat_lang"] . " AS d
-                WHERE
-                    a.idart = b.idart AND
-                    b.idclient = '" . cSecurity::toInteger($client) . "' AND
-                    b.idart = c.idart AND
-                    c.idcat = d.idcat
-                GROUP BY c.idcat";
+                c.idcat AS idcat,
+                SUM(a.online) AS online,
+                d.startidartlang
+            FROM
+                " . $cfg["tab"]["art_lang"] . " AS a,
+                " . $cfg["tab"]["art"] . " AS b,
+                " . $cfg["tab"]["cat_art"] . " AS c,
+                " . $cfg["tab"]["cat_lang"] . " AS d
+            WHERE
+                a.idart = b.idart AND
+                b.idclient = '" . cSecurity::toInteger($client) . "' AND
+                b.idart = c.idart AND
+                c.idcat = d.idcat
+            GROUP BY c.idcat";
 }
-
 $db->query($sql2);
+
 $aStartOnlineArticles = array();
 while ($db->nextRecord()) {
     if ($db->f('startidartlang') > 0) {

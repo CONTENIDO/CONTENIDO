@@ -4,8 +4,6 @@
  *
  * @package    Plugin
  * @subpackage ContentAllocation
- * @version    SVN Revision $Rev:$
- *
  * @author     Marco Jahn
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,28 +23,50 @@ plugin_include('repository', 'custom/FrontendNavigation.php');
  */
 class pApiContentAllocationSelectBox extends pApiTree {
 
-    var $idSetter = true;
-    var $load = array();
+    /**
+     * @var boolean
+     */
+    protected $_idSetter = true;
 
-    function pApiContentAllocationComplexList ($uuid) {
-        global $cfg;
+    /**
+     * @var array
+     */
+    protected $_load = array();
 
-        parent::pApiTree($uuid);
+    /**
+     * pApiContentAllocationSelectBox constructor
+     *
+     * @param string $uuid
+     */
+    public function __construct($uuid) {
+        parent::__construct($uuid);
     }
 
-    function _buildRenderTree ($tree) {
-        global $action, $frame, $area, $sess, $idart;
+    /**
+     * Old constructor
+     *
+     * @deprecated [2016-02-11]
+     * 				This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     * @param string $uuid
+     * @return __construct()
+     */
+    public function pApiContentAllocationSelectBox($uuid) {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
+        return $this->__construct($uuid);
+    }
 
-        $oldIdSetter = $this->idSetter;
-        $this->idSetter = false;
+    /**
+     * Builed an render tree
+     *
+     * @param $tree
+     * @return string
+     */
+    protected function _buildRenderTre ($tree) {
 
+        $this->_idSetter = false;
         $result = '';
 
-        $levelElms = sizeof($tree);
-        $cnt = 1;
         foreach ($tree as $item_tmp) {
-            $item = '';
-
             $spacer = '|-';
             $spacer = str_pad($spacer, (($item_tmp['level'] + 1) * 2), "--", STR_PAD_RIGHT);
 
@@ -61,15 +81,29 @@ class pApiContentAllocationSelectBox extends pApiTree {
         return $result;
     }
 
-    function setChecked($load) {
+
+    /**
+     * Old function
+     *
+     * @deprecated [2016-02-11]
+     * 				This method is deprecated and is not needed any longer.    *
+     * @param null $load
+     * @return boolean
+     */
+    public function setChecked($load = null) {
+        cDeprecated('This method is deprecated and is not needed any longer.');
         return false;
     }
 
     /**
+     * Render tree
      *
-     * @modified 27.10.2005 $bUseTreeStatus = false (ContentAllocation tree in selectbox is always expanded)
+     * @param boolean $return
+     * @param mixed $parentId
+     * @param boolean $useTreeStatus (if true use expand/collapsed status of the tree, otherwise not)
+     * @return boolean|object
      */
-    function renderTree ($return = true, $parentId = false, $bUseTreeStatus = false) {
+    public function renderTree($return = true, $parentId = false, $bUseTreeStatus = false) {
 
         $tree = $this->fetchTree($parentId, 0, $bUseTreeStatus);
 
@@ -86,5 +120,4 @@ class pApiContentAllocationSelectBox extends pApiTree {
         }
     }
 }
-
 ?>

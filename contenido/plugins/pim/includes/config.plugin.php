@@ -4,8 +4,6 @@
  *
  * @package Plugin
  * @subpackage PluginManager
- * @version SVN Revision $Rev:$
- *
  * @author Frederic Schneider
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -14,10 +12,6 @@
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
-
-// global translation for userright management
-global $lngAct;
-$lngAct['pim']['pim'] = i18n('Run Plugin Manager', 'pim');
 
 // plugin includes
 plugin_include('pim', 'classes/class.pim.plugin.collection.php');

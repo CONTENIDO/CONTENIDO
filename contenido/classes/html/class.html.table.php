@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the cHTMLTable class.
  *
  * @package Core
  * @subpackage GUI_HTML
- * @version SVN Revision $Rev:$
- *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -24,6 +23,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHTMLTable extends cHTMLContentElement {
 
     /**
+     * Constructor to create an instance of this class.
+     *
      * Creates an HTML table element.
      */
     public function __construct() {
@@ -38,8 +39,10 @@ class cHTMLTable extends cHTMLContentElement {
     /**
      * Sets the spacing between cells
      *
-     * @param string $cellspacing Spacing
-     * @return cHTMLTable $this
+     * @param string $cellspacing
+     *         Spacing
+     * @return cHTMLTable
+     *         $this for chaining
      */
     public function setCellSpacing($cellspacing) {
         return $this->updateAttribute('cellspacing', $cellspacing);
@@ -49,7 +52,8 @@ class cHTMLTable extends cHTMLContentElement {
      * Alias for setCellSpacing
      *
      * @param string $cellspacing
-     * @return cHTMLTable $this
+     * @return cHTMLTable
+     *         $this for chaining
      */
     public function setSpacing($cellspacing) {
         return $this->setCellSpacing($cellspacing);
@@ -58,8 +62,10 @@ class cHTMLTable extends cHTMLContentElement {
     /**
      * Sets the padding between cells
      *
-     * @param string $cellpadding Padding
-     * @return cHTMLTable $this
+     * @param string $cellpadding
+     *         Padding
+     * @return cHTMLTable
+     *         $this for chaining
      */
     public function setCellPadding($cellpadding) {
         return $this->updateAttribute('cellpadding', $cellpadding);
@@ -69,7 +75,8 @@ class cHTMLTable extends cHTMLContentElement {
      * Alias for setCellPadding
      *
      * @param string $cellpadding
-     * @return cHTMLTable $this
+     * @return cHTMLTable
+     *         $this for chaining
      */
     public function setPadding($cellpadding) {
         return $this->setCellPadding($cellpadding);
@@ -78,8 +85,10 @@ class cHTMLTable extends cHTMLContentElement {
     /**
      * Sets the table's border
      *
-     * @param string $border Border size
-     * @return cHTMLTable $this
+     * @param string $border
+     *         Border size
+     * @return cHTMLTable
+     *         $this for chaining
      */
     public function setBorder($border) {
         return $this->updateAttribute('border', $border);
@@ -88,8 +97,10 @@ class cHTMLTable extends cHTMLContentElement {
     /**
      * setWidth: Sets the table width
      *
-     * @param string $width Width
-     * @return cHTMLTable $this
+     * @param string $width
+     *         Width
+     * @return cHTMLTable
+     *         $this for chaining
      */
     public function setWidth($width) {
         return $this->updateAttribute('width', $width);

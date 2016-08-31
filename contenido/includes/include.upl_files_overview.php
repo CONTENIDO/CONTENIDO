@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for displaying files of a directory in upload section.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Timo Hummel
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -33,7 +32,11 @@ if (!(int) $client > 0) {
 $page = new cGuiPage('upl_files_overview', '', 0);
 
 $appendparameters = $_REQUEST['appendparameters'];
-$file = $_REQUEST['file'];
+
+// Define local variable file
+$file = cSecurity::escapeString($_REQUEST['file']);
+$file = str_replace('..', '', $file);
+$file = str_replace('/', '', $file);
 
 if (!is_array($browserparameters) && ($appendparameters != 'imagebrowser' || $appendparameters != 'filebrowser')) {
     $browserparameters = array();
@@ -46,6 +49,7 @@ if (!$sess->isRegistered('upl_last_path')) {
     // if no path is given the last path is used
     $path = $upl_last_path;
 }
+
 // if path doesn't exist use root path
 // this might happen when the last path is that of another client or deleted outside CONTENIDO
 if (!cApiDbfs::isDbfs($path) && !cFileHandler::exists($cfgClient[$client]['upl']['path'] . $path)) {
@@ -77,19 +81,19 @@ if ($action == 'upl_modify_file') {
     $uplPath = $cfgClient[$client]['upl']['path'];
 
     if (isset($_REQUEST['path']) && $_REQUEST['path'] != NULL) {
-        $uplPath .= $_REQUEST['path'];
+        $uplPath .= cSecurity::escapeString($_REQUEST['path']);
     }
 
     if (isset($_REQUEST['efolder']) && $_REQUEST['efolder'] != NULL) {
-        $extractFolder = $_REQUEST['efolder'];
+        $extractFolder = cSecurity::escapeString($_REQUEST['efolder']);
     }
 
     if (isset($_REQUEST['extractZip']) && !isset($_REQUEST['overwrite'])) {
-        $zipFile = $uplPath . $_REQUEST['file'];
+        $zipFile = $uplPath . cSecurity::escapeString($_REQUEST['file']);
         cZipArchive::extract($zipFile, $uplPath, $extractFolder);
     }
     if (isset($_REQUEST['extractZip']) && isset($_REQUEST['overwrite'])) {
-        $zipFile = $uplPath . $_REQUEST['file'];
+        $zipFile = $uplPath . cSecurity::escapeString($_REQUEST['file']);
         cZipArchive::extractOverRide($zipFile, $uplPath, $extractFolder);
     }
     // Did the user upload a new file?
@@ -147,8 +151,8 @@ if ($action == 'upl_modify_file') {
     $bTimeMng = (isset($_REQUEST['timemgmt']) && strlen($_REQUEST['timemgmt']) > 1);
     $properties->setValue('upload', $qpath . $file, 'file', 'timemgmt', ($bTimeMng) ? 1 : 0);
     if ($bTimeMng) {
-        $properties->setValue('upload', $qpath . $file, 'file', 'datestart', $_REQUEST['datestart']);
-        $properties->setValue('upload', $qpath . $file, 'file', 'dateend', $_REQUEST['dateend']);
+        $properties->setValue('upload', $qpath . $file, 'file', 'datestart', cSecurity::escapeString($_REQUEST['datestart']));
+        $properties->setValue('upload', $qpath . $file, 'file', 'dateend', cSecurity::escapeString($_REQUEST['dateend']));
     }
 
     $author = $auth->auth['uid'];
@@ -253,7 +257,7 @@ if ($action == 'upl_upload' && $bDirectoryIsWritable == true) {
     if ($perm->have_perm_area_action($area, 'upl_upload')) {
         if (count($_FILES) == 1) {
             foreach ($_FILES['file']['name'] as $key => $value) {
-                if (isUtf8($_FILES['file']['name'][$key])) {
+                if (cString::isUtf8($_FILES['file']['name'][$key])) {
                     $_FILES['file']['name'][$key] = utf8_decode($_FILES['file']['name'][$key]);
                 }
                 if ($_FILES['file']['tmp_name'][$key] != '') {
@@ -313,14 +317,41 @@ if ($action == 'upl_renamefile' && $bDirectoryIsWritable == true) {
     rename($cfgClient[$client]['upl']['path'] . $path . $oldname, $cfgClient[$client]['upl']['path'] . $path . $newname);
 }
 
+/**
+ *
+ * @author unknown
+ */
 class UploadList extends FrontendList {
 
-    var $dark;
-    var $size;
+    /**
+     *
+     * @var string
+     */
+    protected $_dark;
 
-    function convert($field, $data) {
-        global $cfg, $path, $sess, $cfgClient, $client, $appendparameters;
+    /**
+     *
+     * @var int
+     */
+    protected $_size;
 
+    /**
+     * Field converting facility.
+     *
+     * @see FrontendList::convert()
+     * @param int $field
+     *         Field index
+     * @param mixed $data
+     *         Field value
+     * @return mixed
+     */
+    public function convert($field, $data) {
+        global $path, $appendparameters;
+
+        $cfg = cRegistry::getConfig();
+        $sess = cRegistry::getSession();
+        $client = cRegistry::getClientId();
+        $cfgClient = cRegistry::getClientConfig();
         $backendUrl = cRegistry::getBackendUrl();
 
         if ($field == 4) {
@@ -339,7 +370,7 @@ class UploadList extends FrontendList {
                 }
             } else {
                 $tmp_mstr = '<a onmouseover="this.style.cursor=\'pointer\'" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
-                $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$data&appendparameters=$appendparameters&startpage=" . $_REQUEST['startpage'] . "&sortby=" . $_REQUEST['sortby'] . "&sortmode=" . $_REQUEST['sortmode'] . "&thumbnailmode=" . $_REQUEST['thumbnailmode']), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$data"), $data);
+                $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$data&appendparameters=$appendparameters&startpage=" . cSecurity::toInteger($_REQUEST['startpage']) . "&sortby=" . cSecurity::escapeString($_REQUEST['sortby']) . "&sortmode=" . cSecurity::escapeString($_REQUEST['sortmode']) . "&thumbnailmode=" . cSecurity::escapeString($_REQUEST['thumbnailmode'])), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$data"), $data);
             }
             return $mstr;
         }
@@ -350,7 +381,7 @@ class UploadList extends FrontendList {
 
         if ($field == 2) {
             // If this file is an image, try to open
-            $fileType = strtolower(getFileType($data));
+            $fileType = strtolower(cFileHandler::getExtension($data));
             switch ($fileType) {
                 case 'png':
                 case 'gif':
@@ -393,6 +424,20 @@ class UploadList extends FrontendList {
         }
 
         return $data;
+    }
+
+    /**
+     * @return int $size
+     */
+    public function getSize() {
+        return $this->_size;
+    }
+
+    /**
+     * @param int $size
+     */
+    public function setSize($size) {
+        $this->_size = $size;
     }
 
 }
@@ -559,7 +604,7 @@ $user->setUserProperty('upload_folder_thumbnailmode', md5($path), $thumbnailmode
 
 $list2->setResultsPerPage($numpics);
 
-$list2->size = $thumbnailmode;
+$list2->setSize($thumbnailmode);
 
 $rownum = 0;
 
@@ -567,14 +612,14 @@ $properties = new cApiPropertyCollection();
 
 while ($item = $uploads->next()) {
 
-	// Get name of directory, filename and size of file
-	$dirname = $item->get('dirname');
+    // Get name of directory, filename and size of file
+    $dirname = $item->get('dirname');
     $filename = $item->get('filename');
     $filesize = $item->get('size');
 
     // Do not display directories and "filenames" begin with a dot
     if (true === cDirHandler::exists($cfgClient[$client]['upl']['path'] . $dirname . $filename) || strpos($filename, ".") === 0) {
-    	continue;
+        continue;
     }
 
     $bAddFile = true;
@@ -582,7 +627,7 @@ while ($item = $uploads->next()) {
     if ($appendparameters == 'imagebrowser') {
         $restrictvar = 'restrict_' . $appendparameters;
         if (array_key_exists($restrictvar, $browserparameters)) {
-            $fileType = strtolower(getFileType($filename));
+            $fileType = strtolower(cFileHandler::getExtension($filename));
             if (count($browserparameters[$restrictvar]) > 0) {
                 $bAddFile = false;
                 if (in_array($fileType, $browserparameters[$restrictvar])) {
@@ -620,11 +665,11 @@ while ($item = $uploads->next()) {
 
     $check = new cHTMLCheckbox('fdelete[]', $filename);
 
-    $mark = $check->toHTML(false);
+    $mark = $check->toHtml(false);
 
     if ($bAddFile == true) {
         // 'bgcolor' is just a placeholder...
-        $list2->setData($rownum, $mark, $dirname . $filename, $showfilename, $filesize, strtolower(getFileType($filename)), $todo->render() . $actions);
+        $list2->setData($rownum, $mark, $dirname . $filename, $showfilename, $filesize, strtolower(cFileHandler::getExtension($filename)), $todo->render() . $actions);
         $rownum++;
     }
 }

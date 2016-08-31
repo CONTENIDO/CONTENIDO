@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the file collection and item class.
  *
  * @package Core
  * @subpackage GenericDB_Model
- * @version SVN Revision $Rev:$
- *
  * @author Timo Hummel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -24,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiFileCollection extends ItemCollection {
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -39,7 +38,7 @@ class cApiFileCollection extends ItemCollection {
      * Creates a file item entry
      * @param string $area
      * @param string $filename
-     * @param string $filetype
+     * @param string $filetype [optional]
      * @return cApiFile
      */
     public function create($area, $filename, $filetype = 'main') {
@@ -81,9 +80,10 @@ class cApiFileCollection extends ItemCollection {
 class cApiFile extends Item {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId [optional]
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;

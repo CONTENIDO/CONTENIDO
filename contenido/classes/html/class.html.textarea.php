@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the cHTMLTextarea class.
  *
  * @package Core
  * @subpackage GUI_HTML
- * @version SVN Revision $Rev:$
- *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -26,21 +25,31 @@ class cHTMLTextarea extends cHTMLFormElement {
     protected $_value;
 
     /**
-     * Constructor.
+     * Constructor to create an instance of this class.
+     *
      * Creates an HTML text area.
      *
-     * If no additional parameters are specified, the
-     * default width is 60 chars, and the height is 5 chars.
+     * If no additional parameters are specified, the default width is
+     * 60 chars, and the height is 5 chars.
      *
-     * @param string $name Name of the element
-     * @param string $initvalue Initial value of the textarea
-     * @param int $width width of the textarea
-     * @param int $height height of the textarea
-     * @param string $id ID of the element
-     * @param string $disabled Item disabled flag (non-empty to set disabled)
-     * @param string $tabindex Tab index for form elements
-     * @param string $accesskey Key to access the field
-     * @param string $class the class of this element
+     * @param string $name
+     *         Name of the element
+     * @param string $initvalue [optional]
+     *         Initial value of the textarea
+     * @param int $width [optional]
+     *         width of the textarea
+     * @param int $height [optional]
+     *         height of the textarea
+     * @param string $id [optional]
+     *         ID of the element
+     * @param string $disabled [optional]
+     *         Item disabled flag (non-empty to set disabled)
+     * @param string $tabindex [optional]
+     *         Tab index for form elements
+     * @param string $accesskey [optional]
+     *         Key to access the field
+     * @param string $class [optional]
+     *         the class of this element
      */
     public function __construct($name, $initvalue = '', $width = '', $height = '', $id = '', $disabled = false, $tabindex = NULL, $accesskey = '', $class = '') {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
@@ -55,8 +64,10 @@ class cHTMLTextarea extends cHTMLFormElement {
     /**
      * Sets the width of the text box.
      *
-     * @param int $width width of the text box
-     * @return cHTMLTextarea $this
+     * @param int $width
+     *         width of the text box
+     * @return cHTMLTextarea
+     *         $this for chaining
      */
     public function setWidth($width) {
         $width = intval($width);
@@ -71,8 +82,10 @@ class cHTMLTextarea extends cHTMLFormElement {
     /**
      * Sets the maximum input length of the text box.
      *
-     * @param int $maxlen maximum input length
-     * @return cHTMLTextarea $this
+     * @param int $maxlen
+     *         maximum input length
+     * @return cHTMLTextarea
+     *         $this for chaining
      */
     public function setHeight($height) {
         $height = intval($height);
@@ -87,8 +100,10 @@ class cHTMLTextarea extends cHTMLFormElement {
     /**
      * Sets the initial value of the text box.
      *
-     * @param string $value Initial value
-     * @return cHTMLTextarea $this
+     * @param string $value
+     *         Initial value
+     * @return cHTMLTextarea
+     *         $this for chaining
      */
     public function setValue($value) {
         $this->_value = $value;
@@ -99,12 +114,13 @@ class cHTMLTextarea extends cHTMLFormElement {
     /**
      * Renders the textarea
      *
-     * @return string Rendered HTML
+     * @return string
+     *         Rendered HTML
      */
     public function toHtml() {
         $this->_setContent($this->_value);
 
-        return parent::toHTML();
+        return parent::toHtml();
     }
 
 }

@@ -4,8 +4,6 @@
  *
  * @package Core
  * @subpackage LayoutHandler
- * @version SVN Revision $Rev:$
- *
  * @author Rusmir Jusufovic
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -53,6 +51,7 @@ class cLayoutSynchronizer {
     private $_outputMessage = array();
 
     /**
+     * Constructor to create an instance of this class.
      *
      * @param array $cfg
      * @param array $cfgClient
@@ -87,7 +86,7 @@ class cLayoutSynchronizer {
             }
 
             // set output message
-            $this->_outputMessage['info'][] = sprintf(i18n("Synchronization successfully layout name: %s"), $newLayoutName);
+            $this->_outputMessage['info'][] = sprintf(i18n("Layout synchronization successful: %s"), $newLayoutName);
         } else {
             // update the name of the layout
             if ($oldLayoutName != $newLayoutName) {
@@ -99,9 +98,12 @@ class cLayoutSynchronizer {
     /**
      * Update the name of layout (if the name not allowes)
      *
-     * @param string $oldName old name
-     * @param string $newName new module name
-     * @param int $idclient id of client
+     * @param string $oldName
+     *         old name
+     * @param string $newName
+     *         new module name
+     * @param int $idclient
+     *         id of client
      */
     private function _updateModulnameInDb($oldName, $newName, $idclient) {
         $oLayColl = new cApiLayoutCollection();
@@ -119,7 +121,7 @@ class cLayoutSynchronizer {
      * @param string $dirNameOld
      * @param string $dirNameNew
      * @param int $client
-     * @return boolean
+     * @return bool
      */
     private function _renameFileAndDir($dir, $dirNameOld, $dirNameNew, $client) {
         if (rename($dir . $dirNameOld, $dir . $dirNameNew) == false) {
@@ -134,9 +136,11 @@ class cLayoutSynchronizer {
     /**
      * Exist the layout in db-table
      *
-     * @param string $alias layout name
-     * @param int $idclient client id
-     * @return boolean
+     * @param string $alias
+     *         layout name
+     * @param int $idclient
+     *         client id
+     * @return bool
      */
     private function _isExistInTable($alias, $idclient) {
         // Select depending from idclient all moduls wiht the name $name
@@ -148,9 +152,12 @@ class cLayoutSynchronizer {
     /**
      * Rename the Layout
      *
-     * @param string path to client layout-direcotry $dir
-     * @param string $oldLayoutName layout name in file directory
-     * @param string $newLayoutName clear layout name
+     * @param string $dir
+     *         path to client layout-direcotry $dir
+     * @param string $oldLayoutName
+     *         layout name in file directory
+     * @param string $newLayoutName
+     *         clear layout name
      */
     private function _renameFiles($dir, $oldLayoutName, $newLayoutName) {
         if (cFileHandler::exists($dir . $newLayoutName . '/' . $oldLayoutName . '.html') == true) {
@@ -161,8 +168,10 @@ class cLayoutSynchronizer {
     /**
      * Update the con_mod, the field lastmodified
      *
-     * @param int $timestamp timestamp of last modification
-     * @param int $idlay Id of layout
+     * @param int $timestamp
+     *         timestamp of last modification
+     * @param int $idlay
+     *         Id of layout
      */
     public function setLastModified($timestamp, $idlay) {
         $oLay = new cApiLayout((int) $idlay);
@@ -200,7 +209,7 @@ class cLayoutSynchronizer {
                         $layout = new cLayoutHandler($db->f('idlay'), ' ', $this->_cfg, $this->_lang);
                         // Update CODE table
                         conGenerateCodeForAllartsUsingLayout($db->f('idlay'));
-                        $this->_outputMessage['info'][] = i18n("Synchronization successfully layout name: ") . $db->f('name');
+                        $this->_outputMessage['info'][] = i18n("Layout synchronization successful: ") . $db->f('name');
                     }
                 }
             } else {
@@ -211,14 +220,14 @@ class cLayoutSynchronizer {
                 if ($oLayout->isInUse()) {
                     // make layout file
                     $layout->saveLayout('');
-                    $this->_outputMessage['info'][] = i18n("Synchronization successfully layout name made: ") . $db->f('name');
+                    $this->_outputMessage['info'][] = i18n("Layout synchronization successful, created: ") . $db->f('name');
                 } else {
                     // if not in use delete layout
                     if ($layout->eraseLayout()) {
                         layDeleteLayout($db->f('idlay'));
-                        $this->_outputMessage['info'][] = i18n("Synchronization successfully layout deleted: ") . $db->f('name');
+                        $this->_outputMessage['info'][] = i18n("Layout synchronization successful, deleted: ") . $db->f('name');
                     } else {
-                        $this->_outputMessage['error'][] = i18n("Synchronization faild cold not delate layout: ") . $db->f('name');
+                        $this->_outputMessage['error'][] = i18n("Synchronization failed could not delete layout: ") . $db->f('name');
                     }
                 }
             }
@@ -238,7 +247,7 @@ class cLayoutSynchronizer {
             }
         }
         if ($emptyMessage) {
-            $notification->displayNotification('info', i18n("Synchronization successfully!"));
+            $notification->displayNotification('info', i18n("Synchronization successful!"));
         }
     }
 
@@ -246,7 +255,7 @@ class cLayoutSynchronizer {
      * Synchronize the Layout directory with the lay-table und the lay-table
      * with directory.
      *
-     * @return boolean
+     * @return bool
      */
     public function synchronize() {
         // update file and layout
@@ -273,7 +282,7 @@ class cLayoutSynchronizer {
                     continue;
                 }
 
-                $newFile = strtolower(cApiStrCleanURLCharacters($file));
+                $newFile = strtolower(cString::cleanURLCharacters($file));
 
                 if ($newFile == $file) {
                     // dir is ok
@@ -302,5 +311,3 @@ class cLayoutSynchronizer {
         $this->_showOutputMessage();
     }
 }
-
-?>

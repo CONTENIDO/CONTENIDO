@@ -1,8 +1,6 @@
 <?PHP
 /**
  *
- * @version SVN Revision $Rev:$
- *
  * @author claus.schunk@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -22,14 +20,14 @@ class cHtmlListTest extends PHPUnit_Framework_TestCase {
             '<li>bla</li>',
             '<li>haa</li>'
         ));
-        $this->assertSame('<ul id="testId" class="testclass"><li>bla</li><li>haa</li></ul>', $cList->toHTML());
+        $this->assertSame('<ul id="testId" class="testclass"><li>bla</li><li>haa</li></ul>', $cList->toHtml());
         $cList = new cHTMLList('ul', 'testId', 'testclass', array());
-        $this->assertSame('<ul id="testId" class="testclass"></ul>', $cList->toHTML());
+        $this->assertSame('<ul id="testId" class="testclass"></ul>', $cList->toHtml());
         $cListItem = new cHTMLListItem('testId', 'testClass');
         $cList = new cHTMLList('ul', 'testId', 'testclass', array(
             $cListItem
         ));
-        $this->assertSame('<ul id="testId" class="testclass"><li id="testId" class="testClass"></li></ul>', $cList->toHTML());
+        $this->assertSame('<ul id="testId" class="testclass"><li id="testId" class="testClass"></li></ul>', $cList->toHtml());
     }
 
 }

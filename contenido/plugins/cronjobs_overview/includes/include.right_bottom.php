@@ -4,8 +4,6 @@
  *
  * @package    Plugin
  * @subpackage CronjobOverview
- * @version    SVN Revision $Rev:$
- *
  * @author     Rusmir Jusufovic
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -17,9 +15,8 @@
 include_once(dirname(__FILE__).'/config.plugin.php');
 
 $tpl = new cTemplate();
-$contenidoVars = array('cfg' => $cfg);
 
-$cronjobs = new Cronjobs($contenidoVars, $_REQUEST['file']);
+$cronjobs = new Cronjobs($_REQUEST['file']);
 $notification = new cGuiNotification();
 
 switch ($_REQUEST['action']) {
@@ -53,9 +50,9 @@ switch ($_REQUEST['action']) {
         if (!empty($_POST['crontab_contents'])) {
             //save contents
             if ($cronjobs->saveCrontabFile($_POST['crontab_contents']) === FALSE) {
-                $notification-> displayNotification('info', i18n('Could not be saved!', 'cronjobs_overview'));
+                $notification-> displayNotification('warning', i18n('Could not be saved!', 'cronjobs_overview'));
             } else {
-                $notification-> displayNotification('info', i18n('Successfully saved!', 'cronjobs_overview'));
+                $notification-> displayNotification('ok', i18n('Successfully saved!', 'cronjobs_overview'));
             }
         }
         $tpl->set('s', 'HEADER', i18n('Edit cronjob: ', 'cronjobs_overview').$cronjobs->getCronlogDirectory(). Cronjobs::$CRONTAB_FILE);

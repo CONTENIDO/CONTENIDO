@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for layout group rights management.
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Unknown
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -35,7 +34,7 @@ while ($db->nextRecord()) { // set a new rights list fore this user
 
 if (($perm->have_perm_area_action("groups_overview", $action)) && ($action == 'group_edit')) {
     if (saveGroupRights() === true) {
-        cRegistry::addInfoMessage(i18n('Changes saved'));
+        cRegistry::addOkMessage(i18n('Changes saved'));
     }
 } else {
     if (!$perm->have_perm_area_action("groups_overview", $action)) {

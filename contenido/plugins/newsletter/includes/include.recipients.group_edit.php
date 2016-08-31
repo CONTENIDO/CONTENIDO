@@ -4,8 +4,6 @@
  *
  * @package Plugin
  * @subpackage Newsletter
- * @version SVN Revision $Rev:$
- *
  * @author Bjoern Behrens
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -44,7 +42,7 @@ $aFields["deactivated"] = array(
 );
 
 if ($action == "recipientgroup_create" && $perm->have_perm_area_action($area, $action)) {
-    $oRGroup = $oRGroups->create(" " . i18n("-- New group --", 'newsletter'));
+    $oRGroup = $oRGroups->create(" " . i18n("-- New group --", 'newsletter', "newsletter"));
     $_REQUEST["idrecipientgroup"] = $oRGroup->get("idnewsgroup");
     $oPage->setReload();
     $sRefreshLeftTopScript = '<script type="text/javascript">Con.getFrame("left_top").refreshGroupOption(\'' . $_REQUEST["idrecipientgroup"] . '\', \'add\')</script>';
@@ -61,7 +59,7 @@ if ($action == "recipientgroup_create" && $perm->have_perm_area_action($area, $a
     $oRGroup->loadByPrimaryKey($_REQUEST["idrecipientgroup"]);
 }
 
-if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGroup->get("idlang") == $lang) {
+if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oRGroup->get("idlang") == $lang) {
     if ($action == "recipientgroup_save_group" && $perm->have_perm_area_action($area, $action)) {
         // Saving changes
         $aMessages = array();
@@ -73,7 +71,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
             $oRGroups->setWhere("groupname", stripslashes($sGroupName));
             $oRGroups->setWhere("idclient", $client);
             $oRGroups->setWhere("idlang", $lang);
-            $oRGroups->setWhere($oRGroup->primaryKey, $oRGroup->get($oRGroup->primaryKey), "!=");
+            $oRGroups->setWhere($oRGroup->getPrimaryKeyName(), $oRGroup->get($oRGroup->getPrimaryKeyName()), "!=");
             $oRGroups->query();
 
             if ($oRGroups->next()) {
@@ -180,7 +178,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 
     $oCkbDefault = new cHTMLCheckbox("defaultgroup", "1");
     $oCkbDefault->setChecked($oRGroup->get("defaultgroup"));
-    $oForm->add(i18n("Default group", 'newsletter'), $oCkbDefault->toHTML(false));
+    $oForm->add(i18n("Default group", 'newsletter'), $oCkbDefault->toHtml(false));
 
     // Member list options folding row
     $oMemberListOptionRow = new cGuiFoldingRow("a91f5540-52db-11db-b0de-0800200c9a66", i18n("Member list options", "newsletter"), "member");
@@ -291,7 +289,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 
         if ($oInsiders->count() > 0) {
             while ($oInsider = $oInsiders->next()) {
-                $aInsiders[] = $oInsider->get($oInsider->primaryKey);
+                $aInsiders[] = $oInsider->get($oInsider->getPrimaryKeyName());
             }
         }
 
@@ -356,7 +354,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 
             if ($perm->have_perm_area_action($area, "recipientgroup_recipient_delete")) {
                 $oCkbDel = new cHTMLCheckbox("deluser[]", $iID);
-                $oAddedRecipientList->setCell($iID, 2, $oCkbDel->toHTML(false));
+                $oAddedRecipientList->setCell($iID, 2, $oCkbDel->toHtml(false));
             } else {
                 $oAddedRecipientList->setCell($iID, 2, "&nbsp;");
             }
@@ -548,7 +546,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     $oSelUser = new cHTMLSelectElement("adduser[]");
     $oSelUser->setSize(25);
     $oSelUser->setStyle("width: 100%;");
-    $oSelUser->setMultiSelect();
+    $oSelUser->setMultiselect();
     $oSelUser->autoFill($aItems);
 
     // Outsider list pager (-> below data, as iOutsiders is needed)

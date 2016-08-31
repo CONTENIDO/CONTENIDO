@@ -4,8 +4,6 @@
  *
  * @package    Plugin
  * @subpackage ContentAllocation
- * @version    SVN Revision $Rev:$
- *
  * @author     Marco Jahn
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,19 +23,48 @@ plugin_include('repository', 'custom/FrontendNavigation.php');
  */
 class pApiContentAllocationComplexList extends pApiTree {
 
-    var $idSetter = true;
-    var $load = array();
+    /**
+     * @var boolean
+     */
+    protected $_idSetter = true;
 
-    function pApiContentAllocationComplexList ($uuid) {
-        global $cfg;
-        parent::pApiTree($uuid);
+    /**
+     * @var array
+     */
+    protected $_load = array();
+
+    /**
+     * pApiContentAllocationComplexList constructor
+     *
+     * @param string $uuid
+     */
+    public function __construct($uuid) {
+        parent::__construct($uuid);
     }
 
-    function _buildRenderTree ($tree) {
-        global $action, $frame, $area, $sess, $idart;
+    /**
+     * Old constructor
+     *
+     * @deprecated [2016-02-11]
+     * 				This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     * @param string $uuid
+     * @return __construct()
+     */
+    public function pApiContentAllocationComplexList($uuid) {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
+        return $this->__construct($uuid);
+    }
 
-        $oldIdSetter = $this->idSetter;
-        $this->idSetter = false;
+    /**
+     * Builed an render tree
+     *
+     * @param $tree
+     * @return string
+     */
+    protected function _buildRenderTree($tree) {
+
+        $oldIdSetter = $this->_idSetter;
+        $this->_idSetter = false;
 
         $result = '';
 
@@ -48,7 +75,7 @@ class pApiContentAllocationComplexList extends pApiTree {
         foreach ($tree as $item_tmp) {
             $item = '';
             $checked = '';
-            if (in_array($item_tmp['idpica_alloc'], $this->load)) {
+            if (in_array($item_tmp['idpica_alloc'], $this->_load)) {
                 $checked = ' checked="checked"';
             }
 
@@ -84,11 +111,22 @@ class pApiContentAllocationComplexList extends pApiTree {
         }
     }
 
-    function setChecked($load) {
-        $this->load = $load;
+    /**
+     * Set method for load
+     *
+     * @param array $load
+     */
+    public function setChecked($load) {
+        $this->_load = $load;
     }
 
-    function renderTree ($return = true) {
+    /**
+     * Render tree
+     *
+     * @param boolean $return
+     * @return boolean|object
+     */
+    public function renderTree($return = true) {
         $tree = $this->fetchTree();
         if ($tree === false) {
             return false;

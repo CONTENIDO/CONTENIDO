@@ -2,8 +2,6 @@
 
 {*
 
-author: marcus.gnass
-
 Form to edit meta data for the given form.
 
 If no $formAction is given user lacks the rights to store form.

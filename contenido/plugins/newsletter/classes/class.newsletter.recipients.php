@@ -4,8 +4,6 @@
  *
  * @package Plugin
  * @subpackage Newsletter
- * @version SVN Revision $Rev:$
- *
  * @author Bjoern Behrens
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -162,8 +160,8 @@ class NewsletterRecipientCollection extends ItemCollection {
      * checkEMail returns true, if there is no recipient with the same e-mail
      * address; otherwise false
      *
-     * @param $email string e-mail
-     * @return recpient item if item with e-mail exists, false otherwise
+     * @param $sEmail string e-mail
+     * @return NewsletterRecipient|false recpient item if item with e-mail exists, false otherwise
      */
     public function emailExists($sEmail) {
         global $client, $lang;
@@ -245,7 +243,7 @@ class NewsletterRecipient extends Item {
         $iNewsType = $this->get("news_type");
 
         $oLogs = new NewsletterLogCollection();
-        $oLogs->setWhere("idnewsrcp", $this->get($this->primaryKey));
+        $oLogs->setWhere("idnewsrcp", $this->get($this->getPrimaryKeyName()));
         $oLogs->setWhere("status", "pending");
         $oLogs->query();
 

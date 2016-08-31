@@ -4,8 +4,6 @@
  *
  * @package          Core
  * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
- *
  * @author           Murat Purc <murat@purc.de>
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -24,7 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiArticleSpecificationCollection extends ItemCollection {
 
     /**
-     * Constructor function
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -37,7 +35,8 @@ class cApiArticleSpecificationCollection extends ItemCollection {
      *
      * @param int $client
      * @param int $lang
-     * @param string $orderby Order statement, like "artspec ASC"
+     * @param string $orderby [optional]
+     *         Order statement, like "artspec ASC"
      * @return array
      */
     public function fetchByClientLang($client, $lang, $orderBy = '') {
@@ -60,9 +59,10 @@ class cApiArticleSpecificationCollection extends ItemCollection {
 class cApiArticleSpecification extends Item {
 
     /**
-     * Constructor function
+     * Constructor to create an instance of this class.
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId [optional]
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;

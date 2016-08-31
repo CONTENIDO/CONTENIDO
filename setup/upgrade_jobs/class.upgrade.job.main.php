@@ -4,8 +4,6 @@
  *
  * @package Setup
  * @subpackage UpgradeJob
- * @version SVN Revision $Rev:$
- *
  * @author Murat Purc <murat@purc.de>
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -56,8 +54,7 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
         $this->_jobConvertOldStartArticlesToNewOne();
 
         // Update Keys
-        $aNothing = array();
-        injectSQL($this->_oDb, $cfg['sql']['sqlprefix'], 'data/indexes.sql', array(), $aNothing);
+        injectSQL($this->_oDb, $cfg['sql']['sqlprefix'], 'data/indexes.sql', array());
 
         // Update to autoincrement
         addAutoIncrementToTables($this->_oDb, $cfg);
@@ -78,8 +75,6 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
      *
      * This function takes the start articles from con_cat_art.is_start and
      * sets them in con_cat_lang.startidartlang for all available languages.
-     *
-     * @todo Move this to an upgrade job
      */
     protected function _jobConvertOldStartArticlesToNewOne() {
         global $cfg;

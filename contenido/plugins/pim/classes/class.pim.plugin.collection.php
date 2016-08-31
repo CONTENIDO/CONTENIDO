@@ -4,8 +4,6 @@
  *
  * @package Plugin
  * @subpackage PluginManager
- * @version SVN Revision $Rev:$
- *
  * @author Frederic Schneider
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -35,11 +33,23 @@ class PimPluginCollection extends ItemCollection {
         $this->_setItemClass('PimPlugin');
     }
 
-    /**
-     * Create a new plugin
-     *
-     * @param none
-     */
+	/**
+	 * Create a new plugin
+	 * 
+	 * @param     $name
+	 * @param     $description
+	 * @param     $author
+	 * @param     $copyright
+	 * @param     $mail
+	 * @param     $website
+	 * @param     $version
+	 * @param     $foldername
+	 * @param     $uuId
+	 * @param     $active
+	 * @param int $execOrder
+	 *
+	 * @return Item
+	 */
     public function create($name, $description, $author, $copyright, $mail, $website, $version, $foldername, $uuId, $active, $execOrder = 0) {
         global $client;
 
@@ -78,7 +88,7 @@ class PimPluginCollection extends ItemCollection {
      * @return int
      */
     protected function _getNextId() {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
 
         $sql = 'SELECT MAX(idplugin) AS id FROM ' . $cfg['tab']['plugins'];
         $this->db->query($sql);

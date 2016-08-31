@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the system integrity backend page.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Mischa Holz
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -42,4 +41,5 @@ foreach ($results as $result) {
 
 $page->set("s", "RESULTS", i18n("Results"));
 $page->render();
+
 ?>

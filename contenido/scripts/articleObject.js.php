@@ -7,13 +7,13 @@
  * Moving article related logic to the front_end
  *
  * @package    CONTENIDO Backend Scripts
- * @version    SVN Revision $Rev$
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release 4.8.7
+ * @deprecated [2015-05-21] This file is no longer supported
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -81,17 +81,16 @@ $aCustomTabs['bar'] = array(
  * Article related logic module
  *
  * @module     article-object
- * @version    SVN Revision $Rev$
  * @requires   jQuery, Con
  * @author     Unknown
  * @author     Jan Lengowski <Jan.Lengowski@4fb.de>
  * @author     Timo Trautmann <timo.trautmann@4fb.de>
  * @author     Murat Purc <murat@purc.de>
- * @version    SVN Revision $Rev$
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
+ * @deprecated [2015-05-21] This file is no longer supported
  */
 
 (function(Con, $) {
@@ -156,6 +155,35 @@ foreach ($aCustomTabs as $key => $params) {
 }
 echo $cutomTabsJs;
 ?>
+
+         // try to get nav and action frames if async frames loading don't work
+         if (   typeof this.navFrame === 'undefined'
+             || typeof this.actionFrame === 'undefined'
+         ) {
+
+             var self = this;
+             var maxIntervalCounter = 20;
+             var interval = setInterval(
+                 function() {
+
+                     if (typeof self.navFrame === 'undefined') {
+                         self.navFrame = Con.getFrame('right_top');
+                     }
+                     if (typeof self.actionFrame === 'undefined') {
+                         self.actionFrame = Con.getFrame(self.actionFrameName);
+                     }
+
+                     if (   (   typeof self.navFrame !== 'undefined'
+                         && typeof self.actionFrame !== 'undefined')
+                         || maxIntervalCounter <= 0
+                     ) {
+                         clearInterval(interval);
+                     }
+
+                     maxIntervalCounter--;
+                 }
+                 ,250);
+         }
 
     };
 
@@ -260,7 +288,7 @@ echo $cutomTabsJs;
                             url = this.sessUrl(this.filename + 'area=' + str + '&action=con_edit&idart=' + this.idart + '&idcat=' + this.idcat);
                             doAction = true;
                         } else {
-                            // There is no selected article, we do not have the neccessary
+                            // There is no selected article, we do not have the necessary
                             // data to display the Article- properties mask
                             error = "<?php echo i18n("Article can't be displayed") . '<br>' . i18n("No article was selected"); ?>";
                             Con.markSubmenuItem('c_0');
@@ -279,7 +307,7 @@ echo $cutomTabsJs;
                             url = this.sessUrl(this.filename + 'area=' + str + '&action=tplcfg_edit&idart=' + this.idart + '&idcat=' + this.idcat);
                             doAction = true;
                         } else {
-                            // There is no selected article, we do not have the neccessary
+                            // There is no selected article, we do not have the necessary
                             // data to display the Template- configuration mask
                             error = "<?php echo i18n("Template configuration can't be displayed") . '<br>' . i18n("No article was selected"); ?>";
                             Con.markSubmenuItem('c_0');
@@ -298,7 +326,7 @@ echo $cutomTabsJs;
                             url = this.sessUrl(this.filename + 'area=' + str + '&action=con_editart&changeview=edit&idart=' + this.idart + '&idartlang=' + this.idartlang + '&idcat=' + this.idcat);
                             doAction = true;
                         } else {
-                            // There is no selected article, we do not have the neccessary data to display the Editor
+                            // There is no selected article, we do not have the necessary data to display the Editor
                             error = "<?php echo i18n("Editor can't be displayed") . '<br>' . i18n("No article was selected"); ?>";
                             Con.markSubmenuItem('c_0');
                         }
@@ -312,7 +340,7 @@ echo $cutomTabsJs;
                         url = this.sessUrl(this.filename + 'area=con_editcontent&action=con_editart&changeview=prev&idart=' + this.idart + '&idartlang=' + this.idartlang + '&idcat=' + this.idcat + '&tmpchangelang='+ this.idlang);
                         doAction = true;
                     } else {
-                        // There is no selected article, we do not have the neccessary
+                        // There is no selected article, we do not have the necessary
                         // data to display the Editor
                         error = "<?php echo i18n("Preview can't be displayed") . '<br>' . i18n("No article was selected"); ?>";
                         Con.markSubmenuItem('c_0');
@@ -330,7 +358,7 @@ echo $cutomTabsJs;
                             url = this.sessUrl(this.filename + 'area=' + str + '&action=con_meta_edit&idart=' + this.idart + '&idcat=' + this.idcat);
                             doAction = true;
                         } else {
-                            // There is no selected article, we do not have the neccessary
+                            // There is no selected article, we do not have the necessary
                             // data to display the Article- properties mask
                             error = "<?php echo i18n("Article can't be displayed") . '<br>' . i18n("No article was selected"); ?>";
                             Con.markSubmenuItem('c_0');
@@ -349,7 +377,7 @@ echo $cutomTabsJs;
                             url = this.sessUrl(this.filename + 'area=' + str + '&action=con_content&changeview=edit&idart=' + this.idart + '&idartlang=' + this.idartlang + '&idcat=' + this.idcat + '&client=' + this.client + '&lang=' + this.lang);
                             doAction = true;
                         } else {
-                            // There is no selected article, we do not have the neccessary
+                            // There is no selected article, we do not have the necessary
                             // data to display the Editor
                             error = "<?php echo i18n("Editor can't be displayed") . '<br>' . i18n("No article was selected"); ?>";
                             Con.markSubmenuItem('c_0');
@@ -364,7 +392,7 @@ echo $cutomTabsJs;
                             url = this.sessUrl(this.filename + 'area=' + obj.area + '&action=' + obj.action + '&idart=' + this.idart + '&idartlang=' + this.idartlang + '&idcat=' + this.idcat + '&tmpchangelang='+ this.idlang + '&' + obj.custom);
                             doAction = true;
                         } else {
-                            // There is no selected article, we do not have the neccessary
+                            // There is no selected article, we do not have the necessary
                             // data to display the Editor
                             error = "<?php echo i18n("Tab can't be displayed") . '<br>' . i18n("No article was selected"); ?>";
                             Con.markSubmenuItem('c_0');
@@ -483,8 +511,5 @@ echo $cutomTabsJs;
         }
 
     };
-
-    // @deprecated [2013-10-22] Assign to windows scope (downwards compatibility)
-    window.articleObject = Con.ArticleObject;
 
 })(Con, Con.$);

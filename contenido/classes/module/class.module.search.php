@@ -1,12 +1,12 @@
 <?php
+
 /**
  * This file contains the module search class.
- * TODO: Rework comments of this class.
+ *
+ * @todo refactor documentation
  *
  * @package    Core
  * @subpackage Backend
- * @version    SVN Revision $Rev:$
- *
  * @author     Rusmir Jusufovic
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,73 +25,69 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cModuleSearch extends cModuleHandler {
 
     /**
-     * Items/Element per page
+     * Items/Element per page.
      *
      * @var int
      */
     protected $_elementPerPage = '';
 
     /**
-     * Order by
+     * Order by.
      *
      * @var string
      */
     protected $_orderBy = '';
 
     /**
-     * Sort order
+     * Sort order.
      *
      * @var string
      */
     protected $_sortOrder = '';
 
     /**
-     * Module type
+     * Module type.
      *
      * @var string
      */
     protected $_moduleType = '';
 
     /**
-     * Filter string
+     * Filter string.
      *
      * @var string
      */
     protected $_filter = '';
 
     /**
-     * Where should be searched (all, description, type, input, output)
+     * Where should be searched (all, description, type, input, output).
      *
      * @var string
      */
     protected $_searchIn = '';
 
     /**
-     * Selected page
+     * Selected page.
      *
      * @var int
      */
     protected $_selectedPage = 1;
 
     /**
-     * Result saved in a array
+     * Result saved in a array.
      *
      * @var array
      */
     protected $_result = array();
 
     /**
-     * Print a array
+     * Constructor to create an instance of this class.
      *
-     * @param array $arg
+     * @param array $searchOptions
      */
-    private function _echo($arg) {
-        echo '<pre>' . print_r($arg) . '</pre>';
-    }
-
     public function __construct($searchOptions) {
         parent::__construct();
-        
+
         $this->_elementPerPage = $searchOptions['elementPerPage'];
         $this->_orderBy = $searchOptions['orderBy'];
         $this->_sortOrder = $searchOptions['sortOrder'];
@@ -102,19 +98,29 @@ class cModuleSearch extends cModuleHandler {
     }
 
     /**
-     * Count result
+     * Print a array.
      *
-     * @return int count in result
+     * @param array $arg
+     */
+    private function _echo($arg) {
+        echo '<pre>' . print_r($arg) . '</pre>';
+    }
+
+    /**
+     * Count result.
+     *
+     * @return int
+     *         count in result
      */
     public function getModulCount() {
         return count($this->_result);
     }
 
     /**
-     * Search for modules in db columns and in filesystem (input and output
-     * files)
+     * Search for modules in db columns and in filesystem (input and
+     * output files).
      *
-     * @return array result
+     * @return array
      */
     public function searchForAllModules() {
         global $cfg, $client;
@@ -124,12 +130,12 @@ class cModuleSearch extends cModuleHandler {
         // then apply _filter on input and output from files
         // then use the whitelisted id's and search for additional filter matches on database
         $sql = sprintf("SELECT * FROM %s WHERE idclient = %s", $cfg['tab']['mod'], $idClient);
-        
-        
+
+
         $db = cRegistry::getDb();
         $db->query($sql);
         $moduleIds = array();
-        
+
         // filter modules based on input and output
         while (($modul = $db->nextRecord()) !== false) {
             $this->initWithDatabaseRow($db);
@@ -139,7 +145,7 @@ class cModuleSearch extends cModuleHandler {
                     $moduleIds[] = $db->f('idmod');
             }
         }
-        
+
         // build query using whitelisted id's
         $idFilter = "";
         foreach ($moduleIds as $moduleId) {
@@ -174,7 +180,7 @@ class cModuleSearch extends cModuleHandler {
      * Main method for the class. Search for modules in db and in input and
      * outputs files.
      *
-     * @return array result
+     * @return array
      */
     public function getModules() {
         $modules = array();
@@ -216,9 +222,9 @@ class cModuleSearch extends cModuleHandler {
     }
 
     /**
-     * Search for modules in "name" column of modul
+     * Search for modules in "name" column of modul.
      *
-     * @return array result
+     * @return array
      */
     public function findeModulWithName() {
         global $cfg, $client;
@@ -245,9 +251,9 @@ class cModuleSearch extends cModuleHandler {
     }
 
     /**
-     * Search for modules in input file of the module
+     * Search for modules in input file of the module.
      *
-     * @return array result
+     * @return array
      */
     public function findModulWithInput() {
         global $cfg, $client;
@@ -277,13 +283,13 @@ class cModuleSearch extends cModuleHandler {
     }
 
     /**
-     * Search for modules in output of modules of current client
+     * Search for modules in output of modules of current client.
      *
-     * @return array result
+     * @return array
      */
     public function findModulWithOutput() {
          global $cfg, $client;
-        
+
         $result = array();
 
         $idClient = $client;
@@ -311,9 +317,9 @@ class cModuleSearch extends cModuleHandler {
     }
 
     /**
-     * Search for modules in type column
+     * Search for modules in type column.
      *
-     * @return array result
+     * @return array
      */
     public function findModuleWithType() {
         global $cfg, $client;
@@ -342,9 +348,9 @@ class cModuleSearch extends cModuleHandler {
     }
 
     /**
-     * Search for modules in description column of modules
+     * Search for modules in description column of modules.
      *
-     * @return array result
+     * @return array
      */
     public function findModuleWithDescription() {
         global $cfg, $client;

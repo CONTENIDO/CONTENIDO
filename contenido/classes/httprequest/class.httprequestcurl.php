@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains an implementation of HttpRequest using curl
  *
  * @package Core
  * @subpackage Core
- * @version SVN Revision $Rev:$
- *
  * @author Mischa Holz
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -16,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Curl implementation of HttpRequest
+ * Curl implementation of HttpRequest.
  *
  * @package Core
  * @subpackage Core
@@ -24,46 +23,47 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHttpRequestCurl extends cHttpRequest {
 
     /**
-     * the curl instance
+     * The curl instance.
      *
-     * @var $curl ressource
+     * @var $curl resource
      */
     protected $curl;
 
     /**
-     * Array for the post parameters
+     * Array for the post parameters.
      *
      * @var array
      */
     protected $postArray;
 
     /**
-     * Array for the get parameters
+     * Array for the get parameters.
      *
      * @var array
      */
     protected $getArray;
 
     /**
-     * Array for the HTTP-headers
+     * Array for the HTTP-headers.
      *
      * @var array
      */
     protected $headerArray;
 
     /**
-     * Request URL
+     * Request URL.
      *
      * @var string
      */
     protected $url;
 
     /**
-     * Basic constructor
+     * Constructor to create an instance of this class.
      *
-     * @param string $url URL for the request
      * @see cHttpRequest::__construct()
      * @see cHttpRequest::getHttpRequest()
+     * @param string $url [optional]
+     *         URL for the request
      */
     public function __construct($url = '') {
         $this->curl = curl_init(($url == '') ? NULL : $url);
@@ -71,8 +71,12 @@ class cHttpRequestCurl extends cHttpRequest {
     }
 
     /**
+     * Set the GET parameters.
      *
      * @see cHttpRequest::setGetParams()
+     * @param array $array
+     *         associative array containing keys and values of the GET parameters
+     * @return cHttpRequest
      */
     public function setGetParams($array) {
         $this->getArray = $array;
@@ -81,8 +85,12 @@ class cHttpRequestCurl extends cHttpRequest {
     }
 
     /**
+     * Set the POST parameters.
      *
      * @see cHttpRequest::setPostParams()
+     * @param array $array
+     *         associative array containing keys and values of the POST parameters
+     * @return cHttpRequest
      */
     public function setPostParams($array) {
         $this->postArray = $array;
@@ -91,8 +99,12 @@ class cHttpRequestCurl extends cHttpRequest {
     }
 
     /**
+     * Set the HTTP headers.
      *
      * @see cHttpRequest::setHeaders()
+     * @param array $array
+     *         associative array containing the HTTP headers
+     * @return cHttpRequest
      */
     public function setHeaders($array) {
         $this->headerArray = $array;
@@ -101,8 +113,12 @@ class cHttpRequestCurl extends cHttpRequest {
     }
 
     /**
+     * Set the request URL.
      *
      * @see cHttpRequest::setURL()
+     * @param string $url
+     *         the URL
+     * @return cHttpRequest
      */
     public function setURL($url) {
         $this->url = $url;
@@ -111,7 +127,7 @@ class cHttpRequestCurl extends cHttpRequest {
     }
 
     /**
-     * Inserts the POST array into the headers and encodes it
+     * Inserts the POST array into the headers and encodes it.
      */
     protected function preparePostRequest() {
         if (is_array($this->postArray)) {
@@ -121,7 +137,7 @@ class cHttpRequestCurl extends cHttpRequest {
     }
 
     /**
-     * Appends the GET array to the URL
+     * Appends the GET array to the URL.
      */
     protected function prepareGetRequest() {
         if (is_array($this->getArray)) {
@@ -139,7 +155,7 @@ class cHttpRequestCurl extends cHttpRequest {
     }
 
     /**
-     * Reads all the custom headers and add them to the header string
+     * Reads all the custom headers and add them to the header string.
      */
     protected function prepareHeaders() {
         $curlHeaderArray = array();
@@ -160,12 +176,15 @@ class cHttpRequestCurl extends cHttpRequest {
     }
 
     /**
-     * Send the request to the server
+     * Send the request to the server.
      *
-     * @param bool $return Wether the function should return the servers response
-     * @param string $method GET or POST
-     * @param bool $returnHeaders Wether the headers should be included in the response
-     * @return string|boolean
+     * @param bool $return
+     *         Wether the function should return the servers response
+     * @param string $method
+     *         GET or POST
+     * @param bool $returnHeaders
+     *         Wether the headers should be included in the response
+     * @return string|bool
      */
     protected function sendRequest($return, $method, $returnHeaders) {
         $this->setOpt(CURLOPT_RETURNTRANSFER, true);
@@ -191,35 +210,59 @@ class cHttpRequestCurl extends cHttpRequest {
     }
 
     /**
+     * Perform the request using POST.
      *
      * @see cHttpRequest::postRequest()
+     * @param bool $return [optional]
+     *         If true, response of the server gets returned as string
+     * @param bool $returnHeaders [optional]
+     *         If true, headers will be included in the response
+     * @return string|bool
+     *         False on error, response otherwise
      */
     public function postRequest($return = true, $returnHeaders = false) {
         return $this->sendRequest($return, 'POST', $returnHeaders);
     }
 
     /**
+     * Perform the request using GET.
      *
      * @see cHttpRequest::getRequest()
+     * @param bool $return [optional]
+     *         If true, response of the server gets returned as string
+     * @param bool $returnHeaders [optional]
+     *         If true, headers will be included in the response
+     * @return string|bool
+     *         False on error, response otherwise
      */
     public function getRequest($return = true, $returnHeaders = false) {
         return $this->sendRequest($return, 'GET', $returnHeaders);
     }
 
     /**
+     * Perform the request using POST AND append all GET parameters.
      *
      * @see cHttpRequest::request()
+     * @param bool $return [optional]
+     *         If true, response of the server gets returned as string
+     * @param bool $returnHeaders [optional]
+     *         If true, headers will be included in the response
+     * @return string|bool
+     *         False on error, response otherwise
      */
     public function request($return = true, $returnHeaders = false) {
         return $this->sendRequest($return, 'POST', $returnHeaders);
     }
 
     /**
-     * Sets CURL options
+     * Sets CURL options.
      *
-     * @param int $curlOpt One of the CURLOPT constants
-     * @param mixed $value Value for the option
      * @see curl_setopt()
+     * @param int $curlOpt
+     *         One of the CURLOPT constants
+     * @param mixed $value
+     *         Value for the option
+     * @return cHttpRequest
      */
     public function setOpt($curlOpt, $value) {
         curl_setopt($this->curl, $curlOpt, $value);
@@ -228,13 +271,11 @@ class cHttpRequestCurl extends cHttpRequest {
     }
 
     /**
-     * Returns the curl reference
+     * Returns the curl reference.
      *
-     * @return curl
+     * @return resource
      */
     public function getCurl() {
         return $this->curl;
     }
 }
-
-?>

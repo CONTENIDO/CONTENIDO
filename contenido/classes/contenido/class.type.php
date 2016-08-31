@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the type collection and item class.
  *
  * @package          Core
  * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
- *
  * @author           Murat Purc <murat@purc.de>
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -24,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiTypeCollection extends ItemCollection {
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -37,11 +36,11 @@ class cApiTypeCollection extends ItemCollection {
      *
      * @param string $type
      * @param string $description
-     * @param string $code
-     * @param int $status
-     * @param string $author
-     * @param string $created
-     * @param string $lastmodified
+     * @param string $code [optional]
+     * @param int $status [optional]
+     * @param string $author [optional]
+     * @param string $created [optional]
+     * @param string $lastmodified [optional]
      * @return cApiType
      */
     public function create($type, $description, $code = '', $status = 0, $author = '', $created = '', $lastmodified = '') {
@@ -82,9 +81,10 @@ class cApiTypeCollection extends ItemCollection {
 class cApiType extends Item {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
-     * @param mixed $id Specifies the ID of item to load
+     * @param mixed $id [optional]
+     *         Specifies the ID of item to load
      */
     public function __construct($id = false) {
         global $cfg;
@@ -98,7 +98,8 @@ class cApiType extends Item {
     /**
      * Loads an type entry by its type.
      *
-     * @param string $type e. g. CMS_HTML, CMS_TEXT, etc.
+     * @param string $type
+     *         e.g. CMS_HTML, CMS_TEXT, etc.
      * @return bool
      */
     public function loadByType($type) {
@@ -121,15 +122,17 @@ class cApiType extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $safe Flag to run defined inFilter on passed value
-     * @todo should return return value of overloaded method
+     * @param bool $safe [optional]
+     *         Flag to run defined inFilter on passed value
+     *                   
+     * @return bool
      */
     public function setField($name, $value, $safe = true) {
         if ('status' === $name) {
             $value = (int) $value;
         }
 
-        parent::setField($name, $value, $safe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

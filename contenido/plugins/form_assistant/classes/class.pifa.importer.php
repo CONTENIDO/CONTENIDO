@@ -5,8 +5,7 @@
  *
  * @package Plugin
  * @subpackage FormAssistant
- * @version SVN Revision $Rev:$
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  * @copyright four for business AG
  * @link http://www.4fb.de
  */
@@ -24,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * $imp = new PifaImporter();
  * $imp->import($xml);</code>
  *
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
 class PifaImporter {
 
@@ -120,7 +119,7 @@ class PifaImporter {
             foreach ($colElems as $colElem) {
                 $fields[$colElem->getAttribute('name')] = $colElem->nodeValue;
             }
-            $sql = $db->buildInsert($formElem->getAttribute('table'), $fields);
+            $sql = $db->buildInsert($this->_tableName, $fields);
             $db->query($sql);
         }
     }
@@ -167,12 +166,14 @@ class PifaImporter {
             $data['default_value'] = $fieldElem->getAttribute('default');
         }
 
-		// import label
-		$label = $this->_reader->getXpathValue($fieldPath . '/label');
-		$data['label'] = strip_tags($label);
-		$labelElem = $this->_reader->getXpathNode($fieldPath . '/label');
-		if ($labelElem)
-		{ $display = (int) ('true' === $labelElem->getAttribute('display')); $data['display_label'] = $display; }
+        // import label
+        $label = $this->_reader->getXpathValue($fieldPath . '/label');
+        $data['label'] = strip_tags($label);
+        $labelElem = $this->_reader->getXpathNode($fieldPath . '/label');
+        if ($labelElem) {
+            $display = (int) ('true' === $labelElem->getAttribute('display'));
+            $data['display_label'] = $display;
+        }
 
         // import help (optional)
         if (0 < $this->_reader->countXpathNodes($fieldPath . '/help')) {

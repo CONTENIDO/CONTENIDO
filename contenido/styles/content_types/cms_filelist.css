@@ -2,7 +2,6 @@
  * Content Type Filelist styles
  *
  * @package    CONTENIDO Content Type Filelist styles
- * @version    SVN Revision $Rev: 5958 $
  * @author     ???
  * @copyright  four for business AG <www.4fb.de>
  * @license    http: //www.contenido.org/license/LIZENZ.txt
@@ -67,7 +66,6 @@
 #metaDataList span,
 #manual span {
     float: left;
-    padding-top: 3px;
 }
 
 .cms_filelist #filter .manual {

@@ -5,8 +5,6 @@
  *
  * @package Module
  * @subpackage ContentRssCreator
- * @version SVN Revision $Rev:$
- *
  * @author timo.trautmann@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -63,8 +61,12 @@ $articles = $teaser->getConfiguredArticles();
 $configuration = $teaser->getConfiguration();
 
 $xmlString = '<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"></rss>';
-function addCData($cdata_text)
-{
+
+/**
+ *
+ * @param string $cdata_text
+ */
+function addCData($cdata_text) {
     $node= dom_import_simplexml($this);
     $no = $node->ownerDocument;
     $node->appendChild($no->createCDATASection($cdata_text));
@@ -92,7 +94,7 @@ foreach ($articles as $article) {
     $child = $rssChannel->addChild('item');
     $title = strip_tags($article->getContent('HTMLHEAD', 1));
     $text = strip_tags($article->getContent('HTML', 1));
-    $text = cApiStrTrimAfterWord($text, $configuration['teaser_character_limit']);
+    $text = cString::trimAfterWord($text, $configuration['teaser_character_limit']);
     $link = $cfgClient[$client]['path']['htmlpath'] . $article->getLink();
 
     $child->title = conHtmlEntityDecode(conHtmlSpecialChars($title));
@@ -111,7 +113,7 @@ if (isset($cfgClient[$client]['xml']['frontendpath'])) {
     if (false !== $success) {
         $result = mi18n("LABEL_RSS_CREATED");
     }
-    
+
 }
 
 $tpl = cSmartyFrontend::getInstance();

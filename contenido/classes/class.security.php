@@ -4,8 +4,6 @@
  *
  * @package    Core
  * @subpackage Security
- * @version    SVN Revision $Rev:$
- *
  * @author     Frederic Schneider
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -16,7 +14,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This object makes CONTENIDO more secure
+ * This object makes CONTENIDO more secure.
  *
  * @package    Core
  * @subpackage Security
@@ -24,9 +22,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cSecurity {
 
     /**
-     * Checks some CONTENIDO core related request parameters against XSS
+     * Checks some CONTENIDO core related request parameters against XSS.
      *
-     * @return  bool  True on success otherwhise nothing.
+     * @return bool
+     *         True on success otherwise nothing.
      */
     public static function checkRequests() {
         $requestValidator = cRequestValidator::getInstance();
@@ -35,11 +34,14 @@ class cSecurity {
     }
 
     /**
-     * Escapes string using CONTENIDO urlencoding method and escapes string for inserting
+     * Escapes string using CONTENIDO urlencoding method and escapes string for inserting.
      *
-     * @param   string        $sString  Input string
-     * @param   cDb  $oDb      CONTENIDO database object
-     * @return  string   Filtered string
+     * @param string $sString
+     *         Input string
+     * @param cDb $oDb
+     *         CONTENIDO database object
+     * @return string
+     *         Filtered string
      */
     public static function filter($sString, $oDb) {
         $sString = self::toString($sString);
@@ -50,75 +52,91 @@ class cSecurity {
     }
 
     /**
-     * Reverts effect of method filter()
+     * Reverts effect of method filter().
      *
-     * @param   string  $sString  Input string
-     * @return  string  Unfiltered string
+     * @param string $sString
+     *         Input string
+     * @return string
+     *         Unfiltered string
      */
     public static function unFilter($sString) {
         $sString = self::toString($sString);
-        return htmldecode(self::unEscapeDB($sString));
+        return htmldecode(self::unescapeDB($sString));
     }
 
     /**
-     * Check: Has the variable an boolean value?
+     * Check: Has the variable an bool value?
      *
-     * @param   string   $sVar  Input string
-     * @return  bool  Check state
+     * @param string $sVar
+     *         Input string
+     * @return bool
+     *         Check state
      */
     public static function isBoolean($sVar) {
         $sTempVar = $sVar;
         $sTemp2Var = self::toBoolean($sVar);
-        return ($sTempVar === $sTemp2Var);
+        return $sTempVar === $sTemp2Var;
     }
 
     /**
      * Check: Is the variable an integer?
      *
-     * @param   string   $sVar  Input string
-     * @return  bool  Check state
+     * @param string $sVar
+     *         Input string
+     * @return bool
+     *         Check state
      */
     public static function isInteger($sVar) {
-        return (preg_match('/^[0-9]+$/', $sVar));
+        return preg_match('/^[0-9]+$/', $sVar);
     }
 
     /**
      * Check: Is the variable an string?
      *
-     * @param   string   $sVar  Input string
-     * @return  bool  Check state
+     * @param string $sVar
+     *         Input string
+     * @return bool
+     *         Check state
      */
     public static function isString($sVar) {
-        return (is_string($sVar));
+        return is_string($sVar);
     }
 
     /**
-     * Convert an string to an boolean
+     * Convert an string to an bool.
      *
-     * @param   string   $sString   Input string
-     * @return  bool  Type casted input string
+     * @param string $sString
+     *         Input string
+     * @return bool
+     *         Type casted input string
      */
     public static function toBoolean($sString) {
         return (bool) $sString;
     }
 
     /**
-     * Convert an string to an integer
+     * Convert an string to an integer.
      *
-     * @param   string   $sString   Input string
-     * @return  int  Type casted input string
+     * @param string $sString
+     *         Input string
+     * @return int
+     *         Type casted input string
      */
     public static function toInteger($sString) {
         return (int) $sString;
     }
 
     /**
-     * Convert an string
+     * Convert an string.
      *
-     * @param   string   $sString         Input string
-     * @param   bool  $bHTML           If true check with strip_tags and stripslashes
-     * @param   string   $sAllowableTags  Allowable tags if $bHTML is true
-     * @return  string  Converted string
+     * @param string $sString
+     *         Input string
+     * @param bool $bHTML [optional]
+     *         If true check with strip_tags and stripslashes
+     * @param string $sAllowableTags [optional]
+     *         Allowable tags if $bHTML is true
+     * @return string
+     *         Converted string
      */
     public static function toString($sString, $bHTML = false, $sAllowableTags = '') {
         $sString = (string) $sString;
@@ -129,12 +147,16 @@ class cSecurity {
     }
 
     /**
-     * Escaped an query-string with mysql_real_escape_string
+     * Escaped an query-string with mysql_real_escape_string.
      *
-     * @param   string        $sString          Input string
-     * @param   cDb  $oDB              CONTENIDO database object
-     * @param   bool       $bUndoAddSlashes  Flag for undo addslashes (optional, default: true)
-     * @return  string  Converted string
+     * @param string $sString
+     *         Input string
+     * @param cDb $oDB
+     *         CONTENIDO database object
+     * @param bool $bUndoAddSlashes [optional; default: true]
+     *         Flag for undo addslashes
+     * @return string
+     *         Converted string
      */
     public static function escapeDB($sString, $oDB, $bUndoAddSlashes = true) {
         if (!is_object($oDB)) {
@@ -148,10 +170,12 @@ class cSecurity {
     }
 
     /**
-     * Escaped an query-string with addslashes
+     * Escaped an query-string with addslashes.
      *
-     * @param   string  $sString  Input string
-     * @return  string  Converted string
+     * @param string $sString
+     *         Input string
+     * @return string
+     *         Converted string
      */
     public static function escapeString($sString) {
         $sString = (string) $sString;
@@ -162,10 +186,12 @@ class cSecurity {
     }
 
     /**
-     * Un-quote string quoted with escapeDB()
+     * Un-quote string quoted with escapeDB().
      *
-     * @param   string  $sString  Input string
-     * @return  string  Converted string
+     * @param string $sString
+     *         Input string
+     * @return string
+     *         Converted string
      */
     public static function unescapeDB($sString) {
         return stripslashes($sString);

@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the group collection and item class.
  *
  * @package Core
  * @subpackage GenericDB_Model
- * @version SVN Revision $Rev:$
- *
  * @author Dominik Ziegler
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -24,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiGroupCollection extends ItemCollection {
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -62,7 +61,8 @@ class cApiGroupCollection extends ItemCollection {
      * Returns the groups a user is in
      *
      * @param string $userid
-     * @return cApiGroup[] List of groups
+     * @return array
+     *         List of groups
      */
     public function fetchByUserID($userid) {
         global $cfg;
@@ -95,8 +95,10 @@ class cApiGroupCollection extends ItemCollection {
     /**
      * Removes the specified group from the database.
      *
-     * @param string $groupname Specifies the groupname
-     * @return bool True if the delete was successful
+     * @param string $groupname
+     *         Specifies the groupname
+     * @return bool
+     *         True if the delete was successful
      */
     public function deleteGroupByGroupname($groupname) {
         $groupname = cApiGroup::prefixedGroupName($groupname);
@@ -108,7 +110,8 @@ class cApiGroupCollection extends ItemCollection {
      * Returns all groups which are accessible by the current group.
      *
      * @param array $perms
-     * @return cApiGroup Array of group objects
+     * @return cApiGroup
+     *         Array of group objects
      */
     public function fetchAccessibleGroups($perms) {
         $groups = array();
@@ -148,7 +151,9 @@ class cApiGroupCollection extends ItemCollection {
      * a multidimensional array instead of a list of objects.
      *
      * @param array $perms
-     * @return array Array of user like $arr[user_id][groupname],
+     * @return array
+     *         Array of user like
+     *         $arr[user_id][groupname],
      *         $arr[user_id][description]
      *         Note: Value of $arr[user_id][groupname] is cleaned from prefix
      *         "grp_"
@@ -182,9 +187,10 @@ class cApiGroup extends Item {
     const PREFIX = 'grp_';
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId [optional]
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -198,8 +204,10 @@ class cApiGroup extends Item {
     /**
      * Loads a group from the database by its groupId.
      *
-     * @param string $groupId Specifies the groupId
-     * @return bool True if the load was successful
+     * @param string $groupId
+     *         Specifies the groupId
+     * @return bool
+     *         True if the load was successful
      */
     public function loadGroupByGroupID($groupId) {
         return $this->loadByPrimaryKey($groupId);
@@ -208,8 +216,10 @@ class cApiGroup extends Item {
     /**
      * Loads a group entry by its groupname.
      *
-     * @param string $groupname Specifies the groupname
-     * @return bool True if the load was successful
+     * @param string $groupname
+     *         Specifies the groupname
+     * @return bool
+     *         True if the load was successful
      */
     public function loadGroupByGroupname($groupname) {
         $groupname = cApiGroup::prefixedGroupName($groupname);
@@ -219,11 +229,14 @@ class cApiGroup extends Item {
     /**
      * User defined field value setter.
      *
-     * @param string $sField Field name
-     * @param string $mValue Value to set
-     * @param bool $bSafe Flag to run defined inFilter on passed value
-     * @return bool
      * @see Item::setField()
+     * @param string $sField
+     *         Field name
+     * @param string $mValue
+     *         Value to set
+     * @param bool $bSafe [optional]
+     *         Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function setField($sField, $mValue, $bSafe = true) {
         if ('perms' === $sField) {
@@ -244,7 +257,7 @@ class cApiGroup extends Item {
         return explode(',', $this->get('perms'));
     }
 
-	/**
+    /**
      * Returns group id, currently set.
      *
      * @return string
@@ -256,8 +269,9 @@ class cApiGroup extends Item {
     /**
      * Returns name of group.
      *
-     * @param bool $removePrefix Flag to remove "grp_" prefix from group name
-     * @return Ambigous <string, mixed, bool>
+     * @param bool $removePrefix [optional]
+     *         Flag to remove "grp_" prefix from group name
+     * @return string
      */
     public function getGroupName($removePrefix = false) {
         $groupname = $this->get('groupname');
@@ -292,7 +306,8 @@ class cApiGroup extends Item {
      *
      * @param string $type
      * @param string $name
-     * @return string bool value or false
+     * @return string|bool
+     *         value or false
      */
     public function getGroupProperty($type, $name) {
         $groupPropColl = new cApiGroupPropertyCollection($this->values['group_id']);
@@ -303,7 +318,8 @@ class cApiGroup extends Item {
     /**
      * Retrieves all available properties of the group.
      *
-     * @return array Returns assoziative properties array as follows:
+     * @return array
+     *         Returns assoziative properties array as follows:
      *         - $arr[idgroupprop][name]
      *         - $arr[idgroupprop][type]
      *         - $arr[idgroupprop][value]
@@ -327,10 +343,12 @@ class cApiGroup extends Item {
     /**
      * Stores a property to the database.
      *
-     * @param string $type Type (class, category etc) for the property to
-     *        retrieve
-     * @param string $name Name of the property to retrieve
-     * @param string $value Value to insert
+     * @param string $type
+     *         Type (class, category etc) for the property to retrieve
+     * @param string $name
+     *         Name of the property to retrieve
+     * @param string $value
+     *         Value to insert
      * @return cApiGroupProperty
      */
     public function setGroupProperty($type, $name, $value) {
@@ -341,8 +359,10 @@ class cApiGroup extends Item {
     /**
      * Deletes a group property from the table.
      *
-     * @param string $type Type (class, category etc) for the property to delete
-     * @param string $name Name of the property to delete
+     * @param string $type
+     *         Type (class, category etc) for the property to delete
+     * @param string $name
+     *         Name of the property to delete
      * @return bool
      */
     public function deleteGroupProperty($type, $name) {

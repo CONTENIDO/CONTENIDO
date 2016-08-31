@@ -1,10 +1,10 @@
 <?php
+
 /**
  * This file contains the cHTMLLabel class.
  *
  * @package Core
  * @subpackage GUI_HTML
- * @version SVN Revision $Rev:$
  *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
@@ -31,17 +31,21 @@ class cHTMLLabel extends cHTMLContentElement {
     public $text;
 
     /**
-     * Constructor.
-     * Creates an HTML label which can be linked
-     * to any form element (specified by their ID).
+     * Constructor to create an instance of this class.
+     *
+     * Creates an HTML label which can be linked to any form element
+     * (specified by their ID).
      *
      * A label can be used to link to elements. This is very useful
      * since if a user clicks a label, the linked form element receives
      * the focus (if supported by the user agent).
      *
-     * @param string $text Name of the element
-     * @param string $for ID of the form element to link to.
-     * @param string $class the class of this element
+     * @param string $text
+     *         Name of the element
+     * @param string $for
+     *         ID of the form element to link to.
+     * @param string $class [optional]
+     *         the class of this element
      */
     public function __construct($text, $for, $class = '') {
         parent::__construct('', $class);
@@ -53,12 +57,13 @@ class cHTMLLabel extends cHTMLContentElement {
     /**
      * Renders the label
      *
-     * @return string Rendered HTML
+     * @return string
+     *         Rendered HTML
      */
     public function toHtml() {
         $this->_setContent($this->text);
 
-        return parent::toHTML();
+        return parent::toHtml();
     }
 
 }

@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the table form GUI class.
  *
  * @package Core
  * @subpackage GUI
- * @version SVN Revision $Rev:$
- *
  * @author Mischa Holz
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -25,6 +24,7 @@ class cGuiTableForm {
 
     /**
      * accept charset of form tag
+     *
      * @var string
      */
     private $_acceptCharset = '';
@@ -114,11 +114,16 @@ class cGuiTableForm {
     public $custom = array();
 
     /**
+     * Constructor to create an instance of this class.
+     *
      * Creates a new cGuiTableForm with given name, action & method of form.
      *
-     * @param string $name of form
-     * @param string $action of form defaults to 'main.php'
-     * @param string $method of form defaults to 'post'
+     * @param string $name
+     *         of form
+     * @param string $action [optional]
+     *         of form defaults to 'main.php'
+     * @param string $method [optional]
+     *         of form defaults to 'post'
      */
     public function __construct($name, $action = 'main.php', $method = 'post') {
 
@@ -138,7 +143,7 @@ class cGuiTableForm {
     /**
      *
      * @param string $name
-     * @param mixed $value
+     * @param string $value
      */
     public function setVar($name, $value) {
         $this->formvars[$name] = $value;
@@ -149,7 +154,7 @@ class cGuiTableForm {
      *
      * @param string $caption
      * @param array|object|string $item
-     * @param string $rowname
+     * @param string $rowname [optional]
      */
     public function add($caption, $item, $rowname = "") {
 
@@ -229,7 +234,8 @@ class cGuiTableForm {
     }
 
     /**
-     * Sets the accept-charset attribute of form tag
+     * Sets the accept-charset attribute of form tag.
+     *
      * @param string $charset
      */
     public function setAcceptCharset($charset) {
@@ -238,8 +244,8 @@ class cGuiTableForm {
 
     /**
      *
-     * @param unknown_type $id
-     * @param unknown_type $event
+     * @param string $id
+     * @param string $event
      */
     public function setActionEvent($id, $event) {
         $this->custom[$id]["event"] = $event;
@@ -247,11 +253,11 @@ class cGuiTableForm {
 
     /**
      *
-     * @param unknown_type $id
-     * @param unknown_type $image
-     * @param unknown_type $description
-     * @param unknown_type $accesskey
-     * @param unknown_type $action
+     * @param string $id
+     * @param string $image
+     * @param string $description [optional]
+     * @param bool $accesskey [optional]
+     * @param bool $action [optional]
      */
     public function setActionButton($id, $image, $description = "", $accesskey = false, $action = false) {
         $this->custom[$id]["image"] = $image;
@@ -264,9 +270,9 @@ class cGuiTableForm {
 
     /**
      *
-     * @param unknown_type $id
-     * @param unknown_type $title
-     * @param unknown_type $description
+     * @param string $id
+     * @param string $title
+     * @param string $description
      */
     public function setConfirm($id, $title, $description) {
         $this->custom[$id]["confirmtitle"] = $title;
@@ -283,18 +289,19 @@ class cGuiTableForm {
 
     /**
      *
-     * @param unknown_type $id
+     * @param string $id
      */
     public function unsetActionButton($id) {
         unset($this->custom[$id]);
     }
 
     /**
-     * Renders this cGuiTableForm and either returs ist markup or echoes it
-     * immediately.
+     * Renders this cGuiTableForm and either returs ist markup or echoes
+     * it immediately.
      *
-     * @param bool $return if true then return markup, else echo immediately
-     * @return Ambigous <string, mixed>
+     * @param bool $return [optional]
+     *         if true then return markup, else echo immediately
+     * @return string
      */
     public function render($return = true) {
         global $sess, $cfg;

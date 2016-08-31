@@ -1,12 +1,12 @@
 <?php
+
 /**
  * This file contains the backend page for editing template configurations.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
- * @author           Jan Lengowski, Olaf Niemann
+ * @author           Jan Lengowski
+ * @author           Olaf Niemann
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
  * @link             http://www.4fb.de
@@ -51,7 +51,7 @@ if ($idtpl != 0 && $idtplcfg != 0) {
             conGenerateCode($idcat, $idart, $lang, $client);
             //backToMainArea($send);
         } else {
-            conGenerateCodeForAllartsInCategory($idcat);
+            conGenerateCodeForAllArtsInCategory($idcat);
             if ($back == 'true') {
                 backToMainArea($send);
             }
@@ -91,7 +91,7 @@ if ($idtpl != 0 && $idtplcfg != 0) {
         $sql = "UPDATE " . $cfg["tab"]["cat_lang"] . " SET idtplcfg = 0 WHERE idcat = '" . cSecurity::toInteger($idcat) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";
         $db->query($sql);
 
-        conGenerateCodeForAllartsInCategory($idcat);
+        conGenerateCodeForAllArtsInCategory($idcat);
         backToMainArea($send);
     } elseif (isset($idart) && $idart != 0 && $changetemplate == 1) {
 
@@ -110,7 +110,7 @@ if ($idtpl != 0 && $idtplcfg != 0) {
         $sql = "UPDATE " . $cfg["tab"]["art_lang"] . " SET idtplcfg = 0 WHERE idart = '" . cSecurity::toInteger($idart) . "' AND idlang = '" . cSecurity::toInteger($lang) . "'";
         $db->query($sql);
 
-        conGenerateCodeForAllartsInCategory($idcat);
+        conGenerateCodeForAllArtsInCategory($idcat);
         //backToMainArea($send);
     }
 
@@ -142,7 +142,7 @@ if ($idtpl != 0 && $idtplcfg != 0) {
         }
     }
 
-    conGenerateCodeForAllartsInCategory($idcat);
+    conGenerateCodeForAllArtsInCategory($idcat);
 }
 
 ?>

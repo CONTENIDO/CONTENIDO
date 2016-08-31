@@ -1,17 +1,18 @@
 <?php
+
 /**
  * This file contains the backend page for managing module style files.
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
- * @author Olaf Niemann, Willi Man
+ * @author Olaf Niemann
+ * @author Willi Man
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('external', 'codemirror/class.codemirror.php');
@@ -72,7 +73,7 @@ if (!$contenidoModulHandler->moduleWriteable('css')) {
 $sTempFilename = stripslashes($tmp_file);
 $sOrigFileName = $sTempFilename;
 
-if (getFileType($file) != $sFileType && strlen(stripslashes(trim($file))) > 0) {
+if (cFileHandler::getExtension($file) != $sFileType && strlen(stripslashes(trim($file))) > 0) {
     $sFilename .= stripslashes($file) . '.' . $sFileType;
 } else {
     $sFilename .= stripslashes($file);
@@ -117,9 +118,9 @@ if ((!$readOnly) && $actionRequest == $sActionCreate && $_REQUEST['status'] == '
     $page->reloadFrame('right_top', $urlReload);
 
     if ($ret && $bEdit) {
-        $page->displayInfo(i18n('Created new css file successfully'));
+        $page->displayOk(i18n('Created new css file successfully'));
     } else {
-        $page->displayInfo(i18n('Could not create a new css file!'));
+        $page->displayError(i18n('Could not create a new css file!'));
     }
 }
 
@@ -155,11 +156,11 @@ if ((!$readOnly) && $actionRequest == $sActionEdit && $_REQUEST['status'] == 'se
     }
 
     if ($sFilename != $sTempFilename && $bEdit) {
-        $page->displayInfo(i18n('Renamed and saved changes successfully!'));
+        $page->displayOk(i18n('Renamed and saved changes successfully!'));
     } elseif (false === $bEdit) {
         $page->displayError(i18n("Can't save file!"));
     } else {
-        $page->displayInfo(i18n('Saved changes successfully!'));
+        $page->displayOk(i18n('Saved changes successfully!'));
     }
 }
 
@@ -176,7 +177,7 @@ if (isset($actionRequest)) {
         if ($sCode === false) {
             exit();
         }
-        $sCode = iconv($fileEncoding, cModuleHandler::getEncoding(), $sCode);
+        $sCode = cString::recodeString($sCode, $fileEncoding, cModuleHandler::getEncoding());
     } else {
         // stripslashes is required here in case of creating a new file
         $sCode = stripslashes($_REQUEST['code']);
@@ -185,7 +186,7 @@ if (isset($actionRequest)) {
     $aFileInfo = $fileInfoCollection->getFileInformation($sTempFilename, 'css');
 
     $form = new cGuiTableForm('file_editor');
-    $form->setTableid('mod_style');
+    $form->setTableID('mod_style');
     $form->addHeader(i18n('Edit file'));
     $form->setVar('area', $area);
     $form->setVar('action', $sAction);

@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for managing module script files.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Willi Man
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -75,7 +74,7 @@ if (!$contenidoModulHandler->moduleWriteable('js')) {
 $sTempFilename = stripslashes($tmpFile);
 $sOrigFileName = $sTempFilename;
 
-if (getFileType($file) != $sFileType && strlen(stripslashes(trim($file))) > 0) {
+if (cFileHandler::getExtension($file) != $sFileType && strlen(stripslashes(trim($file))) > 0) {
     $sFilename .= stripslashes($file) . '.' . $sFileType;
 } else {
     $sFilename .= stripslashes($file);
@@ -116,7 +115,7 @@ if ((!$readOnly) && $actionRequest == $sActionCreate && $_REQUEST['status'] == '
 
     // Show message for user
     if ($bEdit === true) {
-        $page->displayInfo(i18n('Created new javascript file successfully'));
+        $page->displayOk(i18n('Created new javascript file successfully'));
     } else {
         $page->displayError(i18n('Could not create a new javascript file!'));
     }
@@ -126,7 +125,7 @@ if ((!$readOnly) && $actionRequest == $sActionCreate && $_REQUEST['status'] == '
 if ((!$readOnly) && $actionRequest == $sActionEdit && $_REQUEST['status'] == 'send') {
 
     if ($sFilename != $sTempFilename) {
-        
+
         try {
             if (true !== cFileHandler::validateFilename($sFilename)) {
                 throw new cInvalidArgumentException('The file ' . $sFilename . ' could not be validated.');
@@ -161,9 +160,9 @@ if ((!$readOnly) && $actionRequest == $sActionEdit && $_REQUEST['status'] == 'se
 
     // Show message for user
     if ($sFilename != $sTempFilename) {
-        $page->displayInfo(i18n('Renamed and saved changes successfully!'));
+        $page->displayOk(i18n('Renamed and saved changes successfully!'));
     } else {
-        $page->displayInfo(i18n('Saved changes successfully!'));
+        $page->displayOk(i18n('Saved changes successfully!'));
     }
 }
 
@@ -178,13 +177,14 @@ if (isset($actionRequest)) {
         if ($sCode === false) {
             exit;
         }
-        $sCode = iconv($fileEncoding, cModuleHandler::getEncoding(), $sCode);
+        $sCode = cString::recodeString($sCode, $fileEncoding, cModuleHandler::getEncoding());
     } else {
-        $sCode = stripslashes($_REQUEST['code']); # stripslashes is required here in case of creating a new file
+        // stripslashes is required here in case of creating a new file
+        $sCode = stripslashes($_REQUEST['code']);
     }
 
     $form = new cGuiTableForm('file_editor');
-    $form->setTableid('mod_javascript');
+    $form->setTableID('mod_javascript');
     $form->addHeader(i18n('Edit file'));
     $form->setVar('area', $area);
     $form->setVar('action', $sAction);

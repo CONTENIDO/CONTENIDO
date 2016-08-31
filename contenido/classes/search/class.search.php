@@ -1,17 +1,17 @@
 <?php
+
 /**
  * This file contains the class for content search.
  *
  * @package Core
  * @subpackage Frontend_Search
- * @version SVN Revision $Rev:$
- *
  * @author Willi Man
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.encoding.php');
@@ -19,83 +19,123 @@ cInclude('includes', 'functions.encoding.php');
 /**
  * CONTENIDO API - Search Object
  *
- * This object starts a indexed fulltext search
+ * This object starts a indexed fulltext search.
  *
  * TODO:
- * The way to set the search options could be done much more better!
- * The computation of the set of searchable articles should not be treated in
- * this class.
- * It is better to compute the array of searchable articles from the outside and
- * to pass the array of searchable articles as parameter.
- * Avoid foreach loops.
+ * - The way to set the search options could be done much more better!
+ * - The computation of the set of searchable articles should not be
+ * treated in this class.
+ * - It is better to compute the array of searchable articles from the
+ * outside and to pass the array of searchable articles as parameter.
+ * - Avoid foreach loops.
  *
  * Use object with
  *
- * $options = array('db' => 'regexp', // use db function regexp
- * 'combine' => 'or'); // combine searchwords with or
+ * $options = array(
+ *      // use db function regexp
+ *      'db' => 'regexp',
+ *      // combine searchwords with or
+ *      'combine' => 'or'
+ * );
  *
- * The range of searchable articles is by default the complete content which is
- * online and not protected.
+ * The range of searchable articles is by default the complete content
+ * which is online and not protected.
  *
- * With option 'searchable_articles' you can define your own set of searchable
- * articles.
- * If parameter 'searchable_articles' is set the options 'cat_tree',
- * 'categories', 'articles', 'exclude', 'artspecs',
- * 'protected', 'dontshowofflinearticles' don't have any effect.
+ * With option 'searchable_articles' you can define your own set of
+ * searchable articles.
  *
- * $options = array('db' => 'regexp', // use db function regexp
- * 'combine' => 'or', // combine searchwords with or
- * 'searchable_articles' => array(5, 6, 9, 13));
+ * If parameter 'searchable_articles' is set, the options 'cat_tree',
+ * 'categories', 'articles', 'exclude', 'artspecs', 'protected' and
+ * 'dontshowofflinearticles' won't have any effect.
  *
- * One can define the range of searchable articles by setting the parameter
- * 'exclude' to false which means the range of categories
- * defined by parameter 'cat_tree' or 'categories' and the range of articles
- * defined by parameter 'articles' is included.
+ * $options = array(
+ *      // use db function regexp
+ *      'db' => 'regexp',
+ *      // combine searchwords with or
+ *      'combine' => 'or',
+ *      'searchable_articles' => array(5, 6, 9, 13)
+ * );
  *
- * $options = array('db' => 'regexp', // use db function regexp
- * 'combine' => 'or', // combine searchwords with or
- * 'exclude' => false, // => searchrange specified in 'cat_tree', 'categories'
- * and 'articles' is included
- * 'cat_tree' => array(12), // tree with root 12 included
- * 'categories' => array(100,111), // categories 100, 111 included
- * 'articles' => array(33), // article 33 included
- * 'artspecs' => array(2, 3), // array of article specifications => search only
- * articles with these artspecs
- * 'res_per_page' => 2, // results per page
- * 'protected' => true); // => do not search articles or articles in categories
- * which are offline or protected
- * 'dontshowofflinearticles' => false); // => search offline articles or
- * articles in categories which are offline
+ * One can define the range of searchable articles by setting the
+ * parameter 'exclude' to false which means the range of categories
+ * defined by parameter 'cat_tree' or 'categories' and the range of
+ * articles defined by parameter 'articles' is included.
  *
- * You can build the complement of the range of searchable articles by setting
- * the parameter 'exclude' to true which means the range of categories
- * defined by parameter 'cat_tree' or 'categories' and the range of articles
- * defined by parameter 'articles' is excluded from search.
+ * $options = array(
+ *      // use db function regexp
+ *      'db' => 'regexp',
+ *      // combine searchwords with or
+ *      'combine' => 'or',
+ *      // searchrange specified in 'cat_tree', 'categories' and
+ *      // 'articles' is included
+ *      'exclude' => false,
+ *      // tree with root 12 included
+ *      'cat_tree' => array(12),
+ *      // categories 100, 111 included
+ *      'categories' => array(100,111),
+ *      // article 33 included
+ *      'articles' => array(33),
+ *      // array of article specifications => search only articles with
+ *      // these artspecs
+ *      'artspecs' => array(2, 3),
+ *      // results per page
+ *      'res_per_page' => 2,
+ *      // do not search articles or articles in categories which are
+ *      // offline or protected
+ *      'protected' => true,
+ *      // search offline articles or articles in categories which are
+ *      // offline
+ *      'dontshowofflinearticles' => false
+ * );
  *
- * $options = array('db' => 'regexp', // use db function regexp
- * 'combine' => 'or', // combine searchwords with or
- * 'exclude' => true, // => searchrange specified in 'cat_tree', 'categories'
- * and 'articles' is excluded
- * 'cat_tree' => array(12), // tree with root 12 excluded
- * 'categories' => array(100,111), // categories 100, 111 excluded
- * 'articles' => array(33), // article 33 excluded
- * 'artspecs' => array(2, 3), // array of article specifications => search only
- * articles with these artspecs
- * 'res_per_page' => 2, // results per page
- * 'protected' => true); // => do not search articles or articles in categories
- * which are offline or protected
- * 'dontshowofflinearticles' => false); // => search offline articles or
- * articles in categories which are offline
+ * You can build the complement of the range of searchable articles by
+ * setting the parameter 'exclude' to true which means the range of
+ * categories defined by parameter 'cat_tree' or 'categories' and the
+ * range of articles defined by parameter 'articles' is excluded from
+ * search.
+ *
+ * $options = array(
+ *      // use db function regexp
+ *      'db' => 'regexp',
+ *      // combine searchwords with or
+ *      'combine' => 'or',
+ *      // searchrange specified in 'cat_tree', 'categories' and
+ *      // 'articles' is excluded
+ *      'exclude' => true,
+ *      // tree with root 12 excluded
+ *      'cat_tree' => array(12),
+ *      // categories 100, 111 excluded
+ *      'categories' => array(100,111),
+ *      // article 33 excluded
+ *      'articles' => array(33),
+ *      // array of article specifications => search only articles with
+ *      // these artspecs
+ *      'artspecs' => array(2, 3),
+ *      // results per page
+ *      'res_per_page' => 2,
+ *      // do not search articles or articles in categories which are
+ *      // offline or protected
+ *      'protected' => true,
+ *      // search offline articles or articles in categories which are
+ *      // offline
+ *      'dontshowofflinearticles' => false
+ * );
  *
  * $search = new Search($options);
  *
- * $cms_options = array("htmlhead", "html", "head", "text", "imgdescr", "link",
- * "linkdescr");
- * search only in these cms-types
- * $search->setCmsOptions($cms_options);
+ * // search only in these cms-types
+ * $search->setCmsOptions(array(
+ *      "htmlhead",
+ *      "html",
+ *      "head",
+ *      "text",
+ *      "imgdescr",
+ *      "link",
+ *      "linkdescr"
+ * ));
  *
- * $search_result = $search->searchIndex($searchword, $searchwordex); // start
- * search
+ * // start search
+ * $search_result = $search->searchIndex($searchword, $searchwordex);
  *
  * The search result structure has following form
  * Array (
@@ -126,13 +166,13 @@ cInclude('includes', 'functions.encoding.php');
  *
  * The keys of the array are the article ID's found by search.
  *
- * Searching 'con' matches keywords 'content', 'contenido' and 'wwwcontenidoorg'
- * in article with ID 20 in content type CMS_HTML[1].
+ * Searching 'con' matches keywords 'content', 'contenido' and
+ * 'wwwcontenidoorg' in article with ID 20 in content type CMS_HTML[1].
  * The search term occurs 7 times.
  * The maximum similarity between searchterm and matching keyword is 60%.
  *
- * with $oSearchResults = new cSearchResult($search_result, 10);
- * one can rank and display the results
+ * // rank and display the results
+ * $oSearchResults = new cSearchResult($search_result, 10);
  *
  * @package Core
  * @subpackage Frontend_Search
@@ -147,14 +187,14 @@ class cSearch extends cSearchBaseAbstract {
     protected $_index;
 
     /**
-     * the search words
+     * search words
      *
      * @var array
      */
     protected $_searchWords = array();
 
     /**
-     * the words which should be excluded from search
+     * words which should be excluded from search
      *
      * @var array
      */
@@ -162,7 +202,9 @@ class cSearch extends cSearchBaseAbstract {
 
     /**
      * type of db search
-     * like => 'sql like', regexp => 'sql regexp'
+     *
+     * like => 'sql like'
+     * regexp => 'sql regexp'
      *
      * @var string
      */
@@ -190,65 +232,73 @@ class cSearch extends cSearchBaseAbstract {
     protected $_articleSpecs = array();
 
     /**
-     * If $protected = true => do not search articles which are offline or
-     * articles in catgeories which are offline (protected) unless the user has access to them
+     * If $protected = true => do not search articles which are offline
+     * or articles in catgeories which are offline (protected) unless
+     * the user has access to them.
      *
-     * @var boolean
+     * @var bool
      */
     protected $_protected;
 
     /**
      * If $dontshowofflinearticles = false => search offline articles or
-     * articles in categories which are offline
+     * articles in categories which are offline.
      *
-     * @var boolean
+     * @var bool
      */
     protected $_dontshowofflinearticles;
 
     /**
-     * If $exclude = true => the specified search range is excluded from search,
-     * otherwise included
+     * If $exclude = true => the specified search range is excluded from
+     * search, otherwise included.
      *
-     * @var boolean
+     * @var bool
      */
     protected $_exclude;
 
     /**
-     * Array of article id's with information about cms-types, occurence of
-     * keyword/searchword, similarity .
-     *
-     *
+     * Array of article id's with information about cms-types, occurence
+     * of keyword/searchword, similarity.
      *
      * @var array
      */
     protected $_searchResult = array();
 
     /**
-     * Constructor
+     * Constructor to create an instance of this class.
      *
-     * @param array $options $options['db'] 'regexp' => DB search with REGEXP;
-     *        'like' => DB search with LIKE; 'exact' => exact match;
-     *        $options['combine'] 'and', 'or' Combination of search words with
-     *        AND, OR
-     *        $options['exclude'] 'true' => searchrange specified in 'cat_tree',
-     *        'categories' and 'articles' is excluded; 'false' =>
-     *        searchrange specified in 'cat_tree', 'categories' and
-     *        'articles' is included
-     *        $options['cat_tree'] e.g. array(8) => The complete tree with root
-     *        8 is in/excluded from search
-     *        $options['categories'] e.g. array(10, 12) => Categories 10, 12
-     *        in/excluded
-     *        $options['articles'] e.g. array(23) => Article 33 in/excluded
-     *        $options['artspecs'] => e.g. array(2, 3) => search only articles
-     *        with certain article specifications
-     *        $options['protected'] 'true' => do not search articles which are
-     *        offline (locked) or articles in catgeories which are offline
-     *        (protected)
-     *        $options['dontshowofflinearticles'] 'false' => search offline
-     *        articles or articles in categories which are offline
-     *        $options['searchable_articles'] array of article ID's which should
-     *        be searchable
-     * @param cDb $db Optional database instance
+     * @param array $options
+     *         $options['db']
+     *             'regexp' => DB search with REGEXP
+     *             'like' => DB search with LIKE
+     *             'exact' => exact match;
+     *         $options['combine']
+     *             'and', 'or' Combination of search words with AND, OR
+     *         $options['exclude']
+     *             'true' => searchrange specified in 'cat_tree', 'categories'
+     *             and 'articles' is excluded;
+     *             'false' => searchrange specified in 'cat_tree', 'categories'
+     *             and 'articles' is included
+     *         $options['cat_tree']
+     *             e.g. array(8) => The complete tree with root 8 is in/excluded
+     *             from search
+     *         $options['categories']
+     *             e.g. array(10, 12) => Categories 10, 12 in/excluded
+     *         $options['articles']
+     *             e.g. array(23) => Article 33 in/excluded
+     *         $options['artspecs']
+     *             e.g. array(2, 3) => search only articles with certain article
+     *             specifications
+     *         $options['protected']
+     *             'true' => do not search articles which are offline (locked)
+     *             or articles in catgeories which are offline (protected)
+     *         $options['dontshowofflinearticles']
+     *             'false' => search offline articles or articles in categories
+     *             which are offline
+     *         $options['searchable_articles']
+     *             array of article ID's which should be searchable
+     * @param cDb $db [optional]
+     *         database instance
      */
     public function __construct($options, $db = NULL) {
         parent::__construct($db);
@@ -275,10 +325,11 @@ class cSearch extends cSearchBaseAbstract {
     /**
      * indexed fulltext search
      *
-     * @param string $searchwords The search words
-     * @param string $searchwords_exclude The words, which should be excluded
-     *        from search
-     * @return boolean multitype:
+     * @param string $searchwords
+     *         The search words
+     * @param string $searchwords_exclude [optional]
+     *         The words, which should be excluded from search
+     * @return bool|array
      */
     public function searchIndex($searchwords, $searchwords_exclude = '') {
         if (strlen(trim($searchwords)) > 0) {
@@ -427,9 +478,9 @@ class cSearch extends cSearchBaseAbstract {
 
     /**
      *
-     * @param mixed $cms_options The cms-types (htmlhead, html, ...) which
-     *            should
-     *        explicitly be searched
+     * @param mixed $cms_options
+     *         The cms-types (htmlhead, html, ...) which should explicitly be
+     *         searched.
      */
     public function setCmsOptions($cms_options) {
         if (is_array($cms_options) && count($cms_options) > 0) {
@@ -439,8 +490,10 @@ class cSearch extends cSearchBaseAbstract {
 
     /**
      *
-     * @param string $searchwords The search-words
-     * @return array of stripped search-words
+     * @param string $searchwords
+     *         The search-words
+     * @return array
+     *         of stripped search-words
      */
     public function stripWords($searchwords) {
         // remove backslash and html tags
@@ -469,9 +522,11 @@ class cSearch extends cSearchBaseAbstract {
     /**
      * Returns the category tree array.
      *
-     * @param int $cat_start Root of a category tree
-     * @return array Category Tree
      * @todo This is not the job for search, should be outsourced ...
+     * @param int $cat_start
+     *         Root of a category tree
+     * @return array
+     *         Category Tree
      */
     public function getSubTree($cat_start) {
         $sql = "SELECT
@@ -526,13 +581,13 @@ class cSearch extends cSearchBaseAbstract {
     }
 
     /**
-     * Returns list of searchable article ids.
+     * Returns list of searchable article ids in given search range.
      *
      * @param array $search_range
-     * @return array Articles in specified search range
+     * @return array
      */
     public function getSearchableArticles($search_range) {
-	    global $auth;
+        global $auth;
 
         $aCatRange = array();
         if (array_key_exists('cat_tree', $search_range) && is_array($search_range['cat_tree'])) {
@@ -629,9 +684,10 @@ class cSearch extends cSearchBaseAbstract {
     }
 
     /**
-     * Fetch all article specifications which are online,
+     * Fetch all article specifications which are online.
      *
-     * @return array Array of article specification Ids
+     * @return array
+     *         Array of article specification Ids
      */
     public function getArticleSpecifications() {
         $sql = "SELECT
@@ -652,7 +708,7 @@ class cSearch extends cSearchBaseAbstract {
     }
 
     /**
-     * Set article specification
+     * Set article specification.
      *
      * @param int $iArtspecID
      */
@@ -661,11 +717,11 @@ class cSearch extends cSearchBaseAbstract {
     }
 
     /**
-     * Add all article specifications matching name of article specification
-     * (client dependent but language independent)
+     * Add all article specifications matching name of article
+     * specification (client dependent but language independent).
      *
      * @param string $sArtSpecName
-     * @return boolean
+     * @return bool
      */
     public function addArticleSpecificationsByName($sArtSpecName) {
         if (!isset($sArtSpecName) || strlen($sArtSpecName) == 0) {

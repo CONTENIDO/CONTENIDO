@@ -1,17 +1,18 @@
 <?php
+
 /**
  * This file contains the cContentTypeLinkeditor class.
  *
  * @package Core
  * @subpackage ContentType
- * @version SVN Revision $Rev:$
- *
- * @author Fulai Zhang, Simon Sprankel
+ * @author Fulai Zhang
+ * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.con.php');
@@ -26,17 +27,20 @@ cInclude('includes', 'functions.upl.php');
 class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
 
     /**
+     * Constructor to create an instance of this class.
+     *
      * Initialises class attributes and handles store events.
      *
-     * @param string $rawSettings the raw settings in an XML structure or as
-     *        plaintext
-     * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is
-     *        used
-     * @param array $contentTypes array containing the values of all content
-     *        types
+     * @param string $rawSettings
+     *         the raw settings in an XML structure or as plaintext
+     * @param int $id
+     *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
+     * @param array $contentTypes
+     *         array containing the values of all content types
      */
     function __construct($rawSettings, $id, array $contentTypes) {
-        // set attributes of the parent class and call the parent constructor
+
+        // set props
         $this->_type = 'CMS_LINKEDITOR';
         $this->_prefix = 'linkeditor';
         $this->_settingsType = self::SETTINGS_TYPE_XML;
@@ -52,7 +56,10 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         // encoding conversions to avoid problems with umlauts
         $rawSettings = conHtmlEntityDecode($rawSettings);
         $rawSettings = utf8_encode($rawSettings);
+
+        // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
+
         $this->_settings['linkeditor_title'] = utf8_decode($this->_settings['linkeditor_title']);
         $this->_settings['linkeditor_title'] = conHtmlentities($this->_settings['linkeditor_title']);
 
@@ -112,13 +119,13 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      */
     public function getConfiguredData() {
         $data = array(
-            'type' => $this->_settings['linkeditor_type'],
-            'externallink' => $this->_settings['linkeditor_externallink'],
-            'title' => $this->_settings['linkeditor_title'],
-            'newwindow' => $this->_settings['linkeditor_newwindow'],
-            'idart' => $this->_settings['linkeditor_idart'],
-            'filename' => $this->_settings['linkeditor_filename'],
-            'href' => $this->_generateHref()
+            'type'          => $this->_settings['linkeditor_type'],
+            'externallink'  => $this->_settings['linkeditor_externallink'],
+            'title'         => $this->_settings['linkeditor_title'],
+            'newwindow'     => $this->_settings['linkeditor_newwindow'],
+            'idart'         => $this->_settings['linkeditor_idart'],
+            'filename'      => $this->_settings['linkeditor_filename'],
+            'href'          => $this->_generateHref()
         );
 
         return $data;
@@ -128,8 +135,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * Generates the code which should be shown if this content type is shown in
      * the frontend.
      *
-     * @return string escaped HTML code which sould be shown if content type is
-     *         shown in frontend
+     * @return string
+     *         escaped HTML code which sould be shown if content type is shown in frontend
      */
     public function generateViewCode() {
         // generate the needed attributes
@@ -138,7 +145,6 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
             return '';
         }
         $linktext = $this->_settings['linkeditor_title'];
-        $alt = $linktext;
         // if the linktext is empty, use the link as the link text
         if (empty($linktext)) {
             $linktext = $href;
@@ -147,7 +153,6 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
 
         $link = new cHTMLLink($href);
         $link->setClass('link_list');
-        $link->setAlt($alt);
         $link->setTargetFrame($target);
         $link->setContent($linktext);
 
@@ -157,7 +162,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     /**
      * Generates the actual link depending on the link type.
      *
-     * @return string the generated link
+     * @return string
+     *         the generated link
      */
     protected function _generateHref() {
         switch ($this->_settings['linkeditor_type']) {
@@ -195,8 +201,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     /**
      * Generates the code which should be shown if this content type is edited.
      *
-     * @return string escaped HTML code which should be shown if content type is
-     *         edited
+     * @return string
+     *         escaped HTML code which should be shown if content type is edited
      */
     public function generateEditCode() {
         $template = new cTemplate();
@@ -276,7 +282,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * Generates code for the external link tab in which links to external sites
      * can be specified.
      *
-     * @return string - the code for the external link tab
+     * @return string
+     *         the code for the external link tab
      */
     private function _generateTabExternal() {
         // define a wrapper which contains the whole content of the general tab
@@ -294,9 +301,11 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     /**
      * Generates code for the basic settings "tab" in which the link title and
      * target can be specified.
+     *
      * This tab is always shown.
      *
-     * @return string - the code for the basic settings tab
+     * @return string
+     *         the code for the basic settings tab
      */
     private function _generateBasicSettings() {
         // define a wrapper which contains the whole content of the basic
@@ -319,7 +328,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * Generates code for the internal link tab in which links to internal sites
      * can be specified.
      *
-     * @return string - the code for the internal link tab
+     * @return string
+     *         the code for the internal link tab
      */
     private function _generateTabInternal() {
         // define a wrapper which contains the whole content of the general tab
@@ -356,9 +366,10 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     /**
      * Builds an array with category information.
      *
-     * @param int $level
-     * @param int $parentid
-     * @return array with directory information
+     * @param int $level [optional]
+     * @param int $parentid [optional]
+     * @return array
+     *         with directory information
      */
     public function buildCategoryArray($level = 0, $parentid = 0) {
         $db = cRegistry::getDb();
@@ -395,8 +406,10 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * Generates a category list from the given category information (which is
      * typically built by {@link cContentTypeLinkeditor::buildCategoryArray}).
      *
-     * @param array $dirs directory information
-     * @return string HTML code showing a directory list
+     * @param array $dirs
+     *         directory information
+     * @return string
+     *         HTML code showing a directory list
      */
     public function getCategoryList(array $categories) {
         $template = new cTemplate();
@@ -438,7 +451,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     /**
      * Computes all active idcats.
      *
-     * @return array containing all active idcats
+     * @return array
+     *         containing all active idcats
      */
     private function _getActiveIdcats() {
         $activeIdcats = array();
@@ -472,11 +486,12 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     /**
      * Computes all parent idcats of the given idcat and returns them.
      *
-     * @param int $idcat the current idcat
-     * @param array $idcats the array of idcats to which all idcats should be
-     *        added
-     * @return array the given idcats array with the given idcat and all parent
-     *         idcats
+     * @param int $idcat
+     *         the current idcat
+     * @param array $idcats [optional]
+     *         the array of idcats to which all idcats should be added
+     * @return array
+     *         the given idcats array with the given idcat and all parent idcats
      */
     private function _getParentIdcats($idcat, array $idcats = array()) {
         // add the current idcat to the result idcats
@@ -495,9 +510,10 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     /**
      * Generate a select box for all articles of the given idcat.
      *
-     * @param int $idCat idcat of the category from which all articles
-     *        should be shown
-     * @return string rendered cHTMLSelectElement
+     * @param int $idCat [optional]
+     *         idcat of the category from which all articles should be shown
+     * @return string
+     *         rendered cHTMLSelectElement
      */
     public function generateArticleSelect($idCat = 0) {
         $htmlSelect = new cHTMLSelectElement('linkeditor_idart', '', 'linkeditor_idart_' . $this->_id);
@@ -545,7 +561,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * Generates code for the link to file tab in which links to files can be
      * specified.
      *
-     * @return string - the code for the link to file tab
+     * @return string
+     *         the code for the link to file tab
      */
     private function _generateTabFile() {
         // define a wrapper which contains the whole content of the general tab
@@ -659,8 +676,10 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     /**
      * Generates a select box for the manual files.
      *
-     * @param string $directoryPath to directory of the files
-     * @return string cHTMLSelectElement
+     * @SuppressWarnings docBlocks
+     * @param string $directoryPath [optional]
+     *         to directory of the files
+     * @return string|int
      */
     public function getUploadFileSelect($directoryPath = '') {
         // replace all backslashes with slashes
@@ -726,10 +745,13 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     /**
      * Checks whether the directory defined by the given directory
      * information is the currently active directory.
+     *
      * Overwrite in subclasses if you use getDirectoryList!
      *
-     * @param array $dirData directory information
-     * @return boolean whether the directory is the currently active directory
+     * @param array $dirData
+     *         directory information
+     * @return bool
+     *         whether the directory is the currently active directory
      */
     protected function _isActiveDirectory(array $dirData) {
         return $dirData['path'] . $dirData['name'] === dirname($this->_settings['linkeditor_filename']);
@@ -738,10 +760,13 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     /**
      * Checks whether the directory defined by the given directory information
      * should be shown expanded.
+     *
      * Overwrite in subclasses if you use getDirectoryList!
      *
-     * @param array $dirData directory information
-     * @return boolean whether the directory should be shown expanded
+     * @param array $dirData
+     *         directory information
+     * @return bool
+     *         whether the directory should be shown expanded
      */
     protected function _shouldDirectoryBeExpanded(array $dirData) {
         return $this->_isSubdirectory($dirData['path'] . $dirData['name'], $this->_dirname);

@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the CONTENIDO language functions.
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Jan Lengowski
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -22,9 +21,11 @@ cInclude('includes', 'functions.str.php');
  * Edit a language
  *
  * @param int $idlang
- * @param string $langname Name of the language
+ * @param string $langname
+ *         Name of the language
  * @param string $encoding
- * @param int $active Flag for active state, 1 or 0
+ * @param int $active
+ *         Flag for active state, 1 or 0
  * @param string $direction
  * @return bool
  */
@@ -46,9 +47,12 @@ function langEditLanguage($idlang, $langname, $encoding, $active, $direction = '
 /**
  * Create a new language
  *
- * @param string $name Name of the language
- * @param int $client Id of client
- * @return int New language id
+ * @param string $name
+ *         Name of the language
+ * @param int $client
+ *         Id of client
+ * @return int
+ *         New language id
  */
 function langNewLanguage($name, $client) {
     global $cfgClient, $notification;
@@ -82,8 +86,10 @@ function langNewLanguage($name, $client) {
 /**
  * Rename a language
  *
- * @param int $idlang Id of the language
- * @param string $name Name of the language
+ * @param int $idlang
+ *         Id of the language
+ * @param string $name
+ *         Name of the language
  * @return bool
  */
 function langRenameLanguage($idlang, $name) {
@@ -98,8 +104,11 @@ function langRenameLanguage($idlang, $name) {
 /**
  * Delete a language
  *
- * @param int $iIdLang Id of the language
- * @param int $iIdClient Id of the client, uses global client id by default
+ * @param int $iIdLang
+ *         Id of the language
+ * @param int $iIdClient
+ *         Id of the client, uses global client id by default
+ * @return void|string
  */
 function langDeleteLanguage($iIdLang, $iIdClient = 0) {
     global $db, $sess, $client, $cfg, $notification, $cfgClient;
@@ -204,7 +213,7 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0) {
 
         // ********** delete from 'code'-cache
         if (cFileHandler::exists($cfgClient[$iIdClient]['code']['path'])) {
-            /** @var $file SplFileInfo */
+            /* @var $file SplFileInfo */
             foreach (new DirectoryIterator($cfgClient[$iIdClient]['code']['path']) as $file) {
                 if ($file->isFile() === false) {
                     continue;
@@ -270,8 +279,10 @@ function langActivateDeactivateLanguage($idlang, $active) {
  * by language id
  *
  * @param int $idlang
- * @param cDb $db Is not in use
- * @return string 'ltr' or 'rtl'
+ * @param cDb $db
+ *         Is not in use
+ * @return string
+ *         'ltr' or 'rtl'
  */
 function langGetTextDirection($idlang, $db = NULL) {
     static $oLang;
@@ -287,5 +298,3 @@ function langGetTextDirection($idlang, $db = NULL) {
     }
     return $direction;
 }
-
-?>

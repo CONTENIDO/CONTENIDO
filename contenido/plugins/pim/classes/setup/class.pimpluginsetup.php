@@ -4,8 +4,6 @@
  *
  * @package Plugin
  * @subpackage PluginManager
- * @version SVN Revision $Rev:$
- *
  * @author Frederic Schneider
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -410,11 +408,11 @@ class PimPluginSetup {
     }
 
     /**
-     * Info function
+     * Info function, used displayOk CONTENIDO method
      * @param string $message
      */
     protected static function info($message = '') {
-        return self::$_GuiPage->displayInfo($message);
+        return self::$_GuiPage->displayOk($message);
     }
 
 }

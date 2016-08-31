@@ -31,24 +31,44 @@
 <body>
 
     {CATEGORY}
-
+    {NOTIFICATION}
+    {NOTIFICATIONS}
+    
+    <form method="post" name="selectVersion" action="{ACTION2}">
+        <input type="hidden" name="idart" value="{IDART}">
+        <input type="hidden" name="idcat" value="{IDCAT}">
+        <input type="hidden" name="idartlang" value="{IDARTLANG}">
+        <input type="hidden" name="idArtLangVersion" value="">
+    </form>
+    
+    <form method="post" name="copyto" action="{ACTION3}">
+        <input type="hidden" name="idart" value="{IDART}">
+        <input type="hidden" name="idcat" value="{IDCAT}">
+        <input type="hidden" name="idartlang" value="{IDARTLANG}">
+        <input type="hidden" name="idArtLangVersion" value="">
+    </form>    
+       
     <form method="post" name="art_props" action="{ACTION}">
-
         <input type="hidden" name="action" value="con_meta_saveart">
         <input type="hidden" name="send" value="1">
         <input type="hidden" name="tmp_firstedit" value="{TMP_FIRSTEDIT}">
         <input type="hidden" name="idart" value="{IDART}">
         <input type="hidden" name="idcat" value="{IDCAT}">
         <input type="hidden" name="idartlang" value="{IDARTLANG}">
-
+        
         <table class="generic" cellspacing="0" cellpadding="2" border="0">
 
+            <!-- BEGIN -->
+            {ARTICLE_VERSIONING_BOX}
+            <!-- END -->
+            
             <tr>
                 <th colspan="2">{TITEL}</th>
             </tr>
-
-            {NOTIFICATION}
-
+            
+           <!--{NOTIFICATION}
+           {NOTIFICATIONS}-->
+           
             <tr>
                 <td class="leftData">i18n("Link")</td>
                 <td>
@@ -61,7 +81,7 @@
 
             <tr>
                 <td class="leftData">i18n("Page title")</td>
-                <td colspan="3" class="text_medium">
+                <td class="text_medium">
                     <input class="textField" type="text" name="page_title" value="{PAGE_TITLE}" {DISABLED}>
                     {INFO_BUTTON_PAGE_TITLE}
                 </td>
@@ -134,6 +154,8 @@
                     <label for="metaNoImageIndex">noimageindex</label><br>
                     <input id="metaNoArchive" class="vAlignMiddle robotCheckbox" type="checkbox" name="robots[]" value="noarchive" {NOARCHIVE} {DISABLED}>
                     <label for="metaNoArchive">noarchive</label><br>
+                    <input id="metaNoOdP" class="vAlignMiddle robotCheckbox" type="checkbox" name="robots[]" value="noodp" {NOODP} {DISABLED}>
+                    <label for="metaNoOdP">noodp</label><br>
                     {INFO_BUTTON_ROBOTS}
                 </td>
             </tr>
@@ -176,13 +198,13 @@
                 <td>{METATITLE}</td>
                 <td class="text_medium">
                     {METAFIELDTYPE}
-                    <a href="javascript://" onclick="Con.showConfirmation('{DELETE_META_CONFIRM}', function() { deleteMetaTag({IDMETATYPE}, {ARTICLE_ID}, {CAT_ID}, {ARTICLE_LANGUAGE_ID}); }); return false;" title="Delete Meta tag">
-                        <img class="vAlignMiddle" style="float: right" src="images/delete.gif" alt="">
+                    <a href="javascript://" onclick="{DELETE_META}return false;" style="cursor:{CURSOR};" title="Delete Meta tag">
+                        <img class="vAlignMiddle" style="float: right" src="images/delete.gif">
                     </a>
                 </td>
             </tr>
             <!-- END:BLOCK -->
-
+            
             {ADDNEWMETA}
 
             <tr>
@@ -255,6 +277,12 @@ function deleteMetaTag(idMetaType, articleId, catId, idartlang) {
 (function(Con, $) {
     $(function() {
 
+        $('#copytobutton').on('click', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            copyto.idArtLangVersion.value=$('#selectVersionElement option:selected').val();copyto.submit();
+        });
+        
         $('img#addMeta').hover(function() {
             $(this).css('cursor', 'pointer');
         }).click(function() {

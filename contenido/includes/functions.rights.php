@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the CONTENIDO rights functions.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Martin Horwath
  * @author           Murat Purc <murat@purc.de>
  * @copyright        four for business AG <www.4fb.de>
@@ -19,13 +18,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Function checks if a language is associated with a given list of clients
  *
- * @param array $aClients - array of clients to check
- * @param int $iLang - language id which should be checked
- * @param array $aCfg - CONTENIDO configruation array (no more needed)
- * @param object $oDb - CONTENIDO database object (no more needed)
- *
- * @return boolean - status (if language id corresponds to list of clients true
- *         otherwise false)
+ * @param array $aClients
+ *         array of clients to check
+ * @param int $iLang
+ *         language id which should be checked
+ * @param array $aCfg
+ *         CONTENIDO configruation array (no more needed)
+ * @param cDb $oDb
+ *         CONTENIDO database object (no more needed)
+ * @return boolean
+ *         status
+ *         If language id corresponds to list of clients true otherwise false.
  */
 function checkLangInClients($aClients, $iLang, $aCfg, $oDb) {
     $oClientLanguageCollection = new cApiClientLanguageCollection();
@@ -35,12 +38,17 @@ function checkLangInClients($aClients, $iLang, $aCfg, $oDb) {
 /**
  * Duplicate rights for any element.
  *
- * @param string $area Main area name (e. g. 'lay', 'mod', 'str', 'tpl', etc.)
- * @param int $iditem ID of element to copy
- * @param int $newiditem ID of the new element
- * @param int $idlang ID of language, if passed only rights for this language
- *            will be created, otherwhise for all existing languages
- * @return bool True on success otherwhise false
+ * @param string $area
+ *         Main area name (e. g. 'lay', 'mod', 'str', 'tpl', etc.)
+ * @param int $iditem
+ *         ID of element to copy
+ * @param int $newiditem
+ *         ID of the new element
+ * @param int $idlang
+ *         ID of language, if passed only rights for this language
+ *         will be created, otherwise for all existing languages
+ * @return bool
+ *         True on success otherwise false
  */
 function copyRightsForElement($area, $iditem, $newiditem, $idlang = false) {
     global $perm, $auth, $area_tree;
@@ -104,11 +112,15 @@ function copyRightsForElement($area, $iditem, $newiditem, $idlang = false) {
 /**
  * Create rights for any element
  *
- * @param string $area Main area name (e. g. 'lay', 'mod', 'str', 'tpl', etc.)
- * @param int $iditem ID of new element
- * @param int $idlang ID of language, if passed only rights for this language
- *            will be created, otherwhise for all existing languages
- * @return bool True on success otherwhise false
+ * @param string $area
+ *         Main area name (e. g. 'lay', 'mod', 'str', 'tpl', etc.)
+ * @param int $iditem
+ *         ID of new element
+ * @param int $idlang
+ *         ID of language, if passed only rights for this language
+ *         will be created, otherwise for all existing languages
+ * @return bool
+ *         True on success otherwise false
  */
 function createRightsForElement($area, $iditem, $idlang = false) {
     global $perm, $auth, $area_tree, $client;
@@ -171,9 +183,12 @@ function createRightsForElement($area, $iditem, $idlang = false) {
 /**
  * Delete rights for any element
  *
- * @param string $area main area name
- * @param int $iditem ID of new element
- * @param int $idlang ID of lang parameter
+ * @param string $area
+ *         main area name
+ * @param int $iditem
+ *         ID of new element
+ * @param int $idlang
+ *         ID of lang parameter
  */
 function deleteRightsForElement($area, $iditem, $idlang = false) {
     global $perm, $area_tree, $client;
@@ -200,8 +215,8 @@ function deleteRightsForElement($area, $iditem, $idlang = false) {
  *
  * @todo Do we really need to add other perms, if the user/group gets the
  *       'sysadmin' permission?
- * @param bool $bAddUserToClient Flag to add current user to current client,
- *        if no client is specified.
+ * @param bool $bAddUserToClient
+ *         Flag to add current user to current client, if no client is specified.
  * @return array
  */
 function buildUserOrGroupPermsFromRequest($bAddUserToClient = false) {
@@ -273,9 +288,14 @@ function buildUserOrGroupPermsFromRequest($bAddUserToClient = false) {
     return $aPerms;
 }
 
+/**
+ *
+ * @return boolean
+ */
 function saveRights() {
     global $perm, $notification, $db, $userid;
     global $rights_list, $rights_list_old, $rights_client, $rights_lang;
+    global $aArticleRights, $aCategoryRights, $aTemplateRights;
 
     // If no checkbox is checked
     if (!is_array($rights_list)) {
@@ -287,11 +307,27 @@ function saveRights() {
 
     // Search all checks which are not in the rights_list_old for saving
     $arraysave = array_diff(array_keys($rights_list), array_keys($rights_list_old));
+    $oAreaColl = new cApiAreaCollection();
 
     if (is_array($arraydel)) {
         foreach ($arraydel as $value) {
+
             $data = explode('|', $value);
-            $data[0] = $perm->getIDForArea($data[0]);
+
+            // Do not delete rights that does not display at this moment
+            if (!empty($_REQUEST['filter_rights'])) {
+                if (($_REQUEST['filter_rights'] != 'article' && in_array($data[1], $aArticleRights)) ||
+                    ($_REQUEST['filter_rights'] != 'category' && in_array($data[1], $aCategoryRights)) ||
+                    ($_REQUEST['filter_rights'] != 'template' && in_array($data[1], $aTemplateRights))) {
+                    continue;
+                }
+
+                if ($_REQUEST['filter_rights'] != 'other' && !in_array($data[1], array_merge($aArticleRights, $aCategoryRights, $aTemplateRights))) {
+                    continue;
+                }
+            }
+
+            $data[0] = $oAreaColl->getAreaID($data[0]);
             $data[1] = $perm->getIDForAction($data[1]);
 
             $where = "user_id = '" . $db->escape($userid) . "' AND idclient = " . (int) $rights_client . " AND idlang = " . (int) $rights_lang . " AND idarea = " . (int) $data[0] . " AND idcat = " . (int) $data[2] . " AND idaction = " . (int) $data[1] . " AND type = 0";
@@ -311,7 +347,7 @@ function saveRights() {
             // Since areas are stored in a numeric form in the rights table, we
             // have
             // to convert them from strings into numbers
-            $data[0] = $perm->getIDForArea($data[0]);
+            $data[0] = $oAreaColl->getAreaID($data[0]);
             $data[1] = $perm->getIDForAction($data[1]);
 
             if (!isset($data[1])) {
@@ -330,9 +366,14 @@ function saveRights() {
 
 }
 
+/**
+ *
+ * @return boolean
+ */
 function saveGroupRights() {
     global $perm, $notification, $db, $groupid;
     global $rights_list, $rights_list_old, $rights_client, $rights_lang;
+    global $aArticleRights, $aCategoryRights, $aTemplateRights;
 
     // If no checkbox is checked
     if (!is_array($rights_list)) {
@@ -345,10 +386,26 @@ function saveGroupRights() {
     // Search all checks which are not in the rights_list_old for saving
     $arraysave = array_diff(array_keys($rights_list), array_keys($rights_list_old));
 
+    $oAreaColl = new cApiAreaCollection();
+
     if (is_array($arraydel)) {
         foreach ($arraydel as $value) {
             $data = explode('|', $value);
-            $data[0] = $perm->getIDForArea($data[0]);
+
+            // Do not delete grouprights that does not display at this moment
+            if (!empty($_REQUEST['filter_rights'])) {
+                if (($_REQUEST['filter_rights'] != 'article' && in_array($data[1], $aArticleRights)) ||
+                    ($_REQUEST['filter_rights'] != 'category' && in_array($data[1], $aCategoryRights)) ||
+                    ($_REQUEST['filter_rights'] != 'template' && in_array($data[1], $aTemplateRights))) {
+                    continue;
+                }
+
+                if ($_REQUEST['filter_rights'] != 'other' && !in_array($data[1], array_merge($aArticleRights, $aCategoryRights, $aTemplateRights))) {
+                    continue;
+                }
+            }
+
+            $data[0] = $oAreaColl->getAreaID($data[0]);
             $data[1] = $perm->getIDForAction($data[1]);
 
             $where = "user_id = '" . $db->escape($groupid) . "' AND idclient = " . (int) $rights_client . " AND idlang = " . (int) $rights_lang . " AND idarea = " . (int) $data[0] . " AND idcat = " . (int) $data[2] . " AND idaction = " . (int) $data[1] . " AND type = 1";
@@ -368,7 +425,7 @@ function saveGroupRights() {
             // Since areas are stored in a numeric form in the rights table, we
             // have
             // to convert them from strings into numbers
-            $data[0] = $perm->getIDForArea($data[0]);
+            $data[0] = $oAreaColl->getAreaID($data[0]);
             $data[1] = $perm->getIDForAction($data[1]);
 
             if (!isset($data[1])) {

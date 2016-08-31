@@ -4,8 +4,6 @@
  *
  * @package Setup
  * @subpackage UpgradeJob
- * @version SVN Revision $Rev:$
- *
  * @author Frederic Schneider
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -40,7 +38,7 @@ class cUpgradeJob_0016 extends cUpgradeJobAbstract {
 
 				$groupname = stripcslashes(preg_replace("/\"/", "", ($group->get('groupname'))));
 				$description = stripcslashes(preg_replace("/\"/", "", ($group->get('description'))));
-				
+
 				$group->set('groupname', $groupname);
 				$group->set('description', $description);
 
@@ -48,10 +46,10 @@ class cUpgradeJob_0016 extends cUpgradeJobAbstract {
                 $group->store();
 
 			}
-	
+
 			// METATAGS
 			$metaColl = new cApiMetaTagCollection();
-			
+
 			// Get all created metatags
             $metaColl->select();
 
@@ -64,21 +62,21 @@ class cUpgradeJob_0016 extends cUpgradeJobAbstract {
                 $meta->store();
 
 			}
-			
+
 			// UPLOAD METATAGS
 			$uplColl = new cApiUploadMetaCollection();
-			
+
 			// Get all created upload metatags
             $uplColl->select();
 
             while ($upl = $uplColl->next()) {
 
 				$medianame = stripcslashes(preg_replace("/\"/", "", ($upl->get('medianame'))));
-				$description = stripcslashes(preg_replace("/\"/", "", ($upl->get('description'))));				
+				$description = stripcslashes(preg_replace("/\"/", "", ($upl->get('description'))));
 				$keywords = stripcslashes(preg_replace("/\"/", "", ($upl->get('keywords'))));
 				$internal_notice = stripcslashes(preg_replace("/\"/", "", ($upl->get('internal_notice'))));
 				$copyright = stripcslashes(preg_replace("/\"/", "", ($upl->get('copyright'))));
-				
+
 				$upl->set('medianame', $medianame);
 				$upl->set('description', $description);
 				$upl->set('keywords', $keywords);
@@ -89,7 +87,7 @@ class cUpgradeJob_0016 extends cUpgradeJobAbstract {
                 $upl->store();
 
 			}
-	
+
         }
     }
 

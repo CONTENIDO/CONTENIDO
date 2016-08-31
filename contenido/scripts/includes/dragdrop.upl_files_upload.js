@@ -3,8 +3,8 @@
  *
  * @module     upl-files-upload
  * @requires   jQuery, Con
- * @version    SVN Revision $Rev: 5937 $
- * @author     Mischa Holz, Murat Purc <murat@purc.de>
+ * @author     Mischa Holz
+ * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de

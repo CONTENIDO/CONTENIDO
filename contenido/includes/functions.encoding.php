@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains some little function to retrieving current encoding.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Holger Librenz
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -25,26 +24,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * return
  * false, otherwise the encoding as string like it is stored in database.
  *
- * @param cDb $db not used any more!
+ * @deprecated [2015-05-21]
+ *         use cRegistry::getEncoding
+ * @param cDb $db
+ *         not used any more!
  * @param int $lang
- * @return string
+ * @return string|boolean
  */
 function getEncodingByLanguage($db, $lang) {
-    // check parameters and use cRegistry values if they are invalid
-    if (!is_numeric($lang)) {
-        $lang = cRegistry::getLanguageId();
-    }
-
-    $lang = cSecurity::toInteger($lang);
-    if ($lang > 0) {
-        // load the language object with the given ID and return the encoding
-        $apiLanguage = new cApiLanguage($lang);
-        if ($apiLanguage->isLoaded()) {
-            return trim($apiLanguage->get('encoding'));
-        }
-    }
-
-    return false;
+    cDeprecated('This method is deprecated and is not needed any longer');
+    return cRegistry::getEncoding();
 }
 
 /**

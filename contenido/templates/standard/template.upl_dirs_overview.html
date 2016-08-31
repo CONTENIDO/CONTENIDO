@@ -56,22 +56,6 @@ function deleteDirectory(path) {
     window.location.href = url;
 }
 
-/** @deprecated 2013-12-02 This function is not longer supported. **/
-function renameDir(oldname, parent) {
-    var newname = prompt("{RENAME}", oldname);
-    if (newname) {
-        var url = Con.UtilUrl.build('main.php', {
-            area: 'upl',
-            action: 'upl_renamedir',
-            frame: 2,
-            newname: newname,
-            oldname: oldname,
-            parent: parent
-        });
-        window.location.href = url;
-    }
-}
-
 (function(Con, $) {
     $(function() {
         if (idPath != '' && $('#' + idPath)) {

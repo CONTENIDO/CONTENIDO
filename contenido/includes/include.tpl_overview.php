@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the menu frame (overview) backend page for template management.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Jan Lengowski
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt

@@ -4,7 +4,6 @@
  *
  * @package Module
  * @subpackage search_result
- * @version SVN Revision $Rev:$
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG
  * @link http://www.4fb.de
@@ -78,9 +77,14 @@ class SearchResultModule {
 
     /**
      *
-     * @var unknown_type
+     * @var int
      */
     protected $_numberOfPages = NULL;
+
+    /**
+     * @var int
+     */
+    protected $_page = 0;
 
     /**
      *
@@ -219,8 +223,7 @@ class SearchResultModule {
         ));
         if (strlen($this->_prepSearchTerm) > 1) {
             $searchResultArray = $search->searchIndex($this->_prepSearchTerm, '');
-
-            $searchResultCount = 0;
+            
             if (false !== $searchResultArray) {
 
                 $this->_searchResultCount = count($searchResultArray);
@@ -254,8 +257,8 @@ class SearchResultModule {
 
     /**
      *
-     * @param unknown_type $count
-     * @param unknown_type $countIdarts
+     * @param int $count
+     * @param int $countIdarts
      */
     protected function _setMsgResult($count, $countIdarts) {
         $this->_countValues = $count;
@@ -341,15 +344,15 @@ class SearchResultModule {
 
             // get headlines
             $headlines = $this->_searchResults->getSearchContent($idart, 'HTMLHEAD', 1);
-            $headline = cApiStrTrimAfterWord($headlines[0], $this->_maxTeaserTextLen);
+            $headline = cString::trimAfterWord($headlines[0], $this->_maxTeaserTextLen);
 
             // get subheadlines
             $subheadlines = $this->_searchResults->getSearchContent($idart, 'HTMLHEAD', 2);
-            $subheadline = cApiStrTrimAfterWord($subheadlines[0], $this->_maxTeaserTextLen);
+            $subheadline = cString::trimAfterWord($subheadlines[0], $this->_maxTeaserTextLen);
 
             // get paragraphs
             $paragraphs = $this->_searchResults->getSearchContent($idart, 'HTML', 1);
-            $paragraph = cApiStrTrimAfterWord($paragraphs[0], $this->_maxTeaserTextLen);
+            $paragraph = cString::trimAfterWord($paragraphs[0], $this->_maxTeaserTextLen);
 
             // get similarity
             $similarity = $this->_searchResults->getSimilarity($idart);
@@ -448,7 +451,7 @@ class SearchResultModule {
         );
         // add optional params if given
         if (NULL !== $searchTerm) {
-            $params['search_term'] = $searchTerm;
+            $params['search_term'] = conHtmlEntityDecode($searchTerm);
         }
         if (NULL !== $page) {
             $params['page'] = $page . $this->_artSpecs;

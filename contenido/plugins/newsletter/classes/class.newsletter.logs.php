@@ -4,8 +4,6 @@
  *
  * @package Plugin
  * @subpackage Newsletter
- * @version SVN Revision $Rev:$
- *
  * @author Bjoern Behrens
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -103,7 +101,9 @@ class NewsletterLogCollection extends ItemCollection {
             $sDestination = $oNewsletter->get("send_to");
             $iIDClient = $oNewsletter->get("idclient");
             $iIDLang = $oNewsletter->get("idlang");
-
+            $nrc = new NewsletterRecipientCollection();
+            $nrcClassName = strtolower(get_class($nrc));
+            
             switch ($sDestination) {
                 case "all":
                     $sDistinct = "";
@@ -113,7 +113,7 @@ class NewsletterLogCollection extends ItemCollection {
                 case "default":
                     $sDistinct = "distinct";
                     $sFrom = $cfg["tab"]["news_groups"] . " AS groups, " . $cfg["tab"]["news_groupmembers"] . " AS groupmembers ";
-                    $sSQL = $cfg['tab']['news_rcp'] . ".idclient = '" . $iIDClient . "' AND " . $cfg['tab']['news_rcp'] . ".idlang = '" . $iIDLang . "' AND " . $cfg['tab']['news_rcp'] . ".deactivated = '0' AND " . $cfg['tab']['news_rcp'] . ".confirmed = '1' AND " . $cfg['tab']['news_rcp'] . ".idnewsrcp = groupmembers.idnewsrcp AND " . "groupmembers.idnewsgroup = groups.idnewsgroup AND " . "groups.defaultgroup = '1' AND groups.idclient = '" . $iIDClient . "' AND " . "groups.idlang = '" . $iIDLang . "'";
+                    $sSQL = $nrcClassName . ".idclient = '" . $iIDClient . "' AND " . $nrcClassName . ".idlang = '" . $iIDLang . "' AND " . $nrcClassName . ".deactivated = '0' AND " . $nrcClassName . ".confirmed = '1' AND " . $nrcClassName . ".idnewsrcp = groupmembers.idnewsrcp AND " . "groupmembers.idnewsgroup = groups.idnewsgroup AND " . "groups.defaultgroup = '1' AND groups.idclient = '" . $iIDClient . "' AND " . "groups.idlang = '" . $iIDLang . "'";
                     break;
                 case "selection":
                     $aGroups = unserialize($oNewsletter->get("send_ids"));
@@ -152,7 +152,7 @@ class NewsletterLogCollection extends ItemCollection {
                 $iRecipients = $oRecipients->count();
 
                 while ($oRecipient = $oRecipients->next()) {
-                    $this->create($idnewsjob, $oRecipient->get($oRecipient->primaryKey));
+                    $this->create($idnewsjob, $oRecipient->get($oRecipient->getPrimaryKeyName()));
                 }
 
                 return $iRecipients;
@@ -189,7 +189,7 @@ class NewsletterLogCollection extends ItemCollection {
         $this->query();
 
         while ($oItem = $this->next()) {
-            $this->delete($oItem->get($oItem->primaryKey));
+            $this->delete($oItem->get($oItem->getPrimaryKeyName()));
         }
 
         return true;

@@ -32,11 +32,13 @@
                 tree=$wrapper.subcats path=$path ulId=""}
         {* loop articles *}
         {if 0 lt $wrapper.articles|count}
-            {foreach from=$wrapper.articles item=article}
-            <li>
-                <a href="{$article->getLink()|escape}" title="{$article->get('title')|escape}">{$article->get('title')|escape}</a>
-            </li>
-            {/foreach}
+        	<ul>
+	            {foreach from=$wrapper.articles item=article}
+	            <li>
+	                <a href="{$article->getLink()|escape}" title="{$article->get('title')|escape}">{$article->get('title')|escape}</a>
+	            </li>
+	            {/foreach}
+            </ul>
         {/if}
         </li>
      {/foreach}

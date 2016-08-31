@@ -4,8 +4,6 @@
  *
  * @package    Setup
  * @subpackage GUI
- * @version    SVN Revision $Rev:$
- *
  * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,27 +23,39 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cHTMLAlphaImage extends cHTMLImage {
 
-    var $_sClickImage;
+    protected $_sClickImage;
 
-    var $_sMouseoverClickImage;
+    protected $_sMouseoverClickImage;
 
-    var $_sMouseoverSrc;
+    protected $_sMouseoverSrc;
 
-    function cHTMLAlphaImage() {
+    /**
+     * cHTMLAlphaImage constructor.
+     */
+    public function __construct() {
         parent::__construct();
         $this->setAlt("");
     }
 
-    function setMouseover($sMouseoverSrc) {
+    /**
+     * Old constructor
+     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     */
+    public function cHTMLAlphaImage() {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
+        $this->__construct();
+    }
+
+    public function setMouseover($sMouseoverSrc) {
         $this->_sMouseoverSrc = $sMouseoverSrc;
     }
 
-    function setSwapOnClick($sClickSrc, $sMouseoverClickSrc) {
+    public function setSwapOnClick($sClickSrc, $sMouseoverClickSrc) {
         $this->_sClickImage = $sClickSrc;
         $this->_sMouseoverClickImage = $sMouseoverClickSrc;
     }
 
-    function toHTML() {
+    public function toHtml() {
         $imageLocations = "this.imgnormal = '%s'; this.imgover = '%s'; this.clickimgnormal = '%s'; this.clickimgover = '%s';";
 
         $this->attachEventDefinition("imagelocs", "onload", sprintf($imageLocations, $this->getAttribute('src'), $this->_sMouseoverSrc, $this->_sClickImage, $this->_sMouseoverClickImage));
@@ -62,7 +72,7 @@ class cHTMLAlphaImage extends cHTMLImage {
             }
         }
 
-        return parent::toHTML();
+        return parent::toHtml();
     }
 
 }
@@ -74,21 +84,37 @@ class cHTMLAlphaImage extends cHTMLImage {
  * @subpackage GUI
  */
 class cHTMLErrorMessageList extends cHTMLDiv {
+    /**
+     * @var cHTMLTable
+     */
+    protected $_oTable;
 
-    function cHTMLErrorMessageList() {
+    /**
+     * cHTMLErrorMessageList constructor.
+     */
+    public function __construct() {
         $this->_oTable = new cHTMLTable();
         $this->_oTable->setWidth("100%");
         parent::__construct();
         $this->setClass("errorlist");
     }
 
-    function setContent($content) {
+    /**
+     * Old constructor
+     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     */
+    public function cHTMLErrorMessageList() {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
+        $this->__construct();
+    }
+
+    public function setContent($content) {
         $this->_oTable->setContent($content);
     }
 
-    function toHTML() {
+    public function toHtml() {
         $this->_setContent($this->_oTable->render());
-        return parent::toHTML();
+        return parent::toHtml();
     }
 
 }
@@ -100,8 +126,45 @@ class cHTMLErrorMessageList extends cHTMLDiv {
  * @subpackage GUI
  */
 class cHTMLFoldableErrorMessage extends cHTMLTableRow {
+    /**
+     * @var cHTMLDiv
+     */
+    protected $_oTitle;
 
-    function cHTMLFoldableErrorMessage($sTitle, $sMessage, $sIcon = false, $sIconText = false) {
+    /**
+     * @var cHTMLDiv
+     */
+    protected $_oMessage;
+
+    /**
+     * @var cHTMLTableData
+     */
+    protected $_oIcon;
+
+    /**
+     * @var cHTMLTableData
+     */
+    protected $_oFolding;
+
+    /**
+     * TODO: this should not be public
+     * @var cHTMLTableData
+     */
+    public $_oContent;
+
+    /**
+     * @var cHTMLAlphaImage
+     */
+    protected $_oIconImg;
+
+    /**
+     * cHTMLFoldableErrorMessage constructor.
+     * @param $title
+     * @param $message
+     * @param bool $icon
+     * @param bool $iconText
+     */
+    public function __construct($title, $message, $icon = false, $iconText = false) {
         $this->_oFolding = new cHTMLTableData();
         $this->_oContent = new cHTMLTableData();
         $this->_oIcon = new cHTMLTableData();
@@ -116,13 +179,13 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow {
         $alphaImage->setSrc("images/controls/open_all.gif");
         $alphaImage->setMouseover("images/controls/open_all.gif");
         $alphaImage->setSwapOnClick("images/controls/close_all.gif", "images/controls/close_all.gif");
-        $alphaImage->attachEventDefinition("showhide", "onclick", "aldiv = document.getElementById('" . $this->_oMessage->getId() . "'); showHideMessage(this, aldiv);");
+        $alphaImage->attachEventDefinition("showhide", "onclick", "aldiv = document.getElementById('" . $this->_oMessage->getID() . "'); showHideMessage(this, aldiv);");
 
-        $this->_oTitle->setContent($sTitle);
+        $this->_oTitle->setContent($title);
         $this->_oTitle->setStyle("cursor:pointer;");
-        $this->_oTitle->attachEventDefinition("showhide", "onclick", "alimg = document.getElementById('" . $alphaImage->getId() . "'); aldiv = document.getElementById('" . $this->_oMessage->getId() . "'); showHideMessage(alimg, aldiv); clickHandler(alimg);");
+        $this->_oTitle->attachEventDefinition("showhide", "onclick", "alimg = document.getElementById('" . $alphaImage->getID() . "'); aldiv = document.getElementById('" . $this->_oMessage->getID() . "'); showHideMessage(alimg, aldiv); clickHandler(alimg);");
 
-        $this->_oMessage->setContent($sMessage);
+        $this->_oMessage->setContent($message);
         $this->_oMessage->setClass("entry_closed");
 
         $this->_oFolding->setVerticalAlignment("top");
@@ -138,11 +201,11 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow {
 
         $this->_oIcon->setClass("icon");
         $this->_oIcon->setVerticalAlignment("top");
-        if ($sIcon !== false) {
-            $this->_oIconImg->setSrc($sIcon);
+        if ($icon !== false) {
+            $this->_oIconImg->setSrc($icon);
 
-            if ($sIconText !== false) {
-                $this->_oIconImg->setAlt($sIconText);
+            if ($iconText !== false) {
+                $this->_oIconImg->setAlt($iconText);
             }
 
             $this->_oIcon->setContent($this->_oIconImg);
@@ -153,13 +216,26 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow {
         parent::__construct();
     }
 
-    function toHTML() {
+    /**
+     * Old constructor
+     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     * @param $title
+     * @param $message
+     * @param bool $icon
+     * @param bool $iconText
+     */
+    public function cHTMLFoldableErrorMessage($title, $message, $icon = false, $iconText = false) {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
+        $this->__construct($title, $message, $icon, $iconText);
+    }
+
+    public function toHtml() {
         $this->setContent(array(
             $this->_oFolding,
             $this->_oContent,
             $this->_oIcon
         ));
-        return parent::toHTML();
+        return parent::toHtml();
     }
 
 }
@@ -171,28 +247,54 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow {
  * @subpackage GUI
  */
 class cHTMLInfoMessage extends cHTMLTableRow {
+    /**
+     * TODO: this should not be public!
+     * @var cHTMLTableData
+     */
+    public $_oTitle;
 
-    function cHTMLInfoMessage($sTitle, $sMessage) {
+    /**
+     * @var cHTMLTableData
+     */
+    protected $_oMessage;
+
+    /**
+     * cHTMLInfoMessage constructor.
+     * @param $title
+     * @param $message
+     */
+    public function __construct($title, $message) {
         $this->_oTitle = new cHTMLTableData();
         $this->_oMessage = new cHTMLTableData();
 
-        $this->_oTitle->setContent($sTitle);
+        $this->_oTitle->setContent($title);
         $this->_oTitle->setClass("entry_nowrap");
         $this->_oTitle->setAttribute("nowrap", "nowrap");
         $this->_oTitle->setWidth(1);
         $this->_oTitle->setVerticalAlignment("top");
-        $this->_oMessage->setContent($sMessage);
+        $this->_oMessage->setContent($message);
         $this->_oMessage->setClass("entry_nowrap");
 
         parent::__construct();
     }
 
-    function toHTML() {
+    /**
+     * Old constructor
+     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     * @param $title
+     * @param $message
+     */
+    public function cHTMLInfoMessage($title, $message) {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
+        $this->__construct($title, $message);
+    }
+
+    public function toHtml() {
         $this->setContent(array(
             $this->_oTitle,
             $this->_oMessage
         ));
-        return parent::toHTML();
+        return parent::toHtml();
     }
 
 }
@@ -206,7 +308,13 @@ class cHTMLInfoMessage extends cHTMLTableRow {
  */
 class cHTMLLanguageLink extends cHTMLDiv {
 
-    function cHTMLLanguageLink($langcode, $langname, $stepnumber) {
+    /**
+     * cHTMLLanguageLink constructor.
+     * @param string $langcode
+     * @param string $langname
+     * @param string $stepnumber
+     */
+    public function __construct($langcode, $langname, $stepnumber) {
         parent::__construct();
 
         $this->setStyle("height:40px;width:150px;");
@@ -221,6 +329,18 @@ class cHTMLLanguageLink extends cHTMLDiv {
         $this->setContent($link->render());
     }
 
+    /**
+     * Old constructor
+     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     * @param $langcode
+     * @param $langname
+     * @param $stepnumber
+     */
+    public function cHTMLLanguageLink($langcode, $langname, $stepnumber) {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
+        $this->__construct($langcode, $langname, $stepnumber);
+    }
+
 }
 
 /**
@@ -232,7 +352,12 @@ class cHTMLLanguageLink extends cHTMLDiv {
  */
 class cHTMLButtonLink extends cHTMLDiv {
 
-    function cHTMLButtonLink($href, $title) {
+    /**
+     * cHTMLButtonLink constructor.
+     * @param string $href
+     * @param string $title
+     */
+    public function __construct($href, $title) {
         parent::__construct();
 
         $this->setStyle("height:40px;width:180px;");
@@ -243,6 +368,17 @@ class cHTMLButtonLink extends cHTMLDiv {
         $link->setContent($title . "<span>&raquo;</span>");
 
         $this->setContent($link->render());
+    }
+
+    /**
+     * Old constructor
+     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     * @param $href
+     * @param $title
+     */
+    function cHTMLButtonLink($href, $title) {
+        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
+        $this->__construct($href, $title);
     }
 
 }

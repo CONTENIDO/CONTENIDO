@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the frontend group memeber collection and item class.
  *
  * @package Core
  * @subpackage GenericDB_Model
- * @version SVN Revision $Rev:$
- *
  * @author Murat Purc <murat@purc.de>
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -24,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiFrontendGroupMemberCollection extends ItemCollection {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      */
     public function __construct() {
         global $cfg;
@@ -38,9 +37,12 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
 
     /**
      * Creates a new association
-     * @TODO Should return null in case of failure
-     * @param int $idfrontendgroup specifies the frontend group
-     * @param int $idfrontenduser specifies the frontend user
+     *
+     * @todo Should return null in case of failure
+     * @param int $idfrontendgroup
+     *         specifies the frontend group
+     * @param int $idfrontenduser
+     *         specifies the frontend user
      * @return cApiFrontendGroupMember|false
      */
     public function create($idfrontendgroup, $idfrontenduser) {
@@ -62,8 +64,10 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
     /**
      * Removes an association
      *
-     * @param int $idfrontendgroup Specifies the frontend group
-     * @param int $idfrontenduser Specifies the frontend user
+     * @param int $idfrontendgroup
+     *         Specifies the frontend group
+     * @param int $idfrontenduser
+     *         Specifies the frontend user
      */
     public function remove($idfrontendgroup, $idfrontenduser) {
         $this->select('idfrontendgroup = ' . (int) $idfrontendgroup . ' AND idfrontenduser = ' . (int) $idfrontenduser);
@@ -76,9 +80,12 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
     /**
      * Returns all users in a single group
      *
-     * @param int $idfrontendgroup specifies the frontend group
-     * @param bool $asObjects Specifies if the function should return objects
-     * @return array List of frontend user ids or cApiFrontendUser items
+     * @param int $idfrontendgroup
+     *         specifies the frontend group
+     * @param bool $asObjects [optional]
+     *         Specifies if the function should return objects
+     * @return array
+     *         List of frontend user ids or cApiFrontendUser items
      */
     public function getUsersInGroup($idfrontendgroup, $asObjects = true) {
         $this->select('idfrontendgroup = ' . (int) $idfrontendgroup);
@@ -95,7 +102,7 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
             }
         }
 
-        return ($objects);
+        return $objects;
     }
 }
 
@@ -108,9 +115,10 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
 class cApiFrontendGroupMember extends Item {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId [optional]
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;

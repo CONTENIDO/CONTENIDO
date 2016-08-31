@@ -4,8 +4,7 @@
  *
  * @package Plugin
  * @subpackage FormAssistant
- * @version SVN Revision $Rev:$
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  * @copyright four for business AG
  * @link http://www.4fb.de
  */
@@ -17,7 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * PIFA form item collection class.
  * It's a kind of a model.
  *
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
 class PifaFormCollection extends ItemCollection {
 
@@ -143,7 +142,7 @@ class PifaFormCollection extends ItemCollection {
  * PIFA form item class.
  * It's a kind of a model.
  *
- * @author marcus.gnass
+ * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
 class PifaForm extends Item {
 
@@ -199,8 +198,6 @@ class PifaForm extends Item {
 
     /**
      * Read this forms fields from database and aggregate them.
-     *
-     * @param array $_errors
      */
     public function loadFields() {
         $col = new PifaFieldCollection();
@@ -231,7 +228,7 @@ class PifaForm extends Item {
 
     /**
      *
-     * @return $_lastInsertedId
+     * @return int
      */
     public function getLastInsertedId() {
         return $this->_lastInsertedId;
@@ -576,7 +573,7 @@ class PifaForm extends Item {
                     }
                 }
             }
-    
+
             // add attachments by string
             if (array_key_exists('attachmentStrings', $opt)) {
                 if (is_array($opt['attachmentStrings'])) {
@@ -587,7 +584,7 @@ class PifaForm extends Item {
                     }
                 }
             }
-    
+
             // add sender
             $message->addFrom($opt['from'], $opt['fromName']);
 
@@ -789,7 +786,7 @@ class PifaForm extends Item {
             // append value
             foreach ($columns as $index => $columnName) {
                 $out .= 0 === $index? "\n" : ';';
-				$out .= $row[$columnName];
+                $out .= $row[$columnName];
             }
         }
 

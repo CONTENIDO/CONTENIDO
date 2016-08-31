@@ -37,7 +37,13 @@
                         return false;
                     }
                     $pifaFormFieldForm.html(data);
-                    pifaShowFormFieldDialog($pifaFormFieldForm, null);
+                    pifaShowFormFieldDialog($pifaFormFieldForm, null);                    
+                    
+                    $('#pifa-form-field-dialog').find('.pseudo-fieldset').find('#deselectCss').click( function() {
+                        console.log($('#css_class'));
+                        $('#css_class option:selected').removeAttr('selected');
+                    });
+                    
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     $(jqXHR.responseText).appendTo('body').dialog({
@@ -351,7 +357,7 @@
                 }
             });
         });
-
+            
     });
 
 })(Con, Con.$);

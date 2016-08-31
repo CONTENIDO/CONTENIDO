@@ -5,8 +5,6 @@
  *
  * @package Module
  * @subpackage ContentList
- * @version SVN Revision $Rev:$
- *
  * @author timo.trautmann@4fb.de
  * @author alexander.scheider@4fb.de
  * @copyright four for business AG <www.4fb.de>
@@ -23,8 +21,8 @@ $typeid = 500;
 
 $idartlang = cRegistry::getArticleLanguageId(true);
 $artId = cRegistry::getArticleId(true);
-$client = cRegistry::getClientId(true);
-$lang = cRegistry::getLanguageId(true);
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
 
 // create art object
 $art = new cApiArticleLanguage();

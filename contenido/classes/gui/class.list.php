@@ -1,16 +1,15 @@
 <?php
+
 /**
  * This file contains the list GUI class.
  *
- * @package          Core
- * @subpackage       GUI
- * @version          SVN Revision $Rev:$
- *
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @package Core
+ * @subpackage GUI
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -23,16 +22,36 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cGuiList {
 
+    /**
+     *
+     * @todo names of protected members should have a leading underscore
+     * @var array
+     */
     protected $cells;
 
+    /**
+     * Constructor to create an instance of this class.
+     */
     public function __construct() {
         $this->cells = array();
     }
 
+    /**
+     *
+     * @param string|int $item
+     * @param string|int $cell
+     * @param string $value
+     */
     public function setCell($item, $cell, $value) {
         $this->cells[$item][$cell] = $value;
     }
 
+    /**
+     *
+     * @param bool $print [optional]
+     * @return string|void
+     *         Complete template string or nothing
+     */
     public function render($print = false) {
         global $cfg;
 
@@ -80,5 +99,3 @@ class cGuiList {
     }
 
 }
-
-?>

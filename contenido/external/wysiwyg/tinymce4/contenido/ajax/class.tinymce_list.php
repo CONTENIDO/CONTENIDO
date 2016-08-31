@@ -53,6 +53,7 @@ $mediaList = new cTinyMCE4List($_GET['mode']);
 class cTinyMCE4List {
 
     /**
+     * @param string|null $mode
      */
     public function __construct($mode = null) {
         // output an empty list for no specified mode
@@ -73,10 +74,10 @@ class cTinyMCE4List {
             default:
                 // just output an empty list for unknown mode
         }
-        
+
         $this->_printList($list);
     }
-    
+
     /**
      * get a list of images that is accessible for tinymce
      * @return array The array of images filled with upload objects
@@ -96,14 +97,14 @@ class cTinyMCE4List {
         // $oApiUploadCol->setWhere('filetype', array('gif', 'jpg', 'jpeg', 'png'), 'IN');
         // $oApiUploadCol->setOrder('dirname, filename ASC');
         // $oApiUploadCol->query();
-        $aUplList = $oApiUploadCol->fetchArray($oApiUploadCol->primaryKey, array('idclient', 'dirname', 'filetype', 'filename'));
+        $aUplList = $oApiUploadCol->fetchArray($oApiUploadCol->getPrimaryKeyName(), array('idclient', 'dirname', 'filetype', 'filename'));
 
         $imageList = array();
         foreach ($aUplList as $uplItem) {
             $imageItem = new stdClass();
             $imageItem->title = $uplItem['dirname'] . $uplItem['filename'];
             $imageItem->value = $clientConfig['upload'] . $uplItem['dirname'] . $uplItem['filename'];
-            
+
             $imageList[] = $imageItem;
         }
 
@@ -206,7 +207,7 @@ class cTinyMCE4List {
                 }
 
                 $is_start = isStartArticle($articleLanguage->get('idartlang'), $catEntry['idcat'], $lang);
-            
+
                 if ($is_start) {
                     $tmp_title .= "*";
                 }

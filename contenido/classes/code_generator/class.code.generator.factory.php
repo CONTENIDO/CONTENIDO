@@ -1,11 +1,10 @@
 <?php
+
 /**
  * CONTENIDO code generator factory
  *
  * @package    Core
  * @subpackage ContentType
- * @version    SVN Revision $Rev:$
- *
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -17,6 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * CONTENIDO code generator factory.
+ *
  * @package    Core
  * @subpackage ContentType
  */
@@ -25,11 +25,11 @@ class cCodeGeneratorFactory {
     /**
      * Returns code generator instance by it's name.
      *
-     * @param  string $name   The generator name, e. g. 'Standard' to retrieve instance of
-     *                        cCodeGeneratorStandard
-     *
-     * @throws cInvalidArgumentException If name is invalid, class file is missing or
-     *                                   class isn't available
+     * @param string $name [optional]
+     *         The generator name, e.g. 'Standard' to retrieve instance of
+     *         cCodeGeneratorStandard.
+     * @throws cInvalidArgumentException
+     *         If name is invalid, class file is missing or class isn't available.
      * @return cCodeGeneratorAbstract
      */
     public static function getInstance($name = '') {

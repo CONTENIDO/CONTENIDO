@@ -4,8 +4,6 @@
  *
  * @package    Core
  * @subpackage Util
- * @version    SVN Revision $Rev:$
- *
  * @author     Dominik Ziegler
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -80,11 +78,13 @@ class cArticleCollector implements SeekableIterator, Countable {
     protected $_currentPosition = 0;
 
     /**
-     * Constructor. If options are defined, the loading process is automatically
+     * Constructor to create an instance of this class.
+     *
+     * If options are defined, the loading process is automatically
      * initiated.
      *
-     * @param array $options array with options for the collector (optional,
-     *            default: empty array)
+     * @param array $options [optional, default: empty array]
+     *         array with options for the collector
      */
     public function __construct($options = array()) {
         $this->setOptions($options);
@@ -95,7 +95,8 @@ class cArticleCollector implements SeekableIterator, Countable {
      * Setter for the collector options. Validates incoming options and sets the
      * default of the missing options.
      *
-     * @param array $options array with option
+     * @param array $options
+     *         array with option
      */
     public function setOptions($options) {
         if (isset($options['idcat']) && !isset($options['categories'])) {
@@ -180,10 +181,10 @@ class cArticleCollector implements SeekableIterator, Countable {
 
         $cfg = cRegistry::getConfig();
 
-        $sqlCat = (count($this->_options['categories']) > 0) ? " idcat IN ('" . implode("','", $this->_options['categories']) . "') AND " : '';
+        $sqlCatLang = (count($this->_options['categories']) > 0) ? " idcat IN ('" . implode("','", $this->_options['categories']) . "') AND " : '';
 
         $db = cRegistry::getDb();
-        $sql = "SELECT startidartlang, idcat FROM " . $cfg['tab']['cat_lang'] . " WHERE " . $sqlCat . " idlang=" . $this->_options['lang'];
+        $sql = "SELECT startidartlang, idcat FROM " . $cfg['tab']['cat_lang'] . " WHERE " . $sqlCatLang . " idlang=" . $this->_options['lang'];
         $db->query($sql);
 
         while ($db->nextRecord()) {
@@ -193,25 +194,27 @@ class cArticleCollector implements SeekableIterator, Countable {
             }
         }
 
-        $sqlCat = (count($this->_options['categories']) > 0) ? " c.idcat IN ('" . implode("','", $this->_options['categories']) . "') AND b.idart = c.idart AND " : '';
+        // This sql-line uses cat_art table with alias c. If no categories found, it writes only "WHERE" into sql-query
+        $sqlCat = (count($this->_options['categories']) > 0) ? ", " . $cfg['tab']['cat_art'] . " AS c WHERE c.idcat IN ('" . implode("','", $this->_options['categories']) . "') AND b.idart = c.idart AND " : ' WHERE ';
+
         $sqlArtSpecs = (count($this->_options['artspecs']) > 0) ? " a.artspec IN ('" . implode("','", $this->_options['artspecs']) . "') AND " : '';
 
         if (count($this->_startArticles) > 0) {
             if ($this->_options['start'] == false) {
                 $sqlStartArticles = "a.idartlang NOT IN ('" . implode("','", $this->_startArticles) . "') AND ";
-            } 
-            
+            }
+
             if ($this->_options['startonly'] == true) {
                 $sqlStartArticles = "a.idartlang IN ('" . implode("','", $this->_startArticles) . "') AND ";
             }
         }
-        
+
         if ($this->_options['startonly'] == true && count($this->_startArticles) == 0) {
             return;
         }
 
         $sql = "SELECT DISTINCT a.idartlang FROM " . $cfg['tab']['art_lang'] . " AS a, ";
-        $sql .= $cfg['tab']['art'] . " AS b, " . $cfg['tab']['cat_art'] . " AS c " . " WHERE ";
+        $sql .= $cfg['tab']['art'] . " AS b";
         $sql .= $sqlCat . $sqlStartArticles . $sqlArtSpecs . "b.idclient = '" . $this->_options['client'] . "' AND ";
         $sql .= "a.idlang = '" . $this->_options['lang'] . "' AND " . "a.idart = b.idart";
 
@@ -260,7 +263,7 @@ class cArticleCollector implements SeekableIterator, Countable {
      * Compatibility method for old ArticleCollection class. Returns the next
      * article.
      *
-     * @return bool cApiArticleLanguage
+     * @return bool|cApiArticleLanguage
      */
     public function nextArticle() {
         $next = $this->current();
@@ -303,7 +306,8 @@ class cArticleCollector implements SeekableIterator, Countable {
      * // Iterate through all articles of page two while ($art =
      * $collection->nextArticle()) { ... }
      *
-     * @param int $page The page of the article collection
+     * @param int $page
+     *         The page of the article collection
      */
     public function setPage($page) {
         if (is_array($this->_pages[$page])) {
@@ -314,7 +318,8 @@ class cArticleCollector implements SeekableIterator, Countable {
     /**
      * Seeks a specific position in the loaded articles.
      *
-     * @param int $position position to load
+     * @param int $position
+     *         position to load
      * @throws cOutOfBoundsException
      */
     public function seek($position) {
@@ -344,7 +349,7 @@ class cArticleCollector implements SeekableIterator, Countable {
     /**
      * Method "key" of the implemented iterator.
      *
-     * @return int mixed
+     * @return int
      */
     public function key() {
         return $this->_currentPosition;

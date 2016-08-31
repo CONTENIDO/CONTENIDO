@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This file contains the backend page for search results in upload section.
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Timo Hummel
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -20,15 +19,40 @@ cInclude('includes', 'functions.upl.php');
 cInclude('includes', 'functions.file.php');
 
 $appendparameters = $_REQUEST["appendparameters"];
+
+/**
+ *
+ */
 class UploadSearchResultList extends FrontendList {
+    /**
+     *
+     * @var string
+     */
+    private $_pathdata;
 
-    var $dark;
+    /**
+     *
+     * @var string
+     */
+    private $_fileType;
 
-    var $size;
+    /**
+     *
+     * @var int
+     */
+    protected $_size;
 
-    var $pathdata;
-
-    function convert($field, $data) {
+    /**
+     * Field converting facility.
+     *
+     * @see FrontendList::convert()
+     * @param int $field
+     *         Field index
+     * @param mixed $value
+     *         Field value
+     * @return mixed
+     */
+    public function convert($field, $data) {
         global $cfg, $sess, $client, $cfgClient, $appendparameters;
 
         if ($field == 5) {
@@ -50,10 +74,10 @@ class UploadSearchResultList extends FrontendList {
 
         if ($field == 2) {
 
-        	// OK icon
-        	$icon = "<img src=\"images/but_ok.gif\" alt=\"\" />&nbsp;";
+            // OK icon
+            $icon = "<img src=\"images/but_ok.gif\" alt=\"\" />&nbsp;";
 
-            $vpath = str_replace($cfgClient[$client]["upl"]["path"], "", $this->pathdata);
+            $vpath = str_replace($cfgClient[$client]["upl"]["path"], "", $this->_pathdata);
             $slashpos = strrpos($vpath, "/");
             if ($slashpos === false) {
                 $file = $vpath;
@@ -64,21 +88,27 @@ class UploadSearchResultList extends FrontendList {
 
             if ($appendparameters == "imagebrowser" || $appendparameters == "filebrowser") {
                 $mstr = '<a href="javascript://" onclick="javascript:Con.getFrame(\'left_top\').document.getElementById(\'selectedfile\').value= \'' . $cfgClient[$client]["upl"]["frontendpath"] . $path . $data . '\'; window.returnValue=\'' . $cfgClient[$client]["upl"]["frontendpath"] . $path . $data . '\'; window.close();">' . $icon . $data . '</a>';
-            } else {
+            } else if ('' !== $this->_fileType) {
                 $markLeftPane = "Con.getFrame('left_bottom').upl.click(Con.getFrame('left_bottom').document.getElementById('$path'));";
 
                 $tmp_mstr = '<a onmouseover="this.style.cursor=\'pointer\'" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\');' . $markLeftPane . '">%s</a>';
                 $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$file"), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$file"), $data);
+            } else {
+                $markLeftPane = "Con.getFrame('left_bottom').upl.click(Con.getFrame('left_bottom').document.getElementById('$path'));";
+
+                $tmp_mstr = '<a onmouseover="this.style.cursor=\'pointer\'" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\');' . $markLeftPane . '">%s</a>';
+                // concatinate path with folder name (file) for path parameter to access folder
+                $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl&frame=4&path=$path$file/&file="), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$file"), $data);
             }
             return $mstr;
         }
 
         if ($field == 1) {
-            $this->path = $data;
+            $this->_pathdata = $data;
 
             // If this file is an image, try to open
-            $fileType = strtolower(getFileType($data));
-            switch ($fileType) {
+            $this->_fileType = strtolower(cFileHandler::getExtension($data));
+            switch ($this->_fileType) {
                 case "png":
                 case "psd":
                 case "gif":
@@ -118,6 +148,9 @@ class UploadSearchResultList extends FrontendList {
                         return $retValue;
                     }
                     break;
+                case '':
+                    // folder has empty filetype column value
+                    return '<img class="hover_none" name="smallImage" alt="" src="' . cRegistry::getBackendUrl() . 'images/grid_folder.gif' . '">';
                 default:
                     $sCacheThumbnail = uplGetThumbnail($data, 150);
                     return '<img class="hover_none" name="smallImage" alt="" src="' . $sCacheThumbnail . '">';
@@ -125,6 +158,21 @@ class UploadSearchResultList extends FrontendList {
         }
 
         return $data;
+    }
+
+
+    /**
+     * @return int $size
+     */
+    public function getSize() {
+        return $this->_size;
+    }
+
+    /**
+     * @param int $size
+     */
+    public function setSize($size) {
+        $this->_size = $size;
     }
 
 }
@@ -275,7 +323,7 @@ $currentuser->setUserProperty('upload_folder_thumbnailmode', md5('search_results
 
 $list2->setResultsPerPage($numpics);
 
-$list2->size = $thumbnailmode;
+$list2->setSize($thumbnailmode);
 
 $rownum = 0;
 if (!is_array($files)) {
@@ -299,7 +347,7 @@ foreach ($files as $idupl => $rating) {
     }
     $description = $upl->get('description');
 
-    $fileType = strtolower(getFileType($filename));
+    $fileType = strtolower(cFileHandler::getExtension($filename));
     $list2->setData($rownum, $dirname . $filename, $filename, $dirname, $filesize, $fileType, $rating / 10, $dirname . $filename);
 
     $rownum++;

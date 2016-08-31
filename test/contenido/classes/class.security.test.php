@@ -4,8 +4,6 @@
  *
  * @package          Testing
  * @subpackage       Test_Security
- * @version          SVN Revision $Rev:$
- *
  * @author           Murat Purc <murat@purc.de>
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt

@@ -1,16 +1,15 @@
 <?php
+
 /**
  * This file contains CONTENIDO Category API functions.
  *
  * If you are planning to add a function, please make sure that:
  * 1.) The function is in the correct place
  * 2.) The function is documented
- * 3.) The function makes sense and is generically usable
+ * 3.) The function makes sense and is generally usable
  *
  * @package          Core
  * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
  * @author           Timo Hummel
  * @copyright        four for business AG <www.4fb.de>
  * @license          http://www.contenido.org/license/LIZENZ.txt
@@ -24,26 +23,36 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Seeks through the category tree and returns the node on a specific level.
  *
  * Example:
+ * <pre>
  * + Category A (15)
  * |-+ News (16)
  * | |- News A (17)
  * + Category B (18)
  * |-+ Internal (19)
+ * </pre>
  *
- * Given you are in the leaf "News A" (idcat 17), and you want to get out in which
- * "main" tree you are, you can call the function like this:
+ * Given you are in the leaf "News A" (idcat 17), and you want to find
+ * out in which "main" tree you are, you can call the function like this:
  *
- * cApiCatGetLevelNode(17,1);
+ * <code>cApiCatGetLevelNode(17, 1);</code>
  *
- * The example would return "Category A" (idcat 15). If you specify an invalid level,
- * the results are undefined.
+ * The example would return "Category A" (idcat 15). If you specify an
+ * invalid level the results are undefined.
  *
- * @param  int  $idcat     The category number
- * @param  int  $minLevel  The level to extract
- * @return int  The category node on a specific level
+ * @deprecated [2015-05-21]
+ *         This method is no longer supported (no replacement)
+ * @param int $idcat
+ *         The category number
+ * @param int $minLevel [optional]
+ *         The level to extract
+ * @return int
+ *         The category node on a specific level
  */
 function cApiCatGetLevelNode($idcat, $minLevel = 0) {
+
     global $cfg, $client, $lang;
+
+    cDeprecated('This method is deprecated and is not needed any longer');
 
     $db = cRegistry::getDb();
 
@@ -75,4 +84,3 @@ function cApiCatGetLevelNode($idcat, $minLevel = 0) {
         return $idcat;
     }
 }
-

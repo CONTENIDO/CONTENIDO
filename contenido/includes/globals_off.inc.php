@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Makes available those super global arrays that are made available in versions
  * of PHP after v4.1.0.
@@ -9,8 +10,6 @@
  *
  * @package Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
- *
  * @author Martin Horwarth
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -32,37 +31,14 @@ if (function_exists('get_magic_quotes_gpc')) {
 // Simulate get_magic_quotes_gpc on if turned off
 if (CON_STRIPSLASHES) {
 
-    /**
-     * Adds slashes to passed variable
-     *
-     * @param mixed $value Either a string or a multi-dimensional array of
-     *        values
-     * @return array
-     * @deprecated [2013-03-12] This function is for internal usage, use
-     *             cString::addSlashes() for own purposes
-     */
-    function addslashes_deep($value) {
-        $value = is_array($value) ? array_map('addslashes_deep', $value) : addslashes($value);
-        return $value;
+    // class cString is not loaded here as autoloader wasn't called yet
+    if (false === class_exists('cString')) {
+        include_once dirname(__DIR__) . '/classes/class.string.php';
     }
 
-    /**
-     * Removes slashes from passed variable.
-     *
-     * @param mixed $value Either a string or a multi-dimensional array of
-     *        values
-     * @return array
-     * @deprecated [2013-03-12] This function is for internal usage, use
-     *             cString::stripSlashes() for own purposes
-     */
-    function stripslashes_deep($value) {
-        $value = is_array($value) ? array_map('stripslashes_deep', $value) : stripslashes($value);
-        return $value;
-    }
-
-    $_POST = array_map('addslashes_deep', $_POST);
-    $_GET = array_map('addslashes_deep', $_GET);
-    $_COOKIE = array_map('addslashes_deep', $_COOKIE);
+    $_POST = array_map(array('cString', 'addSlashes'), $_POST);
+    $_GET = array_map(array('cString', 'addSlashes'), $_GET);
+    $_COOKIE = array_map(array('cString', 'addSlashes'), $_COOKIE);
 
     $cfg['simulate_magic_quotes'] = true;
 } else {

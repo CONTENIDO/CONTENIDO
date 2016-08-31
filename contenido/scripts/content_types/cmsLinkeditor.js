@@ -7,8 +7,9 @@
  * @submodule  content-type-cms-linkeditor
  * @package    Core
  * @subpackage Content Type
- * @version    SVN Revision $Rev$
- * @author     Fulai Zhang, Simon Sprankel, Murat Purc <murat@purc.de>
+ * @author     Fulai Zhang
+ * @author     Simon Sprankel
+ * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -305,7 +306,7 @@
 						if (Con.checkAjaxResponse(msg) === false)  {
 							return false;
 						}
-	
+
                         $(self.frameId + ' img.loading').hide();
                         $(self.frameId + ' input.jqueryAjaxUpload').css('visibility', 'visible');
                         $(self.frameId + ' #file #directoryFile_' + self.id).html(msg);
@@ -421,8 +422,5 @@
 
 
     Con.cContentTypeLinkeditor = cContentTypeLinkeditor;
-
-    // @deprecated [2013-10-21] Assign to windows scope (downwards compatibility)
-    window.cContentTypeLinkeditor = cContentTypeLinkeditor;
 
 })(Con, Con.$);

@@ -4,8 +4,6 @@
  *
  * @package    Setup
  * @subpackage Setup
- * @version    SVN Revision $Rev:$
- *
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -14,9 +12,6 @@
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
-
-// Don't display errors
-@ini_set('display_errors', false);
 
 // Report all errors except warnings
 error_reporting(E_ALL ^E_NOTICE);
@@ -28,12 +23,6 @@ header('Content-Type: text/html; charset=ISO-8859-1');
 // PHP5 object syntax not compatible with PHP < 5
 if (version_compare(PHP_VERSION, '5.0.0', '<')) {
     die("You need PHP >= 5.0.0 for CONTENIDO. Sorry, even the setup doesn't work otherwise. Your version: " . PHP_VERSION . "\n");
-}
-
-// Check version
-//PHP >= 5.0.0 and < 6.0.0
-if (version_compare(PHP_VERSION, '6.0.0', '>=')) {
-    die("You need PHP >= 5.0.0  < 6.0.0 for CONTENIDO. Sorry, even the setup doesn't work otherwise. Your version: " . PHP_VERSION . "\n");
 }
 
 /*
@@ -67,7 +56,7 @@ function checkAndInclude($filename) {
         include_once($filename);
     } else {
         echo "<pre>";
-        echo "Setup was unable to include neccessary files. The file $filename was not found. Solutions:\n\n";
+        echo "Setup was unable to include necessary files. The file $filename was not found. Solutions:\n\n";
         echo "- Make sure that all files are correctly uploaded to the server.\n";
         echo "- Make sure that include_path is set to '.' (of course, it can contain also other directories). Your include path is: " . ini_get("include_path") . "\n";
         echo "</pre>";
@@ -77,6 +66,42 @@ function checkAndInclude($filename) {
 // Include security class and check request variables
 checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.filehandler.php');
 checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.requestvalidator.php');
+
+/**
+ * Check configuration path for the environment
+ * If no configuration for environment found, copy from production
+ */
+$installationPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../..'));
+$configPath = $installationPath . '/data/config/' . CON_ENVIRONMENT;
+if (!cFileHandler::exists($configPath)) {
+    // create environment config
+    mkdir($configPath);
+    // if not successful throw exception
+    if (!cFileHandler::exists($configPath)) {
+        throw new cException('Can not create environment directory: data folder is not writable');
+    }
+    // get config source path
+    $configPathProduction = $installationPath . '/data/config/production/';
+    // load config source directory
+    $directoryIterator = new DirectoryIterator($configPathProduction);
+    // iterate through files
+    foreach ($directoryIterator as $dirContent) {
+        // check file is not dot and file
+        if ($dirContent->isFile() && !$dirContent->isDot()) {
+            // get filename
+            $configFileName = $dirContent->getFilename();
+            // build source string
+            $source = $configPathProduction . $configFileName;
+            // build target string
+            $target = $configPath . '/' . $configFileName;
+            // try to copy from source to target, if not successful throw exception
+            if(!copy($source, $target)) {
+                throw new cException('Can not copy configuration files for the environment: environment folder is not writable');
+            }
+        }
+    }
+}
+
 try {
     $requestValidator = cRequestValidator::getInstance();
     $requestValidator->checkParams();
@@ -98,9 +123,9 @@ if (is_array($_REQUEST)) {
     }
 }
 
-
 // set max_execution_time
-if (ini_get('max_execution_time') < 60) {
+$maxExecutionTime = (int) ini_get('max_execution_time');
+if ($maxExecutionTime < 60 && $maxExecutionTime !== 0) {
     ini_set('max_execution_time', 60);
 }
 

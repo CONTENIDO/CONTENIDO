@@ -4,8 +4,6 @@
  *
  * @package Core
  * @subpackage GenericDB_Model
- * @version SVN Revision $Rev:$
- *
  * @author Timo Hummel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -24,10 +22,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiCategoryLanguageCollection extends ItemCollection {
 
     /**
-     * Create a new collection of items.
+     * Constructor to create an instance of this class.
      *
-     * @param string $select where clause to use for selection (see
-     *            ItemCollection::select())
+     * @param string $select [optional]
+     *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
         global $cfg;
@@ -51,15 +49,15 @@ class cApiCategoryLanguageCollection extends ItemCollection {
      * @param int $idlang
      * @param string $name
      * @param string $urlname
-     * @param string $urlpath
-     * @param int $idtplcfg
-     * @param int $visible
-     * @param int $public
-     * @param int $status
-     * @param string $author
-     * @param int $startidartlang
-     * @param string $created
-     * @param string $lastmodified
+     * @param string $urlpath [optional]
+     * @param int $idtplcfg [optional]
+     * @param int $visible [optional]
+     * @param int $public [optional]
+     * @param int $status [optional]
+     * @param string $author [optional]
+     * @param int $startidartlang [optional]
+     * @param string $created [optional]
+     * @param string $lastmodified [optional]
      * @return cApiCategoryLanguage
      */
     public function create($idcat, $idlang, $name, $urlname, $urlpath = '', $idtplcfg = 0, $visible = 0, $public = 0, $status = 0, $author = '', $startidartlang = 0, $created = '', $lastmodified = '') {
@@ -126,8 +124,10 @@ class cApiCategoryLanguageCollection extends ItemCollection {
      * Checks if passed idartlang is a start article.
      *
      * @param int $idartlang
-     * @param int $idcat Check category id additionally
-     * @param int $idlang Check language id additionally
+     * @param int $idcat [optional]
+     *         Check category id additionally
+     * @param int $idlang [optional]
+     *         Check language id additionally
      * @return bool
      */
     public function isStartArticle($idartlang, $idcat = NULL, $idlang = NULL) {
@@ -155,9 +155,10 @@ class cApiCategoryLanguageCollection extends ItemCollection {
 class cApiCategoryLanguage extends Item {
 
     /**
-     * Constructor Function
+     * Constructor to create an instance of this class.
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId [optional]
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -171,9 +172,12 @@ class cApiCategoryLanguage extends Item {
     /**
      * Load data by category id and language id
      *
-     * @param int $idcat Category id
-     * @param int $idlang Language id
-     * @return bool true on success, otherwhise false
+     * @param int $idcat
+     *         Category id
+     * @param int $idlang
+     *         Language id
+     * @return bool
+     *         true on success, otherwise false
      */
     public function loadByCategoryIdAndLanguageId($idcat, $idlang) {
         $aProps = array(
@@ -196,8 +200,10 @@ class cApiCategoryLanguage extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $safe Flag to run defined inFilter on passed value
-     * @todo should return return value of overloaded method
+     * @param bool $safe [optional]
+     *         Flag to run defined inFilter on passed value
+     *
+     * @return bool
      */
     public function setField($name, $value, $safe = true) {
         switch ($name) {
@@ -205,7 +211,7 @@ class cApiCategoryLanguage extends Item {
                 $this->setField('urlname', conHtmlSpecialChars($value, ENT_QUOTES), $safe);
                 break;
             case 'urlname':
-                $value = conHtmlSpecialChars(cApiStrCleanURLCharacters($value), ENT_QUOTES);
+                $value = conHtmlSpecialChars(cString::cleanURLCharacters($value), ENT_QUOTES);
                 break;
             case 'visible':
             case 'public':
@@ -219,7 +225,7 @@ class cApiCategoryLanguage extends Item {
                 break;
         }
 
-        parent::setField($name, $value, $safe);
+        return parent::setField($name, $value, $safe);
     }
 
     /**
@@ -281,8 +287,10 @@ class cApiCategoryLanguage extends Item {
     /**
      * Returns the link to the current object.
      *
-     * @param int $changeLangId change language id for URL (optional)
-     * @return string link
+     * @param int $changeLangId [optional]
+     *         change language id for URL (optional)
+     * @return string
+     *         link
      */
     public function getLink($changeLangId = 0) {
         if ($this->isLoaded() === false) {

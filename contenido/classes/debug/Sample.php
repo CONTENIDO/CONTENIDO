@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains some sample scripts how to use the debug classes.
  *
@@ -17,7 +18,6 @@
  *
  * @package    Core
  * @subpackage Debug
- * @version    SVN Revision $Rev:$
  *
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
@@ -69,5 +69,3 @@ $oDbgDevnull = cDebug::getDebugger(cDebug::DEBUGGER_DEVNULL);
 $oDbgDevnull->show($oMyObj, 'some comments if needed');
 $oDbgDevnull->show($aMyArray, 'some comments if needed');
 $oDbgDevnull->show($fMyFloat, 'some comments if needed');
-
-?>
