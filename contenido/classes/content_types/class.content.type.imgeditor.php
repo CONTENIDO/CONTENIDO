@@ -466,6 +466,11 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $directoryList->setContent($conStrTree);
         $wrapperContent[] = $directoryList;
 
+        // Added slash if you selected an file from main directory (CON-2555)
+        if (empty($this->_dirname)) {
+            $this->_dirname = "/";
+        }
+
         $wrapperContent[] = new cHTMLDiv($this->generateFileSelect($this->_dirname), 'directoryFile', 'directoryFile' . '_' . $this->_id);
 
         $directoryShow = new cHTMLDiv('', 'directoryShow', 'directoryShow_' . $this->_id);
