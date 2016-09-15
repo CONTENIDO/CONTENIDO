@@ -176,12 +176,22 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                 return $link;
                 break;
             case 'internal':
-                if ($this->_settings['linkeditor_idart'] != "") {
+                if(substr($this->_settings['linkeditor_idart'], 0, 8) == 'category') { // Selection of category (CON-2563)
+
+                    $uriInstance = cUri::getInstance();
+                    $uriBuilder = $uriInstance->getUriBuilder();
+                    $uriParams = array(
+                        'idcat' => cSecurity::toInteger(substr($this->_settings['linkeditor_idart'], 9))
+                    );
+                    $uriBuilder->buildUrl($uriParams, true);
+
+                    return $uriBuilder->getUrl();
+                } else if ($this->_settings['linkeditor_idart'] != "") {
 
                     $oUri       = cUri::getInstance();
                     $uriBuilder = $oUri->getUriBuilder();
                     $uriParams  = array(
-                        'idart' => $this->_settings['linkeditor_idart']
+                        'idart' => cSecurity::toInteger($this->_settings['linkeditor_idart'])
                     );
                     $uriBuilder->buildUrl($uriParams, true);
 
@@ -457,22 +467,41 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     private function _getActiveIdcats() {
         $activeIdcats = array();
         if ($this->_settings['linkeditor_type'] === 'internal') {
-            $sql = 'SELECT distinct
-                        *
-                    FROM
-                        ' . $this->_cfg['tab']['cat_tree'] . ' AS a,
-                        ' . $this->_cfg['tab']['cat_art'] . ' AS b,
-                        ' . $this->_cfg['tab']['cat'] . ' AS c,
-                        ' . $this->_cfg['tab']['cat_lang'] . ' AS d
-                    WHERE
-                        b.idart = ' . cSecurity::toInteger($this->_settings['linkeditor_idart']) . ' AND
-                        a.idcat = d.idcat AND
-                        b.idcat = c.idcat AND
-                        c.idcat = a.idcat AND
-                        d.idlang = ' . cSecurity::toInteger($this->_lang) . ' AND
-                        c.idclient = ' . cSecurity::toInteger($this->_client) . '
-                    ORDER BY
-                        a.idtree';
+            if (cSecurity::isInteger($this->_settings['linkeditor_idart'])) {
+                $sql = 'SELECT distinct
+                                *
+                            FROM
+                                ' . $this->_cfg['tab']['cat_tree'] . ' AS a,
+                                ' . $this->_cfg['tab']['cat_art'] . ' AS b,
+                                ' . $this->_cfg['tab']['cat'] . ' AS c,
+                                ' . $this->_cfg['tab']['cat_lang'] . ' AS d
+                            WHERE
+                                b.idart = ' . cSecurity::toInteger($this->_settings['linkeditor_idart']) . ' AND
+                                a.idcat = d.idcat AND
+                                b.idcat = c.idcat AND
+                                c.idcat = a.idcat AND
+                                d.idlang = ' . cSecurity::toInteger($this->_lang) . ' AND
+                                c.idclient = ' . cSecurity::toInteger($this->_client) . '
+                            ORDER BY
+                                a.idtree';
+            } else if (substr($this->_settings['linkeditor_idart'], 0, 8) == 'category') { // Selection of category (CON-2563)
+                $sql = 'SELECT distinct
+                                *
+                           FROM
+                                ' . $this->_cfg['tab']['cat_tree'] . ' AS a,
+                                ' . $this->_cfg['tab']['cat_art'] . ' AS b,
+                                ' . $this->_cfg['tab']['cat'] . ' AS c,
+                                ' . $this->_cfg['tab']['cat_lang'] . ' AS d
+                            WHERE
+                                b.idcat = ' . cSecurity::toInteger(substr($this->_settings['linkeditor_idart'], 9)) . ' AND
+                                a.idcat = d.idcat AND
+                                b.idcat = c.idcat AND
+                                c.idcat = a.idcat AND
+                                d.idlang = ' . cSecurity::toInteger($this->_lang) . ' AND
+                                c.idclient = ' . cSecurity::toInteger($this->_client) . '
+                            ORDER BY
+                                a.idtree';
+            }
             $db = cRegistry::getDb();
             $db->query($sql);
             while ($db->nextRecord()) {
@@ -518,8 +547,17 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     public function generateArticleSelect($idCat = 0) {
         $htmlSelect = new cHTMLSelectElement('linkeditor_idart', '', 'linkeditor_idart_' . $this->_id);
         $htmlSelect->setSize(16);
-        $htmlSelectOption = new cHTMLOptionElement('Kein', '', false);
-        $htmlSelect->appendOptionElement($htmlSelectOption);
+
+        // Selection of category (CON-2563)
+        // Format: category-CATID
+        $checkCategorySelection = ((substr($this->_settings['linkeditor_idart'], 0, 8) == 'category' ? true : false));
+        $htmlSelectOptionCategory = new cHTMLOptionElement('- ' . i18n('Select category') . ' -', 'category-' . $idCat, $checkCategorySelection);
+        $htmlSelect->appendOptionElement($htmlSelectOptionCategory);
+
+        // Select neither (deselection)
+        $htmlSelectOptionNothing = new cHTMLOptionElement('- '. i18n('Neither') . ' -', '', false);
+        $htmlSelect->appendOptionElement($htmlSelectOptionNothing);
+
         // if no idcat has been given, do not search for articles
         if (empty($idCat)) {
             return $htmlSelect->render();
