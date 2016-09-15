@@ -206,7 +206,8 @@ class cModuleFileTranslation extends cModuleHandler {
     private function _unserializeArray($string) {
         $retArray = array();
 
-        $words = preg_split('/$\R?^:/m', substr($string, 0, strlen($string)));
+        $string = $string . '\n';
+        $words = preg_split('((\r\n)|(\r)|(\n))', substr($string, 0, strlen($string) - strlen(PHP_EOL)));
 
         foreach ($words as $key => $value) {
             $oriTrans = preg_split('/(?<!\\\\)' . self::$originalTranslationDivider . '/', $value);
