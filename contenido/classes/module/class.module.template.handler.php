@@ -233,7 +233,7 @@ class cModuleTemplateHandler extends cModuleHandler {
      * @return void|bool
      */
     public function checkWritePermissions() {
-        if ($this->moduleWriteable('template') == true && cFileHandler::exists(parent::getModulePath() . $this->_directories['template'])) {
+        if ($this->moduleWriteable('template') === false && cFileHandler::exists(parent::getModulePath() . $this->_directories['template']) === false) {
         	return $this->_notification->displayNotification(cGuiNotification::LEVEL_WARNING, sprintf(i18n("You have no write permissions for this module: %s"), parent::getModuleName()));
         } else {
             return true;
