@@ -206,7 +206,7 @@ class cModuleFileTranslation extends cModuleHandler {
     private function _unserializeArray($string) {
         $retArray = array();
 
-        $string = $string . '\n';
+        $string = $string . PHP_EOL;
         $words = preg_split('((\r\n)|(\r)|(\n))', substr($string, 0, strlen($string) - strlen(PHP_EOL)));
 
         foreach ($words as $key => $value) {
