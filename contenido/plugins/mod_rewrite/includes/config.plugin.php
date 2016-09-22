@@ -134,12 +134,6 @@ if (ModRewrite::isEnabled()) {
             $_cecRegistry->addChainFunction('Contenido.Frontend.AfterLoadPlugins', 'mr_runFrontendController');
         }
 
-        // Add url rewriting function to CONTENIDO Extension Chainer
-        // @todo: no more need since CONTENIDO 4.8.9 provides central Url building,
-        //        but it is still available  because of downwards compatibility
-        // @deprecated
-        $_cecRegistry->addChainFunction('Contenido.Frontend.CreateURL', 'mr_buildNewUrl');
-
         // overwrite url builder configuration with own url builder
         $cfg['url_builder']['name'] = 'MR';
         $cfg['config'] = array();
