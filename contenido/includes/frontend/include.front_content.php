@@ -667,7 +667,13 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             $redirect_url .= '&amp;';
         }
 
-        $redirect_url .= htmlentities(cRequestValidator::cleanParameter($getKey)) . '=' . htmlentities(cRequestValidator::cleanParameter($getValue));
+        if (!is_array($getValue)) {
+            $redirect_url .= htmlentities(cRequestValidator::cleanParameter($getKey)) . '=' . htmlentities(cRequestValidator::cleanParameter($getValue));
+        } else {
+            foreach ($getValue as $getArrayKey => $getArrayValue) {
+                $redirect_url .= htmlentities(cRequestValidator::cleanParameter($getKey)) . '[' . $getArrayKey . ']=' . htmlentities(cRequestValidator::cleanParameter($getArrayValue));
+            }
+        }
 
     }
 
