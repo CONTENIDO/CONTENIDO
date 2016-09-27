@@ -379,7 +379,7 @@ class cEffectiveSetting {
     	}
 
 		if (strlen($prefix) == 0) {
-			$prefix = 'unknown';
+			$prefix = cAuth::AUTH_UID_NOBODY;
 		}
 		
     	return $prefix;
