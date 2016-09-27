@@ -63,7 +63,7 @@ class cEffectiveSetting {
      *
      * @var bool
      */
-    protected static $_loaded = false;
+    protected static $_loaded = array();
 
     /**
      *
@@ -78,7 +78,7 @@ class cEffectiveSetting {
      *
      */
     private static function _loadSettings() {
-        if (self::$_loaded == false) {
+		if (!isset(self::$_loaded[self::_getKeyPrefix()])) {
             global $contenido;
 
             $typeGroup = array();
@@ -137,7 +137,7 @@ class cEffectiveSetting {
             }
         }
 
-        self::$_loaded = true;
+        self::$_loaded[self::_getKeyPrefix()] = true;
     }
 
     /**
@@ -312,7 +312,7 @@ class cEffectiveSetting {
      * @return cApiClient
      */
     protected static function _getClientInstance() {
-        global $client;
+        $client = cRegistry::getClientId();
 
         if (!isset(self::$_client)) {
             self::$_client = new cApiClient($client);
@@ -378,6 +378,10 @@ class cEffectiveSetting {
     		}
     	}
 
+		if (strlen($prefix) == 0) {
+			$prefix = 'unknown';
+		}
+		
     	return $prefix;
     }
 
