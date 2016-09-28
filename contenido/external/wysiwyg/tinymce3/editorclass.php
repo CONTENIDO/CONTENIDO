@@ -79,6 +79,10 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         // Retrieve all settings for tinymce
         $this->_aSettings = getEffectiveSettingsByType("tinymce");
 
+        // added client and langiage id in tinymce settings
+        $this->_aSettings["langid"] = cRegistry::getLanguageId();
+        $this->_aSettings["clientid"] = cRegistry::getClientId();
+
         // For compatibility, read settings in previous syntax also (< V4.7, type "wysiwyg" vs. "tinymce")
         $this->_aSettings = array_merge(getEffectiveSettingsByType("wysiwyg"), $this->_aSettings);
 
