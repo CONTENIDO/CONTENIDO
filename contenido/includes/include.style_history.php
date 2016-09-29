@@ -67,7 +67,7 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage')) {
                                                                                                                       // variables
         $oVersionStyle = new cVersionFile($aFileInfo['idsfi'], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
 
-        $sStyleCode = $_POST['stylecode'];
+        $sStyleCode = stripslashes($_POST['stylecode']);
         $sStyleName = $_POST['stylename'];
         $sStyleDesc = $_POST['styledesc'];
 
