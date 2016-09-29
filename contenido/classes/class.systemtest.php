@@ -1337,11 +1337,11 @@ class cSystemtest {
             if (!cFileHandler::exists("../" . $dir)) {
                 if (!mkdir("../" . $dir)) {
                     $ret = false;
-                    $this->storeResult(false, self::C_SEVERITY_WARNING, sprintf(i18n("Could not find or create directory %s"), $dir), i18n("The frontend expects certain directories to exist and it needs to be able to write to these directories."));
+                    $this->storeResult(false, self::C_SEVERITY_WARNING, sprintf(i18n("Could not find or create directory %s"), $dir), i18n("The frontend expects certain directories to exist and it needs to be able to write to these directories. You have to set chmod rights 755 to these directories."));
                 } else {
-                    if (!cFileHandler::chmod("../" . $dir, "777")) {
+                    if (!cFileHandler::chmod("../" . $dir, 0755)) {
                         $ret = false;
-                        $this->storeResult(false, self::C_SEVERITY_WARNING, sprintf(i18n("Could not find or create directory %s"), $dir), i18n("The frontend expects certain directories to exist and it needs to be able to write to these directories."));
+                        $this->storeResult(false, self::C_SEVERITY_WARNING, sprintf(i18n("Could not find or create directory %s"), $dir), i18n("The frontend expects certain directories to exist and it needs to be able to write to these directories. You have to set chmod rights 755 to these directories."));
                     }
                 }
             }

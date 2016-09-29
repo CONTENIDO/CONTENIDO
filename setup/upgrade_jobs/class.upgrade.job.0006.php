@@ -24,7 +24,7 @@ class cUpgradeJob_0006 extends cUpgradeJobAbstract {
 
     public $maxVersion = "4.9.0-beta1";
 
-    const MODE = 0777;
+    const MODE = 0755;
 
     public function _execute() {
 

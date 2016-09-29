@@ -292,7 +292,7 @@ function scanDirectory($sDirectory, $bRecursive = false) {
  *         </pre>
  * @return cDirHandler::recursiceCopy method (bool)
  */
-function recursiveCopy($sourcePath, $destinationPath, $mode = 0777, array $options = array()) {
+function recursiveCopy($sourcePath, $destinationPath, $mode = 0755, array $options = array()) {
     cDeprecated('This method is deprecated and is not needed any longer');
     return cDirHandler::recursiveCopy($sourcePath, $destinationPath, $mode);
 }

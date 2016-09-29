@@ -343,7 +343,7 @@ class cUpdateNotifier {
     protected function setCachePath() {
         $sCachePath = $this->aCfg['path']['contenido_cache'];
         if (!is_dir($sCachePath)) {
-            mkdir($sCachePath, 0777);
+            mkdir($sCachePath, 0755);
         }
 
         if (!is_writable($sCachePath)) {

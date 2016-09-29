@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-15 11:09+0200\n"
+"POT-Creation-Date: 2016-09-29 12:13+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -973,7 +973,8 @@ msgstr ""
 #: classes/class.systemtest.php:1340 classes/class.systemtest.php:1344
 msgid ""
 "The frontend expects certain directories to exist and it needs to be able to "
-"write to these directories."
+"write to these directories. You have to set chmod rights 755 to these "
+"directories."
 msgstr ""
 
 #: classes/class.systemtest.php:1446

@@ -38,7 +38,7 @@ class cDirHandler {
         // reset umask and store old umask
         $oldumask = umask(0);
         // calc mode from setting or default
-        $mode = cRegistry::getConfigValue('default_perms', 'directory', 0777);
+        $mode = cRegistry::getConfigValue('default_perms', 'directory', 0755);
         // create dir with given mode
         $success = mkdir($pathname, $mode, $recursive);
         // reset umask to old umask
@@ -180,14 +180,14 @@ class cDirHandler {
      *         the name and path of the file
      * @param string $destination
      *         the destination. Note that existing files get overwritten
-     * @param string $chmod [optional; default: 0777]
+     * @param string $chmod [optional; default: 0755]
      * 			chmod mode
      * @throws cInvalidArgumentException
      *         if the file with the given filename does not exist
      * @return bool
      *         true on success
      */
-    public static function recursiveCopy($dirname, $destination, $chmod = 0777) {
+    public static function recursiveCopy($dirname, $destination, $chmod = 0755) {
         if (!self::exists($dirname)) {
             throw new cInvalidArgumentException('The directory ' . $dirname . ' could not be accessed because it does not exist.');
         }

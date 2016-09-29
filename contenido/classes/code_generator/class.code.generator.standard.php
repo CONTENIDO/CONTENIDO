@@ -441,7 +441,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         if ($this->_layout == false && $this->_save == true && isset($cfgClient[$this->_client]['code']['path'])) {
             if (false === is_dir($cfgClient[$this->_client]['code']['path'])) {
                 mkdir($cfgClient[$this->_client]['code']['path']);
-                @chmod($cfgClient[$this->_client]['code']['path'], 0777);
+                @chmod($cfgClient[$this->_client]['code']['path'], 0755);
             }
 
             if (true !== cFileHandler::exists($cfgClient[$this->_client]['code']['path'] . '.htaccess')) {

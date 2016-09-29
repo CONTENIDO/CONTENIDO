@@ -572,7 +572,7 @@ class cModuleHandler {
 
         // make
         if (!is_dir($sMainModuleDirectory) && $sMainModuleDirectory != NULL) {
-            if (mkdir($sMainModuleDirectory, 0777, true) == false) {
+            if (mkdir($sMainModuleDirectory, 0755, true) == false) {
                 return false;
             } else {
                 cDirHandler::setDefaultDirPerms($sMainModuleDirectory);

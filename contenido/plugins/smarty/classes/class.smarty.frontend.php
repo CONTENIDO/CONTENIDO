@@ -74,7 +74,7 @@ class cSmartyFrontend {
 
         // check the template directory and create new one if it not exists
         if (!is_dir(self::$aDefaultPaths['compile_dir'])) {
-            mkdir(self::$aDefaultPaths['compile_dir'], 0777);
+            mkdir(self::$aDefaultPaths['compile_dir'], 0755);
         }
 
         // check if folders exist and rights ok if needed
