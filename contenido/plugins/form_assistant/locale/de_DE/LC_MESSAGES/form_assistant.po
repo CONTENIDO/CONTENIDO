@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO FormAsistant\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-06 13:35+0200\n"
-"PO-Revision-Date: 2015-08-06 13:35+0100\n"
+"POT-Creation-Date: 2016-06-07 12:22+0200\n"
+"PO-Revision-Date: 2016-06-07 12:23+0200\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: Marcus GnaÃ <marcus.gnass@4fb.de>\n"
 "Language: de_DE\n"
@@ -11,91 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: i18n\n"
-"X-Generator: Poedit 1.7.5\n"
-
-#: classes/class.content.type.pifa_form.php:101
-#: classes/class.content.type.pifa_form.php:106
-#: classes/class.content.type.pifa_form.php:200 classes/class.pifa.gui.php:395
-#: includes/include.right_top.php:43
-msgid "form"
-msgstr "Formular"
-
-#: classes/class.content.type.pifa_form.php:157
-msgid "classes & templates"
-msgstr "Klassen & Vorlagen"
-
-#: classes/class.content.type.pifa_form.php:166
-msgid "client mail"
-msgstr "Benutzer-Mail"
-
-#: classes/class.content.type.pifa_form.php:175
-msgid "system mail"
-msgstr "System-Mail"
-
-#: classes/class.content.type.pifa_form.php:204
-#: classes/class.content.type.pifa_form.php:254
-#: classes/class.content.type.pifa_form.php:303
-#: classes/class.content.type.pifa_form.php:352
-#: classes/class.content.type.pifa_form.php:401
-#: classes/class.content.type.pifa_form.php:451
-#: classes/class.content.type.pifa_form.php:569
-#: classes/class.pifa.ajax_handler.php:195
-msgid "none"
-msgstr "keine"
-
-#: classes/class.content.type.pifa_form.php:250
-msgid "module"
-msgstr "Module"
-
-#: classes/class.content.type.pifa_form.php:299
-msgid "processor"
-msgstr "Prozessoren"
-
-#: classes/class.content.type.pifa_form.php:348
-#: classes/class.content.type.pifa_form.php:397
-#: classes/class.content.type.pifa_form.php:447
-#: classes/class.content.type.pifa_form.php:565
-msgid "template"
-msgstr "Vorlagen"
-
-#: classes/class.content.type.pifa_form.php:348
-msgid "GET"
-msgstr "GET"
-
-#: classes/class.content.type.pifa_form.php:397
-msgid "POST"
-msgstr "POST"
-
-#: classes/class.content.type.pifa_form.php:492
-#: classes/class.content.type.pifa_form.php:610
-msgid "sender email"
-msgstr "Absender-Adresse"
-
-#: classes/class.content.type.pifa_form.php:514
-#: classes/class.content.type.pifa_form.php:632
-msgid "sender name"
-msgstr "Absender-Name"
-
-#: classes/class.content.type.pifa_form.php:536
-#: classes/class.content.type.pifa_form.php:677
-msgid "subject"
-msgstr "Betreff"
-
-#: classes/class.content.type.pifa_form.php:655
-msgid "Recipient email"
-msgstr "Empfänger Email"
-
-#: classes/class.content.type.pifa_form.php:729
-msgid "MISSING_MODULE_FILE"
-msgstr "Modul-Datei '%s' fehlt"
-
-#: classes/class.content.type.pifa_form.php:734
-msgid "MISSING_MODULE_CLASS"
-msgstr "Modul-Klasse '%s' fehlt"
-
-#: classes/class.pifa.abstract_form_module.php:201
-msgid "UNKNOWN_REQUEST_METHOD"
-msgstr "unbekannte Anfragemethode"
+"X-Generator: Poedit 1.8.7\n"
 
 #: classes/class.pifa.abstract_form_processor.php:69
 #: classes/class.pifa.abstract_form_processor.php:151
@@ -103,154 +19,28 @@ msgid "MISSING_IDFORM"
 msgstr "Angabe zum Formular fehlt"
 
 #: classes/class.pifa.abstract_form_processor.php:76
-#: classes/class.pifa.form.php:616 classes/class.pifa.form.php:694
-#: classes/class.pifa.form.php:914 classes/class.pifa.form.php:979
-#: classes/class.pifa.form.php:1037 classes/class.pifa.form.php:1201
 #: classes/class.pifa.gui.php:248 classes/class.pifa.gui.php:587
-#: classes/class.pifa.gui.php:817 classes/class.pifa.gui.php:999
+#: classes/class.pifa.gui.php:817 classes/class.pifa.gui.php:997
+#: classes/class.pifa.form.php:621 classes/class.pifa.form.php:699
+#: classes/class.pifa.form.php:919 classes/class.pifa.form.php:984
+#: classes/class.pifa.form.php:1042 classes/class.pifa.form.php:1206
 #: extensions/class.pifa.default_form_module.php:42
 msgid "FORM_LOAD_ERROR"
 msgstr "Formular konnte nicht gelesen werden"
 
-#: classes/class.pifa.ajax_handler.php:95 classes/class.pifa.gui.php:283
-#: classes/class.pifa.gui.php:623 classes/class.pifa.gui.php:854
-#: classes/class.pifa.gui.php:1032 classes/class.pifa.gui.php:1145
-msgid "NO_PERMISSIONS"
-msgstr "keine Berechtigung"
+#: classes/class.pifa.abstract_form_module.php:201
+msgid "UNKNOWN_REQUEST_METHOD"
+msgstr "unbekannte Anfragemethode"
 
-#: classes/class.pifa.ajax_handler.php:156 classes/class.pifa.gui.php:338
-#: classes/class.pifa.gui.php:646 classes/class.pifa.gui.php:877
-#: classes/class.pifa.gui.php:1045 classes/class.pifa.gui.php:1173
-msgid "UNKNOWN_ACTION"
-msgstr "unbekannte Aktion"
-
-#: classes/class.pifa.ajax_handler.php:187
-msgid "FORM_CREATE_ERROR"
-msgstr "Formular konnte nicht erstellt werden"
-
-#: classes/class.pifa.ajax_handler.php:203
-msgid "ID"
-msgstr "ID"
-
-#: classes/class.pifa.ajax_handler.php:204
-msgid "RANK"
-msgstr "Rang"
-
-#: classes/class.pifa.ajax_handler.php:205
-msgid "FIELD_TYPE"
-msgstr "Feldtyp"
-
-#: classes/class.pifa.ajax_handler.php:206
-msgid "COLUMN_NAME"
-msgstr "Spaltenname"
-
-#: classes/class.pifa.ajax_handler.php:207
-#: classes/class.pifa.ajax_handler.php:689
-msgid "LABEL"
-msgstr "Beschriftung"
-
-#: classes/class.pifa.ajax_handler.php:208
-msgid "DISPLAY_LABEL"
-msgstr "Beschriftung darstellen"
-
-#: classes/class.pifa.ajax_handler.php:209
-msgid "DEFAULT_VALUE"
-msgstr "Standardwert"
-
-#: classes/class.pifa.ajax_handler.php:210
-msgid "HELP_TEXT"
-msgstr "Hilfetext"
-
-#: classes/class.pifa.ajax_handler.php:211
-msgid "VALIDATION_RULE"
-msgstr "Validierungsregel"
-
-#: classes/class.pifa.ajax_handler.php:212
-msgid "ERROR_MESSAGE"
-msgstr "Fehlermeldung"
-
-#: classes/class.pifa.ajax_handler.php:213
-msgid "DATABASE"
-msgstr "Datenbank"
-
-#: classes/class.pifa.ajax_handler.php:214
-msgid "OPTIONS"
-msgstr "Optionen"
-
-#: classes/class.pifa.ajax_handler.php:215
-msgid "GENERAL"
-msgstr "Allgemein"
-
-#: classes/class.pifa.ajax_handler.php:216
-#: classes/class.pifa.ajax_handler.php:536 classes/class.pifa.gui.php:705
-msgid "OBLIGATORY"
-msgstr "Pflichtfeld"
-
-#: classes/class.pifa.ajax_handler.php:217
-#: classes/class.pifa.ajax_handler.php:690
-msgid "VALUE"
-msgstr "Wert"
-
-#: classes/class.pifa.ajax_handler.php:218
-msgid "ADD_OPTION"
-msgstr "Option hinzufügen"
-
-#: classes/class.pifa.ajax_handler.php:219 classes/class.pifa.gui.php:256
-#: classes/class.pifa.gui.php:595 classes/class.pifa.gui.php:825
-#: classes/class.pifa.gui.php:989 classes/class.pifa.gui.php:1118
-msgid "SAVE"
-msgstr "Speichern"
-
-#: classes/class.pifa.ajax_handler.php:220
-msgid "STYLING"
-msgstr "Formatierung"
-
-#: classes/class.pifa.ajax_handler.php:221
-msgid "CSS_CLASS"
-msgstr "CSS-Klasse"
-
-#: classes/class.pifa.ajax_handler.php:222
-msgid "URI"
-msgstr "URI"
-
-#: classes/class.pifa.ajax_handler.php:223
-msgid "EXTERNAL_OPTIONS_DATASOURCE"
-msgstr "externe Datenquelle für Optionen"
-
-#: classes/class.pifa.ajax_handler.php:224
-msgid "DELETE_CSS_CLASSES"
-msgstr "Alle deselektieren"
-
-#: classes/class.pifa.ajax_handler.php:284 classes/class.pifa.field.php:933
-#: classes/class.pifa.field.php:1029 classes/class.pifa.form.php:1041
-msgid "FIELD_LOAD_ERROR"
-msgstr "Feld konnte nicht gelesen werden"
-
-#: classes/class.pifa.ajax_handler.php:490
-msgid "FIELD_STORE_ERROR"
-msgstr "Feld konnte nicht gespeichert werden: '%s'"
-
-#: classes/class.pifa.ajax_handler.php:534 classes/class.pifa.gui.php:703
-msgid "EDIT"
-msgstr "Bearbeiten"
-
-#: classes/class.pifa.ajax_handler.php:535 classes/class.pifa.gui.php:704
-msgid "DELETE"
-msgstr "Löschen"
-
-#: classes/class.pifa.ajax_handler.php:555
-msgid "MISSING_IDFIELD"
-msgstr "Angabe zum Feld fehlt"
-
-#: classes/class.pifa.field.php:545
+#: classes/class.pifa.field.php:547
 msgid "MISSING_EOD_FILE"
 msgstr "Datei für externe Options-Datenquelle '%s' fehlt"
 
-#: classes/class.pifa.field.php:551
+#: classes/class.pifa.field.php:553
 msgid "MISSING_EOD_CLASS"
 msgstr "Klasse für externe Options-Datenquelle '%s' fehlt"
 
-#: classes/class.pifa.field.php:775 classes/class.pifa.field.php:1013
+#: classes/class.pifa.field.php:777 classes/class.pifa.field.php:1013
 msgid "NOT_IMPLEMENTED_FIELDTYPE"
 msgstr "Feldtyp '%s' ist noch nicht implementiert"
 
@@ -298,6 +88,10 @@ msgstr "Fortschrittsbalken"
 msgid "SLIDER"
 msgstr "Slider"
 
+#: classes/class.pifa.field.php:882
+msgid "CAPTCHA"
+msgstr "Captcha"
+
 #: classes/class.pifa.field.php:884
 msgid "PARAGRAPH"
 msgstr "Absatz"
@@ -334,11 +128,16 @@ msgstr "Bild-Button"
 msgid "UNKNOWN"
 msgstr "unbekannt"
 
+#: classes/class.pifa.field.php:933 classes/class.pifa.field.php:1029
+#: classes/class.pifa.ajax_handler.php:283 classes/class.pifa.form.php:1046
+msgid "FIELD_LOAD_ERROR"
+msgstr "Feld konnte nicht gelesen werden"
+
 #: classes/class.pifa.field.php:1056
 msgid "FIELD_DELETE_ERROR"
 msgstr "Feld konnte nicht gelöscht werden"
 
-#: classes/class.pifa.field.php:1072 classes/class.pifa.form.php:1125
+#: classes/class.pifa.field.php:1072 classes/class.pifa.form.php:1130
 msgid "COLUMN_DROP_ERROR"
 msgstr "Spalte konnte nicht gelöscht werden"
 
@@ -346,98 +145,137 @@ msgstr "Spalte konnte nicht gelöscht werden"
 msgid "NOT_IMPLEMENTED_FIELDPROP"
 msgstr "Feldeigenschaft '%s' ist noch nicht implementiert"
 
-#: classes/class.pifa.form.php:92 classes/class.pifa.form.php:128
-msgid "MISSING_CLIENT"
-msgstr "Angabe zum Mandanten fehlt"
+#: classes/class.pifa.ajax_handler.php:95 classes/class.pifa.gui.php:283
+#: classes/class.pifa.gui.php:623 classes/class.pifa.gui.php:852
+#: classes/class.pifa.gui.php:1030 classes/class.pifa.gui.php:1143
+msgid "NO_PERMISSIONS"
+msgstr "keine Berechtigung"
 
-#: classes/class.pifa.form.php:109 classes/class.pifa.form.php:133
-msgid "MISSING_LANG"
-msgstr "Angabe zur Sprache fehlt"
+#: classes/class.pifa.ajax_handler.php:156 classes/class.pifa.gui.php:338
+#: classes/class.pifa.gui.php:646 classes/class.pifa.gui.php:875
+#: classes/class.pifa.gui.php:1043 classes/class.pifa.gui.php:1171
+msgid "UNKNOWN_ACTION"
+msgstr "unbekannte Aktion"
 
-#: classes/class.pifa.form.php:487
-msgid "DATABASE_CONNECT_ERROR"
-msgstr "Datenbank-Verbindung konnte nicht hergestellt werden"
+#: classes/class.pifa.ajax_handler.php:187
+msgid "FORM_CREATE_ERROR"
+msgstr "Formular konnte nicht erstellt werden"
 
-#: classes/class.pifa.form.php:491
-msgid "SQL_BUILD_ERROR"
-msgstr "SQL konne nicht erstellt werden"
+#: classes/class.pifa.ajax_handler.php:195
+#: classes/class.content.type.pifa_form.php:207
+#: classes/class.content.type.pifa_form.php:283
+#: classes/class.content.type.pifa_form.php:332
+#: classes/class.content.type.pifa_form.php:381
+#: classes/class.content.type.pifa_form.php:430
+#: classes/class.content.type.pifa_form.php:480
+#: classes/class.content.type.pifa_form.php:598
+msgid "none"
+msgstr "keine"
 
-#: classes/class.pifa.form.php:497
-msgid "VALUE_STORE_ERROR"
-msgstr "Werte konnten nicht gespeichert werden"
+#: classes/class.pifa.ajax_handler.php:203
+msgid "ID"
+msgstr "ID"
 
-#: classes/class.pifa.form.php:520
-msgid "FOLDER_CREATE_ERROR"
-msgstr "Verzeichnis konnte nicht erzeugt werden"
+#: classes/class.pifa.ajax_handler.php:204
+msgid "RANK"
+msgstr "Rang"
 
-#: classes/class.pifa.form.php:526
-msgid "FILE_STORE_ERROR"
-msgstr "Datei konnte nicht gespeichert werden"
+#: classes/class.pifa.ajax_handler.php:205
+msgid "FIELD_TYPE"
+msgstr "Feldtyp"
 
-#: classes/class.pifa.form.php:538
-msgid "MISSING_SENDER_ADDRESS"
-msgstr "Absender-Adresse fehlt"
+#: classes/class.pifa.ajax_handler.php:206
+msgid "COLUMN_NAME"
+msgstr "Spaltenname"
 
-#: classes/class.pifa.form.php:542
-msgid "MISSING_SENDER_NAME"
-msgstr "Absender-Name fehlt"
+#: classes/class.pifa.ajax_handler.php:207
+#: classes/class.pifa.ajax_handler.php:688
+msgid "LABEL"
+msgstr "Beschriftung"
 
-#: classes/class.pifa.form.php:546
-msgid "MISSING_RECIPIENT_ADDRESS"
-msgstr "Empfänger-Adresse fehlt"
+#: classes/class.pifa.ajax_handler.php:208
+msgid "DISPLAY_LABEL"
+msgstr "Beschriftung darstellen"
 
-#: classes/class.pifa.form.php:550
-msgid "MISSING_SUBJECT"
-msgstr "Betreff fehlt"
+#: classes/class.pifa.ajax_handler.php:209
+msgid "DEFAULT_VALUE"
+msgstr "Standardwert"
 
-#: classes/class.pifa.form.php:554
-msgid "MISSING_EMAIL_BODY"
-msgstr "Nachricht fehlt"
+#: classes/class.pifa.ajax_handler.php:210
+msgid "HELP_TEXT"
+msgstr "Hilfetext"
 
-#: classes/class.pifa.form.php:625 classes/class.pifa.form.php:701
-msgid "MISSING_TABLE_ERROR"
-msgstr "Datentabelle existiert nicht"
+#: classes/class.pifa.ajax_handler.php:211
+msgid "VALIDATION_RULE"
+msgstr "Validierungsregel"
 
-#: classes/class.pifa.form.php:892
-msgid "TABLE_CHECK_ERROR"
-msgstr "Existenz der Datentabelle konnte nicht geprüft werden: '%s'"
+#: classes/class.pifa.ajax_handler.php:212
+msgid "ERROR_MESSAGE"
+msgstr "Fehlermeldung"
 
-#: classes/class.pifa.form.php:921
-msgid "TABLE_EXISTS_ERROR"
-msgstr "Datentabelle '%s' existiert bereits"
+#: classes/class.pifa.ajax_handler.php:213
+msgid "DATABASE"
+msgstr "Datenbank"
 
-#: classes/class.pifa.form.php:960
-msgid "TABLE_CREATE_ERROR"
-msgstr "Datentabelle konnte nicht erstellt werden"
+#: classes/class.pifa.ajax_handler.php:214
+msgid "OPTIONS"
+msgstr "Optionen"
 
-#: classes/class.pifa.form.php:1079 classes/class.pifa.form.php:1111
-#: classes/class.pifa.form.php:1140
-msgid "COLUMN_EXISTS_ERROR"
-msgstr "Die Spalte '%s' existiert bereits."
+#: classes/class.pifa.ajax_handler.php:215
+msgid "GENERAL"
+msgstr "Allgemein"
 
-#: classes/class.pifa.form.php:1097
-msgid "COLUMN_ALTER_ERROR"
-msgstr "Spalte konnte nicht geändert werden"
+#: classes/class.pifa.ajax_handler.php:216
+#: classes/class.pifa.ajax_handler.php:535 classes/class.pifa.gui.php:705
+msgid "OBLIGATORY"
+msgstr "Pflichtfeld"
 
-#: classes/class.pifa.form.php:1157
-msgid "COLUMN_ADD_ERROR"
-msgstr "Spalte konnte nicht erzeugt werden"
+#: classes/class.pifa.ajax_handler.php:217
+#: classes/class.pifa.ajax_handler.php:689
+msgid "VALUE"
+msgstr "Wert"
 
-#: classes/class.pifa.form.php:1177
-msgid "COLUMNS_LOAD_ERROR"
-msgstr "Spalte konnte nicht gelesen werden"
+#: classes/class.pifa.ajax_handler.php:218
+msgid "ADD_OPTION"
+msgstr "Option hinzufügen"
 
-#: classes/class.pifa.form.php:1213
-msgid "FORM_DELETE_ERROR"
-msgstr "Formular konnte nicht gelöscht werden"
+#: classes/class.pifa.ajax_handler.php:219 classes/class.pifa.gui.php:256
+#: classes/class.pifa.gui.php:595 classes/class.pifa.gui.php:825
+#: classes/class.pifa.gui.php:987 classes/class.pifa.gui.php:1116
+msgid "SAVE"
+msgstr "Speichern"
 
-#: classes/class.pifa.form.php:1225
-msgid "FIELDS_DELETE_ERROR"
-msgstr "Felder konnten nicht gelöscht werden"
+#: classes/class.pifa.ajax_handler.php:220
+msgid "STYLING"
+msgstr "Formatierung"
 
-#: classes/class.pifa.form.php:1236
-msgid "TABLE_DROP_ERROR"
-msgstr "Datentabelle konnte nicht gelöscht werden"
+#: classes/class.pifa.ajax_handler.php:221
+msgid "CSS_CLASS"
+msgstr "CSS-Klasse"
+
+#: classes/class.pifa.ajax_handler.php:222
+msgid "URI"
+msgstr "URI"
+
+#: classes/class.pifa.ajax_handler.php:223
+msgid "EXTERNAL_OPTIONS_DATASOURCE"
+msgstr "externe Datenquelle für Optionen"
+
+#: classes/class.pifa.ajax_handler.php:489
+msgid "FIELD_STORE_ERROR"
+msgstr "Feld konnte nicht gespeichert werden: '%s'"
+
+#: classes/class.pifa.ajax_handler.php:533 classes/class.pifa.gui.php:703
+msgid "EDIT"
+msgstr "Bearbeiten"
+
+#: classes/class.pifa.ajax_handler.php:534 classes/class.pifa.gui.php:704
+msgid "DELETE"
+msgstr "Löschen"
+
+#: classes/class.pifa.ajax_handler.php:554
+msgid "MISSING_IDFIELD"
+msgstr "Angabe zum Feld fehlt"
 
 #: classes/class.pifa.gui.php:60
 msgid "INUSE_DIALOG_TITLE"
@@ -456,13 +294,13 @@ msgid "DELETE_FORM"
 msgstr "Formular löschen"
 
 #: classes/class.pifa.gui.php:255 classes/class.pifa.gui.php:594
-#: classes/class.pifa.gui.php:824 classes/class.pifa.gui.php:988
-#: classes/class.pifa.gui.php:1117
+#: classes/class.pifa.gui.php:824 classes/class.pifa.gui.php:986
+#: classes/class.pifa.gui.php:1115
 msgid "CANCEL"
 msgstr "Abbrechen"
 
 #: classes/class.pifa.gui.php:289 classes/class.pifa.gui.php:628
-#: classes/class.pifa.gui.php:859
+#: classes/class.pifa.gui.php:857
 msgid "please select a form"
 msgstr "Bitte wählen Sie ein Formular aus."
 
@@ -470,11 +308,18 @@ msgstr "Bitte wählen Sie ein Formular aus."
 msgid "FORM_DELETED"
 msgstr "Das Formular wurde erfolgreich gelöscht."
 
+#: classes/class.pifa.gui.php:395 classes/class.content.type.pifa_form.php:102
+#: classes/class.content.type.pifa_form.php:107
+#: classes/class.content.type.pifa_form.php:203
+#: includes/include.right_top.php:43
+msgid "form"
+msgstr "Formular"
+
 #: classes/class.pifa.gui.php:396
 msgid "form name"
 msgstr "Formularname"
 
-#: classes/class.pifa.gui.php:397 classes/class.pifa.gui.php:1198
+#: classes/class.pifa.gui.php:397 classes/class.pifa.gui.php:1196
 msgid "data table"
 msgstr "Datentabelle"
 
@@ -527,7 +372,7 @@ msgstr ""
 msgid "fields"
 msgstr "Formularfelder"
 
-#: classes/class.pifa.gui.php:701 classes/class.pifa.gui.php:892
+#: classes/class.pifa.gui.php:701 classes/class.pifa.gui.php:890
 msgid "please save first"
 msgstr "bitte erst speichern"
 
@@ -535,128 +380,211 @@ msgstr "bitte erst speichern"
 msgid "edit field"
 msgstr "Formularfeld bearbeiten"
 
-#: classes/class.pifa.gui.php:828
-msgid "NODATA"
-msgstr "Keine Daten"
-
-#: classes/class.pifa.gui.php:891 includes/include.right_top.php:65
+#: classes/class.pifa.gui.php:889 includes/include.right_top.php:65
 msgid "data"
 msgstr "Formulardaten"
 
-#: classes/class.pifa.gui.php:893
+#: classes/class.pifa.gui.php:891
 msgid "download data as CSV"
 msgstr "Formulardaten als CSV herunterladen"
 
-#: classes/class.pifa.gui.php:1059 includes/config.plugin.php:394
+#: classes/class.pifa.gui.php:1057 includes/config.plugin.php:391
 msgid "pifa_export_form"
 msgstr "Formular exportieren"
 
-#: classes/class.pifa.gui.php:1060
+#: classes/class.pifa.gui.php:1058
 msgid "WITH_DATA"
 msgstr "mit Formulardaten"
 
-#: classes/class.pifa.gui.php:1061 includes/include.right_top.php:75
+#: classes/class.pifa.gui.php:1059 includes/include.right_top.php:75
 msgid "EXPORT"
 msgstr "Export"
 
-#: classes/class.pifa.gui.php:1195 includes/config.plugin.php:393
-#: includes/include.left_top.php:40
+#: classes/class.pifa.gui.php:1193 includes/include.left_top.php:40
+#: includes/config.plugin.php:390
 msgid "pifa_import_form"
 msgstr "Formular importieren"
 
-#: classes/class.pifa.gui.php:1196
+#: classes/class.pifa.gui.php:1194
 msgid "XML"
 msgstr "XML"
 
-#: classes/class.pifa.gui.php:1197
+#: classes/class.pifa.gui.php:1195
 msgid "USED_TABLE_NAME_ERROR"
 msgstr ""
 "Die angegebene Datentabelle existiert bereits. Bitte geben sie einen "
 "alternativen Tabellennamen an."
 
-#: classes/class.pifa.gui.php:1199 includes/include.right_top.php:90
+#: classes/class.pifa.gui.php:1197 includes/include.right_top.php:90
 msgid "IMPORT"
 msgstr "Import"
 
-#: classes/class.pifa.gui.php:1235
+#: classes/class.pifa.gui.php:1233
 msgid "READ_XML_ERROR"
 msgstr "Die XML-Datei konnte nicht gelesen werden."
 
-#: classes/class.pifa.gui.php:1247
+#: classes/class.pifa.gui.php:1245
 msgid "IMPORT_SUCCESS"
 msgstr "Das Formular wurde erfolgreich importiert."
 
-#: extensions/class.pifa.default_form_module.php:86
-msgid "MISSING_PROCESSOR_FILE"
-msgstr "Prozessor-Datei '%s' fehlt"
+#: classes/class.content.type.pifa_form.php:160
+msgid "classes & templates"
+msgstr "Klassen & Vorlagen"
 
-#: extensions/class.pifa.default_form_module.php:92
-msgid "MISSING_PROCESSOR_CLASS"
-msgstr "Prozessor-Klasse '%s' fehlt"
+#: classes/class.content.type.pifa_form.php:169
+msgid "client mail"
+msgstr "Benutzer-Mail"
 
-#: includes/config.plugin.php:135
-msgid "INTERNAL_SERVER_ERROR"
-msgstr "Ein Fehler ist aufgetreten:"
+#: classes/class.content.type.pifa_form.php:178
+msgid "system mail"
+msgstr "System-Mail"
 
-#: includes/config.plugin.php:199
-msgid "EXTENSION_REGEX_ERROR"
-msgstr ""
-"der Reguläre Ausdruck hat versagt, konnte den Klassennamen der PIFA-"
-"Erweiterung nicht anhand des Dateinamens ermitteln"
+#: classes/class.content.type.pifa_form.php:251
+msgid "form_headline"
+msgstr "Formular Überschrift"
 
-#: includes/config.plugin.php:257
-msgid "TEMPLATE_REGEX_ERROR"
-msgstr ""
-"der Reguläre Ausdruck hat versagt, konnte den Klassennamen der PIFA-"
-"Schablone nicht anhand des Dateinamens ermitteln"
+#: classes/class.content.type.pifa_form.php:279
+msgid "module"
+msgstr "Module"
 
-#: includes/config.plugin.php:388
-msgid "pifa_show_form"
-msgstr "Formular sehen"
+#: classes/class.content.type.pifa_form.php:328
+msgid "processor"
+msgstr "Prozessoren"
 
-#: includes/config.plugin.php:389
-msgid "pifa_store_form"
-msgstr "Formular speichern"
+#: classes/class.content.type.pifa_form.php:377
+#: classes/class.content.type.pifa_form.php:426
+#: classes/class.content.type.pifa_form.php:476
+#: classes/class.content.type.pifa_form.php:594
+msgid "template"
+msgstr "Vorlagen"
 
-#: includes/config.plugin.php:390
-msgid "pifa_delete_form"
-msgstr "Formular löschen"
+#: classes/class.content.type.pifa_form.php:377
+msgid "GET"
+msgstr "GET"
 
-#: includes/config.plugin.php:391
-msgid "pifa_show_fields"
-msgstr "Formularfelder sehen"
+#: classes/class.content.type.pifa_form.php:426
+msgid "POST"
+msgstr "POST"
 
-#: includes/config.plugin.php:392
-msgid "pifa_show_data"
-msgstr "Formulardaten sehen"
+#: classes/class.content.type.pifa_form.php:521
+#: classes/class.content.type.pifa_form.php:639
+msgid "sender email"
+msgstr "Absender-Adresse"
 
-#: includes/config.plugin.php:395
-msgid "pifa_get_field_form"
-msgstr "Formularfeld sehen"
+#: classes/class.content.type.pifa_form.php:543
+#: classes/class.content.type.pifa_form.php:661
+msgid "sender name"
+msgstr "Absender-Name"
 
-#: includes/config.plugin.php:396
-msgid "pifa_post_field_form"
-msgstr "Formularfeld speichern"
+#: classes/class.content.type.pifa_form.php:565
+#: classes/class.content.type.pifa_form.php:706
+msgid "subject"
+msgstr "Betreff"
 
-#: includes/config.plugin.php:397
-msgid "pifa_reorder_fields"
-msgstr "Formularfeld verschieben"
+#: classes/class.content.type.pifa_form.php:684
+msgid "Recipient email"
+msgstr "Empfänger Email"
 
-#: includes/config.plugin.php:398
-msgid "pifa_export_data"
-msgstr "Formulardaten exportieren"
+#: classes/class.content.type.pifa_form.php:758
+msgid "MISSING_MODULE_FILE"
+msgstr "Modul-Datei '%s' fehlt"
 
-#: includes/config.plugin.php:399
-msgid "pifa_get_file"
-msgstr "Datei aus Formulardaten herunterladen"
+#: classes/class.content.type.pifa_form.php:763
+msgid "MISSING_MODULE_CLASS"
+msgstr "Modul-Klasse '%s' fehlt"
 
-#: includes/config.plugin.php:400
-msgid "pifa_delete_field"
-msgstr "Formularfeld löschen"
+#: classes/class.pifa.form.php:92 classes/class.pifa.form.php:128
+msgid "MISSING_CLIENT"
+msgstr "Angabe zum Mandanten fehlt"
 
-#: includes/config.plugin.php:401
-msgid "pifa_get_option_row"
-msgstr "Formularfeldoption hinzufügen"
+#: classes/class.pifa.form.php:109 classes/class.pifa.form.php:133
+msgid "MISSING_LANG"
+msgstr "Angabe zur Sprache fehlt"
+
+#: classes/class.pifa.form.php:492
+msgid "DATABASE_CONNECT_ERROR"
+msgstr "Datenbank-Verbindung konnte nicht hergestellt werden"
+
+#: classes/class.pifa.form.php:496
+msgid "SQL_BUILD_ERROR"
+msgstr "SQL konne nicht erstellt werden"
+
+#: classes/class.pifa.form.php:502
+msgid "VALUE_STORE_ERROR"
+msgstr "Werte konnten nicht gespeichert werden"
+
+#: classes/class.pifa.form.php:525
+msgid "FOLDER_CREATE_ERROR"
+msgstr "Verzeichnis konnte nicht erzeugt werden"
+
+#: classes/class.pifa.form.php:531
+msgid "FILE_STORE_ERROR"
+msgstr "Datei konnte nicht gespeichert werden"
+
+#: classes/class.pifa.form.php:543
+msgid "MISSING_SENDER_ADDRESS"
+msgstr "Absender-Adresse fehlt"
+
+#: classes/class.pifa.form.php:547
+msgid "MISSING_SENDER_NAME"
+msgstr "Absender-Name fehlt"
+
+#: classes/class.pifa.form.php:551
+msgid "MISSING_RECIPIENT_ADDRESS"
+msgstr "Empfänger-Adresse fehlt"
+
+#: classes/class.pifa.form.php:555
+msgid "MISSING_SUBJECT"
+msgstr "Betreff fehlt"
+
+#: classes/class.pifa.form.php:559
+msgid "MISSING_EMAIL_BODY"
+msgstr "Nachricht fehlt"
+
+#: classes/class.pifa.form.php:630 classes/class.pifa.form.php:706
+msgid "MISSING_TABLE_ERROR"
+msgstr "Datentabelle existiert nicht"
+
+#: classes/class.pifa.form.php:897
+msgid "TABLE_CHECK_ERROR"
+msgstr "Existenz der Datentabelle konnte nicht geprüft werden: '%s'"
+
+#: classes/class.pifa.form.php:926
+msgid "TABLE_EXISTS_ERROR"
+msgstr "Datentabelle '%s' existiert bereits"
+
+#: classes/class.pifa.form.php:965
+msgid "TABLE_CREATE_ERROR"
+msgstr "Datentabelle konnte nicht erstellt werden"
+
+#: classes/class.pifa.form.php:1084 classes/class.pifa.form.php:1116
+#: classes/class.pifa.form.php:1145
+msgid "COLUMN_EXISTS_ERROR"
+msgstr "Die Spalte '%s' existiert bereits."
+
+#: classes/class.pifa.form.php:1102
+msgid "COLUMN_ALTER_ERROR"
+msgstr "Spalte konnte nicht geändert werden"
+
+#: classes/class.pifa.form.php:1162
+msgid "COLUMN_ADD_ERROR"
+msgstr "Spalte konnte nicht erzeugt werden"
+
+#: classes/class.pifa.form.php:1182
+msgid "COLUMNS_LOAD_ERROR"
+msgstr "Spalte konnte nicht gelesen werden"
+
+#: classes/class.pifa.form.php:1218
+msgid "FORM_DELETE_ERROR"
+msgstr "Formular konnte nicht gelöscht werden"
+
+#: classes/class.pifa.form.php:1230
+msgid "FIELDS_DELETE_ERROR"
+msgstr "Felder konnten nicht gelöscht werden"
+
+#: classes/class.pifa.form.php:1241
+msgid "TABLE_DROP_ERROR"
+msgstr "Datentabelle konnte nicht gelöscht werden"
 
 #: includes/include.left_top.php:25
 msgid "CREATE_FORM"
@@ -673,6 +601,78 @@ msgstr "Formular importieren"
 #: includes/include.left_top.php:44
 msgid "IMPORT_FORM_NO_PERMISSIONS"
 msgstr "Formular importieren: keine Berechtigung"
+
+#: includes/config.plugin.php:132
+msgid "INTERNAL_SERVER_ERROR"
+msgstr "Ein Fehler ist aufgetreten:"
+
+#: includes/config.plugin.php:196
+msgid "EXTENSION_REGEX_ERROR"
+msgstr ""
+"der Reguläre Ausdruck hat versagt, konnte den Klassennamen der PIFA-"
+"Erweiterung nicht anhand des Dateinamens ermitteln"
+
+#: includes/config.plugin.php:254
+msgid "TEMPLATE_REGEX_ERROR"
+msgstr ""
+"der Reguläre Ausdruck hat versagt, konnte den Klassennamen der PIFA-"
+"Schablone nicht anhand des Dateinamens ermitteln"
+
+#: includes/config.plugin.php:385
+msgid "pifa_show_form"
+msgstr "Formular sehen"
+
+#: includes/config.plugin.php:386
+msgid "pifa_store_form"
+msgstr "Formular speichern"
+
+#: includes/config.plugin.php:387
+msgid "pifa_delete_form"
+msgstr "Formular löschen"
+
+#: includes/config.plugin.php:388
+msgid "pifa_show_fields"
+msgstr "Formularfelder sehen"
+
+#: includes/config.plugin.php:389
+msgid "pifa_show_data"
+msgstr "Formulardaten sehen"
+
+#: includes/config.plugin.php:392
+msgid "pifa_get_field_form"
+msgstr "Formularfeld sehen"
+
+#: includes/config.plugin.php:393
+msgid "pifa_post_field_form"
+msgstr "Formularfeld speichern"
+
+#: includes/config.plugin.php:394
+msgid "pifa_reorder_fields"
+msgstr "Formularfeld verschieben"
+
+#: includes/config.plugin.php:395
+msgid "pifa_export_data"
+msgstr "Formulardaten exportieren"
+
+#: includes/config.plugin.php:396
+msgid "pifa_get_file"
+msgstr "Datei aus Formulardaten herunterladen"
+
+#: includes/config.plugin.php:397
+msgid "pifa_delete_field"
+msgstr "Formularfeld löschen"
+
+#: includes/config.plugin.php:398
+msgid "pifa_get_option_row"
+msgstr "Formularfeldoption hinzufügen"
+
+#: extensions/class.pifa.default_form_module.php:87
+msgid "MISSING_PROCESSOR_FILE"
+msgstr "Prozessor-Datei '%s' fehlt"
+
+#: extensions/class.pifa.default_form_module.php:93
+msgid "MISSING_PROCESSOR_CLASS"
+msgstr "Prozessor-Klasse '%s' fehlt"
 
 #~ msgid "Currently there is no field called \"email\" in this form!"
 #~ msgstr ""

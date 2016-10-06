@@ -379,6 +379,10 @@ class PifaForm extends Item {
             'class' => 'pifa-form jqtransform'
         ), $opt);
         $idform = $this->get('idform');
+        $headline = '';
+        if(isset($opt['headline']) && strlen($opt['headline']) > 0) {
+            $headline = '<h1 class="pifa-headline">' . $opt['headline'] . '</h1>';
+        }
 
         // build form
         $htmlForm = new cHTMLForm($opt['name'], $opt['action'], $opt['method'], $opt['class']);
@@ -404,7 +408,7 @@ class PifaForm extends Item {
         }
         $htmlForm->appendContent("\n");
 
-        return $htmlForm->render();
+        return $headline . $htmlForm->render();
     }
 
     /**
