@@ -56,7 +56,7 @@ class cSetupSystemtest extends cSetupMask {
 
         // Display message for chmod rights on webserver
         if ($_SESSION['setuptype'] == 'setup') {
-            $message = i18n("Please check that your template-, css- and js-files has chmod rights 755. Please check also that your client directory (including cache, module and upload directories) has chmod rights 755. Please make sure that the owner for these directories and all files are the same as the owner of your webserver.", "setup");
+            $message = i18n("Please check that your config and client directories (including cache, module and upload directories, template-, css- and js-files) has chmod rights 755. Please make sure that the owner for these directories and all files are the same as the owner of your webserver.", "setup");
             $message = nl2br($message);
             $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Attention: Please give your directories rights on your webserver", "setup"), $message);
         }
@@ -228,7 +228,7 @@ class cSetupSystemtest extends cSetupMask {
             $message = nl2br($message);
             $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Attention: Some directories/files have been moved", "setup"), $message);
 
-            $message = i18n("Please check that your template-, css- and js-files has chmod rights 755. Please check also that your client directory (including cache, module and upload directories) has chmod rights 755. Please make sure that the owner for these directories and all files are the same as the owner of your webserver.", "setup");
+            $message = i18n("Please check that your config and client directories (including cache, module and upload directories, template-, css- and js-files) has chmod rights 755. Please make sure that the owner for these directories and all files are the same as the owner of your webserver.", "setup");
             $message = nl2br($message);
             $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Attention: Please give your directories rights on your webserver", "setup"), $message);
         }
