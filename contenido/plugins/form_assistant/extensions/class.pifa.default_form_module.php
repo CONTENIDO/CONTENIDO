@@ -59,7 +59,8 @@ class DefaultFormModule extends PifaAbstractFormModule {
 
         // assign rendered form
         $this->getTpl()->assign('form', $pifaForm->toHtml(array(
-            'action' => $actionPath
+            'action' => $actionPath,
+            'headline' => $this->getSetting('pifaform_headline')
         )));
     }
 

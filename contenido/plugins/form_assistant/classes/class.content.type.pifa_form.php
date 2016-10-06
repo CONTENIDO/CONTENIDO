@@ -57,6 +57,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $this->_prefix = 'pifaform';
         $this->_settingsType = self::SETTINGS_TYPE_XML;
         $this->_formFields = array(
+            'pifaform_headline',
             'pifaform_idform',
             'pifaform_module',
             'pifaform_processor',
@@ -148,6 +149,8 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     private function _getPanel() {
         $wrapper = new cHTMLDiv(array(
 
+            // headline
+            $this->_getHeadline(),
             // form
             $this->_getSelectForm(),
 
@@ -229,6 +232,32 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $div = new cHTMLDiv(array(
             $label,
             $select
+        ));
+
+        // return div element
+        return $div;
+    }
+
+    /**
+     * Builds input field for the form headline
+     *
+     * @return cHTMLDiv
+     */
+    private function _getHeadline() {
+        // attributes of form field elements
+        $id = 'pifaform_idform_' . $this->_id;
+
+        // build label element
+        $label = new cHTMLLabel(Pifa::i18n('form_headline'), $id);
+        // builds input element
+        $id = 'pifaform_headline_' . $this->_id;
+        $value = $this->_settings['pifaform_headline'];
+        $input = new cHTMLTextbox($id, $value, '', '', $id);
+
+        // build div element as wrapper
+        $div = new cHTMLDiv(array(
+            $label,
+            $input
         ));
 
         // return div element

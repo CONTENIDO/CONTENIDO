@@ -406,23 +406,33 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
 
             // try to get a teaser image directly from cms_img or try to extract
             // if a content type is given, wich contains html
+            $cApiUploadMeta = new cApiUploadMeta();
             if ((int) $imageId > 0) {
                 $image = $this->_getImage($imageId, $this->_settings['teaser_image_width'], $this->_settings['teaser_image_height'], $this->_settings['teaser_image_crop']);
                 $template->set('d', 'IMAGE', $image['element']);
                 $template->set('d', 'IMAGE_SRC', $image['src']);
+                $cApiUploadMeta->loadByMany(array('idlang' => cRegistry::getLanguageId(), 'idupl' => $imageId));
+                if($cApiUploadMeta->isLoaded()) {
+                    $template->set('d', 'IMAGE_MEDIANAME', $cApiUploadMeta->get('medianame'));
+                }
             } else if (strip_tags($imageId) != $imageId && strlen($imageId) > 0) {
-
                 $image = $this->_extractImage($imageId);
                 if (strlen($image['src']) > 0) {
                     $template->set('d', 'IMAGE', $image['element']);
                     $template->set('d', 'IMAGE_SRC', $image['src']);
+                    $cApiUploadMeta->loadByMany(array('idlang' => cRegistry::getArticleLanguageId(), 'idupl' => $imageId));
+                    if($cApiUploadMeta->isLoaded()) {
+                        $template->set('d', 'IMAGE_MEDIANAME', $cApiUploadMeta->get('medianame'));
+                    }
                 } else {
                     $template->set('d', 'IMAGE', '');
                     $template->set('d', 'IMAGE_SRC', '');
+                    $template->set('d', 'IMAGE_MEDIANAME', '');
                 }
             } else {
                 $template->set('d', 'IMAGE_SRC', '');
                 $template->set('d', 'IMAGE', '');
+                $template->set('d', 'IMAGE_MEDIANAME', '');
             }
 
             // strip all tags from manual teaser date
