@@ -68,8 +68,8 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage')) {
         $oVersionStyle = new cVersionFile($aFileInfo['idsfi'], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
 
         $sStyleCode = stripslashes($_POST['stylecode']);
-        $sStyleName = $_POST['stylename'];
-        $sStyleDesc = $_POST['styledesc'];
+        $sStyleName = stripslashes($_POST['stylename']);
+        $sStyleDesc = stripslashes($_POST['styledesc']);
 
         $sPath = $oVersionStyle->getPathFile();
 
