@@ -368,12 +368,19 @@
      * @private
      */
     var _loadCss = function(file, callback) {
-        var link = document.createElement('link');
-        link.href = file;
-        link.rel = 'stylesheet';
-        link.type = 'text/css';
-        _head.appendChild(link);
-        callback();
+        // load file only if not already loaded
+        if(_loaded[file] == false) {
+            var link = document.createElement('link');
+            link.href = file;
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            _head.appendChild(link);
+            callback();
+            // set as loaded after successful loading
+            _loaded[file] = true;
+        } else {
+            callback();
+        }
     };
 
     /**
@@ -419,23 +426,29 @@
      * @private
      */
     var _loadJs = function(file, callback) {
-        $.getScript(file).done(function(script, textStatus) {
-            //console.log("callback new for " + file);
+        // load file only if not already loaded
+        if(_loaded[file] == false) {
+            $.ajax({async: false, url: file, dataType: "script"}).done(function (script, textStatus) {
+                callback();
+                // set as loaded after successful loading
+                _loaded[file] = true;
+            }).fail(function (jqxhr, settings, exception) {
+                if (jqxhr.status == "200" && jqxhr.responseText != "") {
+                    // Give other files a little bit of time to load in case there are dependencies
+                    // Try to evaluate the file after 250ms
+                    setTimeout(function () {
+                        _lateEval(jqxhr.responseText, callback, 1, file, jqxhr, settings);
+                    }, 250);
+                } else {
+                    Con.log('fail ' + file, NAME);
+                    Con.log(jqxhr, NAME);
+                    Con.log(settings, NAME);
+                    Con.log(exception, NAME);
+                }
+            });
+        } else {
             callback();
-        }).fail(function(jqxhr, settings, exception) {
-            if (jqxhr.status == "200" && jqxhr.responseText != "") {
-                // Give other files a little bit of time to load in case there are dependencies
-                // Try to evaluate the file after 250ms
-                setTimeout(function() {
-                    _lateEval(jqxhr.responseText, callback, 1, file, jqxhr, settings);
-                }, 250);
-            } else {
-                Con.log('fail ' + file, NAME);
-                Con.log(jqxhr, NAME);
-                Con.log(settings, NAME);
-                Con.log(exception, NAME);
-            }
-        });
+        }
     };
 
     /**
