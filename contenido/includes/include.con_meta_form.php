@@ -117,7 +117,7 @@ switch ($versioning->getState()) {
 
                 // Execute cec hook
                 cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
-                    'idart' => $artLangVersion->get("idart"),
+                    'idart' => $artLang->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
                 ));
             }
