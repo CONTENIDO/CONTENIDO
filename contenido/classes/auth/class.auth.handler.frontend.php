@@ -83,7 +83,9 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
      * @return string|false
      */
     public function validateCredentials() {
-        $username = conHtmlentities(stripslashes(trim($_POST['username'])));
+		$frontendUserColl = new cApiFrontendUserCollection();
+		
+        $username = $frontendUserColl->escape( conHtmlentities(stripslashes(trim($_POST['username']))) );
         $password = $_POST['password'];
 
         $groupPerm = array();
@@ -107,7 +109,6 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
 
         $client = cRegistry::getClientId();
 
-        $frontendUserColl = new cApiFrontendUserCollection();
         $where = "username = '" . $username . "' AND idclient='" . $client . "' AND active=1";
         $frontendUserColl->select($where);
 
