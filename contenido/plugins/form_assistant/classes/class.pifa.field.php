@@ -564,7 +564,7 @@ class PifaField extends Item {
         // if no current value is given
         if (NULL === $value) {
             // the fields default value is used
-            $value = conHtmlentities($this->get('default_value'));
+            $value = $this->get('default_value');
             // which could be overwritten by a GET param
             if (array_key_exists($columnName, $_GET)) {
                 $value = $_GET[$columnName];
@@ -572,7 +572,13 @@ class PifaField extends Item {
         }
 		
 		// try to prevent XSS ... the lazy way ...
-        $value = conHtmlentities($value, ENT_COMPAT | ENT_HTML401, 'UTF-8');
+		if ( is_array($value) ) {
+			foreach ($value as $key => $val) {
+				$value[$key] = conHtmlentities($val, ENT_COMPAT | ENT_HTML401, 'UTF-8');
+			}
+		} else {
+			$value = conHtmlentities($value, ENT_COMPAT | ENT_HTML401, 'UTF-8');
+		}
 
         switch ($fieldType) {
 
