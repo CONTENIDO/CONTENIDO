@@ -28,6 +28,7 @@ $err_art    = trim(getEffectiveSetting('login_error_page', 'idart', ''));
 $oUrl = cUri::getInstance();
 
 $sClientHtmlPath = cRegistry::getFrontendUrl();
+$basePath = cApiCecHook::executeAndReturn('Contenido.Frontend.BaseHrefGeneration', $sClientHtmlPath);
 
 $sUrl = $sClientHtmlPath . 'front_content.php';
 
@@ -52,6 +53,9 @@ if ($bRedirect) {
     $aUrl = $oUrl->parse($sess->url($sErrorUrl));
     $aUrl['params']['wrongpass'] = 1;
     $sErrorUrl = $oUrl->buildRedirect($aUrl['params']);
+	
+	$sErrorUrl = str_replace($sClientHtmlPath, $basePath, $sErrorUrl);
+
     header('Location: ' . $sErrorUrl);
     exit();
 }
@@ -72,6 +76,9 @@ if (isset($_GET['return']) || isset($_POST['return'])) {
     $sErrorUrl = $sUrl . '?' . implode('&', $aLocator);
     $aUrl = $oUrl->parse($sess->url($sErrorUrl));
     $sErrorUrl = $oUrl->buildRedirect($aUrl['params']);
+	
+	$sErrorUrl = str_replace($sClientHtmlPath, $basePath, $sErrorUrl);
+	
     header('Location: ' . $sErrorUrl);
     exit();
 }
@@ -80,6 +87,8 @@ if (isset($_GET['return']) || isset($_POST['return'])) {
 $sFormAction = $sess->url($sUrl . '?idcat=' . (int) $idcat . '&lang=' . $lang);
 $aUrl = $oUrl->parse($sFormAction);
 $sFormAction = $oUrl->build($aUrl['params']);
+
+$sFormAction = str_replace($sClientHtmlPath, $basePath, $sFormAction);
 
 // set login input image, use button as fallback
 if (cFileHandler::exists(cRegistry::getFrontendPath() . 'images/but_ok.gif')) {
