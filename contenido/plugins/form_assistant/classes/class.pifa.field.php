@@ -568,10 +568,11 @@ class PifaField extends Item {
             // which could be overwritten by a GET param
             if (array_key_exists($columnName, $_GET)) {
                 $value = $_GET[$columnName];
-                // try to prevent XSS ... the lazy way ...
-                $value = conHtmlentities($value, ENT_COMPAT | ENT_HTML401, 'UTF-8');
             }
         }
+		
+		// try to prevent XSS ... the lazy way ...
+        $value = conHtmlentities($value, ENT_COMPAT | ENT_HTML401, 'UTF-8');
 
         switch ($fieldType) {
 

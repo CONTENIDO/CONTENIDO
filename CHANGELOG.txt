@@ -5,6 +5,7 @@ Release 4.9.12
 ---------------------------------------------------------------------
 ** Bug
     * [CON-2580] - Handling special chars in frontend username
+	* [CON-2581] - Formular assistant: Special chars
 
 ---------------------------------------------------------------------
 Release 4.9.11
