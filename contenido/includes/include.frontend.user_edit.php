@@ -98,7 +98,8 @@ if (true === $feuser->isLoaded() && $feuser->get("idclient") == $client) {
         $messages = array();
 
         if ($feuser->get("username") != $username) {
-            $feusers->select("username = '".$username."' and idclient='$client'");
+			$usernameDb = $feuser->escape($username);
+            $feusers->select("username = '".$usernameDb."' and idclient='$client'");
             if ($feusers->next()) {
                 $messages[] = i18n("Could not set new username: Username already exists");
             } else {
