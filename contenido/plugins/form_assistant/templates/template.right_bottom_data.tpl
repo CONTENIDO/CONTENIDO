@@ -54,9 +54,9 @@
             <td nowrap="nowrap" class="bordercell">&nbsp;</td>
             {else if '9' eq $field->get('field_type')}
             {* display INPUTFILE values as link *}
-            <td nowrap="nowrap" class="bordercell"><a href="{$getFileUrl}&name={$columnData}&file={$form->get('data_table')}_{$row.id}_{$columnName}">{$columnData}</a></td>
+            <td nowrap="nowrap" class="bordercell"><a href="{$getFileUrl}&name={$columnData|htmlentities}&file={$form->get('data_table')}_{$row.id}_{$columnName}">{$columnData|htmlentities}</a></td>
             {else}
-            <td nowrap="nowrap" class="bordercell">{$columnData}</td>
+            <td nowrap="nowrap" class="bordercell">{$columnData|htmlentities}</td>
             {/if}
         {/foreach}
         </tr>
