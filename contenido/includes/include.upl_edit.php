@@ -163,13 +163,14 @@ if ($upload = $uploads->next()) {
                 break;
 
             case 'medianame':
+
                 if ($uploadMeta->get('medianame')) {
                     $medianame = cSecurity::unFilter($uploadMeta->get('medianame'));
                 } else {
                     $medianame = $properties->getValue('upload', $qpath . $filename, 'file', 'medianame');
                 }
 
-                $mnedit = new cHTMLTextbox('medianame', $medianame, 60);
+                $mnedit = new cHTMLTextbox('medianame', conHtmlentities($medianame), 60);
                 $sCell = $mnedit->render();
                 break;
 
