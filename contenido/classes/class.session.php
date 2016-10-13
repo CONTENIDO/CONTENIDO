@@ -75,6 +75,11 @@ class cSession {
                 $url = cRegistry::getFrontendUrl();
             }
 
+            // If you use AMR, use rootdir variable of mod_rewrite plugin instead of BackendUrl/FrontendUrl
+            if ($cfg['mod_rewrite']['use'] === 1) {
+                $url = $cfg['mod_rewrite']['rootdir'];
+            }
+
             // remove protocol from contenido URL
             $start = strpos($url, '://');
             if (false === $start) {
