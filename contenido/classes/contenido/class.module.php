@@ -201,6 +201,13 @@ class cApiModule extends Item {
      * @var string
      */
     private $_translationReplacement = 'mi18n("';
+	
+	/**
+     * for finding module translations in source code of templates
+     *
+     * @var string
+     */
+	private $_translationPatternTemplate = '/\{\s*"([^"]+)"\s*\|\s*mi18n\s*\}/';
 
     /**
      * @todo check if this property is still required
@@ -341,7 +348,25 @@ class cApiModule extends Item {
                 unset($results);
             }
         }
-
+		
+		//Parse all templates too
+		$contenidoModulTemplateHandler = new cModuleTemplateHandler($this->get('idmod'), null);
+		$filesArray = $contenidoModulTemplateHandler->getAllFilesFromDirectory('template');
+		
+		if (is_array($filesArray)) {
+			$code = '';
+			foreach ($filesArray as $file) {
+				$code .= $contenidoModulTemplateHandler->getFilesContent('template', '', $file);
+			}
+			
+			// Parse for the mi18n stuff
+            preg_match_all($this->_translationPatternTemplate, $code, $results);
+			
+			if (is_array($results) && is_array($results[1]) && count($results[1]) > 0) {
+				$strings = array_merge($strings, $results[1]);
+			}
+		}
+		
         // adding dynamically new module translations by content types
         // this function was introduced with CONTENIDO 4.8.13
         // checking if array is set to prevent crashing the module translation
