@@ -58,7 +58,7 @@ class cSetupSystemtest extends cSetupMask {
         if ($_SESSION['setuptype'] == 'setup') {
             $message = i18n("Please check that your config and client directories (including cache, module and upload directories, template-, css- and js-files) has chmod rights 755. Please make sure that the owner for these directories and all files are the same as the owner of your webserver.", "setup");
             $message = nl2br($message);
-            $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Attention: Please give your directories rights on your webserver", "setup"), $message);
+            $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_INFO, i18n("Attention: Please give your directories rights on your webserver", "setup"), $message);
         }
 
         $cHTMLErrorMessageList = new cHTMLErrorMessageList();
@@ -230,7 +230,7 @@ class cSetupSystemtest extends cSetupMask {
 
             $message = i18n("Please check that your config and client directories (including cache, module and upload directories, template-, css- and js-files) has chmod rights 755. Please make sure that the owner for these directories and all files are the same as the owner of your webserver.", "setup");
             $message = nl2br($message);
-            $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Attention: Please give your directories rights on your webserver", "setup"), $message);
+            $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_INFO, i18n("Attention: Please give your directories rights on your webserver", "setup"), $message);
         }
     }
 
