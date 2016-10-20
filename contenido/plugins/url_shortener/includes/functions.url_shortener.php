@@ -198,3 +198,20 @@ function piUsAfterLoadPlugins() {
         exit();
     }
 }
+
+/**
+ * Chain for delete short urls at con_deleteart action
+ *
+ * @param integer $id Id of idart
+ */
+function piUseConDeleteArtAfter($id) {
+
+    $perm = cRegistry::getPerm();
+
+    if ($perm->have_perm_area_action('url_shortener', 'url_shortener_delete')) {
+        $shortUrlColl = new cApiShortUrlCollection();
+        return $shortUrlColl->deleteBy('idart', cSecurity::toInteger($id));
+    } else {
+        return false;
+    }
+}

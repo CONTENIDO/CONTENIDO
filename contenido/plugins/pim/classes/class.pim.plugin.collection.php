@@ -112,7 +112,6 @@ class PimPluginCollection extends ItemCollection {
             return cSecurity::toInteger($result . 0);
         }
     }
-
 }
 
 /**
@@ -350,5 +349,19 @@ class PimPlugin extends Item {
         }
 
         return true;
+    }
+
+    /**
+     * Check if plugin exists and is active
+     *
+     * @param string $pluginname
+     * @return bool true iv available, false if it is not available
+     */
+    public function isPluginAvailable($pluginname) {
+        return $this->loadByMany(array(
+            'idclient' => cRegistry::getClientId(),
+            'name' => $pluginname,
+            'active' => 1
+        ));
     }
 }
