@@ -73,9 +73,7 @@ if (!defined('CON_ENVIRONMENT')) {
  * SetEnv CON_VERSION
  */
 if (!defined('CON_VERSION')) {
-
     define('CON_VERSION', '4.9.13');
-
 }
 
 // Temporary backend path, will be re-set again later...
