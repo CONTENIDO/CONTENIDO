@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: CONTENIDO Setup\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-10-06 11:48+0200\n"
-"PO-Revision-Date: 2016-10-06 11:49+0200\n"
+"PO-Revision-Date: 2016-10-20 12:32+0200\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: CONTENIDO Development\n"
 "Language: de_DE\n"
@@ -777,7 +777,7 @@ msgstr ""
 
 #: steps/forms/systemtest.php:61 steps/forms/systemtest.php:233
 msgid "Attention: Please give your directories rights on your webserver"
-msgstr "Warnung: Bitte geben Sie den Verzeichnissen Rechte auf Ihrem Webserver"
+msgstr "Achtung: Bitte geben Sie den Verzeichnissen Rechte auf Ihrem Webserver"
 
 #: steps/forms/systemtest.php:67
 msgid "PHP MySQL Extension missing"
