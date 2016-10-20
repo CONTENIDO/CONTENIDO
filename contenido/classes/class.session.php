@@ -91,7 +91,7 @@ class cSession {
             }
 
             // If you use AMR, use rootdir variable of mod_rewrite plugin instead of BackendUrl/FrontendUrl
-            if ($cfg['mod_rewrite']['use'] === 1 && $available === true) {
+            if ($cfg['mod_rewrite']['use'] === 1 && $available === true && strlen($cfg['mod_rewrite']['rootdir']) > 0) {
                 $url = $cfg['mod_rewrite']['rootdir'];
             }
 
