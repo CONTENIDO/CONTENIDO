@@ -1,4 +1,4 @@
-﻿CONTENIDO Version 4.9.12
+﻿CONTENIDO Version 4.9.13
 Lizenz:        GNU General Public Licence (GPL)
 Copyright:     (c) 2003-2016, four for business AG
 
