@@ -75,8 +75,23 @@ class cSession {
                 $url = cRegistry::getFrontendUrl();
             }
 
+            // Check if amr is available
+            $db = cRegistry::getDb();
+
+            // Query the database
+            $db->query("SELECT active FROM " . $cfg['tab']['plugins'] . "
+                        WHERE idclient = '" . cRegistry::getClientId() . "' AND
+                        name = 'Advanced Mod Rewrite' AND
+                        active = 1");
+
+            if ($db->numRows() > 1) {
+                $available = true;
+            } else {
+                $available = false;
+            }
+
             // If you use AMR, use rootdir variable of mod_rewrite plugin instead of BackendUrl/FrontendUrl
-            if ($cfg['mod_rewrite']['use'] === 1) {
+            if ($cfg['mod_rewrite']['use'] === 1 && $available === true) {
                 $url = $cfg['mod_rewrite']['rootdir'];
             }
 
