@@ -65,7 +65,7 @@ if (!is_numeric($request["idclientslang"]) || $request["idclientslang"] == 0) {
 }
 
 if ($_POST['action'] == 'clientsettings_save_item') {
-    $oClient->setProperty($request['cstype'], $request['csname'], $request['csvalue'], $request['csidproperty']);
+    $oClient->setProperty(trim($request['cstype']), trim($request['csname']), trim($request['csvalue']), $request['csidproperty']);
     $oPage->displayOk(i18n("Save changes successfully!"));
 }
 
@@ -118,7 +118,7 @@ if ($aItems !== false) {
         } else {
             $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
 
-               if (strlen($aValue['type']) > 35) {
+            if (strlen($aValue['type']) > 35) {
                 $sShort = cString::trimHard($aValue['type'], 35);
                 $aValue['type'] = sprintf($sMouseoverTemplate, $aValue['type'], $sShort);
             }

@@ -39,7 +39,7 @@ if ($action == "systemsettings_save_item") {
         $page->displayError(i18n("You don't have the permission to make changes here."));
     } else {
         if (!in_array($request['systype'] . '_' . $request['sysname'], $aManagedValues)) {
-            setSystemProperty($request['systype'], $request['sysname'], $request['sysvalue'], (int) $request['csidsystemprop']);
+            setSystemProperty(trim($request['systype']), trim($request['sysname']), trim($request['sysvalue']), cSecurity::toInteger($request['csidsystemprop']));
             if (isset($x)) {
                 $page->displayOk(i18n('Saved changes successfully!'));
             } else {
