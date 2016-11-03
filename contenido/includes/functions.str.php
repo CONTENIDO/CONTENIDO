@@ -254,7 +254,7 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
 function strCheckAlias($catalias) {
     $lang = cRegistry::getLanguageId();
     $catLangColl = new cApiCategoryLanguageCollection();
-    $result = $catLangColl->select("idlang = " . $lang . " AND urlname = '" . $catalias . "'");
+    $result = $catLangColl->select("idlang = " . $lang . " AND urlname = '" . cSecurity::escapeString($catalias) . "'");
     return $result;
 }
 
