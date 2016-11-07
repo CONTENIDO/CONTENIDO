@@ -74,7 +74,7 @@ function rowMark(overColor, markedColor, overMarked, onClick, instanceName) {
 
 /**
  * rowMark::over()
- * @param object oRow table row object
+ * @param {Object} oRow table row object
  */
 function rowMark_over(oRow) {
     if (oRow == null) {
@@ -87,16 +87,16 @@ function rowMark_over(oRow) {
 
     oRow.style.backgroundColor = this.overColor;
 
-    /*if (oRow.style.backgroundColor == this.markedColor) {
-        oRow.style.backgroundColor = this.overMarked;
-    } else {
-        oRow.style.backgroundColor = this.overColor;
-    }*/
+    //if (oRow.style.backgroundColor == this.markedColor) {
+    //    oRow.style.backgroundColor = this.overMarked;
+    //} else {
+    //    oRow.style.backgroundColor = this.overColor;
+    //}
 }
 
 /**
  * rowMark::out()
- * @param object oRow table row object
+ * @param {Object} oRow table row object
  */
 function rowMark_out(oRow) {
     if (oRow == this.markedRow) {
@@ -132,10 +132,9 @@ function rowMark_reset() {
 
 /**
  * rowMark::over()
- * @param object oRow table row object
+ * @param {Object} oRow table row object
  */
-function rowMark_click(oRow)
-{
+function rowMark_click(oRow) {
     if (oRow == null) {
         return;
     }
@@ -169,7 +168,6 @@ function rowMark_click(oRow)
         }
     }
 }
-
 
 /**
  * Table rowMark with image rollover
@@ -283,8 +281,7 @@ function rowMarkConClick(obj) {
     data = tmp_data.split("-");
 
     if (data.length == 9) {
-        /* Transfer data to the cfg object
-           through the .load() method */
+        // Transfer data to the cfg object through the .load() method
         //cfgObj.load(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]);
         cfgObj.load(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], obj.id);
         rowMarkRefreshSyncScreen(data[8]);
@@ -293,7 +290,7 @@ function rowMarkConClick(obj) {
         rowMarkRefreshSyncScreen(0);
     }
 
-    /* String for debugging */
+    // String for debugging
     str  = "";
     str += "Category ID is: "     + data[0] + "\n";
     str += "Template ID is: "     + data[1] + "\n";
@@ -398,8 +395,8 @@ function rowMarkArtRowClick(oRow) {
 }
 
 /**
-rowMark instances
-**/
+ * rowMark instances
+ */
 
 // rowMark instance for the general use
 row = new rowMark('#f9fbdd', '#ecf1b2', '#cccccc', 'void(0)', 'row');

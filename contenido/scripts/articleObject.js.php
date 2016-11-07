@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Project:
  * CONTENIDO Content Management System
@@ -94,7 +95,8 @@ $aCustomTabs['bar'] = array(
  */
 
 (function(Con, $) {
-//    'use strict';
+
+    // 'use strict';
 
     var NAME = 'article-object';
 
@@ -104,33 +106,33 @@ $aCustomTabs['bar'] = array(
      * @constructor
      */
      Con.ArticleObject = function(actionFrameName, frameNumber) {
-        /* Name of the Actionframe. Defaults to 'right_bottom' */
+        // Name of the Actionframe. Defaults to 'right_bottom'
         this.actionFrameName = actionFrameName || 'right_bottom';
 
-        /* Reference to the Actionframe */
+        // Reference to the Actionframe
         this.actionFrame = Con.getFrame(this.actionFrameName);
 
-        /* Frame-number. Defaults to '4' */
+        // Frame-number. Defaults to '4'
         this.frame      = frameNumber || 4;
 
-        /* Reference to navigation frame */
+        // Reference to navigation frame
         this.navFrame = Con.getFrame('right_top');
 
-        /* Filename of the CONTENIDO main file - defaults to 'main.php' */
+        // Filename of the CONTENIDO main file - defaults to 'main.php'
         this.filename   = 'main.php?';
 
-        /* CONTENIDO session name - defaults to 'contenido' */
+        // CONTENIDO session name - defaults to 'contenido'
         this.sessionName = 'contenido';
 
-        /* Current page selection (first shown article number) */
+        // Current page selection (first shown article number)
         this.next       = 0;
 
-        /* Global Vars */
+        // Global Vars
         this.sessid     = 0;
         this.client     = 0;
         this.lang       = 0;
 
-        /* Article Properties*/
+        // Article Properties
         this.idart      = 0;
         this.idartlang  = 0;
         this.idcat      = 0;
@@ -138,15 +140,15 @@ $aCustomTabs['bar'] = array(
         this.idcatart   = 0;
         this.idlang     = 0;
 
-        /* Menu visible / invisible */
+        // Menu visible / invisible
         this.vis        = 1;
 
         this.customTabs = new Array();
 
-        /* Href of OverviewPage */
+        // Href of OverviewPage
         this.hrefOverview = null;
 
-        /* Dynamically created custom tabs */
+        // Dynamically created custom tabs
 <?php
 $cutomTabsJs = '';
 $prefix = str_repeat(' ', 8);
@@ -156,38 +158,35 @@ foreach ($aCustomTabs as $key => $params) {
 echo $cutomTabsJs;
 ?>
 
-         // try to get nav and action frames if async frames loading don't work
-         if (   typeof this.navFrame === 'undefined'
-             || typeof this.actionFrame === 'undefined'
-         ) {
+        // try to get nav and action frames if async frames loading don't work
+        if (typeof this.navFrame === 'undefined'
+        || typeof this.actionFrame === 'undefined') {
 
-             var self = this;
-             var maxIntervalCounter = 20;
-             var interval = setInterval(
-                 function() {
+            var self = this;
+            var maxIntervalCounter = 20;
+            var interval = setInterval(function() {
 
-                     if (typeof self.navFrame === 'undefined') {
-                         self.navFrame = Con.getFrame('right_top');
-                     }
-                     if (typeof self.actionFrame === 'undefined') {
-                         self.actionFrame = Con.getFrame(self.actionFrameName);
-                     }
+                if (typeof self.navFrame === 'undefined') {
+                    self.navFrame = Con.getFrame('right_top');
+                }
+                if (typeof self.actionFrame === 'undefined') {
+                    self.actionFrame = Con.getFrame(self.actionFrameName);
+                }
 
-                     if (   (   typeof self.navFrame !== 'undefined'
-                         && typeof self.actionFrame !== 'undefined')
-                         || maxIntervalCounter <= 0
-                     ) {
-                         clearInterval(interval);
-                     }
+                if ((typeof self.navFrame !== 'undefined' && typeof self.actionFrame !== 'undefined')
+                || maxIntervalCounter <= 0) {
+                    clearInterval(interval);
+                }
 
-                     maxIntervalCounter--;
-                 }
-                 ,250);
+                maxIntervalCounter--;
+
+            }, 250);
          }
 
     };
 
     Con.ArticleObject.prototype = {
+    
         /**
          * Define required global variables
          * @method setGlobalVars

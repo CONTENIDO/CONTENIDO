@@ -324,7 +324,7 @@
         var cb = function() {
             numFiles--;
             if (0 === numFiles) {
-                // ##console.log('Con.Loader.get() loaded files', files);
+                // console.log('Con.Loader.get() loaded files', files);
                 callback();
             }
         };
@@ -415,7 +415,7 @@
             return;
         }
         callback();
-    }
+    };
 
     /**
      * Loads JavaScript file by using $.getScript
@@ -659,23 +659,25 @@
 
             if (opt.initial) {
                 // Check for data-resizeinitcb for initial resizing
-                callback = ($container.data('resizeinitcb')) ? $container
-                        .data('resizeinitcb') : null;
+                callback = ($container.data('resizeinitcb'))
+                    ? $container.data('resizeinitcb')
+                    : null;
             }
 
             if ('number' === $.type(opt.resizegap)) {
                 gap = opt.resizegap;
             } else {
-                gap = (false === isNaN($container.data('resizegap'))) ? $container
-                        .data('resizegap')
-                        : 0;
+                gap = (false === isNaN($container.data('resizegap')))
+                    ? $container.data('resizegap')
+                    : 0;
             }
 
             if (callback && 'function' === $.type(scope[callback])) {
                 scope[callback]();
             } else {
-                Con.getFrame('content').frameResize
-                        .resizeTopLeftFrame($container.height() + gap);
+                Con.getFrame('content')
+                    .frameResize
+                    .resizeTopLeftFrame($container.height() + gap);
             }
         },
 
@@ -686,8 +688,7 @@
          */
         _getContainer: function() {
             if (null === $_container) {
-                $_container = $('#top_left_container',
-                        Con.getFrame('left_top').document);
+                $_container = $('#top_left_container', Con.getFrame('left_top').document);
             }
             return $_container;
         }
@@ -762,8 +763,7 @@
          */
         getUrlWithPath: function(url) {
             url = url || scope.location.href;
-            return decodeURI(url.substring(0, (url.lastIndexOf('/', url
-                    .indexOf('?')) + 1)));
+            return decodeURI(url.substring(0, (url.lastIndexOf('/', url.indexOf('?')) + 1)));
         },
 
         /**
@@ -1017,8 +1017,7 @@
      * @param {Object} [context]
      */
     Con.getTranslations = function(callback, context) {
-        callback = callback || function() {
-        };
+        callback = callback || function() {};
         context = context || this;
 
         var registry = Con.getRegistry();
@@ -1048,7 +1047,7 @@
                         registry.set('translations', data);
                         callback.call(context, data);
                     },
-                    error: function(data) {
+                    error: function() {
                         callback.call(context, null);
                         Con.log('getTranslations: Could not get translations',
                                 'general.js', 'error');
@@ -1115,8 +1114,9 @@
                 contentWindow.$('html').find('div.ui-widget-overlay').remove();
                 contentWindow.$('html').find('#single_dialog').remove();
 
-                contentWindow.$('<div id="single_dialog">' + description + '</div>')
-                        .dialog(options);
+                contentWindow
+                    .$('<div id="single_dialog">' + description + '</div>')
+                    .dialog(options);
             }
 
         }, this);
@@ -1151,8 +1151,7 @@
             if (!hideButtons) {
                 buttons[translations.OK] = function() {
                     // unfortunately, the following line does not work if the
-                    // dialog is
-                    // opened from another frame
+                    // dialog is opened from another frame
                     // $(this).dialog('close');
                     // so use this ugly workaround
                     $(this).parent().remove();

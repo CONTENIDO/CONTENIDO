@@ -47,7 +47,9 @@
     // NOTE: This is used to disable background image caching in IE 6
     try {
         document.execCommand('BackgroundImageCache', false, true);
-    } catch (err) {}
+    } catch (err) {
+
+    }
 
 
     // ########################################################################
@@ -58,12 +60,10 @@
         $(function() {
             Con.FrameLeftTop.resize({initial: true});
         });
-/*
-        $(top.window).on('resize', function() {
-            console.log('resize');
-            Con.FrameLeftTop.resize();
-        });
-*/
+        //$(top.window).on('resize', function() {
+        //    console.log('resize');
+        //    Con.FrameLeftTop.resize();
+        //});
     }
 
 })(Con, Con.$, window);

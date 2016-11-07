@@ -21,7 +21,8 @@
  * @returns {undefined}
  */
 (function(jQuery, scope) {
-//    'use strict';
+
+    // 'use strict';
 
     var NAME = 'contenido';
 
@@ -31,10 +32,13 @@
      * @static
      */
     var Con;
-//    var $ = jQuery.noConflict();
+
+    // var $ = jQuery.noConflict();
+
     var $ = jQuery;
 
     // Create Con namespace in scope (window)
+
     /**
      * Common configurations
      * @property  cfg
@@ -48,12 +52,16 @@
      * @type {Object}
      * @static
      */
-    scope.Con = scope.Con || {Plugin: {}, cfg: {}, sid: 0};
+    scope.Con = scope.Con || {
+        Plugin: {},
+        cfg: {},
+        sid: 0
+    };
 
     Con = scope.Con;
 
-    // Assign jQuery instance
     /**
+     * Assign jQuery instance
      * Reference to backend jQuery instance
      * @property  $
      * @type {jQuery}

@@ -7,17 +7,16 @@
  * @copyright four for business AG <www.4fb.de>
  */
 function HTMLObj(objId) {
-
     this.objId = objId;
     this.obj = document.getElementById(this.objId);
     this.type = this.getElementType();
     this.id = null;
-    this.status = 0; /* status for images / other elements..
-                        0 - normal
-                        1 - out
-                        2 - locked */
-
-} // end function
+    // status for images / other elements..
+    //    0 - normal
+    //    1 - out
+    //    2 - locked
+    this.status = 0;
+}
 
 /**
  * Defines the HTML Element Type
@@ -29,20 +28,17 @@ function HTMLObj(objId) {
  */
 HTMLObj.prototype.getElementType = function() {
     var type = 'undefined';
-
     switch (this.obj.tagName) {
         case 'IMG':
-                type = 'image';
+            type = 'image';
             break;
         case 'SELECT':
-                type = 'select';
+            type = 'select';
             break;
     }
-
     if ('undefined' != type) {
         this.setMethods(type);
     }
-
     return type;
 }
 
@@ -55,19 +51,19 @@ HTMLObj.prototype.setMethods = function(type) {
 
         case 'image':
 
-            /* .over() method */
+            // .over() method
             this.over = function() {
                 if ('' != this.oImgSrc) {
                     this.obj.src = this.oImgSrc;
                     this.status = "over";
-                    /* If there is a corresponding label, show it */
+                    // If there is a corresponding label, show it
                     if (document.getElementById(this.objId+'_label')) {
                          document.getElementById(this.objId+'_label').style.display = 'block';
                     }
                 }
             }
 
-            /* .out() method */
+            // .out() method
             this.out = function() {
                 if ('' != this.nImgSrc) {
                     this.obj.src = this.nImgSrc
@@ -79,24 +75,24 @@ HTMLObj.prototype.setMethods = function(type) {
                 }
             }
 
-            /* Set image sources */
+            // Set image sources
             this.setImgSrc = function(nImgSrc, oImgSrc) {
                 this.nImgSrc = nImgSrc;
                 this.oImgSrc = oImgSrc;
             }
 
-            /* Set the intance id */
+            // Set the intance id
             this.setId = function(id) {
-                /* JS Object */
+                // JS Object
                 this.id = id;
-                /* HTML Object */
+                // HTML Object
                 this.obj.id = id;
             }
 
-            /* Lock the image */
+            // Lock the image
             this.lock = function() {
                 this.obj.src = "images/spacer.gif";
-                /* If there is a corresponding label, hide it */
+                // If there is a corresponding label, hide it
                 if (document.getElementById(this.objId+'_label')) {
                     document.getElementById(this.objId+'_label').style.display = 'none';
                 }
@@ -133,8 +129,7 @@ HTMLObj.prototype.setMethods = function(type) {
             }
 
             /**
-             * Return value of the
-             * select
+             * Return value of the select
              */
             this.getValue = function() {
                 return this.obj.value;
@@ -224,7 +219,7 @@ function doAction() {
         if (cfg.catId != 0 && cfg.hasRight['public']) {
             cfg.setAction(str);
 
-            /* change image source */
+            // change image source
             if (this.status == "out") {
                 cfg.objRef[2].over()
                 cfg.isPublic = (cfg.isPublic == 0) ? 1 : 0;
@@ -247,7 +242,7 @@ function doAction() {
 
             cfg.setAction(str);
 
-            /* change image source */
+            // change image source
             if (this.status == "out") {
                 cfg.objRef[2].over();
                 cfg.isPublic = (cfg.isPublic == 0) ? 1 : 0;

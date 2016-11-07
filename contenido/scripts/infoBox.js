@@ -1,8 +1,6 @@
 /**
  * infoBox Class
- *
  * Displays some text somewhere =/
- *
  * @deprecated [2015-05-21] This file is no longer supported
  */
 function infoBox(objId) {

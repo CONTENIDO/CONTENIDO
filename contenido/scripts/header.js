@@ -17,14 +17,14 @@
  */
 
 (function(Con, $) {
-//    'use strict';
+
+    // 'use strict';
 
     var NAME = 'header';
 
     var MENU_ID = 'main_0',
         SUBMENU_ID = 'sub_0',
         SELECTOR_MENUES = '#head_nav1 span a';
-
 
     /**
      * Header class
@@ -121,14 +121,16 @@
 
             frame = Con.getFrame('right_top');
             if (frame) {
-                // remove the action parameter, so that actions are not executed in the other language
+                // remove the action parameter, so that actions are not executed
+                // in the other language
                 var href = Con.UtilUrl.replaceParams(frame.location.href, {action: null, changelang: idlang});
                 frame.location.href = href;
             }
 
             frame = Con.getFrame('right_bottom');
             if (frame) {
-                // remove the action parameter, so that actions are not executed in the other language
+                // remove the action parameter, so that actions are not executed
+                // in the other language
                 var href = Con.UtilUrl.replaceParams(frame.location.href, {action: null, changelang: idlang, frame: 4});
                 frame.location.href = href;
             }
@@ -155,7 +157,9 @@
 
             var frame;
 
-            // TODO when the startup process has been reworked, it should be possible to reload the frames individually, so that the current page stays the same
+            // TODO when the startup process has been reworked, it should be
+            // possible to reload the frames individually, so that the current
+            // page stays the same
             frame = Con.getFrame('left_top');
             if (frame) {
                 frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {changeclient: idclient});
@@ -168,14 +172,16 @@
 
             frame = Con.getFrame('right_top');
             if (frame) {
-                // remove the action parameter, so that actions are not executed in the other language
+                // remove the action parameter, so that actions are not executed
+                // in the other language
                 var href = Con.UtilUrl.replaceParams(frame.location.href, {action: null, changeclient: idclient});
                 frame.location.href = href;
             }
 
             frame = Con.getFrame('right_bottom');
             if (frame) {
-                // remove the action parameter, so that actions are not executed in the other language
+                // remove the action parameter, so that actions are not executed
+                // in the other language
                 var href = Con.UtilUrl.replaceParams(frame.location.href, {action: null, changeclient: idclient});
                 frame.location.href = href;
             }
@@ -202,9 +208,6 @@
     };
 
     Con.Header = Header;
-
-
-    // ########################################################################
 
     /**
      * Header timer class to control the mouseout mouseover delay
@@ -246,10 +249,6 @@
     };
 
     Con.HeaderTimer = HeaderTimer;
-
-
-    // ########################################################################
-
 
     /**
      * Base header menu class. Clickmenu or Delaymenu should extend this (se below)!
@@ -375,7 +374,8 @@
 
             // If we are here this means a submenu item was clicked
             // Now find out the related menu item on level 1 and store it
-            // We need to do this for restoring highlighting of the current active menu on mouseout of hover menu
+            // We need to do this for restoring highlighting of the current
+            // active menu on mouseout of hover menu
             this.setActiveMenu(this.getMenuIdBySubMenuId(curElement));
             this.setActiveSubMenu(curElement);
         }
@@ -383,10 +383,6 @@
 
 
     Con.HeaderMenu = HeaderMenu;
-
-
-    // ########################################################################
-
 
     /**
      * Header click menu class. Switches the menu by click.
@@ -440,17 +436,12 @@
          * @param  {Object}  obj  Main menu item object
          */
         deactivate: function(obj) {
-            // donut
+            // noop
         }
 
     });
 
-
     Con.HeaderClickMenu = HeaderClickMenu;
-
-
-    // ########################################################################
-
 
     /**
      * Header delay menu class. Switches the menu by mouseover/-out.
@@ -538,12 +529,7 @@
         }
     });
 
-
     Con.HeaderDelayMenu = HeaderDelayMenu;
-
-
-    // ########################################################################
-
 
     // Bootstrap header on document load
     // @TODO  Move this to a separate file...
@@ -556,11 +542,7 @@
     });
 
 
-    // ########################################################################
-
 })(Con, Con.$);
-
-
 
 /**
  * @deprecated [2013-10-17] Use Con.UtilUrl.replaceParams instead
