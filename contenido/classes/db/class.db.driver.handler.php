@@ -795,7 +795,7 @@ abstract class cDbDriverHandler {
     /**
      * Moves the cursor (position inside current result sets).
      *
-     * @param int $iPos
+     * @param int $pos
      *         The positon to move to inside the current result set
      * @return int
      */
