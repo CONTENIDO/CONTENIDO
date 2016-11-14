@@ -278,6 +278,7 @@ REPLACE INTO `!PREFIX!_iso_3166` (`iso`, `en`) VALUES('fm', 'Micronesia, Federat
 REPLACE INTO `!PREFIX!_iso_3166` (`iso`, `en`) VALUES('md', 'Moldova, Republic Of');
 REPLACE INTO `!PREFIX!_iso_3166` (`iso`, `en`) VALUES('mc', 'Monaco');
 REPLACE INTO `!PREFIX!_iso_3166` (`iso`, `en`) VALUES('mn', 'Mongolita');
+REPLACE INTO `!PREFIX!_iso_3166` (`iso`, `en`) VALUES('me', 'Montenegro');
 REPLACE INTO `!PREFIX!_iso_3166` (`iso`, `en`) VALUES('ms', 'Montserrat');
 REPLACE INTO `!PREFIX!_iso_3166` (`iso`, `en`) VALUES('ma', 'Morocco');
 REPLACE INTO `!PREFIX!_iso_3166` (`iso`, `en`) VALUES('mz', 'Mozambique');
@@ -335,6 +336,7 @@ REPLACE INTO `!PREFIX!_iso_3166` (`iso`, `en`) VALUES('es', 'Spain');
 REPLACE INTO `!PREFIX!_iso_3166` (`iso`, `en`) VALUES('lk', 'Sri Lanka');
 REPLACE INTO `!PREFIX!_iso_3166` (`iso`, `en`) VALUES('sh', 'Santa Helena');
 REPLACE INTO `!PREFIX!_iso_3166` (`iso`, `en`) VALUES('pm', 'Santa Pierre/Miquelon');
+REPLACE INTO `!PREFIX!_iso_3166` (`iso`, `en`) VALUES('rs', 'Serbia');
 REPLACE INTO `!PREFIX!_iso_3166` (`iso`, `en`) VALUES('sd', 'Sudan');
 REPLACE INTO `!PREFIX!_iso_3166` (`iso`, `en`) VALUES('sr', 'Suriname');
 REPLACE INTO `!PREFIX!_iso_3166` (`iso`, `en`) VALUES('sj', 'Svalbard/Jan Mayen Islands');
@@ -372,6 +374,5 @@ REPLACE INTO `!PREFIX!_iso_3166` (`iso`, `en`) VALUES('vi', 'Virgin Islands, U.S
 REPLACE INTO `!PREFIX!_iso_3166` (`iso`, `en`) VALUES('wf', 'Wallis/Futuna Islands');
 REPLACE INTO `!PREFIX!_iso_3166` (`iso`, `en`) VALUES('eh', 'Western Sahara');
 REPLACE INTO `!PREFIX!_iso_3166` (`iso`, `en`) VALUES('ye', 'Yemen');
-REPLACE INTO `!PREFIX!_iso_3166` (`iso`, `en`) VALUES('yu', 'Yougoslavia');
 REPLACE INTO `!PREFIX!_iso_3166` (`iso`, `en`) VALUES('zm', 'Zambia');
 REPLACE INTO `!PREFIX!_iso_3166` (`iso`, `en`) VALUES('zw', 'Zimbabwe');
