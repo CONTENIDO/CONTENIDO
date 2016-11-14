@@ -182,7 +182,7 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
                     }
                 }
                 if ($bStop) {
-                    exit();
+                    break;
                 } else {
                     $_REQUEST["txtData"] = "";
                 }
