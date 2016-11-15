@@ -25,7 +25,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cContentVersioning {
 
     /**
-     * db instance
+     * CONTENIDO database object
      *
      * @var cDb
      */

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the layout synchronizer class.
  *
@@ -121,6 +122,7 @@ class cLayoutSynchronizer {
      * @param string $dirNameOld
      * @param string $dirNameNew
      * @param int $client
+     *         unused
      * @return bool
      */
     private function _renameFileAndDir($dir, $dirNameOld, $dirNameNew, $client) {
@@ -278,7 +280,7 @@ class cLayoutSynchronizer {
                 }
 
                 // skip entries that are no directories
-                if (false === is_dir($dir . $file . "/")) {
+                if (false === is_dir($dir . $file . '/')) {
                     continue;
                 }
 

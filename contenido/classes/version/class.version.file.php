@@ -66,7 +66,8 @@ class cVersionFile extends cVersion {
      * @param string $sTypeContent
      * @param array $aCfg
      * @param array $aCfgClient
-     * @param object $oDB
+     * @param cDb $oDB
+     *         CONTENIDO database object
      * @param int $iClient
      * @param string $sArea
      * @param int $iFrame

@@ -116,7 +116,7 @@ class NoteView extends cHTMLIFrame {
      * @param string $sItemId
      */
     public function NoteView($sItemType, $sItemId) {
-        global $sess, $cfg;
+        global $sess;
         cHTMLIFrame::cHTMLIFrame();
         $this->setSrc($sess->url("main.php?itemtype=$sItemType&itemid=$sItemId&area=note&frame=2"));
         $this->setBorder(0);
@@ -176,7 +176,7 @@ class NoteList extends cHTMLDiv {
      *     generated markup
      */
     public function toHtml() {
-        global $cfg, $lang;
+        global $lang;
 
         $sItemType = $this->_sItemType;
         $sItemId = $this->_sItemId;
@@ -439,7 +439,9 @@ class NoteLink extends cHTMLLink {
         $itemtype = $this->_sItemType;
         $itemid = $this->_sItemID;
 
-        $this->setEvent('click', 'javascript:window.open(' . "'" . $sess->url("main.php?area=note&frame=1&itemtype=$itemtype&itemid=$itemid") . "', 'todo', 'resizable=yes,scrollbars=yes,height=360,width=550');");
+        $url = $sess->url("main.php?area=note&frame=1&itemtype=$itemtype&itemid=$itemid");
+        $this->setEvent('click', "javascript:window.open('$url', 'todo', 'resizable=yes,scrollbars=yes,height=360,width=550');");
+
         return parent::render();
     }
 }

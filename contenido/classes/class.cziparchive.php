@@ -22,8 +22,7 @@ class cZipArchive {
 
     /**
      * Read all files from given path excluding files which names start with a
-     * dot or are not valid according to CONTENIDO standards
-     * (validateFilename()).
+     * dot or are not valid according to CONTENIDO standards (validateFilename()).
      *
      * @see cFileHandler::validateFilename()
      * @param string $dirPath
@@ -133,9 +132,10 @@ class cZipArchive {
             $extractPath .= uplCreateFriendlyName($extractPathUserInput);
         }
 
-        if (file_exists($extractPath) and is_dir($extractPath)) {
+        if (file_exists($extractPath) && is_dir($extractPath)) {
             $ar = cZipArchive::readExistingFiles($extractPath);
         }
+
         $zip = new ZipArchive();
 
         // try to open archive
@@ -165,6 +165,7 @@ class cZipArchive {
                 }
             }
         }
+
         $zip->close();
     }
 

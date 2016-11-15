@@ -246,9 +246,7 @@ class cApiCecHook {
                 // process return value
                 if (isset($return) && $return === $breakCondition) {
                     self::_reset();
-
                     return $return;
-                    break;
                 }
             }
         }

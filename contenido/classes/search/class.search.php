@@ -298,7 +298,7 @@ class cSearch extends cSearchBaseAbstract {
      *         $options['searchable_articles']
      *             array of article ID's which should be searchable
      * @param cDb $db [optional]
-     *         database instance
+     *         CONTENIDO database object
      */
     public function __construct($options, $db = NULL) {
         parent::__construct($db);

@@ -118,12 +118,12 @@ class cApiContentVersion extends Item {
 
     /**
      * Userdefined setter for item fields.
-     * 
+     *
      * @param string $name
      * @param mixed $value
      * @param bool $safe
      *         Flag to run defined inFilter on passed value
-     * 
+     *
      * @return bool
      */
     public function setField($name, $value, $safe = true) {
@@ -199,7 +199,6 @@ class cApiContentVersion extends Item {
      * @return bool
      */
     public function loadByArticleLanguageIdTypeTypeIdAndVersion(array $contentParameters) {
-        //$db = cRegistry::getDb();
         $props = array(
             'idartlang' => $contentParameters['idartlang'],
             'idtype' => $contentParameters['idtype'],

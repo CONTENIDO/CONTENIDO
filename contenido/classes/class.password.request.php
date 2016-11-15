@@ -104,7 +104,7 @@ class cPasswordRequest {
      * Initializes class variables.
      *
      * @param cDb $db
-     *         The CONTENIDO database object
+     *         CONTENIDO database object
      * @param array $cfg
      *         The CONTENIDO configuration array
      */

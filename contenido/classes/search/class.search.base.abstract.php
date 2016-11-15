@@ -61,7 +61,7 @@ abstract class cSearchBaseAbstract {
      * Initialises some properties.
      *
      * @param cDb $oDB [optional]
-     *         Optional database instance
+     *         CONTENIDO database object
      * @param bool $bDebug [optional]
      *         Optional, flag to enable debugging (no longer needed)
      */

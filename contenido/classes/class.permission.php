@@ -44,7 +44,7 @@ class cPermission {
     public $actioncache = array();
 
     /**
-     * Database instance
+     * CONTENIDO database object
      *
      * @var cDb
      */

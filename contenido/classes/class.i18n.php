@@ -283,10 +283,10 @@ class cI18n {
     /**
      * Registers a new i18n domain.
      *
-     * @param string $localePath
-     *         Path to the locales
      * @param string $domain
      *         Domain to bind to
+     * @param string $localePath
+     *         Path to the locales
      */
     public static function registerDomain($domain, $localePath) {
         if (function_exists('bindtextdomain')) {

@@ -111,10 +111,7 @@ class cAutoload {
         self::$_initialized = true;
         self::$_conRootPath = str_replace('\\', '/', realpath($cfg['path']['contenido'] . '/../')) . '/';
 
-        spl_autoload_register(array(
-            __CLASS__,
-            'autoload'
-        ));
+        spl_autoload_register(array(__CLASS__, 'autoload'));
 
         // load n' store autoloader class map file
         $file = $cfg['path']['contenido_config'] . 'config.autoloader.php';
@@ -201,7 +198,7 @@ class cAutoload {
      */
     public static function autoload($className) {
         if (self::$_initialized !== true) {
-            throw new cBadMethodCallException("Autoloader has to be initialized by calling method initialize()");
+            throw new cBadMethodCallException('Autoloader has to be initialized by calling method initialize()');
         }
 
         if (isset(self::$_loadedClasses[$className])) {
@@ -272,31 +269,31 @@ class cAutoload {
     }
 
     /**
-     * Validates the given class and the file
+     * Validates the given classname and filename.
      *
-     * @param string $className
-     * @param string $filePathName
+     * @param string $classname
+     * @param string $filename
      * @return string|null
      *         string if validation was successfull, otherwise NULL
      */
-    private static function _validateClassAndFile($className, $filePathName) {
-        if (class_exists($className)) {
+    private static function _validateClassAndFile($classname, $filename) {
+        if (class_exists($classname)) {
             self::$_errors[] = array(
-                'class' => $className,
-                'file' => str_replace(self::$_conRootPath, '', $filePathName),
+                'class' => $classname,
+                'file' => str_replace(self::$_conRootPath, '', $filename),
                 'error' => self::ERROR_CLASS_EXISTS
             );
             return NULL;
-        } elseif (!is_file($filePathName)) {
+        } elseif (!is_file($filename)) {
             self::$_errors[] = array(
-                'class' => $className,
-                'file' => str_replace(self::$_conRootPath, '', $filePathName),
+                'class' => $classname,
+                'file' => str_replace(self::$_conRootPath, '', $filename),
                 'error' => self::ERROR_FILE_NOT_FOUND
             );
             return NULL;
+        } else {
+            return $filename;
         }
-
-        return $filePathName;
     }
 
     /**

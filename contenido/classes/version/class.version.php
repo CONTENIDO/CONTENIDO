@@ -72,7 +72,7 @@ class cVersion {
     protected $aCfgClient;
 
     /**
-     * Database object
+     * CONTENIDO database object
      *
      * @var cDb
      */
@@ -179,7 +179,8 @@ class cVersion {
      *
      * @param array $aCfg
      * @param array $aCfgClient
-     * @param object $oDB
+     * @param cDb $oDB
+     *         CONTENIDO database object
      * @param int $iClient
      * @param string $sArea
      * @param int $iFrame

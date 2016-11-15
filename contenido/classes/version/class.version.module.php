@@ -38,7 +38,8 @@ class cVersionModule extends cVersion {
      *         The name of style file
      * @param array $aCfg
      * @param array $aCfgClient
-     * @param cDB $oDB
+     * @param cDb $oDB
+     *         CONTENIDO database object
      * @param int $iClient
      * @param object $sArea
      * @param object $iFrame

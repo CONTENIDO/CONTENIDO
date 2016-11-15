@@ -134,13 +134,13 @@ class cSearchResult extends cSearchBaseAbstract {
      * more than a matching word in the text (CMS_HTML[1]).
      *
      * @param array $search_result
-     *         List of article ids
+     *         list of article ids
      * @param int $result_per_page
-     *         Number of items per page
+     *         number of items per page
      * @param cDb $oDB [optional]
-     *         db instance
+     *         CONTENIDO database object
      * @param bool $bDebug [optional]
-     *         Optional flag to enable debugging
+     *         flag to enable debugging
      */
     public function __construct($search_result, $result_per_page, $oDB = NULL, $bDebug = false) {
         parent::__construct($oDB, $bDebug);

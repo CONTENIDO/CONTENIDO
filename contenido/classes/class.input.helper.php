@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the the input helper classes.
  * Various derived HTML class elements especially useful
@@ -19,7 +20,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Select box with additional functions for category and article selection
+ * Select box with additional functionality for category and article selection
  *
  * @package Core
  * @subpackage Util
@@ -32,11 +33,11 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      * Creates an HTML select field (aka 'DropDown').
      *
      * @param string $sName
-     *         Name of the element
+     *         Name of the select element
      * @param int $iWidth [optional]
      *         Width of the select element
      * @param string $sID [optional]
-     *         ID of the element
+     *         ID of the select element
      * @param string $bDisabled [optional]
      *         Item disabled flag (non-empty to set disabled)
      * @param int $iTabIndex [optional]
@@ -49,8 +50,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
     }
 
     /**
-     * Function addArticles.
-     * Adds articles to select box values.
+     * Adds articles to select options.
      *
      * @param int $iIDCat
      *         idcat of the category to be listed
@@ -67,23 +67,32 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
     public function addArticles($iIDCat, $bColored = false, $bArtOnline = true, $sSpaces = '') {
         global $cfg, $lang;
 
-        $oDB = cRegistry::getDb();
-
         if (is_numeric($iIDCat) && $iIDCat > 0) {
-            $sql = "SELECT al.title AS title, al.idartlang AS idartlang, ca.idcat AS idcat,
-                        ca.idcatart AS idcatart, ca.is_start AS isstart, al.online AS online,
-                        cl.startidartlang AS idstartartlang
-                    FROM " . $cfg["tab"]["art_lang"] . " AS al, " . $cfg["tab"]["cat_art"] . " AS ca,
-                        " . $cfg["tab"]["cat_lang"] . " AS cl
-                    WHERE ca.idcat = '" . cSecurity::toInteger($iIDCat) . "' AND cl.idcat = ca.idcat
-                        AND cl.idlang = al.idlang AND ";
+
+            $sql = "SELECT al.title AS title
+                        , al.idartlang AS idartlang
+                        , ca.idcat AS idcat
+                        , ca.idcatart AS idcatart
+                        , ca.is_start AS isstart
+                        , al.online AS online
+                        , cl.startidartlang AS idstartartlang
+                    FROM " . $cfg["tab"]["art_lang"] . " AS al
+                        , " . $cfg["tab"]["cat_art"] . " AS ca
+                        , " . $cfg["tab"]["cat_lang"] . " AS cl
+                    WHERE ca.idcat = '" . cSecurity::toInteger($iIDCat) . "'
+                        AND cl.idcat = ca.idcat
+                        AND cl.idlang = al.idlang
+                        ";
 
             if ($bArtOnline) {
-                $sql .= "al.online = 1 AND ";
+                $sql .= " AND al.online = 1";
             }
 
-            $sql .= "al.idart = ca.idart AND al.idlang = " . (int) $lang . " ORDER BY al.title";
+            $sql .= " AND al.idart = ca.idart
+                AND al.idlang = " . (int) $lang . "
+                ORDER BY al.title";
 
+            $oDB = cRegistry::getDb();
             $oDB->query($sql);
 
             $iCount = $oDB->numRows();
@@ -122,12 +131,11 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
     }
 
     /**
-     * Function addCategories.
-     * Adds category elements (optionally including articles) to select box
-     * values.
-     * Note: Using 'with articles' adds the articles also - but the categories
-     * will get a negative value!
-     * There is no way to distinguish between a category id and an article id...
+     * Adds categories (optionally including articles) as options to select box.
+     *
+     * Note: Using 'with articles' also adds articles - but the categories
+     * will get negative values cause otherwise there is no way to distinguish
+     * between a category id and an article id.
      *
      * @param int $iMaxLevel
      *         Max. level shown (to be exact: except this level)
@@ -147,16 +155,27 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
     public function addCategories($iMaxLevel = 0, $bColored = false, $bCatVisible = true, $bCatPublic = true, $bWithArt = false, $bArtOnline = true) {
         global $cfg, $client, $lang;
 
-        $oDB = cRegistry::getDb();
-
-        $sql = "SELECT c.idcat AS idcat, cl.name AS name, cl.visible AS visible, cl.public AS public, ct.level AS level
-                FROM " . $cfg["tab"]["cat"] . " AS c, " . $cfg["tab"]["cat_lang"] . " AS cl, " . $cfg["tab"]["cat_tree"] . " AS ct
-                WHERE c.idclient = " . (int) $client . " AND cl.idlang = " . (int) $lang . " AND cl.idcat = c.idcat AND ct.idcat = c.idcat ";
+        $sql = "SELECT
+                    c.idcat
+                    , cl.name
+                    , cl.visible
+                    , cl.public
+                    , ct.level
+                FROM
+                    " . $cfg["tab"]["cat"] . " AS c
+                    , " . $cfg["tab"]["cat_lang"] . " AS cl
+                    , " . $cfg["tab"]["cat_tree"] . " AS ct
+                WHERE
+                    c.idclient = " . (int) $client . "
+                    AND cl.idlang = " . (int) $lang . "
+                    AND cl.idcat = c.idcat
+                    AND ct.idcat = c.idcat";
         if ($iMaxLevel > 0) {
-            $sql .= "AND ct.level < " . (int) $iMaxLevel . " ";
+            $sql .= " AND ct.level < " . (int) $iMaxLevel;
         }
-        $sql .= "ORDER BY ct.idtree";
+        $sql .= " ORDER BY ct.idtree";
 
+        $oDB = cRegistry::getDb();
         $oDB->query($sql);
 
         $iCount = $oDB->numRows();
@@ -166,7 +185,6 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
             $iCounter = count($this->_options);
             while ($oDB->nextRecord()) {
                 $sSpaces = '';
-                $sStyle = '';
                 $iID = $oDB->f('idcat');
 
                 for ($i = 0; $i < $oDB->f('level'); $i++) {
@@ -203,6 +221,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
                 $iCounter = count($this->_options);
             }
         }
+
         return $iCount;
     }
 
@@ -221,21 +240,30 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
     public function addTypesFromArt($iIDCatArt, $sTypeRange = '') {
         global $cfg, $lang;
 
-        $oDB = cRegistry::getDb();
-
         if (is_numeric($iIDCatArt) && $iIDCatArt > 0) {
-            $sql = "SELECT t.typeid AS typeid, t.idtype AS idtype, t.type AS type, t.description AS description, t.value AS value
-                    FROM " . $cfg["tab"]["content"] . " AS t, " . $cfg["tab"]["art_lang"] . " AS al,
-                         " . $cfg["tab"]["cat_art"] . " AS ca, " . $cfg["tab"]["type"] . " AS t
-                    WHERE t.idtype = t.idtype AND t.idartlang = al.idartlang AND al.idart = ca.idart
-                        AND al.idlang = " . (int) $lang . " AND ca.idcatart = " . (int) $iIDCatArt . " ";
 
+            $sql = "SELECT
+                        t.typeid AS typeid
+                        , t.idtype AS idtype
+                        , t.type AS type
+                        , t.description AS description
+                        , t.value AS value
+                    FROM " . $cfg["tab"]["content"] . " AS t
+                        , " . $cfg["tab"]["art_lang"] . " AS al
+                        , " . $cfg["tab"]["cat_art"] . " AS ca
+                        , " . $cfg["tab"]["type"] . " AS t
+                    WHERE
+                        t.idtype = t.idtype
+                        AND t.idartlang = al.idartlang
+                        AND al.idart = ca.idart
+                        AND al.idlang = " . (int) $lang . "
+                        AND ca.idcatart = " . (int) $iIDCatArt;
             if ($sTypeRange != "") {
-                $sql .= "AND t.idtype IN (" . $oDB->escape($sTypeRange) . ") ";
+                $sql .= " AND t.idtype IN (" . $oDB->escape($sTypeRange) . ")";
             }
+            $sql .= " ORDER BY t.idtype, t.typeid";
 
-            $sql .= "ORDER BY t.idtype, t.typeid";
-
+            $oDB = cRegistry::getDb();
             $oDB->query($sql);
 
             $iCount = $oDB->numRows();
@@ -530,9 +558,6 @@ try {
         $table->reset();
 
         $ColCount = 0;
-        $dark = false;
-        $BgColor = "";
-        $MultiSelJSAdded = false;
         if (is_array($this->_Cells)) {
             foreach ($this->_Cells as $row => $cells) {
                 $ColCount++;

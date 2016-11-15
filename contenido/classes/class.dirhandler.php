@@ -258,7 +258,7 @@ class cDirHandler {
      * Optionally options are to read the directory recursive or to list only
      * directories.
      *
-     * @param string $dirName
+     * @param string $dirname
      *         directory
      * @param bool $recursive [optional]
      *         flag to read recursive

@@ -15,8 +15,8 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-// since CONTENIDO has it's own autoloader, swift_init.php is enough
-// we do not need and should not use swift_required.php!
+// Since CONTENIDO has it's own autoloader, swift_init.php is enough.
+// We do not need and should not use swift_required.php!
 require_once 'swiftmailer/lib/swift_init.php';
 
 /**
@@ -210,9 +210,11 @@ class cMailer extends Swift_Mailer {
 
         // build transport
         $transport = self::constructTransport($this->_mailHost, $this->_mailPort, $this->_mailEncryption, $this->_mailUser, $this->_mailPass);
-        if($transport == false) {
+        // CON-2540 TODO constructors should not return a value
+        if ($transport == false) {
             return false;
         }
+
         parent::__construct($transport);
     }
 
@@ -434,8 +436,9 @@ class cMailer extends Swift_Mailer {
             return $value;
         } else if (is_string($value)) {
             return conHtmlentities($value, ENT_COMPAT, $charset, false);
+        } else {
+            return $value;
         }
-        return $value;
     }
 
     /**
@@ -456,10 +459,12 @@ class cMailer extends Swift_Mailer {
                     $value[$i] = conHtmlEntityDecode($value[$i], ENT_COMPAT | ENT_HTML401, $charset, false);
                 }
             }
+            return $value;
         } else if (is_string($value)) {
             return conHtmlEntityDecode($value, ENT_COMPAT | ENT_HTML401, $charset);
+        } else {
+            return $value;
         }
-        return $value;
     }
 
     /**

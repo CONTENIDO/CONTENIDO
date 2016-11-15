@@ -202,7 +202,6 @@ class cCategoryHelper {
      *         Array with cApiCategoryLanguage objects
      */
     public function getCategoryPath($categoryId, $startingLevel = 1, $maxDepth = 20) {
-        $clientId = $this->getClientId();
         $languageId = $this->getLanguageId();
 
         $categories = array();

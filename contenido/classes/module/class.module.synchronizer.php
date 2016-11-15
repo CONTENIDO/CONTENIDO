@@ -206,6 +206,7 @@ class cModuleSynchronizer extends cModuleHandler {
      * clear it from filesystem.
      *
      * @param cDb $db
+     *         CONTENIDO database object
      * @return int
      *         id of last update module
      */

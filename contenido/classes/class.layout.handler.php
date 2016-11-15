@@ -33,7 +33,7 @@ class cLayoutHandler {
      *
      * @var string
      */
-    protected $_layoutCode = "";
+    protected $_layoutCode = '';
 
     /**
      *
@@ -46,7 +46,7 @@ class cLayoutHandler {
      *
      * @var string
      */
-    protected $_layoutName = "";
+    protected $_layoutName = '';
 
     /**
      * The contenido cfg
@@ -68,7 +68,7 @@ class cLayoutHandler {
      *
      * @var string
      */
-    protected $_layoutPath = "";
+    protected $_layoutPath = '';
 
     /**
      * Main path of layouts.
@@ -76,14 +76,14 @@ class cLayoutHandler {
      *
      * @var string
      */
-    protected $_layoutMainPath = "";
+    protected $_layoutMainPath = '';
 
     /**
      * File name of the layout ([layoutname].html
      *
      * @var string
      */
-    protected $_fileName = "";
+    protected $_fileName = '';
 
     /**
      * Constructor to create an instance of this class.
@@ -93,8 +93,9 @@ class cLayoutHandler {
      * @param array $cfg [optional]
      * @param int $lang [optional]
      * @param cDb $db [optional]
+     *         CONTENIDO database object
      */
-    public function __construct($layoutId = 0, $layoutCode = "", array $cfg = array(), $lang = 0, cDb $db = NULL) {
+    public function __construct($layoutId = 0, $layoutCode = '', array $cfg = array(), $lang = 0, cDb $db = NULL) {
         if ($db === NULL) {
             $db = cRegistry::getDb();
         }
@@ -162,8 +163,8 @@ class cLayoutHandler {
         if (true === $cApiLayout->isLoaded() && is_array($cfgClient) && (int) $client > 0) {
             $this->_layoutName = $cApiLayout->get('alias');
             $this->_layoutMainPath = $cfgClient[$client]['layout']['path'];
-            $this->_layoutPath = $this->_layoutMainPath . $this->_layoutName . "/";
-            $this->_fileName = $this->_layoutName . ".html";
+            $this->_layoutPath = $this->_layoutMainPath . $this->_layoutName . '/';
+            $this->_fileName = $this->_layoutName . '.html';
 
             // make directoryies for layout
             $this->_makeDirectories();
@@ -184,15 +185,16 @@ class cLayoutHandler {
      * Init class vars with values, only use for setup or upgrade
      *
      * @param cDb $dbObject
+     *         CONTENIDO database object
      */
     public function initWithDbObject($dbObject) {
-        global $cfgClient, $client;
+        global $cfgClient;
 
-        $this->_layoutCode = $dbObject->f("code");
-        $this->_layoutName = $dbObject->f("alias");
-        $this->_layoutMainPath = $cfgClient[$dbObject->f("idclient")]['layout']['path'];
-        $this->_layoutPath = $this->_layoutMainPath . $this->_layoutName . "/";
-        $this->_fileName = $this->_layoutName . ".html";
+        $this->_layoutCode = $dbObject->f('code');
+        $this->_layoutName = $dbObject->f('alias');
+        $this->_layoutMainPath = $cfgClient[$dbObject->f('idclient')]['layout']['path'];
+        $this->_layoutPath = $this->_layoutMainPath . $this->_layoutName . '/';
+        $this->_fileName = $this->_layoutName . '.html';
 
         // make directories for layout
         $this->_makeDirectories();
@@ -373,9 +375,9 @@ class cLayoutHandler {
      */
     public function rename($old, $new) {
         // try to rename the dir
-        $newPath = $this->_layoutMainPath . $new . "/";
+        $newPath = $this->_layoutMainPath . $new . '/';
 
-        $newFileName = $new . ".html";
+        $newFileName = $new . '.html';
 
         if (rename($this->_layoutPath, $newPath) == FALSE) {
             return false;
@@ -391,8 +393,8 @@ class cLayoutHandler {
         }
 
         $this->_layoutName = $new;
-        $this->_layoutPath = $this->_layoutMainPath . $this->_layoutName . "/";
-        $this->_fileName = $this->_layoutName . ".html";
+        $this->_layoutPath = $this->_layoutMainPath . $this->_layoutName . '/';
+        $this->_fileName = $this->_layoutName . '.html';
 
         return true;
     }
@@ -414,7 +416,7 @@ class cLayoutHandler {
         } else {
             // convert
             $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
-            $content = iconv($fileEncoding, $this->_encoding . "//IGNORE", $content);
+            $content = iconv($fileEncoding, $this->_encoding . '//IGNORE', $content);
             return $content;
         }
     }
@@ -425,7 +427,7 @@ class cLayoutHandler {
      *
      * @throws cException if the layout could not be saved
      * @param cDb $adb
-     *         database object
+     *         CONTENIDO database object
      * @param array $cfg
      *         CONTENIDO config array
      * @param int $clientId

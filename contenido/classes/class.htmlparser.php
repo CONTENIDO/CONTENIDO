@@ -155,18 +155,18 @@ class HtmlParser {
      * @param string $htmlText
      * @return string
      */
-    public function setHtmlText($HtmlText) {
-        return $this->_HtmlText = $HtmlText;
+    public function setHtmlText($htmlText) {
+        return $this->_HtmlText = $htmlText;
     }
 
     /**
      * Set method for HtmlTextLength variable.
      *
-     * @param int $htmlText
+     * @param int $htmlTextLength
      * @return int
      */
-    public function setHtmlTextLength($HtmlTextLength) {
-        return $this->_HtmlTextLength = $HtmlTextLength;
+    public function setHtmlTextLength($htmlTextLength) {
+        return $this->_HtmlTextLength = $htmlTextLength;
     }
 
     /**
