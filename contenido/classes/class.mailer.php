@@ -210,7 +210,7 @@ class cMailer extends Swift_Mailer {
 
         // build transport
         $transport = self::constructTransport($this->_mailHost, $this->_mailPort, $this->_mailEncryption, $this->_mailUser, $this->_mailPass);
-        // CON-2540 TODO constructors should not return a value
+        // CON-2530 TODO constructors should not return a value
         if ($transport == false) {
             return false;
         }
@@ -269,7 +269,7 @@ class cMailer extends Swift_Mailer {
             // if SMTP fails just use PHP's mail() function
             // $transport = Swift_MailTransport::newInstance();
 
-            // CON-2540
+            // CON-2530
             // fallback in constructTransport deleted
             // parent::send() can't handle it, therefore return null before
             return false;
