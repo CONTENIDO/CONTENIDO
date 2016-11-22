@@ -258,6 +258,10 @@ abstract class cContentTypeAbstract {
 
         // store new settings in the database
         conSaveContentEntry($this->_idArtLang, $this->_type, $this->_id, $settingsToStore);
+		
+		$oArtLang = new cApiArticleLanguage($this->_idArtLang);
+		$this->_rawSettings = $oArtLang->getContent($this->_type, $this->_id);
+        $this->_readSettings();
     }
 
     /**

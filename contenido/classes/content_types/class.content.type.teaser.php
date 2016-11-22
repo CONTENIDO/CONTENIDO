@@ -712,7 +712,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         // $wrapperContent[] = new cHTMLParagraph(i18n('General settings'),
         // 'head_sub');
         $wrapperContent[] = new cHTMLLabel(i18n('Teaser title'), 'teaser_title_' . $this->_id);
-        $wrapperContent[] = new cHTMLTextbox('teaser_title_' . $this->_id, $this->_settings['teaser_title'], '', '', 'teaser_title_' . $this->_id);
+        $wrapperContent[] = new cHTMLTextbox('teaser_title_' . $this->_id, conHtmlSpecialChars($this->_settings['teaser_title']), '', '', 'teaser_title_' . $this->_id);
         $wrapperContent[] = new cHTMLLabel(i18n('Source category'), 'teaser_category_' . $this->_id);
         $wrapperContent[] = buildCategorySelect('teaser_category_' . $this->_id, $this->_settings['teaser_category'], 0);
         $wrapperContent[] = new cHTMLLabel(i18n('Number of articles'), 'teaser_count_' . $this->_id);
