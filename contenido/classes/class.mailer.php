@@ -210,9 +210,10 @@ class cMailer extends Swift_Mailer {
 
         // build transport
         $transport = self::constructTransport($this->_mailHost, $this->_mailPort, $this->_mailEncryption, $this->_mailUser, $this->_mailPass);
-        // CON-2530 TODO constructors should not return a value
-        if ($transport == false) {
-            return false;
+
+        // CON-2530
+        if ($transport === false) {
+            throw new cInvalidArgumentException('Can not connect to the mail server. Please check your mail server configuration at CONTENIDO backend.');
         }
 
         parent::__construct($transport);
