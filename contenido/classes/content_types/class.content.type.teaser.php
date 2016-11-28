@@ -414,6 +414,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
                 $cApiUploadMeta->loadByMany(array('idlang' => cRegistry::getLanguageId(), 'idupl' => $imageId));
                 if($cApiUploadMeta->isLoaded()) {
                     $template->set('d', 'IMAGE_MEDIANAME', $cApiUploadMeta->get('medianame'));
+                } else {
+                    $template->set('d', 'IMAGE_MEDIANAME', '');
                 }
             } else if (strip_tags($imageId) != $imageId && strlen($imageId) > 0) {
                 $image = $this->_extractImage($imageId);
@@ -423,6 +425,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
                     $cApiUploadMeta->loadByMany(array('idlang' => cRegistry::getArticleLanguageId(), 'idupl' => $imageId));
                     if($cApiUploadMeta->isLoaded()) {
                         $template->set('d', 'IMAGE_MEDIANAME', $cApiUploadMeta->get('medianame'));
+                    } else {
+                        $template->set('d', 'IMAGE_MEDIANAME', '');
                     }
                 } else {
                     $template->set('d', 'IMAGE', '');
