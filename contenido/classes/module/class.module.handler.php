@@ -803,19 +803,19 @@ class cModuleHandler {
      *         if success else false
      */
     public function saveInfoXML($moduleName = NULL, $description = NULL, $type = NULL, $alias = NULL) {
-        if ($moduleName == NULL) {
+        if ($moduleName === NULL) {
             $moduleName = $this->_moduleName;
         }
 
-        if ($description == NULL) {
+        if ($description === NULL) {
             $description = $this->_description;
         }
 
-        if ($type == NULL) {
+        if ($type === NULL) {
             $type = $this->_type;
         }
 
-        if ($alias == NULL) {
+        if ($alias === NULL) {
             $alias = $this->_moduleAlias;
         }
 
