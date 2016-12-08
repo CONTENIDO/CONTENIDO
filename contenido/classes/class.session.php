@@ -207,7 +207,7 @@ class cSession {
      * @return mixed
      */
     public function selfURL() {
-        return $this->url($_SERVER['PHP_SELF'] . ((isset($_SERVER['QUERY_STRING']) && ('' != $_SERVER['QUERY_STRING'])) ? '?' . $_SERVER['QUERY_STRING'] : ''));
+        return $this->url($_SERVER['REQUEST_URI'] . ((isset($_SERVER['QUERY_STRING']) && ('' != $_SERVER['QUERY_STRING'])) ? '?' . $_SERVER['QUERY_STRING'] : ''));
     }
 
     /**

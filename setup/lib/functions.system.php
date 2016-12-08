@@ -237,7 +237,7 @@ function stripLastSlash($sInput) {
 function getSystemDirectories($bOriginalPath = false) {
     $root_path = stripLastSlash(CON_FRONTEND_PATH);
 
-    $root_http_path = dirname(dirname($_SERVER["PHP_SELF"]));
+    $root_http_path = dirname(dirname($_SERVER["REQUEST_URI"]));
     $root_http_path = str_replace("\\", "/", $root_http_path);
 
     $port = "";

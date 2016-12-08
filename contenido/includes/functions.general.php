@@ -1139,7 +1139,7 @@ function machineReadableSize($sizeString) {
  *         True if the script is running from the web
  */
 function isRunningFromWeb() {
-    if ($_SERVER['PHP_SELF'] == '' || php_sapi_name() == 'cgi' || php_sapi_name() == 'cli') {
+    if ($_SERVER['REQUEST_URI'] == '' || php_sapi_name() == 'cgi' || php_sapi_name() == 'cli') {
         return false;
     }
 
