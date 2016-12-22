@@ -160,6 +160,7 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
             $oldData['is_start'] = $wasStart;
         }
 
+
         conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang, $lang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $publishing_date, $artsort, 0, $searchable);
 
         $tmp_notification = $notification->returnNotification("ok", i18n("Changes saved"));
@@ -198,6 +199,13 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
 
                 $db->query($sql);
                 $db->nextRecord();
+
+                // CON-2606 fix for startarticles
+                $tmp_idcatart = $db->f("idcatart");
+
+                if ($is_start == 1) {
+                    conMakeStart($tmp_idcatart, $is_start);
+                }
 
                 conSetCodeFlag($db->f("idcatart"));
             }
