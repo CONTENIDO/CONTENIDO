@@ -420,15 +420,29 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                         $creationDate = $fileStats['ctime'];
                         $modifyDate = $fileStats['mtime'];
                         // conditional stuff is completed, start sorting
+                        // inclusive fix CON_2605 for files created at the same time
+                        // or with the same filesize
                         switch ($this->_settings['filelist_sort']) {
                             case 'filesize':
-                                $indexName = $filesize;
+                                if (!isset($files[$filesize])) {
+                                    $indexName = $filesize . "_" . mt_rand(0, mt_getrandmax());
+                                } else {
+                                    $indexName = $filesize;
+                                }
                                 break;
                             case 'createdate':
-                                $indexName = $creationDate;
+                                if (!isset($files[$creationDate])) {
+                                    $indexName = $creationDate . "_" . mt_rand(0, mt_getrandmax());
+                                } else {
+                                    $indexName = $creationDate;
+                                }
                                 break;
                             case 'modifydate':
-                                $indexName = $modifyDate;
+                                if (!isset($files[$modifyDate])) {
+                                    $indexName = $modifyDate . "_" . mt_rand(0, mt_getrandmax());
+                                } else {
+                                    $indexName = $modifyDate;
+                                }
                                 break;
                             case 'filename':
                             default:
