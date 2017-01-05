@@ -463,7 +463,7 @@ class cApiArticleLanguage extends Item {
 
         $this->content = array();
         while ($this->db->nextRecord()) {
-            $this->content[strtolower($this->db->f('type'))][$this->db->f('typeid')] = $this->db->f('value');
+            $this->content[cString::toLowerCase($this->db->f('type'))][$this->db->f('typeid')] = $this->db->f('value');
         }
     }
 
@@ -597,9 +597,9 @@ class cApiArticleLanguage extends Item {
             return $this->content;
         }
 
-        $type = strtolower($type);
+        $type = cString::toLowerCase($type);
 
-        if (false === stripos($type, 'cms_')) {
+        if (false === cString::findFirstPosCI($type, 'cms_')) {
             $type = 'cms_' . $type;
         }
 
@@ -623,7 +623,7 @@ class cApiArticleLanguage extends Item {
      *         Returns false if the name was invalid
      */
     public function getContentObject($type, $id) {
-        $typeClassName = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $type)));
+        $typeClassName = 'cContentType' . ucfirst(cString::toLowerCase(str_replace('CMS_', '', $type)));
 
         if (!class_exists($typeClassName)) {
             return false;

@@ -117,7 +117,7 @@ class ModRewriteController extends ModRewriteBase {
         // CON-1266 make incomming URL lowercase if option "URLS to
         // lowercase" is set
         if (1 == $this->getConfig('use_lowercase_uri')) {
-            $incommingUrl = strtolower($incommingUrl);
+            $incommingUrl = cString::toLowerCase($incommingUrl);
         }
 
         $this->_sIncommingUrl = $incommingUrl;
@@ -271,19 +271,19 @@ class ModRewriteController extends ModRewriteBase {
         // CON-1266 make request URL lowercase if option "URLS to
         // lowercase" is set
         if (1 == $this->getConfig('use_lowercase_uri')) {
-            $requestUri = strtolower($requestUri);
+            $requestUri = cString::toLowerCase($requestUri);
         }
 
         // check for defined rootdir
         // allows for root dir being alternativly defined as path of setting client/%frontend_path%
         $rootdir = cUriBuilderMR::getMultiClientRootDir(parent::getConfig('rootdir'));
-        if ('/' !==  $rootdir && 0 === strpos($requestUri, $this->_sIncommingUrl)) {
+        if ('/' !==  $rootdir && 0 === cString::findFirstPos($requestUri, $this->_sIncommingUrl)) {
             $this->_sIncommingUrl = str_replace($rootdir, '/', $this->_sIncommingUrl);
         }
 
         $aUrlComponents = $this->_parseUrl($this->_sIncommingUrl);
         if (isset($aUrlComponents['path'])) {
-            if (parent::getConfig('rootdir') !== '/' && strpos($aUrlComponents['path'], parent::getConfig('rootdir')) === 0) {
+            if (parent::getConfig('rootdir') !== '/' && cString::findFirstPos($aUrlComponents['path'], parent::getConfig('rootdir')) === 0) {
                 $aUrlComponents['path'] = str_replace(parent::getConfig('rootdir'), '/', $aUrlComponents['path']);
             }
 
@@ -294,7 +294,7 @@ class ModRewriteController extends ModRewriteBase {
                 $routings = parent::getConfig('routing');
                 if (is_array($routings) && isset($routings[$aUrlComponents['path']])) {
                     $aUrlComponents['path'] = $routings[$aUrlComponents['path']];
-                    if (strpos($aUrlComponents['path'], self::FRONT_CONTENT) !== false) {
+                    if (cString::findFirstPos($aUrlComponents['path'], self::FRONT_CONTENT) !== false) {
                         // routing destination contains front_content.php
 
                         $this->_bRoutingFound = true;
@@ -327,7 +327,7 @@ class ModRewriteController extends ModRewriteBase {
                     // pathinfo would also work
                     $arr = explode('.', $item);
                     $count = count($arr);
-                    if ($count > 0 && '.' . strtolower($arr[$count - 1]) == parent::getConfig('file_extension')) {
+                    if ($count > 0 && '.' . cString::toLowerCase($arr[$count - 1]) == parent::getConfig('file_extension')) {
                         array_pop($arr);
                         $this->_sArtName = trim(implode('.', $arr));
                     } else {

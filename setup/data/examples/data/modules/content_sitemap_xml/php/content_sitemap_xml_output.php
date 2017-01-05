@@ -39,7 +39,7 @@ if(cRegistry::getBackendSessionId() === NULL) {
     if (!empty($filename)) {
         $filename = basename($filename);
         // assert .xml extension
-        if (substr($filename, -4) !== '.xml') {
+        if (cString::getPartOfString($filename, -4) !== '.xml') {
             $filename .= '.xml';
         }
     }
@@ -251,7 +251,7 @@ function addUrl(SimpleXMLElement $sitemap, array $data) {
 function iso8601Date($time) {
     $tzd = date('O', $time);
     $tzd = chunk_split($tzd, 3, ':');
-    $tzd = substr($tzd, 0, 6);
+    $tzd = cString::getPartOfString($tzd, 0, 6);
     $date = date('Y-m-d\TH:i:s', $time);
     return $date . $tzd;
 }

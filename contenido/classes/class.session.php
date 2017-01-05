@@ -91,23 +91,23 @@ class cSession {
             }
 
             // If you use AMR, use rootdir variable of mod_rewrite plugin instead of BackendUrl/FrontendUrl
-            if ($cfg['mod_rewrite']['use'] === 1 && $available === true && strlen($cfg['mod_rewrite']['rootdir']) > 0) {
+            if ($cfg['mod_rewrite']['use'] === 1 && $available === true && cString::getStringLength($cfg['mod_rewrite']['rootdir']) > 0) {
                 $url = $cfg['mod_rewrite']['rootdir'];
             }
 
             // remove protocol from contenido URL
-            $start = strpos($url, '://');
+            $start = cString::findFirstPos($url, '://');
             if (false === $start) {
                 $url = 'http://' . $url;
-                $start = strpos($url, '://');
+                $start = cString::findFirstPos($url, '://');
             }
 
             // url of contenido folder with hostname
-            $path = substr($url, $start + 3);
+            $path = cString::getPartOfString($url, $start + 3);
 
-            $start = strpos($path, '/');
+            $start = cString::findFirstPos($path, '/');
             if (false !== $start) {
-                $path = substr($path, $start);
+                $path = cString::getPartOfString($path, $start);
                 session_set_cookie_params(0, $path, null, $cfg['secure'], true);
             } else {
                 // fall back to entire domain if no path can be computed
@@ -179,7 +179,7 @@ class cSession {
         $url = preg_replace('/[&?]+$/', '', $url);
 
         if (!preg_match('~\b' . quotemeta(urlencode($this->name)) . '=[a-zA-Z0-9]*\b~', $url)) {
-            $url .= (strpos($url, '?') != false? '&' : '?') . urlencode($this->name) . '=' . $this->id;
+            $url .= (cString::findFirstPos($url, '?') != false? '&' : '?') . urlencode($this->name) . '=' . $this->id;
         }
 
         // Encode naughty characters in the URL

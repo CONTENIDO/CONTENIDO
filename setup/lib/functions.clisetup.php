@@ -54,15 +54,15 @@ function prntst($str = '') {
  * @return string user entered password
  */
 function passwordPrompt($title, $tab = 0) {
-    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+    if (cString::toUpperCase(cString::getPartOfString(PHP_OS, 0, 3)) === 'WIN') {
         prntln(i18n('Be careful! The password will be readable in the console window!', 'setup'), $tab);
     }
     prnt($title . ': ', $tab);
     $line = trim(fgets(STDIN));
-    if (!(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')) {
+    if (!(cString::toUpperCase(cString::getPartOfString(PHP_OS, 0, 3)) === 'WIN')) {
         echo("\033[1A"); // move the cursor up one line
         prnt($title . ': ', $tab); // reprint the label
-        for ($i = 0; $i < strlen($line); $i++) {
+        for ($i = 0; $i < cString::getStringLength($line); $i++) {
             echo("*"); // replace the password with asterisks
         }
         echo("\r\n");
@@ -158,7 +158,7 @@ function checkInstallationSettings() {
     }
 
     // append a slash to the http path if it isn't there already
-    if (!(substr($_SESSION['override_root_http_path'], -strlen("/")) === "/")) {
+    if (!(cString::getPartOfString($_SESSION['override_root_http_path'], -cString::getStringLength("/")) === "/")) {
         $_SESSION['override_root_http_path'] = $_SESSION['override_root_http_path'] . "/";
     }
     if ($_SESSION['override_root_http_path'] == '') {
@@ -208,7 +208,7 @@ function getArgs() {
             }
             $last_arg = $key;
         } else if (preg_match("/^-([a-zA-Z0-9]+)/", $args[$i], $match)) {
-            for ($j = 0, $jl = strlen($match[1]); $j < $jl; $j++) {
+            for ($j = 0, $jl = cString::getStringLength($match[1]); $j < $jl; $j++) {
                 $key = $match[1]{$j};
                 $out[$key] = true;
             }

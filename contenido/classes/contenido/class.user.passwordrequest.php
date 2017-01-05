@@ -52,7 +52,7 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
         // check configuration setting for different password expiration
         // value must be valid string for DateTime's time variable in its constructor
         if (false === ($expiration = getEffectiveSetting('pw_request', 'user_password_reset_expiration'))
-        || 0 === strlen($expiration)) {
+        || 0 === cString::getStringLength($expiration)) {
             $expiration = '+4 hour';
         }
         $time = new DateTime('+' . $expiration, new DateTimeZone('UTC'));

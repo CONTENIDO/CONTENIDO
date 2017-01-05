@@ -132,7 +132,7 @@ function linksort($sErrors) {
 
 // function url_is_image
 function url_is_image($sUrl) {
-    if (substr($sUrl, -3, 3) == "gif" || substr($sUrl, -3, 3) == "jpg" || substr($sUrl, -4, 4) == "jpeg" || substr($sUrl, -3, 3) == "png" || substr($sUrl, -3, 3) == "tif" || substr($sUrl, -3, 3) == "psd" || substr($sUrl, -3, 3) == "bmp") {
+    if (cString::getPartOfString($sUrl, -3, 3) == "gif" || cString::getPartOfString($sUrl, -3, 3) == "jpg" || cString::getPartOfString($sUrl, -4, 4) == "jpeg" || cString::getPartOfString($sUrl, -3, 3) == "png" || cString::getPartOfString($sUrl, -3, 3) == "tif" || cString::getPartOfString($sUrl, -3, 3) == "psd" || cString::getPartOfString($sUrl, -3, 3) == "bmp") {
         return true;
     } else {
         return false;
@@ -141,7 +141,7 @@ function url_is_image($sUrl) {
 
 // function url_is_uri
 function url_is_uri($sUrl) {
-    if (substr($sUrl, 0, 4) == "file" || substr($sUrl, 0, 3) == "ftp" || substr($sUrl, 0, 4) == "http" || substr($sUrl, 0, 2) == "ww") {
+    if (cString::getPartOfString($sUrl, 0, 4) == "file" || cString::getPartOfString($sUrl, 0, 3) == "ftp" || cString::getPartOfString($sUrl, 0, 4) == "http" || cString::getPartOfString($sUrl, 0, 2) == "ww") {
         return true;
     } else {
         return false;
@@ -330,14 +330,14 @@ if (empty($aErrors) && $cronjob != true) {
             // set template variables
             $tpl2->set('s', 'ERRORS_ARTID', $aRow[$i]['idart']);
             $tpl2->set('s', 'ERRORS_ARTICLE', $aRow[$i]['nameart']);
-            $tpl2->set('s', 'ERRORS_ARTICLE_SHORT', substr($aRow[$i]['nameart'], 0, 20) . ((strlen($aRow[$i]['nameart']) > 20) ? ' ...' : ''));
+            $tpl2->set('s', 'ERRORS_ARTICLE_SHORT', cString::getPartOfString($aRow[$i]['nameart'], 0, 20) . ((cString::getStringLength($aRow[$i]['nameart']) > 20) ? ' ...' : ''));
             $tpl2->set('s', 'ERRORS_CATID', $aRow[$i]['idcat']);
             $tpl2->set('s', 'ERRORS_LANGARTID', $aRow[$i]['idartlang']);
             $tpl2->set('s', 'ERRORS_LINK', $aRow[$i]['url']);
             $tpl2->set('s', 'ERRORS_LINK_ENCODE', base64_encode($aRow[$i]['url']));
-            $tpl2->set('s', 'ERRORS_LINK_SHORT', substr($aRow[$i]['url'], 0, 45) . ((strlen($aRow[$i]['url']) > 45) ? ' ...' : ''));
+            $tpl2->set('s', 'ERRORS_LINK_SHORT', cString::getPartOfString($aRow[$i]['url'], 0, 45) . ((cString::getStringLength($aRow[$i]['url']) > 45) ? ' ...' : ''));
             $tpl2->set('s', 'ERRORS_CATNAME', $aRow[$i]['namecat']);
-            $tpl2->set('s', 'ERRORS_CATNAME_SHORT', substr($aRow[$i]['namecat'], 0, 20) . ((strlen($aRow[$i]['namecat']) > 20) ? ' ...' : ''));
+            $tpl2->set('s', 'ERRORS_CATNAME_SHORT', cString::getPartOfString($aRow[$i]['namecat'], 0, 20) . ((cString::getStringLength($aRow[$i]['namecat']) > 20) ? ' ...' : ''));
             $tpl2->set('s', 'MODE', $_GET['mode']);
             $tpl2->set('s', 'URL_FRONTEND', $aUrl['cms']);
 
@@ -411,12 +411,12 @@ if (empty($aErrors) && $cronjob != true) {
             $aError_output[$sKey] = $tpl2->generate($cfg['templates']['linkchecker_test_nothing'], 1);
         }
 
-        $tpl->set('s', 'ERRORS_SHOW_' . strtoupper($sKey), $aError_output[$sKey]);
+        $tpl->set('s', 'ERRORS_SHOW_' . cString::toUpperCase($sKey), $aError_output[$sKey]);
 
         if (count($aErrors[$sKey]) > 0) {
-            $tpl->set('s', 'ERRORS_COUNT_ERRORS_' . strtoupper($sKey), '<span class="settingWrong">' . count($aErrors[$sKey]) . '</span>');
+            $tpl->set('s', 'ERRORS_COUNT_ERRORS_' . cString::toUpperCase($sKey), '<span class="settingWrong">' . count($aErrors[$sKey]) . '</span>');
         } else {
-            $tpl->set('s', 'ERRORS_COUNT_ERRORS_' . strtoupper($sKey), count($aErrors[$key]));
+            $tpl->set('s', 'ERRORS_COUNT_ERRORS_' . cString::toUpperCase($sKey), count($aErrors[$key]));
         }
     }
 

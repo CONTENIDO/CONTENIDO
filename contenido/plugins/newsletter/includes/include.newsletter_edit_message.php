@@ -150,8 +150,8 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
                     $aPluginVars = call_user_func("recipients_" . $plugin . "_wantedVariables");
 
                     foreach ($aPluginVars as $sPluginVar) {
-                        $sTagInfoText .= 'MAIL_' . strtoupper($sPluginVar) . '<br>';
-                        $sTagInfoHTML .= '[mail name="' . strtolower($sPluginVar) . '" type="text"][/mail]<br>';
+                        $sTagInfoText .= 'MAIL_' . cString::toUpperCase($sPluginVar) . '<br>';
+                        $sTagInfoHTML .= '[mail name="' . cString::toLowerCase($sPluginVar) . '" type="text"][/mail]<br>';
                     }
                 }
             }

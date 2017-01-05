@@ -33,8 +33,8 @@ $selectedClient = isset($_GET['targetclient']) ? $_GET['targetclient'] : cRegist
 foreach ($clients as $key => $value) {
     $selected = ($selectedClient == $key) ? 'selected' : '';
 
-    if (strlen($value['name']) > 15) {
-        $value['name'] = substr($value['name'], 0, 12) . '...';
+    if (cString::getStringLength($value['name']) > 15) {
+        $value['name'] = cString::getPartOfString($value['name'], 0, 12) . '...';
     }
 
     $tpl2->set('d', 'VALUE', $key);

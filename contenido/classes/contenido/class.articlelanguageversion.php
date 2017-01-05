@@ -587,7 +587,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
 
         $this->content = array();
         while ($this->db->nextRecord()) {
-            $this->content[strtolower($this->db->f('type'))][$this->db->f('typeid')] = $this->db->f('value');
+            $this->content[cString::toLowerCase($this->db->f('type'))][$this->db->f('typeid')] = $this->db->f('value');
         }
 
     }

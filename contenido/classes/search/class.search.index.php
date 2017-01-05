@@ -255,7 +255,7 @@ class cSearchIndex extends cSearchBaseAbstract {
                         ), "\n", $code);
                         // remove html tags
                         $code = strip_tags($code);
-                        if (strlen($code) > 0) {
+                        if (cString::getStringLength($code) > 0) {
                             $code = conHtmlEntityDecode($code);
                         }
                         $this->_debug('code', $code);
@@ -270,14 +270,14 @@ class cSearchIndex extends cSearchBaseAbstract {
                             // $value = strtolower($value);
 
                             $value = conHtmlentities($value);
-                            $value = trim(strtolower($value));
+                            $value = trim(cString::toLowerCase($value));
                             $value = conHtmlEntityDecode($value);
 
                             if (!in_array($value, $this->_stopwords)) {
                                 // eliminate stopwords
                                 $value = $this->removeSpecialChars($value);
 
-                                if (strlen($value) > 1) {
+                                if (cString::getStringLength($value) > 1) {
                                     // do not index single characters
                                     $this->_keywords[$value] = $this->_keywords[$value] . $idtype . '-' . $typeid . ' ';
                                 }
@@ -341,7 +341,7 @@ class cSearchIndex extends cSearchBaseAbstract {
         foreach ($this->_keywordsDel as $key_del) {
             $index_string = preg_replace("/&$this->idart=[0-9]+\([\w-,]+\)/", "", $this->_keywordsOld[$key_del]);
 
-            if (strlen($index_string) == 0) {
+            if (cString::getStringLength($index_string) == 0) {
                 // keyword is not referenced by any article
                 $sql = "DELETE FROM " . $this->cfg['tab']['keywords'] . "
                     WHERE idlang = " . cSecurity::toInteger($this->lang) . " AND keyword = '" . $this->db->escape($key_del) . "'";
@@ -437,7 +437,7 @@ class cSearchIndex extends cSearchBaseAbstract {
         // since you turn on UTF-8 as language encoding)
         $sEncoding = cRegistry::getEncoding();
 
-        if (strtolower($sEncoding) != 'iso-8859-2') {
+        if (cString::toLowerCase($sEncoding) != 'iso-8859-2') {
             $key = conHtmlentities($key, NULL, $sEncoding);
         } else {
             $key = htmlentities_iso88592($key);
@@ -509,7 +509,7 @@ class cSearchIndex extends cSearchBaseAbstract {
         $this->db->query($sql);
         while ($this->db->nextRecord()) {
             $this->_cmsType[$this->db->f('type')] = $this->db->f('idtype');
-            $this->_cmsTypeSuffix[$this->db->f('idtype')] = substr($this->db->f('type'), 4, strlen($this->db->f('type')));
+            $this->_cmsTypeSuffix[$this->db->f('idtype')] = cString::getPartOfString($this->db->f('type'), 4, cString::getStringLength($this->db->f('type')));
         }
     }
 
@@ -522,10 +522,10 @@ class cSearchIndex extends cSearchBaseAbstract {
     public function setCmsOptions($cms_options) {
         if (is_array($cms_options) && count($cms_options) > 0) {
             foreach ($cms_options as $opt) {
-                $opt = strtoupper($opt);
+                $opt = cString::toUpperCase($opt);
 
-                if (strlen($opt) > 0) {
-                    if (!stristr($opt, 'cms_')) {
+                if (cString::getStringLength($opt) > 0) {
+                    if (!cString::findFirstOccurrenceCI($opt, 'cms_')) {
                         if (in_array($opt, $this->_cmsTypeSuffix)) {
                             $this->_cmsOptions[$opt] = 'CMS_' . $opt;
                         }
@@ -549,7 +549,7 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @return bool
      */
     public function checkCmsType($idtype) {
-        $idtype = strtoupper($idtype);
+        $idtype = cString::toUpperCase($idtype);
 
         // Do not index CMS_RAW
         if ($idtype == "CMS_RAW") {

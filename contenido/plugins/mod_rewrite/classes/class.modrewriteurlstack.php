@@ -263,7 +263,7 @@ class ModRewriteUrlStack {
         if ($sWhere == '') {
             return;
         }
-        $sWhere = substr($sWhere, 0, -4);
+        $sWhere = cString::getPartOfString($sWhere, 0, -4);
         $sWhere = str_replace(' OR ', " OR \n", $sWhere);
 
         // compose query and execute it

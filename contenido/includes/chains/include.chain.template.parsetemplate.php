@@ -124,7 +124,7 @@ function cecParseTemplate($template, cTemplate $templateObj) {
     // in the template
     foreach ($replacements as $key => $value) {
         $placeholder = '{' . $key . '}';
-        if (!in_array($key, $templateObj->needles) && false !== strpos($template, $placeholder)) {
+        if (!in_array($key, $templateObj->needles) && false !== cString::findFirstPos($template, $placeholder)) {
             $template = str_replace($placeholder, $value, $template);
         }
     }

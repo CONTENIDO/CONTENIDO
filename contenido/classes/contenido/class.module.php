@@ -323,14 +323,14 @@ class cApiModule extends Item {
         if (count($varr) > 0) {
             foreach ($varr as $key => $value) {
                 // Search first closing
-                $closing = strpos($value, '")');
+                $closing = cString::findFirstPos($value, '")');
 
                 if ($closing === false) {
-                    $closing = strpos($value, '" )');
+                    $closing = cString::findFirstPos($value, '" )');
                 }
 
                 if ($closing !== false) {
-                    $value = substr($value, 0, $closing) . '")';
+                    $value = cString::getPartOfString($value, 0, $closing) . '")';
                 }
 
                 // Append mi18n again
@@ -375,13 +375,13 @@ class cApiModule extends Item {
             // iterate over all defines cms content types
             foreach ($cfg['translatable_content_types'] as $sContentType) {
                 // check if the content type exists and include his class file
-                if (file_exists($cfg['contenido']['path'] . 'classes/class.' . strtolower($sContentType) . '.php')) {
-                    cInclude('classes', 'class.' . strtolower($sContentType) . '.php');
+                if (file_exists($cfg['contenido']['path'] . 'classes/class.' . cString::toLowerCase($sContentType) . '.php')) {
+                    cInclude('classes', 'class.' . cString::toLowerCase($sContentType) . '.php');
                     // if the class exists, has the method
                     // 'addModuleTranslations'
                     // and the current module contains this cms content type we
                     // add the additional translations for the module
-                    if (class_exists($sContentType) && method_exists($sContentType, 'addModuleTranslations') && preg_match('/' . strtoupper($sContentType) . '\[\d+\]/', $code)) {
+                    if (class_exists($sContentType) && method_exists($sContentType, 'addModuleTranslations') && preg_match('/' . cString::toUpperCase($sContentType) . '\[\d+\]/', $code)) {
 
                         $strings = call_user_func(array(
                             $sContentType,
@@ -424,14 +424,14 @@ class cApiModule extends Item {
         if (count($varr) > 1) {
             foreach ($varr as $key => $value) {
                 // Search first closing
-                $closing = strpos($value, '")');
+                $closing = cString::findFirstPos($value, '")');
 
                 if ($closing === false) {
-                    $closing = strpos($value, '" )');
+                    $closing = cString::findFirstPos($value, '" )');
                 }
 
                 if ($closing !== false) {
-                    $value = substr($value, 0, $closing) . '")';
+                    $value = cString::getPartOfString($value, 0, $closing) . '")';
                 }
 
                 // Append mi18n again
@@ -460,13 +460,13 @@ class cApiModule extends Item {
             // iterate over all defines cms content types
             foreach ($cfg['translatable_content_types'] as $sContentType) {
                 // check if the content type exists and include his class file
-                if (cFileHandler::exists($cfg['contenido']['path'] . 'classes/class.' . strtolower($sContentType) . '.php')) {
-                    cInclude('classes', 'class.' . strtolower($sContentType) . '.php');
+                if (cFileHandler::exists($cfg['contenido']['path'] . 'classes/class.' . cString::toLowerCase($sContentType) . '.php')) {
+                    cInclude('classes', 'class.' . cString::toLowerCase($sContentType) . '.php');
                     // if the class exists, has the method
                     // 'addModuleTranslations'
                     // and the current module contains this cms content type we
                     // add the additional translations for the module
-                    if (class_exists($sContentType) && method_exists($sContentType, 'addModuleTranslations') && preg_match('/' . strtoupper($sContentType) . '\[\d+\]/', $code)) {
+                    if (class_exists($sContentType) && method_exists($sContentType, 'addModuleTranslations') && preg_match('/' . cString::toUpperCase($sContentType) . '\[\d+\]/', $code)) {
 
                         $strings = call_user_func(array(
                             $sContentType,
@@ -682,7 +682,7 @@ class cApiModule extends Item {
 
         // file name Hello_World.zip => Hello_World
         // @TODO: fetch file extension correctly
-        $modulName = substr($sFile, 0, -4);
+        $modulName = cString::getPartOfString($sFile, 0, -4);
 
         $sModulePath = $cfgClient[$client]['module']['path'] . $modulName;
         $sTempPath = $cfg['path']['contenido_temp'] . 'module_import_' . $modulName;

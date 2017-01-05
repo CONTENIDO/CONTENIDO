@@ -102,7 +102,7 @@ class cSystemPurge {
                 continue;
             }
 
-            $extension = substr($file, strrpos($file->getBasename(), '.') + 1);
+            $extension = cString::getPartOfString($file, cString::findLastPos($file->getBasename(), '.') + 1);
             if ($extension != 'php') {
                 continue;
             }

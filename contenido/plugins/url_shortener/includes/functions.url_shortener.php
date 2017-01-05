@@ -185,7 +185,7 @@ function piUsGetErrorMessage($errorCode, $shortUrlItem = NULL) {
  */
 function piUsAfterLoadPlugins() {
     $requestUri = $_SERVER['REQUEST_URI'];
-    $shorturl = substr($requestUri, strrpos($requestUri, '/') + 1);
+    $shorturl = cString::getPartOfString($requestUri, cString::findLastPos($requestUri, '/') + 1);
     $shortUrlItem = new cApiShortUrl();
     $shortUrlItem->loadBy('shorturl', $shorturl);
     if ($shortUrlItem->isLoaded()) {

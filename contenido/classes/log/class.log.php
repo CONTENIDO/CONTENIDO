@@ -215,8 +215,8 @@ class cLog {
             throw new cInvalidArgumentException('The shortcut name must not be empty.');
         }
 
-        if (substr($shortcut, 0, 1) == "%") {
-            $shortcut = substr($shortcut, 1);
+        if (cString::getPartOfString($shortcut, 0, 1) == "%") {
+            $shortcut = cString::getPartOfString($shortcut, 1);
         }
 
         if (is_callable($handler) == false) {
@@ -313,7 +313,7 @@ class cLog {
         $lineEnding = $this->getWriter()->getOption('line_ending');
 
         foreach ($this->_shortcutHandlers as $shortcut => $handler) {
-            if (substr($shortcut, 0, 1) != "%") {
+            if (cString::getPartOfString($shortcut, 0, 1) != "%") {
                 $shortcut = "%" . $shortcut;
             }
 
@@ -394,7 +394,7 @@ class cLog {
      *         if the given priority is not supported
      */
     public function __call($method, $arguments) {
-        $priorityName = strtoupper($method);
+        $priorityName = cString::toUpperCase($method);
 
         if (in_array($priorityName, $this->_priorities) == false) {
             throw new cInvalidArgumentException('The given priority ' . $priorityName . ' is not supported.');

@@ -177,7 +177,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         // save the collected css/js data and save it under the template name
         // ([templatename].css , [templatename].js in cache dir
         $cssFile = '';
-        if (strlen($this->_cssData) > 0) {
+        if (cString::getStringLength($this->_cssData) > 0) {
             if (($myFileCss = $moduleHandler->saveContentToFile($this->_tplName, 'css', $this->_cssData)) !== false) {
                 $oHTML = new cHTML(array(
                     'rel' => 'stylesheet',
@@ -190,7 +190,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         }
 
         $jsFile = '';
-        if (strlen($this->_jsData) > 0) {
+        if (cString::getStringLength($this->_jsData) > 0) {
             if (($myFileJs = $moduleHandler->saveContentToFile($this->_tplName, 'js', $this->_jsData)) !== false) {
                 $jsFile = '<script src="' . $myFileJs . '" type="text/javascript"></script>';
             }
@@ -198,10 +198,10 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
         // add module CSS at {CSS} position, after title
         // or after opening head tag
-        if (strpos($this->_layoutCode, '{CSS}') !== false) {
+        if (cString::findFirstPos($this->_layoutCode, '{CSS}') !== false) {
             $this->_layoutCode = cString::iReplaceOnce('{CSS}', $cssFile, $this->_layoutCode);
         } else if (!empty($cssFile)) {
-            if (strpos($this->_layoutCode, '</title>') !== false) {
+            if (cString::findFirstPos($this->_layoutCode, '</title>') !== false) {
                 $matches = array();
                 preg_match_all("#(<head>.*?</title>)(.*?</head>)#si", $this->_layoutCode, $matches);
                 $this->_layoutCode = cString::iReplaceOnce($matches[1][0], $matches[1][0] . $cssFile . $matches[1][1], $this->_layoutCode);
@@ -210,19 +210,19 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             }
         }
 
-        if (strpos($this->_layoutCode, '{REV}') !== false) {
+        if (cString::findFirstPos($this->_layoutCode, '{REV}') !== false) {
             $this->_layoutCode = cString::iReplaceOnce('{REV}', ((int) getEffectiveSetting("ressource", "revision", 0)), $this->_layoutCode);
         }
 
         // add module JS at {JS} position
         // or before closing body tag if there is no {JS}
-        if (strpos($this->_layoutCode, '{JS}') !== false) {
+        if (cString::findFirstPos($this->_layoutCode, '{JS}') !== false) {
             $this->_layoutCode = cString::iReplaceOnce('{JS}', $jsFile, $this->_layoutCode);
         } else if (!empty($jsFile)) {
             $this->_layoutCode = cString::iReplaceOnce('</body>', $jsFile . '</body>', $this->_layoutCode);
         }
 
-        if (strpos($this->_layoutCode, '{META}') !== false) {
+        if (cString::findFirstPos($this->_layoutCode, '{META}') !== false) {
             $this->_layoutCode = cString::iReplaceOnce('{META}', $this->_processCodeMetaTags(), $this->_layoutCode);
         } else {
             $this->_layoutCode = cString::iReplaceOnce('</head>', $this->_processCodeMetaTags() . '</head>', $this->_layoutCode);
@@ -321,7 +321,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             $replaceTag = '{__TITLE__' . md5(rand().time()) . '}';
             $headCode = preg_replace('/<title>.*?<\/title>/is', $replaceTag, $headTag, 1);
 
-            if (false !== strpos($headCode, $replaceTag)) {
+            if (false !== cString::findFirstPos($headCode, $replaceTag)) {
                 $headCode = str_ireplace($replaceTag, '<title>' . $this->_pageTitle . '</title>', $headCode);
             } else {
                 $headCode = cString::iReplaceOnce('</head>', '<title>' . $this->_pageTitle . "</title>\n</head>", $headCode);
@@ -476,7 +476,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         $metaTags = array();
         foreach (conGetAvailableMetaTagTypes() as $key => $value) {
             $metaValue = conGetMetaValue($this->_idartlang, $key);
-            if (0 < strlen($metaValue)) {
+            if (0 < cString::getStringLength($metaValue)) {
                 $metaTags[] = array(
                     $value['fieldname'] => $value['metatype'],
                     'content' => $metaValue

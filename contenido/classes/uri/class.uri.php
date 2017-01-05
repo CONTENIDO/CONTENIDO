@@ -225,7 +225,7 @@ class cUri {
             return false;
         }
 
-        return strtolower($aComponents['host']) !== strtolower($aComponents2['host']);
+        return cString::toLowerCase($aComponents['host']) !== cString::toLowerCase($aComponents2['host']);
     }
 
     /**

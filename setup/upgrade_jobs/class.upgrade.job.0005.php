@@ -75,7 +75,7 @@ EOT;
             while (($item = $contentCollection->next()) !== false) {
                 $oldFilelistVal = $item->get('value');
                 // skip CMS_FILELISTs w/ empty values
-                if (0 === strlen(trim($oldFilelistVal))) {
+                if (0 === cString::getStringLength(trim($oldFilelistVal))) {
                     continue;
                 }
                 $oldFilelistArray = cXmlBase::xmlStringToArray($oldFilelistVal);
@@ -243,7 +243,7 @@ EOT;
                     $type = 'internal';
                     $cApiCategoryArticle = new cApiCategoryArticle($linkInfo['link']);
                     $articleId = $cApiCategoryArticle->get('idart');
-                } elseif (strpos($linkInfo['link'], 'http://') == 0 || strpos($linkInfo['link'], 'www.') == 0) {
+                } elseif (cString::findFirstPos($linkInfo['link'], 'http://') == 0 || cString::findFirstPos($linkInfo['link'], 'www.') == 0) {
                     $link = $linkInfo['link'];
                     $type = 'external';
                 } else {

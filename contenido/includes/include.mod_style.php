@@ -73,7 +73,7 @@ if (!$contenidoModulHandler->moduleWriteable('css')) {
 $sTempFilename = stripslashes($tmp_file);
 $sOrigFileName = $sTempFilename;
 
-if (cFileHandler::getExtension($file) != $sFileType && strlen(stripslashes(trim($file))) > 0) {
+if (cFileHandler::getExtension($file) != $sFileType && cString::getStringLength(stripslashes(trim($file))) > 0) {
     $sFilename .= stripslashes($file) . '.' . $sFileType;
 } else {
     $sFilename .= stripslashes($file);
@@ -206,7 +206,7 @@ if (isset($actionRequest)) {
     $form->add(i18n('Code'), $code);
 
 
-    $oCodeMirror = new CodeMirror('code', 'css', substr(strtolower($belang), 0, 2), true, $cfg);
+    $oCodeMirror = new CodeMirror('code', 'css', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg);
     if($readOnly) {
         $oCodeMirror->setProperty("readOnly", "true");
 

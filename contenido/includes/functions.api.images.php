@@ -134,7 +134,7 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
     }
 
     // Get out which file we have
-    switch (strtolower($filetype)) {
+    switch (cString::toLowerCase($filetype)) {
         case 'gif':
             $function = 'imagecreatefromgif';
             break;
@@ -178,7 +178,7 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
 
     // Output the file
     if ($keepType) {
-        switch (strtolower($filetype)) {
+        switch (cString::toLowerCase($filetype)) {
             case 'png':
                 // no quality option available
                 imagepng($targetImage, $cacheFile);
@@ -268,7 +268,7 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
     }
 
     // Get out which file we have
-    switch (strtolower($filetype)) {
+    switch (cString::toLowerCase($filetype)) {
         case 'gif':
             $function = 'imagecreatefromgif';
             break;
@@ -308,7 +308,7 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
         $srcY = ($y - $maxY) / 2;
 
         // Preserve transparency
-        if (strtolower($filetype) == 'gif' || strtolower($filetype) == 'png') {
+        if (cString::toLowerCase($filetype) == 'gif' || cString::toLowerCase($filetype) == 'png') {
         	imagecolortransparent($targetImage, imagecolorallocatealpha($targetImage, 0, 0, 0, 127));
         	imagealphablending($targetImage, false);
         	imagesavealpha($targetImage, true);
@@ -321,7 +321,7 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
         $targetImage = imagecreatetruecolor($targetX, $targetY);
 
         // Preserve transparency
-        if (strtolower($filetype) == 'gif' || strtolower($filetype) == 'png') {
+        if (cString::toLowerCase($filetype) == 'gif' || cString::toLowerCase($filetype) == 'png') {
             imagecolortransparent($targetImage, imagecolorallocatealpha($targetImage, 0, 0, 0, 127));
             imagealphablending($targetImage, false);
             imagesavealpha($targetImage, true);
@@ -332,7 +332,7 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
 
     // Output the file
     if ($keepType) {
-        switch (strtolower($filetype)) {
+        switch (cString::toLowerCase($filetype)) {
             case 'png':
                 // no quality option available
                 imagepng($targetImage, $cacheFile);
@@ -567,7 +567,7 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false, $cache
     }
 
     $filename = $img;
-    $filetype = substr($filename, strlen($filename) - 4, 4);
+    $filetype = cString::getPartOfString($filename, cString::getStringLength($filename) - 4, 4);
 
     $mxdAvImgEditingPosibility = cApiImageCheckImageEditingPosibility();
     switch ($mxdAvImgEditingPosibility) {
@@ -719,7 +719,7 @@ function cApiImageGetCacheFileName($md5, $filetype, $keepType) {
     if ($keepType) {
 
         // Just using switch if someone likes to add other types
-        switch (strtolower($filetype)) {
+        switch (cString::toLowerCase($filetype)) {
             case 'png':
                 $fileName = $md5 . '.png';
                 break;
@@ -813,7 +813,7 @@ function cApiIsImageMagickAvailable() {
     // if IM is available, it contains the string "ImageMagick"
     if (!is_array($output) || count($output) == 0) {
         $imagemagickAvailable = false;
-    } else if (false === strpos($output[0], 'ImageMagick')) {
+    } else if (false === cString::findFirstPos($output[0], 'ImageMagick')) {
         $imagemagickAvailable = false;
     } else {
         $imagemagickAvailable = true;

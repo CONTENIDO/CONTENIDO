@@ -62,7 +62,7 @@ function cecCreateBaseHref($currentBaseHref) {
         }
 
         // skip if http path does not start with configured path
-        if (0 !== strpos($httpPath, $propPath)) {
+        if (0 !== cString::findFirstPos($httpPath, $propPath)) {
             continue;
         }
 

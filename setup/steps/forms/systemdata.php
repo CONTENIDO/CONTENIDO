@@ -95,7 +95,7 @@ class cSetupSystemData extends cSetupMask {
         $dbuser = new cHTMLTextbox('dbuser', $_SESSION['dbuser'], 30, 255);
 
         if ($_SESSION['dbpass'] != '') {
-            $mpass = str_repeat('*', strlen($_SESSION['dbpass']));
+            $mpass = str_repeat('*', cString::getStringLength($_SESSION['dbpass']));
         } else {
             $mpass = '';
         }

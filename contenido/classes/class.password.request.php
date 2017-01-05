@@ -448,7 +448,7 @@ class cPasswordRequest {
         $pw = (string) $_POST['user_pw'];
         $pwRepeat = (string) $_POST['user_pw_repeat'];
 
-        if (0 === strlen($username)) {
+        if (0 === cString::getStringLength($username)) {
             $this->_tpl->set('s', 'RESET_MESSAGE', i18n('Username can\'t be empty'));
             $this->_tpl->set('s', 'RESET_LABEL', '');
             $this->renderNewPwForm();
@@ -620,7 +620,7 @@ class cPasswordRequest {
 
         // for each character of token choose one from $sChars randomly
         for ($i = 0; $i < $this->_tokenLength; $i++) {
-            $password .= $chars[rand(0, strlen($chars))];
+            $password .= $chars[rand(0, cString::getStringLength($chars))];
         }
 
         return $password;

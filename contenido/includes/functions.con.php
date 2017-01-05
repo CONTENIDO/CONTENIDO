@@ -876,7 +876,7 @@ function conDeleteart($idart) {
                     continue;
                 }
 
-                $extension = substr($file, strrpos($file->getBasename(), '.') + 1);
+                $extension = cString::getPartOfString($file, cString::findLastPos($file->getBasename(), '.') + 1);
                 if ($extension != 'php') {
                     continue;
                 }
@@ -1134,10 +1134,10 @@ function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false
     if ($parentid != 0) {
         conCreateLocationString($parentid, $seperator, $catStr, $makeLink, $linkClass, $firstTreeElementToUse, $uselang, false);
     } else {
-        $sep_length = strlen($seperator);
-        $str_length = strlen($catStr);
+        $sep_length = cString::getStringLength($seperator);
+        $str_length = cString::getStringLength($catStr);
         $tmp_length = $str_length - $sep_length;
-        $catStr = substr($catStr, 0, $tmp_length);
+        $catStr = cString::getPartOfString($catStr, 0, $tmp_length);
     }
 
     if ($final == true && $usecache == true) {
@@ -1367,7 +1367,7 @@ function conSetCodeFlag($idcatart) {
                 continue;
             }
 
-            $extension = substr($file, strrpos($file->getBasename(), '.') + 1);
+            $extension = cString::getPartOfString($file, cString::findLastPos($file->getBasename(), '.') + 1);
             if ($extension != 'php') {
                 continue;
             }
@@ -1408,7 +1408,7 @@ function conSetCodeFlagBulkEditing(array $idcatarts) {
                 continue;
             }
 
-            $extension = substr($file, strrpos($file->getBasename(), '.') + 1);
+            $extension = cString::getPartOfString($file, cString::findLastPos($file->getBasename(), '.') + 1);
             if ($extension != 'php') {
                 continue;
             }
@@ -1916,7 +1916,7 @@ function conRemoveOldCategoryArticle($idcat, $idart, $idartlang, $client, $lang)
             continue;
         }
 
-        $extension = substr($file, strrpos($file->getBasename(), '.') + 1);
+        $extension = cString::getPartOfString($file, cString::findLastPos($file->getBasename(), '.') + 1);
         if ($extension != 'php') {
             continue;
         }

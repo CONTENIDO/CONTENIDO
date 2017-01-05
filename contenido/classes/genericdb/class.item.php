@@ -213,7 +213,7 @@ abstract class Item extends cItemBaseAbstract {
             }
         }
         // strip the last " AND" token
-        $sql = substr($sql, 0, strlen($sql) - 4);
+        $sql = cString::getPartOfString($sql, 0, cString::getStringLength($sql) - 4);
         $sql = $this->db->prepare($sql, array_merge(array(
             'mytab' => $this->table
         ), $aAttributes));
@@ -383,7 +383,7 @@ abstract class Item extends cItemBaseAbstract {
         }
 
         // flag as modified
-        if ($this->values[$sField] != $mValue || strlen($this->values[$sField]) != strlen($mValue)) {
+        if ($this->values[$sField] != $mValue || cString::getStringLength($this->values[$sField]) != cString::getStringLength($mValue)) {
             $this->modifiedValues[$sField] = true;
         }
 
@@ -688,11 +688,11 @@ abstract class Item extends cItemBaseAbstract {
         }
 
         $sClassName = $this->_metaObject;
-        $qclassname = strtolower($sClassName);
+        $qclassname = cString::toLowerCase($sClassName);
 
         if (array_key_exists($qclassname, $_metaObjectCache)) {
             if (is_object($_metaObjectCache[$qclassname])) {
-                if (strtolower(get_class($_metaObjectCache[$qclassname])) == $qclassname) {
+                if (cString::toLowerCase(get_class($_metaObjectCache[$qclassname])) == $qclassname) {
                     $_metaObjectCache[$qclassname]->setPayloadObject($this);
                     return $_metaObjectCache[$qclassname];
                 }

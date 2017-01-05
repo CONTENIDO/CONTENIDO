@@ -284,17 +284,17 @@ class cLayoutSynchronizer {
                     continue;
                 }
 
-                $newFile = strtolower(cString::cleanURLCharacters($file));
+                $newFile = cString::toLowerCase(cString::cleanURLCharacters($file));
 
                 if ($newFile == $file) {
                     // dir is ok
                     $this->_addOrUpdateLayout($dir, $file, $newFile, $this->_client);
                 } else {
                     // dir not ok (with not allowed characters)
-                    if (is_dir($dir . $newFile) && strtolower($file) != $newFile) {
+                    if (is_dir($dir . $newFile) && cString::toLowerCase($file) != $newFile) {
                         // exist the new dir name after clean?
                         // make new dirname
-                        $newDirName = $newFile . substr(md5(time() . rand(0, time())), 0, 4);
+                        $newDirName = $newFile . cString::getPartOfString(md5(time() . rand(0, time())), 0, 4);
                         // rename
                         if ($this->_renameFileAndDir($dir, $file, $newDirName, $this->_client) != false) {
                             $this->_addOrUpdateLayout($dir, $file, $newDirName, $this->_client);

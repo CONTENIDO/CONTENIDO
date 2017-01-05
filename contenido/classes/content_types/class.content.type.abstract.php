@@ -295,7 +295,7 @@ abstract class cContentTypeAbstract {
         if ($uploadPath === '') {
             $uploadPath = $this->_uploadPath;
         }
-        if (substr($uploadPath, -1) !== '/') {
+        if (cString::getPartOfString($uploadPath, -1) !== '/') {
             $uploadPath .= '/';
         }
 
@@ -317,8 +317,8 @@ abstract class cContentTypeAbstract {
         }
 
         usort($directories, function($a, $b) {
-            $a = mb_strtolower($a["name"]);
-            $b = mb_strtolower($b["name"]);
+            $a = cString::toLowerCase($a["name"]);
+            $b = cString::toLowerCase($b["name"]);
             if($a < $b) {
                 return -1;
             } else if($a > $b) {
@@ -427,6 +427,16 @@ abstract class cContentTypeAbstract {
         }
 
         return $expand;
+    }
+
+    /**
+     * This functions able to use a content type object directly for output
+     * See also CON-2587
+     *
+     * @return string
+     */
+    public function __toString() {
+        return $this->generateViewCode();
     }
 
     /**

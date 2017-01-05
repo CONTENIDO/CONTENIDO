@@ -207,7 +207,7 @@ $tpl->set('s', 'ERR_MSG_NO_ACTION', i18n('No action selected!'));
 $tpl->set('s', 'SUBMIT_TEXT', i18n('Send'));
 $tpl->set('s', 'NO_CLIENT_SELECTED', i18n('Please select a client or all clients.'));
 
-if (strpos($auth->auth['perm'], 'sysadmin') === false) {
+if (cString::findFirstPos($auth->auth['perm'], 'sysadmin') === false) {
     $tpl->set('s', 'DEACTIVATED', 'disabled');
 } else {
     $tpl->set('s', 'DEACTIVATED', '');

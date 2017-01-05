@@ -249,7 +249,7 @@ class cEffectiveSetting {
     public static function delete($type, $name) {
         $keySuffix = '_' . $type . '_' . $name;
         foreach (self::$_settings as $key => $value) {
-            if (strpos($key, $keySuffix) !== false) {
+            if (cString::findFirstPos($key, $keySuffix) !== false) {
                 unset(self::$_settings[$key]);
             }
         }
@@ -378,7 +378,7 @@ class cEffectiveSetting {
     		}
     	}
 
-		if (strlen($prefix) == 0) {
+		if (cString::getStringLength($prefix) == 0) {
 			$prefix = cAuth::AUTH_UID_NOBODY;
 		}
 		

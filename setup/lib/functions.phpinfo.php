@@ -102,11 +102,11 @@ function checkPHPUploadMaxFilesize() {
 }
 
 function getAsBytes($val) {
-    if (strlen($val) == 0) {
+    if (cString::getStringLength($val) == 0) {
         return 0;
     }
     $val = trim($val);
-    $last = $val{strlen($val) - 1};
+    $last = $val{cString::getStringLength($val) - 1};
     switch ($last) {
         case 'k':
         case 'K':

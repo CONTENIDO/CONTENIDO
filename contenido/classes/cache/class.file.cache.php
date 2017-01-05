@@ -49,7 +49,7 @@ class cFileCache {
      */
     public function setOptions($options) {
         // complete all options
-        if (isset($options['cacheDir']) === true && substr($options['cacheDir'], -1) != '/') {
+        if (isset($options['cacheDir']) === true && cString::getPartOfString($options['cacheDir'], -1) != '/') {
             $options['cacheDir'] = $options['cacheDir'] . '/';
         }
 

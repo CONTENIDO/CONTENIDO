@@ -134,9 +134,9 @@ class SearchResultModule {
         $this->_dispSearchTerm = $searchTerm;
 
         // now parse search term and set search options
-        if (strlen(trim($searchTerm)) > 0) {
+        if (cString::getStringLength(trim($searchTerm)) > 0) {
             $searchTerm = conHtmlEntityDecode($searchTerm);
-            if (false === stristr($searchTerm, ' or ')) {
+            if (false === cString::findFirstOccurrenceCI($searchTerm, ' or ')) {
                 $this->_combine = 'and';
             } else {
                 $this->_combine = 'or';
@@ -145,7 +145,7 @@ class SearchResultModule {
             // force converting string to UTF-8
             $searchTerm = htmlentities($searchTerm, ENT_COMPAT, 'UTF-8');
             // remove superfluous white space and convert search term to lowercase
-            $searchTerm = (trim(strtolower($searchTerm)));
+            $searchTerm = (trim(cString::toLowerCase($searchTerm)));
             $searchTerm = html_entity_decode($searchTerm, ENT_COMPAT, 'UTF-8');
 
             $searchTerm = str_replace(' and ', ' ', $searchTerm);
@@ -221,7 +221,7 @@ class SearchResultModule {
             'htmltext',
             'text'
         ));
-        if (strlen($this->_prepSearchTerm) > 1) {
+        if (cString::getStringLength($this->_prepSearchTerm) > 1) {
             $searchResultArray = $search->searchIndex($this->_prepSearchTerm, '');
             
             if (false !== $searchResultArray) {

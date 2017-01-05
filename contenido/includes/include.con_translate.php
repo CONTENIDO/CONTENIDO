@@ -99,7 +99,7 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
         if ($field > 3) {
             $sortby = array();
             foreach ($this->data as $row => $cols) {
-                $sortby[$row] = trim(strtolower(conHtmlentities($cols[$field])));
+                $sortby[$row] = trim(cString::toLowerCase(conHtmlentities($cols[$field])));
             }
             $this->data = cArray::csort($this->data, $sortby, $order);
         } else {
@@ -193,7 +193,7 @@ if ($editlang != 'all') {
     $editlang = cSecurity::toInteger($editlang);
 }
 
-$search = strtolower(trim($_REQUEST["search"]));
+$search = cString::toLowerCase(trim($_REQUEST["search"]));
 $filter = $_REQUEST["filter"];
 
 $cApiModuleCollection = new cApiModuleCollection();
@@ -343,11 +343,11 @@ if ($search != '' || ($filter != '' && $filter != -1)) {
         // filter by search
         if ($search != '') {
             $bFoundSearch = false;
-            if (stripos($aTranslation['string'], $search) !== false) {
+            if (cString::findFirstPosCI($aTranslation['string'], $search) !== false) {
                 $bFoundSearch = true;
             }
             foreach ($aTranslation['translations'] as $idlang => $langTranslation) {
-                if (stripos($langTranslation, $search) !== false) {
+                if (cString::findFirstPosCI($langTranslation, $search) !== false) {
                     $bFoundSearch = true;
                 }
             }

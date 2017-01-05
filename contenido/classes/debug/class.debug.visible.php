@@ -86,7 +86,7 @@ class cDebugVisible implements cDebugInterface {
         }
         if (is_string($mVariable)) {
             if (preg_match('/<(.*)>/', $mVariable)) {
-                if (strlen($mVariable) > 40) {
+                if (cString::getStringLength($mVariable) > 40) {
                     $bTextarea = true;
                 } else {
                     $bPlainText = true;

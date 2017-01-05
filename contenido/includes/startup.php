@@ -36,7 +36,6 @@ global $cfg, $cfgClient, $errsite_idcat, $errsite_idart;
 // Report all errors except warnings
 error_reporting(E_ALL ^E_NOTICE);
 
-
 /* Initial PHP session settings.
  * NOTE: When you change these values by custom configuration, the length of the session ID may differ from 32 characters.
  * As this length was a criteria for session ID validity in previous versions of CONTENIDO, changes may affect your scripts.
@@ -105,6 +104,10 @@ include_once($backendPath . '/includes/functions.php54.php');
 // Security check: Include security class and invoke basic request checks
 require_once($backendPath . '/classes/class.registry.php');
 require_once($backendPath . '/classes/class.security.php');
+
+// "Workaround" for register_globals=off settings.
+require_once($backendPath . '/includes/globals_off.inc.php');
+
 require_once($backendPath . '/classes/class.requestvalidator.php');
 try {
     $requestValidator = cRequestValidator::getInstance();
@@ -113,8 +116,6 @@ try {
     die($e->getMessage());
 }
 
-// "Workaround" for register_globals=off settings.
-require_once($backendPath . '/includes/globals_off.inc.php');
 
 // Include some basic configuration files
 require_once($cfg['path']['contenido_config'] . 'config.php');

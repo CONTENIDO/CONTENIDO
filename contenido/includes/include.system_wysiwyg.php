@@ -29,7 +29,7 @@ if ('tinymce3' === $curWysiwygEditor) {
 
 // prepare to output template
 // example config class name: cTinymce4Configuration
-$configClass = 'c' . strtoupper($curWysiwygEditor[0]) . substr($curWysiwygEditor, 1) . 'Configuration';
+$configClass = 'c' . cString::toUpperCase($curWysiwygEditor[0]) . cString::getPartOfString($curWysiwygEditor, 1) . 'Configuration';
 
 if (class_exists($configClass)) {
 

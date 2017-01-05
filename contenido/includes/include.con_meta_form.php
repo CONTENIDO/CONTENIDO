@@ -191,7 +191,7 @@ if ($art->getField('created')) {
 }
 
 // Assign head values to page
-$lang_short = substr(strtolower($belang), 0, 2);
+$lang_short = cString::getPartOfString(cString::toLowerCase($belang), 0, 2);
 $langscripts = '';
 if ($lang_short != 'en') {
     $langscripts = '
@@ -295,11 +295,11 @@ foreach ($availableTags as $key => $value) {
             // Set robots checkboxes
             $robot_array = explode(', ', conHtmlSpecialChars(conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version'))));
             foreach ($robot_array as $instruction) {
-                $tpl->set('s', strtoupper($instruction), 'checked');
+                $tpl->set('s', cString::toUpperCase($instruction), 'checked');
             }
         } else {
             $metaType = conHtmlSpecialChars(cSecurity::unFilter(stripslashes(conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version')))));
-            $tpl->set('s', strtoupper($value['metatype']), str_replace('\\', '', $metaType));
+            $tpl->set('s', cString::toUpperCase($value['metatype']), str_replace('\\', '', $metaType));
         }
 
         continue;

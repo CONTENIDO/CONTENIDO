@@ -259,7 +259,7 @@ class cModuleSynchronizer extends cModuleHandler {
                             if (is_dir($dir . $newFile)) { // exist the new dir
                                 // name?
                                 // make new dirname
-                                $newDirName = $newFile . substr(md5(time() . rand(0, time())), 0, 4);
+                                $newDirName = $newFile . cString::getPartOfString(md5(time() . rand(0, time())), 0, 4);
 
                                 // rename
                                 if ($this->_renameFileAndDir($dir, $file, $newDirName, $this->_client) != false) {

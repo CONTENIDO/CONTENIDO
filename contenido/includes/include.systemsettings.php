@@ -32,7 +32,7 @@ if (defined('CON_STRIPSLASHES')) {
 }
 
 // @TODO: Check possibility to use $perm->isSysadmin()
-$isSysadmin = (false !== strpos($auth->auth["perm"], "sysadmin"));
+$isSysadmin = (false !== cString::findFirstPos($auth->auth["perm"], "sysadmin"));
 
 if ($action == "systemsettings_save_item") {
     if (false === $isSysadmin) {
@@ -110,21 +110,21 @@ foreach ($settings as $key => $types) {
             } else {
                 $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
 
-                if (strlen($type) > 35) {
+                if (cString::getStringLength($type) > 35) {
                     $sShort = conHtmlSpecialChars(cString::trimHard($type, 35));
                     $type = sprintf($sMouseoverTemplate, conHtmlSpecialChars(addslashes($type), ENT_QUOTES), $sShort);
                 }
 
-                if (strlen($value['value']) > 35) {
+                if (cString::getStringLength($value['value']) > 35) {
                     $sShort = conHtmlSpecialChars(cString::trimHard($value['value'], 35));
                     $value['value'] = sprintf($sMouseoverTemplate, conHtmlSpecialChars(addslashes($value['value']), ENT_QUOTES), $sShort);
                 }
 
-                if (strlen($key) > 35) {
+                if (cString::getStringLength($key) > 35) {
                     $sShort = conHtmlSpecialChars(cString::trimHard($key, 35));
                     $key = sprintf($sMouseoverTemplate, conHtmlSpecialChars(addslashes($key), ENT_QUOTES), $sShort);
                 }
-                $sValue = !strlen(trim($value['value'])) ? '&nbsp;' : $value['value'];
+                $sValue = !cString::getStringLength(trim($value['value'])) ? '&nbsp;' : $value['value'];
 
                 $list->setCell($count, 1, $key);
                 $list->setCell($count, 2, $type);

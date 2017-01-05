@@ -67,15 +67,15 @@ class cSetupClientMode extends cSetupMask {
 
         $this->_stepTemplateClass->set("s", "FOLDER_MESSAGE_EXAMPLES", "");
         $this->_stepTemplateClass->set("s", "FOLDER_MESSAGE_MODULES", "");
-        if (strlen($folders) > 0) {
-            $folders = substr($folders, 0, strlen($folders) - 2);
+        if (cString::getStringLength($folders) > 0) {
+            $folders = cString::getPartOfString($folders, 0, cString::getStringLength($folders) - 2);
         }
 
         $exampleMessage = i18n("PLEASE NOTE: Some folders (%s) which are used by the example client aren't empty. THESE WILL BE OVERWRITTEN", "setup");
         $moduleMessage = i18n("PLEASE NOTE: The cms/data/modules folder is not empty. IT WILL BE OVERWRITTEN", "setup");
 
         $aChoices = array(
-            "CLIENTEXAMPLES" => i18n("Client with example modules and example content", "setup") . ((strlen($folders) > 0) ? " <span class='additionalInfo'>(" . sprintf($exampleMessage, $folders) . ")</span>" : ""),
+            "CLIENTEXAMPLES" => i18n("Client with example modules and example content", "setup") . ((cString::getStringLength($folders) > 0) ? " <span class='additionalInfo'>(" . sprintf($exampleMessage, $folders) . ")</span>" : ""),
             "CLIENTMODULES" => i18n("Client with example modules, but without example content", "setup") . (($moduleFolderNotEmpty) ? " <span class='additionalInfo'>(" . $moduleMessage . ")</span>" : ""),
             "NOCLIENT" => i18n("Don't create client", "setup")
         );

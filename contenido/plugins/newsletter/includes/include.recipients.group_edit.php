@@ -195,7 +195,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
 
     $oSelSortBy = new cHTMLSelectElement("member_sortby");
     foreach ($aFields as $sKey => $aData) {
-        if (strpos($aData["type"], "sort") !== false) {
+        if (cString::findFirstPos($aData["type"], "sort") !== false) {
             if ($_REQUEST["member_sortby"] == "") {
                 $_REQUEST["member_sortby"] = $aData["field"];
             }
@@ -219,7 +219,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
     $oSelSearchIn->addOptionElement("all", $oOption);
 
     foreach ($aFields as $sKey => $aData) {
-        if (strpos($aData["type"], "search") !== false) {
+        if (cString::findFirstPos($aData["type"], "search") !== false) {
             $oOption = new cHTMLOptionElement($aData["caption"], $aData["field"]);
             $oSelSearchIn->addOptionElement($aData["field"], $oOption);
         }
@@ -297,7 +297,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
         if ($_REQUEST["member_filter"] != "") {
             if ($_REQUEST["member_searchin"] == "--all--" || $_REQUEST["member_searchin"] == "") {
                 foreach ($aFields as $sKey => $aData) {
-                    if (strpos($aData["type"], "search") !== false) {
+                    if (cString::findFirstPos($aData["type"], "search") !== false) {
                         $oInsiders->setWhereGroup("filter", $aData["field"], $_REQUEST["member_filter"], "LIKE");
                     }
                 }
@@ -405,7 +405,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
 
     $oSelSortBy = new cHTMLSelectElement("outsider_sortby");
     foreach ($aFields as $sKey => $aData) {
-        if (strpos($aData["type"], "sort") !== false) {
+        if (cString::findFirstPos($aData["type"], "sort") !== false) {
             if ($_REQUEST["outsider_sortby"] == "") {
                 $_REQUEST["outsider_sortby"] = $aData["field"];
             }
@@ -429,7 +429,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
     $oSelSearchIn->addOptionElement("all", $oOption);
 
     foreach ($aFields as $sKey => $aData) {
-        if (strpos($aData["type"], "search") !== false) {
+        if (cString::findFirstPos($aData["type"], "search") !== false) {
             $oOption = new cHTMLOptionElement($aData["caption"], $aData["field"]);
             $oSelSearchIn->addOptionElement($aData["field"], $oOption);
         }
@@ -492,7 +492,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
         $sSQLSearchIn = "";
         if ($_REQUEST["outsider_searchin"] == "--all--" || $_REQUEST["outsider_searchin"] == "") {
             foreach ($aFields as $sKey => $aData) {
-                if (strpos($aData["type"], "search") !== false) {
+                if (cString::findFirstPos($aData["type"], "search") !== false) {
                     if ($sSQLSearchIn !== "") {
                         $sSQLSearchIn .= " OR ";
                     }

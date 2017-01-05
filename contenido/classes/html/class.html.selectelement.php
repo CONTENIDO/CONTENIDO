@@ -131,8 +131,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
      */
     public function setMultiselect() {
         $name = $this->getAttribute('name');
-        $strLength = strlen($name);
-        if (substr($name, $strLength - 2, $strLength) != '[]') {
+        $strLength = cString::getStringLength($name);
+        if (cString::getPartOfString($name, $strLength - 2, $strLength) != '[]') {
             $this->updateAttribute('name', $name . '[]');
         }
         return $this->updateAttribute('multiple', 'multiple');

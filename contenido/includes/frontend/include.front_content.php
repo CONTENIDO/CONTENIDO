@@ -181,7 +181,7 @@ if (isset($logout)) {
 
 // If the path variable was passed, try to resolve it to a category id,
 // e.g. front_content.php?path=/company/products/
-if (isset($path) && strlen($path) > 1) {
+if (isset($path) && cString::getStringLength($path) > 1) {
     // Which resolve method is configured?
     if ($cfg['urlpathresolve'] == true) {
         $idcat = prResolvePathViaURLNames($path);
@@ -567,14 +567,14 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             foreach ($userProperties as $userProperty) {
                 $user_id = $userProperty->get('user_id');
                 $range   = $userProperty->f('value');
-                $slash   = strpos($range, '/');
+                $slash   = cString::findFirstPos($range, '/');
 
                 if ($slash == false) {
                     $netmask = '255.255.255.255';
                     $network = $range;
                 } else {
-                    $network = substr($range, 0, $slash);
-                    $netmask = substr($range, $slash + 1, strlen($range) - $slash - 1);
+                    $network = cString::getPartOfString($range, 0, $slash);
+                    $netmask = cString::getPartOfString($range, $slash + 1, cString::getStringLength($range) - $slash - 1);
                 }
 
                 if (ipMatch($network, $netmask, $_SERVER['REMOTE_ADDR'])) {
@@ -638,9 +638,9 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     // CON-1990: append GET parameters to redirect url
     foreach ($_GET as $getKey => $getValue) {
         // do not add already added GET parameters to redirect url
-        if (strpos($redirect_url, '?' . $getKey . '=') !== false
-            || strpos($redirect_url, '&' . $getKey . '=') !== false
-            || strpos($redirect_url, '&amp;' . $getKey . '=') !== false
+        if (cString::findFirstPos($redirect_url, '?' . $getKey . '=') !== false
+            || cString::findFirstPos($redirect_url, '&' . $getKey . '=') !== false
+            || cString::findFirstPos($redirect_url, '&amp;' . $getKey . '=') !== false
         ) {
             continue;
         }
@@ -661,7 +661,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
                 continue 2;
         }
 
-        if (strpos($redirect_url, '?') === false) {
+        if (cString::findFirstPos($redirect_url, '?') === false) {
             $redirect_url .= '?';
         } else {
             $redirect_url .= '&amp;';

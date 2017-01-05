@@ -60,8 +60,8 @@ class cApiUploadCollection extends ItemCollection {
         // i.e. test.gif is not the same as Test.gif
         // Windows OS doesn't distinguish between lower and uppercase file
         // names, i.e. test.gif is the same as Test.gif in file system
-        $os = strtolower(getenv('OS'));
-        $isWindows = (false !== strpos($os, 'windows'));
+        $os = cString::toLowerCase(getenv('OS'));
+        $isWindows = (false !== cString::findFirstPos($os, 'windows'));
         $binary = $isWindows ? '' : 'BINARY';
 
         $this->select("idclient = $escClient AND dirname = $binary '$escDirname' AND filename = $binary '$escFilename'");

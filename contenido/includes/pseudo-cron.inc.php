@@ -199,7 +199,7 @@ function logMessage($msg, $PC_writeDir, $PC_useLog, $PC_debug) {
 
         if (is_writable($logfile)) {
             $file = fopen($logfile, "ab");
-            if ($msg[strlen($msg) - 1] != "\n") {
+            if ($msg[cString::getStringLength($msg) - 1] != "\n") {
                 $msg.="\r\n";
             }
             if ($PC_debug) {
@@ -218,7 +218,7 @@ function logMessage($msg, $PC_writeDir, $PC_useLog, $PC_debug) {
  */
 function lTrimZeros($number) {
     while ($number[0] == '0') {
-        $number = substr($number, 1);
+        $number = cString::getPartOfString($number, 1);
     }
     return $number;
 }

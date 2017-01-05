@@ -55,7 +55,7 @@ class cGenericDbDriverMysql extends cGenericDbDriver {
      * @return string
      */
     public function buildOperator($sField, $sOperator, $sRestriction) {
-        $sOperator = strtolower($sOperator);
+        $sOperator = cString::toLowerCase($sOperator);
 
         $sWhereStatement = "";
 

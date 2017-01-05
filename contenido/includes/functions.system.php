@@ -23,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 function emptyLogFile() {
     global $cfg, $notification, $auth;
 
-    if (strpos($auth->auth["perm"], "sysadmin") === false) {
+    if (cString::findFirstPos($auth->auth["perm"], "sysadmin") === false) {
         return $notification->returnNotification("error", i18n("Can't clear error log : Access is denied!"));
     }
 
@@ -147,7 +147,7 @@ function checkPathInformation($strConUrl, $strBrowserUrl) {
     } else { // isn't
         if (isIPv4($arrBrowserUrl['host'])) { //is
             $tmpAddr = gethostbyaddr($arrBrowserUrl['host']);
-            $arrBrowserUrl['host'] = str_replace('-', '.', substr($tmpAddr, 0, strpos($tmpAddr, ".")));
+            $arrBrowserUrl['host'] = str_replace('-', '.', cString::getPartOfString($tmpAddr, 0, cString::findFirstPos($tmpAddr, ".")));
 
             if (isIPv4($arrBrowserUrl['host'])) {
                 return '3';
@@ -185,7 +185,7 @@ function compareUrlStrings($arrConUrl, $arrBrowserUrl, $isIP = false) {
 
     // && $isIP == false
     // remove 'www.' if needed
-    if (strpos($arrConUrl['host'], 'www.') == 0 || strpos($arrBrowserUrl['host'], 'www.') == 0) {
+    if (cString::findFirstPos($arrConUrl['host'], 'www.') == 0 || cString::findFirstPos($arrBrowserUrl['host'], 'www.') == 0) {
         $arrConUrl['host'] = str_replace('www.', '', $arrConUrl);
         $arrBrowserUrl['host'] = str_replace('www.', '', $arrBrowserUrl);
     }

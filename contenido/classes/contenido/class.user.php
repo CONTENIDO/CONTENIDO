@@ -461,7 +461,7 @@ class cApiUser extends Item {
         }
 
         // check length...
-        if (strlen($password) < $iMinLength) {
+        if (cString::getStringLength($password) < $iMinLength) {
             $iResult = self::PASS_TO_SHORT;
         }
 
@@ -651,7 +651,7 @@ class cApiUser extends Item {
      */
     public function getEffectiveName() {
         $name = trim($this->get('realname'));
-        if (strlen($name) == 0) {
+        if (cString::getStringLength($name) == 0) {
             $name = trim($this->get('username'));
         }
         return $name;
@@ -859,7 +859,7 @@ class cApiUser extends Item {
      * @param string $sValidateTo
      */
     public function setValidDateTo($sValidateTo) {
-        if ('0000-00-00' == $this->get('valid_to') && 0 == strlen(trim($sValidateTo))) {
+        if ('0000-00-00' == $this->get('valid_to') && 0 == cString::getStringLength(trim($sValidateTo))) {
             return;
         }
         if ($this->get('valid_to') != $sValidateTo) {
@@ -874,7 +874,7 @@ class cApiUser extends Item {
      * @param string $sValidateFrom
      */
     public function setValidDateFrom($sValidateFrom) {
-        if ('0000-00-00' == $this->get('valid_from') && 0 == strlen(trim($sValidateFrom))) {
+        if ('0000-00-00' == $this->get('valid_from') && 0 == cString::getStringLength(trim($sValidateFrom))) {
             return;
         }
         if ($this->get('valid_from') != $sValidateFrom) {
@@ -952,7 +952,7 @@ class cApiUser extends Item {
 
         foreach ($groups as $group) {
             $sTemp = $group->get('groupname');
-            $sTemp = substr($sTemp, 4, strlen($sTemp) - 4);
+            $sTemp = cString::getPartOfString($sTemp, 4, cString::getStringLength($sTemp) - 4);
 
             if (true === $bAddDescription) {
                 $sDescription = trim($group->get('description'));

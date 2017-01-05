@@ -191,7 +191,7 @@ class Solr {
 
         // remove unset options (TODO could be done via array_filter too)
         foreach ($options as $key => $value) {
-            if (0 == strlen(trim($value))) {
+            if (0 == cString::getStringLength(trim($value))) {
                 unset($options[$key]);
             }
         }

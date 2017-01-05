@@ -170,7 +170,7 @@ class cApiCecRegistry {
             return false;
         }
 
-        if (strpos($sFunctionName, '->') > 0) {
+        if (cString::findFirstPos($sFunctionName, '->') > 0) {
             // chain function is a method of a object instance
             list($class, $method) = explode('->', $sFunctionName);
             if (!class_exists($class)) {
@@ -182,7 +182,7 @@ class cApiCecRegistry {
                 new $class(),
                 $method
             );
-        } elseif (strpos($sFunctionName, '::') > 0) {
+        } elseif (cString::findFirstPos($sFunctionName, '::') > 0) {
             // chain function is static method of a object
             list($class, $method) = explode('::', $sFunctionName);
             if (!class_exists($class)) {

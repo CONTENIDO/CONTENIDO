@@ -324,11 +324,11 @@ class PifaAjaxHandler {
             $columnName = cSecurity::unescapeDB($columnName);
             $columnName = cSecurity::toString($columnName);
             $columnName = trim($columnName);
-            $columnName = strtolower($columnName);
+            $columnName = cString::toLowerCase($columnName);
             // does not seem to work
             // $columnName = cString::replaceDiacritics($columnName);
             $columnName = preg_replace('/[^a-z0-9_]/', '_', $columnName);
-            $columnName = substr($columnName, 0, 64);
+            $columnName = cString::getPartOfString($columnName, 0, 64);
             if ($columnName !== $pifaField->get('column_name')) {
                 $pifaField->set('column_name', $columnName);
             }
@@ -340,7 +340,7 @@ class PifaAjaxHandler {
             $label = cSecurity::toString($label);
             $label = strip_tags($label);
             $label = trim($label);
-            $label = substr($label, 0, 1023);
+            $label = cString::getPartOfString($label, 0, 1023);
             if ($label !== $pifaField->get('label')) {
                 $pifaField->set('label', $label);
             }
@@ -362,7 +362,7 @@ class PifaAjaxHandler {
             $uri = cSecurity::unescapeDB($uri);
             $uri = cSecurity::toString($uri);
             $uri = trim($uri);
-            $uri = substr($uri, 0, 1023);
+            $uri = cString::getPartOfString($uri, 0, 1023);
             if ($uri !== $pifaField->get('uri')) {
                 $pifaField->set('uri', $uri);
             }
@@ -373,7 +373,7 @@ class PifaAjaxHandler {
             $defaultValue = cSecurity::unescapeDB($defaultValue);
             $defaultValue = cSecurity::toString($defaultValue);
             $defaultValue = trim($defaultValue);
-            $defaultValue = substr($defaultValue, 0, 1023);
+            $defaultValue = cString::getPartOfString($defaultValue, 0, 1023);
             if ($defaultValue !== $pifaField->get('default_value')) {
                 $pifaField->set('default_value', $defaultValue);
             }
@@ -382,7 +382,7 @@ class PifaAjaxHandler {
         if ($pifaField->showField('option_labels')) {
             if (array_key_exists('option_labels', $_POST) && is_array($_POST['option_labels'])) {
                 $optionLabels = implode(',', array_map($string_cast_deep, $_POST['option_labels']));
-                $optionLabels = substr($optionLabels, 0, 1023);
+                $optionLabels = cString::getPartOfString($optionLabels, 0, 1023);
             }
             if ($optionLabels !== $pifaField->get('option_labels')) {
                 $pifaField->set('option_labels', $optionLabels);
@@ -392,7 +392,7 @@ class PifaAjaxHandler {
         if ($pifaField->showField('option_values')) {
             if (array_key_exists('option_values', $_POST) && is_array($_POST['option_values'])) {
                 $optionValues = implode(',', array_map($string_cast_deep, $_POST['option_values']));
-                $optionValues = substr($optionValues, 0, 1023);
+                $optionValues = cString::getPartOfString($optionValues, 0, 1023);
             }
             if ($optionValues !== $pifaField->get('option_values')) {
                 $pifaField->set('option_values', $optionValues);
@@ -424,9 +424,9 @@ class PifaAjaxHandler {
             $rule = $_POST['rule'];
             $rule = cSecurity::toString($rule, false);
             $rule = trim($rule);
-            $rule = substr($rule, 0, 1023);
+            $rule = cString::getPartOfString($rule, 0, 1023);
             // check if rule is valid
-            if (0 === strlen($rule)) {
+            if (0 === cString::getStringLength($rule)) {
                 $pifaField->set('rule', $rule);
             } else if (false === @preg_match($rule, 'And always remember: the world is an orange!')) {
                 // PASS
@@ -442,7 +442,7 @@ class PifaAjaxHandler {
             $errorMessage = cSecurity::unescapeDB($errorMessage);
             $errorMessage = cSecurity::toString($errorMessage);
             $errorMessage = trim($errorMessage);
-            $errorMessage = substr($errorMessage, 0, 1023);
+            $errorMessage = cString::getPartOfString($errorMessage, 0, 1023);
             if ($errorMessage !== $pifaField->get('error_message')) {
                 $pifaField->set('error_message', $errorMessage);
             }
@@ -450,7 +450,7 @@ class PifaAjaxHandler {
 
         if ($pifaField->showField('css_class') && array_key_exists('css_class', $_POST) && is_array($_POST['css_class'])) {
             $cssClass = implode(',', array_map($string_cast_deep, $_POST['css_class']));
-            $cssClass = substr($cssClass, 0, 1023);
+            $cssClass = cString::getPartOfString($cssClass, 0, 1023);
         }
         if ($cssClass !== $pifaField->get('css_class')) {
             $pifaField->set('css_class', $cssClass);
@@ -461,7 +461,7 @@ class PifaAjaxHandler {
             $optionClass = cSecurity::unescapeDB($optionClass);
             $optionClass = cSecurity::toString($optionClass);
             $optionClass = trim($optionClass);
-            $optionClass = substr($optionClass, 0, 1023);
+            $optionClass = cString::getPartOfString($optionClass, 0, 1023);
             if ($optionClass !== $pifaField->get('option_class')) {
                 $pifaField->set('option_class', $optionClass);
             }
@@ -589,7 +589,7 @@ class PifaAjaxHandler {
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
         header('Cache-Control: private');
         header('Content-Type: text/csv');
-        header('Content-Length: ' . strlen($data));
+        header('Content-Length: ' . cString::getStringLength($data));
         header('Content-Disposition: attachment; filename="' . $filename . '"');
         header('Content-Transfer-Encoding: binary');
 
@@ -624,7 +624,7 @@ class PifaAjaxHandler {
         header('Cache-Control: private');
         header('Content-Type: text/xml');
         // header('Content-Type: application/xml');
-        header('Content-Length: ' . strlen($xml));
+        header('Content-Length: ' . cString::getStringLength($xml));
         header('Content-Disposition: attachment; filename="' . $filename . '"');
         header('Content-Transfer-Encoding: binary');
 

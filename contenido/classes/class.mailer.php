@@ -195,7 +195,7 @@ class cMailer extends Swift_Mailer {
             'tls',
             'ssl'
         );
-        $mail_encryption = strtolower(getSystemProperty('system', 'mail_encryption'));
+        $mail_encryption = cString::toLowerCase(getSystemProperty('system', 'mail_encryption'));
         if (in_array($mail_encryption, $encryptions)) {
             $this->_mailEncryption = $mail_encryption;
         } elseif ('1' == $mail_encryption) {

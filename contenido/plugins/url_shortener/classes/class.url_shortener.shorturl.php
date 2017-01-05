@@ -112,7 +112,7 @@ class cApiShortUrlCollection extends ItemCollection {
     public function isValidShortUrl($shorturl) {
         $cfg = cRegistry::getConfig();
 
-        if (strlen(trim($shorturl)) === 0) {
+        if (cString::getStringLength(trim($shorturl)) === 0) {
             return true;
         }
 
@@ -130,7 +130,7 @@ class cApiShortUrlCollection extends ItemCollection {
         if (is_numeric($cfg['url_shortener']['minimum_length'])) {
             $minLength = $cfg['url_shortener']['minimum_length'];
         }
-        if (strlen($shorturl) < $minLength) {
+        if (cString::getStringLength($shorturl) < $minLength) {
             return self::ERR_TOO_SHORT;
         }
 

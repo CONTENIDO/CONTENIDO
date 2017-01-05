@@ -171,7 +171,7 @@ class cHttpRequestSocket extends cHttpRequest {
             foreach ($this->getArray as $key => $value) {
                 $this->url .= urlencode($key) . '=' . urlencode($value) . '&';
             }
-            $this->url = substr($this->url, 0, strlen($this->url) - 1);
+            $this->url = cString::getPartOfString($this->url, 0, cString::getStringLength($this->url) - 1);
         }
     }
 
@@ -189,7 +189,7 @@ class cHttpRequestSocket extends cHttpRequest {
             $this->body .= $value . "\r\n";
             $this->body .= $this->boundary . "\r\n";
         }
-        $this->headerArray['Content-Length'] = strlen($this->body);
+        $this->headerArray['Content-Length'] = cString::getStringLength($this->body);
     }
 
     /**
@@ -204,7 +204,7 @@ class cHttpRequestSocket extends cHttpRequest {
      * @return string|bool
      */
     protected function sendRequest($return, $method, $returnHeaders = false) {
-        if (!(strpos($this->url, 'http') === 0)) {
+        if (!(cString::findFirstPos($this->url, 'http') === 0)) {
             $this->url = 'http://' . $this->url;
         }
 
@@ -246,11 +246,11 @@ class cHttpRequestSocket extends cHttpRequest {
 
         if ($return) {
             if (!$returnHeaders) {
-                $ret = substr(cString::strstr($ret, "\r\n\r\n"), strlen("\r\n\r\n"));
+                $ret = cString::getPartOfString(cString::strstr($ret, "\r\n\r\n"), cString::getStringLength("\r\n\r\n"));
             }
             return $ret;
         } else {
-            return strpos(cString::strstr($ret, '\r\n', true), '200') !== false;
+            return cString::findFirstPos(cString::strstr($ret, '\r\n', true), '200') !== false;
         }
     }
 

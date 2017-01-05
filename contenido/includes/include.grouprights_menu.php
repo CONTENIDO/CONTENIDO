@@ -106,7 +106,7 @@ while ($db->nextRecord()) {
         $groupid = $db->f("group_id");
         $groupname = conHtmlSpecialChars($db->f("groupname"));
 
-        $groupname = substr($groupname, 4);
+        $groupname = cString::getPartOfString($groupname, 4);
 
         $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
         $area = "groups";

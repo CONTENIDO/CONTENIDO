@@ -165,12 +165,12 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         }
 
         // teasersort is creationdate by default
-        if (strlen($this->_settings['teaser_sort']) == 0) {
+        if (cString::getStringLength($this->_settings['teaser_sort']) == 0) {
             $this->_settings['teaser_sort'] = 'creationdate';
         }
 
         // teaser style is liststyle by default
-        if (strlen($this->_settings['teaser_style']) == 0) {
+        if (cString::getStringLength($this->_settings['teaser_style']) == 0) {
             $this->_settings['teaser_style'] = 'cms_teaser_slider.html';
         }
 
@@ -185,32 +185,32 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         }
 
         // cms type head default
-        if (strlen($this->_settings['teaser_source_head']) == 0) {
+        if (cString::getStringLength($this->_settings['teaser_source_head']) == 0) {
             $this->_settings['teaser_source_head'] = 'CMS_HTMLHEAD';
         }
 
         // cms type text default
-        if (strlen($this->_settings['teaser_source_text']) == 0) {
+        if (cString::getStringLength($this->_settings['teaser_source_text']) == 0) {
             $this->_settings['teaser_source_text'] = 'CMS_HTML';
         }
 
         // cms type image default
-        if (strlen($this->_settings['teaser_source_image']) == 0) {
+        if (cString::getStringLength($this->_settings['teaser_source_image']) == 0) {
             $this->_settings['teaser_source_image'] = 'CMS_IMG';
         }
 
         // cms type date default
-        if (strlen($this->_settings['teaser_source_date']) == 0) {
+        if (cString::getStringLength($this->_settings['teaser_source_date']) == 0) {
             $this->_settings['teaser_source_date'] = 'CMS_DATE';
         }
 
         // sort order of teaser articles
-        if (strlen($this->_settings['teaser_sort_order']) == 0) {
+        if (cString::getStringLength($this->_settings['teaser_sort_order']) == 0) {
             $this->_settings['teaser_sort_order'] = 'asc';
         }
 
         // teaser image crop option
-        if (strlen($this->_settings['teaser_image_crop']) == 0 || $this->_settings['teaser_image_crop'] == 'false') {
+        if (cString::getStringLength($this->_settings['teaser_image_crop']) == 0 || $this->_settings['teaser_image_crop'] == 'false') {
             $this->_settings['teaser_image_crop'] = 'false';
         }
     }
@@ -385,8 +385,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
             // if string is defined check if article contains this string and
             // abort, if article does not contain this string
             if ($this->_settings['teaser_filter'] != '') {
-                $iPosText = strrpos(conHtmlEntityDecode($text), $this->_settings['teaser_filter']);
-                $iPosHead = strrpos(conHtmlEntityDecode($title), $this->_settings['teaser_filter']);
+                $iPosText = cString::findLastPos(conHtmlEntityDecode($text), $this->_settings['teaser_filter']);
+                $iPosHead = cString::findLastPos(conHtmlEntityDecode($title), $this->_settings['teaser_filter']);
                 if (is_bool($iPosText) && !$iPosText && is_bool($iPosHead) && !$iPosHead) {
                     return false;
                 }
@@ -400,7 +400,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
             // strip tags in teaser text and cut it if it is to long
             $title = trim(strip_tags($title));
             $text = trim(strip_tags($text));
-            if (strlen($text) > $this->_settings['teaser_character_limit']) {
+            if (cString::getStringLength($text) > $this->_settings['teaser_character_limit']) {
                 $text = cString::trimAfterWord($text, $this->_settings['teaser_character_limit']) . '...';
             }
 
@@ -417,9 +417,9 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
                 } else {
                     $template->set('d', 'IMAGE_MEDIANAME', '');
                 }
-            } else if (strip_tags($imageId) != $imageId && strlen($imageId) > 0) {
+            } else if (strip_tags($imageId) != $imageId && cString::getStringLength($imageId) > 0) {
                 $image = $this->_extractImage($imageId);
-                if (strlen($image['src']) > 0) {
+                if (cString::getStringLength($image['src']) > 0) {
                     $template->set('d', 'IMAGE', $image['element']);
                     $template->set('d', 'IMAGE_SRC', $image['src']);
                     $cApiUploadMeta->loadByMany(array('idlang' => cRegistry::getArticleLanguageId(), 'idupl' => $imageId));
@@ -528,7 +528,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         preg_match($regEx, $match[0], $img);
 
         // check if this image lies in upload folder
-        $pos = strrpos($img[4], $this->_cfgClient[$this->_client]['upload']);
+        $pos = cString::findLastPos($img[4], $this->_cfgClient[$this->_client]['upload']);
         if (!is_bool($pos)) {
             // if it is generate full internal path to image and scale it for
             // display using class internal function getImage()

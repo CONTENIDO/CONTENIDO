@@ -78,7 +78,7 @@ switch ($wysiwygeditor) {
 
 // get scripts from editor class
 $jslibs .= $oEditor->getScripts();
-if ('tinymce3' === substr($wysiwygeditor, 0, 8)
+if ('tinymce3' === cString::getPartOfString($wysiwygeditor, 0, 8)
     && true === $oEditor->getGZIPMode()
 ) {
     // tinyMCE_GZ.init call must be placed in its own script tag
@@ -113,7 +113,7 @@ if (!($perm->have_perm_area_action($area, "savecontype") || $perm->have_perm_are
 if (($action == 'savecontype' || $action == 10)) {
     if ($perm->have_perm_area_action($area, "savecontype") || $perm->have_perm_area_action_item($area, "savecontype", $idcat)) {
         if ($data != '') {
-            $data = explode('||', substr($data, 0, -2));
+            $data = explode('||', cString::getPartOfString($data, 0, -2));
             foreach ($data as $value) {
                 $value = explode('|', $value);
                 if ($value[3] == '%$%EMPTY%$%') {
@@ -334,7 +334,7 @@ if (($action == 'savecontype' || $action == 10)) {
     $rawDataFile = $_FILES['rawfile']['tmp_name'];
 
     // check file exist
-    if (strlen($rawDataFile) > 0 && isset($_FILES['rawfile'])) {
+    if (cString::getStringLength($rawDataFile) > 0 && isset($_FILES['rawfile'])) {
 
         // read file from tmp upload folder
         $rawData = file_get_contents($rawDataFile);
@@ -408,7 +408,7 @@ if (($action == 'savecontype' || $action == 10)) {
                                     $typeEntry = new cApiType();
                                     $typeEntry->loadBy("type", $type);
 
-                                    if (strlen($type) > 0 && $typeid > 0 && in_array($typeEntry->get("type"), $allowedContentTypes)) {
+                                    if (cString::getStringLength($type) > 0 && $typeid > 0 && in_array($typeEntry->get("type"), $allowedContentTypes)) {
                                         if (isset($_POST['overwritecontent']) && $_POST['overwritecontent'] == 1) {
                                             conSaveContentEntry($articleLanguage->get('idartlang'), $type, $typeid, $child);
                                         } else {
@@ -1080,7 +1080,7 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
     // Replace all CMS_TAGS[]
     foreach ($_typeList as $_typeItem) {
 
-        $key = strtolower($_typeItem->type);
+        $key = cString::toLowerCase($_typeItem->type);
         $type = $_typeItem->type;
 
         // Try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
@@ -1095,9 +1095,9 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
         $backendPath = cRegistry::getBackendPath();
 
         $typeCodeFile = $backendPath . 'includes/type/code/include.' . $type . '.code.php';
-        $cTypeClassFile = $backendPath . 'classes/content_types/class.content.type.' . strtolower(str_replace('CMS_', '', $type)) . '.php';
+        $cTypeClassFile = $backendPath . 'classes/content_types/class.content.type.' . cString::toLowerCase(str_replace('CMS_', '', $type)) . '.php';
         // classname format: CMS_HTMLHEAD -> cContentTypeHtmlhead
-        $className = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $type)));
+        $className = 'cContentType' . ucfirst(cString::toLowerCase(str_replace('CMS_', '', $type)));
 
         // Indexes of content typ fields
         foreach ($a_[$key] as $val) {

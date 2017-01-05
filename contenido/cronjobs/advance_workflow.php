@@ -55,9 +55,9 @@ while ($obj = $workflowartallocations->next()) {
         }
 
         $starttime = strtotime(
-            substr_replace(substr(substr($starttime, 0, 2)
-            . chunk_split(substr($starttime, 2, 6), 2, '-')
-            . chunk_split(substr($starttime, 8), 2, ':'), 0, 19), ' ', 10, 1)
+            substr_replace(cString::getPartOfString(cString::getPartOfString($starttime, 0, 2)
+            . chunk_split(cString::getPartOfString($starttime, 2, 6), 2, '-')
+            . chunk_split(cString::getPartOfString($starttime, 8), 2, ':'), 0, 19), ' ', 10, 1)
         );
 
         switch ($timeunit) {

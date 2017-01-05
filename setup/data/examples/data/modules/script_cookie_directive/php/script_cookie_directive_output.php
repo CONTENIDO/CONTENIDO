@@ -55,11 +55,11 @@ if (!cRegistry::getBackendSessionId()) {
         function script_cookie_directive_add_get_params($uri) {
             foreach ($_GET as $getKey => $getValue) {
                 // do not add already added GET parameters to redirect url
-                if (strpos($uri, '?' . $getKey . '=') !== false
-                || strpos($uri, '&' . $getKey . '=') !== false) {
+                if (cString::findFirstPos($uri, '?' . $getKey . '=') !== false
+                || cString::findFirstPos($uri, '&' . $getKey . '=') !== false) {
                     continue;
                 }
-                if (strpos($uri, '?') === false) {
+                if (cString::findFirstPos($uri, '?') === false) {
                     $uri .= '?';
                 } else {
                     $uri .= '&';

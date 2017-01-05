@@ -170,18 +170,18 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
             case 'external':
                 // make sure that link starts with http://
                 $link = $this->_settings['linkeditor_externallink'];
-                if (strpos($link, 'http://') !== 0 && strpos($link, 'www.') === 0) {
+                if (cString::findFirstPos($link, 'http://') !== 0 && cString::findFirstPos($link, 'www.') === 0) {
                     $link = 'http://' . $link;
                 }
                 return $link;
                 break;
             case 'internal':
-                if(substr($this->_settings['linkeditor_idart'], 0, 8) == 'category') { // Selection of category (CON-2563)
+                if(cString::getPartOfString($this->_settings['linkeditor_idart'], 0, 8) == 'category') { // Selection of category (CON-2563)
 
                     $uriInstance = cUri::getInstance();
                     $uriBuilder = $uriInstance->getUriBuilder();
                     $uriParams = array(
-                        'idcat' => cSecurity::toInteger(substr($this->_settings['linkeditor_idart'], 9))
+                        'idcat' => cSecurity::toInteger(cString::getPartOfString($this->_settings['linkeditor_idart'], 9))
                     );
                     $uriBuilder->buildUrl($uriParams, true);
 
@@ -484,7 +484,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                                 c.idclient = ' . cSecurity::toInteger($this->_client) . '
                             ORDER BY
                                 a.idtree';
-            } else if (substr($this->_settings['linkeditor_idart'], 0, 8) == 'category') { // Selection of category (CON-2563)
+            } else if (cString::getPartOfString($this->_settings['linkeditor_idart'], 0, 8) == 'category') { // Selection of category (CON-2563)
                 $sql = 'SELECT distinct
                                 *
                            FROM
@@ -493,7 +493,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                                 ' . $this->_cfg['tab']['cat'] . ' AS c,
                                 ' . $this->_cfg['tab']['cat_lang'] . ' AS d
                             WHERE
-                                b.idcat = ' . cSecurity::toInteger(substr($this->_settings['linkeditor_idart'], 9)) . ' AND
+                                b.idcat = ' . cSecurity::toInteger(cString::getPartOfString($this->_settings['linkeditor_idart'], 9)) . ' AND
                                 a.idcat = d.idcat AND
                                 b.idcat = c.idcat AND
                                 c.idcat = a.idcat AND
@@ -550,7 +550,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
 
         // Selection of category (CON-2563)
         // Format: category-CATID
-        $checkCategorySelection = ((substr($this->_settings['linkeditor_idart'], 0, 8) == 'category' ? true : false));
+        $checkCategorySelection = ((cString::getPartOfString($this->_settings['linkeditor_idart'], 0, 8) == 'category' ? true : false));
         $htmlSelectOptionCategory = new cHTMLOptionElement('- ' . i18n('Select category') . ' -', 'category-' . $idCat, $checkCategorySelection);
         $htmlSelect->appendOptionElement($htmlSelectOptionCategory);
 
@@ -728,7 +728,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
             $directoryPath = '';
         }
         // make sure the path ends with a slash if it is not empty
-        if ($directoryPath !== '' && substr($directoryPath, -1) != '/') {
+        if ($directoryPath !== '' && cString::getPartOfString($directoryPath, -1) != '/') {
             $directoryPath .= '/';
         }
 
@@ -753,8 +753,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         }
 
         usort($files, function($a, $b) {
-            $a = mb_strtolower($a["name"]);
-            $b = mb_strtolower($b["name"]);
+            $a = cString::toLowerCase($a["name"]);
+            $b = cString::toLowerCase($b["name"]);
             if($a < $b) {
                 return -1;
             } else if($a > $b) {

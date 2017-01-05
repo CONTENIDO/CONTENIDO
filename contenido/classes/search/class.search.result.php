@@ -208,9 +208,9 @@ class cSearchResult extends cSearchBaseAbstract {
      *         Content of an article in search result, specified by its type
      */
     public function getSearchContent($art_id, $cms_type, $cms_nr = NULL) {
-        $cms_type = strtoupper($cms_type);
-        if (strlen($cms_type) > 0) {
-            if (!stristr($cms_type, 'cms_')) {
+        $cms_type = cString::toUpperCase($cms_type);
+        if (cString::getStringLength($cms_type) > 0) {
+            if (!cString::findFirstOccurrenceCI($cms_type, 'cms_')) {
                 if (in_array($cms_type, $this->_index->getCmsTypeSuffix())) {
                     $cms_type = 'CMS_' . $cms_type;
                 }
@@ -358,7 +358,7 @@ class cSearchResult extends cSearchBaseAbstract {
      *         The closing html-tag e.g. '</b>'
      */
     public function setReplacement($rep1, $rep2) {
-        if (strlen(trim($rep1)) > 0 && strlen(trim($rep2)) > 0) {
+        if (cString::getStringLength(trim($rep1)) > 0 && cString::getStringLength(trim($rep2)) > 0) {
             $this->_replacement[] = $rep1;
             $this->_replacement[] = $rep2;
         }

@@ -309,14 +309,14 @@ class cGuiTableForm {
         $tpl = new cTemplate();
 
         if ($this->submitjs != "") {
-            if (strlen($this->_acceptCharset) > 0) {
+            if (cString::getStringLength($this->_acceptCharset) > 0) {
                 $tpl->set("s", "JSEXTRA", 'onsubmit="' . $this->submitjs
                         . '" accept-charset="' . $this->_acceptCharset . '"');
             } else {
                 $tpl->set("s", "JSEXTRA", 'onsubmit="' . $this->submitjs . '"');
             }
         } else {
-            if (strlen($this->_acceptCharset) > 0) {
+            if (cString::getStringLength($this->_acceptCharset) > 0) {
                 $tpl->set("s", "JSEXTRA", 'accept-charset="' . $this->_acceptCharset . '"');
             } else {
                 $tpl->set("s", "JSEXTRA", '');

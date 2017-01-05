@@ -78,6 +78,7 @@ return array(
     'cSecurity' => 'contenido/classes/class.security.php',
     'cSession' => 'contenido/classes/class.session.php',
     'cFrontendSession' => 'contenido/classes/class.session.php',
+    'cStringWrapper' => 'contenido/classes/class.stringwrapper.php',
     'cString' => 'contenido/classes/class.string.php',
     'cSystemtest' => 'contenido/classes/class.systemtest.php',
     'cTemplate' => 'contenido/classes/class.template.php',

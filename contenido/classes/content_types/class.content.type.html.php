@@ -85,7 +85,7 @@ class cContentTypeHtml extends cContentTypeAbstract {
             'min-height' => '20px'
         ));
         $wysiwygDiv->updateAttribute('contentEditable', 'true');
-        if (strlen($this->_rawSettings) == 0) {
+        if (cString::getStringLength($this->_rawSettings) == 0) {
             $wysiwygDiv->setContent('&nbsp;');
         } else {
             $wysiwygDiv->setContent($this->_rawSettings);

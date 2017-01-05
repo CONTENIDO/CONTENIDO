@@ -163,7 +163,7 @@ if (file_exists('data/config/' . CON_ENVIRONMENT . '/config.local.php')) {
 
 // If the path variable was passed, try to resolve it to a Category Id
 // e.g. front_content.php?path=/company/products/
-if (isset($path) && strlen($path) > 1) {
+if (isset($path) && cString::getStringLength($path) > 1) {
     // Which resolve method is configured?
     if ($cfg['urlpathresolve'] == true) {
         $iLangCheck = 0;

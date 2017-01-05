@@ -180,7 +180,7 @@ class cRequestValidator {
 
         $this->_check = $aCheck;
         foreach ($aBlacklist as $elem) {
-            $this->_blacklist[] = strtolower($elem);
+            $this->_blacklist[] = cString::toLowerCase($elem);
         }
     }
 
@@ -279,11 +279,11 @@ class cRequestValidator {
 
         $result = false;
 
-        if (in_array(strtolower($key), $this->_blacklist)) {
+        if (in_array(cString::toLowerCase($key), $this->_blacklist)) {
             return false;
         }
 
-        if (in_array(strtoupper($type), array(
+        if (in_array(cString::toUpperCase($type), array(
             'GET',
             'POST',
             'COOKIE'
@@ -322,7 +322,7 @@ class cRequestValidator {
 
         if ($this->_log === true && !empty($this->_logPath)) {
             $content = date('Y-m-d H:i:s') . '    ';
-            $content .= $_SERVER['REMOTE_ADDR'] . str_repeat(' ', 17 - strlen($_SERVER['REMOTE_ADDR'])) . "\n";
+            $content .= $_SERVER['REMOTE_ADDR'] . str_repeat(' ', 17 - cString::getStringLength($_SERVER['REMOTE_ADDR'])) . "\n";
             $content .= '    Query String: ' . $_SERVER['QUERY_STRING'] . "\n";
             $content .= '    Bad parameter: ' . $this->getBadParameter() . "\n";
             $content .= '    POST array: ' . print_r($_POST, true) . "\n";
@@ -370,7 +370,7 @@ class cRequestValidator {
         $result = true;
 
         foreach ($arr as $key => $value) {
-            if (!$this->checkParameter(strtoupper($type), $key, $value)) {
+            if (!$this->checkParameter(cString::toUpperCase($type), $key, $value)) {
                 $this->_failure = $key;
                 $result         = false;
                 break;

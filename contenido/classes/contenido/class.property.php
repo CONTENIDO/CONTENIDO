@@ -784,7 +784,7 @@ class cApiProperty extends Item {
      */
     public function setField($field, $value, $safe = true) {
         if (array_key_exists($field, $this->maximumLength)) {
-            if (strlen($value) > $this->maximumLength[$field]) {
+            if (cString::getStringLength($value) > $this->maximumLength[$field]) {
                 throw new cInvalidArgumentException("Tried to set field $field to value $value, but the field is too small. Truncated.");
             }
         }

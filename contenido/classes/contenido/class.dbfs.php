@@ -78,7 +78,7 @@ class cApiDbfsCollection extends ItemCollection {
             // for the mimetype
             $contentDispositionHeader = true;
             foreach ($cfg['dbfs']['skip_content_disposition_header_for_mimetypes'] as $mt) {
-                if (strtolower($mt) == strtolower($mimetype)) {
+                if (cString::toLowerCase($mt) == cString::toLowerCase($mimetype)) {
                     $contentDispositionHeader = false;
                     break;
                 }
@@ -248,8 +248,8 @@ class cApiDbfsCollection extends ItemCollection {
         $client = (int) $client;
         $item = false;
 
-        if (substr($path, 0, 1) == '/') {
-            $path = substr($path, 1);
+        if (cString::getPartOfString($path, 0, 1) == '/') {
+            $path = cString::getPartOfString($path, 1);
         }
 
         $dir = dirname($path);
@@ -286,7 +286,7 @@ class cApiDbfsCollection extends ItemCollection {
             $item->set('idclient', $client);
             $item->set('dirname', $dir);
             $item->set('filename', $file);
-            $item->set('size', strlen($content));
+            $item->set('size', cString::getStringLength($content));
 
             if ($mimetype != '') {
                 $item->set('mimetype', $mimetype);
@@ -321,7 +321,7 @@ class cApiDbfsCollection extends ItemCollection {
         $this->select("dirname = '" . $dirname . "' AND filename = '" . $filename . "' AND idclient = " . $client . " LIMIT 1");
         if (($item = $this->next()) !== false) {
             $item->set('content', $content);
-            $item->set('size', strlen($content));
+            $item->set('size', cString::getStringLength($content));
             $item->store();
         }
     }
@@ -531,8 +531,8 @@ class cApiDbfs extends Item {
      */
     public static function stripPath($path) {
         $path = self::stripProtocol($path);
-        if (substr($path, 0, 1) == '/') {
-            $path = substr($path, 1);
+        if (cString::getPartOfString($path, 0, 1) == '/') {
+            $path = cString::getPartOfString($path, 1);
         }
         return $path;
     }
@@ -545,7 +545,7 @@ class cApiDbfs extends Item {
      */
     public static function stripProtocol($path) {
         if (self::isDbfs($path)) {
-            $path = substr($path, strlen(cApiDbfs::PROTOCOL_DBFS));
+            $path = cString::getPartOfString($path, cString::getStringLength(cApiDbfs::PROTOCOL_DBFS));
         }
         return $path;
     }
@@ -557,6 +557,6 @@ class cApiDbfs extends Item {
      * @return bool
      */
     public static function isDbfs($file) {
-        return substr($file, 0, 5) == self::PROTOCOL_DBFS;
+        return cString::getPartOfString($file, 0, 5) == self::PROTOCOL_DBFS;
     }
 }

@@ -349,7 +349,7 @@ abstract class cCodeGeneratorAbstract {
 
         // replace all CMS_TAGS[]
         foreach ($_typeList as $_typeItem) {
-            $key = strtolower($_typeItem->type);
+            $key = cString::toLowerCase($_typeItem->type);
             $type = $_typeItem->type;
             // find all CMS_{type}[{number}] values, e.g. CMS_HTML[1]
             // $tmp = preg_match_all('/(' . $type . ')\[+([a-z0-9_]+)+\]/i',
@@ -601,7 +601,7 @@ abstract class cCodeGeneratorAbstract {
      *         The classname e.g. cContentTypeHtmlhead for content type CMS_HTMLHEAD.
      */
     protected function _getContentTypeClassName($type) {
-        $typeClassName = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $type)));
+        $typeClassName = 'cContentType' . ucfirst(cString::toLowerCase(str_replace('CMS_', '', $type)));
 
         return $typeClassName;
     }

@@ -125,8 +125,8 @@ if ($sSelectBox != "") {
     $oForm->unsetActionButton("submit");
 
     // Render and handle History Area
-    $oCodeMirrorIn = new CodeMirror('IdCodeIn', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
-    $oCodeMirrorOutput = new CodeMirror('IdCodeOut', 'php', substr(strtolower($belang), 0, 2), false, $cfg, !$bInUse);
+    $oCodeMirrorIn = new CodeMirror('IdCodeIn', 'php', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg, !$bInUse);
+    $oCodeMirrorOutput = new CodeMirror('IdCodeOut', 'php', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), false, $cfg, !$bInUse);
     if($readOnly) {
         $oCodeMirrorIn->setProperty("readOnly", "true");
         $oCodeMirrorOutput->setProperty("readOnly", "true");

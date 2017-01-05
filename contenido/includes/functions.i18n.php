@@ -135,7 +135,7 @@ function i18nMatchBrowserAccept($accept) {
      * de-ch isn't in the list. Cut it down after the '-' to 'de' which should
      * be in the list.
      */
-    $accept = substr($accept, 0, 2);
+    $accept = cString::getPartOfString($accept, 0, 2);
     foreach ($available_languages as $key => $value) {
         list($country, $lang, $encoding, $shortaccept) = $value;
         if ($accept == $shortaccept) {
@@ -431,7 +431,7 @@ function i18nGetAvailableLanguages() {
 function mi18n($key) {
 
     // skip empty keys
-    if (0 === strlen(trim($key))) {
+    if (0 === cString::getStringLength(trim($key))) {
         return 'No module translation ID specified.';
     }
 
@@ -453,7 +453,7 @@ function mi18n($key) {
     // consider key as untranslated if translation has length 0
     // Don't trim translation, so that a string can be translated as ' '!
     // Show message only if module_translation_message mode is turn on
-    if (0 === strlen($translation)) {
+    if (0 === cString::getStringLength($translation)) {
         $translation = $moduleTranslationMessage ? 'Module translation not found: ' : '';
         $translation .= $key;
     }

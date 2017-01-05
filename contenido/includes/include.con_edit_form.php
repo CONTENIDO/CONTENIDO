@@ -733,7 +733,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $iAvariableSpec = 0;
     foreach ($arrArtSpecs as $id => $value) {
         if ($arrArtSpecs[$id]['online'] == 1) {
-            if (($arrArtSpecs[$id]['default'] == 1) && (strlen($tmp_artspec) == 0 || $tmp_artspec == 0)) {
+            if (($arrArtSpecs[$id]['default'] == 1) && (cString::getStringLength($tmp_artspec) == 0 || $tmp_artspec == 0)) {
                 $inputArtSortSelect->appendOptionElement(new cHTMLOptionElement($arrArtSpecs[$id]['artspec'], $id, true));
             } elseif ($id == $tmp_artspec) {
                 $inputArtSortSelect->appendOptionElement(new cHTMLOptionElement($arrArtSpecs[$id]['artspec'], $id, true));
@@ -789,7 +789,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $select->appendOptionElement($option[4]);
 
     $append = cApiCecHook::executeAndReturn('Contenido.Backend.AfterArticleLink');
-    if(strlen($append) === 0) {
+    if(cString::getStringLength($append) === 0) {
         $page->set('s', 'HOOK_AFTERARTICLELINK', '');
     } else {
         $page->set('s', 'HOOK_AFTERARTICLELINK', $append);
@@ -1398,7 +1398,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         $page->set('s', 'BUTTONIMAGE', 'but_ok.gif');
     }
 
-    if (($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
+    if (($lang_short = cString::getPartOfString(cString::toLowerCase($belang), 0, 2)) != "en") {
         $langscripts = '<script type="text/javascript" src="scripts/jquery/plugins/timepicker-' . $lang_short . '.js"></script>
                  <script type="text/javascript" src="scripts/jquery/plugins/datepicker-' . $lang_short . '.js"></script>';
         $page->set('s', 'CAL_LANG', $langscripts);

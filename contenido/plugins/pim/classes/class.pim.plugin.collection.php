@@ -106,7 +106,7 @@ class PimPluginCollection extends ItemCollection {
             $result = $result + 10;
 
             // removed the last number
-            $result = substr($result, 0, strlen($result) - 1);
+            $result = cString::getPartOfString($result, 0, cString::getStringLength($result) - 1);
 
             // last number is always zero
             return cSecurity::toInteger($result . 0);

@@ -116,7 +116,7 @@ class NewsletterJobCollection extends ItemCollection {
                                     $aPluginVars = call_user_func("recipients_" . $sPlugin . "_wantedVariables");
 
                                     foreach ($aPluginVars as $sPluginVar) {
-                                        $oNewsletter->_replaceTag($sMessageHTML, true, $sPluginVar, "MAIL_" . strtoupper($sPluginVar));
+                                        $oNewsletter->_replaceTag($sMessageHTML, true, $sPluginVar, "MAIL_" . cString::toUpperCase($sPluginVar));
                                     }
                                 }
                             }
@@ -377,7 +377,7 @@ class NewsletterJob extends Item {
                     $bSendHTML = true; // Recipient accepts html newsletter
                 }
 
-                if (strlen($sKey) == 30) { // Prevents sending without having a
+                if (cString::getStringLength($sKey) == 30) { // Prevents sending without having a
                                            // key
                     $sRcpMsgText = str_replace("{KEY}", $sKey, $sRcpMsgText);
                     $sRcpMsgText = str_replace("MAIL_MAIL", $sEMail, $sRcpMsgText);
@@ -399,11 +399,11 @@ class NewsletterJob extends Item {
                         foreach ($aPlugins as $sPlugin => $aPluginVar) {
                             foreach ($aPluginVar as $sPluginVar) {
                                 // Replace tags in text message
-                                $sRcpMsgText = str_replace("MAIL_" . strtoupper($sPluginVar), call_user_func("recipients_" . $sPlugin . "_getvalue", $sPluginVar), $sRcpMsgText);
+                                $sRcpMsgText = str_replace("MAIL_" . cString::toUpperCase($sPluginVar), call_user_func("recipients_" . $sPlugin . "_getvalue", $sPluginVar), $sRcpMsgText);
 
                                 // Replace tags in html message
                                 if ($bIsHTML && $bSendHTML) {
-                                    $sRcpMsgHTML = str_replace("MAIL_" . strtoupper($sPluginVar), call_user_func("recipients_" . $sPlugin . "_getvalue", $sPluginVar), $sRcpMsgHTML);
+                                    $sRcpMsgHTML = str_replace("MAIL_" . cString::toUpperCase($sPluginVar), call_user_func("recipients_" . $sPlugin . "_getvalue", $sPluginVar), $sRcpMsgHTML);
                                 }
                             }
                         }

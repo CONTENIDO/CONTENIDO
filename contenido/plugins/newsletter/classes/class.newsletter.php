@@ -48,7 +48,7 @@ class NewsletterCollection extends ItemCollection
         $this->query();
 
         if ($this->next()) {
-            return $this->create($sName . "_" . substr(md5(rand()), 0, 10));
+            return $this->create($sName . "_" . cString::getPartOfString(md5(rand()), 0, 10));
         }
 
         $oItem = $this->createNewItem();
@@ -80,7 +80,7 @@ class NewsletterCollection extends ItemCollection
         $oBaseItem->loadByPrimaryKey($iItemID);
 
         $oItem = $this->createNewItem();
-        $oItem->set("name", $oBaseItem->get("name") . "_" . substr(md5(rand()), 0, 10));
+        $oItem->set("name", $oBaseItem->get("name") . "_" . cString::getPartOfString(md5(rand()), 0, 10));
 
         $iIDArt = 0;
         if ($oBaseItem->get("type") == "html" && $oBaseItem->get("idart") > 0 && $oBaseItem->get("template_idart") > 0) {
@@ -222,7 +222,7 @@ class Newsletter extends Item
     public function _replaceTag(&$sCode, $bIsHTML, $sField, $sData)
     {
         if ($sCode && !$bIsHTML) {
-            $sCode = str_replace("MAIL_".strtoupper($sField), $sData, $sCode);
+            $sCode = str_replace("MAIL_".cString::toUpperCase($sField), $sData, $sCode);
         } else if ($sCode) {
             // Extract certain tag
             $sRegExp   = '/\[mail\s*([^]]+)\s*name=(?:"|&quot;)'.$sField.'(?:"|&quot;)\s*(.*?)\s*\]((?:.|\s)+?)\[\/mail\]/i';
@@ -275,18 +275,18 @@ class Newsletter extends Item
                                     $sParameter .= ' '.$sKey . '="' . $sValue . '"';
                                 }
                             }
-                            $sMessage    = str_replace("MAIL_".strtoupper($sField), '<a href="'.conHtmlentities($sData).'"'.$sParameter.'>'.$sText.'</a>', $sMessage);
+                            $sMessage    = str_replace("MAIL_".cString::toUpperCase($sField), '<a href="'.conHtmlentities($sData).'"'.$sParameter.'>'.$sText.'</a>', $sMessage);
                             #$sMessage    = '<a href="'.conHtmlentities($sData).'"'.$sParameter.'>'.$sMessage.'</a>';
                             break;
                         default:
-                            $sMessage    = str_replace("MAIL_".strtoupper($sField), $sData, $sMessage);
+                            $sMessage    = str_replace("MAIL_".cString::toUpperCase($sField), $sData, $sMessage);
                             #$sMessage    = $sData;
                     }
 
                     $sRegExp = '/\[mail[^]]+name=(?:"|&quot;)'.$sField.'(?:"|&quot;).*?\].*?\[\/mail\]/is';
                     $sCode   = preg_replace($sRegExp, $sMessage, $sCode, -1);
                     // Just to replace "text"-tags in HTML message also, just in case...
-                    $sCode   = str_replace("MAIL_".strtoupper($sField), $sData, $sCode);
+                    $sCode   = str_replace("MAIL_".cString::toUpperCase($sField), $sData, $sCode);
                 }
             }
         }
@@ -351,9 +351,9 @@ class Newsletter extends Item
         $aHeader = array();
         for ($i = 0;$i < sizeof ($aParts); $i++) {
             if ($i != 0) {
-                $iPos       = strpos($aParts[$i], ':');
-                $sParameter = strtolower (str_replace(' ', '', substr ($aParts[$i], 0, $iPos)));
-                $sValue     = trim(substr($aParts[$i], ($iPos + 1)));
+                $iPos       = cString::findFirstPos($aParts[$i], ':');
+                $sParameter = cString::toLowerCase(str_replace(' ', '', cString::getPartOfString($aParts[$i], 0, $iPos)));
+                $sValue     = trim(cString::getPartOfString($aParts[$i], ($iPos + 1)));
             } else {
                 $sField      = 'status';
                 $aParameters = explode(' ', $aParts[$i]);
@@ -363,8 +363,8 @@ class Newsletter extends Item
             if ($sParameter == 'set-cookie') {
                 $aHeader['cookies'][] = $sValue;
             } else if ($sParameter == 'content-type') {
-                if (($iPos = strpos($sValue, ';')) !== false) {
-                    $aHeader[$sParameter] = substr($sValue, 0, $iPos);
+                if (($iPos = cString::findFirstPos($sValue, ';')) !== false) {
+                    $aHeader[$sParameter] = cString::getPartOfString($sValue, 0, $iPos);
                 } else {
                     $aHeader[$sParameter] = $sValue;
                 }
@@ -374,7 +374,7 @@ class Newsletter extends Item
         }
 
         // Get dechunked and decompressed body
-        $iEOLLen = strlen($sEOL);
+        $iEOLLen = cString::getStringLength($sEOL);
 
         $sBuffer = '';
 
@@ -386,8 +386,8 @@ class Newsletter extends Item
 
             do {
                 $sBody    = ltrim ($sBody);
-                $iPos     = strpos($sBody, $sEOL);
-                $nextChunkLength =  substr($sBody, 0, (int) $iPos);
+                $iPos     = cString::findFirstPos($sBody, $sEOL);
+                $nextChunkLength =  cString::getPartOfString($sBody, 0, (int) $iPos);
 
                 // workaround begin
                 preg_match('/^[0-9A-F]$/', $nextChunkLength, $isHex);
@@ -400,12 +400,12 @@ class Newsletter extends Item
                 $iDataLen = hexdec($nextChunkLength);
 
                 if (isset($aHeader['content-encoding'])) {
-                    $sBuffer .= gzinflate(substr($sBody, ((int) $iPos + (int) $iEOLLen + 10), (int) $iDataLen));
+                    $sBuffer .= gzinflate(cString::getPartOfString($sBody, ((int) $iPos + (int) $iEOLLen + 10), (int) $iDataLen));
                 } else {
-                    $sBuffer .= substr($sBody, ((int) $iPos + (int) $iEOLLen), (int) $iDataLen);
+                    $sBuffer .= cString::getPartOfString($sBody, ((int) $iPos + (int) $iEOLLen), (int) $iDataLen);
                 }
 
-                $sBody      = substr ($sBody, ((int) $iPos + (int) $iDataLen + (int) $iEOLLen));
+                $sBody      = cString::getPartOfString($sBody, ((int) $iPos + (int) $iDataLen + (int) $iEOLLen));
 
 
 
@@ -415,7 +415,7 @@ class Newsletter extends Item
             // workarround begin
             if ($isHex === false) {
                 if (isset($aHeader['content-encoding'])) {
-                    $sBuffer = gzinflate(substr($sBody, 10));
+                    $sBuffer = gzinflate(cString::getPartOfString($sBody, 10));
                 } else {
                     $sBuffer = $sBody; // Not chunked, not compressed
                 }
@@ -423,7 +423,7 @@ class Newsletter extends Item
             // workarround end
 
         } else if (isset($aHeader['content-encoding'])) {
-            $sBuffer = gzinflate(substr($sBody, 10));
+            $sBuffer = gzinflate(cString::getPartOfString($sBody, 10));
         } else {
             $sBuffer = $sBody; // Not chunked, not compressed
         }
@@ -692,7 +692,7 @@ class Newsletter extends Item
             }
         }
 
-        if (!isValidMail($sEMail) || strtolower($sEMail) == "sysadmin@ihresite.de") {
+        if (!isValidMail($sEMail) || cString::toLowerCase($sEMail) == "sysadmin@ihresite.de") {
             // No valid destination mail address specified
             if ($contenido) { // Use i18n only in backend
                 $sError = i18n("Newsletter to %s could not be sent: No valid e-mail address", "newsletter");
@@ -896,7 +896,7 @@ class Newsletter extends Item
                     }
                 }
 
-                if (strlen($sKey) != 30) { // Prevents sending without having a key
+                if (cString::getStringLength($sKey) != 30) { // Prevents sending without having a key
                     if ($contenido) { // Use i18n only in backend
                         $sError = i18n("Newsletter to %s could not be sent: Recipient has an incompatible or empty key", "newsletter");
                     } else {

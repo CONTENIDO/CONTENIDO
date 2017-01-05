@@ -98,7 +98,7 @@ class PifaExporter {
         $attr = array();
         $attr['name'] = $pifaForm->get('name');
         $attr['table'] = $pifaForm->get('data_table');
-        $attr['method'] = strtolower($pifaForm->get('method'));
+        $attr['method'] = cString::toLowerCase($pifaForm->get('method'));
         if ($pifaForm->get('with_timestamp')) {
             $attr['timestamp'] = 'true';
         } else {
@@ -159,7 +159,7 @@ class PifaExporter {
 
         // get value
         $value = strip_tags($pifaField->get('label'));
-        if (0 === strlen(trim($value))) {
+        if (0 === cString::getStringLength(trim($value))) {
             return;
         }
 
@@ -187,7 +187,7 @@ class PifaExporter {
 
         // get value
         $value = $pifaField->get('help_text');
-        if (0 === strlen(trim($value))) {
+        if (0 === cString::getStringLength(trim($value))) {
             return;
         }
 
@@ -206,7 +206,7 @@ class PifaExporter {
 
         // get value
         $value = $pifaField->get('error_message');
-        if (0 === strlen(trim($value))) {
+        if (0 === cString::getStringLength(trim($value))) {
             return;
         }
 
@@ -225,7 +225,7 @@ class PifaExporter {
 
         // get value
         $value = $pifaField->get('rule');
-        if (0 === strlen(trim($value))) {
+        if (0 === cString::getStringLength(trim($value))) {
             return;
         }
 
@@ -400,7 +400,7 @@ class PifaExporter {
             PifaField::BUTTONIMAGE => 'BUTTONIMAGE'
         );
         $fieldTypeName = $fieldTypeNames[$fieldTypeId];
-        $fieldTypeName = strtolower($fieldTypeName);
+        $fieldTypeName = cString::toLowerCase($fieldTypeName);
         return $fieldTypeName;
     }
 }

@@ -297,13 +297,13 @@ class cGuiPage {
         $filePathName = $this->_getRealFilePathName($script);
 
         // Warning message for not existing resources
-        if($perm->isSysadmin($currentuser) && strpos(trim($script), '<script') === false &&
+        if($perm->isSysadmin($currentuser) && cString::findFirstPos(trim($script), '<script') === false &&
            ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['scripts'] . $script)) &&
            (!cFileHandler::exists($backendPath . $cfg['path']['scripts'] . $filePathName)))) {
             $this->displayWarning(i18n("The requested resource") . " <strong>" . $filePathName . "</strong> " . i18n("was not found"));
         }
 
-        if (strpos(trim($script), 'http') === 0 || strpos(trim($script), '<script') === 0 || strpos(trim($script), '//') === 0) {
+        if (cString::findFirstPos(trim($script), 'http') === 0 || cString::findFirstPos(trim($script), '<script') === 0 || cString::findFirstPos(trim($script), '//') === 0) {
             // the given script path is absolute
             if(!in_array($script, $this->_scripts)) {
                 $this->_scripts[] = $script;
@@ -352,7 +352,7 @@ class cGuiPage {
             $this->displayWarning(i18n("The requested resource") . " <strong>" . $filePathName . "</strong> " . i18n("was not found"));
         }
 
-        if (strpos($stylesheet, 'http') === 0 || strpos($stylesheet, '//') === 0) {
+        if (cString::findFirstPos($stylesheet, 'http') === 0 || cString::findFirstPos($stylesheet, '//') === 0) {
             // the given stylesheet path is absolute
             if(!in_array($stylesheet, $this->_styles)) {
                 $this->_styles[] = $stylesheet;
@@ -667,7 +667,7 @@ class cGuiPage {
 
         // Get all messages for the content
         $text = $this->_renderContentMessages();
-        if (strlen(trim($text)) > 0) {
+        if (cString::getStringLength(trim($text)) > 0) {
             $this->_skipTemplateCheck = true;
         }
 
@@ -718,9 +718,9 @@ class cGuiPage {
     protected function _renderScripts() {
         $strscript = $this->_subnav . "\n" . $this->_markScript . "\n";
         foreach ($this->_scripts as $script) {
-            if (strpos($script, 'http') === 0 || strpos($script, '//') === 0) {
+            if (cString::findFirstPos($script, 'http') === 0 || cString::findFirstPos($script, '//') === 0) {
                 $strscript .= '<script type="text/javascript" src="' . $script . '"></script>' . "\n";
-            } else if (strpos($script, '<script') === false) {
+            } else if (cString::findFirstPos($script, '<script') === false) {
                 $strscript .= '<script type="text/javascript" src="scripts/' . $script . '"></script>' . "\n";
             } else {
                 $strscript .= $script;
@@ -735,7 +735,7 @@ class cGuiPage {
     protected function _renderStyles() {
         $strstyle = '';
         foreach ($this->_styles as $style) {
-            if (strpos($style, 'http') === 0 || strpos($style, '//') === 0) {
+            if (cString::findFirstPos($style, 'http') === 0 || cString::findFirstPos($style, '//') === 0) {
                 $strstyle .= '<link href="' . $style . '" type="text/css" rel="stylesheet">' . "\n";
             } else {
                 $strstyle .= '<link href="styles/' . $style . '" type="text/css" rel="stylesheet">' . "\n";

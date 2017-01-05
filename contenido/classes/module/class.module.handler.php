@@ -254,7 +254,7 @@ class cModuleHandler {
         }
 
         $templateName = str_replace(' ', '_', $templateName);
-        $templateName = strtolower($templateName);
+        $templateName = cString::toLowerCase($templateName);
         $fileOperation = cFileHandler::write($sSaveDirectory . $templateName . '.' . $fileType, $fileContent);
         if ($fileOperation === false) {
             return false;
@@ -280,10 +280,10 @@ class cModuleHandler {
         // the first character of module/layout name should be [a-zA-Z0-9]|_|-
         $name = cString::cleanURLCharacters($name);
         // get the first charcte
-        $firstChar = substr($name, 0, 1);
+        $firstChar = cString::getPartOfString($name, 0, 1);
         if (!preg_match('/^[a-zA-Z0-9]|_|-$/', $firstChar)) {
             // replace the first character
-            $name = $defaultChar . substr($name, 1);
+            $name = $defaultChar . cString::getPartOfString($name, 1);
         }
 
         return $name;
@@ -405,7 +405,7 @@ class cModuleHandler {
         $micro1 = microtime();
         $rand1 = rand(0, time());
         $rand2 = rand(0, time());
-        return substr(md5($micro1 . $rand1 . $rand2), 0, $count);
+        return cString::getPartOfString(md5($micro1 . $rand1 . $rand2), 0, $count);
     }
 
     /**
@@ -1129,7 +1129,7 @@ class cModuleHandler {
 
         // Strip out the error message
         if ($isError === false) {
-            $isError = strpos($output, '<phperror>');
+            $isError = cString::findFirstPos($output, '<phperror>');
         }
 
         // More stripping: Users shouldnt see where the file is located,
@@ -1138,8 +1138,8 @@ class cModuleHandler {
             if (isset($modErrorMessage) === false) {
                 $pattern         = '/(<phperror>|<\/phperror>|<b>|<\/b>|<br>|<br \/>)/im';
                 $modErrorMessage = trim(preg_replace($pattern, '', $output));
-                $errorPart1      = substr($modErrorMessage, 0, strpos($modErrorMessage, ' in '));
-                $errorPart2      = substr($modErrorMessage, strpos($modErrorMessage, ' on line '));
+                $errorPart1      = cString::getPartOfString($modErrorMessage, 0, cString::findFirstPos($modErrorMessage, ' in '));
+                $errorPart2      = cString::getPartOfString($modErrorMessage, cString::findFirstPos($modErrorMessage, ' on line '));
                 $modErrorMessage = $errorPart1 . $errorPart2;
             }
             $result['errorMessage'] = sprintf(i18n("Error in module. Error location: %s"), $modErrorMessage);

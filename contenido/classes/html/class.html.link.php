@@ -143,7 +143,7 @@ class cHTMLLink extends cHTMLContentElement {
         $this->_link = $href;
         $this->_type = 'link';
 
-        if (strpos($href, 'javascript:') !== false) {
+        if (cString::findFirstPos($href, 'javascript:') !== false) {
             $this->disableAutomaticParameterAppend();
         }
 
