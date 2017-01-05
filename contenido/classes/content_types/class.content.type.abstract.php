@@ -430,6 +430,16 @@ abstract class cContentTypeAbstract {
     }
 
     /**
+     * This functions able to use a content type object directly for output
+     * See also CON-2587
+     *
+     * @return string
+     */
+    public function __toString() {
+        return $this->generateViewCode();
+    }
+
+    /**
      * Generates the code which should be shown if this content type is shown in
      * the frontend.
      *
