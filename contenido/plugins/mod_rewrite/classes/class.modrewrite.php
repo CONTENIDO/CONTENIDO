@@ -356,11 +356,11 @@ class ModRewrite extends ModRewriteBase {
     public static function getCatIdByUrlPath($path) {
         global $cfg, $client, $lang;
 
-        if (strpos($path, '/') === 0) {
-            $path = substr($path, 1);
+        if (cString::findFirstPos($path, '/') === 0) {
+            $path = cString::getPartOfString($path, 1);
         }
-        if (strrpos($path, '/') === strlen($path) - 1) {
-            $path = substr($path, 0, -1);
+        if (cString::findLastPos($path, '/') === cString::getStringLength($path) - 1) {
+            $path = cString::getPartOfString($path, 0, -1);
         }
 
         $catSeperator = '/';
@@ -385,13 +385,13 @@ class ModRewrite extends ModRewriteBase {
             self::$_db->query($sql);
             while (self::$_db->nextRecord()) {
                 $urlPath = self::$_db->f('urlpath');
-                if ($startFromRoot == 0 && strpos($urlPath, $catSeperator) > 0) {
+                if ($startFromRoot == 0 && cString::findFirstPos($urlPath, $catSeperator) > 0) {
                     // paths are stored with prefixed main category, but created
                     // urls doesn't contain the main cat, remove it...
-                    $urlPath = substr($urlPath, strpos($urlPath, $catSeperator) + 1);
+                    $urlPath = cString::getPartOfString($urlPath, cString::findFirstPos($urlPath, $catSeperator) + 1);
                 }
                 if ($urls2lowercase) {
-                    $urlPath = strtolower($urlPath);
+                    $urlPath = cString::toLowerCase($urlPath);
                 }
 
                 // store path
@@ -543,7 +543,7 @@ class ModRewrite extends ModRewriteBase {
 
         // set article name
         $sArtParam = '';
-        if (isset($artname) && strlen($artname) > 0) {
+        if (isset($artname) && cString::getStringLength($artname) > 0) {
             $sArtParam = '&idart=' . (int) $idart;
         }
 
@@ -553,7 +553,7 @@ class ModRewrite extends ModRewriteBase {
 
         if (isset($_GET) && count($_GET) > 0) {
             foreach ($_GET as $key => $value) {
-                if (!in_array($key, $aParamsToIgnore) && strlen(trim($value)) > 0) {
+                if (!in_array($key, $aParamsToIgnore) && cString::getStringLength(trim($value)) > 0) {
                     $aNoAnchor = explode('#', $value);
                     $sOtherParams .= '&' . urlencode(urldecode($key)) . '=' . urlencode(urldecode($value));
                 }
@@ -667,7 +667,7 @@ class ModRewrite extends ModRewriteBase {
     public static function getClientId($sClientName = '') {
         global $cfg;
 
-        $sClientName = strtolower(self::$_db->escape($sClientName));
+        $sClientName = cString::toLowerCase(self::$_db->escape($sClientName));
         $key = 'clientid_by_name_' . $sClientName;
 
         if (isset(self::$_lookupTable[$key])) {
@@ -778,8 +778,8 @@ class ModRewrite extends ModRewriteBase {
     public static function getLanguageId($sLanguageName = '', $iClientId = 1) {
         global $cfg;
 
-        $sLanguageName = strtolower(self::$_db->escape($sLanguageName));
-        $iClientId = (int) $iClientId;
+        $sLanguageName = cString::toLowerCase(self::$_db->escape($sLanguageName));
+        $iClientId = cSecurity::toInteger($iClientId);
         $key = 'langid_by_langname_clientid_' . $sLanguageName . '_' . $iClientId;
 
         if (isset(self::$_lookupTable[$key])) {
@@ -814,7 +814,7 @@ class ModRewrite extends ModRewriteBase {
     public static function getClientFullUrlParts($url) {
         $clientPath = cRegistry::getFrontendUrl();
 
-        if (stristr($url, $clientPath) !== false) {
+        if (cString::findFirstOccurrenceCI($url, $clientPath) !== false) {
             // url includes full html path (scheme host path, etc.)
             $url = str_replace($clientPath, '', $url);
             $htmlPath = $clientPath;
@@ -825,9 +825,9 @@ class ModRewrite extends ModRewriteBase {
                 // replace not matching path agaings configured one
                 // this will replace e. g. "http://host/cms/" against "http://host/"
                 $htmlPath = str_replace($aComp['path'], parent::getConfig('rootdir'), $htmlPath);
-                if (substr($htmlPath, strlen($htmlPath) - 1) == '/') {
+                if (cString::getPartOfString($htmlPath, cString::getStringLength($htmlPath) - 1) == '/') {
                     // remove last slash
-                    $htmlPath = substr($htmlPath, 0, strlen($htmlPath) - 1);
+                    $htmlPath = cString::getPartOfString($htmlPath, 0, cString::getStringLength($htmlPath) - 1);
                 }
             }
         } else {
@@ -848,9 +848,9 @@ class ModRewrite extends ModRewriteBase {
      */
     public static function urlPreClean($url) {
         // some preparation of different front_content.php occurence
-        if (strpos($url, './front_content.php') === 0) {
+        if (cString::findFirstPos($url, './front_content.php') === 0) {
             $url = str_replace('./front_content.php', 'front_content.php', $url);
-        } elseif (strpos($url, '/front_content.php') === 0) {
+        } elseif (cString::findFirstPos($url, '/front_content.php') === 0) {
             $url = str_replace('/front_content.php', 'front_content.php', $url);
         }
         $url = str_replace('&amp;', '&', $url);

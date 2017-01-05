@@ -120,7 +120,7 @@ $oForm->setActionButton("apply", "images/but_ok" . (($readOnly) ? '_off' : '') .
 $oForm->unsetActionButton("submit");
 
 // Render and handle History Area
-$oCodeMirrorOutput = new CodeMirror('IdLaycode', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
+$oCodeMirrorOutput = new CodeMirror('IdLaycode', 'php', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg, !$bInUse);
     if($readOnly) {
         $oCodeMirrorOutput->setProperty("readOnly", "true");
     }

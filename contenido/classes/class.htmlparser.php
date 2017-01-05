@@ -132,7 +132,7 @@ class HtmlParser {
      */
     public function __construct($HtmlText) {
         $this->setHtmlText($HtmlText);
-        $this->setHtmlTextLength(strlen($HtmlText));
+        $this->setHtmlTextLength(cString::getStringLength($HtmlText));
     }
 
     /**
@@ -310,11 +310,11 @@ class HtmlParser {
         $this->_skipInTag("<");
         $this->_clearAttributes();
         $name = $this->_skipToBlanksInTag();
-        $pos = strpos($name, "/");
+        $pos = cString::findFirstPos($name, "/");
 
         if ($pos === 0) {
             $this->_NodeType = self::NODE_TYPE_ENDELEMENT;
-            $this->_NodeName = substr($name, 1);
+            $this->_NodeName = cString::getPartOfString($name, 1);
             $this->_NodeValue = "";
         } else {
             if (!$this->_isValidTagIdentifier($name)) {
@@ -337,9 +337,9 @@ class HtmlParser {
             } else {
                 $this->_NodeType = self::NODE_TYPE_ELEMENT;
                 $this->_NodeValue = "";
-                $nameLength = strlen($name);
-                if ($nameLength > 0 && substr($name, $nameLength - 1, 1) == "/") {
-                    $this->_NodeName = substr($name, 0, $nameLength - 1);
+                $nameLength = cString::getStringLength($name);
+                if ($nameLength > 0 && cString::getPartOfString($name, $nameLength - 1, 1) == "/") {
+                    $this->_NodeName = cString::getPartOfString($name, 0, $nameLength - 1);
                 } else {
                     $this->_NodeName = $name;
                 }
@@ -360,10 +360,10 @@ class HtmlParser {
 
                     $value = $this->_readValueInTag();
 
-                    $NodeAttributes[strtolower($attrName)] = $value;
+                    $NodeAttributes[cString::toLowerCase($attrName)] = $value;
                     $this->_setNodeAttributes($NodeAttributes);
                 } else {
-                    $NodeAttributes[strtolower($attrName)] = "";
+                    $NodeAttributes[cString::toLowerCase($attrName)] = "";
                     $this->_setNodeAttributes($NodeAttributes);
                 }
             }
@@ -590,12 +590,12 @@ class HtmlParser {
      * @return string
      */
     protected function _skipToStringInTag($needle) {
-        $pos = strpos($this->getHtmlText(), $needle, $this->getHtmlTextIndex());
+        $pos = cString::findFirstPos($this->getHtmlText(), $needle, $this->getHtmlTextIndex());
         if ($pos === false) {
             return "";
         }
-        $top = $pos + strlen($needle);
-        $retvalue = substr($this->getHtmlText(), $this->getHtmlTextIndex(), $top - $this->getHtmlTextIndex());
+        $top = $pos + cString::getStringLength($needle);
+        $retvalue = cString::getPartOfString($this->getHtmlText(), $this->getHtmlTextIndex(), $top - $this->getHtmlTextIndex());
         $this->setHtmlTextIndex($top);
         return $retvalue;
     }

@@ -78,7 +78,7 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage')) {
 
         // There is a need for renaming file
         if ($sFileName != $sHTMLName) {
-            if (cFileHandler::getExtension($sHTMLName) != 'html' and strlen(stripslashes(trim($sHTMLName))) > 0) {
+            if (cFileHandler::getExtension($sHTMLName) != 'html' && cString::getStringLength(stripslashes(trim($sHTMLName))) > 0) {
                 $sHTMLName = stripslashes($sHTMLName) . '.html';
             }
 
@@ -164,7 +164,7 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage')) {
         // Render and handle History Area
         $oPage->setEncoding('utf-8');
 
-        $oCodeMirrorOutput = new CodeMirror('IdLaycode', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
+        $oCodeMirrorOutput = new CodeMirror('IdLaycode', 'php', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg, !$bInUse);
         if($readOnly) {
             $oCodeMirrorOutput->setProperty("readOnly", "true");
         }

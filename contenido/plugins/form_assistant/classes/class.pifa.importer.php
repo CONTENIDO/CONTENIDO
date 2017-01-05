@@ -244,7 +244,7 @@ class PifaImporter {
      * @param string $fieldTypeName to map
      */
     private function _getPifaFieldTypeId($fieldTypeName) {
-        $fieldTypeName = strtoupper($fieldTypeName);
+        $fieldTypeName = cString::toUpperCase($fieldTypeName);
         $fieldTypeIds = array(
             'INPUTTEXT' => PifaField::INPUTTEXT,
             'TEXTAREA' => PifaField::TEXTAREA,

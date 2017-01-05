@@ -228,7 +228,7 @@ class cAutoload {
      */
     public static function isAutoloadable($file) {
         foreach (self::$_includeFiles as $className => $includeFile) {
-            if (strpos($includeFile, $file) !== false) {
+            if (cString::findFirstPos($includeFile, $file) !== false) {
                 return true;
             }
         }
@@ -263,7 +263,7 @@ class cAutoload {
      *         string if validation was successfull, otherwise NULL
      */
     private static function _getContenidoClassFile($className) {
-        $classNameLower = strtolower($className);
+        $classNameLower = cString::toLowerCase($className);
         $file = isset(self::$_includeFiles[$classNameLower]) ? self::$_conRootPath . self::$_includeFiles[$classNameLower] : NULL;
         return self::_validateClassAndFile($className, $file);
     }
@@ -308,7 +308,7 @@ class cAutoload {
     private static function _normalizeConfig(array $config) {
         $newConfig = array();
         foreach ($config as $name => $file) {
-            $newConfig[strtolower($name)] = $file;
+            $newConfig[cString::toLowerCase($name)] = $file;
         }
         return $newConfig;
     }

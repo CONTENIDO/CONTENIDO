@@ -166,8 +166,8 @@ function tplBrowseLayoutForContainers($idlay) {
     $returnStr = '';
 
     preg_match_all("/CMS_CONTAINER\[([0-9]*)\]/", $code, $containerMatches);
-    $posBody = stripos($code, '<body>');
-    $codeBeforeHeader = substr($code, 0, $posBody);
+    $posBody = cString::findFirstPosCI($code, '<body>');
+    $codeBeforeHeader = cString::getPartOfString($code, 0, $posBody);
 
     foreach ($containerMatches[1] as $value) {
         if (preg_match("/CMS_CONTAINER\[$value\]/", $codeBeforeHeader)) {
@@ -318,7 +318,7 @@ function tplPreparseLayout($idlay) {
     $bIsBody = false;
 
     while ($parser->parse()) {
-        if (strtolower($parser->getNodeName()) == 'body') {
+        if (cString::toLowerCase($parser->getNodeName()) == 'body') {
             $bIsBody = true;
         }
 

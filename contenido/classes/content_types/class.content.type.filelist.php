@@ -140,7 +140,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
             // convert the date form fields to timestamps
             foreach ($dateFormFields as $dateFormField) {
                 $value = $_POST[$dateFormField];
-                if ($value != '' && $value != 'DD.MM.YYYY' && strlen($value) == 10) {
+                if ($value != '' && $value != 'DD.MM.YYYY' && cString::getStringLength($value) == 10) {
                     $valueSplit = explode('.', $value);
                     $timestamp = mktime(0, 0, 0, $valueSplit[1], $valueSplit[0], $valueSplit[2]);
                 } else {
@@ -305,7 +305,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                             // Cut the string only, when the limit for identName
                             // is active and the string length is more than the
                             // setting
-                            if ($this->_settings['filelist_md_' . $identName . '_limit'] > 0 && strlen($string) > $this->_settings['filelist_md_' . $identName . '_limit']) {
+                            if ($this->_settings['filelist_md_' . $identName . '_limit'] > 0 && cString::getStringLength($string) > $this->_settings['filelist_md_' . $identName . '_limit']) {
                                 $metaData[$identName] = cString::trimAfterWord(cSecurity::unFilter($string), $this->_settings['filelist_md_' . $identName . '_limit']) . '...';
                             } else {
                                 $metaData[$identName] = cSecurity::unFilter($string);
@@ -446,7 +446,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                                 break;
                             case 'filename':
                             default:
-                                $indexName = strtolower($directoryName . $filename);
+                                $indexName = cString::toLowerCase($directoryName . $filename);
                         }
 
                         $files[$indexName] = array();
@@ -1043,8 +1043,8 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         }
 
         usort($files, function($a, $b) {
-            $a = mb_strtolower($a["name"]);
-            $b = mb_strtolower($b["name"]);
+            $a = cString::toLowerCase($a["name"]);
+            $b = cString::toLowerCase($b["name"]);
             if($a < $b) {
                 return -1;
             } else if($a > $b) {

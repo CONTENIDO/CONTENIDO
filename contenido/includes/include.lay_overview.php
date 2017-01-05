@@ -32,8 +32,8 @@ while (($layout = $oLayouts->next()) !== false) {
     $descr = conHtmlSpecialChars(nl2br($layout->get('description')));
     $idlay = $layout->get('idlay');
 
-    if (strlen($descr) > 64) {
-        $descr = substr($descr, 0, 64) . ' ..';
+    if (cString::getStringLength($descr) > 64) {
+        $descr = cString::getPartOfString($descr, 0, 64) . ' ..';
     }
 
     $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';

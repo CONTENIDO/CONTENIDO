@@ -41,13 +41,13 @@ class cSetupAdminPassword extends cSetupMask {
         $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("Please enter the password for the default administrator account sysadmin and specify it's mail address in case you forgot your entered password.", "setup"));
 
         if ($_SESSION["adminpass"] != "") {
-            $displayadminpass = str_repeat("*", strlen($_SESSION["adminpass"]));
+            $displayadminpass = str_repeat("*", cString::getStringLength($_SESSION["adminpass"]));
         } else {
             $displayadminpass = "";
         }
 
         if ($_SESSION["adminpassrepeat"] != "") {
-            $displayadminpassrepeat = str_repeat("*", strlen($_SESSION["adminpassrepeat"]));
+            $displayadminpassrepeat = str_repeat("*", cString::getStringLength($_SESSION["adminpassrepeat"]));
         } else {
             $displayadminpassrepeat = "";
         }

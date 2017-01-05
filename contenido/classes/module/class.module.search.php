@@ -139,9 +139,9 @@ class cModuleSearch extends cModuleHandler {
         // filter modules based on input and output
         while (($modul = $db->nextRecord()) !== false) {
             $this->initWithDatabaseRow($db);
-            if (strlen(stripslashes($this->_filter)) === 0
-                    || strpos($this->readInput(), stripslashes($this->_filter)) !== false
-                    || strpos($this->readOutput(), stripslashes($this->_filter)) !== false) {
+            if (cString::getStringLength(stripslashes($this->_filter)) === 0
+                    || cString::findFirstPos($this->readInput(), stripslashes($this->_filter)) !== false
+                    || cString::findFirstPos($this->readOutput(), stripslashes($this->_filter)) !== false) {
                     $moduleIds[] = $db->f('idmod');
             }
         }
@@ -267,8 +267,8 @@ class cModuleSearch extends cModuleHandler {
         $result = array();
         while (($module = $db->nextRecord()) !== false) {
             $this->initWithDatabaseRow($db);
-            if (strlen(stripslashes($this->_filter)) === 0
-                || strpos($this->readInput(), stripslashes($this->_filter)) !== false) {
+            if (cString::getStringLength(stripslashes($this->_filter)) === 0
+                || cString::findFirstPos($this->readInput(), stripslashes($this->_filter)) !== false) {
                 $result[$db->f('idmod')] = array(
                         'name' => $db->f('name'),
                         'description' => $db->f('description'),
@@ -301,8 +301,8 @@ class cModuleSearch extends cModuleHandler {
         $result = array();
         while (($module = $db->nextRecord()) !== false) {
             $this->initWithDatabaseRow($db);
-            if (strlen(stripslashes($this->_filter)) === 0
-                || strpos($this->readOutput(), stripslashes($this->_filter)) !== false) {
+            if (cString::getStringLength(stripslashes($this->_filter)) === 0
+                || cString::findFirstPos($this->readOutput(), stripslashes($this->_filter)) !== false) {
                 $result[$db->f('idmod')] = array(
                         'name' => $db->f('name'),
                         'description' => $db->f('description'),

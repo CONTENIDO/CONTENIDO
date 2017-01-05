@@ -339,10 +339,10 @@ class PifaField extends Item {
             // $isValid = $securimage->check($value);
             // } else
 
-            if (1 === cSecurity::toInteger($this->get('obligatory')) && 0 === strlen($value)) {
+            if (1 === cSecurity::toInteger($this->get('obligatory')) && 0 === cString::getStringLength($value)) {
                 // check for obligatory & rule
                 $isValid = false;
-            } else if (0 < strlen($this->get('rule')) && in_array(preg_match($this->get('rule'), $value), array(
+            } else if (0 < cString::getStringLength($this->get('rule')) && in_array(preg_match($this->get('rule'), $value), array(
                 false,
                 0
             ))) {
@@ -379,7 +379,7 @@ class PifaField extends Item {
             case self::FIELDSET_BEGIN:
 
                 // optional class for field
-                if (0 < strlen(trim($this->get('css_class')))) {
+                if (0 < cString::getStringLength(trim($this->get('css_class')))) {
                     $class = ' class="' . implode(' ', explode(',', $this->get('css_class'))) . '"';
                 }
                 $out .= "\n\t<fieldset$class>";
@@ -409,7 +409,7 @@ class PifaField extends Item {
                     // add this fields error message
                     if (isset($errors[$this->get('idfield')])) {
                         $error = $errors[$this->get('idfield')];
-                        if (0 < strlen($error)) {
+                        if (0 < cString::getStringLength($error)) {
                             $content[] = new cHTMLParagraph($error, 'pifa-error-message');
                         }
                     }
@@ -425,7 +425,7 @@ class PifaField extends Item {
                 // CSS class for surrounding division
                 $class = 'pifa-field-' . $this->get('field_type');
                 // optional class for field
-                if (0 < strlen(trim($this->get('css_class')))) {
+                if (0 < cString::getStringLength(trim($this->get('css_class')))) {
                     $class .= ' ' . implode(' ', explode(',', $this->get('css_class')));
                 }
                 // optional class for obligatory field
@@ -527,7 +527,7 @@ class PifaField extends Item {
         // get option labels & values
         // either from field or from external data source class
         $optionClass = $this->get('option_class');
-        if (0 === strlen(trim($optionClass))) {
+        if (0 === cString::getStringLength(trim($optionClass))) {
             $optionLabels = $this->get('option_labels');
             if (NULL !== $optionLabels) {
                 $optionLabels = explode(',', $optionLabels);
@@ -794,7 +794,7 @@ class PifaField extends Item {
         $helpText = $this->get('help_text');
 
         $p = NULL;
-        if (0 < strlen($helpText)) {
+        if (0 < cString::getStringLength($helpText)) {
             $p = new cHTMLParagraph($helpText, 'pifa-field-help');
         }
 
@@ -846,7 +846,7 @@ class PifaField extends Item {
         }
 
         $elemScript = NULL;
-        if (0 < strlen($script)) {
+        if (0 < cString::getStringLength($script)) {
             $elemScript = new cHTMLScript();
             $elemScript->setContent($script);
         }
@@ -1062,10 +1062,10 @@ class PifaField extends Item {
         }
 
         // drop column of data table
-        if (0 < strlen(trim($this->get('column_name')))) {
+        if (0 < cString::getStringLength(trim($this->get('column_name')))) {
             $pifaForm = new PifaForm($this->get('idform'));
 
-            if (0 < strlen(trim($pifaForm->get('data_table')))) {
+            if (0 < cString::getStringLength(trim($pifaForm->get('data_table')))) {
                 $sql = "-- PifaField->delete()
                     ALTER TABLE
                         `" . cSecurity::toString($pifaForm->get('data_table')) . "`
@@ -1344,7 +1344,7 @@ class PifaField extends Item {
         $option_values = $this->get('option_values');
 
         $out = array();
-        if (0 < strlen($option_labels . $option_values)) {
+        if (0 < cString::getStringLength($option_labels . $option_values)) {
             $option_labels = explode(',', $option_labels);
             $option_values = explode(',', $option_values);
 

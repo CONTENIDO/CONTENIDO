@@ -33,7 +33,7 @@ function generateDisplayFilePath($sDisplayPath, $iLimit) {
     $sDisplayPath = (string) $sDisplayPath;
     $iLimit = (int) $iLimit;
 
-    if (strlen($sDisplayPath) > $iLimit) {
+    if (cString::getStringLength($sDisplayPath) > $iLimit) {
         $sDisplayPathShort = cString::trimHard($sDisplayPath, $iLimit);
 
         $sTooltippString = '';
@@ -43,15 +43,15 @@ function generateDisplayFilePath($sDisplayPath, $iLimit) {
 
         foreach ($aPathFragments as $sFragment) {
             if ($sFragment != '') {
-                if (strlen($sFragment) > ($iLimit - 5)) {
+                if (cString::getStringLength($sFragment) > ($iLimit - 5)) {
                     $sFragment = cString::trimHard($sFragment, $iLimit);
                 }
 
-                if ($iCharcount + strlen($sFragment) + 1 > $iLimit) {
+                if ($iCharcount + cString::getStringLength($sFragment) + 1 > $iLimit) {
                     $sTooltippString .= '<br>' . $sFragment . '/';
-                    $iCharcount = strlen($sFragment);
+                    $iCharcount = cString::getStringLength($sFragment);
                 } else {
-                    $iCharcount = $iCharcount + 1 + strlen($sFragment);
+                    $iCharcount = $iCharcount + 1 + cString::getStringLength($sFragment);
                     $sTooltippString .= $sFragment . '/';
                 }
             }
@@ -104,7 +104,7 @@ function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = arra
         return $aFiles;
     }
     foreach ($handle as $file) {
-        if (!in_array(strtolower($file), $aDirsToExclude)) {
+        if (!in_array(cString::toLowerCase($file), $aDirsToExclude)) {
             $aCurrentFiles[] = $file;
         }
     }
@@ -217,8 +217,8 @@ function uplSyncDirectory($sPath) {
     $db->query($sql);
     while ($db->nextRecord()) {
         $sCurrDirname = $db->f('dirname');
-        $sSubDir = substr($sCurrDirname, strlen($sPath));
-        if (substr_count($sSubDir, '/') <= 1 && !cApiDbfs::isDbfs($sCurrDirname)) {
+        $sSubDir = cString::getPartOfString($sCurrDirname, cString::getStringLength($sPath));
+        if (cString::countSubstring($sSubDir, '/') <= 1 && !cApiDbfs::isDbfs($sCurrDirname)) {
             // subdirectory is a direct descendant, process this directory too
             $sFullPath = $cfgClient['upl']['path'] . $sCurrDirname;
             if (!is_dir($sFullPath)) {
@@ -242,7 +242,7 @@ function uplSyncDirectory($sPath) {
         $aDirsToExclude = uplGetDirectoriesToExclude();
         if (false !== ($handle = cDirHandler::read($sFullPath))) {
             foreach ($handle as $file) {
-                if (!in_array(strtolower($file), $aDirsToExclude)) {
+                if (!in_array(cString::toLowerCase($file), $aDirsToExclude)) {
                     cDebug::out($sPath . "::" . $file);
                     $oUploadsColl->sync($sPath, $file);
                 }
@@ -374,7 +374,7 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent) {
     $oUploadColl->select("idclient=" . cSecurity::toInteger($client) . " AND dirname LIKE '" . $oUploadColl->escape($sParent . $sOldName) . "%'");
     while (($oUpload = $oUploadColl->next()) !== false) {
         $sDirName = $oUpload->get('dirname');
-        $sJunk = substr($sDirName, strlen($sParent) + strlen($sOldName));
+        $sJunk = cString::getPartOfString($sDirName, cString::getStringLength($sParent) + cString::getStringLength($sOldName));
         $sNewName2 = $sParent . $sNewName . $sJunk;
         $oUpload->set('dirname', $sNewName2, false);
         $oUpload->store();
@@ -386,7 +386,7 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent) {
     $oPropertyColl->select("idclient=" . (int) $client . " AND itemtype='upload' AND type='file' AND itemid LIKE '" . $oPropertyColl->escape($sParent . $sOldName) . "%'");
     while (($oProperty = $oPropertyColl->next()) !== false) {
         $sDirName = $oProperty->get('itemid');
-        $sJunk = substr($sDirName, strlen($sParent) + strlen($sOldName));
+        $sJunk = cString::getPartOfString($sDirName, cString::getStringLength($sParent) + cString::getStringLength($sOldName));
         $sNewName2 = $sParent . $sNewName . $sJunk;
         $oProperty->set('itemid', $sNewName2, false);
         $oProperty->store();
@@ -414,8 +414,8 @@ function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $s
 
         // list the files in the dir
         foreach (cDirHandler::read($sDirectory, false, true) as $key => $file) {
-            if (!in_array(strtolower($file), $aDirsToExclude)) {
-                if (strpos($file, ".") === 0) {
+            if (!in_array(cString::toLowerCase($file), $aDirsToExclude)) {
+                if (cString::findFirstPos($file, ".") === 0) {
                     continue;
                 }
                 if (@chdir($sDirectory . $file . '/')) {
@@ -479,7 +479,7 @@ function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $c
 
     while (($dbitem = $dbfs->next()) !== false) {
         $dirname = $dbitem->get('dirname');
-        $level = substr_count($dirname, '/') + 2;
+        $level = cString::countSubstring($dirname, '/') + 2;
         $file = basename($dbitem->get('dirname'));
         $parent = dirname($dbitem->get('dirname'));
 
@@ -532,7 +532,7 @@ function uplGetThumbnail($sFile, $iMaxSize) {
         return uplGetFileIcon($sFile);
     }
 
-    $sFileType = strtolower(cFileHandler::getExtension($sFile));
+    $sFileType = cString::toLowerCase(cFileHandler::getExtension($sFile));
 
     switch ($sFileType) {
         case "png":
@@ -575,7 +575,7 @@ function uplGetFileIcon($sFile) {
     $cfg = cRegistry::getConfig();
 
     $sPathFiletypes = cRegistry::getBackendUrl() . $cfg['path']['images'] . 'filetypes/';
-    $sFileType = strtolower(cFileHandler::getExtension($sFile));
+    $sFileType = cString::toLowerCase(cFileHandler::getExtension($sFile));
 
     switch ($sFileType) {
         case "sxi":
@@ -871,7 +871,7 @@ function uplCreateFriendlyName($filename) {
         ), '', $chars);
     }
 
-    $filename = cString::replaceDiacritics($filename, strtoupper($oLang->getField('encoding')));
+    $filename = cString::replaceDiacritics($filename, cString::toUpperCase($oLang->getField('encoding')));
     $filename = preg_replace("/[^A-Za-z0-9._\-" . $chars . "]/i", '', $filename);
 
     return $filename;
@@ -902,7 +902,7 @@ function uplSearch($searchfor) {
     $uplMetaColl->setWhereGroup('description', 'capiuploadmetacollection.description', '%' . $searchfordb . '%', 'LIKE');
     $uplMetaColl->query();
     while (($item = $uplMetaColl->next()) !== false) {
-        $items[$item->get('idupl')] += (substr_count(strtolower($item->get('description')), strtolower($searchfor)) * 5);
+        $items[$item->get('idupl')] += (cString::countSubstring(cString::toLowerCase($item->get('description')), cString::toLowerCase($searchfor)) * 5);
     }
 
     // Search for medianame, ranking *4
@@ -913,7 +913,7 @@ function uplSearch($searchfor) {
     $uplMetaColl->setWhereGroup('medianame', 'capiuploadmetacollection.medianame', '%' . $searchfordb . '%', 'LIKE');
     $uplMetaColl->query();
     while (($item = $uplMetaColl->next()) !== false) {
-        $items[$item->get('idupl')] += (substr_count(strtolower($item->get('medianame')), strtolower($searchfor)) * 4);
+        $items[$item->get('idupl')] += (cString::countSubstring(cString::toLowerCase($item->get('medianame')), cString::toLowerCase($searchfor)) * 4);
     }
 
     // Search for file name, ranking +4
@@ -930,7 +930,7 @@ function uplSearch($searchfor) {
     $uplMetaColl->setWhereGroup('keywords', 'capiuploadmetacollection.keywords', '%' . $searchfordb . '%', 'LIKE');
     $uplMetaColl->query();
     while (($item = $uplMetaColl->next()) !== false) {
-        $items[$item->get('idupl')] += (substr_count(strtolower($item->get('keywords')), strtolower($searchfor)) * 3);
+        $items[$item->get('idupl')] += (cString::countSubstring(cString::toLowerCase($item->get('keywords')), cString::toLowerCase($searchfor)) * 3);
     }
 
     // Search for copyright, ranking *2
@@ -941,7 +941,7 @@ function uplSearch($searchfor) {
     $uplMetaColl->setWhereGroup('copyright', 'capiuploadmetacollection.copyright', '%' . $searchfordb . '%', 'LIKE');
     $uplMetaColl->query();
     while (($item = $uplMetaColl->next()) !== false) {
-        $items[$item->get('idupl')] += (substr_count(strtolower($item->get('copyright')), strtolower($searchfor)) * 2);
+        $items[$item->get('idupl')] += (cString::countSubstring(cString::toLowerCase($item->get('copyright')), cString::toLowerCase($searchfor)) * 2);
     }
 
     // Search for internal_notice, ranking *1
@@ -952,7 +952,7 @@ function uplSearch($searchfor) {
     $uplMetaColl->setWhereGroup('internal_notice', 'capiuploadmetacollection.internal_notice', '%' . $searchfordb . '%', 'LIKE');
     $uplMetaColl->query();
     while (($item = $uplMetaColl->next()) !== false) {
-        $items[$item->get('idupl')] += (substr_count(strtolower($item->get('internal_notice')), strtolower($searchfor)));
+        $items[$item->get('idupl')] += (cString::countSubstring(cString::toLowerCase($item->get('internal_notice')), cString::toLowerCase($searchfor)));
     }
 
     return $items;

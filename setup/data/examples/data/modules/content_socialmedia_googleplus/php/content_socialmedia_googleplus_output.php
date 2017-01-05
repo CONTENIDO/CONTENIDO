@@ -33,7 +33,7 @@ $idclient = cRegistry::getClientId();
 $art = new cApiArticleLanguage($idartlang);
 
 //if post save values in db
-if (cRegistry::isBackendEditMode() && 'POST' === strtoupper($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] == 'gplus') {
+if (cRegistry::isBackendEditMode() && 'POST' === cString::toUpperCase($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] == 'gplus') {
 
     // CON-2174
     $url = $_POST['url'];

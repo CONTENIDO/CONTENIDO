@@ -103,7 +103,7 @@ class cUriBuilderCustomPath extends cUriBuilder {
 
         $sCategoryString = '';
         prCreateURLNameLocationString(intval($aParams['idcat']), "/", $sCategoryString, false, "", $aParams['level'], $aParams['lang'], true, false);
-        if (strlen($sCategoryString) > 0 && substr($sCategoryString, -1) != '/') {
+        if (cString::getStringLength($sCategoryString) > 0 && cString::getPartOfString($sCategoryString, -1) != '/') {
             $sCategoryString .= '/';
         }
         $this->sUrl = $bUseAbsolutePath === true ? $this->sHttpBasePath : '';

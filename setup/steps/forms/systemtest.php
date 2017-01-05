@@ -260,7 +260,7 @@ class cSetupSystemtest extends cSetupMask {
             $oClient->loadByPrimaryKey($client);
             $clientName = $oClient->getField('name');
 
-            if (strlen($languageCode) == 0 || strlen($contryCode) == 0) {
+            if (cString::getStringLength($languageCode) == 0 || cString::getStringLength($contryCode) == 0) {
                 $langName = $oLanguage->getField('name');
 
                 $oClient = new cApiClient();

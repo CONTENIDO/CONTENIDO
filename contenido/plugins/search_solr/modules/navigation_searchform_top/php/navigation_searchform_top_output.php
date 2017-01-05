@@ -42,14 +42,14 @@ if (0 < $searchResultIdart) {
     // determine label to be shown inside input field
     $label = mi18n("NAVIGATION_SEARCHFORM_TOP_LABEL");
     // this translation is optional
-    if (false !== strpos($label, 'Module translation not found: ')) {
+    if (false !== cString::findFirstPos($label, 'Module translation not found: ')) {
         $label = '';
     }
 
     // determine label to be shown on submit button
     $submit = mi18n("NAVIGATION_SEARCHFORM_TOP_SUBMIT");
     // this translation is optional
-    if (false !== strpos($submit, 'Module translation not found: ')) {
+    if (false !== cString::findFirstPos($submit, 'Module translation not found: ')) {
         $submit = '';
     }
 }

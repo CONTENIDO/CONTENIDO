@@ -117,7 +117,7 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
 
     // Parameter check for $default. If set, create a default value
     if ($default != '') {
-        if (((strpos($type, 'timestamp') !== FALSE) && ($default != '')) || ($default == 'NULL')) {
+        if (((cString::findFirstPos($type, 'timestamp') !== FALSE) && ($default != '')) || ($default == 'NULL')) {
             $parameter['DEFAULT'] = "DEFAULT " . $db->escape($default);
         } else {
             $parameter['DEFAULT'] = "DEFAULT '" . $db->escape($default) . "'";
@@ -165,12 +165,12 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
     $structure = dbGetColumns($db, $table);
 
     // If $field contains ',' previous names has been specified; separate from $field
-    $sepPos = strpos($field, ',');
+    $sepPos = cString::findFirstPos($field, ',');
     if ($sepPos === false) {
         $previousName = '';
     } else {
-        $previousName = substr($field, $sepPos + 1);
-        $field = substr($field, 0, $sepPos);
+        $previousName = cString::getPartOfString($field, $sepPos + 1);
+        $field = cString::getPartOfString($field, 0, $sepPos);
     }
 
     if (!array_key_exists($field, $structure)) {

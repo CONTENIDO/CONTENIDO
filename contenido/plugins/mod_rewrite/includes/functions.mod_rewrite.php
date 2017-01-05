@@ -292,7 +292,7 @@ function mr_conSaveArticle(array $data) {
         return $data;
     }
 
-    if (strlen(trim($data['urlname'])) == 0) {
+    if (cString::getStringLength(trim($data['urlname'])) == 0) {
         $data['urlname'] = $data['title'];
     }
 
@@ -707,7 +707,7 @@ function mr_runFrontendController() {
  * @return  string  Cleaned string
  */
 function mr_removeMultipleChars($char, $string) {
-    while (strpos($string, $char . $char) !== false) {
+    while (cString::findFirstPos($string, $char . $char) !== false) {
         $string = str_replace($char . $char, $char, $string);
     }
     return $string;

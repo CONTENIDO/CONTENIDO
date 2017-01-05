@@ -203,8 +203,8 @@ class cHTMLValidator {
         foreach ($chunks as $key => $value) {
             $html .= ($key + 1) . " ";
 
-            for ($i = 0; $i < strlen($value); $i++) {
-                $char = substr($value, $i, 1);
+            for ($i = 0; $i < cString::getStringLength($value); $i++) {
+                $char = cString::getPartOfString($value, $i, 1);
 
                 if (is_array($this->missingTags[$key + 1])) {
                     // echo ($key+1) . " ". $i."<br>";
@@ -230,10 +230,10 @@ class cHTMLValidator {
      * @return array
      */
     protected function _getLineAndCharPos($charpos) {
-        $mangled = substr($this->_html, 0, $charpos);
+        $mangled = cString::getPartOfString($this->_html, 0, $charpos);
 
-        $line = substr_count($mangled, "\n") + 1;
-        $char = $charpos - strrpos($mangled, "\n");
+        $line = cString::countSubstring($mangled, "\n") + 1;
+        $char = $charpos - cString::findLastPos($mangled, "\n");
 
         return array($line, $char);
     }

@@ -84,7 +84,7 @@ class cModuleFileTranslation extends cModuleHandler {
                 // set filename lang_[language]_[Country].txt
                 $language = $this->_getValueFromProperties('language', 'code');
                 $country = $this->_getValueFromProperties('country', 'code');
-                self::$fileName = 'lang_' . $language . '_' . strtoupper($country) . '.txt';
+                self::$fileName = 'lang_' . $language . '_' . cString::toUpperCase($country) . '.txt';
 
                 self::$langArray = $this->getTranslationArray();
                 self::$savedIdMod = $idmodul;
@@ -95,7 +95,7 @@ class cModuleFileTranslation extends cModuleHandler {
             // set filename lang_[language]_[Country].txt
             $language = $this->_getValueFromProperties('language', 'code');
             $country = $this->_getValueFromProperties('country', 'code');
-            self::$fileName = 'lang_' . $language . '_' . strtoupper($country) . '.txt';
+            self::$fileName = 'lang_' . $language . '_' . cString::toUpperCase($country) . '.txt';
         }
     }
 
@@ -141,7 +141,7 @@ class cModuleFileTranslation extends cModuleHandler {
             // set filename lang_[language]_[Country].txt
             $language = $this->_getValueFromProperties('language', 'code');
             $country = $this->_getValueFromProperties('country', 'code');
-            self::$fileName = 'lang_' . $language . '_' . strtoupper($country) . '.txt';
+            self::$fileName = 'lang_' . $language . '_' . cString::toUpperCase($country) . '.txt';
 
             $translations = array();
             while ($db->nextRecord()) {
@@ -207,7 +207,7 @@ class cModuleFileTranslation extends cModuleHandler {
         $retArray = array();
 
         $string = $string . PHP_EOL;
-        $words = preg_split('((\r\n)|(\r)|(\n))', substr($string, 0, strlen($string) - strlen(PHP_EOL)));
+        $words = preg_split('((\r\n)|(\r)|(\n))', cString::getPartOfString($string, 0, cString::getStringLength($string) - cString::getStringLength(PHP_EOL)));
 
         foreach ($words as $key => $value) {
             $oriTrans = preg_split('/(?<!\\\\)' . self::$originalTranslationDivider . '/', $value);
@@ -242,8 +242,8 @@ class cModuleFileTranslation extends cModuleHandler {
 
         $escapedArray = array();
         foreach ($wordListArray as $key => $value) {
-            $newKey = mb_ereg_replace("=", "\\=", $key);
-            $newValue = mb_ereg_replace("=", "\\=", $value);
+            $newKey = cString::ereg_replace("=", "\\=", $key);
+            $newValue = cString::ereg_replace("=", "\\=", $value);
             $escapedArray[$newKey] = $newValue;
         }
 

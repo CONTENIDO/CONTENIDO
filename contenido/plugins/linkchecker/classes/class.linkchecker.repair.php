@@ -60,7 +60,7 @@ class LinkcheckerRepair {
     public function checkLink($link) {
 
         foreach ($this->errorTypes as $errorTypeKey => $errorType) {
-            if (substr($link, 0, strlen($errorType)) == $errorType) {
+            if (cString::getPartOfString($link, 0, cString::getStringLength($errorType)) == $errorType) {
                 $repaired_link = str_replace($errorType, $this->correctTypes[$errorTypeKey], $link);
                 if ($this->pingRepairedLink($repaired_link) == true) {
                     return $repaired_link;

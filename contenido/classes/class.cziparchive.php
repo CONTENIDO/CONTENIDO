@@ -107,7 +107,7 @@ class cZipArchive {
             // remove '/' for validation -> directory names
             $tmpFile = str_replace('/', '', $file);
             // extract only file with valid filename
-            if (cFileHandler::validateFilename($tmpFile, FALSE) && (substr($tmpFile, 0, 1) != '.') && (substr($tmpFile, 0, 1) != '_')) {
+            if (cFileHandler::validateFilename($tmpFile, FALSE) && (cString::getPartOfString($tmpFile, 0, 1) != '.') && (cString::getPartOfString($tmpFile, 0, 1) != '_')) {
                 $zip->extractTo($extractPath, $file);
             }
         }
@@ -149,7 +149,7 @@ class cZipArchive {
             for ($i = 0; $i < $zip->numFiles; $i++) {
                 $file = $zip->getNameIndex($i);
                 $tmpFile = str_replace('/', '', $file);
-                if (cFileHandler::validateFilename($tmpFile, FALSE) && (substr($tmpFile, 0, 1) != '.') && (substr($tmpFile, 0, 1) != '_')) {
+                if (cFileHandler::validateFilename($tmpFile, FALSE) && (cString::getPartOfString($tmpFile, 0, 1) != '.') && (cString::getPartOfString($tmpFile, 0, 1) != '_')) {
                     if (!file_exists($extractPath . '/' . $file)) {
                         $zip->extractTo($extractPath, $file);
                     }
@@ -160,7 +160,7 @@ class cZipArchive {
                 $file = $zip->getNameIndex($i);
                 // remove '/' for validation -> directory names
                 $tmpFile = str_replace('/', '', $file);
-                if (cFileHandler::validateFilename($tmpFile, FALSE) && (substr($tmpFile, 0, 1) != '.') && (substr($tmpFile, 0, 1) != '_')) {
+                if (cFileHandler::validateFilename($tmpFile, FALSE) && (cString::getPartOfString($tmpFile, 0, 1) != '.') && (cString::getPartOfString($tmpFile, 0, 1) != '_')) {
                     $zip->extractTo($extractPath, $file);
                 }
             }

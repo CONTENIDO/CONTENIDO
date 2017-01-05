@@ -233,10 +233,10 @@ foreach ($aMemberList as $key) {
         $li .= $sRealName;
     }
     if ('' !== $aPerms['0']) {
-        $li .= strlen($li) ? ', ' : '';
+        $li .= cString::getStringLength($li) ? ', ' : '';
         $li .= $aPerms['0'];
     }
-    if (0 == strlen($li)) {
+    if (0 == cString::getStringLength($li)) {
         continue;
     }
     $sOutput .= '<li class="welcome">' . $li . '</li>';

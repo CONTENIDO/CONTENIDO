@@ -64,10 +64,10 @@ class ArticleForumRightBottom extends cGuiPage {
             $ar = (date_parse($timeStamp));
             // if elements are smaller than 2 digits add a '0' at front. e.g
             // 2:10 -> 02:10
-            (strlen($ar['day']) < 2) ? $ar['day'] = $nullstring . $ar['day'] : '';
-            (strlen($ar['month']) < 2) ? $ar['month'] = $nullstring . $ar['month'] : '';
-            (strlen($ar['minute']) < 2) ? $ar['minute'] = $nullstring . $ar['minute'] : '';
-            (strlen($ar['hour']) < 2) ? $ar['hour'] = $nullstring . $ar['hour'] : '';
+            (cString::getStringLength($ar['day']) < 2) ? $ar['day'] = $nullstring . $ar['day'] : '';
+            (cString::getStringLength($ar['month']) < 2) ? $ar['month'] = $nullstring . $ar['month'] : '';
+            (cString::getStringLength($ar['minute']) < 2) ? $ar['minute'] = $nullstring . $ar['minute'] : '';
+            (cString::getStringLength($ar['hour']) < 2) ? $ar['hour'] = $nullstring . $ar['hour'] : '';
         }
 
         return $ar;

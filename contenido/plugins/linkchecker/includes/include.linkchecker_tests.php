@@ -161,7 +161,7 @@ function checkLinks() {
                     "error_type" => "invalidurl"
                 ));
             } elseif (url_is_uri($aSearchIDInfosNonID[$i]['url'])) {
-                if (substr($aSearchIDInfosNonID[$i]['url'], 0, strlen($aSearchIDInfosNonID[$i]['url'])) == $frontendURL) {
+                if (cString::getPartOfString($aSearchIDInfosNonID[$i]['url'], 0, cString::getStringLength($aSearchIDInfosNonID[$i]['url'])) == $frontendURL) {
                     $iPing = @cFileHandler::exists(str_replace($frontendURL, $frontendPath, $aSearchIDInfosNonID[$i]['url']));
                 } else {
                     $iPing = @fopen($aSearchIDInfosNonID[$i]['url'], 'r');
@@ -179,7 +179,7 @@ function checkLinks() {
                         ));
                     }
                 }
-            } elseif (substr($aSearchIDInfosNonID[$i]['url'], strlen($aSearchIDInfosNonID[$i]['url']) - 5, 5) == ".html") {
+            } elseif (cString::getPartOfString($aSearchIDInfosNonID[$i]['url'], cString::getStringLength($aSearchIDInfosNonID[$i]['url']) - 5, 5) == ".html") {
 
                 $iPing = @cFileHandler::exists($frontendURL . $aSearchIDInfosNonID[$i]['url']);
 
@@ -188,13 +188,13 @@ function checkLinks() {
                         "error_type" => "unknown"
                     ));
                 }
-            } elseif (substr($aSearchIDInfosNonID[$i]['url'], 0, 20) == "dbfs.php?file=" . cApiDbfs::PROTOCOL_DBFS . "/") {
+            } elseif (cString::getPartOfString($aSearchIDInfosNonID[$i]['url'], 0, 20) == "dbfs.php?file=" . cApiDbfs::PROTOCOL_DBFS . "/") {
 
-                $sDBurl = substr($aSearchIDInfosNonID[$i]['url'], 20, strlen($aSearchIDInfosNonID[$i]['url']));
+                $sDBurl = cString::getPartOfString($aSearchIDInfosNonID[$i]['url'], 20, cString::getStringLength($aSearchIDInfosNonID[$i]['url']));
 
-                $iPos = strrpos($sDBurl, '/');
-                $sDirname = substr($sDBurl, 0, $iPos);
-                $sFilename = substr($sDBurl, $iPos + 1);
+                $iPos = cString::findLastPos($sDBurl, '/');
+                $sDirname = cString::getPartOfString($sDBurl, 0, $iPos);
+                $sFilename = cString::getPartOfString($sDBurl, $iPos + 1);
 
                 // Check dbfs
                 $sql = "SELECT iddbfs FROM " . $cfg['tab']['dbfs'] . " WHERE dirname IN('" . $sDirname . "', '" . conHtmlEntityDecode($sDirname) . "', '" . $sDirname . "') AND filename = '" . $sFilename . "'";
@@ -310,7 +310,7 @@ function searchLinks($sValue, $iArt, $sArt, $iCat, $sCat, $iArtLang, $iLang, $sF
     }
 
     // Redirect
-    if ($sFromtype == "Redirect" && (preg_match('!(' . preg_quote($aUrl['cms']) . '[^\s]*)!i', $sValue, $aMatches) || (preg_match('~(?:file|ftp|http|ww)[^\s]*~i', $sValue, $aMatches) && $_GET['mode'] != 1)) && (stripos($sValue, 'front_content.php') === false) && !in_array($aMatches[0], $aWhitelist)) {
+    if ($sFromtype == "Redirect" && (preg_match('!(' . preg_quote($aUrl['cms']) . '[^\s]*)!i', $sValue, $aMatches) || (preg_match('~(?:file|ftp|http|ww)[^\s]*~i', $sValue, $aMatches) && $_GET['mode'] != 1)) && (cString::findFirstPosCI($sValue, 'front_content.php') === false) && !in_array($aMatches[0], $aWhitelist)) {
         $aSearchIDInfosNonID[] = array(
             "url" => $aMatches[0],
             "idart" => $iArt,
@@ -329,7 +329,7 @@ function searchLinks($sValue, $iArt, $sArt, $iCat, $sCat, $iArtLang, $iLang, $sF
 
         for ($i = 0; $i < count($aMatches[1]); $i++) {
 
-            if (strpos($aMatches[1][$i], "front_content.php") === false && !in_array($aMatches[1][$i], $aWhitelist)) {
+            if (cString::findFirstPos($aMatches[1][$i], "front_content.php") === false && !in_array($aMatches[1][$i], $aWhitelist)) {
                 $aSearchIDInfosNonID[] = array(
                     "url" => $aMatches[1][$i],
                     "idart" => $iArt,

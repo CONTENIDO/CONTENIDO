@@ -87,8 +87,8 @@ class cValidatorEmail extends cValidatorAbstract {
             return false;
         }
 
-        $host = substr($value, strpos($value, '@') + 1);
-        $tld = strrchr($value, '.');
+        $host = cString::getPartOfString($value, cString::findFirstPos($value, '@') + 1);
+        $tld = cString::findLastOccurrence($value, '.');
 
         // do RFC 2606 or user defined filter if configured
         if ($this->getOption('disallow_tld')) {

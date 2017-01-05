@@ -290,7 +290,7 @@ class ModRewriteTest {
         foreach ($data as $k => $v) {
             $ret .= $k . '=' . $v . '; ';
         }
-        $ret = substr($ret, 0, strlen($ret) - 2);
+        $ret = cString::getPartOfString($ret, 0, cString::getStringLength($ret) - 2);
         return $ret;
     }
 

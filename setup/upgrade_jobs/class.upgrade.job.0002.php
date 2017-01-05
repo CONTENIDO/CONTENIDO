@@ -101,7 +101,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
         // Update module aliases
         $this->_oDb->query("SELECT * FROM `%s`", $cfg['tab']['mod']);
         while ($this->_oDb->nextRecord()) {
-            $newName = strtolower(cModuleHandler::getCleanName($this->_oDb->f('name')));
+            $newName = cString::toLowerCase(cModuleHandler::getCleanName($this->_oDb->f('name')));
             $sql = $db2->prepare("UPDATE `%s` SET `alias` = '%s' WHERE `idmod` = %d", $cfg['tab']['mod'], $newName, $this->_oDb->f('idmod'));
             $db2->query($sql);
         }
@@ -109,7 +109,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
         // Update layout aliases
         $this->_oDb->query("SELECT * FROM `%s`", $cfg['tab']['lay']);
         while ($this->_oDb->nextRecord()) {
-            $newName = cModuleHandler::getCleanName(strtolower($this->_oDb->f('name')));
+            $newName = cModuleHandler::getCleanName(cString::toLowerCase($this->_oDb->f('name')));
             $sql = $db2->prepare("UPDATE `%s` SET `alias` = '%s' WHERE `idlay` = %d", $cfg['tab']['lay'], $newName, $this->_oDb->f('idlay'));
             $db2->query($sql);
         }

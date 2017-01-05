@@ -303,7 +303,7 @@ class Pifa {
      * @return string $str Translated into underscore format
      */
     public static function fromCamelCase($str) {
-        $str[0] = strtolower($str[0]);
+        $str[0] = cString::toLowerCase($str[0]);
         $func = create_function('$c', 'return "_" . strtolower($c[1]);');
         return preg_replace_callback('/([A-Z])/', $func, $str);
     }
@@ -320,7 +320,7 @@ class Pifa {
      */
     public static function toCamelCase($str, $capitalise_first_char = false) {
         if ($capitalise_first_char) {
-            $str[0] = strtoupper($str[0]);
+            $str[0] = cString::toUpperCase($str[0]);
         }
         $func = create_function('$c', 'return strtoupper($c[1]);');
         return preg_replace_callback('/_([a-z])/', $func, $str);

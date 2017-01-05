@@ -162,7 +162,7 @@ class cGuiNavigation {
                 $area = $db2->f('area');
                 if ($perm->have_perm_area_action($area) || $db2->f('relevant') == 0) {
                     // if this menu entry is a plugin and plugins are disabled, ignore it
-                    if (strpos($db2->f('location'), ';') !== false && $cfg['debug']['disable_plugins']) {
+                    if (cString::findFirstPos($db2->f('location'), ';') !== false && $cfg['debug']['disable_plugins']) {
                         continue;
                     }
                     // Extract names from the XML document.
@@ -322,7 +322,7 @@ class cGuiNavigation {
         }
 
         $sClientName = $clientCollection->getClientname($client);
-        if (strlen($sClientName) > 25) {
+        if (cString::getStringLength($sClientName) > 25) {
             $sClientName = cString::trimHard($sClientName, 25);
         }
 
@@ -404,7 +404,7 @@ class cGuiNavigation {
                             $tpl->set('d', 'SELECTED', '');
                         }
 
-                        if (strlen($value) > 20) {
+                        if (cString::getStringLength($value) > 20) {
                             $value = cString::trimHard($value, 20);
                         }
 
@@ -455,7 +455,7 @@ class cGuiNavigation {
                 $tpl->set('d', 'SELECTED', '');
             }
 
-            if (strlen($name) > 20) {
+            if (cString::getStringLength($name) > 20) {
                 $name = cString::trimHard($name, 20);
             }
 

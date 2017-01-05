@@ -46,7 +46,7 @@ class cApiFrontendUserCollection extends ItemCollection {
 
         $feUsers = new cApiFrontendUserCollection();
         $feUsers->setWhere('idclient', $client);
-        $feUsers->setWhere('username', strtolower($sUsername));
+        $feUsers->setWhere('username', cString::toLowerCase($sUsername));
         $feUsers->query();
 
         return ($feUsers->next()) ? true : false;
@@ -68,7 +68,7 @@ class cApiFrontendUserCollection extends ItemCollection {
         $this->select("idclient = " . (int) $client . " AND username = '" . $this->escape($username) . "'");
 
         if ($this->next()) {
-            return $this->create($username . '_' . substr(md5(rand()), 0, 10), $password);
+            return $this->create($username . '_' . cString::getPartOfString(md5(rand()), 0, 10), $password);
         }
 
         $item = $this->createNewItem();

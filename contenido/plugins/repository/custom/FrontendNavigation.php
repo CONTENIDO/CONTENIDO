@@ -595,7 +595,7 @@ class FrontendNavigation {
         $cat_str = '';
         prCreateURLNameLocationString($idcat, "/", $cat_str, false, "", $level, $this->_lang, true, false);
 
-        if (strlen($cat_str) <= 1) {
+        if (cString::getStringLength($cat_str) <= 1) {
             # return empty string if no url location is available
             return '';
         }
@@ -634,7 +634,7 @@ class FrontendNavigation {
         $cat_str = '';
         prCreateURLNameLocationString($idcat, "/", $cat_str, false, "", $level, $this->_lang, true, false);
 
-        if (strlen($cat_str) <= 1) {
+        if (cString::getStringLength($cat_str) <= 1) {
             # return empty string if no url location is available
             return '';
         }

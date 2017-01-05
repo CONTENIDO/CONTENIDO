@@ -87,18 +87,18 @@ $kidDirectedSite = getEffectiveSetting($settingType, 'kid-directed-site');
 $locale = getEffectiveSetting($settingType, 'locale');
 
 // if none was defined
-if (0 == strlen(trim($locale))) {
+if (0 == cString::getStringLength(trim($locale))) {
     // get current locale
     cApiPropertyCollection::reset();
     $propColl = new cApiPropertyCollection();
     $propColl->changeClient(cRegistry::getClientId());
     $languageCode = $propColl->getValue('idlang', cRegistry::getLanguageId(), 'language', 'code', '');
     $countryCode = $propColl->getValue('idlang', cRegistry::getLanguageId(), 'country', 'code', '');
-    $locale = $languageCode . '_' . strtoupper($countryCode);
+    $locale = $languageCode . '_' . cString::toUpperCase($countryCode);
 }
 
 // if none
-if (0 == strlen(trim($locale))) {
+if (0 == cString::getStringLength(trim($locale))) {
     // get default locale
     $locale = 'en_US';
 }

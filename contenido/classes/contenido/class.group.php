@@ -285,7 +285,7 @@ class cApiGroup extends Item {
      * @return string
      */
     public static function getUnprefixedGroupName($groupname) {
-        return substr($groupname, strlen(self::PREFIX));
+        return cString::getPartOfString($groupname, cString::getStringLength(self::PREFIX));
     }
 
     /**
@@ -295,7 +295,7 @@ class cApiGroup extends Item {
      * @return string
      */
     public static function prefixedGroupName($groupname) {
-        if (substr($groupname, 0, strlen(cApiGroup::PREFIX)) != cApiGroup::PREFIX) {
+        if (cString::getPartOfString($groupname, 0, cString::getStringLength(cApiGroup::PREFIX)) != cApiGroup::PREFIX) {
             return cApiGroup::PREFIX . $groupname;
         }
         return $groupname;

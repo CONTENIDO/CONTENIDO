@@ -19,7 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package Core
  * @subpackage Util
  */
-class cString {
+class cString extends cStringWrapper {
 
     /**
      * Replaces a string only once.
@@ -36,15 +36,15 @@ class cString {
      *         Processed string
      */
     public static function iReplaceOnce($find, $replace, $subject) {
-        $start = strpos(strtolower($subject), strtolower($find));
+        $start = parent::findFirstPos(parent::toLowerCase($subject), parent::toLowerCase($find));
 
         if ($start === false) {
             return $subject;
         }
 
-        $end = $start + strlen($find);
-        $first = substr($subject, 0, $start);
-        $last = substr($subject, $end, strlen($subject) - $end);
+        $end = $start + parent::getStringLength($find);
+        $first = parent::getPartOfString($subject, 0, $start);
+        $last = parent::getPartOfString($subject, $end, parent::getStringLength($subject) - $end);
 
         $result = $first . $replace . $last;
 
@@ -66,16 +66,16 @@ class cString {
      *         Processed string
      */
     public static function iReplaceOnceReverse($find, $replace, $subject) {
-        $start = self::posReverse(strtolower($subject), strtolower($find));
+        $start = self::posReverse(parent::toLowerCase($subject), parent::toLowerCase($find));
 
         if ($start === false) {
             return $subject;
         }
 
-        $end = $start + strlen($find);
+        $end = $start + parent::getStringLength($find);
 
-        $first = substr($subject, 0, $start);
-        $last = substr($subject, $end, strlen($subject) - $end);
+        $first = parent::getPartOfString($subject, 0, $start);
+        $last = parent::getPartOfString($subject, $end, parent::getStringLength($subject) - $end);
 
         $result = $first . $replace . $last;
 
@@ -85,7 +85,7 @@ class cString {
     /**
      * Finds a string position in reverse direction.
      *
-     * NOTE: The original strrpos-function of PHP4 only finds a single character
+     * NOTE: The original cString::findLastPos-function of PHP4 only finds a single character
      * as needle.
      *
      * @param string $haystack
@@ -98,7 +98,7 @@ class cString {
      *         String position
      */
     public static function posReverse($haystack, $needle, $start = 0) {
-        $tempPos = strpos($haystack, $needle, $start);
+        $tempPos = parent::findFirstPos($haystack, $needle, $start);
 
         if ($tempPos === false) {
             if ($start == 0) {
@@ -106,11 +106,11 @@ class cString {
                 return false;
             } else {
                 // No more occurances found
-                return $start - strlen($needle);
+                return $start - parent::getStringLength($needle);
             }
         } else {
             // Find the next occurance
-            return self::posReverse($haystack, $needle, $tempPos + strlen($needle));
+            return self::posReverse($haystack, $needle, $tempPos + parent::getStringLength($needle));
         }
     }
 
@@ -129,7 +129,7 @@ class cString {
     /**
      * Removes slashes from passed variable or array.
      *
-     * @param string|array  $value
+     * @param string|array $value
      *         Either a string or a multi-dimensional array of values
      * @return string|array
      */
@@ -148,12 +148,12 @@ class cString {
      * @return bool
      */
     public static function endsWith($haystack, $needle) {
-        $length = strlen($needle);
+        $length = parent::getStringLength($needle);
         if ($length == 0) {
             return true;
         }
 
-        return substr($haystack, -$length) === $needle;
+        return parent::getPartOfString($haystack, -$length) === $needle;
     }
 
     /**
@@ -166,7 +166,7 @@ class cString {
      * @return bool
      */
     public static function contains($haystack, $needle) {
-        return !(strpos($haystack, $needle) === false);
+        return !(parent::findFirstPos($haystack, $needle) === false);
     }
 
     /**
@@ -179,11 +179,17 @@ class cString {
      * @param string $beforeNeedle [optional]
      *         If true, return everything BEFORE needle
      * @return string
+     * @link http://php.net/manual/de/function.mb-strstr.php
      * @link http://php.net/manual/de/function.strstr.php
      */
     public static function strstr($haystack, $needle, $beforeNeedle = false) {
+
         if (!$beforeNeedle) {
-            return strstr($haystack, $needle);
+            if (parent::$isMbstringLoaded === true && isset(parent::$mbstringFunction['mb_strstr'])) {
+                return mb_strstr($haystack, $needle);
+            } else {
+                return strstr($haystack, $needle);
+            }
         } else {
             return strtok($haystack, $needle);
         }
@@ -223,7 +229,7 @@ class cString {
      * @return bool
      */
     public static function isUtf8($input) {
-        $len = strlen($input);
+        $len = parent::getStringLength($input);
 
         for ($i = 0; $i < $len; $i++) {
             $char = ord($input[$i]);
@@ -302,23 +308,23 @@ class cString {
     public static function trimAfterWord($string, $maxlen) {
         // If the string is smaller than the maximum lenght, it makes no sense to
         // process it any further. Return it.
-        if (strlen($string) < $maxlen) {
+        if (parent::getStringLength($string) < $maxlen) {
             return $string;
         }
 
         // If the character after the $maxlen position is a space, we can return
         // the string until $maxlen.
-        if (substr($string, $maxlen, 1) == ' ') {
-            return substr($string, 0, $maxlen);
+        if (parent::getPartOfString($string, $maxlen, 1) == ' ') {
+            return parent::getPartOfString($string, 0, $maxlen);
         }
 
-        // Cut the string up to $maxlen so we can use strrpos (reverse str position)
-        $cutted_string = substr($string, 0, $maxlen);
+        // Cut the string up to $maxlen so we can use cString::findLastPos (reverse str position)
+        $cutted_string = parent::getPartOfString($string, 0, $maxlen);
 
         // Extract the end of the last word
-        $last_word_position = strrpos($cutted_string, ' ');
+        $last_word_position = cString::findLastPos($cutted_string, ' ');
 
-        return substr($cutted_string, 0, $last_word_position);
+        return parent::getPartOfString($cutted_string, 0, $last_word_position);
     }
 
     /**
@@ -345,12 +351,12 @@ class cString {
     public static function trimHard($string, $maxlen, $fillup = '...') {
         // If the string is smaller than the maximum lenght, it makes no sense to
         // process it any further. Return it.
-        if (strlen($string) < $maxlen) {
+        if (parent::getStringLength($string) < $maxlen) {
             return $string;
         }
 
         // Calculate the maximum text length
-        $maximum_text_length = $maxlen - strlen($fillup);
+        $maximum_text_length = $maxlen - parent::getStringLength($fillup);
 
         // If text length is over zero cut it
         if ($maximum_text_length > 0) {
@@ -359,7 +365,7 @@ class cString {
             } else if (preg_match('/^.{0,' . $maximum_text_length . '}/u', $string, $result_array)) {
                 $cutted_string = $result_array[0];
             } else {
-                $cutted_string = substr($string, 0, $maximum_text_length);
+                $cutted_string = parent::getPartOfString($string, 0, $maximum_text_length);
             }
         } else {
             $cutted_string = $string;
@@ -418,24 +424,24 @@ class cString {
     public static function trimSentence($string, $approxlen, $hard = false) {
         // If the string is smaller than the maximum lenght, it makes no sense to
         // process it any further. Return it.
-        if (strlen($string) < $approxlen) {
+        if (parent::getStringLength($string) < $approxlen) {
             return $string;
         }
 
         // Find out the start of the next sentence
-        $next_sentence_start = strpos($string, '.', $approxlen);
+        $next_sentence_start = parent::findFirstPos($string, '.', $approxlen);
 
         // If there's no next sentence (somebody forgot the dot?), set it to the end
         // of the string.
         if ($next_sentence_start === false) {
-            $next_sentence_start = strlen($string);
+            $next_sentence_start = parent::getStringLength($string);
         }
 
-        // Cut the previous sentence so we can use strrpos
-        $previous_sentence_cutted = substr($string, 0, $approxlen);
+        // Cut the previous sentence so we can use cString::findLastPos
+        $previous_sentence_cutted = parent::getPartOfString($string, 0, $approxlen);
 
         // Get out the previous sentence start
-        $previous_sentence_start = strrpos($previous_sentence_cutted, '.');
+        $previous_sentence_start = cString::findLastPos($previous_sentence_cutted, '.');
 
         // If the sentence doesn't contain a dot, use the text start.
         if ($previous_sentence_start === false) {
@@ -445,7 +451,7 @@ class cString {
         // If we have a hard limit, we only want to process everything before
         // $approxlen
         if (($hard == true) && ($next_sentence_start > $approxlen)) {
-            return substr($string, 0, $previous_sentence_start + 1);
+            return parent::getPartOfString($string, 0, $previous_sentence_start + 1);
         }
 
         // Calculate next and previous sentence distances
@@ -453,17 +459,17 @@ class cString {
         $distance_next_sentence = $next_sentence_start - $approxlen;
 
         // Sanity: Return at least one sentence.
-        $sanity = substr($string, 0, $previous_sentence_start + 1);
+        $sanity = parent::getPartOfString($string, 0, $previous_sentence_start + 1);
 
-        if (strpos($sanity, '.') === false) {
-            return substr($string, 0, $next_sentence_start + 1);
+        if (parent::findFirstPos($sanity, '.') === false) {
+            return parent::getPartOfString($string, 0, $next_sentence_start + 1);
         }
 
         // Decide wether the next or previous sentence is nearer
         if ($distance_previous_sentence > $distance_next_sentence) {
-            return substr($string, 0, $next_sentence_start + 1);
+            return parent::getPartOfString($string, 0, $next_sentence_start + 1);
         } else {
-            return substr($string, 0, $previous_sentence_start + 1);
+            return parent::getPartOfString($string, 0, $previous_sentence_start + 1);
         }
     }
 
@@ -497,82 +503,82 @@ class cString {
         static $search, $replace;
         if (!isset($search)) {
             $search = array(
-                    'Ä',
-                    'Ö',
-                    'Ü',
-                    'ä',
-                    'ö',
-                    'ü',
-                    'ß',
-                    'Á',
-                    'À',
-                    'Â',
-                    'á',
-                    'à',
-                    'â',
-                    'É',
-                    'È',
-                    'Ê',
-                    'é',
-                    'è',
-                    'ê',
-                    'Í',
-                    'Ì',
-                    'Î',
-                    'í',
-                    'ì',
-                    'î',
-                    'Ó',
-                    'Ò',
-                    'Ô',
-                    'ó',
-                    'ò',
-                    'ô',
-                    'Ú',
-                    'Ù',
-                    'Û',
-                    'ú',
-                    'ù',
-                    'û'
+                'Ä',
+                'Ö',
+                'Ü',
+                'ä',
+                'ö',
+                'ü',
+                'ß',
+                'Á',
+                'À',
+                'Â',
+                'á',
+                'à',
+                'â',
+                'É',
+                'È',
+                'Ê',
+                'é',
+                'è',
+                'ê',
+                'Í',
+                'Ì',
+                'Î',
+                'í',
+                'ì',
+                'î',
+                'Ó',
+                'Ò',
+                'Ô',
+                'ó',
+                'ò',
+                'ô',
+                'Ú',
+                'Ù',
+                'Û',
+                'ú',
+                'ù',
+                'û'
             );
             $replace = array(
-                    'Ae',
-                    'Oe',
-                    'Ue',
-                    'ae',
-                    'oe',
-                    'ue',
-                    'ss',
-                    'A',
-                    'A',
-                    'A',
-                    'a',
-                    'a',
-                    'a',
-                    'E',
-                    'E',
-                    'E',
-                    'e',
-                    'e',
-                    'e',
-                    'I',
-                    'I',
-                    'I',
-                    'i',
-                    'i',
-                    'i',
-                    'O',
-                    'O',
-                    'O',
-                    'o',
-                    'o',
-                    'o',
-                    'U',
-                    'U',
-                    'U',
-                    'u',
-                    'u',
-                    'u'
+                'Ae',
+                'Oe',
+                'Ue',
+                'ae',
+                'oe',
+                'ue',
+                'ss',
+                'A',
+                'A',
+                'A',
+                'a',
+                'a',
+                'a',
+                'E',
+                'E',
+                'E',
+                'e',
+                'e',
+                'e',
+                'I',
+                'I',
+                'I',
+                'i',
+                'i',
+                'i',
+                'O',
+                'O',
+                'O',
+                'o',
+                'o',
+                'o',
+                'U',
+                'U',
+                'U',
+                'u',
+                'u',
+                'u'
             );
         }
         $string = str_replace($search, $replace, $string);
@@ -618,7 +624,7 @@ class cString {
      */
     public static function recodeString($string, $sourceEncoding, $targetEncoding) {
         // If sourceEncoding and targetEncoding are the same, return
-        if (strtolower($sourceEncoding) == strtolower($targetEncoding)) {
+        if (parent::toLowerCase($sourceEncoding) == parent::toLowerCase($targetEncoding)) {
             return $string;
         }
 
@@ -663,12 +669,12 @@ class cString {
         $string = str_replace('&', '-', $string);
         $string = str_replace('+', '-', $string);
 
-        $iStrLen = strlen($string);
+        $iStrLen = parent::getStringLength($string);
 
         $sResultString = '';
 
         for ($i = 0; $i < $iStrLen; $i++) {
-            $sChar = substr($string, $i, 1);
+            $sChar = parent::getPartOfString($string, $i, 1);
 
             if (preg_match('/^[a-z0-9]*$/i', $sChar) || $sChar == '-' || $sChar == '_' || $sChar == '.') {
                 $sResultString .= $sChar;

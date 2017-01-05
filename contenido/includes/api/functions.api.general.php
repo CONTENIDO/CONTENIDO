@@ -55,7 +55,7 @@ function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
 
     // Sanity check for $sWhat
     $sWhat  = trim($sWhat);
-    $sWhere = strtolower($sWhere);
+    $sWhere = cString::toLowerCase($sWhere);
     $bError = false;
 
     switch ($sWhere) {

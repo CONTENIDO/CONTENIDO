@@ -118,7 +118,7 @@ class cI18n {
                     $language = $oApiLang->getProperty('language', 'code');
                     $country = $oApiLang->getProperty('country', 'code');
 
-                    $locale = $language . '_' . strtoupper($country);
+                    $locale = $language . '_' . cString::toUpperCase($country);
                     self::init($cfg['path']['contenido'] . $cfg['path']['plugins'] . $domain . '/locale/', $locale, $domain);
                 } else {
                     self::init($cfg['path']['contenido'] . $cfg['path']['plugins'] . $domain . '/locale/', $belang, $domain);
@@ -233,7 +233,7 @@ class cI18n {
             self::$_i18nData['files'][$domain] = self::_loadTranslationFile($translationFile);
         }
 
-        $stringStart = strpos(self::$_i18nData['files'][$domain], '"' . str_replace(array(
+        $stringStart = cString::findFirstPos(self::$_i18nData['files'][$domain], '"' . str_replace(array(
             "\n",
             "\r",
             "\t"

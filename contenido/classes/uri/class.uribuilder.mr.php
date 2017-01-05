@@ -205,7 +205,7 @@ class cUriBuilderMR extends cUriBuilder {
 
         // use lowercase url
         if ($this->_aMrCfg['use_lowercase_uri'] == 1) {
-            $sPathAndArticle = strtolower($sPathAndArticle);
+            $sPathAndArticle = cString::toLowerCase($sPathAndArticle);
         }
 
         // $sUrl = $this->_aMrCfg['rootdir'] . $sPathAndArticle . $sQuery;
@@ -213,7 +213,7 @@ class cUriBuilderMR extends cUriBuilder {
 
         // remove double or more join parameter
         $sUrl = mr_removeMultipleChars('/', $sUrl);
-        if (substr($sUrl, -2) == '?=') {
+        if (cString::getPartOfString($sUrl, -2) == '?=') {
             $sUrl = substr_replace($sUrl, '', -2);
         }
 
@@ -284,7 +284,7 @@ class cUriBuilderMR extends cUriBuilder {
             }
 
             // skip if http path does not start with configured path
-            if (0 !== strpos($httpPath, $propPath)) {
+            if (0 !== cString::findFirstPos($httpPath, $propPath)) {
                 continue;
             }
 
@@ -349,8 +349,8 @@ class cUriBuilderMR extends cUriBuilder {
                 }
             }
         }
-        if (strlen($sQuery) > 0) {
-            $sQuery = '?' . substr($sQuery, 0, -strlen($this->_sAmp));
+        if (cString::getStringLength($sQuery) > 0) {
+            $sQuery = '?' . cString::getPartOfString($sQuery, 0, -cString::getStringLength($this->_sAmp));
         }
         return $sQuery;
     }
@@ -415,7 +415,7 @@ class cUriBuilderMR extends cUriBuilder {
         $sPath = (isset($aPretty['urlpath'])) ? $aPretty['urlpath'] : '';
 
         // check start directory settings
-        if ($this->_aMrCfg['startfromroot'] == 0 && (strlen($sPath) > 0)) {
+        if ($this->_aMrCfg['startfromroot'] == 0 && (cString::getStringLength($sPath) > 0)) {
             // splitt string in array
             $aCategories = explode('/', $sPath);
 

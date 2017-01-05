@@ -214,7 +214,7 @@ $tpl->next();
 
 $tpl->set('s', 'PATH_TO_CALENDER_PIC', cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif');
 
-if (($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
+if (($lang_short = cString::getPartOfString(cString::toLowerCase($belang), 0, 2)) != "en") {
     $langscripts = '<script type="text/javascript" src="scripts/jquery/plugins/timepicker-' . $lang_short . '.js"></script>
     <script type="text/javascript" src="scripts/jquery/plugins/datepicker-' . $lang_short . '.js"></script>';
     $tpl->set('s', 'CAL_LANG', $langscripts);

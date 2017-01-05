@@ -47,7 +47,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
     $messageIfError = '';
 
     // Alias for modul name for the file system
-    $alias = strtolower(cModuleHandler::getCleanName($name));
+    $alias = cString::toLowerCase(cModuleHandler::getCleanName($name));
 
     // Track version
     $oVersion = new cVersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);

@@ -462,17 +462,17 @@ class cUpdateNotifier {
         $bValidDeRSSFile = true;
         $bValidEnRSSFile = true;
 
-        $sCheckXML = stristr($aXMLContent[$this->sVendorXMLFile], "<fourforbusiness>");
+        $sCheckXML = cString::findFirstOccurrenceCI($aXMLContent[$this->sVendorXMLFile], "<fourforbusiness>");
         if ($sCheckXML == false) {
             $bValidXMLFile = false;
         }
 
-        $sCheckDeRSS = stristr($aXMLContent[$this->sVendorRssDeFile], "<channel>");
+        $sCheckDeRSS = cString::findFirstOccurrenceCI($aXMLContent[$this->sVendorRssDeFile], "<channel>");
         if ($sCheckDeRSS == false) {
             $bValidDeRSSFile = false;
         }
 
-        $sCheckEnRSS = stristr($aXMLContent[$this->sVendorRssEnFile], "<channel>");
+        $sCheckEnRSS = cString::findFirstOccurrenceCI($aXMLContent[$this->sVendorRssEnFile], "<channel>");
         if ($sCheckEnRSS == false) {
             $bValidEnRSSFile = false;
         }
@@ -673,7 +673,7 @@ class cUpdateNotifier {
                 $title = utf8_encode($title);
                 $sText = utf8_encode($description);
 
-                if (strlen($sText) > 150) {
+                if (cString::getStringLength($sText) > 150) {
                     $sText = cString::trimAfterWord($sText, 150) . '...';
                 }
 

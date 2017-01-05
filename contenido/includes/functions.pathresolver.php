@@ -39,7 +39,7 @@ function prResolvePathViaURLNames($path) {
     $results = array();
 
     // Pre-process path
-    $path = strtolower(str_replace(' ', '', $path));
+    $path = cString::toLowerCase(str_replace(' ', '', $path));
 
     // Delete outdated entry in heapcache table, if enabled.
     if ($cfg['pathresolve_heapcache'] == true) {
@@ -74,15 +74,15 @@ function prResolvePathViaURLNames($path) {
     // Compare strings using the similar_text algorithm
     $percent = 0;
     foreach ($catpath as $key => $value) {
-        $value = strtolower(str_replace(' ', '', $value));
+        $value = cString::toLowerCase(str_replace(' ', '', $value));
 
         similar_text($value, $path, $percent);
 
-        $firstpath = strpos($value, '/');
+        $firstpath = cString::findFirstPos($value, '/');
 
         if ($firstpath !== 0) {
-            $xpath = substr($value, $firstpath);
-            $ypath = substr($path, 0, strlen($path) - 1);
+            $xpath = cString::getPartOfString($value, $firstpath);
+            $ypath = cString::getPartOfString($path, 0, cString::getStringLength($path) - 1);
             if ($xpath == $ypath) {
                 $results[$key] = 100;
             } else {
@@ -140,7 +140,7 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck) {
         $aResults[1] = $path;
     }
 
-    $aResults[1] = strtolower(preg_replace('/-/', ' ', $aResults[1]));
+    $aResults[1] = cString::toLowerCase(preg_replace('/-/', ' ', $aResults[1]));
 
     // Init to Compare, save path in array
     $aPathsToCompare = explode('/', $aResults[1]);
@@ -150,7 +150,7 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck) {
     $iLangCheck = 0;
 
     // Pre-process path
-    $path = strtolower(str_replace(' ', '', $path));
+    $path = cString::toLowerCase(str_replace(' ', '', $path));
 
     // Fetch all category names, build path strings
     // @todo change the where statement for get all languages
@@ -175,7 +175,7 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck) {
         $catlevels[$db->f('idcat')] = $db->f('level');
 
         // Init variables for take a language id
-        $aTemp = strtolower($cat_str);
+        $aTemp = cString::toLowerCase($cat_str);
         $aDBToCompare = explode('/', $aTemp);
         $iCountDB = count($aDBToCompare);
         $iCountDBFor = $iCountDB - 1;
@@ -209,13 +209,13 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck) {
     // Compare strings using the similar_text algorithm
     $percent = 0;
     foreach ($catpath as $key => $value) {
-        $value = strtolower(str_replace(' ', '', $value));
+        $value = cString::toLowerCase(str_replace(' ', '', $value));
         similar_text($value, $path, $percent);
         $results[$key] = $percent;
     }
 
     foreach ($catnames as $key => $value) {
-        $value = strtolower(str_replace(' ', '', $value));
+        $value = cString::toLowerCase(str_replace(' ', '', $value));
         similar_text($value, $path, $percent);
 
         // Apply weight
@@ -331,10 +331,10 @@ function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink
     if ($parentid != 0) {
         prCreateURLNameLocationString($parentid, $seperator, $cat_str, $makeLink, $linkClass, $firstTreeElementToUse, $uselang, false, $usecache);
     } else {
-        $sep_length = strlen($seperator);
-        $str_length = strlen($cat_str);
+        $sep_length = cString::getStringLength($seperator);
+        $str_length = cString::getStringLength($cat_str);
         $tmp_length = $str_length - $sep_length;
-        $cat_str = substr($cat_str, 0, $tmp_length);
+        $cat_str = cString::getPartOfString($cat_str, 0, $tmp_length);
     }
 
     if ($final == true && $usecache == true) {

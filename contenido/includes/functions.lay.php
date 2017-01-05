@@ -47,12 +47,12 @@ function layEditLayout($idlay, $name, $description, $code) {
         $code = stripslashes($code);
     }
 
-    if (strlen(trim($name)) == 0) {
+    if (cString::getStringLength(trim($name)) == 0) {
         $name = i18n('-- Unnamed layout --');
     }
 
     // Replace all not allowed characters..
-    $layoutAlias = cModuleHandler::getCleanName(strtolower($name));
+    $layoutAlias = cModuleHandler::getCleanName(cString::toLowerCase($name));
 
     // Constructor for the layout in filesystem
     $layoutInFile = new cLayoutHandler($idlay, $code, $cfg, $lang);

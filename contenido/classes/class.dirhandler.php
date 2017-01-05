@@ -155,7 +155,7 @@ class cDirHandler {
         }
 
         // make sure $dirname ends with a slash
-        if (substr($dirname, -1) !== '/') {
+        if (cString::getPartOfString($dirname, -1) !== '/') {
             $dirname .= '/';
         }
 

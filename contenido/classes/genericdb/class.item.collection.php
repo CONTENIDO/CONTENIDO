@@ -225,7 +225,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         if (class_exists($sForeignCollectionClass)) {
             // Add class
             if (!in_array($sForeignCollectionClass, $this->_JoinPartners)) {
-                $this->_JoinPartners[] = strtolower($sForeignCollectionClass);
+                $this->_JoinPartners[] = cString::toLowerCase($sForeignCollectionClass);
             }
         } else {
             $msg = "Could not instantiate class [$sForeignCollectionClass] for use " . "with _setJoinPartner in class " . get_class($this);
@@ -314,7 +314,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param string $sOperator [optional]
      */
     public function setWhere($sField, $mRestriction, $sOperator = '=') {
-        $sField = strtolower($sField);
+        $sField = cString::toLowerCase($sField);
         $this->_where['global'][$sField]['operator'] = $sOperator;
         $this->_where['global'][$sField]['restriction'] = $mRestriction;
     }
@@ -327,7 +327,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param string $sOperator [optional]
      */
     public function deleteWhere($sField, $mRestriction, $sOperator = '=') {
-        $sField = strtolower($sField);
+        $sField = cString::toLowerCase($sField);
         if (isset($this->_where['global'][$sField]) && is_array($this->_where['global'][$sField])) {
             if ($this->_where['global'][$sField]['operator'] == $sOperator && $this->_where['global'][$sField]['restriction'] == $mRestriction) {
                 unset($this->_where['global'][$sField]);
@@ -344,7 +344,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param string $sOperator [optional]
      */
     public function setWhereGroup($sGroup, $sField, $mRestriction, $sOperator = '=') {
-        $sField = strtolower($sField);
+        $sField = cString::toLowerCase($sField);
         $this->_where['groups'][$sGroup][$sField]['operator'] = $sOperator;
         $this->_where['groups'][$sGroup][$sField]['restriction'] = $mRestriction;
     }
@@ -359,7 +359,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param string $sOperator [optional]
      */
     public function deleteWhereGroup($sGroup, $sField, $mRestriction, $sOperator = '=') {
-        $sField = strtolower($sField);
+        $sField = cString::toLowerCase($sField);
         if (is_array($this->_where['groups'][$sGroup]) && isset($this->_where['groups'][$sGroup][$sField]) && is_array($this->_where['groups'][$sGroup][$sField])) {
             if ($this->_where['groups'][$sGroup][$sField]['operator'] == $sOperator && $this->_where['groups'][$sGroup][$sField]['restriction'] == $mRestriction) {
                 unset($this->_where['groups'][$sGroup][$sField]);
@@ -503,14 +503,14 @@ abstract class ItemCollection extends cItemBaseAbstract {
 
         // Fetch linked tables
         foreach ($this->_links as $link => $object) {
-            $matches = $this->_findReverseJoinPartner(strtolower(get_class($this)), $link);
+            $matches = $this->_findReverseJoinPartner(cString::toLowerCase(get_class($this)), $link);
             if ($matches !== false) {
                 if (isset($matches['desttable'])) {
                     // Driver function: Build query parts
-                    $aParameters[] = $this->_driver->buildJoinQuery($matches['desttable'], strtolower($matches['destclass']), $matches['key'], strtolower($matches['sourceclass']), $matches['key']);
+                    $aParameters[] = $this->_driver->buildJoinQuery($matches['desttable'], cString::toLowerCase($matches['destclass']), $matches['key'], cString::toLowerCase($matches['sourceclass']), $matches['key']);
                 } else {
                     foreach ($matches as $match) {
-                        $aParameters[] = $this->_driver->buildJoinQuery($match['desttable'], strtolower($match['destclass']), $match['key'], strtolower($match['sourceclass']), $match['key']);
+                        $aParameters[] = $this->_driver->buildJoinQuery($match['desttable'], cString::toLowerCase($match['destclass']), $match['key'], cString::toLowerCase($match['sourceclass']), $match['key']);
                     }
                 }
             } else {
@@ -519,7 +519,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         }
 
         // Add this class
-        $aFields[] = strtolower(strtolower(get_class($this))) . '.' . $this->getPrimaryKeyName();
+        $aFields[] = cString::toLowerCase(cString::toLowerCase(get_class($this))) . '.' . $this->getPrimaryKeyName();
 
         // Make the parameters unique
         foreach ($aParameters as $parameter) {
@@ -549,7 +549,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      */
     protected function _resolveLinks() {
         $aResolvedLinks = array();
-        $aResolvedLinks[] = strtolower(get_class($this));
+        $aResolvedLinks[] = cString::toLowerCase(get_class($this));
 
         foreach ($this->_JoinPartners as $link) {
             $class = new $link();
@@ -591,7 +591,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
             'SELECT',
             implode(', ', (array_merge($aParameters['fields'], $this->_resultFields))),
             'FROM',
-            '`' . $this->table . '` AS ' . strtolower(get_class($this))
+            '`' . $this->table . '` AS ' . cString::toLowerCase(get_class($this))
         );
 
         if (count($aParameters['tables']) > 0) {
@@ -649,7 +649,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param string $order
      */
     public function setOrder($order) {
-        $this->_order = strtolower($order);
+        $this->_order = cString::toLowerCase($order);
     }
 
     /**
@@ -658,7 +658,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param string $sField
      */
     public function addResultField($sField) {
-        $sField = strtolower($sField);
+        $sField = cString::toLowerCase($sField);
         if (!in_array($sField, $this->_resultFields)) {
             $this->_resultFields[] = $sField;
         }
@@ -670,7 +670,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param string $sField
      */
     public function removeResultField($sField) {
-        $sField = strtolower($sField);
+        $sField = cString::toLowerCase($sField);
         $key = array_search($sField, $this->_resultFields);
         if ($key !== false) {
             unset($this->_resultFields[$key]);
@@ -686,8 +686,8 @@ abstract class ItemCollection extends cItemBaseAbstract {
      */
     protected function _findReverseJoinPartner($sParentClass, $sClassName) {
         // Make the parameters lowercase, as get_class is buggy
-        $sClassName = strtolower($sClassName);
-        $sParentClass = strtolower($sParentClass);
+        $sClassName = cString::toLowerCase($sClassName);
+        $sParentClass = cString::toLowerCase($sParentClass);
 
         // Check if we found a direct link
         if (in_array($sClassName, $this->_JoinPartners)) {
@@ -825,7 +825,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
             $sLimit = ' LIMIT ' . $sLimit;
         }
 
-        $sql = 'SELECT ' . $sDistinct . strtolower(get_class($this)) . '.' . $this->getPrimaryKeyName() . ' AS ' . $this->getPrimaryKeyName() . ' FROM `' . $this->table . '` AS ' . strtolower(get_class($this)) . $sFrom . $sWhere . $sGroupBy . $sOrderBy . $sLimit;
+        $sql = 'SELECT ' . $sDistinct . cString::toLowerCase(get_class($this)) . '.' . $this->getPrimaryKeyName() . ' AS ' . $this->getPrimaryKeyName() . ' FROM `' . $this->table . '` AS ' . cString::toLowerCase(get_class($this)) . $sFrom . $sWhere . $sGroupBy . $sOrderBy . $sLimit;
 
         $this->db->query($sql);
         $this->_lastSQL = $sql;
@@ -886,7 +886,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @return Item
      */
     public function fetchObject($sClassName) {
-        $sKey = strtolower($sClassName);
+        $sKey = cString::toLowerCase($sClassName);
 
         if (!is_object($this->_collectionCache[$sKey])) {
             $this->_collectionCache[$sKey] = new $sClassName();
@@ -970,7 +970,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
 
         foreach ($aObjects as $object) {
             $x = new $object();
-            $object = strtolower($object);
+            $object = cString::toLowerCase($object);
             $aOrder[] = $object . '.' . $x->getPrimaryKeyName() . ' ASC';
             $aFetchObjects[] = $x;
         }
@@ -999,7 +999,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         $value = $this->db->f($i->getPrimaryKeyName());
 
         if (!is_null($value)) {
-            $aResult[$value]['class'] = strtolower(get_class($i));
+            $aResult[$value]['class'] = cString::toLowerCase(get_class($i));
             $aResult[$value]['object'] = $i->loadItem($value);
 
             if (count($aObjects) > 0) {

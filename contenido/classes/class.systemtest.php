@@ -662,11 +662,11 @@ class cSystemtest {
      * @return number
      */
     protected function getAsBytes($val) {
-        if (strlen($val) == 0) {
+        if (cString::getStringLength($val) == 0) {
             return 0;
         }
         $val = trim($val);
-        $last = $val{strlen($val) - 1};
+        $last = $val{cString::getStringLength($val) - 1};
         switch ($last) {
             case 'k':
             case 'K':
@@ -755,7 +755,7 @@ class cSystemtest {
      * @return bool
      */
     public function isWindows() {
-        if (strtolower(substr(PHP_OS, 0, 3)) == "win") {
+        if (cString::toLowerCase(cString::getPartOfString(PHP_OS, 0, 3)) == "win") {
             return true;
         } else {
             return false;
@@ -1022,7 +1022,7 @@ class cSystemtest {
         $db = new cDb($dbCfg);
         $db->query('SELECT LOWER(@@GLOBAL.sql_mode) AS sql_mode');
         if ($db->nextRecord()) {
-            if (strpos($db->f('sql_mode'), 'strict_trans_tables') !== false || strpos($db->f('sql_mode'), 'strict_all_tables') !== false) {
+            if (cString::findFirstPos($db->f('sql_mode'), 'strict_trans_tables') !== false || cString::findFirstPos($db->f('sql_mode'), 'strict_all_tables') !== false) {
                 return false;
             }
         }
@@ -1225,9 +1225,9 @@ class cSystemtest {
      *         Returns true if everything is fine
      */
     protected function testSingleFile($filename, $severity, $dir = false) {
-        if (strpos($filename, $this->_config["path"]["frontend"]) === 0) {
-            $length = strlen($this->_config["path"]["frontend"]) + 1;
-            $shortFilename = substr($filename, $length);
+        if (cString::findFirstPos($filename, $this->_config["path"]["frontend"]) === 0) {
+            $length = cString::getStringLength($this->_config["path"]["frontend"]) + 1;
+            $shortFilename = cString::getPartOfString($filename, $length);
         } else { // for dirs
             $shortFilename = $filename;
         }
@@ -1253,17 +1253,17 @@ class cSystemtest {
                         $predictMessage = sprintf(i18n("Due to a very restrictive environment, an advise is not possible. Ask your system administrator to enable write access to the file %s, especially in environments where ACL (Access Control Lists) are used."), $shortFilename);
                         break;
                     case self::CON_PREDICT_CHANGEPERM_SAMEOWNER:
-                        $mfileperms = substr(sprintf("%o", fileperms($filename)), -3);
+                        $mfileperms = cString::getPartOfString(sprintf("%o", fileperms($filename)), -3);
                         $mfileperms{0} = intval($mfileperms{0}) | 0x6;
                         $predictMessage = sprintf(i18n("Your web server and the owner of your files are identical. You need to enable write access for the owner, e.g. using chmod u+rw %s, setting the file mask to %s or set the owner to allow writing the file."), $shortFilename, $mfileperms);
                         break;
                     case self::CON_PREDICT_CHANGEPERM_SAMEGROUP:
-                        $mfileperms = substr(sprintf("%o", fileperms($filename)), -3);
+                        $mfileperms = cString::getPartOfString(sprintf("%o", fileperms($filename)), -3);
                         $mfileperms{1} = intval($mfileperms{1}) | 0x6;
                         $predictMessage = sprintf(i18n("Your web server's group and the group of your files are identical. You need to enable write access for the group, e.g. using chmod g+rw %s, setting the file mask to %s or set the group to allow writing the file."), $shortFilename, $mfileperms);
                         break;
                     case self::CON_PREDICT_CHANGEPERM_OTHERS:
-                        $mfileperms = substr(sprintf("%o", fileperms($filename)), -3);
+                        $mfileperms = cString::getPartOfString(sprintf("%o", fileperms($filename)), -3);
                         $mfileperms{2} = intval($mfileperms{2}) | 0x6;
                         $predictMessage = sprintf(i18n("Your web server is not equal to the file owner, and is not in the webserver's group. It would be highly insecure to allow world write acess to the files. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the file mask to %s or set the others to allow writing the file."), $shortFilename, $mfileperms);
                         break;
@@ -1281,17 +1281,17 @@ class cSystemtest {
                         $predictMessage = sprintf(i18n("Due to a very restrictive environment, an advise is not possible. Ask your system administrator to enable write access to the file or directory %s, especially in environments where ACL (Access Control Lists) are used."), dirname($shortFilename));
                         break;
                     case self::CON_PREDICT_CHANGEPERM_SAMEOWNER:
-                        $mfileperms = substr(sprintf("%o", @fileperms($target)), -3);
+                        $mfileperms = cString::getPartOfString(sprintf("%o", @fileperms($target)), -3);
                         $mfileperms{0} = intval($mfileperms{0}) | 0x6;
                         $predictMessage = sprintf(i18n("Your web server and the owner of your directory are identical. You need to enable write access for the owner, e.g. using chmod u+rw %s, setting the directory mask to %s or set the owner to allow writing the directory."), dirname($shortFilename), $mfileperms);
                         break;
                     case self::CON_PREDICT_CHANGEPERM_SAMEGROUP:
-                        $mfileperms = substr(sprintf("%o", @fileperms($target)), -3);
+                        $mfileperms = cString::getPartOfString(sprintf("%o", @fileperms($target)), -3);
                         $mfileperms{1} = intval($mfileperms{1}) | 0x6;
                         $predictMessage = sprintf(i18n("Your web server's group and the group of your directory are identical. You need to enable write access for the group, e.g. using chmod g+rw %s, setting the directory mask to %s or set the group to allow writing the directory."), dirname($shortFilename), $mfileperms);
                         break;
                     case self::CON_PREDICT_CHANGEPERM_OTHERS:
-                        $mfileperms = substr(sprintf("%o", @fileperms($target)), -3);
+                        $mfileperms = cString::getPartOfString(sprintf("%o", @fileperms($target)), -3);
                         $mfileperms{2} = intval($mfileperms{2}) | 0x6;
                         $predictMessage = sprintf(i18n("Your web server is not equal to the directory owner, and is not in the webserver's group. It would be highly insecure to allow world write acess to the directory. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the directory mask to %s or set the others to allow writing the directory."), dirname($shortFilename), $mfileperms);
                         break;
@@ -1376,7 +1376,7 @@ class cSystemtest {
         $sCurrentDirectory = getcwd();
 
         foreach ($aBasedirEntries as $entry) {
-            if (stristr($sCurrentDirectory, $entry)) {
+            if (cString::findFirstOccurrenceCI($sCurrentDirectory, $entry)) {
                 return self::CON_BASEDIR_RESTRICTIONSUFFICIENT;
             }
         }

@@ -267,7 +267,7 @@ class NoteListItem extends cHTMLDiv {
      * @param string $sAuthor
      */
     public function setAuthor($sAuthor) {
-        if (strlen($sAuthor) == 32) {
+        if (cString::getStringLength($sAuthor) == 32) {
             $result = getGroupOrUserName($sAuthor);
 
             if ($result !== false) {
@@ -285,7 +285,7 @@ class NoteListItem extends cHTMLDiv {
     public function setDate($iDate) {
         $dateformat = getEffectiveSetting('dateformat', 'full', 'Y-m-d H:i:s');
 
-        if (is_string($iDate)) {
+        if (cSecurity::isString($iDate)) {
             $iDate = strtotime($iDate);
         }
         $this->_sDate = date($dateformat, $iDate);

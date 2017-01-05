@@ -16,7 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 function cCatPerm($widcat, $db = NULL) {
     global $cfg, $sess, $auth, $group_id, $_arrCatIDs_cCP;
 
-    if (strpos($auth->auth['perm'], 'admin') !== FALSE) {
+    if (cString::findFirstPos($auth->auth['perm'], 'admin') !== false) {
         return true;
     }
 

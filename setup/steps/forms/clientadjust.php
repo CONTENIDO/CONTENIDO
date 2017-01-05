@@ -65,7 +65,7 @@ class cSetupClientAdjust extends cSetupMask {
             if ($_SESSION["frontendpath"][$idclient] == "") {
                 $iDifferencePos = findSimilarText($cfg['path']['frontend'] . "/", $frontendPath);
                 if ($iDifferencePos > 0) {
-                    $sClientPath = $a_root_path . "/" . substr($frontendPath, $iDifferencePos + 1, strlen($frontendPath) - $iDifferencePos);
+                    $sClientPath = $a_root_path . "/" . cString::getPartOfString($frontendPath, $iDifferencePos + 1, cString::getStringLength($frontendPath) - $iDifferencePos);
                     $_SESSION["frontendpath"][$idclient] = $sClientPath;
                 } else {
                     $_SESSION["frontendpath"][$idclient] = $frontendPath;
@@ -76,7 +76,7 @@ class cSetupClientAdjust extends cSetupMask {
                 // Use frontendpath instead of htmlpath as the directories should be aligned pairwhise
                 $iDifferencePos = findSimilarText($cfg['path']['frontend'] . "/", $frontendPath);
                 if ($iDifferencePos > 0) {
-                    $sClientPath = $a_root_http_path . "/" . substr($frontendPath, $iDifferencePos + 1, strlen($frontendPath) - $iDifferencePos);
+                    $sClientPath = $a_root_http_path . "/" . cString::getPartOfString($frontendPath, $iDifferencePos + 1, cString::getStringLength($frontendPath) - $iDifferencePos);
                     $_SESSION["htmlpath"][$idclient] = $sClientPath;
                 } else {
                     $_SESSION["htmlpath"][$idclient] = $htmlPath;

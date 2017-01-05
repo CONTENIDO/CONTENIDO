@@ -308,7 +308,7 @@ class Swift_Transport_Esmtp_Auth_NTLMAuthenticator implements Swift_Transport_Es
     protected function createLMPassword($password, $challenge)
     {
         // FIRST PART
-        $password = $this->createByte(strtoupper($password), 14, false);
+        $password = $this->createByte(cString::toUpperCase($password), 14, false);
         list($key1, $key2) = str_split($password, 7);
 
         $desKey1 = $this->createDesKey($key1);
@@ -386,7 +386,7 @@ class Swift_Transport_Esmtp_Auth_NTLMAuthenticator implements Swift_Transport_Es
         // if $password > 15 than we can't use this method
         if (strlen($password) <= 15) {
             $ntlmHash = $this->md4Encrypt($password);
-            $ntml2Hash = $this->md5Encrypt($ntlmHash, $this->convertTo16bit(strtoupper($username).$domain));
+            $ntml2Hash = $this->md5Encrypt($ntlmHash, $this->convertTo16bit(cString::toUpperCase($username).$domain));
 
             $lmPass = bin2hex($this->md5Encrypt($ntml2Hash, $challenge.$client).$client);
         }
@@ -410,7 +410,7 @@ class Swift_Transport_Esmtp_Auth_NTLMAuthenticator implements Swift_Transport_Es
     protected function createNTLMv2Hash($password, $username, $domain, $challenge, $targetInfo, $timestamp, $client)
     {
         $ntlmHash = $this->md4Encrypt($password);
-        $ntml2Hash = $this->md5Encrypt($ntlmHash, $this->convertTo16bit(strtoupper($username).$domain));
+        $ntml2Hash = $this->md5Encrypt($ntlmHash, $this->convertTo16bit(cString::toUpperCase($username).$domain));
 
         // create blob
         $blob = $this->createBlob($timestamp, $client, $targetInfo);

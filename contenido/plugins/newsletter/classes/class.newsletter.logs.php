@@ -102,7 +102,7 @@ class NewsletterLogCollection extends ItemCollection {
             $iIDClient = $oNewsletter->get("idclient");
             $iIDLang = $oNewsletter->get("idlang");
             $nrc = new NewsletterRecipientCollection();
-            $nrcClassName = strtolower(get_class($nrc));
+            $nrcClassName = cString::toLowerCase(get_class($nrc));
             
             switch ($sDestination) {
                 case "all":

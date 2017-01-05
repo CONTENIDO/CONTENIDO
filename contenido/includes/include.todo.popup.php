@@ -57,7 +57,7 @@ if ($action == 'todo_save_item') {
     $notiemail = new cHTMLCheckbox('notiemail', i18n('E-mail notification'));
     $langscripts = array();
 
-    if (($lang_short = substr(strtolower($belang), 0, 2)) != 'en') {
+    if (($lang_short = cString::getPartOfString(cString::toLowerCase($belang), 0, 2)) != 'en') {
         $langscripts[] = 'jquery/plugins/timepicker-' . $lang_short . '.js';
         $langscripts[] = 'jquery/plugins/datepicker-' . $lang_short . '.js';
     }

@@ -33,7 +33,7 @@ function cecCreateMetatags($metatags) {
     // Get encoding
     $oLang = new cApiLanguage((int) $lang);
     if ($oLang->get('encoding')) {
-        $sEncoding = strtoupper($oLang->get('encoding'));
+        $sEncoding = cString::toUpperCase($oLang->get('encoding'));
     } else {
         $sEncoding = 'ISO-8859-1';
     }
@@ -89,7 +89,7 @@ function cecCreateMetatags($metatags) {
     }
 
     $sHeadline = strip_tags($sHeadline);
-    $sHeadline = substr(str_replace(chr(13) . chr(10), ' ', $sHeadline), 0, 100);
+    $sHeadline = cString::getPartOfString(str_replace(chr(13) . chr(10), ' ', $sHeadline), 0, 100);
 
     $arrText1 = $oArt->getContent('html');
     $arrText2 = $oArt->getContent('text');
@@ -151,10 +151,10 @@ function cecCreateMetatags($metatags) {
     foreach ($availableTags as $key => $value) {
         $metavalue = conGetMetaValue($idartlang, $key);
 
-        if (strlen($metavalue) == 0) {
+        if (cString::getStringLength($metavalue) == 0) {
             // Add values for metatags that don't have a value in the current
             // article
-            switch (strtolower($value['metatype'])) {
+            switch (cString::toLowerCase($value['metatype'])) {
                 case 'author':
                     // Build author metatag from name of last modifier
                     $oArt = new cApiArticleLanguage();
@@ -186,7 +186,7 @@ function cecCreateMetatags($metatags) {
                 case 'robots':
                 case 'expires':
                     // Build these 3 metatags from entries in homepage
-                    $sCurrentTag = strtolower($value['name']);
+                    $sCurrentTag = cString::toLowerCase($value['name']);
                     $iCheck = CheckIfMetaTagExists($metatags, $sCurrentTag);
                     if($sCurrentTag != '' && $arrHomepageMetaTags[$sCurrentTag] != "") {
                         $metatags[$iCheck]['name'] = $sCurrentTag;

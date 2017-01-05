@@ -102,7 +102,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
                 $iCounter = count($this->_options);
                 while ($oDB->nextRecord()) {
                     // Generate new option element
-                    $oOption = new cHTMLOptionElement($sSpaces . '&nbsp;&nbsp;&nbsp;' . substr($oDB->f('title'), 0, 32), $oDB->f('idcatart'));
+                    $oOption = new cHTMLOptionElement($sSpaces . '&nbsp;&nbsp;&nbsp;' . cString::getPartOfString($oDB->f('title'), 0, 32), $oDB->f('idcatart'));
 
                     if ($bColored) {
                         if ($oDB->f('idstartartlang') == $oDB->f('idartlang')) {
@@ -274,7 +274,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
                     $sTypeIdentifier = "tblData.idtype = '" . $oDB->f('idtype') . "' AND tblData.typeid = '" . $oDB->f('typeid') . "'";
 
                     // Generate new option element
-                    $oOption = new cHTMLOptionElement($oDB->f('type') . "[" . $oDB->f('typeid') . "]: " . substr(strip_tags($oDB->f("value")), 0, 50), $sTypeIdentifier);
+                    $oOption = new cHTMLOptionElement($oDB->f('type') . "[" . $oDB->f('typeid') . "]: " . cString::getPartOfString(strip_tags($oDB->f("value")), 0, 50), $sTypeIdentifier);
 
                     // Add option element to the list
                     $this->addOptionElement($sTypeIdentifier, $oOption);

@@ -49,14 +49,14 @@ class NewsletterRecipientCollection extends ItemCollection {
         global $client, $lang, $auth;
 
         /* Check if the e-mail adress already exists */
-        $email = strtolower($sEMail); // e-mail always lower case
+        $email = cString::toLowerCase($sEMail); // e-mail always lower case
         $this->setWhere("idclient", $client);
         $this->setWhere("idlang", $lang);
         $this->setWhere("email", $email);
         $this->query();
 
         if ($this->next()) {
-            return $this->create($email . "_" . substr(md5(rand()), 0, 10), $sName, 0, $sJoinID, $iMessageType); // 0:
+            return $this->create($email . "_" . cString::getPartOfString(md5(rand()), 0, 10), $sName, 0, $sJoinID, $iMessageType); // 0:
                                                                                                             // Deactivate
                                                                                                             // 'confirmed'
         }
@@ -65,7 +65,7 @@ class NewsletterRecipientCollection extends ItemCollection {
         $oItem->set("idlang", $lang);
         $oItem->set("name", $sName);
         $oItem->set("email", $email);
-        $oItem->set("hash", substr(md5(rand()), 0, 17) . uniqid("")); // Generating
+        $oItem->set("hash", cString::getPartOfString(md5(rand()), 0, 17) . uniqid("")); // Generating
                                                                     // UID, 30
                                                                     // characters
         $oItem->set("confirmed", $iConfirmed);
@@ -170,7 +170,7 @@ class NewsletterRecipientCollection extends ItemCollection {
 
         $oRecipientCollection->setWhere("idclient", $client);
         $oRecipientCollection->setWhere("idlang", $lang);
-        $oRecipientCollection->setWhere("email", strtolower($sEmail));
+        $oRecipientCollection->setWhere("email", cString::toLowerCase($sEmail));
         $oRecipientCollection->query();
 
         if ($oItem = $oRecipientCollection->next()) {
@@ -191,7 +191,7 @@ class NewsletterRecipientCollection extends ItemCollection {
 
         $iUpdated = $this->count();
         while ($oItem = $this->next()) {
-            $oItem->set("hash", substr(md5(rand()), 0, 17) . uniqid("")); /*
+            $oItem->set("hash", cString::getPartOfString(md5(rand()), 0, 17) . uniqid("")); /*
                                                                          *
                                                                          * Generating
                                                                          * UID,

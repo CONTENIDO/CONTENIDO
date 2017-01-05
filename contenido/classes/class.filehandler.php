@@ -32,7 +32,7 @@ class cFileHandler {
      *         true on success. Otherwise false.
      */
     public static function create($filename, $content = '') {
-        $success = file_put_contents($filename, $content) === strlen($content);
+        $success = file_put_contents($filename, $content) === cString::getStringLength($content);
         if ($success) {
             self::setDefaultFilePerms($filename);
         }
@@ -119,11 +119,11 @@ class cFileHandler {
                     fclose($f);
                     return false;
                 }
-                $ret[] = substr($temp, 0, strlen($temp) - 1);
+                $ret[] = cString::getPartOfString($temp, 0, cString::getStringLength($temp) - 1);
             }
         } else {
             $ret = fgets($f);
-            $ret = substr($ret, 0, strlen($ret) - 1);
+            $ret = cString::getPartOfString($ret, 0, cString::getStringLength($ret) - 1);
         }
 
         fclose($f);
@@ -380,9 +380,9 @@ class cFileHandler {
         $ret['mtime'] = @filemtime($filename);
 
         $temp = @decoct(fileperms($filename));
-        $ret['perms'] = substr($temp, strlen($temp) - 4);
+        $ret['perms'] = cString::getPartOfString($temp, cString::getStringLength($temp) - 4);
 
-        $ret['extension'] = substr(basename($filename), (int) strrpos(basename($filename), '.') + 1);
+        $ret['extension'] = cString::getPartOfString(basename($filename), (int) cString::findLastPos(basename($filename), '.') + 1);
         if ($ret['extension'] == basename($filename)) {
             $ret['extension'] = '';
         }
@@ -457,7 +457,7 @@ class cFileHandler {
         }
 
         // check if filename is empty
-        if (strlen(trim($filename)) == 0) {
+        if (cString::getStringLength(trim($filename)) == 0) {
             // validation failure...
             if ($notifyAndExitOnFailure) {
                 // display notification and exit
@@ -495,6 +495,6 @@ class cFileHandler {
      * @return bool
      */
     public static function fileNameBeginsWithDot($fileName) {
-        return strpos(end(explode('/', $fileName)), ".") === 0;
+        return cString::findFirstPos(end(explode('/', $fileName)), ".") === 0;
     }
 }

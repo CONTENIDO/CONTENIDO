@@ -131,7 +131,7 @@ function getStrExpandCollapseButton($item, $catName) {
     $auth = cRegistry::getAuth();
     $currentUser = new cApiUser($auth->auth['uid']);
     $userPerms = $currentUser->getPerms();
-    if (strpos($userPerms, 'sysadmin') !== false || strpos($userPerms, 'admin[') !== false) {
+    if (cString::findFirstPos($userPerms, 'sysadmin') !== false || cString::findFirstPos($userPerms, 'admin[') !== false) {
         $title = " title=\"idcat: {$item->getId()}, parentid: {$item->getCustom('parentid')}, preid: {$item->getCustom('preid')}, postid: {$item->getCustom('postid')}\"";
     } else {
         $title = '';
@@ -604,12 +604,12 @@ foreach ($objects as $key => $value) {
 
         $tpl->set('d', 'INDENT', ($value->getCustom('level') * 16) . "px");
         $sCategoryname = $value->getName();
-        if (strlen($value->getName()) > 30) {
+        if (cString::getStringLength($value->getName()) > 30) {
             $sCategoryname = cString::trimHard($sCategoryname, 30);
         }
 
         // $tpl->set('d', 'CATEGORY', $sCategoryname);
-        if (strlen($value->getName()) > 30) {
+        if (cString::getStringLength($value->getName()) > 30) {
             $tpl->set('d', 'SHOW_MOUSEOVER_CATEGORY', 'title="' . htmlspecialchars(cSecurity::unFilter($value->getName())) . '" class="tooltip"');
         } else {
             $tpl->set('d', 'SHOW_MOUSEOVER_CATEGORY', '');
@@ -618,11 +618,11 @@ foreach ($objects as $key => $value) {
         $tpl->set('d', 'COLLAPSE_CATEGORY_NAME', getStrExpandCollapseButton($value, $sCategoryname));
         if ($value->getCustom('alias')) {
             $sCategoryalias = $value->getCustom('alias');
-            if (strlen($value->getCustom('alias')) > 30) {
+            if (cString::getStringLength($value->getCustom('alias')) > 30) {
                 $sCategoryalias = cString::trimHard($sCategoryalias, 30);
             }
             $tpl->set('d', 'ALIAS', $sCategoryalias);
-            if (strlen($value->getCustom('alias')) > 30) {
+            if (cString::getStringLength($value->getCustom('alias')) > 30) {
                 $tpl->set('d', 'SHOW_MOUSEOVER_ALIAS', 'title="' . $value->getCustom('alias') . '"');
             } else {
                 $tpl->set('d', 'SHOW_MOUSEOVER_ALIAS', '');
@@ -649,7 +649,7 @@ foreach ($objects as $key => $value) {
         }
 
         $sTemplatename = $template;
-        if (strlen($template) > 20) {
+        if (cString::getStringLength($template) > 20) {
             $sTemplatename = cString::trimHard($sTemplatename, 20);
         }
 
@@ -692,7 +692,7 @@ foreach ($objects as $key => $value) {
         $tpl->set('d', 'PREID', $value->getCustom('preid'));
         $tpl->set('d', 'LEVEL', $value->getCustom('level'));
 
-        if (strlen($template) > 20) {
+        if (cString::getStringLength($template) > 20) {
             $tpl->set('d', 'SHOW_MOUSEOVER', 'title="' . $descString . '"');
         } else {
             $tpl->set('d', 'SHOW_MOUSEOVER', '');
@@ -958,12 +958,12 @@ if (($perm->have_perm_area_action($tmp_area, 'str_newtree') || $perm->have_perm_
 $clang = new cApiLanguage($lang);
 
 if ($movesubtreeidcat != 0) {
-    if (strlen($sMoveSubtreeCatName) > 30) {
+    if (cString::getStringLength($sMoveSubtreeCatName) > 30) {
         $sLimiter = "...";
     } else {
         $sLimiter = "";
     }
-    $sButtonDesc = sprintf(i18n('Cancel moving %s'), '"' . substr($sMoveSubtreeCatName, 0, 30) . $sLimiter . '"');
+    $sButtonDesc = sprintf(i18n('Cancel moving %s'), '"' . cString::getPartOfString($sMoveSubtreeCatName, 0, 30) . $sLimiter . '"');
     $tpl->set('s', 'CANCEL_MOVE_TREE', '<a class="black" id="cancel_move_tree_button" href="javascript:cancelMoveTree(\'' . $movesubtreeidcat . '\');"><img src="images/but_cancel.gif" alt="' . $sButtonDesc . '">&nbsp;' . $sButtonDesc . '</a>');
 } else {
     $tpl->set('s', 'CANCEL_MOVE_TREE', '');

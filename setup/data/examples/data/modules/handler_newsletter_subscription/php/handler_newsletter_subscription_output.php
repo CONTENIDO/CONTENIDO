@@ -68,7 +68,7 @@ if (!class_exists('NewsletterJobCollection')) {
     if ($_POST['action'] == "subscribe") {
         if (!isset($_POST['email']) || !$_POST['email']) {
             $sMessage = mi18n("SPECIFY_EMAIL");
-        } elseif (!isValidMail($_POST['email']) || strpos($_POST['email'], ",") != false || strpos($_POST['email'], ";") != false) {
+        } elseif (!isValidMail($_POST['email']) || cString::findFirstPos($_POST['email'], ",") != false || cString::findFirstPos($_POST['email'], ";") != false) {
             $sMessage = mi18n("SPECIFY_VALID_EMAIL");
         } elseif ($oRecipients->emailExists($_POST['email'])) {
             $sMessage = mi18n("EMAIL_REGISTERED");
@@ -199,7 +199,7 @@ if (!class_exists('NewsletterJobCollection')) {
     } elseif ($_POST['action'] == "delete") {
         if (!isset($_POST['email']) || !$_POST['email']) {
             $sMessage = mi18n("SPECIFY_EMAIL");
-        } elseif (!isValidMail($_POST['email']) || strpos($_POST['email'], ",") != false || strpos($_POST['email'], ";") != false) {
+        } elseif (!isValidMail($_POST['email']) || cString::findFirstPos($_POST['email'], ",") != false || cString::findFirstPos($_POST['email'], ";") != false) {
             $sMessage = mi18n("SPECIFY_VALID_EMAIL");
         } elseif ($recipient = $oRecipients->emailExists($_POST['email'])) {
             $sBody = mi18n("TXTMAILDELETE") . "\n" . $frontendURL . "front_content.php?changelang=" . $lang . "&idcatart=" . $aSettings['HandlerID'] . "&unsubscribe=" . $recipient->get("hash") . "\n\n";
@@ -218,7 +218,7 @@ if (!class_exists('NewsletterJobCollection')) {
         } else {
             $sMessage = mi18n("EMAIL_NOT_FOUND");
         }
-    } elseif (strlen($_GET['confirm']) == 30 && cString::isAlphanumeric($_GET['confirm'])) {
+    } elseif (cString::getStringLength($_GET['confirm']) == 30 && cString::isAlphanumeric($_GET['confirm'])) {
         $oRecipients->setWhere("idclient", $client);
         $oRecipients->setWhere("idlang", $lang);
         $oRecipients->setWhere("hash", $_GET['confirm']);
@@ -257,7 +257,7 @@ if (!class_exists('NewsletterJobCollection')) {
 
                 if (($frontenduser = $oFrontendUsers->next()) !== false) {
                     $frontenduser->set("active", 1);
-                    $sPassword = substr(md5(rand()), 0, 8); // Generating
+                    $sPassword = cString::getPartOfString(md5(rand()), 0, 8); // Generating
                                                             // password
                     $frontenduser->set("password", $sPassword);
                     $frontenduser->store();
@@ -287,7 +287,7 @@ _BR ") . $sPassword;
         } else {
             $sMessage = mi18n("PROBLEM_CONFIRMING_SUBSCRIPTION");
         }
-    } elseif (strlen($_GET['stop']) == 30 && cString::isAlphanumeric($_GET['stop'])) {
+    } elseif (cString::getStringLength($_GET['stop']) == 30 && cString::isAlphanumeric($_GET['stop'])) {
         $oRecipients->setWhere("idclient", $client);
         $oRecipients->setWhere("idlang", $lang);
         $oRecipients->setWhere("hash", $_GET['stop']);
@@ -300,7 +300,7 @@ _BR ") . $sPassword;
         } else {
             $sMessage = mi18n("PROBLEM_PAUSING_NEWSLETTER_SUBSCRIPTION");
         }
-    } elseif (strlen($_GET['goon']) == 30 && cString::isAlphanumeric($_GET['goon'])) {
+    } elseif (cString::getStringLength($_GET['goon']) == 30 && cString::isAlphanumeric($_GET['goon'])) {
         $oRecipients->setWhere("idclient", $client);
         $oRecipients->setWhere("idlang", $lang);
         $oRecipients->setWhere("hash", $_GET['goon']);
@@ -313,7 +313,7 @@ _BR ") . $sPassword;
         } else {
             $sMessage = mi18n("PROBLEM_RESUMING_NEWSLETTER_SUBSCRIPTION");
         }
-    } elseif (strlen($_GET['unsubscribe']) == 30 && cString::isAlphanumeric($_GET['unsubscribe'])) {
+    } elseif (cString::getStringLength($_GET['unsubscribe']) == 30 && cString::isAlphanumeric($_GET['unsubscribe'])) {
         $oRecipients->setWhere("idclient", $client);
         $oRecipients->setWhere("idlang", $lang);
         $oRecipients->setWhere("hash", $_GET['unsubscribe']);

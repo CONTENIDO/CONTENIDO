@@ -93,7 +93,7 @@ foreach ($clientList as $key => $value) {
     $db->query($sql);
 
     while ($db->nextRecord()) {
-        if ((strpos($userPerms, "client[$key]") !== false) && (strpos($userPerms, "lang[" . $db->f("idlang") . "]") !== false) && ($perm->have_perm("lang[" . $db->f("idlang") . "]"))) {
+        if ((cString::findFirstPos($userPerms, "client[$key]") !== false) && (cString::findFirstPos($userPerms, "lang[" . $db->f("idlang") . "]") !== false) && ($perm->have_perm("lang[" . $db->f("idlang") . "]"))) {
             if ($firstSel == false) {
                 $firstSel = true;
                 $firstClientsLang = $db->f('idclientslang');

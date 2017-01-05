@@ -120,7 +120,7 @@ abstract class cXmlBase {
      *         resolved path
      */
     public static function resolvePath($path) {
-        if (substr($path, 0, 1) != '/') {
+        if (cString::getPartOfString($path, 0, 1) != '/') {
             $path = '/' . $path;
         }
 
@@ -135,8 +135,8 @@ abstract class cXmlBase {
 
         $pathString = implode('/', $splits);
 
-        if (substr($pathString, -1) == '/') {
-            $pathString = substr($pathString, 0, -1);
+        if (cString::getPartOfString($pathString, -1) == '/') {
+            $pathString = cString::getPartOfString($pathString, 0, -1);
         }
 
         return $pathString;

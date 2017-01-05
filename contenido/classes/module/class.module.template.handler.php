@@ -611,7 +611,7 @@ class cModuleTemplateHandler extends cModuleHandler {
             $this->_page->appendContent($form);
         }
 
-        $oCodeMirror = new CodeMirror('code', 'html', substr(strtolower($belang), 0, 2), true, $this->_cfg);
+        $oCodeMirror = new CodeMirror('code', 'html', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $this->_cfg);
         if($readOnly) {
             $oCodeMirror->setProperty("readOnly", "true");
 

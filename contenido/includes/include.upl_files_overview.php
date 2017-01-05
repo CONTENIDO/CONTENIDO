@@ -148,7 +148,7 @@ if ($action == 'upl_modify_file') {
     $properties = new cApiPropertyCollection();
     $properties->setValue('upload', $qpath . $file, 'file', 'protected', stripslashes($protected));
 
-    $bTimeMng = (isset($_REQUEST['timemgmt']) && strlen($_REQUEST['timemgmt']) > 1);
+    $bTimeMng = (isset($_REQUEST['timemgmt']) && cString::getStringLength($_REQUEST['timemgmt']) > 1);
     $properties->setValue('upload', $qpath . $file, 'file', 'timemgmt', ($bTimeMng) ? 1 : 0);
     if ($bTimeMng) {
         $properties->setValue('upload', $qpath . $file, 'file', 'datestart', cSecurity::escapeString($_REQUEST['datestart']));
@@ -381,7 +381,7 @@ class UploadList extends FrontendList {
 
         if ($field == 2) {
             // If this file is an image, try to open
-            $fileType = strtolower(cFileHandler::getExtension($data));
+            $fileType = cString::toLowerCase(cFileHandler::getExtension($data));
             switch ($fileType) {
                 case 'png':
                 case 'gif':
@@ -395,7 +395,7 @@ class UploadList extends FrontendList {
                     $frontendURL = cRegistry::getFrontendUrl();
 
                     $sCacheThumbnail = uplGetThumbnail($data, 150);
-                    $sCacheName = substr($sCacheThumbnail, strrpos($sCacheThumbnail, '/') + 1, strlen($sCacheThumbnail) - (strrchr($sCacheThumbnail, '/') + 1));
+                    $sCacheName = cString::getPartOfString($sCacheThumbnail, cString::findLastPos($sCacheThumbnail, '/') + 1, cString::getStringLength($sCacheThumbnail) - (cString::findLastOccurrence($sCacheThumbnail, '/') + 1));
                     $sFullPath = $cfgClient[$client]['cache']['path'] . $sCacheName;
                     if (cFileHandler::exists($sFullPath)) {
                         $aDimensions = getimagesize($sFullPath);
@@ -554,7 +554,7 @@ $list2 = new UploadList($startwrap, $endwrap, $itemwrap);
 $uploads = new cApiUploadCollection();
 
 // Fetch data
-if (substr($path, strlen($path) - 1, 1) != "/") {
+if (cString::getPartOfString($path, cString::getStringLength($path) - 1, 1) != "/") {
     if ($path != "") {
         $qpath = $path . "/";
     } else {
@@ -618,7 +618,7 @@ while ($item = $uploads->next()) {
     $filesize = $item->get('size');
 
     // Do not display directories and "filenames" begin with a dot
-    if (true === cDirHandler::exists($cfgClient[$client]['upl']['path'] . $dirname . $filename) || strpos($filename, ".") === 0) {
+    if (true === cDirHandler::exists($cfgClient[$client]['upl']['path'] . $dirname . $filename) || cString::findFirstPos($filename, ".") === 0) {
         continue;
     }
 
@@ -627,7 +627,7 @@ while ($item = $uploads->next()) {
     if ($appendparameters == 'imagebrowser') {
         $restrictvar = 'restrict_' . $appendparameters;
         if (array_key_exists($restrictvar, $browserparameters)) {
-            $fileType = strtolower(cFileHandler::getExtension($filename));
+            $fileType = cString::toLowerCase(cFileHandler::getExtension($filename));
             if (count($browserparameters[$restrictvar]) > 0) {
                 $bAddFile = false;
                 if (in_array($fileType, $browserparameters[$restrictvar])) {
@@ -669,7 +669,7 @@ while ($item = $uploads->next()) {
 
     if ($bAddFile == true) {
         // 'bgcolor' is just a placeholder...
-        $list2->setData($rownum, $mark, $dirname . $filename, $showfilename, $filesize, strtolower(cFileHandler::getExtension($filename)), $todo->render() . $actions);
+        $list2->setData($rownum, $mark, $dirname . $filename, $showfilename, $filesize, cString::toLowerCase(cFileHandler::getExtension($filename)), $todo->render() . $actions);
         $rownum++;
     }
 }

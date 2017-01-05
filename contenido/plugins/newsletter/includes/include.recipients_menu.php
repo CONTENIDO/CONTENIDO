@@ -101,10 +101,10 @@ if ($_REQUEST["sortorder"] != "DESC") {
 $bSortByFound = false;
 $bSearchInFound = false;
 foreach ($aFields as $sKey => $aData) {
-    if ($aData["field"] == $_REQUEST["sortby"] && strpos($aData["type"], "sort") !== false) {
+    if ($aData["field"] == $_REQUEST["sortby"] && cString::findFirstPos($aData["type"], "sort") !== false) {
         $bSortByFound = true;
     }
-    if ($aData["field"] == $_REQUEST["searchin"] && strpos($aData["type"], "search") !== false) {
+    if ($aData["field"] == $_REQUEST["searchin"] && cString::findFirstPos($aData["type"], "search") !== false) {
         $bSearchInFound = true;
     }
 }
@@ -148,7 +148,7 @@ if ($_REQUEST["restrictgroup"] != "--all--") {
 if ($_REQUEST["filter"] != "") {
     if ($_REQUEST["searchin"] == "--all--" || $_REQUEST["searchin"] == "") {
         foreach ($aFields as $sKey => $aData) {
-            if (strpos($aData["type"], "search") !== false) {
+            if (cString::findFirstPos($aData["type"], "search") !== false) {
                 $oRecipients->setWhereGroup("filter", $aData["field"], $_REQUEST["filter"], "LIKE");
             }
         }

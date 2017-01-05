@@ -340,7 +340,7 @@ class cLayoutHandler {
 
         $save = cFileHandler::write($this->_layoutPath . $this->_fileName, $layoutCode);
 
-        return (strlen($layoutCode) == 0 && $save == 0) || $save > 0;
+        return (cString::getStringLength($layoutCode) == 0 && $save == 0) || $save > 0;
     }
 
     /**

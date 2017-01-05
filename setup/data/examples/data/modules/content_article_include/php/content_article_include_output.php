@@ -119,7 +119,7 @@ $selectElement = new cHTMLSelectElement("articleselect_" . $curContainerId, "", 
 $defOptionElement = new cHTMLOptionElement(mi18n("PLEASE_CHOOSE_LABEL"), 0);
 $selectElement->addOptionElement(0, $defOptionElement);
 
-if ($cms_idcat != "0" && strlen($cms_idcat) > 0) {
+if ($cms_idcat != "0" && cString::getStringLength($cms_idcat) > 0) {
 
     $sql = "
         SELECT
@@ -247,11 +247,11 @@ if ($cms_idcat >= 0 && $cms_idcatart >= 0) {
         $edit = $tmpView;
         $GLOBALS['edit'] = $tmpView;
 
-        $posStart = strpos($code, "<!--start:content-->");
-        $posEnd = strpos($code, "<!--end:content-->");
+        $posStart = cString::findFirstPos($code, "<!--start:content-->");
+        $posEnd = cString::findFirstPos($code, "<!--end:content-->");
         $difflen = $posEnd - $posStart;
 
-        $code = substr($code, $posStart, $difflen);
+        $code = cString::getPartOfString($code, $posStart, $difflen);
 
         echo $code;
 

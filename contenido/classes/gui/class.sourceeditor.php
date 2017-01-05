@@ -143,7 +143,7 @@ class cGuiSourceEditor extends cGuiPage {
 
         // include the class and create the codemirror instance
         cInclude('external', 'codemirror/class.codemirror.php');
-        $this->_codeMirror = new CodeMirror('code', $this->_filetype, substr(strtolower($belang), 0, 2), true, $cfg, !$this->_readOnly);
+        $this->_codeMirror = new CodeMirror('code', $this->_filetype, cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg, !$this->_readOnly);
 
         $this->_versioning = $versioning;
 

@@ -40,7 +40,7 @@ foreach ($_GET as $sTempKey => $sTempValue) {
     if (in_array($sTempKey, $aBasicParams)) {
         // Basic parameters attached
         $iCountBasicVal++;
-    } else if ((substr($sTempKey, 0, 2) == 'id' || substr($sTempKey, -2, 2) == 'id')
+    } else if ((cString::getPartOfString($sTempKey, 0, 2) == 'id' || cString::getPartOfString($sTempKey, -2, 2) == 'id')
         && ((int) $sTempValue == $sTempValue                      // check integer
         || preg_match('/^[0-9a-f]{32}$/', $sTempValue)) // check md5
         )
@@ -123,7 +123,7 @@ if (!$bVirgin || $bMenuless) {
 
     $sTpl = $tpl->generate($cfg['path']['templates'] . $cfg['templates']['subnav'], true);
 
-    cDebug::out('sExectime: ' . substr($sExectime, 0, 7) . ' sec');
+    cDebug::out('sExectime: ' . cString::getPartOfString($sExectime, 0, 7) . ' sec');
     echo $sTpl;
 } else {
     // Is loading from main.php

@@ -28,7 +28,7 @@ if (cRegistry::isBackendEditMode()) {
 
 // build class containing all data necessary to display image
 // therefor the image dimensions have to be determined
-if (0 < strlen($imageSource)) {
+if (0 < cString::getStringLength($imageSource)) {
     $clientConfig = cRegistry::getClientConfig(cRegistry::getClientId());
     $filename = str_replace($clientConfig["upl"]["htmlpath"], $clientConfig["upl"]["path"], $imageSource);
     list($imageWidth, $imageHeight) = getimagesize($filename);

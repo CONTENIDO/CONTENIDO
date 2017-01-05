@@ -476,7 +476,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $directoryShow = new cHTMLDiv('', 'directoryShow', 'directoryShow_' . $this->_id);
         $imagePath = $this->_imagePath;
         $imageFilename = str_replace($this->_cfgClient[$this->_client]['path']['htmlpath'], $this->_cfgClient[$this->_client]['path']['frontend'], $imagePath);
-        $imageFiletype = substr($imagePath, strlen($imagePath) - 4, 4);
+        $imageFiletype = cString::getPartOfString($imagePath, cString::getStringLength($imagePath) - 4, 4);
         $imageExtensions = array(
             '.gif',
             '.png',
@@ -627,7 +627,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      */
     public function generateFileSelect($directoryPath = '') {
         // make sure the path ends with a slash
-        if (substr($directoryPath, -1) != '/') {
+        if (cString::getPartOfString($directoryPath, -1) != '/') {
             $directoryPath .= '/';
         }
 
@@ -651,8 +651,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         }
 
         usort($files, function($a, $b) {
-            $a = mb_strtolower($a["name"]);
-            $b = mb_strtolower($b["name"]);
+            $a = cString::toLowerCase($a["name"]);
+            $b = cString::toLowerCase($b["name"]);
             if($a < $b) {
                 return -1;
             } else if($a > $b) {

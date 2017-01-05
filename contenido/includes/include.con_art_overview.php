@@ -229,17 +229,17 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         }
         switch ($sortby) {
             case 2:
-                $sql .= ' ORDER BY a.lastmodified ' . strtoupper($sortmode);
+                $sql .= ' ORDER BY a.lastmodified ' . cString::toUpperCase($sortmode);
                 break;
             case 3:
-                $sql .= ' ORDER BY a.published ' . strtoupper($sortmode) . ', a.lastmodified ' . strtoupper($sortmode);
+                $sql .= ' ORDER BY a.published ' . cString::toUpperCase($sortmode) . ', a.lastmodified ' . cString::toUpperCase($sortmode);
                 break;
             case 4:
-                $sql .= ' ORDER BY a.artsort ' . strtoupper($sortmode);
+                $sql .= ' ORDER BY a.artsort ' . cString::toUpperCase($sortmode);
                 break;
             default:
                 // Default sort order
-                $sql .= ' ORDER BY a.title ' . strtoupper($sortmode);
+                $sql .= ' ORDER BY a.title ' . cString::toUpperCase($sortmode);
                 $sortby = 1;
         }
 
@@ -611,8 +611,8 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             // Delete button
             if (($perm->have_perm_area_action('con', 'con_deleteart') || $perm->have_perm_area_action_item('con', 'con_deleteart', $idcat)) && $inUse == false && ((int) $locked === 0  || $admin)) {
                 $tmp_title = $title;
-                if (strlen($tmp_title) > 30) {
-                    $tmp_title = substr($tmp_title, 0, 27) . "...";
+                if (cString::getStringLength($tmp_title) > 30) {
+                    $tmp_title = cString::getPartOfString($tmp_title, 0, 27) . "...";
                 }
 
                 $confirmString = sprintf(i18n("Are you sure to delete the following article:<br><br><b>%s</b>"), conHtmlSpecialChars($tmp_title));
@@ -838,7 +838,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                         $descString = '<b>' . $artitem[$key] . '</b>';
 
                         $sTemplatename = cString::trimHard($artitem[$key], 20);
-                        if (strlen($artitem[$key]) > 20) {
+                        if (cString::getStringLength($artitem[$key]) > 20) {
                             $cells[] = '<td nowrap="nowrap" class="bordercell tooltip" title="' . $descString . '">' . $sTemplatename . '</td>';
                         } else {
                             $cells[] = '<td nowrap="nowrap" class="bordercell">' . $artitem[$key] . '</td>';

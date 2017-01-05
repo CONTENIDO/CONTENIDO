@@ -349,7 +349,7 @@ class PifaForm extends Item {
     public function fromForm() {
 
         // get data from source depending on method
-        switch (strtoupper($this->get('method'))) {
+        switch (cString::toUpperCase($this->get('method'))) {
             case 'GET':
                 $this->setValues($_GET);
                 break;
@@ -380,7 +380,7 @@ class PifaForm extends Item {
         ), $opt);
         $idform = $this->get('idform');
         $headline = '';
-        if(isset($opt['headline']) && strlen($opt['headline']) > 0) {
+        if(isset($opt['headline']) && cString::getStringLength($opt['headline']) > 0) {
             $headline = '<h1 class="pifa-headline">' . $opt['headline'] . '</h1>';
         }
 
@@ -488,7 +488,7 @@ class PifaForm extends Item {
             $msg = Pifa::i18n('DATABASE_CONNECT_ERROR');
             throw new PifaDatabaseException($msg);
         }
-        if (0 === strlen(trim($sql))) {
+        if (0 === cString::getStringLength(trim($sql))) {
             $msg = Pifa::i18n('SQL_BUILD_ERROR');
             throw new PifaDatabaseException($msg);
         }
@@ -512,7 +512,7 @@ class PifaForm extends Item {
             }
             $tmpName = $file['tmp_name'];
             // if no file was submitted tmp_name is an empty string
-            if (0 === strlen($tmpName)) {
+            if (0 === cString::getStringLength($tmpName)) {
                 continue;
             }
             $destPath = $cfg['path']['contenido_cache'] . 'form_assistant/';
@@ -535,23 +535,23 @@ class PifaForm extends Item {
      * @param array $opt
      */
     public function toMailRecipient(array $opt) {
-        if (0 == strlen(trim($opt['from']))) {
+        if (0 == cString::getStringLength(trim($opt['from']))) {
             $msg = Pifa::i18n('MISSING_SENDER_ADDRESS');
             throw new PifaMailException($msg);
         }
-        if (0 == strlen(trim($opt['fromName']))) {
+        if (0 == cString::getStringLength(trim($opt['fromName']))) {
             $msg = Pifa::i18n('MISSING_SENDER_NAME');
             throw new PifaMailException($msg);
         }
-        if (0 == strlen(trim($opt['to']))) {
+        if (0 == cString::getStringLength(trim($opt['to']))) {
             $msg = Pifa::i18n('MISSING_RECIPIENT_ADDRESS');
             throw new PifaMailException($msg);
         }
-        if (0 == strlen(trim($opt['subject']))) {
+        if (0 == cString::getStringLength(trim($opt['subject']))) {
             $msg = Pifa::i18n('MISSING_SUBJECT');
             throw new PifaMailException($msg);
         }
-        if (0 == strlen(trim($opt['body']))) {
+        if (0 == cString::getStringLength(trim($opt['body']))) {
             $msg = Pifa::i18n('MISSING_EMAIL_BODY');
             throw new PifaMailException($msg);
         }
@@ -761,7 +761,7 @@ class PifaForm extends Item {
         }
         foreach ($this->getFields() as $index => $pifaField) {
             // CON-2169 filter empty values
-            if (strlen(trim($pifaField->get('column_name'))) > 0) {
+            if (cString::getStringLength(trim($pifaField->get('column_name'))) > 0) {
                 $columns[] = $pifaField->get('column_name');
             }
         }
@@ -937,7 +937,7 @@ class PifaForm extends Item {
         foreach ($this->_fields as $pifaField) {
             $columnName = $pifaField->get('column_name');
             // skip fields w/o column
-            if (0 === strlen(trim($columnName))) {
+            if (0 === cString::getStringLength(trim($columnName))) {
                 continue;
             }
             $dataType = $pifaField->getDbDataType();
@@ -1046,14 +1046,14 @@ class PifaForm extends Item {
         $columnName = $pifaField->get('column_name');
         $dataType = $pifaField->getDbDataType();
 
-        if (0 === strlen(trim($oldColumnName))) {
-            if (0 === strlen(trim($columnName))) {
+        if (0 === cString::getStringLength(trim($oldColumnName))) {
+            if (0 === cString::getStringLength(trim($columnName))) {
                 // PASS
             } else {
                 $this->addColumn($columnName, $dataType);
             }
         } else {
-            if (0 === strlen(trim($columnName))) {
+            if (0 === cString::getStringLength(trim($columnName))) {
                 $this->dropColumn($oldColumnName);
             } else {
                 $this->changeColumn($columnName, $dataType, $oldColumnName);
@@ -1182,7 +1182,7 @@ class PifaForm extends Item {
         // Field, Type, Null, Key, Default, Extra
         while (false !== $db->nextRecord()) {
             $field = $db->toArray();
-            if (strtolower($field['Field']) == strtolower($columnName)) {
+            if (cString::toLowerCase($field['Field']) == cString::toLowerCase($columnName)) {
                 return true;
             }
         }
@@ -1228,7 +1228,7 @@ class PifaForm extends Item {
         }
 
         // drop data
-        if (0 < strlen(trim($this->get('data_table')))) {
+        if (0 < cString::getStringLength(trim($this->get('data_table')))) {
             $sql = "-- PifaForm->delete()
                 DROP TABLE IF EXISTS
                     `" . cSecurity::toString($this->get('data_table')) . "`

@@ -489,7 +489,7 @@ $oSelItemsPerPage->setDefault($iItemsPerPage);
 // Sort by
 $oSelSortBy = new cHTMLSelectElement("sortby");
 foreach ($aFields as $sKey => $aData) {
-    if (strpos($aData["type"], "sort") !== false) {
+    if (cString::findFirstPos($aData["type"], "sort") !== false) {
         $oOption = new cHTMLOptionElement($aData["caption"], $sKey);
         $oSelSortBy->addOptionElement($sKey, $oOption);
     }
@@ -514,7 +514,7 @@ $oOption = new cHTMLOptionElement(i18n("-- All fields --", 'newsletter'), "--all
 $oSelSearchIn->addOptionElement("all", $oOption);
 
 foreach ($aFields as $sKey => $aData) {
-    if (strpos($aData["type"], "search") !== false) {
+    if (cString::findFirstPos($aData["type"], "search") !== false) {
         $oOption = new cHTMLOptionElement($aData["caption"], $sKey);
         $oSelSearchIn->addOptionElement($sKey, $oOption);
     }
@@ -740,7 +740,7 @@ $oSelItemsPerPage->setDefault($iItemsPerPage);
 
 $oSelSortBy = new cHTMLSelectElement("sortby");
 foreach ($aFields as $sKey => $aData) {
-    if (strpos($aData["type"], "sort") !== false) {
+    if (cString::findFirstPos($aData["type"], "sort") !== false) {
         $oOption = new cHTMLOptionElement($aData["caption"], $aData["field"]);
         $oSelSortBy->addOptionElement($aData["field"], $oOption);
     }
@@ -787,7 +787,7 @@ $oOption = new cHTMLOptionElement(i18n("-- All fields --", 'newsletter'), "--all
 $oSelSearchIn->addOptionElement("all", $oOption);
 
 foreach ($aFields as $sKey => $aData) {
-    if (strpos($aData["type"], "search") !== false) {
+    if (cString::findFirstPos($aData["type"], "search") !== false) {
         $oOption = new cHTMLOptionElement($aData["caption"], $aData["field"]);
         $oSelSearchIn->addOptionElement($aData["field"], $oOption);
     }
@@ -943,7 +943,7 @@ $oSelItemsPerPage->setDefault($iItemsPerPage);
 
 $oSelSortBy = new cHTMLSelectElement("sortby");
 foreach ($aFields as $sKey => $aData) {
-    if (strpos($aData["type"], "sort") !== false) {
+    if (cString::findFirstPos($aData["type"], "sort") !== false) {
         $oOption = new cHTMLOptionElement($aData["caption"], $aData["field"]);
         $oSelSortBy->addOptionElement($aData["field"], $oOption);
     }
@@ -965,7 +965,7 @@ $oOption = new cHTMLOptionElement(i18n("-- All fields --", 'newsletter'), "--all
 $oSelSearchIn->addOptionElement("all", $oOption);
 
 foreach ($aFields as $sKey => $aData) {
-    if (strpos($aData["type"], "search") !== false) {
+    if (cString::findFirstPos($aData["type"], "search") !== false) {
         $oOption = new cHTMLOptionElement($aData["caption"], $aData["field"]);
         $oSelSearchIn->addOptionElement($aData["field"], $oOption);
     }

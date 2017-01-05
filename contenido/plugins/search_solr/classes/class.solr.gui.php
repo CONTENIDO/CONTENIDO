@@ -181,7 +181,7 @@ class SolrRightBottomPage extends cGuiPage {
         $settings .= 'ssl_cert,ssl_key,ssl_keypassword,ssl_cainfo,ssl_capath';
         foreach (explode(',', $settings) as $setting) {
             $value = $_POST[$setting];
-            if (0 < strlen(trim($value))) {
+            if (0 < cString::getStringLength(trim($value))) {
                 setSystemProperty('solr', $setting, $value);
             } else {
                 // Solr system properties w/o values are not stored to prevent

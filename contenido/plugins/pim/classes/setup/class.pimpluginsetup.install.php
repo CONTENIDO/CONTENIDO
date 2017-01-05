@@ -596,7 +596,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
             // Fallback for older plugins
             if (!$attributes['name']) {
-            	$attributes['name'] = strtolower($location);
+            	$attributes['name'] = cString::toLowerCase($location);
             	$attributes['name'] = str_replace('/', '', $attributes['name']);
             }
 
@@ -604,7 +604,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
             $idnavm = $idnavm + 10;
 
             // Removed the last number at idnavm
-            $idnavm = substr($idnavm, 0, strlen($idnavm) - 1);
+            $idnavm = cString::getPartOfString($idnavm, 0, cString::getStringLength($idnavm) - 1);
 
             // Last number is always a zero
             $idnavm = cSecurity::toInteger($idnavm . 0);
@@ -743,7 +743,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
         foreach (new DirectoryIterator($modulesPath) as $modulesFiles) {
 
-            if (substr($modulesFiles->getBasename(), -4) == ".zip") {
+            if (cString::getPartOfString($modulesFiles->getBasename(), -4) == ".zip") {
 
                 // Import founded module
                 $module->import($modulesFiles->getBasename(), $modulesFiles->getBasename(), false);

@@ -361,7 +361,7 @@ class PimPluginSetup {
      * Check file type, Plugin Manager accepts only Zip archives
      */
     private function checkZip() {
-        if (substr($_FILES['package']['name'], -4) != ".zip") {
+        if (cString::getPartOfString($_FILES['package']['name'], -4) != ".zip") {
             self::error(i18n('Plugin Manager accepts only Zip archives', 'pim'));
         }
     }

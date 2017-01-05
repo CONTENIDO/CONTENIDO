@@ -41,7 +41,7 @@ if (($piwikUrl = getEffectiveSetting('stats', 'piwik_url', '')) != "") {
 
 
 if ($action == "stat_show") {
-    if (strlen($yearmonth) < 4) {
+    if (cString::getStringLength($yearmonth) < 4) {
         $yearmonth = "current";
     }
 
@@ -79,7 +79,7 @@ if ($action == "stat_show") {
         if (strcmp($yearmonth, "current") == 0) {
             $tpl->set('s', 'STATTITLE', i18n("Current") . ' ' . $stattype);
         } else {
-            $tpl->set('s', 'STATTITLE', $stattype . " " . getCanonicalMonth(substr($yearmonth, 4, 2)) . ' ' . substr($yearmonth, 0, 4));
+            $tpl->set('s', 'STATTITLE', $stattype . " " . getCanonicalMonth(cString::getPartOfString($yearmonth, 4, 2)) . ' ' . cString::getPartOfString($yearmonth, 0, 4));
         }
     }
 

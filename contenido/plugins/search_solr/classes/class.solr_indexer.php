@@ -222,7 +222,7 @@ class SolrIndexer {
             foreach ($articleContent as $type => $typeContent) {
 
                 // field names in Solr should always be lowercase!
-                $type = strtolower($type);
+                $type = cString::toLowerCase($type);
 
                 // == sort content of a certain content type by their typeids
                 // This is important so that the most prominent headline can be
@@ -233,7 +233,7 @@ class SolrIndexer {
                 // defined as multiValued)
                 foreach ($typeContent as $typeid => $contentEntry) {
                     $contentEntry = trim($contentEntry);
-                    if (0 < strlen($contentEntry)) {
+                    if (0 < cString::getStringLength($contentEntry)) {
                         $solrInputDocument->addField($type, $contentEntry);
                     }
                 }
@@ -241,7 +241,7 @@ class SolrIndexer {
 
             if (isset($articleContent['CMS_IMGEDITOR'])) {
                 foreach ($articleContent['CMS_IMGEDITOR'] as $typeid => $idupl) {
-                    if (0 == strlen($idupl)) {
+                    if (0 == cString::getStringLength($idupl)) {
                         continue;
                     }
                     $image = $this->_getImageUrlByIdupl($idupl);

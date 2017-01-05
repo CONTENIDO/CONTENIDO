@@ -25,7 +25,7 @@ $label_optionButton = mi18n("OPTIONBUTTON");
 $art = new cApiArticleLanguage($idartlang);
 
 //if post save values in db
-if (cRegistry::isBackendEditMode() && 'POST' === strtoupper($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] == 'xing') {
+if (cRegistry::isBackendEditMode() && 'POST' === cString::toUpperCase($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] == 'xing') {
     conSaveContentEntry($idartlang, "CMS_HTML", 2000, $_POST['profile']);
     conSaveContentEntry($idartlang, "CMS_HTML", 2001, $_POST['look']);
     conSaveContentEntry($idartlang, "CMS_HTML", 2002, $_POST['name']);

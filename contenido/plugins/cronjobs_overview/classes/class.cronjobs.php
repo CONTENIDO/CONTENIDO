@@ -57,7 +57,7 @@ class Cronjobs {
 
         //get the name of the file withouth the mime type
         if ($phpFile != '') {
-            $this->_fileName = substr($phpFile, 0, -4);
+            $this->_fileName = cString::getPartOfString($phpFile, 0, -4);
         }
 
         $cfg = cRegistry::getConfig();
@@ -172,7 +172,7 @@ class Cronjobs {
      */
     public function existFile() {
         if (cFileHandler::exists($this->_cronjobDirectory . $this->_phpFile) && !is_dir($this->_cronjobDirectory . $this->_phpFile)) {
-            if (substr($this->_phpFile, -4) == '.php') {
+            if (cString::getPartOfString($this->_phpFile, -4) == '.php') {
                 return true;
             } else {
                 return false;
@@ -194,7 +194,7 @@ class Cronjobs {
             if (false !== ($handle = cDirHandler::read($this->_cronjobDirectory, false, false, true))) {
                 foreach ($handle as $file) {
                     if (cFileHandler::fileNameIsDot($file) === false
-                        && substr($file, -4) == '.php' && $file != 'index.php') {
+                        && cString::getPartOfString($file, -4) == '.php' && $file != 'index.php') {
                         $retArray[] = $file;
                     }
                 }

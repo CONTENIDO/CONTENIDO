@@ -78,7 +78,7 @@ class cTypeGenerator {
      *         The classname e.g. cContentTypeHtmlhead for content type CMS_HTMLHEAD
      */
     protected function _getContentTypeClassName($type) {
-        $typeClassName = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $type)));
+        $typeClassName = 'cContentType' . ucfirst(cString::toLowerCase(str_replace('CMS_', '', $type)));
         return $typeClassName;
     }
 
@@ -88,8 +88,8 @@ class cTypeGenerator {
      * @return string
      */
     public static function getContentTypeClassName($type)  {
-        $contentType = substr($type, 4);
-        return 'cContentType' . strtoupper($contentType[0]) . strtolower(substr($contentType, 1));
+        $contentType = cString::getPartOfString($type, 4);
+        return 'cContentType' . cString::toUpperCase($contentType[0]) . cString::toLowerCase(cString::getPartOfString($contentType, 1));
     }
 
     /**

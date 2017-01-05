@@ -375,7 +375,7 @@ class PifaRightBottomFormPage extends cGuiPage {
 
             $dataTableValue = empty($_POST['data_table'])? '' : $_POST['data_table'];
             $dataTableValue = trim($dataTableValue);
-            $dataTableValue = strtolower($dataTableValue);
+            $dataTableValue = cString::toLowerCase($dataTableValue);
             $dataTableValue = preg_replace('/[^a-z0-9_]/', '_', $dataTableValue);
 
             $methodValue = '';
@@ -387,7 +387,7 @@ class PifaRightBottomFormPage extends cGuiPage {
         $tpl->assign('idform', $idform);
         $tpl->assign('nameValue', $nameValue);
         $tpl->assign('dataTableValue', $dataTableValue);
-        $tpl->assign('methodValue', strtoupper($methodValue));
+        $tpl->assign('methodValue', cString::toUpperCase($methodValue));
         $tpl->assign('withTimestampValue', $withTimestampValue);
         $tpl->assign('hasWithTimestamp', Pifa::TIMESTAMP_BYFORM === Pifa::getTimestampSetting());
         $tpl->assign('trans', array(
@@ -423,12 +423,12 @@ class PifaRightBottomFormPage extends cGuiPage {
 
         $dataTable = $_POST['data_table'];
         $dataTable = trim($dataTable);
-        $dataTable = strtolower($dataTable);
+        $dataTable = cString::toLowerCase($dataTable);
         $dataTable = preg_replace('/[^a-z0-9_]/', '_', $dataTable);
 
         $method = $_POST['method'];
         $method = trim($method);
-        $method = strtoupper($method);
+        $method = cString::toUpperCase($method);
 
         switch (Pifa::getTimestampSetting()) {
             case Pifa::TIMESTAMP_NEVER:
@@ -443,11 +443,11 @@ class PifaRightBottomFormPage extends cGuiPage {
         }
 
         // validate item data
-        if (0 === strlen($name)) {
+        if (0 === cString::getStringLength($name)) {
             $msg = Pifa::i18n('EMPTY_FORMNAME_ERROR');
             throw new PifaException($msg);
         }
-        if (0 === strlen($dataTable)) {
+        if (0 === cString::getStringLength($dataTable)) {
             $msg = Pifa::i18n('EMPTY_DATETABLENAME_ERROR');
             throw new PifaException($msg);
         }
@@ -1151,7 +1151,7 @@ class PifaRightBottomFormImportPage extends cGuiPage {
                 $this->set('s', 'notification', $notification);
                 try {
 
-                    switch (strtoupper($_SERVER['REQUEST_METHOD'])) {
+                    switch (cString::toUpperCase($_SERVER['REQUEST_METHOD'])) {
                         case 'GET':
                             $this->set('s', 'content', $this->_importFormGet());
                             break;

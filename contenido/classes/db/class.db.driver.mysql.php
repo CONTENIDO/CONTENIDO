@@ -113,8 +113,8 @@ class cDbDriverMysql extends cDbDriverAbstract {
             }
         }
 
-        $fieldList = substr($fieldList, 0, -2);
-        $valueList = substr($valueList, 0, -2);
+        $fieldList = cString::getPartOfString($fieldList, 0, -2);
+        $valueList = cString::getPartOfString($valueList, 0, -2);
 
         return sprintf('INSERT INTO `%s` (%s) VALUES (%s)', $tableName, $fieldList, $valueList);
     }
@@ -156,8 +156,8 @@ class cDbDriverMysql extends cDbDriverAbstract {
             }
         }
 
-        $updateList = substr($updateList, 0, -2);
-        $whereList = substr($whereList, 0, -5);
+        $updateList = cString::getPartOfString($updateList, 0, -2);
+        $whereList = cString::getPartOfString($whereList, 0, -5);
 
         return sprintf('UPDATE `%s` SET %s WHERE %s', $tableName, $updateList, $whereList);
     }

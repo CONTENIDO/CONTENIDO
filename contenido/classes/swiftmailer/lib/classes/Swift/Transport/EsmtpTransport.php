@@ -345,8 +345,8 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
         array_shift($lines);
         foreach ($lines as $line) {
             if (preg_match('/^[0-9]{3}[ -]([A-Z0-9-]+)((?:[ =].*)?)$/Di', $line, $matches)) {
-                $keyword = strtoupper($matches[1]);
-                $paramStr = strtoupper(ltrim($matches[2], ' ='));
+                $keyword = cString::toUpperCase($matches[1]);
+                $paramStr = cString::toUpperCase(ltrim($matches[2], ' ='));
                 $params = !empty($paramStr) ? explode(' ', $paramStr) : array();
                 $capabilities[$keyword] = $params;
             }

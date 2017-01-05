@@ -83,10 +83,10 @@ if ($_REQUEST["sortorder"] != "ASC") {
 $bSortByFound = false;
 $bSearchInFound = false;
 foreach ($aFields as $sKey => $aData) {
-    if ($aData["field"] == $_REQUEST["sortby"] && strpos($aData["type"], "sort") !== false) {
+    if ($aData["field"] == $_REQUEST["sortby"] && cString::findFirstPos($aData["type"], "sort") !== false) {
         $bSortByFound = true;
     }
-    if ($aData["field"] == $_REQUEST["searchin"] && strpos($aData["type"], "search") !== false) {
+    if ($aData["field"] == $_REQUEST["searchin"] && cString::findFirstPos($aData["type"], "search") !== false) {
         $bSearchInFound = true;
     }
 }
@@ -118,7 +118,7 @@ $oJobs->setWhere("author", $_REQUEST["selAuthor"]);
 if ($_REQUEST["filter"] != "") {
     if ($_REQUEST["searchin"] == "--all--" || $_REQUEST["searchin"] == "") {
         foreach ($aFields as $sKey => $aData) {
-            if (strpos($aData["type"], "search") !== false) {
+            if (cString::findFirstPos($aData["type"], "search") !== false) {
                 $oJobs->setWhereGroup("filter", $aData["field"], $_REQUEST["filter"], "LIKE");
             }
         }

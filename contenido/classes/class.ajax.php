@@ -218,8 +218,8 @@ class cAjaxRequest {
                 $filename = str_replace($frontendURL, $frontendPath, $filename_a);
                 // $filename muss not url path(http://) sondern globale PC
                 // Path(c:/) sein.
-                $filetype = substr($filename, strlen($filename) - 4, 4);
-                switch (strtolower($filetype)) {
+                $filetype = cString::getPartOfString($filename, cString::getStringLength($filename) - 4, 4);
+                switch (cString::toLowerCase($filetype)) {
                     case '.gif':
                         $string = cApiImgScale($filename, 428, 210);
                         break;

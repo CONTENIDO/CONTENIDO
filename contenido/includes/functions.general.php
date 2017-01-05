@@ -1118,8 +1118,8 @@ function machineReadableSize($sizeString) {
     }
 
     $val = trim($sizeString);
-    $last = strtolower($val[strlen($val) - 1]);
-    $val = (float) substr($val, 0, strlen($val) - 1);
+    $last = cString::toLowerCase($val[cString::getStringLength($val) - 1]);
+    $val = (float) cString::getPartOfString($val, 0, cString::getStringLength($val) - 1);
     switch ($last) {
         case 'g':
             $val *= 1024;
@@ -1292,11 +1292,11 @@ function createRandomName($nameLength) {
 
     for ($index = 1; $index <= $nameLength; $index++) {
         if ($index % 3 == 0) {
-            $randomNumber = rand(1, strlen($Vouel));
-            $Name .= substr($Vouel, $randomNumber - 1, 1);
+            $randomNumber = rand(1, cString::getStringLength($Vouel));
+            $Name .= cString::getPartOfString($Vouel, $randomNumber - 1, 1);
         } else {
-            $randomNumber = rand(1, strlen($NameChars));
-            $Name .= substr($NameChars, $randomNumber - 1, 1);
+            $randomNumber = rand(1, cString::getStringLength($NameChars));
+            $Name .= cString::getPartOfString($NameChars, $randomNumber - 1, 1);
         }
     }
 

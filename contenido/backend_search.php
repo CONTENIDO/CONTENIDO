@@ -79,7 +79,7 @@ if (isset($_POST[$sess->name])) {
 } elseif (isset($_GET[$sess->name])) {
     $sSessionTmp = trim(strip_tags($_GET[$sess->name]));
 }
-if (strlen($sSessionTmp) > 0) {
+if (cString::getStringLength($sSessionTmp) > 0) {
     $sSession = $sSessionTmp;
 }
 
@@ -324,7 +324,7 @@ if (sizeof($_GET) == 0 && isset($_POST['save_search'])) {
     $itemtypeReq = $_GET['itemtype'];
     $itemidReq = $_GET['itemid'];
     // Do we have the request parameters we need to fetch search values of stored search ?
-    if ((isset($itemtypeReq) && strlen($itemtypeReq) > 0) && (isset($itemidReq) && strlen($itemidReq) > 0)) {
+    if ((isset($itemtypeReq) && cString::getStringLength($itemtypeReq) > 0) && (isset($itemidReq) && cString::getStringLength($itemidReq) > 0)) {
         $aSearchResults = getSearchResults($itemidReq, $itemtypeReq);
         $sSearchStrTmp = $aSearchResults[$sSaveTitle];
         $iSearchIdTmp = $aSearchResults[$sSaveId];
@@ -457,7 +457,7 @@ if (!empty($sSearchStrAuthor) && ($sSearchStrAuthor != 'n/a')) {
 
 if (!empty($sWhere)) {
     $sql .= $sWhere;
-    $sql .= ' ORDER BY a.' . $sSortBy . ' ' . strtoupper($sSortMode);
+    $sql .= ' ORDER BY a.' . $sSortBy . ' ' . cString::toUpperCase($sSortMode);
     $db->query($sql);
 } elseif ($bLostAndFound) {
     $sql = "SELECT
@@ -736,8 +736,8 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
             foreach ($catArray as $cat) {
                 $catstring .= $cat->get("name") . "-> ";
             }
-            if (strlen($catstring) > 0) {
-                $catstring = substr($catstring, 0, strlen($catstring) - 3);
+            if (cString::getStringLength($catstring) > 0) {
+                $catstring = cString::getPartOfString($catstring, 0, cString::getStringLength($catstring) - 3);
             }
 
             $strTitle = cSecurity::unFilter($db->f("title"));
@@ -760,8 +760,8 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
 
             if ($perm->have_perm_area_action_item("con", "con_deleteart", $idcat)) {
                 $tmp_title = conHtmlSpecialChars($db->f("title"));
-                if (strlen($tmp_title) > 30) {
-                    $tmp_title = substr($tmp_title, 0, 27) . "...";
+                if (cString::getStringLength($tmp_title) > 30) {
+                    $tmp_title = cString::getPartOfString($tmp_title, 0, 27) . "...";
                 }
 
                 $delete = '

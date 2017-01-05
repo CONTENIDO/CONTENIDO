@@ -84,11 +84,11 @@ if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && 
                     Con.multiLink('right_top', url_right_top, 'right_bottom', url_right_bottom, 'left_top', url_left_top, 'left_bottom', url_left_bottom);";
         $sLangNotificationLink = sprintf(i18n('Please click %shere%s to create a new language.'), '<a href="javascript://" onclick="' . $sJsLink . '">', '</a>');
         $sNewNotification = '<br>' . $sLangNotification . '<br>' . $sLangNotificationLink;
-        if (substr($frontendpath, strlen($frontendpath) - 1) != '/') {
+        if (cString::getPartOfString($frontendpath, cString::getStringLength($frontendpath) - 1) != '/') {
             $frontendpath .= '/';
         }
 
-        if (substr($htmlpath, strlen($htmlpath) - 1) != '/') {
+        if (cString::getPartOfString($htmlpath, cString::getStringLength($htmlpath) - 1) != '/') {
             $htmlpath .= '/';
         }
 
@@ -121,7 +121,7 @@ if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && 
         }
     } else {
         $pathwithoutslash = $frontendpath;
-        if (substr($frontendpath, strlen($frontendpath) - 1) != '/') {
+        if (cString::getPartOfString($frontendpath, cString::getStringLength($frontendpath) - 1) != '/') {
             $frontendpath .= '/';
         }
 
@@ -129,7 +129,7 @@ if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && 
             cRegistry::addWarningMessage(i18n("Path could not be created. Please ensure that there are only valid characters and no new nested folders."));
         }
 
-        if (substr($htmlpath, strlen($htmlpath) - 1) != '/') {
+        if (cString::getPartOfString($htmlpath, cString::getStringLength($htmlpath) - 1) != '/') {
             $htmlpath .= '/';
         }
 
@@ -161,7 +161,7 @@ if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && 
                 continue;
             }
 
-            $extension = substr($file, strrpos($file->getBasename(), '.') + 1);
+            $extension = cString::getPartOfString($file, cString::findLastPos($file->getBasename(), '.') + 1);
             if ($extension != 'php') {
                 continue;
             }

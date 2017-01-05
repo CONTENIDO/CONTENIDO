@@ -158,7 +158,7 @@ abstract class PifaAbstractFormModule {
      */
     protected function _getRequestMethod() {
         $requestMethod = $_SERVER['REQUEST_METHOD'];
-        $requestMethod = strtoupper($requestMethod);
+        $requestMethod = cString::toUpperCase($requestMethod);
 
         return $requestMethod;
     }

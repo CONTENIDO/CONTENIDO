@@ -500,7 +500,7 @@ class cOutputCacheHandler extends cOutputCache {
 
         // check if current article shouldn't be cached (by stese)
         $sExcludeIdarts = getEffectiveSetting('cache', 'excludeidarts', false);
-        if ($sExcludeIdarts && strlen($sExcludeIdarts) > 0) {
+        if ($sExcludeIdarts && cString::getStringLength($sExcludeIdarts) > 0) {
             $sExcludeIdarts = preg_replace("/[^0-9,]/", '', $sExcludeIdarts);
             $aExcludeIdart = explode(',', $sExcludeIdarts);
             if (in_array($GLOBALS['idart'], $aExcludeIdart)) {

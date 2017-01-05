@@ -113,7 +113,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
 
             $i = 1;
             foreach ($this->_aItems as $oItem) {
-                $sItemName = strlen($oItem->getDescription()) > 0 ? $oItem->getDescription() : ('debug item #' . $i);
+                $sItemName = cString::getStringLength($oItem->getDescription()) > 0 ? $oItem->getDescription() : ('debug item #' . $i);
                 $sItemValue = $this->_prepareValue($oItem->getValue());
 
                 $tpl->set("d", "DBG_ITEM_COUNT", $i);
@@ -168,7 +168,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
         }
         if (is_string($mValue)) {
             if (preg_match('/<(.*)>/', $mValue)) {
-                if (strlen($mValue) > 40) {
+                if (cString::getStringLength($mValue) > 40) {
                     $bTextarea = true;
                 } else {
                     $bPlainText = true;

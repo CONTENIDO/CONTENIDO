@@ -747,7 +747,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $out = '';
         if (0 === cSecurity::toInteger($this->_settings['pifaform_idform'])) {
             // no form was selected
-        } else if (0 === strlen(trim($this->_settings['pifaform_module']))) {
+        } else if (0 === cString::getStringLength(trim($this->_settings['pifaform_module']))) {
             // no module was selected
         } else {
             $moduleClass = trim($this->_settings['pifaform_module']);

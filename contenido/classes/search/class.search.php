@@ -305,8 +305,8 @@ class cSearch extends cSearchBaseAbstract {
 
         $this->_index = new cSearchIndex($db);
 
-        $this->_searchOption = (array_key_exists('db', $options)) ? strtolower($options['db']) : 'regexp';
-        $this->_searchCombination = (array_key_exists('combine', $options)) ? strtolower($options['combine']) : 'or';
+        $this->_searchOption = (array_key_exists('db', $options)) ? cString::toLowerCase($options['db']) : 'regexp';
+        $this->_searchCombination = (array_key_exists('combine', $options)) ? cString::toLowerCase($options['combine']) : 'or';
         $this->_protected = (array_key_exists('protected', $options)) ? $options['protected'] : true;
         $this->_dontshowofflinearticles = (array_key_exists('dontshowofflinearticles', $options)) ? $options['dontshowofflinearticles'] : true;
         $this->_exclude = (array_key_exists('exclude', $options)) ? $options['exclude'] : true;
@@ -332,13 +332,13 @@ class cSearch extends cSearchBaseAbstract {
      * @return bool|array
      */
     public function searchIndex($searchwords, $searchwords_exclude = '') {
-        if (strlen(trim($searchwords)) > 0) {
+        if (cString::getStringLength(trim($searchwords)) > 0) {
             $this->_searchWords = $this->stripWords($searchwords);
         } else {
             return false;
         }
 
-        if (strlen(trim($searchwords_exclude)) > 0) {
+        if (cString::getStringLength(trim($searchwords_exclude)) > 0) {
             $this->_searchWordsExclude = $this->stripWords($searchwords_exclude);
         }
 
@@ -507,11 +507,11 @@ class cSearch extends cSearchBaseAbstract {
         foreach ($tmp_words as $word) {
 
             $word = htmlentities($word, ENT_COMPAT, 'UTF-8');
-            $word = (trim(strtolower($word)));
+            $word = (trim(cString::toLowerCase($word)));
             $word = html_entity_decode($word, ENT_COMPAT, 'UTF-8');
 
             // $word =(trim(strtolower($word)));
-            if (strlen($word) > 1) {
+            if (cString::getStringLength($word) > 1) {
                 $tmp_searchwords[] = $word;
             }
         }
@@ -631,7 +631,7 @@ class cSearch extends cSearchBaseAbstract {
             $sSearchRange = " A.idcat NOT IN ('" . $sCatRange . "') AND B.idart NOT IN ('" . $sArtRange . "') AND ";
         } else {
             // include searchrange
-            if (strlen($sArtRange) > 0) {
+            if (cString::getStringLength($sArtRange) > 0) {
                 $sSearchRange = " A.idcat IN ('" . $sCatRange . "') AND B.idart IN ('" . $sArtRange . "') AND ";
             } else {
                 $sSearchRange = " A.idcat IN ('" . $sCatRange . "') AND ";
@@ -724,7 +724,7 @@ class cSearch extends cSearchBaseAbstract {
      * @return bool
      */
     public function addArticleSpecificationsByName($sArtSpecName) {
-        if (!isset($sArtSpecName) || strlen($sArtSpecName) == 0) {
+        if (!isset($sArtSpecName) || cString::getStringLength($sArtSpecName) == 0) {
             return false;
         }
 

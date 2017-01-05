@@ -124,7 +124,7 @@ class cXmlWriter extends cXmlBase {
             throw new cException('Can not write XML file: Directory is not writable.');
         }
 
-        if (substr($directory, 0, -1) != '/') {
+        if (cString::getPartOfString($directory, 0, -1) != '/') {
             $directory = $directory . '/';
         }
 

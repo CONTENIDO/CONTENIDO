@@ -308,7 +308,7 @@ function mailLogDecodeAddresses($addresses) {
     foreach ($addresses as $mail => $name) {
         $result .= $name . ' &lt;' . $mail . '&gt;<br>';
     }
-    $result = substr($result, 0, strlen($result) - 4);
+    $result = cString::getPartOfString($result, 0, cString::getStringLength($result) - 4);
 
     return $result;
 }

@@ -94,7 +94,7 @@ foreach ($clientList as $key => $value) {
 
         $idClientsLang = $db->f('idclientslang');
 
-        if ((strpos($userPerms, "client[$key]") !== false) && (strpos($userPerms, "lang[" . $db->f("idlang") . "]") !== false) && ($perm->have_perm("lang[" . $db->f("idlang") . "]"))) {
+        if ((cString::findFirstPos($userPerms, "client[$key]") !== false) && (cString::findFirstPos($userPerms, "lang[" . $db->f("idlang") . "]") !== false) && ($perm->have_perm("lang[" . $db->f("idlang") . "]"))) {
             if ($firstSel == false) {
                 $firstSel = true;
                 $firstClientsLang = $idClientsLang;
@@ -223,9 +223,9 @@ if ($oClientLang->isLoaded()) {
     ob_end_clean();
 
     // Account is sysadmin
-    if (strpos($userPerms, 'sysadmin') !== false) {
+    if (cString::findFirstPos($userPerms, 'sysadmin') !== false) {
         $oTpl->set('s', 'NOTIFICATION', $notification->returnMessageBox('warning', i18n("The selected user is a system administrator. A system administrator has all rights for all clients for all languages and therefore rights can't be specified in more detail."), 0));
-    } else if (strpos($userPerms, 'admin[') !== false) {
+    } else if (cString::findFirstPos($userPerms, 'admin[') !== false) {
         // Account is only assigned to clients with admin rights
         $oTpl->set('s', 'NOTIFICATION', $notification->returnMessageBox('warning', i18n("The selected user is assigned to clients as admin, only. An admin has all rights for a client and therefore rights can't be specified in more detail."), 0));
     } else {
