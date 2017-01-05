@@ -28,13 +28,13 @@ global $cfg, $cfgClient, $errsite_idcat, $errsite_idart;
  * NOTE: They will be overwritten below...
  */
 // Don't display errors
-@ini_set('display_errors', true);
+@ini_set('display_errors', false);
 
 // Log errors to a file
 @ini_set('log_errors', true);
 
 // Report all errors except warnings
-error_reporting(E_ALL);
+error_reporting(E_ALL ^E_NOTICE);
 
 /* Initial PHP session settings.
  * NOTE: When you change these values by custom configuration, the length of the session ID may differ from 32 characters.
