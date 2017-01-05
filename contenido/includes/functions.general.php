@@ -278,13 +278,13 @@ JS;
         if (parent.parent.frames[0].name == 'header') {
             if (parent.frames.right_top.document.getElementById(id)) {
                 menuItem = parent.frames.right_top.document.getElementById(id).getElementsByTagName('a')[0];
-                parent.frames.right_top.Con.Subnav.clicked(menuItem);
+                parent.frames.right_top.Con.Subnav.clicked(menuItem, true);
             }
         } else {
             // Check if submenuItem is existing and mark it
             if (parent.parent.frames.right.frames.right_top.document.getElementById(id)) {
                 menuItem = parent.parent.frames.right.frames.right_top.document.getElementById(id).getElementsByTagName('a')[0];
-                parent.parent.frames.right.frames.right_top.Con.Subnav.clicked(menuItem);
+                parent.parent.frames.right.frames.right_top.Con.Subnav.clicked(menuItem, true);
             }
         }
     } catch (e) {}
