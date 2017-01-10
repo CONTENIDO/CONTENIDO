@@ -523,10 +523,13 @@ class cContentVersioning {
         // times. Therefore its necessary to check if the same change already
         // has been saved and prevent multiple savings.
         static $savedTypes = array();
-        if (isset($savedTypes[$content->get('idtype') . $content->get('typeid')])) {
+
+        $contentTypeIdent = $content->get('idartlang') . $content->get('idtype') . $content->get('typeid');
+
+        if (isset($savedTypes[$contentTypeIdent])) {
             return;
         }
-        $savedTypes[$content->get('idtype').$content->get('typeid')] = $value;
+        $savedTypes[$contentTypeIdent] = $value;
 
         $versioningState = $this->getState();
         $date = date('Y-m-d H:i:s');
