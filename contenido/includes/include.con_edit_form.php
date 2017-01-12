@@ -894,7 +894,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     // Redirect - New window
     if (getEffectiveSetting("articles", "show-new-window-checkbox", "false") == "true") {
-        $page->set('s', 'CHECKBOX-NEWWINDOW', '<input type="checkbox" ' . $disabled . ' id="external_redirect" name="external_redirect" value="1" ' . $tmp_external_redirect_checked . '></td><td><label for="external_redirect">' . i18n("New window") . '</label>');
+        $page->set('s', 'CHECKBOX-NEWWINDOW', '<br><input type="checkbox" ' . $disabled . ' id="external_redirect" name="external_redirect" value="1" ' . $tmp_external_redirect_checked . '><label for="external_redirect">' . i18n("New window") . '</label>');
     } else {
         $page->set('s', 'CHECKBOX-NEWWINDOW', '&nbsp;');
     }
