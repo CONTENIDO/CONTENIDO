@@ -168,6 +168,10 @@ class cArticleCollector implements SeekableIterator, Countable {
             $options['limit'] = 0;
         }
 
+        if (isset($options['offset']) === false) {
+            $options['offset'] = 0;
+        }
+
         $this->_options = $options;
     }
 
@@ -228,6 +232,10 @@ class cArticleCollector implements SeekableIterator, Countable {
 
         if ((int) $this->_options['limit'] > 0) {
             $sql .= " LIMIT " . $this->_options['limit'];
+        }
+
+        if ((int) $this->_options['offset'] > 0) {
+            $sql .= " OFFSET " . $this->_options['offset'];
         }
 
         $db->query($sql);
