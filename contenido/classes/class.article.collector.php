@@ -231,11 +231,11 @@ class cArticleCollector implements SeekableIterator, Countable {
         $sql .= " ORDER BY a." . $this->_options['order'] . " " . $this->_options['direction'];
 
         if ((int) $this->_options['limit'] > 0) {
-            $sql .= " LIMIT " . $this->_options['limit'];
+            $sql .= " LIMIT " . cSecurity::toInteger($this->_options['limit']);
         }
 
         if ((int) $this->_options['offset'] > 0) {
-            $sql .= " OFFSET " . $this->_options['offset'];
+            $sql .= " OFFSET " . cSecurity::toInteger($this->_options['offset']);
         }
 
         $db->query($sql);
