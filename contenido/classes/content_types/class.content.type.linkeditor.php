@@ -176,7 +176,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                 return $link;
                 break;
             case 'internal':
-                if(cString::getPartOfString($this->_settings['linkeditor_idart'], 0, 8) == 'category') { // Selection of category (CON-2563)
+                if (cString::getPartOfString($this->_settings['linkeditor_idart'], 0, 8) == 'category') { // Selection of category (CON-2563)
 
                     $uriInstance = cUri::getInstance();
                     $uriBuilder = $uriInstance->getUriBuilder();
@@ -188,9 +188,9 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                     return $uriBuilder->getUrl();
                 } else if ($this->_settings['linkeditor_idart'] != "") {
 
-                    $oUri       = cUri::getInstance();
+                    $oUri = cUri::getInstance();
                     $uriBuilder = $oUri->getUriBuilder();
-                    $uriParams  = array(
+                    $uriParams = array(
                         'idart' => cSecurity::toInteger($this->_settings['linkeditor_idart'])
                     );
                     $uriBuilder->buildUrl($uriParams, true);
@@ -200,7 +200,11 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                 }
                 break;
             case 'file':
-                return $this->_cfgClient[$this->_client]['upl']['htmlpath'] . $this->_settings['linkeditor_filename'];
+                if (cString::getStringLength($this->_settings['linkeditor_filename']) > 0) {
+                    return $this->_cfgClient[$this->_client]['upl']['htmlpath'] . $this->_settings['linkeditor_filename'];
+                } else {
+                    return '';
+                }
                 break;
             default:
                 // invalid link type, output nothing
