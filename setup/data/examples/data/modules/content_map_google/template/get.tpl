@@ -8,14 +8,14 @@
 
 
 {if false eq $isBackendEditMode}
-    <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+    <script src="http://maps.google.com/maps/api/js?sensor=false&amp;key={$googlekey}" type="text/javascript"></script>
     <div id="googleMap"></div>
 {/if}
 
 {if true eq $isBackendEditMode}
     <label class="content_type_label">{$trans.address|escape}</label>
     <div>{$address}</div>
-{ELSE}
+    {ELSE}
     <div id="address">{$address}</div>
 {/if}
 
