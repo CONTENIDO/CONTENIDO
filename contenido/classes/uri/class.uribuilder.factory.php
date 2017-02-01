@@ -48,15 +48,9 @@ class cUriBuilderFactory {
                 return cUriBuilderCustomPath::getInstance();
                 break;
             default:
-                // TODO check if this is needed any longer because we have autoloading feature
                 if ((string) $sBuilder !== '') {
                     $sClassName = 'cUriBuilder' . $sBuilder;
-                    $sFileName = 'class.uribuilder.' . cString::toLowerCase($sBuilder) . '.php';
-                    $sPath = str_replace('\\', '/', dirname(__FILE__)) . '/';
-                    if (!cFileHandler::exists($sPath . $sFileName)) {
-                        throw new cInvalidArgumentException('The classfile of cUriBuilder couldn\'t included by Contenido_UriBuilderFactory: ' . $sBuilder . '!');
-                    }
-                    cInclude('classes', 'uri/' . $sFileName);
+
                     if (!class_exists($sClassName)) {
                         throw new cInvalidArgumentException('The classfile of cUriBuilder couldn\'t included by Contenido_UriBuilderFactory: ' . $sBuilder . '!');
                     }
