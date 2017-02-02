@@ -36,7 +36,7 @@ class cStringMultiByteWrapper {
      * @param string $functionName
      * @return bool
      */
-    protected function _functionExists($functionName) {
+    protected static function _functionExists($functionName) {
         static $cache;
         if (!isset($cache)) {
             $cache = array();
@@ -64,7 +64,7 @@ class cStringMultiByteWrapper {
      *         - give null to use the encoding of the current language
      * @return string
      */
-    protected function _getEncoding($encoding = null) {
+    protected static function _getEncoding($encoding = null) {
         // TODO
         /*if (is_null($encoding) && (class_exists('cRegistry'))) {
             $encoding = cRegistry::getEncoding();
