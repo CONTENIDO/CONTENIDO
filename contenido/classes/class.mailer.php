@@ -195,21 +195,30 @@ class cMailer extends Swift_Mailer {
             'tls',
             'ssl'
         );
-        $mail_encryption = cString::toLowerCase(getSystemProperty('system', 'mail_encryption'));
-        if (in_array($mail_encryption, $encryptions)) {
-            $this->_mailEncryption = $mail_encryption;
-        } elseif ('1' == $mail_encryption) {
-            $this->_mailEncryption = 'ssl';
+
+        $mail_type = cString::toLowerCase(getSystemProperty('system', 'mail_transport', 'smtp'));
+
+        if ($mail_type == 'smtp') {
+
+            $mail_encryption = cString::toLowerCase(getSystemProperty('system', 'mail_encryption'));
+            if (in_array($mail_encryption, $encryptions)) {
+                $this->_mailEncryption = $mail_encryption;
+            } elseif ('1' == $mail_encryption) {
+                $this->_mailEncryption = 'ssl';
+            } else {
+                $this->_mailEncryption = NULL;
+            }
+
+            // get name and password of mail host user
+            $this->_mailUser = (getSystemProperty('system', 'mail_user')) ? getSystemProperty('system', 'mail_user') : '';
+            $this->_mailPass = (getSystemProperty('system', 'mail_pass')) ? getSystemProperty('system', 'mail_pass') : '';
+
+            // build transport
+            $transport = self::constructTransport($this->_mailHost, $this->_mailPort, $this->_mailEncryption, $this->_mailUser, $this->_mailPass);
+
         } else {
-            $this->_mailEncryption = NULL;
+            $transport = Swift_MailTransport::newInstance();
         }
-
-        // get name and password of mail host user
-        $this->_mailUser = (getSystemProperty('system', 'mail_user')) ? getSystemProperty('system', 'mail_user') : '';
-        $this->_mailPass = (getSystemProperty('system', 'mail_pass')) ? getSystemProperty('system', 'mail_pass') : '';
-
-        // build transport
-        $transport = self::constructTransport($this->_mailHost, $this->_mailPort, $this->_mailEncryption, $this->_mailUser, $this->_mailPass);
 
         // CON-2530
         if ($transport === false) {

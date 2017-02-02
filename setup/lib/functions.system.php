@@ -71,6 +71,7 @@ function updateSystemProperties($db, $table) {
 
     $aStandardvalues = array(
         array('type' => 'pw_request', 'name' => 'enable', 'value' => 'true'),
+        array('type' => 'system', 'name' => 'mail_transport', 'value' => 'smtp'),
         array('type' => 'system', 'name' => 'mail_sender_name', 'value' => 'CONTENIDO Backend'),
         array('type' => 'system', 'name' => 'mail_sender', 'value' => 'info@contenido.org'),
         array('type' => 'system', 'name' => 'mail_host', 'value' => 'localhost'),

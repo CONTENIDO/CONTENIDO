@@ -39,7 +39,9 @@
 ./classes/class.search.php
 ./classes/class.security.php
 ./classes/class.session.php
+./classes/class.string.multi.byte.wrapper.php
 ./classes/class.string.php
+./classes/class.stringwrapper.php
 ./classes/class.systemtest.php
 ./classes/class.template.php
 ./classes/class.todo.php
@@ -872,3 +874,4 @@
 ../data/config/production/config.path.php
 ../data/config/production/config.php
 ../data/config/production/config.templates.php
+../data/config/production/config.wysiwyg_tinymce4.php

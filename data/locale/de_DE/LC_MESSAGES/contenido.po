@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-03 10:13+0100\n"
-"PO-Revision-Date: 2016-11-03 10:14+0100\n"
+"POT-Creation-Date: 2017-02-02 10:14+0100\n"
+"PO-Revision-Date: 2017-02-02 10:14+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: de_DE\n"
@@ -22,7 +22,7 @@ msgstr "Vielen Dank für die Speicherung dieser Suche!"
 
 #: backend_search.php:484
 #: classes/content_types/class.content.type.imgeditor.php:516
-#: classes/content_types/class.content.type.linkeditor.php:326
+#: classes/content_types/class.content.type.linkeditor.php:330
 #: includes/include.con_art_overview.php:81
 #: includes/include.con_art_overview.php:750
 #: includes/include.con_edit_form.php:723 includes/include.stat_overview.php:86
@@ -42,8 +42,8 @@ msgid "Published"
 msgstr "Veröffentlicht"
 
 #: backend_search.php:493
-#: classes/content_types/class.content.type.filelist.php:667
-#: classes/content_types/class.content.type.teaser.php:726
+#: classes/content_types/class.content.type.filelist.php:681
+#: classes/content_types/class.content.type.teaser.php:730
 #: includes/include.con_art_overview.php:84
 #: templates/standard/template.frontend_left_top_filter.html:16
 #: templates/standard/template.frontend_left_top_filter.html:43
@@ -58,7 +58,7 @@ msgid "Search results"
 msgstr "Suchergebnisse"
 
 #: backend_search.php:512 classes/class.ajax.php:196
-#: classes/content_types/class.content.type.teaser.php:876
+#: classes/content_types/class.content.type.teaser.php:880
 #: includes/include.con_art_overview.php:80 includes/include.con_subnav.php:112
 #: includes/include.logs.php:267 templates/standard/template.symbolhelp.html:18
 #: templates/standard/template.symbolhelp.html:100
@@ -194,7 +194,7 @@ msgid "No data found!"
 msgstr "Keine Daten gefunden!"
 
 #: classes/class.ajax.php:180
-#: classes/content_types/class.content.type.teaser.php:874
+#: classes/content_types/class.content.type.teaser.php:878
 #: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_list.php:198
 #: includes/include.con_edit_form.php:1205
 #: includes/include.grouprights_con.php:77
@@ -288,28 +288,28 @@ msgstr "Falscher Dateiname."
 msgid "Please insert file name."
 msgstr "Bitte Dateinamen angeben."
 
-#: classes/class.layout.synchronizer.php:89
+#: classes/class.layout.synchronizer.php:90
 #, php-format
 msgid "Layout synchronization successful: %s"
 msgstr "Layout wurde synchronisiert: %s"
 
-#: classes/class.layout.synchronizer.php:212
+#: classes/class.layout.synchronizer.php:214
 msgid "Layout synchronization successful: "
 msgstr "Layout erfolgreich synchronisiert: "
 
-#: classes/class.layout.synchronizer.php:223
+#: classes/class.layout.synchronizer.php:225
 msgid "Layout synchronization successful, created: "
 msgstr "Layout wurde erfolgreich synchronisiert: "
 
-#: classes/class.layout.synchronizer.php:228
+#: classes/class.layout.synchronizer.php:230
 msgid "Layout synchronization successful, deleted: "
 msgstr "Layout erfolgreich synchronisiert, Layout gelöscht: "
 
-#: classes/class.layout.synchronizer.php:230
+#: classes/class.layout.synchronizer.php:232
 msgid "Synchronization failed could not delete layout: "
 msgstr "Synchronisation fehlgeschlagen, konnte das Layout nicht löschen: "
 
-#: classes/class.layout.synchronizer.php:250
+#: classes/class.layout.synchronizer.php:252
 msgid "Synchronization successful!"
 msgstr "Sychronisierung war erfolgreich!"
 
@@ -1466,20 +1466,20 @@ msgid "Please choose a more secure password!"
 msgstr ""
 "Ihr Passwort ist nicht sicher genug. Bitte wählen Sie ein sicheres Passwort!"
 
-#: classes/content_types/class.content.type.filelist.php:585
+#: classes/content_types/class.content.type.filelist.php:599
 msgid "File list settings"
 msgstr "Dateilisteneinstellungen"
 
-#: classes/content_types/class.content.type.filelist.php:590
+#: classes/content_types/class.content.type.filelist.php:604
 #: classes/content_types/class.content.type.imgeditor.php:388
 msgid "Directories"
 msgstr "Verzeichnisse"
 
-#: classes/content_types/class.content.type.filelist.php:591
+#: classes/content_types/class.content.type.filelist.php:605
 msgid "General"
 msgstr "Allgemein"
 
-#: classes/content_types/class.content.type.filelist.php:592
+#: classes/content_types/class.content.type.filelist.php:606
 #: templates/standard/template.grouprights_memberselect.html:130
 #: templates/standard/template.grouprights_memberselect.html:134
 #: templates/standard/template.log_main.html:17
@@ -1487,137 +1487,137 @@ msgstr "Allgemein"
 msgid "Filter"
 msgstr "Filter"
 
-#: classes/content_types/class.content.type.filelist.php:593
-#: classes/content_types/class.content.type.teaser.php:649
+#: classes/content_types/class.content.type.filelist.php:607
+#: classes/content_types/class.content.type.teaser.php:653
 msgid "Manual"
 msgstr "Manuell"
 
-#: classes/content_types/class.content.type.filelist.php:630
+#: classes/content_types/class.content.type.filelist.php:644
 msgid "Source directory"
 msgstr "Quellverzeichnis"
 
-#: classes/content_types/class.content.type.filelist.php:659
+#: classes/content_types/class.content.type.filelist.php:673
 msgid "General settings"
 msgstr "Allgemeine Einstellungen"
 
-#: classes/content_types/class.content.type.filelist.php:661
+#: classes/content_types/class.content.type.filelist.php:675
 msgid "File list title"
 msgstr "Dateilistentitel"
 
-#: classes/content_types/class.content.type.filelist.php:663
+#: classes/content_types/class.content.type.filelist.php:677
 msgid "File list style"
 msgstr "Darstellungsart"
 
-#: classes/content_types/class.content.type.filelist.php:665
+#: classes/content_types/class.content.type.filelist.php:679
 msgid "File list sort"
 msgstr "Sortierungsart"
 
-#: classes/content_types/class.content.type.filelist.php:669
+#: classes/content_types/class.content.type.filelist.php:683
 msgid "Include subdirectories?"
 msgstr "Unterverzeichnisse berücksichtigen?"
 
-#: classes/content_types/class.content.type.filelist.php:671
+#: classes/content_types/class.content.type.filelist.php:685
 msgid "Include meta data?"
 msgstr "Metadaten laden?"
 
-#: classes/content_types/class.content.type.filelist.php:691
+#: classes/content_types/class.content.type.filelist.php:705
 msgid "Default style"
 msgstr "Standarddarstellung"
 
-#: classes/content_types/class.content.type.filelist.php:712
+#: classes/content_types/class.content.type.filelist.php:726
 #: includes/include.upl_edit.php:77
 msgid "File name"
 msgstr "Dateiname"
 
-#: classes/content_types/class.content.type.filelist.php:715
+#: classes/content_types/class.content.type.filelist.php:729
 #: templates/standard/template.upl_files_overview.html:169
 #: templates/standard/template.upl_files_overview.html:192
 msgid "File size"
 msgstr "Dateigröße"
 
-#: classes/content_types/class.content.type.filelist.php:718
+#: classes/content_types/class.content.type.filelist.php:732
 #: includes/include.con_left_top.php:99
 msgid "Date created"
 msgstr "Erstelldatum"
 
-#: classes/content_types/class.content.type.filelist.php:721
+#: classes/content_types/class.content.type.filelist.php:735
 #: includes/include.con_left_top.php:100
 msgid "Date modified"
 msgstr "Änderungsdatum"
 
-#: classes/content_types/class.content.type.filelist.php:738
-#: classes/content_types/class.content.type.teaser.php:961
+#: classes/content_types/class.content.type.filelist.php:752
+#: classes/content_types/class.content.type.teaser.php:965
 #: includes/include.frontend.left_top.php:117
 #: includes/include.frontend.user_menu.php:50 includes/include.mod_new.php:52
 #: includes/include.rights_left_top.php:85
 msgid "Ascending"
 msgstr "Aufsteigend"
 
-#: classes/content_types/class.content.type.filelist.php:741
-#: classes/content_types/class.content.type.teaser.php:964
+#: classes/content_types/class.content.type.filelist.php:755
+#: classes/content_types/class.content.type.teaser.php:968
 #: includes/include.frontend.left_top.php:118
 #: includes/include.frontend.user_menu.php:51 includes/include.mod_new.php:52
 #: includes/include.rights_left_top.php:85
 msgid "Descending"
 msgstr "Absteigend"
 
-#: classes/content_types/class.content.type.filelist.php:787
+#: classes/content_types/class.content.type.filelist.php:801
 msgid "Filter settings"
 msgstr "Filter-Einstellungen"
 
-#: classes/content_types/class.content.type.filelist.php:789
+#: classes/content_types/class.content.type.filelist.php:803
 msgid "Displayed file extensions"
 msgstr "Angezeigte Datei-Erweiterungen"
 
-#: classes/content_types/class.content.type.filelist.php:794
+#: classes/content_types/class.content.type.filelist.php:808
 msgid "Select all entries"
 msgstr "Alle Einträge selektieren"
 
-#: classes/content_types/class.content.type.filelist.php:796
+#: classes/content_types/class.content.type.filelist.php:810
 msgid "Ignore selection (use all)"
 msgstr "Auswahl ignorieren (alle benutzen)"
 
-#: classes/content_types/class.content.type.filelist.php:799
+#: classes/content_types/class.content.type.filelist.php:813
 msgid "File size limit (in MiB)"
 msgstr "Dateigrößenlimit (in MiB)"
 
-#: classes/content_types/class.content.type.filelist.php:806
+#: classes/content_types/class.content.type.filelist.php:820
 msgid "Creation date limit"
 msgstr "Zeitraum des Erstellungsdatums"
 
-#: classes/content_types/class.content.type.filelist.php:813
+#: classes/content_types/class.content.type.filelist.php:827
 msgid "Modify date limit"
 msgstr "Zeitraum des Änderungsdatums"
 
-#: classes/content_types/class.content.type.filelist.php:820
+#: classes/content_types/class.content.type.filelist.php:834
 msgid "File count"
 msgstr "Anzahl der Dateien"
 
-#: classes/content_types/class.content.type.filelist.php:908
+#: classes/content_types/class.content.type.filelist.php:922
 msgid "Manual settings"
 msgstr "Manuelle Einstellungen"
 
-#: classes/content_types/class.content.type.filelist.php:910
+#: classes/content_types/class.content.type.filelist.php:924
 msgid "Use manual file list?"
 msgstr "Manuelle Dateiliste verwenden?"
 
-#: classes/content_types/class.content.type.filelist.php:917
+#: classes/content_types/class.content.type.filelist.php:931
 msgid "Existing files"
 msgstr "Ausgewählte Dateien"
 
-#: classes/content_types/class.content.type.filelist.php:919
+#: classes/content_types/class.content.type.filelist.php:933
 msgid "Already configured entries can be deleted by using double click"
 msgstr "Bereits konfigurierte Einträge können mit Doppelklick entfernt werden"
 
-#: classes/content_types/class.content.type.filelist.php:921
+#: classes/content_types/class.content.type.filelist.php:935
 msgid "Add file"
 msgstr "Datei hinzufügen"
 
-#: classes/content_types/class.content.type.filelist.php:922
+#: classes/content_types/class.content.type.filelist.php:936
 msgid "Directory"
 msgstr "Verzeichnis"
 
-#: classes/content_types/class.content.type.filelist.php:936
+#: classes/content_types/class.content.type.filelist.php:950
 #: classes/module/class.module.template.handler.php:595
 #: includes/include.mod_import_export.php:129
 #: includes/include.mod_import_export.php:131 xml/navigation.xml:43
@@ -1625,8 +1625,8 @@ msgstr "Verzeichnis"
 msgid "File"
 msgstr "Datei"
 
-#: classes/content_types/class.content.type.filelist.php:1051
-#: classes/content_types/class.content.type.filelist.php:1052
+#: classes/content_types/class.content.type.filelist.php:1065
+#: classes/content_types/class.content.type.filelist.php:1066
 #: classes/content_types/class.content.type.imgeditor.php:673
 #: classes/content_types/class.content.type.imgeditor.php:674
 #: includes/include.upl_search_results.php:357
@@ -1692,12 +1692,12 @@ msgid "Copyright"
 msgstr "Copyright"
 
 #: classes/content_types/class.content.type.imgeditor.php:550
-#: classes/content_types/class.content.type.linkeditor.php:618
+#: classes/content_types/class.content.type.linkeditor.php:622
 msgid "Create a directory in"
 msgstr "Erstelle Verzeichnis in"
 
 #: classes/content_types/class.content.type.imgeditor.php:595
-#: classes/content_types/class.content.type.linkeditor.php:663
+#: classes/content_types/class.content.type.linkeditor.php:667
 #: includes/functions.stat.php:320 includes/functions.stat.php:416
 #: includes/functions.stat.php:652 includes/functions.stat.php:727
 #: includes/functions.stat.php:827 includes/functions.stat.php:894
@@ -1709,119 +1709,119 @@ msgstr "Erstelle Verzeichnis in"
 msgid "Path"
 msgstr "Pfad"
 
-#: classes/content_types/class.content.type.linkeditor.php:258
+#: classes/content_types/class.content.type.linkeditor.php:262
 msgid "Link settings"
 msgstr "Linkeinstellungen"
 
-#: classes/content_types/class.content.type.linkeditor.php:263
+#: classes/content_types/class.content.type.linkeditor.php:267
 msgid "External link"
 msgstr "Externer Link"
 
-#: classes/content_types/class.content.type.linkeditor.php:264
+#: classes/content_types/class.content.type.linkeditor.php:268
 msgid "Internal link"
 msgstr "Interner Link"
 
-#: classes/content_types/class.content.type.linkeditor.php:265
+#: classes/content_types/class.content.type.linkeditor.php:269
 msgid "Link to a file"
 msgstr "Link auf eine Datei"
 
-#: classes/content_types/class.content.type.linkeditor.php:303
+#: classes/content_types/class.content.type.linkeditor.php:307
 msgid "Href"
 msgstr "Adresse"
 
-#: classes/content_types/class.content.type.linkeditor.php:330
+#: classes/content_types/class.content.type.linkeditor.php:334
 msgid "Open in a new window"
 msgstr "Im neuen Fenster öffnen"
 
-#: classes/content_types/class.content.type.linkeditor.php:554
+#: classes/content_types/class.content.type.linkeditor.php:558
 msgid "Select category"
 msgstr "Kategorie auswählen"
 
-#: classes/content_types/class.content.type.linkeditor.php:558
+#: classes/content_types/class.content.type.linkeditor.php:562
 msgid "Neither"
 msgstr "Keine"
 
-#: classes/content_types/class.content.type.teaser.php:643
+#: classes/content_types/class.content.type.teaser.php:647
 msgid "Teaser settings"
 msgstr "Teasereinstellungen"
 
-#: classes/content_types/class.content.type.teaser.php:648
+#: classes/content_types/class.content.type.teaser.php:652
 msgid "Automatic"
 msgstr "Automatisch"
 
-#: classes/content_types/class.content.type.teaser.php:650
+#: classes/content_types/class.content.type.teaser.php:654
 #: includes/include.mycontenido.php:180 xml/navigation.xml:91
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: classes/content_types/class.content.type.teaser.php:714
+#: classes/content_types/class.content.type.teaser.php:718
 msgid "Teaser title"
 msgstr "Teaserüberschrift"
 
-#: classes/content_types/class.content.type.teaser.php:716
+#: classes/content_types/class.content.type.teaser.php:720
 msgid "Source category"
 msgstr "Quellkategorie"
 
-#: classes/content_types/class.content.type.teaser.php:718
+#: classes/content_types/class.content.type.teaser.php:722
 #: includes/include.stat_overview.php:88
 #: includes/include.system_sysvalues.php:77
 msgid "Number of articles"
 msgstr "Anzahl der Artikel"
 
-#: classes/content_types/class.content.type.teaser.php:721
+#: classes/content_types/class.content.type.teaser.php:725
 msgid "Include start article"
 msgstr "Start Artikel inkludieren"
 
-#: classes/content_types/class.content.type.teaser.php:724
+#: classes/content_types/class.content.type.teaser.php:728
 msgid "Teaser sort"
 msgstr "Teaser-Sortierung"
 
-#: classes/content_types/class.content.type.teaser.php:746
-#: classes/content_types/class.content.type.teaser.php:782
-#: classes/content_types/class.content.type.teaser.php:839
-#: classes/content_types/class.content.type.teaser.php:925
-#: classes/content_types/class.content.type.teaser.php:957
-#: classes/content_types/class.content.type.teaser.php:983
+#: classes/content_types/class.content.type.teaser.php:750
+#: classes/content_types/class.content.type.teaser.php:786
+#: classes/content_types/class.content.type.teaser.php:843
+#: classes/content_types/class.content.type.teaser.php:929
+#: classes/content_types/class.content.type.teaser.php:961
+#: classes/content_types/class.content.type.teaser.php:987
 #: includes/functions.general.php:974 includes/functions.general.php:1017
 #: includes/include.str_overview.php:56
 msgid "Please choose"
 msgstr "Bitte wählen"
 
-#: classes/content_types/class.content.type.teaser.php:786
+#: classes/content_types/class.content.type.teaser.php:790
 msgid "Slider style"
 msgstr "Slider-Darstellung"
 
-#: classes/content_types/class.content.type.teaser.php:789
+#: classes/content_types/class.content.type.teaser.php:793
 msgid "Image style"
 msgstr "Bild-Darstellung"
 
-#: classes/content_types/class.content.type.teaser.php:792
+#: classes/content_types/class.content.type.teaser.php:796
 msgid "Text style"
 msgstr "Text-Darstellung"
 
-#: classes/content_types/class.content.type.teaser.php:795
+#: classes/content_types/class.content.type.teaser.php:799
 msgid "Blog style"
 msgstr "Blog-Darstellung"
 
-#: classes/content_types/class.content.type.teaser.php:869
+#: classes/content_types/class.content.type.teaser.php:873
 msgid "Manual teaser"
 msgstr "Manueller Teaser"
 
-#: classes/content_types/class.content.type.teaser.php:879
+#: classes/content_types/class.content.type.teaser.php:883
 #: includes/include.con_translate.php:436
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: classes/content_types/class.content.type.teaser.php:885
+#: classes/content_types/class.content.type.teaser.php:889
 msgid "Included articles"
 msgstr "Eingebundene Artikel"
 
-#: classes/content_types/class.content.type.teaser.php:898
-#: classes/content_types/class.content.type.teaser.php:1057
+#: classes/content_types/class.content.type.teaser.php:902
+#: classes/content_types/class.content.type.teaser.php:1061
 msgid "Unknown article"
 msgstr "Unbekannter Artikel"
 
-#: classes/content_types/class.content.type.teaser.php:905
+#: classes/content_types/class.content.type.teaser.php:909
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:228
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:229
 #: includes/include.clientsettings.php:90
@@ -1834,80 +1834,80 @@ msgstr "Unbekannter Artikel"
 msgid "Delete"
 msgstr "Löschen"
 
-#: classes/content_types/class.content.type.teaser.php:929
+#: classes/content_types/class.content.type.teaser.php:933
 msgid "Sort sequence"
 msgstr "Sortierungsreihenfolge"
 
-#: classes/content_types/class.content.type.teaser.php:932
+#: classes/content_types/class.content.type.teaser.php:936
 #: includes/include.mycontenido_lastarticles.php:160
 msgid "Creation date"
 msgstr "Erstellungsdatum"
 
-#: classes/content_types/class.content.type.teaser.php:935
+#: classes/content_types/class.content.type.teaser.php:939
 msgid "Published date"
 msgstr "Veröffentlichungsdatum"
 
-#: classes/content_types/class.content.type.teaser.php:938
+#: classes/content_types/class.content.type.teaser.php:942
 msgid "Modification date"
 msgstr "Änderungsdatum"
 
-#: classes/content_types/class.content.type.teaser.php:987
+#: classes/content_types/class.content.type.teaser.php:991
 msgid "Scaled"
 msgstr "Skaliert"
 
-#: classes/content_types/class.content.type.teaser.php:990
+#: classes/content_types/class.content.type.teaser.php:994
 msgid "Cropped"
 msgstr "Zugeschnitten"
 
-#: classes/content_types/class.content.type.teaser.php:1011
+#: classes/content_types/class.content.type.teaser.php:1015
 msgid "Content visualisation"
 msgstr "Content Darstellung"
 
-#: classes/content_types/class.content.type.teaser.php:1012
+#: classes/content_types/class.content.type.teaser.php:1016
 msgid "Teaser visualisation"
 msgstr "Teaserdarstellung"
 
-#: classes/content_types/class.content.type.teaser.php:1014
+#: classes/content_types/class.content.type.teaser.php:1018
 msgid "Teaser filter"
 msgstr "Teaser-Filter"
 
-#: classes/content_types/class.content.type.teaser.php:1016
+#: classes/content_types/class.content.type.teaser.php:1020
 msgid "Character length"
 msgstr "Zeichenanzahl"
 
-#: classes/content_types/class.content.type.teaser.php:1019
+#: classes/content_types/class.content.type.teaser.php:1023
 msgid "Pictures"
 msgstr "Bilder"
 
-#: classes/content_types/class.content.type.teaser.php:1020
+#: classes/content_types/class.content.type.teaser.php:1024
 msgid "Image width"
 msgstr "Bildbreite"
 
-#: classes/content_types/class.content.type.teaser.php:1022
+#: classes/content_types/class.content.type.teaser.php:1026
 msgid "Image height"
 msgstr "Bildhöhe"
 
-#: classes/content_types/class.content.type.teaser.php:1024
+#: classes/content_types/class.content.type.teaser.php:1028
 msgid "Image scale"
 msgstr "Bildskalierung"
 
-#: classes/content_types/class.content.type.teaser.php:1027
+#: classes/content_types/class.content.type.teaser.php:1031
 msgid "Content types"
 msgstr "Content Typen"
 
-#: classes/content_types/class.content.type.teaser.php:1028
+#: classes/content_types/class.content.type.teaser.php:1032
 msgid "Headline source"
 msgstr "Quelle Überschrift"
 
-#: classes/content_types/class.content.type.teaser.php:1030
+#: classes/content_types/class.content.type.teaser.php:1034
 msgid "Text source"
 msgstr "Quelle Text"
 
-#: classes/content_types/class.content.type.teaser.php:1032
+#: classes/content_types/class.content.type.teaser.php:1036
 msgid "Image source"
 msgstr "Quelle Bild"
 
-#: classes/content_types/class.content.type.teaser.php:1034
+#: classes/content_types/class.content.type.teaser.php:1038
 msgid "Date source"
 msgstr "Quelle Datum"
 
@@ -1947,8 +1947,8 @@ msgstr "Benutzer"
 msgid "-- No Language available --"
 msgstr "-- Keine Sprache verfügbar --"
 
-#: classes/gui/class.notification.php:105 scripts/articleObject.js.php:254
-#: scripts/articleObject.js.php:257 scripts/langref.php:14
+#: classes/gui/class.notification.php:105 scripts/articleObject.js.php:253
+#: scripts/articleObject.js.php:256 scripts/langref.php:14
 msgid "Error"
 msgstr "Fehler"
 
@@ -2156,13 +2156,12 @@ msgid "Please do not use short open tags. (Use <?php instead of <?)."
 msgstr ""
 "Bitte benutzen Sie keine Short Open Tags. (Nutzen Sie <?php anstelle von <?)"
 
-#: classes/module/class.module.synchronizer.php:53
-#: classes/module/class.module.synchronizer.php:189
+#: classes/module/class.module.synchronizer.php:188
 #, php-format
 msgid "Module %s successfully synchronized"
 msgstr "Das Modul %s wurde erfolgreich synchronisiert"
 
-#: classes/module/class.module.synchronizer.php:194
+#: classes/module/class.module.synchronizer.php:193
 msgid "All modules are already synchronized"
 msgstr "Alle Module sind bereits synchronisiert"
 
@@ -2259,87 +2258,87 @@ msgstr "Quelltext"
 msgid "Overwriting files is disabled"
 msgstr "Überschreiben dieser Dateien ist deaktiviert"
 
-#: classes/version/class.version.php:230
+#: classes/version/class.version.php:231
 #, php-format
 msgid "Alternative path %s does not exist. Version was saved in frondendpath."
 msgstr ""
 "Der alternative Pfad %s existiert nicht. Die Version wurde im Frontendpfad "
 "gespeichert."
 
-#: classes/version/class.version.php:562
+#: classes/version/class.version.php:563
 #: includes/include.mycontenido.tasks.php:395
 msgid "Refresh"
 msgstr "Aktualisieren"
 
-#: classes/version/class.version.php:582
+#: classes/version/class.version.php:583
 msgid "Clear layout history"
 msgstr "Layouthistorie löschen"
 
-#: classes/version/class.version.php:583
+#: classes/version/class.version.php:584
 msgid "Do you really want to clear layout history?"
 msgstr "Möchten Sie wirklich die Layouthistorie löschen?"
 
-#: classes/version/class.version.php:583
+#: classes/version/class.version.php:584
 msgid "Note: This only affects the current layout."
 msgstr "Hinweis: Dies betrifft nur das aktuelle Layout."
 
-#: classes/version/class.version.php:586
+#: classes/version/class.version.php:587
 msgid "Clear module history"
 msgstr "Modulhistorie löschen"
 
-#: classes/version/class.version.php:587
+#: classes/version/class.version.php:588
 msgid "Do you really want to clear module history?"
 msgstr "Möchte Sie wirklich die Modulhistorie löschen?"
 
-#: classes/version/class.version.php:587
+#: classes/version/class.version.php:588
 msgid "Note: This only affects the current module."
 msgstr "Hinweis: Dies betrifft nur das aktuelle Modul."
 
-#: classes/version/class.version.php:590
+#: classes/version/class.version.php:591
 msgid "Clear style history"
 msgstr "Stylehistorie löschen"
 
-#: classes/version/class.version.php:591
+#: classes/version/class.version.php:592
 msgid "Do you really want to clear style history?"
 msgstr "Möchten Sie wirklich die Stylehistorie löschen?"
 
-#: classes/version/class.version.php:591
+#: classes/version/class.version.php:592
 msgid "Note: This only affects the current style."
 msgstr "Hinweis: Dies betrifft nur das aktuelle Style."
 
-#: classes/version/class.version.php:594
+#: classes/version/class.version.php:595
 msgid "Clear Java-Script history"
 msgstr "JavaScript-Historie löschen"
 
-#: classes/version/class.version.php:595
+#: classes/version/class.version.php:596
 msgid "Do you really want to clear Java-Script history?"
 msgstr "Möchten Sie wirklich die JavaScript-Historie löschen?"
 
-#: classes/version/class.version.php:595
+#: classes/version/class.version.php:596
 msgid "Note: This only affects the current JavaScript."
 msgstr "Hinweis: Dies betrifft nur das aktuelle JavaScript."
 
-#: classes/version/class.version.php:598
+#: classes/version/class.version.php:599
 msgid "Clear HTML template history"
 msgstr "HTML-Template-Historie löschen"
 
-#: classes/version/class.version.php:599
+#: classes/version/class.version.php:600
 msgid "Do you really want to clear HTML template history?"
 msgstr "Möchten Sie wirklich die HTML-Template-Historie löschen?"
 
-#: classes/version/class.version.php:599
+#: classes/version/class.version.php:600
 msgid "Note: This only the affects current HTML template."
 msgstr "Hinweis: Dies betrifft nur das aktuelle HTML-Template."
 
-#: classes/version/class.version.php:602
+#: classes/version/class.version.php:603
 msgid "Clear history"
 msgstr "Stylehistorie löschen"
 
-#: classes/version/class.version.php:603
+#: classes/version/class.version.php:604
 msgid "Do you really want to clear history?"
 msgstr "Möchten Sie wirklich die Stylehistorie löschen?"
 
-#: classes/version/class.version.php:603
+#: classes/version/class.version.php:604
 msgid "Note: This only affects the current history."
 msgstr "Hinweis: Dies betrifft nur die aktuelle Historie."
 
@@ -3314,7 +3313,7 @@ msgstr ""
 #: includes/include.system_configuration.php:230
 #: includes/type/action/include.con_meta_saveart.action.php:125
 #: includes/type/action/include.con_saveart.action.php:53
-#: includes/type/action/include.con_saveart.action.php:165
+#: includes/type/action/include.con_saveart.action.php:166
 msgid "Changes saved"
 msgstr "Änderungen gespeichert"
 
@@ -3366,7 +3365,7 @@ msgstr "Nein"
 msgid "Yes"
 msgstr "Ja"
 
-#: includes/include.client_edit.php:288 xml/system.xml:31
+#: includes/include.client_edit.php:288 xml/system.xml:32
 msgid "Generate XHTML"
 msgstr "XHTML generieren"
 
@@ -3455,7 +3454,7 @@ msgstr "Artikel ist nicht gefroren"
 
 #: includes/include.con_art_overview.php:466
 #: includes/include.con_art_overview.php:813
-#: templates/standard/template.con_art_overview.html:487
+#: templates/standard/template.con_art_overview.html:508
 msgid "Copy article to the current language"
 msgstr "Artikel in die aktuelle Sprache kopieren"
 
@@ -3503,27 +3502,27 @@ msgid "Click on a row to select an article for editing"
 msgstr "Klicken Sie auf einen Artikel, um ihn zu bearbeiten"
 
 #: includes/include.con_art_overview.php:801
-#: templates/standard/template.con_art_overview.html:483
+#: templates/standard/template.con_art_overview.html:504
 msgid "Set articles online"
 msgstr "Artikel online stellen"
 
 #: includes/include.con_art_overview.php:804
-#: templates/standard/template.con_art_overview.html:484
+#: templates/standard/template.con_art_overview.html:505
 msgid "Set articles offline"
 msgstr "Artikel offline stellen"
 
 #: includes/include.con_art_overview.php:807
-#: templates/standard/template.con_art_overview.html:485
+#: templates/standard/template.con_art_overview.html:506
 msgid "Freeze articles"
 msgstr "Artikel einfrieren"
 
 #: includes/include.con_art_overview.php:810
-#: templates/standard/template.con_art_overview.html:486
+#: templates/standard/template.con_art_overview.html:507
 msgid "Unfreeze articles"
 msgstr "Artikel auftauen"
 
 #: includes/include.con_art_overview.php:816
-#: templates/standard/template.con_art_overview.html:488
+#: templates/standard/template.con_art_overview.html:509
 msgid "Delete articles"
 msgstr "Artikel löschen"
 
@@ -5355,8 +5354,8 @@ msgstr "Zugewiesen zu"
 
 #: includes/include.mycontenido.tasks.edit.php:53
 #: includes/include.todo.popup.php:56 includes/include.upl_edit.php:242
-#: templates/standard/template.con_edit_form.html:195
-#: templates/standard/template.con_edit_form.html:433
+#: templates/standard/template.con_edit_form.html:196
+#: templates/standard/template.con_edit_form.html:434
 #: templates/standard/template.log_main.html:46
 #: templates/standard/template.log_main.html:99
 msgid "End date"
@@ -5900,7 +5899,7 @@ msgstr "Neues Element erfolgreich angelegt!"
 msgid "Please set this property in systemsettings directly"
 msgstr "Bitte setzen Sie diese Einstellung direkt in den Systemeinstellungen"
 
-#: includes/include.system_configuration.php:66 xml/system.xml:47
+#: includes/include.system_configuration.php:66 xml/system.xml:48
 msgid "Article versioning"
 msgstr "Artikel-Versionierung"
 
@@ -6456,8 +6455,8 @@ msgid "Protection"
 msgstr "Schutz"
 
 #: includes/include.upl_edit.php:86
-#: templates/standard/template.con_edit_form.html:174
-#: templates/standard/template.con_edit_form.html:430
+#: templates/standard/template.con_edit_form.html:175
+#: templates/standard/template.con_edit_form.html:431
 msgid "Time control"
 msgstr "Zeitsteuerung"
 
@@ -6484,14 +6483,14 @@ msgid "Protected for non-logged in users"
 msgstr "Geschützt für nicht angemeldete Benutzer"
 
 #: includes/include.upl_edit.php:234
-#: templates/standard/template.con_edit_form.html:182
-#: templates/standard/template.con_edit_form.html:431
+#: templates/standard/template.con_edit_form.html:183
+#: templates/standard/template.con_edit_form.html:432
 msgid "Use time control"
 msgstr "Zeitsteuerung aktivieren"
 
 #: includes/include.upl_edit.php:239
-#: templates/standard/template.con_edit_form.html:188
-#: templates/standard/template.con_edit_form.html:432
+#: templates/standard/template.con_edit_form.html:189
+#: templates/standard/template.con_edit_form.html:433
 #: templates/standard/template.log_main.html:38
 #: templates/standard/template.log_main.html:98
 msgid "Start date"
@@ -6625,50 +6624,50 @@ msgstr "Ungültiger Login oder Passwort!"
 msgid "Password"
 msgstr "Passwort"
 
-#: scripts/articleObject.js.php:275 scripts/langref.php:13
+#: scripts/articleObject.js.php:274 scripts/langref.php:13
 msgid "Overview cannot be displayed"
 msgstr "Übersicht kann nicht angezeigt werden"
 
-#: scripts/articleObject.js.php:283 scripts/articleObject.js.php:303
-#: scripts/articleObject.js.php:321 scripts/articleObject.js.php:330
-#: scripts/articleObject.js.php:353 scripts/articleObject.js.php:372
-#: scripts/articleObject.js.php:382 scripts/langref.php:18
+#: scripts/articleObject.js.php:282 scripts/articleObject.js.php:302
+#: scripts/articleObject.js.php:320 scripts/articleObject.js.php:329
+#: scripts/articleObject.js.php:352 scripts/articleObject.js.php:371
+#: scripts/articleObject.js.php:381 scripts/langref.php:18
 msgid "Editor can't be displayed"
 msgstr "Editor kann nicht angezeigt werden"
 
-#: scripts/articleObject.js.php:283 scripts/articleObject.js.php:303
-#: scripts/articleObject.js.php:321 scripts/articleObject.js.php:353
-#: scripts/articleObject.js.php:372
+#: scripts/articleObject.js.php:282 scripts/articleObject.js.php:302
+#: scripts/articleObject.js.php:320 scripts/articleObject.js.php:352
+#: scripts/articleObject.js.php:371
 msgid "Can't edit articles in foreign languages."
 msgstr ""
 "Artikel kann in nicht-aktiver bzw. nicht synchronisierter Sprache nicht "
 "bearbeitet werden."
 
-#: scripts/articleObject.js.php:293 scripts/articleObject.js.php:363
+#: scripts/articleObject.js.php:292 scripts/articleObject.js.php:362
 #: scripts/langref.php:15
 msgid "Article can't be displayed"
 msgstr "Artikel kann nicht angezeigt werden"
 
-#: scripts/articleObject.js.php:293 scripts/articleObject.js.php:312
-#: scripts/articleObject.js.php:330 scripts/articleObject.js.php:345
-#: scripts/articleObject.js.php:363 scripts/articleObject.js.php:382
-#: scripts/articleObject.js.php:397 scripts/langref.php:16
+#: scripts/articleObject.js.php:292 scripts/articleObject.js.php:311
+#: scripts/articleObject.js.php:329 scripts/articleObject.js.php:344
+#: scripts/articleObject.js.php:362 scripts/articleObject.js.php:381
+#: scripts/articleObject.js.php:396 scripts/langref.php:16
 msgid "No article was selected"
 msgstr "Kein Artikel ausgewählt"
 
-#: scripts/articleObject.js.php:312 scripts/langref.php:17
+#: scripts/articleObject.js.php:311 scripts/langref.php:17
 msgid "Template configuration can't be displayed"
 msgstr "Vorlagenkonfiguration kann nicht angezeigt werden"
 
-#: scripts/articleObject.js.php:345 scripts/langref.php:19
+#: scripts/articleObject.js.php:344 scripts/langref.php:19
 msgid "Preview can't be displayed"
 msgstr "Vorschau kann nicht angezeigt werden"
 
-#: scripts/articleObject.js.php:397
+#: scripts/articleObject.js.php:396
 msgid "Tab can't be displayed"
 msgstr "Reiter kann nicht angezeigt werden"
 
-#: scripts/iZoom.js.php:59 scripts/iZoom.js.php:62 scripts/langref.php:23
+#: scripts/iZoom.js.php:61 scripts/iZoom.js.php:64 scripts/langref.php:23
 #: templates/standard/template.upl_files_overview.html:184
 #: templates/standard/template.upl_search_results.html:140
 msgid "Click to close"
@@ -6744,13 +6743,13 @@ msgstr ""
 
 #: templates/standard/template.con_art_overview.html:71
 #: templates/standard/template.con_art_overview.html:107
-#: templates/standard/template.con_art_overview.html:481
+#: templates/standard/template.con_art_overview.html:502
 msgid "Flip selection"
 msgstr "Markierung umkehren"
 
 #: templates/standard/template.con_art_overview.html:73
 #: templates/standard/template.con_art_overview.html:109
-#: templates/standard/template.con_art_overview.html:482
+#: templates/standard/template.con_art_overview.html:503
 msgid "Apply to all selected articles"
 msgstr "Anwenden für ausgewählte Artikel"
 
@@ -6759,25 +6758,25 @@ msgstr "Anwenden für ausgewählte Artikel"
 msgid "Content administration"
 msgstr "Content-Administration"
 
-#: templates/standard/template.con_edit_form.html:205
-#: templates/standard/template.con_edit_form.html:434
+#: templates/standard/template.con_edit_form.html:206
+#: templates/standard/template.con_edit_form.html:435
 msgid "When expired, move to category"
 msgstr "Wenn abgelaufen, dann in diese Kategorie verschieben"
 
-#: templates/standard/template.con_edit_form.html:214
-#: templates/standard/template.con_edit_form.html:435
+#: templates/standard/template.con_edit_form.html:215
+#: templates/standard/template.con_edit_form.html:436
 msgid "Make online after move"
 msgstr "Nach dem Verschieben den Artikel online stellen"
 
-#: templates/standard/template.con_edit_form.html:436
+#: templates/standard/template.con_edit_form.html:437
 msgid "Synchronize this article to all selected languages"
 msgstr "Synchronisiere diesen Artikel in alle ausgewählten Sprachen"
 
-#: templates/standard/template.con_edit_form.html:437
+#: templates/standard/template.con_edit_form.html:438
 msgid "Bring this article in the selected languages online"
 msgstr "Bringe diesen Artikel in ausgewählten Sprachen online"
 
-#: templates/standard/template.con_edit_form.html:438
+#: templates/standard/template.con_edit_form.html:439
 msgid "Take this article in the selected languages offline"
 msgstr "Nimm diesen Aritkel in den ausgewählten Sprachen offline"
 
@@ -7772,96 +7771,100 @@ msgid "Sender name"
 msgstr "Absender-Name"
 
 #: xml/system.xml:26
+msgid "Type for mails"
+msgstr "Typ für E-Mails"
+
+#: xml/system.xml:27
 msgid "Use passwordrequest in Backend"
 msgstr "\"Passwort vergessen\"-Funktion benutzen"
 
-#: xml/system.xml:27
+#: xml/system.xml:28
 msgid "Activate maintenance mode"
 msgstr "Wartungsmodus aktiviert"
 
-#: xml/system.xml:28
+#: xml/system.xml:29
 msgid "Use CodeMirror for code highlighting"
 msgstr "CodeMirror für Syntax-Highlighting verwenden"
 
-#: xml/system.xml:29
+#: xml/system.xml:30
 msgid "Default client (ID)"
 msgstr "Standardmandant (Id)"
 
-#: xml/system.xml:30
+#: xml/system.xml:31
 msgid "Maximum log size in MiB (0 = infinite)"
 msgstr "Max. Größe aller Logs in MiB (0=unendlich)"
 
-#: xml/system.xml:32
+#: xml/system.xml:33
 msgid "Generate basehref"
 msgstr "basehref generieren"
 
-#: xml/system.xml:33
+#: xml/system.xml:34
 msgid "Development"
 msgstr "Entwicklung"
 
-#: xml/system.xml:34
+#: xml/system.xml:35
 msgid "Use image magic (if available)"
 msgstr "Image magic benutzen (sofern verfügbar)"
 
-#: xml/system.xml:35
+#: xml/system.xml:36
 msgid "Debug to file"
 msgstr "Debug-Meldungen in einer Datei speichern"
 
-#: xml/system.xml:36
+#: xml/system.xml:37
 msgid "Visible debug"
 msgstr "Debug-Meldungen anzeigen"
 
-#: xml/system.xml:37
+#: xml/system.xml:38
 msgid "Allow all HTML tags and attributes in TinyMCE"
 msgstr "Erlaube alle HTML-Tags und -Attribute in TinyMCE"
 
-#: xml/system.xml:38
+#: xml/system.xml:39
 msgid "User password reset threshold"
 msgstr "Maximale Anzahl für Anfragen zum Zurücksetzen des Passwortes"
 
-#: xml/system.xml:39
+#: xml/system.xml:40
 msgid "When to consider a password reset request to be outdated"
 msgstr ""
 "Wann sollen Anfragen zum Zurücksetzen des Benutzerpasswortes als veraltet "
 "angesehen werden"
 
-#: xml/system.xml:40
+#: xml/system.xml:41
 msgid "Optional backend label"
 msgstr "Optionale Backend-Bezeichnung"
 
-#: xml/system.xml:41
+#: xml/system.xml:42
 msgid "Show only CSS/JS/HTML files at areas CSS/JS/HTML"
 msgstr "Zeige lediglich CSS/JS/HTML-Dateien in den Bereichen CSS/JS/HTML"
 
-#: xml/system.xml:42
+#: xml/system.xml:43
 msgid "Show message for unknown module translations"
 msgstr "Zeige Meldungen für nicht gefundene Modul-Übersetzungen an"
 
-#: xml/system.xml:43
+#: xml/system.xml:44
 msgid "Debug function for plugins"
 msgstr "Debug-Funktion für Plugins"
 
-#: xml/system.xml:44
+#: xml/system.xml:45
 msgid "Serverpath to style version files"
 msgstr "Serverpfad für Style-Versionierungsdateien"
 
-#: xml/system.xml:45
+#: xml/system.xml:46
 msgid "Style versioning activated"
 msgstr "Style-Versionierung aktiviert"
 
-#: xml/system.xml:46
+#: xml/system.xml:47
 msgid "Maximum number of stored style versions"
 msgstr "Maximale Anzahl gespeicherter Style-Versionen"
 
-#: xml/system.xml:50
+#: xml/system.xml:51
 msgid "Versioning activated"
 msgstr "Versionierung aktiviert"
 
-#: xml/system.xml:51
+#: xml/system.xml:52
 msgid "Serverpath to version files"
 msgstr "Serverpfad für Versionierungsdateien"
 
-#: xml/system.xml:52
+#: xml/system.xml:53
 msgid "Maximum number of stored versions"
 msgstr "Maximale Anzahl gespeicherter Versionen"
 
