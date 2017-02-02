@@ -105,8 +105,9 @@ include_once($backendPath . '/includes/functions.php54.php');
 require_once($backendPath . '/classes/class.registry.php');
 require_once($backendPath . '/classes/class.security.php');
 
-// "Workaround" for register_globals=off settings.
-require_once($backendPath . '/includes/globals_off.inc.php');
+// Include cStringMultiByteWrapper and cString
+require_once($backendPath . '/classes/class.string.multi.byte.wrapper.php');
+require_once($backendPath . '/classes/class.string.php');
 
 require_once($backendPath . '/classes/class.requestvalidator.php');
 try {
@@ -116,6 +117,8 @@ try {
     die($e->getMessage());
 }
 
+// "Workaround" for register_globals=off settings.
+require_once($backendPath . '/includes/globals_off.inc.php');
 
 // Include some basic configuration files
 require_once($cfg['path']['contenido_config'] . 'config.php');

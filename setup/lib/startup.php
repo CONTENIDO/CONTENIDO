@@ -63,6 +63,10 @@ function checkAndInclude($filename) {
     }
 }
 
+// Include cStringMultiByteWrapper and cString
+checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.string.multi.byte.wrapper.php');
+checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.string.php');
+
 // Include security class and check request variables
 checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.filehandler.php');
 checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.requestvalidator.php');

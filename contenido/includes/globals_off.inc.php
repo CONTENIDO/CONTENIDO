@@ -31,9 +31,9 @@ if (function_exists('get_magic_quotes_gpc')) {
 // Simulate get_magic_quotes_gpc on if turned off
 if (CON_STRIPSLASHES) {
 
-    // classes cStringWrapper and cString are not loaded here as autoloader wasn't called yet
-    if (false === class_exists('cStringWrapper')) {
-        include_once dirname(__DIR__) . '/classes/class.stringwrapper.php';
+    // classes cStringMultiByteWrapper and cString are not loaded here as autoloader wasn't called yet
+    if (false === class_exists('cStringMultiByteWrapper')) {
+        include_once dirname(__DIR__) . '/classes/class.string.multi.byte.wrapper.php';
     }
     if (false === class_exists('cString')) {
         include_once dirname(__DIR__) . '/classes/class.string.php';

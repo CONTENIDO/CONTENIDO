@@ -19,7 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package Core
  * @subpackage Util
  */
-class cString extends cStringWrapper {
+class cString extends cStringMultiByteWrapper {
 
     /**
      * Replaces a string only once.
@@ -185,7 +185,7 @@ class cString extends cStringWrapper {
     public static function strstr($haystack, $needle, $beforeNeedle = false) {
 
         if (!$beforeNeedle) {
-            if (parent::$isMbstringLoaded === true && isset(parent::$mbstringFunction['mb_strstr'])) {
+            if (self::_functionExists('mb_strstr')) {
                 return mb_strstr($haystack, $needle);
             } else {
                 return strstr($haystack, $needle);
