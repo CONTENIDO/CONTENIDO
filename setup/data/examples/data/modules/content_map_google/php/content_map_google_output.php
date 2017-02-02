@@ -27,7 +27,7 @@ $tpl->assign('header', "CMS_HTMLHEAD[600]");
 $tpl->assign('address', "CMS_HTML[601]");
 $tpl->assign('lat', "CMS_TEXT[602]");
 $tpl->assign('lng', "CMS_TEXT[603]");
-$tpl->assign('googlekey', getEffectiveSetting('maps', 'googlekey'));
+$tpl->assign('googlekey', conHtmlEntityDecode(getEffectiveSetting('maps', 'googlekey')));
 $tpl->assign('markerTitle', "CMS_HTML[604]");
 $tpl->assign('way', "CMS_HTML[605]");
 $tpl->display('get.tpl');
