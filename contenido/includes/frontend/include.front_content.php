@@ -219,10 +219,9 @@ if ($error == 1) {
 // If not the values will be computed.
 if ($idart && !$idcat && !$idcatart) {
     // Try to fetch the idcat by idart
-    $oCatArt = new cApiCategoryArticle();
-    if ($oCatArt->loadBy('idart', (int)$idart)) {
-        $idcat = $oCatArt->get('idcat');
-    }
+    $catArtColl = new cApiCategoryArticleCollection();
+    $categories = $catArtColl->getCategoryIdsByArticleId($idart);
+    $idcat = $categories[0];
 }
 
 unset($code, $markscript);
