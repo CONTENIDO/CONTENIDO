@@ -683,15 +683,35 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
         $tpl = cSmartyBackend::getInstance(true);
 
         $columnNames = array();
+        $includesCaptcha = false;
+
         foreach ($this->_pifaForm->getFields() as $field) {
             $columnNames[] = $field->get('column_name');
+            if ((int) $field->get('field_type') === PifaField::CAPTCHA) {
+                $includesCaptcha = true;
+            }
         }
+
+        $cGuiNotification = new cGuiNotification();
 
         // check for required email column at this form
         if (!in_array('email', $columnNames)) {
-            $cGuiNotification = new cGuiNotification();
-            $email_notification = $cGuiNotification->returnNotification(cGuiNotification::LEVEL_WARNING, Pifa::i18n('Currently there is no field called "email" in this form. Sending mails - if configured - to the user which entered the form data may not work!'));
+            $email_notification = $cGuiNotification->returnNotification(
+                cGuiNotification::LEVEL_WARNING,
+                Pifa::i18n('Currently there is no field called "email" in this form. Sending mails - if configured - to the user which entered the form data may not work!')
+            );
             $tpl->assign('email_notification', $email_notification);
+        }
+
+        // check for captcha usage
+        if ($includesCaptcha && (cString::getStringLength(getEffectiveSetting('pifa-recaptcha', 'sitekey', '')) === 0 || cString::getStringLength(getEffectiveSetting('pifa-recaptcha', 'secret', '')) === 0)) {
+            $captcha_notification = $cGuiNotification->returnNotification(
+                cGuiNotification::LEVEL_WARNING,
+                Pifa::i18n('This form is configured with a captcha, but its settings were not defined.') . "<br>" .
+                Pifa::i18n('The captcha will not work until you provide the missing information.') . "<br>" .
+                Pifa::i18n('Please save the "sitekey" and the "secret" in the client settings for the type "pifa-recaptcha". You will get this data from https://www.google.com/recaptcha.')
+            );
+            $tpl->assign('captcha_notification', $captcha_notification);
         }
 
         // translations

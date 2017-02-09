@@ -149,12 +149,12 @@ class PifaField extends Item {
      */
     const SLIDER = 11;
 
-    // /**
-    // * Captcha.
-    // *
-    // * @var int
-    // */
-    // const CAPTCHA = 12;
+    /**
+     * Captcha.
+     *
+     * @var int
+     */
+    const CAPTCHA = 12;
 
     /**
      * Button of type submit.
@@ -330,22 +330,27 @@ class PifaField extends Item {
         }
 
         foreach ($values as $value) {
+            if (self::CAPTCHA == $this->get('field_type')) {
+                //site secret key
+                $secret = getEffectiveSetting('pifa-recaptcha', 'secret', '');
 
-            // if (self::CAPTCHA == $this->get('field_type')) {
-            // // check for captcha
-            // $securimage = new Securimage(array(
-            // 'session_name' => cRegistry::getClientId() . 'frontend'
-            // ));
-            // $isValid = $securimage->check($value);
-            // } else
+                if (cString::getStringLength($secret) === 0 || !isset($_POST['g-recaptcha-response']) || empty($_POST['g-recaptcha-response'])) {
+                    $isValid = false;
+                } else {
+                    //get verify response data
+                    $response = urlencode($_POST['g-recaptcha-response']);
+                    $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $response);
+                    $responseData   = json_decode($verifyResponse);
 
-            if (1 === cSecurity::toInteger($this->get('obligatory')) && 0 === cString::getStringLength($value)) {
+                    $isValid = $responseData->success ? true : false;
+                }
+            } else if (1 === cSecurity::toInteger($this->get('obligatory')) && 0 === cString::getStringLength($value)) {
                 // check for obligatory & rule
                 $isValid = false;
             } else if (0 < cString::getStringLength($this->get('rule')) && in_array(preg_match($this->get('rule'), $value), array(
-                false,
-                0
-            ))) {
+                    false,
+                    0
+                ))) {
                 // check for rule
                 $isValid = false;
             } else {
@@ -483,12 +488,6 @@ class PifaField extends Item {
             $label .= ' *';
         }
 
-        // add span to request new captcha code
-        // if (self::CAPTCHA===$fieldType) {
-        // $label .= '<br><br><span style="cursor: pointer;">New Captcha
-        // Code</span>';
-        // }
-
         $elemLabel = new cHTMLLabel($label, 'pifa-field-elm-' . $idfield, 'pifa-field-lbl');
         if (self::INPUTRADIO === $fieldType) {
             $elemLabel->removeAttribute('for');
@@ -570,15 +569,15 @@ class PifaField extends Item {
                 $value = $_GET[$columnName];
             }
         }
-		
-		// try to prevent XSS ... the lazy way ...
-		if ( is_array($value) ) {
-			foreach ($value as $key => $val) {
-				$value[$key] = conHtmlentities($val, ENT_COMPAT | ENT_HTML401, 'UTF-8');
-			}
-		} else {
-			$value = conHtmlentities($value, ENT_COMPAT | ENT_HTML401, 'UTF-8');
-		}
+
+        // try to prevent XSS ... the lazy way ...
+        if ( is_array($value) ) {
+            foreach ($value as $key => $val) {
+                $value[$key] = conHtmlentities($val, ENT_COMPAT | ENT_HTML401, 'UTF-8');
+            }
+        } else {
+            $value = conHtmlentities($value, ENT_COMPAT | ENT_HTML401, 'UTF-8');
+        }
 
         switch ($fieldType) {
 
@@ -711,24 +710,24 @@ class PifaField extends Item {
                 // $elemField = new cHTML();
                 break;
 
-            // case self::CAPTCHA:
+            case self::CAPTCHA:
+                // input
+                $elemField = new cHTMLTextbox($columnName);
+                // set ID (workaround: remove ID first!)
+                $elemField->removeAttribute('id')->setID($id);
+                if (null !== $value) {
+                    $elemField->setValue($value);
+                }
 
-                // // input
-                // $elemField = new cHTMLTextbox($columnName);
-                // // set ID (workaround: remove ID first!)
-                // $elemField->removeAttribute('id')->setID($id);
-                // if (NULL !== $value) {
-                // $elemField->setValue($value);
-                // }
+                //google recaptcha integration
+                $sitekey = getEffectiveSetting('pifa-recaptcha', 'sitekey', '');
 
-                // // surrounding div
-                // // img src (front_content.php?securimage)
-                // // will be caught by Pifa::afterLoadPlugins
-                // $img = new cHTMLImage('front_content.php?securimage');
-                // $img->setAttribute('alt', 'captcha');
-                // $elemField = new cHTMLDiv(array($img, $elemField));
+                $elemScript = new cHTMLScript();
+                $elemScript->setAttribute("src", "https://www.google.com/recaptcha/api.js");
+                $elemDiv = new cHTMLDiv('<div class="g-recaptcha" data-sitekey="' . $sitekey . '"></div>');
+                $elemField = $elemScript . PHP_EOL . $elemDiv;
 
-                // break;
+                break;
 
             case self::BUTTONSUBMIT:
             case self::BUTTONRESET:
@@ -824,23 +823,6 @@ class PifaField extends Item {
                 	});});
                 }";
                 break;
-            // case self::CAPTCHA:
-            // $sel = '#pifa-field-' . $idfield . ' label';
-            // $newCaptchaCode = mi18n("NEW_CAPTCHA_CODE");
-            // $script = "jQuery(function(){\n";
-            // // implement captcha reload on click
-            // $script .= "jQuery('$sel').click(function (e) {\n";
-            // $script .= "e.preventDefault();\n";
-            // $script .= "var url = 'front_content.php?securimage&' +
-            // Math.random();\n";
-            // $script .= "jQuery(this).parent().find('img').attr('src',
-            // url);\n";
-            // $script .= "});\n";
-            // // append 'New Captcha Code' to label
-            // $script .= "jQuery('$sel').append('<br/><br/><span
-            // style=\"cursor:pointer\">$newCaptchaCode</span>');";
-            // $script .= "});\n";
-            // break;
             default:
                 $script = '';
         }
@@ -884,7 +866,7 @@ class PifaField extends Item {
             self::INPUTFILE => Pifa::i18n('INPUTFILE'),
             self::PROCESSBAR => Pifa::i18n('PROCESSBAR'),
             self::SLIDER => Pifa::i18n('SLIDER'),
-            // self::CAPTCHA => Pifa::i18n('CAPTCHA'),
+            self::CAPTCHA => Pifa::i18n('CAPTCHA'),
             // self::MATRIX => Pifa::i18n('MATRIX'),
             self::PARA => Pifa::i18n('PARAGRAPH'),
             self::INPUTHIDDEN => Pifa::i18n('INPUTHIDDEN'),
@@ -1005,7 +987,7 @@ class PifaField extends Item {
             // type to use.
             case self::PROCESSBAR:
             case self::SLIDER:
-            // case self::CAPTCHA:
+            case self::CAPTCHA:
             case self::MATRIX:
             case self::PARA:
             case self::FIELDSET_BEGIN:
@@ -1112,7 +1094,7 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    // self::CAPTCHA,
+                    self::CAPTCHA,
                     // self::BUTTONSUBMIT,
                     // self::BUTTONRESET,
                     // self::BUTTON,
@@ -1139,7 +1121,7 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    // self::CAPTCHA,
+                    self::CAPTCHA,
                     self::BUTTONSUBMIT,
                     self::BUTTONRESET,
                     self::BUTTON,
@@ -1151,7 +1133,7 @@ class PifaField extends Item {
                     /*
                     self::FIELDSET_END
                     */
-                    ));
+                ));
 
             case 'default_value':
                 return in_array($fieldType, array(
@@ -1166,7 +1148,7 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    // self::CAPTCHA,
+                    self::CAPTCHA,
                     self::BUTTONSUBMIT,
                     self::BUTTONRESET,
                     self::BUTTON,
@@ -1198,7 +1180,7 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    // self::CAPTCHA,
+                    self::CAPTCHA,
                     self::BUTTONSUBMIT,
                     self::BUTTONRESET,
                     self::BUTTON,
@@ -1221,7 +1203,7 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    // self::CAPTCHA,
+                    self::CAPTCHA,
                     // self::BUTTONSUBMIT,
                     // self::BUTTONRESET,
                     // self::BUTTON,
@@ -1243,7 +1225,7 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    // self::CAPTCHA,
+                    self::CAPTCHA,
                     // self::BUTTONSUBMIT,
                     // self::BUTTONRESET,
                     // self::BUTTON,
@@ -1265,7 +1247,7 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    // self::CAPTCHA,
+                    self::CAPTCHA,
                     // self::BUTTONSUBMIT,
                     // self::BUTTONRESET,
                     // self::BUTTON,
@@ -1287,7 +1269,7 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    // self::CAPTCHA,
+                    self::CAPTCHA,
                     self::BUTTONSUBMIT,
                     self::BUTTONRESET,
                     self::BUTTON,
@@ -1314,7 +1296,7 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    // self::CAPTCHA,
+                    self::CAPTCHA,
                     self::BUTTONSUBMIT,
                     self::BUTTONRESET,
                     self::BUTTON,

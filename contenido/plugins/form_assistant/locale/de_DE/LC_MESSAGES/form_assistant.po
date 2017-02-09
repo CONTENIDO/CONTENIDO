@@ -368,6 +368,15 @@ msgstr ""
 ">Sofern konfiguriert, wird der E-Mail-Versand durch Nutzer, die das Formular "
 "ausfüllen, eventuell nicht funktionieren!"
 
+msgid "This form is configured with a captcha, but its settings were not defined."
+msgstr "Dieses Formular wurde mit einem Captcha konfiguriert, aber dessen Einstellungen wurden nicht hinterlegt."
+
+msgid "The captcha will not work until you provide the missing information."
+msgstr "Das Captcha wird nicht funktionieren, bis die fehlenden Informationen gespeichert wurden."
+
+msgid "Please save the \"sitekey\" and the \"secret\" in the client settings for the type \"pifa-recaptcha\". You will get this data from https://www.google.com/recaptcha."
+msgstr "Bitte speichen Sie den \"sitekey\" und das \"secret\" in den Mandanteneinstellungen für den Typ \"pifa-recaptcha\". Sie erhalten diese Daten von https://www.google.com/recaptcha."
+
 #: classes/class.pifa.gui.php:700 includes/include.right_top.php:55
 msgid "fields"
 msgstr "Formularfelder"

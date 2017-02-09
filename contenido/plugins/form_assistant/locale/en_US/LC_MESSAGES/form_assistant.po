@@ -365,6 +365,15 @@ msgid ""
 "if configured - to the user which entered the form data may not work!"
 msgstr ""
 
+msgid "This form is configured with a captcha, but its settings were not defined."
+msgstr "This form is configured with a captcha, but its settings were not defined."
+
+msgid "The captcha will not work until you provide the missing information."
+msgstr "The captcha will not work until you provide the missing information."
+
+msgid "Please save the \"sitekey\" and the \"secret\" in the client settings for the type \"pifa-recaptcha\". You will get this data from https://www.google.com/recaptcha."
+msgstr "Please save the \"sitekey\" and the \"secret\" in the client settings for the type \"pifa-recaptcha\". You will get this data from https://www.google.com/recaptcha."
+
 #: classes/class.pifa.gui.php:700 includes/include.right_top.php:55
 msgid "fields"
 msgstr "fields"

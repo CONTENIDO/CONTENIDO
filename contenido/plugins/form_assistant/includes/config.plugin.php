@@ -271,28 +271,6 @@ class Pifa {
         return $templates;
     }
 
-    // /**
-    // */
-    // public static function afterLoadPlugins() {
-
-    // // return;
-    // if (!isset($_GET['securimage'])) {
-    // return;
-    // }
-
-    // $e = error_get_last();
-
-    // $img = new Securimage(array(
-    // 'image_height' => (int) getEffectiveSetting('pifa', 'captcha-image-height', 80),
-    // 'image_width' => (int) getEffectiveSetting('pifa', 'captcha-image-width', 215),
-    // 'perturbation' => (int) getEffectiveSetting('pifa', 'captcha-perturbation', 0),
-    // 'num_lines' => (int) getEffectiveSetting('pifa', 'captcha-num-lines', 3),
-    // 'session_name' => cRegistry::getClientId() . 'frontend'
-    // ));
-
-    // $img->show();
-    // }
-
     /**
      * Translates a camel case string into a string with underscores
      * (e.g.
@@ -424,12 +402,8 @@ cAutoload::addClassmapConfig(array(
     'PifaDatabaseException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'PifaNotImplementedException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'PifaIllegalStateException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
-    // 'Securimage' => $pluginClassPath . 'securimage/securimage.php',
     'PifaNotYetStoredException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'PifaValidationException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'PifaMailException' => $pluginClassPath . 'classes/class.pifa.exceptions.php'
 ));
 unset($pluginClassPath);
-
-// define chain functions
-//cRegistry::getCecRegistry()->addChainFunction('Contenido.Frontend.AfterLoadPlugins', 'Pifa::afterLoadPlugins');
