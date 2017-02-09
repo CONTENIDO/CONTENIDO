@@ -260,9 +260,9 @@ class cSearchIndex extends cSearchBaseAbstract {
                         }
                         $this->_debug('code', $code);
 
-                        // split content by any number of commas or space
-                        // characters
-                        $tmp_keys = mb_split('[\s,]+', trim($code));
+                        // split content by any number of commas, space
+                        // characters or hyphens
+                        $tmp_keys = mb_split('[\s,-]+', trim($code));
                         $this->_debug('tmp_keys', $tmp_keys);
 
                         foreach ($tmp_keys as $value) {
