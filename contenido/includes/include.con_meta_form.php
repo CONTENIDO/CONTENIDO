@@ -269,10 +269,13 @@ $metaPreview = array();
 
 // Set meta tags values
 foreach ($availableTags as $key => $value) {
+    $contentMetaValue = conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version'));
+    $contentMetaValue = str_replace('"', '', $contentMetaValue);
+
     $metaPreview[] = array(
         'fieldname' => $value['fieldname'],
         'name' => $value['metatype'],
-        'content' => cSecurity::unFilter(stripslashes(conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version'))))
+        'content' => cSecurity::unFilter(stripslashes($contentMetaValue))
     );
 
     // Set meta values to inputs
@@ -293,12 +296,12 @@ foreach ($availableTags as $key => $value) {
             }
 
             // Set robots checkboxes
-            $robot_array = explode(', ', conHtmlSpecialChars(conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version'))));
+            $robot_array = explode(', ', conHtmlSpecialChars($contentMetaValue));
             foreach ($robot_array as $instruction) {
                 $tpl->set('s', cString::toUpperCase($instruction), 'checked');
             }
         } else {
-            $metaType = conHtmlSpecialChars(cSecurity::unFilter(stripslashes(conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version')))));
+            $metaType = conHtmlSpecialChars(cSecurity::unFilter(stripslashes($contentMetaValue)));
             $tpl->set('s', cString::toUpperCase($value['metatype']), str_replace('\\', '', $metaType));
         }
 
@@ -316,17 +319,16 @@ foreach ($availableTags as $key => $value) {
                             id="META' . $value['metatype'] . '"
                             size="24"
                             maxlength=' . $value['maxlength'] . '
-                            value="' . conHtmlSpecialChars(conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version'))) . '">';
+                            value="' . conHtmlSpecialChars($contentMetaValue) . '">';
 
             break;
         case 'textarea':
-            $textValue = cSecurity::unFilter(stripslashes(conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version'))));
             $element = '<textarea ' . $disabled . '
                             class="metaTag"
                             name="META' . $value['metatype'] . '"
                             id="META' . $value['metatype'] . '"
                             rows="3"
-                        >' . $textValue . '</textarea>';
+                        >' . cSecurity::unFilter(stripslashes($contentMetaValue)) . '</textarea>';
             break;
         case 'date':
             $element = '<input ' . $disabled . '
@@ -336,7 +338,7 @@ foreach ($availableTags as $key => $value) {
                             id="META' . $value['metatype'] . '"
                             size="24"
                             maxlength=' . $value['maxlength'] . '
-                            value="' . conHtmlSpecialChars(conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version'))) . '">';
+                            value="' . conHtmlSpecialChars($contentMetaValue) . '">';
 
             break;
     }

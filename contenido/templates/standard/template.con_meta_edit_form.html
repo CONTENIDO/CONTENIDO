@@ -331,7 +331,7 @@ function deleteMetaTag(idMetaType, articleId, catId, idartlang) {
             } else {
                 $("#metaRow_" + id).show();
             }
-            $("#metaContent_" + id).text(text);
+            $("#metaContent_" + id).text(text.replace(/["]/g, ''));
         });
 
         $('.robotCheckbox').change(function() {
