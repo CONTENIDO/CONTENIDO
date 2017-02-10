@@ -119,11 +119,11 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
                     // load css and js content of the js/css files
                     if ($moduleHandler->getFilesContent('css', 'css') !== false) {
-                        $this->_cssData .= $moduleHandler->getFilesContent('css', 'css');
+                        $this->_cssData .= $moduleHandler->getFilesContent('css', 'css') . PHP_EOL;
                     }
 
                     if ($moduleHandler->getFilesContent('js', 'js') !== false) {
-                        $this->_jsData .= $moduleHandler->getFilesContent('js', 'js');
+                        $this->_jsData .= $moduleHandler->getFilesContent('js', 'js') . PHP_EOL;
                     }
 
                     $input = $moduleHandler->readInput();
