@@ -116,7 +116,7 @@ function conEditFirstTime(
         $lastId = $oArtLang->get('idartlang');
         $availableTags = conGetAvailableMetaTagTypes();
         foreach ($availableTags as $key => $value) {
-            conSetMetaValue($lastId, $key, $_POST['META' . $value['name']], $child);
+            conSetMetaValue($lastId, $key, $_POST['META' . $value['name']]);
         }
     }
 
