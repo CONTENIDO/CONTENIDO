@@ -1092,7 +1092,10 @@ textarea {
 
 .pifa-form .pifa-error:hover p {
     display: block;
+}
 
+.pifa-form .g-recaptcha {
+	display: inline-block;
 }
 
 /* ----- NEWSLETTERFORM ----- */
