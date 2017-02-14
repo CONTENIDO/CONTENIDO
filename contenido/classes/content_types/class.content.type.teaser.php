@@ -720,7 +720,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $wrapperContent[] = new cHTMLLabel(i18n('Source category'), 'teaser_category_' . $this->_id);
         $wrapperContent[] = buildCategorySelect('teaser_category_' . $this->_id, $this->_settings['teaser_category'], 0);
         $wrapperContent[] = new cHTMLLabel(i18n('Number of articles'), 'teaser_count_' . $this->_id);
-        $wrapperContent[] = $this->_generateCountSelect();
+        $wrapperContent[] = new cHTMLTextbox('teaser_count_' . $this->_id, (int) $this->_settings['teaser_count'], '', '', 'teaser_count_' . $this->_id);
 
         $wrapperContent[] = new cHTMLLabel(i18n("Include start article"), 'teaser_start_' . $this->_id);
         $wrapperContent[] = new cHTMLCheckbox('teaser_start_' . $this->_id, '', 'teaser_start_' . $this->_id, ($this->_settings['teaser_start'] == 'true'));
@@ -732,35 +732,6 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
 
         $wrapper->setContent($wrapperContent);
         return $wrapper->render();
-    }
-
-    /**
-     * Generats a select box for setting number of articles which should be
-     * displayed in teaser as a maximum.
-     *
-     * Only important in editmode.
-     *
-     * @return string
-     *         html string of select box
-     */
-    private function _generateCountSelect() {
-        $htmlSelect = new cHTMLSelectElement('teaser_count_' . $this->_id, '', 'teaser_count_' . $this->_id);
-
-        // set please chose option element
-        $htmlSelectOption = new cHTMLOptionElement(i18n('Please choose'), '', true);
-        $htmlSelect->appendOptionElement($htmlSelectOption);
-
-        // generate a select box containing count 1 to 20 for maximum teaser
-        // count
-        for ($i = 1; $i <= 20; $i++) {
-            $htmlSelectOption = new cHTMLOptionElement($i, $i, false);
-            $htmlSelect->appendOptionElement($htmlSelectOption);
-        }
-
-        // set default value
-        $htmlSelect->setDefault($this->_settings['teaser_count']);
-
-        return $htmlSelect->render();
     }
 
     /**
