@@ -65,10 +65,6 @@ class cStringMultiByteWrapper {
      * @return string
      */
     protected static function _getEncoding($encoding = null) {
-        // TODO
-        /*if (is_null($encoding) && (class_exists('cRegistry'))) {
-            $encoding = cRegistry::getEncoding();
-        }*/
         if (!is_string($encoding)) {
             $encoding = mb_internal_encoding();
         }
