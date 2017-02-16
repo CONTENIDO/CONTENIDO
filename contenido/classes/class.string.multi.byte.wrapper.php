@@ -336,9 +336,7 @@ class cStringMultiByteWrapper {
      * @link http://php.net/manual/de/function.mb-ereg.php
      */
     public static function ereg($pattern, $string, &$regs = array()) {
-        if (self::_functionExists('mb_ereg')) {
-            return mb_ereg($pattern, $string, $regs);
-        }
+        return mb_ereg($pattern, $string, $regs);
     }
 
     /**
@@ -351,9 +349,7 @@ class cStringMultiByteWrapper {
      * @link http://php.net/manual/de/function.mb-ereg.php
      */
     public static function eregi($pattern, $string, &$regs = array()) {
-        if (self::_functionExists('mb_eregi')) {
-            return mb_eregi($pattern, $string, $regs);
-        }
+        return mb_eregi($pattern, $string, $regs);
     }
 
     /**
@@ -367,9 +363,7 @@ class cStringMultiByteWrapper {
      * @link http://php.net/manual/de/function.mb-ereg-replace.php
      */
     public static function ereg_replace($pattern, $replacement, $string, $option = 'msr') {
-        if (self::_functionExists('mb_ereg_replace')) {
-            return mb_ereg_replace($pattern, $replacement, $string, $option);
-        }
+        return mb_ereg_replace($pattern, $replacement, $string, $option);
     }
 
     /**
@@ -383,9 +377,7 @@ class cStringMultiByteWrapper {
      * @link http://php.net/manual/de/function.mb-eregi-replace.php
      */
     public static function eregi_replace($pattern, $replacement, $string, $option = 'msr') {
-        if (self::_functionExists('mb_eregi_replace')) {
-            return mb_eregi_replace($pattern, $replacement, $string, $option);
-        }
+        return mb_eregi_replace($pattern, $replacement, $string, $option);
     }
 
     /**
@@ -398,9 +390,7 @@ class cStringMultiByteWrapper {
      * @link http://php.net/manual/de/function.mb-split.php
      */
     public static function split($pattern, $string, $limit = -1) {
-        if (self::_functionExists('mb_split')) {
-            return mb_split($pattern, $string, $limit);
-        }
+        return mb_split($pattern, $string, $limit);
     }
 
 }
