@@ -337,9 +337,8 @@ class cStringMultiByteWrapper {
      */
     public static function ereg($pattern, $string, &$regs = array()) {
         if (self::_functionExists('mb_ereg')) {
-            $result = mb_ereg($pattern, $string, $regs);
+            return mb_ereg($pattern, $string, $regs);
         }
-        return $result;
     }
 
     /**
