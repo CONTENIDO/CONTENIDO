@@ -45,97 +45,58 @@ class cApiArticleLanguageCollection extends ItemCollection {
     /**
      * Creates an article language item entry.
      *
-     * @global object $auth
-     * @param int $idart
-     * @param int $idlang
-     * @param string $title
-     * @param string $urlname
-     * @param string $pagetitle
-     * @param string $summary
-     * @param int $artspec [optional]
-     * @param string $created [optional]
-     * @param string $author [optional]
-     * @param string $lastmodified [optional]
-     * @param string $modifiedby [optional]
-     * @param string $published [optional]
-     * @param string $publishedby [optional]
-     * @param int $online [optional]
-     * @param int $redirect [optional]
-     * @param string $redirect_url [optional]
-     * @param int $external_redirect [optional]
-     * @param int $artsort [optional]
-     * @param int $timemgmt [optional]
-     * @param string $datestart [optional]
-     * @param string $dateend [optional]
-     * @param int $status [optional]
-     * @param int $time_move_cat [optional]
-     * @param int $time_target_cat [optional]
-     * @param int $time_online_move [optional]
-     * @param int $locked [optional]
-     * @param mixed $free_use_01 [optional]
-     * @param mixed $free_use_02 [optional]
-     * @param mixed $free_use_03 [optional]
-     * @param int $searchable [optional]
-     * @param float $sitemapprio [optional]
-     * @param string $changefreq [optional]
+     * @param array $parameters
      * @return cApiArticleLanguage
      */
-    public function create($idart, $idlang, $title, $urlname, $pagetitle,
-            $summary, $artspec = 0, $created = '', $author = '',
-            $lastmodified = '', $modifiedby = '', $published = '',
-            $publishedby = '', $online = 0, $redirect = 0, $redirect_url = '',
-            $external_redirect = 0, $artsort = 0, $timemgmt = 0, $datestart = '',
-            $dateend = '', $status = 0, $time_move_cat = 0, $time_target_cat = 0,
-            $time_online_move = 0, $locked = 0, $free_use_01 = '', $free_use_02 = '',
-            $free_use_03 = '', $searchable = 1, $sitemapprio = 0.5, $changefreq = '') {
-        global $auth;
+    public function create(array $parameters) {
+        $auth = cRegistry::getAuth();
 
-        if (empty($author)) {
-            $author = $auth->auth['uname'];
+        if (empty($parameters['author'])) {
+            $parameters['author'] = $auth->auth['uname'];
         }
-        if (empty($created)) {
-            $created = date('Y-m-d H:i:s');
+        if (empty($parameters['created'])) {
+            $parameters['created'] = date('Y-m-d H:i:s');
         }
-        if (empty($lastmodified)) {
-            $lastmodified = date('Y-m-d H:i:s');
+        if (empty($parameters['lastmodified'])) {
+            $parameters['lastmodified'] = date('Y-m-d H:i:s');
         }
 
-        $urlname = (trim($urlname) == '') ? trim($title) : trim($urlname);
+        $parameters['urlname'] = (trim($parameters['urlname']) == '') ? trim($parameters['title']) : trim($parameters['urlname']);
 
         $item = $this->createNewItem();
 
-        $item->set('idart', $idart);
-        $item->set('idlang', $idlang);
-        $item->set('title', $title);
-        $item->set('urlname', $urlname);
-        $item->set('pagetitle', $pagetitle);
-        $item->set('summary', $summary);
-        $item->set('artspec', $artspec);
-        $item->set('created', $created);
-        $item->set('author', $author);
-        $item->set('lastmodified', $lastmodified);
-        $item->set('modifiedby', $modifiedby);
-        $item->set('published', $published);
-        $item->set('publishedby', $publishedby);
-        $item->set('online', $online);
-        $item->set('redirect', $redirect);
-        $item->set('redirect_url', $redirect_url);
-        $item->set('external_redirect', $external_redirect);
-        $item->set('artsort', $artsort);
-        $item->set('timemgmt', $timemgmt);
-        $item->set('datestart', $datestart);
-        $item->set('dateend', $dateend);
-        $item->set('status', $status);
-        $item->set('time_move_cat', $time_move_cat);
-        $item->set('time_target_cat', $time_target_cat);
-        $item->set('time_online_move', $time_online_move);
-        $item->set('locked', $locked);
-        $item->set('free_use_01', $free_use_01);
-        $item->set('free_use_02', $free_use_02);
-        $item->set('free_use_03', $free_use_03);
-        $item->set('searchable', $searchable);
-        $item->set('sitemapprio', $sitemapprio);
-        $item->set('changefreq', $changefreq);
+        $item->set('idart', $parameters['idart']);
+        $item->set('idlang', $parameters['idlang']);
+        $item->set('title', $parameters['title']);
+        $item->set('urlname', $parameters['urlname']);
+        $item->set('pagetitle', $parameters['pagetitle']);
+        $item->set('summary', $parameters['summary']);
+        $item->set('artspec', $parameters['artspec']);
+        $item->set('created', $parameters['created']);
+        $item->set('author', $parameters['author']);
+        $item->set('lastmodified', $parameters['lastmodified']);
+        $item->set('modifiedby', $parameters['modifiedby']);
+        $item->set('published', $parameters['published']);
+        $item->set('publishedby', $parameters['publishedby']);
+        $item->set('online', $parameters['online']);
+        $item->set('redirect', $parameters['redirect']);
+        $item->set('redirect_url', $parameters['redirect_url']);
+        $item->set('external_redirect', $parameters['external_redirect']);
+        $item->set('artsort', $parameters['artsort']);
+        $item->set('timemgmt', $parameters['timemgmt']);
+        $item->set('datestart', $parameters['datestart']);
+        $item->set('dateend', $parameters['dateend']);
+        $item->set('status', $parameters['status']);
+        $item->set('time_move_cat', $parameters['time_move_cat']);
+        $item->set('time_target_cat', $parameters['time_target_cat']);
+        $item->set('time_online_move', $parameters['time_online_move']);
+        $item->set('locked', $parameters['locked']);
+        $item->set('free_use_01', $parameters['free_use_01']);
+        $item->set('free_use_02', $parameters['free_use_02']);
+        $item->set('free_use_03', $parameters['free_use_03']);
+        $item->set('searchable', $parameters['searchable']);
+        $item->set('sitemapprio', $parameters['sitemapprio']);
+        $item->set('changefreq', $parameters['changefreq']);
 
         $item->store();
 

@@ -52,7 +52,7 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
      * @throws cDbException
      */
     public function create(array $parameters) {
-        global $auth;
+        $auth = cRegistry::getAuth();
 
         if (empty($parameters['author'])) {
             $parameters['author'] = $auth->auth['uname'];
