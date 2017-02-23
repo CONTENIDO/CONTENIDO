@@ -276,12 +276,9 @@ class cMailer extends Swift_Mailer {
         try {
             $transport->start();
         } catch (Swift_TransportException $e) {
-            // if SMTP fails just use PHP's mail() function
-            // $transport = Swift_MailTransport::newInstance();
-
             // CON-2530
             // fallback in constructTransport deleted
-            // parent::send() can't handle it, therefore return null before
+            // parent::send() can't handle it, therefore return false before
             return false;
         }
 
@@ -333,7 +330,7 @@ class cMailer extends Swift_Mailer {
         if (empty($from) || is_array($from) && count($from) > 1) {
             $message->setFrom(array(
                 $this->_mailSender => $this->_mailSenderName
-            ));
+            ));die("x");
         } else {
             $message->setFrom($from);
         }
