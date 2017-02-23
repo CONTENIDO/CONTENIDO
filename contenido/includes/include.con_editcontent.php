@@ -342,6 +342,8 @@ switch ($versioningState) {
                 );
                 $selectedArticleId = 'editable';
 
+                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+
                 // Execute cec hook
                 cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
                     'idart' => $artLangVersion->get("idart"),
