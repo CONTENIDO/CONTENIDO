@@ -73,6 +73,7 @@
         // call the function of the parent so that it is initialised correctly
         Con.cContentTypeAbstractTabbed.prototype.initialise.call(this);
         // call custom functions that attach custom event handlers etc.
+        this.addDirectoryList();
         this.addNaviActions();
         this.addSelectAction();
         this.showFolderPath();
@@ -125,6 +126,35 @@
             }
         });
     };
+
+    /**
+     * Adds the directory list
+     */
+    cContentTypeImgeditor.prototype.addDirectoryList = function() {
+        var self = this;
+        var id = self.id;
+
+        var dlist = $(self.frameId + ' #directoryList_' + id + ' em a');
+        var divContainer = dlist.parent().parent();
+
+        $('#cms_imgeditor_' + id).on('click', function(e) {
+            $.ajax({
+                type: 'POST',
+                url: self.pathBackend + 'ajaxmain.php',
+                data: 'ajax=dirlist&dir=&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
+                success: function (msg) {
+                    if (Con.checkAjaxResponse(msg) === false) {
+                        return false;
+                    }
+
+                    divContainer.after(msg);
+                    divContainer.parent('li').removeClass('collapsed');
+                    self.addNaviActions();
+                }
+            });
+        });
+        return false;
+    }
 
     /**
      * Adds possibility to navigate through the upload folder by:

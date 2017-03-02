@@ -453,15 +453,11 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $aUpload->setClass('on');
         $aUpload->setAttribute('title', 'upload');
         $aUpload->setContent('Uploads');
-        $directoryListCode = $this->generateDirectoryList($this->buildDirectoryList());
         $div = new cHTMLDiv(array(
             '<em><a href="#"></a></em>',
             $aUpload
         ));
-        $liRoot->setContent(array(
-            $div,
-            $directoryListCode
-        ));
+        $liRoot->setContent($div);
         $conStrTree = new cHTMLList('ul', 'con_str_tree', 'con_str_tree', $liRoot);
         $directoryList->setContent($conStrTree);
         $wrapperContent[] = $directoryList;
