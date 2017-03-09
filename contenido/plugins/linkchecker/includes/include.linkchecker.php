@@ -149,7 +149,7 @@ function url_is_uri($sUrl) {
 }
 
 /* Repaire some selected link */
-if (!empty($_GET['idartlang']) && !empty($_GET['oldlink']) && !empty($_GET['repairedlink'])) {
+if (!empty($_GET['idcontent']) && !empty($_GET['idartlang']) && !empty($_GET['oldlink']) && !empty($_GET['repairedlink'])) {
 
     if ($_GET['redirect'] == true) { // Update redirect
         $sql = "UPDATE " . $cfg['tab']['art_lang'] . " SET redirect_url = '" . $db->escape(base64_decode($_GET['repairedlink'])) . "' WHERE idartlang = '" . cSecurity::toInteger($_GET['idartlang']) . "'";
@@ -157,7 +157,7 @@ if (!empty($_GET['idartlang']) && !empty($_GET['oldlink']) && !empty($_GET['repa
     } else { // Update content
 
         // Get old value
-        $sql = "SELECT value FROM " . $cfg['tab']['content'] . " WHERE idartlang = '" . cSecurity::toInteger($_GET['idartlang']) . "'";
+        $sql = "SELECT value FROM " . $cfg['tab']['content'] . " WHERE idcontent = '" . cSecurity::toInteger($_GET['idcontent']) . "'";
         $db->query($sql);
         $db->next_record();
 
@@ -165,7 +165,7 @@ if (!empty($_GET['idartlang']) && !empty($_GET['oldlink']) && !empty($_GET['repa
         $newvalue = str_replace($db->escape(base64_decode($_GET['oldlink'])), $db->escape(base64_decode($_GET['repairedlink'])), $db->f("value"));
 
         // Update database table with new value
-        $sql = "UPDATE " . $cfg['tab']['content'] . " SET value = '" . $newvalue . "' WHERE idartlang = '" . cSecurity::toInteger($_GET['idartlang']) . "'";
+        $sql = "UPDATE " . $cfg['tab']['content'] . " SET value = '" . $newvalue . "' WHERE idcontent = '" . cSecurity::toInteger($_GET['idcontent']) . "'";
         $db->query($sql);
     }
 
@@ -200,6 +200,9 @@ if ($sCache_errors && $_GET['live'] != 1) {
     $aErrors = unserialize($sCache_errors);
 } else { // If no cache exists
 
+    // Initializing searchLinks class
+    $searchLinks = new searchLinks();
+
     // Select all categorys
     $sql = "SELECT idcat FROM " . $cfg['tab']['cat'] . " GROUP BY idcat";
     $db->query($sql);
@@ -227,7 +230,7 @@ if ($sCache_errors && $_GET['live'] != 1) {
     $languageId = cRegistry::getLanguageId();
 
     // How many articles exist? [Text]
-    $sql = "SELECT art.title, art.idartlang, art.idlang, cat.idart, cat.idcat, catName.name AS namecat, con.value FROM " . $cfg['tab']['cat_art'] . " cat
+    $sql = "SELECT art.title, art.idartlang, art.idlang, cat.idart, cat.idcat, catName.name AS namecat, con.idcontent, con.value FROM " . $cfg['tab']['cat_art'] . " cat
             LEFT JOIN " . $cfg['tab']['art_lang'] . " art ON (art.idart = cat.idart)
             LEFT JOIN " . $cfg['tab']['cat_lang'] . " catName ON (catName.idcat = cat.idcat)
             LEFT JOIN " . $cfg['tab']['content'] . " con ON (con.idartlang = art.idartlang)
@@ -241,8 +244,14 @@ if ($sCache_errors && $_GET['live'] != 1) {
         // Text decode
         $value = $db->f("value");
 
+        // Set contentId
+        $searchLinks->setContentId($db->f("idcontent"));
+
+        // Set articleLangId
+        $searchLinks->setArticleLangId($db->f("idartlang"));
+
         // Search the text
-        searchLinks($value, $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idartlang"), $db->f("idlang"));
+        $aSearchIDInfosNonID = $searchLinks->search($value, $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idlang"));
 
         // Search front_content.php-links
         if ($_GET['mode'] != 2) {
@@ -260,8 +269,14 @@ if ($sCache_errors && $_GET['live'] != 1) {
     $db->query($sql);
 
     while ($db->nextRecord()) {
-        // Search links
-        searchLinks($db->f("redirect_url"), $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idartlang"), $db->f("idlang"), "Redirect");
+        // Set mode to "redirect"
+        $searchLinks->setMode("redirect");
+
+        // Set articleLangId
+        $searchLinks->setArticleLangId($db->f("idartlang"));
+
+        // Search the text
+        $aSearchIDInfosNonID = $searchLinks->search($value, $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idlang"));
 
         // Search front_content.php-links
         if ($_GET['mode'] != 2) {
@@ -373,7 +388,7 @@ if (empty($aErrors) && $cronjob != true) {
                 // Repaired question
                 $repaired_question = i18n("Linkchecker has found a way to repair your wrong link. Do you want to automatically repair the link to the URL below?", $plugin_name);
 
-                $tpl2->set('s', 'ERRORS_REPAIRED_LINK', '<a href="javascript:void(0)" onclick="javascript:Con.showConfirmation(\'' . $repaired_question . '<br /><br /><strong>' . $repaired_link . '</strong>\', function() { window.location.href=\'' . $aUrl['contenido'] . 'main.php?area=linkchecker&frame=4&contenido=' . $sess->id . '&action=linkchecker&mode=' . $_GET['mode'] . '&idartlang=' . $aRow[$i]['idartlang'] . '&oldlink=' . base64_encode($aRow[$i]['url']) . '&repairedlink=' . base64_encode($repaired_link) . '&redirect=' . $aRow[$i]['redirect'] . '\';})"><img src="' . $aUrl['contenido'] . 'images/but_editlink.gif" alt="" border="0"></a>');
+                $tpl2->set('s', 'ERRORS_REPAIRED_LINK', '<a href="javascript:void(0)" onclick="javascript:Con.showConfirmation(\'' . $repaired_question . '<br /><br /><strong>' . $repaired_link . '</strong>\', function() { window.location.href=\'' . $aUrl['contenido'] . 'main.php?area=linkchecker&frame=4&contenido=' . $sess->id . '&action=linkchecker&mode=' . $_GET['mode'] . '&idcontent=' . $aRow[$i]['idcontent'] . '&idartlang=' . $aRow[$i]['idartlang'] . '&oldlink=' . base64_encode($aRow[$i]['url']) . '&repairedlink=' . base64_encode($repaired_link) . '&redirect=' . $aRow[$i]['redirect'] . '\';})"><img src="' . $aUrl['contenido'] . 'images/but_editlink.gif" alt="" border="0"></a>');
             }
 
             if ($sKey != "cat") {

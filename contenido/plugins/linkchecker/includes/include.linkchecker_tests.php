@@ -285,63 +285,128 @@ function searchFrontContentLinks($sValue, $iArt, $sArt, $iCat, $sCat) {
     }
 }
 
-// Searchs extern and intern links
-function searchLinks($sValue, $iArt, $sArt, $iCat, $sCat, $iArtLang, $iLang, $sFromtype = "") {
-    global $aUrl, $aSearchIDInfosNonID, $aWhitelist;
+/**
+ * Class searchLinks
+ * TODO: Linkchecker should uses completely a class system. This is only a first step!
+ */
+class searchLinks
+{
 
-    // Extern URL
-    if (preg_match_all('~(?:(?:action|data|href|src)=["\']((?:file|ftp|http|ww)[^\s]*)["\'])~i', $sValue, $aMatches) && $_GET['mode'] != 1) {
+    private $mode = '';
+    private static $contentId = 0;
+    private static $articleLangId = 0;
 
-        for ($i = 0; $i < count($aMatches[1]); $i++) {
+    /**
+     * searchLinks constructor.
+     */
+    public function __construct() {
+        $this->setMode("text");
+    }
 
-            if (!in_array($aMatches[1][$i], $aWhitelist)) {
-                $aSearchIDInfosNonID[] = array(
-                    "url" => $aMatches[1][$i],
-                    "idart" => $iArt,
-                    "nameart" => $sArt,
-                    "idcat" => $iCat,
-                    "namecat" => $sCat,
-                    "idartlang" => $iArtLang,
-                    "lang" => $iLang,
-                    "urltype" => "extern"
-                );
-            }
+    /**
+     * Setter method for mode
+     * mode:
+     * - text (standard)
+     * - redirect
+     *
+     * @param $mode
+     * @return mixed
+     */
+    public function setMode($mode) {
+        return $this->mode = $mode;
+    }
+
+    /**
+     * Setter method for contentId
+     *
+     * @param int $id
+     * @return bool
+     */
+    public function setContentId($id = 0) {
+
+        if ($id == 0) {
+            return false;
+        } else {
+            self::$contentId = cSecurity::toInteger($id);
         }
     }
 
-    // Redirect
-    if ($sFromtype == "Redirect" && (preg_match('!(' . preg_quote($aUrl['cms']) . '[^\s]*)!i', $sValue, $aMatches) || (preg_match('~(?:file|ftp|http|ww)[^\s]*~i', $sValue, $aMatches) && $_GET['mode'] != 1)) && (cString::findFirstPosCI($sValue, 'front_content.php') === false) && !in_array($aMatches[0], $aWhitelist)) {
-        $aSearchIDInfosNonID[] = array(
-            "url" => $aMatches[0],
-            "idart" => $iArt,
-            "nameart" => $sArt,
-            "idcat" => $iCat,
-            "namecat" => $sCat,
-            "idartlang" => $iArtLang,
-            "lang" => $iLang,
-            "urltype" => "unknown",
-            "redirect" => true
-        );
+    /**
+     * Setter method for articleLangId
+     *
+     * @param int $id
+     * @return bool
+     */
+    public function setArticleLangId($id = 0) {
+
+        if ($id == 0) {
+            return false;
+        } else {
+            self::$articleLangId = cSecurity::toInteger($id);
+        }
     }
 
-    // Intern URL
-    if (preg_match_all('~(?:(?:action|data|href|src)=["\'])(?!file://)(?!ftp://)(?!http://)(?!https://)(?!ww)(?!mailto)(?!\#)(?!/\#)([^"\']+)(?:["\'])~i', $sValue, $aMatches) && $_GET['mode'] != 2) {
+    public function search($value, $idart, $nameart, $idcat, $namecat, $idlang) {
+        global $aUrl, $aSearchIDInfosNonID, $aWhitelist;
 
-        for ($i = 0; $i < count($aMatches[1]); $i++) {
+        // Extern URL
+        if (preg_match_all('~(?:(?:action|data|href|src)=["\']((?:file|ftp|http|ww)[^\s]*)["\'])~i', $value, $aMatches) && $_GET['mode'] != 1) {
 
-            if (cString::findFirstPos($aMatches[1][$i], "front_content.php") === false && !in_array($aMatches[1][$i], $aWhitelist)) {
-                $aSearchIDInfosNonID[] = array(
-                    "url" => $aMatches[1][$i],
-                    "idart" => $iArt,
-                    "nameart" => $sArt,
-                    "idcat" => $iCat,
-                    "namecat" => $sCat,
-                    "idartlang" => $iArtLang,
-                    "lang" => $iLang,
-                    "urltype" => "intern"
-                );
+            for ($i = 0; $i < count($aMatches[1]); $i++) {
+
+                if (!in_array($aMatches[1][$i], $aWhitelist)) {
+                    $aSearchIDInfosNonID[] = array(
+                        "url" => $aMatches[1][$i],
+                        "idart" => $idart,
+                        "nameart" => $nameart,
+                        "idcat" => $idcat,
+                        "namecat" => $namecat,
+                        "idcontent" => self::$contentId,
+                        "idartlang" => self::$articleLangId,
+                        "lang" => $idlang,
+                        "urltype" => "extern"
+                    );
+                }
             }
         }
+
+        // Redirect
+        if ($this->mode == "redirect" && (preg_match('!(' . preg_quote($aUrl['cms']) . '[^\s]*)!i', $value, $aMatches) || (preg_match('~(?:file|ftp|http|ww)[^\s]*~i', $value, $aMatches) && $_GET['mode'] != 1)) && (cString::findFirstPosCI($value, 'front_content.php') === false) && !in_array($aMatches[0], $aWhitelist)) {
+            $aSearchIDInfosNonID[] = array(
+                "url" => $aMatches[0],
+                "idart" => $idart,
+                "nameart" => $nameart,
+                "idcat" => $idcat,
+                "namecat" => $namecat,
+                "idartlang" => self::$articleLangId,
+                "lang" => $idlang,
+                "urltype" => "unknown",
+                "redirect" => true
+            );
+        }
+
+        // Intern URL
+        if (preg_match_all('~(?:(?:action|data|href|src)=["\'])(?!file://)(?!ftp://)(?!http://)(?!https://)(?!ww)(?!mailto)(?!\#)(?!/\#)([^"\']+)(?:["\'])~i', $value, $aMatches) && $_GET['mode'] != 2) {
+
+            for ($i = 0; $i < count($aMatches[1]); $i++) {
+
+                if (cString::findFirstPos($aMatches[1][$i], "front_content.php") === false && !in_array($aMatches[1][$i], $aWhitelist)) {
+                    $aSearchIDInfosNonID[] = array(
+                        "url" => $aMatches[1][$i],
+                        "idart" => $idart,
+                        "nameart" => $nameart,
+                        "idcat" => $idcat,
+                        "namecat" => $namecat,
+                        "idcontent" => self::$contentId,
+                        "idartlang" => self::$articleLangId,
+                        "lang" => $idlang,
+                        "urltype" => "intern"
+                    );
+                }
+            }
+        }
+
+        return $aSearchIDInfosNonID;
     }
 }
 ?>
