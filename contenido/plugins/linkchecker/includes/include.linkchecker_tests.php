@@ -313,7 +313,7 @@ class searchLinks
      * @return mixed
      */
     public function setMode($mode) {
-        return $this->mode = $mode;
+        return $this->mode = cSecurity::toString($mode);
     }
 
     /**
@@ -346,6 +346,19 @@ class searchLinks
         }
     }
 
+    /**
+     * Old searchLinks function
+     * TODO: Optimize this function!
+     *
+     * @param $value
+     * @param $idart
+     * @param $nameart
+     * @param $idcat
+     * @param $namecat
+     * @param $idlang
+     * @todo Do not use global!
+     * @return array
+     */
     public function search($value, $idart, $nameart, $idcat, $namecat, $idlang) {
         global $aUrl, $aSearchIDInfosNonID, $aWhitelist;
 
@@ -378,6 +391,7 @@ class searchLinks
                 "nameart" => $nameart,
                 "idcat" => $idcat,
                 "namecat" => $namecat,
+                "idcontent" => 0,
                 "idartlang" => self::$articleLangId,
                 "lang" => $idlang,
                 "urltype" => "unknown",

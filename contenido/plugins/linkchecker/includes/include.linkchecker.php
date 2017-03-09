@@ -268,15 +268,16 @@ if ($sCache_errors && $_GET['live'] != 1) {
             AND cat.idcat != '0'";
     $db->query($sql);
 
+    // Set mode to "redirect"
+    $searchLinks->setMode("redirect");
+
     while ($db->nextRecord()) {
-        // Set mode to "redirect"
-        $searchLinks->setMode("redirect");
 
         // Set articleLangId
         $searchLinks->setArticleLangId($db->f("idartlang"));
 
         // Search the text
-        $aSearchIDInfosNonID = $searchLinks->search($value, $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idlang"));
+        $aSearchIDInfosNonID = $searchLinks->search($db->f("redirect_url"), $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idlang"));
 
         // Search front_content.php-links
         if ($_GET['mode'] != 2) {
