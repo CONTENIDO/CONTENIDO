@@ -157,7 +157,7 @@ if (!empty($_GET['idcontent']) && !empty($_GET['idartlang']) && !empty($_GET['ol
     } else { // Update content
 
         // Get old value
-        $sql = "SELECT value FROM " . $cfg['tab']['content'] . " WHERE idcontent = '" . cSecurity::toInteger($_GET['idcontent']) . "'";
+        $sql = "SELECT value FROM " . $cfg['tab']['content'] . " WHERE idcontent = '" . cSecurity::toInteger($_GET['idcontent']) . "' AND idartlang = '" . cSecurity::toInteger($_GET['idartlang']) . "'";
         $db->query($sql);
         $db->next_record();
 
@@ -165,7 +165,7 @@ if (!empty($_GET['idcontent']) && !empty($_GET['idartlang']) && !empty($_GET['ol
         $newvalue = str_replace($db->escape(base64_decode($_GET['oldlink'])), $db->escape(base64_decode($_GET['repairedlink'])), $db->f("value"));
 
         // Update database table with new value
-        $sql = "UPDATE " . $cfg['tab']['content'] . " SET value = '" . $newvalue . "' WHERE idcontent = '" . cSecurity::toInteger($_GET['idcontent']) . "'";
+        $sql = "UPDATE " . $cfg['tab']['content'] . " SET value = '" . $newvalue . "' WHERE idcontent = '" . cSecurity::toInteger($_GET['idcontent']) . "' AND idartlang = '" . cSecurity::toInteger($_GET['idartlang']) . "'";
         $db->query($sql);
     }
 
