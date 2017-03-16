@@ -50,6 +50,14 @@ class cSmartyWrapper extends Smarty {
     public function display($template = NULL, $cache_id = NULL, $compile_id = NULL, $parent = NULL) {
         global $frontend_debug;
 
+        if ($this->templateExists($template) === false) {
+            $moduleId = (int) cRegistry::getCurrentModuleId();
+            if ($moduleId > 0) {
+                $module = new cModuleHandler($moduleId);
+                $template = $module->getTemplatePath($template);
+            }
+        }
+
         if ($frontend_debug['template_display']) {
             echo("<!-- SMARTY TEMPLATE " . $template . " -->");
         }
