@@ -16,6 +16,29 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 cInclude('includes', 'functions.file.php');
 
+
+/**
+ * create a Debug-Output at the Browser-Console
+ *
+ * @param mixed $value
+ * @param   string $type  log | warn | error or any other valid Methods for console-Object
+ * @author  Samuel Suther (alias "rethus")
+ */
+function consoleLog($value,$type="log"){
+    $value = json_encode($value);
+    echo '
+    <script>
+        console.'.$type.'(  "Debug-Msg:",
+                            "\nFile:",        "'.__FILE__.'",
+                            "\nLine:",        '.__LINE__.',
+                            "\nFunction:",    "'.__FUNCTION__.'",
+                            "\nMethod:",      "'.__METHOD__.'",
+                            "\nClass:",       "'.__CLASS__.'",
+                            "\nValue:",       '.$value.'
+                          );
+    </script>
+    ';
+}
 /**
  * Extracts the available content-types from the database
  *
