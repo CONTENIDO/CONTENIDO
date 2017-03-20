@@ -336,6 +336,11 @@ class UploadList extends FrontendList {
     protected $_size;
 
     /**
+     * @var int
+     */
+    protected $_data_count = 0;
+
+    /**
      * Field converting facility.
      *
      * @see FrontendList::convert()
@@ -438,6 +443,69 @@ class UploadList extends FrontendList {
      */
     public function setSize($size) {
         $this->_size = $size;
+    }
+
+    /**
+     * Sets the total count of data entries. This is needed for calculating the pages.
+     * @param int $totalUploadsCount
+     */
+    public function setDataCount($totalUploadsCount) {
+        $this->_data_count = $totalUploadsCount;
+    }
+
+    /**
+     * Returns the number of pages.
+     * If the data count variable is set it will be used instead counting the data array.
+     * @return float|int
+     */
+    public function getNumPages() {
+        if ($this->_data_count > 0) {
+            return ceil($this->_data_count / $this->_resultsPerPage);
+        }
+
+        return parent::getNumPages();
+    }
+
+    /**
+     * Outputs or optionally returns
+     *
+     * @param bool $return
+     *         if true, returns the list
+     * @return string
+     */
+    public function output($return = false) {
+        // if the data count variable is not set, proceed with the previous logic
+        if ($this->_data_count === 0) {
+            return parent::output($return);
+        }
+
+        // if the data count variable is set, display all contents from data array
+
+        $output = $this->_startwrap;
+
+        $count = count($this->_data);
+
+        for ($i = 1; $i <= $count; $i++) {
+            if (is_array($this->_data[$i - 1])) {
+                $items = "";
+                foreach ($this->_data[$i - 1] as $key => $value) {
+                    $items .= ", '" . addslashes($this->convert($key, $value)) . "'";
+                }
+
+                $execute = '$output .= sprintf($this->_itemwrap ' . $items . ');';
+                eval($execute);
+            }
+        }
+
+        $output .= $this->_endwrap;
+
+        $output = stripslashes($output);
+
+        if ($return == true) {
+            return $output;
+        } else {
+            echo $output;
+        }
     }
 
 }
@@ -603,8 +671,13 @@ switch ($thumbnailmode) {
 $user->setUserProperty('upload_folder_thumbnailmode', md5($path), $thumbnailmode);
 
 $list2->setResultsPerPage($numpics);
-
 $list2->setSize($thumbnailmode);
+
+$list2->setDataCount($totalUploadsCount);
+$totalUploadsCount = $uploads->count();
+
+$uploads->resetQuery();
+$uploads->select("idclient = '$client' AND dirname = '$qpath'", '', '', $numpics * ($startpage - 1) . ", " .  $numpics);
 
 $rownum = 0;
 
