@@ -673,8 +673,8 @@ $user->setUserProperty('upload_folder_thumbnailmode', md5($path), $thumbnailmode
 $list2->setResultsPerPage($numpics);
 $list2->setSize($thumbnailmode);
 
-$list2->setDataCount($totalUploadsCount);
 $totalUploadsCount = $uploads->count();
+$list2->setDataCount($totalUploadsCount);
 
 $uploads->resetQuery();
 $uploads->select("idclient = '$client' AND dirname = '$qpath'", '', '', $numpics * ($startpage - 1) . ", " .  $numpics);
