@@ -146,6 +146,10 @@ class cStringMultiByteWrapper {
      * @link http://php.net/manual/de/function.mb-substr.php
      */
     public static function getPartOfString($string, $start, $length = null, $encoding = null) {
+        if ($length === null) {
+            $length = self::getStringLength($string);
+        }
+
         if (self::_functionExists('mb_substr')) {
             $result = mb_substr($string, $start, $length, self::_getEncoding($encoding));
         } else {
