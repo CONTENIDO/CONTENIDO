@@ -676,6 +676,14 @@ $list2->setSize($thumbnailmode);
 $totalUploadsCount = $uploads->count();
 $list2->setDataCount($totalUploadsCount);
 
+if ($startpage < 1) {
+    $startpage = 1;
+}
+
+if ($startpage > $list2->getNumPages()) {
+    $startpage = $list2->getNumPages();
+}
+
 $uploads->resetQuery();
 $uploads->select("idclient = '$client' AND dirname = '$qpath'", '', '', $numpics * ($startpage - 1) . ", " .  $numpics);
 
@@ -755,14 +763,6 @@ if ($sortmode == 'ASC') {
     $list2->sort($sortby, SORT_ASC);
 } else {
     $list2->sort($sortby, SORT_DESC);
-}
-
-if ($startpage < 1) {
-    $startpage = 1;
-}
-
-if ($startpage > $list2->getNumPages()) {
-    $startpage = $list2->getNumPages();
 }
 
 $list2->setListStart($startpage);
