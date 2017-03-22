@@ -129,7 +129,6 @@ class WorkflowArtAllocation extends Item {
                 $idartlang = $this->get("idartlang");
                 $timeunit = $usersequence->get("timeunit");
                 $timelimit = $usersequence->get("timelimit");
-                $starttime = $this->get("starttime");
 
                 $db = cRegistry::getDb();
                 $sql = "SELECT author, title, idart FROM " . $cfg["tab"]["art_lang"] . " WHERE idartlang = " . (int) $idartlang;
@@ -157,8 +156,7 @@ class WorkflowArtAllocation extends Item {
                     $catname = $db->f("name");
                 }
 
-                // WTF ist this???
-                $starttime = strtotime($starttime);
+                $starttime = time();
 
                 switch ($timeunit) {
                     case "Seconds":
