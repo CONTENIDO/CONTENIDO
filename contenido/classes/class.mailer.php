@@ -330,7 +330,7 @@ class cMailer extends Swift_Mailer {
         if (empty($from) || is_array($from) && count($from) > 1) {
             $message->setFrom(array(
                 $this->_mailSender => $this->_mailSenderName
-            ));die("x");
+            ));
         } else {
             $message->setFrom($from);
         }
