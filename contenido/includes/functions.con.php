@@ -112,7 +112,8 @@ function conEditFirstTime(
 
         // Create an article language entry
         $oArtLangColl = new cApiArticleLanguageCollection();
-        $oArtLang = $oArtLangColl->create($idart, $curLang, $title, $urlname, $page_title, $summary, $artspec, $created, $auth->auth['uname'], $lastmodified, $modifiedby, $published_value, $publishedby_value, $online, $redirect, $redirect_url, $external_redirect, $artsort, $timemgmt, $datestart, $dateend, $status, $time_move_cat, $time_target_cat, $time_online_move, 0, '', '', '', $searchable, $sitemapprio, $changefreq);
+        $parameters = array('idart' => $idart, 'idlang' => $curLang, 'title' => $title, 'urlname' => $urlname, 'pagetitle' => $page_title, 'summary' => $summary, 'artspec' => $artspec, 'created' => $created, 'author' => $auth->auth['uname'], 'lastmodified' => $lastmodified, 'modifiedby' => $modifiedby, 'published' => $published_value, 'publishedby' => $publishedby_value, 'online' => $online, 'redirect' => $redirect, 'redirect_url' => $redirect_url, 'external_redirect'> $external_redirect, 'artsort' => $artsort, 'timemgmt' => $timemgmt, 'datestart' => $datestart, 'dateend' => $dateend, 'status' => $status, 'time_move_cat' => $time_move_cat, 'time_target_cat' => $time_target_cat, 'time_online_move' => $time_online_move, 'locked' => 0, 'free_use_01' => '', 'free_use_02' => '', 'free_use_03' => '', 'searchable' => $searchable, 'searchmapprio' => $sitemapprio, 'changefreq' => $changefreq);
+        $oArtLang = $oArtLangColl->create($parameters);
         $lastId = $oArtLang->get('idartlang');
         $availableTags = conGetAvailableMetaTagTypes();
         foreach ($availableTags as $key => $value) {
