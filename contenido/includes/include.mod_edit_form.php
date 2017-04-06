@@ -343,8 +343,8 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     $modulecheck = getSystemProperty("system", "modulecheck");
     $isCodeError = $module->get('error');
     if ($modulecheck !== "false") {
-        $outled = '<img style="float: right;" src="images/ajax-loader_16x16.gif" class="outputok" alt="" title="" data-state="' . htmlentities($isCodeError) . '">';
-        $inled  = '<img style="float: right;" src="images/ajax-loader_16x16.gif" class="inputok" alt="" title="" data-state="' . htmlentities($isCodeError) . '">';
+        $outled = '<img style="float: right;" src="images/ajax-loader_16x16.gif" class="outputok" alt="" title="" data-state="' . htmlentities(strip_tags($isCodeError)) . '">';
+        $inled  = '<img style="float: right;" src="images/ajax-loader_16x16.gif" class="inputok" alt="" title="" data-state="' . htmlentities(strip_tags($isCodeError)) . '">';
     }
 
     if($readOnly) {
