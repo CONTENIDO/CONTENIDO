@@ -323,9 +323,9 @@ class cContentTypeDate extends cContentTypeAbstract {
         }
         $value = date($format, $this->_settings['date_timestamp']);
         $code = new cHTMLTextbox('date_timestamp_' . $this->_id, $value, '', '', 'date_timestamp_' . $this->_id, true, '', '', 'date_timestamp');
-        $code .= $this->_generateJavaScript();
         $code .= $this->_generateFormatSelect();
         $code .= $this->_generateStoreButton();
+        $code .= $this->_generateJavaScript();
         $code = new cHTMLDiv($code, 'cms_date', 'cms_' . $this->_prefix . '_' . $this->_id . '_settings');
 
         return $this->_encodeForOutput($code);
@@ -378,7 +378,7 @@ class cContentTypeDate extends cContentTypeAbstract {
         $formatSelect = new cHTMLSelectElement($this->_prefix . '_format_select_' . $this->_id, '', $this->_prefix . '_format_select_' . $this->_id);
         $formatSelect->appendStyleDefinitions(array(
             'border' => '1px solid #ccc',
-            'margin' => '2px 5px 5px'
+            'margin' => '0px 5px 5px'
         ));
         $formatSelect->autoFill($this->_dateFormatsPhp);
         $phpDateFormat = conHtmlSpecialChars($this->_settings[$this->_prefix . '_format']);
