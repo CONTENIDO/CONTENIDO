@@ -29,6 +29,9 @@ $artRetItem = NULL;
 $urlSet = false;
 $currentLanguage = NULL;
 $clientId = cRegistry::getClientId();
+$catCheck = false;
+$artCheck = false;
+$startart = NULL;
 
 // get all client language id's
 $clientsLangInstance->select("idclient= " . $clientId);
@@ -81,20 +84,28 @@ if (empty($allLanguages)) {
         $selectedLang = reset($allLanguages);
     }
 
-    // check category and articles, if category exists and has start article
-    // which
-    // is online and not locked the set check to true
-    $catCheck = $catCollection->select("idcat = " . $idcatAuto . " AND " . " idlang = " . $selectedLang . " AND " . "startidartlang != 0", NULL, NULL, NULL);
+    // check articles, if article exists and is online and not locked set the check to true
+    $artCheck = $artCollection->select("idart = '" . $idart . "' AND idlang = '" . $selectedLang . "' AND online = '1' AND locked = '0'", NULL, NULL, NULL);
 
-    $catRetItem = new cApiCategoryLanguage();
-    $catRetItem->loadByCategoryIdAndLanguageId($idcatAuto, $selectedLang);
+    // check if this article is an startarticle
+    $startart = $catCollection->getStartIdartByIdcatAndIdlang($idcatAuto, $selectedLang);
 
-    if ($catCheck === true && $catRetItem) {
-        $artRetItem = $artCollection->fetchById($catRetItem->get('startidartlang'));
-    }
-    if ($artRetItem) {
-        if ($artRetItem->get('online') == 1 && $artRetItem->get('locked') == 0) {
-            $checkedCatArt = true;
+    if ($artCheck !== true || ($startart == $idart)) {
+
+        // check category and articles, if category exists and has start article
+        // which is online and not locked the set check to true
+        $catCheck = $catCollection->select("idcat = '" . $idcatAuto . "' AND idlang = '" . $selectedLang . "' AND startidartlang != '0'", NULL, NULL, NULL);
+
+        $catRetItem = new cApiCategoryLanguage();
+        $catRetItem->loadByCategoryIdAndLanguageId($idcatAuto, $selectedLang);
+
+        if ($catCheck === true && $catRetItem) {
+            $artRetItem = $artCollection->fetchById($catRetItem->get('startidartlang'));
+        }
+        if ($artRetItem) {
+            if ($artRetItem->get('online') == 1 && $artRetItem->get('locked') == 0) {
+                $checkedCatArt = true;
+            }
         }
     }
 
