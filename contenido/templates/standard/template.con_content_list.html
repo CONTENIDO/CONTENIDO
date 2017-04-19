@@ -111,15 +111,23 @@ function getVersionNumber() {
     <input type="hidden" name="changeview" value="edit">
     <input type="hidden" name="data" value="">
 </form>
+
+<div class="exportrawdata-box">
 <label class="rawdata">{EXPORT_LABEL}</label>
 <div class="contypeList">
 <form name="exportrawdata" method="post" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=exportrawcontent&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
     <div class="rawtypes">
-    </div>	
+    </div>
     <input type="hidden" id="versionnumber" name="versionnumber" value="">
     <input type="submit" name="export" value="{EXPORT_RAWDATA}" onclick="getVersionNumber()">
 </form>
 </div>
+<input type="hidden" class="exportrawdata-box-input-hidden" value="<?php echo count($result) ?>">
+</div>
+<script>
+    if($(".exportrawdata-box-input-hidden").val()<=0) $(".exportrawdata-box").hide();
+</script>
+
 <label class="rawdata" {HIDE}>{IMPORT_LABEL}</label>
 <div class="contypeList" {HIDE}>
 <form name="importrawdata" id="importrawdata" method="post" enctype="multipart/form-data" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=importrawcontent&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
