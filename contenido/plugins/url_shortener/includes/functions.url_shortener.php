@@ -13,6 +13,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+
 /**
  * Constructs the HTML code containing table rows which are added to the end of
  * the article edit form
@@ -37,7 +38,8 @@ function piUsEditFormAdditionalRows($idart, $idlang, $idclient, $disabled) {
     $td = new cHTMLTableData();
     $td->setClass('text_medium');
     $textbox = new cHTMLTextbox('url_shortener_shorturl', $shortUrl->get('shorturl'), 24, '', '', $disabled);
-    $td->setContent($textbox.' <img class="vAlignMiddle" title="'. i18n('INFO', 'url_shortener') .'" src="images/info.gif" alt="">');
+    $infoButton = new cGuiBackendHelpbox(i18n('INFO', 'url_shortener'));
+    $td->setContent($textbox.' '.$infoButton->render());
     $tr->appendContent($td);
 
     return $tr->render();
