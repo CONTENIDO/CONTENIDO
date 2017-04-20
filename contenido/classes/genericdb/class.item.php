@@ -456,7 +456,7 @@ abstract class Item extends cItemBaseAbstract {
 
         $this->_lastSQL = $sql;
 
-        if ($this->db->affectedRows() > 0) {
+        if ($this->db->affectedRows() > 0 || $this->db->getErrorNumber() === 0) {
             $this->_oCache->addItem($this->oldPrimaryKey, $this->values);
             $this->_executeCallbacks(self::STORE_SUCCESS, get_class($this), array(
                 $this
