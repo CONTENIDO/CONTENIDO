@@ -64,9 +64,8 @@ class cTypeGenerator {
         if (self::$db === NULL) {
             self::$db = cRegistry::getDb();
         }
-        if (!isset(self::$a_content[$this->_idart])) {
-            $this->fillContent();
-        }
+        
+        $this->fillContent();
     }
 
     /**
