@@ -334,7 +334,7 @@ class cModuleHandler {
      * @return string
      */
     public function getModuleName() {
-    	return $this->_moduleName;
+        return $this->_moduleName;
     }
 
     /**
@@ -912,19 +912,19 @@ class cModuleHandler {
             if (cFileHandler::exists($this->_path . $new . '/' . $this->_directories['php'] . $old . '_input.php'))
                 $retInput = rename($this->_path . $new . '/' . $this->_directories['php'] . $old . '_input.php', $this->_path . $new . '/' . $this->_directories['php'] . $new . '_input.php');
 
-                // if file output exist rename it
+            // if file output exist rename it
             if (cFileHandler::exists($this->_path . $new . '/' . $this->_directories['php'] . $old . '_output.php'))
                 $retOutput = rename($this->_path . $new . '/' . $this->_directories['php'] . $old . '_output.php', $this->_path . $new . '/' . $this->_directories['php'] . $new . '_output.php');
 
-                // rename the css file
+            // rename the css file
             if (cFileHandler::exists($this->_path . $new . '/' . $this->_directories['css'] . $old . '.css'))
                 rename($this->_path . $new . '/' . $this->_directories['css'] . $old . '.css', $this->_path . $new . '/' . $this->_directories['css'] . $new . '.css');
 
-                // rename the javascript file
+            // rename the javascript file
             if (cFileHandler::exists($this->_path . $new . '/' . $this->_directories['js'] . $old . '.js'))
                 rename($this->_path . $new . '/' . $this->_directories['js'] . $old . '.js', $this->_path . $new . '/' . $this->_directories['js'] . $new . '.js');
 
-                // rename the template file
+            // rename the template file
             if (cFileHandler::exists($this->_path . $new . '/' . $this->_directories['template'] . $old . '.html'))
                 rename($this->_path . $new . '/' . $this->_directories['template'] . $old . '.html', $this->_path . $new . '/' . $this->_directories['template'] . $new . '.html');
 
@@ -1098,6 +1098,8 @@ class cModuleHandler {
         $code = 'function foo' . $id . ' () {' . $code;
         $code .= "\n}\n";
 
+        $html_errors = ini_get('html_errors');
+
         // To parse the error message, we prepend and append a phperror tag in front
         // of the output
         $sErs = ini_get('error_prepend_string'); // Save current setting (see below)
@@ -1108,6 +1110,7 @@ class cModuleHandler {
         // Turn off output buffering and error reporting, eval the code
         ob_start();
         $display_errors = ini_get('display_errors');
+        @ini_set('html_errors', false);
         @ini_set('display_errors', true);
         $output = eval($code);
         @ini_set('display_errors', $display_errors);
@@ -1116,14 +1119,10 @@ class cModuleHandler {
         $output = ob_get_contents();
         ob_end_clean();
 
+        // Restore html_errors
+        @ini_set('html_errors', $html_errors);
+
         // Remove the prepend and append settings
-        /*
-         * 19.09.2006: Following lines have been disabled, as ini_restore
-         * has been disabled by some hosters as there is a security leak
-         * in PHP (PHP <= 5.1.6 & <= 4.4.4)
-         */
-        // ini_restore('error_prepend_string');
-        // ini_restore('error_append_string');
         @ini_set('error_prepend_string', $sErs); // Restoring settings (see above)
         @ini_set('error_append_string', $sEas); // Restoring settings (see above)
 
