@@ -1090,7 +1090,7 @@ class cModuleHandler {
 
         // If the module is an output module, escape PHP since all output modules
         // enter php mode
-        if ($output == true) {
+        if ($output === true) {
             $code = "?>\n" . $code . "\n<?php";
         }
 
