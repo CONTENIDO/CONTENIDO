@@ -623,15 +623,22 @@ function strMakeVisible($idcat, $lang, $visible) {
  *         public status of the article to set
  */
 function strMakePublic($idcat, $lang, $public) {
-
-    foreach (strDeeperCategoriesArray($idcat) as $tmpIdcat) {
+    if(!$public) {
+        foreach (strDeeperCategoriesArray($idcat) as $tmpIdcat) {
+            $oCatLang = new cApiCategoryLanguage();
+            $oCatLang->loadByCategoryIdAndLanguageId($tmpIdcat, $lang);
+            $oCatLang->set('public', $public);
+            $oCatLang->set('lastmodified', date('Y-m-d H:i:s'));
+            $oCatLang->store();
+        }
+    }
+    else {
         $oCatLang = new cApiCategoryLanguage();
-        $oCatLang->loadByCategoryIdAndLanguageId($tmpIdcat, $lang);
+        $oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang);
         $oCatLang->set('public', $public);
         $oCatLang->set('lastmodified', date('Y-m-d H:i:s'));
         $oCatLang->store();
     }
-
 }
 
 /**
