@@ -38,7 +38,7 @@
      * @property {String} session The session ID of the admin user.
      * @property {Object|String} settings The settings of this content type.
      */
-    function cContentTypeImgeditor(frameId, imageId, pathBackend, pathFrontend, idArtLang, id, fields, prefix, session, settings) {
+    function cContentTypeImgeditor(frameId, imageId, pathBackend, pathFrontend, idArtLang, id, fields, prefix, session, settings, selectedDirname) {
 
         // call the constructor of the parent class with the same arguments
         Con.cContentTypeAbstractTabbed.apply(this, arguments);
@@ -135,19 +135,20 @@
         var id = self.id;
 
         var dlist = $(self.frameId + ' #directoryList_' + id + ' em a');
-        var divContainer = dlist.parent().parent();
+        var divContainer = dlist.closest('.con_str_tree');
 
         $('#cms_imgeditor_' + id).on('click', function(e) {
             $.ajax({
                 type: 'POST',
                 url: self.pathBackend + 'ajaxmain.php',
-                data: 'ajax=dirlist&dir=&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
+                data: 'ajax=dirlist&id=' + id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
                 success: function (msg) {
                     if (Con.checkAjaxResponse(msg) === false) {
                         return false;
                     }
 
-                    divContainer.after(msg);
+                    divContainer.find('ul').remove();
+                    divContainer.append(msg);
                     divContainer.parent('li').removeClass('collapsed');
                     self.addNaviActions();
                 }
