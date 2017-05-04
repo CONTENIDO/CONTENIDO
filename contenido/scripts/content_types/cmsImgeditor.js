@@ -157,7 +157,6 @@
                         }
                     });
 
-                    divContainer.parent('li').removeClass('collapsed');
                     self.addNaviActions();
                 }
             });
