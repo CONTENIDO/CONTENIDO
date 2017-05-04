@@ -110,9 +110,6 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
 
-        // TODO is this required?
-        global $area;
-
         // set props
         $this->_type = 'CMS_IMGEDITOR';
         $this->_prefix = 'imgeditor';
@@ -154,6 +151,9 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $this->_keywords = ($uploadMeta->get('keywords') !== false) ? $uploadMeta->get('keywords') : '';
         $this->_internalNotice = ($uploadMeta->get('internal_notice') !== false) ? $uploadMeta->get('internal_notice') : '';
         $this->_copyright = ($uploadMeta->get('copyright') !== false) ? $uploadMeta->get('copyright') : '';
+
+        // Define settings for this content type as an array
+        $this->_settings = array();
 
     }
 
@@ -413,6 +413,13 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
 
         $codeTabs = $templateTabs->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_tabs.html', true);
 
+        // Write setting dirname (without backslash at th eend)
+        if (cString::endsWith($this->_dirname, '/')) {
+            $this->_settings['dirname'] = cString::getPartOfString($this->_dirname, 0, -1);
+        } else {
+            $this->_settings['dirname'] = $this->_dirname;
+        }
+
         // construct the bottom code of the template
         $templateBottom = new cTemplate();
         $templateBottom->set('s', 'PATH_FRONTEND', $this->_cfgClient[$this->_client]['path']['htmlpath']);
@@ -420,7 +427,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $templateBottom->set('s', 'PREFIX', $this->_prefix);
         $templateBottom->set('s', 'IDARTLANG', $this->_idArtLang);
         $templateBottom->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
-        $templateBottom->set('s', 'SETTINGS', json_encode($this->_settings));
+        $templateBottom->set('s', 'SETTINGS', json_encode($this->getConfiguration()));
         $templateBottom->set('s', 'JS_CLASS_SCRIPT', $this->_cfg['path']['contenido_fullhtml'] . 'scripts/content_types/cmsImgeditor.js');
         $templateBottom->set('s', 'JS_CLASS_NAME', 'Con.cContentTypeImgeditor');
         $codeBottom = $templateBottom->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_bottom.html', true);
@@ -453,10 +460,12 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $aUpload->setClass('on');
         $aUpload->setAttribute('title', 'upload');
         $aUpload->setContent('Uploads');
+
         $div = new cHTMLDiv(array(
             '<em><a href="#"></a></em>',
             $aUpload
         ));
+
         $liRoot->setContent($div);
         $conStrTree = new cHTMLList('ul', 'con_str_tree', 'con_str_tree', $liRoot);
         $directoryList->setContent($conStrTree);

@@ -38,7 +38,7 @@
      * @property {String} session The session ID of the admin user.
      * @property {Object|String} settings The settings of this content type.
      */
-    function cContentTypeImgeditor(frameId, imageId, pathBackend, pathFrontend, idArtLang, id, fields, prefix, session, settings, selectedDirname) {
+    function cContentTypeImgeditor(frameId, imageId, pathBackend, pathFrontend, idArtLang, id, fields, prefix, session, settings) {
 
         // call the constructor of the parent class with the same arguments
         Con.cContentTypeAbstractTabbed.apply(this, arguments);
@@ -149,6 +149,14 @@
 
                     divContainer.find('ul').remove();
                     divContainer.append(msg);
+
+                    var a = divContainer.find('ul li div > a');
+                    a.each(function() {
+                        if ($(this).attr('title') == self.settings.dirname) {
+                            $(this).parent().addClass('active');
+                        }
+                    });
+
                     divContainer.parent('li').removeClass('collapsed');
                     self.addNaviActions();
                 }
