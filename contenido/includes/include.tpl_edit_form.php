@@ -158,6 +158,7 @@ if ($idlay) {
                         $option->setSelected(true);
                     }
                     $modselect->addOptionElement($key, $option);
+                    break;
                 }
             }
 

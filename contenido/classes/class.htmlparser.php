@@ -439,7 +439,6 @@ class HtmlParser {
     protected function _readValueInTag() {
         $ch = $this->_currentChar();
         $value = "";
-
         if ($ch == "\"") {
             $this->_skipInTag(array(
                 "\""
@@ -463,7 +462,6 @@ class HtmlParser {
         } else {
             $value = $this->_skipToBlanksInTag();
         }
-
         return $value;
     }
 
@@ -516,11 +514,11 @@ class HtmlParser {
      */
     protected function _skipInTag($chars) {
         $sb = "";
-        while (($ch = $this->_currentChar()) !== -1) {
+        $match = false;
+        while (($ch = $this->_currentChar()) !== -1 && !$match) {
             if ($ch == ">") {
                 return $sb;
             } else {
-                $match = false;
                 for ($idx = 0; $idx < count($chars); $idx++) {
                     if ($ch == $chars[$idx]) {
                         $match = true;
