@@ -413,7 +413,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
 
         $codeTabs = $templateTabs->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_tabs.html', true);
 
-        // Write setting dirname (without backslash at th eend)
+        // Write setting dirname (without backslash at the end)
         if (cString::endsWith($this->_dirname, '/')) {
             $this->_settings['dirname'] = cString::getPartOfString($this->_dirname, 0, -1);
         } else {
