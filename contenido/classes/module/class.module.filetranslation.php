@@ -187,7 +187,8 @@ class cModuleFileTranslation extends cModuleHandler {
             $retString .= $key . self::$originalTranslationDivider . $value . "\r\n";
         }
 
-        return $retString;
+        //remove trailing new line characters in the string
+        return chop($retString);
     }
 
     /**
