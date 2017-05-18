@@ -428,15 +428,13 @@ class PimPluginSetupInstall extends PimPluginSetup {
      */
     private function _installAddAreas() {
 
-        // Initializing attribute array
-        $attributes = array();
-
         // Get Id of plugin
         $pluginId = parent::_getPluginId();
 
         $areaCount = count(parent::$XmlArea->area);
         for ($i = 0; $i < $areaCount; $i++) {
 
+            // Initializing attribute array
             $attributes = array();
 
             // Build attributes
