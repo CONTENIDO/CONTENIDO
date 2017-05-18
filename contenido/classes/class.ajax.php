@@ -98,7 +98,7 @@ class cAjaxRequest {
                 $uplPath = $cfgClient['upl']['path'];
 
                 $art = new cApiArticleLanguage($idartlang, true);
-                $content = $art->getContent('CMS_IMAGELIST', $fileListId);
+                $content = $art->getContent('CMS_FILELIST', $fileListId);
 
                 $fileList = new cContentTypeFilelist($content, $fileListId, array());
                 $directoryList = $fileList->buildDirectoryList($uplPath . $dirname);
@@ -266,7 +266,7 @@ class cAjaxRequest {
                 $uplPath = $cfgClient['upl']['path'];
 
                 $art = new cApiArticleLanguage($idartlang, true);
-                $content = $art->getContent('CMS_IMAGELIST', $fileListId);
+                $content = $art->getContent('CMS_FILELIST', $fileListId);
 
                 $fileList = new cContentTypeFilelist($content, $fileListId, array());
                 $directoryList = $fileList->buildDirectoryList($uplPath);
