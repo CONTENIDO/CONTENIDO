@@ -141,7 +141,7 @@
             $.ajax({
                 type: 'POST',
                 url: self.pathBackend + 'ajaxmain.php',
-                data: 'ajax=dirlist&id=' + id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
+                data: 'ajax=imagefilelist&id=' + id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
                 success: function (msg) {
                     if (Con.checkAjaxResponse(msg) === false) {
                         return false;

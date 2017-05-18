@@ -1073,4 +1073,41 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         return $htmlSelect->render();
     }
 
+    /**
+     * Generates a directory list from the given directory information (which is
+     * typically built by {@link cContentTypeAbstract::buildDirectoryList}).
+     * Special modified for Ajax call
+     *
+     * @param array $dirs
+     *         directory information
+     * @return string
+     *         HTML code showing a directory list
+     */
+    public function generateAjaxDirectoryList(array $dirs) {
+        $template = new cTemplate();
+        $i = 1;
+
+        foreach ($dirs as $dirData) {
+            // set the active class if this is the chosen directory
+            $divClass = ($this->_isActiveDirectory($dirData)) ? 'active' : '';
+            $template->set('d', 'DIVCLASS', $divClass);
+
+            $template->set('d', 'TITLE', $dirData['path'] . $dirData['name']);
+            $template->set('d', 'DIRNAME', $dirData['name']);
+
+            $liClasses = array();
+            $template->set('d', 'SUBDIRLIST', $this->generateAjaxDirectoryList($dirData['sub']));
+
+            if ($i === count($dirs)) {
+                $liClasses[] = 'last';
+            }
+            $template->set('d', 'LICLASS', implode(' ', $liClasses));
+
+            $i++;
+            $template->next();
+        }
+
+        return $template->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_filelist_dirlistitem.html', true);
+    }
+
 }

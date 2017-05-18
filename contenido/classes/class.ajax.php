@@ -98,7 +98,7 @@ class cAjaxRequest {
                 $uplPath = $cfgClient['upl']['path'];
 
                 $art = new cApiArticleLanguage($idartlang, true);
-                $content = $art->getContent('CMS_FILELIST', $fileListId);
+                $content = $art->getContent('CMS_IMAGELIST', $fileListId);
 
                 $fileList = new cContentTypeFilelist($content, $fileListId, array());
                 $directoryList = $fileList->buildDirectoryList($uplPath . $dirname);
@@ -255,6 +255,22 @@ class cAjaxRequest {
                 $image = new cContentTypeImgeditor($artReturn, $imageId, array());
 
                 $string = $image->generateFileSelect($dirName);
+                break;
+
+            case 'imagefilelist':
+                $idartlang = cSecurity::toInteger($_REQUEST['idartlang']);
+                $fileListId = cSecurity::toInteger($_REQUEST['id']);
+
+                $clientId = cRegistry::getClientId();
+                $cfgClient = cRegistry::getClientConfig($clientId);
+                $uplPath = $cfgClient['upl']['path'];
+
+                $art = new cApiArticleLanguage($idartlang, true);
+                $content = $art->getContent('CMS_IMAGELIST', $fileListId);
+
+                $fileList = new cContentTypeFilelist($content, $fileListId, array());
+                $directoryList = $fileList->buildDirectoryList($uplPath);
+                $string = $fileList->generateAjaxDirectoryList($directoryList);
                 break;
 
             case 'inlineeditart':
