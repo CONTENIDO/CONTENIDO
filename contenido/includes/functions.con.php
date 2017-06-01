@@ -66,7 +66,6 @@ function conEditFirstTime(
     $page_title = addslashes($page_title);
     $title = stripslashes($title);
     $redirect_url = stripslashes($redirect_url);
-    $urlname = (trim($urlname) == '')? trim($title) : trim($urlname);
 
     if ($isstart == 1) {
         $timemgmt = 0;
@@ -81,6 +80,9 @@ function conEditFirstTime(
     $oArtColl = new cApiArticleCollection();
     $oArt = $oArtColl->create($client);
     $idart = $oArt->get('idart');
+
+    $urlname = (trim($urlname) == '')? trim($title) : trim($urlname);
+    $urlname = checkURLname($urlname, $idart, $idcat, $idartlang, $idlang);
 
     $status = 0;
 
@@ -288,6 +290,8 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     $redirect_url = stripslashes($redirect_url);
 
     $urlname = (trim($urlname) == '')? trim($title) : trim($urlname);
+    $urlname = checkURLname($urlname, $idart, $idcat, $idartlang, $idlang);
+
     $usetimemgmt = ((int) $timemgmt == 1)? 1 : 0;
     if ($timemgmt == '1' && (($datestart == '' && $dateend == '') || ($datestart == '0000-00-00 00:00:00' && $dateend == '0000-00-00 00:00:00'))) {
         $usetimemgmt = 0;
@@ -1592,8 +1596,9 @@ function conCopyMetaTags($srcidartlang, $dstidartlang) {
  * @param int $dstidart
  * @param int $newtitle
  * @param int $useCopyLabel
+ * @param int $targetcat
  */
-function conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel = true) {
+function conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel = true, $targetcat) {
     global $auth, $lang;
 
     $oSrcArtLang = new cApiArticleLanguage();
@@ -1619,8 +1624,10 @@ function conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel = true) {
         $title = $oSrcArtLang->get('title');
     }
 
-    // Create an article language entry
+    // Initializing Article Language
     $oArtLangColl = new cApiArticleLanguageCollection();
+
+    // Create an article language entry
     $fieldsToOverwrite = array(
         'idart' => $idart,
         'idlang' => $idlang,
@@ -1644,6 +1651,10 @@ function conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel = true) {
 
     // Copy meta tags
     conCopyMetaTags($oSrcArtLang->get('idartlang'), $oNewArtLang->get('idartlang'));
+
+    $urlname = checkURLname(trim($title), $idart, $targetcat, $oNewArtLang->get('idartlang'), $idlang);
+    $oNewArtLang->set('urlname', $urlname);
+    $oNewArtLang->store();
 
     // Execute CEC hook
     cApiCecHook::execute('Contenido.Article.conCopyArtLang_AfterInsert', array(
@@ -1687,7 +1698,7 @@ function conCopyArticle($srcidart, $targetcat = 0, $newtitle = '', $useCopyLabel
     }
     $dstidart = $oNewArt->get('idart');
 
-    conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel);
+    conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel, $targetcat);
 
     // Get source category article entries
     $oCatArtColl = new cApiCategoryArticleCollection();
@@ -1950,5 +1961,38 @@ function conRemoveOldCategoryArticle($idcat, $idart, $idartlang, $client, $lang)
     if ($oArtLang->isLoaded() && $oArtLang->get('idtplcfg') > 0) {
         $oTplCfgColl = new cApiTemplateConfigurationCollection();
         $oTplCfgColl->delete($oArtLang->get('idtplcfg'));
+    }
+}
+
+/**
+ * Prevent double aliasnames at the same category
+ * CON-2690 and Mod_Rewrite code
+ *
+ * @param $newurlname
+ * @param $idart
+ * @param $idcat
+ * @param $idlang
+ */
+function checkURLname($newurlname, $idart, $idcat, $idartlang, $idlang) {
+
+    // Initializing Article Language class
+    $artlang = new cApiArticleLanguage($idartlang);
+
+    // Remove double or more separators
+    $newurlname = mr_removeMultipleChars('-', $newurlname);
+
+    $artlang->loadByArticleAndLanguageId($idart, $idartlang);
+
+    // Check if new urlname name already exists
+    if ($artlang->isInCatArticles($newurlname, $idart, $idlang, $idcat)) {
+        // Create new urlname name if exists
+        $newurlname = $newurlname . $idart;
+    }
+
+    // Check again - and set name
+    if (!$artlang->isInCatArticles($newurlname, $idart, $idlang, $idcat)) {
+        return $newurlname;
+    } else {
+        return false;
     }
 }
