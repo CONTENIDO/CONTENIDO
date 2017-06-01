@@ -1978,9 +1978,6 @@ function checkURLname($newurlname, $idart, $idcat, $idartlang, $idlang) {
     // Initializing Article Language class
     $artlang = new cApiArticleLanguage($idartlang);
 
-    // Remove double or more separators
-    $newurlname = mr_removeMultipleChars('-', $newurlname);
-
     $artlang->loadByArticleAndLanguageId($idart, $idartlang);
 
     // Check if new urlname name already exists
