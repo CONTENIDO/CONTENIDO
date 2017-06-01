@@ -1652,7 +1652,8 @@ function conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel = true, $
     // Copy meta tags
     conCopyMetaTags($oSrcArtLang->get('idartlang'), $oNewArtLang->get('idartlang'));
 
-    $urlname = checkURLname(trim($title), $idart, $targetcat, $oNewArtLang->get('idartlang'), $idlang);
+    $urlname = trim(conHtmlSpecialChars(cString::cleanURLCharacters($title)));
+    $urlname = checkURLname($urlname, $idart, $targetcat, $oNewArtLang->get('idartlang'), $idlang);
     $oNewArtLang->set('urlname', $urlname);
     $oNewArtLang->store();
 
@@ -1978,6 +1979,7 @@ function checkURLname($newurlname, $idart, $idcat, $idartlang, $idlang) {
     // Initializing Article Language class
     $artlang = new cApiArticleLanguage($idartlang);
 
+    // Load article
     $artlang->loadByArticleAndLanguageId($idart, $idartlang);
 
     // Check if new urlname name already exists
