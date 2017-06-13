@@ -359,7 +359,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
                 return true;
             }
 
-            // Add attributes "min_version" and "max_version" to an array
+            // Add attributes uuid", "min_version" and "max_version" to an array
             $attributes = array(
                     'uuid' => cSecurity::escapeString($attributes['uuid']),
                     'minversion' => cSecurity::escapeString($attributes['min_version']),
@@ -428,15 +428,13 @@ class PimPluginSetupInstall extends PimPluginSetup {
      */
     private function _installAddAreas() {
 
-        // Initializing attribute array
-        $attributes = array();
-
         // Get Id of plugin
         $pluginId = parent::_getPluginId();
 
         $areaCount = count(parent::$XmlArea->area);
         for ($i = 0; $i < $areaCount; $i++) {
 
+            // Initializing attribute array
             $attributes = array();
 
             // Build attributes

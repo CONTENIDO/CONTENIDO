@@ -135,20 +135,28 @@
         var id = self.id;
 
         var dlist = $(self.frameId + ' #directoryList_' + id + ' em a');
-        var divContainer = dlist.parent().parent();
+        var divContainer = dlist.closest('.con_str_tree');
 
         $('#cms_imgeditor_' + id).on('click', function(e) {
             $.ajax({
                 type: 'POST',
                 url: self.pathBackend + 'ajaxmain.php',
-                data: 'ajax=dirlist&dir=&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
+                data: 'ajax=imagefilelist&id=' + id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
                 success: function (msg) {
                     if (Con.checkAjaxResponse(msg) === false) {
                         return false;
                     }
 
-                    divContainer.after(msg);
-                    divContainer.parent('li').removeClass('collapsed');
+                    divContainer.find('ul').remove();
+                    divContainer.append(msg);
+
+                    var a = divContainer.find('ul li div > a');
+                    a.each(function() {
+                        if ($(this).attr('title') == self.settings.dirname) {
+                            $(this).parent().addClass('active');
+                        }
+                    });
+
                     self.addNaviActions();
                 }
             });

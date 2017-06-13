@@ -106,7 +106,7 @@ class cApiArticleLanguageCollection extends ItemCollection {
     /**
      * Returns id (idartlang) of articlelanguage by article id and language id
      *
-     * @param int $idcat
+     * @param int $idart
      * @param int $idlang
      * @return int
      */
@@ -647,6 +647,48 @@ class cApiArticleLanguage extends Item {
         }
 
         return cUri::getInstance()->build($options);
+    }
+
+    /**
+     * Check articles on urlname.
+     *
+     * Check all articles in the current category on existing same urlname (alias).
+     *
+     * @param    string  $sName    Websafe name to check
+     * @param    int     $iArtId   Current article id
+     * @param    int     $iLangId  Current language id
+     * @param   int     $iCatId   Category id
+     * @return     bool    True if urlname already exists, false if not
+     */
+    public function isInCatArticles($sName = '', $iArtId = 0, $iLangId = 0, $iCatId = 0) {
+        $cfg = cRegistry::getConfig();
+
+        $sName = cSecurity::escapeString($sName);
+        $iArtId = cSecurity::toInteger($iArtId);
+        $iLangId = cSecurity::toInteger($iLangId);
+        $iCatId = cSecurity::toInteger($iCatId);
+
+        // Handle multipages
+        if ($iCatId == 0) {
+            // Get category id if not set
+            $sql = "SELECT idcat FROM " . $cfg['tab']['cat_art'] . " WHERE idart = " . $iArtId;
+            $this->db->query($sql);
+            while ($this->db->nextRecord()) {
+                $iCatId = ($this->db->f('idcat') > 0) ? cSecurity::toInteger($this->db->f('idcat')) : 0;
+            }
+        }
+
+        // Check if urlname is in this category
+        $sql = "SELECT count(al.idart) as numcats FROM " . $cfg['tab']['art_lang'] . " al "
+            . "LEFT JOIN " . $cfg['tab']['cat_art'] . " ca ON al.idart = ca.idart WHERE "
+            . " ca.idcat='$iCatId' AND al.idlang=" . $iLangId . " AND "
+            . "LOWER(al.urlname) = LOWER('" . $sName . "') AND al.idart <> " . $iArtId;
+        $this->db->query($sql);
+        while ($this->db->nextRecord()) {
+            return ($this->db->f('numcats') > 0) ? true : false;
+        }
+
+        return false;
     }
 
 }
