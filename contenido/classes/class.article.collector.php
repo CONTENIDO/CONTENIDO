@@ -316,7 +316,7 @@ class cArticleCollector implements SeekableIterator, Countable {
      *
      * @param int $page
      *         The page of the article collection
-     * @param int $force
+     * @param boolean $force
      *         Sets page without checking of page count
      */
     public function setPage($page, $force = false) {
