@@ -185,7 +185,7 @@ class cModuleFileTranslation extends cModuleHandler {
         foreach ($wordListArray as $key => $value) {
             // Original String [Divider] Translation String
             if (strlen($key) > 0) {
-                $retString .= $key . self::$originalTranslationDivider . $value . "\r\n";
+                $retString .= trim($key . self::$originalTranslationDivider . $value) . "\r\n";
             }
         }
 
