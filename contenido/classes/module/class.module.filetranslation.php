@@ -249,7 +249,7 @@ class cModuleFileTranslation extends cModuleHandler {
             $escapedArray[$newKey] = $newValue;
         }
 
-        if (cFileHandler::write($fileName, $this->_serializeArray($escapedArray)) === false) {
+        if (cFileHandler::write($fileName, $this->_serializeArray($escapedArray) . "\r\n") === false) {
             return false;
         } else {
             return true;
