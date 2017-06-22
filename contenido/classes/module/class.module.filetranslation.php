@@ -183,11 +183,13 @@ class cModuleFileTranslation extends cModuleHandler {
     private function _serializeArray($wordListArray) {
         $retString = '';
         foreach ($wordListArray as $key => $value) {
-            // Originall String [Divider] Translation String
-            $retString .= $key . self::$originalTranslationDivider . $value . "\r\n";
+            // Original String [Divider] Translation String
+            if (strlen($key) > 0) {
+                $retString .= $key . self::$originalTranslationDivider . $value . "\r\n";
+            }
         }
 
-        return $retString;
+        return trim($retString);
     }
 
     /**
