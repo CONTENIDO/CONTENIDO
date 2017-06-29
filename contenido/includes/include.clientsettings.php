@@ -108,7 +108,7 @@ if ($aItems !== false) {
             $oInputboxType->setWidth(15);
             $oInputboxName = new cHTMLTextbox("csname", $aValue['name']);
             $oInputboxName->setWidth(15);
-            $oInputboxValue = new cHTMLTextbox("csvalue", conHtmlentities($aValue['value']));
+            $oInputboxValue = new cHTMLTextbox("csvalue", cSecurity::escapeString(conHtmlentities($aValue['value'])));
             $oInputboxValue->setWidth(30);
 
             $hidden = '<input type="hidden" name="csidproperty" value="' . $iKey . '">';
@@ -130,7 +130,9 @@ if ($aItems !== false) {
 
             if (cString::getStringLength($aValue['value']) > 35) {
                 $sShort = cString::trimHard($aValue['value'], 35);
-                $aValue['value'] = sprintf($sMouseoverTemplate, conHtmlentities($aValue['value']), $sShort);
+                $aValue['value'] = sprintf($sMouseoverTemplate, cSecurity::escapeString(conHtmlentities($aValue['value'])), $sShort);
+            } else {
+                $aValue['value'] = cSecurity::escapeString($aValue['value']);
             }
 
             $oList->setData($iCounter, $aValue['type'], $aValue['name'], $aValue['value'], $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render());

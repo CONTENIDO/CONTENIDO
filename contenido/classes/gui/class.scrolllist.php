@@ -348,7 +348,6 @@ class cGuiScrollList {
      * @return string|void
      */
     public function render($return = true) {
-        global $cfg;
 
         $currentpage = $this->getCurrentPage();
 
@@ -430,7 +429,7 @@ class cGuiScrollList {
 
         $this->objTable->setContent($headeroutput . $output);
 
-        $output = stripslashes($this->objTable->render());
+        $output = $this->objTable->render();
 
         if ($return == true) {
             return $output;

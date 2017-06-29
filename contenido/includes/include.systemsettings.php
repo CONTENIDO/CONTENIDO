@@ -94,7 +94,7 @@ foreach ($settings as $key => $types) {
         if (!in_array($key . '_' . $type, $aManagedValues)) {
 
             if (($action == "systemsettings_edit_item") && ($request['systype'] == $key) && ($request['sysname'] == $type) && $isSysadmin) {
-                $oInputboxValue = new cHTMLTextbox("sysvalue", conHtmlSpecialChars($value['value']));
+                $oInputboxValue = new cHTMLTextbox("sysvalue", cSecurity::escapeString(conHtmlSpecialChars($value['value'])));
                 $oInputboxValue->setWidth(30);
                 $oInputboxName = new cHTMLTextbox("sysname", conHtmlSpecialChars($type));
                 $oInputboxName->setWidth(30);
@@ -117,7 +117,9 @@ foreach ($settings as $key => $types) {
 
                 if (cString::getStringLength($value['value']) > 35) {
                     $sShort = conHtmlSpecialChars(cString::trimHard($value['value'], 35));
-                    $value['value'] = sprintf($sMouseoverTemplate, conHtmlSpecialChars(addslashes($value['value']), ENT_QUOTES), $sShort);
+                    $value['value'] = sprintf($sMouseoverTemplate, cSecurity::escapeString(conHtmlSpecialChars($value['value']), ENT_QUOTES), $sShort);
+                } else {
+                    $value['value'] = cSecurity::escapeString($value['value']);
                 }
 
                 if (cString::getStringLength($key) > 35) {
