@@ -208,7 +208,7 @@ class cGuiFileOverview extends cGuiPage {
         foreach($files as $file) {
             if($this->_fileInfoType != '') {
                 $fileInfo = $fileInfos->getFileInformation($file, $this->_fileInfoType);
-                $this->set('d', 'DESCRIPTION', $fileInfo['description']);
+                $this->set('d', 'DESCRIPTION', cSecurity::escapeString($fileInfo['description']));
             } else {
                 $this->set('d', 'DESCRIPTION', '');
             }
