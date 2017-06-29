@@ -42,6 +42,7 @@ if (!is_object($notification)) {
     $notification = new cGuiNotification();
 }
 
+
 // $_REQUEST['action'] = $sActionEdit;
 if (!$perm->have_perm_area_action($area, $sActionEdit)) {
     $page->displayCriticalError(i18n("Permission denied"));

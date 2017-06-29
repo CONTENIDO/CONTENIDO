@@ -465,6 +465,8 @@ class cModuleHandler {
             } else {
                 $fileName = $fileName . '.' . $type;
             }
+        } else {
+            $fileName = cString::replaceDiacritics($fileName);
         }
 
         // create and save file contents
@@ -511,6 +513,9 @@ class cModuleHandler {
      *         true on success or false on failure
      */
     public function renameModuleFile($type, $oldFileName, $newFileName) {
+
+        $newFileName = cString::replaceDiacritics($newFileName);
+
         if ($this->existFile($type, $newFileName)) {
             return false;
         }

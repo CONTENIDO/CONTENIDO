@@ -344,20 +344,20 @@ class cModuleTemplateHandler extends cModuleHandler {
         } else {
             $this->createModuleFile('template', $this->_file, $this->_code);
             $this->_notification->displayNotification(cGuiNotification::LEVEL_OK, i18n('Renamed the template file successfully!'));
-            $this->_tmpFile = $this->_file;
+
         }
+        $this->_tmpFile = cString::replaceDiacritics($this->_file);
     }
 
     /**
      * Create new file
      */
     private function _new() {
-        $fileName = $this->_newFileName;
 
         // if target filename already exists insert few random characters into target filename
         $fileName = $this->_newFileName . '.' . $this->_templateFileEnding;
         while ($this->existFile('template', $fileName)) {
-            $fileName = $this->_newFileName . $this->getRandomCharacters(5) . '.' . $this->_templateFileEnding;
+            $fileName = $this->_newFileName . $this->getRandomCharacters(5). '.' . $this->_templateFileEnding;
         }
         $this->createModuleFile('template', $fileName, '');
         $this->_notification->displayNotification(cGuiNotification::LEVEL_OK, i18n('Created a new template file successfully!'));
@@ -522,7 +522,7 @@ class cModuleTemplateHandler extends cModuleHandler {
         $form->setVar('tmp_file', conHtmlSpecialChars($this->_tmpFile));
         $form->setVar('idmod', $this->_idmod);
         $form->setVar('file', conHtmlSpecialChars($this->_file));
-        $form->setVar('selectedFile', conHtmlSpecialChars($this->_file));
+        $form->setVar('selectedFile', cString::replaceDiacritics(conHtmlSpecialChars($this->_file)));
 
         $selectFile = new cHTMLSelectElement('selectedFile');
         $selectFile->setClass("fileChooser");
@@ -543,7 +543,7 @@ class cModuleTemplateHandler extends cModuleHandler {
                 $optionField = new cHTMLOptionElement(conHtmlSpecialChars($file), conHtmlSpecialChars($file));
 
                 // select the current file
-                if ($file == $this->_file) {
+                if ($file == cString::replaceDiacritics($this->_file)) {
                     $optionField->setAttribute('selected', 'selected');
                 }
 
@@ -578,7 +578,7 @@ class cModuleTemplateHandler extends cModuleHandler {
         $aAdd->setCustom('file', urlencode($this->_file));
 
         // $oName = new cHTMLLabel($sFilename, '');
-        $oName = new cHTMLTextbox('file', conHtmlSpecialChars($this->_file), 60);
+        $oName = new cHTMLTextbox('file', cString::replaceDiacritics(conHtmlSpecialChars($this->_file)), 60);
 
         $oCode = new cHTMLTextarea('code', conHtmlSpecialChars($this->_code), 100, 35, 'code');
 
