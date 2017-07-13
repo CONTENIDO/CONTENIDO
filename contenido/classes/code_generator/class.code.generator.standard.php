@@ -139,9 +139,10 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                     && cFileHandler::writeable(dirname($tmpFile))) {
                     if (false !== cFileHandler::write($tmpFile, $this->_moduleCode)) {
                         $this->_moduleCode = php_strip_whitespace($tmpFile);
+
+                        // delete file
+                        cFileHandler::remove($tmpFile);
                     }
-                    // delete file
-                    cFileHandler::remove($tmpFile);
                 }
 
                 // process CMS value tags
