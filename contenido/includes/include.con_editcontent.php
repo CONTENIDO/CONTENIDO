@@ -514,7 +514,7 @@ if ($code == "0601") {
 
 $bodyPosition = cString::findFirstPos($code, '<body>');
 
-$code = substr_replace($code, $versioningElement, $bodyPosition+6, 0);
+$code = substr_replace($code, $versioningElement, $bodyPosition, 0);
 
 if ($cfg["debug"]["codeoutput"]) {
     cDebug::out(conHtmlSpecialChars($code));
