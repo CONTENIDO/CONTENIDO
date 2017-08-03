@@ -53,7 +53,7 @@ if ($action == 'mail_log_delete') {
 $mailLogCollection->query();
 
 // show notification if there no mails have been logged yet
-if ($mailLogCollection->count() === 0) {
+if ($mailLogCollection->count() === 0 && getSystemProperty('system', 'mail_log') !== 'false') {
     $page->displayInfo(i18n('No mails have been logged yet.'));
     $page->abortRendering();
     $page->render();
