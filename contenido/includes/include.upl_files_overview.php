@@ -25,6 +25,7 @@ cInclude('classes', 'class.cziparchive.php');
 if (!(int) $client > 0) {
     // if there is no client selected, display empty page
     $oPage = new cGuiPage('upl_files_overview');
+    $oPage->abortRendering();
     $oPage->render();
     return;
 }
