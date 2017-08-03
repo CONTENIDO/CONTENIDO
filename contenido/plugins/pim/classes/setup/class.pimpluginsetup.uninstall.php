@@ -184,7 +184,6 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      *        false
      */
     public function uninstall($sql = true) {
-        $cfg = cRegistry::getConfig();
 
         // Dependencies checks
         $this->_uninstallCheckDependencies();
@@ -193,6 +192,7 @@ class PimPluginSetupUninstall extends PimPluginSetup {
         $this->_PimPluginRelationsCollection->setWhere('idplugin', parent::_getPluginId());
         $this->_PimPluginRelationsCollection->query();
 
+        // Initializing relations array
         $relations = array();
 
         while (($relation = $this->_PimPluginRelationsCollection->next()) !== false) {
@@ -288,6 +288,7 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      * Delete specific sql entries or tables, full uninstall mode
      */
     protected function _uninstallDeleteSpecificSql() {
+
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 
@@ -316,6 +317,7 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      * Delete a installed plugin directory
      */
     public function uninstallDir() {
+
         $cfg = cRegistry::getConfig();
 
         // delete folders

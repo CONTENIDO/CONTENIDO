@@ -87,6 +87,7 @@ class PimPluginSetupUpdate extends PimPluginSetup {
      * sql files.
      */
     private function _updateSql() {
+
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 

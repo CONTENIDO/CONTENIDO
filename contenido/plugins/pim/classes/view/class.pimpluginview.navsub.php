@@ -304,8 +304,8 @@ class PimPluginViewNavSub {
 
         if (cFileHandler::exists($pluginLanguageFileLang) && $contenidoNav != "") {
 
-            // Initializing founded variable
-            $founded = "";
+            // Initializing founded array
+            $founded = array();
 
             for ($i = 0; $i < $this->_NavCount; $i++) {
 

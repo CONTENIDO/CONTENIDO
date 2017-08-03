@@ -434,7 +434,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
         $areaCount = count(parent::$XmlArea->area);
         for ($i = 0; $i < $areaCount; $i++) {
 
-            // Initializing attribute array
+            // Initializing attributes array
             $attributes = array();
 
             // Build attributes
@@ -477,7 +477,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
      */
     private function _installAddActions() {
 
-        // Initializing attribute array
+        // Initializing attributes array
         $attributes = array();
 
         // Get Id of plugin
@@ -523,7 +523,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
      */
     private function _installAddFrames() {
 
-        // Initializing attribute array
+        // Initializing attributes array
         $attributes = array();
 
         // Get Id of plugin
@@ -562,7 +562,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 
-    	// Initializing attribute array
+    	// Initializing attributes array
     	$attributes = array();
 
         // Get Id of plugin
@@ -620,7 +620,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
      */
     private function _installAddNavSub() {
 
-        // Initializing attribute array
+        // Initializing attributes array
         $attributes = array();
 
         // Get Id of plugin
@@ -665,8 +665,10 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * Add specific sql queries
      */
     private function _installAddSpecificSql() {
+
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
+
         if (parent::getMode() == 1) { // Plugin is already extracted
             $tempSqlFilename = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->_getPluginFoldername() . DIRECTORY_SEPARATOR . 'plugin_install.sql';
         } elseif (parent::getMode() == 2 || parent::getMode() == 4) { // Plugin
@@ -729,6 +731,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * Add modules
      */
     private function _installAddModules() {
+
         $cfg = cRegistry::getConfig();
         $module = new cApiModule();
 
@@ -755,6 +758,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * Add plugin dir
      */
     private function _installAddDir() {
+
         $cfg = cRegistry::getConfig();
 
         // Build the new plugin dir

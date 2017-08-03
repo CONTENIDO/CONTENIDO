@@ -233,6 +233,7 @@ class PimPluginSetup {
      * Load plugin datas and run Xml checks
      */
     public function checkXml() {
+
         $cfg = cRegistry::getConfig();
 
         if (self::getMode() == 1) { // Plugin is already extracted
@@ -345,6 +346,7 @@ class PimPluginSetup {
     				$this->_PimPluginCollection->setWhere('uuid', $tempXml->general->uuid);
     				$this->_PimPluginCollection->setWhere('active', '1');
     				$this->_PimPluginCollection->query();
+
     				if ($this->_PimPluginCollection->count() != 0) {
     					self::setPluginName($tempXml->general->plugin_name);
     					return false;
@@ -372,6 +374,7 @@ class PimPluginSetup {
      * @return bool
      */
     private function validXml($xml) {
+
         // Initializing PHP DomDocument class
         $dom = new DomDocument();
         $dom->loadXML($xml);
