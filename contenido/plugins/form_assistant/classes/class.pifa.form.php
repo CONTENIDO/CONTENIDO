@@ -780,7 +780,7 @@ class PifaForm extends Item {
             $value = str_replace("\n", '\n', $value);
             $value = str_replace("\r", '\r', $value);
             $value = "\"$value\"";
-            return $value;
+            return utf8_decode($value);
         }
 
         // add data rows
