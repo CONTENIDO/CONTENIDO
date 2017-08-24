@@ -81,6 +81,10 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             cInclude('includes', 'functions.tpl.php');
             $containerNumbers = tplGetContainerNumbersInLayout($idlay);
 
+            // Initializing check arrays (CON-2706)
+            $loadedCSS = array();
+            $loadedJS = array();
+
             foreach ($containerNumbers as $containerNr) {
                 // if there's no configured module in this container
                 if (!isset($containerModules[$containerNr]) || !is_numeric($containerModules[$containerNr])) {
@@ -118,12 +122,14 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                     }
 
                     // load css and js content of the js/css files
-                    if ($moduleHandler->getFilesContent('css', 'css') !== false) {
+                    if ($moduleHandler->getFilesContent('css', 'css') !== false && !in_array($oModule->get('idmod'), $loadedCSS)) {
                         $this->_cssData .= $moduleHandler->getFilesContent('css', 'css') . PHP_EOL;
+                        $loadedCSS[] = $oModule->get('idmod');
                     }
 
-                    if ($moduleHandler->getFilesContent('js', 'js') !== false) {
+                    if ($moduleHandler->getFilesContent('js', 'js') !== false && !in_array($oModule->get('idmod'), $loadedJS)) {
                         $this->_jsData .= $moduleHandler->getFilesContent('js', 'js') . PHP_EOL;
+                        $loadedJS[] = $oModule->get('idmod');
                     }
 
                     $input = $moduleHandler->readInput();
