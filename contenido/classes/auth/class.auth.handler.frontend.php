@@ -85,7 +85,7 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
     public function validateCredentials() {
 		$frontendUserColl = new cApiFrontendUserCollection();
 		
-        $username = $frontendUserColl->escape( conHtmlentities(stripslashes(trim($_POST['username']))) );
+        $username = $frontendUserColl->escape(stripslashes(trim($_POST['username'])));
         $password = $_POST['password'];
 
         $groupPerm = array();
