@@ -111,7 +111,7 @@ class cUri {
                 $aConfig = $aResult['aConfig'];
             }
         }
-
+        $bUseAbsolutePath = true;
         if ($this->_sUriBuilderName == 'custom_path' && !isset($aParams['level'])) {
             // downwards compatibility to cUriBuilderCustomPath
             $aParams['level'] = '1';
@@ -125,6 +125,11 @@ class cUri {
         if ($this->_sUriBuilderName == 'custom_path' && count($param) <= 3) {
             // third downwards compatibility
             $param['_c_p_'] = '1';
+        }
+
+        // CON-2712
+        if ($bUseAbsolutePath === true) {
+            $this->_oUriBuilder->setHttpBasePath(cRegistry::getFrontendUrl());
         }
 
         $this->_oUriBuilder->buildUrl($param, $bUseAbsolutePath, $aConfig);
