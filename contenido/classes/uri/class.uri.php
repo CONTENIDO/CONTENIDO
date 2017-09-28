@@ -111,7 +111,7 @@ class cUri {
                 $aConfig = $aResult['aConfig'];
             }
         }
-        $bUseAbsolutePath = true;
+        
         if ($this->_sUriBuilderName == 'custom_path' && !isset($aParams['level'])) {
             // downwards compatibility to cUriBuilderCustomPath
             $aParams['level'] = '1';
