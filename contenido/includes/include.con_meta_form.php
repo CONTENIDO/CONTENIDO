@@ -234,7 +234,11 @@ $cfgClient = cRegistry::getClientConfig();
 
 // Assign form page seo elements values (incl. CON-2696 change, undo CON-2532 changes)
 $tpl->set('s', 'LINK', $art->getLink());
-$tpl->set('s', 'FULL_LINK', $cfgClient[$client]['path']['htmlpath'] . $art->getLink());
+
+$tpl->set('s', 'FULL_LINK', cUri::getInstance()->build(array(
+    'idart' => $art->get('idart'),
+    'lang' => $art->get('idlang')
+), true));
 
 $tpl->set('s', 'PAGE_TITLE', conHtmlSpecialChars(cSecurity::unFilter(stripslashes($art->getField('pagetitle')))));
 
