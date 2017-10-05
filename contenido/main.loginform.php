@@ -42,6 +42,16 @@ $tpl->reset();
 
 $sess = cRegistry::getSession();
 
+// CON-2714
+// Please check at CONTENIDO backend login whether the database tables are filled
+$db = new cDb();
+$sql = $db->prepare('SELECT user_id FROM %s', $cfg['tab']['user']);
+$db->query($sql);
+if ($db->num_rows() == 0) {
+    $notification = new cGuiNotification();
+    $notification->displayNotification('error', i18n('Your database is obviously empty. Please ensure that you have installed CONTENIDO completely and/or that your database configuration is correct.'));
+}
+
 // Get backend label
 $backend_label = getSystemProperty('backend', 'backend_label');
 $backend_label = " " . $backend_label . " ";

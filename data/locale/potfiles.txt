@@ -41,7 +41,6 @@
 ./classes/class.session.php
 ./classes/class.string.multi.byte.wrapper.php
 ./classes/class.string.php
-./classes/class.stringwrapper.php
 ./classes/class.systemtest.php
 ./classes/class.template.php
 ./classes/class.todo.php
