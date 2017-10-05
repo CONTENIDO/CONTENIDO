@@ -230,8 +230,6 @@ if (!empty($notifications)) {
     $tpl->set('s', 'NOTIFICATIONS', '');
 }
 
-$cfgClient = cRegistry::getClientConfig();
-
 // Assign form page seo elements values (incl. CON-2696 change, undo CON-2532 changes)
 $tpl->set('s', 'LINK', $art->getLink());
 
