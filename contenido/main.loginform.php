@@ -43,7 +43,7 @@ $tpl->reset();
 $sess = cRegistry::getSession();
 
 // CON-2714
-// Please check at CONTENIDO backend login whether the database tables are filled
+// Please check at CONTENIDO backend login whether the database tables are filled or not
 $db = new cDb();
 $sql = $db->prepare('SELECT user_id FROM %s', $cfg['tab']['user']);
 $db->query($sql);
