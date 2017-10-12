@@ -195,7 +195,7 @@ class PimPluginViewNavSub {
 
                 // Get single navigation values
                 $navSubEntries = explode("/", $matches[1]);
-;
+
                 if ($navSubEntries[0] == "navigation") { // CONTENIDO navigation
                                                          // case
 
