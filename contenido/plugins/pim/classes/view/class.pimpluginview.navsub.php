@@ -137,7 +137,6 @@ class PimPluginViewNavSub {
      * @return Ambigous <string, string>|Ambigous <string, boolean>
      */
     public function getNavSubentries() {
-        global $belang;
 
         $cfg = cRegistry::getConfig();
 
@@ -196,7 +195,7 @@ class PimPluginViewNavSub {
 
                 // Get single navigation values
                 $navSubEntries = explode("/", $matches[1]);
-
+;
                 if ($navSubEntries[0] == "navigation") { // CONTENIDO navigation
                                                          // case
 
@@ -256,7 +255,12 @@ class PimPluginViewNavSub {
 
             for ($i = 0; $i < $this->_NavCount; $i++) {
 
-                $this->_ApiNavMainCollection->setWhere('idnavm', cSecurity::toInteger(self::$XmlNavSub->nav[$i]->attributes()->navm));
+                if (cSecurity::toInteger(self::$XmlNavSub->nav[$i]->attributes()->navm) > 0)  {
+                    $this->_ApiNavMainCollection->setWhere('idnavm', cSecurity::toInteger(self::$XmlNavSub->nav[$i]->attributes()->navm));
+                } else {
+                    $this->_ApiNavMainCollection->setWhere('name', cSecurity::escapeString(self::$XmlNavSub->nav[$i]->attributes()->navm));
+                }
+
                 $this->_ApiNavMainCollection->query();
 
                 // If no entry at nav_sub database table founded,
