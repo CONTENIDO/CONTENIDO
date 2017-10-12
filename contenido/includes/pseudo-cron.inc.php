@@ -223,7 +223,7 @@ function lTrimZeros($number) {
     if (empty($number)) {
         $number = 0;
     }
-    return cString::toInteger($number);
+    return cSecurity::toInteger($number);
 }
 
 /**
