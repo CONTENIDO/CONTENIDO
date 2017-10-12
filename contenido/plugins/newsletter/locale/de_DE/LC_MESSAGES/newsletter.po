@@ -1020,8 +1020,8 @@ msgid "Associated groups"
 msgstr "Mitglied von"
 
 #: includes/include.recipients_import.php:45
-msgid "E-mail"
-msgstr "E-Mail"
+msgid "Email"
+msgstr "Email"
 
 #: includes/include.recipients_import.php:63
 msgid "Confirmed date"
@@ -1142,8 +1142,8 @@ msgid "Example:"
 msgstr "Beispiel:"
 
 #: includes/include.recipients_import.php:358
-msgid "<br>name;mail;confirmed<br>Smith;jon.smith@example.org;1"
-msgstr "<br><br>name;mail;bestätigt<br>Smith;jon.smith@example.org;1"
+msgid "<br>name;email;confirmed<br>Smith;jon.smith@example.org;1"
+msgstr "<br><br>name;email;bestätigt<br>Smith;jon.smith@example.org;1"
 
 #: includes/include.recipients_import.php:358
 msgid "The following column names will be recognized:"
