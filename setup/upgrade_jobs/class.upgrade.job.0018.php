@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the upgrade job 178.
+ * This file contains the upgrade job 18.
  *
  * @package Setup
  * @subpackage UpgradeJob
@@ -13,7 +13,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Upgrade job 17
+ * Upgrade job 18
  * Add system settings for stats_tracking
  * CON-2718
  *
