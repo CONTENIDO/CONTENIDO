@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-05 11:04+0200\n"
-"PO-Revision-Date: 2017-10-05 11:05+0200\n"
+"POT-Creation-Date: 2017-10-19 10:53+0200\n"
+"PO-Revision-Date: 2017-10-19 10:54+0200\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: de_DE\n"
@@ -25,7 +25,7 @@ msgstr "Vielen Dank für die Speicherung dieser Suche!"
 #: classes/content_types/class.content.type.linkeditor.php:330
 #: includes/include.con_art_overview.php:81
 #: includes/include.con_art_overview.php:750
-#: includes/include.con_edit_form.php:723 includes/include.stat_overview.php:86
+#: includes/include.con_edit_form.php:723 includes/include.stat_overview.php:97
 #: templates/standard/template.mycontenido_lastarticles.html:73
 #: templates/standard/template.mycontenido_lastarticles.html:113
 #: templates/standard/template.upl_artlist.html:30
@@ -235,8 +235,8 @@ msgstr "idlang"
 #: includes/include.rights_left_top.php:83
 #: includes/include.rights_overview.php:214
 #: includes/include.style_history.php:154
-#: includes/include.systemsettings.php:67
-#: includes/include.systemsettings.php:172
+#: includes/include.systemsettings.php:68
+#: includes/include.systemsettings.php:173
 #: includes/include.tpl_edit_form.php:114
 #: templates/standard/template.generic_source_editor.html:17
 #: templates/standard/template.tpl_edit_form.html:18
@@ -1763,7 +1763,7 @@ msgid "Source category"
 msgstr "Quellkategorie"
 
 #: classes/content_types/class.content.type.teaser.php:722
-#: includes/include.stat_overview.php:88
+#: includes/include.stat_overview.php:99
 #: includes/include.system_sysvalues.php:77
 msgid "Number of articles"
 msgstr "Anzahl der Artikel"
@@ -1829,7 +1829,7 @@ msgstr "Unbekannter Artikel"
 #: includes/include.grouprights_overview.php:196
 #: includes/include.rights_overview.php:364
 #: includes/include.rights_overview.php:373
-#: includes/include.systemsettings.php:85
+#: includes/include.systemsettings.php:86
 msgid "Delete"
 msgstr "Löschen"
 
@@ -2184,7 +2184,7 @@ msgstr "Das Feld für den Dateinamen ist leer!"
 #: includes/include.frontend.user_edit.php:165
 #: includes/include.mod_script.php:165 includes/include.mod_style.php:163
 #: includes/include.pretplcfg_edit.php:38
-#: includes/include.systemsettings.php:44
+#: includes/include.systemsettings.php:45
 #: includes/include.tpl_edit_form.php:216
 msgid "Saved changes successfully!"
 msgstr "Die Änderungen wurden erfolgreich gespeichert!"
@@ -2236,7 +2236,7 @@ msgstr "Neues HTML-Template"
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:182
 #: includes/include.con_edit_form.php:404 includes/include.logs.php:265
 #: includes/include.mail_log.php:94 includes/include.mail_log.php:224
-#: includes/include.systemsettings.php:71
+#: includes/include.systemsettings.php:72
 #: templates/standard/template.log_main.html:34
 #: templates/standard/template.log_main.html:97
 msgid "Action"
@@ -2813,17 +2813,17 @@ msgid "Sum"
 msgstr "Summe"
 
 #: includes/functions.stat.php:925 includes/functions.stat.php:958
-#: includes/include.stat_overview.php:53
+#: includes/include.stat_overview.php:64
 msgid "Top 10"
 msgstr "Top 10"
 
 #: includes/functions.stat.php:926 includes/functions.stat.php:959
-#: includes/include.stat_overview.php:56
+#: includes/include.stat_overview.php:67
 msgid "Top 20"
 msgstr "Top 20"
 
 #: includes/functions.stat.php:927 includes/functions.stat.php:960
-#: includes/include.stat_overview.php:59
+#: includes/include.stat_overview.php:70
 msgid "Top 30"
 msgstr "Top 30"
 
@@ -3161,15 +3161,15 @@ msgid "Save changes successfully!"
 msgstr "Die Änderungen wurden erfolgreich gespeichert!"
 
 #: includes/include.clientsettings.php:74
-#: includes/include.systemsettings.php:59
+#: includes/include.systemsettings.php:60
 msgid "Deleted item successfully!"
 msgstr "Der Eintrag wurde erfolgreich gelöscht!"
 
 #: includes/include.clientsettings.php:77
 #: includes/include.clientsettings.php:159
 #: includes/include.mod_edit_form.php:358 includes/include.mod_new.php:51
-#: includes/include.mod_new.php:71 includes/include.systemsettings.php:66
-#: includes/include.systemsettings.php:168
+#: includes/include.mod_new.php:71 includes/include.systemsettings.php:67
+#: includes/include.systemsettings.php:169
 #: includes/include.upl_files_overview.php:549
 #: includes/include.upl_files_overview.php:552
 #: includes/include.upl_files_overview.php:554
@@ -3187,8 +3187,8 @@ msgstr "Typ"
 #: includes/include.rights_create.php:158
 #: includes/include.rights_overview.php:206
 #: includes/include.rights_overview.php:372
-#: includes/include.systemsettings.php:68
-#: includes/include.systemsettings.php:176
+#: includes/include.systemsettings.php:69
+#: includes/include.systemsettings.php:177
 #: templates/standard/template.log_main.html:18
 #: templates/standard/template.log_main.html:94
 msgid "Value"
@@ -3199,19 +3199,19 @@ msgstr "Wert"
 #: includes/include.con_translate.php:574
 #: includes/include.con_translate.php:629
 #: includes/include.con_translate.php:658
-#: includes/include.systemsettings.php:84 includes/include.upl_edit.php:54
+#: includes/include.systemsettings.php:85 includes/include.upl_edit.php:54
 #: xml/navigation.xml:23 xml/navigation.xml:27 xml/navigation.xml:31
 #: xml/navigation.xml:39
 msgid "Edit"
 msgstr "Bearbeiten"
 
 #: includes/include.clientsettings.php:146
-#: includes/include.systemsettings.php:155
+#: includes/include.systemsettings.php:156
 msgid "No defined properties"
 msgstr "Keine definierten Eigenschaften"
 
 #: includes/include.clientsettings.php:155
-#: includes/include.systemsettings.php:165
+#: includes/include.systemsettings.php:166
 msgid "Add new variable"
 msgstr "Neue Variable erstellen"
 
@@ -3376,7 +3376,7 @@ msgstr "An"
 msgid "Off"
 msgstr "Aus"
 
-#: includes/include.client_edit.php:309
+#: includes/include.client_edit.php:309 xml/system.xml:49
 msgid "Statistic"
 msgstr "Statistik"
 
@@ -5024,7 +5024,7 @@ msgstr "Empfänger"
 #: includes/include.mail_log.php:250
 #: includes/include.mycontenido.tasks.edit.php:90
 #: includes/include.mycontenido.tasks.php:292
-#: includes/include.stat_overview.php:87
+#: includes/include.stat_overview.php:98
 msgid "Status"
 msgstr "Status"
 
@@ -5651,27 +5651,34 @@ msgstr "Dieser Benutzer ist momentan deaktiviert."
 msgid "This account is currently active."
 msgstr "Dieser Benutzer ist momentan aktiviert."
 
-#: includes/include.stat_menu.php:19
+#: includes/include.stat_menu.php:26
 msgid "Current Report"
 msgstr "Aktuelle Statistik"
 
-#: includes/include.stat_menu.php:25
+#: includes/include.stat_menu.php:32
 msgid "Statistics Overview"
 msgstr "Statistikübersicht"
 
-#: includes/include.stat_menu.php:34
+#: includes/include.stat_menu.php:41
 msgid "Archived Statistics"
 msgstr "Archivierte Statistiken"
 
-#: includes/include.stat_overview.php:25
+#: includes/include.stat_overview.php:23
+msgid ""
+"The statistic is disabled. You can activate it at the system configuration."
+msgstr ""
+"Die Statistik ist deaktiviert. Sie können sie in der System-Konfiguration "
+"wieder aktivieren."
+
+#: includes/include.stat_overview.php:36
 msgid "Tracking was disabled for this client!"
 msgstr "Das Tracking wurde für diesen Mandanten abgeschaltet!"
 
-#: includes/include.stat_overview.php:30 includes/include.stat_overview.php:37
+#: includes/include.stat_overview.php:41 includes/include.stat_overview.php:48
 msgid "here"
 msgstr "hier"
 
-#: includes/include.stat_overview.php:31
+#: includes/include.stat_overview.php:42
 #, php-format
 msgid ""
 "This client has been configured with Google Analytics account %s. Click %s "
@@ -5680,7 +5687,7 @@ msgstr ""
 "Dieser Mandant wurde mit dem Google Analytics-Account %s konfiguriert. "
 "Klicken Sie bitte %s, um Google Analytics zu besuchen."
 
-#: includes/include.stat_overview.php:38
+#: includes/include.stat_overview.php:49
 #, php-format
 msgid ""
 "This client has been configured with Piwik Site %s. Click %s to visit the "
@@ -5689,26 +5696,26 @@ msgstr ""
 "Dieser Mandant wurde mit der Piwik Seite %s konfiguriert. Klicken Sie bitte "
 "%s, um die Piwik-Installation zu besuchen."
 
-#: includes/include.stat_overview.php:50 includes/include.stat_overview.php:63
+#: includes/include.stat_overview.php:61 includes/include.stat_overview.php:74
 msgid "Full statistics"
 msgstr "Alle Statistiken"
 
-#: includes/include.stat_overview.php:77
+#: includes/include.stat_overview.php:88
 msgid "Yearly"
 msgstr "Jährlich"
 
-#: includes/include.stat_overview.php:80
+#: includes/include.stat_overview.php:91
 msgid "Current"
 msgstr "Aktuell"
 
-#: includes/include.stat_overview.php:89
+#: includes/include.stat_overview.php:100
 #: templates/standard/template.symbolhelp.html:35
 #: templates/standard/template.symbolhelp.html:495
 #: templates/standard/template.symbolhelp.html:667 xml/navigation.xml:52
 msgid "Hits"
 msgstr "Hits"
 
-#: includes/include.stat_overview.php:91
+#: includes/include.stat_overview.php:102
 msgid "Hits in this language"
 msgstr "Hits in dieser Sprache"
 
@@ -5883,18 +5890,18 @@ msgstr "Style erstellen"
 msgid "No permission to create new styles"
 msgstr "Keine Berechtigung"
 
-#: includes/include.systemsettings.php:39
-#: includes/include.systemsettings.php:56
-#: includes/include.systemsettings.php:185
+#: includes/include.systemsettings.php:40
+#: includes/include.systemsettings.php:57
+#: includes/include.systemsettings.php:186
 #: includes/include.system_configuration.php:190
 msgid "You don't have the permission to make changes here."
 msgstr "Ihnen fehlt die Berechtigung hier etwas zu ändern."
 
-#: includes/include.systemsettings.php:46
+#: includes/include.systemsettings.php:47
 msgid "Created new item successfully!"
 msgstr "Neues Element erfolgreich angelegt!"
 
-#: includes/include.systemsettings.php:49
+#: includes/include.systemsettings.php:50
 msgid "Please set this property in systemsettings directly"
 msgstr "Bitte setzen Sie diese Einstellung direkt in den Systemeinstellungen"
 
@@ -7864,15 +7871,19 @@ msgstr "Style-Versionierung aktiviert"
 msgid "Maximum number of stored style versions"
 msgstr "Maximale Anzahl gespeicherter Style-Versionen"
 
-#: xml/system.xml:51
+#: xml/system.xml:50
+msgid "Turn frontend user statistic on"
+msgstr "Aktiviere die Benutzerstatistik im Frontend"
+
+#: xml/system.xml:53
 msgid "Versioning activated"
 msgstr "Versionierung aktiviert"
 
-#: xml/system.xml:52
+#: xml/system.xml:54
 msgid "Serverpath to version files"
 msgstr "Serverpfad für Versionierungsdateien"
 
-#: xml/system.xml:53
+#: xml/system.xml:55
 msgid "Maximum number of stored versions"
 msgstr "Maximale Anzahl gespeicherter Versionen"
 
