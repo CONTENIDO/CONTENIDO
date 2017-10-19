@@ -26,15 +26,8 @@ if ($statisticmode == 'disabled') {
     return false;
 }
 
-$trackingNotification = "";
 $googleNotification = "";
 $piwikNotification = "";
-
-// Show message if statistics off
-$cApiClient = new cApiClient($client);
-if ($cApiClient->getProperty("stats", "tracking") == "off") {
-    $trackingNotification = $contenidoNotification->returnNotification('warning', i18n("Tracking was disabled for this client!"));
-}
 
 // Display google account message
 if (($googleAccount = getEffectiveSetting('stats', 'ga_account', '')) != "") {
@@ -103,7 +96,6 @@ if ($action == "stat_show") {
 
     $tpl->set('s', 'GOOGLE_NOTIFICATION', $googleNotification . ($googleNotification != '') ? '<br>' : '');
     $tpl->set('s', 'PIWIK_NOTIFICATION', $piwikNotification . ($piwikNotification != '') ? '<br>' : '');
-    $tpl->set('s', 'TRACKING_NOTIFICATION', $trackingNotification . ($trackingNotification != '') ? '<br>' : '');
 
     switch ($displaytype) {
         case "all":
@@ -142,7 +134,7 @@ if ($action == "stat_show") {
     }
 } else {
     $tpl->reset();
-    $tpl->set('s', 'CONTENTS', $trackingNotification . '<br>' . $googleNotification . '<br>' . $piwikNotification);
+    $tpl->set('s', 'CONTENTS', $googleNotification . '<br>' . $piwikNotification);
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['blank']);
 }
 

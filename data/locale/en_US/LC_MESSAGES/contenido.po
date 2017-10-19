@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-19 10:53+0200\n"
-"PO-Revision-Date: 2017-10-19 10:53+0200\n"
+"POT-Creation-Date: 2017-10-19 11:27+0200\n"
+"PO-Revision-Date: 2017-10-19 11:27+0200\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: en_US\n"
@@ -24,7 +24,7 @@ msgstr ""
 #: classes/content_types/class.content.type.linkeditor.php:330
 #: includes/include.con_art_overview.php:81
 #: includes/include.con_art_overview.php:750
-#: includes/include.con_edit_form.php:723 includes/include.stat_overview.php:97
+#: includes/include.con_edit_form.php:723 includes/include.stat_overview.php:90
 #: templates/standard/template.mycontenido_lastarticles.html:73
 #: templates/standard/template.mycontenido_lastarticles.html:113
 #: templates/standard/template.upl_artlist.html:30
@@ -1579,7 +1579,7 @@ msgid "Source category"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:722
-#: includes/include.stat_overview.php:99
+#: includes/include.stat_overview.php:92
 #: includes/include.system_sysvalues.php:77
 msgid "Number of articles"
 msgstr ""
@@ -2593,17 +2593,17 @@ msgid "Sum"
 msgstr ""
 
 #: includes/functions.stat.php:925 includes/functions.stat.php:958
-#: includes/include.stat_overview.php:64
+#: includes/include.stat_overview.php:57
 msgid "Top 10"
 msgstr ""
 
 #: includes/functions.stat.php:926 includes/functions.stat.php:959
-#: includes/include.stat_overview.php:67
+#: includes/include.stat_overview.php:60
 msgid "Top 20"
 msgstr ""
 
 #: includes/functions.stat.php:927 includes/functions.stat.php:960
-#: includes/include.stat_overview.php:70
+#: includes/include.stat_overview.php:63
 msgid "Top 30"
 msgstr ""
 
@@ -4665,7 +4665,7 @@ msgstr ""
 #: includes/include.mail_log.php:250
 #: includes/include.mycontenido.tasks.edit.php:90
 #: includes/include.mycontenido.tasks.php:292
-#: includes/include.stat_overview.php:98
+#: includes/include.stat_overview.php:91
 msgid "Status"
 msgstr ""
 
@@ -5282,48 +5282,44 @@ msgid ""
 "The statistic is disabled. You can activate it at the system configuration."
 msgstr ""
 
-#: includes/include.stat_overview.php:36
-msgid "Tracking was disabled for this client!"
-msgstr ""
-
-#: includes/include.stat_overview.php:41 includes/include.stat_overview.php:48
+#: includes/include.stat_overview.php:34 includes/include.stat_overview.php:41
 msgid "here"
 msgstr ""
 
-#: includes/include.stat_overview.php:42
+#: includes/include.stat_overview.php:35
 #, php-format
 msgid ""
 "This client has been configured with Google Analytics account %s. Click %s "
 "to visit Google Analytics"
 msgstr ""
 
-#: includes/include.stat_overview.php:49
+#: includes/include.stat_overview.php:42
 #, php-format
 msgid ""
 "This client has been configured with Piwik Site %s. Click %s to visit the "
 "Piwik installation."
 msgstr ""
 
-#: includes/include.stat_overview.php:61 includes/include.stat_overview.php:74
+#: includes/include.stat_overview.php:54 includes/include.stat_overview.php:67
 msgid "Full statistics"
 msgstr ""
 
-#: includes/include.stat_overview.php:88
+#: includes/include.stat_overview.php:81
 msgid "Yearly"
 msgstr ""
 
-#: includes/include.stat_overview.php:91
+#: includes/include.stat_overview.php:84
 msgid "Current"
 msgstr ""
 
-#: includes/include.stat_overview.php:100
+#: includes/include.stat_overview.php:93
 #: templates/standard/template.symbolhelp.html:35
 #: templates/standard/template.symbolhelp.html:495
 #: templates/standard/template.symbolhelp.html:667 xml/navigation.xml:52
 msgid "Hits"
 msgstr ""
 
-#: includes/include.stat_overview.php:102
+#: includes/include.stat_overview.php:95
 msgid "Hits in this language"
 msgstr ""
 
