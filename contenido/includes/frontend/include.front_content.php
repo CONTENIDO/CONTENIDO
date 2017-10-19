@@ -614,7 +614,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
 
     $cApiClient = new cApiClient($client);
     // Dont track page hit if tracking off
-    if ($cApiClient->getProperty('stats', 'tracking') != 'off' && cRegistry::isTrackingAllowed()) {
+    if (getSystemProperty('stats', 'tracking') != 'disabled' && cRegistry::isTrackingAllowed()) {
         // Statistic, track page hit
         $oStatColl = new cApiStatCollection();
         $oStat     = $oStatColl->trackVisit($idcatart, $lang, $client);

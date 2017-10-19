@@ -90,7 +90,7 @@ function statsArchive($yearmonth) {
         $db2->query($insertSQL);
     }
 
-    $sql = "DELETE FROM " . $cfg["tab"]["stat"];
+    $sql = "TRUNCATE TABLE " . $cfg["tab"]["stat"];
     $db->query($sql);
 
     // Recreate empty stats
@@ -111,7 +111,7 @@ function statsArchive($yearmonth) {
                           " . cSecurity::toInteger($db->f(0)) . ",
                           " . cSecurity::toInteger($db->f(2)) . ",
                           " . cSecurity::toInteger($db->f(1)) . ",
-                          '0000-00-00 00:00:00')";
+                          0)";
 
         $db2->query($insertSQL);
     }

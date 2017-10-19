@@ -46,6 +46,8 @@ i18n("Serverpath to style version files")
 i18n("Style versioning activated")
 i18n("Maximum number of stored style versions")
 i18n("Article versioning")
+i18n("Statistic")
+i18n("Turn frontend user statistic on")
 
 // old text
 i18n("Versioning activated")
@@ -226,6 +228,16 @@ i18n("Maximum number of stored versions")
                 <group>Backend</group>
             </activated>
         </codemirror>
+        <stats>
+            <tracking>
+                <values>
+                    <array_value>enabled</array_value>
+                    <array_value>disabled</array_value>
+                </values>
+                <label>Turn frontend user statistic on</label>
+                <group>Statistic</group>
+            </tracking>
+        </stats>
         <backend>
             <preferred_idclient>
                 <values>integer</values>

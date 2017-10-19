@@ -89,7 +89,8 @@ function updateSystemProperties($db, $table) {
         array('type' => 'generator', 'name' => 'xhtml', 'value' => 'true'),
         array('type' => 'generator', 'name' => 'basehref', 'value' => 'true'),
     	array('type' => 'debug', 'name' => 'module_translation_message', 'value' => 'true'),
-    	array('type' => 'debug', 'name' => 'debug_for_plugins', 'value' => 'true')
+    	array('type' => 'debug', 'name' => 'debug_for_plugins', 'value' => 'true'),
+        array('type' => 'stats', 'name' => 'tracking', 'value' => 'disabled')
     );
 
     foreach ($aStandardvalues as $aData) {

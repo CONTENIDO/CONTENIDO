@@ -16,22 +16,33 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $tpl->reset();
 $contenidoNotification = new cGuiNotification();
+
+// CON-2718
+$statisticmode = getSystemProperty('stats', 'tracking');
+if ($statisticmode == 'disabled') {
+    $trackingNotification = $contenidoNotification->returnNotification('error', i18n('The statistic is disabled. You can activate it at the system configuration.'));
+    $tpl->set('s', 'CONTENTS', $trackingNotification);
+    $tpl->generate($cfg['path']['templates'] . $cfg['templates']['blank']);
+    return false;
+}
+
 $trackingNotification = "";
 $googleNotification = "";
 $piwikNotification = "";
-//Show message if statistics off
+
+// Show message if statistics off
 $cApiClient = new cApiClient($client);
 if ($cApiClient->getProperty("stats", "tracking") == "off") {
     $trackingNotification = $contenidoNotification->returnNotification('warning', i18n("Tracking was disabled for this client!"));
 }
 
-//Display google account message
+// Display google account message
 if (($googleAccount = getEffectiveSetting('stats', 'ga_account', '')) != "") {
     $linkToGoogle = sprintf('<a target="_blank" href="http://www.google.com/intl/' . $belang . '/analytics/">%s</a>', i18n("here"));
     $googleNotification = $contenidoNotification->returnNotification('warning', sprintf(i18n("This client has been configured with Google Analytics account %s. Click %s to visit Google Analytics"), $googleAccount, $linkToGoogle));
 }
 
-//display piwik account message
+// display piwik account message
 if (($piwikUrl = getEffectiveSetting('stats', 'piwik_url', '')) != "") {
     if (($piwikSite = getEffectiveSetting('stats', 'piwik_site', '')) != "") {
         $linkToPiwik = sprintf('<a target="_blank" href="' . $piwikUrl . '">%s</a>', i18n('here'));

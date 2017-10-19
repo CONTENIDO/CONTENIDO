@@ -21,7 +21,8 @@ $aManagedValues = array(
     'update_check_period', 'system_clickmenu', 'mail_transport', 'system_mail_host', 'system_mail_sender',
     'system_mail_sender_name', 'pw_request_enable', 'maintenance_mode', 'codemirror_activated',
     'backend_preferred_idclient', 'generator_basehref', 'generator_xhtml', 'system_insite_editing_activated',
-    'backend_backend_label', 'backend_file_extensions', 'module_translation_message', 'versioning_enabled'
+    'backend_backend_label', 'backend_file_extensions', 'module_translation_message', 'versioning_enabled',
+    'stats_tracking'
 );
 
 // @TODO Find a general solution for this!
