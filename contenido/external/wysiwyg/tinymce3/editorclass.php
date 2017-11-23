@@ -38,6 +38,7 @@ cInclude('includes', 'functions.lang.php');
  * contenido_height_head
  * See backend.customizing.html for details
  *
+ * @deprecated [2017-11-23]
  * @package    Core
  * @subpackage Backend
  */
@@ -540,13 +541,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
      * @return string
      */
     public function getScripts() {
-        if ($this->_useGZIP) {
-            $return = "\n<!-- tinyMCE -->\n" . '<script language="javascript" type="text/javascript" src="' . $this->_baseURL . 'jscripts/tiny_mce/tiny_mce_gzip.js"></script>';
-        } else {
-            $return = "\n<!-- tinyMCE -->\n" . '<script language="javascript" type="text/javascript" src="' . $this->_baseURL . 'jscripts/tiny_mce/tiny_mce.js"></script>';
-        }
-
-        return $return;
+        return "\n<!-- tinyMCE -->\n" . '<script language="javascript" type="text/javascript" src="' . $this->_baseURL . 'jscripts/tiny_mce/tiny_mce.js"></script>';
     }
 
     /**
@@ -575,25 +570,6 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         $template->set('s', 'FILEBROWSER', $cfg['path']['contenido_fullhtml'] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=filebrowser');
         $template->set('s', 'MEDIABROWSER', $cfg['path']['contenido_fullhtml'] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
         $template->set('s', 'FRONTEND_PATH', $cfgClient[$client]['path']['htmlpath']);
-
-        // GZIP support options
-        $GZIPScript = '';
-        if ($this->_useGZIP) {
-            // tinyMCE_GZ.init call must be placed in its own script tag
-            // User defined plugins and themes should be identical in both "inits"
-            $GZIPScript = <<<JS
-<script type="text/javascript">
-tinyMCE_GZ.init({
-    plugins: '{$this->_aSettings["plugins"]}',
-    themes: '{$this->_aSettings["theme"]}',
-    languages: '{$this->_aSettings["language"]}',
-    disk_cache: true,
-    debug: false
-});
-</script>
-JS;
-        }
-        $template->set('s', 'COMPRESSOR', $GZIPScript);
 
         // Calculate the configuration
         $config = '';
