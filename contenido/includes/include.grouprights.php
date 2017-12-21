@@ -35,7 +35,7 @@ if (!is_object($oTpl)) {
 // Set new right_list (=all possible rights)
 if (!is_array($right_list)) {
     // Select all rights, actions an their locations without area login
-    $sql = "SELECT A.idarea, A.parent_id, B.location, A.name " . "FROM " . $cfg["tab"]["area"] . " AS A LEFT JOIN " . $cfg["tab"]["nav_sub"] . " AS B ON  A.idarea = B.idarea " . "WHERE A.name!='login' AND A.relevant='1' AND A.online='1' GROUP BY A.name ORDER BY A.idarea";
+    $sql = "SELECT A.idarea, A.parent_id, B.location, A.name " . "FROM " . $cfg["tab"]["area"] . " AS A LEFT JOIN " . $cfg["tab"]["nav_sub"] . " AS B ON  A.idarea = B.idarea " . "WHERE A.name!='login' AND A.relevant='1' AND A.online='1' GROUP BY A.name, A.idarea, A.parent_id, B.location ORDER BY A.idarea";
     $db->query($sql);
 
     while ($db->nextRecord()) {

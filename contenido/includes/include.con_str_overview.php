@@ -434,7 +434,7 @@ if ($syncoptions == -1) {
                 b.idclient = '" . cSecurity::toInteger($client) . "' AND
                 b.idart = c.idart AND
                 c.idcat = d.idcat
-            GROUP BY c.idcat";
+            GROUP BY c.idcat, online, d.startidartlang";
 } else {
     $sql2 = "SELECT
                 c.idcat AS idcat,
@@ -450,7 +450,7 @@ if ($syncoptions == -1) {
                 b.idclient = '" . cSecurity::toInteger($client) . "' AND
                 b.idart = c.idart AND
                 c.idcat = d.idcat
-            GROUP BY c.idcat";
+            GROUP BY c.idcat, online, d.startidartlang";
 }
 $db->query($sql2);
 

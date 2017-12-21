@@ -467,7 +467,7 @@ function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $s
  */
 function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $client) {
     $dbfs = new cApiDbfsCollection();
-    $dbfs->select("filename = '.' AND idclient=" . cSecurity::toInteger($client), 'dirname', 'dirname ASC');
+    $dbfs->select("filename = '.' AND idclient=" . cSecurity::toInteger($client), 'dirname, iddbfs, idclient, filename, mimetype, size, content, created, author, modified, modifiedby', 'dirname ASC');
     $count = 0;
     $lastlevel = 0;
     $item['.'] = $oRootItem;

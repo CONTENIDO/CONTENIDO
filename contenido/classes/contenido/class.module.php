@@ -157,7 +157,7 @@ class cApiModuleCollection extends ItemCollection {
                 ' . $cfg['tab']['tpl'] . " as t
                 WHERE
                     t.idtpl = c.idtpl
-                GROUP BY c.idmod
+                GROUP BY c.idmod, c.idtpl, t.name
                 ORDER BY t.name";
         $db->query($sql);
 
@@ -502,7 +502,7 @@ class cApiModule extends Item {
                 WHERE
                     c.idmod = '" . cSecurity::toInteger($module) . "' AND
                     t.idtpl=c.idtpl
-                GROUP BY c.idtpl
+                GROUP BY c.idtpl, c.idmod, t.name
                 ORDER BY t.name";
         $db->query($sql);
 
