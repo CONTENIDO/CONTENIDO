@@ -52,22 +52,25 @@ if (!cRegistry::getBackendSessionId()) {
          * @param string $uri
          * @return string
          */
-        function script_cookie_directive_add_get_params($uri) {
-            foreach ($_GET as $getKey => $getValue) {
-                // do not add already added GET parameters to redirect url
-                if (cString::findFirstPos($uri, '?' . $getKey . '=') !== false
-                || cString::findFirstPos($uri, '&' . $getKey . '=') !== false) {
-                    continue;
+        if (!function_exists('script_cookie_directive_add_get_params')) {
+            function script_cookie_directive_add_get_params($uri) {
+                foreach ($_GET as $getKey => $getValue) {
+                    // do not add already added GET parameters to redirect url
+                    if (cString::findFirstPos($uri, '?' . $getKey . '=') !== false
+                        || cString::findFirstPos($uri, '&' . $getKey . '=') !== false
+                    ) {
+                        continue;
+                    }
+                    if (cString::findFirstPos($uri, '?') === false) {
+                        $uri .= '?';
+                    } else {
+                        $uri .= '&';
+                    }
+                    $uri .= htmlentities($getKey) . '=' . htmlentities($getValue);
                 }
-                if (cString::findFirstPos($uri, '?') === false) {
-                    $uri .= '?';
-                } else {
-                    $uri .= '&';
-                }
-                $uri .= htmlentities($getKey) . '=' . htmlentities($getValue);
-            }
 
-            return $uri;
+                return $uri;
+            }
         }
 
         // build accept url
