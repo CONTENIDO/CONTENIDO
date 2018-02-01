@@ -66,7 +66,8 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * Resets the states of static properties.
      */
     public static function reset() {
-        unset(self::$_enableCache, self::$_entries);
+        self::$_enableCache = false;
+        self::$_entries = array();
     }
 
     /**
