@@ -15,6 +15,7 @@
 }
 
 .cms_imgeditor .directoryFile {
+    background-color: #ffffff;
     border: 1px solid #CCC;
     height: 170px;
     overflow: auto;
@@ -22,8 +23,7 @@
 }
 
 .cms_imgeditor .directories .directoryShow,
-.cms_imgeditor .upload .directoryShow
-    {
+.cms_imgeditor .upload .directoryShow {
     background-color: #FFFFFF;
     border: 1px solid #CCCCCC;
     min-height: 50px;
@@ -31,11 +31,13 @@
     max-height: 210px;
     overflow: auto;
 }
+
 .cms_imgeditor b {
     display: block;
 }
+
 .cms_imgeditor .meta label {
-   /* margin: 10px 0 3px 10px;*/
+    /* margin: 10px 0 3px 10px;*/
 }
 
 .cms_imgeditor .meta input {
@@ -56,6 +58,7 @@
 }
 
 .cms_imgeditor select {
+    background-color: #ffffff;
     border: none;
     color: #000;
     font-size: 11px;

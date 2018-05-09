@@ -15,7 +15,7 @@
  * @link       http://www.contenido.org
  */
 
-(function(Con, $) {
+(function (Con, $) {
 //    'use strict';
 
     var NAME = 'content-type-cms-abstract-tabbed';
@@ -120,7 +120,7 @@
      * Initialises the content type by adding event handlers etc.
      * @method initialise
      */
-    cContentTypeAbstractTabbed.prototype.initialise = function() {
+    cContentTypeAbstractTabbed.prototype.initialise = function () {
         // append the whole frame to the end of the body for better positioning
         this.$frame.appendTo($('body'));
         this.loadExternalFiles();
@@ -135,14 +135,14 @@
      * really needed.
      * @method loadExternalFiles
      */
-    cContentTypeAbstractTabbed.prototype.loadExternalFiles = function() {
-        // Dependencies to load
-        var files = [];
-        files.push(this.pathBackend + 'styles/content_types/cms_abstract_tabbed.css');
-        // jquery-ui.js is already added via $cfg['backend_template']['js_files']
-        //files.push(this.pathBackend + 'scripts/jquery/jquery-ui.js');
-
-        Con.Loader.get(files, cContentTypeAbstractTabbed.prototype.jQueryUiCallback, this);
+    cContentTypeAbstractTabbed.prototype.loadExternalFiles = function () {
+        Con.Loader.get(
+            [
+                this.pathBackend + 'styles/content_types/cms_abstract_tabbed.css'
+            ],
+            cContentTypeAbstractTabbed.prototype.jQueryUiCallback,
+            this
+        );
     };
 
     /**
@@ -150,7 +150,7 @@
      * loaded. Makes the frames draggable.
      * @method jQueryUiCallback
      */
-    cContentTypeAbstractTabbed.prototype.jQueryUiCallback = function() {
+    cContentTypeAbstractTabbed.prototype.jQueryUiCallback = function () {
         this.$frame.draggable({handle: '.head'});
         this.$frame.find('.head').css('cursor', 'move');
     };
@@ -164,8 +164,8 @@
      * @param {String} name The name of the form field which should be added.
      * @param {String} value The value of the form field which should be added.
      */
-    cContentTypeAbstractTabbed.prototype.appendFormField = function(name, value) {
-    	// CON-2142
+    cContentTypeAbstractTabbed.prototype.appendFormField = function (name, value) {
+        // CON-2142
         // jQuery transforms special strings like &auml; to ä during append
         // if a hidden input field with the given name already exists, just set the value
         if ($('form[name="editcontent"] input[type="hidden"][name="' + name + '"]').length > 0) {
@@ -182,11 +182,11 @@
      * Adds event which fades in the edit form when editbutton is clicked.
      * @method addFrameShowEvent
      */
-    cContentTypeAbstractTabbed.prototype.addFrameShowEvent = function() {
+    cContentTypeAbstractTabbed.prototype.addFrameShowEvent = function () {
         var self = this;
         $(this.imageId).css('cursor', 'pointer');
-        $(this.imageId).click(function() {
-            var top = $(document).scrollTop()+($(window).height()/2);
+        $(this.imageId).click(function () {
+            var top = $(document).scrollTop() + ($(window).height() / 2);
             self.$frame.fadeIn('normal');
             self.$frame.css({
                 position: 'absolute',
@@ -201,11 +201,11 @@
      * switch between the different tabs.
      * @method addTabbingEvents
      */
-    cContentTypeAbstractTabbed.prototype.addTabbingEvents = function() {
+    cContentTypeAbstractTabbed.prototype.addTabbingEvents = function () {
         var self = this,
             $items = this.$frame.find('.menu li');
         // add layer click events
-        $items.click(function() {
+        $items.click(function () {
             $items.removeClass('active');
             // hide all tabs but the active one
             self.$frame.find('.tabs > div:not(#' + $(this).attr('class') + ')').hide();
@@ -221,11 +221,11 @@
      * Adds save event to the save button of content type edit form.
      * @method addSaveEvent
      */
-    cContentTypeAbstractTabbed.prototype.addSaveEvent = function() {
+    cContentTypeAbstractTabbed.prototype.addSaveEvent = function () {
         var self = this,
             $elem = this.$frame.find('.save_settings');
         $elem.css('cursor', 'pointer');
-        $elem.click(function() {
+        $elem.click(function () {
             for (var i = 0; i < self.fields.length; i++) {
                 var value = '',
                     name = self.fields[i] + '_' + self.id,
@@ -235,7 +235,7 @@
                     value = $item.prop('checked');
                 } else if ($item.is('select')) {
                     // in case of select field implode the options, use ',' as separator
-                    $item.find('option:selected').each(function() {
+                    $item.find('option:selected').each(function () {
                         if (value === '') {
                             value = $(this).val();
                         } else {
@@ -263,18 +263,18 @@
      * Adds event for closing content type edit window.
      * @method addFrameCloseEvents
      */
-    cContentTypeAbstractTabbed.prototype.addFrameCloseEvents = function() {
+    cContentTypeAbstractTabbed.prototype.addFrameCloseEvents = function () {
         var self = this,
             $close = this.$frame.find('.close'),
             $cancel = this.$frame.find('.cancel_settings');
 
         // add cancel image event
-        $close.css('cursor', 'pointer').click(function() {
+        $close.css('cursor', 'pointer').click(function () {
             self.$frame.fadeOut('normal');
         });
 
         // add cancel button event
-        $cancel.css('cursor', 'pointer').click(function() {
+        $cancel.css('cursor', 'pointer').click(function () {
             self.$frame.fadeOut('normal');
         });
     };

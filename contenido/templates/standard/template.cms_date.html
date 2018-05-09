@@ -1,17 +1,22 @@
 <script type="text/javascript">
-//<![CDATA[
-Con.Loader.get(Con.cfg.urlBackend + 'scripts/content_types/cmsDate.js', function() {
-    var contentTypeInstance = new Con.cContentTypeDate(
-        '#cms_{PREFIX}_{ID}_settings',
-        '{PREFIX}',
-        {ID},
-        '{IDARTLANG}',
-        '{_PATH_CONTENIDO_FULLHTML_}',
-        '{LANG}',
-        {SETTINGS},
-        '{BELANG}'
+    //<![CDATA[
+    Con.Loader.get(
+        [
+            Con.cfg.urlBackend + 'scripts/content_types/cmsDate.js'
+        ],
+        function () {
+            var contentTypeInstance = new Con.cContentTypeDate(
+                '#cms_{PREFIX}_{ID}_settings',
+                '{PREFIX}',
+                {ID},
+                '{IDARTLANG}',
+                '{_PATH_CONTENIDO_FULLHTML_}',
+                '{LANG}',
+                {SETTINGS},
+                '{BELANG}'
+            );
+            contentTypeInstance.initialise('{PATH_TO_CALENDAR_PIC}');
+        }
     );
-    contentTypeInstance.initialise('{PATH_TO_CALENDAR_PIC}');
-});
-//]]>
+    //]]>
 </script>

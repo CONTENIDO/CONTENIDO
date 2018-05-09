@@ -1,4 +1,5 @@
-<img id="cms_filelist_{ID}" alt="" class="cms_filelist_img cms_filelist_{ID}_EDIT CMS_LINK_EDIT" src="{_PATH_CONTENIDO_FULLHTML_}images/but_downloadlist.gif">
+<img id="cms_filelist_{ID}" alt="" class="cms_filelist_img cms_filelist_{ID}_EDIT CMS_LINK_EDIT"
+     src="{_PATH_CONTENIDO_FULLHTML_}images/but_downloadlist.gif">
 <div style="display:none" id="cms_filelist_{ID}_settings" class="cms_filelist">
     <div class="close" id="filelist_close">
         <img src="{_PATH_CONTENIDO_FULLHTML_}images/but_cancel.gif" alt="">
@@ -40,10 +41,12 @@
             {SORTORDER_SELECT}
 
             <label for="filelist_incl_subdirectories">{LABEL_INCLUDE_SUBDIRECTORIES}</label>
-            <input class="no_width" type="checkbox" name="filelist_incl_subdirectories" id="filelist_incl_subdirectories" {FILELIST_INCL_SUBDIRECTORIES}>
+            <input class="no_width" type="checkbox" name="filelist_incl_subdirectories"
+                   id="filelist_incl_subdirectories" {FILELIST_INCL_SUBDIRECTORIES}>
 
             <label for="filelist_incl_metadata">{LABEL_INCLUDE_METADATA}</label>
-            <input class="no_width" type="checkbox" name="filelist_incl_metadata" id="filelist_incl_metadata" {FILELIST_INCL_METADATA}>
+            <input class="no_width" type="checkbox" name="filelist_incl_metadata" id="filelist_incl_metadata"
+                   {FILELIST_INCL_METADATA}>
 
             <div id="metaDataList">
                 {METADATALIST}
@@ -56,27 +59,37 @@
 
             <label for="filelist_extensions">{LABEL_FILE_EXTENSIONS}:</label>
             {EXTENSION_LIST}
-            <br style="clear:both"><a id="filelist_all_extensions">{LABEL_SELECTALLENTRIES}</a> - <a id="filelist_ignore_extensions">{LABEL_IGNORESELECTION}</a><br><br>
+            <br style="clear:both"><a id="filelist_all_extensions">{LABEL_SELECTALLENTRIES}</a> - <a
+                id="filelist_ignore_extensions">{LABEL_IGNORESELECTION}</a><br><br>
 
             <label for="filelist_filesizefilter_from">{LABEL_FILELIST_FILESIZE_LIMIT}:</label>
-            <input type="text" class="small" name="filelist_filesizefilter_from" id="filelist_filesizefilter_from" value="{FILELIST_FILESIZEFILTER_FROM}"><span>&nbsp;-&nbsp;</span><input class="small" type="text" name="filelist_filesizefilter_to" id="filelist_filesizefilter_to" value="{FILELIST_FILESIZEFILTER_TO}"><span>&nbsp;MB</span>
+            <input type="text" class="small" name="filelist_filesizefilter_from" id="filelist_filesizefilter_from"
+                   value="{FILELIST_FILESIZEFILTER_FROM}"><span>&nbsp;-&nbsp;</span><input class="small" type="text"
+                                                                                           name="filelist_filesizefilter_to"
+                                                                                           id="filelist_filesizefilter_to"
+                                                                                           value="{FILELIST_FILESIZEFILTER_TO}"><span>&nbsp;MB</span>
 
             <br style="clear:both"><br>
 
             <label for="filelist_creationdatefilter_from">{LABEL_FILELIST_CREATIONDATE_LIMIT}:</label>
-            <input type="text" name="filelist_creationdatefilter_from" id="filelist_creationdatefilter_from" class="smalldate" value="{FILELIST_CREATIONDATEFILTER_FROM}">
+            <input type="text" name="filelist_creationdatefilter_from" id="filelist_creationdatefilter_from"
+                   class="smalldate" value="{FILELIST_CREATIONDATEFILTER_FROM}">
             <span>&nbsp;-&nbsp;</span>
-            <input type="text" name="filelist_creationdatefilter_to" id="filelist_creationdatefilter_to" class="smalldate" value="{FILELIST_CREATIONDATEFILTER_TO}">
+            <input type="text" name="filelist_creationdatefilter_to" id="filelist_creationdatefilter_to"
+                   class="smalldate" value="{FILELIST_CREATIONDATEFILTER_TO}">
 
             <label for="filelist_modifydatefilter_from">{LABEL_FILELIST_MODIFYDATE_LIMIT}:</label>
-            <input type="text" name="filelist_modifydatefilter_from" id="filelist_modifydatefilter_from" class="smalldate" value="{FILELIST_MODIFYDATEFILTER_FROM}">
+            <input type="text" name="filelist_modifydatefilter_from" id="filelist_modifydatefilter_from"
+                   class="smalldate" value="{FILELIST_MODIFYDATEFILTER_FROM}">
             <span>&nbsp;-&nbsp;</span>
-            <input type="text" name="filelist_modifydatefilter_to" id="filelist_modifydatefilter_to" class="smalldate" value="{FILELIST_MODIFYDATEFILTER_TO}">
+            <input type="text" name="filelist_modifydatefilter_to" id="filelist_modifydatefilter_to" class="smalldate"
+                   value="{FILELIST_MODIFYDATEFILTER_TO}">
 
             <br style="clear:both"><br>
 
             <label for="filelist_filecount">{LABEL_FILECOUNT}:</label>
-            <input type="text" class="small" name="filelist_filecount" id="filelist_filecount" value="{FILELIST_FILECOUNT}">
+            <input type="text" class="small" name="filelist_filecount" id="filelist_filecount"
+                   value="{FILELIST_FILECOUNT}">
 
             <div class="head_sub head_sep">&nbsp;</div>
         </div>
@@ -102,7 +115,8 @@
                 </div>
                 <br>
                 <label for="teaser_art" class="small">{LABEL_FILE}:</label>
-                {FILE_SELECT}<span>&nbsp;<img id="add_file" src="{_PATH_CONTENIDO_FULLHTML_}images/but_art_new.gif" alt=""></span>
+                {FILE_SELECT}<span>&nbsp;<img id="add_file" src="{_PATH_CONTENIDO_FULLHTML_}images/but_art_new.gif"
+                                              alt=""></span>
             </div>
         </div>
     </div>
@@ -114,19 +128,24 @@
 </div>
 
 <script type="text/javascript">
-(function(Con, $) {
-    var fileListImage{ID} = '#cms_filelist_{ID}';
-    var fileListFrame{ID} = '#cms_filelist_{ID}_settings';
-    var aFileListData{ID} = [{FIELDS}];
-    var dateFields = ["filelist_creationdatefilter_from", "filelist_creationdatefilter_to", "filelist_modifydatefilter_from", "filelist_modifydatefilter_to"];
-    var iIdArtLang = '{IDARTLANG}';
-    var sLabelIgnoreExtensionsOn = '{LABEL_SELECTIONWILLBEIGNORED}';
-    var sLabelIgnoreExtensionsOff = '{LABEL_IGNORESELECTION}';
-    var bIgnoreExtensions{ID} = '{IGNOREEXTENSIONS}';
+    (function(Con, $) {
+        var fileListImage{ID} = '#cms_filelist_{ID}';
+        var fileListFrame{ID} = '#cms_filelist_{ID}_settings';
+        var aFileListData{ID} = [{FIELDS}];
+        var dateFields = ["filelist_creationdatefilter_from", "filelist_creationdatefilter_to", "filelist_modifydatefilter_from", "filelist_modifydatefilter_to"];
+        var iIdArtLang = '{IDARTLANG}';
+        var sLabelIgnoreExtensionsOn = '{LABEL_SELECTIONWILLBEIGNORED}';
+        var sLabelIgnoreExtensionsOff = '{LABEL_IGNORESELECTION}';
+        var bIgnoreExtensions{ID} = '{IGNOREEXTENSIONS}';
 
 
-    Con.Loader.get(Con.cfg.urlBackend + 'scripts/cmsFilelist.js', function() {
-        addFileListEvents(fileListFrame{ID}, fileListImage{ID}, sPath, Con.sid, iIdArtLang, {ID}, aFileListData{ID}, bIgnoreExtensions{ID});
-    });
-})(Con, Con.$);
+        Con.Loader.get(
+            [
+                Con.cfg.urlBackend + 'scripts/cmsFilelist.js'
+            ],
+            function() {
+                addFileListEvents(fileListFrame{ID}, fileListImage{ID}, sPath, Con.sid, iIdArtLang, {ID}, aFileListData{ID}, bIgnoreExtensions{ID});
+            }
+        );
+    })(Con, Con.$);
 </script>

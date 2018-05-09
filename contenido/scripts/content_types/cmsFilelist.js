@@ -16,7 +16,7 @@
  * @link       http://www.contenido.org
  */
 
-(function(Con, $) {
+(function (Con, $) {
 //    'use strict';
 
     var NAME = 'content-type-cms-filelist';
@@ -69,7 +69,7 @@
      * @method initialise
      * @override
      */
-    cContentTypeFilelist.prototype.initialise = function() {
+    cContentTypeFilelist.prototype.initialise = function () {
         // call the function of the parent so that it is initialised correctly
         Con.cContentTypeAbstractTabbed.prototype.initialise.call(this);
 
@@ -84,10 +84,10 @@
      * @method loadExternalFiles
      * @override
      */
-    cContentTypeFilelist.prototype.loadExternalFiles = function() {
+    cContentTypeFilelist.prototype.loadExternalFiles = function () {
         // call the function of the parent so that all general files are included
         Con.cContentTypeAbstractTabbed.prototype.loadExternalFiles.call(this);
-        Con.Loader.get(this.pathBackend + 'styles/content_types/cms_filelist.css');
+        Con.Loader.get([this.pathBackend + 'styles/content_types/cms_filelist.css']);
     };
 
     /**
@@ -95,9 +95,9 @@
      * Function also checks if article is already in that list
      * @method addManualFileListEvent
      */
-    cContentTypeFilelist.prototype.addManualFileListEvent = function() {
+    cContentTypeFilelist.prototype.addManualFileListEvent = function () {
         var self = this;
-        $(self.frameId + ' #add_file').css('cursor', 'pointer').click(function() {
+        $(self.frameId + ' #add_file').css('cursor', 'pointer').click(function () {
             self.addManualFileListEntry();
         });
     };
@@ -107,7 +107,7 @@
      * Function also checks if article is already in that list
      * @method addManualFileListEntry
      */
-    cContentTypeFilelist.prototype.addManualFileListEntry = function() {
+    cContentTypeFilelist.prototype.addManualFileListEntry = function () {
         var $selectFileList = $(this.SELECTOR_FILELIST_FILENAME),
             $selectManualFiles = $(this.SELECTOR_FILELIST_MANUAL_FILES),
             filename = $selectFileList.val(),
@@ -129,7 +129,7 @@
      * in case of a double click this selected article is removed from list.
      * @method addClickEvent
      */
-    cContentTypeFilelist.prototype.addClickEvent = function() {
+    cContentTypeFilelist.prototype.addClickEvent = function () {
         var self = this;
 
         this.addNaviActions();
@@ -144,7 +144,7 @@
             $settings.hide();
         }
 
-        $chk.click(function() {
+        $chk.click(function () {
             $settings.slideToggle();
         });
 
@@ -155,12 +155,12 @@
             $(this.SELECTOR_METADATALIST).hide();
         }
 
-        $(this.SELECTOR_FILELIST_INCL_METADATA).click(function() {
+        $(this.SELECTOR_FILELIST_INCL_METADATA).click(function () {
             $(self.SELECTOR_METADATALIST).slideToggle();
         });
 
-        $(this.SELECTOR_FILELIST_MANUAL_FILES).dblclick(function() {
-            $(self.SELECTOR_FILELIST_MANUAL_FILES).find('option').each(function() {
+        $(this.SELECTOR_FILELIST_MANUAL_FILES).dblclick(function () {
+            $(self.SELECTOR_FILELIST_MANUAL_FILES).find('option').each(function () {
                 if ($(this).is(':selected')) {
                     $(this).remove();
                 }
@@ -174,16 +174,16 @@
      * disables file extension select if file extensions should be ignored.
      * @method addExtensionActions
      */
-    cContentTypeFilelist.prototype.addExtensionActions = function() {
+    cContentTypeFilelist.prototype.addExtensionActions = function () {
         var self = this;
         // let the user select all file extensions at once
         $(this.SELECTOR_FILELIST_ALL_EXTENSIONS).css('cursor', 'pointer');
-        $(this.SELECTOR_FILELIST_ALL_EXTENSIONS).click(function() {
+        $(this.SELECTOR_FILELIST_ALL_EXTENSIONS).click(function () {
             // only react if the extensions should not be ignored
             if ($(self.SELECTOR_FILELIST_EXTENSIONS).is(':not(:disabled)')) {
                 // check if all options are selected
                 var allSelected = true;
-                $(self.SELECTOR_FILELIST_EXTENSIONS).find('option').each(function() {
+                $(self.SELECTOR_FILELIST_EXTENSIONS).find('option').each(function () {
                     if (!$(this).is(':selected')) {
                         allSelected = false;
                     }
@@ -202,7 +202,7 @@
         });
 
         // disable the file extension select if file extensions should be ignored
-        $(this.SELECTOR_FILELIST_IGNORE_EXTENSIONS).click(function() {
+        $(this.SELECTOR_FILELIST_IGNORE_EXTENSIONS).click(function () {
             if ($(this).is(':checked')) {
                 $(self.SELECTOR_FILELIST_EXTENSIONS).attr('disabled', 'disabled');
             } else {
@@ -217,18 +217,19 @@
      * - updating the file list each time a new directory is selected
      * @method addNaviActions
      */
-    cContentTypeFilelist.prototype.addNaviActions = function() {
+    cContentTypeFilelist.prototype.addNaviActions = function () {
         var self = this,
             $dirListManual, delegateSelector;
 
         // Click handler for directories, the regular one and the manual one...
         // Loads any available sub directories and toggles the collapsed state
         // NB: The given callback is not used at the moment but is there for future purposes!
-        var _onDirectoryClick = function($context, callback) {
-            callback = callback || function() {};
+        var _onDirectoryClick = function ($context, callback) {
+            callback = callback || function () {
+            };
             var dirname = $context.find('a[class="on"]').attr('title');
             if ($context.next('ul').length > 0) {
-                $context.next('ul').toggle(function() {
+                $context.next('ul').toggle(function () {
                     if ($context.next('ul').is(':hidden')) {
                         $context.parent().addClass('collapsed');
                     } else {
@@ -241,10 +242,10 @@
                     type: 'POST',
                     url: self.pathBackend + 'ajaxmain.php',
                     data: 'ajax=dirlist&dir=' + dirname + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
-                    success: function(msg) {
-						if (Con.checkAjaxResponse(msg) === false)  {
-							return false;
-						}
+                    success: function (msg) {
+                        if (Con.checkAjaxResponse(msg) === false) {
+                            return false;
+                        }
 
                         if (msg.length > 0) {
                             $context.after(msg);
@@ -260,7 +261,7 @@
         $dirListManual = $(this.SELECTOR_DIRLIST_MANUAL);
         delegateSelector = this.SELECTOR_DIRLIST_MANUAL.replace(this.frameId + ' ', '');
         $dirListManual.removeClass('active');
-        $(this.frameId).delegate(delegateSelector, 'click', function() {
+        $(this.frameId).delegate(delegateSelector, 'click', function () {
             _onDirectoryClick($(this));
 
             $dirListManual.removeClass('active');
@@ -271,10 +272,10 @@
                 type: 'POST',
                 url: self.pathBackend + 'ajaxmain.php',
                 data: 'ajax=filelist&dir=' + dirname + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
-                success: function(msg) {
-					if (Con.checkAjaxResponse(msg) === false)  {
-						return false;
-					}
+                success: function (msg) {
+                    if (Con.checkAjaxResponse(msg) === false) {
+                        return false;
+                    }
 
                     $(self.frameId + ' #manual #filelist_filename_' + self.id).replaceWith(msg);
                 }
@@ -285,13 +286,13 @@
 
         // Directory list
         delegateSelector = this.SELECTOR_DIRLIST_LINK.replace(this.frameId + ' ', '');
-        $(this.frameId).delegate(delegateSelector, 'click', function() {
+        $(this.frameId).delegate(delegateSelector, 'click', function () {
             $(this).parent().toggleClass('active');
             return false;
         });
 
         delegateSelector = this.SELECTOR_DIRLIST.replace(this.frameId + ' ', '');
-        $(this.frameId).delegate(delegateSelector, 'click', function() {
+        $(this.frameId).delegate(delegateSelector, 'click', function () {
             _onDirectoryClick($(this).parent().parent());
             return false;
         });
@@ -304,15 +305,15 @@
      * @method addSaveEvent
      * @override
      */
-    cContentTypeFilelist.prototype.addSaveEvent = function() {
+    cContentTypeFilelist.prototype.addSaveEvent = function () {
         var self = this;
 
-        $(this.SELECTOR_SAVE_SETTINGS).click(function() {
+        $(this.SELECTOR_SAVE_SETTINGS).click(function () {
             // The chosen directory is no form field, so add it to the editform manually
             var value = [],
                 item;
             // Loop through all selected (active) directories and collect their names
-            $(self.SELECTOR_DIRLIST_ACTIVE).each(function() {
+            $(self.SELECTOR_DIRLIST_ACTIVE).each(function () {
                 item = $(this).find('a[class="on"]');
                 if (item.attr('title').length) {
                     value.push(item.attr('title'));
@@ -321,7 +322,7 @@
 
             self.appendFormField('filelist_array_directories', value.join(','));
             // remove the filelist_directories item from the fields so that it is not set again
-            self.fields = $.grep(self.fields, function(e) {
+            self.fields = $.grep(self.fields, function (e) {
                 return e !== 'filelist_directories';
             });
         });

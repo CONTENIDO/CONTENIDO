@@ -16,7 +16,7 @@
  * @link       http://www.contenido.org
  */
 
-(function(Con, $) {
+(function (Con, $) {
 //    'use strict';
 
     var NAME = 'content-type-cms-teaser';
@@ -53,7 +53,7 @@
      * @method initialise
      * @override
      */
-    cContentTypeTeaser.prototype.initialise = function() {
+    cContentTypeTeaser.prototype.initialise = function () {
         // call the function of the parent so that it is initialised correctly
         Con.cContentTypeAbstractTabbed.prototype.initialise.call(this);
         // call custom functions that attach custom event handlers etc.
@@ -68,15 +68,15 @@
      * @method loadExternalFiles
      * @override
      */
-    cContentTypeTeaser.prototype.loadExternalFiles = function() {
+    cContentTypeTeaser.prototype.loadExternalFiles = function () {
         // call the function of the parent so that all general files are included
         Con.cContentTypeAbstractTabbed.prototype.loadExternalFiles.call(this);
 
-        // Dependencies to load
-        var files = [];
-        files.push(this.pathBackend + 'styles/content_types/cms_teaser.css');
-
-        Con.Loader.get(files);
+        Con.Loader.get(
+            [
+                this.pathBackend + 'styles/content_types/cms_teaser.css'
+            ]
+        );
     };
 
     /**
@@ -85,18 +85,18 @@
      * is changed.
      * @method getArticleList
      */
-    cContentTypeTeaser.prototype.getArticleList = function() {
+    cContentTypeTeaser.prototype.getArticleList = function () {
         var self = this;
-        $(self.frameId + ' #teaser_cat_' + self.id).change(function() {
+        $(self.frameId + ' #teaser_cat_' + self.id).change(function () {
             // get new article select and replace it with default value
             $.ajax({
                 type: 'POST',
                 url: self.pathBackend + 'ajaxmain.php',
                 data: 'ajax=artsel&name=teaser_art_' + self.id + '&contenido=' + self.session + '&idcat=' + $(this).val(),
-                success: function(msg) {
-					if (Con.checkAjaxResponse(msg) === false)  {
-						return false;
-					}
+                success: function (msg) {
+                    if (Con.checkAjaxResponse(msg) === false) {
+                        return false;
+                    }
 
                     $(self.frameId + ' #teaser_art_' + self.id).replaceWith(msg);
                 }
@@ -109,10 +109,10 @@
      * Function also checks if article is already in that list.
      * @method addManualTeaser
      */
-    cContentTypeTeaser.prototype.addManualTeaser = function() {
+    cContentTypeTeaser.prototype.addManualTeaser = function () {
         var self = this;
         $(self.frameId + ' #add_art_' + self.id).css('cursor', 'pointer');
-        $(self.frameId + ' #add_art_' + self.id).click(function() {
+        $(self.frameId + ' #add_art_' + self.id).click(function () {
             // call internal add function
             self.addManualTeaserEntry();
         });
@@ -123,7 +123,7 @@
      * Function also checks if article is already in that list
      * @method addManualTeaserEntry
      */
-    cContentTypeTeaser.prototype.addManualTeaserEntry = function() {
+    cContentTypeTeaser.prototype.addManualTeaserEntry = function () {
         var idArt = $(this.frameId + ' #teaser_art_' + this.id).val();
         var name = '';
         var exists = false;
@@ -131,14 +131,14 @@
         // if an article was selected
         if (idArt > 0) {
             // check if article already exists in view list
-            $(this.frameId + ' #teaser_manual_art_' + this.id + ' option').each(function() {
+            $(this.frameId + ' #teaser_manual_art_' + this.id + ' option').each(function () {
                 if (idArt == $(this).val()) {
                     exists = true;
                 }
             });
 
             // get name of selected article
-            $(this.frameId + ' #teaser_art_' + this.id + ' option').each(function() {
+            $(this.frameId + ' #teaser_art_' + this.id + ' option').each(function () {
                 if (idArt == $(this).val()) {
                     name = $(this).html();
                 }
@@ -156,15 +156,15 @@
      * in case of a double click this selected article is removed from list.
      * @method removeManualTeaser
      */
-    cContentTypeTeaser.prototype.removeManualTeaser = function() {
+    cContentTypeTeaser.prototype.removeManualTeaser = function () {
         var self = this;
-        $(self.frameId + ' #teaser_manual_art_' + self.id).dblclick(function() {
-            $(self.frameId + ' #teaser_manual_art_' + self.id + ' option:selected').each(function() {
+        $(self.frameId + ' #teaser_manual_art_' + self.id).dblclick(function () {
+            $(self.frameId + ' #teaser_manual_art_' + self.id + ' option:selected').each(function () {
                 $(this).remove();
             });
         });
 
-        $(self.frameId + ' #del_art_' + self.id).on('click', function() {
+        $(self.frameId + ' #del_art_' + self.id).on('click', function () {
             $(self.frameId + ' #teaser_manual_art_' + self.id + ' option').remove();
         });
     };
