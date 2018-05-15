@@ -20,7 +20,7 @@
  * @param {Object} scope  The scope, e. g. window
  * @returns {undefined}
  */
-(function (jQuery, scope) {
+(function(jQuery, scope) {
 
     // 'use strict';
 
@@ -83,7 +83,7 @@
      * @param  {String}  namespace  The full path to the desired namespace, like "Con.MyNamespace"
      * @return {Object}  The existing or new created namespace
      */
-    Con.namespace = function (namespace) {
+    Con.namespace = function(namespace) {
         var ns = namespace.split('.'),
             o = scope, i;
         for (i = 0; i < ns.length; i++) {
@@ -106,12 +106,12 @@
      * @param  {Object}  replacements  Replacements object
      * @return {String}
      */
-    Con.parseTemplate = function (template, replacements) {
+    Con.parseTemplate = function(template, replacements) {
         if (!template.replace || 'object' !== $.type(replacements)) {
             return template;
         }
         var regex = /\{\s*([^|}]+?)\s*(?:\|([^}]*))?\s*\}/g;
-        return template.replace(regex, function (match, key) {
+        return template.replace(regex, function(match, key) {
             return ('undefined' === $.type(replacements[key])) ? match : replacements[key];
         });
     };
@@ -122,7 +122,7 @@
      * @param  {String}  name  The name of frame to get
      * @return {Window|null}
      */
-    Con.getFrame = function (name) {
+    Con.getFrame = function(name) {
         try {
             // Contenido's file and image browser
             if ("undefined" === typeof(scope.top.content)) {
@@ -189,7 +189,7 @@
      * @param {String}  source   The source (template, page name, js module, etc.) who called this method
      * @param {String}  [severity='log']  Type of severity, feasible is 'log', 'info', 'warn', 'error'
      */
-    Con.log = function (mixedVar, source, severity) {
+    Con.log = function(mixedVar, source, severity) {
         severity = severity || 'log';
 
         if (!Con.cfg.enableLog) {
@@ -206,17 +206,17 @@
 
     // Console emulation, to prevent errors if console is not available
     if (!('console' in scope)) {
-        (function () {
+        (function() {
             scope.console = {
-                log: function () {
+                log: function() {
                 },
-                debug: function () {
+                debug: function() {
                 },
-                info: function () {
+                info: function() {
                 },
-                warn: function () {
+                warn: function() {
                 },
-                error: function () {
+                error: function() {
                 }
             };
         })();

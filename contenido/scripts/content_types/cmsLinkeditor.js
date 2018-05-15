@@ -16,7 +16,7 @@
  * @link       http://www.contenido.org
  */
 
-(function (Con, $) {
+(function(Con, $) {
 
     var NAME = 'content-type-cms-linkeditor';
 
@@ -58,6 +58,7 @@
 
     // inherit from cContentTypeAbstractTabbed
     cContentTypeLinkeditor.prototype = new Con.cContentTypeAbstractTabbed();
+    // correct the constructor function (it points to the cContentTypeAbstractTabbed constructor)
     cContentTypeLinkeditor.prototype.constructor = cContentTypeLinkeditor;
 
     /**
@@ -65,7 +66,7 @@
      * @method initialise
      * @override
      */
-    cContentTypeLinkeditor.prototype.initialise = function () {
+    cContentTypeLinkeditor.prototype.initialise = function() {
         // call the function of the parent so that it is initialised correctly
         Con.cContentTypeAbstractTabbed.prototype.initialise.call(this);
         // call custom functions that attach custom event handlers etc.
@@ -79,7 +80,7 @@
      * @method loadExternalFiles
      * @override
      */
-    cContentTypeLinkeditor.prototype.loadExternalFiles = function () {
+    cContentTypeLinkeditor.prototype.loadExternalFiles = function() {
         // call the function of the parent so that all general files are included
         Con.cContentTypeAbstractTabbed.prototype.loadExternalFiles.call(this);
 
@@ -88,9 +89,7 @@
                 this.pathBackend + 'styles/content_types/cms_linkeditor.css',
                 this.pathBackend + 'scripts/jquery/ajaxupload.js'
             ],
-            cContentTypeLinkeditor.prototype.linkEditorFileUpload,
-            this
-        );
+            cContentTypeLinkeditor.prototype.linkEditorFileUpload, this);
     };
 
     /**
@@ -99,7 +98,7 @@
      * @method addTabbingEvents
      * @override
      */
-    cContentTypeLinkeditor.prototype.addTabbingEvents = function () {
+    cContentTypeLinkeditor.prototype.addTabbingEvents = function() {
         var self = this;
         // call the function of the parent so that the standard tab functionality works
         Con.cContentTypeAbstractTabbed.prototype.addTabbingEvents.call(this);
@@ -109,7 +108,7 @@
 
         // show the basic settings "tab" any time
         $(this.frameId + ' .tabs #basic-settings').show();
-        $(this.frameId + ' .menu li').bind('click', function () {
+        $(this.frameId + ' .menu li').bind('click', function() {
             $(self.frameId + ' .tabs #basic-settings').show();
         });
     };
@@ -175,50 +174,45 @@
      * - updating the file list each time a new directory is selected
      * @method addNaviActions
      */
-    cContentTypeLinkeditor.prototype.addNaviActions = function () {
+    cContentTypeLinkeditor.prototype.addNaviActions = function() {
         var self = this;
 
-        $(this.frameId + ' #internal #directoryList_' + this.id + ' a[class="on"]').parent('div')
-            .unbind('click')
-            .bind('click', function () {
-                $(self.frameId + ' div').each(function () {
-                    $(this).removeClass('active');
-                });
-                $(this).addClass('active');
-                var idcat = $(this).children('a[class="on"]').attr('title');
+        $(this.frameId + ' #internal #directoryList_' + this.id + ' a[class="on"]').parent('div').unbind('click')
+            .bind('click', function() {
+                $(self.frameId + ' div').each(function() {
+                $(this).removeClass('active');
+            });
+            $(this).addClass('active');
+            var idcat = $(this).children('a[class="on"]').attr('title');
 
                 self.getArticlesList(idcat);
-                return false;
-            });
+            return false;
+        });
 
         // add possibility to expand and close directories for the article view
-        $(this.frameId + ' #internal #directoryList_' + this.id + ' em a')
-            .unbind('click')
-            .bind('click', function () {
-                var divContainer = $(this).parent().parent();
-
-                if (!_bindCollapsing(divContainer)) {
-                    var parentidcat = $(this).parent('em').parent().parent().parent().find('div a[class="on"]').attr('title');
-                    var level = $(this).parents('ul').length - 1;
+        $(this.frameId + ' #internal #directoryList_' + this.id + ' em a').unbind('click')
+            .bind('click', function() {
+            var divContainer = $(this).parent().parent();
+            if (!_bindCollapsing(divContainer)) {
+                var parentidcat = $(this).parent('em').parent().parent().parent().find('div a[class="on"]').attr('title');
+                var level = $(this).parents('ul').length - 1;
                     self.getCategoriesList(divContainer, level, parentidcat);
                 }
 
-                return false;
+            return false;
+        });
+
+        $(this.frameId + ' #file #directoryList_' + this.id + ' a[class="on"]').parent('div').unbind('click')
+            .bind('click', function() {
+            // update the "active" class
+            $(self.frameId + ' div').each(function() {
+                $(this).removeClass('active');
             });
-
-        $(this.frameId + ' #file #directoryList_' + this.id + ' a[class="on"]').parent('div')
-            .unbind('click')
-            .bind('click', function () {
-                // update the "active" class
-                $(self.frameId + ' div').each(function () {
-                    $(this).removeClass('active');
-                });
-                $(this).addClass('active');
-
-                var dirname = $(this).children('a[class="on"]').attr('title');
-                if (dirname === 'upload') {
-                    dirname = '/';
-                }
+            $(this).addClass('active');
+            var dirname = $(this).children('a[class="on"]').attr('title');
+            if (dirname === 'upload') {
+                dirname = '/';
+            }
 
                 self.getImagesList(dirname);
                 return false;
@@ -263,7 +257,7 @@
             type: 'POST',
             url: this.pathBackend + 'ajaxmain.php',
             data: params.join('&'),
-            success: function (msg) {
+            success: function(msg) {
                 if (Con.checkAjaxResponse(msg) === false) {
                     return false;
                 }
@@ -295,14 +289,13 @@
             type: 'POST',
             url: this.pathBackend + 'ajaxmain.php',
             data: params.join('&'),
-            success: function (msg) {
+            success: function(msg) {
                 if (Con.checkAjaxResponse(msg) === false) {
                     return false;
                 }
 
                 el.after(msg);
                 el.parent('li').removeClass('collapsed');
-
                 self.addNaviActions();
             }
         });
@@ -378,11 +371,11 @@
      * every time a new folder is selected.
      * @method showFolderPath
      */
-    cContentTypeLinkeditor.prototype.showFolderPath = function () {
+    cContentTypeLinkeditor.prototype.showFolderPath = function() {
         var self = this;
         // if there are no directories, set the active class for the root upload folder
-        var titles = [];
-        $(self.frameId + ' div[class="active"] a[class="on"]').each(function () {
+        var titles = new Array();
+        $(self.frameId + ' div[class="active"] a[class="on"]').each(function() {
             titles.push($(this).attr('title'));
         });
         if (titles.length < 1) {
@@ -410,7 +403,7 @@
      * Uploads an image.
      * @method linkEditorFileUpload
      */
-    cContentTypeLinkeditor.prototype.linkEditorFileUpload = function () {
+    cContentTypeLinkeditor.prototype.linkEditorFileUpload = function() {
 
         var self = this;
         var dirname = '';
@@ -425,11 +418,11 @@
             autoUpload: true,
             forceIframeTransport: true,
             multipart: true,
-            start: function () {
+            start: function() {
                 $(self.frameId + ' img.loading').show();
                 $(self.frameId + ' input.jqueryAjaxUpload').css('visibility', 'hidden');
             },
-            always: function () {
+            always: function() {
                 if (dirname === 'upload' || dirname === '') {
                     dirname = '/';
                 }
@@ -438,10 +431,10 @@
                     type: 'POST',
                     url: self.pathBackend + 'ajaxmain.php',
                     data: 'ajax=linkeditorimagelist&dir=' + self.selectedPath + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
-                    success: function (msg) {
-                        if (Con.checkAjaxResponse(msg) === false) {
-                            return false;
-                        }
+                    success: function(msg) {
+						if (Con.checkAjaxResponse(msg) === false)  {
+							return false;
+						}
 
                         $(self.frameId + ' img.loading').hide();
                         $(self.frameId + ' input.jqueryAjaxUpload').css('visibility', 'visible');
@@ -456,10 +449,10 @@
      * Creates a new directory and updates the directory list accordingly.
      * @method createMKDir
      */
-    cContentTypeLinkeditor.prototype.createMKDir = function () {
+    cContentTypeLinkeditor.prototype.createMKDir = function() {
         var self = this;
         $(self.frameId + ' #file form[name="newdir"] input[type="image"]').unbind('click');
-        $(self.frameId + ' #file form[name="newdir"] input[type="image"]').click(function () {
+        $(self.frameId + ' #file form[name="newdir"] input[type="image"]').click(function() {
             var folderName = $(self.frameId + ' input[name="foldername"]').val();
             // if folder name is empty, do nothing
             if (folderName === '') {
@@ -474,10 +467,10 @@
                 type: 'POST',
                 url: self.pathBackend + 'ajaxmain.php',
                 data: 'ajax=upl_mkdir&id=' + self.id + '&idartlang=' + self.idArtLang + '&path=' + dirname + '&foldername=' + folderName + '&contenido=' + self.session,
-                success: function (msg) { //make create folder
-                    if (Con.checkAjaxResponse(msg) === false) {
-                        return false;
-                    }
+                success: function(msg) { //make create folder
+					if (Con.checkAjaxResponse(msg) === false)  {
+						return false;
+					}
 
                     if (msg === '1') {
                         // reset input field
@@ -487,10 +480,10 @@
                             type: 'POST',
                             url: self.pathBackend + 'ajaxmain.php',
                             data: 'ajax=dirlist&idartlang=' + self.idArtLang + '&id=' + self.id + '&dir=' + dirname + '&contenido=' + self.session,
-                            success: function (msg) {
-                                if (Con.checkAjaxResponse(msg) === false) {
-                                    return false;
-                                }
+                            success: function(msg) {
+								if (Con.checkAjaxResponse(msg) === false)  {
+									return false;
+								}
 
                                 if ($('div.cms_linkeditor .con_str_tree div.active').length === 0) {
                                     // to make sure that some element is selected. Otherwise the list wouldn't get updated
@@ -503,12 +496,12 @@
                                     title = dirname + folderName;
                                 }
                                 var titles = [];
-                                $(self.frameId + ' div a[class="on"]').each(function () {
+                                $(self.frameId + ' div a[class="on"]').each(function() {
                                     titles.push($(this).attr('title'));
                                 });
 
                                 if ($.inArray(title, titles) === -1) {
-                                    $('div.cms_linkeditor .con_str_tree li div>a').each(function () {
+                                    $('div.cms_linkeditor .con_str_tree li div>a').each(function() {
                                         if ($(this).attr('title') === self.selectedPath) {
                                             $(this).parent().parent('li:has(ul)').children('ul').remove();
                                             $(this).parent().after(msg);
@@ -533,12 +526,12 @@
      * @method addSaveEvent
      * @override
      */
-    cContentTypeLinkeditor.prototype.addSaveEvent = function () {
+    cContentTypeLinkeditor.prototype.addSaveEvent = function() {
         var self = this;
-        $(self.frameId + ' .save_settings').click(function () {
+        $(self.frameId + ' .save_settings').click(function() {
             // the link type is no form field, so add it to the editform manually
             var type = '';
-            $(self.frameId + ' .menu li').each(function () {
+            $(self.frameId + ' .menu li').each(function() {
                 // if this is the active tab, extract the tab name
                 if ($(this).hasClass('active')) {
                     var cssClass = $(this).attr('class');
@@ -547,7 +540,7 @@
             });
             self.appendFormField('linkeditor_type', type);
             // remove the linkeditor_type item from the fields so that it is not set again
-            self.fields = $.grep(self.fields, function (e) {
+            self.fields = $.grep(self.fields, function(e) {
                 return e !== 'linkeditor_type';
             });
         });

@@ -15,7 +15,7 @@
  * @link http://www.contenido.org
  */
 
-(function (Con, $) {
+(function(Con, $) {
 
     var NAME = 'registry';
 
@@ -23,7 +23,7 @@
     // use definition from Mozilla
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
     if ('function' !== typeof Array.prototype.forEach) {
-        Array.prototype.forEach = function (callback, thisArg) {
+        Array.prototype.forEach = function(callback, thisArg) {
 
             var T, k;
 
@@ -74,7 +74,7 @@
                 // d. Increase k by 1.
                 k++;
             }
-            // 8. return undefined
+        // 8. return undefined
         };
     }
 
@@ -82,7 +82,7 @@
     // use definition from Mozilla
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf#Polyfill
     if (!Array.prototype.indexOf) {
-        Array.prototype.indexOf = function (searchElement, fromIndex) {
+        Array.prototype.indexOf = function(searchElement, fromIndex) {
 
             var k;
 
@@ -149,10 +149,10 @@
     // use definition from Mozilla
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
     if (!Object.keys) {
-        Object.keys = (function () {
+        Object.keys = (function() {
             'use strict';
             var hasOwnProperty = Object.prototype.hasOwnProperty,
-                hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
+            hasDontEnumBug = !({ toString: null }).propertyIsEnumerable('toString'),
                 dontEnums = [
                     'toString',
                     'toLocaleString',
@@ -164,7 +164,7 @@
                 ],
                 dontEnumsLength = dontEnums.length;
 
-            return function (obj) {
+            return function(obj) {
                 if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
                     throw new TypeError('Object.keys called on non-object');
                 }
@@ -214,7 +214,7 @@
          * @param {String} key
          * @param {*} value
          */
-        set: function (key, value) {
+        set: function(key, value) {
             this._instances[key] = value;
         },
 
@@ -228,7 +228,7 @@
          * @param {String} key
          * @return {*} The value or NULL
          */
-        get: function (key) {
+        get: function(key) {
             if ('undefined' === $.type(this._instances[key])) {
                 // Con.log('Registry.get: No entry is registered for key ' +
                 // key, NAME, 'warn');
@@ -249,7 +249,7 @@
          * @param {String} key
          * @return {Boolean}
          */
-        isRegistered: function (key) {
+        isRegistered: function(key) {
             return ('undefined' === $.type(this._instances[key]));
         },
 
@@ -262,7 +262,7 @@
          * @method remove
          * @param {String} key
          */
-        remove: function (key) {
+        remove: function(key) {
             delete this._instances[key];
         }
     };
@@ -271,7 +271,7 @@
 
 // ############################################################################
 
-(function (Con, $) {
+(function(Con, $) {
 
     var NAME = 'loader';
 
@@ -368,17 +368,17 @@
      * @param {Object} settings Settings Object (for debugging)
      * @private
      */
-    var _lateEval = function (fileContent, callback, tries, fileName, jqxhr, settings) {
+    var _lateEval = function(fileContent, callback, tries, fileName, jqxhr, settings) {
         try {
             eval(fileContent);
-        } catch (err) {
-            if (tries >= 3) {
+        } catch(err) {
+            if (tries >=3) {
                 Con.log("failed 3 times for " + fileName, NAME);
                 Con.log(jqxhr, NAME);
                 Con.log(settings, NAME);
                 Con.log(err, NAME);
             } else {
-                setTimeout(function () {
+                setTimeout(function() {
                     _lateEval(fileContent, callback, tries + 1, fileName, jqxhr, settings);
                 }, 250);
             }
@@ -395,7 +395,7 @@
      * @param {Function} callback
      * @private
      */
-    var _loadJs = function (file, callback) {
+    var _loadJs = function(file, callback) {
         $.getScript(file).done(function () {
             callback();
         }).fail(function (jqxhr, settings, exception) {
@@ -438,7 +438,6 @@
         }
     }
 
-
     /**
      * Add callback to queue
      *
@@ -467,7 +466,7 @@
      * @returns {{load: Array, loaded: Array, loading: Array}}
      * @private
      */
-    var _getState = function (files) {
+    var _getState = function(files) {
         var out = {
             load: [],
             loaded: [],
@@ -545,8 +544,8 @@
          * @return {Boolean}
          * @static
          */
-        get: function (files, callback, scope, params) {
-            callback = ('undefined' === $.type(callback)) ? function () {
+        get: function(files, callback, scope, params) {
+            callback = ('undefined' === $.type(callback)) ? function() {
             } : callback;
             scope = ('undefined' === $.type(scope)) ? this : scope;
             params = ('undefined' === $.type(params)) ? [] : params;
@@ -565,7 +564,7 @@
 
 // ############################################################################
 
-(function (Con, $, scope) {
+(function(Con, $, scope) {
 
     var NAME = 'frame-left-top';
 
@@ -607,7 +606,7 @@
          * options.resizegap  (Number)  The resize gab passed manually.
          * </pre>
          */
-        resize: function (options) {
+        resize: function(options) {
             var opt = $.extend({
                 initial: false,
                 resizegap: null
@@ -617,8 +616,8 @@
 
             if (!$container[0]) {
                 Con
-                    .log("resize: Couldn't get container element!", NAME,
-                        'warn');
+                        .log("resize: Couldn't get container element!", NAME,
+                                'warn');
                 return;
             }
 
@@ -651,7 +650,7 @@
          * @return {HTMLElement[]}
          * @private
          */
-        _getContainer: function () {
+        _getContainer: function() {
             if (null === $_container) {
                 $_container = $('#top_left_container', Con.getFrame('left_top').document);
             }
@@ -663,7 +662,7 @@
 
 // ############################################################################
 
-(function (Con, $, scope) {
+(function(Con, $, scope) {
 
     var NAME = 'util-url';
 
@@ -694,12 +693,12 @@
          * @return {String}
          * @static
          */
-        build: function (page, params) {
+        build: function(page, params) {
             params = params || {};
 
             var query = [];
 
-            $.each(params, function (name, value) {
+            $.each(params, function(name, value) {
                 query.push(name + '=' + value);
             });
 
@@ -726,7 +725,7 @@
          * @return {String} The folder starting like 'http://hostname/some/path/'
          * @static
          */
-        getUrlWithPath: function (url) {
+        getUrlWithPath: function(url) {
             url = url || scope.location.href;
             return decodeURI(url.substring(0, (url.lastIndexOf('/', url.indexOf('?')) + 1)));
         },
@@ -746,7 +745,7 @@
          * @return {Object}
          * @static
          */
-        getParams: function (url) {
+        getParams: function(url) {
             url = url || scope.location.href;
 
             var params = {}, parts = url.split('?');
@@ -754,7 +753,7 @@
             if (2 === parts.length) {
                 var queryString = parts[1];
                 queryString = queryString.split('&');
-                $.each(queryString, function (pos, value) {
+                $.each(queryString, function(pos, value) {
                     var query = value.split('=');
                     if (2 === query.length) {
                         params[query[0]] = query[1];
@@ -791,11 +790,11 @@
          * @return {String}
          * @static
          */
-        replaceParams: function (url, params) {
+        replaceParams: function(url, params) {
             var parts = url.split('?'), paramsOrg = Con.UtilUrl.getParams(url), query = '';
 
             if (2 === parts.length) {
-                $.each(params, function (key, value) {
+                $.each(params, function(key, value) {
                     if (null === value) {
                         if ('undefined' !== $.type(paramsOrg[key])) {
                             delete paramsOrg[key];
@@ -805,7 +804,7 @@
                     }
                 });
 
-                $.each(paramsOrg, function (key, value) {
+                $.each(paramsOrg, function(key, value) {
                     if ('' !== query) {
                         query += '&';
                     }
@@ -833,7 +832,7 @@
          * @return {Boolean} True if value is a URL
          * @static
          */
-        validate: function (value) {
+        validate: function(value) {
             var urlregex = /(http:\/\/www.|https:\/\/www.|www.|http:\/\/|https:\/\/){1}(([0-9A-Za-z]+\.))|(localhost)/;
             return urlregex.test(value);
 
@@ -844,7 +843,7 @@
 
 // ############################################################################
 
-(function (Con, $) {
+(function(Con, $) {
 
     /**
      * Miscellaneous/common functions, extends Con.
@@ -856,12 +855,12 @@
      * @static
      */
 
-        // Fallback for not being able to load translations
+    // Fallback for not being able to load translations
     var TRANSLATIONS = {
-            OK: 'OK',
-            Cancel: 'Cancel',
-            'Confirmation Required': 'Confirmation Required'
-        };
+        OK: 'OK',
+        Cancel: 'Cancel',
+        'Confirmation Required': 'Confirmation Required'
+    };
 
     /**
      * Javascript Multilink Example:
@@ -883,7 +882,7 @@
      *            frame structure is not available.
      */
 
-    Con.multiLink = function () {
+    Con.multiLink = function() {
         // get last argument
         var tmp = arguments[arguments.length - 1];
         // check by last argument if reduced frame structure is used
@@ -931,7 +930,7 @@
      * @method getRegistry
      * @return {Registry|NULL}
      */
-    Con.getRegistry = function () {
+    Con.getRegistry = function() {
         var frame = Con.getFrame('header');
         if (frame && frame.Con && frame.Con.Registry) {
             return frame.Con.Registry;
@@ -957,7 +956,7 @@
      * @return {Window} The window object in which all content is being
      *         displayed
      */
-    Con.getContentWindow = function () {
+    Con.getContentWindow = function() {
         var frame = Con.getFrame('right_bottom');
         if (frame) {
             return frame;
@@ -981,15 +980,14 @@
      *            translations
      * @param {Object} [context]
      */
-    Con.getTranslations = function (callback, context) {
-        callback = callback || function () {
-        };
+    Con.getTranslations = function(callback, context) {
+        callback = callback || function() {};
         context = context || this;
 
         var registry = Con.getRegistry();
 
         if (!registry) {
-            setTimeout(function () {
+            setTimeout(function() {
                 Con.getTranslations(callback, context);
             }, 50);
             return;
@@ -1005,7 +1003,7 @@
                     url: 'ajaxmain.php',
                     data: 'ajax=generaljstranslations&contenido=' + Con.sid,
                     dataType: 'json',
-                    success: function (data) {
+                    success: function(data) {
                         if (Con.checkAjaxResponse(data) === false) {
                             return false;
                         }
@@ -1013,10 +1011,10 @@
                         registry.set('translations', data);
                         callback.call(context, data);
                     },
-                    error: function () {
+                    error: function() {
                         callback.call(context, null);
                         Con.log('getTranslations: Could not get translations',
-                            'general.js', 'error');
+                                'general.js', 'error');
                     }
                 });
             }
@@ -1041,9 +1039,9 @@
      * @param {Object} additionalOptions  Options which can be used to customise the
      *            behaviour of the dialog box
      */
-    Con.showConfirmation = function (description, callback, additionalOptions) {
+    Con.showConfirmation = function(description, callback, additionalOptions) {
         // Get the translations so that we can use them
-        Con.getTranslations(function (translations) {
+        Con.getTranslations(function(translations) {
             if (null === translations) {
                 // Use fallback
                 translations = TRANSLATIONS;
@@ -1052,13 +1050,13 @@
             // Define the options and extend them with the given ones
             var contentWindow = Con.getContentWindow(), buttons = {};
 
-            buttons[translations.OK] = function () {
+            buttons[translations.OK] = function() {
                 if (typeof callback === 'function') {
                     callback();
                 }
                 contentWindow.$('#single_dialog').dialog('close');
             };
-            buttons[translations.Cancel] = function () {
+            buttons[translations.Cancel] = function() {
                 contentWindow.$('#single_dialog').dialog('close');
             };
 
@@ -1103,10 +1101,10 @@
      *            http://api.jqueryui.com/dialog/
      * @param {Boolean} hideButtons
      */
-    Con.showNotification = function (title, description, additionalOptions,
-                                     hideButtons) {
+    Con.showNotification = function(title, description, additionalOptions,
+            hideButtons) {
         // Get the translations so that we can use them
-        Con.getTranslations(function (translations) {
+        Con.getTranslations(function(translations) {
             if (null === translations) {
                 // Use fallback
                 translations = TRANSLATIONS;
@@ -1115,7 +1113,7 @@
             // Define the options and extend them with the given ones
             var buttons = {};
             if (!hideButtons) {
-                buttons[translations.OK] = function () {
+                buttons[translations.OK] = function() {
                     // unfortunately, the following line does not work if the
                     // dialog is opened from another frame
                     // $(this).dialog('close');
@@ -1142,14 +1140,14 @@
     };
 
     /**
-     * Check Ajax response and located user to login page
-     * if authentication failed (e. g. user timeout)
-     *
-     * @method checkAjaxResponde
-     * @param {String|Object} response
-     * @return {Boolean}
-     */
-    Con.checkAjaxResponse = function (response) {
+    * Check Ajax response and located user to login page
+    * if authentication failed (e. g. user timeout)
+    *
+    * @method checkAjaxResponde
+    * @param {String|Object} response
+    * @return {Boolean}
+    */
+    Con.checkAjaxResponse = function(response) {
 
         if (typeof response === 'string' && response.indexOf('authentication_failure') > -1) {
 
@@ -1181,7 +1179,7 @@
      * @param {String} subMenu  The position of submenu or data-name value
      * @return {Boolean}
      */
-    Con.markSubmenuItem = function (subMenu) {
+    Con.markSubmenuItem = function(subMenu) {
         var frame = Con.getFrame('right_top'), selector, menuItem;
 
         if (frame) {

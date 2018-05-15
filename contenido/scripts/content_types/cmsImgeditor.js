@@ -16,7 +16,7 @@
  * @link       http://www.contenido.org
  */
 
-(function (Con, $) {
+(function(Con, $) {
 //    'use strict';
 
     var NAME = 'content-type-cms-imgeditor';
@@ -75,7 +75,7 @@
      * @method initialise
      * @override
      */
-    cContentTypeImgeditor.prototype.initialise = function () {
+    cContentTypeImgeditor.prototype.initialise = function() {
         // call the function of the parent so that it is initialised correctly
         Con.cContentTypeAbstractTabbed.prototype.initialise.call(this);
         // call custom functions that attach custom event handlers etc.
@@ -93,7 +93,7 @@
      * @method loadExternalFiles
      * @override
      */
-    cContentTypeImgeditor.prototype.loadExternalFiles = function () {
+    cContentTypeImgeditor.prototype.loadExternalFiles = function() {
         // call the function of the parent so that all general files are included
         Con.cContentTypeAbstractTabbed.prototype.loadExternalFiles.call(this);
 
@@ -108,7 +108,7 @@
      * Inits Upload action after needed scripts were loaded
      * @method initUpload
      */
-    cContentTypeImgeditor.prototype.initUpload = function () {
+    cContentTypeImgeditor.prototype.initUpload = function() {
         var self = this;
         self.imageFileUpload();
         self.scriptLoaded = 1;
@@ -120,12 +120,12 @@
      * @method addTabbingEvents
      * @override
      */
-    cContentTypeImgeditor.prototype.addTabbingEvents = function () {
+    cContentTypeImgeditor.prototype.addTabbingEvents = function() {
         var self = this;
         // call the function of the parent so that the standard tab functionality works
         Con.cContentTypeAbstractTabbed.prototype.addTabbingEvents.call(self);
 
-        $(self.frameId + ' .menu li').click(function () {
+        $(self.frameId + ' .menu li').click(function() {
             // refresh dirs list
             if (!self.refreshed) {
                 var folderName = self.getSelectedFolder();
@@ -144,14 +144,14 @@
     /**
      * Adds the directory list
      */
-    cContentTypeImgeditor.prototype.addDirectoryList = function () {
+    cContentTypeImgeditor.prototype.addDirectoryList = function() {
         var self = this;
         var id = self.id;
 
         var dlist = $(self.frameId + ' #directoryList_' + id + ' em a');
         var divContainer = dlist.closest('.con_str_tree');
 
-        $('#cms_imgeditor_' + id).on('click', function (e) {
+        $('#cms_imgeditor_' + id).on('click', function(e) {
             var folderName = self.getSelectedFolder();
             var dirname = self.getSelectedDir();
             self.updateDirList(dirname, folderName);
@@ -165,10 +165,10 @@
      * - updating the file list each time a new directory is selected
      * @method addNaviActions
      */
-    cContentTypeImgeditor.prototype.addNaviActions = function () {
+    cContentTypeImgeditor.prototype.addNaviActions = function() {
         var self = this;
 
-        $(self.frameId + ' ul.menu li.upload').click(function () {
+        $(self.frameId + ' ul.menu li.upload').click(function() {
             if (self.scriptLoaded == 1) {
                 self.imageFileUpload();
             }
@@ -176,9 +176,9 @@
 
         // init directories lists
         $(self.frameId + ' #directoryList_' + self.id + ' a[class="on"]').parent('div').unbind('click');
-        $(self.frameId + ' #directoryList_' + self.id + ' a[class="on"]').parent('div').click(function () {
+        $(self.frameId + ' #directoryList_' + self.id + ' a[class="on"]').parent('div').click(function() {
             // update the "active" class
-            $.each($(self.frameId + ' div'), function () {
+            $.each($(self.frameId + ' div'), function() {
                 $(this).removeClass('active');
             });
             $(this).addClass('active');
@@ -188,12 +188,12 @@
         });
         // add possibility to expand and close directories
         $(self.frameId + ' #directoryList_' + self.id + ' em a').unbind('click');
-        $(self.frameId + ' #directoryList_' + self.id + ' em a').click(function (e) {
-            e.preventDefault();
+        $(self.frameId + ' #directoryList_' + self.id + ' em a').click(function(e) {
+        	e.preventDefault();
             var divContainer = $(this).parent().parent();
             var dirname = $(this).parent('em').parent().find('a[class="on"]').attr('title');
             if (divContainer.next('ul').length > 0) {
-                divContainer.next('ul').toggle(function () {
+                divContainer.next('ul').toggle(function() {
                     if (divContainer.next('ul').css('display') === 'none') {
                         divContainer.parent().addClass('collapsed');
                     } else {
@@ -205,10 +205,10 @@
                     type: 'POST',
                     url: self.pathBackend + 'ajaxmain.php',
                     data: 'ajax=dirlist&dir=' + dirname + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
-                    success: function (msg) {
-                        if (Con.checkAjaxResponse(msg) === false) {
-                            return false;
-                        }
+                    success: function(msg) {
+						if (Con.checkAjaxResponse(msg) === false)  {
+							return false;
+						}
 
                         divContainer.after(msg);
                         divContainer.parent('li').removeClass('collapsed');
@@ -224,11 +224,11 @@
      * Updates the directory names in the upload tab.
      * @method showFolderPath
      */
-    cContentTypeImgeditor.prototype.showFolderPath = function () {
+    cContentTypeImgeditor.prototype.showFolderPath = function() {
         var self = this;
         // if there are no directories, set the active class for the root upload folder
         var directories = [];
-        $(self.frameId + ' div[class="active"] a[class="on"]').each(function () {
+        $(self.frameId + ' div[class="active"] a[class="on"]').each(function() {
             directories.push($(this).attr('title'));
         });
         if (directories.length < 1) {
@@ -260,10 +260,10 @@
      * Updates the image preview and the image's meta data each time a new image is selected.
      * @method addSelectAction
      */
-    cContentTypeImgeditor.prototype.addSelectAction = function () {
+    cContentTypeImgeditor.prototype.addSelectAction = function() {
         var self = this;
         if ($('#image_filename_' + self.id).length > 0) {
-            $(self.frameId + ' select[name="image_filename"]').change(function () {
+            $(self.frameId + ' select[name="image_filename"]').change(function() {
                 var filename = $('select#image_filename_' + self.id + ' option:selected').val();
                 // update the image preview element with the new selected image
                 if (filename === '') {
@@ -283,10 +283,10 @@
                         type: 'POST',
                         url: self.pathBackend + 'ajaxmain.php',
                         data: 'ajax=loadImageMeta&filename=' + filename + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
-                        success: function (msg) {
-                            if (Con.checkAjaxResponse(msg) === false) {
-                                return false;
-                            }
+                        success: function(msg) {
+							if (Con.checkAjaxResponse(msg) === false)  {
+								return false;
+							}
 
                             var imageMeta = $.parseJSON(msg);
                             $('#image_medianame_' + self.id).val(imageMeta.medianame);
@@ -306,10 +306,10 @@
      * Creates a new directory and updates the directory list accordingly.
      * @method createMKDir
      */
-    cContentTypeImgeditor.prototype.createMKDir = function () {
+    cContentTypeImgeditor.prototype.createMKDir = function() {
         var self = this;
         $(self.frameId + ' #upload form[name="newdir"] input[type="image"]').unbind('click');
-        $(self.frameId + ' #upload form[name="newdir"] input[type="image"]').click(function () {
+        $(self.frameId + ' #upload form[name="newdir"] input[type="image"]').click(function() {
             var folderName = self.getSelectedFolder();
             if (folderName === false) {
                 return false;
@@ -321,10 +321,10 @@
                 type: 'POST',
                 url: self.pathBackend + 'ajaxmain.php',
                 data: 'ajax=upl_mkdir&id=' + self.id + '&idartlang=' + self.idArtLang + '&path=' + dirname + '&foldername=' + folderName + '&contenido=' + self.session,
-                success: function (msg) {
-                    if (Con.checkAjaxResponse(msg) === false) {
-                        return false;
-                    }
+                success: function(msg) {
+					if (Con.checkAjaxResponse(msg) === false)  {
+						return false;
+					}
 
                     if (msg === '1') {
                         self.updateDirList(dirname, folderName);
@@ -341,7 +341,7 @@
      * Uploads an image.
      * @method imageFileUpload
      */
-    cContentTypeImgeditor.prototype.imageFileUpload = function () {
+    cContentTypeImgeditor.prototype.imageFileUpload = function() {
         var self = this;
         var dirname = '';
         if (self.selectedPath !== '' && self.selectedPath !== 'upload') {
@@ -359,11 +359,11 @@
             autoUpload: true,
             forceIframeTransport: true,
             multipart: true,
-            start: function (e) {
+            start: function(e) {
                 $(self.frameId + ' img.loading').show();
                 $(self.frameId + ' input.jqueryAjaxUpload').css('visibility', 'hidden');
             },
-            always: function (e, data) {
+            always: function(e, data) {
                 if (dirname === 'upload' || dirname === '') {
                     dirname = '/';
                 }
@@ -371,10 +371,10 @@
                     type: 'POST',
                     url: self.pathBackend + 'ajaxmain.php',
                     data: 'ajax=imagelist&dir=' + dirname + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
-                    success: function (msg) {
-                        if (Con.checkAjaxResponse(msg) === false) {
-                            return false;
-                        }
+                    success: function(msg) {
+						if (Con.checkAjaxResponse(msg) === false)  {
+							return false;
+						}
 
                         $(self.frameId + ' img.loading').hide();
                         $(self.frameId + ' input.jqueryAjaxUpload').css('visibility', 'visible');
@@ -393,7 +393,7 @@
      * Updates the filename in the meta tab.
      * @method showUrlforMeta
      */
-    cContentTypeImgeditor.prototype.showUrlforMeta = function () {
+    cContentTypeImgeditor.prototype.showUrlforMeta = function() {
         var filename = $(this.frameId + ' select#image_filename_' + this.id + ' option:selected').val();
         $(this.frameId + ' #image_meta_url_' + this.id).html(filename);
     };
