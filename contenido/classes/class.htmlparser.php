@@ -307,7 +307,7 @@ class HtmlParser {
             return false;
         }
 
-        $this->_skipInTag("<");
+        $this->_skipInTag(array("<"));
         $this->_clearAttributes();
         $name = $this->_skipToBlanksInTag();
         $pos = strpos($name, "/");
