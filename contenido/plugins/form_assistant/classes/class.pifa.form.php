@@ -825,9 +825,9 @@ class PifaForm extends Item {
         $toCsv = '';
 
         // convert array values to CSV values
-        $implode = 'return implode(\',\', $in);';
-        $implode = create_function('$in', $toCsv);
-        $data = array_map($implode, $data);
+        $data = array_map(function($in) {
+            return implode(',', $in);;
+        }, $data);
 
         // optionally rearrange/mirror array
         if (!$oneRowPerField) {
