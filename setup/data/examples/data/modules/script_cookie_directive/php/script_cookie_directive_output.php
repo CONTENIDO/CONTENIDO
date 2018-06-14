@@ -52,22 +52,24 @@ if (!cRegistry::getBackendSessionId()) {
          * @param string $uri
          * @return string
          */
-        function script_cookie_directive_add_get_params($uri) {
-            foreach ($_GET as $getKey => $getValue) {
-                // do not add already added GET parameters to redirect url
-                if (strpos($uri, '?' . $getKey . '=') !== false
-                || strpos($uri, '&' . $getKey . '=') !== false) {
-                    continue;
+        if (!function_exists('script_cookie_directive_add_get_params')) {
+            function script_cookie_directive_add_get_params($uri) {
+                foreach ($_GET as $getKey => $getValue) {
+                    // do not add already added GET parameters to redirect url
+                    if (strpos($uri, '?' . $getKey . '=') !== false
+                    || strpos($uri, '&' . $getKey . '=') !== false) {
+                        continue;
+                    }
+                    if (strpos($uri, '?') === false) {
+                        $uri .= '?';
+                    } else {
+                        $uri .= '&';
+                    }
+                    $uri .= htmlentities($getKey) . '=' . htmlentities($getValue);
                 }
-                if (strpos($uri, '?') === false) {
-                    $uri .= '?';
-                } else {
-                    $uri .= '&';
-                }
-                $uri .= htmlentities($getKey) . '=' . htmlentities($getValue);
-            }
 
-            return $uri;
+                return $uri;
+            }
         }
 
         // build accept url
