@@ -115,9 +115,9 @@ class NoteView extends cHTMLIFrame {
      * @param string $sItemType
      * @param string $sItemId
      */
-    public function NoteView($sItemType, $sItemId) {
+    public function __construct($sItemType, $sItemId) {
         global $sess, $cfg;
-        cHTMLIFrame::cHTMLIFrame();
+        parent::__construct();
         $this->setSrc($sess->url("main.php?itemtype=$sItemType&itemid=$sItemId&area=note&frame=2"));
         $this->setBorder(0);
     }
@@ -383,7 +383,7 @@ class NoteLink extends cHTMLLink {
      * @param mixed $sItemID
      *         Item ID (usually the primary key)
      */
-    public function NoteLink($sItemType, $sItemID) {
+    public function __construct($sItemType, $sItemID) {
         parent::__construct();
 
         $img = new cHTMLImage('images/note.gif');
