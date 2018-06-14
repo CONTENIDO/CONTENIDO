@@ -444,7 +444,7 @@ class cApiPropertyCollection extends ItemCollection {
      */
     public function getAllValues($field, $fieldValue, $auth = NULL) {
         $authString = '';
-        if (!is_null($auth) && sizeof($auth) > 0) {
+        if (!is_null($auth) && is_object($auth) && sizeof($auth) > 0) {
             $authString .= " AND author = '" . $this->db->escape($auth->auth["uid"]) . "'";
         }
 
