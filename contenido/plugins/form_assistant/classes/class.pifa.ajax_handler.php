@@ -263,16 +263,17 @@ class PifaAjaxHandler {
      * @throws PifaException
      */
     private function _postFieldForm($idform, $idfield) {
-        $string_cast_deep = create_function('$value', '
+        global $area;
+
+        $string_cast_deep = function($value) {
             $value = cSecurity::unescapeDB($value);
             $value = cSecurity::toString($value);
             $value = trim($value);
             // replace comma by comma entity
-            $value = str_replace(\',\', \'&#44;\', $value);
+            $value = str_replace(',', '&#44;', $value);
             return $value;
-        ');
+        };
 
-        global $area;
         $cfg = cRegistry::getConfig();
 
         // load or create field

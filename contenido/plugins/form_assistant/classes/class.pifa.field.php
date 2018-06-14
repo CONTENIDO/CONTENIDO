@@ -1353,7 +1353,9 @@ class PifaField extends Item {
             // $option_values = str_getcsv($option_values);
 
             // instead replace commas stored as entities by real commas
-            $func = create_function('$v', 'return str_replace(\'&#44;\', \',\', $v);');
+            $func = function($v) {
+                return str_replace('&#44;', ',', $v);
+            };
             $option_labels = array_map($func, $option_labels);
             $option_values = array_map($func, $option_values);
 
