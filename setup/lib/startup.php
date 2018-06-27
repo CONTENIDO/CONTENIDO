@@ -137,6 +137,7 @@ $cfg['db'] = array(
     'enableProfiling' => false,
 );
 
+checkAndInclude(CON_SETUP_PATH . '/lib/defines.php');
 checkAndInclude($cfg['path']['contenido_config'] . 'config.path.php');
 checkAndInclude($cfg['path']['contenido_config'] . 'config.misc.php');
 checkAndInclude($cfg['path']['contenido_config'] . 'cfg_sql.inc.php');
@@ -171,7 +172,6 @@ cAutoload::initialize($cfg);
 cHTML::setGenerateXHTML(false);
 
 // Common includes
-checkAndInclude(CON_SETUP_PATH . '/lib/defines.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.php54.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.i18n.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/api/functions.api.general.php');
