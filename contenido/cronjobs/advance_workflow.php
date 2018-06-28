@@ -17,6 +17,8 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
+global $cfg;
+
 // CONTENIDO path
 $contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . '/';
 

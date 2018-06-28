@@ -16,13 +16,15 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
+global $cfg;
+
 // CONTENIDO path
 $contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . '/';
 
 // CONTENIDO startup process
 include_once($contenidoPath . 'includes/startup.php');
 
-
+// @todo Do we really need this include here?
 require_once(cRegistry::getBackendPath() . $cfg['path']['includes'] . 'pseudo-cron.inc.php');
 
 if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
