@@ -18,7 +18,8 @@ function hasMySQLiExtension() {
 	return (isPHPExtensionLoaded ( "mysqli" ) == CON_EXTENSION_AVAILABLE) ? true : false;
 }
 function doMySQLConnect($host, $username, $password) {
-	$aOptions = array (
+    $db = null;
+    $aOptions = array (
 			'connection' => array (
 					'host' => $host,
 					'user' => $username,
