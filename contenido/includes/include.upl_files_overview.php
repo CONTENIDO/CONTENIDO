@@ -401,8 +401,7 @@ class UploadList extends FrontendList {
                     $frontendURL = cRegistry::getFrontendUrl();
 
                     $sCacheThumbnail = uplGetThumbnail($data, 150);
-                    $sCacheName = cString::getPartOfString($sCacheThumbnail, cString::findLastPos($sCacheThumbnail, '/') + 1, cString::getStringLength($sCacheThumbnail) - (cString::findLastOccurrence($sCacheThumbnail, '/') + 1));
-                    $sFullPath = $cfgClient[$client]['cache']['path'] . $sCacheName;
+                    $sCacheName = cString::getPartOfString($sCacheThumbnail, cString::findLastPos($sCacheThumbnail, '/') + 1, cString::getStringLength($sCacheThumbnail) - (cString::findLastOccurrence($sCacheThumbnail, '/')) + 1);                    $sFullPath = $cfgClient[$client]['cache']['path'] . $sCacheName;
                     if (cFileHandler::exists($sFullPath)) {
                         $aDimensions = getimagesize($sFullPath);
                         $iWidth = $aDimensions[0];
