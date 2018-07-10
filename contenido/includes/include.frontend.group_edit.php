@@ -88,9 +88,9 @@ JS;
 }
 
 if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
-    if ($action == "frontendgroup_save_group" && $perm->have_perm_area_action($area, $action)) {
-        $messages = array();
+    $messages = array();
 
+    if ($action == "frontendgroup_save_group" && $perm->have_perm_area_action($area, $action)) {
         if ($fegroup->get("groupname") != stripslashes($groupname)) {
             $fegroups->select("groupname = '$groupname' and idclient='$client'");
             if ($fegroups->next()) {
