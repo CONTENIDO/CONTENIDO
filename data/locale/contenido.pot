@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-19 11:27+0200\n"
+"POT-Creation-Date: 2018-04-19 09:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1573,7 +1573,7 @@ msgid "Automatic"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:654
-#: includes/include.mycontenido.php:180 xml/navigation.xml:91
+#: includes/include.mycontenido.php:186 xml/navigation.xml:91
 msgid "Settings"
 msgstr ""
 
@@ -3897,7 +3897,7 @@ msgid ""
 msgstr ""
 
 #: includes/include.frontend.group.subnav.php:23
-#: includes/include.mycontenido.php:177 xml/navigation.xml:11
+#: includes/include.mycontenido.php:183 xml/navigation.xml:11
 #: xml/navigation.xml:20 xml/navigation.xml:22 xml/navigation.xml:88
 msgid "Overview"
 msgstr ""
@@ -4933,53 +4933,61 @@ msgid ""
 "you continue."
 msgstr ""
 
-#: includes/include.mycontenido.php:60
+#: includes/include.mycontenido.php:55
+msgid ""
+"Please check the requirements of the EU General Data Protection Regulation "
+"if you collecting personal data. We suggest to encrypt the entire website "
+"with SSL to ensure secure data transfer. If you have any questions, please "
+"contact your webhoster."
+msgstr ""
+
+#: includes/include.mycontenido.php:66
 msgid "The log directory is bigger than"
 msgstr ""
 
-#: includes/include.mycontenido.php:60
+#: includes/include.mycontenido.php:66
 msgid "Current size"
 msgstr ""
 
-#: includes/include.mycontenido.php:83
+#: includes/include.mycontenido.php:89
 #, php-format
 msgid ""
 "The folder located at %s contains data but it's no longer needed. You can "
 "delete it."
 msgstr ""
 
-#: includes/include.mycontenido.php:89
+#: includes/include.mycontenido.php:95
 msgid "Welcome"
 msgstr ""
 
-#: includes/include.mycontenido.php:90
+#: includes/include.mycontenido.php:96
 msgid "Last login"
 msgstr ""
 
-#: includes/include.mycontenido.php:120
+#: includes/include.mycontenido.php:126
 msgid "Change client"
 msgstr ""
 
-#: includes/include.mycontenido.php:125
+#: includes/include.mycontenido.php:131
 msgid "No clients available!"
 msgstr ""
 
-#: includes/include.mycontenido.php:134
+#: includes/include.mycontenido.php:140
 #, php-format
 msgid "Client %s (%s) has no languages"
 msgstr ""
 
-#: includes/include.mycontenido.php:172
+#: includes/include.mycontenido.php:178
 #, php-format
 msgid "Reminder list: %d Task open"
 msgstr ""
 
-#: includes/include.mycontenido.php:174
+#: includes/include.mycontenido.php:180
 #, php-format
 msgid "Reminder list: %d Tasks open"
 msgstr ""
 
-#: includes/include.mycontenido.php:178
+#: includes/include.mycontenido.php:184
 #: includes/include.mycontenido_lastarticles.php:74
 #: templates/standard/template.con_left_top_art_search.html:66
 #: xml/navigation.xml:89
