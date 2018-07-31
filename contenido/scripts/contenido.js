@@ -185,7 +185,7 @@
     /**
      * Wrapper for console object.
      * @method log
-     * @param {Mixed}  mixedVar  Any type of variable to print to the console
+     * @param {*}  mixedVar  Any type of variable to print to the console
      * @param {String}  source   The source (template, page name, js module, etc.) who called this method
      * @param {String}  [severity='log']  Type of severity, feasible is 'log', 'info', 'warn', 'error'
      */

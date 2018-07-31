@@ -109,6 +109,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *         array containing the values of all content types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
+        // TODO is this required?
+        global $area;
 
         // set props
         $this->_type = 'CMS_IMGEDITOR';
@@ -470,30 +472,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $conStrTree = new cHTMLList('ul', 'con_str_tree', 'con_str_tree', $liRoot);
         $directoryList->setContent($conStrTree);
         $wrapperContent[] = $directoryList;
-
-        // Added slash if you selected an file from main directory (CON-2555)
-        if (empty($this->_dirname)) {
-            $this->_dirname = "/";
-        }
-
-        $wrapperContent[] = new cHTMLDiv($this->generateFileSelect($this->_dirname), 'directoryFile', 'directoryFile' . '_' . $this->_id);
-
-        $directoryShow = new cHTMLDiv('', 'directoryShow', 'directoryShow_' . $this->_id);
-        $imagePath = $this->_imagePath;
-        $imageFilename = str_replace($this->_cfgClient[$this->_client]['path']['htmlpath'], $this->_cfgClient[$this->_client]['path']['frontend'], $imagePath);
-        $imageFiletype = cString::getPartOfString($imagePath, cString::getStringLength($imagePath) - 4, 4);
-        $imageExtensions = array(
-            '.gif',
-            '.png',
-            '.jpg',
-            'jpeg'
-        );
-        if (in_array($imageFiletype, $imageExtensions)) {
-            $imagePath = cApiImgScale($imageFilename, 428, 210);
-        }
-        $image = new cHTMLImage($imagePath);
-        $directoryShow->setContent($image);
-        $wrapperContent[] = $directoryShow;
+        $wrapperContent[] = new cHTMLDiv('', 'directoryFile', 'directoryFile' . '_' . $this->_id);
+        $wrapperContent[] = new cHTMLDiv('', 'directoryShow', 'directoryShow_' . $this->_id);
 
         $wrapper->setContent($wrapperContent);
         return $wrapper->render();

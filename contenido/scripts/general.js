@@ -212,7 +212,7 @@
          *
          * @method set
          * @param {String} key
-         * @param {Mixed} value
+         * @param {*} value
          */
         set: function(key, value) {
             this._instances[key] = value;
@@ -226,7 +226,7 @@
          *
          * @method get
          * @param {String} key
-         * @return {Mixed} The value or NULL
+         * @return {*} The value or NULL
          */
         get: function(key) {
             if ('undefined' === $.type(this._instances[key])) {
@@ -285,24 +285,6 @@
      */
 
     /**
-     * Map of loaded files, keeps the state of all files and their loaded state.
-     *
-     * @property _loaded
-     * @type {Object}
-     * @private
-     */
-    var _loaded = {};
-
-    /**
-     * Stack to process for each Loader.get() calls.
-     *
-     * @property _stack
-     * @type {Object}
-     * @private
-     */
-    var _stack = {};
-
-    /**
      * Reference to head HTML element
      *
      * @property _head
@@ -312,51 +294,46 @@
     var _head = $('head')[0];
 
     /**
-     * Loads on or more files
+     * Map of loaded files, keeps the state of all files and their loaded state.
      *
-     * @method _load
-     * @param {String[]} files
-     * @param {Function} callback
+     * @property _cache
+     * @type {Object}
      * @private
      */
-    var _load = function(files, callback) {
-        var numFiles = files.length;
-        var cb = function() {
-            numFiles--;
-            if (0 === numFiles) {
-                // console.log('Con.Loader.get() loaded files', files);
-                callback();
-            }
-        };
-
-        $.each(files, function(index, item) {
-            if (item.search(/\.css\b/) > 0) {
-                _loadCss(item, cb);
-            } else {
-                _loadJs(item, cb);
-            }
-        });
-    };
+    var _cache = {};
 
     /**
-     * Checks if a file exists in the DOM or not
+     * Stack to process for each Loader.get() calls.
      *
-     * @method _fileExists
-     * @param {String} file
-     * @return {Boolean}
+     * @property _queue
+     * @type {Object}
      * @private
      */
-    var _fileExists = function(file) {
-        if (file.search(/\.css\b/) > 0) {
-            if ($('link[href="' + file + '"]')[0]) {
-                return true;
-            }
-        } else {
-            if ($('script[src="' + file + '"]')[0]) {
-                return true;
+    var _queue = [];
+
+    /**
+     * Load file
+     *
+     * @method _load
+     * @param {String} file
+     * @private
+     */
+    var _load = function (file) {
+        if (typeof _cache[file] === 'undefined') {
+            _cache[file] = 0;
+
+            if (file.search(/\.css\b/) > 0) {
+                _loadCss(file, function () {
+                    _cache[file] = 1;
+                    _onLoaded();
+                })
+            } else {
+                _loadJs(file, function () {
+                    _cache[file] = 1;
+                    _onLoaded();
+                })
             }
         }
-        return false;
     };
 
     /**
@@ -367,20 +344,13 @@
      * @param {Function} callback
      * @private
      */
-    var _loadCss = function(file, callback) {
-        // load file only if not already loaded
-        if(_loaded[file] == false) {
-            var link = document.createElement('link');
-            link.href = file;
-            link.rel = 'stylesheet';
-            link.type = 'text/css';
-            _head.appendChild(link);
-            callback();
-            // set as loaded after successful loading
-            _loaded[file] = true;
-        } else {
-            callback();
-        }
+    var _loadCss = function (file, callback) {
+        var link = document.createElement('link');
+        link.href = file;
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        _head.appendChild(link);
+        callback();
     };
 
     /**
@@ -426,128 +396,126 @@
      * @private
      */
     var _loadJs = function(file, callback) {
-        // load file only if not already loaded
-        if(_loaded[file] == false) {
-            $.ajax({async: false, url: file, dataType: "script"}).done(function (script, textStatus) {
-                callback();
-                // set as loaded after successful loading
-                _loaded[file] = true;
-            }).fail(function (jqxhr, settings, exception) {
-                if (jqxhr.status == "200" && jqxhr.responseText != "") {
-                    // Give other files a little bit of time to load in case there are dependencies
-                    // Try to evaluate the file after 250ms
-                    setTimeout(function () {
-                        _lateEval(jqxhr.responseText, callback, 1, file, jqxhr, settings);
-                    }, 250);
-                } else {
-                    Con.log('fail ' + file, NAME);
-                    Con.log(jqxhr, NAME);
-                    Con.log(settings, NAME);
-                    Con.log(exception, NAME);
-                }
-            });
-        } else {
+        $.getScript(file).done(function () {
             callback();
-        }
-    };
-
-    /**
-     * Loads desired files, if not done before
-     *
-     * @method _get
-     * @param {String[]} files
-     * @param {String} key
-     * @private
-     */
-    var _get = function(files, key) {
-        var key = files.join('$$$');
-        var _toLoad = [];
-        $.each(files, function(index, item) {
-            if (!_loaded[item]) {
-                if (true === _fileExists(item)) {
-                    _loaded[item] = true;
-                } else {
-                    _loaded[item] = false;
-                    _toLoad.push(item);
-                }
+        }).fail(function (jqxhr, settings, exception) {
+            if (jqxhr.status === "200" && jqxhr.responseText !== "") {
+                // Give other files a little bit of time to load in case there are dependencies
+                // Try to evaluate the file after 250ms
+                setTimeout(function () {
+                    _lateEval(jqxhr.responseText, callback, 1, file, jqxhr, settings);
+                }, 250);
+            } else {
+                Con.log('fail ' + file, NAME);
+                Con.log(jqxhr, NAME);
+                Con.log(settings, NAME);
+                Con.log(exception, NAME);
             }
         });
-
-        if (0 === _toLoad.length) {
-            _removeFromStack(key);
-        } else {
-            _load(files, function() {
-                _removeFromStack(key);
-                $.each(files, function(index, item) {
-                    _loaded[item] = true;
-                });
-            });
-        }
     };
 
     /**
-     * Adds an entry to the stack
+     * Check queue on file load
      *
-     * @method _addToStack
-     * @param {String[]} files
-     * @param {Function} callback
-     * @param {Object} scope
-     * @param {Array} params
-     * @return {String} Entry key
+     * @method _onLoaded
      * @private
      */
-    var _addToStack = function(files, callback, scope, params) {
-        var key = files.join('$$$');
-        // Check if callback has to be called on the scope object
-        var isObjectCallback = (typeof callback === 'function' && typeof scope === 'object');
+    var _onLoaded = function () {
+        var toCall = [];
+        _queue = _queue.filter(function (item) {
+            var state = _getState(item[0]);
 
-        // Initialise callback stack
-        if ('undefined' === $.type(_stack[key])) {
-            _stack[key] = [];
-        }
-
-        // Push new entry onto the callback stack depending on the callback type
-        if (isObjectCallback) {
-            _stack[key].push({
-                callback: callback,
-                scope: scope,
-                params: params
-            });
-        } else {
-            _stack[key].push(callback);
-        }
-
-        return key;
-    };
-
-    /**
-     * Removes entry from stack and processes related callback
-     *
-     * @method _removeFromStack
-     * @param {String} key
-     * @private
-     */
-    var _removeFromStack = function(key) {
-        if ('undefined' === $.type(_stack[key])) {
-            return;
-        }
-
-        var callbacks = _stack[key];
-        $.each(callbacks, function(index, value) {
-            var type = $.type(value);
-            if ('object' === type) {
-                // Object callback, call it with the appropriate scope
-                value.callback.apply(value.scope, value.params);
-            } else if ('string' === type) {
-                // Simple callback, just evaluate it
-                Con.log('_removeFromStack: Deprecated string callback!', NAME,
-                        'warn');
-                eval(value);
+            if (state.loaded.length === item[0].length) {
+                toCall.push(item);
+                return false;
             }
+
+            return true;
         });
 
-        delete _stack[key];
-    };
+        for (var i = 0; i < toCall.length; i++) {
+            toCall[i][1].apply(toCall[i][2], toCall[i][3]);
+        }
+    }
+
+    /**
+     * Add callback to queue
+     *
+     * @method _addToQueue
+     * @param {String[]} files
+     * @param {Function} [callback]
+     * @param {Object} [scope]
+     * @param {Array} [params]
+     * @return {Boolean}
+     * @static
+     */
+    var _addToQueue = function (files, callback, scope, params) {
+        _queue.push([
+            files,
+            callback,
+            scope,
+            params
+        ]);
+    }
+
+    /**
+     * Get current loading state for callback files
+     *
+     * @method _getState
+     * @param {Array} files
+     * @returns {{load: Array, loaded: Array, loading: Array}}
+     * @private
+     */
+    var _getState = function(files) {
+        var out = {
+            load: [],
+            loaded: [],
+            loading: []
+        };
+
+        for (var i = 0; i < files.length; i++) {
+            var f = files[i];
+
+            if (typeof _cache[f] === 'undefined') {
+                out.load.push(f);
+            } else if (_cache[f] === 1) {
+                out.loaded.push(f);
+            } else if (_cache[f] === 0) {
+                out.loading.push(f);
+            }
+        }
+
+        return out;
+    }
+
+    /**
+     * Add callback to queue
+     *
+     * @method _push
+     * @param {String[]} files
+     * @param {Function} [callback]
+     * @param {Object} [scope]
+     * @param {Array} [params]
+     * @return {Boolean}
+     * @static
+     */
+    var _push = function (files, callback, scope, params) {
+        // step 1: check is loaded
+        var state = _getState(files);
+
+        if (state.loaded.length === files.length) {
+            // step 2: if all loaded, call callback
+            callback.apply(scope, params);
+        } else {
+            // step 3: add callback to queue
+            _addToQueue(files, callback, scope, params);
+
+            // step 4: load not existed files
+            for (var k = 0; k < state.load.length; k++) {
+                _load(state.load[k]);
+            }
+        }
+    }
 
     Con.Loader = {
         /**
@@ -565,7 +533,7 @@
          * </pre>
          *
          * @method get
-         * @param {String|String[]}  file  One or more files (JS or CSS) to load
+         * @param {String|String[]}  files  One or more files (JS or CSS) to load
          * @param {Function} [callback=function(){}]  Callback to call after the files
          *            where loaded which is called with the given params and the
          *            given scope
@@ -576,18 +544,17 @@
          * @return {Boolean}
          * @static
          */
-        get: function(file, callback, scope, params) {
+        get: function(files, callback, scope, params) {
             callback = ('undefined' === $.type(callback)) ? function() {
             } : callback;
             scope = ('undefined' === $.type(scope)) ? this : scope;
             params = ('undefined' === $.type(params)) ? [] : params;
 
-            if ('array' !== $.type(file)) {
-                file = [file];
+            if ('array' !== $.type(files)) {
+                files = [files];
             }
 
-            var key = _addToStack(file, callback, scope, params);
-            _get(file, key);
+            _push(files, callback, scope, params);
         }
     };
 
@@ -638,9 +605,6 @@
          * options.initial  (Boolean)  Flag for initial call of resize, e. on document ready
          * options.resizegap  (Number)  The resize gab passed manually.
          * </pre>
-         *
-         * @param {Boolean} [initial=false] Flag to initial call of resize, e. on
-         *            document ready
          */
         resize: function(options) {
             var opt = $.extend({
@@ -1101,7 +1065,7 @@
                 buttons: buttons,
                 position: ['center', 50],
                 resizable: false,
-                close: function(event, ui) {
+                close: function () {
                     contentWindow.$('html').find('#single_dialog').remove();
                 },
                 title: translations['Confirmation Required']
@@ -1185,11 +1149,11 @@
     */
     Con.checkAjaxResponse = function(response) {
 
-        if (typeof response == 'string' && response.indexOf('authentication_failure') > -1) {
+        if (typeof response === 'string' && response.indexOf('authentication_failure') > -1) {
 
-            json = $.parseJSON(response);
+            var json = $.parseJSON(response);
 
-            if (json !== null && json.state == "error" && json.code == 401) {
+            if (json !== null && json.state === "error" && json.code === 401) {
                 window.location.href = 'index.php';
                 return false;
             }

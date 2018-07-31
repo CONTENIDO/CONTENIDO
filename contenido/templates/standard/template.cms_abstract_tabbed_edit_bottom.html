@@ -4,9 +4,7 @@
 
 <script type="text/javascript">
 //<![CDATA[
-Con.Loader.get(
-    [Con.cfg.urlBackend + 'scripts/content_types/cmsAbstractTabbed.js', '{JS_CLASS_SCRIPT}'],
-    function() {
+    var initCallBack = function() {
         var contentTypeInstance = new {JS_CLASS_NAME}(
             '#cms_{PREFIX}_{ID}_settings',
             '#cms_{PREFIX}_{ID}',
@@ -20,8 +18,19 @@ Con.Loader.get(
             {SETTINGS}
         );
         contentTypeInstance.initialise();
+    };
+
+    if (typeof {JS_CLASS_NAME} === 'undefined') {
+        Con.Loader.get(
+            [
+                Con.cfg.urlBackend + 'scripts/content_types/cmsAbstractTabbed.js',
+                '{JS_CLASS_SCRIPT}'
+            ],
+            initCallBack
+        );
+    } else {
+        initCallBack();
     }
-);
-//]]>
+    //]]>
 </script>
 <!-- /template.cms_abstract_tabbed_edit_bottom.html -->

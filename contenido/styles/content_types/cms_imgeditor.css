@@ -15,6 +15,7 @@
 }
 
 .cms_imgeditor .directoryFile {
+    background-color: #ffffff;
     border: 1px solid #CCC;
     height: 170px;
     overflow: auto;
@@ -56,6 +57,7 @@
 }
 
 .cms_imgeditor select {
+    background-color: #ffffff;
     border: none;
     color: #000;
     font-size: 11px;

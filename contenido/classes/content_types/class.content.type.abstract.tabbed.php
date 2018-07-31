@@ -54,6 +54,7 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
      * @param array $contentTypes
      *         Content type array
      * @return mixed
+     * @throws cException
      */
     protected function _getRawSettings($contentTypeName, $id, array $contentTypes) {
         if (!isset($contentTypes[$contentTypeName][$id])) {

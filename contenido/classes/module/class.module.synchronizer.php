@@ -50,6 +50,7 @@ class cModuleSynchronizer extends cModuleHandler {
         if ($this->_isExistInTable($oldModulName, $client) == false) {
             // add new Module in db-tablle
             $this->_addModule($newModulName);
+            cRegistry::appendLastOkMessage(sprintf(i18n('Module %s successfully synchronized'), $newModulName));
         } else {
             // update the name of the module
             if ($oldModulName != $newModulName) {
@@ -350,8 +351,14 @@ class cModuleSynchronizer extends cModuleHandler {
         // initializing module class
         $oModColl = new cApiModuleCollection();
 
+        // get module path
+        $modulePath = $cfgClient['module']['path'] . $name . '/';
+
+        // get module type
+        $modInfo = cXmlBase::xmlStringToArray(cFileHandler::read($modulePath . 'info.xml'));
+
         // create mew module
-        $mod = $oModColl->create($name, $client, $name, "", "none", "", 0, "", 0, "", "", "", "", "1970-01-01 00:00:00");
+        $mod = $oModColl->create($modInfo['name'], $client, $modInfo['alias'], $modInfo['type']);
 
         if (is_object($mod)) {
             // save the last id from modul

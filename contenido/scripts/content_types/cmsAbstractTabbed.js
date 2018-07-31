@@ -136,13 +136,13 @@
      * @method loadExternalFiles
      */
     cContentTypeAbstractTabbed.prototype.loadExternalFiles = function() {
-        // Dependencies to load
-        var files = [];
-        files.push(this.pathBackend + 'styles/content_types/cms_abstract_tabbed.css');
-        // jquery-ui.js is already added via $cfg['backend_template']['js_files']
-        //files.push(this.pathBackend + 'scripts/jquery/jquery-ui.js');
-
-        Con.Loader.get(files, cContentTypeAbstractTabbed.prototype.jQueryUiCallback, this);
+        Con.Loader.get(
+            [
+                this.pathBackend + 'styles/content_types/cms_abstract_tabbed.css'
+            ],
+            cContentTypeAbstractTabbed.prototype.jQueryUiCallback,
+            this
+        );
     };
 
     /**

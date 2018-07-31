@@ -35,6 +35,7 @@ class cAjaxRequest {
      *          idcat = category ID whose articles should be contained
      *          value = selected article
      *     <li>dirlist
+     *     <li>imgdirlist
      *     <li>filelist
      *     <li>inused_layout
      *          List templates using a given layout.
@@ -48,7 +49,7 @@ class cAjaxRequest {
      *     <li>loadImageMeta
      *     <li>upl_mkdir
      *     <li>upl_upload
-     *     <li>linkeditorfilelist
+     *     <li>linkeditorarticleslist
      *     <li>linkeditordirlist
      *     <li>linkeditorimagelist
      *     <li>generaljstranslations
@@ -80,9 +81,9 @@ class cAjaxRequest {
         $string = '';
         switch ($action) {
             case 'artsel':
-                $name = (string) $_REQUEST['name'];
-                $idcat = (int) $_REQUEST['idcat'];
-                $value = (int) $_REQUEST['value'];
+                $name  = cSecurity::toString($_REQUEST['name']);
+                $idcat = cSecurity::toInteger($_REQUEST['idcat']);
+                $value = cSecurity::toInteger($_REQUEST['value']);
 
                 $string = buildArticleSelect($name, $idcat, $value);
                 break;
@@ -105,10 +106,28 @@ class cAjaxRequest {
                 $string = $fileList->generateDirectoryList($directoryList);
                 break;
 
+            case 'imgdirlist':
+
+                $idartlang  = cSecurity::toInteger($_REQUEST['idartlang']);
+                $fileListId = cSecurity::toInteger($_REQUEST['id']);
+                $dirname    = cSecurity::toString($_REQUEST['dir']);
+
+                $clientId  = cRegistry::getClientId();
+                $cfgClient = cRegistry::getClientConfig($clientId);
+                $uplPath   = $cfgClient['upl']['path'];
+
+                $art     = new cApiArticleLanguage($idartlang, true);
+                $content = $art->getContent('CMS_IMGEDITOR', $fileListId);
+
+                $fileList      = new cContentTypeImgeditor($content, $fileListId, []);
+                $directoryList = $fileList->buildDirectoryList($uplPath . $dirname);
+                $string = $fileList->generateDirectoryList($directoryList);
+                break;
+
             case 'filelist':
-                $idartlang = (int) $_REQUEST['idartlang'];
-                $fileListId = (int) $_REQUEST['id'];
-                $dirname = (string) $_REQUEST['dir'];
+                $idartlang  = cSecurity::toInteger($_REQUEST['idartlang']);
+                $fileListId = cSecurity::toInteger($_REQUEST['id']);
+                $dirname    = cSecurity::toString($_REQUEST['dir']);
 
                 $art = new cApiArticleLanguage($idartlang, true);
                 $content = $art->getContent('CMS_FILELIST', $fileListId);
@@ -257,22 +276,6 @@ class cAjaxRequest {
                 $string = $image->generateFileSelect($dirName);
                 break;
 
-            case 'imagefilelist':
-                $idartlang = cSecurity::toInteger($_REQUEST['idartlang']);
-                $fileListId = cSecurity::toInteger($_REQUEST['id']);
-
-                $clientId = cRegistry::getClientId();
-                $cfgClient = cRegistry::getClientConfig($clientId);
-                $uplPath = $cfgClient['upl']['path'];
-
-                $art = new cApiArticleLanguage($idartlang, true);
-                $content = $art->getContent('CMS_FILELIST', $fileListId);
-
-                $fileList = new cContentTypeFilelist($content, $fileListId, array());
-                $directoryList = $fileList->buildDirectoryList($uplPath);
-                $string = $fileList->generateAjaxDirectoryList($directoryList);
-                break;
-
             case 'inlineeditart':
 
                 $languageCollection = new cApiArticleLanguageCollection();
@@ -349,7 +352,7 @@ class cAjaxRequest {
                 $string = $image->uplupload($path);
                 break;
 
-            case 'linkeditorfilelist':
+            case 'linkeditorarticleslist':
                 $id = (int) $_REQUEST['id'];
                 $idArtLang = (int) $_REQUEST['idartlang'];
                 $idCat = (string) $_REQUEST['idcat'];
@@ -357,6 +360,11 @@ class cAjaxRequest {
                 $art = new cApiArticleLanguage($idArtLang, true);
                 $artReturn = $art->getContent('CMS_LINKEDITOR', $id);
                 $linkEditor = new cContentTypeLinkeditor($artReturn, $id, array());
+
+                if ($idCat === '') {
+                    $activeIdcats = $linkEditor->getActiveIdcats();
+                    $idCat        = $activeIdcats[0];
+                }
 
                 $string = $linkEditor->generateArticleSelect($idCat);
                 break;
@@ -382,6 +390,10 @@ class cAjaxRequest {
                 $art = new cApiArticleLanguage($idArtLang, true);
                 $artReturn = $art->getContent('CMS_LINKEDITOR', $id);
                 $linkEditor = new cContentTypeLinkeditor($artReturn, $id, array());
+
+                if ($dirName === '') {
+                    $dirName = dirname($linkEditor->getFilename());
+                }
 
                 $string = $linkEditor->getUploadFileSelect($dirName);
                 break;

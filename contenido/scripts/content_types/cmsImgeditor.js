@@ -57,6 +57,12 @@
          */
         this.scriptLoaded = 0;
 
+        /**
+         * Defines if dirlist need to be refreshed by opening
+         * @type {boolean}
+         */
+        this.refreshed = false;
+
     }
 
     // inherit from cContentTypeAbstractTabbed
@@ -120,6 +126,14 @@
         Con.cContentTypeAbstractTabbed.prototype.addTabbingEvents.call(self);
 
         $(self.frameId + ' .menu li').click(function() {
+            // refresh dirs list
+            if (!self.refreshed) {
+                var folderName = self.getSelectedFolder();
+                var dirname = self.getSelectedDir();
+                self.updateDirList(dirname, folderName);
+                self.refreshed = true;
+            }
+
             // if the upload tab is shown, show the directories tab, too
             if ($(this).hasClass('upload')) {
                 $(self.frameId + ' .tabs #directories').show();
@@ -138,28 +152,9 @@
         var divContainer = dlist.closest('.con_str_tree');
 
         $('#cms_imgeditor_' + id).on('click', function(e) {
-            $.ajax({
-                type: 'POST',
-                url: self.pathBackend + 'ajaxmain.php',
-                data: 'ajax=imagefilelist&id=' + id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
-                success: function (msg) {
-                    if (Con.checkAjaxResponse(msg) === false) {
-                        return false;
-                    }
-
-                    divContainer.find('ul').remove();
-                    divContainer.append(msg);
-
-                    var a = divContainer.find('ul li div > a');
-                    a.each(function() {
-                        if ($(this).attr('title') == self.settings.dirname) {
-                            $(this).parent().addClass('active');
-                        }
-                    });
-
-                    self.addNaviActions();
-                }
-            });
+            var folderName = self.getSelectedFolder();
+            var dirname = self.getSelectedDir();
+            self.updateDirList(dirname, folderName);
         });
         return false;
     }
@@ -179,6 +174,7 @@
             }
         });
 
+        // init directories lists
         $(self.frameId + ' #directoryList_' + self.id + ' a[class="on"]').parent('div').unbind('click');
         $(self.frameId + ' #directoryList_' + self.id + ' a[class="on"]').parent('div').click(function() {
             // update the "active" class
@@ -186,25 +182,7 @@
                 $(this).removeClass('active');
             });
             $(this).addClass('active');
-            var dirname = $(this).children('a[class="on"]').attr('title');
-            if (dirname === 'upload') {
-                dirname = '/';
-            }
-            // update the file list each time a new directory is selected
-            $.ajax({
-                type: 'POST',
-                url: self.pathBackend + 'ajaxmain.php',
-                data: 'ajax=imagelist&dir=' + dirname + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
-                success: function(msg) {
-					if (Con.checkAjaxResponse(msg) === false)  {
-						return false;
-					}
-
-                    $(self.frameId + ' #directoryFile_' + self.id).html(msg);
-                    // the items of the file select element have been changed, so add the event handlers again
-                    self.addSelectAction();
-                }
-            });
+            self.showActiveFilename();
             self.showFolderPath();
             return false;
         });
@@ -291,15 +269,7 @@
                 if (filename === '') {
                     $('#directoryShow_' + self.id).html('');
                 } else {
-                    var url = self.pathFrontend + 'upload/' + filename;
-                    $.ajax({
-                        type: 'POST',
-                        url: self.pathBackend + 'ajaxmain.php',
-                        data: 'ajax=scaleImage&url=' + url + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
-                        success: function(msg) {
-                            $('#directoryShow_' + self.id).html('<div><img src="' + msg + '" alt=""/></div>');
-                        }
-                    });
+                    self.showActiveImg();
                 }
                 // update image meta data
                 if (filename === '') {
@@ -340,15 +310,12 @@
         var self = this;
         $(self.frameId + ' #upload form[name="newdir"] input[type="image"]').unbind('click');
         $(self.frameId + ' #upload form[name="newdir"] input[type="image"]').click(function() {
-            var folderName = $(self.frameId + ' input[name="foldername"]').val();
-            // if folder name is empty, do nothing
-            if (folderName === '') {
+            var folderName = self.getSelectedFolder();
+            if (folderName === false) {
                 return false;
             }
-            var dirname = '';
-            if (self.selectedPath !== '' && self.selectedPath !== 'upload') {
-                dirname = self.selectedPath + '/';
-            }
+            var dirname = self.getSelectedDir();
+
             // create folder
             $.ajax({
                 type: 'POST',
@@ -360,42 +327,7 @@
 					}
 
                     if (msg === '1') {
-                        // reset input field
-                        $('input[name="foldername"]').val('');
-                        // update directory list
-                        $.ajax({
-                            type: 'POST',
-                            url: self.pathBackend + 'ajaxmain.php',
-                            data: 'ajax=dirlist&idartlang=' + self.idArtLang + '&id=' + self.id + '&dir=' + dirname + '&contenido=' + self.session,
-                            success: function(msg) {
-								if (Con.checkAjaxResponse(msg) === false)  {
-									return false;
-								}
-
-                                var title;
-                                if (self.selectedPath === 'upload') {
-                                    title = folderName;
-                                } else {
-                                    title = dirname + folderName;
-                                }
-                                var titles = [];
-                                $(self.frameId + ' div a[class="on"]').each(function() {
-                                    titles.push($(this).attr('title'));
-                                });
-
-                                if ($.inArray(title, titles) === -1) {
-                                    $(self.frameId + ' .con_str_tree li div>a').each(function(index) {
-                                        if ($(this).attr('title') === self.selectedPath) {
-                                            $(this).parent().parent('li:has(ul)').children('ul').remove();
-                                            $(this).parent().after(msg);
-
-                                            $(this).parent().parent('li').removeClass('collapsed');
-                                            self.addNaviActions();
-                                        }
-                                    });
-                                }
-                            }
-                        });
+                        self.updateDirList(dirname, folderName);
                     } else {
                         alert(msg);
                     }
@@ -466,6 +398,146 @@
         $(this.frameId + ' #image_meta_url_' + this.id).html(filename);
     };
 
+    /**
+     * Get selected foldername
+     */
+    cContentTypeImgeditor.prototype.getSelectedFolder = function () {
+        var folderName = $(this.frameId + ' input[name="foldername"]').val();
+        // if folder name is empty, do nothing
+        if (folderName === '') {
+            folderName = false;
+        }
+
+        return folderName;
+    }
+
+    /**
+     * Get selected dirname
+     * @returns {string}
+     */
+    cContentTypeImgeditor.prototype.getSelectedDir = function () {
+        var dirname = '';
+        if (this.selectedPath !== '' && this.selectedPath !== 'upload') {
+            dirname = this.selectedPath + '/';
+        }
+
+        return dirname;
+    }
+
+
+    /**
+     * Update dirs list
+     * @method imageFileUpload
+     */
+    cContentTypeImgeditor.prototype.updateDirList = function (dirname, folderName) {
+        var self = this;
+        // reset input field
+        $('input[name="foldername"]').val('');
+        // update directory list
+        $.ajax({
+            type: 'POST',
+            url: self.pathBackend + 'ajaxmain.php',
+            data: 'ajax=imgdirlist&idartlang=' + self.idArtLang + '&id=' + self.id + '&dir=' + dirname + '&contenido=' + self.session,
+            success: function (msg) {
+                if (Con.checkAjaxResponse(msg) === false) {
+                    return false;
+                }
+
+                var titles = [];
+                $(self.frameId + ' div a[class="on"]').each(function () {
+                    titles.push($(this).attr('title'));
+                });
+
+                if (typeof folderName !== 'undefined') {
+                    var title;
+                    if (self.selectedPath === 'upload') {
+                        title = folderName;
+                    } else {
+                        title = dirname + folderName;
+                    }
+
+                    if ($.inArray(title, titles) === -1) {
+                        $(self.frameId + ' .con_str_tree li div>a').each(function (index) {
+                            if ($(this).attr('title') === self.selectedPath) {
+                                $(this).parent().parent('li:has(ul)').children('ul').remove();
+                                $(this).parent().after(msg);
+
+                                $(this).parent().parent('li').removeClass('collapsed');
+                                self.addNaviActions();
+                            }
+                        });
+                    }
+                } else {
+                    $(self.frameId + ' .con_str_tree li div>a').each(function (index) {
+                        if ($(this).attr('title') === self.selectedPath) {
+                            $(this).parent().parent('li:has(ul)').children('ul').remove();
+                            $(this).parent().after(msg);
+
+                            $(this).parent().parent('li').removeClass('collapsed');
+                            self.addNaviActions();
+                        }
+                    });
+                }
+                //remove upload acitve, if image selected.
+                if ($(self.frameId + ' div[class="active"] a[class="on"]').length > 1) {
+                    $(self.frameId + ' li[class="root"] > div').removeClass('active');
+                }
+                self.showActiveFilename();
+            }
+        });
+    }
+
+    /**
+     * show the active filelist
+     * @method showActiveFilename
+     */
+    cContentTypeImgeditor.prototype.showActiveFilename = function () {
+        var self = this;
+        // get the selected directory
+        self.selectedPath = $(self.frameId + ' div[class="active"] a[class="on"]').attr('title');
+
+        var dirname = self.selectedPath;
+        if (dirname === 'upload') {
+            dirname = '/';
+        }
+        // update the file list each time a new directory is selected
+        $.ajax({
+            type: 'POST',
+            url: self.pathBackend + 'ajaxmain.php',
+            data: 'ajax=imagelist&dir=' + dirname + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
+            success: function (msg) {
+                if (Con.checkAjaxResponse(msg) === false) {
+                    return false;
+                }
+
+                $(self.frameId + ' #directoryFile_' + self.id).html(msg);
+                // the items of the file select element have been changed, so add the event handlers again
+                self.addSelectAction();
+                self.showActiveImg();
+            }
+        });
+    }
+
+    /**
+     * show the active img
+     * @method showActiveImg
+     */
+    cContentTypeImgeditor.prototype.showActiveImg = function () {
+        var self = this;
+        var filename = $('select#image_filename_' + self.id + ' option:selected').val();
+        if (filename) {
+            var url = self.pathFrontend + 'upload/' + filename;
+            $.ajax({
+                type: 'POST',
+                url: self.pathBackend + 'ajaxmain.php',
+                data: 'ajax=scaleImage&url=' + url + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
+                success: function (msg) {
+                    $('#directoryShow_' + self.id).html('<div><img src="' + msg + '" alt=""/></div>');
+                }
+            });
+        }
+
+    }
 
     Con.cContentTypeImgeditor = cContentTypeImgeditor;
 
