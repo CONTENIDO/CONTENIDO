@@ -390,4 +390,12 @@ class cArticleCollector implements SeekableIterator, Countable {
         return count($this->_articles);
     }
 
+    /**
+     * @return array
+     */
+    public function getStartArticles()
+    {
+        return $this->_startArticles;
+    }
+
 }
