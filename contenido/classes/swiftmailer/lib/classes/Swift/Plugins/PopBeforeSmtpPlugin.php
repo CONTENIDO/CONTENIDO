@@ -193,6 +193,8 @@ class Swift_Plugins_PopBeforeSmtpPlugin implements Swift_Events_TransportChangeL
      * Invoked just before a Transport is started.
      *
      * @param Swift_Events_TransportChangeEvent $evt
+     *
+     * @throws Swift_Plugins_Pop_Pop3Exception
      */
     public function beforeTransportStarted(Swift_Events_TransportChangeEvent $evt)
     {

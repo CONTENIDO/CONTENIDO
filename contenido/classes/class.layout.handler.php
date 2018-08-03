@@ -88,12 +88,15 @@ class cLayoutHandler {
     /**
      * Constructor to create an instance of this class.
      *
-     * @param int $layoutId
+     * @param int    $layoutId
      * @param string $layoutCode [optional]
-     * @param array $cfg [optional]
-     * @param int $lang [optional]
-     * @param cDb $db [optional]
-     *         CONTENIDO database object
+     * @param array  $cfg        [optional]
+     * @param int    $lang       [optional]
+     * @param cDb    $db         [optional]
+     *                           CONTENIDO database object
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function __construct($layoutId = 0, $layoutCode = '', array $cfg = array(), $lang = 0, cDb $db = NULL) {
         if ($db === NULL) {
@@ -140,10 +143,13 @@ class cLayoutHandler {
     /**
      * Init all vars for the class
      *
-     * @param int $layoutId
+     * @param int    $layoutId
      * @param string $layoutCode
-     * @param array $cfg
-     * @param int $language
+     * @param array  $cfg
+     * @param int    $language
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function init($layoutId, $layoutCode, $cfg, $language) {
         $this->_layoutCode = $layoutCode;
@@ -186,6 +192,7 @@ class cLayoutHandler {
      *
      * @param cDb $dbObject
      *         CONTENIDO database object
+     * @throws cInvalidArgumentException
      */
     public function initWithDbObject($dbObject) {
         global $cfgClient;
@@ -206,6 +213,7 @@ class cLayoutHandler {
      *
      * @return bool
      *         true if successfully
+     * @throws cInvalidArgumentException
      */
     private function _makeDirectories() {
         if ($this->_makeDirectory($this->_layoutMainPath)) {
@@ -221,8 +229,10 @@ class cLayoutHandler {
      * Make directory
      *
      * @param string $directory
+     *
      * @return bool
      *         true if succssesfully
+     * @throws cInvalidArgumentException
      */
     private function _makeDirectory($directory) {
         if (is_dir($directory)) {
@@ -241,6 +251,8 @@ class cLayoutHandler {
      * Save encoding from language.
      *
      * @param int $lang
+     *
+     * @throws cDbException
      */
     private function _setEncoding($lang) {
         if ((int) $lang == 0) {
@@ -292,6 +304,7 @@ class cLayoutHandler {
      *
      * @param string $layoutCode [optional]
      * @return bool
+     * @throws cInvalidArgumentException
      */
     public function saveLayout($layoutCode = '') {
         $fileName = $this->_layoutPath . $this->_fileName;
@@ -309,6 +322,7 @@ class cLayoutHandler {
      *
      * @param string $layoutCode [optional]
      * @return bool
+     * @throws cInvalidArgumentException
      */
     public function saveLayoutByUpgrade($layoutCode = '') {
         // if file exist dont overwirte it
@@ -323,6 +337,7 @@ class cLayoutHandler {
      *
      * @param string $layoutCode [optional]
      * @return bool
+     * @throws cInvalidArgumentException
      */
     private function _save($layoutCode = '') {
         if ($layoutCode == '') {
@@ -349,6 +364,7 @@ class cLayoutHandler {
      *
      * @return bool
      *         true on success or false on failure
+     * @throws cInvalidArgumentException
      */
     public function eraseLayout() {
         global $area, $frame;
@@ -404,6 +420,7 @@ class cLayoutHandler {
      *
      * @return string|bool
      *         content or false
+     * @throws cInvalidArgumentException
      */
     public function getLayoutCode() {
         // cant read it dont exist file

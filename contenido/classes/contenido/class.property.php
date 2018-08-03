@@ -97,7 +97,9 @@ class cApiPropertyCollection extends ItemCollection {
      * Constructor to create an instance of this class.
      *
      * @param int $idclient [optional]
-     *         Client id
+     *                      Client id
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct($idclient = 0) {
         global $cfg, $client, $lang;
@@ -160,19 +162,23 @@ class cApiPropertyCollection extends ItemCollection {
      * </pre>
      *
      * @param mixed $itemtype
-     *         Type of the item (example: idcat)
+     *                           Type of the item (example: idcat)
      * @param mixed $itemid
-     *         ID of the item (example: 31)
+     *                           ID of the item (example: 31)
      * @param mixed $type
-     *         Type of the data to store (arbitary data)
+     *                           Type of the data to store (arbitary data)
      * @param mixed $name
-     *         Entry name
+     *                           Entry name
      * @param mixed $value
-     *         Value
-     * @param bool $bDontEscape [optional; default false]
-     *         on internal call do not escape parameters again
-     *         NOTE: This parameter is deprecated since 2013-11-26
+     *                           Value
+     * @param bool  $bDontEscape [optional; default false]
+     *                           on internal call do not escape parameters again
+     *                           NOTE: This parameter is deprecated since 2013-11-26
+     *
      * @return cApiProperty
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($itemtype, $itemid, $type, $name, $value, $bDontEscape = false) {
         global $auth;
@@ -207,16 +213,17 @@ class cApiPropertyCollection extends ItemCollection {
      * </pre>
      *
      * @param mixed $itemtype
-     *         Type of the item (example: idcat)
+     *                       Type of the item (example: idcat)
      * @param mixed $itemid
-     *         ID of the item (example: 31)
+     *                       ID of the item (example: 31)
      * @param mixed $type
-     *         Type of the data to store (arbitary data)
+     *                       Type of the data to store (arbitary data)
      * @param mixed $name
-     *         Entry name
+     *                       Entry name
      * @param mixed $default [optional]
-     *         to be returned if no item was found
+     *                       to be returned if no item was found
      * @return mixed Value
+     * @throws Exception
      */
     public function getValue($itemtype, $itemid, $type, $name, $default = false) {
         if ($this->_useCache($itemtype, $itemid)) {
@@ -255,7 +262,7 @@ class cApiPropertyCollection extends ItemCollection {
      *         Type of the data to store (arbitary data)
      * @return array
      *         Value
-     *
+     * @throws Exception
      */
     public function getValuesByType($itemtype, $itemid, $type) {
         if ($this->_useCache($itemtype, $itemid)) {
@@ -288,13 +295,12 @@ class cApiPropertyCollection extends ItemCollection {
      * $values = $properties->getValuesOnlyByTypeName('note', 'category');
      * </pre>
      *
-     * @param mixed $itemtype
-     *         Type of the item (example: idcat)
+     * @param       $type
      * @param mixed $name
      *         Type of the data to store (arbitary data)
      * @return array
      *         Value
-     *
+     * @throws Exception
      */
     public function getValuesOnlyByTypeName($type, $name) {
         $aResult = array();
@@ -320,18 +326,19 @@ class cApiPropertyCollection extends ItemCollection {
      * </pre>
      *
      * @param mixed $itemtype
-     *         Type of the item (example: idcat)
+     *                      Type of the item (example: idcat)
      * @param mixed $itemid
-     *         ID of the item (example: 31)
+     *                      ID of the item (example: 31)
      * @param mixed $type
-     *         Type of the data to store (arbitary data)
+     *                      Type of the data to store (arbitary data)
      * @param mixed $name
-     *         Entry name
+     *                      Entry name
      * @param mixed $value
-     *         Value
-     * @param int $idProp [optional]
-     *         Id of database record (if set, update on this basis
-     *         (possiblity to update name value and type))
+     *                      Value
+     * @param int   $idProp [optional]
+     *                      Id of database record (if set, update on this basis
+     *                      (possiblity to update name value and type))
+     * @throws Exception
      */
     public function setValue($itemtype, $itemid, $type, $name, $value, $idProp = 0) {
         $idProp = (int) $idProp;
@@ -374,6 +381,7 @@ class cApiPropertyCollection extends ItemCollection {
      *         Type of the data to store (arbitary data)
      * @param mixed $name
      *         Entry name
+     * @throws Exception
      */
     public function deleteValue($itemtype, $itemid, $type, $name) {
         if (isset($this->client)) {
@@ -400,6 +408,7 @@ class cApiPropertyCollection extends ItemCollection {
      *         ID of the item (example: 31)
      * @return array
      *         For each given item
+     * @throws Exception
      */
     public function getProperties($itemtype, $itemid) {
         if ($this->_useCache($itemtype, $itemid)) {
@@ -434,13 +443,15 @@ class cApiPropertyCollection extends ItemCollection {
      * Returns all datasets selected by given field and value combination
      *
      * @param mixed $field
-     *         Field to search in
+     *                    Field to search in
      * @param mixed $fieldValue
-     *         Value to search for
+     *                    Value to search for
      * @param cAuth $auth [optional]
-     *         Narrow result down to user in auth objext
+     *                    Narrow result down to user in auth objext
      * @return array
-     *         For each given item
+     *                    For each given item
+     * @throws cDbException
+     * @throws cException
      */
     public function getAllValues($field, $fieldValue, $auth = NULL) {
         $authString = '';
@@ -485,6 +496,7 @@ class cApiPropertyCollection extends ItemCollection {
      *         Type of the item (example: idcat)
      * @param mixed $itemid
      *         ID of the item (example: 31)
+     * @throws Exception
      */
     public function deleteProperties($itemtype, $itemid) {
         if (isset($this->client)) {
@@ -506,6 +518,9 @@ class cApiPropertyCollection extends ItemCollection {
      *         Type of the item (example: idcat)
      * @param array $itemids
      *         Ids of multiple items (example: array(31,12,22))
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function deletePropertiesMultiple($itemtype, array $itemids) {
         $itemtype = $this->db->escape($itemtype);
@@ -591,6 +606,8 @@ class cApiPropertyCollection extends ItemCollection {
      * Deletes them also from internal cache.
      *
      * @param array $ids
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     protected function _deletePropertiesByIds(array $ids) {
         if (count($ids) > 0) {
@@ -738,7 +755,11 @@ class cApiProperty extends Item {
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -761,6 +782,8 @@ class cApiProperty extends Item {
      * Stores changed cApiProperty
      *
      * @return bool
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function store() {
         global $auth;

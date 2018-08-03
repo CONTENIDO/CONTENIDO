@@ -79,7 +79,10 @@ class cDebugFile implements cDebugInterface {
      * Writes a line.
      *
      * @see cDebugInterface::out()
+     *
      * @param string $msg
+     *
+     * @throws cInvalidArgumentException
      */
     public function out($msg) {
         if (cFileHandler::writeable($this->_sPathToFile)) {
@@ -91,13 +94,14 @@ class cDebugFile implements cDebugInterface {
     /**
      * Outputs contents of passed variable in a preformatted, readable way
      *
-     * @param mixed $mVariable
-     *         The variable to be displayed
+     * @param mixed  $mVariable
+     *                                     The variable to be displayed
      * @param string $sVariableDescription [optional]
-     *         The variable's name or description
-     * @param bool $bExit [optional]
-     *         If set to true, your app will die() after output of current var
-     */
+     *                                     The variable's name or description
+     * @param bool   $bExit                [optional]
+     *                                     If set to true, your app will die() after output of current var
+     * @throws cInvalidArgumentException
+*/
     public function show($mVariable, $sVariableDescription = '', $bExit = false) {
         if (cFileHandler::writeable($this->_sPathToFile)) {
             $sDate = date('Y-m-d H:i:s');

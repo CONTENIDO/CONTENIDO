@@ -252,6 +252,7 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
      * @param string[] $failures An array of failures by-reference
      *
      * @return string
+     * @throws Swift_IoException
      */
     public function executeCommand($command, $codes = array(), &$failures = null)
     {

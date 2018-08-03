@@ -62,16 +62,21 @@ class cFrontendHelper {
      *
      * @deprecated [2015-05-21]
      *         This method is no longer supported (no replacement)
+     *
      * @param int $baseCategoryId
      *         root category ID
      * @param int $depth
      *         maximum depth
      * @param int $currentCategoryId
      *         the current category ID
-     * @throws cUnexpectedValueException
-     *         if given category ID is not greater than 0
+     *
      * @return array
      *         category tree
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     * @throws cUnexpectedValueException if given category ID is not greater than 0
      */
     protected function _fetchCategoryTree($baseCategoryId, $depth, $currentCategoryId) {
         cDeprecated("The cFrontendHelper _fetchCategoryTree method are no longer supported.");
@@ -120,14 +125,21 @@ class cFrontendHelper {
      *
      * @deprecated [2015-05-21]
      *         This method is no longer supported (no replacement)
+     *
      * @param int $baseCategoryId
      *         root category ID
      * @param int $depth
      *         maximum depth
      * @param int $currentCategoryId
      *         the current category ID
+     *
      * @return array
      *         category tree
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     * @throws cUnexpectedValueException
      */
     public function renderNavigation($baseCategoryId, $depth, $currentCategoryId) {
         cDeprecated("The cFrontendHelper renderNavigation method are no longer supported.");
@@ -142,12 +154,19 @@ class cFrontendHelper {
      *
      * @deprecated [2015-05-21]
      *         This method is no longer supported (no replacement)
-     * @param int $baseCategoryId
+     *
+     * @param int       $baseCategoryId
      *         root category ID
-     * @param int $depth
+     * @param int       $depth
      *         maximum depth
      * @param cTemplate $tpl
      *         template reference
+     *
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     * @throws cUnexpectedValueException
      */
     public function renderSitemap($baseCategoryId, $depth, cTemplate &$tpl) {
         cDeprecated("The cFrontendHelper renderSitemap method are no longer supported.");

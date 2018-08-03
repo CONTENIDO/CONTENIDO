@@ -22,14 +22,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiUserCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
      *
-     * @global array $cfg
      * @param string|bool $where [optional]
-     *         The where clause in the select, usable to run select by creating
-     *         the instance
+     *                           The where clause in the select, usable to run select by creating
+     *                           the instance
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
+     * @global array      $cfg
      */
     public function __construct($where = false) {
         global $cfg;
@@ -44,7 +46,11 @@ class cApiUserCollection extends ItemCollection {
      * Createa a user by user name.
      *
      * @param string $username
+     *
      * @return cApiUser|bool
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($username) {
         $primaryKeyValue = md5($username);
@@ -68,6 +74,7 @@ class cApiUserCollection extends ItemCollection {
      *         Specifies the username
      * @return bool
      *         True if the delete was successful
+     * @throws Exception
      */
     public function deleteUserByUsername($username) {
         $result = $this->deleteBy('username', $username);
@@ -77,14 +84,16 @@ class cApiUserCollection extends ItemCollection {
     /**
      * Returns all users which are accessible by the current user.
      *
-     * @param array $perms
-     *         Permissions array
-     * @param bool $includeAdmins [optional]
-     *         Flag to get admins (admin and sysadmin) too
-     * @param string $orderBy [optional]
-     *         Order by rule, uses 'realname, username' by default
+     * @param array  $perms
+     *                              Permissions array
+     * @param bool   $includeAdmins [optional]
+     *                              Flag to get admins (admin and sysadmin) too
+     * @param string $orderBy       [optional]
+     *                              Order by rule, uses 'realname, username' by default
      * @return array
-     *         Array of user objects
+     *                              Array of user objects
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchAccessibleUsers($perms, $includeAdmins = false, $orderBy = '') {
         $users = array();
@@ -135,14 +144,17 @@ class cApiUserCollection extends ItemCollection {
      * function
      * a multidimensional array instead of a list of objects.
      *
-     * @param array $perms
-     *         Permissions array
-     * @param bool $includeAdmins [optional]
-     *         Flag to get admins (admin and sysadmin) too
-     * @param string $orderBy [optional]
-     *         Order by rule, uses 'realname, username' by default
+     * @param array  $perms
+     *                              Permissions array
+     * @param bool   $includeAdmins [optional]
+     *                              Flag to get admins (admin and sysadmin) too
+     * @param string $orderBy       [optional]
+     *                              Order by rule, uses 'realname, username' by default
+     *
      * @return array
      *         Array of user like $arr[user_id][username], $arr[user_id][realname]
+     * @throws cDbException
+     * @throws cException
      */
     public function getAccessibleUsers($perms, $includeAdmins = false, $orderBy = '') {
         $users = array();
@@ -160,8 +172,10 @@ class cApiUserCollection extends ItemCollection {
      * Returns all users available in the system
      *
      * @param string $orderBy [optional]
-     *         SQL order by part
+     *                        SQL order by part
      * @return array
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchAvailableUsers($orderBy = 'realname ASC') {
         $users = array();
@@ -178,9 +192,11 @@ class cApiUserCollection extends ItemCollection {
      * Returns all system admins available in the system
      *
      * @param bool $forceActive [optional]
-     *         flag if only active sysadmins should be returned
+     *                          flag if only active sysadmins should be returned
      * @return array
-     *         Array of user objects
+     *                          Array of user objects
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchSystemAdmins($forceActive = false) {
         $users = array();
@@ -204,6 +220,8 @@ class cApiUserCollection extends ItemCollection {
      * @param int $client
      * @return array
      *         Array of user objects
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchClientAdmins($client) {
         $client = (int) $client;
@@ -370,7 +388,11 @@ class cApiUser extends Item {
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -388,6 +410,9 @@ class cApiUser extends Item {
      *         Specifies the userID
      * @return bool
      *         True if the load was successful
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
      */
     public function loadUserByUserID($userId) {
         return $this->loadByPrimaryKey($userId);
@@ -400,6 +425,9 @@ class cApiUser extends Item {
      *         Specifies the username
      * @return bool
      *         True if the load was successful
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
      */
     public function loadUserByUsername($userName) {
         return $this->loadBy('username', $userName);
@@ -411,6 +439,9 @@ class cApiUser extends Item {
      * @param string $userId
      * @return bool
      *         user exists or not
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
      */
     public static function userExists($userId) {
         $test = new cApiUser();
@@ -425,6 +456,9 @@ class cApiUser extends Item {
      *         the name
      * @return bool
      *         username exists or not
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
      */
     public static function usernameExists($username) {
         $user = new cApiUser();
@@ -558,6 +592,9 @@ class cApiUser extends Item {
      * NOTE: Setting the user id by this method will load the user model.
      *
      * @param string $uid
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
      */
     public function setUserId($uid) {
         $this->loadByPrimaryKey($uid);
@@ -598,6 +635,8 @@ class cApiUser extends Item {
      * @param string $password
      * @return int|bool
      *         PASS_* or false if saving fails
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function savePassword($password) {
         if ($this->get('password') == $this->encodePassword($password)) {
@@ -936,11 +975,13 @@ class cApiUser extends Item {
     /**
      * Returns group names where the user is in.
      *
-     * @param string $userid [optional]
-     *         user id, uses id of loaded user by default.
-     * @param bool $bAddDescription [optional]
-     *         Flag to add description like "groupname (description)"
+     * @param string $userid          [optional]
+     *                                user id, uses id of loaded user by default.
+     * @param bool   $bAddDescription [optional]
+     *                                Flag to add description like "groupname (description)"
      * @return array
+     * @throws cDbException
+     * @throws cException
      */
     public function getGroupNamesByUserID($userid = NULL, $bAddDescription = true) {
         $userid = (NULL === $userid) ? $this->get('user_id') : $userid;
@@ -971,8 +1012,10 @@ class cApiUser extends Item {
      * Returns group ids where the user is in.
      *
      * @param string $userid [optional]
-     *         user id, uses id of loaded user by default.
+     *                       user id, uses id of loaded user by default.
      * @return array
+     * @throws cDbException
+     * @throws cException
      */
     public function getGroupIDsByUserID($userid) {
         $userid = (NULL === $userid) ? $this->get('user_id') : $userid;
@@ -993,13 +1036,16 @@ class cApiUser extends Item {
      * Retrieves the effective user property.
      *
      * @param string $type
-     *         Type (class, category etc) for the property to retrieve
+     *                      Type (class, category etc) for the property to retrieve
      * @param string $name
-     *         Name of the property to retrieve
-     * @param bool $group [optional]
-     *         Flag to search in groups
+     *                      Name of the property to retrieve
+     * @param bool   $group [optional]
+     *                      Flag to search in groups
      * @return string|bool
-     *         value of the retrieved property or false
+     *                      value of the retrieved property or false
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
      */
     public function getUserProperty($type, $name, $group = false) {
         global $perm;
@@ -1039,14 +1085,17 @@ class cApiUser extends Item {
      * @todo return value should be similar to getUserProperties()
      *
      * @param string $type
-     *         Type (class, category etc) of the properties to retrieve
-     * @param bool $group [optional]
-     *         Flag to retrieve in group properties. If enabled, group
-     *         properties will be merged with user properties where the user
-     *         poperties will overwrite group properties
+     *                      Type (class, category etc) of the properties to retrieve
+     * @param bool   $group [optional]
+     *                      Flag to retrieve in group properties. If enabled, group
+     *                      properties will be merged with user properties where the user
+     *                      poperties will overwrite group properties
      * @return array
-     *         Assoziative properties array as follows:
-     *         - $arr[name] = value
+     *                      Assoziative properties array as follows:
+     *                      - $arr[name] = value
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
      */
     public function getUserPropertiesByType($type, $group = false) {
         global $perm;
@@ -1087,6 +1136,7 @@ class cApiUser extends Item {
      *         - $arr[iduserprop][name]
      *         - $arr[iduserprop][type]
      *         - $arr[iduserprop][value]
+     * @throws Exception
      */
     public function getUserProperties() {
         $userPropColl = new cApiUserPropertyCollection($this->values['user_id']);
@@ -1114,6 +1164,10 @@ class cApiUser extends Item {
      *         Name of the property to retrieve
      * @param string $value
      *         Value to insert
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function setUserProperty($type, $name, $value) {
         $userPropColl = new cApiUserPropertyCollection($this->values['user_id']);
@@ -1128,6 +1182,7 @@ class cApiUser extends Item {
      * @param string $name
      *         Name of property to retrieve
      * @return bool
+     * @throws Exception
      */
     public function deleteUserProperty($type, $name) {
         $userPropColl = new cApiUserPropertyCollection($this->values['user_id']);

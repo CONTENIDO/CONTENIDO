@@ -38,15 +38,19 @@ class cApiContentCollection extends ItemCollection {
     /**
      * Creates a content entry.
      *
-     * @param int $idArtLang
-     * @param int $idType
-     * @param int $typeId
+     * @param int    $idArtLang
+     * @param int    $idType
+     * @param int    $typeId
      * @param string $value
-     * @param int $version
-     * @param string $author [optional]
-     * @param string $created [optional]
+     * @param int    $version
+     * @param string $author       [optional]
+     * @param string $created      [optional]
      * @param string $lastmodified [optional]
+     *
      * @return cApiContent
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($idArtLang, $idType, $typeId, $value, $version, $author = '', $created = '', $lastmodified = '') {
         global $auth;
@@ -85,13 +89,18 @@ class cApiContentCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiContent extends Item {
-
+class cApiContent extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -129,7 +138,10 @@ class cApiContent extends Item {
      * Creates a new, editable Version with same properties as this Content
      *
      * @param string $version
-     * @param mixed $deleted
+     * @param mixed  $deleted
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function markAsEditable($version, $deleted) {
             $parameters = $this->values;
@@ -148,7 +160,10 @@ class cApiContent extends Item {
      * @param int $idartlang
      * @param int $idtype
      * @param int $typeid
+     *
      * @return bool
+     * @throws Exception
+     * @throws cException
      */
     public function loadByArticleLanguageIdTypeAndTypeId($idartlang, $idtype, $typeid) {
         $aProps = array(

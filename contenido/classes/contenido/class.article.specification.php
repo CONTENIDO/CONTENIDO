@@ -33,11 +33,13 @@ class cApiArticleSpecificationCollection extends ItemCollection {
     /**
      * Returns all article specifications by client and language.
      *
-     * @param int $client
-     * @param int $lang
-     * @param string $orderby [optional]
-     *         Order statement, like "artspec ASC"
+     * @param int    $client
+     * @param int    $lang
+     * @param string $orderBy
+     *
      * @return array
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchByClientLang($client, $lang, $orderBy = '') {
         $this->select("client=" . (int) $client . " AND lang=" . (int) $lang, '', $this->escape($orderBy));
@@ -56,13 +58,18 @@ class cApiArticleSpecificationCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiArticleSpecification extends Item {
-
+class cApiArticleSpecification extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

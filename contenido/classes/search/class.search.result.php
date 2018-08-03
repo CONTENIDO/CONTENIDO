@@ -134,13 +134,15 @@ class cSearchResult extends cSearchBaseAbstract {
      * more than a matching word in the text (CMS_HTML[1]).
      *
      * @param array $search_result
-     *         list of article ids
-     * @param int $result_per_page
-     *         number of items per page
-     * @param cDb $oDB [optional]
-     *         CONTENIDO database object
-     * @param bool $bDebug [optional]
-     *         flag to enable debugging
+     *                      list of article ids
+     * @param int   $result_per_page
+     *                      number of items per page
+     * @param cDb   $oDB    [optional]
+     *                      CONTENIDO database object
+     * @param bool  $bDebug [optional]
+     *                      flag to enable debugging
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct($search_result, $result_per_page, $oDB = NULL, $bDebug = false) {
         parent::__construct($oDB, $bDebug);
@@ -184,12 +186,16 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param int $art_id
-     *         Id of an article
+     * @param int    $art_id
+     *                   Id of an article
      * @param string $cms_type
-     * @param int $id [optional]
+     * @param int    $id [optional]
+     *
      * @return string
-     *         Content of an article, specified by it's content type
+     *                   Content of an article, specified by it's content type
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
      */
     public function getContent($art_id, $cms_type, $id = 0) {
         $article = new cApiArticleLanguage();
@@ -199,13 +205,15 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param int $art_id
-     *         Id of an article
+     * @param int    $art_id
+     *                       Id of an article
      * @param string $cms_type
-     *         Content type
-     * @param int $cms_nr [optional]
-     * @return string
-     *         Content of an article in search result, specified by its type
+     *                       Content type
+     * @param int    $cms_nr [optional]
+     * @return array Content of an article in search result, specified by its type*         Content of an article in search result, specified by its type
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
      */
     public function getSearchContent($art_id, $cms_type, $cms_nr = NULL) {
         $cms_type = cString::toUpperCase($cms_type);
@@ -367,9 +375,12 @@ class cSearchResult extends cSearchBaseAbstract {
     /**
      *
      * @todo refactor this because it shouldn't be the Search's job
+     *
      * @param int $artid
+     *
      * @return int
      *         Category Id
+     * @throws cDbException
      */
     public function getArtCat($artid) {
         $sql = "SELECT idcat FROM " . $this->cfg['tab']['cat_art'] . "

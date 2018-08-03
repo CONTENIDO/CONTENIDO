@@ -34,24 +34,28 @@ class cApiModuleCollection extends ItemCollection {
     /**
      * Creates a new module item
      *
-     * @global int $client
+     * @param string  $name
+     * @param int     $idclient     [optional]
+     * @param string  $alias        [optional]
+     * @param string  $type         [optional]
+     * @param string  $error        [optional]
+     * @param string  $description  [optional]
+     * @param int     $deletable    [optional]
+     * @param string  $template     [optional]
+     * @param int     $static       [optional]
+     * @param string  $package_guid [optional]
+     * @param string  $package_data [optional]
+     * @param string  $author       [optional]
+     * @param string  $created      [optional]
+     * @param string  $lastmodified [optional]
+     *
+     * @return cApiModule
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     * @global int    $client
      * @global object $auth
      *
-     * @param string $name
-     * @param int $idclient [optional]
-     * @param string $alias [optional]
-     * @param string $type [optional]
-     * @param string $error [optional]
-     * @param string $description [optional]
-     * @param int $deletable [optional]
-     * @param string $template [optional]
-     * @param int $static [optional]
-     * @param string $package_guid [optional]
-     * @param string $package_data [optional]
-     * @param string $author [optional]
-     * @param string $created [optional]
-     * @param string $lastmodified [optional]
-     * @return cApiModule
      */
     public function create($name, $idclient = NULL, $alias = '', $type = '',
             $error = 'none', $description = '', $deletable = 0, $template = '',
@@ -100,6 +104,8 @@ class cApiModuleCollection extends ItemCollection {
      * @param int $idclient
      *
      * @return array
+     * @throws Exception
+     * @throws cDbException
      */
     public function getAllTypesByIdclient($idclient) {
         $types = array();
@@ -119,9 +125,12 @@ class cApiModuleCollection extends ItemCollection {
      * By default the modules are ordered by name but can be ordered by any
      * property.
      *
-     * @param int $idclient
+     * @param int    $idclient
      * @param string $oderBy [optional]
+     *
      * @return array
+     * @throws Exception
+     * @throws cDbException
      */
     public function getAllByIdclient($idclient, $oderBy = 'name') {
         $records = array();
@@ -144,6 +153,7 @@ class cApiModuleCollection extends ItemCollection {
      *
      * @return array
      *         Returns all templates for all modules
+     * @throws cDbException
      */
     public function getModulesInUse() {
         global $cfg;
@@ -232,7 +242,12 @@ class cApiModule extends Item {
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg, $cfgClient, $client;
@@ -262,6 +277,7 @@ class cApiModule extends Item {
      *
      * @return string
      *         Translated module name or original
+     * @throws Exception
      */
     public function getTranslatedName() {
         global $lang;
@@ -285,6 +301,7 @@ class cApiModule extends Item {
      *
      * @param string $name
      *         Translated name of the module
+     * @throws Exception
      */
     public function setTranslatedName($name) {
         global $lang;
@@ -296,9 +313,10 @@ class cApiModule extends Item {
      * from db-table.
      *
      * @param array $cfg
-     * @param int $client
-     * @param int $lang
+     * @param int   $client
+     * @param int   $lang
      * @return bool|array
+     * @throws cInvalidArgumentException
      */
     function parseModuleForStringsLoadFromFile($cfg, $client, $lang) {
         global $client;
@@ -401,6 +419,7 @@ class cApiModule extends Item {
      *
      * @return array
      *         Found strings for this module
+     * @throws cInvalidArgumentException
      */
     public function parseModuleForStrings() {
         if (!$this->isLoaded()) {
@@ -484,10 +503,11 @@ class cApiModule extends Item {
     /**
      * Checks if the module is in use
      *
-     * @param int $module
+     * @param int  $module
      * @param bool $bSetData [optional]
      * @return bool
-     *         true if the module is in use
+     *                       true if the module is in use
+     * @throws cDbException
      */
     public function moduleInUse($module, $bSetData = false) {
         global $cfg;
@@ -591,8 +611,10 @@ class cApiModule extends Item {
      *
      * @see Item::store()
      * @param bool $bJustStore [optional]
-     *     don't generate code for all articles using this module (default false)
+     *                         don't generate code for all articles using this module (default false)
      * @return bool
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function store($bJustStore = false) {
         if ($bJustStore) {
@@ -616,6 +638,7 @@ class cApiModule extends Item {
      *         Filename including path of import xml file
      * @return array
      *         Array with module data from XML file
+     * @throws cException
      */
     private function _parseImportFile($sFile) {
         $oXmlReader = new cXmlReader();
@@ -647,6 +670,7 @@ class cApiModule extends Item {
      * @param string $sFile
      *         Where is the modul info.xml file
      * @return array
+     * @throws cException
      */
     private function _getModuleProperties($sFile) {
         $ret = array();
@@ -668,12 +692,15 @@ class cApiModule extends Item {
      * Imports the a module from a zip file, uses xmlparser and callbacks
      *
      * @param string $sFile
-     *         Filename of data file (full path)
+     *                                  Filename of data file (full path)
      * @param string $tempName
-     *         of archive
-     * @param bool $show_notification [optional]
-     *         standard: true, mode to turn notifications off
+     *                                  of archive
+     * @param bool   $show_notification [optional]
+     *                                  standard: true, mode to turn notifications off
      * @return bool
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     function import($sFile, $tempName, $show_notification = true) {
         global $cfgClient, $db, $client, $cfg, $encoding, $lang;
@@ -748,6 +775,8 @@ class cApiModule extends Item {
      * @param string $sFile
      *         Filename of data file (full path)
      * @return bool
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     function importModuleFromXML($sFile) {
         global $db, $cfgClient, $client, $cfg, $encoding, $lang;

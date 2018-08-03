@@ -161,6 +161,7 @@ class cRegistry {
      * Returns the loaded cApiLanguage object for the current language.
      *
      * @return cApiLanguage
+     * @throws cInvalidArgumentException
      */
     public static function getLanguage() {
         return self::_fetchItemObject('cApiLanguage', self::getLanguageId());
@@ -179,6 +180,7 @@ class cRegistry {
      * Returns the loaded cApiClient object for the current client.
      *
      * @return cApiClient
+     * @throws cInvalidArgumentException
      */
     public static function getClient() {
         return self::_fetchItemObject('cApiClient', self::getClientId());
@@ -200,6 +202,7 @@ class cRegistry {
      * Returns the loaded cApiArticle object for the current article.
      *
      * @return cApiArticle
+     * @throws cInvalidArgumentException
      */
     public static function getArticle() {
         return self::_fetchItemObject('cApiArticle', self::getArticleId());
@@ -222,6 +225,7 @@ class cRegistry {
      * Returns the loaded cApiArticleLanguage object for the current article.
      *
      * @return cApiArticleLanguage
+     * @throws cInvalidArgumentException
      */
     public static function getArticleLanguage() {
         return self::_fetchItemObject('cApiArticleLanguage', self::getArticleLanguageId());
@@ -243,6 +247,7 @@ class cRegistry {
      * Returns the loaded cApiCategory object for the current category.
      *
      * @return cApiCategory
+     * @throws cInvalidArgumentException
      */
     public static function getCategory() {
         return self::_fetchItemObject('cApiCategory', self::getCategoryId());
@@ -265,6 +270,7 @@ class cRegistry {
      * Returns the loaded cApiCategoryLanguage object for the current category.
      *
      * @return cApiCategoryLanguage
+     * @throws cInvalidArgumentException
      */
     public static function getCategoryLanguage() {
         return self::_fetchItemObject('cApiCategoryLanguage', self::getCategoryLanguageId());
@@ -288,6 +294,7 @@ class cRegistry {
      * category/article relation.
      *
      * @return cApiCategoryArticle
+     * @throws cInvalidArgumentException
      */
     public static function getCategoryArticle() {
         return self::_fetchItemObject('cApiCategoryArticle', self::getCategoryArticleId());

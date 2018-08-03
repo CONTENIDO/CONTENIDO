@@ -182,10 +182,13 @@ abstract class cWYSIWYGEditor {
      * Saves configuration of WYSIWYG editor into a file
      * This function does not validate input! This has to be done by classes that extend cWYSIWYGEditor
      * because this class does not know what each WYSIWYG editor expects.
+     *
      * @param array $config
      *         Array with configuration values for the current WYSIWYG editor to save
+     *
      * @return array
      *         Array with values that were not accepted
+     * @throws cInvalidArgumentException
      */
     public static function saveConfig($config) {
 

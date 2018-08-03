@@ -123,6 +123,7 @@ class cContentVersioning {
      * Returns the current versioning state (disabled (default), simple, advanced).
      *
      * @return string $versioningState
+     * @throws Exception
      */
     public static function getState() {
 
@@ -152,11 +153,15 @@ class cContentVersioning {
      * Returns selected article.
      *
      * @todo $idArtlangVersion <-> $selectedArticleId
-     * @param int $idArtLangVersion
-     * @param int $idArtLang
+     *
+     * @param int    $idArtLangVersion
+     * @param int    $idArtLang
      * @param string $articleType
-     * @param int $selectedArticleId [optional]
+     * @param int    $selectedArticleId [optional]
+     *
      * @return cApiArticleLanguage|cApiArticleLanguageVersion $this->selectedArticle
+     * @throws Exception
+     * @throws cDbException
      */
     public function getSelectedArticle($idArtLangVersion, $idArtLang, $articleType, $selectedArticleId = NULL) {
 
@@ -179,17 +184,19 @@ class cContentVersioning {
         }
 
         return $this->selectedArticle;
-
     }
 
     /**
      * Returns $list[1] = CMS_HTMLHEAD for every content existing
      * in article/version with $idArtLang.
      *
-     * @param int $idArtLang
+     * @param int    $idArtLang
      * @param string $articleType
+     *
      * @return array $list
-     */
+     * @throws Exception
+     * @throws cDbException
+*/
     public function getList($idArtLang, $articleType) {
 
         $sql = 'SELECT DISTINCT b.idtype as idtype, b.type as name
@@ -210,13 +217,13 @@ class cContentVersioning {
         }
 
         return $list;
-
     }
 
     /**
      * Return max idcontent.
      *
      * @return int
+     * @throws cDbException
      */
     public function getMaxIdContent() {
 
@@ -230,13 +237,14 @@ class cContentVersioning {
     /**
      * Returns type of article (current, version or editable).
      *
-     * @param int $idArtLangVersion
-     * @param int $idArtLang
+     * @param int    $idArtLangVersion
+     * @param int    $idArtLang
      * @param string $action
-     * @param mixed $selectedArticleId
+     * @param mixed  $selectedArticleId
      * @return string $this->articleType
-     *
-     */
+     * @throws Exception
+     * @throws cDbException
+*/
     public function getArticleType($idArtLangVersion, $idArtLang, $action, $selectedArticleId) {
 
         $this->editableArticleId = $this->getEditableArticleId($idArtLang);
@@ -321,7 +329,9 @@ class cContentVersioning {
      *
      * @param int $idArtLang
      * @return int $editableArticleId
-     */
+     * @throws Exception
+     * @throws cDbException
+*/
     public function getEditableArticleId($idArtLang) {
 
         if ($this->getState() == 'advanced') {
@@ -346,7 +356,6 @@ class cContentVersioning {
             return $idArtLang;
 
         }
-
     }
 
     /**
@@ -360,6 +369,7 @@ class cContentVersioning {
      * @param int $articleType
      * @param int $version
      * @return array $idContent
+     * @throws cDbException
      */
     public function getContentId($idArtLang, $typeId, $type, $versioningState, $articleType, $version) {
 
@@ -413,10 +423,12 @@ class cContentVersioning {
      * Returns $artLangVersionMap[version][idartlangversion] = lastmodified
      * either from each article-/content- or metatag-version.
      *
-     * @param int $idArtLang
+     * @param int    $idArtLang
      * @param string $selectElementType [optional]
-     *         either 'content', 'seo' or 'config'
+     *                                  either 'content', 'seo' or 'config'
+     *
      * @return array
+     * @throws cException
      */
     public function getDataForSelectElement($idArtLang, $selectElementType = '') {
 
@@ -503,19 +515,22 @@ class cContentVersioning {
         }
 
         return $artLangVersionMap;
-
     }
 
     /**
      * Prepares content for saving (consider versioning-mode; prevents multiple
      * storings for filelists e.g.).
      *
-     * @param int $idartlang
+     * @param int          $idartlang
      *         the contents idartlang
-     * @param cApiContent $content
+     * @param cApiContent  $content
      *         the content to store
      * @param unknown_type $value
      *         the contents value to store
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function prepareContentForSaving($idartlang, cApiContent $content, $value) {
 
@@ -623,16 +638,11 @@ class cContentVersioning {
      * Create new content version.
      *
      * @param mixed[] $parameters {
-     *     @type int $idContent
-     *     @type int $idArtLang
-     *     @type int $idType
-     *     @type int $typeId
-     *     @type string $value
-     *     @type string $author
-     *     @type string $created
-     *     @type string $lastModified
-     * }
-    */
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     */
     public function createContentVersion(array $parameters) {
 
         // set parameters for article language version
@@ -709,47 +719,16 @@ class cContentVersioning {
     /**
      * Create new article language version.
      *
-     * @global int $lang
+     * @param mixed[] $parameters {
+     * @return cApiArticleLanguageVersion
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @global int    $lang
      * @global object $auth
      * @global string $urlname
      * @global string $page_title
-     * @param mixed[] $parameters {
-     *     @type int $idart
-     *     @type int $idlang
-     *     @type string $title
-     *     @type string $urlname
-     *     @type string $pagetitle
-     *     @type string $summary
-     *     @type int $artspec
-     *     @type string $created
-     *     @type int $iscurrentverseion
-     *     @type string $author
-     *     @type string $lastmodified
-     *     @type string $modifiedby
-     *     @type string $published
-     *     @type string $publishedby
-     *     @type int $online
-     *     @type int $redirect
-     *     @type string $redirect_url
-     *     @type int $external_redirect
-     *     @type int $artsort
-     *     @type int $timemgmt
-     *     @type string $datestart
-     *     @type string $dateend
-     *     @type int $status
-     *     @type int $time_move_cat
-     *     @type int $time_target_cat
-     *     @type int $time_online_move
-     *     @type int $locked
-     *     @type mixed $free_use_01
-     *     @type mixed $free_use_02
-     *     @type mixed $free_use_03
-     *     @type int $searchable
-     *     @type float $sitemapprio
-     *     @type string $changefreq
-     * }
-     * @return cApiArticleLanguageVersion
-    */
+     */
     public function createArticleLanguageVersion(array $parameters) {
 
         global $lang, $auth, $urlname, $page_title;
@@ -877,14 +856,11 @@ class cContentVersioning {
      * Create new Meta Tag Version.
      *
      * @param mixed[] $parameters {
-     *     @type int $idmetatag
-     *     @type int $idartlang
-     *     @type string $idmetatype
-     *     @type string $value
-     *     @type int version
-     * }
      * @return cApiMetaTagVersion
-    */
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+*/
     public function createMetaTagVersion(array $parameters) {
 
         $coll = new cApiMetaTagVersionCollection();

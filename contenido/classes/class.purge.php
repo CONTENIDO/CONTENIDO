@@ -82,7 +82,9 @@ class cSystemPurge {
      * Deletes the PHP files in cms/cache/code.
      *
      * @param int $clientId
+     *
      * @return bool
+     * @throws cInvalidArgumentException
      */
     public function resetClientConCode($clientId) {
         global $perm, $currentuser;
@@ -119,7 +121,9 @@ class cSystemPurge {
      * Reset the table con_cat_art for a client.
      *
      * @param int $clientId
+     *
      * @return bool
+     * @throws cDbException
      */
     public function resetClientConCatArt($clientId) {
         global $perm, $currentuser;
@@ -150,6 +154,7 @@ class cSystemPurge {
      * Reset the table con_inuse.
      *
      * @return bool
+     * @throws cDbException
      */
     public function resetConInuse() {
         global $perm, $currentuser;
@@ -170,7 +175,9 @@ class cSystemPurge {
      * Clear the cache directory for a client.
      *
      * @param int $clientId
+     *
      * @return bool
+     * @throws cInvalidArgumentException
      */
     public function clearClientCache($clientId) {
         global $perm, $currentuser;
@@ -190,10 +197,11 @@ class cSystemPurge {
     /**
      * Clear the cache directory for a client.
      *
-     * @param int $clientId
+     * @param int  $clientId
      * @param bool $keep
-     * @param int $fileNumber
+     * @param int  $fileNumber
      * @return bool
+     * @throws cInvalidArgumentException
      */
     public function clearClientHistory($clientId, $keep, $fileNumber) {
         global $perm, $currentuser;
@@ -233,7 +241,10 @@ class cSystemPurge {
      * Clear the clients content versioning.
      *
      * @param int $idclient
+     *
      * @return bool
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function clearClientContentVersioning($idclient) {
         global $perm, $currentuser;
@@ -260,6 +271,7 @@ class cSystemPurge {
      *
      * @param int $idclient
      * @return bool
+     * @throws cInvalidArgumentException
      */
     public function clearClientLog($idclient) {
         global $perm, $currentuser;
@@ -280,6 +292,7 @@ class cSystemPurge {
      * Clear CONTENIDO log files.
      *
      * @return bool
+     * @throws cInvalidArgumentException
      */
     public function clearConLog() {
         global $perm, $currentuser;
@@ -300,6 +313,7 @@ class cSystemPurge {
      * Clear the cronjob directory.
      *
      * @return bool
+     * @throws cInvalidArgumentException
      */
     public function clearConCronjob() {
         global $perm, $currentuser;
@@ -320,6 +334,7 @@ class cSystemPurge {
      * Clear the cache directory for a client.
      *
      * @return bool
+     * @throws cInvalidArgumentException
      */
     public function clearConCache() {
         global $perm, $currentuser;
@@ -342,6 +357,10 @@ class cSystemPurge {
      *
      * @param int $idartlang
      *         the idartlang of the article
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function clearArticleCache($idartlang) {
         $cfgClient = cRegistry::getClientConfig();
@@ -368,11 +387,13 @@ class cSystemPurge {
      *
      * @param string $dirPath
      * @param string $tmpDirPath
-     *         root directory not deleted
-     * @param bool $keep [optional]
-     * @param array $tmpFileList [optional]
-     *         files are temporarily saved
+     *                            root directory not deleted
+     * @param bool   $keep        [optional]
+     * @param array  $tmpFileList [optional]
+     *                            files are temporarily saved
+     *
      * @return bool
+     * @throws cInvalidArgumentException
      */
     public function clearDir($dirPath, $tmpDirPath, $keep = false, &$tmpFileList = array()) {
         if (cDirHandler::exists($dirPath) && false !== ($handle = cDirHandler::read($dirPath))) {
@@ -440,8 +461,10 @@ class cSystemPurge {
      * Empty a file content.
      *
      * @param string $dirPath
-     * @param array $types
+     * @param array  $types
+     *
      * @return bool
+     * @throws cInvalidArgumentException
      */
     public function emptyFile($dirPath, $types) {
         $count = 0;

@@ -38,15 +38,19 @@ class cApiLayoutCollection extends ItemCollection {
      * Creates a layout entry.
      *
      * @param string $name
-     * @param int $idclient [optional]
-     * @param string $alias [optional]
-     * @param string $description [optional]
-     * @param int $deletable [optional]
-     *         Either 1 or 0
-     * @param string $author [optional]
-     * @param string $created [optional]
+     * @param int    $idclient     [optional]
+     * @param string $alias        [optional]
+     * @param string $description  [optional]
+     * @param int    $deletable    [optional]
+     *                             Either 1 or 0
+     * @param string $author       [optional]
+     * @param string $created      [optional]
      * @param string $lastmodified [optional]
+     *
      * @return cApiLayout
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($name, $idclient = NULL, $alias = '', $description = '', $deletable = 1, $author = '', $created = '', $lastmodified = '') {
         global $client, $auth;
@@ -104,7 +108,12 @@ class cApiLayout extends Item {
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

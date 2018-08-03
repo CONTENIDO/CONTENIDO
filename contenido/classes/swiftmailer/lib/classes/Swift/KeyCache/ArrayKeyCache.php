@@ -49,6 +49,8 @@ class Swift_KeyCache_ArrayKeyCache implements Swift_KeyCache
      * @param string $itemKey
      * @param string $string
      * @param int    $mode
+     *
+     * @throws Swift_SwiftException
      */
     public function setString($nsKey, $itemKey, $string, $mode)
     {
@@ -80,6 +82,8 @@ class Swift_KeyCache_ArrayKeyCache implements Swift_KeyCache
      * @param string                 $itemKey
      * @param Swift_OutputByteStream $os
      * @param int                    $mode
+     * @throws Swift_IoException
+     * @throws Swift_SwiftException
      */
     public function importFromByteStream($nsKey, $itemKey, Swift_OutputByteStream $os, $mode)
     {
@@ -148,7 +152,8 @@ class Swift_KeyCache_ArrayKeyCache implements Swift_KeyCache
      *
      * @param string                $nsKey
      * @param string                $itemKey
-     * @param Swift_InputByteStream $is      to write the data to
+     * @param Swift_InputByteStream $is to write the data to
+     * @throws Swift_IoException
      */
     public function exportToByteStream($nsKey, $itemKey, Swift_InputByteStream $is)
     {

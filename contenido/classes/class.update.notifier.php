@@ -254,11 +254,13 @@ class cUpdateNotifier {
     /**
      * Constructor to create an instance of this class.
      *
-     * @param array $aCfg
-     * @param cApiUser $oUser
+     * @param array       $aCfg
+     * @param cApiUser    $oUser
      * @param cPermission $oPerm
-     * @param cSession $oSession
-     * @param string $sBackendLanguage
+     * @param cSession    $oSession
+     * @param string      $sBackendLanguage
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct($aCfg, $oUser, $oPerm, $oSession, $sBackendLanguage) {
         $this->oProperties = new cApiPropertyCollection();
@@ -456,6 +458,9 @@ class cUpdateNotifier {
      * Handles the update of files coming per vendor host
      *
      * @param array $aXMLContent
+     *
+     * @throws Exception
+     * @throws cInvalidArgumentException
      */
     protected function handleVendorUpdate($aXMLContent) {
         $bValidXMLFile = true;
@@ -518,6 +523,7 @@ class cUpdateNotifier {
      * Connects with vendor host and gets the xml files
      *
      * @return array
+     * @throws cException
      */
     protected function getVendorHostFiles() {
         $aXMLContent = array();
@@ -541,6 +547,8 @@ class cUpdateNotifier {
      * Updates the files in cache
      *
      * @param array $aRSSContent
+     *
+     * @throws cInvalidArgumentException
      */
     protected function updateCacheFiles($aRSSContent) {
         $aWriteCache = array();
@@ -561,6 +569,7 @@ class cUpdateNotifier {
      * Gets the xml file hash from the property table
      *
      * @return string
+     * @throws Exception
      */
     protected function getHashProperty() {
         $sProperty = $this->oProperties->getValue($this->aPropConf['itemType'], $this->aPropConf['itemID'], $this->aPropConf['type'], $this->aPropConf['name']);
@@ -570,7 +579,8 @@ class cUpdateNotifier {
     /**
      * Updates the xml file hash in the property table
      *
-     * @param array $aRSSContent
+     * @param $aXMLContent
+     * @throws Exception
      */
     protected function updateHashProperty($aXMLContent) {
         $sXML = $aXMLContent[$this->sVendorXMLFile];
@@ -607,6 +617,7 @@ class cUpdateNotifier {
      *
      * @param string $sMessage
      * @return string
+     * @throws cException
      */
     protected function renderOutput($sMessage) {
         $oTpl = new cTemplate();
@@ -649,6 +660,7 @@ class cUpdateNotifier {
      * @param cTemplate $oTpl
      * @return cTemplate
      *         CONTENIDO template object
+     * @throws cException
      */
     protected function renderRss($oTpl) {
         if (!is_object($oTpl)) {
@@ -716,6 +728,7 @@ class cUpdateNotifier {
      * @todo add a retry counter and a deathpoint with warning in errorlog
      * @param string $sUrl
      * @return string|bool
+     * @throws cException
      */
     private function fetchUrl($sUrl) {
         if ($this->bVendorHostReachable != true) {
@@ -739,6 +752,7 @@ class cUpdateNotifier {
      * Displays the rendered output
      *
      * @return string
+     * @throws cException
      */
     public function displayOutput() {
         if (!$this->bEnableView) {

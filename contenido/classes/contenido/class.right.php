@@ -43,13 +43,17 @@ class cApiRightCollection extends ItemCollection {
      * Creates a right entry.
      *
      * @param string $userId
-     * @param int $idarea
-     * @param int $idaction
-     * @param int $idcat
-     * @param int $idclient
-     * @param int $idlang
-     * @param int $type
+     * @param int    $idarea
+     * @param int    $idaction
+     * @param int    $idcat
+     * @param int    $idclient
+     * @param int    $idlang
+     * @param int    $type
+     *
      * @return cApiRight
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($userId, $idarea, $idaction, $idcat, $idclient, $idlang, $type) {
         $oItem = $this->createNewItem();
@@ -70,9 +74,12 @@ class cApiRightCollection extends ItemCollection {
     /**
      * Checks if a specific user has frontend access to a protected category.
      *
-     * @param int $idcat
+     * @param int    $idcat
      * @param string $userId
+     *
      * @return bool
+     * @throws Exception
+     * @throws cDbException
      */
     public function hasFrontendAccessByCatIdAndUserId($idcat, $userId) {
         global $cfg;
@@ -103,6 +110,7 @@ class cApiRightCollection extends ItemCollection {
      *       language.
      * @param string $userId
      * @return bool
+     * @throws Exception
      */
     public function deleteByUserId($userId) {
         $result = $this->deleteBy('user_id', $userId);
@@ -117,13 +125,18 @@ class cApiRightCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiRight extends Item {
-
+class cApiRight extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

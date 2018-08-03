@@ -43,6 +43,10 @@ class cApiStatCollection extends ItemCollection {
      * @param int $iIdCatArt
      * @param int $iIdLang
      * @param int $iIdClient
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function trackVisit($iIdCatArt, $iIdLang, $iIdClient) {
         $oStat = $this->fetchByCatArtAndLang($iIdCatArt, $iIdLang);
@@ -60,7 +64,11 @@ class cApiStatCollection extends ItemCollection {
      * @param int $iIdLang
      * @param int $iIdClient
      * @param int $iVisited [optional]
+     *
      * @return cApiStat
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($iIdCatArt, $iIdLang, $iIdClient, $iVisited = 1) {
         $oItem = $this->createNewItem();
@@ -80,6 +88,8 @@ class cApiStatCollection extends ItemCollection {
      * @param int $iIdCatArt
      * @param int $iIdLang
      * @return cApiStat|NULL
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchByCatArtAndLang($iIdCatArt, $iIdLang) {
         $this->select('idcatart=' . (int) $iIdCatArt . ' AND idlang=' . (int) $iIdLang);
@@ -93,6 +103,8 @@ class cApiStatCollection extends ItemCollection {
      * @param int $idlang
      * @return int
      *         Number of deleted items
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function deleteByCategoryArticleAndLanguage($idcatart, $idlang) {
         $where = 'idcatart = ' . (int) $idcatart . ' AND idlang = ' . (int) $idlang;
@@ -106,13 +118,17 @@ class cApiStatCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiStat extends Item {
-
+class cApiStat extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

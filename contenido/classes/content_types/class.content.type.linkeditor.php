@@ -231,8 +231,10 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     /**
      * Generates the code which should be shown if this content type is edited.
      *
-     * * @return string
+     * *
+     * @return string
      *         escaped HTML code which should be shown if content type is edited
+     * @throws cDbException
      * @throws cInvalidArgumentException
      */
     public function generateEditCode() {
@@ -361,6 +363,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         the code for the internal link tab
+     * @throws cDbException
      */
     private function _generateTabInternal() {
         // define a wrapper which contains the whole content of the general tab
@@ -394,10 +397,12 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     /**
      * Builds an array with category information.
      *
-     * @param int $level [optional]
+     * @param int $level    [optional]
      * @param int $parentid [optional]
+     *
      * @return array
      *         with directory information
+     * @throws cDbException
      */
     public function buildCategoryArray($level = 0, $parentid = 0) {
         $db = cRegistry::getDb();
@@ -437,6 +442,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * @param array $categories directory information
      *
      * @return string HTML code showing a directory list
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function getCategoryList(array $categories) {
         $template = new cTemplate();
@@ -480,6 +487,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      *
      * @return array
      *         containing all active idcats
+     * @throws cDbException
      */
     public function getActiveIdcats() {
         $activeIdcats = array();
@@ -557,9 +565,10 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * Generate a select box for all articles of the given idcat.
      *
      * @param int $idCat [optional]
-     *         idcat of the category from which all articles should be shown
+     *                   idcat of the category from which all articles should be shown
      * @return string
-     *         rendered cHTMLSelectElement
+     *                   rendered cHTMLSelectElement
+     * @throws cDbException
      */
     public function generateArticleSelect($idCat = 0) {
         $htmlSelect = new cHTMLSelectElement('linkeditor_idart', '', 'linkeditor_idart_' . $this->_id);
@@ -618,6 +627,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         the code for the link to file tab
+     * @throws cInvalidArgumentException
      */
     private function _generateTabFile() {
         // define a wrapper which contains the whole content of the general tab

@@ -36,7 +36,12 @@ class cApiNavMainCollection extends ItemCollection {
      *
      * @param string $name
      * @param string $location
+     * @param null   $id
+     *
      * @return cApiNavMain
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($name, $location, $id = null) {
         $item = $this->createNewItem();
@@ -58,13 +63,18 @@ class cApiNavMainCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiNavMain extends Item {
-
+class cApiNavMain extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

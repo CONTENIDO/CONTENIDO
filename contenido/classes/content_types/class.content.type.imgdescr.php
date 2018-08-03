@@ -22,7 +22,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage ContentType
  */
 class cContentTypeImgdescr extends cContentTypeImgeditor {
-
     /**
      * Constructor to create an instance of this class.
      *
@@ -30,10 +29,14 @@ class cContentTypeImgdescr extends cContentTypeImgeditor {
      *
      * @param string $rawSettings
      *         the raw settings in an XML structure or as plaintext
-     * @param int $id
+     * @param int    $id
      *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
-     * @param array $contentTypes
+     * @param array  $contentTypes
      *         array containing the values of all content types
+     *
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
 

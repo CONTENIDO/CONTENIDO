@@ -34,16 +34,18 @@ class TODOCollection extends cApiCommunicationCollection {
      * Selects all entries from the database.
      * Objects are loaded using their primary key.
      *
-     * @param string $where [optional]
-     *         Specifies the where clause.
+     * @param string $where    [optional]
+     *                         Specifies the where clause.
      * @param string $group_by [optional]
-     *         Specifies the group by clause.
+     *                         Specifies the group by clause.
      * @param string $order_by [optional]
-     *         Specifies the order by clause.
-     * @param string $limit [optional]
-     *         Specifies the limit by clause.
+     *                         Specifies the order by clause.
+     * @param string $limit    [optional]
+     *                         Specifies the limit by clause.
+     *
      * @return bool
      *         True on success, otherwise false
+     * @throws cDbException
      */
     public function select($where = '', $group_by = '', $order_by = '', $limit = '') {
         if ($where == '') {
@@ -58,17 +60,21 @@ class TODOCollection extends cApiCommunicationCollection {
     /**
      * Creates a new communication item
      *
-     * @param string $itemtype
-     * @param int $itemid
+     * @param string     $itemtype
+     * @param int        $itemid
      * @param int|string $reminderdate
      *          if not given as timestamp it is expected to be a string
      *          using the English date format
-     * @param string $subject
-     * @param string $content
-     * @param string $notimail
-     * @param string $notibackend
-     * @param string $recipient
+     * @param string     $subject
+     * @param string     $content
+     * @param string     $notimail
+     * @param string     $notibackend
+     * @param string     $recipient
      * @return cApiCommunication
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function createItem($itemtype, $itemid, $reminderdate, $subject, $content, $notimail, $notibackend, $recipient) {
         $item = parent::create();
@@ -136,21 +142,22 @@ class TODOCollection extends cApiCommunicationCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class TODOItem extends cApiCommunication {
-
+class TODOItem extends cApiCommunication
+{
     /**
      * Sets a custom property.
      *
      * @see Item::setProperty()
      * @param string $type
-     *         Specifies the type
+     *                       Specifies the type
      * @param string $name
-     *         Specifies the name
-     * @param mixed $value
-     *         Specifies the value
-     * @param int $client [optional]
-     *         unused (should be "Id of client to set property for")
+     *                       Specifies the name
+     * @param mixed  $value
+     *                       Specifies the value
+     * @param int    $client [optional]
+     *                       unused (should be "Id of client to set property for")
      * @return bool
+     * @throws Exception
      */
     public function setProperty($type, $name, $value, $client = 0) {
         if ($type == 'todo' && $name == 'emailnoti') {

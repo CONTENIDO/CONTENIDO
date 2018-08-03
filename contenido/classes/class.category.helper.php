@@ -94,6 +94,8 @@ class cCategoryHelper {
      *
      * @param cAuth $auth
      *         auth object
+     *
+     * @throws cException
      */
     public function setAuth($auth) {
         $this->_auth = $auth;
@@ -193,13 +195,17 @@ class cCategoryHelper {
      * for a breadcrumb.
      *
      * @param int $categoryId
-     *         Last category ID in list.
+     *                           Last category ID in list.
      * @param int $startingLevel [optional, default: 1]
-     *         Define here, at which level the list should start.
-     * @param int $maxDepth [optional, default: 20]
-     *         Amount of the max depth of categories.
+     *                           Define here, at which level the list should start.
+     * @param int $maxDepth      [optional, default: 20]
+     *                           Amount of the max depth of categories.
+     *
      * @return array
      *         Array with cApiCategoryLanguage objects
+     * @throws Exception
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function getCategoryPath($categoryId, $startingLevel = 1, $maxDepth = 20) {
         $languageId = $this->getLanguageId();
@@ -266,6 +272,9 @@ class cCategoryHelper {
      *         Category ID to fetch the level of.
      * @return int
      *         category level
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
      */
     public function getCategoryLevel($categoryId) {
         if (isset($this->_levelCache[$categoryId]) === false) {
@@ -294,6 +303,10 @@ class cCategoryHelper {
      *         the maximum depth
      * @return array
      *         array with subcategories
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function getSubCategories($categoryId, $depth) {
         if ((int) $categoryId <= 0 || (int) $depth < 0) {
@@ -373,8 +386,12 @@ class cCategoryHelper {
      *
      * @param cApiCategoryLanguage $categoryLanguage
      *         category language object
+     *
      * @return bool
      *         result of access check
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function hasCategoryAccess(cApiCategoryLanguage $categoryLanguage) {
         $useAuthorization = ($this->_auth !== NULL && $this->_fePermColl !== NULL);

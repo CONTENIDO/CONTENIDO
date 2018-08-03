@@ -33,10 +33,12 @@ class Swift_Mime_ContentEncoder_RawContentEncoder implements Swift_Mime_ContentE
     /**
      * Encode stream $in to stream $out.
      *
-     * @param Swift_OutputByteStream $in
-     * @param Swift_InputByteStream  $out
+     * @param Swift_OutputByteStream $os
+     * @param Swift_InputByteStream  $is
      * @param int                    $firstLineOffset ignored
      * @param int                    $maxLineLength   ignored
+     *
+     * @throws Swift_IoException
      */
     public function encodeByteStream(Swift_OutputByteStream $os, Swift_InputByteStream $is, $firstLineOffset = 0, $maxLineLength = 0)
     {

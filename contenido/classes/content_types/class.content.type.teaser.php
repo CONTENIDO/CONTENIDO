@@ -237,6 +237,10 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * Function returns idarts of selected articles as array
      *
      * @return array
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function getConfiguredArticles() {
         $articles = array();
@@ -250,9 +254,14 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * for output
      *
      * @param bool $returnAsArray [optional]
-     *         modeswitch betwwen template generation and returning result as array
+     *                            modeswitch betwwen template generation and returning result as array
+     *
      * @return mixed
      *         string of select box or array of articles
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function generateTeaserCode($returnAsArray = false) {
         global $contenido;
@@ -351,10 +360,14 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @param cApiArticleLanguage $article
      *         CONTENIDO Article object
-     * @param cTemplate $template
+     * @param cTemplate           $template
      *         CONTENIDO Template object (as reference)
+     *
      * @return bool
      *         success state of this operation
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
      */
     private function _fillTeaserTemplateEntry(cApiArticleLanguage $article, cTemplate &$template) {
         global $contenido;
@@ -606,6 +619,10 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         escaped HTML code which should be shown if content type is edited
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function generateEditCode() {
         $this->_initCmsTypes();
@@ -833,6 +850,9 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         the code for the advanced tab
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
      */
     private function _generateTabAdvanced() {
         // define a wrapper which contains the whole content of the advanced tab
@@ -1018,8 +1038,12 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @param int $idArt
      *         CONTENIDO article id
+     *
      * @return string
      *         name of article
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
      */
     private function _getArtName($idArt) {
         $article = new cApiArticleLanguage();

@@ -47,7 +47,7 @@ class cApiFrontendPermissionCollection extends ItemCollection {
     /**
      * Creates a new permission entry.
      *
-     * @param int $group
+     * @param int    $group
      *         Specifies the frontend group
      * @param string $plugin
      *         Specifies the plugin
@@ -55,7 +55,11 @@ class cApiFrontendPermissionCollection extends ItemCollection {
      *         Specifies the action
      * @param string $item
      *         Specifies the item
+     *
      * @return cApiFrontendPermission|false
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($group, $plugin, $action, $item) {
         global $lang;
@@ -78,7 +82,7 @@ class cApiFrontendPermissionCollection extends ItemCollection {
     /**
      * Sets a permission entry, is a wrapper for create() function
      *
-     * @param int $group
+     * @param int    $group
      *         Specifies the frontend group
      * @param string $plugin
      *         Specifies the plugin
@@ -86,6 +90,10 @@ class cApiFrontendPermissionCollection extends ItemCollection {
      *         Specifies the action
      * @param string $item
      *         Specifies the item
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function setPerm($group, $plugin, $action, $item) {
         $this->create($group, $plugin, $action, $item);
@@ -97,17 +105,19 @@ class cApiFrontendPermissionCollection extends ItemCollection {
      * 1.) Checks for global permission
      * 2.) Checks for specific item permission
      *
-     * @param int $group
-     *         Specifies the frontend group
+     * @param int    $group
+     *                        Specifies the frontend group
      * @param string $plugin
-     *         Specifies the plugin
+     *                        Specifies the plugin
      * @param string $action
-     *         Specifies the action
+     *                        Specifies the action
      * @param string $item
-     *         Specifies the item
-     * @param bool $useLang [optional]
-     *         Flag to use language (Not used!)
+     *                        Specifies the item
+     * @param bool   $useLang [optional]
+     *                        Flag to use language (Not used!)
      * @return bool
+     * @throws cDbException
+     * @throws cException
      */
     public function checkPerm($group, $plugin, $action, $item, $useLang = false) {
         global $lang;
@@ -133,17 +143,21 @@ class cApiFrontendPermissionCollection extends ItemCollection {
     /**
      * Removes the permission.
      *
-     * @param int $group
-     *         Specifies the frontend group
+     * @param int    $group
+     *                        Specifies the frontend group
      * @param string $plugin
-     *         Specifies the plugin
+     *                        Specifies the plugin
      * @param string $action
-     *         Specifies the action
+     *                        Specifies the action
      * @param string $item
-     *         Specifies the item
-     * @param bool $useLang [optional]
-     *         Flag to use language (Not used!)
+     *                        Specifies the item
+     * @param bool   $useLang [optional]
+     *                        Flag to use language (Not used!)
      * @return bool
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function removePerm($group, $plugin, $action, $item, $useLang = false) {
         global $lang;
@@ -169,13 +183,17 @@ class cApiFrontendPermissionCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiFrontendPermission extends Item {
-
+class cApiFrontendPermission extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

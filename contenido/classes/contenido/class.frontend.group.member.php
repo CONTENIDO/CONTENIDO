@@ -39,11 +39,16 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
      * Creates a new association
      *
      * @todo Should return null in case of failure
+     *
      * @param int $idfrontendgroup
      *         specifies the frontend group
      * @param int $idfrontenduser
      *         specifies the frontend user
+     *
      * @return cApiFrontendGroupMember|false
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($idfrontendgroup, $idfrontenduser) {
         $this->select('idfrontendgroup = ' . (int) $idfrontendgroup . ' AND idfrontenduser = ' . (int) $idfrontenduser);
@@ -68,6 +73,11 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
      *         Specifies the frontend group
      * @param int $idfrontenduser
      *         Specifies the frontend user
+     *
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function remove($idfrontendgroup, $idfrontenduser) {
         $this->select('idfrontendgroup = ' . (int) $idfrontendgroup . ' AND idfrontenduser = ' . (int) $idfrontenduser);
@@ -80,12 +90,15 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
     /**
      * Returns all users in a single group
      *
-     * @param int $idfrontendgroup
-     *         specifies the frontend group
+     * @param int  $idfrontendgroup
+     *                        specifies the frontend group
      * @param bool $asObjects [optional]
-     *         Specifies if the function should return objects
+     *                        Specifies if the function should return objects
      * @return array
-     *         List of frontend user ids or cApiFrontendUser items
+     *                        List of frontend user ids or cApiFrontendUser items
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
      */
     public function getUsersInGroup($idfrontendgroup, $asObjects = true) {
         $this->select('idfrontendgroup = ' . (int) $idfrontendgroup);
@@ -112,13 +125,17 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiFrontendGroupMember extends Item {
-
+class cApiFrontendGroupMember extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

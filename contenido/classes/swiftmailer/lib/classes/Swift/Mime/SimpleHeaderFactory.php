@@ -50,6 +50,7 @@ class Swift_Mime_SimpleHeaderFactory implements Swift_Mime_HeaderFactory
      * @param array|string|null $addresses
      *
      * @return Swift_Mime_Header
+     * @throws Swift_RfcComplianceException
      */
     public function createMailboxHeader($name, $addresses = null)
     {
@@ -131,6 +132,7 @@ class Swift_Mime_SimpleHeaderFactory implements Swift_Mime_HeaderFactory
      * @param string|array $ids
      *
      * @return Swift_Mime_Header
+     * @throws Swift_RfcComplianceException
      */
     public function createIdHeader($name, $ids = null)
     {
@@ -150,6 +152,7 @@ class Swift_Mime_SimpleHeaderFactory implements Swift_Mime_HeaderFactory
      * @param string $path
      *
      * @return Swift_Mime_Header
+     * @throws Swift_RfcComplianceException
      */
     public function createPathHeader($name, $path = null)
     {

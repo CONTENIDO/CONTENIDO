@@ -136,8 +136,11 @@ class cTypeGenerator {
     /**
      *
      * @param string $type
-     * @param int $index
+     * @param int    $index
+     *
      * @return string
+     * @throws cDbException
+     * @throws cException
      */
     private function _processCmsTags($type, $index) {
         $oTypeColl = new cApiTypeCollection();
@@ -174,9 +177,11 @@ class cTypeGenerator {
      * Helper function to call a private function
      *
      * @param string $type
-     * @param int $index
+     * @param int    $index
      *
-     * @return array
+     * @return string
+     * @throws cDbException
+     * @throws cException
      */
     public function getGeneratedCmsTag($type, $index) {
         return $this->_processCmsTags($type, $index);

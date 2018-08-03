@@ -98,6 +98,8 @@ class cDirHandler {
      *         the name and path of the dir
      * @param string $new_dirname
      *         the new name of the dir
+     *
+     * @throws cInvalidArgumentException
      */
     public static function rename($dirname, $new_dirname) {
         self::move($dirname, $new_dirname);
@@ -131,6 +133,7 @@ class cDirHandler {
      *         the name of the directory
      * @return bool
      *         Returns true on success or false on failure.
+     * @throws cInvalidArgumentException
      */
     public static function setDefaultDirPerms($dirname) {
         $cfg = cRegistry::getConfig();
@@ -180,7 +183,7 @@ class cDirHandler {
      *         the name and path of the file
      * @param string $destination
      *         the destination. Note that existing files get overwritten
-     * @param string $chmod [optional; default: 0755]
+     * @param int $chmod [optional; default: 0755]
      * 			chmod mode
      * @throws cInvalidArgumentException
      *         if the file with the given filename does not exist
@@ -344,11 +347,12 @@ class cDirHandler {
      * that are larger than 2GiB
      *
      * @param string $dirname
-     *         The directory name
-     * @param bool $recursive [optional]
-     *         true if all the subdirectories should be included in the calculation
+     *                          The directory name
+     * @param bool   $recursive [optional]
+     *                          true if all the subdirectories should be included in the calculation
      * @return int|bool
-     *         false in case of an error or the size
+     *                          false in case of an error or the size
+     * @throws cInvalidArgumentException
      */
     public static function getDirectorySize($dirname, $recursive = false) {
         $ret = 0;

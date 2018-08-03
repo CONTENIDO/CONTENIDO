@@ -167,9 +167,8 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
      *
      * @param string $bytes
      *
-     * @throws Swift_IoException
-     *
      * @return $this
+     * @throws Swift_SwiftException
      */
     public function write($bytes)
     {
@@ -392,6 +391,7 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
      * @param Swift_Mime_HeaderSet $headers
      *
      * @return $this
+     * @throws Swift_SwiftException
      */
     public function addSignature(Swift_Mime_HeaderSet $headers)
     {

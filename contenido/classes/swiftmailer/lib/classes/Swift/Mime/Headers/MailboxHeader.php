@@ -244,6 +244,7 @@ class Swift_Mime_Headers_MailboxHeader extends Swift_Mime_Headers_AbstractHeader
      * @param string[] $mailboxes
      *
      * @return string[]
+     * @throws Swift_RfcComplianceException
      */
     protected function normalizeMailboxes(array $mailboxes)
     {
@@ -272,6 +273,7 @@ class Swift_Mime_Headers_MailboxHeader extends Swift_Mime_Headers_AbstractHeader
      * @param bool   $shorten     the first line to make remove for header name
      *
      * @return string
+     * @throws Swift_RfcComplianceException
      */
     protected function createDisplayNameString($displayName, $shorten = false)
     {
@@ -314,6 +316,7 @@ class Swift_Mime_Headers_MailboxHeader extends Swift_Mime_Headers_AbstractHeader
      * @param string[] $mailboxes
      *
      * @return string[]
+     * @throws Swift_RfcComplianceException
      */
     private function _createNameAddressStrings(array $mailboxes)
     {

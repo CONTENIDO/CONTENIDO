@@ -113,14 +113,18 @@ class cUriBuilderMR extends cUriBuilder {
      * Builds a URL based on defined mod rewrite settings.
      *
      * @param array $params
-     *         Parameter array, provides only following parameters:
-     *         <code>
-     *         $params[0] = 'front_content.php?idart=123...'
-     *         </code>
-     * @param bool $bUseAbsolutePath [optional]
-     *         Flag to use absolute path (not used at the moment)
+     *                                Parameter array, provides only following parameters:
+     *                                <code>
+     *                                $params[0] = 'front_content.php?idart=123...'
+     *                                </code>
+     * @param bool  $bUseAbsolutePath [optional]
+     *                                Flag to use absolute path (not used at the moment)
+     *
      * @return string
      *         New build url
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function buildUrl(array $params, $bUseAbsolutePath = false) {
         ModRewriteDebugger::add($params, 'cUriBuilderMR::buildUrl() $params');
@@ -151,8 +155,12 @@ class cUriBuilderMR extends cUriBuilder {
      *
      * @param array $aParams
      *         Parameter array
+     *
      * @return string
      *         New build pretty url
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _buildUrl(array $aParams) {
         // language should changed, set lang parameter
@@ -239,7 +247,11 @@ class cUriBuilderMR extends cUriBuilder {
      *
      * @param string $configuredRootDir
      *         defined rootdir
+     *
      * @return string
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public static function getMultiClientRootDir($configuredRootDir) {
 

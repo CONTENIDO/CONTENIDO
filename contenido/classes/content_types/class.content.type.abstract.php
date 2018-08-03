@@ -337,8 +337,10 @@ abstract class cContentTypeAbstract {
      *
      * @param array $dirs
      *         directory information
+     *
      * @return string
      *         HTML code showing a directory list
+     * @throws cInvalidArgumentException
      */
     public function generateDirectoryList(array $dirs) {
         $template = new cTemplate();

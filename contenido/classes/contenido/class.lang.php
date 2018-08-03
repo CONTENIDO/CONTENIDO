@@ -34,12 +34,16 @@ class cApiLanguageCollection extends ItemCollection {
     /**
      * Creates a language entry.
      *
-     * @global object $auth
-     * @param string $name
-     * @param int $active
-     * @param string $encoding
-     * @param string $direction
+     * @param string  $name
+     * @param int     $active
+     * @param string  $encoding
+     * @param string  $direction
+     *
      * @return cApiLanguage
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     * @global object $auth
      */
     public function create($name, $active, $encoding, $direction) {
         global $auth;
@@ -62,12 +66,14 @@ class cApiLanguageCollection extends ItemCollection {
      * Returns next accessible language for current client and current logged in
      * user.
      *
-     * @global object $perm
-     * @global array $cfg
-     * @global int $client
-     * @global int $lang
-     *
      * @return cApiLanguage|NULL
+     * @throws cDbException
+     * @throws cException
+     * @global object $perm
+     * @global array  $cfg
+     * @global int    $client
+     * @global int    $lang
+     *
      */
     public function nextAccessible() {
         global $perm, $client, $lang;
@@ -144,7 +150,12 @@ class cApiLanguage extends Item {
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -159,6 +170,8 @@ class cApiLanguage extends Item {
      * Stores made changes.
      *
      * @return bool
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function store() {
         $this->set('lastmodified', date('Y-m-d H:i:s'), false);
@@ -188,7 +201,9 @@ class cApiLanguage extends Item {
      * Loads all languagesettings into an static array.
      *
      * @param int $idclient [optional]
-     *         Id of client to load properties from
+     *                      Id of client to load properties from
+     * @throws cDbException
+     * @throws cException
      */
     protected function _loadProperties($idclient = 0) {
 
@@ -225,13 +240,15 @@ class cApiLanguage extends Item {
      * Returns a custom property.
      *
      * @param string $type
-     *         Specifies the type
+     *                         Specifies the type
      * @param string $name
-     *         Specifies the name
-     * @param int $idclient [optional]
-     *         Id of client to set property for
+     *                         Specifies the name
+     * @param int    $idclient [optional]
+     *                         Id of client to set property for
      * @return mixed
-     *         Value of the given property or false if item hasn't been loaded
+     *                         Value of the given property or false if item hasn't been loaded
+     * @throws cDbException
+     * @throws cException
      */
     public function getProperty($type, $name, $idclient = 0) {
 

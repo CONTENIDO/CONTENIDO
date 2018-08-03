@@ -38,10 +38,14 @@ class cApiMetaTagCollection extends ItemCollection {
     /**
      * Creates a meta tag entry.
      *
-     * @param int $iIdArtLang
-     * @param int $iIdMetaType
+     * @param int    $iIdArtLang
+     * @param int    $iIdMetaType
      * @param string $sMetaValue
+     *
      * @return cApiMetaTag
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($iIdArtLang, $iIdMetaType, $sMetaValue) {
         $oItem = $this->createNewItem();
@@ -60,6 +64,8 @@ class cApiMetaTagCollection extends ItemCollection {
      * @param int $iIdArtLang
      * @param int $iIdMetaType
      * @return cApiMetaTag|NULL
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchByArtLangAndMetaType($iIdArtLang, $iIdMetaType) {
         $this->select('idartlang=' . (int) $iIdArtLang . ' AND idmetatype=' . (int) $iIdMetaType);
@@ -74,13 +80,18 @@ class cApiMetaTagCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiMetaTag extends Item {
-
+class cApiMetaTag extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId
      *         Specifies the ID of item to load
+     *
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -96,6 +107,8 @@ class cApiMetaTag extends Item {
      *
      * @param string $sMetaValue
      * @return bool
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function updateMetaValue($sMetaValue) {
         $this->set('metavalue', $sMetaValue, false);
@@ -128,6 +141,9 @@ class cApiMetaTag extends Item {
      * Creates a new, editable Version with same properties
      *
      * @param string $version
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function markAsEditable($version) {
         //var_export($this->values);

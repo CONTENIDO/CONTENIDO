@@ -49,6 +49,8 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
      *
      * @see cAuthHandlerAbstract::preAuthorize()
      * @return string|false
+     * @throws cDbException
+     * @throws cException
      */
     public function preAuthorize() {
         $password = $_POST['password'];
@@ -81,6 +83,8 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
      *
      * @see cAuthHandlerAbstract::validateCredentials()
      * @return string|false
+     * @throws cDbException
+     * @throws cException
      */
     public function validateCredentials() {
 		$frontendUserColl = new cApiFrontendUserCollection();

@@ -126,6 +126,8 @@ class Swift_Plugins_LoggerPlugin implements Swift_Events_CommandListener, Swift_
      * Invoked as a TransportException is thrown in the Transport system.
      *
      * @param Swift_Events_TransportExceptionEvent $evt
+     *
+     * @throws Swift_TransportException
      */
     public function exceptionThrown(Swift_Events_TransportExceptionEvent $evt)
     {

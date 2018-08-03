@@ -72,6 +72,7 @@ class cContentTypeHead extends cContentTypeText {
      *
      * @return string
      *         the JS code for the content type
+     * @throws cInvalidArgumentException
      */
     protected function _getEditJavaScript() {
         $textbox = new cHTMLTextbox($this->_prefix . '_text_' . $this->_id, '', '', '', $this->_prefix . '_text_' . $this->_id, false, NULL, '', 'edit-textfield edit-' . $this->_prefix . '-textfield');

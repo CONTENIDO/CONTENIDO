@@ -273,10 +273,12 @@ class cApiCecHook {
      *       Writes the debug value into a logfile (see
      *       contenido/data/log/cec_hook_debug.log).
      *
-     * @param mixed $var
-     *         The variable to dump
+     * @param mixed  $var
+     *                    The variable to dump
      * @param string $msg [optional]
-     *         Additional message
+     *                    Additional message
+     *
+     * @throws cInvalidArgumentException
      */
     private static function _debug($var, $msg = '') {
         global $cfg;

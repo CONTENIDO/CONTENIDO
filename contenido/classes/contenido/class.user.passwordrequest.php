@@ -20,14 +20,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiUserPasswordRequestCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
      *
-     * @global array $cfg
      * @param string|bool $where [optional]
-     *         The where clause in the select, usable to run select by creating
-     *         the instance.
+     *                           The where clause in the select, usable to run select by creating
+     *                           the instance.
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
+     * @global array      $cfg
      */
     public function __construct($where = false) {
         global $cfg;
@@ -42,9 +44,13 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
      * Create a user password request by user id.
      *
      * @param string|array $data [optional]
-     *         optional parameter for direct input of primary key value
-     *         (string) or multiple column name - value pairs
+     *                           optional parameter for direct input of primary key value
+     *                           (string) or multiple column name - value pairs
+     *
      * @return cApiUserPasswordRequest
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function createNewItem($data = NULL) {
         $item = parent::createNewItem($data);
@@ -68,6 +74,7 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
      *         Specifies the user id
      * @return bool
      *         True if the delete was successful
+     * @throws Exception
      */
     public function deleteByUserId($userid) {
         $result = $this->deleteBy('user_id', $userid);
@@ -77,10 +84,10 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
     /**
      * Removes the specified entries from the database by token.
      *
-     * @param int $userid
-     *         Specifies the user id
+     * @param $token
      * @return bool
      *         True if the delete was successful
+     * @throws Exception
      */
     public function deleteByToken($token) {
         $result = $this->deleteBy('validation_token', $token);
@@ -90,11 +97,13 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
     /**
      * Returns all password requests available in the system
      *
-     * @param string $userid [optional]
-     *         search for a specific user id
+     * @param bool   $userid  [optional]
+     *                        search for a specific user id
      * @param string $orderBy [optional]
-     *         SQL order by part
+     *                        SQL order by part
      * @return array
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchAvailableRequests($userid = false, $orderBy = 'id_pwreq ASC') {
         $requests = array();
@@ -114,9 +123,11 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
     /**
      * Returns all non expired password requests
      *
-     * @param string $userid [optional]
-     *         search for a specific user id
+     * @param bool $userid [optional]
+     *                     search for a specific user id
      * @return array
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchCurrentRequests($userid = false) {
         $requests = array();
@@ -141,13 +152,18 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiUserPasswordRequest extends Item {
-
+class cApiUserPasswordRequest extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

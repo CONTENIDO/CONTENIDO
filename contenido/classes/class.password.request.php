@@ -103,10 +103,13 @@ class cPasswordRequest {
      *
      * Initializes class variables.
      *
-     * @param cDb $db
+     * @param cDb   $db
      *         CONTENIDO database object
      * @param array $cfg
      *         The CONTENIDO configuration array
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($db, $cfg) {
         // generate new dbobject, if it does not exist
@@ -184,9 +187,14 @@ class cPasswordRequest {
      * passwort reset request and sending process
      *
      * @param bool $return [optional]
-     *         Return or print template
+     *                     Return or print template
+     *
      * @return string
      *         rendered HTML code
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function renderForm($return = false) {
         // if feature is not enabled, do nothing
@@ -288,6 +296,8 @@ class cPasswordRequest {
      * Getter function to obtain an array of all current user password reset requests
      *
      * @return array
+     * @throws cDbException
+     * @throws cException
      */
     protected function _getCurrentRequests() {
         $oApiUserPasswordRequest = new cApiUserPasswordRequestCollection();
@@ -300,6 +310,10 @@ class cPasswordRequest {
      * _submitMail() in case of valid requests
      *
      * @return string
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     protected function _handleNewPassword() {
         // notification message, which is returned to caller
@@ -546,12 +560,17 @@ class cPasswordRequest {
 
     /**
      * Save request into db for future validity check
-     * @param string $token
+     *
+     * @param string   $token
      *         Token used to check for validity at user confirmation part
-     * @param DateTime
-     *         Expiration time of reset request validity
+     * @param DateTime $expiration
+     *
      * @return bool
      *         whether password request could be safed successfully
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     protected function _safePwResetRequest($token, DateTime $expiration) {
         $oUserPwRequestCol = new cApiUserPasswordRequestCollection();
@@ -576,6 +595,10 @@ class cPasswordRequest {
      *
      * @param string $token
      *         The token used to authorise password change
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     protected function _submitMail($token) {
         $cfg = cRegistry::getConfig();

@@ -527,6 +527,8 @@ class Swift_Signers_DKIMSigner implements Swift_Signers_HeaderSigner
      * @param Swift_Mime_HeaderSet $headers
      *
      * @return Swift_Signers_DKIMSigner
+     * @throws Swift_RfcComplianceException
+     * @throws Swift_SwiftException
      */
     public function addSignature(Swift_Mime_HeaderSet $headers)
     {

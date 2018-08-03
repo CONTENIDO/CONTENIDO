@@ -96,6 +96,9 @@ class Swift_Transport_SendmailTransport extends Swift_Transport_AbstractSmtpTran
      * @param string[]           $failedRecipients An array of failures by-reference
      *
      * @return int
+     * @throws Exception
+     * @throws Swift_IoException
+     * @throws Swift_TransportException
      */
     public function send(Swift_Mime_Message $message, &$failedRecipients = null)
     {

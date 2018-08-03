@@ -73,6 +73,10 @@ class cLayoutSynchronizer {
      * @param string $oldLayoutName
      * @param string $newLayoutName
      * @param string $idclient
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _addOrUpdateLayout($dir, $oldLayoutName, $newLayoutName, $idclient) {
         // if layout dont exist in the $cfg["tab"]["lay"] table.
@@ -103,8 +107,12 @@ class cLayoutSynchronizer {
      *         old name
      * @param string $newName
      *         new module name
-     * @param int $idclient
+     * @param int    $idclient
      *         id of client
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _updateModulnameInDb($oldName, $newName, $idclient) {
         $oLayColl = new cApiLayoutCollection();
@@ -140,9 +148,10 @@ class cLayoutSynchronizer {
      *
      * @param string $alias
      *         layout name
-     * @param int $idclient
+     * @param int    $idclient
      *         client id
      * @return bool
+     * @throws cDbException
      */
     private function _isExistInTable($alias, $idclient) {
         // Select depending from idclient all moduls wiht the name $name
@@ -174,6 +183,8 @@ class cLayoutSynchronizer {
      *         timestamp of last modification
      * @param int $idlay
      *         Id of layout
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function setLastModified($timestamp, $idlay) {
         $oLay = new cApiLayout((int) $idlay);
@@ -258,6 +269,9 @@ class cLayoutSynchronizer {
      * with directory.
      *
      * @return bool
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function synchronize() {
         // update file and layout

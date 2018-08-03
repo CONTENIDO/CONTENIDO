@@ -39,7 +39,11 @@ class cApiFrontendGroupCollection extends ItemCollection {
      *
      * @param string $groupname
      *         Specifies the groupname
+     *
      * @return cApiFrontendGroup
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($groupname) {
         global $client;
@@ -71,6 +75,10 @@ class cApiFrontendGroupCollection extends ItemCollection {
      *         specifies the frontend user group
      *
      * @return bool
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function delete($itemID) {
         $associations = new cApiFrontendGroupMemberCollection();
@@ -90,13 +98,18 @@ class cApiFrontendGroupCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiFrontendGroup extends Item {
-
+class cApiFrontendGroup extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

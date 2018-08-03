@@ -145,8 +145,10 @@ class cModuleTemplateHandler extends cModuleHandler {
     /**
      * Constructor to create an instance of this class.
      *
-     * @param int $idmod
+     * @param int      $idmod
      * @param cGuiPage $page
+     *
+     * @throws cException
      */
     public function __construct($idmod, $page) {
         parent::__construct($idmod);
@@ -422,11 +424,15 @@ class cModuleTemplateHandler extends cModuleHandler {
     /**
      * Have the user permissions for the actions.
      *
-     * @param cPermission $perm
+     * @param cPermission      $perm
      * @param cGuiNotification $notification
-     * @param string $action
+     * @param string           $action
+     *
      * @return int
      *         if user doesn't have permission return -1
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
      */
     private function _havePermission($perm, $notification, $action) {
         switch ($action) {
@@ -625,12 +631,16 @@ class cModuleTemplateHandler extends cModuleHandler {
     /**
      * Display the form and evaluate the action and excute the action.
      *
-     * @param cPermission $perm
+     * @param cPermission      $perm
      * @param cGuiNotification $notification
-     * @param string $belang
+     * @param string           $belang
      *         Backend language (not sure about this...)
-     * @param bool $readOnly
+     * @param bool             $readOnly
      *         render in read only mode
+     *
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
      */
     public function display($perm, $notification, $belang, $readOnly) {
         $myAction = $this->_getAction();

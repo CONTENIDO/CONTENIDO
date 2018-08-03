@@ -33,17 +33,21 @@ class cApiAreaCollection extends ItemCollection {
     /**
      * Creates an area item entry.
      *
-     * @param string $name
-     *         Name
+     * @param string     $name
+     *                             Name
      * @param string|int $parentid [optional]
-     *         Parent id as astring or number
-     * @param int $relevant [optional]
-     *         0 or 1
-     * @param int $online [optional]
-     *         0 or 1
-     * @param int $menuless [optional]
-     *         0 or 1
+     *                             Parent id as astring or number
+     * @param int        $relevant [optional]
+     *                             0 or 1
+     * @param int        $online   [optional]
+     *                             0 or 1
+     * @param int        $menuless [optional]
+     *                             0 or 1
+     *
      * @return cApiArea
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($name, $parentid = 0, $relevant = 1, $online = 1, $menuless = 0) {
         $parentid = (is_string($parentid)) ? $this->escape($parentid) : (int) $parentid;
@@ -68,6 +72,7 @@ class cApiAreaCollection extends ItemCollection {
      *         Area id or name
      * @return string|int
      *         name of parent area or passed area
+     * @throws cDbException
      */
     public function getParentAreaID($area) {
         if (is_numeric($area)) {
@@ -86,6 +91,7 @@ class cApiAreaCollection extends ItemCollection {
      *         Area name or parent id
      * @return array
      *         List of area ids
+     * @throws cDbException
      */
     public function getIdareasByAreaNameOrParentId($nameOrId) {
         $sql = "SELECT idarea FROM `%s` AS a WHERE a.name = '%s' OR a.parent_id = '%s' ORDER BY idarea";
@@ -104,6 +110,8 @@ class cApiAreaCollection extends ItemCollection {
      *
      * @return array
      *         Array with id and name entries
+     * @throws cDbException
+     * @throws cException
      */
     public function getAvailableAreas() {
         $aClients = array();
@@ -135,8 +143,12 @@ class cApiAreaCollection extends ItemCollection {
      * Returns the idarea for a given area name.
      *
      * @param string $area
+     *
      * @return int
      *         Integer with the ID for the area
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
      */
     public function getAreaID($area) {
         // if area name is numeric (legacy areas)
@@ -161,13 +173,18 @@ class cApiAreaCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiArea extends Item {
-
+class cApiArea extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

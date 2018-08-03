@@ -81,6 +81,8 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
      *
      * @see cAuthHandlerAbstract::validateCredentials()
      * @return string|false
+     * @throws cDbException
+     * @throws cException
      */
     public function validateCredentials() {
         $username = $_POST['username'];

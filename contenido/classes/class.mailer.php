@@ -154,8 +154,13 @@ class cMailer extends Swift_Mailer {
      * created using constructTransport().
      *
      * @todo add type hinting!
+     *
      * @param Swift_Transport $transport [optional]
-     *         a transport instance
+     *                                   a transport instance
+     *
+     * @throws Swift_DependencyException
+     * @throws Swift_RfcComplianceException
+     * @throws cInvalidArgumentException
      */
     public function __construct($transport = NULL) {
 
@@ -303,26 +308,30 @@ class cMailer extends Swift_Mailer {
      * where the key is the email address and the value is the name.
      *
      * @param string|array $from
-     *         the sender of the mail, if something "empty" is given,
-     *         default address from CONTENIDO system settings is used
+     *                                  the sender of the mail, if something "empty" is given,
+     *                                  default address from CONTENIDO system settings is used
      * @param string|array $to
-     *         one or more recipient addresses
-     * @param string $subject
-     *         the subject of the mail
-     * @param string $body [optional]
-     *         the body of the mail
-     * @param string|array $cc [optional]
-     *         one or more recipient addresses which should get a normal copy
-     * @param string|array $bcc [optional]
-     *         one or more recipient addresses which should get a blind copy
-     * @param string|array $replyTo [optional]
-     *         address to which replies should be sent
-     * @param bool $resend [optional]
-     *         whether the mail is resent
-     * @param string $contentType [optional]
-     *         MIME type to use for mail, defaults to 'text/plain'
+     *                                  one or more recipient addresses
+     * @param string       $subject
+     *                                  the subject of the mail
+     * @param string       $body        [optional]
+     *                                  the body of the mail
+     * @param string|array $cc          [optional]
+     *                                  one or more recipient addresses which should get a normal copy
+     * @param string|array $bcc         [optional]
+     *                                  one or more recipient addresses which should get a blind copy
+     * @param string|array $replyTo     [optional]
+     *                                  address to which replies should be sent
+     * @param bool         $resend      [optional]
+     *                                  whether the mail is resent
+     * @param string       $contentType [optional]
+     *                                  MIME type to use for mail, defaults to 'text/plain'
+     *
      * @return int
      *         number of recipients to which the mail has been sent
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function sendMail($from, $to, $subject, $body = '', $cc = NULL, $bcc = NULL, $replyTo = NULL, $resend = false, $contentType = 'text/plain') {
 
@@ -347,14 +356,19 @@ class cMailer extends Swift_Mailer {
      * Sends the given Swift_Mime_Message and logs it if $resend is false.
      *
      * @see Swift_Mailer::send()
+     *
      * @param Swift_Mime_Message $message
-     *         the message to send
-     * @param array &$failedRecipients [optional]
-     *         list of recipients for which the sending has failed
-     * @param bool $resend [optional]
-     *         if this mail is send via resend
-     *         when resending a mail it is not logged again
+     *                                              the message to send
+     * @param array              &$failedRecipients [optional]
+     *                                              list of recipients for which the sending has failed
+     * @param bool               $resend            [optional]
+     *                                              if this mail is send via resend
+     *                                              when resending a mail it is not logged again
+     *
      * @return int
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function send(Swift_Mime_Message $message, &$failedRecipients = NULL, $resend = false) {
         if (!is_array($failedRecipients)) {
@@ -382,8 +396,10 @@ class cMailer extends Swift_Mailer {
      *
      * @param int $idmailsuccess
      *         ID of the mail which should be resend
-     * @throws cInvalidArgumentException
-     *         if the mail has already been sent successfully or does not exist
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException if the mail has already been sent successfully or does not exist
      */
     public function resendMail($idmailsuccess) {
         $mailLogSuccess = new cApiMailLogSuccess($idmailsuccess);
@@ -477,13 +493,17 @@ class cMailer extends Swift_Mailer {
     /**
      * Log the information about sending the email.
      *
-     * @param Swift_Message $message
-     *         the message which has been send
-     * @param array $failedRecipients [optional]
-     *         the recipient addresses that did not get the mail
+     * @param Swift_Mime_Message $message
+     *                                             the message which has been send
+     * @param array              $failedRecipients [optional]
+     *                                             the recipient addresses that did not get the mail
+     *
      * @return string|bool
      *         the idmail of the inserted table row in con_mail_log|bool
      *         false if mail_log option is inactive
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _logMail(Swift_Mime_Message $message, array $failedRecipients = array()) {
 

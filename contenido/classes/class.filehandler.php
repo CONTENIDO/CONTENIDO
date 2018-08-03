@@ -20,16 +20,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage Util
  */
 class cFileHandler {
-
     /**
      * Creates a new file
      *
      * @param string $filename
-     *         the name and path of the new file
+     *                        the name and path of the new file
      * @param string $content [optional]
-     *         content of the new file
+     *                        content of the new file
+     *
      * @return bool
      *         true on success. Otherwise false.
+     * @throws cInvalidArgumentException
      */
     public static function create($filename, $content = '') {
         $success = file_put_contents($filename, $content) === cString::getStringLength($content);
@@ -134,13 +135,14 @@ class cFileHandler {
      * Writes data to a file
      *
      * @param string $filename
-     *         the name and path of the file
+     *                       the name and path of the file
      * @param string $content
-     *         the data which should be written
-     * @param bool $append [optional]
-     *         if true the data will be appended to the file.
+     *                       the data which should be written
+     * @param bool   $append [optional]
+     *                       if true the data will be appended to the file.
      * @return bool
-     *         true on success, false otherwise
+     *                       true on success, false otherwise
+     * @throws cInvalidArgumentException
      */
     public static function write($filename, $content, $append = false) {
         $flag = 0;
@@ -161,14 +163,17 @@ class cFileHandler {
      * cFileHandler::write($filename, $data."\n", $apppend)
      *
      * @see cFileHandler::write($filename, $content, $append)
+     *
      * @param string $filename
-     *         the name and path to the file
+     *                       the name and path to the file
      * @param string $content
-     *         the data of the line
-     * @param bool $append [optional]
-     *         if true the data will be appended to file.
+     *                       the data of the line
+     * @param bool   $append [optional]
+     *                       if true the data will be appended to file.
+     *
      * @return bool
      *         true on success, false otherwise
+     * @throws cInvalidArgumentException
      */
     public static function writeLine($filename, $content, $append = false) {
         return self::write($filename, $content . "\n", $append);
@@ -416,8 +421,10 @@ class cFileHandler {
      *
      * @param string $filename
      *         the name of the file
+     *
      * @return bool
      *         true on success or false on failure
+     * @throws cInvalidArgumentException
      */
     public static function setDefaultFilePerms($filename) {
         $cfg = cRegistry::getConfig();
@@ -434,11 +441,13 @@ class cFileHandler {
      * Validates the given filename.
      *
      * @param string $filename
-     *         the filename to validate
-     * @param bool $notifyAndExitOnFailure [optional]
-     *         if set, function will show a notification and will exit the script
+     *                                       the filename to validate
+     * @param bool   $notifyAndExitOnFailure [optional]
+     *                                       if set, function will show a notification and will exit the script
+     *
      * @return bool
      *         true if the given filename is valid, false otherwise
+     * @throws cInvalidArgumentException
      */
     public static function validateFilename($filename, $notifyAndExitOnFailure = true) {
         // check if filename only contains valid characters

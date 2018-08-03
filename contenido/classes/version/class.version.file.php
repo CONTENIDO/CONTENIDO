@@ -141,8 +141,10 @@ class cVersionFile extends cVersion {
      *
      * @param string $sPath
      *         Path to file
+     *
      * @return array
      *         returns array width nodes
+     * @throws cException
      */
     public function initXmlReader($sPath) {
         $aResult = array();

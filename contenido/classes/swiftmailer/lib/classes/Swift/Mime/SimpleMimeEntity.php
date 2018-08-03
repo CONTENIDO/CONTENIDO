@@ -513,6 +513,8 @@ class Swift_Mime_SimpleMimeEntity implements Swift_Mime_MimeEntity
      * Write this entire entity to a {@see Swift_InputByteStream}.
      *
      * @param Swift_InputByteStream
+     *
+     * @throws Swift_IoException
      */
     public function toByteStream(Swift_InputByteStream $is)
     {
@@ -526,6 +528,7 @@ class Swift_Mime_SimpleMimeEntity implements Swift_Mime_MimeEntity
      * Write this entire entity to a {@link Swift_InputByteStream}.
      *
      * @param Swift_InputByteStream
+     * @throws Swift_IoException
      */
     protected function _bodyToByteStream(Swift_InputByteStream $is)
     {

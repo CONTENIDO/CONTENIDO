@@ -21,7 +21,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage Backend
  */
 class cAjaxRequest {
-
     /**
      * Handles AJAX requests for certain data. Which data is returned
      * depends upon the given $action. If the $action is unknown an
@@ -69,9 +68,15 @@ class cAjaxRequest {
      *
      * @todo split functionality into seperate methods
      * @todo use registry instead of globals where possible
+     *
      * @param string $action
      *         name of requested ajax action
+     *
      * @return string
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function handle($action) {
         $backendPath = cRegistry::getBackendPath();

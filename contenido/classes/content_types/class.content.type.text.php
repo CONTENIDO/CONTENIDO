@@ -69,6 +69,7 @@ class cContentTypeText extends cContentTypeAbstract {
      *
      * @return string
      *         escaped HTML code which should be shown if content type is edited
+     * @throws cInvalidArgumentException
      */
     public function generateEditCode() {
         $script = $this->_getEditJavaScript();
@@ -92,6 +93,7 @@ class cContentTypeText extends cContentTypeAbstract {
      *
      * @return string
      *         the JS code for the content type
+     * @throws cInvalidArgumentException
      */
     protected function _getEditJavaScript() {
         $textbox = new cHTMLTextarea($this->_prefix . '_text_' . $this->_id, '', '', '', $this->_prefix . '_text_' . $this->_id, false, NULL, '', 'edit-textfield edit-' . $this->_prefix . '-textfield');

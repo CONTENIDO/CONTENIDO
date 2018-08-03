@@ -72,6 +72,7 @@ class Swift_MemorySpool implements Swift_Spool
      * @param string[]        $failedRecipients An array of failures by-reference
      *
      * @return int The number of sent emails
+     * @throws Swift_TransportException
      */
     public function flushQueue(Swift_Transport $transport, &$failedRecipients = null)
     {

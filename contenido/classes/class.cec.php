@@ -348,7 +348,9 @@ class cApiCecChainItem {
      *
      * @param string $sChainName
      * @param string $sFunctionName
-     * @param array $aParameters
+     * @param array  $aParameters
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct($sChainName, $sFunctionName, $aParameters) {
         $this->setChainName($sChainName);

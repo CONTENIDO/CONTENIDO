@@ -40,11 +40,15 @@ class cApiActionCollection extends ItemCollection {
      * @param string|int $area
      * @param string|int $name
      * @param string|int $alt_name [optional]
-     * @param string $code [optional]
-     * @param string $location [optional]
-     * @param int $relevant [optional]
+     * @param string     $code     [optional]
+     * @param string     $location [optional]
+     * @param int        $relevant [optional]
      *
      * @return cApiAction
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($area, $name, $alt_name = '', $code = '', $location = '', $relevant = 1) {
         $item = $this->createNewItem();
@@ -87,6 +91,7 @@ class cApiActionCollection extends ItemCollection {
      *
      * @return array
      *         Array with id and name entries
+     * @throws cDbException
      */
     public function getAvailableActions() {
         global $cfg;
@@ -114,7 +119,9 @@ class cApiActionCollection extends ItemCollection {
      *
      * @param int $action
      *         Id of action
+     *
      * @return string|NULL
+     * @throws cDbException
      */
     public function getActionName($action) {
         $this->db->query("SELECT name FROM `%s` WHERE idaction = %d", $this->table, $action);
@@ -129,6 +136,7 @@ class cApiActionCollection extends ItemCollection {
      *         Name or id of action
      * @return int|NULL
      *         with the area ID for the given action or NULL
+     * @throws cDbException
      */
     function getAreaForAction($action) {
         if (!is_numeric($action)) {
@@ -147,13 +155,18 @@ class cApiActionCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiAction extends Item {
-
+class cApiAction extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

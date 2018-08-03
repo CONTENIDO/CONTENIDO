@@ -273,8 +273,10 @@ class cSystemtest {
      * Runs all available tests and stores the resuls in the messages array
      *
      * @param bool $testFileSystem [optional]
-     *         If this is true the file system checks will be performed too
-     *         with standard settings.
+     *                             If this is true the file system checks will be performed too
+     *                             with standard settings.
+     *
+     * @throws Exception
      */
     public function runTests($testFileSystem = true) {
         $this->storeResult($this->testPHPVersion(), self::C_SEVERITY_ERROR, sprintf(i18n("PHP Version lower than %s"), self::CON_SETUP_MIN_PHP_VERSION), sprintf(i18n("CONTENIDO requires PHP %s or higher as it uses functionality first introduced with this version. Please update your PHP version."), self::CON_SETUP_MIN_PHP_VERSION), i18n("The PHP version is higher than ") . self::CON_SETUP_MIN_PHP_VERSION);
@@ -520,6 +522,7 @@ class cSystemtest {
      *
      * @return number|bool
      *         ID or false if unable to determine the user
+     * @throws cInvalidArgumentException
      */
     protected function getServerUID() {
         if (function_exists("posix_getuid")) {
@@ -551,6 +554,7 @@ class cSystemtest {
      *
      * @return number|bool
      *         ID or false if unable to determine the group
+     * @throws cInvalidArgumentException
      */
     protected function getServerGID() {
         if (function_exists("posix_getgid")) {
@@ -576,8 +580,10 @@ class cSystemtest {
      *
      * @param string $file
      *         The path to the file
+     *
      * @return int
-     *         CON_PREDICT_*
+     *         CON_PREDICT_
+     * @throws cInvalidArgumentException
      */
     protected function predictCorrectFilepermissions($file) {
         // Check if the system is a windows system. If yes, we can't predict
@@ -1008,6 +1014,7 @@ class cSystemtest {
      * @param string $password
      * @return bool
      *         true if the test passed and false if not
+     * @throws cDbException
      */
     public function testMySQLModeStrict($host, $username, $password) {
         // host, user and password
@@ -1034,8 +1041,10 @@ class cSystemtest {
      * @param string $host
      * @param string $username
      * @param string $password
+     *
      * @return int
      *         1 if the test passed and > 1 if not
+     * @throws cDbException
      */
     public function testMySQL($host, $username, $password) {
         list($handle, $status) = $this->doMySQLConnect($host, $username, $password);
@@ -1067,10 +1076,11 @@ class cSystemtest {
 
     /**
      *
-     * @param bool $testConfig [optional]
+     * @param bool $testConfig   [optional]
      * @param bool $testFrontend [optional]
      * @return bool
-     *         true if the test passed and false if not
+     *                           true if the test passed and false if not
+     * @throws Exception
      */
     public function testFilesystem($testConfig = true, $testFrontend = true) {
         global $cfgClient;
@@ -1311,6 +1321,7 @@ class cSystemtest {
      *
      * @return bool
      *         true if the test passed and false if not
+     * @throws cInvalidArgumentException
      */
     public function testFrontendFolderCreation() {
         $directories = array(
@@ -1422,8 +1433,9 @@ class cSystemtest {
      * @param string $setupType
      * @param string $databaseName
      * @param string $databasePrefix
-     * @param string $charset [optional]
+     * @param string $charset   [optional]
      * @param string $collation [optional]
+     * @throws cDbException
      */
     public function checkSetupMysql($setupType, $databaseName, $databasePrefix, $charset = '', $collation = '') {
         switch ($setupType) {

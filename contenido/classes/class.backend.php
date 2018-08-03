@@ -72,6 +72,9 @@ class cBackend {
      *
      * @param string $area
      *         selected area
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function select($area) {
         // Required global vars
@@ -210,8 +213,10 @@ class cBackend {
      *
      * @param string $action
      *         action to be read
+     *
      * @return string
      *         code for given action
+     * @throws cInvalidArgumentException
      */
     public function getCode($action) {
         $actionCodeFile = cRegistry::getBackendPath() . 'includes/type/action/include.' . $action . '.action.php';
@@ -242,16 +247,20 @@ class cBackend {
     /**
      * Creates a log entry for the specified parameters.
      *
-     * @param int $idcat
+     * @param int        $idcat
      *         Category-ID
-     * @param int $idart
+     * @param int        $idart
      *         Article-ID
-     * @param int $client
+     * @param int        $client
      *         Client-ID
-     * @param int $lang
+     * @param int        $lang
      *         Language-ID
      * @param int|string $idaction
      *         Action (ID or canonical name)
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function log($idcat, $idart, $client, $lang, $idaction) {
         global $perm, $auth;

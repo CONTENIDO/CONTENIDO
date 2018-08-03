@@ -49,6 +49,8 @@ class Swift_Transport_StreamBuffer extends Swift_ByteStream_AbstractFilterableIn
      * Parameters will vary depending upon the type of IoBuffer used.
      *
      * @param array $params
+     *
+     * @throws Swift_TransportException
      */
     public function initialize(array $params)
     {

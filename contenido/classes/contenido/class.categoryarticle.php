@@ -20,12 +20,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiCategoryArticleCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
      *
-     * @param string $select [optional]
-     *         where clause to use for selection (see ItemCollection::select())
+     * @param bool $select [optional]
+     *                     where clause to use for selection (see ItemCollection::select())
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function __construct($select = false) {
         global $cfg;
@@ -44,14 +46,18 @@ class cApiCategoryArticleCollection extends ItemCollection {
     /**
      * Creates an article item entry
      *
-     * @param int $idcat
-     * @param int $idart
-     * @param int $status [optional]
-     * @param string $author [optional]
-     * @param string $created [optional]
+     * @param int    $idcat
+     * @param int    $idart
+     * @param int    $status       [optional]
+     * @param string $author       [optional]
+     * @param string $created      [optional]
      * @param string $lastmodified [optional]
-     * @param int $createcode [optional]
+     * @param int    $createcode   [optional]
+     *
      * @return cApiCategoryArticle
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($idcat, $idart, $status = 0, $author = "", $created = "", $lastmodified = "", $createcode = 1) {
         global $auth;
@@ -89,7 +95,10 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *
      * @param int $client
      * @param int $lang
+     *
      * @return cApiCategoryArticle|NULL
+     * @throws Exception
+     * @throws cDbException
      */
     public function fetchFirstFromTreeByClientIdAndLangId($client, $lang) {
         global $cfg;
@@ -122,6 +131,8 @@ class cApiCategoryArticleCollection extends ItemCollection {
      * @param int $idcat
      * @param int $idart
      * @return cApiCategoryArticle|NULL
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchByCategoryIdAndArticleId($idcat, $idart) {
         $aProps = array(
@@ -145,7 +156,9 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *
      * @param int $idcat
      * @param int $idart
+     *
      * @return int|NULL
+     * @throws Exception
      */
     public function getIdByCategoryIdAndArticleId($idcat, $idart) {
         $where = "idcat = %d AND idart = %d";
@@ -159,6 +172,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *
      * @param int $idclient
      * @return array
+     * @throws cDbException
      */
     public function getAllIdsByClientId($idclient) {
         global $cfg;
@@ -179,6 +193,8 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *
      * @param int $idart
      * @return array
+     * @throws Exception
+     * @throws cDbException
      */
     public function getCategoryIdsByArticleId($idart) {
         $aIdCats = array();
@@ -205,6 +221,8 @@ class cApiCategoryArticleCollection extends ItemCollection {
      * @param int $idlang
      *         Language id
      * @return bool
+     * @throws Exception
+     * @throws cDbException
      */
     public function getHasArticles($idcat, $idlang) {
         global $cfg;
@@ -225,11 +243,13 @@ class cApiCategoryArticleCollection extends ItemCollection {
      * Sets 'createcode' flag for one or more category articles.
      *
      * @param int|array $idcatart
-     *         One category article id or list of category article ids
-     * @param int $createcode [optional]
-     *         Create code state, either 1 or 0.
+     *                              One category article id or list of category article ids
+     * @param int       $createcode [optional]
+     *                              Create code state, either 1 or 0.
      * @return int
-     *         Number of updated entries
+     *                              Number of updated entries
+     * @throws Exception
+     * @throws cDbException
      */
     public function setCreateCodeFlag($idcatart, $createcode = 1) {
         $createcode = ($createcode == 1) ? 1 : 0;
@@ -260,13 +280,18 @@ class cApiCategoryArticleCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiCategoryArticle extends Item {
-
+class cApiCategoryArticle extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

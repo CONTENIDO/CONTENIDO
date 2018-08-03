@@ -37,16 +37,19 @@ class NoteCollection extends cApiCommunicationCollection {
      * original function for the parameters.
      *
      * @see ItemCollection::select()
-     * @param string $where [optional]
-     *         Specifies the where clause.
+     *
+     * @param string $where    [optional]
+     *                         Specifies the where clause.
      * @param string $group_by [optional]
-     *         Specifies the group by clause.
+     *                         Specifies the group by clause.
      * @param string $order_by [optional]
-     *         Specifies the order by clause.
-     * @param string $limit [optional]
-     *         Specifies the limit by clause.
+     *                         Specifies the order by clause.
+     * @param string $limit    [optional]
+     *                         Specifies the limit by clause.
+     *
      * @return bool
      *         True on success, otherwise false
+     * @throws cDbException
      */
     public function select($where = '', $group_by = '', $order_by = '', $limit = '') {
         if ($where == '') {
@@ -62,17 +65,21 @@ class NoteCollection extends cApiCommunicationCollection {
      * Creates a new note item.
      *
      * @param string $itemtype
-     *         Item type (usually the class name)
-     * @param mixed $itemid
-     *         Item ID (usually the primary key)
-     * @param int $idlang
-     *         Language-ID
+     *                         Item type (usually the class name)
+     * @param mixed  $itemid
+     *                         Item ID (usually the primary key)
+     * @param int    $idlang
+     *                         Language-ID
      * @param string $message
-     *         Message to store
+     *                         Message to store
      * @param string $category [optional]
      * @return object
-     *         The new item
-     */
+     *                         The new item
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+*/
     public function createItem($itemtype, $itemid, $idlang, $message, $category = '') {
         $item = parent::create();
 
@@ -174,7 +181,10 @@ class NoteList extends cHTMLDiv {
      * @see cHTML::toHtml()
      * @return string
      *     generated markup
-     */
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+*/
     public function toHtml() {
         global $lang;
 

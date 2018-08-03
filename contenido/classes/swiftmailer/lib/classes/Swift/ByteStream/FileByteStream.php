@@ -41,6 +41,8 @@ class Swift_ByteStream_FileByteStream extends Swift_ByteStream_AbstractFilterabl
      *
      * @param string $path
      * @param bool   $writable if true
+     *
+     * @throws Swift_IoException
      */
     public function __construct($path, $writable = false)
     {

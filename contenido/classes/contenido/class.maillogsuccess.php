@@ -36,11 +36,16 @@ class cApiMailLogSuccessCollection extends ItemCollection {
 
     /**
      * Creates a new mail log success entry with the given data.
-     * @param int $idmail
-     * @param array $recipient
-     * @param bool $success
+     *
+     * @param int    $idmail
+     * @param array  $recipient
+     * @param bool   $success
      * @param string $exception
+     *
      * @return cApiMailLogSuccess
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($idmail, $recipient, $success, $exception) {
         $item = $this->createNewItem();
@@ -62,12 +67,17 @@ class cApiMailLogSuccessCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiMailLogSuccess extends Item {
-
+class cApiMailLogSuccess extends Item
+{
     /**
      * Constructor
      *
      * @param mixed $mId
+     *
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

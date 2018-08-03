@@ -33,12 +33,17 @@ class cApiKeywordCollection extends ItemCollection {
 
     /**
      * @todo params w/ defaults should be relocated
+     *
      * @param string $keyword
-     * @param string $exp [optional]
+     * @param string $exp  [optional]
      * @param string $auto
      * @param string $self [optional]
-     * @param int $idlang
+     * @param int    $idlang
+     *
      * @return cApiKeyword
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($keyword, $exp = '', $auto, $self = '', $idlang) {
         $item = $this->createNewItem();
@@ -62,13 +67,18 @@ class cApiKeywordCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiKeyword extends Item {
-
+class cApiKeyword extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

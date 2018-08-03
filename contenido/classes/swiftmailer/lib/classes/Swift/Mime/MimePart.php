@@ -54,6 +54,7 @@ class Swift_Mime_MimePart extends Swift_Mime_SimpleMimeEntity
      * @param string $charset     optional
      *
      * @return $this
+     * @throws Swift_SwiftException
      */
     public function setBody($body, $contentType = null, $charset = null)
     {
