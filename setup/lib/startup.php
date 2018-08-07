@@ -25,26 +25,8 @@ if (version_compare(PHP_VERSION, '5.0.0', '<')) {
     die("You need PHP >= 5.0.0 for CONTENIDO. Sorry, even the setup doesn't work otherwise. Your version: " . PHP_VERSION . "\n");
 }
 
-/*
- * Do not edit this value!
- *
- * If you want to set a different enviroment value please define it in your .htaccess file
- * or in the server configuration.
- *
- * SetEnv CONTENIDO_ENVIRONMENT development
- */
-if (!defined('CON_ENVIRONMENT')) {
-    if (getenv('CONTENIDO_ENVIRONMENT')) {
-        $sEnvironment = getenv('CONTENIDO_ENVIRONMENT');
-    } else if (getenv('CON_ENVIRONMENT')) {
-        $sEnvironment = getenv('CON_ENVIRONMENT');
-    } else {
-        // @TODO: provide a possibility to set the environment value via file
-        $sEnvironment = 'production';
-    }
-
-    define('CON_ENVIRONMENT', $sEnvironment);
-}
+// Include the environment definer file
+include_once(CON_FRONTEND_PATH . '/contenido/environment.php');
 
 /**
  * Setup file inclusion

@@ -31,25 +31,14 @@ require_once CON_TEST_PATH . '/lib/class.testing.exception.php';
 require_once CON_TEST_PATH . '/lib/class.testing.test.case.php';
 require_once CON_TEST_PATH . '/lib/class.testing.test.helper.php';
 
-if (!defined('CON_ENVIRONMENT')) {
-    if (getenv('CONTENIDO_ENVIRONMENT')) {
-        $sEnvironment = getenv('CONTENIDO_ENVIRONMENT');
-    } elseif (getenv('CON_ENVIRONMENT')) {
-        $sEnvironment = getenv('CON_ENVIRONMENT');
-    } else {
-        // @TODO: provide a possibility to set the environment value via file
-        $sEnvironment = 'production';
-    }
-
-    define('CON_ENVIRONMENT', $sEnvironment);
-}
-
-
 ################################################################################
 # CONTENIDO frontend initialization
 
 $currentWorkingDir = getcwd();
 chdir(realpath(CON_TEST_PATH . '/../cms'));
+
+// Include the environment definer file
+include_once('environment.php');
 
 global $contenido_host, $contenido_database, $contenido_user, $contenido_password;
 global $contenido, $db, $auth, $sess, $perm, $lngAct, $_cecRegistry;
