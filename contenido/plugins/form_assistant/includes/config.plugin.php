@@ -324,7 +324,7 @@ class Pifa {
             $str[0] = strtoupper($str[0]);
         }
         return preg_replace_callback('/_([a-z])/', function($c) {
-            return '_' . strtoupper($c[1]);
+            return strtoupper($c[1]);
         }, $str);
     }
 
