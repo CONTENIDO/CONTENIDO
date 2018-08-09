@@ -302,7 +302,7 @@ class Pifa {
             $str[0] = cString::toUpperCase($str[0]);
         }
         return preg_replace_callback('/_([a-z])/', function($c) {
-            return '_' . cString::toUpperCase($c[1]);
+            return cString::toUpperCase($c[1]);
         }, $str);
     }
 
