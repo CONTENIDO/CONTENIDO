@@ -100,6 +100,7 @@ class cApiModuleCollection extends ItemCollection {
      * @param int $idclient
      *
      * @return array
+     * @throws Exception
      */
     public function getAllTypesByIdclient($idclient) {
         $types = array();
@@ -119,9 +120,11 @@ class cApiModuleCollection extends ItemCollection {
      * By default the modules are ordered by name but can be ordered by any
      * property.
      *
-     * @param int $idclient
+     * @param int    $idclient
      * @param string $oderBy [optional]
+     *
      * @return array
+     * @throws Exception
      */
     public function getAllByIdclient($idclient, $oderBy = 'name') {
         $records = array();
@@ -131,6 +134,35 @@ class cApiModuleCollection extends ItemCollection {
         }
         $sql = "SELECT * FROM `%s` WHERE idclient = %d{$oderBy}";
         $sql = $this->db->prepare($sql, $this->table, $idclient);
+        $this->db->query($sql);
+        while ($this->db->nextRecord()) {
+            $records[$this->db->f('idmod')] = $this->db->toArray();
+        }
+
+        return $records;
+    }
+
+    /**
+     * Returns a list of all modules used by the given client.
+     * By default the modules are ordered by name but can be ordered by any
+     * property.
+     *
+     * @param int    $idclient
+     * @param string $type
+     * @param string $oderBy [optional]
+     *
+     * @return array
+     * @throws Exception
+     */
+    public function getAllByIdclientAndType($idclient, $type, $oderBy = 'name') {
+        $records = array();
+
+        if (!empty($oderBy)) {
+            $oderBy = ' ORDER BY ' . $this->db->escape($oderBy);
+        }
+        $sql = "SELECT * FROM `%s` WHERE idclient = %d AND type LIKE '%s' {$oderBy}";
+        $sql = $this->db->prepare($sql, $this->table, $idclient, '%' . $type . '%');
+
         $this->db->query($sql);
         while ($this->db->nextRecord()) {
             $records[$this->db->f('idmod')] = $this->db->toArray();
@@ -201,7 +233,7 @@ class cApiModule extends Item {
      * @var string
      */
     private $_translationReplacement = 'mi18n("';
-	
+
 	/**
      * for finding module translations in source code of templates
      *
@@ -296,9 +328,11 @@ class cApiModule extends Item {
      * from db-table.
      *
      * @param array $cfg
-     * @param int $client
-     * @param int $lang
+     * @param int   $client
+     * @param int   $lang
+     *
      * @return bool|array
+     * @throws cException
      */
     function parseModuleForStringsLoadFromFile($cfg, $client, $lang) {
         global $client;
@@ -348,25 +382,25 @@ class cApiModule extends Item {
                 unset($results);
             }
         }
-		
+
 		//Parse all templates too
 		$contenidoModulTemplateHandler = new cModuleTemplateHandler($this->get('idmod'), null);
 		$filesArray = $contenidoModulTemplateHandler->getAllFilesFromDirectory('template');
-		
+
 		if (is_array($filesArray)) {
 			$code = '';
 			foreach ($filesArray as $file) {
 				$code .= $contenidoModulTemplateHandler->getFilesContent('template', '', $file);
 			}
-			
+
 			// Parse for the mi18n stuff
             preg_match_all($this->_translationPatternTemplate, $code, $results);
-			
+
 			if (is_array($results) && is_array($results[1]) && count($results[1]) > 0) {
 				$strings = array_merge($strings, $results[1]);
 			}
 		}
-		
+
         // adding dynamically new module translations by content types
         // this function was introduced with CONTENIDO 4.8.13
         // checking if array is set to prevent crashing the module translation
@@ -399,8 +433,8 @@ class cApiModule extends Item {
     /**
      * Parses the module for mi18n strings and returns them in an array
      *
-     * @return array
-     *         Found strings for this module
+     * @return array Found strings for this module
+     * @throws cException
      */
     public function parseModuleForStrings() {
         if (!$this->isLoaded()) {
@@ -612,10 +646,10 @@ class cApiModule extends Item {
     /**
      * Parse import xml file and returns its values.
      *
-     * @param string $sFile
-     *         Filename including path of import xml file
-     * @return array
-     *         Array with module data from XML file
+     * @param string $sFile Filename including path of import xml file
+     *
+     * @return array Array with module data from XML file
+     * @throws cException
      */
     private function _parseImportFile($sFile) {
         $oXmlReader = new cXmlReader();
@@ -644,9 +678,10 @@ class cApiModule extends Item {
     /**
      * Save the modul properties (description,type...)
      *
-     * @param string $sFile
-     *         Where is the modul info.xml file
+     * @param string $sFile Where is the modul info.xml file
+     *
      * @return array
+     * @throws cException
      */
     private function _getModuleProperties($sFile) {
         $ret = array();
@@ -667,13 +702,12 @@ class cApiModule extends Item {
     /**
      * Imports the a module from a zip file, uses xmlparser and callbacks
      *
-     * @param string $sFile
-     *         Filename of data file (full path)
-     * @param string $tempName
-     *         of archive
-     * @param bool $show_notification [optional]
-     *         standard: true, mode to turn notifications off
+     * @param string $sFile Filename of data file (full path)
+     * @param string $tempName of archive
+     * @param bool   $show_notification [optional] standard: true, mode to turn notifications off
+     *
      * @return bool
+     * @throws cException
      */
     function import($sFile, $tempName, $show_notification = true) {
         global $cfgClient, $db, $client, $cfg, $encoding, $lang;
@@ -745,9 +779,10 @@ class cApiModule extends Item {
     /**
      * Imports the a module from a XML file, uses xmlparser and callbacks
      *
-     * @param string $sFile
-     *         Filename of data file (full path)
+     * @param string $sFile Filename of data file (full path)
+     *
      * @return bool
+     * @throws cException
      */
     function importModuleFromXML($sFile) {
         global $db, $cfgClient, $client, $cfg, $encoding, $lang;

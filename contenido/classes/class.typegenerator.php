@@ -176,7 +176,7 @@ class cTypeGenerator {
      * @param string $type
      * @param int $index
      *
-     * @return array
+     * @return string
      */
     public function getGeneratedCmsTag($type, $index) {
         return $this->_processCmsTags($type, $index);

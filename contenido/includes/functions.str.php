@@ -162,16 +162,6 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
         $catalias = trim($catname);
     }
 
-    $catalias = conHtmlSpecialChars(cString::cleanURLCharacters($catalias), ENT_QUOTES);
-
-    // Check alias name
-    $checkAlias = strCheckAlias($catalias);
-    if ($checkAlias === true) {
-        $notification = new cGuiNotification();
-        $notification->displayNotification(cGuiNotification::LEVEL_ERROR, i18n('This alias already exists in a other category. Please try with another alias name again.'));
-        return;
-    }
-
     $client = (int) $client;
     $lang = (int) $lang;
 
@@ -222,9 +212,21 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
     $aLanguages = array(
         $lang
     );
+
+    $catalias = conHtmlSpecialChars(cString::cleanURLCharacters($catalias), ENT_QUOTES);
+
+    // Check alias name
+    $checkAlias = strCheckAlias($catalias);
+    if ($checkAlias === true) {
+        // $notification = new cGuiNotification();
+        // $notification->displayNotification(cGuiNotification::LEVEL_ERROR, i18n('This alias already exists in a other category. Please try with another alias name again.'));
+        // return;
+        $catalias = $catalias . $newIdcat;
+    }
+
     foreach ($aLanguages as $curLang) {
         $name = $catname;
-        $urlname = $catname;
+        $urlname = $catalias;
 
         // Insert new category language entry
         $oCatLangColl = new cApiCategoryLanguageCollection();
