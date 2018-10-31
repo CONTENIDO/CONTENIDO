@@ -202,16 +202,20 @@ function piUsAfterLoadPlugins() {
 /**
  * Chain for delete short urls at con_deleteart action
  *
- * @param integer $id Id of idart
+ * @param int $idart
+ *         ID of deleted article
+ *
+ * @return int
+ *         Number of deleted entries
  */
-function piUseConDeleteArtAfter($id) {
-
-    $perm = cRegistry::getPerm();
-
-    if ($perm->have_perm_area_action('url_shortener', 'url_shortener_delete')) {
+function piUseConDeleteArtAfter($idart)
+{
+    $count = 0;
+    if (cRegistry::getPerm()->have_perm_area_action('url_shortener', 'url_shortener_delete')) {
+        $idart        = cSecurity::toInteger($idart);
         $shortUrlColl = new cApiShortUrlCollection();
-        return $shortUrlColl->deleteBy('idart', cSecurity::toInteger($id));
-    } else {
-        return false;
+        $count        = $shortUrlColl->deleteBy('idart', $idart);
     }
+
+    return $count;
 }

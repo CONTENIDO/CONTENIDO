@@ -887,7 +887,11 @@ function conDeleteart($idart) {
                 }
 
                 if (preg_match('/[0-9*].[0-9*].' . $oCatArtItem->get('idcatart') . '/s', $file->getBasename())) {
-                    cFileHandler::remove($cfgClient[$client]['code']['path'] . '/' . $file->getFilename());
+                    try {
+                        cFileHandler::remove($cfgClient[$client]['code']['path'] . '/' . $file->getFilename());
+                    } catch (cInvalidArgumentException $e) {
+                        // skip non existing file
+                    }
                 }
             }
         }
@@ -935,6 +939,15 @@ function conDeleteart($idart) {
     $artLangVersionColl->deleteBy('idartlang', (int) $idartlang);
     $metaTagVersionColl = new cApiMetaTagVersionCollection();
     $metaTagVersionColl->deleteBy('idartlang', (int) $idartlang);
+
+    // CON-2578 call listeners to Contenido.Action.con_deleteart.AfterCall
+    $cecIterator = cRegistry::getCecRegistry()->getIterator('Contenido.Action.con_deleteart.AfterCall');
+    do {
+        $chainEntry = $cecIterator->next();
+        if ($chainEntry) {
+            $chainEntry->execute($idart);
+        }
+    } while ($chainEntry);
 }
 
 /**
