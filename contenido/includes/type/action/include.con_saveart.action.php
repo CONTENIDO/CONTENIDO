@@ -37,13 +37,15 @@ if (false === isset($publishing_date)) {
 
 $oldData = array();
 
-
 if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_action_item($area, "con_edit", $idcat))  && ((int) $locked === 0 || $admin )) {
 
 	// Get idartlang
 	if (!isset($idartlang) || $idartlang == 0) {
-		$sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idart = $idart AND idlang = $lang";
-		$db->query($sql);
+		$db->query("
+            SELECT idartlang
+            FROM " . $cfg["tab"]["art_lang"] . "
+            WHERE idart = '$idart'
+                AND idlang = '$lang'");
 		$db->nextRecord();
 		$idartlang = $db->f("idartlang");
 	}
@@ -53,9 +55,11 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
         $tmp_notification = $notification->returnNotification("ok", i18n("Changes saved"));
 
         if (in_array($idcat, $idcatnew)) {
-            $sql = "SELECT idcatart FROM " . $cfg["tab"]["cat_art"] . " WHERE idcat = '" . $idcat . "' AND idart = '" . $idart . "'";
-
-            $db->query($sql);
+            $db->query("
+                SELECT idcatart
+                FROM " . $cfg["tab"]["cat_art"] . "
+                WHERE idcat = '$idcat'
+                    AND idart = '$idart'");
             $db->nextRecord();
 
             $tmp_idcatart = $db->f("idcatart");
@@ -65,8 +69,12 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
             }
 
             if (!isset($is_start)) {
-                $sql = "SELECT * FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat = '$idcat' AND idlang = '$lang' AND startidartlang != '0' ";
-                $db->query($sql);
+                $db->query("
+                    SELECT *
+                    FROM " . $cfg["tab"]["cat_lang"] . "
+                    WHERE idcat = '$idcat'
+                        AND idlang = '$lang'
+                        AND startidartlang != '0'");
                 if ($db->nextRecord()) {
                     $tmp_startidartlang = $db->f('startidartlang');
                     if ($idartlang == $tmp_startidartlang) {
@@ -80,9 +88,11 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
 
         if (is_array($idcatnew)) {
             foreach ($idcatnew as $idcat) {
-                $sql = "SELECT idcatart FROM " . $cfg["tab"]["cat_art"] . " WHERE idcat = $idcat AND idart = $idart";
-
-                $db->query($sql);
+                $db->query("
+                    SELECT idcatart
+                    FROM " . $cfg["tab"]["cat_art"] . "
+                    WHERE idcat = '$idcat'
+                        AND idart = '$idart'");
                 $db->nextRecord();
 
                 conSetCodeFlag($db->f("idcatart"));
@@ -160,16 +170,17 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
             $oldData['is_start'] = $wasStart;
         }
 
-
         conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang, $lang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $publishing_date, $artsort, 0, $searchable);
 
         $tmp_notification = $notification->returnNotification("ok", i18n("Changes saved"));
 
         if (is_array($idcatnew)) {
             if (in_array($idcat, $idcatnew)) {
-                $sql = "SELECT idcatart FROM " . $cfg["tab"]["cat_art"] . " WHERE idcat = '" . $idcat . "' AND idart = '" . $idart . "'";
-
-                $db->query($sql);
+                $db->query("
+                    SELECT idcatart
+                    FROM " . $cfg["tab"]["cat_art"] . "
+                    WHERE idcat = '$idcat'
+                        AND idart = '$idart'");
                 $db->nextRecord();
 
                 $tmp_idcatart = $db->f("idcatart");
@@ -179,8 +190,12 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
                 }
 
                 if (!isset($is_start)) {
-                    $sql = "SELECT * FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat = '$idcat' AND idlang = '$lang' AND startidartlang != '0' ";
-                    $db->query($sql);
+                    $db->query("
+                        SELECT *
+                        FROM " . $cfg["tab"]["cat_lang"] . "
+                        WHERE idcat = '$idcat'
+                            AND idlang = '$lang'
+                            AND startidartlang != '0'");
                     if ($db->nextRecord()) {
                         $tmp_startidartlang = $db->f('startidartlang');
                         if ($idartlang == $tmp_startidartlang) {
@@ -195,9 +210,11 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
 
         if (is_array($idcatnew)) {
             foreach ($idcatnew as $idcat) {
-                $sql = "SELECT idcatart FROM " . $cfg["tab"]["cat_art"] . " WHERE idcat = $idcat AND idart = $idart";
-
-                $db->query($sql);
+                $db->query("
+                    SELECT idcatart
+                    FROM " . $cfg["tab"]["cat_art"] . "
+                    WHERE idcat = '$idcat'
+                        AND idart = '$idart'");
                 $db->nextRecord();
 
                 // CON-2606 fix for startarticles
