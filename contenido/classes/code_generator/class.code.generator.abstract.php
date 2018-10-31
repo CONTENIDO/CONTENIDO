@@ -210,7 +210,7 @@ abstract class cCodeGeneratorAbstract {
         }
 
         $this->_idartlang = $this->_oArtLang->get('idartlang');
-        $this->_pageTitle = conHtmlentities(stripslashes($this->_oArtLang->get('pagetitle')));
+        $this->_pageTitle = stripslashes($this->_oArtLang->get('pagetitle'));
 
         return $this->_generate($contype, $editable, $version);
     }

@@ -295,50 +295,50 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
     /**
      * Processes and adds or replaces title tag for an article.
-     * Also calls the CEC 'Contenido.Content.CreateTitletag'
-     * for user defined title creation.
+     * Also calls the CEC 'Contenido.Content.CreateTitletag' for user defined title creation if none is given.
      *
      * @see cCodeGeneratorAbstract::_processCodeTitleTag()
      * @return string
      */
-    protected function _processCodeTitleTag() {
+    protected function _processCodeTitleTag()
+    {
         if ($this->_pageTitle == '') {
             cApiCecHook::setDefaultReturnValue($this->_pageTitle);
             $this->_pageTitle = cApiCecHook::executeAndReturn('Contenido.Content.CreateTitletag');
         }
 
-        $headTag = array();
+        // define regular expressions
+        $reHead  = '/<head>.*?<\/head>/is';
+        $reTitle = '/<title>.*?<\/title>/is';
+
         // find head tags in layout code (case insensitive, search across linebreaks)
-        if (false === preg_match_all('/<head>.*?<\/head>/is', $this->_layoutCode, $headTag)) {
-            // no head tag
-            return $this->_layoutCode;
-        }
-        if (0 === count($headTag)
-        || false === isset($headTag[0])
-        || false === isset($headTag[0][0])) {
-            // no head tag
-            return $this->_layoutCode;
-        }
-        // use first head tag found (by definition there must always be only 1 tag
-        // but user supplied markup might be incorrect)
-        $headTag = $headTag[0][0];
+        $matches = [];
+        $succ    = preg_match_all($reHead, $this->_layoutCode, $matches);
 
-        // add or replace title
-        if ($this->_pageTitle != '') {
-            $replaceTag = '{__TITLE__' . md5(rand().time()) . '}';
-            $headCode = preg_replace('/<title>.*?<\/title>/is', $replaceTag, $headTag, 1);
+        // check if head tag has been found
+        if (false !== $succ && count($matches) && isset($matches[0], $matches[0][0])) {
+            // use first head tag found
+            // by definition there must be no more than one head tag but user supplied markup might be invalid
+            $headTag = $matches[0][0];
 
-            if (false !== cString::findFirstPos($headCode, $replaceTag)) {
-                $headCode = str_ireplace($replaceTag, '<title>' . $this->_pageTitle . '</title>', $headCode);
+            // add or replace title
+            if ($this->_pageTitle != '') {
+                $replaceTag = '{__TITLE__' . md5(rand() . time()) . '}';
+                $headCode   = preg_replace($reTitle, $replaceTag, $headTag, 1);
+                $pageTitle  = conHtmlentities($this->_pageTitle);
+                if (false !== cString::findFirstPos($headCode, $replaceTag)) {
+                    $headCode = str_ireplace($replaceTag, "<title>$pageTitle</title>", $headCode);
+                } else {
+                    $headCode = cString::iReplaceOnce('</head>', "<title>$pageTitle</title>\n</head>", $headCode);
+                }
             } else {
-                $headCode = cString::iReplaceOnce('</head>', '<title>' . $this->_pageTitle . "</title>\n</head>", $headCode);
+                // remove empty title tags from head tag
+                $headCode = str_replace('<title></title>', '', $headTag);
             }
-        } else {
-            // remove empty title tags from head tag
-            $headCode = str_replace('<title></title>', '', $headTag);
+
+            // overwrite first head tag in original layout code
+            $this->_layoutCode = preg_replace($reHead, $headCode, $this->_layoutCode, 1);
         }
-        // overwrite first head tag in original layout code
-        $this->_layoutCode = preg_replace('/<head>.*?<\/head>/is', $headCode, $this->_layoutCode, 1);
 
         return $this->_layoutCode;
     }
