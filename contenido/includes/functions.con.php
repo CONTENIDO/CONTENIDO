@@ -238,7 +238,7 @@ function conEditFirstTime(
  * Create a version if versioning state is simple or advanced.
  *
  * @param int $idcat
- * @param int $idcatnew
+ * @param array|mixed $idcatnew
  * @param int $idart
  * @param int $isstart
  * @param int $idtpl
@@ -1157,55 +1157,73 @@ function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false
 }
 
 /**
- * Set a start-article @fixme Do we still need the isstart.
- * The old start
- * compatibility has already been removed...
+ * Set a start-article
+ *
+ * @fixme Do we still need the isstart. The old start compatibility has already been removed ..
  *
  * @param int $idcatart
  *         Idcatart of the article
  * @param bool $isstart
  *         Start article flag
  */
-function conMakeStart($idcatart, $isstart) {
+function conMakeStart($idcatart, $isstart)
+{
     global $lang;
 
     // Load category article
-    $oCatArt = new cApiCategoryArticle((int) $idcatart);
-    if (!$oCatArt->isLoaded()) {
-        return;
-    }
-    $idart = $oCatArt->get('idart');
-    $idcat = $oCatArt->get('idcat');
+    $categoryArticle = new cApiCategoryArticle((int)$idcatart);
+    if ($categoryArticle->isLoaded()) {
+        $idcat = $categoryArticle->get('idcat');
+        $idart = $categoryArticle->get('idart');
 
-    // Load article language
-    $oArtLang = new cApiArticleLanguage();
-    if (!$oArtLang->loadByArticleAndLanguageId($idart, $lang)) {
-        return;
+        conSetStartArticle($idcat, $idart, $lang, $isstart);
     }
-    $idartlang = $oArtLang->get('idartlang');
+}
 
-    // Update startidartlang for category language
-    $oCatLang = new cApiCategoryLanguage();
-    if ($oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang)) {
-        if ($isstart == 1) {
-            $oCatLang->set('startidartlang', $idartlang);
-        } else {
-            $oCatLang->set('startidartlang', 0);
+/**
+ * Set start-article property of given article in given category of given language.
+ *
+ * @param int $idcat
+ * @param int $idart
+ * @param int $lang
+ * @param int $isstart
+ *         Start article flag
+ *
+ * @return bool if action was successfull
+ */
+function conSetStartArticle($idcat, $idart, $lang, $isstart)
+{
+    // load article language
+    $articleLanguage = new cApiArticleLanguage();
+    $succ            = $articleLanguage->loadByArticleAndLanguageId($idart, $lang);
+
+    // deactivate time management of article language if article should be start article
+    if ($succ && $isstart == 1) {
+        $timemgmt = $articleLanguage->get('timemgmt');
+        $articleLanguage->set('timemgmt', 0);
+        $succ = $articleLanguage->store();
+    }
+
+    // set startidartlang of category language
+    $categoryLanguage = new cApiCategoryLanguage();
+    if ($succ && $categoryLanguage->loadByCategoryIdAndLanguageId($idcat, $lang)) {
+        $startidartlang = $isstart == 1 ? $articleLanguage->get('idartlang') : 0;
+        $categoryLanguage->set('startidartlang', $startidartlang);
+        $succ = $categoryLanguage->store();
+
+        // PARANOIA: in case of failure roleback timemgmt change
+        if (!$succ && isset($timemgmt)) {
+            $articleLanguage->set('timemgmt', $timemgmt);
+            $succ = $articleLanguage->store();
         }
-        $oCatLang->store();
     }
 
-    if ($isstart == 1) {
-        // Deactivate time management if article is a start article
-        $oArtLang->set('timemgmt', 0);
-        $oArtLang->store();
+    // execute CEC hook
+    if ($succ) {
+        cApiCecHook::execute('Contenido.Article.ConMakeStart', ['idart' => $idart, 'idlang' => $lang]);
     }
 
-    // Execute cec hook
-    cApiCecHook::execute('Contenido.Article.ConMakeStart', array(
-    'idart' => $oCatArt->get("idart"),
-    'idlang' => $lang,
-    ));
+    return $succ;
 }
 
 /**
