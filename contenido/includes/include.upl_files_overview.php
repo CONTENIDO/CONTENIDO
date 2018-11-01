@@ -676,12 +676,12 @@ $list2->setSize($thumbnailmode);
 $totalUploadsCount = $uploads->count();
 $list2->setDataCount($totalUploadsCount);
 
-if ($startpage < 1) {
-    $startpage = 1;
-}
-
 if ($startpage > $list2->getNumPages()) {
     $startpage = $list2->getNumPages();
+}
+
+if ($startpage < 1) {
+    $startpage = 1;
 }
 
 $uploads->resetQuery();
