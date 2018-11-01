@@ -325,7 +325,23 @@ class TreeItem {
     }
 
     /**
-     * Checks if a specific custom attribute is set
+     * Checks if a specific custom attribute is set.
+     *
+     * Provides public access to the protected _isCustomAttributeSet() function.
+     *
+     * @param string $item
+     *         the attribute name to find
+     * @return bool
+     */
+    protected function isCustomAttributeSet($item) {
+        return $this->_isCustomAttributeSet($item);
+    }
+
+    /**
+     * Checks if a specific custom attribute is set.
+     *
+     * TODO:
+     * We may decide to change the accessibility of this function to public since it is used in include.str_overview.php
      *
      * @param string $item
      *         the attribute name to find
