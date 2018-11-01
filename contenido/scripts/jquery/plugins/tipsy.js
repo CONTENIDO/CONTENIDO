@@ -25,6 +25,23 @@
         this.fixTitle();
     };
 
+    var entityMap = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+        '/': '&#x2F;',
+        '`': '&#x60;',
+        '=': '&#x3D;'
+    };
+
+    function escapeHtml(string) {
+        return String(string).replace(/[&<>"'`=\/]/g, function (s) {
+            return entityMap[s];
+        });
+    }
+
     Tipsy.prototype = {
         show: function() {
             var title = this.getTitle();
@@ -137,7 +154,7 @@
             } else if (typeof o.title == 'function') {
                 title = o.title.call($e[0]);
             }
-            title = ('' + title).replace(/(^\s*|\s*$)/, "");
+            title = ('' + escapeHtml(title)).replace(/(^\s*|\s*$)/, "");
             return title || o.fallback;
         },
 

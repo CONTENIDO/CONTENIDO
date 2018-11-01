@@ -31,7 +31,7 @@ while ($db->nextRecord()) {
     ) {
         $name = (cString::getStringLength(trim($db->f('name'))) > 0) ? $db->f('name') : i18n("-- New template --");
         $name = conHtmlSpecialChars(stripslashes($name));
-        $descr = $db->f('description');
+        $descr = conHtmlSpecialChars(stripslashes($db->f('description')));
         $idtpl = $db->f("idtpl");
 
         // create javascript multilink
@@ -39,14 +39,14 @@ while ($db->nextRecord()) {
 
         if ($db->f("defaulttemplate") == 1) {
             $mstr = sprintf(
-                $tmp_mstr, conHtmlSpecialChars($descr),
+                $tmp_mstr, $descr,
                 'right_top', $sess->url("main.php?area=tpl&frame=3&idtpl=$idtpl"),
                 'right_bottom', $sess->url("main.php?area=tpl_edit&frame=4&idtpl=$idtpl"),
                 '<b>' . $name . '</b>'
             );
         } else {
             $mstr = sprintf(
-                $tmp_mstr, conHtmlSpecialChars($descr),
+                $tmp_mstr, $descr,
                 'right_top', $sess->url("main.php?area=tpl&frame=3&idtpl=$idtpl"),
                 'right_bottom', $sess->url("main.php?area=tpl_edit&frame=4&idtpl=$idtpl"),
                 $name
