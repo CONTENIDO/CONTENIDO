@@ -109,8 +109,6 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *         array containing the values of all content types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-        // TODO is this required?
-        global $area;
 
         // set props
         $this->_type = 'CMS_IMGEDITOR';
