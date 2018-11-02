@@ -276,11 +276,11 @@ class cPasswordRequest {
         $sendBtn->setAttribute('alt', i18n('Submit'));
         $sendBtn->setAttribute('title', i18n('Submit'));
         $sendBtn->setAttribute('class', 'send_btn');
-        $sendBtnDiv = new cHTMLDiv($userPwRepeatLbl . $userPwRepeatBox . $sendBtn);
-        $sendBtnDiv->setAttribute('class', 'last_row');
+        $lastFormRow = new cHTMLDiv($userPwRepeatLbl . $userPwRepeatBox . $sendBtn);
+        $lastFormRow->setAttribute('class', 'last_row');
 
         $sendBtn->removeAttribute('value');
-        $form->setContent(array($userNameLbl, $userNameBox, $userPwLbl, $userPwBox, $sendBtnDiv));
+        $form->setContent(array($userNameLbl, $userNameBox, $userPwLbl, $userPwBox, $lastFormRow));
 
         $this->_tpl->set('s', 'RESET_MESSAGE', '');
 
