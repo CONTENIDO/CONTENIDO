@@ -370,7 +370,7 @@ abstract class cDbDriverHandler {
      *         The sql statement to prepare.
      * @return string
      *         The prepared sql statement
-     * @throws Exception
+     * @throws cDbException
      *         If statement is empty or function is called with less than 2 parameters
      */
     public function prepare($statement) {

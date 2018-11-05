@@ -1088,11 +1088,12 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param string|array $data [optional]
      *                           optional parameter for direct input of primary key value
      *                           (string) or multiple column name - value pairs
+     *
      * @return Item
      *                           The newly created object
+     * @throws cInvalidArgumentException
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function createNewItem($data = NULL) {
         $this->_executeCallbacks(self::CREATE_BEFORE, get_class($this), array());

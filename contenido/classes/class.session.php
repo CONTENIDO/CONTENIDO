@@ -245,12 +245,11 @@ class cSession {
         switch ($t) {
             case 'array':
                 // $$var is an array. Enumerate the elements and serialize them.
-                eval("reset(\$$var); \$l = gettype(list(\$k)=each(\$$var));");
                 $str .= "\$$var = array(); ";
-                while ('array' == $l) {
+                eval("\$l = array(); foreach(\$$var as \$k => \$v) {\$l[] = array(\$k,gettype(\$k),\$v);}");
+                foreach ($l as $item) {
                     // Structural recursion
-                    $this->_rSerialize($var . "['" . preg_replace("/([\\'])/", "\\\\1", $k) . "']", $str);
-                    eval("\$l = gettype(list(\$k)=each(\$$var));");
+                    $this->_rSerialize($var . "['" . preg_replace("/([\\'])/", "\\\\1", $item[0]) . "']", $str);
                 }
                 break;
             case 'object':

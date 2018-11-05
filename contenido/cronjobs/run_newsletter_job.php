@@ -16,19 +16,15 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
+global $cfg;
+
 // CONTENIDO path
 $contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . '/';
 
 // CONTENIDO startup process
 include_once($contenidoPath . 'includes/startup.php');
 
-global $cfg;
-
-if (!class_exists('NewsletterJobCollection')) {
-    exit();
-}
-
-if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
+if (class_exists('NewsletterJobCollection') && (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs')) {
     $oJobs = new NewsletterJobCollection();
     $oJobs->setWhere('status', 1);
     $oJobs->setWhere('use_cronjob', 1);

@@ -119,9 +119,9 @@ abstract class Item extends cItemBaseAbstract {
      *                      Specifies the value
      * @param bool   $bSafe [optional]
      *                      Use inFilter or not
+     *
      * @return bool
      *                      True if the load was successful
-     * @throws Exception
      * @throws cDbException
      * @throws cException if more than one item has been found matching the given arguments
      */
@@ -290,7 +290,6 @@ abstract class Item extends cItemBaseAbstract {
      *
      * @return bool
      *         True if the load was successful
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      */
@@ -520,8 +519,11 @@ abstract class Item extends cItemBaseAbstract {
      *                        Specifies the value
      * @param int    $iClient [optional]
      *                        Id of client to set property for
+     *
      * @return bool
-     * @throws Exception
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function setProperty($sType, $sName, $mValue, $iClient = 0) {
         // If this object wasn't loaded before, return false
@@ -545,9 +547,11 @@ abstract class Item extends cItemBaseAbstract {
      *                        Specifies the name
      * @param int    $iClient [optional]
      *                        Id of client to set property for
+     *
      * @return mixed
      *                        Value of the given property or false
-     * @throws Exception
+     * @throws cDbException
+     * @throws cException
      */
     public function getProperty($sType, $sName, $iClient = 0) {
         // If this object wasn't loaded before, return false

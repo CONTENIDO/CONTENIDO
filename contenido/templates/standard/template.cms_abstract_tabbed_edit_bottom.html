@@ -20,7 +20,7 @@
         contentTypeInstance.initialise();
     };
 
-    if (typeof {JS_CLASS_NAME} === 'undefined') {
+    if (typeof {JS_CLASS_NAME} === 'undefined' || typeof Con.cContentTypeAbstractTabbed === 'undefined') {
         Con.Loader.get(
             [
                 Con.cfg.urlBackend + 'scripts/content_types/cmsAbstractTabbed.js',

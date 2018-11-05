@@ -323,7 +323,7 @@ class cStringMultiByteWrapper {
      */
     public static function findLastOccurrence($haystack, $needle, $part = false, $encoding = null) {
         if (self::_functionExists('mb_stristr')) {
-            $result = mb_strrchr($haystack, $needle, part, self::_getEncoding($encoding));
+            $result = mb_strrchr($haystack, $needle, $part, self::_getEncoding($encoding));
         } else {
             $result = strrchr($haystack, $needle, $part);
         }

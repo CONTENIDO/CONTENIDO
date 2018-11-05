@@ -40,6 +40,13 @@ class cIterator {
     protected $_aIteratorItems;
 
     /**
+     * Holds the keys of the array which should be iterated
+     *
+     * @var array
+     */
+    protected $_keys;
+
+    /**
      * Constructor to create an instance of this class.
      *
      * This function initializes the constructor, adds the passed items
@@ -49,12 +56,7 @@ class cIterator {
      *         Items to add
      */
     public function __construct($aItems) {
-        if (is_array($aItems)) {
-            $this->_aIteratorItems = $aItems;
-        } else {
-            $this->_aIteratorItems = array();
-        }
-
+        $this->_aIteratorItems = is_array($aItems) ? $aItems : array();
         $this->reset();
     }
 
@@ -64,7 +66,7 @@ class cIterator {
      * This function moves the iterator to the first element
      */
     public function reset() {
-        reset($this->_aIteratorItems);
+        $this->_keys = array_keys($this->_aIteratorItems);
     }
 
     /**
@@ -76,13 +78,8 @@ class cIterator {
      *         item or false if no items are left
      */
     public function next() {
-        $item = each($this->_aIteratorItems);
-
-        if ($item === false) {
-            return false;
-        } else {
-            return $item['value'];
-        }
+        $key = array_shift($this->_keys);
+        return isset($this->_aIteratorItems[$key]) ? $this->_aIteratorItems[$key] : false;
     }
 
     /**

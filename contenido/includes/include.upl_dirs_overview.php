@@ -85,9 +85,10 @@ if ($action == 'upl_delete') {
     if (cApiDbfs::isDbfs($path)) {
         $dbfs->remove($path . '/.');
     } else {
+        $failedFiles = array();
+
         // Check for files
         if (uplHasFiles($path)) {
-            $failedFiles = array();
             if (is_dir($cfgClient[$client]['upl']['path'] . $path)) {
                 if (false !== ($directory = cDirHandler::read($uploadPath))) {
                     foreach ($directory as $dir_entry) {

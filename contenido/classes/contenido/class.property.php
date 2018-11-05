@@ -222,8 +222,10 @@ class cApiPropertyCollection extends ItemCollection {
      *                       Entry name
      * @param mixed $default [optional]
      *                       to be returned if no item was found
+     *
      * @return mixed Value
-     * @throws Exception
+     * @throws cDbException
+     * @throws cException
      */
     public function getValue($itemtype, $itemid, $type, $name, $default = false) {
         if ($this->_useCache($itemtype, $itemid)) {
@@ -338,7 +340,10 @@ class cApiPropertyCollection extends ItemCollection {
      * @param int   $idProp [optional]
      *                      Id of database record (if set, update on this basis
      *                      (possiblity to update name value and type))
-     * @throws Exception
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function setValue($itemtype, $itemid, $type, $name, $value, $idProp = 0) {
         $idProp = (int) $idProp;
@@ -455,7 +460,7 @@ class cApiPropertyCollection extends ItemCollection {
      */
     public function getAllValues($field, $fieldValue, $auth = NULL) {
         $authString = '';
-        if (!is_null($auth) && sizeof($auth) > 0) {
+        if (!is_null($auth) && is_object($auth) && sizeof($auth->auth) > 0) {
             $authString .= " AND author = '" . $this->db->escape($auth->auth["uid"]) . "'";
         }
 

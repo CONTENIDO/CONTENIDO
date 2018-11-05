@@ -396,6 +396,9 @@
      * @private
      */
     var _loadJs = function(file, callback) {
+        $.ajaxSetup({
+            cache: true
+        });
         $.getScript(file).done(function () {
             callback();
         }).fail(function (jqxhr, settings, exception) {
@@ -411,6 +414,9 @@
                 Con.log(settings, NAME);
                 Con.log(exception, NAME);
             }
+        });
+        $.ajaxSetup({
+            cache: false
         });
     };
 
@@ -428,6 +434,11 @@
             if (state.loaded.length === item[0].length) {
                 toCall.push(item);
                 return false;
+            }
+
+            // load next
+            if (!state.loading.length && state.load.length) {
+                _load(state.load.shift());
             }
 
             return true;
@@ -510,9 +521,9 @@
             // step 3: add callback to queue
             _addToQueue(files, callback, scope, params);
 
-            // step 4: load not existed files
-            for (var k = 0; k < state.load.length; k++) {
-                _load(state.load[k]);
+            // step 4: load first file
+            if (!state.loading.length && state.load.length) {
+                _load(state.load.shift());
             }
         }
     }
@@ -545,8 +556,7 @@
          * @static
          */
         get: function(files, callback, scope, params) {
-            callback = ('undefined' === $.type(callback)) ? function() {
-            } : callback;
+            callback = ('undefined' === $.type(callback)) ? function() {} : callback;
             scope = ('undefined' === $.type(scope)) ? this : scope;
             params = ('undefined' === $.type(params)) ? [] : params;
 

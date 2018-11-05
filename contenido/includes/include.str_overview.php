@@ -271,13 +271,15 @@ if (!isset($action)) {
 /**
  *
  * @param TreeItem $rootItem
- * @param array $items
+ * @param ArrayIterator $itemsIterator
  */
-function buildTree(&$rootItem, &$items) {
+function buildTree(&$rootItem, $itemsIterator) {
     global $nextItem, $perm, $tmp_area;
 
-    while ($item_list = each($items)) {
-        list($key, $item) = $item_list;
+    while ($itemsIterator->valid()) {
+        $key = $itemsIterator->key();
+        $item = $itemsIterator->current();
+        $itemsIterator->next();
 
         unset($newItem);
 
@@ -340,8 +342,8 @@ function buildTree(&$rootItem, &$items) {
             $newItem->setCustom('forcedisplay', 1);
         }
 
-        if (array_key_exists($key + 1, $items)) {
-            $nextItem = $items[$key + 1];
+        if ($itemsIterator->offsetExists($key + 1)) {
+            $nextItem = $itemsIterator->offsetGet($key + 1);
         } else {
             $nextItem = 0;
         }
@@ -350,7 +352,7 @@ function buildTree(&$rootItem, &$items) {
 
         if ($nextItem['level'] > $item['level']) {
             $oldRoot = $rootItem;
-            buildTree($newItem, $items);
+            buildTree($newItem, $itemsIterator);
             $rootItem = $oldRoot;
         }
 
@@ -432,7 +434,8 @@ if ($db->num_rows() == 0) { // If we have no categories, display warning message
     $rootStrItem->setCollapsedIcon('images/open_all.gif');
     $rootStrItem->setExpandedIcon('images/close_all.gif');
 
-    buildTree($rootStrItem, $items);
+    $arrayObj = new ArrayObject($items);
+    buildTree($rootStrItem, $arrayObj->getIterator());
 
     $expandedList = unserialize($currentuser->getUserProperty('system', 'cat_expandstate'));
 
@@ -644,7 +647,7 @@ foreach ($objects as $key => $value) {
         // Description for hover effect
         $descString = '<b>' . $template . '</b>';
 
-        if (sizeof($templateDescription) > 0) {
+        if (strlen($templateDescription) > 0) {
             $descString .= '<br>' . $templateDescription;
         }
 

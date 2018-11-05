@@ -2,6 +2,7 @@
 /.cache
 /.project
 /.settings
+/.idea
 
 cms/cache/*
 cms/cache/code/*

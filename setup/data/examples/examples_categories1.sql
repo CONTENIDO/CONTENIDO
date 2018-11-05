@@ -20,7 +20,7 @@ INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, 
 INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, `status`, `author`, `created`, `lastmodified`) VALUES(30, 1, 2, 29, 68, 0, 'sysadmin', NOW(), NOW());
 INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, `status`, `author`, `created`, `lastmodified`) VALUES(46, 1, 1, 8, 57, 0, 'sysadmin', NOW(), NOW());
 INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, `status`, `author`, `created`, `lastmodified`) VALUES(39, 1, 0, 1, 4, 0, 'sysadmin', NOW(), NOW());
-INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, `status`, `author`, `created`, `lastmodified`) VALUES(47, 1, 0, 40, 0, 0, 'sysadmin', NOW(), NOW());
+INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, `status`, `author`, `created`, `lastmodified`) VALUES(47, 1, 39, 0, 0, 0, 'sysadmin', NOW(), NOW());
 INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, `status`, `author`, `created`, `lastmodified`) VALUES(48, 1, 10, 11, 49, 0, 'sysadmin', NOW(), NOW());
 INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, `status`, `author`, `created`, `lastmodified`) VALUES(49, 1, 10, 48, 56, 0, 'sysadmin', NOW(), NOW());
 INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, `status`, `author`, `created`, `lastmodified`) VALUES(51, 1, 46, 0, 52, 0, 'sysadmin', NOW(), NOW());

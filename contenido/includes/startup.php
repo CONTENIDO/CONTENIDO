@@ -47,26 +47,9 @@ error_reporting(E_ALL ^E_NOTICE);
 // Set 5 bits per character
 @ini_set('session.hash_bits_per_character', 5);
 
-/*
- * Do not edit this value!
- *
- * If you want to set a different enviroment value please define it in your .htaccess file
- * or in the server configuration.
- *
- * SetEnv CON_ENVIRONMENT development
- */
-if (!defined('CON_ENVIRONMENT')) {
-    if (getenv('CONTENIDO_ENVIRONMENT')) {
-        $sEnvironment = getenv('CONTENIDO_ENVIRONMENT');
-    } elseif (getenv('CON_ENVIRONMENT')) {
-        $sEnvironment = getenv('CON_ENVIRONMENT');
-    } else {
-        // @TODO: provide a possibility to set the environment value via file
-        $sEnvironment = 'production';
-    }
+// Temporary backend path, will be re-set again later...
+$backendPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/..'));
 
-    define('CON_ENVIRONMENT', $sEnvironment);
-}
 
 /*
  * SetEnv CON_VERSION
@@ -75,8 +58,8 @@ if (!defined('CON_VERSION')) {
     define('CON_VERSION', '4.9.13');
 }
 
-// Temporary backend path, will be re-set again later...
-$backendPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/..'));
+// Include the environment definer file
+include_once($backendPath . '/environment.php');
 require_once($backendPath . '/classes/class.filehandler.php');
 
 // (string) Path to folder containing all contenido configuration files. Use environment setting!
