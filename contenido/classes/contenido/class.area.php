@@ -46,6 +46,7 @@ class cApiAreaCollection extends ItemCollection {
      *                             0 or 1
      *
      * @return cApiArea
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -71,8 +72,10 @@ class cApiAreaCollection extends ItemCollection {
      *
      * @param int|string $area
      *         Area id or name
+     *
      * @return string|int
      *         name of parent area or passed area
+     *
      * @throws cDbException
      */
     public function getParentAreaID($area) {
@@ -90,8 +93,10 @@ class cApiAreaCollection extends ItemCollection {
      *
      * @param int|string $nameOrId
      *         Area name or parent id
+     *
      * @return array
      *         List of area ids
+     *
      * @throws cDbException
      */
     public function getIdareasByAreaNameOrParentId($nameOrId) {
@@ -111,6 +116,7 @@ class cApiAreaCollection extends ItemCollection {
      *
      * @return array
      *         Array with id and name entries
+     *
      * @throws cDbException
      * @throws cException
      */

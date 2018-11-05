@@ -112,7 +112,6 @@ class cLayoutSynchronizer {
      *
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     private function _updateModulnameInDb($oldName, $newName, $idclient) {
         $oLayColl = new cApiLayoutCollection();
@@ -274,6 +273,7 @@ class cLayoutSynchronizer {
      * with directory.
      *
      * @return bool
+     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException

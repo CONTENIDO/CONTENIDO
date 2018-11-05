@@ -84,7 +84,9 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
      * ID or false.
      *
      * @see cAuthHandlerAbstract::validateCredentials()
+     *
      * @return string|false
+     *
      * @throws cDbException
      * @throws cException
      */

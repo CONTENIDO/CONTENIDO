@@ -191,6 +191,7 @@ class cPasswordRequest {
      *
      * @return string
      *         rendered HTML code
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -299,6 +300,7 @@ class cPasswordRequest {
      * Getter function to obtain an array of all current user password reset requests
      *
      * @return array
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -313,6 +315,7 @@ class cPasswordRequest {
      * _submitMail() in case of valid requests
      *
      * @return string
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -573,6 +576,7 @@ class cPasswordRequest {
      *
      * @return bool
      *         whether password request could be safed successfully
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException

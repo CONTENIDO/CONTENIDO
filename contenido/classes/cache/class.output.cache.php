@@ -283,6 +283,7 @@ VALID UNTIL: %s
      * Starts the cache process.
      *
      * @return bool|string
+     * 
      * @throws cInvalidArgumentException
      */
     protected function _start() {
@@ -483,6 +484,7 @@ class cOutputCacheHandler extends cOutputCache
      *                           CONTENIDO database object
      * @param int   $iCreateCode [optional]
      *                           Flag of createcode state from table con_cat_art
+     *                           
      * @throws cDbException
      * @throws cException
      */
@@ -551,6 +553,7 @@ class cOutputCacheHandler extends cOutputCache
      *
      * @return bool
      *         True if code is to create, otherwise false.
+     * 
      * @throws cDbException
      * @throws cException
      */

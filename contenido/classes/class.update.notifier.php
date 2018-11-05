@@ -528,6 +528,7 @@ class cUpdateNotifier {
      * Connects with vendor host and gets the xml files
      *
      * @return array
+     * 
      * @throws cException
      */
     protected function getVendorHostFiles() {
@@ -626,7 +627,9 @@ class cUpdateNotifier {
      * Generates the output for the backend
      *
      * @param string $sMessage
+     * 
      * @return string
+     * 
      * @throws cException
      */
     protected function renderOutput($sMessage) {
@@ -668,8 +671,10 @@ class cUpdateNotifier {
      * Generates the output for the rss informations
      *
      * @param cTemplate $oTpl
+     * 
      * @return cTemplate
      *         CONTENIDO template object
+     * 
      * @throws cException
      */
     protected function renderRss($oTpl) {
@@ -737,7 +742,9 @@ class cUpdateNotifier {
      *
      * @todo add a retry counter and a deathpoint with warning in errorlog
      * @param string $sUrl
+     * 
      * @return string|bool
+     * 
      * @throws cException
      */
     private function fetchUrl($sUrl) {
@@ -762,6 +769,7 @@ class cUpdateNotifier {
      * Displays the rendered output
      *
      * @return string
+     * 
      * @throws cException
      */
     public function displayOutput() {

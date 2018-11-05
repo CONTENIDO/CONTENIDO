@@ -111,10 +111,10 @@ class cCategoryHelper {
     /**
      * Returns the local stored client ID
      *
-     * @throws cInvalidArgumentException if no active client ID specified or
-     *         found
      * @return int
      *         client ID
+     *
+     * @throws cInvalidArgumentException if no active client ID specified or found
      */
     public function getClientId() {
         if ($this->_clientId == 0) {
@@ -142,10 +142,11 @@ class cCategoryHelper {
     /**
      * Returns the local stored language ID
      *
-     * @throws cInvalidArgumentException
-     *         if no active language ID specified or found
      * @return int
      *         language ID
+     *
+     * @throws cInvalidArgumentException
+     *         if no active language ID specified or found
      */
     public function getLanguageId() {
         if ($this->_languageId == 0) {
@@ -203,6 +204,7 @@ class cCategoryHelper {
      *
      * @return array
      *         Array with cApiCategoryLanguage objects
+     *
      * @throws cException
      * @throws cInvalidArgumentException
      */
@@ -271,6 +273,7 @@ class cCategoryHelper {
      *         Category ID to fetch the level of.
      * @return int
      *         category level
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -301,6 +304,7 @@ class cCategoryHelper {
      *         the maximum depth
      * @return array
      *         array with subcategories
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -386,6 +390,7 @@ class cCategoryHelper {
      *
      * @return bool
      *         result of access check
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException

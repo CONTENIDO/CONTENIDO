@@ -166,6 +166,7 @@ class cTemplate {
      *
      * @return string|void
      *         Complete template string or nothing
+     * 
      * @throws cInvalidArgumentException
      */
     public function generate($template, $return = false, $note = false) {

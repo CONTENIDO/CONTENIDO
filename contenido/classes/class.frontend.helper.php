@@ -72,6 +72,7 @@ class cFrontendHelper {
      *
      * @return array
      *         category tree
+     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -134,6 +135,7 @@ class cFrontendHelper {
      *
      * @return array
      *         category tree
+     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException

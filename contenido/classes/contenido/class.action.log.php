@@ -54,6 +54,7 @@ class cApiActionlogCollection extends ItemCollection {
      * @param string $logtimestamp [optional]
      *
      * @return cApiActionlog
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException

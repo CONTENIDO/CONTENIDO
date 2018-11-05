@@ -39,6 +39,7 @@ class cApiArticleSpecificationCollection extends ItemCollection {
      * @param string $orderBy
      *
      * @return array
+     *
      * @throws cDbException
      * @throws cException
      */

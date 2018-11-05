@@ -79,6 +79,7 @@ class cI18n {
      *
      * @return string
      *         Returns the translation
+     *
      * @throws cException
      */
     public static function __($string, $domain = 'contenido') {
@@ -92,10 +93,12 @@ class cI18n {
      *         The string to translate
      * @param string $domain [optional]
      *         The domain to look up
-     * @throws cException
-     *         if this is the backend mode and the $belang is not set
+     *
      * @return string
      *         Returns the translation
+     *
+     * @throws cException
+     *         if this is the backend mode and the $belang is not set
      */
     public static function translate($string, $domain = 'contenido') {
         global $cfg, $belang, $contenido;
@@ -214,6 +217,7 @@ class cI18n {
      *
      * @return string
      *         Returns the translation
+     *
      * @throws cInvalidArgumentException
      */
     public static function emulateGettext($string, $domain = 'contenido') {
@@ -305,8 +309,10 @@ class cI18n {
      * comments on the content.
      *
      * @param string $translationFile
+     *
      * @return string
      *         The preparend translation file content
+     *
      * @throws cInvalidArgumentException
      */
     protected static function _loadTranslationFile($translationFile) {

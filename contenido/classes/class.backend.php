@@ -216,6 +216,7 @@ class cBackend {
      *
      * @return string
      *         code for given action
+     *
      * @throws cInvalidArgumentException
      */
     public function getCode($action) {

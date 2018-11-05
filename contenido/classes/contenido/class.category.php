@@ -55,6 +55,7 @@ class cApiCategoryCollection extends ItemCollection {
      * @param string $lastmodified [optional]
      *
      * @return cApiCategory
+     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -93,7 +94,9 @@ class cApiCategoryCollection extends ItemCollection {
      * Last entry has no parentid and no postid.
      *
      * @param int $idclient
+     * 
      * @return cApiCategory|NULL
+     * 
      * @throws cDbException
      * @throws cException
      */
@@ -107,7 +110,9 @@ class cApiCategoryCollection extends ItemCollection {
      * Returns list of categories (category ids) by passed client.
      *
      * @param int $idclient
+     * 
      * @return array
+     * 
      * @throws cDbException
      */
     public function getCategoryIdsByClient($idclient) {
@@ -134,7 +139,9 @@ class cApiCategoryCollection extends ItemCollection {
      * </pre>
      *
      * @param int $idcat
+     * 
      * @return int
+     * 
      * @throws cDbException
      */
     public function getNextPostCategoryId($idcat) {
@@ -177,7 +184,9 @@ class cApiCategoryCollection extends ItemCollection {
      *
      * @param int $idcat
      *         Category id
+     * 
      * @return int
+     * 
      * @throws cDbException
      */
     public function getParentsNextPostCategoryId($idcat) {
@@ -236,6 +245,7 @@ class cApiCategoryCollection extends ItemCollection {
      * @return int
      * 
      * @throws cDbException
+     * 
      * @global array   $cfg
      */
     public function getFirstChildCategoryId($idcat, $idlang = NULL) {
@@ -273,8 +283,11 @@ class cApiCategoryCollection extends ItemCollection {
      *
      * @param int      $idcat
      * @param int|NULL $idlang [optional]
+     *                         
      * @return array
+     * 
      * @throws cDbException
+     * 
      * @global array   $cfg
      */
     public function getAllChildCategoryIds($idcat, $idlang = NULL) {
@@ -341,6 +354,7 @@ class cApiCategoryCollection extends ItemCollection {
      * @return array
      * 
      * @throws cDbException
+     * 
      * @global array $cfg
      */
     public function getAllCategoryIdsRecursive($idcat, $idclient) {
@@ -405,6 +419,7 @@ class cApiCategoryCollection extends ItemCollection {
      *         Sorted by category id
      * 
      * @throws cDbException
+     * 
      * @global array $cfg
      */
     public function getAllCategoryIdsRecursive2($idcat, $idclient) {
@@ -469,7 +484,6 @@ class cApiCategory extends Item
      * Updates lastmodified field and calls parents store method
      *
      * @return bool
-     * @throws cDbException
      */
     public function store() {
         $this->set('lastmodified', date('Y-m-d H:i:s'));
@@ -506,8 +520,10 @@ class cApiCategory extends Item
      *
      * @param int $changeLangId [optional]
      *                          change language id for URL (optional)
+     *                          
      * @return string
      *                          link
+     * 
      * @throws cInvalidArgumentException
      */
     public function getLink($changeLangId = 0) {

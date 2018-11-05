@@ -46,6 +46,7 @@ class cApiActionCollection extends ItemCollection {
      * @param int        $relevant [optional]
      *
      * @return cApiAction
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -91,6 +92,7 @@ class cApiActionCollection extends ItemCollection {
      *
      * @return array
      *         Array with id and name entries
+     *
      * @throws cDbException
      */
     public function getAvailableActions() {
@@ -121,6 +123,7 @@ class cApiActionCollection extends ItemCollection {
      *         Id of action
      *
      * @return string|NULL
+     *
      * @throws cDbException
      */
     public function getActionName($action) {
@@ -134,8 +137,10 @@ class cApiActionCollection extends ItemCollection {
      *
      * @param string|int
      *         Name or id of action
+     *
      * @return int|NULL
      *         with the area ID for the given action or NULL
+     *
      * @throws cDbException
      */
     function getAreaForAction($action) {

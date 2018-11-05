@@ -48,7 +48,9 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
      * otherwise false.
      *
      * @see cAuthHandlerAbstract::preAuthorize()
+     *
      * @return string|false
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -82,7 +84,9 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
      * ID or false.
      *
      * @see cAuthHandlerAbstract::validateCredentials()
+     *
      * @return string|false
+     *
      * @throws cDbException
      * @throws cException
      */

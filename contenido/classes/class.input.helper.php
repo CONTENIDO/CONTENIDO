@@ -64,6 +64,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      *
      * @return int
      *         Number of items added
+     * 
      * @throws cDbException
      */
     public function addArticles($iIDCat, $bColored = false, $bArtOnline = true, $sSpaces = '') {
@@ -151,8 +152,10 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      *         Add also articles per category
      * @param bool $bArtOnline
      *         If true, show only online articles
+     * 
      * @return int
      *         Number of items added
+     * 
      * @throws cDbException
      */
     public function addCategories($iMaxLevel = 0, $bColored = false, $bCatVisible = true, $bCatPublic = true, $bWithArt = false, $bArtOnline = true) {
@@ -237,8 +240,10 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      * @param string $sTypeRange
      *         Comma separated list of CONTENIDO type ids
      *         which may be in the resulting list (e.g. '1', '17', '28')
+     * 
      * @return int
      *         Number of items added
+     * 
      * @throws cDbException
      */
     public function addTypesFromArt($iIDCatArt, $sTypeRange = '') {
@@ -557,6 +562,7 @@ try {
      *
      * @return string|void
      *         Complete template string or nothing
+     * 
      * @throws cInvalidArgumentException
      */
     public function render($print = false) {

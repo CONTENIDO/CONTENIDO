@@ -192,6 +192,7 @@ class cLayoutHandler {
      *
      * @param cDb $dbObject
      *         CONTENIDO database object
+     * 
      * @throws cInvalidArgumentException
      */
     public function initWithDbObject($dbObject) {
@@ -213,6 +214,7 @@ class cLayoutHandler {
      *
      * @return bool
      *         true if successfully
+     * 
      * @throws cInvalidArgumentException
      */
     private function _makeDirectories() {
@@ -232,6 +234,7 @@ class cLayoutHandler {
      *
      * @return bool
      *         true if succssesfully
+     * 
      * @throws cInvalidArgumentException
      */
     private function _makeDirectory($directory) {
@@ -303,7 +306,9 @@ class cLayoutHandler {
      * Save Layout
      *
      * @param string $layoutCode [optional]
+     *                           
      * @return bool
+     * 
      * @throws cInvalidArgumentException
      */
     public function saveLayout($layoutCode = '') {
@@ -321,7 +326,9 @@ class cLayoutHandler {
      * Use it for upgrade!
      *
      * @param string $layoutCode [optional]
+     *                           
      * @return bool
+     * 
      * @throws cInvalidArgumentException
      */
     public function saveLayoutByUpgrade($layoutCode = '') {
@@ -336,7 +343,9 @@ class cLayoutHandler {
     /**
      *
      * @param string $layoutCode [optional]
+     *                           
      * @return bool
+     * 
      * @throws cInvalidArgumentException
      */
     private function _save($layoutCode = '') {
@@ -364,6 +373,7 @@ class cLayoutHandler {
      *
      * @return bool
      *         true on success or false on failure
+     * 
      * @throws cInvalidArgumentException
      */
     public function eraseLayout() {
@@ -420,6 +430,7 @@ class cLayoutHandler {
      *
      * @return string|bool
      *         content or false
+     * 
      * @throws cInvalidArgumentException
      */
     public function getLayoutCode() {
@@ -442,12 +453,13 @@ class cLayoutHandler {
      * Save all layout in file system.
      * Use it for upgrade.
      *
-     * @throws cException if the layout could not be saved
      * @param cDb $adb
      *         CONTENIDO database object
      * @param array $cfg
      *         CONTENIDO config array
      * @param int $clientId
+     * 
+     * @throws cException if the layout could not be saved
      */
     public static function upgrade($adb, $cfg, $clientId) {
         // get name of layout and frontendpath

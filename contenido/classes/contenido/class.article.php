@@ -50,6 +50,7 @@ class cApiArticleCollection extends ItemCollection {
      * @param int $idclient
      *
      * @return cApiArticle
+     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -67,7 +68,9 @@ class cApiArticleCollection extends ItemCollection {
      * Returns list of ids by given client id.
      *
      * @param int $idclient
+     * 
      * @return array
+     * 
      * @throws cDbException
      */
     public function getIdsByClientId($idclient) {
@@ -115,6 +118,7 @@ class cApiArticle extends Item
      *
      * @return string
      *         link
+     * 
      * @throws cInvalidArgumentException
      */
     public function getLink($changeLangId = 0) {

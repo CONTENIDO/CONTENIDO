@@ -161,6 +161,7 @@ class cRegistry {
      * Returns the loaded cApiLanguage object for the current language.
      *
      * @return cApiLanguage
+     * 
      * @throws cInvalidArgumentException
      */
     public static function getLanguage() {
@@ -180,6 +181,7 @@ class cRegistry {
      * Returns the loaded cApiClient object for the current client.
      *
      * @return cApiClient
+     * 
      * @throws cInvalidArgumentException
      */
     public static function getClient() {
@@ -202,6 +204,7 @@ class cRegistry {
      * Returns the loaded cApiArticle object for the current article.
      *
      * @return cApiArticle
+     * 
      * @throws cInvalidArgumentException
      */
     public static function getArticle() {
@@ -225,6 +228,7 @@ class cRegistry {
      * Returns the loaded cApiArticleLanguage object for the current article.
      *
      * @return cApiArticleLanguage
+     * 
      * @throws cInvalidArgumentException
      */
     public static function getArticleLanguage() {
@@ -247,6 +251,7 @@ class cRegistry {
      * Returns the loaded cApiCategory object for the current category.
      *
      * @return cApiCategory
+     * 
      * @throws cInvalidArgumentException
      */
     public static function getCategory() {
@@ -270,6 +275,7 @@ class cRegistry {
      * Returns the loaded cApiCategoryLanguage object for the current category.
      *
      * @return cApiCategoryLanguage
+     * 
      * @throws cInvalidArgumentException
      */
     public static function getCategoryLanguage() {
@@ -294,6 +300,7 @@ class cRegistry {
      * category/article relation.
      *
      * @return cApiCategoryArticle
+     * 
      * @throws cInvalidArgumentException
      */
     public static function getCategoryArticle() {
@@ -570,9 +577,11 @@ class cRegistry {
      *         name of the api class
      * @param int $objectId
      *         primary key value
+     * 
+     * @return Item
+     * 
      * @throws cInvalidArgumentException
      *         if the given objectId is not greater than 0 or the given class does not exist
-     * @return Item
      */
     protected final static function _fetchItemObject($apiClassName, $objectId) {
         if ((int) $objectId <= 0) {

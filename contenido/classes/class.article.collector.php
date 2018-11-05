@@ -259,6 +259,7 @@ class cArticleCollector implements SeekableIterator, Countable {
      * article of a category. Does work only if one category was requested.
      *
      * @return cApiArticleLanguage
+     * 
      * @throws cBadMethodCallException
      */
     public function startArticle() {
@@ -331,6 +332,7 @@ class cArticleCollector implements SeekableIterator, Countable {
      *
      * @param int $position
      *         position to load
+     * 
      * @throws cOutOfBoundsException
      */
     public function seek($position) {

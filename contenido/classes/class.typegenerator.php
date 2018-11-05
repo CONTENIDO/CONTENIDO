@@ -143,6 +143,7 @@ class cTypeGenerator {
      * @param int    $index
      *
      * @return string
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -184,6 +185,7 @@ class cTypeGenerator {
      * @param int    $index
      *
      * @return string
+     *
      * @throws cDbException
      * @throws cException
      */

@@ -84,6 +84,7 @@ class cSystemPurge {
      * @param int $clientId
      *
      * @return bool
+     * 
      * @throws cInvalidArgumentException
      */
     public function resetClientConCode($clientId) {
@@ -123,6 +124,7 @@ class cSystemPurge {
      * @param int $clientId
      *
      * @return bool
+     * 
      * @throws cDbException
      */
     public function resetClientConCatArt($clientId) {
@@ -154,6 +156,7 @@ class cSystemPurge {
      * Reset the table con_inuse.
      *
      * @return bool
+     * 
      * @throws cDbException
      */
     public function resetConInuse() {
@@ -177,6 +180,7 @@ class cSystemPurge {
      * @param int $clientId
      *
      * @return bool
+     * 
      * @throws cInvalidArgumentException
      */
     public function clearClientCache($clientId) {
@@ -200,7 +204,9 @@ class cSystemPurge {
      * @param int  $clientId
      * @param bool $keep
      * @param int  $fileNumber
+     * 
      * @return bool
+     * 
      * @throws cInvalidArgumentException
      */
     public function clearClientHistory($clientId, $keep, $fileNumber) {
@@ -243,6 +249,7 @@ class cSystemPurge {
      * @param int $idclient
      *
      * @return bool
+     * 
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
@@ -270,7 +277,9 @@ class cSystemPurge {
      * Clear client log file.
      *
      * @param int $idclient
+     * 
      * @return bool
+     * 
      * @throws cInvalidArgumentException
      */
     public function clearClientLog($idclient) {
@@ -292,6 +301,7 @@ class cSystemPurge {
      * Clear CONTENIDO log files.
      *
      * @return bool
+     * 
      * @throws cInvalidArgumentException
      */
     public function clearConLog() {
@@ -313,6 +323,7 @@ class cSystemPurge {
      * Clear the cronjob directory.
      *
      * @return bool
+     * 
      * @throws cInvalidArgumentException
      */
     public function clearConCronjob() {
@@ -334,6 +345,7 @@ class cSystemPurge {
      * Clear the cache directory for a client.
      *
      * @return bool
+     * 
      * @throws cInvalidArgumentException
      */
     public function clearConCache() {
@@ -393,6 +405,7 @@ class cSystemPurge {
      *                            files are temporarily saved
      *
      * @return bool
+     * 
      * @throws cInvalidArgumentException
      */
     public function clearDir($dirPath, $tmpDirPath, $keep = false, &$tmpFileList = array()) {
@@ -464,6 +477,7 @@ class cSystemPurge {
      * @param array  $types
      *
      * @return bool
+     * 
      * @throws cInvalidArgumentException
      */
     public function emptyFile($dirPath, $types) {

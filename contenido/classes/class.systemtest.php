@@ -523,6 +523,7 @@ class cSystemtest {
      *
      * @return number|bool
      *         ID or false if unable to determine the user
+     * 
      * @throws cInvalidArgumentException
      */
     protected function getServerUID() {
@@ -555,6 +556,7 @@ class cSystemtest {
      *
      * @return number|bool
      *         ID or false if unable to determine the group
+     * 
      * @throws cInvalidArgumentException
      */
     protected function getServerGID() {
@@ -584,6 +586,7 @@ class cSystemtest {
      *
      * @return int
      *         CON_PREDICT_
+     * 
      * @throws cInvalidArgumentException
      */
     protected function predictCorrectFilepermissions($file) {
@@ -1013,8 +1016,10 @@ class cSystemtest {
      * @param string $host
      * @param string $username
      * @param string $password
+     * 
      * @return bool
      *         true if the test passed and false if not
+     * 
      * @throws cDbException
      */
     public function testMySQLModeStrict($host, $username, $password) {
@@ -1045,6 +1050,7 @@ class cSystemtest {
      *
      * @return int
      *         1 if the test passed and > 1 if not
+     * 
      * @throws cDbException
      */
     public function testMySQL($host, $username, $password) {
@@ -1325,6 +1331,7 @@ class cSystemtest {
      *
      * @return bool
      *         true if the test passed and false if not
+     * 
      * @throws cInvalidArgumentException
      */
     public function testFrontendFolderCreation() {
@@ -1439,6 +1446,7 @@ class cSystemtest {
      * @param string $databasePrefix
      * @param string $charset   [optional]
      * @param string $collation [optional]
+     *                          
      * @throws cDbException
      */
     public function checkSetupMysql($setupType, $databaseName, $databasePrefix, $charset = '', $collation = '') {

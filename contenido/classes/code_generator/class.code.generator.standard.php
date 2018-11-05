@@ -39,6 +39,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      *
      * @return string
      *         The generated code
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException

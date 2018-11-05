@@ -52,10 +52,12 @@ class cDirHandler {
      *
      * @param string $dirname
      *         The path to the directory
-     * @throws cInvalidArgumentException
-     *         if the dir with the given dirname does not exist
+     *
      * @return bool
      *         Returns true on success or false on failure.
+     *
+     * @throws cInvalidArgumentException
+     *         if the dir with the given dirname does not exist
      */
     public static function remove($dirname) {
         if (!self::exists($dirname)) {
@@ -72,10 +74,12 @@ class cDirHandler {
      * @param string $destination
      *         the destination. Note that the dir can also be renamed in the
      *         process of moving it
-     * @throws cInvalidArgumentException
-     *         if the dir with the given dirname does not exist
+     *
      * @return bool
      *         Returns true on success or false on failure.
+     *
+     * @throws cInvalidArgumentException
+     *         if the dir with the given dirname does not exist
      */
     public static function move($dirname, $destination) {
         if (!self::exists($dirname)) {
@@ -112,10 +116,12 @@ class cDirHandler {
      *         the name and path of the dir
      * @param int $mode
      *         the new access mode : php chmod needs octal value
-     * @throws cInvalidArgumentException
-     *         if the dir with the given dirname does not exist
+     *
      * @return bool
      *         Returns true on success or false on failure.
+     *
+     * @throws cInvalidArgumentException
+     *         if the dir with the given dirname does not exist
      */
     public static function chmod($dirname, $mode) {
         if (!cFileHandler::exists($dirname)) {
@@ -131,8 +137,10 @@ class cDirHandler {
      *
      * @param string $dirname
      *         the name of the directory
+     *
      * @return bool
      *         Returns true on success or false on failure.
+     *
      * @throws cInvalidArgumentException
      */
     public static function setDefaultDirPerms($dirname) {
@@ -147,10 +155,12 @@ class cDirHandler {
      *
      * @param string $dirname
      *         the name of the directory which should be deleted
-     * @throws cInvalidArgumentException
-     *         if dirname is empty
+     *
      * @return bool
      *         Returns true on success or false on failure.
+     *
+     * @throws cInvalidArgumentException
+     *         if dirname is empty
      */
     public static function recursiveRmdir($dirname) {
         if ($dirname == '') {
@@ -185,10 +195,12 @@ class cDirHandler {
      *         the destination. Note that existing files get overwritten
      * @param int $chmod [optional; default: 0755]
      * 			chmod mode
-     * @throws cInvalidArgumentException
-     *         if the file with the given filename does not exist
+     *
      * @return bool
      *         true on success
+     *
+     * @throws cInvalidArgumentException
+     *         if the file with the given filename does not exist
      */
     public static function recursiveCopy($dirname, $destination, $chmod = 0755) {
         if (!self::exists($dirname)) {
@@ -350,8 +362,10 @@ class cDirHandler {
      *                          The directory name
      * @param bool   $recursive [optional]
      *                          true if all the subdirectories should be included in the calculation
+     *
      * @return int|bool
      *                          false in case of an error or the size
+     *
      * @throws cInvalidArgumentException
      */
     public static function getDirectorySize($dirname, $recursive = false) {

@@ -188,6 +188,7 @@ abstract class cWYSIWYGEditor {
      *
      * @return array
      *         Array with values that were not accepted
+     *
      * @throws cInvalidArgumentException
      */
     public static function saveConfig($config) {

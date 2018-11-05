@@ -30,6 +30,7 @@ class cFileHandler {
      *
      * @return bool
      *         true on success. Otherwise false.
+     * 
      * @throws cInvalidArgumentException
      */
     public static function create($filename, $content = '') {
@@ -52,11 +53,13 @@ class cFileHandler {
      *         this will be the first byte which is read.
      * @param bool $reverse [optional]
      *         if true, the function will start from the back of the file.
-     * @throws cInvalidArgumentException
-     *         if the file with the given filename does not exist
+     * 
      * @return string|bool
      *         On success it returns the bytes which have been read.
      *         Otherwise false.
+     *                      
+     * @throws cInvalidArgumentException
+     *         if the file with the given filename does not exist
      */
     public static function read($filename, $length = 0, $offset = 0, $reverse = false) {
         if (!cFileHandler::exists($filename)) {
@@ -85,12 +88,14 @@ class cFileHandler {
      *         the number of lines to be read.
      * @param int $lineoffset [optional]
      *         this will be the first line which is read.
-     * @throws cInvalidArgumentException
-     *         if the file with the given filename does not exist
+     * 
      * @return string|array|bool
      *         If one line was read the function will return it.
      *         If more than one line was read the function will return an array
      *         containing the lines. Otherwise false is returned
+     *                        
+     * @throws cInvalidArgumentException
+     *         if the file with the given filename does not exist
      */
     public static function readLine($filename, $lines = 0, $lineoffset = 0) {
         if (!cFileHandler::exists($filename)) {
@@ -140,8 +145,10 @@ class cFileHandler {
      *                       the data which should be written
      * @param bool   $append [optional]
      *                       if true the data will be appended to the file.
+     *                       
      * @return bool
      *                       true on success, false otherwise
+     * 
      * @throws cInvalidArgumentException
      */
     public static function write($filename, $content, $append = false) {
@@ -173,6 +180,7 @@ class cFileHandler {
      *
      * @return bool
      *         true on success, false otherwise
+     * 
      * @throws cInvalidArgumentException
      */
     public static function writeLine($filename, $content, $append = false) {
@@ -208,10 +216,12 @@ class cFileHandler {
      *
      * @param string $filename
      *         the name and path of the file
-     * @throws cInvalidArgumentException
-     *         if the file with the given filename does not exist
+     * 
      * @return bool
      *         true if the file is readable
+     * 
+     * @throws cInvalidArgumentException
+     *         if the file with the given filename does not exist
      */
     public static function readable($filename) {
         if (!cFileHandler::exists($filename)) {
@@ -226,10 +236,12 @@ class cFileHandler {
      *
      * @param string $filename
      *         the name and path of the file
-     * @throws cInvalidArgumentException
-     *         if the file with the given filename does not exist
+     * 
      * @return bool
      *         true on success
+     * 
+     * @throws cInvalidArgumentException
+     *         if the file with the given filename does not exist
      */
     public static function remove($filename) {
         if (!cFileHandler::exists($filename)) {
@@ -244,10 +256,12 @@ class cFileHandler {
      *
      * @param string $filename
      *         the name and path of the file
-     * @throws cInvalidArgumentException
-     *         if the file with the given filename does not exist
+     * 
      * @return bool
      *         true on success
+     * 
+     * @throws cInvalidArgumentException
+     *         if the file with the given filename does not exist
      */
     public static function truncate($filename) {
         if (!cFileHandler::exists($filename)) {
@@ -269,10 +283,12 @@ class cFileHandler {
      * @param string $destination
      *         the destination. Note that the file can also be renamed in the
      *         process of moving it
-     * @throws cInvalidArgumentException
-     *         if the file with the given filename does not exist
+     * 
      * @return bool
      *         true on success
+     * 
+     * @throws cInvalidArgumentException
+     *         if the file with the given filename does not exist
      */
     public static function move($filename, $destination) {
         if (!cFileHandler::exists($filename)) {
@@ -293,10 +309,12 @@ class cFileHandler {
      *         the name and path of the file
      * @param string $new_filename
      *         the new name of the file
-     * @throws cInvalidArgumentException
-     *         if the file with the given filename does not exist
+     * 
      * @return bool
      *         true on success
+     * 
+     * @throws cInvalidArgumentException
+     *         if the file with the given filename does not exist
      */
     public static function rename($filename, $new_filename) {
         if (!cFileHandler::exists($filename)) {
@@ -317,10 +335,12 @@ class cFileHandler {
      *         the name and path of the file
      * @param string $destination
      *         the destination. Note that existing files get overwritten
-     * @throws cInvalidArgumentException
-     *         if the file with the given filename does not exist
+     * 
      * @return bool
      *         true on success
+     * 
+     * @throws cInvalidArgumentException
+     *         if the file with the given filename does not exist
      */
     public static function copy($filename, $destination) {
         if (!cFileHandler::exists($filename)) {
@@ -341,10 +361,12 @@ class cFileHandler {
      *         the name and path of the file
      * @param int $mode
      *         the new access mode : php chmod needs octal value
-     * @throws cInvalidArgumentException
-     *         if the file with the given filename does not exist
+     * 
      * @return bool
      *         true on success
+     * 
+     * @throws cInvalidArgumentException
+     *         if the file with the given filename does not exist
      */
     public static function chmod($filename, $mode) {
         if (!cFileHandler::exists($filename)) {
@@ -367,10 +389,12 @@ class cFileHandler {
      *
      * @param string $filename
      *         the name and path to the file
-     * @throws cInvalidArgumentException
-     *         if the file with the given filename does not exist
+     * 
      * @return array
      *         Returns an array containing information about the file
+     * 
+     * @throws cInvalidArgumentException
+     *         if the file with the given filename does not exist
      */
     public static function info($filename) {
         if (!cFileHandler::exists($filename)) {
@@ -424,6 +448,7 @@ class cFileHandler {
      *
      * @return bool
      *         true on success or false on failure
+     * 
      * @throws cInvalidArgumentException
      */
     public static function setDefaultFilePerms($filename) {
@@ -447,6 +472,7 @@ class cFileHandler {
      *
      * @return bool
      *         true if the given filename is valid, false otherwise
+     * 
      * @throws cInvalidArgumentException
      */
     public static function validateFilename($filename, $notifyAndExitOnFailure = true) {

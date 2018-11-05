@@ -50,6 +50,7 @@ class NoteCollection extends cApiCommunicationCollection {
      *
      * @return bool
      *         True on success, otherwise false
+     * 
      * @throws cDbException
      */
     public function select($where = '', $group_by = '', $order_by = '', $limit = '') {
@@ -74,8 +75,10 @@ class NoteCollection extends cApiCommunicationCollection {
      * @param string $message
      *                         Message to store
      * @param string $category [optional]
+     *                         
      * @return object
      *                         The new item
+     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -179,8 +182,10 @@ class NoteList extends cHTMLDiv {
      * (non-PHPdoc)
      *
      * @see cHTML::toHtml()
+     * 
      * @return string
      *     generated markup
+     * 
      * @throws cDbException
      * @throws cException
      */

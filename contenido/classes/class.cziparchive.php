@@ -29,6 +29,7 @@ class cZipArchive {
      *
      * @return array
      *         of files
+     * 
      * @throws cInvalidArgumentException
      */
     public static function readExistingFiles($dirPath) {

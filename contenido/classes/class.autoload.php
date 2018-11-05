@@ -193,6 +193,7 @@ class cAutoload {
      *
      * @param string $className
      *         The classname
+     *
      * @throws cBadMethodCallException
      *         If autoloader wasn't initialized before
      */

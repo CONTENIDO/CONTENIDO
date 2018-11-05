@@ -46,6 +46,7 @@ class TODOCollection extends cApiCommunicationCollection {
      *
      * @return bool
      *         True on success, otherwise false
+     * 
      * @throws cDbException
      */
     public function select($where = '', $group_by = '', $order_by = '', $limit = '') {
@@ -71,7 +72,9 @@ class TODOCollection extends cApiCommunicationCollection {
      * @param string     $notimail
      * @param string     $notibackend
      * @param string     $recipient
+     * 
      * @return cApiCommunication
+     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException

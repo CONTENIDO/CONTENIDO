@@ -50,6 +50,7 @@ class cApiArticleLanguageCollection extends ItemCollection {
      * @param array $parameters
      *
      * @return cApiArticleLanguage
+     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -114,7 +115,9 @@ class cApiArticleLanguageCollection extends ItemCollection {
      *
      * @param int $idart
      * @param int $idlang
+     * 
      * @return int
+     * 
      * @throws cDbException
      */
     public function getIdByArticleIdAndLanguageId($idart, $idlang) {
@@ -380,8 +383,10 @@ class cApiArticleLanguage extends Item {
      *         Article id
      * @param int $idlang
      *         Language id
+     * 
      * @return int
      *         Language dependant article id
+     * 
      * @throws cDbException
      */
     protected function _getIdArtLang($idart, $idlang) {
@@ -637,10 +642,11 @@ class cApiArticleLanguage extends Item {
 
     /**
      * Returns all available content types
+     * 
+     * @return array
      *
      * @throws cException
      *         if no content has been loaded
-     * @return array
      */
     public function getContentTypes() {
         if (empty($this->content)) {
@@ -658,6 +664,7 @@ class cApiArticleLanguage extends Item {
      *
      * @return string
      *         link
+     * 
      * @throws cInvalidArgumentException
      */
     public function getLink($changeLangId = 0) {
@@ -680,11 +687,13 @@ class cApiArticleLanguage extends Item {
      *
      * Check all articles in the current category on existing same urlname (alias).
      *
-     * @param    string $sName   Websafe name to check
-     * @param    int    $iArtId  Current article id
-     * @param    int    $iLangId Current language id
-     * @param   int     $iCatId  Category id
-     * @return     bool    True if urlname already exists, false if not
+     * @param string $sName   Websafe name to check
+     * @param int    $iArtId  Current article id
+     * @param int    $iLangId Current language id
+     * @param int    $iCatId  Category id
+     *
+     * @return bool True if urlname already exists, false if not
+     *
      * @throws cDbException
      */
     public function isInCatArticles($sName = '', $iArtId = 0, $iLangId = 0, $iCatId = 0) {

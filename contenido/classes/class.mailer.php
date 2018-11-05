@@ -329,6 +329,7 @@ class cMailer extends Swift_Mailer {
      *
      * @return int
      *         number of recipients to which the mail has been sent
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -366,6 +367,7 @@ class cMailer extends Swift_Mailer {
      *                                              when resending a mail it is not logged again
      *
      * @return int
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -501,6 +503,7 @@ class cMailer extends Swift_Mailer {
      * @return string|bool
      *         the idmail of the inserted table row in con_mail_log|bool
      *         false if mail_log option is inactive
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException

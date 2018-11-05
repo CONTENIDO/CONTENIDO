@@ -189,6 +189,7 @@ abstract class cCodeGeneratorAbstract {
      * @return string
      *         Generated code or error code '0601' if no template
      *         configuration was found for category or article.
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException If an article with the given idart and idlang can not be loaded.
@@ -235,6 +236,7 @@ abstract class cCodeGeneratorAbstract {
      * article or by configured category.
      *
      * @return int|NULL
+     *
      * @throws cInvalidArgumentException
      */
     protected function _getTemplateConfigurationId() {
@@ -275,8 +277,10 @@ abstract class cCodeGeneratorAbstract {
      *             'idtpl' => (int),
      *             'name' => (string)
      *         )
+     *
      * @throws cDbException
      * @throws cInvalidArgumentException
+     *
      * @global array $cfg
      */
     protected function _getTemplateData() {
@@ -467,6 +471,7 @@ abstract class cCodeGeneratorAbstract {
      *         Container number (the id attribute in container tag).
      * @param array $module
      *         Recordset as assoziative array of related module (container code).
+     *
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
@@ -545,6 +550,7 @@ abstract class cCodeGeneratorAbstract {
      *
      * @return array
      *         like $arr[type][typeid] = value;
+     *
      * @throws cDbException
      */
     protected function _getUsedCmsTypesData($editable = true, $version = NULL) {

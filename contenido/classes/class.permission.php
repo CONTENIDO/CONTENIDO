@@ -57,6 +57,7 @@ class cPermission {
      *
      * @return array
      *         List of group ids
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -79,7 +80,9 @@ class cPermission {
      * @deprecated [2015-05-21]
      *         This method is no longer supported (no replacement)
      * @param string|int $area
+     *
      * @return int
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -105,7 +108,9 @@ class cPermission {
      * If passed action is numeric, it will returned directly.
      *
      * @param string|int $action
+     *
      * @return int
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -137,6 +142,7 @@ class cPermission {
      *         Returns diffrent values, depending on state:
      *         '1' (string) if permissions couldn't loaded
      *         '3' (string) if permissions were successfull loaded
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -177,6 +183,7 @@ class cPermission {
      *
      * @param string $user
      *         User Id hash
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -227,7 +234,9 @@ class cPermission {
      *
      * @param string $area
      * @param int    $action [optional]
+     *
      * @return bool
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -251,7 +260,9 @@ class cPermission {
      * @param string $area
      * @param string $action
      * @param mixed  $itemid
+     *
      * @return bool
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -314,8 +325,10 @@ class cPermission {
      *         This method is no longer supported (no replacement)
      * @param int|string $area
      *         Area id or name
+     *
      * @return string|int
      *         name of parent area or passed area
+     *
      * @throws cDbException
      */
     public function getParentAreaId($area) {
@@ -327,7 +340,9 @@ class cPermission {
      *
      * @param string $area
      * @param int    $action [optional]
+     *
      * @return bool
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -410,6 +425,7 @@ class cPermission {
      *                      User object to check against, or false for the current user
      *
      * @return bool
+     *
      * @throws cInvalidArgumentException
      */
     public function hasClientPermission($iClient = false, $oUser = false) {
@@ -445,7 +461,9 @@ class cPermission {
      *         idclient to check
      * @param object $oUser
      *         User object to check against
+     *
      * @return bool
+     *
      * @throws cInvalidArgumentException
      */
     public function isClientUser($iClient, $oUser) {
@@ -486,7 +504,9 @@ class cPermission {
      *         idclient to check
      * @param object $oUser
      *         User object to check against
+     *
      * @return bool
+     *
      * @throws cInvalidArgumentException
      */
     public function isClientAdmin($iClient, $oUser) {
@@ -506,7 +526,9 @@ class cPermission {
      *
      * @param object $oUser
      *         User object to check against
+     *
      * @return bool
+     *
      * @throws cInvalidArgumentException
      */
     public function isSysadmin($oUser) {
@@ -530,9 +552,11 @@ class cPermission {
      *
      * @param object $oUser
      *         User object
+     *
+     * @return object
+     *
      * @throws cInvalidArgumentException
      *         if the given or constructed user is not a cApiUser object
-     * @return object
      */
     private function _checkUserObject($oUser) {
         if ($oUser === false) {
@@ -624,7 +648,9 @@ class cPermission {
      *
      * @param string|int $mainarea
      * @param int        $itemid
+     *
      * @return bool
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -697,7 +723,9 @@ class cPermission {
     /**
      *
      * @param string|int $mainarea
+     *
      * @return int
+     *
      * @throws cDbException
      * @throws cException
      */

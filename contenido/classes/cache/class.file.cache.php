@@ -130,6 +130,7 @@ class cFileCache {
      *
      * @return string
      *         full filename
+     * 
      * @throws cInvalidArgumentException
      */
     public function getDestination($id, $group = '') {
@@ -150,8 +151,10 @@ class cFileCache {
      *                      cache ID
      * @param string $group [optional]
      *                      cache group
+     *                      
      * @return bool|string
      *                      content or false
+     * 
      * @throws cInvalidArgumentException
      */
     public function get($id, $group = '') {
@@ -188,6 +191,7 @@ class cFileCache {
      *
      * @return bool
      *         success state
+     * 
      * @throws cInvalidArgumentException
      */
     public function save($data, $id, $group = '') {
@@ -201,8 +205,10 @@ class cFileCache {
      *                      cache ID
      * @param string $group [optional]
      *                      cache group
+     *                      
      * @return bool
      *                      success state
+     * 
      * @throws cInvalidArgumentException
      */
     public function remove($id, $group = '') {

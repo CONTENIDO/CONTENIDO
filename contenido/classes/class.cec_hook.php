@@ -121,6 +121,7 @@ class cApiCecHook {
      *
      * @param int $pos
      *         Position, feasible value greater 0
+     *
      * @throws cInvalidArgumentException if the given position is less than 1
      */
     public static function setReturnArgumentPos($pos) {

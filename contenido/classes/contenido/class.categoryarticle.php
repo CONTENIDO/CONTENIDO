@@ -55,6 +55,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
      * @param int    $createcode   [optional]
      *
      * @return cApiCategoryArticle
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -130,7 +131,9 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *
      * @param int $idcat
      * @param int $idart
+     *
      * @return cApiCategoryArticle|NULL
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -158,6 +161,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
      * @param int $idart
      *
      * @return int|NULL
+     *
      * @throws cDbException
      */
     public function getIdByCategoryIdAndArticleId($idcat, $idart) {
@@ -170,7 +174,9 @@ class cApiCategoryArticleCollection extends ItemCollection {
      * Returns all category article ids by client id.
      *
      * @param int $idclient
+     *
      * @return array
+     *
      * @throws cDbException
      */
     public function getAllIdsByClientId($idclient) {
@@ -247,8 +253,10 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *                              One category article id or list of category article ids
      * @param int       $createcode [optional]
      *                              Create code state, either 1 or 0.
+     *
      * @return int
      *                              Number of updated entries
+     *
      * @throws cDbException
      */
     public function setCreateCodeFlag($idcatart, $createcode = 1) {
