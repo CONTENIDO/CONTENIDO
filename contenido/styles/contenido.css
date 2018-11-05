@@ -27,6 +27,7 @@ form, h1, h2, h3, h4 {
     width: 1000px;
     float: left;
     /*margin-right: -3px;*/
+    position: relative;
 }
 .left_top_dist {
     padding-left: 17px;
@@ -94,12 +95,29 @@ form, h1, h2, h3, h4 {
     margin: 0 30px 0 0;
     padding:0 5px;
     width:250px;
+    position: absolute;
+    right: 0;
 }
 #request_layer #request_form .message {
     line-height: 16px;
     margin: 0 0 5px 0;
     padding: 0;
 }
+#request_layer .password_request_input {
+    vertical-align: top;
+    margin-top: 2px;
+    float: right;
+    margin-right: 6px;
+}
+#request_layer .last_row {
+    padding-bottom: 7px;
+}
+#request_layer .last_row .send_btn {
+    position: relative;
+    top: 3px;
+    padding-left: 5px;
+}
+
 hr.sep {
     border: 0;
     height: 1px;
@@ -1997,14 +2015,6 @@ input[type=image].vAlignMiddle {
 .vAlignTop {
     vertical-align: top;
     margin-top: 0.25em;
-}
-
-
-.password_request_input {
-    vertical-align: top;
-    margin-top: 2px;
-    float: right;
-    margin-right: 6px;
 }
 
 #version_selector {
