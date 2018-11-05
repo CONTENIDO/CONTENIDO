@@ -39,9 +39,6 @@ class Swift_Message extends Swift_Mime_SimpleMessage
      * @param string $body
      * @param string $contentType
      * @param string $charset
-     *
-     * @throws Swift_DependencyException
-     * @throws Swift_SwiftException
      */
     public function __construct($subject = null, $body = null, $contentType = null, $charset = null)
     {
@@ -168,8 +165,6 @@ class Swift_Message extends Swift_Mime_SimpleMessage
      * Write this message to a {@link Swift_InputByteStream}.
      *
      * @param Swift_InputByteStream $is
-     *
-     * @throws Swift_IoException
      */
     public function toByteStream(Swift_InputByteStream $is)
     {

@@ -606,8 +606,6 @@ class Swift_Mime_SimpleMessage extends Swift_Mime_MimePart implements Swift_Mime
      * Write this message to a {@link Swift_InputByteStream}.
      *
      * @param Swift_InputByteStream $is
-     *
-     * @throws Swift_IoException
      */
     public function toByteStream(Swift_InputByteStream $is)
     {

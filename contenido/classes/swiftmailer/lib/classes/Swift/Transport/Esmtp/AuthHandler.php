@@ -164,8 +164,6 @@ class Swift_Transport_Esmtp_AuthHandler implements Swift_Transport_EsmtpHandler
      * Runs immediately after a EHLO has been issued.
      *
      * @param Swift_Transport_SmtpAgent $agent to read/write
-     *
-     * @throws Swift_TransportException
      */
     public function afterEhlo(Swift_Transport_SmtpAgent $agent)
     {
@@ -244,8 +242,9 @@ class Swift_Transport_Esmtp_AuthHandler implements Swift_Transport_EsmtpHandler
     /**
      * Returns the authenticator list for the given agent.
      *
+     * @param Swift_Transport_SmtpAgent $agent
+     *
      * @return array
-     * @throws Swift_TransportException
      */
     protected function _getAuthenticatorsForAgent()
     {

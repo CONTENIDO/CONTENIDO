@@ -49,8 +49,6 @@ class Swift_ByteStream_ArrayByteStream implements Swift_InputByteStream, Swift_O
      * If $stack is given the stream will be populated with the bytes it contains.
      *
      * @param mixed $stack of bytes in string or array form, optional
-     *
-     * @throws Swift_IoException
      */
     public function __construct($stack = null)
     {
@@ -97,8 +95,6 @@ class Swift_ByteStream_ArrayByteStream implements Swift_InputByteStream, Swift_O
      * Writes $bytes to the end of the stream.
      *
      * @param string $bytes
-     *
-     * @throws Swift_IoException
      */
     public function write($bytes)
     {

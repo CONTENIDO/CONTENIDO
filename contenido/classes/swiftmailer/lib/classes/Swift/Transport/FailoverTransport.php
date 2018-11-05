@@ -38,7 +38,6 @@ class Swift_Transport_FailoverTransport extends Swift_Transport_LoadBalancedTran
      * @param string[]           $failedRecipients An array of failures by-reference
      *
      * @return int
-     * @throws Swift_TransportException
      */
     public function send(Swift_Mime_Message $message, &$failedRecipients = null)
     {

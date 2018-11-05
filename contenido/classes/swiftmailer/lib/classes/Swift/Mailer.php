@@ -48,7 +48,6 @@ class Swift_Mailer
      * @param string $service
      *
      * @return object
-     * @throws Swift_DependencyException
      */
     public function createMessage($service = 'message')
     {

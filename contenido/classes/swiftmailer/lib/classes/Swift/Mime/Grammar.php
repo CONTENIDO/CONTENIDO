@@ -124,7 +124,6 @@ class Swift_Mime_Grammar
      * @param string $name exactly as written in the RFC
      *
      * @return string
-     * @throws Swift_RfcComplianceException
      */
     public function getDefinition($name)
     {

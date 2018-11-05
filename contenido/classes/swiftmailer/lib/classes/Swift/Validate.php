@@ -27,8 +27,6 @@ class Swift_Validate
      * @param string $email
      *
      * @return bool
-     * @throws Swift_DependencyException
-     * @throws Swift_RfcComplianceException
      */
     public static function email($email)
     {

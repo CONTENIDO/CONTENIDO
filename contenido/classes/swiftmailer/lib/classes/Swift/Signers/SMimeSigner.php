@@ -44,8 +44,6 @@ class Swift_Signers_SMimeSigner implements Swift_Signers_BodySigner
      * @param string|null $signCertificate
      * @param string|null $signPrivateKey
      * @param string|null $encryptCertificate
-     *
-     * @throws Swift_DependencyException
      */
     public function __construct($signCertificate = null, $signPrivateKey = null, $encryptCertificate = null)
     {
@@ -204,10 +202,6 @@ class Swift_Signers_SMimeSigner implements Swift_Signers_BodySigner
      * @param Swift_Message $message
      *
      * @return $this
-     * @throws Swift_DependencyException
-     * @throws Swift_IoException
-     * @throws Swift_RfcComplianceException
-     * @throws Swift_SwiftException
      */
     public function signMessage(Swift_Message $message)
     {
@@ -240,8 +234,6 @@ class Swift_Signers_SMimeSigner implements Swift_Signers_BodySigner
 
     /**
      * @param Swift_InputByteStream $inputStream
-     * @param Swift_Message         $message
-     * @throws Swift_IoException
      */
     protected function toSMimeByteStream(Swift_InputByteStream $inputStream, Swift_Message $message)
     {
@@ -331,7 +323,6 @@ class Swift_Signers_SMimeSigner implements Swift_Signers_BodySigner
     /**
      * @param Swift_OutputByteStream $fromStream
      * @param Swift_InputByteStream  $toStream
-     * @throws Swift_IoException
      */
     protected function copyFromOpenSSLOutput(Swift_OutputByteStream $fromStream, Swift_InputByteStream $toStream)
     {
@@ -358,10 +349,6 @@ class Swift_Signers_SMimeSigner implements Swift_Signers_BodySigner
      *
      * @param Swift_OutputByteStream $fromStream
      * @param Swift_Message          $message
-     * @throws Swift_DependencyException
-     * @throws Swift_IoException
-     * @throws Swift_RfcComplianceException
-     * @throws Swift_SwiftException
      */
     protected function streamToMime(Swift_OutputByteStream $fromStream, Swift_Message $message)
     {

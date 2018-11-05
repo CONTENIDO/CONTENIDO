@@ -212,7 +212,6 @@ abstract class Swift_Mime_Headers_AbstractHeader implements Swift_Mime_Header
      *
      * @return string
      *
-     * @throws Swift_RfcComplianceException
      * @see toString()
      */
     public function __toString()
@@ -240,7 +239,6 @@ abstract class Swift_Mime_Headers_AbstractHeader implements Swift_Mime_Header
      * @param bool                     $shorten the first line to make remove for header name
      *
      * @return string
-     * @throws Swift_RfcComplianceException
      */
     protected function createPhrase(Swift_Mime_Header $header, $string, $charset, Swift_Mime_HeaderEncoder $encoder = null, $shorten = false)
     {

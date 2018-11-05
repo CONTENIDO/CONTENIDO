@@ -130,8 +130,6 @@ class Swift_CharacterStream_NgCharacterStream implements Swift_CharacterStream
      * @see Swift_CharacterStream::importByteStream()
      *
      * @param Swift_OutputByteStream $os
-     *
-     * @throws Swift_IoException
      */
     public function importByteStream(Swift_OutputByteStream $os)
     {

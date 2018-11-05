@@ -126,7 +126,6 @@ class Swift_Mime_Headers_ParameterizedHeader extends Swift_Mime_Headers_Unstruct
      * Get the value of this header prepared for rendering.
      *
      * @return string
-     * @throws Swift_RfcComplianceException
      */
     public function getFieldBody() //TODO: Check caching here
     {
@@ -150,7 +149,6 @@ class Swift_Mime_Headers_ParameterizedHeader extends Swift_Mime_Headers_Unstruct
      * @param string $string The string to tokenize
      *
      * @return array An array of tokens as strings
-     * @throws Swift_RfcComplianceException
      */
     protected function toTokens($string = null)
     {
@@ -177,7 +175,6 @@ class Swift_Mime_Headers_ParameterizedHeader extends Swift_Mime_Headers_Unstruct
      * @param string $value
      *
      * @return string
-     * @throws Swift_RfcComplianceException
      */
     private function _createParameter($name, $value)
     {

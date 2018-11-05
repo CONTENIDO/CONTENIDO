@@ -52,8 +52,6 @@ class Swift_KeyCache_SimpleKeyCacheInputStream implements Swift_KeyCache_KeyCach
      *
      * @param string                $bytes
      * @param Swift_InputByteStream $is optional
-     *
-     * @throws Swift_IoException
      */
     public function write($bytes, Swift_InputByteStream $is = null)
     {

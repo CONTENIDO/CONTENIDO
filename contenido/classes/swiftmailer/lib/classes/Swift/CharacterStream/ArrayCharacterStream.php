@@ -77,8 +77,6 @@ class Swift_CharacterStream_ArrayCharacterStream implements Swift_CharacterStrea
      * Overwrite this character stream using the byte sequence in the byte stream.
      *
      * @param Swift_OutputByteStream $os output stream to read from
-     *
-     * @throws Swift_IoException
      */
     public function importByteStream(Swift_OutputByteStream $os)
     {

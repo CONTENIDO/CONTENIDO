@@ -23,9 +23,6 @@ class Swift_MimePart extends Swift_Mime_MimePart
      * @param string $body
      * @param string $contentType
      * @param string $charset
-     *
-     * @throws Swift_DependencyException
-     * @throws Swift_SwiftException
      */
     public function __construct($body = null, $contentType = null, $charset = null)
     {

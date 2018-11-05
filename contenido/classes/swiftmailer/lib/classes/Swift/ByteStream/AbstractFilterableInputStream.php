@@ -126,8 +126,6 @@ abstract class Swift_ByteStream_AbstractFilterableInputStream implements Swift_I
      * before unbinding occurs.
      *
      * @param Swift_InputByteStream $is
-     *
-     * @throws Swift_IoException
      */
     public function unbind(Swift_InputByteStream $is)
     {
