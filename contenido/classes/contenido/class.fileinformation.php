@@ -23,9 +23,10 @@ cInclude('includes', 'functions.file.php');
  * @subpackage GenericDB_Model
  */
 class cApiFileInformationCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -47,7 +48,7 @@ class cApiFileInformationCollection extends ItemCollection {
      *
      * @return cApiFileInformation
      *         the new item
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -98,7 +99,7 @@ class cApiFileInformationCollection extends ItemCollection {
      *
      * @return cApiFileInformation
      *                            the updated item
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -138,10 +139,10 @@ class cApiFileInformationCollection extends ItemCollection {
      * @param array $values
      *         with parameters
      * @return bool
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
-*/
+     */
     public function removeFileInformation(array $values) {
         $item = new cApiFileInformation();
         $item->loadByMany($values);
@@ -157,10 +158,10 @@ class cApiFileInformationCollection extends ItemCollection {
      * @param string $type
      *         type of the entry
      * @return array
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
-*/
+     */
     public function getFileInformation($filename, $type) {
         $client = cRegistry::getClientId();
         $fileInformation = array();
@@ -195,10 +196,8 @@ class cApiFileInformation extends Item
      *
      * @param bool $id [optional]
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($id = false) {
         global $cfg;

@@ -74,7 +74,6 @@ class cApiUserCollection extends ItemCollection {
      *         Specifies the username
      * @return bool
      *         True if the delete was successful
-     * @throws Exception
      */
     public function deleteUserByUsername($username) {
         $result = $this->deleteBy('username', $username);
@@ -389,10 +388,9 @@ class cApiUser extends Item {
      *
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
-     * @throws Exception
+     *                   
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -410,7 +408,7 @@ class cApiUser extends Item {
      *         Specifies the userID
      * @return bool
      *         True if the load was successful
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      */
@@ -425,7 +423,7 @@ class cApiUser extends Item {
      *         Specifies the username
      * @return bool
      *         True if the load was successful
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      */
@@ -437,9 +435,10 @@ class cApiUser extends Item {
      * Checks if a user with the id $userId exists
      *
      * @param string $userId
+     * 
      * @return bool
      *         user exists or not
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      */
@@ -456,7 +455,7 @@ class cApiUser extends Item {
      *         the name
      * @return bool
      *         username exists or not
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      */
@@ -592,7 +591,7 @@ class cApiUser extends Item {
      * NOTE: Setting the user id by this method will load the user model.
      *
      * @param string $uid
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      */
@@ -1043,7 +1042,7 @@ class cApiUser extends Item {
      *                      Flag to search in groups
      * @return string|bool
      *                      value of the retrieved property or false
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      */
@@ -1093,7 +1092,6 @@ class cApiUser extends Item {
      * @return array
      *                      Assoziative properties array as follows:
      *                      - $arr[name] = value
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      */
@@ -1136,7 +1134,6 @@ class cApiUser extends Item {
      *         - $arr[iduserprop][name]
      *         - $arr[iduserprop][type]
      *         - $arr[iduserprop][value]
-     * @throws Exception
      */
     public function getUserProperties() {
         $userPropColl = new cApiUserPropertyCollection($this->values['user_id']);
@@ -1164,7 +1161,7 @@ class cApiUser extends Item {
      *         Name of the property to retrieve
      * @param string $value
      *         Value to insert
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -1182,7 +1179,6 @@ class cApiUser extends Item {
      * @param string $name
      *         Name of property to retrieve
      * @return bool
-     * @throws Exception
      */
     public function deleteUserProperty($type, $name) {
         $userPropColl = new cApiUserPropertyCollection($this->values['user_id']);

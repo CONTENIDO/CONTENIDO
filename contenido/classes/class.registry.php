@@ -639,7 +639,10 @@ class cRegistry {
      * Shutdowns the CONTENIDO framework on page close.
      *
      * @author frederic.schneider
+     *
      * @param bool $debugShowAll [optional]
+     *
+     * @throws cInvalidArgumentException
      */
     public final static function shutdown($debugShowAll = true) {
         if ($debugShowAll == true) {

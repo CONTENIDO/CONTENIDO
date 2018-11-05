@@ -21,12 +21,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiActionlogCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
      *
      * Tables user, client, language, action & category_article
      * are allowed as join partners.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -92,10 +93,8 @@ class cApiActionlog extends Item
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

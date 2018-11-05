@@ -21,9 +21,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class TODOCollection extends cApiCommunicationCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         parent::__construct();
@@ -71,7 +72,6 @@ class TODOCollection extends cApiCommunicationCollection {
      * @param string     $notibackend
      * @param string     $recipient
      * @return cApiCommunication
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -148,6 +148,7 @@ class TODOItem extends cApiCommunication
      * Sets a custom property.
      *
      * @see Item::setProperty()
+     *
      * @param string $type
      *                       Specifies the type
      * @param string $name
@@ -156,8 +157,12 @@ class TODOItem extends cApiCommunication
      *                       Specifies the value
      * @param int    $client [optional]
      *                       unused (should be "Id of client to set property for")
+     *
      * @return bool
-     * @throws Exception
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function setProperty($type, $name, $value, $client = 0) {
         if ($type == 'todo' && $name == 'emailnoti') {

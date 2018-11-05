@@ -234,10 +234,8 @@ class cApiArticleLanguage extends Item {
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -255,7 +253,6 @@ class cApiArticleLanguage extends Item {
      * @param string $type
      *         meta, content or complete
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      */
@@ -352,7 +349,7 @@ class cApiArticleLanguage extends Item {
      *         Flag to fetch content
      * @return bool
      *         true on success, otherwise false
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      */
@@ -419,6 +416,8 @@ class cApiArticleLanguage extends Item {
      *
      * @deprecated [2015-05-15]
      *         use _loadArticleContent, automaticly loaded with getContent()
+     *             
+     * @throws cDbException
      */
     protected function _getArticleContent() {
         cDeprecated('This method is deprecated and is not needed any longer');
@@ -430,6 +429,8 @@ class cApiArticleLanguage extends Item {
      * article object, whenever it is needed to get the content of the article.
      *
      * $article->content[type][number] = value;
+     *
+     * @throws cDbException
      */
     protected function _loadArticleContent() {
         global $cfg;
@@ -558,12 +559,15 @@ class cApiArticleLanguage extends Item {
      * linkdescr - Linkdescription
      * swf - Upload id of the element
      *
-     * @param string $type
-     *         CMS_TYPE - Legal cms type string
+     * @param string   $type
+     *                     CMS_TYPE - Legal cms type string
      * @param int|NULL $id [optional]
-     *         Id of the content
+     *                     Id of the content
+     *
      * @return string|array
      *         data
+     * 
+     * @throws cDbException
      */
     public function getContent($type = '', $id = NULL) {
         if (NULL === $this->content) {

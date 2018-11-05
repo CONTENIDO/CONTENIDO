@@ -145,7 +145,7 @@ abstract class Swift_Transport_AbstractSmtpTransport implements Swift_Transport
      * @param string[]           $failedRecipients An array of failures by-reference
      *
      * @return int
-     * @throws Exception
+     * 
      * @throws Swift_TransportException
      */
     public function send(Swift_Mime_Message $message, &$failedRecipients = null)

@@ -33,7 +33,6 @@ class cContentTypeImg extends cContentTypeImgeditor {
      * @param array  $contentTypes
      *         array containing the values of all content types
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      */

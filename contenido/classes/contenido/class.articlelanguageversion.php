@@ -50,9 +50,12 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
 
     /**
      * @param array $parameters
+     *
      * @return Item
-     * @throws Exception
+     *
      * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create(array $parameters) {
         $auth = cRegistry::getAuth();
@@ -236,10 +239,8 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
      * @param bool  $fetchContent
      *         Flag to fetch content
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($id = false, $fetchContent = false) {
 
@@ -260,7 +261,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
      * Set iscurrentversion = 0 in the current version and set iscurrentversion = 1 in this version
      *
      * @param $isCurrentVersion
-     * @throws Exception
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -292,7 +293,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
      *
      * @param string $type
      *         meta, content or complete
-     * @throws Exception
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -405,7 +406,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
      *
      * @param string $type
      *         meta, content or complete
-     * @throws Exception
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -519,7 +520,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
      *         Flag to fetch content
      * @return bool
      *         true on success, otherwise false
-     * @throws Exception
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -580,6 +581,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
      * Load the articles version content and store it in the 'content' property of the
      * article version object: $article->content[type][number] = value;
      *
+     * @throws cDbException
      */
     protected function _getArticleVersionContent() {
 
@@ -641,12 +643,15 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
      * linkdescr - Linkdescription
      * swf - Upload id of the element
      *
-     * @param string $type
+     * @param string   $type
      *         CMS_TYPE - Legal cms type string
      * @param int|NULL $id
      *         Id of the content
+     *
      * @return string|array
      *         data
+     * 
+     * @throws cDbException
      */
     public function getContent($type = '', $id = NULL) {
         if (NULL === $this->content) {

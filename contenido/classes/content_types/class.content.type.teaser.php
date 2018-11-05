@@ -237,7 +237,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * Function returns idarts of selected articles as array
      *
      * @return array
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -258,7 +258,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @return mixed
      *         string of select box or array of articles
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -365,7 +365,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @return bool
      *         success state of this operation
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      */
@@ -619,7 +619,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         escaped HTML code which should be shown if content type is edited
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -699,6 +699,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * from database and store it into class variable aCMSTypes.
      * Because this information is used multiple times, this causes a better
      * performance than gettting it seperately
+     *
+     * @throws cDbException
      */
     private function _initCmsTypes() {
         if (!empty($this->_cmsTypes)) {
@@ -850,7 +852,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         the code for the advanced tab
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      */
@@ -1041,7 +1043,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         name of article
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      */

@@ -183,6 +183,7 @@ class cLayoutSynchronizer {
      *         timestamp of last modification
      * @param int $idlay
      *         Id of layout
+     * 
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
@@ -197,6 +198,10 @@ class cLayoutSynchronizer {
     /**
      * Compare file change timestamp and the timestamp in ["tab"]["lay"].
      * If file had changed make new code :conGenerateCodeForAllArtsUsingMod
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
+     * @throws cException
      */
     private function _compareFileAndLayoutTimestamp() {
         // get all layouts from client

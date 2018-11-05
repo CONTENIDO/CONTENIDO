@@ -302,6 +302,8 @@ class cModuleTemplateHandler extends cModuleHandler {
 
     /**
      * Save the code in the file
+     *
+     * @throws cException
      */
     private function _save() {
         // if user selected other file display it
@@ -353,6 +355,9 @@ class cModuleTemplateHandler extends cModuleHandler {
 
     /**
      * Create new file
+     *
+     * @throws cInvalidArgumentException
+     * @throws cException
      */
     private function _new() {
 
@@ -378,6 +383,8 @@ class cModuleTemplateHandler extends cModuleHandler {
 
     /**
      * Delete a file
+     *
+     * @throws cException
      */
     private function _delete() {
         // trigger a smarty cache rebuild for template that should be deleted
@@ -430,7 +437,7 @@ class cModuleTemplateHandler extends cModuleHandler {
      *
      * @return int
      *         if user doesn't have permission return -1
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      */
@@ -638,7 +645,6 @@ class cModuleTemplateHandler extends cModuleHandler {
      * @param bool             $readOnly
      *         render in read only mode
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      */

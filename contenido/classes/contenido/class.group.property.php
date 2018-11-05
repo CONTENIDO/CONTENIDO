@@ -102,6 +102,9 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * Group id setter
      *
      * @param string $groupId
+     *
+     * @throws cDbException
+     * @throws cException
      * @throws cInvalidArgumentException If passed group id is empty
      */
     public function setGroupId($groupId) {
@@ -123,7 +126,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @param int    $idcatlang [optional]
      *
      * @return cApiGroupProperty
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -178,8 +181,11 @@ class cApiGroupPropertyCollection extends ItemCollection {
      *
      * @param string $type
      * @param string $name
+     *
      * @return cApiGroupProperty|NULL
-     * @throws Exception
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchByGroupIdTypeName($type, $name) {
         if (self::$_enableCache) {
@@ -198,8 +204,11 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * Returns all group properties by groupid and type.
      *
      * @param string $type
+     *
      * @return array
-     * @throws Exception
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchByGroupIdType($type) {
         if (self::$_enableCache) {
@@ -219,7 +228,9 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * Returns all group properties by groupid.
      *
      * @return array
-     * @throws Exception
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchByGroupId() {
         if (self::$_enableCache) {
@@ -240,8 +251,12 @@ class cApiGroupPropertyCollection extends ItemCollection {
      *
      * @param string $type
      * @param string $name
+     *
      * @return bool
-     * @throws Exception
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function deleteByGroupIdTypeName($type, $name) {
         $sql = $this->db->prepare("group_id = '%s' AND type = '%s' AND name = '%s'", $this->_groupId, $type, $name);
@@ -253,8 +268,12 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * Deletes group properties by groupid and type.
      *
      * @param string $type
+     *
      * @return bool
-     * @throws Exception
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function deleteByGroupIdType($type) {
         $sql = $this->db->prepare("group_id = '%s' AND type = '%s'", $this->_groupId, $type);
@@ -266,7 +285,10 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * Deletes all group properties by groupid.
      *
      * @return bool
-     * @throws Exception
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function deleteByGroupId() {
         $sql = $this->db->prepare("group_id = '%s'", $this->_groupId);
@@ -278,7 +300,6 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * Deletes selected group properties.
      *
      * @return bool
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -297,6 +318,9 @@ class cApiGroupPropertyCollection extends ItemCollection {
 
     /**
      * Loads/Caches all group properties.
+     *
+     * @throws cDbException
+     * @throws cException
      */
     protected function _loadFromCache() {
         if (!isset(self::$_entries)) {
@@ -327,7 +351,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
     /**
      * Adds a entry to the cache.
      *
-     * @param cApiGroupProperty $entry
+     * @param cApiGroupProperty $item
      */
     protected function _addToCache($item) {
         $data = $item->toArray();
@@ -426,7 +450,6 @@ class cApiGroupProperty extends Item
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException

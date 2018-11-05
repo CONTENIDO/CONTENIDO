@@ -234,7 +234,7 @@ class cApiCategoryCollection extends ItemCollection {
      *                         If defined, it checks also if there is a next deeper category in this language.
      *
      * @return int
-     * @throws Exception
+     * 
      * @throws cDbException
      * @global array   $cfg
      */
@@ -339,7 +339,7 @@ class cApiCategoryCollection extends ItemCollection {
      * @param int    $idclient
      *
      * @return array
-     * @throws Exception
+     * 
      * @throws cDbException
      * @global array $cfg
      */
@@ -403,7 +403,7 @@ class cApiCategoryCollection extends ItemCollection {
      * @param        $idclient
      * @return array
      *         Sorted by category id
-     * @throws Exception
+     * 
      * @throws cDbException
      * @global array $cfg
      */
@@ -452,10 +452,8 @@ class cApiCategory extends Item
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -472,7 +470,6 @@ class cApiCategory extends Item
      *
      * @return bool
      * @throws cDbException
-     * @throws cInvalidArgumentException
      */
     public function store() {
         $this->set('lastmodified', date('Y-m-d H:i:s'));

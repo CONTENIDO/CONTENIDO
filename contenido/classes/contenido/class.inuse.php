@@ -21,9 +21,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiInUseCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -82,7 +83,6 @@ class cApiInUseCollection extends ItemCollection {
      * @param string $session
      *         Specifies the session for which the "in use" mark is valid
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -108,7 +108,7 @@ class cApiInUseCollection extends ItemCollection {
      *         Specifies the type to de-mark.
      * @param string $session
      *         Specifies the session for which the "in use" mark is valid
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -133,7 +133,7 @@ class cApiInUseCollection extends ItemCollection {
      *         Specifies the type to de-mark.
      * @param string $itemid
      *         Specifies the item
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -156,7 +156,7 @@ class cApiInUseCollection extends ItemCollection {
      *
      * @param string $userId
      *         Specifies the user
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -174,6 +174,9 @@ class cApiInUseCollection extends ItemCollection {
 
     /**
      * Removes all inuse entries which are older than the inuse timeout
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function removeOldMarks() {
         $cfg = cRegistry::getConfig();
@@ -193,7 +196,7 @@ class cApiInUseCollection extends ItemCollection {
      *
      * @param string $session
      *         Specifies the session for which the "in use" marks should be removed
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -321,10 +324,9 @@ class cApiInUse extends Item
      *
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
-     * @throws Exception
+     *                   
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

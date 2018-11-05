@@ -20,9 +20,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiAreaCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -146,7 +147,7 @@ class cApiAreaCollection extends ItemCollection {
      *
      * @return int
      *         Integer with the ID for the area
-     * @throws Exception
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -181,10 +182,8 @@ class cApiArea extends Item
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

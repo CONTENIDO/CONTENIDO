@@ -191,7 +191,6 @@ class cPasswordRequest {
      *
      * @return string
      *         rendered HTML code
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -241,7 +240,11 @@ class cPasswordRequest {
     }
 
     /**
-     * function to display form to set new password for user
+     * Function to display form to set new password for user.
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function renderNewPwForm() {
         if (isset($_POST['action']) && $_POST['action'] == 'reset_pw') {
@@ -310,7 +313,6 @@ class cPasswordRequest {
      * _submitMail() in case of valid requests
      *
      * @return string
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -455,6 +457,10 @@ class cPasswordRequest {
 
     /**
      * Function checks password reset request for errors and sets a new password in case there is no error
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     protected function _handleResetPw() {
         $this->_tpl->set('s', 'JS_CALL', 'showResetLayer();');
@@ -567,7 +573,6 @@ class cPasswordRequest {
      *
      * @return bool
      *         whether password request could be safed successfully
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException

@@ -53,6 +53,10 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
      * Includes a file which displays the login form.
      *
      * @see cAuthHandlerAbstract::displayLoginForm()
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function displayLoginForm() {
         // $cfg = cRegistry::getConfig();
@@ -168,6 +172,9 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
      * Log the successful authentication.
      *
      * @see cAuthHandlerAbstract::logSuccessfulAuth()
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public function logSuccessfulAuth() {
         global $client, $lang, $saveLoginTime;

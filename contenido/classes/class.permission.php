@@ -228,7 +228,6 @@ class cPermission {
      * @param string $area
      * @param int    $action [optional]
      * @return bool
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      */
@@ -253,7 +252,6 @@ class cPermission {
      * @param string $action
      * @param mixed  $itemid
      * @return bool
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      */
@@ -330,7 +328,6 @@ class cPermission {
      * @param string $area
      * @param int    $action [optional]
      * @return bool
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      */
@@ -628,7 +625,6 @@ class cPermission {
      * @param string|int $mainarea
      * @param int        $itemid
      * @return bool
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      */
@@ -702,7 +698,6 @@ class cPermission {
      *
      * @param string|int $mainarea
      * @return int
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      */

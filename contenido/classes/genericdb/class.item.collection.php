@@ -1278,8 +1278,9 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *
      * @param mixed $mId
      *         Id of entry to delete
+     * 
      * @return bool
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
@@ -1321,9 +1322,12 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *         The field name
      * @param mixed  $mValue
      *         The value of the field
+     *
      * @return int
      *         Number of deleted entries
-     * @throws Exception
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function deleteBy($sField, $mValue) {
         $where = (is_string($mValue)) ? "`%s` = '%s'" : "`%s` = %d";
@@ -1339,7 +1343,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param mixed $mId
      *         Id of entry to delete
      * @return bool
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cInvalidArgumentException
      */

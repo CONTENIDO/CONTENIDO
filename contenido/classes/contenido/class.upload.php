@@ -125,8 +125,9 @@ class cApiUploadCollection extends ItemCollection {
      *
      * @todo Code is similar/redundant to include.upl_files_overview.php 216-230
      * @param int              $id
+     * 
      * @return bool
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      * @global cApiCecRegistry $_cecRegistry
@@ -188,7 +189,6 @@ class cApiUploadCollection extends ItemCollection {
      *
      * @param string $sDirname
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      * @global int   $client
@@ -223,10 +223,9 @@ class cApiUpload extends Item {
      *
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
-     * @throws Exception
+     *                   
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -237,7 +236,11 @@ class cApiUpload extends Item {
     }
 
     /**
-     * Updates upload recordset
+     * Updates upload recordset.
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function update() {
         $sDirname = $this->get('dirname');
@@ -292,7 +295,9 @@ class cApiUpload extends Item {
      * Deletes all upload properties by it's itemid
      *
      * @param string $sItemid
-     * @throws Exception
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function deletePropertiesByItemid($sItemid) {
         $oPropertiesColl = $this->_getPropertiesCollectionInstance();

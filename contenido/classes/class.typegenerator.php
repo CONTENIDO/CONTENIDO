@@ -55,6 +55,8 @@ class cTypeGenerator {
 
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cDbException
      */
     public function __construct() {
         $this->_idart = cRegistry::getArticleId(true);
@@ -110,6 +112,8 @@ class cTypeGenerator {
 
     /**
      * Fill content from db for current article
+     *
+     * @throws cDbException
      */
     private function fillContent() {
         self::$a_content[$this->_idart] = array();

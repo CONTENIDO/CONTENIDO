@@ -262,9 +262,12 @@ class cApiPropertyCollection extends ItemCollection {
      *         ID of the item (example: 31)
      * @param mixed $type
      *         Type of the data to store (arbitary data)
+     *
      * @return array
      *         Value
-     * @throws Exception
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public function getValuesByType($itemtype, $itemid, $type) {
         if ($this->_useCache($itemtype, $itemid)) {
@@ -300,9 +303,12 @@ class cApiPropertyCollection extends ItemCollection {
      * @param       $type
      * @param mixed $name
      *         Type of the data to store (arbitary data)
+     *
      * @return array
      *         Value
-     * @throws Exception
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public function getValuesOnlyByTypeName($type, $name) {
         $aResult = array();
@@ -386,7 +392,9 @@ class cApiPropertyCollection extends ItemCollection {
      *         Type of the data to store (arbitary data)
      * @param mixed $name
      *         Entry name
-     * @throws Exception
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function deleteValue($itemtype, $itemid, $type, $name) {
         if (isset($this->client)) {
@@ -411,9 +419,12 @@ class cApiPropertyCollection extends ItemCollection {
      *         Type of the item (example: idcat)
      * @param mixed $itemid
      *         ID of the item (example: 31)
+     *
      * @return array
      *         For each given item
-     * @throws Exception
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public function getProperties($itemtype, $itemid) {
         if ($this->_useCache($itemtype, $itemid)) {
@@ -501,7 +512,9 @@ class cApiPropertyCollection extends ItemCollection {
      *         Type of the item (example: idcat)
      * @param mixed $itemid
      *         ID of the item (example: 31)
-     * @throws Exception
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function deleteProperties($itemtype, $itemid) {
         if (isset($this->client)) {
@@ -557,6 +570,9 @@ class cApiPropertyCollection extends ItemCollection {
      * Loads/Caches configured properties, but only for current client!
      * NOTE: It loads properties for global set client, not for the client set
      * in this instance!
+     *
+     * @throws cDbException
+     * @throws cException
      */
     protected function _loadFromCache() {
         global $client;
@@ -579,6 +595,7 @@ class cApiPropertyCollection extends ItemCollection {
 
         $where = "idclient = " . (int) $client . ' AND ' . implode(' OR ', $where);
         $this->select($where);
+        /** @var cApiUserProperty $property */
         while (($property = $this->next()) !== false) {
             $this->_addToCache($property);
         }
@@ -761,10 +778,9 @@ class cApiProperty extends Item {
      *
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
-     * @throws Exception
+     *                   
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

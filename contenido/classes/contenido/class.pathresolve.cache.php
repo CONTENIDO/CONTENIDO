@@ -74,9 +74,11 @@ class cApiPathresolveCacheHelper {
  * @subpackage GenericDB_Model
  */
 class cApiPathresolveCacheCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -133,7 +135,6 @@ class cApiPathresolveCacheCollection extends ItemCollection {
      * @param int $idcat
      * @param int $idlang
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -160,10 +161,9 @@ class cApiPathresolveCache extends Item
      *
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
-     * @throws Exception
+     *                   
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

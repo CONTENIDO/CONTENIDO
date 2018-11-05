@@ -143,10 +143,8 @@ class cApiTemplate extends Item
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -168,8 +166,9 @@ class cApiTemplate extends Item
      *         language id
      * @param int $client
      *         client id
+     * 
      * @return bool
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      */

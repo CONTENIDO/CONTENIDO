@@ -21,9 +21,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiStatCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -125,10 +126,9 @@ class cApiStat extends Item
      *
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
-     * @throws Exception
+     *
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -141,6 +141,9 @@ class cApiStat extends Item
 
     /**
      * Increment and store property 'visited'.
+     * 
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function increment() {
         $this->set('visited', $this->get('visited') + 1);

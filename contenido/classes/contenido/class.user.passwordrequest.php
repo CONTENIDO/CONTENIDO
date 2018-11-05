@@ -74,7 +74,6 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
      *         Specifies the user id
      * @return bool
      *         True if the delete was successful
-     * @throws Exception
      */
     public function deleteByUserId($userid) {
         $result = $this->deleteBy('user_id', $userid);
@@ -87,7 +86,6 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
      * @param $token
      * @return bool
      *         True if the delete was successful
-     * @throws Exception
      */
     public function deleteByToken($token) {
         $result = $this->deleteBy('validation_token', $token);
@@ -160,10 +158,8 @@ class cApiUserPasswordRequest extends Item
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

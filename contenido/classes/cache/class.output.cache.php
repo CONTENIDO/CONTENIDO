@@ -215,7 +215,7 @@ VALID UNTIL: %s
      *
      * @param bool $htmlcomment
      *         True debugging or false.
-     * @return void|string
+     * @return string
      *         Htmlcomment flag or void
      */
     public function htmlComment($htmlcomment) {
@@ -274,11 +274,9 @@ VALID UNTIL: %s
      *         Information about cache if caching is enabled, otherwise nothing.
      */
     public function getInfo() {
-        if (!$this->_bEnableCaching) {
-            return;
+        if ($this->_bEnableCaching) {
+            return $this->_sDebugMsg;
         }
-
-        return $this->_sDebugMsg;
     }
 
     /**
@@ -357,6 +355,8 @@ VALID UNTIL: %s
 
     /**
      * Handles ending of PEAR caching.
+     *
+     * @throws cInvalidArgumentException
      */
     public function end() {
         if (!$this->_bEnableCaching) {
@@ -381,6 +381,8 @@ VALID UNTIL: %s
      *
      * This is nesessary to delete cached articles, if they are changed on
      * backend.
+     *
+     * @throws cInvalidArgumentException
      */
     public function removeFromCache() {
         // set cache object and unique id

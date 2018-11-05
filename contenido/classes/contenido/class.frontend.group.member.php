@@ -21,9 +21,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiFrontendGroupMemberCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -74,7 +75,6 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
      * @param int $idfrontenduser
      *         Specifies the frontend user
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -96,7 +96,7 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
      *                        Specifies if the function should return objects
      * @return array
      *                        List of frontend user ids or cApiFrontendUser items
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      */
@@ -132,10 +132,9 @@ class cApiFrontendGroupMember extends Item
      *
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
-     * @throws Exception
+     *                   
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

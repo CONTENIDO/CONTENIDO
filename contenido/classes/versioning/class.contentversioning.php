@@ -123,7 +123,9 @@ class cContentVersioning {
      * Returns the current versioning state (disabled (default), simple, advanced).
      *
      * @return string $versioningState
-     * @throws Exception
+     *                
+     * @throws cDbException
+     * @throws cException
      */
     public static function getState() {
 
@@ -160,7 +162,7 @@ class cContentVersioning {
      * @param int    $selectedArticleId [optional]
      *
      * @return cApiArticleLanguage|cApiArticleLanguageVersion $this->selectedArticle
-     * @throws Exception
+     *                                                        
      * @throws cDbException
      */
     public function getSelectedArticle($idArtLangVersion, $idArtLang, $articleType, $selectedArticleId = NULL) {
@@ -194,9 +196,9 @@ class cContentVersioning {
      * @param string $articleType
      *
      * @return array $list
-     * @throws Exception
+     *               
      * @throws cDbException
-*/
+     */
     public function getList($idArtLang, $articleType) {
 
         $sql = 'SELECT DISTINCT b.idtype as idtype, b.type as name
@@ -242,9 +244,8 @@ class cContentVersioning {
      * @param string $action
      * @param mixed  $selectedArticleId
      * @return string $this->articleType
-     * @throws Exception
      * @throws cDbException
-*/
+     */
     public function getArticleType($idArtLangVersion, $idArtLang, $action, $selectedArticleId) {
 
         $this->editableArticleId = $this->getEditableArticleId($idArtLang);
@@ -329,9 +330,8 @@ class cContentVersioning {
      *
      * @param int $idArtLang
      * @return int $editableArticleId
-     * @throws Exception
      * @throws cDbException
-*/
+     */
     public function getEditableArticleId($idArtLang) {
 
         if ($this->getState() == 'advanced') {
@@ -527,7 +527,7 @@ class cContentVersioning {
      *         the content to store
      * @param unknown_type $value
      *         the contents value to store
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -637,8 +637,8 @@ class cContentVersioning {
     /**
      * Create new content version.
      *
-     * @param mixed[] $parameters {
-     * @throws Exception
+     * @param mixed[] $parameters
+     *                            
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -719,9 +719,10 @@ class cContentVersioning {
     /**
      * Create new article language version.
      *
-     * @param mixed[] $parameters {
+     * @param mixed[] $parameters
+     *                            
      * @return cApiArticleLanguageVersion
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      * @global int    $lang

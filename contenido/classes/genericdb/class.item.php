@@ -180,7 +180,6 @@ abstract class Item extends cItemBaseAbstract {
      *                     Use inFilter or not
      * @return bool
      *                     True if the load was successful
-     * @throws Exception
      * @throws cDbException
      * @throws cException if more than one item could be found matching the given arguments
      */
@@ -254,7 +253,7 @@ abstract class Item extends cItemBaseAbstract {
      *         The where clause like 'idart = 123 AND idlang = 1'
      * @return bool
      *         True if the load was successful
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException if more than one item could be found matching the given where clause
      */
@@ -575,8 +574,11 @@ abstract class Item extends cItemBaseAbstract {
      *                        Specifies the name
      * @param int    $iClient [optional]
      *                        Id of client to delete properties
+     *
      * @return bool
-     * @throws Exception
+     * 
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function deleteProperty($sType, $sName, $iClient = 0) {
         // If this object wasn't loaded before, return false
@@ -598,7 +600,7 @@ abstract class Item extends cItemBaseAbstract {
      *         Id of property
      *
      * @return bool
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cInvalidArgumentException
      */

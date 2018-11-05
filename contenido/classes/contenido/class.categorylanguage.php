@@ -169,10 +169,8 @@ class cApiCategoryLanguage extends Item
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -193,7 +191,7 @@ class cApiCategoryLanguage extends Item
      *
      * @return bool
      *         true on success, otherwise false
-     * @throws Exception
+     * 
      * @throws cException
      */
     public function loadByCategoryIdAndLanguageId($idcat, $idlang) {
@@ -249,8 +247,9 @@ class cApiCategoryLanguage extends Item
      * Assigns the passed template to the category language item.
      *
      * @param int $idtpl
+     * 
      * @return cApiTemplateConfiguration
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException

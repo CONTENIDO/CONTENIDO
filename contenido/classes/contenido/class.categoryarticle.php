@@ -97,7 +97,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
      * @param int $lang
      *
      * @return cApiCategoryArticle|NULL
-     * @throws Exception
+     * 
      * @throws cDbException
      */
     public function fetchFirstFromTreeByClientIdAndLangId($client, $lang) {
@@ -158,10 +158,9 @@ class cApiCategoryArticleCollection extends ItemCollection {
      * @param int $idart
      *
      * @return int|NULL
-     * @throws Exception
+     * @throws cDbException
      */
     public function getIdByCategoryIdAndArticleId($idcat, $idart) {
-        $where = "idcat = %d AND idart = %d";
         $where = $this->db->prepare("idcat = %d AND idart = %d", $idcat, $idart);
         $aIds = $this->getIdsByWhereClause($where);
         return (count($aIds) > 0) ? $aIds[0] : NULL;
@@ -192,8 +191,9 @@ class cApiCategoryArticleCollection extends ItemCollection {
      * Returns all available category ids of entries having a secific article id
      *
      * @param int $idart
+     * 
      * @return array
-     * @throws Exception
+     * 
      * @throws cDbException
      */
     public function getCategoryIdsByArticleId($idart) {
@@ -220,8 +220,9 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *         Category id
      * @param int $idlang
      *         Language id
+     * 
      * @return bool
-     * @throws Exception
+     * 
      * @throws cDbException
      */
     public function getHasArticles($idcat, $idlang) {
@@ -248,7 +249,6 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *                              Create code state, either 1 or 0.
      * @return int
      *                              Number of updated entries
-     * @throws Exception
      * @throws cDbException
      */
     public function setCreateCodeFlag($idcatart, $createcode = 1) {
@@ -288,10 +288,8 @@ class cApiCategoryArticle extends Item
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

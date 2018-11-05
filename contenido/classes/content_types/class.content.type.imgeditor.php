@@ -108,7 +108,6 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * @param array  $contentTypes
      *         array containing the values of all content types
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      */
@@ -173,7 +172,6 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *                         Content type array
      * @param bool   $editable [optional]
      * @return mixed
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      */
@@ -304,6 +302,9 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     /**
      * Stores all values from the $_POST array in the $_settings attribute
      * (associative array) and saves them in the database (XML).
+     *
+     * @throws cDbException
+     * @throws cException
      */
     protected function _storeSettings() {
         // prepare the filename and dirname
@@ -716,7 +717,6 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *         the dirname of the image
      * @return string
      *         JSON-encoded array with meta data
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      */
@@ -768,7 +768,6 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *         the path to which the file should be uploaded
      * @return string
      *         the filename of the uploaded file
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException

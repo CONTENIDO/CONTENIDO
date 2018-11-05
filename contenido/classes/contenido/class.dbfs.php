@@ -23,9 +23,10 @@ cInclude('includes', 'functions.file.php');
  * @subpackage GenericDB_Model
  */
 class cApiDbfsCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -41,7 +42,6 @@ class cApiDbfsCollection extends ItemCollection {
      *
      * @param string $path
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      */
@@ -408,7 +408,7 @@ class cApiDbfsCollection extends ItemCollection {
     /**
      *
      * @param string $path
-     * @throws Exception
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -437,8 +437,11 @@ class cApiDbfsCollection extends ItemCollection {
      *
      * @param string                 $sPath
      * @param cApiPropertyCollection $oProperties
+     *
      * @return bool $bAvailable
-     * @throws Exception
+     *              
+     * @throws cDbException
+     * @throws cException
      */
     public function checkTimeManagement($sPath, $oProperties) {
         global $contenido;
@@ -494,10 +497,9 @@ class cApiDbfs extends Item {
      *
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
-     * @throws Exception
+     *
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -513,8 +515,6 @@ class cApiDbfs extends Item {
      *
      * @see Item::store()
      * @return bool
-     * @throws cDbException
-     * @throws cInvalidArgumentException
      */
     public function store() {
         global $auth;

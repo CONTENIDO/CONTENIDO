@@ -92,7 +92,6 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      * @param array  $contentTypes
      *         array containing the values of all content types
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      */
@@ -220,7 +219,6 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      *
      * @todo unify return values
      * @return void|string|array
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      */
@@ -342,7 +340,6 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         generated code
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException

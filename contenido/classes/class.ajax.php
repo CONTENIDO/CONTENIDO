@@ -73,7 +73,6 @@ class cAjaxRequest {
      *         name of requested ajax action
      *
      * @return string
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException

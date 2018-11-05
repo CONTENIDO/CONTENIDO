@@ -21,9 +21,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiGroupCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -46,6 +47,7 @@ class cApiGroupCollection extends ItemCollection {
     public function create($groupname, $perms, $description) {
         $primaryKeyValue = md5($groupname . time());
 
+        /** @var cApiGroup $item */
         $item = $this->createNewItem($primaryKeyValue);
         if (!is_object($item)) {
             return false;
@@ -65,7 +67,7 @@ class cApiGroupCollection extends ItemCollection {
      * Returns the groups a user is in
      *
      * @param string $userid
-     * @return array
+     * @return cApiGroup[]
      *         List of groups
      * @throws cDbException
      * @throws cException
@@ -103,9 +105,12 @@ class cApiGroupCollection extends ItemCollection {
      *
      * @param string $groupname
      *         Specifies the groupname
+     *
      * @return bool
      *         True if the delete was successful
-     * @throws Exception
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function deleteGroupByGroupname($groupname) {
         $groupname = cApiGroup::prefixedGroupName($groupname);
@@ -202,10 +207,9 @@ class cApiGroup extends Item {
      *
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
-     * @throws Exception
+     *                   
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -221,9 +225,10 @@ class cApiGroup extends Item {
      *
      * @param string $groupId
      *         Specifies the groupId
+     * 
      * @return bool
      *         True if the load was successful
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      */
@@ -239,7 +244,7 @@ class cApiGroup extends Item {
      *
      * @return bool
      *         True if the load was successful
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      */
@@ -328,9 +333,12 @@ class cApiGroup extends Item {
      *
      * @param string $type
      * @param string $name
+     *
      * @return string|bool
      *         value or false
-     * @throws Exception
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function getGroupProperty($type, $name) {
         $groupPropColl = new cApiGroupPropertyCollection($this->values['group_id']);
@@ -346,7 +354,9 @@ class cApiGroup extends Item {
      *         - $arr[idgroupprop][name]
      *         - $arr[idgroupprop][type]
      *         - $arr[idgroupprop][value]
-     * @throws Exception
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function getGroupProperties() {
         $props = array();
@@ -373,8 +383,9 @@ class cApiGroup extends Item {
      *         Name of the property to retrieve
      * @param string $value
      *         Value to insert
+     * 
      * @return cApiGroupProperty
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -391,8 +402,12 @@ class cApiGroup extends Item {
      *         Type (class, category etc) for the property to delete
      * @param string $name
      *         Name of the property to delete
+     *
      * @return bool
-     * @throws Exception
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function deleteGroupProperty($type, $name) {
         $groupPropColl = new cApiGroupPropertyCollection($this->values['group_id']);

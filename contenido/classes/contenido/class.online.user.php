@@ -250,7 +250,7 @@ class cApiOnlineUserCollection extends ItemCollection {
      *         Is the User-Id (get from auth object)
      * @return bool
      *         Returns true if successful, else false
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
@@ -272,10 +272,9 @@ class cApiOnlineUser extends Item
      *
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
-     * @throws Exception
+     *                   
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

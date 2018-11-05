@@ -144,6 +144,8 @@ class cDebug {
 
     /**
      * Prints the cached debug messages to the screen
+     *
+     * @throws cInvalidArgumentException
      */
     public static function showAll() {
         self::getDebugger()->showAll();

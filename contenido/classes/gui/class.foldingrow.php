@@ -86,7 +86,8 @@ class cGuiFoldingRow extends cHTML {
      * @param string    $linkId    [optional]
      * @param bool|NULL $bExpanded [optional]
      *
-     * @throws Exception
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($uuid, $caption = "", $linkId = "", $bExpanded = NULL) {
         global $auth;

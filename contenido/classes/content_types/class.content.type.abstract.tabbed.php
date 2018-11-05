@@ -56,7 +56,6 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
      *         Content type array
      *
      * @return mixed
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      */

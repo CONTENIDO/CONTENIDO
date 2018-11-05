@@ -90,7 +90,6 @@ class cGuiSourceEditor extends cGuiPage {
      *                           Path to the file. If ommited the class tries to determine the
      *                           path from the type and the area
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -162,7 +161,6 @@ class cGuiSourceEditor extends cGuiPage {
      * @param array $req
      *         Request array. Usually _REQUEST
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException

@@ -50,6 +50,8 @@ class cUri {
      *
      * Gets the UriBuilder configuration and creates an UriBuilder
      * instance.
+     *
+     * @throws cException
      */
     private function __construct() {
         $this->_sUriBuilderName = cUriBuilderConfig::getUriBuilderName();

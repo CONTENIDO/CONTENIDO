@@ -21,9 +21,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiUploadMetaCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -103,10 +104,8 @@ class cApiUploadMeta extends Item
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -124,7 +123,7 @@ class cApiUploadMeta extends Item
      * @param int $idlang
      *
      * @return bool
-     * @throws Exception
+     * 
      * @throws cException
      */
     public function loadByUploadIdAndLanguageId($idupl, $idlang) {

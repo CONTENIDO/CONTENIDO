@@ -118,7 +118,7 @@ class cStringMultiByteWrapper {
      *         The string being checked for length
      * @param string|null $encoding
      *         encoding parameter, standard: cRegistry::getEncoding()
-     * @return string
+     * @return int
      *         Returns the number of characters
      * @link http://php.net/manual/de/function.mb-strlen.php
      */

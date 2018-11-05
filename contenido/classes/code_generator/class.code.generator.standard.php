@@ -39,7 +39,6 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      *
      * @return string
      *         The generated code
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -292,7 +291,6 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * @param int $idcatart
      *         category article id
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
@@ -434,7 +432,6 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      *                               parameter for setting code manually instead of using the generated layout code
      * @param bool   $flagCreateCode [optional]
      *                               whether the create code flag in cat_art should be set or not (optional)
-     * @throws Exception
      * @throws cDbException
      * @throws cInvalidArgumentException
      * @global array $cfgClient

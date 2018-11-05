@@ -261,6 +261,7 @@ class cUpdateNotifier {
      * @param string      $sBackendLanguage
      *
      * @throws cInvalidArgumentException
+     * @throws cException
      */
     public function __construct($aCfg, $oUser, $oPerm, $oSession, $sBackendLanguage) {
         $this->oProperties = new cApiPropertyCollection();
@@ -357,8 +358,9 @@ class cUpdateNotifier {
     }
 
     /**
-     * Checks if the xml files must be loaded from the vendor host or local
-     * cache
+     * Checks if the xml files must be loaded from the vendor host or local cache
+     *
+     * @throws cInvalidArgumentException
      */
     protected function checkUpdateNecessity() {
         $bUpdateNecessity = false;
@@ -405,6 +407,8 @@ class cUpdateNotifier {
     /**
      * Reads the xml files from vendor host or cache and checks for file
      * manipulations
+     *
+     * @throws cException
      */
     protected function readVendorContent() {
         $this->sXMLContent = "";
@@ -459,7 +463,8 @@ class cUpdateNotifier {
      *
      * @param array $aXMLContent
      *
-     * @throws Exception
+     * @throws cDbException
+     * @throws cException
      * @throws cInvalidArgumentException
      */
     protected function handleVendorUpdate($aXMLContent) {
@@ -569,7 +574,9 @@ class cUpdateNotifier {
      * Gets the xml file hash from the property table
      *
      * @return string
-     * @throws Exception
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     protected function getHashProperty() {
         $sProperty = $this->oProperties->getValue($this->aPropConf['itemType'], $this->aPropConf['itemID'], $this->aPropConf['type'], $this->aPropConf['name']);
@@ -580,7 +587,10 @@ class cUpdateNotifier {
      * Updates the xml file hash in the property table
      *
      * @param $aXMLContent
-     * @throws Exception
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     protected function updateHashProperty($aXMLContent) {
         $sXML = $aXMLContent[$this->sVendorXMLFile];

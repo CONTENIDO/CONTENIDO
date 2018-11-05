@@ -203,7 +203,6 @@ class cCategoryHelper {
      *
      * @return array
      *         Array with cApiCategoryLanguage objects
-     * @throws Exception
      * @throws cException
      * @throws cInvalidArgumentException
      */
@@ -272,7 +271,6 @@ class cCategoryHelper {
      *         Category ID to fetch the level of.
      * @return int
      *         category level
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      */
@@ -303,7 +301,6 @@ class cCategoryHelper {
      *         the maximum depth
      * @return array
      *         array with subcategories
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException

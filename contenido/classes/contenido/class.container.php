@@ -85,8 +85,8 @@ class cApiContainerCollection extends ItemCollection {
 
     /**
      * Deletes all configurations by given template id
+     * 
      * @param int $idtpl
-     * @throws Exception
      */
     public function clearAssignments($idtpl) {
         $this->deleteBy('idtpl', (int) $idtpl);
@@ -126,10 +126,8 @@ class cApiContainer extends Item
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

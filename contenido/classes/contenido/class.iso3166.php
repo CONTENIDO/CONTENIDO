@@ -53,10 +53,8 @@ class cApiIso3166 extends Item {
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         parent::__construct(cRegistry::getDbTableName('iso_3166'), 'iso');

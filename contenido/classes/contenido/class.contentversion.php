@@ -21,9 +21,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiContentVersionCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         parent::__construct(cRegistry::getDbTableName('content_version'), 'idcontentversion');
@@ -104,10 +105,8 @@ class cApiContentVersion extends Item
      * @param mixed $id
      *         Specifies the ID of item to load
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($id = false) {
         parent::__construct(cRegistry::getDbTableName('content_version'), 'idcontentversion');
@@ -133,6 +132,8 @@ class cApiContentVersion extends Item
 
     /**
      * Mark this Content Version as current Content
+     *
+     * @throws cException
      */
     public function markAsCurrent() {
 
@@ -196,7 +197,7 @@ class cApiContentVersion extends Item
      * @param mixed $contentParameters []{
      *
      * @return bool
-     * @throws Exception
+     * 
      * @throws cException
      */
     public function loadByArticleLanguageIdTypeTypeIdAndVersion(array $contentParameters) {

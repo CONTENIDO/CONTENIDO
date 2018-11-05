@@ -21,9 +21,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiRightCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -78,7 +79,7 @@ class cApiRightCollection extends ItemCollection {
      * @param string $userId
      *
      * @return bool
-     * @throws Exception
+     * 
      * @throws cDbException
      */
     public function hasFrontendAccessByCatIdAndUserId($idcat, $userId) {
@@ -108,9 +109,13 @@ class cApiRightCollection extends ItemCollection {
      *
      * @todo Implement functions to delete rights by area, action, cat, client,
      *       language.
+     *
      * @param string $userId
+     *
      * @return bool
-     * @throws Exception
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function deleteByUserId($userId) {
         $result = $this->deleteBy('user_id', $userId);
@@ -133,10 +138,8 @@ class cApiRight extends Item
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;

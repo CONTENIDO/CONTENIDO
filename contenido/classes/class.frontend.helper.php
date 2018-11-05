@@ -72,7 +72,6 @@ class cFrontendHelper {
      *
      * @return array
      *         category tree
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -135,7 +134,6 @@ class cFrontendHelper {
      *
      * @return array
      *         category tree
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -162,7 +160,6 @@ class cFrontendHelper {
      * @param cTemplate $tpl
      *         template reference
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException

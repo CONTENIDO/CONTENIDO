@@ -193,7 +193,7 @@ class cSearchResult extends cSearchBaseAbstract {
      *
      * @return string
      *                   Content of an article, specified by it's content type
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      */
@@ -210,8 +210,9 @@ class cSearchResult extends cSearchBaseAbstract {
      * @param string $cms_type
      *                       Content type
      * @param int    $cms_nr [optional]
+     *                       
      * @return array Content of an article in search result, specified by its type*         Content of an article in search result, specified by its type
-     * @throws Exception
+     *               
      * @throws cDbException
      * @throws cException
      */

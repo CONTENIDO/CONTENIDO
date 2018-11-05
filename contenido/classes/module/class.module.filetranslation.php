@@ -62,7 +62,6 @@ class cModuleFileTranslation extends cModuleHandler {
      * @param int  $overrideIdlang [optional]
      *                             use different language if not NULL
      *
-     * @throws Exception
      * @throws cException
      * @throws cInvalidArgumentException
      */
@@ -111,7 +110,9 @@ class cModuleFileTranslation extends cModuleHandler {
      *
      * @return string
      *         value
-     * @throws Exception
+     *
+     * @throws cDbException
+     * @throws cException
      */
     private function _getValueFromProperties($type, $name) {
         cApiPropertyCollection::reset();
@@ -132,6 +133,9 @@ class cModuleFileTranslation extends cModuleHandler {
     /**
      * Save the hole translations for a idmod and lang.
      * For the upgrade/setup.
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function saveTranslations() {
         $db = cRegistry::getDb();

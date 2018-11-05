@@ -21,9 +21,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class NoteCollection extends cApiCommunicationCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         parent::__construct();
@@ -75,11 +76,10 @@ class NoteCollection extends cApiCommunicationCollection {
      * @param string $category [optional]
      * @return object
      *                         The new item
-     * @throws Exception
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
-*/
+     */
     public function createItem($itemtype, $itemid, $idlang, $message, $category = '') {
         $item = parent::create();
 
@@ -181,10 +181,9 @@ class NoteList extends cHTMLDiv {
      * @see cHTML::toHtml()
      * @return string
      *     generated markup
-     * @throws Exception
      * @throws cDbException
      * @throws cException
-*/
+     */
     public function toHtml() {
         global $lang;
 

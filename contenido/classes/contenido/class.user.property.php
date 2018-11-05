@@ -102,7 +102,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      * @param int    $idcatlang [optional]
      *
      * @return cApiUserProperty
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -156,7 +156,9 @@ class cApiUserPropertyCollection extends ItemCollection {
      * Returns all user properties by userid.
      *
      * @return array
-     * @throws Exception
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchByUserId() {
         if (self::$_enableCache) {
@@ -179,8 +181,11 @@ class cApiUserPropertyCollection extends ItemCollection {
      *
      * @param string $type
      * @param string $name
+     *
      * @return array
-     * @throws Exception
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchByTypeName($type, $name) {
         $sql = $this->db->prepare("type = '%s' AND name = '%s'", $type, $name);
@@ -197,8 +202,11 @@ class cApiUserPropertyCollection extends ItemCollection {
      *
      * @param string $type
      * @param string $name
+     *
      * @return cApiUserProperty|NULL
-     * @throws Exception
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchByUserIdTypeName($type, $name) {
         if (self::$_enableCache) {
@@ -217,8 +225,11 @@ class cApiUserPropertyCollection extends ItemCollection {
      * Returns all user properties by userid and type.
      *
      * @param string $type
+     *
      * @return array
-     * @throws Exception
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchByUserIdType($type) {
         if (self::$_enableCache) {
@@ -239,8 +250,12 @@ class cApiUserPropertyCollection extends ItemCollection {
      *
      * @param string $type
      * @param string $name
+     *
      * @return bool
-     * @throws Exception
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function deleteByUserIdTypeName($type, $name) {
         $sql = $this->db->prepare("user_id = '%s' AND type = '%s' AND name = '%s'", $this->_userId, $type, $name);
@@ -252,8 +267,12 @@ class cApiUserPropertyCollection extends ItemCollection {
      * Deletes user properties by userid and type.
      *
      * @param string $type
+     *
      * @return bool
-     * @throws Exception
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function deleteByUserIdType($type) {
         $sql = $this->db->prepare("user_id = '%s' AND type = '%s'", $this->_userId, $type);
@@ -265,7 +284,10 @@ class cApiUserPropertyCollection extends ItemCollection {
      * Deletes all user properties by userid.
      *
      * @return bool
-     * @throws Exception
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function deleteByUserId() {
         $sql = $this->db->prepare("user_id = '%s'", $this->_userId);
@@ -277,7 +299,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      * Deletes selected user properties.
      *
      * @return bool
-     * @throws Exception
+     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -296,6 +318,9 @@ class cApiUserPropertyCollection extends ItemCollection {
 
     /**
      * Loads/Caches all user properties.
+     *
+     * @throws cDbException
+     * @throws cException
      */
     protected function _loadFromCache() {
         self::$_entries = array();
@@ -396,10 +421,8 @@ class cApiUserProperty extends Item
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
      *
-     * @throws Exception
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         $cfg = cRegistry::getConfig();

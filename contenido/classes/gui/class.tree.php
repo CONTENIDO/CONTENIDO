@@ -122,7 +122,9 @@ class cGuiTree extends cTree {
     }
 
     /**
-     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function processParameters() {
         if (($items = $this->_user->getUserProperty("expandstate", $this->_uuid)) !== false) {

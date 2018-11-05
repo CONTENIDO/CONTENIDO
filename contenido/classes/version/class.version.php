@@ -242,6 +242,8 @@ class cVersion {
     /**
      * This function looks if maximum number of stored versions is achieved.
      * If true, it will be delete the first version.
+     *
+     * @throws cInvalidArgumentException
      */
     protected function prune() {
         $this->initRevisions();

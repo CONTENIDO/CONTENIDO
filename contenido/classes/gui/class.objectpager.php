@@ -55,7 +55,6 @@ class cGuiObjectPager extends cGuiFoldingRow {
      * @param string    $id [optional]
      *
      * @throws cException if the given link is not an object
-     * @throws Exception
      */
     public function __construct($uuid, $items, $itemsperpage, $currentpage, $link, $parameterToAdd, $id = '') {
         if ((int) $currentpage == 0) {
