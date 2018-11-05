@@ -14,11 +14,11 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$idtpl           = isset($idtpl) ?: false;
-$artspec         = isset($artspec) ?: '';
-$online          = isset($online) || isset($timemgmt) ?: false;
-$searchable      = isset($searchable) ?: false;
-$publishing_date = isset($publishing_date) ?: false;
+$idtpl           = isset($idtpl) ? $idtpl : false;
+$artspec         = isset($artspec) ? $artspec : '';
+$online          = isset($online) || isset($timemgmt) ? $online : false;
+$searchable      = isset($searchable) ? $searchable : false;
+$publishing_date = isset($publishing_date) ? $publishing_date : false;
 
 // remember old values to be passed to listeners of Contenido.Action.con_saveart.AfterCall
 $oldData = array();
