@@ -1278,6 +1278,9 @@ function conGenerateCodeForAllartsUsingMod($idmods)
     $idmods = is_array($idmods) ? $idmods : [$idmods];
     $idmods = array_map('intval', $idmods);
     $idmods = implode(',', $idmods);
+    if (empty($idmods)) {
+        return;
+    }
 
     $containerColl = new cApiContainerCollection();
     $rsList        = $containerColl->getFieldsByWhereClause(['idtpl'], 'idmod IN (' . $idmods . ')');
@@ -1303,6 +1306,9 @@ function conGenerateCodeForAllArtsUsingTemplate($idtpls)
     $idtpls = is_array($idtpls) ? $idtpls : [$idtpls];
     $idtpls = array_map('intval', $idtpls);
     $idtpls = implode(',', $idtpls);
+    if (empty($idtpls)) {
+        return;
+    }
 
     // Search all categories
     $db = cRegistry::getDb();
