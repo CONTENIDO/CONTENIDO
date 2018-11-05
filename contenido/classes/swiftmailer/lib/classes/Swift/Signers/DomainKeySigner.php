@@ -167,6 +167,8 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
      *
      * @param string $bytes
      *
+     * @throws Swift_IoException
+     *
      * @return $this
      */
     public function write($bytes)

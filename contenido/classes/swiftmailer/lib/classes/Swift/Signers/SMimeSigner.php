@@ -234,6 +234,7 @@ class Swift_Signers_SMimeSigner implements Swift_Signers_BodySigner
 
     /**
      * @param Swift_InputByteStream $inputStream
+     * @param Swift_Message         $mimeEntity
      */
     protected function toSMimeByteStream(Swift_InputByteStream $inputStream, Swift_Message $message)
     {

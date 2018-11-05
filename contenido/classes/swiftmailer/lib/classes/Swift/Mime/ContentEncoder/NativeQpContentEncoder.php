@@ -46,6 +46,7 @@ class Swift_Mime_ContentEncoder_NativeQpContentEncoder implements Swift_Mime_Con
      * @param int                    $firstLineOffset
      * @param int                    $maxLineLength 0 indicates the default length for this encoding
      *
+     * @throws RuntimeException
      */
     public function encodeByteStream(Swift_OutputByteStream $os, Swift_InputByteStream $is, $firstLineOffset = 0, $maxLineLength = 0)
     {
