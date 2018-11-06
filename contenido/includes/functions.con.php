@@ -1249,13 +1249,20 @@ function conGenerateCodeForClient() {
  * @param int $idlay
  *         Layout Id
  */
-function conGenerateCodeForAllartsUsingLayout($idlay) {
+function conGenerateCodeForAllartsUsingLayout($idlay)
+{
     global $cfg;
 
     $db = cRegistry::getDb();
+    $db->query(
+        "SELECT
+            idtpl
+        FROM
+            " . $cfg['tab']['tpl'] . "
+        WHERE
+            idlay = " . cSecurity::toInteger($idlay)
+    );
 
-    $sql = "SELECT idtpl FROM " . $cfg["tab"]["tpl"] . " WHERE idlay='" . cSecurity::toInteger($idlay) . "'";
-    $db->query($sql);
     while ($db->nextRecord()) {
         conGenerateCodeForAllArtsUsingTemplate($db->f("idtpl"));
     }
@@ -1264,91 +1271,111 @@ function conGenerateCodeForAllartsUsingLayout($idlay) {
 /**
  * Create code for all articles using the same module
  *
- * @param int $idmod
+ * @param int|array $idmods
  *         Module Id
  */
-function conGenerateCodeForAllartsUsingMod($idmod) {
-    $oContainerColl = new cApiContainerCollection();
-    $rsList = $oContainerColl->getFieldsByWhereClause(array(
-        'idtpl'
-    ), 'idmod = ' . (int) $idmod);
-    foreach ($rsList as $rs) {
-        conGenerateCodeForAllArtsUsingTemplate($rs['idtpl']);
+function conGenerateCodeForAllartsUsingMod($idmods)
+{
+    $idmods = is_array($idmods) ? $idmods : [$idmods];
+    $idmods = array_map('intval', $idmods);
+    $idmods = implode(',', $idmods);
+    if (empty($idmods)) {
+        return;
     }
+
+    $containerColl = new cApiContainerCollection();
+    $rsList        = $containerColl->getFieldsByWhereClause(['idtpl'], 'idmod IN (' . $idmods . ')');
+
+    $idtpls = [];
+    foreach ($rsList as $rs) {
+        $idtpls[] = $rs['idtpl'];
+    }
+
+    conGenerateCodeForAllArtsUsingTemplate($idtpls);
 }
 
 /**
  * Generate code for all articles using one template
  *
- * @param int $idtpl
+ * @param int|array $idtpls
  *         Template Id
  */
-function conGenerateCodeForAllArtsUsingTemplate($idtpl) {
+function conGenerateCodeForAllArtsUsingTemplate($idtpls)
+{
     global $cfg, $client;
 
-    $db = cRegistry::getDb();
-
-    $oCatArtColl = new cApiCategoryArticleCollection();
+    $idtpls = is_array($idtpls) ? $idtpls : [$idtpls];
+    $idtpls = array_map('intval', $idtpls);
+    $idtpls = implode(',', $idtpls);
+    if (empty($idtpls)) {
+        return;
+    }
 
     // Search all categories
-    $sql = "SELECT
-                b.idcat
-            FROM
-                " . $cfg['tab']['tpl_conf'] . " AS a,
-                " . $cfg['tab']['cat_lang'] . " AS b,
-                " . $cfg['tab']['cat'] . " AS c
-            WHERE
-                a.idtpl     = " . cSecurity::toInteger($idtpl) . " AND
-                b.idtplcfg  = a.idtplcfg AND
-                c.idclient  = " . cSecurity::toInteger($client) . " AND
-                b.idcat     = c.idcat";
+    $db = cRegistry::getDb();
+    $db->query(
+        "SELECT
+            b.idcat
+        FROM
+            " . $cfg['tab']['tpl_conf'] . " AS a,
+            " . $cfg['tab']['cat_lang'] . " AS b,
+            " . $cfg['tab']['cat'] . " AS c
+        WHERE
+            a.idtpl     IN (" . $idtpls . ")
+            AND b.idtplcfg  = a.idtplcfg
+            AND c.idclient  = " . cSecurity::toInteger($client) . "
+            AND b.idcat     = c.idcat"
+    );
 
-    $db->query($sql);
+    $categoryArticleColl = new cApiCategoryArticleCollection();
 
+    $idcatarts = [];
     while ($db->nextRecord()) {
-        $oCatArtColl->resetQuery();
-        $ids = $oCatArtColl->getIdsByWhereClause('idcat = ' . cSecurity::toInteger($db->f('idcat')));
-        foreach ($ids as $id) {
-            conSetCodeFlag($id);
-        }
+        $categoryArticleColl->resetQuery();
+        $ids       = $categoryArticleColl->getIdsByWhereClause('idcat = ' . cSecurity::toInteger($db->f('idcat')));
+        $idcatarts = array_merge($idcatarts, $ids);
     }
 
     // Search all articles
-    $sql = "SELECT
-                b.idart
-            FROM
-                " . $cfg['tab']['tpl_conf'] . " AS a,
-                " . $cfg['tab']['art_lang'] . " AS b,
-                " . $cfg['tab']['art'] . " AS c
-            WHERE
-                a.idtpl     = " . cSecurity::toInteger($idtpl) . " AND
-                b.idtplcfg  = a.idtplcfg AND
-                c.idclient  = " . cSecurity::toInteger($client) . " AND
-                b.idart     = c.idart";
-
-    $db->query($sql);
+    $db->query(
+        "SELECT
+            b.idart
+        FROM
+            " . $cfg['tab']['tpl_conf'] . " AS a,
+            " . $cfg['tab']['art_lang'] . " AS b,
+            " . $cfg['tab']['art'] . " AS c
+        WHERE
+            a.idtpl     IN (" . $idtpls . ")
+            AND b.idtplcfg  = a.idtplcfg
+            AND c.idclient  = " . cSecurity::toInteger($client) . "
+            AND b.idart     = c.idart"
+    );
 
     while ($db->nextRecord()) {
-        $oCatArtColl->resetQuery();
-        $ids = $oCatArtColl->getIdsByWhereClause('idart = ' . (int) $db->f('idart'));
-        foreach ($ids as $id) {
-            conSetCodeFlag($id);
-        }
+        $categoryArticleColl->resetQuery();
+        $ids       = $categoryArticleColl->getIdsByWhereClause('idart = ' . cSecurity::toInteger($db->f('idart')));
+        $idcatarts = array_merge($idcatarts, $ids);
+    }
+
+    // set code flag for unique catarts
+    $idcatarts = array_unique($idcatarts);
+    foreach ($idcatarts as $idcatart) {
+        conSetCodeFlag($idcatart);
     }
 }
 
 /**
  * Create code for all articles
  */
-function conGenerateCodeForAllArts() {
+function conGenerateCodeForAllArts()
+{
     global $cfg;
 
     $db = cRegistry::getDb();
+    $db->query("SELECT idcatart FROM " . $cfg['tab']['cat_art']);
 
-    $sql = "SELECT idcatart FROM " . $cfg['tab']['cat_art'];
-    $db->query($sql);
     while ($db->nextRecord()) {
-        conSetCodeFlag($db->f("idcatart"));
+        conSetCodeFlag($db->f('idcatart'));
     }
 }
 
@@ -1379,7 +1406,12 @@ function conSetCodeFlag($idcatart) {
             }
 
             if (preg_match('/[0-9*].[0-9*].' . $idcatart . '/s', $file->getBasename())) {
-                cFileHandler::remove($cfgClient[$client]['code']['path'] . '/' . $file->getFilename());
+                try {
+                    cFileHandler::remove($cfgClient[$client]['code']['path'] . '/' . $file->getFilename());
+                } catch (cInvalidArgumentException $e) {
+                    // if file does not exist it does not have to be removed
+                    error_log('cannot remove ' . $cfgClient[$client]['code']['path'] . '/' . $file->getFilename());
+                }
             }
         }
     }

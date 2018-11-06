@@ -124,13 +124,17 @@ class cModuleSynchronizer extends cModuleHandler {
     public function compareFileAndModuleTimestamp() {
         global $cfgClient;
 
-        $synchLock = 0;
-
-        $sql = sprintf('SELECT UNIX_TIMESTAMP(mod1.lastmodified) AS lastmodified,mod1.idclient,description,type, mod1.name, mod1.alias, mod1.idmod FROM %s AS mod1 WHERE mod1.idclient = %s', $this->_cfg['tab']['mod'], $this->_client);
-
         $db = cRegistry::getDb();
-        $db->query($sql);
-        $retIdMod = 0;
+        $db->query('
+            SELECT lastmodified, idclient, description, type, `name`, alias, idmod
+            FROM ' . $this->_cfg['tab']['mod'] . '
+            WHERE idclient = ' . cSecurity::toInteger($this->_client));
+
+        $synchLock = 0;
+        $retIdMod  = 0;
+
+        // for performance reasons IDs of modules are collected in order to generate their code
+        $idmods    = [];
 
         while ($db->nextRecord()) {
             $showMessage = false;
@@ -139,6 +143,8 @@ class cModuleSynchronizer extends cModuleHandler {
             $modulePHP = $modulePath . $this->_directories['php'] . $db->f('alias');
 
             $lastmodified = $db->f('lastmodified');
+            $lastmodified = DateTime::createFromFormat('Y-m-d H:i:s', $lastmodified);
+            $lastmodified = $lastmodified->getTimestamp();
 
             $lastmodInput = $lastmodOutput = 0;
 
@@ -153,8 +159,13 @@ class cModuleSynchronizer extends cModuleHandler {
             if (cFileHandler::exists($modulePath . "info.xml")) {
                 $lastModInfo = filemtime($modulePath . "info.xml");
                 if ($lastModInfo > $lastmodified) {
-                    $modInfo = cXmlBase::xmlStringToArray(cFileHandler::read($modulePath . "info.xml"));
-                    $mod = new cApiModule($db->f("idmod"));
+                    try {
+                        $xml = cFileHandler::read($modulePath . 'info.xml');
+                    } catch (cInvalidArgumentException $e) {
+                        $xml = '';
+                    }
+                    $modInfo = cXmlBase::xmlStringToArray($xml);
+                    $mod     = new cApiModule($db->f("idmod"));
                     if ($modInfo["description"] != $mod->get("description")) {
                         $mod->set("description", $modInfo["description"]);
                         $this->setLastModified($lastModInfo, $db->f('idmod'));
@@ -173,7 +184,7 @@ class cModuleSynchronizer extends cModuleHandler {
                         $mod->set("alias", $modInfo["alias"]);
                         $this->setLastModified($lastModInfo, $db->f('idmod'));
                     }
-                    $mod->store();
+                    $mod->store(true);
                     $synchLock = 1;
                     $showMessage = true;
                 }
@@ -181,10 +192,9 @@ class cModuleSynchronizer extends cModuleHandler {
 
             $lastmodabsolute = max($lastmodInput, $lastmodOutput);
             if ($lastmodified < $lastmodabsolute) {
-                // update
                 $synchLock = 1;
                 $this->setLastModified($lastmodabsolute, $db->f('idmod'));
-                conGenerateCodeForAllartsUsingMod($db->f('idmod'));
+                $idmods[] = (int) $db->f('idmod');
                 $showMessage = true;
             }
 
@@ -195,6 +205,10 @@ class cModuleSynchronizer extends cModuleHandler {
             if ($showMessage) {
                 cRegistry::appendLastOkMessage(sprintf(i18n('Module %s successfully synchronized'), $db->f('name')));
             }
+        }
+
+        if (count($idmods)) {
+            conGenerateCodeForAllartsUsingMod($idmods);
         }
 
         if ($synchLock == 0) {
@@ -400,7 +414,7 @@ class cModuleSynchronizer extends cModuleHandler {
         $oMod = new cApiModule((int) $idmod);
         if ($oMod->isLoaded()) {
             $oMod->set('lastmodified', date('Y-m-d H:i:s', $timestamp));
-            $oMod->store();
+            $oMod->store(true);
         }
     }
 
