@@ -88,7 +88,7 @@ class idna_convert
     /**
      * the constructor
      *
-     * @param array $options
+     * @param array|bool $options
      * @since 0.5.2
      */
     public function __construct($options = false)
@@ -117,9 +117,10 @@ class idna_convert
      *           on failures; false: loose mode, ideal for "wildlife" applications
      *           by silently ignoring errors and returning the original input instead
      *
-     * @param    mixed     Parameter to set (string: single parameter; array of Parameter => Value pairs)
-     * @param    string    Value to use (if parameter 1 is a string)
-     * @return   boolean   true on success, false otherwise
+     * @param    mixed  $option     Parameter to set (string: single parameter; array of Parameter => Value pairs)
+     * @param    string|bool $value Value to use (if parameter 1 is a string)
+     *
+     * @return   bool true on success, false otherwise
      */
     public function set_parameter($option, $value = false)
     {
@@ -591,8 +592,10 @@ class idna_convert
 
     /**
      * Do Nameprep according to RFC3491 and RFC3454
+     *
      * @param    array    Unicode Characters
-     * @return   string   Unicode Characters, Nameprep'd
+     *
+     * @return   array   Unicode Characters, Nameprep'd
      */
     protected function _nameprep($input)
     {

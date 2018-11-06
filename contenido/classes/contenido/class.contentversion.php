@@ -21,9 +21,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiContentVersionCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         parent::__construct(cRegistry::getDbTableName('content_version'), 'idcontentversion');
@@ -37,18 +38,12 @@ class cApiContentVersionCollection extends ItemCollection {
     /**
      * Creates a content version entry.
      *
-     * @param mixed[] $parameters{
-     * 	@type int $idContent
-     * 	@type int $idArtLang
-     * 	@type int $idType
-     * 	@type int $typeId
-     * 	@type string $value
-     * 	@type int $version
-     * 	@type string $author
-     * 	@type string $created
-     * 	@type string $lastModified
-     * }
+     * @param mixed[] $parameters {
+     *
      * @return cApiContentVersion
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create(array $parameters) {
         global $auth;
@@ -79,6 +74,8 @@ class cApiContentVersionCollection extends ItemCollection {
      *
      * @param string $where
      * @return array $ids
+     * @throws cDbException
+     * @throws cException
      */
     public function getIdsByWhereClause($where){
 
@@ -100,13 +97,16 @@ class cApiContentVersionCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiContentVersion extends Item {
-
+class cApiContentVersion extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $id
      *         Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($id = false) {
         parent::__construct(cRegistry::getDbTableName('content_version'), 'idcontentversion');
@@ -132,6 +132,8 @@ class cApiContentVersion extends Item {
 
     /**
      * Mark this Content Version as current Content
+     *
+     * @throws cException
      */
     public function markAsCurrent() {
 
@@ -160,14 +162,16 @@ class cApiContentVersion extends Item {
 
         // store item
         $content->store();
-
     }
 
     /**
      * Creates a new, editable Version with same properties as this Content Version
      *
      * @param string $version
-     * @param mixed $deleted
+     * @param mixed  $deleted
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function markAsEditable($version, $deleted) {
 
@@ -190,13 +194,11 @@ class cApiContentVersion extends Item {
     /**
      * Loads a content entry by its article language id, idtype, type id and version.
      *
-     * @param mixed $contentParameters[]{
-     *	@type int idartlang
-     *	@type int idtype
-     *	@type int typeid
-     *	@type int $version
-     * }
+     * @param mixed $contentParameters []{
+     *
      * @return bool
+     * 
+     * @throws cException
      */
     public function loadByArticleLanguageIdTypeTypeIdAndVersion(array $contentParameters) {
         $props = array(

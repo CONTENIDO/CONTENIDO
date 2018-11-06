@@ -103,6 +103,8 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
     /**
      * Outputs all Debug items in collection to screen in a HTML Box at left top
      * of page.
+     *
+     * @throws cInvalidArgumentException
      */
     public function showAll() {
         global $cfg;

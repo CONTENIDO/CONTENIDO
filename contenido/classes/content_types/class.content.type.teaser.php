@@ -84,10 +84,12 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @param string $rawSettings
      *         the raw settings in an XML structure or as plaintext
-     * @param int $id
+     * @param int    $id
      *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
-     * @param array $contentTypes
+     * @param array  $contentTypes
      *         array containing the values of all content types
+     *
+     * @throws cDbException
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
 
@@ -237,6 +239,10 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * Function returns idarts of selected articles as array
      *
      * @return array
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function getConfiguredArticles() {
         $articles = array();
@@ -250,9 +256,14 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * for output
      *
      * @param bool $returnAsArray [optional]
-     *         modeswitch betwwen template generation and returning result as array
+     *                            modeswitch betwwen template generation and returning result as array
+     *
      * @return mixed
      *         string of select box or array of articles
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function generateTeaserCode($returnAsArray = false) {
         global $contenido;
@@ -351,10 +362,14 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @param cApiArticleLanguage $article
      *         CONTENIDO Article object
-     * @param cTemplate $template
+     * @param cTemplate           $template
      *         CONTENIDO Template object (as reference)
+     *
      * @return bool
      *         success state of this operation
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     private function _fillTeaserTemplateEntry(cApiArticleLanguage $article, cTemplate &$template) {
         global $contenido;
@@ -481,12 +496,15 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @param cApiArticleLanguage $article
      *         CONTENIDO article object
-     * @param string $contentTypeName
+     * @param string              $contentTypeName
      *         Name of Content type to extract informations from
-     * @param string $ids
+     * @param string              $ids
      *         list of ids to search in
+     *
      * @return string
      *         largest result of content
+     *
+     * @throws cDbException
      */
     private function _getArtContent(cApiArticleLanguage &$article, $contentTypeName, $ids) {
         $this->_initCmsTypes();
@@ -606,6 +624,10 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         escaped HTML code which should be shown if content type is edited
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function generateEditCode() {
         $this->_initCmsTypes();
@@ -682,6 +704,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * from database and store it into class variable aCMSTypes.
      * Because this information is used multiple times, this causes a better
      * performance than gettting it seperately
+     *
+     * @throws cDbException
      */
     private function _initCmsTypes() {
         if (!empty($this->_cmsTypes)) {
@@ -833,6 +857,9 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         the code for the advanced tab
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     private function _generateTabAdvanced() {
         // define a wrapper which contains the whole content of the advanced tab
@@ -1018,8 +1045,12 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @param int $idArt
      *         CONTENIDO article id
+     *
      * @return string
      *         name of article
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     private function _getArtName($idArt) {
         $article = new cApiArticleLanguage();

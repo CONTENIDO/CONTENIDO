@@ -41,10 +41,10 @@ class Swift_Mime_ContentEncoder_NativeQpContentEncoder implements Swift_Mime_Con
     /**
      * Encode $in to $out.
      *
-     * @param Swift_OutputByteStream $os              to read from
-     * @param Swift_InputByteStream  $is              to write to
+     * @param Swift_OutputByteStream $os            to read from
+     * @param Swift_InputByteStream  $is            to write to
      * @param int                    $firstLineOffset
-     * @param int                    $maxLineLength   0 indicates the default length for this encoding
+     * @param int                    $maxLineLength 0 indicates the default length for this encoding
      *
      * @throws RuntimeException
      */

@@ -21,9 +21,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiGroupMemberCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -40,7 +41,11 @@ class cApiGroupMemberCollection extends ItemCollection {
      *
      * @param string $userId
      * @param string $groupId
+     *
      * @return cApiGroupMember
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($userId, $groupId) {
         $oItem = $this->createNewItem();
@@ -57,7 +62,11 @@ class cApiGroupMemberCollection extends ItemCollection {
      * Deletes group member entries by user id.
      *
      * @param string $userId
+     *
      * @return bool
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function deleteByUserId($userId) {
         $result = $this->deleteBy('user_id', $userId);
@@ -69,7 +78,11 @@ class cApiGroupMemberCollection extends ItemCollection {
      *
      * @param string $userId
      * @param string $groupId
+     * 
      * @return cApiGroupMember|NULL
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchByUserIdAndGroupId($userId, $groupId) {
         $where = "user_id = '" . $this->escape($userId) . "' AND group_id = '" . $this->escape($groupId) . "'";
@@ -88,13 +101,16 @@ class cApiGroupMemberCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiGroupMember extends Item {
-
+class cApiGroupMember extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;

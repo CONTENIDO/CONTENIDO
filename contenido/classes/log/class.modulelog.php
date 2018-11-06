@@ -49,10 +49,12 @@ class cModuleLog extends cLog {
      *
      * @deprecated [2015-05-21]
      *         This method is no longer supported (no replacement)
-     * @param mixed $writer [optional]
-     *         Writer object (any subclass of cLogWriter),
-     *         or false if cLog should handle the writer creation
      *
+     * @param mixed $writer [optional]
+     *                      Writer object (any subclass of cLogWriter),
+     *                      or false if cLog should handle the writer creation
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct($writer = false) {
         cDeprecated("The cModuleLog classes are no longer supported.");

@@ -21,9 +21,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiCommunicationCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -38,6 +39,9 @@ class cApiCommunicationCollection extends ItemCollection {
      * Creates a new communication item.
      *
      * @return cApiCommunication
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create() {
         global $auth, $client;
@@ -59,12 +63,14 @@ class cApiCommunicationCollection extends ItemCollection {
  * @subpackage GenericDB_Model
  */
 class cApiCommunication extends Item {
-
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;

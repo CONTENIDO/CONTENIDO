@@ -84,7 +84,9 @@ class cArticleCollector implements SeekableIterator, Countable {
      * initiated.
      *
      * @param array $options [optional, default: empty array]
-     *         array with options for the collector
+     *                       array with options for the collector
+     *
+     * @throws cDbException
      */
     public function __construct($options = array()) {
         $this->setOptions($options);
@@ -178,7 +180,7 @@ class cArticleCollector implements SeekableIterator, Countable {
     /**
      * Executes the article search with the given options.
      *
-     * @throws cUnexpectedValueException
+     * @throws cDbException
      */
     public function loadArticles() {
         $this->_articles = array();
@@ -257,6 +259,7 @@ class cArticleCollector implements SeekableIterator, Countable {
      * article of a category. Does work only if one category was requested.
      *
      * @return cApiArticleLanguage
+     * 
      * @throws cBadMethodCallException
      */
     public function startArticle() {
@@ -329,6 +332,7 @@ class cArticleCollector implements SeekableIterator, Countable {
      *
      * @param int $position
      *         position to load
+     * 
      * @throws cOutOfBoundsException
      */
     public function seek($position) {

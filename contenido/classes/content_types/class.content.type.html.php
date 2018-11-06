@@ -62,6 +62,7 @@ class cContentTypeHtml extends cContentTypeAbstract {
      *
      * @return string
      *         escaped HTML code which should be shown if content type is edited
+     * @throws cDbException
      */
     public function generateEditCode() {
         $wysiwygDiv = new cHTMLDiv();

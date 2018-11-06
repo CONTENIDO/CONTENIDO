@@ -176,7 +176,7 @@ class cString extends cStringMultiByteWrapper {
      *         String to be searched
      * @param string $needle
      *         String to search for
-     * @param string $beforeNeedle [optional]
+     * @param bool $beforeNeedle [optional]
      *         If true, return everything BEFORE needle
      * @return string
      * @link http://php.net/manual/de/function.mb-strstr.php

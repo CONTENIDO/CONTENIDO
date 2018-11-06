@@ -198,7 +198,9 @@ class cModuleHandler {
     /**
      *
      * @param int $overrideLanguageId [optional]
+     *
      * @return mixed
+     * @throws cDbException
      */
     public static function getEncoding($overrideLanguageId = 0) {
         $lang = cRegistry::getLanguageId();
@@ -245,7 +247,8 @@ class cModuleHandler {
      * @param string $fileContent
      * @param string $saveDirectory [optional]
      * @return string|bool
-     *         URL on success or false on failure
+     *                              URL on success or false on failure
+     * @throws cInvalidArgumentException
      */
     public function saveContentToFile($templateName, $fileType, $fileContent, $saveDirectory = 'cache') {
         $sSaveDirectory = $this->_cfgClient[$this->_client]['path']['frontend'] . $saveDirectory . '/';
@@ -442,13 +445,14 @@ class cModuleHandler {
      * Create and save new file.
      *
      * @param string $type
-     *         css | js | template directory of the file
+     *                         css | js | template directory of the file
      * @param string $fileName [optional]
-     *         file name
-     * @param string $content [optional]
-     *         content of the file
+     *                         file name
+     * @param string $content  [optional]
+     *                         content of the file
      * @return bool
-     *         true on success or false on failure
+     *                         true on success or false on failure
+     * @throws cInvalidArgumentException
      */
     public function createModuleFile($type, $fileName = NULL, $content = '') {
         // create directory if not exist
@@ -541,11 +545,13 @@ class cModuleHandler {
      * Get the content of file, modul js or css or template or php.
      *
      * @param string $directory
-     *         where in module should we look
+     *                         where in module should we look
      * @param string $fileTyp
-     *         css or js
+     *                         css or js
      * @param string $fileName [optional]
+     *
      * @return string|bool
+     * @throws cInvalidArgumentException
      */
     public function getFilesContent($directory, $fileTyp, $fileName = NULL) {
         if ($fileName == NULL) {
@@ -566,6 +572,7 @@ class cModuleHandler {
      *
      * @return bool
      *         true on success or false on failure
+     * @throws cInvalidArgumentException
      */
     protected function _makeModuleDirectory() {
         // Do not display error on login page
@@ -615,6 +622,7 @@ class cModuleHandler {
      *
      * @return bool
      *         true on success or false on failure
+     * @throws cInvalidArgumentException
      */
     public function eraseModule() {
         // Delete modules only if we find info.xml at module path
@@ -630,7 +638,8 @@ class cModuleHandler {
      *
      * @param bool $issource [optional]
      * @return string|bool
-     *         content of module input file or false on failure
+     *                       content of module input file or false on failure
+     * @throws cInvalidArgumentException
      */
     public function readInput($issource = false) {
         if (cFileHandler::exists($this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_input.php') == false) {
@@ -651,7 +660,8 @@ class cModuleHandler {
      *
      * @param bool $issource [optional]
      * @return bool|string
-     *         content of module output file or false on failure
+     *                       content of module output file or false on failure
+     * @throws cInvalidArgumentException
      */
     public function readOutput($issource = false) {
         if (cFileHandler::exists($this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_output.php') == false) {
@@ -671,8 +681,10 @@ class cModuleHandler {
      * Make a directory template/css/image/js/php if not exist.
      *
      * @param string $type
+     *
      * @return bool
      *         true on success or false on failure
+     * @throws cInvalidArgumentException
      */
     protected function createModuleDirectory($type) {
         if (array_key_exists($type, $this->_directories)) {
@@ -738,7 +750,8 @@ class cModuleHandler {
      *
      * @param string $output [optional]
      * @return bool
-     *         true on success or false on failure
+     *                       true on success or false on failure
+     * @throws cInvalidArgumentException
      */
     public function saveOutput($output = NULL) {
         $fileName = $this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_output.php';
@@ -768,7 +781,8 @@ class cModuleHandler {
      *
      * @param string $input [optional]
      * @return bool
-     *         true on success or false on failure
+     *                      true on success or false on failure
+     * @throws cInvalidArgumentException
      */
     public function saveInput($input = NULL) {
         $fileName = $this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_input.php';
@@ -797,15 +811,16 @@ class cModuleHandler {
      * This method save a xml file with modul information.
      * If the params not set, get the value from this.
      *
-     * @param string $moduleName [optional]
-     *         name of the modul
+     * @param string $moduleName  [optional]
+     *                            name of the modul
      * @param string $description [optional]
-     *         description of the modul
-     * @param string $type [optional]
-     *         type of the modul
-     * @param string $alias [optional]
+     *                            description of the modul
+     * @param string $type        [optional]
+     *                            type of the modul
+     * @param string $alias       [optional]
      * @return true
-     *         if success else false
+     *                            if success else false
+     * @throws cException
      */
     public function saveInfoXML($moduleName = NULL, $description = NULL, $type = NULL, $alias = NULL) {
         if ($moduleName === NULL) {
@@ -841,12 +856,14 @@ class cModuleHandler {
      * The module name will be [ModuleName] example Contact_Form or
      * GoogleMaps2.
      *
-     * @param string $input [optional]
+     * @param string $input  [optional]
      * @param string $output [optional]
      * @return bool
-     *         if module exist or mkdir and saveInput and saveOutput success
-     *         return true. Else if the mkdir or saveInput or saveOutput not
-     *         success return false.
+     *                       if module exist or mkdir and saveInput and saveOutput success
+     *                       return true. Else if the mkdir or saveInput or saveOutput not
+     *                       success return false.
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function createModule($input = '', $output = '') {
         if ($input != '') {
@@ -956,11 +973,12 @@ class cModuleHandler {
      *
      * @return array
      *         bool state, string errorMessage
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function testInput() {
 
         return $this->_testCode('input');
-
     }
 
     /**
@@ -968,11 +986,12 @@ class cModuleHandler {
      *
      * @return array
      *         bool state, string errorMessage
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function testOutput() {
 
         return $this->_testCode('output');
-
     }
 
     /**
@@ -982,6 +1001,8 @@ class cModuleHandler {
      *         code field type, 'input' or 'output'
      * @return array
      *         bool state, string errorMessage
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     protected function _testCode($inputType) {
 
@@ -1060,20 +1081,20 @@ class cModuleHandler {
         }
 
         return $result;
-
     }
 
     /**
      * Check module php code.
      *
      * @param string $code
-     *         Code to evaluate
+     *                       Code to evaluate
      * @param string $id
-     *         Unique ID for the test function
-     * @param string $output [optional]
-     *         true if start in php mode, otherwise false
+     *                       Unique ID for the test function
+     * @param bool   $output [optional]
+     *                       true if start in php mode, otherwise false
      * @return array
-     *         bool state, string errorMessage
+     *                       bool state, string errorMessage
+     * @throws cDbException
      */
     protected function _verifyCode($code, $id, $output = false) {
         $isError = false;

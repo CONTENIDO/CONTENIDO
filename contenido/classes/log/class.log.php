@@ -144,8 +144,10 @@ class cLog {
      * by an own function which decides what to do.
      *
      * @param mixed $writer [optional]
-     *         Writer object (any subclass of cLogWriter), or false if
-     *         cLog should handle the writer creation
+     *                      Writer object (any subclass of cLogWriter), or false if
+     *                      cLog should handle the writer creation
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct($writer = false) {
         global $cfg;

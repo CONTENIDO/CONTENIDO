@@ -95,7 +95,6 @@ class cApiCecRegistry {
      * @deprecated [2014-08-07]
      *         This method is deprecated and is not needed any longer
      * @param string $sChainName
-     * @throws cInvalidArgumentException if the given chain does not exist
      */
     public function unregisterChain($sChainName) {
         cDeprecated('This method is deprecated and is not needed any longer');
@@ -157,10 +156,12 @@ class cApiCecRegistry {
      *         - "FunctionName" to invoke a function.
      *         NOTE: Necessary files must be manually included before or by
      *         defined autoloader.
-     * @throws cInvalidArgumentException
-     *         if the given chain is not registered or the given callback is not callable
+     * 
      * @return bool
      *         True on success, otherwise false
+     * 
+     * @throws cInvalidArgumentException
+     *         if the given chain is not registered or the given callback is not callable
      */
     public function addChainFunction($sChainName, $sFunctionName) {
         $cfg = cRegistry::getConfig();
@@ -348,7 +349,9 @@ class cApiCecChainItem {
      *
      * @param string $sChainName
      * @param string $sFunctionName
-     * @param array $aParameters
+     * @param array  $aParameters
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct($sChainName, $sFunctionName, $aParameters) {
         $this->setChainName($sChainName);
@@ -419,6 +422,7 @@ class cApiCecChainItem {
      * Sets the callback
      *
      * @param string|array $callback
+     * 
      * @throws cInvalidArgumentException if the given callback is not a string
      *         or an array
      */

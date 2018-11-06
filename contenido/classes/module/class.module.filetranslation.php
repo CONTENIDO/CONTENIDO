@@ -56,11 +56,14 @@ class cModuleFileTranslation extends cModuleHandler {
     /**
      * Constructor to create an instance of this class.
      *
-     * @param int $idmodul [optional]
-     * @param bool $static [optional]
-     *         if true it will load once the translation from file
-     * @param int $overrideIdlang [optional]
-     *         use different language if not NULL
+     * @param int  $idmodul        [optional]
+     * @param bool $static         [optional]
+     *                             if true it will load once the translation from file
+     * @param int  $overrideIdlang [optional]
+     *                             use different language if not NULL
+     *
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($idmodul = NULL, $static = false, $overrideIdlang = NULL) {
         parent::__construct($idmodul);
@@ -104,8 +107,12 @@ class cModuleFileTranslation extends cModuleHandler {
      *
      * @param string $type
      * @param string $name
+     *
      * @return string
      *         value
+     *
+     * @throws cDbException
+     * @throws cException
      */
     private function _getValueFromProperties($type, $name) {
         cApiPropertyCollection::reset();
@@ -126,6 +133,9 @@ class cModuleFileTranslation extends cModuleHandler {
     /**
      * Save the hole translations for a idmod and lang.
      * For the upgrade/setup.
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function saveTranslations() {
         $db = cRegistry::getDb();
@@ -232,8 +242,10 @@ class cModuleFileTranslation extends cModuleHandler {
      * Save the contents of the wordListArray in file.
      *
      * @param array $wordListArray
+     *
      * @return bool
      *         true on success or false on failure
+     * @throws cInvalidArgumentException
      */
     public function saveTranslationArray($wordListArray) {
         $fileName = $this->_modulePath . $this->_directories['lang'] . self::$fileName;
@@ -260,6 +272,7 @@ class cModuleFileTranslation extends cModuleHandler {
      * Get the translations array.
      *
      * @return array
+     * @throws cInvalidArgumentException
      */
     public function getTranslationArray() {
         if (cFileHandler::exists($this->_modulePath . $this->_directories['lang'] . self::$fileName)) {
