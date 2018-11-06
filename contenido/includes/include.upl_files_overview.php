@@ -74,7 +74,7 @@ if ((is_writable($cfgClient[$client]['upl']['path'] . $path) || cApiDbfs::isDbfs
 }
 
 
-if ($action == 'upl_modify_file' && !empty($file)) {
+if ($action == 'upl_modify_file' && empty($file) === false) {
 
     $extractFolder = NULL;
     $uplPath = $cfgClient[$client]['upl']['path'];
@@ -186,18 +186,18 @@ if ($action == 'upl_multidelete' && $perm->have_perm_area_action($area, $action)
         $uploadObjects = array();
 
         // Check if it is in the upload table
-        foreach ($fdelete as $file) {
-            $file = basename(cSecurity::escapeString($file));
-            $uploads->select("idclient = '$client' AND dirname='" . $uploads->escape($qpath) . "' AND filename='" . $uploads->escape($file) . "'");
+        foreach ($fdelete as $fileNameToDelete) {
+            $fileNameToDelete = basename(cSecurity::escapeString($fileNameToDelete));
+            $uploads->select("idclient = '$client' AND dirname='" . $uploads->escape($qpath) . "' AND filename='" . $uploads->escape($fileNameToDelete) . "'");
             if (false !== $item = $uploads->next()) {
                 if (cApiDbfs::isDbfs($qpath)) {
-                    $dbfs->remove($qpath . $file);
+                    $dbfs->remove($qpath . $fileNameToDelete);
 
                     // call chain once for each deleted file
                     $_cecIterator = cRegistry::getCecRegistry()->getIterator('Contenido.Upl_edit.Delete');
                     if ($_cecIterator->count() > 0) {
                         while (false !== $chainEntry = $_cecIterator->next()) {
-                            $chainEntry->execute($item->get('idupl'), $qpath, $file);
+                            $chainEntry->execute($item->get('idupl'), $qpath, $fileNameToDelete);
                         }
                     }
                 } else {
@@ -219,7 +219,7 @@ if ($action == 'upl_multidelete' && $perm->have_perm_area_action($area, $action)
     }
 }
 
-if ($action == 'upl_delete' && !empty($file) && $perm->have_perm_area_action($area, $action) && $bDirectoryIsWritable == true) {
+if ($action == 'upl_delete' && empty($file) === false && $perm->have_perm_area_action($area, $action) && $bDirectoryIsWritable == true) {
     // array of cApiUpload objects to be passed to chain function
     $uploadObjects = array();
 
