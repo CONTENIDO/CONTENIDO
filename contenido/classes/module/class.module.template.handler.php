@@ -332,7 +332,7 @@ class cModuleTemplateHandler extends cModuleHandler {
     /**
      * rename a file in template directory
      *
-     * @throws cException if rename was not successfull
+     * @throws cException if rename was not successful
      */
     private function _rename() {
         // trigger a smarty cache rebuild for old and new template file name

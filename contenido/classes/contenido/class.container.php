@@ -85,8 +85,11 @@ class cApiContainerCollection extends ItemCollection {
 
     /**
      * Deletes all configurations by given template id
-     * 
+     *
      * @param int $idtpl
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function clearAssignments($idtpl) {
         $this->deleteBy('idtpl', (int) $idtpl);

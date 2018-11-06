@@ -84,10 +84,12 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @param string $rawSettings
      *         the raw settings in an XML structure or as plaintext
-     * @param int $id
+     * @param int    $id
      *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
-     * @param array $contentTypes
+     * @param array  $contentTypes
      *         array containing the values of all content types
+     *
+     * @throws cDbException
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
 
@@ -494,12 +496,15 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @param cApiArticleLanguage $article
      *         CONTENIDO article object
-     * @param string $contentTypeName
+     * @param string              $contentTypeName
      *         Name of Content type to extract informations from
-     * @param string $ids
+     * @param string              $ids
      *         list of ids to search in
+     *
      * @return string
      *         largest result of content
+     *
+     * @throws cDbException
      */
     private function _getArtContent(cApiArticleLanguage &$article, $contentTypeName, $ids) {
         $this->_initCmsTypes();

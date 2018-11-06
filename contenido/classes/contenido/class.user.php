@@ -72,8 +72,12 @@ class cApiUserCollection extends ItemCollection {
      *
      * @param string $username
      *         Specifies the username
+     *
      * @return bool
      *         True if the delete was successful
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function deleteUserByUsername($username) {
         $result = $this->deleteBy('username', $username);
@@ -1134,6 +1138,9 @@ class cApiUser extends Item {
      *         - $arr[iduserprop][name]
      *         - $arr[iduserprop][type]
      *         - $arr[iduserprop][value]
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function getUserProperties() {
         $userPropColl = new cApiUserPropertyCollection($this->values['user_id']);
@@ -1178,7 +1185,12 @@ class cApiUser extends Item {
      *         Type (class, category etc) of property to retrieve
      * @param string $name
      *         Name of property to retrieve
+     *
      * @return bool
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function deleteUserProperty($type, $name) {
         $userPropColl = new cApiUserPropertyCollection($this->values['user_id']);

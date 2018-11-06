@@ -141,7 +141,7 @@ class cPermission {
      * @return string
      *         Returns diffrent values, depending on state:
      *         '1' (string) if permissions couldn't loaded
-     *         '3' (string) if permissions were successfull loaded
+     *         '3' (string) if permissions were loaded successfully
      *
      * @throws cDbException
      * @throws cException
@@ -578,7 +578,8 @@ class cPermission {
 
     /**
      *
-     * @param string $p [optional]
+     * @param string $perm [optional]
+     *
      * @return bool
      */
     public function have_perm_client($perm = 'x') {

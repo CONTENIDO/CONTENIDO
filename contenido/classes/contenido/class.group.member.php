@@ -62,8 +62,11 @@ class cApiGroupMemberCollection extends ItemCollection {
      * Deletes group member entries by user id.
      *
      * @param string $userId
-     * 
+     *
      * @return bool
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function deleteByUserId($userId) {
         $result = $this->deleteBy('user_id', $userId);

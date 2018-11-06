@@ -271,7 +271,7 @@ class NoteListItem extends cHTMLDiv {
 
     /**
      *
-     * @param string $dark [optional]
+     * @param bool $dark [optional]
      */
     public function setBackground($dark = false) {
     }

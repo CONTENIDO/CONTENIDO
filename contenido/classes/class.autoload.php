@@ -261,7 +261,7 @@ class cAutoload {
      *
      * @param string $className
      * @return string|null
-     *         string if validation was successfull, otherwise NULL
+     *         string if validation was successful, otherwise NULL
      */
     private static function _getContenidoClassFile($className) {
         $classNameLower = cString::toLowerCase($className);
@@ -275,7 +275,7 @@ class cAutoload {
      * @param string $classname
      * @param string $filename
      * @return string|null
-     *         string if validation was successfull, otherwise NULL
+     *         string if validation was successful, otherwise NULL
      */
     private static function _validateClassAndFile($classname, $filename) {
         if (class_exists($classname)) {

@@ -407,6 +407,8 @@ class cApiArticleLanguage extends Item {
      *
      * @deprecated [2015-05-15]
      *         use _loadArticleContent, automaticly loaded with getContent()
+     *
+     * @throws cDbException
      */
     public function loadArticleContent() {
         cDeprecated('This method is deprecated and is not needed any longer');
@@ -607,10 +609,13 @@ class cApiArticleLanguage extends Item {
      *
      * @param string $type
      *         Name of the content type
-     * @param int $id
+     * @param int    $id
      *         Id of the content type in this article
+     *
      * @return bool|cContentTypeAbstract
      *         Returns false if the name was invalid
+     *
+     * @throws cDbException
      */
     public function getContentObject($type, $id) {
         $typeClassName = 'cContentType' . ucfirst(cString::toLowerCase(str_replace('CMS_', '', $type)));
@@ -627,9 +632,12 @@ class cApiArticleLanguage extends Item {
      *
      * @param string $type
      *         Name of the content type
-     * @param int  $id
+     * @param int    $id
      *         Id of the content type in this article
+     *
      * @return string
+     *
+     * @throws cDbException
      */
     public function getContentViewCode($type, $id) {
         $object = $this->getContentObject($type, $id);

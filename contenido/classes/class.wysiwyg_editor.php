@@ -72,7 +72,7 @@ abstract class cWYSIWYGEditor {
 
     /**
      *
-     * @param string $sContent
+     * @param string $sEditorContent
      */
     protected function _setEditorContent($sEditorContent) {
         $this->_sEditorContent = $sEditorContent;

@@ -104,7 +104,7 @@ class cGuiTree extends cTree {
      * Constructor to create an instance of this class.
      *
      * @param string $uuid
-     * @param string $treename [optional]
+     * @param false|string $treename [optional]
      */
     public function __construct($uuid, $treename = false) {
         global $cfg, $auth;

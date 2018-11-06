@@ -48,6 +48,8 @@ class cApiUserPropertyCollection extends ItemCollection {
      *
      * @param string $userId
      *
+     * @throws cDbException
+     * @throws cException
      * @throws cInvalidArgumentException
      */
     public function __construct($userId) {
@@ -81,6 +83,9 @@ class cApiUserPropertyCollection extends ItemCollection {
      * User id setter
      *
      * @param string $userId
+     *
+     * @throws cDbException
+     * @throws cException
      * @throws cInvalidArgumentException If passed user id is empty
      */
     public function setUserId($userId) {

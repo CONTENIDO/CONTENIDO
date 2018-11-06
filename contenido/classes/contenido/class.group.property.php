@@ -59,6 +59,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
      *
      * @param string $groupId
      *
+     * @throws cDbException
+     * @throws cException
      * @throws cInvalidArgumentException
      */
     public function __construct($groupId) {

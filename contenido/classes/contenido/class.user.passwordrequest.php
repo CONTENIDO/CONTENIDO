@@ -72,8 +72,12 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
      *
      * @param int $userid
      *         Specifies the user id
+     *
      * @return bool
      *         True if the delete was successful
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function deleteByUserId($userid) {
         $result = $this->deleteBy('user_id', $userid);
@@ -84,8 +88,12 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
      * Removes the specified entries from the database by token.
      *
      * @param $token
+     *
      * @return bool
      *         True if the delete was successful
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function deleteByToken($token) {
         $result = $this->deleteBy('validation_token', $token);

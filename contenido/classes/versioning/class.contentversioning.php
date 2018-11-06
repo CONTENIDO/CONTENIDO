@@ -162,8 +162,9 @@ class cContentVersioning {
      * @param int    $selectedArticleId [optional]
      *
      * @return cApiArticleLanguage|cApiArticleLanguageVersion $this->selectedArticle
-     *                                                        
+     *
      * @throws cDbException
+     * @throws cException
      */
     public function getSelectedArticle($idArtLangVersion, $idArtLang, $articleType, $selectedArticleId = NULL) {
 
@@ -196,8 +197,9 @@ class cContentVersioning {
      * @param string $articleType
      *
      * @return array $list
-     *               
+     *
      * @throws cDbException
+     * @throws cException
      */
     public function getList($idArtLang, $articleType) {
 
@@ -243,8 +245,11 @@ class cContentVersioning {
      * @param int    $idArtLang
      * @param string $action
      * @param mixed  $selectedArticleId
+     *
      * @return string $this->articleType
+     *
      * @throws cDbException
+     * @throws cException
      */
     public function getArticleType($idArtLangVersion, $idArtLang, $action, $selectedArticleId) {
 
@@ -329,8 +334,11 @@ class cContentVersioning {
      * Returns idartlangversion of editable article.
      *
      * @param int $idArtLang
+     *
      * @return int $editableArticleId
+     *
      * @throws cDbException
+     * @throws cException
      */
     public function getEditableArticleId($idArtLang) {
 

@@ -99,6 +99,8 @@ class cApiPropertyCollection extends ItemCollection {
      * @param int $idclient [optional]
      *                      Client id
      *
+     * @throws cDbException
+     * @throws cException
      * @throws cInvalidArgumentException
      */
     public function __construct($idclient = 0) {
