@@ -21,9 +21,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiNavSubCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -38,13 +39,18 @@ class cApiNavSubCollection extends ItemCollection {
     /**
      * Create new item with given values.
      *
-     * @param int $navm
+     * @param int        $navm
      * @param int|string $area
-     *         AreaId or area name
-     * @param int $level
-     * @param string $location
-     * @param int $online [optional]
+     *                           AreaId or area name
+     * @param int        $level
+     * @param string     $location
+     * @param int        $online [optional]
+     *
      * @return cApiNavSub
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($navm, $area, $level, $location, $online = 1) {
         $item = $this->createNewItem();
@@ -75,18 +81,20 @@ class cApiNavSubCollection extends ItemCollection {
     /**
      * Returns sub navigation by area name
      * @param string $area
-     * @param int $level [optional]
-     * @param int $online [optional]
+     * @param int    $level  [optional]
+     * @param int    $online [optional]
      * @return array
-     *         List of assiziative arrays like
-     *         <pre>
-     *         $arr[] = array(
-     *             'location' => location xml path
-     *             'caption' => The tanslation of location from XML file
-     *             'name' => area name for sub navigation item
-     *             'menulesss' => Menuless state
-     *         );
-     *         </pre>
+     *                       List of assiziative arrays like
+     *                       <pre>
+     *                       $arr[] = array(
+     *                       'location' => location xml path
+     *                       'caption' => The tanslation of location from XML file
+     *                       'name' => area name for sub navigation item
+     *                       'menulesss' => Menuless state
+     *                       );
+     *                       </pre>
+     * @throws cDbException
+     * @throws cException
      */
     public function getSubnavigationsByAreaName($area, $level = 1, $online = 1) {
         global $cfg;
@@ -140,12 +148,14 @@ class cApiNavSubCollection extends ItemCollection {
  * @subpackage GenericDB_Model
  */
 class cApiNavSub extends Item {
-
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;

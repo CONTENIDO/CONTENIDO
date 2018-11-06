@@ -215,7 +215,7 @@ VALID UNTIL: %s
      *
      * @param bool $htmlcomment
      *         True debugging or false.
-     * @return void|string
+     * @return string
      *         Htmlcomment flag or void
      */
     public function htmlComment($htmlcomment) {
@@ -274,17 +274,17 @@ VALID UNTIL: %s
      *         Information about cache if caching is enabled, otherwise nothing.
      */
     public function getInfo() {
-        if (!$this->_bEnableCaching) {
-            return;
+        if ($this->_bEnableCaching) {
+            return $this->_sDebugMsg;
         }
-
-        return $this->_sDebugMsg;
     }
 
     /**
      * Starts the cache process.
      *
      * @return bool|string
+     * 
+     * @throws cInvalidArgumentException
      */
     protected function _start() {
         $id = $this->_sID;
@@ -310,7 +310,9 @@ VALID UNTIL: %s
      * content is found.
      *
      * @param int $iPageStartTime [optional]
-     *         Optional start time, e.g. start time of main script
+     *                            Optional start time, e.g. start time of main script
+     *
+     * @throws cInvalidArgumentException
      */
     public function start($iPageStartTime = NULL) {
         if (!$this->_bEnableCaching) {
@@ -354,6 +356,8 @@ VALID UNTIL: %s
 
     /**
      * Handles ending of PEAR caching.
+     *
+     * @throws cInvalidArgumentException
      */
     public function end() {
         if (!$this->_bEnableCaching) {
@@ -378,6 +382,8 @@ VALID UNTIL: %s
      *
      * This is nesessary to delete cached articles, if they are changed on
      * backend.
+     *
+     * @throws cInvalidArgumentException
      */
     public function removeFromCache() {
         // set cache object and unique id
@@ -439,45 +445,48 @@ VALID UNTIL: %s
  * @package Core
  * @subpackage Cache
  */
-class cOutputCacheHandler extends cOutputCache {
-
+class cOutputCacheHandler extends cOutputCache
+{
     /**
      * Constructor to create an instance of this class.
      *
      * Does some checks and sets the configuration of cache object.
      *
      * @param array $aConf
-     *         Configuration of caching as follows:
-     *         - $a['excludecontenido'] bool
-     *             don't cache output, if we have a CONTENIDO variable,
-     *             e.g. on calling frontend preview from backend
-     *         - $a['enable'] bool
-     *             activate caching of frontend output
-     *         - $a['debug'] bool
-     *             compose debuginfo (hit/miss and execution time of caching)
-     *         - $a['infotemplate'] string
-     *             debug information template
-     *         - $a['htmlcomment'] bool
-     *             add a html comment including several debug messages to output
-     *         - $a['lifetime'] int
-     *             lifetime in seconds to cache output
-     *         - $a['cachedir'] string
-     *             directory where cached content is to store.
-     *         - $a['cachegroup'] string
-     *             cache group, will be a subdirectory inside cachedir
-     *         - $a['cacheprefix'] string
-     *             add prefix to stored filenames
-     *         - $a['idoptions'] array
-     *             several variables to create a unique id,
-     *             if the output depends on them. e.g.
-     *             array(
-     *                 'uri' => $_SERVER['REQUEST_URI'],
-     *                 'post' => $_POST, 'get' => $_GET
-     *             )
-     * @param cDb $db
-     *         CONTENIDO database object
-     * @param int $iCreateCode [optional]
-     *         Flag of createcode state from table con_cat_art
+     *                           Configuration of caching as follows:
+     *                           - $a['excludecontenido'] bool
+     *                           don't cache output, if we have a CONTENIDO variable,
+     *                           e.g. on calling frontend preview from backend
+     *                           - $a['enable'] bool
+     *                           activate caching of frontend output
+     *                           - $a['debug'] bool
+     *                           compose debuginfo (hit/miss and execution time of caching)
+     *                           - $a['infotemplate'] string
+     *                           debug information template
+     *                           - $a['htmlcomment'] bool
+     *                           add a html comment including several debug messages to output
+     *                           - $a['lifetime'] int
+     *                           lifetime in seconds to cache output
+     *                           - $a['cachedir'] string
+     *                           directory where cached content is to store.
+     *                           - $a['cachegroup'] string
+     *                           cache group, will be a subdirectory inside cachedir
+     *                           - $a['cacheprefix'] string
+     *                           add prefix to stored filenames
+     *                           - $a['idoptions'] array
+     *                           several variables to create a unique id,
+     *                           if the output depends on them. e.g.
+     *                           array(
+     *                           'uri' => $_SERVER['REQUEST_URI'],
+     *                           'post' => $_POST, 'get' => $_GET
+     *                           )
+     * @param cDb   $db
+     *                           CONTENIDO database object
+     * @param int   $iCreateCode [optional]
+     *                           Flag of createcode state from table con_cat_art
+     *                           
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($aConf, $db, $iCreateCode = NULL) {
         // check if caching is allowed on CONTENIDO variable
@@ -541,8 +550,12 @@ class cOutputCacheHandler extends cOutputCache {
      * @param mixed $iCreateCode
      *         State of create code (0 or 1).
      *         The state will be loaded from database if value is NULL
+     *
      * @return bool
      *         True if code is to create, otherwise false.
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     protected function _isCode2Create($iCreateCode) {
         if ($this->_bEnableCaching == false) {

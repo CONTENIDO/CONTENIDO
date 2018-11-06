@@ -103,14 +103,15 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *
      * @param string $rawSettings
      *         the raw settings in an XML structure or as plaintext
-     * @param int $id
+     * @param int    $id
      *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
-     * @param array $contentTypes
+     * @param array  $contentTypes
      *         array containing the values of all content types
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-        // TODO is this required?
-        global $area;
 
         // set props
         $this->_type = 'CMS_IMGEDITOR';
@@ -156,20 +157,21 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
 
         // Define settings for this content type as an array
         $this->_settings = array();
-
     }
 
     /**
      * Return the raw settings of a content type
      *
      * @param string $contentTypeName
-     *         Content type name
-     * @param int $id
-     *         ID of the content type
-     * @param array $contentTypes
-     *         Content type array
-     * @param bool $editable [optional]
+     *                         Content type name
+     * @param int    $id
+     *                         ID of the content type
+     * @param array  $contentTypes
+     *                         Content type array
+     * @param bool   $editable [optional]
      * @return mixed
+     * @throws cDbException
+     * @throws cException
      */
     protected function _getRawSettings($contentTypeName, $id, array $contentTypes, $editable = false) {
         $cfg = cRegistry::getConfig();
@@ -298,6 +300,9 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     /**
      * Stores all values from the $_POST array in the $_settings attribute
      * (associative array) and saves them in the database (XML).
+     *
+     * @throws cDbException
+     * @throws cException
      */
     protected function _storeSettings() {
         // prepare the filename and dirname
@@ -376,6 +381,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         escaped HTML code which should be shown if content type is edited
+     * @throws cInvalidArgumentException
      */
     public function generateEditCode() {
         // construct the top code of the template
@@ -709,6 +715,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *         the dirname of the image
      * @return string
      *         JSON-encoded array with meta data
+     * @throws cDbException
+     * @throws cException
      */
     public function getImageMeta($filename, $dirname) {
         $upload = new cApiUpload();
@@ -758,6 +766,9 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *         the path to which the file should be uploaded
      * @return string
      *         the filename of the uploaded file
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function uplupload($path) {
         if (count($_FILES) === 1) {

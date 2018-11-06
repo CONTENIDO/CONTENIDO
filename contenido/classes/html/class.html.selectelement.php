@@ -37,7 +37,7 @@ class cHTMLSelectElement extends cHTMLFormElement {
      *
      * @param string $name
      *         Name of the element
-     * @param int $width [optional]
+     * @param string $width [optional]
      *         Width of the select element
      * @param string $id [optional]
      *         ID of the element

@@ -87,10 +87,13 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      *
      * @param string $rawSettings
      *         the raw settings in an XML structure or as plaintext
-     * @param int $id
+     * @param int    $id
      *         ID of the content type, e.g. 3 if CMS_TEASER[3] is used
-     * @param array $contentTypes
+     * @param array  $contentTypes
      *         array containing the values of all content types
+     *
+     * @throws cDbException
+     * @throws cException
      */
     function __construct($rawSettings, $id, array $contentTypes) {
 
@@ -216,6 +219,8 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      *
      * @todo unify return values
      * @return void|string|array
+     * @throws cDbException
+     * @throws cException
      */
     public function getConfiguredFiles() {
         $files = array();
@@ -335,6 +340,9 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         generated code
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function generateFileListCode() {
         if ($this->_settings['filelist_style'] === '') {
@@ -555,6 +563,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         escaped HTML code which should be shown if content type is edited
+     * @throws cInvalidArgumentException
      */
     public function generateEditCode() {
         $template = new cTemplate();
@@ -635,6 +644,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         the code for the directories tab
+     * @throws cInvalidArgumentException
      */
     private function _generateTabDirectories() {
         // wrapper containing content of directories tab
@@ -664,6 +674,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         the code for the general link tab
+     * @throws cInvalidArgumentException
      */
     private function _generateTabGeneral() {
         // wrapper containing content of general tab
@@ -766,6 +777,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         HTML code showing a list of meta data
+     * @throws cInvalidArgumentException
      */
     private function _generateMetaDataList() {
         $template = new cTemplate();
@@ -913,6 +925,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         the code for the manual link tab
+     * @throws cInvalidArgumentException
      */
     private function _generateTabManual() {
         // wrapper containing content of manual tab
@@ -1080,8 +1093,10 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      *
      * @param array $dirs
      *         directory information
+     *
      * @return string
      *         HTML code showing a directory list
+     * @throws cInvalidArgumentException
      */
     public function generateAjaxDirectoryList(array $dirs) {
         $template = new cTemplate();

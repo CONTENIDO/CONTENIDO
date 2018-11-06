@@ -36,9 +36,11 @@ class PimPluginRelationsCollection extends ItemCollection {
     /**
      * Create a new plugin
      *
-     * @param $idItem int Is equivalent to idarea or idnavm
+     * @param $idItem   int Is equivalent to idarea or idnavm
      * @param $idPlugin int Plugin Id
-     * @param $type string Relation to tables *_area and *_nav_main
+     * @param $type     string Relation to tables *_area and *_nav_main
+     *
+     * @return Item
      */
     public function create($idItem, $idPlugin, $type) {
 

@@ -59,7 +59,9 @@ class cSession {
      * Starts the session.
      *
      * @param string $prefix [optional]
-     *         The prefix for the session variables
+     *                       The prefix for the session variables
+     *
+     * @throws cDbException
      */
     public function __construct($prefix = 'backend') {
     	$cfg = cRegistry::getConfig();
@@ -320,11 +322,12 @@ class cSession {
  * @subpackage Session
  */
 class cFrontendSession extends cSession {
-
     /**
      * Constructor to create an instance of this class.
      *
      * Starts the session and initilializes the class.
+     *
+     * @throws cDbException
      */
     public function __construct() {
         $client = cRegistry::getClientId();

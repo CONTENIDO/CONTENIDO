@@ -164,7 +164,10 @@ class cSearchIndex extends cSearchBaseAbstract {
      * Set object properties.
      *
      * @param cDb $db [optional]
-     *         CONTENIDO database object
+     *                CONTENIDO database object
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function __construct($db = NULL) {
         parent::__construct($db);
@@ -175,26 +178,29 @@ class cSearchIndex extends cSearchBaseAbstract {
     /**
      * Start indexing the article.
      *
-     * @param int $idart
-     *         Article Id
-     * @param array $aContent
-     *         The complete content of an article specified by its content types.
-     *         It looks like:
-     *         Array (
-     *             [CMS_HTMLHEAD] => Array (
-     *                 [1] => Herzlich Willkommen...
-     *                 [2] => ...auf Ihrer Website!
-     *             )
-     *             [CMS_HTML] => Array (
-     *                 [1] => Die Inhalte auf dieser Website ...
-     *             )
-     *         )
-     * @param string $place [optional]
-     *         The field where to store the index information in db.
-     * @param array $cms_options [optional]
-     *         One can specify explicitly cms types which should not be indexed.
-     * @param array $aStopwords [optional]
-     *         Array with words which should not be indexed.
+     * @param int    $idart
+     *                            Article Id
+     * @param array  $aContent
+     *                            The complete content of an article specified by its content types.
+     *                            It looks like:
+     *                            Array (
+     *                            [CMS_HTMLHEAD] => Array (
+     *                            [1] => Herzlich Willkommen...
+     *                            [2] => ...auf Ihrer Website!
+     *                            )
+     *                            [CMS_HTML] => Array (
+     *                            [1] => Die Inhalte auf dieser Website ...
+     *                            )
+     *                            )
+     * @param string $place       [optional]
+     *                            The field where to store the index information in db.
+     * @param array  $cms_options [optional]
+     *                            One can specify explicitly cms types which should not be indexed.
+     * @param array  $aStopwords  [optional]
+     *                            Array with words which should not be indexed.
+     *
+     * @throws cInvalidArgumentException
+     * @throws cDbException
      */
     public function start($idart, $aContent, $place = 'auto', $cms_options = array(), $aStopwords = array()) {
         if (!is_int((int) $idart) || $idart < 0) {
@@ -235,6 +241,8 @@ class cSearchIndex extends cSearchBaseAbstract {
      *     [dieser] => CMS_HTML-1
      *     [website] => CMS_HTML-1 CMS_HTML-1 CMS_HTMLHEAD-2
      * )
+     *
+     * @throws cInvalidArgumentException
      */
     public function createKeywords() {
         $tmp_keys = array();
@@ -296,6 +304,9 @@ class cSearchIndex extends cSearchBaseAbstract {
     /**
      * Generate index_string from index structure and save keywords.
      * The index_string looks like "&12=2(CMS_HTMLHEAD-1,CMS_HTML-1)".
+     *
+     * @throws cInvalidArgumentException
+     * @throws cDbException
      */
     public function saveKeywords() {
         $tmp_count = array();
@@ -336,6 +347,9 @@ class cSearchIndex extends cSearchBaseAbstract {
     /**
      * If keywords don't occur in the article anymore,
      * update index_string and delete keyword if necessary.
+     *
+     * @throws cInvalidArgumentException
+     * @throws cDbException
      */
     public function deleteKeywords() {
         foreach ($this->_keywordsDel as $key_del) {
@@ -357,6 +371,9 @@ class cSearchIndex extends cSearchBaseAbstract {
 
     /**
      * Get the keywords of an article.
+     *
+     * @throws cInvalidArgumentException
+     * @throws cDbException
      */
     public function getKeywords() {
         $keys = implode("','", array_keys($this->_keywords));
@@ -502,6 +519,9 @@ class cSearchIndex extends cSearchBaseAbstract {
 
     /**
      * Set the cms types.
+     *
+     * @throws cInvalidArgumentException
+     * @throws cDbException
      */
     public function setContentTypes() {
         $sql = "SELECT type, idtype FROM " . $this->cfg['tab']['type'] . ' ';

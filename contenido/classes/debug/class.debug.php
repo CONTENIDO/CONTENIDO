@@ -121,6 +121,8 @@ class cDebug {
      * @param string $message
      *         Message to display.
      *         NOTE: You can use buildStackString to show stacktraces
+     *
+     * @throws cInvalidArgumentException
      */
     public static function out($message) {
         self::getDebugger()->out($message);
@@ -130,10 +132,11 @@ class cDebug {
      * Adds a variable to the debugger.
      * This variable will be watched.
      *
-     * @param mixed $var
-     *         A variable or an object
+     * @param mixed  $var
+     *                      A variable or an object
      * @param string $label [optional]
-     *         An optional description for the variable
+     *                      An optional description for the variable
+     * @throws cInvalidArgumentException
      */
     public static function add($var, $label = '') {
         self::getDebugger()->add($var, $label);
@@ -141,6 +144,8 @@ class cDebug {
 
     /**
      * Prints the cached debug messages to the screen
+     *
+     * @throws cInvalidArgumentException
      */
     public static function showAll() {
         self::getDebugger()->showAll();

@@ -21,9 +21,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiClientLanguageCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -40,7 +41,11 @@ class cApiClientLanguageCollection extends ItemCollection {
      *
      * @param int $iClient
      * @param int $iLang
+     *
      * @return cApiClientLanguage
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($iClient, $iLang) {
         $oItem = $this->createNewItem();
@@ -53,11 +58,12 @@ class cApiClientLanguageCollection extends ItemCollection {
     /**
      * Checks if a language is associated with a given list of clients.
      *
-     * @param int $iLang
+     * @param int   $iLang
      *         Language id which should be checked
-     * @param array $aClients
-     *         List of clients to check
+     * @param array $aClientIds
+     *
      * @return bool
+     * @throws cDbException
      */
     public function hasLanguageInClients($iLang, array $aClientIds) {
         $iLang = (int) $iLang;
@@ -71,6 +77,7 @@ class cApiClientLanguageCollection extends ItemCollection {
      *
      * @param int $client
      * @return array
+     * @throws cDbException
      */
     public function getLanguagesByClient($client) {
         $list = array();
@@ -89,6 +96,7 @@ class cApiClientLanguageCollection extends ItemCollection {
      * @return array
      *         List of languages where the key is the language id and value the
      *         language name
+     * @throws cDbException
      */
     public function getLanguageNamesByClient($client) {
         global $cfg;
@@ -116,6 +124,7 @@ class cApiClientLanguageCollection extends ItemCollection {
      *         List of languages where the key is the language id and value an
      *         assoziative array merged by fields from language and client
      *         language table
+     * @throws cDbException
      */
     public function getAllLanguagesByClient($client) {
         global $cfg;
@@ -139,6 +148,7 @@ class cApiClientLanguageCollection extends ItemCollection {
      *
      * @param int $client
      * @return int NULL
+     * @throws cDbException
      */
     public function getFirstLanguageIdByClient($client) {
         global $cfg;
@@ -176,14 +186,17 @@ class cApiClientLanguage extends Item {
     /**
      * Constructor to create an instance of this class.
      *
-     * @param int $iIdClientsLang [optional]
-     *         If specified, load item
-     * @param int $iIdClient [optional]
-     *         If idclient and idlang specified, load item;
-     *         ignored, if idclientslang specified
-     * @param int $iIdLang [optional]
-     *         If idclient and idlang specified, load item;
-     *         ignored, if idclientslang specified
+     * @param bool $iIdClientsLang [optional]
+     *                             If specified, load item
+     * @param bool $iIdClient      [optional]
+     *                             If idclient and idlang specified, load item;
+     *                             ignored, if idclientslang specified
+     * @param bool $iIdLang        [optional]
+     *                             If idclient and idlang specified, load item;
+     *                             ignored, if idclientslang specified
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($iIdClientsLang = false, $iIdClient = false, $iIdLang = false) {
         global $cfg;
@@ -214,6 +227,9 @@ class cApiClientLanguage extends Item {
      *
      * @param int $iIdClientsLang
      * @return bool
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public function loadByPrimaryKey($iIdClientsLang) {
         if (parent::loadByPrimaryKey($iIdClientsLang) == true) {
@@ -228,15 +244,20 @@ class cApiClientLanguage extends Item {
      *
      * @todo Use parents method
      * @todo should return return value as overwritten method
-     * @see Item::setProperty()
+     * @see  Item::setProperty()
+     *
      * @param mixed $mType
-     *         Type of the data to store (arbitary data)
+     *                      Type of the data to store (arbitary data)
      * @param mixed $mName
-     *         Entry name
+     *                      Entry name
      * @param mixed $mValue
-     *         Value
-     * @param int $client [optional]
-     *         Client id
+     *                      Value
+     * @param int   $client [optional]
+     *                      Client id
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function setProperty($mType, $mName, $mValue, $client = 0) {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
@@ -249,13 +270,17 @@ class cApiClientLanguage extends Item {
      * @todo Use parents method @see Item::getProperty()
      *
      * @param mixed $mType
-     *         Type of the data to get
+     *                      Type of the data to get
      * @param mixed $mName
-     *         Entry name
-     * @param int $client [optional]
-     *         Client id (not used, it's declared because of PHP strict warnings)
+     *                      Entry name
+     * @param int   $client [optional]
+     *                      Client id (not used, it's declared because of PHP strict warnings)
+     *
      * @return mixed
-     *         Value
+     *                      Value
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public function getProperty($mType, $mName, $client = 0) {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
@@ -269,11 +294,14 @@ class cApiClientLanguage extends Item {
      *       different parameter!
      *
      * @param int $idprop
-     *         Id of property
+     *                    Id of property
      * @param int $p2
-     *         Not used, is here to prevent PHP Strict warnings
+     *                    Not used, is here to prevent PHP Strict warnings
      * @param int $client [optional]
-     *         Client id (not used, it's declared because of PHP strict warnings)
+     *                    Client id (not used, it's declared because of PHP strict warnings)
+     *                    
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function deleteProperty($idprop, $p2 = NULL, $client = 0) {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
@@ -285,8 +313,12 @@ class cApiClientLanguage extends Item {
      *
      * @param mixed $mType
      *         Type of the data to get
+     *
      * @return array
      *         Assoziative array
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public function getPropertiesByType($mType) {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
@@ -300,6 +332,8 @@ class cApiClientLanguage extends Item {
      *       empty array instead of false
      * @return array|false
      *         array
+     * @throws cDbException
+     * @throws cException
      */
     public function getProperties() {
         $itemtype = $this->db->escape($this->getPrimaryKeyName());

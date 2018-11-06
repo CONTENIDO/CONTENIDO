@@ -197,7 +197,7 @@ class Swift_KeyCache_DiskKeyCache implements Swift_KeyCache
      *
      * @param string                $nsKey
      * @param string                $itemKey
-     * @param Swift_InputByteStream $is      to write the data to
+     * @param Swift_InputByteStream $is to write the data to
      */
     public function exportToByteStream($nsKey, $itemKey, Swift_InputByteStream $is)
     {

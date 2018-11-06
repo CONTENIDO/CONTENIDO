@@ -145,8 +145,10 @@ class cModuleTemplateHandler extends cModuleHandler {
     /**
      * Constructor to create an instance of this class.
      *
-     * @param int $idmod
+     * @param int      $idmod
      * @param cGuiPage $page
+     *
+     * @throws cException
      */
     public function __construct($idmod, $page) {
         parent::__construct($idmod);
@@ -300,6 +302,8 @@ class cModuleTemplateHandler extends cModuleHandler {
 
     /**
      * Save the code in the file
+     *
+     * @throws cException
      */
     private function _save() {
         // if user selected other file display it
@@ -328,7 +332,7 @@ class cModuleTemplateHandler extends cModuleHandler {
     /**
      * rename a file in template directory
      *
-     * @throws cException if rename was not successfull
+     * @throws cException if rename was not successful
      */
     private function _rename() {
         // trigger a smarty cache rebuild for old and new template file name
@@ -351,6 +355,9 @@ class cModuleTemplateHandler extends cModuleHandler {
 
     /**
      * Create new file
+     *
+     * @throws cInvalidArgumentException
+     * @throws cException
      */
     private function _new() {
 
@@ -376,6 +383,8 @@ class cModuleTemplateHandler extends cModuleHandler {
 
     /**
      * Delete a file
+     *
+     * @throws cException
      */
     private function _delete() {
         // trigger a smarty cache rebuild for template that should be deleted
@@ -422,11 +431,15 @@ class cModuleTemplateHandler extends cModuleHandler {
     /**
      * Have the user permissions for the actions.
      *
-     * @param cPermission $perm
+     * @param cPermission      $perm
      * @param cGuiNotification $notification
-     * @param string $action
+     * @param string           $action
+     *
      * @return int
      *         if user doesn't have permission return -1
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     private function _havePermission($perm, $notification, $action) {
         switch ($action) {
@@ -625,12 +638,15 @@ class cModuleTemplateHandler extends cModuleHandler {
     /**
      * Display the form and evaluate the action and excute the action.
      *
-     * @param cPermission $perm
+     * @param cPermission      $perm
      * @param cGuiNotification $notification
-     * @param string $belang
+     * @param string           $belang
      *         Backend language (not sure about this...)
-     * @param bool $readOnly
+     * @param bool             $readOnly
      *         render in read only mode
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function display($perm, $notification, $belang, $readOnly) {
         $myAction = $this->_getAction();

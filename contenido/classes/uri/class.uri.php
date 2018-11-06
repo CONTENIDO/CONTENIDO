@@ -50,6 +50,8 @@ class cUri {
      *
      * Gets the UriBuilder configuration and creates an UriBuilder
      * instance.
+     *
+     * @throws cException
      */
     private function __construct() {
         $this->_sUriBuilderName = cUriBuilderConfig::getUriBuilderName();
@@ -149,14 +151,16 @@ class cUri {
      * Creates a URL used to redirect to frontend page.
      *
      * @param mixed $param
-     *         Either url or assoziative array containing parameter:
-     *         - url: front_content.php?idcat=12&lang=1
-     *         - params: array('idcat' => 12, 'lang' => 1)
-     *         Required values depend on used UriBuilder, but a must have is 'lang'.
+     *                       Either url or assoziative array containing parameter:
+     *                       - url: front_content.php?idcat=12&lang=1
+     *                       - params: array('idcat' => 12, 'lang' => 1)
+     *                       Required values depend on used UriBuilder, but a must have is 'lang'.
      * @param array $aConfig [optional]
-     *         If not set, cUriBuilderConfig::getConfig() will be used by the UriBuilder.
+     *                       If not set, cUriBuilderConfig::getConfig() will be used by the UriBuilder.
+     *
      * @return string
      *         The redirect Url build by cUriBuilder.
+     * @throws cInvalidArgumentException
      */
     public function buildRedirect($param, array $aConfig = array()) {
         $url = $this->build($param, true, $aConfig);

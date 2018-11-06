@@ -72,13 +72,16 @@ class cUriBuilderCustomPath extends cUriBuilder {
      * If level is not set, level 0 will be used as default.
      *
      * @todo Somehow get around using prCreateURLNameLocationString()
-     * @throws cInvalidArgumentException
+     *
      * @param array $aParams
-     *         Required keys are: idcat, level, lang and at least one
-     *         custom key.
-     * @param bool $bUseAbsolutePath [optional]
-     * @param array $aConfig [optional]
-     *         If not set, will use UriBuilderConfig::getConfig()
+     *                                Required keys are: idcat, level, lang and at least one
+     *                                custom key.
+     * @param bool  $bUseAbsolutePath [optional]
+     * @param array $aConfig          [optional]
+     *                                If not set, will use UriBuilderConfig::getConfig()
+     *
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array()) {
         if (!isset($aParams['idcat'])) {

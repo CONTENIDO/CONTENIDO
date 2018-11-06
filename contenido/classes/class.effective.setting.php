@@ -73,9 +73,10 @@ class cEffectiveSetting {
 
     /**
      * Loads all client, clientlanguage an system properties into an static array.
-     *
      * The order is: System => Client => Client (language)
-     *
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     private static function _loadSettings() {
 		if (!isset(self::$_loaded[self::_getKeyPrefix()])) {
@@ -152,13 +153,17 @@ class cEffectiveSetting {
      *       in case of not existing or empty setting.
      *
      * @param string $type
-     *         The type of the item
+     *                        The type of the item
      * @param string $name
-     *         The name of the item
+     *                        The name of the item
      * @param string $default [optional]
-     *         default value
+     *                        default value
+     *
      * @return bool|string
      *         Setting value or false
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public static function get($type, $name, $default = '') {
         self::_loadSettings();
@@ -197,8 +202,12 @@ class cEffectiveSetting {
      *
      * @param string $type
      *         The type of the item
+     *
      * @return array
      *         Assoziative array like $arr[name] = value
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public static function getByType($type) {
         self::_loadSettings();

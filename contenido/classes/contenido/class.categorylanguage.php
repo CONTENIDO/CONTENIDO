@@ -20,12 +20,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiCategoryLanguageCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
      *
-     * @param string $select [optional]
-     *         where clause to use for selection (see ItemCollection::select())
+     * @param bool $select [optional]
+     *                     where clause to use for selection (see ItemCollection::select())
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function __construct($select = false) {
         global $cfg;
@@ -45,20 +47,24 @@ class cApiCategoryLanguageCollection extends ItemCollection {
     /**
      * Creates a category language entry.
      *
-     * @param int $idcat
-     * @param int $idlang
+     * @param int    $idcat
+     * @param int    $idlang
      * @param string $name
      * @param string $urlname
-     * @param string $urlpath [optional]
-     * @param int $idtplcfg [optional]
-     * @param int $visible [optional]
-     * @param int $public [optional]
-     * @param int $status [optional]
-     * @param string $author [optional]
-     * @param int $startidartlang [optional]
-     * @param string $created [optional]
-     * @param string $lastmodified [optional]
+     * @param string $urlpath        [optional]
+     * @param int    $idtplcfg       [optional]
+     * @param int    $visible        [optional]
+     * @param int    $public         [optional]
+     * @param int    $status         [optional]
+     * @param string $author         [optional]
+     * @param int    $startidartlang [optional]
+     * @param string $created        [optional]
+     * @param string $lastmodified   [optional]
+     *
      * @return cApiCategoryLanguage
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($idcat, $idlang, $name, $urlname, $urlpath = '', $idtplcfg = 0, $visible = 0, $public = 0, $status = 0, $author = '', $startidartlang = 0, $created = '', $lastmodified = '') {
         global $auth;
@@ -98,6 +104,7 @@ class cApiCategoryLanguageCollection extends ItemCollection {
      * @param int $idcat
      * @param int $idlang
      * @return int
+     * @throws cDbException
      */
     public function getStartIdartlangByIdcatAndIdlang($idcat, $idlang) {
         $sql = "SELECT startidartlang FROM `" . $this->table . "` WHERE idcat = " . (int) $idcat . " AND idlang = " . (int) $idlang . " AND startidartlang != 0";
@@ -112,6 +119,7 @@ class cApiCategoryLanguageCollection extends ItemCollection {
      * @param int $idcat
      * @param int $idlang
      * @return int
+     * @throws cDbException
      */
     public function getStartIdartByIdcatAndIdlang($idcat, $idlang) {
         global $cfg;
@@ -124,11 +132,12 @@ class cApiCategoryLanguageCollection extends ItemCollection {
      * Checks if passed idartlang is a start article.
      *
      * @param int $idartlang
-     * @param int $idcat [optional]
-     *         Check category id additionally
+     * @param int $idcat  [optional]
+     *                    Check category id additionally
      * @param int $idlang [optional]
-     *         Check language id additionally
+     *                    Check language id additionally
      * @return bool
+     * @throws cDbException
      */
     public function isStartArticle($idartlang, $idcat = NULL, $idlang = NULL) {
         $where = 'startidartlang = ' . (int) $idartlang;
@@ -152,13 +161,16 @@ class cApiCategoryLanguageCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiCategoryLanguage extends Item {
-
+class cApiCategoryLanguage extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -176,8 +188,11 @@ class cApiCategoryLanguage extends Item {
      *         Category id
      * @param int $idlang
      *         Language id
+     *
      * @return bool
      *         true on success, otherwise false
+     * 
+     * @throws cException
      */
     public function loadByCategoryIdAndLanguageId($idcat, $idlang) {
         $aProps = array(
@@ -232,7 +247,12 @@ class cApiCategoryLanguage extends Item {
      * Assigns the passed template to the category language item.
      *
      * @param int $idtpl
+     * 
      * @return cApiTemplateConfiguration
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function assignTemplate($idtpl) {
         $oTplConfColl = new cApiTemplateConfigurationCollection();
@@ -278,6 +298,8 @@ class cApiCategoryLanguage extends Item {
      * Updates lastmodified field and calls parents store method
      *
      * @return bool
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function store() {
         $this->set('lastmodified', date('Y-m-d H:i:s'));
@@ -288,9 +310,11 @@ class cApiCategoryLanguage extends Item {
      * Returns the link to the current object.
      *
      * @param int $changeLangId [optional]
-     *         change language id for URL (optional)
+     *                          change language id for URL (optional)
+     *
      * @return string
      *         link
+     * @throws cInvalidArgumentException
      */
     public function getLink($changeLangId = 0) {
         if ($this->isLoaded() === false) {

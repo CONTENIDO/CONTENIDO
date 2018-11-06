@@ -21,9 +21,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiInUseCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -39,13 +40,17 @@ class cApiInUseCollection extends ItemCollection {
      *
      * @param string $type
      *         Specifies the type to mark.
-     * @param mixed $objectid
+     * @param mixed  $objectid
      *         Specifies the object ID
      * @param string $session
      *         Specifies the session for which the "in use" mark is valid
      * @param string $user
      *         Specifies the user which requested the in-use flag
+     *
      * @return cApiInUse|NULL
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function markInUse($type, $objectid, $session, $user) {
         $type = $type;
@@ -73,10 +78,14 @@ class cApiInUseCollection extends ItemCollection {
      *
      * @param string $type
      *         Specifies the type to de-mark.
-     * @param mixed $objectid
+     * @param mixed  $objectid
      *         Specifies the object ID
      * @param string $session
      *         Specifies the session for which the "in use" mark is valid
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function removeMark($type, $objectid, $session) {
         $type = $this->escape($type);
@@ -99,6 +108,10 @@ class cApiInUseCollection extends ItemCollection {
      *         Specifies the type to de-mark.
      * @param string $session
      *         Specifies the session for which the "in use" mark is valid
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function removeTypeMarks($type, $session) {
         $type = $this->escape($type);
@@ -120,6 +133,10 @@ class cApiInUseCollection extends ItemCollection {
      *         Specifies the type to de-mark.
      * @param string $itemid
      *         Specifies the item
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function removeItemMarks($type, $itemid) {
         $type = $this->escape($type);
@@ -139,6 +156,10 @@ class cApiInUseCollection extends ItemCollection {
      *
      * @param string $userId
      *         Specifies the user
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function removeUserMarks($userId) {
         $userId = $this->escape($userId);
@@ -153,6 +174,9 @@ class cApiInUseCollection extends ItemCollection {
 
     /**
      * Removes all inuse entries which are older than the inuse timeout
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function removeOldMarks() {
         $cfg = cRegistry::getConfig();
@@ -172,6 +196,10 @@ class cApiInUseCollection extends ItemCollection {
      *
      * @param string $session
      *         Specifies the session for which the "in use" marks should be removed
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function removeSessionMarks($session) {
         $session = $this->escape($session);
@@ -189,10 +217,12 @@ class cApiInUseCollection extends ItemCollection {
      *
      * @param string $type
      *         Specifies the type to de-mark.
-     * @param mixed $objectid
+     * @param mixed  $objectid
      *         Specifies the object ID
      * @return cApiInUse bool
      *         false if it's not in use or returns the object if it is.
+     * @throws cDbException
+     * @throws cException
      */
     public function checkMark($type, $objectid) {
         $type = $this->escape($type);
@@ -215,22 +245,25 @@ class cApiInUseCollection extends ItemCollection {
      * $idmod);
      *
      * @param string $type
-     *         Specifies the type to de-mark.
-     * @param mixed $objectid
-     *         Specifies the object ID
-     * @param bool $returnWarning [optional]
-     *         If true, also returns an error message if in use
+     *                                Specifies the type to de-mark.
+     * @param mixed  $objectid
+     *                                Specifies the object ID
+     * @param bool   $returnWarning   [optional]
+     *                                If true, also returns an error message if in use
      * @param string $warningTemplate [optional]
-     *         String to fill with the template (%s as placeholder, first %s is
-     *         the username, second is the real name)
-     * @param bool $allowOverride [optional]
-     *         True if the user can override the lock
-     * @param string $location [optional]
-     *         Value to append to the override lock button
+     *                                String to fill with the template (%s as placeholder, first %s is
+     *                                the username, second is the real name)
+     * @param bool   $allowOverride   [optional]
+     *                                True if the user can override the lock
+     * @param string $location        [optional]
+     *                                Value to append to the override lock button
      * @return bool array
-     *         returnWarning is false, returns a bool value wether the object
-     *         is locked. If returnWarning is true, returns a 2-item array
-     *         (bool inUse, string errormessage).
+     *                                returnWarning is false, returns a bool value wether the object
+     *                                is locked. If returnWarning is true, returns a 2-item array
+     *                                (bool inUse, string errormessage).
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function checkAndMark($type, $objectid, $returnWarning = false, $warningTemplate = '', $allowOverride = false, $location = '') {
         global $sess, $auth, $notification, $area, $frame, $perm;
@@ -284,13 +317,16 @@ class cApiInUseCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiInUse extends Item {
-
+class cApiInUse extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *                   
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;

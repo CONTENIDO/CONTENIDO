@@ -21,14 +21,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage ContentType
  */
 abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
-
     /**
      * Generates the encoded code for the tab menu.
      *
      * @param array $tabs
      *         associative array mapping the tab IDs to the tab names
+     *
      * @return string
      *         the encoded code for the tab menu
+     * @throws cInvalidArgumentException
      */
     protected function _generateTabMenuCode(array $tabs) {
         $template = new cTemplate();
@@ -49,11 +50,13 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
      *
      * @param string $contentTypeName
      *         Content type name
-     * @param int $id
+     * @param int    $id
      *         ID of the content type
-     * @param array $contentTypes
+     * @param array  $contentTypes
      *         Content type array
+     *
      * @return mixed
+     * @throws cDbException
      * @throws cException
      */
     protected function _getRawSettings($contentTypeName, $id, array $contentTypes) {
@@ -82,6 +85,7 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
      *
      * @return string
      *         the encoded code for the action buttons
+     * @throws cInvalidArgumentException
      */
     protected function _generateActionCode() {
         $template = new cTemplate();

@@ -87,8 +87,10 @@ abstract class cSearchBaseAbstract {
      *
      * @param string $msg
      *         Some text
-     * @param mixed $var
+     * @param mixed  $var
      *         The variable to dump
+     *
+     * @throws cInvalidArgumentException
      */
     protected function _debug($msg, $var) {
         $dump = $msg . ': ';

@@ -21,7 +21,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage ContentType
  */
 class cContentTypeText extends cContentTypeAbstract {
-
     /**
      * Constructor to create an instance of this class.
      *
@@ -29,10 +28,12 @@ class cContentTypeText extends cContentTypeAbstract {
      *
      * @param string $rawSettings
      *         the raw settings in an XML structure or as plaintext
-     * @param int $id
+     * @param int    $id
      *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
-     * @param array $contentTypes
+     * @param array  $contentTypes
      *         array containing the values of all content types
+     *
+     * @throws cDbException
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
 
@@ -69,6 +70,7 @@ class cContentTypeText extends cContentTypeAbstract {
      *
      * @return string
      *         escaped HTML code which should be shown if content type is edited
+     * @throws cInvalidArgumentException
      */
     public function generateEditCode() {
         $script = $this->_getEditJavaScript();
@@ -92,6 +94,7 @@ class cContentTypeText extends cContentTypeAbstract {
      *
      * @return string
      *         the JS code for the content type
+     * @throws cInvalidArgumentException
      */
     protected function _getEditJavaScript() {
         $textbox = new cHTMLTextarea($this->_prefix . '_text_' . $this->_id, '', '', '', $this->_prefix . '_text_' . $this->_id, false, NULL, '', 'edit-textfield edit-' . $this->_prefix . '-textfield');

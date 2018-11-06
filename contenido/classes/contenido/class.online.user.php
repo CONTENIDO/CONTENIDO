@@ -21,12 +21,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiOnlineUserCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
      *
-     * @param string $select [optional]
-     *         where clause to use for selection (see ItemCollection::select())
+     * @param bool $select [optional]
+     *                     where clause to use for selection (see ItemCollection::select())
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function __construct($select = false) {
         global $cfg;
@@ -44,7 +46,11 @@ class cApiOnlineUserCollection extends ItemCollection {
      * 3) Else there is no current user do insert new user
      *
      * @param string $userId [optional]
-     *         Id of user
+     *                       Id of user
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function startUsersTracking($userId = NULL) {
         global $auth;
@@ -72,8 +78,12 @@ class cApiOnlineUserCollection extends ItemCollection {
      *
      * @param string $userId
      *         Id of user
+     *
      * @return bool
      *         Returns true if successful else false
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function insertOnlineUser($userId) {
         $oItem = $this->createNewItem((string) $userId);
@@ -104,6 +114,8 @@ class cApiOnlineUserCollection extends ItemCollection {
      *
      * @return array
      *         Returns array of user-information
+     * @throws cDbException
+     * @throws cException
      */
     public function findAllUser() {
         // todo use $perm
@@ -175,6 +187,8 @@ class cApiOnlineUserCollection extends ItemCollection {
      *         Is the User-Id (get from auth object)
      * @return bool
      *         Returns true if successful, else false
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function updateUser($userId) {
         $oUser = new cApiOnlineUser((string) $userId);
@@ -192,6 +206,8 @@ class cApiOnlineUserCollection extends ItemCollection {
      *
      * @return bool
      *         Returns true if successful else false
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function deleteInactiveUser() {
         global $cfg;
@@ -214,6 +230,7 @@ class cApiOnlineUserCollection extends ItemCollection {
      *
      * @return int
      *         Returns if exists a number of users
+     * @throws cDbException
      */
     public function getNumberOfUsers() {
         $sql = 'SELECT COUNT(*) AS cnt FROM `%s`';
@@ -233,6 +250,9 @@ class cApiOnlineUserCollection extends ItemCollection {
      *         Is the User-Id (get from auth object)
      * @return bool
      *         Returns true if successful, else false
+     * 
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function deleteUser($userId) {
         return $this->delete((string) $userId);
@@ -245,13 +265,16 @@ class cApiOnlineUserCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiOnlineUser extends Item {
-
+class cApiOnlineUser extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *                   
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;

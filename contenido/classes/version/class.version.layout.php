@@ -58,13 +58,16 @@ class cVersionLayout extends cVersion {
      *
      * @param string $iIdLayout
      *         The name of style file
-     * @param array $aCfg
-     * @param array $aCfgClient
-     * @param cDb $oDB
+     * @param array  $aCfg
+     * @param array  $aCfgClient
+     * @param cDb    $oDB
      *         CONTENIDO database object
-     * @param int $iClient
+     * @param int    $iClient
      * @param object $sArea
-     * @param object $iFrame
+     * @param int    $iFrame
+     *
+     * @throws cInvalidArgumentException
+     * @throws cDbException
      */
     public function __construct($iIdLayout, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame) {
         // Init class members in super class
@@ -101,6 +104,8 @@ class cVersionLayout extends cVersion {
     /**
      * Function reads rows variables from table con_layout and init with the
      * class members.
+     *
+     * @throws cDbException
      */
     private function setLayoutTable() {
         if (!is_object($this->oDB)) {

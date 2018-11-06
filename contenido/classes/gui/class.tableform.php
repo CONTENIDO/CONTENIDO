@@ -300,8 +300,10 @@ class cGuiTableForm {
      * it immediately.
      *
      * @param bool $return [optional]
-     *         if true then return markup, else echo immediately
+     *                     if true then return markup, else echo immediately
+     *
      * @return string
+     * @throws cInvalidArgumentException
      */
     public function render($return = true) {
         global $sess, $cfg;
