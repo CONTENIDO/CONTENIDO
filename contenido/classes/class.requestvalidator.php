@@ -205,6 +205,8 @@ class cRequestValidator {
      *
      * @return bool
      *         True if every parameter is fine
+     *
+     * @throws cInvalidArgumentException
      */
     public function checkParams() {
 
@@ -317,6 +319,8 @@ class cRequestValidator {
     /**
      * Writes a log entry containing information about the request which
      * led to the halt of the execution.
+     *
+     * @throws cInvalidArgumentException
      */
     protected function logHackTrial() {
 

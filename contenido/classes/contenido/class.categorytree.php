@@ -21,12 +21,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiCategoryTreeCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
      *
-     * @param string $select [optional]
-     *         where clause to use for selection (see ItemCollection::select())
+     * @param bool $select [optional]
+     *                     where clause to use for selection (see ItemCollection::select())
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function __construct($select = false) {
         global $cfg;
@@ -49,6 +51,7 @@ class cApiCategoryTreeCollection extends ItemCollection {
      *         Client id
      * @param int $lang
      *         Language id
+     *
      * @return array
      *         Category tree structure as follows:
      *         <pre>
@@ -62,6 +65,8 @@ class cApiCategoryTreeCollection extends ItemCollection {
      *         $arr[n]['urlname'] (string)
      *         $arr[n]['is_start'] (int)
      *         </pre>
+     * 
+     * @throws cDbException
      */
     function getCategoryTreeStructureByClientIdAndLanguageId($client, $lang) {
         global $cfg;
@@ -103,12 +108,14 @@ class cApiCategoryTreeCollection extends ItemCollection {
  * @subpackage GenericDB_Model
  */
 class cApiCategoryTree extends Item {
-
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;

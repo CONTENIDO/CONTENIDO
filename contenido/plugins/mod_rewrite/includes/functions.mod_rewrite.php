@@ -474,9 +474,9 @@ function mr_buildGeneratedCode($code) {
         $sseStarttime = getmicrotime();
 
         // anchor hack
-        $code = preg_replace_callback(
-                "/<a([^>]*)href\s*=\s*[\"|\'][\/]#(.?|.+?)[\"|\']([^>]*)>/i", create_function('$arr_matches', 'return ModRewrite::rewriteHtmlAnchor($arr_matches);'), $code
-        );
+        $code = preg_replace_callback("/<a([^>]*)href\s*=\s*[\"|\'][\/]#(.?|.+?)[\"|\']([^>]*)>/i", function($match) {
+            return ModRewrite::rewriteHtmlAnchor($match);
+        }, $code);
 
         // remove fucking tinymce single quote entities:
         $code = str_replace("&#39;", "'", $code);
@@ -491,8 +491,9 @@ function mr_buildGeneratedCode($code) {
 		$baseUri = cApiCecHook::execute("Contenido.Frontend.BaseHrefGeneration", $baseUri);
 
 		// CON-1389 modifier /e is deprecated as of PHP 5.5
-		$code = preg_replace_callback("/([\"|\'|=])upload\/(.?|.+?)([\"|\'|>])/i", create_function('$m', '
-        		return stripslashes($m[1] . "' . $baseUri . 'upload/" . $m[2] . $m[3]);'), $code);
+		$code = preg_replace_callback("/([\"|\'|=])upload\/(.?|.+?)([\"|\'|>])/i", function($match) {
+            return stripslashes($match[1] . $baseUri . 'upload/' . $match[2] . $match[3]);
+        }, $code);
 
         // define some preparations to replace /front_content.php & ./front_content.php
         // against front_content.php, because urls should start with front_content.php
@@ -522,18 +523,18 @@ function mr_buildGeneratedCode($code) {
         // ok let it beginn, start mod rewrite class
         $code = str_replace('"front_content.php"', '"' . mr_buildNewUrl('front_content.php') . '"', $code);
         $code = str_replace("'front_content.php'", "'" . mr_buildNewUrl('front_content.php') . "'", $code);
-        $code = preg_replace_callback(
-                "/([\"|\'|=])front_content\.php(.?|.+?)([\"|\'|>])/i", create_function('$aMatches', 'return $aMatches[1] . mr_buildNewUrl("front_content.php" . $aMatches[2]) . $aMatches[3];'), $code
-        );
+        $code = preg_replace_callback("/([\"|\'|=])front_content\.php(.?|.+?)([\"|\'|>])/i", function($match) {
+            return $match[1] . mr_buildNewUrl('front_content.php' . $match[2]) . $match[3];
+        }, $code);
 
         ModRewriteDebugger::add($code, 'mr_buildGeneratedCode() out');
 
         $sseEndtime = getmicrotime();
     } else {
         // anchor hack for non modrewrite websites
-        $code = preg_replace_callback(
-                "/<a([^>]*)href\s*=\s*[\"|\'][\/]#(.?|.+?)[\"|\']([^>]*)>/i", create_function('$arr_matches', 'return ModRewrite::contenidoHtmlAnchor($arr_matches, $GLOBALS["is_XHTML"]);'), $code
-        );
+        $code = preg_replace_callback("/<a([^>]*)href\s*=\s*[\"|\'][\/]#(.?|.+?)[\"|\']([^>]*)>/i", function($match) {
+            return ModRewrite::contenidoHtmlAnchor($match, $GLOBALS['is_XHTML']);
+        }, $code);
     }
 
     ModRewriteDebugger::add(($sseEndtime - $sseStarttime), 'mr_buildGeneratedCode() total spend time');

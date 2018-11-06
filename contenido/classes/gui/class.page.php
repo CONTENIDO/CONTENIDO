@@ -646,10 +646,12 @@ class cGuiPage {
      * Renders the page and either prints it or returns it.
      *
      * @param cTemplate|NULL $template [optional]
-     *         If set, use this content template instead of the default one
-     * @param bool $return [optional]
-     *         If true, the page will be returned instead of echoed
+     *                                 If set, use this content template instead of the default one
+     * @param bool           $return   [optional]
+     *                                 If true, the page will be returned instead of echoed
+     *
      * @return string|void
+     * @throws cInvalidArgumentException
      */
     public function render($template = NULL, $return = false) {
 
@@ -835,6 +837,7 @@ class cGuiPage {
      *
      * @param cTemplate $template
      * @return string
+     * @throws cInvalidArgumentException
      */
     protected function _renderTemplate($template) {
         global $perm, $currentuser, $notification;

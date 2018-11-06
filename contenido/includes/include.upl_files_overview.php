@@ -401,8 +401,7 @@ class UploadList extends FrontendList {
                     $frontendURL = cRegistry::getFrontendUrl();
 
                     $sCacheThumbnail = uplGetThumbnail($data, 150);
-                    $sCacheName = cString::getPartOfString($sCacheThumbnail, cString::findLastPos($sCacheThumbnail, '/') + 1, cString::getStringLength($sCacheThumbnail) - (cString::findLastOccurrence($sCacheThumbnail, '/') + 1));
-                    $sFullPath = $cfgClient[$client]['cache']['path'] . $sCacheName;
+                    $sCacheName = cString::getPartOfString($sCacheThumbnail, cString::findLastPos($sCacheThumbnail, '/') + 1, cString::getStringLength($sCacheThumbnail) - (cString::findLastOccurrence($sCacheThumbnail, '/')) + 1);                    $sFullPath = $cfgClient[$client]['cache']['path'] . $sCacheName;
                     if (cFileHandler::exists($sFullPath)) {
                         $aDimensions = getimagesize($sFullPath);
                         $iWidth = $aDimensions[0];
@@ -677,12 +676,12 @@ $list2->setSize($thumbnailmode);
 $totalUploadsCount = $uploads->count();
 $list2->setDataCount($totalUploadsCount);
 
-if ($startpage < 1) {
-    $startpage = 1;
-}
-
 if ($startpage > $list2->getNumPages()) {
     $startpage = $list2->getNumPages();
+}
+
+if ($startpage < 1) {
+    $startpage = 1;
 }
 
 $uploads->resetQuery();

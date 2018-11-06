@@ -21,9 +21,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiFrameFileCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -37,10 +38,16 @@ class cApiFrameFileCollection extends ItemCollection {
 
     /**
      * Creates a frame file item
+     *
      * @param string $area
-     * @param int $idframe
-     * @param int $idfile
+     * @param int    $idframe
+     * @param int    $idfile
+     *
      * @return cApiFrameFile
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($area, $idframe, $idfile) {
         $item = $this->createNewItem();
@@ -74,12 +81,14 @@ class cApiFrameFileCollection extends ItemCollection {
  * @subpackage GenericDB_Model
  */
 class cApiFrameFile extends Item {
-
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;

@@ -19,15 +19,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @author claus.schunk@4fb.de
  */
 class cZipArchive {
-
     /**
      * Read all files from given path excluding files which names start with a
      * dot or are not valid according to CONTENIDO standards (validateFilename()).
      *
      * @see cFileHandler::validateFilename()
+     *
      * @param string $dirPath
+     *
      * @return array
      *         of files
+     * 
+     * @throws cInvalidArgumentException
      */
     public static function readExistingFiles($dirPath) {
 
@@ -81,11 +84,13 @@ class cZipArchive {
      * existing files.
      *
      * @param string $file
-     *         zip file
+     *                                     zip file
      * @param string $extractPath
-     *         extraction path
+     *                                     extraction path
      * @param string $extractPathUserInput [optional]
-     *         user specified extraction path
+     *                                     user specified extraction path
+     *
+     * @throws cInvalidArgumentException
      */
     public static function extractOverRide($file, $extractPath, $extractPathUserInput = NULL) {
 
@@ -119,11 +124,13 @@ class cZipArchive {
      * This function contains the functionality to extract archive.
      *
      * @param string $file
-     *         zip file
+     *                                     zip file
      * @param string $extractPath
-     *         extraction path
+     *                                     extraction path
      * @param string $extractPathUserInput [optional]
-     *         user specified extraction path
+     *                                     user specified extraction path
+     *
+     * @throws cInvalidArgumentException
      */
     public static function extract($file, $extractPath, $extractPathUserInput = NULL) {
         if (isset($extractPathUserInput)) {

@@ -238,7 +238,7 @@ function conEditFirstTime(
  * Create a version if versioning state is simple or advanced.
  *
  * @param int $idcat
- * @param int $idcatnew
+ * @param array|mixed $idcatnew
  * @param int $idart
  * @param int $isstart
  * @param int $idtpl
@@ -269,6 +269,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     global $time_online_move;
     global $timemgmt;
     // CON-2134 check admin permission
+    $auth = cRegistry::getAuth();
     $aAuthPerms = explode(',', $auth->auth['perm']);
 
     $admin = false;
@@ -1170,55 +1171,73 @@ function conCreateLocationString($idcat, $seperator, &$catStr, $makeLink = false
 }
 
 /**
- * Set a start-article @fixme Do we still need the isstart.
- * The old start
- * compatibility has already been removed...
+ * Set a start-article
+ *
+ * @fixme Do we still need the isstart. The old start compatibility has already been removed ..
  *
  * @param int $idcatart
  *         Idcatart of the article
  * @param bool $isstart
  *         Start article flag
  */
-function conMakeStart($idcatart, $isstart) {
+function conMakeStart($idcatart, $isstart)
+{
     global $lang;
 
     // Load category article
-    $oCatArt = new cApiCategoryArticle((int) $idcatart);
-    if (!$oCatArt->isLoaded()) {
-        return;
-    }
-    $idart = $oCatArt->get('idart');
-    $idcat = $oCatArt->get('idcat');
+    $categoryArticle = new cApiCategoryArticle((int)$idcatart);
+    if ($categoryArticle->isLoaded()) {
+        $idcat = $categoryArticle->get('idcat');
+        $idart = $categoryArticle->get('idart');
 
-    // Load article language
-    $oArtLang = new cApiArticleLanguage();
-    if (!$oArtLang->loadByArticleAndLanguageId($idart, $lang)) {
-        return;
+        conSetStartArticle($idcat, $idart, $lang, $isstart);
     }
-    $idartlang = $oArtLang->get('idartlang');
+}
 
-    // Update startidartlang for category language
-    $oCatLang = new cApiCategoryLanguage();
-    if ($oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang)) {
-        if ($isstart == 1) {
-            $oCatLang->set('startidartlang', $idartlang);
-        } else {
-            $oCatLang->set('startidartlang', 0);
+/**
+ * Set start-article property of given article in given category of given language.
+ *
+ * @param int $idcat
+ * @param int $idart
+ * @param int $lang
+ * @param int $isstart
+ *         Start article flag
+ *
+ * @return bool if action was successfull
+ */
+function conSetStartArticle($idcat, $idart, $lang, $isstart)
+{
+    // load article language
+    $articleLanguage = new cApiArticleLanguage();
+    $succ            = $articleLanguage->loadByArticleAndLanguageId($idart, $lang);
+
+    // deactivate time management of article language if article should be start article
+    if ($succ && $isstart == 1) {
+        $timemgmt = $articleLanguage->get('timemgmt');
+        $articleLanguage->set('timemgmt', 0);
+        $succ = $articleLanguage->store();
+    }
+
+    // set startidartlang of category language
+    $categoryLanguage = new cApiCategoryLanguage();
+    if ($succ && $categoryLanguage->loadByCategoryIdAndLanguageId($idcat, $lang)) {
+        $startidartlang = $isstart == 1 ? $articleLanguage->get('idartlang') : 0;
+        $categoryLanguage->set('startidartlang', $startidartlang);
+        $succ = $categoryLanguage->store();
+
+        // PARANOIA: in case of failure roleback timemgmt change
+        if (!$succ && isset($timemgmt)) {
+            $articleLanguage->set('timemgmt', $timemgmt);
+            $succ = $articleLanguage->store();
         }
-        $oCatLang->store();
     }
 
-    if ($isstart == 1) {
-        // Deactivate time management if article is a start article
-        $oArtLang->set('timemgmt', 0);
-        $oArtLang->store();
+    // execute CEC hook
+    if ($succ) {
+        cApiCecHook::execute('Contenido.Article.ConMakeStart', ['idart' => $idart, 'idlang' => $lang]);
     }
 
-    // Execute cec hook
-    cApiCecHook::execute('Contenido.Article.ConMakeStart', array(
-    'idart' => $oCatArt->get("idart"),
-    'idlang' => $lang,
-    ));
+    return $succ;
 }
 
 /**
@@ -1261,13 +1280,20 @@ function conGenerateCodeForClient() {
  * @param int $idlay
  *         Layout Id
  */
-function conGenerateCodeForAllartsUsingLayout($idlay) {
+function conGenerateCodeForAllartsUsingLayout($idlay)
+{
     global $cfg;
 
     $db = cRegistry::getDb();
+    $db->query(
+        "SELECT
+            idtpl
+        FROM
+            " . $cfg['tab']['tpl'] . "
+        WHERE
+            idlay = " . cSecurity::toInteger($idlay)
+    );
 
-    $sql = "SELECT idtpl FROM " . $cfg["tab"]["tpl"] . " WHERE idlay='" . cSecurity::toInteger($idlay) . "'";
-    $db->query($sql);
     while ($db->nextRecord()) {
         conGenerateCodeForAllArtsUsingTemplate($db->f("idtpl"));
     }
@@ -1276,91 +1302,111 @@ function conGenerateCodeForAllartsUsingLayout($idlay) {
 /**
  * Create code for all articles using the same module
  *
- * @param int $idmod
+ * @param int|array $idmods
  *         Module Id
  */
-function conGenerateCodeForAllartsUsingMod($idmod) {
-    $oContainerColl = new cApiContainerCollection();
-    $rsList = $oContainerColl->getFieldsByWhereClause(array(
-        'idtpl'
-    ), 'idmod = ' . (int) $idmod);
-    foreach ($rsList as $rs) {
-        conGenerateCodeForAllArtsUsingTemplate($rs['idtpl']);
+function conGenerateCodeForAllartsUsingMod($idmods)
+{
+    $idmods = is_array($idmods) ? $idmods : [$idmods];
+    $idmods = array_map('intval', $idmods);
+    $idmods = implode(',', $idmods);
+    if (empty($idmods)) {
+        return;
     }
+
+    $containerColl = new cApiContainerCollection();
+    $rsList        = $containerColl->getFieldsByWhereClause(['idtpl'], 'idmod IN (' . $idmods . ')');
+
+    $idtpls = [];
+    foreach ($rsList as $rs) {
+        $idtpls[] = $rs['idtpl'];
+    }
+
+    conGenerateCodeForAllArtsUsingTemplate($idtpls);
 }
 
 /**
  * Generate code for all articles using one template
  *
- * @param int $idtpl
+ * @param int|array $idtpls
  *         Template Id
  */
-function conGenerateCodeForAllArtsUsingTemplate($idtpl) {
+function conGenerateCodeForAllArtsUsingTemplate($idtpls)
+{
     global $cfg, $client;
 
-    $db = cRegistry::getDb();
-
-    $oCatArtColl = new cApiCategoryArticleCollection();
+    $idtpls = is_array($idtpls) ? $idtpls : [$idtpls];
+    $idtpls = array_map('intval', $idtpls);
+    $idtpls = implode(',', $idtpls);
+    if (empty($idtpls)) {
+        return;
+    }
 
     // Search all categories
-    $sql = "SELECT
-                b.idcat
-            FROM
-                " . $cfg['tab']['tpl_conf'] . " AS a,
-                " . $cfg['tab']['cat_lang'] . " AS b,
-                " . $cfg['tab']['cat'] . " AS c
-            WHERE
-                a.idtpl     = " . cSecurity::toInteger($idtpl) . " AND
-                b.idtplcfg  = a.idtplcfg AND
-                c.idclient  = " . cSecurity::toInteger($client) . " AND
-                b.idcat     = c.idcat";
+    $db = cRegistry::getDb();
+    $db->query(
+        "SELECT
+            b.idcat
+        FROM
+            " . $cfg['tab']['tpl_conf'] . " AS a,
+            " . $cfg['tab']['cat_lang'] . " AS b,
+            " . $cfg['tab']['cat'] . " AS c
+        WHERE
+            a.idtpl     IN (" . $idtpls . ")
+            AND b.idtplcfg  = a.idtplcfg
+            AND c.idclient  = " . cSecurity::toInteger($client) . "
+            AND b.idcat     = c.idcat"
+    );
 
-    $db->query($sql);
+    $categoryArticleColl = new cApiCategoryArticleCollection();
 
+    $idcatarts = [];
     while ($db->nextRecord()) {
-        $oCatArtColl->resetQuery();
-        $ids = $oCatArtColl->getIdsByWhereClause('idcat = ' . cSecurity::toInteger($db->f('idcat')));
-        foreach ($ids as $id) {
-            conSetCodeFlag($id);
-        }
+        $categoryArticleColl->resetQuery();
+        $ids       = $categoryArticleColl->getIdsByWhereClause('idcat = ' . cSecurity::toInteger($db->f('idcat')));
+        $idcatarts = array_merge($idcatarts, $ids);
     }
 
     // Search all articles
-    $sql = "SELECT
-                b.idart
-            FROM
-                " . $cfg['tab']['tpl_conf'] . " AS a,
-                " . $cfg['tab']['art_lang'] . " AS b,
-                " . $cfg['tab']['art'] . " AS c
-            WHERE
-                a.idtpl     = " . cSecurity::toInteger($idtpl) . " AND
-                b.idtplcfg  = a.idtplcfg AND
-                c.idclient  = " . cSecurity::toInteger($client) . " AND
-                b.idart     = c.idart";
-
-    $db->query($sql);
+    $db->query(
+        "SELECT
+            b.idart
+        FROM
+            " . $cfg['tab']['tpl_conf'] . " AS a,
+            " . $cfg['tab']['art_lang'] . " AS b,
+            " . $cfg['tab']['art'] . " AS c
+        WHERE
+            a.idtpl     IN (" . $idtpls . ")
+            AND b.idtplcfg  = a.idtplcfg
+            AND c.idclient  = " . cSecurity::toInteger($client) . "
+            AND b.idart     = c.idart"
+    );
 
     while ($db->nextRecord()) {
-        $oCatArtColl->resetQuery();
-        $ids = $oCatArtColl->getIdsByWhereClause('idart = ' . (int) $db->f('idart'));
-        foreach ($ids as $id) {
-            conSetCodeFlag($id);
-        }
+        $categoryArticleColl->resetQuery();
+        $ids       = $categoryArticleColl->getIdsByWhereClause('idart = ' . cSecurity::toInteger($db->f('idart')));
+        $idcatarts = array_merge($idcatarts, $ids);
+    }
+
+    // set code flag for unique catarts
+    $idcatarts = array_unique($idcatarts);
+    foreach ($idcatarts as $idcatart) {
+        conSetCodeFlag($idcatart);
     }
 }
 
 /**
  * Create code for all articles
  */
-function conGenerateCodeForAllArts() {
+function conGenerateCodeForAllArts()
+{
     global $cfg;
 
     $db = cRegistry::getDb();
+    $db->query("SELECT idcatart FROM " . $cfg['tab']['cat_art']);
 
-    $sql = "SELECT idcatart FROM " . $cfg['tab']['cat_art'];
-    $db->query($sql);
     while ($db->nextRecord()) {
-        conSetCodeFlag($db->f("idcatart"));
+        conSetCodeFlag($db->f('idcatart'));
     }
 }
 
@@ -1391,7 +1437,12 @@ function conSetCodeFlag($idcatart) {
             }
 
             if (preg_match('/[0-9*].[0-9*].' . $idcatart . '/s', $file->getBasename())) {
-                cFileHandler::remove($cfgClient[$client]['code']['path'] . '/' . $file->getFilename());
+                try {
+                    cFileHandler::remove($cfgClient[$client]['code']['path'] . '/' . $file->getFilename());
+                } catch (cInvalidArgumentException $e) {
+                    // if file does not exist it does not have to be removed
+                    error_log('cannot remove ' . $cfgClient[$client]['code']['path'] . '/' . $file->getFilename());
+                }
             }
         }
     }

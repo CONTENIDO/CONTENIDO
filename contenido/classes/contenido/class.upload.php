@@ -20,10 +20,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiUploadCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
      *
+     * @throws cInvalidArgumentException
      * @global array $cfg
      */
     public function __construct() {
@@ -38,11 +38,15 @@ class cApiUploadCollection extends ItemCollection {
     /**
      * Syncronizes upload directory and file with database.
      *
-     * @global int $client
      * @param string $sDirname
      * @param string $sFilename
-     * @param int $clientid [optional]
+     * @param int    $client
+     *
      * @return cApiUpload
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     * @global int   $client
      */
     public function sync($sDirname, $sFilename, $client = 0) {
         $client = cSecurity::toInteger($client);
@@ -80,16 +84,19 @@ class cApiUploadCollection extends ItemCollection {
     /**
      * Creates a upload entry.
      *
-     * @global int $client
-     * @global array $cfg
-     * @global object $auth
-     * @param string $sDirname
-     * @param string $sFilename
-     * @param string $sFiletype [optional]
-     * @param int $iFileSize [optional]
-     * @param string $sDescription [optional]
-     * @param int $iStatus [optional]
+     * @param string  $sDirname
+     * @param string  $sFilename
+     * @param string  $sFiletype    [optional]
+     * @param int     $iFileSize    [optional]
+     * @param string  $sDescription [optional]
+     * @param int     $iStatus      [optional]
      * @return cApiUpload
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     * @global int    $client
+     * @global array  $cfg
+     * @global object $auth
      */
     public function create($sDirname, $sFilename, $sFiletype = '', $iFileSize = 0,
             $sDescription = '', $iStatus = 0) {
@@ -117,11 +124,15 @@ class cApiUploadCollection extends ItemCollection {
      * Deletes upload file and it's properties
      *
      * @todo Code is similar/redundant to include.upl_files_overview.php 216-230
-     * @global cApiCecRegistry $_cecRegistry
-     * @global array $cfgClient
-     * @global int $client
-     * @param int $id
+     * @param int              $id
+     * 
      * @return bool
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @global cApiCecRegistry $_cecRegistry
+     * @global array           $cfgClient
+     * @global int             $client
      */
     public function delete($id) {
 
@@ -165,6 +176,7 @@ class cApiUploadCollection extends ItemCollection {
      *
      * @param int $idupl
      * @return bool
+     * @throws cDbException
      */
     protected function deleteUploadMetaData($idupl) {
         global $client, $db, $cfg;
@@ -175,8 +187,11 @@ class cApiUploadCollection extends ItemCollection {
     /**
      * Deletes upload directory by its dirname.
      *
-     * @global int $client
      * @param string $sDirname
+     *
+     * @throws cDbException
+     * @throws cException
+     * @global int   $client
      */
     public function deleteByDirname($sDirname) {
         global $client;
@@ -207,7 +222,10 @@ class cApiUpload extends Item {
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *                   
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -218,7 +236,11 @@ class cApiUpload extends Item {
     }
 
     /**
-     * Updates upload recordset
+     * Updates upload recordset.
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function update() {
         $sDirname = $this->get('dirname');
@@ -246,9 +268,11 @@ class cApiUpload extends Item {
     /**
      * Stores made changes
      *
-     * @global object $auth
-     * @global cApiCecRegistry $_cecRegistry
      * @return bool
+     * @throws cDbException
+     * @throws cInvalidArgumentException
+     * @global object          $auth
+     * @global cApiCecRegistry $_cecRegistry
      */
     public function store() {
         global $auth, $_cecRegistry;
@@ -271,6 +295,9 @@ class cApiUpload extends Item {
      * Deletes all upload properties by it's itemid
      *
      * @param string $sItemid
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function deletePropertiesByItemid($sItemid) {
         $oPropertiesColl = $this->_getPropertiesCollectionInstance();
@@ -283,6 +310,8 @@ class cApiUpload extends Item {
      * @param string $sDirname
      * @param string $sFilename
      * @return string
+     * @throws cDbException
+     * @throws cException
      */
     public static function getFileSize($sDirname, $sFilename) {
         global $client, $cfgClient;

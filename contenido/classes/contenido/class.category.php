@@ -20,12 +20,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiCategoryCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
      *
-     * @param string $select [optional]
-     *         where clause to use for selection (see ItemCollection::select())
+     * @param bool $select [optional]
+     *                     where clause to use for selection (see ItemCollection::select())
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function __construct($select = false) {
         global $cfg;
@@ -43,15 +45,20 @@ class cApiCategoryCollection extends ItemCollection {
     /**
      * Creates a category entry.
      *
-     * @param int $idclient
-     * @param int $parentid [optional]
-     * @param int $preid [optional]
-     * @param int $postid [optional]
-     * @param int $status [optional]
-     * @param string $author [optional]
-     * @param string $created [optional]
+     * @param int    $idclient
+     * @param int    $parentid     [optional]
+     * @param int    $preid        [optional]
+     * @param int    $postid       [optional]
+     * @param int    $status       [optional]
+     * @param string $author       [optional]
+     * @param string $created      [optional]
      * @param string $lastmodified [optional]
+     *
      * @return cApiCategory
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($idclient, $parentid = 0, $preid = 0, $postid = 0, $status = 0, $author = '', $created = '', $lastmodified = '') {
         global $auth;
@@ -87,7 +94,11 @@ class cApiCategoryCollection extends ItemCollection {
      * Last entry has no parentid and no postid.
      *
      * @param int $idclient
+     * 
      * @return cApiCategory|NULL
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchLastCategoryTree($idclient) {
         $where = 'parentid=0 AND postid=0 AND idclient=' . (int) $idclient;
@@ -99,7 +110,10 @@ class cApiCategoryCollection extends ItemCollection {
      * Returns list of categories (category ids) by passed client.
      *
      * @param int $idclient
+     * 
      * @return array
+     * 
+     * @throws cDbException
      */
     public function getCategoryIdsByClient($idclient) {
         $list = array();
@@ -125,7 +139,10 @@ class cApiCategoryCollection extends ItemCollection {
      * </pre>
      *
      * @param int $idcat
+     * 
      * @return int
+     * 
+     * @throws cDbException
      */
     public function getNextPostCategoryId($idcat) {
         $sql = "SELECT idcat FROM `%s` WHERE preid = %d";
@@ -167,7 +184,10 @@ class cApiCategoryCollection extends ItemCollection {
      *
      * @param int $idcat
      *         Category id
+     * 
      * @return int
+     * 
+     * @throws cDbException
      */
     public function getParentsNextPostCategoryId($idcat) {
         $sql = "SELECT parentid FROM `%s` WHERE idcat = %d";
@@ -218,11 +238,15 @@ class cApiCategoryCollection extends ItemCollection {
      * (*) Returned category id
      * </pre>
      *
-     * @global array $cfg
-     * @param int $idcat
+     * @param int      $idcat
      * @param int|NULL $idlang [optional]
-     *         If defined, it checks also if there is a next deeper category in this language.
+     *                         If defined, it checks also if there is a next deeper category in this language.
+     *
      * @return int
+     * 
+     * @throws cDbException
+     * 
+     * @global array   $cfg
      */
     public function getFirstChildCategoryId($idcat, $idlang = NULL) {
         global $cfg;
@@ -257,10 +281,14 @@ class cApiCategoryCollection extends ItemCollection {
      * (*) Returned category ids
      * </pre>
      *
-     * @global array $cfg
-     * @param int $idcat
+     * @param int      $idcat
      * @param int|NULL $idlang [optional]
+     *                         
      * @return array
+     * 
+     * @throws cDbException
+     * 
+     * @global array   $cfg
      */
     public function getAllChildCategoryIds($idcat, $idlang = NULL) {
         global $cfg;
@@ -320,10 +348,14 @@ class cApiCategoryCollection extends ItemCollection {
      * (*) Returned category ids
      * </pre>
      *
-     * @global array $cfg
-     * @param int $idcat
-     * @param int $idclient
+     * @param int    $idcat
+     * @param int    $idclient
+     *
      * @return array
+     * 
+     * @throws cDbException
+     * 
+     * @global array $cfg
      */
     public function getAllCategoryIdsRecursive($idcat, $idclient) {
         global $cfg;
@@ -381,11 +413,14 @@ class cApiCategoryCollection extends ItemCollection {
      * (*) Returned category ids
      * </pre>
      *
-     * @global array $cfg
-     * @param int $idcat
-     * @param int $client
+     * @param int    $idcat
+     * @param        $idclient
      * @return array
      *         Sorted by category id
+     * 
+     * @throws cDbException
+     * 
+     * @global array $cfg
      */
     public function getAllCategoryIdsRecursive2($idcat, $idclient) {
         global $cfg;
@@ -424,13 +459,16 @@ class cApiCategoryCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiCategory extends Item {
-
+class cApiCategory extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -481,9 +519,12 @@ class cApiCategory extends Item {
      * Returns the link to the current object.
      *
      * @param int $changeLangId [optional]
-     *         change language id for URL (optional)
+     *                          change language id for URL (optional)
+     *                          
      * @return string
-     *         link
+     *                          link
+     * 
+     * @throws cInvalidArgumentException
      */
     public function getLink($changeLangId = 0) {
         if ($this->isLoaded() === false) {

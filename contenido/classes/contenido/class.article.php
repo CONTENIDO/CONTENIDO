@@ -22,12 +22,14 @@ cInclude('includes', 'functions.str.php');
  * @subpackage GenericDB_Model
  */
 class cApiArticleCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
      *
-     * @param string $select [optional]
-     *         where clause to use for selection (see ItemCollection::select())
+     * @param bool $select [optional]
+     *                     where clause to use for selection (see ItemCollection::select())
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function __construct($select = false) {
         global $cfg;
@@ -46,7 +48,12 @@ class cApiArticleCollection extends ItemCollection {
      * Creates an article item entry
      *
      * @param int $idclient
+     *
      * @return cApiArticle
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($idclient) {
         $item = $this->createNewItem();
@@ -61,7 +68,10 @@ class cApiArticleCollection extends ItemCollection {
      * Returns list of ids by given client id.
      *
      * @param int $idclient
+     * 
      * @return array
+     * 
+     * @throws cDbException
      */
     public function getIdsByClientId($idclient) {
         $sql = "SELECT idart FROM `%s` WHERE idclient=%d";
@@ -80,13 +90,16 @@ class cApiArticleCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiArticle extends Item {
-
+class cApiArticle extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -101,9 +114,12 @@ class cApiArticle extends Item {
      * Returns the link to the current object.
      *
      * @param int $changeLangId [optional]
-     *         change language id for URL (optional)
+     *                          change language id for URL (optional)
+     *
      * @return string
      *         link
+     * 
+     * @throws cInvalidArgumentException
      */
     public function getLink($changeLangId = 0) {
         if ($this->isLoaded() === false) {

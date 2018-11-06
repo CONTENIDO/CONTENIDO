@@ -43,6 +43,10 @@ class cModuleSynchronizer extends cModuleHandler {
      * @param string $dir
      * @param string $oldModulName
      * @param string $newModulName
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _syncModule($dir, $oldModulName, $newModulName) {
         global $client;
@@ -50,7 +54,6 @@ class cModuleSynchronizer extends cModuleHandler {
         if ($this->_isExistInTable($oldModulName, $client) == false) {
             // add new Module in db-tablle
             $this->_addModule($newModulName);
-            cRegistry::appendLastOkMessage(sprintf(i18n('Module %s successfully synchronized'), $newModulName));
         } else {
             // update the name of the module
             if ($oldModulName != $newModulName) {
@@ -113,17 +116,24 @@ class cModuleSynchronizer extends cModuleHandler {
      *
      * @return int
      *         id of last update module
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function compareFileAndModuleTimestamp() {
         global $cfgClient;
 
-        $synchLock = 0;
-
-        $sql = sprintf('SELECT UNIX_TIMESTAMP(mod1.lastmodified) AS lastmodified,mod1.idclient,description,type, mod1.name, mod1.alias, mod1.idmod FROM %s AS mod1 WHERE mod1.idclient = %s', $this->_cfg['tab']['mod'], $this->_client);
-
         $db = cRegistry::getDb();
-        $db->query($sql);
-        $retIdMod = 0;
+        $db->query('
+            SELECT lastmodified, idclient, description, type, `name`, alias, idmod
+            FROM ' . $this->_cfg['tab']['mod'] . '
+            WHERE idclient = ' . cSecurity::toInteger($this->_client));
+
+        $synchLock = 0;
+        $retIdMod  = 0;
+
+        // for performance reasons IDs of modules are collected in order to generate their code
+        $idmods    = [];
 
         while ($db->nextRecord()) {
             $showMessage = false;
@@ -132,6 +142,8 @@ class cModuleSynchronizer extends cModuleHandler {
             $modulePHP = $modulePath . $this->_directories['php'] . $db->f('alias');
 
             $lastmodified = $db->f('lastmodified');
+            $lastmodified = DateTime::createFromFormat('Y-m-d H:i:s', $lastmodified);
+            $lastmodified = $lastmodified->getTimestamp();
 
             $lastmodInput = $lastmodOutput = 0;
 
@@ -146,8 +158,13 @@ class cModuleSynchronizer extends cModuleHandler {
             if (cFileHandler::exists($modulePath . "info.xml")) {
                 $lastModInfo = filemtime($modulePath . "info.xml");
                 if ($lastModInfo > $lastmodified) {
-                    $modInfo = cXmlBase::xmlStringToArray(cFileHandler::read($modulePath . "info.xml"));
-                    $mod = new cApiModule($db->f("idmod"));
+                    try {
+                        $xml = cFileHandler::read($modulePath . 'info.xml');
+                    } catch (cInvalidArgumentException $e) {
+                        $xml = '';
+                    }
+                    $modInfo = cXmlBase::xmlStringToArray($xml);
+                    $mod     = new cApiModule($db->f("idmod"));
                     if ($modInfo["description"] != $mod->get("description")) {
                         $mod->set("description", $modInfo["description"]);
                         $this->setLastModified($lastModInfo, $db->f('idmod'));
@@ -166,7 +183,7 @@ class cModuleSynchronizer extends cModuleHandler {
                         $mod->set("alias", $modInfo["alias"]);
                         $this->setLastModified($lastModInfo, $db->f('idmod'));
                     }
-                    $mod->store();
+                    $mod->store(true);
                     $synchLock = 1;
                     $showMessage = true;
                 }
@@ -174,10 +191,9 @@ class cModuleSynchronizer extends cModuleHandler {
 
             $lastmodabsolute = max($lastmodInput, $lastmodOutput);
             if ($lastmodified < $lastmodabsolute) {
-                // update
                 $synchLock = 1;
                 $this->setLastModified($lastmodabsolute, $db->f('idmod'));
-                conGenerateCodeForAllartsUsingMod($db->f('idmod'));
+                $idmods[] = (int) $db->f('idmod');
                 $showMessage = true;
             }
 
@@ -188,6 +204,10 @@ class cModuleSynchronizer extends cModuleHandler {
             if ($showMessage) {
                 cRegistry::appendLastOkMessage(sprintf(i18n('Module %s successfully synchronized'), $db->f('name')));
             }
+        }
+
+        if (count($idmods)) {
+            conGenerateCodeForAllartsUsingMod($idmods);
         }
 
         if ($synchLock == 0) {
@@ -207,8 +227,12 @@ class cModuleSynchronizer extends cModuleHandler {
      *
      * @param cDb $db
      *         CONTENIDO database object
+     *
      * @return int
      *         id of last update module
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _synchronizeFilesystemAndDb($db) {
         $returnIdMod = 0;
@@ -241,6 +265,9 @@ class cModuleSynchronizer extends cModuleHandler {
      *
      * @return int
      *         last id of synchronized module
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function synchronize() {
         global $cfgClient;
@@ -288,11 +315,12 @@ class cModuleSynchronizer extends cModuleHandler {
      * If the modul name exist it will return true
      *
      * @param string $alias
-     * @param int $idclient
+     * @param int    $idclient
      *         idclient
      * @return bool
      *         if a modul with the $name exist in the $cfg['tab']['mod'] table
      *         return true else false
+     * @throws cDbException
      */
     private function _isExistInTable($alias, $idclient) {
         $db = cRegistry::getDb();
@@ -317,8 +345,9 @@ class cModuleSynchronizer extends cModuleHandler {
      *         old name
      * @param string $newName
      *         new module name
-     * @param int $idclient
+     * @param int    $idclient
      *         id of client
+     * @throws cDbException
      */
     private function _updateModulnameInDb($oldName, $newName, $idclient) {
         $db = cRegistry::getDb();
@@ -341,27 +370,58 @@ class cModuleSynchronizer extends cModuleHandler {
      *
      * @param string $name
      *         name of the new module
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _addModule($name) {
 
         // initializing variables
-        $client = cRegistry::getClientId();
-        $cfgClient = cRegistry::getClientConfig($client);
+        $client       = cRegistry::getClientId();
+        $alias        = $name;
+        $type         = '';
+        $error        = 'none';
+        $description  = '';
+        $deletable    = 0;
+        $template     = '';
+        $static       = 0;
+        $package_guid = '';
+        $package_data = '';
+        $author       = '';
+        $created      = '';
+        $lastmodified = '1970-01-01 00:00:00';
 
-        // initializing module class
-        $oModColl = new cApiModuleCollection();
-
-        // get module path
-        $modulePath = $cfgClient['module']['path'] . $name . '/';
-
-        // get module type
-        $modInfo = cXmlBase::xmlStringToArray(cFileHandler::read($modulePath . 'info.xml'));
+        // old behaviour before CON-2603
+        // $cfgClient    = cRegistry::getClientConfig(cRegistry::getClientId());
+        // $modulePath   = $cfgClient['module']['path'] . $name . '/';
+        // $modInfo      = cXmlBase::xmlStringToArray(cFileHandler::read($modulePath . 'info.xml'));
+        // $name         = $modInfo['name'];
+        // $alias        = $modInfo['alias'];
+        // $type         = $modInfo['type'];
+        // $lastmodified = '';
 
         // create mew module
-        $mod = $oModColl->create($modInfo['name'], $client, $modInfo['alias'], $modInfo['type']);
+        $oModColl = new cApiModuleCollection();
+        $mod = $oModColl->create(
+            $name,
+            $client,
+            $alias,
+            $type,
+            $error,
+            $description,
+            $deletable,
+            $template,
+            $static,
+            $package_guid,
+            $package_data,
+            $author,
+            $created,
+            $lastmodified
+        );
 
+        // save last module id
         if (is_object($mod)) {
-            // save the last id from modul
             $this->_lastIdMod = $mod->get('idmod');
         }
     }
@@ -373,12 +433,14 @@ class cModuleSynchronizer extends cModuleHandler {
      *         timestamp of last modification
      * @param int $idmod
      *         id of module
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function setLastModified($timestamp, $idmod) {
         $oMod = new cApiModule((int) $idmod);
         if ($oMod->isLoaded()) {
             $oMod->set('lastmodified', date('Y-m-d H:i:s', $timestamp));
-            $oMod->store();
+            $oMod->store(true);
         }
     }
 

@@ -100,7 +100,7 @@ if ($bUsePlugins == true && is_array($cfg['plugins']['frontendusers'])) {
                     $aFieldsToSort = $aTmp2;
 
                     foreach ($aVariableNames as $sVariableName => $name) {
-                        if (in_array($databaseFields, $sVariableName)) {
+                        if (in_array($sVariableName, $databaseFields)) {
                             $aFieldSources[$sVariableName] = $plugin;
 
                             $aFieldsToSort[$sVariableName] = $name;
@@ -273,7 +273,7 @@ if (cString::getStringLength($_REQUEST["filter"]) > 0) {
         $oFEUsers->setInnerGroupCondition("filter", "OR");
     } else {
         $searchField = 'username';
-        if (in_array($databaseFields, $_REQUEST['searchin'])) {
+        if (in_array($_REQUEST['searchin'], $databaseFields)) {
             $searchField = $_REQUEST['searchin'];
         }
 

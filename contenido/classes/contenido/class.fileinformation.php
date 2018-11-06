@@ -23,9 +23,10 @@ cInclude('includes', 'functions.file.php');
  * @subpackage GenericDB_Model
  */
 class cApiFileInformationCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -37,14 +38,20 @@ class cApiFileInformationCollection extends ItemCollection {
      * Creates a new entry in the database
      *
      * @todo  Pass additional fields as optional parameters
+     *
      * @param string $typeContent
-     *         type of the entry
+     *                            type of the entry
      * @param string $filename
-     *         name of the file
+     *                            name of the file
      * @param string $description [optional]
-     *         an optional description
+     *                            an optional description
+     *
      * @return cApiFileInformation
      *         the new item
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($typeContent, $filename, $description = '') {
         $client = cRegistry::getClientId();
@@ -78,18 +85,24 @@ class cApiFileInformationCollection extends ItemCollection {
      * updates a new entry in the database
      *
      * @todo  Pass additional fields as optional parameters
+     *
      * @param string $filename
-     *         name of the file
+     *                            name of the file
      * @param string $typeContent
-     *         type of the entry
+     *                            type of the entry
      * @param string $description [optional]
-     *         an optional description
+     *                            an optional description
      * @param string $newFilename [optional]
-     *         an optional new filename
-     * @param string $author [optional]
-     *         an optional author
+     *                            an optional new filename
+     * @param string $author      [optional]
+     *                            an optional author
+     *
      * @return cApiFileInformation
-     *         the updated item
+     *                            the updated item
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function updateFile($filename, $typeContent, $description = '', $newFilename = '', $author = '') {
         $auth = cRegistry::getAuth();
@@ -126,6 +139,9 @@ class cApiFileInformationCollection extends ItemCollection {
      * @param array $values
      *         with parameters
      * @return bool
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public function removeFileInformation(array $values) {
         $item = new cApiFileInformation();
@@ -142,6 +158,9 @@ class cApiFileInformationCollection extends ItemCollection {
      * @param string $type
      *         type of the entry
      * @return array
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public function getFileInformation($filename, $type) {
         $client = cRegistry::getClientId();
@@ -170,12 +189,15 @@ class cApiFileInformationCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiFileInformation extends Item {
-
+class cApiFileInformation extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
-     * @param string $id [optional]
+     * @param bool $id [optional]
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($id = false) {
         global $cfg;

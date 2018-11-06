@@ -88,6 +88,7 @@ if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "fr
 
 if (true === $feuser->isLoaded() && $feuser->get("idclient") == $client) {
     $username = stripslashes(trim($username));
+    $messages = array();
 
     if ($action == "frontend_save_user" && cString::getStringLength($username) == 0) {
         $page->displayError(i18n("Username can't be empty"));
@@ -95,7 +96,6 @@ if (true === $feuser->isLoaded() && $feuser->get("idclient") == $client) {
         if (!empty($sReloadScript)) {
             $page->addScript($sReloadScript);
         }
-        $messages = array();
 
         if ($feuser->get("username") != $username) {
 			$usernameDb = $feuser->escape($username);

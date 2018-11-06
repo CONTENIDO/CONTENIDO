@@ -33,7 +33,10 @@ class cLogWriterFile extends cLogWriter {
      * Constructor to create an instance of this class.
      *
      * @param array $options [optional]
-     *         Array with options for the writer instance (optional)
+     *                       Array with options for the writer instance (optional)
+     *
+     * @throws cException
+     * @throws cFileNotFoundException
      */
     public function __construct($options = array()) {
         parent::__construct($options);

@@ -81,10 +81,13 @@ class cGuiFoldingRow extends cHTML {
     /**
      * Constructor to create an instance of this class.
      *
-     * @param string $uuid
-     * @param string $caption [optional]
-     * @param string $linkId [optional]
+     * @param string    $uuid
+     * @param string    $caption   [optional]
+     * @param string    $linkId    [optional]
      * @param bool|NULL $bExpanded [optional]
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($uuid, $caption = "", $linkId = "", $bExpanded = NULL) {
         global $auth;

@@ -99,12 +99,12 @@ $clientCollection = new cApiClientCollection();
 $clients = $clientCollection->getAccessibleClients();
 
 $cApiClient = new cApiClient();
+$warnings = array();
 
 if (count($clients) > 1) {
     $select = new cHTMLSelectElement('changeclient');
     $select->setClass("vAlignMiddle");
     $choices = array();
-    $warnings = array();
 
     foreach ($clients as $key => $v_client) {
         if ($perm->hasClientPermission($key)) {

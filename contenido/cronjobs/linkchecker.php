@@ -16,6 +16,7 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
+global $cfg;
 
 // CONTENIDO path
 $contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . '/';
@@ -26,8 +27,6 @@ include_once($contenidoPath . 'includes/startup.php');
 $backendPath = cRegistry::getBackendPath();
 
 include_once($backendPath . 'plugins/linkchecker/includes/config.plugin.php');
-
-global $cfg;
 
 if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
     $db = cRegistry::getDb();

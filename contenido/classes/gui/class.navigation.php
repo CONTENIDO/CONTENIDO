@@ -122,6 +122,9 @@ class cGuiNavigation {
 
     /**
      * Reads and fills the navigation structure data
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function _buildHeaderData() {
         global $cfg, $perm;
@@ -186,6 +189,10 @@ class cGuiNavigation {
      *
      * @param int $lang
      *         The language to use for header doc creation
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function buildHeader($lang) {
         global $cfg, $sess, $client, $auth, $cfgClient;
@@ -370,6 +377,10 @@ class cGuiNavigation {
      * Renders the language select box.
      *
      * @return string
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function _renderLanguageSelect() {
         global $cfg, $client, $lang;
@@ -429,6 +440,9 @@ class cGuiNavigation {
      *
      * @return string
      *         rendered HTML
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     protected function _renderClientSelect() {
         $cfg = cRegistry::getConfig();

@@ -59,7 +59,9 @@ class cSession {
      * Starts the session.
      *
      * @param string $prefix [optional]
-     *         The prefix for the session variables
+     *                       The prefix for the session variables
+     *
+     * @throws cDbException
      */
     public function __construct($prefix = 'backend') {
     	$cfg = cRegistry::getConfig();
@@ -243,12 +245,11 @@ class cSession {
         switch ($t) {
             case 'array':
                 // $$var is an array. Enumerate the elements and serialize them.
-                eval("reset(\$$var); \$l = gettype(list(\$k)=each(\$$var));");
                 $str .= "\$$var = array(); ";
-                while ('array' == $l) {
+                eval("\$l = array(); foreach(\$$var as \$k => \$v) {\$l[] = array(\$k,gettype(\$k),\$v);}");
+                foreach ($l as $item) {
                     // Structural recursion
-                    $this->_rSerialize($var . "['" . preg_replace("/([\\'])/", "\\\\1", $k) . "']", $str);
-                    eval("\$l = gettype(list(\$k)=each(\$$var));");
+                    $this->_rSerialize($var . "['" . preg_replace("/([\\'])/", "\\\\1", $item[0]) . "']", $str);
                 }
                 break;
             case 'object':
@@ -321,11 +322,12 @@ class cSession {
  * @subpackage Session
  */
 class cFrontendSession extends cSession {
-
     /**
      * Constructor to create an instance of this class.
      *
      * Starts the session and initilializes the class.
+     *
+     * @throws cDbException
      */
     public function __construct() {
         $client = cRegistry::getClientId();
