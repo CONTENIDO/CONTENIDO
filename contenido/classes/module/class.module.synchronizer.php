@@ -54,7 +54,6 @@ class cModuleSynchronizer extends cModuleHandler {
         if ($this->_isExistInTable($oldModulName, $client) == false) {
             // add new Module in db-tablle
             $this->_addModule($newModulName);
-            cRegistry::appendLastOkMessage(sprintf(i18n('Module %s successfully synchronized'), $newModulName));
         } else {
             // update the name of the module
             if ($oldModulName != $newModulName) {
@@ -379,23 +378,50 @@ class cModuleSynchronizer extends cModuleHandler {
     private function _addModule($name) {
 
         // initializing variables
-        $client = cRegistry::getClientId();
-        $cfgClient = cRegistry::getClientConfig($client);
+        $client       = cRegistry::getClientId();
+        $alias        = $name;
+        $type         = '';
+        $error        = 'none';
+        $description  = '';
+        $deletable    = 0;
+        $template     = '';
+        $static       = 0;
+        $package_guid = '';
+        $package_data = '';
+        $author       = '';
+        $created      = '';
+        $lastmodified = '1970-01-01 00:00:00';
 
-        // initializing module class
-        $oModColl = new cApiModuleCollection();
-
-        // get module path
-        $modulePath = $cfgClient['module']['path'] . $name . '/';
-
-        // get module type
-        $modInfo = cXmlBase::xmlStringToArray(cFileHandler::read($modulePath . 'info.xml'));
+        // old behaviour before CON-2603
+        // $cfgClient    = cRegistry::getClientConfig(cRegistry::getClientId());
+        // $modulePath   = $cfgClient['module']['path'] . $name . '/';
+        // $modInfo      = cXmlBase::xmlStringToArray(cFileHandler::read($modulePath . 'info.xml'));
+        // $name         = $modInfo['name'];
+        // $alias        = $modInfo['alias'];
+        // $type         = $modInfo['type'];
+        // $lastmodified = '';
 
         // create mew module
-        $mod = $oModColl->create($modInfo['name'], $client, $modInfo['alias'], $modInfo['type']);
+        $oModColl = new cApiModuleCollection();
+        $mod = $oModColl->create(
+            $name,
+            $client,
+            $alias,
+            $type,
+            $error,
+            $description,
+            $deletable,
+            $template,
+            $static,
+            $package_guid,
+            $package_data,
+            $author,
+            $created,
+            $lastmodified
+        );
 
+        // save last module id
         if (is_object($mod)) {
-            // save the last id from modul
             $this->_lastIdMod = $mod->get('idmod');
         }
     }
