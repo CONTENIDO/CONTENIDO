@@ -43,6 +43,10 @@ class cModuleSynchronizer extends cModuleHandler {
      * @param string $dir
      * @param string $oldModulName
      * @param string $newModulName
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _syncModule($dir, $oldModulName, $newModulName) {
         global $client;
@@ -113,6 +117,9 @@ class cModuleSynchronizer extends cModuleHandler {
      *
      * @return int
      *         id of last update module
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function compareFileAndModuleTimestamp() {
         global $cfgClient;
@@ -221,8 +228,12 @@ class cModuleSynchronizer extends cModuleHandler {
      *
      * @param cDb $db
      *         CONTENIDO database object
+     *
      * @return int
      *         id of last update module
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _synchronizeFilesystemAndDb($db) {
         $returnIdMod = 0;
@@ -255,6 +266,9 @@ class cModuleSynchronizer extends cModuleHandler {
      *
      * @return int
      *         last id of synchronized module
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function synchronize() {
         global $cfgClient;
@@ -302,11 +316,12 @@ class cModuleSynchronizer extends cModuleHandler {
      * If the modul name exist it will return true
      *
      * @param string $alias
-     * @param int $idclient
+     * @param int    $idclient
      *         idclient
      * @return bool
      *         if a modul with the $name exist in the $cfg['tab']['mod'] table
      *         return true else false
+     * @throws cDbException
      */
     private function _isExistInTable($alias, $idclient) {
         $db = cRegistry::getDb();
@@ -331,8 +346,9 @@ class cModuleSynchronizer extends cModuleHandler {
      *         old name
      * @param string $newName
      *         new module name
-     * @param int $idclient
+     * @param int    $idclient
      *         id of client
+     * @throws cDbException
      */
     private function _updateModulnameInDb($oldName, $newName, $idclient) {
         $db = cRegistry::getDb();
@@ -355,6 +371,10 @@ class cModuleSynchronizer extends cModuleHandler {
      *
      * @param string $name
      *         name of the new module
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _addModule($name) {
 
@@ -387,6 +407,8 @@ class cModuleSynchronizer extends cModuleHandler {
      *         timestamp of last modification
      * @param int $idmod
      *         id of module
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function setLastModified($timestamp, $idmod) {
         $oMod = new cApiModule((int) $idmod);

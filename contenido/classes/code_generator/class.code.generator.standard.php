@@ -31,12 +31,18 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * language).
      *
      * @see cCodeGeneratorAbstract::_generate()
-     * @param bool $contype [optional]
-     *         Flag to enable/disable replacement of CMS_TAGS[]
-     * @param bool $editable [optional]
-     * @param int|NULL $version [optional]
+     *
+     * @param bool     $contype  [optional]
+     *                           Flag to enable/disable replacement of CMS_TAGS[]
+     * @param bool     $editable [optional]
+     * @param int|NULL $version  [optional]
+     *
      * @return string
      *         The generated code
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function _generate($contype = true, $editable = true, $version = NULL) {
         global $cfg, $code;
@@ -285,6 +291,9 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      *
      * @param int $idcatart
      *         category article id
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     protected function _processNoConfigurationError($idcatart) {
         cDebug::out('Neither CAT or ART are configured!<br><br>');
@@ -418,13 +427,15 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
     /**
      * Saves the generated code if layout flag is false and save flag is true.
      *
+     * @param int    $idcatart
+     *                               Category article id
+     * @param string $code           [optional]
+     *                               parameter for setting code manually instead of using the generated layout code
+     * @param bool   $flagCreateCode [optional]
+     *                               whether the create code flag in cat_art should be set or not (optional)
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      * @global array $cfgClient
-     * @param int $idcatart
-     *         Category article id
-     * @param string $code [optional]
-     *         parameter for setting code manually instead of using the generated layout code
-     * @param bool $flagCreateCode [optional]
-     *         whether the create code flag in cat_art should be set or not (optional)
      */
     protected function _saveGeneratedCode($idcatart, $code = '', $flagCreateCode = true) {
         global $cfgClient;

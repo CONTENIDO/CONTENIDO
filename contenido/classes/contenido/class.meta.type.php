@@ -21,9 +21,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiMetaTypeCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -36,9 +37,13 @@ class cApiMetaTypeCollection extends ItemCollection {
      *
      * @param string $metatype
      * @param string $fieldtype
-     * @param int $maxlength
+     * @param int    $maxlength
      * @param string $fieldname
+     *
      * @return cApiMetaType
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($metatype, $fieldtype, $maxlength, $fieldname) {
         $oItem = $this->createNewItem();
@@ -60,13 +65,16 @@ class cApiMetaTypeCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiMetaType extends Item {
-
+class cApiMetaType extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId
      *         Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;

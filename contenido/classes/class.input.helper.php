@@ -34,11 +34,11 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      *
      * @param string $sName
      *         Name of the select element
-     * @param int $iWidth [optional]
+     * @param string $iWidth [optional]
      *         Width of the select element
      * @param string $sID [optional]
      *         ID of the select element
-     * @param string $bDisabled [optional]
+     * @param bool $bDisabled [optional]
      *         Item disabled flag (non-empty to set disabled)
      * @param int $iTabIndex [optional]
      *         Tab index for form elements
@@ -52,17 +52,20 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
     /**
      * Adds articles to select options.
      *
-     * @param int $iIDCat
+     * @param int    $iIDCat
      *         idcat of the category to be listed
-     * @param bool $bColored
+     * @param bool   $bColored
      *         Add color information to option elements
-     * @param bool $bArtOnline
+     * @param bool   $bArtOnline
      *         If true, only online articles will be added
      * @param string $sSpaces
      *         Just some '&nbsp;' to show data hierarchically
      *         (used in conjunction with addCategories)
+     *
      * @return int
      *         Number of items added
+     * 
+     * @throws cDbException
      */
     public function addArticles($iIDCat, $bColored = false, $bArtOnline = true, $sSpaces = '') {
         global $cfg, $lang;
@@ -137,7 +140,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      * will get negative values cause otherwise there is no way to distinguish
      * between a category id and an article id.
      *
-     * @param int $iMaxLevel
+     * @param int  $iMaxLevel
      *         Max. level shown (to be exact: except this level)
      * @param bool $bColored
      *         Add color information to option elements
@@ -149,8 +152,11 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      *         Add also articles per category
      * @param bool $bArtOnline
      *         If true, show only online articles
+     * 
      * @return int
      *         Number of items added
+     * 
+     * @throws cDbException
      */
     public function addCategories($iMaxLevel = 0, $bColored = false, $bCatVisible = true, $bCatPublic = true, $bWithArt = false, $bArtOnline = true) {
         global $cfg, $client, $lang;
@@ -229,13 +235,16 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      * Function addTypesFromArt.
      * Adds types and type ids which are available for the specified article
      *
-     * @param int $iIDCatArt
+     * @param int    $iIDCatArt
      *         Article id
      * @param string $sTypeRange
      *         Comma separated list of CONTENIDO type ids
      *         which may be in the resulting list (e.g. '1', '17', '28')
+     * 
      * @return int
      *         Number of items added
+     * 
+     * @throws cDbException
      */
     public function addTypesFromArt($iIDCatArt, $sTypeRange = '') {
         global $cfg, $lang;
@@ -550,8 +559,11 @@ try {
      * Rendering function
      *
      * @param bool $print [optional]
+     *
      * @return string|void
      *         Complete template string or nothing
+     * 
+     * @throws cInvalidArgumentException
      */
     public function render($print = false) {
         $table = new cTemplate();

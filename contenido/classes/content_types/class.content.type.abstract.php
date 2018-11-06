@@ -232,6 +232,8 @@ abstract class cContentTypeAbstract {
     /**
      * Stores all values from the $_POST array in the $_settings attribute
      * (associative array) and saves them in the database (XML).
+     *
+     * @throws cDbException
      */
     protected function _storeSettings() {
         $settingsToStore = '';
@@ -337,8 +339,10 @@ abstract class cContentTypeAbstract {
      *
      * @param array $dirs
      *         directory information
+     *
      * @return string
      *         HTML code showing a directory list
+     * @throws cInvalidArgumentException
      */
     public function generateDirectoryList(array $dirs) {
         $template = new cTemplate();

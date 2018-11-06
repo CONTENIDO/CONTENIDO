@@ -55,6 +55,8 @@ class cTypeGenerator {
 
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cDbException
      */
     public function __construct() {
         $this->_idart = cRegistry::getArticleId(true);
@@ -110,6 +112,8 @@ class cTypeGenerator {
 
     /**
      * Fill content from db for current article
+     *
+     * @throws cDbException
      */
     private function fillContent() {
         self::$a_content[$this->_idart] = array();
@@ -136,8 +140,12 @@ class cTypeGenerator {
     /**
      *
      * @param string $type
-     * @param int $index
+     * @param int    $index
+     *
      * @return string
+     *
+     * @throws cDbException
+     * @throws cException
      */
     private function _processCmsTags($type, $index) {
         $oTypeColl = new cApiTypeCollection();
@@ -174,9 +182,12 @@ class cTypeGenerator {
      * Helper function to call a private function
      *
      * @param string $type
-     * @param int $index
+     * @param int    $index
      *
      * @return string
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function getGeneratedCmsTag($type, $index) {
         return $this->_processCmsTags($type, $index);

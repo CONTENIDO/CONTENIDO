@@ -21,12 +21,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiTemplateConfigurationCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
      *
-     * @param string $select [optional]
-     *         where clause to use for selection (see ItemCollection::select())
+     * @param bool $select [optional]
+     *                     where clause to use for selection (see ItemCollection::select())
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function __construct($select = false) {
         global $cfg;
@@ -46,7 +48,11 @@ class cApiTemplateConfigurationCollection extends ItemCollection {
      * configurations.
      *
      * @param int $idtplcfg
+     *
      * @return bool
+     * 
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function delete($idtplcfg) {
         $result = parent::delete($idtplcfg);
@@ -61,12 +67,16 @@ class cApiTemplateConfigurationCollection extends ItemCollection {
     /**
      * Creates a template config item entry
      *
-     * @param int $idtpl
-     * @param int $status [optional]
-     * @param string $author [optional]
-     * @param string $created [optional]
+     * @param int    $idtpl
+     * @param int    $status       [optional]
+     * @param string $author       [optional]
+     * @param string $created      [optional]
      * @param string $lastmodified [optional]
+     *
      * @return cApiTemplateConfiguration
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($idtpl, $status = 0, $author = '', $created = '', $lastmodified = '') {
         global $auth;
@@ -98,6 +108,9 @@ class cApiTemplateConfigurationCollection extends ItemCollection {
      *
      * @param int $idtpl
      * @param int $idtplcfg
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function copyTemplatePreconfiguration($idtpl, $idtplcfg) {
         $oTemplateColl = new cApiTemplateCollection('idtpl = ' . (int) $idtpl);
@@ -124,13 +137,16 @@ class cApiTemplateConfigurationCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiTemplateConfiguration extends Item {
-
+class cApiTemplateConfiguration extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *                   
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;

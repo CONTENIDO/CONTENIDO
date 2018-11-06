@@ -49,8 +49,10 @@ class cGuiList {
     /**
      *
      * @param bool $print [optional]
+     *
      * @return string|void
      *         Complete template string or nothing
+     * @throws cInvalidArgumentException
      */
     public function render($print = false) {
         global $cfg;

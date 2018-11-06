@@ -21,9 +21,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiFrontendUserCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -39,7 +40,9 @@ class cApiFrontendUserCollection extends ItemCollection {
      *
      * @param string $sUsername
      *         specifies the username to search for
+     *
      * @return bool
+     * @throws cException
      */
     public function userExists($sUsername) {
         global $client;
@@ -56,10 +59,14 @@ class cApiFrontendUserCollection extends ItemCollection {
      * Creates a new user
      *
      * @param string $username
-     *         Specifies the username
+     *                         Specifies the username
      * @param string $password [optional]
-     *         Specifies the password (optional)
+     *                         Specifies the password (optional)
+     *
      * @return cApiFrontendUser
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($username, $password = '') {
         global $client, $auth;
@@ -104,7 +111,12 @@ class cApiFrontendUserCollection extends ItemCollection {
      *
      * @param int $itemId
      *         specifies the frontend user
+     *
      * @return bool
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function delete($itemId) {
         // delete group memberships
@@ -126,13 +138,17 @@ class cApiFrontendUserCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiFrontendUser extends Item {
-
+class cApiFrontendUser extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *                   
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -196,6 +212,8 @@ class cApiFrontendUser extends Item {
      * Saves modified user entry
      *
      * @return bool
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function store() {
         global $auth;
@@ -210,6 +228,7 @@ class cApiFrontendUser extends Item {
      *
      * @return array
      *         List of frontend group ids
+     * @throws cException
      */
     public function getGroupsForUser() {
         $feGroupMembers = new cApiFrontendGroupMemberCollection();

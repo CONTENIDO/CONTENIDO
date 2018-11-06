@@ -118,7 +118,7 @@ class cStringMultiByteWrapper {
      *         The string being checked for length
      * @param string|null $encoding
      *         encoding parameter, standard: cRegistry::getEncoding()
-     * @return string
+     * @return int
      *         Returns the number of characters
      * @link http://php.net/manual/de/function.mb-strlen.php
      */
@@ -349,7 +349,7 @@ class cStringMultiByteWrapper {
      * @param string $pattern
      * @param string $string
      * @param array $regs [Optional]
-     * @return Returns the byte length of the matched string if a match for pattern was found in string
+     * @return int Returns the byte length of the matched string if a match for pattern was found in string
      * @link http://php.net/manual/de/function.mb-ereg.php
      */
     public static function eregi($pattern, $string, &$regs = array()) {
@@ -363,7 +363,7 @@ class cStringMultiByteWrapper {
      * @param string $replacement
      * @param string $string
      * @param string $option [Optional]
-     * @return Returns the byte length of the matched string if a match for pattern was found in string
+     * @return false|string Returns the byte length of the matched string if a match for pattern was found in string
      * @link http://php.net/manual/de/function.mb-ereg-replace.php
      */
     public static function ereg_replace($pattern, $replacement, $string, $option = 'msr') {
@@ -377,7 +377,7 @@ class cStringMultiByteWrapper {
      * @param string $replacement
      * @param string $string
      * @param string $option [Optional]
-     * @return Returns the byte length of the matched string if a match for pattern was found in string
+     * @return false|string Returns the byte length of the matched string if a match for pattern was found in string
      * @link http://php.net/manual/de/function.mb-eregi-replace.php
      */
     public static function eregi_replace($pattern, $replacement, $string, $option = 'msr') {
@@ -390,7 +390,7 @@ class cStringMultiByteWrapper {
      * @param string $pattern
      * @param string $string
      * @param integer $limit [Optional]
-     * @return The result as an array
+     * @return string[] The result as an array
      * @link http://php.net/manual/de/function.mb-split.php
      */
     public static function split($pattern, $string, $limit = -1) {

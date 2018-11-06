@@ -21,7 +21,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage ContentType
  */
 class cContentTypeLink extends cContentTypeLinkeditor {
-
     /**
      * Constructor to create an instance of this class.
      *
@@ -29,10 +28,13 @@ class cContentTypeLink extends cContentTypeLinkeditor {
      *
      * @param string $rawSettings
      *         the raw settings in an XML structure or as plaintext
-     * @param int $id
+     * @param int    $id
      *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
-     * @param array $contentTypes
+     * @param array  $contentTypes
      *         array containing the values of all content types
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
 
@@ -53,6 +55,7 @@ class cContentTypeLink extends cContentTypeLinkeditor {
      *
      * @return string
      *         escaped HTML code which sould be shown if content type is shown in frontend
+     * @throws cInvalidArgumentException
      */
     public function generateViewCode() {
         return $this->_encodeForOutput($this->_generateHref());
@@ -63,6 +66,7 @@ class cContentTypeLink extends cContentTypeLinkeditor {
      *
      * @return string
      *         escaped HTML code which should be shown if content type is edited
+     * @throws cInvalidArgumentException
      */
     public function generateEditCode() {
         return $this->generateViewCode();

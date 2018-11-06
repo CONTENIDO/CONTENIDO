@@ -21,12 +21,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiContainerConfigurationCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
      *
-     * @param string $select [optional]
-     *         where clause to use for selection (see ItemCollection::select())
+     * @param bool $select [optional]
+     *                     where clause to use for selection (see ItemCollection::select())
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function __construct($select = false) {
         global $cfg;
@@ -43,10 +45,15 @@ class cApiContainerConfigurationCollection extends ItemCollection {
 
     /**
      * Creates a container configuration item
-     * @param int $idtplcfg
-     * @param int $number
+     *
+     * @param int    $idtplcfg
+     * @param int    $number
      * @param string $container
+     *
      * @return cApiContainerConfiguration
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($idtplcfg, $number, $container) {
         $item = $this->createNewItem();
@@ -67,7 +74,9 @@ class cApiContainerConfigurationCollection extends ItemCollection {
      * @return array
      *         Assoziative array where the key is the number and value the
      *         container configuration.
-     */
+     * @throws cDbException
+     * @throws cException
+*/
     public function getByTemplateConfiguration($idtplcfg) {
         $configuration = array();
 
@@ -86,13 +95,16 @@ class cApiContainerConfigurationCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiContainerConfiguration extends Item {
-
+class cApiContainerConfiguration extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;

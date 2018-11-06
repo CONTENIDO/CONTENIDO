@@ -269,6 +269,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     global $time_online_move;
     global $timemgmt;
     // CON-2134 check admin permission
+    $auth = cRegistry::getAuth();
     $aAuthPerms = explode(',', $auth->auth['perm']);
 
     $admin = false;

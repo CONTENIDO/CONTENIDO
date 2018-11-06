@@ -49,6 +49,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
      * @see cDbDriverAbstract::connect()
      * @return object|resource|int|NULL
      *         value depends on used driver and is NULL in case of an error
+     * @throws cDbException
      */
     public function connect() {
         if (isset($this->_dbCfg['connection'])) {
@@ -335,13 +336,16 @@ class cDbDriverMysql extends cDbDriverAbstract {
      * Test: if (isset($result['meta']['myfield'])) { ...
      *
      * @see cDbDriverAbstract::getMetaData()
+     *
      * @param string $tableName
-     *         The table to get metadata or empty string to retrieve metadata
-     *         of all tables.
-     * @param bool $full [optional]
-     *         Flag to load full metadata.
+     *                     The table to get metadata or empty string to retrieve metadata
+     *                     of all tables.
+     * @param bool   $full [optional]
+     *                     Flag to load full metadata.
+     *
      * @return array
      *         Depends on used database and on parameter $full
+     * @throws cDbException
      */
     public function getMetaData($tableName, $full = false) {
         $res = array();

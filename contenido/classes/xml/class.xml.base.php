@@ -67,6 +67,8 @@ abstract class cXmlBase {
      *
      * @param DOMDocument $domDocument
      *         DOMDocument object
+     *
+     * @throws cException
      */
     public function setDomDocument(DOMDocument $domDocument) {
         $this->_dom = $domDocument;

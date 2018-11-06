@@ -124,11 +124,14 @@ class cFileCache {
      * Returns full destination to the cached file.
      *
      * @param string $id
-     *         cache ID
+     *                      cache ID
      * @param string $group [optional]
-     *         cache group
+     *                      cache group
+     *
      * @return string
      *         full filename
+     * 
+     * @throws cInvalidArgumentException
      */
     public function getDestination($id, $group = '') {
         $this->_validateDirectory();
@@ -145,11 +148,14 @@ class cFileCache {
      * If not cached, false is returned.
      *
      * @param string $id
-     *         cache ID
+     *                      cache ID
      * @param string $group [optional]
-     *         cache group
+     *                      cache group
+     *                      
      * @return bool|string
-     *         content or false
+     *                      content or false
+     * 
+     * @throws cInvalidArgumentException
      */
     public function get($id, $group = '') {
         $data = false;
@@ -177,13 +183,16 @@ class cFileCache {
      * Saves the content of a cache in filesystem.
      *
      * @param string $data
-     *         data to save
+     *                      data to save
      * @param string $id
-     *         cache ID
+     *                      cache ID
      * @param string $group [optional]
-     *         cache group
+     *                      cache group
+     *
      * @return bool
      *         success state
+     * 
+     * @throws cInvalidArgumentException
      */
     public function save($data, $id, $group = '') {
         return cFileHandler::write($this->getDestination($id, $group), $data);
@@ -193,11 +202,14 @@ class cFileCache {
      * Removes cache from filesystem.
      *
      * @param string $id
-     *         cache ID
+     *                      cache ID
      * @param string $group [optional]
-     *         cache group
+     *                      cache group
+     *                      
      * @return bool
-     *         success state
+     *                      success state
+     * 
+     * @throws cInvalidArgumentException
      */
     public function remove($id, $group = '') {
         $destination = $this->getDestination($id, $group);

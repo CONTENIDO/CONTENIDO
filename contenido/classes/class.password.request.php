@@ -103,10 +103,13 @@ class cPasswordRequest {
      *
      * Initializes class variables.
      *
-     * @param cDb $db
+     * @param cDb   $db
      *         CONTENIDO database object
      * @param array $cfg
      *         The CONTENIDO configuration array
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($db, $cfg) {
         // generate new dbobject, if it does not exist
@@ -184,9 +187,14 @@ class cPasswordRequest {
      * passwort reset request and sending process
      *
      * @param bool $return [optional]
-     *         Return or print template
+     *                     Return or print template
+     *
      * @return string
      *         rendered HTML code
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function renderForm($return = false) {
         // if feature is not enabled, do nothing
@@ -233,7 +241,11 @@ class cPasswordRequest {
     }
 
     /**
-     * function to display form to set new password for user
+     * Function to display form to set new password for user.
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function renderNewPwForm() {
         if (isset($_POST['action']) && $_POST['action'] == 'reset_pw') {
@@ -275,9 +287,12 @@ class cPasswordRequest {
         $sendBtn->setAttribute('src', 'images/submit.gif');
         $sendBtn->setAttribute('alt', i18n('Submit'));
         $sendBtn->setAttribute('title', i18n('Submit'));
+        $sendBtn->setAttribute('class', 'send_btn');
+        $lastFormRow = new cHTMLDiv($userPwRepeatLbl . $userPwRepeatBox . $sendBtn);
+        $lastFormRow->setAttribute('class', 'last_row');
 
         $sendBtn->removeAttribute('value');
-        $form->setContent(array($userNameLbl, $userNameBox, $userPwLbl, $userPwBox, $userPwRepeatLbl, $userPwRepeatBox, $sendBtn));
+        $form->setContent(array($userNameLbl, $userNameBox, $userPwLbl, $userPwBox, $lastFormRow));
 
         $this->_tpl->set('s', 'RESET_MESSAGE', '');
 
@@ -288,6 +303,9 @@ class cPasswordRequest {
      * Getter function to obtain an array of all current user password reset requests
      *
      * @return array
+     *
+     * @throws cDbException
+     * @throws cException
      */
     protected function _getCurrentRequests() {
         $oApiUserPasswordRequest = new cApiUserPasswordRequestCollection();
@@ -300,6 +318,10 @@ class cPasswordRequest {
      * _submitMail() in case of valid requests
      *
      * @return string
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     protected function _handleNewPassword() {
         // notification message, which is returned to caller
@@ -441,6 +463,10 @@ class cPasswordRequest {
 
     /**
      * Function checks password reset request for errors and sets a new password in case there is no error
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     protected function _handleResetPw() {
         $this->_tpl->set('s', 'JS_CALL', 'showResetLayer();');
@@ -546,12 +572,17 @@ class cPasswordRequest {
 
     /**
      * Save request into db for future validity check
-     * @param string $token
+     *
+     * @param string   $token
      *         Token used to check for validity at user confirmation part
-     * @param DateTime
-     *         Expiration time of reset request validity
+     * @param DateTime $expiration
+     *
      * @return bool
      *         whether password request could be safed successfully
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     protected function _safePwResetRequest($token, DateTime $expiration) {
         $oUserPwRequestCol = new cApiUserPasswordRequestCollection();
@@ -576,6 +607,10 @@ class cPasswordRequest {
      *
      * @param string $token
      *         The token used to authorise password change
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     protected function _submitMail($token) {
         $cfg = cRegistry::getConfig();

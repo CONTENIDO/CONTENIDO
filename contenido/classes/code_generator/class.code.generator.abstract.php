@@ -173,23 +173,26 @@ abstract class cCodeGeneratorAbstract {
      * Generates the code for a specific article (article for a client
      * in a language).
      *
-     * @param int $idcat
-     * @param int $idart
-     * @param int $lang
-     * @param int $client
-     * @param bool $layout [optional]
-     *         This params purpose is unclear.
-     * @param bool $save [optional]
-     *         Flag to persist generated code.
-     * @param bool $contype [optional]
-     *         Flag to enable/disable replacement of CMS_TAGS[].
-     * @param bool $editable [optional]
-     * @param int|NULL $version [optional]
-     * @throws cInvalidArgumentException
-     *         If an article with the given idart and idlang can not be loaded.
+     * @param int      $idcat
+     * @param int      $idart
+     * @param int      $lang
+     * @param int      $client
+     * @param bool     $layout   [optional]
+     *                           This params purpose is unclear.
+     * @param bool     $save     [optional]
+     *                           Flag to persist generated code.
+     * @param bool     $contype  [optional]
+     *                           Flag to enable/disable replacement of CMS_TAGS[].
+     * @param bool     $editable [optional]
+     * @param int|NULL $version  [optional]
+     *
      * @return string
      *         Generated code or error code '0601' if no template
      *         configuration was found for category or article.
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException If an article with the given idart and idlang can not be loaded.
      */
     public function generate(
         $idcat, $idart, $lang, $client, $layout = false, $save = true,
@@ -233,6 +236,8 @@ abstract class cCodeGeneratorAbstract {
      * article or by configured category.
      *
      * @return int|NULL
+     *
+     * @throws cInvalidArgumentException
      */
     protected function _getTemplateConfigurationId() {
         // get configuration for article
@@ -265,7 +270,6 @@ abstract class cCodeGeneratorAbstract {
     /**
      * Returns array containing used layout, template and template name.
      *
-     * @global array $cfg
      * @return array
      *         Assoziative array like
      *         array(
@@ -273,6 +277,11 @@ abstract class cCodeGeneratorAbstract {
      *             'idtpl' => (int),
      *             'name' => (string)
      *         )
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
+     *
+     * @global array $cfg
      */
     protected function _getTemplateData() {
         global $cfg;
@@ -308,10 +317,13 @@ abstract class cCodeGeneratorAbstract {
      * Processes replacements of all existing CMS_* tags within passed code.
      *
      * @param array $contentList
-     *         Associative list of CMS variables.
-     * @param bool $saveKeywords [optional]
-     *         Flag to save collected keywords during replacement process.
-     * @param bool $editable [optional]
+     *                            Associative list of CMS variables.
+     * @param bool  $saveKeywords [optional]
+     *                            Flag to save collected keywords during replacement process.
+     * @param bool  $editable     [optional]
+     *
+     * @throws cDbException
+     * @throws cException
      */
     protected function _processCmsTags($contentList, $saveKeywords = true, $editable = true) {
         // NOTE: Variables below are required in included/evaluated content type codes!
@@ -370,6 +382,7 @@ abstract class cCodeGeneratorAbstract {
                 if (class_exists($typeClassName)) {
                     // we have a class for the content type, use it
                     $tmp = $a_content[$_typeItem->type][$val];
+                    /** @var cContentTypeAbstract $cTypeObject */
                     $cTypeObject = new $typeClassName($tmp, $val, $a_content);
                     global $edit;
 
@@ -454,10 +467,13 @@ abstract class cCodeGeneratorAbstract {
      * Extends container code by adding several debug features,
      * if enabled and configured.
      *
-     * @param int $containerNumber
+     * @param int   $containerNumber
      *         Container number (the id attribute in container tag).
      * @param array $module
      *         Recordset as assoziative array of related module (container code).
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     protected function _processFrontendDebug($containerNumber, array $module) {
         global $containerinf;
@@ -529,10 +545,13 @@ abstract class cCodeGeneratorAbstract {
     /**
      * Returns array of all CMS_* vars being used by current article and language
      *
-     * @param bool $editable [optional]
-     * @param int|NULL $version [optional]
+     * @param bool     $editable [optional]
+     * @param int|NULL $version  [optional]
+     *
      * @return array
      *         like $arr[type][typeid] = value;
+     *
+     * @throws cDbException
      */
     protected function _getUsedCmsTypesData($editable = true, $version = NULL) {
         global $cfg;

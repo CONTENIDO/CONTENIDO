@@ -20,12 +20,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage Security
  */
 class cSecurity {
-
     /**
      * Checks some CONTENIDO core related request parameters against XSS.
      *
      * @return bool
      *         True on success otherwise nothing.
+     * 
+     * @throws cInvalidArgumentException
      */
     public static function checkRequests() {
         $requestValidator = cRequestValidator::getInstance();

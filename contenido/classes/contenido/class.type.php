@@ -21,9 +21,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiTypeCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -36,12 +37,16 @@ class cApiTypeCollection extends ItemCollection {
      *
      * @param string $type
      * @param string $description
-     * @param string $code [optional]
-     * @param int $status [optional]
-     * @param string $author [optional]
-     * @param string $created [optional]
+     * @param string $code         [optional]
+     * @param int    $status       [optional]
+     * @param string $author       [optional]
+     * @param string $created      [optional]
      * @param string $lastmodified [optional]
+     *
      * @return cApiType
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($type, $description, $code = '', $status = 0, $author = '', $created = '', $lastmodified = '') {
         global $auth;
@@ -78,13 +83,16 @@ class cApiTypeCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiType extends Item {
-
+class cApiType extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $id [optional]
-     *         Specifies the ID of item to load
+     *                  Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($id = false) {
         global $cfg;
@@ -100,7 +108,10 @@ class cApiType extends Item {
      *
      * @param string $type
      *         e.g. CMS_HTML, CMS_TEXT, etc.
+     *
      * @return bool
+     * 
+     * @throws cException
      */
     public function loadByType($type) {
         $aProps = array(

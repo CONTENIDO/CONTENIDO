@@ -242,6 +242,8 @@ class cVersion {
     /**
      * This function looks if maximum number of stored versions is achieved.
      * If true, it will be delete the first version.
+     *
+     * @throws cInvalidArgumentException
      */
     protected function prune() {
         $this->initRevisions();
@@ -307,8 +309,10 @@ class cVersion {
      * @param string $sDirectory
      * @param string $sFileName
      *         name of xml file to create
+     *
      * @return bool
      *         true if saving file was successful, otherwise false
+     * @throws cException
      */
     public function createNewXml($sDirectory, $sFileName) {
         $oWriter = new cXmlWriter();
@@ -400,7 +404,8 @@ class cVersion {
      *
      * @param string $sFirstFile [optional]
      * @return bool
-     *         return true if successful
+     *                           return true if successful
+     * @throws cInvalidArgumentException
      */
     public function deleteFile($sFirstFile = '') {
         // Open this Filepath and read then the content.
@@ -531,18 +536,20 @@ class cVersion {
      * The general SelectBox function for get Revision.
      *
      * @param string $sTableForm
-     *         The name of Table_Form class
+     *                         The name of Table_Form class
      * @param string $sAddHeader
-     *         The Header Label of SelectBox Widget
+     *                         The Header Label of SelectBox Widget
      * @param string $sLabelOfSelectBox
-     *         The Label of SelectBox Widget
+     *                         The Label of SelectBox Widget
      * @param string $sIdOfSelectBox
-     *         Id of Select Box
-     * @param bool $disabled [optional]
-     *         If true, show disabled buttons for deleting
+     *                         Id of Select Box
+     * @param bool   $disabled [optional]
+     *                         If true, show disabled buttons for deleting
+     *
      * @return string
      *         if is exists Revision, then returns HTML Code of full SelectBox
      *         else returns empty string
+     * @throws cInvalidArgumentException
      */
     public function buildSelectBox($sTableForm, $sAddHeader, $sLabelOfSelectBox, $sIdOfSelectBox, $disabled = false) {
         $oForm = new cGuiTableForm($sTableForm);

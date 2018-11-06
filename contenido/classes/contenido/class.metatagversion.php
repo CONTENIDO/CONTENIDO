@@ -21,9 +21,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiMetaTagVersionCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -38,12 +39,16 @@ class cApiMetaTagVersionCollection extends ItemCollection {
     /**
      * Creates a meta tag entry.
      *
-     * @param int $idMetaTag
-     * @param int $idArtLang
-     * @param int $idMetaType
+     * @param int    $idMetaTag
+     * @param int    $idArtLang
+     * @param int    $idMetaType
      * @param string $metaValue
      * @param string $version
+     *
      * @return cApiMetaTagVersion
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($idMetaTag, $idArtLang, $idMetaType, $metaValue, $version) {
 
@@ -58,7 +63,6 @@ class cApiMetaTagVersionCollection extends ItemCollection {
         $item->store();
 
         return $item;
-
     }
 
     /**
@@ -68,6 +72,7 @@ class cApiMetaTagVersionCollection extends ItemCollection {
      * @param int $idMetaType
      * @param int $version
      * @return cApiMetaTagVersion|NULL
+     * @throws cDbException
      */
     public function fetchByArtLangMetaTypeAndVersion($idArtLang, $idMetaType, $version) {
         $sql = 'SELECT idmetatagversion FROM %s
@@ -92,12 +97,13 @@ class cApiMetaTagVersionCollection extends ItemCollection {
         return new cApiMetaTagVersion($this->db->f('idmetatagversion'));
     }
 
-
     /**
      * Returns idmetatagversions by where-clause
      *
      * @param string $where
      * @return int[]
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchByArtLangAndMetaType($where) {
         $metaTagVersionColl = new cApiMetaTagVersionCollection();
@@ -118,13 +124,16 @@ class cApiMetaTagVersionCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiMetaTagVersion extends Item {
-
+class cApiMetaTagVersion extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $id
      *         Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($id = false) {
         global $cfg;
@@ -140,6 +149,8 @@ class cApiMetaTagVersion extends Item {
      *
      * @param string $metaValue
      * @return bool
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function updateMetaValue($metaValue) {
         $this->set('metavalue', $metaValue, false);
@@ -150,6 +161,9 @@ class cApiMetaTagVersion extends Item {
      * Marks this meta value as current.
      *
      * @return bool|void
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function markAsCurrent() {
         $metaTagColl = new cApiMetaTagCollection();
@@ -167,6 +181,9 @@ class cApiMetaTagVersion extends Item {
      * Marks this meta value as editable.
      *
      * @param int $version
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function markAsEditable($version) {
         $metaTagVersionColl = new cApiMetaTagVersionCollection();
