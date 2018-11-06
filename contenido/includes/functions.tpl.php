@@ -238,12 +238,12 @@ function tplGetContainerName($idlay, $container) {
 /**
  * Retrieve the container mode
  *
- * @param int $idtpl
+ * @param int $idlay
  *         Layout number to browse
  * @param int $container
  *         Container number
  * @return string|null
- *         Container name or a empty string
+ *         Container name or null
  */
 function tplGetContainerMode($idlay, $container) {
     global $containerinf;
@@ -292,7 +292,7 @@ function tplGetContainerTypes($idlay, $container) {
  * @param int $container
  *         Container number
  * @return string|null
- *         Defaulr module name
+ *         Default module name or null
  */
 function tplGetContainerDefault($idlay, $container) {
     global $containerinf;
