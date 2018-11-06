@@ -167,7 +167,7 @@ class cStringMultiByteWrapper {
      *         The string being found
      * @param string|null $encoding
      *         encoding parameter, standard: cRegistry::getEncoding()
-     * @return string
+     * @return int
      *         The number of times the needle substring occurs in the haystack string.
      * @link http://php.net/manual/de/function.mb-substr-count.php
      */

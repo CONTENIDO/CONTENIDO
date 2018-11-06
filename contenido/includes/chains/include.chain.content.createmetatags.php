@@ -22,7 +22,11 @@ cInclude('plugins', 'repository/keyword_density.php');
 /**
  *
  * @param array $metatags
+ *
  * @return array
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function cecCreateMetatags($metatags) {
     global $cfg, $lang, $idart, $client, $cfgClient, $idcat, $idartlang;

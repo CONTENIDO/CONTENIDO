@@ -22,10 +22,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @deprecated [2015-05-21]
  *         This method is no longer supported (no replacement)
+ *
  * @param string $string
  *         The string to translate
+ *
  * @return string
  *         Returns the translation
+ * 
+ * @throws cException
  */
 function trans($string) {
     return cI18n::__($string);
@@ -41,8 +45,11 @@ function trans($string) {
  *         The string to translate
  * @param string $domain
  *         The domain to look up
+ *
  * @return string
  *         Returns the translation
+ * 
+ * @throws cException
  */
 function i18n($string, $domain = 'contenido') {
     return cI18n::__($string, $domain);
@@ -55,8 +62,11 @@ function i18n($string, $domain = 'contenido') {
  *         The string to translate
  * @param string $domain
  *         The domain to look up
+ *
  * @return string
  *         Returns the translation
+ * 
+ * @throws cInvalidArgumentException
  */
 function i18nEmulateGettext($string, $domain = 'contenido') {
     return cI18n::emulateGettext($string, $domain);
@@ -425,8 +435,12 @@ function i18nGetAvailableLanguages() {
  *
  * @param string $key
  *         the string to translate
+ *
  * @return string
  *         the translated string
+ * 
+ * @throws cDbException
+ * @throws cException
  */
 function mi18n($key) {
 

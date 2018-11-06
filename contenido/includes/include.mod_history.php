@@ -88,8 +88,6 @@ $oForm->setVar("frame", $frame);
 $oForm->setVar("idmod", $idmod);
 $oForm->setVar("mod_send", 1);
 
-
-
 // if send form refresh
 if ($_POST["idmodhistory"] != "") {
     $sRevision = $_POST["idmodhistory"];

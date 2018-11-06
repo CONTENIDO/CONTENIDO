@@ -22,7 +22,7 @@ cInclude('classes', 'class.layout.handler.php');
 /**
  * Edit or Create a new layout
  *
- * @param int $idlay
+ * @param int    $idlay
  *         Id of the Layout
  * @param string $name
  *         Name of the Layout
@@ -30,8 +30,13 @@ cInclude('classes', 'class.layout.handler.php');
  *         Description of the Layout
  * @param string $code
  *         Layout HTML Code
+ *
  * @return int
  *         Id of the new or edited layout
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function layEditLayout($idlay, $name, $description, $code) {
     global $client, $auth, $cfg, $sess, $lang, $area_tree, $perm, $area, $frame, $cfgClient;
@@ -146,8 +151,13 @@ function layEditLayout($idlay, $name, $description, $code) {
  *
  * @param int $idlay
  *         the ID of the layout
+ *
  * @return string
  *         an error code if the layout is still in use
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function layDeleteLayout($idlay) {
     global $client, $cfg, $area_tree, $perm, $cfgClient;

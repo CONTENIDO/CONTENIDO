@@ -23,7 +23,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  *
  * @param string $currentBaseHref
+ *
  * @return string
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function cecCreateBaseHref($currentBaseHref) {
 

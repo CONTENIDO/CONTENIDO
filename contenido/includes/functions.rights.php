@@ -20,15 +20,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @param array $aClients
  *         array of clients to check
- * @param int $iLang
+ * @param int   $iLang
  *         language id which should be checked
  * @param array $aCfg
  *         CONTENIDO configruation array (no more needed)
- * @param cDb $oDb
+ * @param cDb   $oDb
  *         CONTENIDO database object (no more needed)
- * @return boolean
+ *
+ * @return bool
  *         status
  *         If language id corresponds to list of clients true otherwise false.
+ * 
+ * @throws cDbException
  */
 function checkLangInClients($aClients, $iLang, $aCfg, $oDb) {
     $oClientLanguageCollection = new cApiClientLanguageCollection();
@@ -40,15 +43,20 @@ function checkLangInClients($aClients, $iLang, $aCfg, $oDb) {
  *
  * @param string $area
  *         Main area name (e. g. 'lay', 'mod', 'str', 'tpl', etc.)
- * @param int $iditem
+ * @param int    $iditem
  *         ID of element to copy
- * @param int $newiditem
+ * @param int    $newiditem
  *         ID of the new element
- * @param int $idlang
+ * @param bool   $idlang
  *         ID of language, if passed only rights for this language
  *         will be created, otherwise for all existing languages
+ *
  * @return bool
  *         True on success otherwise false
+ * 
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function copyRightsForElement($area, $iditem, $newiditem, $idlang = false) {
     global $perm, $auth, $area_tree;
@@ -114,13 +122,18 @@ function copyRightsForElement($area, $iditem, $newiditem, $idlang = false) {
  *
  * @param string $area
  *         Main area name (e. g. 'lay', 'mod', 'str', 'tpl', etc.)
- * @param int $iditem
+ * @param int    $iditem
  *         ID of new element
- * @param int $idlang
+ * @param bool   $idlang
  *         ID of language, if passed only rights for this language
  *         will be created, otherwise for all existing languages
+ *
  * @return bool
  *         True on success otherwise false
+ * 
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function createRightsForElement($area, $iditem, $idlang = false) {
     global $perm, $auth, $area_tree, $client;
@@ -185,10 +198,13 @@ function createRightsForElement($area, $iditem, $idlang = false) {
  *
  * @param string $area
  *         main area name
- * @param int $iditem
+ * @param int    $iditem
  *         ID of new element
- * @param int $idlang
+ * @param bool   $idlang
  *         ID of lang parameter
+ *
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function deleteRightsForElement($area, $iditem, $idlang = false) {
     global $perm, $area_tree, $client;
@@ -215,9 +231,13 @@ function deleteRightsForElement($area, $iditem, $idlang = false) {
  *
  * @todo Do we really need to add other perms, if the user/group gets the
  *       'sysadmin' permission?
+ *
  * @param bool $bAddUserToClient
  *         Flag to add current user to current client, if no client is specified.
+ *
  * @return array
+ * 
+ * @throws cDbException
  */
 function buildUserOrGroupPermsFromRequest($bAddUserToClient = false) {
     global $cfg, $msysadmin, $madmin, $mclient, $mlang, $auth, $client;
@@ -290,7 +310,11 @@ function buildUserOrGroupPermsFromRequest($bAddUserToClient = false) {
 
 /**
  *
- * @return boolean
+ * @return bool
+ * 
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function saveRights() {
     global $perm, $notification, $db, $userid;
@@ -368,7 +392,11 @@ function saveRights() {
 
 /**
  *
- * @return boolean
+ * @return bool
+ * 
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function saveGroupRights() {
     global $perm, $notification, $db, $groupid;

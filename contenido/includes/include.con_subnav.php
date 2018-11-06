@@ -14,7 +14,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-//Get sync options
+// Get sync options
 if (isset($syncoptions)) {
     $syncfrom = $syncoptions;
     $remakeCatTable = true;

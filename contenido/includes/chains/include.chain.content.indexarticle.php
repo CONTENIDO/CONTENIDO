@@ -21,6 +21,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @param array $articleIds
  *         containing keys idclient, idlang, idcat, idcatlang, idart, idartlang
+ *
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function cecIndexArticle(array $articleIds) {
 

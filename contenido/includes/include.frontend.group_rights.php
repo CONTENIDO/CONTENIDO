@@ -19,7 +19,6 @@ if ($_REQUEST['useplugin'] != 'category') {
     die('Illegal call!');
 }
 
-
 $page = new cGuiPage("frontend.group_rights");
 
 if (!in_array($useplugin, $cfg['plugins']['frontendlogic'])) {
@@ -48,14 +47,13 @@ if ($action == 'fegroups_save_perm') {
     $myitems = $items;
     $myitems['__GLOBAL__'] = '__GLOBAL__';
 
-       foreach ($actions as $action => $text) {
-           foreach ($myitems as $item => $text) {
+    foreach ($actions as $action => $actionText) {
+        foreach ($myitems as $item => $itemText) {
             if ($item === '__GLOBAL__') {
                 $varname = 'action_' . $action;
             } else {
                 $varname = 'item_' . $item . '_' . $action;
             }
-
             if ($_POST[$varname] == 1) {
                 $perms->setPerm($idfrontendgroup, $useplugin, $action, $item);
             } else {

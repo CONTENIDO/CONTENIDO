@@ -292,12 +292,12 @@ if ($upload = $uploads->next()) {
 $page->render();
 
 /**
- *
  * @param string $fileName
- * @return boolean
+ *
+ * @return bool
  */
-function isArchive($fileName) {
-
+function isArchive($fileName)
+{
     if (cString::getPartOfString(cString::findLastOccurrence($fileName, '.'), 1) === 'zip') {
         return true;
     } else {
