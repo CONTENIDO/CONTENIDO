@@ -74,7 +74,7 @@ if ((is_writable($cfgClient[$client]['upl']['path'] . $path) || cApiDbfs::isDbfs
 }
 
 
-if ($action == 'upl_modify_file' && empty($file) === false) {
+if ($action === 'upl_modify_file' && !empty($file)) {
 
     $extractFolder = NULL;
     $uplPath = $cfgClient[$client]['upl']['path'];
@@ -109,13 +109,13 @@ if ($action == 'upl_modify_file' && empty($file) === false) {
                 while ($chainEntry = $_cecIterator->next()) {
                     if (cApiDbfs::isDbfs($path)) {
                         $sPathPrepend = '';
-                        $sPathApppend = '/';
+                        $sPathAppend = '/';
                     } else {
                         $sPathPrepend = $cfgClient[$client]['upl']['path'];
-                        $sPathApppend = '';
+                        $sPathAppend = '';
                     }
 
-                    $modified = $chainEntry->execute($tmp_name, $sPathPrepend . $path . $sPathApppend . uplCreateFriendlyName($_FILES['file']['name']));
+                    $modified = $chainEntry->execute($tmp_name, $sPathPrepend . $path . $sPathAppend . uplCreateFriendlyName($_FILES['file']['name']));
 
                     if ($modified !== false) {
                         $tmp_name = $modified;
@@ -180,7 +180,7 @@ if ($action == 'upl_modify_file' && empty($file) === false) {
     }
 }
 
-if ($action == 'upl_multidelete' && $perm->have_perm_area_action($area, $action) && $bDirectoryIsWritable == true) {
+if ($action === 'upl_multidelete' && $perm->have_perm_area_action($area, $action) && $bDirectoryIsWritable === true) {
     if (is_array($fdelete)) {
         // array of cApiUpload objects to be passed to chain function
         $uploadObjects = array();
@@ -219,7 +219,7 @@ if ($action == 'upl_multidelete' && $perm->have_perm_area_action($area, $action)
     }
 }
 
-if ($action == 'upl_delete' && empty($file) === false && $perm->have_perm_area_action($area, $action) && $bDirectoryIsWritable == true) {
+if ($action === 'upl_delete' && !empty($file) && $perm->have_perm_area_action($area, $action) && $bDirectoryIsWritable === true) {
     // array of cApiUpload objects to be passed to chain function
     $uploadObjects = array();
 
@@ -254,7 +254,7 @@ if ($action == 'upl_delete' && empty($file) === false && $perm->have_perm_area_a
     }
 }
 
-if ($action == 'upl_upload' && $bDirectoryIsWritable == true) {
+if ($action === 'upl_upload' && $bDirectoryIsWritable === true) {
     if ($perm->have_perm_area_action($area, 'upl_upload')) {
         if (count($_FILES) == 1) {
             foreach ($_FILES['file']['name'] as $key => $value) {
@@ -270,16 +270,16 @@ if ($action == 'upl_upload' && $bDirectoryIsWritable == true) {
                         move_uploaded_file($tmp_name, $backendPath . $cfg['path']['temp'] . $_FILES['file']['name'][$key]);
                         $tmp_name = $backendPath . $cfg['path']['temp'] . $_FILES['file']['name'][$key];
 
-                        while ($chainEntry = $_cecIterator->next()) {
+                        while (false !== $chainEntry = $_cecIterator->next()) {
                             if (cApiDbfs::isDbfs($path)) {
                                 $sPathPrepend = '';
-                                $sPathApppend = '/';
+                                $sPathAppend = '/';
                             } else {
                                 $sPathPrepend = $cfgClient[$client]['upl']['path'];
-                                $sPathApppend = '';
+                                $sPathAppend = '';
                             }
 
-                            $modified = $chainEntry->execute($tmp_name, $sPathPrepend . $path . $sPathApppend . uplCreateFriendlyName($_FILES['file']['name'][$key]));
+                            $modified = $chainEntry->execute($tmp_name, $sPathPrepend . $path . $sPathAppend . uplCreateFriendlyName($_FILES['file']['name'][$key]));
                             if ($modified !== false) {
                                 $tmp_name = $modified;
                             }
@@ -313,7 +313,7 @@ if ($action == 'upl_upload' && $bDirectoryIsWritable == true) {
     }
 }
 
-if ($action == 'upl_renamefile' && $bDirectoryIsWritable == true) {
+if ($action === 'upl_renamefile' && $bDirectoryIsWritable === true) {
     $oldname = basename(cSecurity::escapeString($oldname));
     $newname = basename(cSecurity::escapeString($newname));
     rename($cfgClient[$client]['upl']['path'] . $path . $oldname, $cfgClient[$client]['upl']['path'] . $path . $newname);
