@@ -242,7 +242,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                 }
             }
 
-        } else if (is_array($this->_settings['filelist_directories']) === true && count($this->_settings['filelist_directories']) > 0) {
+        } else if (is_array($this->_settings['filelist_directories']) && count($this->_settings['filelist_directories']) > 0) {
             $directories = $this->_settings['filelist_directories'];
 
             if ($this->_settings['filelist_incl_subdirectories'] === 'true') {
