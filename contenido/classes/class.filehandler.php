@@ -188,15 +188,27 @@ class cFileHandler {
     }
 
     /**
-     * Checks if a file exists
+     * Checks if a file or a directory exists
+     *
+     * @param string $filename
+     *         the name and path of the file or to the directory
+     * @return bool
+     *         true if the file or the directory exists.
+     */
+    public static function exists($filename) {
+        return file_exists($filename);
+    }
+
+    /**
+     * Checks if a file exists and is not a directory.
      *
      * @param string $filename
      *         the name and path of the file
      * @return bool
-     *         true if the file exists
+     *         true if the file exists and is not a directory
      */
-    public static function exists($filename) {
-        return file_exists($filename);
+    public static function isFile($filename) {
+        return is_file($filename);
     }
 
     /**
