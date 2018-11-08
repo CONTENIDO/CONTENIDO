@@ -147,7 +147,8 @@ class PimPluginViewNavSub {
         $xmlPluginXml = simplexml_load_string($dataPluginXml);
 
         // Count nav_sub entries for this plugin
-        $this->_NavCount = count($xmlPluginXml->contenido->nav_sub->nav);
+        $entries = $xmlPluginXml->contenido->nav_sub->nav;
+        $this->_NavCount = is_object($entries) ? count($entries) : 0;
 
         // No navigation configured, so we can stop this process
         if ($this->_NavCount == 0) {
