@@ -238,15 +238,15 @@ function tplGetContainerName($idlay, $container) {
 /**
  * Retrieve the container mode
  *
- * @param int $idtpl
+ * @param int $idlay
  *         Layout number to browse
  * @param int $container
  *         Container number
- * @return string
- *         Container name
+ * @return string|null
+ *         Container name or null
  */
 function tplGetContainerMode($idlay, $container) {
-    global $db, $cfg, $containerinf;
+    global $containerinf;
 
     if (is_array($containerinf[$idlay])) {
         if (array_key_exists($container, $containerinf[$idlay])) {
@@ -266,7 +266,7 @@ function tplGetContainerMode($idlay, $container) {
  *         Allowed container types
  */
 function tplGetContainerTypes($idlay, $container) {
-    global $db, $cfg, $containerinf;
+    global $containerinf;
 
     if (is_array($containerinf[$idlay])) {
         if (array_key_exists($container, $containerinf[$idlay])) {
@@ -280,6 +280,8 @@ function tplGetContainerTypes($idlay, $container) {
             }
         }
     }
+
+    return [];
 }
 
 /**
@@ -289,11 +291,11 @@ function tplGetContainerTypes($idlay, $container) {
  *         Layout number to browse
  * @param int $container
  *         Container number
- * @return array
- *         Allowed container types
+ * @return string|null
+ *         Default module name or null
  */
 function tplGetContainerDefault($idlay, $container) {
-    global $db, $cfg, $containerinf;
+    global $containerinf;
 
     if (is_array($containerinf[$idlay])) {
         if (array_key_exists($container, $containerinf[$idlay])) {

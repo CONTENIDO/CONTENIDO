@@ -132,9 +132,7 @@ if (true === $layout->isLoaded()) {
 
             $containerCounter[$containerNr] += $count;
 
-            if (is_array(tplGetContainerTypes($idlay, $containerNr))) {
-                $types = array_merge($types, tplGetContainerTypes($idlay, $containerNr));
-            }
+            $types = array_merge($types, tplGetContainerTypes($idlay, $containerNr));
         }
 
         $types = array_unique($types);
