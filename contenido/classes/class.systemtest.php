@@ -715,6 +715,7 @@ class cSystemtest {
                 'password' => $password
             )
         );
+        $db = null;
         try {
             $db = new cDb($aOptions);
         } catch (cDbException $e) {

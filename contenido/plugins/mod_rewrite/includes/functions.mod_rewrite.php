@@ -469,9 +469,10 @@ function mr_buildGeneratedCode($code) {
 
     ModRewriteDebugger::add($code, 'mr_buildGeneratedCode() in');
 
+    $sseStartTime = getmicrotime();
+
     // mod rewrite is activated
     if (ModRewrite::isEnabled()) {
-        $sseStarttime = getmicrotime();
 
         // anchor hack
         $code = preg_replace_callback("/<a([^>]*)href\s*=\s*[\"|\'][\/]#(.?|.+?)[\"|\']([^>]*)>/i", function($match) {
@@ -488,10 +489,10 @@ function mr_buildGeneratedCode($code) {
 //         $code = preg_replace("/([\"|\'|=])upload\/(.?|.+?)([\"|\'|>])/ie", "stripslashes('\\1{$sBaseUri}upload/\\2\\3')", $code);
 
         $baseUri = cRegistry::getFrontendUrl();
-		$baseUri = cApiCecHook::execute("Contenido.Frontend.BaseHrefGeneration", $baseUri);
+		$baseUri = cApiCecHook::executeAndReturn("Contenido.Frontend.BaseHrefGeneration", $baseUri);
 
 		// CON-1389 modifier /e is deprecated as of PHP 5.5
-		$code = preg_replace_callback("/([\"|\'|=])upload\/(.?|.+?)([\"|\'|>])/i", function($match) {
+		$code = preg_replace_callback("/([\"|\'|=])upload\/(.?|.+?)([\"|\'|>])/i", function($match) use ($baseUri) {
             return stripslashes($match[1] . $baseUri . 'upload/' . $match[2] . $match[3]);
         }, $code);
 
@@ -529,7 +530,6 @@ function mr_buildGeneratedCode($code) {
 
         ModRewriteDebugger::add($code, 'mr_buildGeneratedCode() out');
 
-        $sseEndtime = getmicrotime();
     } else {
         // anchor hack for non modrewrite websites
         $code = preg_replace_callback("/<a([^>]*)href\s*=\s*[\"|\'][\/]#(.?|.+?)[\"|\']([^>]*)>/i", function($match) {
@@ -537,14 +537,16 @@ function mr_buildGeneratedCode($code) {
         }, $code);
     }
 
-    ModRewriteDebugger::add(($sseEndtime - $sseStarttime), 'mr_buildGeneratedCode() total spend time');
+    $sseEndTime = getmicrotime();
+
+    ModRewriteDebugger::add(($sseEndTime - $sseStartTime), 'mr_buildGeneratedCode() total spend time');
 
     if ($debug = mr_debugOutput(false)) {
         $code = cString::iReplaceOnce("</body>", $debug . "\n</body>", $code);
     }
 
     return $code;
-    // print "\n\n<!-- modrewrite generation time: " . ($sseEndtime - $sseStarttime) . " seconds -->";
+    // print "\n\n<!-- modrewrite generation time: " . ($sseEndTime - $sseStartTime) . " seconds -->";
 }
 
 /**
@@ -614,6 +616,21 @@ function mr_loadConfiguration($clientId, $forceReload = false) {
 }
 
 /**
+ * Returns the path of the mod rewrite configuration file of an client.
+ *
+ * File is placed within client frontend path in directory "data/config/{CENVIRONMENT}/"
+ * and has the name "config.mod_rewrite.php"
+ *
+ * @param   int   $clientId     Id of client
+ * @return  string  File name and path
+ */
+function mr_getConfigurationFilePath($clientId) {
+    $clientConfig = cRegistry::getClientConfig((int) $clientId);
+    $fePath = $clientConfig['path']['frontend'];
+    return $fePath . 'data/config/' . CON_ENVIRONMENT . '/config.mod_rewrite.php';
+}
+
+/**
  * Returns the mod rewrite configuration array of an client.
  *
  * File is placed in /contenido/mod_rewrite/includes/and is named like
@@ -627,14 +644,10 @@ function mr_getConfiguration($clientId) {
 
     $clientId = (int) $clientId;
 
-    $backendPath = cRegistry::getBackendPath();
-
-    $clientConfig = cRegistry::getClientConfig($clientId);
-    $fePath = $clientConfig['path']['frontend'];
-
-    $file = $fePath . 'data/config/' . CON_ENVIRONMENT . '/config.mod_rewrite.php';
+    $file = mr_getConfigurationFilePath($clientId);
 
     if (!is_file($file) || !is_readable($file)) {
+        $backendPath = cRegistry::getBackendPath();
         $file = $backendPath . $cfg['path']['plugins'] . 'mod_rewrite/includes/config.mod_rewrite_' . $clientId . '.php';
     }
 
@@ -663,12 +676,10 @@ function mr_setConfiguration($clientId, array $config) {
 
     $clientId = (int) $clientId;
 
-    $clientConfig = cRegistry::getClientConfig($clientId);
-    $fePath = $clientConfig['path']['frontend'];
-
-    $file = $fePath . 'data/config/' . CON_ENVIRONMENT . '/config.mod_rewrite.php';
+    $file = mr_getConfigurationFilePath($clientId);
     $result = cFileHandler::write($file, serialize($config));
 
+    $backendPath = cRegistry::getBackendPath();
     $file = $backendPath . $cfg['path']['plugins'] . 'mod_rewrite/includes/config.mod_rewrite_' . $clientId . '.php';
     if (is_file($file) && is_writeable($file)) {
         cFileHandler::remove($file, serialize($config));
