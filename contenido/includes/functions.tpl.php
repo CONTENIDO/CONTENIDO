@@ -669,10 +669,10 @@ function tplProcessSendContainerConfiguration($idtpl, $idtplcfg, array $postData
     foreach ($containerNumbers as $number) {
         $CiCMS_VAR = 'C' . $number . 'CMS_VAR';
 
+        if (!isset($containerData[$number])) {
+            $containerData[$number] = '';
+        }
         if (isset($postData[$CiCMS_VAR]) && is_array($postData[$CiCMS_VAR])) {
-            if (!isset($containerData[$number])) {
-                $containerData[$number] = '';
-            }
             foreach ($postData[$CiCMS_VAR] as $key => $value) {
                 $containerData[$number] = cApiContainerConfiguration::addContainerValue($containerData[$number], $key, $value);
             }
