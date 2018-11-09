@@ -24,7 +24,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-
 global $cfg;
 
 // Use advanced mod_rewrites  ( 1 = yes, 0 = none )
@@ -79,7 +78,6 @@ $cfg['mod_rewrite']['rewrite_urls_at_congeneratecode'] = 0;
 // option above. (1 = yes, 0 = none)
 $cfg['mod_rewrite']['rewrite_urls_at_front_content_output'] = 1;
 
-
 // Following five settings write urls like this one:
 //     www.domain.de/category1-category2.articlename.html
 // Changes of these settings causes a reset of all aliases, see Advanced Mod Rewrite settings in
@@ -97,14 +95,12 @@ $cfg['mod_rewrite']['category_word_seperator'] = '-';
 // Word seperator in article names
 $cfg['mod_rewrite']['article_word_seperator'] = '-';
 
-
 // Routing settings for incomming urls. Here you can define routing rules as follows:
 // $cfg['mod_rewrite']['routing'] = array(
 //    '/a_incomming/url/foobar.html' => '/new_url/foobar.html',  # route /a_incomming/url/foobar.html to /new_url/foobar.html
 //    '/cms/' => '/' # route /cms/ to / (doc root of client)
 // );
 $cfg['mod_rewrite']['routing'] = array();
-
 
 // Redirect invalid articles to errorpage (1 = yes, 0 = none)
 $cfg['mod_rewrite']['redirect_invalid_article_to_errorsite'] = 0;

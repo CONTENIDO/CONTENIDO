@@ -13,11 +13,19 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @return array
+ */
 function pica_RegisterCustomTab ()
 {
     return array("con_contentallocation");
 }
 
+/**
+ * @param $sIntName
+ *
+ * @return array
+ */
 function pica_GetCustomTabProperties ($sIntName)
 {
     if ($sIntName == "con_contentallocation")
@@ -26,6 +34,11 @@ function pica_GetCustomTabProperties ($sIntName)
     }
 }
 
+/**
+ * @param $aActions
+ *
+ * @return mixed
+ */
 function pica_ArticleListActions ($aActions)
 {
     $aTmpActions["con_contentallocation"] = "con_contentallocation";
@@ -33,6 +46,14 @@ function pica_ArticleListActions ($aActions)
     return $aTmpActions + $aActions;
 }
 
+/**
+ * @param $idcat
+ * @param $idart
+ * @param $idartlang
+ * @param $actionkey
+ *
+ * @return string
+ */
 function pica_RenderArticleAction ($idcat, $idart, $idartlang, $actionkey)
 {
     global $sess;
@@ -45,4 +66,5 @@ function pica_RenderArticleAction ($idcat, $idart, $idartlang, $actionkey)
         return "";
     }
 }
+
 ?>

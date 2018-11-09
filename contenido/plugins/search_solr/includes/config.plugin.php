@@ -27,8 +27,11 @@ class Solr {
     private static $_name = 'search_solr';
 
     /**
-     *
      * @param mixed $whatever
+     * @param null  $file
+     * @param null  $line
+     *
+     * @throws cInvalidArgumentException
      */
     public static function log($whatever, $file = NULL, $line = NULL) {
         $msg = '';
@@ -107,6 +110,9 @@ class Solr {
      * The option values are read from system or client settings.
      * Required settings are solr/hostname, solr/port, solr/path.
      *
+     * @param $idclient
+     * @param $idlang
+     *
      * @return array
      */
     public static function getClientOptions($idclient, $idlang) {
@@ -127,21 +133,6 @@ class Solr {
 
         // Required. The path to solr.
         $options['path'] = $queryOption('solr', 'path');
-
-        // load path from clientLanguage, client or system
-        $clientLanguage = new cApiClientLanguage();
-        $clientLanguage->loadByMany(array(
-            'idclient' => $idclient,
-            'idlang' => $idlang
-        ));
-        $value = $clientLanguage->isLoaded() ? $clientLanguage->getProperty($type, $name) : false;
-        if (false === $value) {
-            $client = new cApiClient($idclient);
-            $value = $client->isLoaded() ? $client->getProperty($type, $name) : false;
-        }
-        if (false === $value) {
-            $value = getSystemProperty($type, $name);
-        }
 
         // The name of the response writer e.g. xml, phpnative.
         $options['wt'] = $queryOption('solr', 'wt');
@@ -222,15 +213,16 @@ class Solr {
     }
 
     /**
-     *
      * @param Exception $e
+     *
+     * @throws cInvalidArgumentException
      */
     public static function logException(Exception $e) {
         $cfg = cRegistry::getConfig();
 
         $log = new cLog(cLogWriter::factory('file', array(
             'destination' => $cfg['path']['contenido_logs'] . 'errorlog.txt'
-        )), cLog::ERR);
+        )));
 
         $log->err($e->getMessage());
         $log->err($e->getTraceAsString());

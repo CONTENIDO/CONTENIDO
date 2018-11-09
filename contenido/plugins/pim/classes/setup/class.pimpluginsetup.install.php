@@ -30,32 +30,49 @@ class PimPluginSetupInstall extends PimPluginSetup {
     // All area entries from database in an array
     private $PluginInstalledAreas = array();
 
-    // Classes
-    // Class variable for PimPluginCollection
+    /**
+     * @var PimPluginCollection
+     */
     protected $_PimPluginCollection;
 
-    // Class variable for PimPluginRelationsCollection
+    /**
+     * @var PimPluginRelationsCollection
+     */
     protected $_PimPluginRelationsCollection;
 
-    // Class variable for cApiAreaCollection;
+    /**
+     * @var cApiAreaCollection
+     */
     protected $_ApiAreaCollection;
 
-    // Class variable for cApiActionCollection
+    /**
+     * @var cApiActionCollection
+     */
     protected $_ApiActionCollection;
 
-    // Class variable for cApiFileCollection
+    /**
+     * @var cApiFileCollection
+     */
     protected $_ApiFileCollection;
 
-    // Class variable for cApiFrameFileCollection
+    /**
+     * @var cApiFrameFileCollection
+     */
     protected $_ApiFrameFileCollection;
 
-    // Class variable for cApiNavMainCollection
+    /**
+     * @var cApiNavMainCollection
+     */
     protected $_ApiNavMainCollection;
 
-    // Class variable for cApiNavSubCollection
+    /**
+     * @var cApiNavSubCollection
+     */
     protected $_ApiNavSubCollection;
 
-    // Class variable for cApiTypeCollection
+    /**
+     * @var cApiTypeCollection
+     */
     protected $_ApiTypeCollection;
 
     // GET and SET methods for installation routine
@@ -144,7 +161,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
     /**
      * Initializing and set variable for cApiTypeCollection
      *
-     * @return cApiNavSubCollection
+     * @return cApiTypeCollection
      */
     private function _setApiTypeCollection() {
         return $this->_ApiTypeCollection = new cApiTypeCollection();
@@ -170,8 +187,13 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Get id of nav_main entry
+     *
      * @param string $navm
-     * @return boolean|integer
+     *
+     * @return bool|int
+     *
+     * @throws cDbException
+     * @throws cException
      */
     protected function _getNavMainId($navm = '') {
 
@@ -213,6 +235,8 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Installation method
+     *
+     * @throws cException
      */
     public function install() {
 
@@ -271,6 +295,8 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Check uuId: You can install a plugin only for one time
+     *
+     * @throws cException
      */
     private function _installCheckUuid() {
         $this->_PimPluginCollection->setWhere('uuid', parent::$XmlGeneral->uuid);
@@ -282,6 +308,8 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * This function checks requirements for one plugin
+     *
+     * @throws cException
      */
     private function _installCheckRequirements() {
 
@@ -339,6 +367,9 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Check dependencies to other plugins (dependencies-Tag at plugin.xml)
+     *
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _installCheckDependencies() {
 
@@ -356,7 +387,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
             $depend = cSecurity::escapeString(parent::$XmlDependencies->depend[$i]);
 
             if ($depend == "") {
-                return true;
+                return;
             }
 
             // Add attributes uuid", "min_version" and "max_version" to an array
@@ -365,7 +396,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
                     'minversion' => cSecurity::escapeString($attributes['min_version']),
                     'maxversion' => cSecurity::escapeString($attributes['max_version'])
             );
-
 
             $this->_PimPluginCollection->setWhere('uuid', $attributes['uuid']);
             $this->_PimPluginCollection->setWhere('active', '1');
@@ -398,6 +428,10 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Add entries at *_plugins
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _installAddPlugin() {
         // Add entry at *_plugins
@@ -415,6 +449,9 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Get all area names from database
+     *
+     * @throws cDbException
+     * @throws cException
      */
     private function _installFillAreas() {
         $this->_ApiAreaCollection->select(NULL, NULL, 'name');
@@ -425,6 +462,10 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Add entries at *_area
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _installAddAreas() {
 
@@ -474,6 +515,10 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Add entries at *_actions
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _installAddActions() {
 
@@ -520,6 +565,10 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Add entries at *_frame_files and *_files
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _installAddFrames() {
 
@@ -557,6 +606,10 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Add entries at *_nav_main
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _installAddNavMain() {
         $cfg = cRegistry::getConfig();
@@ -617,6 +670,10 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Add entries at *_nav_sub
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _installAddNavSub() {
 
@@ -663,6 +720,9 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Add specific sql queries
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     private function _installAddSpecificSql() {
 
@@ -671,13 +731,8 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
         if (parent::getMode() == 1) { // Plugin is already extracted
             $tempSqlFilename = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->_getPluginFoldername() . DIRECTORY_SEPARATOR . 'plugin_install.sql';
-        } elseif (parent::getMode() == 2 || parent::getMode() == 4) { // Plugin
-                                                                      // is
-                                                                      // uploaded
-                                                                      // or /
-                                                                      // and
-                                                                      // update
-                                                                      // mode
+        } elseif (parent::getMode() == 2 || parent::getMode() == 4) {
+            // Plugin is uploaded or / and update mode
             $tempSqlFilename = parent::$_PimPluginArchiveExtractor->extractArchiveFileToVariable('plugin_install.sql', 0);
         }
 
@@ -703,6 +758,10 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Add content types (*_type)
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _installAddContentTypes() {
 
@@ -729,6 +788,12 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Add modules
+     *
+     * @return bool
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _installAddModules() {
 
@@ -756,6 +821,8 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Add plugin dir
+     *
+     * @throws cInvalidArgumentException
      */
     private function _installAddDir() {
 
@@ -780,4 +847,3 @@ class PimPluginSetupInstall extends PimPluginSetup {
     }
 
 }
-?>

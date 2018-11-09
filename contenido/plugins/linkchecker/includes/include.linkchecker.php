@@ -95,7 +95,11 @@ $oCache = new cFileCache(array(
  * ******** Program code ********
  */
 
-// function linksort
+/**
+ * @param $sErrors
+ *
+ * @return mixed
+ */
 function linksort($sErrors) {
     if ($_GET['sort'] == "nameart") {
 
@@ -130,7 +134,11 @@ function linksort($sErrors) {
     return $sErrors;
 }
 
-// function url_is_image
+/**
+ * @param $sUrl
+ *
+ * @return bool
+ */
 function url_is_image($sUrl) {
     if (cString::getPartOfString($sUrl, -3, 3) == "gif" || cString::getPartOfString($sUrl, -3, 3) == "jpg" || cString::getPartOfString($sUrl, -4, 4) == "jpeg" || cString::getPartOfString($sUrl, -3, 3) == "png" || cString::getPartOfString($sUrl, -3, 3) == "tif" || cString::getPartOfString($sUrl, -3, 3) == "psd" || cString::getPartOfString($sUrl, -3, 3) == "bmp") {
         return true;
@@ -139,7 +147,11 @@ function url_is_image($sUrl) {
     }
 }
 
-// function url_is_uri
+/**
+ * @param $sUrl
+ *
+ * @return bool
+ */
 function url_is_uri($sUrl) {
     if (cString::getPartOfString($sUrl, 0, 4) == "file" || cString::getPartOfString($sUrl, 0, 3) == "ftp" || cString::getPartOfString($sUrl, 0, 4) == "http" || cString::getPartOfString($sUrl, 0, 2) == "ww") {
         return true;

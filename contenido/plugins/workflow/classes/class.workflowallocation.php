@@ -18,11 +18,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Plugin
  * @subpackage Workflow
+ * @method WorkflowAllocation createNewItem
+ * @method WorkflowAllocation next
  */
 class WorkflowAllocations extends ItemCollection {
-
     /**
      * Constructor Function
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -30,6 +33,14 @@ class WorkflowAllocations extends ItemCollection {
         $this->_setItemClass("WorkflowAllocation");
     }
 
+    /**
+     * @param mixed $idallocation
+     *
+     * @return bool|void
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     */
     public function delete($idallocation) {
         global $cfg, $lang;
 
@@ -47,19 +58,17 @@ class WorkflowAllocations extends ItemCollection {
         $sql = "SELECT idart FROM " . $cfg["tab"]["cat_art"] . " WHERE idcat = '" . cSecurity::toInteger($idcat) . "'";
         $db->query($sql);
 
+        $idarts = [];
         while ($db->nextRecord()) {
             $idarts[] = $db->f("idart");
         }
 
         $idartlangs = array();
-
-        if (is_array($idarts)) {
-            foreach ($idarts as $idart) {
-                $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idart = '" . cSecurity::toInteger($idart) . "' and idlang = '" . cSecurity::toInteger($lang) . "'";
-                $db->query($sql);
-                if ($db->nextRecord()) {
-                    $idartlangs[] = $db->f("idartlang");
-                }
+        foreach ($idarts as $idart) {
+            $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idart = '" . cSecurity::toInteger($idart) . "' and idlang = '" . cSecurity::toInteger($lang) . "'";
+            $db->query($sql);
+            if ($db->nextRecord()) {
+                $idartlangs[] = $db->f("idartlang");
             }
         }
 
@@ -74,6 +83,15 @@ class WorkflowAllocations extends ItemCollection {
         parent::delete($idallocation);
     }
 
+    /**
+     * @param $idworkflow
+     * @param $idcatlang
+     *
+     * @return bool|Item
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     */
     public function create($idworkflow, $idcatlang) {
         $this->select("idcatlang = '$idcatlang'");
 
@@ -89,6 +107,7 @@ class WorkflowAllocations extends ItemCollection {
             $this->lasterror = i18n("Workflow doesn't exist", "workflow");
             return false;
         }
+
         $newitem = $this->createNewItem();
         if (!$newitem->setWorkflow($idworkflow)) {
             $this->lasterror = $newitem->lasterror;
@@ -135,9 +154,11 @@ class WorkflowAllocation extends Item {
      * Users should only use setWorkflow.
      *
      * @param string $field Void field since we override the usual setField
-     *            function
+     *                      function
      * @param string $value Void field since we override the usual setField
-     *            function
+     *                      function
+     * @param bool   $safe
+     *
      * @throws cBadMethodCallException if this function is called
      */
     public function setField($field, $value, $safe = true) {
@@ -148,6 +169,11 @@ class WorkflowAllocation extends Item {
      * setWorkflow sets the workflow for the current item.
      *
      * @param int $idworkflow Workflow-ID to set the item to
+     *
+     * @return bool
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function setWorkflow($idworkflow) {
         $workflows = new Workflows();
@@ -169,7 +195,12 @@ class WorkflowAllocation extends Item {
      * Should
      * only be called by the create function.
      *
-     * @param int $idcatlang idcatlang to set.
+     * @param int $idcatlang idcatlang to set
+     *
+     * @return bool
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function setCatLang($idcatlang) {
         global $cfg;
@@ -198,5 +229,3 @@ class WorkflowAllocation extends Item {
     }
 
 }
-
-?>

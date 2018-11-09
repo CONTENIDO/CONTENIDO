@@ -13,10 +13,17 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @return string
+ */
 function frontendusers_valid_from_getTitle() {
     return i18n("Valid from");
 }
 
+/**
+ * @return string|void
+ * @throws cInvalidArgumentException
+ */
 function frontendusers_valid_from_display() {
     global $feuser, $db, $belang, $cfg;
 
@@ -79,10 +86,16 @@ function frontendusers_valid_from_display() {
     return $oTemplate->generate($template, 1);
 }
 
+/**
+ * @return array
+ */
 function frontendusers_valid_from_wantedVariables() {
     return (array("valid_from"));
 }
 
+/**
+ * @param $variables
+ */
 function frontendusers_valid_from_store($variables) {
     global $feuser;
 

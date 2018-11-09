@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PIFA form exporter.
+ * This file contains the PifaExporter class.
  *
  * @package Plugin
  * @subpackage FormAssistant
@@ -282,7 +282,7 @@ class PifaExporter {
 
         $count = min(array(
             count($optionLabels),
-            count($optionValues)
+            count($optionValues),
         ));
 
         // build attributes
@@ -328,6 +328,7 @@ class PifaExporter {
 
         // get all column names as array
         $columns = array();
+        /** @var PifaField $pifaField */
         foreach ($fields as $pifaField) {
             $columns[] = $pifaField->get('column_name');
         }
@@ -374,6 +375,8 @@ class PifaExporter {
      * token (i18n).
      *
      * @param int $fieldTypeId to map
+     *
+     * @return string
      */
     private function _getFieldTypeName($fieldTypeId) {
         $fieldTypeNames = array(
@@ -397,7 +400,7 @@ class PifaExporter {
             PifaField::INPUTHIDDEN => 'INPUTHIDDEN',
             PifaField::FIELDSET_BEGIN => 'FIELDSET_BEGIN',
             PifaField::FIELDSET_END => 'FIELDSET_END',
-            PifaField::BUTTONIMAGE => 'BUTTONIMAGE'
+            PifaField::BUTTONIMAGE => 'BUTTONIMAGE',
         );
         $fieldTypeName = $fieldTypeNames[$fieldTypeId];
         $fieldTypeName = cString::toLowerCase($fieldTypeName);

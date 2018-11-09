@@ -13,6 +13,13 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @param int  $widcat
+ * @param null $db
+ *
+ * @return bool
+ * @throws cDbException
+ */
 function cCatPerm($widcat, $db = NULL) {
     global $cfg, $sess, $auth, $group_id, $_arrCatIDs_cCP;
 
@@ -45,6 +52,12 @@ function cCatPerm($widcat, $db = NULL) {
     return array_key_exists($widcat, $_arrCatIDs_cCP);
 }
 
+/**
+ * @param cDb $db
+ *
+ * @return array
+ * @throws cDbException
+ */
 function getGroupIDs(&$db) {
     global $cfg, $sess, $auth, $group_id, $_arrGroupIDs_gGI;
 

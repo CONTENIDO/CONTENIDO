@@ -45,6 +45,11 @@ class SolrSearchModule {
     private $_templateName;
 
     /**
+     * @var array
+     */
+    private $_label;
+
+    /**
      *
      * @var SolrObject
      */
@@ -53,6 +58,8 @@ class SolrSearchModule {
     /**
      *
      * @param array $options
+     *
+     * @throws cException
      */
     public function __construct(array $options = NULL) {
         if (NULL !== $options) {
@@ -65,8 +72,8 @@ class SolrSearchModule {
     }
 
     /**
-     *
      * @return SolrObject
+     * @throws cException
      */
     private function _getSearchResults() {
         $searcher = new SolrSearcherSimple();
@@ -77,7 +84,8 @@ class SolrSearchModule {
     }
 
     /**
-     *
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function render() {
         $tpl = cSmartyFrontend::getInstance();

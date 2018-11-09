@@ -18,11 +18,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Plugin
  * @subpackage Workflow
+ * @method WorkflowAction createNewItem
+ * @method WorkflowAction next
  */
 class WorkflowActions extends ItemCollection {
-
     /**
      * Constructor Function
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -30,6 +33,12 @@ class WorkflowActions extends ItemCollection {
         $this->_setItemClass("WorkflowAction");
     }
 
+    /**
+     * @param $idworkflowitem
+     * @param $action
+     *
+     * @return bool
+     */
     public function get($idworkflowitem, $action) {
         $this->select("idworkflowitem = " . (int) $idworkflowitem . " AND action = '" . $this->escape($action) . "'");
         if ($this->next()) {
@@ -39,6 +48,9 @@ class WorkflowActions extends ItemCollection {
         }
     }
 
+    /**
+     * @return array
+     */
     public function getAvailableWorkflowActions() {
         $availableWorkflowActions = array(
             "publish" => i18n("Publish article", "workflow"),
@@ -54,6 +66,14 @@ class WorkflowActions extends ItemCollection {
         return ($availableWorkflowActions);
     }
 
+    /**
+     * @param $idworkflowitem
+     * @param $action
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     */
     public function set($idworkflowitem, $action) {
         $this->select("idworkflowitem = " . (int) $idworkflowitem . " AND action = '" . $this->escape($action) . "'");
         if (!$this->next()) {
@@ -64,6 +84,14 @@ class WorkflowActions extends ItemCollection {
         }
     }
 
+    /**
+     * @param $idworkflowitem
+     * @param $action
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     */
     public function remove($idworkflowitem, $action) {
         $this->select("idworkflowitem = " . (int) $idworkflowitem . " AND action = '" . $this->escape($action) . "'");
         if (($item = $this->next()) !== false) {
@@ -71,6 +99,14 @@ class WorkflowActions extends ItemCollection {
         }
     }
 
+    /**
+     * @param string $where
+     * @param string $group_by
+     * @param string $order_by
+     * @param string $limit
+     *
+     * @return bool
+     */
     public function select($where = "", $group_by = "", $order_by = "", $limit = "") {
         global $client;
 
@@ -101,5 +137,3 @@ class WorkflowAction extends Item {
     }
 
 }
-
-?>

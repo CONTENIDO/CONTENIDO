@@ -27,14 +27,11 @@ if ((int) $client <= 0) {
     return;
 }
 
-
 $action = (isset($_REQUEST['mr_action'])) ? $_REQUEST['mr_action'] : 'index';
 $debug = false;
 
-
 ################################################################################
 ##### Some variables
-
 
 $oMrController = new ModRewrite_ContentExpertController();
 
@@ -89,7 +86,6 @@ $oView->lng_resetaliases_note = i18n('This process could require some time depen
 $oView->lng_discard_changes = i18n('Discard changes', 'mod_rewrite');
 $oView->lng_save_changes = i18n('Save changes', 'mod_rewrite');
 
-
 ################################################################################
 ##### Action processing
 
@@ -107,7 +103,6 @@ if ($action == 'index') {
 } else {
     $oMrController->indexAction();
 }
-
 
 ################################################################################
 ##### Output

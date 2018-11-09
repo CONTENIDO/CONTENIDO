@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the complex list class for the plugin content allocation.
  *
@@ -24,7 +25,7 @@ plugin_include('repository', 'custom/FrontendNavigation.php');
 class pApiContentAllocationComplexList extends pApiTree {
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $_idSetter = true;
 
@@ -37,6 +38,9 @@ class pApiContentAllocationComplexList extends pApiTree {
      * pApiContentAllocationComplexList constructor
      *
      * @param string $uuid
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($uuid) {
         parent::__construct($uuid);
@@ -46,9 +50,13 @@ class pApiContentAllocationComplexList extends pApiTree {
      * Old constructor
      *
      * @deprecated [2016-02-11]
-     * 				This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     *                This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     *
      * @param string $uuid
-     * @return __construct()
+     *
+     * @return pApiContentAllocationComplexList
+     * @throws cDbException
+     * @throws cException
      */
     public function pApiContentAllocationComplexList($uuid) {
         cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
@@ -73,10 +81,10 @@ class pApiContentAllocationComplexList extends pApiTree {
         $levelElms = sizeof($tree);
         $cnt = 1;
         foreach ($tree as $item_tmp) {
-            $item = '';
-            $checked = '';
             if (in_array($item_tmp['idpica_alloc'], $this->_load)) {
                 $checked = ' checked="checked"';
+            } else {
+                $checked = '';
             }
 
             $li_closeElm = '';
@@ -123,8 +131,10 @@ class pApiContentAllocationComplexList extends pApiTree {
     /**
      * Render tree
      *
-     * @param boolean $return
-     * @return boolean|object
+     * @param bool $return
+     *
+     * @return bool|string
+     * @throws cDbException
      */
     public function renderTree($return = true) {
         $tree = $this->fetchTree();
@@ -138,5 +148,3 @@ class pApiContentAllocationComplexList extends pApiTree {
         }
     }
 }
-
-?>

@@ -64,4 +64,5 @@ $tpl->set('s', 'WHITELIST', $aWhitelist);
 $tpl->set('s', 'WHITELIST_COUNT', $db->numRows());
 
 $tpl->generate($cfg['templates']['linkchecker_whitelist']);
+
 ?>

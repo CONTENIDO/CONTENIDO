@@ -69,8 +69,8 @@ class FrontendNavigation {
      * Old constructor
      *
      * @deprecated [2016-02-11]
-     * 				This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
-     * @return __construct()
+     *                This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     * @return FrontendNavigation
      */
     public function FrontendNavigation() {
         cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
@@ -81,7 +81,9 @@ class FrontendNavigation {
      * Get child categories by given parent category
      *
      * @param integer $parentCategory
+     *
      * @return array
+     * @throws cDbException
      */
     public function getSubCategories($parentCategory) {
         if (!is_int((int) $parentCategory)) {
@@ -125,7 +127,9 @@ class FrontendNavigation {
      * Check if child categories of a given parent category exist
      *
      * @param integer $parentCategory
+     *
      * @return boolean
+     * @throws cDbException
      */
     public function hasChildren($parentCategory) {
         if (!is_int((int) $parentCategory)) {
@@ -166,7 +170,9 @@ class FrontendNavigation {
      * or not public
      *
      * @param integer $category
+     *
      * @return integer
+     * @throws cDbException
      */
     public function getSuccessor($category) {
         if (!is_int((int) $category)) {
@@ -206,7 +212,9 @@ class FrontendNavigation {
      * Check if a given category has a direct successor
      *
      * @param integer $category
+     *
      * @return boolean
+     * @throws cDbException
      */
     public function hasSuccessor($category) {
         if (!is_int((int) $category)) {
@@ -246,7 +254,9 @@ class FrontendNavigation {
      * Get category name
      *
      * @param integer $cat_id
+     *
      * @return string
+     * @throws cDbException
      */
     public function getCategoryName($cat_id) {
         if (!is_int((int) $cat_id)) {
@@ -284,7 +294,9 @@ class FrontendNavigation {
      * Get category urlname
      *
      * @param integer $cat_id
+     *
      * @return string
+     * @throws cDbException
      */
     public function getCategoryURLName($cat_id) {
         if (!is_int((int) $cat_id)) {
@@ -322,7 +334,9 @@ class FrontendNavigation {
      * Check if category is visible
      *
      * @param integer $cat_id
+     *
      * @return boolean
+     * @throws cDbException
      */
     public function isVisible($cat_id) {
         if (!is_int((int) $cat_id)) {
@@ -361,7 +375,9 @@ class FrontendNavigation {
      * Check if category is public
      *
      * @param integer $cat_id
+     *
      * @return boolean
+     * @throws cDbException
      */
     public function isPublic($cat_id) {
         if (!is_int((int) $cat_id)) {
@@ -401,7 +417,9 @@ class FrontendNavigation {
      *
      * @param integer $parentid
      * @param integer $catid
+     *
      * @return boolean
+     * @throws cDbException
      */
     public function isParent($parentid, $catid) {
         if (!is_int((int) $parentid)) {
@@ -441,7 +459,9 @@ class FrontendNavigation {
      * Get parent id of a category
      *
      * @param integer $preid
+     *
      * @return integer
+     * @throws cDbException
      */
     public function getParent($preid) {
         if (!is_int((int) $preid)) {
@@ -478,7 +498,9 @@ class FrontendNavigation {
      * Check if a category has a parent
      *
      * @param integer $preid
+     *
      * @return boolean
+     * @throws cDbException
      */
     public function hasParent($preid) {
         if (!is_int((int) $preid)) {
@@ -515,7 +537,9 @@ class FrontendNavigation {
      * Get level of a category
      *
      * @param integer $catid
+     *
      * @return integer
+     * @throws cDbException
      */
     public function getLevel($catid) {
         if (!is_int((int) $catid)) {
@@ -635,12 +659,12 @@ class FrontendNavigation {
         prCreateURLNameLocationString($idcat, "/", $cat_str, false, "", $level, $this->_lang, true, false);
 
         if (cString::getStringLength($cat_str) <= 1) {
-            # return empty string if no url location is available
+            // return empty string if no url location is available
             return '';
         }
 
         if ($absolute === true) {
-            # add absolute web path to urlpath
+            // add absolute web path to urlpath
             if (is_int((int) $selectedNumber)) {
                 return $this->_cfgClient[$this->_client]['path']['htmlpath'] . $cat_str . '/index-g-' . $selectedNumber . '.html';
             }
@@ -654,18 +678,18 @@ class FrontendNavigation {
     /**
      * Get URL by given categoryid and/or articleid
      *
-     * @param int $idcat url name to create for
-     * @param int $idart
-     * @param bool $absolute return absolute path or not [optional]
+     * @param int     $idcat    url name to create for
+     * @param int     $idart
+     * @param string  $type
+     * @param bool    $absolute return absolute path or not [optional]
      * @param integer $level
+     *
      * @return string $url or empty
      */
     public function getURL($idcat, $idart, $type = '', $absolute = true, $level = 0) {
         if (!is_int((int) $idcat) AND $idcat < 0) {
             return '';
         }
-
-        #print "type ".$sType."<br>";
 
         switch ($type) {
             case 'urlpath':
@@ -692,7 +716,9 @@ class FrontendNavigation {
      * category.
      *
      * @param  int $idart
+     *
      * @return int category id or negative integer
+     * @throws cDbException
      */
     public function getCategoryOfArticle($idart) {
 
@@ -742,7 +768,9 @@ class FrontendNavigation {
      * @param integer $cat_id
      * @param integer $level [optional]
      * @param boolean $reverse
+     *
      * @return array
+     * @throws cDbException
      */
     public function getCategoryPath($cat_id, $level = 0, $reverse = true) {
         if (!is_int((int) $cat_id) && $cat_id < 0) {
@@ -771,7 +799,9 @@ class FrontendNavigation {
      * Get root category of a given category
      *
      * @param integer $cat_id
-     * @return array     *
+     *
+     * @return array
+     * @throws cDbException
      */
     function getRoot($cat_id) {
         if (!is_int((int) $cat_id) && $cat_id < 0) {
@@ -792,7 +822,9 @@ class FrontendNavigation {
      * get subtree by a given id
      *
      * @param int $idcat_start Id of category
+     *
      * @return array Array with subtree
+     * @throws cDbException
      */
     function getSubTree($idcat_start) {
 

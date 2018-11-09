@@ -40,8 +40,13 @@ class PimPluginSetupUpdate extends PimPluginSetup {
     }
 
     // Begin of update routine
+
     /**
-     * Construct function
+     * PimPluginSetupUpdate constructor.
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
 
@@ -69,6 +74,8 @@ class PimPluginSetupUpdate extends PimPluginSetup {
 
     /**
      * Check uuId: You can update only the same plugin
+     *
+     * @throws cException
      */
     private function _checkSamePlugin() {
         $this->_PimPluginCollection->setWhere('idplugin', parent::_getPluginId());
@@ -83,8 +90,13 @@ class PimPluginSetupUpdate extends PimPluginSetup {
 
     /**
      * Check for update specific sql files.
-     * If some valid sql file available, PIM does not run uninstall and install
-     * sql files.
+     * If some valid sql file available, PIM does not run uninstall and install sql files.
+     *
+     * @return bool
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _updateSql() {
 
@@ -124,6 +136,8 @@ class PimPluginSetupUpdate extends PimPluginSetup {
 
     /**
      * Get installed plugin version
+     *
+     * @throws cException
      */
     private function _getInstalledPluginVersion() {
         $this->_PimPluginCollection->setWhere('idplugin', parent::_getPluginId());

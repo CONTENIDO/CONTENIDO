@@ -200,11 +200,11 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
                     $aMessage[] = sprintf(i18n("Item with empty e-mail address found, item ignored (name: %s, row: %s)", 'newsletter'), $sName, $iRow);
                     $aInvalidLines[] = $sLine;
                     $iInvalid++;
-                } else if (!isValidMail($sEMail)) {
+                } elseif (!isValidMail($sEMail)) {
                     $aMessage[] = sprintf(i18n("E-mail address '%s' is invalid, item ignored (row: %s)", 'newsletter'), $sEMail, $iRow);
                     $aInvalidLines[] = $sLine;
                     $iInvalid++;
-                } else if ($oRecipients->emailExists($sEMail)) {
+                } elseif ($oRecipients->emailExists($sEMail)) {
                     $aMessage[] = sprintf(i18n("Recipient with e-mail address '%s' already exists, item skipped (row: %s)", 'newsletter'), $sEMail, $iRow);
                     $aInvalidLines[] = $sLine;
                     $iDublettes++;

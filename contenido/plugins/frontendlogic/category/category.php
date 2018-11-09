@@ -45,6 +45,7 @@ class frontendlogic_category extends FrontendLogic {
 
     /**
      * @see FrontendLogic::listItems()
+     * @throws cDbException
      */
     public function listItems() {
         global $lang, $db, $cfg;

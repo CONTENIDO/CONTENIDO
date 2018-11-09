@@ -46,4 +46,5 @@ plugin_include('content_allocation', 'includes/functions.chains.php');
 
 $_cecRegistry->addChainFunction("Contenido.Article.RegisterCustomTab", "pica_RegisterCustomTab");
 $_cecRegistry->addChainFunction("Contenido.Article.GetCustomTabProperties", "pica_GetCustomTabProperties");
+
 ?>

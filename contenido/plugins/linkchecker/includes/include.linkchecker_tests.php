@@ -13,7 +13,12 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-// Checks all links without front_content.php
+/**
+ * Checks all links without front_content.php
+ *
+ * @return mixed
+ * @throws cDbException
+ */
 function checkLinks() {
     global $auth, $cfgClient, $client, $cfg, $cronjob, $db, $aErrors, $lang, $langart, $whitelist;
     global $aSearchIDInfosArt, $aSearchIDInfosCat, $aSearchIDInfosCatArt, $aSearchIDInfosNonID;
@@ -139,8 +144,8 @@ function checkLinks() {
         }
     }
 
-    if (count($aSearchIDInfosNonID) != 0) { // Checks other links (e. g. http,
-                                            // www, dfbs)
+    if (count($aSearchIDInfosNonID) != 0) {
+        // Checks other links (e. g. http, www, dfbs)
 
         // Select userrights (is the user admin or sysadmin?)
         $sql = "SELECT username FROM " . $cfg['tab']['user'] . " WHERE user_id='" . $db->escape($auth->auth['uid']) . "' AND perms LIKE '%admin%'";
@@ -226,7 +231,15 @@ function checkLinks() {
     return $aErrors;
 }
 
-// Searchs front_content.php-links
+/**
+ * Searchs front_content.php-links
+ *
+ * @param string $sValue
+ * @param int    $iArt
+ * @param string $sArt
+ * @param int    $iCat
+ * @param string $sCat
+ */
 function searchFrontContentLinks($sValue, $iArt, $sArt, $iCat, $sCat) {
     global $aSearchIDInfosArt, $aSearchIDInfosCat, $aSearchIDInfosCatArt, $aWhitelist;
 
@@ -291,9 +304,19 @@ function searchFrontContentLinks($sValue, $iArt, $sArt, $iCat, $sCat) {
  */
 class searchLinks
 {
-
+    /**
+     * @var string
+     */
     private $mode = '';
+
+    /**
+     * @var int
+     */
     private static $contentId = 0;
+
+    /**
+     * @var int
+     */
     private static $articleLangId = 0;
 
     /**
@@ -323,7 +346,6 @@ class searchLinks
      * @return bool
      */
     public function setContentId($id = 0) {
-
         if ($id == 0) {
             return false;
         } else {
@@ -338,7 +360,6 @@ class searchLinks
      * @return bool
      */
     public function setArticleLangId($id = 0) {
-
         if ($id == 0) {
             return false;
         } else {
@@ -348,15 +369,15 @@ class searchLinks
 
     /**
      * Old searchLinks function
-     * TODO: Optimize this function!
      *
+     * @todo Do not use global!
+     * @todo Optimize this function!
      * @param $value
      * @param $idart
      * @param $nameart
      * @param $idcat
      * @param $namecat
      * @param $idlang
-     * @todo Do not use global!
      * @return array
      */
     public function search($value, $idart, $nameart, $idcat, $namecat, $idlang) {
@@ -423,4 +444,5 @@ class searchLinks
         return $aSearchIDInfosNonID;
     }
 }
+
 ?>

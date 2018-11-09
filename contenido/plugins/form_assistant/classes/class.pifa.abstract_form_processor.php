@@ -1,12 +1,13 @@
 <?php
 
 /**
+ * This file contains the PifaAbstractFormProcessor class.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage FormAssistant
- * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @copyright four for business AG
- * @link http://www.4fb.de
+ * @author     Marcus Gnaß <marcus.gnass@4fb.de>
+ * @copyright  four for business AG
+ * @link       http://www.4fb.de
  */
 
 // assert CONTENIDO framework
@@ -27,15 +28,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 abstract class PifaAbstractFormProcessor {
 
     /**
-     *
      * @var PifaAbstractFormModule
      */
     private $_module = NULL;
 
     /**
-     *
-     * @todo Should be private instead of protected as it can be accessed via
-     *       getForm()
+     * @todo Should be private instead of protected as it can be accessed via getForm()
      * @var PifaForm
      */
     protected $_form = NULL;
@@ -79,7 +77,6 @@ abstract class PifaAbstractFormProcessor {
     }
 
     /**
-     *
      * @return PifaAbstractFormModule
      */
     public function getModule() {
@@ -87,7 +84,6 @@ abstract class PifaAbstractFormProcessor {
     }
 
     /**
-     *
      * @param PifaAbstractFormModule $_module
      */
     public function setModule($_module) {
@@ -95,7 +91,6 @@ abstract class PifaAbstractFormProcessor {
     }
 
     /**
-     *
      * @return PifaForm
      */
     public function getForm() {
@@ -103,7 +98,6 @@ abstract class PifaAbstractFormProcessor {
     }
 
     /**
-     *
      * @param PifaForm $_form
      */
     public function setForm($_form) {
@@ -121,6 +115,8 @@ abstract class PifaAbstractFormProcessor {
      * Template method to postprocess data that has just been validated.
      * I cannot yet imagine a situatio where this could be useful but added
      * this method for completeness' sake.
+     *
+     * @throws PifaValidationException
      */
     abstract protected function _processValidatedData();
 
@@ -129,6 +125,8 @@ abstract class PifaAbstractFormProcessor {
      * database.
      * This can be usefull e.g. to send form values via email or process them
      * in another way.
+     *
+     * @throws PifaDatabaseException
      */
     abstract protected function _processStoredData();
 

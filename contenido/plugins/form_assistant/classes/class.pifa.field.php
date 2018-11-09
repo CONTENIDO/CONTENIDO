@@ -1,12 +1,13 @@
 <?php
 
 /**
+ * This file contains the PifaFieldCollection & PifaField class.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage FormAssistant
- * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @copyright four for business AG
- * @link http://www.4fb.de
+ * @author     Marcus Gnaß <marcus.gnass@4fb.de>
+ * @copyright  four for business AG
+ * @link       http://www.4fb.de
  */
 
 // assert CONTENIDO framework
@@ -17,13 +18,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * It's a kind of a model.
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
+ * @method PifaField createNewItem
+ * @method PifaField next
  */
 class PifaFieldCollection extends ItemCollection {
-
     /**
      * Create an instance.
      *
-     * @param mixed $where clause to be used to load items or false
+     * @param string|bool $where clause to be used to load items or false
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function __construct($where = false) {
         parent::__construct(cRegistry::getDbTableName('pifa_field'), 'idfield');
@@ -36,8 +41,10 @@ class PifaFieldCollection extends ItemCollection {
     /**
      * Reorders a forms fields according to the given.
      *
-     * @param int $idform
+     * @param int    $idform
      * @param string $idfields containing a CSV list of idfield as integer
+     *
+     * @throws cDbException
      */
     public static function reorder($idform, $idfields) {
         $sql = "-- PifaFieldCollection::reorder()
@@ -186,7 +193,6 @@ class PifaField extends Item {
     const BUTTON = 15;
 
     /**
-     *
      * @var int
      */
     const MATRIX = 16;
@@ -244,7 +250,10 @@ class PifaField extends Item {
     /**
      * Create an instance.
      *
-     * @param mixed $id ID of item to be loaded or false
+     * @param string|bool $id ID of item to be loaded or false
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($id = false) {
         parent::__construct(cRegistry::getDbTableName('pifa_field'), 'idfield');
@@ -259,6 +268,11 @@ class PifaField extends Item {
      * backslashes.
      *
      * @see Item::getField()
+     *
+     * @param string $field
+     * @param bool   $bSafe
+     *
+     * @return mixed|string
      */
     function getField($field, $bSafe = true) {
         $value = parent::getField($field, $bSafe);
@@ -302,7 +316,6 @@ class PifaField extends Item {
     }
 
     /**
-     *
      * @param array $_file
      */
     public function setFile(array $_file) {
@@ -310,7 +323,6 @@ class PifaField extends Item {
     }
 
     /**
-     *
      * @throws PifaValidationException if an error occured
      */
     public function validate() {
@@ -344,10 +356,10 @@ class PifaField extends Item {
 
                     $isValid = $responseData->success ? true : false;
                 }
-            } else if (1 === cSecurity::toInteger($this->get('obligatory')) && 0 === cString::getStringLength($value)) {
+            } elseif (1 === cSecurity::toInteger($this->get('obligatory')) && 0 === cString::getStringLength($value)) {
                 // check for obligatory & rule
                 $isValid = false;
-            } else if (0 < cString::getStringLength($this->get('rule')) && in_array(preg_match($this->get('rule'), $value), array(
+            } elseif (0 < cString::getStringLength($this->get('rule')) && in_array(preg_match($this->get('rule'), $value), array(
                     false,
                     0
                 ))) {
@@ -375,7 +387,9 @@ class PifaField extends Item {
      * Returns HTML for this form that should be displayed in frontend.
      *
      * @param array $errors to be displayed for form field
+     *
      * @return string
+     * @throws PifaException
      */
     public function toHtml(array $errors = NULL) {
         $out = '';
@@ -386,6 +400,8 @@ class PifaField extends Item {
                 // optional class for field
                 if (0 < cString::getStringLength(trim($this->get('css_class')))) {
                     $class = ' class="' . implode(' ', explode(',', $this->get('css_class'))) . '"';
+                } else {
+                    $class = '';
                 }
                 $out .= "\n\t<fieldset$class>";
                 // add optional legend/description
@@ -438,7 +454,7 @@ class PifaField extends Item {
                     $class .= ' pifa-obligatory';
                 }
                 // optional error class for field
-                if (NULL !== $error) {
+                if (isset($error) && NULL !== $error) {
                     $class .= ' pifa-error';
                 }
 
@@ -454,11 +470,9 @@ class PifaField extends Item {
     }
 
     /**
-     *
-     * @return cHTMLLabel
-     * @todo should be private, right?
+     * @return cHTMLLabel|string
      */
-    public function _getElemLabel() {
+    private function _getElemLabel() {
         if (1 !== cSecurity::toInteger($this->get('display_label'))) {
             return '';
         }
@@ -505,12 +519,13 @@ class PifaField extends Item {
      * has to be the fields column name which is set if the form is displayed
      * for the first time and user hasn't entered another value.
      *
-     * @throws PifaNotImplementedException if field type is not implemented
      * @return cHTMLTextbox cHTMLTextarea cHTMLPasswordbox cHTMLSpan
      *         cHTMLSelectElement NULL cHTMLButton
-     * @todo should be private, right?
+     *
+     * @throws PifaException
+     * @throws PifaNotImplementedException if field type is not implemented
      */
-    public function _getElemField() {
+    private function _getElemField() {
 
         // get field data
         $idfield = cSecurity::toInteger($this->get('idfield'));
@@ -549,6 +564,7 @@ class PifaField extends Item {
                 $msg = sprintf($msg, $optionClass);
                 throw new PifaException($msg);
             }
+            /** @var PifaExternalOptionsDatasourceInterface $dataSource */
             $dataSource = new $optionClass();
             $optionLabels = $dataSource->getOptionLabels();
             $optionValues = $dataSource->getOptionValues();
@@ -632,7 +648,7 @@ class PifaField extends Item {
                 for ($i = 0; $i < $count; $i++) {
                     if (self::INPUTRADIO === $fieldType) {
                         $elemField = new cHTMLRadiobutton($columnName, $optionValues[$i]);
-                    } else if (self::INPUTCHECKBOX === $fieldType) {
+                    } elseif (self::INPUTCHECKBOX === $fieldType) {
                         $elemField = new cHTMLCheckbox($columnName . '[]', $optionValues[$i]);
                     }
                     if (!is_array($value)) {
@@ -785,11 +801,9 @@ class PifaField extends Item {
     }
 
     /**
-     *
-     * @return Ambigous <NULL, cHTMLParagraph>
-     * @todo should be private, right?
+     * @return cHTMLParagraph|null
      */
-    public function _getElemHelp() {
+    private function _getElemHelp() {
         $helpText = $this->get('help_text');
 
         $p = NULL;
@@ -801,9 +815,7 @@ class PifaField extends Item {
     }
 
     /**
-     *
-     * @return Ambigous <NULL, cHTMLScript>
-     * @todo should be private, right?
+     * @return cHTMLScript|null
      */
     public function _getElemScript() {
 
@@ -1006,6 +1018,9 @@ class PifaField extends Item {
     /**
      * Deletes this form with all its fields and stored data.
      * The forms data table is also dropped.
+     *
+     * @throws PifaException
+     * @throws cDbException
      */
     public function delete() {
         $cfg = cRegistry::getConfig();
@@ -1026,10 +1041,11 @@ class PifaField extends Item {
                 idform = " . cSecurity::toInteger($this->get('idform')) . "
                 AND field_rank > " . cSecurity::toInteger($this->get('field_rank')) . "
             ;";
-        if (false === $db->query($sql)) {
-            // false is returned if no fields were updated
-            // but that doesn't matter ...
-        }
+        $succ = $db->query($sql);
+        // if (false === $succ) {
+        //     // false is returned if no fields were updated
+        //     // but that doesn't matter ...
+        // }
 
         // delete field
         $sql = "-- PifaField->delete()
@@ -1067,6 +1083,10 @@ class PifaField extends Item {
      * backend.
      *
      * @param string $columnName for data to edit
+     *
+     * @return bool
+     *
+     * @throws PifaException
      */
     public function showField($columnName) {
         $fieldType = $this->get('field_type');
@@ -1100,11 +1120,9 @@ class PifaField extends Item {
                     // self::BUTTON,
                     // self::BUTTONIMAGE,
                     self::MATRIX,
-                    self::INPUTHIDDEN
-                    /*
-                    self::FIELDSET_BEGIN,
-                    self::FIELDSET_END
-                    */
+                    self::INPUTHIDDEN,
+                    // self::FIELDSET_BEGIN,
+                    // self::FIELDSET_END,
                 ));
 
             case 'label':
@@ -1129,10 +1147,8 @@ class PifaField extends Item {
                     self::MATRIX,
                     self::PARA,
                     // self::INPUTHIDDEN,
-                    self::FIELDSET_BEGIN
-                    /*
-                    self::FIELDSET_END
-                    */
+                    self::FIELDSET_BEGIN,
+                    // self::FIELDSET_END,
                 ));
 
             case 'default_value':
@@ -1154,7 +1170,7 @@ class PifaField extends Item {
                     self::BUTTON,
                     // self::BUTTONIMAGE,
                     self::MATRIX,
-                    self::INPUTHIDDEN
+                    self::INPUTHIDDEN,
                 ));
 
             case 'option_labels':
@@ -1164,7 +1180,7 @@ class PifaField extends Item {
                     self::INPUTRADIO,
                     self::INPUTCHECKBOX,
                     self::SELECT,
-                    self::SELECTMULTI
+                    self::SELECTMULTI,
                 ));
 
             case 'help_text':
@@ -1187,7 +1203,7 @@ class PifaField extends Item {
                     self::BUTTONIMAGE,
                     self::MATRIX,
                     self::PARA,
-                    self::FIELDSET_BEGIN
+                    self::FIELDSET_BEGIN,
                 ));
 
             case 'obligatory':
@@ -1209,7 +1225,7 @@ class PifaField extends Item {
                     // self::BUTTON,
                     // self::BUTTONIMAGE,
                     self::MATRIX,
-                    self::INPUTHIDDEN
+                    self::INPUTHIDDEN,
                 ));
 
             case 'rule':
@@ -1231,7 +1247,7 @@ class PifaField extends Item {
                     // self::BUTTON,
                     // self::BUTTONIMAGE,
                     self::MATRIX,
-                    self::INPUTHIDDEN
+                    self::INPUTHIDDEN,
                 ));
 
             case 'error_message':
@@ -1253,7 +1269,7 @@ class PifaField extends Item {
                     // self::BUTTON,
                     // self::BUTTONIMAGE,
                     self::MATRIX,
-                    self::INPUTHIDDEN
+                    self::INPUTHIDDEN,
                 ));
 
             case 'css_class':
@@ -1276,38 +1292,32 @@ class PifaField extends Item {
                     self::BUTTONIMAGE,
                     self::MATRIX,
                     self::PARA,
-                    self::FIELDSET_BEGIN
-                    /*
-                    self::INPUTHIDDEN
-                    */
+                    self::FIELDSET_BEGIN,
+                    // self::INPUTHIDDEN,
                 ));
 
             case 'uri':
                 return in_array($fieldType, array(
-                    /*
-                    self::INPUTTEXT,
-                    self::TEXTAREA,
-                    self::INPUTPASSWORD,
-                    self::INPUTRADIO,
-                    self::INPUTCHECKBOX,
-                    self::SELECT,
-                    self::SELECTMULTI,
-                    self::DATEPICKER,
-                    self::INPUTFILE,
-                    self::PROCESSBAR,
-                    self::SLIDER,
-                    self::CAPTCHA,
-                    self::BUTTONSUBMIT,
-                    self::BUTTONRESET,
-                    self::BUTTON,
-                    */
+                    // self::INPUTTEXT,
+                    // self::TEXTAREA,
+                    // self::INPUTPASSWORD,
+                    // self::INPUTRADIO,
+                    // self::INPUTCHECKBOX,
+                    // self::SELECT,
+                    // self::SELECTMULTI,
+                    // self::DATEPICKER,
+                    // self::INPUTFILE,
+                    // self::PROCESSBAR,
+                    // self::SLIDER,
+                    // self::CAPTCHA,
+                    // self::BUTTONSUBMIT,
+                    // self::BUTTONRESET,
+                    // self::BUTTON,
                     self::BUTTONIMAGE,
-                    /*
-                    self::MATRIX,
-                    self::PARA,
-                    self::FIELDSET_BEGIN
-                    self::INPUTHIDDEN
-                    */
+                    // self::MATRIX,
+                    // self::PARA,
+                    // self::FIELDSET_BEGIN,
+                    // self::INPUTHIDDEN,
                 ));
 
             default:
@@ -1318,7 +1328,6 @@ class PifaField extends Item {
     }
 
     /**
-     *
      * @return array
      */
     public function getOptions() {

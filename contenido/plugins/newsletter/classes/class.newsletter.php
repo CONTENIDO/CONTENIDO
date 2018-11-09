@@ -18,12 +18,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Plugin
  * @subpackage Newsletter
+ * @method Newsletter createNewItem
+ * @method Newsletter next
  */
 class NewsletterCollection extends ItemCollection
 {
     /**
      * Constructor Function
-     * @param none
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct()
     {
@@ -34,7 +37,13 @@ class NewsletterCollection extends ItemCollection
 
     /**
      * Creates a new newsletter
+     *
      * @param $sName string specifies the newsletter name
+     *
+     * @return Item
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($sName)
     {
@@ -65,7 +74,13 @@ class NewsletterCollection extends ItemCollection
 
     /**
      * Duplicates the newsletter specified by $itemID
+     *
      * @param  int $iItemID specifies the newsletter id
+     *
+     * @return Item
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function duplicate($iItemID)
     {
@@ -146,7 +161,11 @@ class Newsletter extends Item
 
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param  mixed $mId Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false)
     {
@@ -161,6 +180,8 @@ class Newsletter extends Item
     /**
      * Overriden store()-Method to set modified and modifiedby data and
      * to ensure, that there is only one welcome newsletter
+     *
+     * @throws cException
      */
     public function store()
     {
@@ -191,12 +212,14 @@ class Newsletter extends Item
         return parent::store();
     }
 
-	/**
+    /**
      * Userdefined setter for newsletter fields.
      *
      * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @param mixed  $value
+     * @param bool   $bSafe Flag to run defined inFilter on passed value
+     *
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
@@ -223,7 +246,7 @@ class Newsletter extends Item
     {
         if ($sCode && !$bIsHTML) {
             $sCode = str_replace("MAIL_".cString::toUpperCase($sField), $sData, $sCode);
-        } else if ($sCode) {
+        } elseif ($sCode) {
             // Extract certain tag
             $sRegExp   = '/\[mail\s*([^]]+)\s*name=(?:"|&quot;)'.$sField.'(?:"|&quot;)\s*(.*?)\s*\]((?:.|\s)+?)\[\/mail\]/i';
             $aMatch    = array();
@@ -292,7 +315,11 @@ class Newsletter extends Item
         }
     }
 
-    /* TODO: HerrB: Remove or insert some functionality */
+    /**
+     * @todo HerrB: Remove or insert some functionality
+     * @param $sHTML
+     * @param $sTag
+     */
     protected function _getNewsletterTagData($sHTML, $sTag)
     {
         //$sRegExp = "/<newsletter[^>](.*?)>.*?<\/newsletter>/i";
@@ -319,7 +346,7 @@ class Newsletter extends Item
          * Match the characters "/mail" literally �/mail�
          * Match the character "]" literally �\]�
          * Ignore case (i), . includes new lines (s)
-         **/
+         */
 
         /*
         $sRegExp = '/\[mail\s*([^]]+)\]((?:.|\s)+?)\[\/mail\]/is';
@@ -340,6 +367,13 @@ class Newsletter extends Item
         //print_r ($aMatch);
     }
 
+    /**
+     * @param        $sHeader
+     * @param        $sBody
+     * @param string $sEOL
+     *
+     * @return string
+     */
     protected function _deChunkHTTPBody($sHeader, $sBody, $sEOL = "\r\n")
     {
         // Based on code from jbr at ya-right dot com, posted on http://www.php.net
@@ -362,7 +396,7 @@ class Newsletter extends Item
 
             if ($sParameter == 'set-cookie') {
                 $aHeader['cookies'][] = $sValue;
-            } else if ($sParameter == 'content-type') {
+            } elseif ($sParameter == 'content-type') {
                 if (($iPos = cString::findFirstPos($sValue, ';')) !== false) {
                     $aHeader[$sParameter] = cString::getPartOfString($sValue, 0, $iPos);
                 } else {
@@ -407,8 +441,6 @@ class Newsletter extends Item
 
                 $sBody      = cString::getPartOfString($sBody, ((int) $iPos + (int) $iDataLen + (int) $iEOLLen));
 
-
-
                 $sRemaining = trim ($sBody);
             } while ($sRemaining != '');
 
@@ -422,7 +454,7 @@ class Newsletter extends Item
             }
             // workarround end
 
-        } else if (isset($aHeader['content-encoding'])) {
+        } elseif (isset($aHeader['content-encoding'])) {
             $sBuffer = gzinflate(cString::getPartOfString($sBody, 10));
         } else {
             $sBuffer = $sBody; // Not chunked, not compressed
@@ -434,7 +466,10 @@ class Newsletter extends Item
     /**
      * If newsletter is HTML newsletter and necessary data available
      * returns final HTML message
+     *
      * @return string HTML message
+     * @throws cDbException
+     * @throws cException
      */
     public function getHTMLMessage()
     {
@@ -552,7 +587,9 @@ class Newsletter extends Item
 
     /**
      * Checks, if html newsletter article still exists
+     *
      * @return bool
+     * @throws cException
      */
     public function htmlArticleExists()
     {
@@ -578,12 +615,18 @@ class Newsletter extends Item
 
     /**
      * Sends test newsletter directly to specified email address
-     * @param int  $iIDCatArt        idcatart of newsletter handler article
-     * @param string   $sEMail           Recipient email address
-     * @param string   $sName            Optional: Recipient name
-     * @param bool     $bSimulatePlugins If recipient plugin activated, include plugins
+     *
+     * @param int    $iIDCatArt          idcatart of newsletter handler article
+     * @param string $sEMail             Recipient email address
+     * @param string $sName              Optional: Recipient name
+     * @param bool   $bSimulatePlugins   If recipient plugin activated, include plugins
      *                                   and simulate values from plugins
-     * @param string   $sEncoding        Message (and header) encoding, e.g. iso-8859-1
+     * @param string $sEncoding          Message (and header) encoding, e.g. iso-8859-1
+     *
+     * @return bool
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function sendEMail($iIDCatArt, $sEMail, $sName = "", $bSimulatePlugins = true, $sEncoding = "iso-8859-1")
     {
@@ -713,14 +756,21 @@ class Newsletter extends Item
                 $contentType = 'text/plain';
             }
 
-            $mailer = new cMailer();
+            try {
+                $mailer = new cMailer();
+            } catch (cInvalidArgumentException $e) {
+                $this->_sError = $e->getMessage();
+                return false;
+            }
+
             $message = Swift_Message::newInstance($sSubject, $body, $contentType, $sEncoding);
             $message->setFrom($sFrom, $sFromName);
             $message->setTo($sEMail);
             $result = $mailer->send($message);
 
             if (!$result) {
-                if ($contenido) { // Use i18n only in backend
+                // Use i18n only in backend
+                if ($contenido) {
                     $sError = i18n("Newsletter to %s could not be sent", "newsletter");
                 } else {
                     $sError = "Newsletter to %s could not be sent";
@@ -739,11 +789,16 @@ class Newsletter extends Item
      * Note: Sending in chunks not supported! Only usable for tests and only a few
      * recipients.
      *
-     * @param int  $iIDCatArt     idcatart of newsletter handler article
-     * @param int  $iIDNewsRcp    If specified, newsletter recipient id, ignored, if group specified
-     * @param int  $iIDNewsGroup  If specified, newsletter recipient group id
-     * @param array    $aSendRcps     As reference: Filled with a list of succesfull recipients
-     * @param string   $sEncoding     Message (and header) encoding, e.g. iso-8859-1
+     * @param int    $iIDCatArt    idcatart of newsletter handler article
+     * @param bool   $iIDNewsRcp   If specified, newsletter recipient id, ignored, if group specified
+     * @param bool   $iIDNewsGroup If specified, newsletter recipient group id
+     * @param array  $aSendRcps    As reference: Filled with a list of succesfull recipients
+     * @param string $sEncoding    Message (and header) encoding, e.g. iso-8859-1
+     *
+     * @return bool
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function sendDirect($iIDCatArt, $iIDNewsRcp = false, $iIDNewsGroup = false, &$aSendRcps, $sEncoding = "iso-8859-1")
     {
@@ -835,7 +890,7 @@ class Newsletter extends Item
         if ($iIDNewsGroup !== false) {
             $oGroupMembers = new NewsletterRecipientGroupMemberCollection;
             $aRecipients = $oGroupMembers->getRecipientsInGroup($iIDNewsGroup, false);
-        } else if ($iIDNewsRcp !== false) {
+        } elseif ($iIDNewsRcp !== false) {
             $aRecipients[] = $iIDNewsRcp;
         }
 
@@ -903,7 +958,7 @@ class Newsletter extends Item
                         $sError = "Newsletter to %s could not be sent: Recipient has an incompatible or empty key";
                     }
                     $aMessages[] = $sName." (".$sEMail."): ".sprintf($sError, $sEMail);
-                } else if (!isValidMail($sEMail)) {
+                } elseif (!isValidMail($sEMail)) {
                     if ($contenido) { // Use i18n only in backend
                         $sError = i18n("Newsletter to %s could not be sent: No valid e-mail address specified", "newsletter");
                     } else {

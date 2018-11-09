@@ -17,7 +17,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Repair common mistakes in links
  *
  * @author frederic.schneider
- *
  */
 class LinkcheckerRepair {
 
@@ -55,6 +54,8 @@ class LinkcheckerRepair {
     /**
      * Checks link and generate a repaired version
      *
+     * @param string $link
+     *
      * @return string|bool
      */
     public function checkLink($link) {
@@ -83,4 +84,5 @@ class LinkcheckerRepair {
     }
 
 }
+
 ?>

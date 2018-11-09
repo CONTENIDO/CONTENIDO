@@ -117,4 +117,5 @@ $div->setContent($sLocationString . $result);
 
 $oPage->setContent($div);
 $oPage->render();
+
 ?>

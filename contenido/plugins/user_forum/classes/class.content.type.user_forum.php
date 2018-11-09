@@ -21,21 +21,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage UserForum
  */
 class cContentTypeUserForum extends cContentTypeAbstractTabbed {
-
-    // Width from Container set in file cms/css/contenido_backend.css
-    // .cms_userforum label {
-    // width: 210px !important;
-    // }
-
     /**
      * Initialize class attributes and handles store events.
      *
-     * @param string $rawSettings the raw settings in an XML structure or as
-     *        plaintext
-     * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is
-     *        used
-     * @param array $contentTypes array containing the values of all content
-     *        types
+     * @param string $rawSettings  the raw settings in an XML structure or as
+     *                             plaintext
+     * @param int    $id           ID of the content type, e.g. 3 if CMS_DATE[3] is
+     *                             used
+     * @param array  $contentTypes array containing the values of all content
+     *                             types
+     *
+     * @throws cDbException
      */
     function __construct($rawSettings, $id, array $contentTypes) {
 
@@ -69,9 +65,11 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
      * Generate the escaped HTML code for editor.
      *
      * @return string escaped HTML code for editor
+     * @throws cInvalidArgumentException
      */
     public function generateEditCode() {
         $cfg = cRegistry::getConfig();
+
         // build top code
         $tplTop = new cTemplate();
         $tplTop->set('s', 'ICON', 'plugins/user_forum/images/con_button.gif');
@@ -81,9 +79,7 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
         $codeTop = $tplTop->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_top.html', true);
 
         // available tabs
-        // $tabMenu = array(
-        // 'base' => Pifa::i18n('form')
-        // );
+        // $tabMenu = array('base' => Pifa::i18n('form'));
 
         // build tab code
         $tplPanel = new cTemplate();
@@ -137,6 +133,9 @@ $code
         return $wrapper->render();
     }
 
+    /**
+     * @return cHTMLDiv
+     */
     private function _getModMode() {
         $id = 'userforum_modactive_' . $this->_id;
 
@@ -160,6 +159,9 @@ $code
         return $div;
     }
 
+    /**
+     * @return cHTMLDiv
+     */
     private function _getEditMode() {
         $id = 'userforum_subcomments_' . $this->_id;
 
@@ -205,6 +207,7 @@ $code
             $inputEmail
         ));
         $div->setClass('mail');
+
         // return div element
         return $div;
     }

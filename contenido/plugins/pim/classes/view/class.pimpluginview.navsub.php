@@ -22,38 +22,72 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @author frederic.schneider
  */
 class PimPluginViewNavSub {
-
-    // Pattern for navigation (nav_sub) xml entries
+    /**
+     * Pattern for navigation (nav_sub) xml entries
+     */
     const PATTERN = '/;(.+)$/';
-
-    // Filename of Xml configuration file for plugins
+    /**
+     * Filename of Xml configuration file for plugins
+     */
     const PLUGIN_CONFIG_FILENAME = "plugin.xml";
-
-    // Filename of Xml configuration file for CONTENIDO navigation
+    /**
+     * Filename of Xml configuration file for CONTENIDO navigation
+     */
     const CONTENIDO_NAVIGATION_FILENAME = "navigation.xml";
 
-    // Initializing variables
+    /**
+     * @var string
+     */
     private $PluginFoldername;
 
-    // CONTENIDO sub navigations: *_nav_sub
+    /**
+     * CONTENIDO sub navigations: *_nav_sub
+     *
+     * @var SimpleXMLElement
+     */
     public static $XmlNavSub;
 
-    // Varianle for counted nav entries
+    /**
+     * Variable for counted nav entries
+     *
+     * @var int
+     */
     protected $_NavCount = 0;
 
-    // Variable for filepath to CONTENIDO base navigation.xml
+    /**
+     * Variable for filepath to CONTENIDO base navigation.xml
+     *
+     * @todo check variable name
+     * @var string
+     */
     protected $_contenidoLanguageFileLang;
 
-    // Variable for subnavigation name
+    /**
+     * Variable for subnavigation name
+     *
+     * @var string
+     */
     protected $_SubNav;
 
-    // Class variable for DOMDocument
+    /**
+     * Class variable for DOMDocument
+     *
+     * @var DOMDocument
+     */
     protected $_DOMDocument;
 
-    // Class variable for cApiNavMainCollection
+    /**
+     * Class variable for cApiNavMainCollection
+     *
+     * @var cApiNavMainCollection
+     */
     protected $_ApiNavMainCollection;
 
-    // Class variable for cApiNavSubCollection
+    /**
+     * Class variable for cApiNavSubCollection
+     *
+     * @var cApiNavSubCollection
+     */
     protected $_ApiNavSubCollection;
 
     /**
@@ -88,7 +122,7 @@ class PimPluginViewNavSub {
      * (Filepath to CONTENIDO base navigation.xml)
      *
      * @param string $path
-     * @return boolean
+     * @return bool
      */
     private function _setNavigationXmlPath($path) {
     	$this->_contenidoLanguageFileLang = $path;
@@ -104,7 +138,6 @@ class PimPluginViewNavSub {
     private function _getNavigationXmlPath() {
     	return $this->_contenidoLanguageFileLang;
 	}
-
 
     /**
      * Construct function
@@ -131,10 +164,13 @@ class PimPluginViewNavSub {
     }
 
     // View methods
+
     /**
      * Get nav_sub entries
      *
-     * @return Ambigous <string, string>|Ambigous <string, boolean>
+     * @return string
+     *
+     * @throws cException
      */
     public function getNavSubentries() {
 
@@ -196,8 +232,8 @@ class PimPluginViewNavSub {
                 // Get single navigation values
                 $navSubEntries = explode("/", $matches[1]);
 
-                if ($navSubEntries[0] == "navigation") { // CONTENIDO navigation
-                                                         // case
+                if ($navSubEntries[0] == "navigation") {
+                    // CONTENIDO navigation case
 
                 	// Define subnavigation name (example: navigation/content/linkchecker)
                     $this->_SubNav = $this->_getTranslatedNavigationName('//language/navigation/' . $navSubEntries[1] . '/' . $navSubEntries[2] . '/main');
@@ -217,7 +253,7 @@ class PimPluginViewNavSub {
      * Get translated navigation name
      *
      * @param string $query
-     * @return xml String of translated navigation nane
+     * @return string XML of translated navigation nane
      */
     private function _getTranslatedNavigationName($query = '') {
 
@@ -244,6 +280,9 @@ class PimPluginViewNavSub {
      * CONTENIDO navigation xml file
      *
      * @return bool
+     *
+     * @throws cDbException
+     * @throws cException
      */
     private function _checkAndGetPluginNavigation() {
         $cfg = cRegistry::getConfig();
@@ -296,7 +335,8 @@ class PimPluginViewNavSub {
      * Get founded plugin navigation entries
      *
      * @param string $contenidoNav
-     * @return string boolean
+     *
+     * @return string|bool
      */
     private function _getPluginNavigation($contenidoNav = "") {
         global $belang;
@@ -368,4 +408,3 @@ class PimPluginViewNavSub {
     }
 
 }
-?>

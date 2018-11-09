@@ -29,8 +29,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * Will be called by chain 'Contenido.Action.str_newtree.AfterCall'.
  *
- * @param   array  $data  Assoziative array with some values
+ * @param   array $data Assoziative array with some values
+ *
  * @return  array  Passed parameter
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function mr_strNewTree(array $data) {
     global $lang;
@@ -52,8 +55,11 @@ function mr_strNewTree(array $data) {
  *
  * Will be called by chain 'Contenido.Action.str_newcat.AfterCall'.
  *
- * @param   array  $data  Assoziative array with some values
+ * @param   array $data Assoziative array with some values
+ *
  * @return  array  Passed parameter
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function mr_strNewCategory(array $data) {
     global $lang;
@@ -77,8 +83,12 @@ function mr_strNewCategory(array $data) {
  *
  * Will be called by chain 'Contenido.Action.str_renamecat.AfterCall'.
  *
- * @param   array  $data  Assoziative array with some values
+ * @param   array $data Assoziative array with some values
+ *
  * @return  array  Passed parameter
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function mr_strRenameCategory(array $data) {
     ModRewriteDebugger::log($data, 'mr_strRenameCategory $data');
@@ -131,8 +141,11 @@ function mr_strRenameCategory(array $data) {
  * @todo  do we really need processing of the category? there is no mr relevant data
  *        changes while moving the category on same level, level and name won't change
  *
- * @param   int  $idcat  Category id
+ * @param   int $idcat Category id
+ *
  * @return  int  Category id
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function mr_strMoveUpCategory($idcat) {
     ModRewriteDebugger::log($idcat, 'mr_strMoveUpCategory $idcat');
@@ -165,8 +178,11 @@ function mr_strMoveUpCategory($idcat) {
  * @todo  do we really need processing of the category? there is no mr relevant data
  *        changes while moving the category on same level, level and name won't change
  *
- * @param   int  $idcat  Id of category beeing moved down
+ * @param   int $idcat Id of category beeing moved down
+ *
  * @return  int  Category id
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function mr_strMovedownCategory($idcat) {
     ModRewriteDebugger::log($idcat, 'mr_strMovedownCategory $idcat');
@@ -195,8 +211,12 @@ function mr_strMovedownCategory($idcat) {
  *
  * Will be called by chain 'Contenido.Action.str_movesubtree.AfterCall'.
  *
- * @param   array  $data  Assoziative array with some values
+ * @param   array $data Assoziative array with some values
+ *
  * @return  array  Passed parameter
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function mr_strMoveSubtree(array $data) {
     ModRewriteDebugger::log($data, 'mr_strMoveSubtree $data');
@@ -237,8 +257,11 @@ function mr_strMoveSubtree(array $data) {
  *
  * Will be called by chain 'Contenido.Category.strCopyCategory'.
  *
- * @param   array  $data  Assoziative array with some values
+ * @param   array $data Assoziative array with some values
+ *
  * @return  array  Passed parameter
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function mr_strCopyCategory(array $data) {
     ModRewriteDebugger::log($data, 'mr_strCopyCategory $data');
@@ -266,8 +289,11 @@ function mr_strCopyCategory(array $data) {
  *
  * Will be called by chain 'Contenido.Category.strSyncCategory_Loop'.
  *
- * @param   array  $data  Assoziative array with some values
+ * @param   array $data Assoziative array with some values
+ *
  * @return  array  Passed parameter
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function mr_strSyncCategory(array $data) {
     ModRewriteDebugger::log($data, 'mr_strSyncCategory $data');
@@ -280,8 +306,11 @@ function mr_strSyncCategory(array $data) {
  *
  * Will be called by chain 'Contenido.Action.con_saveart.AfterCall'.
  *
- * @param   array  $data  Assoziative array with some article properties
+ * @param   array $data Assoziative array with some article properties
+ *
  * @return  array  Passed parameter
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function mr_conSaveArticle(array $data) {
     global $tmp_firstedit, $client;
@@ -320,8 +349,11 @@ function mr_conSaveArticle(array $data) {
  *
  * Will be called by chain 'Contenido.Article.conMoveArticles_Loop'.
  *
- * @param   array  $data  Assoziative array with record entries
+ * @param   array $data Assoziative array with record entries
+ *
  * @return  array  Loop through of arguments
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function mr_conMoveArticles($data) {
     ModRewriteDebugger::log($data, 'mr_conMoveArticles $data');
@@ -348,8 +380,11 @@ function mr_conMoveArticles($data) {
  *
  * Will be called by chain 'Contenido.Article.conCopyArtLang_AfterInsert'.
  *
- * @param   array  $data  Assoziative array with record entries
+ * @param   array $data Assoziative array with record entries
+ *
  * @return  array  Loop through of arguments
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function mr_conCopyArtLang($data) {
     ModRewriteDebugger::log($data, 'mr_conCopyArtLang $data');
@@ -375,15 +410,17 @@ function mr_conCopyArtLang($data) {
  *
  * Will be called by chain 'Contenido.Article.conSyncArticle_AfterInsert'.
  *
- * @param   array  $data  Assoziative array with record entries as follows:
- * <code>
- * array(
- *     'src_art_lang'  => Recordset (assoziative array) of source item from con_art_lang table
- *     'dest_art_lang' => Recordset (assoziative array) of inserted destination item from con_art_lang table
- * );
- * </code>
+ * @param   array $data Assoziative array with record entries as follows:
+ *                      <code>
+ *                      array(
+ *                      'src_art_lang'  => Recordset (assoziative array) of source item from con_art_lang table
+ *                      'dest_art_lang' => Recordset (assoziative array) of inserted destination item from con_art_lang table
+ *                      );
+ *                      </code>
  *
  * @return  array  Loop through of argument
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function mr_conSyncArticle($data) {
     ModRewriteDebugger::log($data, 'mr_conSyncArticle $data');
@@ -422,8 +459,10 @@ function mr_conSyncArticle($data) {
  *
  * @todo: Still exists bcause of downwards compatibility (some other modules/plugins are using it)
  *
- * @param   string  $url  URL to rebuild
+ * @param   string $url URL to rebuild
+ *
  * @return  string        New URL
+ * @throws cInvalidArgumentException
  */
 function mr_buildNewUrl($url) {
     global $lang;
@@ -461,8 +500,10 @@ function mr_buildNewUrl($url) {
  * Will be called by chain 'Contenido.Content.conGenerateCode' or
  * 'Contenido.Frontend.HTMLCodeOutput' depening on mod_rewrite settings.
  *
- * @param   string  $code   Code to prepare
+ * @param   string $code Code to prepare
+ *
  * @return  string          New code
+ * @throws cInvalidArgumentException
  */
 function mr_buildGeneratedCode($code) {
     global $client, $cfgClient;
@@ -483,9 +524,9 @@ function mr_buildGeneratedCode($code) {
 
         // == IE hack with wrong base href interpretation
         // get base uri
-//         $sBaseUri = cRegistry::getFrontendUrl();
-//         $sBaseUri = cApiCecHook::execute("Contenido.Frontend.BaseHrefGeneration", $sBaseUri);
-//         $code = preg_replace("/([\"|\'|=])upload\/(.?|.+?)([\"|\'|>])/ie", "stripslashes('\\1{$sBaseUri}upload/\\2\\3')", $code);
+        // $sBaseUri = cRegistry::getFrontendUrl();
+        // $sBaseUri = cApiCecHook::execute("Contenido.Frontend.BaseHrefGeneration", $sBaseUri);
+        // $code = preg_replace("/([\"|\'|=])upload\/(.?|.+?)([\"|\'|>])/ie", "stripslashes('\\1{$sBaseUri}upload/\\2\\3')", $code);
 
         $baseUri = cRegistry::getFrontendUrl();
 		$baseUri = cApiCecHook::execute("Contenido.Frontend.BaseHrefGeneration", $baseUri);
@@ -550,7 +591,9 @@ function mr_buildGeneratedCode($code) {
 /**
  * Sets language of client, like done in front_content.php
  *
- * @param  int  $client  Client id
+ * @param  int $client Client id
+ *
+ * @throws cDbException
  */
 function mr_setClientLanguageId($client) {
     global $lang, $load_lang, $cfg;
@@ -584,9 +627,11 @@ function mr_setClientLanguageId($client) {
  * File is placed in /contenido/mod_rewrite/includes/and is named like
  * config.mod_rewrite_{client_id}.php.
  *
- * @param  int   $clientId     Id of client
- * @param  bool  $forceReload  Flag to force to reload configuration, e. g. after
+ * @param  int  $clientId      Id of client
+ * @param  bool $forceReload   Flag to force to reload configuration, e. g. after
  *                             done changes on it
+ *
+ * @throws cInvalidArgumentException
  */
 function mr_loadConfiguration($clientId, $forceReload = false) {
     global $cfg;
@@ -619,8 +664,10 @@ function mr_loadConfiguration($clientId, $forceReload = false) {
  * File is placed in /contenido/mod_rewrite/includes/and is named like
  * config.mod_rewrite_{client_id}.php.
  *
- * @param   int   $clientId     Id of client
+ * @param   int $clientId Id of client
+ *
  * @return  array|NULL
+ * @throws cInvalidArgumentException
  */
 function mr_getConfiguration($clientId) {
     global $cfg;
@@ -654,9 +701,11 @@ function mr_getConfiguration($clientId) {
  * File is placed in /contenido/mod_rewrite/includes/and is named like
  * config.mod_rewrite_{client_id}.php.
  *
- * @param   int    $clientId     Id of client
- * @param   array  $config       Configuration to save
+ * @param   int   $clientId Id of client
+ * @param   array $config   Configuration to save
+ *
  * @return  bool
+ * @throws cInvalidArgumentException
  */
 function mr_setConfiguration($clientId, array $config) {
     global $cfg;
@@ -684,6 +733,7 @@ function mr_setConfiguration($clientId, array $config) {
  * Will be called by chain 'Contenido.Frontend.AfterLoadPlugins' at front_content.php.
  *
  * @return  bool  Just a return value
+ * @throws cInvalidArgumentException
  */
 function mr_runFrontendController() {
     $iStartTime = getmicrotime();
@@ -746,8 +796,10 @@ function mr_i18n($key) {
  * $data = mr_queryAndNextRecord($sql);
  * </code>
  *
- * @param   string  $query  Query to execute
+ * @param   string $query Query to execute
+ *
  * @return  mixed   Assoziative array including recordset or NULL
+ * @throws cDbException
  */
 function mr_queryAndNextRecord($query) {
     static $db;
@@ -886,23 +938,24 @@ function mr_getRequest($key, $default = NULL) {
  */
 function mr_header($header) {
     header($header);
-    return;
 
-    $header = str_replace('Location: ', '', $header);
-    echo '<html>
-        <head></head>
-        <body>
-        <p><a href="' . $header . '">' . $header . '</a></p>';
-    mr_debugOutput();
-    echo '</body></html>';
-    exit();
+    // $header = str_replace('Location: ', '', $header);
+    // echo '<html>
+    //     <head></head>
+    //     <body>
+    //     <p><a href="' . $header . '">' . $header . '</a></p>';
+    // mr_debugOutput();
+    // echo '</body></html>';
+    // exit();
 }
 
 /**
  * Debug output only during development
  *
- * @param   bool  $print  Flag to echo the debug data
+ * @param   bool $print Flag to echo the debug data
+ *
  * @return  mixed  Either the debug data, if parameter $print is set to true, or nothing
+ * @throws cInvalidArgumentException
  */
 function mr_debugOutput($print = true) {
     global $DB_Contenido_QueryCache;
