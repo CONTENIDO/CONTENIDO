@@ -81,7 +81,7 @@ $oCfgTable = new UI_Config_Table();
 
 $oHidAction = new cHTMLHiddenField('hidAction'.$cnumber, 'save');
 
-$oSelHandlerCatArt = new cHTMLInputSelectElement('selHandlerCatArt'.$cnumber, 1, '', true);
+$oSelHandlerCatArt = new cHTMLInputSelectElement('selHandlerCatArt'.$cnumber, '', '', true);
 $oOption           = new cHTMLOptionElement(mi18n("PLEASE_SELECT"), '');
 $oSelHandlerCatArt->addOptionElement(0, $oOption);
 $oSelHandlerCatArt->addCategories(0, true, false, false, true, true);
@@ -211,7 +211,7 @@ $oCfgTable->setCell('options_01', 1, mi18n("DEFAULT_MESSAGE_TYPE").' '.$oSelMsgT
 
 // Options: Open handler article in new window?
 $oCfgTable->setCell('options_02', 0, '');
-$oCkbNewWindow = new cHTMLCheckbox("CMS_VAR[4]", 'enabled', '', "CMS_VALUE[4]");
+$oCkbNewWindow = new cHTMLCheckbox("CMS_VAR[4]", 'enabled', '', $aSettings['OptNewWindow'] === 'enabled');
 $oCfgTable->setCell('options_02', 1, $oCkbNewWindow->toHtml(false).mi18n("HANDLER_NEW_WINDOW"));
 
 $oCfgTable->render(true);
