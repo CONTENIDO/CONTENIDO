@@ -44,6 +44,11 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         return -1;
     }
 
+    if (true === cRegistry::getConfigValue('simulate_magic_quotes')) {
+        $name = stripslashes($name);
+        $description = stripslashes($description);
+    }
+
     if (!$idtpl) {
         // Insert new entry in the Template table
         $templateColl = new cApiTemplateCollection();
