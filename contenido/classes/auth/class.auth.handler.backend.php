@@ -59,11 +59,6 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
      * @throws cInvalidArgumentException
      */
     public function displayLoginForm() {
-        // $cfg = cRegistry::getConfig();
-
-        // if ($_SERVER['SCRIPT_FILENAME'] != $cfg['path']['contenido'] . 'index.php') {
-        //     header("Location: index.php");
-        // }
         // @TODO  We need a better solution for this.
         //        One idea could be to set the request/response type in
         //        global $cfg array instead of checking $_REQUEST['ajax']

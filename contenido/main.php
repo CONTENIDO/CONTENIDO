@@ -38,6 +38,8 @@ require_once($backendPath . $cfg['path']['includes'] . 'functions.includePluginC
 
 require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 
+$sess->register('belang');
+
 if ($cfg['use_pseudocron'] == true) {
     // Include cronjob-Emulator, but only for frame 1
     if ($frame == 1) {
