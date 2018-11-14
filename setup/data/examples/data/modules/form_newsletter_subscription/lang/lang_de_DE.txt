@@ -25,4 +25,4 @@ OPTIONS_COLON=Optionen:
 USER_SELECTED=Nutzerauswahl
 HTML_AND_TEXT=HTML und Text
 DEFAULT_MESSAGE_TYPE=Standard-Nachrichtenformat:
-HANDLER_NEW_WINDOW=Öffne Handhaber im neuen Fenster
+HANDLER_NEW_WINDOW=Öffne Handler im neuen Fenster
