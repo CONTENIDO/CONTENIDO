@@ -581,7 +581,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
             }
         }
 
-        $navCount = count(parent::$XmlNavMain->nav);
+        $navCount = is_array(parent::$XmlNavMain->nav) ? count(parent::$XmlNavMain->nav) : 0;
         for ($i = 0; $i < $navCount; $i++) {
 
         	// Security check for location
@@ -711,7 +711,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
         $pattern = '/^CMS_.+/';
 
-        $typeCount = count(parent::$XmlContentType->type);
+        $typeCount = is_array(parent::$XmlContentType->type) ? count(parent::$XmlContentType->type) : 0;
         for ($i = 0; $i < $typeCount; $i++) {
 
             $type = cSecurity::toString(parent::$XmlContentType->type[$i]);
