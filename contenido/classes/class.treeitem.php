@@ -325,18 +325,18 @@ class TreeItem {
     }
 
     /**
-     * Checks if a specific custom attribute is set
+     * Checks if a specific custom attribute is set.
      *
      * @param string $item
      *         the attribute name to find
      * @return bool
      */
-    protected function _isCustomAttributeSet($item) {
+    public function isCustomAttributeSet($item) {
         if (array_key_exists($item, $this->_custom)) {
             return true;
         } else {
             foreach (array_keys($this->_subitems) as $key) {
-                if ($this->_subitems[$key]->_isCustomAttributeSet($item)) {
+                if ($this->_subitems[$key]->isCustomAttributeSet($item)) {
                     return true;
                 }
             }

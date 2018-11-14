@@ -49,6 +49,11 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         return -1;
     }
 
+    if (true === cRegistry::getConfigValue('simulate_magic_quotes')) {
+        $name = stripslashes($name);
+        $description = stripslashes($description);
+    }
+
     if (!$idtpl) {
         // Insert new entry in the Template table
         $templateColl = new cApiTemplateCollection();
@@ -255,11 +260,11 @@ function tplGetContainerName($idlay, $container) {
  *         Layout number to browse
  * @param int $container
  *         Container number
- * @return string
- *         Container name
+ * @return string|null
+ *         Container name or null
  */
 function tplGetContainerMode($idlay, $container) {
-    global $db, $cfg, $containerinf;
+    global $containerinf;
 
     if (is_array($containerinf[$idlay])) {
         if (array_key_exists($container, $containerinf[$idlay])) {
@@ -279,7 +284,7 @@ function tplGetContainerMode($idlay, $container) {
  *         Allowed container types
  */
 function tplGetContainerTypes($idlay, $container) {
-    global $db, $cfg, $containerinf;
+    global $containerinf;
 
     if (is_array($containerinf[$idlay])) {
         if (array_key_exists($container, $containerinf[$idlay])) {
@@ -293,6 +298,8 @@ function tplGetContainerTypes($idlay, $container) {
             }
         }
     }
+
+    return [];
 }
 
 /**
@@ -302,11 +309,11 @@ function tplGetContainerTypes($idlay, $container) {
  *         Layout number to browse
  * @param int $container
  *         Container number
- * @return array
- *         Allowed container types
+ * @return string|null
+ *         Default module name or null
  */
 function tplGetContainerDefault($idlay, $container) {
-    global $db, $cfg, $containerinf;
+    global $containerinf;
 
     if (is_array($containerinf[$idlay])) {
         if (array_key_exists($container, $containerinf[$idlay])) {
