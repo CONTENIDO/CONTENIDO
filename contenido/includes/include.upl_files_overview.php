@@ -73,7 +73,6 @@ if ((is_writable($cfgClient[$client]['upl']['path'] . $path) || cApiDbfs::isDbfs
     $bDirectoryIsWritable = false;
 }
 
-
 if ($action === 'upl_modify_file' && !empty($file)) {
 
     $extractFolder = NULL;
@@ -346,11 +345,17 @@ class UploadList extends FrontendList {
      * Field converting facility.
      *
      * @see FrontendList::convert()
-     * @param int $field
+     *
+     * @param int   $field
      *         Field index
      * @param mixed $data
      *         Field value
+     *
      * @return mixed
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function convert($field, $data) {
         global $path, $appendparameters;
@@ -473,7 +478,12 @@ class UploadList extends FrontendList {
      *
      * @param bool $return
      *         if true, returns the list
+     *
      * @return string
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function output($return = false) {
         // if the data count variable is not set, proceed with the previous logic

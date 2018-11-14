@@ -29,7 +29,10 @@ if (!(int) $client > 0) {
 /**
  *
  * @param TreeItem $item
+ *
  * @return string
+ * 
+ * @throws cException
  */
 function getUplExpandCollapseButton($item) {
     global $sess, $frame, $area, $appendparameters;

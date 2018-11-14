@@ -19,6 +19,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @return string
  *         Message if clearing was successfull or not
+ * 
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function emptyLogFile() {
     global $cfg, $notification, $auth;
@@ -47,8 +50,11 @@ function emptyLogFile() {
  *
  * @deprecated [2015-05-21]
  *         This method is no longer supported (no replacement)
+ *             
  * @return string
  *         HTML output of phpinfo()
+ * 
+ * @throws cInvalidArgumentException
  */
 function phpInfoToHtml() {
     cDeprecated('This method is deprecated and is not needed any longer');
@@ -111,12 +117,16 @@ function isIPv4($strHostAdress) {
  *
  * @deprecated [2015-05-21]
  *         This method is no longer supported (no replacement)
+ *
  * @param string $strConUrl
  *         CONTENIDO fullhtmlPath
  * @param string $strBrowserUrl
  *         current browser string
+ *
  * @return string
  *         Status of path comparement
+ * 
+ * @throws cInvalidArgumentException
  */
 function checkPathInformation($strConUrl, $strBrowserUrl) {
     cDeprecated('This method is deprecated and is not needed any longer');
@@ -175,10 +185,14 @@ function checkPathInformation($strConUrl, $strBrowserUrl) {
  *
  * @deprecated [2015-05-21]
  *         This method is no longer supported (no replacement)
+ *
  * @param array $arrConUrl
  * @param array $arrBrowserUrl
- * @param bool $isIP
+ * @param bool  $isIP
+ *
  * @return bool
+ * 
+ * @throws cInvalidArgumentException
  */
 function compareUrlStrings($arrConUrl, $arrBrowserUrl, $isIP = false) {
     cDeprecated('This method is deprecated and is not needed any longer');

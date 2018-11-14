@@ -265,7 +265,7 @@ function parseElement($element, &$targetArray, $numberOfElements) {
  * @param array $dateArr
  * @param int $amount
  * @param string $unit
- * @param boolean $PC_debug
+ * @param bool $PC_debug
  */
 function decDate(&$dateArr, $amount, $unit, $PC_debug) {
     if ($PC_debug) {
@@ -331,7 +331,7 @@ function decDate(&$dateArr, $amount, $unit, $PC_debug) {
 /**
  *
  * @param string $job
- * @param boolean $PC_debug
+ * @param bool $PC_debug
  * @return int
  */
 function getLastScheduledRunTime($job, $PC_debug) {
@@ -421,8 +421,9 @@ function markLastRun($jobname, $lastRun, $PC_writeDir) {
  * @param string $PC_jobDir
  * @param string $PC_writeDir
  * @param int $PC_useLog
- * @param boolean $PC_debug
- * @return boolean
+ * @param bool $PC_debug
+ * 
+ * @return bool
  */
 function runJob($job, $PC_jobDir, $PC_writeDir, $PC_useLog, $PC_debug = false) {
     global $sess;
@@ -471,7 +472,8 @@ function runJob($job, $PC_jobDir, $PC_writeDir, $PC_useLog, $PC_debug = false) {
 /**
  *
  * @param string $PC_cronTabFile
- * @param boolean $PC_debug
+ * @param bool $PC_debug
+ * 
  * @return array
  */
 function parseCronFile($PC_cronTabFile, $PC_debug) {

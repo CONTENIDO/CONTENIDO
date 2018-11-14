@@ -25,8 +25,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @param string $path
  *         Path to resolve
+ *
  * @return int
  *         Closest matching category ID (idcat)
+ * 
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function prResolvePathViaURLNames($path) {
     global $cfg, $lang, $client;
@@ -117,8 +122,13 @@ function prResolvePathViaURLNames($path) {
  * @param string $path
  *         Path to resolve
  * @param string $iLangCheck
+ *
  * @return int
  *         Closest matching category ID (idcat)
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function prResolvePathViaCategoryNames($path, &$iLangCheck) {
     global $cfg, $lang, $client;
@@ -236,23 +246,27 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck) {
 /**
  * Recursive function to create an URL name location string.
  *
- * @param int $idcat
+ * @param int    $idcat
  *         ID of the starting category
  * @param string $seperator
  *         Seperation string
  * @param string $cat_str
  *         Category location string (by reference)
- * @param bool $makeLink
+ * @param bool   $makeLink
  *         create location string with links
  * @param string $linkClass
  *         stylesheet class for the links
- * @param int $firstTreeElementToUse
+ * @param int    $firstTreeElementToUse
  *         first navigation level location string should be printed out (first level = 0!!)
- * @param int $uselang
- * @param bool $final
- * @param bool $usecache
+ * @param int    $uselang
+ * @param bool   $final
+ * @param bool   $usecache
+ *
  * @return string
  *         location string
+ * 
+ * @throws cDbException
+ * @throws cException
  */
 function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink = false, $linkClass = '', $firstTreeElementToUse = 0, $uselang = 0, $final = true, $usecache = false) {
     global $cfg, $client, $cfgClient, $lang, $sess, $_URLlocationStringCache;
@@ -348,11 +362,15 @@ function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink
 /**
  * Writes path location string cache data file.
  *
- * @global array $cfgClient
- * @param array $data
- * @param int $client
- * @param int $lang
+ * @param array  $data
+ * @param int    $client
+ * @param int    $lang
+ *
  * @return bool
+ * 
+ * @throws cInvalidArgumentException
+ * 
+ * @global array $cfgClient
  */
 function prWriteCacheFileContent($data, $client, $lang) {
     global $cfgClient;
@@ -371,10 +389,14 @@ function prWriteCacheFileContent($data, $client, $lang) {
 /**
  * Get path location string cache data file content.
  *
- * @global array $cfgClient
- * @param int $client
- * @param int $lang
+ * @param int    $client
+ * @param int    $lang
+ *
  * @return array $data
+ *               
+ * @throws cInvalidArgumentException
+ * 
+ * @global array $cfgClient
  */
 function prGetCacheFileContent($client, $lang) {
     global $cfgClient;

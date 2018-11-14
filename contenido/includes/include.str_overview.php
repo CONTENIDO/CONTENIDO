@@ -45,6 +45,9 @@ $oDirectionDb = cRegistry::getDb();
  * user is allowed to create new categories.
  *
  * @return string HTML
+ *                
+ * @throws cDbException
+ * @throws cException
  */
 function buildCategorySelectRights() {
     global $cfg, $client, $lang, $idcat, $perm, $tmp_area;
@@ -114,8 +117,11 @@ function buildCategorySelectRights() {
 /**
  *
  * @param TreeItem $item
- * @param string $catName
+ * @param string   $catName
+ *
  * @return string
+ * 
+ * @throws cException
  */
 function getStrExpandCollapseButton($item, $catName) {
     global $sess, $frame, $area;
@@ -159,6 +165,9 @@ function getStrExpandCollapseButton($item, $catName) {
 /**
  *
  * @return string
+ * 
+ * @throws cDbException
+ * @throws cException
  */
 function getTemplateSelect() {
     global $client, $cfg, $db;

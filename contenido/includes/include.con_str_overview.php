@@ -20,9 +20,13 @@ cInclude('includes', 'functions.lang.php');
 
 /**
  *
- * @param int $iIdcat
+ * @param int   $iIdcat
  * @param array $aWholelist
+ *
  * @return string
+ *
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function showTree($iIdcat, &$aWholelist) {
     global $check_global_rights, $sess, $cfg, $perm, $db, $db2, $db3, $area, $client, $lang, $navigationTree;

@@ -55,8 +55,8 @@ if (!$perm->have_perm_area_action('js', $actionRequest) || $permCreate) {
     return;
 }
 
+// If there is no client selected, display empty page
 if (!(int) $client > 0) {
-    // If there is no client selected, display empty page
     $page->render();
     return;
 }

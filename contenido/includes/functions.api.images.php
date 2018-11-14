@@ -511,26 +511,31 @@ function cApiImageIsAnimGif($sFile) {
  * If the file is older than 10 minutes, regenerate it.
  *
  * @param string $img
- *         The path to the image (relative to the frontend)
- * @param int $maxX
- *         The maximum size in x-direction
- * @param int $maxY
- *         The maximum size in y-direction
- * @param bool $crop [optional]
- *         If true, the image is cropped and not scaled.
- * @param bool $expand [optional]
- *         If true, the image is expanded (e.g. really scaled).
- *         If false, the image will only be made smaller.
- * @param int $cacheTime [optional]
- *         The number of minutes to cache the image, use 0 for unlimited
- * @param bool $wantHQ [optional]
- *         If true, try to force high quality mode
- * @param int $quality [optional]
- *         The quality of the output file
- * @param bool $keepType [optional]
- *         If true and a png file is source, output file is also png
+ *                          The path to the image (relative to the frontend)
+ * @param int    $maxX
+ *                          The maximum size in x-direction
+ * @param int    $maxY
+ *                          The maximum size in y-direction
+ * @param bool   $crop      [optional]
+ *                          If true, the image is cropped and not scaled.
+ * @param bool   $expand    [optional]
+ *                          If true, the image is expanded (e.g. really scaled).
+ *                          If false, the image will only be made smaller.
+ * @param int    $cacheTime [optional]
+ *                          The number of minutes to cache the image, use 0 for unlimited
+ * @param bool   $wantHQ    [optional]
+ *                          If true, try to force high quality mode
+ * @param int    $quality   [optional]
+ *                          The quality of the output file
+ * @param bool   $keepType  [optional]
+ *                          If true and a png file is source, output file is also png
+ *
  * @return string
  *         Path to the resulting image
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $wantHQ = false, $quality = 0, $keepType = true) {
     global $client, $cfgClient, $cfg;

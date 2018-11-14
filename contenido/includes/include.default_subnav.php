@@ -56,20 +56,18 @@ if ($iCountBasicVal == count($_GET)) {
     $bVirgin = true;
 }
 
-/*
-// Area-Url-Params for special params
-switch ($area) {
-    case 'style':
-    case 'js':
-    case 'htmltpl':
-        if (array_key_exists('file', $_GET)) {
-            $sUrlParams .= '&file=' . $_GET['file'];
-        }
-        break;
-    default:
-        echo '';
-}
-*/
+// // Area-Url-Params for special params
+// switch ($area) {
+//     case 'style':
+//     case 'js':
+//     case 'htmltpl':
+//         if (array_key_exists('file', $_GET)) {
+//             $sUrlParams .= '&file=' . $_GET['file'];
+//         }
+//         break;
+//     default:
+//         echo '';
+// }
 
 // Debug
 cDebug::out('Url-Params: ' . $sUrlParams);

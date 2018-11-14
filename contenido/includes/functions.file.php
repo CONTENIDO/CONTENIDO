@@ -27,14 +27,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @deprecated [2015-05-21]
  *         This method is no longer supported (no replacement)
- * @param int $iIdClient
+ *
+ * @param int    $iIdClient
  *         id of client which contains this file
  * @param string $sFilename
  *         name of corresponding file
  * @param string $sType
  *         type of file (css, js or templates)
- * @param cDb $oDb
+ * @param cDb    $oDb
  *         CONTENIDO database object
+ *
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function removeFileInformation($iIdClient, $sFilename, $sType, $oDb) {
     global $cfg;
@@ -61,14 +65,16 @@ function removeFileInformation($iIdClient, $sFilename, $sType, $oDb) {
  *
  * @deprecated [2015-05-21]
  *         This method is no longer supported (no replacement)
- * @param int $iIdClient
+ *
+ * @param int    $iIdClient
  *         id of client which contains this file
  * @param string $sFilename
  *         name of corresponding file
  * @param string $sType
  *         type of file (css, js or templates)
- * @param cDb $oDb
+ * @param cDb    $oDb
  *         CONTENIDO database object
+ *
  * @return array
  *         Indexes:
  *         - idsfi - Primary key of database record
@@ -78,6 +84,8 @@ function removeFileInformation($iIdClient, $sFilename, $sType, $oDb) {
  *         - modifiedby - Last modifier of file (CONTENIDO Backend User)
  *         - description - Description which was inserted for this file
  *
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function getFileInformation($iIdClient, $sFilename, $sType, $oDb) {
     global $cfg;
@@ -119,7 +127,8 @@ function getFileInformation($iIdClient, $sFilename, $sType, $oDb) {
  *
  * @deprecated [2015-05-21]
  *         This method is no longer supported (no replacement)
- * @param int $iIdClient
+ *
+ * @param int    $iIdClient
  *         id of client which contains this file
  * @param string $sFilename
  *         name of corresponding file
@@ -129,10 +138,13 @@ function getFileInformation($iIdClient, $sFilename, $sType, $oDb) {
  *         author of file
  * @param string $sDescription
  *         description of file
- * @param cDb $oDb
+ * @param cDb    $oDb
  *         CONTENIDO database object
  * @param string $sFilenameNew
  *         new filename if filename was changed (optional)
+ *
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescription, $oDb, $sFilenameNew = '') {
     global $cfg;
@@ -197,10 +209,13 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
  *
  * @deprecated [2015-05-21]
  *         use cFileHandler::getExtension
+ *
  * @param string $filename
  *         The file to get the type
+ *
  * @return string
  *         Filetype
+ * @throws cInvalidArgumentException
  */
 function getFileType($filename) {
     cDeprecated('This method is deprecated and is not needed any longer');
@@ -215,12 +230,16 @@ function getFileType($filename) {
  *
  * @deprecated [2015-05-21]
  *         use cDirHandler::getDirectorySize
+ *
  * @param string $sDirectory
  *         The directory
- * @param bool $bRecursive
+ * @param bool   $bRecursive
  *         true if all the subdirectories should be included in the calculation
+ *
  * @return int|bool
  *         false in case of an error or the size
+ *
+ * @throws cInvalidArgumentException
  */
 function getDirectorySize($sDirectory, $bRecursive = false) {
     cDeprecated('This method is deprecated and is not needed any longer');
@@ -232,10 +251,14 @@ function getDirectorySize($sDirectory, $bRecursive = false) {
  *
  * @deprecated [2015-05-21]
  *         use cDirHandler::read with parameter fileOnly true
+ *
  * @param string $sDirectory
- * @param bool $bRecursive
+ * @param bool   $bRecursive
+ *
  * @return array|bool
  *         array of found files (full path and name) or false
+ *
+ * @throws cInvalidArgumentException
  */
 function scanDirectory($sDirectory, $bRecursive = false) {
 
@@ -280,17 +303,21 @@ function scanDirectory($sDirectory, $bRecursive = false) {
  *
  * @deprecated [2015-05-21]
  *         use cDirHandler::recursiveCopy
+ *
  * @param string $sourcePath
  * @param string $destinationPath
- * @param int $mode
- *         Octal representation of file mode (0644, 0750, etc.)
- * @param array $options
- *         Some additional options as follows
- *         <pre>
- *         $options['force_overwrite'] (bool) Flag to overwrite existing
+ * @param int    $mode
+ *             Octal representation of file mode (0644, 0750, etc.)
+ * @param array  $options
+ *             Some additional options as follows
+ *             <pre>
+ *             $options['force_overwrite'] (bool) Flag to overwrite existing
  *             destination file, default value is false
- *         </pre>
- * @return cDirHandler::recursiceCopy method (bool)
+ *             </pre>
+ *
+ * @return bool ::recursiceCopy method (bool)
+ *
+ * @throws cInvalidArgumentException
  */
 function recursiveCopy($sourcePath, $destinationPath, $mode = 0755, array $options = array()) {
     cDeprecated('This method is deprecated and is not needed any longer');

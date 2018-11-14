@@ -28,7 +28,12 @@ cInclude("includes", "functions.con.php");
  * @param unknown_type $idlay
  * @param unknown_type $c
  * @param unknown_type $default
- * @return number|Ambigous <mixed, boolean, multitype:>
+ *
+ * @return number|Ambigous <mixed, bool, multitype:>
+ *                         
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c, $default) {
     global $db, $sess, $auth, $client, $cfg;
@@ -121,6 +126,9 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
  *
  * @param int $idtpl
  *         ID of the template to duplicate
+ *
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function tplDeleteTemplate($idtpl) {
 
@@ -156,10 +164,12 @@ function tplDeleteTemplate($idtpl) {
 /**
  * Browse a specific layout for containers
  *
- * @param int $idtpl
- *         Layout number to browse
+ * @param $idlay
+ *
  * @return string
  *         &-separated string of all containers
+ * 
+ * @throws cInvalidArgumentException
  */
 function tplBrowseLayoutForContainers($idlay) {
     global $db, $cfg, $containerinf, $lang;
@@ -206,7 +216,10 @@ function tplBrowseLayoutForContainers($idlay) {
  * the list of found container numbers.
  *
  * @param int $idlay
+ *
  * @return array
+ * 
+ * @throws cInvalidArgumentException
  */
 function tplGetContainerNumbersInLayout($idlay) {
     $containerNumbers = array();
@@ -223,7 +236,7 @@ function tplGetContainerNumbersInLayout($idlay) {
 /**
  * Retrieve the container name
  *
- * @param int $idtpl
+ * @param int $idlay
  *         Layout number to browse
  * @param int $container
  *         Container number
@@ -314,6 +327,8 @@ function tplGetContainerDefault($idlay, $container) {
  *
  * @param int $idlay
  *         Layout number to browse
+ *
+ * @throws cInvalidArgumentException
  */
 function tplPreparseLayout($idlay) {
     global $db, $cfg, $containerinf, $lang;
@@ -352,8 +367,12 @@ function tplPreparseLayout($idlay) {
  *
  * @param int $idtpl
  *         ID of the template to duplicate
+ *
  * @return int
  *         ID of the duplicated template
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function tplDuplicateTemplate($idtpl) {
     global $db, $client, $lang, $cfg, $sess, $auth;
@@ -417,8 +436,11 @@ function tplDuplicateTemplate($idtpl) {
  *
  * @param int $idtpl
  *         Template ID
+ *
  * @return bool
  *         is template in use
+ * 
+ * @throws cDbException
  */
 function tplIsTemplateInUse($idtpl) {
     global $cfg, $client, $lang;
@@ -466,8 +488,11 @@ function tplIsTemplateInUse($idtpl) {
  *
  * @param int $idtpl
  *         Template ID
+ *
  * @return array
  *         category name, article name
+ * 
+ * @throws cDbException
  */
 function tplGetInUsedData($idtpl) {
     global $cfg, $client, $lang;
@@ -530,8 +555,13 @@ function tplGetInUsedData($idtpl) {
  *
  * @param int $idtplcfg
  *         Template Configuration ID
+ *
  * @return int
  *         new template configuration ID
+ * 
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function tplcfgDuplicate($idtplcfg) {
     global $auth;
@@ -569,11 +599,14 @@ function tplcfgDuplicate($idtplcfg) {
  * - If the container mode is fixed, insert the named module (if exists)
  * - If the container mode is mandatory, insert the "default" module (if exists)
  *
- * @todo The default module is only inserted in mandatory mode if the container
- *        is empty. We need a better logic for handling "changes".
+ * @todo Default module is only inserted in mandatory mode if container is empty. We need a better logic for handling "changes".
  *
  * @param int $idtpl
- * @return boolean
+ *
+ * @return bool
+ * 
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function tplAutoFillModules($idtpl) {
     global $cfg, $db_autofill, $containerinf, $_autoFillcontainerCache;
@@ -658,10 +691,14 @@ function tplAutoFillModules($idtpl) {
  * Takes over send container configuration data, stores send data (via POST) by article
  * or template configuration in container configuration table.
  *
- * @param int $idtpl
- * @param int $idtplcfg
+ * @param int   $idtpl
+ * @param int   $idtplcfg
  * @param array $postData
  *         Usually $_POST
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function tplProcessSendContainerConfiguration($idtpl, $idtplcfg, array $postData) {
 
