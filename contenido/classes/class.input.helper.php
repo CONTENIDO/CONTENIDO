@@ -250,6 +250,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
         global $cfg, $lang;
 
         if (is_numeric($iIDCatArt) && $iIDCatArt > 0) {
+            $oDB = cRegistry::getDb();
 
             $sql = "SELECT
                         t.typeid AS typeid
