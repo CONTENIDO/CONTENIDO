@@ -83,7 +83,7 @@ if ($action == 'user_edit') {
             $clientLanguageCollection = new cApiClientLanguageCollection();
             $availablelanguages = $clientLanguageCollection->getLanguagesByClient($selectedclient);
 
-            if (count($mlang) == 0) {
+            if (!is_array($mlang) || count($mlang) == 0) {
                 // User has no selected language
                 $sNotification = $notification->returnNotification("warning", i18n("Please select a language for your selected client."));
                 $bError = true;
