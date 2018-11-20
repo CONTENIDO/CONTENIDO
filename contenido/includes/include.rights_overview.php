@@ -74,7 +74,7 @@ if ($action == 'user_delete') {
 // Action edit user
 if ($action == 'user_edit') {
 
-    if (count($mclient) > 0) {
+    if (is_array($mclient) && count($mclient) > 0) {
 
         // Prevent setting the permissions for a client without a language of that client
         foreach ($mclient as $selectedclient) {
