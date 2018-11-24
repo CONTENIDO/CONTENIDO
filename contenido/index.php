@@ -19,7 +19,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 // CONTENIDO startup process
 include_once('./includes/startup.php');
-;
+
 // ugly globals that are used in this script
 // global $sess, $perm, $area;
 // global $belang, $changelang, $changeclient;
