@@ -55,7 +55,7 @@ $backendPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/..'));
  * SetEnv CON_VERSION
  */
 if (!defined('CON_VERSION')) {
-    define('CON_VERSION', '4.9.13');
+    define('CON_VERSION', '4.10.0');
 }
 
 // Include the environment definer file
