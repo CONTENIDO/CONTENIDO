@@ -815,7 +815,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         if ($articlesToRemove > 0 && ($perm->have_perm_area_action("con", "con_deleteart") || $perm->have_perm_area_action_item("con", "con_deleteart", $idcat))) {
             $bulkEditingFunctions .= createBulkEditingFunction('con_deleteart', 'images/delete.gif', i18n('Delete articles'), 'Con.showConfirmation("' . i18n('Are you sure to delete the selected articles') . '", deleteArticles)');
         }
-        if ($articlesToEdit > 0 && ($perm->have_perm_area_action("con", "con_editart") || $perm->have_perm_area_action_item("con", "con_editart", $idcat))) {
+        if ($articlesToEdit > 0 && ($perm->have_perm_area_action("con_editart", "con_edit") || $perm->have_perm_area_action_item("con_editart", "con_edit", $idcat))) {
         	$bulkEditingFunctions .= createBulkEditingFunction('con_inlineeditart', 'images/editieren.gif', i18n('Edit articles'));
         }
 
