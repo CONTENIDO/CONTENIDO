@@ -418,6 +418,8 @@ $cfg['system_log']['number_of_lines'] = 100;
 // Allowed log file names
 $cfg['system_log']['allowed_filenames'] = array('deprecatedlog.txt', 'errorlog.txt', 'exception.txt', 'security.txt', 'setuplog.txt');
 
+// Default memory limit in bytes in case of not determining it via the PHP setting memory_limit
+$cfg['system_log']['default_memory_limit'] = 67108864; // 67108864 = 64 MB
 
 /* Search index settings
  * -----------------------------------------------------------------------------
