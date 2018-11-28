@@ -24,8 +24,7 @@ $numberOfLines = $cfg['system_log']['number_of_lines'];
 $logfile = basename($_REQUEST['logfile']);
 
 // memory limit
-$memoryLimit = machineReadableSize(ini_get("memory_limit"));
-$memoryLimit = 10000;
+$memoryLimit = machineReadableSize(ini_get('memory_limit'));
 if ($memoryLimit <= 0) {
     $memoryLimit = $cfg['system_log']['default_memory_limit'];
 }
