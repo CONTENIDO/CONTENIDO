@@ -244,14 +244,8 @@ if ($sCache_errors && $_GET['live'] != 1) {
         // Text decode
         $value = $db->f("value");
 
-        // Set contentId
-        $searchLinks->setContentId($db->f("idcontent"));
-
-        // Set articleLangId
-        $searchLinks->setArticleLangId($db->f("idartlang"));
-
         // Search the text
-        $aSearchIDInfosNonID = $searchLinks->search($value, $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idlang"));
+        $aSearchIDInfosNonID = $searchLinks->search($value, $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idlang"), $db->f("idartlang"), $db->f("idcontent"));
 
         // Search front_content.php-links
         if ($_GET['mode'] != 2) {
@@ -273,11 +267,8 @@ if ($sCache_errors && $_GET['live'] != 1) {
 
     while ($db->nextRecord()) {
 
-        // Set articleLangId
-        $searchLinks->setArticleLangId($db->f("idartlang"));
-
         // Search the text
-        $aSearchIDInfosNonID = $searchLinks->search($db->f("redirect_url"), $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idlang"));
+        $aSearchIDInfosNonID = $searchLinks->search($db->f("redirect_url"), $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idlang"), $db->f("idartlang"));
 
         // Search front_content.php-links
         if ($_GET['mode'] != 2) {

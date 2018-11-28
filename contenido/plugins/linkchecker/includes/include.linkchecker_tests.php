@@ -293,8 +293,6 @@ class searchLinks
 {
 
     private $mode = '';
-    private static $contentId = 0;
-    private static $articleLangId = 0;
 
     /**
      * searchLinks constructor.
@@ -317,36 +315,6 @@ class searchLinks
     }
 
     /**
-     * Setter method for contentId
-     *
-     * @param int $id
-     * @return bool
-     */
-    public function setContentId($id = 0) {
-
-        if ($id == 0) {
-            return false;
-        } else {
-            self::$contentId = cSecurity::toInteger($id);
-        }
-    }
-
-    /**
-     * Setter method for articleLangId
-     *
-     * @param int $id
-     * @return bool
-     */
-    public function setArticleLangId($id = 0) {
-
-        if ($id == 0) {
-            return false;
-        } else {
-            self::$articleLangId = cSecurity::toInteger($id);
-        }
-    }
-
-    /**
      * Old searchLinks function
      * TODO: Optimize this function!
      *
@@ -356,10 +324,12 @@ class searchLinks
      * @param $idcat
      * @param $namecat
      * @param $idlang
+     * @param $idartlang
+     * @param $idcontent
      * @todo Do not use global!
      * @return array
      */
-    public function search($value, $idart, $nameart, $idcat, $namecat, $idlang) {
+    public function search($value, $idart, $nameart, $idcat, $namecat, $idlang, $idartlang, $idcontent = 0) {
         global $aUrl, $aSearchIDInfosNonID, $aWhitelist;
 
         // Extern URL
@@ -374,8 +344,8 @@ class searchLinks
                         "nameart" => $nameart,
                         "idcat" => $idcat,
                         "namecat" => $namecat,
-                        "idcontent" => self::$contentId,
-                        "idartlang" => self::$articleLangId,
+                        "idcontent" => $idcontent,
+                        "idartlang" => $idartlang,
                         "lang" => $idlang,
                         "urltype" => "extern"
                     );
@@ -392,7 +362,7 @@ class searchLinks
                 "idcat" => $idcat,
                 "namecat" => $namecat,
                 "idcontent" => 0,
-                "idartlang" => self::$articleLangId,
+                "idartlang" => $idartlang,
                 "lang" => $idlang,
                 "urltype" => "unknown",
                 "redirect" => true
@@ -411,8 +381,8 @@ class searchLinks
                         "nameart" => $nameart,
                         "idcat" => $idcat,
                         "namecat" => $namecat,
-                        "idcontent" => self::$contentId,
-                        "idartlang" => self::$articleLangId,
+                        "idcontent" => $idcontent,
+                        "idartlang" => $idartlang,
                         "lang" => $idlang,
                         "urltype" => "intern"
                     );
