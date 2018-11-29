@@ -335,17 +335,17 @@ if (empty($aErrors) && $cronjob != true) {
             $aRow[$i]['namecat'] = conHtmlentities($aRow[$i]['namecat']);
 
             // set template variables
-            $tpl2->set('s', 'ERRORS_ARTID', $aRow[$i]['idart']);
-            $tpl2->set('s', 'ERRORS_ARTICLE', $aRow[$i]['nameart']);
+            $tpl2->set('s', 'ERRORS_ARTID', cSecurity::toInteger($aRow[$i]['idart']));
+            $tpl2->set('s', 'ERRORS_ARTICLE', cSecurity::escapeString($aRow[$i]['nameart']));
             $tpl2->set('s', 'ERRORS_ARTICLE_SHORT', cString::getPartOfString($aRow[$i]['nameart'], 0, 20) . ((cString::getStringLength($aRow[$i]['nameart']) > 20) ? ' ...' : ''));
-            $tpl2->set('s', 'ERRORS_CATID', $aRow[$i]['idcat']);
-            $tpl2->set('s', 'ERRORS_LANGARTID', $aRow[$i]['idartlang']);
-            $tpl2->set('s', 'ERRORS_LINK', $aRow[$i]['url']);
+            $tpl2->set('s', 'ERRORS_CATID', cSecurity::toInteger($aRow[$i]['idcat']));
+            $tpl2->set('s', 'ERRORS_LANGARTID', cSecurity::toInteger($aRow[$i]['idartlang']));
+            $tpl2->set('s', 'ERRORS_LINK', cSecurity::toString($aRow[$i]['url']));
             $tpl2->set('s', 'ERRORS_LINK_ENCODE', base64_encode($aRow[$i]['url']));
             $tpl2->set('s', 'ERRORS_LINK_SHORT', cString::getPartOfString($aRow[$i]['url'], 0, 45) . ((cString::getStringLength($aRow[$i]['url']) > 45) ? ' ...' : ''));
-            $tpl2->set('s', 'ERRORS_CATNAME', $aRow[$i]['namecat']);
+            $tpl2->set('s', 'ERRORS_CATNAME', cSecurity::toString($aRow[$i]['namecat']));
             $tpl2->set('s', 'ERRORS_CATNAME_SHORT', cString::getPartOfString($aRow[$i]['namecat'], 0, 20) . ((cString::getStringLength($aRow[$i]['namecat']) > 20) ? ' ...' : ''));
-            $tpl2->set('s', 'MODE', $_GET['mode']);
+            $tpl2->set('s', 'MODE', cSecurity::toInteger($_GET['mode']));
             $tpl2->set('s', 'URL_FRONTEND', $aUrl['cms']);
 
             if ($aRow[$i]['error_type'] == "unknown") {
