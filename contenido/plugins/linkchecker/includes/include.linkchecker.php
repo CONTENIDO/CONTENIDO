@@ -200,8 +200,8 @@ if ($sCache_errors && $_GET['live'] != 1) {
     $aErrors = unserialize($sCache_errors);
 } else { // If no cache exists
 
-    // Initializing searchLinks class
-    $searchLinks = new searchLinks();
+    // Initializing cLinkCheckerSearchLinks class
+    $searchLinks = new cLinkcheckerSearchLinks();
 
     // Select all categorys
     $sql = "SELECT idcat FROM " . $cfg['tab']['cat'] . " GROUP BY idcat";
