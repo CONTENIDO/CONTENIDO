@@ -200,8 +200,8 @@ if ($sCache_errors && $_GET['live'] != 1) {
     $aErrors = unserialize($sCache_errors);
 } else { // If no cache exists
 
-    // Initializing searchLinks class
-    $searchLinks = new searchLinks();
+    // Initializing cLinkCheckerSearchLinks class
+    $searchLinks = new cLinkcheckerSearchLinks();
 
     // Select all categorys
     $sql = "SELECT idcat FROM " . $cfg['tab']['cat'] . " GROUP BY idcat";
@@ -244,14 +244,8 @@ if ($sCache_errors && $_GET['live'] != 1) {
         // Text decode
         $value = $db->f("value");
 
-        // Set contentId
-        $searchLinks->setContentId($db->f("idcontent"));
-
-        // Set articleLangId
-        $searchLinks->setArticleLangId($db->f("idartlang"));
-
         // Search the text
-        $aSearchIDInfosNonID = $searchLinks->search($value, $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idlang"));
+        $aSearchIDInfosNonID = $searchLinks->search($value, $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idlang"), $db->f("idartlang"), $db->f("idcontent"));
 
         // Search front_content.php-links
         if ($_GET['mode'] != 2) {
@@ -273,11 +267,8 @@ if ($sCache_errors && $_GET['live'] != 1) {
 
     while ($db->nextRecord()) {
 
-        // Set articleLangId
-        $searchLinks->setArticleLangId($db->f("idartlang"));
-
         // Search the text
-        $aSearchIDInfosNonID = $searchLinks->search($db->f("redirect_url"), $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idlang"));
+        $aSearchIDInfosNonID = $searchLinks->search($db->f("redirect_url"), $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idlang"), $db->f("idartlang"));
 
         // Search front_content.php-links
         if ($_GET['mode'] != 2) {
@@ -344,17 +335,17 @@ if (empty($aErrors) && $cronjob != true) {
             $aRow[$i]['namecat'] = conHtmlentities($aRow[$i]['namecat']);
 
             // set template variables
-            $tpl2->set('s', 'ERRORS_ARTID', $aRow[$i]['idart']);
-            $tpl2->set('s', 'ERRORS_ARTICLE', $aRow[$i]['nameart']);
+            $tpl2->set('s', 'ERRORS_ARTID', cSecurity::toInteger($aRow[$i]['idart']));
+            $tpl2->set('s', 'ERRORS_ARTICLE', cSecurity::escapeString($aRow[$i]['nameart']));
             $tpl2->set('s', 'ERRORS_ARTICLE_SHORT', cString::getPartOfString($aRow[$i]['nameart'], 0, 20) . ((cString::getStringLength($aRow[$i]['nameart']) > 20) ? ' ...' : ''));
-            $tpl2->set('s', 'ERRORS_CATID', $aRow[$i]['idcat']);
-            $tpl2->set('s', 'ERRORS_LANGARTID', $aRow[$i]['idartlang']);
-            $tpl2->set('s', 'ERRORS_LINK', $aRow[$i]['url']);
+            $tpl2->set('s', 'ERRORS_CATID', cSecurity::toInteger($aRow[$i]['idcat']));
+            $tpl2->set('s', 'ERRORS_LANGARTID', cSecurity::toInteger($aRow[$i]['idartlang']));
+            $tpl2->set('s', 'ERRORS_LINK', cSecurity::escapeString($aRow[$i]['url']));
             $tpl2->set('s', 'ERRORS_LINK_ENCODE', base64_encode($aRow[$i]['url']));
             $tpl2->set('s', 'ERRORS_LINK_SHORT', cString::getPartOfString($aRow[$i]['url'], 0, 45) . ((cString::getStringLength($aRow[$i]['url']) > 45) ? ' ...' : ''));
-            $tpl2->set('s', 'ERRORS_CATNAME', $aRow[$i]['namecat']);
+            $tpl2->set('s', 'ERRORS_CATNAME', cSecurity::escapeString($aRow[$i]['namecat']));
             $tpl2->set('s', 'ERRORS_CATNAME_SHORT', cString::getPartOfString($aRow[$i]['namecat'], 0, 20) . ((cString::getStringLength($aRow[$i]['namecat']) > 20) ? ' ...' : ''));
-            $tpl2->set('s', 'MODE', $_GET['mode']);
+            $tpl2->set('s', 'MODE', cSecurity::toInteger($_GET['mode']));
             $tpl2->set('s', 'URL_FRONTEND', $aUrl['cms']);
 
             if ($aRow[$i]['error_type'] == "unknown") {

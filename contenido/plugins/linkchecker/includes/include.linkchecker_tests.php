@@ -15,7 +15,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 // Checks all links without front_content.php
 function checkLinks() {
-    global $auth, $cfgClient, $client, $cfg, $cronjob, $db, $aErrors, $lang, $langart, $whitelist;
+    global $auth, $cfg, $cronjob, $db, $aErrors, $lang;
     global $aSearchIDInfosArt, $aSearchIDInfosCat, $aSearchIDInfosCatArt, $aSearchIDInfosNonID;
 
     $sSearch = '';
@@ -31,10 +31,12 @@ function checkLinks() {
             }
         }
 
-        // Check articles
-        $aFind = array();
+        // SQL query, please note: integer cast some lines before!
         $sql = "SELECT idart, online FROM " . $cfg['tab']['art_lang'] . " WHERE idart IN (" . $sSearch . ")";
         $db->query($sql);
+
+        // Check articles
+        $aFind = array();
 
         while ($db->nextRecord()) {
             $aFind[$db->f("idart")] = array(
@@ -61,16 +63,18 @@ function checkLinks() {
         for ($i = 0; $i < count($aSearchIDInfosCat); $i++) {
 
             if ($i == 0) {
-                $sSearch = $aSearchIDInfosCat[$i]['id'];
+                $sSearch = cSecurity::toInteger($aSearchIDInfosCat[$i]['id']);
             } else {
-                $sSearch .= ", " . $aSearchIDInfosCat[$i]['id'];
+                $sSearch .= ", " . cSecurity::toInteger($aSearchIDInfosCat[$i]['id']);
             }
         }
 
-        // Check categories
-        $aFind = array();
+        // SQL query, please note: integer cast some lines before!
         $sql = "SELECT idcat, startidartlang, visible FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat IN (" . $sSearch . ") AND idlang = '" . cSecurity::toInteger($lang) . "'";
         $db->query($sql);
+
+        // Check categories
+        $aFind = array();
 
         while ($db->nextRecord()) {
             $aFind[$db->f("idcat")] = array(
@@ -97,7 +101,7 @@ function checkLinks() {
 
             if (is_array($aFind[$aSearchIDInfosCat[$i]['id']]) && $aFind[$aSearchIDInfosCat[$i]['id']]['startidart'] != 0) {
 
-                $sql = "SELECT idart FROM " . $cfg['tab']['art_lang'] . " WHERE idartlang = '" . $aFind[$aSearchIDInfosCat[$i]['id']]['startidart'] . "' AND online = '1'";
+                $sql = "SELECT idart FROM " . $cfg['tab']['art_lang'] . " WHERE idartlang = '" . cSecurity::toInteger($aFind[$aSearchIDInfosCat[$i]['id']]['startidart']) . "' AND online = '1'";
                 $db->query($sql);
 
                 if ($db->numRows() == 0) {
@@ -120,10 +124,12 @@ function checkLinks() {
             }
         }
 
-        // Check articles
-        $aFind = array();
+        // SQL query, please note: integer cast some lines before!
         $sql = "SELECT idcatart FROM " . $cfg['tab']['cat_art'] . " WHERE idcatart IN (" . $sSearch . ")";
         $db->query($sql);
+
+        // Check articles
+        $aFind = array();
 
         while ($db->nextRecord()) {
             $aFind[] = $db->f("idcatart");
@@ -143,7 +149,7 @@ function checkLinks() {
                                             // www, dfbs)
 
         // Select userrights (is the user admin or sysadmin?)
-        $sql = "SELECT username FROM " . $cfg['tab']['user'] . " WHERE user_id='" . $db->escape($auth->auth['uid']) . "' AND perms LIKE '%admin%'";
+        $sql = "SELECT username FROM " . $cfg['tab']['user'] . " WHERE user_id='" . cSecurity::toInteger($auth->auth['uid']) . "' AND perms LIKE '%admin%'";
         $db->query($sql);
 
         if ($db->numRows() > 0 || $cronjob == true) { // User is admin when he
@@ -197,7 +203,7 @@ function checkLinks() {
                 $sFilename = cString::getPartOfString($sDBurl, $iPos + 1);
 
                 // Check dbfs
-                $sql = "SELECT iddbfs FROM " . $cfg['tab']['dbfs'] . " WHERE dirname IN('" . $sDirname . "', '" . conHtmlEntityDecode($sDirname) . "', '" . $sDirname . "') AND filename = '" . $sFilename . "'";
+                $sql = "SELECT iddbfs FROM " . $cfg['tab']['dbfs'] . " WHERE dirname IN('" . cSecurity::escapeDB($sDirname, $db) . "', '" . conHtmlEntityDecode($sDirname) . "', '" . cSecurity::escapeDB($sDirname, $db) . "') AND filename = '" . cSecurity::escapeDB($sFilename, $db) . "'";
                 $db->query($sql);
 
                 if ($db->numRows() == 0) {
@@ -289,12 +295,10 @@ function searchFrontContentLinks($sValue, $iArt, $sArt, $iCat, $sCat) {
  * Class searchLinks
  * TODO: Linkchecker should uses completely a class system. This is only a first step!
  */
-class searchLinks
+class cLinkcheckerSearchLinks
 {
 
     private $mode = '';
-    private static $contentId = 0;
-    private static $articleLangId = 0;
 
     /**
      * searchLinks constructor.
@@ -317,49 +321,21 @@ class searchLinks
     }
 
     /**
-     * Setter method for contentId
-     *
-     * @param int $id
-     * @return bool
-     */
-    public function setContentId($id = 0) {
-
-        if ($id == 0) {
-            return false;
-        } else {
-            self::$contentId = cSecurity::toInteger($id);
-        }
-    }
-
-    /**
-     * Setter method for articleLangId
-     *
-     * @param int $id
-     * @return bool
-     */
-    public function setArticleLangId($id = 0) {
-
-        if ($id == 0) {
-            return false;
-        } else {
-            self::$articleLangId = cSecurity::toInteger($id);
-        }
-    }
-
-    /**
      * Old searchLinks function
      * TODO: Optimize this function!
      *
-     * @param $value
-     * @param $idart
-     * @param $nameart
-     * @param $idcat
-     * @param $namecat
-     * @param $idlang
+     * @param string $value
+     * @param int $idart
+     * @param string $nameart
+     * @param int $idcat
+     * @param string $namecat
+     * @param int $idlang
+     * @param int $idartlang
+     * @param int $idcontent
      * @todo Do not use global!
      * @return array
      */
-    public function search($value, $idart, $nameart, $idcat, $namecat, $idlang) {
+    public function search($value, $idart, $nameart, $idcat, $namecat, $idlang, $idartlang, $idcontent = 0) {
         global $aUrl, $aSearchIDInfosNonID, $aWhitelist;
 
         // Extern URL
@@ -374,8 +350,8 @@ class searchLinks
                         "nameart" => $nameart,
                         "idcat" => $idcat,
                         "namecat" => $namecat,
-                        "idcontent" => self::$contentId,
-                        "idartlang" => self::$articleLangId,
+                        "idcontent" => $idcontent,
+                        "idartlang" => $idartlang,
                         "lang" => $idlang,
                         "urltype" => "extern"
                     );
@@ -392,7 +368,7 @@ class searchLinks
                 "idcat" => $idcat,
                 "namecat" => $namecat,
                 "idcontent" => 0,
-                "idartlang" => self::$articleLangId,
+                "idartlang" => $idartlang,
                 "lang" => $idlang,
                 "urltype" => "unknown",
                 "redirect" => true
@@ -411,8 +387,8 @@ class searchLinks
                         "nameart" => $nameart,
                         "idcat" => $idcat,
                         "namecat" => $namecat,
-                        "idcontent" => self::$contentId,
-                        "idartlang" => self::$articleLangId,
+                        "idcontent" => $idcontent,
+                        "idartlang" => $idartlang,
                         "lang" => $idlang,
                         "urltype" => "intern"
                     );
