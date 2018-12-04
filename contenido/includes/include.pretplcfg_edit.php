@@ -31,7 +31,9 @@ if (!isset($idtplcfg)) {
 }
 
 if (isset($idtplcfg)) {
-    tplProcessSendContainerConfiguration($idtpl, $idtplcfg, $_POST);
+    if ('POST' === $_SERVER['REQUEST_METHOD']) {
+        tplProcessSendContainerConfiguration($idtpl, $idtplcfg, $_POST);
+    }
 
     // Is form send
     if ($x > 0) {
