@@ -443,6 +443,7 @@
 ./cronjobs/run_newsletter_job.php
 ./cronjobs/send_reminder.php
 ./cronjobs/setfrontenduserstate.php
+./environment.php
 ./external/backendedit/front_content.php
 ./external/frontend/cache/code/index.php
 ./external/frontend/cache/index.php
@@ -861,6 +862,7 @@
 ./xml/legend.xml
 ./xml/navigation.xml
 ./xml/system.xml
+../data/config/config.environment.php
 ../data/config/production/cfg_actions.inc.php
 ../data/config/production/cfg_sql.inc.php
 ../data/config/production/config.autoloader.php
@@ -872,4 +874,3 @@
 ../data/config/production/config.path.php
 ../data/config/production/config.php
 ../data/config/production/config.templates.php
-../data/config/production/config.wysiwyg_tinymce4.php
