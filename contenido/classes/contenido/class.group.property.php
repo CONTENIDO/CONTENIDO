@@ -97,7 +97,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
     public static function reset() {
         self::$_enableCache = null;
         self::$_entries = null;
-        self::$_maxGroups = null;
+        self::$_maxGroups = 3;
     }
 
     /**
