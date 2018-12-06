@@ -95,9 +95,9 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * Resets the states of static properties.
      */
     public static function reset() {
-        self::$_enableCache = false;
-        self::$_entries = array();
-        self::$_maxGroups = 3;
+        self::$_enableCache = null;
+        self::$_entries = null;
+        self::$_maxGroups = null;
     }
 
     /**
