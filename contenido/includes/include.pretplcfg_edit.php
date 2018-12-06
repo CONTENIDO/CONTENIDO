@@ -31,10 +31,9 @@ if (!isset($idtplcfg)) {
 }
 
 if (isset($idtplcfg)) {
-    tplProcessSendContainerConfiguration($idtpl, $idtplcfg, $_POST);
-
     // Is form send
     if ($x > 0) {
+        tplProcessSendContainerConfiguration($idtpl, $idtplcfg, $_POST);
         $notification->displayNotification(cGuiNotification::LEVEL_OK, i18n("Saved changes successfully!"));
     }
 }
