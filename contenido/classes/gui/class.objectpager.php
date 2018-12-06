@@ -92,13 +92,13 @@ class cGuiObjectPager extends cGuiFoldingRow {
         }
 
         $items = $this->_cPager->getPagesInRange();
+        $link = $this->_pagerLink;
 
         $output = '';
 
         if (!$this->_cPager->isFirstPage()) {
             $img = new cHTMLImage("images/paging/first.gif");
 
-            $link = $this->_getPagerLinkForNextUsage();
             $link->setAlt(i18n("First page"));
             $link->setContent($img);
             $link->setCustom($this->_parameterToAdd, 1);
@@ -106,7 +106,6 @@ class cGuiObjectPager extends cGuiFoldingRow {
             $output .= " ";
 
             $img = new cHTMLImage("images/paging/previous.gif");
-            $link = $this->_getPagerLinkForNextUsage();
             $link->setAlt(i18n("Previous page"));
             $link->setContent($img);
 
@@ -120,7 +119,6 @@ class cGuiObjectPager extends cGuiFoldingRow {
         }
 
         foreach ($items as $key => $item) {
-            $link = $this->_getPagerLinkForNextUsage();
             $link->setContent($key);
             $link->setAlt(sprintf(i18n("Page %s"), $key));
             $link->setCustom($this->_parameterToAdd, $key);
@@ -138,7 +136,6 @@ class cGuiObjectPager extends cGuiFoldingRow {
 
         if (!$this->_cPager->isLastPage()) {
             $img = new cHTMLImage("images/paging/next.gif");
-            $link = $this->_getPagerLinkForNextUsage();
             $link->setAlt(i18n("Next page"));
             $link->setContent($img);
             $link->setCustom($this->_parameterToAdd, $this->_cPager->getCurrentPage() + 1);
@@ -148,7 +145,6 @@ class cGuiObjectPager extends cGuiFoldingRow {
 
             $img = new cHTMLImage("images/paging/last.gif");
 
-            $link = $this->_getPagerLinkForNextUsage();
             $link->setCustom($this->_parameterToAdd, $this->_cPager->getMaxPages());
             $link->setAlt(i18n("Last page"));
             $link->setContent($img);
@@ -178,13 +174,4 @@ class cGuiObjectPager extends cGuiFoldingRow {
         }
     }
 
-    /**
-     * Resets the title attribute of the pager link property and returns the it for new usage
-     * @return cHTMLLink
-     */
-    protected function _getPagerLinkForNextUsage() {
-        $link = $this->_pagerLink;
-        $link->removeAttribute("title");
-        return $link;
-    }
 }
