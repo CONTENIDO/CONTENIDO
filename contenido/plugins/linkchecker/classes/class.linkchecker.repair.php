@@ -79,7 +79,7 @@ class LinkcheckerRepair {
      * @return  bool  true or false
      */
     private function pingRepairedLink($repaired_link) {
-        return @fopen($repaired_link, 'r');
+        return @fopen(cString::escapeString($repaired_link), 'r');
     }
 
 }

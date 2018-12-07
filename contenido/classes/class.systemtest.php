@@ -780,7 +780,7 @@ class cSystemtest {
      *         true if the test passed and false if not
      */
     public function testPHPVersion() {
-        if (version_compare(phpversion(), CON_SETUP_MIN_PHP_VERSION, '>=') == true) {
+        if (version_compare(phpversion(), self::CON_SETUP_MIN_PHP_VERSION, '>=') == true) {
             return true;
         } else {
             return false;

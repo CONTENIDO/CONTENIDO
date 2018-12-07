@@ -909,7 +909,7 @@ function uplCreateFriendlyName($filename) {
         ), '', $chars);
     }
 
-    $filename = cString::replaceDiacritics(utf8_encode($filename), cString::toUpperCase($oLang->getField('encoding')));
+    $filename = cString::replaceDiacritics($filename, cString::toUpperCase($oLang->getField('encoding')));
     $filename = preg_replace("/[^A-Za-z0-9._\-" . $chars . "]/i", '', $filename);
 
     return $filename;

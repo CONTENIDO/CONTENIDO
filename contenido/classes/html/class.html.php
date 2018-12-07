@@ -197,8 +197,6 @@ class cHTML {
      * Sets the "alt" and "title" tags. Usually, "alt" is used
      * for accessibility and "title" for mouse overs.
      *
-     * The title attribute is not overwritten if there is already a set value for it.
-     *
      * To set the text for all browsers for mouse over, set "alt"
      * and "title". IE behaves incorrectly and shows "alt" on
      * mouse over. Mozilla browsers only show "title" as mouse over.
@@ -213,7 +211,7 @@ class cHTML {
     public function setAlt($alt, $setTitle = true) {
         $attributes = array('alt' => $alt, 'title' => $alt);
 
-        if ($setTitle === false || isset($this->_attributes['title']) === true) {
+        if ($setTitle === false) {
             unset($attributes['title']);
         }
 

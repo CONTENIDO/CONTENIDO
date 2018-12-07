@@ -48,7 +48,7 @@ if ($action == 'user_createuser') {
         $bError = true;
     } else {
 
-        if (count($mclient) > 0) {
+        if (is_array($mclient) && count($mclient) > 0) {
 
             // Prevent setting the permissions for a client without a language of that client
             foreach ($mclient as $selectedclient) {

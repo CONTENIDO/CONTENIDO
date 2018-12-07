@@ -52,7 +52,7 @@ class cUriBuilderFactory {
                     $sClassName = 'cUriBuilder' . $sBuilder;
 
                     if (!class_exists($sClassName)) {
-                        throw new cInvalidArgumentException('The classfile of cUriBuilder couldn\'t included by Contenido_UriBuilderFactory: ' . $sBuilder . '!');
+                        throw new cInvalidArgumentException('The classfile of cUriBuilder couldn\'t included by cUriBuilderFactory: ' . $sBuilder . '!');
                     }
                     return call_user_func(array($sClassName, 'getInstance'));
                 }
