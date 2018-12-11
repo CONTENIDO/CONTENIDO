@@ -584,10 +584,10 @@ class cModuleHandler {
 
         // make
         if (!is_dir($sMainModuleDirectory) && $sMainModuleDirectory != NULL) {
-            if (mkdir($sMainModuleDirectory, 0755, true) == false) {
+            if (mkdir($sMainModuleDirectory, cDirHandler::getDefaultPermissions(), true) == false) {
                 return false;
             } else {
-                cDirHandler::setDefaultDirPerms($sMainModuleDirectory);
+                cDirHandler::setDefaultPermissions($sMainModuleDirectory);
             }
         }
 
@@ -692,7 +692,7 @@ class cModuleHandler {
                 if (cDirHandler::create($this->_modulePath . $this->_directories[$type]) == false) {
                     return false;
                 } else
-                    cDirHandler::setDefaultDirPerms($this->_modulePath . $this->_directories[$type]);
+                    cDirHandler::setDefaultPermissions($this->_modulePath . $this->_directories[$type]);
             } else {
                 return true;
             }
@@ -771,7 +771,7 @@ class cModuleHandler {
         if ($fileOperation === false) {
             return false; // return false if file_put_contents dont work
         } else {
-            cFileHandler::setDefaultFilePerms($fileName);
+            cFileHandler::setDefaultPermissions($fileName);
             return true; // return true if file_put_contents working
         }
     }
@@ -802,7 +802,7 @@ class cModuleHandler {
         if ($fileOperation === false) {
             return false; // return false if file_put_contents dont work
         } else {
-            cFileHandler::setDefaultFilePerms($fileName);
+            cFileHandler::setDefaultPermissions($fileName);
             return true; // return true if file_put_contents working
         }
     }
@@ -881,7 +881,7 @@ class cModuleHandler {
         if (mkdir($this->_modulePath) == false) {
             return false;
         } else {
-            cDirHandler::setDefaultDirPerms($this->_modulePath);
+            cDirHandler::setDefaultPermissions($this->_modulePath);
         }
 
         // create other directories
@@ -890,7 +890,7 @@ class cModuleHandler {
                 if (mkdir($this->_modulePath . $directory) == false) {
                     return false;
                 } else {
-                    cDirHandler::setDefaultDirPerms($this->_modulePath . $directory);
+                    cDirHandler::setDefaultPermissions($this->_modulePath . $directory);
                 }
             }
         }

@@ -24,8 +24,9 @@ class cUpgradeJob_0006 extends cUpgradeJobAbstract {
 
     public $maxVersion = "4.9.0-beta1";
 
-    const MODE = 0755;
-
+    /**
+     * @throws cInvalidArgumentException
+     */
     public function _execute() {
 
         global $cfg, $cfgClient;
@@ -57,7 +58,7 @@ class cUpgradeJob_0006 extends cUpgradeJobAbstract {
                 // check if config directory exists
                 $configDir = $cfgClient[$idclient]['path']['frontend'] . 'data/config/' . CON_ENVIRONMENT;
                 if (!is_dir($configDir)) {
-                    @mkdir($configDir, self::MODE, true);
+                    @mkdir($configDir, cDirHandler::getDefaultPermissions(), true);
                 }
 
                 foreach ($clientCopyList as $src => $dst) {
@@ -65,17 +66,17 @@ class cUpgradeJob_0006 extends cUpgradeJobAbstract {
                     $destination = $cfgClient[$idclient]['path']['frontend'] . $dst;
                     if (is_dir($source)) {
                         if (!is_dir($destination)) {
-                            @mkdir($destination, self::MODE, true);
+                            @mkdir($destination, cDirHandler::getDefaultPermissions(), true);
                         }
                         if (!is_dir($destination)) {
                             logSetupFailure("Couldn't create client data directory $destination");
                             continue;
                         }
 
-                        cDirHandler::recursiveCopy($source, $destination, self::MODE);
+                        cDirHandler::recursiveCopy($source, $destination, cDirHandler::getDefaultPermissions());
                     } elseif (cFileHandler::exists($source) && cFileHandler::exists($destination)) {
                         if (cFileHandler::move($source, $destination)) {
-                            cFileHandler::chmod($destination, self::MODE);
+                            cFileHandler::chmod($destination, cDirHandler::getDefaultPermissions());
                         } else {
                             logSetupFailure("Couldn't copy client file $source");
                         }
