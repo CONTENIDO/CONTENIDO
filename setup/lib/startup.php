@@ -40,7 +40,7 @@ checkAndInclude(CON_SETUP_PATH . '/lib/defines.php');
 // Check version in the 'first' line, as class.security.php uses
 // PHP5 object syntax not compatible with PHP < 5
 if (version_compare(PHP_VERSION, CON_SETUP_MIN_PHP_VERSION, '<')) {
-    die("You need PHP >= 5.0.0 for CONTENIDO. Sorry, even the setup doesn't work otherwise. Your version: " . PHP_VERSION . "\n");
+    die(sprintf("You need PHP >= %s for CONTENIDO. Sorry, even the setup doesn't work otherwise. Your version: %s\n", CON_SETUP_MIN_PHP_VERSION, PHP_VERSION));
 }
 
 // Include the environment definer file
