@@ -158,9 +158,11 @@ class cMailer extends Swift_Mailer {
      * @param Swift_Transport $transport [optional]
      *                                   a transport instance
      *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      * @throws Swift_DependencyException
      * @throws Swift_RfcComplianceException
-     * @throws cInvalidArgumentException
      */
     public function __construct($transport = NULL) {
 
@@ -181,8 +183,7 @@ class cMailer extends Swift_Mailer {
             parent::__construct($transport);
             return;
         }
-        // if no transport object has been given, read system setting
-        // and create one
+        // if no transport object has been given, read system setting and create one
 
         // get name of mail host
         $mailHost = getSystemProperty('system', 'mail_host');
@@ -201,7 +202,7 @@ class cMailer extends Swift_Mailer {
             'ssl'
         );
 
-        $mail_type = cString::toLowerCase(getSystemProperty('system', 'mail_transport', 'smtp'));
+        $mail_type = cString::toLowerCase(getSystemProperty('system', 'mail_transport'));
 
         if ($mail_type == 'smtp') {
 
