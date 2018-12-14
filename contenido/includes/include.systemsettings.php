@@ -112,7 +112,7 @@ foreach ($settings as $key => $types) {
                 $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
 
                 if (cString::getStringLength($type) > 35) {
-                    $sShort =  conHtmlentities(cString::trimHard($type, 35));
+                    $sShort = conHtmlentities(cString::trimHard($type, 35));
                     $type = sprintf($sMouseoverTemplate, conHtmlentities($type), $sShort);
                 }
 
@@ -120,12 +120,12 @@ foreach ($settings as $key => $types) {
                     $sShort =  cString::trimHard($value['value'], 35);
                     $value['value'] = sprintf($sMouseoverTemplate, conHtmlentities($value['value']), conHtmlentities($sShort));
                 } else {
-                    $value['value'] =  $value['value'];
+                    $value['value'] = $value['value'];
                 }
 
                 if (cString::getStringLength($key) > 35) {
-                    $sShort =  conHtmlentities(cString::trimHard($key, 35));
-                    $key = sprintf($sMouseoverTemplate,  conHtmlentities(addslashes($key), ENT_QUOTES), $sShort);
+                    $sShort = cString::trimHard($key, 35);
+                    $key = sprintf($sMouseoverTemplate,  conHtmlentities($key), conHtmlentities($sShort));
                 }
                 $sValue = !cString::getStringLength(trim($value['value'])) ? '&nbsp;' :  conHtmlentities($value['value']);
 
