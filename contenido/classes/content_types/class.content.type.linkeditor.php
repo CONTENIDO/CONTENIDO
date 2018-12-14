@@ -218,7 +218,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                 }
                 break;
             case 'file':
-                if (cString::getStringLength($this->getFilename()) > 0) {
+                if (!empty($this->getFilename())) {
                     return $this->_cfgClient[$this->_client]['upl']['htmlpath'] . $this->getFilename();
                 } else {
                     return '';
