@@ -21,9 +21,9 @@ cInclude('includes', 'functions.str.php');
 if (!(int) $client > 0) {
     // if there is no client selected, display empty page
     $oPage = new cGuiPage('upl_dirs_overview');
-    $oPage->abortRendering();
+    $oPage->displayCriticalError(i18n("No Client selected"));
     $oPage->render();
-    return;
+    return null;
 }
 
 /**

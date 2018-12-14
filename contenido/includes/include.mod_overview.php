@@ -17,8 +17,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 if (!(int) $client > 0) {
     // If there is no client selected, display empty page
     $oPage = new cGuiPage("mod_overview");
+    $oPage->displayCriticalError(i18n("No Client selected"));
     $oPage->render();
-    return;
+    return null;
 }
 
 // Now build bottom with list

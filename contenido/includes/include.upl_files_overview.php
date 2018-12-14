@@ -25,9 +25,9 @@ cInclude('classes', 'class.cziparchive.php');
 if (!(int) $client > 0) {
     // if there is no client selected, display empty page
     $oPage = new cGuiPage('upl_files_overview');
-    $oPage->abortRendering();
+    $oPage->displayCriticalError(i18n("No Client selected"));
     $oPage->render();
-    return;
+    return null;
 }
 
 $page = new cGuiPage('upl_files_overview', '', 0);

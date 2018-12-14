@@ -52,13 +52,17 @@ $tpl->reset();
 
 if (!$perm->have_perm_area_action('js', $actionRequest) || $permCreate) {
     $notification->displayNotification('error', i18n('Permission denied'));
-    return;
+    $page->abortRendering();
+    $page->render();
+    return null;
 }
 
 // If there is no client selected, display empty page
 if (!(int) $client > 0) {
+    $page->displayCriticalError(i18n("No Client selected"));
+    $page->abortRendering();
     $page->render();
-    return;
+    return null;
 }
 
 
@@ -67,8 +71,9 @@ $path = $contenidoModulHandler->getJsPath(); // $cfgClient[$client]['js']['path'
 // ERROR MESSAGE
 if (!$contenidoModulHandler->moduleWriteable('js')) {
     $page->displayCriticalError(i18n('No write permissions in folder js for this module!'));
+    $page->abortRendering();
     $page->render();
-    exit();
+    return null;
 }
 
 $sTempFilename = stripslashes($tmpFile);
