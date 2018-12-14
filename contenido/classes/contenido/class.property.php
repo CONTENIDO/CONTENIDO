@@ -364,9 +364,9 @@ class cApiPropertyCollection extends ItemCollection {
         $this->select($sql);
 
         if (($item = $this->next()) !== false) {
-            $item->set('value', $value);
-            $item->set('name', $name);
-            $item->set('type', $type);
+            $item->set('value', $value, false);
+            $item->set('name', $name, false);
+            $item->set('type', $type, false);
             $item->store();
 
             if ($this->_useCache($itemtype, $itemid)) {

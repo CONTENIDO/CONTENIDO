@@ -121,7 +121,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
     public function setValueByTypeName($type, $name, $value) {
         $item = $this->fetchByTypeName($type, $name);
         if ($item) {
-            $item->set('value', $value);
+            $item->set('value', $value, false);
             $item->store();
         } else {
             $item = $this->create($type, $name, $value);

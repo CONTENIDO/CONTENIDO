@@ -108,7 +108,7 @@ if ($aItems !== false) {
             $oInputboxType->setWidth(15);
             $oInputboxName = new cHTMLTextbox("csname", $aValue['name']);
             $oInputboxName->setWidth(15);
-            $oInputboxValue = new cHTMLTextbox("csvalue", cSecurity::escapeString(conHtmlentities($aValue['value'])));
+            $oInputboxValue = new cHTMLTextbox("csvalue", conHtmlentities($aValue['value']));
             $oInputboxValue->setWidth(30);
 
             $hidden = '<input type="hidden" name="csidproperty" value="' . $iKey . '">';
@@ -120,19 +120,23 @@ if ($aItems !== false) {
 
             if (cString::getStringLength($aValue['type']) > 35) {
                 $sShort = cString::trimHard($aValue['type'], 35);
-                $aValue['type'] = sprintf($sMouseoverTemplate, $aValue['type'], $sShort);
+                $aValue['type'] = sprintf($sMouseoverTemplate, conHtmlentities($aValue['type']), conHtmlentities($sShort));
+            } else {
+                $aValue['type'] = conHtmlentities($aValue['type']);
             }
 
             if (cString::getStringLength($aValue['name']) > 35) {
                 $sShort = cString::trimHard($aValue['name'], 35);
-                $aValue['name'] = sprintf($sMouseoverTemplate, $aValue['name'], $sShort);
+                $aValue['name'] = sprintf($sMouseoverTemplate, conHtmlentities($aValue['name']), conHtmlentities($sShort));
+            } else {
+                $aValue['name'] = conHtmlentities($aValue['name']);
             }
 
             if (cString::getStringLength($aValue['value']) > 35) {
                 $sShort = cString::trimHard($aValue['value'], 35);
-                $aValue['value'] = sprintf($sMouseoverTemplate, cSecurity::escapeString(conHtmlentities($aValue['value'])), $sShort);
+                $aValue['value'] = sprintf($sMouseoverTemplate, conHtmlentities($aValue['value']), conHtmlentities($sShort));
             } else {
-                $aValue['value'] = cSecurity::escapeString($aValue['value']);
+                $aValue['value'] = conHtmlentities($aValue['value']);
             }
 
             $oList->setData($iCounter, $aValue['type'], $aValue['name'], $aValue['value'], $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render());

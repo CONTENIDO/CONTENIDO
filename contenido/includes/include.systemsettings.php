@@ -95,11 +95,11 @@ foreach ($settings as $key => $types) {
         if (!in_array($key . '_' . $type, $aManagedValues)) {
 
             if (($action == "systemsettings_edit_item") && ($request['systype'] == $key) && ($request['sysname'] == $type) && $isSysadmin) {
-                $oInputboxValue = new cHTMLTextbox("sysvalue", cSecurity::escapeString(conHtmlSpecialChars($value['value'])));
+                $oInputboxValue = new cHTMLTextbox("sysvalue", conHtmlentities($value['value']));
                 $oInputboxValue->setWidth(30);
-                $oInputboxName = new cHTMLTextbox("sysname", conHtmlSpecialChars($type));
+                $oInputboxName = new cHTMLTextbox("sysname", conHtmlentities($type));
                 $oInputboxName->setWidth(30);
-                $oInputboxType = new cHTMLTextbox("systype", conHtmlSpecialChars($key));
+                $oInputboxType = new cHTMLTextbox("systype", conHtmlentities($key));
                 $oInputboxType->setWidth(10);
 
                 $hidden = '<input type="hidden" name="csidsystemprop" value="' . $value['idsystemprop'] . '">';
@@ -112,22 +112,22 @@ foreach ($settings as $key => $types) {
                 $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
 
                 if (cString::getStringLength($type) > 35) {
-                    $sShort = conHtmlSpecialChars(cString::trimHard($type, 35));
-                    $type = sprintf($sMouseoverTemplate, conHtmlSpecialChars(addslashes($type), ENT_QUOTES), $sShort);
+                    $sShort =  conHtmlentities(cString::trimHard($type, 35));
+                    $type = sprintf($sMouseoverTemplate, conHtmlentities($type), $sShort);
                 }
 
                 if (cString::getStringLength($value['value']) > 35) {
-                    $sShort = conHtmlSpecialChars(cString::trimHard($value['value'], 35));
-                    $value['value'] = sprintf($sMouseoverTemplate, cSecurity::escapeString(conHtmlSpecialChars($value['value']), ENT_QUOTES), $sShort);
+                    $sShort =  cString::trimHard($value['value'], 35);
+                    $value['value'] = sprintf($sMouseoverTemplate, conHtmlentities($value['value']), conHtmlentities($sShort));
                 } else {
-                    $value['value'] = cSecurity::escapeString($value['value']);
+                    $value['value'] =  $value['value'];
                 }
 
                 if (cString::getStringLength($key) > 35) {
-                    $sShort = conHtmlSpecialChars(cString::trimHard($key, 35));
-                    $key = sprintf($sMouseoverTemplate, conHtmlSpecialChars(addslashes($key), ENT_QUOTES), $sShort);
+                    $sShort =  conHtmlentities(cString::trimHard($key, 35));
+                    $key = sprintf($sMouseoverTemplate,  conHtmlentities(addslashes($key), ENT_QUOTES), $sShort);
                 }
-                $sValue = !cString::getStringLength(trim($value['value'])) ? '&nbsp;' : $value['value'];
+                $sValue = !cString::getStringLength(trim($value['value'])) ? '&nbsp;' :  conHtmlentities($value['value']);
 
                 $list->setCell($count, 1, $key);
                 $list->setCell($count, 2, $type);
