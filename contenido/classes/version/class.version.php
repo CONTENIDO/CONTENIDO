@@ -284,8 +284,8 @@ class cVersion {
 
         foreach ($aPath as $sSubPath) {
             if (!is_dir($sFrontEndPath . $sSubPath)) {
-                mkdir($sFrontEndPath . $sSubPath, 0755);
-                @chmod($sFrontEndPath . $sSubPath, 0755);
+                mkdir($sFrontEndPath . $sSubPath, cDirHandler::getDefaultPermissions());
+                @chmod($sFrontEndPath . $sSubPath, cDirHandler::getDefaultPermissions());
             }
         }
     }
@@ -353,8 +353,8 @@ class cVersion {
         $sRevisionName = $this->getRevision();
 
         if (!is_dir($this->getFilePath())) {
-            mkdir($this->getFilePath(), 0755);
-            @chmod($this->getFilePath(), 0755);
+            mkdir($this->getFilePath(), cDirHandler::getDefaultPermissions());
+            @chmod($this->getFilePath(), cDirHandler::getDefaultPermissions());
         }
 
         // Create xml version file

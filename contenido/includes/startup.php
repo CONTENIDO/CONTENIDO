@@ -22,6 +22,9 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+// SetEnv CON_VERSION
+defined('CON_VERSION') || define('CON_VERSION', '4.10.0');
+
 global $cfg, $cfgClient, $errsite_idcat, $errsite_idart;
 
 /* Initial PHP error handling settings.
@@ -50,16 +53,9 @@ error_reporting(E_ALL ^E_NOTICE);
 // Temporary backend path, will be re-set again later...
 $backendPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/..'));
 
-
-/*
- * SetEnv CON_VERSION
- */
-if (!defined('CON_VERSION')) {
-    define('CON_VERSION', '4.10.0');
-}
-
 // Include the environment definer file
 include_once($backendPath . '/environment.php');
+
 require_once($backendPath . '/classes/class.filehandler.php');
 
 // (string) Path to folder containing all contenido configuration files. Use environment setting!

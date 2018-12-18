@@ -243,7 +243,7 @@ class cLayoutHandler {
         } else {
             $success = mkdir($directory);
             if ($success) {
-                cDirHandler::setDefaultDirPerms($directory);
+                cDirHandler::setDefaultPermissions($directory);
             }
         }
 

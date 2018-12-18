@@ -132,10 +132,10 @@ $cfg['contenido']['notifyonerror'] = '';
 $cfg['contenido']['notifyinterval'] = 20;
 
 // (int) octal value (with a leading zero!) for use in chmod
-$cfg['default_perms']['file'] = 0664;
+$cfg['default_perms']['directory'] = 0775;
 
 // (int) octal value (with a leading zero!) for use in chmod
-$cfg['default_perms']['directory'] = 0775;
+$cfg['default_perms']['file'] = 0664;
 
 // (bool) Use heap table to accelerate statitics (off by default)
 $cfg['statistics_heap_table'] = false;

@@ -22,6 +22,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cDirHandler {
 
     /**
+     * default permissions for new directories
+     *
+     * @see CON-2770
+     * @var int
+     */
+    const DEFAULT_MODE = 0775;
+
+    /**
      * Creates a new dir.
      *
      * @param string $pathname
@@ -38,7 +46,7 @@ class cDirHandler {
         // reset umask and store old umask
         $oldumask = umask(0);
         // calc mode from setting or default
-        $mode = cRegistry::getConfigValue('default_perms', 'directory', 0755);
+        $mode = self::getDefaultPermissions();
         // create dir with given mode
         $success = mkdir($pathname, $mode, $recursive);
         // reset umask to old umask
@@ -133,7 +141,21 @@ class cDirHandler {
     }
 
     /**
-     * Sets the default directory permissions on the given directory.
+     * Determines the default permissions for new directories.
+     * These can be configured using the setting "default_perms/directory" in "data/config/<ENV>/config.misc.php".
+     * If no configuration can be found 0775 is assumed.
+     *
+     * @return int
+     */
+    public static function getDefaultPermissions()
+    {
+        $mode = cRegistry::getConfigValue('default_perms', 'directory', self::DEFAULT_MODE);
+
+        return intval($mode, 8);
+    }
+
+    /**
+     * Sets the default permissions for the given directory.
      *
      * @param string $dirname
      *         the name of the directory
@@ -143,11 +165,26 @@ class cDirHandler {
      *
      * @throws cInvalidArgumentException
      */
-    public static function setDefaultDirPerms($dirname) {
-        $cfg = cRegistry::getConfig();
-        $dirPerms = $cfg['default_perms']['directory'];
+    public static function setDefaultPermissions($dirname)
+    {
+        return self::chmod($dirname, self::getDefaultPermissions());
+    }
 
-        return self::chmod($dirname, $dirPerms);
+    /**
+     * Sets the default permissions for the given directory.
+     *
+     * @deprecated use setDefaultPermissions() instead
+     * @param string $dirname
+     *         the name of the directory
+     *
+     * @return bool
+     *         Returns true on success or false on failure.
+     *
+     * @throws cInvalidArgumentException
+     */
+    public static function setDefaultDirPerms($dirname)
+    {
+        return self::setDefaultPermissions($dirname);
     }
 
     /**
@@ -190,11 +227,11 @@ class cDirHandler {
      * Copies a directory and all of its subfolders.
      *
      * @param string $dirname
-     *         the name and path of the file
+     *                     the name and path of the file
      * @param string $destination
-     *         the destination. Note that existing files get overwritten
-     * @param int $chmod [optional; default: 0755]
-     * 			chmod mode
+     *                     the destination. Note that existing files get overwritten
+     * @param int    $mode [optional; default as configured or 0775]
+     *                     chmod mode
      *
      * @return bool
      *         true on success
@@ -202,16 +239,20 @@ class cDirHandler {
      * @throws cInvalidArgumentException
      *         if the file with the given filename does not exist
      */
-    public static function recursiveCopy($dirname, $destination, $chmod = 0755) {
+    public static function recursiveCopy($dirname, $destination, $mode = null) {
         if (!self::exists($dirname)) {
             throw new cInvalidArgumentException('The directory ' . $dirname . ' could not be accessed because it does not exist.');
+        }
+
+        if (is_null($mode)) {
+            $mode = self::getDefaultPermissions();
         }
 
         if (!cFileHandler::exists($destination)) {
             if (!mkdir($destination)) {
                 return false;
             }
-            if (!self::chmod($destination, $chmod)) {
+            if (!self::chmod($destination, $mode)) {
                 return false;
             }
         }
@@ -227,14 +268,14 @@ class cDirHandler {
                 if (!mkdir($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName())) {
                     return false;
                 }
-                if (!self::chmod($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName(), $chmod)) {
+                if (!self::chmod($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName(), $mode)) {
                     return false;
                 }
             } else {
                 if (!copy($item, $destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName())) {
                     return false;
                 }
-                if (!self::chmod($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName(), $chmod)) {
+                if (!self::chmod($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName(), $mode)) {
                     return false;
                 }
             }

@@ -53,7 +53,7 @@ if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && 
     $pathExisted = false;
 
     if (!cFileHandler::exists($request['frontendpath'])) {
-        $validPath = mkdir($request['frontendpath'], 0755);
+        $validPath = mkdir($request['frontendpath'], cDirHandler::getDefaultPermissions());
     } else {
         $pathExisted = true;
         $validPath = true;

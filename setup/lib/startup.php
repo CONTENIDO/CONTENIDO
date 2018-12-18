@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Main CONTENIDO setup bootstrap file.
  *
@@ -15,7 +16,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 // Report all errors except warnings
 error_reporting(E_ALL ^E_NOTICE);
-
 
 header('Content-Type: text/html; charset=ISO-8859-1');
 
