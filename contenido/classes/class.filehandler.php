@@ -437,10 +437,7 @@ class cFileHandler {
             $ret['extension'] = '';
         }
 
-        if (version_compare(PHP_VERSION, '5.3', '<') && function_exists('mime_content_type')) {
-            // function is deprecated in PHP 5.3
-            $ret['mime'] = @mime_content_type($filename);
-        } else if (function_exists('finfo_open')) {
+        if (function_exists('finfo_open')) {
             // extension has to be installed seperately in versions prior to 5.3
             $finfo = @finfo_open(FILEINFO_MIME_TYPE);
             $ret['mime'] = @finfo_file($finfo, $filename);
