@@ -18,12 +18,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.str.php');
 
-if (!(int) $client > 0) {
-    // if there is no client selected, display empty page
+// display critical error if no valid client is selected
+if (1 > (int) $client) {
     $oPage = new cGuiPage('upl_dirs_overview');
     $oPage->displayCriticalError(i18n("No Client selected"));
     $oPage->render();
-    return null;
+    return;
 }
 
 /**

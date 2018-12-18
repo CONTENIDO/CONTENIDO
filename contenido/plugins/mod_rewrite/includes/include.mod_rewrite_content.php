@@ -24,9 +24,8 @@ if ((int) $client <= 0) {
     $oPage = new cGuiPage("mod_rewrite_content", "mod_rewrite");
     $oPage->displayCriticalError(i18n("No Client selected"));
     $oPage->render();
-    return null;
+    return;
 }
-
 
 $action = (isset($_REQUEST['mr_action'])) ? $_REQUEST['mr_action'] : 'index';
 $bDebug = false;

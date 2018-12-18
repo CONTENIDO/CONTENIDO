@@ -32,9 +32,8 @@ if ((int) $client <= 0) {
     $oPage = new cGuiPage("mod_rewrite_contenttest", "mod_rewrite");
     $oPage->displayCriticalError(i18n("No Client selected"));
     $oPage->render();
-    return null;
+    return;
 }
-
 
 ################################################################################
 ##### Processing

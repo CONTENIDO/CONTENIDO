@@ -39,6 +39,7 @@ if (empty($action)) {
 } else {
     $actionRequest = $action;
 }
+
 $page = new cGuiPage('mod_style');
 
 $tpl->reset();
@@ -53,12 +54,14 @@ if (!$contenidoModulHandler->existFile('css', $contenidoModulHandler->getCssFile
 if (!$perm->have_perm_area_action('style', $actionRequest) || $premCreate) {
     $page->displayCriticalError(i18n('Permission denied'));
     $page->render();
-    return null;
+    return;
 }
 
-if (!(int) $client > 0) {
-    // If there is no client selected, display empty page
-     return null;
+// display critical error if no valid client is selected
+if (1 > (int) $client) {
+    $page->displayCriticalError(i18n("No Client selected"));
+    $page->render();
+    return;
 }
 
 $path = $contenidoModulHandler->getCssPath(); // $cfgClient[$client]['css']['path'];
@@ -67,7 +70,7 @@ $path = $contenidoModulHandler->getCssPath(); // $cfgClient[$client]['css']['pat
 if (!$contenidoModulHandler->moduleWriteable('css')) {
     $page->displayCriticalError(i18n('No write permissions in folder css for this module!'));
     $page->render();
-    return null;
+    return;
 }
 
 $sTempFilename = stripslashes($tmp_file);

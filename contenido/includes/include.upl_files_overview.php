@@ -20,17 +20,14 @@ cInclude('includes', 'api/functions.frontend.list.php');
 cInclude('includes', 'functions.file.php');
 cInclude('classes', 'class.cziparchive.php');
 
-//cInclude('includes', 'class.ziparchive.php');
-
-if (!(int) $client > 0) {
-    // if there is no client selected, display empty page
-    $oPage = new cGuiPage('upl_files_overview');
-    $oPage->displayCriticalError(i18n("No Client selected"));
-    $oPage->render();
-    return null;
-}
-
 $page = new cGuiPage('upl_files_overview', '', 0);
+
+// display critical error if no valid client is selected
+if (1 > (int) $client) {
+    $page->displayCriticalError(i18n("No Client selected"));
+    $page->render();
+    return;
+}
 
 $appendparameters = $_REQUEST['appendparameters'];
 

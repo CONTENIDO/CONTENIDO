@@ -14,18 +14,18 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-if (!(int) $client > 0) {
-    // If there is no client selected, display empty page
-    $oPage = new cGuiPage("mod_overview");
+$oPage = new cGuiPage("mod_overview");
+
+// display critical error if no valid client is selected
+if (1 > (int) $client) {
     $oPage->displayCriticalError(i18n("No Client selected"));
     $oPage->render();
-    return null;
+    return;
 }
 
 // Now build bottom with list
 $cApiModuleCollection = new cApiModuleCollection();
 $classmodule = new cApiModule();
-$oPage = new cGuiPage("mod_overview");
 $searchOptions = array();
 
 // no value found in request for items per page -> get form db or set default

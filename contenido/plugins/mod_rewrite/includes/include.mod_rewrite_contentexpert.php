@@ -24,17 +24,14 @@ if ((int) $client <= 0) {
     $oPage = new cGuiPage("mod_rewrite_contentexpert", "mod_rewrite");
     $oPage->displayCriticalError(i18n("No Client selected"));
     $oPage->render();
-    return null;
+    return;
 }
-
 
 $action = (isset($_REQUEST['mr_action'])) ? $_REQUEST['mr_action'] : 'index';
 $debug = false;
 
-
 ################################################################################
 ##### Some variables
-
 
 $oMrController = new ModRewrite_ContentExpertController();
 
@@ -89,7 +86,6 @@ $oView->lng_resetaliases_note = i18n('This process could require some time depen
 $oView->lng_discard_changes = i18n('Discard changes', 'mod_rewrite');
 $oView->lng_save_changes = i18n('Save changes', 'mod_rewrite');
 
-
 ################################################################################
 ##### Action processing
 
@@ -108,11 +104,9 @@ if ($action == 'index') {
     $oMrController->indexAction();
 }
 
-
 ################################################################################
 ##### Output
 
 $oMrController->render(
     cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'mod_rewrite/templates/contentexpert.html'
 );
-
