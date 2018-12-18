@@ -46,7 +46,7 @@ class cTinymce4Configuration {
 
         // decide whether user is allowed to change values
         $perms = cRegistry::getAuth()->getPerms();
-        if (strpos($perms, 'sysadmin') !== false) {
+        if (cString::findFirstPos($perms, 'sysadmin') !== false) {
             $this->_perm = true;
         }
     }
@@ -283,7 +283,7 @@ class cTinymce4Configuration {
         // do not use cRequestValidator instance
         // because it does not support multi-dimensional arrays
         if (false === $this->_checkType('/^[a-zA-Z0-9 \-\|_]*$/', $toolbarData)
-        || false !== strpos($toolbarData, '||')) {
+        || false !== cString::findFirstPos($toolbarData, '||')) {
             return false;
         }
 

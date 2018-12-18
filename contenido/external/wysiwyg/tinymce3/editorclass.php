@@ -179,7 +179,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         if (array_key_exists("contenido_toolbar_mode", $this->_aSettings)) {
             $mode = $this->_aSettings["contenido_toolbar_mode"];
         }
-        $this->setToolbar(trim(strtolower($mode)));
+        $this->setToolbar(trim(cString::toLowerCase($mode)));
 
         $autoFullElements = $this->_aSettings['auto_full_elements'];
         unset($this->_aSettings['auto_full_elements']);
@@ -287,7 +287,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         }
 
         $aLists = array();
-        $aLists = explode(",", strtolower(str_replace(" ", "", $lists)));
+        $aLists = explode(",", cString::toLowerCase(str_replace(" ", "", $lists)));
 
         if (in_array("link", $aLists)) {
             $this->setSetting(null, "external_link_list_url", $this->_baseURL . "list.php?mode=link&lang=" . $lang . "&client=" . $client . "#", true);
@@ -591,7 +591,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
             $config .= ",\n\t";
         }
 
-        $config = substr($config, 0, -3);
+        $config = cString::getPartOfString($config, 0, -3);
         $template->set('s', 'CONFIG', $config);
 
         $oTxtEditor = new cHTMLTextarea($this->_sEditorName, $this->_sEditorContent);
@@ -631,7 +631,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
             $config .= ",\n\t";
         }
 
-        $config = substr($config, 0, -3);
+        $config = cString::getPartOfString($config, 0, -3);
 
         return $config;
     }

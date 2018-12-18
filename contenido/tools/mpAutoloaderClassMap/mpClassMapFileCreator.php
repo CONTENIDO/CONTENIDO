@@ -110,7 +110,7 @@ class mpClassMapFileCreator {
         foreach ($data as $classToken => $path) {
             $classMapContent .= sprintf("    '%s' => '%s',\r\n", addslashes($classToken), addslashes($path));
         }
-        $classMapContent = substr($classMapContent, 0, -3);
+        $classMapContent = cString::getPartOfString($classMapContent, 0, -3);
 
         $this->_data->content .= sprintf($classMapTpl, $classMapContent);
     }
@@ -124,7 +124,7 @@ class mpClassMapFileCreator {
     protected function _renderTemplate() {
         $template = $this->_template;
         foreach ($this->_data as $name => $value) {
-            $template = str_replace('{' . strtoupper($name) . '}', $value, $template);
+            $template = str_replace('{' . cString::toUpperCase($name) . '}', $value, $template);
         }
 
         return $template;

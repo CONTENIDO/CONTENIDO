@@ -131,7 +131,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
         $buffer = str_replace("\'", "\\'", $this->_buffer);
         $buffer = str_replace("\"", "\\\"", $buffer);
         $buffer = str_replace("\n", '\n', $buffer);
-        $buffer = str_replace(chr(13), "", $buffer);
+        $buffer = str_replace("\r", '', $buffer);
 
         // making sure that the working directory is right
         $dir = getcwd();

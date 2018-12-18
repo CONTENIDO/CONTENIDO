@@ -361,7 +361,7 @@ function keywordDensity($headline, $text) {
 
     // path = cms_getUrlPath($idcat);
     // path = str_replace(cRegistry::getFrontendUrl();, '', $path);
-    // path = cString::getPartOfString($path, 0, strlen($path) - 1);
+    // path = cString::getPartOfString($path, 0, cString::getStringLength($path) - 1);
     // path = str_replace('/', ' ', $path);
 
     $singlewordcounter = array();

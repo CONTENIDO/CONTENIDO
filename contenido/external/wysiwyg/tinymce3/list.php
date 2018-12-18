@@ -109,8 +109,8 @@ switch ($_REQUEST['mode']) {
 
                 $tmp_title = $db2->f("title");
 
-                if (strlen($tmp_title) > 32) {
-                    $tmp_title = substr($tmp_title, 0, 32);
+                if (cString::getStringLength($tmp_title) > 32) {
+                    $tmp_title = cString::getPartOfString($tmp_title, 0, 32);
                 }
 
                 $is_start = isStartArticle($db2->f("idartlang"), $db2->f("idcat"), $lang);

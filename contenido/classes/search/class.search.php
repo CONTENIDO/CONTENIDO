@@ -517,7 +517,7 @@ class cSearch extends cSearchBaseAbstract {
             $word = (trim(cString::toLowerCase($word)));
             $word = html_entity_decode($word, ENT_COMPAT, 'UTF-8');
 
-            // $word =(trim(strtolower($word)));
+            // $word =(trim(cString::toLowerCase($word)));
             if (cString::getStringLength($word) > 1) {
                 $tmp_searchwords[] = $word;
             }

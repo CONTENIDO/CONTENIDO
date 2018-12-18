@@ -656,7 +656,7 @@ foreach ($objects as $key => $value) {
         // Description for hover effect
         $descString = '<b>' . $template . '</b>';
 
-        if (strlen($templateDescription) > 0) {
+        if (cString::getStringLength($templateDescription) > 0) {
             $descString .= '<br>' . $templateDescription;
         }
 

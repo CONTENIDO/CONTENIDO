@@ -93,7 +93,7 @@ function cecCreateMetatags($metatags) {
     }
 
     $sHeadline = strip_tags($sHeadline);
-    $sHeadline = cString::getPartOfString(str_replace(chr(13) . chr(10), ' ', $sHeadline), 0, 100);
+    $sHeadline = cString::getPartOfString(str_replace("\r\n", ' ', $sHeadline), 0, 100);
 
     $arrText1 = $oArt->getContent('html');
     $arrText2 = $oArt->getContent('text');

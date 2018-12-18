@@ -275,7 +275,7 @@ class cSearchIndex extends cSearchBaseAbstract {
 
                         foreach ($tmp_keys as $value) {
                             // index terms are stored with lower case
-                            // $value = strtolower($value);
+                            // $value = cString::toLowerCase($value);
 
                             $value = conHtmlentities($value);
                             $value = trim(cString::toLowerCase($value));
