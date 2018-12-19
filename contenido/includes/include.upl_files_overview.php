@@ -27,7 +27,7 @@ if (!(int) $client > 0) {
     $oPage = new cGuiPage('upl_files_overview');
     $oPage->displayCriticalError(i18n("No Client selected"));
     $oPage->render();
-    return null;
+    return;
 }
 
 $page = new cGuiPage('upl_files_overview', '', 0);

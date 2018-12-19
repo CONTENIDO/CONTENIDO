@@ -19,7 +19,7 @@ if (!(int) $client > 0) {
     $oPage = new cGuiPage("mod_overview");
     $oPage->displayCriticalError(i18n("No Client selected"));
     $oPage->render();
-    return null;
+    return;
 }
 
 // Now build bottom with list
