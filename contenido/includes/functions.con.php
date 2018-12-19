@@ -1783,7 +1783,7 @@ function conCopyMetaTags($srcidartlang, $dstidartlang) {
  * @global array $cfg
  * @global int   $lang
  */
-function conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel = true, $targetcat) {
+function conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel = true, $targetcat = 0) {
     global $auth, $lang;
 
     $oSrcArtLang = new cApiArticleLanguage();

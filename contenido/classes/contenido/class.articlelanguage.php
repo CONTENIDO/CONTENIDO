@@ -695,44 +695,46 @@ class cApiArticleLanguage extends Item {
      *
      * Check all articles in the current category on existing same urlname (alias).
      *
-     * @param string $sName   Websafe name to check
-     * @param int    $iArtId  Current article id
-     * @param int    $iLangId Current language id
-     * @param int    $iCatId  Category id
+     * @param string $name   Websafe name to check
+     * @param int    $idart  Current article id
+     * @param int    $idlang Current language id
+     * @param int    $idcat  Category id
      *
      * @return bool True if urlname already exists, false if not
      *
      * @throws cDbException
      */
-    public function isInCatArticles($sName = '', $iArtId = 0, $iLangId = 0, $iCatId = 0) {
+    public function isInCatArticles($name = '', $idart = 0, $idlang = 0, $idcat = 0) {
         $cfg = cRegistry::getConfig();
 
-        $sName = cSecurity::escapeString($sName);
-        $iArtId = cSecurity::toInteger($iArtId);
-        $iLangId = cSecurity::toInteger($iLangId);
-        $iCatId = cSecurity::toInteger($iCatId);
-
         // Handle multipages
-        if ($iCatId == 0) {
+        if ($idcat == 0) {
             // Get category id if not set
-            $sql = "SELECT idcat FROM " . $cfg['tab']['cat_art'] . " WHERE idart = " . $iArtId;
+            $sql = "SELECT idcat FROM " . $cfg['tab']['cat_art'] . " WHERE idart = " . cSecurity::toInteger($idart);
             $this->db->query($sql);
             while ($this->db->nextRecord()) {
-                $iCatId = ($this->db->f('idcat') > 0) ? cSecurity::toInteger($this->db->f('idcat')) : 0;
+                $idcat = ($this->db->f('idcat') > 0) ? cSecurity::toInteger($this->db->f('idcat')) : 0;
             }
         }
+
+        // initializing tempo boolean variable $numcats
+        $numcats = false;
 
         // Check if urlname is in this category
         $sql = "SELECT count(al.idart) as numcats FROM " . $cfg['tab']['art_lang'] . " al "
             . "LEFT JOIN " . $cfg['tab']['cat_art'] . " ca ON al.idart = ca.idart WHERE "
-            . " ca.idcat='$iCatId' AND al.idlang=" . $iLangId . " AND "
-            . "LOWER(al.urlname) = LOWER('" . $sName . "') AND al.idart <> " . $iArtId;
+            . " ca.idcat='" . cSecurity::toInteger($idcat) . "' AND al.idlang=" . cSecurity::toInteger($idlang) . " AND "
+            . "LOWER(al.urlname) = LOWER('" . cSecurity::escapeString($name) . "') AND al.idart <> " . cSecurity::toInteger($idart);
         $this->db->query($sql);
         while ($this->db->nextRecord()) {
-            return ($this->db->f('numcats') > 0) ? true : false;
+            $numcats = $this->db->f('numcats');
         }
 
-        return false;
+        if ($numcats > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
