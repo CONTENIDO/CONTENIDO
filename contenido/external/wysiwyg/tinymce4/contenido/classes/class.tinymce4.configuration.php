@@ -44,9 +44,11 @@ class cTinymce4Configuration {
      */
     public function __construct() {
 
+        // get auth object
+        $auth = cRegistry::getAuth();
+
         // decide whether user is allowed to change values
-        $perms = cRegistry::getAuth()->getPerms();
-        if (strpos($perms, 'sysadmin') !== false) {
+        if (in_array('sysadmin', $auth->auth['perm'])) {
             $this->_perm = true;
         }
     }
@@ -73,7 +75,7 @@ class cTinymce4Configuration {
         $textarea = new cHTMLTextarea($name);
         $textarea->setValue($value);
         $textarea->setAttribute('style', 'box-sizing: border-box; width: 600px;');
-        if (true !== $this->_perm) {
+        if ($this->_perm === false) {
             $textarea->updateAttribute('disabled', 'disabled');
         }
         $div = new cHTMLDiv($label .  $textarea, 'systemSetting');
