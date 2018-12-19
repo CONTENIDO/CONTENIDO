@@ -19,7 +19,7 @@ cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.str.php');
 
 // display critical error if no valid client is selected
-if (1 > (int) $client) {
+if ((int) $client < 1) {
     $oPage = new cGuiPage('upl_dirs_overview');
     $oPage->displayCriticalError(i18n("No Client selected"));
     $oPage->render();

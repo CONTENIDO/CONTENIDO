@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 $oPage = new cGuiPage("mod_overview");
 
 // display critical error if no valid client is selected
-if (1 > (int) $client) {
+if ((int) $client < 1) {
     $oPage->displayCriticalError(i18n("No Client selected"));
     $oPage->render();
     return;

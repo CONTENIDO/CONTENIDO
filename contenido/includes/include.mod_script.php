@@ -57,7 +57,7 @@ if (!$perm->have_perm_area_action('js', $actionRequest) || $permCreate) {
 }
 
 // display critical error if no valid client is selected
-if (1 > (int) $client) {
+if ((int) $client < 1) {
     $page->displayCriticalError(i18n("No Client selected"));
     $page->render();
     return;

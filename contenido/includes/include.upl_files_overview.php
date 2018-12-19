@@ -23,7 +23,7 @@ cInclude('classes', 'class.cziparchive.php');
 $page = new cGuiPage('upl_files_overview', '', 0);
 
 // display critical error if no valid client is selected
-if (1 > (int) $client) {
+if ((int) $client < 1) {
     $page->displayCriticalError(i18n("No Client selected"));
     $page->render();
     return;
