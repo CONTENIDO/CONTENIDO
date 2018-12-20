@@ -718,7 +718,7 @@ class cApiArticleLanguage extends Item {
         }
 
         // initializing tempo boolean variable $numcats
-        $numcats = false;
+        $numcats = 0;
 
         // Check if urlname is in this category
         $sql = "SELECT count(al.idart) as numcats FROM " . $cfg['tab']['art_lang'] . " al "
