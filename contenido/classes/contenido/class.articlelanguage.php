@@ -708,7 +708,7 @@ class cApiArticleLanguage extends Item {
         $cfg = cRegistry::getConfig();
 
         // Handle multipages
-        if ($idcat == 0) {
+        if ((int) $idcat === 0) {
             // Get category id if not set
             $sql = "SELECT idcat FROM " . $cfg['tab']['cat_art'] . " WHERE idart = " . cSecurity::toInteger($idart);
             $this->db->query($sql);
