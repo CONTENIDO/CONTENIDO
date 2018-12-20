@@ -43,12 +43,10 @@ class cTinymce4Configuration {
      * Inits permission.
      */
     public function __construct() {
-
-        // get auth object
-        $auth = cRegistry::getAuth();
+        global $currentuser;
 
         // decide whether user is allowed to change values
-        if (in_array('sysadmin', $auth->auth['perm'])) {
+        if (cRegistry::getPerm()->isSysadmin($currentuser) === true) {
             $this->_perm = true;
         }
     }
@@ -360,8 +358,7 @@ class cTinymce4Configuration {
         // Checks for cross site requests and cross site scripting
         // are omitted due to time constraints
 
-        // User must be system administrator to change the settings
-        if ('sysadmin' !== cRegistry::getAuth()->getPerms()) {
+        if ($this->_perm === false) {
             return false;
         }
 
