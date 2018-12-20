@@ -39,6 +39,7 @@ if (empty($action)) {
 } else {
     $actionRequest = $action;
 }
+
 $page = new cGuiPage('mod_style');
 
 $tpl->reset();
@@ -56,8 +57,8 @@ if (!$perm->have_perm_area_action('style', $actionRequest) || $premCreate) {
     return;
 }
 
-if (!(int) $client > 0) {
-    // If there is no client selected, display empty page
+// display critical error if no valid client is selected
+if ((int) $client < 1) {
     $page->displayCriticalError(i18n("No Client selected"));
     $page->render();
     return;
