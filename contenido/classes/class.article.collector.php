@@ -319,11 +319,9 @@ class cArticleCollector implements SeekableIterator, Countable {
      *
      * @param int $page
      *         The page of the article collection
-     * @param boolean $force
-     *         Sets page without checking of page count
      */
-    public function setPage($page, $force = false) {
-        if (is_array($this->_pages[$page]) || $force === true) {
+    public function setPage($page) {
+        if (array_key_exists($page, $this->_pages)) {
             $this->_articles = $this->_pages[$page];
         }
     }
