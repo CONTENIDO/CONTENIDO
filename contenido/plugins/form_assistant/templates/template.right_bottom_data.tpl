@@ -15,7 +15,6 @@
     {if 0 lt $exportUrl|trim|strlen}
     <a class="form-data-export" href="{$exportUrl}">{$trans.export}</a>
     {/if}
-    {$lnkDel}
 
     <!-- table cellpadding="0" class="generic" -->
     <table class="generic" width="97%" cellspacing="0" cellpadding="2" border="0">

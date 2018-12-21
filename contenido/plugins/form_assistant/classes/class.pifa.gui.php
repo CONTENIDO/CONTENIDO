@@ -943,12 +943,6 @@ class PifaRightBottomFormDataPage extends cGuiPage {
             $tpl->assign('data', Pifa::notifyException($e));
         }
 
-        // Mass deletion of form data
-        $lnkDel = new cHTMLLink('javascript://');
-        $lnkDel->setClass('flip_mark');
-        $lnkDel->setContent(Pifa::i18n('Check all'));
-        $tpl->assign('lnkDel', $lnkDel->render());
-
         $out = $tpl->fetch($cfg['templates']['pifa_right_bottom_data']);
 
         return $out;
