@@ -88,7 +88,7 @@ function conEditFirstTime(
     $idart = $oArt->get('idart');
 
     $urlname = (trim($urlname) == '')? trim($title) : trim($urlname);
-    $urlname = getUniqueArticleUrlname($idart, $idlang, $urlname, $idcatnew);
+    $urlname = conGetUniqueArticleUrlname($idart, $idlang, $urlname, $idcatnew);
 
     $status = 0;
 
@@ -301,7 +301,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     $redirect_url = stripslashes($redirect_url);
 
     $urlname = (trim($urlname) == '')? trim($title) : trim($urlname);
-    $urlname = getUniqueArticleUrlname($idart, $idlang, $urlname, $idcatnew);
+    $urlname = conGetUniqueArticleUrlname($idart, $idlang, $urlname, $idcatnew);
 
     $usetimemgmt = ((int) $timemgmt == 1)? 1 : 0;
     if ($timemgmt == '1' && (($datestart == '' && $dateend == '') || ($datestart == '0000-00-00 00:00:00' && $dateend == '0000-00-00 00:00:00'))) {
@@ -1839,7 +1839,7 @@ function conCopyArtLang($srcidart, $dstidart, $dstidcat, $newtitle, $useCopyLabe
     conCopyMetaTags($oSrcArtLang->get('idartlang'), $oNewArtLang->get('idartlang'));
 
     $urlname = trim(conHtmlSpecialChars(cString::cleanURLCharacters($title)));
-    $urlname = getUniqueArticleUrlname($idart, $idlang, $urlname, [$dstidcat]);
+    $urlname = conGetUniqueArticleUrlname($idart, $idlang, $urlname, [$dstidcat]);
 
     $oNewArtLang->set('urlname', $urlname);
     $oNewArtLang->store();
@@ -2191,13 +2191,13 @@ function conRemoveOldCategoryArticle($idcat, $idart, $idartlang, $client, $lang)
  * @return string
  * @throws cDbException
  */
-function getUniqueArticleUrlname($idart, $idlang, $urlname, array $idcats)
+function conGetUniqueArticleUrlname($idart, $idlang, $urlname, array $idcats)
 {
     // assume given urlname to be unique
     $uniqueUrlname = $urlname;
 
     // check for uniqueness
-    while (!isArticleUrlnameUnique($idart, $idlang, $uniqueUrlname, $idcats)) {
+    while (!conIsArticleUrlnameUnique($idart, $idlang, $uniqueUrlname, $idcats)) {
         // append five random chars to original urlname
         $uniqueUrlname = $urlname . ' ' . substr(md5(time()), 0, 5);
     }
@@ -2220,7 +2220,7 @@ function getUniqueArticleUrlname($idart, $idlang, $urlname, array $idcats)
  * @return bool
  * @throws cDbException
  */
-function isArticleUrlnameUnique($idart, $idlang, $urlname, array $idcats)
+function conIsArticleUrlnameUnique($idart, $idlang, $urlname, array $idcats)
 {
     $articleCount = 0;
     if (!empty($idcats)) {
