@@ -908,8 +908,7 @@ class PifaRightBottomFormDataPage extends cGuiPage {
             'legend' => Pifa::i18n('data'),
         	'nodata' => Pifa::i18n('NODATA'),
             'pleaseSaveFirst' => Pifa::i18n('please save first'),
-            'export' => Pifa::i18n('download data as CSV'),
-            'delete' => Pifa::i18n('Delete')
+            'export' => Pifa::i18n('download data as CSV')
         ));
 
         $tpl->assign('form', $this->_pifaForm);
@@ -943,12 +942,6 @@ class PifaRightBottomFormDataPage extends cGuiPage {
         } catch (Exception $e) {
             $tpl->assign('data', Pifa::notifyException($e));
         }
-
-        // Mass deletion of form data
-        $lnkDel = new cHTMLLink('javascript://');
-        $lnkDel->setClass('flip_mark');
-        $lnkDel->setContent(Pifa::i18n('Check all'));
-        $tpl->assign('lnkDel', $lnkDel->render());
 
         $out = $tpl->fetch($cfg['templates']['pifa_right_bottom_data']);
 
