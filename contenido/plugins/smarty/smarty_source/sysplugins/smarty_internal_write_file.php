@@ -36,7 +36,7 @@ class Smarty_Internal_Write_File
         $_dirpath = dirname($_filepath);
         // if subdirs, create dir structure
         if ($_dirpath !== '.' && !file_exists($_dirpath)) {
-            mkdir($_dirpath, $smarty->_dir_perms === null ? cDirHandler::getDefaultPermissions() : $smarty->_dir_perms, true);
+            mkdir($_dirpath, $smarty->_dir_perms === null ? 0777 : $smarty->_dir_perms, true);
         }
 
         // write to tmp file, then move to overt file lock race condition

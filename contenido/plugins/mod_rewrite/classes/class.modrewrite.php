@@ -97,6 +97,9 @@ class ModRewrite extends ModRewriteBase {
      *
      * Check all articles in the current category on existing same websafe name.
      *
+     * @internal This method only considers the case that articles are related to a single category.
+     *           The function conIsArticleUrlnameUnique also considers multiple categories.
+     *
      * @param    string  $sName    Websafe name to check
      * @param    int     $iArtId   Current article id
      * @param    int     $iLangId  Current language id
