@@ -273,7 +273,6 @@ function conEditFirstTime(
  * @throws cInvalidArgumentException
  */
 function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $published, $artsort, $keyart = 0, $searchable = 1, $sitemapprio = -1, $changefreq = 'nothing') {
-
     global $client, $lang, $redirect, $redirect_url, $external_redirect, $perm;
     global $urlname, $page_title;
     global $time_move_cat, $time_target_cat;
@@ -1773,18 +1772,18 @@ function conCopyMetaTags($srcidartlang, $dstidartlang) {
  *
  * @param int    $srcidart
  * @param int    $dstidart
+ * @param int    $dstidcat
  * @param int    $newtitle
  * @param bool   $useCopyLabel
- * @param int    $targetcat
  *
  * @throws cDbException
  * @throws cException
  * @throws cInvalidArgumentException
- * 
+ *
  * @global array $cfg
  * @global int   $lang
  */
-function conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel = true, $targetcat = 0) {
+function conCopyArtLang($srcidart, $dstidart, $dstidcat, $newtitle, $useCopyLabel = true) {
 
     global $auth, $lang;
 
@@ -1840,7 +1839,7 @@ function conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel = true, $
     conCopyMetaTags($oSrcArtLang->get('idartlang'), $oNewArtLang->get('idartlang'));
 
     $urlname = trim(conHtmlSpecialChars(cString::cleanURLCharacters($title)));
-    $urlname = getUniqueArticleUrlname($idart, $idlang, $urlname, [$targetcat]);
+    $urlname = getUniqueArticleUrlname($idart, $idlang, $urlname, [$dstidcat]);
 
     $oNewArtLang->set('urlname', $urlname);
     $oNewArtLang->store();
@@ -1865,11 +1864,11 @@ function conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel = true, $
  * Copy article entry.
  *
  * @param int     $srcidart
- * @param int     $targetcat
+ * @param int     $dstidcat
  * @param string  $newtitle
  * @param bool    $useCopyLabel
  *
- * @return bool
+ * @return int|bool
  * 
  * @throws cDbException
  * @throws cException
@@ -1877,7 +1876,7 @@ function conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel = true, $
  * 
  * @global object $auth
  */
-function conCopyArticle($srcidart, $targetcat = 0, $newtitle = '', $useCopyLabel = true) {
+function conCopyArticle($srcidart, $dstidcat = 0, $newtitle = '', $useCopyLabel = true) {
     // Get source article
     $oSrcArt = new cApiArticle((int) $srcidart);
     if (!$oSrcArt->isLoaded()) {
@@ -1893,7 +1892,7 @@ function conCopyArticle($srcidart, $targetcat = 0, $newtitle = '', $useCopyLabel
     }
     $dstidart = $oNewArt->get('idart');
 
-    conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel, $targetcat);
+    conCopyArtLang($srcidart, $dstidart, $dstidcat, $newtitle, $useCopyLabel);
 
     // Get source category article entries
     $oCatArtColl = new cApiCategoryArticleCollection();
@@ -1902,7 +1901,7 @@ function conCopyArticle($srcidart, $targetcat = 0, $newtitle = '', $useCopyLabel
         // Insert destination category article entry
         $oCatArtColl2 = new cApiCategoryArticleCollection();
         $fieldsToOverwrite = array(
-            'idcat' => ($targetcat != 0)? $targetcat : $oCatArt->get('idcat'),
+            'idcat' => ($dstidcat != 0)? $dstidcat : $oCatArt->get('idcat'),
             'idart' => $dstidart,
             'status' => ($oCatArt->get('status') !== '')? $oCatArt->get('status') : 0,
             'createcode' => 1,
@@ -1911,7 +1910,7 @@ function conCopyArticle($srcidart, $targetcat = 0, $newtitle = '', $useCopyLabel
         $oCatArtColl2->copyItem($oCatArt, $fieldsToOverwrite);
 
         // If true, exit while routine, only one category entry is needed
-        if ($targetcat != 0) {
+        if ($dstidcat != 0) {
             break;
         }
     }
