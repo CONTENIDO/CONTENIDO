@@ -140,16 +140,16 @@ foreach ($allSystemProperties as $type => $typeSystemProperties) {
 
             if (cString::getStringLength($value['value']) > 35) {
                 $sShort =  conHtmlentities(cString::trimHard($value['value'], 35));
-                $value['value'] = sprintf($sMouseoverTemplate, $settingValue, $sShort);
+                $settingValue = sprintf($sMouseoverTemplate, $settingValue, $sShort);
             }
 
-            if (empty($value['value'])) {
-                $value['value'] = '&nbsp;';
+            if (empty($settingValue)) {
+                $settingValue = '&nbsp;';
             }
 
             $list->setCell($count, 1, $type);
             $list->setCell($count, 2, $name);
-            $list->setCell($count, 3, $value['value']);
+            $list->setCell($count, 3, $settingValue);
         }
 
         if ($isSysadmin) {
