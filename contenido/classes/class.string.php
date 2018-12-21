@@ -233,7 +233,6 @@ class cString extends cStringMultiByteWrapper {
 
         for ($i = 0; $i < $len; $i++) {
             $char = ord($input[$i]);
-            $n = 0;
 
             if ($char < 0x80) {
                 // ASCII char
@@ -485,13 +484,15 @@ class cString extends cStringMultiByteWrapper {
      * For other languages, the diacritic marks are removed, if possible.
      *
      * @param string $string
-     *         The string to operate on
+     *                               The string to operate on
      * @param string $sourceEncoding [optional; default: UTF-8]
-     *         The source encoding
+     *                               The source encoding
      * @param string $targetEncoding [optional; default: UTF-8]
-     *         The target encoding
+     *                               The target encoding
+     *
      * @return string
      *         The resulting string
+     * @throws cInvalidArgumentException
      */
     public static function replaceDiacritics($string, $sourceEncoding = 'UTF-8', $targetEncoding = 'UTF-8') {
         if ($sourceEncoding != 'UTF-8') {
@@ -613,14 +614,17 @@ class cString extends cStringMultiByteWrapper {
      *
      * @todo Check if the charset names are the same for both converters
      * @todo Implement a converter and charset checker to ensure compilance.
+     *
      * @param string $string
      *         The string to operate on
      * @param string $sourceEncoding
      *         The source encoding
      * @param string $targetEncoding
      *         The target encoding (if false, use source encoding)
+     *
      * @return string
      *         The resulting string
+     * @throws cInvalidArgumentException
      */
     public static function recodeString($string, $sourceEncoding, $targetEncoding) {
         // If sourceEncoding and targetEncoding are the same, return
@@ -656,11 +660,13 @@ class cString extends cStringMultiByteWrapper {
      * aren't one of the following: _-.
      *
      * @param string $string
-     *         The string to operate on
-     * @param bool $replace [optional]
-     *         If true, all "unclean" characters are replaced
+     *                        The string to operate on
+     * @param bool   $replace [optional]
+     *                        If true, all "unclean" characters are replaced
+     *
      * @return string
      *         The resulting string
+     * @throws cInvalidArgumentException
      */
     public static function cleanURLCharacters($string, $replace = false) {
         $string = self::replaceDiacritics($string);

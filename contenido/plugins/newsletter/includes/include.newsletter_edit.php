@@ -441,7 +441,11 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     }
 
     // Recipients
-    $oForm->add(i18n("Recipients", 'newsletter'), $oSendToAll->toHtml(false) . "&nbsp;" . i18n("Send newsletter to all recipients", 'newsletter') . "<br>" . chr(10) . $oSendToDefault->toHtml(false) . "&nbsp;" . i18n("Send newsletter to the members of the default group", 'newsletter') . "<br>" . chr(10) . $oSendToGroups->toHtml(false) . "&nbsp;" . i18n("Send newsletter to the members of the selected group(s):", 'newsletter') . "<br>" . chr(10) . $oSelGroup->render());
+    $html = $oSendToAll->toHtml(false) . "&nbsp;" . i18n("Send newsletter to all recipients", 'newsletter') . "<br>" . PHP_EOL;
+    $html .= $oSendToDefault->toHtml(false) . "&nbsp;" . i18n("Send newsletter to the members of the default group", 'newsletter') . "<br>" . PHP_EOL;
+    $html .= $oSendToGroups->toHtml(false) . "&nbsp;" . i18n("Send newsletter to the members of the selected group(s):", 'newsletter') . "<br>" . PHP_EOL;
+    $html .= $oSelGroup->render();
+    $oForm->add(i18n("Recipients", 'newsletter'), $html);
 
     // Options
     $ckbWelcome = new cHTMLCheckbox("ckbWelcome", "1");
