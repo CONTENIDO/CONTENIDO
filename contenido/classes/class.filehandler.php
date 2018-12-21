@@ -20,6 +20,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage Util
  */
 class cFileHandler {
+
+    /**
+     * default permissions for new files
+     *
+     * @see CON-2770
+     * @var int
+     */
+    const DEFAULT_MODE = 0664;
+
     /**
      * Creates a new file
      *
@@ -36,7 +45,7 @@ class cFileHandler {
     public static function create($filename, $content = '') {
         $success = file_put_contents($filename, $content) === cString::getStringLength($content);
         if ($success) {
-            self::setDefaultFilePerms($filename);
+            self::setDefaultPermissions($filename);
         }
 
         return $success;
@@ -159,7 +168,7 @@ class cFileHandler {
 
         $success = file_put_contents($filename, $content, $flag);
         if ((int) $success != 0) {
-            self::setDefaultFilePerms($filename);
+            self::setDefaultPermissions($filename);
         }
 
         return !($success === false);
@@ -281,7 +290,7 @@ class cFileHandler {
         }
         $success = file_put_contents($filename, '') === 0;
         if ($success) {
-            self::setDefaultFilePerms($filename);
+            self::setDefaultPermissions($filename);
         }
 
         return $success;
@@ -308,7 +317,7 @@ class cFileHandler {
         }
         $success = rename($filename, $destination);
         if ($success) {
-            self::setDefaultFilePerms($destination);
+            self::setDefaultPermissions($destination);
         }
 
         return $success;
@@ -334,7 +343,7 @@ class cFileHandler {
         }
         $success = rename($filename, dirname($filename) . '/' . $new_filename);
         if ($success) {
-            self::setDefaultFilePerms(dirname($filename) . '/' . $new_filename);
+            self::setDefaultPermissions(dirname($filename) . '/' . $new_filename);
         }
 
         return $success;
@@ -360,7 +369,7 @@ class cFileHandler {
         }
         $success = copy($filename, $destination);
         if ($success) {
-            self::setDefaultFilePerms($destination);
+            self::setDefaultPermissions($destination);
         }
 
         return $success;
@@ -428,10 +437,7 @@ class cFileHandler {
             $ret['extension'] = '';
         }
 
-        if (version_compare(PHP_VERSION, '5.3', '<') && function_exists('mime_content_type')) {
-            // function is deprecated in PHP 5.3
-            $ret['mime'] = @mime_content_type($filename);
-        } else if (function_exists('finfo_open')) {
+        if (function_exists('finfo_open')) {
             // extension has to be installed seperately in versions prior to 5.3
             $finfo = @finfo_open(FILEINFO_MIME_TYPE);
             $ret['mime'] = @finfo_file($finfo, $filename);
@@ -453,25 +459,50 @@ class cFileHandler {
     }
 
     /**
-     * Sets the default file permissions on the given file.
+     * Determines the default permissions for new files.
+     * These can be configured using the setting "default_perms/file" in "data/config/<ENV>/config.misc.php".
+     * If no configuration can be found 0664 is assumed.
+     *
+     * @return int
+     */
+    public static function getDefaultPermissions()
+    {
+        $mode = cRegistry::getConfigValue('default_perms', 'file', self::DEFAULT_MODE);
+
+        return intval($mode, 8);
+    }
+
+    /**
+     * Sets the default permissions for the given file.
      *
      * @param string $filename
      *         the name of the file
      *
      * @return bool
      *         true on success or false on failure
-     * 
+     *
      * @throws cInvalidArgumentException
      */
-    public static function setDefaultFilePerms($filename) {
-        $cfg = cRegistry::getConfig();
+    public static function setDefaultPermissions($filename)
+    {
+        return self::chmod($filename, self::getDefaultPermissions());
+    }
 
-        if (isset($cfg['default_perms']['file']) === false) {
-            return false;
-        }
-
-        $filePerms = $cfg['default_perms']['file'];
-        return cFileHandler::chmod($filename, $filePerms);
+    /**
+     * Sets the default permissions for the given file.
+     *
+     * @deprecated use setDefaultPermissions() instead
+     * @param string $filename
+     *         the name of the file
+     *
+     * @return bool
+     *         true on success or false on failure
+     *
+     * @throws cInvalidArgumentException
+     */
+    public static function setDefaultFilePerms($filename)
+    {
+        return self::setDefaultPermissions($filename);
     }
 
     /**

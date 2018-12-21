@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Main CONTENIDO setup bootstrap file.
  *
@@ -16,17 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 // Report all errors except warnings
 error_reporting(E_ALL ^E_NOTICE);
 
-
 header('Content-Type: text/html; charset=ISO-8859-1');
-
-// Check version in the 'first' line, as class.security.php uses
-// PHP5 object syntax not compatible with PHP < 5
-if (version_compare(PHP_VERSION, '5.0.0', '<')) {
-    die("You need PHP >= 5.0.0 for CONTENIDO. Sorry, even the setup doesn't work otherwise. Your version: " . PHP_VERSION . "\n");
-}
-
-// Include the environment definer file
-include_once(CON_FRONTEND_PATH . '/contenido/environment.php');
 
 /**
  * Setup file inclusion
@@ -44,6 +35,17 @@ function checkAndInclude($filename) {
         echo "</pre>";
     }
 }
+
+checkAndInclude(CON_SETUP_PATH . '/lib/defines.php');
+
+// Check version in the 'first' line, as class.security.php uses
+// PHP5 object syntax not compatible with PHP < 5
+if (version_compare(PHP_VERSION, CON_SETUP_MIN_PHP_VERSION, '<')) {
+    die(sprintf("You need PHP >= %s for CONTENIDO. Sorry, even the setup doesn't work otherwise. Your version: %s\n", CON_SETUP_MIN_PHP_VERSION, PHP_VERSION));
+}
+
+// Include the environment definer file
+include_once(CON_FRONTEND_PATH . '/contenido/environment.php');
 
 // Include cStringMultiByteWrapper and cString
 checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.string.multi.byte.wrapper.php');
@@ -137,7 +139,6 @@ $cfg['db'] = array(
     'enableProfiling' => false,
 );
 
-checkAndInclude(CON_SETUP_PATH . '/lib/defines.php');
 checkAndInclude($cfg['path']['contenido_config'] . 'config.path.php');
 checkAndInclude($cfg['path']['contenido_config'] . 'config.misc.php');
 checkAndInclude($cfg['path']['contenido_config'] . 'cfg_sql.inc.php');

@@ -1,32 +1,30 @@
 <?php
+
 /**
  * This file contains the the password request class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @author Timo Trautmann
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Timo Trautmann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Class for handling passwort recovery for backend users.
- * If a user has set his e-mail address, this class
- * generates a new Password for user and submits to his e-mail address.
- * Submitting a new Password is
- * only possible every 30 minutes Mailsender, Mailsendername and Mailserver are
- * set into system properties.
- * There it is also possible to deactivate this feature.
+ * Class for handling passwort recovery of backend users.
+ * If a user has set his e-mail address, this class generates a new password for user and submits to his e-mail address.
+ * Submitting a new Password is only possible every 30 minutes. Mailsender, Mailsendername and Mailserver are set into
+ * system properties. There it is also possible to deactivate this feature.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
  */
-class cPasswordRequest {
-
+class cPasswordRequest
+{
     /**
      * The CONTENIDO database object
      *
@@ -101,8 +99,6 @@ class cPasswordRequest {
     /**
      * Constructor to create an instance of this class.
      *
-     * Initializes class variables.
-     *
      * @param cDb   $db
      *         CONTENIDO database object
      * @param array $cfg
@@ -111,8 +107,9 @@ class cPasswordRequest {
      * @throws cDbException
      * @throws cException
      */
-    public function __construct($db, $cfg) {
-        // generate new dbobject, if it does not exist
+    public function __construct($db, $cfg)
+    {
+        // generate new db object, if it does not exist
         if (!is_object($db)) {
             $this->_db = cRegistry::getDb();
         } else {
@@ -120,10 +117,10 @@ class cPasswordRequest {
         }
 
         // init class variables
-        $this->_cfg = $cfg;
-        $this->_tpl = new cTemplate();
+        $this->_cfg      = $cfg;
+        $this->_tpl      = new cTemplate();
         $this->_username = '';
-        $this->_email = '';
+        $this->_email    = '';
 
         // set reload to 4 hours (60*4 minutes)
         $this->_reloadTime = 240;
@@ -161,17 +158,17 @@ class cPasswordRequest {
         // if feature is not enabled, do nothing
         if (true === $this->_isEnabled) {
             // check if confirmation link from mail used
-            if (isset($_GET['pw_reset'])
-            && '' !== $_GET['pw_reset']) {
+            if (isset($_GET['pw_reset']) && '' !== $_GET['pw_reset']) {
                 // check if requests found
                 $aRequests = $this->_getCurrentRequests();
                 if (count($aRequests) > 0) {
                     // check if form with username and new password was filled out
                     if (false === isset($_POST['user_name'])
-                    || false === isset($_POST['user_pw'])
-                    || false === isset($_POST['user_pw_repeat'])) {
+                        || false === isset($_POST['user_pw'])
+                        || false === isset($_POST['user_pw_repeat'])
+                    ) {
                         // show form to set new password
-                        $this->renderNewPwForm();
+                        $this->_renderNewPwForm();
                     } else {
                         // do validation checks then set new password for user in database
                         $this->_handleResetPw();
@@ -196,13 +193,12 @@ class cPasswordRequest {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function renderForm($return = false) {
+    public function renderForm($return = false)
+    {
         // if feature is not enabled, do nothing
         if (!$this->_isEnabled) {
             return '';
         }
-
-        $message = '';
 
         // if form is sumbitted call function handleNewPassword() and set
         // submitted username to class variable $sUsername
@@ -212,9 +208,12 @@ class cPasswordRequest {
             $this->_username = $_POST['request_username'];
 
             $message = $this->_handleNewPassword();
+
             // if form is submitted, show corresponding password request layer
             $this->_tpl->set('s', 'JS_CALL', 'showRequestLayer();');
         } else {
+            $message = '';
+
             // by default request layer is invisible so do nothing
             $this->_tpl->set('s', 'JS_CALL', '');
         }
@@ -222,8 +221,12 @@ class cPasswordRequest {
         // generate new form
         $form = new cHTMLForm('request_pw', 'index.php', 'post');
 
+        // CON-2772 generate username safe to display
+        $safeUsername = stripslashes($this->_username);
+        $safeUsername = conHtmlentities($safeUsername);
+
         // generate input for username
-        $inputUsername = new cHTMLTextbox('request_username', stripslashes($_POST['request_username']), '', '', 'request_username');
+        $inputUsername = new cHTMLTextbox('request_username', $safeUsername, '', '', 'request_username');
         $inputUsername->setStyle('width:215px;');
 
         // set request action and current language
@@ -231,13 +234,20 @@ class cPasswordRequest {
         $form->setVar('belang', $GLOBALS['belang']);
 
         // generate submitbutton and fill the form
-        $form->setContent('<input class="password_request_input" type="image" src="images/submit.gif" alt="' . i18n('Submit') . '" title="' . i18n('Submit') . '">' . $inputUsername->render());
+        $form->setContent(
+            '<input class="password_request_input" type="image" src="images/submit.gif" alt="' . i18n('Submit')
+            . '" title="' . i18n('Submit') . '">' . $inputUsername->render()
+        );
         $this->_tpl->set('s', 'FORM', $form->render());
         $this->_tpl->set('s', 'MESSAGE', $message);
         $this->_tpl->set('s', 'LABEL', i18n('Please enter your login') . ':');
 
         // if handleNewPassword() returns a message, display it
-        return $this->_tpl->generate($this->_cfg['path']['contenido'] . $this->_cfg['path']['templates'] . $this->_cfg['templates']['request_password'], $return);
+        return $this->_tpl->generate(
+            $this->_cfg['path']['contenido'] . $this->_cfg['path']['templates']
+            . $this->_cfg['templates']['request_password'],
+            $return
+        );
     }
 
     /**
@@ -247,11 +257,13 @@ class cPasswordRequest {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function renderNewPwForm() {
+    protected function _renderNewPwForm()
+    {
         if (isset($_POST['action']) && $_POST['action'] == 'reset_pw') {
             $this->_username = $_POST['request_username'];
 
             $message = $this->_handleNewPassword();
+            
             // do not show password reset form
             $this->_tpl->set('s', 'JS_CALL', '');
         } else {
@@ -263,9 +275,9 @@ class cPasswordRequest {
         $this->_tpl->set('s', 'RESET_LABEL', $msg);
 
         // insert form with username, password and password repeat fields
-        $form = new cHTMLForm('reset_form', htmlentities(cRegistry::getBackendUrl()) . '?pw_reset=' . $_GET['pw_reset']);
+        $form =
+            new cHTMLForm('reset_form', htmlentities(cRegistry::getBackendUrl()) . '?pw_reset=' . $_GET['pw_reset']);
 
-        $fields = array();
         $userNameLbl = new cHTMLDiv(new cHTMLLabel(i18n('User name') . ': ', 'user_name'));
         $userNameBox = new cHTMLTextbox('user_name');
         $userNameBox->removeAttribute('size');
@@ -292,7 +304,7 @@ class cPasswordRequest {
         $lastFormRow->setAttribute('class', 'last_row');
 
         $sendBtn->removeAttribute('value');
-        $form->setContent(array($userNameLbl, $userNameBox, $userPwLbl, $userPwBox, $lastFormRow));
+        $form->setContent([$userNameLbl, $userNameBox, $userPwLbl, $userPwBox, $lastFormRow]);
 
         $this->_tpl->set('s', 'RESET_MESSAGE', '');
 
@@ -307,7 +319,8 @@ class cPasswordRequest {
      * @throws cDbException
      * @throws cException
      */
-    protected function _getCurrentRequests() {
+    protected function _getCurrentRequests()
+    {
         $oApiUserPasswordRequest = new cApiUserPasswordRequestCollection();
 
         return $oApiUserPasswordRequest->fetchCurrentRequests();
@@ -323,19 +336,23 @@ class cPasswordRequest {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    protected function _handleNewPassword() {
+    protected function _handleNewPassword()
+    {
         // notification message, which is returned to caller
         $message = '';
 
         // check if requested username exists, also get email and timestamp when
         // user last requests a new password (last_pw_request)
-//         $ocApiUser = new cApiUser(cSecurity::toInteger($this->_username));
-        $sql = "SELECT username, email FROM " . $this->_cfg['tab']['user'] . "
-                 WHERE username = '" . $this->_db->escape($this->_username) . "'
-                 AND (valid_from <= NOW() OR valid_from = '0000-00-00 00:00:00' OR valid_from IS NULL)
-                 AND (valid_to >= NOW() OR valid_to = '0000-00-00 00:00:00' OR valid_to IS NULL)";
-
+        $sql = "SELECT
+                    username, email
+                FROM
+                    " . $this->_cfg['tab']['user'] . "
+                WHERE
+                    username = '" . $this->_db->escape($this->_username) . "'
+                    AND (valid_from <= NOW() OR valid_from = '0000-00-00 00:00:00' OR valid_from IS NULL)
+                    AND (valid_to >= NOW() OR valid_to = '0000-00-00 00:00:00' OR valid_to IS NULL)";
         $this->_db->query($sql);
+
         if ($this->_db->nextRecord() && md5($this->_username) == md5($this->_db->f('username'))) {
             // by default user is allowed to request new password
             $isAllowed = true;
@@ -349,10 +366,10 @@ class cPasswordRequest {
             // this should always work because username in database already confirmed
             if (false === $oApiUser->loadBy('username', $this->_username)) {
                 $isAllowed = false;
-                $message = i18n('New password was submitted to your e-mail address.');
+                $message   = i18n('New password was submitted to your e-mail address.');
             } else {
                 $oApiPasswordRequestCol = new cApiUserPasswordRequestCollection();
-                $requests = $oApiPasswordRequestCol->fetchAvailableRequests();
+                $requests               = $oApiPasswordRequestCol->fetchAvailableRequests();
 
                 // do maintainance for all user password requests
                 foreach ($requests as $oApiUserPasswordRequest) {
@@ -361,14 +378,18 @@ class cPasswordRequest {
 
                     // if $reqTime is newer than $lastPwRequest then use this as new last password request time
                     if (strtotime($lastPwRequest) < strtotime($reqTime)
-                    && $this->_db->f($oApiUser->getPrimaryKeyName()) === $oApiUser->get($oApiUser->getPrimaryKeyName())) {
+                        && $this->_db->f($oApiUser->getPrimaryKeyName()) === $oApiUser->get(
+                            $oApiUser->getPrimaryKeyName()
+                        )
+                    ) {
                         $lastPwRequest = $reqTime;
                     }
 
                     // check if password request is too old and considered outdated
                     // by default 1 day old requests are outdated
                     if (false === ($outdatedStr = getEffectiveSetting('pw_request', 'outdated_threshold', false))
-                    || '' === $outdatedStr) {
+                        || '' === $outdatedStr
+                    ) {
                         $outdatedStr = '-1 day';
                     }
                     // convert times to DateTime objects for comparison
@@ -377,20 +398,24 @@ class cPasswordRequest {
                     $outdated->modify($outdatedStr);
                     $expiration = new DateTime($oApiUserPasswordRequest->get('expiration'), new DateTimeZone('UTC'));
                     if (false === $oApiUserPasswordRequest->get('expiration')
-                    || '' === $oApiUserPasswordRequest->get('expiration')
-                    || $expiration < $outdated) {
+                        || '' === $oApiUserPasswordRequest->get('expiration')
+                        || $expiration < $outdated
+                    ) {
                         // delete password request as it is considered outdated
-                        $oApiPasswordRequestCol->delete($oApiUserPasswordRequest->get($oApiUserPasswordRequest->getPrimaryKeyName()));
+                        $oApiPasswordRequestCol->delete(
+                            $oApiUserPasswordRequest->get($oApiUserPasswordRequest->getPrimaryKeyName())
+                        );
                     }
                 }
 
                 // get all password reset requests related to entered username in form
-                $uid = $oApiUser->get($oApiUser->getPrimaryKeyName());
+                $uid      = $oApiUser->get($oApiUser->getPrimaryKeyName());
                 $requests = $oApiPasswordRequestCol->fetchAvailableRequests($uid);
 
                 // get amount of max password reset requests
                 if (false === ($resetThreshold = getEffectiveSetting('pw_request', 'reset_threshold', false))
-                || '' === $resetThreshold) {
+                    || '' === $resetThreshold
+                ) {
                     // use 4 as default value
                     $resetThreshold = 4;
                 }
@@ -398,7 +423,8 @@ class cPasswordRequest {
                 // check if there are more than allowed number of password requests for user
                 if (count($requests) > $resetThreshold) {
                     $isAllowed = false;
-                    $message = i18n('Too many password reset requests. You may wait before requesting a new password.');
+                    $message   =
+                        i18n('Too many password reset requests. You may wait before requesting a new password.');
                 }
                 unset($requests);
             }
@@ -408,23 +434,27 @@ class cPasswordRequest {
 
             // check if there is a correct last request date
             if (preg_match('/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/', $lastPwRequest, $aMatches)) {
-                $lastRequest = mktime($aMatches[4], $aMatches[5], $aMatches[6], $aMatches[2], $aMatches[3], $aMatches[1]);
+                $lastRequest =
+                    mktime($aMatches[4], $aMatches[5], $aMatches[6], $aMatches[2], $aMatches[3], $aMatches[1]);
 
                 // check if this last request is longer ago than timelimit.
                 if ((time() - $lastRequest) < (60 * $this->_reloadTime)) {
                     // user is not allowed to request new password, he has to wait
                     $isAllowed = false;
-                    $message = sprintf(i18n('Password requests are allowed every %s minutes.'), $this->_reloadTime);
+                    $message   = sprintf(i18n('Password requests are allowed every %s minutes.'), $this->_reloadTime);
                 }
             }
 
             $this->_username = stripslashes($this->_username);
 
-
             // check if syntax of users mail address is correct and there is no
             // standard mail address like admin_kunde@IhreSite.de or
             // sysadmin@IhreSite.de
-            if ((!preg_match("/^.+@.+\.([A-Za-z0-9\-_]{1,20})$/", $this->_email) || $this->_email == 'sysadmin@IhreSite.de' || $this->_email == 'admin_kunde@IhreSite.de') && $isAllowed) {
+            if ((!preg_match("/^.+@.+\.([A-Za-z0-9\-_]{1,20})$/", $this->_email)
+                    || $this->_email == 'sysadmin@IhreSite.de'
+                    || $this->_email == 'admin_kunde@IhreSite.de')
+                && $isAllowed
+            ) {
                 $isAllowed = false;
                 // $sMessage = i18n('The requested user has no valid e-mail
                 // address. Submitting new password is not possible. Please
@@ -442,12 +472,12 @@ class cPasswordRequest {
                 // use 4 hours as expiration time
                 $expiration = new DateTime('+4 hour', new DateTimeZone('UTC'));
 
-                if (false !== $token
-                && false !== $this->_safePwResetRequest($token, $expiration)) {
-                    $this->_submitMail($token);
-                    $message = i18n('New password was submitted to your e-mail address.');
-                } else {
+                if (false == $token || false === $this->_safePwResetRequest($token, $expiration)
+                    || false === $this->_submitMail($token)
+                ) {
                     $message = i18n('An unknown problem occurred. Please contact your system administrator.');
+                } else {
+                    $message = i18n('New password was submitted to your e-mail address.');
                 }
             } else {
                 sleep(5);
@@ -458,6 +488,7 @@ class cPasswordRequest {
             $message = i18n('No matching data found. Please contact your system administrator.');
             sleep(5);
         }
+
         return $message;
     }
 
@@ -468,28 +499,32 @@ class cPasswordRequest {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    protected function _handleResetPw() {
+    protected function _handleResetPw()
+    {
         $this->_tpl->set('s', 'JS_CALL', 'showResetLayer();');
-        $username = (string) $_POST['user_name'];
-        $pw = (string) $_POST['user_pw'];
-        $pwRepeat = (string) $_POST['user_pw_repeat'];
+        $username = (string)$_POST['user_name'];
+        $pw       = (string)$_POST['user_pw'];
+        $pwRepeat = (string)$_POST['user_pw_repeat'];
 
         if (0 === cString::getStringLength($username)) {
             $this->_tpl->set('s', 'RESET_MESSAGE', i18n('Username can\'t be empty'));
             $this->_tpl->set('s', 'RESET_LABEL', '');
-            $this->renderNewPwForm();
+            $this->_renderNewPwForm();
+
             return;
         }
         if ($pw !== $pwRepeat) {
             $this->_tpl->set('s', 'RESET_MESSAGE', i18n('Passwords don\'t match'));
             $this->_tpl->set('s', 'RESET_LABEL', '');
-            $this->renderNewPwForm();
+            $this->_renderNewPwForm();
+
             return;
         }
-        if ((string) $_POST['user_pw'] === (string) $_GET['pw_reset']) {
+        if ((string)$_POST['user_pw'] === (string)$_GET['pw_reset']) {
             $this->_tpl->set('s', 'RESET_MESSAGE', i18n('You may not use the confirmation token as password'));
             $this->_tpl->set('s', 'RESET_LABEL', '');
-            $this->renderNewPwForm();
+            $this->_renderNewPwForm();
+
             return;
         }
 
@@ -503,6 +538,7 @@ class cPasswordRequest {
             $this->_tpl->set('s', 'RESET_MESSAGE', i18n('New password has been set.'));
             $this->_tpl->set('s', 'RESET_LABEL', '');
             $this->_tpl->set('s', 'RESET_FORM', '');
+
             return;
         }
 
@@ -516,6 +552,7 @@ class cPasswordRequest {
             $this->_tpl->set('s', 'RESET_MESSAGE', i18n('New password has been set.'));
             $this->_tpl->set('s', 'RESET_LABEL', '');
             $this->_tpl->set('s', 'RESET_FORM', '');
+
             return;
         }
 
@@ -523,8 +560,7 @@ class cPasswordRequest {
         $validUser = false;
         foreach ($requests as $request) {
             // match validation token against database password reset entry
-            if ($request->get('validation_token') === $_GET['pw_reset'])
-            {
+            if ($request->get('validation_token') === $_GET['pw_reset']) {
                 // we found the used token
                 if ($oApiUser->get($oApiUser->getPrimaryKeyName()) === $request->get($oApiUser->getPrimaryKeyName())) {
                     // user entered in form matches user related to validation token
@@ -538,22 +574,24 @@ class cPasswordRequest {
             $this->_tpl->set('s', 'RESET_MESSAGE', i18n('New password has been set.'));
             $this->_tpl->set('s', 'RESET_LABEL', '');
             $this->_tpl->set('s', 'RESET_FORM', '');
+
             return;
         }
 
         // try to set password
         $res = $oApiUser->setPassword($pw);
 
-        $msg = '';
         // check if password was accepted by cApiUser class
         if (cApiUser::PASS_OK !== $res) {
             // password not accepted, present error message from cApiUser class to end user
             $msg = cApiUser::getErrorString($res);
             $this->_tpl->set('s', 'RESET_MESSAGE', $msg);
             $this->_tpl->set('s', 'RESET_LABEL', '');
-            $this->renderNewPwForm();
+            $this->_renderNewPwForm();
+
             return;
         }
+
         // check if new password can be saved for user
         if (false !== $oApiUser->store()) {
             $this->_tpl->set('s', 'RESET_LABEL', '');
@@ -584,13 +622,14 @@ class cPasswordRequest {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    protected function _safePwResetRequest($token, DateTime $expiration) {
+    protected function _safePwResetRequest($token, DateTime $expiration)
+    {
         $oUserPwRequestCol = new cApiUserPasswordRequestCollection();
-        $oUserPwRequest = $oUserPwRequestCol->createNewItem();
+        $oUserPwRequest    = $oUserPwRequestCol->createNewItem();
 
         // set request data
         $requestTime = new DateTime('now', new DateTimeZone('UTC'));
-        $oApiUser = new cApiUser();
+        $oApiUser    = new cApiUser();
         $oApiUser->loadBy('username', $this->_username);
 
         $oUserPwRequest->set($oApiUser->getPrimaryKeyName(), $oApiUser->get($oApiUser->getPrimaryKeyName()));
@@ -608,37 +647,53 @@ class cPasswordRequest {
      * @param string $token
      *         The token used to authorise password change
      *
-     * @throws cDbException
+     * @return bool true if successful
      * @throws cException
-     * @throws cInvalidArgumentException
      */
-    protected function _submitMail($token) {
+    protected function _submitMail($token)
+    {
         $cfg = cRegistry::getConfig();
 
-        $token = (string) $token;
+        $token = (string)$token;
 
         // get translation for mailbody and insert username and new password
-        $msg = i18n("Dear CONTENIDO-User %s,\n\nA request to change your password for Content Management System CONTENIDO was made. ");
-        $msg .= i18n("Use the following URL to confirm the password change:\n\n");
-        $msg .= cRegistry::getBackendUrl() . '?pw_reset=';
-        $msg .= i18n("%s\n\nBest regards\n\nYour CONTENIDO sysadmin");
+        $msg      = i18n(
+            "Dear CONTENIDO-User %s,\n\nA request to change your password for Content Management System CONTENIDO was made. "
+        );
+        $msg      .= i18n("Use the following URL to confirm the password change:\n\n");
+        $msg      .= cRegistry::getBackendUrl() . '?pw_reset=';
+        $msg      .= i18n("%s\n\nBest regards\n\nYour CONTENIDO sysadmin");
         $mailBody = sprintf($msg, $this->_username, $token);
 
-        $mailer = new cMailer();
-        $from = array(
-            $this->_sendermail => $this->_sendername
-        );
+        $from = [$this->_sendermail => $this->_sendername];
 
         // Decoding and encoding for charsets (without UTF-8)
         if ($cfg['php_settings']['default_charset'] != 'UTF-8') {
-            $subject = utf8_encode(conHtmlEntityDecode(stripslashes(i18n('Your new password for CONTENIDO Backend')), '', $cfg['php_settings']['default_charset']));
-            $body = utf8_encode(conHtmlEntityDecode($mailBody, '', $cfg['php_settings']['default_charset']));
+            $subject = utf8_encode(
+                conHtmlEntityDecode(
+                    stripslashes(i18n('Your new password for CONTENIDO Backend')),
+                    '',
+                    $cfg['php_settings']['default_charset']
+                )
+            );
+            $body    = utf8_encode(conHtmlEntityDecode($mailBody, '', $cfg['php_settings']['default_charset']));
         } else {
             $subject = conHtmlEntityDecode(stripslashes(i18n('Your new password for CONTENIDO Backend')));
-            $body = conHtmlEntityDecode($mailBody);
+            $body    = conHtmlEntityDecode($mailBody);
         }
 
-        $mailer->sendMail($from, $this->_email, $subject, $body);
+        try {
+            $mailer = new cMailer();
+            $mailer->sendMail($from, $this->_email, $subject, $body);
+
+            return true;
+        } catch (cDbException $e) {
+            return false;
+        } catch (cInvalidArgumentException $e) {
+            return false;
+        } catch (cException $e) {
+            return false;
+        }
     }
 
     /**
@@ -647,7 +702,8 @@ class cPasswordRequest {
      * @return string
      *         The new token
      */
-    protected function _generateToken() {
+    protected function _generateToken()
+    {
         // possible chars which were used in password
         $chars = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghjkmnopqrstuvwxyz123456789";
 

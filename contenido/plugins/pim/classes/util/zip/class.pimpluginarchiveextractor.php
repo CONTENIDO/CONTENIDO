@@ -101,7 +101,7 @@ class PimPluginArchiveExtractor {
      */
     public function setDestinationPath($destination) {
         if (!is_dir($destination)) {
-            $makeDirectory = mkdir($destination, 0755);
+            $makeDirectory = mkdir($destination, cDirHandler::getDefaultPermissions());
             if ($makeDirectory != true) {
                 throw new cException('Can not set destination path: directoy is not writable');
             }

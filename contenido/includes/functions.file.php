@@ -319,7 +319,7 @@ function scanDirectory($sDirectory, $bRecursive = false) {
  *
  * @throws cInvalidArgumentException
  */
-function recursiveCopy($sourcePath, $destinationPath, $mode = 0755, array $options = array()) {
+function recursiveCopy($sourcePath, $destinationPath, $mode = null, array $options = array()) {
     cDeprecated('This method is deprecated and is not needed any longer');
     return cDirHandler::recursiveCopy($sourcePath, $destinationPath, $mode);
 }

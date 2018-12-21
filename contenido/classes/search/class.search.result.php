@@ -308,9 +308,13 @@ class cSearchResult extends cSearchBaseAbstract {
      *         Articles in page $page_id
      */
     public function getSearchResultPage($page_id) {
-        $this->_resultPage = $page_id;
-        $result_page = $this->_orderedSearchResult[$page_id - 1];
-        return $result_page;
+        if (isset($this->_orderedSearchResult[$page_id - 1])) {
+            $this->_resultPage = $page_id;
+            $result_page = $this->_orderedSearchResult[$page_id - 1];
+            return $result_page;
+        } else {
+            return [];
+        }
     }
 
     /**
