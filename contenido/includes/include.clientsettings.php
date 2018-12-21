@@ -97,49 +97,61 @@ if ($aItems !== false) {
     $oLnkEdit->setCustom("idclient", $idclient);
     $oLnkEdit->setCustom("idclientslang", $request["idclientslang"]);
 
+    $sSubmit = ' <input type="image" class="vAlignMiddle" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif">';
+    $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
+
     $iCounter = 0;
     foreach ($aItems as $iKey => $aValue) {
+
+        $settingType  = conHtmlentities($aValue['type']);
+        $settingName  = conHtmlentities($aValue['name']);
+        $settingValue = conHtmlentities($aValue['value']);
+
         $oLnkDelete->setCustom("idprop", $iKey);
         $oLnkEdit->setCustom("idprop", $iKey);
 
         if (($_GET['action'] == "clientsettings_edit_item") && ($_GET['idprop'] == $iKey)) {
 
-            $oInputboxType = new cHTMLTextbox("cstype", $aValue['type']);
+            $oInputboxType = new cHTMLTextbox("cstype", $settingType);
             $oInputboxType->setWidth(15);
-            $oInputboxName = new cHTMLTextbox("csname", $aValue['name']);
+            $oInputboxName = new cHTMLTextbox("csname", $settingName);
             $oInputboxName->setWidth(15);
-            $oInputboxValue = new cHTMLTextbox("csvalue", conHtmlentities($aValue['value']));
+            $oInputboxValue = new cHTMLTextbox("csvalue", $settingValue);
             $oInputboxValue->setWidth(30);
 
             $hidden = '<input type="hidden" name="csidproperty" value="' . $iKey . '">';
-            $sSubmit = ' <input type="image" class="vAlignMiddle" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif">';
 
-            $oList->setData($iCounter, $oInputboxType->render(), $oInputboxName->render(), $oInputboxValue->render() . $hidden . $sSubmit, $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render());
+            $oList->setData(
+                $iCounter,
+                $oInputboxType->render(),
+                $oInputboxName->render(),
+                $oInputboxValue->render() . $sSubmit . $hidden,
+                $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render() . '&nbsp;&nbsp;&nbsp;'
+            );
         } else {
-            $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
 
             if (cString::getStringLength($aValue['type']) > 35) {
-                $sShort = cString::trimHard($aValue['type'], 35);
-                $aValue['type'] = sprintf($sMouseoverTemplate, conHtmlentities($aValue['type']), conHtmlentities($sShort));
-            } else {
-                $aValue['type'] = conHtmlentities($aValue['type']);
+                $sShort = conHtmlentities(cString::trimHard($aValue['type'], 35));
+                $settingType = sprintf($sMouseoverTemplate, $settingType, $sShort);
             }
 
             if (cString::getStringLength($aValue['name']) > 35) {
-                $sShort = cString::trimHard($aValue['name'], 35);
-                $aValue['name'] = sprintf($sMouseoverTemplate, conHtmlentities($aValue['name']), conHtmlentities($sShort));
-            } else {
-                $aValue['name'] = conHtmlentities($aValue['name']);
+                $sShort = conHtmlentities(cString::trimHard($aValue['name'], 35));
+                $settingName = sprintf($sMouseoverTemplate, $settingName, $sShort);
             }
 
             if (cString::getStringLength($aValue['value']) > 35) {
-                $sShort = cString::trimHard($aValue['value'], 35);
-                $aValue['value'] = sprintf($sMouseoverTemplate, conHtmlentities($aValue['value']), conHtmlentities($sShort));
-            } else {
-                $aValue['value'] = conHtmlentities($aValue['value']);
+                $sShort = conHtmlentities(cString::trimHard($aValue['value'], 35));
+                $settingValue = sprintf($sMouseoverTemplate, $settingValue, $sShort);
             }
 
-            $oList->setData($iCounter, $aValue['type'], $aValue['name'], $aValue['value'], $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render());
+            $oList->setData(
+                $iCounter,
+                $settingType,
+                $settingName,
+                $settingValue,
+                $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render()
+            );
         }
         $iCounter++;
     }
