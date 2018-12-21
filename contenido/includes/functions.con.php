@@ -20,8 +20,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('includes', 'functions.con2.php');
 
 /**
- * Create a new article; create article version, if versioning state
- * is simple or advanced
+ * Create a new article.
+ *
+ * Create article version, if versioning state is simple or advanced.
  *
  * @param int    $idcat
  * @param int    $idcatnew
@@ -87,7 +88,7 @@ function conEditFirstTime(
     $idart = $oArt->get('idart');
 
     $urlname = (trim($urlname) == '')? trim($title) : trim($urlname);
-    $urlname = checkURLname($urlname, $idart, $idcat, $idartlang, $idlang);
+    $urlname = conGetUniqueArticleUrlname($idart, $idlang, $urlname, $idcatnew);
 
     $status = 0;
 
@@ -290,9 +291,8 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     $locked = (int) $oArtLang->get('locked');
 
     // abort editing if article is locked and user user no admin
-    if (1 === $locked
-        && false === $admin) {
-            return $idart;
+    if (1 === $locked && false === $admin) {
+        return $idart;
     }
 
     // Add slashes because single quotes will crash the db
@@ -301,7 +301,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     $redirect_url = stripslashes($redirect_url);
 
     $urlname = (trim($urlname) == '')? trim($title) : trim($urlname);
-    $urlname = checkURLname($urlname, $idart, $idcat, $idartlang, $idlang);
+    $urlname = conGetUniqueArticleUrlname($idart, $idlang, $urlname, $idcatnew);
 
     $usetimemgmt = ((int) $timemgmt == 1)? 1 : 0;
     if ($timemgmt == '1' && (($datestart == '' && $dateend == '') || ($datestart == '0000-00-00 00:00:00' && $dateend == '0000-00-00 00:00:00'))) {
@@ -1772,18 +1772,19 @@ function conCopyMetaTags($srcidartlang, $dstidartlang) {
  *
  * @param int    $srcidart
  * @param int    $dstidart
+ * @param int    $dstidcat
  * @param int    $newtitle
  * @param bool   $useCopyLabel
- * @param int    $targetcat
  *
  * @throws cDbException
  * @throws cException
  * @throws cInvalidArgumentException
- * 
+ *
  * @global array $cfg
  * @global int   $lang
  */
-function conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel = true, $targetcat) {
+function conCopyArtLang($srcidart, $dstidart, $dstidcat, $newtitle, $useCopyLabel = true) {
+
     global $auth, $lang;
 
     $oSrcArtLang = new cApiArticleLanguage();
@@ -1838,7 +1839,8 @@ function conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel = true, $
     conCopyMetaTags($oSrcArtLang->get('idartlang'), $oNewArtLang->get('idartlang'));
 
     $urlname = trim(conHtmlSpecialChars(cString::cleanURLCharacters($title)));
-    $urlname = checkURLname($urlname, $idart, $targetcat, $oNewArtLang->get('idartlang'), $idlang);
+    $urlname = conGetUniqueArticleUrlname($idart, $idlang, $urlname, [$dstidcat]);
+
     $oNewArtLang->set('urlname', $urlname);
     $oNewArtLang->store();
 
@@ -1862,11 +1864,11 @@ function conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel = true, $
  * Copy article entry.
  *
  * @param int     $srcidart
- * @param int     $targetcat
+ * @param int     $dstidcat
  * @param string  $newtitle
  * @param bool    $useCopyLabel
  *
- * @return bool
+ * @return int|bool
  * 
  * @throws cDbException
  * @throws cException
@@ -1874,7 +1876,7 @@ function conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel = true, $
  * 
  * @global object $auth
  */
-function conCopyArticle($srcidart, $targetcat = 0, $newtitle = '', $useCopyLabel = true) {
+function conCopyArticle($srcidart, $dstidcat = 0, $newtitle = '', $useCopyLabel = true) {
     // Get source article
     $oSrcArt = new cApiArticle((int) $srcidart);
     if (!$oSrcArt->isLoaded()) {
@@ -1890,7 +1892,7 @@ function conCopyArticle($srcidart, $targetcat = 0, $newtitle = '', $useCopyLabel
     }
     $dstidart = $oNewArt->get('idart');
 
-    conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel, $targetcat);
+    conCopyArtLang($srcidart, $dstidart, $dstidcat, $newtitle, $useCopyLabel);
 
     // Get source category article entries
     $oCatArtColl = new cApiCategoryArticleCollection();
@@ -1899,7 +1901,7 @@ function conCopyArticle($srcidart, $targetcat = 0, $newtitle = '', $useCopyLabel
         // Insert destination category article entry
         $oCatArtColl2 = new cApiCategoryArticleCollection();
         $fieldsToOverwrite = array(
-            'idcat' => ($targetcat != 0)? $targetcat : $oCatArt->get('idcat'),
+            'idcat' => ($dstidcat != 0)? $dstidcat : $oCatArt->get('idcat'),
             'idart' => $dstidart,
             'status' => ($oCatArt->get('status') !== '')? $oCatArt->get('status') : 0,
             'createcode' => 1,
@@ -1908,7 +1910,7 @@ function conCopyArticle($srcidart, $targetcat = 0, $newtitle = '', $useCopyLabel
         $oCatArtColl2->copyItem($oCatArt, $fieldsToOverwrite);
 
         // If true, exit while routine, only one category entry is needed
-        if ($targetcat != 0) {
+        if ($dstidcat != 0) {
             break;
         }
     }
@@ -2177,38 +2179,71 @@ function conRemoveOldCategoryArticle($idcat, $idart, $idartlang, $client, $lang)
 }
 
 /**
- * Prevent double aliasnames at the same category
- * CON-2690 and Mod_Rewrite code
+ * Returns for the given article language a urlname which is unique in given categories.
  *
- * @param $newurlname
- * @param $idart
- * @param $idcat
- * @param $idartlang
- * @param $idlang
+ * @see CON-2690 and Mod_Rewrite code
  *
- * @return bool|string
- * 
+ * @param int   $idart
+ * @param int   $idlang
+ * @param int   $urlname
+ * @param array $idcats
+ *
+ * @return string
  * @throws cDbException
- * @throws cException
  */
-function checkURLname($newurlname, $idart, $idcat, $idartlang, $idlang) {
+function conGetUniqueArticleUrlname($idart, $idlang, $urlname, array $idcats)
+{
+    // assume given urlname to be unique
+    $uniqueUrlname = $urlname;
 
-    // Initializing Article Language class
-    $artlang = new cApiArticleLanguage($idartlang);
-
-    // Load article
-    $artlang->loadByArticleAndLanguageId($idart, $idartlang);
-
-    // Check if new urlname name already exists
-    if ($artlang->isInCatArticles($newurlname, $idart, $idlang, $idcat)) {
-        // Create new urlname name if exists
-        $newurlname = $newurlname . $idart;
+    // check for uniqueness
+    while (!conIsArticleUrlnameUnique($idart, $idlang, $uniqueUrlname, $idcats)) {
+        // append five random chars to original urlname
+        $uniqueUrlname = $urlname . ' ' . substr(md5(time()), 0, 5);
     }
 
-    // Check again - and set name
-    if (!$artlang->isInCatArticles($newurlname, $idart, $idlang, $idcat)) {
-        return $newurlname;
-    } else {
-        return false;
+    return $uniqueUrlname;
+}
+
+/**
+ * Checks if the given urlname is unique in the given categories.
+ *
+ * @internal Count number of other article languages of the given language
+ *           that have the given urlname and are related to the given categories.
+ *           Given urlname is unique if there are no other articles.
+ *
+ * @param int    $idart
+ * @param int    $idlang
+ * @param string $urlname
+ * @param array  $idcats
+ *
+ * @return bool
+ * @throws cDbException
+ */
+function conIsArticleUrlnameUnique($idart, $idlang, $urlname, array $idcats)
+{
+    $articleCount = 0;
+    if (!empty($idcats)) {
+        $sql = "SELECT
+                    COUNT(art_lang.idart) AS art_count
+                FROM
+                    " . cRegistry::getDbTableName('art_lang') . " AS art_lang
+                INNER JOIN
+                    " . cRegistry::getDbTableName('cat_art') . " AS cat_art
+                        ON art_lang.idart = cat_art.idart
+                        AND cat_art.idcat IN (" . implode(',', $idcats) . ")
+                WHERE
+                    art_lang.idlang = " . cSecurity::toInteger($idlang) . "
+                    AND art_lang.idart <> " . cSecurity::toInteger($idart) . "
+                    AND LOWER(art_lang.urlname) = LOWER('" . cSecurity::escapeString($urlname) . "')
+                GROUP BY
+                    cat_art.idcat";
+        $db  = new cDb();
+        $db->query($sql);
+        while ($db->nextRecord()) {
+            $articleCount = max($articleCount, $db->f('art_count'));
+        }
     }
+
+    return 0 === $articleCount;
 }
