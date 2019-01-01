@@ -12,7 +12,8 @@
  */
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$client = (isset($client)) ? $client : $load_client;
+$client = cRegistry::getClientId();
+$cfgClient = cRegistry::getClientConfig();
 
 // Load smarty
 if (!defined('SMARTY_DIR')) {
