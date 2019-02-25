@@ -558,7 +558,8 @@ class cFileHandler {
      */
     public static function fileNameIsDot($fileName) {
         // bugfix: function must work with full paths of files
-        $name = end(explode('/', $fileName));
+        $parts = explode('/', $fileName);
+        $name = end($parts);
         if ($name != '.' && $name != '..') {
             return false;
         } else {

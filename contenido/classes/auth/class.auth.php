@@ -67,6 +67,14 @@ class cAuth {
     private $_in = false;
 
     /**
+     * Property used for session persistency, by cSession.
+     * This property needs to be public since cSession has to set it!
+     *
+     * @var array
+     */
+    public $persistent_slots = ['auth'];
+
+    /**
      * Magic getter function for outdated variable names.
      *
      * @param string $name
@@ -76,12 +84,6 @@ class cAuth {
     public function __get($name) {
         if ($name == 'lifetime') {
             return $this->_lifetime;
-        }
-
-        if ($name == 'persistent_slots') {
-            return array(
-                "auth"
-            );
         }
 
         if ($name == 'classname') {

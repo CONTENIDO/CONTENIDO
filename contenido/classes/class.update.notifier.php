@@ -274,7 +274,7 @@ class cUpdateNotifier {
         } else {
             $this->bEnableView = true;
 
-            $sAction = $_GET['do'];
+            $sAction = !empty($_GET['do']) ? $_GET['do'] : '';
             if ($sAction != "") {
                 $this->updateSystemProperty($sAction);
             }

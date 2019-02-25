@@ -86,9 +86,9 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
      * @throws cException
      */
     public function validateCredentials() {
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $formtimestamp = $_POST['formtimestamp'];
+        $username = !empty($_POST['username']) ? $_POST['username'] : '';
+        $password = !empty($_POST['password']) ? $_POST['password'] : '';
+        $formtimestamp = !empty($_POST['formtimestamp']) ? $_POST['formtimestamp'] : '';
 
         // add slashes if they are not automatically added
         if (cRegistry::getConfigValue('simulate_magic_quotes') !== true) {

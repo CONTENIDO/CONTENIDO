@@ -513,7 +513,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         // split ids, if there is only one id, array has only one place filled,
         // that is also ok
         foreach (explode(',', $ids) as $currentId) {
-            if ($this->_forwardTypes[$contentTypeName] != "") {
+            if (!empty($this->_forwardTypes[$contentTypeName])) {
                 $contentTypeName = $this->_forwardTypes[$contentTypeName];
             }
             $return .= ' ' . $article->getContent($contentTypeName, $currentId);

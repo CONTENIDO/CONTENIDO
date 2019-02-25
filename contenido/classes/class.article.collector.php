@@ -204,6 +204,7 @@ class cArticleCollector implements SeekableIterator, Countable {
         $sqlCat = (count($this->_options['categories']) > 0) ? ", " . $cfg['tab']['cat_art'] . " AS c WHERE c.idcat IN ('" . implode("','", $this->_options['categories']) . "') AND b.idart = c.idart AND " : ' WHERE ';
 
         $sqlArtSpecs = (count($this->_options['artspecs']) > 0) ? " a.artspec IN ('" . implode("','", $this->_options['artspecs']) . "') AND " : '';
+        $sqlStartArticles = '';
 
         if (count($this->_startArticles) > 0) {
             if ($this->_options['start'] == false) {

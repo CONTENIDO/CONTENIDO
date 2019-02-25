@@ -597,7 +597,7 @@ class cApiArticleLanguage extends Item {
 
         if (is_null($id)) {
             // return Array
-            return $this->content[$type];
+            return isset($this->content[$type]) ? $this->content[$type] : [];
         }
 
         // return String

@@ -363,7 +363,7 @@ class cGuiTableForm {
 
         if (is_array($this->items)) {
             foreach ($this->items as $key => $value) {
-                if ($this->itemType[$key] == 'subheader') {
+                if (!empty($this->itemType[$key]) && $this->itemType[$key] == 'subheader') {
                     $tablerow = new cHTMLTableRow();
                     $tabledata = new cHTMLTableData();
                     $tabledata->setAttribute("colspan", "2");
