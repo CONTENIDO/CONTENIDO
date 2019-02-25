@@ -39,7 +39,7 @@ class cApiPathresolveCacheHelper {
      * @throws cDbException
      */
     public static function setup($cfg) {
-        if (true === $cfg['pathresolve_heapcache'] && false === self::$_tableCreated) {
+        if (isset($cfg['pathresolve_heapcache']) && true === $cfg['pathresolve_heapcache'] && false === self::$_tableCreated) {
             $db = cRegistry::getDb();
             $tableName = $cfg['sql']['sqlprefix'] . '_pathresolve_cache';
 
@@ -82,7 +82,7 @@ class cApiPathresolveCacheCollection extends ItemCollection {
      */
     public function __construct() {
         global $cfg;
-        cApiPathresolveCacheHelper::setup($cfg['sql']['sqlprefix'] . '_pathresolve_cache');
+        cApiPathresolveCacheHelper::setup($cfg);
         parent::__construct($cfg['sql']['sqlprefix'] . '_pathresolve_cache', 'idpathresolvecache');
         $this->_setItemClass('cApiPathresolveCache');
     }
@@ -167,7 +167,7 @@ class cApiPathresolveCache extends Item
      */
     public function __construct($mId = false) {
         global $cfg;
-        cApiPathresolveCacheHelper::setup($cfg['sql']['sqlprefix'] . '_pathresolve_cache');
+        cApiPathresolveCacheHelper::setup($cfg);
         parent::__construct($cfg['sql']['sqlprefix'] . '_pathresolve_cache', 'idpathresolvecache');
         $this->setFilters(array(), array());
         if ($mId !== false) {
