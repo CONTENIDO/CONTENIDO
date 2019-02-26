@@ -25,7 +25,7 @@ $contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . 
 include_once($contenidoPath . 'includes/startup.php');
 
 // con_cli Plugin
-if ('cli' === substr(PHP_SAPI, 0, 3)) {
+if ('cli' === cString::getPartOfString(PHP_SAPI, 0, 3)) {
     $client = $lang = 1;
     require_once($contenidoPath . $cfg['path']['includes'] . 'functions.includePluginConf.php');
     cApiCecHook::execute('Contenido.Frontend.AfterLoadPlugins');

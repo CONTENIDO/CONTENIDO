@@ -261,41 +261,8 @@ function getDirectorySize($sDirectory, $bRecursive = false) {
  * @throws cInvalidArgumentException
  */
 function scanDirectory($sDirectory, $bRecursive = false) {
-
     cDeprecated('This method is deprecated and is not needed any longer');
     return cDirHandler::read($sDirectory, $bRecursive, false, true);
-
-    // if (substr($sDirectory, strlen($sDirectory) - 1, 1) == '/') {
-    //     $sDirectory = substr($sDirectory, 0, strlen($sDirectory) - 1);
-    // }
-    // if (!is_dir($sDirectory)) {
-    //     return false;
-    // }
-    // $aFiles = array();
-    // $openDirs = array();
-    // $closedDirs = array();
-    // array_push($openDirs, $sDirectory);
-    // while (count(($openDirs)) >= 1) {
-    //     $sDirectory = array_pop($openDirs);
-    //     if (is_dir($sDirectory)) {
-    //         if (false !== $handle = cDirHandler::read($sDirectory)) {
-    //             foreach ($handle as $sFile) {
-    //                 if (cFileHandler::fileNameIsDot($sFile) === false) {
-    //                     $sFullpathFile = $sDirectory . '/' . $sFile;
-    //                     if (is_file($sFullpathFile) && cFileHandler::readable($sFullpathFile)) {
-    //                         array_push($aFiles, $sFullpathFile);
-    //                     } elseif (is_dir($sFullpathFile) && $bRecursive == true) {
-    //                         if (!in_array($sFullpathFile, $closedDirs)) {
-    //                             array_push($openDirs, $sFullpathFile);
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     array_push($closedDirs, $sDirectory);
-    // }
-    // return $aFiles;
 }
 
 /**

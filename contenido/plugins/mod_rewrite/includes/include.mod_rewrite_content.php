@@ -27,7 +27,6 @@ if ((int) $client <= 0) {
     return;
 }
 
-
 $action = (isset($_REQUEST['mr_action'])) ? $_REQUEST['mr_action'] : 'index';
 $bDebug = false;
 

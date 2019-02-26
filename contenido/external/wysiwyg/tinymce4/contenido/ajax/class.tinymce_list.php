@@ -202,8 +202,8 @@ class cTinyMCE4List {
             foreach ($articleCollector as $articleLanguage) {
                 $tmp_title = $articleLanguage->get("title");
 
-                if (strlen($tmp_title) > 32) {
-                    $tmp_title = substr($tmp_title, 0, 32);
+                if (cString::getStringLength($tmp_title) > 32) {
+                    $tmp_title = cString::getPartOfString($tmp_title, 0, 32);
                 }
 
                 $is_start = isStartArticle($articleLanguage->get('idartlang'), $catEntry['idcat'], $lang);

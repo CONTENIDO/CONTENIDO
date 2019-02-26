@@ -244,11 +244,10 @@ function calcDensity($singlewordcounter, $string, $quantifier = 1) {
     for ($i = 0; $i < count($blacklist); $i++) {
         $blacklist[$i] = ltrim(cString::toLowerCase($blacklist[$i]), '');
     }
-    $tmp = array();
     $tmp = explode(' ', $string);
     $tmp_size = sizeof($tmp);
 
-    for ($i = 0; $i <= $tmp_size; $i++) {
+    for ($i = 0; $i < $tmp_size; $i++) {
         if (cString::getStringLength($tmp[$i]) < $minLen) {
             continue;
         }
@@ -361,7 +360,7 @@ function keywordDensity($headline, $text) {
 
     // path = cms_getUrlPath($idcat);
     // path = str_replace(cRegistry::getFrontendUrl();, '', $path);
-    // path = cString::getPartOfString($path, 0, strlen($path) - 1);
+    // path = cString::getPartOfString($path, 0, cString::getStringLength($path) - 1);
     // path = str_replace('/', ' ', $path);
 
     $singlewordcounter = array();
