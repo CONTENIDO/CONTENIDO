@@ -231,6 +231,9 @@ class cI18n {
         if (isset(self::$_i18nData['cache'][$domain][$string])) {
             return self::$_i18nData['cache'][$domain][$string];
         }
+        if (!isset(self::$_i18nData['domains'][$domain])) {
+            return $string;
+        }
 
         $translationFile = self::$_i18nData['domains'][$domain] . self::$_i18nData['language'] . '/LC_MESSAGES/' . $domain . '.po';
         if (!cFileHandler::exists($translationFile)) {

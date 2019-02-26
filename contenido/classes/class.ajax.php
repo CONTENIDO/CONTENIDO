@@ -80,8 +80,6 @@ class cAjaxRequest {
      */
     public function handle($action) {
         $backendPath = cRegistry::getBackendPath();
-        $frontendURL = cRegistry::getFrontendUrl();
-        $frontendPath = cRegistry::getFrontendPath();
 
         $string = '';
         switch ($action) {
@@ -239,6 +237,10 @@ class cAjaxRequest {
                 break;
 
             case 'scaleImage':
+                // Access to frontend configuration only when needed, clients config may not available everywhere in the backend
+                $frontendURL = cRegistry::getFrontendUrl();
+                $frontendPath = cRegistry::getFrontendPath();
+
                 $filename_a = $_REQUEST['url'];
                 $filename = str_replace($frontendURL, $frontendPath, $filename_a);
                 // $filename muss not url path(http://) sondern globale PC

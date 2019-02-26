@@ -92,8 +92,9 @@ class cSession {
                 $available = false;
             }
 
+            // TODO Remove amr check here, plugins are not initialized at this stage!
             // If you use AMR, use rootdir variable of mod_rewrite plugin instead of BackendUrl/FrontendUrl
-            if ($cfg['mod_rewrite']['use'] === 1 && $available === true && cString::getStringLength($cfg['mod_rewrite']['rootdir']) > 0) {
+            if (isset($cfg['mod_rewrite']) && $cfg['mod_rewrite']['use'] === 1 && $available === true && cString::getStringLength($cfg['mod_rewrite']['rootdir']) > 0) {
                 $url = $cfg['mod_rewrite']['rootdir'];
             }
 

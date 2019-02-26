@@ -25,6 +25,8 @@ if (!defined('CON_FRAMEWORK')) {
 global $cfgConCache;
 global $auth;
 
+$cfgConCache = [];
+
 /**
  * don't cache output, if we have a CONTENIDO variable, e. g. on calling frontend preview from backend
  * @var bool  $cfgConCache['excludecontenido']

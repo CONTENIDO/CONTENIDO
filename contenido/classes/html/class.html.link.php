@@ -98,7 +98,6 @@ class cHTMLLink extends cHTMLContentElement {
      *         String with the location to link to
      */
     public function __construct($href = '') {
-        global $sess;
         parent::__construct();
 
         $this->setLink($href);
@@ -106,10 +105,9 @@ class cHTMLLink extends cHTMLContentElement {
         $this->_image = '';
 
         // Check for backend
-        if (is_object($sess)) {
-            if ($sess->classname == 'cSession') {
-                $this->enableAutomaticParameterAppend();
-            }
+        $sess = cRegistry::getSession();
+        if (is_object($sess) && get_class($sess) == 'cSession') {
+            $this->enableAutomaticParameterAppend();
         }
     }
 

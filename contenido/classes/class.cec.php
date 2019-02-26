@@ -208,17 +208,15 @@ class cApiCecRegistry {
             throw new cInvalidArgumentException('Function ' . $sFunctionName . ' isn\'t callable, can\'t add to chain ' . $sChainName);
         }
 
+        if (!isset($this->_aChains[$sChainName])) {
+            $this->_aChains[$sChainName] = [
+                'functions' => [],
+                'parameters' => [],
+            ];
+        }
+
         $oChainItem = new cApiCecChainItem($sChainName, $sFunctionName, $this->_aChains[$sChainName]['parameters']);
         $oChainItem->setCallback($call);
-
-        if (!is_array($this->_aChains[$sChainName])) {
-            $this->_aChains[$sChainName] = array();
-            $this->_aChains[$sChainName]['functions'] = array();
-        }
-
-        if (!is_array($this->_aChains[$sChainName]['functions'])) {
-            $this->_aChains[$sChainName]['functions'] = array();
-        }
 
         $this->_aChains[$sChainName]['functions'][] = $oChainItem;
 

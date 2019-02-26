@@ -381,7 +381,7 @@ abstract class cCodeGeneratorAbstract {
             foreach ($a_[$key] as $val) {
                 if (class_exists($typeClassName)) {
                     // we have a class for the content type, use it
-                    $tmp = $a_content[$_typeItem->type][$val];
+                    $tmp = !empty($a_content[$_typeItem->type][$val]) ? $a_content[$_typeItem->type][$val] : '';
                     /** @var cContentTypeAbstract $cTypeObject */
                     $cTypeObject = new $typeClassName($tmp, $val, $a_content);
                     global $edit;

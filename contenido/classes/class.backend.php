@@ -193,8 +193,9 @@ class cBackend {
             $this->_files[$db->f('type')][] = $filepath;
         }
 
+        $actions = !empty($this->_actions[$this->_area]) ? $this->_actions[$this->_area] : [];
         $debug = "Files:\n" . print_r($this->_files, true) . "\n"
-            . "Actions:\n" . print_r($this->_actions[$this->_area], true) . "\n"
+            . "Actions:\n" . print_r($actions, true) . "\n"
             . "Information:\n" . "Area: $area\n"
             . "Action: $action\n"
             . "Client: $client\n"
@@ -240,8 +241,10 @@ class cBackend {
      * @return array
      */
     public function getFile($which) {
-        if (isset($this->_files[$which])) {
+        if (isset($this->_files[$which]) && is_array($this->_files[$which])) {
             return $this->_files[$which];
+        } else {
+            return [];
         }
     }
 
