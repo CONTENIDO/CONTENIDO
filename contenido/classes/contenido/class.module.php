@@ -509,7 +509,7 @@ class cApiModule extends Item {
             // iterate over all defines cms content types
             foreach ($cfg['translatable_content_types'] as $sContentType) {
                 // check if the content type exists and include his class file
-                if (cFileHandler::exists($cfg['contenido']['path'] . 'classes/class.' . cString::toLowerCase($sContentType) . '.php')) {
+                if (cFileHandler::exists($cfg['path']['contenido'] . 'classes/class.' . cString::toLowerCase($sContentType) . '.php')) {
                     cInclude('classes', 'class.' . cString::toLowerCase($sContentType) . '.php');
                     // if the class exists, has the method
                     // 'addModuleTranslations'

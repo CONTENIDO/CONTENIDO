@@ -438,7 +438,7 @@ class cRegistry {
 
         // determine configuration section
         $section = array();
-        if (array_key_exists($sectionName, $cfg)) {
+        if (isset($cfg[$sectionName])) {
             $section = $cfg[$sectionName];
         }
         if (NULL === $optionName) {
@@ -447,13 +447,11 @@ class cRegistry {
 
         // determine configuration value for certain option name of
         // configuration section
-        $value = $defaultValue;
-        if (is_array($cfg[$sectionName])) {
-            if (array_key_exists($optionName, $section)) {
-                $value = $section[$optionName];
-            }
+        if (is_array($section) && isset($section[$optionName])) {
+            return $section[$optionName];
+        } else {
+            return $defaultValue;
         }
-        return $value;
     }
 
     /**
