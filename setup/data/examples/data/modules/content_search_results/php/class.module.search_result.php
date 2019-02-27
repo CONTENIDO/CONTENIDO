@@ -87,6 +87,16 @@ class SearchResultModule {
     protected $_page = 0;
 
     /**
+     * @var string
+     */
+    protected $_msgResult;
+
+    /**
+     * @var string
+     */
+    protected $_msgRange;
+
+    /**
      *
      * @param array $options
      */
@@ -108,6 +118,9 @@ class SearchResultModule {
         $this->_idcat = cRegistry::getCategoryId();
         $this->_idart = cRegistry::getArticleId();
         $this->_sess = cRegistry::getSession();
+        $this->_combine = '';
+        $this->_msgResult = '';
+        $this->_msgRange = '';
 
         // get global variables (the ugly way)
         global $sArtSpecs;
@@ -174,6 +187,7 @@ class SearchResultModule {
         $tpl->assign('prev', $this->_getPreviousLink());
         $tpl->assign('next', $this->_getNextLink());
         $tpl->assign('pages', $this->_getPageLinks());
+        $tpl->assign('method', 'post');
 
         // determine action & method for search form
         // depends upon if plugin mod_rewrite is enabled

@@ -18,13 +18,13 @@ cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.str.php');
 cInclude('includes', 'functions.upl.php');
 
+$appendparameters = !empty($_REQUEST['appendparameters']) ? $_REQUEST['appendparameters'] : '';
+$searchfor = !empty($_REQUEST['searchfor']) ? cSecurity::escapeString($_REQUEST['searchfor']) : '';
+$sDisplayPath = !empty($_REQUEST['path']) ? cSecurity::escapeString($_REQUEST['path']) : '';
+$pathstring = !empty($_REQUEST['pathstring']) ? cSecurity::escapeString($_REQUEST['pathstring']) : '';
+$file = !empty($_REQUEST['file']) ? cSecurity::escapeString($_REQUEST['file']) : '';
+
 $tpl->set('s', 'FORMACTION', '');
-$sDisplayPath = '';
-if (isset($_REQUEST['path'])) {
-    $sDisplayPath = $_REQUEST['path'];
-} else {
-    $sDisplayPath = $sCurrentPathInfo;
-}
 
 $sDisplayPath = generateDisplayFilePath($sDisplayPath, 35);
 $tpl->set('s', 'CAPTION2', $sDisplayPath);
@@ -39,7 +39,7 @@ if ((int) $client == 0) {
 
 // Form for 'Search'
 if ((int) $client > 0) {
-    $search = new cHTMLTextbox('searchfor', $_REQUEST['searchfor'], 26);
+    $search = new cHTMLTextbox('searchfor', $searchfor, 26);
     $search->setClass('text_small vAlignMiddle');
     $sSearch = $search->render();
 
@@ -113,10 +113,7 @@ $mstr = sprintf(
 );
 
 $tpl->set('d', 'PATH', $pathstring);
-$tpl->set('d', 'BGCOLOR', $bgcolor);
-$tpl->set('d', 'INDENT', 3);
 $tpl->set('d', 'DIRNAME', $mstr);
-$tpl->set('d', 'EDITBUTTON', '');
 $tpl->set('d', 'COLLAPSE', '');
 $tpl->next();
 

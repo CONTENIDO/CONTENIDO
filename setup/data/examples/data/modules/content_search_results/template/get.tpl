@@ -14,7 +14,7 @@
 <h3>{$msgResult}</h3>
 
 {* top pagination *}
-{if 0 lt $prev|cat:$pages|cat:$next|trim|strlen}
+{if !empty($pages) && (!empty($prev) || !empty($next))}
 <div class="pagination">
     <span>{$msgRange}</span>
     <ul>
@@ -44,7 +44,7 @@
 </ul>
 
 {* bottom pagination *}
-{if 0 lt $prev|cat:$pages|cat:$next|trim|strlen}
+{if !empty($pages) && (!empty($prev) || !empty($next))}
 <div class="pagination">
     <span>{$msgRange}</span>
     <ul>

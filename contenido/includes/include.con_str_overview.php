@@ -145,7 +145,7 @@ function showTree($iIdcat, &$aWholelist) {
                 $aCssClasses[] = 'last';
             }
 
-            if ($aValue['collapsed'] == 1 && is_array($navigationTree[$idcat])) {
+            if ($aValue['collapsed'] == 1 && isset($navigationTree[$idcat]) && is_array($navigationTree[$idcat])) {
                 $aCssClasses[] = 'collapsed';
             }
 
@@ -197,7 +197,7 @@ function showTree($iIdcat, &$aWholelist) {
 
             // Build Tree
             $tpl->set('d', 'CFGDATA', $cfgdata);
-            if (is_array($navigationTree[$idcat])) {
+            if (isset($navigationTree[$idcat]) && is_array($navigationTree[$idcat])) {
                 $tpl->set('d', 'SUBCATS', showTree($idcat, $aWholelist));
                 $tpl->set('d', 'COLLAPSE', '<a href="#"> </a>');
                 $aWholelist[] = $idcat;
@@ -375,6 +375,7 @@ while ($db->nextRecord()) {
 }
 
 $arrArtCache = array();
+$aIsArticles = array();
 
 if (count($arrIn) > 0) {
     $sIn = implode(',', $arrIn);
@@ -631,7 +632,7 @@ while ($db->nextRecord()) {
             'forcedisplay' => $forcedisplay,
             'active' => $active,
             'islast' => false,
-            'articles' => $aIsArticles[$db->f("idcat")],
+            'articles' => !empty($aIsArticles[$db->f("idcat")]) ? $aIsArticles[$db->f("idcat")] : false,
             'level' => $db->f('level')
         );
         if ($aStartOnlineArticles[$db->f('idcat')]['is_start']) {

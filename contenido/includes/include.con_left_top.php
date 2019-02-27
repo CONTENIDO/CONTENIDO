@@ -105,11 +105,13 @@ $oListOptionRow = new cGuiFoldingRow("3498dbba-ed4a-4618-8e49-3a3635396e22", i18
 $tpl->set('s', 'ARTICLELINK', $articleLink);
 
 // Textfeld
-$oTextboxArtTitle = new cHTMLTextbox("bs_search_text", $_REQUEST["bs_search_text"], 10);
+$bsSearchText = !empty($_REQUEST["bs_search_text"]) ? $_REQUEST["bs_search_text"] : '';
+$oTextboxArtTitle = new cHTMLTextbox("bs_search_text", $bsSearchText, 10);
 $oTextboxArtTitle->setStyle('width:135px;');
 
 // Artikel_ID-Feld
-$oTextboxArtID = new cHTMLTextbox("bs_search_id", $_REQUEST["bs_search_id"], 10);
+$bsSearchId = !empty($_REQUEST["bs_search_id"]) ? $_REQUEST["bs_search_id"] : '';
+$oTextboxArtID = new cHTMLTextbox("bs_search_id", $bsSearchId, 10);
 $oTextboxArtID->setStyle('width:135px;');
 
 // Date type
@@ -118,11 +120,8 @@ $oSelectArtDateType->autoFill($arrDateTypes);
 $oSelectArtDateType->setStyle('width:135px;');
 $oSelectArtDateType->setEvent("Change", "toggle_tr_visibility('tr_date_from');toggle_tr_visibility('tr_date_to');");
 
-if ($_REQUEST["bs_search_date_type"] != '') {
-    $oSelectArtDateType->setDefault($_REQUEST["bs_search_date_type"]);
-} else {
-    $oSelectArtDateType->setDefault('n/a');
-}
+$bsSearchDateType = !empty($_REQUEST["bs_search_date_type"]) ? $_REQUEST["bs_search_date_type"] : 'n/a';
+$oSelectArtDateType->setDefault($bsSearchDateType);
 
 // DateFrom
 $oSelectArtDateFromDay = new cHTMLSelectElement("bs_search_date_from_day");
@@ -137,19 +136,19 @@ $oSelectArtDateFromYear = new cHTMLSelectElement("bs_search_date_from_year");
 $oSelectArtDateFromYear->setStyle('width:55px;');
 $oSelectArtDateFromYear->autoFill($arrYears);
 
-if ($_REQUEST["bs_search_date_from_day"] > 0) {
+if (!empty($_REQUEST["bs_search_date_from_day"]) && $_REQUEST["bs_search_date_from_day"] > 0) {
     $oSelectArtDateFromDay->setDefault($_REQUEST["bs_search_date_from_day"]);
 } else {
     $oSelectArtDateFromDay->setDefault(0);
 }
 
-if ($_REQUEST["bs_search_date_from_month"] > 0) {
+if (!empty($_REQUEST["bs_search_date_from_month"]) && $_REQUEST["bs_search_date_from_month"] > 0) {
     $oSelectArtDateFromMonth->setDefault($_REQUEST["bs_search_date_from_month"]);
 } else {
     $oSelectArtDateFromMonth->setDefault(0);
 }
 
-if ($_REQUEST["bs_search_date_from_year"] > 0) {
+if (!empty($_REQUEST["bs_search_date_from_year"]) && $_REQUEST["bs_search_date_from_year"] > 0) {
     $oSelectArtDateFromYear->setDefault($_REQUEST["bs_search_date_from_year"]);
 } else {
     $oSelectArtDateFromYear->setDefault(0);
@@ -168,19 +167,19 @@ $oSelectArtDateToYear = new cHTMLSelectElement("bs_search_date_to_year");
 $oSelectArtDateToYear->setStyle('width:55px;');
 $oSelectArtDateToYear->autoFill($arrYears);
 
-if ($_REQUEST["bs_search_date_to_day"] > 0) {
+if (!empty($_REQUEST["bs_search_date_to_day"]) && $_REQUEST["bs_search_date_to_day"] > 0) {
     $oSelectArtDateToDay->setDefault($_REQUEST["bs_search_date_to_day"]);
 } else {
     $oSelectArtDateToDay->setDefault(0);
 }
 
-if ($_REQUEST["bs_search_date_to_month"] > 0) {
+if (!empty($_REQUEST["bs_search_date_to_month"]) && $_REQUEST["bs_search_date_to_month"] > 0) {
     $oSelectArtDateToMonth->setDefault($_REQUEST["bs_search_date_to_month"]);
 } else {
     $oSelectArtDateToMonth->setDefault(0);
 }
 
-if ($_REQUEST["bs_search_date_to_year"] > 0) {
+if (!empty($_REQUEST["bs_search_date_to_year"]) && $_REQUEST["bs_search_date_to_year"] > 0) {
     $oSelectArtDateToYear->setDefault($_REQUEST["bs_search_date_to_year"]);
 } else {
     $oSelectArtDateToYear->setDefault(0);
@@ -191,7 +190,7 @@ $oSelectArtAuthor = new cHTMLSelectElement("bs_search_author");
 $oSelectArtAuthor->setStyle('width:135px;');
 $oSelectArtAuthor->autoFill($arrUsers);
 
-if ($_REQUEST["bs_search_author"] != '') {
+if (!empty($_REQUEST["bs_search_author"]) && $_REQUEST["bs_search_author"] != '') {
     $oSelectArtAuthor->setDefault($_REQUEST["bs_search_author"]);
 } else {
     $oSelectArtAuthor->setDefault('n/a');
@@ -345,6 +344,9 @@ $editCategory = new cGuiFoldingRow("31f52be2-7499-4d21-8175-3917129e6014", i18n(
 $divLegend = new cHTMLDiv("", "articleLegend", "legend-content");
 
 $aInformation = array('imgsrc', 'description');
+if (empty($aData)) {
+    $aData = [];
+}
 $aData = xmlFileToArray($cfg['path']['xml'] . "legend.xml", $aData, $aInformation);
 
 foreach ($aData as $key => $item) {
@@ -379,10 +381,10 @@ function xmlFileToArray($filename, $aData = array(), $aInformation) {
     $_dom = simplexml_load_file($filename);
     for ($i = 0, $size = count($_dom); $i < $size; $i++) {
         foreach ($aInformation as $sInfoName) {
-            if ($_dom->article[$i]->$sInfoName != '') {
+            if (!empty($_dom->article[$i]->$sInfoName)) {
                 $aData['article'][$i][$sInfoName] = $_dom->article[$i]->$sInfoName;
             }
-            if ($_dom->category[$i]->$sInfoName != '') {
+            if (!empty($_dom->category[$i]->$sInfoName)) {
                 $aData['category'][$i][$sInfoName] = $_dom->category[$i]->$sInfoName;
             }
         }

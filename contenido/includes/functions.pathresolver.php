@@ -45,9 +45,10 @@ function prResolvePathViaURLNames($path) {
 
     // Pre-process path
     $path = cString::toLowerCase(str_replace(' ', '', $path));
+    $pathresolveHeapcacheEnabled = cRegistry::getConfigValue('pathresolve_heapcache');
 
     // Delete outdated entry in heapcache table, if enabled.
-    if ($cfg['pathresolve_heapcache'] == true) {
+    if ($pathresolveHeapcacheEnabled === true) {
         $oPathresolveCacheColl = new cApiPathresolveCacheCollection();
         $oPathresolveCache = $oPathresolveCacheColl->fetchLatestByPathAndLanguage($path, $lang);
         if (is_object($oPathresolveCache)) {
@@ -103,7 +104,7 @@ function prResolvePathViaURLNames($path) {
 
     endAndLogTiming($handle);
 
-    if ($cfg['pathresolve_heapcache'] == true) {
+    if ($pathresolveHeapcacheEnabled === true) {
         $oPathresolveCacheColl = new cApiPathresolveCacheCollection();
         $oPathresolveCache = $oPathresolveCacheColl->create($path, key($results), $lang, time());
     }

@@ -14,15 +14,17 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$cpage = new cGuiPage("todo.popup");
+$oPage = new cGuiPage("todo.popup");
 
 if ($action == 'todo_save_item') {
     $todo = new TODOCollection();
 
     $subject = stripslashes($subject);
     $message = stripslashes($message);
+    $notiemail = !empty($notiemail) ? '1' : '';
+    $notibackend = !empty($notibackend) ? '1' : '';
 
-    if (is_array($userassignment)) {
+    if (!empty($userassignment) && is_array($userassignment)) {
         foreach ($userassignment as $key => $value) {
             $item = $todo->createItem($itemtype, $itemid, strtotime($reminderdate), $subject, $message, $notiemail, $notibackend, $auth->auth['uid']);
             $item->set('recipient', $value);
@@ -31,7 +33,7 @@ if ($action == 'todo_save_item') {
         }
     }
 
-    $cpage->addScript('<script>window.close();</script>');
+    $oPage->addScript('<script>window.close();</script>');
 } else {
     $ui = new cGuiTableForm('reminder');
     $ui->addHeader(i18n('Add TODO item'));
@@ -42,7 +44,7 @@ if ($action == 'todo_save_item') {
     $ui->setVar('itemtype', $itemtype);
     $ui->setVar('itemid', $itemid);
 
-    $subject = new cHTMLTextbox('subject', stripslashes(urldecode($subject)),60);
+    $subject = new cHTMLTextbox('subject', stripslashes(urldecode($subject)), 60);
     $ui->add(i18n('Subject'), $subject->render());
 
     $message = new cHTMLTextarea('message', stripslashes(urldecode($message)));
@@ -54,23 +56,24 @@ if ($action == 'todo_save_item') {
 
     $reminderdue = new cHTMLTextbox('enddate', '', '', '', 'enddate');
     $ui->add(i18n('End date'),$reminderdue->render());
-    $notiemail = new cHTMLCheckbox('notiemail', i18n('E-mail notification'));
-    $langscripts = array();
+    $notiemail = new cHTMLCheckbox('notiemail', '1');
+    $notiemail->setLabelText(i18n('E-mail notification'));
+    $langScripts = array();
 
-    if (($lang_short = cString::getPartOfString(cString::toLowerCase($belang), 0, 2)) != 'en') {
-        $langscripts[] = 'jquery/plugins/timepicker-' . $lang_short . '.js';
-        $langscripts[] = 'jquery/plugins/datepicker-' . $lang_short . '.js';
+    if (($langCodeShort = cString::getPartOfString(cString::toLowerCase($belang), 0, 2)) != 'en') {
+        $langScripts[] = 'jquery/plugins/timepicker-' . $langCodeShort . '.js';
+        $langScripts[] = 'jquery/plugins/datepicker-' . $langCodeShort . '.js';
     }
 
-    $path_to_calender_pic = cRegistry::getBackendUrl(). $cfg['path']['images'] . 'calendar.gif';
+    $calendarButtonImage = cRegistry::getBackendUrl(). $cfg['path']['images'] . 'calendar.gif';
 
     $ui->add(i18n('Reminder options'), $notiemail->toHtml());
-    $calscript = '
+    $calScript = '
 <script type="text/javascript">
 (function(Con, $) {
     $(function() {
         $("#reminderdate").datetimepicker({
-            buttonImage:"'. $path_to_calender_pic.'",
+            buttonImage:"'. $calendarButtonImage.'",
             buttonImageOnly: true,
             showOn: "both",
             dateFormat: "yy-mm-dd",
@@ -92,7 +95,7 @@ if ($action == 'todo_save_item') {
             }
         });
         $("#enddate").datetimepicker({
-            buttonImage: "'. $path_to_calender_pic .'",
+            buttonImage: "'. $calendarButtonImage .'",
             buttonImageOnly: true,
             showOn: "both",
             dateFormat: "yy-mm-dd",
@@ -117,29 +120,30 @@ if ($action == 'todo_save_item') {
 })(Con, Con.$);
 </script>';
 
-    $userselect = new cHTMLSelectElement("userassignment[]");
+    $userSelect = new cHTMLSelectElement("userassignment[]");
 
     $userColl = new cApiUserCollection();
+    $assignedUsers = [];
     foreach ($userColl->getAccessibleUsers(explode(',', $auth->auth['perm']), true) as $key => $value) {
-       $acusers[$key] = $value["username"] . " (" . $value["realname"] . ")";
+        $assignedUsers[$key] = $value["username"] . " (" . $value["realname"] . ")";
     }
 
-    asort($acusers);
+    asort($assignedUsers);
 
-    $userselect->autoFill($acusers);
-    $userselect->setDefault($auth->auth["uid"]);
-    $userselect->setMultiselect();
-    $userselect->setSize(5);
+    $userSelect->autoFill($assignedUsers);
+    $userSelect->setDefault($auth->auth["uid"]);
+    $userSelect->setMultiselect();
+    $userSelect->setSize(5);
 
-    $ui->add(i18n("Assigned to"), $userselect->render());
+    $ui->add(i18n("Assigned to"), $userSelect->render());
 
-    $cpage->addStyle('jquery/plugins/timepicker.css');
-    $cpage->addScript('jquery/plugins/timepicker.js');
-    foreach ($langscripts as $langscript) {
-        $cpage->addScript($langscript);
+    $oPage->addStyle('jquery/plugins/timepicker.css');
+    $oPage->addScript('jquery/plugins/timepicker.js');
+    foreach ($langScripts as $langScript) {
+        $oPage->addScript($langScript);
     }
-    $cpage->addScript($calscript);
-    $cpage->setContent($ui);
+    $oPage->addScript($calScript);
+    $oPage->setContent($ui);
 }
 
-$cpage->render();
+$oPage->render();

@@ -267,11 +267,20 @@ function calcDensity($singlewordcounter, $string, $quantifier = 1) {
         // hole word in upper cases ?
         (!ctype_upper($tmp[$i])) ? $tmp[$i] = cString::toLowerCase(addslashes($tmp[$i])) : $tmp[$i] = addslashes(preg_replace($patterns, $replaces, $tmp[$i]));
 
-        // using mb_strtolower because of umlauts
         if (!array_search($tmp[$i], $blacklist)) {
-            // if hole string in upper casses add additional quantifiert else
+            // if hole string in upper cases add additional quantifier else
             // use only the string length
-            (ctype_upper($tmp[$i])) ? $singlewordcounter[cString::toLowerCase($tmp[$i])] += cString::getStringLength($tmp[$i]) + 10000 : $singlewordcounter[$tmp[$i]] += cString::getStringLength($tmp[$i]);
+            if (ctype_upper($tmp[$i])) {
+                if (empty($singlewordcounter[cString::toLowerCase($tmp[$i])])) {
+                    $singlewordcounter[cString::toLowerCase($tmp[$i])] = 0;
+                }
+                $singlewordcounter[cString::toLowerCase($tmp[$i])] += cString::getStringLength($tmp[$i]) + 10000;
+            } else {
+                if (empty( $singlewordcounter[$tmp[$i]])) {
+                    $singlewordcounter[$tmp[$i]] = 0;
+                }
+                $singlewordcounter[$tmp[$i]] += cString::getStringLength($tmp[$i]);
+            }
         }
     }
 
@@ -306,7 +315,11 @@ function stripCount($singlewordcounter, $maxKeywords = 15) {
         $dist = array();
 
         foreach ($tmp as $key => $value) {
+            if (!isset($dist[$value])) {
+                $dist[$value] = 0;
+            } else {
             $dist[$value]++;
+            }
         }
 
         uksort($dist, "__cmp");

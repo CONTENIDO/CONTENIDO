@@ -26,6 +26,10 @@ if ((int) $client < 1) {
     return;
 }
 
+$appendparameters = !empty($_REQUEST['appendparameters']) ? $_REQUEST['appendparameters'] : '';
+$collapse = !empty($_REQUEST['collapse']) ? $_REQUEST['collapse'] : '';
+$expand = !empty($_REQUEST['expand']) ? $_REQUEST['expand'] : '';
+
 /**
  *
  * @param TreeItem $item
@@ -62,12 +66,11 @@ if (!isset($path) && $sess->isRegistered('upl_last_path')) {
     $path = $upl_last_path;
 }
 
-$appendparameters = $_REQUEST['appendparameters'];
-
-if (!isset($action))
+if (!isset($action)) {
     $action = '';
+}
 
-if ($tmp_area == '') {
+if (empty($tmp_area)) {
     $tmp_area = $area; // $tmp_area used at two places for unknown reasons...
 }
 
@@ -121,10 +124,12 @@ if ($action == 'upl_delete') {
 $tpl->reset();
 
 // Show notification for error in dir name from upl_mkdir.action
-if ($errno === '0703') {
+if (!empty($errno)) {
+    if ($errno === '0703') {
     $tpl->set('s', 'WARNING', $notification->returnNotification('error', i18n('Directories with special characters and spaces are not allowed.')));
-} elseif($errno === '0704') {
+    } elseif($errno === '0704') {
     $tpl->set('s', 'WARNING', $notification->returnNotification('error', i18n('Can not write directory.')));
+    }
 }
 
 // Uploadfiles tree on file system
@@ -157,11 +162,11 @@ foreach ($uplexpandedList as $key => $value) {
 }
 
 // Collapse and expand the tree
-if (is_string($collapse)) {
+if (!empty($collapse)) {
     $rootTreeItem->markCollapsed($collapse);
 }
 
-if (is_string($expand)) {
+if (!empty($expand)) {
     $rootTreeItem->markExpanded($expand);
 }
 
@@ -355,11 +360,11 @@ foreach ($upldbfsexpandedList as $key => $value) {
 }
 
 // Collapse and expand the tree
-if (is_string($collapse)) {
+if (!empty($collapse)) {
     $rootTreeItem->markCollapsed($collapse);
 }
 
-if (is_string($expand)) {
+if (!empty($expand)) {
     $rootTreeItem->markExpanded($expand);
 }
 

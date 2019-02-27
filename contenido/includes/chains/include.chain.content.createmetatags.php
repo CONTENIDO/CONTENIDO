@@ -84,6 +84,7 @@ function cecCreateMetatags($metatags) {
     }
 
     $arrHeadlines = array_merge($arrHead1, $arrHead2);
+    $sHeadline = '';
 
     foreach ($arrHeadlines as $key => $value) {
         if ($value != '') {
@@ -107,6 +108,7 @@ function cecCreateMetatags($metatags) {
     }
 
     $arrText = array_merge($arrText1, $arrText2);
+    $sText = '';
 
     foreach ($arrText as $key => $value) {
         if ($value != '') {
@@ -190,7 +192,7 @@ function cecCreateMetatags($metatags) {
                 case 'robots':
                 case 'expires':
                     // Build these 3 metatags from entries in homepage
-                    $sCurrentTag = cString::toLowerCase($value['name']);
+                    $sCurrentTag = isset($value['name']) ? cString::toLowerCase($value['name']) : '';
                     $iCheck = CheckIfMetaTagExists($metatags, $sCurrentTag);
                     if($sCurrentTag != '' && $arrHomepageMetaTags[$sCurrentTag] != "") {
                         $metatags[$iCheck]['name'] = $sCurrentTag;
@@ -223,7 +225,7 @@ function CheckIfMetaTagExists($arrMetatags, $sCheckForMetaTag) {
 
     // loop thru existing metatags and check against the listitem name
     foreach ($arrMetatags as $pos => $item) {
-        if ($item['name'] == $sCheckForMetaTag && $item['name'] != '') {
+        if (isset($item['name']) && $item['name'] == $sCheckForMetaTag && $item['name'] != '') {
             // metatag found -> return the position
             return $pos;
         }

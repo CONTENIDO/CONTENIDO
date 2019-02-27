@@ -69,19 +69,19 @@ Lizenzen von verwendeten Produkten / Licenses of used third party products:
   Lizenz:      GNU General Public Licence (GPL)
   Information: http://www.bitfolge.de/?l=en&s=pseudocron
 
-- Smarty 3.1.21
+- Smarty 3.1.30
   Lizenz:      GNU Lesser General Public License 2.1 or later
   Information: http://www.smarty.net/
 
-- SwiftMailer 4.2.1
+- SwiftMailer 5.4.6
   Lizenz:      GNU Lesser General Public License v3
   Information: http://swiftmailer.org/
 
-- TinyMCE 3.5.10
+- TinyMCE 3.5.12
   Lizenz:      GNU Lesser General Public License
   Information: http://www.tinymce.com/
   
-- TinyMCE 4.1.7
+- TinyMCE 4.1.10
   Lizenz:      GNU Lesser General Public License 2.1
   Information: http://www.tinymce.com/
 

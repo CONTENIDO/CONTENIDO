@@ -217,7 +217,7 @@ function logMessage($msg, $PC_writeDir, $PC_useLog, $PC_debug) {
  * @return integer
  */
 function lTrimZeros($number) {
-    while ($number[0] == '0') {
+    while (!empty($number) && $number[0] == '0') {
         $number = cString::getPartOfString($number, 1);
     }
     if (empty($number)) {

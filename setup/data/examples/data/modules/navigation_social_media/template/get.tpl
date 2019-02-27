@@ -17,10 +17,6 @@
     <li class="twitter"><a href="{$url.twitter|escape}" target="_blank"></a></li>
 {/if}
 
-{if 0 lt $url.youtube|strlen}
-    <li class="youtube"><a href="{$url.youtube|escape}" target="_blank"></a></li>
-{/if}
-
 {if 0 lt $url.xing|strlen}
     <li class="xing"><a href="{$url.xing|escape}" target="_blank"></a></li>
 {/if}

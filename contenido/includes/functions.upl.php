@@ -516,7 +516,7 @@ function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $c
             $item[$dirname]->setCustom('lastitem', true);
 
             if ($item[$dirname]->getCustom('level') == $level) {
-                if (is_object($prevobj[$level])) {
+                if (isset($prevobj[$level]) && is_object($prevobj[$level])) {
                     $prevobj[$level]->setCustom('lastitem', false);
                 }
             }
@@ -888,20 +888,22 @@ function uplGetFileTypeDescription($sExtension) {
  * @throws cException
  */
 function uplCreateFriendlyName($filename) {
-    global $cfg, $lang;
+    static $encoding;
 
-    $oLang = new cApiLanguage();
-    $oLang->loadByPrimaryKey($lang);
+    if (!isset($encoding)) {
+        $encoding = cRegistry::getEncoding();
+    }
 
-    if (!is_array($cfg['upl']['allow_additional_chars'])) {
+    $additionalChars = cRegistry::getConfigValue('upl', 'allow_additional_chars');
+    if (!is_array($additionalChars)) {
         $filename = str_replace(" ", "_", $filename);
-    } elseif (in_array(' ', $cfg['upl']['allow_additional_chars']) === FALSE) {
+    } elseif (in_array(' ', $additionalChars) === FALSE) {
         $filename = str_replace(" ", "_", $filename);
     }
 
     $chars = '';
-    if (is_array($cfg['upl']['allow_additional_chars'])) {
-        $chars = implode("", $cfg['upl']['allow_additional_chars']);
+    if (is_array($additionalChars)) {
+        $chars = implode("", $additionalChars);
         $chars = str_replace(array(
             '-',
             '[',
@@ -909,7 +911,7 @@ function uplCreateFriendlyName($filename) {
         ), '', $chars);
     }
 
-    $filename = cString::replaceDiacritics($filename, cString::toUpperCase($oLang->getField('encoding')));
+    $filename = cString::replaceDiacritics($filename, cString::toUpperCase($encoding));
     $filename = preg_replace("/[^A-Za-z0-9._\-" . $chars . "]/i", '', $filename);
 
     return $filename;

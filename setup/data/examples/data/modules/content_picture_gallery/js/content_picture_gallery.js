@@ -1,13 +1,14 @@
 /* ----- GALLERY ----- */
 
-var imgPerPage = 6,
+(function (window, jQuery) {
+    var imgPerPage = 6,
 	activePage,
 	maxPage = 0;
 
-//Setting Pagination
-function iniPagination() {
+    //Setting Pagination
+    function iniPagination() {
 	var images = 0;
-	$(".gallery .source li").each(function() {
+        $(".gallery .source li").each(function () {
 		images++;
 	});
 
@@ -27,7 +28,7 @@ function iniPagination() {
 	var forwardNode = $(".gallery .pagination li a#forward").parent();
 	forwardNode.remove();
 	// append links for each pagination page
-	for (x = 1; x <= maxPage; x++) {
+        for (var x = 1; x <= maxPage; x++) {
 		$(".gallery .pagination").append('<li><a class="' + x + '" href="">' + x + '</a></li>');
 	}
 	// re-append forward link to the end of pagination elements
@@ -37,17 +38,18 @@ function iniPagination() {
 	if (0 === maxPage) {
 		$(".gallery .pagination li").remove();
 	}
-}
-iniPagination();
+    }
 
-//Loading function for every single page, with limitation
-function loadGalleryPage(page) {
+    iniPagination();
+
+    //Loading function for every single page, with limitation
+    function loadGalleryPage(page) {
 	activePage = page;
 
 	var sliceFrom = (page - 1) * imgPerPage,
 		sliceTo = page * imgPerPage;
 	$(".gallery .slider").html("");
-	$(".gallery .source li").slice(sliceFrom, sliceTo).each(function() {
+        $(".gallery .source li").slice(sliceFrom, sliceTo).each(function () {
 		var $a = $(this).children("a");
 		$(".gallery .slider").append('<li><a href="' + $a.attr("href") + '" rel="' + $a.attr("rel") + '" title="' + $a.attr("title") + '"><img src="' + $a.text() + '" alt="" style="' + $a.attr("style") + '" /></a></li>');
 	});
@@ -56,29 +58,37 @@ function loadGalleryPage(page) {
 	//Setting active pagination element
 	$(".gallery .pagination li a.active").removeClass("active");
 	$(".gallery .pagination li a." + page).addClass("active");
-}
+    }
 
-//initial loading the first page
-loadGalleryPage(1);
+    //initial loading the first page
+    loadGalleryPage(1);
 
+    /* distinguish between different browsers
+     * needed for some stupid ie/chrome incompatibilities */
+    function isIE() {
+        var myNav = navigator.userAgent.toLowerCase();
+        return (myNav.indexOf('msie') !== -1) ? parseInt(myNav.split('msie')[1]) : false;
+    }
 
-$(".gallery .pagination li a").not(".disabled").click(function(e) {
+    $(".gallery .pagination li a").not(".disabled").click(function (e) {
 	e.preventDefault();
 
 	var page;
-	if ($(this).parent().index() == 0) {
+        var parent = $(this).parent();
+        if (parent.index() === 0) {
 		page = activePage - 1;
-	} else if ($(this).parent().index() == $(".gallery .pagination li").length - 1) {
+        } else if (parent.index() === $(".gallery .pagination li").length - 1) {
 		page = activePage + 1;
 	} else {
 		page = $(this).parent().index();
 	}
-	if (page != 0 && page <= maxPage) {
+        if (page !== 0 && page <= maxPage) {
 		loadGalleryPage(page);
 	}
-});
-/* ----- GALLERY LIGHTBOX ----- */
-jQuery(window).load(function() {
+    });
+
+    /* ----- GALLERY LIGHTBOX ----- */
+    jQuery(window).load(function () {
 	var dialogPosition = {
 		my: "center",
 		at: "center",
@@ -86,7 +96,7 @@ jQuery(window).load(function() {
 		collision: "fit"
 	};
 
-	$(".gallery .slider").delegate("a", "click", function(e) {
+        $(".gallery .slider").delegate("a", "click", function (e) {
 		e.preventDefault();
 		var left = "", right = "";
 		// number of pictures on all pages in total
@@ -98,7 +108,7 @@ jQuery(window).load(function() {
 			// index of picture, starts with 0
 			var index = $(this).parent().index();
 			// add current page offset to index
-			index += (curPage -1) * imgPerPage;
+                index += (curPage - 1) * imgPerPage;
 			if (index > 0) {
 				left = '<a href="' + (index - 1) + '" class="prev_image">&laquo;</a>';
 			}
@@ -112,20 +122,13 @@ jQuery(window).load(function() {
 			colon = ':';
 		}
 
-
-                /* distinguish between different browsers
-                 * needed for some stupid ie/chrome incomatibilities */
-                function isIE () {
-                  var myNav = navigator.userAgent.toLowerCase();
-                  return (myNav.indexOf('msie') != -1) ? parseInt(myNav.split('msie')[1]) : false;
-                }
-                
+            var timeout, dialogClass;
                 if (isIE() < 9) {
-                    var timeout = 0;
-                    var dialogClass = 'dialog-gallery'; 
+                timeout = 0;
+                dialogClass = 'dialog-gallery';
                 } else {
-                    var timeout = 5;
-                    var dialogClass = 'dialog-gallery invisible';
+                timeout = 5;
+                dialogClass = 'dialog-gallery invisible';
                 }
                 
 		var lb = $(".gallery .lightbox").html(left + right + '<img src="' + $(this).attr("href") + '" alt="" /><p>' + $(this).attr("rel") + colon + $(this).attr("title") + '</p>').dialog({
@@ -135,75 +138,78 @@ jQuery(window).load(function() {
 			closeText: "X",
                         dialogClass: dialogClass, 
                         position: dialogPosition,
-			open: function(event) {
-				$('.ui-widget-overlay').on('click', function() {
+                open: function (event) {
+                    $('.ui-widget-overlay').on('click', function () {
 					$(".ui-dialog-content").dialog("destroy");
 				});
 
-				$(".ui-dialog img").swipe( {
+                    $(".ui-dialog img").swipe({
 					//Generic swipe handler for all directions
-					swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
-
-						if (direction == 'right') {
+                        swipe: function (event, direction, distance, duration, fingerCount, fingerData) {
+                            if (direction === 'right') {
 							$(this).parent().find('.next_image').click();
-						} else if (direction == 'left') {
+                            } else if (direction === 'left') {
 							$(this).parent().find('.prev_image').click();
 						}
 					},
 					threshold: 75
 				});
 			},
-			close: function() {
+                close: function () {
 				dialogPosition = {
 					my: "center",
 					at: "center",
 					of: window
 				};
-				$(this).dialog('destroy').remove()
+                    $(this).dialog('destroy').remove();
 					$(".gallery").prepend('<div class="lightbox"></div>');
 			}
 		});
 
-		setTimeout(function() {
-			dialogPosition = lb.dialog( "option", "position" );
-			lb.dialog( "option", "position", dialogPosition);
+            setTimeout(function () {
+                dialogPosition = lb.dialog("option", "position");
+                lb.dialog("option", "position", dialogPosition);
 			$('.dialog-gallery.invisible').removeClass('invisible');
 		}, timeout);
 	});
 
-	$("body").delegate(".lightbox a", "click", function(e) {
+        $("body").delegate(".lightbox a", "click", function (e) {
 		e.preventDefault();
 
+            var lightbox = $(".lightbox");
+
 		// get position
-		dialogPosition = $( ".lightbox" ).dialog( "option", "position" );
+            dialogPosition = lightbox.dialog("option", "position");
 
 		// get next image and close dialog
 		var index = parseInt($(this).attr("href"));
-		$(".lightbox").dialog("destroy");
+            lightbox.dialog("destroy");
 
 		// switch pages when image is on other page.
-		if (index % imgPerPage == 0 && e.currentTarget.className == 'next_image') {
+            if (index % imgPerPage === 0 && e.currentTarget.className === 'next_image') {
 			$('#forward').click();
-		} else if (index % imgPerPage == (imgPerPage -1) && e.currentTarget.className == 'prev_image') {
+            } else if (index % imgPerPage === (imgPerPage - 1) && e.currentTarget.className === 'prev_image') {
 			$('#back').click();
 		}
 
-		// make sure all images are loaded before comming up with next dialog
+            // make sure all images are loaded before coming up with next dialog
 		// if we omit the check then the dialog will be misplaced after the images are loaded
 		var numImgOnPage = $(".gallery .slider li").length;
 		var numLoadedImg = 0;
-		$(".gallery .slider img").one("load", function() {
+            $(".gallery .slider img").one("load", function () {
 			numLoadedImg++;
 			// are all images are loaded yet?
 			if (numLoadedImg >= numImgOnPage) {
-				// click on link of displayed imagage at newly loaded page
+                    // click on link of displayed image at newly loaded page
 				$('.gallery .slider li:eq(' + index % imgPerPage + ') a').click();
 			}
-		}).each(function() {
+            }).each(function () {
 			// fallback if images are loaded from cache
 			if (this.complete) $(this).load();
 		});
 
 	});
 
-});
+    });
+
+})(window, jQuery);

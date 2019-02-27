@@ -18,7 +18,6 @@ $backendPath = cRegistry::getBackendPath();
 
 cInclude('includes', 'api/functions.frontend.list.php');
 cInclude('includes', 'functions.file.php');
-cInclude('classes', 'class.cziparchive.php');
 
 $page = new cGuiPage('upl_files_overview', '', 0);
 
@@ -29,12 +28,14 @@ if ((int) $client < 1) {
     return;
 }
 
-$appendparameters = $_REQUEST['appendparameters'];
+$appendparameters = !empty($_REQUEST['appendparameters']) ? $_REQUEST['appendparameters'] : '';
+$file = !empty($_REQUEST['file']) ? basename(cSecurity::escapeString($_REQUEST['file'])) : '';
+$startpage = !empty($_REQUEST['startpage']) ? cSecurity::toInteger($_REQUEST['startpage']) : 1;
+$sortby = !empty($_REQUEST['sortby']) ? cSecurity::escapeString($_REQUEST['sortby']) : '';
+$sortmode = !empty($_REQUEST['sortmode']) ? cSecurity::escapeString($_REQUEST['sortmode']) : '';
+$thumbnailmode = !empty($_REQUEST['thumbnailmode']) ? cSecurity::escapeString($_REQUEST['thumbnailmode']) : '';
 
-// Define local variable file
-$file = basename(cSecurity::escapeString($_REQUEST['file']));
-
-if (!is_array($browserparameters) && ($appendparameters != 'imagebrowser' || $appendparameters != 'filebrowser')) {
+if ((empty($browserparameters) || !is_array($browserparameters)) && ($appendparameters != 'imagebrowser' || $appendparameters != 'filebrowser')) {
     $browserparameters = array();
 }
 
@@ -48,7 +49,7 @@ if (!$sess->isRegistered('upl_last_path')) {
 
 // if path doesn't exist use root path
 // this might happen when the last path is that of another client or deleted outside CONTENIDO
-if (!cApiDbfs::isDbfs($path) && !cFileHandler::exists($cfgClient[$client]['upl']['path'] . $path)) {
+if (empty($path) || (!cApiDbfs::isDbfs($path) && !cFileHandler::exists($cfgClient[$client]['upl']['path'] . $path))) {
     $path = '';
 }
 // remember current path as last path
@@ -141,14 +142,17 @@ if ($action === 'upl_modify_file' && !empty($file)) {
         $upload->store();
     }
 
+    $protected = !empty($_REQUEST['protected']) && $_REQUEST['protected'] === '1' ? '1' : '';
     $properties = new cApiPropertyCollection();
-    $properties->setValue('upload', $qpath . $file, 'file', 'protected', stripslashes($protected));
+    $properties->setValue('upload', $qpath . $file, 'file', 'protected', $protected);
 
-    $bTimeMng = (isset($_REQUEST['timemgmt']) && cString::getStringLength($_REQUEST['timemgmt']) > 1);
-    $properties->setValue('upload', $qpath . $file, 'file', 'timemgmt', ($bTimeMng) ? 1 : 0);
-    if ($bTimeMng) {
-        $properties->setValue('upload', $qpath . $file, 'file', 'datestart', cSecurity::escapeString($_REQUEST['datestart']));
-        $properties->setValue('upload', $qpath . $file, 'file', 'dateend', cSecurity::escapeString($_REQUEST['dateend']));
+    $timeMgmt = !empty($_REQUEST['timemgmt']) && $_REQUEST['timemgmt'] === '1' ? '1' : '';
+    $properties->setValue('upload', $qpath . $file, 'file', 'timemgmt', $timeMgmt);
+    if ($timeMgmt) {
+        $dateStart = !empty($_REQUEST['datestart']) ? cSecurity::escapeString($_REQUEST['datestart']) : '';
+        $dateEnd = !empty($_REQUEST['dateend']) ? cSecurity::escapeString($_REQUEST['dateend']) : '';
+        $properties->setValue('upload', $qpath . $file, 'file', 'datestart', $dateStart);
+        $properties->setValue('upload', $qpath . $file, 'file', 'dateend', $dateEnd);
     }
 
     $author = $auth->auth['uid'];
@@ -352,7 +356,7 @@ class UploadList extends FrontendList {
      * @throws cInvalidArgumentException
      */
     public function convert($field, $data) {
-        global $path, $appendparameters;
+        global $path, $appendparameters, $startpage, $sortby, $sortmode, $thumbnailmode;
 
         $cfg = cRegistry::getConfig();
         $sess = cRegistry::getSession();
@@ -376,7 +380,7 @@ class UploadList extends FrontendList {
                 }
             } else {
                 $tmp_mstr = '<a onmouseover="this.style.cursor=\'pointer\'" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
-                $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$data&appendparameters=$appendparameters&startpage=" . cSecurity::toInteger($_REQUEST['startpage']) . "&sortby=" . cSecurity::escapeString($_REQUEST['sortby']) . "&sortmode=" . cSecurity::escapeString($_REQUEST['sortmode']) . "&thumbnailmode=" . cSecurity::escapeString($_REQUEST['thumbnailmode'])), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$data"), $data);
+                $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$data&appendparameters=$appendparameters&startpage=" . $startpage . "&sortby=" . $sortby . "&sortmode=" . $sortmode . "&thumbnailmode=" . $thumbnailmode), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$data"), $data);
             }
             return $mstr;
         }
@@ -859,8 +863,7 @@ if ($bDirectoryIsWritable == false) {
 }
 
 $page->setContent(array(
-    $delform,
-    $jsScript
+    $delform
 ));
 
 $page->render();
