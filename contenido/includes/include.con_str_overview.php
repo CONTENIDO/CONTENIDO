@@ -303,7 +303,8 @@ if ($syncoptions == -1) {
                 b.public AS public,
                 b.visible AS online,
                 d.idtpl AS idtpl,
-                b.idlang AS idlang
+                b.idlang AS idlang,
+                c.idtree AS idtree
             FROM
                 (" . $cfg["tab"]["cat"] . " AS a,
                 " . $cfg["tab"]["cat_lang"] . " AS b,
@@ -329,7 +330,8 @@ if ($syncoptions == -1) {
                 b.public AS public,
                 b.visible AS online,
                 d.idtpl AS idtpl,
-                b.idlang AS idlang
+                b.idlang AS idlang,
+                c.idtree AS idtree
             FROM
                 (" . $cfg["tab"]["cat"] . " AS a,
                 " . $cfg["tab"]["cat_lang"] . " AS b,
