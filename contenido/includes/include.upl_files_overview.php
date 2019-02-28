@@ -28,12 +28,12 @@ if ((int) $client < 1) {
     return;
 }
 
-$appendparameters = !empty($_REQUEST['appendparameters']) ? $_REQUEST['appendparameters'] : '';
-$file = !empty($_REQUEST['file']) ? basename(cSecurity::escapeString($_REQUEST['file'])) : '';
-$startpage = !empty($_REQUEST['startpage']) ? cSecurity::toInteger($_REQUEST['startpage']) : 1;
-$sortby = !empty($_REQUEST['sortby']) ? cSecurity::escapeString($_REQUEST['sortby']) : '';
-$sortmode = !empty($_REQUEST['sortmode']) ? cSecurity::escapeString($_REQUEST['sortmode']) : '';
-$thumbnailmode = !empty($_REQUEST['thumbnailmode']) ? cSecurity::escapeString($_REQUEST['thumbnailmode']) : '';
+$appendparameters = isset($_REQUEST['appendparameters']) ? $_REQUEST['appendparameters'] : '';
+$file             = isset($_REQUEST['file']) ? basename(cSecurity::escapeString($_REQUEST['file'])) : '';
+$startpage        = isset($_REQUEST['startpage']) ? cSecurity::toInteger($_REQUEST['startpage']) : 1;
+$sortby           = isset($_REQUEST['sortby']) ? cSecurity::escapeString($_REQUEST['sortby']) : '';
+$sortmode         = isset($_REQUEST['sortmode']) ? cSecurity::escapeString($_REQUEST['sortmode']) : '';
+$thumbnailmode    = isset($_REQUEST['thumbnailmode']) ? cSecurity::escapeString($_REQUEST['thumbnailmode']) : '';
 
 if ((empty($browserparameters) || !is_array($browserparameters)) && ($appendparameters != 'imagebrowser' || $appendparameters != 'filebrowser')) {
     $browserparameters = array();
