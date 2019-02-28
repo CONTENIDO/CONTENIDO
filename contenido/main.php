@@ -171,7 +171,7 @@ $cfg['debug']['backend_exectime']['start'] = getmicrotime();
 // Include all required 'include' files. Can be an array of files, if more than
 // one file is required.
 foreach ($backend->getFile('inc') as $filename) {
-        include_once($backendPath . $filename);
+    include_once($backendPath . $filename);
 }
 
 // If $action is set -> User klicked some button/link
