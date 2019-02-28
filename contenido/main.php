@@ -62,8 +62,8 @@ if ($cfg['use_pseudocron'] == true) {
 // Remove all own marks, only for frame 1 and 4 if $_REQUEST['appendparameters']
 // == 'filebrowser'
 // filebrowser is used in tiny in this case also do not remove session marks
-$appendparameters = !empty($_REQUEST['appendparameters']) ? $_REQUEST['appendparameters'] : '';
-if (($frame == 1 || $frame == 4) && $appendparameters != 'filebrowser') {
+$appendparameters = isset($_REQUEST['appendparameters']) ? $_REQUEST['appendparameters'] : '';
+if (in_array($frame, [1, 4]) && $appendparameters != 'filebrowser') {
     $col = new cApiInUseCollection();
     $col->removeSessionMarks($sess->id);
     $col->removeOldMarks();
@@ -168,10 +168,9 @@ $backend->select($area);
 
 $cfg['debug']['backend_exectime']['start'] = getmicrotime();
 
-// Include all required 'include' files. Can be an array of files, if more than
-// one file is required.
+// Include all required 'include' files. Can be an array of files, if more than one file is required.
 foreach ($backend->getFile('inc') as $filename) {
-        include_once($backendPath . $filename);
+    include_once($backendPath . $filename);
 }
 
 // If $action is set -> User klicked some button/link
