@@ -273,10 +273,11 @@ class cApiCecRegistry {
      */
     public function getIterator($sChainName) {
         if (isset($this->_aChains[$sChainName]) && isset($this->_aChains[$sChainName]['functions'])) {
-        return new cIterator($this->_aChains[$sChainName]['functions']);
+            $functions = $this->_aChains[$sChainName]['functions'];
         } else {
-            return new cIterator([]);
+            $functions = [];
         }
+        return new cIterator($functions);
     }
 
     /**
