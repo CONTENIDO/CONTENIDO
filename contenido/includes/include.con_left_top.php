@@ -36,11 +36,10 @@ $syncoptions = $syncfrom;
 
 $tpl->set('s', 'SYNC_LANG', $syncfrom);
 
-
 // Delete a saved search
 $bShowArticleSearch = false;
 if (isset($_GET['delsavedsearch'])) {
-    if (isset($_GET['itemtype']) && sizeof($_GET['itemtype']) > 0 && isset($_GET['itemid']) && sizeof($_GET['itemid']) > 0) {
+    if (isset($_GET['itemtype']) && count($_GET['itemtype']) > 0 && isset($_GET['itemid']) && count($_GET['itemid']) > 0) {
         $propertyCollection = new cApiPropertyCollection();
         $propertyCollection->deleteProperties($_GET['itemtype'], $_GET['itemid']);
         $bShowArticleSearch = true;
@@ -52,149 +51,106 @@ if (isset($_GET['save_search']) && $_GET['save_search'] == 'true') {
 }
 
 // ARTICLE SEARCH
-$arrDays = array();
+$arrDays      = ['--'] + range(0, 31);
+$arrMonths    = ['--'] + range(0, 12);
+$sCurrentYear = (int)date('Y');
+$arrYears     = range($sCurrentYear - 10, $sCurrentYear + 30);
+$arrYears     = ['-----'] + array_combine($arrYears, $arrYears);
 
-for ($i = 0; $i < 32; $i++) {
-    if ($i == 0) {
-        $arrDays[$i] = '--';
-    } else {
-        $arrDays[$i] = $i;
-    }
-}
+// get user input
+$bsSearchText              = isset($_REQUEST['bs_search_text']) ? $_REQUEST['bs_search_text'] : '';
+$bsSearchId                = isset($_REQUEST['bs_search_id']) ? $_REQUEST['bs_search_id'] : '';
+$bsSearchDateType          = isset($_REQUEST['bs_search_date_type']) ? $_REQUEST['bs_search_date_type'] : 'n/a';
+$bsSearchDateTypeFromDay   = isset($_REQUEST['bs_search_date_from_day']) ? $_REQUEST['bs_search_date_from_day'] : '';
+$bsSearchDateTypeFromMonth = isset($_REQUEST['bs_search_date_from_month']) ? $_REQUEST['bs_search_date_from_month'] : '';
+$bsSearchDateTypeFromYear  = isset($_REQUEST['bs_search_date_from_year']) ? $_REQUEST['bs_search_date_from_year'] : '';
+$bsSearchDateToDay         = isset($_REQUEST['bs_search_date_to_day']) ? $_REQUEST['bs_search_date_to_day'] : '';
+$bsSearchDateToMonth       = isset($_REQUEST['bs_search_date_to_month']) ? $_REQUEST['bs_search_date_to_month'] : '';
+$bsSearchDateToYear        = isset($_REQUEST['bs_search_date_to_year']) ? $_REQUEST['bs_search_date_to_year'] : '';
+$bsSearchAuthor            = isset($_REQUEST['bs_search_author']) ? $_REQUEST['bs_search_author'] : 'n/a';
 
-$arrMonths = array();
+// validate user input
+$bsSearchDateTypeFromDay   = max(0, (int)$bsSearchDateTypeFromDay);
+$bsSearchDateTypeFromMonth = max(0, (int)$bsSearchDateTypeFromMonth);
+$bsSearchDateTypeFromYear  = max(0, (int)$bsSearchDateTypeFromYear);
+$bsSearchDateToDay         = max(0, (int)$bsSearchDateToDay);
+$bsSearchDateToMonth       = max(0, (int)$bsSearchDateToMonth);
+$bsSearchDateToYear        = max(0, (int)$bsSearchDateToYear);
 
-for ($i = 0; $i < 13; $i++) {
-    if ($i == 0) {
-        $arrMonths[$i] = '--';
-    } else {
-        $arrMonths[$i] = $i;
-    }
-}
+// get users
+$sql = "SELECT username, realname
+        FROM " . $cfg['tab']['user'] . "
+        ORDER BY realname";
+$db->query($sql);
 
-$arrYears = array();
-
-$arrYears[0] = '-----';
-$sActualYear = (int) date("Y");
-
-for ($i = $sActualYear - 10; $i < $sActualYear + 30; $i++) {
-    $arrYears[$i] = $i;
-}
-
-$arrUsers = array();
-
-$query = "SELECT * FROM " . $cfg['tab']['user'] . " ORDER BY realname";
-
-$arrUsers['n/a'] = '-';
-
-$db->query($query);
-
+$arrUsers = ['n/a' => '-'];
 while ($db->nextRecord()) {
-    $arrUsers[$db->f('username')] = $db->f('realname');
+    $arrUsers[$db->f('username')] = empty($db->f('realname')) ? $db->f('username') : $db->f('realname');
 }
-
-$arrDateTypes = array();
-
-$arrDateTypes['n/a'] = i18n('Ignore');
-$arrDateTypes['created'] = i18n('Date created');
-$arrDateTypes['lastmodified'] = i18n('Date modified');
-$arrDateTypes['published'] = i18n('Date published');
 
 $articleLink = "editarticle";
 $oListOptionRow = new cGuiFoldingRow("3498dbba-ed4a-4618-8e49-3a3635396e22", i18n("Article search"), $articleLink, $bShowArticleSearch);
 $tpl->set('s', 'ARTICLELINK', $articleLink);
 
 // Textfeld
-$bsSearchText = !empty($_REQUEST["bs_search_text"]) ? $_REQUEST["bs_search_text"] : '';
 $oTextboxArtTitle = new cHTMLTextbox("bs_search_text", $bsSearchText, 10);
 $oTextboxArtTitle->setStyle('width:135px;');
 
 // Artikel_ID-Feld
-$bsSearchId = !empty($_REQUEST["bs_search_id"]) ? $_REQUEST["bs_search_id"] : '';
 $oTextboxArtID = new cHTMLTextbox("bs_search_id", $bsSearchId, 10);
 $oTextboxArtID->setStyle('width:135px;');
 
 // Date type
 $oSelectArtDateType = new cHTMLSelectElement("bs_search_date_type", "bs_search_date_type");
-$oSelectArtDateType->autoFill($arrDateTypes);
+$oSelectArtDateType->autoFill(
+    [
+        'n/a'          => i18n('Ignore'),
+        'created'      => i18n('Date created'),
+        'lastmodified' => i18n('Date modified'),
+        'published'    => i18n('Date published'),
+    ]
+);
 $oSelectArtDateType->setStyle('width:135px;');
 $oSelectArtDateType->setEvent("Change", "toggle_tr_visibility('tr_date_from');toggle_tr_visibility('tr_date_to');");
-
-$bsSearchDateType = !empty($_REQUEST["bs_search_date_type"]) ? $_REQUEST["bs_search_date_type"] : 'n/a';
 $oSelectArtDateType->setDefault($bsSearchDateType);
 
 // DateFrom
-$oSelectArtDateFromDay = new cHTMLSelectElement("bs_search_date_from_day");
+$oSelectArtDateFromDay = new cHTMLSelectElement('bs_search_date_from_day');
 $oSelectArtDateFromDay->setStyle('width:40px;');
 $oSelectArtDateFromDay->autoFill($arrDays);
+$oSelectArtDateFromDay->setDefault($bsSearchDateTypeFromDay);
 
-$oSelectArtDateFromMonth = new cHTMLSelectElement("bs_search_date_from_month");
+$oSelectArtDateFromMonth = new cHTMLSelectElement('bs_search_date_from_month');
 $oSelectArtDateFromMonth->setStyle('width:40px;');
 $oSelectArtDateFromMonth->autoFill($arrMonths);
+$oSelectArtDateFromMonth->setDefault($bsSearchDateTypeFromMonth);
 
-$oSelectArtDateFromYear = new cHTMLSelectElement("bs_search_date_from_year");
+$oSelectArtDateFromYear = new cHTMLSelectElement('bs_search_date_from_year');
 $oSelectArtDateFromYear->setStyle('width:55px;');
 $oSelectArtDateFromYear->autoFill($arrYears);
-
-if (!empty($_REQUEST["bs_search_date_from_day"]) && $_REQUEST["bs_search_date_from_day"] > 0) {
-    $oSelectArtDateFromDay->setDefault($_REQUEST["bs_search_date_from_day"]);
-} else {
-    $oSelectArtDateFromDay->setDefault(0);
-}
-
-if (!empty($_REQUEST["bs_search_date_from_month"]) && $_REQUEST["bs_search_date_from_month"] > 0) {
-    $oSelectArtDateFromMonth->setDefault($_REQUEST["bs_search_date_from_month"]);
-} else {
-    $oSelectArtDateFromMonth->setDefault(0);
-}
-
-if (!empty($_REQUEST["bs_search_date_from_year"]) && $_REQUEST["bs_search_date_from_year"] > 0) {
-    $oSelectArtDateFromYear->setDefault($_REQUEST["bs_search_date_from_year"]);
-} else {
-    $oSelectArtDateFromYear->setDefault(0);
-}
+$oSelectArtDateFromYear->setDefault($bsSearchDateTypeFromYear);
 
 // DateTo
-$oSelectArtDateToDay = new cHTMLSelectElement("bs_search_date_to_day");
+$oSelectArtDateToDay = new cHTMLSelectElement('bs_search_date_to_day');
 $oSelectArtDateToDay->setStyle('width:40px;');
 $oSelectArtDateToDay->autoFill($arrDays);
+$oSelectArtDateToDay->setDefault($bsSearchDateToDay);
 
-$oSelectArtDateToMonth = new cHTMLSelectElement("bs_search_date_to_month");
+$oSelectArtDateToMonth = new cHTMLSelectElement('bs_search_date_to_month');
 $oSelectArtDateToMonth->setStyle('width:40px;');
 $oSelectArtDateToMonth->autoFill($arrMonths);
+$oSelectArtDateToMonth->setDefault($bsSearchDateToMonth);
 
-$oSelectArtDateToYear = new cHTMLSelectElement("bs_search_date_to_year");
+$oSelectArtDateToYear = new cHTMLSelectElement('bs_search_date_to_year');
 $oSelectArtDateToYear->setStyle('width:55px;');
 $oSelectArtDateToYear->autoFill($arrYears);
-
-if (!empty($_REQUEST["bs_search_date_to_day"]) && $_REQUEST["bs_search_date_to_day"] > 0) {
-    $oSelectArtDateToDay->setDefault($_REQUEST["bs_search_date_to_day"]);
-} else {
-    $oSelectArtDateToDay->setDefault(0);
-}
-
-if (!empty($_REQUEST["bs_search_date_to_month"]) && $_REQUEST["bs_search_date_to_month"] > 0) {
-    $oSelectArtDateToMonth->setDefault($_REQUEST["bs_search_date_to_month"]);
-} else {
-    $oSelectArtDateToMonth->setDefault(0);
-}
-
-if (!empty($_REQUEST["bs_search_date_to_year"]) && $_REQUEST["bs_search_date_to_year"] > 0) {
-    $oSelectArtDateToYear->setDefault($_REQUEST["bs_search_date_to_year"]);
-} else {
-    $oSelectArtDateToYear->setDefault(0);
-}
+$oSelectArtDateToYear->setDefault($bsSearchDateToYear);
 
 // Author
-$oSelectArtAuthor = new cHTMLSelectElement("bs_search_author");
+$oSelectArtAuthor = new cHTMLSelectElement('bs_search_author');
 $oSelectArtAuthor->setStyle('width:135px;');
 $oSelectArtAuthor->autoFill($arrUsers);
-
-if (!empty($_REQUEST["bs_search_author"]) && $_REQUEST["bs_search_author"] != '') {
-    $oSelectArtAuthor->setDefault($_REQUEST["bs_search_author"]);
-} else {
-    $oSelectArtAuthor->setDefault('n/a');
-}
+$oSelectArtAuthor->setDefault($bsSearchAuthor);
 
 $oSubmit = new cHTMLButton("submit", i18n("Search"));
 
@@ -203,19 +159,12 @@ $tplSearch->set("s", "AREA", $area);
 $tplSearch->set("s", "FRAME", $frame);
 $tplSearch->set("s", "LANG", $lang);
 $tplSearch->set("s", "LANGTEXTDIRECTION", langGetTextDirection($lang));
-
 $tplSearch->set("s", "TEXTBOX_ARTTITLE", $oTextboxArtTitle->render());
-
 $tplSearch->set("s", "TEXTBOX_ARTID", $oTextboxArtID->render());
-
 $tplSearch->set("s", "SELECT_ARTDATE", $oSelectArtDateType->render());
-
 $tplSearch->set("s", "SELECT_ARTDATEFROM", $oSelectArtDateFromDay->render() . $oSelectArtDateFromMonth->render() . $oSelectArtDateFromYear->render());
-
 $tplSearch->set("s", "SELECT_ARTDATETO", $oSelectArtDateToDay->render() . $oSelectArtDateToMonth->render() . $oSelectArtDateToYear->render());
-
 $tplSearch->set("s", "SELECT_AUTHOR", $oSelectArtAuthor->render());
-
 $tplSearch->set("s", "SUBMIT_BUTTON", $oSubmit->render());
 
 // Saved searches
@@ -226,7 +175,6 @@ $savedSearchList = $proppy->getAllValues('type', 'savedsearch', $auth);
 foreach ($savedSearchList as $value) {
     if ($value["name"] == "save_name") {
         $tplSearch->set("d", "SEARCH_NAME", ($value['value'] == "") ? i18n("A saved search") : $value['value']);
-
         $tplSearch->set("d", "ITEM_ID", $value['itemid']);
         $tplSearch->set("d", "ITEM_TYPE", $value['itemtype']);
         $tplSearch->next();
@@ -373,11 +321,13 @@ $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_left_top']);
 /**
  *
  * @param string $filename
- * @param array $aData
- * @param array $aInformation
+ * @param array  $aData
+ * @param array  $aInformation
+ *
  * @return array
  */
-function xmlFileToArray($filename, $aData = array(), $aInformation) {
+function xmlFileToArray($filename, $aData = [], $aInformation)
+{
     $_dom = simplexml_load_file($filename);
     for ($i = 0, $size = count($_dom); $i < $size; $i++) {
         foreach ($aInformation as $sInfoName) {
@@ -389,6 +339,7 @@ function xmlFileToArray($filename, $aData = array(), $aInformation) {
             }
         }
     }
+
     return $aData;
 }
 
