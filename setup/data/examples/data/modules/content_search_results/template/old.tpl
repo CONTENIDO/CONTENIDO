@@ -39,7 +39,7 @@
     {/foreach}
 
     {* navigation *}
-    {if !empty($pages) && (!empty($prev) || !empty($next))}
+    {if (!empty($pages) || (!empty($prev) || !empty($next)))}
     <p class="result">
         {$label.resultPage}
         &nbsp;
