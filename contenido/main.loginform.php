@@ -25,11 +25,11 @@ foreach ($aLangs as $sValue) {
     }
 }
 
-if (!empty($_POST['belang'])) {
+if (empty($_POST['belang'])) {
+    $sSelectedLang = '';
+} else {
     $sSelectedLang = $_POST['belang'];
     $GLOBALS['belang'] = $sSelectedLang;
-} else {
-    $sSelectedLang = '';
 }
 
 $noti = '';
@@ -94,13 +94,8 @@ $tpl->set('s', 'OPTIONS', $str);
 $tpl->set('s', 'LANGUAGE', i18n('Language'));
 $tpl->set('s', 'BACKEND', i18n('CONTENIDO Backend'));
 $tpl->set('s', 'LOGIN', i18n('Login'));
-$tpl->set('s', 'USERNAME', (isset($this->auth["uname"])) ? conHtmlentities(strip_tags($this->auth["uname"])) : "");
-
-$err = '';
-if (isset($username) && $username != '') {
-    $err = i18n('Invalid login or password!');
-}
-$tpl->set('s', 'ERROR', $err);
+$tpl->set('s', 'USERNAME', isset($this->auth['uname']) ? conHtmlentities(strip_tags($this->auth["uname"])) : '');
+$tpl->set('s', 'ERROR', isset($username) && $username != '' ? i18n('Invalid login or password!') : '');
 $tpl->set('s', 'PASSWORD', i18n('Password'));
 $tpl->set('s', 'TIME', time());
 
