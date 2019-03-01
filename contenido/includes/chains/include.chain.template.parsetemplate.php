@@ -72,6 +72,7 @@ function cecParseTemplate($template, cTemplate $templateObj) {
     <meta http-equiv="pragma" content="no-cache">';
 
     // JavaScript configuration
+    $urlHelp = !empty($cfg['help_url']) ? $cfg['help_url'] : '#';
     $jsConfigurationAdded = false;
     $jsConfiguration = '
     <script type="text/javascript">
@@ -79,7 +80,7 @@ function cecParseTemplate($template, cTemplate $templateObj) {
         Con.sid = "' . $sessid . '";
         $.extend(Con.cfg, {
             urlBackend: "' .  $backendPath . '",
-            urlHelp: "' . $cfg['help_url'] . '",
+            urlHelp: "' . $urlHelp . '",
             belang: "' . $backendLang . '",
             frame: ' . $frameNr . '
         });

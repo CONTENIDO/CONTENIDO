@@ -14,69 +14,122 @@
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
 class SearchResultModule {
+    /**
+     * @var array
+     */
+    protected $_cfg;
 
     /**
-     *
+     * @var cDb
+     */
+    protected $_db;
+
+    /**
+     * @var int
+     */
+    protected $_client;
+
+    /**
+     * @var int
+     */
+    protected $_lang;
+
+    /**
+     * @var int
+     */
+    protected $_idcat;
+
+    /**
+     * @var int
+     */
+    protected $_idart;
+
+    /**
+     * @var cSession
+     */
+    protected $_sess;
+
+    /**
+     * @var string
+     */
+    protected $_artSpecs;
+
+    /**
+     * @var string
+     */
+    protected $_combine = '';
+
+    /**
+     * @var string
+     */
+    protected $_msgResult = '';
+
+    /**
+     * @var string
+     */
+    protected $_msgRange = '';
+
+    /**
      * @var int
      */
     protected $_countValues;
 
     /**
-     *
      * @var int
      */
     protected $_searchResultCount = 0;
 
     /**
-     *
+     * @var string
+     */
+    protected $_templateName;
+
+    /**
      * @var array
      */
     protected $_label;
 
     /**
-     *
      * @var int
      */
     protected $_itemsPerPage;
 
     /**
-     *
+     * @var int
+     */
+    protected $_page;
+
+    /**
      * @var int
      */
     protected $_maxTeaserTextLen;
 
     /**
-     *
      * @var string
      */
     protected $_searchTerm;
 
     /**
-     *
      * @var string
      */
     protected $_dispSearchTerm = NULL;
 
     /**
-     *
      * @var string
      */
     protected $_prepSearchTerm = NULL;
 
     /**
-     *
      * @var array
      */
     protected $_searchResultData = NULL;
 
     /**
-     *
      * @var cSearchResult
      */
     protected $_searchResults = NULL;
 
     /**
-     *
      * @var int
      */
     protected $_numberOfPages = NULL;
@@ -84,6 +137,10 @@ class SearchResultModule {
     /**
      *
      * @param array $options
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct(array $options = NULL) {
 
@@ -146,6 +203,8 @@ class SearchResultModule {
     }
 
     /**
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function render() {
         $tpl = cSmartyFrontend::getInstance();
@@ -160,6 +219,7 @@ class SearchResultModule {
         $tpl->assign('prev', $this->_getPreviousLink());
         $tpl->assign('next', $this->_getNextLink());
         $tpl->assign('pages', $this->_getPageLinks());
+        $tpl->assign('method', 'post');
 
         // determine action & method for search form
         // depends upon if plugin mod_rewrite is enabled
@@ -178,6 +238,9 @@ class SearchResultModule {
     }
 
     /**
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     protected function _performSearch() {
 
@@ -210,19 +273,16 @@ class SearchResultModule {
         if (cString::getStringLength($this->_prepSearchTerm) > 1) {
             $searchResultArray = $search->searchIndex($this->_prepSearchTerm, '');
 
-            $searchResultCount = 0;
             if (false !== $searchResultArray) {
-
                 $this->_searchResultCount = count($searchResultArray);
-
                 // get search results
                 $this->_searchResults = new cSearchResult($searchResultArray, $this->_itemsPerPage);
-
                 // get number of pages
                 $this->_numberOfPages = $this->_searchResults->getNumberOfPages();
-
                 // html-tags to emphasize the located searchterms
                 $this->_searchResults->setReplacement('<strong>', '</strong>');
+            } else {
+                $this->_searchResultCount = 0;
             }
 
             // create message to display
@@ -244,8 +304,8 @@ class SearchResultModule {
 
     /**
      *
-     * @param unknown_type $count
-     * @param unknown_type $countIdarts
+     * @param int $count
+     * @param int $countIdarts
      */
     protected function _setMsgResult($count, $countIdarts) {
         $this->_countValues = $count;
@@ -263,6 +323,8 @@ class SearchResultModule {
      * Default value is 1.
      *
      * @return array
+     * @throws cDbException
+     * @throws cException
      */
     protected function _getSearchableIdcats() {
         $searchableIdcats = getEffectiveSetting('searchable', 'idcats', 1);
@@ -277,6 +339,7 @@ class SearchResultModule {
      * TODO use cApiArticleSpecificationCollection instead
      *
      * @return array
+     * @throws cDbException
      */
     protected function _getArticleSpecs() {
         $sql = "-- getArticleSpecs()
@@ -305,6 +368,9 @@ class SearchResultModule {
     /**
      *
      * @return array
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     protected function _getResults() {
         if (NULL === $this->_searchResults) {
@@ -409,7 +475,7 @@ class SearchResultModule {
     /**
      * Build links to other result pages.
      *
-     * @return string
+     * @return array
      */
     protected function _getPageLinks() {
         $pageLinks = array();
@@ -476,5 +542,3 @@ class SearchResultModule {
     }
 
 }
-
-?>

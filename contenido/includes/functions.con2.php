@@ -128,42 +128,37 @@ function conGetAvailableMetaTagTypes() {
  * @throws cDbException
  * @throws cException
  */
-function conGetMetaValue($idartlang, $idmetatype, $version  = NULL) {
-    static $oMetaTagColl = NULL;
-    static $metaTagVersionColl = NULL;
+function conGetMetaValue($idartlang, $idmetatype, $version = null)
+{
+    static $oMetaTagColl = null;
+    static $metaTagVersionColl = null;
 
-    if ($version ==  NULL) {
+    if ((int)$idartlang <= 0) {
+        return '';
+    }
+
+    if ($version === null) {
         if (!isset($oMetaTagColl)) {
             $oMetaTagColl = new cApiMetaTagCollection();
         }
-
-        if ((int) $idartlang <= 0) {
-            return '';
-        }
-
         $oMetaTag = $oMetaTagColl->fetchByArtLangAndMetaType($idartlang, $idmetatype);
-        if (is_object($oMetaTag)) {
-            return stripslashes($oMetaTag->get('metavalue'));
-        } else {
-            return '';
-        }
-    } else if (is_numeric ($version)) {
+    } elseif (is_numeric($version)) {
         if (!isset($metaTagVersionColl)) {
             $metaTagVersionColl = new cApiMetaTagVersionCollection();
         }
-
-        if ((int) $idartlang <= 0) {
-            return '';
-        }
-
-        $metaTagVersion = $metaTagVersionColl->fetchByArtLangMetaTypeAndVersion($idartlang, $idmetatype, $version);
-        if (is_object($metaTagVersion)) {
-            return stripslashes($metaTagVersion->get('metavalue'));
-        } else {
-            return '';
-        }
-
+        $oMetaTag = $metaTagVersionColl->fetchByArtLangMetaTypeAndVersion($idartlang, $idmetatype, $version);
+    } else {
+        $oMetaTag = null;
     }
+
+    if (is_object($oMetaTag)) {
+        $metavalue = $oMetaTag->get('metavalue');
+        $metavalue = stripslashes($metavalue);
+    } else {
+        $metavalue = '';
+    }
+
+    return $metavalue;
 }
 
 /**

@@ -793,28 +793,26 @@ function conIsLocked($idart, $lang) {
  *         Id of the category
  * @param int $lang
  *         Id of the language
- * @param int $status
- *         Status of the category
+ * @param int $visible
+ *         Visible status of the category
  *
  * @throws cDbException
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function conMakeCatOnline($idcat, $lang, $status) {
-    global $cfg;
-
+function conMakeCatOnline($idcat, $lang, $visible) {
     $catLang = new cApiCategoryLanguage();
     if (!$catLang->loadByCategoryIdAndLanguageId($idcat, $lang)) {
         return;
     }
 
-    $status = (1 == $status)? 1 : 0;
+    $visible = (1 == $visible) ? 1 : 0;
 
-    $catLang->set('visible', $status);
+    $catLang->set('visible', $visible);
     $catLang->set('lastmodified', date('Y-m-d H:i:s'));
     $catLang->store();
 
-    if ($cfg['pathresolve_heapcache'] == true && !$status = 0) {
+    if (cRegistry::getConfigValue('pathresolve_heapcache') === true && $visible != 0) {
         $oPathresolveCacheColl = new cApiPathresolveCacheCollection();
         $oPathresolveCacheColl->deleteByCategoryAndLanguage($idcat, $lang);
     }

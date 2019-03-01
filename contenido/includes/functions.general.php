@@ -1130,9 +1130,7 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
     $selectElem->setClass($sClass);
     $selectElem->appendOptionElement(new cHTMLOptionElement(i18n("Please choose"), ""));
 
-    if ($sLevel > 0) {
-        $addString = "AND c.level < " . (int) $sLevel;
-    }
+    $addString = ($sLevel > 0) ? "AND c.level < " . (int) $sLevel : '';
 
     $sql = "SELECT a.idcat AS idcat, b.name AS name, c.level FROM
            " . $cfg["tab"]["cat"] . " AS a, " . $cfg["tab"]["cat_lang"] . " AS b,

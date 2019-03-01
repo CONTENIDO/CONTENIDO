@@ -420,7 +420,7 @@ function strBuildSqlValues($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0) {
         $aCats = strSortPrePost($aCats);
         foreach ($aCats as $aCat) {
             $sInsertQuery .= '(' . (int) $aCat['idcat'] . ', ' . (int) $iLevel . '), ';
-            if (is_array($aAllCats[$aCat['idcat']])) {
+            if (isset($aAllCats[$aCat['idcat']]) && is_array($aAllCats[$aCat['idcat']])) {
                 $iSubLevel = $iLevel + 1;
                 $sInsertQuery = strBuildSqlValues($aAllCats[$aCat['idcat']], $sInsertQuery, $aAllCats, $iSubLevel);
             }
@@ -638,8 +638,6 @@ function strRenameCategoryAlias($idcat, $lang, $newcategoryalias) {
  * @throws cInvalidArgumentException
  */
 function strMakeVisible($idcat, $lang, $visible) {
-    global $cfg;
-
     $visible = (int) $visible;
     $lang = (int) $lang;
 
@@ -652,7 +650,7 @@ function strMakeVisible($idcat, $lang, $visible) {
         $oCatLang->store();
     }
 
-    if ($cfg['pathresolve_heapcache'] == true && $visible = 0) {
+    if (cRegistry::getConfigValue('pathresolve_heapcache') == true && $visible != 0) {
         $oPathresolveCacheColl = new cApiPathresolveCacheCollection();
         $oPathresolveCacheColl->deleteByCategoryAndLanguage($idcat, $lang);
     }
