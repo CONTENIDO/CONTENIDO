@@ -225,7 +225,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     public function getConfiguredFiles() {
         $files = array();
 
-        if ($this->_settings['filelist_manual'] === 'true' && count($this->_settings['filelist_manual_files']) > 0) {
+        if ($this->_settings['filelist_manual'] === 'true' && is_array($this->_settings['filelist_manual_files']) && count($this->_settings['filelist_manual_files']) > 0) {
             $tempFileList = $this->_settings['filelist_manual_files'];
 
             // Check if manual selected file exists, otherwise ignore them
