@@ -318,7 +318,7 @@ function stripCount($singlewordcounter, $maxKeywords = 15) {
             if (!isset($dist[$value])) {
                 $dist[$value] = 0;
             } else {
-            $dist[$value]++;
+                $dist[$value]++;
             }
         }
 

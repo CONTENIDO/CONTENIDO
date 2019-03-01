@@ -18,11 +18,11 @@ cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.str.php');
 cInclude('includes', 'functions.upl.php');
 
-$appendparameters = !empty($_REQUEST['appendparameters']) ? $_REQUEST['appendparameters'] : '';
-$searchfor = !empty($_REQUEST['searchfor']) ? cSecurity::escapeString($_REQUEST['searchfor']) : '';
-$sDisplayPath = !empty($_REQUEST['path']) ? cSecurity::escapeString($_REQUEST['path']) : '';
-$pathstring = !empty($_REQUEST['pathstring']) ? cSecurity::escapeString($_REQUEST['pathstring']) : '';
-$file = !empty($_REQUEST['file']) ? cSecurity::escapeString($_REQUEST['file']) : '';
+$appendparameters = isset($_REQUEST['appendparameters']) ? $_REQUEST['appendparameters'] : '';
+$searchfor        = isset($_REQUEST['searchfor']) ? cSecurity::escapeString($_REQUEST['searchfor']) : '';
+$sDisplayPath     = isset($_REQUEST['path']) ? cSecurity::escapeString($_REQUEST['path']) : '';
+$pathstring       = isset($_REQUEST['pathstring']) ? cSecurity::escapeString($_REQUEST['pathstring']) : '';
+$file             = isset($_REQUEST['file']) ? cSecurity::escapeString($_REQUEST['file']) : '';
 
 $tpl->set('s', 'FORMACTION', '');
 

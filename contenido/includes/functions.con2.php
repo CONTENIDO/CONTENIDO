@@ -128,34 +128,37 @@ function conGetAvailableMetaTagTypes() {
  * @throws cDbException
  * @throws cException
  */
-function conGetMetaValue($idartlang, $idmetatype, $version  = NULL) {
-    static $oMetaTagColl = NULL;
-    static $metaTagVersionColl = NULL;
-    $oMetaTag = NULL;
+function conGetMetaValue($idartlang, $idmetatype, $version = null)
+{
+    static $oMetaTagColl = null;
+    static $metaTagVersionColl = null;
 
-    if ((int) $idartlang <= 0) {
+    if ((int)$idartlang <= 0) {
         return '';
     }
 
-    if ($version === NULL) {
+    if ($version === null) {
         if (!isset($oMetaTagColl)) {
             $oMetaTagColl = new cApiMetaTagCollection();
         }
-
         $oMetaTag = $oMetaTagColl->fetchByArtLangAndMetaType($idartlang, $idmetatype);
-    } else if (is_numeric($version)) {
+    } elseif (is_numeric($version)) {
         if (!isset($metaTagVersionColl)) {
             $metaTagVersionColl = new cApiMetaTagVersionCollection();
         }
-
         $oMetaTag = $metaTagVersionColl->fetchByArtLangMetaTypeAndVersion($idartlang, $idmetatype, $version);
-        }
+    } else {
+        $oMetaTag = null;
+    }
 
     if (is_object($oMetaTag)) {
-        return stripslashes($oMetaTag->get('metavalue'));
-        } else {
-            return '';
-        }
+        $metavalue = $oMetaTag->get('metavalue');
+        $metavalue = stripslashes($metavalue);
+    } else {
+        $metavalue = '';
+    }
+
+    return $metavalue;
 }
 
 /**

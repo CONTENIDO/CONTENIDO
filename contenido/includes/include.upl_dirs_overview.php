@@ -26,9 +26,9 @@ if ((int) $client < 1) {
     return;
 }
 
-$appendparameters = !empty($_REQUEST['appendparameters']) ? $_REQUEST['appendparameters'] : '';
-$collapse = !empty($_REQUEST['collapse']) ? $_REQUEST['collapse'] : '';
-$expand = !empty($_REQUEST['expand']) ? $_REQUEST['expand'] : '';
+$appendparameters = isset($_REQUEST['appendparameters']) ? $_REQUEST['appendparameters'] : '';
+$collapse         = isset($_REQUEST['collapse']) ? $_REQUEST['collapse'] : '';
+$expand           = isset($_REQUEST['expand']) ? $_REQUEST['expand'] : '';
 
 /**
  *
@@ -124,11 +124,11 @@ if ($action == 'upl_delete') {
 $tpl->reset();
 
 // Show notification for error in dir name from upl_mkdir.action
-if (!empty($errno)) {
+if (isset($errno)) {
     if ($errno === '0703') {
-    $tpl->set('s', 'WARNING', $notification->returnNotification('error', i18n('Directories with special characters and spaces are not allowed.')));
-    } elseif($errno === '0704') {
-    $tpl->set('s', 'WARNING', $notification->returnNotification('error', i18n('Can not write directory.')));
+        $tpl->set('s', 'WARNING', $notification->returnNotification('error', i18n('Directories with special characters and spaces are not allowed.')));
+    } elseif ($errno === '0704') {
+        $tpl->set('s', 'WARNING', $notification->returnNotification('error', i18n('Can not write directory.')));
     }
 }
 
@@ -162,11 +162,11 @@ foreach ($uplexpandedList as $key => $value) {
 }
 
 // Collapse and expand the tree
-if (!empty($collapse)) {
+if ($collapse) {
     $rootTreeItem->markCollapsed($collapse);
 }
 
-if (!empty($expand)) {
+if ($expand) {
     $rootTreeItem->markExpanded($expand);
 }
 
@@ -360,11 +360,11 @@ foreach ($upldbfsexpandedList as $key => $value) {
 }
 
 // Collapse and expand the tree
-if (!empty($collapse)) {
+if ($collapse) {
     $rootTreeItem->markCollapsed($collapse);
 }
 
-if (!empty($expand)) {
+if ($expand) {
     $rootTreeItem->markExpanded($expand);
 }
 
