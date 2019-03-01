@@ -512,7 +512,7 @@ if ($code == "0601") {
     $code = cString::iReplaceOnce("<head>", "<head>\n" . '<base href="' . cRegistry::getFrontendUrl() . '">', $code);
 }
 
-$code = preg_replace("/<body(.*)>/i", "<body\\1>" . $versioningElement, $code);
+$code = preg_replace("/(<body[^>]*)>/i", "\${1}> \n $versioningElement", $code, 1);
 
 if ($cfg["debug"]["codeoutput"]) {
     cDebug::out(conHtmlSpecialChars($code));
