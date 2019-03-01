@@ -58,68 +58,56 @@ class cSession {
      *
      * Starts the session.
      *
-     * @param string $prefix [optional]
-     *                       The prefix for the session variables
-     *
-     * @throws cDbException
+     * @param string $prefix [optional] The prefix for the session variables
      */
-    public function __construct($prefix = 'backend') {
-    	$cfg = cRegistry::getConfig();
-        $this->_pt = array();
+    public function __construct($prefix = 'backend')
+    {
+        $this->_pt     = [];
         $this->_prefix = $prefix;
+        $this->name    = 'contenido';
 
-        $this->name = 'contenido';
-
-        if (!isset($_SESSION)) {
-            if ('backend' === $prefix) {
-                $url = cRegistry::getBackendUrl();
-            } else {
-                $url = cRegistry::getFrontendUrl();
-            }
-
-            // Check if amr is available
-            $db = cRegistry::getDb();
-
-            // Query the database
-            $db->query("SELECT active FROM " . $cfg['tab']['plugins'] . "
-                        WHERE idclient = '" . cRegistry::getClientId() . "' AND
-                        name = 'Advanced Mod Rewrite' AND
-                        active = 1");
-
-            if ($db->numRows() > 1) {
-                $available = true;
-            } else {
-                $available = false;
-            }
-
-            // If you use AMR, use rootdir variable of mod_rewrite plugin instead of BackendUrl/FrontendUrl
-            if ($cfg['mod_rewrite']['use'] === 1 && $available === true && cString::getStringLength($cfg['mod_rewrite']['rootdir']) > 0) {
-                $url = $cfg['mod_rewrite']['rootdir'];
-            }
-
-            // remove protocol from contenido URL
-            $start = cString::findFirstPos($url, '://');
-            if (false === $start) {
-                $url = 'http://' . $url;
-                $start = cString::findFirstPos($url, '://');
-            }
-
-            // url of contenido folder with hostname
-            $path = cString::getPartOfString($url, $start + 3);
-
-            $start = cString::findFirstPos($path, '/');
-            if (false !== $start) {
-                $path = cString::getPartOfString($path, $start);
-                session_set_cookie_params(0, $path, null, $cfg['secure'], true);
-            } else {
-                // fall back to entire domain if no path can be computed
-                session_set_cookie_params(0, '/', null, $cfg['secure'], true);
-            }
-
-            session_name($this->_prefix);
-            session_start();
-            $this->id = session_id();
+        if (isset($_SESSION)) {
+            return;
         }
+
+        if ('backend' === $prefix) {
+            $url = cRegistry::getBackendUrl();
+        } else {
+            $url = cRegistry::getFrontendUrl();
+        }
+
+        // remove protocol from CONTENIDO URL
+        $start = cString::findFirstPos($url, '://');
+        if (false === $start) {
+            $url   = 'http://' . $url;
+            $start = cString::findFirstPos($url, '://');
+        }
+
+        // url of CONTENIDO folder with hostname
+        $path = cString::getPartOfString($url, $start + 3);
+
+        // CON-2785 if AMR is used and active, use mod_rewrites rootdir as path for frontend session
+        if ('backend' !== $prefix && class_exists('ModRewriteUrlUtil')
+            && ModRewriteUrlUtil::getInstance()->getConfig('use')
+        ) {
+            $path = ModRewriteUrlUtil::getInstance()->getConfig('rootdir');
+        }
+
+        $start = cString::findFirstPos($path, '/');
+        if (false !== $start) {
+            $path = cString::getPartOfString($path, $start);
+        } else {
+            // fallback to entire domain if no path can be computed
+            $path = '/';
+        }
+
+        $secure = cRegistry::getConfigValue('secure');
+
+        session_set_cookie_params(0, $path, null, $secure, true);
+        session_name($this->_prefix);
+        session_start();
+
+        $this->id = session_id();
     }
 
     /**
