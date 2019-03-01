@@ -15,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // In some cases dont print menue
-if ($dont_print_subnav == 1) {
+if (isset($dont_print_subnav) && $dont_print_subnav == 1) {
     $tpl->reset();
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['right_top_blank']);
     return;
@@ -97,7 +97,7 @@ foreach ($areasNavSubs as $areasNavSub) {
     $sClass = ($areaName == $area) ? ' current' : '';
 
     // Link
-    $sLink = $sess->url('main.php?area=' . $areaName . '&frame=4' . ($appendparameters ? '&appendparameters=' . $appendparameters : '') . $sUrlParams);
+    $sLink = $sess->url('main.php?area=' . $areaName . '&frame=4' . (!empty($appendparameters) ? '&appendparameters=' . $appendparameters : '') . $sUrlParams);
 
     // Fill template
     $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
@@ -121,7 +121,6 @@ if (!$bVirgin || $bMenuless) {
 
     $sTpl = $tpl->generate($cfg['path']['templates'] . $cfg['templates']['subnav'], true);
 
-    cDebug::out('sExectime: ' . cString::getPartOfString($sExectime, 0, 7) . ' sec');
     echo $sTpl;
 } else {
     // Is loading from main.php

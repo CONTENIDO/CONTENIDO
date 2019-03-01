@@ -397,6 +397,8 @@ if ($db->num_rows() == 0) { // If we have no categories, display warning message
 
     $bIgnore = false;
     $iIgnoreLevel = 0;
+    $iCurLevel = 0;
+    $iCurParent = 0;
 
     $items = array();
     while ($db->nextRecord()) {
@@ -406,7 +408,7 @@ if ($db->num_rows() == 0) { // If we have no categories, display warning message
             $bIgnore = false;
         }
 
-        if ($db->f('idcat') == $movesubtreeidcat) {
+        if (isset($movesubtreeidcat) && $db->f('idcat') == $movesubtreeidcat) {
             $bIgnore = true;
             $iIgnoreLevel = $db->f('level');
             $sMoveSubtreeCatName = $db->f('name');
@@ -513,6 +515,9 @@ $tpl->set('s', 'ADDITIONALHEADERS', $additionalheader);
 // We don't want to show our root
 unset($objects[0]);
 
+if (empty($syncoptions)) {
+    $syncoptions = '';
+}
 $selflink = 'main.php';
 $expandlink = $sess->url($selflink . "?area=$area&frame=$frame&expand=all&syncoptions=$syncoptions");
 $collapselink = $sess->url($selflink . "?area=$area&frame=$frame&collapse=all&syncoptions=$syncoptions");
@@ -969,7 +974,7 @@ if (($perm->have_perm_area_action($tmp_area, 'str_newtree') || $perm->have_perm_
 // Generate template
 $clang = new cApiLanguage($lang);
 
-if ($movesubtreeidcat != 0) {
+if (isset($movesubtreeidcat) && $movesubtreeidcat != 0) {
     if (cString::getStringLength($sMoveSubtreeCatName) > 30) {
         $sLimiter = "...";
     } else {

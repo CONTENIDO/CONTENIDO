@@ -44,9 +44,11 @@ if (cRegistry::isBackendEditMode()) {
     $input = '<input type="text" name="text_field" id="text_field" value="' . $linkCount . '"/>';
     $button = '<input type="button" id="create_linkfields" value="' . conHtmlSpecialChars($createButton) . '"/>';
 } else {
+    $backend = false;
     $label = NULL;
     $input = NULL;
     $button = NULL;
+    $createLabel = NULL;
 }
 
 $val = array();

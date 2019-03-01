@@ -212,18 +212,13 @@ function logMessage($msg, $PC_writeDir, $PC_useLog, $PC_debug) {
 }
 
 /**
+ * @param int|string $number
  *
- * @param int $number
- * @return integer
+ * @return int
  */
-function lTrimZeros($number) {
-    while ($number[0] == '0') {
-        $number = cString::getPartOfString($number, 1);
-    }
-    if (empty($number)) {
-        $number = 0;
-    }
-    return cSecurity::toInteger($number);
+function lTrimZeros($number)
+{
+    return (int)ltrim($number, '0');
 }
 
 /**

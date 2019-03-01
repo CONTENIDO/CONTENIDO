@@ -111,12 +111,13 @@ if ($action == 'lang_deactivatelanguage' || $action == 'lang_activatelanguage') 
     $sReloadScript = <<<JS
 <script type="text/javascript">
 (function(Con, $) {
-    var frame = Con.getFrame('right_bottom');
+    var frame, href;
+    frame = Con.getFrame('right_bottom');
     if (frame.location.href.substr(-8) != 'main.php') {
-        var href = Con.UtilUrl.replaceParams(frame.location.href, {idlang: $iGetIdlang});
+        href = Con.UtilUrl.replaceParams(frame.location.href, {idlang: $iGetIdlang});
         frame.location.href = href;
     } else {
-        var href = 'main.php?area=lang_edit&idlang=$iGetIdlang&targetclient=$clientId&frame=4&contenido=$contenido';
+        href = 'main.php?area=lang_edit&idlang=$iGetIdlang&targetclient=$clientId&frame=4&contenido=$contenido';
         frame.location.href = href;
     }
 })(Con, Con.$);

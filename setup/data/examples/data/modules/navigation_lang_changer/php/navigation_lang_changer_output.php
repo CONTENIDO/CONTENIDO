@@ -53,6 +53,8 @@ if (empty($allLanguages)) {
     // no active languages. handling was moved to include.front_content.php (lines 433 - 439).
 } else if (count($allLanguages) != 1) {
 
+    $langName = '';
+
     // else check if there more as one language
     $currentLanguage = cRegistry::getLanguageId();
 
