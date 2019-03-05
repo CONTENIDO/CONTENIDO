@@ -84,8 +84,6 @@ class cSession {
         }
 
         // determine cookie lifetime
-        // The value 0 means "until the browser is closed."
-        // @see session.cookie_lifetime
         $lifetime = 0;
 
         // determine cookie path (entire domain if path could not be determined)
