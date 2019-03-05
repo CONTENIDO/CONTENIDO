@@ -51,7 +51,7 @@ class cSession {
      *
      * @var string
      */
-    public $name = 'contenido';
+    public $name;
 
     /**
      * cSession constructor. Starts a session if it does not yet exist.
