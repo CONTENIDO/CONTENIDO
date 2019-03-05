@@ -83,18 +83,13 @@ class cSession {
             return;
         }
 
-        if ('backend' === $prefix) {
-            $url = cRegistry::getBackendUrl();
-        } else {
-            $url = cRegistry::getFrontendUrl();
-        }
-
         // determine cookie lifetime
         // The value 0 means "until the browser is closed."
         // @see session.cookie_lifetime
         $lifetime = 0;
 
         // determine cookie path (entire domain if path could not be determined)
+        $url  = 'backend' === $prefix ? cRegistry::getBackendUrl() : cRegistry::getFrontendUrl();
         $path = parse_url($url, PHP_URL_PATH);
         $path = cRegistry::getConfigValue('cookie', 'path', $path);
         if (empty($path)) {
