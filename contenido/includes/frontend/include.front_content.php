@@ -62,11 +62,6 @@ if ($cfg['use_pseudocron'] == true) {
     chdir($oldpwd);
 }
 
-// Include plugins & call hook after plugins are loaded
-// CON-2785 Plugins will to be loaded before session is created
-require_once($backendPath . $cfg['path']['includes'] . 'functions.includePluginConf.php');
-cApiCecHook::execute('Contenido.Frontend.AfterLoadPlugins');
-
 // Initialize the database abstraction layer, the session, authentication and
 // permissions handler of the PHPLIB application development toolkit
 // @see http://sourceforge.net/projects/phplib
@@ -86,6 +81,10 @@ if (cRegistry::getBackendSessionId()) {
         'perm' => 'cPermission'
     ));
 }
+
+// Include plugins & call hook after plugins are loaded
+require_once($backendPath . $cfg['path']['includes'] . 'functions.includePluginConf.php');
+cApiCecHook::execute('Contenido.Frontend.AfterLoadPlugins');
 
 $db = cRegistry::getDb();
 
