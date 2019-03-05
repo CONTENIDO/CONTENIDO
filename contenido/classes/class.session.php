@@ -51,12 +51,25 @@ class cSession {
      *
      * @var string
      */
-    public $name;
+    public $name = 'contenido';
 
     /**
-     * Constructor to create an instance of this class.
+     * cSession constructor. Starts a session if it does not yet exist.
      *
-     * Starts the session.
+     * Session cookies will be created with these parameters:
+     *
+     * The session cookie will have a lifetime of 0 which means "until the browser is closed".
+     *
+     * It will be valid for the host name of the server which generated the cookie
+     * and the path as in either the configured backend or frontend URL.
+     *
+     * @since CON-2785 the cookie path can be configured as $cfg['cookie']['path'].
+     *        Configure in <CLIENT>/data/config/<ENV>/config.local.php
+     *
+     * @since CON-2423 Via $cfg['secure'] you can define if the cookie should only be sent over secure connections.
+     *        Configure in data/config/<ENV>/config.misc.php
+     *
+     * The session cookie is accessible only through the HTTP protocol.
      *
      * @param string $prefix [optional] The prefix for the session variables
      */
@@ -76,34 +89,28 @@ class cSession {
             $url = cRegistry::getFrontendUrl();
         }
 
-        // remove protocol from CONTENIDO URL
-        $start = cString::findFirstPos($url, '://');
-        if (false === $start) {
-            $url   = 'http://' . $url;
-            $start = cString::findFirstPos($url, '://');
-        }
+        // determine cookie lifetime
+        // The value 0 means "until the browser is closed."
+        // @see session.cookie_lifetime
+        $lifetime = 0;
 
-        // url of CONTENIDO folder with hostname
-        $path = cString::getPartOfString($url, $start + 3);
-
-        // CON-2785 if AMR is used and active, use mod_rewrites rootdir as path for frontend session
-        if ('backend' !== $prefix && class_exists('ModRewriteUrlUtil')
-            && ModRewriteUrlUtil::getInstance()->getConfig('use')
-        ) {
-            $path = ModRewriteUrlUtil::getInstance()->getConfig('rootdir');
-        }
-
-        $start = cString::findFirstPos($path, '/');
-        if (false !== $start) {
-            $path = cString::getPartOfString($path, $start);
-        } else {
-            // fallback to entire domain if no path can be computed
+        // determine cookie path (entire domain if path could not be determined)
+        $path = parse_url($url, PHP_URL_PATH);
+        $path = cRegistry::getConfigValue('cookie', 'path', $path);
+        if (empty($path)) {
             $path = '/';
         }
 
+        // determine cookie domain
+        $domain = null;
+
+        // determine cookie security flag
         $secure = cRegistry::getConfigValue('secure');
 
-        session_set_cookie_params(0, $path, null, $secure, true);
+        // determine cookie httponly flag
+        $httponly = true;
+
+        session_set_cookie_params($lifetime, $path, $domain, $secure, $httponly);
         session_name($this->_prefix);
         session_start();
 
@@ -161,7 +168,6 @@ class cSession {
      * @return mixed
      */
     public function url($url) {
-
         // Remove existing session info from url
         $url = preg_replace('/([&?])' . quotemeta(urlencode($this->name)) . '=1(&|$)/', "\\1", $url);
 
@@ -173,19 +179,8 @@ class cSession {
         }
 
         // Encode naughty characters in the URL
-        $url = str_replace(array(
-            '<',
-            '>',
-            ' ',
-            '"',
-            '\''
-        ), array(
-            '%3C',
-            '%3E',
-            '+',
-            '%22',
-            '%27'
-        ), $url);
+        $url = str_replace(['<', '>', ' ', '"', '\''], ['%3C', '%3E', '+', '%22', '%27',], $url);
+
         return $url;
     }
 
@@ -311,11 +306,24 @@ class cSession {
  */
 class cFrontendSession extends cSession {
     /**
-     * Constructor to create an instance of this class.
+     * cFrontendSession constructor. Starts a session if it does not yet exist.
      *
-     * Starts the session and initilializes the class.
+     * Session cookies will be created with these parameters:
      *
-     * @throws cDbException
+     * The session cookie will have a lifetime of 0 which means "until the browser is closed".
+     *
+     * It will be valid for the host name of the server which generated the cookie
+     * and the path as in the configured frontend URL.
+     *
+     * @since CON-2785 the cookie path can be configured as $cfg['cookie']['path'].
+     *        Configure in <CLIENT>/data/config/<ENV>/config.local.php
+     *
+     * @since CON-2423 Via $cfg['secure'] you can define if the cookie should only be sent over secure connections.
+     *        Configure in data/config/<ENV>/config.misc.php
+     *
+     * The session cookie is accessible only through the HTTP protocol.
+     *
+     * @param string $prefix [optional] The prefix for the session variables
      */
     public function __construct() {
         $client = cRegistry::getClientId();
@@ -333,23 +341,14 @@ class cFrontendSession extends cSession {
      * @return mixed
      */
     public function url($url) {
+        // Remove existing session info from url
         $url = preg_replace('/([&?])' . quotemeta(urlencode($this->name)) . '=' . $this->id . '(&|$)/', "\\1", $url);
 
+        // Remove trailing ?/& if needed
         $url = preg_replace('/[&?]+$/', '', $url);
 
-        $url = str_replace(array(
-            '<',
-            '>',
-            ' ',
-            '"',
-            '\''
-        ), array(
-            '%3C',
-            '%3E',
-            '+',
-            '%22',
-            '%27'
-        ), $url);
+        // Encode naughty characters in the URL
+        $url = str_replace(['<', '>', ' ', '"', '\''], ['%3C', '%3E', '+', '%22', '%27'], $url);
 
         return $url;
     }
