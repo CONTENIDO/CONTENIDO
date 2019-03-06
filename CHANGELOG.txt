@@ -1,5 +1,210 @@
 ﻿---------------------------------------------------------------------
 ------------------------ CONTENIDO CHANGELOG ------------------------
+
+---------------------------------------------------------------------
+Release 4.10.0
+---------------------------------------------------------------------
+** Bug
+    * [CON-1947] - Bug im Modul Teaser vers. 4.9.4
+    * [CON-1951] - Pifa - import formular data
+    * [CON-2011] - Plugin: Solr - Client settings
+    * [CON-2214] - Form assistant columns are inconsistent
+    * [CON-2236] - Fix DocBlocks
+    * [CON-2294] - Page title is not escaped in frontend output
+    * [CON-2305] - Tab highlight not correct for not synchronised articles
+    * [CON-2320] - Slashes at titles after POST
+    * [CON-2326] - Tab menu is not updated correctly for articles in backend
+    * [CON-2333] - TinyMCE 4 configuration file is not ignored in git
+    * [CON-2348] - Login session problem
+    * [CON-2358] - Medianame of uploads cannot contain doublequotes
+    * [CON-2377] - "Logout" instead of "Login" at Frontend
+    * [CON-2402] - "Not published yet" display are sometimes outdated
+    * [CON-2412] - PIFA: Ugly formdata table if user has no email column
+    * [CON-2414] - PIFA: Formdata displays wrong email address
+    * [CON-2418] - Wrong display after synchronize one category with more than five articles
+    * [CON-2424] - Slow loading of filemanager with many entries
+    * [CON-2426] - AMR-Bug
+    * [CON-2443] - SEO tab: Can not select meta tags
+    * [CON-2447] - Wrong path for cInclude("module"...
+    * [CON-2453] - PIFA: Optimize display of form data, i. e. with slashes
+    * [CON-2456] - PIFA: slashes will be stripped from validation rules
+    * [CON-2473] - Prevent getLinkId() error if password for MySQL user is wrong
+    * [CON-2487] - PIFA: Incomplete export with select forms
+    * [CON-2500] - Session problem with login
+    * [CON-2506] - CMS_TEASER: Double teaser title
+    * [CON-2511] - Last char of last module translation is cut off
+    * [CON-2518] - Handling of array URL params for redirects
+    * [CON-2548] - Raw data export/import corrupt
+    * [CON-2555] - CMS_IMGEDITOR: lost image selection
+    * [CON-2558] - Editor: Activated Tinymce4 leads to error
+    * [CON-2560] - Adopt module improvements at update process
+    * [CON-2562] - Modules -> HTML: Wrong notices
+    * [CON-2567] - Class Session Function selfURL() produces wrong URLs
+    * [CON-2568] - Invalid Frontend session cookie when using mod_rewrite and htacess redirection
+    * [CON-2569] - Function strtolower() does not work correctly in some locales
+    * [CON-2570] - Styles -> CSS -> History: Double quotes with backslashes if you use revision
+    * [CON-2573] - Newsletter CSV Import - missing error messages
+    * [CON-2574] - Google map is broken on contact page
+    * [CON-2576] - Backend JS and CSS are loaded multiple times
+    * [CON-2578] - Short URL: Delete short urls if you delete articles
+    * [CON-2582] - Login problem using feature multiple client domains
+    * [CON-2584] - Fix entries in contentido country list
+    * [CON-2585] - Newsletter-Handler and Newsletter-Form - invisible Selectfield after save
+    * [CON-2586] - Newsletter - "Open in new Window" not able to disable it
+    * [CON-2589] - Add "X"|mi18n to module translation recognition for all templates
+    * [CON-2590] - Layouts: Change behaviour of containers with empty types attribute
+    * [CON-2593] - Save client and system settings: Add a trim
+    * [CON-2596] - SEO tab: Prevent double quotes for meta tags
+    * [CON-2600] - Can't save empty description or type at module xml
+    * [CON-2603] - Full synchronization of new module don't work
+    * [CON-2604] - Search: Highlighting keywords does not work always
+    * [CON-2605] - CMS_FILELIST: Sort function with files created at the same time
+    * [CON-2606] - Lost startarticle configuration
+    * [CON-2607] - No defination of child variable at conFirstEditTime function
+    * [CON-2608] - File manager: Check correct use of $friendlyName
+    * [CON-2615] - Debug-Messages result in error for Front_End-Pages
+    * [CON-2619] - Can not save same content type with ID for different articles
+    * [CON-2620] - HTML error if external redirect checkbox for articles is shown
+    * [CON-2626] - Client changer does not work anytime
+    * [CON-2629] - Swiftmailer: Ability to execute arbitrary code with the swiftmailer package
+    * [CON-2630] - Content Type: Linkeditor fails if you do not select some file
+    * [CON-2631] - Fallback to mail() for mail transport
+    * [CON-2632] - Unable to register an URI builder within plugin
+    * [CON-2636] - Frontend article is not loading when article is stored in more than one category
+    * [CON-2641] - Linkchecker: Repair function sometimes replaces the full content
+    * [CON-2644] - MyCONTENIDO: Update notifier does not work
+    * [CON-2645] - Content / Articles: Creation of articles does not work
+    * [CON-2651] - Content / Articles: Synchronization shows wrong languages
+    * [CON-2653] - Content / Categories: Unprotecting a category unprotects all its subcategories
+    * [CON-2656] - Content / Translation: Line break of last translation is displayed in textarea
+    * [CON-2657] - HTML parser does not work any longer
+    * [CON-2659] - Administration / Groups: Groupname is empty after creation
+    * [CON-2660] - Content / File manager: DBFS directories can not be created
+    * [CON-2661] - Administration / Clients: Missing directories after creating client
+    * [CON-2662] - Administration / Users: Saving user property only shows wrong notification
+    * [CON-2663] - cString::getPartOfString does not work with empty length prior PHP 5.4
+    * [CON-2664] - Uncaught exception when mailserver configuration is not valid
+    * [CON-2665] - Style of password reset form broken
+    * [CON-2666] - Administration / Cronjobs: empty space in crontab textarea in first line
+    * [CON-2667] - Content / Articles: Tooltip of URL shortener plugin not correct
+    * [CON-2669] - Workflow: wrong start and end date in notification mails
+    * [CON-2670] - PIFA: Form export files are broken
+    * [CON-2674] - Module editor: PHP error at the signal light with html chars
+    * [CON-2675] - include.str_overview.php references not existent method TreeItem::isCustomAttributeSet()
+    * [CON-2677] - Module "navigation_lang_changer" does not generate links to all articles
+    * [CON-2679] - cTypeGenerator returns old content
+    * [CON-2681] - Module translation shows 0 on empty file
+    * [CON-2682] - Module templates allows umlauts
+    * [CON-2683] - Template view is broken on special chars escaping in description
+    * [CON-2684] - Css view is broken on special chars escaping in description
+    * [CON-2685] - Javascript view is broken on special chars escaping in description
+    * [CON-2686] - System and client allows xss in backend
+    * [CON-2690] - Prevent double aliasnames at the same category
+    * [CON-2691] - Can not edit WYSIWYG options if your user has not the username "sysadmin"
+    * [CON-2693] - Article collector setPage returns results of the first page instead of empty result
+    * [CON-2694] - Mod Lang: CONTENIDO adds empty line if you save your module translation
+    * [CON-2695] - Exception at cCodeGenerator
+    * [CON-2696] - Content-SEO tab: Link is broken
+    * [CON-2697] - Use German umlauts for filenames at filemanager
+    * [CON-2698] - Content edit mode: body html tag is broken
+    * [CON-2700] - PIM: Wrong array initializing at the nav sub class
+    * [CON-2701] - File manager: Blank page if you open the file manager without an client
+    * [CON-2704] - PIFA, export as CSV: Umlauts are broken
+    * [CON-2706] - Include css- and js-files only for one time
+    * [CON-2707] - Quotes crashes article specification values
+    * [CON-2709] - Frontend login does not work with umlauts
+    * [CON-2711] - Faulty URL in SEO tab
+    * [CON-2712] - cUri::build does not generate absolute url
+    * [CON-2713] - Contenido.Frontend.PreprocessUrlBuilding set bUseAbsolutePath variable to false
+    * [CON-2715] - PIM: Missing nav_tab information for plugin "Cronjob Overview"
+    * [CON-2716] - Newsletter: Wrong example at the import notices
+    * [CON-2717] - Return value of lTrimZeros function must be a integer
+    * [CON-2722] - Errors if administrators enables sql_mode ONLY_FULL_GROUP_BY
+    * [CON-2723] - Cannot redeclare script_cookie_directive_add_get_params
+    * [CON-2724] - reset at property classes: unset function throws warnings
+    * [CON-2729] - Usage of wrong/swapped parameters in in_array in frontend user area
+    * [CON-2730] - Wrong data type in template_conf table's created field in setup tables
+    * [CON-2731] - Delete border=0 at TinyMCE3 configuration
+    * [CON-2733] - PHP Warning "A non-numeric value encountered" in include.upl_files_overview.php
+    * [CON-2735] - Undefined variable $auth in function conEditArt()
+    * [CON-2739] - Error in include.tpl_edit_form.php when creating a new template
+    * [CON-2740] - Usage of the class cContentTypeFilelist in a module output leads to an error
+    * [CON-2742] - Plugin Manager page error by installed plugis without nav_sub entrie
+    * [CON-2743] - Plugin Manager page error during plugin installation
+    * [CON-2745] - cSession error on PHP 5.6
+    * [CON-2748] - Remove not needed COMPRESSOR placeholder from tinymce.tpl.html
+    * [CON-2755] - Disabled PHP memory_limit breakes the system logs page functionality
+    * [CON-2756] - Remove semicolon in contenido/index.php
+    * [CON-2757] - Class cSystemtest uses not existing const CON_SETUP_MIN_PHP_VERSION
+    * [CON-2758] - Rename Contenido_UriBuilderFactory to cUriBuilderFactory
+    * [CON-2759] - Typing strings starting with dollar sign ($) will be interpreted as a PHP variable
+    * [CON-2762] - Bulk editing of articles does not work for regular users
+    * [CON-2763] - Class cGuiObjectPager renders pager items with wrong title attribute value
+    * [CON-2764] - Viewing template preconfig deletes values
+    * [CON-2766] - No utf8 decoding at form assistant CSV export is needed
+    * [CON-2767] - Upload new file: No utf8 encoding
+    * [CON-2768] - Search for diacritics does not work
+    * [CON-2769] - PHP count() warning in SearchResultModule
+    * [CON-2770] - File and folder permissions
+    * [CON-2772] - XSS in password recovery
+    * [CON-2778] - Delete wasted escapeString functionality and use correct XSS preventing
+    * [CON-2780] - Prevent SQL injection at navigation_lang_changer module
+    * [CON-2781] - Use an correct method to check if a user is logged in as an sysadmin
+    * [CON-2784] - Missing $cfgClient in Smarty Wrapper plugin config leads to an error
+    * [CON-2785] - Invalid session cookie path in frontend, when using AMR
+
+** New Feature
+    * [CON-2559] - New cApiHook after rawdata delete
+    * [CON-2572] - Editor Class in TinyMCE 3 should have client and language id
+    * [CON-2592] - Add new chain after article link in article properties
+    * [CON-2618] - Integration of Google Recaptcha into PIFA
+
+** Task
+    * [CON-1382] - Remove redundancy with CON_ENVIRONMENT detection
+    * [CON-2354] - Update Smarty library
+    * [CON-2356] - Update SwiftMailer library
+    * [CON-2566] - Delete wasted Frontend.CreateURL chain function
+    * [CON-2571] - getEffectiveSetting: Harmonization, documentation, unit test
+    * [CON-2728] - Make PHP 7.2 compatible
+    * [CON-2744] - Find & fix usage of undefined variables
+    * [CON-2750] - Update CONTENIDO release number to 4.10.0
+    * [CON-2752] - CMS_TEASER add more Ausgabe field
+    * [CON-2760] - Linkchecker: Undo static contentId and articleLangId variables
+    * [CON-2771] - Version constraint for 4.10.0
+
+** Improvement
+    * [CON-2448] - CMS_TEASER: Change select of maximum teaser count to checkbox
+    * [CON-2509] - New line for appended CSS and JS files in frontend
+    * [CON-2544] - Stop double category alias
+    * [CON-2552] - File manager: Prevent creation of directories and files if chmod rights are not correct
+    * [CON-2557] - Harmonize chmod right management at setup
+    * [CON-2561] - Improve new isCreatable function
+    * [CON-2563] - CMS_LINK: You can not choose categories as intern links
+    * [CON-2575] - Add pifa form headline
+    * [CON-2577] - Cms teaser need upload meta like image name for alt-tag
+    * [CON-2587] - Add __toString() method to cContentTypeAbstract
+    * [CON-2602] - Match create functions at classes cApiArticleLanguageVersionCollection and cApiArticleLanguageCollection
+    * [CON-2614] - cArticleCollector: Add support for offset
+    * [CON-2623] - CMS_IMGEDITOR: Do not load the directory list initially
+    * [CON-2649] - Content / Articles / Raw data: Do not show export button for articles without content
+    * [CON-2673] - Con-Articles-Editor: (Sometimes) No reaction on save button for datetime format
+    * [CON-2702] - Mail log: Do not display "No mails have been logged yet" if mail logging is disabled
+    * [CON-2714] - Please check at CONTENIDO backend login whether the database tables are filled or not
+    * [CON-2718] - Add a option to switch the onboard statistic off (default: off)
+    * [CON-2719] - Use TRUNCATE TABLE instead of DELETE FROM at statsArchive function
+    * [CON-2721] - Linking to Anchor-Tag in Tinymce not work
+    * [CON-2725] - Contact form and user forum aren't standard features anymore
+    * [CON-2732] - Refactoring of action "con_saveart"
+    * [CON-2734] - Improve performance of module synchronization
+    * [CON-2738] - Amending documentation of includes
+    * [CON-2749] - Remove not needed redundant integration of atooltip in templates
+    * [CON-2761] - Google map module: Show map only if admin has configured an api key
+    * [CON-2765] - Reset static class variables correctly
+    * [CON-2777] - Prevent empty template variables at some sections if no client is selected
+    * [CON-2779] - Use PHP empty function instead of cString::getStringLength
+    * [CON-2782] - No force parameter for ArticleCollector setPage method
+    * [CON-2783] - Optimize isInCatArticles method and make targetcat variable at conCopyArtLang method optional
+
 ---------------------------------------------------------------------
 Release 4.9.12
 ---------------------------------------------------------------------
@@ -147,7 +352,7 @@ Release 4.9.9
 Release 4.9.8
 ---------------------------------------------------------------------
 
-**Bug
+** Bug
     * [CON-1993] - Responsive mandant navmenu
     * [CON-2067] - By deleting an Article, its Meta Tags won't be deleted, too
     * [CON-2082] - cGuiPage does not show info button when using displayInfo function
@@ -255,7 +460,7 @@ Release 4.9.8
     * [CON-2350] - Time control: Offline articles are online at frontend
     * [CON-2352] - Linkchecker Error
 
-**Improvement
+** Improvement
     * [CON-1343] - Change usage of iconv to cApiRecodeString
     * [CON-1602] - Minor changes in cApiArticleLanguage for content handling
     * [CON-1891] - HTML-tags in category and article names
@@ -267,7 +472,7 @@ Release 4.9.8
     * [CON-2250] - Optimize creation handling for (new) languages
     * [CON-2268] - Add a title at frontend groups overview
 
-**New Feature
+** New Feature
     * [CON-1068] - Add content versioning feature
 
 ** Task
