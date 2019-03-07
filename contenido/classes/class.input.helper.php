@@ -435,6 +435,13 @@ class UI_Config_Table {
     }
 
     /**
+     * @param bool $bEnabled
+     */
+    function setAddMultiSelJS($bEnabled = true) {
+        $this->_bAddMultiSelJS = (bool) $bEnabled;
+    }
+
+    /**
      *
      * @param string $code
      */
