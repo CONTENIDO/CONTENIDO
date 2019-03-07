@@ -33,6 +33,8 @@ strRemakeTreeTable();
 
 $tmp_area = 'str';
 
+$perm = cRegistry::getPerm();
+
 // Duplicate category
 if ($action == 'str_duplicate' && ($perm->have_perm_area_action('str', 'str_duplicate') || $perm->have_perm_area_action_item('str', 'str_duplicate', $idcat))) {
     strCopyTree($idcat, $parentid);
@@ -41,7 +43,7 @@ if ($action == 'str_duplicate' && ($perm->have_perm_area_action('str', 'str_dupl
 $oDirectionDb = cRegistry::getDb();
 
 /**
- * Build a category select box containg all categories which the current
+ * Build a category select box containing all categories which the current
  * user is allowed to create new categories.
  *
  * @return string HTML
@@ -50,7 +52,7 @@ $oDirectionDb = cRegistry::getDb();
  * @throws cException
  */
 function buildCategorySelectRights() {
-    global $cfg, $client, $lang, $idcat, $perm, $tmp_area;
+    global $cfg, $client, $lang, $perm, $tmp_area;
 
     $db = cRegistry::getDb();
 
@@ -392,7 +394,7 @@ $sql = "SELECT
 $db->query($sql);
 
 if ($db->num_rows() == 0) { // If we have no categories, display warning message
-    $additionalheader = $notification->returnNotification("warning", i18n("You have no categories for this client. Please create a new root category with your categories. Without categories, you can't create some articles.")) . "<br />";
+    $additionalHeader = $notification->returnNotification("warning", i18n("You have no categories for this client. Please create a new root category with your categories. Without categories, you can't create some articles.")) . "<br />";
 } else {
 
     $bIgnore = false;
@@ -498,19 +500,20 @@ if ($db->num_rows() == 0) { // If we have no categories, display warning message
             }
         }
 
+        $additionalHeaders = array();
         foreach ($listColumns as $content) {
             // Header for additional columns
-            $additionalheaders[] = '<th class="header nowrap" nowrap="nowrap">' . $content . '</th>';
+            $additionalHeaders[] = '<th class="header nowrap" nowrap="nowrap">' . $content . '</th>';
         }
 
-        $additionalheader = implode('', $additionalheaders);
+        $additionalHeader = implode('', $additionalHeaders);
     } else {
-        $additionalheader = '';
+        $additionalHeader = '';
     }
 
 }
 
-$tpl->set('s', 'ADDITIONALHEADERS', $additionalheader);
+$tpl->set('s', 'ADDITIONALHEADERS', $additionalHeader);
 
 // We don't want to show our root
 unset($objects[0]);
@@ -832,12 +835,12 @@ foreach ($objects as $key => $value) {
 
         $columns = array();
 
-        foreach ($listColumns as $key => $content) {
+        foreach ($listColumns as $cKey => $content) {
             $columnContents = array();
             $_cecIterator = $_cecRegistry->getIterator('Contenido.CategoryList.RenderColumn');
             if ($_cecIterator->count() > 0) {
                 while ($chainEntry = $_cecIterator->next()) {
-                    $columnContents[] = $chainEntry->execute($value->getId(), $key);
+                    $columnContents[] = $chainEntry->execute($value->getId(), $cKey);
                 }
             } else {
                 $columnContents[] = '';
@@ -862,7 +865,7 @@ foreach ($aInlineEditData as $iIdCat => $aData) {
 
 $tpl->set('s', 'JS_DATA', $jsDataArray);
 
-$string = markSubMenuItem(0, true);
+$tpl->set('s', 'JS_MARK_SUBMENU_ITEM', markSubMenuItem(0, true));
 
 // Set DHTML generic Values
 $sImagepath = $cfg["path"]["images"];
@@ -903,12 +906,10 @@ $oNewAlias = new cHTMLTextbox('newcategoryalias');
 $oNewAlias->setStyle('width:150px; vertical-align:middle;');
 $tpl->set('s', 'INPUT_ALIAS_EDIT', $oNewAlias->render());
 
-$sCategorySelect = buildCategorySelectRights('idcat', '');
-
 // Show Layerbutton for adding new Cateogries and set options according to
 // Permisssions
 if (($perm->have_perm_area_action($tmp_area, 'str_newtree') || $perm->have_perm_area_action($tmp_area, 'str_newcat') || $bAreaAddNewCategory) && (int) $client > 0 && (int) $lang > 0) {
-    $tpl->set('s', 'NEWCAT', $string . '<a class="black" id="new_tree_button" href="javascript:showNewForm();"><img src="images/folder_new.gif">&nbsp;' . i18n('Create new category') . '</a>');
+    $tpl->set('s', 'NEWCAT', '<a class="black" id="new_tree_button" href="javascript:showNewForm();"><img src="images/folder_new.gif">&nbsp;' . i18n('Create new category') . '</a>');
     if ($perm->have_perm_area_action($tmp_area, 'str_newtree')) {
         if ($perm->have_perm_area_action($tmp_area, 'str_newcat') || $bAreaAddNewCategory) {
             $tpl->set('s', 'PERMISSION_NEWTREE', '');
@@ -928,7 +929,7 @@ if (($perm->have_perm_area_action($tmp_area, 'str_newtree') || $perm->have_perm_
     }
 
     if ($perm->have_perm_area_action($tmp_area, 'str_newcat') || $bAreaAddNewCategory) {
-        $tpl->set('s', 'CATEGORY_SELECT', $sCategorySelect);
+        $tpl->set('s', 'CATEGORY_SELECT', buildCategorySelectRights());
         $tpl->set('s', 'PERMISSION_NEWCAT_DISPLAY', 'block');
     } else {
         $tpl->set('s', 'CATEGORY_SELECT', '');
@@ -955,7 +956,7 @@ if (($perm->have_perm_area_action($tmp_area, 'str_newtree') || $perm->have_perm_
         $tpl->set('s', 'MAKEPUBLIC_BUTTON_NEW', '<img src="' . $sImagepath . 'folder_delocked.gif" id="public_image" title="' . i18n('Protect category') . '" alt="' . i18n('Protect category') . '">');
     }
 } else {
-    $tpl->set('s', 'NEWCAT', $string);
+    $tpl->set('s', 'NEWCAT', '');
 
     $tpl->set('s', 'PERMISSION_NEWTREE', 'disabled');
     $tpl->set('s', 'PERMISSION_NEWTREE_DISPLAY', 'none');
