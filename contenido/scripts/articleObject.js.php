@@ -484,7 +484,7 @@ echo $cutomTabsJs;
                 index++;
             });
 
-            this.navFrame.Con.Subnav.clickedById(oDoc.find('ul#navlist li:nth-child(2)').attr('id'));
+            this.navFrame.Con.Subnav.clickedById(oDoc.find('ul#navlist li:nth-child(1)').attr('id'));
         },
 
         /**
