@@ -304,7 +304,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      * @return cHTMLSelectElement
      *         $this for chaining
      */
-    public function setSelected($aElements) {
+    public function setSelected(array $aElements) {
         if (is_array($this->_options) && is_array($aElements)) {
             foreach ($this->_options as $sKey => $oOption) {
                 if (in_array($oOption->getAttribute("value"), $aElements)) {
