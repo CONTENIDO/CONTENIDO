@@ -26,7 +26,7 @@ class cHTMLSelectElement extends cHTMLFormElement {
     /**
      * All cHTMLOptionElements
      *
-     * @var array
+     * @var cHTMLOptionElement[]
      */
     protected $_options = array();
 
@@ -206,16 +206,14 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return cHTMLSelectElement
      *         $this for chaining
      */
-    public function setSelected(array $elements) {
+    public function setSelected(array $elements)
+    {
         foreach ($this->_options as $key => $option) {
-            if (in_array($option->getAttribute('value'), $elements)) {
-                $option->setSelected(true);
-                $this->_options[$key] = $option;
-            } else {
-                $option->setSelected(false);
-                $this->_options[$key] = $option;
-            }
+            $selected = in_array($option->getAttribute('value'), $elements);
+            $option->setSelected($selected);
+            $this->_options[$key] = $option;
         }
+
         return $this;
     }
 
