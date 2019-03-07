@@ -295,30 +295,6 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
             return false;
         }
     }
-
-    /**
-     * Selects specified elements as selected
-     *
-     * @param array $aElements
-     *         Array with "values" of the cHTMLOptionElement to set
-     * @return cHTMLSelectElement
-     *         $this for chaining
-     */
-    public function setSelected($aElements) {
-        if (is_array($this->_options) && is_array($aElements)) {
-            foreach ($this->_options as $sKey => $oOption) {
-                if (in_array($oOption->getAttribute("value"), $aElements)) {
-                    $oOption->setSelected(true);
-                    $this->_options[$sKey] = $oOption;
-                } else {
-                    $oOption->setSelected(false);
-                    $this->_options[$sKey] = $oOption;
-                }
-            }
-        }
-        return $this;
-    }
-
 }
 
 /**
