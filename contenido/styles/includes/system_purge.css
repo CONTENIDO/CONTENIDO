@@ -1,0 +1,109 @@
+.system_clear {
+    border: 1px solid #B3B3B3;
+    width: 570px;
+    margin-top: 10px;
+}
+
+.system_clear_header {
+    background-color: #E2E2E2;
+    height: 11px;
+    color: #666;
+    padding: 2px 5px 5px 5px;
+}
+
+.system_clear_form_row {
+    padding: 2px 2px 2px 5px;
+    clear: left;
+    width: 305px;
+}
+
+#select_list_clients select {
+    width: 150px;
+    margin-top: 5px;
+    /*border: 1px;*/
+}
+
+.system_clear_form_row .label {
+    width: 180px;
+    display: block;
+    float:left
+}
+
+.system_clear_form_row .label_middle {
+    float:left;
+    padding-right: 5px;
+    padding-top: 2px;
+}
+.system_clear_form_row .labelrightCol {
+    display: block;
+    padding-left: 10px;
+    padding-top: 2px;
+}
+
+.system_clear_form_row .input {
+    display: block;
+    float: left;
+    vertical-align: middle;
+}
+
+.system_clear_group {
+    border-top: 1px solid #B3B3B3;
+}
+
+.system_clear_group .leftCol {
+    float:left;
+    width: 150px;
+    padding: 5px;
+}
+
+.system_clear_group .rightCol {
+    float:left;
+    border-left: 1px solid #B3B3B3;
+    padding-bottom: 5px;
+    white-space: nowrap;
+}
+
+.system_clear_group .bottom {
+    text-align: right;
+    padding: 5px;
+}
+
+.system_clear_group .clear_float {
+    clear: both;
+    display: none;
+}
+
+#select_list_clients {
+    margin-left: 20px;
+    width: 150px;
+}
+
+#system_clear_error_box {
+    display: none;
+}
+
+#contenido_notification {
+    padding-top: 5px;
+}
+
+.clearfix:after{
+    content: ".";
+    display: block;
+    clear: both;
+    height: 0;
+    visibility: hidden;
+    line-height: 0;
+}
+
+.clearfix {
+    display: block;
+}
+
+*+html .clearfix:after, * html .clearfix:after{
+    height: 1px;
+}
+
+*+html .clearfix, * html .clearfix {
+    height: 1%;
+    display: inline-block;
+}
