@@ -428,22 +428,26 @@ class PimPluginSetupInstall extends PimPluginSetup {
      */
     private function _installAddAreas() {
 
+        $elements = parent::$XmlArea->area;
+        if (empty($elements)) {
+            return;
+        }
+
         // Get Id of plugin
         $pluginId = parent::_getPluginId();
 
-        $areaCount = count(parent::$XmlArea->area);
-        for ($i = 0; $i < $areaCount; $i++) {
+        foreach ($elements as $element) {
 
             // Initializing attributes array
             $attributes = array();
 
             // Build attributes
-            foreach (parent::$XmlArea->area[$i]->attributes() as $key => $value) {
+            foreach ($element->attributes() as $key => $value) {
                 $attributes[$key] = $value;
             }
 
             // Security check
-            $area = cSecurity::escapeString(parent::$XmlArea->area[$i]);
+            $area = cSecurity::escapeString($element);
 
             // Add attributes "parent", "relevant" and "menuless" to an array
             $attributes = array(
@@ -477,17 +481,21 @@ class PimPluginSetupInstall extends PimPluginSetup {
      */
     private function _installAddActions() {
 
+        $elements = parent::$XmlActions->action;
+        if (empty($elements)) {
+            return;
+        }
+
         // Initializing attributes array
         $attributes = array();
 
         // Get Id of plugin
         $pluginId = parent::_getPluginId();
 
-        $actionCount = count(parent::$XmlActions->action);
-        for ($i = 0; $i < $actionCount; $i++) {
+        foreach ($elements as $element) {
 
             // Build attributes
-            foreach (parent::$XmlActions->action[$i]->attributes() as $key => $value) {
+            foreach ($element->attributes() as $key => $value) {
                 $attributes[$key] = $value;
             }
 
@@ -503,7 +511,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
             );
 
             // Security check for action name
-            $action = cSecurity::escapeString(parent::$XmlActions->action[$i]);
+            $action = cSecurity::escapeString($element);
 
             // Check for valid area
             if (!in_array($attributes['area'], $this->_getInstalledAreas())) {
@@ -523,17 +531,21 @@ class PimPluginSetupInstall extends PimPluginSetup {
      */
     private function _installAddFrames() {
 
+        $elements = parent::$XmlFrames->frame;
+        if (empty($elements)) {
+            return;
+        }
+
         // Initializing attributes array
         $attributes = array();
 
         // Get Id of plugin
         $pluginId = parent::_getPluginId();
 
-        $frameCount = count(parent::$XmlFrames->frame);
-        for ($i = 0; $i < $frameCount; $i++) {
+        foreach ($elements as $element) {
 
             // Build attributes with security checks
-            foreach (parent::$XmlFrames->frame[$i]->attributes() as $sKey => $sValue) {
+            foreach ($element->attributes() as $sKey => $sValue) {
                 $attributes[$sKey] = cSecurity::escapeString($sValue);
             }
 
@@ -559,6 +571,12 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * Add entries at *_nav_main
      */
     private function _installAddNavMain() {
+
+        $elements = parent::$XmlNavMain->nav;
+        if (empty($elements)) {
+            return;
+        }
+
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 
@@ -581,14 +599,13 @@ class PimPluginSetupInstall extends PimPluginSetup {
             }
         }
 
-        $navCount = is_array(parent::$XmlNavMain->nav) ? count(parent::$XmlNavMain->nav) : 0;
-        for ($i = 0; $i < $navCount; $i++) {
+        foreach ($elements as $element) {
 
         	// Security check for location
-        	$location = cSecurity::escapeString(parent::$XmlNavMain->nav[$i]);
+        	$location = cSecurity::escapeString($element);
 
         	// Build attributes with security checks
-            foreach (parent::$XmlNavMain->nav[$i]->attributes() as $sKey => $sValue) {
+            foreach ($element->attributes() as $sKey => $sValue) {
                 $attributes[$sKey] = cSecurity::escapeString($sValue);
             }
 
@@ -620,17 +637,21 @@ class PimPluginSetupInstall extends PimPluginSetup {
      */
     private function _installAddNavSub() {
 
+        $elements = parent::$XmlNavSub->nav;
+        if (empty($elements)) {
+            return;
+        }
+
         // Initializing attributes array
         $attributes = array();
 
         // Get Id of plugin
         $pluginId = parent::_getPluginId();
 
-        $navCount = count(parent::$XmlNavSub->nav);
-        for ($i = 0; $i < $navCount; $i++) {
+        foreach ($elements as $element) {
 
             // Build attributes
-            foreach (parent::$XmlNavSub->nav[$i]->attributes() as $key => $value) {
+            foreach ($element->attributes() as $key => $value) {
                 $attributes[$key] = $value;
             }
 
@@ -654,7 +675,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
             }
 
             // Create a new entry at *_nav_sub
-            $item = $this->_ApiNavSubCollection->create($attributes['navm'], $attributes['area'], $attributes['level'], parent::$XmlNavSub->nav[$i], 1);
+            $item = $this->_ApiNavSubCollection->create($attributes['navm'], $attributes['area'], $attributes['level'], $element, 1);
 
             // Set a relation
             $this->_PimPluginRelationsCollection->create($item->get('idnavs'), $pluginId, 'navs');
@@ -671,13 +692,8 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
         if (parent::getMode() == 1) { // Plugin is already extracted
             $tempSqlFilename = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->_getPluginFoldername() . DIRECTORY_SEPARATOR . 'plugin_install.sql';
-        } elseif (parent::getMode() == 2 || parent::getMode() == 4) { // Plugin
-                                                                      // is
-                                                                      // uploaded
-                                                                      // or /
-                                                                      // and
-                                                                      // update
-                                                                      // mode
+        } elseif (parent::getMode() == 2 || parent::getMode() == 4) {
+            // Plugin is uploaded or / and update mode
             $tempSqlFilename = parent::$_PimPluginArchiveExtractor->extractArchiveFileToVariable('plugin_install.sql', 0);
         }
 
@@ -706,15 +722,19 @@ class PimPluginSetupInstall extends PimPluginSetup {
      */
     private function _installAddContentTypes() {
 
+        $elements = parent::$XmlContentType->type;
+        if (empty($elements)) {
+            return;
+        }
+
         // Get Id of plugin
         $pluginId = parent::_getPluginId();
 
         $pattern = '/^CMS_.+/';
 
-        $typeCount = is_array(parent::$XmlContentType->type) ? count(parent::$XmlContentType->type) : 0;
-        for ($i = 0; $i < $typeCount; $i++) {
+        foreach ($elements as $element) {
 
-            $type = cSecurity::toString(parent::$XmlContentType->type[$i]);
+            $type = cSecurity::toString($element);
 
             if (preg_match($pattern, $type)) {
 
@@ -739,7 +759,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
         $modulesPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->_getPluginFoldername() . DIRECTORY_SEPARATOR . "modules" . DIRECTORY_SEPARATOR;
 
         if (!is_dir($modulesPath)) {
-            return false;
+            return;
         }
 
         foreach (new DirectoryIterator($modulesPath) as $modulesFiles) {
