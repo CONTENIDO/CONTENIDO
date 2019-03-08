@@ -43,28 +43,28 @@ if (!is_array($right_list)) {
     $actionCollection = new cApiActionCollection();
     try {
         $areaCollection->select('relevant = 1 AND online = 1 AND name != "login"');
-        while ($area = $areaCollection->next()) {
+        while ($areaItem = $areaCollection->next()) {
             $right = [
-                'perm'     => $area->get('name'),
+                'perm'     => $areaItem->get('name'),
                 'location' => '',
             ];
             // get location
-            $navSubCollection->select('idarea = ' . (int)$area->get('idarea'));
-            if ($navSub = $navSubCollection->next()) {
-                $right['location'] = $navSub->get('location');
+            $navSubCollection->select('idarea = ' . (int)$areaItem->get('idarea'));
+            if ($navSubItem = $navSubCollection->next()) {
+                $right['location'] = $navSubItem->get('location');
             }
             // get relevant actions
-            $actions = $actionCollection->select('relevant = 1 AND idarea = ' . (int)$area->get('idarea'));
-            while ($action = $actionCollection->next()) {
-                $right['action'][] = $action->get('name');
+            $actions = $actionCollection->select('relevant = 1 AND idarea = ' . (int)$areaItem->get('idarea'));
+            while ($actionItem = $actionCollection->next()) {
+                $right['action'][] = $actionItem->get('name');
             }
             // insert into list
-            if ($area->get('parent_id') == '0') {
-                $key = $area->get('name');
+            if ($areaItem->get('parent_id') == '0') {
+                $key = $areaItem->get('name');
             } else {
-                $key = $area->get('parent_id');
+                $key = $areaItem->get('parent_id');
             }
-            $right_list[$key][$area->get('name')] = $right;
+            $right_list[$key][$areaItem->get('name')] = $right;
         }
     } catch (cDbException $e) {
         $right_list = [];
