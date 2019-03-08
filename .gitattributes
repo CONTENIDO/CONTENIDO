@@ -1986,7 +1986,9 @@ contenido/styles/content_types/cms_linkeditor.css -text
 contenido/styles/content_types/cms_teaser.css -text svneol=unset#text/plain
 contenido/styles/includes/con_content_list.css -text svneol=unset#text/plain
 contenido/styles/includes/dragdrop.upl_files_upload.css -text svneol=unset#text/plain
+contenido/styles/includes/str_overview.css -text
 contenido/styles/includes/system_integrity.css -text svneol=unset#text/plain
+contenido/styles/includes/system_purge.css -text
 contenido/styles/index.php -text
 contenido/styles/inuse.css -text
 contenido/styles/jquery/fileuploader.css -text svneol=unset#text/plain
@@ -2009,9 +2011,7 @@ contenido/styles/jquery/jquery-ui.css -text svneol=unset#text/plain
 contenido/styles/jquery/plugins/atooltip.css -text svneol=unset#text/plain
 contenido/styles/jquery/plugins/timepicker.css -text svneol=unset#text/plain
 contenido/styles/jquery/plugins/tipsy.css -text
-contenido/styles/str_overview.css -text
 contenido/styles/system_integrity.css -text
-contenido/styles/system_purge.css -text
 contenido/styles/tree.css -text svneol=unset#text/plain
 contenido/subnav.php -text
 contenido/templates/frontend_error.html -text svneol=unset#text/plain
