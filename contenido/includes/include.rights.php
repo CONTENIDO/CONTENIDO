@@ -36,30 +36,40 @@ if (!is_object($oTpl)) {
 }
 $oTpl->reset();
 
-// Set new right_list (=all possible rights)
+// build list of rights for all relevant and online areas except "login" and their relevant actions
 if (!is_array($right_list)) {
-    // Select all rights, actions an their locations without area login
-    $sql = "SELECT A.idarea, A.parent_id, B.location, A.name " . "FROM " . $cfg["tab"]["area"] . " AS A LEFT JOIN " . $cfg["tab"]["nav_sub"] . " AS B ON  A.idarea = B.idarea " . "WHERE A.name!='login' AND A.relevant='1' AND A.online='1' GROUP BY A.name, A.idarea, A.parent_id, B.location ORDER BY A.idarea";
-    $db->query($sql);
-
-    while ($db->nextRecord()) {
-        if ($db->f('parent_id') == '0') {
-            $right_list[$db->f('name')][$db->f('name')]['perm'] = $db->f('name');
-            $right_list[$db->f('name')][$db->f('name')]['location'] = $db->f('location');
-        } else {
-            $right_list[$db->f('parent_id')][$db->f('name')]['perm'] = $db->f('name');
-            $right_list[$db->f('parent_id')][$db->f('name')]['location'] = $db->f('location');
-        }
-
-        $sql = "SELECT * FROM " . $cfg["tab"]["actions"] . " WHERE idarea=" . (int) $db->f("idarea") . " AND relevant='1'";
-        $db2->query($sql);
-        while ($db2->nextRecord()) {
-            if ($db->f('parent_id') == '0') {
-                $right_list[$db->f('name')][$db->f('name')]['action'][] = $db2->f('name');
-            } else {
-                $right_list[$db->f('parent_id')][$db->f('name')]['action'][] = $db2->f('name');
+    $areaCollection   = new cApiAreaCollection();
+    $navSubCollection = new cApiNavSubCollection();
+    $actionCollection = new cApiActionCollection();
+    try {
+        $areaCollection->select('relevant = 1 AND online = 1 AND name != "login"');
+        while ($area = $areaCollection->next()) {
+            $right = [
+                'perm'     => $area->get('name'),
+                'location' => '',
+            ];
+            // get location
+            $navSubCollection->select('idarea = ' . (int)$area->get('idarea'));
+            if ($navSub = $navSubCollection->next()) {
+                $right['location'] = $navSub->get('location');
             }
+            // get relevant actions
+            $actions = $actionCollection->select('relevant = 1 AND idarea = ' . (int)$area->get('idarea'));
+            while ($action = $actionCollection->next()) {
+                $right['action'][] = $action->get('name');
+            }
+            // insert into list
+            if ($area->get('parent_id') == '0') {
+                $key = $area->get('name');
+            } else {
+                $key = $area->get('parent_id');
+            }
+            $right_list[$key][$area->get('name')] = $right;
         }
+    } catch (cDbException $e) {
+        $right_list = [];
+    } catch (cException $e) {
+        $right_list = [];
     }
 }
 
