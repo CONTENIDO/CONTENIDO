@@ -152,12 +152,18 @@ Release 4.10.0
     * [CON-2781] - Use an correct method to check if a user is logged in as an sysadmin
     * [CON-2784] - Missing $cfgClient in Smarty Wrapper plugin config leads to an error
     * [CON-2785] - Invalid session cookie path in frontend, when using AMR
+    * [CON-2789] - Permissions assigned to a user are added or rendered twice
+    * [CON-2792] - Incompatible declaration of cHTMLInputSelectElement::setSelected()
+    * [CON-2794] - Call to undefined method UI_Config_Table::addMultiSelJS()
+    * [CON-2797] - Overviews list file index.php
+
 
 ** New Feature
     * [CON-2559] - New cApiHook after rawdata delete
     * [CON-2572] - Editor Class in TinyMCE 3 should have client and language id
     * [CON-2592] - Add new chain after article link in article properties
     * [CON-2618] - Integration of Google Recaptcha into PIFA
+
 
 ** Task
     * [CON-1382] - Remove redundancy with CON_ENVIRONMENT detection
@@ -204,6 +210,7 @@ Release 4.10.0
     * [CON-2779] - Use PHP empty function instead of cString::getStringLength
     * [CON-2782] - No force parameter for ArticleCollector setPage method
     * [CON-2783] - Optimize isInCatArticles method and make targetcat variable at conCopyArtLang method optional
+    * [CON-2793] - Define TinyMCE 4 as default in setup
 
 ---------------------------------------------------------------------
 Release 4.9.12
