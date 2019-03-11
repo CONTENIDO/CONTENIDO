@@ -482,6 +482,8 @@ function getRightsList()
     $actions = new cApiActionCollection();
 
     try {
+        $rights = [];
+
         $areas->select('relevant = 1 AND online = 1 AND name != "login"');
         while ($area = $areas->next()) {
             $right = [
