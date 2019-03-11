@@ -469,3 +469,51 @@ function saveGroupRights() {
     $rights_list_old = $rights_list;
     return true;
 }
+
+/**
+ * Build list of rights for all relevant and online areas except "login" and their relevant actions.
+ *
+ * @return array
+ */
+function getRightsList()
+{
+    $areas   = new cApiAreaCollection();
+    $navSubs = new cApiNavSubCollection();
+    $actions = new cApiActionCollection();
+
+    try {
+        $areas->select('relevant = 1 AND online = 1 AND name != "login"');
+        while ($area = $areas->next()) {
+            $right = [
+                'perm'     => $area->get('name'),
+                'location' => '',
+            ];
+
+            // get location
+            $navSubs->select('idarea = ' . (int)$area->get('idarea'));
+            if ($navSubItem = $navSubs->next()) {
+                $right['location'] = $navSubItem->get('location');
+            }
+
+            // get relevant actions
+            $actions->select('relevant = 1 AND idarea = ' . (int)$area->get('idarea'));
+            while ($action = $actions->next()) {
+                $right['action'][] = $action->get('name');
+            }
+
+            // insert into list
+            if ($area->get('parent_id') == '0') {
+                $key = $area->get('name');
+            } else {
+                $key = $area->get('parent_id');
+            }
+            $rights[$key][$area->get('name')] = $right;
+        }
+    } catch (cDbException $e) {
+        $rights = [];
+    } catch (cException $e) {
+        $rights = [];
+    }
+
+    return $rights;
+}

@@ -27,46 +27,14 @@ if (!is_object($db2)) {
     $db2 = cRegistry::getDb();
 }
 
-if (!is_object($oTpl)) {
-    // $oTpl = new cTemplate();
-}
+// if (!is_object($oTpl)) {
+//     $oTpl = new cTemplate();
+// }
 // $oTpl->reset();
 
-// build list of rights for all relevant and online areas except "login" and their relevant actions
+// get list of rights
 if (!is_array($right_list)) {
-    $areaCollection   = new cApiAreaCollection();
-    $navSubCollection = new cApiNavSubCollection();
-    $actionCollection = new cApiActionCollection();
-    try {
-        $areaCollection->select('relevant = 1 AND online = 1 AND name != "login"');
-        while ($areaItem = $areaCollection->next()) {
-            $right = [
-                'perm'     => $areaItem->get('name'),
-                'location' => '',
-            ];
-            // get location
-            $navSubCollection->select('idarea = ' . (int)$areaItem->get('idarea'));
-            if ($navSubItem = $navSubCollection->next()) {
-                $right['location'] = $navSubItem->get('location');
-            }
-            // get relevant actions
-            $actions = $actionCollection->select('relevant = 1 AND idarea = ' . (int)$areaItem->get('idarea'));
-            while ($actionItem = $actionCollection->next()) {
-                $right['action'][] = $actionItem->get('name');
-            }
-            // insert into list
-            if ($areaItem->get('parent_id') == '0') {
-                $key = $areaItem->get('name');
-            } else {
-                $key = $areaItem->get('parent_id');
-            }
-            $right_list[$key][$areaItem->get('name')] = $right;
-        }
-    } catch (cDbException $e) {
-        $right_list = [];
-    } catch (cException $e) {
-        $right_list = [];
-    }
+    $right_list = getRightsList();
 }
 
 $dataSync['SESS_ID'] = $sess->id;
