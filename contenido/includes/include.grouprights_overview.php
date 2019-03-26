@@ -55,7 +55,8 @@ if (($action == 'group_edit')) {
             $bError = true;
         } else {
             foreach ($mlang as $ilang) {
-                if (!cRights::checkLangInClients($mclient, $ilang)) {
+                $clientLangColl = new cApiClientLanguageCollection();
+                if (!$clientLangColl->hasLanguageInClients($ilang, $mclient)) {
                     $sNotification = $notification->returnNotification("error", i18n("If you want to assign a language to a group you need to give it access to the client too."));
                     $bError = true;
                     break;

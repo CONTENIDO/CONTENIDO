@@ -22,26 +22,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cRights
 {
     /**
-     * Function checks if a language is associated with a given list of clients
-     *
-     * @param array $aClients
-     *         array of clients to check
-     * @param int   $iLang
-     *         language id which should be checked
-     *
-     * @return bool
-     *         If language id corresponds to list of clients true otherwise false.
-     *
-     * @throws cDbException
-     */
-    public static function checkLangInClients($aClients, $iLang)
-    {
-        $oClientLanguageCollection = new cApiClientLanguageCollection();
-
-        return $oClientLanguageCollection->hasLanguageInClients($iLang, $aClients);
-    }
-
-    /**
      * Duplicate rights for any element.
      *
      * @param string $area
