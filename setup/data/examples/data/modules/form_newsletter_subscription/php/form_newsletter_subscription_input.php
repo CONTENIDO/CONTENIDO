@@ -154,8 +154,8 @@ if ($oRcpGroups->count() == 0) {
 function fncUpdateSel() {
     var strSel = "";
     for (i = 0; i < document.forms[0].selGroup'.$cCurrentContainer.'.length; i++) {
-        if (document.forms[0].selGroup'.$cCurrentContainer.'.options[i].selected == true) {
-            if (strSel != "") {
+        if (document.forms[0].selGroup'.$cCurrentContainer.'.options[i].selected === true) {
+            if (strSel !== "") {
                 strSel = strSel + ",";
             }
             strSel = strSel + document.forms[0].selGroup'.$cCurrentContainer.'.options[i].value;
@@ -166,11 +166,8 @@ function fncUpdateSel() {
 //--></script>
 ';
 
-    if ($aSettings['JoinSel'] == 'Default') {
-        $oSelGroup = new cHTMLSelectElement('selGroup'.$cCurrentContainer, '', '', true);
-    } else {
-        $oSelGroup = new cHTMLSelectElement('selGroup'.$cCurrentContainer, '');
-    }
+    $disabled = $aSettings['JoinSel'] == 'Default';
+    $oSelGroup = new cHTMLSelectElement('selGroup'.$cCurrentContainer, '', '', (bool)$disabled);
     $oSelGroup->setSize(5);
     $oSelGroup->setMultiselect();
     $oSelGroup->setEvent('change', "fncUpdateSel()");
@@ -187,7 +184,13 @@ function fncUpdateSel() {
     }
 
     $oHidGroups = new cHTMLHiddenField('hidJoinGroups'.$cCurrentContainer, $aSettings['JoinGroups']);
-    $oCfgTable->setCell('groups', 1, $sSkript.$oSelGroup->render().$oHidGroups->render());
+
+    $groups = '';
+    $groups .= $sSkript;
+    $groups .= $sSkript.$oSelGroup->render();
+    $groups .= $oHidGroups->render();
+
+    $oCfgTable->setCell('groups', 1, $groups);
 }
 
 // Options: Message type (user [->selectbox], text or html)

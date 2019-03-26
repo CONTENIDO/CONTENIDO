@@ -380,7 +380,7 @@ class UI_Config_Table
     protected $_cellVAlignment = [];
 
     /**
-     * @var unknown_type
+     * @var string
      */
     protected $_cellColSpan;
 
@@ -390,12 +390,12 @@ class UI_Config_Table
     protected $_cellClass = [];
 
     /**
-     * @var unknown_type
+     * @var string
      */
     protected $_rowBgColor;
 
     /**
-     * @var unknown_type
+     * @var string
      */
     protected $_rowExtra;
 
@@ -462,7 +462,7 @@ class UI_Config_Table
      *
      * @param string       $row
      * @param string       $cell
-     * @param unknown_type $alignment
+     * @param string $alignment
      */
     protected function setCellAlignment($row, $cell, $alignment)
     {
@@ -474,7 +474,7 @@ class UI_Config_Table
      *
      * @param string       $row
      * @param string       $cell
-     * @param unknown_type $alignment
+     * @param string $alignment
      */
     public function setCellVAlignment($row, $cell, $alignment)
     {
@@ -486,7 +486,7 @@ class UI_Config_Table
      *
      * @param string       $row
      * @param string       $cell
-     * @param unknown_type $class
+     * @param string $class
      */
     public function setCellClass($row, $cell, $class)
     {
@@ -521,9 +521,9 @@ try {
         var oSelectBox = document.getElementsByName(selectBox)[0];
         var oStorage   = document.getElementsByName(storage)[0];
         if (oSelectBox && oStorage) {
-            for (i = 0; i < oSelectBox.length; i++) {
-                if (oSelectBox.options[i].selected == true) {
-                    if (sSelection != "") {
+            for (var i = 0; i < oSelectBox.length; i++) {
+                if (oSelectBox.options[i].selected === true) {
+                    if (sSelection !== "") {
                         sSelection = sSelection + ",";
                     }
                     sSelection = sSelection + oSelectBox.options[i].value;
