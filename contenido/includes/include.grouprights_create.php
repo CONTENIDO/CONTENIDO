@@ -14,8 +14,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-cInclude('includes', 'functions.rights.php');
-
 if (!$perm->have_perm_area_action($area, $action)) {
     // access denied
     $notification->displayNotification('error', i18n('Permission denied'));
@@ -29,7 +27,7 @@ $aPerms        = array();
 $groupId       = NULL;
 
 if ($action == 'group_create') {
-    $aPerms = buildUserOrGroupPermsFromRequest();
+    $aPerms = cRights::buildUserOrGroupPermsFromRequest();
 
     if ($groupname == '') {
         $groupname = cApiGroup::PREFIX . i18n("New Group");

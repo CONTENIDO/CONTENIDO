@@ -14,8 +14,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-cInclude('includes', 'functions.rights.php');
-
 global $dataSync;
 $dataSync = array();
 
@@ -34,7 +32,7 @@ if (!is_object($db2)) {
 
 // get list of rights
 if (!is_array($right_list)) {
-    $right_list = getRightsList();
+    $right_list = cRights::getRightsList();
 }
 
 $dataSync['SESS_ID'] = $sess->id;

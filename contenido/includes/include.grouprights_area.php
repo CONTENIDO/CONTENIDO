@@ -16,7 +16,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 // notice $oTpl is filled and generated in file include.rights.php this file
 // renders $oTpl to browser
-include_once (cRegistry::getBackendPath() . 'includes/functions.rights.php');
 include_once (cRegistry::getBackendPath() . 'includes/include.grouprights.php');
 
 $page = new cGuiPage('rights', '', 2);
@@ -37,7 +36,7 @@ while ($db->nextRecord()) { // set a new rights list for this user
 }
 
 if (($perm->have_perm_area_action("groups_overview", $action)) && ($action == "group_edit")) {
-    if (saveGroupRights() === true) {
+    if (cRights::saveGroupRights() === true) {
         cRegistry::addOkMessage(i18n('Changes saved'));
     } else {
         // no error handling implemented yet.
