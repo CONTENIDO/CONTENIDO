@@ -521,7 +521,7 @@ function cApiImageIsAnimGif($sFile) {
  *                          The number of minutes to cache the image, use 0 for unlimited
  * @param bool   $wantHQ    [optional]
  *                          If true, try to force high quality mode
- *                          @deprecated 4.8.* This is not used anymore.
+ *                          Deprecated 4.8.* This is not used anymore.
  *                          Configure the quality via following setting:
  *                          $cfg['images']['image_quality']['compression_rate']
  * @param int    $quality   [optional]
