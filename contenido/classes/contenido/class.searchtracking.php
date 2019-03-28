@@ -93,14 +93,14 @@ class cApiSearchTrackingCollection extends ItemCollection {
      *                      Use this language instead of the current one
      * @return bool
      * @throws cDbException
-     * @deprecated Since 4.10.1, We can't use fields created by AVG or COUNT here! The result set of this function will contain all search term entries, not the cumulated entries.
+     * @deprecated Since 4.10.1, We can't use fields created by AVG or COUNT here! Result sets received by this function will contain all search term entries, not the cumulated ones.
      */
     public function selectPopularSearchTerms($idclient = 0, $idlang = 0) {
         return $this->select('idclient=' . (($idclient == 0) ? cRegistry::getClientId() : $idclient) . ' AND idlang=' . (($idlang == 0) ? cRegistry::getLanguageId() : $idlang), 'searchterm, idsearchtracking, idclient, idlang, results, datesearched', 'COUNT(searchterm) DESC');
     }
 
     /**
-     * Fetch all search terms of this client and language, group them by search
+     * Query all search terms of this client and language, group them by search
      * term and sort them by popularity.
      *
      * The record sets created by this query contain following fields:
