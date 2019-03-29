@@ -1241,6 +1241,33 @@ class PifaForm extends Item {
     }
 
     /**
+     * Delete this form all selected datas.
+     */
+    public function deleteData($iddatas) {
+        $db = cRegistry::getDb();
+
+        if (!$this->isLoaded()) {
+            $msg = Pifa::i18n('FORM_LOAD_ERROR');
+            throw new PifaException($msg);
+        }
+
+        // delete datas
+        $sql = "-- PifaForm->deleteData()
+            DELETE FROM
+                `" . cSecurity::toString($this->get('data_table')). "`
+            WHERE
+                id in (" . $iddatas . ")
+            ;";
+
+        if (false === $db->query($sql)) {
+            $msg = Pifa::i18n('DATAS_DELETE_ERROR');
+            throw new PifaException($msg);
+        } else {
+            return true;
+        }
+    }
+
+    /**
      *
      * @deprecated use $this->get('data_table') instead
      */

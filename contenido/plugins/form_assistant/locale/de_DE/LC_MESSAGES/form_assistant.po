@@ -359,6 +359,10 @@ msgstr "Formular konnte nicht gespeichert werden: '%s'"
 msgid "CONFIRM_DELETE_FIELD"
 msgstr "Wollen Sie dieses Feld wirklich löschen?"
 
+#: classes/class.pifa.gui.php:954
+msgid "CONFIRM_DELETE_DATA"
+msgstr "Wollen Sie dieses Data wirklich löschen?"
+
 #: classes/class.pifa.gui.php:694
 msgid ""
 "Currently there is no field called \"email\" in this form. Sending mails - "
@@ -591,6 +595,10 @@ msgstr "Formular konnte nicht gelöscht werden"
 msgid "FIELDS_DELETE_ERROR"
 msgstr "Felder konnten nicht gelöscht werden"
 
+#: classes/class.pifa.form.php:1263
+msgid "DATAS_DELETE_ERROR"
+msgstr "Daten konnten nicht gelöscht werden"
+
 #: classes/class.pifa.form.php:1241
 msgid "TABLE_DROP_ERROR"
 msgstr "Datentabelle konnte nicht gelöscht werden"
@@ -670,6 +678,10 @@ msgstr "Datei aus Formulardaten herunterladen"
 #: includes/config.plugin.php:397
 msgid "pifa_delete_field"
 msgstr "Formularfeld löschen"
+
+#: includes/config.plugin.php:380
+msgid "pifa_delete_data"
+msgstr "Formulardata löschen"
 
 #: includes/config.plugin.php:398
 msgid "pifa_get_option_row"

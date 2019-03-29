@@ -1,4 +1,51 @@
 <!-- form_assistant/templates/template.right_bottom_data.tpl -->
+<script>
+    (function(Con, $) {
+        $(function() {
+            var formAssistant = Con.namespace('Con.Plugin.FormAssistant');
+            formAssistant.translations = {$I18N};
+
+            // On flip mark click
+            $('a.flip_mark').click(function() {
+                $('input.mark_data').each(function() {
+                    if ($(this).prop('checked')) {
+                        $(this).prop('checked', false);
+                    } else {
+                        $(this).prop('checked', true);
+                    }
+                });
+            });
+
+            $('#right_bottom img.delete').on('click', function(event) {
+                event.preventDefault();
+                var iddatas = [];
+                $('input.mark_data').each(function() {
+                    if ($(this).prop('checked')) {
+                        iddatas.push($(this).val());
+                    }
+                });
+                if (!iddatas.length){
+                    return;
+                }
+                if (false === confirm(formAssistant.getTrans('confirm_delete_data'))) {
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url:  '{$deleteUrl}',
+                    data: 'idform=' + {$idform} + '&iddatas=' + iddatas.join(','),
+                    success: function(msg) {
+                        if (Con.checkAjaxResponse(msg) === false)  {
+                            return false;
+                        }
+                        document.location.reload();
+                    }
+                });
+            });
+
+        });
+    })(Con, Con.$);
+</script>
 
 <fieldset>
     <legend>{$trans.legend}</legend>
@@ -15,6 +62,7 @@
     {if 0 lt $exportUrl|trim|strlen}
     <a class="form-data-export" href="{$exportUrl}">{$trans.export}</a>
     {/if}
+    {$lnkDel}
 
     <!-- table cellpadding="0" class="generic" -->
     <table class="generic" width="97%" cellspacing="0" cellpadding="2" border="0">
@@ -33,6 +81,7 @@
             <th nowrap="nowrap">{$columnName}</th>
         {/if}
     {/foreach}
+            <th nowrap="nowrap">{$trans.delete}</th>
         </tr>
     {if 0 eq $data|count}
         <tr>
@@ -59,9 +108,15 @@
             <td nowrap="nowrap" class="bordercell">{$columnData|escape:htmlall}</td>
             {/if}
         {/foreach}
+            <td><input type="checkbox" name="mark" class="mark_data" value="{$row.id}" /></td>
         </tr>
         {/foreach}
     {/if}
+    </table>
+    <table>
+        <tr>
+            <th><img class="delete" src="images/delete.gif" /></th>
+        </tr>
     </table>
 {/if}
 </fieldset>

@@ -80,6 +80,13 @@ class PifaAjaxHandler {
      *
      * @var string
      */
+    const DELETE_DATA = 'pifa_delete_data';
+
+    /**
+     * Action constant.
+     *
+     * @var string
+     */
     const GET_OPTION_ROW = 'pifa_get_option_row';
 
     /**
@@ -116,6 +123,12 @@ class PifaAjaxHandler {
             case self::DELETE_FIELD:
                 $idfield = cSecurity::toInteger($_GET['idfield']);
                 $this->_deleteField($idfield);
+                break;
+
+            case self::DELETE_DATA:
+                $idform = cSecurity::toInteger($_POST['idform']);
+                $iddatas = implode(',', array_map('cSecurity::toInteger', explode(',', $_POST['iddatas'])));
+                $this->_deleteData($idform, $iddatas);
                 break;
 
             case self::REORDER_FIELDS:
@@ -557,6 +570,22 @@ class PifaAjaxHandler {
 
         $pifaField = new PifaField($idfield);
         $pifaField->delete();
+    }
+
+    /**
+     *
+     * @param int $idform
+     * @param array $iddatas
+     * @throws PifaException
+     */
+    private function _deleteData($idform, $iddatas) {
+        if (0 == $iddatas) {
+            $msg = Pifa::i18n('MISSING_IDDATA');
+            throw new PifaException($msg);
+        }
+
+        $pifaForm = new PifaForm($idform);
+        $pifaForm->deleteData($iddatas);
     }
 
     /**

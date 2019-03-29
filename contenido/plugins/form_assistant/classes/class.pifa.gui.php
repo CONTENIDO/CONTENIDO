@@ -908,7 +908,8 @@ class PifaRightBottomFormDataPage extends cGuiPage {
             'legend' => Pifa::i18n('data'),
         	'nodata' => Pifa::i18n('NODATA'),
             'pleaseSaveFirst' => Pifa::i18n('please save first'),
-            'export' => Pifa::i18n('download data as CSV')
+            'export' => Pifa::i18n('download data as CSV'),
+            'delete' => Pifa::i18n('Delete')
         ));
 
         $tpl->assign('form', $this->_pifaForm);
@@ -928,6 +929,7 @@ class PifaRightBottomFormDataPage extends cGuiPage {
         $tpl->assign('withTimestamp', (bool) $this->_pifaForm->get('with_timestamp'));
 
         try {
+            // export data
             $data = $this->_pifaForm->getData();
             $tpl->assign('data', $data);
             if (!empty($data) && cRegistry::getPerm()->have_perm_area_action('form_ajax', PifaAjaxHandler::EXPORT_DATA)) {
@@ -939,9 +941,29 @@ class PifaRightBottomFormDataPage extends cGuiPage {
                     'idform=' . $this->_pifaForm->get('idform')
                 )));
             }
+
+            // delete data
+            if (!empty($data) && cRegistry::getPerm()->have_perm_area_action('form_ajax', PifaAjaxHandler::DELETE_DATA)) {
+                $tpl->assign('deleteUrl', 'main.php?' . implode('&', array(
+                        'area=form_ajax',
+                        'frame=4',
+                        'contenido=' . cRegistry::getBackendSessionId(),
+                        'action=' . PifaAjaxHandler::DELETE_DATA
+                    )));
+                $tpl->assign('idform', $this->_pifaForm->get('idform'));
+                $tpl->assign('I18N', json_encode(array(
+                    'confirm_delete_data' => Pifa::i18n('CONFIRM_DELETE_DATA')
+                )));
+            }
         } catch (Exception $e) {
             $tpl->assign('data', Pifa::notifyException($e));
         }
+
+        // Mass deletion of form data
+        $lnkDel = new cHTMLLink('javascript://');
+        $lnkDel->setClass('flip_mark');
+        $lnkDel->setContent(Pifa::i18n('Check all'));
+        $tpl->assign('lnkDel', $lnkDel->render());
 
         $out = $tpl->fetch($cfg['templates']['pifa_right_bottom_data']);
 
