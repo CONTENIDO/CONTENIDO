@@ -1241,6 +1241,7 @@ class PifaForm extends Item {
     }
 
     /**
+     * @param string $iddatas
      * Delete this form all selected datas.
      */
     public function deleteData($iddatas) {
