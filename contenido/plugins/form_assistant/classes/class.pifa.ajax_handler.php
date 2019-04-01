@@ -563,7 +563,7 @@ class PifaAjaxHandler {
      * @throws PifaException
      */
     private function _deleteField($idfield) {
-        if (0 == $idfield) {
+        if (0 === $idfield) {
             $msg = Pifa::i18n('MISSING_IDFIELD');
             throw new PifaException($msg);
         }
@@ -579,7 +579,7 @@ class PifaAjaxHandler {
      * @throws PifaException
      */
     private function _deleteData($idform, $iddatas) {
-        if (0 == $iddatas) {
+        if (0 === $iddatas) {
             $msg = Pifa::i18n('MISSING_IDDATA');
             throw new PifaException($msg);
         }
