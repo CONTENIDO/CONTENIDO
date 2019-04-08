@@ -126,8 +126,10 @@ class PifaAjaxHandler {
                 break;
 
             case self::DELETE_DATA:
-                $idform = cSecurity::toInteger($_POST['idform']);
-                $iddatas = implode(',', array_map('cSecurity::toInteger', explode(',', $_POST['iddatas'])));
+                $idform  = cSecurity::toInteger($_POST['idform']);
+                $iddatas = explode(',', $_POST['iddatas']);
+                $iddatas = array_map('cSecurity::toInteger', $iddatas);
+                $iddatas = array_filter($iddatas);
                 $this->_deleteData($idform, $iddatas);
                 break;
 
@@ -574,12 +576,13 @@ class PifaAjaxHandler {
 
     /**
      *
-     * @param int $idform
+     * @param int   $idform
      * @param array $iddatas
+     *
      * @throws PifaException
      */
-    private function _deleteData($idform, $iddatas) {
-        if (0 === $iddatas) {
+    private function _deleteData($idform, array $iddatas) {
+        if (empty($iddatas)) {
             $msg = Pifa::i18n('MISSING_IDDATA');
             throw new PifaException($msg);
         }

@@ -608,9 +608,9 @@ class PifaForm extends Item {
     /**
      * Returns an array containing this forms stored data.
      *
+     * @return array
      * @throws PifaException if form is not loaded
      * @throws PifaException if table does not exist
-     * @return array
      */
     public function getData() {
         if (!$this->isLoaded()) {
@@ -635,7 +635,13 @@ class PifaForm extends Item {
                 `$tableName`
             ;";
 
-        if (false === $db->query($sql)) {
+        try {
+            $succ = $db->query($sql);
+        } catch (cDbException $e) {
+            $succ = false;
+        }
+
+        if (false === $succ) {
             return array();
         }
 
@@ -643,9 +649,13 @@ class PifaForm extends Item {
             return array();
         }
 
-        $data = array();
-        while ($db->nextRecord()) {
-            $data[] = $db->toArray();
+        try {
+            $data = array();
+            while ($db->nextRecord()) {
+                $data[] = $db->toArray();
+            }
+        } catch (cDbException $e) {
+            $data = array();
         }
 
         return $data;
@@ -1241,10 +1251,14 @@ class PifaForm extends Item {
     }
 
     /**
-     * @param string $iddatas
      * Delete this form all selected datas.
+     *
+     * @param array $iddatas
+     *
+     * @return bool
+     * @throws PifaException
      */
-    public function deleteData($iddatas) {
+    public function deleteData(array $iddatas) {
         $db = cRegistry::getDb();
 
         if (!$this->isLoaded()) {
@@ -1257,10 +1271,16 @@ class PifaForm extends Item {
             DELETE FROM
                 `" . cSecurity::toString($this->get('data_table')). "`
             WHERE
-                id in (" . $iddatas . ")
+                id in (" . implode(',', $iddatas) . ")
             ;";
 
-        if (false === $db->query($sql)) {
+        try {
+            $succ = $db->query($sql);
+        } catch (cDbException $e) {
+            $succ = false;
+        }
+
+        if (false === $succ) {
             $msg = Pifa::i18n('DATAS_DELETE_ERROR');
             throw new PifaException($msg);
         } else {

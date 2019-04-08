@@ -85,7 +85,7 @@
         </tr>
     {if 0 eq $data|count}
         <tr>
-            <td colspan="{$fields|count}">{$trans.nodata}</td>
+            <td colspan="{$fields|count + 1}">{$trans.nodata}</td>
         </tr>
     {else}
         {foreach from=$data item=row}

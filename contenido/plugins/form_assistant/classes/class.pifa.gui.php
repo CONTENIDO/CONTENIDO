@@ -897,6 +897,8 @@ class PifaRightBottomFormDataPage extends cGuiPage {
     }
 
     /**
+     * @return string
+     * throws cException
      */
     private function _showData() {
         $cfg = cRegistry::getConfig();
@@ -928,35 +930,42 @@ class PifaRightBottomFormDataPage extends cGuiPage {
 
         $tpl->assign('withTimestamp', (bool) $this->_pifaForm->get('with_timestamp'));
 
-        try {
-            // export data
-            $data = $this->_pifaForm->getData();
-            $tpl->assign('data', $data);
-            if (!empty($data) && cRegistry::getPerm()->have_perm_area_action('form_ajax', PifaAjaxHandler::EXPORT_DATA)) {
-                $tpl->assign('exportUrl', 'main.php?' . implode('&', array(
-                    'area=form_ajax',
-                    'frame=4',
-                    'contenido=' . cRegistry::getBackendSessionId(),
-                    'action=' . PifaAjaxHandler::EXPORT_DATA,
-                    'idform=' . $this->_pifaForm->get('idform')
-                )));
-            }
 
-            // delete data
-            if (!empty($data) && cRegistry::getPerm()->have_perm_area_action('form_ajax', PifaAjaxHandler::DELETE_DATA)) {
-                $tpl->assign('deleteUrl', 'main.php?' . implode('&', array(
-                        'area=form_ajax',
-                        'frame=4',
-                        'contenido=' . cRegistry::getBackendSessionId(),
-                        'action=' . PifaAjaxHandler::DELETE_DATA
-                    )));
-                $tpl->assign('idform', $this->_pifaForm->get('idform'));
-                $tpl->assign('I18N', json_encode(array(
-                    'confirm_delete_data' => Pifa::i18n('CONFIRM_DELETE_DATA')
-                )));
-            }
+        try {
+            $hasPermExportData = cRegistry::getPerm()->have_perm_area_action('form_ajax', PifaAjaxHandler::EXPORT_DATA);
+            $hasPermDeleteData = cRegistry::getPerm()->have_perm_area_action('form_ajax', PifaAjaxHandler::DELETE_DATA);
         } catch (Exception $e) {
+            $hasPermExportData = false;
+            $hasPermDeleteData = false;
             $tpl->assign('data', Pifa::notifyException($e));
+        }
+
+        // export data
+        $data = $this->_pifaForm->getData();
+        $tpl->assign('data', $data);
+
+        if (!empty($data) && $hasPermExportData) {
+            $tpl->assign('exportUrl', 'main.php?' . http_build_query(array(
+                'area=form_ajax',
+                'frame=4',
+                'contenido=' . cRegistry::getBackendSessionId(),
+                'action=' . PifaAjaxHandler::EXPORT_DATA,
+                'idform=' . $this->_pifaForm->get('idform')
+            )));
+        }
+
+        // delete data
+        if (!empty($data) && $hasPermDeleteData) {
+            $tpl->assign('deleteUrl', 'main.php?' . http_build_query([
+                'area=form_ajax',
+                'frame=4',
+                'contenido=' . cRegistry::getBackendSessionId(),
+                'action=' . PifaAjaxHandler::DELETE_DATA,
+            ]));
+            $tpl->assign('idform', $this->_pifaForm->get('idform'));
+            $tpl->assign('I18N', json_encode([
+                'confirm_delete_data' => Pifa::i18n('CONFIRM_DELETE_DATA'),
+            ]));
         }
 
         // Mass deletion of form data
