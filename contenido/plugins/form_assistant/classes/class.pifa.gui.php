@@ -937,7 +937,6 @@ class PifaRightBottomFormDataPage extends cGuiPage {
         } catch (Exception $e) {
             $hasPermExportData = false;
             $hasPermDeleteData = false;
-            $tpl->assign('data', Pifa::notifyException($e));
         }
 
         // export data
