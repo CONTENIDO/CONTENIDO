@@ -898,7 +898,7 @@ class PifaRightBottomFormDataPage extends cGuiPage {
 
     /**
      * @return string
-     * throws cException
+     * @throws cException
      */
     private function _showData() {
         $cfg = cRegistry::getConfig();
