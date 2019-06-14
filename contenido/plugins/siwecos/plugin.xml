@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<plugin>
+    <general active="1">
+        <plugin_name>SIWECOS</plugin_name>
+        <plugin_foldername>siwecos</plugin_foldername>
+        <uuid>eb318307-a521-473f-afe9-24dc2fd820b9</uuid>
+        <description>SIWECOS for CONTENIDO</description>
+        <author>Fulai Zhang</author>
+        <copyright>four for business AG</copyright>
+        <mail>fulai.zhang@4fb.de</mail>
+        <website>http://www.4fb.de</website>
+        <version>1.0.0</version>
+    </general>
+
+    <requirements php="7.0">
+        <contenido minversion="4.10.0" />
+    </requirements>
+
+    <contenido>
+
+        <areas>
+            <area>siwecos</area>
+        </areas>
+
+        <actions>
+            <action area="siwecos">siwecos_show</action>
+            <action area="siwecos">siwecos_verification</action>
+            <action area="siwecos">siwecos_add</action>
+            <action area="siwecos">siwecos_scan</action>
+            <action area="siwecos">siwecos_store</action>
+            <action area="siwecos">siwecos_delete</action>
+        </actions>
+
+        <frames>
+            <frame area="siwecos" filetype="main" name="siwecos/includes/include.left_top.php" frameId="1" />
+            <frame area="siwecos" filetype="main" name="siwecos/includes/include.left_bottom.php" frameId="2" />
+            <frame area="siwecos" filetype="main" name="siwecos/includes/include.subnav_blank.php" frameId="3" />
+            <frame area="siwecos" filetype="main" name="siwecos/includes/include.right_bottom.php" frameId="4" />
+        </frames>
+
+        <nav_sub>
+            <nav area="siwecos" level="0" navm="extra">siwecos/xml/lang_de_DE.xml;plugins/siwecos/label</nav>
+        </nav_sub>
+    </contenido>
+
+</plugin>
