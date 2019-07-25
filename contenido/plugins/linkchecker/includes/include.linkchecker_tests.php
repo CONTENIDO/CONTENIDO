@@ -13,6 +13,10 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @return mixed
+ * @throws cDbException
+ */
 // Checks all links without front_content.php
 function checkLinks() {
     global $auth, $cfg, $cronjob, $db, $aErrors, $lang;
@@ -20,7 +24,7 @@ function checkLinks() {
 
     $sSearch = '';
 
-    if (count($aSearchIDInfosArt) > 0) { // Checks idarts
+    if ( (is_array($aSearchIDInfosArt) || is_object($aSearchIDInfosArt)) && count($aSearchIDInfosArt) > 0) { // Checks idarts
 
         for ($i = 0; $i < count($aSearchIDInfosArt); $i++) {
 
@@ -58,7 +62,7 @@ function checkLinks() {
         }
     }
 
-    if (count($aSearchIDInfosCat) > 0) { // Checks idcats
+    if ((is_array($aSearchIDInfosCat) || is_object($aSearchIDInfosCat)) && count($aSearchIDInfosCat) > 0) { // Checks idcats
 
         for ($i = 0; $i < count($aSearchIDInfosCat); $i++) {
 
@@ -113,7 +117,7 @@ function checkLinks() {
         }
     }
 
-    if (count($aSearchIDInfosCatArt) > 0) { // Checks idcatarts
+    if ( (is_array($aSearchIDInfosCatArt) || is_object($aSearchIDInfosCatArt)) && count($aSearchIDInfosCatArt) > 0) { // Checks idcatarts
 
         for ($i = 0; $i < count($aSearchIDInfosCatArt); $i++) {
 
@@ -145,7 +149,7 @@ function checkLinks() {
         }
     }
 
-    if (count($aSearchIDInfosNonID) != 0) { // Checks other links (e. g. http,
+    if ((is_array($aSearchIDInfosNonID) || is_object($aSearchIDInfosNonID)) && count($aSearchIDInfosNonID) != 0) { // Checks other links (e. g. http,
                                             // www, dfbs)
 
         // Select userrights (is the user admin or sysadmin?)
