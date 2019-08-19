@@ -220,7 +220,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         } else if (!empty($cssFile)) {
             if (cString::findFirstPos($this->_layoutCode, '</title>') !== false) {
                 $matches = array();
-                if (preg_match_all("#(<head>.*?</title>)(.*?</head>)#", $this->_layoutCode, $matches)) {
+                if (preg_match_all("#(<head>.*?</title>)(.*?</head>)#si", $this->_layoutCode, $matches)) {
                     $this->_layoutCode = cString::iReplaceOnce($matches[1][0], $matches[1][0] . $cssFile . $matches[2][0], $this->_layoutCode);
                 }
             } else {
