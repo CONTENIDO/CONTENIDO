@@ -945,25 +945,22 @@ class PifaRightBottomFormDataPage extends cGuiPage {
 
         if (!empty($data) && $hasPermExportData) {
             $tpl->assign('exportUrl', 'main.php?' . http_build_query(array(
-                'area=form_ajax',
-                'frame=4',
-                'contenido=' . cRegistry::getBackendSessionId(),
-                'action=' . PifaAjaxHandler::EXPORT_DATA,
-                'idform=' . $this->_pifaForm->get('idform')
+                'area' => 'form_ajax',
+                'frame' => '4',
+                'contenido' => cRegistry::getBackendSessionId(),
+                'action' => PifaAjaxHandler::EXPORT_DATA,
+                'idform' => $this->_pifaForm->get('idform')
             )));
         }
 
         // delete data
         if (!empty($data) && $hasPermDeleteData) {
             $tpl->assign('deleteUrl', 'main.php?' . http_build_query([
-                'area=form_ajax',
-                'frame=4',
-                'contenido=' . cRegistry::getBackendSessionId(),
-                'action=' . PifaAjaxHandler::DELETE_DATA,
-            ]));
-            $tpl->assign('idform', $this->_pifaForm->get('idform'));
-            $tpl->assign('I18N', json_encode([
-                'confirm_delete_data' => Pifa::i18n('CONFIRM_DELETE_DATA'),
+                'area' => 'form_ajax',
+                'frame' => '4',
+                'contenido' => cRegistry::getBackendSessionId(),
+                'action' => PifaAjaxHandler::DELETE_DATA,
+                'idform' => $this->_pifaForm->get('idform')
             ]));
         }
 

@@ -126,7 +126,7 @@ class PifaAjaxHandler {
                 break;
 
             case self::DELETE_DATA:
-                $idform  = cSecurity::toInteger($_POST['idform']);
+                $idform  = cSecurity::toInteger($_GET['idform']);
                 $iddatas = explode(',', $_POST['iddatas']);
                 $iddatas = array_map('cSecurity::toInteger', $iddatas);
                 $iddatas = array_filter($iddatas);
