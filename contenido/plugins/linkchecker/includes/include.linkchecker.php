@@ -49,10 +49,11 @@ plugin_include('linkchecker', 'includes/include.checkperms.php');
 plugin_include('linkchecker', 'includes/include.linkchecker_tests.php');
 
 // Initialization
-$aCats = array();
-$aSearchIDInfosArt = array();
-$aSearchIDInfosCatArt = array();
-$aSearchIDInfosNonID = array();
+$aCats                = [];
+$aSearchIDInfosArt    = [];
+$aSearchIDInfosCat    = [];
+$aSearchIDInfosCatArt = [];
+$aSearchIDInfosNonID  = [];
 
 // Var initialization
 $aUrl = array(

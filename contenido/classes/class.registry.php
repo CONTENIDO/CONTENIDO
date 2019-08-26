@@ -828,8 +828,6 @@ class cRegistry {
     *
     * @return string|bool
     *         name of encoding or false if no language found
-     * @throws cDbException
-     * @throws cException
     */
     public static function getEncoding() {
 

@@ -14,17 +14,18 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
+ * Checks all links without front_content.php
+ *
  * @return mixed
  * @throws cDbException
  */
-// Checks all links without front_content.php
 function checkLinks() {
     global $auth, $cfg, $cronjob, $db, $aErrors, $lang;
     global $aSearchIDInfosArt, $aSearchIDInfosCat, $aSearchIDInfosCatArt, $aSearchIDInfosNonID;
 
     $sSearch = '';
 
-    if ( (is_array($aSearchIDInfosArt) || is_object($aSearchIDInfosArt)) && count($aSearchIDInfosArt) > 0) { // Checks idarts
+    if (count($aSearchIDInfosArt) > 0) { // Checks idarts
 
         for ($i = 0; $i < count($aSearchIDInfosArt); $i++) {
 
@@ -62,7 +63,7 @@ function checkLinks() {
         }
     }
 
-    if ((is_array($aSearchIDInfosCat) || is_object($aSearchIDInfosCat)) && count($aSearchIDInfosCat) > 0) { // Checks idcats
+    if (count($aSearchIDInfosCat) > 0) { // Checks idcats
 
         for ($i = 0; $i < count($aSearchIDInfosCat); $i++) {
 
@@ -117,7 +118,7 @@ function checkLinks() {
         }
     }
 
-    if ( (is_array($aSearchIDInfosCatArt) || is_object($aSearchIDInfosCatArt)) && count($aSearchIDInfosCatArt) > 0) { // Checks idcatarts
+    if (count($aSearchIDInfosCatArt) > 0) { // Checks idcatarts
 
         for ($i = 0; $i < count($aSearchIDInfosCatArt); $i++) {
 
@@ -149,7 +150,7 @@ function checkLinks() {
         }
     }
 
-    if ((is_array($aSearchIDInfosNonID) || is_object($aSearchIDInfosNonID)) && count($aSearchIDInfosNonID) != 0) { // Checks other links (e. g. http,
+    if (count($aSearchIDInfosNonID) != 0) { // Checks other links (e. g. http,
                                             // www, dfbs)
 
         // Select userrights (is the user admin or sysadmin?)
@@ -236,7 +237,15 @@ function checkLinks() {
     return $aErrors;
 }
 
-// Searchs front_content.php-links
+/**
+ * Searchs front_content.php-links
+ *
+ * @param $sValue
+ * @param $iArt
+ * @param $sArt
+ * @param $iCat
+ * @param $sCat
+ */
 function searchFrontContentLinks($sValue, $iArt, $sArt, $iCat, $sCat) {
     global $aSearchIDInfosArt, $aSearchIDInfosCat, $aSearchIDInfosCatArt, $aWhitelist;
 
@@ -301,7 +310,9 @@ function searchFrontContentLinks($sValue, $iArt, $sArt, $iCat, $sCat) {
  */
 class cLinkcheckerSearchLinks
 {
-
+    /**
+     * @var string
+     */
     private $mode = '';
 
     /**

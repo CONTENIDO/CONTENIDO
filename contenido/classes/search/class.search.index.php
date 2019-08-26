@@ -178,30 +178,24 @@ class cSearchIndex extends cSearchBaseAbstract {
     /**
      * Start indexing the article.
      *
-     * @param int $idart
-     *                            Article Id
-     * @param array $aContent
-     *                            The complete content of an article specified by its content types.
-     *                            It looks like:
-     *                            Array (
-     *                            [CMS_HTMLHEAD] => Array (
-     *                            [1] => Herzlich Willkommen...
-     *                            [2] => ...auf Ihrer Website!
-     *                            )
-     *                            [CMS_HTML] => Array (
-     *                            [1] => Die Inhalte auf dieser Website ...
-     *                            )
-     *                            )
-     * @param string $place [optional]
-     *                            The field where to store the index information in db.
-     * @param array $cms_options [optional]
-     *                            One can specify explicitly cms types which should not be indexed.
-     * @param array $aStopwords [optional]
-     *                            Array with words which should not be indexed.
+     * @param int    $idart             Article Id
+     * @param array  $aContent          The complete content of an article specified by its content types.
+     *                                  It looks like:
+     *                                  [
+     *                                  [CMS_HTMLHEAD] => [
+     *                                  [1] => Herzlich Willkommen...
+     *                                  [2] => ...auf Ihrer Website!
+     *                                  ]
+     *                                  [CMS_HTML] => [
+     *                                  [1] => Die Inhalte auf dieser Website ...
+     *                                  ]
+     *                                  ]
+     * @param string $place             [optional] The field where to store the index information in db.
+     * @param array  $cms_options       [optional] One can specify explicitly cms types which should not be indexed.
+     * @param array  $aStopwords        [optional] Array with words which should not be indexed.
      *
-     * @throws cDbException
-     * @throws cException
      * @throws cInvalidArgumentException
+     * @throws cDbException
      */
     public function start($idart, $aContent, $place = 'auto', $cms_options = array(), $aStopwords = array()) {
         if (!is_int((int) $idart) || $idart < 0) {
@@ -243,8 +237,6 @@ class cSearchIndex extends cSearchBaseAbstract {
      *     [website] => CMS_HTML-1 CMS_HTML-1 CMS_HTMLHEAD-2
      * )
      *
-     * @throws cDbException
-     * @throws cException
      * @throws cInvalidArgumentException
      */
     public function createKeywords() {
@@ -331,7 +323,7 @@ class cSearchIndex extends cSearchBaseAbstract {
             } else {
                 // if keyword allready exists, create new index_string
                 if (preg_match("/&$this->idart=/", $this->_keywordsOld[$keyword])) {
-                    $index_string = preg_replace("/&" . $this->idart . "=[0-9]+\([\w\-,]+\)/", $index_string, $this->_keywordsOld[$keyword]);
+                    $index_string = preg_replace("/&$this->idart=[0-9]+\([\w\-,]+\)/", $index_string, $this->_keywordsOld[$keyword]);
                 } else {
                     $index_string = $this->_keywordsOld[$keyword] . $index_string;
                 }
@@ -404,8 +396,6 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @param string $key
      *         Keyword
      * @return mixed
-     * @throws cDbException
-     * @throws cException
      */
     public function removeSpecialChars($key) {
         $aSpecialChars = array(
@@ -488,8 +478,6 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @param string $key
      *         Keyword
      * @return string
-     * @throws cDbException
-     * @throws cException
      */
     public function addSpecialUmlauts($key) {
         $key = conHtmlentities($key, NULL, cRegistry::getEncoding());
