@@ -36,7 +36,7 @@ if ($action == "show_single_term") {
     // select all entries about one term
     $termCollection->selectSearchTerm(addslashes($term));
 
-    $page->set("s", "ADDITIONAL_INFO", i18n('Date'));
+    $page->set("s", "ADDITIONAL_INFO", i18n("Date"));
     $page->set("s", "RESULTS_HEADER", i18n("Number of Results"));
 
     // fill template
@@ -50,36 +50,20 @@ if ($action == "show_single_term") {
         $page->next();
     }
 } else {
-    // select all search terms and sort them by popularity
-    $termCollection->selectPopularSearchTerms();
+    // select all search terms, grouped by search term and sorted by popularity
+    $db = $termCollection->queryPopularSearchTerms();
 
-    $db = cRegistry::getDb();
-    // select all search terms, count their occurence and calculate the average
-    // number of results
-    $db->query('SELECT searchterm, COUNT(searchterm), AVG(results)
-                FROM ' . $cfg['tab']['search_tracking'] . '
-                GROUP BY searchterm
-                ORDER BY COUNT(searchterm) DESC');
-    $counts = array();
-    // save this information in an array
-    while ($db->next_record()) {
-        $counts[$db->f('searchterm')] = array(
-            'count' => $db->f('COUNT(searchterm)'),
-            'avg' => $db->f('AVG(results)')
-        );
-    }
-
-    $page->set("s", "ADDITIONAL_INFO", i18n('Count'));
+    $page->set("s", "ADDITIONAL_INFO", i18n("Count"));
     $page->set("s", "RESULTS_HEADER", i18n("Average Number of Results"));
 
     // fill template
     $i = 0;
-    while ($termItem = $termCollection->next()) {
+    while ($db->nextRecord()) {
         $i++;
         $page->set("d", "NUMBER", $i);
-        $page->set("d", "SEARCH_TERM", conHtmlSpecialChars($termItem->get('searchterm')));
-        $page->set("d", "NUMBER_OF_RESULTS", round($counts[$termItem->get('searchterm')]['avg'], 2));
-        $page->set("d", "ADDITIONAL_INFO", $counts[$termItem->get('searchterm')]['count']);
+        $page->set("d", "SEARCH_TERM", conHtmlSpecialChars($db->f("searchterm")));
+        $page->set("d", "NUMBER_OF_RESULTS", round($db->f("avgresults"), 2));
+        $page->set("d", "ADDITIONAL_INFO", $db->f("countsearchterm"));
         $page->next();
     }
 }

@@ -297,9 +297,9 @@ function saveInlineEditArt() {
 
     var params = "";
     for (var i = 0; i<inlinedata.length; i++) {
-        params += "&fields["+i+"][idart] = " + inlinedata[i]['idart'];
-        params += "&fields["+i+"][title] = " + inlinedata[i]['title'];
-        params += "&fields["+i+"][index] = " + inlinedata[i]['index'];
+        params += "&fields["+i+"][idart]=" + inlinedata[i]['idart'];
+        params += "&fields["+i+"][title]=" + inlinedata[i]['title'];
+        params += "&fields["+i+"][index]=" + inlinedata[i]['index'];
     }
     params += '&ajax=inlineeditart'
 
