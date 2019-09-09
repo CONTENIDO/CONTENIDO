@@ -46,17 +46,17 @@ class SIWECOSCollection extends ItemCollection
      * @return array
      * @throws SIWECOSException
      * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cException
      */
     public static function getByClientAndLang($client, $lang)
     {
         if (0 >= cSecurity::toInteger($client)) {
-            $msg = SIWECOS::i18n('MISSING_CLIENT');
+            $msg = i18n('ERR_MISSING_CLIENT', 'siwecos');
             throw new SIWECOSException($msg);
         }
 
         if (0 >= cSecurity::toInteger($lang)) {
-            $msg = SIWECOS::i18n('MISSING_LANG');
+            $msg = i18n('ERR_MISSING_LANG', 'siwecos');
             throw new SIWECOSException($msg);
         }
 
@@ -76,18 +76,24 @@ class SIWECOSCollection extends ItemCollection
     {
         global $idsiwecos;
 
-        $db    = cRegistry::getDb();
-        $forms = [];
         if ($idsiwecos) {
-            $str = " idsiwecos = " . $idsiwecos . " AND ";
+            $str = "AND idsiwecos = " . cSecurity::toInteger($idsiwecos);
+        } else {
+            $str = '';
         }
-        // update ranks of younger siblings
-        $sql = "SELECT * FROM `con_pi_siwecos`
-            WHERE " . $str . "
+
+        $db = cRegistry::getDb();
+        $db->query(
+            "SELECT *
+            FROM `con_pi_siwecos`
+            WHERE 
                 idclient = " . cSecurity::toInteger($client) . "
                 AND idlang = " . cSecurity::toInteger($lang) . "
-            ;";
-        $db->query($sql);
+                " . $str . "
+            ;"
+        );
+
+        $forms = [];
         while ($db->nextRecord()) {
             $forms[$db->f('idsiwecos')]['idsiwecos']   = $db->f('idsiwecos');
             $forms[$db->f('idsiwecos')]['domain']      = $db->f('domain');
@@ -122,11 +128,9 @@ class SIWECOS extends Item
      *
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function __construct($id = false)
     {
-        $cfg = cRegistry::getConfig();
         parent::__construct('con_pi_siwecos', 'idsiwecos');
         $this->setFilters([], []);
         if (false !== $id) {
@@ -145,21 +149,6 @@ class SIWECOS extends Item
     }
 
     /**
-     * translate
-     *
-     * @param $key
-     *
-     * @return string
-     * @throws cException
-     */
-    public static function i18n($key)
-    {
-        $trans = i18n($key, self::$_name);
-
-        return $trans;
-    }
-
-    /**
      * @param Exception $e
      *
      * @throws cDbException
@@ -169,12 +158,10 @@ class SIWECOS extends Item
     public static function logException(Exception $e)
     {
         if (getSystemProperty('debug', 'debug_for_plugins') == 'true') {
-            $cfg = cRegistry::getConfig();
-
-            $log = new cLog(cLogWriter::factory('file', [
-                'destination' => $cfg['path']['contenido_logs'] . 'errorlog.txt',
-            ]), cLog::ERR);
-
+            $cfg         = cRegistry::getConfig();
+            $destination = $cfg['path']['contenido_logs'] . 'errorlog.txt';
+            $writer      = cLogWriter::factory('file', ['destination' => $destination]);
+            $log         = new cLog($writer);
             $log->err($e->getMessage());
             $log->err($e->getTraceAsString());
         }
@@ -200,20 +187,28 @@ class SIWECOS extends Item
     /**
      * Deletes this form with all its fields and stored data.
      * The forms data table is also dropped.
+     *
+     * @throws SIWECOSException
+     * @throws cDbException
+     * @throws cException
      */
     public function delete()
     {
         global $idsiwecos;
-        $cfg = cRegistry::getConfig();
-        $db  = cRegistry::getDb();
+        $db = cRegistry::getDb();
 
         // delete form
-        $sql = "DELETE FROM con_pi_siwecos
+        $succ = $db->query(
+            "
+            DELETE
+            FROM con_pi_siwecos
             WHERE
                 idsiwecos = " . cSecurity::toInteger($idsiwecos) . "
-            ;";
-        if (false === $db->query($sql)) {
-            $msg = SIWECOS::i18n('FORM_DELETE_ERROR');
+            ;"
+        );
+
+        if (false === $succ) {
+            $msg = i18n('ERR_DELETE_ENTITY', 'siwecos');
             throw new SIWECOSException($msg);
         }
     }

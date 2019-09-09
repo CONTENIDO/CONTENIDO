@@ -17,22 +17,22 @@
     text-align: center;
     text-decoration: none;
     text-shadow: none;
-    transition: background-color .3s
+    transition: background-color .3s;
 }
 
 .btn-primary:focus, .btn-primary:hover, .btn:focus, .btn:hover, button:not(.mainnav__navtoggler):focus, button:not(.mainnav__navtoggler):hover, input[type=button]:focus, input[type=button]:hover, input[type=reset]:focus, input[type=reset]:hover, input[type=submit]:focus, input[type=submit]:hover {
-    background: #8a0000
+    background: #8a0000;
 }
 
 .btn-primary[disabled], .btn[disabled], button:not(.mainnav__navtoggler)[disabled], input[type=button][disabled], input[type=reset][disabled], input[type=submit][disabled] {
     background: #cbcccc;
     cursor: no-drop;
-    color: #444 !important
+    color: #444 !important;
 }
 
 .scanner-data {
     font-size: 1.2rem;
-    font-weight: 700
+    font-weight: 700;
 }
 
 .scanner-item-data > a {
@@ -40,11 +40,11 @@
     height: 14px;
     text-indent: -9000px;
     width: 14px;
-    margin-left: 4px
+    margin-left: 4px;
 }
 
 .scanner-item-data > a, .scanner-score-information {
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAABAklEQVR4AWJwL/ABVEoWVxEEURQtQkDTwtekgLMbnwkCd90RB5bJ6BJ7l/O7TtHei9tl/31tT71eXxCdRqPxrnVivOnc7na786Gt3zSbzXUZjcRAhhdiC3S+tLuhbFb/CU30rcc7rTPchfR6vVm9PWATiaP0Roicc1NBBqthBN4QE5m0EXbEIB5JBkcQ68EcQtHk8CHOeSiD1fzmrCHbMQMiHkDK/Q6aPyGHFM/PkCLcI1027+KigvBKvGLQEgNaXiSkm0TTfcMfxEM4Dp03IDaOJ5vAnJ8Zw0XMZUrac4jEl/ZL8V9u1SLDFZ0G9pbeQDbLPoN4DdRM8WJsHWffjGfyCzXINKTWDhkDAAAAAElFTkSuQmCC)
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAABAklEQVR4AWJwL/ABVEoWVxEEURQtQkDTwtekgLMbnwkCd90RB5bJ6BJ7l/O7TtHei9tl/31tT71eXxCdRqPxrnVivOnc7na786Gt3zSbzXUZjcRAhhdiC3S+tLuhbFb/CU30rcc7rTPchfR6vVm9PWATiaP0Roicc1NBBqthBN4QE5m0EXbEIB5JBkcQ68EcQtHk8CHOeSiD1fzmrCHbMQMiHkDK/Q6aPyGHFM/PkCLcI1027+KigvBKvGLQEgNaXiSkm0TTfcMfxEM4Dp03IDaOJ5vAnJ8Zw0XMZUrac4jEl/ZL8V9u1SLDFZ0G9pbeQDbLPoN4DdRM8WJsHWffjGfyCzXINKTWDhkDAAAAAElFTkSuQmCC);
 }
 
 .scanner-score-information {
@@ -56,7 +56,7 @@
     right: -10px;
     text-indent: -9000px;
     width: 16px;
-    top: -16px
+    top: -16px;
 }
 
 .scanner-check-item-data .btn-primary, .scanner-check-item-data .scanner-item-data .btn-primary {
@@ -66,21 +66,21 @@
     font-size: 12px;
     padding: 0;
     margin-bottom: 2px;
-    min-width: 0
+    min-width: 0;
 }
 
 .scanner-check-item-data .btn-primary:focus, .scanner-check-item-data .btn-primary:hover, .scanner-check-item-data .scanner-item-data .btn-primary:focus, .scanner-check-item-data .scanner-item-data .btn-primary:hover {
     background: 0 0;
-    text-decoration: underline
+    text-decoration: underline;
 }
 
 .scanner-check-wrapper {
-    padding-left: 30px
+    padding-left: 30px;
 }
 
 .scanner-content {
     overflow: hidden;
-    margin-bottom: 1rem
+    margin-bottom: 1rem;
 }
 
 .scanner-content .round-check.score-green::before, .scanner-content .round-check.score-orange::before, .scanner-content .round-check.score-red::before, .scanner-content .round-check.score-yellow::before {
@@ -90,30 +90,30 @@
     display: inline-block;
     margin-left: -30px;
     background-repeat: no-repeat;
-    background-size: contain
+    background-size: contain;
 }
 
 .scanner-content .round-check.score-red::before {
-    background-image: url(../images/scanner-gauge_red2.svg)
+    background-image: url(../images/scanner-gauge_red2.svg);
 }
 
 .scanner-content .round-check.score-green::before {
-    background-image: url(../images/scanner-gauge_green2.svg)
+    background-image: url(../images/scanner-gauge_green2.svg);
 }
 
 .scanner-content .round-check.score-yellow::before {
-    background-image: url(../images/scanner-gauge_yellow2.svg)
+    background-image: url(../images/scanner-gauge_yellow2.svg);
 }
 
 .scanner-check-item-description {
     border-left: 1px dotted #d3d3d3;
     padding-left: 1em;
-    margin-bottom: 2em
+    margin-bottom: 2em;
 }
 
 .scanner-check-item-description-report {
     font-size: 12px;
-    margin-top: 0
+    margin-top: 0;
 }
 #mod_siwecos_results {
     width: 900px;
@@ -121,24 +121,24 @@
 
 .scanner-check-item-data > div:first-child {
     width: 70%;
-    float: left
+    float: left;
 }
 
 .scanner-check-item-data > div:nth-child(2) {
     width: 30%;
     float: left;
-    text-align: right
+    text-align: right;
 }
 
 .scanner-check-wrapper {
     width: 78%;
-    float: left
+    float: left;
 }
 
 .scanner-item-data .GaugeMeter {
     float: right;
     margin-top: -15px;
-    transform: scale(.8)
+    transform: scale(.8);
 }
 
 #domains-scanners-list {
@@ -146,6 +146,5 @@
     padding: 0;
     width: 100%;
     margin: 3.5em 0;
-    list-style-type: none
+    list-style-type: none;
 }
-

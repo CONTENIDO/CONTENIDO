@@ -13,23 +13,24 @@ msgstr ""
 "X-Poedit-KeywordsList: i18n\n"
 "X-Generator: Poedit 1.8.7\n"
 
-msgid "howBtn"
+msgid "BTN_HOWTO"
 msgstr "Embed SIWECOS-Seal on %s: This is how you do it..."
 
-msgid "startScanBtn"
-msgstr "Start a new scan"
-
-msgid "goSiwecosBtn"
+msgid "BTN_SIWECOS_SITE"
 msgstr "Go to SIWECOS"
 
-msgid "verificationProcessText"
-msgstr "<p>Any domain that is added to be scanned by SIWECOS must be verified and cross checked. Siwecos offers two methods for this (File, Meta Tag).</p> <p>Why is verification necessary? The verification proves that you are the true owner of the domain, which is necessary for data protection reasons.</p>"
+msgid "BTN_START_SCAN"
+msgstr "Start a new scan"
 
-msgid "metaTagText1"
-msgstr "<li>In order to verify a domain with a meta tag, please copy the code specified by us into the header information of your homepage.</li><li>Download the homepage (e.g. index.html) and copy the meta tag into the head of the file.</li>"
+msgid "ERR_FORM_VALIDATION"
+msgstr "Mit * markierte Felder sind Pflichtfelder"
 
-msgid "metaTagText2"
-msgstr "<li>Reload the start file to the main directory of the website and click “Verify” on the Siwecos page.</li><li>If the meta information can be found, the new domain will be accepted for the Siwecos services and saved.</li>"
+msgid "ERR_LOAD_ENTITY"
+msgstr "Form not loaded"
+
+msgid "MSG_DELETED_ENTITY"
+msgstr "Form deleted"
+
 
 
 msgid "fileText1"
@@ -41,8 +42,11 @@ msgstr "Then, copy the code into the first line of the HTML file"
 msgid "fileText3"
 msgstr "<li>Finally, upload the created HTML file to the main directory of your website.</li><li>Afterwards, click “Verify”. If verification is successful, the new domain will be accepted for the Siwecos services and saved.</li>"
 
-msgid "FORM_DELETED"
-msgstr "Form deleted"
+msgid "metaTagText1"
+msgstr "<li>In order to verify a domain with a meta tag, please copy the code specified by us into the header information of your homepage.</li><li>Download the homepage (e.g. index.html) and copy the meta tag into the head of the file.</li>"
 
-msgid "FORM_LOAD_ERROR"
-msgstr "Form not loaded"
+msgid "metaTagText2"
+msgstr "<li>Reload the start file to the main directory of the website and click “Verify” on the Siwecos page.</li><li>If the meta information can be found, the new domain will be accepted for the Siwecos services and saved.</li>"
+
+msgid "verificationProcessText"
+msgstr "<p>Any domain that is added to be scanned by SIWECOS must be verified and cross checked. Siwecos offers two methods for this (File, Meta Tag).</p> <p>Why is verification necessary? The verification proves that you are the true owner of the domain, which is necessary for data protection reasons.</p>"

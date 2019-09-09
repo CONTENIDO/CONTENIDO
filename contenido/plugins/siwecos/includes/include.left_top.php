@@ -21,14 +21,14 @@ if (cRegistry::getPerm()->have_perm_area_action('siwecos', SIWECOSRightBottomPag
 
     $link = new cHTMLLink();
     $link->setMultiLink($area, SIWECOSRightBottomPage::SHOW_FORM, $area, SIWECOSRightBottomPage::SHOW_FORM);
-    $link->setContent(SIWECOS::i18n("create"));
+    $link->setContent(i18n("create", 'siwecos'));
     // class addfunction lets display add icon beneath link
     $link->updateAttributes(array(
         'class' => 'addfunction'
     ));
     $actions[] = $link->render();
 } else {
-    $actions[] = $notification->returnNotification(cGuiNotification::LEVEL_WARNING, SIWECOS::i18n('CREATE_FORM_NO_PERMISSIONS'));
+    $actions[] = $notification->returnNotification(cGuiNotification::LEVEL_WARNING, i18n('ERR_PERMISSION_DENIED', 'siwecos'));
 }
 
 $page = new cGuiPage('left_top', 'siwecos');

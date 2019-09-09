@@ -7,7 +7,7 @@
                 </div>
             </div>
             <div class="span8">
-                <strong class="text-center">{$Titel}</strong>
+                <strong class="text-center">{i18n("TTL_SCAN_RESULTS", 'siwecos')}</strong>
                 <div class="last-scan-data">
                     <span>{$resultjson->scanFinished->date|date_format:"%d %m %Y %H:%M:%S"}</span>
                 </div>
@@ -18,8 +18,8 @@
                             <div class="scanner-item-data">
                                 <span class="scanner-data">{$item->scanner_type}</span>
                                 <a href="https://www.siwecos.de/wiki/{$item->scanner_type}&#10;/{$language}"
-                                   title="{$backgroundInfo}"
-                                   target="_blank">{$backgroundInfo} &gt;&gt;</a>
+                                   title="{i18n("BTN_BACKGROUND_INFO", 'siwecos')}"
+                                   target="_blank">{i18n("BTN_BACKGROUND_INFO", 'siwecos')} &gt;&gt;</a>
                                 <div class="GaugeMeter scanner-gauge{$item@key}"></div>
                                 <script type="text/javascript">
                                     $(document).ready(function() {
@@ -36,14 +36,14 @@
                                                 </div>
                                                 <div class="col-20">
                                                     <button class="btn btn-primary" onclick="showDescription(this)">
-                                                        <span>{$moreInfo}</span></button>
+                                                        <span>{i18n("BTN_EXPAND", 'siwecos')}</span></button>
                                                 </div>
                                                 <div style="clear: both;"></div>
                                                 <div class="scanner-check-item-description" style="display: none;">
                                                     <p class="scanner-check-item-description-title">{$val->description}</p>
                                                     <p class="scanner-check-item-description-report">{$val->report}</p>
                                                     <div style="clear: both;"></div>
-                                                    <small><a href="{$val->link}" target="_blank">{$backgroundInfo}</a>
+                                                    <small><a href="{$val->link}" target="_blank">{i18n("BTN_BACKGROUND_INFO", 'siwecos')}</a>
                                                     </small>
                                                     <div style="clear: both;"></div>
                                                     <div style="clear: both; padding-bottom: 20px;"></div>
@@ -56,12 +56,12 @@
                             </div>
                         </div>
                     {/foreach}
-                    <div class="seal-link"><a
-                                href="https://www.siwecos.de/wiki/Siwecos-Siegel/{$LANG}?userdomain={$resultjson->domain}"
-                                target="_blank">{$howBtn}</a></div>
+                    <div class="seal-link">
+                        <a href="https://www.siwecos.de/wiki/Siwecos-Siegel/{$LANG}?userdomain={$resultjson->domain}" target="_blank">{$howBtn}</a>
+                    </div>
                 </div>
-                <button id="siwecosStartScanBtn" class="btn-primary btn"><a href="{$scanHref}">{$startScanBtn}</a></button>
-                <a href="https://siwecos.de/app/#/domains" target="_blank" class="btn-secondary btn">{$goSiwecosBtn}</a>
+                <button id="siwecosStartScanBtn" class="btn-primary btn"><a href="{$scanHref}">{i18n("BTN_START_SCAN", 'siwecos')}</a></button>
+                <a href="https://siwecos.de/app/#/domains" target="_blank" class="btn-secondary btn">{i18n("BTN_SIWECOS_SITE", 'siwecos')}</a>
             </div>
         </div>
     </div>
@@ -73,21 +73,19 @@
 <script type="text/javascript">
     $(document).ready(function() {
         var responseData = {$result};
-        //console.log(responseData);
-        $("#mod_siwecos_results .big").data('percent', parseInt(responseData.weightedMedia));
-        $("#mod_siwecos_results .big").gaugeMeter();
+        var elem = $('#mod_siwecos_results').find('.big');
+        elem.data('percent', parseInt(responseData.weightedMedia));
+        elem.gaugeMeter();
     });
 
     function showDescription(ele) {
         var divEle = ele.closest('.scanner-check-content');
-        var moretxt = '{$moreInfo}';
-        var lesstxt = '{$lessInfo}';
-        if (divEle.getElementsByClassName('scanner-check-item-description')[0].style.display == "block") {
+        if (divEle.getElementsByClassName('scanner-check-item-description')[0].style.display === "block") {
             divEle.getElementsByClassName('scanner-check-item-description')[0].style.display = "none";
-            ele.textContent = moretxt;
+            ele.textContent = '{i18n("BTN_EXPAND", 'siwecos')}';
         } else {
             divEle.getElementsByClassName('scanner-check-item-description')[0].style.display = "block";
-            ele.textContent = lesstxt;
+            ele.textContent = '{i18n("BTN_COLLAPSE", 'siwecos')}';
         }
     }
 </script>

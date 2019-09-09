@@ -12,6 +12,7 @@ declare(strict_types=1);
 class CurlService
 {
     const DBG = false;
+
     public $error;
 
     /**
@@ -20,7 +21,6 @@ class CurlService
      * @param array  $header
      *
      * @return \stdClass
-     * @throws AppException
      * @throws CurlException
      */
     public function post(string $url, array $data, array $header = [])
@@ -29,7 +29,7 @@ class CurlService
         $options = [
             CURLOPT_POST           => true,
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_URL            => $url
+            CURLOPT_URL            => $url,
         ];
 
         // $options[CURLOPT_HEADER] = true;
@@ -75,7 +75,6 @@ class CurlService
      * @param array  $header
      *
      * @return \stdClass
-     * @throws AppException
      * @throws CurlException
      */
     public function get(string $url, array $header = [])
@@ -84,7 +83,7 @@ class CurlService
         $options = [
             CURLOPT_POST           => false,
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_URL            => $url
+            CURLOPT_URL            => $url,
         ];
 
         // $options[CURLOPT_HEADER] = true;
@@ -120,13 +119,11 @@ class CurlService
         return $response;
     }
 
-
     /**
      * @param array $options
      *
      * @return \stdClass
      * @throws CurlException
-     * @throws AppException
      */
     private function _call(array $options)
     {
@@ -158,10 +155,11 @@ class CurlService
         if (self::DBG) {
             error_log($info);
         }
+
         return $resp;
     }
 }
 
-class CurlException extends cException{
-
+class CurlException extends cException
+{
 }

@@ -1,57 +1,57 @@
 .mod_siwecos .GaugeMeter {
-    Position:        relative;
-    Text-Align:      center;
-    Overflow:        hidden;
-    Cursor:          default;
+    cursor: default;
     margin: auto;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
 }
 
 .mod_siwecos .GaugeMeter SPAN,
 .mod_siwecos .GaugeMeter B {
-    Margin:          0 23%;
-    Width:           5%;
-    Position:        Absolute;
-    Text-align:      Center;
-    Display:         Inline-Block;
-    Color:           RGBa(0,0,0,.8);
-    Font-Weight:     100;
-    Font-Family:     "Open Sans", Arial;
-    Overflow:        Hidden;
-    White-Space:     NoWrap;
-    Text-Overflow:   Ellipsis;
+    color: RGBa(0, 0, 0, .8);
+    display: Inline-Block;
+    font-family: "Open Sans", Arial, sans-serif;
+    font-weight: 100;
+    margin: 0 23%;
+    overflow: Hidden;
+    position: Absolute;
+    text-align: Center;
+    text-overflow: Ellipsis;
+    width: 5%;
+    white-space: NoWrap;
 }
+
 .mod_siwecos .GaugeMeter[data-style="Semi"] B {
-    Margin:          0 10%;
-    Width:           80%;
+    margin: 0 10%;
+    width: 80%;
 }
 
 .mod_siwecos .GaugeMeter S,
 .mod_siwecos .GaugeMeter U {
-    Text-Decoration: None;
-    Font-Size:       .49em;
-    Opacity:         .5;
+    font-size: .49em;
+    opacity: .5;
+    text-decoration: None;
 }
 
 .mod_siwecos .GaugeMeter B {
-    Color:           Black;
-    Font-Weight:     300;
-    Opacity:         .8;
+    color: Black;
+    font-weight: 300;
+    opacity: .8;
 }
 
 .mod_siwecos .GaugeMeter SPAN, .mod_siwecos .GaugeMeter B {
-    width: 54%;
+    color: RGBa(0, 0, 0, .8);
+    display: Inline-Block;
+    font-family: "Open Sans", Arial, sans-serif;
+    font-weight: 100;
+    margin: 0 23%;
+    overflow: Hidden;
     position: Absolute;
     text-align: Center;
-    display: Inline-Block;
-    color: RGBa(0,0,0,.8);
-    font-weight: 100;
-    font-family: "Open Sans", Arial;
-    overflow: Hidden;
-    white-space: NoWrap;
     text-overflow: Ellipsis;
-    margin: 0 23%;
+    white-space: NoWrap;
+    width: 54%;
 }
-
 
 .mod_siwecos #mod_siwecos_resultscale:before {
     background: #fbfbfb;
@@ -84,7 +84,8 @@
     width: 90px;
     transform-origin: 100% 4px;
     transform: rotate(0deg);
-    transition: all 1s; }
+    transition: all 1s;
+}
 
 .mod_siwecos #mod_siwecos_resultscale:after {
     background: #fff;
@@ -107,9 +108,11 @@
 .mod_siwecos .btn {
     margin-top: 10px;
 }
+
 .mod_siwecos #siwecosStartScanBtn.btn a {
     color: #fff !important;
 }
+
 button[type="button"] {
-    display: block!important;
+    display: block !important;
 }

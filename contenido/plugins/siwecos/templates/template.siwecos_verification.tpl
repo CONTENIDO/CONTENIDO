@@ -1,34 +1,46 @@
 <br>
+
 <div class="container">
-    <div><h3>{$ConfirmDomain}: {$domain}</h3>
-        <div id="wppb-domainverify-wrap" class="wppb-domain-forms"><p><strong>{$verificationProcess}</strong></p>
-            {$verificationProcessText}
-            <p><strong>{$MetaTag}</strong></p>
+    <div>
+
+        <h3>{i18n('TTL_DOMAIN_CONFIRMATION', 'siwecos')}: {$domain}</h3>
+
+        <div id="wppb-domainverify-wrap" class="wppb-domain-forms">
+
+            <p><strong>{i18n('The verification process', 'siwecos')}</strong></p>
+            {i18n('verificationProcessText', 'siwecos')}
+            <p><strong>{i18n('MetaTag', 'siwecos')}</strong></p>
             <ul>
-                {$metaTagText1}
+                {i18n('metaTagText1', 'siwecos')}
                 <li>Meta-Tag:<br> <strong id="metaDomainToken">&lt;meta name="siwecostoken"
                         content="{$domainToken}" /&gt;</strong>
-                    <button type="button" onclick="copy2Clipboard('metaDomainToken')">{$copy}</button>
+                    <button type="button" onclick="copy2Clipboard('metaDomainToken')">{i18n('BTN_COPY', 'siwecos')}</button>
                 </li>
-                {$metaTagText2}
+                {i18n('metaTagText2', 'siwecos')}
             </ul>
-            <p><strong>{$file}</strong></p>
+
+            <p><strong>{i18n('File', 'siwecos')}</strong></p>
             <ul>
                 <li>
-                    {$fileText1}:
+                    {i18n('fileText1', 'siwecos')}:
                     <strong id="htmlDomainToken">{$domainToken}.html</strong>
-                    <button type="button" onclick="copy2Clipboard('htmlDomainToken')">{$copy}</button>
+                    <button type="button" onclick="copy2Clipboard('htmlDomainToken')">{i18n('BTN_COPY', 'siwecos')}</button>
                 </li>
                 <li>
-                    {$fileText2}:
+                    {i18n('fileText2', 'siwecos')}:
                     <strong id="codeDomainToken">{$domainToken}</strong>
-                    <button type="button" onclick="copy2Clipboard('codeDomainToken')">{$copy}</button>
+                    <button type="button" onclick="copy2Clipboard('codeDomainToken')">{i18n('BTN_COPY', 'siwecos')}</button>
                 </li>
-                {$fileText3}
+                {i18n('fileText3', 'siwecos')}
             </ul>
-            <a href="{$verificationHref}" class="btn btn-primary">{$verify}</a></div>
+
+            <a href="{$verificationHref}" class="btn btn-primary">{i18n('BTN_VERIFY', 'siwecos')}</a>
+
+        </div>
+
     </div>
 </div>
+
 <script type="text/javascript">
     function copy2Clipboard(id) {
         var obj = document.getElementById(id);
@@ -42,10 +54,10 @@
             if (document.execCommand("Copy", "false", null)) {
                 //alert("OK！");
             } else {
-                alert("{$copy2}");
+                alert("{i18n('MSG_MANUAL_COPY', 'siwecos')}");
             }
         } catch (err) {
-            alert("{$copy2}")
+            alert("{i18n('MSG_MANUAL_COPY', 'siwecos')}")
         }
     }
 </script>
