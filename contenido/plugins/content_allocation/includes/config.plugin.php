@@ -20,6 +20,7 @@ plugin_include('content_allocation', 'classes/class.content_allocation_treeview.
 plugin_include('content_allocation', 'classes/class.content_allocation_article.php');
 plugin_include('content_allocation', 'classes/class.content_allocation.php');
 plugin_include('content_allocation', 'classes/class.content_allocation_complexlist.php');
+plugin_include('content_allocation', 'includes/functions.chains.php');
 
 // plugin_variables
 $cfg['tab']['pica_alloc']     = $cfg['sql']['sqlprefix'] . '_pica_alloc';
@@ -38,8 +39,6 @@ $cfg['pica']['script_complexlist']       = 'complexlist.js';
 // administration > users > area translations
 global $lngAct;
 $lngAct['con_contentallocation']['storeallocation'] = i18n('Store tagging', 'content_allocation');
-
-plugin_include('content_allocation', 'includes/functions.chains.php');
 
 global $_cecRegistry;
 $_cecRegistry->addChainFunction("Contenido.Article.RegisterCustomTab", "pica_RegisterCustomTab");
