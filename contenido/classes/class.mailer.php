@@ -456,12 +456,12 @@ class cMailer extends Swift_Mailer {
         if (is_array($value)) {
             for ($i = 0; $i < count($value); $i++) {
                 if (!empty($value[$i])) {
-                    $value[$i] = conHtmlentities($value[$i], ENT_COMPAT, $charset, false);
+                    $value[$i] = conHtmlentities($value[$i], ENT_COMPAT, $charset);
                 }
             }
             return $value;
         } else if (is_string($value)) {
-            return conHtmlentities($value, ENT_COMPAT, $charset, false);
+            return conHtmlentities($value, ENT_COMPAT, $charset);
         } else {
             return $value;
         }

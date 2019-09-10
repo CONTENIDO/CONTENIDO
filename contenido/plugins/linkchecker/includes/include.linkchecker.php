@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This is the main backend page for the linkchecker plugin.
  *
@@ -44,15 +45,12 @@ if (empty($_GET['action'])) {
     $action = "linkchecker";
 }
 
-plugin_include('linkchecker', 'includes/config.plugin.php');
-plugin_include('linkchecker', 'includes/include.checkperms.php');
-plugin_include('linkchecker', 'includes/include.linkchecker_tests.php');
-
 // Initialization
-$aCats = array();
-$aSearchIDInfosArt = array();
-$aSearchIDInfosCatArt = array();
-$aSearchIDInfosNonID = array();
+$aCats                = [];
+$aSearchIDInfosArt    = [];
+$aSearchIDInfosCat    = [];
+$aSearchIDInfosCatArt = [];
+$aSearchIDInfosNonID  = [];
 
 // Var initialization
 $aUrl = array(
@@ -204,17 +202,10 @@ if ($sCache_errors && $_GET['live'] != 1) {
     $searchLinks = new cLinkcheckerSearchLinks();
 
     // Select all categorys
-    $sql = "SELECT idcat FROM " . $cfg['tab']['cat'] . " GROUP BY idcat";
-    $db->query($sql);
-
+    // Check userrights, if no cronjob
+    $db->query("SELECT idcat FROM " . $cfg['tab']['cat'] . " GROUP BY idcat");
     while ($db->nextRecord()) {
-        if ($cronjob != true) { // Check userrights, if no cronjob
-            $iCheck = cCatPerm($db->f("idcat"), $db2);
-
-            if ($iCheck == true) {
-                $aCats[] = cSecurity::toInteger($db->f("idcat"));
-            }
-        } else {
+        if ($cronjob || cLinkcheckerCategoryHelper::checkPermission($db->f("idcat"), $db2)) {
             $aCats[] = cSecurity::toInteger($db->f("idcat"));
         }
     }
@@ -234,10 +225,18 @@ if ($sCache_errors && $_GET['live'] != 1) {
             LEFT JOIN " . $cfg['tab']['art_lang'] . " art ON (art.idart = cat.idart)
             LEFT JOIN " . $cfg['tab']['cat_lang'] . " catName ON (catName.idcat = cat.idcat)
             LEFT JOIN " . $cfg['tab']['content'] . " con ON (con.idartlang = art.idartlang)
-            WHERE (con.value LIKE '%action%' OR con.value LIKE '%data%' OR con.value LIKE '%href%' OR con.value LIKE '%src%')
-            " . $aCats_Sql . " AND cat.idcat != '0'
-            AND art.idlang = '" . cSecurity::toInteger($languageId) . "' AND catName.idlang = '" . cSecurity::toInteger($languageId) . "'
-            AND art.online = '1' AND art.redirect = '0'";
+            WHERE (
+                con.value LIKE '%action%'
+                OR con.value LIKE '%data%'
+                OR con.value LIKE '%href%'
+                OR con.value LIKE '%src%'
+            )
+                " . $aCats_Sql . "
+                AND cat.idcat != '0'
+                AND art.idlang = '" . cSecurity::toInteger($languageId) . "'
+                AND catName.idlang = '" . cSecurity::toInteger($languageId) . "'
+                AND art.online = '1'
+                AND art.redirect = '0'";
     $db->query($sql);
 
     while ($db->nextRecord()) {
@@ -249,7 +248,7 @@ if ($sCache_errors && $_GET['live'] != 1) {
 
         // Search front_content.php-links
         if ($_GET['mode'] != 2) {
-            searchFrontContentLinks($value, $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"));
+            cLinkcheckerTester::searchFrontContentLinks($value, $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"));
         }
     }
 
@@ -257,9 +256,12 @@ if ($sCache_errors && $_GET['live'] != 1) {
     $sql = "SELECT art.title, art.redirect_url, art.idartlang, art.idlang, cat.idart, cat.idcat, catName.name AS namecat FROM " . $cfg['tab']['cat_art'] . " cat
             LEFT JOIN " . $cfg['tab']['art_lang'] . " art ON (art.idart = cat.idart)
             LEFT JOIN " . $cfg['tab']['cat_lang'] . " catName ON (catName.idcat = cat.idcat)
-            WHERE art.online = '1' AND art.redirect = '1' " . $aCats_Sql . "
-            AND art.idlang = '" . cSecurity::toInteger($languageId) . "' AND catName.idlang = '" . cSecurity::toInteger($languageId) . "'
-            AND cat.idcat != '0'";
+            WHERE art.online = '1'
+                AND art.redirect = '1'
+                " . $aCats_Sql . "
+                AND art.idlang = '" . cSecurity::toInteger($languageId) . "'
+                AND catName.idlang = '" . cSecurity::toInteger($languageId) . "'
+                AND cat.idcat != '0'";
     $db->query($sql);
 
     // Set mode to "redirect"
@@ -272,12 +274,12 @@ if ($sCache_errors && $_GET['live'] != 1) {
 
         // Search front_content.php-links
         if ($_GET['mode'] != 2) {
-            searchFrontContentLinks($db->f("redirect_url"), $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"));
+            cLinkcheckerTester::searchFrontContentLinks($db->f("redirect_url"), $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"));
         }
     }
 
     // Check the links
-    checkLinks();
+    cLinkcheckerTester::checkLinks();
 }
 
 /* Analysis of the errors */
@@ -319,7 +321,7 @@ if (empty($aErrors) && $cronjob != true) {
     );
 
     // Initializing repair class
-    $repair = new LinkcheckerRepair();
+    $repair = new cLinkcheckerRepair();
 
     foreach ($aErrors as $sKey => $aRow) {
 
@@ -369,13 +371,14 @@ if (empty($aErrors) && $cronjob != true) {
             }
 
             // Generate repaired link variables
-            if ($aRow[$i]['error_type'] != "invalidurl") { // No invalid url
-                                                           // case
+            if ($aRow[$i]['error_type'] != "invalidurl") {
+                // No invalid url case
                 $tpl2->set('s', 'ERRORS_REPAIRED_LINK', '-');
-            } elseif ($repaired_link == false) { // Linkchecker can not repaire
-                                                 // this link
+            } elseif ($repaired_link == false) {
+                // Linkchecker can not repaire this link
                 $tpl2->set('s', 'ERRORS_REPAIRED_LINK', i18n("No repaired link", $plugin_name));
-            } else { // Yeah, we have an repaired link!
+            } else {
+                // Yeah, we have an repaired link!
 
                 // Repaired question
                 $repaired_question = i18n("Linkchecker has found a way to repair your wrong link. Do you want to automatically repair the link to the URL below?", $plugin_name);

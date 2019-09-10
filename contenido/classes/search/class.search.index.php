@@ -178,26 +178,21 @@ class cSearchIndex extends cSearchBaseAbstract {
     /**
      * Start indexing the article.
      *
-     * @param int    $idart
-     *                            Article Id
-     * @param array  $aContent
-     *                            The complete content of an article specified by its content types.
-     *                            It looks like:
-     *                            Array (
-     *                            [CMS_HTMLHEAD] => Array (
-     *                            [1] => Herzlich Willkommen...
-     *                            [2] => ...auf Ihrer Website!
-     *                            )
-     *                            [CMS_HTML] => Array (
-     *                            [1] => Die Inhalte auf dieser Website ...
-     *                            )
-     *                            )
-     * @param string $place       [optional]
-     *                            The field where to store the index information in db.
-     * @param array  $cms_options [optional]
-     *                            One can specify explicitly cms types which should not be indexed.
-     * @param array  $aStopwords  [optional]
-     *                            Array with words which should not be indexed.
+     * @param int    $idart             Article Id
+     * @param array  $aContent          The complete content of an article specified by its content types.
+     *                                  It looks like:
+     *                                  [
+     *                                  [CMS_HTMLHEAD] => [
+     *                                  [1] => Herzlich Willkommen...
+     *                                  [2] => ...auf Ihrer Website!
+     *                                  ]
+     *                                  [CMS_HTML] => [
+     *                                  [1] => Die Inhalte auf dieser Website ...
+     *                                  ]
+     *                                  ]
+     * @param string $place             [optional] The field where to store the index information in db.
+     * @param array  $cms_options       [optional] One can specify explicitly cms types which should not be indexed.
+     * @param array  $aStopwords        [optional] Array with words which should not be indexed.
      *
      * @throws cInvalidArgumentException
      * @throws cDbException
@@ -307,7 +302,6 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @throws cDbException
      */
     public function saveKeywords() {
-        $tmp_count = array();
 
         foreach ($this->_keywords as $keyword => $count) {
             $tmp_count = preg_split('/[\s]/', trim($count));
@@ -321,14 +315,15 @@ class cSearchIndex extends cSearchBaseAbstract {
             if (!array_key_exists($keyword, $this->_keywordsOld)) {
                 // if keyword is new, save index information
                 // $nextid = $this->db->nextid($this->cfg['tab']['keywords']);
-                $sql = "INSERT INTO " . $this->cfg['tab']['keywords'] . "
-                            (keyword, " . $this->_place . ", idlang)
-                        VALUES
-                            ('" . $this->db->escape($keyword) . "', '" . $this->db->escape($index_string) . "', " . cSecurity::toInteger($this->lang) . ")";
+                $iLang = cSecurity::toInteger($this->lang);
+                $sql   = "INSERT INTO {$this->cfg['tab']['keywords']}";
+                $sql  .= "(keyword, {$this->_place}, idlang) ";
+                $sql  .= "VALUES";
+                $sql  .= "('{$this->db->escape($keyword)}', '{$this->db->escape($index_string)}', {$iLang})";
             } else {
                 // if keyword allready exists, create new index_string
                 if (preg_match("/&$this->idart=/", $this->_keywordsOld[$keyword])) {
-                    $index_string = preg_replace("/&$this->idart=[0-9]+\([\w-,]+\)/", $index_string, $this->_keywordsOld[$keyword]);
+                    $index_string = preg_replace("/&$this->idart=[0-9]+\([\w\-,]+\)/", $index_string, $this->_keywordsOld[$keyword]);
                 } else {
                     $index_string = $this->_keywordsOld[$keyword] . $index_string;
                 }
@@ -351,7 +346,7 @@ class cSearchIndex extends cSearchBaseAbstract {
      */
     public function deleteKeywords() {
         foreach ($this->_keywordsDel as $key_del) {
-            $index_string = preg_replace("/&$this->idart=[0-9]+\([\w-,]+\)/", "", $this->_keywordsOld[$key_del]);
+            $index_string = preg_replace("/&$this->idart=[0-9]+\([\w\-,]+\)/", "", $this->_keywordsOld[$key_del]);
 
             if (cString::getStringLength($index_string) == 0) {
                 // keyword is not referenced by any article

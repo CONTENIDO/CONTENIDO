@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This is the whitelist backend page for the linkchecker plugin.
  *
@@ -30,7 +31,8 @@ $backendUrl = cRegistry::getBackendUrl();
 // Template-definition
 /* Whitelist: Delete */
 if (!empty($_GET['url_to_delete'])) {
-    $sql = "DELETE FROM " . $cfg['tab']['whitelist'] . " WHERE url = '" . $db->escape(base64_decode($_GET['url_to_delete'])) . "'";
+    $sql = "DELETE FROM " . $cfg['tab']['whitelist'] . "
+            WHERE url = '" . $db->escape(base64_decode($_GET['url_to_delete'])) . "'";
     $db->query($sql);
 }
 
@@ -64,4 +66,5 @@ $tpl->set('s', 'WHITELIST', $aWhitelist);
 $tpl->set('s', 'WHITELIST_COUNT', $db->numRows());
 
 $tpl->generate($cfg['templates']['linkchecker_whitelist']);
+
 ?>
