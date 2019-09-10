@@ -7,7 +7,7 @@
                 </div>
             </div>
             <div class="span8">
-                <strong class="text-center">{i18n("TTL_SCAN_RESULTS", 'siwecos')}</strong>
+                <h1 class="text-center">{i18n("TTL_SCAN_RESULTS", 'siwecos')}</h1>
                 <div class="last-scan-data">
                     <span>{$resultjson->scanFinished->date|date_format:"%d %m %Y %H:%M:%S"}</span>
                 </div>

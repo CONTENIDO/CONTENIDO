@@ -22,11 +22,14 @@ msgstr "Weniger Informationen"
 msgid "BTN_COPY"
 msgstr "Kopieren"
 
+msgid "BTN_CREATE"
+msgstr "Erstellen"
+
 msgid "BTN_EXPAND"
 msgstr "Mehr Informationen"
 
 msgid "BTN_HOWTO"
-msgstr "SIWECOS-Siegel auf %s einbinden; So geht's..."
+msgstr "SIWECOS-Siegel auf %s einbinden; So geht's ..."
 
 msgid "BTN_SAVE"
 msgstr "Speichern"
@@ -46,9 +49,6 @@ msgstr "Der Datensatz konnte nicht gelöscht werden!"
 msgid "ERR_DOMAIN_EXISTS"
 msgstr "Die Domain existiert bereits."
 
-msgid "ERR_DOMAIN_NOT_CONFIGURED"
-msgstr "Die Domain ist noch nicht konfiguriert."
-
 msgid "ERR_DOMAIN_NOT_FOUND"
 msgstr "Die Domain konnte nicht gefunden werden."
 
@@ -62,19 +62,19 @@ msgid "ERR_MALFORMED_URL"
 msgstr "Bitte prüfen Sie die Domain! Diese muss mit Protokoll angegeben werden."
 
 msgid "ERR_MISSING_CLIENT"
-msgstr ""
+msgstr "Der Mandant ist nicht definiert."
 
 msgid "ERR_MISSING_LANG"
-msgstr ""
+msgstr "Der Sprache ist nicht definiert."
 
 msgid "ERR_MISSING_USER_TOKEN"
-msgstr ""
+msgstr "Das User-Token ist nicht definiert."
 
 msgid "ERR_PERMISSION_DENIED"
-msgstr ""
+msgstr "Sie haben keine Berechtigung diese Aktion auszuführen.<br />Bitte wenden Sie sich an Ihren Adminstrator."
 
 msgid "ERR_UNKNOWN_ACTION"
-msgstr ""
+msgstr "Diese Aktion wird nicht unterstützt."
 
 msgid "LBL_AUTHOR"
 msgstr "Autor"
@@ -86,13 +86,13 @@ msgid "LBL_CREATION_DATE"
 msgstr "Erstellt am"
 
 msgid "LBL_DANGER_LEVEL"
-msgstr "Danger Level"
+msgstr "Danger-Level"
 
 msgid "LBL_DOMAIN"
 msgstr "Domain"
 
 msgid "LBL_DOMAIN_TOKEN"
-msgstr "Domain Token"
+msgstr "Domain-Token"
 
 msgid "LBL_EMAIL_ADDRESS"
 msgstr "Email"
@@ -101,49 +101,46 @@ msgid "LBL_PASSWORD"
 msgstr "Passwort"
 
 msgid "LBL_USER_TOKEN"
-msgstr "User Token"
+msgstr "User-Token"
 
 msgid "MSG_DELETED_ENTITY"
 msgstr "Der Datensatz wurde erfolgreich gelöscht."
 
+msgid "MSG_FILE_1"
+msgstr "Um eine Domain mit einer Datei verifizieren zu können, erstellen Sie bitte im ersten Schritt eine HTML-Datei mit dem von uns angegebenen Namen"
+
+msgid "MSG_FILE_2"
+msgstr "Im zweiten Schritt kopieren Sie den Code in die erste Zeile der HTML-Datei"
+
+msgid "MSG_FILE_3"
+msgstr "<li>Im dritten Schritt laden Sie die erstellte HTML-Datei in das Hauptverzeichnis ihres Webseite hoch.</li><li>Klicken Sie im Anschluss auf „Überprüfen“. Ist die Überprüfung erfolgreich, wird die neue Domain im Dienst von Siwecos aufgenommen bzw. gespeichert.</li>"
+
 msgid "MSG_MANUAL_COPY"
-msgstr "Bitte manuell kopieren"
+msgstr "Bitte händisch kopieren."
+
+msgid "MSG_META_TAG_1"
+msgstr "<li>Um eine Domain über ein Meta-Tag zu verifizieren, kopieren Sie den von uns angegebenen Code in die Headerinformationen ihrer Startseite.</li><li>Laden Sie die Startseite (z.B. index.html) herunter und kopieren den Meta-Tag in den Kopfbereich der Datei.</li>"
+
+msgid "MSG_META_TAG_2"
+msgstr "<li>Laden Sie die Startdatei wieder in ihr Hauptverzeichnis der Webseite und klicken Sie Auf der Siwecos-Seite auf „Überprüfen“.</li><li>Sollte die Meta-information gefunden werden, wird die neue Domain im Dienst von Siwecos aufgenommen bzw. gespeichert.</li>"
 
 msgid "MSG_SELECT_DOMAIN"
 msgstr "Bitte wählen Sie eine Domain aus."
 
+msgid "MSG_VERIFICATION_PROCESS"
+msgstr "<p>Alle Domains die bei Siwecos zur Überprüfung eingetragen werden, müssen verifiziert bzw. gegengeprüft werden. Dazu bietet Siwecos zwei verschiedene Verfahren (Datei, Meta-Tag) an.</p> <p>Wozu wird eine Verifizierung gemacht? Bei einer Verifizierung wird aus datenschutzrechtlichen Gründen nachgewiesen, dass Sie der wirkliche Inhaber der Domain sind.</p>"
+
 msgid "TTL_DOMAIN_CONFIRMATION"
 msgstr "Domain bestätigen"
+
+msgid "TTL_FILE"
+msgstr "Datei"
+
+msgid "TTL_META_TAG"
+msgstr "Meta-Tag"
 
 msgid "TTL_SCAN_RESULTS"
 msgstr "Ihre Scanergebnisse"
 
-
-
-
-msgid "create"
-msgstr "Erstellen"
-
-msgid "File"
-msgstr "Datei"
-
-msgid "fileText1"
-msgstr "Um eine Domain mit einer Datei verifizieren zu können, erstellen Sie bitte im ersten Schritt eine HTML-Datei mit dem von uns angegebenen Namen"
-
-msgid "fileText2"
-msgstr "Im zweiten Schritt kopieren Sie den Code in die erste Zeile der HTML-Datei"
-
-msgid "fileText3"
-msgstr "<li>Im dritten Schritt laden Sie die erstellte HTML-Datei in das Hauptverzeichnis ihres Webseite hoch.</li><li>Klicken Sie im Anschluss auf „Überprüfen“. Ist die Überprüfung erfolgreich, wird die neue Domain im Dienst von Siwecos aufgenommen bzw. gespeichert.</li>"
-
-msgid "metaTagText1"
-msgstr "<li>Um eine Domain über ein Meta-Tag zu verifizieren, kopieren Sie den von uns angegebenen Code in die Headerinformationen ihrer Startseite.</li><li>Laden Sie die Startseite (z.B. index.html) herunter und kopieren den Meta-Tag in den Kopfbereich der Datei.</li>"
-
-msgid "metaTagText2"
-msgstr "<li>Laden Sie die Startdatei wieder in ihr Hauptverzeichnis der Webseite und klicken Sie Auf der Siwecos-Seite auf „Überprüfen“.</li><li>Sollte die Meta-information gefunden werden, wird die neue Domain im Dienst von Siwecos aufgenommen bzw. gespeichert.</li>"
-
-msgid "The verification process"
+msgid "TTL_VERIFICATION_PROCESS"
 msgstr "Das Verifizierungsverfahren"
-
-msgid "verificationProcessText"
-msgstr "<p>Alle Domains die bei Siwecos zur Überprüfung eingetragen werden, müssen verifiziert bzw. gegengeprüft werden. Dazu bietet Siwecos zwei verschiedene Verfahren (Datei, Meta-Tag) an.</p> <p>Wozu wird eine Verifizierung gemacht? Bei einer Verifizierung wird aus datenschutzrechtlichen Gründen nachgewiesen, dass Sie der wirkliche Inhaber der Domain sind.</p>"

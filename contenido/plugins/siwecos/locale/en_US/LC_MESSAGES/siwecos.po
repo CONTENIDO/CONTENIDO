@@ -13,8 +13,26 @@ msgstr ""
 "X-Poedit-KeywordsList: i18n\n"
 "X-Generator: Poedit 1.8.7\n"
 
+msgid "BTN_BACKGROUND_INFO"
+msgstr "Background information"
+
+msgid "BTN_COLLAPSE"
+msgstr "Less information"
+
+msgid "BTN_COPY"
+msgstr "Copy"
+
+msgid "BTN_CREATE"
+msgstr "Create"
+
+msgid "BTN_EXPAND"
+msgstr "More information"
+
 msgid "BTN_HOWTO"
-msgstr "Embed SIWECOS-Seal on %s: This is how you do it..."
+msgstr "Embed SIWECOS-Seal on %s: This is how you do it ..."
+
+msgid "BTN_SAVE"
+msgstr "Save"
 
 msgid "BTN_SIWECOS_SITE"
 msgstr "Go to SIWECOS"
@@ -22,31 +40,107 @@ msgstr "Go to SIWECOS"
 msgid "BTN_START_SCAN"
 msgstr "Start a new scan"
 
+msgid "BTN_VERIFY"
+msgstr "Verify"
+
+msgid "ERR_DELETE_ENTITY"
+msgstr "The record could not be deleted!"
+
+msgid "ERR_DOMAIN_EXISTS"
+msgstr "The domain already exists."
+
+msgid "ERR_DOMAIN_NOT_FOUND"
+msgstr "The domain could not be found."
+
 msgid "ERR_FORM_VALIDATION"
-msgstr "Mit * markierte Felder sind Pflichtfelder"
+msgstr "Fields marked with an * are obligatory"
 
 msgid "ERR_LOAD_ENTITY"
-msgstr "Form not loaded"
+msgstr "The record could not be loaded."
+
+msgid "ERR_MALFORMED_URL"
+msgstr "Please check the domain! It has to be given including a protocol."
+
+msgid "ERR_MISSING_CLIENT"
+msgstr "The client is not defined."
+
+msgid "ERR_MISSING_LANG"
+msgstr "The language is not defined."
+
+msgid "ERR_MISSING_USER_TOKEN"
+msgstr "The user token is not defined."
+
+msgid "ERR_PERMISSION_DENIED"
+msgstr "You have no permission to perform this action.<br />Please contact your administrator."
+
+msgid "ERR_UNKNOWN_ACTION"
+msgstr "This action is not supported."
+
+msgid "LBL_AUTHOR"
+msgstr "Author"
+
+msgid "LBL_CONFIGURATION"
+msgstr "Configuration"
+
+msgid "LBL_CREATION_DATE"
+msgstr "Created on"
+
+msgid "LBL_DANGER_LEVEL"
+msgstr "Danger level"
+
+msgid "LBL_DOMAIN"
+msgstr "Domain"
+
+msgid "LBL_DOMAIN_TOKEN"
+msgstr "Domain token"
+
+msgid "LBL_EMAIL_ADDRESS"
+msgstr "Email"
+
+msgid "LBL_PASSWORD"
+msgstr "Password"
+
+msgid "LBL_USER_TOKEN"
+msgstr "User token"
 
 msgid "MSG_DELETED_ENTITY"
-msgstr "Form deleted"
+msgstr "The record has been deleted successfully."
 
-
-
-msgid "fileText1"
+msgid "MSG_FILE_1"
 msgstr "In order to verify a domain with a file, please first create an HTML file with the name specified by us"
 
-msgid "fileText2"
+msgid "MSG_FILE_2"
 msgstr "Then, copy the code into the first line of the HTML file"
 
-msgid "fileText3"
+msgid "MSG_FILE_3"
 msgstr "<li>Finally, upload the created HTML file to the main directory of your website.</li><li>Afterwards, click “Verify”. If verification is successful, the new domain will be accepted for the Siwecos services and saved.</li>"
 
-msgid "metaTagText1"
+msgid "MSG_MANUAL_COPY"
+msgstr "Please copy manually."
+
+msgid "MSG_META_TAG_1"
 msgstr "<li>In order to verify a domain with a meta tag, please copy the code specified by us into the header information of your homepage.</li><li>Download the homepage (e.g. index.html) and copy the meta tag into the head of the file.</li>"
 
-msgid "metaTagText2"
+msgid "MSG_META_TAG_2"
 msgstr "<li>Reload the start file to the main directory of the website and click “Verify” on the Siwecos page.</li><li>If the meta information can be found, the new domain will be accepted for the Siwecos services and saved.</li>"
 
-msgid "verificationProcessText"
+msgid "MSG_SELECT_DOMAIN"
+msgstr "Pleases choose a domain."
+
+msgid "MSG_VERIFICATION_PROCESS"
 msgstr "<p>Any domain that is added to be scanned by SIWECOS must be verified and cross checked. Siwecos offers two methods for this (File, Meta Tag).</p> <p>Why is verification necessary? The verification proves that you are the true owner of the domain, which is necessary for data protection reasons.</p>"
+
+msgid "TTL_DOMAIN_CONFIRMATION"
+msgstr "Confirm domain"
+
+msgid "TTL_FILE"
+msgstr "File"
+
+msgid "TTL_META_TAG"
+msgstr "Meta tag"
+
+msgid "TTL_SCAN_RESULTS"
+msgstr "Your scan results"
+
+msgid "TTL_VERIFICATION_PROCESS"
+msgstr "The verification process"

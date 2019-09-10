@@ -207,98 +207,92 @@ class SIWECOSRightBottomPage extends cGuiPage
         global $area;
 
         $cGuiNotification = new cGuiNotification();
-        $notification     = '';
 
         // check for permission
         if (!cRegistry::getPerm()->have_perm_area_action($area, $action)) {
             throw new SIWECOSException(i18n('ERR_PERMISSION_DENIED', 'siwecos'));
         }
+
+        $notification = $content = '';
         if (null === $action) {
             $notification = $cGuiNotification->returnNotification(
                 cGuiNotification::LEVEL_OK,
                 i18n('MSG_SELECT_DOMAIN', 'siwecos')
             );
-            $this->set('s', 'notification', $notification);
-            $this->set('s', 'content', '');
+        } else {
+            // dispatch actions
+            switch ($action) {
+                case self::SHOW_FORM:
+                    try {
+                        $content = $this->_showForm();
+                    } catch (Exception $e) {
+                        $notification = SIWECOS::notifyException($e);
+                    }
+                    break;
 
-            return;
-        }
+                case self::VERIFICATION_FORM:
+                    try {
+                        $this->_startVerification();
+                    } catch (Exception $e) {
+                        $notification = SIWECOS::notifyException($e);
+                    };
+                    $content = $this->_showForm();
+                    break;
 
-        // dispatch actions
-        switch ($action) {
-            case self::SHOW_FORM:
-                try {
-                    $this->set('s', 'content', $this->_showForm());
-                } catch (Exception $e) {
-                    $this->set('s', 'content', SIWECOS::notifyException($e));
-                }
-                break;
+                case self::SCAN_FORM:
+                    try {
+                        $this->_scanForm();
+                        $notification = $cGuiNotification->returnNotification(cGuiNotification::LEVEL_OK, $notification);
+                    } catch (Exception $e) {
+                        $notification = SIWECOS::notifyException($e);
+                    }
+                    $content = $this->_showForm();
+                    break;
 
-            case self::VERIFICATION_FORM:
-                try {
-                    $this->_startVerification();
-                } catch (Exception $e) {
-                    $notification = SIWECOS::notifyException($e);
-                };
-                $this->set('s', 'notification', $notification);
-                $this->set('s', 'content', $this->_showForm());
-                break;
-
-            case self::SCAN_FORM:
-                try {
-                    $this->_scanForm();
-                } catch (Exception $e) {
-                    $notification = SIWECOS::notifyException($e);
-                }
-                $cGuiNotification = new cGuiNotification();
-                $notification     = $cGuiNotification->returnNotification(cGuiNotification::LEVEL_OK, $notification);
-                $this->set('s', 'notification', $notification);
-                $this->set('s', 'content', $this->_showForm());
-                break;
-
-            case self::STORE_FORM:
-                try {
-                    $this->_validation();
-                    $this->_storeForm();
-                } catch (Exception $e) {
-                    $notification = SIWECOS::notifyException($e);
-                }
-                $this->setReload();
-                // reload right_top after saving of form
-                $idsiwecos  = $this->_SIWECOSForm->get('idsiwecos');
-                $formAction = new cHTMLLink();
-                $formAction->setCLink($area, 3, self::SHOW_FORM);
-                $formAction->setCustom('idsiwecos', $idsiwecos);
-                $url = $formAction->getHref();
-                $this->addScript(
-                    "<script type=\"text/javascript\">
-                    Con.getFrame('right_top').location.href = '$url';
-                    </script>"
-                );
-                $this->set('s', 'notification', $notification);
-                $this->set('s', 'content', $this->_showForm());
-                break;
-
-            case self::DELETE_FORM:
-                try {
-                    $this->_deleteForm();
-                    $cGuiNotification = new cGuiNotification();
-                    $notification     = $cGuiNotification->returnNotification(
-                        cGuiNotification::LEVEL_OK,
-                        i18n('MSG_DELETED_ENTITY', 'siwecos')
-                    );
-                    $this->set('s', 'notification', $notification);
-                    $this->set('s', 'content', '');
+                case self::STORE_FORM:
+                    try {
+                        $this->_validation();
+                        $this->_storeForm();
+                    } catch (Exception $e) {
+                        $notification = SIWECOS::notifyException($e);
+                    }
                     $this->setReload();
-                } catch (Exception $e) {
-                    $notification = SIWECOS::notifyException($e);
-                }
-                break;
+                    // reload right_top after saving of form
+                    $idsiwecos  = $this->_SIWECOSForm->get('idsiwecos');
+                    $formAction = new cHTMLLink();
+                    $formAction->setCLink($area, 3, self::SHOW_FORM);
+                    $formAction->setCustom('idsiwecos', $idsiwecos);
+                    $url = $formAction->getHref();
+                    $this->addScript(
+                        "<script type=\"text/javascript\">
+                            Con.getFrame('right_top').location.href = '$url';
+                        </script>"
+                    );
+                    $content = $this->_showForm();
+                    break;
 
-            default:
-                $msg = i18n('ERR_UNKNOWN_ACTION', 'siwecos');
-                throw new SIWECOSException($msg);
+                case self::DELETE_FORM:
+                    try {
+                        $this->_deleteForm();
+                        $notification = $cGuiNotification->returnNotification(
+                            cGuiNotification::LEVEL_OK,
+                            i18n('MSG_DELETED_ENTITY', 'siwecos')
+                        );
+                        $content      = '';
+                        $this->setReload();
+                    } catch (Exception $e) {
+                        $notification = SIWECOS::notifyException($e);
+                    }
+                    break;
+
+                default:
+                    $msg = i18n('ERR_UNKNOWN_ACTION', 'siwecos');
+                    throw new SIWECOSException($msg);
+            }
         }
+
+        $this->set('s', 'notification', $notification);
+        $this->set('s', 'content', $content);
     }
 
     /**
@@ -362,11 +356,7 @@ class SIWECOSRightBottomPage extends cGuiPage
         $cGuiNotification = new cGuiNotification();
 
         if (empty($idsiwecos)) {
-            $notification = $cGuiNotification->returnNotification(
-                cGuiNotification::LEVEL_INFO,
-                i18n('ERR_DOMAIN_NOT_CONFIGURED', 'siwecos')
-            );
-            $this->set('s', 'notification', $notification);
+            // NOOP
         } elseif (empty($userToken)) {
             $notification = $cGuiNotification->returnNotification(
                 cGuiNotification::LEVEL_WARNING,
@@ -375,7 +365,7 @@ class SIWECOSRightBottomPage extends cGuiPage
             $this->set('s', 'notification', $notification);
         } else {
             $domainList = $this->_getDomainList($userToken);
-            error_log(print_r($domainList, true));
+            // error_log(print_r($domainList, true));
             if (!$this->_in_multiarray($domain, $domainList)) {
                 $notification = $cGuiNotification->returnNotification(
                     cGuiNotification::LEVEL_WARNING,
@@ -388,13 +378,13 @@ class SIWECOSRightBottomPage extends cGuiPage
                         continue;
                     }
 
-                    if (empty($ele->verificationStatus)) {
+                    if (1 !== (int)$ele->verificationStatus) {
                         $reportHtml = $this->_showVerificationInfo();
                         break;
                     }
 
                     $domainResult = $this->_getDomainResult();
-                    error_log(print_r(json_decode($domainResult), true));
+                    // error_log(print_r(json_decode($domainResult), true));
 
                     // href for scan start
                     $link = new cHTMLLink();
