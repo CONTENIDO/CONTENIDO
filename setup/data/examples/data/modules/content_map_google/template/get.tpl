@@ -7,7 +7,7 @@
 
 
 
-{if false eq $isBackendEditMode}
+{if false eq $isBackendEditMode && $googlekey != ''}
     <script src="http://maps.google.com/maps/api/js?sensor=false&amp;key={$googlekey}" type="text/javascript"></script>
     <div id="googleMap"></div>
 {/if}

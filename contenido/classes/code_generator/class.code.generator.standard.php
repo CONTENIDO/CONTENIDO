@@ -158,7 +158,11 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                 }
 
                 // process CMS value tags
-                $containerCmsValues = $this->_processCmsValueTags($containerNr, $containerConfigurations[$containerNr]);
+                if (isset($containerConfigurations[$containerNr])) {
+                    $containerCmsValues = $this->_processCmsValueTags($containerNr, $containerConfigurations[$containerNr]);
+                } else {
+                    $containerCmsValues = '';
+                }
 
                 // add CMS value code to module prefix code
                 if ($containerCmsValues) {
@@ -216,8 +220,9 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         } else if (!empty($cssFile)) {
             if (cString::findFirstPos($this->_layoutCode, '</title>') !== false) {
                 $matches = array();
-                preg_match_all("#(<head>.*?</title>)(.*?</head>)#si", $this->_layoutCode, $matches);
-                $this->_layoutCode = cString::iReplaceOnce($matches[1][0], $matches[1][0] . $cssFile . $matches[1][1], $this->_layoutCode);
+                if (preg_match_all("#(<head>.*?</title>)(.*?</head>)#si", $this->_layoutCode, $matches)) {
+                    $this->_layoutCode = cString::iReplaceOnce($matches[1][0], $matches[1][0] . $cssFile, $this->_layoutCode);
+                }
             } else {
                 $this->_layoutCode = cString::iReplaceOnce('<head>', '<head>' . $cssFile, $this->_layoutCode);
             }
@@ -459,7 +464,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         if ($this->_layout == false && $this->_save == true && isset($cfgClient[$this->_client]['code']['path'])) {
             if (false === is_dir($cfgClient[$this->_client]['code']['path'])) {
                 mkdir($cfgClient[$this->_client]['code']['path']);
-                @chmod($cfgClient[$this->_client]['code']['path'], 0755);
+                @chmod($cfgClient[$this->_client]['code']['path'], cDirHandler::getDefaultPermissions());
             }
 
             if (true !== cFileHandler::exists($cfgClient[$this->_client]['code']['path'] . '.htaccess')) {

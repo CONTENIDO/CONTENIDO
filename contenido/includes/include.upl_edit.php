@@ -231,8 +231,9 @@ if ($upload = $uploads->next()) {
                 $sStartDate = $properties->getValue('upload', $qpath . $filename, 'file', 'datestart');
                 $sEndDate = $properties->getValue('upload', $qpath . $filename, 'file', 'dateend');
 
-                $oTimeCheckbox = new cHTMLCheckbox('timemgmt', i18n('Use time control'));
+                $oTimeCheckbox = new cHTMLCheckbox('timemgmt', '1');
                 $oTimeCheckbox->setChecked($iTimeMng);
+                $oTimeCheckbox->setLabelText(i18n('Use time control'));
 
                 $sHtmlTimeMng = $oTimeCheckbox->render();
                 $sHtmlTimeMng .= "<table id='dbfsTimecontrol' class='borderless' border='0' cellpadding='0' cellspacing='0'>\n";
@@ -292,12 +293,12 @@ if ($upload = $uploads->next()) {
 $page->render();
 
 /**
- *
  * @param string $fileName
- * @return boolean
+ *
+ * @return bool
  */
-function isArchive($fileName) {
-
+function isArchive($fileName)
+{
     if (cString::getPartOfString(cString::findLastOccurrence($fileName, '.'), 1) === 'zip') {
         return true;
     } else {

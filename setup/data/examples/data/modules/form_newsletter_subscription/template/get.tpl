@@ -15,8 +15,15 @@
                     <option value="subscribe" selected>{$SUBSCRIBE|escape}</option>
                     <option value="delete">{$DELETE|escape}</option>
                 </select>
-                {$EXTRAHTML}
             </div>
+            {if !empty($ADDITIONAL_ROWS) && is_array($ADDITIONAL_ROWS)}
+                {foreach from=$ADDITIONAL_ROWS item=row}
+                    <div class="contact_row{if !empty($row.cssClass)} {$row.cssClass|escape}{/if}">
+                        <label for="{$row.id|escape}">{$row.label|strip_tags}</label>
+                        {$row.elementHtml}
+                    </div>
+                {/foreach}
+            {/if}
             <div class="contact_row policy">
                 <input class="checkbox" type="checkbox" value="1" name="privacy" />
                 <label class="label" for="email"> {$PRIVACY_TEXT_PART1|escape} {$LINKEDITOR}  {$PRIVACY_TEXT_PART2|escape}</label>

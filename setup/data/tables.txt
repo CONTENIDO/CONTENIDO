@@ -415,7 +415,7 @@
 "template_conf";"idtpl";"int(11)";"YES";"MUL";"";"";""
 "template_conf";"status";"int(11)";"YES";"";"";"";""
 "template_conf";"author";"varchar(255)";"YES";"";"";"";""
-"template_conf";"created";"varchar(14)";"YES";"";"";"";""
+"template_conf";"created";"datetime";"";"";"0000-00-00 00:00:00";"";""
 "template_conf";"lastmodified";"datetime";"";"";"0000-00-00 00:00:00";"";""
 "type";"idtype";"int(6)";"";"PRI";"0";"";"1"
 "type";"type";"varchar(255)";"";"";"";"";""

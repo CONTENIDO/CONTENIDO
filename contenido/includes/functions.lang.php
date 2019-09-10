@@ -20,14 +20,19 @@ cInclude('includes', 'functions.str.php');
 /**
  * Edit a language
  *
- * @param int $idlang
+ * @param int    $idlang
  * @param string $langname
  *         Name of the language
  * @param string $encoding
- * @param int $active
+ * @param int    $active
  *         Flag for active state, 1 or 0
  * @param string $direction
+ *
  * @return bool
+ * 
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function langEditLanguage($idlang, $langname, $encoding, $active, $direction = 'ltr') {
     $oLang = new cApiLanguage();
@@ -49,10 +54,15 @@ function langEditLanguage($idlang, $langname, $encoding, $active, $direction = '
  *
  * @param string $name
  *         Name of the language
- * @param int $client
+ * @param int    $client
  *         Id of client
+ *
  * @return int
  *         New language id
+ * 
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function langNewLanguage($name, $client) {
     global $cfgClient, $notification;
@@ -86,11 +96,16 @@ function langNewLanguage($name, $client) {
 /**
  * Rename a language
  *
- * @param int $idlang
+ * @param int    $idlang
  *         Id of the language
  * @param string $name
  *         Name of the language
+ *
  * @return bool
+ * 
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function langRenameLanguage($idlang, $name) {
     $oLang = new cApiLanguage();
@@ -108,7 +123,12 @@ function langRenameLanguage($idlang, $name) {
  *         Id of the language
  * @param int $iIdClient
  *         Id of the client, uses global client id by default
+ *
  * @return void|string
+ * 
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function langDeleteLanguage($iIdLang, $iIdClient = 0) {
     global $db, $sess, $client, $cfg, $notification, $cfgClient;
@@ -263,7 +283,12 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0) {
  *
  * @param int $idlang
  * @param int $active
+ *
  * @return bool
+ * 
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function langActivateDeactivateLanguage($idlang, $active) {
     $oLang = new cApiLanguage();
@@ -281,8 +306,12 @@ function langActivateDeactivateLanguage($idlang, $active) {
  * @param int $idlang
  * @param cDb $db
  *         Is not in use
+ *
  * @return string
  *         'ltr' or 'rtl'
+ * 
+ * @throws cDbException
+ * @throws cException
  */
 function langGetTextDirection($idlang, $db = NULL) {
     static $oLang;

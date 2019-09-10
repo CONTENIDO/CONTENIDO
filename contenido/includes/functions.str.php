@@ -25,14 +25,19 @@ cInclude('includes', 'functions.database.php');
  *         The category name
  * @param string $catalias
  *         Alias of category
- * @param int $visible
+ * @param int    $visible
  *         Flag about visible status
- * @param int $public
+ * @param int    $public
  *         Flag about public status
- * @param int $iIdtplcfg
+ * @param int    $iIdtplcfg
  *         Id of template configuration
+ *
  * @return int|NULL
  *         of new generated category or nothing on failure
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtplcfg = 0) {
     global $client, $lang, $perm;
@@ -123,22 +128,27 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
 /**
  * Creates a new category.
  *
- * @param int $parentid
+ * @param int    $parentid
  *         Id of parent category
  * @param string $catname
  *         The category name
- * @param bool $remakeTree
+ * @param bool   $remakeTree
  *         Flag to rebuild category tree structure
  * @param string $catalias
  *         Alias of category
- * @param int $visible
+ * @param int    $visible
  *         Flag about visible status
- * @param int $public
+ * @param int    $public
  *         Flag about public status
- * @param int $iIdtplcfg
+ * @param int    $iIdtplcfg
  *         Id of template configuration
+ *
  * @return int|NULL
  *         of new generated category or nothing on failure
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '', $visible = 0, $public = 1, $iIdtplcfg = 0) {
     global $client, $lang, $perm;
@@ -251,7 +261,10 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
  * This function check if the alias exists in this language in a other category
  *
  * @param string $catalias
+ *
  * @return bool|void
+ *
+ * @throws cDbException
  */
 function strCheckAlias($catalias) {
     $lang = cRegistry::getLanguageId();
@@ -263,9 +276,13 @@ function strCheckAlias($catalias) {
 /**
  * Builds ordered post string for a passed category
  *
- * @param int $idcat
+ * @param int    $idcat
  * @param string $poststring
+ *
  * @return string
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function strOrderedPostTreeList($idcat, $poststring) {
     $oCatColl = new cApiCategoryCollection();
@@ -283,6 +300,9 @@ function strOrderedPostTreeList($idcat, $poststring) {
  * Remakes the category tree structure in category tree table.
  *
  * It still uses manually build sql statements due to performance reasons.
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function strRemakeTreeTable() {
     global $db, $client, $cfg;
@@ -400,7 +420,7 @@ function strBuildSqlValues($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0) {
         $aCats = strSortPrePost($aCats);
         foreach ($aCats as $aCat) {
             $sInsertQuery .= '(' . (int) $aCat['idcat'] . ', ' . (int) $iLevel . '), ';
-            if (is_array($aAllCats[$aCat['idcat']])) {
+            if (isset($aAllCats[$aCat['idcat']]) && is_array($aAllCats[$aCat['idcat']])) {
                 $iSubLevel = $iLevel + 1;
                 $sInsertQuery = strBuildSqlValues($aAllCats[$aCat['idcat']], $sInsertQuery, $aAllCats, $iSubLevel);
             }
@@ -412,12 +432,14 @@ function strBuildSqlValues($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0) {
 /**
  * Returns id of next deeper category.
  *
- * @global int $lang
- * @param int $idcat
+ * @param int  $idcat
  *         Category id to check next deeper item
  * @param bool $ignoreLang
  *         Flag to check for existing entry in category language table
+ *
  * @return int
+ *
+ * @throws cDbException
  */
 function strNextDeeper($idcat, $ignoreLang = false) {
 	$lang = cRegistry::getLanguageId();
@@ -432,7 +454,10 @@ function strNextDeeper($idcat, $ignoreLang = false) {
  *
  * @param int $idcat
  *         ID of category
+ *
  * @return bool
+ *
+ * @throws cDbException
  */
 function strHasArticles($idcat) {
     $lang = cRegistry::getLanguageId();
@@ -446,7 +471,10 @@ function strHasArticles($idcat) {
  *
  * @param int $idcat
  *         ID of category
+ *
  * @return int
+ *
+ * @throws cDbException
  */
 function strNextPost($idcat) {
     $oCatColl = new cApiCategoryCollection();
@@ -458,7 +486,10 @@ function strNextPost($idcat) {
  *
  * @param int $idcat
  *         ID of category
+ *
  * @return int
+ *
+ * @throws cDbException
  */
 function strNextBackwards($idcat) {
     $oCatColl = new cApiCategoryCollection();
@@ -468,10 +499,14 @@ function strNextBackwards($idcat) {
 /**
  * Returns list of child categories.
  *
- * @global int $lang
- * @param int $idcat
+ * @param int  $idcat
  * @param bool $ignoreLang
+ *
  * @return array
+ *
+ * @throws cDbException
+ *
+ * @global int $lang
  */
 function strNextDeeperAll($idcat, $ignoreLang = false) {
     global $lang;
@@ -484,14 +519,18 @@ function strNextDeeperAll($idcat, $ignoreLang = false) {
 /**
  * Renames a category
  *
- * @param int $idcat
+ * @param int    $idcat
  *         Category id
- * @param int $lang
+ * @param int    $lang
  *         Language id
  * @param string $newCategoryName
  *         New category name
  * @param string $newCategoryAlias
  *         New category alias
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias) {
     if (trim($newCategoryName) == '') {
@@ -540,12 +579,16 @@ function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias) {
 /**
  * Renames a category alias.
  *
- * @param int $idcat
+ * @param int    $idcat
  *         Category id
- * @param int $lang
+ * @param int    $lang
  *         Language id
  * @param string $newcategoryalias
  *         New category alias
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function strRenameCategoryAlias($idcat, $lang, $newcategoryalias) {
     $oCatLang = new cApiCategoryLanguage();
@@ -589,10 +632,12 @@ function strRenameCategoryAlias($idcat, $lang, $newcategoryalias) {
  *         Language id
  * @param int $visible
  *         Visible status
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function strMakeVisible($idcat, $lang, $visible) {
-    global $cfg;
-
     $visible = (int) $visible;
     $lang = (int) $lang;
 
@@ -605,7 +650,7 @@ function strMakeVisible($idcat, $lang, $visible) {
         $oCatLang->store();
     }
 
-    if ($cfg['pathresolve_heapcache'] == true && $visible = 0) {
+    if (cRegistry::getConfigValue('pathresolve_heapcache') == true && $visible != 0) {
         $oPathresolveCacheColl = new cApiPathresolveCacheCollection();
         $oPathresolveCacheColl->deleteByCategoryAndLanguage($idcat, $lang);
     }
@@ -623,6 +668,10 @@ function strMakeVisible($idcat, $lang, $visible) {
  *         language id
  * @param int $public
  *         public status of the article to set
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function strMakePublic($idcat, $lang, $public) {
 
@@ -641,8 +690,11 @@ function strMakePublic($idcat, $lang, $public) {
  *
  * @param int $idcat
  *         category ID to start at
+ *
  * @return array
  *         idcats of all scions
+ *
+ * @throws cDbException
  */
 function strDeeperCategoriesArray($idcat) {
     global $client;
@@ -661,7 +713,12 @@ function strDeeperCategoriesArray($idcat) {
  *
  * @param int $idcat
  *         Id of category to delete
+ *
  * @return void|string
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function strDeleteCategory($idcat) {
     $lang = cRegistry::getLanguageId();
@@ -774,6 +831,9 @@ function strDeleteCategory($idcat) {
  *
  * @param int $idcat
  *         Id of category to move upwards
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function strMoveUpCategory($idcat) {
     // Flag to rebuild the category table and initializing notification variable
@@ -853,6 +913,9 @@ function strMoveUpCategory($idcat) {
  *
  * @param int $idcat
  *         Id of category to move downwards
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function strMoveDownCategory($idcat) {
     // Flag to rebuild the category table and initializing notification variable
@@ -938,7 +1001,11 @@ function strMoveDownCategory($idcat) {
  *         Id of new previous category
  * @param int $newPostId
  *         Id of new post category
+ *
  * @return bool
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function strMoveSubtree($idcat, $newParentId, $newPreId = NULL, $newPostId = NULL) {
     global $movesubtreeidcat, $notification;
@@ -961,9 +1028,9 @@ function strMoveSubtree($idcat, $newParentId, $newPreId = NULL, $newPostId = NUL
     if ($newParentId == 0 && $newPreId == 0) {
         return false;
     }
-    if (!isset($newPostId)) {
-        // return false;
-    }
+    // if (!isset($newPostId)) {
+    //     return false;
+    // }
     // flag to rebuild the category table
     global $remakeCatTable, $remakeStrTable;
 
@@ -1086,15 +1153,20 @@ function strMoveCatTargetallowed($idcat, $source) {
 /**
  * Synchronizes a category from one language to another language.
  *
- * @param int $idcatParam
+ * @param int  $idcatParam
  *         Id of category to synchronize
- * @param int $sourcelang
+ * @param int  $sourcelang
  *         Id of source language
- * @param int $targetlang
+ * @param int  $targetlang
  *         Id of target language
  * @param bool $bMultiple
  *         Flag to synchronize child languages
- * @return boolean
+ *
+ * @return bool
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = false) {
     $bMultiple = (bool) $bMultiple;
@@ -1150,7 +1222,10 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
  *         Id of category
  * @param int $idlang
  *         The language id
+ *
  * @return bool
+ *
+ * @throws cDbException
  */
 function strHasStartArticle($idcat, $idlang) {
     $oCatLangColl = new cApiCategoryLanguageCollection();
@@ -1160,15 +1235,20 @@ function strHasStartArticle($idcat, $idlang) {
 /**
  * Copies the category and it's existing articles into another category.
  *
- * @param int $idcat
+ * @param int  $idcat
  *         Id of category to copy
- * @param int $destidcat
+ * @param int  $destidcat
  *         Id of destination category
  * @param bool $remakeTree
  *         Flag to rebuild category tree
  * @param bool $bUseCopyLabel
  *         Flag to add copy label to the new categories
+ *
  * @return void|int
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel = true) {
     global $cfg, $lang;
@@ -1251,14 +1331,18 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
 /**
  * Copies the categorytree (category and its childs) to an another category.
  *
- * @param int $idcat
+ * @param int  $idcat
  *         Id of category to copy
- * @param int $destcat
+ * @param int  $destcat
  *         Id of destination category
  * @param bool $remakeTree
  *         Flag to rebuild category tree
  * @param bool $bUseCopyLabel
  *         Flag to add copy label to the new categories
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function strCopyTree($idcat, $destcat, $remakeTree = true, $bUseCopyLabel = true) {
     $newidcat = strCopyCategory($idcat, $destcat, false, $bUseCopyLabel);
@@ -1280,6 +1364,9 @@ function strCopyTree($idcat, $destcat, $remakeTree = true, $bUseCopyLabel = true
  * @param int $idcat
  * @param int $client
  * @param int $idTplCfg
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function strAssignTemplate($idcat, $client, $idTplCfg) {
     global $perm;
@@ -1317,9 +1404,13 @@ function strAssignTemplate($idcat, $client, $idTplCfg) {
  *         An array of cApiCategory objects which overwrite categories from the database
  * @param array $ignoreCats
  *         An array of idcat's which will be treated like they don't exist in the database
+ *
  * @return array|bool
  *         An array of error messages if something is wrong.
  *         If nothing is wrong false will be returned.
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
     $errorMessages = array();

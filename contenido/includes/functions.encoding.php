@@ -26,10 +26,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @deprecated [2015-05-21]
  *         use cRegistry::getEncoding
+ *
  * @param cDb $db
  *         not used any more!
  * @param int $lang
- * @return string|boolean
+ *
+ * @return string|bool
+ * @throws cInvalidArgumentException
  */
 function getEncodingByLanguage($db, $lang) {
     cDeprecated('This method is deprecated and is not needed any longer');

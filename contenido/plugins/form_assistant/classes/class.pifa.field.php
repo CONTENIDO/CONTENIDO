@@ -662,9 +662,30 @@ class PifaField extends Item {
                 break;
 
             case self::SELECT:
+
+                $elemField = new cHTMLSelectElement($columnName);
+
+                // set ID (workaround: remove ID first!)
+                $elemField->removeAttribute('id')->setID($id);
+                $autofill = array();
+                $count = min(array(
+                    count($optionLabels),
+                    count($optionValues)
+                ));
+
+                for ($i = 0; $i < $count; $i++) {
+                    $autofill[$optionValues[$i]] = $optionLabels[$i];
+                }
+
+                $elemField->autoFill($autofill);
+                $elemField->setDefault($value);
+
+                break;
+
             case self::SELECTMULTI:
 
                 $elemField = new cHTMLSelectElement($columnName);
+                $elemField->setMultiselect();
 
                 // set ID (workaround: remove ID first!)
                 $elemField->removeAttribute('id')->setID($id);

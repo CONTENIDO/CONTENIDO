@@ -289,24 +289,25 @@ class cContentTypeDate extends cContentTypeAbstract {
      * the frontend.
      *
      * @return string
-     *         escaped HTML code which sould be shown if content type is shown in frontend
+     *         escaped HTML code which should be shown if content type is shown in frontend
      */
     public function generateViewCode() {
-        $format = $this->_settings['date_format'];
+        if (empty($this->_settings['date_timestamp'])) {
+            return '';
+        }
 
-        if (empty($format)) {
+        $timestamp = $this->_settings['date_timestamp'];
+
+        if (empty($this->_settings['date_format'])) {
             $format = '';
         } else {
+            $format = $this->_settings['date_format'];
             $decoded_array = json_decode($format, true);
             if (is_array($decoded_array)) {
                 $format = implode(' ', $decoded_array);
             } else {
                 $format = '';
             }
-        }
-        $timestamp = $this->_settings['date_timestamp'];
-        if (empty($timestamp)) {
-            return '';
         }
 
         return $this->_formatDate($format, $timestamp);

@@ -529,13 +529,13 @@ class cContentVersioning {
      * Prepares content for saving (consider versioning-mode; prevents multiple
      * storings for filelists e.g.).
      *
-     * @param int          $idartlang
+     * @param int         $idartlang
      *         the contents idartlang
-     * @param cApiContent  $content
+     * @param cApiContent $content
      *         the content to store
-     * @param unknown_type $value
+     * @param string      $value
      *         the contents value to store
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException

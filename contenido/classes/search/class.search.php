@@ -444,7 +444,7 @@ class cSearch extends cSearchBaseAbstract {
                                 $this->_searchResult[$artid]['search'][] = $searchword;
                                 $this->_searchResult[$artid]['occurence'][] = $string[1];
                                 $this->_searchResult[$artid]['debug_similarity'][] = $percent;
-                                if ($similarity > $this->_searchResult[$artid]['similarity']) {
+                                if (isset($this->_searchResult[$artid]['similarity']) && $similarity > $this->_searchResult[$artid]['similarity']) {
                                     $this->_searchResult[$artid]['similarity'] = $similarity;
                                 }
                             }
@@ -517,7 +517,7 @@ class cSearch extends cSearchBaseAbstract {
             $word = (trim(cString::toLowerCase($word)));
             $word = html_entity_decode($word, ENT_COMPAT, 'UTF-8');
 
-            // $word =(trim(strtolower($word)));
+            // $word =(trim(cString::toLowerCase($word)));
             if (cString::getStringLength($word) > 1) {
                 $tmp_searchwords[] = $word;
             }
@@ -617,12 +617,11 @@ class cSearch extends cSearchBaseAbstract {
 
         $aCatRange = array_unique($aCatRange);
         $sCatRange = implode("','", $aCatRange);
+        $sArtRange = '';
 
         if (array_key_exists('articles', $search_range) && is_array($search_range['articles'])) {
             if (count($search_range['articles']) > 0) {
                 $sArtRange = implode("','", $search_range['articles']);
-            } else {
-                $sArtRange = '';
             }
         }
 

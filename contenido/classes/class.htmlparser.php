@@ -248,7 +248,7 @@ class HtmlParser {
      * @return string
      */
     public function getNodeAttributes($attribute) {
-        return $this->_NodeAttributes[$attribute];
+        return isset($this->_NodeAttributes[$attribute]) ? $this->_NodeAttributes[$attribute] : '';
     }
 
     /**

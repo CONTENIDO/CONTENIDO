@@ -17,7 +17,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('includes', 'functions.pathresolver.php');
 
 // fetch idartlang for idart
-$sql = "SELECT idartlang, locked FROM " . $cfg['tab']['art_lang'] . " WHERE idart=" . (int) $idart . " AND idlang=" . (int) $lang;
+$sql = "SELECT idartlang, locked
+        FROM " . $cfg['tab']['art_lang'] . "
+        WHERE idart=" . (int) $idart . "
+            AND idlang=" . (int) $lang;
 $db->query($sql);
 $db->nextRecord();
 $this_idartlang = $db->f('idartlang');
@@ -88,10 +91,12 @@ if ($result == false) {
     $oPage->addStyle($cfg['pica']['style_complexlist']);
     $oPage->addScript($cfg['pica']['script_complexlist']);
 }
+
 // breadcrumb onclick
 if (!isset($syncfrom)) {
     $syncfrom = -1;
 }
+
 $syncoptions = $syncfrom;
 $sLocationString = <<<JS
 <script type="text/javascript">

@@ -308,9 +308,13 @@ class cSearchResult extends cSearchBaseAbstract {
      *         Articles in page $page_id
      */
     public function getSearchResultPage($page_id) {
-        $this->_resultPage = $page_id;
-        $result_page = $this->_orderedSearchResult[$page_id - 1];
-        return $result_page;
+        if (isset($this->_orderedSearchResult[$page_id - 1])) {
+            $this->_resultPage = $page_id;
+            $result_page = $this->_orderedSearchResult[$page_id - 1];
+            return $result_page;
+        } else {
+            return [];
+        }
     }
 
     /**
@@ -339,7 +343,7 @@ class cSearchResult extends cSearchBaseAbstract {
      *         Similarity between searchword and matching word in article
      */
     public function getSimilarity($art_id) {
-        return $this->_searchResult[$art_id]['similarity'];
+        return isset($this->_searchResult[$art_id]['similarity']) ? $this->_searchResult[$art_id]['similarity'] : 0;
     }
 
     /**

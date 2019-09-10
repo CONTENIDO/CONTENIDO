@@ -46,6 +46,12 @@ if (!isset($contenido)) {
     }
 }
 
+// Initialize common variables
+$idcat    = isset($idcat) ? $idcat : 0;
+$idart    = isset($idart) ? $idart : 0;
+$idcatart = isset($idcatart) ? $idcatart : 0;
+$error    = isset($error) ? $error : 0;
+
 cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.con2.php');
 cInclude('includes', 'functions.api.php');
@@ -82,10 +88,8 @@ if (cRegistry::getBackendSessionId()) {
     ));
 }
 
-// Include plugins
+// Include plugins & call hook after plugins are loaded
 require_once($backendPath . $cfg['path']['includes'] . 'functions.includePluginConf.php');
-
-// Call hook after plugins are loaded
 cApiCecHook::execute('Contenido.Frontend.AfterLoadPlugins');
 
 $db = cRegistry::getDb();
@@ -393,9 +397,6 @@ if ($contenido) {
         if (false === $admin) {
             $notification    = new cGuiNotification();
             $modErrorMessage = i18n('This article is currently frozen and can not be edited!');
-            foreach ($erroneousModules as $erroneousModule) {
-                $modErrorMessage .= "- " . $erroneousModule . "<br />\n";
-            }
             $inUse             = true;
             $sHtmlInUseCss     = '<link rel="stylesheet" type="text/css" href="' . $backendUrl . 'styles/inuse.css">';
             $sHtmlInUseMessage = $notification->returnMessageBox('warning', $modErrorMessage, 0);
@@ -545,10 +546,12 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     $code = cFileHandler::read($cfgClient[$client]['code']['path'] . $client . "." . $lang . "." . $idcatart . ".php");
 
     // Add mark Script to code if user is in the backend
-    $code = preg_replace("/<\/head>/i", "$markscript\n</head>", $code, 1);
+    if ($contenido && !empty($markscript)) {
+        $code = preg_replace("/<\/head>/i", "$markscript\n</head>", $code, 1);
+    }
 
     // If article is in use, display notification
-    if ($sHtmlInUseCss && $sHtmlInUseMessage) {
+    if (!empty($sHtmlInUseCss) && !empty($sHtmlInUseMessage)) {
         $code = preg_replace("/<\/head>/i", "$sHtmlInUseCss\n</head>", $code, 1);
         $code = preg_replace("/(<body[^>]*)>/i", "\${1}> \n $sHtmlInUseMessage", $code, 1);
     }
@@ -623,7 +626,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     // Check if an article is start article of the category
     $oCatLang = new cApiCategoryLanguage();
     $oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang);
-    $isstart = ($oCatLang->get('idartlang') == $idartlang) ? 1 : 0;
+    $isstart = ($oCatLang->get('startidartlang') == $idartlang) ? 1 : 0;
 
     // Time management, redirect
     $oArtLang = new cApiArticleLanguage();

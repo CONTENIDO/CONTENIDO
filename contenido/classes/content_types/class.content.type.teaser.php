@@ -393,6 +393,14 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $idArt = $article->getField('idart');
         $published = $article->getField('published');
         $online = $article->getField('online');
+        $afields = [];
+        foreach ($article as $item => $value){
+            if ($item === 'values') {
+                foreach ($value as $field => $val){
+                    $afields[$field] = $val;
+                }
+            }
+        }
 
         if ($online == 1 || $contenido) {
             // teaserfilter defines strings which must be contained in text for
@@ -465,6 +473,9 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
             $template->set('d', 'ART_URL', 'front_content.php?idart=' . $idArt);
             $template->set('d', 'PUBLISHED', $published);
             $template->set('d', 'PUBLISHED_MANUAL', $date);
+            foreach ($afields as $field => $value) {
+                $template->set('d', strtoupper($field), $value);
+            }
 
             if ($date != '') {
                 $template->set('d', 'PUBLISHED_COMBINED', $date);
@@ -513,7 +524,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         // split ids, if there is only one id, array has only one place filled,
         // that is also ok
         foreach (explode(',', $ids) as $currentId) {
-            if ($this->_forwardTypes[$contentTypeName] != "") {
+            if (!empty($this->_forwardTypes[$contentTypeName])) {
                 $contentTypeName = $this->_forwardTypes[$contentTypeName];
             }
             $return .= ' ' . $article->getContent($contentTypeName, $currentId);

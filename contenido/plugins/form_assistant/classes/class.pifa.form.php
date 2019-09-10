@@ -623,7 +623,7 @@ class PifaForm extends Item {
      * Returns an array containing this forms stored data.
      *
      * @return array
-     * @throws PifaException if table does not exist
+     * @throws PifaException
      * @throws cDbException
      */
     public function getData() {
@@ -649,7 +649,13 @@ class PifaForm extends Item {
                 `$tableName`
             ;";
 
-        if (false === $db->query($sql)) {
+        try {
+            $succ = $db->query($sql);
+        } catch (cDbException $e) {
+            $succ = false;
+        }
+
+        if (false === $succ) {
             return array();
         }
 
@@ -657,9 +663,13 @@ class PifaForm extends Item {
             return array();
         }
 
-        $data = array();
-        while ($db->nextRecord()) {
-            $data[] = $db->toArray();
+        try {
+            $data = array();
+            while ($db->nextRecord()) {
+                $data[] = $db->toArray();
+            }
+        } catch (cDbException $e) {
+            $data = array();
         }
 
         return $data;
@@ -798,7 +808,7 @@ class PifaForm extends Item {
             $value = str_replace("\n", '\n', $value);
             $value = str_replace("\r", '\r', $value);
             $value = "\"$value\"";
-            return utf8_decode($value);
+            return $value;
         }
 
         // add data rows
@@ -1269,6 +1279,44 @@ class PifaForm extends Item {
                 $msg = Pifa::i18n('TABLE_DROP_ERROR');
                 throw new PifaException($msg);
             }
+        }
+    }
+
+    /**
+     * Delete this form all selected datas.
+     *
+     * @param array $iddatas
+     *
+     * @return bool
+     * @throws PifaException
+     */
+    public function deleteData(array $iddatas) {
+        $db = cRegistry::getDb();
+
+        if (!$this->isLoaded()) {
+            $msg = Pifa::i18n('FORM_LOAD_ERROR');
+            throw new PifaException($msg);
+        }
+
+        // delete datas
+        $sql = "-- PifaForm->deleteData()
+            DELETE FROM
+                `" . cSecurity::toString($this->get('data_table')). "`
+            WHERE
+                id in (" . implode(',', $iddatas) . ")
+            ;";
+
+        try {
+            $succ = $db->query($sql);
+        } catch (cDbException $e) {
+            $succ = false;
+        }
+
+        if (false === $succ) {
+            $msg = Pifa::i18n('DATAS_DELETE_ERROR');
+            throw new PifaException($msg);
+        } else {
+            return true;
         }
     }
 

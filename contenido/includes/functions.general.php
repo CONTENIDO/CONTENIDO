@@ -40,6 +40,9 @@ function consoleLog($value, $method = 'log')
  *
  * @param int $idartlang
  *         Language specific ID of the arcticle
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function getAvailableContentTypes($idartlang) {
     global $db, $cfg, $a_content, $a_description;
@@ -68,8 +71,11 @@ function getAvailableContentTypes($idartlang) {
  *
  * @param int $idart
  *         Article-Id
+ *
  * @return bool
  *         Article assigned to multiple categories
+ *
+ * @throws cDbException
  */
 function isArtInMultipleUse($idart) {
     global $cfg;
@@ -113,7 +119,10 @@ function isUtf8($input) {
  * Returns multi-language month name (canonical) by its numeric value
  *
  * @param int $month
+ *
  * @return string
+ *
+ * @throws cException
  */
 function getCanonicalMonth($month) {
     switch ($month) {
@@ -161,8 +170,11 @@ function getCanonicalMonth($month) {
  *
  * @param int $iDay
  *         The day number of date(w)
+ *
  * @return string
  *         Dayname of current language
+ *
+ * @throws cException
  */
 function getCanonicalDay($iDay) {
     switch ($iDay) {
@@ -197,12 +209,16 @@ function getCanonicalDay($iDay) {
  *
  * @param mixed $timestamp
  *         a timestamp. If no value is given the current time will be used.
- * @param bool $date
+ * @param bool  $date
  *         if true the date will be included in the string
- * @param bool $time
+ * @param bool  $time
  *         if true the time will be included in the string
+ *
  * @return string
  *         the formatted time string.
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function displayDatetime($timestamp = "", $date = false, $time = false) {
     if ($timestamp == "") {
@@ -228,7 +244,11 @@ function displayDatetime($timestamp = "", $date = false, $time = false) {
  *
  * @param int|string $area
  *         Area name or id
+ *
  * @return int|string
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function getIDForArea($area) {
     if (!is_numeric($area)) {
@@ -245,7 +265,10 @@ function getIDForArea($area) {
  * Returns the parent id of passed area
  *
  * @param mixed $area
+ *
  * @return int
+ *
+ * @throws cDbException
  */
 function getParentAreaId($area) {
     $oAreaColl = new cApiAreaCollection();
@@ -338,6 +361,8 @@ JS;
  *
  * @param bool $send
  *         Redirect Yes/No
+ *
+ * @throws cDbException
  */
 function backToMainArea($send) {
     if ($send) {
@@ -361,7 +386,10 @@ function backToMainArea($send) {
  * Returns list of languages (language ids) by passed client.
  *
  * @param int $client
+ *
  * @return array
+ *
+ * @throws cDbException
  */
 function getLanguagesByClient($client) {
     $oClientLangColl = new cApiClientLanguageCollection();
@@ -372,9 +400,12 @@ function getLanguagesByClient($client) {
  * Returns all languages (language ids and names) of an client
  *
  * @param int $client
+ *
  * @return array
  *         List of languages where the key is the language id
  *         and value the language name
+ *
+ * @throws cDbException
  */
 function getLanguageNamesByClient($client) {
     $oClientLangColl = new cApiClientLanguageCollection();
@@ -386,8 +417,11 @@ function getLanguageNamesByClient($client) {
  *
  * @deprecated [2015-05-21]
  *         This method is no longer supported (no replacement)
+ *
  * @param string $code
  *         String by reference
+ *
+ * @throws cInvalidArgumentException
  */
 function set_magic_quotes_gpc(&$code) {
     cDeprecated('This method is deprecated and is not needed any longer');
@@ -411,6 +445,8 @@ function set_magic_quotes_gpc(&$code) {
  *         - $arr[0]['idclient']
  *         - $arr[0]['clientname']
  *         </pre>
+ *
+ * @throws cDbException
  */
 function getAllClientsAndLanguages() {
     global $db, $cfg;
@@ -453,7 +489,11 @@ function getmicrotime() {
 /**
  *
  * @param unknown_type $uid
- * @return boolean
+ *
+ * @return bool
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function isGroup($uid) {
     $user = new cApiUser();
@@ -467,7 +507,11 @@ function isGroup($uid) {
 /**
  *
  * @param int $uid
+ *
  * @return string|bool
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function getGroupOrUserName($uid) {
     $user = new cApiUser();
@@ -488,9 +532,12 @@ function getGroupOrUserName($uid) {
  * Checks if passed email address is valid or not
  *
  * @param string $email
- * @param bool $strict
+ * @param bool   $strict
  *         No more used!
- * @return boolean
+ *
+ * @return bool
+ *
+ * @throws cInvalidArgumentException
  */
 function isValidMail($email, $strict = false) {
     $validator = cValidatorFactory::getInstance('email');
@@ -515,14 +562,18 @@ function htmldecode($string) {
  * Reinitializes the $cfgClient array and fills it wih updated information if
  * provided.
  *
- * @param int $idclient
+ * @param int    $idclient
  *         client id which will be updated
  * @param string $htmlpath
  *         new HTML path. Starting with "http://"
  * @param string $frontendpath
  *         path the to the frontend
+ *
  * @return array
  *         client configuration
+ *
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
 
@@ -713,10 +764,15 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
  *         The name of the item
  * @param string $value
  *         The value of the item
- * @param int $idsystemprop
+ * @param int    $idsystemprop
  *         The sysprop id, use optional.
  *         If set it allows to modify type name and value
- * @return void|boolean
+ *
+ * @return void|bool
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function setSystemProperty($type, $name, $value, $idsystemprop = 0) {
     if ($type == '' || $name == '') {
@@ -741,7 +797,12 @@ function setSystemProperty($type, $name, $value, $idsystemprop = 0) {
  *         The type of the item
  * @param string $name
  *         The name of the item
- * @return bool
+ *
+ * @return void
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function deleteSystemProperty($type, $name) {
     $systemPropColl = new cApiSystemPropertyCollection();
@@ -763,7 +824,11 @@ function deleteSystemProperty($type, $name) {
  * @param bool $bGetPropId
  *         If true special mode is activated which generates for each property
  *         a third array, which also contains idsystemprop value
+ *
  * @return array
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function getSystemProperties($bGetPropId = false) {
     $return = array();
@@ -791,8 +856,12 @@ function getSystemProperties($bGetPropId = false) {
  *         The type of the item
  * @param string $name
  *         The name of the item
+ *
  * @return string|bool
  *         property value or false if nothing was found
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function getSystemProperty($type, $name) {
     $systemPropColl = new cApiSystemPropertyCollection();
@@ -805,9 +874,13 @@ function getSystemProperty($type, $name) {
  *
  * @param string $type
  *         The type of the properties
+ *
  * @return array
  *         Assoziative array like
  *         - $arr[name] = value
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function getSystemPropertiesByType($type) {
     $return = array();
@@ -840,8 +913,12 @@ function getSystemPropertiesByType($type) {
  *         The name of the item
  * @param string $default
  *         Optional default value
+ *
  * @return bool|string
  *         Setting value or false
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function getEffectiveSetting($type, $name, $default = '') {
     return cEffectiveSetting::get($type, $name, $default);
@@ -857,7 +934,11 @@ function getEffectiveSetting($type, $name, $default = '') {
  *
  * @param string $type
  *         The type of the item
+ *
  * @return array Value
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function getEffectiveSettingsByType($type) {
     return cEffectiveSetting::getByType($type);
@@ -868,6 +949,8 @@ function getEffectiveSettingsByType($type) {
  *
  * @return array
  *         list of article specifications
+ *
+ * @throws cDbException
  */
 function getArtspec() {
     global $db, $cfg, $lang, $client;
@@ -890,8 +973,10 @@ function getArtspec() {
  *
  * @param string $artspectext
  *         specification text
- * @param int $online
+ * @param int    $online
  *         Online status (1 or 0)
+ *
+ * @throws cDbException
  */
 function addArtspec($artspectext, $online) {
     global $db, $cfg, $lang, $client;
@@ -923,6 +1008,8 @@ function addArtspec($artspectext, $online) {
  *
  * @param int $idartspec
  *         article specification id
+ *
+ * @throws cDbException
  */
 function deleteArtspec($idartspec) {
     global $db, $cfg;
@@ -943,6 +1030,8 @@ function deleteArtspec($idartspec) {
  *         article specification id
  * @param int $online
  *         0/1 switch the status between on an offline
+ *
+ * @throws cDbException
  */
 function setArtspecOnline($idartspec, $online) {
     global $db, $cfg;
@@ -958,6 +1047,8 @@ function setArtspecOnline($idartspec, $online) {
  *
  * @param int $idartspec
  *         Article specification id
+ *
+ * @throws cDbException
  */
 function setArtspecDefault($idartspec) {
     global $db, $cfg, $lang, $client;
@@ -977,8 +1068,12 @@ function setArtspecDefault($idartspec) {
  *         Category id
  * @param string $sValue
  *         Value of the SelectBox
+ *
  * @return string
  *         HTML
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function buildArticleSelect($sName, $iIdCat, $sValue) {
     global $cfg, $lang;
@@ -1014,12 +1109,16 @@ function buildArticleSelect($sName, $iIdCat, $sValue) {
  *         Name of the SelectBox
  * @param string $sValue
  *         Value of the SelectBox
- * @param int $sLevel
+ * @param int    $sLevel
  *         Value of highest level that should be shown
  * @param string $sClass
  *         Optional css class for select
+ *
  * @return string
  *         HTML
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
     global $cfg, $client, $lang;
@@ -1031,9 +1130,7 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
     $selectElem->setClass($sClass);
     $selectElem->appendOptionElement(new cHTMLOptionElement(i18n("Please choose"), ""));
 
-    if ($sLevel > 0) {
-        $addString = "AND c.level < " . (int) $sLevel;
-    }
+    $addString = ($sLevel > 0) ? "AND c.level < " . (int) $sLevel : '';
 
     $sql = "SELECT a.idcat AS idcat, b.name AS name, c.level FROM
            " . $cfg["tab"]["cat"] . " AS a, " . $cfg["tab"]["cat_lang"] . " AS b,
@@ -1180,6 +1277,10 @@ function isRunningFromWeb() {
  *
  * @param string $entity
  *         Name of the directory to scan
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function scanPlugins($entity) {
     global $cfg;
@@ -1358,10 +1459,12 @@ function defineIfNotDefined($constant, $value) {
  *
  * @param string $file
  *         File name (use __FILE__)
- * @param int $line
+ * @param int    $line
  *         Line number (use __LINE__)
  * @param string $message
  *         Message to display
+ *
+ * @throws cInvalidArgumentException
  */
 function cDie($file, $line, $message) {
     cError($file, $line, $message);
@@ -1405,8 +1508,9 @@ function buildStackString($startlevel = 2) {
  * cWarning(__FILE__, __LINE__, 'Some warning message');
  * </pre>
  *
- * @param Multiple parameters
  * @SuppressWarnings docBlocks
+ * @internal has variadic parameters
+ * @throws cInvalidArgumentException
  */
 function cWarning() {
     global $cfg;
@@ -1455,7 +1559,10 @@ function cWarning() {
  * </pre>
  *
  * @param string $message
- * @param Multiple
+ *
+ * @throws cInvalidArgumentException
+ * @SuppressWarnings docBlocks
+ * @internal         has variadic parameters
  */
 function cError($message) {
     global $cfg;
@@ -1497,6 +1604,8 @@ function cError($message) {
  *
  * @param string $message
  *         Optional message (e.g. "Use function XYZ instead")
+ *
+ * @throws cInvalidArgumentException
  */
 function cDeprecated($message = '') {
     global $cfg;
@@ -1559,10 +1668,13 @@ function getNamedFrame($frame) {
  *
  * @param string $function
  *         Name of the function
- * @param array $parameters
+ * @param array  $parameters
  *         All parameters for the function to measure
+ *
  * @return string
  *         uuid for this measure process
+ *
+ * @throws cInvalidArgumentException
  */
 function startTiming($function, $parameters = array()) {
     global $_timings, $cfg;
@@ -1592,6 +1704,8 @@ function startTiming($function, $parameters = array()) {
  *
  * @param int $uuid
  *         UUID which has been used for timing
+ *
+ * @throws cInvalidArgumentException
  */
 function endAndLogTiming($uuid) {
     global $_timings, $cfg;
@@ -1638,14 +1752,17 @@ function endAndLogTiming($uuid) {
  * settings.
  * Based on this informations it will send an HTTP header for right encoding.
  *
- * @param cDb $db
+ * @param cDb    $db
  *         NO MORE NEEDED
- * @param array $cfg
+ * @param array  $cfg
  *         Global cfg-array
- * @param int $lang
+ * @param int    $lang
  *         Global language id
  * @param string $contentType
  *         Mime type
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function sendEncodingHeader($db, $cfg, $lang, $contentType = 'text/html') {
     if (isset($_GET['use_encoding'])) {
@@ -1685,7 +1802,8 @@ function sendEncodingHeader($db, $cfg, $lang, $contentType = 'text/html') {
  * @param string $network
  * @param string $mask
  * @param string $ip
- * @return boolean
+ *
+ * @return bool
  */
 function ipMatch($network, $mask, $ip) {
     bcscale(3);
@@ -1719,6 +1837,7 @@ function ipMatch($network, $mask, $ip) {
  *
  * @param string $functionName
  *         Name of the function to check
+ *
  * @return bool
  */
 function isFunctionDisabled($functionName) {
@@ -1739,13 +1858,18 @@ function isFunctionDisabled($functionName) {
  * Generates category article breadcrumb for backend
  *
  * @param string $syncoptions
- *         syncstate of backend
- * @param string $showArticle
- *         show also current article or categories only (optional)
- * @param bool $return [optional]
- *         Return or print template
+ *                       syncstate of backend
+ * @param bool   $showArticle
+ *                       show also current article or categories only (optional)
+ * @param bool   $return [optional]
+ *                       Return or print template
+ *
  * @return string|void
  *         Complete template string or nothing
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function renderBackendBreadcrumb($syncoptions, $showArticle = true, $return = false) {
     $tplBread = new cTemplate();

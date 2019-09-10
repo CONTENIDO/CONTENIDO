@@ -20,7 +20,7 @@
 /**
  * Set constant value depending on get_magic_quotes_gpc status
  *
- * @var boolean
+ * @var bool
  */
 if (function_exists('get_magic_quotes_gpc')) {
     define('CON_STRIPSLASHES', !get_magic_quotes_gpc());

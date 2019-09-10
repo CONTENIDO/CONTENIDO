@@ -1,7 +1,7 @@
 @import "notifications.css"; /* @see CON-1992 */
 
 a.standard {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: verdana, arial, helvetica, sans-serif;
 	text-decoration: none;
 	font-size: 11px;
 	color: #000000;

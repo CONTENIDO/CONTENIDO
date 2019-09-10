@@ -321,6 +321,8 @@ function mailLogDecodeAddresses($addresses) {
 /**
  *
  * @return cHTMLTable
+ * 
+ * @throws cException
  */
 function mailLogBulkEditingFunctions() {
 

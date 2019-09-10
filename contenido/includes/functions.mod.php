@@ -20,7 +20,7 @@ cInclude('includes', 'functions.con.php');
 /**
  * Saves changes of modules and regenerates code cache if required
  *
- * @param int $idmod
+ * @param int    $idmod
  *         module id
  * @param string $name
  *         name of the module
@@ -34,8 +34,13 @@ cInclude('includes', 'functions.con.php');
  *         template field in module's database entry (seems deprecated)
  * @param string $type
  *         module type (common values are '', 'content', 'head', 'layout', 'navigation' and 'script')
+ *
  * @return mixed
  *         idmod or nothing
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function modEditModule($idmod, $name, $description, $input, $output, $template, $type = '') {
     global $db, $client, $cfgClient, $auth, $cfg, $sess, $area, $area_tree, $perm, $frame;
@@ -177,7 +182,11 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
  * Furthermore the rights for this module are deleted.
  *
  * @todo some global vars seem to be overfluous
+ *
  * @param int $idmod
+ *
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function modDeleteModule($idmod) {
     global $db, $client, $cfg;

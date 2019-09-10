@@ -512,9 +512,7 @@ if ($code == "0601") {
     $code = cString::iReplaceOnce("<head>", "<head>\n" . '<base href="' . cRegistry::getFrontendUrl() . '">', $code);
 }
 
-$bodyPosition = cString::findFirstPos($code, '<body>');
-
-$code = substr_replace($code, $versioningElement, $bodyPosition, 0);
+$code = preg_replace("/(<body[^>]*)>/i", "\${1}> \n $versioningElement", $code, 1);
 
 if ($cfg["debug"]["codeoutput"]) {
     cDebug::out(conHtmlSpecialChars($code));

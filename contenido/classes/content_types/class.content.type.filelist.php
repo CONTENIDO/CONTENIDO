@@ -216,33 +216,29 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     }
 
     /**
-     *
-     * @todo unify return values
-     * @return void|string|array
+     * Returns a list of configured files.
+     * @return array
      * @throws cDbException
      * @throws cException
      */
     public function getConfiguredFiles() {
-        $files = array();
+        $files = [];
+        $fileList = [];
 
-        if ($this->_settings['filelist_manual'] === 'true' && count($this->_settings['filelist_manual_files']) > 0) {
+        if ($this->_settings['filelist_manual'] === 'true' && !empty($this->_settings['filelist_manual_files'])) {
             $tempFileList = $this->_settings['filelist_manual_files'];
 
-            // Check if manual selected file exists, otherwise ignore them
-            // Write only existing files into fileList array
-            if (is_array($tempFileList)) {
-                foreach ($tempFileList as $filename) {
-                    if (cFileHandler::exists($this->_uploadPath . $filename)) {
-                        $fileList[] = $filename;
-                    }
-                }
-            } else {
-                if (cFileHandler::exists($this->_uploadPath . $tempFileList)) {
-                    $fileList[] = $tempFileList;
+            // Check if manual selected file exists, otherwise ignore them. Write only existing files into fileList array.
+            // Manual selected setting can be a string or an array!
+            if (!is_array($tempFileList)) {
+                $tempFileList = [$tempFileList];
+            }
+            foreach ($tempFileList as $filename) {
+                if (cFileHandler::exists($this->_uploadPath . $filename)) {
+                    $fileList[] = $filename;
                 }
             }
-
-        } else if (count($this->_settings['filelist_directories']) > 0) {
+        } else if (is_array($this->_settings['filelist_directories']) && count($this->_settings['filelist_directories']) > 0) {
             $directories = $this->_settings['filelist_directories'];
 
             if ($this->_settings['filelist_incl_subdirectories'] === 'true') {
@@ -253,9 +249,8 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
             // strip duplicate directories to save performance
             $directories = array_unique($directories);
-
             if (count($directories) < 1) {
-                return;
+                return [];
             }
 
             foreach ($directories as $directoryName) {
@@ -268,16 +263,15 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                 }
             }
         } else {
-            return '';
+            return [];
         }
 
-        if (is_array($fileList)) {
+        if (count($fileList) > 0) {
             $files = $this->_applyFileFilters($fileList);
-        } else {
-            $files = $this->_applyFileFilters((array) $fileList);
         }
         unset($fileList);
 
+        $limitedFiles = [];
         if (count($files) > 0) {
             // sort the files
             if ($this->_settings['filelist_sortorder'] === 'desc') {
@@ -290,19 +284,19 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
             foreach ($files as $key => $filenameData) {
                 if (($this->_settings['filelist_filecount'] != 0 && $i <= $this->_settings['filelist_filecount']) || $this->_settings['filelist_filecount'] == 0) {
                     if ($this->_settings['filelist_incl_metadata'] === 'true') {
-                        $metaData = array();
+                        $metaData = [];
                         // load upload and upload meta object
                         $upload = new cApiUpload();
-                        $upload->loadByMany(array(
+                        $upload->loadByMany([
                             'filename' => $filenameData['filename'],
                             'dirname' => $filenameData['path'] . '/',
                             'idclient' => $this->_client
-                        ));
+                        ]);
                         $uploadMeta = new cApiUploadMeta();
-                        $uploadMeta->loadByMany(array(
+                        $uploadMeta->loadByMany([
                             'idupl' => $upload->get('idupl'),
                             'idlang' => $this->_lang
-                        ));
+                        ]);
 
                         foreach ($this->_metaDataIdents as $identName => $translation) {
                             $string = $uploadMeta->get($identName);
@@ -319,19 +313,19 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
                         $filenameData['metadata'] = $metaData;
                     } else {
-                        $filenameData['metadata'] = array();
+                        $filenameData['metadata'] = [];
                     }
 
                     // Define new array for files
                     // If filelist_filecount is defined, this array has the same
                     // size as "filelist_filecount" setting value (0 = no limit)
-                    $limitedfiles[$key] = $filenameData;
+                    $limitedFiles[$key] = $filenameData;
                     $i++;
                 }
             }
-
-            return $limitedfiles;
         }
+
+        return $limitedFiles;
     }
 
     /**
@@ -345,16 +339,16 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      * @throws cInvalidArgumentException
      */
     public function generateFileListCode() {
+        $code = '';
         if ($this->_settings['filelist_style'] === '') {
-            return '';
+            return $code;
         }
         $template = new cTemplate();
-        $fileList = array();
         $template->set('s', 'TITLE', conHtmlSpecialChars($this->_settings['filelist_title']));
 
         $files = $this->getConfiguredFiles();
 
-        if (is_array($files) && count($files) > 0) {
+        if (count($files) > 0) {
             foreach ($files as $filenameData) {
                 $this->_fillFileListTemplateEntry($filenameData, $template);
             }
@@ -392,7 +386,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     }
 
     /**
-     * Removes all files not matching the filter criterias.
+     * Removes all files not matching the filter criteria.
      *
      * @param array $fileList
      *         files which should be filtered
@@ -400,29 +394,32 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      *         with filtered files
      */
     private function _applyFileFilters(array $fileList) {
-        foreach ($fileList as $fullname) {
-            $filename = basename($fullname);
-            $directoryName = str_replace('/' . $filename, '', $fullname);
+        $files = [];
+        foreach ($fileList as $fullName) {
+            $fileName = basename($fullName);
+            $directoryName = str_replace('/' . $fileName, '', $fullName);
 
             // checking the extension stuff
-            $extensionName = cFileHandler::getExtension($filename);
+            $extensionName = cFileHandler::getExtension($fileName);
             $extensions = $this->_settings['filelist_extensions'];
-            if(!is_array($extensions)) {
-                $extensions = array($extensions);
+            if (!is_array($extensions)) {
+                $extensions = [$extensions];
             }
-            if ($this->_settings['filelist_ignore_extensions'] === 'true' || count($extensions) == 0 || ($this->_settings['filelist_ignore_extensions'] === 'false' && in_array($extensionName, $extensions)) || ($this->_settings['filelist_ignore_extensions'] === 'false' && $extensionName == $extensions)) {
+            if ($this->_settings['filelist_ignore_extensions'] === 'true' || count($extensions) == 0
+                || ($this->_settings['filelist_ignore_extensions'] === 'false' && in_array($extensionName, $extensions))
+                || ($this->_settings['filelist_ignore_extensions'] === 'false' && $extensionName == $extensions)) {
 
                 // Prevent errors with not existing files
-                if (!cFileHandler::exists($this->_uploadPath . $directoryName . '/' . $filename)) {
-                    return;
+                if (!cFileHandler::exists($this->_uploadPath . $directoryName . '/' . $fileName)) {
+                    return [];
                 }
 
                 // checking filesize filter
-                $fileStats = stat($this->_uploadPath . $directoryName . '/' . $filename);
-                $filesize = $fileStats['size'];
+                $fileStats = stat($this->_uploadPath . $directoryName . '/' . $fileName);
+                $fileSize = $fileStats['size'];
 
-                $filesizeMib = $filesize / 1024 / 1024;
-                if (($this->_settings['filelist_filesizefilter_from'] == 0 && $this->_settings['filelist_filesizefilter_to'] == 0) || ($this->_settings['filelist_filesizefilter_from'] <= $filesizeMib && $this->_settings['filelist_filesizefilter_to'] >= $filesizeMib)) {
+                $fileSizeMib = $fileSize / 1024 / 1024;
+                if (($this->_settings['filelist_filesizefilter_from'] == 0 && $this->_settings['filelist_filesizefilter_to'] == 0) || ($this->_settings['filelist_filesizefilter_from'] <= $fileSizeMib && $this->_settings['filelist_filesizefilter_to'] >= $fileSizeMib)) {
 
                     if ($this->_applyDateFilters($fileStats)) {
                         $creationDate = $fileStats['ctime'];
@@ -432,10 +429,10 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                         // or with the same filesize
                         switch ($this->_settings['filelist_sort']) {
                             case 'filesize':
-                                if (!isset($files[$filesize])) {
-                                    $indexName = $filesize . "_" . mt_rand(0, mt_getrandmax());
+                                if (!isset($files[$fileSize])) {
+                                    $indexName = $fileSize . "_" . mt_rand(0, mt_getrandmax());
                                 } else {
-                                    $indexName = $filesize;
+                                    $indexName = $fileSize;
                                 }
                                 break;
                             case 'createdate':
@@ -454,14 +451,14 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                                 break;
                             case 'filename':
                             default:
-                                $indexName = cString::toLowerCase($directoryName . $filename);
+                                $indexName = cString::toLowerCase($directoryName . $fileName);
                         }
 
-                        $files[$indexName] = array();
-                        $files[$indexName]['filename'] = $filename;
+                        $files[$indexName] = [];
+                        $files[$indexName]['filename'] = $fileName;
                         $files[$indexName]['path'] = $directoryName;
                         $files[$indexName]['extension'] = $extensionName;
-                        $files[$indexName]['filesize'] = $filesize;
+                        $files[$indexName]['filesize'] = $fileSize;
                         $files[$indexName]['filemodifydate'] = $modifyDate;
                         $files[$indexName]['filecreationdate'] = $creationDate;
                     }

@@ -26,7 +26,7 @@ class cSystemtest {
      *
      * @var string
      */
-    const CON_SETUP_MIN_PHP_VERSION = '5.3';
+    const CON_SETUP_MIN_PHP_VERSION = '7.0.0';
 
     /**
      * Messages have no influence on the result of the system integrity
@@ -715,6 +715,7 @@ class cSystemtest {
                 'password' => $password
             )
         );
+        $db = null;
         try {
             $db = new cDb($aOptions);
         } catch (cDbException $e) {
@@ -779,7 +780,7 @@ class cSystemtest {
      *         true if the test passed and false if not
      */
     public function testPHPVersion() {
-        if (version_compare(phpversion(), CON_SETUP_MIN_PHP_VERSION, '>=') == true) {
+        if (version_compare(phpversion(), self::CON_SETUP_MIN_PHP_VERSION, '>=') == true) {
             return true;
         } else {
             return false;
@@ -1331,7 +1332,8 @@ class cSystemtest {
      *
      * @return bool
      *         true if the test passed and false if not
-     * 
+     *
+     * @throws cException
      * @throws cInvalidArgumentException
      */
     public function testFrontendFolderCreation() {
@@ -1356,15 +1358,13 @@ class cSystemtest {
         $ret = true;
 
         foreach ($directories as $dir) {
-            if (!cFileHandler::exists("../" . $dir)) {
+            if (!cDirHandler::exists("../" . $dir)) {
                 if (!mkdir("../" . $dir)) {
                     $ret = false;
                     $this->storeResult(false, self::C_SEVERITY_WARNING, sprintf(i18n("Could not find or create directory %s"), $dir), i18n("The frontend expects certain directories to exist and it needs to be able to write to these directories. You have to set chmod rights 755 to these directories."));
-                } else {
-                    if (!cFileHandler::chmod("../" . $dir, 0755)) {
-                        $ret = false;
-                        $this->storeResult(false, self::C_SEVERITY_WARNING, sprintf(i18n("Could not find or create directory %s"), $dir), i18n("The frontend expects certain directories to exist and it needs to be able to write to these directories. You have to set chmod rights 755 to these directories."));
-                    }
+                } elseif (!cDirHandler::chmod("../" . $dir, cDirHandler::getDefaultPermissions())) {
+                    $ret = false;
+                    $this->storeResult(false, self::C_SEVERITY_WARNING, sprintf(i18n("Could not find or create directory %s"), $dir), i18n("The frontend expects certain directories to exist and it needs to be able to write to these directories. You have to set chmod rights 755 to these directories."));
                 }
             }
         }

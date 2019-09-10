@@ -132,9 +132,7 @@ if (true === $layout->isLoaded()) {
 
             $containerCounter[$containerNr] += $count;
 
-            if (is_array(tplGetContainerTypes($idlay, $containerNr))) {
-                $types = array_merge($types, tplGetContainerTypes($idlay, $containerNr));
-            }
+            $types = array_merge($types, tplGetContainerTypes($idlay, $containerNr));
         }
 
         $types = array_unique($types);
@@ -240,11 +238,11 @@ if (stripslashes($_REQUEST['idlay']) || $bReloadSyncSrcipt) {
     $page->setReload();
 }
 
-if ($action == "lay_sync") {
-    //$page->setSubnav("idlay={$idlay}&dont_print_subnav=1", "lay");
-} else {
-    //$page->setSubnav("idlay={$idlay}", "lay");
-}
+// if ($action == "lay_sync") {
+//     $page->setSubnav("idlay={$idlay}&dont_print_subnav=1", "lay");
+// } else {
+//     $page->setSubnav("idlay={$idlay}", "lay");
+// }
 
 $page->render();
 

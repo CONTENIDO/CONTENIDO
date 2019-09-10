@@ -25,7 +25,9 @@ foreach ($aLangs as $sValue) {
     }
 }
 
-if (isset($_POST['belang']) && $_POST['belang'] != '') {
+if (empty($_POST['belang'])) {
+    $sSelectedLang = '';
+} else {
     $sSelectedLang = $_POST['belang'];
     $GLOBALS['belang'] = $sSelectedLang;
 }
@@ -92,12 +94,8 @@ $tpl->set('s', 'OPTIONS', $str);
 $tpl->set('s', 'LANGUAGE', i18n('Language'));
 $tpl->set('s', 'BACKEND', i18n('CONTENIDO Backend'));
 $tpl->set('s', 'LOGIN', i18n('Login'));
-$tpl->set('s', 'USERNAME', (isset($this->auth["uname"])) ? conHtmlentities(strip_tags($this->auth["uname"])) : "");
-
-if (isset($username) && $username != '') {
-    $err = i18n('Invalid login or password!');
-}
-$tpl->set('s', 'ERROR', $err);
+$tpl->set('s', 'USERNAME', isset($this->auth['uname']) ? conHtmlentities(strip_tags($this->auth["uname"])) : '');
+$tpl->set('s', 'ERROR', isset($username) && $username != '' ? i18n('Invalid login or password!') : '');
 $tpl->set('s', 'PASSWORD', i18n('Password'));
 $tpl->set('s', 'TIME', time());
 
@@ -109,7 +107,7 @@ $tpl->set('s', 'FORM', $str);
 $tpl->set('s', 'NOTI', $noti);
 
 // send right encoding http header
-sendEncodingHeader($db, $cfg, $lang);
+sendEncodingHeader($db, $cfg, !empty($lang) ? $lang : 0);
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['main_loginform']);
 

@@ -24,6 +24,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage Util
+ * @todo add mb_chr(), mb_ord()
  */
 class cStringMultiByteWrapper {
 
@@ -42,7 +43,7 @@ class cStringMultiByteWrapper {
             $cache = array();
             foreach (array(
                 'mb_strtolower', 'mb_strtoupper', 'mb_strlen', 'mb_substr',
-                'mb_substr_count', 'mb_strpos', 'mb_strrpos', 'mb_stripos',
+                'mb_substr_count', 'mb_send_mail', 'mb_strpos', 'mb_strrpos', 'mb_stripos',
                 'mb_strripos', 'mb_stristr', 'mb_strrchr'
             ) as $function) {
                 $cache[$function] = function_exists($function);
@@ -146,10 +147,6 @@ class cStringMultiByteWrapper {
      * @link http://php.net/manual/de/function.mb-substr.php
      */
     public static function getPartOfString($string, $start, $length = null, $encoding = null) {
-        if ($length === null) {
-            $length = self::getStringLength($string);
-        }
-
         if (self::_functionExists('mb_substr')) {
             $result = mb_substr($string, $start, $length, self::_getEncoding($encoding));
         } else {
@@ -167,7 +164,7 @@ class cStringMultiByteWrapper {
      *         The string being found
      * @param string|null $encoding
      *         encoding parameter, standard: cRegistry::getEncoding()
-     * @return string
+     * @return int
      *         The number of times the needle substring occurs in the haystack string.
      * @link http://php.net/manual/de/function.mb-substr-count.php
      */
@@ -195,11 +192,11 @@ class cStringMultiByteWrapper {
      *         true or false
      * @link http://php.net/manual/de/function.mb-send-mail.php
      */
-    public static function mail($to, $subject, $message, $additional_headers = null, $aditional_parameter = null) {
-        if (self::_functionExists('mb_mail')) {
-            $result = mb_send_mail($to, $subject, $message, $additional_headers, $aditional_parameter);
+    public static function mail($to, $subject, $message, $additional_headers = null, $additional_parameter = null) {
+        if (self::_functionExists('mb_send_mail')) {
+            $result = mb_send_mail($to, $subject, $message, $additional_headers, $additional_parameter);
         } else {
-            $result = mail($to, $subject, $message, $additional_headers, $aditional_parameter);
+            $result = mail($to, $subject, $message, $additional_headers, $additional_parameter);
         }
         return $result;
     }
@@ -322,10 +319,13 @@ class cStringMultiByteWrapper {
      * @link http://php.net/manual/de/function.mb-strrchr.php
      */
     public static function findLastOccurrence($haystack, $needle, $part = false, $encoding = null) {
-        if (self::_functionExists('mb_stristr')) {
+        if (self::_functionExists('mb_strrchr')) {
             $result = mb_strrchr($haystack, $needle, $part, self::_getEncoding($encoding));
+        } elseif (!$part) {
+            $result = strrchr($haystack, $needle);
         } else {
-            $result = strrchr($haystack, $needle, $part);
+            // TODO strrchr canot handle $part = true
+            $result = null;
         }
         return $result;
     }
@@ -340,6 +340,7 @@ class cStringMultiByteWrapper {
      * @link http://php.net/manual/de/function.mb-ereg.php
      */
     public static function ereg($pattern, $string, &$regs = array()) {
+        // TODO provide fallback multibyte extension is missing
         return mb_ereg($pattern, $string, $regs);
     }
 
@@ -350,9 +351,10 @@ class cStringMultiByteWrapper {
      * @param string $string
      * @param array $regs [Optional]
      * @return int Returns the byte length of the matched string if a match for pattern was found in string
-     * @link http://php.net/manual/de/function.mb-ereg.php
+     * @link http://php.net/manual/de/function.mb-eregi.php
      */
     public static function eregi($pattern, $string, &$regs = array()) {
+        // TODO provide fallback multibyte extension is missing
         return mb_eregi($pattern, $string, $regs);
     }
 
@@ -367,6 +369,7 @@ class cStringMultiByteWrapper {
      * @link http://php.net/manual/de/function.mb-ereg-replace.php
      */
     public static function ereg_replace($pattern, $replacement, $string, $option = 'msr') {
+        // TODO provide fallback multibyte extension is missing
         return mb_ereg_replace($pattern, $replacement, $string, $option);
     }
 
@@ -381,6 +384,7 @@ class cStringMultiByteWrapper {
      * @link http://php.net/manual/de/function.mb-eregi-replace.php
      */
     public static function eregi_replace($pattern, $replacement, $string, $option = 'msr') {
+        // TODO provide fallback multibyte extension is missing
         return mb_eregi_replace($pattern, $replacement, $string, $option);
     }
 
@@ -394,6 +398,7 @@ class cStringMultiByteWrapper {
      * @link http://php.net/manual/de/function.mb-split.php
      */
     public static function split($pattern, $string, $limit = -1) {
+        // TODO provide fallback multibyte extension is missing
         return mb_split($pattern, $string, $limit);
     }
 

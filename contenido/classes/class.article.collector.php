@@ -204,6 +204,7 @@ class cArticleCollector implements SeekableIterator, Countable {
         $sqlCat = (count($this->_options['categories']) > 0) ? ", " . $cfg['tab']['cat_art'] . " AS c WHERE c.idcat IN ('" . implode("','", $this->_options['categories']) . "') AND b.idart = c.idart AND " : ' WHERE ';
 
         $sqlArtSpecs = (count($this->_options['artspecs']) > 0) ? " a.artspec IN ('" . implode("','", $this->_options['artspecs']) . "') AND " : '';
+        $sqlStartArticles = '';
 
         if (count($this->_startArticles) > 0) {
             if ($this->_options['start'] == false) {
@@ -319,11 +320,9 @@ class cArticleCollector implements SeekableIterator, Countable {
      *
      * @param int $page
      *         The page of the article collection
-     * @param boolean $force
-     *         Sets page without checking of page count
      */
-    public function setPage($page, $force = false) {
-        if (is_array($this->_pages[$page]) || $force === true) {
+    public function setPage($page) {
+        if (array_key_exists($page, $this->_pages)) {
             $this->_articles = $this->_pages[$page];
         }
     }

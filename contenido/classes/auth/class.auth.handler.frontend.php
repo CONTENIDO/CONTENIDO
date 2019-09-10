@@ -55,7 +55,7 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
      * @throws cException
      */
     public function preAuthorize() {
-        $password = $_POST['password'];
+        $password = isset($_POST['password']) ? $_POST['password'] : '';
 
         if ($password == '') {
             // Stay as nobody when an empty password is passed

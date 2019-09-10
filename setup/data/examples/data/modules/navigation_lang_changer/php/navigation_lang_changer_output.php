@@ -53,6 +53,8 @@ if (empty($allLanguages)) {
     // no active languages. handling was moved to include.front_content.php (lines 433 - 439).
 } else if (count($allLanguages) != 1) {
 
+    $langName = '';
+
     // else check if there more as one language
     $currentLanguage = cRegistry::getLanguageId();
 
@@ -85,7 +87,7 @@ if (empty($allLanguages)) {
     }
 
     // check articles, if article exists and is online and not locked set the check to true
-    $artCheck = $artCollection->select("idart = '" . $idart . "' AND idlang = '" . $selectedLang . "' AND online = '1' AND locked = '0'", NULL, NULL, NULL);
+    $artCheck = $artCollection->select("idart = '" . cSecurity::toInteger($idart) . "' AND idlang = '" . cSecurity::toInteger($selectedLang) . "' AND online = '1' AND locked = '0'", NULL, NULL, NULL);
 
     // check if this article is an startarticle
     $startart = $catCollection->getStartIdartByIdcatAndIdlang($idcatAuto, $selectedLang);
@@ -94,10 +96,10 @@ if (empty($allLanguages)) {
 
         // check category and articles, if category exists and has start article
         // which is online and not locked the set check to true
-        $catCheck = $catCollection->select("idcat = '" . $idcatAuto . "' AND idlang = '" . $selectedLang . "' AND startidartlang != '0'", NULL, NULL, NULL);
+        $catCheck = $catCollection->select("idcat = '" . cSecurity::toInteger($idcatAuto) . "' AND idlang = '" . cSecurity::toInteger($selectedLang) . "' AND startidartlang != '0'", NULL, NULL, NULL);
 
         $catRetItem = new cApiCategoryLanguage();
-        $catRetItem->loadByCategoryIdAndLanguageId($idcatAuto, $selectedLang);
+        $catRetItem->loadByCategoryIdAndLanguageId(cSecurity::toInteger($idcatAuto), cSecurity::toInteger($selectedLang));
 
         if ($catCheck === true && $catRetItem) {
             $artRetItem = $artCollection->fetchById($catRetItem->get('startidartlang'));
@@ -114,7 +116,7 @@ if (empty($allLanguages)) {
         $url = $catRetItem->getLink($selectedLang);
     } else {
         $config = cRegistry::getClientConfig(cRegistry::getClientId());
-        $url = cRegistry::getFrontendUrl() . 'front_content.php?idart='.$idart.'&changelang=' . $selectedLang;
+        $url = cRegistry::getFrontendUrl() . 'front_content.php?idart='.cSecurity::toInteger($idart).'&changelang=' . cSecurity::toInteger($selectedLang);
     }
 
     $tpl->set('s', 'url', conHtmlSpecialChars($url));

@@ -374,8 +374,7 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract {
             $this->_oView->content_before = $this->_notifyBox('info', $sMsg);
         } else {
             $sMsg = i18n('Configuration could not saved. Please check write permissions for %s ', 'mod_rewrite');
-            // TODO: where does $options come from?
-            $sMsg = sprintf($sMsg, $options['key']);
+            $sMsg = sprintf($sMsg, mr_getConfigurationFilePath($this->_client));
             $this->_oView->content_before = $this->_notifyBox('error', $sMsg);
         }
     }

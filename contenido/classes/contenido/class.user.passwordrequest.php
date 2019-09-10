@@ -107,7 +107,7 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
      *                        search for a specific user id
      * @param string $orderBy [optional]
      *                        SQL order by part
-     * @return array
+     * @return cApiUserPasswordRequest[]
      * @throws cDbException
      * @throws cException
      */

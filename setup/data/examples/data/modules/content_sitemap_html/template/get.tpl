@@ -18,7 +18,7 @@
         <div>{$article}</div>
     </div>
     {if $error}<p class="error">{$error|escape}</p>{/if}
-{else if $tree}
+{elseif $tree}
 <ul{if $first == false} class="sitemap"{/if}>
     {$first = true}
     {* loop categories *}
@@ -31,7 +31,7 @@
             {include file="content_sitemap_html/template/get.tpl"
                 tree=$wrapper.subcats path=$path ulId=""}
         {* loop articles *}
-        {if $wrapper.articles|is_array && 0 lt $wrapper.articles|count}
+        {if isset($wrapper.articles) && $wrapper.articles|is_array && 0 lt $wrapper.articles|count}
         	<ul>
 	            {foreach from=$wrapper.articles item=article}
 	            <li>

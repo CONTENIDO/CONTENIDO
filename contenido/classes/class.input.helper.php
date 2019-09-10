@@ -250,6 +250,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
         global $cfg, $lang;
 
         if (is_numeric($iIDCatArt) && $iIDCatArt > 0) {
+            $oDB = cRegistry::getDb();
 
             $sql = "SELECT
                         t.typeid AS typeid
@@ -294,30 +295,6 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
             return false;
         }
     }
-
-    /**
-     * Selects specified elements as selected
-     *
-     * @param array $aElements
-     *         Array with "values" of the cHTMLOptionElement to set
-     * @return cHTMLSelectElement
-     *         $this for chaining
-     */
-    public function setSelected($aElements) {
-        if (is_array($this->_options) && is_array($aElements)) {
-            foreach ($this->_options as $sKey => $oOption) {
-                if (in_array($oOption->getAttribute("value"), $aElements)) {
-                    $oOption->setSelected(true);
-                    $this->_options[$sKey] = $oOption;
-                } else {
-                    $oOption->setSelected(false);
-                    $this->_options[$sKey] = $oOption;
-                }
-            }
-        }
-        return $this;
-    }
-
 }
 
 /**
@@ -455,6 +432,13 @@ class UI_Config_Table {
     public function UI_Config_Table() {
         cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
         return $this->__construct();
+    }
+
+    /**
+     * @param bool $bEnabled
+     */
+    function setAddMultiSelJS($bEnabled = true) {
+        $this->_bAddMultiSelJS = (bool) $bEnabled;
     }
 
     /**

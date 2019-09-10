@@ -25,15 +25,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @param string $name
  *         the name of the form element
- * @param array $possibleValues
+ * @param array  $possibleValues
  *         the possible values
  * @param string $value
  *         the value which should be selected
  * @param string $label
  *         the label text which should be rendered
- * @param int $width
+ * @param int    $width
+ *
  * @return array
  *         associative array with the label and the input field
+ * 
+ * @throws cException
  */
 function renderSelectProperty($name, $possibleValues, $value, $label, $width = 328) {
     global $auth;
@@ -116,7 +119,7 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
  *         the label text
  * @param string $name
  *         the name of the corresponding input element
- * @param string $width
+ * @param int $width
  *         the width in pixel
  * @param string $seperator
  *         the seperator which is written at the end of the label

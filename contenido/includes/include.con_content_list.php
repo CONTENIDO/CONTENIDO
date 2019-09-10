@@ -929,7 +929,6 @@ $page->set('s', 'EXPORT_LABEL', i18n("Raw data export"));
 $page->set('s', 'IMPORT_LABEL', i18n("Raw data import"));
 $page->set('s', 'OVERWRITE_DATA_LABEL', i18n("Overwrite data"));
 
-
 $page->set('s', 'HIDE', ($admin || (int)$locked === 0) ? '' : 'style="display:none;"');
 
 if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false') {
@@ -1006,16 +1005,22 @@ cRegistry::shutdown();
  * @param array $list
  *         CMS_...tags list
  * @param array $contentList
- *         all CMS variables
- * @param bool $saveKeywords
- *         Flag to save collected keywords during replacement process.
- * @param array $contentList
  *         Associative list of CMS variables
- * @SuppressWarnings docBlocks
+ * @param bool  $saveKeywords
+ *         Flag to save collected keywords during replacement process.
+ * @param       $layoutCode
+ * @param       $articleType
+ * @param       $versioningState
+ * @param       $version
+ *
+ * @return mixed
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode, $articleType, $versioningState, $version)
 {
-
     /*
      * NOTE: Variables below are required in included/evaluated content type codes!
      */

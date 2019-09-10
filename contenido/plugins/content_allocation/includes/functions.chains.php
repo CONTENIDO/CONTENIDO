@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains various function for the plugin content allocation.
  *
@@ -16,9 +17,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * @return array
  */
-function pica_RegisterCustomTab ()
+function pica_RegisterCustomTab()
 {
-    return array("con_contentallocation");
+    return ["con_contentallocation"];
 }
 
 /**
@@ -26,11 +27,10 @@ function pica_RegisterCustomTab ()
  *
  * @return array
  */
-function pica_GetCustomTabProperties ($sIntName)
+function pica_GetCustomTabProperties($sIntName)
 {
-    if ($sIntName == "con_contentallocation")
-    {
-        return array("con_contentallocation", "con_edit", "");
+    if ($sIntName == "con_contentallocation") {
+        return ["con_contentallocation", "con_edit", ""];
     }
 }
 
@@ -39,7 +39,7 @@ function pica_GetCustomTabProperties ($sIntName)
  *
  * @return mixed
  */
-function pica_ArticleListActions ($aActions)
+function pica_ArticleListActions($aActions)
 {
     $aTmpActions["con_contentallocation"] = "con_contentallocation";
 
@@ -53,18 +53,24 @@ function pica_ArticleListActions ($aActions)
  * @param $actionkey
  *
  * @return string
+ * @throws cException
  */
-function pica_RenderArticleAction ($idcat, $idart, $idartlang, $actionkey)
+function pica_RenderArticleAction($idcat, $idart, $idartlang, $actionkey)
 {
     global $sess;
 
-    if ($actionkey == "con_contentallocation")
-    {
-         return '<a title="'.i18n("Tagging", 'content_allocation').'" alt="'.i18n("Tagging", 'content_allocation').'" href="'.$sess->url('main.php?area=con_contentallocation&action=con_edit&idart='.$idart.'&idartlang='.$idartlang.'&idcat='.$idcat.'&frame=4').'"><img src="plugins/content_allocation/images/call_contentallocation.gif" alt=""></a>';
-
-    } else {
-        return "";
+    $anchor = '';
+    if ($actionkey == 'con_contentallocation') {
+        $label  = i18n('Tagging', 'content_allocation');
+        $url    = $sess->url(
+            'main.php?area=con_contentallocation&action=con_edit&idart=' . $idart . '&idartlang=' . $idartlang
+            . '&idcat=' . $idcat . '&frame=4'
+        );
+        $image  = '<img src="plugins/content_allocation/images/call_contentallocation.gif" alt="' . $label . '">';
+        $anchor = '<a title="' . $label . '" alt="' . $label . '" href="' . $url . '">' . $image . '</a>';
     }
+
+    return $anchor;
 }
 
 ?>

@@ -385,6 +385,7 @@ $lngAct['form_ajax']['pifa_reorder_fields'] = Pifa::i18n('pifa_reorder_fields');
 $lngAct['form_ajax']['pifa_export_data'] = Pifa::i18n('pifa_export_data');
 $lngAct['form_ajax']['pifa_get_file'] = Pifa::i18n('pifa_get_file');
 $lngAct['form_ajax']['pifa_delete_field'] = Pifa::i18n('pifa_delete_field');
+$lngAct['form_ajax']['pifa_delete_data'] = Pifa::i18n('pifa_delete_data');
 $lngAct['form_ajax']['pifa_get_option_row'] = Pifa::i18n('pifa_get_option_row');
 
 // include necessary sources, setup autoloader for plugin

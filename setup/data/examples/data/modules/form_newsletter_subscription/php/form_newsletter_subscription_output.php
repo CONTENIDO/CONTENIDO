@@ -51,7 +51,8 @@ if (class_exists('NewsletterJobCollection')) {
     $tpl->assign('EMAILNAME', mi18n("NAME"));
     $tpl->assign('EMAIL', mi18n("E_MAIL"));
 
-    $sTmpHTML = "";
+    $aAdditionalRows = [];
+
     if ($aSettings["JoinSel"] == "UserSelected") {
         // Late include to increase performance
 
@@ -69,8 +70,6 @@ if (class_exists('NewsletterJobCollection')) {
         // "groupname ASC");
 
         if ($oRcpGroups->count() > 0) {
-            $oLblGroupSel = new cHTMLLabel(mi18n("SELECT"), "selNewsletterGroup");
-
             $oSelGroup = new cHTMLSelectElement("selNewsletterGroup[]", "", "selNewsletterGroup");
             $oSelGroup->setSize(2);
             $oSelGroup->setClass("");
@@ -85,18 +84,19 @@ if (class_exists('NewsletterJobCollection')) {
                 $oSelGroup->addOptionElement($iID, $oOption);
             }
 
-            $sTmpHTML .= '         ' . $oLblGroupSel->toHtml() . "\n";
-            $sTmpHTML .= '         ' . $oSelGroup->render() . "\n";
-            $sTmpHTML .= '         <br class="y"/>';
+            $aAdditionalRows[] = [
+                'id' => 'selNewsletterGroup',
+                'cssClass' => 'contact_rowNlGroup',
+                'label' => mi18n("SELECT"),
+                'elementHtml' =>  $oSelGroup->render()
+            ];
         }
     }
     // You may like to add here additional rows for fields used in recipient- or
     // frontenduser-plugins
-    // $sTmpHTML .= '...';
+    // $aAdditionalRows[] = [...];
 
     if ($aSettings['JoinMessageType'] == 'user') {
-        $oLblType = new cHTMLLabel(mi18n("TYPE"), "selNewsletterType");
-
         $oSelType = new cHTMLSelectElement("selNewsletterType", "", "selNewsletterType");
         $oSelType->setSize(1);
         $oSelType->setClass("");
@@ -106,11 +106,15 @@ if (class_exists('NewsletterJobCollection')) {
         $oOption = new cHTMLOptionElement(mi18n("HTML"), 1);
         $oSelType->addOptionElement(1, $oOption);
 
-        // $sTmpHTML .= ' '.$oLblType->toHtml()."\n";
-        $sTmpHTML .= '         ' . $oSelType->render() . "\n";
-        $sTmpHTML .= '         <br class="y"/>';
+        $aAdditionalRows[] = [
+            'id' => 'selNewsletterType',
+            'cssClass' => 'contact_rowNlType',
+            'label' => mi18n("TYPE"),
+            'elementHtml' =>  $oSelType->render()
+        ];
     }
-    $tpl->assign('EXTRAHTML', $sTmpHTML);
+
+    $tpl->assign('ADDITIONAL_ROWS', $aAdditionalRows);
 
     $tpl->assign('NEWSLETTER', mi18n("NEWSLETTER_SRC"));
     $tpl->assign('SUBSCRIBE', mi18n("SUBSCRIBE_SRC"));

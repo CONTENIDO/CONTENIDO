@@ -20,15 +20,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @param array $aClients
  *         array of clients to check
- * @param int $iLang
+ * @param int   $iLang
  *         language id which should be checked
  * @param array $aCfg
  *         CONTENIDO configruation array (no more needed)
- * @param cDb $oDb
+ * @param cDb   $oDb
  *         CONTENIDO database object (no more needed)
- * @return boolean
+ *
+ * @return bool
  *         status
  *         If language id corresponds to list of clients true otherwise false.
+ * 
+ * @throws cDbException
  */
 function checkLangInClients($aClients, $iLang, $aCfg, $oDb) {
     $oClientLanguageCollection = new cApiClientLanguageCollection();
@@ -40,15 +43,20 @@ function checkLangInClients($aClients, $iLang, $aCfg, $oDb) {
  *
  * @param string $area
  *         Main area name (e. g. 'lay', 'mod', 'str', 'tpl', etc.)
- * @param int $iditem
+ * @param int    $iditem
  *         ID of element to copy
- * @param int $newiditem
+ * @param int    $newiditem
  *         ID of the new element
- * @param int $idlang
+ * @param bool   $idlang
  *         ID of language, if passed only rights for this language
  *         will be created, otherwise for all existing languages
+ *
  * @return bool
  *         True on success otherwise false
+ * 
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function copyRightsForElement($area, $iditem, $newiditem, $idlang = false) {
     global $perm, $auth, $area_tree;
@@ -114,13 +122,18 @@ function copyRightsForElement($area, $iditem, $newiditem, $idlang = false) {
  *
  * @param string $area
  *         Main area name (e. g. 'lay', 'mod', 'str', 'tpl', etc.)
- * @param int $iditem
+ * @param int    $iditem
  *         ID of new element
- * @param int $idlang
+ * @param bool   $idlang
  *         ID of language, if passed only rights for this language
  *         will be created, otherwise for all existing languages
+ *
  * @return bool
  *         True on success otherwise false
+ * 
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function createRightsForElement($area, $iditem, $idlang = false) {
     global $perm, $auth, $area_tree, $client;
@@ -185,10 +198,13 @@ function createRightsForElement($area, $iditem, $idlang = false) {
  *
  * @param string $area
  *         main area name
- * @param int $iditem
+ * @param int    $iditem
  *         ID of new element
- * @param int $idlang
+ * @param bool   $idlang
  *         ID of lang parameter
+ *
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function deleteRightsForElement($area, $iditem, $idlang = false) {
     global $perm, $area_tree, $client;
@@ -215,9 +231,13 @@ function deleteRightsForElement($area, $iditem, $idlang = false) {
  *
  * @todo Do we really need to add other perms, if the user/group gets the
  *       'sysadmin' permission?
+ *
  * @param bool $bAddUserToClient
  *         Flag to add current user to current client, if no client is specified.
+ *
  * @return array
+ * 
+ * @throws cDbException
  */
 function buildUserOrGroupPermsFromRequest($bAddUserToClient = false) {
     global $cfg, $msysadmin, $madmin, $mclient, $mlang, $auth, $client;
@@ -290,7 +310,11 @@ function buildUserOrGroupPermsFromRequest($bAddUserToClient = false) {
 
 /**
  *
- * @return boolean
+ * @return bool
+ * 
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function saveRights() {
     global $perm, $notification, $db, $userid;
@@ -368,7 +392,11 @@ function saveRights() {
 
 /**
  *
- * @return boolean
+ * @return bool
+ * 
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function saveGroupRights() {
     global $perm, $notification, $db, $groupid;
@@ -440,4 +468,54 @@ function saveGroupRights() {
 
     $rights_list_old = $rights_list;
     return true;
+}
+
+/**
+ * Build list of rights for all relevant and online areas except "login" and their relevant actions.
+ *
+ * @return array
+ */
+function getRightsList()
+{
+    $areas   = new cApiAreaCollection();
+    $navSubs = new cApiNavSubCollection();
+    $actions = new cApiActionCollection();
+
+    try {
+        $rights = [];
+
+        $areas->select('relevant = 1 AND online = 1 AND name != "login"');
+        while ($area = $areas->next()) {
+            $right = [
+                'perm'     => $area->get('name'),
+                'location' => '',
+            ];
+
+            // get location
+            $navSubs->select('idarea = ' . (int)$area->get('idarea'));
+            if ($navSubItem = $navSubs->next()) {
+                $right['location'] = $navSubItem->get('location');
+            }
+
+            // get relevant actions
+            $actions->select('relevant = 1 AND idarea = ' . (int)$area->get('idarea'));
+            while ($action = $actions->next()) {
+                $right['action'][] = $action->get('name');
+            }
+
+            // insert into list
+            if ($area->get('parent_id') == '0') {
+                $key = $area->get('name');
+            } else {
+                $key = $area->get('parent_id');
+            }
+            $rights[$key][$area->get('name')] = $right;
+        }
+    } catch (cDbException $e) {
+        $rights = [];
+    } catch (cException $e) {
+        $rights = [];
+    }
+
+    return $rights;
 }

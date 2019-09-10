@@ -21,7 +21,7 @@ cInclude('includes', 'functions.file.php');
 $appendparameters = $_REQUEST["appendparameters"];
 
 /**
- *
+ * Class UploadSearchResultList
  */
 class UploadSearchResultList extends FrontendList {
     /**
@@ -46,11 +46,16 @@ class UploadSearchResultList extends FrontendList {
      * Field converting facility.
      *
      * @see FrontendList::convert()
+     *
      * @param int $field
      *         Field index
-     * @param mixed $value
-     *         Field value
+     * @param     $data
+     *
      * @return mixed
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function convert($field, $data) {
         global $cfg, $sess, $client, $cfgClient, $appendparameters;
@@ -174,7 +179,6 @@ class UploadSearchResultList extends FrontendList {
     public function setSize($size) {
         $this->_size = $size;
     }
-
 }
 
 if ($sortby == "") {

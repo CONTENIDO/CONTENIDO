@@ -64,9 +64,10 @@ class TODOBackendList extends cGuiScrollList {
         $this->_prioritytypes = $todoitems->getPriorityTypes();
     }
 
-
     /**
      * Old constructor
+     *
+     * @throws cInvalidArgumentException
      */
     public function TODOBackendList() {
         cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
@@ -99,12 +100,16 @@ class TODOBackendList extends cGuiScrollList {
      * Needs to be overridden in the child class to work properbly.
      *
      * @see cGuiScrollList::convert()
-     * @param int $key
+     *
+     * @param int    $key
      *         Field index
      * @param string $value
      *         Field value
-     * @param array $hidden
+     * @param array  $hidden
+     *
      * @return unknown
+     * 
+     * @throws cException
      */
     public function convert($key, $value, $hidden) {
         global $link, $dateformat, $cfg;

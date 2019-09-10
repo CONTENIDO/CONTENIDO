@@ -1,22 +1,5 @@
 <!-- form_assistant/templates/template.right_bottom_data.tpl -->
 
-<script>
-    (function(Con, $) {
-        $(function() {
-            // On flip mark click
-            $('a.flip_mark').click(function() {
-                $('input.mark_data').each(function() {
-                    if ($(this).prop('checked')) {
-                        $(this).prop('checked', false);
-                    } else {
-                        $(this).prop('checked', true);
-                    }
-                });
-            });
-        });
-    })(Con, Con.$);
-</script>
-
 <fieldset>
     <legend>{$trans.legend}</legend>
 {if true neq $form->isLoaded()}
@@ -55,7 +38,7 @@
         </tr>
     {if 0 eq $data|count}
         <tr>
-            <td colspan="{$fields|count}">{$trans.nodata}</td>
+            <td colspan="{$fields|count + 1}">{$trans.nodata}</td>
         </tr>
     {else}
         {foreach from=$data item=row}
@@ -85,7 +68,10 @@
     </table>
     <table>
         <tr>
-            <th><img src="images/delete.gif" /></th>
+            <th>
+                <input type="hidden" name="deleteUrl" class="deleteUrl" value="{$deleteUrl}">
+                <img class="delete" src="images/delete.gif" />
+            </th>
         </tr>
     </table>
 {/if}
