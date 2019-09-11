@@ -27,23 +27,13 @@ class Solr {
     private static $_name = 'search_solr';
 
     /**
-     *
      * @param mixed $whatever
+     * @param null  $file
+     * @param null  $line
+     *
+     * @throws cInvalidArgumentException
      */
     public static function log($whatever, $file = NULL, $line = NULL) {
-        $msg = '';
-        if ($whatever instanceof Exception) {
-            $msg .= '========================' . PHP_EOL;
-            $msg .= '=== LOGGED EXCEPTION ===' . PHP_EOL;
-            $msg .= 'REFERER: ' . $_SERVER['HTTP_REFERER'] . PHP_EOL;
-            $msg .= 'URI: ' . $_SERVER['REQUEST_URI'] . PHP_EOL;
-            $msg .= 'MSG: ' . $whatever->getMessage() . PHP_EOL;
-            $msg .= 'TRACE: ' . $whatever->getTraceAsString() . PHP_EOL;
-            $msg .= '========================';
-        } else {
-            $msg = $whatever;
-        }
-
         static $start = 0;
         if (0 == $start) {
             $start = microtime(true);
@@ -72,6 +62,22 @@ class Solr {
     }
 
     /**
+     * @param Exception $e
+     *
+     * @throws cInvalidArgumentException
+     */
+    public static function logException(Exception $e) {
+        $cfg = cRegistry::getConfig();
+
+        $log = new cLog(cLogWriter::factory('file', array(
+            'destination' => $cfg['path']['contenido_logs'] . 'errorlog.txt'
+        )));
+
+        $log->err($e->getMessage());
+        $log->err($e->getTraceAsString());
+    }
+
+    /**
      */
     public static function getName() {
         return self::$_name;
@@ -97,7 +103,12 @@ class Solr {
      * @return string
      */
     public static function i18n($key) {
-        $trans = i18n($key, self::$_name);
+        try {
+            $trans = i18n($key, self::$_name);
+        } catch (cException $e) {
+            $trans = $key;
+        }
+
         return $trans;
     }
 
@@ -107,87 +118,73 @@ class Solr {
      * The option values are read from system or client settings.
      * Required settings are solr/hostname, solr/port, solr/path.
      *
+     * @param $idclient
+     * @param $idlang
+     *
      * @return array
+     * @throws cDbException
+     * @throws cException
      */
-    public static function getClientOptions($idclient, $idlang) {
-
-        //$queryOption = 'getSystemProperty';
-        $queryOption = 'getEffectiveSetting';
-
-        $options = array();
+    public static function getClientOptions($idclient, $idlang)
+    {
+        $options = [];
 
         // Boolean value indicating whether or not to connect in secure mode.
-        $options['secure'] = (bool) $queryOption('solr', 'secure');
+        $options['secure'] = (bool)cEffectiveSetting::get('solr', 'secure');
 
         // Required. The hostname for the Solr server.
-        $options['hostname'] = $queryOption('solr', 'hostname');
+        $options['hostname'] = cEffectiveSetting::get('solr', 'hostname');
 
         // Required. The port number.
-        $options['port'] = $queryOption('solr', 'port');
+        $options['port'] = cEffectiveSetting::get('solr', 'port');
 
         // Required. The path to solr.
-        $options['path'] = $queryOption('solr', 'path');
-
-        // load path from clientLanguage, client or system
-        $clientLanguage = new cApiClientLanguage();
-        $clientLanguage->loadByMany(array(
-            'idclient' => $idclient,
-            'idlang' => $idlang
-        ));
-        $value = $clientLanguage->isLoaded() ? $clientLanguage->getProperty($type, $name) : false;
-        if (false === $value) {
-            $client = new cApiClient($idclient);
-            $value = $client->isLoaded() ? $client->getProperty($type, $name) : false;
-        }
-        if (false === $value) {
-            $value = getSystemProperty($type, $name);
-        }
+        $options['path'] = cEffectiveSetting::get('solr', 'path');
 
         // The name of the response writer e.g. xml, phpnative.
-        $options['wt'] = $queryOption('solr', 'wt');
+        $options['wt'] = cEffectiveSetting::get('solr', 'wt');
 
         // Required. The username used for HTTP Authentication, if any.
-        $options['login'] = $queryOption('solr', 'login');
+        $options['login'] = cEffectiveSetting::get('solr', 'login');
 
         // Required. The HTTP Authentication password.
-        $options['password'] = $queryOption('solr', 'password');
+        $options['password'] = cEffectiveSetting::get('solr', 'password');
 
         // The hostname for the proxy server, if any.
-        $options['proxy_host'] = $queryOption('solr', 'proxy_host');
+        $options['proxy_host'] = cEffectiveSetting::get('solr', 'proxy_host');
 
         // The proxy port.
-        $options['proxy_port'] = $queryOption('solr', 'proxy_port');
+        $options['proxy_port'] = cEffectiveSetting::get('solr', 'proxy_port');
 
         // The proxy username.
-        $options['proxy_login'] = $queryOption('solr', 'proxy_login');
+        $options['proxy_login'] = cEffectiveSetting::get('solr', 'proxy_login');
 
         // The proxy password.
-        $options['proxy_password'] = $queryOption('solr', 'proxy_password');
+        $options['proxy_password'] = cEffectiveSetting::get('solr', 'proxy_password');
 
         // This is maximum time in seconds allowed for the http data transfer
         // operation. Default is 30 seconds.
-        $options['timeout'] = $queryOption('solr', 'timeout');
+        $options['timeout'] = cEffectiveSetting::get('solr', 'timeout');
 
         // File name to a PEM-formatted file containing the private key +
         // private certificate (concatenated in that order).
         // Please note the if the ssl_cert file only contains the private
         // certificate, you have to specify a separate ssl_key file.
-        $options['ssl_cert'] = $queryOption('solr', 'ssl_cert');
+        $options['ssl_cert'] = cEffectiveSetting::get('solr', 'ssl_cert');
 
         // File name to a PEM-formatted private key file only.
-        $options['ssl_key'] = $queryOption('solr', 'ssl_key');
+        $options['ssl_key'] = cEffectiveSetting::get('solr', 'ssl_key');
 
         // Password for private key.
         // The ssl_keypassword option is required if the ssl_cert or ssl_key
         // options are set.
-        $options['ssl_keypassword'] = $queryOption('solr', 'ssl_keypassword');
+        $options['ssl_keypassword'] = cEffectiveSetting::get('solr', 'ssl_keypassword');
 
         // Name of file holding one or more CA certificates to verify peer with.
-        $options['ssl_cainfo'] = $queryOption('solr', 'ssl_cainfo');
+        $options['ssl_cainfo'] = cEffectiveSetting::get('solr', 'ssl_cainfo');
 
-        // Name of directory holding multiple CA certificates to verify peer
-        // with.
-        $options['ssl_capath'] = $queryOption('solr', 'ssl_capath');
+        // Name of directory holding multiple CA certificates to verify peer with.
+        $options['ssl_capath'] = cEffectiveSetting::get('solr', 'ssl_capath');
 
         // remove unset options (TODO could be done via array_filter too)
         foreach ($options as $key => $value) {
@@ -219,21 +216,6 @@ class Solr {
         if (!$valid) {
             throw new SolrWarning(Solr::i18n('WARNING_INVALID_CLIENT_OPTIONS'));
         }
-    }
-
-    /**
-     *
-     * @param Exception $e
-     */
-    public static function logException(Exception $e) {
-        $cfg = cRegistry::getConfig();
-
-        $log = new cLog(cLogWriter::factory('file', array(
-            'destination' => $cfg['path']['contenido_logs'] . 'errorlog.txt'
-        )), cLog::ERR);
-
-        $log->err($e->getMessage());
-        $log->err($e->getTraceAsString());
     }
 
     /**
@@ -304,7 +286,8 @@ cAutoload::addClassmapConfig(array(
 unset($pluginClassPath);
 
 // == add chain functions
+$cec = cRegistry::getCecRegistry();
 // reindex article after article properties are updated
-cRegistry::getCecRegistry()->addChainFunction('Contenido.Action.con_saveart.AfterCall', 'SolrIndexer::handleStoringOfArticle');
+$cec->addChainFunction('Contenido.Action.con_saveart.AfterCall', 'SolrIndexer::handleStoringOfArticle');
 // reindex article after any content entry is updated
-cRegistry::getCecRegistry()->addChainFunction('Contenido.Content.AfterStore', 'SolrIndexer::handleStoringOfContentEntry');
+$cec->addChainFunction('Contenido.Content.AfterStore', 'SolrIndexer::handleStoringOfContentEntry');

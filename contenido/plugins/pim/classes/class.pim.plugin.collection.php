@@ -19,13 +19,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package     Plugin
  * @subpackage  PluginManager
  * @author Frederic Schneider
+ * @method PimPlugin createNewItem
+ * @method PimPlugin next
  */
 class PimPluginCollection extends ItemCollection {
-
     /**
      * Constructor Function
      *
-     * @param none
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -33,23 +34,27 @@ class PimPluginCollection extends ItemCollection {
         $this->_setItemClass('PimPlugin');
     }
 
-	/**
-	 * Create a new plugin
-	 * 
-	 * @param     $name
-	 * @param     $description
-	 * @param     $author
-	 * @param     $copyright
-	 * @param     $mail
-	 * @param     $website
-	 * @param     $version
-	 * @param     $foldername
-	 * @param     $uuId
-	 * @param     $active
-	 * @param int $execOrder
-	 *
-	 * @return Item
-	 */
+    /**
+     * Create a new plugin
+     *
+     * @param unknown_type $name
+     * @param unknown_type $description
+     * @param unknown_type $author
+     * @param unknown_type $copyright
+     * @param unknown_type $mail
+     * @param unknown_type $website
+     * @param unknown_type $version
+     * @param unknown_type $foldername
+     * @param unknown_type $uuId
+     * @param unknown_type $active
+     * @param int          $execOrder
+     *
+     * @return Item
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     */
     public function create($name, $description, $author, $copyright, $mail, $website, $version, $foldername, $uuId, $active, $execOrder = 0) {
         global $client;
 
@@ -86,6 +91,8 @@ class PimPluginCollection extends ItemCollection {
      * Get the next id in table *_plugins
      *
      * @return int
+     *
+     * @throws cDbException
      */
     protected function _getNextId() {
         $cfg = cRegistry::getConfig();
@@ -127,7 +134,10 @@ class PimPlugin extends Item {
     /**
      * Constructor Function
      *
-     * @param  mixed  $id  Specifies the id of item to load
+     * @param  mixed $id Specifies the id of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($id = false) {
         $cfg = cRegistry::getConfig();
@@ -138,12 +148,14 @@ class PimPlugin extends Item {
         }
     }
 
-	/**
+    /**
      * Userdefined setter for pim fields.
      *
      * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @param mixed  $value
+     * @param bool   $bSafe Flag to run defined inFilter on passed value
+     *
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
@@ -162,8 +174,12 @@ class PimPlugin extends Item {
      * Check dependencies
      * Adapted from PimPLuginSetup class
      *
-     * @param integer $newOrder New executionorder value
-     * @return boolean
+     * @param int $newOrder New executionorder value
+     *
+     * @return bool
+     *
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function checkDependedFromOtherPlugins($newOrder) {
     	$cfg = cRegistry::getConfig();
@@ -242,8 +258,12 @@ class PimPlugin extends Item {
      * Check dependencies
      * Adapted from PimPLuginSetup class
      *
-     * @param integer $newOrder New executionorder value
-     * @return boolean
+     * @param int $newOrder New executionorder value
+     *
+     * @return bool
+     *
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function checkDependenciesToOtherPlugins($newOrder) {
     	$cfg = cRegistry::getConfig();
@@ -317,7 +337,12 @@ class PimPlugin extends Item {
      * Change the execution order of this plugin and update the order for every other plugin
      *
      * @param int $newOrder New execution order for this plugin
-     * @return boolean
+     *
+     * @return bool
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function updateExecOrder($newOrder) {
 
@@ -342,7 +367,7 @@ class PimPlugin extends Item {
             if ($newOrder < $oldOrder) {
                 $plugin->set("executionorder", $plugin->get("executionorder") + 1); // increment the execution order after we moved the plugin up
                 $plugin->store();
-            } else if ($oldOrder < $newOrder) {
+            } elseif ($oldOrder < $newOrder) {
                 $plugin->set("executionorder", $plugin->get("executionorder") - 1); // decrement the execution value after we moved the plugin down
                 $plugin->store();
             }
@@ -355,7 +380,11 @@ class PimPlugin extends Item {
      * Check if plugin exists and is active
      *
      * @param string $pluginname
+     *
      * @return bool true iv available, false if it is not available
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function isPluginAvailable($pluginname) {
         return $this->loadByMany(array(

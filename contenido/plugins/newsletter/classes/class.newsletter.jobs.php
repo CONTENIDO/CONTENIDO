@@ -18,13 +18,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Plugin
  * @subpackage Newsletter
+ * @method NewsletterJob createNewItem
+ * @method NewsletterJob next
  */
 class NewsletterJobCollection extends ItemCollection {
-
     /**
      * Constructor Function
      *
-     * @param none
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -35,9 +36,14 @@ class NewsletterJobCollection extends ItemCollection {
     /**
      * Creates a newsletter job
      *
-     * @param $name string Specifies the name of the newsletter, the same name
-     *            may be used more than once
-     * @param $idnews integer Newsletter id
+     * @param        $iIDNews
+     * @param        $iIDCatArt
+     * @param string $sName
+     *
+     * @return bool|Item
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($iIDNews, $iIDCatArt, $sName = "") {
 
@@ -232,11 +238,13 @@ class NewsletterJobCollection extends ItemCollection {
  * Single NewsletterJob Item
  */
 class NewsletterJob extends Item {
-
     /**
      * Constructor Function
      *
      * @param mixed $mId Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -246,6 +254,11 @@ class NewsletterJob extends Item {
         }
     }
 
+    /**
+     * @return int
+     * @throws cDbException
+     * @throws cException
+     */
     public function runJob() {
         global $cfg, $recipient;
 
@@ -424,7 +437,6 @@ class NewsletterJob extends Item {
                         $contentType = 'text/html';
                     }
 
-
                     try {
                         // this code can throw exceptions like Swift_RfcComplianceException
                         $message = Swift_Message::newInstance($sSubject, $body, $contentType, $sEncoding);
@@ -455,7 +467,7 @@ class NewsletterJob extends Item {
                 // No recipients remaining, job finished
                 $this->set("status", 9);
                 $this->set("finished", date("Y-m-d H:i:s"), false);
-            } else if ($bDispatch) {
+            } elseif ($bDispatch) {
                 // Check, if there are recipients remaining - stops job faster
                 $oLogs->resetQuery();
                 $oLogs->setWhere("idnewsjob", $this->get($this->getPrimaryKeyName()));

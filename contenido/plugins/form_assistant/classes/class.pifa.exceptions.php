@@ -1,12 +1,13 @@
 <?php
 
 /**
+ * This file contains several exception classes.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage FormAssistant
- * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @copyright four for business AG
- * @link http://www.4fb.de
+ * @author     Marcus Gnaß <marcus.gnass@4fb.de>
+ * @copyright  four for business AG
+ * @link       http://www.4fb.de
  */
 
 // assert CONTENIDO framework
@@ -17,7 +18,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-class PifaException extends cException {
+class PifaException extends cException
+{
 }
 
 /**
@@ -25,7 +27,8 @@ class PifaException extends cException {
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-class PifaDatabaseException extends PifaException {
+class PifaDatabaseException extends PifaException
+{
 }
 
 /**
@@ -33,7 +36,8 @@ class PifaDatabaseException extends PifaException {
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-class PifaNotImplementedException extends PifaException {
+class PifaNotImplementedException extends PifaException
+{
 }
 
 /**
@@ -42,7 +46,8 @@ class PifaNotImplementedException extends PifaException {
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-class PifaIllegalStateException extends PifaException {
+class PifaIllegalStateException extends PifaException
+{
 }
 
 /**
@@ -50,7 +55,8 @@ class PifaIllegalStateException extends PifaException {
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-class PifaNotYetStoredException extends PifaException {
+class PifaNotYetStoredException extends PifaException
+{
 }
 
 /**
@@ -59,28 +65,27 @@ class PifaNotYetStoredException extends PifaException {
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-class PifaValidationException extends PifaException {
-
+class PifaValidationException extends PifaException
+{
     /**
-     *
      * @var array
      */
-    private $_errors = array();
+    private $_errors = [];
 
     /**
-     *
      * @param array $errors
      */
-    public function __construct(array $errors) {
+    public function __construct(array $errors)
+    {
         // parent::__construct($message, $code, $previous);
         $this->_errors = $errors;
     }
 
     /**
-     *
      * @return array
      */
-    public function getErrors() {
+    public function getErrors()
+    {
         return $this->_errors;
     }
 }
@@ -90,5 +95,6 @@ class PifaValidationException extends PifaException {
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */
-class PifaMailException extends PifaException {
+class PifaMailException extends PifaException
+{
 }

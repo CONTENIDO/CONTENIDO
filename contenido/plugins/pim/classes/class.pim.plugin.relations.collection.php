@@ -19,13 +19,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package     Plugin
  * @subpackage  PluginManager
  * @author Frederic Schneider
+ * @method PimPluginRelations createNewItem
+ * @method PimPluginRelations next
  */
 class PimPluginRelationsCollection extends ItemCollection {
-
     /**
      * Constructor Function
      *
-     * @param none
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -41,6 +42,10 @@ class PimPluginRelationsCollection extends ItemCollection {
      * @param $type     string Relation to tables *_area and *_nav_main
      *
      * @return Item
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($idItem, $idPlugin, $type) {
 
@@ -70,7 +75,10 @@ class PimPluginRelations extends Item {
     /**
      * Constructor Function
      *
-     * @param  mixed  $id  Specifies the id of item to load
+     * @param  mixed $id Specifies the id of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($id = false) {
         global $cfg;
@@ -81,12 +89,14 @@ class PimPluginRelations extends Item {
         }
     }
 
-	/**
+    /**
      * Userdefined setter for pim relations fields.
      *
      * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @param mixed  $value
+     * @param bool   $bSafe Flag to run defined inFilter on passed value
+     *
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {

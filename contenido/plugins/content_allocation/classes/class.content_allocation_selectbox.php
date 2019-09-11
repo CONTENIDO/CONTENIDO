@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the select box class for the plugin content allocation.
  *
@@ -24,7 +25,7 @@ plugin_include('repository', 'custom/FrontendNavigation.php');
 class pApiContentAllocationSelectBox extends pApiTree {
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $_idSetter = true;
 
@@ -37,6 +38,9 @@ class pApiContentAllocationSelectBox extends pApiTree {
      * pApiContentAllocationSelectBox constructor
      *
      * @param string $uuid
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($uuid) {
         parent::__construct($uuid);
@@ -46,9 +50,13 @@ class pApiContentAllocationSelectBox extends pApiTree {
      * Old constructor
      *
      * @deprecated [2016-02-11]
-     * 				This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     *                This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     *
      * @param string $uuid
-     * @return __construct()
+     *
+     * @return pApiContentAllocationSelectBox
+     * @throws cDbException
+     * @throws cException
      */
     public function pApiContentAllocationSelectBox($uuid) {
         cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
@@ -61,7 +69,7 @@ class pApiContentAllocationSelectBox extends pApiTree {
      * @param $tree
      * @return string
      */
-    protected function _buildRenderTre ($tree) {
+    protected function _buildRenderTree($tree) {
 
         $this->_idSetter = false;
         $result = '';
@@ -81,14 +89,13 @@ class pApiContentAllocationSelectBox extends pApiTree {
         return $result;
     }
 
-
     /**
      * Old function
      *
      * @deprecated [2016-02-11]
      * 				This method is deprecated and is not needed any longer.    *
      * @param null $load
-     * @return boolean
+     * @return bool
      */
     public function setChecked($load = null) {
         cDeprecated('This method is deprecated and is not needed any longer.');
@@ -98,14 +105,16 @@ class pApiContentAllocationSelectBox extends pApiTree {
     /**
      * Render tree
      *
-     * @param boolean $return
-     * @param mixed $parentId
-     * @param boolean $useTreeStatus (if true use expand/collapsed status of the tree, otherwise not)
-     * @return boolean|object
+     * @param bool $return
+     * @param mixed   $parentId
+     * @param bool $useTreeStatus (if true use expand/collapsed status of the tree, otherwise not)
+     *
+     * @return bool|object
+     * @throws cDbException
      */
-    public function renderTree($return = true, $parentId = false, $bUseTreeStatus = false) {
+    public function renderTree($return = true, $parentId = false, $useTreeStatus = false) {
 
-        $tree = $this->fetchTree($parentId, 0, $bUseTreeStatus);
+        $tree = $this->fetchTree($parentId, 0, $useTreeStatus);
 
         if ($tree === false) {
             return false;
@@ -120,4 +129,3 @@ class pApiContentAllocationSelectBox extends pApiTree {
         }
     }
 }
-?>

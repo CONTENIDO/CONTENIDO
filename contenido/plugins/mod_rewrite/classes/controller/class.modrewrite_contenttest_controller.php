@@ -14,7 +14,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-
 /**
  * Content controller to run tests.
  *
@@ -52,6 +51,10 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract {
 
     /**
      * Test action
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function testAction() {
         $this->_oView->content = '';

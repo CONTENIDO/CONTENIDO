@@ -673,7 +673,6 @@ $sContent = '
 </div>
 ';
 
-
 $oTpl->set('s', 'VALUE_PURGETIMEFRAME', $iTimeframe);
 
 // To template

@@ -21,15 +21,19 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @author frederic.schneider
  */
 class PimPluginSetupStatus extends PimPluginSetup {
-
-    // Classes
-    // Class variable for PimPluginCollection
+    /**
+     * @var PimPluginCollection
+     */
     protected $_PimPluginCollection;
 
-    // Class variable for PimPluginRelationsCollection
+    /**
+     * @var PimPluginRelationsCollection
+     */
     protected $_PimPluginRelationsCollection;
 
-    // Class variable for cApiNavSubCollection
+    /**
+     * @var cApiNavSubCollection
+     */
     protected $_ApiNavSubCollection;
 
     /**
@@ -78,6 +82,8 @@ class PimPluginSetupStatus extends PimPluginSetup {
      * Change plugin active status
      *
      * @param int $pluginId
+     *
+     * @throws cException
      */
     public function changeActiveStatus($pluginId) {
 
@@ -98,8 +104,8 @@ class PimPluginSetupStatus extends PimPluginSetup {
         $this->_PimPluginRelationsCollection->setWhere('type', 'navs');
         $this->_PimPluginRelationsCollection->query();
 
-        if ($pluginActiveStatus == 1) { // Plugin is online and now we change
-                                        // status to offline
+        if ($pluginActiveStatus == 1) {
+            // Plugin is online and now we change status to offline
 
             // Dependencies check
             $this->_updateCheckDependencies();
@@ -115,7 +121,8 @@ class PimPluginSetupStatus extends PimPluginSetup {
             }
 
             parent::info(sprintf(i18n('The plugin <strong>%s</strong> has been sucessfully disabled. To apply the changes please login into backend again.', 'pim'), $pluginName));
-        } else { // Plugin is offline and now we change status to online
+        } else {
+            // Plugin is offline and now we change status to online
 
             $plugin->set('active', 1);
             $plugin->store();
@@ -133,6 +140,9 @@ class PimPluginSetupStatus extends PimPluginSetup {
 
     /**
      * Check dependencies to other plugins (dependencies-Tag at plugin.xml)
+     *
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _updateCheckDependencies() {
 
@@ -149,9 +159,11 @@ class PimPluginSetupStatus extends PimPluginSetup {
     /**
      * Change *_nav_sub online status
      *
-     * @param int $idnavs (equivalent to column name)
+     * @param int  $idnavs (equivalent to column name)
      * @param bool $online (equivalent to column name)
-     * @return  bool true
+     *
+     * @throws cDbException
+     * @throws cException
      */
     private function _changeNavSubStatus($idnavs, $online) {
         $this->_ApiNavSubCollection->setWhere('idnavs', cSecurity::toInteger($idnavs));
@@ -160,9 +172,5 @@ class PimPluginSetupStatus extends PimPluginSetup {
         $navSub = $this->_ApiNavSubCollection->next();
         $navSub->set('online', cSecurity::toInteger($online));
         $navSub->store();
-
-        return true;
     }
-
 }
-?>

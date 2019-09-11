@@ -21,6 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @author Ingo van Peeren
  * @package Plugin
  * @subpackage UrlShortener
+ * @method cApiShortUrl createNewItem
+ * @method cApiShortUrl next
  */
 class cApiShortUrlCollection extends ItemCollection {
 
@@ -61,6 +63,7 @@ class cApiShortUrlCollection extends ItemCollection {
     const ERR_ALREADY_EXISTS = 6;
 
     /**
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         $cfg = cRegistry::getConfig();
@@ -71,10 +74,14 @@ class cApiShortUrlCollection extends ItemCollection {
     /**
      *
      * @param string $shorturl
-     * @param int $idart
-     * @param int $idlang
-     * @param int $idclient
-     * @return Ambigous <Item, object>
+     * @param int    $idart
+     * @param int    $idlang
+     * @param int    $idclient
+     *
+     * @return cApiShortUrl
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($shorturl, $idart = NULL, $idlang = NULL, $idclient = NULL) {
         if (is_null($idart)) {
@@ -87,6 +94,7 @@ class cApiShortUrlCollection extends ItemCollection {
             $idclient = cRegistry::getClientId();
         }
 
+        /** @var cApiShortUrl $item */
         $item = $this->createNewItem();
         $item->set('shorturl', $shorturl);
         $item->set('idart', $idart);
@@ -106,8 +114,10 @@ class cApiShortUrlCollection extends ItemCollection {
      * - given url is not an article or category alias
      *
      * @param string $shorturl the short URL to check
+     *
      * @return int boolean error code if the given shorturl is invalid or true
      *         if it is valid
+     * @throws cDbException
      */
     public function isValidShortUrl($shorturl) {
         $cfg = cRegistry::getConfig();
@@ -164,11 +174,13 @@ class cApiShortUrlCollection extends ItemCollection {
  * @subpackage UrlShortener
  */
 class cApiShortUrl extends Item {
-
     /**
      * Constructor Function
      *
      * @param mixed $id Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($id = false) {
         $cfg = cRegistry::getConfig();

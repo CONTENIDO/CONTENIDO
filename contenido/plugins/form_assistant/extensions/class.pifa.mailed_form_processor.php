@@ -36,6 +36,8 @@ class MailedFormProcessor extends DefaultFormProcessor {
      *
      * @see DefaultFormProcessor::_processStoredData()
      * @throws PifaMailException if any mail could not be sent
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     protected function _processStoredData() {
 
@@ -76,7 +78,10 @@ class MailedFormProcessor extends DefaultFormProcessor {
      * Sends a mail to the client or configured system address when mail template was selected.
      *
      * @param string $mode mail mode, must be "client" or "system"
+     *
      * @return boolean|array
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     protected function _getMailOptions($mode) {
     	if ($mode != self::MAIL_MODE_CLIENT && $mode != self::MAIL_MODE_SYSTEM) {

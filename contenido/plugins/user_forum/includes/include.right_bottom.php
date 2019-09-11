@@ -13,7 +13,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-
 // generates obj that renders the content at the right side.
 if (!empty($_REQUEST['idart'])) {
 	$rightBottom = new ArticleForumRightBottom();

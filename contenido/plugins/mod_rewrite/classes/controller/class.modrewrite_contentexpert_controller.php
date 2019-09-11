@@ -14,7 +14,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-
 /**
  * Content expert controller for expert settings/actions.
  *
@@ -51,7 +50,6 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract {
      * Index action
      */
     public function indexAction() {
-
     }
 
     /**
@@ -97,6 +95,9 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract {
 
     /**
      * Download htaccess action
+     *
+     * @throws cInvalidArgumentException
+     * @throws cException
      */
     public function downloadHtaccessAction() {
         $type = $this->_getParam('htaccesstype');
@@ -121,6 +122,9 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract {
 
     /**
      * Reset aliases action
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function resetAction() {
         // recreate all aliases
@@ -130,6 +134,9 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract {
 
     /**
      * Reset only empty aliases action
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function resetEmptyAction() {
         // recreate only empty aliases

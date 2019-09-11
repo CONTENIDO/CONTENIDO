@@ -1,15 +1,17 @@
 <?php
+
 /**
  * This file contains the main class for the plugin content allocation.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage ContentAllocation
- * @author Marco Jahn
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Marco Jahn
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 plugin_include('repository', 'custom/FrontendNavigation.php');
@@ -17,7 +19,7 @@ plugin_include('repository', 'custom/FrontendNavigation.php');
 /**
  * Main class for content allocation
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage ContentAllocation
  */
 class pApiContentAllocation {
@@ -30,8 +32,7 @@ class pApiContentAllocation {
     protected $_db = null;
 
     /*
-     *
-     * @var boolean
+     * @var bool
      */
     protected $_debug = false;
 
@@ -41,12 +42,12 @@ class pApiContentAllocation {
     protected $_table = array();
 
     /**
-     * @var integer
+     * @var int
      */
     protected $_lang = 0;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $_client = 0;
 
@@ -74,7 +75,6 @@ class pApiContentAllocation {
      *
      * @deprecated [2016-02-11]
      * 				This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
-     * @return __construct()
      */
     public function pApiContentAllocation() {
         cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
@@ -84,8 +84,10 @@ class pApiContentAllocation {
     /**
      * Store allocations
      *
-     * @param integer $idartlang
+     * @param int   $idartlang
      * @param array $allocations
+     *
+     * @throws cDbException
      */
     public function storeAllocations($idartlang, $allocations) {
         // empty before insert
@@ -102,7 +104,9 @@ class pApiContentAllocation {
     /**
      * Delete allocations by allocation id
      *
-     * @param integer $idpica_alloc
+     * @param int $idpica_alloc
+     *
+     * @throws cDbException
      */
     public function deleteAllocations($idpica_alloc) {
         $sql = "DELETE FROM " . $this->_table['pica_alloc_con'] . " WHERE idpica_alloc = " . cSecurity::toInteger($idpica_alloc);
@@ -112,7 +116,9 @@ class pApiContentAllocation {
     /**
      * Delete allocations by language id
      *
-     * @param integer $idartlang
+     * @param int $idartlang
+     *
+     * @throws cDbException
      */
     public function deleteAllocationsByIdartlang($idartlang) {
         $sql = "DELETE FROM " . $this->_table['pica_alloc_con'] . " WHERE idartlang = " . cSecurity::toInteger($idartlang);
@@ -123,7 +129,9 @@ class pApiContentAllocation {
      * Load all tagging keys
      *
      * @param int $idartlang
+     *
      * @return array $result
+     * @throws cDbException
      */
     public function loadAllocations($idartlang) {
         $this->_db->query("-- pApiContentAllocation->loadAllocations()
@@ -148,10 +156,12 @@ class pApiContentAllocation {
     /**
      * Load allocations by language id and parent id
      *
-     * @param $idartlang
-     * @param $parent
-     * @param boolean $firstonly [optional]
-     * @return array $tmp
+     * @param int  $idartlang
+     * @param int  $parent
+     * @param bool $firstonly [optional]
+     *
+     * @return array
+     * @throws cDbException
      */
     public function loadAllocationsWithNames($idartlang, $parent, $firstonly = false) {
         $cfg = cRegistry::getConfig();
@@ -164,6 +174,7 @@ class pApiContentAllocation {
 
         $this->_db->query($sql);
 
+        $tmp = [];
         while ($this->_db->nextRecord()) {
             $tmp[$this->_db->f("idpica_alloc")] = $this->_treeObj->fetchItemNameLang($this->_db->f("idpica_alloc"));
 
@@ -179,7 +190,8 @@ class pApiContentAllocation {
      * Build query to find matching content by ContentAllocation
      *
      * @param array $restrictions [optional]
-     * @param integer $max [optional]
+     * @param int   $max          [optional]
+     *
      * @return string $sql
      */
     public function findMatchingContent($restrictions = null, $max = 0) {
@@ -198,7 +210,8 @@ class pApiContentAllocation {
      *
      * @param array $restrictions
      * @param array $categoriesToExclude
-     * @param integer $max
+     * @param int   $max
+     *
      * @return string $sql
      */
     protected function _buildQuery($restrictions, $categoriesToExclude, $max) {
@@ -267,10 +280,11 @@ class pApiContentAllocation {
      *
      * @param array $contentAllocation
      * @param array $categories
-     * @param integer $offset [optional]
-     * @param integer $numOfRows [optional]
+     * @param int   $offset    [optional]
+     * @param int   $numOfRows [optional]
      *
      * @return array of articles
+     * @throws cDbException
      */
     public function findMatchingContentByContentAllocationByCategories($contentAllocation, $categories = array(), $offset = 0, $numOfRows = 0) {
         if (!is_array($contentAllocation) || count($contentAllocation) == 0) {
@@ -306,10 +320,10 @@ class pApiContentAllocation {
      *
      * @param array $contentAllocation
      * @param array $categories
-     * @param integer offset
-     * @param integer numOfRows
+     * @param int offset
+     * @param int numOfRows
      *
-     * @return array of articles
+     * @return string
      */
     protected function _buildQuery_MatchingContentByContentAllocationByCategories($contentAllocation, $categories, $offset, $numOfRows) {
         $cfg = cRegistry::getConfig();
@@ -371,12 +385,13 @@ class pApiContentAllocation {
     /**
      * Search articles by catgories without start articles
      *
-     * @param array $categories [optional]
-     * @param int $offset [optional]
-     * @param int $numOfRows [optional]
+     * @param array  $categories [optional]
+     * @param int    $offset     [optional]
+     * @param int    $numOfRows  [optional]
      * @param string $resultType element of {article_id, object} [optional]
      *
      * @return array of articles
+     * @throws cDbException
      */
     public function findMatchingContentByCategories($categories = array(), $offset = 0, $numOfRows = 0, $resultType = '') {
         for ($i = 0; $i < count($categories); $i++) {
@@ -404,8 +419,9 @@ class pApiContentAllocation {
      * Build SQL query to find articles by catgories
      *
      * @param array $categories
-     * @param integer offset
-     * @param integer numOfRows
+     * @param int offset
+     * @param int numOfRows
+     *
      * @return string $sql
      */
     public function _buildQuery_MatchingContentByCategories($categories, $offset, $numOfRows) {
@@ -451,4 +467,3 @@ class pApiContentAllocation {
     }
 
 }
-?>

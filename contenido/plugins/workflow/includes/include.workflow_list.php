@@ -46,7 +46,6 @@ JS;
 $ui = new cGuiMenu();
 $workflows->select("idclient = '$client' AND idlang = '$lang'");
 
-
 while (($workflow = $workflows->next()) !== false) {
     $wfid = $workflow->getField('idworkflow');
     $wfname = preg_replace("/\"/", '', ($workflow->getField('name')));

@@ -43,24 +43,14 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
         $_REQUEST["selTemplate"] = 0;
     }
 
-    // Saving message changes; note, that if a user doesn't have the right to
-    // save the
-    // text message he may still have the right to change the html article. To
-    // prevent
-    // changing the html article, give the user only read access right for the
-    // newsletter
-    // article category - the article will be shown also, if he doesn't have any
-    // rights at all...
-    if ($action == "news_save" && $perm->have_perm_area_action("news", $action)) { // Don't
-                                                                                   // use
-                                                                                   // $area!
-                                                                                   // Changing
-                                                                                   // e.g.
-                                                                                   // \'
-                                                                                   // back
-                                                                                   // to
-                                                                                   // '
-                                                                                   // (magic_quotes)
+    // Saving message changes; note, that if a user doesn't have the right to save the
+    // text message he may still have the right to change the html article. To prevent
+    // changing the html article, give the user only read access right for the newsletter
+    // article category - the article will be shown also, if he doesn't have any rights at all...
+    if ($action == "news_save" && $perm->have_perm_area_action("news", $action)) {
+
+        // Don't use $area! Changing e.g. \' back to ' (magic_quotes)
+
         $sMessage = cSecurity::unescapeDB($_REQUEST["txtMessage"]);
         $oNewsletter->set("message", $sMessage);
 
@@ -157,12 +147,8 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
             }
         }
     } else {
-        setSystemProperty("newsletter", "newsletter-recipients-plugin", "false"); // ->
-                                                                                  // Property
-                                                                                  // available
-                                                                                  // in
-                                                                                  // system
-                                                                                  // settings
+        // -> Property available in system settings
+        setSystemProperty("newsletter", "newsletter-recipients-plugin", "false");
     }
     $sTagInfoText .= "</div>";
     $sTagInfoHTML .= "</div>";

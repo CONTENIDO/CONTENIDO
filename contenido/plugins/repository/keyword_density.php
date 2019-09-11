@@ -13,6 +13,13 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @param     $singlewordcounter
+ * @param     $string
+ * @param int $quantifier
+ *
+ * @return mixed
+ */
 function calcDensity($singlewordcounter, $string, $quantifier = 1) {
     $minLen = 3;
 
@@ -240,10 +247,11 @@ function calcDensity($singlewordcounter, $string, $quantifier = 1) {
         $minLen = 5;
     }
 
-    //all blacklistentries to lowercase and trim ' ' at front.
+    // all blacklistentries to lowercase and trim ' ' at front.
     for ($i = 0; $i < count($blacklist); $i++) {
         $blacklist[$i] = ltrim(cString::toLowerCase($blacklist[$i]), '');
     }
+
     $tmp = explode(' ', $string);
     $tmp_size = sizeof($tmp);
 
@@ -287,12 +295,24 @@ function calcDensity($singlewordcounter, $string, $quantifier = 1) {
     return $singlewordcounter;
 }
 
+/**
+ * @param $a
+ * @param $b
+ *
+ * @return int
+ */
 function __cmp($a, $b) {
     if ($a == $b)
         return 0;
     return ($a > $b) ? -1 : 1;
 }
 
+/**
+ * @param     $singlewordcounter
+ * @param int $maxKeywords
+ *
+ * @return array
+ */
 function stripCount($singlewordcounter, $maxKeywords = 15) {
 
     // strip all with only 1
@@ -351,6 +371,12 @@ function stripCount($singlewordcounter, $maxKeywords = 15) {
     return $result;
 }
 
+/**
+ * @param $headline
+ * @param $text
+ *
+ * @return bool|string
+ */
 function keywordDensity($headline, $text) {
     global $lang, $client, $cfgClient;
 
@@ -396,4 +422,5 @@ function keywordDensity($headline, $text) {
         return implode(', ', $singlewordcounter);
     }
 }
+
 ?>

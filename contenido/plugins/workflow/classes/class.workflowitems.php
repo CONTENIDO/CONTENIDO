@@ -18,11 +18,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Plugin
  * @subpackage Workflow
+ * @method WorkflowItem createNewItem
+ * @method WorkflowItem next
  */
 class WorkflowItems extends ItemCollection {
-
     /**
      * Constructor Function
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -30,6 +33,13 @@ class WorkflowItems extends ItemCollection {
         $this->_setItemClass("WorkflowItem");
     }
 
+    /**
+     * @param mixed $id
+     *
+     * @return bool|void
+     * @throws cDbException
+     * @throws cException
+     */
     public function delete($id) {
         global $cfg;
         $item = new WorkflowItem();
@@ -62,6 +72,14 @@ class WorkflowItems extends ItemCollection {
         }
     }
 
+    /**
+     * @param      $idworkflowitem
+     * @param bool $delete
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     */
     public function updateArtAllocation($idworkflowitem, $delete = false) {
         global $idworkflow, $cfg;
         $oDb = cRegistry::getDb();
@@ -94,6 +112,16 @@ class WorkflowItems extends ItemCollection {
         }
     }
 
+    /**
+     * @param $idworkflow
+     * @param $pos1
+     * @param $pos2
+     *
+     * @return bool
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     */
     public function swap($idworkflow, $pos1, $pos2) {
         $idworkflow = (int) $idworkflow;
         $pos1 = (int) $pos1;
@@ -128,6 +156,14 @@ class WorkflowItems extends ItemCollection {
         return (true);
     }
 
+    /**
+     * @param $idworkflow
+     *
+     * @return bool|Item
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     */
     public function create($idworkflow) {
         $idworkflow = (int) $idworkflow;
 
@@ -186,6 +222,11 @@ class WorkflowItem extends Item {
         parent::__construct($cfg["tab"]["workflow_items"], "idworkflowitem");
     }
 
+    /**
+     * @return mixed
+     * @throws cDbException
+     * @throws cException
+     */
     public function getStepRights() {
         $idwfi = $this->values["idworkflowitem"];
         $workflowActions = new WorkflowActions();
@@ -203,9 +244,12 @@ class WorkflowItem extends Item {
      * Overridden setField function.
      *
      * @param string $field Void field since we override the usual setField
-     *            function
+     *                      function
      * @param string $value Void field since we override the usual setField
-     *            function
+     *                      function
+     * @param bool   $safe
+     *
+     * @return bool
      * @throws cInvalidArgumentException if the field is idsequence, idworkflow
      *         or position
      */
@@ -246,8 +290,11 @@ class WorkflowItem extends Item {
      *
      * @param int $idworkflow The workflow to set the item to
      * @param int $idposition Position of workflow item
-     *                        
+     *
      * @return bool
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function init($idworkflow, $idposition) {
         global $cfg;
@@ -280,6 +327,10 @@ class WorkflowItem extends Item {
      * called by the "swap" function
      *
      * @param int $idposition The new position ID
+     *
+     * @return bool
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function setPosition($idposition) {
         parent::setField("position", $idposition);
@@ -288,5 +339,3 @@ class WorkflowItem extends Item {
     }
 
 }
-
-?>

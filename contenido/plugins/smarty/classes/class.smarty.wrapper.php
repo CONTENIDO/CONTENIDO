@@ -20,10 +20,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage SmartyWrapper
  */
 class cSmartyWrapper extends Smarty {
-
     /**
-     *
      * @see Smarty_Internal_TemplateBase::fetch()
+     *
+     * @param string $template   the resource handle of the template file or template object
+     * @param mixed  $cache_id   cache id to be used with this template
+     * @param mixed  $compile_id compile id to be used with this template
+     * @param object $parent     next higher level of Smarty variables
+     * @param bool   $display
+     * @param bool   $merge_tpl_vars
+     * @param bool   $no_output_filter
+     *
+     * @return mixed|string
      */
     public function fetch($template = NULL, $cache_id = NULL, $compile_id = NULL, $parent = NULL, $display = false, $merge_tpl_vars = true, $no_output_filter = false) {
         if ($this->templateExists($template) === false) {
@@ -40,6 +48,16 @@ class cSmartyWrapper extends Smarty {
     /**
      *
      * @see Smarty_Internal_TemplateBase::fetch()
+     *
+     * @param string $template   the resource handle of the template file or template object
+     * @param mixed  $cache_id   cache id to be used with this template
+     * @param mixed  $compile_id compile id to be used with this template
+     * @param object $parent     next higher level of Smarty variables
+     * @param bool $display
+     * @param bool $merge_tpl_vars
+     * @param bool $no_output_filter
+     *
+     * @return string
      */
     public function fetchGeneral($template = NULL, $cache_id = NULL, $compile_id = NULL, $parent = NULL, $display = false, $merge_tpl_vars = true, $no_output_filter = false) {
         $template = cRegistry::getFrontendPath() . 'templates/' . $template;
@@ -47,6 +65,12 @@ class cSmartyWrapper extends Smarty {
         return parent::fetch($template, $cache_id, $compile_id, $parent, $display, $merge_tpl_vars, $no_output_filter);
     }
 
+    /**
+     * @param string $template   the resource handle of the template file or template object
+     * @param mixed  $cache_id   cache id to be used with this template
+     * @param mixed  $compile_id compile id to be used with this template
+     * @param object $parent     next higher level of Smarty variables
+     */
     public function display($template = NULL, $cache_id = NULL, $compile_id = NULL, $parent = NULL) {
         global $frontend_debug;
 
@@ -66,8 +90,12 @@ class cSmartyWrapper extends Smarty {
     }
 
     /**
-     *
      * @see Smarty_Internal_TemplateBase::display()
+     *
+     * @param string $template   the resource handle of the template file or template object
+     * @param mixed  $cache_id   cache id to be used with this template
+     * @param mixed  $compile_id compile id to be used with this template
+     * @param object $parent     next higher level of Smarty variables
      */
     public function displayGeneral($template = NULL, $cache_id = NULL, $compile_id = NULL, $parent = NULL) {
         $this->fetchGeneral($template, $cache_id, $compile_id, $parent, true);
