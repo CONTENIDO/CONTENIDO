@@ -626,7 +626,6 @@ class Newsletter extends Item
      * @return bool
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function sendEMail($iIDCatArt, $sEMail, $sName = "", $bSimulatePlugins = true, $sEncoding = "iso-8859-1")
     {

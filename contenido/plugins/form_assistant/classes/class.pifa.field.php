@@ -343,8 +343,14 @@ class PifaField extends Item {
 
         foreach ($values as $value) {
             if (self::CAPTCHA == $this->get('field_type')) {
-                //site secret key
-                $secret = getEffectiveSetting('pifa-recaptcha', 'secret', '');
+                // site secret key
+                try {
+                    $secret = getEffectiveSetting('pifa-recaptcha', 'secret', '');
+                } catch (cDbException $e) {
+                    $secret = '';
+                } catch (cException $e) {
+                    $secret = '';
+                }
 
                 if (cString::getStringLength($secret) === 0 || !isset($_POST['g-recaptcha-response']) || empty($_POST['g-recaptcha-response'])) {
                     $isValid = false;
@@ -420,6 +426,8 @@ class PifaField extends Item {
 
             default:
 
+                $error = null;
+
                 // build HTML content
                 $content = array();
                 try {
@@ -454,7 +462,7 @@ class PifaField extends Item {
                     $class .= ' pifa-obligatory';
                 }
                 // optional error class for field
-                if (isset($error) && NULL !== $error) {
+                if (NULL !== $error) {
                     $class .= ' pifa-error';
                 }
 
@@ -654,9 +662,11 @@ class PifaField extends Item {
                     if (!is_array($value)) {
                         $value = explode(',', $value);
                     }
-                    $elemField->setChecked(in_array($optionValues[$i], $value));
-                    $elemField->setLabelText($optionLabels[$i]);
-                    $tmpHtml .= $elemField->render();
+                    if (isset($elemField)) {
+                        $elemField->setChecked(in_array($optionValues[$i], $value));
+                        $elemField->setLabelText($optionLabels[$i]);
+                        $tmpHtml .= $elemField->render();
+                    }
                 }
                 $elemField = new cHTMLSpan($tmpHtml);
                 break;
@@ -756,8 +766,14 @@ class PifaField extends Item {
                     $elemField->setValue($value);
                 }
 
-                //google recaptcha integration
-                $sitekey = getEffectiveSetting('pifa-recaptcha', 'sitekey', '');
+                // google recaptcha integration
+                try {
+                    $sitekey = getEffectiveSetting('pifa-recaptcha', 'sitekey', '');
+                } catch (cDbException $e) {
+                    $sitekey = '';
+                } catch (cException $e) {
+                    $sitekey = '';
+                }
 
                 $elemScript = new cHTMLScript();
                 $elemScript->setAttribute("src", "https://www.google.com/recaptcha/api.js");
@@ -1044,7 +1060,6 @@ class PifaField extends Item {
      * @throws cDbException
      */
     public function delete() {
-        $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 
         if (!$this->isLoaded()) {
@@ -1062,11 +1077,7 @@ class PifaField extends Item {
                 idform = " . cSecurity::toInteger($this->get('idform')) . "
                 AND field_rank > " . cSecurity::toInteger($this->get('field_rank')) . "
             ;";
-        $succ = $db->query($sql);
-        // if (false === $succ) {
-        //     // false is returned if no fields were updated
-        //     // but that doesn't matter ...
-        // }
+        $db->query($sql);
 
         // delete field
         $sql = "-- PifaField->delete()
@@ -1382,5 +1393,3 @@ class PifaField extends Item {
         return $out;
     }
 }
-
-?>

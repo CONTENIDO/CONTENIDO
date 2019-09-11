@@ -62,9 +62,7 @@ class PifaLeftBottomPage extends cGuiPage {
         $this->set('s', 'menu', $this->_getMenu());
 
         // add translations to template
-        $this->set('s', 'I18N', json_encode(array(
-            'confirm_delete_form' => Pifa::i18n('CONFIRM_DELETE_FORM'),
-        )));
+        $this->set('s', 'I18N', json_encode(['confirm_delete_form' => Pifa::i18n('CONFIRM_DELETE_FORM')]));
     }
 
     /**
