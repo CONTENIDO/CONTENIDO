@@ -202,5 +202,6 @@ class cArray {
         if (!array_key_exists($sKey, $aArray)) {
             $aArray[$sKey] = $mDefault;
         }
+        return true;
     }
 }
