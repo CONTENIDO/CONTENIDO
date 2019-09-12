@@ -334,6 +334,7 @@ return array(
     'cModuleSearch' => 'contenido/classes/module/class.module.search.php',
     'cModuleSynchronizer' => 'contenido/classes/module/class.module.synchronizer.php',
     'cModuleTemplateHandler' => 'contenido/classes/module/class.module.template.handler.php',
+    'cRights' => 'contenido/classes/class.rights.php',
     'cSearchBaseAbstract' => 'contenido/classes/search/class.search.base.abstract.php',
     'cSearchIndex' => 'contenido/classes/search/class.search.index.php',
     'cSearch' => 'contenido/classes/search/class.search.php',

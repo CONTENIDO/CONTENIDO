@@ -39,6 +39,15 @@ legend {
     margin-left: 10px;
 }
 
+.flip_mark {
+    background: url("../../../images/but_invert_selection.gif") no-repeat scroll 0 2px transparent;
+    display: block;
+    height: 20px;
+    line-height: 2em;
+    padding-left: 20px;
+    margin-left: 10px;
+}
+
 /******************************************************************************/
 /* FORM: form                                                                 */
 /******************************************************************************/

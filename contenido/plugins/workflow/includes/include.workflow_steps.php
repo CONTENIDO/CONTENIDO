@@ -119,6 +119,13 @@ if ($action == "workflow_save_step" || $action == "workflow_create_user") {
     }
 }
 
+/**
+ * @param $listid
+ * @param $default
+ *
+ * @return string
+ * @throws cInvalidArgumentException
+ */
 function getTimeUnitSelector($listid, $default) {
     global $idclient, $cfg, $auth;
 
@@ -152,6 +159,12 @@ function getTimeUnitSelector($listid, $default) {
     return $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
 }
 
+/**
+ * @return string
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
+ */
 function getWorkflowList() {
     global $idworkflow, $cfg;
 
@@ -223,6 +236,10 @@ function getWorkflowList() {
     return ($content);
 }
 
+/**
+ * @return string
+ * @throws cInvalidArgumentException
+ */
 function createNewWorkflow() {
     global $idworkflow, $cfg;
 
@@ -246,6 +263,14 @@ function createNewWorkflow() {
     return $content;
 }
 
+/**
+ * @param $idworkflowitem
+ *
+ * @return string
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
+ */
 function editWorkflowStep($idworkflowitem) {
     global $area, $idworkflow, $idworkflowitem, $frame, $availableWorkflowActions;
     global $notification;
@@ -291,6 +316,14 @@ function editWorkflowStep($idworkflowitem) {
     return $form->render(true);
 }
 
+/**
+ * @param $idworkflowitem
+ *
+ * @return string
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
+ */
 function getWorkflowUsers($idworkflowitem) {
     global $idworkflow, $cfg;
 

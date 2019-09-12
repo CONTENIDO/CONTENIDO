@@ -17,6 +17,15 @@ cInclude("includes", "functions.con.php");
 
 plugin_include('workflow', 'classes/class.workflowitems.php');
 
+/**
+ * @param $listid
+ * @param $default
+ *
+ * @return string
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
+ */
 function getUsers($listid, $default) {
     global $idclient, $cfg, $auth;
 
@@ -77,6 +86,13 @@ function getUsers($listid, $default) {
     return $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
 }
 
+/**
+ * @param $uid
+ *
+ * @return bool
+ * @throws cDbException
+ * @throws cException
+ */
 function isCurrentEditor($uid) {
     global $auth, $cfg;
 
@@ -105,12 +121,20 @@ function isCurrentEditor($uid) {
     return false;
 }
 
+/**
+ * @param $idartlang
+ * @param $idusersequence
+ *
+ * @return bool|string
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
+ */
 function getActionSelect($idartlang, $idusersequence) {
     global $cfg;
 
     $workflowActions = new WorkflowActions();
-
-    $allActions = $workflowActions->getAvailableWorkflowActions();
+    $allActions      = $workflowActions->getAvailableWorkflowActions();
 
     $wfSelect = new cTemplate();
     $wfSelect->set('s', 'NAME', 'wfselect' . $idartlang);
@@ -168,14 +192,24 @@ function getActionSelect($idartlang, $idusersequence) {
     }
 
     if ($bExistOption)
-        return ($wfSelect->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true));
+        return $wfSelect->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
     else {
         return false;
     }
 }
 
-// unction for inserting todos in wokflow_art_allocation used, when a workflow
-// is associated with a category in content->category
+/**
+ * function for inserting todos in wokflow_art_allocation used, when a workflow
+ * is associated with a category in content->category
+ *
+ * @param $idartlang
+ * @param $defaultidworkflow
+ *
+ * @return bool
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
+ */
 function setUserSequence($idartlang, $defaultidworkflow) {
     $wfaa = new WorkflowArtAllocations();
     $wfaa->select("idartlang = '$idartlang'");
@@ -220,9 +254,12 @@ function setUserSequence($idartlang, $defaultidworkflow) {
  * Returns current user sequence, either from workflow article allocations or
  * from workflow user sequnces.
  *
- * @param int $idartlang Article language id
+ * @param int $idartlang         Article language id
  * @param int $defaultidworkflow Default workflow id
+ *
  * @return int false of found user sequence or false
+ * @throws cDbException
+ * @throws cException
  */
 function getCurrentUserSequence($idartlang, $defaultidworkflow) {
     $wfaa = new WorkflowArtAllocations();
@@ -269,6 +306,13 @@ function getCurrentUserSequence($idartlang, $defaultidworkflow) {
     return $idusersequence;
 }
 
+/**
+ * @param $idartlang
+ *
+ * @return bool|string
+ * @throws cDbException
+ * @throws cException
+ */
 function getLastWorkflowStatus($idartlang) {
     $wfaa = new WorkflowArtAllocations();
 
@@ -299,6 +343,13 @@ function getLastWorkflowStatus($idartlang) {
     }
 }
 
+/**
+ * @param $idartlang
+ * @param $action
+ *
+ * @throws cDbException
+ * @throws cException
+ */
 function doWorkflowAction($idartlang, $action) {
     global $cfg, $idcat;
 
@@ -429,6 +480,13 @@ function doWorkflowAction($idartlang, $action) {
     }
 }
 
+/**
+ * @param $usersequence
+ *
+ * @return bool|mixed
+ * @throws cDbException
+ * @throws cException
+ */
 function getWorkflowForUserSequence($usersequence) {
     $usersequences = new WorkflowUserSequences();
     $workflowitems = new WorkflowItems();
@@ -448,6 +506,13 @@ function getWorkflowForUserSequence($usersequence) {
     }
 }
 
+/**
+ * @param $listid
+ * @param $default
+ * @param $idcat
+ *
+ * @return string
+ */
 function workflowSelect($listid, $default, $idcat) {
     global $idclient, $cfg, $frame, $area, $workflowworkflows, $client, $lang, $wfcache, $workflowSelectBox;
 
@@ -468,6 +533,11 @@ function workflowSelect($listid, $default, $idcat) {
     return $workflowSelectBox->render() . $sButton;
 }
 
+/**
+ * @param $idcat
+ *
+ * @return string
+ */
 function workflowInherit($idcat) {
     global $idclient, $cfg, $frame, $area, $workflowworkflows, $sess;
     $sUrl = $sess->url("main.php?area=$area&frame=$frame&modidcat=$idcat&action=workflow_inherit_down");

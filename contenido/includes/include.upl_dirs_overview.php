@@ -35,7 +35,7 @@ $expand           = isset($_REQUEST['expand']) ? $_REQUEST['expand'] : '';
  * @param TreeItem $item
  *
  * @return string
- * 
+ *
  * @throws cException
  */
 function getUplExpandCollapseButton($item) {

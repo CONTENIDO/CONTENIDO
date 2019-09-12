@@ -229,6 +229,10 @@ class ModRewriteController extends ModRewriteBase {
      *
      * Executes some private functions to extract request URI and to set needed membervariables
      * (client, language, article id, category id, etc.)
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function execute() {
         if (parent::isEnabled() == false) {
@@ -262,6 +266,10 @@ class ModRewriteController extends ModRewriteBase {
      *
      * @param  bool $secondCall  Flag about second call of this function, is needed
      *                           to re extract url if a routing definition was found
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _extractRequestUri($secondCall = false) {
         global $client;
@@ -408,6 +416,8 @@ class ModRewriteController extends ModRewriteBase {
 
     /**
      * Detects client id from given url
+     *
+     * @throws cDbException
      */
     private function _setClientId() {
         global $client;
@@ -441,6 +451,8 @@ class ModRewriteController extends ModRewriteBase {
 
     /**
      * Sets language id
+     *
+     * @throws cDbException
      */
     private function _setLanguageId() {
         global $lang;
@@ -476,6 +488,8 @@ class ModRewriteController extends ModRewriteBase {
 
     /**
      * Sets path resolver and category id
+     *
+     * @throws cException
      */
     private function _setPathresolverSetting() {
         global $client, $lang, $load_lang, $idcat;
@@ -520,13 +534,16 @@ class ModRewriteController extends ModRewriteBase {
 
     /**
      * Sets article id
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     private function _setIdart() {
         global $idcat, $idart, $lang;
 
         if ($this->_bError) {
             return;
-        } else if ($this->_isRootRequest()) {
+        } elseif ($this->_isRootRequest()) {
             return;
         }
 
@@ -580,6 +597,9 @@ class ModRewriteController extends ModRewriteBase {
      *
      * One main goal of this function is to prevent duplicated content, which could happen, if
      * the configuration 'startfromroot' is activated.
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     private function _postValidation() {
         global $idcat, $idart, $client;
@@ -632,7 +652,7 @@ class ModRewriteController extends ModRewriteBase {
      * Parses the url using defined separators
      *
      * @param   string  $url  Incoming url
-     * @return  string  Parsed url
+     * @return  array|bool  Parsed url
      */
     private function _parseUrl($url) {
         $this->_sResolvedUrl = $url;

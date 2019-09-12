@@ -13,17 +13,22 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @return string
+ */
 function frontendusers_valid_to_getTitle ()
 {
     return i18n("Valid to");
 }
 
+/**
+ * @return string
+ */
 function frontendusers_valid_to_display ()
 {
     global $feuser,$db,$belang,$cfg;
 
     $langscripts = '';
-
 
     $path_to_calender_pic =  cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif';
 
@@ -70,15 +75,22 @@ function frontendusers_valid_to_display ()
     return sprintf($template,$sValidFrom);
 }
 
+/**
+ * @return array
+ */
 function frontendusers_valid_to_wantedVariables()
 {
     return (array("valid_to"));
 }
 
+/**
+ * @param $variables
+ */
 function frontendusers_valid_to_store($variables)
 {
     global $feuser;
 
     $feuser->set("valid_to", $variables["valid_to"], false);
 }
+
 ?>

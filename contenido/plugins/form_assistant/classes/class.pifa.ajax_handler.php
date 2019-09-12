@@ -1,12 +1,13 @@
 <?php
 
 /**
+ * This file contains the PifaAjaxHandler class.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage FormAssistant
- * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @copyright four for business AG
- * @link http://www.4fb.de
+ * @author     Marcus Gnaß <marcus.gnass@4fb.de>
+ * @copyright  four for business AG
+ * @link       http://www.4fb.de
  */
 
 // assert CONTENIDO framework
@@ -80,11 +81,22 @@ class PifaAjaxHandler {
      *
      * @var string
      */
+    const DELETE_DATA = 'pifa_delete_data';
+
+    /**
+     * Action constant.
+     *
+     * @var string
+     */
     const GET_OPTION_ROW = 'pifa_get_option_row';
 
     /**
+     * @param $action
      *
      * @throws PifaException if action is unknown
+     * @throws PifaIllegalStateException
+     * @throws cDbException
+     * @throws cException
      */
     function dispatch($action) {
         global $area;
@@ -116,6 +128,14 @@ class PifaAjaxHandler {
             case self::DELETE_FIELD:
                 $idfield = cSecurity::toInteger($_GET['idfield']);
                 $this->_deleteField($idfield);
+                break;
+
+            case self::DELETE_DATA:
+                $idform  = cSecurity::toInteger($_GET['idform']);
+                $iddatas = explode(',', $_POST['iddatas']);
+                $iddatas = array_map('cSecurity::toInteger', $iddatas);
+                $iddatas = array_filter($iddatas);
+                $this->_deleteData($idform, $iddatas);
                 break;
 
             case self::REORDER_FIELDS:
@@ -164,7 +184,10 @@ class PifaAjaxHandler {
      * @param int $idform
      * @param int $idfield
      * @param int $fieldType
+     *
      * @throws PifaException
+     * @throws cDbException
+     * @throws cException
      */
     private function _getFieldForm($idform, $idfield, $fieldType) {
         $cfg = cRegistry::getConfig();
@@ -260,7 +283,10 @@ class PifaAjaxHandler {
      *
      * @param int $idform
      * @param int $idfield
+     *
      * @throws PifaException
+     * @throws cDbException
+     * @throws cException
      */
     private function _postFieldForm($idform, $idfield) {
         global $area;
@@ -429,9 +455,9 @@ class PifaAjaxHandler {
             // check if rule is valid
             if (0 === cString::getStringLength($rule)) {
                 $pifaField->set('rule', $rule);
-            } else if (false === @preg_match($rule, 'And always remember: the world is an orange!')) {
+            } elseif (false === @preg_match($rule, 'And always remember: the world is an orange!')) {
                 // PASS
-            } else if ($rule === $pifaField->get('rule')) {
+            } elseif ($rule === $pifaField->get('rule')) {
                 // PASS
             } else {
                 $pifaField->set('rule', $rule);
@@ -508,11 +534,12 @@ class PifaAjaxHandler {
                 ;";
 
             $db = cRegistry::getDb();
-            if (false === $db->query($sql)) {
-                // false is returned if no fields were updated
-                // but that doesn't matter cause new field might
-                // have no younger siblings
-            }
+            $succ = $db->query($sql);
+            // if (false === $succ) {
+            //     // false is returned if no fields were updated
+            //     // but that doesn't matter cause new field might
+            //     // have no younger siblings
+            // }
         }
 
         // return new row to be displayed in list
@@ -545,18 +572,34 @@ class PifaAjaxHandler {
     }
 
     /**
-     *
      * @param int $idfield
      * @throws PifaException
      */
     private function _deleteField($idfield) {
-        if (0 == $idfield) {
+        if (0 === $idfield) {
             $msg = Pifa::i18n('MISSING_IDFIELD');
             throw new PifaException($msg);
         }
 
         $pifaField = new PifaField($idfield);
         $pifaField->delete();
+    }
+
+    /**
+     *
+     * @param int   $idform
+     * @param array $iddatas
+     *
+     * @throws PifaException
+     */
+    private function _deleteData($idform, array $iddatas) {
+        if (empty($iddatas)) {
+            $msg = Pifa::i18n('MISSING_IDDATA');
+            throw new PifaException($msg);
+        }
+
+        $pifaForm = new PifaForm($idform);
+        $pifaForm->deleteData($iddatas);
     }
 
     /**
@@ -570,7 +613,6 @@ class PifaAjaxHandler {
     }
 
     /**
-     *
      * @param int $idform
      */
     private function _exportData($idform) {
@@ -634,7 +676,6 @@ class PifaAjaxHandler {
     }
 
     /**
-     *
      * @param string $name
      * @param string $file
      */
@@ -664,7 +705,7 @@ class PifaAjaxHandler {
         $buffer = '';
         $handle = fopen($path . $file, 'rb');
         if (false === $handle) {
-            return false;
+            return;
         }
         while (!feof($handle)) {
             print fread($handle, 1 * (1024 * 1024));
@@ -675,8 +716,9 @@ class PifaAjaxHandler {
     }
 
     /**
-     *
      * @param int $index
+     *
+     * @throws cException
      */
     private function _getOptionRow($index) {
         $cfg = cRegistry::getConfig();

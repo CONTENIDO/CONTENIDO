@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the tree class for the plugin content allocation.
  *
@@ -32,7 +33,7 @@ class pApiTree {
 
     /*
      *
-     * @var boolean
+     * @var bool
      */
     protected $_debug = false;
 
@@ -44,25 +45,25 @@ class pApiTree {
 
     /**
      *
-     * @var integer
+     * @var int
      */
     protected $_lang = 1;
 
     /**
      *
-     * @var integer
+     * @var int
      */
     protected $_client = 1;
 
     /**
      *
-     * @var integer
+     * @var int
      */
     protected $_defaultLang = 1;
 
     /**
      *
-     * @var boolean
+     * @var bool
      */
     protected $_logger = null;
 
@@ -100,6 +101,9 @@ class pApiTree {
      * pApiTree constructor
      *
      * @param string $uuid
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($uuid) {
         $cfg = cRegistry::getConfig();
@@ -120,9 +124,13 @@ class pApiTree {
      * Old constructor
      *
      * @deprecated [2016-02-11]
-     * 				This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     *                This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     *
      * @param string $uuid
-     * @return __construct()
+     *
+     * @return pApiTree
+     * @throws cDbException
+     * @throws cException
      */
     public function pApiTree($uuid) {
         cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
@@ -133,9 +141,11 @@ class pApiTree {
      * Fetch tree
      *
      * @param mixed $parentId
-     * @param int $level
-     * @param bool $useTreeStatus (if true use expand/collapsed status of the tree, otherwise not)
-     * @result array|boolean
+     * @param int   $level
+     * @param bool  $useTreeStatus (if true use expand/collapsed status of the tree, otherwise not)
+     *
+     * @return array|bool
+     * @throws cDbException
      */
     public function fetchTree($parentId = false, $level = 0, $useTreeStatus = true) {
 
@@ -210,8 +220,11 @@ class pApiTree {
      * @created 21.11.2005 Willi Man
      *
      * @param mixed $parentId
-     * @param int $level
-     * @return array with ContentAllocation id's
+     * @param int   $level
+     * @param bool  $showOffline
+     *
+     * @return bool|array with ContentAllocation id's
+     * @throws cDbException
      */
     public function fetchTreeIds($parentId = false, $level = 0, $showOffline = false) {
 
@@ -267,7 +280,11 @@ class pApiTree {
     /**
      * Set tree status
      *
-     * @param integer $idpica_alloc
+     * @param int $idpica_alloc
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function setTreeStatus($idpica_alloc) {
     	$idpica_alloc = cSecurity::toInteger($idpica_alloc);
@@ -282,6 +299,8 @@ class pApiTree {
     /**
      * Load tree status
      *
+     * @throws cDbException
+     * @throws cException
      */
     public function loadTreeStatus() {
         $status = $this->_user->getProperty("expandstate", $this->_uuid);
@@ -293,8 +312,10 @@ class pApiTree {
     /**
      * Fetch parent via idpica_alloc variable
      *
-     * @param integer$idpica_alloc
+     * @param int $idpica_alloc
+     *
      * @return array|bool
+     * @throws cDbException
      */
     public function fetchParent($idpica_alloc) {
         $sql = "SELECT idpica_alloc FROM ".$this->_table['pica_alloc']." WHERE parentId = " . cSecurity::toInteger($idpica_alloc);
@@ -317,7 +338,9 @@ class pApiTree {
      *
      * @param bool $parentId
      * @param bool $showOffline
+     *
      * @return array
+     * @throws cDbException
      */
     protected function fetchLevel($parentId = false, $showOffline = false) {
         // fetch current lang category
@@ -372,7 +395,9 @@ class pApiTree {
      * Store item into database
      *
      * @param $treeItem
+     *
      * @return mixed
+     * @throws cDbException
      */
     public function storeItem($treeItem) {
 
@@ -433,7 +458,9 @@ class pApiTree {
     /**
      * Set status to online
      *
-     * @param integer $idpica_alloc
+     * @param int $idpica_alloc
+     *
+     * @throws cDbException
      */
     public function setOnline($idpica_alloc) {
         $this->_switchOnOffline($idpica_alloc, 1);
@@ -442,7 +469,9 @@ class pApiTree {
     /**
      * Set status to offline
      *
-     * @param integer$idpica_alloc
+     * @param int $idpica_alloc
+     *
+     * @throws cDbException
      */
     public function setOffline($idpica_alloc) {
         $this->_switchOnOffline($idpica_alloc, 0);
@@ -451,8 +480,10 @@ class pApiTree {
     /**
      * Set status to online or offline
      *
-     * @param integer $idpica_alloc
-     * @param integer $status
+     * @param int $idpica_alloc
+     * @param int $status
+     *
+     * @throws cDbException
      */
     protected function _switchOnOffline($idpica_alloc, $status) {
         $sql = "UPDATE " . $this->_table['pica_lang'] . " SET online = " . cSecurity::toInteger($status) . " WHERE idpica_alloc = " . cSecurity::toInteger($idpica_alloc) . "
@@ -463,7 +494,9 @@ class pApiTree {
     /**
      * Move item up
      *
-     * @param integer $idpica_alloc
+     * @param int $idpica_alloc
+     *
+     * @throws cDbException
      */
     public function itemMoveUp($idpica_alloc) {
         $treeItem = $this->fetchItem($idpica_alloc);
@@ -491,8 +524,10 @@ class pApiTree {
     /**
      * Delete content allocation item
      *
-     * @param integer $idpica_alloc
-     * @return boolean
+     * @param int $idpica_alloc
+     *
+     * @return bool
+     * @throws cDbException
      */
     public function deleteItem($idpica_alloc) {
         $sql = "DELETE FROM " . $this->_table['pica_alloc'] . " WHERE idpica_alloc = " . cSecurity::toInteger($idpica_alloc);
@@ -510,8 +545,10 @@ class pApiTree {
     /**
      * Get parentid and sortorder
      *
-     * @param integer $idpica_alloc
+     * @param int $idpica_alloc
+     *
      * @return array|bool
+     * @throws cDbException
      */
     function fetchItem($idpica_alloc) {
         $sql = "SELECT parentid, sortorder FROM " . $this->_table['pica_alloc'] . " WHERE idpica_alloc = " . cSecurity::toInteger($idpica_alloc);
@@ -537,8 +574,10 @@ class pApiTree {
     /**
      * Get name, id of language and online/offline status
      *
-     * @param integer $idpica_alloc
+     * @param int $idpica_alloc
+     *
      * @return array|bool
+     * @throws cDbException
      */
     public function fetchItemNameLang($idpica_alloc) {
 
@@ -565,8 +604,10 @@ class pApiTree {
     /**
      * Get maximal sortorder
      *
-     * @param boolean $parentId
-     * @return integer
+     * @param bool|int $parentId
+     *
+     * @return int
+     * @throws cDbException
      */
     protected function _fetchMaxOrder($parentId = false) {
 
@@ -591,8 +632,10 @@ class pApiTree {
     /**
      * Decrease order (value at database - 1)
      *
-     * @param bool $parentId
-     * @param integer $fromOrder
+     * @param bool    $parentId
+     * @param int $fromOrder
+     *
+     * @throws cDbException
      */
     protected function _decreaseOrder($parentId = false, $fromOrder) {
         $sql = "UPDATE " . $this->_table['pica_alloc'] . " SET sortorder = sortorder - 1 WHERE sortorder >= " . cSecurity::toInteger($fromOrder);
@@ -608,7 +651,9 @@ class pApiTree {
      * Increase order (value at database + 1)
      *
      * @param bool $parentId
-     * @param $fromOrder
+     * @param int  $fromOrder
+     *
+     * @throws cDbException
      */
     protected function _increaseOrder($parentId = false, $fromOrder) {
         $sql = "UPDATE " . $this->_table['pica_alloc'] . " SET sortorder = sortorder + 1 WHERE sortorder >= " . cSecurity::toInteger($fromOrder);
@@ -665,4 +710,3 @@ class pApiTree {
         return $data;
     }
 }
-?>

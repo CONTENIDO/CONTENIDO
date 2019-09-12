@@ -81,8 +81,7 @@ function layEditLayout($idlay, $name, $description, $code) {
         }
 
         // Set correct rights for element
-        cInclude('includes', 'functions.rights.php');
-        createRightsForElement('lay', $idlay);
+        cRights::createRightsForElement('lay', $idlay);
 
         return $idlay;
     } else {
@@ -185,6 +184,5 @@ function layDeleteLayout($idlay) {
     }
 
     // Delete rights for element
-    cInclude('includes', 'functions.rights.php');
-    deleteRightsForElement('lay', $idlay);
+    cRights::deleteRightsForElement('lay', $idlay);
 }

@@ -41,8 +41,10 @@ class ModRewriteDebugger {
      * Adds variable to debugger.
      * Wrapper for <code>cDebug::getDebugger('visible_adv')</code>.
      *
-     * @param  mixed   $mVar  The variable to dump
-     * @param  string  $sLabel  Describtion for passed $mVar
+     * @param  mixed  $mVar   The variable to dump
+     * @param  string $sLabel Describtion for passed $mVar
+     *
+     * @throws cInvalidArgumentException
      */
     public static function add($mVar, $sLabel = '') {
         if (!self::$_bEnabled) {
@@ -53,7 +55,9 @@ class ModRewriteDebugger {
 
     /**
      * Returns output of all added variables to debug.
+     *
      * @return  string
+     * @throws cInvalidArgumentException
      */
     public static function getAll() {
         if (!self::$_bEnabled) {
@@ -70,8 +74,10 @@ class ModRewriteDebugger {
      * Logs variable to debugger.
      * Wrapper for <code>cDebug::getDebugger(cDebug::DEBUGGER_FILE)</code>.
      *
-     * @param  mixed   $mVar  The variable to log the contents
-     * @param  string  $sLabel  Describtion for passed $mVar
+     * @param  mixed  $mVar   The variable to log the contents
+     * @param  string $sLabel Describtion for passed $mVar
+     *
+     * @throws cInvalidArgumentException
      */
     public static function log($mVar, $sLabel = '') {
         if (!self::$_bEnabled) {

@@ -149,7 +149,7 @@ class ArticleForumRightBottom extends cGuiPage {
         // additional params to identify actions from moderator startpage
         if (isset($mod)) {
             $online->setCustom('mod', true);
-//            $edit->setCustom('mod', true);
+            // $edit->setCustom('mod', true);
         }
 
         $message = UserForum::i18n('ALLDELETEFROMCATHIER');
@@ -173,8 +173,11 @@ class ArticleForumRightBottom extends cGuiPage {
     /**
      * generate main menu
      *
-     * @param $result array with comments
-     * @return ArticleForumRightBottom
+     * @param array $result array with comments
+     * @param null  $mod
+     *
+     * @return ArticleForumRightBottom|cHTMLTable
+     * @throws cException
      */
     public function getMenu(&$result, $mod = null) {
         $table = new cHTMLTable();
@@ -372,7 +375,10 @@ class ArticleForumRightBottom extends cGuiPage {
      * generate dialog for editmode
      *
      * @param array $post
+     *
      * @return ArticleForumRightBottom
+     * @throws cDbException
+     * @throws cException
      */
     protected function getEditModeMenu($post) {
 
@@ -408,7 +414,6 @@ class ArticleForumRightBottom extends cGuiPage {
         $likeButton = new cHTMLImage($cfg['path']['images'] . 'like.png');
         $dislikeButton = new cHTMLImage($cfg['path']['images'] . 'dislike.png');
 
-
         $name = new cHTMLTextBox("realname", str_replace('\\', '',(conHtmlSpecialChars($post['realname']))), 30, 255);
         $email = new cHTMLTextBox("email", $post['email'], 30, 255);
         $like = new cHTMLTextBox("like", $post['like'], 7, 7);
@@ -432,7 +437,6 @@ class ArticleForumRightBottom extends cGuiPage {
         $editedat->setDisabled(true);
         $timestamp->setDisabled(true);
         $editedby->setDisabled(true);
-
 
         $form1->add(UserForum::i18n("USER"), $name, '');
         $form1->add(UserForum::i18n("EMAIL"), $email, '');
@@ -479,6 +483,7 @@ class ArticleForumRightBottom extends cGuiPage {
      * @param $id_lang
      *
      * @return ArticleForumRightBottom
+     * @throws cException
      */
     public function getForum($id_cat, $id_art, $id_lang) {
         $arrUsers = $this->_collection->getExistingforum();
@@ -495,9 +500,9 @@ class ArticleForumRightBottom extends cGuiPage {
     }
 
     /**
-     * @param     $arrforum
-     * @param     $result
-     * @param int $level
+     * @param array $arrforum
+     * @param array $result
+     * @param int   $level
      */
     protected function normalizeArray($arrforum, &$result, $level = 0) {
         if (is_array($arrforum)) {
@@ -524,21 +529,18 @@ class ArticleForumRightBottom extends cGuiPage {
         }
     }
 
-
     /**
+     * @throws cException
      */
-    public function getStartpage() {
-
-
+    public function getStartpage()
+    {
         $cGuiNotification = new cGuiNotification();
         echo $cGuiNotification->returnNotification(cGuiNotification::LEVEL_INFO, UserForum::i18n('MODMODE'));
         echo '<br />';
 
         $comments = $this->_collection->getUnmoderatedComments();
         $this->getMenu($comments, 'mod');
-
     }
-
 
     /**
      * switch case action calling
@@ -552,7 +554,6 @@ class ArticleForumRightBottom extends cGuiPage {
         $idcat = $_REQUEST['idcat'];
         $action = $_REQUEST["action"];
         $online = (isset($_REQUEST['onlineState'])) ? 1 : 0;
-
 
         switch ($action) {
 
@@ -597,7 +598,7 @@ class ArticleForumRightBottom extends cGuiPage {
                 } else{
                     $this->getStartpage();
                 }
-//                $this->getForum($idcat, $idart, $lang);
+                // $this->getForum($idcat, $idart, $lang);
                 break;
             case 'empty':
                 // $this->getForum($idcat, $idart, $lang);

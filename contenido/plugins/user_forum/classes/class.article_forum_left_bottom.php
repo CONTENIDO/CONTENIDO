@@ -21,9 +21,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage UserForum
  */
 class ArticleForumLeftBottom extends cGuiPage {
-
+    /**
+     * @var ArticleForumCollection
+     */
     protected $_collection;
 
+    /**
+     * ArticleForumLeftBottom constructor.
+     */
     public function __construct() {
         parent::__construct('left_bottom', 'userforum');
         $this->_collection = new ArticleForumCollection();
@@ -31,6 +36,10 @@ class ArticleForumLeftBottom extends cGuiPage {
         $this->addStyle('right_bottom.css');
     }
 
+    /**
+     * @return cGuiMenu|string
+     * @throws cDbException
+     */
     protected function getMenu() {
         $arts = new ArticleForumCollection();
         $result = $arts->getAllCommentedArticles();
@@ -80,6 +89,13 @@ class ArticleForumLeftBottom extends cGuiPage {
         return $menu;
     }
 
+    /**
+     * @param $get
+     *
+     * @return cGuiMenu|string
+     * @throws cDbException
+     * @throws cInvalidArgumentException
+     */
     public function receiveData(&$get) {
         if ($_GET['action'] === 'delete_form') {
             $this->_collection->deleteAllCommentsById($get['idart']);

@@ -23,7 +23,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $client, $cfg;
 
-
 ################################################################################
 ##### Initialization
 
@@ -43,9 +42,7 @@ if (!mr_getRequest('idart') && !mr_getRequest('idcat') && !mr_getRequest('idcata
     $mrTestNoOptionSelected = true;
 }
 
-
 $oMrTestController = new ModRewrite_ContentTestController();
-
 
 // view language variables
 $oView = $oMrTestController->getView();
@@ -58,7 +55,6 @@ $oView->lng_result_item_tpl = i18n('{pref}<strong>{name}</strong><br>{pref}Build
 
 $oView->lng_result_message_tpl = i18n('Duration of test run: {time} seconds.<br>Number of processed URLs: {num_urls}<br><span class="settingFine">Successful resolved: {num_success}</span><br><span class="settingWrong">Errors during resolving: {num_fail}</span></strong>', 'mod_rewrite');
 
-
 ################################################################################
 ##### Action processing
 
@@ -70,7 +66,6 @@ if ($mrTestNoOptionSelected) {
 
 $oView = $oMrTestController->getView();
 $oView->content .= mr_debugOutput(false);
-
 
 ################################################################################
 ##### Output

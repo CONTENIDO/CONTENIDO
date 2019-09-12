@@ -22,7 +22,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-
 global $client, $changeclient, $cfgClient, $lang, $changelang, $idart, $idcat, $path, $mr_preprocessedPageError;
 
 ModRewriteDebugger::add(ModRewrite::getConfig(), 'front_content_controller.php mod rewrite config');

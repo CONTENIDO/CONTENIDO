@@ -58,7 +58,11 @@ class SolrIndexer {
      *
      * include.con_editcontent.php
      *
-     * @param int $idartlang of article to be updated
+     * @param array $newData
+     * @param array $oldData
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public static function handleStoringOfArticle(array $newData, array $oldData) {
 
@@ -115,7 +119,7 @@ class SolrIndexer {
      *
      * include.con_editcontent.php
      *
-     * @param int $idartlang of article to be updated
+     * @param array $articleIds of article to be updated
      */
     public static function handleStoringOfContentEntry(array $articleIds) {
         try {
@@ -157,10 +161,12 @@ class SolrIndexer {
     }
 
     /**
-     *
      * @param int $idclient
      * @param int $idlang
+     *
      * @return SolrClient
+     * @throws SolrWarning
+     * @throws cException
      */
     private function _getSolrClient($idclient, $idlang) {
 
@@ -286,6 +292,8 @@ class SolrIndexer {
      * Gets path to upload.
      *
      * @param int $idupl
+     *
+     * @return bool|string
      */
     private function _getImageUrlByIdupl($idupl) {
         $upload = new cApiUpload($idupl);
@@ -308,7 +316,8 @@ class SolrIndexer {
      * Delete all CONTENIDO article documents that are aggregated as
      * $this->_articleIds.
      *
-     * @throws SolrClientException if Solr delete request failed
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function deleteArticles() {
         $toDelete = array();
@@ -346,7 +355,6 @@ class SolrIndexer {
     }
 
     /**
-     *
      * @throws cException if Solr delete request failed
      */
     public function updateArticles() {
@@ -383,9 +391,9 @@ class SolrIndexer {
         $articleLanguage = new cApiArticleLanguage($idartlang);
         if (!$articleLanguage->isLoaded()) {
             return false;
-        } else if (1 != $articleLanguage->get('online')) {
+        } elseif (1 != $articleLanguage->get('online')) {
             return false;
-        } else if (1 != $articleLanguage->get('searchable')) {
+        } elseif (1 != $articleLanguage->get('searchable')) {
             return false;
         } else {
             return true;
@@ -393,9 +401,10 @@ class SolrIndexer {
     }
 
     /**
-     *
      * @param int $idartlang of article to be read
+     *
      * @return array
+     * @throws cDbException
      */
     private function _getContent($idartlang) {
 
@@ -456,6 +465,8 @@ class SolrIndexer {
     /**
      *
      * @param SolrResponse $solrResponse
+     * @param string       $msg
+     *
      * @throws cException if Solr update request failed
      */
     private function _checkResponse(SolrResponse $solrResponse, $msg = 'Solr update request failed') {

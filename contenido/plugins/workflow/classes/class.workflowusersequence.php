@@ -18,11 +18,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Plugin
  * @subpackage Workflow
+ * @method WorkflowUserSequence createNewItem
+ * @method WorkflowUserSequence next
  */
 class WorkflowUserSequences extends ItemCollection {
-
     /**
      * Constructor Function
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -30,6 +33,13 @@ class WorkflowUserSequences extends ItemCollection {
         $this->_setItemClass("WorkflowUserSequence");
     }
 
+    /**
+     * @param mixed $id
+     *
+     * @return bool|void
+     * @throws cDbException
+     * @throws cException
+     */
     public function delete($id) {
         global $cfg, $idworkflow;
 
@@ -50,6 +60,13 @@ class WorkflowUserSequences extends ItemCollection {
         $this->updateArtAllocation($id);
     }
 
+    /**
+     * @param $idusersequence
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     */
     public function updateArtAllocation($idusersequence) {
         global $idworkflow, $cfg;
         $oDb = cRegistry::getDb();
@@ -69,6 +86,14 @@ class WorkflowUserSequences extends ItemCollection {
         }
     }
 
+    /**
+     * @param $idworkflowitem
+     *
+     * @return bool|Item
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     */
     public function create($idworkflowitem) {
         global $auth, $client, $idworkflow;
 
@@ -96,6 +121,16 @@ class WorkflowUserSequences extends ItemCollection {
         return $newitem;
     }
 
+    /**
+     * @param $idworkflowitem
+     * @param $pos1
+     * @param $pos2
+     *
+     * @return bool
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     */
     public function swap($idworkflowitem, $pos1, $pos2) {
         $this->select("idworkflowitem = '$idworkflowitem' AND position = " . (int) $pos1);
         if (($item = $this->next()) === false) {
@@ -155,7 +190,11 @@ class WorkflowUserSequence extends Item {
      *
      * @param string $field Field to set
      * @param string $value Value to set
-     * @param bool $safe
+     * @param bool   $safe
+     *
+     * @return bool
+     * @throws cDbException
+     * @throws cException
      * @throws cInvalidArgumentException if the field is idworkflowitem,
      *         idusersequence or position
      */
@@ -198,7 +237,9 @@ class WorkflowUserSequence extends Item {
     /**
      * Returns the associated workflowItem for this user sequence
      *
-     * @param none
+     * @return bool|WorkflowItem
+     * @throws cDbException
+     * @throws cException
      */
     public function getWorkflowItem() {
         if ($this->isLoaded()) {
@@ -231,5 +272,3 @@ class WorkflowUserSequence extends Item {
     }
 
 }
-
-?>
