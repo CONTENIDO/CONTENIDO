@@ -70,8 +70,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         $template->store();
 
         // Set correct rights for element
-        cInclude('includes', 'functions.rights.php');
-        createRightsForElement('tpl', $idtpl);
+        cRights::createRightsForElement('tpl', $idtpl);
     } else {
 
         // Define lastmodified variable with actual date
@@ -157,8 +156,7 @@ function tplDeleteTemplate($idtpl) {
         $db->query($sql);
     }
 
-    cInclude("includes", "functions.rights.php");
-    deleteRightsForElement("tpl", $idtpl);
+    cRights::deleteRightsForElement("tpl", $idtpl);
 }
 
 /**
@@ -425,8 +423,7 @@ function tplDuplicateTemplate($idtpl) {
         }
     }
 
-    cInclude('includes', 'functions.rights.php');
-    copyRightsForElement('tpl', $idtpl, $newidtpl);
+    cRights::copyRightsForElement('tpl', $idtpl, $newidtpl);
 
     return $newidtpl;
 }

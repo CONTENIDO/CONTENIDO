@@ -16,8 +16,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-include_once(cRegistry::getBackendPath() . 'includes/functions.rights.php');
-
 if (!isset($actionarea)) {
     $actionarea = 'area';
 }
@@ -38,7 +36,7 @@ $oTpl->reset();
 
 // get list of rights
 if (!is_array($right_list)) {
-    $right_list = getRightsList();
+    $right_list = cRights::getRightsList();
 }
 
 $oTpl->set('s', 'SESS_ID', $sess->id);
