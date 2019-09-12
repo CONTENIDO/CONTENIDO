@@ -1,21 +1,16 @@
 ?><?php
+
 /**
  * Description: Newsletter handler input
  *
  * @version    1.0.0
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
- *
- * {@internal
- *   created unknown
- *   $Id: newsletter_handler_input.php 3584 2012-10-26 10:50:54Z konstantinos.katikak $
- * }}
  */
 
 // Initialisation
-$oClientLang = new cApiClientLanguage(false, $client, $lang);
-$oClient     = new cApiClient($client);
-$cnumber     = 1;
+$oClientLang       = new cApiClientLanguage(false, $client, $lang);
+$oClient           = new cApiClient($client);
 
 /*
  *  Used variables:
@@ -55,39 +50,39 @@ if ($aSettings['FrontendConfirm'] == '') {
 if ($aSettings['FrontendDel'] == '') {
     $aSettings['FrontendDel'] = "DeleteUser";
 }
-if (!is_numeric($_REQUEST['selHandlerCatArt'.$cnumber]) || $_REQUEST['selHandlerCatArt'.$cnumber] < 0) {
-    $_REQUEST['selHandlerCatArt'.$cnumber] = 0;
+if (!is_numeric($_REQUEST['selHandlerCatArt'.$cCurrentContainer]) || $_REQUEST['selHandlerCatArt'.$cCurrentContainer] < 0) {
+    $_REQUEST['selHandlerCatArt'.$cCurrentContainer] = 0;
 }
 
 // Saving changes, if any
-if ($_REQUEST['hidAction'.$cnumber] == 'save') {
-    if ($_REQUEST['radJoin'.$cnumber] != '') {
-        $aSettings['JoinSel'] = $_REQUEST['radJoin'.$cnumber];
+if ($_REQUEST['hidAction'.$cCurrentContainer] == 'save') {
+    if ($_REQUEST['radJoin'.$cCurrentContainer] != '') {
+        $aSettings['JoinSel'] = $_REQUEST['radJoin'.$cCurrentContainer];
         $oClientLang->setProperty('newsletter', 'joinsel', $aSettings['JoinSel']);
     }
-    if ($_REQUEST['ckbJoinMultiple'.$cnumber] != $aSettings['JoinMultiple']) {
-        $aSettings['JoinMultiple'] = $_REQUEST['ckbJoinMultiple'.$cnumber];
+    if ($_REQUEST['ckbJoinMultiple'.$cCurrentContainer] != $aSettings['JoinMultiple']) {
+        $aSettings['JoinMultiple'] = $_REQUEST['ckbJoinMultiple'.$cCurrentContainer];
         $oClientLang->setProperty('newsletter', 'joinmultiple', $aSettings['JoinMultiple']);
     }
-    if (isset($_REQUEST['selGroup'.$cnumber]) && is_array($_REQUEST['selGroup'.$cnumber])) {
-        $aSettings['JoinGroups'] = implode(',', $_REQUEST['selGroup'.$cnumber]);
+    if (isset($_REQUEST['selGroup'.$cCurrentContainer]) && is_array($_REQUEST['selGroup'.$cCurrentContainer])) {
+        $aSettings['JoinGroups'] = implode(',', $_REQUEST['selGroup'.$cCurrentContainer]);
         $oClientLang->setProperty('newsletter', 'joingroups', $aSettings['JoinGroups']);
     }
-    if ($_REQUEST['selMessageType'.$cnumber] != $aSettings['JoinMessageType']) {
-        $aSettings['JoinMessageType'] = $_REQUEST['selMessageType'.$cnumber];
+    if ($_REQUEST['selMessageType'.$cCurrentContainer] != $aSettings['JoinMessageType']) {
+        $aSettings['JoinMessageType'] = $_REQUEST['selMessageType'.$cCurrentContainer];
         $oClientLang->setProperty('newsletter', 'joinmessagetype', $aSettings['JoinMessageType']);
     }
-    if ($_REQUEST['ckbFrontendLink'.$cnumber] != $aSettings['FrontendLink']) {
-        $aSettings['FrontendLink'] = $_REQUEST['ckbFrontendLink'.$cnumber];
+    if ($_REQUEST['ckbFrontendLink'.$cCurrentContainer] != $aSettings['FrontendLink']) {
+        $aSettings['FrontendLink'] = $_REQUEST['ckbFrontendLink'.$cCurrentContainer];
         $oClient->setProperty('newsletter', 'frontendlink', $aSettings['FrontendLink']);
     }
-    if ($_REQUEST['ckbUpdateHandlerID'.$cnumber] == 'enabled') {
+    if ($_REQUEST['ckbUpdateHandlerID'.$cCurrentContainer] == 'enabled') {
         // Trick: If UpdateHandlerID is enabled, save id as client setting
-        $iHandlerCatArt = $_REQUEST['selHandlerCatArt'.$cnumber];
+        $iHandlerCatArt = $_REQUEST['selHandlerCatArt'.$cCurrentContainer];
         $oClientLang->setProperty('newsletter', 'idcatart', $iHandlerCatArt);
     }
-    if (isValidMail($_REQUEST['txtSender'.$cnumber]) && $_REQUEST['txtSender'.$cnumber] != $aSettings['SenderEMail']) {
-        $aSettings['SenderEMail'] = $_REQUEST['txtSender'.$cnumber];
+    if (isValidMail($_REQUEST['txtSender'.$cCurrentContainer]) && $_REQUEST['txtSender'.$cCurrentContainer] != $aSettings['SenderEMail']) {
+        $aSettings['SenderEMail'] = $_REQUEST['txtSender'.$cCurrentContainer];
         $oClient->setProperty('global', 'sender-email', $aSettings['SenderEMail']);
     }
 }
@@ -99,21 +94,21 @@ unset($oClientLang, $oClient);
 // Show options
 $oCfgTable  = new UI_Config_Table();
 
-$oHidAction = new cHTMLHiddenField('hidAction'.$cnumber, 'save');
+$oHidAction = new cHTMLHiddenField('hidAction'.$cCurrentContainer, 'save');
 
-$oTxtSender = new cHTMLTextbox("txtSender".$cnumber, $aSettings['SenderEMail'], 30);
+$oTxtSender = new cHTMLTextbox("txtSender".$cCurrentContainer, $aSettings['SenderEMail'], 30);
 
 $oCfgTable->setCell('sender', 0, mi18n("SENDER_EMAIL_COLON"));
 $oCfgTable->setCell('sender', 1, $oHidAction->render().$oTxtSender->render());
 
-$oSelHandlerCatArt = new cHTMLInputSelectElement('selHandlerCatArt'.$cnumber, 1, '', true);
+$oSelHandlerCatArt = new cHTMLInputSelectElement('selHandlerCatArt'.$cCurrentContainer, 1, '', true);
 $oOption           = new cHTMLOptionElement(mi18n("PLEASE_SELECT"), '');
 $oSelHandlerCatArt->addOptionElement(0, $oOption);
 $oSelHandlerCatArt->addCategories(0, true, false, false, true, true);
 $oSelHandlerCatArt->setDefault($iHandlerCatArt);
 
-$oCkbUpdate        = new cHTMLCheckbox('ckbUpdateHandlerID'.$cnumber, 'enabled');
-$oCkbUpdate->setEvent('click', 'if (this.checked) {document.forms[0].selHandlerCatArt'.$cnumber.'.disabled = false;} else {document.forms[0].selHandlerCatArt'.$cnumber.'.disabled = true;}');
+$oCkbUpdate        = new cHTMLCheckbox('ckbUpdateHandlerID'.$cCurrentContainer, 'enabled');
+$oCkbUpdate->setEvent('click', 'if (this.checked) {document.forms[0].selHandlerCatArt'.$cCurrentContainer.'.disabled = false;} else {document.forms[0].selHandlerCatArt'.$cCurrentContainer.'.disabled = true;}');
 
 $oCfgTable->setCell('handler', 0, mi18n("HANDLER_ARTICLE_COLON"));
 $oCfgTable->setCell('handler', 1, $oSelHandlerCatArt->render()."\n ".$oCkbUpdate->toHtml(false).mi18n("UPDATE"));
@@ -135,37 +130,37 @@ $oCfgTable->setCell('join_01', 0, mi18n("JOIN_COLON"));
 
 if ($oRcpGroups->count() == 0) {
     // No groups available, only default group possible
-    $oRadJoinDefault = new cHTMLRadioButton('radJoin'.$cnumber, 'Default', '', true);
+    $oRadJoinDefault = new cHTMLRadioButton('radJoin'.$cCurrentContainer, 'Default', '', true);
     $oCfgTable->setCell('join_01', 1, $oRadJoinDefault->toHtml(false).mi18n("DEFAULT_GROUP"));
 } else {
     // Groups available, show different group join options
 
     // Join default group only
     if ($aSettings['JoinSel'] == 'Default') {
-        $oRadJoinDefault = new cHTMLRadioButton('radJoin'.$cnumber, 'Default', '', true);
+        $oRadJoinDefault = new cHTMLRadioButton('radJoin'.$cCurrentContainer, 'Default', '', true);
     } else {
-        $oRadJoinDefault = new cHTMLRadioButton('radJoin'.$cnumber, 'Default');
+        $oRadJoinDefault = new cHTMLRadioButton('radJoin'.$cCurrentContainer, 'Default');
     }
     $oCfgTable->setCell('join_01', 1, $oRadJoinDefault->toHtml(false).mi18n("DEFAULT_GROUP"));
 
     // Join admin selected groups automatically
     if ($aSettings['JoinSel'] == 'Selected') {
-        $oRadJoinSelected = new cHTMLRadioButton('radJoin'.$cnumber, 'Selected', '', true);
+        $oRadJoinSelected = new cHTMLRadioButton('radJoin'.$cCurrentContainer, 'Selected', '', true);
     } else {
-        $oRadJoinSelected = new cHTMLRadioButton('radJoin'.$cnumber, 'Selected');
+        $oRadJoinSelected = new cHTMLRadioButton('radJoin'.$cCurrentContainer, 'Selected');
     }
     $oCfgTable->setCell('join_02', 0, '');
     $oCfgTable->setCell('join_02', 1, $oRadJoinSelected->toHtml(false).mi18n("SELECTED_GROUP_S"));
 
     // Join the groups the user has selected (-> provide a list for the user), optionally, the user may select more than one group
     if ($aSettings['JoinSel'] == 'UserSelected') {
-        $oRadJoinUserSel  = new cHTMLRadioButton('radJoin'.$cnumber, 'UserSelected', '', true);
-        $oCkbJoinMultiple = new cHTMLCheckbox('ckbJoinMultiple'.$cnumber, 'enabled', '', $aSettings['JoinMultiple']);
+        $oRadJoinUserSel  = new cHTMLRadioButton('radJoin'.$cCurrentContainer, 'UserSelected', '', true);
+        $oCkbJoinMultiple = new cHTMLCheckbox('ckbJoinMultiple'.$cCurrentContainer, 'enabled', '', $aSettings['JoinMultiple']);
     } else {
-        $oRadJoinUserSel  = new cHTMLRadioButton('radJoin'.$cnumber, 'UserSelected');
-        $oCkbJoinMultiple = new cHTMLCheckbox('ckbJoinMultiple'.$cnumber, 'enabled', '', false, true);
+        $oRadJoinUserSel  = new cHTMLRadioButton('radJoin'.$cCurrentContainer, 'UserSelected');
+        $oCkbJoinMultiple = new cHTMLCheckbox('ckbJoinMultiple'.$cCurrentContainer, 'enabled', '', false, true);
     }
-    //$oRadJoinUserSel->setEvent('click', "document.forms[0].elements['ckbJoinMultiple".$cnumber."'].disabled = false; document.forms[0].selGroup".$cnumber.".disabled = false;");
+    //$oRadJoinUserSel->setEvent('click', "document.forms[0].elements['ckbJoinMultiple".$cCurrentContainer."'].disabled = false; document.forms[0].selGroup".$cCurrentContainer.".disabled = false;");
     $oCfgTable->setCell('join_03', 0, '');
     $oCfgTable->setCell('join_03', 1, $oRadJoinUserSel->toHtml(false).mi18n("GROUP_S_USER_SELECTED").'<br />'."\n".$oCkbJoinMultiple->toHtml(false).mi18n("GROUP_SELECTION_MULTIPLE"));
 
@@ -178,23 +173,23 @@ if ($oRcpGroups->count() == 0) {
 <script type="text/javascript"><!--
 function fncUpdateSel() {
     var strSel = "";
-    for (i = 0; i < document.forms[0].selGroup'.$cnumber.'.length; i++) {
-        if (document.forms[0].selGroup'.$cnumber.'.options[i].selected == true) {
+    for (i = 0; i < document.forms[0].selGroup'.$cCurrentContainer.'.length; i++) {
+        if (document.forms[0].selGroup'.$cCurrentContainer.'.options[i].selected == true) {
             if (strSel != "") {
                 strSel = strSel + ",";
             }
-            strSel = strSel + document.forms[0].selGroup'.$cnumber.'.options[i].value;
+            strSel = strSel + document.forms[0].selGroup'.$cCurrentContainer.'.options[i].value;
         }
     }
-    document.forms[0].elements["hidJoinGroups'.$cnumber.'"].value = strSel;
+    document.forms[0].elements["hidJoinGroups'.$cCurrentContainer.'"].value = strSel;
 }
 //--></script>
 ';
 
     if ($aSettings['JoinSel'] == 'Default') {
-        $oSelGroup = new cHTMLSelectElement('selGroup'.$cnumber, '', '', true);
+        $oSelGroup = new cHTMLSelectElement('selGroup'.$cCurrentContainer, '', '', true);
     } else {
-        $oSelGroup = new cHTMLSelectElement('selGroup'.$cnumber, '');
+        $oSelGroup = new cHTMLSelectElement('selGroup'.$cCurrentContainer, '');
     }
     $oSelGroup->setSize(5);
     $oSelGroup->setMultiselect();
@@ -211,14 +206,14 @@ function fncUpdateSel() {
         $oSelGroup->addOptionElement($iID, $oOption);
     }
 
-    $oHidGroups = new cHTMLHiddenField('hidJoinGroups'.$cnumber, $aSettings['JoinGroups']);
+    $oHidGroups = new cHTMLHiddenField('hidJoinGroups'.$cCurrentContainer, $aSettings['JoinGroups']);
     $oCfgTable->setCell('groups', 1, $sSkript.$oSelGroup->render().$oHidGroups->render());
 }
 
 // Options: Message type (user [->selectbox], text or html)
 $oCfgTable->setCell('options_01', 0, mi18n("OPTIONS_COLON"));
 
-$oSelMsgType = new cHTMLSelectElement('selMessageType'.$cnumber);
+$oSelMsgType = new cHTMLSelectElement('selMessageType'.$cCurrentContainer);
 $oOption = new cHTMLOptionElement(mi18n("USER_SELECTED"), "user");
 $oSelMsgType->addOptionElement(0, $oOption);
 $oOption = new cHTMLOptionElement(mi18n("TEXT_ONLY"), "text");
@@ -231,7 +226,7 @@ $oCfgTable->setCell('options_01', 1, mi18n("DEFAULT_MESSAGE_TYPE_COLON").' '.$oS
 
 // Frontend Link
 $oCfgTable->setCell('link_01', 0, mi18n("FRONTEND_USERS_COLON"));
-$oCkbLink = new cHTMLCheckbox('ckbFrontendLink'.$cnumber, 'enabled', '', $aSettings['FrontendLink']);
+$oCkbLink = new cHTMLCheckbox('ckbFrontendLink'.$cCurrentContainer, 'enabled', '', $aSettings['FrontendLink']);
 
 $sSkript = "if (this.checked) {
               document.forms[0].elements['CMS_VAR[5]'][0].disabled = false;

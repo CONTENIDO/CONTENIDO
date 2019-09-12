@@ -303,158 +303,121 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
  * @package Core
  * @subpackage Util
  */
-class UI_Config_Table {
-
+class UI_Config_Table
+{
     /**
-     *
      * @var string
      */
-    protected $_TplCellCode = '';
+    protected $_tplCellCode = '';
 
     /**
-     *
      * @var string
      */
-    protected $_TplTableFile = '';
+    protected $_tplTableFile = '';
 
     /**
-     *
      * @var string
      */
-    protected $_Width = '';
+    protected $_width = '';
 
     /**
-     *
      * @var int
      */
-    protected $_Border = 0;
+    protected $_border = 0;
 
     /**
-     *
      * @var string
      */
-    protected $_BorderColor = '';
+    protected $_borderColor = '';
 
     /**
-     *
      * @var string
      */
-    protected $_SolidBorder = '';
+    protected $_solidBorder = '';
 
     /**
-     *
      * @var int
      */
-    protected $_Padding = 0;
+    protected $_padding = 0;
 
     /**
-     *
      * @var array
      */
-    protected $_Cells = array();
+    protected $_cells = [];
 
     /**
-     *
      * @var array
      */
-    protected $_CellAlignment = array();
+    protected $_cellAlignment = [];
 
     /**
-     *
      * @var array
      */
-    protected $_CellVAlignment = array();
+    protected $_cellVAlignment = [];
 
     /**
-     *
-     * @var unknown_type
+     * @var string
      */
-    protected $_CellColSpan;
+    protected $_cellColSpan;
 
     /**
-     *
      * @var array
      */
-    protected $_CellClass = array();
+    protected $_cellClass = [];
 
     /**
-     *
-     * @var unknown_type
+     * @var string
      */
-    protected $_RowBgColor;
+    protected $_rowBgColor;
 
     /**
-     *
-     * @var unknown_type
+     * @var string
      */
-    protected $_RowExtra;
+    protected $_rowExtra;
 
     /**
-     *
      * @var bool
      */
-    protected $_AddMultiSelJS = null;
+    protected $_addMultiSelJS = false;
 
     /**
-     *
      * @var string
      */
-    protected $_ColorLight = '';
+    protected $_colorLight = '';
 
     /**
-     *
      * @var string
      */
-    protected $_ColorDark = '';
+    protected $_colorDark = '';
 
     /**
      * Constructor to create an instance of this class.
      */
-    public function __construct() {
-        $cfg = cRegistry::getConfig();
+    public function __construct()
+    {
+        $cfg         = cRegistry::getConfig();
         $backendPath = cRegistry::getBackendPath();
 
-        $this->_Padding = 2;
-        $this->_Border = 0;
-        $this->_TplCellCode = '        <td align="{ALIGN}" valign="{VALIGN}" class="{CLASS}" colspan="{COLSPAN}" style="{EXTRA}white-space:nowrap;" nowrap="nowrap">{CONTENT}</td>' . "\n";
-        $this->_TplTableFile = $backendPath . $cfg['path']['templates'] . $cfg['templates']['input_helper'];
-        $this->_TplCellCode =  $backendPath . $cfg['path']['templates'] . $cfg['templates']['input_helper_row'];
+        $this->_padding      = 2;
+        $this->_border       = 0;
+        $this->_tplTableFile = $backendPath . $cfg['path']['templates'] . $cfg['templates']['input_helper'];
+        $this->_tplCellCode  = $backendPath . $cfg['path']['templates'] . $cfg['templates']['input_helper_row'];
     }
 
     /**
-     * Create a config table instance.
-     * Old constructor
-     *
-     * @deprecated [2016-02-11]
-     *              This method is deprecated and is not needed any longer.
-     *              Please use __construct() as constructor function.
-     */
-    public function UI_Config_Table() {
-        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
-        return $this->__construct();
-    }
-
-    /**
-     * @param bool $bEnabled
-     */
-    function setAddMultiSelJS($bEnabled = true) {
-        $this->_bAddMultiSelJS = (bool) $bEnabled;
-    }
-
-    /**
-     *
      * @param string $code
      */
-    public function setCellTemplate($code) {
-        $this->_TplCellCode = $code;
+    public function setCellTemplate($code)
+    {
+        $this->_tplCellCode = $code;
     }
 
     /**
-     *
      * @param string $path
      */
-    public function setTableTemplateFile($path) {
-        $this->_TplTableFile = $path;
+    public function setTableTemplateFile($path)
+    {
+        $this->_tplTableFile = $path;
     }
 
     /**
@@ -464,55 +427,68 @@ class UI_Config_Table {
      * @param string $cell
      * @param string $content
      */
-    public function setCell($row, $cell, $content) {
-        $this->_Cells[$row][$cell] = $content;
-        $this->_CellAlignment[$row][$cell] = "";
+    public function setCell($row, $cell, $content)
+    {
+        $this->_cells[$row][$cell]         = $content;
+        $this->_cellAlignment[$row][$cell] = "";
     }
 
     /**
      * Set method for cell alignment
      *
-     * @param string $row
-     * @param string $cell
-     * @param unknown_type $alignment
+     * @param string       $row
+     * @param string       $cell
+     * @param string $alignment
      */
-    protected function setCellAlignment($row, $cell, $alignment) {
-        $this->_CellAlignment[$row][$cell] = $alignment;
+    protected function setCellAlignment($row, $cell, $alignment)
+    {
+        $this->_cellAlignment[$row][$cell] = $alignment;
     }
 
     /**
      * Set method for cell vertical alignment
      *
-     * @param string $row
-     * @param string $cell
-     * @param unknown_type $alignment
+     * @param string       $row
+     * @param string       $cell
+     * @param string $alignment
      */
-    public function setCellVAlignment($row, $cell, $alignment) {
-        $this->_CellVAlignment[$row][$cell] = $alignment;
+    public function setCellVAlignment($row, $cell, $alignment)
+    {
+        $this->_cellVAlignment[$row][$cell] = $alignment;
     }
 
     /**
      * Set method for cell class
      *
-     * @param string $row
-     * @param string $cell
-     * @param unknown_type $class
+     * @param string       $row
+     * @param string       $cell
+     * @param string $class
      */
-    public function setCellClass($row, $cell, $class) {
-        $this->_CellClass[$row][$cell] = $class;
+    public function setCellClass($row, $cell, $class)
+    {
+        $this->_cellClass[$row][$cell] = $class;
+    }
+
+    /**
+     */
+    public function addMultiSelJS()
+    {
+        $this->_addMultiSelJS = true;
     }
 
     /**
      * Add inline javascript
      *
+     * @internal Trick: To save multiple selections in <select>-Element,
+     * add some JS which saves the selection, comma separated
+     * in a hidden input field on change.
+     * Try ... catch prevents error messages, if function is added
+     * more than once if (!fncUpdateSel) in JS has not worked ...
+     *
      * @return string
      */
-    protected function _addMultiSelJS() {
-        // Trick: To save multiple selections in <select>-Element,
-        // add some JS which saves the selection, comma separated
-        // in a hidden input field on change.
-        // Try ... catch prevents error messages, if function is added
-        // more than once if (!fncUpdateSel) in JS has not worked ...
+    protected function _getMultiSelJS()
+    {
         $script = '
 <script type="text/javascript"><!--
 try {
@@ -521,9 +497,9 @@ try {
         var oSelectBox = document.getElementsByName(selectBox)[0];
         var oStorage   = document.getElementsByName(storage)[0];
         if (oSelectBox && oStorage) {
-            for (i = 0; i < oSelectBox.length; i++) {
-                if (oSelectBox.options[i].selected == true) {
-                    if (sSelection != "") {
+            for (var i = 0; i < oSelectBox.length; i++) {
+                if (oSelectBox.options[i].selected === true) {
+                    if (sSelection !== "") {
                         sSelection = sSelection + ",";
                     }
                     sSelection = sSelection + oSelectBox.options[i].value;
@@ -544,21 +520,22 @@ try {
      *
      * @param bool $print [optional]
      *
-     * @return string|void
+     * @return string|null
      *         Complete template string or nothing
-     * 
+     *
      * @throws cInvalidArgumentException
      */
-    public function render($print = false) {
-        $table = new cTemplate();
-        $table->reset();
+    public function render($print = false)
+    {
+        $template = new cTemplate();
+        $template->reset();
 
         $ColCount = 0;
-        if (is_array($this->_Cells)) {
-            foreach ($this->_Cells as $row => $cells) {
+        if (is_array($this->_cells)) {
+            foreach ($this->_cells as $row => $cells) {
                 $ColCount++;
                 // $dark = !$dark;
-                $line = '';
+                $line  = '';
                 $count = 0;
 
                 foreach ($cells as $cell => $data) {
@@ -566,46 +543,48 @@ try {
                     $tplCell = new cTemplate();
                     $tplCell->reset();
 
-                    if ($this->_CellClass[$row][$cell] != '') {
-                        $tplCell->set('s', 'CLASS', $this->_CellClass[$row][$cell]);
+                    if ($this->_cellClass[$row][$cell] != '') {
+                        $tplCell->set('s', 'CLASS', $this->_cellClass[$row][$cell]);
                     } else {
                         $tplCell->set('s', 'CLASS', '');
                     }
 
-                    if ($this->_CellAlignment[$row][$cell] != '') {
-                        $tplCell->set('s', 'ALIGN', $this->_CellAlignment[$row][$cell]);
+                    if ($this->_cellAlignment[$row][$cell] != '') {
+                        $tplCell->set('s', 'ALIGN', $this->_cellAlignment[$row][$cell]);
                     } else {
                         $tplCell->set('s', 'ALIGN', 'left');
                     }
 
-                    if ($this->_CellVAlignment[$row][$cell] != '') {
-                        $tplCell->set('s', 'VALIGN', $this->_CellAlignment[$row][$cell]);
+                    if ($this->_cellVAlignment[$row][$cell] != '') {
+                        $tplCell->set('s', 'VALIGN', $this->_cellAlignment[$row][$cell]);
                     } else {
                         $tplCell->set('s', 'VALIGN', 'top');
                     }
 
-                    // Multi selection javascript
-                    if ($this->_AddMultiSelJS) {
-                        $data = $this->_addMultiSelJS() . $data;
-                        $this->_AddMultiSelJS = false;
+                    // add multi selection javascript
+                    if ($this->_addMultiSelJS) {
+                        $data = $this->_getMultiSelJS() . $data;
                     }
 
                     $tplCell->set('s', 'CONTENT', $data);
-                    $line .= $tplCell->generate($this->_TplCellCode, true, false);
+                    $line .= $tplCell->generate($this->_tplCellCode, true, false);
+
+                    error_log($line);
                 }
 
                 // Row
-                $table->set('d', 'ROWS', $line);
-                $table->next();
+                $template->set('d', 'ROWS', $line);
+                $template->next();
             }
         }
-        $rendered = $table->generate($this->_TplTableFile, true, false);
+        $rendered = $template->generate($this->_tplTableFile, true, false);
 
         if ($print == true) {
             echo $rendered;
+
+            return null;
         } else {
             return $rendered;
         }
     }
-
 }

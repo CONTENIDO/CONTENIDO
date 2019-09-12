@@ -417,7 +417,7 @@ function markLastRun($jobname, $lastRun, $PC_writeDir) {
  * @param string $PC_writeDir
  * @param int $PC_useLog
  * @param bool $PC_debug
- * 
+ *
  * @return bool
  */
 function runJob($job, $PC_jobDir, $PC_writeDir, $PC_useLog, $PC_debug = false) {
@@ -468,7 +468,7 @@ function runJob($job, $PC_jobDir, $PC_writeDir, $PC_useLog, $PC_debug = false) {
  *
  * @param string $PC_cronTabFile
  * @param bool $PC_debug
- * 
+ *
  * @return array
  */
 function parseCronFile($PC_cronTabFile, $PC_debug) {
