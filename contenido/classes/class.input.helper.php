@@ -378,7 +378,7 @@ class UI_Config_Table
     /**
      * @var bool
      */
-    protected $_addMultiSelJS = null;
+    protected $_addMultiSelJS = false;
 
     /**
      * @var string
@@ -410,13 +410,6 @@ class UI_Config_Table
     public function setCellTemplate($code)
     {
         $this->_tplCellCode = $code;
-    }
-
-    /**
-     * @param bool $bEnabled
-     */
-    function setAddMultiSelJS($bEnabled = true) {
-        $this->_bAddMultiSelJS = (bool) $bEnabled;
     }
 
     /**
@@ -568,10 +561,9 @@ try {
                         $tplCell->set('s', 'VALIGN', 'top');
                     }
 
-                    // Multi selection javascript
+                    // add multi selection javascript
                     if ($this->_addMultiSelJS) {
-                        $data                 = $this->_getMultiSelJS() . $data;
-                        $this->_addMultiSelJS = false;
+                        $data = $this->_getMultiSelJS() . $data;
                     }
 
                     $tplCell->set('s', 'CONTENT', $data);
