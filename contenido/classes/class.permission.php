@@ -421,7 +421,7 @@ class cPermission {
      *
      * @param bool $iClient [optional]
      *                      idclient to check, or false for the current client
-     * @param bool $oUser   [optional]
+     * @param object $oUser   [optional]
      *                      User object to check against, or false for the current user
      *
      * @return bool
@@ -429,7 +429,7 @@ class cPermission {
      * @throws cInvalidArgumentException
      */
     public function hasClientPermission($iClient = false, $oUser = false) {
-        global $auth, $client;
+        global $client;
 
         if ($iClient === false) {
             $iClient = $client;
@@ -437,21 +437,33 @@ class cPermission {
 
         $oUser = $this->_checkUserObject($oUser);
 
-        if ($this->isSysadmin($oUser) || $this->isClientAdmin($iClient, $oUser) || $this->isClientUser($iClient, $oUser)) {
+        if ($this->isSysadmin($oUser)) {
+            return true;
+        } elseif ($this->isClientAdmin($iClient, $oUser)) {
+            return true;
+        } elseif ($this->isClientUser($iClient, $oUser)) {
             return true;
         } else {
             return false;
         }
-        /*
-         * Commented out Timo Trautmann, because here only client access is
-         * checked, possibility for admin or sysadmin access was ignored
-         * functions isSysadmin isClientAdmin isClientUser also handles
-         * permission for groups #Check clients' rights of users' group(s)
-         * $aGroups = $this->getGroupsForUser($auth->auth["uid"]); if
-         * (is_array($aGroups)) { foreach ($aGroups as $group) { $oGroup = new
-         * cApiGroup($group); if ($this->isClientGroup($iClient, $oGroup)) {
-         * return true; } } } return false; }
-         */
+
+        // Commented out by Timo Trautmann, because here only client access is checked,
+        // possibility for admin or sysadmin access was ignored.
+        // functions isSysadmin isClientAdmin isClientUser also handles permission for groups
+
+        // Check clients' rights of users' group(s)
+        // global $auth;
+        // $aGroups = $this->getGroupsForUser($auth->auth["uid"]);
+        // if (is_array($aGroups)) {
+        //     foreach ($aGroups as $group) {
+        //         $oGroup = new cApiGroup($group);
+        //         if ($this->isClientGroup($iClient, $oGroup)) {
+        //             return true;
+        //         }
+        //     }
+        // }
+        //
+        // return false;
     }
 
     /**
