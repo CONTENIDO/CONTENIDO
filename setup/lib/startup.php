@@ -139,6 +139,7 @@ $cfg['db'] = array(
     'enableProfiling' => false,
 );
 
+checkAndInclude(CON_SETUP_PATH . '/lib/defines.php');
 checkAndInclude($cfg['path']['contenido_config'] . 'config.path.php');
 checkAndInclude($cfg['path']['contenido_config'] . 'config.misc.php');
 checkAndInclude($cfg['path']['contenido_config'] . 'cfg_sql.inc.php');

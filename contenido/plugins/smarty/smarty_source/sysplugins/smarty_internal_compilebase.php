@@ -46,14 +46,14 @@ abstract class Smarty_Internal_CompileBase
 
     /**
      * Mapping array for boolqn option value
-     * 
+     *
      * @var array
      */
     public $optionMap = array(1 => true, 0 => false, 'true' => true, 'false' => false);
 
     /**
      * Mapping array with attributes as key
-     * 
+     *
      * @var array
      */
     public $mapCache = array();
@@ -92,24 +92,27 @@ abstract class Smarty_Internal_CompileBase
                 // named attribute
             } else {
                 foreach ($mixed as $k => $v) {
-                    // option flag?
-                    if (isset($this->mapCache[ 'option' ][ $k ])) {
-                        if (is_bool($v)) {
-                            $_indexed_attr[ $k ] = $v;
-                        } else {
-                            if (is_string($v)) {
-                                $v = trim($v, '\'" ');
-                            }
-                            if (isset($this->optionMap[ $v ])) {
-                                $_indexed_attr[ $k ] = $this->optionMap[ $v ];
+                    if (in_array($k, $this->option_flags)) {
+                            if (is_bool($v)) {
+                            $_indexed_attr[$k] = $v;
+                        } elseif (is_string($v) && in_array(trim($v, '\'"'), array('true', 'false'))) {
+                            if (trim($v) == 'true') {
+                                $_indexed_attr[$k] = true;
                             } else {
-                                $compiler->trigger_template_error("illegal value '" . var_export($v, true) .
-                                                                  "' for option flag '{$k}'", null, true);
+                                $_indexed_attr[$k] = false;
                             }
+                        } elseif (is_numeric($v) && in_array($v, array(0, 1))) {
+                            if ($v == 1) {
+                                $_indexed_attr[$k] = true;
+                            } else {
+                                $_indexed_attr[$k] = false;
+                            }
+                        } else {
+                            $compiler->trigger_template_error("illegal value of option flag \"{$k}\"", $compiler->lex->taglineno);
                         }
                         // must be named attribute
                     } else {
-                        $_indexed_attr[ $k ] = $v;
+                        $_indexed_attr[$k] = $v;
                     }
                 }
             }
