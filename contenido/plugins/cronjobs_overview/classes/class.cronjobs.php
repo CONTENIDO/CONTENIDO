@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the main class for the plugin content allocation.
  *
@@ -22,10 +23,19 @@ plugin_include('repository', 'custom/FrontendNavigation.php');
  * @subpackage CronjobOverview
  */
 class Cronjobs {
+    /**
+     * @var string
+     */
     public static $CRONTAB_FILE = 'crontab.txt';
 
+    /**
+     * @var string
+     */
     public static $JOB_ENDING = '.job';
 
+    /**
+     * @var string
+     */
     public static $LOG_ENDING = '.log';
 
     /**
@@ -35,23 +45,30 @@ class Cronjobs {
 
     /**
      * Filename without the mimetype
+     *
      * @var string
      */
     private $_fileName = '';
 
     /**
      * Path to the cronjob Directory
-     * @var string (path)
+     *
+     * @var string
      */
     protected $_cronjobDirectory = '';
 
     /**
      * Path to the cronlog Directory
-     * @var string (path)
+     *
+     * @var string
      */
     protected $_cronlogDirectory = '';
 
-
+    /**
+     * Cronjobs constructor.
+     *
+     * @param string $phpFile
+     */
     public function __construct($phpFile = '') {
         $this->_phpFile = $phpFile;
 
@@ -66,26 +83,26 @@ class Cronjobs {
     }
 
     /**
-     *
      * Return the name of file
-     * @return string filename
+     *
+     * @return string
      */
     public function getFile() {
         return $this->_phpFile;
     }
 
     /**
-     *
      * Get the directory path of cronjobs
+     *
      * @return string
      */
     public function getCronjobDirectory() {
         return $this->_cronjobDirectory;
     }
 
-
     /**
      * Get the directory path of cronlog
+     *
      * @return string
      */
     public function getCronlogDirectory() {
@@ -95,7 +112,9 @@ class Cronjobs {
     /**
      *
      * Get date of last execution of cronjob
+     *
      * @return string date
+     * @throws cInvalidArgumentException
      */
     public function getDateLastExecute() {
         $timestamp = '';
@@ -111,7 +130,9 @@ class Cronjobs {
     /**
      * Get the contents of the crontab.txt file
      *
-     * @return string, contents of the file or ''
+     * @return string
+     *      contents of the file or ''
+     * @throws cInvalidArgumentException
      */
     public function getContentsCrontabFile() {
         if (cFileHandler::exists($this->_cronlogDirectory . self::$CRONTAB_FILE)) {
@@ -127,7 +148,8 @@ class Cronjobs {
      *
      * @param string $data
      *
-     * @return mixed file_put_contents
+     * @return bool
+     * @throws cInvalidArgumentException
      */
     public function saveCrontabFile($data) {
         return cFileHandler::write($this->_cronlogDirectory . self::$CRONTAB_FILE, $data);
@@ -137,17 +159,20 @@ class Cronjobs {
      * Set the execute-time to $this->_phpFile.job file.
      *
      * @param int $timestamp
+     *
+     * @throws cInvalidArgumentException
      */
     public function setRunTime($timestamp) {
         cFileHandler::write($this->_cronlogDirectory . $this->_phpFile . self::$JOB_ENDING, $timestamp);
     }
-    
+
     /**
      * Get the last lines of log file
      *
      * @param int $lines
      *
-     * @return string, the lines
+     * @return string
+     * @throws cInvalidArgumentException
      */
     public function getLastLines($lines = 25) {
         if (cFileHandler::exists($this->_cronlogDirectory . $this->_phpFile . self::$LOG_ENDING)) {
@@ -171,19 +196,16 @@ class Cronjobs {
      * @return bool if exist
      */
     public function existFile() {
-        if (cFileHandler::exists($this->_cronjobDirectory . $this->_phpFile) && !is_dir($this->_cronjobDirectory . $this->_phpFile)) {
-            if (cString::getPartOfString($this->_phpFile, -4) == '.php') {
-                return true;
-            } else {
-                return false;
-            }
+        if (!cFileHandler::exists($this->_cronjobDirectory . $this->_phpFile) && !is_dir($this->_cronjobDirectory . $this->_phpFile)) {
+            return false;
+        } elseif (cString::getPartOfString($this->_phpFile, -4) == '.php') {
+            return true;
         } else {
             return false;
         }
     }
 
     /**
-     *
      * Get all Cronjobs in directory cronjobs from contenido
      */
     public function getAllCronjobs() {
@@ -204,5 +226,3 @@ class Cronjobs {
         return $retArray;
     }
 }
-
-?>

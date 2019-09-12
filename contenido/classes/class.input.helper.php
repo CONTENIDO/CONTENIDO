@@ -295,30 +295,6 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
             return false;
         }
     }
-
-    /**
-     * Selects specified elements as selected
-     *
-     * @param array $aElements
-     *         Array with "values" of the cHTMLOptionElement to set
-     * @return cHTMLSelectElement
-     *         $this for chaining
-     */
-    public function setSelected(array $aElements) {
-        if (is_array($this->_options) && is_array($aElements)) {
-            foreach ($this->_options as $sKey => $oOption) {
-                if (in_array($oOption->getAttribute("value"), $aElements)) {
-                    $oOption->setSelected(true);
-                    $this->_options[$sKey] = $oOption;
-                } else {
-                    $oOption->setSelected(false);
-                    $this->_options[$sKey] = $oOption;
-                }
-            }
-        }
-        return $this;
-    }
-
 }
 
 /**
@@ -434,6 +410,13 @@ class UI_Config_Table
     public function setCellTemplate($code)
     {
         $this->_tplCellCode = $code;
+    }
+
+    /**
+     * @param bool $bEnabled
+     */
+    function setAddMultiSelJS($bEnabled = true) {
+        $this->_bAddMultiSelJS = (bool) $bEnabled;
     }
 
     /**
@@ -590,7 +573,6 @@ try {
                         $data                 = $this->_getMultiSelJS() . $data;
                         $this->_addMultiSelJS = false;
                     }
-                    // error_log($data);
 
                     $tplCell->set('s', 'CONTENT', $data);
                     $line .= $tplCell->generate($this->_tplCellCode, true, false);

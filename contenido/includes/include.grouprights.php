@@ -14,8 +14,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-cInclude('includes', 'functions.rights.php');
-
 global $dataSync;
 $dataSync = array();
 
@@ -27,36 +25,14 @@ if (!is_object($db2)) {
     $db2 = cRegistry::getDb();
 }
 
-if (!is_object($oTpl)) {
-    // $oTpl = new cTemplate();
-}
+// if (!is_object($oTpl)) {
+//     $oTpl = new cTemplate();
+// }
 // $oTpl->reset();
 
-// Set new right_list (=all possible rights)
+// get list of rights
 if (!is_array($right_list)) {
-    // Select all rights, actions an their locations without area login
-    $sql = "SELECT A.idarea, A.parent_id, B.location, A.name " . "FROM " . $cfg["tab"]["area"] . " AS A LEFT JOIN " . $cfg["tab"]["nav_sub"] . " AS B ON  A.idarea = B.idarea " . "WHERE A.name!='login' AND A.relevant='1' AND A.online='1' GROUP BY A.name, A.idarea, A.parent_id, B.location ORDER BY A.idarea";
-    $db->query($sql);
-
-    while ($db->nextRecord()) {
-        if ($db->f('parent_id') == '0') {
-            $right_list[$db->f('name')][$db->f('name')]['perm'] = $db->f('name');
-            $right_list[$db->f('name')][$db->f('name')]['location'] = $db->f('location');
-        } else {
-            $right_list[$db->f('parent_id')][$db->f('name')]['perm'] = $db->f('name');
-            $right_list[$db->f('parent_id')][$db->f('name')]['location'] = $db->f('location');
-        }
-
-        $sql = "SELECT * FROM " . $cfg["tab"]["actions"] . " WHERE idarea=" . (int) $db->f("idarea") . " AND relevant='1'";
-        $db2->query($sql);
-        while ($db2->nextRecord()) {
-            if ($db->f('parent_id') == '0') {
-                $right_list[$db->f('name')][$db->f('name')]['action'][] = $db2->f('name');
-            } else {
-                $right_list[$db->f('parent_id')][$db->f('name')]['action'][] = $db2->f('name');
-            }
-        }
-    }
+    $right_list = cRights::getRightsList();
 }
 
 $dataSync['SESS_ID'] = $sess->id;

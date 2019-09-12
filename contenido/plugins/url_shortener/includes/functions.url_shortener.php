@@ -17,7 +17,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Constructs the HTML code containing table rows which are added to the end of
  * the article edit form
  *
+ * @param $idart
+ * @param $idlang
+ * @param $idclient
+ * @param $disabled
+ *
  * @return string rendered HTML code
+ * @throws cDbException
+ * @throws cException
  */
 function piUsEditFormAdditionalRows($idart, $idlang, $idclient, $disabled) {
     $shortUrl = new cApiShortUrl();
@@ -47,7 +54,12 @@ function piUsEditFormAdditionalRows($idart, $idlang, $idclient, $disabled) {
  * Function is called after an article has been saved.
  * Checks whether a short URL has been given via $_POST and saves/deletes it.
  *
+ * @param       $editedIdArt
  * @param array $values the values which are saved
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function piUsConSaveArtAfter($editedIdArt, $values) {
     // if not all parameters have been given, do nothing
@@ -128,8 +140,12 @@ function piUsConSaveArtAfter($editedIdArt, $values) {
 /**
  * Computes an error message which describes the given error code.
  *
- * @param int $errorCode the error code
+ * @param int          $errorCode the error code
+ * @param cApiShortUrl $shortUrlItem
+ *
  * @return string the error message describing the given error code
+ * @throws cDbException
+ * @throws cException
  */
 function piUsGetErrorMessage($errorCode, $shortUrlItem = NULL) {
     switch ($errorCode) {
@@ -182,6 +198,10 @@ function piUsGetErrorMessage($errorCode, $shortUrlItem = NULL) {
  * Function is called after the plugins have been loaded.
  * If the string placeholder in the example URL http://www.domain.de/placeholder
  * is a defined short URL, the user is redirected to the correct URL.
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function piUsAfterLoadPlugins() {
     $requestUri = $_SERVER['REQUEST_URI'];
@@ -207,6 +227,9 @@ function piUsAfterLoadPlugins() {
  *
  * @return int
  *         Number of deleted entries
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function piUseConDeleteArtAfter($idart)
 {

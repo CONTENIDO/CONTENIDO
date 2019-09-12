@@ -14,7 +14,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-
 /**
  * Content controller for general settings.
  *
@@ -33,6 +32,8 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract {
 
     /**
      * Save settings action
+     *
+     * @throws cInvalidArgumentException
      */
     public function saveAction() {
         $bDebug = $this->getProperty('bDebug');

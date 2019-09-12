@@ -44,6 +44,9 @@ class SolrRightBottomPage extends cGuiPage {
     private $_clientOptions;
 
     /**
+     * @throws SolrClientException
+     * @throws cDbException
+     * @throws cException
      * @global string $action to be performed
      */
     public function __construct() {
@@ -131,7 +134,10 @@ class SolrRightBottomPage extends cGuiPage {
      * Dispatches the given action.
      *
      * @param string $action to be executed
-     * @throws InvalidArgumentException if the given action is unknown
+     *
+     * @throws SolrClientException
+     * @throws cDbException
+     * @throws cException
      */
     protected function _dispatch($action) {
         global $area;
@@ -197,6 +203,7 @@ class SolrRightBottomPage extends cGuiPage {
      * Call the relaod action.
      *
      * @return string
+     * @throws cException
      */
     private function _reload() {
 
@@ -272,6 +279,8 @@ class SolrRightBottomPage extends cGuiPage {
     /**
      *
      * @return string
+     * @throws cDbException
+     * @throws cException
      */
     private function _reindex() {
         $cfg = cRegistry::getConfig();
@@ -336,6 +345,8 @@ class SolrRightBottomPage extends cGuiPage {
     /**
      *
      * @return string
+     * @throws cDbException
+     * @throws cException
      */
     private function _delete() {
 

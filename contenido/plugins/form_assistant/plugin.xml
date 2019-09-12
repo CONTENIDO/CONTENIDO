@@ -50,6 +50,7 @@
             <action area="form_ajax">pifa_export_data</action>
             <action area="form_ajax">pifa_get_file</action>
             <action area="form_ajax">pifa_delete_field</action>
+            <action area="form_ajax">pifa_delete_data</action>
             <action area="form_ajax">pifa_get_option_row</action>
         </actions>
 

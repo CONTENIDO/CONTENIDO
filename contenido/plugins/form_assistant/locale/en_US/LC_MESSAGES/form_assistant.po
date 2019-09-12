@@ -359,6 +359,10 @@ msgstr "could not store form: '%s'"
 msgid "CONFIRM_DELETE_FIELD"
 msgstr "Do you really want to delete this field?"
 
+#: classes/class.pifa.gui.php:954
+msgid "CONFIRM_DELETE_DATA"
+msgstr "Do you really want to delete this data?"
+
 #: classes/class.pifa.gui.php:694
 msgid ""
 "Currently there is no field called \"email\" in this form. Sending mails - "
@@ -587,6 +591,10 @@ msgstr "form could not be deleted"
 msgid "FIELDS_DELETE_ERROR"
 msgstr "fields could not be deleted"
 
+#: classes/class.pifa.form.php:1263
+msgid "DATAS_DELETE_ERROR"
+msgstr "data could not be deleted"
+
 #: classes/class.pifa.form.php:1241
 msgid "TABLE_DROP_ERROR"
 msgstr "data table could not be dropped"
@@ -664,6 +672,10 @@ msgstr "download form data file"
 #: includes/config.plugin.php:397
 msgid "pifa_delete_field"
 msgstr "delete form field"
+
+#: includes/config.plugin.php:380
+msgid "pifa_delete_data"
+msgstr "delete form data"
 
 #: includes/config.plugin.php:398
 msgid "pifa_get_option_row"

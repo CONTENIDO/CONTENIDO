@@ -91,6 +91,8 @@ class Pifa {
      *
      * @param string $level
      * @param string $note
+     *
+     * @return string
      */
     public static function getNote($level, $note) {
         $note = self::i18n($note);
@@ -101,6 +103,8 @@ class Pifa {
     /**
      *
      * @param string $note
+     *
+     * @return string
      */
     public static function getError($note) {
         return self::getNote(cGuiNotification::LEVEL_ERROR, $note);
@@ -109,6 +113,8 @@ class Pifa {
     /**
      *
      * @param Exception $e
+     *
+     * @throws cInvalidArgumentException
      */
     public static function logException(Exception $e) {
 
@@ -117,7 +123,7 @@ class Pifa {
 
 	        $log = new cLog(cLogWriter::factory('file', array(
 	            'destination' => $cfg['path']['contenido_logs'] . 'errorlog.txt'
-	        )), cLog::ERR);
+	        )));
 
 	        $log->err($e->getMessage());
 	        $log->err($e->getTraceAsString());
@@ -228,8 +234,10 @@ class Pifa {
      * convention cms_pifaform_FOOBAR.tpl where FOOBAR is any character but a
      * dot.
      *
-     * @throws PifaException
+     * @param string $re
+     *
      * @return array
+     * @throws PifaException
      */
     public static function getTemplates($re = '/cms_pifaform_[^\.]+\.tpl/') {
         $clientConfig = cRegistry::getClientConfig(cRegistry::getClientId());
@@ -311,9 +319,9 @@ class Pifa {
      * first_name -&gt; firstName)
      *
      * @see http://www.paulferrett.com/2009/php-camel-case-functions/
-     * @param string $str String in underscore format
-     * @param bool $capitalise_first_char If true, capitalise the first
-     *        char in $str
+     *
+     * @param bool $force
+     *
      * @return string $str translated into camel caps
      */
     public static function getTimestampSetting($force = false) {
@@ -377,6 +385,7 @@ $lngAct['form_ajax']['pifa_reorder_fields'] = Pifa::i18n('pifa_reorder_fields');
 $lngAct['form_ajax']['pifa_export_data'] = Pifa::i18n('pifa_export_data');
 $lngAct['form_ajax']['pifa_get_file'] = Pifa::i18n('pifa_get_file');
 $lngAct['form_ajax']['pifa_delete_field'] = Pifa::i18n('pifa_delete_field');
+$lngAct['form_ajax']['pifa_delete_data'] = Pifa::i18n('pifa_delete_data');
 $lngAct['form_ajax']['pifa_get_option_row'] = Pifa::i18n('pifa_get_option_row');
 
 // include necessary sources, setup autoloader for plugin

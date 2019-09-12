@@ -88,10 +88,8 @@ if (cRegistry::getBackendSessionId()) {
     ));
 }
 
-// Include plugins
+// Include plugins & call hook after plugins are loaded
 require_once($backendPath . $cfg['path']['includes'] . 'functions.includePluginConf.php');
-
-// Call hook after plugins are loaded
 cApiCecHook::execute('Contenido.Frontend.AfterLoadPlugins');
 
 $db = cRegistry::getDb();

@@ -6,9 +6,9 @@
         <plugin_foldername>linkchecker</plugin_foldername>
         <uuid>428CB6BC-2DE3-284D-34C9-C30C010F6B20</uuid>
         <description>Checks intern and extern links to valid</description>
-        <author>Frederic Schneider (4fb)</author>
+        <author>Holger Librenz (4fb)</author>
         <copyright>four for business AG</copyright>
-        <mail>frederic.schneider@4fb.de</mail>
+        <mail>info@4fb.de</mail>
         <website>http://www.4fb.de</website>
         <version>2.0.1</version>
     </general>

@@ -40,7 +40,7 @@ if ($action === 'url_shortener_delete' && !empty($_POST['idshorturl']) && $perm-
             $page->displayOk(i18n('The short URL has successfully been deleted!', 'url_shortener'));
         }
     }
-} else if ($action === 'url_shortener_edit' && !empty($_POST['idshorturl']) && $perm->have_perm_area_action('url_shortener', 'url_shortener_edit')) {
+} elseif ($action === 'url_shortener_edit' && !empty($_POST['idshorturl']) && $perm->have_perm_area_action('url_shortener', 'url_shortener_edit')) {
     // only do something if shorturl has been changed
     $shortUrlItem = new cApiShortUrl($_POST['idshorturl']);
     if ($shortUrlItem->isLoaded() && $shortUrlItem->get('shorturl') !== $_POST['newshorturl']) {
@@ -80,7 +80,7 @@ if ($action === 'url_shortener_delete' && !empty($_POST['idshorturl']) && $perm-
             }
         }
     }
-} else if ($action === 'url_shortener_copy_htaccess' && !empty($_GET['htaccess_type'])) {
+} elseif ($action === 'url_shortener_copy_htaccess' && !empty($_GET['htaccess_type'])) {
     // copy the .htaccess file to the client path
     $validTypes = array(
         'simple',
@@ -91,7 +91,7 @@ if ($action === 'url_shortener_delete' && !empty($_POST['idshorturl']) && $perm-
         $dest = cRegistry::getFrontendPath() . '.htaccess';
         if (cFileHandler::exists($dest)) {
             $page->displayError(i18n('The .htaccess file already exists, so that it has not been copied!', 'url_shortener'));
-        } else if (cFileHandler::copy($source, $dest)) {
+        } elseif (cFileHandler::copy($source, $dest)) {
             $page->displayOk(i18n('The .htaccess file has been successfully copied to the client path!', 'url_shortener'));
         } else {
             $page->displayError(i18n('The .htaccess file could not be copied to the client path!', 'url_shortener'));

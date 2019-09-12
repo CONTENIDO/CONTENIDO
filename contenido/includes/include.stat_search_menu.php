@@ -22,10 +22,10 @@ if (getEffectiveSetting("search", "term_tracking", "on") != "on") {
 
 // select the most popular terms and display them
 $searchTerms = new cApiSearchTrackingCollection();
-$searchTerms->selectPopularSearchTerms();
-while ($term = $searchTerms->next()) {
-    $page->set("d", "SEARCHTERM_URL", urlencode($term->get("searchterm")));
-    $page->set("d", "SEARCHTERM", conHtmlSpecialChars($term->get("searchterm")));
+$db = $searchTerms->queryPopularSearchTerms();
+while ($db->nextRecord()) {
+    $page->set("d", "SEARCHTERM_URL", urlencode($db->f("searchterm")));
+    $page->set("d", "SEARCHTERM", conHtmlSpecialChars($db->f("searchterm")));
     $page->next();
 }
 

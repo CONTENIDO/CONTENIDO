@@ -158,11 +158,14 @@ class ModRewriteUrlStack {
      * desired url.
      *
      * @param   string  Url, like front_content.php?idcat=123...
+     *
      * @return  array   Assoziative array like
      * <code>
      * $arr['urlpath']
      * $arr['urlname']
      * </code>
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function getPrettyUrlParts($url) {
         $url = ModRewrite::urlPreClean($url);
@@ -230,6 +233,11 @@ class ModRewriteUrlStack {
      *
      * Composes the query by looping thru stored but non processed urls, executes
      * the query and adds the (urlpath and urlname) result to the stack.
+     *
+     * @param $sStackId
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     private function _chunkSetPrettyUrlParts($sStackId) {
         // collect stack parameter to get urlpath and urlname

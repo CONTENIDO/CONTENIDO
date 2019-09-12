@@ -42,7 +42,7 @@ $aFields["deactivated"] = array(
 );
 
 if ($action == "recipientgroup_create" && $perm->have_perm_area_action($area, $action)) {
-    $oRGroup = $oRGroups->create(" " . i18n("-- New group --", 'newsletter', "newsletter"));
+    $oRGroup = $oRGroups->create(" " . i18n("-- New group --", 'newsletter'));
     $_REQUEST["idrecipientgroup"] = $oRGroup->get("idnewsgroup");
     $oPage->setReload();
     $sRefreshLeftTopScript = '<script type="text/javascript">Con.getFrame("left_top").refreshGroupOption(\'' . $_REQUEST["idrecipientgroup"] . '\', \'add\')</script>';
@@ -338,7 +338,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
     if ($iItems == 0 && $_REQUEST["member_filter"] == "" && ($_REQUEST["member_elemperpage"] == 0 || $iMembers == 0)) {
         $oAddedRecipientList->setCell(1, 1, i18n("No recipients are added to this group yet", 'newsletter'));
         $oAddedRecipientList->setCell(1, 2, '&nbsp;');
-    } else if ($iItems == 0) {
+    } elseif ($iItems == 0) {
         $oAddedRecipientList->setCell(1, 1, i18n("No recipients found", 'newsletter'));
         $oAddedRecipientList->setCell(1, 2, '&nbsp;');
     } else {

@@ -45,7 +45,6 @@ if (isset($client) && (int) $client > 0) {
     $clientId = '';
 }
 
-
 // include necessary sources, setup autoloader for plugin
 // @todo Use config variables for $pluginClassPath below!
 $pluginClassPath = 'contenido/plugins/mod_rewrite/classes/';
@@ -65,13 +64,11 @@ cAutoload::addClassmapConfig(array(
 unset($pluginClassPath);
 plugin_include('mod_rewrite', 'includes/functions.mod_rewrite.php');
 
-
 global $lngAct;
 
 $lngAct['mod_rewrite']['mod_rewrite'] = i18n('Advanced Mod Rewrite', 'mod_rewrite');
 $lngAct['mod_rewrite']['mod_rewrite_expert'] = i18n('Advanced Mod Rewrite functions', 'mod_rewrite');
 $lngAct['mod_rewrite']['mod_rewrite_test'] = i18n('Advanced Mod Rewrite test', 'mod_rewrite');
-
 
 // set debug configuration
 if (isset($contenido)) {

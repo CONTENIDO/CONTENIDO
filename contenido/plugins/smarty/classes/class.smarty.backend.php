@@ -19,7 +19,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage SmartyWrapper
  */
 class cSmartyBackend extends cSmartyFrontend {
-
+    /**
+     * cSmartyBackend constructor.
+     *
+     * @param      $aCfg
+     * @param      $aClientCfg
+     * @param bool $bSanityCheck
+     *
+     * @throws cException
+     * @throws cInvalidArgumentException
+     */
     public function __construct(&$aCfg, &$aClientCfg, $bSanityCheck = false) {
         parent::__construct($aCfg, $aClientCfg, false);
 

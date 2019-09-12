@@ -19,7 +19,7 @@ if (!isset($path)) {
 }
 
 $area = $_GET['area'];
-$anchorTpl = '<a class="white" target="right_bottom" href="%s">%s</a>';
+$anchorTpl = '<a class="white%s" target="right_bottom" href="%s">%s</a>';
 
 // Get all sub navigation items
 $navSubColl = new cApiNavSubCollection();
@@ -28,6 +28,12 @@ $areasNavSubs = $navSubColl->getSubnavigationsByAreaName($area);
 foreach ($areasNavSubs as $areasNavSub) {
     $areaName = $areasNavSub['name'];
 
+    // CSS Class
+    $sClass = ($areaName == $area) ? ' current' : '';
+
+    // Link
+    $sLink = $sess->url("main.php?area=$areaName&frame=4&path=$path");
+
     if ($perm->have_perm_area_action($areaName)) {
         if ($areaName != 'upl_edit') {
             // Set template data
@@ -35,7 +41,7 @@ foreach ($areasNavSubs as $areasNavSub) {
             $tpl->set('d', 'DATA_NAME', $areaName);
             $tpl->set('d', 'CLASS', '');
             $tpl->set('d', 'OPTIONS', '');
-            $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=$areaName&frame=4&path=$path"), $areasNavSub['caption']));
+            $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sClass, $sLink, $areasNavSub['caption']));
             $tpl->next();
         }
     }

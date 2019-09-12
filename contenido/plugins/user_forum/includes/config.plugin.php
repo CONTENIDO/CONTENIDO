@@ -13,7 +13,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-
 // define plugin path
 $cfg['plugins']['user_forum'] = 'user_forum/';
 

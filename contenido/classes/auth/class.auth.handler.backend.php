@@ -168,6 +168,11 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
     /**
      * Log the successful authentication.
      *
+     * Switches the globals $client & $lang to the first client/language for which the current user has permissions.
+     * If a client/language combination is found the action "login" is added to the actionlog.
+     * Eventually the global $saveLoginTime is set to true which will trigger the update of the user properties
+     * "currentlogintime" and "lastlogintime" in mycontenido.
+     *
      * @see cAuthHandlerAbstract::logSuccessfulAuth()
      * 
      * @throws cDbException

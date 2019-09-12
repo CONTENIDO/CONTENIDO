@@ -32,13 +32,14 @@ plugin_include('workflow', 'classes/class.workflowusersequence.php');
  *
  * @package Plugin
  * @subpackage Workflow
+ * @method Workflow createNewItem
+ * @method Workflow next
  */
 class Workflows extends ItemCollection {
-
     /**
      * Constructor Function
      *
-     * @param none
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -46,6 +47,11 @@ class Workflows extends ItemCollection {
         $this->_setItemClass("Workflow");
     }
 
+    /**
+     * @return Workflow
+     * @throws cDbException
+     * @throws cInvalidArgumentException
+     */
     public function create() {
         global $auth, $client, $lang;
         $newitem = $this->createNewItem();
@@ -63,6 +69,8 @@ class Workflows extends ItemCollection {
      * to parent
      *
      * @param int $idWorkflow - id of workflow to delete
+     *
+     * @throws cDbException
      */
     public function delete($idWorkflow) {
         global $cfg;
@@ -129,7 +137,13 @@ class Workflow extends Item {
 
 }
 
-/* Helper functions */
+/**
+ * @param $idcat
+ *
+ * @return int|mixed
+ * @throws cDbException
+ * @throws cException
+ */
 function getWorkflowForCat($idcat) {
     global $lang;
 
@@ -147,11 +161,16 @@ function getWorkflowForCat($idcat) {
     }
 }
 
+/**
+ * @param $idcat
+ * @param $idlang
+ *
+ * @return int
+ * @throws cDbException
+ */
 function getCatLang($idcat, $idlang) {
     // Get the idcatlang
     $oCatLangColl = new cApiCategoryLanguageCollection();
     $aIds = $oCatLangColl->getIdsByWhereClause('idlang = ' . (int) $idlang . ' AND idcat = ' . (int) $idcat);
     return (count($aIds) > 0) ? $aIds[0] : 0;
 }
-
-?>

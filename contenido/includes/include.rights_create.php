@@ -14,8 +14,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-cInclude('includes', 'functions.rights.php');
-
 if (!$perm->have_perm_area_action($area, $action)) {
     $notification->displayNotification("error", i18n("Permission denied"));
     return;
@@ -85,7 +83,7 @@ if ($action == 'user_createuser') {
 
         // If we have no errors, continue to create a user
         if ($bError == false) {
-            $aPerms = buildUserOrGroupPermsFromRequest(true);
+            $aPerms = cRights::buildUserOrGroupPermsFromRequest(true);
 
             if (cApiUser::usernameExists($username)) {
                 // username already exists

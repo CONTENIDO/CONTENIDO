@@ -44,9 +44,11 @@ class cSmartyFrontend {
     /**
      * constructor
      *
-     * @param array &$aCfg contenido cfg array
+     * @param array &$aCfg       contenido cfg array
      * @param array &$aClientCfg contenido client cfg array of the specific
-     *        client
+     *                           client
+     * @param bool  $bSanityCheck
+     *
      * @throws cException
      * @throws cInvalidArgumentException if the given configurations are not an
      *         array
@@ -142,5 +144,3 @@ class cSmartyFrontend {
     }
 
 }
-
-?>

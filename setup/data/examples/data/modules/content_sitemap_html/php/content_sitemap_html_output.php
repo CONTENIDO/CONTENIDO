@@ -28,7 +28,7 @@ $tpl = cSmartyFrontend::getInstance();
 $tpl->assign('isBackendEditMode', cRegistry::isBackendEditMode());
 
 // assign module translations
-$tpl->assign('trans', array(
+$tpl->assign('trans', [
     'headline' => mi18n("HEADLINE"),
     'categoryLabel' => mi18n("CATEGORY_LABEL"),
     'levelLabel' => mi18n("LEVEL_LABEL"),
@@ -36,7 +36,7 @@ $tpl->assign('trans', array(
     'articleHintLabel' => mi18n("ARTICLE_HINT_LABEL"),
     'categoryHintLabel' => mi18n("GATEGORY_HINT_LABEL"),
     'levelHintLabel' => mi18n("LEVEL_HINT_LABEL")
-));
+]);
 
 // assign CMS input fields
 $tpl->assign('category', "CMS_TEXT[1]");
@@ -70,16 +70,14 @@ $tpl->display('get.tpl');
  * @return array
  */
 function addArticlesToTree(array $tree) {
-
-    $startidartlang = getStartIdArtLang();
+    $startIdArtLang = getStartIdArtLang();
 
     foreach ($tree as $key => $wrapper) {
-        $tree[$key]['articles'] = getArticlesFromCategory($wrapper['idcat'], $startidartlang);
+        $tree[$key]['articles'] = getArticlesFromCategory($wrapper['idcat'], $startIdArtLang);
         $tree[$key]['subcats'] = addArticlesToTree($tree[$key]['subcats']);
     }
 
     return $tree;
-
 }
 
 /**
@@ -90,12 +88,10 @@ function addArticlesToTree(array $tree) {
  *         of article language IDs
  */
 function getStartIdArtLang() {
-
     $cfg = cRegistry::getConfig();
     $db = cRegistry::getDb();
 
     // get all startidartlangs
-
     $ret = $db->query('-- getStartIdArtLang()
         SELECT
             startidartlang
@@ -106,13 +102,12 @@ function getStartIdArtLang() {
             AND public = 1
         ;');
 
-    $result = array();
+    $result = [];
     while ($db->nextRecord()) {
         $result[] = $db->f('startidartlang');
     }
 
     return $result;
-
 }
 
 /**
@@ -123,13 +118,12 @@ function getStartIdArtLang() {
  *
  * @param int $idcat
  *         ID of category to search in
- * @param array $excludedIdartlangs [optional]
+ * @param array $excludedIdArtLangs [optional]
  *         ID of article languages to exclude
  * @return array
  *         of article languages
  */
-function getArticlesFromCategory($idcat, array $excludedIdartlangs = array()) {
-
+function getArticlesFromCategory($idcat, array $excludedIdArtLangs = []) {
     $cfg = cRegistry::getConfig();
     $db = cRegistry::getDb();
     $idlang = cRegistry::getLanguageId();
@@ -138,8 +132,8 @@ function getArticlesFromCategory($idcat, array $excludedIdartlangs = array()) {
         SELECT
             art_lang.idartlang
         FROM
-            `' . $cfg['tab']['art_lang'] . '` AS art_lang
-            , `' . $cfg['tab']['cat_art'] . '` AS ca
+            `' . $cfg['tab']['art_lang'] . '` AS art_lang,
+            `' . $cfg['tab']['cat_art'] . '` AS cat_art
         WHERE
             art_lang.idart = cat_art.idart
             AND art_lang.idlang = ' . cSecurity::toInteger($idlang) . '
@@ -149,24 +143,21 @@ function getArticlesFromCategory($idcat, array $excludedIdartlangs = array()) {
         ;');
 
     if (false === $ret) {
-        return array();
+        return [];
     }
 
-    $result = array();
+    $result = [];
     while ($db->nextRecord()) {
-
         // skip article languages to exclude
-        if (in_array($db->f('idartlang'), $excludedIdartlangs)) {
+        if (in_array($db->f('idartlang'), $excludedIdArtLangs)) {
             continue;
         }
 
         // add article languages to result
         $result[] = new cApiArticleLanguage($db->f('idartlang'));
-
     }
 
     return $result;
-
 }
 
 ?>

@@ -16,8 +16,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-cInclude('includes', 'functions.rights.php');
-
 if (!($perm->have_perm_area_action($area, $action) || $perm->have_perm_area_action('user', $action))) {
     // access denied
     $notification->displayNotification("error", i18n("Permission denied"));
@@ -109,7 +107,7 @@ if ($action == 'user_edit') {
 
     }
 
-    $aPerms = buildUserOrGroupPermsFromRequest();
+    $aPerms = cRights::buildUserOrGroupPermsFromRequest();
 
     // update user values
     // New Class User, update password and other values

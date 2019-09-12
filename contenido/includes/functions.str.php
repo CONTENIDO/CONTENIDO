@@ -100,8 +100,6 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
         return;
     }
 
-    cInclude('includes', 'functions.rights.php');
-
     // Loop through languages
     $aLanguages = array(
         $lang
@@ -115,8 +113,8 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
         $oCatLangColl->create($newIdcat, $curLang, $name, $urlname, '', 0, $visible, $public, 0, '', 0);
 
         // Set correct rights for element
-        createRightsForElement('str', $newIdcat, $curLang);
-        createRightsForElement('con', $newIdcat, $curLang);
+        cRights::createRightsForElement('str', $newIdcat, $curLang);
+        cRights::createRightsForElement('con', $newIdcat, $curLang);
     }
 
     // Assign template
@@ -216,12 +214,8 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
         return;
     }
 
-    cInclude('includes', 'functions.rights.php');
-
     // Loop through languages
-    $aLanguages = array(
-        $lang
-    );
+    $aLanguages = [$lang];
 
     $catalias = conHtmlSpecialChars(cString::cleanURLCharacters($catalias), ENT_QUOTES);
 
@@ -243,8 +237,8 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
         $oCatLangColl->create($newIdcat, $curLang, $name, $urlname, '', 0, $visible, $public, 0, '', 0);
 
         // Set correct rights for element
-        copyRightsForElement('str', $parentid, $newIdcat, $curLang);
-        copyRightsForElement('con', $parentid, $newIdcat, $curLang);
+        cRights::copyRightsForElement('str', $parentid, $newIdcat, $curLang);
+        cRights::copyRightsForElement('con', $parentid, $newIdcat, $curLang);
     }
 
     if ($remakeTree == true) {
@@ -734,8 +728,6 @@ function strDeleteCategory($idcat) {
         return '0202';
     }
 
-    cInclude('includes', 'functions.rights.php');
-
     $remakeCatTable = true;
     $remakeStrTable = true;
 
@@ -759,8 +751,8 @@ function strDeleteCategory($idcat) {
     $oCatLangColl->select('idcat = ' . (int) $idcat);
     if (($oCatLang = $oCatLangColl->next()) !== false) {
         // More languages found, delete rights for current category
-        deleteRightsForElement('str', $idcat, $lang);
-        deleteRightsForElement('con', $idcat, $lang);
+        cRights::deleteRightsForElement('str', $idcat, $lang);
+        cRights::deleteRightsForElement('con', $idcat, $lang);
         return;
     }
 
@@ -822,8 +814,8 @@ function strDeleteCategory($idcat) {
     $oCatTreeColl->deleteBy('idcat', (int) $idcat);
 
     // Delete rights for element
-    deleteRightsForElement('str', $idcat);
-    deleteRightsForElement('con', $idcat);
+    cRights::deleteRightsForElement('str', $idcat);
+    cRights::deleteRightsForElement('con', $idcat);
 }
 
 /**
@@ -1208,9 +1200,8 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
             cApiCecHook::execute('Contenido.Category.strSyncCategory_Loop', $param);
 
             // Set correct rights for element
-            cInclude('includes', 'functions.rights.php');
-            createRightsForElement('str', $idcat, $targetlang);
-            createRightsForElement('con', $idcat, $targetlang);
+            cRights::createRightsForElement('str', $idcat, $targetlang);
+            cRights::createRightsForElement('con', $idcat, $targetlang);
         }
     }
 }
