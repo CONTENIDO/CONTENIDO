@@ -3,6 +3,8 @@
 /**
  * This file contains the CONTENIDO rights functions.
  *
+ * These functions now are all deprecated. The class cRights should be used instead.
+ *
  * @package          Core
  * @subpackage       Backend
  * @author           Martin Horwath

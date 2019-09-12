@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the the rights class.
  *
@@ -229,9 +230,8 @@ class cRights
     }
 
     /**
-     * Builds user/group permissions (sysadmin, admin, client and language) by
-     * processing request variables ($msysadmin, $madmin, $mclient, $mlang) and
-     * returns the build permissions array.
+     * Builds user/group permissions (sysadmin, admin, client and language) by processing request variables
+     * ($msysadmin, $madmin, $mclient, $mlang) and returns the build permissions array.
      *
      * @todo Do we really need to add other perms, if the user/group gets the 'sysadmin' permission?
      *
@@ -244,13 +244,12 @@ class cRights
      */
     public static function buildUserOrGroupPermsFromRequest($bAddUserToClient = false)
     {
-        global $msysadmin, $madmin, $mclient, $mlang, $auth, $client;
-
-        $aPerms = [];
+        global $auth, $client;
+        global $msysadmin, $madmin, $mclient, $mlang;
 
         // check and prevalidation
 
-        $bSysadmin = (isset($msysadmin) && $msysadmin);
+        $bSysadmin = isset($msysadmin) && $msysadmin;
 
         $aAdmin = (isset($madmin) && is_array($madmin)) ? $madmin : [];
         foreach ($aAdmin as $p => $value) {
@@ -274,6 +273,7 @@ class cRights
         }
 
         // build permissions array
+        $aPerms = [];
 
         if ($bSysadmin) {
             $aPerms[] = 'sysadmin';
@@ -287,20 +287,22 @@ class cRights
             $aPerms[] = sprintf('client[%s]', $value);
         }
 
+        // Add user to the current client, if the current user isn't sysadmin and no client has been specified.
+        // This avoids new accounts which are not accessible by the current user (client admin) anymore.
         if (count($aClient) == 0 && $bAddUserToClient) {
-            // Add user to the current client, if the current user isn't sysadmin and no client has been specified.
-            // This avoids new accounts which are not accessible by the current user (client admin) anymore.
             $aUserPerm = explode(',', $auth->auth['perm']);
             if (!in_array('sysadmin', $aUserPerm)) {
                 $aPerms[] = sprintf('client[%s]', $client);
             }
         }
 
+        // adding language perms makes sense if we have also at least one selected client
         if (count($aLang) > 0 && count($aClient) > 0) {
-            // adding language perms makes sense if we have also at least one selected client
-            foreach ($aLang as $value) {
-                if (self::checkLangInClients($aClient, $value)) {
-                    $aPerms[] = sprintf('lang[%s]', $value);
+            foreach ($aLang as $idlang) {
+                $oClientLanguageCollection = new cApiClientLanguageCollection();
+                $hasLanguageInClients      = $oClientLanguageCollection->hasLanguageInClients($idlang, $aClient);
+                if ($hasLanguageInClients) {
+                    $aPerms[] = sprintf('lang[%s]', $idlang);
                 }
             }
         }
