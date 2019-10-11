@@ -29,6 +29,28 @@ cInclude('includes', 'functions.upl.php');
 class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
     /**
+     * Name of the content type.
+     *
+     * @var string
+     */
+    const TYPE = 'CMS_PIFAFORM';
+
+    /**
+     * Whether the settings should be interpreted as plaintext or XML.
+     *
+     * @var string
+     */
+    const SETTINGS_TYPE = 'xml';
+
+    /**
+     * Prefix used for posted data.
+     * Replaces the property $this->>_prefix.
+     *
+     * @var string
+     */
+    const PREFIX = 'pifaform';
+
+    /**
      * Callback function that is capable of sorting items that are arrays by
      * comparing their value for the key 'label'.
      *
@@ -52,9 +74,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     function __construct($rawSettings, $id, array $contentTypes) {
 
         // set attributes of the parent class and call the parent constructor
-        $this->_type = 'CMS_PIFAFORM';
-        $this->_prefix = 'pifaform';
-        $this->_settingsType = self::SETTINGS_TYPE_XML;
         $this->_formFields = array(
             'pifaform_headline',
             'pifaform_idform',
@@ -98,7 +117,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $tplTop = new cTemplate();
         $tplTop->set('s', 'ICON', 'plugins/form_assistant/images/icon_form.png');
         $tplTop->set('s', 'ID', $this->_id);
-        $tplTop->set('s', 'PREFIX', $this->_prefix);
+        $tplTop->set('s', 'PREFIX', static::PREFIX);
         $tplTop->set('s', 'HEADLINE', Pifa::i18n('form'));
         $codeTop = $tplTop->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_top.html', true);
 
@@ -109,7 +128,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
         // build tab code
         $tplPanel = new cTemplate();
-        $tplPanel->set('s', 'PREFIX', $this->_prefix);
+        $tplPanel->set('s', 'PREFIX', static::PREFIX);
         $tplPanel->set('d', 'TAB_ID', 'base');
         $tplPanel->set('d', 'TAB_CLASS', 'base');
         $tplPanel->set('d', 'TAB_CONTENT', $this->_getPanel());
@@ -120,7 +139,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $tplBottom = new cTemplate();
         $tplBottom->set('s', 'PATH_FRONTEND', $this->_cfgClient[$this->_client]['path']['htmlpath']);
         $tplBottom->set('s', 'ID', $this->_id);
-        $tplBottom->set('s', 'PREFIX', $this->_prefix);
+        $tplBottom->set('s', 'PREFIX', static::PREFIX);
         $tplBottom->set('s', 'IDARTLANG', $this->_idArtLang);
         $tplBottom->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
         // encode dollar sign so that contained PHP style variable will not be interpreted
@@ -181,7 +200,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
                 $this->_getInputMailSystemRecipientEmail(),
                 $this->_getInputMailSystemSubject()
             ))
-        ), $this->_prefix . '_panel_base', $this->_prefix . '_panel_base_' . $this->_id);
+        ), static::PREFIX . '_panel_base', static::PREFIX . '_panel_base_' . $this->_id);
         $wrapper->setStyle('clear:both');
 
         return $wrapper->render();

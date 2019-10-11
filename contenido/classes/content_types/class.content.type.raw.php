@@ -23,27 +23,19 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cContentTypeRaw extends cContentTypeAbstract {
 
     /**
-     * Constructor to create an instance of this class.
+     * Name of the content type.
      *
-     * Initialises class attributes and handles store events.
-     *
-     * @param string $rawSettings
-     *         the raw settings in an XML structure or as plaintext
-     * @param int $id
-     *         ID of the content type, e.g. 3 if CMS_RAW[3] is used
-     * @param array $contentTypes
-     *         array containing the values of all content types
+     * @var string
      */
-    public function __construct($rawSettings, $id, array $contentTypes) {
+    const CONTENT_TYPE = 'CMS_RAW';
 
-        // call parent constructor
-        parent::__construct($rawSettings, $id, $contentTypes);
-
-        // set props
-        $this->_type = 'CMS_RAW';
-        $this->_prefix = 'raw';
-
-    }
+    /**
+     * Prefix used for posted data.
+     * Replaces the property $this->>_prefix.
+     *
+     * @var string
+     */
+    const PREFIX = 'raw';
 
     /**
      * @see cContentTypeAbstract::generateViewCode()

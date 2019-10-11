@@ -28,6 +28,28 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cContentTypeDate extends cContentTypeAbstract {
 
     /**
+     * Name of the content type.
+     *
+     * @var string
+     */
+    const CONTENT_TYPE = 'CMS_DATE';
+
+    /**
+     * Whether the settings should be interpreted as plaintext or XML.
+     *
+     * @var string
+     */
+    const SETTINGS_TYPE = 'xml';
+
+    /**
+     * Prefix used for posted data.
+     * Replaces the property $this->>_prefix.
+     *
+     * @var string
+     */
+    const PREFIX = 'date';
+
+    /**
      * The possible PHP date formats in which the selected date can be
      * displayed.
      *
@@ -53,9 +75,6 @@ class cContentTypeDate extends cContentTypeAbstract {
     public function __construct($rawSettings, $id, array $contentTypes) {
 
         // set props
-        $this->_type = 'CMS_DATE';
-        $this->_prefix = 'date';
-        $this->_settingsType = self::SETTINGS_TYPE_XML;
         $this->_formFields = array(
             'date_timestamp',
             'date_format'
@@ -66,8 +85,7 @@ class cContentTypeDate extends cContentTypeAbstract {
 
         // set the locale
         $locale = cRegistry::getBackendLanguage();
-        if (empty($locale)
-        || false === setlocale(LC_TIME, $locale)) {
+        if (empty($locale) || false === setlocale(LC_TIME, $locale)) {
             $oApiLang = new cApiLanguage(cRegistry::getLanguageId());
             $locale = $oApiLang->getProperty('dateformat', 'locale');
             if (empty($locale)) {
@@ -117,23 +135,18 @@ class cContentTypeDate extends cContentTypeAbstract {
         // if form is submitted, store the current date settings
         // notice: also check the ID of the content type (there could be more
         // than one content type of the same type on the same page!)
-        if (isset($_POST[$this->_prefix . '_action']) && $_POST[$this->_prefix . '_action'] === 'store' && isset($_POST[$this->_prefix . '_id']) && (int) $_POST[$this->_prefix . '_id'] == $this->_id) {
-            // convert the given date string into a valid timestamp, so that a
-            // timestamp is stored
-            //CON-2049 additional check for base64 strings
+        if (isset($_POST[static::PREFIX . '_action']) && $_POST[static::PREFIX . '_action'] === 'store' && isset($_POST[static::PREFIX . '_id']) && (int) $_POST[static::PREFIX . '_id'] == $this->_id) {
+            // convert the given date string into a valid timestamp, so that a timestamp is stored
+            // CON-2049 additional check for base64 strings
             if (!empty($_POST['date_format']) && base64_encode(base64_decode($_POST['date_format'])) === $_POST['date_format']) {
                 $_POST['date_format'] = stripslashes(base64_decode($_POST['date_format']));
-            } else { // if no date_format is given, set standard value
+            } else {
+                // if no date_format is given, set standard value
                 $_POST['date_format'] = '{"dateFormat":"","timeFormat":""}';
             }
 
             $this->_storeSettings();
         }
-
-        // CON-2049
-        // reset specific date variable
-        // $_POST[$this->_prefix . '_action'] = '';
-        // $_POST['date_format'] = '';
     }
 
     /**
@@ -261,14 +274,12 @@ class cContentTypeDate extends cContentTypeAbstract {
                         $result .= strftime('%b', $timestamp);
                         break;
                     default:
-                        // use the default date() format if no localisation is
-                        // needed
+                        // use the default date() format if no localisation is needed
                         $result .= date($char, $timestamp);
                         break;
                 }
             } else {
-                // if this is not a format char, just add it to the result
-                // string
+                // if this is not a format char, just add it to the result string
                 $result .= $char;
             }
         }
@@ -331,7 +342,7 @@ class cContentTypeDate extends cContentTypeAbstract {
         $code .= $this->_generateFormatSelect();
         $code .= $this->_generateStoreButton();
         $code .= $this->_generateJavaScript();
-        $code = new cHTMLDiv($code, 'cms_date', 'cms_' . $this->_prefix . '_' . $this->_id . '_settings');
+        $code = new cHTMLDiv($code, 'cms_date', 'cms_' . static::PREFIX . '_' . $this->_id . '_settings');
 
         return $this->_encodeForOutput($code);
     }
@@ -347,7 +358,7 @@ class cContentTypeDate extends cContentTypeAbstract {
         $template = new cTemplate();
         $pathBackend = $this->_cfg['path']['contenido_fullhtml'];
 
-        $template->set('s', 'PREFIX', $this->_prefix);
+        $template->set('s', 'PREFIX', static::PREFIX);
         $template->set('s', 'ID', $this->_id);
         $template->set('s', 'IDARTLANG', $this->_idArtLang);
         $template->set('s', 'LANG', cString::getPartOfString(cRegistry::getBackendLanguage(), 0, 2));
@@ -381,13 +392,13 @@ class cContentTypeDate extends cContentTypeAbstract {
      *         the HTML code of the format select box
      */
     private function _generateFormatSelect() {
-        $formatSelect = new cHTMLSelectElement($this->_prefix . '_format_select_' . $this->_id, '', $this->_prefix . '_format_select_' . $this->_id);
+        $formatSelect = new cHTMLSelectElement(static::PREFIX . '_format_select_' . $this->_id, '', static::PREFIX . '_format_select_' . $this->_id);
         $formatSelect->appendStyleDefinitions(array(
             'border' => '1px solid #ccc',
             'margin' => '0px 5px 5px'
         ));
         $formatSelect->autoFill($this->_dateFormatsPhp);
-        $phpDateFormat = conHtmlSpecialChars($this->_settings[$this->_prefix . '_format']);
+        $phpDateFormat = conHtmlSpecialChars($this->_settings[static::PREFIX . '_format']);
         $formatSelect->setDefault($phpDateFormat);
 
         return $formatSelect->render();

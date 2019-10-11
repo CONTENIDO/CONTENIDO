@@ -3,13 +3,13 @@
 /**
  * This file contains the cContentTypeAbstract class.
  *
- * @package Core
+ * @package    Core
  * @subpackage ContentType
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,28 +17,36 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Abstract content type from which every content type should inherit.
  *
- * @package Core
+ * @package    Core
  * @subpackage ContentType
  */
-abstract class cContentTypeAbstract {
-
+abstract class cContentTypeAbstract
+{
     /**
-     * Constant defining that the settings should be interpreted as plaintext.
+     * Name of the content type, e.g. 'CMS_TEASER'.
+     * Replaces the property $this->>_type.
      *
      * @var string
      */
-    const SETTINGS_TYPE_PLAINTEXT = 'plaintext';
-
+    const CONTENT_TYPE = '';
     /**
-     * Constant defining that the settings should be interpreted as XML.
+     * Whether the settings should be interpreted as plaintext or XML.
      *
      * @var string
      */
-    const SETTINGS_TYPE_XML = 'xml';
+    const SETTINGS_TYPE = 'plaintext';
+    /**
+     * Prefix of the content type used for posted data, e.g. 'teaser'.
+     * Replaces the property $this->>_prefix.
+     *
+     * @var string
+     */
+    const PREFIX = 'abstract';
 
     /**
      * Name of the content type, e.g. 'CMS_TEASER'.
      *
+     * @deprecated since 10.2019 use const static::CONTENT_TYPE instead
      * @var string
      */
     protected $_type = '';
@@ -46,6 +54,7 @@ abstract class cContentTypeAbstract {
     /**
      * Prefix of the content type, e.g. 'teaser'.
      *
+     * @deprecated since 10.2019 use const static::PREFIX instead
      * @var string
      */
     protected $_prefix = 'abstract';
@@ -53,9 +62,10 @@ abstract class cContentTypeAbstract {
     /**
      * Whether the settings should be interpreted as plaintext or XML.
      *
+     * @deprecated since 10.2019 use const static::SETTINGS_TYPE instead
      * @var string
      */
-    protected $_settingsType = self::SETTINGS_TYPE_PLAINTEXT;
+    protected $_settingsType = 'plaintext';
 
     /**
      * ID of the content type, e.g. 3 if CMS_TEASER[3] is used.
@@ -146,21 +156,21 @@ abstract class cContentTypeAbstract {
      *
      * @var string
      */
-    protected $_rawSettings = array();
+    protected $_rawSettings = '';
 
     /**
      * The parsed settings.
      *
      * @var array|string
      */
-    protected $_settings = array();
+    protected $_settings = [];
 
     /**
      * List of form field names which are used by this content type!
      *
      * @var array
      */
-    protected $_formFields = array();
+    protected $_formFields = [];
 
     /**
      * Constructor to create an instance of this class.
@@ -169,27 +179,31 @@ abstract class cContentTypeAbstract {
      *
      * @param string $rawSettings
      *         the raw settings in an XML structure or as plaintext
-     * @param int $id
+     * @param int    $id
      *         ID of the content type, e.g. 3 if CMS_TEASER[3] is used
-     * @param array $contentTypes
+     * @param array  $contentTypes
      *         array containing the values of all content types
+     *
+     * @throws cDbException
+     * @throws cException
      */
-    public function __construct($rawSettings, $id, array $contentTypes) {
-
+    public function __construct($rawSettings, $id, array $contentTypes)
+    {
         // set props
-        $this->_rawSettings = $rawSettings;
-        $this->_id = $id;
+        $this->_rawSettings  = $rawSettings;
+        $this->_id           = $id;
         $this->_contentTypes = $contentTypes;
 
         $this->_idArtLang = cRegistry::getArticleLanguageId();
-        $this->_idArt = cRegistry::getArticleId();
-        $this->_idCat = cRegistry::getCategoryId();
-        $this->_cfg = cRegistry::getConfig();
-        $this->_client = cRegistry::getClientId();
-        $this->_lang = cRegistry::getLanguageId();
+        $this->_idArt     = cRegistry::getArticleId();
+        $this->_idCat     = cRegistry::getCategoryId();
+        $this->_cfg       = cRegistry::getConfig();
+        $this->_client    = cRegistry::getClientId();
+        $this->_lang      = cRegistry::getLanguageId();
         $this->_cfgClient = cRegistry::getClientConfig();
-        $this->_session = cRegistry::getSession();
-        $this->_useXHTML = cSecurity::toBoolean(getEffectiveSetting('generator', 'xhtml', 'false'));
+        $this->_session   = cRegistry::getSession();
+
+        $this->_useXHTML   = cSecurity::toBoolean(getEffectiveSetting('generator', 'xhtml', 'false'));
         $this->_uploadPath = $this->_cfgClient[$this->_client]['upl']['path'];
 
         $this->_readSettings();
@@ -200,18 +214,19 @@ abstract class cContentTypeAbstract {
      * and stores them in the $_settings attribute (associative array or
      * plaintext).
      */
-    protected function _readSettings() {
+    protected function _readSettings()
+    {
         // if no settings have been given, do nothing
         if (empty($this->_rawSettings)) {
             return;
         }
-        if ($this->_settingsType === self::SETTINGS_TYPE_XML) {
-            // if the settings should be interpreted as XML, process them
-            // accordingly
+
+        if (static::SETTINGS_TYPE === 'xml') {
+            // if the settings should be interpreted as XML, process them accordingly
             $this->_settings = cXmlBase::xmlStringToArray($this->_rawSettings);
             // add the prefix to the settings array keys
             foreach ($this->_settings as $key => $value) {
-                $this->_settings[$this->_prefix . '_' . $key] = $value;
+                $this->_settings[static::PREFIX . '_' . $key] = $value;
                 unset($this->_settings[$key]);
             }
         } else {
@@ -225,7 +240,8 @@ abstract class cContentTypeAbstract {
      *
      * @return array|string
      */
-    public function getConfiguration() {
+    public function getConfiguration()
+    {
         return $this->_settings;
     }
 
@@ -234,35 +250,36 @@ abstract class cContentTypeAbstract {
      * (associative array) and saves them in the database (XML).
      *
      * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
-    protected function _storeSettings() {
-        $settingsToStore = '';
-        if ($this->_settingsType === self::SETTINGS_TYPE_XML) {
+    protected function _storeSettings()
+    {
+        if (static::SETTINGS_TYPE === 'xml') {
             // if the settings should be stored as XML, process them accordingly
-            $settings = array();
-            // update the values in the settings array with the values from the
-            // $_POST array
+            $settings = [];
+            // update the values in the settings array with the values from the $_POST array
             foreach ($this->_formFields as $key) {
-                $keyWithoutPrefix = str_replace($this->_prefix . '_', '', $key);
+                $keyWithoutPrefix = str_replace(static::PREFIX . '_', '', $key);
                 if (isset($_POST[$key])) {
                     $this->_settings[$key] = $_POST[$key];
-                } else if (isset($_POST[$this->_prefix . '_array_' . $keyWithoutPrefix])) {
+                } elseif (isset($_POST[static::PREFIX . '_array_' . $keyWithoutPrefix])) {
                     // key is of type prefix_array_field, so interpret value as an array
-                    $this->_settings[$key] = explode(',', $_POST[$this->_prefix . '_array_' . $keyWithoutPrefix]);
+                    $this->_settings[$key] = explode(',', $_POST[static::PREFIX . '_array_' . $keyWithoutPrefix]);
                 }
                 $settings[$keyWithoutPrefix] = $this->_settings[$key];
             }
-            $xml = cXmlBase::arrayToXml($settings, NULL, $this->_prefix);
+            $xml             = cXmlBase::arrayToXml($settings, null, static::PREFIX);
             $settingsToStore = $xml->asXML();
         } else {
             $settingsToStore = $this->_settings;
         }
 
         // store new settings in the database
-        conSaveContentEntry($this->_idArtLang, $this->_type, $this->_id, $settingsToStore);
-		
-		$oArtLang = new cApiArticleLanguage($this->_idArtLang);
-		$this->_rawSettings = $oArtLang->getContent($this->_type, $this->_id);
+        conSaveContentEntry($this->_idArtLang, static::CONTENT_TYPE, $this->_id, $settingsToStore);
+
+        $oArtLang           = new cApiArticleLanguage($this->_idArtLang);
+        $this->_rawSettings = $oArtLang->getContent(static::CONTENT_TYPE, $this->_id);
         $this->_readSettings();
     }
 
@@ -271,10 +288,12 @@ abstract class cContentTypeAbstract {
      *
      * @param string $code
      *         code to encode
+     *
      * @return string
      *         encoded code
      */
-    protected function _encodeForOutput($code) {
+    protected function _encodeForOutput($code)
+    {
         $code = addslashes($code);
         $code = str_replace("\\'", "'", $code);
         $code = str_replace('$', '\\$', $code);
@@ -286,13 +305,16 @@ abstract class cContentTypeAbstract {
      * Builds an array with directory information from the given upload path.
      *
      * @SuppressWarnings docBlocks
+     *
      * @param string $uploadPath [optional]
-     *         path to upload directory
-     *         (default: root upload path of client)
+     *                           path to upload directory
+     *                           (default: root upload path of client)
+     *
      * @return array
      *         with directory information (keys: name, path, sub)
      */
-    public function buildDirectoryList($uploadPath = '') {
+    public function buildDirectoryList($uploadPath = '')
+    {
         // make sure the upload path is set and ends with a slash
         if ($uploadPath === '') {
             $uploadPath = $this->_uploadPath;
@@ -301,34 +323,36 @@ abstract class cContentTypeAbstract {
             $uploadPath .= '/';
         }
 
-        $directories = array();
+        $directories = [];
 
         if (is_dir($uploadPath)) {
             if (false !== ($handle = cDirHandler::read($uploadPath, false, true))) {
                 foreach ($handle as $entry) {
                     if (cFileHandler::fileNameBeginsWithDot($entry) === false && is_dir($uploadPath . $entry)) {
-
-                        $directory = array();
+                        $directory         = [];
                         $directory['name'] = $entry;
                         $directory['path'] = str_replace($this->_uploadPath, '', $uploadPath);
-                        $directory['sub'] = $this->buildDirectoryList($uploadPath . $entry);
-                        $directories[] = $directory;
+                        $directory['sub']  = $this->buildDirectoryList($uploadPath . $entry);
+                        $directories[]     = $directory;
                     }
                 }
             }
         }
 
-        usort($directories, function($a, $b) {
-            $a = cString::toLowerCase($a["name"]);
-            $b = cString::toLowerCase($b["name"]);
-            if($a < $b) {
-                return -1;
-            } else if($a > $b) {
-                return 1;
-            } else {
-                return 0;
+        usort(
+            $directories,
+            function ($a, $b) {
+                $a = cString::toLowerCase($a["name"]);
+                $b = cString::toLowerCase($b["name"]);
+                if ($a < $b) {
+                    return -1;
+                } elseif ($a > $b) {
+                    return 1;
+                } else {
+                    return 0;
+                }
             }
-        });
+        );
 
         return $directories;
     }
@@ -344,23 +368,24 @@ abstract class cContentTypeAbstract {
      *         HTML code showing a directory list
      * @throws cInvalidArgumentException
      */
-    public function generateDirectoryList(array $dirs) {
+    public function generateDirectoryList(array $dirs)
+    {
         $template = new cTemplate();
-        $i = 1;
+        $i        = 1;
 
         foreach ($dirs as $dirData) {
             // set the active class if this is the chosen directory
-            $divClass = ($this->_isActiveDirectory($dirData)) ? 'active' : '';
+            $divClass = $this->_isActiveDirectory($dirData) ? 'active' : '';
             $template->set('d', 'DIVCLASS', $divClass);
 
             $template->set('d', 'TITLE', $dirData['path'] . $dirData['name']);
             $template->set('d', 'DIRNAME', $dirData['name']);
 
-            $liClasses = array();
+            $liClasses = [];
             // check if the directory should be shown expanded or collapsed
             if ($this->_shouldDirectoryBeExpanded($dirData)) {
                 $template->set('d', 'SUBDIRLIST', $this->generateDirectoryList($dirData['sub']));
-            } else if (isset($dirData['sub']) && count($dirData['sub']) > 0) {
+            } elseif (isset($dirData['sub']) && count($dirData['sub']) > 0) {
                 $liClasses[] = 'collapsed';
                 $template->set('d', 'SUBDIRLIST', '');
             } else {
@@ -375,20 +400,25 @@ abstract class cContentTypeAbstract {
             $template->next();
         }
 
-        return $template->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_filelist_dirlistitem.html', true);
+        return $template->generate(
+            $this->_cfg['path']['contenido'] . 'templates/standard/template.cms_filelist_dirlistitem.html',
+            true
+        );
     }
 
     /**
-     * Checks whether the directory defined by the given directory
-     * information is the currently active directory.
+     * Checks whether the directory defined by the given directory information is the currently active directory.
+     *
      * Overwrite in subclasses if you use generateDirectoryList!
      *
      * @param array $dirData
      *         directory information
+     *
      * @return bool
      *         whether the directory is the currently active directory
      */
-    protected function _isActiveDirectory(array $dirData) {
+    protected function _isActiveDirectory(array $dirData)
+    {
         return false;
     }
 
@@ -399,10 +429,12 @@ abstract class cContentTypeAbstract {
      *
      * @param array $dirData
      *         directory information
+     *
      * @return bool
      *         whether the directory should be shown expanded
      */
-    protected function _shouldDirectoryBeExpanded(array $dirData) {
+    protected function _shouldDirectoryBeExpanded(array $dirData)
+    {
         return false;
     }
 
@@ -413,16 +445,17 @@ abstract class cContentTypeAbstract {
      *         the potential subdirectory
      * @param string $dir
      *         the parent directory
+     *
      * @return bool
      *         whether the given $subDir is a subdirectory of $dir
      */
-    protected function _isSubdirectory($subDir, $dir) {
+    protected function _isSubdirectory($subDir, $dir)
+    {
         $dirArray = explode('/', $dir);
-        $expand = false;
+        $expand   = false;
         $checkDir = '';
 
-        // construct the whole directory in single steps and check if the given
-        // directory can be found
+        // construct the whole directory in single steps and check if the given directory can be found
         foreach ($dirArray as $dirPart) {
             $checkDir .= '/' . $dirPart;
             if ($checkDir === '/' . $subDir) {
@@ -439,7 +472,8 @@ abstract class cContentTypeAbstract {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->generateViewCode();
     }
 
@@ -465,8 +499,8 @@ abstract class cContentTypeAbstract {
      *
      * @return bool
      */
-    public function isWysiwygCompatible() {
+    public function isWysiwygCompatible()
+    {
         return false;
     }
-
 }

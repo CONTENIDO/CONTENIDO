@@ -21,6 +21,22 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage ContentType
  */
 class cContentTypeText extends cContentTypeAbstract {
+
+    /**
+     * Name of the content type.
+     *
+     * @var string
+     */
+    const CONTENT_TYPE = 'CMS_TEXT';
+
+    /**
+     * Prefix used for posted data.
+     * Replaces the property $this->>_prefix.
+     *
+     * @var string
+     */
+    const PREFIX = 'text';
+
     /**
      * Constructor to create an instance of this class.
      *
@@ -34,6 +50,8 @@ class cContentTypeText extends cContentTypeAbstract {
      *         array containing the values of all content types
      *
      * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
 
@@ -42,15 +60,11 @@ class cContentTypeText extends cContentTypeAbstract {
         // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
 
-        // set props
-        $this->_type = 'CMS_TEXT';
-        $this->_prefix = 'text';
-
         // if form is submitted, store the current text
         // notice: also check the ID of the content type (there could be more
         // than one content type of the same type on the same page!)
-        if (isset($_POST[$this->_prefix . '_action']) && $_POST[$this->_prefix . '_action'] === 'store' && isset($_POST[$this->_prefix . '_id']) && (int) $_POST[$this->_prefix . '_id'] == $this->_id) {
-            $this->_settings = $_POST[$this->_prefix . '_text_' . $this->_id];
+        if (isset($_POST[static::PREFIX . '_action']) && $_POST[static::PREFIX . '_action'] === 'store' && isset($_POST[static::PREFIX . '_id']) && (int) $_POST[static::PREFIX . '_id'] == $this->_id) {
+            $this->_settings = $_POST[static::PREFIX . '_text_' . $this->_id];
             $this->_rawSettings = $this->_settings;
             $this->_storeSettings();
 
@@ -76,11 +90,11 @@ class cContentTypeText extends cContentTypeAbstract {
         $script = $this->_getEditJavaScript();
 
         $div = new cHTMLDiv($this->_rawSettings);
-        $div->setID($this->_prefix . '_text_' . $this->_id);
+        $div->setID(static::PREFIX . '_text_' . $this->_id);
         $div->appendStyleDefinition('display', 'inline');
 
         $editButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_edithead.gif');
-        $editButton->setID($this->_prefix . '_editbutton_' . $this->_id);
+        $editButton->setID(static::PREFIX . '_editbutton_' . $this->_id);
         $editButton->appendStyleDefinitions(array(
             'margin-left' => '5px',
             'cursor' => 'pointer'
@@ -97,18 +111,18 @@ class cContentTypeText extends cContentTypeAbstract {
      * @throws cInvalidArgumentException
      */
     protected function _getEditJavaScript() {
-        $textbox = new cHTMLTextarea($this->_prefix . '_text_' . $this->_id, '', '', '', $this->_prefix . '_text_' . $this->_id, false, NULL, '', 'edit-textfield edit-' . $this->_prefix . '-textfield');
+        $textbox = new cHTMLTextarea(static::PREFIX . '_text_' . $this->_id, '', '', '', static::PREFIX . '_text_' . $this->_id, false, NULL, '', 'edit-textfield edit-' . static::PREFIX . '-textfield');
         $textbox->setClass("$this->_id");
 
         $saveButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . 'images/but_ok.gif');
-        $saveButton->setID($this->_prefix . '_savebutton_' . $this->_id);
+        $saveButton->setID(static::PREFIX . '_savebutton_' . $this->_id);
         $saveButton->appendStyleDefinitions(array(
             'margin-left' => '5px',
             'cursor' => 'pointer'
         ));
 
         $template = new cTemplate();
-        $template->set('s', 'PREFIX', $this->_prefix);
+        $template->set('s', 'PREFIX', static::PREFIX);
         $template->set('s', 'ID', $this->_id);
         $template->set('s', 'TEXTBOX', $textbox->render());
         $template->set('s', 'SAVEBUTTON', $saveButton->render());

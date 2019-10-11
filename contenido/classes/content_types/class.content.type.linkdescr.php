@@ -45,7 +45,6 @@ class cContentTypeLinkdescr extends cContentTypeLinkeditor {
             $rawSettings = $this->_getRawSettings("CMS_LINKEDITOR", $id, $contentTypes);
         }
 
-        // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
     }
 

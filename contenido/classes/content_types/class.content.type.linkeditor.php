@@ -25,6 +25,29 @@ cInclude('includes', 'functions.upl.php');
  * @subpackage ContentType
  */
 class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
+
+    /**
+     * Name of the content type.
+     *
+     * @var string
+     */
+    const CONTENT_TYPE = 'CMS_LINKEDITOR';
+
+    /**
+     * Whether the settings should be interpreted as plaintext or XML.
+     *
+     * @var string
+     */
+    const SETTINGS_TYPE = 'xml';
+
+    /**
+     * Prefix used for posted data.
+     * Replaces the property $this->>_prefix.
+     *
+     * @var string
+     */
+    const PREFIX = 'linkeditor';
+
     /**
      * @var string
      */
@@ -43,13 +66,12 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      *         array containing the values of all content types
      *
      * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     function __construct($rawSettings, $id, array $contentTypes) {
 
         // set props
-        $this->_type = 'CMS_LINKEDITOR';
-        $this->_prefix = 'linkeditor';
-        $this->_settingsType = self::SETTINGS_TYPE_XML;
         $this->_formFields = array(
             'linkeditor_type',
             'linkeditor_externallink',
@@ -73,8 +95,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         // notice: also check the ID of the content type (there could be more
         // than one content type of the same type on the same page!)
         if (isset($_POST['linkeditor_action']) && $_POST['linkeditor_action'] === 'store' && isset($_POST['linkeditor_id']) && (int) $_POST['linkeditor_id'] == $this->_id) {
-            // use htmlentities for the title
-            // otherwise umlauts will crash the XML parsing
+            // use htmlentities for the title otherwise umlauts will crash the XML parsing
             $_POST['linkeditor_title'] = conHtmlentities(conHtmlEntityDecode($_POST['linkeditor_title']));
             $this->_storeSettings();
         }
@@ -194,8 +215,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                 return $link;
                 break;
             case 'internal':
-                if (cString::getPartOfString($this->_settings['linkeditor_idart'], 0, 8) == 'category') { // Selection of category (CON-2563)
-
+                if (cString::getPartOfString($this->_settings['linkeditor_idart'], 0, 8) == 'category') {
+                    // Selection of category (CON-2563)
                     $uriInstance = cUri::getInstance();
                     $uriBuilder = $uriInstance->getUriBuilder();
                     $uriParams = array(
@@ -204,7 +225,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                     $uriBuilder->buildUrl($uriParams, true);
 
                     return $uriBuilder->getUrl();
-                } else if ($this->_settings['linkeditor_idart'] != "") {
+                } elseif ($this->_settings['linkeditor_idart'] != "") {
 
                     $oUri = cUri::getInstance();
                     $uriBuilder = $oUri->getUriBuilder();
@@ -215,6 +236,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
 
                     return $uriBuilder->getUrl();
 
+                } else {
+                    return '';
                 }
                 break;
             case 'file':
@@ -237,6 +260,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * @return string
      *         escaped HTML code which should be shown if content type is edited
      * @throws cDbException
+     * @throws cException
      * @throws cInvalidArgumentException
      */
     public function generateEditCode() {
@@ -246,7 +270,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         $template->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
 
         $templateTabs = new cTemplate();
-        $templateTabs->set('s', 'PREFIX', $this->_prefix);
+        $templateTabs->set('s', 'PREFIX', static::PREFIX);
 
         // create code for external tab
         $templateTabs->set('d', 'TAB_ID', 'external');
@@ -266,8 +290,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         $templateTabs->set('d', 'TAB_CONTENT', $this->_generateTabFile());
         $templateTabs->next();
 
-        // create code for basic settings "tab" - these settings are actually
-        // visible any time
+        // create code for basic settings "tab" - these settings are actually visible any time
         $templateTabs->set('d', 'TAB_ID', 'basic-settings');
         $templateTabs->set('d', 'TAB_CLASS', 'basic-settings');
         $templateTabs->set('d', 'TAB_CONTENT', $this->_generateBasicSettings());
@@ -279,7 +302,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         $templateTop = new cTemplate();
         $templateTop->set('s', 'ICON', 'images/but_editlink.gif');
         $templateTop->set('s', 'ID', $this->_id);
-        $templateTop->set('s', 'PREFIX', $this->_prefix);
+        $templateTop->set('s', 'PREFIX', static::PREFIX);
         $templateTop->set('s', 'HEADLINE', i18n('Link settings'));
         $codeTop = $templateTop->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_top.html', true);
 
@@ -294,7 +317,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         $templateBottom = new cTemplate();
         $templateBottom->set('s', 'PATH_FRONTEND', $this->_cfgClient[$this->_client]['path']['htmlpath']);
         $templateBottom->set('s', 'ID', $this->_id);
-        $templateBottom->set('s', 'PREFIX', $this->_prefix);
+        $templateBottom->set('s', 'PREFIX', static::PREFIX);
         $templateBottom->set('s', 'IDARTLANG', $this->_idArtLang);
         $templateBottom->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
         $templateBottom->set('s', 'SETTINGS', json_encode($this->_settings));
@@ -319,6 +342,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         the code for the external link tab
+     * @throws cException
      */
     private function _generateTabExternal() {
         // define a wrapper which contains the whole content of the general tab
@@ -341,10 +365,10 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         the code for the basic settings tab
+     * @throws cException
      */
     private function _generateBasicSettings() {
-        // define a wrapper which contains the whole content of the basic
-        // settings section
+        // define a wrapper which contains the whole content of the basic settings section
         $wrapper = new cHTMLDiv();
         $wrapperContent = array();
 
@@ -366,6 +390,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * @return string
      *         the code for the internal link tab
      * @throws cDbException
+     * @throws cException
      */
     private function _generateTabInternal() {
         // define a wrapper which contains the whole content of the general tab
@@ -464,7 +489,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
             // check if the category should be shown expanded or collapsed
             if (in_array($category['idcat'], $activeIdcats) && $category['sub'] != '') {
                 $template->set('d', 'SUBDIRLIST', $this->getCategoryList($category['sub']));
-            } else if ($category['sub'] != '' && count($category['sub']) > 0) {
+            } elseif ($category['sub'] != '' && count($category['sub']) > 0) {
                 $liClasses[] = 'collapsed';
                 $template->set('d', 'SUBDIRLIST', '');
             } else {
@@ -496,43 +521,46 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         if ($this->_settings['linkeditor_type'] === 'internal') {
             if (cSecurity::isInteger($this->_settings['linkeditor_idart'])) {
                 $sql = 'SELECT distinct
-                                *
-                            FROM
-                                ' . $this->_cfg['tab']['cat_tree'] . ' AS a,
-                                ' . $this->_cfg['tab']['cat_art'] . ' AS b,
-                                ' . $this->_cfg['tab']['cat'] . ' AS c,
-                                ' . $this->_cfg['tab']['cat_lang'] . ' AS d
-                            WHERE
-                                b.idart = ' . cSecurity::toInteger($this->_settings['linkeditor_idart']) . ' AND
-                                a.idcat = d.idcat AND
-                                b.idcat = c.idcat AND
-                                c.idcat = a.idcat AND
-                                d.idlang = ' . cSecurity::toInteger($this->_lang) . ' AND
-                                c.idclient = ' . cSecurity::toInteger($this->_client) . '
-                            ORDER BY
-                                a.idtree';
-            } else if (cString::getPartOfString($this->_settings['linkeditor_idart'], 0, 8) == 'category') { // Selection of category (CON-2563)
+                            *
+                        FROM
+                            ' . $this->_cfg['tab']['cat_tree'] . ' AS a,
+                            ' . $this->_cfg['tab']['cat_art'] . ' AS b,
+                            ' . $this->_cfg['tab']['cat'] . ' AS c,
+                            ' . $this->_cfg['tab']['cat_lang'] . ' AS d
+                        WHERE
+                            b.idart = ' . cSecurity::toInteger($this->_settings['linkeditor_idart']) . ' AND
+                            a.idcat = d.idcat AND
+                            b.idcat = c.idcat AND
+                            c.idcat = a.idcat AND
+                            d.idlang = ' . cSecurity::toInteger($this->_lang) . ' AND
+                            c.idclient = ' . cSecurity::toInteger($this->_client) . '
+                        ORDER BY
+                            a.idtree';
+            } elseif (cString::getPartOfString($this->_settings['linkeditor_idart'], 0, 8) == 'category') {
+                // Selection of category (CON-2563)
                 $sql = 'SELECT distinct
-                                *
-                           FROM
-                                ' . $this->_cfg['tab']['cat_tree'] . ' AS a,
-                                ' . $this->_cfg['tab']['cat_art'] . ' AS b,
-                                ' . $this->_cfg['tab']['cat'] . ' AS c,
-                                ' . $this->_cfg['tab']['cat_lang'] . ' AS d
-                            WHERE
-                                b.idcat = ' . cSecurity::toInteger(cString::getPartOfString($this->_settings['linkeditor_idart'], 9)) . ' AND
-                                a.idcat = d.idcat AND
-                                b.idcat = c.idcat AND
-                                c.idcat = a.idcat AND
-                                d.idlang = ' . cSecurity::toInteger($this->_lang) . ' AND
-                                c.idclient = ' . cSecurity::toInteger($this->_client) . '
-                            ORDER BY
-                                a.idtree';
+                            *
+                        FROM
+                            ' . $this->_cfg['tab']['cat_tree'] . ' AS a,
+                            ' . $this->_cfg['tab']['cat_art'] . ' AS b,
+                            ' . $this->_cfg['tab']['cat'] . ' AS c,
+                            ' . $this->_cfg['tab']['cat_lang'] . ' AS d
+                        WHERE
+                            b.idcat = ' . cSecurity::toInteger(cString::getPartOfString($this->_settings['linkeditor_idart'], 9)) . ' AND
+                            a.idcat = d.idcat AND
+                            b.idcat = c.idcat AND
+                            c.idcat = a.idcat AND
+                            d.idlang = ' . cSecurity::toInteger($this->_lang) . ' AND
+                            c.idclient = ' . cSecurity::toInteger($this->_client) . '
+                        ORDER BY
+                            a.idtree';
             }
-            $db = cRegistry::getDb();
-            $db->query($sql);
-            while ($db->nextRecord()) {
-                $activeIdcats = $this->_getParentIdcats($db->f('idcat'));
+            if (isset($sql)) {
+                $db = cRegistry::getDb();
+                $db->query($sql);
+                while ($db->nextRecord()) {
+                    $activeIdcats = $this->_getParentIdcats($db->f('idcat'));
+                }
             }
         }
 
@@ -568,9 +596,11 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      *
      * @param int $idCat [optional]
      *                   idcat of the category from which all articles should be shown
+     *
      * @return string
      *                   rendered cHTMLSelectElement
      * @throws cDbException
+     * @throws cException
      */
     public function generateArticleSelect($idCat = 0) {
         $htmlSelect = new cHTMLSelectElement('linkeditor_idart', '', 'linkeditor_idart_' . $this->_id);
@@ -591,8 +621,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
             return $htmlSelect->render();
         }
 
-        // get all articles from the category with the given idcat and add them
-        // to the select element
+        // get all articles from the category with the given idcat and add them to the select element
         $sql = 'SELECT distinct
                     e.*
                 FROM
@@ -629,7 +658,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         the code for the link to file tab
-     * @throws cInvalidArgumentException
+     * @throws cException
      */
     private function _generateTabFile() {
         // define a wrapper which contains the whole content of the general tab
@@ -716,18 +745,13 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         $aUpload->setClass('on');
         $aUpload->setAttribute('title', 'upload');
         $aUpload->setContent('Uploads');
-        $directoryListCode = $this->generateDirectoryList($this->buildDirectoryList());
-        $div = new cHTMLDiv(array(
-            '<em><a href="#"></a></em>',
-            $aUpload
-        ));
+        // $directoryListCode = $this->generateDirectoryList($this->buildDirectoryList());
+        $div = new cHTMLDiv(['<em><a href="#"></a></em>', $aUpload]);
         // set the active class if the root directory has been chosen
         if (dirname($this->getFilename()) === '\\') {
             $div->setClass('active');
         }
-        $liRoot->setContent(array(
-            $div
-        ));
+        $liRoot->setContent([$div]);
         $conStrTree = new cHTMLList('ul', 'con_str_tree', 'con_str_tree', $liRoot);
         $directoryList->setContent($conStrTree);
         $wrapperContent[] = $directoryList;
@@ -752,8 +776,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     public function getUploadFileSelect($directoryPath = '', $isEmptySelect = false) {
         // replace all backslashes with slashes
         $directoryPath = str_replace('\\', '/', $directoryPath);
-        // if the directory path only contains a slash, leave it empty
-        // otherwise there will be two slashes in the end
+        // if the directory path only contains a slash, leave it empty otherwise there will be two slashes in the end
         if ($directoryPath === '/') {
             $directoryPath = '';
         }
@@ -788,7 +811,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                 $b = cString::toLowerCase($b["name"]);
                 if($a < $b) {
                     return -1;
-                } else if($a > $b) {
+                } elseif($a > $b) {
                     return 1;
                 } else {
                     return 0;

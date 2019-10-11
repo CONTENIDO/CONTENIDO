@@ -3,13 +3,13 @@
 /**
  * This file contains the cContentTypeAbstractTabbed class.
  *
- * @package Core
+ * @package    Core
  * @subpackage ContentType
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -17,10 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Abstract content type for content types which are edited in a tabbed popup.
  *
- * @package Core
+ * @package    Core
  * @subpackage ContentType
  */
-abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
+abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract
+{
     /**
      * Generates the encoded code for the tab menu.
      *
@@ -31,16 +32,17 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
      *         the encoded code for the tab menu
      * @throws cInvalidArgumentException
      */
-    protected function _generateTabMenuCode(array $tabs) {
-        $template = new cTemplate();
-
+    protected function _generateTabMenuCode(array $tabs)
+    {
         // iterate over all tabs and set dynamic template placeholder for each
+        $template = new cTemplate();
         foreach ($tabs as $id => $name) {
             $template->set('d', 'TAB_ID', $id);
             $template->set('d', 'TAB_NAME', $name);
             $template->next();
         }
-        $code = $template->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_tab_menu.html', true);
+        $filename = $this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_tab_menu.html';
+        $code     = $template->generate($filename, true);
 
         return $this->_encodeForOutput($code);
     }
@@ -59,25 +61,24 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
      * @throws cDbException
      * @throws cException
      */
-    protected function _getRawSettings($contentTypeName, $id, array $contentTypes) {
-        if (!isset($contentTypes[$contentTypeName][$id])) {
-            $idArtLang = cRegistry::getArticleLanguageId();
-            // get the idtype of the content type
-            $typeItem = new cApiType();
-            $typeItem->loadByType($contentTypeName);
-            $idtype = $typeItem->get('idtype');
-            // first load the appropriate content entry in order to get the
-            // settings
-            $content = new cApiContent();
-            $content->loadByMany(array(
-                'idartlang' => $idArtLang,
-                'idtype' => $idtype,
-                'typeid' => $id
-            ));
-            return $content->get('value');
-        } else {
+    protected function _getRawSettings($contentTypeName, $id, array $contentTypes)
+    {
+        if (isset($contentTypes[$contentTypeName][$id])) {
             return $contentTypes[$contentTypeName][$id];
         }
+
+        $idArtLang = cRegistry::getArticleLanguageId();
+
+        // get the idtype of the content type
+        $typeItem = new cApiType();
+        $typeItem->loadByType($contentTypeName);
+        $idtype = $typeItem->get('idtype');
+
+        // first load the appropriate content entry in order to get the settings
+        $content = new cApiContent();
+        $content->loadByMany(['idartlang' => $idArtLang, 'idtype' => $idtype, 'typeid' => $id]);
+
+        return $content->get('value');
     }
 
     /**
@@ -87,12 +88,12 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
      *         the encoded code for the action buttons
      * @throws cInvalidArgumentException
      */
-    protected function _generateActionCode() {
+    protected function _generateActionCode()
+    {
         $template = new cTemplate();
-
-        $code = $template->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_action.html', true);
+        $filename = $this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_action.html';
+        $code     = $template->generate($filename, true);
 
         return $this->_encodeForOutput($code);
     }
-
 }

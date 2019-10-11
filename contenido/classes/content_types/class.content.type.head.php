@@ -21,6 +21,22 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage ContentType
  */
 class cContentTypeHead extends cContentTypeText {
+
+    /**
+     * Name of the content type.
+     *
+     * @var string
+     */
+    const CONTENT_TYPE = 'CMS_HEAD';
+
+    /**
+     * Prefix used for posted data.
+     * Replaces the property $this->>_prefix.
+     *
+     * @var string
+     */
+    const PREFIX = 'head';
+
     /**
      * Constructor to create an instance of this class.
      *
@@ -34,29 +50,19 @@ class cContentTypeHead extends cContentTypeText {
      *         array containing the values of all content types
      *
      * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
 
-        // try to call constructor of parent of parent to avoid overwriting of $this->_settings
-        // this can happen in case of POST-data
-        if (false === get_parent_class($this) || false === get_parent_class(get_parent_class($this))) {
-            // can not get parent of parent class, call parent constructor as fallback
-            parent::__construct($rawSettings, $id, $contentTypes);
-        }
-
-        // call constructor of parent of parent class
-        $nameParentParentClass = get_parent_class(get_parent_class($this));
-        $nameParentParentClass::__construct($rawSettings, $id, $contentTypes);
-
-        // set props
-        $this->_type = 'CMS_HEAD';
-        $this->_prefix = 'head';
+        // call parent constructor
+        parent::__construct($rawSettings, $id, $contentTypes);
 
         // if form is submitted, store the current text
         // notice: also check the ID of the content type (there could be more
         // than one content type of the same type on the same page!)
-        if (isset($_POST[$this->_prefix . '_action']) && $_POST[$this->_prefix . '_action'] === 'store' && isset($_POST[$this->_prefix . '_id']) && (int) $_POST[$this->_prefix . '_id'] == $this->_id) {
-            $this->_settings = $_POST[$this->_prefix . '_text_' . $this->_id];
+        if (isset($_POST[static::PREFIX . '_action']) && $_POST[static::PREFIX . '_action'] === 'store' && isset($_POST[static::PREFIX . '_id']) && (int) $_POST[static::PREFIX . '_id'] == $this->_id) {
+            $this->_settings = $_POST[static::PREFIX . '_text_' . $this->_id];
             $this->_rawSettings = $this->_settings;
             $this->_storeSettings();
 
@@ -76,18 +82,18 @@ class cContentTypeHead extends cContentTypeText {
      * @throws cInvalidArgumentException
      */
     protected function _getEditJavaScript() {
-        $textbox = new cHTMLTextbox($this->_prefix . '_text_' . $this->_id, '', '', '', $this->_prefix . '_text_' . $this->_id, false, NULL, '', 'edit-textfield edit-' . $this->_prefix . '-textfield');
+        $textbox = new cHTMLTextbox(static::PREFIX . '_text_' . $this->_id, '', '', '', static::PREFIX . '_text_' . $this->_id, false, NULL, '', 'edit-textfield edit-' . static::PREFIX . '-textfield');
         $textbox->setClass("$this->_id");
 
         $saveButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . 'images/but_ok.gif');
-        $saveButton->setID($this->_prefix . '_savebutton_' . $this->_id);
+        $saveButton->setID(static::PREFIX . '_savebutton_' . $this->_id);
         $saveButton->appendStyleDefinitions(array(
-                'margin-left' => '5px',
-                'cursor' => 'pointer'
+            'margin-left' => '5px',
+            'cursor' => 'pointer'
         ));
 
         $template = new cTemplate();
-        $template->set('s', 'PREFIX', $this->_prefix);
+        $template->set('s', 'PREFIX', static::PREFIX);
         $template->set('s', 'ID', $this->_id);
         $template->set('s', 'TEXTBOX', $textbox->render());
         $template->set('s', 'SAVEBUTTON', $saveButton->render());

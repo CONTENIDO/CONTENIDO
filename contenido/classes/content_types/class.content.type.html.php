@@ -24,27 +24,19 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cContentTypeHtml extends cContentTypeAbstract {
 
     /**
-     * Constructor to create an instance of this class.
+     * Name of the content type.
      *
-     * Initialises class attributes and handles store events.
-     *
-     * @param string $rawSettings
-     *         the raw settings in an XML structure or as plaintext
-     * @param int $id
-     *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
-     * @param array $contentTypes
-     *         array containing the values of all content types
+     * @var string
      */
-    public function __construct($rawSettings, $id, array $contentTypes) {
+    const CONTENT_TYPE = 'CMS_HTML';
 
-        // call parent constructor
-        parent::__construct($rawSettings, $id, $contentTypes);
-
-        // set props
-        $this->_type = 'CMS_HTML';
-        $this->_prefix = 'html';
-
-    }
+    /**
+     * Prefix used for posted data.
+     * Replaces the property $this->>_prefix.
+     *
+     * @var string
+     */
+    const PREFIX = 'html';
 
     /**
      * Generates the code which should be shown if this content type is shown in
@@ -63,20 +55,21 @@ class cContentTypeHtml extends cContentTypeAbstract {
      * @return string
      *         escaped HTML code which should be shown if content type is edited
      * @throws cDbException
+     * @throws cException
      */
     public function generateEditCode() {
         $wysiwygDiv = new cHTMLDiv();
 
         // generate the div ID - format: TYPEWITHOUTCMS_TYPEID_ID
         // important because it is used to save the content accordingly
-        $id = str_replace('CMS_', '', $this->_type) . '_';
+        $id = str_replace('CMS_', '', static::CONTENT_TYPE) . '_';
         $db = cRegistry::getDb();
-        $sql = 'SELECT `idtype` FROM `' . $this->_cfg['tab']['type'] . '` WHERE `type`=\'' . $this->_type . '\'';
+        $sql = 'SELECT `idtype` FROM `' . $this->_cfg['tab']['type'] . '` WHERE `type`=\'' . static::CONTENT_TYPE . '\'';
         $db->query($sql);
         $db->nextRecord();
         $id .= $db->f('idtype') . '_' . $this->_id;
         $wysiwygDiv->setID($id);
-        $wysiwygDiv->setClass(htmlentities($this->_type));
+        $wysiwygDiv->setClass(htmlentities(static::CONTENT_TYPE));
 
         $wysiwygDiv->setEvent('Focus', "this.style.border='1px solid #bb5577';");
         $wysiwygDiv->setEvent('Blur', "this.style.border='1px dashed #bfbfbf';");
@@ -94,7 +87,7 @@ class cContentTypeHtml extends cContentTypeAbstract {
 
 
         // construct edit button
-        $editLink = $this->_session->url($this->_cfg['path']['contenido_fullhtml'] . 'external/backendedit/' . 'front_content.php?action=10&idcat=' . $this->_idCat . '&idart=' . $this->_idArt . '&idartlang=' . $this->_idArtLang . '&type=' . $this->_type . '&typenr=' . $this->_id. '&client=' . $this->_client);
+        $editLink = $this->_session->url($this->_cfg['path']['contenido_fullhtml'] . 'external/backendedit/' . 'front_content.php?action=10&idcat=' . $this->_idCat . '&idart=' . $this->_idArt . '&idartlang=' . $this->_idArtLang . '&type=' . static::CONTENT_TYPE . '&typenr=' . $this->_id. '&client=' . $this->_client);
         $editAnchor = new cHTMLLink('#');
         $editAnchor->setAttribute('onclick', "javascript:Con.Tiny.setContent('" . $this->_idArtLang . "','" . $editLink . "'); return false;");
         $editButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_edithtml.gif');

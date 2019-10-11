@@ -21,6 +21,29 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage UserForum
  */
 class cContentTypeUserForum extends cContentTypeAbstractTabbed {
+
+    /**
+     * Name of the content type.
+     *
+     * @var string
+     */
+    const CONTENT_TYPE = 'CMS_USERFORUM';
+
+    /**
+     * Whether the settings should be interpreted as plaintext or XML.
+     *
+     * @var string
+     */
+    const SETTINGS_TYPE = 'xml';
+
+    /**
+     * Prefix used for posted data.
+     * Replaces the property $this->>_prefix.
+     *
+     * @var string
+     */
+    const PREFIX = 'userforum';
+
     /**
      * Initialize class attributes and handles store events.
      *
@@ -36,9 +59,6 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
     function __construct($rawSettings, $id, array $contentTypes) {
 
         // set attributes of the parent class and call the parent constructor
-        $this->_type = 'CMS_USERFORUM';
-        $this->_prefix = 'userforum';
-        $this->_settingsType = self::SETTINGS_TYPE_XML;
         $this->_formFields = array(
             'userforum_email',
             'userforum_subcomments',
@@ -74,7 +94,7 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
         $tplTop = new cTemplate();
         $tplTop->set('s', 'ICON', 'plugins/user_forum/images/con_button.gif');
         $tplTop->set('s', 'ID', $this->_id);
-        $tplTop->set('s', 'PREFIX', $this->_prefix);
+        $tplTop->set('s', 'PREFIX', static::PREFIX);
         $tplTop->set('s', 'HEADLINE', UserForum::i18n('ADMINISTRATION'));
         $codeTop = $tplTop->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_top.html', true);
 
@@ -83,7 +103,7 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
 
         // build tab code
         $tplPanel = new cTemplate();
-        $tplPanel->set('s', 'PREFIX', $this->_prefix);
+        $tplPanel->set('s', 'PREFIX', static::PREFIX);
         $tplPanel->set('d', 'TAB_ID', 'base');
         $tplPanel->set('d', 'TAB_CLASS', 'base');
         $tplPanel->set('d', 'TAB_CONTENT', $this->_getPanel());
@@ -94,7 +114,7 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
         $tplBottom = new cTemplate();
         $tplBottom->set('s', 'PATH_FRONTEND', $this->_cfgClient[$this->_client]['path']['htmlpath']);
         $tplBottom->set('s', 'ID', $this->_id);
-        $tplBottom->set('s', 'PREFIX', $this->_prefix);
+        $tplBottom->set('s', 'PREFIX', static::PREFIX);
         $tplBottom->set('s', 'IDARTLANG', $this->_idArtLang);
         $tplBottom->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
         $tplBottom->set('s', 'SETTINGS', json_encode($this->_settings));
@@ -127,7 +147,7 @@ $code
             $this->_getModEmail(),
             $this->_getModMode(),
             $this->_getEditMode()
-        ), $this->_prefix . '_panel_base', $this->_prefix . '_panel_base_' . $this->_id);
+        ), static::PREFIX . '_panel_base', static::PREFIX . '_panel_base_' . $this->_id);
         $wrapper->setStyle('clear:both');
 
         return $wrapper->render();
