@@ -2,6 +2,32 @@
 ------------------------ CONTENIDO CHANGELOG ------------------------
 
 ---------------------------------------------------------------------
+Release 4.10.1
+---------------------------------------------------------------------
+** Bug
+    * [CON-2815] Additional whitespace when editing article title in article overview
+    * [CON-2811] Parameter marked as deprecated affects the whole function
+    * [CON-2810] Invalid view of cumulated search statistics
+    * [CON-2805] Wrong replacement of module CSS after title or after opening head tag
+    * [CON-2798] Remove not used template placeholder from template.stat_top.html
+    * [CON-2791] Output of articles in module content_sitemap_html doesn't work
+    * [CON-2786] Provide missing German tranlations for TinyMCE 3 plugins
+    * [CON-2776] Article overview creates an SQL-Error in a specific MySQL-Mode
+    * [CON-2774] CMS_FILELIST: Checked manual selection checkbox without any selected files results in a warning
+    * [CON-2652] Content / Categories: "Overview" tab is not highlighted
+    * [CON-2647] Content / Articles: Clicking on tab "Overview" highlights "Settings" first
+    * [CON-2612] Newsletter module has several bugs
+
+** New Feature
+    * [CON-2814] SIWECOS in CONTENIDO Backend
+    * [CON-2812] PIFA: delete data
+
+** Improvement
+    * [CON-2800] Create class cRights from functions in include.rights.php
+    * [CON-2795] CONTENIDO stylesheets
+    * [CON-2741] Amending documentation of plugins
+
+---------------------------------------------------------------------
 Release 4.10.0
 ---------------------------------------------------------------------
 ** Bug
@@ -157,13 +183,11 @@ Release 4.10.0
     * [CON-2794] - Call to undefined method UI_Config_Table::addMultiSelJS()
     * [CON-2797] - Overviews list file index.php
 
-
 ** New Feature
     * [CON-2559] - New cApiHook after rawdata delete
     * [CON-2572] - Editor Class in TinyMCE 3 should have client and language id
     * [CON-2592] - Add new chain after article link in article properties
     * [CON-2618] - Integration of Google Recaptcha into PIFA
-
 
 ** Task
     * [CON-1382] - Remove redundancy with CON_ENVIRONMENT detection
