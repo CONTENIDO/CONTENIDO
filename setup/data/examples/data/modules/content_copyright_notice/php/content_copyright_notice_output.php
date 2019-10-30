@@ -19,7 +19,7 @@ $configIdart = getEffectiveSetting('footer_config', 'idart', 0);
 
 if (0 < $configIdart) {
 
-    $article = new cApiArticleLanguage($configIdart, true);
+    $article = new cApiArticleLanguage($configIdart);
 
     $text = $article->getContent('CMS_HTML', 1);
     $text = str_replace('{year}', date('Y'), $text);

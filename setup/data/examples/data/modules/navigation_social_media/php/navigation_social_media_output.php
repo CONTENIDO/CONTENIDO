@@ -19,7 +19,7 @@ $configIdart = getEffectiveSetting('footer_config', 'idart', 0);
 
 if (0 < $configIdart) {
 
-    $article = new cApiArticleLanguage($configIdart, true);
+    $article = new cApiArticleLanguage($configIdart);
 
     $url = array(
         'rss' => $article->getContent('CMS_TEXT', 1),
