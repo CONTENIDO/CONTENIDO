@@ -36,21 +36,15 @@
     display: block;
 }
 .cms_imgeditor .meta label {
-   /* margin: 10px 0 3px 10px;*/
 }
 
 .cms_imgeditor .meta input {
-    border: 1px solid #ccc;
-    font-size: 11px;
     margin-bottom: 5px;
-    width: 50%;
     margin-top: 2px;
 }
 
 .cms_imgeditor .meta textarea {
-    border: 1px solid #ccc;
-    font-size: 11px;
-    height: 50px;
+    height: 75px;
     margin-bottom: 5px;
     resize: vertical;
     width: 50%;
@@ -88,7 +82,7 @@
     margin-left: 10px;
 }
 
-#imgeditor_tabs input[type='file'] {
+.cms_imgeditor #imgeditor_tabs input[type='file'] {
     width: 99%;
     margin-bottom: 8px;
     display: block;

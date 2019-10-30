@@ -83,7 +83,7 @@ if (!is_numeric($client)
 if (!is_numeric($lang) || $lang == '') {
     $sess->register('lang');
     // search for the first language of this client
-    $db->query("
+    $sql = "
         SELECT
             *
         FROM
@@ -94,7 +94,8 @@ if (!is_numeric($lang) || $lang == '') {
             AND idclient=" . cSecurity::toInteger($client) . "
         ORDER BY
             A.idlang ASC
-        ;");
+        ;";
+    $db->query($sql);
     $db->nextRecord();
     $lang = $db->f('idlang');
 } else {

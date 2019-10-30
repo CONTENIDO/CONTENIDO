@@ -705,16 +705,22 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
         $wrapperContent[] = new cHTMLLabel(i18n('File list title'), 'filelist_title_' . $this->_id);
         $wrapperContent[] = new cHTMLTextbox('filelist_title_' . $this->_id, conHtmlSpecialChars($this->_settings['filelist_title']), '', '', 'filelist_title_' . $this->_id);
+
         $wrapperContent[] = new cHTMLLabel(i18n('File list style'), 'filelist_style_' . $this->_id);
         $wrapperContent[] = $this->_generateStyleSelect();
+
         $wrapperContent[] = new cHTMLLabel(i18n('File list sort'), 'filelist_sort_' . $this->_id);
         $wrapperContent[] = $this->_generateSortSelect();
+
         $wrapperContent[] = new cHTMLLabel(i18n('Sort order'), 'filelist_sortorder_' . $this->_id);
         $wrapperContent[] = $this->_generateSortOrderSelect();
-        $wrapperContent[] = new cHTMLLabel(i18n('Include subdirectories?'), 'filelist_incl_subdirectories_' . $this->_id);
-        $wrapperContent[] = new cHTMLCheckbox('filelist_incl_subdirectories_' . $this->_id, '', 'filelist_incl_subdirectories_' . $this->_id, ($this->_settings['filelist_incl_subdirectories'] === 'true'));
+
         $wrapperContent[] = new cHTMLLabel(i18n('Include meta data?'), 'filelist_incl_metadata_' . $this->_id);
         $wrapperContent[] = new cHTMLCheckbox('filelist_incl_metadata_' . $this->_id, '', 'filelist_incl_metadata_' . $this->_id, ($this->_settings['filelist_incl_metadata'] === 'true'));
+
+        $wrapperContent[] = new cHTMLLabel(i18n('Include subdirectories?'), 'filelist_incl_subdirectories_' . $this->_id, 'filelist_incl_subdirectories');
+        $wrapperContent[] = new cHTMLCheckbox('filelist_incl_subdirectories_' . $this->_id, '', 'filelist_incl_subdirectories_' . $this->_id, ($this->_settings['filelist_incl_subdirectories'] === 'true'));
+
         $div = new cHTMLDiv($this->_generateMetaDataList());
         $div->setID('metaDataList');
         $wrapperContent[] = $div;
@@ -957,48 +963,45 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      * @throws cInvalidArgumentException
      */
     private function _generateTabManual() {
-        // wrapper containing content of manual tab
-        $wrapper = new cHTMLDiv();
-        $wrapperContent = array();
+        // directory navigation
+        $directoryListCode = $this->generateDirectoryList($this->buildDirectoryList());
 
-        $wrapperContent[] = new cHTMLParagraph(i18n('Manual settings'), 'head_sub');
+        $liRoot = new cHTMLListItem('root', 'last');
+        $liRoot->setContent(['<em>Uploads</em>', $directoryListCode]);
+        $conStrTree = new cHTMLList('ul', 'con_str_tree', 'con_str_tree', $liRoot);
 
-        $wrapperContent[] = new cHTMLLabel(i18n('Use manual file list?'), 'filelist_manual_' . $this->_id);
-        $wrapperContent[] = new cHTMLCheckbox('filelist_manual_' . $this->_id, '', 'filelist_manual_' . $this->_id, ($this->_settings['filelist_manual'] === 'true'));
+        $directoryList = new cHTMLDiv('', 'directoryList', 'directoryList_' . $this->_id . '_manual');
+        $directoryList->setContent($conStrTree);
+
+        $image = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . 'images/but_art_new.gif');
+        $image->setAttribute('id', 'add_file');
+        $image->appendStyleDefinition('cursor', 'pointer');
+
+        $divContent = [
+            new cHTMLParagraph(i18n('Existing files'), 'head_sub'),
+            $this->_generateExistingFileSelect(),
+            new cHTMLSpan(i18n('Already configured entries can be deleted by using double click'), 'filelist_manual_' . $this->_id),
+            new cHTMLParagraph(i18n('Add file'), 'head_sub'),
+            new cHTMLLabel(i18n('Directory'), ''),
+            $directoryList,
+            new cHTMLLabel(i18n('File'), 'filelist_filename_' . $this->_id, 'filelist_filename'),
+            $this->generateFileSelect(),
+            $image,
+        ];
 
         $manualDiv = new cHTMLDiv();
         $manualDiv->setID('manual_filelist_setting');
         $manualDiv->appendStyleDefinition('display', 'none');
-        $divContent = array();
-        $divContent[] = new cHTMLParagraph(i18n('Existing files'), 'head_sub');
-        $divContent[] = $this->_generateExistingFileSelect();
-        $divContent[] = new cHTMLSpan(i18n('Already configured entries can be deleted by using double click'), 'filelist_manual_' . $this->_id);
-        $divContent[] = new CHTMLSpan('<br><br>', 'filelist_manual_' . $this->_id);
-        $divContent[] = new cHTMLParagraph(i18n('Add file'), 'head_sub');
-        $divContent[] = new cHTMLLabel(i18n('Directory'), '');
-
-        // directory navigation
-        $directoryList = new cHTMLDiv('', 'directoryList', 'directoryList_' . $this->_id . '_manual');
-        $liRoot = new cHTMLListItem('root', 'last');
-        $directoryListCode = $this->generateDirectoryList($this->buildDirectoryList());
-        $liRoot->setContent(array(
-            '<em>Uploads</em>',
-            $directoryListCode
-        ));
-        $conStrTree = new cHTMLList('ul', 'con_str_tree', 'con_str_tree', $liRoot);
-        $directoryList->setContent($conStrTree);
-        $divContent[] = $directoryList;
-
-        $divContent[] = new cHTMLLabel(i18n('File'), 'filelist_filename_' . $this->_id, 'filelist_filename');
-        $divContent[] = $this->generateFileSelect();
-        $image = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . 'images/but_art_new.gif');
-        $image->setAttribute('id', 'add_file');
-        $image->appendStyleDefinition('cursor', 'pointer');
-        $divContent[] = $image;
-
         $manualDiv->setContent($divContent);
-        $wrapperContent[] = $manualDiv;
 
+        $wrapperContent = [
+            new cHTMLParagraph(i18n('Manual settings'), 'head_sub'),
+            new cHTMLLabel(i18n('Use manual file list?'), 'filelist_manual_' . $this->_id),
+            new cHTMLCheckbox('filelist_manual_' . $this->_id, '', 'filelist_manual_' . $this->_id, ($this->_settings['filelist_manual'] === 'true')),
+            $manualDiv,
+        ];
+
+        $wrapper = new cHTMLDiv();
         $wrapper->setContent($wrapperContent);
 
         return $wrapper->render();

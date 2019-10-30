@@ -44,30 +44,6 @@ abstract class cContentTypeAbstract
     const PREFIX = 'abstract';
 
     /**
-     * Name of the content type, e.g. 'CMS_TEASER'.
-     *
-     * @deprecated since 10.2019 use const static::CONTENT_TYPE instead
-     * @var string
-     */
-    protected $_type = '';
-
-    /**
-     * Prefix of the content type, e.g. 'teaser'.
-     *
-     * @deprecated since 10.2019 use const static::PREFIX instead
-     * @var string
-     */
-    protected $_prefix = 'abstract';
-
-    /**
-     * Whether the settings should be interpreted as plaintext or XML.
-     *
-     * @deprecated since 10.2019 use const static::SETTINGS_TYPE instead
-     * @var string
-     */
-    protected $_settingsType = 'plaintext';
-
-    /**
      * ID of the content type, e.g. 3 if CMS_TEASER[3] is used.
      *
      * @var int
@@ -161,12 +137,14 @@ abstract class cContentTypeAbstract
     /**
      * The parsed settings.
      *
+     * In case of SETTINGS_TYPE = 'xml' this is an array. Otherwise its a string.
+     *
      * @var array|string
      */
     protected $_settings = [];
 
     /**
-     * List of form field names which are used by this content type!
+     * List of form field names which are used by this content type.
      *
      * @var array
      */
@@ -194,6 +172,7 @@ abstract class cContentTypeAbstract
         $this->_id           = $id;
         $this->_contentTypes = $contentTypes;
 
+        // set values from registry
         $this->_idArtLang = cRegistry::getArticleLanguageId();
         $this->_idArt     = cRegistry::getArticleId();
         $this->_idCat     = cRegistry::getCategoryId();
@@ -302,62 +281,6 @@ abstract class cContentTypeAbstract
     }
 
     /**
-     * Builds an array with directory information from the given upload path.
-     *
-     * @SuppressWarnings docBlocks
-     *
-     * @param string $uploadPath [optional]
-     *                           path to upload directory
-     *                           (default: root upload path of client)
-     *
-     * @return array
-     *         with directory information (keys: name, path, sub)
-     */
-    public function buildDirectoryList($uploadPath = '')
-    {
-        // make sure the upload path is set and ends with a slash
-        if ($uploadPath === '') {
-            $uploadPath = $this->_uploadPath;
-        }
-        if (cString::getPartOfString($uploadPath, -1) !== '/') {
-            $uploadPath .= '/';
-        }
-
-        $directories = [];
-
-        if (is_dir($uploadPath)) {
-            if (false !== ($handle = cDirHandler::read($uploadPath, false, true))) {
-                foreach ($handle as $entry) {
-                    if (cFileHandler::fileNameBeginsWithDot($entry) === false && is_dir($uploadPath . $entry)) {
-                        $directory         = [];
-                        $directory['name'] = $entry;
-                        $directory['path'] = str_replace($this->_uploadPath, '', $uploadPath);
-                        $directory['sub']  = $this->buildDirectoryList($uploadPath . $entry);
-                        $directories[]     = $directory;
-                    }
-                }
-            }
-        }
-
-        usort(
-            $directories,
-            function ($a, $b) {
-                $a = cString::toLowerCase($a["name"]);
-                $b = cString::toLowerCase($b["name"]);
-                if ($a < $b) {
-                    return -1;
-                } elseif ($a > $b) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        );
-
-        return $directories;
-    }
-
-    /**
      * Generates a directory list from the given directory information (which is
      * typically built by {@link cContentTypeAbstract::buildDirectoryList}).
      *
@@ -452,18 +375,18 @@ abstract class cContentTypeAbstract
     protected function _isSubdirectory($subDir, $dir)
     {
         $dirArray = explode('/', $dir);
-        $expand   = false;
         $checkDir = '';
+        $isSubdirectory   = false;
 
         // construct the whole directory in single steps and check if the given directory can be found
         foreach ($dirArray as $dirPart) {
             $checkDir .= '/' . $dirPart;
             if ($checkDir === '/' . $subDir) {
-                $expand = true;
+                $isSubdirectory = true;
             }
         }
 
-        return $expand;
+        return $isSubdirectory;
     }
 
     /**
@@ -503,4 +426,61 @@ abstract class cContentTypeAbstract
     {
         return false;
     }
+
+    /**
+     * Builds an array with directory information from the given upload path.
+     *
+     * @SuppressWarnings docBlocks
+     *
+     * @param string $uploadPath [optional]
+     *                           path to upload directory
+     *                           (default: root upload path of client)
+     *
+     * @return array
+     *         with directory information (keys: name, path, sub)
+     */
+    public function buildDirectoryList($uploadPath = '')
+    {
+        // make sure the upload path is set and ends with a slash
+        if ($uploadPath === '') {
+            $uploadPath = $this->_uploadPath;
+        }
+        if (cString::getPartOfString($uploadPath, -1) !== '/') {
+            $uploadPath .= '/';
+        }
+
+        $directories = [];
+
+        if (is_dir($uploadPath)) {
+            if (false !== ($handle = cDirHandler::read($uploadPath, false, true))) {
+                foreach ($handle as $entry) {
+                    if (cFileHandler::fileNameBeginsWithDot($entry) === false && is_dir($uploadPath . $entry)) {
+                        $directories[]     = [
+                            'name' => $entry,
+                            'path' => str_replace($this->_uploadPath, '', $uploadPath),
+                            'sub'  => $this->buildDirectoryList($uploadPath . $entry),
+                        ];
+                    }
+                }
+            }
+        }
+
+        usort(
+            $directories,
+            function ($a, $b) {
+                $a = cString::toLowerCase($a["name"]);
+                $b = cString::toLowerCase($b["name"]);
+                if ($a < $b) {
+                    return -1;
+                } elseif ($a > $b) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        );
+
+        return $directories;
+    }
+
 }

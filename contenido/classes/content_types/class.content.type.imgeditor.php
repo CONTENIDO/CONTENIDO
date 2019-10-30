@@ -636,7 +636,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *         rendered cHTMLSelectElement
      * @throws cException
      */
-    public function generateFileSelect($directoryPath = '') {
+    public function getUploadFileSelect($directoryPath = '') {
         // make sure the path ends with a slash
         if (cString::getPartOfString($directoryPath, -1) != '/') {
             $directoryPath .= '/';
@@ -652,10 +652,10 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             if (false !== ($handle = cDirHandler::read($this->_uploadPath . $directoryPath, false, false, true))) {
                 foreach ($handle as $entry) {
                     if (false === cFileHandler::fileNameBeginsWithDot($entry)) {
-                        $file = array();
-                        $file["name"] = $entry;
-                        $file["path"] = $directoryPath . $entry;
-                        $files[] = $file;
+                        $files[] = [
+                            'name' => $entry,
+                            'path' => $directoryPath . $entry,
+                        ];
                     }
                 }
             }

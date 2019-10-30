@@ -8,11 +8,8 @@
     border: 1px solid #B3B3B3;
     display: none;
     font-size: 12px;
-    /*left: 50% !important;*/
     padding: 5px;
-    /*top: 50% !important;*/
     margin: -160px 0 0 -161px;
-    /*position: fixed !important;*/
     z-index: 20000;
 }
 
@@ -50,24 +47,19 @@
 .cms_abstract label {
     display: block;
     float: left;
+    line-height: 30px;
     width: 48%;
 }
 
 .cms_abstract input,
 .cms_abstract select {
+    box-sizing: border-box;
     margin-bottom: 5px;
     width: 50%;
 }
 
-.cms_abstract input {
-    width: 50%;
-}
-
-.cms_abstract input.file {
-    width: 50%;
-}
-
 .cms_abstract input[type="checkbox"] {
+    margin: 8px 0;
     width: 20px;
 }
 
@@ -103,9 +95,4 @@
 .cms_abstract .menu li.active {
     font-weight: bold;
     border-bottom: 1px solid #F1F1F1;
-}
-
-.cms_abstract .checkbox_wrapper {
-    float: left;
-    width: 120px;
 }

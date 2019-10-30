@@ -125,7 +125,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * @return string
      */
     public function getTarget() {
-        return ($this->_settings['linkeditor_newwindow'] === 'true') ? '_blank' : '';
+        return $this->_settings['linkeditor_newwindow'] === 'true' ? '_blank' : '';
     }
 
     /**
@@ -358,27 +358,29 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     }
 
     /**
-     * Generates code for the basic settings "tab" in which the link title and
-     * target can be specified.
+     * Generates code for the basic settings "tab" in which the link title and target can be specified.
      *
      * This tab is always shown.
      *
+     * @internal define a wrapper which contains the whole content of the basic settings section
      * @return string
-     *         the code for the basic settings tab
      * @throws cException
      */
-    private function _generateBasicSettings() {
-        // define a wrapper which contains the whole content of the basic settings section
+    private function _generateBasicSettings()
+    {
         $wrapper = new cHTMLDiv();
-        $wrapperContent = array();
 
-        $wrapperContent[] = new cHTMLLabel(i18n('Title'), 'linkeditor_title_' . $this->_id);
-        $title = conHtmlEntityDecode($this->_settings['linkeditor_title']);
-        $wrapperContent[] = new cHTMLTextbox('linkeditor_title_' . $this->_id, $title, '', '', 'linkeditor_title_' . $this->_id);
-        $wrapperContent[] = new cHTMLCheckbox('linkeditor_newwindow_' . $this->_id, '', 'linkeditor_newwindow_' . $this->_id, ($this->_settings['linkeditor_newwindow'] === 'true'));
-        $wrapperContent[] = new cHTMLLabel(i18n('Open in a new window'), 'linkeditor_newwindow_' . $this->_id);
+        // input: link title
+        $titleId    = 'linkeditor_title_' . $this->_id;
+        $titleValue = conHtmlEntityDecode($this->_settings['linkeditor_title']);
+        $wrapper->appendContent(new cHTMLLabel(i18n('Title'), $titleId));
+        $wrapper->appendContent(new cHTMLTextbox($titleId, $titleValue, '', '', $titleId));
 
-        $wrapper->setContent($wrapperContent);
+        // checkbox: link target (if to open in new window)
+        $newwindowId    = 'linkeditor_newwindow_' . $this->_id;
+        $newwindowValue = 'true' === $this->_settings['linkeditor_newwindow'];
+        $wrapper->appendContent(new cHTMLLabel(i18n('Open in a new window'), $newwindowId));
+        $wrapper->appendContent(new cHTMLCheckbox($newwindowId, '', $newwindowId, $newwindowValue));
 
         return $wrapper->render();
     }
@@ -776,10 +778,12 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     public function getUploadFileSelect($directoryPath = '', $isEmptySelect = false) {
         // replace all backslashes with slashes
         $directoryPath = str_replace('\\', '/', $directoryPath);
+
         // if the directory path only contains a slash, leave it empty otherwise there will be two slashes in the end
         if ($directoryPath === '/') {
             $directoryPath = '';
         }
+
         // make sure the path ends with a slash if it is not empty
         if ($directoryPath !== '' && cString::getPartOfString($directoryPath, -1) != '/') {
             $directoryPath .= '/';
@@ -797,10 +801,10 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                 if (false !== ($handle = cDirHandler::read($this->_uploadPath . $directoryPath, false, false, true))) {
                     foreach ($handle as $entry) {
                         if (cFileHandler::fileNameBeginsWithDot($entry) === false) {
-                            $file = array();
-                            $file["name"] = $entry;
-                            $file["path"] = $directoryPath . $entry;
-                            $files[] = $file;
+                            $files[] = [
+                                'name' => $entry,
+                                'path' => $directoryPath . $entry,
+                            ];
                         }
                     }
                 }

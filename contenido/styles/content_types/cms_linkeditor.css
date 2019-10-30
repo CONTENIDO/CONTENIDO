@@ -35,16 +35,13 @@
     width: 16px;
 }
 
+.cms_linkeditor #caption1,
+.cms_linkeditor #caption2 {
+    margin-left: 10px;
+}
+
 .loading {
     left: 22%;
     position: absolute;
     top: 25%;
-}
-
-.cms_linkeditor #caption1,.cms_linkeditor #caption2 {
-    margin-left: 10px;
-}
-
-.cms_abstract .checkbox_wrapper {
-    clear: both;
 }
