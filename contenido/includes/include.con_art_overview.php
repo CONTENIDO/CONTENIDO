@@ -990,6 +990,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             } else {
                 // category is either not in sync or does not exist
                 // check if category does not exist for current language if syncoptions is turned on to find out if current category is unsynchronized
+                // TODO cApiArticleLanguage($idcat) cannot be correct!
                 $oArtLang = new cApiArticleLanguage($idcat);
                 if (0 < $syncoptions && false === $oArtLang->isLoaded()) {
                     $notification_text = $notification->returnNotification("error", i18n("Creation of articles is only possible if the category has is synchronized."));

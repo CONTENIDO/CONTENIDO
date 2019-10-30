@@ -101,7 +101,7 @@ class cAjaxRequest {
                 $cfgClient = cRegistry::getClientConfig($clientId);
                 $uplPath = $cfgClient['upl']['path'];
 
-                $art = new cApiArticleLanguage($idartlang, true);
+                $art = new cApiArticleLanguage($idartlang);
                 $content = $art->getContent('CMS_FILELIST', $fileListId);
 
                 $fileList = new cContentTypeFilelist($content, $fileListId, array());
@@ -119,7 +119,7 @@ class cAjaxRequest {
                 $cfgClient = cRegistry::getClientConfig($clientId);
                 $uplPath   = $cfgClient['upl']['path'];
 
-                $art     = new cApiArticleLanguage($idartlang, true);
+                $art     = new cApiArticleLanguage($idartlang);
                 $content = $art->getContent('CMS_IMGEDITOR', $fileListId);
 
                 $fileList      = new cContentTypeImgeditor($content, $fileListId, []);
@@ -132,7 +132,7 @@ class cAjaxRequest {
                 $fileListId = cSecurity::toInteger($_REQUEST['id']);
                 $dirname    = cSecurity::toString($_REQUEST['dir']);
 
-                $art = new cApiArticleLanguage($idartlang, true);
+                $art = new cApiArticleLanguage($idartlang);
                 $content = $art->getContent('CMS_FILELIST', $fileListId);
 
                 $fileList = new cContentTypeFilelist($content, $fileListId, array());
@@ -195,9 +195,11 @@ class cAjaxRequest {
                 cInclude('backend', 'includes/functions.tpl.php');
 
                 if ((int) $_REQUEST['id'] > 0) {
+                    $response = '';
+                    $usedData = tplGetInUsedData((int) $_REQUEST['id']);
+
                     $template = new cTemplate();
                     $template->reset();
-                    $usedData = tplGetInUsedData((int) $_REQUEST['id']);
 
                     if (isset($usedData['cat'])) {
                         $template->set('s', 'HEAD_TYPE', i18n('Category'));
@@ -276,7 +278,7 @@ class cAjaxRequest {
                 $imageId = (int) $_REQUEST['id'];
                 $idArtLang = (int) $_REQUEST['idartlang'];
 
-                $art = new cApiArticleLanguage($idArtLang, true);
+                $art = new cApiArticleLanguage($idArtLang);
                 $artReturn = $art->getContent('CMS_IMGEDITOR', $imageId);
                 $image = new cContentTypeImgeditor($artReturn, $imageId, array());
 
@@ -303,7 +305,7 @@ class cAjaxRequest {
                 $imageId = (int) $_REQUEST['id'];
                 $idArtLang = (int) $_REQUEST['idartlang'];
 
-                $art = new cApiArticleLanguage($idArtLang, true);
+                $art = new cApiArticleLanguage($idArtLang);
                 $artReturn = $art->getContent('CMS_IMGEDITOR', $imageId);
                 $image = new cContentTypeImgeditor($artReturn, $imageId, array());
 
@@ -324,7 +326,7 @@ class cAjaxRequest {
                 $path = (string) $_REQUEST['path'];
                 $name = (string) $_REQUEST['foldername'];
 
-                $art = new cApiArticleLanguage($idArtLang, true);
+                $art = new cApiArticleLanguage($idArtLang);
                 $artReturn = $art->getContent('CMS_IMGEDITOR', $imageId);
                 $image = new cContentTypeImgeditor($artReturn, $imageId, array());
 
@@ -352,7 +354,7 @@ class cAjaxRequest {
                     $path = '';
                 }
 
-                $art = new cApiArticleLanguage($idArtLang, true);
+                $art = new cApiArticleLanguage($idArtLang);
                 $artReturn = $art->getContent('CMS_IMGEDITOR', $imageId);
                 $image = new cContentTypeImgeditor($artReturn, $imageId, array());
 
@@ -364,7 +366,7 @@ class cAjaxRequest {
                 $idArtLang = (int) $_REQUEST['idartlang'];
                 $idCat = (string) $_REQUEST['idcat'];
 
-                $art = new cApiArticleLanguage($idArtLang, true);
+                $art = new cApiArticleLanguage($idArtLang);
                 $artReturn = $art->getContent('CMS_LINKEDITOR', $id);
                 $linkEditor = new cContentTypeLinkeditor($artReturn, $id, array());
 
@@ -382,7 +384,7 @@ class cAjaxRequest {
                 $levelId = (string) $_REQUEST['level'];
                 $parentidcat = (string) $_REQUEST['parentidcat'];
 
-                $art = new cApiArticleLanguage($idArtLang, true);
+                $art = new cApiArticleLanguage($idArtLang);
                 $artReturn = $art->getContent('CMS_LINKEDITOR', $id);
                 $linkEditor = new cContentTypeLinkeditor($artReturn, $id, array());
 
@@ -394,7 +396,7 @@ class cAjaxRequest {
                 $id = (int) $_REQUEST['id'];
                 $idArtLang = (int) $_REQUEST['idartlang'];
 
-                $art = new cApiArticleLanguage($idArtLang, true);
+                $art = new cApiArticleLanguage($idArtLang);
                 $artReturn = $art->getContent('CMS_LINKEDITOR', $id);
                 $linkEditor = new cContentTypeLinkeditor($artReturn, $id, array());
 

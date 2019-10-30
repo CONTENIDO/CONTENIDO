@@ -186,11 +186,14 @@ class cArticleCollector implements SeekableIterator, Countable {
         $this->_articles = array();
 
         $cfg = cRegistry::getConfig();
+        $db  = cRegistry::getDb();
 
-        $sqlCatLang = (count($this->_options['categories']) > 0) ? " idcat IN ('" . implode("','", $this->_options['categories']) . "') AND " : '';
-
-        $db = cRegistry::getDb();
-        $sql = "SELECT startidartlang, idcat FROM " . $cfg['tab']['cat_lang'] . " WHERE " . $sqlCatLang . " idlang=" . $this->_options['lang'];
+        $sql = "SELECT startidartlang, idcat
+                FROM " . $cfg['tab']['cat_lang'] . "
+                WHERE idlang=" . $this->_options['lang'];
+        if (count($this->_options['categories']) > 0) {
+            $sql .= " AND idcat IN ('" . implode("','", $this->_options['categories']) . "')";
+        }
         $db->query($sql);
 
         while ($db->nextRecord()) {
