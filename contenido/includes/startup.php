@@ -23,7 +23,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // SetEnv CON_VERSION
-defined('CON_VERSION') || define('CON_VERSION', '4.10.0');
+defined('CON_VERSION') || define('CON_VERSION', '4.10.1');
 
 global $cfg, $cfgClient, $errsite_idcat, $errsite_idart;
 
