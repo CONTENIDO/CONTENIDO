@@ -136,20 +136,6 @@ class HtmlParser {
     }
 
     /**
-     * Old constructor.
-     *
-     * @deprecated [2016-02-04]
-     *          This method is deprecated and is not needed any longer.
-     *          Please use __construct() as constructor function.
-     * @param string $HtmlText
-     * @return __construct()
-     */
-    public function HtmlParser($HtmlText) {
-        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
-        return $this->__construct($HtmlText);
-    }
-
-    /**
      * Set method for HtmlText variable.
      *
      * @param string $htmlText
@@ -388,11 +374,11 @@ class HtmlParser {
      */
     protected function _skipBlanksInTag() {
         return "" != ($this->_skipInTag(array(
-            " ",
-            "\t",
-            "\r",
-            "\n"
-        )));
+                                            " ",
+                                            "\t",
+                                            "\r",
+                                            "\n"
+                                        )));
     }
 
     /**
@@ -401,12 +387,12 @@ class HtmlParser {
      */
     protected function _skipToBlanksOrEqualsInTag() {
         return $this->_skipToInTag(array(
-            " ",
-            "\t",
-            "\r",
-            "\n",
-            "="
-        ));
+                                       " ",
+                                       "\t",
+                                       "\r",
+                                       "\n",
+                                       "="
+                                   ));
     }
 
     /**
@@ -415,11 +401,11 @@ class HtmlParser {
      */
     protected function _skipToBlanksInTag() {
         return $this->_skipToInTag(array(
-            " ",
-            "\t",
-            "\r",
-            "\n"
-        ));
+                                       " ",
+                                       "\t",
+                                       "\r",
+                                       "\n"
+                                   ));
     }
 
     /**
@@ -428,8 +414,8 @@ class HtmlParser {
      */
     protected function _skipEqualsInTag() {
         return $this->_skipInTag(array(
-            "="
-        ));
+                                     "="
+                                 ));
     }
 
     /**
@@ -438,28 +424,27 @@ class HtmlParser {
      */
     protected function _readValueInTag() {
         $ch = $this->_currentChar();
-        $value = "";
 
         if ($ch == "\"") {
             $this->_skipInTag(array(
-                "\""
-            ));
+                                  "\""
+                              ));
             $value = $this->_skipToInTag(array(
-                "\""
-            ));
+                                             "\""
+                                         ));
             $this->_skipInTag(array(
-                "\""
-            ));
-        } else if ($ch == "\'") {
+                                  "\""
+                              ));
+        } elseif ($ch == "\'") {
             $this->_skipInTag(array(
-                "\'"
-            ));
+                                  "\'"
+                              ));
             $value = $this->_skipToInTag(array(
-                "\'"
-            ));
+                                             "\'"
+                                         ));
             $this->_skipInTag(array(
-                "\'"
-            ));
+                                  "\'"
+                              ));
         } else {
             $value = $this->_skipToBlanksInTag();
         }
@@ -476,7 +461,7 @@ class HtmlParser {
             return -1;
         }
         $HtmlText = $this->getHtmlText();
-        return $HtmlText{$this->getHtmlTextIndex()};
+        return cString::getPartOfString($HtmlText, $this->getHtmlTextIndex(), 1);
     }
 
     /**
@@ -511,7 +496,7 @@ class HtmlParser {
 
     /**
      *
-     * @param string $chars
+     * @param array $chars
      * @return string
      */
     protected function _skipInTag($chars) {
@@ -539,7 +524,7 @@ class HtmlParser {
 
     /**
      *
-     * @param string $chars
+     * @param array $chars
      * @return string
      */
     protected function _skipToInTag($chars) {
@@ -560,6 +545,7 @@ class HtmlParser {
             $sb .= $ch;
             $this->_moveNext();
         }
+
         return $sb;
     }
 

@@ -49,6 +49,12 @@ class cHTMLValidator {
 
     /**
      *
+     * @var array
+     */
+    public $missingTags = array();
+
+    /**
+     *
      * @deprecated
      *         not used anymore
      * @var string
@@ -89,11 +95,12 @@ class cHTMLValidator {
         // Clean up HTML first from any PHP scripts, and clean up line breaks
         $this->_html = $this->_cleanHTML($html);
 
-        $htmlParser = new HtmlParser($this->_html);		
+        $htmlParser = new HtmlParser($this->_html);
 
         while ($htmlParser->parse()) {
-			$nodeName = $htmlParser->getNodeName();
+            $nodeName = $htmlParser->getNodeName();
             $this->_existingTags[] = $nodeName;
+
             // Check if we found a double tag
             if (in_array($nodeName, $this->_doubleTags)) {
                 if (!array_key_exists($nodeName, $this->_nestingLevel)) {
@@ -106,8 +113,7 @@ class cHTMLValidator {
 
                 // Check if it's a start tag
                 if ($htmlParser->getNodeType() == HtmlParser::NODE_TYPE_ELEMENT) {
-                    // Push the current element to the stack, remember ID and
-                    // Name, if possible
+                    // Push the current element to the stack, remember ID and Name, if possible
                     $nestingLevel++;
 
                     $this->_nestingNodes[$nodeName][intval($this->_nestingLevel[$nodeName])]["name"] = $htmlParser->getNodeAttributes('name');
@@ -123,9 +129,9 @@ class cHTMLValidator {
                         unset($this->_nestingNodes[$nodeName][$this->_nestingLevel[$nodeName]]);
                         $this->_nestingLevel[$nodeName]--;
 
-                        if ($this->_nestingNodes[$nodeName][intval($this->_nestingLevel[$nodeName])]["level"] != $nestingLevel) {
-                            // Todo: Check for the wrong nesting level
-                        }
+                        // if ($this->_nestingNodes[$nodeName][intval($this->_nestingLevel[$nodeName])]["level"] != $nestingLevel) {
+                        //     // Todo: Check for the wrong nesting level
+                        // }
 
                         $nestingLevel--;
                     }
