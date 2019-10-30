@@ -106,13 +106,13 @@ if (!empty($artspec)) {
                 $form->setVar("idartspec", $id);
                 $form->setVar("action", "client_artspec_save");
                 $form->setVar("online", $artspec[$id]['online']);
-                $inputbox = new cHTMLTextbox("artspectext", $artspec[$id]['artspec']);
+                $inputbox = new cHTMLTextbox("artspectext", conHtmlentities(stripslashes($artspec[$id]['artspec'])));
                 $form->appendContent($inputbox->render());
                 $form->appendContent('<input type="image" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif" alt="' . i18n('Save') . '" title="' . i18n('Save') . '">');
 
                 $list->setCell($count, 1, $form->render());
             } else {
-                $list->setCell($count, 1, $artspec[$id]['artspec']);
+                $list->setCell($count, 1, stripslashes($artspec[$id]['artspec']));
             }
 
             if ($artspec[$id]['online'] == 0) {

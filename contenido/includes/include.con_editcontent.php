@@ -35,7 +35,7 @@ $data = cSecurity::toString($_REQUEST['data']);
 
 if (($action == 20 || $action == 10) && $_REQUEST['filelist_action'] != 'store') {
     if ($data != '') {
-        $data = explode('||', substr($data, 0, -2));
+        $data = explode('||', cString::getPartOfString($data, 0, -2));
         foreach ($data as $value) {
             $value = explode('|', $value);
             if ($value[3] == '%$%EMPTY%$%') {
@@ -101,7 +101,7 @@ switch ($wysiwygeditor) {
 $jslibs = '';
 // get scripts from editor class
 $jslibs .= $oEditor->getScripts();
-if ('tinymce3' === substr($wysiwygeditor, 0, 8)
+if ('tinymce3' === cString::getPartOfString($wysiwygeditor, 0, 8)
 && true === $oEditor->getGZIPMode()) {
     // tinyMCE_GZ.init call must be placed in its own script tag
     // User defined plugins and themes should be identical in both "inits"
@@ -342,6 +342,8 @@ switch ($versioningState) {
                 );
                 $selectedArticleId = 'editable';
 
+                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+
                 // Execute cec hook
                 cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
                     'idart' => $artLangVersion->get("idart"),
@@ -510,9 +512,7 @@ if ($code == "0601") {
     $code = cString::iReplaceOnce("<head>", "<head>\n" . '<base href="' . cRegistry::getFrontendUrl() . '">', $code);
 }
 
-$bodyPosition = strpos($code, '<body>');
-
-$code = substr_replace($code, $versioningElement, $bodyPosition+6, 0);
+$code = preg_replace("/(<body[^>]*)>/i", "\${1}> \n $versioningElement", $code, 1);
 
 if ($cfg["debug"]["codeoutput"]) {
     cDebug::out(conHtmlSpecialChars($code));

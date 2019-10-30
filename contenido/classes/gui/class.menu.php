@@ -168,7 +168,9 @@ class cGuiMenu {
     /**
      *
      * @param bool $print [optional]
+     *
      * @return string
+     * @throws cInvalidArgumentException
      */
     public function render($print = true) {
         global $cfg;

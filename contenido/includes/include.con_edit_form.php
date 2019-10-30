@@ -733,7 +733,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $iAvariableSpec = 0;
     foreach ($arrArtSpecs as $id => $value) {
         if ($arrArtSpecs[$id]['online'] == 1) {
-            if (($arrArtSpecs[$id]['default'] == 1) && (strlen($tmp_artspec) == 0 || $tmp_artspec == 0)) {
+            if (($arrArtSpecs[$id]['default'] == 1) && (cString::getStringLength($tmp_artspec) == 0 || $tmp_artspec == 0)) {
                 $inputArtSortSelect->appendOptionElement(new cHTMLOptionElement($arrArtSpecs[$id]['artspec'], $id, true));
             } elseif ($id == $tmp_artspec) {
                 $inputArtSortSelect->appendOptionElement(new cHTMLOptionElement($arrArtSpecs[$id]['artspec'], $id, true));
@@ -787,6 +787,13 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $select->appendOptionElement($option[2]);
     $select->appendOptionElement($option[3]);
     $select->appendOptionElement($option[4]);
+
+    $append = cApiCecHook::executeAndReturn('Contenido.Backend.AfterArticleLink');
+    if(cString::getStringLength($append) === 0) {
+        $page->set('s', 'HOOK_AFTERARTICLELINK', '');
+    } else {
+        $page->set('s', 'HOOK_AFTERARTICLELINK', $append);
+    }
 
     $page->set('s', 'DIRECTLINK', $select->render() . '<br><br><input class="text_medium" type="text" id="linkhint" readonly="readonly"> <input id="linkhintA" type="button" value="' . i18n("open") . '" style="display: none;" onclick="window.open(document.getElementById(\'linkhint\').value);">');
 
@@ -887,7 +894,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     // Redirect - New window
     if (getEffectiveSetting("articles", "show-new-window-checkbox", "false") == "true") {
-        $page->set('s', 'CHECKBOX-NEWWINDOW', '<input type="checkbox" ' . $disabled . ' id="external_redirect" name="external_redirect" value="1" ' . $tmp_external_redirect_checked . '></td><td><label for="external_redirect">' . i18n("New window") . '</label>');
+        $page->set('s', 'CHECKBOX-NEWWINDOW', '<br><input type="checkbox" ' . $disabled . ' id="external_redirect" name="external_redirect" value="1" ' . $tmp_external_redirect_checked . '><label for="external_redirect">' . i18n("New window") . '</label>');
     } else {
         $page->set('s', 'CHECKBOX-NEWWINDOW', '&nbsp;');
     }
@@ -1391,7 +1398,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         $page->set('s', 'BUTTONIMAGE', 'but_ok.gif');
     }
 
-    if (($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
+    if (($lang_short = cString::getPartOfString(cString::toLowerCase($belang), 0, 2)) != "en") {
         $langscripts = '<script type="text/javascript" src="scripts/jquery/plugins/timepicker-' . $lang_short . '.js"></script>
                  <script type="text/javascript" src="scripts/jquery/plugins/datepicker-' . $lang_short . '.js"></script>';
         $page->set('s', 'CAL_LANG', $langscripts);

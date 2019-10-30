@@ -25,8 +25,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @param string $path
  *         Path to resolve
+ *
  * @return int
  *         Closest matching category ID (idcat)
+ * 
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function prResolvePathViaURLNames($path) {
     global $cfg, $lang, $client;
@@ -39,10 +44,11 @@ function prResolvePathViaURLNames($path) {
     $results = array();
 
     // Pre-process path
-    $path = strtolower(str_replace(' ', '', $path));
+    $path = cString::toLowerCase(str_replace(' ', '', $path));
+    $pathresolveHeapcacheEnabled = cRegistry::getConfigValue('pathresolve_heapcache');
 
     // Delete outdated entry in heapcache table, if enabled.
-    if ($cfg['pathresolve_heapcache'] == true) {
+    if ($pathresolveHeapcacheEnabled === true) {
         $oPathresolveCacheColl = new cApiPathresolveCacheCollection();
         $oPathresolveCache = $oPathresolveCacheColl->fetchLatestByPathAndLanguage($path, $lang);
         if (is_object($oPathresolveCache)) {
@@ -74,15 +80,15 @@ function prResolvePathViaURLNames($path) {
     // Compare strings using the similar_text algorithm
     $percent = 0;
     foreach ($catpath as $key => $value) {
-        $value = strtolower(str_replace(' ', '', $value));
+        $value = cString::toLowerCase(str_replace(' ', '', $value));
 
         similar_text($value, $path, $percent);
 
-        $firstpath = strpos($value, '/');
+        $firstpath = cString::findFirstPos($value, '/');
 
         if ($firstpath !== 0) {
-            $xpath = substr($value, $firstpath);
-            $ypath = substr($path, 0, strlen($path) - 1);
+            $xpath = cString::getPartOfString($value, $firstpath);
+            $ypath = cString::getPartOfString($path, 0, cString::getStringLength($path) - 1);
             if ($xpath == $ypath) {
                 $results[$key] = 100;
             } else {
@@ -98,7 +104,7 @@ function prResolvePathViaURLNames($path) {
 
     endAndLogTiming($handle);
 
-    if ($cfg['pathresolve_heapcache'] == true) {
+    if ($pathresolveHeapcacheEnabled === true) {
         $oPathresolveCacheColl = new cApiPathresolveCacheCollection();
         $oPathresolveCache = $oPathresolveCacheColl->create($path, key($results), $lang, time());
     }
@@ -117,8 +123,13 @@ function prResolvePathViaURLNames($path) {
  * @param string $path
  *         Path to resolve
  * @param string $iLangCheck
+ *
  * @return int
  *         Closest matching category ID (idcat)
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function prResolvePathViaCategoryNames($path, &$iLangCheck) {
     global $cfg, $lang, $client;
@@ -140,7 +151,7 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck) {
         $aResults[1] = $path;
     }
 
-    $aResults[1] = strtolower(preg_replace('/-/', ' ', $aResults[1]));
+    $aResults[1] = cString::toLowerCase(preg_replace('/-/', ' ', $aResults[1]));
 
     // Init to Compare, save path in array
     $aPathsToCompare = explode('/', $aResults[1]);
@@ -150,7 +161,7 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck) {
     $iLangCheck = 0;
 
     // Pre-process path
-    $path = strtolower(str_replace(' ', '', $path));
+    $path = cString::toLowerCase(str_replace(' ', '', $path));
 
     // Fetch all category names, build path strings
     // @todo change the where statement for get all languages
@@ -175,7 +186,7 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck) {
         $catlevels[$db->f('idcat')] = $db->f('level');
 
         // Init variables for take a language id
-        $aTemp = strtolower($cat_str);
+        $aTemp = cString::toLowerCase($cat_str);
         $aDBToCompare = explode('/', $aTemp);
         $iCountDB = count($aDBToCompare);
         $iCountDBFor = $iCountDB - 1;
@@ -209,13 +220,13 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck) {
     // Compare strings using the similar_text algorithm
     $percent = 0;
     foreach ($catpath as $key => $value) {
-        $value = strtolower(str_replace(' ', '', $value));
+        $value = cString::toLowerCase(str_replace(' ', '', $value));
         similar_text($value, $path, $percent);
         $results[$key] = $percent;
     }
 
     foreach ($catnames as $key => $value) {
-        $value = strtolower(str_replace(' ', '', $value));
+        $value = cString::toLowerCase(str_replace(' ', '', $value));
         similar_text($value, $path, $percent);
 
         // Apply weight
@@ -236,23 +247,27 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck) {
 /**
  * Recursive function to create an URL name location string.
  *
- * @param int $idcat
+ * @param int    $idcat
  *         ID of the starting category
  * @param string $seperator
  *         Seperation string
  * @param string $cat_str
  *         Category location string (by reference)
- * @param bool $makeLink
+ * @param bool   $makeLink
  *         create location string with links
  * @param string $linkClass
  *         stylesheet class for the links
- * @param int $firstTreeElementToUse
+ * @param int    $firstTreeElementToUse
  *         first navigation level location string should be printed out (first level = 0!!)
- * @param int $uselang
- * @param bool $final
- * @param bool $usecache
+ * @param int    $uselang
+ * @param bool   $final
+ * @param bool   $usecache
+ *
  * @return string
  *         location string
+ * 
+ * @throws cDbException
+ * @throws cException
  */
 function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink = false, $linkClass = '', $firstTreeElementToUse = 0, $uselang = 0, $final = true, $usecache = false) {
     global $cfg, $client, $cfgClient, $lang, $sess, $_URLlocationStringCache;
@@ -331,10 +346,10 @@ function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink
     if ($parentid != 0) {
         prCreateURLNameLocationString($parentid, $seperator, $cat_str, $makeLink, $linkClass, $firstTreeElementToUse, $uselang, false, $usecache);
     } else {
-        $sep_length = strlen($seperator);
-        $str_length = strlen($cat_str);
+        $sep_length = cString::getStringLength($seperator);
+        $str_length = cString::getStringLength($cat_str);
         $tmp_length = $str_length - $sep_length;
-        $cat_str = substr($cat_str, 0, $tmp_length);
+        $cat_str = cString::getPartOfString($cat_str, 0, $tmp_length);
     }
 
     if ($final == true && $usecache == true) {
@@ -348,11 +363,15 @@ function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink
 /**
  * Writes path location string cache data file.
  *
- * @global array $cfgClient
- * @param array $data
- * @param int $client
- * @param int $lang
+ * @param array  $data
+ * @param int    $client
+ * @param int    $lang
+ *
  * @return bool
+ * 
+ * @throws cInvalidArgumentException
+ * 
+ * @global array $cfgClient
  */
 function prWriteCacheFileContent($data, $client, $lang) {
     global $cfgClient;
@@ -371,10 +390,14 @@ function prWriteCacheFileContent($data, $client, $lang) {
 /**
  * Get path location string cache data file content.
  *
- * @global array $cfgClient
- * @param int $client
- * @param int $lang
+ * @param int    $client
+ * @param int    $lang
+ *
  * @return array $data
+ *               
+ * @throws cInvalidArgumentException
+ * 
+ * @global array $cfgClient
  */
 function prGetCacheFileContent($client, $lang) {
     global $cfgClient;

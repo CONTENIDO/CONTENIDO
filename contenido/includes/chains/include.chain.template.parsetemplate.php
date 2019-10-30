@@ -28,11 +28,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Does some replacements in the given template.
  * Replaces some CONTENIDO specific placeholders against their values.
  *
- * @param string $template
+ * @param string    $template
  *         Template string to preprocess
  * @param cTemplate $templateObj
  *         The current template instance
+ *
  * @return string
+ *
+ * @throws cInvalidArgumentException
  */
 function cecParseTemplate($template, cTemplate $templateObj) {
 
@@ -69,6 +72,7 @@ function cecParseTemplate($template, cTemplate $templateObj) {
     <meta http-equiv="pragma" content="no-cache">';
 
     // JavaScript configuration
+    $urlHelp = !empty($cfg['help_url']) ? $cfg['help_url'] : '#';
     $jsConfigurationAdded = false;
     $jsConfiguration = '
     <script type="text/javascript">
@@ -76,7 +80,7 @@ function cecParseTemplate($template, cTemplate $templateObj) {
         Con.sid = "' . $sessid . '";
         $.extend(Con.cfg, {
             urlBackend: "' .  $backendPath . '",
-            urlHelp: "' . $cfg['help_url'] . '",
+            urlHelp: "' . $urlHelp . '",
             belang: "' . $backendLang . '",
             frame: ' . $frameNr . '
         });
@@ -124,7 +128,7 @@ function cecParseTemplate($template, cTemplate $templateObj) {
     // in the template
     foreach ($replacements as $key => $value) {
         $placeholder = '{' . $key . '}';
-        if (!in_array($key, $templateObj->needles) && false !== strpos($template, $placeholder)) {
+        if (!in_array($key, $templateObj->needles) && false !== cString::findFirstPos($template, $placeholder)) {
             $template = str_replace($placeholder, $value, $template);
         }
     }

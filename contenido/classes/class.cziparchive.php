@@ -19,16 +19,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @author claus.schunk@4fb.de
  */
 class cZipArchive {
-
     /**
      * Read all files from given path excluding files which names start with a
-     * dot or are not valid according to CONTENIDO standards
-     * (validateFilename()).
+     * dot or are not valid according to CONTENIDO standards (validateFilename()).
      *
      * @see cFileHandler::validateFilename()
+     *
      * @param string $dirPath
+     *
      * @return array
      *         of files
+     * 
+     * @throws cInvalidArgumentException
      */
     public static function readExistingFiles($dirPath) {
 
@@ -82,11 +84,13 @@ class cZipArchive {
      * existing files.
      *
      * @param string $file
-     *         zip file
+     *                                     zip file
      * @param string $extractPath
-     *         extraction path
+     *                                     extraction path
      * @param string $extractPathUserInput [optional]
-     *         user specified extraction path
+     *                                     user specified extraction path
+     *
+     * @throws cInvalidArgumentException
      */
     public static function extractOverRide($file, $extractPath, $extractPathUserInput = NULL) {
 
@@ -108,7 +112,7 @@ class cZipArchive {
             // remove '/' for validation -> directory names
             $tmpFile = str_replace('/', '', $file);
             // extract only file with valid filename
-            if (cFileHandler::validateFilename($tmpFile, FALSE) && (substr($tmpFile, 0, 1) != '.') && (substr($tmpFile, 0, 1) != '_')) {
+            if (cFileHandler::validateFilename($tmpFile, FALSE) && (cString::getPartOfString($tmpFile, 0, 1) != '.') && (cString::getPartOfString($tmpFile, 0, 1) != '_')) {
                 $zip->extractTo($extractPath, $file);
             }
         }
@@ -120,11 +124,13 @@ class cZipArchive {
      * This function contains the functionality to extract archive.
      *
      * @param string $file
-     *         zip file
+     *                                     zip file
      * @param string $extractPath
-     *         extraction path
+     *                                     extraction path
      * @param string $extractPathUserInput [optional]
-     *         user specified extraction path
+     *                                     user specified extraction path
+     *
+     * @throws cInvalidArgumentException
      */
     public static function extract($file, $extractPath, $extractPathUserInput = NULL) {
         if (isset($extractPathUserInput)) {
@@ -133,9 +139,10 @@ class cZipArchive {
             $extractPath .= uplCreateFriendlyName($extractPathUserInput);
         }
 
-        if (file_exists($extractPath) and is_dir($extractPath)) {
+        if (file_exists($extractPath) && is_dir($extractPath)) {
             $ar = cZipArchive::readExistingFiles($extractPath);
         }
+
         $zip = new ZipArchive();
 
         // try to open archive
@@ -149,7 +156,7 @@ class cZipArchive {
             for ($i = 0; $i < $zip->numFiles; $i++) {
                 $file = $zip->getNameIndex($i);
                 $tmpFile = str_replace('/', '', $file);
-                if (cFileHandler::validateFilename($tmpFile, FALSE) && (substr($tmpFile, 0, 1) != '.') && (substr($tmpFile, 0, 1) != '_')) {
+                if (cFileHandler::validateFilename($tmpFile, FALSE) && (cString::getPartOfString($tmpFile, 0, 1) != '.') && (cString::getPartOfString($tmpFile, 0, 1) != '_')) {
                     if (!file_exists($extractPath . '/' . $file)) {
                         $zip->extractTo($extractPath, $file);
                     }
@@ -160,11 +167,12 @@ class cZipArchive {
                 $file = $zip->getNameIndex($i);
                 // remove '/' for validation -> directory names
                 $tmpFile = str_replace('/', '', $file);
-                if (cFileHandler::validateFilename($tmpFile, FALSE) && (substr($tmpFile, 0, 1) != '.') && (substr($tmpFile, 0, 1) != '_')) {
+                if (cFileHandler::validateFilename($tmpFile, FALSE) && (cString::getPartOfString($tmpFile, 0, 1) != '.') && (cString::getPartOfString($tmpFile, 0, 1) != '_')) {
                     $zip->extractTo($extractPath, $file);
                 }
             }
         }
+
         $zip->close();
     }
 

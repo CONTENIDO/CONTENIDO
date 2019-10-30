@@ -111,7 +111,6 @@ abstract class ModRewrite_ControllerAbstract {
      * This method will be invoked in constructor of ModRewrite_ControllerAbstract.
      */
     public function init() {
-
     }
 
     /**
@@ -185,7 +184,7 @@ abstract class ModRewrite_ControllerAbstract {
 
         $oTpl = new cTemplate();
         foreach ($this->_oView as $k => $v) {
-            $oTpl->set('s', strtoupper($k), $v);
+            $oTpl->set('s', cString::toUpperCase($k), $v);
         }
         $oTpl->generate($template, 0, 0);
     }

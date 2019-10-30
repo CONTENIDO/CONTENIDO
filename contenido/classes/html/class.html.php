@@ -197,8 +197,6 @@ class cHTML {
      * Sets the "alt" and "title" tags. Usually, "alt" is used
      * for accessibility and "title" for mouse overs.
      *
-     * The title attribute is not overwritten if there is already a set value for it.
-     *
      * To set the text for all browsers for mouse over, set "alt"
      * and "title". IE behaves incorrectly and shows "alt" on
      * mouse over. Mozilla browsers only show "title" as mouse over.
@@ -213,7 +211,7 @@ class cHTML {
     public function setAlt($alt, $setTitle = true) {
         $attributes = array('alt' => $alt, 'title' => $alt);
 
-        if ($setTitle === false || isset($this->_attributes['title']) === true) {
+        if ($setTitle === false) {
             unset($attributes['title']);
         }
 
@@ -279,7 +277,7 @@ class cHTML {
      *         $this for chaining
      */
     public function setEvent($event, $action) {
-        if (substr($event, 0, 2) !== 'on' && $event != 'disabled') {
+        if (cString::getPartOfString($event, 0, 2) !== 'on' && $event != 'disabled') {
             return $this->updateAttribute('on' . $event, conHtmlSpecialChars($action));
         } else {
             return $this->updateAttribute($event, conHtmlSpecialChars($action));
@@ -298,7 +296,7 @@ class cHTML {
      *         $this for chaining
      */
     public function unsetEvent($event) {
-        if (substr($event, 0, 2) !== 'on') {
+        if (cString::getPartOfString($event, 0, 2) !== 'on') {
             return $this->removeAttribute('on' . $event);
         } else {
             return $this->removeAttribute($event);
@@ -348,8 +346,8 @@ class cHTML {
      *         $this for chaining
      */
     public function appendStyleDefinition($property, $value) {
-        if (substr($value, -1) === ';') {
-            $value = substr($value, 0, strlen($value) - 1);
+        if (cString::getPartOfString($value, -1) === ';') {
+            $value = cString::getPartOfString($value, 0, cString::getStringLength($value) - 1);
         }
         $this->_styleDefinitions[$property] = $value;
 
@@ -498,7 +496,7 @@ class cHTML {
      *         $this for chaining
      */
     public function attachEventDefinition($name, $event, $code) {
-        $this->_eventDefinitions[strtolower($event)][$name] = $code;
+        $this->_eventDefinitions[cString::toLowerCase($event)][$name] = $code;
 
         return $this;
     }
@@ -514,7 +512,7 @@ class cHTML {
      *         $this for chaining
      */
     public function setAttribute($attributeName, $value = NULL) {
-        $attributeName = strtolower($attributeName);
+        $attributeName = cString::toLowerCase($attributeName);
         if (is_null($value)) {
             $value = $attributeName;
         }
@@ -549,9 +547,9 @@ class cHTML {
         $return = array();
         foreach ($attributes as $key => $value) {
             if (is_int($key)) {
-                $key = $value = strtolower($value);
+                $key = $value = cString::toLowerCase($value);
             } else {
-                $key = strtolower($key);
+                $key = cString::toLowerCase($key);
             }
 
             $return[$key] = $value;
@@ -585,7 +583,7 @@ class cHTML {
      *         NULL value or NULL if the attribute does not exist
      */
     public function getAttribute($attributeName) {
-        $attributeName = strtolower($attributeName);
+        $attributeName = cString::toLowerCase($attributeName);
 
         if (isset($this->_attributes[$attributeName])) {
             return $this->_attributes[$attributeName];
@@ -682,7 +680,7 @@ class cHTML {
         // If the style doesn't end with a semicolon, append one
         if (is_string($style)) {
             $style = trim($style);
-            if (substr($style, -1) !== ';') {
+            if (cString::getPartOfString($style, -1) !== ';') {
                 $style .= ';';
             }
         }

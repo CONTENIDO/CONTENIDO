@@ -45,8 +45,8 @@ class ExampleOptionsDatasource extends PifaExternalOptionsDatasourceInterface {
     }
 
     /**
-     *
      * @see ExternalOptionsDatasourceInterface::getOptionLabels()
+     * @return array
      */
     public function getOptionLabels() {
         if (NULL === $this->_options) {
@@ -56,8 +56,8 @@ class ExampleOptionsDatasource extends PifaExternalOptionsDatasourceInterface {
     }
 
     /**
-     *
      * @see ExternalOptionsDatasourceInterface::getOptionValues()
+     * @return array
      */
     public function getOptionValues() {
         if (NULL === $this->_options) {

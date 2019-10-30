@@ -18,17 +18,25 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.str.php');
 
-if (!(int) $client > 0) {
-    // if there is no client selected, display empty page
+// display critical error if no valid client is selected
+if ((int) $client < 1) {
     $oPage = new cGuiPage('upl_dirs_overview');
+    $oPage->displayCriticalError(i18n("No Client selected"));
     $oPage->render();
     return;
 }
 
+$appendparameters = isset($_REQUEST['appendparameters']) ? $_REQUEST['appendparameters'] : '';
+$collapse         = isset($_REQUEST['collapse']) ? $_REQUEST['collapse'] : '';
+$expand           = isset($_REQUEST['expand']) ? $_REQUEST['expand'] : '';
+
 /**
  *
  * @param TreeItem $item
+ *
  * @return string
+ *
+ * @throws cException
  */
 function getUplExpandCollapseButton($item) {
     global $sess, $frame, $area, $appendparameters;
@@ -58,12 +66,11 @@ if (!isset($path) && $sess->isRegistered('upl_last_path')) {
     $path = $upl_last_path;
 }
 
-$appendparameters = $_REQUEST['appendparameters'];
-
-if (!isset($action))
+if (!isset($action)) {
     $action = '';
+}
 
-if ($tmp_area == '') {
+if (empty($tmp_area)) {
     $tmp_area = $area; // $tmp_area used at two places for unknown reasons...
 }
 
@@ -117,8 +124,12 @@ if ($action == 'upl_delete') {
 $tpl->reset();
 
 // Show notification for error in dir name from upl_mkdir.action
-if ($errno === '0703') {
-    $tpl->set('s', 'WARNING', $notification->returnNotification('error', i18n('Directories with special characters and spaces are not allowed.')));
+if (isset($errno)) {
+    if ($errno === '0703') {
+        $tpl->set('s', 'WARNING', $notification->returnNotification('error', i18n('Directories with special characters and spaces are not allowed.')));
+    } elseif ($errno === '0704') {
+        $tpl->set('s', 'WARNING', $notification->returnNotification('error', i18n('Can not write directory.')));
+    }
 }
 
 // Uploadfiles tree on file system
@@ -151,11 +162,11 @@ foreach ($uplexpandedList as $key => $value) {
 }
 
 // Collapse and expand the tree
-if (is_string($collapse)) {
+if ($collapse) {
     $rootTreeItem->markCollapsed($collapse);
 }
 
-if (is_string($expand)) {
+if ($expand) {
     $rootTreeItem->markExpanded($expand);
 }
 
@@ -349,11 +360,11 @@ foreach ($upldbfsexpandedList as $key => $value) {
 }
 
 // Collapse and expand the tree
-if (is_string($collapse)) {
+if ($collapse) {
     $rootTreeItem->markCollapsed($collapse);
 }
 
-if (is_string($expand)) {
+if ($expand) {
     $rootTreeItem->markExpanded($expand);
 }
 

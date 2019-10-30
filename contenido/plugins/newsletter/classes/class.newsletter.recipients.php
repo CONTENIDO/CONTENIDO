@@ -19,13 +19,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Plugin
  * @subpackage Newsletter
+ * @method NewsletterRecipient createNewItem
+ * @method NewsletterRecipient next
  */
 class NewsletterRecipientCollection extends ItemCollection {
-
     /**
      * Constructor Function
      *
-     * @param none
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -36,27 +37,31 @@ class NewsletterRecipientCollection extends ItemCollection {
     /**
      * Creates a new recipient
      *
-     * @param string $sEMail Specifies the e-mail adress
-     * @param string $sName Specifies the recipient name (optional)
-     * @param int $iConfirmed Specifies, if the recipient is confirmed
-     *            (optional)
-     * @param string $sJoinID Specifies additional recipient group ids to join
-     *            (optional, e.g. 47,12,...)
-     * @param int $iMessageType Specifies the message type for the recipient (0
-     *            = text, 1 = html)
+     * @param string $sEMail       Specifies the e-mail adress
+     * @param string $sName        Specifies the recipient name (optional)
+     * @param int    $iConfirmed   Specifies, if the recipient is confirmed
+     *                             (optional)
+     * @param string $sJoinID      Specifies additional recipient group ids to join
+     *                             (optional, e.g. 47,12,...)
+     * @param int    $iMessageType Specifies the message type for the recipient (0 = text, 1 = html)
+     *
+     * @return Item
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($sEMail, $sName = "", $iConfirmed = 0, $sJoinID = "", $iMessageType = 0) {
         global $client, $lang, $auth;
 
         /* Check if the e-mail adress already exists */
-        $email = strtolower($sEMail); // e-mail always lower case
+        $email = cString::toLowerCase($sEMail); // e-mail always lower case
         $this->setWhere("idclient", $client);
         $this->setWhere("idlang", $lang);
         $this->setWhere("email", $email);
         $this->query();
 
         if ($this->next()) {
-            return $this->create($email . "_" . substr(md5(rand()), 0, 10), $sName, 0, $sJoinID, $iMessageType); // 0:
+            return $this->create($email . "_" . cString::getPartOfString(md5(rand()), 0, 10), $sName, 0, $sJoinID, $iMessageType); // 0:
                                                                                                             // Deactivate
                                                                                                             // 'confirmed'
         }
@@ -65,7 +70,7 @@ class NewsletterRecipientCollection extends ItemCollection {
         $oItem->set("idlang", $lang);
         $oItem->set("name", $sName);
         $oItem->set("email", $email);
-        $oItem->set("hash", substr(md5(rand()), 0, 17) . uniqid("")); // Generating
+        $oItem->set("hash", cString::getPartOfString(md5(rand()), 0, 17) . uniqid("")); // Generating
                                                                     // UID, 30
                                                                     // characters
         $oItem->set("confirmed", $iConfirmed);
@@ -115,6 +120,10 @@ class NewsletterRecipientCollection extends ItemCollection {
      * before deleting recipient
      *
      * @param $itemID int specifies the recipient
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function delete($itemID) {
         $oAssociations = new NewsletterRecipientGroupMemberCollection();
@@ -132,8 +141,12 @@ class NewsletterRecipientCollection extends ItemCollection {
      * a month
      *
      * @param $timeframe int Days after creation a not confirmed recipient will
-     *            be removed
+     *                   be removed
+     *
      * @return int Count of deleted recipients
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function purge($timeframe) {
         global $client, $lang;
@@ -161,16 +174,17 @@ class NewsletterRecipientCollection extends ItemCollection {
      * address; otherwise false
      *
      * @param $sEmail string e-mail
+     *
      * @return NewsletterRecipient|false recpient item if item with e-mail exists, false otherwise
+     * @throws cException
      */
     public function emailExists($sEmail) {
         global $client, $lang;
 
         $oRecipientCollection = new NewsletterRecipientCollection();
-
         $oRecipientCollection->setWhere("idclient", $client);
         $oRecipientCollection->setWhere("idlang", $lang);
-        $oRecipientCollection->setWhere("email", strtolower($sEmail));
+        $oRecipientCollection->setWhere("email", cString::toLowerCase($sEmail));
         $oRecipientCollection->query();
 
         if ($oItem = $oRecipientCollection->next()) {
@@ -183,7 +197,9 @@ class NewsletterRecipientCollection extends ItemCollection {
     /**
      * Sets a key for all recipients without key or an old key (len(key) <> 30)
      *
-     * @param none
+     * @return int
+     * @throws cDbException
+     * @throws cException
      */
     public function updateKeys() {
         $this->setWhere("LENGTH(hash)", 30, "<>");
@@ -191,7 +207,7 @@ class NewsletterRecipientCollection extends ItemCollection {
 
         $iUpdated = $this->count();
         while ($oItem = $this->next()) {
-            $oItem->set("hash", substr(md5(rand()), 0, 17) . uniqid("")); /*
+            $oItem->set("hash", cString::getPartOfString(md5(rand()), 0, 17) . uniqid("")); /*
                                                                          *
                                                                          * Generating
                                                                          * UID,
@@ -210,11 +226,13 @@ class NewsletterRecipientCollection extends ItemCollection {
  * Single Recipient Item
  */
 class NewsletterRecipient extends Item {
-
     /**
      * Constructor Function
      *
      * @param mixed $mId Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -224,6 +242,11 @@ class NewsletterRecipient extends Item {
         }
     }
 
+    /**
+     * @return bool
+     * @throws cDbException
+     * @throws cException
+     */
     public function store() {
         global $auth;
 
@@ -257,12 +280,14 @@ class NewsletterRecipient extends Item {
         return $success;
     }
 
-	/**
+    /**
      * Userdefined setter for newsletter recipients fields.
      *
      * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @param mixed  $value
+     * @param bool   $bSafe Flag to run defined inFilter on passed value
+     *
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {

@@ -19,11 +19,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @return string
  *         Message if clearing was successfull or not
+ * 
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function emptyLogFile() {
     global $cfg, $notification, $auth;
 
-    if (strpos($auth->auth["perm"], "sysadmin") === false) {
+    if (cString::findFirstPos($auth->auth["perm"], "sysadmin") === false) {
         return $notification->returnNotification("error", i18n("Can't clear error log : Access is denied!"));
     }
 
@@ -47,8 +50,11 @@ function emptyLogFile() {
  *
  * @deprecated [2015-05-21]
  *         This method is no longer supported (no replacement)
+ *             
  * @return string
  *         HTML output of phpinfo()
+ * 
+ * @throws cInvalidArgumentException
  */
 function phpInfoToHtml() {
     cDeprecated('This method is deprecated and is not needed any longer');
@@ -111,12 +117,16 @@ function isIPv4($strHostAdress) {
  *
  * @deprecated [2015-05-21]
  *         This method is no longer supported (no replacement)
+ *
  * @param string $strConUrl
  *         CONTENIDO fullhtmlPath
  * @param string $strBrowserUrl
  *         current browser string
+ *
  * @return string
  *         Status of path comparement
+ * 
+ * @throws cInvalidArgumentException
  */
 function checkPathInformation($strConUrl, $strBrowserUrl) {
     cDeprecated('This method is deprecated and is not needed any longer');
@@ -147,7 +157,7 @@ function checkPathInformation($strConUrl, $strBrowserUrl) {
     } else { // isn't
         if (isIPv4($arrBrowserUrl['host'])) { //is
             $tmpAddr = gethostbyaddr($arrBrowserUrl['host']);
-            $arrBrowserUrl['host'] = str_replace('-', '.', substr($tmpAddr, 0, strpos($tmpAddr, ".")));
+            $arrBrowserUrl['host'] = str_replace('-', '.', cString::getPartOfString($tmpAddr, 0, cString::findFirstPos($tmpAddr, ".")));
 
             if (isIPv4($arrBrowserUrl['host'])) {
                 return '3';
@@ -175,17 +185,21 @@ function checkPathInformation($strConUrl, $strBrowserUrl) {
  *
  * @deprecated [2015-05-21]
  *         This method is no longer supported (no replacement)
+ *
  * @param array $arrConUrl
  * @param array $arrBrowserUrl
- * @param bool $isIP
+ * @param bool  $isIP
+ *
  * @return bool
+ * 
+ * @throws cInvalidArgumentException
  */
 function compareUrlStrings($arrConUrl, $arrBrowserUrl, $isIP = false) {
     cDeprecated('This method is deprecated and is not needed any longer');
 
     // && $isIP == false
     // remove 'www.' if needed
-    if (strpos($arrConUrl['host'], 'www.') == 0 || strpos($arrBrowserUrl['host'], 'www.') == 0) {
+    if (cString::findFirstPos($arrConUrl['host'], 'www.') == 0 || cString::findFirstPos($arrBrowserUrl['host'], 'www.') == 0) {
         $arrConUrl['host'] = str_replace('www.', '', $arrConUrl);
         $arrBrowserUrl['host'] = str_replace('www.', '', $arrBrowserUrl);
     }

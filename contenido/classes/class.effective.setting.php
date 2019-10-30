@@ -63,7 +63,7 @@ class cEffectiveSetting {
      *
      * @var bool
      */
-    protected static $_loaded = false;
+    protected static $_loaded = array();
 
     /**
      *
@@ -73,12 +73,13 @@ class cEffectiveSetting {
 
     /**
      * Loads all client, clientlanguage an system properties into an static array.
-     *
      * The order is: System => Client => Client (language)
-     *
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     private static function _loadSettings() {
-        if (self::$_loaded == false) {
+		if (!isset(self::$_loaded[self::_getKeyPrefix()])) {
             global $contenido;
 
             $typeGroup = array();
@@ -137,7 +138,7 @@ class cEffectiveSetting {
             }
         }
 
-        self::$_loaded = true;
+        self::$_loaded[self::_getKeyPrefix()] = true;
     }
 
     /**
@@ -152,13 +153,17 @@ class cEffectiveSetting {
      *       in case of not existing or empty setting.
      *
      * @param string $type
-     *         The type of the item
+     *                        The type of the item
      * @param string $name
-     *         The name of the item
+     *                        The name of the item
      * @param string $default [optional]
-     *         default value
+     *                        default value
+     *
      * @return bool|string
      *         Setting value or false
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public static function get($type, $name, $default = '') {
         self::_loadSettings();
@@ -197,8 +202,12 @@ class cEffectiveSetting {
      *
      * @param string $type
      *         The type of the item
+     *
      * @return array
      *         Assoziative array like $arr[name] = value
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public static function getByType($type) {
         self::_loadSettings();
@@ -249,7 +258,7 @@ class cEffectiveSetting {
     public static function delete($type, $name) {
         $keySuffix = '_' . $type . '_' . $name;
         foreach (self::$_settings as $key => $value) {
-            if (strpos($key, $keySuffix) !== false) {
+            if (cString::findFirstPos($key, $keySuffix) !== false) {
                 unset(self::$_settings[$key]);
             }
         }
@@ -312,7 +321,7 @@ class cEffectiveSetting {
      * @return cApiClient
      */
     protected static function _getClientInstance() {
-        global $client;
+        $client = cRegistry::getClientId();
 
         if (!isset(self::$_client)) {
             self::$_client = new cApiClient($client);
@@ -378,6 +387,10 @@ class cEffectiveSetting {
     		}
     	}
 
+		if (cString::getStringLength($prefix) == 0) {
+			$prefix = cAuth::AUTH_UID_NOBODY;
+		}
+		
     	return $prefix;
     }
 

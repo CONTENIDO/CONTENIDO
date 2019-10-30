@@ -18,8 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Debug object to write info to a file and to show info on screen.
  * In case you cannot output directly to screen when debugging a live system,
- * this object writes
- * the info to a file located in /data/logs/debug.log.
+ * this object writes the info to a file located in /data/logs/debug.log.
  *
  * @package Core
  * @subpackage Debug
@@ -71,7 +70,10 @@ class cDebugFileAndVisAdv extends cDebugVisibleAdv {
      * Writes a line.
      *
      * @see cDebugInterface::out()
+     *
      * @param string $msg
+     *
+     * @throws cInvalidArgumentException
      */
     public function out($msg) {
         parent::out($msg);
@@ -84,13 +86,14 @@ class cDebugFileAndVisAdv extends cDebugVisibleAdv {
      * Outputs contents of passed variable in a preformatted, readable way.
      *
      * @see cDebugVisibleAdv::show()
-     * @param mixed $mVariable
-     *         The variable to be displayed.
+     * @param mixed  $mVariable
+     *                                     The variable to be displayed.
      * @param string $sVariableDescription [optional]
-     *         The variable's name or description.
-     * @param bool $bExit [optional]
-     *         If set to true, your app will die() after output of current var.
-     */
+     *                                     The variable's name or description.
+     * @param bool   $bExit                [optional]
+     *                                     If set to true, your app will die() after output of current var.
+     * @throws cInvalidArgumentException
+*/
     public function show($mVariable, $sVariableDescription = '', $bExit = false) {
         parent::show($mVariable, $sVariableDescription, $bExit);
 

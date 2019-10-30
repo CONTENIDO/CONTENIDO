@@ -39,7 +39,7 @@
     {/foreach}
 
     {* navigation *}
-    {if 0 lt $prev|cat:$pages|cat:$next|trim|strlen}
+    {if (!empty($pages) || (!empty($prev) || !empty($next)))}
     <p class="result">
         {$label.resultPage}
         &nbsp;

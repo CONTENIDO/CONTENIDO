@@ -49,6 +49,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
      * @see cDbDriverAbstract::connect()
      * @return object|resource|int|NULL
      *         value depends on used driver and is NULL in case of an error
+     * @throws cDbException
      */
     public function connect() {
         if (isset($this->_dbCfg['connection'])) {
@@ -113,8 +114,8 @@ class cDbDriverMysql extends cDbDriverAbstract {
             }
         }
 
-        $fieldList = substr($fieldList, 0, -2);
-        $valueList = substr($valueList, 0, -2);
+        $fieldList = cString::getPartOfString($fieldList, 0, -2);
+        $valueList = cString::getPartOfString($valueList, 0, -2);
 
         return sprintf('INSERT INTO `%s` (%s) VALUES (%s)', $tableName, $fieldList, $valueList);
     }
@@ -156,8 +157,8 @@ class cDbDriverMysql extends cDbDriverAbstract {
             }
         }
 
-        $updateList = substr($updateList, 0, -2);
-        $whereList = substr($whereList, 0, -5);
+        $updateList = cString::getPartOfString($updateList, 0, -2);
+        $whereList = cString::getPartOfString($whereList, 0, -5);
 
         return sprintf('UPDATE `%s` SET %s WHERE %s', $tableName, $updateList, $whereList);
     }
@@ -166,7 +167,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
      * Executes the query.
      *
      * @see cDbDriverAbstract::query()
-     * @param string $statement
+     * @param string $query
      *         The query to execute
      */
     public function query($query) {
@@ -335,13 +336,16 @@ class cDbDriverMysql extends cDbDriverAbstract {
      * Test: if (isset($result['meta']['myfield'])) { ...
      *
      * @see cDbDriverAbstract::getMetaData()
+     *
      * @param string $tableName
-     *         The table to get metadata or empty string to retrieve metadata
-     *         of all tables.
-     * @param bool $full [optional]
-     *         Flag to load full metadata.
+     *                     The table to get metadata or empty string to retrieve metadata
+     *                     of all tables.
+     * @param bool   $full [optional]
+     *                     Flag to load full metadata.
+     *
      * @return array
      *         Depends on used database and on parameter $full
+     * @throws cDbException
      */
     public function getMetaData($tableName, $full = false) {
         $res = array();

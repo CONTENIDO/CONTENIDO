@@ -114,7 +114,7 @@ if ((!$readOnly) && $action == "mod_new") {
     }
 
     $module = $modules->create(i18n("- Unnamed module -"));
-    $module->set("alias", strtolower($alias));
+    $module->set("alias", cString::toLowerCase($alias));
 
     $module->store();
     // save into the file
@@ -212,8 +212,8 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
 
     if ($sOptionDebugRows !== "never") {
         // +2: Just sanity, to have at least two more lines than the code
-        $iInputNewLines = substr_count($sInputData, "\n") + 2;
-        $iOutputNewLines = substr_count($sOutputData, "\n") + 2;
+        $iInputNewLines = cString::countSubstring($sInputData, "\n") + 2;
+        $iOutputNewLines = cString::countSubstring($sOutputData, "\n") + 2;
         // +2: Just sanity, to have at least two more lines than the code have at
         // least 15 + 2 lines (15 = code textarea lines count)
         if ($iInputNewLines < 21) {
@@ -224,8 +224,8 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         }
 
         // Calculate how many characters are needed (e.g. 2 for lines ip to 99)
-        $iInputNewLineChars = strlen($iInputNewLines);
-        $iOutputNewLineChars = strlen($iOutputNewLines);
+        $iInputNewLineChars = cString::getStringLength($iInputNewLines);
+        $iOutputNewLineChars = cString::getStringLength($iOutputNewLines);
         if ($iInputNewLineChars > $iOutputNewLineChars) {
             $iChars = $iInputNewLineChars;
         } else {
@@ -376,8 +376,8 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         }
     }
     if ($idmod != 0) {
-        $oCodeMirrorInput = new CodeMirror('input', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
-        $oCodeMirrorOutput = new CodeMirror('output', 'php', substr(strtolower($belang), 0, 2), false, $cfg, !$bInUse);
+        $oCodeMirrorInput = new CodeMirror('input', 'php', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg, !$bInUse);
+        $oCodeMirrorOutput = new CodeMirror('output', 'php', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), false, $cfg, !$bInUse);
 
         if($readOnly || $bInUse) {
             $oCodeMirrorInput->setProperty("readOnly", "true");

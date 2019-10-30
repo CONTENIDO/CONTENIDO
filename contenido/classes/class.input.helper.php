@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the the input helper classes.
  * Various derived HTML class elements especially useful
@@ -19,7 +20,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Select box with additional functions for category and article selection
+ * Select box with additional functionality for category and article selection
  *
  * @package Core
  * @subpackage Util
@@ -32,12 +33,12 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      * Creates an HTML select field (aka 'DropDown').
      *
      * @param string $sName
-     *         Name of the element
-     * @param int $iWidth [optional]
+     *         Name of the select element
+     * @param string $iWidth [optional]
      *         Width of the select element
      * @param string $sID [optional]
-     *         ID of the element
-     * @param string $bDisabled [optional]
+     *         ID of the select element
+     * @param bool $bDisabled [optional]
      *         Item disabled flag (non-empty to set disabled)
      * @param int $iTabIndex [optional]
      *         Tab index for form elements
@@ -49,41 +50,52 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
     }
 
     /**
-     * Function addArticles.
-     * Adds articles to select box values.
+     * Adds articles to select options.
      *
-     * @param int $iIDCat
+     * @param int    $iIDCat
      *         idcat of the category to be listed
-     * @param bool $bColored
+     * @param bool   $bColored
      *         Add color information to option elements
-     * @param bool $bArtOnline
+     * @param bool   $bArtOnline
      *         If true, only online articles will be added
      * @param string $sSpaces
      *         Just some '&nbsp;' to show data hierarchically
      *         (used in conjunction with addCategories)
+     *
      * @return int
      *         Number of items added
+     * 
+     * @throws cDbException
      */
     public function addArticles($iIDCat, $bColored = false, $bArtOnline = true, $sSpaces = '') {
         global $cfg, $lang;
 
-        $oDB = cRegistry::getDb();
-
         if (is_numeric($iIDCat) && $iIDCat > 0) {
-            $sql = "SELECT al.title AS title, al.idartlang AS idartlang, ca.idcat AS idcat,
-                        ca.idcatart AS idcatart, ca.is_start AS isstart, al.online AS online,
-                        cl.startidartlang AS idstartartlang
-                    FROM " . $cfg["tab"]["art_lang"] . " AS al, " . $cfg["tab"]["cat_art"] . " AS ca,
-                        " . $cfg["tab"]["cat_lang"] . " AS cl
-                    WHERE ca.idcat = '" . cSecurity::toInteger($iIDCat) . "' AND cl.idcat = ca.idcat
-                        AND cl.idlang = al.idlang AND ";
+
+            $sql = "SELECT al.title AS title
+                        , al.idartlang AS idartlang
+                        , ca.idcat AS idcat
+                        , ca.idcatart AS idcatart
+                        , ca.is_start AS isstart
+                        , al.online AS online
+                        , cl.startidartlang AS idstartartlang
+                    FROM " . $cfg["tab"]["art_lang"] . " AS al
+                        , " . $cfg["tab"]["cat_art"] . " AS ca
+                        , " . $cfg["tab"]["cat_lang"] . " AS cl
+                    WHERE ca.idcat = '" . cSecurity::toInteger($iIDCat) . "'
+                        AND cl.idcat = ca.idcat
+                        AND cl.idlang = al.idlang
+                        ";
 
             if ($bArtOnline) {
-                $sql .= "al.online = 1 AND ";
+                $sql .= " AND al.online = 1";
             }
 
-            $sql .= "al.idart = ca.idart AND al.idlang = " . (int) $lang . " ORDER BY al.title";
+            $sql .= " AND al.idart = ca.idart
+                AND al.idlang = " . (int) $lang . "
+                ORDER BY al.title";
 
+            $oDB = cRegistry::getDb();
             $oDB->query($sql);
 
             $iCount = $oDB->numRows();
@@ -93,7 +105,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
                 $iCounter = count($this->_options);
                 while ($oDB->nextRecord()) {
                     // Generate new option element
-                    $oOption = new cHTMLOptionElement($sSpaces . '&nbsp;&nbsp;&nbsp;' . substr($oDB->f('title'), 0, 32), $oDB->f('idcatart'));
+                    $oOption = new cHTMLOptionElement($sSpaces . '&nbsp;&nbsp;&nbsp;' . cString::getPartOfString($oDB->f('title'), 0, 32), $oDB->f('idcatart'));
 
                     if ($bColored) {
                         if ($oDB->f('idstartartlang') == $oDB->f('idartlang')) {
@@ -122,14 +134,13 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
     }
 
     /**
-     * Function addCategories.
-     * Adds category elements (optionally including articles) to select box
-     * values.
-     * Note: Using 'with articles' adds the articles also - but the categories
-     * will get a negative value!
-     * There is no way to distinguish between a category id and an article id...
+     * Adds categories (optionally including articles) as options to select box.
      *
-     * @param int $iMaxLevel
+     * Note: Using 'with articles' also adds articles - but the categories
+     * will get negative values cause otherwise there is no way to distinguish
+     * between a category id and an article id.
+     *
+     * @param int  $iMaxLevel
      *         Max. level shown (to be exact: except this level)
      * @param bool $bColored
      *         Add color information to option elements
@@ -141,22 +152,36 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      *         Add also articles per category
      * @param bool $bArtOnline
      *         If true, show only online articles
+     * 
      * @return int
      *         Number of items added
+     * 
+     * @throws cDbException
      */
     public function addCategories($iMaxLevel = 0, $bColored = false, $bCatVisible = true, $bCatPublic = true, $bWithArt = false, $bArtOnline = true) {
         global $cfg, $client, $lang;
 
-        $oDB = cRegistry::getDb();
-
-        $sql = "SELECT c.idcat AS idcat, cl.name AS name, cl.visible AS visible, cl.public AS public, ct.level AS level
-                FROM " . $cfg["tab"]["cat"] . " AS c, " . $cfg["tab"]["cat_lang"] . " AS cl, " . $cfg["tab"]["cat_tree"] . " AS ct
-                WHERE c.idclient = " . (int) $client . " AND cl.idlang = " . (int) $lang . " AND cl.idcat = c.idcat AND ct.idcat = c.idcat ";
+        $sql = "SELECT
+                    c.idcat
+                    , cl.name
+                    , cl.visible
+                    , cl.public
+                    , ct.level
+                FROM
+                    " . $cfg["tab"]["cat"] . " AS c
+                    , " . $cfg["tab"]["cat_lang"] . " AS cl
+                    , " . $cfg["tab"]["cat_tree"] . " AS ct
+                WHERE
+                    c.idclient = " . (int) $client . "
+                    AND cl.idlang = " . (int) $lang . "
+                    AND cl.idcat = c.idcat
+                    AND ct.idcat = c.idcat";
         if ($iMaxLevel > 0) {
-            $sql .= "AND ct.level < " . (int) $iMaxLevel . " ";
+            $sql .= " AND ct.level < " . (int) $iMaxLevel;
         }
-        $sql .= "ORDER BY ct.idtree";
+        $sql .= " ORDER BY ct.idtree";
 
+        $oDB = cRegistry::getDb();
         $oDB->query($sql);
 
         $iCount = $oDB->numRows();
@@ -166,7 +191,6 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
             $iCounter = count($this->_options);
             while ($oDB->nextRecord()) {
                 $sSpaces = '';
-                $sStyle = '';
                 $iID = $oDB->f('idcat');
 
                 for ($i = 0; $i < $oDB->f('level'); $i++) {
@@ -203,6 +227,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
                 $iCounter = count($this->_options);
             }
         }
+
         return $iCount;
     }
 
@@ -210,32 +235,45 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      * Function addTypesFromArt.
      * Adds types and type ids which are available for the specified article
      *
-     * @param int $iIDCatArt
+     * @param int    $iIDCatArt
      *         Article id
      * @param string $sTypeRange
      *         Comma separated list of CONTENIDO type ids
      *         which may be in the resulting list (e.g. '1', '17', '28')
+     * 
      * @return int
      *         Number of items added
+     * 
+     * @throws cDbException
      */
     public function addTypesFromArt($iIDCatArt, $sTypeRange = '') {
         global $cfg, $lang;
 
-        $oDB = cRegistry::getDb();
-
         if (is_numeric($iIDCatArt) && $iIDCatArt > 0) {
-            $sql = "SELECT t.typeid AS typeid, t.idtype AS idtype, t.type AS type, t.description AS description, t.value AS value
-                    FROM " . $cfg["tab"]["content"] . " AS t, " . $cfg["tab"]["art_lang"] . " AS al,
-                         " . $cfg["tab"]["cat_art"] . " AS ca, " . $cfg["tab"]["type"] . " AS t
-                    WHERE t.idtype = t.idtype AND t.idartlang = al.idartlang AND al.idart = ca.idart
-                        AND al.idlang = " . (int) $lang . " AND ca.idcatart = " . (int) $iIDCatArt . " ";
+            $oDB = cRegistry::getDb();
 
+            $sql = "SELECT
+                        t.typeid AS typeid
+                        , t.idtype AS idtype
+                        , t.type AS type
+                        , t.description AS description
+                        , t.value AS value
+                    FROM " . $cfg["tab"]["content"] . " AS t
+                        , " . $cfg["tab"]["art_lang"] . " AS al
+                        , " . $cfg["tab"]["cat_art"] . " AS ca
+                        , " . $cfg["tab"]["type"] . " AS t
+                    WHERE
+                        t.idtype = t.idtype
+                        AND t.idartlang = al.idartlang
+                        AND al.idart = ca.idart
+                        AND al.idlang = " . (int) $lang . "
+                        AND ca.idcatart = " . (int) $iIDCatArt;
             if ($sTypeRange != "") {
-                $sql .= "AND t.idtype IN (" . $oDB->escape($sTypeRange) . ") ";
+                $sql .= " AND t.idtype IN (" . $oDB->escape($sTypeRange) . ")";
             }
+            $sql .= " ORDER BY t.idtype, t.typeid";
 
-            $sql .= "ORDER BY t.idtype, t.typeid";
-
+            $oDB = cRegistry::getDb();
             $oDB->query($sql);
 
             $iCount = $oDB->numRows();
@@ -246,7 +284,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
                     $sTypeIdentifier = "tblData.idtype = '" . $oDB->f('idtype') . "' AND tblData.typeid = '" . $oDB->f('typeid') . "'";
 
                     // Generate new option element
-                    $oOption = new cHTMLOptionElement($oDB->f('type') . "[" . $oDB->f('typeid') . "]: " . substr(strip_tags($oDB->f("value")), 0, 50), $sTypeIdentifier);
+                    $oOption = new cHTMLOptionElement($oDB->f('type') . "[" . $oDB->f('typeid') . "]: " . cString::getPartOfString(strip_tags($oDB->f("value")), 0, 50), $sTypeIdentifier);
 
                     // Add option element to the list
                     $this->addOptionElement($sTypeIdentifier, $oOption);
@@ -257,30 +295,6 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
             return false;
         }
     }
-
-    /**
-     * Selects specified elements as selected
-     *
-     * @param array $aElements
-     *         Array with "values" of the cHTMLOptionElement to set
-     * @return cHTMLSelectElement
-     *         $this for chaining
-     */
-    public function setSelected($aElements) {
-        if (is_array($this->_options) && is_array($aElements)) {
-            foreach ($this->_options as $sKey => $oOption) {
-                if (in_array($oOption->getAttribute("value"), $aElements)) {
-                    $oOption->setSelected(true);
-                    $this->_options[$sKey] = $oOption;
-                } else {
-                    $oOption->setSelected(false);
-                    $this->_options[$sKey] = $oOption;
-                }
-            }
-        }
-        return $this;
-    }
-
 }
 
 /**
@@ -289,151 +303,121 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
  * @package Core
  * @subpackage Util
  */
-class UI_Config_Table {
-
+class UI_Config_Table
+{
     /**
-     *
      * @var string
      */
-    protected $_TplCellCode = '';
+    protected $_tplCellCode = '';
 
     /**
-     *
      * @var string
      */
-    protected $_TplTableFile = '';
+    protected $_tplTableFile = '';
 
     /**
-     *
      * @var string
      */
-    protected $_Width = '';
+    protected $_width = '';
 
     /**
-     *
      * @var int
      */
-    protected $_Border = 0;
+    protected $_border = 0;
 
     /**
-     *
      * @var string
      */
-    protected $_BorderColor = '';
+    protected $_borderColor = '';
 
     /**
-     *
      * @var string
      */
-    protected $_SolidBorder = '';
+    protected $_solidBorder = '';
 
     /**
-     *
      * @var int
      */
-    protected $_Padding = 0;
+    protected $_padding = 0;
 
     /**
-     *
      * @var array
      */
-    protected $_Cells = array();
+    protected $_cells = [];
 
     /**
-     *
      * @var array
      */
-    protected $_CellAlignment = array();
+    protected $_cellAlignment = [];
 
     /**
-     *
      * @var array
      */
-    protected $_CellVAlignment = array();
+    protected $_cellVAlignment = [];
 
     /**
-     *
-     * @var unknown_type
+     * @var string
      */
-    protected $_CellColSpan;
+    protected $_cellColSpan;
 
     /**
-     *
      * @var array
      */
-    protected $_CellClass = array();
+    protected $_cellClass = [];
 
     /**
-     *
-     * @var unknown_type
+     * @var string
      */
-    protected $_RowBgColor;
+    protected $_rowBgColor;
 
     /**
-     *
-     * @var unknown_type
+     * @var string
      */
-    protected $_RowExtra;
+    protected $_rowExtra;
 
     /**
-     *
      * @var bool
      */
-    protected $_AddMultiSelJS = null;
+    protected $_addMultiSelJS = false;
 
     /**
-     *
      * @var string
      */
-    protected $_ColorLight = '';
+    protected $_colorLight = '';
 
     /**
-     *
      * @var string
      */
-    protected $_ColorDark = '';
+    protected $_colorDark = '';
 
     /**
      * Constructor to create an instance of this class.
      */
-    public function __construct() {
-        $cfg = cRegistry::getConfig();
+    public function __construct()
+    {
+        $cfg         = cRegistry::getConfig();
         $backendPath = cRegistry::getBackendPath();
 
-        $this->_Padding = 2;
-        $this->_Border = 0;
-        $this->_TplCellCode = '        <td align="{ALIGN}" valign="{VALIGN}" class="{CLASS}" colspan="{COLSPAN}" style="{EXTRA}white-space:nowrap;" nowrap="nowrap">{CONTENT}</td>' . "\n";
-        $this->_TplTableFile = $backendPath . $cfg['path']['templates'] . $cfg['templates']['input_helper'];
-        $this->_TplCellCode =  $backendPath . $cfg['path']['templates'] . $cfg['templates']['input_helper_row'];
+        $this->_padding      = 2;
+        $this->_border       = 0;
+        $this->_tplTableFile = $backendPath . $cfg['path']['templates'] . $cfg['templates']['input_helper'];
+        $this->_tplCellCode  = $backendPath . $cfg['path']['templates'] . $cfg['templates']['input_helper_row'];
     }
 
     /**
-     * Create a config table instance.
-     * Old constructor
-     *
-     * @deprecated [2016-02-11]
-     *              This method is deprecated and is not needed any longer.
-     *              Please use __construct() as constructor function.
-     */
-    public function UI_Config_Table() {
-        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
-        return $this->__construct();
-    }
-
-    /**
-     *
      * @param string $code
      */
-    public function setCellTemplate($code) {
-        $this->_TplCellCode = $code;
+    public function setCellTemplate($code)
+    {
+        $this->_tplCellCode = $code;
     }
 
     /**
-     *
      * @param string $path
      */
-    public function setTableTemplateFile($path) {
-        $this->_TplTableFile = $path;
+    public function setTableTemplateFile($path)
+    {
+        $this->_tplTableFile = $path;
     }
 
     /**
@@ -443,55 +427,68 @@ class UI_Config_Table {
      * @param string $cell
      * @param string $content
      */
-    public function setCell($row, $cell, $content) {
-        $this->_Cells[$row][$cell] = $content;
-        $this->_CellAlignment[$row][$cell] = "";
+    public function setCell($row, $cell, $content)
+    {
+        $this->_cells[$row][$cell]         = $content;
+        $this->_cellAlignment[$row][$cell] = "";
     }
 
     /**
      * Set method for cell alignment
      *
-     * @param string $row
-     * @param string $cell
-     * @param unknown_type $alignment
+     * @param string       $row
+     * @param string       $cell
+     * @param string $alignment
      */
-    protected function setCellAlignment($row, $cell, $alignment) {
-        $this->_CellAlignment[$row][$cell] = $alignment;
+    protected function setCellAlignment($row, $cell, $alignment)
+    {
+        $this->_cellAlignment[$row][$cell] = $alignment;
     }
 
     /**
      * Set method for cell vertical alignment
      *
-     * @param string $row
-     * @param string $cell
-     * @param unknown_type $alignment
+     * @param string       $row
+     * @param string       $cell
+     * @param string $alignment
      */
-    public function setCellVAlignment($row, $cell, $alignment) {
-        $this->_CellVAlignment[$row][$cell] = $alignment;
+    public function setCellVAlignment($row, $cell, $alignment)
+    {
+        $this->_cellVAlignment[$row][$cell] = $alignment;
     }
 
     /**
      * Set method for cell class
      *
-     * @param string $row
-     * @param string $cell
-     * @param unknown_type $class
+     * @param string       $row
+     * @param string       $cell
+     * @param string $class
      */
-    public function setCellClass($row, $cell, $class) {
-        $this->_CellClass[$row][$cell] = $class;
+    public function setCellClass($row, $cell, $class)
+    {
+        $this->_cellClass[$row][$cell] = $class;
+    }
+
+    /**
+     */
+    public function addMultiSelJS()
+    {
+        $this->_addMultiSelJS = true;
     }
 
     /**
      * Add inline javascript
      *
+     * @internal Trick: To save multiple selections in <select>-Element,
+     * add some JS which saves the selection, comma separated
+     * in a hidden input field on change.
+     * Try ... catch prevents error messages, if function is added
+     * more than once if (!fncUpdateSel) in JS has not worked ...
+     *
      * @return string
      */
-    protected function _addMultiSelJS() {
-        // Trick: To save multiple selections in <select>-Element,
-        // add some JS which saves the selection, comma separated
-        // in a hidden input field on change.
-        // Try ... catch prevents error messages, if function is added
-        // more than once if (!fncUpdateSel) in JS has not worked ...
+    protected function _getMultiSelJS()
+    {
         $script = '
 <script type="text/javascript"><!--
 try {
@@ -500,9 +497,9 @@ try {
         var oSelectBox = document.getElementsByName(selectBox)[0];
         var oStorage   = document.getElementsByName(storage)[0];
         if (oSelectBox && oStorage) {
-            for (i = 0; i < oSelectBox.length; i++) {
-                if (oSelectBox.options[i].selected == true) {
-                    if (sSelection != "") {
+            for (var i = 0; i < oSelectBox.length; i++) {
+                if (oSelectBox.options[i].selected === true) {
+                    if (sSelection !== "") {
                         sSelection = sSelection + ",";
                     }
                     sSelection = sSelection + oSelectBox.options[i].value;
@@ -522,22 +519,23 @@ try {
      * Rendering function
      *
      * @param bool $print [optional]
-     * @return string|void
+     *
+     * @return string|null
      *         Complete template string or nothing
+     *
+     * @throws cInvalidArgumentException
      */
-    public function render($print = false) {
-        $table = new cTemplate();
-        $table->reset();
+    public function render($print = false)
+    {
+        $template = new cTemplate();
+        $template->reset();
 
         $ColCount = 0;
-        $dark = false;
-        $BgColor = "";
-        $MultiSelJSAdded = false;
-        if (is_array($this->_Cells)) {
-            foreach ($this->_Cells as $row => $cells) {
+        if (is_array($this->_cells)) {
+            foreach ($this->_cells as $row => $cells) {
                 $ColCount++;
                 // $dark = !$dark;
-                $line = '';
+                $line  = '';
                 $count = 0;
 
                 foreach ($cells as $cell => $data) {
@@ -545,46 +543,48 @@ try {
                     $tplCell = new cTemplate();
                     $tplCell->reset();
 
-                    if ($this->_CellClass[$row][$cell] != '') {
-                        $tplCell->set('s', 'CLASS', $this->_CellClass[$row][$cell]);
+                    if ($this->_cellClass[$row][$cell] != '') {
+                        $tplCell->set('s', 'CLASS', $this->_cellClass[$row][$cell]);
                     } else {
                         $tplCell->set('s', 'CLASS', '');
                     }
 
-                    if ($this->_CellAlignment[$row][$cell] != '') {
-                        $tplCell->set('s', 'ALIGN', $this->_CellAlignment[$row][$cell]);
+                    if ($this->_cellAlignment[$row][$cell] != '') {
+                        $tplCell->set('s', 'ALIGN', $this->_cellAlignment[$row][$cell]);
                     } else {
                         $tplCell->set('s', 'ALIGN', 'left');
                     }
 
-                    if ($this->_CellVAlignment[$row][$cell] != '') {
-                        $tplCell->set('s', 'VALIGN', $this->_CellAlignment[$row][$cell]);
+                    if ($this->_cellVAlignment[$row][$cell] != '') {
+                        $tplCell->set('s', 'VALIGN', $this->_cellAlignment[$row][$cell]);
                     } else {
                         $tplCell->set('s', 'VALIGN', 'top');
                     }
 
-                    // Multi selection javascript
-                    if ($this->_AddMultiSelJS) {
-                        $data = $this->_addMultiSelJS() . $data;
-                        $this->_AddMultiSelJS = false;
+                    // add multi selection javascript
+                    if ($this->_addMultiSelJS) {
+                        $data = $this->_getMultiSelJS() . $data;
                     }
 
                     $tplCell->set('s', 'CONTENT', $data);
-                    $line .= $tplCell->generate($this->_TplCellCode, true, false);
+                    $line .= $tplCell->generate($this->_tplCellCode, true, false);
+
+                    error_log($line);
                 }
 
                 // Row
-                $table->set('d', 'ROWS', $line);
-                $table->next();
+                $template->set('d', 'ROWS', $line);
+                $template->next();
             }
         }
-        $rendered = $table->generate($this->_TplTableFile, true, false);
+        $rendered = $template->generate($this->_tplTableFile, true, false);
 
         if ($print == true) {
             echo $rendered;
+
+            return null;
         } else {
             return $rendered;
         }
     }
-
 }

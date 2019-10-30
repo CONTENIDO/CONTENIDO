@@ -35,9 +35,11 @@ class cApiPathresolveCacheHelper {
      *
      * @param array $cfg
      *         Global CONTENIDO config array
+     *
+     * @throws cDbException
      */
     public static function setup($cfg) {
-        if (true === $cfg['pathresolve_heapcache'] && false === self::$_tableCreated) {
+        if (isset($cfg['pathresolve_heapcache']) && true === $cfg['pathresolve_heapcache'] && false === self::$_tableCreated) {
             $db = cRegistry::getDb();
             $tableName = $cfg['sql']['sqlprefix'] . '_pathresolve_cache';
 
@@ -72,13 +74,15 @@ class cApiPathresolveCacheHelper {
  * @subpackage GenericDB_Model
  */
 class cApiPathresolveCacheCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
-        cApiPathresolveCacheHelper::setup($cfg['sql']['sqlprefix'] . '_pathresolve_cache');
+        cApiPathresolveCacheHelper::setup($cfg);
         parent::__construct($cfg['sql']['sqlprefix'] . '_pathresolve_cache', 'idpathresolvecache');
         $this->_setItemClass('cApiPathresolveCache');
     }
@@ -87,10 +91,13 @@ class cApiPathresolveCacheCollection extends ItemCollection {
      * Creates a pathresolve cache entry.
      *
      * @param string $path
-     * @param int $idcat
-     * @param int $idlang
+     * @param int    $idcat
+     * @param int    $idlang
      * @param string $lastcached [optional]
      * @return cApiPathresolveCache
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($path, $idcat, $idlang, $lastcached = '') {
         $oItem = $this->createNewItem();
@@ -112,8 +119,10 @@ class cApiPathresolveCacheCollection extends ItemCollection {
      * Returns a last cached entry by path and language.
      *
      * @param string $path
-     * @param int $idlang
+     * @param int    $idlang
      * @return cApiPathresolveCache|NULL
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchLatestByPathAndLanguage($path, $idlang) {
         $this->select("path LIKE '" . $this->db->escape($path) . "' AND idlang=" . (int) $idlang, '', 'lastcached DESC', '1');
@@ -125,6 +134,10 @@ class cApiPathresolveCacheCollection extends ItemCollection {
      *
      * @param int $idcat
      * @param int $idlang
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function deleteByCategoryAndLanguage($idcat, $idlang) {
         $this->select('idcat=' . (int) $idcat . ' AND idlang=' . (int) $idlang);
@@ -141,17 +154,20 @@ class cApiPathresolveCacheCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiPathresolveCache extends Item {
-
+class cApiPathresolveCache extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *                   
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;
-        cApiPathresolveCacheHelper::setup($cfg['sql']['sqlprefix'] . '_pathresolve_cache');
+        cApiPathresolveCacheHelper::setup($cfg);
         parent::__construct($cfg['sql']['sqlprefix'] . '_pathresolve_cache', 'idpathresolvecache');
         $this->setFilters(array(), array());
         if ($mId !== false) {

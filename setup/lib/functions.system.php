@@ -71,6 +71,7 @@ function updateSystemProperties($db, $table) {
 
     $aStandardvalues = array(
         array('type' => 'pw_request', 'name' => 'enable', 'value' => 'true'),
+        array('type' => 'system', 'name' => 'mail_transport', 'value' => 'smtp'),
         array('type' => 'system', 'name' => 'mail_sender_name', 'value' => 'CONTENIDO Backend'),
         array('type' => 'system', 'name' => 'mail_sender', 'value' => 'info@contenido.org'),
         array('type' => 'system', 'name' => 'mail_host', 'value' => 'localhost'),
@@ -88,7 +89,8 @@ function updateSystemProperties($db, $table) {
         array('type' => 'generator', 'name' => 'xhtml', 'value' => 'true'),
         array('type' => 'generator', 'name' => 'basehref', 'value' => 'true'),
     	array('type' => 'debug', 'name' => 'module_translation_message', 'value' => 'true'),
-    	array('type' => 'debug', 'name' => 'debug_for_plugins', 'value' => 'true')
+    	array('type' => 'debug', 'name' => 'debug_for_plugins', 'value' => 'true'),
+        array('type' => 'stats', 'name' => 'tracking', 'value' => 'disabled')
     );
 
     foreach ($aStandardvalues as $aData) {
@@ -221,8 +223,8 @@ function updateClientPath($db, $table, $idclient, $frontendpath, $htmlpath) {
  * @return string
  */
 function stripLastSlash($sInput) {
-    if (substr($sInput, strlen($sInput) - 1, 1) == "/") {
-        $sInput = substr($sInput, 0, strlen($sInput) - 1);
+    if (cString::getPartOfString($sInput, cString::getStringLength($sInput) - 1, 1) == "/") {
+        $sInput = cString::getPartOfString($sInput, 0, cString::getStringLength($sInput) - 1);
     }
 
     return $sInput;
@@ -237,7 +239,7 @@ function stripLastSlash($sInput) {
 function getSystemDirectories($bOriginalPath = false) {
     $root_path = stripLastSlash(CON_FRONTEND_PATH);
 
-    $root_http_path = dirname(dirname($_SERVER["PHP_SELF"]));
+    $root_http_path = dirname(dirname($_SERVER["REQUEST_URI"]));
     $root_http_path = str_replace("\\", "/", $root_http_path);
 
     $port = "";
@@ -253,8 +255,8 @@ function getSystemDirectories($bOriginalPath = false) {
 
     $root_http_path = $protocol . $_SERVER["SERVER_NAME"] . $port . $root_http_path;
 
-    if (substr($root_http_path, strlen($root_http_path) - 1, 1) == "/") {
-        $root_http_path = substr($root_http_path, 0, strlen($root_http_path) - 1);
+    if (cString::getPartOfString($root_http_path, cString::getStringLength($root_http_path) - 1, 1) == "/") {
+        $root_http_path = cString::getPartOfString($root_http_path, 0, cString::getStringLength($root_http_path) - 1);
     }
 
     if ($bOriginalPath == true) {
@@ -283,8 +285,8 @@ function getSystemDirectories($bOriginalPath = false) {
  * @return int
  */
 function findSimilarText($string1, $string2) {
-    for ($i = 0; $i < strlen($string1); $i++) {
-        if (substr($string1, 0, $i) != substr($string2, 0, $i)) {
+    for ($i = 0; $i < cString::getStringLength($string1); $i++) {
+        if (cString::getPartOfString($string1, 0, $i) != cString::getPartOfString($string2, 0, $i)) {
             return $i - 1;
         }
     }

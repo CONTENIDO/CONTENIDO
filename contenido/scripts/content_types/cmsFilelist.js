@@ -87,7 +87,7 @@
     cContentTypeFilelist.prototype.loadExternalFiles = function() {
         // call the function of the parent so that all general files are included
         Con.cContentTypeAbstractTabbed.prototype.loadExternalFiles.call(this);
-        Con.Loader.get(this.pathBackend + 'styles/content_types/cms_filelist.css');
+        Con.Loader.get([this.pathBackend + 'styles/content_types/cms_filelist.css']);
     };
 
     /**

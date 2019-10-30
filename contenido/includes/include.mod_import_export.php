@@ -64,7 +64,7 @@ if ($action == "mod_importexport_module") {
             $modules = new cApiModuleCollection();
 
             if (cFileHandler::exists($_FILES["upload"]["tmp_name"])) {
-                $modulName = substr($_FILES['upload']['name'], 0, -4);
+                $modulName = cString::getPartOfString($_FILES['upload']['name'], 0, -4);
 
                 $module = $modules->create($modulName);
                 if (!$module->importModuleFromXML($_FILES["upload"]["tmp_name"])) {

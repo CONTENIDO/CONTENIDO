@@ -60,8 +60,9 @@ class PimPluginArchiveExtractor {
     /**
      * Constructor of ArchiveExtractor, load the file list
      *
-     * @param $source string path to the temp directory
-     * @param $filename string name of zip archive
+     * @param string $source path to the temp directory
+     * @param string $filename name of zip archive
+     *
      * @throws cException if the source file does not exists
      */
     public function __construct($source, $filename) {
@@ -94,14 +95,14 @@ class PimPluginArchiveExtractor {
     /**
      * Sets the path where the extractor extracts the archive files
      *
-     * @param $destination string
-     * @throws cException if the destination path can not set (directory is not
-     *         writable)
+     * @param string $destination string
+     *
+     * @throws cException if the destination path can not set (directory is not writable)
      * @throws cException if the defined destination already exists
      */
     public function setDestinationPath($destination) {
         if (!is_dir($destination)) {
-            $makeDirectory = mkdir($destination, 0777);
+            $makeDirectory = mkdir($destination, cDirHandler::getDefaultPermissions());
             if ($makeDirectory != true) {
                 throw new cException('Can not set destination path: directoy is not writable');
             }
@@ -128,11 +129,10 @@ class PimPluginArchiveExtractor {
      * Extracts a specific file from archive and return its content to use it in
      * a variable
      *
-     * @param $filename string
-     * @param $content bool [optional] whether to return the content or just the
+     * @param string $filename
+     * @param bool $content [optional] whether to return the content or just the
      *            dir and filename of the extracted file
-     * @return string content of extracted file or dir and filename of extracted
-     *         File
+     * @return string content of extracted file or dir and filename of extracted File
      */
     public function extractArchiveFileToVariable($filename, $content = true) {
         $filename = (string) $filename;
@@ -148,6 +148,8 @@ class PimPluginArchiveExtractor {
     /**
      * Destory temporary plugin files (plugin.xml, plugin_install.sql and files
      * at CONTENIDO temp dir)
+     *
+     * @throws cInvalidArgumentException
      */
     public function destroyTempFiles() {
 

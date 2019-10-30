@@ -149,7 +149,7 @@ class cHttpRequestCurl extends cHttpRequest {
             foreach ($this->getArray as $key => $value) {
                 $this->url .= urlencode($key) . '=' . urlencode($value) . '&';
             }
-            $this->url = substr($this->url, 0, strlen($this->url) - 1);
+            $this->url = cString::getPartOfString($this->url, 0, cString::getStringLength($this->url) - 1);
         }
         $this->setOpt(CURLOPT_URL, $this->url);
     }
@@ -201,11 +201,11 @@ class cHttpRequestCurl extends cHttpRequest {
 
         if ($return) {
             if (!$returnHeaders) {
-                $string = substr(cString::strstr($string, "\r\n\r\n"), strlen("\r\n\r\n"));
+                $string = cString::getPartOfString(cString::strstr($string, "\r\n\r\n"), cString::getStringLength("\r\n\r\n"));
             }
             return $string;
         } else {
-            return strpos(cString::strstr($string, "\r\n", true), '200') !== false || strpos(cString::strstr($string, "\r\n", true), '100') !== false;
+            return cString::findFirstPos(cString::strstr($string, "\r\n", true), '200') !== false || cString::findFirstPos(cString::strstr($string, "\r\n", true), '100') !== false;
         }
     }
 

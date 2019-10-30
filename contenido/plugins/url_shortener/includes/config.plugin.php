@@ -49,3 +49,5 @@ $cecRegistry->addChainFunction('Contenido.Backend.ConMetaEditFormAdditionalRows'
 $cecRegistry->addChainFunction('Contenido.Action.con_meta_saveart.AfterCall', 'piUsConSaveArtAfter');
 // hook as soon as possible, so that short URLs can be resolved early
 $cecRegistry->addChainFunction('Contenido.Frontend.AfterLoadPlugins', 'piUsAfterLoadPlugins');
+// delete short url entries if you delete article
+$cecRegistry->addChainFunction('Contenido.Action.con_deleteart.AfterCall', 'piUseConDeleteArtAfter');

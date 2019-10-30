@@ -18,11 +18,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Plugin
  * @subpackage Workflow
+ * @method WorkflowArtAllocation createNewItem
+ * @method WorkflowArtAllocation next
  */
 class WorkflowArtAllocations extends ItemCollection {
-
     /**
      * Constructor Function
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -30,6 +33,14 @@ class WorkflowArtAllocations extends ItemCollection {
         $this->_setItemClass("WorkflowArtAllocation");
     }
 
+    /**
+     * @param $idartlang
+     *
+     * @return bool|Item
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     */
     public function create($idartlang) {
         global $cfg;
 
@@ -78,6 +89,11 @@ class WorkflowArtAllocation extends Item {
         parent::__construct($cfg["tab"]["workflow_art_allocation"], "idartallocation");
     }
 
+    /**
+     * @return bool|WorkflowItem
+     * @throws cDbException
+     * @throws cException
+     */
     public function getWorkflowItem() {
         $userSequence = new WorkflowUserSequence();
         $userSequence->loadByPrimaryKey($this->values["idusersequence"]);
@@ -87,6 +103,9 @@ class WorkflowArtAllocation extends Item {
 
     /**
      * Returns the current item position
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function currentItemPosition() {
         $idworkflowitem = $this->get("idworkflowitem");
@@ -109,7 +128,10 @@ class WorkflowArtAllocation extends Item {
     /**
      * Overriden store function to send mails
      *
-     * @param none
+     * @return bool
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function store() {
         global $cfg;
@@ -129,7 +151,6 @@ class WorkflowArtAllocation extends Item {
                 $idartlang = $this->get("idartlang");
                 $timeunit = $usersequence->get("timeunit");
                 $timelimit = $usersequence->get("timelimit");
-                $starttime = $this->get("starttime");
 
                 $db = cRegistry::getDb();
                 $sql = "SELECT author, title, idart FROM " . $cfg["tab"]["art_lang"] . " WHERE idartlang = " . (int) $idartlang;
@@ -157,8 +178,7 @@ class WorkflowArtAllocation extends Item {
                     $catname = $db->f("name");
                 }
 
-                // WTF ist this???
-                $starttime = strtotime($starttime);
+                $starttime = time();
 
                 switch ($timeunit) {
                     case "Seconds":

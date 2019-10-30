@@ -59,18 +59,21 @@ class cVersionFile extends cVersion {
      * Initializes class variables.
      *
      * @param string $iIdOfType
-     *         The name of style file
-     * @param array $aFileInfo
-     *         Get FileInformation from table file_information
+     *                                 The name of style file
+     * @param array  $aFileInfo
+     *                                 Get FileInformation from table file_information
      * @param string $sFileName
      * @param string $sTypeContent
-     * @param array $aCfg
-     * @param array $aCfgClient
-     * @param object $oDB
-     * @param int $iClient
+     * @param array  $aCfg
+     * @param array  $aCfgClient
+     * @param cDb    $oDB
+     *                                 CONTENIDO database object
+     * @param int    $iClient
      * @param string $sArea
-     * @param int $iFrame
+     * @param int    $iFrame
      * @param string $sVersionFileName [optional]
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct(
         $iIdOfType, $aFileInfo, $sFileName, $sTypeContent, $aCfg, $aCfgClient,
@@ -126,6 +129,8 @@ class cVersionFile extends cVersion {
 
     /**
      * This function init the class member sCode with current file content
+     *
+     * @throws cInvalidArgumentException
      */
     protected function initFileContent() {
         if (cFileHandler::exists($this->sPath . $this->sFileName)) {
@@ -140,8 +145,10 @@ class cVersionFile extends cVersion {
      *
      * @param string $sPath
      *         Path to file
+     *
      * @return array
      *         returns array width nodes
+     * @throws cException
      */
     public function initXmlReader($sPath) {
         $aResult = array();

@@ -182,6 +182,8 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *         The table to use as information source
      * @param string $sPrimaryKey
      *         The primary key to use
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct($sTable, $sPrimaryKey) {
         parent::__construct($sTable, $sPrimaryKey, get_parent_class($this));
@@ -225,7 +227,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         if (class_exists($sForeignCollectionClass)) {
             // Add class
             if (!in_array($sForeignCollectionClass, $this->_JoinPartners)) {
-                $this->_JoinPartners[] = strtolower($sForeignCollectionClass);
+                $this->_JoinPartners[] = cString::toLowerCase($sForeignCollectionClass);
             }
         } else {
             $msg = "Could not instantiate class [$sForeignCollectionClass] for use " . "with _setJoinPartner in class " . get_class($this);
@@ -314,7 +316,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param string $sOperator [optional]
      */
     public function setWhere($sField, $mRestriction, $sOperator = '=') {
-        $sField = strtolower($sField);
+        $sField = cString::toLowerCase($sField);
         $this->_where['global'][$sField]['operator'] = $sOperator;
         $this->_where['global'][$sField]['restriction'] = $mRestriction;
     }
@@ -327,7 +329,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param string $sOperator [optional]
      */
     public function deleteWhere($sField, $mRestriction, $sOperator = '=') {
-        $sField = strtolower($sField);
+        $sField = cString::toLowerCase($sField);
         if (isset($this->_where['global'][$sField]) && is_array($this->_where['global'][$sField])) {
             if ($this->_where['global'][$sField]['operator'] == $sOperator && $this->_where['global'][$sField]['restriction'] == $mRestriction) {
                 unset($this->_where['global'][$sField]);
@@ -344,7 +346,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param string $sOperator [optional]
      */
     public function setWhereGroup($sGroup, $sField, $mRestriction, $sOperator = '=') {
-        $sField = strtolower($sField);
+        $sField = cString::toLowerCase($sField);
         $this->_where['groups'][$sGroup][$sField]['operator'] = $sOperator;
         $this->_where['groups'][$sGroup][$sField]['restriction'] = $mRestriction;
     }
@@ -359,7 +361,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param string $sOperator [optional]
      */
     public function deleteWhereGroup($sGroup, $sField, $mRestriction, $sOperator = '=') {
-        $sField = strtolower($sField);
+        $sField = cString::toLowerCase($sField);
         if (is_array($this->_where['groups'][$sGroup]) && isset($this->_where['groups'][$sGroup][$sField]) && is_array($this->_where['groups'][$sGroup][$sField])) {
             if ($this->_where['groups'][$sGroup][$sField]['operator'] == $sOperator && $this->_where['groups'][$sGroup][$sField]['restriction'] == $mRestriction) {
                 unset($this->_where['groups'][$sGroup][$sField]);
@@ -503,14 +505,14 @@ abstract class ItemCollection extends cItemBaseAbstract {
 
         // Fetch linked tables
         foreach ($this->_links as $link => $object) {
-            $matches = $this->_findReverseJoinPartner(strtolower(get_class($this)), $link);
+            $matches = $this->_findReverseJoinPartner(cString::toLowerCase(get_class($this)), $link);
             if ($matches !== false) {
                 if (isset($matches['desttable'])) {
                     // Driver function: Build query parts
-                    $aParameters[] = $this->_driver->buildJoinQuery($matches['desttable'], strtolower($matches['destclass']), $matches['key'], strtolower($matches['sourceclass']), $matches['key']);
+                    $aParameters[] = $this->_driver->buildJoinQuery($matches['desttable'], cString::toLowerCase($matches['destclass']), $matches['key'], cString::toLowerCase($matches['sourceclass']), $matches['key']);
                 } else {
                     foreach ($matches as $match) {
-                        $aParameters[] = $this->_driver->buildJoinQuery($match['desttable'], strtolower($match['destclass']), $match['key'], strtolower($match['sourceclass']), $match['key']);
+                        $aParameters[] = $this->_driver->buildJoinQuery($match['desttable'], cString::toLowerCase($match['destclass']), $match['key'], cString::toLowerCase($match['sourceclass']), $match['key']);
                     }
                 }
             } else {
@@ -519,7 +521,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         }
 
         // Add this class
-        $aFields[] = strtolower(strtolower(get_class($this))) . '.' . $this->getPrimaryKeyName();
+        $aFields[] = cString::toLowerCase(cString::toLowerCase(get_class($this))) . '.' . $this->getPrimaryKeyName();
 
         // Make the parameters unique
         foreach ($aParameters as $parameter) {
@@ -549,7 +551,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      */
     protected function _resolveLinks() {
         $aResolvedLinks = array();
-        $aResolvedLinks[] = strtolower(get_class($this));
+        $aResolvedLinks[] = cString::toLowerCase(get_class($this));
 
         foreach ($this->_JoinPartners as $link) {
             $class = new $link();
@@ -591,7 +593,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
             'SELECT',
             implode(', ', (array_merge($aParameters['fields'], $this->_resultFields))),
             'FROM',
-            '`' . $this->table . '` AS ' . strtolower(get_class($this))
+            '`' . $this->table . '` AS ' . cString::toLowerCase(get_class($this))
         );
 
         if (count($aParameters['tables']) > 0) {
@@ -649,7 +651,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param string $order
      */
     public function setOrder($order) {
-        $this->_order = strtolower($order);
+        $this->_order = cString::toLowerCase($order);
     }
 
     /**
@@ -658,7 +660,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param string $sField
      */
     public function addResultField($sField) {
-        $sField = strtolower($sField);
+        $sField = cString::toLowerCase($sField);
         if (!in_array($sField, $this->_resultFields)) {
             $this->_resultFields[] = $sField;
         }
@@ -670,7 +672,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param string $sField
      */
     public function removeResultField($sField) {
-        $sField = strtolower($sField);
+        $sField = cString::toLowerCase($sField);
         $key = array_search($sField, $this->_resultFields);
         if ($key !== false) {
             unset($this->_resultFields[$key]);
@@ -686,8 +688,8 @@ abstract class ItemCollection extends cItemBaseAbstract {
      */
     protected function _findReverseJoinPartner($sParentClass, $sClassName) {
         // Make the parameters lowercase, as get_class is buggy
-        $sClassName = strtolower($sClassName);
-        $sParentClass = strtolower($sParentClass);
+        $sClassName = cString::toLowerCase($sClassName);
+        $sParentClass = cString::toLowerCase($sParentClass);
 
         // Check if we found a direct link
         if (in_array($sClassName, $this->_JoinPartners)) {
@@ -732,16 +734,18 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * Selects all entries from the database.
      * Objects are loaded using their primary key.
      *
-     * @param string $sWhere [optional]
-     *         Specifies the where clause.
+     * @param string $sWhere   [optional]
+     *                         Specifies the where clause.
      * @param string $sGroupBy [optional]
-     *         Specifies the group by clause.
+     *                         Specifies the group by clause.
      * @param string $sOrderBy [optional]
-     *         Specifies the order by clause.
-     * @param string $sLimit [optional]
-     *         Specifies the limit by clause.
+     *                         Specifies the order by clause.
+     * @param string $sLimit   [optional]
+     *                         Specifies the limit by clause.
+     *
      * @return bool
      *         True on success, otherwise false
+     * @throws cDbException
      */
     public function select($sWhere = '', $sGroupBy = '', $sOrderBy = '', $sLimit = '') {
         unset($this->objects);
@@ -782,21 +786,22 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * Objects are loaded using their primary key.
      *
      * @param string $sDistinct [optional]
-     *         Specifies if distinct will be added to the SQL statement
-     *         ($sDistinct !== '' -> DISTINCT)
-     * @param string $sFrom [optional]
-     *         Specifies the additional from clause (e.g.
-     *         'con_news_groups AS groups, con_news_groupmembers AS groupmembers').
-     * @param string $sWhere [optional]
-     *         Specifies the where clause.
-     * @param string $sGroupBy [optional]
-     *         Specifies the group by clause.
-     * @param string $sOrderBy [optional]
-     *         Specifies the order by clause.
-     * @param string $sLimit [optional]
-     *         Specifies the limit by clause.
+     *                          Specifies if distinct will be added to the SQL statement
+     *                          ($sDistinct !== '' -> DISTINCT)
+     * @param string $sFrom     [optional]
+     *                          Specifies the additional from clause (e.g.
+     *                          'con_news_groups AS groups, con_news_groupmembers AS groupmembers').
+     * @param string $sWhere    [optional]
+     *                          Specifies the where clause.
+     * @param string $sGroupBy  [optional]
+     *                          Specifies the group by clause.
+     * @param string $sOrderBy  [optional]
+     *                          Specifies the order by clause.
+     * @param string $sLimit    [optional]
+     *                          Specifies the limit by clause.
      * @return bool
-     *         True on success, otherwise false
+     *                          True on success, otherwise false
+     * @throws cDbException
      */
     public function flexSelect($sDistinct = '', $sFrom = '', $sWhere = '', $sGroupBy = '', $sOrderBy = '', $sLimit = '') {
         unset($this->objects);
@@ -825,7 +830,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
             $sLimit = ' LIMIT ' . $sLimit;
         }
 
-        $sql = 'SELECT ' . $sDistinct . strtolower(get_class($this)) . '.' . $this->getPrimaryKeyName() . ' AS ' . $this->getPrimaryKeyName() . ' FROM `' . $this->table . '` AS ' . strtolower(get_class($this)) . $sFrom . $sWhere . $sGroupBy . $sOrderBy . $sLimit;
+        $sql = 'SELECT ' . $sDistinct . cString::toLowerCase(get_class($this)) . '.' . $this->getPrimaryKeyName() . ' AS ' . $this->getPrimaryKeyName() . ' FROM `' . $this->table . '` AS ' . cString::toLowerCase(get_class($this)) . $sFrom . $sWhere . $sGroupBy . $sOrderBy . $sLimit;
 
         $this->db->query($sql);
         $this->_lastSQL = $sql;
@@ -846,6 +851,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *         The id to check for (could be numeric or string)
      * @return bool
      *         True if object exists, false if not
+     * @throws cDbException
      */
     public function exists($mId) {
         $oDb = $this->_getSecondDBInstance();
@@ -859,6 +865,8 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *
      * @return Item|bool
      *         next object, or false if no more objects
+     * @throws cDbException
+     * @throws cException
      */
     public function next() {
         $ret = false;
@@ -884,9 +892,10 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *
      * @param string $sClassName
      * @return Item
+     * @throws cException
      */
     public function fetchObject($sClassName) {
-        $sKey = strtolower($sClassName);
+        $sKey = cString::toLowerCase($sClassName);
 
         if (!is_object($this->_collectionCache[$sKey])) {
             $this->_collectionCache[$sKey] = new $sClassName();
@@ -904,10 +913,12 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * keys, the key will be used as alias for the object. If you specify more
      * than one object with the same key, the array will be multi-dimensional.
      *
-     * @param array $aFields [optional]
-     *         array with the fields to fetch
+     * @param array $aFields  [optional]
+     *                        array with the fields to fetch
      * @param array $aObjects [optional]
      * @return array
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchTable(array $aFields = array(), array $aObjects = array()) {
         $row = 1;
@@ -962,6 +973,8 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *         With the correct order of the objects
      * @return array
      *         Result
+     * @throws cDbException
+     * @throws cException
      */
     public function queryAndFetchStructured(array $aObjects) {
         $aOrder = array();
@@ -970,7 +983,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
 
         foreach ($aObjects as $object) {
             $x = new $object();
-            $object = strtolower($object);
+            $object = cString::toLowerCase($object);
             $aOrder[] = $object . '.' . $x->getPrimaryKeyName() . ' ASC';
             $aFetchObjects[] = $x;
         }
@@ -999,7 +1012,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         $value = $this->db->f($i->getPrimaryKeyName());
 
         if (!is_null($value)) {
-            $aResult[$value]['class'] = strtolower(get_class($i));
+            $aResult[$value]['class'] = cString::toLowerCase(get_class($i));
             $aResult[$value]['object'] = $i->loadItem($value);
 
             if (count($aObjects) > 0) {
@@ -1027,6 +1040,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *         The primary key of the item to load.
      * @return Item
      *         The loaded item
+     * @throws cException
      */
     public function fetchById($id) {
         if (is_numeric($id)) {
@@ -1072,10 +1086,14 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * Creates a new item in the table and loads it afterwards.
      *
      * @param string|array $data [optional]
-     *         optional parameter for direct input of primary key value
-     *         (string) or multiple column name - value pairs
+     *                           optional parameter for direct input of primary key value
+     *                           (string) or multiple column name - value pairs
+     *
      * @return Item
-     *         The newly created object
+     *                           The newly created object
+     * @throws cInvalidArgumentException
+     * @throws cDbException
+     * @throws cException
      */
     public function createNewItem($data = NULL) {
         $this->_executeCallbacks(self::CREATE_BEFORE, get_class($this), array());
@@ -1121,13 +1139,14 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * Inserts a new item entry by using a existing item entry.
      *
      * @param object $srcItem
-     *         Source Item instance to copy
-     * @param array $fieldsToOverwrite [optional]
-     *         Assoziative list of fields to overwrite.
-     * @throws cInvalidArgumentException
-     *         If Item class doesn't match the defined _itemClass property
-     *         or passed Item instance has no loaded recordset
+     *                                  Source Item instance to copy
+     * @param array  $fieldsToOverwrite [optional]
+     *                                  Assoziative list of fields to overwrite.
      * @return Item|NULL
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException If Item class doesn't match the defined _itemClass property
+     *                                  or passed Item instance has no loaded recordset
      */
     public function copyItem($srcItem, array $fieldsToOverwrite = array()) {
         if (get_class($srcItem) !== $this->_itemClass) {
@@ -1171,6 +1190,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *         The where clause of the SQL statement
      * @return array
      *         List of ids
+     * @throws cDbException
      */
     public function getIdsByWhereClause($sWhere) {
         $oDb = $this->_getSecondDBInstance();
@@ -1191,12 +1211,13 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * Returns all specified fields of recordsets in the table matching the
      * rules in the passed where clause.
      *
-     * @param array $aFields
+     * @param array  $aFields
      *         List of fields to get
      * @param string $sWhere
      *         The where clause of the SQL statement
      * @return array
      *         List of entries with specified fields
+     * @throws cDbException
      */
     public function getFieldsByWhereClause(array $aFields, $sWhere) {
         $oDb = $this->_getSecondDBInstance();
@@ -1234,6 +1255,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *
      * @return array
      *         List of ids
+     * @throws cDbException
      */
     public function getAllIds() {
         $oDb = $this->_getSecondDBInstance();
@@ -1256,7 +1278,11 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *
      * @param mixed $mId
      *         Id of entry to delete
+     * 
      * @return bool
+     * 
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function delete($mId) {
         $result = $this->_delete($mId);
@@ -1272,6 +1298,8 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *         The where clause of the SQL statement
      * @return int
      *         Number of deleted entries
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function deleteByWhereClause($sWhere) {
         // Get all ids and delete related entries
@@ -1292,10 +1320,14 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *
      * @param string $sField
      *         The field name
-     * @param mixed $mValue
+     * @param mixed  $mValue
      *         The value of the field
+     *
      * @return int
      *         Number of deleted entries
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function deleteBy($sField, $mValue) {
         $where = (is_string($mValue)) ? "`%s` = '%s'" : "`%s` = %d";
@@ -1311,6 +1343,9 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param mixed $mId
      *         Id of entry to delete
      * @return bool
+     * 
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     protected function _delete($mId) {
         $this->_executeCallbacks(self::DELETE_BEFORE, $this->_itemClass, array(
@@ -1352,6 +1387,8 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *         Id of entries to delete (has to be called w/ an array!)
      * @return int
      *         Number of affected records
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     protected function _deleteMultiple(array $aIds) {
         foreach ($aIds as $mId) {
@@ -1411,10 +1448,12 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *
      * @param string $sKey
      *         Name of the field to use for the key
-     * @param mixed $mFields
+     * @param mixed  $mFields
      *         String or array
      * @return array
      *         Resulting array
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchArray($sKey, $mFields) {
         $aResult = array();

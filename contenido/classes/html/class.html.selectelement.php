@@ -26,7 +26,7 @@ class cHTMLSelectElement extends cHTMLFormElement {
     /**
      * All cHTMLOptionElements
      *
-     * @var array
+     * @var cHTMLOptionElement[]
      */
     protected $_options = array();
 
@@ -37,7 +37,7 @@ class cHTMLSelectElement extends cHTMLFormElement {
      *
      * @param string $name
      *         Name of the element
-     * @param int $width [optional]
+     * @param string $width [optional]
      *         Width of the select element
      * @param string $id [optional]
      *         ID of the element
@@ -131,8 +131,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
      */
     public function setMultiselect() {
         $name = $this->getAttribute('name');
-        $strLength = strlen($name);
-        if (substr($name, $strLength - 2, $strLength) != '[]') {
+        $strLength = cString::getStringLength($name);
+        if (cString::getPartOfString($name, $strLength - 2, $strLength) != '[]') {
             $this->updateAttribute('name', $name . '[]');
         }
         return $this->updateAttribute('multiple', 'multiple');
@@ -206,16 +206,14 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return cHTMLSelectElement
      *         $this for chaining
      */
-    public function setSelected(array $elements) {
+    public function setSelected(array $elements)
+    {
         foreach ($this->_options as $key => $option) {
-            if (in_array($option->getAttribute('value'), $elements)) {
-                $option->setSelected(true);
-                $this->_options[$key] = $option;
-            } else {
-                $option->setSelected(false);
-                $this->_options[$key] = $option;
-            }
+            $selected = in_array($option->getAttribute('value'), $elements);
+            $option->setSelected($selected);
+            $this->_options[$key] = $option;
         }
+
         return $this;
     }
 

@@ -18,11 +18,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Plugin
  * @subpackage Workflow
+ * @method WorkflowTask createNewItem
+ * @method WorkflowTask next
  */
 class WorkflowTasks extends ItemCollection {
-
     /**
-     * Constructor Function
+     * WorkflowTasks constructor.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -30,11 +33,21 @@ class WorkflowTasks extends ItemCollection {
         $this->_setItemClass("WorkflowTask");
     }
 
+    /**
+     * @return WorkflowTask
+     */
     public function create() {
-        $newitem = $this->createNewItem();
-        return ($newitem);
+        return $this->createNewItem();
     }
 
+    /**
+     * @param string $where
+     * @param string $group_by
+     * @param string $order_by
+     * @param string $limit
+     *
+     * @return bool
+     */
     public function select($where = "", $group_by = "", $order_by = "", $limit = "") {
         global $client;
 
@@ -57,9 +70,8 @@ class WorkflowTasks extends ItemCollection {
  * @copyright four for business 2003
  */
 class WorkflowTask extends Item {
-
     /**
-     * Constructor Function
+     * WorkflowTask constructor.
      */
     public function __construct() {
         global $cfg;
@@ -67,5 +79,3 @@ class WorkflowTask extends Item {
     }
 
 }
-
-?>

@@ -11,7 +11,8 @@
  */
 
 (function(Con, $) {
-//    'use strict';
+
+    // 'use strict';
 
     var NAME = 'frame-resize';
 
@@ -169,7 +170,6 @@
                         context.frames[i].document.onmouseover = function() {
                             //context.frameResize._stopDrag();
                         };
-
                         context.frames[i].document.onclick = function() {
                             //context.frameResize._stopDrag();
                         };
@@ -233,7 +233,7 @@
             context.document.onmouseup = function() {
                 context.frameResize.drag = false;
                 context.frameResize.dragPosX = 0;
-            }
+            };
         },
 
         /**
@@ -243,6 +243,7 @@
          */
         setDragEvents: function(id) {
             if (Con.isNs) {
+
                 this.dragObj = this.frames[1].document.getElementById(id);
 
                 this.dragObj.onmouseover = function() {
@@ -251,7 +252,6 @@
 
                 this.dragObj.onmousedown = function() {
                     this.style.cursor = 'move';
-
                     frameResize.drag = true;
                     frameResize.dragPosX = frameResize.x;
                     frameResize.dragDiff = frameResize.size - frameResize.dragPosX;
@@ -259,26 +259,24 @@
 
                 this.dragObj.onmouseup = function() {
                     this.style.cursor = 'default';
-
                     frameResize.drag = false;
-
                     if (frameResize.x == frameResize.dragPosX) {
                         frameResize.toggle();
                     }
                 };
+
             }
 
             if (Con.isMsie) {
                 this.dragObj = window.frames[this.frameNames[1]].document.getElementById(id);
-
                 this.dragObj.onmouseover = function() {
                     this.style.cursor = 'hand';
                 };
-
                 this.dragObj.onclick = function() {
                     frameResize.toggle();
                 };
             }
+
         },
 
         /**

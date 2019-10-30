@@ -240,7 +240,7 @@ class cCLISetup {
             prntln(i18n('Do you want to install the example client?', 'setup'));
             prntln(i18n('Please choose "yes" (to install the modules AND the content), "modules" (to install only the modules) or "no"', 'setup'));
             prnt(i18n('Examples? (yes/modules/no)', 'setup') . '[' . $displayStandard . ']: ', 1);
-            $line = strtolower(trim(fgets(STDIN)));
+            $line = cString::toLowerCase(trim(fgets(STDIN)));
             if ($line == "") {
                 $line = $displayStandard;
             }
@@ -287,7 +287,7 @@ class cCLISetup {
             return;
         }
 
-        $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+        $ext = cString::toLowerCase(pathinfo($file, PATHINFO_EXTENSION));
 
         switch ($ext) {
             case 'ini':
@@ -407,7 +407,7 @@ class cCLISetup {
                     $answer = "n";
                 }
             }
-            if (strtolower($answer) == "n" || strtolower($answer) == strtolower(i18n('n', 'setup'))) {
+            if (cString::toLowerCase($answer) == "n" || cString::toLowerCase($answer) == cString::toLowerCase(i18n('n', 'setup'))) {
                 exit(3);
             }
         } else {

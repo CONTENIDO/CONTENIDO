@@ -73,11 +73,14 @@ class cI18n {
      * Returns translation of a specific text, wrapper for translate().
      *
      * @param string $string
-     *         The string to translate
+     *                       The string to translate
      * @param string $domain [optional]
-     *         The domain to look up
+     *                       The domain to look up
+     *
      * @return string
      *         Returns the translation
+     *
+     * @throws cException
      */
     public static function __($string, $domain = 'contenido') {
         return self::translate($string, $domain);
@@ -90,10 +93,12 @@ class cI18n {
      *         The string to translate
      * @param string $domain [optional]
      *         The domain to look up
-     * @throws cException
-     *         if this is the backend mode and the $belang is not set
+     *
      * @return string
      *         Returns the translation
+     *
+     * @throws cException
+     *         if this is the backend mode and the $belang is not set
      */
     public static function translate($string, $domain = 'contenido') {
         global $cfg, $belang, $contenido;
@@ -118,7 +123,7 @@ class cI18n {
                     $language = $oApiLang->getProperty('language', 'code');
                     $country = $oApiLang->getProperty('country', 'code');
 
-                    $locale = $language . '_' . strtoupper($country);
+                    $locale = $language . '_' . cString::toUpperCase($country);
                     self::init($cfg['path']['contenido'] . $cfg['path']['plugins'] . $domain . '/locale/', $locale, $domain);
                 } else {
                     self::init($cfg['path']['contenido'] . $cfg['path']['plugins'] . $domain . '/locale/', $belang, $domain);
@@ -132,7 +137,7 @@ class cI18n {
             // hopefully a proper replacement for
             // mb_convert_encoding($string, 'HTML-ENTITIES', 'utf-8');
             // see http://stackoverflow.com/q/11974008
-            $ret = htmlspecialchars_decode(utf8_decode(conHtmlentities($ret, ENT_COMPAT, 'utf-8', false)));
+            $ret = htmlspecialchars_decode(utf8_decode(conHtmlentities($ret, ENT_COMPAT, 'utf-8')));
             return $ret;
         }
 
@@ -206,11 +211,14 @@ class cI18n {
      * Emulates GNU gettext
      *
      * @param string $string
-     *         The string to translate
+     *                       The string to translate
      * @param string $domain [optional]
-     *         The domain to look up
+     *                       The domain to look up
+     *
      * @return string
      *         Returns the translation
+     *
+     * @throws cInvalidArgumentException
      */
     public static function emulateGettext($string, $domain = 'contenido') {
         if ($string == '') {
@@ -223,6 +231,9 @@ class cI18n {
         if (isset(self::$_i18nData['cache'][$domain][$string])) {
             return self::$_i18nData['cache'][$domain][$string];
         }
+        if (!isset(self::$_i18nData['domains'][$domain])) {
+            return $string;
+        }
 
         $translationFile = self::$_i18nData['domains'][$domain] . self::$_i18nData['language'] . '/LC_MESSAGES/' . $domain . '.po';
         if (!cFileHandler::exists($translationFile)) {
@@ -233,7 +244,7 @@ class cI18n {
             self::$_i18nData['files'][$domain] = self::_loadTranslationFile($translationFile);
         }
 
-        $stringStart = strpos(self::$_i18nData['files'][$domain], '"' . str_replace(array(
+        $stringStart = cString::findFirstPos(self::$_i18nData['files'][$domain], '"' . str_replace(array(
             "\n",
             "\r",
             "\t"
@@ -283,10 +294,10 @@ class cI18n {
     /**
      * Registers a new i18n domain.
      *
-     * @param string $localePath
-     *         Path to the locales
      * @param string $domain
      *         Domain to bind to
+     * @param string $localePath
+     *         Path to the locales
      */
     public static function registerDomain($domain, $localePath) {
         if (function_exists('bindtextdomain')) {
@@ -301,8 +312,11 @@ class cI18n {
      * comments on the content.
      *
      * @param string $translationFile
+     *
      * @return string
      *         The preparend translation file content
+     *
+     * @throws cInvalidArgumentException
      */
     protected static function _loadTranslationFile($translationFile) {
         $content = cFileHandler::read($translationFile);

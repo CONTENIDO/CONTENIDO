@@ -38,6 +38,7 @@ cInclude('includes', 'functions.lang.php');
  * contenido_height_head
  * See backend.customizing.html for details
  *
+ * @deprecated [2017-11-23]
  * @package    Core
  * @subpackage Backend
  */
@@ -78,6 +79,10 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
 
         // Retrieve all settings for tinymce
         $this->_aSettings = getEffectiveSettingsByType("tinymce");
+
+        // added client and langiage id in tinymce settings
+        $this->_aSettings["langid"] = cRegistry::getLanguageId();
+        $this->_aSettings["clientid"] = cRegistry::getClientId();
 
         // For compatibility, read settings in previous syntax also (< V4.7, type "wysiwyg" vs. "tinymce")
         $this->_aSettings = array_merge(getEffectiveSettingsByType("wysiwyg"), $this->_aSettings);
@@ -174,7 +179,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         if (array_key_exists("contenido_toolbar_mode", $this->_aSettings)) {
             $mode = $this->_aSettings["contenido_toolbar_mode"];
         }
-        $this->setToolbar(trim(strtolower($mode)));
+        $this->setToolbar(trim(cString::toLowerCase($mode)));
 
         $autoFullElements = $this->_aSettings['auto_full_elements'];
         unset($this->_aSettings['auto_full_elements']);
@@ -190,7 +195,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
             $this->setSetting(null, 'extended_valid_elements', '*[*]');
         }
 
-        $this->setSetting(null, "valid_elements", "a[name|href|target|title],strong/b[class],em/i[class],strike[class],u[class],p[dir|class|align],ol,ul,li,br,img[class|src|border=0|alt|title|hspace|vspace|width|height|align],sub,sup,blockquote[dir|style],table[border=0|cellspacing|cellpadding|width|height|class|align|style],tr[class|rowspan|width|height|align|valign|style],td[dir|class|colspan|rowspan|width|height|align|valign|style],div[dir|class|align],span[class|align],pre[class|align],address[class|align],h1[dir|class|align],h2[dir|class|align],h3[dir|class|align],h4[dir|class|align],h5[dir|class|align],h6[dir|class|align],hr");
+        $this->setSetting(null, "valid_elements", "a[name|href|target|title],strong/b[class],em/i[class],strike[class],u[class],p[dir|class|align],ol,ul,li,br,img[class|src|alt|title|hspace|vspace|width|height|align],sub,sup,blockquote[dir|style],table[border=0|cellspacing|cellpadding|width|height|class|align|style],tr[class|rowspan|width|height|align|valign|style],td[dir|class|colspan|rowspan|width|height|align|valign|style],div[dir|class|align],span[class|align],pre[class|align],address[class|align],h1[dir|class|align],h2[dir|class|align],h3[dir|class|align],h4[dir|class|align],h5[dir|class|align],h6[dir|class|align],hr");
 
         // Extended valid elements, for compatibility also accepts "tinymce-extended-valid-elements"
         if (!array_key_exists("extended_valid_elements", $this->_aSettings) && array_key_exists("tinymce-extended-valid-elements", $this->_aSettings)) {
@@ -200,7 +205,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
 
         //print_r($this->_aSettings['valid_elements']);
 
-        $this->setSetting(null, "extended_valid_elements", "form[name|action|method],textarea[name|style|cols|rows],input[type|name|value|style|onclick],a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]");
+        $this->setSetting(null, "extended_valid_elements", "form[name|action|method],textarea[name|style|cols|rows],input[type|name|value|style|onclick],a[name|href|target|title|onclick],img[class|src|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]");
 
         // Clean all possible URLs
         $this->cleanURLs();
@@ -282,7 +287,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         }
 
         $aLists = array();
-        $aLists = explode(",", strtolower(str_replace(" ", "", $lists)));
+        $aLists = explode(",", cString::toLowerCase(str_replace(" ", "", $lists)));
 
         if (in_array("link", $aLists)) {
             $this->setSetting(null, "external_link_list_url", $this->_baseURL . "list.php?mode=link&lang=" . $lang . "&client=" . $client . "#", true);
@@ -536,13 +541,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
      * @return string
      */
     public function getScripts() {
-        if ($this->_useGZIP) {
-            $return = "\n<!-- tinyMCE -->\n" . '<script language="javascript" type="text/javascript" src="' . $this->_baseURL . 'jscripts/tiny_mce/tiny_mce_gzip.js"></script>';
-        } else {
-            $return = "\n<!-- tinyMCE -->\n" . '<script language="javascript" type="text/javascript" src="' . $this->_baseURL . 'jscripts/tiny_mce/tiny_mce.js"></script>';
-        }
-
-        return $return;
+        return "\n<!-- tinyMCE -->\n" . '<script language="javascript" type="text/javascript" src="' . $this->_baseURL . 'jscripts/tiny_mce/tiny_mce.js"></script>';
     }
 
     /**
@@ -572,25 +571,6 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         $template->set('s', 'MEDIABROWSER', $cfg['path']['contenido_fullhtml'] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
         $template->set('s', 'FRONTEND_PATH', $cfgClient[$client]['path']['htmlpath']);
 
-        // GZIP support options
-        $GZIPScript = '';
-        if ($this->_useGZIP) {
-            // tinyMCE_GZ.init call must be placed in its own script tag
-            // User defined plugins and themes should be identical in both "inits"
-            $GZIPScript = <<<JS
-<script type="text/javascript">
-tinyMCE_GZ.init({
-    plugins: '{$this->_aSettings["plugins"]}',
-    themes: '{$this->_aSettings["theme"]}',
-    languages: '{$this->_aSettings["language"]}',
-    disk_cache: true,
-    debug: false
-});
-</script>
-JS;
-        }
-        $template->set('s', 'COMPRESSOR', $GZIPScript);
-
         // Calculate the configuration
         $config = '';
 
@@ -611,7 +591,7 @@ JS;
             $config .= ",\n\t";
         }
 
-        $config = substr($config, 0, -3);
+        $config = cString::getPartOfString($config, 0, -3);
         $template->set('s', 'CONFIG', $config);
 
         $oTxtEditor = new cHTMLTextarea($this->_sEditorName, $this->_sEditorContent);
@@ -651,7 +631,7 @@ JS;
             $config .= ",\n\t";
         }
 
-        $config = substr($config, 0, -3);
+        $config = cString::getPartOfString($config, 0, -3);
 
         return $config;
     }

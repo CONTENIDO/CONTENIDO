@@ -47,6 +47,11 @@ $_cecRegistry->addChainFunction('Contenido.CategoryList.Columns', 'piworkflowCat
 $_cecRegistry->addChainFunction('Contenido.CategoryList.RenderColumn', 'piworkflowCategoryRenderColumn');
 $_cecRegistry->addChainFunction('Contenido.Frontend.AllowEdit', 'piworkflowAllowArticleEdit');
 
+/**
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
+ */
 function prepareWorkflowItems() {
     global $action, $lang, $modidcat, $workflowSelectBox, $workflowworkflows, $client, $tpl, $cfg;
 
@@ -176,6 +181,14 @@ function prepareWorkflowItems() {
     $tpl->set('s', 'PLUGIN_WORKFLOW_TRANSLATION', i18n("Inherit workflow down", "workflow"));
 }
 
+/**
+ * @param $idcat
+ * @param $type
+ *
+ * @return string
+ * @throws cDbException
+ * @throws cException
+ */
 function piworkflowCategoryRenderColumn($idcat, $type) {
     switch ($type) {
         case "workflow":
@@ -196,6 +209,14 @@ JS;
     return $value;
 }
 
+/**
+ * @param $array
+ *
+ * @return array
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
+ */
 function piworkflowCategoryColumns($array) {
     prepareWorkflowItems();
     $myarray = array(
@@ -205,6 +226,13 @@ function piworkflowCategoryColumns($array) {
     return ($myarray);
 }
 
+/**
+ * @param $array
+ *
+ * @return array
+ * @throws cDbException
+ * @throws cException
+ */
 function piworkflowProcessActions($array) {
     global $idcat;
 
@@ -227,6 +255,16 @@ function piworkflowProcessActions($array) {
     return $narray;
 }
 
+/**
+ * @param $idcat
+ * @param $idart
+ * @param $idartlang
+ * @param $type
+ *
+ * @return string
+ * @throws cDbException
+ * @throws cException
+ */
 function piworkflowRenderAction($idcat, $idart, $idartlang, $type) {
     global $area, $frame, $idtpl, $cfg, $alttitle, $tmp_articletitle;
     global $tmp_artconf, $onlinelink, $lockedlink, $tplconf_link;
@@ -277,6 +315,13 @@ function piworkflowRenderAction($idcat, $idart, $idartlang, $type) {
     return "";
 }
 
+/**
+ * @param $array
+ *
+ * @return array
+ * @throws cDbException
+ * @throws cException
+ */
 function piworkflowProcessArticleColumns($array) {
     global $idcat, $action, $modidartlang;
 
@@ -312,6 +357,16 @@ function piworkflowProcessArticleColumns($array) {
     return ($narray);
 }
 
+/**
+ * @param $idlang
+ * @param $idcat
+ * @param $idart
+ * @param $user
+ *
+ * @return bool
+ * @throws cDbException
+ * @throws cException
+ */
 function piworkflowAllowArticleEdit($idlang, $idcat, $idart, $user) {
     $defaultidworkflow = getWorkflowForCat($idcat);
 
@@ -343,6 +398,17 @@ function piworkflowAllowArticleEdit($idlang, $idcat, $idart, $user) {
     }
 }
 
+/**
+ * @param $idcat
+ * @param $idart
+ * @param $idartlang
+ * @param $column
+ *
+ * @return bool|string
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
+ */
 function piworkflowRenderColumn($idcat, $idart, $idartlang, $column) {
     global $area, $frame, $idtpl, $cfg, $alttitle, $tmp_articletitle;
     $defaultidworkflow = getWorkflowForCat($idcat);
@@ -417,6 +483,9 @@ function piworkflowRenderColumn($idcat, $idart, $idartlang, $column) {
     }
 }
 
+/**
+ * @return array
+ */
 function piworkflowCreateTasksFolder() {
     global $sess, $cfg;
 

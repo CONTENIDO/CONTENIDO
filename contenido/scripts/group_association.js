@@ -16,7 +16,8 @@
  */
 
 (function(Con, $) {
-//    'use strict';
+
+    // 'use strict';
 
     // #########################################################################
     // Some constants
@@ -47,7 +48,8 @@
          * @type {Number}
          * @private
          */
-        var keycode = 0; //
+        var keycode = 0;
+
         /**
          * CONTENIDO action for adding user to group - (different fpr frontentgroups and backendgroups)
          * @property addAction
@@ -55,6 +57,7 @@
          * @private
          */
         var addAction = options.add;
+
         /**
          * CONTENIDO action for removing user from group - (different fpr frontentgroups and backendgroups)
          * @property deleteAction
@@ -62,6 +65,7 @@
          * @private
          */
         var deleteAction = options.del;
+
         /**
          * Reference to form
          * @property $form
@@ -104,36 +108,36 @@
          * @private
          */
         function _filter(id) {
-            //get search string ans buid regular expression
+            // get search string ans buid regular expression
             var sFilterValue = document.getElementById(id).value;
             var oReg = new RegExp(sFilterValue, 'gi');
 
-            //build id of corresponding select box
+            // build id of corresponding select box
             var sSelectId = id.replace(/_filter_value/, '');
 
-            //get select box and corresponding options
+            // get select box and corresponding options
             var sSelectBox = document.getElementById(sSelectId);
             var oOptions = sSelectBox.getElementsByTagName('option');
 
-            //remove all options
+            // remove all options
             var iLen = oOptions.length;
             for (var i = 0; i < iLen; i++) {
                 sSelectBox.removeChild(oOptions[0]);
             }
 
-            //get all options which where avariable in hidden select box
+            // get all options which where avariable in hidden select box
             var sSelectBoxAll = document.getElementById('all_'+sSelectId);
             var oOptionsAll = sSelectBoxAll.getElementsByTagName('option');
 
-            //iterate over all hidden options
+            // iterate over all hidden options
             var count = 0;
             for (var i = 0; i < oOptionsAll.length; i++) {
-                //get the label of the option
+                // get the label of the option
                 var label = oOptionsAll[i].firstChild.nodeValue;
 
-                //if option label matches to search string
+                // if option label matches to search string
                 if (label.match(oReg)) {
-                    //generate new option element, fill it with the hidden values and append it to the select box which is viewable
+                    // generate new option element, fill it with the hidden values and append it to the select box which is viewable
                     var newOption = document.createElement('option');
                     newOption.value = oOptionsAll[i].value;
                     newOption.innerHTML = label;
@@ -143,8 +147,8 @@
                 }
             }
 
-            //if there are no options, deactivate corresponding move button
-            document.getElementById(sSelectId + '_button').disabled = count == 0;
+            // if there are no options, deactivate corresponding move button
+            document.getElementById(sSelectId + '_button').disabled = count === 0;
         }
 
         /**
@@ -154,7 +158,7 @@
          * @private
          */
         function _keyHandler(id)  {
-            //if user pressed enter key into filter input, js function filter is called
+            // if user pressed enter key into filter input, js function filter is called
             if (keycode == 13) {
                 _filter(id);
             }
@@ -171,10 +175,10 @@
                 event = window.event;
             }
             if (event.keyCode) {
-                //for ie: store keycode, which is pressed into global variable
+                // for ie: store keycode, which is pressed into global variable
                 keycode = event.keyCode;
             } else if (event.which) {
-                //for mozilla: store keycode, which is pressed into global variable
+                // for mozilla: store keycode, which is pressed into global variable
                 keycode = event.which;
             }
         }
@@ -197,6 +201,7 @@
             setAction: function(action) {
                 return _setAction(action);
             },
+
             /**
              * @method filter
              * @param {String}  id
@@ -204,6 +209,7 @@
             filter: function(id) {
                 return _filter(id);
             },
+
             /**
              * @method keyHandler
              * @param {String}  id

@@ -116,7 +116,7 @@ class mpClassTypeFinder
     public function setExcludeFiles(array $excludeFiles)
     {
         foreach ($excludeFiles as $pos => $entry) {
-            if (strpos($entry, '*') !== false) {
+            if (cString::findFirstPos($entry, '*') !== false) {
                 $entry = '/^' . str_replace('*', '.*', preg_quote($entry)) . '$/';
                 $excludeFiles[$pos] = $entry;
             }
@@ -255,7 +255,7 @@ class mpClassTypeFinder
      */
     public function getFormattedDebugMessages($delemiter="\n", $wrap='%s')
     {
-        if (strpos($wrap, '%s') === false) {
+        if (cString::findFirstPos($wrap, '%s') === false) {
             throw new cInvalidArgumentException('Missing type specifier %s in parameter wrap!');
         }
         $messages = implode($delemiter, $this->_debugMessages);
@@ -328,10 +328,10 @@ class mpClassTypeFinder
      */
     protected function _isDirToExclude(SplFileInfo $file)
     {
-        $path = strtolower($this->_normalizePathSeparator($file->getRealPath()));
+        $path = cString::toLowerCase($this->_normalizePathSeparator($file->getRealPath()));
 
         foreach ($this->_excludeDirs as $item) {
-            if (strpos($path, $item) !== false) {
+            if (cString::findFirstPos($path, $item) !== false) {
                 return true;
             }
         }
@@ -347,14 +347,14 @@ class mpClassTypeFinder
      */
     protected function _isFileToExclude(SplFileInfo $file)
     {
-        $path = strtolower($this->_normalizePathSeparator($file->getRealPath()));
+        $path = cString::toLowerCase($this->_normalizePathSeparator($file->getRealPath()));
 
         foreach ($this->_excludeFiles as $item) {
-            if (strlen($item) > 2 && substr($item, 0, 2) == '/^') {
+            if (cString::getStringLength($item) > 2 && cString::getPartOfString($item, 0, 2) == '/^') {
                 if (preg_match($item, $path)) {
                     return true;
                 }
-            } else if (strpos($path, $item) !== false) {
+            } else if (cString::findFirstPos($path, $item) !== false) {
                 return true;
             }
         }
@@ -370,10 +370,10 @@ class mpClassTypeFinder
      */
     protected function _isFileToParse(SplFileInfo $file)
     {
-        $path = strtolower($this->_normalizePathSeparator($file->getRealPath()));
+        $path = cString::toLowerCase($this->_normalizePathSeparator($file->getRealPath()));
 
         foreach ($this->_extensionsToParse as $item) {
-            if (substr($path, -strlen($item)) == $item) {
+            if (cString::getPartOfString($path, -cString::getStringLength($item)) == $item) {
                 return true;
             }
         }

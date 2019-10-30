@@ -103,6 +103,8 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
     /**
      * Outputs all Debug items in collection to screen in a HTML Box at left top
      * of page.
+     *
+     * @throws cInvalidArgumentException
      */
     public function showAll() {
         global $cfg;
@@ -113,7 +115,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
 
             $i = 1;
             foreach ($this->_aItems as $oItem) {
-                $sItemName = strlen($oItem->getDescription()) > 0 ? $oItem->getDescription() : ('debug item #' . $i);
+                $sItemName = cString::getStringLength($oItem->getDescription()) > 0 ? $oItem->getDescription() : ('debug item #' . $i);
                 $sItemValue = $this->_prepareValue($oItem->getValue());
 
                 $tpl->set("d", "DBG_ITEM_COUNT", $i);
@@ -129,7 +131,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
         $buffer = str_replace("\'", "\\'", $this->_buffer);
         $buffer = str_replace("\"", "\\\"", $buffer);
         $buffer = str_replace("\n", '\n', $buffer);
-        $buffer = str_replace(chr(13), "", $buffer);
+        $buffer = str_replace("\r", '', $buffer);
 
         // making sure that the working directory is right
         $dir = getcwd();
@@ -168,7 +170,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
         }
         if (is_string($mValue)) {
             if (preg_match('/<(.*)>/', $mValue)) {
-                if (strlen($mValue) > 40) {
+                if (cString::getStringLength($mValue) > 40) {
                     $bTextarea = true;
                 } else {
                     $bPlainText = true;

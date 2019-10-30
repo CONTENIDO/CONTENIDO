@@ -21,12 +21,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiContainerCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
      *
-     * @param string $select [optional]
-     *         where clause to use for selection (see ItemCollection::select())
+     * @param bool $select [optional]
+     *                     where clause to use for selection (see ItemCollection::select())
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function __construct($select = false) {
         global $cfg;
@@ -47,7 +49,11 @@ class cApiContainerCollection extends ItemCollection {
      * @param int $idtpl
      * @param int $number
      * @param int $idmod
+     *
      * @return cApiContainer
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($idtpl, $number, $idmod) {
         $item = $this->createNewItem();
@@ -65,6 +71,7 @@ class cApiContainerCollection extends ItemCollection {
      *
      * @param int $idtpl
      * @return array
+     * @throws cDbException
      */
     public function getNumbersByTemplate($idtpl) {
         $list = array();
@@ -78,7 +85,11 @@ class cApiContainerCollection extends ItemCollection {
 
     /**
      * Deletes all configurations by given template id
+     *
      * @param int $idtpl
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function clearAssignments($idtpl) {
         $this->deleteBy('idtpl', (int) $idtpl);
@@ -89,6 +100,9 @@ class cApiContainerCollection extends ItemCollection {
      * @param int $idtpl
      * @param int $number
      * @param int $idmod
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function assignModule($idtpl, $number, $idmod) {
         $this->select('idtpl = ' . (int) $idtpl . ' AND number = ' . (int) $number);
@@ -107,13 +121,16 @@ class cApiContainerCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiContainer extends Item {
-
+class cApiContainer extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -132,7 +149,7 @@ class cApiContainer extends Item {
      * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      *
-     * @eturn bool
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {

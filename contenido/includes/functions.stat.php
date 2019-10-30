@@ -21,20 +21,25 @@ cInclude("includes", "functions.database.php");
  *
  * @deprecated [2015-05-21]
  *         This method is no longer supported (no replacement)
- * @param int $id
+ *
+ * @param int    $id
  *         Either article or directory id
  * @param string $type
  *         The type
- * @param int $x
+ * @param int    $x
  *         Style top position
- * @param int $y
+ * @param int    $y
  *         Style left position
- * @param int $w
+ * @param int    $w
  *         Style width
- * @param int $h
+ * @param int    $h
  *         Style height
+ *
  * @return string
  *         Composed info layer
+ *
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function statsDisplayInfo($id, $type, $x, $y, $w, $h) {
     cDeprecated('This method is deprecated and is not needed any longer');
@@ -61,6 +66,8 @@ function statsDisplayInfo($id, $type, $x, $y, $w, $h) {
  *
  * @param string $yearmonth
  *         String with the desired archive date (YYYYMM)
+ *
+ * @throws cDbException
  */
 function statsArchive($yearmonth) {
     global $cfg;
@@ -90,7 +97,7 @@ function statsArchive($yearmonth) {
         $db2->query($insertSQL);
     }
 
-    $sql = "DELETE FROM " . $cfg["tab"]["stat"];
+    $sql = "TRUNCATE TABLE " . $cfg["tab"]["stat"];
     $db->query($sql);
 
     // Recreate empty stats
@@ -111,7 +118,7 @@ function statsArchive($yearmonth) {
                           " . cSecurity::toInteger($db->f(0)) . ",
                           " . cSecurity::toInteger($db->f(2)) . ",
                           " . cSecurity::toInteger($db->f(1)) . ",
-                          '0000-00-00 00:00:00')";
+                          0)";
 
         $db2->query($insertSQL);
     }
@@ -123,6 +130,9 @@ function statsArchive($yearmonth) {
  * @param string $yearmonth
  *         Specifies the year and month from which to retrieve the statistics,
  *         specify "current" to retrieve the current entries.
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function statsOverviewAll($yearmonth) {
     global $cfg, $db, $tpl, $client, $lang, $cfgClient;
@@ -486,6 +496,9 @@ function statsOverviewAll($yearmonth) {
  *
  * @param string $year
  *         Specifies the year to retrieve the statistics for
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function statsOverviewYear($year) {
     global $cfg, $db, $tpl, $client, $lang;
@@ -778,8 +791,11 @@ function statsOverviewYear($year) {
  * @param string $yearmonth
  *         Specifies the year and month from which to retrieve the statistics,
  *         specify "current" to retrieve the current entries.
- * @param int $top
+ * @param int    $top
  *         Specifies the amount of pages to display
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function statsOverviewTop($yearmonth, $top) {
     global $cfg, $db, $tpl, $client, $cfgClient, $lang;
@@ -837,12 +853,15 @@ function statsOverviewTop($yearmonth, $top) {
  *
  * Performs a recursive call, if parent category doesn't matches to 0
  *
- * @param int $idcat
+ * @param int    $idcat
  *         The category id
  * @param string $seperator
  *         Separator for location string
  * @param string $cat_str
  *         The location string variable (reference)
+ *
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function statCreateLocationString($idcat, $seperator, &$cat_str) {
     $cats = array();
@@ -863,6 +882,10 @@ function statCreateLocationString($idcat, $seperator, &$cat_str) {
  *         Specifies the year from which to retrieve the statistics
  * @param int $top
  *         Specifies the amount of pages to display
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function statsOverviewTopYear($year, $top) {
     global $cfg, $db, $tpl, $client, $lang, $cfgClient;
@@ -903,8 +926,11 @@ function statsOverviewTopYear($year, $top) {
  * Returns a drop down to choose the stats to display
  *
  * @param string $default
+ *
  * @return string
  *         Returns a drop down string
+ *
+ * @throws cException
  */
 function statDisplayTopChooser($default) {
     if ($default == "top10") {
@@ -934,8 +960,11 @@ function statDisplayTopChooser($default) {
  * Returns a drop down to choose the stats to display for yearly summary pages
  *
  * @param string $default
+ *
  * @return string
  *         Returns a drop down string
+ *
+ * @throws cException
  */
 function statDisplayYearlyTopChooser($default) {
     $defaultAll = $defaultTop10 = $defaultTop20 = $defaultTop30 = '';
@@ -968,9 +997,11 @@ function statDisplayYearlyTopChooser($default) {
  *
  * @param int $client
  * @param int $lang
+ *
  * @return array
  *         Array of strings with years.
- * @return array
+ *
+ * @throws cDbException
  */
 function statGetAvailableYears($client, $lang) {
     global $cfg, $db;
@@ -1001,10 +1032,13 @@ function statGetAvailableYears($client, $lang) {
  * as stat files.
  *
  * @param string $year
- * @param int $client
- * @param int $lang
+ * @param int    $client
+ * @param int    $lang
+ *
  * @return array
  *         Array of strings with months.
+ *
+ * @throws cDbException
  */
 function statGetAvailableMonths($year, $client, $lang) {
     global $cfg, $db;
@@ -1037,6 +1071,8 @@ function statGetAvailableMonths($year, $client, $lang) {
  *
  * @param int $client
  *         Id of client
+ *
+ * @throws cDbException
  */
 function statResetStatistic($client) {
     global $db, $cfg;
@@ -1049,8 +1085,10 @@ function statResetStatistic($client) {
  *
  * @param string $sHeapTable
  *         Table name
- * @param cDb $db
+ * @param cDb    $db
  *         Database object
+ *
+ * @throws cDbException
  */
 function buildHeapTable($sHeapTable, $db) {
     global $cfg;

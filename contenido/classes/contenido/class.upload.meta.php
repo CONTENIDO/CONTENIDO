@@ -21,9 +21,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiUploadMetaCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -37,19 +38,23 @@ class cApiUploadMetaCollection extends ItemCollection {
     /**
      * Creates a upload meta entry.
      *
-     * @global object $auth
-     * @param int $idupl
-     * @param int $idlang
-     * @param string $medianame [optional]
-     * @param string $description [optional]
-     * @param string $keywords [optional]
-     * @param string $internal_notice [optional]
-     * @param string $copyright [optional]
-     * @param string $author [optional]
-     * @param string $created [optional]
-     * @param string $modified [optional]
-     * @param string $modifiedby [optional]
+     * @param int     $idupl
+     * @param int     $idlang
+     * @param string  $medianame       [optional]
+     * @param string  $description     [optional]
+     * @param string  $keywords        [optional]
+     * @param string  $internal_notice [optional]
+     * @param string  $copyright       [optional]
+     * @param string  $author          [optional]
+     * @param string  $created         [optional]
+     * @param string  $modified        [optional]
+     * @param string  $modifiedby      [optional]
+     *
      * @return cApiUploadMeta
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     * @global object $auth
      */
     public function create($idupl, $idlang, $medianame = '', $description = '',
             $keywords = '', $internal_notice = '', $copyright = '', $author = '',
@@ -91,13 +96,16 @@ class cApiUploadMetaCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiUploadMeta extends Item {
-
+class cApiUploadMeta extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -113,7 +121,10 @@ class cApiUploadMeta extends Item {
      *
      * @param int $idupl
      * @param int $idlang
+     *
      * @return bool
+     * 
+     * @throws cException
      */
     public function loadByUploadIdAndLanguageId($idupl, $idlang) {
         $aProps = array(

@@ -153,7 +153,7 @@ class UserForumArticle {
         $this->_checkCookie();
 
         $auth = cRegistry::getAuth();
-        $this->_allowDeleting = (stristr($auth->auth['perm'], 'admin') === FALSE) ? false : true;
+        $this->_allowDeleting = (cString::findFirstOccurrenceCI($auth->auth['perm'], 'admin') === FALSE) ? false : true;
         $bAllowAnonymousforum = (getEffectiveSetting('user_forum', 'allow_anonymous_forum', '1') == '1') ? true : false;
 
         $this->_getUser($auth->auth['uid']);
@@ -313,7 +313,7 @@ class UserForumArticle {
                     $this->_tpl->assign('INPUT_FORUM_QUOTE', $forum_quote);
                 }
 
-                if (strlen($forum_quote) > 0) {
+                if (cString::getStringLength($forum_quote) > 0) {
                     $this->_tpl->assign('DISPLAY', 'display:block');
                     $this->_tpl->assign('INPUT_FORUM_QUOTE', $forum_quote);
                 } else {
@@ -405,14 +405,14 @@ class UserForumArticle {
                     $arrTmp = preg_split('/ /', $value['timestamp']);
                     $arrTmp2 = preg_split('/-/', $arrTmp[0]);
                     $ts = $arrTmp2[2] . '.' . $arrTmp2[1] . '.' . $arrTmp2[0] . ' ' . mi18n("about") . ' ';
-                    $ts .= substr($arrTmp[1], 0, 5) . ' ' . mi18n("clock");
+                    $ts .= cString::getPartOfString($arrTmp[1], 0, 5) . ' ' . mi18n("clock");
 
                     $record['AM'] = mi18n("AM");
                     $record['WROTE_ON'] = mi18n("wroteAt");
                     $record['WRITE_EMAIL'] = mi18n("emailToAuthor");
                     $record['TIMESTAMP'] = $ts;
 
-                    if (strlen($value['forum_quote']) > 0) {
+                    if (cString::getStringLength($value['forum_quote']) > 0) {
                         $record['FORUM_QUOTE'] = '<div class="forum_quote">' . $value['forum_quote'] . '</div>';
                     } else {
                         $record['FORUM_QUOTE'] = '';
@@ -424,7 +424,7 @@ class UserForumArticle {
 
                         // string manipulation for edittime
                         $arrTmp = explode(' ', $value['editedat']);
-                        $edittime = substr($arrTmp[1], 0, 5);
+                        $edittime = cString::getPartOfString($arrTmp[1], 0, 5);
                         $arrTmp2 = explode('-', $arrTmp[0]);
                         $editdate = $arrTmp2[2] . '.' . $arrTmp2[1] . '.' . $arrTmp2[0];
 

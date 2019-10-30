@@ -32,7 +32,7 @@ $aFields = array();
 $aFieldDetails = array();
 $aMessage = array();
 
-$aFields["name"] = strtolower(i18n("Name", 'newsletter'));
+$aFields["name"] = cString::toLowerCase(i18n("Name", 'newsletter'));
 $aFieldDetails["name"]["fieldtype"] = "field"; // field, plugin or group
 $aFieldDetails["name"]["mandatory"] = false; // true or false
 $aFieldDetails["name"]["type"] = "string"; // string, boolean or date
@@ -40,31 +40,31 @@ $aFieldDetails["name"]["link"] = false; // plugin name for plugins, recipient
                                         // group id for groups
 $aFieldDetails["name"]["col"] = -1; // Stores column index where this field has
                                     // been found
-$aFields["email"] = strtolower(i18n("E-mail", 'newsletter'));
+$aFields["email"] = cString::toLowerCase(i18n("Email", 'newsletter'));
 $aFieldDetails["email"]["fieldtype"] = "field";
 $aFieldDetails["email"]["mandatory"] = true;
 $aFieldDetails["email"]["type"] = "string";
 $aFieldDetails["email"]["link"] = false;
 $aFieldDetails["email"]["col"] = -1;
-$aFields["deactivated"] = strtolower(i18n("Deactivated", 'newsletter'));
+$aFields["deactivated"] = cString::toLowerCase(i18n("Deactivated", 'newsletter'));
 $aFieldDetails["deactivated"]["fieldtype"] = "field";
 $aFieldDetails["deactivated"]["mandatory"] = false;
 $aFieldDetails["deactivated"]["type"] = "boolean";
 $aFieldDetails["deactivated"]["link"] = false;
 $aFieldDetails["deactivated"]["col"] = -1;
-$aFields["confirmed"] = strtolower(i18n("Confirmed", 'newsletter'));
+$aFields["confirmed"] = cString::toLowerCase(i18n("Confirmed", 'newsletter'));
 $aFieldDetails["confirmed"]["fieldtype"] = "field";
 $aFieldDetails["confirmed"]["mandatory"] = false;
 $aFieldDetails["confirmed"]["type"] = "boolean";
 $aFieldDetails["confirmed"]["link"] = false;
 $aFieldDetails["confirmed"]["col"] = -1;
-$aFields["confirmeddate"] = strtolower(i18n("Confirmed date", 'newsletter'));
+$aFields["confirmeddate"] = cString::toLowerCase(i18n("Confirmed date", 'newsletter'));
 $aFieldDetails["confirmeddate"]["fieldtype"] = "field";
 $aFieldDetails["confirmeddate"]["mandatory"] = false;
 $aFieldDetails["confirmeddate"]["type"] = "date";
 $aFieldDetails["confirmeddate"]["link"] = false;
 $aFieldDetails["confirmeddate"]["col"] = -1;
-$aFields["news_type"] = strtolower(i18n("Message type", 'newsletter'));
+$aFields["news_type"] = cString::toLowerCase(i18n("Message type", 'newsletter'));
 $aFieldDetails["news_type"]["fieldtype"] = "field";
 $aFieldDetails["news_type"]["mandatory"] = false;
 $aFieldDetails["news_type"]["type"] = "boolean";
@@ -79,7 +79,7 @@ if (is_array($cfg['plugins']['recipients'])) {
             $aPluginFields = call_user_func("recipients_" . $sPlugin . "_wantedVariables");
             foreach ($aPluginFields as $sField) {
                 // if ($_REQUEST["ckb".$sField]) {
-                $aFields[$sField] = strtolower(str_replace(" ", "", $aPluginTitles[$sField]));
+                $aFields[$sField] = cString::toLowerCase(str_replace(" ", "", $aPluginTitles[$sField]));
                 $aFieldDetails[$sField]["fieldtype"] = "plugin";
                 $aFieldDetails[$sField]["mandatory"] = false;
                 $aFieldDetails[$sField]["type"] = "string";
@@ -113,7 +113,7 @@ while ($oRcpGroup = $oRcpGroups->next()) {
     // $sGroupName = str_replace(str_split(" \t\n\r\0\x0B;"), "",
     // $oRcpGroup->get("groupname"));
 
-    $aFields[$sField] = strtolower(conHtmlentities(trim(i18n("Group", 'newsletter') . "_" . $sGroupName)));
+    $aFields[$sField] = cString::toLowerCase(conHtmlentities(trim(i18n("Group", 'newsletter') . "_" . $sGroupName)));
     $aFieldDetails[$sField]["fieldtype"] = "group";
     $aFieldDetails[$sField]["mandatory"] = false;
     $aFieldDetails[$sField]["type"] = "string";
@@ -125,7 +125,7 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
 
     // get content from uploaded file
     if (cFileHandler::exists($_FILES['receptionis_file']['tmp_name'])) {
-        if (strtolower(substr($_FILES['receptionis_file']['name'], -3)) == 'csv') {
+        if (cString::toLowerCase(cString::getPartOfString($_FILES['receptionis_file']['name'], -3)) == 'csv') {
             $sFileData = cFileHandler::read($_FILES['receptionis_file']['tmp_name']);
             if ($sFileData == '') {
                 $aMessage[] = i18n("The file is empty!", 'newsletter');
@@ -167,7 +167,7 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
 
                 foreach ($aParts as $sHeader) {
                     // fix for Con-331
-                    $sKey = array_search(strtolower(conHtmlentities($sHeader, ENT_QUOTES, 'UTF-8')), $aFields);
+                    $sKey = array_search(cString::toLowerCase(conHtmlentities($sHeader, ENT_QUOTES, 'UTF-8')), $aFields);
                     if ($sKey === false) {
                         $aMessage[] = sprintf(i18n("Given column header '%s' unknown, column ignored", 'newsletter'), conHtmlentities(trim($sHeader)));
                     } else {
@@ -182,7 +182,7 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
                     }
                 }
                 if ($bStop) {
-                    exit();
+                    break;
                 } else {
                     $_REQUEST["txtData"] = "";
                 }
@@ -200,11 +200,11 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
                     $aMessage[] = sprintf(i18n("Item with empty e-mail address found, item ignored (name: %s, row: %s)", 'newsletter'), $sName, $iRow);
                     $aInvalidLines[] = $sLine;
                     $iInvalid++;
-                } else if (!isValidMail($sEMail)) {
+                } elseif (!isValidMail($sEMail)) {
                     $aMessage[] = sprintf(i18n("E-mail address '%s' is invalid, item ignored (row: %s)", 'newsletter'), $sEMail, $iRow);
                     $aInvalidLines[] = $sLine;
                     $iInvalid++;
-                } else if ($oRecipients->emailExists($sEMail)) {
+                } elseif ($oRecipients->emailExists($sEMail)) {
                     $aMessage[] = sprintf(i18n("Recipient with e-mail address '%s' already exists, item skipped (row: %s)", 'newsletter'), $sEMail, $iRow);
                     $aInvalidLines[] = $sLine;
                     $iDublettes++;
@@ -225,7 +225,7 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
                                     case "field":
                                         switch ($aDetails["type"]) {
                                             case "boolean":
-                                                $sValue = strtolower(trim($aParts[$aDetails["col"]]));
+                                                $sValue = cString::toLowerCase(trim($aParts[$aDetails["col"]]));
 
                                                 // html is only treated as
                                                 // "true", to get html messages
@@ -284,7 +284,7 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
                                         break;
                                     case "group":
                                         // Add recipient to group
-                                        $sValue = strtolower(trim($aParts[$aDetails["col"]]));
+                                        $sValue = cString::toLowerCase(trim($aParts[$aDetails["col"]]));
 
                                         if ($sValue == "yes" || $sValue == i18n("yes", 'newsletter') || $sValue == "true" || (is_numeric($sValue) && $sValue > 0)) {
                                             $oGroupMembers->create($aDetails["link"], $iID);
@@ -353,7 +353,7 @@ $ofileUpload = new cHTMLUpload('receptionis_file');
 
 $oAreaData = new cHTMLTextarea("txtData", $_REQUEST["txtData"], 80, 20);
 
-$sInfo = '<a href="javascript:fncShowHide(\'idInfoText\');"><strong>' . i18n("Import information", 'newsletter') . '</strong></a>' . '<div id="idInfoText" style="display: none">' . '<br><br><strong>' . i18n("Specify file:", 'newsletter') . '</strong>' . '<br>' . i18n("The file is of type csv and is saved with UTF-8 encoding.", "newsletter") . '<br><br><strong>' . i18n("Specify colum types:", 'newsletter') . '</strong>' . i18n("<br>The first line must contain the column names; this specifies the column order.<br>&lt;column name&gt;[delimiter]&lt;column name&gt;...", 'newsletter') . '<br><br><strong>' . i18n("Data structure:", 'newsletter') . '</strong><br>' . i18n("The recipients have to be entered using the following format:<br>&lt;data&gt;[Delimiter]&lt;data&gt;... - each recipient in a new line.", 'newsletter') . '<br><br><strong>' . i18n("Example:", 'newsletter') . '</strong>' . i18n("<br>name;mail;confirmed<br>Smith;jon.smith@example.org;1", 'newsletter') . '<br><br><strong>' . i18n("The following column names will be recognized:", 'newsletter') . '</strong><br>' . implode("<br>\n", $aFields);
+$sInfo = '<a href="javascript:fncShowHide(\'idInfoText\');"><strong>' . i18n("Import information", 'newsletter') . '</strong></a>' . '<div id="idInfoText" style="display: none">' . '<br><br><strong>' . i18n("Specify file:", 'newsletter') . '</strong>' . '<br>' . i18n("The file is of type csv and is saved with UTF-8 encoding.", "newsletter") . '<br><br><strong>' . i18n("Specify colum types:", 'newsletter') . '</strong>' . i18n("<br>The first line must contain the column names; this specifies the column order.<br>&lt;column name&gt;[delimiter]&lt;column name&gt;...", 'newsletter') . '<br><br><strong>' . i18n("Data structure:", 'newsletter') . '</strong><br>' . i18n("The recipients have to be entered using the following format:<br>&lt;data&gt;[Delimiter]&lt;data&gt;... - each recipient in a new line.", 'newsletter') . '<br><br><strong>' . i18n("Example:", 'newsletter') . '</strong>' . i18n("<br>name;email;confirmed<br>Smith;jon.smith@example.org;1", 'newsletter') . '<br><br><strong>' . i18n("The following column names will be recognized:", 'newsletter') . '</strong><br>' . implode("<br>\n", $aFields);
 
 $oForm->add(i18n("Recipients", 'newsletter'), $ofileUpload->render() . "<br>" . $sInfo);
 unset($sInfo);

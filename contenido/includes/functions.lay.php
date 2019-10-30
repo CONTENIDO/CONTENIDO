@@ -22,7 +22,7 @@ cInclude('classes', 'class.layout.handler.php');
 /**
  * Edit or Create a new layout
  *
- * @param int $idlay
+ * @param int    $idlay
  *         Id of the Layout
  * @param string $name
  *         Name of the Layout
@@ -30,8 +30,13 @@ cInclude('classes', 'class.layout.handler.php');
  *         Description of the Layout
  * @param string $code
  *         Layout HTML Code
+ *
  * @return int
  *         Id of the new or edited layout
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function layEditLayout($idlay, $name, $description, $code) {
     global $client, $auth, $cfg, $sess, $lang, $area_tree, $perm, $area, $frame, $cfgClient;
@@ -47,12 +52,12 @@ function layEditLayout($idlay, $name, $description, $code) {
         $code = stripslashes($code);
     }
 
-    if (strlen(trim($name)) == 0) {
+    if (cString::getStringLength(trim($name)) == 0) {
         $name = i18n('-- Unnamed layout --');
     }
 
     // Replace all not allowed characters..
-    $layoutAlias = cModuleHandler::getCleanName(strtolower($name));
+    $layoutAlias = cModuleHandler::getCleanName(cString::toLowerCase($name));
 
     // Constructor for the layout in filesystem
     $layoutInFile = new cLayoutHandler($idlay, $code, $cfg, $lang);
@@ -76,8 +81,7 @@ function layEditLayout($idlay, $name, $description, $code) {
         }
 
         // Set correct rights for element
-        cInclude('includes', 'functions.rights.php');
-        createRightsForElement('lay', $idlay);
+        cRights::createRightsForElement('lay', $idlay);
 
         return $idlay;
     } else {
@@ -146,8 +150,13 @@ function layEditLayout($idlay, $name, $description, $code) {
  *
  * @param int $idlay
  *         the ID of the layout
+ *
  * @return string
  *         an error code if the layout is still in use
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function layDeleteLayout($idlay) {
     global $client, $cfg, $area_tree, $perm, $cfgClient;
@@ -175,6 +184,5 @@ function layDeleteLayout($idlay) {
     }
 
     // Delete rights for element
-    cInclude('includes', 'functions.rights.php');
-    deleteRightsForElement('lay', $idlay);
+    cRights::deleteRightsForElement('lay', $idlay);
 }

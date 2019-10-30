@@ -36,12 +36,15 @@ class cVersionModule extends cVersion {
      *
      * @param string $iIdMod
      *         The name of style file
-     * @param array $aCfg
-     * @param array $aCfgClient
-     * @param cDB $oDB
-     * @param int $iClient
+     * @param array  $aCfg
+     * @param array  $aCfgClient
+     * @param cDb    $oDB
+     *         CONTENIDO database object
+     * @param int    $iClient
      * @param object $sArea
-     * @param object $iFrame
+     * @param int    $iFrame
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct($iIdMod, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame) {
         // Set globals in main class
@@ -58,6 +61,7 @@ class cVersionModule extends cVersion {
 
     /**
      *
+     * @throws cInvalidArgumentException
      */
     protected function _storeModuleInformation() {
 

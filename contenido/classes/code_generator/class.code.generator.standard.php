@@ -31,12 +31,18 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * language).
      *
      * @see cCodeGeneratorAbstract::_generate()
-     * @param bool $contype [optional]
-     *         Flag to enable/disable replacement of CMS_TAGS[]
-     * @param bool $editable [optional]
-     * @param int|NULL $version [optional]
+     *
+     * @param bool     $contype  [optional]
+     *                           Flag to enable/disable replacement of CMS_TAGS[]
+     * @param bool     $editable [optional]
+     * @param int|NULL $version  [optional]
+     *
      * @return string
      *         The generated code
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function _generate($contype = true, $editable = true, $version = NULL) {
         global $cfg, $code;
@@ -81,6 +87,10 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             cInclude('includes', 'functions.tpl.php');
             $containerNumbers = tplGetContainerNumbersInLayout($idlay);
 
+            // Initializing check arrays (CON-2706)
+            $loadedCSS = array();
+            $loadedJS = array();
+
             foreach ($containerNumbers as $containerNr) {
                 // if there's no configured module in this container
                 if (!isset($containerModules[$containerNr]) || !is_numeric($containerModules[$containerNr])) {
@@ -118,12 +128,14 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                     }
 
                     // load css and js content of the js/css files
-                    if ($moduleHandler->getFilesContent('css', 'css') !== false) {
-                        $this->_cssData .= $moduleHandler->getFilesContent('css', 'css');
+                    if ($moduleHandler->getFilesContent('css', 'css') !== false && !in_array($oModule->get('idmod'), $loadedCSS)) {
+                        $this->_cssData .= $moduleHandler->getFilesContent('css', 'css') . PHP_EOL;
+                        $loadedCSS[] = $oModule->get('idmod');
                     }
 
-                    if ($moduleHandler->getFilesContent('js', 'js') !== false) {
-                        $this->_jsData .= $moduleHandler->getFilesContent('js', 'js');
+                    if ($moduleHandler->getFilesContent('js', 'js') !== false && !in_array($oModule->get('idmod'), $loadedJS)) {
+                        $this->_jsData .= $moduleHandler->getFilesContent('js', 'js') . PHP_EOL;
+                        $loadedJS[] = $oModule->get('idmod');
                     }
 
                     $input = $moduleHandler->readInput();
@@ -139,13 +151,18 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                     && cFileHandler::writeable(dirname($tmpFile))) {
                     if (false !== cFileHandler::write($tmpFile, $this->_moduleCode)) {
                         $this->_moduleCode = php_strip_whitespace($tmpFile);
+
+                        // delete file
+                        cFileHandler::remove($tmpFile);
                     }
-                    // delete file
-                    cFileHandler::remove($tmpFile);
                 }
 
                 // process CMS value tags
-                $containerCmsValues = $this->_processCmsValueTags($containerNr, $containerConfigurations[$containerNr]);
+                if (isset($containerConfigurations[$containerNr])) {
+                    $containerCmsValues = $this->_processCmsValueTags($containerNr, $containerConfigurations[$containerNr]);
+                } else {
+                    $containerCmsValues = '';
+                }
 
                 // add CMS value code to module prefix code
                 if ($containerCmsValues) {
@@ -177,7 +194,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         // save the collected css/js data and save it under the template name
         // ([templatename].css , [templatename].js in cache dir
         $cssFile = '';
-        if (strlen($this->_cssData) > 0) {
+        if (cString::getStringLength($this->_cssData) > 0) {
             if (($myFileCss = $moduleHandler->saveContentToFile($this->_tplName, 'css', $this->_cssData)) !== false) {
                 $oHTML = new cHTML(array(
                     'rel' => 'stylesheet',
@@ -190,7 +207,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         }
 
         $jsFile = '';
-        if (strlen($this->_jsData) > 0) {
+        if (cString::getStringLength($this->_jsData) > 0) {
             if (($myFileJs = $moduleHandler->saveContentToFile($this->_tplName, 'js', $this->_jsData)) !== false) {
                 $jsFile = '<script src="' . $myFileJs . '" type="text/javascript"></script>';
             }
@@ -198,31 +215,32 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
         // add module CSS at {CSS} position, after title
         // or after opening head tag
-        if (strpos($this->_layoutCode, '{CSS}') !== false) {
+        if (cString::findFirstPos($this->_layoutCode, '{CSS}') !== false) {
             $this->_layoutCode = cString::iReplaceOnce('{CSS}', $cssFile, $this->_layoutCode);
         } else if (!empty($cssFile)) {
-            if (strpos($this->_layoutCode, '</title>') !== false) {
+            if (cString::findFirstPos($this->_layoutCode, '</title>') !== false) {
                 $matches = array();
-                preg_match_all("#(<head>.*?</title>)(.*?</head>)#si", $this->_layoutCode, $matches);
-                $this->_layoutCode = cString::iReplaceOnce($matches[1][0], $matches[1][0] . $cssFile . $matches[1][1], $this->_layoutCode);
+                if (preg_match_all("#(<head>.*?</title>)(.*?</head>)#si", $this->_layoutCode, $matches)) {
+                    $this->_layoutCode = cString::iReplaceOnce($matches[1][0], $matches[1][0] . $cssFile, $this->_layoutCode);
+                }
             } else {
                 $this->_layoutCode = cString::iReplaceOnce('<head>', '<head>' . $cssFile, $this->_layoutCode);
             }
         }
 
-        if (strpos($this->_layoutCode, '{REV}') !== false) {
+        if (cString::findFirstPos($this->_layoutCode, '{REV}') !== false) {
             $this->_layoutCode = cString::iReplaceOnce('{REV}', ((int) getEffectiveSetting("ressource", "revision", 0)), $this->_layoutCode);
         }
 
         // add module JS at {JS} position
         // or before closing body tag if there is no {JS}
-        if (strpos($this->_layoutCode, '{JS}') !== false) {
+        if (cString::findFirstPos($this->_layoutCode, '{JS}') !== false) {
             $this->_layoutCode = cString::iReplaceOnce('{JS}', $jsFile, $this->_layoutCode);
         } else if (!empty($jsFile)) {
             $this->_layoutCode = cString::iReplaceOnce('</body>', $jsFile . '</body>', $this->_layoutCode);
         }
 
-        if (strpos($this->_layoutCode, '{META}') !== false) {
+        if (cString::findFirstPos($this->_layoutCode, '{META}') !== false) {
             $this->_layoutCode = cString::iReplaceOnce('{META}', $this->_processCodeMetaTags(), $this->_layoutCode);
         } else {
             $this->_layoutCode = cString::iReplaceOnce('</head>', $this->_processCodeMetaTags() . '</head>', $this->_layoutCode);
@@ -278,6 +296,9 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      *
      * @param int $idcatart
      *         category article id
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     protected function _processNoConfigurationError($idcatart) {
         cDebug::out('Neither CAT or ART are configured!<br><br>');
@@ -288,50 +309,50 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
     /**
      * Processes and adds or replaces title tag for an article.
-     * Also calls the CEC 'Contenido.Content.CreateTitletag'
-     * for user defined title creation.
+     * Also calls the CEC 'Contenido.Content.CreateTitletag' for user defined title creation if none is given.
      *
      * @see cCodeGeneratorAbstract::_processCodeTitleTag()
      * @return string
      */
-    protected function _processCodeTitleTag() {
+    protected function _processCodeTitleTag()
+    {
         if ($this->_pageTitle == '') {
             cApiCecHook::setDefaultReturnValue($this->_pageTitle);
             $this->_pageTitle = cApiCecHook::executeAndReturn('Contenido.Content.CreateTitletag');
         }
 
-        $headTag = array();
+        // define regular expressions
+        $reHead  = '/<head>.*?<\/head>/is';
+        $reTitle = '/<title>.*?<\/title>/is';
+
         // find head tags in layout code (case insensitive, search across linebreaks)
-        if (false === preg_match_all('/<head>.*?<\/head>/is', $this->_layoutCode, $headTag)) {
-            // no head tag
-            return $this->_layoutCode;
-        }
-        if (0 === count($headTag)
-        || false === isset($headTag[0])
-        || false === isset($headTag[0][0])) {
-            // no head tag
-            return $this->_layoutCode;
-        }
-        // use first head tag found (by definition there must always be only 1 tag
-        // but user supplied markup might be incorrect)
-        $headTag = $headTag[0][0];
+        $matches = [];
+        $succ    = preg_match_all($reHead, $this->_layoutCode, $matches);
 
-        // add or replace title
-        if ($this->_pageTitle != '') {
-            $replaceTag = '{__TITLE__' . md5(rand().time()) . '}';
-            $headCode = preg_replace('/<title>.*?<\/title>/is', $replaceTag, $headTag, 1);
+        // check if head tag has been found
+        if (false !== $succ && count($matches) && isset($matches[0], $matches[0][0])) {
+            // use first head tag found
+            // by definition there must be no more than one head tag but user supplied markup might be invalid
+            $headTag = $matches[0][0];
 
-            if (false !== strpos($headCode, $replaceTag)) {
-                $headCode = str_ireplace($replaceTag, '<title>' . $this->_pageTitle . '</title>', $headCode);
+            // add or replace title
+            if ($this->_pageTitle != '') {
+                $replaceTag = '{__TITLE__' . md5(rand() . time()) . '}';
+                $headCode   = preg_replace($reTitle, $replaceTag, $headTag, 1);
+                $pageTitle  = conHtmlentities($this->_pageTitle);
+                if (false !== cString::findFirstPos($headCode, $replaceTag)) {
+                    $headCode = str_ireplace($replaceTag, "<title>$pageTitle</title>", $headCode);
+                } else {
+                    $headCode = cString::iReplaceOnce('</head>', "<title>$pageTitle</title>\n</head>", $headCode);
+                }
             } else {
-                $headCode = cString::iReplaceOnce('</head>', '<title>' . $this->_pageTitle . "</title>\n</head>", $headCode);
+                // remove empty title tags from head tag
+                $headCode = str_replace('<title></title>', '', $headTag);
             }
-        } else {
-            // remove empty title tags from head tag
-            $headCode = str_replace('<title></title>', '', $headTag);
+
+            // overwrite first head tag in original layout code
+            $this->_layoutCode = preg_replace($reHead, $headCode, $this->_layoutCode, 1);
         }
-        // overwrite first head tag in original layout code
-        $this->_layoutCode = preg_replace('/<head>.*?<\/head>/is', $headCode, $this->_layoutCode, 1);
 
         return $this->_layoutCode;
     }
@@ -411,13 +432,15 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
     /**
      * Saves the generated code if layout flag is false and save flag is true.
      *
+     * @param int    $idcatart
+     *                               Category article id
+     * @param string $code           [optional]
+     *                               parameter for setting code manually instead of using the generated layout code
+     * @param bool   $flagCreateCode [optional]
+     *                               whether the create code flag in cat_art should be set or not (optional)
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      * @global array $cfgClient
-     * @param int $idcatart
-     *         Category article id
-     * @param string $code [optional]
-     *         parameter for setting code manually instead of using the generated layout code
-     * @param bool $flagCreateCode [optional]
-     *         whether the create code flag in cat_art should be set or not (optional)
      */
     protected function _saveGeneratedCode($idcatart, $code = '', $flagCreateCode = true) {
         global $cfgClient;
@@ -441,7 +464,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         if ($this->_layout == false && $this->_save == true && isset($cfgClient[$this->_client]['code']['path'])) {
             if (false === is_dir($cfgClient[$this->_client]['code']['path'])) {
                 mkdir($cfgClient[$this->_client]['code']['path']);
-                @chmod($cfgClient[$this->_client]['code']['path'], 0777);
+                @chmod($cfgClient[$this->_client]['code']['path'], cDirHandler::getDefaultPermissions());
             }
 
             if (true !== cFileHandler::exists($cfgClient[$this->_client]['code']['path'] . '.htaccess')) {
@@ -476,7 +499,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         $metaTags = array();
         foreach (conGetAvailableMetaTagTypes() as $key => $value) {
             $metaValue = conGetMetaValue($this->_idartlang, $key);
-            if (0 < strlen($metaValue)) {
+            if (0 < cString::getStringLength($metaValue)) {
                 $metaTags[] = array(
                     $value['fieldname'] => $value['metatype'],
                     'content' => $metaValue

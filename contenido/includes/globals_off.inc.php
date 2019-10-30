@@ -20,7 +20,7 @@
 /**
  * Set constant value depending on get_magic_quotes_gpc status
  *
- * @var boolean
+ * @var bool
  */
 if (function_exists('get_magic_quotes_gpc')) {
     define('CON_STRIPSLASHES', !get_magic_quotes_gpc());
@@ -31,7 +31,10 @@ if (function_exists('get_magic_quotes_gpc')) {
 // Simulate get_magic_quotes_gpc on if turned off
 if (CON_STRIPSLASHES) {
 
-    // class cString is not loaded here as autoloader wasn't called yet
+    // classes cStringMultiByteWrapper and cString are not loaded here as autoloader wasn't called yet
+    if (false === class_exists('cStringMultiByteWrapper')) {
+        include_once dirname(__DIR__) . '/classes/class.string.multi.byte.wrapper.php';
+    }
     if (false === class_exists('cString')) {
         include_once dirname(__DIR__) . '/classes/class.string.php';
     }

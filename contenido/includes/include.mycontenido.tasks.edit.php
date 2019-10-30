@@ -154,7 +154,7 @@ $cpage->addStyle("jquery/plugins/timepicker.css");
 $cpage->addScript("jquery/plugins/timepicker.js");
 // $cpage->addScript("jquery/jquery-ui.js");
 
-if (($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
+if (($lang_short = cString::getPartOfString(cString::toLowerCase($belang), 0, 2)) != "en") {
     $cpage->addScript("jquery/plugins/timepicker-" . $lang_short . ".js");
     $cpage->addScript("jquery/plugins/datepicker-" . $lang_short . ".js");
 }

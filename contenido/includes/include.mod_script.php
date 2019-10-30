@@ -51,16 +51,17 @@ $page = new cGuiPage("mod_script");
 $tpl->reset();
 
 if (!$perm->have_perm_area_action('js', $actionRequest) || $permCreate) {
-    $notification->displayNotification('error', i18n('Permission denied'));
-    return;
-}
-
-if (!(int) $client > 0) {
-    // If there is no client selected, display empty page
+    $page->displayCriticalError(i18n('Permission denied'));
     $page->render();
     return;
 }
 
+// display critical error if no valid client is selected
+if ((int) $client < 1) {
+    $page->displayCriticalError(i18n("No Client selected"));
+    $page->render();
+    return;
+}
 
 $path = $contenidoModulHandler->getJsPath(); // $cfgClient[$client]['js']['path'];
 
@@ -68,13 +69,13 @@ $path = $contenidoModulHandler->getJsPath(); // $cfgClient[$client]['js']['path'
 if (!$contenidoModulHandler->moduleWriteable('js')) {
     $page->displayCriticalError(i18n('No write permissions in folder js for this module!'));
     $page->render();
-    exit();
+    return;
 }
 
 $sTempFilename = stripslashes($tmpFile);
 $sOrigFileName = $sTempFilename;
 
-if (cFileHandler::getExtension($file) != $sFileType && strlen(stripslashes(trim($file))) > 0) {
+if (cFileHandler::getExtension($file) != $sFileType && cString::getStringLength(stripslashes(trim($file))) > 0) {
     $sFilename .= stripslashes($file) . '.' . $sFileType;
 } else {
     $sFilename .= stripslashes($file);
@@ -203,7 +204,7 @@ if (isset($actionRequest)) {
     $form->add(i18n('Name'), $tb_name);
     $form->add(i18n('Code'), $ta_code);
 
-    $oCodeMirror = new CodeMirror('code', 'js', substr(strtolower($belang), 0, 2), true, $cfg);
+    $oCodeMirror = new CodeMirror('code', 'js', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg);
     if($readOnly) {
         $oCodeMirror->setProperty("readOnly", "true");
 

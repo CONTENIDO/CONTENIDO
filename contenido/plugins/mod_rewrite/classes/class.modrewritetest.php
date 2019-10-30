@@ -85,13 +85,15 @@ class ModRewriteTest {
     /**
      * Fetchs full structure of the installation (categories and articles) and returns it back.
      *
-     * @param   int    $idclient  Client id
-     * @param   int    $idlang    Language id
+     * @param   int $idclient Client id
+     * @param   int $idlang   Language id
+     *
      * @return  array  Full structure as follows
      * <code>
      *   $arr[idcat] = Category dataset
      *   $arr[idcat]['articles'][idart] = Article dataset
      * </code>
+     * @throws cDbException
      */
     public function fetchFullStructure($idclient = NULL, $idlang = NULL) {
         global $client, $lang;
@@ -172,15 +174,17 @@ class ModRewriteTest {
      *
      * The result is used to generate seo urls...
      *
-     * @param  array  $arr  Assoziative array with some data as follows:
-     * <code>
-     * $arr['idcat']
-     * $arr['idart']
-     * $arr['idcatart']
-     * $arr['idartlang']
-     * </code>
-     * @param  string  $type  Either 'c' or 'a' (category or article). If set to
+     * @param  array  $arr    Assoziative array with some data as follows:
+     *                        <code>
+     *                        $arr['idcat']
+     *                        $arr['idart']
+     *                        $arr['idcatart']
+     *                        $arr['idartlang']
+     *                        </code>
+     * @param  string $type   Either 'c' or 'a' (category or article). If set to
      *                        'c' only the parameter idcat will be added to the URL
+     *
+     * @return string
      */
     public function composeURL($arr, $type) {
         $type = ($type == 'a') ? 'a' : 'c';
@@ -211,8 +215,12 @@ class ModRewriteTest {
      * Resolves variables of an page (idcat, idart, idclient, idlang, etc.) by
      * processing passed url using ModRewriteController
      *
-     * @param   string  $url  Url to resolve
+     * @param   string $url Url to resolve
+     *
      * @return  array   Assoziative array with resolved data
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function resolveUrl($url) {
         // some globals to reset
@@ -290,7 +298,7 @@ class ModRewriteTest {
         foreach ($data as $k => $v) {
             $ret .= $k . '=' . $v . '; ';
         }
-        $ret = substr($ret, 0, strlen($ret) - 2);
+        $ret = cString::getPartOfString($ret, 0, cString::getStringLength($ret) - 2);
         return $ret;
     }
 

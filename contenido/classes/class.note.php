@@ -21,9 +21,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class NoteCollection extends cApiCommunicationCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         parent::__construct();
@@ -37,16 +38,20 @@ class NoteCollection extends cApiCommunicationCollection {
      * original function for the parameters.
      *
      * @see ItemCollection::select()
-     * @param string $where [optional]
-     *         Specifies the where clause.
+     *
+     * @param string $where    [optional]
+     *                         Specifies the where clause.
      * @param string $group_by [optional]
-     *         Specifies the group by clause.
+     *                         Specifies the group by clause.
      * @param string $order_by [optional]
-     *         Specifies the order by clause.
-     * @param string $limit [optional]
-     *         Specifies the limit by clause.
+     *                         Specifies the order by clause.
+     * @param string $limit    [optional]
+     *                         Specifies the limit by clause.
+     *
      * @return bool
      *         True on success, otherwise false
+     *
+     * @throws cDbException
      */
     public function select($where = '', $group_by = '', $order_by = '', $limit = '') {
         if ($where == '') {
@@ -62,16 +67,21 @@ class NoteCollection extends cApiCommunicationCollection {
      * Creates a new note item.
      *
      * @param string $itemtype
-     *         Item type (usually the class name)
-     * @param mixed $itemid
-     *         Item ID (usually the primary key)
-     * @param int $idlang
-     *         Language-ID
+     *                         Item type (usually the class name)
+     * @param mixed  $itemid
+     *                         Item ID (usually the primary key)
+     * @param int    $idlang
+     *                         Language-ID
      * @param string $message
-     *         Message to store
+     *                         Message to store
      * @param string $category [optional]
+     *
      * @return object
-     *         The new item
+     *                         The new item
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function createItem($itemtype, $itemid, $idlang, $message, $category = '') {
         $item = parent::create();
@@ -116,7 +126,7 @@ class NoteView extends cHTMLIFrame {
      * @param string $sItemId
      */
     public function __construct($sItemType, $sItemId) {
-        global $sess, $cfg;
+        global $sess;
         parent::__construct();
         $this->setSrc($sess->url("main.php?itemtype=$sItemType&itemid=$sItemId&area=note&frame=2"));
         $this->setBorder(0);
@@ -172,11 +182,15 @@ class NoteList extends cHTMLDiv {
      * (non-PHPdoc)
      *
      * @see cHTML::toHtml()
+     *
      * @return string
      *     generated markup
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function toHtml() {
-        global $cfg, $lang;
+        global $lang;
 
         $sItemType = $this->_sItemType;
         $sItemId = $this->_sItemId;
@@ -257,7 +271,7 @@ class NoteListItem extends cHTMLDiv {
 
     /**
      *
-     * @param string $dark [optional]
+     * @param bool $dark [optional]
      */
     public function setBackground($dark = false) {
     }
@@ -267,7 +281,7 @@ class NoteListItem extends cHTMLDiv {
      * @param string $sAuthor
      */
     public function setAuthor($sAuthor) {
-        if (strlen($sAuthor) == 32) {
+        if (cString::getStringLength($sAuthor) == 32) {
             $result = getGroupOrUserName($sAuthor);
 
             if ($result !== false) {
@@ -285,7 +299,7 @@ class NoteListItem extends cHTMLDiv {
     public function setDate($iDate) {
         $dateformat = getEffectiveSetting('dateformat', 'full', 'Y-m-d H:i:s');
 
-        if (is_string($iDate)) {
+        if (cSecurity::isString($iDate)) {
             $iDate = strtotime($iDate);
         }
         $this->_sDate = date($dateformat, $iDate);
@@ -439,7 +453,9 @@ class NoteLink extends cHTMLLink {
         $itemtype = $this->_sItemType;
         $itemid = $this->_sItemID;
 
-        $this->setEvent('click', 'javascript:window.open(' . "'" . $sess->url("main.php?area=note&frame=1&itemtype=$itemtype&itemid=$itemid") . "', 'todo', 'resizable=yes,scrollbars=yes,height=360,width=550');");
+        $url = $sess->url("main.php?area=note&frame=1&itemtype=$itemtype&itemid=$itemid");
+        $this->setEvent('click', "javascript:window.open('$url', 'todo', 'resizable=yes,scrollbars=yes,height=360,width=550');");
+
         return parent::render();
     }
 }

@@ -88,7 +88,7 @@ class idna_convert
     /**
      * the constructor
      *
-     * @param array $options
+     * @param array|bool $options
      * @since 0.5.2
      */
     public function __construct($options = false)
@@ -117,9 +117,10 @@ class idna_convert
      *           on failures; false: loose mode, ideal for "wildlife" applications
      *           by silently ignoring errors and returning the original input instead
      *
-     * @param    mixed     Parameter to set (string: single parameter; array of Parameter => Value pairs)
-     * @param    string    Value to use (if parameter 1 is a string)
-     * @return   boolean   true on success, false otherwise
+     * @param    mixed  $option     Parameter to set (string: single parameter; array of Parameter => Value pairs)
+     * @param    string|bool $value Value to use (if parameter 1 is a string)
+     *
+     * @return   bool true on success, false otherwise
      */
     public function set_parameter($option, $value = false)
     {
@@ -193,7 +194,7 @@ class idna_convert
 
         // Negotiate input and try to determine, whether it is a plain string,
         // an email address or something like a complete URL
-        if (strpos($input, '@')) { // Maybe it is an email address
+        if (cString::findFirstPos($input, '@')) { // Maybe it is an email address
             // No no in strict mode
             if ($this->_strict_mode) {
                 $this->_error('Only simple domain name parts can be handled in strict mode');
@@ -232,7 +233,7 @@ class idna_convert
                 }
                 $parsed['host'] = join('.', $arr);
                 $return =
-                        (empty($parsed['scheme']) ? '' : $parsed['scheme'].(strtolower($parsed['scheme']) == 'mailto' ? ':' : '://'))
+                        (empty($parsed['scheme']) ? '' : $parsed['scheme'].(cString::toLowerCase($parsed['scheme']) == 'mailto' ? ':' : '://'))
                         .(empty($parsed['user']) ? '' : $parsed['user'].(empty($parsed['pass']) ? '' : ':'.$parsed['pass']).'@')
                         .$parsed['host']
                         .(empty($parsed['port']) ? '' : ':'.$parsed['port'])
@@ -374,7 +375,7 @@ class idna_convert
         }
         $parsed['host'] = join('.', $arr);
         $return =
-                (empty($parsed['scheme']) ? '' : $parsed['scheme'].(strtolower($parsed['scheme']) == 'mailto' ? ':' : '://'))
+                (empty($parsed['scheme']) ? '' : $parsed['scheme'].(cString::toLowerCase($parsed['scheme']) == 'mailto' ? ':' : '://'))
                 .(empty($parsed['user']) ? '' : $parsed['user'].(empty($parsed['pass']) ? '' : ':'.$parsed['pass']).'@')
                 .$parsed['host']
                 .(empty($parsed['port']) ? '' : ':'.$parsed['port'])
@@ -413,7 +414,7 @@ class idna_convert
             return false;
         }
         // Find last occurence of the delimiter
-        $delim_pos = strrpos($encoded, '-');
+        $delim_pos = cString::findLastPos($encoded, '-');
         if ($delim_pos > self::byteLength($this->_punycode_prefix)) {
             for ($k = self::byteLength($this->_punycode_prefix); $k < $delim_pos; ++$k) {
                 $decoded[] = ord($encoded{$k});
@@ -591,8 +592,10 @@ class idna_convert
 
     /**
      * Do Nameprep according to RFC3491 and RFC3454
+     *
      * @param    array    Unicode Characters
-     * @return   string   Unicode Characters, Nameprep'd
+     *
+     * @return   array   Unicode Characters, Nameprep'd
      */
     protected function _nameprep($input)
     {
@@ -967,9 +970,9 @@ class idna_convert
     protected static function byteLength($string)
     {
         if (self::$_mb_string_overload) {
-            return mb_strlen($string, '8bit');
+            return cString::getStringLength($string, '8bit');
         }
-        return strlen((binary) $string);
+        return cString::getStringLength((binary) $string);
     }
 
     /**

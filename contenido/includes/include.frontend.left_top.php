@@ -78,7 +78,7 @@ if ($bUsePlugins == true && is_array($cfg['plugins']['frontendusers'])) {
     $_sValidPlugins = getEffectiveSetting("frontendusers", "pluginsearch_valid_plugins", '');
     $_aValidPlugins = array();
 
-    if (strlen($_sValidPlugins) > 0) {
+    if (cString::getStringLength($_sValidPlugins) > 0) {
         $_aValidPlugins = explode(',', $_sValidPlugins);
     }
 
@@ -264,7 +264,7 @@ $oFEUsers->setWhere("cApiFrontendUserCollection.idclient", $client);
  * Process request parameters
  */
 
-if (strlen($_REQUEST["filter"]) > 0) {
+if (cString::getStringLength($_REQUEST["filter"]) > 0) {
     if ($_REQUEST['searchin'] == "--all--" || $_REQUEST['searchin'] == "") {
         foreach ($aFieldSources as $variableName => $source) {
             $oFEUsers->setWhereGroup("filter", $variableName, $_REQUEST["filter"], "LIKE");

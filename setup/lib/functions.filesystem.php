@@ -130,7 +130,7 @@ function checkOpenBasedirCompatibility() {
     $sCurrentDirectory = getcwd();
 
     foreach ($aBasedirEntries as $entry) {
-        if (stristr($sCurrentDirectory, $entry)) {
+        if (cString::findFirstOccurrenceCI($sCurrentDirectory, $entry)) {
             return CON_BASEDIR_RESTRICTIONSUFFICIENT;
         }
     }

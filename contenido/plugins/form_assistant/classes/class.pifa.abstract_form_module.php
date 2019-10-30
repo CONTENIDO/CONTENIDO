@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * This file contains the PifaAbstractFormModule class.
  *
  * @package Plugin
  * @subpackage FormAssistant
@@ -62,14 +63,14 @@ abstract class PifaAbstractFormModule {
     private $_templateName = '';
 
     /**
-     *
-     * @var cSmartyFrontend
+     * @var cSmartyWrapper
      */
     private $_tpl = NULL;
 
     /**
-     *
      * @param array $settings as defined for cContentTypePifaForm
+     *
+     * @throws cException
      */
     public function __construct(array $settings = NULL) {
         $this->_settings = $settings;
@@ -78,7 +79,6 @@ abstract class PifaAbstractFormModule {
     }
 
     /**
-     *
      * @return array
      */
     public function getSettings() {
@@ -86,7 +86,6 @@ abstract class PifaAbstractFormModule {
     }
 
     /**
-     *
      * @param string $key
      * @return mixed
      */
@@ -95,7 +94,6 @@ abstract class PifaAbstractFormModule {
     }
 
     /**
-     *
      * @param array $_settings
      */
     public function setSettings(array $_settings) {
@@ -103,7 +101,6 @@ abstract class PifaAbstractFormModule {
     }
 
     /**
-     *
      * @return int
      */
     public function getIdform() {
@@ -111,7 +108,6 @@ abstract class PifaAbstractFormModule {
     }
 
     /**
-     *
      * @param int $_idform
      */
     public function setIdform($_idform) {
@@ -119,7 +115,6 @@ abstract class PifaAbstractFormModule {
     }
 
     /**
-     *
      * @return string
      */
     public function getTemplateName() {
@@ -127,7 +122,6 @@ abstract class PifaAbstractFormModule {
     }
 
     /**
-     *
      * @param string $_templateName
      */
     public function setTemplateName($_templateName) {
@@ -135,18 +129,16 @@ abstract class PifaAbstractFormModule {
     }
 
     /**
-     *
-     * @return cSmartyFrontend
+     * @return cSmartyWrapper
      */
     public function getTpl() {
         return $this->_tpl;
     }
 
     /**
-     *
-     * @param cSmartyFrontend $_tpl
+     * @param cSmartyWrapper $_tpl
      */
-    public function setTpl(cSmartyFrontend $_tpl) {
+    public function setTpl(cSmartyWrapper $_tpl) {
         $this->_tpl = $_tpl;
     }
 
@@ -158,14 +150,16 @@ abstract class PifaAbstractFormModule {
      */
     protected function _getRequestMethod() {
         $requestMethod = $_SERVER['REQUEST_METHOD'];
-        $requestMethod = strtoupper($requestMethod);
+        $requestMethod = cString::toUpperCase($requestMethod);
 
         return $requestMethod;
     }
 
     /**
-     *
      * @param bool $return
+     *
+     * @return mixed|string
+     *
      * @throws PifaException if request method is unknown
      */
     public function render($return = false) {

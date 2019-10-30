@@ -23,7 +23,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  *
  * @param string $currentBaseHref
+ *
  * @return string
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function cecCreateBaseHref($currentBaseHref) {
 
@@ -62,7 +67,7 @@ function cecCreateBaseHref($currentBaseHref) {
         }
 
         // skip if http path does not start with configured path
-        if (0 !== strpos($httpPath, $propPath)) {
+        if (0 !== cString::findFirstPos($httpPath, $propPath)) {
             continue;
         }
 

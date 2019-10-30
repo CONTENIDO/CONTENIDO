@@ -51,7 +51,7 @@ class cValidatorFactory {
     public static function getInstance($validator, array $options = array()) {
         global $cfg;
 
-        $name = strtolower($validator);
+        $name = cString::toLowerCase($validator);
         $className = 'cValidator' . ucfirst($name);
 
         if ('factory' === $name) {

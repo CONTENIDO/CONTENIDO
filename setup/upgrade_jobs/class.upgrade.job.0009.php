@@ -116,13 +116,13 @@ class cUpgradeJob_0009 extends cUpgradeJobAbstract {
 
         // copy concache.php
         if (!is_dir($this->_aCfgClient[1]["path"]["frontend"] . "data")) {
-            cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "data", 0777);
+            cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "data");
         }
         if (!is_dir($this->_aCfgClient[1]["path"]["frontend"] . "data/config")) {
-            cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "data/config", 0777);
+            cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "data/config");
         }
         if (!is_dir($this->_aCfgClient[1]["path"]["frontend"] . "data/config/" . CON_ENVIRONMENT)) {
-            cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "data/config/" . CON_ENVIRONMENT, 0777);
+            cDirHandler::create($this->_aCfgClient[1]["path"]["frontend"] . "data/config/" . CON_ENVIRONMENT);
         }
         copy("data/examples/concache.php", $this->_aCfgClient[1]["path"]["frontend"] . "data/config/" . CON_ENVIRONMENT . "/concache.php");
 

@@ -117,7 +117,7 @@ switch ($versioning->getState()) {
 
                 // Execute cec hook
                 cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
-                    'idart' => $artLangVersion->get("idart"),
+                    'idart' => $artLang->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
                 ));
             }
@@ -191,7 +191,7 @@ if ($art->getField('created')) {
 }
 
 // Assign head values to page
-$lang_short = substr(strtolower($belang), 0, 2);
+$lang_short = cString::getPartOfString(cString::toLowerCase($belang), 0, 2);
 $langscripts = '';
 if ($lang_short != 'en') {
     $langscripts = '
@@ -230,24 +230,13 @@ if (!empty($notifications)) {
     $tpl->set('s', 'NOTIFICATIONS', '');
 }
 
-// CON-2532
-// problem:
-//      "base"-url is e.g. con.local
-//      "contenido-base"-url is con.local/cms
-// therefore: 1)article links are generated relative like "/cms/some-site"
-//                  -> works in browser for "base"-url+articlelink: con.local/cms/some-site
-//            2)is not working if contenido builds absolute urls with its contenido functions
-//                   -> con.local/cms/cms/some-site
-// we don't have the base url stored in contenido (why :(() so i just made one:
-$baseUrl = sprintf(
-    "%s://%s",
-    isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
-    $_SERVER['SERVER_NAME']
-);
-
-// Assign form page seo elements values
+// Assign form page seo elements values (incl. CON-2696 change, undo CON-2532 changes)
 $tpl->set('s', 'LINK', $art->getLink());
-$tpl->set('s', 'FULL_LINK', /*$cfgClient[$client]['path']['htmlpath']*/ $baseUrl . $art->getLink());
+
+$tpl->set('s', 'FULL_LINK', cUri::getInstance()->build(array(
+    'idart' => $art->get('idart'),
+    'lang' => $art->get('idlang')
+), true));
 
 $tpl->set('s', 'PAGE_TITLE', conHtmlSpecialChars(cSecurity::unFilter(stripslashes($art->getField('pagetitle')))));
 
@@ -269,10 +258,13 @@ $metaPreview = array();
 
 // Set meta tags values
 foreach ($availableTags as $key => $value) {
+    $contentMetaValue = conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version'));
+    $contentMetaValue = str_replace('"', '', $contentMetaValue);
+
     $metaPreview[] = array(
         'fieldname' => $value['fieldname'],
         'name' => $value['metatype'],
-        'content' => cSecurity::unFilter(stripslashes(conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version'))))
+        'content' => cSecurity::unFilter(stripslashes($contentMetaValue))
     );
 
     // Set meta values to inputs
@@ -293,13 +285,13 @@ foreach ($availableTags as $key => $value) {
             }
 
             // Set robots checkboxes
-            $robot_array = explode(', ', conHtmlSpecialChars(conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version'))));
+            $robot_array = explode(', ', conHtmlSpecialChars($contentMetaValue));
             foreach ($robot_array as $instruction) {
-                $tpl->set('s', strtoupper($instruction), 'checked');
+                $tpl->set('s', cString::toUpperCase($instruction), 'checked');
             }
         } else {
-            $metaType = conHtmlSpecialChars(cSecurity::unFilter(stripslashes(conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version')))));
-            $tpl->set('s', strtoupper($value['metatype']), str_replace('\\', '', $metaType));
+            $metaType = conHtmlSpecialChars(cSecurity::unFilter(stripslashes($contentMetaValue)));
+            $tpl->set('s', cString::toUpperCase($value['metatype']), str_replace('\\', '', $metaType));
         }
 
         continue;
@@ -316,17 +308,16 @@ foreach ($availableTags as $key => $value) {
                             id="META' . $value['metatype'] . '"
                             size="24"
                             maxlength=' . $value['maxlength'] . '
-                            value="' . conHtmlSpecialChars(conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version'))) . '">';
+                            value="' . conHtmlSpecialChars($contentMetaValue) . '">';
 
             break;
         case 'textarea':
-            $textValue = cSecurity::unFilter(stripslashes(conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version'))));
             $element = '<textarea ' . $disabled . '
                             class="metaTag"
                             name="META' . $value['metatype'] . '"
                             id="META' . $value['metatype'] . '"
                             rows="3"
-                        >' . $textValue . '</textarea>';
+                        >' . cSecurity::unFilter(stripslashes($contentMetaValue)) . '</textarea>';
             break;
         case 'date':
             $element = '<input ' . $disabled . '
@@ -336,7 +327,7 @@ foreach ($availableTags as $key => $value) {
                             id="META' . $value['metatype'] . '"
                             size="24"
                             maxlength=' . $value['maxlength'] . '
-                            value="' . conHtmlSpecialChars(conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version'))) . '">';
+                            value="' . conHtmlSpecialChars($contentMetaValue) . '">';
 
             break;
     }

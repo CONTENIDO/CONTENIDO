@@ -16,22 +16,26 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $tpl->reset();
 $contenidoNotification = new cGuiNotification();
-$trackingNotification = "";
-$googleNotification = "";
-$piwikNotification = "";
-//Show message if statistics off
-$cApiClient = new cApiClient($client);
-if ($cApiClient->getProperty("stats", "tracking") == "off") {
-    $trackingNotification = $contenidoNotification->returnNotification('warning', i18n("Tracking was disabled for this client!"));
+
+// CON-2718
+$statisticmode = getSystemProperty('stats', 'tracking');
+if ($statisticmode == 'disabled') {
+    $trackingNotification = $contenidoNotification->returnNotification('error', i18n('The statistic is disabled. You can activate it at the system configuration.'));
+    $tpl->set('s', 'CONTENTS', $trackingNotification);
+    $tpl->generate($cfg['path']['templates'] . $cfg['templates']['blank']);
+    return false;
 }
 
-//Display google account message
+$googleNotification = "";
+$piwikNotification = "";
+
+// Display google account message
 if (($googleAccount = getEffectiveSetting('stats', 'ga_account', '')) != "") {
     $linkToGoogle = sprintf('<a target="_blank" href="http://www.google.com/intl/' . $belang . '/analytics/">%s</a>', i18n("here"));
     $googleNotification = $contenidoNotification->returnNotification('warning', sprintf(i18n("This client has been configured with Google Analytics account %s. Click %s to visit Google Analytics"), $googleAccount, $linkToGoogle));
 }
 
-//display piwik account message
+// display piwik account message
 if (($piwikUrl = getEffectiveSetting('stats', 'piwik_url', '')) != "") {
     if (($piwikSite = getEffectiveSetting('stats', 'piwik_site', '')) != "") {
         $linkToPiwik = sprintf('<a target="_blank" href="' . $piwikUrl . '">%s</a>', i18n('here'));
@@ -41,7 +45,7 @@ if (($piwikUrl = getEffectiveSetting('stats', 'piwik_url', '')) != "") {
 
 
 if ($action == "stat_show") {
-    if (strlen($yearmonth) < 4) {
+    if (cString::getStringLength($yearmonth) < 4) {
         $yearmonth = "current";
     }
 
@@ -79,7 +83,7 @@ if ($action == "stat_show") {
         if (strcmp($yearmonth, "current") == 0) {
             $tpl->set('s', 'STATTITLE', i18n("Current") . ' ' . $stattype);
         } else {
-            $tpl->set('s', 'STATTITLE', $stattype . " " . getCanonicalMonth(substr($yearmonth, 4, 2)) . ' ' . substr($yearmonth, 0, 4));
+            $tpl->set('s', 'STATTITLE', $stattype . " " . getCanonicalMonth(cString::getPartOfString($yearmonth, 4, 2)) . ' ' . cString::getPartOfString($yearmonth, 0, 4));
         }
     }
 
@@ -92,7 +96,6 @@ if ($action == "stat_show") {
 
     $tpl->set('s', 'GOOGLE_NOTIFICATION', $googleNotification . ($googleNotification != '') ? '<br>' : '');
     $tpl->set('s', 'PIWIK_NOTIFICATION', $piwikNotification . ($piwikNotification != '') ? '<br>' : '');
-    $tpl->set('s', 'TRACKING_NOTIFICATION', $trackingNotification . ($trackingNotification != '') ? '<br>' : '');
 
     switch ($displaytype) {
         case "all":
@@ -131,7 +134,7 @@ if ($action == "stat_show") {
     }
 } else {
     $tpl->reset();
-    $tpl->set('s', 'CONTENTS', $trackingNotification . '<br>' . $googleNotification . '<br>' . $piwikNotification);
+    $tpl->set('s', 'CONTENTS', $googleNotification . '<br>' . $piwikNotification);
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['blank']);
 }
 

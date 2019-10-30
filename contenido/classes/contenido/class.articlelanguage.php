@@ -20,12 +20,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiArticleLanguageCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
      *
-     * @param string $select [optional]
-     *         where clause to use for selection (see ItemCollection::select())
+     * @param bool $select [optional]
+     *                     where clause to use for selection (see ItemCollection::select())
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function __construct($select = false) {
         global $cfg;
@@ -45,97 +47,63 @@ class cApiArticleLanguageCollection extends ItemCollection {
     /**
      * Creates an article language item entry.
      *
-     * @global object $auth
-     * @param int $idart
-     * @param int $idlang
-     * @param string $title
-     * @param string $urlname
-     * @param string $pagetitle
-     * @param string $summary
-     * @param int $artspec [optional]
-     * @param string $created [optional]
-     * @param string $author [optional]
-     * @param string $lastmodified [optional]
-     * @param string $modifiedby [optional]
-     * @param string $published [optional]
-     * @param string $publishedby [optional]
-     * @param int $online [optional]
-     * @param int $redirect [optional]
-     * @param string $redirect_url [optional]
-     * @param int $external_redirect [optional]
-     * @param int $artsort [optional]
-     * @param int $timemgmt [optional]
-     * @param string $datestart [optional]
-     * @param string $dateend [optional]
-     * @param int $status [optional]
-     * @param int $time_move_cat [optional]
-     * @param int $time_target_cat [optional]
-     * @param int $time_online_move [optional]
-     * @param int $locked [optional]
-     * @param mixed $free_use_01 [optional]
-     * @param mixed $free_use_02 [optional]
-     * @param mixed $free_use_03 [optional]
-     * @param int $searchable [optional]
-     * @param float $sitemapprio [optional]
-     * @param string $changefreq [optional]
+     * @param array $parameters
+     *
      * @return cApiArticleLanguage
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
-    public function create($idart, $idlang, $title, $urlname, $pagetitle,
-            $summary, $artspec = 0, $created = '', $author = '',
-            $lastmodified = '', $modifiedby = '', $published = '',
-            $publishedby = '', $online = 0, $redirect = 0, $redirect_url = '',
-            $external_redirect = 0, $artsort = 0, $timemgmt = 0, $datestart = '',
-            $dateend = '', $status = 0, $time_move_cat = 0, $time_target_cat = 0,
-            $time_online_move = 0, $locked = 0, $free_use_01 = '', $free_use_02 = '',
-            $free_use_03 = '', $searchable = 1, $sitemapprio = 0.5, $changefreq = '') {
-        global $auth;
+    public function create(array $parameters) {
+        $auth = cRegistry::getAuth();
 
-        if (empty($author)) {
-            $author = $auth->auth['uname'];
+        if (empty($parameters['author'])) {
+            $parameters['author'] = $auth->auth['uname'];
         }
-        if (empty($created)) {
-            $created = date('Y-m-d H:i:s');
+        if (empty($parameters['created'])) {
+            $parameters['created'] = date('Y-m-d H:i:s');
         }
-        if (empty($lastmodified)) {
-            $lastmodified = date('Y-m-d H:i:s');
+        if (empty($parameters['lastmodified'])) {
+            $parameters['lastmodified'] = date('Y-m-d H:i:s');
         }
 
-        $urlname = (trim($urlname) == '') ? trim($title) : trim($urlname);
+        $parameters['urlname'] = (trim($parameters['urlname']) == '') ? trim($parameters['title']) : trim($parameters['urlname']);
 
         $item = $this->createNewItem();
 
-        $item->set('idart', $idart);
-        $item->set('idlang', $idlang);
-        $item->set('title', $title);
-        $item->set('urlname', $urlname);
-        $item->set('pagetitle', $pagetitle);
-        $item->set('summary', $summary);
-        $item->set('artspec', $artspec);
-        $item->set('created', $created);
-        $item->set('author', $author);
-        $item->set('lastmodified', $lastmodified);
-        $item->set('modifiedby', $modifiedby);
-        $item->set('published', $published);
-        $item->set('publishedby', $publishedby);
-        $item->set('online', $online);
-        $item->set('redirect', $redirect);
-        $item->set('redirect_url', $redirect_url);
-        $item->set('external_redirect', $external_redirect);
-        $item->set('artsort', $artsort);
-        $item->set('timemgmt', $timemgmt);
-        $item->set('datestart', $datestart);
-        $item->set('dateend', $dateend);
-        $item->set('status', $status);
-        $item->set('time_move_cat', $time_move_cat);
-        $item->set('time_target_cat', $time_target_cat);
-        $item->set('time_online_move', $time_online_move);
-        $item->set('locked', $locked);
-        $item->set('free_use_01', $free_use_01);
-        $item->set('free_use_02', $free_use_02);
-        $item->set('free_use_03', $free_use_03);
-        $item->set('searchable', $searchable);
-        $item->set('sitemapprio', $sitemapprio);
-        $item->set('changefreq', $changefreq);
+        $item->set('idart', $parameters['idart']);
+        $item->set('idlang', $parameters['idlang']);
+        $item->set('title', $parameters['title']);
+        $item->set('urlname', $parameters['urlname']);
+        $item->set('pagetitle', $parameters['pagetitle']);
+        $item->set('summary', $parameters['summary']);
+        $item->set('artspec', $parameters['artspec']);
+        $item->set('created', $parameters['created']);
+        $item->set('author', $parameters['author']);
+        $item->set('lastmodified', $parameters['lastmodified']);
+        $item->set('modifiedby', $parameters['modifiedby']);
+        $item->set('published', $parameters['published']);
+        $item->set('publishedby', $parameters['publishedby']);
+        $item->set('online', $parameters['online']);
+        $item->set('redirect', $parameters['redirect']);
+        $item->set('redirect_url', $parameters['redirect_url']);
+        $item->set('external_redirect', $parameters['external_redirect']);
+        $item->set('artsort', $parameters['artsort']);
+        $item->set('timemgmt', $parameters['timemgmt']);
+        $item->set('datestart', $parameters['datestart']);
+        $item->set('dateend', $parameters['dateend']);
+        $item->set('status', $parameters['status']);
+        $item->set('time_move_cat', $parameters['time_move_cat']);
+        $item->set('time_target_cat', $parameters['time_target_cat']);
+        $item->set('time_online_move', $parameters['time_online_move']);
+        $item->set('locked', $parameters['locked']);
+        $item->set('free_use_01', $parameters['free_use_01']);
+        $item->set('free_use_02', $parameters['free_use_02']);
+        $item->set('free_use_03', $parameters['free_use_03']);
+        $item->set('searchable', $parameters['searchable']);
+        $item->set('sitemapprio', $parameters['sitemapprio']);
+        $item->set('changefreq', $parameters['changefreq']);
 
         $item->store();
 
@@ -145,9 +113,12 @@ class cApiArticleLanguageCollection extends ItemCollection {
     /**
      * Returns id (idartlang) of articlelanguage by article id and language id
      *
-     * @param int $idcat
+     * @param int $idart
      * @param int $idlang
+     * 
      * @return int
+     * 
+     * @throws cDbException
      */
     public function getIdByArticleIdAndLanguageId($idart, $idlang) {
         $sql = "SELECT idartlang FROM `%s` WHERE idart = %d AND idlang = %d";
@@ -264,7 +235,10 @@ class cApiArticleLanguage extends Item {
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -281,6 +255,9 @@ class cApiArticleLanguage extends Item {
      *
      * @param string $type
      *         meta, content or complete
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function markAsEditable($type = '') {
         global $cfg;
@@ -375,6 +352,9 @@ class cApiArticleLanguage extends Item {
      *         Flag to fetch content
      * @return bool
      *         true on success, otherwise false
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public function loadByArticleAndLanguageId($idart, $idlang) {
         $result = true;
@@ -403,8 +383,11 @@ class cApiArticleLanguage extends Item {
      *         Article id
      * @param int $idlang
      *         Language id
+     * 
      * @return int
      *         Language dependant article id
+     * 
+     * @throws cDbException
      */
     protected function _getIdArtLang($idart, $idlang) {
         global $cfg;
@@ -424,6 +407,8 @@ class cApiArticleLanguage extends Item {
      *
      * @deprecated [2015-05-15]
      *         use _loadArticleContent, automaticly loaded with getContent()
+     *
+     * @throws cDbException
      */
     public function loadArticleContent() {
         cDeprecated('This method is deprecated and is not needed any longer');
@@ -438,6 +423,8 @@ class cApiArticleLanguage extends Item {
      *
      * @deprecated [2015-05-15]
      *         use _loadArticleContent, automaticly loaded with getContent()
+     *             
+     * @throws cDbException
      */
     protected function _getArticleContent() {
         cDeprecated('This method is deprecated and is not needed any longer');
@@ -449,6 +436,8 @@ class cApiArticleLanguage extends Item {
      * article object, whenever it is needed to get the content of the article.
      *
      * $article->content[type][number] = value;
+     *
+     * @throws cDbException
      */
     protected function _loadArticleContent() {
         global $cfg;
@@ -463,7 +452,7 @@ class cApiArticleLanguage extends Item {
 
         $this->content = array();
         while ($this->db->nextRecord()) {
-            $this->content[strtolower($this->db->f('type'))][$this->db->f('typeid')] = $this->db->f('value');
+            $this->content[cString::toLowerCase($this->db->f('type'))][$this->db->f('typeid')] = $this->db->f('value');
         }
     }
 
@@ -577,12 +566,15 @@ class cApiArticleLanguage extends Item {
      * linkdescr - Linkdescription
      * swf - Upload id of the element
      *
-     * @param string $type
-     *         CMS_TYPE - Legal cms type string
+     * @param string   $type
+     *                     CMS_TYPE - Legal cms type string
      * @param int|NULL $id [optional]
-     *         Id of the content
+     *                     Id of the content
+     *
      * @return string|array
      *         data
+     * 
+     * @throws cDbException
      */
     public function getContent($type = '', $id = NULL) {
         if (NULL === $this->content) {
@@ -597,15 +589,15 @@ class cApiArticleLanguage extends Item {
             return $this->content;
         }
 
-        $type = strtolower($type);
+        $type = cString::toLowerCase($type);
 
-        if (false === stripos($type, 'cms_')) {
+        if (false === cString::findFirstPosCI($type, 'cms_')) {
             $type = 'cms_' . $type;
         }
 
         if (is_null($id)) {
             // return Array
-            return $this->content[$type];
+            return isset($this->content[$type]) ? $this->content[$type] : [];
         }
 
         // return String
@@ -617,13 +609,16 @@ class cApiArticleLanguage extends Item {
      *
      * @param string $type
      *         Name of the content type
-     * @param int $id
+     * @param int    $id
      *         Id of the content type in this article
+     *
      * @return bool|cContentTypeAbstract
      *         Returns false if the name was invalid
+     *
+     * @throws cDbException
      */
     public function getContentObject($type, $id) {
-        $typeClassName = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $type)));
+        $typeClassName = 'cContentType' . ucfirst(cString::toLowerCase(str_replace('CMS_', '', $type)));
 
         if (!class_exists($typeClassName)) {
             return false;
@@ -637,9 +632,12 @@ class cApiArticleLanguage extends Item {
      *
      * @param string $type
      *         Name of the content type
-     * @param int  $id
+     * @param int    $id
      *         Id of the content type in this article
+     *
      * @return string
+     *
+     * @throws cDbException
      */
     public function getContentViewCode($type, $id) {
         $object = $this->getContentObject($type, $id);
@@ -652,10 +650,11 @@ class cApiArticleLanguage extends Item {
 
     /**
      * Returns all available content types
+     * 
+     * @return array
      *
      * @throws cException
      *         if no content has been loaded
-     * @return array
      */
     public function getContentTypes() {
         if (empty($this->content)) {
@@ -669,9 +668,12 @@ class cApiArticleLanguage extends Item {
      * Returns the link to the current object.
      *
      * @param int $changeLangId [optional]
-     *         change language id for URL (optional)
+     *                          change language id for URL (optional)
+     *
      * @return string
      *         link
+     * 
+     * @throws cInvalidArgumentException
      */
     public function getLink($changeLangId = 0) {
         if ($this->isLoaded() === false) {
@@ -687,5 +689,4 @@ class cApiArticleLanguage extends Item {
 
         return cUri::getInstance()->build($options);
     }
-
 }

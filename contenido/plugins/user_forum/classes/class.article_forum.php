@@ -21,8 +21,19 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage UserForum
  */
 defined('CON_FRAMEWORK') or die('Illegal call');
-class ArticleForum extends Item {
 
+/**
+ * Class ArticleForum
+ */
+class ArticleForum extends Item {
+    /**
+     * ArticleForum constructor.
+     *
+     * @param bool $id
+     *
+     * @throws cDbException
+     * @throws cException
+     */
     public function __construct($id = false) {
         $cfg = cRegistry::getConfig();
         parent::__construct($cfg['tab']['user_forum'], 'id_user_forum');

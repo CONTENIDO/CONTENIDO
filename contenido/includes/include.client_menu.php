@@ -35,7 +35,7 @@ $clientColl->select();
 while ($oClient = $clientColl->next()) {
     $idclient = $oClient->get('idclient');
     $name = $oClient->get('name');
-    if ((strpos($auth->auth['perm'], "client[$idclient]") !== false) || (strpos($auth->auth['perm'], 'sysadmin') !== false)) {
+    if ((cString::findFirstPos($auth->auth['perm'], "client[$idclient]") !== false) || (cString::findFirstPos($auth->auth['perm'], 'sysadmin') !== false)) {
         $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
         $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&idclient=$idclient"), 'right_bottom', $sess->url("main.php?area=client_edit&frame=4&idclient=$idclient"), $name);
 
@@ -66,7 +66,7 @@ while ($oClient = $clientColl->next()) {
 
 // while ($db->nextRecord()) {
 //     $idclient = $db->f("idclient");
-//     if ((strpos($auth->auth["perm"], "admin[$idclient]") !== false) || (strpos($auth->auth["perm"], "sysadmin") !== false)) {
+//     if ((cString::findFirstPos($auth->auth["perm"], "admin[$idclient]") !== false) || (cString::findFirstPos($auth->auth["perm"], "sysadmin") !== false)) {
 //         $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
 //         $idclient = $db->f("idclient");
 //         $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&idclient=$idclient"), 'right_bottom', $sess->url("main.php?area=client_edit&frame=4&idclient=$idclient"), $db->f("name"));

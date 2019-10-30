@@ -3,11 +3,11 @@
 /**
  * This file contains the cContentTypePifaForm class.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage FormAssistant
- * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @copyright four for business AG
- * @link http://www.4fb.de
+ * @author     Marcus Gnaß <marcus.gnass@4fb.de>
+ * @copyright  four for business AG
+ * @link       http://www.4fb.de
  */
 
 // assert CONTENIDO framework
@@ -43,12 +43,11 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     /**
      * Initialize class attributes and handles store events.
      *
-     * @param string $rawSettings the raw settings in an XML structure or as
-     *        plaintext
-     * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is
-     *        used
-     * @param array $contentTypes array containing the values of all content
-     *        types
+     * @param string $rawSettings  the raw settings in an XML structure or as plaintext
+     * @param int    $id           ID of the content type, e.g. 3 if CMS_DATE[3] is used
+     * @param array  $contentTypes array containing the values of all content types
+     *
+     * @throws cDbException
      */
     function __construct($rawSettings, $id, array $contentTypes) {
 
@@ -57,6 +56,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $this->_prefix = 'pifaform';
         $this->_settingsType = self::SETTINGS_TYPE_XML;
         $this->_formFields = array(
+            'pifaform_headline',
             'pifaform_idform',
             'pifaform_module',
             'pifaform_processor',
@@ -89,6 +89,8 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
      * Generate the escaped HTML code for editor.
      *
      * @return string escaped HTML code for editor
+     *
+     * @throws cInvalidArgumentException
      */
     public function generateEditCode() {
 
@@ -121,8 +123,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $tplBottom->set('s', 'PREFIX', $this->_prefix);
         $tplBottom->set('s', 'IDARTLANG', $this->_idArtLang);
         $tplBottom->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
-        // encode dollar sign so that contained PHP style variable will not be
-        // interpreted
+        // encode dollar sign so that contained PHP style variable will not be interpreted
         $tplBottom->set('s', 'SETTINGS', json_encode(str_replace('$', '&#36;', $this->_settings)));
         $tplBottom->set('s', 'JS_CLASS_SCRIPT', Pifa::getUrl() . 'scripts/cmsPifaform.js');
         $tplBottom->set('s', 'JS_CLASS_NAME', 'Con.' . get_class($this));
@@ -148,6 +149,8 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     private function _getPanel() {
         $wrapper = new cHTMLDiv(array(
 
+            // headline
+            $this->_getHeadline(),
             // form
             $this->_getSelectForm(),
 
@@ -188,7 +191,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
      * Builds a select element allowing to choose a single form that was created
      * for the current client.
      *
-     * @return cHTMLDiv
+     * @return cHTMLDiv|cHTMLFormElement
      */
     private function _getSelectForm() {
 
@@ -229,6 +232,32 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $div = new cHTMLDiv(array(
             $label,
             $select
+        ));
+
+        // return div element
+        return $div;
+    }
+
+    /**
+     * Builds input field for the form headline
+     *
+     * @return cHTMLDiv
+     */
+    private function _getHeadline() {
+        // attributes of form field elements
+        $id = 'pifaform_idform_' . $this->_id;
+
+        // build label element
+        $label = new cHTMLLabel(Pifa::i18n('form_headline'), $id);
+        // builds input element
+        $id = 'pifaform_headline_' . $this->_id;
+        $value = $this->_settings['pifaform_headline'];
+        $input = new cHTMLTextbox($id, $value, '', '', $id);
+
+        // build div element as wrapper
+        $div = new cHTMLDiv(array(
+            $label,
+            $input
         ));
 
         // return div element
@@ -432,9 +461,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     }
 
     /**
-     * Builds a select element allowing to choose a single template for the
-     * client
-     * mail.
+     * Builds a select element allowing to choose a single template for the client mail.
      *
      * @return cHTMLDiv
      */
@@ -551,10 +578,9 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     }
 
     /**
-     * Builds a select element allowing to choose a single template the system
-     * mail.
+     * Builds a select element allowing to choose a single template the system mail.
      *
-     * @return cHTMLSelectElement
+     * @return cHTMLDiv
      */
     private function _getSelectMailSystemTemplate() {
 
@@ -644,8 +670,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     }
 
     /**
-     * Builds an input element allowing to set the system mail recipient
-     * address.
+     * Builds an input element allowing to set the system mail recipient address.
      *
      * @return cHTMLDiv
      */
@@ -711,14 +736,13 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     /**
      * Get code of form (either GET or POST request).
      *
-     * @return string escaped HTML code which sould be shown if content type is
-     *         shown in frontend
+     * @return string escaped HTML code which sould be shown if content type is shown in frontend
      */
     public function buildCode() {
         $out = '';
         if (0 === cSecurity::toInteger($this->_settings['pifaform_idform'])) {
             // no form was selected
-        } else if (0 === strlen(trim($this->_settings['pifaform_module']))) {
+        } elseif (0 === cString::getStringLength(trim($this->_settings['pifaform_module']))) {
             // no module was selected
         } else {
             $moduleClass = trim($this->_settings['pifaform_module']);
@@ -734,6 +758,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
                     $msg = sprintf(Pifa::i18n('MISSING_MODULE_CLASS'), $moduleClass);
                     throw new PifaException($msg);
                 }
+                /** @var PifaAbstractFormModule $mod */
                 $mod = new $moduleClass($this->_settings);
                 $out = $mod->render(true);
             } catch (Exception $e) {

@@ -56,11 +56,14 @@ class cModuleFileTranslation extends cModuleHandler {
     /**
      * Constructor to create an instance of this class.
      *
-     * @param int $idmodul [optional]
-     * @param bool $static [optional]
-     *         if true it will load once the translation from file
-     * @param int $overrideIdlang [optional]
-     *         use different language if not NULL
+     * @param int  $idmodul        [optional]
+     * @param bool $static         [optional]
+     *                             if true it will load once the translation from file
+     * @param int  $overrideIdlang [optional]
+     *                             use different language if not NULL
+     *
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($idmodul = NULL, $static = false, $overrideIdlang = NULL) {
         parent::__construct($idmodul);
@@ -84,7 +87,7 @@ class cModuleFileTranslation extends cModuleHandler {
                 // set filename lang_[language]_[Country].txt
                 $language = $this->_getValueFromProperties('language', 'code');
                 $country = $this->_getValueFromProperties('country', 'code');
-                self::$fileName = 'lang_' . $language . '_' . strtoupper($country) . '.txt';
+                self::$fileName = 'lang_' . $language . '_' . cString::toUpperCase($country) . '.txt';
 
                 self::$langArray = $this->getTranslationArray();
                 self::$savedIdMod = $idmodul;
@@ -95,7 +98,7 @@ class cModuleFileTranslation extends cModuleHandler {
             // set filename lang_[language]_[Country].txt
             $language = $this->_getValueFromProperties('language', 'code');
             $country = $this->_getValueFromProperties('country', 'code');
-            self::$fileName = 'lang_' . $language . '_' . strtoupper($country) . '.txt';
+            self::$fileName = 'lang_' . $language . '_' . cString::toUpperCase($country) . '.txt';
         }
     }
 
@@ -104,8 +107,12 @@ class cModuleFileTranslation extends cModuleHandler {
      *
      * @param string $type
      * @param string $name
+     *
      * @return string
      *         value
+     *
+     * @throws cDbException
+     * @throws cException
      */
     private function _getValueFromProperties($type, $name) {
         cApiPropertyCollection::reset();
@@ -126,6 +133,9 @@ class cModuleFileTranslation extends cModuleHandler {
     /**
      * Save the hole translations for a idmod and lang.
      * For the upgrade/setup.
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function saveTranslations() {
         $db = cRegistry::getDb();
@@ -141,7 +151,7 @@ class cModuleFileTranslation extends cModuleHandler {
             // set filename lang_[language]_[Country].txt
             $language = $this->_getValueFromProperties('language', 'code');
             $country = $this->_getValueFromProperties('country', 'code');
-            self::$fileName = 'lang_' . $language . '_' . strtoupper($country) . '.txt';
+            self::$fileName = 'lang_' . $language . '_' . cString::toUpperCase($country) . '.txt';
 
             $translations = array();
             while ($db->nextRecord()) {
@@ -183,11 +193,13 @@ class cModuleFileTranslation extends cModuleHandler {
     private function _serializeArray($wordListArray) {
         $retString = '';
         foreach ($wordListArray as $key => $value) {
-            // Originall String [Divider] Translation String
-            $retString .= $key . self::$originalTranslationDivider . $value . "\r\n";
+            // Original String [Divider] Translation String
+            if (cString::getStringLength($key) > 0) {
+                $retString .= trim($key . self::$originalTranslationDivider . $value) . "\r\n";
+            }
         }
 
-        return $retString;
+        return trim($retString);
     }
 
     /**
@@ -206,7 +218,8 @@ class cModuleFileTranslation extends cModuleHandler {
     private function _unserializeArray($string) {
         $retArray = array();
 
-        $words = preg_split('((\r\n)|(\r)|(\n))', substr($string, 0, strlen($string) - strlen(PHP_EOL)));
+        $string = $string . PHP_EOL;
+        $words = preg_split('((\r\n)|(\r)|(\n))', cString::getPartOfString($string, 0, cString::getStringLength($string) - cString::getStringLength(PHP_EOL)));
 
         foreach ($words as $key => $value) {
             $oriTrans = preg_split('/(?<!\\\\)' . self::$originalTranslationDivider . '/', $value);
@@ -229,8 +242,10 @@ class cModuleFileTranslation extends cModuleHandler {
      * Save the contents of the wordListArray in file.
      *
      * @param array $wordListArray
+     *
      * @return bool
      *         true on success or false on failure
+     * @throws cInvalidArgumentException
      */
     public function saveTranslationArray($wordListArray) {
         $fileName = $this->_modulePath . $this->_directories['lang'] . self::$fileName;
@@ -241,12 +256,12 @@ class cModuleFileTranslation extends cModuleHandler {
 
         $escapedArray = array();
         foreach ($wordListArray as $key => $value) {
-            $newKey = mb_ereg_replace("=", "\\=", $key);
-            $newValue = mb_ereg_replace("=", "\\=", $value);
+            $newKey = cString::ereg_replace("=", "\\=", $key);
+            $newValue = cString::ereg_replace("=", "\\=", $value);
             $escapedArray[$newKey] = $newValue;
         }
 
-        if (cFileHandler::write($fileName, $this->_serializeArray($escapedArray)) === false) {
+        if (cFileHandler::write($fileName, $this->_serializeArray($escapedArray) . "\r\n") === false) {
             return false;
         } else {
             return true;
@@ -257,6 +272,7 @@ class cModuleFileTranslation extends cModuleHandler {
      * Get the translations array.
      *
      * @return array
+     * @throws cInvalidArgumentException
      */
     public function getTranslationArray() {
         if (cFileHandler::exists($this->_modulePath . $this->_directories['lang'] . self::$fileName)) {

@@ -50,6 +50,10 @@
             menuItem = elem[0];
             Con.Subnav.clicked(menuItem.firstChild);
         }
+
+        $(elem[0]).click(function() {
+            artObj.enableNavForArt();
+        });
     });
 })(Con, Con.$);
 </script>

@@ -72,7 +72,7 @@ class cVersion {
     protected $aCfgClient;
 
     /**
-     * Database object
+     * CONTENIDO database object
      *
      * @var cDb
      */
@@ -179,7 +179,8 @@ class cVersion {
      *
      * @param array $aCfg
      * @param array $aCfgClient
-     * @param object $oDB
+     * @param cDb $oDB
+     *         CONTENIDO database object
      * @param int $iClient
      * @param string $sArea
      * @param int $iFrame
@@ -241,6 +242,8 @@ class cVersion {
     /**
      * This function looks if maximum number of stored versions is achieved.
      * If true, it will be delete the first version.
+     *
+     * @throws cInvalidArgumentException
      */
     protected function prune() {
         $this->initRevisions();
@@ -281,8 +284,8 @@ class cVersion {
 
         foreach ($aPath as $sSubPath) {
             if (!is_dir($sFrontEndPath . $sSubPath)) {
-                mkdir($sFrontEndPath . $sSubPath, 0777);
-                @chmod($sFrontEndPath . $sSubPath, 0777);
+                mkdir($sFrontEndPath . $sSubPath, cDirHandler::getDefaultPermissions());
+                @chmod($sFrontEndPath . $sSubPath, cDirHandler::getDefaultPermissions());
             }
         }
     }
@@ -306,8 +309,10 @@ class cVersion {
      * @param string $sDirectory
      * @param string $sFileName
      *         name of xml file to create
+     *
      * @return bool
      *         true if saving file was successful, otherwise false
+     * @throws cException
      */
     public function createNewXml($sDirectory, $sFileName) {
         $oWriter = new cXmlWriter();
@@ -348,8 +353,8 @@ class cVersion {
         $sRevisionName = $this->getRevision();
 
         if (!is_dir($this->getFilePath())) {
-            mkdir($this->getFilePath(), 0777);
-            @chmod($this->getFilePath(), 0777);
+            mkdir($this->getFilePath(), cDirHandler::getDefaultPermissions());
+            @chmod($this->getFilePath(), cDirHandler::getDefaultPermissions());
         }
 
         // Create xml version file
@@ -399,7 +404,8 @@ class cVersion {
      *
      * @param string $sFirstFile [optional]
      * @return bool
-     *         return true if successful
+     *                           return true if successful
+     * @throws cInvalidArgumentException
      */
     public function deleteFile($sFirstFile = '') {
         // Open this Filepath and read then the content.
@@ -530,18 +536,20 @@ class cVersion {
      * The general SelectBox function for get Revision.
      *
      * @param string $sTableForm
-     *         The name of Table_Form class
+     *                         The name of Table_Form class
      * @param string $sAddHeader
-     *         The Header Label of SelectBox Widget
+     *                         The Header Label of SelectBox Widget
      * @param string $sLabelOfSelectBox
-     *         The Label of SelectBox Widget
+     *                         The Label of SelectBox Widget
      * @param string $sIdOfSelectBox
-     *         Id of Select Box
-     * @param bool $disabled [optional]
-     *         If true, show disabled buttons for deleting
+     *                         Id of Select Box
+     * @param bool   $disabled [optional]
+     *                         If true, show disabled buttons for deleting
+     *
      * @return string
      *         if is exists Revision, then returns HTML Code of full SelectBox
      *         else returns empty string
+     * @throws cInvalidArgumentException
      */
     public function buildSelectBox($sTableForm, $sAddHeader, $sLabelOfSelectBox, $sIdOfSelectBox, $disabled = false) {
         $oForm = new cGuiTableForm($sTableForm);

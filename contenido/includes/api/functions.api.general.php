@@ -43,11 +43,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *         The area which should be included
  * @param string $sWhat
  *         The filename of the include
- * @param bool $bForce
+ * @param bool   $bForce
  *         If true, force the file to be included
- * @param string $bReturnPath
+ * @param bool   $bReturnPath
  *         Flag to return the path instead of including the file
+ *
  * @return bool|string|NULL
+ *
+ * @throws cInvalidArgumentException
  */
 function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
     $backendPath = cRegistry::getBackendPath();
@@ -55,7 +58,7 @@ function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
 
     // Sanity check for $sWhat
     $sWhat  = trim($sWhat);
-    $sWhere = strtolower($sWhere);
+    $sWhere = cString::toLowerCase($sWhere);
     $bError = false;
 
     switch ($sWhere) {

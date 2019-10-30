@@ -72,10 +72,13 @@ class cBackend {
      *
      * @param string $area
      *         selected area
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function select($area) {
         // Required global vars
-        global $cfg, $client, $lang, $db, $perm, $action, $idcat;
+        global $cfg, $client, $lang, $db, $perm, $action;
         global $idcat, $idtpl, $idmod, $idlay;
 
         if (isset($idcat)) {
@@ -112,9 +115,7 @@ class cBackend {
 
         // Check if the user has access to this area.
         // Yes -> Grant him all actions
-        // No -> Grant him only action which are irrelevant = (Field 'relevant'
-        // is 0)
-
+        // No -> Grant him only action which are irrelevant (i.e. 'relevant' is 0)
         if (!$perm->have_perm_area_action($area)) {
             $sql .= " AND a.relevant = '0'";
         }
@@ -125,9 +126,7 @@ class cBackend {
 
             // Save the action only access to the desired action is granted.
             // If this action is relevant for rights check if the user has
-            // permission to
-            // execute this action
-
+            // permission to execute this action
             if ($db->f('relevant_action') == 1 && $db->f('relevant_area') == 1) {
 
                 if ($perm->have_perm_area_action_item($area, $db->f('name'), $itemid)) {
@@ -168,10 +167,11 @@ class cBackend {
 
         // Check if the user has access to this area.
         // Yes -> Extract all files
-        // No -> Extract only irrelevant Files = (Field 'relevant' is 0)
+        // No -> Extract only irrelevant files (i.e. 'relevant' is 0)
         if (!$perm->have_perm_area_action($area)) {
             $sql .= " AND a.relevant = '0'";
         }
+
         $sql .= ' ORDER BY b.filename';
 
         $db->query($sql);
@@ -193,9 +193,18 @@ class cBackend {
             $this->_files[$db->f('type')][] = $filepath;
         }
 
-        $debug = "Files:\n" . print_r($this->_files, true) . "\n" . "Actions:\n" . print_r($this->_actions[$this->_area], true) . "\n" . "Information:\n" . "Area: $area\n" . "Action: $action\n" . "Client: $client\n" . "Lang: $lang\n";
+        $actions = !empty($this->_actions[$this->_area]) ? $this->_actions[$this->_area] : [];
+        $debug = "Files:\n" . print_r($this->_files, true) . "\n"
+            . "Actions:\n" . print_r($actions, true) . "\n"
+            . "Information:\n" . "Area: $area\n"
+            . "Action: $action\n"
+            . "Client: $client\n"
+            . "Lang: $lang\n";
+        cDebug::out($debug);
+
         $debug = $sql;
         cDebug::out($debug);
+
     }
 
     /**
@@ -205,8 +214,11 @@ class cBackend {
      *
      * @param string $action
      *         action to be read
+     *
      * @return string
      *         code for given action
+     *
+     * @throws cInvalidArgumentException
      */
     public function getCode($action) {
         $actionCodeFile = cRegistry::getBackendPath() . 'includes/type/action/include.' . $action . '.action.php';
@@ -229,24 +241,30 @@ class cBackend {
      * @return array
      */
     public function getFile($which) {
-        if (isset($this->_files[$which])) {
+        if (isset($this->_files[$which]) && is_array($this->_files[$which])) {
             return $this->_files[$which];
+        } else {
+            return [];
         }
     }
 
     /**
      * Creates a log entry for the specified parameters.
      *
-     * @param int $idcat
+     * @param int        $idcat
      *         Category-ID
-     * @param int $idart
+     * @param int        $idart
      *         Article-ID
-     * @param int $client
+     * @param int        $client
      *         Client-ID
-     * @param int $lang
+     * @param int        $lang
      *         Language-ID
      * @param int|string $idaction
      *         Action (ID or canonical name)
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function log($idcat, $idart, $client, $lang, $idaction) {
         global $perm, $auth;

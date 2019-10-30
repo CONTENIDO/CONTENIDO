@@ -35,7 +35,7 @@ $page->addScript('jquery/plugins/timepicker.js');
 $page->addScript('include.upl_edit.js');
 
 //get language js files
-if (($lang_short = substr(strtolower($belang), 0, 2)) != 'en') {
+if (($lang_short = cString::getPartOfString(cString::toLowerCase($belang), 0, 2)) != 'en') {
     $page->addScript('jquery/plugins/timepicker-' . $lang_short . '.js');
     $page->addScript('jquery/plugins/datepicker-' . $lang_short . '.js');
 }
@@ -163,13 +163,14 @@ if ($upload = $uploads->next()) {
                 break;
 
             case 'medianame':
+
                 if ($uploadMeta->get('medianame')) {
                     $medianame = cSecurity::unFilter($uploadMeta->get('medianame'));
                 } else {
                     $medianame = $properties->getValue('upload', $qpath . $filename, 'file', 'medianame');
                 }
 
-                $mnedit = new cHTMLTextbox('medianame', $medianame, 60);
+                $mnedit = new cHTMLTextbox('medianame', conHtmlentities($medianame), 60);
                 $sCell = $mnedit->render();
                 break;
 
@@ -230,8 +231,9 @@ if ($upload = $uploads->next()) {
                 $sStartDate = $properties->getValue('upload', $qpath . $filename, 'file', 'datestart');
                 $sEndDate = $properties->getValue('upload', $qpath . $filename, 'file', 'dateend');
 
-                $oTimeCheckbox = new cHTMLCheckbox('timemgmt', i18n('Use time control'));
+                $oTimeCheckbox = new cHTMLCheckbox('timemgmt', '1');
                 $oTimeCheckbox->setChecked($iTimeMng);
+                $oTimeCheckbox->setLabelText(i18n('Use time control'));
 
                 $sHtmlTimeMng = $oTimeCheckbox->render();
                 $sHtmlTimeMng .= "<table id='dbfsTimecontrol' class='borderless' border='0' cellpadding='0' cellspacing='0'>\n";
@@ -291,13 +293,13 @@ if ($upload = $uploads->next()) {
 $page->render();
 
 /**
- *
  * @param string $fileName
- * @return boolean
+ *
+ * @return bool
  */
-function isArchive($fileName) {
-
-    if (substr(strrchr($fileName, '.'), 1) === 'zip') {
+function isArchive($fileName)
+{
+    if (cString::getPartOfString(cString::findLastOccurrence($fileName, '.'), 1) === 'zip') {
         return true;
     } else {
         return false;

@@ -84,9 +84,15 @@ class FrontendList {
 
     /**
      * Old FrontendList constructor.
+     *
      * @param $startwrap
      * @param $endwrap
      * @param $itemwrap
+     *
+     * @return FrontendList
+     * 
+     * @throws cInvalidArgumentException
+     * 
      * @deprecated [2016-04-06] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
      */
     public function FrontendList($startwrap, $endwrap, $itemwrap) {

@@ -176,7 +176,11 @@ class cGuiFileOverview extends cGuiPage {
      * Renders the page
      *
      * @param cTemplate|null $template
-     * @param bool $return
+     * @param bool           $return
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function render($template = NULL, $return = false) {
 
@@ -208,7 +212,7 @@ class cGuiFileOverview extends cGuiPage {
         foreach($files as $file) {
             if($this->_fileInfoType != '') {
                 $fileInfo = $fileInfos->getFileInformation($file, $this->_fileInfoType);
-                $this->set('d', 'DESCRIPTION', $fileInfo['description']);
+                $this->set('d', 'DESCRIPTION', conHtmlSpecialChars(cSecurity::escapeString($fileInfo['description'])));
             } else {
                 $this->set('d', 'DESCRIPTION', '');
             }

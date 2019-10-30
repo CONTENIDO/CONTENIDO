@@ -46,6 +46,12 @@ if (!isset($contenido)) {
     }
 }
 
+// Initialize common variables
+$idcat    = isset($idcat) ? $idcat : 0;
+$idart    = isset($idart) ? $idart : 0;
+$idcatart = isset($idcatart) ? $idcatart : 0;
+$error    = isset($error) ? $error : 0;
+
 cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.con2.php');
 cInclude('includes', 'functions.api.php');
@@ -82,10 +88,8 @@ if (cRegistry::getBackendSessionId()) {
     ));
 }
 
-// Include plugins
+// Include plugins & call hook after plugins are loaded
 require_once($backendPath . $cfg['path']['includes'] . 'functions.includePluginConf.php');
-
-// Call hook after plugins are loaded
 cApiCecHook::execute('Contenido.Frontend.AfterLoadPlugins');
 
 $db = cRegistry::getDb();
@@ -181,7 +185,7 @@ if (isset($logout)) {
 
 // If the path variable was passed, try to resolve it to a category id,
 // e.g. front_content.php?path=/company/products/
-if (isset($path) && strlen($path) > 1) {
+if (isset($path) && cString::getStringLength($path) > 1) {
     // Which resolve method is configured?
     if ($cfg['urlpathresolve'] == true) {
         $idcat = prResolvePathViaURLNames($path);
@@ -219,10 +223,9 @@ if ($error == 1) {
 // If not the values will be computed.
 if ($idart && !$idcat && !$idcatart) {
     // Try to fetch the idcat by idart
-    $oCatArt = new cApiCategoryArticle();
-    if ($oCatArt->loadBy('idart', (int)$idart)) {
-        $idcat = $oCatArt->get('idcat');
-    }
+    $catArtColl = new cApiCategoryArticleCollection();
+    $categories = $catArtColl->getCategoryIdsByArticleId($idart);
+    $idcat = $categories[0];
 }
 
 unset($code, $markscript);
@@ -394,9 +397,6 @@ if ($contenido) {
         if (false === $admin) {
             $notification    = new cGuiNotification();
             $modErrorMessage = i18n('This article is currently frozen and can not be edited!');
-            foreach ($erroneousModules as $erroneousModule) {
-                $modErrorMessage .= "- " . $erroneousModule . "<br />\n";
-            }
             $inUse             = true;
             $sHtmlInUseCss     = '<link rel="stylesheet" type="text/css" href="' . $backendUrl . 'styles/inuse.css">';
             $sHtmlInUseMessage = $notification->returnMessageBox('warning', $modErrorMessage, 0);
@@ -546,10 +546,12 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     $code = cFileHandler::read($cfgClient[$client]['code']['path'] . $client . "." . $lang . "." . $idcatart . ".php");
 
     // Add mark Script to code if user is in the backend
-    $code = preg_replace("/<\/head>/i", "$markscript\n</head>", $code, 1);
+    if ($contenido && !empty($markscript)) {
+        $code = preg_replace("/<\/head>/i", "$markscript\n</head>", $code, 1);
+    }
 
     // If article is in use, display notification
-    if ($sHtmlInUseCss && $sHtmlInUseMessage) {
+    if (!empty($sHtmlInUseCss) && !empty($sHtmlInUseMessage)) {
         $code = preg_replace("/<\/head>/i", "$sHtmlInUseCss\n</head>", $code, 1);
         $code = preg_replace("/(<body[^>]*)>/i", "\${1}> \n $sHtmlInUseMessage", $code, 1);
     }
@@ -567,14 +569,14 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             foreach ($userProperties as $userProperty) {
                 $user_id = $userProperty->get('user_id');
                 $range   = $userProperty->f('value');
-                $slash   = strpos($range, '/');
+                $slash   = cString::findFirstPos($range, '/');
 
                 if ($slash == false) {
                     $netmask = '255.255.255.255';
                     $network = $range;
                 } else {
-                    $network = substr($range, 0, $slash);
-                    $netmask = substr($range, $slash + 1, strlen($range) - $slash - 1);
+                    $network = cString::getPartOfString($range, 0, $slash);
+                    $netmask = cString::getPartOfString($range, $slash + 1, cString::getStringLength($range) - $slash - 1);
                 }
 
                 if (ipMatch($network, $netmask, $_SERVER['REMOTE_ADDR'])) {
@@ -615,7 +617,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
 
     $cApiClient = new cApiClient($client);
     // Dont track page hit if tracking off
-    if ($cApiClient->getProperty('stats', 'tracking') != 'off' && cRegistry::isTrackingAllowed()) {
+    if (getSystemProperty('stats', 'tracking') != 'disabled' && cRegistry::isTrackingAllowed()) {
         // Statistic, track page hit
         $oStatColl = new cApiStatCollection();
         $oStat     = $oStatColl->trackVisit($idcatart, $lang, $client);
@@ -624,7 +626,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     // Check if an article is start article of the category
     $oCatLang = new cApiCategoryLanguage();
     $oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang);
-    $isstart = ($oCatLang->get('idartlang') == $idartlang) ? 1 : 0;
+    $isstart = ($oCatLang->get('startidartlang') == $idartlang) ? 1 : 0;
 
     // Time management, redirect
     $oArtLang = new cApiArticleLanguage();
@@ -638,9 +640,9 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     // CON-1990: append GET parameters to redirect url
     foreach ($_GET as $getKey => $getValue) {
         // do not add already added GET parameters to redirect url
-        if (strpos($redirect_url, '?' . $getKey . '=') !== false
-            || strpos($redirect_url, '&' . $getKey . '=') !== false
-            || strpos($redirect_url, '&amp;' . $getKey . '=') !== false
+        if (cString::findFirstPos($redirect_url, '?' . $getKey . '=') !== false
+            || cString::findFirstPos($redirect_url, '&' . $getKey . '=') !== false
+            || cString::findFirstPos($redirect_url, '&amp;' . $getKey . '=') !== false
         ) {
             continue;
         }
@@ -661,13 +663,19 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
                 continue 2;
         }
 
-        if (strpos($redirect_url, '?') === false) {
+        if (cString::findFirstPos($redirect_url, '?') === false) {
             $redirect_url .= '?';
         } else {
             $redirect_url .= '&amp;';
         }
 
-        $redirect_url .= htmlentities(cRequestValidator::cleanParameter($getKey)) . '=' . htmlentities(cRequestValidator::cleanParameter($getValue));
+        if (!is_array($getValue)) {
+            $redirect_url .= htmlentities(cRequestValidator::cleanParameter($getKey)) . '=' . htmlentities(cRequestValidator::cleanParameter($getValue));
+        } else {
+            foreach ($getValue as $getArrayKey => $getArrayValue) {
+                $redirect_url .= htmlentities(cRequestValidator::cleanParameter($getKey)) . '[' . $getArrayKey . ']=' . htmlentities(cRequestValidator::cleanParameter($getArrayValue));
+            }
+        }
 
     }
 

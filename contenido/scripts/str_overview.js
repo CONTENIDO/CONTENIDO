@@ -34,8 +34,11 @@ var oldHrefTplcfg = '';
  * @param string sTransEmptyCatname - Errorstring, if there is no catname
  * @param string sTransEmptyCatSourcename - Errorstring if there is no cat source name
  */
-function initStrOverview(sImagePath, sTransMakeOnline, sTransMakeOffline, sTransProtectCategory,
-                          sTransUnprotectCategory, sTransFormError, sTransEmptyCatname, sTransEmptyCatSourcename) {
+function initStrOverview(
+    sImagePath, sTransMakeOnline, sTransMakeOffline, sTransProtectCategory,
+    sTransUnprotectCategory, sTransFormError, sTransEmptyCatname,
+    sTransEmptyCatSourcename
+) {
     con_images = sImagePath;
     sMakeOnline = sTransMakeOnline;
     sMakeOffline = sTransMakeOffline;
@@ -54,18 +57,18 @@ function initStrOverview(sImagePath, sTransMakeOnline, sTransMakeOffline, sTrans
  * @param int iCatId - id of category, which should be edited
  */
 function handleInlineEdit(iCatId) {
-    //Each form layer has the id syntax cat_<idcat>_layer
+    // Each form layer has the id syntax cat_<idcat>_layer
     iCatId = parseInt(iCatId);
     var layer = document.getElementById('cat_inline_layer');
     if (iCatId > 0) {
-        //Get References for editlayer, row to edit and category table content
+        // Get References for editlayer, row to edit and category table content
         var row = document.getElementById('cat_'+iCatId+'_row');
         var table = document.getElementById('category_list').getElementsByTagName("tbody")[0];
 
-        //If each html object exists
+        // If each html object exists
         if (layer && row && table) {
             var bResetted = false;
-            //when layer is already open, first close it
+            // when layer is already open, first close it
             if (layer.style.display == 'block' || layer.style.display == 'table-row') {
                 bResetted = true;
                 layer.style.display = 'none';
@@ -73,7 +76,7 @@ function handleInlineEdit(iCatId) {
             }
 
             if (document.renamecategory.idcat.value != iCatId || bResetted == false) {
-                //find previous tr element to use insert before function for edit layer
+                // find previous tr element to use insert before function for edit layer
                 while (row = row.nextSibling) {
                     if (row.nodeName == 'TR') {
                         break;
@@ -122,8 +125,10 @@ function handleInlineEdit(iCatId) {
  * Function shows Layer for generating a new Category
  */
 function showNewForm() {
-    //get Layer objects and get position of cat_navbar. On this basis, the layer is displayed.  We need a hidelayer to inactivate input elements.
-    //this is important, when template Layer is displayed.
+    // get Layer objects and get position of cat_navbar.
+    // On this basis, the layer is displayed.
+    // We need a hidelayer to inactivate input elements.
+    // this is important, when template Layer is displayed.
     var oHideEditLayer = document.getElementById('cat_new_layer_disable'),
         oHideEditLayerImage = document.getElementById('cat_new_layer_disable_image'),
         oEditLayer = document.getElementById('cat_edit'),
@@ -139,11 +144,10 @@ function showNewForm() {
 
     oHideEditLayer.style.visibility = 'hidden';
     oHideEditLayer.style.display = 'block';
-    //console.log(pos.left);
-    oHideEditLayer.style.left = pos.left-10;
+    oHideEditLayer.style.left = pos.left - 10;
     oHideEditLayer.style.top = parseInt(pos.top)+parseInt(pos.top)-1;
 
-    //get with of contained select element and calculate layer with.
+    // get with of contained select element and calculate layer with.
     if (select) {
         var iWidth = 85+select.offsetWidth+15;
         if (iWidth > 477) {
@@ -173,7 +177,7 @@ function showNewForm() {
  * Function hides Layer for generating a new Category
  */
 function hideNewForm() {
-    //If Template layer is displayed, also hide
+    // If Template layer is displayed, also hide
     hideTemplateSelect();
 
     var oEditLayer = document.getElementById('cat_edit');
@@ -184,7 +188,6 @@ function hideNewForm() {
 /**
  * Function toggles image and label for online status input, when user clicks on it
  * function also sets status value in hidden input visible_input
- *
  */
 function changeVisible() {
     var image = document.getElementById('visible_image'),
@@ -249,7 +252,7 @@ function refreshStatus(bCaller) {
            input.disabled  = true;
         }
     } else {
-        //when category is tree, there is no need for target category select, else activate it
+        // when category is tree, there is no need for target category select, else activate it
         if (checkbox.checked) {
             input.value = '';
             input.disabled  = true;
@@ -258,7 +261,7 @@ function refreshStatus(bCaller) {
         }
     }
 
-    //corresponding to checkbox state, set CONTENIDO action in form
+    // corresponding to checkbox state, set CONTENIDO action in form
     if (checkbox.checked) {
         conAction.value = 'str_newtree';
     } else {
@@ -288,9 +291,11 @@ function checkForm() {
 }
 
 /**
- * On creating a new category this function enables a sencod layer, which allows to select a templat for this new category.
- * In this step it is not possible to configure template. It is only allowed to selet a template.
- * This function also disables serveral inputs in the new category layer and switches submitbuttons to grey
+ * On creating a new category this function enables a sencod layer, which allows
+ * to select a templat for this new category. In this step it is not possible to
+ * configure template. It is only allowed to selet a template. This function
+ * also disables serveral inputs in the new category layer and switches
+ * submitbuttons to grey.
  */
 function showTemplateSelect() {
     document.getElementById('cat_new_layer_disable').style.display = 'block';
@@ -311,7 +316,7 @@ function showTemplateSelect() {
 
     oCategoryLayer.style.display = 'block';
 
-    //get with of contained select element and calculate layer with.
+    // get with of contained select element and calculate layer with.
     if (select) {
         var iWidth = 95+select.offsetWidth+15;
         if (iWidth > 252) {
@@ -323,8 +328,8 @@ function showTemplateSelect() {
 }
 
 /**
- * This function hides template layer an activates inputs in the new category layer which were disabled by
- * showTemplateSelect();
+ * This function hides template layer an activates inputs in the new category
+ * layer which were disabled by showTemplateSelect();
  */
 function hideTemplateSelect(bSave) {
     document.getElementById('cat_new_layer_disable').style.display = 'none';

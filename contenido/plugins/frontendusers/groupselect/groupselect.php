@@ -15,10 +15,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $db;
 
+/**
+ * @return string
+ */
 function frontendusers_groupselect_getTitle () {
     return i18n("Groupname");
 }
 
+/**
+ * @return string
+ * @throws cDbException
+ * @throws cException
+ */
 function frontendusers_groupselect_display () {
     global $client;
     $iIdfrontenduser = (int)$_REQUEST['idfrontenduser'];
@@ -58,10 +66,21 @@ function frontendusers_groupselect_display () {
     return $oSelect->render();
 }
 
+/**
+ * @return array
+ */
 function frontendusers_groupselect_wantedVariables () {
     return (array("groupselect"));
 }
 
+/**
+ * @param $variables
+ *
+ * @return bool
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
+ */
 function frontendusers_groupselect_store ($variables) {
     global $client;
 
@@ -90,12 +109,21 @@ function frontendusers_groupselect_store ($variables) {
     return true;
 }
 
+/**
+ * @return array
+ */
 function frontendusers_groupselect_canonicalVariables () {
     //FFBCON-812
     return array();
 }
 
+/**
+ * @param $key
+ *
+ * @return string
+ */
 function frontendusers_groupselect_getvalue ($key) {
     return '';
 }
+
 ?>

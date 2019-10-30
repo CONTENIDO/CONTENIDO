@@ -117,7 +117,7 @@ class ModRewriteController extends ModRewriteBase {
         // CON-1266 make incomming URL lowercase if option "URLS to
         // lowercase" is set
         if (1 == $this->getConfig('use_lowercase_uri')) {
-            $incommingUrl = strtolower($incommingUrl);
+            $incommingUrl = cString::toLowerCase($incommingUrl);
         }
 
         $this->_sIncommingUrl = $incommingUrl;
@@ -229,6 +229,10 @@ class ModRewriteController extends ModRewriteBase {
      *
      * Executes some private functions to extract request URI and to set needed membervariables
      * (client, language, article id, category id, etc.)
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function execute() {
         if (parent::isEnabled() == false) {
@@ -262,6 +266,10 @@ class ModRewriteController extends ModRewriteBase {
      *
      * @param  bool $secondCall  Flag about second call of this function, is needed
      *                           to re extract url if a routing definition was found
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _extractRequestUri($secondCall = false) {
         global $client;
@@ -271,19 +279,19 @@ class ModRewriteController extends ModRewriteBase {
         // CON-1266 make request URL lowercase if option "URLS to
         // lowercase" is set
         if (1 == $this->getConfig('use_lowercase_uri')) {
-            $requestUri = strtolower($requestUri);
+            $requestUri = cString::toLowerCase($requestUri);
         }
 
         // check for defined rootdir
         // allows for root dir being alternativly defined as path of setting client/%frontend_path%
         $rootdir = cUriBuilderMR::getMultiClientRootDir(parent::getConfig('rootdir'));
-        if ('/' !==  $rootdir && 0 === strpos($requestUri, $this->_sIncommingUrl)) {
+        if ('/' !==  $rootdir && 0 === cString::findFirstPos($requestUri, $this->_sIncommingUrl)) {
             $this->_sIncommingUrl = str_replace($rootdir, '/', $this->_sIncommingUrl);
         }
 
         $aUrlComponents = $this->_parseUrl($this->_sIncommingUrl);
         if (isset($aUrlComponents['path'])) {
-            if (parent::getConfig('rootdir') !== '/' && strpos($aUrlComponents['path'], parent::getConfig('rootdir')) === 0) {
+            if (parent::getConfig('rootdir') !== '/' && cString::findFirstPos($aUrlComponents['path'], parent::getConfig('rootdir')) === 0) {
                 $aUrlComponents['path'] = str_replace(parent::getConfig('rootdir'), '/', $aUrlComponents['path']);
             }
 
@@ -294,7 +302,7 @@ class ModRewriteController extends ModRewriteBase {
                 $routings = parent::getConfig('routing');
                 if (is_array($routings) && isset($routings[$aUrlComponents['path']])) {
                     $aUrlComponents['path'] = $routings[$aUrlComponents['path']];
-                    if (strpos($aUrlComponents['path'], self::FRONT_CONTENT) !== false) {
+                    if (cString::findFirstPos($aUrlComponents['path'], self::FRONT_CONTENT) !== false) {
                         // routing destination contains front_content.php
 
                         $this->_bRoutingFound = true;
@@ -327,7 +335,7 @@ class ModRewriteController extends ModRewriteBase {
                     // pathinfo would also work
                     $arr = explode('.', $item);
                     $count = count($arr);
-                    if ($count > 0 && '.' . strtolower($arr[$count - 1]) == parent::getConfig('file_extension')) {
+                    if ($count > 0 && '.' . cString::toLowerCase($arr[$count - 1]) == parent::getConfig('file_extension')) {
                         array_pop($arr);
                         $this->_sArtName = trim(implode('.', $arr));
                     } else {
@@ -408,6 +416,8 @@ class ModRewriteController extends ModRewriteBase {
 
     /**
      * Detects client id from given url
+     *
+     * @throws cDbException
      */
     private function _setClientId() {
         global $client;
@@ -441,6 +451,8 @@ class ModRewriteController extends ModRewriteBase {
 
     /**
      * Sets language id
+     *
+     * @throws cDbException
      */
     private function _setLanguageId() {
         global $lang;
@@ -476,6 +488,8 @@ class ModRewriteController extends ModRewriteBase {
 
     /**
      * Sets path resolver and category id
+     *
+     * @throws cException
      */
     private function _setPathresolverSetting() {
         global $client, $lang, $load_lang, $idcat;
@@ -520,13 +534,16 @@ class ModRewriteController extends ModRewriteBase {
 
     /**
      * Sets article id
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     private function _setIdart() {
         global $idcat, $idart, $lang;
 
         if ($this->_bError) {
             return;
-        } else if ($this->_isRootRequest()) {
+        } elseif ($this->_isRootRequest()) {
             return;
         }
 
@@ -580,6 +597,9 @@ class ModRewriteController extends ModRewriteBase {
      *
      * One main goal of this function is to prevent duplicated content, which could happen, if
      * the configuration 'startfromroot' is activated.
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     private function _postValidation() {
         global $idcat, $idart, $client;
@@ -632,7 +652,7 @@ class ModRewriteController extends ModRewriteBase {
      * Parses the url using defined separators
      *
      * @param   string  $url  Incoming url
-     * @return  string  Parsed url
+     * @return  array|bool  Parsed url
      */
     private function _parseUrl($url) {
         $this->_sResolvedUrl = $url;

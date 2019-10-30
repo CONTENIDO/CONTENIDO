@@ -22,7 +22,11 @@ cInclude('plugins', 'repository/keyword_density.php');
 /**
  *
  * @param array $metatags
+ *
  * @return array
+ *
+ * @throws cDbException
+ * @throws cException
  */
 function cecCreateMetatags($metatags) {
     global $cfg, $lang, $idart, $client, $cfgClient, $idcat, $idartlang;
@@ -33,7 +37,7 @@ function cecCreateMetatags($metatags) {
     // Get encoding
     $oLang = new cApiLanguage((int) $lang);
     if ($oLang->get('encoding')) {
-        $sEncoding = strtoupper($oLang->get('encoding'));
+        $sEncoding = cString::toUpperCase($oLang->get('encoding'));
     } else {
         $sEncoding = 'ISO-8859-1';
     }
@@ -80,6 +84,7 @@ function cecCreateMetatags($metatags) {
     }
 
     $arrHeadlines = array_merge($arrHead1, $arrHead2);
+    $sHeadline = '';
 
     foreach ($arrHeadlines as $key => $value) {
         if ($value != '') {
@@ -89,7 +94,7 @@ function cecCreateMetatags($metatags) {
     }
 
     $sHeadline = strip_tags($sHeadline);
-    $sHeadline = substr(str_replace(chr(13) . chr(10), ' ', $sHeadline), 0, 100);
+    $sHeadline = cString::getPartOfString(str_replace("\r\n", ' ', $sHeadline), 0, 100);
 
     $arrText1 = $oArt->getContent('html');
     $arrText2 = $oArt->getContent('text');
@@ -103,6 +108,7 @@ function cecCreateMetatags($metatags) {
     }
 
     $arrText = array_merge($arrText1, $arrText2);
+    $sText = '';
 
     foreach ($arrText as $key => $value) {
         if ($value != '') {
@@ -151,10 +157,10 @@ function cecCreateMetatags($metatags) {
     foreach ($availableTags as $key => $value) {
         $metavalue = conGetMetaValue($idartlang, $key);
 
-        if (strlen($metavalue) == 0) {
+        if (cString::getStringLength($metavalue) == 0) {
             // Add values for metatags that don't have a value in the current
             // article
-            switch (strtolower($value['metatype'])) {
+            switch (cString::toLowerCase($value['metatype'])) {
                 case 'author':
                     // Build author metatag from name of last modifier
                     $oArt = new cApiArticleLanguage();
@@ -186,7 +192,7 @@ function cecCreateMetatags($metatags) {
                 case 'robots':
                 case 'expires':
                     // Build these 3 metatags from entries in homepage
-                    $sCurrentTag = strtolower($value['name']);
+                    $sCurrentTag = isset($value['name']) ? cString::toLowerCase($value['name']) : '';
                     $iCheck = CheckIfMetaTagExists($metatags, $sCurrentTag);
                     if($sCurrentTag != '' && $arrHomepageMetaTags[$sCurrentTag] != "") {
                         $metatags[$iCheck]['name'] = $sCurrentTag;
@@ -219,7 +225,7 @@ function CheckIfMetaTagExists($arrMetatags, $sCheckForMetaTag) {
 
     // loop thru existing metatags and check against the listitem name
     foreach ($arrMetatags as $pos => $item) {
-        if ($item['name'] == $sCheckForMetaTag && $item['name'] != '') {
+        if (isset($item['name']) && $item['name'] == $sCheckForMetaTag && $item['name'] != '') {
             // metatag found -> return the position
             return $pos;
         }

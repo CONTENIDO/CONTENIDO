@@ -84,6 +84,8 @@ class cModuleSearch extends cModuleHandler {
      * Constructor to create an instance of this class.
      *
      * @param array $searchOptions
+     *
+     * @throws cException
      */
     public function __construct($searchOptions) {
         parent::__construct();
@@ -121,6 +123,8 @@ class cModuleSearch extends cModuleHandler {
      * output files).
      *
      * @return array
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function searchForAllModules() {
         global $cfg, $client;
@@ -139,9 +143,9 @@ class cModuleSearch extends cModuleHandler {
         // filter modules based on input and output
         while (($modul = $db->nextRecord()) !== false) {
             $this->initWithDatabaseRow($db);
-            if (strlen(stripslashes($this->_filter)) === 0
-                    || strpos($this->readInput(), stripslashes($this->_filter)) !== false
-                    || strpos($this->readOutput(), stripslashes($this->_filter)) !== false) {
+            if (cString::getStringLength(stripslashes($this->_filter)) === 0
+                    || cString::findFirstPos($this->readInput(), stripslashes($this->_filter)) !== false
+                    || cString::findFirstPos($this->readOutput(), stripslashes($this->_filter)) !== false) {
                     $moduleIds[] = $db->f('idmod');
             }
         }
@@ -181,6 +185,8 @@ class cModuleSearch extends cModuleHandler {
      * outputs files.
      *
      * @return array
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function getModules() {
         $modules = array();
@@ -225,6 +231,8 @@ class cModuleSearch extends cModuleHandler {
      * Search for modules in "name" column of modul.
      *
      * @return array
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function findeModulWithName() {
         global $cfg, $client;
@@ -254,6 +262,8 @@ class cModuleSearch extends cModuleHandler {
      * Search for modules in input file of the module.
      *
      * @return array
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function findModulWithInput() {
         global $cfg, $client;
@@ -267,8 +277,8 @@ class cModuleSearch extends cModuleHandler {
         $result = array();
         while (($module = $db->nextRecord()) !== false) {
             $this->initWithDatabaseRow($db);
-            if (strlen(stripslashes($this->_filter)) === 0
-                || strpos($this->readInput(), stripslashes($this->_filter)) !== false) {
+            if (cString::getStringLength(stripslashes($this->_filter)) === 0
+                || cString::findFirstPos($this->readInput(), stripslashes($this->_filter)) !== false) {
                 $result[$db->f('idmod')] = array(
                         'name' => $db->f('name'),
                         'description' => $db->f('description'),
@@ -286,6 +296,8 @@ class cModuleSearch extends cModuleHandler {
      * Search for modules in output of modules of current client.
      *
      * @return array
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function findModulWithOutput() {
          global $cfg, $client;
@@ -301,8 +313,8 @@ class cModuleSearch extends cModuleHandler {
         $result = array();
         while (($module = $db->nextRecord()) !== false) {
             $this->initWithDatabaseRow($db);
-            if (strlen(stripslashes($this->_filter)) === 0
-                || strpos($this->readOutput(), stripslashes($this->_filter)) !== false) {
+            if (cString::getStringLength(stripslashes($this->_filter)) === 0
+                || cString::findFirstPos($this->readOutput(), stripslashes($this->_filter)) !== false) {
                 $result[$db->f('idmod')] = array(
                         'name' => $db->f('name'),
                         'description' => $db->f('description'),
@@ -320,6 +332,8 @@ class cModuleSearch extends cModuleHandler {
      * Search for modules in type column.
      *
      * @return array
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function findModuleWithType() {
         global $cfg, $client;
@@ -351,6 +365,8 @@ class cModuleSearch extends cModuleHandler {
      * Search for modules in description column of modules.
      *
      * @return array
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function findModuleWithDescription() {
         global $cfg, $client;

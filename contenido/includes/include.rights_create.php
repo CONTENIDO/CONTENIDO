@@ -14,8 +14,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-cInclude('includes', 'functions.rights.php');
-
 if (!$perm->have_perm_area_action($area, $action)) {
     $notification->displayNotification("error", i18n("Permission denied"));
     return;
@@ -48,7 +46,7 @@ if ($action == 'user_createuser') {
         $bError = true;
     } else {
 
-        if (count($mclient) > 0) {
+        if (is_array($mclient) && count($mclient) > 0) {
 
             // Prevent setting the permissions for a client without a language of that client
             foreach ($mclient as $selectedclient) {
@@ -85,7 +83,7 @@ if ($action == 'user_createuser') {
 
         // If we have no errors, continue to create a user
         if ($bError == false) {
-            $aPerms = buildUserOrGroupPermsFromRequest(true);
+            $aPerms = cRights::buildUserOrGroupPermsFromRequest(true);
 
             if (cApiUser::usernameExists($username)) {
                 // username already exists
@@ -214,7 +212,7 @@ $tpl->next();
 
 $tpl->set('s', 'PATH_TO_CALENDER_PIC', cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif');
 
-if (($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
+if (($lang_short = cString::getPartOfString(cString::toLowerCase($belang), 0, 2)) != "en") {
     $langscripts = '<script type="text/javascript" src="scripts/jquery/plugins/timepicker-' . $lang_short . '.js"></script>
     <script type="text/javascript" src="scripts/jquery/plugins/datepicker-' . $lang_short . '.js"></script>';
     $tpl->set('s', 'CAL_LANG', $langscripts);

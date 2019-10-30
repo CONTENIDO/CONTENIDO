@@ -232,6 +232,8 @@ abstract class cContentTypeAbstract {
     /**
      * Stores all values from the $_POST array in the $_settings attribute
      * (associative array) and saves them in the database (XML).
+     *
+     * @throws cDbException
      */
     protected function _storeSettings() {
         $settingsToStore = '';
@@ -258,6 +260,10 @@ abstract class cContentTypeAbstract {
 
         // store new settings in the database
         conSaveContentEntry($this->_idArtLang, $this->_type, $this->_id, $settingsToStore);
+		
+		$oArtLang = new cApiArticleLanguage($this->_idArtLang);
+		$this->_rawSettings = $oArtLang->getContent($this->_type, $this->_id);
+        $this->_readSettings();
     }
 
     /**
@@ -271,7 +277,7 @@ abstract class cContentTypeAbstract {
     protected function _encodeForOutput($code) {
         $code = addslashes($code);
         $code = str_replace("\\'", "'", $code);
-        $code = str_replace('\$', '\\$', $code);
+        $code = str_replace('$', '\\$', $code);
 
         return $code;
     }
@@ -291,7 +297,7 @@ abstract class cContentTypeAbstract {
         if ($uploadPath === '') {
             $uploadPath = $this->_uploadPath;
         }
-        if (substr($uploadPath, -1) !== '/') {
+        if (cString::getPartOfString($uploadPath, -1) !== '/') {
             $uploadPath .= '/';
         }
 
@@ -313,8 +319,8 @@ abstract class cContentTypeAbstract {
         }
 
         usort($directories, function($a, $b) {
-            $a = mb_strtolower($a["name"]);
-            $b = mb_strtolower($b["name"]);
+            $a = cString::toLowerCase($a["name"]);
+            $b = cString::toLowerCase($b["name"]);
             if($a < $b) {
                 return -1;
             } else if($a > $b) {
@@ -333,8 +339,10 @@ abstract class cContentTypeAbstract {
      *
      * @param array $dirs
      *         directory information
+     *
      * @return string
      *         HTML code showing a directory list
+     * @throws cInvalidArgumentException
      */
     public function generateDirectoryList(array $dirs) {
         $template = new cTemplate();
@@ -423,6 +431,16 @@ abstract class cContentTypeAbstract {
         }
 
         return $expand;
+    }
+
+    /**
+     * This functions able to use a content type object directly for output
+     * See also CON-2587
+     *
+     * @return string
+     */
+    public function __toString() {
+        return $this->generateViewCode();
     }
 
     /**

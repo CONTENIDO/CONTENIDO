@@ -14,9 +14,11 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-if (!(int) $client > 0) {
-    // If there is no client selected, display empty page
-    $oPage = new cGuiPage("mod_overview");
+$oPage = new cGuiPage("mod_overview");
+
+// display critical error if no valid client is selected
+if ((int) $client < 1) {
+    $oPage->displayCriticalError(i18n("No Client selected"));
     $oPage->render();
     return;
 }
@@ -24,7 +26,6 @@ if (!(int) $client > 0) {
 // Now build bottom with list
 $cApiModuleCollection = new cApiModuleCollection();
 $classmodule = new cApiModule();
-$oPage = new cGuiPage("mod_overview");
 $searchOptions = array();
 
 // no value found in request for items per page -> get form db or set default
@@ -107,7 +108,7 @@ foreach ($allModules as $idmod => $module) {
         $link->setMultiLink("mod", "", "mod_edit", "");
         $link->setCustom("idmod", $idmod);
 
-        $moduleName = (strlen(trim($module['name'])) > 0) ? $module['name'] : i18n("- Unnamed module -");
+        $moduleName = (cString::getStringLength(trim($module['name'])) > 0) ? $module['name'] : i18n("- Unnamed module -");
         $sName = mb_convert_encoding(cString::stripSlashes(conHtmlSpecialChars($moduleName)), cRegistry::getLanguage()->get('encoding')); //$cApiModule->get("name");
         $descr = mb_convert_encoding(cString::stripSlashes(str_replace("'", "&#39;", conHtmlSpecialChars(nl2br($module ['description'])))), cRegistry::getLanguage()->get('encoding'));
 

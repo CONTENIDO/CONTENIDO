@@ -44,9 +44,11 @@ class cSmartyFrontend {
     /**
      * constructor
      *
-     * @param array &$aCfg contenido cfg array
+     * @param array &$aCfg       contenido cfg array
      * @param array &$aClientCfg contenido client cfg array of the specific
-     *        client
+     *                           client
+     * @param bool  $bSanityCheck
+     *
      * @throws cException
      * @throws cInvalidArgumentException if the given configurations are not an
      *         array
@@ -74,7 +76,7 @@ class cSmartyFrontend {
 
         // check the template directory and create new one if it not exists
         if (!is_dir(self::$aDefaultPaths['compile_dir'])) {
-            mkdir(self::$aDefaultPaths['compile_dir'], 0777);
+            mkdir(self::$aDefaultPaths['compile_dir'], cDirHandler::getDefaultPermissions());
         }
 
         // check if folders exist and rights ok if needed
@@ -142,5 +144,3 @@ class cSmartyFrontend {
     }
 
 }
-
-?>

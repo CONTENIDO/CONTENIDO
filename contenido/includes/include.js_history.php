@@ -77,7 +77,7 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage')) {
 
         // There is a need for renaming file
         if ($sFileName != $sJScriptName) {
-            if (cFileHandler::getExtension($sJScriptName) != 'js' and strlen(stripslashes(trim($sJScriptName))) > 0) {
+            if (cFileHandler::getExtension($sJScriptName) != 'js' && cString::getStringLength(stripslashes(trim($sJScriptName))) > 0) {
                 $sJScriptName = stripslashes($sJScriptName) . '.js';
             }
 
@@ -161,7 +161,7 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage')) {
         // Render and handle History Area
         $oPage->setEncoding('utf-8');
 
-        $oCodeMirrorOutput = new CodeMirror('IdLaycode', 'js', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
+        $oCodeMirrorOutput = new CodeMirror('IdLaycode', 'js', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg, !$bInUse);
         if($readOnly) {
             $oCodeMirrorOutput->setProperty("readOnly", "true");
         }

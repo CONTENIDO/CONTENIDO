@@ -63,7 +63,7 @@ class cRegistry {
     protected static $_warnMessages = array();
 
     /**
-     * Function wich returns path after the last possible place changing via
+     * Function which returns path after the last possible place changing via
      * configuration file.
      *
      * @author konstantinos.katikakis
@@ -76,7 +76,7 @@ class cRegistry {
     }
 
     /**
-     * Function wich returns the backend URL after the last possible place
+     * Function which returns the backend URL after the last possible place
      * changing via configuration file.
      *
      * @author konstantinos.katikakis
@@ -89,7 +89,7 @@ class cRegistry {
     }
 
     /**
-     * Function wich returns path after the last possible place changing via
+     * Function which returns path after the last possible place changing via
      * configuration file.
      * The path point to the current client
      *
@@ -104,7 +104,7 @@ class cRegistry {
     }
 
     /**
-     * Function wich returns URL after the last possible place changing via
+     * Function which returns URL after the last possible place changing via
      * configuration file.
      * The path point to the current client
      *
@@ -161,6 +161,8 @@ class cRegistry {
      * Returns the loaded cApiLanguage object for the current language.
      *
      * @return cApiLanguage
+     *
+     * @throws cInvalidArgumentException
      */
     public static function getLanguage() {
         return self::_fetchItemObject('cApiLanguage', self::getLanguageId());
@@ -179,6 +181,8 @@ class cRegistry {
      * Returns the loaded cApiClient object for the current client.
      *
      * @return cApiClient
+     *
+     * @throws cInvalidArgumentException
      */
     public static function getClient() {
         return self::_fetchItemObject('cApiClient', self::getClientId());
@@ -200,6 +204,8 @@ class cRegistry {
      * Returns the loaded cApiArticle object for the current article.
      *
      * @return cApiArticle
+     *
+     * @throws cInvalidArgumentException
      */
     public static function getArticle() {
         return self::_fetchItemObject('cApiArticle', self::getArticleId());
@@ -222,6 +228,8 @@ class cRegistry {
      * Returns the loaded cApiArticleLanguage object for the current article.
      *
      * @return cApiArticleLanguage
+     *
+     * @throws cInvalidArgumentException
      */
     public static function getArticleLanguage() {
         return self::_fetchItemObject('cApiArticleLanguage', self::getArticleLanguageId());
@@ -243,6 +251,8 @@ class cRegistry {
      * Returns the loaded cApiCategory object for the current category.
      *
      * @return cApiCategory
+     *
+     * @throws cInvalidArgumentException
      */
     public static function getCategory() {
         return self::_fetchItemObject('cApiCategory', self::getCategoryId());
@@ -265,6 +275,8 @@ class cRegistry {
      * Returns the loaded cApiCategoryLanguage object for the current category.
      *
      * @return cApiCategoryLanguage
+     *
+     * @throws cInvalidArgumentException
      */
     public static function getCategoryLanguage() {
         return self::_fetchItemObject('cApiCategoryLanguage', self::getCategoryLanguageId());
@@ -288,6 +300,8 @@ class cRegistry {
      * category/article relation.
      *
      * @return cApiCategoryArticle
+     *
+     * @throws cInvalidArgumentException
      */
     public static function getCategoryArticle() {
         return self::_fetchItemObject('cApiCategoryArticle', self::getCategoryArticleId());
@@ -416,7 +430,7 @@ class cRegistry {
      * @param string $sectionName [optional]
      * @param string $optionName [optional]
      * @param string $defaultValue [optional]
-     * @return array string
+     * @return mixed
      */
     public static function getConfigValue($sectionName = NULL, $optionName = NULL, $defaultValue = NULL) {
         // get general configuration array
@@ -424,7 +438,7 @@ class cRegistry {
 
         // determine configuration section
         $section = array();
-        if (array_key_exists($sectionName, $cfg)) {
+        if (isset($cfg[$sectionName])) {
             $section = $cfg[$sectionName];
         }
         if (NULL === $optionName) {
@@ -433,13 +447,11 @@ class cRegistry {
 
         // determine configuration value for certain option name of
         // configuration section
-        $value = $defaultValue;
-        if (is_array($cfg[$sectionName])) {
-            if (array_key_exists($optionName, $section)) {
-                $value = $section[$optionName];
-            }
+        if (is_array($section) && isset($section[$optionName])) {
+            return $section[$optionName];
+        } else {
+            return $defaultValue;
         }
-        return $value;
     }
 
     /**
@@ -563,9 +575,11 @@ class cRegistry {
      *         name of the api class
      * @param int $objectId
      *         primary key value
+     *
+     * @return Item
+     *
      * @throws cInvalidArgumentException
      *         if the given objectId is not greater than 0 or the given class does not exist
-     * @return Item
      */
     protected final static function _fetchItemObject($apiClassName, $objectId) {
         if ((int) $objectId <= 0) {
@@ -608,19 +622,20 @@ class cRegistry {
 
         if (isset($sessClass)) {
             global $sess;
-
+            /** @var cSession */
             $sess = new $sessClass();
             $sess->start();
             if (isset($authClass)) {
                 global $auth;
                 if (!isset($auth)) {
+                    /** @var cAuthHandlerAbstract */
                     $auth = new $authClass();
                 }
                 $auth->start();
-
                 if (isset($permClass)) {
                     global $perm;
                     if (!isset($perm)) {
+                        /** @var cPermission */
                         $perm = new $permClass();
                     }
                 }
@@ -632,7 +647,10 @@ class cRegistry {
      * Shutdowns the CONTENIDO framework on page close.
      *
      * @author frederic.schneider
+     *
      * @param bool $debugShowAll [optional]
+     *
+     * @throws cInvalidArgumentException
      */
     public final static function shutdown($debugShowAll = true) {
         if ($debugShowAll == true) {
@@ -810,7 +828,7 @@ class cRegistry {
     *
     * @return string|bool
     *         name of encoding or false if no language found
-     */
+    */
     public static function getEncoding() {
 
         $apiLanguage = new cApiLanguage(self::getLanguageId());

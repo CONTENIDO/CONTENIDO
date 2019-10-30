@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the article class for the plugin content allocation.
  *
@@ -42,6 +43,9 @@ class pApiContentAllocationArticle extends pApiTree {
      * pApiContentAllocationArticle constructor
      *
      * @param string $uuid
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($uuid) {
         $cfg = cRegistry::getConfig();
@@ -55,8 +59,13 @@ class pApiContentAllocationArticle extends pApiTree {
      * Old constructor
      *
      * @deprecated [2016-02-11]
-     * 				This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     *                This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
+     *
      * @param string $uuid
+     *
+     * @return pApiContentAllocationArticle
+     * @throws cDbException
+     * @throws cException
      */
     public function pApiContentAllocationArticle($uuid) {
         cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
@@ -112,8 +121,11 @@ class pApiContentAllocationArticle extends pApiTree {
     /**
      * Render tree
      *
-     * @param boolean $return
-     * @return boolean|object
+     * @param bool $return
+     *
+     * @return bool|object
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     function renderTree($return = true) {
         $this->_tpl->reset();
@@ -145,4 +157,3 @@ class pApiContentAllocationArticle extends pApiTree {
         }
     }
 }
-?>

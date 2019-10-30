@@ -111,10 +111,7 @@ class cAutoload {
         self::$_initialized = true;
         self::$_conRootPath = str_replace('\\', '/', realpath($cfg['path']['contenido'] . '/../')) . '/';
 
-        spl_autoload_register(array(
-            __CLASS__,
-            'autoload'
-        ));
+        spl_autoload_register(array(__CLASS__, 'autoload'));
 
         // load n' store autoloader class map file
         $file = $cfg['path']['contenido_config'] . 'config.autoloader.php';
@@ -196,12 +193,13 @@ class cAutoload {
      *
      * @param string $className
      *         The classname
+     *
      * @throws cBadMethodCallException
      *         If autoloader wasn't initialized before
      */
     public static function autoload($className) {
         if (self::$_initialized !== true) {
-            throw new cBadMethodCallException("Autoloader has to be initialized by calling method initialize()");
+            throw new cBadMethodCallException('Autoloader has to be initialized by calling method initialize()');
         }
 
         if (isset(self::$_loadedClasses[$className])) {
@@ -231,7 +229,7 @@ class cAutoload {
      */
     public static function isAutoloadable($file) {
         foreach (self::$_includeFiles as $className => $includeFile) {
-            if (strpos($includeFile, $file) !== false) {
+            if (cString::findFirstPos($includeFile, $file) !== false) {
                 return true;
             }
         }
@@ -263,40 +261,40 @@ class cAutoload {
      *
      * @param string $className
      * @return string|null
-     *         string if validation was successfull, otherwise NULL
+     *         string if validation was successful, otherwise NULL
      */
     private static function _getContenidoClassFile($className) {
-        $classNameLower = strtolower($className);
+        $classNameLower = cString::toLowerCase($className);
         $file = isset(self::$_includeFiles[$classNameLower]) ? self::$_conRootPath . self::$_includeFiles[$classNameLower] : NULL;
         return self::_validateClassAndFile($className, $file);
     }
 
     /**
-     * Validates the given class and the file
+     * Validates the given classname and filename.
      *
-     * @param string $className
-     * @param string $filePathName
+     * @param string $classname
+     * @param string $filename
      * @return string|null
-     *         string if validation was successfull, otherwise NULL
+     *         string if validation was successful, otherwise NULL
      */
-    private static function _validateClassAndFile($className, $filePathName) {
-        if (class_exists($className)) {
+    private static function _validateClassAndFile($classname, $filename) {
+        if (class_exists($classname)) {
             self::$_errors[] = array(
-                'class' => $className,
-                'file' => str_replace(self::$_conRootPath, '', $filePathName),
+                'class' => $classname,
+                'file' => str_replace(self::$_conRootPath, '', $filename),
                 'error' => self::ERROR_CLASS_EXISTS
             );
             return NULL;
-        } elseif (!is_file($filePathName)) {
+        } elseif (!is_file($filename)) {
             self::$_errors[] = array(
-                'class' => $className,
-                'file' => str_replace(self::$_conRootPath, '', $filePathName),
+                'class' => $classname,
+                'file' => str_replace(self::$_conRootPath, '', $filename),
                 'error' => self::ERROR_FILE_NOT_FOUND
             );
             return NULL;
+        } else {
+            return $filename;
         }
-
-        return $filePathName;
     }
 
     /**
@@ -311,7 +309,7 @@ class cAutoload {
     private static function _normalizeConfig(array $config) {
         $newConfig = array();
         foreach ($config as $name => $file) {
-            $newConfig[strtolower($name)] = $file;
+            $newConfig[cString::toLowerCase($name)] = $file;
         }
         return $newConfig;
     }

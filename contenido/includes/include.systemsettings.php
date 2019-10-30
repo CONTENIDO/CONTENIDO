@@ -18,10 +18,11 @@ $page = new cGuiPage("systemsettings");
 
 $aManagedValues = array(
     'versioning_prune_limit', 'update_check', 'update_news_feed', 'versioning_path', 'versioning_activated',
-    'update_check_period', 'system_clickmenu', 'system_mail_host', 'system_mail_sender',
+    'update_check_period', 'system_clickmenu', 'mail_transport', 'system_mail_host', 'system_mail_sender',
     'system_mail_sender_name', 'pw_request_enable', 'maintenance_mode', 'codemirror_activated',
     'backend_preferred_idclient', 'generator_basehref', 'generator_xhtml', 'system_insite_editing_activated',
-    'backend_backend_label', 'backend_file_extensions', 'module_translation_message', 'versioning_enabled'
+    'backend_backend_label', 'backend_file_extensions', 'module_translation_message', 'versioning_enabled',
+    'stats_tracking'
 );
 
 // @TODO Find a general solution for this!
@@ -32,14 +33,14 @@ if (defined('CON_STRIPSLASHES')) {
 }
 
 // @TODO: Check possibility to use $perm->isSysadmin()
-$isSysadmin = (false !== strpos($auth->auth["perm"], "sysadmin"));
+$isSysadmin = (false !== cString::findFirstPos($auth->auth["perm"], "sysadmin"));
 
 if ($action == "systemsettings_save_item") {
     if (false === $isSysadmin) {
         $page->displayError(i18n("You don't have the permission to make changes here."));
     } else {
         if (!in_array($request['systype'] . '_' . $request['sysname'], $aManagedValues)) {
-            setSystemProperty($request['systype'], $request['sysname'], $request['sysvalue'], (int) $request['csidsystemprop']);
+            setSystemProperty(trim($request['systype']), trim($request['sysname']), trim($request['sysvalue']), cSecurity::toInteger($request['csidsystemprop']));
             if (isset($x)) {
                 $page->displayOk(i18n('Saved changes successfully!'));
             } else {
@@ -60,7 +61,6 @@ if ($action == "systemsettings_delete_item") {
     }
 }
 
-$settings = getSystemProperties(1);
 
 $list = new cGuiList();
 $list->setCell(1, 1, i18n("Type"));
@@ -88,63 +88,86 @@ if (true === $isSysadmin) {
 $spacer = new cHTMLImage();
 $spacer->setWidth(5);
 
-foreach ($settings as $key => $types) {
-    foreach ($types as $type => $value) {
-        // Process only entries which are not flagged as managed system settings
-        if (!in_array($key . '_' . $type, $aManagedValues)) {
+$sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
 
-            if (($action == "systemsettings_edit_item") && ($request['systype'] == $key) && ($request['sysname'] == $type) && $isSysadmin) {
-                $oInputboxValue = new cHTMLTextbox("sysvalue", conHtmlSpecialChars($value['value']));
-                $oInputboxValue->setWidth(30);
-                $oInputboxName = new cHTMLTextbox("sysname", conHtmlSpecialChars($type));
-                $oInputboxName->setWidth(30);
-                $oInputboxType = new cHTMLTextbox("systype", conHtmlSpecialChars($key));
-                $oInputboxType->setWidth(10);
+try {
+    $allSystemProperties = getSystemProperties(true);
+} catch (cDbException $e) {
+    $allSystemProperties = [];
+} catch (cException $e) {
+    $allSystemProperties = [];
+}
+foreach ($allSystemProperties as $type => $typeSystemProperties) {
+    foreach ($typeSystemProperties as $name => $value) {
 
-                $hidden = '<input type="hidden" name="csidsystemprop" value="' . $value['idsystemprop'] . '">';
-                $sSubmit = '<input type="image" class="vAlignMiddle" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif">';
-
-                $list->setCell($count, 1, $oInputboxType->render());
-                $list->setCell($count, 2, $oInputboxName->render());
-                $list->setCell($count, 3, $oInputboxValue->render() . $hidden . $sSubmit);
-            } else {
-                $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
-
-                if (strlen($type) > 35) {
-                    $sShort = conHtmlSpecialChars(cString::trimHard($type, 35));
-                    $type = sprintf($sMouseoverTemplate, conHtmlSpecialChars(addslashes($type), ENT_QUOTES), $sShort);
-                }
-
-                if (strlen($value['value']) > 35) {
-                    $sShort = conHtmlSpecialChars(cString::trimHard($value['value'], 35));
-                    $value['value'] = sprintf($sMouseoverTemplate, conHtmlSpecialChars(addslashes($value['value']), ENT_QUOTES), $sShort);
-                }
-
-                if (strlen($key) > 35) {
-                    $sShort = conHtmlSpecialChars(cString::trimHard($key, 35));
-                    $key = sprintf($sMouseoverTemplate, conHtmlSpecialChars(addslashes($key), ENT_QUOTES), $sShort);
-                }
-                $sValue = !strlen(trim($value['value'])) ? '&nbsp;' : $value['value'];
-
-                $list->setCell($count, 1, $key);
-                $list->setCell($count, 2, $type);
-                $list->setCell($count, 3, $sValue);
-            }
-
-            if ($isSysadmin) {
-                $oLinkEdit->setCustom("sysname", urlencode($type));
-                $oLinkEdit->setCustom("systype", urlencode($key));
-
-                $oLinkDelete->setCustom("sysname", urlencode($type));
-                $oLinkDelete->setCustom("systype", urlencode($key));
-
-                $link = $oLinkEdit;
-                $dlink = $oLinkDelete->render();
-
-                $list->setCell($count, 4, $spacer->render() . $link->render() . $spacer->render() . $dlink . $spacer->render());
-            }
-            $count++;
+        // skip managed system settings
+        if (in_array($type . '_' . $name, $aManagedValues)) {
+            continue;
         }
+
+        $settingType  = conHtmlentities($type);
+        $settingName  = conHtmlentities($name);
+        $settingValue = conHtmlentities($value['value']);
+
+        if (($action == "systemsettings_edit_item") && ($request['systype'] == $type) && ($request['sysname'] == $name) && $isSysadmin) {
+
+            $oInputboxType = new cHTMLTextbox("systype", $settingType);
+            $oInputboxType->setWidth(10);
+
+            $oInputboxName = new cHTMLTextbox("sysname", $settingName);
+            $oInputboxName->setWidth(30);
+
+            $oInputboxValue = new cHTMLTextbox("sysvalue", $settingValue);
+            $oInputboxValue->setWidth(30);
+
+            $hidden = '<input type="hidden" name="csidsystemprop" value="' . $value['idsystemprop'] . '">';
+            $sSubmit = '<input type="image" class="vAlignMiddle" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif">';
+
+            $list->setCell($count, 1, $oInputboxType->render());
+            $list->setCell($count, 2, $oInputboxName->render());
+            $list->setCell($count, 3, $oInputboxValue->render() . $hidden . $sSubmit);
+        } else {
+
+            if (cString::getStringLength($type) > 35) {
+                $sShort = conHtmlentities(cString::trimHard($type, 35));
+                $type = sprintf($sMouseoverTemplate,  $settingType, $sShort);
+            }
+
+            if (cString::getStringLength($name) > 35) {
+                $sShort = conHtmlentities(cString::trimHard($name, 35));
+                $name = sprintf($sMouseoverTemplate, $settingName, $sShort);
+            }
+
+            if (cString::getStringLength($value['value']) > 35) {
+                $sShort =  conHtmlentities(cString::trimHard($value['value'], 35));
+                $settingValue = sprintf($sMouseoverTemplate, $settingValue, $sShort);
+            }
+
+            if (empty($settingValue)) {
+                $settingValue = '&nbsp;';
+            }
+
+            $list->setCell($count, 1, $type);
+            $list->setCell($count, 2, $name);
+            $list->setCell($count, 3, $settingValue);
+        }
+
+        if ($isSysadmin) {
+            $oLinkEdit->setCustom("systype", urlencode($type));
+            $oLinkEdit->setCustom("sysname", urlencode($name));
+
+            $oLinkDelete->setCustom("systype", urlencode($type));
+            $oLinkDelete->setCustom("sysname", urlencode($name));
+
+            $list->setCell(
+                $count,
+                4,
+                $spacer->render() . $oLinkEdit->render()
+                . $spacer->render() . $oLinkDelete->render()
+                . $spacer->render()
+            );
+        }
+        $count++;
     }
 }
 

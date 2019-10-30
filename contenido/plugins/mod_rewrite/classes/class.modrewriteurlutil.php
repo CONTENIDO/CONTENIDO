@@ -158,8 +158,8 @@ class ModRewriteUrlUtil extends ModRewriteBase {
             return $urlPath;
         }
 
-        if (substr($urlPath, -1) == $fromArtSep) {
-            $urlPath = substr($urlPath, 0, -1) . '{TAS}';
+        if (cString::getPartOfString($urlPath, -1) == $fromArtSep) {
+            $urlPath = cString::getPartOfString($urlPath, 0, -1) . '{TAS}';
         }
 
         // pre replace category word seperator and category seperator
@@ -227,12 +227,12 @@ class ModRewriteUrlUtil extends ModRewriteBase {
      * @return  string  CONTENIDO url
      */
     public function toContenidoUrl($url) {
-        if (strpos($url, $this->_mrExt) === false) {
+        if (cString::findFirstPos($url, $this->_mrExt) === false) {
             $newUrl = $this->toContenidoUrlPath($url);
         } else {
             // replace category word and article word seperator
-            $path = substr($url, 0, strrpos($url, $this->_mrArtSep) + 1);
-            $name = substr($url, strrpos($url, $this->_mrArtSep) + 1);
+            $path = cString::getPartOfString($url, 0, cString::findLastPos($url, $this->_mrArtSep) + 1);
+            $name = cString::getPartOfString($url, cString::findLastPos($url, $this->_mrArtSep) + 1);
             $newUrl = $this->toContenidoUrlPath($path) . $this->toContenidoUrlName($name);
         }
         return $newUrl;
@@ -245,12 +245,12 @@ class ModRewriteUrlUtil extends ModRewriteBase {
      * @return  string  CONTENIDO url
      */
     public function toModRewriteUrl($url) {
-        if (strpos($url, $this->_mrExt) === false) {
+        if (cString::findFirstPos($url, $this->_mrExt) === false) {
             $newUrl = $this->toModRewriteUrlPath($url);
         } else {
             // replace category word and article word seperator
-            $path = substr($url, 0, strrpos($url, $this->_artSep) + 1);
-            $name = substr($url, strrpos($url, $this->_artSep) + 1);
+            $path = cString::getPartOfString($url, 0, cString::findLastPos($url, $this->_artSep) + 1);
+            $name = cString::getPartOfString($url, cString::findLastPos($url, $this->_artSep) + 1);
             $newUrl = $this->toModRewriteUrlPath($path) . $this->toModRewriteUrlName($name);
         }
         return $newUrl;

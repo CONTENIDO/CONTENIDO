@@ -22,6 +22,9 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+// SetEnv CON_VERSION
+defined('CON_VERSION') || define('CON_VERSION', '4.10.0');
+
 global $cfg, $cfgClient, $errsite_idcat, $errsite_idart;
 
 /* Initial PHP error handling settings.
@@ -36,7 +39,6 @@ global $cfg, $cfgClient, $errsite_idcat, $errsite_idart;
 // Report all errors except warnings
 error_reporting(E_ALL ^E_NOTICE);
 
-
 /* Initial PHP session settings.
  * NOTE: When you change these values by custom configuration, the length of the session ID may differ from 32 characters.
  * As this length was a criteria for session ID validity in previous versions of CONTENIDO, changes may affect your scripts.
@@ -48,38 +50,12 @@ error_reporting(E_ALL ^E_NOTICE);
 // Set 5 bits per character
 @ini_set('session.hash_bits_per_character', 5);
 
-/*
- * Do not edit this value!
- *
- * If you want to set a different enviroment value please define it in your .htaccess file
- * or in the server configuration.
- *
- * SetEnv CON_ENVIRONMENT development
- */
-if (!defined('CON_ENVIRONMENT')) {
-    if (getenv('CONTENIDO_ENVIRONMENT')) {
-        $sEnvironment = getenv('CONTENIDO_ENVIRONMENT');
-    } elseif (getenv('CON_ENVIRONMENT')) {
-        $sEnvironment = getenv('CON_ENVIRONMENT');
-    } else {
-        // @TODO: provide a possibility to set the environment value via file
-        $sEnvironment = 'production';
-    }
-
-    define('CON_ENVIRONMENT', $sEnvironment);
-}
-
-/*
- * SetEnv CON_VERSION
- */
-if (!defined('CON_VERSION')) {
-
-    define('CON_VERSION', '4.9.12');
-
-}
-
 // Temporary backend path, will be re-set again later...
 $backendPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/..'));
+
+// Include the environment definer file
+include_once($backendPath . '/environment.php');
+
 require_once($backendPath . '/classes/class.filehandler.php');
 
 // (string) Path to folder containing all contenido configuration files. Use environment setting!
@@ -107,6 +83,11 @@ include_once($backendPath . '/includes/functions.php54.php');
 // Security check: Include security class and invoke basic request checks
 require_once($backendPath . '/classes/class.registry.php');
 require_once($backendPath . '/classes/class.security.php');
+
+// Include cStringMultiByteWrapper and cString
+require_once($backendPath . '/classes/class.string.multi.byte.wrapper.php');
+require_once($backendPath . '/classes/class.string.php');
+
 require_once($backendPath . '/classes/class.requestvalidator.php');
 try {
     $requestValidator = cRequestValidator::getInstance();

@@ -48,10 +48,14 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
      * otherwise false.
      *
      * @see cAuthHandlerAbstract::preAuthorize()
+     *
      * @return string|false
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function preAuthorize() {
-        $password = $_POST['password'];
+        $password = isset($_POST['password']) ? $_POST['password'] : '';
 
         if ($password == '') {
             // Stay as nobody when an empty password is passed
@@ -80,12 +84,16 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
      * ID or false.
      *
      * @see cAuthHandlerAbstract::validateCredentials()
+     *
      * @return string|false
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function validateCredentials() {
 		$frontendUserColl = new cApiFrontendUserCollection();
 		
-        $username = $frontendUserColl->escape( conHtmlentities(stripslashes(trim($_POST['username']))) );
+        $username = $frontendUserColl->escape(stripslashes(trim($_POST['username'])));
         $password = $_POST['password'];
 
         $groupPerm = array();

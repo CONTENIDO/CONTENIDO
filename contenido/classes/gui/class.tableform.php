@@ -300,8 +300,10 @@ class cGuiTableForm {
      * it immediately.
      *
      * @param bool $return [optional]
-     *         if true then return markup, else echo immediately
+     *                     if true then return markup, else echo immediately
+     *
      * @return string
+     * @throws cInvalidArgumentException
      */
     public function render($return = true) {
         global $sess, $cfg;
@@ -309,14 +311,14 @@ class cGuiTableForm {
         $tpl = new cTemplate();
 
         if ($this->submitjs != "") {
-            if (strlen($this->_acceptCharset) > 0) {
+            if (cString::getStringLength($this->_acceptCharset) > 0) {
                 $tpl->set("s", "JSEXTRA", 'onsubmit="' . $this->submitjs
                         . '" accept-charset="' . $this->_acceptCharset . '"');
             } else {
                 $tpl->set("s", "JSEXTRA", 'onsubmit="' . $this->submitjs . '"');
             }
         } else {
-            if (strlen($this->_acceptCharset) > 0) {
+            if (cString::getStringLength($this->_acceptCharset) > 0) {
                 $tpl->set("s", "JSEXTRA", 'accept-charset="' . $this->_acceptCharset . '"');
             } else {
                 $tpl->set("s", "JSEXTRA", '');
@@ -361,7 +363,7 @@ class cGuiTableForm {
 
         if (is_array($this->items)) {
             foreach ($this->items as $key => $value) {
-                if ($this->itemType[$key] == 'subheader') {
+                if (!empty($this->itemType[$key]) && $this->itemType[$key] == 'subheader') {
                     $tablerow = new cHTMLTableRow();
                     $tabledata = new cHTMLTableData();
                     $tabledata->setAttribute("colspan", "2");

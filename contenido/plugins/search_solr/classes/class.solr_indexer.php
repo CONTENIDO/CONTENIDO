@@ -58,7 +58,11 @@ class SolrIndexer {
      *
      * include.con_editcontent.php
      *
-     * @param int $idartlang of article to be updated
+     * @param array $newData
+     * @param array $oldData
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public static function handleStoringOfArticle(array $newData, array $oldData) {
 
@@ -115,7 +119,7 @@ class SolrIndexer {
      *
      * include.con_editcontent.php
      *
-     * @param int $idartlang of article to be updated
+     * @param array $articleIds of article to be updated
      */
     public static function handleStoringOfContentEntry(array $articleIds) {
         try {
@@ -157,10 +161,12 @@ class SolrIndexer {
     }
 
     /**
-     *
      * @param int $idclient
      * @param int $idlang
+     *
      * @return SolrClient
+     * @throws SolrWarning
+     * @throws cException
      */
     private function _getSolrClient($idclient, $idlang) {
 
@@ -222,7 +228,7 @@ class SolrIndexer {
             foreach ($articleContent as $type => $typeContent) {
 
                 // field names in Solr should always be lowercase!
-                $type = strtolower($type);
+                $type = cString::toLowerCase($type);
 
                 // == sort content of a certain content type by their typeids
                 // This is important so that the most prominent headline can be
@@ -233,7 +239,7 @@ class SolrIndexer {
                 // defined as multiValued)
                 foreach ($typeContent as $typeid => $contentEntry) {
                     $contentEntry = trim($contentEntry);
-                    if (0 < strlen($contentEntry)) {
+                    if (0 < cString::getStringLength($contentEntry)) {
                         $solrInputDocument->addField($type, $contentEntry);
                     }
                 }
@@ -241,7 +247,7 @@ class SolrIndexer {
 
             if (isset($articleContent['CMS_IMGEDITOR'])) {
                 foreach ($articleContent['CMS_IMGEDITOR'] as $typeid => $idupl) {
-                    if (0 == strlen($idupl)) {
+                    if (0 == cString::getStringLength($idupl)) {
                         continue;
                     }
                     $image = $this->_getImageUrlByIdupl($idupl);
@@ -286,6 +292,8 @@ class SolrIndexer {
      * Gets path to upload.
      *
      * @param int $idupl
+     *
+     * @return bool|string
      */
     private function _getImageUrlByIdupl($idupl) {
         $upload = new cApiUpload($idupl);
@@ -308,7 +316,8 @@ class SolrIndexer {
      * Delete all CONTENIDO article documents that are aggregated as
      * $this->_articleIds.
      *
-     * @throws SolrClientException if Solr delete request failed
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function deleteArticles() {
         $toDelete = array();
@@ -346,7 +355,6 @@ class SolrIndexer {
     }
 
     /**
-     *
      * @throws cException if Solr delete request failed
      */
     public function updateArticles() {
@@ -383,9 +391,9 @@ class SolrIndexer {
         $articleLanguage = new cApiArticleLanguage($idartlang);
         if (!$articleLanguage->isLoaded()) {
             return false;
-        } else if (1 != $articleLanguage->get('online')) {
+        } elseif (1 != $articleLanguage->get('online')) {
             return false;
-        } else if (1 != $articleLanguage->get('searchable')) {
+        } elseif (1 != $articleLanguage->get('searchable')) {
             return false;
         } else {
             return true;
@@ -393,9 +401,10 @@ class SolrIndexer {
     }
 
     /**
-     *
      * @param int $idartlang of article to be read
+     *
      * @return array
+     * @throws cDbException
      */
     private function _getContent($idartlang) {
 
@@ -456,6 +465,8 @@ class SolrIndexer {
     /**
      *
      * @param SolrResponse $solrResponse
+     * @param string       $msg
+     *
      * @throws cException if Solr update request failed
      */
     private function _checkResponse(SolrResponse $solrResponse, $msg = 'Solr update request failed') {

@@ -50,6 +50,8 @@ class cUri {
      *
      * Gets the UriBuilder configuration and creates an UriBuilder
      * instance.
+     *
+     * @throws cException
      */
     private function __construct() {
         $this->_sUriBuilderName = cUriBuilderConfig::getUriBuilderName();
@@ -111,7 +113,7 @@ class cUri {
                 $aConfig = $aResult['aConfig'];
             }
         }
-
+        
         if ($this->_sUriBuilderName == 'custom_path' && !isset($aParams['level'])) {
             // downwards compatibility to cUriBuilderCustomPath
             $aParams['level'] = '1';
@@ -125,6 +127,11 @@ class cUri {
         if ($this->_sUriBuilderName == 'custom_path' && count($param) <= 3) {
             // third downwards compatibility
             $param['_c_p_'] = '1';
+        }
+
+        // CON-2712
+        if ($bUseAbsolutePath === true) {
+            $this->_oUriBuilder->setHttpBasePath(cRegistry::getFrontendUrl());
         }
 
         $this->_oUriBuilder->buildUrl($param, $bUseAbsolutePath, $aConfig);
@@ -144,14 +151,16 @@ class cUri {
      * Creates a URL used to redirect to frontend page.
      *
      * @param mixed $param
-     *         Either url or assoziative array containing parameter:
-     *         - url: front_content.php?idcat=12&lang=1
-     *         - params: array('idcat' => 12, 'lang' => 1)
-     *         Required values depend on used UriBuilder, but a must have is 'lang'.
+     *                       Either url or assoziative array containing parameter:
+     *                       - url: front_content.php?idcat=12&lang=1
+     *                       - params: array('idcat' => 12, 'lang' => 1)
+     *                       Required values depend on used UriBuilder, but a must have is 'lang'.
      * @param array $aConfig [optional]
-     *         If not set, cUriBuilderConfig::getConfig() will be used by the UriBuilder.
+     *                       If not set, cUriBuilderConfig::getConfig() will be used by the UriBuilder.
+     *
      * @return string
      *         The redirect Url build by cUriBuilder.
+     * @throws cInvalidArgumentException
      */
     public function buildRedirect($param, array $aConfig = array()) {
         $url = $this->build($param, true, $aConfig);
@@ -225,7 +234,7 @@ class cUri {
             return false;
         }
 
-        return strtolower($aComponents['host']) !== strtolower($aComponents2['host']);
+        return cString::toLowerCase($aComponents['host']) !== cString::toLowerCase($aComponents2['host']);
     }
 
     /**

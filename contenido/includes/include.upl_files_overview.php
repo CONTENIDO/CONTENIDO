@@ -18,27 +18,24 @@ $backendPath = cRegistry::getBackendPath();
 
 cInclude('includes', 'api/functions.frontend.list.php');
 cInclude('includes', 'functions.file.php');
-cInclude('classes', 'class.cziparchive.php');
-
-//cInclude('includes', 'class.ziparchive.php');
-
-if (!(int) $client > 0) {
-    // if there is no client selected, display empty page
-    $oPage = new cGuiPage('upl_files_overview');
-    $oPage->render();
-    return;
-}
 
 $page = new cGuiPage('upl_files_overview', '', 0);
 
-$appendparameters = $_REQUEST['appendparameters'];
+// display critical error if no valid client is selected
+if ((int) $client < 1) {
+    $page->displayCriticalError(i18n("No Client selected"));
+    $page->render();
+    return;
+}
 
-// Define local variable file
-$file = cSecurity::escapeString($_REQUEST['file']);
-$file = str_replace('..', '', $file);
-$file = str_replace('/', '', $file);
+$appendparameters = isset($_REQUEST['appendparameters']) ? $_REQUEST['appendparameters'] : '';
+$file             = isset($_REQUEST['file']) ? basename(cSecurity::escapeString($_REQUEST['file'])) : '';
+$startpage        = isset($_REQUEST['startpage']) ? cSecurity::toInteger($_REQUEST['startpage']) : 1;
+$sortby           = isset($_REQUEST['sortby']) ? cSecurity::escapeString($_REQUEST['sortby']) : '';
+$sortmode         = isset($_REQUEST['sortmode']) ? cSecurity::escapeString($_REQUEST['sortmode']) : '';
+$thumbnailmode    = isset($_REQUEST['thumbnailmode']) ? cSecurity::escapeString($_REQUEST['thumbnailmode']) : '';
 
-if (!is_array($browserparameters) && ($appendparameters != 'imagebrowser' || $appendparameters != 'filebrowser')) {
+if ((empty($browserparameters) || !is_array($browserparameters)) && ($appendparameters != 'imagebrowser' || $appendparameters != 'filebrowser')) {
     $browserparameters = array();
 }
 
@@ -52,7 +49,7 @@ if (!$sess->isRegistered('upl_last_path')) {
 
 // if path doesn't exist use root path
 // this might happen when the last path is that of another client or deleted outside CONTENIDO
-if (!cApiDbfs::isDbfs($path) && !cFileHandler::exists($cfgClient[$client]['upl']['path'] . $path)) {
+if (empty($path) || (!cApiDbfs::isDbfs($path) && !cFileHandler::exists($cfgClient[$client]['upl']['path'] . $path))) {
     $path = '';
 }
 // remember current path as last path
@@ -74,8 +71,7 @@ if ((is_writable($cfgClient[$client]['upl']['path'] . $path) || cApiDbfs::isDbfs
     $bDirectoryIsWritable = false;
 }
 
-
-if ($action == 'upl_modify_file') {
+if ($action === 'upl_modify_file' && !empty($file)) {
 
     $extractFolder = NULL;
     $uplPath = $cfgClient[$client]['upl']['path'];
@@ -110,13 +106,13 @@ if ($action == 'upl_modify_file') {
                 while ($chainEntry = $_cecIterator->next()) {
                     if (cApiDbfs::isDbfs($path)) {
                         $sPathPrepend = '';
-                        $sPathApppend = '/';
+                        $sPathAppend = '/';
                     } else {
                         $sPathPrepend = $cfgClient[$client]['upl']['path'];
-                        $sPathApppend = '';
+                        $sPathAppend = '';
                     }
 
-                    $modified = $chainEntry->execute($tmp_name, $sPathPrepend . $path . $sPathApppend . uplCreateFriendlyName($_FILES['file']['name']));
+                    $modified = $chainEntry->execute($tmp_name, $sPathPrepend . $path . $sPathAppend . uplCreateFriendlyName($_FILES['file']['name']));
 
                     if ($modified !== false) {
                         $tmp_name = $modified;
@@ -139,26 +135,30 @@ if ($action == 'upl_modify_file') {
         }
     }
 
-    $uploads->select("idclient = '$client' AND dirname = '$qpath' AND filename='$file'");
+    $uploads->select("idclient = '$client' AND dirname='" . $uploads->escape($qpath) . "' AND filename='" . $uploads->escape($file) . "'");
     $upload = $uploads->next();
+    if ($upload) {
+        // $upload->set('description', stripslashes($description));
+        $upload->store();
+    }
 
-    // $upload->set('description', stripslashes($description));
-    $upload->store();
-
+    $protected = !empty($_REQUEST['protected']) && $_REQUEST['protected'] === '1' ? '1' : '';
     $properties = new cApiPropertyCollection();
-    $properties->setValue('upload', $qpath . $file, 'file', 'protected', stripslashes($protected));
+    $properties->setValue('upload', $qpath . $file, 'file', 'protected', $protected);
 
-    $bTimeMng = (isset($_REQUEST['timemgmt']) && strlen($_REQUEST['timemgmt']) > 1);
-    $properties->setValue('upload', $qpath . $file, 'file', 'timemgmt', ($bTimeMng) ? 1 : 0);
-    if ($bTimeMng) {
-        $properties->setValue('upload', $qpath . $file, 'file', 'datestart', cSecurity::escapeString($_REQUEST['datestart']));
-        $properties->setValue('upload', $qpath . $file, 'file', 'dateend', cSecurity::escapeString($_REQUEST['dateend']));
+    $timeMgmt = !empty($_REQUEST['timemgmt']) && $_REQUEST['timemgmt'] === '1' ? '1' : '';
+    $properties->setValue('upload', $qpath . $file, 'file', 'timemgmt', $timeMgmt);
+    if ($timeMgmt) {
+        $dateStart = !empty($_REQUEST['datestart']) ? cSecurity::escapeString($_REQUEST['datestart']) : '';
+        $dateEnd = !empty($_REQUEST['dateend']) ? cSecurity::escapeString($_REQUEST['dateend']) : '';
+        $properties->setValue('upload', $qpath . $file, 'file', 'datestart', $dateStart);
+        $properties->setValue('upload', $qpath . $file, 'file', 'dateend', $dateEnd);
     }
 
     $author = $auth->auth['uid'];
     $created = date('Y-m-d H:i:s');
 
-    $iIdupl = $upload->get('idupl');
+    $iIdupl = is_object($upload) ? $upload->get('idupl') : 0;
     if (!empty($iIdupl) && $iIdupl > 0) {
         // check for new entry:
         $oUploadMeta = new cApiUploadMeta((int) $iIdupl);
@@ -180,23 +180,24 @@ if ($action == 'upl_modify_file') {
     }
 }
 
-if ($action == 'upl_multidelete' && $perm->have_perm_area_action($area, $action) && $bDirectoryIsWritable == true) {
+if ($action === 'upl_multidelete' && $perm->have_perm_area_action($area, $action) && $bDirectoryIsWritable === true) {
     if (is_array($fdelete)) {
         // array of cApiUpload objects to be passed to chain function
         $uploadObjects = array();
 
         // Check if it is in the upload table
-        foreach ($fdelete as $file) {
-            $uploads->select("idclient = '$client' AND dirname='$qpath' AND filename='$file'");
+        foreach ($fdelete as $fileNameToDelete) {
+            $fileNameToDelete = basename(cSecurity::escapeString($fileNameToDelete));
+            $uploads->select("idclient = '$client' AND dirname='" . $uploads->escape($qpath) . "' AND filename='" . $uploads->escape($fileNameToDelete) . "'");
             if (false !== $item = $uploads->next()) {
                 if (cApiDbfs::isDbfs($qpath)) {
-                    $dbfs->remove($qpath . $file);
+                    $dbfs->remove($qpath . $fileNameToDelete);
 
                     // call chain once for each deleted file
                     $_cecIterator = cRegistry::getCecRegistry()->getIterator('Contenido.Upl_edit.Delete');
                     if ($_cecIterator->count() > 0) {
                         while (false !== $chainEntry = $_cecIterator->next()) {
-                            $chainEntry->execute($item->get('idupl'), $qpath, $file);
+                            $chainEntry->execute($item->get('idupl'), $qpath, $fileNameToDelete);
                         }
                     }
                 } else {
@@ -218,11 +219,11 @@ if ($action == 'upl_multidelete' && $perm->have_perm_area_action($area, $action)
     }
 }
 
-if ($action == 'upl_delete' && $perm->have_perm_area_action($area, $action) && $bDirectoryIsWritable == true) {
+if ($action === 'upl_delete' && !empty($file) && $perm->have_perm_area_action($area, $action) && $bDirectoryIsWritable === true) {
     // array of cApiUpload objects to be passed to chain function
     $uploadObjects = array();
 
-    $uploads->select("idclient = '$client' AND dirname='$qpath' AND filename='$file'");
+    $uploads->select("idclient = '$client' AND dirname='" . $uploads->escape($qpath) . "' AND filename='" . $uploads->escape($file) . "'");
     // FIXME Code is similar/redundant to cApiUploadCollection->delete(), in
     // previous version from UploadCollection->delete() too
     if (false !== $item = $uploads->next()) {
@@ -253,13 +254,10 @@ if ($action == 'upl_delete' && $perm->have_perm_area_action($area, $action) && $
     }
 }
 
-if ($action == 'upl_upload' && $bDirectoryIsWritable == true) {
+if ($action === 'upl_upload' && $bDirectoryIsWritable === true) {
     if ($perm->have_perm_area_action($area, 'upl_upload')) {
         if (count($_FILES) == 1) {
             foreach ($_FILES['file']['name'] as $key => $value) {
-                if (cString::isUtf8($_FILES['file']['name'][$key])) {
-                    $_FILES['file']['name'][$key] = utf8_decode($_FILES['file']['name'][$key]);
-                }
                 if ($_FILES['file']['tmp_name'][$key] != '') {
                     $tmp_name = $_FILES['file']['tmp_name'][$key];
                     $_cecIterator = $_cecRegistry->getIterator('Contenido.Upload.UploadPreprocess');
@@ -269,16 +267,16 @@ if ($action == 'upl_upload' && $bDirectoryIsWritable == true) {
                         move_uploaded_file($tmp_name, $backendPath . $cfg['path']['temp'] . $_FILES['file']['name'][$key]);
                         $tmp_name = $backendPath . $cfg['path']['temp'] . $_FILES['file']['name'][$key];
 
-                        while ($chainEntry = $_cecIterator->next()) {
+                        while (false !== $chainEntry = $_cecIterator->next()) {
                             if (cApiDbfs::isDbfs($path)) {
                                 $sPathPrepend = '';
-                                $sPathApppend = '/';
+                                $sPathAppend = '/';
                             } else {
                                 $sPathPrepend = $cfgClient[$client]['upl']['path'];
-                                $sPathApppend = '';
+                                $sPathAppend = '';
                             }
 
-                            $modified = $chainEntry->execute($tmp_name, $sPathPrepend . $path . $sPathApppend . uplCreateFriendlyName($_FILES['file']['name'][$key]));
+                            $modified = $chainEntry->execute($tmp_name, $sPathPrepend . $path . $sPathAppend . uplCreateFriendlyName($_FILES['file']['name'][$key]));
                             if ($modified !== false) {
                                 $tmp_name = $modified;
                             }
@@ -312,8 +310,9 @@ if ($action == 'upl_upload' && $bDirectoryIsWritable == true) {
     }
 }
 
-if ($action == 'upl_renamefile' && $bDirectoryIsWritable == true) {
-    $newname = str_replace('/', '', $newname);
+if ($action === 'upl_renamefile' && $bDirectoryIsWritable === true) {
+    $oldname = basename(cSecurity::escapeString($oldname));
+    $newname = basename(cSecurity::escapeString($newname));
     rename($cfgClient[$client]['upl']['path'] . $path . $oldname, $cfgClient[$client]['upl']['path'] . $path . $newname);
 }
 
@@ -336,17 +335,28 @@ class UploadList extends FrontendList {
     protected $_size;
 
     /**
+     * @var int
+     */
+    protected $_data_count = 0;
+
+    /**
      * Field converting facility.
      *
      * @see FrontendList::convert()
-     * @param int $field
+     *
+     * @param int   $field
      *         Field index
      * @param mixed $data
      *         Field value
+     *
      * @return mixed
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function convert($field, $data) {
-        global $path, $appendparameters;
+        global $path, $appendparameters, $startpage, $sortby, $sortmode, $thumbnailmode;
 
         $cfg = cRegistry::getConfig();
         $sess = cRegistry::getSession();
@@ -370,7 +380,7 @@ class UploadList extends FrontendList {
                 }
             } else {
                 $tmp_mstr = '<a onmouseover="this.style.cursor=\'pointer\'" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
-                $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$data&appendparameters=$appendparameters&startpage=" . cSecurity::toInteger($_REQUEST['startpage']) . "&sortby=" . cSecurity::escapeString($_REQUEST['sortby']) . "&sortmode=" . cSecurity::escapeString($_REQUEST['sortmode']) . "&thumbnailmode=" . cSecurity::escapeString($_REQUEST['thumbnailmode'])), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$data"), $data);
+                $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$data&appendparameters=$appendparameters&startpage=" . $startpage . "&sortby=" . $sortby . "&sortmode=" . $sortmode . "&thumbnailmode=" . $thumbnailmode), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$data"), $data);
             }
             return $mstr;
         }
@@ -381,7 +391,7 @@ class UploadList extends FrontendList {
 
         if ($field == 2) {
             // If this file is an image, try to open
-            $fileType = strtolower(cFileHandler::getExtension($data));
+            $fileType = cString::toLowerCase(cFileHandler::getExtension($data));
             switch ($fileType) {
                 case 'png':
                 case 'gif':
@@ -395,9 +405,9 @@ class UploadList extends FrontendList {
                     $frontendURL = cRegistry::getFrontendUrl();
 
                     $sCacheThumbnail = uplGetThumbnail($data, 150);
-                    $sCacheName = substr($sCacheThumbnail, strrpos($sCacheThumbnail, '/') + 1, strlen($sCacheThumbnail) - strlen(strrchr($sCacheThumbnail, '/')) + 1);
+                    $sCacheName = basename($sCacheThumbnail);
                     $sFullPath = $cfgClient[$client]['cache']['path'] . $sCacheName;
-                    if (cFileHandler::exists($sFullPath)) {
+                    if (cFileHandler::isFile($sFullPath)) {
                         $aDimensions = getimagesize($sFullPath);
                         $iWidth = $aDimensions[0];
                         $iHeight = $aDimensions[1];
@@ -438,6 +448,74 @@ class UploadList extends FrontendList {
      */
     public function setSize($size) {
         $this->_size = $size;
+    }
+
+    /**
+     * Sets the total count of data entries. This is needed for calculating the pages.
+     * @param int $totalUploadsCount
+     */
+    public function setDataCount($totalUploadsCount) {
+        $this->_data_count = $totalUploadsCount;
+    }
+
+    /**
+     * Returns the number of pages.
+     * If the data count variable is set it will be used instead counting the data array.
+     * @return float|int
+     */
+    public function getNumPages() {
+        if ($this->_data_count > 0) {
+            return ceil($this->_data_count / $this->_resultsPerPage);
+        }
+
+        return parent::getNumPages();
+    }
+
+    /**
+     * Outputs or optionally returns
+     *
+     * @param bool $return
+     *         if true, returns the list
+     *
+     * @return string
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
+     */
+    public function output($return = false) {
+        // if the data count variable is not set, proceed with the previous logic
+        if ($this->_data_count === 0) {
+            return parent::output($return);
+        }
+
+        // if the data count variable is set, display all contents from data array
+
+        $output = $this->_startwrap;
+
+        $count = count($this->_data);
+
+        for ($i = 1; $i <= $count; $i++) {
+            if (is_array($this->_data[$i - 1])) {
+                $items = "";
+                foreach ($this->_data[$i - 1] as $key => $value) {
+                    $items .= ", '" . addslashes($this->convert($key, $value)) . "'";
+                }
+
+                $execute = '$output .= sprintf($this->_itemwrap ' . $items . ');';
+                eval($execute);
+            }
+        }
+
+        $output .= $this->_endwrap;
+
+        $output = stripslashes($output);
+
+        if ($return == true) {
+            return $output;
+        } else {
+            echo $output;
+        }
     }
 
 }
@@ -554,7 +632,7 @@ $list2 = new UploadList($startwrap, $endwrap, $itemwrap);
 $uploads = new cApiUploadCollection();
 
 // Fetch data
-if (substr($path, strlen($path) - 1, 1) != "/") {
+if (cString::getPartOfString($path, cString::getStringLength($path) - 1, 1) != "/") {
     if ($path != "") {
         $qpath = $path . "/";
     } else {
@@ -603,8 +681,21 @@ switch ($thumbnailmode) {
 $user->setUserProperty('upload_folder_thumbnailmode', md5($path), $thumbnailmode);
 
 $list2->setResultsPerPage($numpics);
-
 $list2->setSize($thumbnailmode);
+
+$totalUploadsCount = $uploads->count();
+$list2->setDataCount($totalUploadsCount);
+
+if ($startpage > $list2->getNumPages()) {
+    $startpage = $list2->getNumPages();
+}
+
+if ($startpage < 1) {
+    $startpage = 1;
+}
+
+$uploads->resetQuery();
+$uploads->select("idclient = '$client' AND dirname = '$qpath'", '', '', $numpics * ($startpage - 1) . ", " .  $numpics);
 
 $rownum = 0;
 
@@ -618,7 +709,7 @@ while ($item = $uploads->next()) {
     $filesize = $item->get('size');
 
     // Do not display directories and "filenames" begin with a dot
-    if (true === cDirHandler::exists($cfgClient[$client]['upl']['path'] . $dirname . $filename) || strpos($filename, ".") === 0) {
+    if (true === cDirHandler::exists($cfgClient[$client]['upl']['path'] . $dirname . $filename) || cString::findFirstPos($filename, ".") === 0) {
         continue;
     }
 
@@ -627,7 +718,7 @@ while ($item = $uploads->next()) {
     if ($appendparameters == 'imagebrowser') {
         $restrictvar = 'restrict_' . $appendparameters;
         if (array_key_exists($restrictvar, $browserparameters)) {
-            $fileType = strtolower(cFileHandler::getExtension($filename));
+            $fileType = cString::toLowerCase(cFileHandler::getExtension($filename));
             if (count($browserparameters[$restrictvar]) > 0) {
                 $bAddFile = false;
                 if (in_array($fileType, $browserparameters[$restrictvar])) {
@@ -669,7 +760,7 @@ while ($item = $uploads->next()) {
 
     if ($bAddFile == true) {
         // 'bgcolor' is just a placeholder...
-        $list2->setData($rownum, $mark, $dirname . $filename, $showfilename, $filesize, strtolower(cFileHandler::getExtension($filename)), $todo->render() . $actions);
+        $list2->setData($rownum, $mark, $dirname . $filename, $showfilename, $filesize, cString::toLowerCase(cFileHandler::getExtension($filename)), $todo->render() . $actions);
         $rownum++;
     }
 }
@@ -682,14 +773,6 @@ if ($sortmode == 'ASC') {
     $list2->sort($sortby, SORT_ASC);
 } else {
     $list2->sort($sortby, SORT_DESC);
-}
-
-if ($startpage < 1) {
-    $startpage = 1;
-}
-
-if ($startpage > $list2->getNumPages()) {
-    $startpage = $list2->getNumPages();
 }
 
 $list2->setListStart($startpage);
@@ -780,8 +863,7 @@ if ($bDirectoryIsWritable == false) {
 }
 
 $page->setContent(array(
-    $delform,
-    $jsScript
+    $delform
 ));
 
 $page->render();

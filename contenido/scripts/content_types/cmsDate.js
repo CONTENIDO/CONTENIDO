@@ -191,7 +191,7 @@
      */
     cContentTypeDate.prototype.addSaveEvent = function() {
         var self = this,
-            $elem = $(this.frameId + ' .save_settings');
+            $elem = $(this.frameId).find(' .save_settings');
         $elem.css('cursor', 'pointer');
         $elem.click(function() {
             var date = self.$element.datetimepicker('getDate') || self.$element.datepicker('getDate') || self.$element.timepicker('getDate');

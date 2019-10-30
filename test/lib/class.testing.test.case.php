@@ -112,7 +112,7 @@ abstract class cTestingTestCase extends PHPUnit_Framework_TestCase {
         foreach ($content as $fileLine) {
             $lineBuffer .= str_replace('!PREFIX!', $cfg['sql']['sqlprefix'], $fileLine);
 
-            if (substr(trim($fileLine), -1) == ';') {
+            if (cString::getPartOfString(trim($fileLine), -1) == ';') {
                 $sqlStatements[] = $lineBuffer;
                 $lineBuffer = '';
             }

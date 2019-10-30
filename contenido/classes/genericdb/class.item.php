@@ -89,6 +89,8 @@ abstract class Item extends cItemBaseAbstract {
      *         The table to use as information source
      * @param string $sPrimaryKey
      *         The primary key to use
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct($sTable, $sPrimaryKey) {
         parent::__construct($sTable, $sPrimaryKey, get_parent_class($this));
@@ -112,15 +114,16 @@ abstract class Item extends cItemBaseAbstract {
      * Loads an item by colum/field from the database.
      *
      * @param string $sField
-     *         Specifies the field
-     * @param mixed $mValue
-     *         Specifies the value
-     * @param bool $bSafe [optional]
-     *         Use inFilter or not
-     * @throws cException
-     *         if more than one item has been found matching the given arguments
+     *                      Specifies the field
+     * @param mixed  $mValue
+     *                      Specifies the value
+     * @param bool   $bSafe [optional]
+     *                      Use inFilter or not
+     *
      * @return bool
-     *         True if the load was successful
+     *                      True if the load was successful
+     * @throws cDbException
+     * @throws cException if more than one item has been found matching the given arguments
      */
     public function loadBy($sField, $mValue, $bSafe = true) {
         // reset class variables back to default before loading
@@ -172,13 +175,13 @@ abstract class Item extends cItemBaseAbstract {
      * Loads an item by colums/fields from the database.
      *
      * @param array $aAttributes
-     *         associative array with field / value pairs
-     * @param bool $bSafe [optional]
-     *         Use inFilter or not
-     * @throws cException
-     *         if more than one item could be found matching the given arguments
+     *                     associative array with field / value pairs
+     * @param bool  $bSafe [optional]
+     *                     Use inFilter or not
      * @return bool
-     *         True if the load was successful
+     *                     True if the load was successful
+     * @throws cDbException
+     * @throws cException if more than one item could be found matching the given arguments
      */
     public function loadByMany(array $aAttributes, $bSafe = true) {
         // reset class variables back to default before loading
@@ -213,7 +216,7 @@ abstract class Item extends cItemBaseAbstract {
             }
         }
         // strip the last " AND" token
-        $sql = substr($sql, 0, strlen($sql) - 4);
+        $sql = cString::getPartOfString($sql, 0, cString::getStringLength($sql) - 4);
         $sql = $this->db->prepare($sql, array_merge(array(
             'mytab' => $this->table
         ), $aAttributes));
@@ -248,10 +251,11 @@ abstract class Item extends cItemBaseAbstract {
      *
      * @param string $sWhere
      *         The where clause like 'idart = 123 AND idlang = 1'
-     * @throws cException
-     *         if more than one item could be found matching the given where clause
      * @return bool
      *         True if the load was successful
+     * 
+     * @throws cDbException
+     * @throws cException if more than one item could be found matching the given where clause
      */
     protected function _loadByWhereClause($sWhere) {
         // SQL-Statement to select by whee clause
@@ -282,8 +286,11 @@ abstract class Item extends cItemBaseAbstract {
      *
      * @param string $mValue
      *         Specifies the primary key value
+     *
      * @return bool
      *         True if the load was successful
+     * @throws cDbException
+     * @throws cException
      */
     public function loadByPrimaryKey($mValue) {
         $bSuccess = $this->loadBy($this->_primaryKeyName, $mValue);
@@ -383,7 +390,7 @@ abstract class Item extends cItemBaseAbstract {
         }
 
         // flag as modified
-        if ($this->values[$sField] != $mValue || strlen($this->values[$sField]) != strlen($mValue)) {
+        if ($this->values[$sField] != $mValue || cString::getStringLength($this->values[$sField]) != cString::getStringLength($mValue)) {
             $this->modifiedValues[$sField] = true;
         }
 
@@ -412,6 +419,8 @@ abstract class Item extends cItemBaseAbstract {
      * Stores the loaded and modified item to the database.
      *
      * @return bool
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function store() {
         $this->_executeCallbacks(self::STORE_BEFORE, get_class($this), array(
@@ -502,14 +511,18 @@ abstract class Item extends cItemBaseAbstract {
      * Sets a custom property.
      *
      * @param string $sType
-     *         Specifies the type
+     *                        Specifies the type
      * @param string $sName
-     *         Specifies the name
-     * @param mixed $mValue
-     *         Specifies the value
-     * @param int $iClient [optional]
-     *         Id of client to set property for
+     *                        Specifies the name
+     * @param mixed  $mValue
+     *                        Specifies the value
+     * @param int    $iClient [optional]
+     *                        Id of client to set property for
+     *
      * @return bool
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function setProperty($sType, $sName, $mValue, $iClient = 0) {
         // If this object wasn't loaded before, return false
@@ -528,13 +541,16 @@ abstract class Item extends cItemBaseAbstract {
      * Returns a custom property.
      *
      * @param string $sType
-     *         Specifies the type
+     *                        Specifies the type
      * @param string $sName
-     *         Specifies the name
-     * @param int $iClient [optional]
-     *         Id of client to set property for
+     *                        Specifies the name
+     * @param int    $iClient [optional]
+     *                        Id of client to set property for
+     *
      * @return mixed
-     *         Value of the given property or false
+     *                        Value of the given property or false
+     * @throws cDbException
+     * @throws cException
      */
     public function getProperty($sType, $sName, $iClient = 0) {
         // If this object wasn't loaded before, return false
@@ -553,12 +569,16 @@ abstract class Item extends cItemBaseAbstract {
      * Deletes a custom property.
      *
      * @param string $sType
-     *         Specifies the type
+     *                        Specifies the type
      * @param string $sName
-     *         Specifies the name
-     * @param int $iClient [optional]
-     *         Id of client to delete properties
+     *                        Specifies the name
+     * @param int    $iClient [optional]
+     *                        Id of client to delete properties
+     *
      * @return bool
+     * 
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function deleteProperty($sType, $sName, $iClient = 0) {
         // If this object wasn't loaded before, return false
@@ -578,7 +598,11 @@ abstract class Item extends cItemBaseAbstract {
      *
      * @param int $idprop
      *         Id of property
+     *
      * @return bool
+     * 
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function deletePropertyById($idprop) {
         $oProperties = $this->_getPropertiesCollectionInstance();
@@ -688,11 +712,11 @@ abstract class Item extends cItemBaseAbstract {
         }
 
         $sClassName = $this->_metaObject;
-        $qclassname = strtolower($sClassName);
+        $qclassname = cString::toLowerCase($sClassName);
 
         if (array_key_exists($qclassname, $_metaObjectCache)) {
             if (is_object($_metaObjectCache[$qclassname])) {
-                if (strtolower(get_class($_metaObjectCache[$qclassname])) == $qclassname) {
+                if (cString::toLowerCase(get_class($_metaObjectCache[$qclassname])) == $qclassname) {
                     $_metaObjectCache[$qclassname]->setPayloadObject($this);
                     return $_metaObjectCache[$qclassname];
                 }

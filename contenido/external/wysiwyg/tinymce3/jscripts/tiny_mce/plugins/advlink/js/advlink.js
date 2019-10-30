@@ -373,12 +373,15 @@ function setAttrib(elm, attrib, value) {
 }
 
 function getAnchorListHTML(id, target) {
-	var ed = tinyMCEPopup.editor, nodes = ed.dom.select('a'), name, i, len, html = "";
+	var ed = tinyMCEPopup.editor, nodes = ed.dom.select('a'), name, anchorId, i, len, html = "";
 
 	for (i=0, len=nodes.length; i<len; i++) {
-	 // CONTENIDO MODIFICATION 24.10.2006 Willi Man
-	    if ((name = ed.dom.getAttrib(nodes[i], "name")) != "")
+        // CONTENIDO MODIFICATION 24.10.2006 Willi Man
+        if ((name = ed.dom.getAttrib(nodes[i], "name")) != "")
             html += '<option value="' + tinyMCE.settings['article_url_suffix'] + '#' + name + '">' + name + '</option>';
+        // CONTENIDO MODIFICATION 24.10.2006 Willi Man
+		else if ((anchorId = ed.dom.getAttrib(nodes[i], "id")) != "")
+			html += '<option value="' + tinyMCE.settings['article_url_suffix'] + '#' + anchorId + '">' + anchorId + '</option>';
 	}
 
 	if (html == "")
@@ -393,12 +396,6 @@ function getAnchorListHTML(id, target) {
 
 	return html;
 }
-
-
-
-
-
-
 
 function insertAction() {
 	var inst = tinyMCEPopup.editor;

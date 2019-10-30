@@ -22,23 +22,24 @@
      * CONTENIDO configuration object
      *
      * @class Config
+     * @param {String} instanceName
+     * @param {String} actionFrameName
      */
     function Config(instanceName, actionFrameName) {
 
-        /* Name of the Instance for external calls
-           or CallBacks. Defaults to 'cfg' */
+        // Name of the Instance for external calls or CallBacks. Defaults to 'cfg'
         this.instanceName = instanceName || 'cfg';
 
-        /* Name of the Actionframe. Defaults to 'left_bottom' */
+        // Name of the Actionframe. Defaults to 'left_bottom'
         this.actionFrameName = actionFrameName || 'left_bottom';
 
-        /* Reference to the Actionframe */
+        // Reference to the Actionframe
         this.actionFrame = Con.getFrame('this.actionFrameName');
 
-        /* Element references Array */
+        // Element references Array
         this.objRef = [];
 
-        /* Userright properties Array */
+        // Userright properties Array
         this.hasRight = {
             template: 0,
             template_cfg: 0,
@@ -47,31 +48,31 @@
             syncable: 0
         };
 
-        /* Actionstatus */
+        // Actionstatus
         this.action = '';
 
-        /* Status */
+        // Status
         this.status = false;
 
-        /* Template ID */
+        // Template ID
         this.tplId = 0;
 
-        /* New template id */
+        // New template id
         this.nTplId = null;
 
-        /* Online flag */
+        // Online flag
         this.isOnline = 0;
 
-        /* Public flag */
+        // Public flag
         this.isPublic = 0;
 
-        /* Category ID */
+        // Category ID
         this.catId = 0;
 
-        /* idString */
+        // idString
         this.idString = 0;
-    }
 
+    }
 
     /**
      * Initializes the class.
@@ -79,17 +80,20 @@
      * class is used in an other area beside 'con'.
      * Stuff is HARDCODED for 'con' ATM
      *
-     * @param string Id of the On-/offline image
-     * @param string Id of the Lock/Unlock image
-     * @param string Id of the Template select
+     * @param {String} imgOnlineId Id of the On-/offline image
+     * @param {String} imgPublicId Id of the Lock/Unlock image
+     * @param {String} imgSelectId Id of the Template select
+     * @param {String} imgTemplateCfgId
      */
     Config.prototype.init = function(imgOnlineId, imgPublicId, imgSelectId, imgTemplateCfgId) {
+
         this.objRef = this.createRefs(imgOnlineId, imgPublicId, imgSelectId, imgTemplateCfgId);
 
         if (this.objRef.length == 4) {
 
             this.status = true;
-            /* Set the object ID's */
+
+            // Set the object ID's
             this.objRef[1].setId('online');
             this.objRef[2].setId('lock');
             this.objRef[3].setId('template_cfg');
@@ -98,8 +102,11 @@
             this.objRef[1].setImgSrc('images/online.gif', 'images/offline.gif');
             this.objRef[2].setImgSrc('images/folder_delock.gif', 'images/folder_lock.gif');
             this.objRef[3].setImgSrc('images/but_cat_conf2.gif', 'images/but_cat_conf2.gif');
+
             return true;
+
         }
+
     };
 
     /**
@@ -139,7 +146,6 @@
     /**
      * Creates objects of class HTMLObj
      *
-     * @param args string ID's of the objects
      * @return array Array storing the objects
      */
     Config.prototype.createRefs = function() {
@@ -158,23 +164,21 @@
      */
     Config.prototype.updateScreen = function() {
         if (this.status) {
-            /* Template select dropdown */
+            // Template select dropdown
             if (this.hasRight.template == 1) {
 
-                /* User has right to change
-                   the template, enable dropdown, select template */
+                // User has right to change the template, enable dropdown, select template
                 this.objRef[0].obj.removeAttribute("disabled");
                 this.objRef[0].select(this.tplId);
 
             } else {
 
-                /* User has NO right to change
-                   the template, disable the dropdown */
+                // User has NO right to change the template, disable the dropdown
                 this.objRef[0].obj.setAttribute("disabled", "true");
                 this.objRef[0].select(this.tplId);
             }
 
-            /* On-/Offline */
+            // On-/Offline
             if (0 == this.isOnline && this.hasRight.online == 1) {
                 this.objRef[1].over();
             } else if (1 == this.isOnline && this.hasRight.online == 1) {
@@ -183,7 +187,7 @@
                 this.objRef[1].lock();
             }
 
-            /* Public / Non-Public */
+            // Public / Non-Public
             if (0 == this.isPublic && 1 == this.hasRight.public) {
                 this.objRef[2].over();
             } else if (1 == this.isPublic && 1 == this.hasRight.public) {
@@ -192,7 +196,7 @@
                 this.objRef[2].lock();
             }
 
-            /* Template Config button */
+            // Template Config button
             if (this.hasRight.template_cfg == 1) {
                 this.objRef[3].out();
             } else {
@@ -208,7 +212,7 @@
      * @param string action
      */
     Config.prototype.setAction = function(action) {
-        //this.actionFrame.location.href = action;
+        // this.actionFrame.location.href = action;
     };
 
     /**
@@ -219,19 +223,21 @@
      */
     Config.prototype.changeTemplate = function() {
         if (this.catId && this.hasRight.template == 1) {
-            /* create action string */
+            // create action string
             var str  = Con.UtilUrl.build('main.php', {
                 area: 'con',
                 action: 'con_changetemplate',
                 frame: 2,
-                idcat: cfg.catId, // idcat of marked category
-                idtpl: this.objRef[0].getValue() // id of selected template
+                // idcat of marked category
+                idcat: cfg.catId,
+                // id of selected template
+                idtpl: this.objRef[0].getValue()
             });
 
-            /* execute action */
+            // execute action
             this.setAction(str);
 
-            /* set flag for changed template */
+            // set flag for changed template
             this.nTplId = this.objRef[0].getValue();
             this.tplId  = this.objRef[0].getValue();
         }
@@ -252,16 +258,16 @@
      */
     Config.prototype.getRowId = function() {
 
-        /* Build the data string.
-        0 -> category id
-        1 -> category template id
-        2 -> category online
-        3 -> category public
-        4 -> has right for: template
-        5 -> has right for: online
-        6 -> has right for: public
-        7->   has right for template_cfg
-        8->   category is syncable*/
+        // Build the data string.
+        //    0 -> category id
+        //    1 -> category template id
+        //    2 -> category online
+        //    3 -> category public
+        //    4 -> has right for: template
+        //    5 -> has right for: online
+        //    6 -> has right for: public
+        //    7 -> has right for template_cfg
+        //    8 -> category is syncable
 
         var sRowId = "";
 

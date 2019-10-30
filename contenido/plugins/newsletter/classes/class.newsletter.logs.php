@@ -18,13 +18,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Plugin
  * @subpackage Newsletter
+ * @method NewsletterLog createNewItem
+ * @method NewsletterLog next
  */
 class NewsletterLogCollection extends ItemCollection {
-
     /**
      * Constructor Function
      *
-     * @param none
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -37,10 +38,11 @@ class NewsletterLogCollection extends ItemCollection {
      *
      * @param $idnewsjob integer ID of corresponding newsletter send job
      * @param $idnewsrcp integer ID of recipient
-     * @param $rcp_name string Name of the recipient (-> recipient may be
-     *        deleted)
-     * @param $rcp_email string E-Mail of the recipient (-> recipient may be
-     *        deleted)
+     *
+     * @return bool|Item
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($idnewsjob, $idnewsrcp) {
 
@@ -86,9 +88,13 @@ class NewsletterLogCollection extends ItemCollection {
      * Gets all active recipients as specified for the newsletter and adds for
      * every recipient a log item
      *
-     * @param  int  $idnewsjob ID of corresponding newsletter dispatch job
-     * @param  int  $idnews ID of newsletter
+     * @param  int $idnewsjob ID of corresponding newsletter dispatch job
+     * @param  int $idnews    ID of newsletter
+     *
      * @return  int  Recipient count
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function initializeJob($idnewsjob, $idnews) {
         global $cfg;
@@ -102,7 +108,7 @@ class NewsletterLogCollection extends ItemCollection {
             $iIDClient = $oNewsletter->get("idclient");
             $iIDLang = $oNewsletter->get("idlang");
             $nrc = new NewsletterRecipientCollection();
-            $nrcClassName = strtolower(get_class($nrc));
+            $nrcClassName = cString::toLowerCase(get_class($nrc));
             
             switch ($sDestination) {
                 case "all":
@@ -183,6 +189,12 @@ class NewsletterLogCollection extends ItemCollection {
         parent::delete($idnewslog);
     }
 
+    /**
+     * @param $idnewsjob
+     *
+     * @return bool
+     * @throws cException
+     */
     public function deleteJob($idnewsjob) {
         $idnewsjob = cSecurity::toInteger($idnewsjob);
         $this->setWhere("idnewsjob", $idnewsjob);
@@ -201,11 +213,13 @@ class NewsletterLogCollection extends ItemCollection {
  * Single NewsletterLog Item
  */
 class NewsletterLog extends Item {
-
     /**
      * Constructor Function
      *
      * @param mixed $mId Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -215,12 +229,14 @@ class NewsletterLog extends Item {
         }
     }
 
-	/**
+    /**
      * Userdefined setter for newsletter logs fields.
      *
      * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @param mixed  $value
+     * @param bool   $bSafe Flag to run defined inFilter on passed value
+     *
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {

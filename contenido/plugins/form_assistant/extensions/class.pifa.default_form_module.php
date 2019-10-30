@@ -59,7 +59,8 @@ class DefaultFormModule extends PifaAbstractFormModule {
 
         // assign rendered form
         $this->getTpl()->assign('form', $pifaForm->toHtml(array(
-            'action' => $actionPath
+            'action' => $actionPath,
+            'headline' => $this->getSetting('pifaform_headline')
         )));
     }
 
@@ -67,6 +68,7 @@ class DefaultFormModule extends PifaAbstractFormModule {
      * Handle POST request.
      *
      * @see PifaAbstractFormModule::doPost()
+     * @throws Exception
      */
     protected function doPost() {
 
@@ -95,7 +97,7 @@ class DefaultFormModule extends PifaAbstractFormModule {
 
             // create processor instance
             // pass module in order to access its settings
-            // processorClass is subclass of PifaAbstractFormProcessor
+            /** @var PifaAbstractFormProcessor $postProcessor */
             $postProcessor = new $processorClass($this);
             $postProcessor->process();
 

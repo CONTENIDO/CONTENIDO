@@ -45,7 +45,7 @@ $cfg['path']['data']                    = $cfg['path']['frontend'] . '/data/';
 $cfg['path']['all_wysiwyg']             = $cfg['path']['contenido']  . 'external/wysiwyg/';
 
 /* The selected wysiwyg editor*/
-$cfg['wysiwyg']['editor']               = 'tinymce3';
+$cfg['wysiwyg']['editor']               = 'tinymce4';
 
 /* The server path to the desired WYSIWYG-Editor */
 $cfg['path']['wysiwyg']                 = $cfg['path']['all_wysiwyg'] . $cfg['wysiwyg']['editor'] . '/';

@@ -25,15 +25,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @param string $name
  *         the name of the form element
- * @param array $possibleValues
+ * @param array  $possibleValues
  *         the possible values
  * @param string $value
  *         the value which should be selected
  * @param string $label
  *         the label text which should be rendered
- * @param int $width
+ * @param int    $width
+ *
  * @return array
  *         associative array with the label and the input field
+ * 
+ * @throws cException
  */
 function renderSelectProperty($name, $possibleValues, $value, $label, $width = 328) {
     global $auth;
@@ -97,7 +100,7 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
     }
 
     // disable the HTML element if user is not a sysadmin
-    if (strpos($auth->auth['perm'], 'sysadmin') === false) {
+    if (cString::findFirstPos($auth->auth['perm'], 'sysadmin') === false) {
         $html->updateAttribute('disabled', 'true');
     }
 
@@ -116,7 +119,7 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
  *         the label text
  * @param string $name
  *         the name of the corresponding input element
- * @param string $width
+ * @param int $width
  *         the width in pixel
  * @param string $seperator
  *         the seperator which is written at the end of the label
@@ -160,7 +163,7 @@ function renderTextProperty($name, $value, $label, $password = false) {
     $textbox = new cHTMLTextbox($name, conHtmlSpecialChars($value), '50', '96');
     $textbox->updateAttribute('style', 'width:322px');
     // disable the textbox if user is not a sysadmin
-    if (strpos($auth->auth['perm'], 'sysadmin') === false) {
+    if (cString::findFirstPos($auth->auth['perm'], 'sysadmin') === false) {
         $textbox->updateAttribute('disabled', 'true');
     }
     if ($password === true) {
@@ -186,7 +189,7 @@ $settings = getSystemProperties();
 $reloadHeader = false;
 // store the system properties
 if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have_perm_area_action($area, 'edit_sysconf')) {
-    if (strpos($auth->auth['perm'], 'sysadmin') === false) {
+    if (cString::findFirstPos($auth->auth['perm'], 'sysadmin') === false) {
         $page->displayError(i18n('You don\'t have the permission to make changes here.'));
     } else {
         // @TODO Find a general solution for this!
@@ -240,7 +243,7 @@ $form->setVar('frame', $frame);
 $form->setVar('action', 'edit_sysconf');
 
 // show a disabled OK button if user is not a sysadmin
-if (strpos($auth->auth['perm'], 'sysadmin') === false) {
+if (cString::findFirstPos($auth->auth['perm'], 'sysadmin') === false) {
     $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n("You are not sysadmin. You can't change these settings."), 's');
 }
 
@@ -268,7 +271,7 @@ foreach ($propertyTypes as $type => $properties) {
         if (is_array($infos['values'])) {
             $htmlElement = renderSelectProperty($fieldName, $infos['values'], $value, i18n($infos['label']));
         } else {
-            if (strlen($name) > 5 && substr($name, -5) === '_pass') {
+            if (cString::getStringLength($name) > 5 && cString::getPartOfString($name, -5) === '_pass') {
                 $htmlElement = renderTextProperty($fieldName, $value, i18n($infos['label']), true);
             } else {
                 $htmlElement = renderTextProperty($fieldName, $value, i18n($infos['label']));

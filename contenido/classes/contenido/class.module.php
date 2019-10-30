@@ -21,9 +21,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiModuleCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -34,24 +35,27 @@ class cApiModuleCollection extends ItemCollection {
     /**
      * Creates a new module item
      *
-     * @global int $client
-     * @global object $auth
+     * @param string  $name
+     * @param int     $idclient     [optional]
+     * @param string  $alias        [optional]
+     * @param string  $type         [optional]
+     * @param string  $error        [optional]
+     * @param string  $description  [optional]
+     * @param int     $deletable    [optional]
+     * @param string  $template     [optional]
+     * @param int     $static       [optional]
+     * @param string  $package_guid [optional]
+     * @param string  $package_data [optional]
+     * @param string  $author       [optional]
+     * @param string  $created      [optional]
+     * @param string  $lastmodified [optional]
      *
-     * @param string $name
-     * @param int $idclient [optional]
-     * @param string $alias [optional]
-     * @param string $type [optional]
-     * @param string $error [optional]
-     * @param string $description [optional]
-     * @param int $deletable [optional]
-     * @param string $template [optional]
-     * @param int $static [optional]
-     * @param string $package_guid [optional]
-     * @param string $package_data [optional]
-     * @param string $author [optional]
-     * @param string $created [optional]
-     * @param string $lastmodified [optional]
      * @return cApiModule
+     * @global int    $client
+     * @global object $auth
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($name, $idclient = NULL, $alias = '', $type = '',
             $error = 'none', $description = '', $deletable = 0, $template = '',
@@ -73,6 +77,7 @@ class cApiModuleCollection extends ItemCollection {
             $lastmodified = date('Y-m-d H:i:s');
         }
 
+        /** @var cApiModule $item */
         $item = $this->createNewItem();
 
         $item->set('idclient', $idclient);
@@ -100,6 +105,7 @@ class cApiModuleCollection extends ItemCollection {
      * @param int $idclient
      *
      * @return array
+     * @throws cDbException
      */
     public function getAllTypesByIdclient($idclient) {
         $types = array();
@@ -119,9 +125,11 @@ class cApiModuleCollection extends ItemCollection {
      * By default the modules are ordered by name but can be ordered by any
      * property.
      *
-     * @param int $idclient
+     * @param int    $idclient
      * @param string $oderBy [optional]
+     *
      * @return array
+     * @throws cDbException
      */
     public function getAllByIdclient($idclient, $oderBy = 'name') {
         $records = array();
@@ -140,10 +148,40 @@ class cApiModuleCollection extends ItemCollection {
     }
 
     /**
+     * Returns a list of all modules used by the given client.
+     * By default the modules are ordered by name but can be ordered by any
+     * property.
+     *
+     * @param int    $idclient
+     * @param string $type
+     * @param string $oderBy [optional]
+     *
+     * @return array
+     * @throws cDbException
+     */
+    public function getAllByIdclientAndType($idclient, $type, $oderBy = 'name') {
+        $records = array();
+
+        if (!empty($oderBy)) {
+            $oderBy = ' ORDER BY ' . $this->db->escape($oderBy);
+        }
+        $sql = "SELECT * FROM `%s` WHERE idclient = %d AND type LIKE '%s' {$oderBy}";
+        $sql = $this->db->prepare($sql, $this->table, $idclient, '%' . $type . '%');
+
+        $this->db->query($sql);
+        while ($this->db->nextRecord()) {
+            $records[$this->db->f('idmod')] = $this->db->toArray();
+        }
+
+        return $records;
+    }
+
+    /**
      * Checks if any modules are in use and returns the data
      *
      * @return array
      *         Returns all templates for all modules
+     * @throws cDbException
      */
     public function getModulesInUse() {
         global $cfg;
@@ -157,7 +195,7 @@ class cApiModuleCollection extends ItemCollection {
                 ' . $cfg['tab']['tpl'] . " as t
                 WHERE
                     t.idtpl = c.idtpl
-                GROUP BY c.idmod
+                GROUP BY c.idmod, c.idtpl, t.name
                 ORDER BY t.name";
         $db->query($sql);
 
@@ -202,6 +240,13 @@ class cApiModule extends Item {
      */
     private $_translationReplacement = 'mi18n("';
 
+	/**
+     * for finding module translations in source code of templates
+     *
+     * @var string
+     */
+	private $_translationPatternTemplate = '/\{\s*"([^"]+)"\s*\|\s*mi18n\s*\}/';
+
     /**
      * @todo check if this property is still required
      * @var string
@@ -225,7 +270,9 @@ class cApiModule extends Item {
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg, $cfgClient, $client;
@@ -255,6 +302,8 @@ class cApiModule extends Item {
      *
      * @return string
      *         Translated module name or original
+     * @throws cDbException
+     * @throws cException
      */
     public function getTranslatedName() {
         global $lang;
@@ -278,6 +327,10 @@ class cApiModule extends Item {
      *
      * @param string $name
      *         Translated name of the module
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function setTranslatedName($name) {
         global $lang;
@@ -289,9 +342,11 @@ class cApiModule extends Item {
      * from db-table.
      *
      * @param array $cfg
-     * @param int $client
-     * @param int $lang
+     * @param int   $client
+     * @param int   $lang
+     *
      * @return bool|array
+     * @throws cException
      */
     function parseModuleForStringsLoadFromFile($cfg, $client, $lang) {
         global $client;
@@ -316,14 +371,14 @@ class cApiModule extends Item {
         if (count($varr) > 0) {
             foreach ($varr as $key => $value) {
                 // Search first closing
-                $closing = strpos($value, '")');
+                $closing = cString::findFirstPos($value, '")');
 
                 if ($closing === false) {
-                    $closing = strpos($value, '" )');
+                    $closing = cString::findFirstPos($value, '" )');
                 }
 
                 if ($closing !== false) {
-                    $value = substr($value, 0, $closing) . '")';
+                    $value = cString::getPartOfString($value, 0, $closing) . '")';
                 }
 
                 // Append mi18n again
@@ -342,6 +397,24 @@ class cApiModule extends Item {
             }
         }
 
+		//Parse all templates too
+		$contenidoModulTemplateHandler = new cModuleTemplateHandler($this->get('idmod'), null);
+		$filesArray = $contenidoModulTemplateHandler->getAllFilesFromDirectory('template');
+
+		if (is_array($filesArray)) {
+			$code = '';
+			foreach ($filesArray as $file) {
+				$code .= $contenidoModulTemplateHandler->getFilesContent('template', '', $file);
+			}
+
+			// Parse for the mi18n stuff
+            preg_match_all($this->_translationPatternTemplate, $code, $results);
+
+			if (is_array($results) && is_array($results[1]) && count($results[1]) > 0) {
+				$strings = array_merge($strings, $results[1]);
+			}
+		}
+
         // adding dynamically new module translations by content types
         // this function was introduced with CONTENIDO 4.8.13
         // checking if array is set to prevent crashing the module translation
@@ -350,13 +423,13 @@ class cApiModule extends Item {
             // iterate over all defines cms content types
             foreach ($cfg['translatable_content_types'] as $sContentType) {
                 // check if the content type exists and include his class file
-                if (file_exists($cfg['contenido']['path'] . 'classes/class.' . strtolower($sContentType) . '.php')) {
-                    cInclude('classes', 'class.' . strtolower($sContentType) . '.php');
+                if (file_exists($cfg['path']['contenido'] . 'classes/class.' . cString::toLowerCase($sContentType) . '.php')) {
+                    cInclude('classes', 'class.' . cString::toLowerCase($sContentType) . '.php');
                     // if the class exists, has the method
                     // 'addModuleTranslations'
                     // and the current module contains this cms content type we
                     // add the additional translations for the module
-                    if (class_exists($sContentType) && method_exists($sContentType, 'addModuleTranslations') && preg_match('/' . strtoupper($sContentType) . '\[\d+\]/', $code)) {
+                    if (class_exists($sContentType) && method_exists($sContentType, 'addModuleTranslations') && preg_match('/' . cString::toUpperCase($sContentType) . '\[\d+\]/', $code)) {
 
                         $strings = call_user_func(array(
                             $sContentType,
@@ -376,6 +449,7 @@ class cApiModule extends Item {
      *
      * @return array
      *         Found strings for this module
+     * @throws cInvalidArgumentException
      */
     public function parseModuleForStrings() {
         if (!$this->isLoaded()) {
@@ -399,14 +473,14 @@ class cApiModule extends Item {
         if (count($varr) > 1) {
             foreach ($varr as $key => $value) {
                 // Search first closing
-                $closing = strpos($value, '")');
+                $closing = cString::findFirstPos($value, '")');
 
                 if ($closing === false) {
-                    $closing = strpos($value, '" )');
+                    $closing = cString::findFirstPos($value, '" )');
                 }
 
                 if ($closing !== false) {
-                    $value = substr($value, 0, $closing) . '")';
+                    $value = cString::getPartOfString($value, 0, $closing) . '")';
                 }
 
                 // Append mi18n again
@@ -435,13 +509,13 @@ class cApiModule extends Item {
             // iterate over all defines cms content types
             foreach ($cfg['translatable_content_types'] as $sContentType) {
                 // check if the content type exists and include his class file
-                if (cFileHandler::exists($cfg['contenido']['path'] . 'classes/class.' . strtolower($sContentType) . '.php')) {
-                    cInclude('classes', 'class.' . strtolower($sContentType) . '.php');
+                if (cFileHandler::exists($cfg['path']['contenido'] . 'classes/class.' . cString::toLowerCase($sContentType) . '.php')) {
+                    cInclude('classes', 'class.' . cString::toLowerCase($sContentType) . '.php');
                     // if the class exists, has the method
                     // 'addModuleTranslations'
                     // and the current module contains this cms content type we
                     // add the additional translations for the module
-                    if (class_exists($sContentType) && method_exists($sContentType, 'addModuleTranslations') && preg_match('/' . strtoupper($sContentType) . '\[\d+\]/', $code)) {
+                    if (class_exists($sContentType) && method_exists($sContentType, 'addModuleTranslations') && preg_match('/' . cString::toUpperCase($sContentType) . '\[\d+\]/', $code)) {
 
                         $strings = call_user_func(array(
                             $sContentType,
@@ -459,10 +533,11 @@ class cApiModule extends Item {
     /**
      * Checks if the module is in use
      *
-     * @param int $module
+     * @param int  $module
      * @param bool $bSetData [optional]
      * @return bool
-     *         true if the module is in use
+     *                       true if the module is in use
+     * @throws cDbException
      */
     public function moduleInUse($module, $bSetData = false) {
         global $cfg;
@@ -477,7 +552,7 @@ class cApiModule extends Item {
                 WHERE
                     c.idmod = '" . cSecurity::toInteger($module) . "' AND
                     t.idtpl=c.idtpl
-                GROUP BY c.idtpl
+                GROUP BY c.idtpl, c.idmod, t.name
                 ORDER BY t.name";
         $db->query($sql);
 
@@ -539,7 +614,7 @@ class cApiModule extends Item {
      * Gets the value of a specific field.
      *
      * @see Item::getField()
-     * @param string $sField
+     * @param string $field
      *         Specifies the field to retrieve
      * @param bool $bSafe [optional]
      *         Flag to run defined outFilter on passed value
@@ -565,8 +640,10 @@ class cApiModule extends Item {
      * (if not suppressed by giving a true value for $bJustStore).
      *
      * @see Item::store()
+     *
      * @param bool $bJustStore [optional]
-     *     don't generate code for all articles using this module (default false)
+     *                         don't generate code for all articles using this module (default false)
+     *
      * @return bool
      */
     public function store($bJustStore = false) {
@@ -591,6 +668,7 @@ class cApiModule extends Item {
      *         Filename including path of import xml file
      * @return array
      *         Array with module data from XML file
+     * @throws cException
      */
     private function _parseImportFile($sFile) {
         $oXmlReader = new cXmlReader();
@@ -619,9 +697,10 @@ class cApiModule extends Item {
     /**
      * Save the modul properties (description,type...)
      *
-     * @param string $sFile
-     *         Where is the modul info.xml file
+     * @param string $sFile Where is the modul info.xml file
+     *
      * @return array
+     * @throws cException
      */
     private function _getModuleProperties($sFile) {
         $ret = array();
@@ -649,6 +728,9 @@ class cApiModule extends Item {
      * @param bool $show_notification [optional]
      *         standard: true, mode to turn notifications off
      * @return bool
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     function import($sFile, $tempName, $show_notification = true) {
         global $cfgClient, $db, $client, $cfg, $encoding, $lang;
@@ -657,7 +739,7 @@ class cApiModule extends Item {
 
         // file name Hello_World.zip => Hello_World
         // @TODO: fetch file extension correctly
-        $modulName = substr($sFile, 0, -4);
+        $modulName = cString::getPartOfString($sFile, 0, -4);
 
         $sModulePath = $cfgClient[$client]['module']['path'] . $modulName;
         $sTempPath = $cfg['path']['contenido_temp'] . 'module_import_' . $modulName;
@@ -720,9 +802,11 @@ class cApiModule extends Item {
     /**
      * Imports the a module from a XML file, uses xmlparser and callbacks
      *
-     * @param string $sFile
-     *         Filename of data file (full path)
+     * @param string $sFile Filename of data file (full path)
+     *
      * @return bool
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     function importModuleFromXML($sFile) {
         global $db, $cfgClient, $client, $cfg, $encoding, $lang;

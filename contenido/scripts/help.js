@@ -13,6 +13,7 @@
  */
 
 (function(Con, $) {
+
     'use strict';
 
     var NAME = 'help';

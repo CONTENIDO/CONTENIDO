@@ -49,6 +49,12 @@ if (cFileHandler::exists(dirname(dirname(dirname(__FILE__))) . '/setup')) {
     $page->displayWarning(i18n("The setup directory still exists. Please remove the setup directory before you continue."));
 }
 
+// DSGVO notice
+// You can disable this notice with the system property type system, name dsgvo_notice and the value disabled
+if (getSystemProperty('system', 'dsgvo_notice') != 'disabled') {
+    $page->displayInfo(i18n("Please check the requirements of the EU General Data Protection Regulation if you collecting personal data. We suggest to encrypt the entire website with SSL to ensure secure data transfer. If you have any questions, please contact your webhoster."));
+}
+
 // check for size of log directory
 $max_log_size = getSystemProperty('backend', 'max_log_size');
 if ($max_log_size === false) {
@@ -233,10 +239,10 @@ foreach ($aMemberList as $key) {
         $li .= $sRealName;
     }
     if ('' !== $aPerms['0']) {
-        $li .= strlen($li) ? ', ' : '';
+        $li .= cString::getStringLength($li) ? ', ' : '';
         $li .= $aPerms['0'];
     }
-    if (0 == strlen($li)) {
+    if (0 == cString::getStringLength($li)) {
         continue;
     }
     $sOutput .= '<li class="welcome">' . $li . '</li>';

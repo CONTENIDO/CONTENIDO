@@ -16,6 +16,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $tpl->reset();
 
+// CON-2718
+// Do not display anything if the statistic is disabled
+$statisticmode = getSystemProperty('stats', 'tracking');
+if ($statisticmode == 'disabled') {
+    return false;
+}
+
 $currentLink = '<a target="right_bottom" href="' . $sess->url("main.php?area=stat&frame=4&displaytype=top10&action=stat_show&yearmonth=current") . '">' . i18n("Current Report") . '</a>';
 
 $availableYears = statGetAvailableYears($client, $lang);

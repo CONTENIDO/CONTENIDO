@@ -28,7 +28,7 @@ $mstr = sprintf(
     'right_bottom', $sess->url("main.php?area=client_edit&action=client_new&frame=4"),
     i18n("Create client")
 );
-if (strpos($auth->auth["perm"],"sysadmin") !== false) {
+if (cString::findFirstPos($auth->auth["perm"],"sysadmin") !== false) {
     $tpl->set('s', 'NEWCLIENT', $mstr);
 } else {
     $tpl->set('s', 'NEWCLIENT', '<a class="addfunction_disabled" href="#">' . i18n("Only sysadmins can create clients") . '</a>');

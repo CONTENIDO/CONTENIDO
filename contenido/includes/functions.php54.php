@@ -39,7 +39,7 @@ if (function_exists('conHtmlSpecialChars') == false) {
     /**
      *
      * @param string $value
-     * @param int $flags
+     * @param int|string $flags
      * @param string $encoding
      * @return string
      */
@@ -72,7 +72,7 @@ if (function_exists('conHtmlEntityDecode') == false) {
     /**
      *
      * @param string $value
-     * @param int $flags
+     * @param int|string $flags
      * @param string $encoding
      * @return string
      */
@@ -100,7 +100,7 @@ if (function_exists('conHtmlentities') == false) {
     /**
      *
      * @param string $value
-     * @param int $flags
+     * @param int|string $flags
      * @param string $encoding
      * @return string
      */
@@ -124,11 +124,11 @@ if (function_exists('conHtmlentities') == false) {
 }
 
 if (function_exists('conGetHtmlTranslationTable') == false) {
-
     /**
      *
-     * @param int $table
-     * @param int $flags
+     * @param string $table
+     * @param string $flags
+     *
      * @return array
      */
     function conGetHtmlTranslationTable($table = '', $flags = '') {

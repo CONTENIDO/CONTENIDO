@@ -13,16 +13,23 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @return string
+ */
 function frontendusers_valid_from_getTitle() {
     return i18n("Valid from");
 }
 
+/**
+ * @return string|void
+ * @throws cInvalidArgumentException
+ */
 function frontendusers_valid_from_display() {
     global $feuser, $db, $belang, $cfg;
 
     $langscripts = '';
 
-    if (($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
+    if (($lang_short = cString::getPartOfString(cString::toLowerCase($belang), 0, 2)) != "en") {
         $langscripts = '<script type="text/javascript" src="scripts/jquery/plugins/timepicker-' . $lang_short . '.js"></script>
         <script type="text/javascript" src="scripts/jquery/plugins/datepicker-' . $lang_short . '.js"></script>';
     }
@@ -79,10 +86,16 @@ function frontendusers_valid_from_display() {
     return $oTemplate->generate($template, 1);
 }
 
+/**
+ * @return array
+ */
 function frontendusers_valid_from_wantedVariables() {
     return (array("valid_from"));
 }
 
+/**
+ * @param $variables
+ */
 function frontendusers_valid_from_store($variables) {
     global $feuser;
 

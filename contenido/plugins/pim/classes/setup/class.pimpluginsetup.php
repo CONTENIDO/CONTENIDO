@@ -21,22 +21,32 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @author frederic.schneider
  */
 class PimPluginSetup {
-
-    // Initializing variables
-    // Variable for installation / update mode:
-    // Extracted or uploaded file?
-    public static $mode = 0;
-
-    // File name of Xml configuration file for plugins
+    /**
+     * File name of Xml configuration file for plugins
+     */
     const PLUGIN_XML_FILENAME = "plugin.xml";
-
-    // Specific sql prefix
+    /**
+     * Specific sql prefix
+     */
     const SQL_PREFIX = "!PREFIX!";
 
-    // Class variable for cGuiPage
+    /**
+     * Initializing variables
+     * Variable for installation / update mode:
+     * Extracted or uploaded file?
+     *
+     * @var int
+     */
+    public static $mode = 0;
+
+    /**
+     * @var cGuiPage
+     */
     protected static $_GuiPage;
 
-    // Class variable for PimPluginArchiveExtractor
+    /**
+     * @var PimPluginArchiveExtractor
+     */
     protected static $_PimPluginArchiveExtractor;
 
     /**
@@ -44,45 +54,90 @@ class PimPluginSetup {
      * If this variable is true PIM does not run uninstall and install
      * sql file. Standard value: false (update sql file does not exist)
      *
-     * @var boolean
+     * @var bool
      */
     private static $_updateSqlFileExist = false;
 
-    // Xml variables
-    // General informations of plugin
+    /**
+     * Xml variables
+     * General informations of plugin
+     *
+     * @var SimpleXMLElement
+     */
     public static $XmlGeneral;
 
-    // Plugin requirements
+    /**
+     * Plugin requirements
+     *
+     * @var SimpleXMLElement
+     */
     public static $XmlRequirements;
 
-    // Plugin dependencies
+    /**
+     * Plugin dependencies
+     *
+     * @var SimpleXMLElement
+     */
     public static $XmlDependencies;
 
-    // CONTENIDO areas: *_area
+    /**
+     * CONTENIDO areas: *_area
+     *
+     * @var SimpleXMLElement
+     */
     public static $XmlArea;
 
-    // CONTENIDO actions: *_actions
+    /**
+     * CONTENIDO actions: *_actions
+     *
+     * @var SimpleXMLElement
+     */
     public static $XmlActions;
 
-    // CONTENIDO frames: *_frame_files and *_files
+    /**
+     * CONTENIDO frames: *_frame_files and *_files
+     *
+     * @var SimpleXMLElement
+     */
     public static $XmlFrames;
 
-    // CONTENIDO main navigations: *_nav_main
+    /**
+     * CONTENIDO main navigations: *_nav_main
+     *
+     * @var SimpleXMLElement
+     */
     public static $XmlNavMain;
 
-    // CONTENIDO sub navigations: *_nav_sub
+    /**
+     * CONTENIDO sub navigations: *_nav_sub
+     *
+     * @var SimpleXMLElement
+     */
     public static $XmlNavSub;
 
-    // CONTENIDO content types: *_type
+    /**
+     * CONTENIDO content types: *_type
+     *
+     * @var SimpleXMLElement
+     */
     public static $XmlContentType;
 
-    // Id of selected/new plugin
+    /**
+     * Id of selected/new plugin
+     *
+     * @var int
+     */
     protected static $_pluginId = 0;
 
-    // Name of selected plugin
+    /**
+     * Name of selected plugin
+     *
+     * @var string
+     */
     protected static $_pluginName;
 
     // GET and SET methods for installation routine
+
     /**
      * Set method for installation / update mode
      * Mode 1: Plugin is already extracted
@@ -111,6 +166,8 @@ class PimPluginSetup {
      * Set method for cGuiPage class
      *
      * @param cGuiPage $page
+     *
+     * @return cGuiPage
      */
     public function setPageClass($page) {
         return self::$_GuiPage = $page;
@@ -139,7 +196,7 @@ class PimPluginSetup {
     /**
      * Set temporary xml content to static variables
      *
-     * @param string $xml
+     * @param SimpleXMLElement $xml
      */
     private function _setXml($xml) {
 
@@ -175,6 +232,7 @@ class PimPluginSetup {
      * Set method for PluginId
      *
      * @param int $pluginId
+     *
      * @return int
      */
     public function setPluginId($pluginId = 0) {
@@ -185,6 +243,7 @@ class PimPluginSetup {
      * Set method for PluginName
      *
      * @param string $pluginName
+     *
      * @return string
      */
     public function setPluginName($pluginName = '') {
@@ -228,18 +287,21 @@ class PimPluginSetup {
     }
 
     // Help methods
+
     /**
      * checkXml
      * Load plugin datas and run Xml checks
+     *
+     * @throws cException
      */
     public function checkXml() {
+
         $cfg = cRegistry::getConfig();
 
         if (self::getMode() == 1) { // Plugin is already extracted
             $XmlData = file_get_contents($cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($_GET['pluginFoldername']) . DIRECTORY_SEPARATOR . self::PLUGIN_XML_FILENAME);
-        } elseif (self::getMode() == 2 || self::getMode() == 4) { // Plugin is
-                                                                  // uploaded /
-                                                                  // Update mode
+        } elseif (self::getMode() == 2 || self::getMode() == 4) {
+            // Plugin is uploaded / Update mode
 
             // Path to CONTENIDO temp dir
             $tempArchiveNewPath = $cfg['path']['frontend'] . DIRECTORY_SEPARATOR . $cfg['path']['temp'];
@@ -250,7 +312,9 @@ class PimPluginSetup {
 
 				// If PIM can not create a temporary directory (if it does not exists), throw an error message
 				if (!$success) {
-					return self::error(sprintf(i18n('Plugin Manager can not found a temporary CONTENIDO directory. Also it is not possible to create a temporary directory at <em>%s</em>. You have to create it manualy.', 'pim'), $tempArchiveNewPath));				}
+					self::error(sprintf(i18n('Plugin Manager can not found a temporary CONTENIDO directory. Also it is not possible to create a temporary directory at <em>%s</em>. You have to create it manualy.', 'pim'), $tempArchiveNewPath));
+                    return;
+				}
             }
 
             // Name of uploaded Zip archive
@@ -277,7 +341,8 @@ class PimPluginSetup {
         if ($this->validXml($XmlData) === true) {
             $this->_setXml(simplexml_load_string($XmlData));
         } else {
-            return self::error(i18n('Invalid Xml document. Please contact the plugin author.', 'pim'));
+            self::error(i18n('Invalid Xml document. Please contact the plugin author.', 'pim'));
+            return;
         }
     }
 
@@ -286,7 +351,9 @@ class PimPluginSetup {
      * Global function for uninstall and status mode
      * Install mode uses an own dependencies function
      *
-     * @return boolean
+     * @return bool
+     *
+     * @throws cInvalidArgumentException
      */
     public function checkDependencies() {
 
@@ -345,6 +412,7 @@ class PimPluginSetup {
     				$this->_PimPluginCollection->setWhere('uuid', $tempXml->general->uuid);
     				$this->_PimPluginCollection->setWhere('active', '1');
     				$this->_PimPluginCollection->query();
+
     				if ($this->_PimPluginCollection->count() != 0) {
     					self::setPluginName($tempXml->general->plugin_name);
     					return false;
@@ -356,12 +424,13 @@ class PimPluginSetup {
     	return true;
     }
 
-
     /**
      * Check file type, Plugin Manager accepts only Zip archives
+     *
+     * @throws cException
      */
     private function checkZip() {
-        if (substr($_FILES['package']['name'], -4) != ".zip") {
+        if (cString::getPartOfString($_FILES['package']['name'], -4) != ".zip") {
             self::error(i18n('Plugin Manager accepts only Zip archives', 'pim'));
         }
     }
@@ -372,6 +441,7 @@ class PimPluginSetup {
      * @return bool
      */
     private function validXml($xml) {
+
         // Initializing PHP DomDocument class
         $dom = new DomDocument();
         $dom->loadXML($xml);
@@ -386,7 +456,11 @@ class PimPluginSetup {
 
     /**
      * Error function with pim_error-Template
+     *
      * @param string $message
+     *
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     protected static function error($message = '') {
 
@@ -409,12 +483,11 @@ class PimPluginSetup {
 
     /**
      * Info function, used displayOk CONTENIDO method
+     *
      * @param string $message
      */
     protected static function info($message = '') {
-        return self::$_GuiPage->displayOk($message);
+        self::$_GuiPage->displayOk($message);
     }
 
 }
-
-?>

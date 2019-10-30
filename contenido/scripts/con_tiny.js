@@ -16,7 +16,8 @@
  */
 
 (function(Con, $) {
-//    'use strict';
+
+    // 'use strict';
 
     var NAME = 'tiny';
 
@@ -49,90 +50,105 @@
          * @type {String|NULL}
          */
         activeId: null,
+
         /**
          * Object of div on which tiny is active
          * @property activeObject
          * @type {HTMLElement|NULL}
          */
         activeObject: null,
+
         /**
          * Object to store edited content
          * @property editData
          * @type {Object}
          */
         editData: {},
+
         /**
          * Object to store to store original content (Importent for decision if content has changed)
          * @property editDataOrg
          * @type {Object}
          */
         editDataOrg: {},
+
         /**
          * Flag to ask the user to store changes when the window
          * @property checkOnLeave
          * @type {Boolean}
          */
         checkOnLeave: true,
+
         /**
          * Tiny settings, used during swap
          * @property settings
          * @type {Object}
          */
         settings: {},
+
         /**
          * Filebrowser popup field name
          * @property fbFieldName
          * @type {String}
          */
         fbFieldName: null,
+
         /**
          * Filebrowser popup window
          * @property fbPopupWindow
          * @type {Window}
          */
         fbPopupWindow: null,
+
         /**
          * Filebrowser popup interval handle
          * @property fbIntervalHandle
          * @type {Numeric}
          */
         fbIntervalHandle: null,
+
         /**
          * Filebrowser popup window
          * @property fbWindow
          * @type {Window}
          */
         fbWindow: null,
+
         /**
          * Url to CONTENIDO file browser
          * @property fileUrl
          * @type {String}
          */
         fileUrl: '',
+
         /**
          * Url to CONTENIDO image browser
          * @property imageUrl
          * @type {String}
          */
         imageUrl: '',
+
         /**
          * Url to CONTENIDO media browser
          * @property mediaUrl
          * @type {String}
          */
         mediaUrl: '',
+
         /**
          * Url to current clients frontend
          * @property frontendPath
          * @type {String}
          */
         frontendPath: '',
+
         /**
          * Confirmation text to save
          * @property txtQuestion
          * @type {String}
          */
         txtQuestion: '',
+
         /**
          * Idartlang which is currently edited
          * @property idartlang
@@ -186,7 +202,6 @@
                     value = value.replace(/[\s]*\/>/g,'>');
                     break;
             }
-
             return value;
         },
 

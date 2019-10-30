@@ -42,10 +42,13 @@ class cContentTypeDate extends cContentTypeAbstract {
      *
      * @param string $rawSettings
      *         the raw settings in an XML structure or as plaintext
-     * @param int $id
+     * @param int    $id
      *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
-     * @param array $contentTypes
+     * @param array  $contentTypes
      *         array containing the values of all content types
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
 
@@ -71,7 +74,7 @@ class cContentTypeDate extends cContentTypeAbstract {
                 $language = $oApiLang->getProperty('language', 'code');
                 $country = $oApiLang->getProperty('country', 'code');
 
-                $locale = $language . '_' . strtoupper($country);
+                $locale = $language . '_' . cString::toUpperCase($country);
             }
             if (false === empty($locale)) {
                 setlocale(LC_TIME, $locale);
@@ -286,24 +289,25 @@ class cContentTypeDate extends cContentTypeAbstract {
      * the frontend.
      *
      * @return string
-     *         escaped HTML code which sould be shown if content type is shown in frontend
+     *         escaped HTML code which should be shown if content type is shown in frontend
      */
     public function generateViewCode() {
-        $format = $this->_settings['date_format'];
+        if (empty($this->_settings['date_timestamp'])) {
+            return '';
+        }
 
-        if (empty($format)) {
+        $timestamp = $this->_settings['date_timestamp'];
+
+        if (empty($this->_settings['date_format'])) {
             $format = '';
         } else {
+            $format = $this->_settings['date_format'];
             $decoded_array = json_decode($format, true);
             if (is_array($decoded_array)) {
                 $format = implode(' ', $decoded_array);
             } else {
                 $format = '';
             }
-        }
-        $timestamp = $this->_settings['date_timestamp'];
-        if (empty($timestamp)) {
-            return '';
         }
 
         return $this->_formatDate($format, $timestamp);
@@ -314,6 +318,7 @@ class cContentTypeDate extends cContentTypeAbstract {
      *
      * @return string
      *         escaped HTML code which should be shown if content type is edited
+     * @throws cInvalidArgumentException
      */
     public function generateEditCode() {
         $belang = cRegistry::getBackendLanguage();
@@ -323,9 +328,9 @@ class cContentTypeDate extends cContentTypeAbstract {
         }
         $value = date($format, $this->_settings['date_timestamp']);
         $code = new cHTMLTextbox('date_timestamp_' . $this->_id, $value, '', '', 'date_timestamp_' . $this->_id, true, '', '', 'date_timestamp');
-        $code .= $this->_generateJavaScript();
         $code .= $this->_generateFormatSelect();
         $code .= $this->_generateStoreButton();
+        $code .= $this->_generateJavaScript();
         $code = new cHTMLDiv($code, 'cms_date', 'cms_' . $this->_prefix . '_' . $this->_id . '_settings');
 
         return $this->_encodeForOutput($code);
@@ -336,6 +341,7 @@ class cContentTypeDate extends cContentTypeAbstract {
      *
      * @return string
      *         HTML code which includes the needed JavaScript
+     * @throws cInvalidArgumentException
      */
     private function _generateJavaScript() {
         $template = new cTemplate();
@@ -344,7 +350,7 @@ class cContentTypeDate extends cContentTypeAbstract {
         $template->set('s', 'PREFIX', $this->_prefix);
         $template->set('s', 'ID', $this->_id);
         $template->set('s', 'IDARTLANG', $this->_idArtLang);
-        $template->set('s', 'LANG', substr(cRegistry::getBackendLanguage(), 0, 2));
+        $template->set('s', 'LANG', cString::getPartOfString(cRegistry::getBackendLanguage(), 0, 2));
         $template->set('s', 'PATH_TO_CALENDAR_PIC', $pathBackend . $this->_cfg['path']['images'] . 'calendar.gif');
         $setting = $this->_settings;
         if (array_key_exists('date_format', $setting)) {
@@ -378,7 +384,7 @@ class cContentTypeDate extends cContentTypeAbstract {
         $formatSelect = new cHTMLSelectElement($this->_prefix . '_format_select_' . $this->_id, '', $this->_prefix . '_format_select_' . $this->_id);
         $formatSelect->appendStyleDefinitions(array(
             'border' => '1px solid #ccc',
-            'margin' => '2px 5px 5px'
+            'margin' => '0px 5px 5px'
         ));
         $formatSelect->autoFill($this->_dateFormatsPhp);
         $phpDateFormat = conHtmlSpecialChars($this->_settings[$this->_prefix . '_format']);

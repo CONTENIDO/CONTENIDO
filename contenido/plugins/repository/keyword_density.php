@@ -13,6 +13,13 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @param     $singlewordcounter
+ * @param     $string
+ * @param int $quantifier
+ *
+ * @return mixed
+ */
 function calcDensity($singlewordcounter, $string, $quantifier = 1) {
     $minLen = 3;
 
@@ -240,16 +247,16 @@ function calcDensity($singlewordcounter, $string, $quantifier = 1) {
         $minLen = 5;
     }
 
-    //all blacklistentries to lowercase and trim ' ' at front.
+    // all blacklistentries to lowercase and trim ' ' at front.
     for ($i = 0; $i < count($blacklist); $i++) {
-        $blacklist[$i] = ltrim(mb_strtolower($blacklist[$i]), '');
+        $blacklist[$i] = ltrim(cString::toLowerCase($blacklist[$i]), '');
     }
-    $tmp = array();
+
     $tmp = explode(' ', $string);
     $tmp_size = sizeof($tmp);
 
-    for ($i = 0; $i <= $tmp_size; $i++) {
-        if (strlen($tmp[$i]) < $minLen) {
+    for ($i = 0; $i < $tmp_size; $i++) {
+        if (cString::getStringLength($tmp[$i]) < $minLen) {
             continue;
         }
 
@@ -266,25 +273,46 @@ function calcDensity($singlewordcounter, $string, $quantifier = 1) {
         $tmp[$i] = rtrim($tmp[$i], '-');
 
         // hole word in upper cases ?
-        (!ctype_upper($tmp[$i])) ? $tmp[$i] = mb_strtolower(addslashes($tmp[$i])) : $tmp[$i] = addslashes(preg_replace($patterns, $replaces, $tmp[$i]));
+        (!ctype_upper($tmp[$i])) ? $tmp[$i] = cString::toLowerCase(addslashes($tmp[$i])) : $tmp[$i] = addslashes(preg_replace($patterns, $replaces, $tmp[$i]));
 
-        // using mb_strtolower because of umlauts
         if (!array_search($tmp[$i], $blacklist)) {
-            // if hole string in upper casses add additional quantifiert else
+            // if hole string in upper cases add additional quantifier else
             // use only the string length
-            (ctype_upper($tmp[$i])) ? $singlewordcounter[mb_strtolower($tmp[$i])] += strlen($tmp[$i]) + 10000 : $singlewordcounter[$tmp[$i]] += strlen($tmp[$i]);
+            if (ctype_upper($tmp[$i])) {
+                if (empty($singlewordcounter[cString::toLowerCase($tmp[$i])])) {
+                    $singlewordcounter[cString::toLowerCase($tmp[$i])] = 0;
+                }
+                $singlewordcounter[cString::toLowerCase($tmp[$i])] += cString::getStringLength($tmp[$i]) + 10000;
+            } else {
+                if (empty( $singlewordcounter[$tmp[$i]])) {
+                    $singlewordcounter[$tmp[$i]] = 0;
+                }
+                $singlewordcounter[$tmp[$i]] += cString::getStringLength($tmp[$i]);
+            }
         }
     }
 
     return $singlewordcounter;
 }
 
+/**
+ * @param $a
+ * @param $b
+ *
+ * @return int
+ */
 function __cmp($a, $b) {
     if ($a == $b)
         return 0;
     return ($a > $b) ? -1 : 1;
 }
 
+/**
+ * @param     $singlewordcounter
+ * @param int $maxKeywords
+ *
+ * @return array
+ */
 function stripCount($singlewordcounter, $maxKeywords = 15) {
 
     // strip all with only 1
@@ -307,7 +335,11 @@ function stripCount($singlewordcounter, $maxKeywords = 15) {
         $dist = array();
 
         foreach ($tmp as $key => $value) {
-            $dist[$value]++;
+            if (!isset($dist[$value])) {
+                $dist[$value] = 0;
+            } else {
+                $dist[$value]++;
+            }
         }
 
         uksort($dist, "__cmp");
@@ -339,6 +371,12 @@ function stripCount($singlewordcounter, $maxKeywords = 15) {
     return $result;
 }
 
+/**
+ * @param $headline
+ * @param $text
+ *
+ * @return bool|string
+ */
 function keywordDensity($headline, $text) {
     global $lang, $client, $cfgClient;
 
@@ -361,7 +399,7 @@ function keywordDensity($headline, $text) {
 
     // path = cms_getUrlPath($idcat);
     // path = str_replace(cRegistry::getFrontendUrl();, '', $path);
-    // path = substr($path, 0, strlen($path) - 1);
+    // path = cString::getPartOfString($path, 0, cString::getStringLength($path) - 1);
     // path = str_replace('/', ' ', $path);
 
     $singlewordcounter = array();
@@ -384,4 +422,5 @@ function keywordDensity($headline, $text) {
         return implode(', ', $singlewordcounter);
     }
 }
+
 ?>

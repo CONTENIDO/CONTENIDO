@@ -142,41 +142,45 @@ Con.markSubmenuItem('c_0');
 
 var rcount = 0;
 var artObj;
+
 initValues();
 
 function initValues() {
-    // Create a reference to the Article Object in frame 'right_top'
+
+    // create a reference to the Article Object in frame 'right_top'
     artObj = Con.getFrame('left_top').artObj;
 
-    /* Reset article object properties. e.g. Some article was edited and we are
-       now back in the overview mask. There is now no marked article, the articleObject
-       data should be reset. */
+    // Reset article object properties. e.g. Some article was edited and we are
+    // now back in the overview mask. There is now no marked article, the
+    // articleObject data should be reset.
     if (artObj) {
         artObj.reset();
         artObj.enable();
         artObj.setHrefOverview(document.location.href);
-
-        /* Save current page selection */
+        // save current page selection
         artObj.next = {NEXT};
     }
 
-    /* Timeout to call the function afer 250ms */
+    // timeout to call the function afer 250ms
     window.setTimeout(function() {
         createReference();
     }, 250);
+
 }
 
-// Javascript-Error work-around... try to create the reference after
-// 250ms again... and hope it works..
+/**
+ * Javascript-Error work-around... try to create the reference after
+ * 250ms again... and hope it works..
+ */
 function createReference() {
+
     if (!artObj) {
         artObj = Con.getFrame('left_top').artObj;
         if (artObj) {
             artObj.reset();
             artObj.enable();
             artObj.setHrefOverview(document.location.href);
-
-            // Save current page selection
+            // save current page selection
             artObj.next = {NEXT};
         }
     }
@@ -184,31 +188,37 @@ function createReference() {
     if (!artObj) {
         return false;
     }
+
 }
 
-// Extract data from the article grid and send them to the articleObject Instance. The data is
-// stored in the attribute 'id' of the row object.
+/**
+ * Extract data from the article grid and send them to the articleObject instance.
+ * The data is stored in the attribute 'id' of the row object.
+ */
 function conArtOverviewExtractData(obj) {
+
     if (!artObj) {
         var rval = createReference();
         if (rval == false) {
             return false;
         }
     }
+
     var datastring  = obj.id;
     var data        = datastring.split("-");
 
     if (data.length == 6) {
-        /* Send data to articleObject instance:
-            0:  idart
-            1:  idartlang
-            2:  idcat
-            3:  idcatlang
-            5:  idcatart */
+        // Send data to articleObject instance:
+        //    0: idart
+        //    1: idartlang
+        //    2: idcat
+        //    3: idcatlang
+        //    5: idcatart
         artObj.setProperties(data[0], data[1], data[2], data[3], data[4], data[5]);
     }
 
     return true;
+
 }
 
 function changeElemPerPage(selObj) {
@@ -218,26 +228,31 @@ function changeElemPerPage(selObj) {
     window.location.href = url + '&elemperpage=' + elemperpage;
 }
 
-// Function for deleting articles
+/**
+ * Function for deleting articles
+ */
 function deleteArticle(idart, idcat, next) {
     Con.multiLink(
         'right_bottom', "main.php?area=con&action=con_deleteart&frame=4&idcat=" + idcat + "&idart=" + idart + "&next=" + next + "&contenido=" + Con.sid,
-        'right_top', 'main.php?area=con&action=deleteArt&frame=3&idcat=' + idcat + '&idtpl={IDTPL}&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido=' + Con.sid);
+        'right_top', 'main.php?area=con&action=deleteArt&frame=3&idcat=' + idcat + '&idtpl={IDTPL}&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido=' + Con.sid
+    );
 }
 
-// execute the delete action
+/**
+ * execute the delete action
+ */
 function deleteArticles() {
     doAction($('div.bulk_editing_functions a.con_deleteart'));
 }
 
 function doAction(thisObject) {
+
     var action = '';
     if (thisObject.hasClass('invert')) {
         $('form.bulk_editing_form input[name="invert"]').val('1');
         if (thisObject.hasClass('con_makeonline')) {
             action = 'con_makeonline';
         }
-
         if (thisObject.hasClass('con_lock')) {
             action = 'con_lock';
         }
@@ -245,10 +260,10 @@ function doAction(thisObject) {
         action = thisObject.attr('class');
     }
 
-    //set action
+    // set action
     $('form.bulk_editing_form input[name="action"]').val(action);
 
-    //collect all selected idarts
+    // collect all selected idarts
     var selectedIdArts = '[';
     $('input.mark_articles:checked').each(function(index, value) {
         selectedIdArts += $(this).val() + ',';
@@ -256,51 +271,47 @@ function doAction(thisObject) {
     selectedIdArts = selectedIdArts.substring(0, selectedIdArts.length - 1);
     selectedIdArts += ']';
 
-    //set all selected idarts
+    // set all selected idarts
     $('form.bulk_editing_form input[name="idarts"]').val(selectedIdArts);
 
-    //send form
+    // send form
     $('form.bulk_editing_form').submit();
+
 }
 
 function saveInlineEditArt() {
-    
+
     var inlinedata = [];
 
     $('input.mark_articles:checked').each(function(index, value) {
 
-		var tempData = [];
+        var tr = $(this).closest('tr');
 
-		var tr = $(this).closest('tr');
-		
-		tempData['idart'] = $(this).val();
-
+        var tempData = [];
+        tempData['idart'] = $(this).val();
         tempData['title'] = $.trim(tr.find('input[name="title"]').val());
         tempData['index'] = $.trim(tr.find('input[name="index"]').val());
 
         inlinedata.push(tempData);
     });
-    
+
     var params = "";
-
     for (var i = 0; i<inlinedata.length; i++) {
-        params += "&fields["+i+"][idart] = " + inlinedata[i]['idart'];
-        params += "&fields["+i+"][title] = " + inlinedata[i]['title'];
-        params += "&fields["+i+"][index] = " + inlinedata[i]['index'];
+        params += "&fields["+i+"][idart]=" + inlinedata[i]['idart'];
+        params += "&fields["+i+"][title]=" + inlinedata[i]['title'];
+        params += "&fields["+i+"][index]=" + inlinedata[i]['index'];
     }
-
     params += '&ajax=inlineeditart'
-  
+
     $.post("ajaxmain.php", params, function(data) {
         document.location = document.location;
     });
+
 }
 
 $('input.mark_articles').on('change', function() {
-    
     if ($(this).is(':checked')) {
-
-        if ($('.bulk_editing_functions .con_inlineeditart').hasClass('con_inlinesaveart')) {            
+        if ($('.bulk_editing_functions .con_inlineeditart').hasClass('con_inlinesaveart')) {
             doInlineEditArt();
         }
     }
@@ -309,29 +320,30 @@ $('input.mark_articles').on('change', function() {
 function doInlineEditArt() {
 
     $('input.mark_articles:checked').each(function() {
- 
+
         if (!$('.bulk_editing_functions .con_inlineeditart').hasClass('con_inlinesaveart')) {
-            
+
             $('.bulk_editing_functions .con_inlineeditart')
-	        	.addClass('con_inlinesaveart')
-	        	.find('img')
-	        		.addClass('img-edit')
-	        		.hide();
+                .addClass('con_inlinesaveart')
+                .find('img')
+                    .addClass('img-edit')
+                    .hide();
 
-	        var saveImg = $('<img />').attr({
-	            'class': 'img-save',
-	            'src': 'images/save.gif',
-	            'alt': '{SAVE_ARTICLES}',
-	            'title': '{SAVE_ARTICLES}'
-	        });
+            var saveImg = $('<img />').attr({
+                'class': 'img-save',
+                'src': 'images/save.gif',
+                'alt': '{SAVE_ARTICLES}',
+                'title': '{SAVE_ARTICLES}'
+            });
 
-	        $('.bulk_editing_functions .con_inlineeditart').append(saveImg);
+            $('.bulk_editing_functions .con_inlineeditart').append(saveImg);
+
         }
 
-		// dom path to td
+        // dom path to td
         var tds = $(this).closest('tr').find('td');
 
-		// edit title
+        // edit title
         var title = tds.eq(2).find('a');
         if (!title.next().length) {
             title.hide();
@@ -339,49 +351,50 @@ function doInlineEditArt() {
         }
 
         // edit index
-        var index = tds.eq(5); 
+        var index = tds.eq(5);
         if (!index.find('input').length) {
-            index.html('<input type="text" name="index" data-value="'+index.html()+'" value="' + index.html() + '" />');            
+            index.html('<input type="text" name="index" data-value="'+index.html()+'" value="' + index.html() + '" />');
         }
 
-	    $(this).off('click.markarticles').on('click.markarticles', function() {
+        $(this).off('click.markarticles').on('click.markarticles', function() {
 
-	        if ($(this).prop('checked') === false) {
+            if ($(this).prop('checked') === false) {
 
-	            $(this).closest('tr').find('input').each(function() {
-   
-	                if ($(this).attr('name') === 'title') {	                    
-	                    $(this).prev().show();
-	                    $(this).remove();
-	                } else if ($(this).attr('name') === 'index') {
-	                    $(this).parent().html($(this).attr('data-value'));
-	                }
-	            });
+                $(this).closest('tr').find('input').each(function() {
+                    if ($(this).attr('name') === 'title') {
+                        $(this).prev().show();
+                        $(this).remove();
+                    } else if ($(this).attr('name') === 'index') {
+                        $(this).parent().html($(this).attr('data-value'));
+                    }
+                });
 
-	            var cbChecked = false;
-	            $(this).closest('table').find('input.mark_articles').each(function() {
-	                if ($(this).is(':checked')) {
-	                    cbChecked = true;
-	                    return false;
-	                }
-	            });
+                var cbChecked = false;
+                $(this).closest('table').find('input.mark_articles').each(function() {
+                    if ($(this).is(':checked')) {
+                        cbChecked = true;
+                        return false;
+                    }
+                });
 
-	            if (cbChecked === false) {
-	                var inlineEditArt = $('.bulk_editing_functions .con_inlineeditart'); 
-	                inlineEditArt.removeClass('con_inlinesaveart');
-	                inlineEditArt.find('img.img-save').remove();
-	                inlineEditArt.find('img.img-edit').show();
-	            }
-	        }
-	    });
-  	 });    
- 
+                if (cbChecked === false) {
+                    var inlineEditArt = $('.bulk_editing_functions .con_inlineeditart');
+                    inlineEditArt.removeClass('con_inlinesaveart');
+                    inlineEditArt.find('img.img-save').remove();
+                    inlineEditArt.find('img.img-edit').show();
+                }
+
+            }
+
+        });
+
+     });
+
     $('.generic.generic_art_overwiew').off('keypress').on('keypress', function (event) {
-
-        if(event.which === 13) {
+        if (event.which === 13) {
             saveInlineEditArt();
         }
-	});
+    });
 
 }
 
@@ -427,11 +440,14 @@ function doInlineEditArt() {
 
         // On bulk editing functions click
         $('div.bulk_editing_functions a').click(function() {
-            if ($(this).hasClass('con_inlinesaveart')) { // inline editing (save)
+            if ($(this).hasClass('con_inlinesaveart')) {
+                // inline editing (save)
                 saveInlineEditArt();
-        	} else if ($(this).hasClass('con_inlineeditart')) { //inline editing
+            } else if ($(this).hasClass('con_inlineeditart')) {
+                // inline editing
             	doInlineEditArt();
-            } else if (!$(this).hasClass('con_deleteart')) { // action delete article has a security prompt, so do nothing here
+            } else if (!$(this).hasClass('con_deleteart')) {
+                // action delete article has a security prompt, so do nothing here
                 doAction($(this));
             }
             return false;
@@ -439,10 +455,9 @@ function doInlineEditArt() {
 
         // On category path link click
         $("div#categorypath > a").click(function() {
-            if($(this).attr("disabled") !== undefined) {
+            if ($(this).attr("disabled") !== undefined) {
                 return false;
             }
-
             var url = $(this).attr('href'),
                 params = Con.UtilUrl.getParams(url);
             Con.multiLink(
@@ -456,6 +471,7 @@ function doInlineEditArt() {
         // if no article exists
         var bNoArticle = {NOARTICLE_JS};
         if (bNoArticle) {
+
             $("a#newArtTxt").click(function() {
                 var url = $(this).attr('href');
                 Con.multiLink(
@@ -465,16 +481,21 @@ function doInlineEditArt() {
                 Con.markSubmenuItem('c_1');
                 return false;
             });
+
             $("a#newArtImg").click(function() {
                 $("a#newArtTxt").click();
             });
+
         }
+
     });
+
 })(Con, Con.$);
 
 </script>
 </body>
 </html>
+
 <!--
 template.con_art_overview
 
@@ -486,5 +507,4 @@ i18n("Freeze articles")
 i18n("Unfreeze articles")
 i18n("Copy article to the current language")
 i18n("Delete articles")
-
 -->

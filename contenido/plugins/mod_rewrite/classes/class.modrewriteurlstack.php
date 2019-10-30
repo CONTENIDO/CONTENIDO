@@ -158,11 +158,14 @@ class ModRewriteUrlStack {
      * desired url.
      *
      * @param   string  Url, like front_content.php?idcat=123...
+     *
      * @return  array   Assoziative array like
      * <code>
      * $arr['urlpath']
      * $arr['urlname']
      * </code>
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function getPrettyUrlParts($url) {
         $url = ModRewrite::urlPreClean($url);
@@ -172,7 +175,7 @@ class ModRewriteUrlStack {
 
         $sStackId = $this->_aUrls[$url];
         if (!isset($this->_aStack[$sStackId]['urlpath'])) {
-            $this->_chunkSetPrettyUrlParts();
+            $this->_chunkSetPrettyUrlParts($sStackId);
         }
         $aPretty = array(
             'urlpath' => $this->_aStack[$sStackId]['urlpath'],
@@ -230,8 +233,13 @@ class ModRewriteUrlStack {
      *
      * Composes the query by looping thru stored but non processed urls, executes
      * the query and adds the (urlpath and urlname) result to the stack.
+     *
+     * @param $sStackId
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
-    private function _chunkSetPrettyUrlParts() {
+    private function _chunkSetPrettyUrlParts($sStackId) {
         // collect stack parameter to get urlpath and urlname
         $aStack = array();
         foreach ($this->_aStack as $stackId => $item) {
@@ -244,23 +252,26 @@ class ModRewriteUrlStack {
         // now, it's time to compose the where clause of the query
         $sWhere = '';
         foreach ($aStack as $stackId => $item) {
-            $aP = $item['params'];
-            if ((int) mr_arrayValue($aP, 'idart') > 0) {
-                $sWhere .= '(al.idart = ' . $aP['idart'] . ' AND al.idlang = ' . $aP['lang'] . ') OR ';
-            } elseif ((int) mr_arrayValue($aP, 'idartlang') > 0) {
-                $sWhere .= '(al.idartlang = ' . $aP['idartlang'] . ') OR ';
-            } elseif ((int) mr_arrayValue($aP, 'idcat') > 0) {
-                $sWhere .= '(cl.idcat = ' . $aP['idcat'] . ' AND cl.idlang = ' . $aP['lang'] . ' AND cl.startidartlang = al.idartlang) OR ';
-            } elseif ((int) mr_arrayValue($aP, 'idcatart') > 0) {
-                $sWhere .= '(ca.idcatart = ' . $aP['idcatart'] . ' AND ca.idart = al.idart AND al.idlang = ' . $aP['lang'] . ') OR ';
-            } elseif ((int) mr_arrayValue($aP, 'idcatlang') > 0) {
-                $sWhere .= '(cl.idcatlang = ' . $aP['idcatlang'] . ' AND cl.startidartlang = al.idartlang) OR ';
+
+            if ($stackId == $sStackId) {
+                $aP = $item['params'];
+                if ((int)mr_arrayValue($aP, 'idart') > 0) {
+                    $sWhere .= '(al.idart = ' . $aP['idart'] . ' AND al.idlang = ' . $aP['lang'] . ') OR ';
+                } elseif ((int)mr_arrayValue($aP, 'idartlang') > 0) {
+                    $sWhere .= '(al.idartlang = ' . $aP['idartlang'] . ') OR ';
+                } elseif ((int)mr_arrayValue($aP, 'idcat') > 0) {
+                    $sWhere .= '(cl.idcat = ' . $aP['idcat'] . ' AND cl.idlang = ' . $aP['lang'] . ' AND cl.startidartlang = al.idartlang) OR ';
+                } elseif ((int)mr_arrayValue($aP, 'idcatart') > 0) {
+                    $sWhere .= '(ca.idcatart = ' . $aP['idcatart'] . ' AND ca.idart = al.idart AND al.idlang = ' . $aP['lang'] . ') OR ';
+                } elseif ((int)mr_arrayValue($aP, 'idcatlang') > 0) {
+                    $sWhere .= '(cl.idcatlang = ' . $aP['idcatlang'] . ' AND cl.startidartlang = al.idartlang) OR ';
+                }
             }
         }
         if ($sWhere == '') {
             return;
         }
-        $sWhere = substr($sWhere, 0, -4);
+        $sWhere = cString::getPartOfString($sWhere, 0, -4);
         $sWhere = str_replace(' OR ', " OR \n", $sWhere);
 
         // compose query and execute it

@@ -25,7 +25,9 @@ foreach ($aLangs as $sValue) {
     }
 }
 
-if (isset($_POST['belang']) && $_POST['belang'] != '') {
+if (empty($_POST['belang'])) {
+    $sSelectedLang = '';
+} else {
     $sSelectedLang = $_POST['belang'];
     $GLOBALS['belang'] = $sSelectedLang;
 }
@@ -41,6 +43,16 @@ $tpl = new cTemplate();
 $tpl->reset();
 
 $sess = cRegistry::getSession();
+
+// CON-2714
+// Please check at CONTENIDO backend login whether the database tables are filled or not
+$db = new cDb();
+$sql = $db->prepare('SELECT user_id FROM %s', $cfg['tab']['user']);
+$db->query($sql);
+if ($db->num_rows() == 0) {
+    $notification = new cGuiNotification();
+    $notification->displayNotification('error', i18n('Your database is obviously empty. Please ensure that you have installed CONTENIDO completely and/or that your database configuration is correct.'));
+}
 
 // Get backend label
 $backend_label = getSystemProperty('backend', 'backend_label');
@@ -82,12 +94,8 @@ $tpl->set('s', 'OPTIONS', $str);
 $tpl->set('s', 'LANGUAGE', i18n('Language'));
 $tpl->set('s', 'BACKEND', i18n('CONTENIDO Backend'));
 $tpl->set('s', 'LOGIN', i18n('Login'));
-$tpl->set('s', 'USERNAME', (isset($this->auth["uname"])) ? conHtmlentities(strip_tags($this->auth["uname"])) : "");
-
-if (isset($username) && $username != '') {
-    $err = i18n('Invalid login or password!');
-}
-$tpl->set('s', 'ERROR', $err);
+$tpl->set('s', 'USERNAME', isset($this->auth['uname']) ? conHtmlentities(strip_tags($this->auth["uname"])) : '');
+$tpl->set('s', 'ERROR', isset($username) && $username != '' ? i18n('Invalid login or password!') : '');
 $tpl->set('s', 'PASSWORD', i18n('Password'));
 $tpl->set('s', 'TIME', time());
 
@@ -99,7 +107,7 @@ $tpl->set('s', 'FORM', $str);
 $tpl->set('s', 'NOTI', $noti);
 
 // send right encoding http header
-sendEncodingHeader($db, $cfg, $lang);
+sendEncodingHeader($db, $cfg, !empty($lang) ? $lang : 0);
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['main_loginform']);
 

@@ -81,7 +81,7 @@ $oRcpGroups->setWhere("idlang", $lang);
 if ($_REQUEST["filter"] != "") {
     if ($_REQUEST["searchin"] == "--all--" || $_REQUEST["searchin"] == "") {
         foreach ($aFields as $sKey => $aData) {
-            if (strpos($aData["type"], "search") !== false) {
+            if (cString::findFirstPos($aData["type"], "search") !== false) {
                 $oRcpGroups->setWhereGroup("filter", $aData["field"], $_REQUEST["filter"], "LIKE");
             }
         }

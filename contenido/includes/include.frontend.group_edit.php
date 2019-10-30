@@ -137,9 +137,9 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
     if (count($messages) > 0) {
         $notis = $notification->returnNotification("warning", implode("<br>", $messages)) . "<br>";
     } else {
-        if (strlen($successMessage) > 0) {
+        if (cString::getStringLength($successMessage) > 0) {
             cRegistry::addOkMessage($successMessage);
-        } elseif (strlen($action) > 0) {
+        } elseif (cString::getStringLength($action) > 0) {
             cRegistry::addOkMessage(i18n("Saved changes successfully!"));
         }
     }

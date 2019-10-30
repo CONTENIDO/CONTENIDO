@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PIFA form importer.
+ * This file contains the PifaImporter class.
  *
  * @package Plugin
  * @subpackage FormAssistant
@@ -60,8 +60,8 @@ class PifaImporter {
      * Creates XML reader member instances.
      */
     public function __construct() {
-        $this->_reader = new cXmlReader();
-        $this->_pifaFormColl = new PifaFormCollection();
+        $this->_reader        = new cXmlReader();
+        $this->_pifaFormColl  = new PifaFormCollection();
         $this->_pifaFieldColl = new PifaFieldCollection();
     }
 
@@ -76,10 +76,11 @@ class PifaImporter {
      * Import the given XML.
      *
      * @param string $xml to import
-     * @throws PifaException if XML could not be loaded
-     * @throws PifaException if existance of table could not be determined
-     * @throws PifaException if table already exists
+     *
+     * @throws PifaDatabaseException
      * @throws PifaException if table could not be created
+     * @throws cDbException
+     * @throws cException
      */
     public function import($xml) {
 
@@ -89,6 +90,7 @@ class PifaImporter {
         }
 
         // import form
+        /** @var DOMElement $formElem */
         $formElem = $this->_reader->getXpathNode('/pifa/form');
         if (is_null($this->_tableName)) {
             $this->_tableName = $formElem->getAttribute('table');
@@ -99,7 +101,7 @@ class PifaImporter {
         // import fields
         $fieldElems = $this->_reader->getXpathNodeList('/pifa/form/field');
         foreach ($fieldElems as $fieldElem) {
-            $pifaField = $this->_createPifaField($fieldElem, $pifaForm);
+            $this->_createPifaField($fieldElem, $pifaForm);
         }
 
         // create table
@@ -109,6 +111,7 @@ class PifaImporter {
         // import data
         $rowElems = $this->_reader->getXpathNodeList('/pifa/data/row');
         $db = cRegistry::getDb();
+        /** @var DOMElement $rowElem */
         foreach ($rowElems as $rowElem) {
             $rowPath = $rowElem->getNodePath();
             $fields = array();
@@ -116,6 +119,7 @@ class PifaImporter {
                 $fields['pifa_timestamp'] = $rowElem->getAttribute('timestamp');
             }
             $colElems = $this->_reader->getXpathNodeList($rowPath . '/col');
+            /** @var DOMElement $colElem */
             foreach ($colElems as $colElem) {
                 $fields[$colElem->getAttribute('name')] = $colElem->nodeValue;
             }
@@ -137,15 +141,19 @@ class PifaImporter {
             'name' => $formElem->getAttribute('name'),
             'data_table' => $this->_tableName,
             'method' => $formElem->getAttribute('method'),
-            'with_timestamp' => (int) ('true' === $formElem->getAttribute('timestamp'))
+            'with_timestamp' => (int) ('true' === $formElem->getAttribute('timestamp')),
         ));
     }
 
     /**
      * Create PIFA field for given PIFA form..
      *
-     * @param DOMElement $formElem to create field for
-     * @return PifaForm
+     * @param DOMElement $fieldElem
+     * @param PifaForm   $pifaForm
+     *
+     * @return PifaField
+     * @throws PifaException
+     * @throws cException
      */
     private function _createPifaField(DOMElement $fieldElem, PifaForm $pifaForm) {
 
@@ -158,7 +166,7 @@ class PifaImporter {
             'field_rank' => $fieldElem->getAttribute('rank'),
             'field_type' => $this->_getPifaFieldTypeId($fieldElem->getAttribute('type')),
             'column_name' => $fieldElem->getAttribute('column'),
-            'obligatory' => (int) ('true' === $fieldElem->getAttribute('obligatory'))
+            'obligatory' => (int) ('true' === $fieldElem->getAttribute('obligatory')),
         );
 
         // import default (optional)
@@ -169,6 +177,7 @@ class PifaImporter {
         // import label
         $label = $this->_reader->getXpathValue($fieldPath . '/label');
         $data['label'] = strip_tags($label);
+        /** @var DOMElement $labelElem */
         $labelElem = $this->_reader->getXpathNode($fieldPath . '/label');
         if ($labelElem) {
             $display = (int) ('true' === $labelElem->getAttribute('display'));
@@ -205,6 +214,7 @@ class PifaImporter {
         $data['css_class'] = implode(',', $cssClass);
 
         // import options
+        /** @var DOMElement $optionsElem */
         $optionsElem = $this->_reader->getXpathNode($fieldPath . '/options');
         if ($optionsElem) {
             if ($optionsElem->hasAttribute('source')) {
@@ -212,6 +222,7 @@ class PifaImporter {
             }
             $optionElems = $this->_reader->getXpathNodeList($fieldPath . '/options/option');
             $optionLabels = $optionValues = array();
+            /** @var DOMElement $optionElem */
             foreach ($optionElems as $optionElem) {
                 array_push($optionLabels, $optionElem->nodeValue);
                 array_push($optionValues, $optionElem->getAttribute('value'));
@@ -224,6 +235,8 @@ class PifaImporter {
     }
 
     /**
+     * @throws PifaDatabaseException
+     * @throws cDbException
      */
     private function _checkTableName() {
         $db = cRegistry::getDb();
@@ -242,9 +255,11 @@ class PifaImporter {
      * appropriate database record.
      *
      * @param string $fieldTypeName to map
+     *
+     * @return mixed
      */
     private function _getPifaFieldTypeId($fieldTypeName) {
-        $fieldTypeName = strtoupper($fieldTypeName);
+        $fieldTypeName = cString::toUpperCase($fieldTypeName);
         $fieldTypeIds = array(
             'INPUTTEXT' => PifaField::INPUTTEXT,
             'TEXTAREA' => PifaField::TEXTAREA,
@@ -268,7 +283,7 @@ class PifaImporter {
             'INPUTHIDDEN' => PifaField::INPUTHIDDEN,
             'FIELDSET_BEGIN' => PifaField::FIELDSET_BEGIN,
             'FIELDSET_END' => PifaField::FIELDSET_END,
-            'BUTTONIMAGE' => PifaField::BUTTONIMAGE
+            'BUTTONIMAGE' => PifaField::BUTTONIMAGE,
         );
         $fieldTypeId = $fieldTypeIds[$fieldTypeName];
         return $fieldTypeId;

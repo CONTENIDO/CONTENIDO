@@ -39,6 +39,7 @@
 ./classes/class.search.php
 ./classes/class.security.php
 ./classes/class.session.php
+./classes/class.string.multi.byte.wrapper.php
 ./classes/class.string.php
 ./classes/class.systemtest.php
 ./classes/class.template.php
@@ -442,6 +443,7 @@
 ./cronjobs/run_newsletter_job.php
 ./cronjobs/send_reminder.php
 ./cronjobs/setfrontenduserstate.php
+./environment.php
 ./external/backendedit/front_content.php
 ./external/frontend/cache/code/index.php
 ./external/frontend/cache/index.php
@@ -466,7 +468,6 @@
 ./external/wysiwyg/tinymce3/editorclass.php
 ./external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/preview/example.html
 ./external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/preview/preview.html
-./external/wysiwyg/tinymce3/jscripts/tiny_mce/tiny_mce_gzip.php
 ./external/wysiwyg/tinymce3/list.php
 ./external/wysiwyg/tinymce3/tinymce.tpl.html
 ./external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_list.php
@@ -861,6 +862,7 @@
 ./xml/legend.xml
 ./xml/navigation.xml
 ./xml/system.xml
+../data/config/config.environment.php
 ../data/config/production/cfg_actions.inc.php
 ../data/config/production/cfg_sql.inc.php
 ../data/config/production/config.autoloader.php

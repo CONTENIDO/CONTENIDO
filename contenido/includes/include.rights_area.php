@@ -33,7 +33,7 @@ while ($db->nextRecord()) { // set a new rights list for this user
 }
 
 if (($perm->have_perm_area_action("user_overview", $action)) && ($action == "user_edit")) {
-    $ret = saveRights();
+    $ret = cRights::saveRights();
     if ($ret === true) {
         $sMessage = $notification->returnNotification('ok', i18n('Changes saved'));
     }

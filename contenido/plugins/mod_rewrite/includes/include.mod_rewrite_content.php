@@ -27,14 +27,11 @@ if ((int) $client <= 0) {
     return;
 }
 
-
 $action = (isset($_REQUEST['mr_action'])) ? $_REQUEST['mr_action'] : 'index';
 $bDebug = false;
 
-
 ################################################################################
 ##### Some variables
-
 
 $oMrController = new ModRewrite_ContentController();
 
@@ -65,7 +62,6 @@ $aWordSeparator = array(
 );
 
 $routingSeparator = '>>>';
-
 
 $oMrController->setProperty('bDebug', $bDebug);
 $oMrController->setProperty('aSeparator', $aSeparator);
@@ -169,7 +165,6 @@ $oView->rewrite_routing = $data;
 
 // mr redirect invalid article
 $oView->redirect_invalid_article_to_errorsite_chk = ($aMrCfg['redirect_invalid_article_to_errorsite'] == 1) ? ' checked="checked"' : '';
-
 
 $oView->lng_version = i18n('Version', 'mod_rewrite');
 $oView->lng_author = i18n('Author', 'mod_rewrite');
@@ -282,7 +277,6 @@ $oView->lng_rewrite_routing_info3 = '<li>' . str_replace("\n", '</li><li>', $oVi
 $oView->lng_discard_changes = i18n('Discard changes', 'mod_rewrite');
 $oView->lng_save_changes = i18n('Save changes', 'mod_rewrite');
 
-
 ################################################################################
 ##### Action processing
 
@@ -297,7 +291,6 @@ if ($action == 'index') {
 } else {
     $oMrController->indexAction();
 }
-
 
 ################################################################################
 ##### Output

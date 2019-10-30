@@ -25,6 +25,13 @@ $contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . 
 include_once($contenidoPath . 'includes/startup.php');
 
 require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
+
+// CON-2718
+$statisticmode = getSystemProperty('stats', 'tracking');
+if ($statisticmode == 'disabled') {
+    return false;
+}
+
 include_once(cRegistry::getBackendPath() . $cfg['path']['includes'] . 'functions.stat.php');
 
 if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {

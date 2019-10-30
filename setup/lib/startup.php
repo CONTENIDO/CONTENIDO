@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Main CONTENIDO setup bootstrap file.
  *
@@ -16,35 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 // Report all errors except warnings
 error_reporting(E_ALL ^E_NOTICE);
 
-
 header('Content-Type: text/html; charset=ISO-8859-1');
-
-// Check version in the 'first' line, as class.security.php uses
-// PHP5 object syntax not compatible with PHP < 5
-if (version_compare(PHP_VERSION, '5.0.0', '<')) {
-    die("You need PHP >= 5.0.0 for CONTENIDO. Sorry, even the setup doesn't work otherwise. Your version: " . PHP_VERSION . "\n");
-}
-
-/*
- * Do not edit this value!
- *
- * If you want to set a different enviroment value please define it in your .htaccess file
- * or in the server configuration.
- *
- * SetEnv CONTENIDO_ENVIRONMENT development
- */
-if (!defined('CON_ENVIRONMENT')) {
-    if (getenv('CONTENIDO_ENVIRONMENT')) {
-        $sEnvironment = getenv('CONTENIDO_ENVIRONMENT');
-    } else if (getenv('CON_ENVIRONMENT')) {
-        $sEnvironment = getenv('CON_ENVIRONMENT');
-    } else {
-        // @TODO: provide a possibility to set the environment value via file
-        $sEnvironment = 'production';
-    }
-
-    define('CON_ENVIRONMENT', $sEnvironment);
-}
 
 /**
  * Setup file inclusion
@@ -62,6 +35,21 @@ function checkAndInclude($filename) {
         echo "</pre>";
     }
 }
+
+checkAndInclude(CON_SETUP_PATH . '/lib/defines.php');
+
+// Check version in the 'first' line, as class.security.php uses
+// PHP5 object syntax not compatible with PHP < 5
+if (version_compare(PHP_VERSION, CON_SETUP_MIN_PHP_VERSION, '<')) {
+    die(sprintf("You need PHP >= %s for CONTENIDO. Sorry, even the setup doesn't work otherwise. Your version: %s\n", CON_SETUP_MIN_PHP_VERSION, PHP_VERSION));
+}
+
+// Include the environment definer file
+include_once(CON_FRONTEND_PATH . '/contenido/environment.php');
+
+// Include cStringMultiByteWrapper and cString
+checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.string.multi.byte.wrapper.php');
+checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.string.php');
 
 // Include security class and check request variables
 checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.filehandler.php');

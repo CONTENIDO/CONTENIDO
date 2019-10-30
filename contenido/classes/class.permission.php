@@ -44,7 +44,7 @@ class cPermission {
     public $actioncache = array();
 
     /**
-     * Database instance
+     * CONTENIDO database object
      *
      * @var cDb
      */
@@ -54,8 +54,12 @@ class cPermission {
      * Returns all groups of a user
      *
      * @param string $userId
+     *
      * @return array
      *         List of group ids
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function getGroupsForUser($userId) {
         $groups = array();
@@ -76,7 +80,11 @@ class cPermission {
      * @deprecated [2015-05-21]
      *         This method is no longer supported (no replacement)
      * @param string|int $area
+     *
      * @return int
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function getIDForArea($area) {
         if (is_numeric($area)) {
@@ -100,7 +108,11 @@ class cPermission {
      * If passed action is numeric, it will returned directly.
      *
      * @param string|int $action
+     *
      * @return int
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function getIDForAction($action) {
         if (is_numeric($action)) {
@@ -124,11 +136,15 @@ class cPermission {
      * and saves them in session.
      *
      * @param bool $force [optional]
-     *         Flag to force loading, event if they were cached before
+     *                    Flag to force loading, event if they were cached before
+     *
      * @return string
      *         Returns diffrent values, depending on state:
      *         '1' (string) if permissions couldn't loaded
-     *         '3' (string) if permissions were successfull loaded
+     *         '3' (string) if permissions were loaded successfully
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function load_permissions($force = false) {
         global $sess, $area_rights, $item_rights, $auth, $changelang, $changeclient;
@@ -167,6 +183,9 @@ class cPermission {
      *
      * @param string $user
      *         User Id hash
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function load_permissions_for_user($user) {
         global $client, $lang;
@@ -214,8 +233,12 @@ class cPermission {
     /**
      *
      * @param string $area
-     * @param string $action [optional]
+     * @param int    $action [optional]
+     *
      * @return bool
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function have_perm_area_action_anyitem($area, $action = 0) {
         global $item_rights;
@@ -236,8 +259,12 @@ class cPermission {
      *
      * @param string $area
      * @param string $action
-     * @param mixed $itemid
+     * @param mixed  $itemid
+     *
      * @return bool
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function have_perm_area_action_item($area, $action, $itemid) {
         global $item_rights, $auth, $client, $lang, $cfg;
@@ -298,8 +325,11 @@ class cPermission {
      *         This method is no longer supported (no replacement)
      * @param int|string $area
      *         Area id or name
+     *
      * @return string|int
      *         name of parent area or passed area
+     *
+     * @throws cDbException
      */
     public function getParentAreaId($area) {
         $oAreaColl = new cApiAreaCollection();
@@ -309,8 +339,12 @@ class cPermission {
     /**
      *
      * @param string $area
-     * @param string $action [optional]
+     * @param int    $action [optional]
+     *
      * @return bool
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function have_perm_area_action($area, $action = 0) {
         global $area_rights, $client, $lang, $cfg;
@@ -385,11 +419,14 @@ class cPermission {
     /**
      * Checks if a user has access rights for a specific client.
      *
-     * @param int $iClient [optional]
-     *         idclient to check, or false for the current client
-     * @param object $oUser [optional]
-     *         User object to check against, or false for the current user
+     * @param bool $iClient [optional]
+     *                      idclient to check, or false for the current client
+     * @param bool $oUser   [optional]
+     *                      User object to check against, or false for the current user
+     *
      * @return bool
+     *
+     * @throws cInvalidArgumentException
      */
     public function hasClientPermission($iClient = false, $oUser = false) {
         global $auth, $client;
@@ -420,11 +457,14 @@ class cPermission {
     /**
      * Checks if the given user has access permission for a client
      *
-     * @param int $iClient
+     * @param int    $iClient
      *         idclient to check
      * @param object $oUser
      *         User object to check against
+     *
      * @return bool
+     *
+     * @throws cInvalidArgumentException
      */
     public function isClientUser($iClient, $oUser) {
         $oUser = $this->_checkUserObject($oUser);
@@ -460,11 +500,14 @@ class cPermission {
     /**
      * Checks if the given user has an admin permission
      *
-     * @param int $iClient
+     * @param int    $iClient
      *         idclient to check
      * @param object $oUser
      *         User object to check against
+     *
      * @return bool
+     *
+     * @throws cInvalidArgumentException
      */
     public function isClientAdmin($iClient, $oUser) {
         $oUser = $this->_checkUserObject($oUser);
@@ -483,7 +526,10 @@ class cPermission {
      *
      * @param object $oUser
      *         User object to check against
+     *
      * @return bool
+     *
+     * @throws cInvalidArgumentException
      */
     public function isSysadmin($oUser) {
         $oUser = $this->_checkUserObject($oUser);
@@ -506,9 +552,11 @@ class cPermission {
      *
      * @param object $oUser
      *         User object
+     *
+     * @return object
+     *
      * @throws cInvalidArgumentException
      *         if the given or constructed user is not a cApiUser object
-     * @return object
      */
     private function _checkUserObject($oUser) {
         if ($oUser === false) {
@@ -530,7 +578,8 @@ class cPermission {
 
     /**
      *
-     * @param string $p [optional]
+     * @param string $perm [optional]
+     *
      * @return bool
      */
     public function have_perm_client($perm = 'x') {
@@ -599,8 +648,12 @@ class cPermission {
      * Checks if an item have any perms
      *
      * @param string|int $mainarea
-     * @param int $itemid
+     * @param int        $itemid
+     *
      * @return bool
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function have_perm_item($mainarea, $itemid) {
         global $cfg, $item_rights, $cfg, $client, $lang, $auth, $area_tree, $sess;
@@ -671,7 +724,11 @@ class cPermission {
     /**
      *
      * @param string|int $mainarea
+     *
      * @return int
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function showareas($mainarea) {
         global $area_tree, $sess, $perm, $cfg;

@@ -21,7 +21,7 @@ cInclude('includes', 'functions.file.php');
 $appendparameters = $_REQUEST["appendparameters"];
 
 /**
- *
+ * Class UploadSearchResultList
  */
 class UploadSearchResultList extends FrontendList {
     /**
@@ -46,11 +46,16 @@ class UploadSearchResultList extends FrontendList {
      * Field converting facility.
      *
      * @see FrontendList::convert()
+     *
      * @param int $field
      *         Field index
-     * @param mixed $value
-     *         Field value
+     * @param     $data
+     *
      * @return mixed
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function convert($field, $data) {
         global $cfg, $sess, $client, $cfgClient, $appendparameters;
@@ -78,12 +83,12 @@ class UploadSearchResultList extends FrontendList {
             $icon = "<img src=\"images/but_ok.gif\" alt=\"\" />&nbsp;";
 
             $vpath = str_replace($cfgClient[$client]["upl"]["path"], "", $this->_pathdata);
-            $slashpos = strrpos($vpath, "/");
+            $slashpos = cString::findLastPos($vpath, "/");
             if ($slashpos === false) {
                 $file = $vpath;
             } else {
-                $path = substr($vpath, 0, $slashpos + 1);
-                $file = substr($vpath, $slashpos + 1);
+                $path = cString::getPartOfString($vpath, 0, $slashpos + 1);
+                $file = cString::getPartOfString($vpath, $slashpos + 1);
             }
 
             if ($appendparameters == "imagebrowser" || $appendparameters == "filebrowser") {
@@ -107,7 +112,7 @@ class UploadSearchResultList extends FrontendList {
             $this->_pathdata = $data;
 
             // If this file is an image, try to open
-            $this->_fileType = strtolower(cFileHandler::getExtension($data));
+            $this->_fileType = cString::toLowerCase(cFileHandler::getExtension($data));
             switch ($this->_fileType) {
                 case "png":
                 case "psd":
@@ -122,7 +127,7 @@ class UploadSearchResultList extends FrontendList {
                     $frontendURL = cRegistry::getFrontendUrl();
 
                     $sCacheThumbnail = uplGetThumbnail($data, 150);
-                    $sCacheName = substr($sCacheThumbnail, strrpos($sCacheThumbnail, "/") + 1, strlen($sCacheThumbnail) - (strrchr($sCacheThumbnail, '/') + 1));
+                    $sCacheName = cString::getPartOfString($sCacheThumbnail, cString::findLastPos($sCacheThumbnail, "/") + 1, cString::getStringLength($sCacheThumbnail) - (cString::findLastOccurrence($sCacheThumbnail, '/') + 1));
                     $sFullPath = $cfgClient[$client]['cache']['path'] . $sCacheName;
                     if (cFileHandler::exists($sFullPath)) {
                         $aDimensions = getimagesize($sFullPath);
@@ -174,7 +179,6 @@ class UploadSearchResultList extends FrontendList {
     public function setSize($size) {
         $this->_size = $size;
     }
-
 }
 
 if ($sortby == "") {
@@ -347,7 +351,7 @@ foreach ($files as $idupl => $rating) {
     }
     $description = $upl->get('description');
 
-    $fileType = strtolower(cFileHandler::getExtension($filename));
+    $fileType = cString::toLowerCase(cFileHandler::getExtension($filename));
     $list2->setData($rownum, $dirname . $filename, $filename, $dirname, $filesize, $fileType, $rating / 10, $dirname . $filename);
 
     $rownum++;

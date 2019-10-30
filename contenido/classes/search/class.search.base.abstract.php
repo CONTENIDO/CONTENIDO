@@ -61,7 +61,7 @@ abstract class cSearchBaseAbstract {
      * Initialises some properties.
      *
      * @param cDb $oDB [optional]
-     *         Optional database instance
+     *         CONTENIDO database object
      * @param bool $bDebug [optional]
      *         Optional, flag to enable debugging (no longer needed)
      */
@@ -87,8 +87,10 @@ abstract class cSearchBaseAbstract {
      *
      * @param string $msg
      *         Some text
-     * @param mixed $var
+     * @param mixed  $var
      *         The variable to dump
+     *
+     * @throws cInvalidArgumentException
      */
     protected function _debug($msg, $var) {
         $dump = $msg . ': ';

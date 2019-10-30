@@ -75,7 +75,6 @@ if ($_GET['step'] == 'expanded') {
 	$oTree->setTreeStatus($_GET['idpica_alloc']);
 }
 
-
 $oDiv = new cHTMLDiv;
 $sTemp = '';
 

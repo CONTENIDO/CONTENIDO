@@ -37,7 +37,7 @@ $idclient = cRegistry::getClientId();
 $art = new cApiArticleLanguage($idartlang);
 
 //if post save values in db
-if (cRegistry::isBackendEditMode() && 'POST' === strtoupper($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] == 'facebook') {
+if (cRegistry::isBackendEditMode() && 'POST' === cString::toUpperCase($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] == 'facebook') {
     conSaveContentEntry($idartlang, "CMS_HTML", 1000, $_POST['url']);
     conSaveContentEntry($idartlang, "CMS_HTML", 1001, $_POST['plugin']);
     conSaveContentEntry($idartlang, "CMS_HTML", 1002, $_POST['layout']);
@@ -116,7 +116,7 @@ if (cRegistry::isBackendEditMode()) {
     $language = $propColl->getValue('idlang', $idlang, 'language', 'code', '');
     $country = $propColl->getValue('idlang', $idlang, 'country', 'code', '');
 
-    $locale = $language . '_' . strtoupper($country);
+    $locale = $language . '_' . cString::toUpperCase($country);
 
     if ($facesvalue != 'true') {
         $facesvalue = 'false';

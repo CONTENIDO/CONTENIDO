@@ -15,7 +15,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 function isWindows()
 {
-    if (strtolower(substr(PHP_OS, 0, 3)) == "win") {
+    if (cString::toLowerCase(cString::getPartOfString(PHP_OS, 0, 3)) == "win") {
         return true;
     } else {
         return false;

@@ -11,7 +11,7 @@
 /**
  * A basic KeyCache backed by an array.
  *
- * @author     Chris Corbyn
+ * @author Chris Corbyn
  */
 class Swift_KeyCache_ArrayKeyCache implements Swift_KeyCache
 {
@@ -45,10 +45,10 @@ class Swift_KeyCache_ArrayKeyCache implements Swift_KeyCache
      *
      * @see MODE_WRITE, MODE_APPEND
      *
-     * @param string  $nsKey
-     * @param string  $itemKey
-     * @param string  $string
-     * @param int     $mode
+     * @param string $nsKey
+     * @param string $itemKey
+     * @param string $string
+     * @param int    $mode
      */
     public function setString($nsKey, $itemKey, $string, $mode)
     {
@@ -148,7 +148,7 @@ class Swift_KeyCache_ArrayKeyCache implements Swift_KeyCache
      *
      * @param string                $nsKey
      * @param string                $itemKey
-     * @param Swift_InputByteStream $is      to write the data to
+     * @param Swift_InputByteStream $is to write the data to
      */
     public function exportToByteStream($nsKey, $itemKey, Swift_InputByteStream $is)
     {

@@ -26,8 +26,14 @@ class PimPluginViewDependencies {
 	// Filename of Xml configuration file for plugins
 	const PLUGIN_CONFIG_FILENAME = "plugin.xml";
 
-	// Initializing variables
+    /**
+     * @var string
+     */
 	private static $pluginFoldername;
+
+    /**
+     * @var SimpleXMLElement
+     */
 	private static $tempXml;
 
 	/**
@@ -56,11 +62,11 @@ class PimPluginViewDependencies {
 		return self::$pluginFoldername;
 	}
 
-	/**
-	 * Get dependencies
-	 *
-	 * @return boolean|string
-	 */
+    /**
+     * Get dependencies
+     *
+     * @return bool|string
+     */
 	private function _getPluginDependencies() {
 
 		$tempXml = self::$tempXml;
@@ -81,12 +87,13 @@ class PimPluginViewDependencies {
 
 	}
 
-	/**
-	 * Get dependencies from extracted plugins
-	 *
-	 * @param array $tempXml
-	 * @return string Plugin dependencie
-	 */
+    /**
+     * Get dependencies from extracted plugins
+     *
+     * @param SimpleXMLElement $tempXml
+     *
+     * @return string Plugin dependency
+     */
 	public function getPluginDependenciesExtracted($tempXml) {
 		// Write plugin.xml content into tempXml variable
     	self::$tempXml = $tempXml;
@@ -95,12 +102,16 @@ class PimPluginViewDependencies {
     	return $this->_getPluginDependencies();
 	}
 
-	/**
-	 * Get dependencies from installed plugins
-	 *
-	 * @param integer $idplugin Id of defined plugin
-	 * @return string Plugin dependencies
-	 */
+    /**
+     * Get dependencies from installed plugins
+     *
+     * @param int $idplugin Id of defined plugin
+     *
+     * @return string Plugin dependencies
+     *
+     * @throws cException
+     * @throws cInvalidArgumentException
+     */
 	public function getPluginDependenciesInstalled($idplugin = 0) {
 
 		// Return false if no idplugin variable is defined
@@ -132,7 +143,4 @@ class PimPluginViewDependencies {
     	// Call plugin dependencies
     	return $this->_getPluginDependencies();
 	}
-
-
 }
-?>

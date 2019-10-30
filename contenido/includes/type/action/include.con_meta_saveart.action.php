@@ -93,8 +93,11 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
             conSetMetaValue($idartlang, $key, $atime, $version);
             $newData[$value['metatype']] = $atime;
         } else {
-            conSetMetaValue($idartlang, $key, $_POST['META' . $value['metatype']], $version);
-            $newData[$value['metatype']] = $_POST['META' . $value['metatype']];
+            $contentMetaValue = $_POST['META' . $value['metatype']];
+            $contentMetaValue = str_replace('"', '', $contentMetaValue);
+
+            conSetMetaValue($idartlang, $key, $contentMetaValue, $version);
+            $newData[$value['metatype']] = $contentMetaValue;
         }
     }
 
@@ -105,16 +108,8 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
     // Add a new Meta Tag in DB
     $validMeta = true;
     if (!empty($METAmetatype) && preg_match('/^([a-zA-Z])([a-zA-Z0-9\.\:\-\_]*$)/', $METAmetatype)) {
-        $sql = "INSERT INTO `" . $cfg['tab']['meta_type'] . "` (
-                    `metatype` ,
-                    `fieldtype` ,
-                    `maxlength` ,
-                    `fieldname`
-                )
-                VALUES (
-                    '" . $METAmetatype . "', '" . $METAfieldtype . "', '" . $METAmaxlength . "', '" . $METAfieldname . "'
-                );";
-        $db->query($sql);
+        $metaTypeColl = new cApiMetaTypeCollection();
+        $metaTypeColl->create($METAmetatype, $METAfieldtype, $METAmaxlength, $METAfieldname);
     } else if (!empty($METAmetatype)) {
         $validMeta = false;
     }

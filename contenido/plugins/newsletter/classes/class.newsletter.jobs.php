@@ -18,13 +18,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Plugin
  * @subpackage Newsletter
+ * @method NewsletterJob createNewItem
+ * @method NewsletterJob next
  */
 class NewsletterJobCollection extends ItemCollection {
-
     /**
      * Constructor Function
      *
-     * @param none
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -35,9 +36,14 @@ class NewsletterJobCollection extends ItemCollection {
     /**
      * Creates a newsletter job
      *
-     * @param $name string Specifies the name of the newsletter, the same name
-     *            may be used more than once
-     * @param $idnews integer Newsletter id
+     * @param        $iIDNews
+     * @param        $iIDCatArt
+     * @param string $sName
+     *
+     * @return bool|Item
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($iIDNews, $iIDCatArt, $sName = "") {
 
@@ -116,7 +122,7 @@ class NewsletterJobCollection extends ItemCollection {
                                     $aPluginVars = call_user_func("recipients_" . $sPlugin . "_wantedVariables");
 
                                     foreach ($aPluginVars as $sPluginVar) {
-                                        $oNewsletter->_replaceTag($sMessageHTML, true, $sPluginVar, "MAIL_" . strtoupper($sPluginVar));
+                                        $oNewsletter->_replaceTag($sMessageHTML, true, $sPluginVar, "MAIL_" . cString::toUpperCase($sPluginVar));
                                     }
                                 }
                             }
@@ -232,11 +238,13 @@ class NewsletterJobCollection extends ItemCollection {
  * Single NewsletterJob Item
  */
 class NewsletterJob extends Item {
-
     /**
      * Constructor Function
      *
      * @param mixed $mId Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -246,6 +254,11 @@ class NewsletterJob extends Item {
         }
     }
 
+    /**
+     * @return int
+     * @throws cDbException
+     * @throws cException
+     */
     public function runJob() {
         global $cfg, $recipient;
 
@@ -377,7 +390,7 @@ class NewsletterJob extends Item {
                     $bSendHTML = true; // Recipient accepts html newsletter
                 }
 
-                if (strlen($sKey) == 30) { // Prevents sending without having a
+                if (cString::getStringLength($sKey) == 30) { // Prevents sending without having a
                                            // key
                     $sRcpMsgText = str_replace("{KEY}", $sKey, $sRcpMsgText);
                     $sRcpMsgText = str_replace("MAIL_MAIL", $sEMail, $sRcpMsgText);
@@ -399,11 +412,11 @@ class NewsletterJob extends Item {
                         foreach ($aPlugins as $sPlugin => $aPluginVar) {
                             foreach ($aPluginVar as $sPluginVar) {
                                 // Replace tags in text message
-                                $sRcpMsgText = str_replace("MAIL_" . strtoupper($sPluginVar), call_user_func("recipients_" . $sPlugin . "_getvalue", $sPluginVar), $sRcpMsgText);
+                                $sRcpMsgText = str_replace("MAIL_" . cString::toUpperCase($sPluginVar), call_user_func("recipients_" . $sPlugin . "_getvalue", $sPluginVar), $sRcpMsgText);
 
                                 // Replace tags in html message
                                 if ($bIsHTML && $bSendHTML) {
-                                    $sRcpMsgHTML = str_replace("MAIL_" . strtoupper($sPluginVar), call_user_func("recipients_" . $sPlugin . "_getvalue", $sPluginVar), $sRcpMsgHTML);
+                                    $sRcpMsgHTML = str_replace("MAIL_" . cString::toUpperCase($sPluginVar), call_user_func("recipients_" . $sPlugin . "_getvalue", $sPluginVar), $sRcpMsgHTML);
                                 }
                             }
                         }
@@ -423,7 +436,6 @@ class NewsletterJob extends Item {
                     if ($bIsHTML && $bSendHTML) {
                         $contentType = 'text/html';
                     }
-
 
                     try {
                         // this code can throw exceptions like Swift_RfcComplianceException
@@ -455,7 +467,7 @@ class NewsletterJob extends Item {
                 // No recipients remaining, job finished
                 $this->set("status", 9);
                 $this->set("finished", date("Y-m-d H:i:s"), false);
-            } else if ($bDispatch) {
+            } elseif ($bDispatch) {
                 // Check, if there are recipients remaining - stops job faster
                 $oLogs->resetQuery();
                 $oLogs->setWhere("idnewsjob", $this->get($this->getPrimaryKeyName()));

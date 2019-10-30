@@ -91,6 +91,8 @@ class Pifa {
      *
      * @param string $level
      * @param string $note
+     *
+     * @return string
      */
     public static function getNote($level, $note) {
         $note = self::i18n($note);
@@ -101,6 +103,8 @@ class Pifa {
     /**
      *
      * @param string $note
+     *
+     * @return string
      */
     public static function getError($note) {
         return self::getNote(cGuiNotification::LEVEL_ERROR, $note);
@@ -109,6 +113,8 @@ class Pifa {
     /**
      *
      * @param Exception $e
+     *
+     * @throws cInvalidArgumentException
      */
     public static function logException(Exception $e) {
 
@@ -117,7 +123,7 @@ class Pifa {
 
 	        $log = new cLog(cLogWriter::factory('file', array(
 	            'destination' => $cfg['path']['contenido_logs'] . 'errorlog.txt'
-	        )), cLog::ERR);
+	        )));
 
 	        $log->err($e->getMessage());
 	        $log->err($e->getTraceAsString());
@@ -228,8 +234,10 @@ class Pifa {
      * convention cms_pifaform_FOOBAR.tpl where FOOBAR is any character but a
      * dot.
      *
-     * @throws PifaException
+     * @param string $re
+     *
      * @return array
+     * @throws PifaException
      */
     public static function getTemplates($re = '/cms_pifaform_[^\.]+\.tpl/') {
         $clientConfig = cRegistry::getClientConfig(cRegistry::getClientId());
@@ -271,28 +279,6 @@ class Pifa {
         return $templates;
     }
 
-    // /**
-    // */
-    // public static function afterLoadPlugins() {
-
-    // // return;
-    // if (!isset($_GET['securimage'])) {
-    // return;
-    // }
-
-    // $e = error_get_last();
-
-    // $img = new Securimage(array(
-    // 'image_height' => (int) getEffectiveSetting('pifa', 'captcha-image-height', 80),
-    // 'image_width' => (int) getEffectiveSetting('pifa', 'captcha-image-width', 215),
-    // 'perturbation' => (int) getEffectiveSetting('pifa', 'captcha-perturbation', 0),
-    // 'num_lines' => (int) getEffectiveSetting('pifa', 'captcha-num-lines', 3),
-    // 'session_name' => cRegistry::getClientId() . 'frontend'
-    // ));
-
-    // $img->show();
-    // }
-
     /**
      * Translates a camel case string into a string with underscores
      * (e.g.
@@ -303,9 +289,9 @@ class Pifa {
      * @return string $str Translated into underscore format
      */
     public static function fromCamelCase($str) {
-        $str[0] = strtolower($str[0]);
+        $str[0] = cString::toLowerCase($str[0]);
         return preg_replace_callback('/([A-Z])/', function($c) {
-            return '_' . strtolower($c[1]);
+            return '_' . cString::toLowerCase($c[1]);
         }, $str);
     }
 
@@ -321,10 +307,10 @@ class Pifa {
      */
     public static function toCamelCase($str, $capitalise_first_char = false) {
         if ($capitalise_first_char) {
-            $str[0] = strtoupper($str[0]);
+            $str[0] = cString::toUpperCase($str[0]);
         }
         return preg_replace_callback('/_([a-z])/', function($c) {
-            return strtoupper($c[1]);
+            return cString::toUpperCase($c[1]);
         }, $str);
     }
 
@@ -333,9 +319,9 @@ class Pifa {
      * first_name -&gt; firstName)
      *
      * @see http://www.paulferrett.com/2009/php-camel-case-functions/
-     * @param string $str String in underscore format
-     * @param bool $capitalise_first_char If true, capitalise the first
-     *        char in $str
+     *
+     * @param bool $force
+     *
      * @return string $str translated into camel caps
      */
     public static function getTimestampSetting($force = false) {
@@ -399,6 +385,7 @@ $lngAct['form_ajax']['pifa_reorder_fields'] = Pifa::i18n('pifa_reorder_fields');
 $lngAct['form_ajax']['pifa_export_data'] = Pifa::i18n('pifa_export_data');
 $lngAct['form_ajax']['pifa_get_file'] = Pifa::i18n('pifa_get_file');
 $lngAct['form_ajax']['pifa_delete_field'] = Pifa::i18n('pifa_delete_field');
+$lngAct['form_ajax']['pifa_delete_data'] = Pifa::i18n('pifa_delete_data');
 $lngAct['form_ajax']['pifa_get_option_row'] = Pifa::i18n('pifa_get_option_row');
 
 // include necessary sources, setup autoloader for plugin
@@ -426,12 +413,8 @@ cAutoload::addClassmapConfig(array(
     'PifaDatabaseException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'PifaNotImplementedException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'PifaIllegalStateException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
-    // 'Securimage' => $pluginClassPath . 'securimage/securimage.php',
     'PifaNotYetStoredException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'PifaValidationException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'PifaMailException' => $pluginClassPath . 'classes/class.pifa.exceptions.php'
 ));
 unset($pluginClassPath);
-
-// define chain functions
-//cRegistry::getCecRegistry()->addChainFunction('Contenido.Frontend.AfterLoadPlugins', 'Pifa::afterLoadPlugins');

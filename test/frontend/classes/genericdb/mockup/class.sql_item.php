@@ -17,7 +17,7 @@ class SqlItem {
         foreach ($tables as $key => $table) {
             $sql = $sql . ' ' . $table . ',';
         }
-        $sql = substr($sql, 0, strlen($sql) - 1);
+        $sql = cString::getPartOfString($sql, 0, cString::getStringLength($sql) - 1);
         return $sql . ';';
     }
 

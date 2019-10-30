@@ -54,7 +54,12 @@ $mailLogCollection->query();
 
 // show notification if there no mails have been logged yet
 if ($mailLogCollection->count() === 0) {
-    $page->displayInfo(i18n('No mails have been logged yet.'));
+
+    // Display this info only if the mail logging is not disabled (CON-2702)
+    if (getSystemProperty('system', 'mail_log') !== 'false') {
+        $page->displayInfo(i18n('No mails have been logged yet.'));
+    }
+
     $page->abortRendering();
     $page->render();
     exit();
@@ -308,7 +313,7 @@ function mailLogDecodeAddresses($addresses) {
     foreach ($addresses as $mail => $name) {
         $result .= $name . ' &lt;' . $mail . '&gt;<br>';
     }
-    $result = substr($result, 0, strlen($result) - 4);
+    $result = cString::getPartOfString($result, 0, cString::getStringLength($result) - 4);
 
     return $result;
 }
@@ -316,6 +321,8 @@ function mailLogDecodeAddresses($addresses) {
 /**
  *
  * @return cHTMLTable
+ * 
+ * @throws cException
  */
 function mailLogBulkEditingFunctions() {
 

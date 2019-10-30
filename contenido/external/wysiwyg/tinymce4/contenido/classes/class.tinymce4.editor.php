@@ -302,7 +302,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         && true === isset($this->_aSettings[$sType][$sType])) {
             if (array_key_exists('style_formats', $this->_aSettings[$sType][$sType])) {
                 $sStyles = $this->_aSettings[$sType]["style_formats"];
-                if (strlen($sStyles) > 0) {
+                if (cString::getStringLength($sStyles) > 0) {
                     // if json can be decoded
                     if (null !== json_decode($sStyles)) {
                         $this->setSetting($sType, 'style_formats', json_decode($sStyles), true);
@@ -632,7 +632,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      */
     public function getEditor() {
 
-        $sess = cRegistry::getBackendSessionId();
+        $sess = cRegistry::getSession();
         $cfg = cRegistry::getConfig();
         $client = cRegistry::getClientId();
         $cfgClient = cRegistry::getClientConfig();
@@ -747,7 +747,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             $config .= ",\n\t";
         }
 
-        $config = substr($config, 0, -3);
+        $config = cString::getPartOfString($config, 0, -3);
         return $config;
         */
     }

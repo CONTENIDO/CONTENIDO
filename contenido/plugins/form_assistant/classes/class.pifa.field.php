@@ -1,12 +1,13 @@
 <?php
 
 /**
+ * This file contains the PifaFieldCollection & PifaField class.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage FormAssistant
- * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @copyright four for business AG
- * @link http://www.4fb.de
+ * @author     Marcus Gnaß <marcus.gnass@4fb.de>
+ * @copyright  four for business AG
+ * @link       http://www.4fb.de
  */
 
 // assert CONTENIDO framework
@@ -17,13 +18,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * It's a kind of a model.
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
+ * @method PifaField createNewItem
+ * @method PifaField next
  */
 class PifaFieldCollection extends ItemCollection {
-
     /**
      * Create an instance.
      *
-     * @param mixed $where clause to be used to load items or false
+     * @param string|bool $where clause to be used to load items or false
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function __construct($where = false) {
         parent::__construct(cRegistry::getDbTableName('pifa_field'), 'idfield');
@@ -36,8 +41,10 @@ class PifaFieldCollection extends ItemCollection {
     /**
      * Reorders a forms fields according to the given.
      *
-     * @param int $idform
+     * @param int    $idform
      * @param string $idfields containing a CSV list of idfield as integer
+     *
+     * @throws cDbException
      */
     public static function reorder($idform, $idfields) {
         $sql = "-- PifaFieldCollection::reorder()
@@ -149,12 +156,12 @@ class PifaField extends Item {
      */
     const SLIDER = 11;
 
-    // /**
-    // * Captcha.
-    // *
-    // * @var int
-    // */
-    // const CAPTCHA = 12;
+    /**
+     * Captcha.
+     *
+     * @var int
+     */
+    const CAPTCHA = 12;
 
     /**
      * Button of type submit.
@@ -186,7 +193,6 @@ class PifaField extends Item {
     const BUTTON = 15;
 
     /**
-     *
      * @var int
      */
     const MATRIX = 16;
@@ -244,7 +250,10 @@ class PifaField extends Item {
     /**
      * Create an instance.
      *
-     * @param mixed $id ID of item to be loaded or false
+     * @param string|bool $id ID of item to be loaded or false
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($id = false) {
         parent::__construct(cRegistry::getDbTableName('pifa_field'), 'idfield');
@@ -259,6 +268,11 @@ class PifaField extends Item {
      * backslashes.
      *
      * @see Item::getField()
+     *
+     * @param string $field
+     * @param bool   $bSafe
+     *
+     * @return mixed|string
      */
     function getField($field, $bSafe = true) {
         $value = parent::getField($field, $bSafe);
@@ -302,7 +316,6 @@ class PifaField extends Item {
     }
 
     /**
-     *
      * @param array $_file
      */
     public function setFile(array $_file) {
@@ -310,7 +323,6 @@ class PifaField extends Item {
     }
 
     /**
-     *
      * @throws PifaValidationException if an error occured
      */
     public function validate() {
@@ -330,22 +342,33 @@ class PifaField extends Item {
         }
 
         foreach ($values as $value) {
+            if (self::CAPTCHA == $this->get('field_type')) {
+                // site secret key
+                try {
+                    $secret = getEffectiveSetting('pifa-recaptcha', 'secret', '');
+                } catch (cDbException $e) {
+                    $secret = '';
+                } catch (cException $e) {
+                    $secret = '';
+                }
 
-            // if (self::CAPTCHA == $this->get('field_type')) {
-            // // check for captcha
-            // $securimage = new Securimage(array(
-            // 'session_name' => cRegistry::getClientId() . 'frontend'
-            // ));
-            // $isValid = $securimage->check($value);
-            // } else
+                if (cString::getStringLength($secret) === 0 || !isset($_POST['g-recaptcha-response']) || empty($_POST['g-recaptcha-response'])) {
+                    $isValid = false;
+                } else {
+                    //get verify response data
+                    $response = urlencode($_POST['g-recaptcha-response']);
+                    $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $response);
+                    $responseData   = json_decode($verifyResponse);
 
-            if (1 === cSecurity::toInteger($this->get('obligatory')) && 0 === strlen($value)) {
+                    $isValid = $responseData->success ? true : false;
+                }
+            } elseif (1 === cSecurity::toInteger($this->get('obligatory')) && 0 === cString::getStringLength($value)) {
                 // check for obligatory & rule
                 $isValid = false;
-            } else if (0 < strlen($this->get('rule')) && in_array(preg_match($this->get('rule'), $value), array(
-                false,
-                0
-            ))) {
+            } elseif (0 < cString::getStringLength($this->get('rule')) && in_array(preg_match($this->get('rule'), $value), array(
+                    false,
+                    0
+                ))) {
                 // check for rule
                 $isValid = false;
             } else {
@@ -370,7 +393,9 @@ class PifaField extends Item {
      * Returns HTML for this form that should be displayed in frontend.
      *
      * @param array $errors to be displayed for form field
+     *
      * @return string
+     * @throws PifaException
      */
     public function toHtml(array $errors = NULL) {
         $out = '';
@@ -379,8 +404,10 @@ class PifaField extends Item {
             case self::FIELDSET_BEGIN:
 
                 // optional class for field
-                if (0 < strlen(trim($this->get('css_class')))) {
+                if (0 < cString::getStringLength(trim($this->get('css_class')))) {
                     $class = ' class="' . implode(' ', explode(',', $this->get('css_class'))) . '"';
+                } else {
+                    $class = '';
                 }
                 $out .= "\n\t<fieldset$class>";
                 // add optional legend/description
@@ -399,6 +426,8 @@ class PifaField extends Item {
 
             default:
 
+                $error = null;
+
                 // build HTML content
                 $content = array();
                 try {
@@ -409,7 +438,7 @@ class PifaField extends Item {
                     // add this fields error message
                     if (isset($errors[$this->get('idfield')])) {
                         $error = $errors[$this->get('idfield')];
-                        if (0 < strlen($error)) {
+                        if (0 < cString::getStringLength($error)) {
                             $content[] = new cHTMLParagraph($error, 'pifa-error-message');
                         }
                     }
@@ -425,7 +454,7 @@ class PifaField extends Item {
                 // CSS class for surrounding division
                 $class = 'pifa-field-' . $this->get('field_type');
                 // optional class for field
-                if (0 < strlen(trim($this->get('css_class')))) {
+                if (0 < cString::getStringLength(trim($this->get('css_class')))) {
                     $class .= ' ' . implode(' ', explode(',', $this->get('css_class')));
                 }
                 // optional class for obligatory field
@@ -449,11 +478,9 @@ class PifaField extends Item {
     }
 
     /**
-     *
-     * @return cHTMLLabel
-     * @todo should be private, right?
+     * @return cHTMLLabel|string
      */
-    public function _getElemLabel() {
+    private function _getElemLabel() {
         if (1 !== cSecurity::toInteger($this->get('display_label'))) {
             return '';
         }
@@ -483,12 +510,6 @@ class PifaField extends Item {
             $label .= ' *';
         }
 
-        // add span to request new captcha code
-        // if (self::CAPTCHA===$fieldType) {
-        // $label .= '<br><br><span style="cursor: pointer;">New Captcha
-        // Code</span>';
-        // }
-
         $elemLabel = new cHTMLLabel($label, 'pifa-field-elm-' . $idfield, 'pifa-field-lbl');
         if (self::INPUTRADIO === $fieldType) {
             $elemLabel->removeAttribute('for');
@@ -506,12 +527,13 @@ class PifaField extends Item {
      * has to be the fields column name which is set if the form is displayed
      * for the first time and user hasn't entered another value.
      *
-     * @throws PifaNotImplementedException if field type is not implemented
      * @return cHTMLTextbox cHTMLTextarea cHTMLPasswordbox cHTMLSpan
      *         cHTMLSelectElement NULL cHTMLButton
-     * @todo should be private, right?
+     *
+     * @throws PifaException
+     * @throws PifaNotImplementedException if field type is not implemented
      */
-    public function _getElemField() {
+    private function _getElemField() {
 
         // get field data
         $idfield = cSecurity::toInteger($this->get('idfield'));
@@ -527,7 +549,7 @@ class PifaField extends Item {
         // get option labels & values
         // either from field or from external data source class
         $optionClass = $this->get('option_class');
-        if (0 === strlen(trim($optionClass))) {
+        if (0 === cString::getStringLength(trim($optionClass))) {
             $optionLabels = $this->get('option_labels');
             if (NULL !== $optionLabels) {
                 $optionLabels = explode(',', $optionLabels);
@@ -550,6 +572,7 @@ class PifaField extends Item {
                 $msg = sprintf($msg, $optionClass);
                 throw new PifaException($msg);
             }
+            /** @var PifaExternalOptionsDatasourceInterface $dataSource */
             $dataSource = new $optionClass();
             $optionLabels = $dataSource->getOptionLabels();
             $optionValues = $dataSource->getOptionValues();
@@ -570,15 +593,15 @@ class PifaField extends Item {
                 $value = $_GET[$columnName];
             }
         }
-		
-		// try to prevent XSS ... the lazy way ...
-		if ( is_array($value) ) {
-			foreach ($value as $key => $val) {
-				$value[$key] = conHtmlentities($val, ENT_COMPAT | ENT_HTML401, 'UTF-8');
-			}
-		} else {
-			$value = conHtmlentities($value, ENT_COMPAT | ENT_HTML401, 'UTF-8');
-		}
+
+        // try to prevent XSS ... the lazy way ...
+        if ( is_array($value) ) {
+            foreach ($value as $key => $val) {
+                $value[$key] = conHtmlentities($val, ENT_COMPAT | ENT_HTML401, 'UTF-8');
+            }
+        } else {
+            $value = conHtmlentities($value, ENT_COMPAT | ENT_HTML401, 'UTF-8');
+        }
 
         switch ($fieldType) {
 
@@ -633,23 +656,46 @@ class PifaField extends Item {
                 for ($i = 0; $i < $count; $i++) {
                     if (self::INPUTRADIO === $fieldType) {
                         $elemField = new cHTMLRadiobutton($columnName, $optionValues[$i]);
-                    } else if (self::INPUTCHECKBOX === $fieldType) {
+                    } elseif (self::INPUTCHECKBOX === $fieldType) {
                         $elemField = new cHTMLCheckbox($columnName . '[]', $optionValues[$i]);
                     }
                     if (!is_array($value)) {
                         $value = explode(',', $value);
                     }
-                    $elemField->setChecked(in_array($optionValues[$i], $value));
-                    $elemField->setLabelText($optionLabels[$i]);
-                    $tmpHtml .= $elemField->render();
+                    if (isset($elemField)) {
+                        $elemField->setChecked(in_array($optionValues[$i], $value));
+                        $elemField->setLabelText($optionLabels[$i]);
+                        $tmpHtml .= $elemField->render();
+                    }
                 }
                 $elemField = new cHTMLSpan($tmpHtml);
                 break;
 
             case self::SELECT:
+
+                $elemField = new cHTMLSelectElement($columnName);
+
+                // set ID (workaround: remove ID first!)
+                $elemField->removeAttribute('id')->setID($id);
+                $autofill = array();
+                $count = min(array(
+                    count($optionLabels),
+                    count($optionValues)
+                ));
+
+                for ($i = 0; $i < $count; $i++) {
+                    $autofill[$optionValues[$i]] = $optionLabels[$i];
+                }
+
+                $elemField->autoFill($autofill);
+                $elemField->setDefault($value);
+
+                break;
+
             case self::SELECTMULTI:
 
                 $elemField = new cHTMLSelectElement($columnName);
+                $elemField->setMultiselect();
 
                 // set ID (workaround: remove ID first!)
                 $elemField->removeAttribute('id')->setID($id);
@@ -711,24 +757,30 @@ class PifaField extends Item {
                 // $elemField = new cHTML();
                 break;
 
-            // case self::CAPTCHA:
+            case self::CAPTCHA:
+                // input
+                $elemField = new cHTMLTextbox($columnName);
+                // set ID (workaround: remove ID first!)
+                $elemField->removeAttribute('id')->setID($id);
+                if (null !== $value) {
+                    $elemField->setValue($value);
+                }
 
-                // // input
-                // $elemField = new cHTMLTextbox($columnName);
-                // // set ID (workaround: remove ID first!)
-                // $elemField->removeAttribute('id')->setID($id);
-                // if (NULL !== $value) {
-                // $elemField->setValue($value);
-                // }
+                // google recaptcha integration
+                try {
+                    $sitekey = getEffectiveSetting('pifa-recaptcha', 'sitekey', '');
+                } catch (cDbException $e) {
+                    $sitekey = '';
+                } catch (cException $e) {
+                    $sitekey = '';
+                }
 
-                // // surrounding div
-                // // img src (front_content.php?securimage)
-                // // will be caught by Pifa::afterLoadPlugins
-                // $img = new cHTMLImage('front_content.php?securimage');
-                // $img->setAttribute('alt', 'captcha');
-                // $elemField = new cHTMLDiv(array($img, $elemField));
+                $elemScript = new cHTMLScript();
+                $elemScript->setAttribute("src", "https://www.google.com/recaptcha/api.js");
+                $elemDiv = new cHTMLDiv('<div class="g-recaptcha" data-sitekey="' . $sitekey . '"></div>');
+                $elemField = $elemScript . PHP_EOL . $elemDiv;
 
-                // break;
+                break;
 
             case self::BUTTONSUBMIT:
             case self::BUTTONRESET:
@@ -786,15 +838,13 @@ class PifaField extends Item {
     }
 
     /**
-     *
-     * @return Ambigous <NULL, cHTMLParagraph>
-     * @todo should be private, right?
+     * @return cHTMLParagraph|null
      */
-    public function _getElemHelp() {
+    private function _getElemHelp() {
         $helpText = $this->get('help_text');
 
         $p = NULL;
-        if (0 < strlen($helpText)) {
+        if (0 < cString::getStringLength($helpText)) {
             $p = new cHTMLParagraph($helpText, 'pifa-field-help');
         }
 
@@ -802,9 +852,7 @@ class PifaField extends Item {
     }
 
     /**
-     *
-     * @return Ambigous <NULL, cHTMLScript>
-     * @todo should be private, right?
+     * @return cHTMLScript|null
      */
     public function _getElemScript() {
 
@@ -824,29 +872,12 @@ class PifaField extends Item {
                 	});});
                 }";
                 break;
-            // case self::CAPTCHA:
-            // $sel = '#pifa-field-' . $idfield . ' label';
-            // $newCaptchaCode = mi18n("NEW_CAPTCHA_CODE");
-            // $script = "jQuery(function(){\n";
-            // // implement captcha reload on click
-            // $script .= "jQuery('$sel').click(function (e) {\n";
-            // $script .= "e.preventDefault();\n";
-            // $script .= "var url = 'front_content.php?securimage&' +
-            // Math.random();\n";
-            // $script .= "jQuery(this).parent().find('img').attr('src',
-            // url);\n";
-            // $script .= "});\n";
-            // // append 'New Captcha Code' to label
-            // $script .= "jQuery('$sel').append('<br/><br/><span
-            // style=\"cursor:pointer\">$newCaptchaCode</span>');";
-            // $script .= "});\n";
-            // break;
             default:
                 $script = '';
         }
 
         $elemScript = NULL;
-        if (0 < strlen($script)) {
+        if (0 < cString::getStringLength($script)) {
             $elemScript = new cHTMLScript();
             $elemScript->setContent($script);
         }
@@ -884,7 +915,7 @@ class PifaField extends Item {
             self::INPUTFILE => Pifa::i18n('INPUTFILE'),
             self::PROCESSBAR => Pifa::i18n('PROCESSBAR'),
             self::SLIDER => Pifa::i18n('SLIDER'),
-            // self::CAPTCHA => Pifa::i18n('CAPTCHA'),
+            self::CAPTCHA => Pifa::i18n('CAPTCHA'),
             // self::MATRIX => Pifa::i18n('MATRIX'),
             self::PARA => Pifa::i18n('PARAGRAPH'),
             self::INPUTHIDDEN => Pifa::i18n('INPUTHIDDEN'),
@@ -1005,7 +1036,7 @@ class PifaField extends Item {
             // type to use.
             case self::PROCESSBAR:
             case self::SLIDER:
-            // case self::CAPTCHA:
+            case self::CAPTCHA:
             case self::MATRIX:
             case self::PARA:
             case self::FIELDSET_BEGIN:
@@ -1024,9 +1055,11 @@ class PifaField extends Item {
     /**
      * Deletes this form with all its fields and stored data.
      * The forms data table is also dropped.
+     *
+     * @throws PifaException
+     * @throws cDbException
      */
     public function delete() {
-        $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 
         if (!$this->isLoaded()) {
@@ -1044,10 +1077,7 @@ class PifaField extends Item {
                 idform = " . cSecurity::toInteger($this->get('idform')) . "
                 AND field_rank > " . cSecurity::toInteger($this->get('field_rank')) . "
             ;";
-        if (false === $db->query($sql)) {
-            // false is returned if no fields were updated
-            // but that doesn't matter ...
-        }
+        $db->query($sql);
 
         // delete field
         $sql = "-- PifaField->delete()
@@ -1062,10 +1092,10 @@ class PifaField extends Item {
         }
 
         // drop column of data table
-        if (0 < strlen(trim($this->get('column_name')))) {
+        if (0 < cString::getStringLength(trim($this->get('column_name')))) {
             $pifaForm = new PifaForm($this->get('idform'));
 
-            if (0 < strlen(trim($pifaForm->get('data_table')))) {
+            if (0 < cString::getStringLength(trim($pifaForm->get('data_table')))) {
                 $sql = "-- PifaField->delete()
                     ALTER TABLE
                         `" . cSecurity::toString($pifaForm->get('data_table')) . "`
@@ -1085,6 +1115,10 @@ class PifaField extends Item {
      * backend.
      *
      * @param string $columnName for data to edit
+     *
+     * @return bool
+     *
+     * @throws PifaException
      */
     public function showField($columnName) {
         $fieldType = $this->get('field_type');
@@ -1112,17 +1146,15 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    // self::CAPTCHA,
+                    self::CAPTCHA,
                     // self::BUTTONSUBMIT,
                     // self::BUTTONRESET,
                     // self::BUTTON,
                     // self::BUTTONIMAGE,
                     self::MATRIX,
-                    self::INPUTHIDDEN
-                    /*
-                    self::FIELDSET_BEGIN,
-                    self::FIELDSET_END
-                    */
+                    self::INPUTHIDDEN,
+                    // self::FIELDSET_BEGIN,
+                    // self::FIELDSET_END,
                 ));
 
             case 'label':
@@ -1139,7 +1171,7 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    // self::CAPTCHA,
+                    self::CAPTCHA,
                     self::BUTTONSUBMIT,
                     self::BUTTONRESET,
                     self::BUTTON,
@@ -1147,11 +1179,9 @@ class PifaField extends Item {
                     self::MATRIX,
                     self::PARA,
                     // self::INPUTHIDDEN,
-                    self::FIELDSET_BEGIN
-                    /*
-                    self::FIELDSET_END
-                    */
-                    ));
+                    self::FIELDSET_BEGIN,
+                    // self::FIELDSET_END,
+                ));
 
             case 'default_value':
                 return in_array($fieldType, array(
@@ -1166,13 +1196,13 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    // self::CAPTCHA,
+                    self::CAPTCHA,
                     self::BUTTONSUBMIT,
                     self::BUTTONRESET,
                     self::BUTTON,
                     // self::BUTTONIMAGE,
                     self::MATRIX,
-                    self::INPUTHIDDEN
+                    self::INPUTHIDDEN,
                 ));
 
             case 'option_labels':
@@ -1182,7 +1212,7 @@ class PifaField extends Item {
                     self::INPUTRADIO,
                     self::INPUTCHECKBOX,
                     self::SELECT,
-                    self::SELECTMULTI
+                    self::SELECTMULTI,
                 ));
 
             case 'help_text':
@@ -1198,14 +1228,14 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    // self::CAPTCHA,
+                    self::CAPTCHA,
                     self::BUTTONSUBMIT,
                     self::BUTTONRESET,
                     self::BUTTON,
                     self::BUTTONIMAGE,
                     self::MATRIX,
                     self::PARA,
-                    self::FIELDSET_BEGIN
+                    self::FIELDSET_BEGIN,
                 ));
 
             case 'obligatory':
@@ -1221,13 +1251,13 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    // self::CAPTCHA,
+                    self::CAPTCHA,
                     // self::BUTTONSUBMIT,
                     // self::BUTTONRESET,
                     // self::BUTTON,
                     // self::BUTTONIMAGE,
                     self::MATRIX,
-                    self::INPUTHIDDEN
+                    self::INPUTHIDDEN,
                 ));
 
             case 'rule':
@@ -1243,13 +1273,13 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    // self::CAPTCHA,
+                    self::CAPTCHA,
                     // self::BUTTONSUBMIT,
                     // self::BUTTONRESET,
                     // self::BUTTON,
                     // self::BUTTONIMAGE,
                     self::MATRIX,
-                    self::INPUTHIDDEN
+                    self::INPUTHIDDEN,
                 ));
 
             case 'error_message':
@@ -1265,13 +1295,13 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    // self::CAPTCHA,
+                    self::CAPTCHA,
                     // self::BUTTONSUBMIT,
                     // self::BUTTONRESET,
                     // self::BUTTON,
                     // self::BUTTONIMAGE,
                     self::MATRIX,
-                    self::INPUTHIDDEN
+                    self::INPUTHIDDEN,
                 ));
 
             case 'css_class':
@@ -1287,45 +1317,39 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    // self::CAPTCHA,
+                    self::CAPTCHA,
                     self::BUTTONSUBMIT,
                     self::BUTTONRESET,
                     self::BUTTON,
                     self::BUTTONIMAGE,
                     self::MATRIX,
                     self::PARA,
-                    self::FIELDSET_BEGIN
-                    /*
-                    self::INPUTHIDDEN
-                    */
+                    self::FIELDSET_BEGIN,
+                    // self::INPUTHIDDEN,
                 ));
 
             case 'uri':
                 return in_array($fieldType, array(
-                    /*
-                    self::INPUTTEXT,
-                    self::TEXTAREA,
-                    self::INPUTPASSWORD,
-                    self::INPUTRADIO,
-                    self::INPUTCHECKBOX,
-                    self::SELECT,
-                    self::SELECTMULTI,
-                    self::DATEPICKER,
-                    self::INPUTFILE,
-                    self::PROCESSBAR,
-                    self::SLIDER,
+                    // self::INPUTTEXT,
+                    // self::TEXTAREA,
+                    // self::INPUTPASSWORD,
+                    // self::INPUTRADIO,
+                    // self::INPUTCHECKBOX,
+                    // self::SELECT,
+                    // self::SELECTMULTI,
+                    // self::DATEPICKER,
+                    // self::INPUTFILE,
+                    // self::PROCESSBAR,
+                    // self::SLIDER,
                     // self::CAPTCHA,
-                    self::BUTTONSUBMIT,
-                    self::BUTTONRESET,
-                    self::BUTTON,
-                    */
+                    // self::BUTTONSUBMIT,
+                    // self::BUTTONRESET,
+                    // self::BUTTON,
                     self::BUTTONIMAGE,
-                    /*
-                    self::MATRIX,
-                    self::PARA,
-                    self::FIELDSET_BEGIN
-                    self::INPUTHIDDEN
-                    */
+                    // self::MATRIX,
+                    // self::PARA,
+                    // self::FIELDSET_BEGIN,
+                    // self::INPUTHIDDEN,
                 ));
 
             default:
@@ -1336,7 +1360,6 @@ class PifaField extends Item {
     }
 
     /**
-     *
      * @return array
      */
     public function getOptions() {
@@ -1344,7 +1367,7 @@ class PifaField extends Item {
         $option_values = $this->get('option_values');
 
         $out = array();
-        if (0 < strlen($option_labels . $option_values)) {
+        if (0 < cString::getStringLength($option_labels . $option_values)) {
             $option_labels = explode(',', $option_labels);
             $option_values = explode(',', $option_values);
 
@@ -1370,5 +1393,3 @@ class PifaField extends Item {
         return $out;
     }
 }
-
-?>

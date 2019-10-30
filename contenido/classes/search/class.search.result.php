@@ -134,13 +134,15 @@ class cSearchResult extends cSearchBaseAbstract {
      * more than a matching word in the text (CMS_HTML[1]).
      *
      * @param array $search_result
-     *         List of article ids
-     * @param int $result_per_page
-     *         Number of items per page
-     * @param cDb $oDB [optional]
-     *         db instance
-     * @param bool $bDebug [optional]
-     *         Optional flag to enable debugging
+     *                      list of article ids
+     * @param int   $result_per_page
+     *                      number of items per page
+     * @param cDb   $oDB    [optional]
+     *                      CONTENIDO database object
+     * @param bool  $bDebug [optional]
+     *                      flag to enable debugging
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct($search_result, $result_per_page, $oDB = NULL, $bDebug = false) {
         parent::__construct($oDB, $bDebug);
@@ -184,12 +186,16 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param int $art_id
-     *         Id of an article
+     * @param int    $art_id
+     *                   Id of an article
      * @param string $cms_type
-     * @param int $id [optional]
+     * @param int    $id [optional]
+     *
      * @return string
-     *         Content of an article, specified by it's content type
+     *                   Content of an article, specified by it's content type
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public function getContent($art_id, $cms_type, $id = 0) {
         $article = new cApiArticleLanguage();
@@ -199,18 +205,21 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param int $art_id
-     *         Id of an article
+     * @param int    $art_id
+     *                       Id of an article
      * @param string $cms_type
-     *         Content type
-     * @param int $cms_nr [optional]
-     * @return string
-     *         Content of an article in search result, specified by its type
+     *                       Content type
+     * @param int    $cms_nr [optional]
+     *                       
+     * @return array Content of an article in search result, specified by its type*         Content of an article in search result, specified by its type
+     *               
+     * @throws cDbException
+     * @throws cException
      */
     public function getSearchContent($art_id, $cms_type, $cms_nr = NULL) {
-        $cms_type = strtoupper($cms_type);
-        if (strlen($cms_type) > 0) {
-            if (!stristr($cms_type, 'cms_')) {
+        $cms_type = cString::toUpperCase($cms_type);
+        if (cString::getStringLength($cms_type) > 0) {
+            if (!cString::findFirstOccurrenceCI($cms_type, 'cms_')) {
                 if (in_array($cms_type, $this->_index->getCmsTypeSuffix())) {
                     $cms_type = 'CMS_' . $cms_type;
                 }
@@ -299,9 +308,13 @@ class cSearchResult extends cSearchBaseAbstract {
      *         Articles in page $page_id
      */
     public function getSearchResultPage($page_id) {
-        $this->_resultPage = $page_id;
-        $result_page = $this->_orderedSearchResult[$page_id - 1];
-        return $result_page;
+        if (isset($this->_orderedSearchResult[$page_id - 1])) {
+            $this->_resultPage = $page_id;
+            $result_page = $this->_orderedSearchResult[$page_id - 1];
+            return $result_page;
+        } else {
+            return [];
+        }
     }
 
     /**
@@ -330,7 +343,7 @@ class cSearchResult extends cSearchBaseAbstract {
      *         Similarity between searchword and matching word in article
      */
     public function getSimilarity($art_id) {
-        return $this->_searchResult[$art_id]['similarity'];
+        return isset($this->_searchResult[$art_id]['similarity']) ? $this->_searchResult[$art_id]['similarity'] : 0;
     }
 
     /**
@@ -358,7 +371,7 @@ class cSearchResult extends cSearchBaseAbstract {
      *         The closing html-tag e.g. '</b>'
      */
     public function setReplacement($rep1, $rep2) {
-        if (strlen(trim($rep1)) > 0 && strlen(trim($rep2)) > 0) {
+        if (cString::getStringLength(trim($rep1)) > 0 && cString::getStringLength(trim($rep2)) > 0) {
             $this->_replacement[] = $rep1;
             $this->_replacement[] = $rep2;
         }
@@ -367,9 +380,12 @@ class cSearchResult extends cSearchBaseAbstract {
     /**
      *
      * @todo refactor this because it shouldn't be the Search's job
+     *
      * @param int $artid
+     *
      * @return int
      *         Category Id
+     * @throws cDbException
      */
     public function getArtCat($artid) {
         $sql = "SELECT idcat FROM " . $this->cfg['tab']['cat_art'] . "

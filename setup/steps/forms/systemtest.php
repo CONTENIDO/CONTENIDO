@@ -54,6 +54,13 @@ class cSetupSystemtest extends cSetupMask {
             $this->_systemtest->testFrontendFolderCreation();
         }
 
+        // Display message for chmod rights on webserver
+        if ($_SESSION['setuptype'] == 'setup') {
+            $message = i18n("Please check that your config and client directories (including cache, module and upload directories, template-, css- and js-files) has chmod rights 755. Please make sure that the owner for these directories and all files are the same as the owner of your webserver.", "setup");
+            $message = nl2br($message);
+            $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_INFO, i18n("Attention: Please give your directories rights on your webserver", "setup"), $message);
+        }
+
         $cHTMLErrorMessageList = new cHTMLErrorMessageList();
 
         if (is_null(getMySQLDatabaseExtension())) {
@@ -214,11 +221,16 @@ class cSetupSystemtest extends cSetupMask {
 
         // Display message about changed directories/files when user updates a
         // system lower than 4.9
+        // Also display message for chmod rights on webserver
         if ($version && version_compare('4.9', $version) > 0) {
             $message = i18n("You are updating a previous version of CONTENIDO to %s. Some directories/files have been moved to other sections in %s.\n\nPlease ensure to copy contenido/includes/config.php to data/config/production/config.php and also other configuration files within contenido/includes/ to data/config/production/.", "setup");
             $message = sprintf($message, '4.9', '4.9');
             $message = nl2br($message);
             $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Attention: Some directories/files have been moved", "setup"), $message);
+
+            $message = i18n("Please check that your config and client directories (including cache, module and upload directories, template-, css- and js-files) has chmod rights 755. Please make sure that the owner for these directories and all files are the same as the owner of your webserver.", "setup");
+            $message = nl2br($message);
+            $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_INFO, i18n("Attention: Please give your directories rights on your webserver", "setup"), $message);
         }
     }
 
@@ -248,7 +260,7 @@ class cSetupSystemtest extends cSetupMask {
             $oClient->loadByPrimaryKey($client);
             $clientName = $oClient->getField('name');
 
-            if (strlen($languageCode) == 0 || strlen($contryCode) == 0) {
+            if (cString::getStringLength($languageCode) == 0 || cString::getStringLength($contryCode) == 0) {
                 $langName = $oLanguage->getField('name');
 
                 $oClient = new cApiClient();

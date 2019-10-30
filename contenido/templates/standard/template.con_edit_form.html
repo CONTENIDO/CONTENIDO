@@ -125,6 +125,8 @@
                 <td width="75%" colspan="3" class="text_medium">{DIRECTLINK}</td>
             </tr>
 
+            {HOOK_AFTERARTICLELINK}
+
             <tr valign="top" style="display:{NEWARTSTYLE};">
                 <td width="25%" class="text_medium">{ARTIKELART}</td>
                 <td width="75%" colspan="3" class="text_medium">{ARTIKELARTSELECT}</td>
@@ -163,9 +165,10 @@
             <tr valign="top">
                 <td class="text_medium"><label for="checkbox_forwarding">{WEITERLEITUNG}</label></td>
                 <td valign="bottom" colspan="3" class="text_medium">
-                    {CHECKBOX}{URL}{CHECKBOX-NEWWINDOW}
+                    {CHECKBOX}{URL}
                     <label class="ui-helper-hidden-accessible" for="redirect_mode">{LABEL_REDIRECT_CODE}</label>
                     <select id="redirect_mode" name="redirect_mode">{REDIRECT_OPTIONS}</select>
+                    {CHECKBOX-NEWWINDOW}
                 </td>
             </tr>
             <tr>

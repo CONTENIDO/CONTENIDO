@@ -17,10 +17,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Returns existing indexes of a specific table.
  *
- * @param cDb $db
+ * @param cDb    $db
  * @param string $table
+ *
  * @return array
  *         Assoziative array where the key and the value is the index name
+ *
+ * @throws cDbException
  */
 function dbGetIndexes($db, $table) {
     if (!is_object($db)) {
@@ -60,7 +63,7 @@ function dbGetIndexes($db, $table) {
  *  - $oldVal might be empty if the field didn't exist
  *  - $tableValues['fieldname'] contains the already existing values
  *
- * @param cDb $db
+ * @param cDb    $db
  *         Database instance
  * @param string $table
  *         Name of table to create/update
@@ -83,9 +86,12 @@ function dbGetIndexes($db, $table) {
  *         field should have the AUTO_INCREMENT attribute and empty otherwise.
  * @param string $upgradeStatement
  *         NOT USED AT THE MOMENT
- * @param bool $bRemoveIndexes
+ * @param bool   $bRemoveIndexes
  *         Flag to remove all indexes
+ *
  * @return bool
+ *
+ * @throws cDbException
  */
 function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extra, $upgradeStatement, $bRemoveIndexes = false) {
     global $columnCache;
@@ -117,7 +123,7 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
 
     // Parameter check for $default. If set, create a default value
     if ($default != '') {
-        if (((strpos($type, 'timestamp') !== FALSE) && ($default != '')) || ($default == 'NULL')) {
+        if (((cString::findFirstPos($type, 'timestamp') !== FALSE) && ($default != '')) || ($default == 'NULL')) {
             $parameter['DEFAULT'] = "DEFAULT " . $db->escape($default);
         } else {
             $parameter['DEFAULT'] = "DEFAULT '" . $db->escape($default) . "'";
@@ -165,12 +171,12 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
     $structure = dbGetColumns($db, $table);
 
     // If $field contains ',' previous names has been specified; separate from $field
-    $sepPos = strpos($field, ',');
+    $sepPos = cString::findFirstPos($field, ',');
     if ($sepPos === false) {
         $previousName = '';
     } else {
-        $previousName = substr($field, $sepPos + 1);
-        $field = substr($field, 0, $sepPos);
+        $previousName = cString::getPartOfString($field, $sepPos + 1);
+        $field = cString::getPartOfString($field, 0, $sepPos);
     }
 
     if (!array_key_exists($field, $structure)) {
@@ -234,9 +240,12 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
 /**
  * Checks, if passed table exists in the database
  *
- * @param cDb $db
+ * @param cDb    $db
  * @param string $table
+ *
  * @return bool
+ *
+ * @throws cDbException
  */
 function dbTableExists($db, $table) {
     global $tableCache;
@@ -264,10 +273,13 @@ function dbTableExists($db, $table) {
 /**
  * Returns the column structure of a table
  *
- * @param cDb $db
+ * @param cDb    $db
  * @param string $table
+ *
  * @return array|bool
  *         Either assoziative column array or false
+ *
+ * @throws cDbException
  */
 function dbGetColumns($db, $table) {
     global $columnCache;
@@ -298,9 +310,14 @@ function dbGetColumns($db, $table) {
  *
  * @deprecated [2015-05-21]
  *         This method is no longer supported (no replacement)
- * @param cDb $db
+ *
+ * @param cDb    $db
  * @param string $table
+ *
  * @return string
+ *
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function dbGetPrimaryKeyName($db, $table) {
     cDeprecated('This method is deprecated and is not needed any longer');

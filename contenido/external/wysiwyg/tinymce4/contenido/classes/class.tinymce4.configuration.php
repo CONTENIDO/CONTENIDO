@@ -43,8 +43,12 @@ class cTinymce4Configuration {
      * Inits permission.
      */
     public function __construct() {
+        global $currentuser;
+
         // decide whether user is allowed to change values
-        $this->_perm = ('sysadmin' === cRegistry::getAuth()->getPerms());
+        if (cRegistry::getPerm()->isSysadmin($currentuser) === true) {
+            $this->_perm = true;
+        }
     }
 
     /**
@@ -69,7 +73,7 @@ class cTinymce4Configuration {
         $textarea = new cHTMLTextarea($name);
         $textarea->setValue($value);
         $textarea->setAttribute('style', 'box-sizing: border-box; width: 600px;');
-        if (false === $this->_perm) {
+        if ($this->_perm === false) {
             $textarea->updateAttribute('disabled', 'disabled');
         }
         $div = new cHTMLDiv($label .  $textarea, 'systemSetting');
@@ -279,7 +283,7 @@ class cTinymce4Configuration {
         // do not use cRequestValidator instance
         // because it does not support multi-dimensional arrays
         if (false === $this->_checkType('/^[a-zA-Z0-9 \-\|_]*$/', $toolbarData)
-        || false !== strpos($toolbarData, '||')) {
+        || false !== cString::findFirstPos($toolbarData, '||')) {
             return false;
         }
 
@@ -354,8 +358,7 @@ class cTinymce4Configuration {
         // Checks for cross site requests and cross site scripting
         // are omitted due to time constraints
 
-        // User must be system administrator to change the settings
-        if ('sysadmin' !== cRegistry::getAuth()->getPerms()) {
+        if ($this->_perm === false) {
             return false;
         }
 

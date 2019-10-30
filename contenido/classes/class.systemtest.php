@@ -26,7 +26,7 @@ class cSystemtest {
      *
      * @var string
      */
-    const CON_SETUP_MIN_PHP_VERSION = '5.3';
+    const CON_SETUP_MIN_PHP_VERSION = '7.0.0';
 
     /**
      * Messages have no influence on the result of the system integrity
@@ -273,8 +273,11 @@ class cSystemtest {
      * Runs all available tests and stores the resuls in the messages array
      *
      * @param bool $testFileSystem [optional]
-     *         If this is true the file system checks will be performed too
-     *         with standard settings.
+     *                             If this is true the file system checks will be performed too
+     *                             with standard settings.
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function runTests($testFileSystem = true) {
         $this->storeResult($this->testPHPVersion(), self::C_SEVERITY_ERROR, sprintf(i18n("PHP Version lower than %s"), self::CON_SETUP_MIN_PHP_VERSION), sprintf(i18n("CONTENIDO requires PHP %s or higher as it uses functionality first introduced with this version. Please update your PHP version."), self::CON_SETUP_MIN_PHP_VERSION), i18n("The PHP version is higher than ") . self::CON_SETUP_MIN_PHP_VERSION);
@@ -520,6 +523,8 @@ class cSystemtest {
      *
      * @return number|bool
      *         ID or false if unable to determine the user
+     * 
+     * @throws cInvalidArgumentException
      */
     protected function getServerUID() {
         if (function_exists("posix_getuid")) {
@@ -551,6 +556,8 @@ class cSystemtest {
      *
      * @return number|bool
      *         ID or false if unable to determine the group
+     * 
+     * @throws cInvalidArgumentException
      */
     protected function getServerGID() {
         if (function_exists("posix_getgid")) {
@@ -576,8 +583,11 @@ class cSystemtest {
      *
      * @param string $file
      *         The path to the file
+     *
      * @return int
-     *         CON_PREDICT_*
+     *         CON_PREDICT_
+     * 
+     * @throws cInvalidArgumentException
      */
     protected function predictCorrectFilepermissions($file) {
         // Check if the system is a windows system. If yes, we can't predict
@@ -662,11 +672,11 @@ class cSystemtest {
      * @return number
      */
     protected function getAsBytes($val) {
-        if (strlen($val) == 0) {
+        if (cString::getStringLength($val) == 0) {
             return 0;
         }
         $val = trim($val);
-        $last = $val{strlen($val) - 1};
+        $last = $val{cString::getStringLength($val) - 1};
         switch ($last) {
             case 'k':
             case 'K':
@@ -705,6 +715,7 @@ class cSystemtest {
                 'password' => $password
             )
         );
+        $db = null;
         try {
             $db = new cDb($aOptions);
         } catch (cDbException $e) {
@@ -755,7 +766,7 @@ class cSystemtest {
      * @return bool
      */
     public function isWindows() {
-        if (strtolower(substr(PHP_OS, 0, 3)) == "win") {
+        if (cString::toLowerCase(cString::getPartOfString(PHP_OS, 0, 3)) == "win") {
             return true;
         } else {
             return false;
@@ -769,7 +780,7 @@ class cSystemtest {
      *         true if the test passed and false if not
      */
     public function testPHPVersion() {
-        if (version_compare(phpversion(), CON_SETUP_MIN_PHP_VERSION, '>=') == true) {
+        if (version_compare(phpversion(), self::CON_SETUP_MIN_PHP_VERSION, '>=') == true) {
             return true;
         } else {
             return false;
@@ -1006,8 +1017,11 @@ class cSystemtest {
      * @param string $host
      * @param string $username
      * @param string $password
+     * 
      * @return bool
      *         true if the test passed and false if not
+     * 
+     * @throws cDbException
      */
     public function testMySQLModeStrict($host, $username, $password) {
         // host, user and password
@@ -1022,7 +1036,7 @@ class cSystemtest {
         $db = new cDb($dbCfg);
         $db->query('SELECT LOWER(@@GLOBAL.sql_mode) AS sql_mode');
         if ($db->nextRecord()) {
-            if (strpos($db->f('sql_mode'), 'strict_trans_tables') !== false || strpos($db->f('sql_mode'), 'strict_all_tables') !== false) {
+            if (cString::findFirstPos($db->f('sql_mode'), 'strict_trans_tables') !== false || cString::findFirstPos($db->f('sql_mode'), 'strict_all_tables') !== false) {
                 return false;
             }
         }
@@ -1034,8 +1048,11 @@ class cSystemtest {
      * @param string $host
      * @param string $username
      * @param string $password
+     *
      * @return int
      *         1 if the test passed and > 1 if not
+     * 
+     * @throws cDbException
      */
     public function testMySQL($host, $username, $password) {
         list($handle, $status) = $this->doMySQLConnect($host, $username, $password);
@@ -1067,10 +1084,13 @@ class cSystemtest {
 
     /**
      *
-     * @param bool $testConfig [optional]
+     * @param bool $testConfig   [optional]
      * @param bool $testFrontend [optional]
+     *
      * @return bool
-     *         true if the test passed and false if not
+     *                           true if the test passed and false if not
+     *
+     * @throws cInvalidArgumentException
      */
     public function testFilesystem($testConfig = true, $testFrontend = true) {
         global $cfgClient;
@@ -1214,20 +1234,21 @@ class cSystemtest {
      * Checks a single file or directory wether it is writeable or not
      *
      * @param string $filename
-     *         The file
-     * @param int $severity
-     *         The resulting C_SEVERITY constant should the test fail
-     * @param bool $dir [optional]
-     *         True if the $filename is a directory
-     * @throws Exception
-     *         Throws a generic Exception in the event that the permissions are wrong
+     *                    The file
+     * @param int    $severity
+     *                    The resulting C_SEVERITY constant should the test fail
+     * @param bool   $dir [optional]
+     *                    True if the $filename is a directory
+     *
      * @return bool
      *         Returns true if everything is fine
+     *
+     * @throws cInvalidArgumentException
      */
     protected function testSingleFile($filename, $severity, $dir = false) {
-        if (strpos($filename, $this->_config["path"]["frontend"]) === 0) {
-            $length = strlen($this->_config["path"]["frontend"]) + 1;
-            $shortFilename = substr($filename, $length);
+        if (cString::findFirstPos($filename, $this->_config["path"]["frontend"]) === 0) {
+            $length = cString::getStringLength($this->_config["path"]["frontend"]) + 1;
+            $shortFilename = cString::getPartOfString($filename, $length);
         } else { // for dirs
             $shortFilename = $filename;
         }
@@ -1253,17 +1274,17 @@ class cSystemtest {
                         $predictMessage = sprintf(i18n("Due to a very restrictive environment, an advise is not possible. Ask your system administrator to enable write access to the file %s, especially in environments where ACL (Access Control Lists) are used."), $shortFilename);
                         break;
                     case self::CON_PREDICT_CHANGEPERM_SAMEOWNER:
-                        $mfileperms = substr(sprintf("%o", fileperms($filename)), -3);
+                        $mfileperms = cString::getPartOfString(sprintf("%o", fileperms($filename)), -3);
                         $mfileperms{0} = intval($mfileperms{0}) | 0x6;
                         $predictMessage = sprintf(i18n("Your web server and the owner of your files are identical. You need to enable write access for the owner, e.g. using chmod u+rw %s, setting the file mask to %s or set the owner to allow writing the file."), $shortFilename, $mfileperms);
                         break;
                     case self::CON_PREDICT_CHANGEPERM_SAMEGROUP:
-                        $mfileperms = substr(sprintf("%o", fileperms($filename)), -3);
+                        $mfileperms = cString::getPartOfString(sprintf("%o", fileperms($filename)), -3);
                         $mfileperms{1} = intval($mfileperms{1}) | 0x6;
                         $predictMessage = sprintf(i18n("Your web server's group and the group of your files are identical. You need to enable write access for the group, e.g. using chmod g+rw %s, setting the file mask to %s or set the group to allow writing the file."), $shortFilename, $mfileperms);
                         break;
                     case self::CON_PREDICT_CHANGEPERM_OTHERS:
-                        $mfileperms = substr(sprintf("%o", fileperms($filename)), -3);
+                        $mfileperms = cString::getPartOfString(sprintf("%o", fileperms($filename)), -3);
                         $mfileperms{2} = intval($mfileperms{2}) | 0x6;
                         $predictMessage = sprintf(i18n("Your web server is not equal to the file owner, and is not in the webserver's group. It would be highly insecure to allow world write acess to the files. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the file mask to %s or set the others to allow writing the file."), $shortFilename, $mfileperms);
                         break;
@@ -1281,17 +1302,17 @@ class cSystemtest {
                         $predictMessage = sprintf(i18n("Due to a very restrictive environment, an advise is not possible. Ask your system administrator to enable write access to the file or directory %s, especially in environments where ACL (Access Control Lists) are used."), dirname($shortFilename));
                         break;
                     case self::CON_PREDICT_CHANGEPERM_SAMEOWNER:
-                        $mfileperms = substr(sprintf("%o", @fileperms($target)), -3);
+                        $mfileperms = cString::getPartOfString(sprintf("%o", @fileperms($target)), -3);
                         $mfileperms{0} = intval($mfileperms{0}) | 0x6;
                         $predictMessage = sprintf(i18n("Your web server and the owner of your directory are identical. You need to enable write access for the owner, e.g. using chmod u+rw %s, setting the directory mask to %s or set the owner to allow writing the directory."), dirname($shortFilename), $mfileperms);
                         break;
                     case self::CON_PREDICT_CHANGEPERM_SAMEGROUP:
-                        $mfileperms = substr(sprintf("%o", @fileperms($target)), -3);
+                        $mfileperms = cString::getPartOfString(sprintf("%o", @fileperms($target)), -3);
                         $mfileperms{1} = intval($mfileperms{1}) | 0x6;
                         $predictMessage = sprintf(i18n("Your web server's group and the group of your directory are identical. You need to enable write access for the group, e.g. using chmod g+rw %s, setting the directory mask to %s or set the group to allow writing the directory."), dirname($shortFilename), $mfileperms);
                         break;
                     case self::CON_PREDICT_CHANGEPERM_OTHERS:
-                        $mfileperms = substr(sprintf("%o", @fileperms($target)), -3);
+                        $mfileperms = cString::getPartOfString(sprintf("%o", @fileperms($target)), -3);
                         $mfileperms{2} = intval($mfileperms{2}) | 0x6;
                         $predictMessage = sprintf(i18n("Your web server is not equal to the directory owner, and is not in the webserver's group. It would be highly insecure to allow world write acess to the directory. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the directory mask to %s or set the others to allow writing the directory."), dirname($shortFilename), $mfileperms);
                         break;
@@ -1311,6 +1332,9 @@ class cSystemtest {
      *
      * @return bool
      *         true if the test passed and false if not
+     *
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function testFrontendFolderCreation() {
         $directories = array(
@@ -1334,15 +1358,13 @@ class cSystemtest {
         $ret = true;
 
         foreach ($directories as $dir) {
-            if (!cFileHandler::exists("../" . $dir)) {
+            if (!cDirHandler::exists("../" . $dir)) {
                 if (!mkdir("../" . $dir)) {
                     $ret = false;
-                    $this->storeResult(false, self::C_SEVERITY_WARNING, sprintf(i18n("Could not find or create directory %s"), $dir), i18n("The frontend expects certain directories to exist and it needs to be able to write to these directories."));
-                } else {
-                    if (!cFileHandler::chmod("../" . $dir, "777")) {
-                        $ret = false;
-                        $this->storeResult(false, self::C_SEVERITY_WARNING, sprintf(i18n("Could not find or create directory %s"), $dir), i18n("The frontend expects certain directories to exist and it needs to be able to write to these directories."));
-                    }
+                    $this->storeResult(false, self::C_SEVERITY_WARNING, sprintf(i18n("Could not find or create directory %s"), $dir), i18n("The frontend expects certain directories to exist and it needs to be able to write to these directories. You have to set chmod rights 755 to these directories."));
+                } elseif (!cDirHandler::chmod("../" . $dir, cDirHandler::getDefaultPermissions())) {
+                    $ret = false;
+                    $this->storeResult(false, self::C_SEVERITY_WARNING, sprintf(i18n("Could not find or create directory %s"), $dir), i18n("The frontend expects certain directories to exist and it needs to be able to write to these directories. You have to set chmod rights 755 to these directories."));
                 }
             }
         }
@@ -1376,7 +1398,7 @@ class cSystemtest {
         $sCurrentDirectory = getcwd();
 
         foreach ($aBasedirEntries as $entry) {
-            if (stristr($sCurrentDirectory, $entry)) {
+            if (cString::findFirstOccurrenceCI($sCurrentDirectory, $entry)) {
                 return self::CON_BASEDIR_RESTRICTIONSUFFICIENT;
             }
         }
@@ -1422,8 +1444,10 @@ class cSystemtest {
      * @param string $setupType
      * @param string $databaseName
      * @param string $databasePrefix
-     * @param string $charset [optional]
+     * @param string $charset   [optional]
      * @param string $collation [optional]
+     *                          
+     * @throws cDbException
      */
     public function checkSetupMysql($setupType, $databaseName, $databasePrefix, $charset = '', $collation = '') {
         switch ($setupType) {

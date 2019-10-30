@@ -63,8 +63,8 @@ if (isset($changelang) && is_numeric($changelang)) {
 }
 
 if (!is_numeric($client)
-|| (!$perm->have_perm_client('client[' . $client . ']')
-&& !$perm->have_perm_client('admin[' . $client . ']'))) {
+    || (!$perm->have_perm_client('client[' . $client . ']')
+    && !$perm->have_perm_client('admin[' . $client . ']'))) {
 
     // use first client which is accessible
     $sess->register('client');
@@ -150,26 +150,29 @@ if (isset($action)) {
     }
 }
 
+$sFilename = '';
 if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
     $oAjax = new cAjaxRequest();
     $sReturn = $oAjax->handle($_REQUEST['ajax']);
     echo $sReturn;
 } else {
-    include_once($backendPath . $cfg['path']['includes'] . 'ajax/include.ajax.' . $area . '.php');
+    $sFilename = $cfg['path']['includes'] . 'ajax/include.ajax.' . $area . '.php';
+    include_once($backendPath . $sFilename);
 }
 
-$cfg['debug']['backend_exectime']['end'] = getmicrotime();
-
-$debugInfo = array(
+if ($cfg['debug']['rendering'] == true) {
+    $cfg['debug']['backend_exectime']['end'] = getmicrotime();
+    $debugInfo = array(
     'Building this page (excluding CONTENIDO includes) took: ' .
-    ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['start']).' seconds',
+        ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['start']) . ' seconds',
     'Building the complete page took: ' .
-    ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['fullstart']).' seconds',
-    'Include memory usage: ' . humanReadableSize(memory_get_usage()-$oldmemusage),
+        ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['fullstart']) . ' seconds',
+        'Include memory usage: ' . humanReadableSize(memory_get_usage() - $oldmemusage),
     'Complete memory usage: ' . humanReadableSize(memory_get_usage()),
     "*****" . $sFilename . "*****"
-);
-cDebug::out(implode("\n", $debugInfo));
+    );
+    cDebug::out(implode("\n", $debugInfo));
+}
 
 // User Tracking (who is online)
 $oActiveUser = new cApiOnlineUserCollection();

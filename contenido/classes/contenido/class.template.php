@@ -21,12 +21,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiTemplateCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
      *
-     * @param string $select [optional]
-     *         where clause to use for selection (see ItemCollection::select())
+     * @param bool $select [optional]
+     *                     where clause to use for selection (see ItemCollection::select())
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function __construct($select = false) {
         global $cfg;
@@ -46,19 +48,23 @@ class cApiTemplateCollection extends ItemCollection {
     /**
      * Creates a template entry.
      *
-     * @param int $idclient
-     * @param int $idlay
-     * @param int $idtplcfg
-     *         Either a valid template configuration id or an empty string
+     * @param int    $idclient
+     * @param int    $idlay
+     * @param int    $idtplcfg
+     *                                Either a valid template configuration id or an empty string
      * @param string $name
      * @param string $description
-     * @param int $deletable [optional]
-     * @param int $status [optional]
-     * @param int $defaulttemplate [optional]
-     * @param string $author [optional]
-     * @param string $created [optional]
-     * @param string $lastmodified [optional]
+     * @param int    $deletable       [optional]
+     * @param int    $status          [optional]
+     * @param int    $defaulttemplate [optional]
+     * @param string $author          [optional]
+     * @param string $created         [optional]
+     * @param string $lastmodified    [optional]
+     *
      * @return cApiTemplate
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($idclient, $idlay, $idtplcfg, $name, $description,
             $deletable = 1, $status = 0, $defaulttemplate = 0, $author = '',
@@ -97,6 +103,8 @@ class cApiTemplateCollection extends ItemCollection {
      *
      * @param int $idclient
      * @return cApiTemplateConfiguration|NULL
+     * @throws cDbException
+     * @throws cException
      */
     public function selectDefaultTemplate($idclient) {
         $this->select('defaulttemplate = 1 AND idclient = ' . (int) $idclient);
@@ -108,6 +116,8 @@ class cApiTemplateCollection extends ItemCollection {
      *
      * @param int $idlay
      * @return array
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchByIdLay($idlay) {
         $this->select('idlay = ' . (int) $idlay);
@@ -125,13 +135,16 @@ class cApiTemplateCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiTemplate extends Item {
-
+class cApiTemplate extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -153,7 +166,11 @@ class cApiTemplate extends Item {
      *         language id
      * @param int $client
      *         client id
+     * 
      * @return bool
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public function loadByArticleOrCategory($idart, $idcat, $lang, $client) {
 

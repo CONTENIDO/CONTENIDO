@@ -62,6 +62,7 @@ class cContentTypeHtml extends cContentTypeAbstract {
      *
      * @return string
      *         escaped HTML code which should be shown if content type is edited
+     * @throws cDbException
      */
     public function generateEditCode() {
         $wysiwygDiv = new cHTMLDiv();
@@ -85,7 +86,7 @@ class cContentTypeHtml extends cContentTypeAbstract {
             'min-height' => '20px'
         ));
         $wysiwygDiv->updateAttribute('contentEditable', 'true');
-        if (strlen($this->_rawSettings) == 0) {
+        if (cString::getStringLength($this->_rawSettings) == 0) {
             $wysiwygDiv->setContent('&nbsp;');
         } else {
             $wysiwygDiv->setContent($this->_rawSettings);

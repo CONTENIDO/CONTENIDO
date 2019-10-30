@@ -104,10 +104,10 @@
          * frame.
          * @method highlightById
          * @param {String} id  Element id of tab to highlight
-         * @param {Object} frame  Reference to frame hodling the subnavigation:
-         *            top.content.right.right_top (when there is a left/right
-         *            frameset) top.content.right_top (when there is no left/right
-         *            frameset)
+         * @param {Object} frame
+         *      Reference to frame holding the subnavigation:
+         *      top.content.right.right_top (when there is a left/right frameset)
+         *      top.content.right_top (when there is no left/right frameset)
          */
         highlightById: function(id, frame) {
             this._reset(frame);
@@ -150,8 +150,9 @@
                 var elem = obj.getElementById(id).getElementsByTagName('a')[0];
                 return elem;
             } catch (e) {
-                return null;}
-            },
+                return null;
+            }
+        },
 
         /**
          * Reset all tabs.
@@ -195,6 +196,5 @@
             Subnav.clicked(this);
         });
     });
-
 
 })(Con, Con.$);

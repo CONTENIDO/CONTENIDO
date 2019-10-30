@@ -268,45 +268,48 @@ class cSearch extends cSearchBaseAbstract {
      * Constructor to create an instance of this class.
      *
      * @param array $options
-     *         $options['db']
-     *             'regexp' => DB search with REGEXP
-     *             'like' => DB search with LIKE
-     *             'exact' => exact match;
-     *         $options['combine']
-     *             'and', 'or' Combination of search words with AND, OR
-     *         $options['exclude']
-     *             'true' => searchrange specified in 'cat_tree', 'categories'
-     *             and 'articles' is excluded;
-     *             'false' => searchrange specified in 'cat_tree', 'categories'
-     *             and 'articles' is included
-     *         $options['cat_tree']
-     *             e.g. array(8) => The complete tree with root 8 is in/excluded
-     *             from search
-     *         $options['categories']
-     *             e.g. array(10, 12) => Categories 10, 12 in/excluded
-     *         $options['articles']
-     *             e.g. array(23) => Article 33 in/excluded
-     *         $options['artspecs']
-     *             e.g. array(2, 3) => search only articles with certain article
-     *             specifications
-     *         $options['protected']
-     *             'true' => do not search articles which are offline (locked)
-     *             or articles in catgeories which are offline (protected)
-     *         $options['dontshowofflinearticles']
-     *             'false' => search offline articles or articles in categories
-     *             which are offline
-     *         $options['searchable_articles']
-     *             array of article ID's which should be searchable
-     * @param cDb $db [optional]
-     *         database instance
+     *                  $options['db']
+     *                  'regexp' => DB search with REGEXP
+     *                  'like' => DB search with LIKE
+     *                  'exact' => exact match;
+     *                  $options['combine']
+     *                  'and', 'or' Combination of search words with AND, OR
+     *                  $options['exclude']
+     *                  'true' => searchrange specified in 'cat_tree', 'categories'
+     *                  and 'articles' is excluded;
+     *                  'false' => searchrange specified in 'cat_tree', 'categories'
+     *                  and 'articles' is included
+     *                  $options['cat_tree']
+     *                  e.g. array(8) => The complete tree with root 8 is in/excluded
+     *                  from search
+     *                  $options['categories']
+     *                  e.g. array(10, 12) => Categories 10, 12 in/excluded
+     *                  $options['articles']
+     *                  e.g. array(23) => Article 33 in/excluded
+     *                  $options['artspecs']
+     *                  e.g. array(2, 3) => search only articles with certain article
+     *                  specifications
+     *                  $options['protected']
+     *                  'true' => do not search articles which are offline (locked)
+     *                  or articles in catgeories which are offline (protected)
+     *                  $options['dontshowofflinearticles']
+     *                  'false' => search offline articles or articles in categories
+     *                  which are offline
+     *                  $options['searchable_articles']
+     *                  array of article ID's which should be searchable
+     * @param cDb   $db [optional]
+     *                  CONTENIDO database object
+     *
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function __construct($options, $db = NULL) {
         parent::__construct($db);
 
         $this->_index = new cSearchIndex($db);
 
-        $this->_searchOption = (array_key_exists('db', $options)) ? strtolower($options['db']) : 'regexp';
-        $this->_searchCombination = (array_key_exists('combine', $options)) ? strtolower($options['combine']) : 'or';
+        $this->_searchOption = (array_key_exists('db', $options)) ? cString::toLowerCase($options['db']) : 'regexp';
+        $this->_searchCombination = (array_key_exists('combine', $options)) ? cString::toLowerCase($options['combine']) : 'or';
         $this->_protected = (array_key_exists('protected', $options)) ? $options['protected'] : true;
         $this->_dontshowofflinearticles = (array_key_exists('dontshowofflinearticles', $options)) ? $options['dontshowofflinearticles'] : true;
         $this->_exclude = (array_key_exists('exclude', $options)) ? $options['exclude'] : true;
@@ -326,19 +329,23 @@ class cSearch extends cSearchBaseAbstract {
      * indexed fulltext search
      *
      * @param string $searchwords
-     *         The search words
+     *                                    The search words
      * @param string $searchwords_exclude [optional]
-     *         The words, which should be excluded from search
+     *                                    The words, which should be excluded from search
+     *
      * @return bool|array
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function searchIndex($searchwords, $searchwords_exclude = '') {
-        if (strlen(trim($searchwords)) > 0) {
+        if (cString::getStringLength(trim($searchwords)) > 0) {
             $this->_searchWords = $this->stripWords($searchwords);
         } else {
             return false;
         }
 
-        if (strlen(trim($searchwords_exclude)) > 0) {
+        if (cString::getStringLength(trim($searchwords_exclude)) > 0) {
             $this->_searchWordsExclude = $this->stripWords($searchwords_exclude);
         }
 
@@ -437,7 +444,7 @@ class cSearch extends cSearchBaseAbstract {
                                 $this->_searchResult[$artid]['search'][] = $searchword;
                                 $this->_searchResult[$artid]['occurence'][] = $string[1];
                                 $this->_searchResult[$artid]['debug_similarity'][] = $percent;
-                                if ($similarity > $this->_searchResult[$artid]['similarity']) {
+                                if (isset($this->_searchResult[$artid]['similarity']) && $similarity > $this->_searchResult[$artid]['similarity']) {
                                     $this->_searchResult[$artid]['similarity'] = $similarity;
                                 }
                             }
@@ -507,11 +514,11 @@ class cSearch extends cSearchBaseAbstract {
         foreach ($tmp_words as $word) {
 
             $word = htmlentities($word, ENT_COMPAT, 'UTF-8');
-            $word = (trim(strtolower($word)));
+            $word = (trim(cString::toLowerCase($word)));
             $word = html_entity_decode($word, ENT_COMPAT, 'UTF-8');
 
-            // $word =(trim(strtolower($word)));
-            if (strlen($word) > 1) {
+            // $word =(trim(cString::toLowerCase($word)));
+            if (cString::getStringLength($word) > 1) {
                 $tmp_searchwords[] = $word;
             }
         }
@@ -527,6 +534,8 @@ class cSearch extends cSearchBaseAbstract {
      *         Root of a category tree
      * @return array
      *         Category Tree
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function getSubTree($cat_start) {
         $sql = "SELECT
@@ -585,6 +594,8 @@ class cSearch extends cSearchBaseAbstract {
      *
      * @param array $search_range
      * @return array
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function getSearchableArticles($search_range) {
         global $auth;
@@ -606,12 +617,11 @@ class cSearch extends cSearchBaseAbstract {
 
         $aCatRange = array_unique($aCatRange);
         $sCatRange = implode("','", $aCatRange);
+        $sArtRange = '';
 
         if (array_key_exists('articles', $search_range) && is_array($search_range['articles'])) {
             if (count($search_range['articles']) > 0) {
                 $sArtRange = implode("','", $search_range['articles']);
-            } else {
-                $sArtRange = '';
             }
         }
 
@@ -631,7 +641,7 @@ class cSearch extends cSearchBaseAbstract {
             $sSearchRange = " A.idcat NOT IN ('" . $sCatRange . "') AND B.idart NOT IN ('" . $sArtRange . "') AND ";
         } else {
             // include searchrange
-            if (strlen($sArtRange) > 0) {
+            if (cString::getStringLength($sArtRange) > 0) {
                 $sSearchRange = " A.idcat IN ('" . $sCatRange . "') AND B.idart IN ('" . $sArtRange . "') AND ";
             } else {
                 $sSearchRange = " A.idcat IN ('" . $sCatRange . "') AND ";
@@ -688,6 +698,8 @@ class cSearch extends cSearchBaseAbstract {
      *
      * @return array
      *         Array of article specification Ids
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function getArticleSpecifications() {
         $sql = "SELECT
@@ -722,9 +734,11 @@ class cSearch extends cSearchBaseAbstract {
      *
      * @param string $sArtSpecName
      * @return bool
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function addArticleSpecificationsByName($sArtSpecName) {
-        if (!isset($sArtSpecName) || strlen($sArtSpecName) == 0) {
+        if (!isset($sArtSpecName) || cString::getStringLength($sArtSpecName) == 0) {
             return false;
         }
 

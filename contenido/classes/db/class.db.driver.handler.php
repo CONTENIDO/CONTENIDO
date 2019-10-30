@@ -370,7 +370,7 @@ abstract class cDbDriverHandler {
      *         The sql statement to prepare.
      * @return string
      *         The prepared sql statement
-     * @throws Exception
+     * @throws cDbException
      *         If statement is empty or function is called with less than 2 parameters
      */
     public function prepare($statement) {
@@ -525,7 +525,9 @@ abstract class cDbDriverHandler {
      *         The table name
      * @param array  $fields
      *         Assoziative array of fields to insert
+     *
      * @return bool
+     * @throws cDbException
      */
     public function insert($tableName, array $fields) {
         $statement = $this->buildInsert($tableName, $fields);
@@ -584,6 +586,7 @@ abstract class cDbDriverHandler {
      *         Assoziative array of field in where clause.
      *         Multiple entries will be concatenated with AND
      * @return bool
+     * @throws cDbException
      */
     public function update($tableName, array $fields, array $whereClauses) {
         $statement = $this->buildUpdate($tableName, $fields, $whereClauses);
@@ -657,8 +660,10 @@ abstract class cDbDriverHandler {
      *
      * @param string $statement
      *         The SQL statement to execute.
+     *
      * @return resource|int|object|bool
      *         database driver, false on error
+     * @throws cDbException
      */
     public function query($statement) {
         // No empty queries, please, since PHP4 chokes on them
@@ -708,6 +713,7 @@ abstract class cDbDriverHandler {
      * Fetches the next record set from result set
      *
      * @return bool
+     * @throws cDbException
      */
     public function nextRecord() {
         if (!$this->getQueryId()) {
@@ -795,9 +801,10 @@ abstract class cDbDriverHandler {
     /**
      * Moves the cursor (position inside current result sets).
      *
-     * @param int $iPos
+     * @param int $pos
      *         The positon to move to inside the current result set
      * @return int
+     * @throws cDbException
      */
     public function seek($pos) {
         $status = $this->getDriver()->seek($pos);
@@ -813,6 +820,7 @@ abstract class cDbDriverHandler {
      *
      * @return int
      *         NULL id of table
+     * @throws cDbException
      */
     public function getLastInsertedId() {
         $lastId = NULL;
@@ -1043,6 +1051,7 @@ abstract class cDbDriverHandler {
      *
      * @see cDbDriverHandler::nextRecord
      * @return bool
+     * @throws cDbException
      */
     public function next_record() {
         return $this->nextRecord();

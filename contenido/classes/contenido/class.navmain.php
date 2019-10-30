@@ -21,9 +21,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiNavMainCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -36,7 +37,12 @@ class cApiNavMainCollection extends ItemCollection {
      *
      * @param string $name
      * @param string $location
+     * @param null   $id
+     *
      * @return cApiNavMain
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($name, $location, $id = null) {
         $item = $this->createNewItem();
@@ -58,13 +64,16 @@ class cApiNavMainCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiNavMain extends Item {
-
+class cApiNavMain extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;

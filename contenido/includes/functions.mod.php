@@ -20,7 +20,7 @@ cInclude('includes', 'functions.con.php');
 /**
  * Saves changes of modules and regenerates code cache if required
  *
- * @param int $idmod
+ * @param int    $idmod
  *         module id
  * @param string $name
  *         name of the module
@@ -34,8 +34,13 @@ cInclude('includes', 'functions.con.php');
  *         template field in module's database entry (seems deprecated)
  * @param string $type
  *         module type (common values are '', 'content', 'head', 'layout', 'navigation' and 'script')
+ *
  * @return mixed
  *         idmod or nothing
+ *
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
 function modEditModule($idmod, $name, $description, $input, $output, $template, $type = '') {
     global $db, $client, $cfgClient, $auth, $cfg, $sess, $area, $area_tree, $perm, $frame;
@@ -47,7 +52,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
     $messageIfError = '';
 
     // Alias for modul name for the file system
-    $alias = strtolower(cModuleHandler::getCleanName($name));
+    $alias = cString::toLowerCase(cModuleHandler::getCleanName($name));
 
     // Track version
     $oVersion = new cVersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
@@ -59,8 +64,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 
         $idmod = $cApiModule->get('idmod');
 
-        cInclude('includes', 'functions.rights.php');
-        createRightsForElement('mod', $idmod);
+        cRights::createRightsForElement('mod', $idmod);
     } else {
         $cApiModule = new cApiModule($idmod);
     }
@@ -177,7 +181,11 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
  * Furthermore the rights for this module are deleted.
  *
  * @todo some global vars seem to be overfluous
+ *
  * @param int $idmod
+ *
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function modDeleteModule($idmod) {
     global $db, $client, $cfg;
@@ -187,6 +195,5 @@ function modDeleteModule($idmod) {
     $db->query($sql);
 
     // Delete rights for element
-    cInclude('includes', 'functions.rights.php');
-    deleteRightsForElement('mod', $idmod);
+    cRights::deleteRightsForElement('mod', $idmod);
 }

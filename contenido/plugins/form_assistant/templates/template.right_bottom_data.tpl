@@ -15,6 +15,7 @@
     {if 0 lt $exportUrl|trim|strlen}
     <a class="form-data-export" href="{$exportUrl}">{$trans.export}</a>
     {/if}
+    {$lnkDel}
 
     <!-- table cellpadding="0" class="generic" -->
     <table class="generic" width="97%" cellspacing="0" cellpadding="2" border="0">
@@ -33,10 +34,11 @@
             <th nowrap="nowrap">{$columnName}</th>
         {/if}
     {/foreach}
+            <th nowrap="nowrap">{$trans.delete}</th>
         </tr>
     {if 0 eq $data|count}
         <tr>
-            <td colspan="{$fields|count}">{$trans.nodata}</td>
+            <td colspan="{$fields|count + 1}">{$trans.nodata}</td>
         </tr>
     {else}
         {foreach from=$data item=row}
@@ -54,14 +56,23 @@
             <td nowrap="nowrap" class="bordercell">&nbsp;</td>
             {else if '9' eq $field->get('field_type')}
             {* display INPUTFILE values as link *}
-            <td nowrap="nowrap" class="bordercell"><a href="{$getFileUrl}&name={$columnData|htmlentities}&file={$form->get('data_table')}_{$row.id}_{$columnName}">{$columnData|htmlentities}</a></td>
+            <td nowrap="nowrap" class="bordercell"><a href="{$getFileUrl}&name={$columnData|htmlentities}&file={$form->get('data_table')}_{$row.id}_{$columnName}">{$columnData|escape:htmlall}</a></td>
             {else}
-            <td nowrap="nowrap" class="bordercell">{$columnData|htmlentities}</td>
+            <td nowrap="nowrap" class="bordercell">{$columnData|escape:htmlall}</td>
             {/if}
         {/foreach}
+            <td><input type="checkbox" name="mark" class="mark_data" value="{$row.id}" /></td>
         </tr>
         {/foreach}
     {/if}
+    </table>
+    <table>
+        <tr>
+            <th>
+                <input type="hidden" name="deleteUrl" class="deleteUrl" value="{$deleteUrl}">
+                <img class="delete" src="images/delete.gif" />
+            </th>
+        </tr>
     </table>
 {/if}
 </fieldset>

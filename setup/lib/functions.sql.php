@@ -90,7 +90,7 @@ function addAutoIncrementToTables($db, $cfg) {
         $aRows[] = $db->getRecord();
     }
     foreach ($aRows as $row) {
-        if (in_array($row[0], $filterTables) === false && strpos($row[0], $cfg['sql']['sqlprefix'] . '_') !== false) {
+        if (in_array($row[0], $filterTables) === false && cString::findFirstPos($row[0], $cfg['sql']['sqlprefix'] . '_') !== false) {
             alterTableHandling($row[0]);
         }
     }
@@ -185,17 +185,17 @@ function urlDecodeTable($db, $table, $checkTableExists = false) {
 
         $sql = "UPDATE " . $table . " SET ";
         foreach ($row as $key => $value) {
-            if (strlen($value) > 0) {
+            if (cString::getStringLength($value) > 0) {
                 $sql .= "`" . $key . "`='" . $db->escape(urldecode($value)) . "', ";
             }
         }
-        $sql = substr($sql, 0, strlen($sql) - 2) . " WHERE ";
+        $sql = cString::getPartOfString($sql, 0, cString::getStringLength($sql) - 2) . " WHERE ";
         foreach ($row as $key => $value) {
-            if (strlen($value) > 0) {
+            if (cString::getStringLength($value) > 0) {
                 $sql .= "`" . $key . "`= '" . $db->escape($value) . "' AND ";
             }
         }
-        $sql = substr($sql, 0, strlen($sql) - 5) . ";";
+        $sql = cString::getPartOfString($sql, 0, cString::getStringLength($sql) - 5) . ";";
 
         $db2->query($sql);
     }
@@ -279,7 +279,7 @@ function removeRemarks($sql) {
     $output = "";
 
     for ($i = 0; $i < $linecount; $i++) {
-        if (($i != ($linecount - 1)) || (strlen($lines[$i]) > 0)) {
+        if (($i != ($linecount - 1)) || (cString::getStringLength($lines[$i]) > 0)) {
             if (!empty($lines[$i]) && $lines[$i][0] != "#") {
                 $output .= $lines[$i] . "\n";
             } else {
@@ -315,7 +315,7 @@ function splitSqlFile($sql, $delimiter) {
     $token_count = count($tokens);
     for ($i = 0; $i < $token_count; $i++) {
         // Don't wanna add an empty string as the last thing in the array.
-        if (($i != ($token_count - 1)) || (strlen($tokens[$i] > 0))) {
+        if (($i != ($token_count - 1)) || (cString::getStringLength($tokens[$i] > 0))) {
             // This is the total number of single quotes in the token.
             $total_quotes = preg_match_all("/'/", $tokens[$i], $matches);
             // Counts single quotes that are preceded by an odd number of backslashes,

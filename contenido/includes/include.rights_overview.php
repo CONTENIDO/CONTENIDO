@@ -16,8 +16,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-cInclude('includes', 'functions.rights.php');
-
 if (!($perm->have_perm_area_action($area, $action) || $perm->have_perm_area_action('user', $action))) {
     // access denied
     $notification->displayNotification("error", i18n("Permission denied"));
@@ -74,7 +72,7 @@ if ($action == 'user_delete') {
 // Action edit user
 if ($action == 'user_edit') {
 
-    if (count($mclient) > 0) {
+    if (is_array($mclient) && count($mclient) > 0) {
 
         // Prevent setting the permissions for a client without a language of that client
         foreach ($mclient as $selectedclient) {
@@ -83,7 +81,7 @@ if ($action == 'user_edit') {
             $clientLanguageCollection = new cApiClientLanguageCollection();
             $availablelanguages = $clientLanguageCollection->getLanguagesByClient($selectedclient);
 
-            if (count($mlang) == 0) {
+            if (!is_array($mlang) || count($mlang) == 0) {
                 // User has no selected language
                 $sNotification = $notification->returnNotification("warning", i18n("Please select a language for your selected client."));
                 $bError = true;
@@ -109,7 +107,7 @@ if ($action == 'user_edit') {
 
     }
 
-    $aPerms = buildUserOrGroupPermsFromRequest();
+    $aPerms = cRights::buildUserOrGroupPermsFromRequest();
 
     // update user values
     // New Class User, update password and other values
@@ -133,7 +131,7 @@ if ($action == 'user_edit') {
     $passwordagain = addslashes($passwordagain);
 
     $bPassOk = false;
-    if (strlen($password) > 0) {
+    if (cString::getStringLength($password) > 0) {
         // yes --> check it...
         if (strcmp($password, $passwordagain) == 0) {
             // set password....
@@ -152,7 +150,7 @@ if ($action == 'user_edit') {
             $sNotification = $notification->returnNotification("error", i18n("Passwords don't match"));
             $bError = true;
         }
-    } else if (strlen($password) === 0 && strlen($passwordagain) === 0) {
+    } else if (cString::getStringLength($password) === 0 && cString::getStringLength($passwordagain) === 0) {
         // it is okay if the password has not been changed - then the old
         // password is kept.
         $bPassOk = true;
@@ -164,7 +162,7 @@ if ($action == 'user_edit') {
         $bError = true;
     }
 
-    if (!$bError && (strlen($password) == 0 || $bPassOk == true)) {
+    if (!$bError && (cString::getStringLength($password) == 0 || $bPassOk == true)) {
         if ($ocApiUser->store()) {
             $sNotification = $notification->returnNotification("ok", i18n("Changes saved"));
             $bError = true;
@@ -270,7 +268,7 @@ $tpl->next();
 
 $tpl->set('s', 'PATH_TO_CALENDER_PIC', cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif');
 
-if (($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
+if (($lang_short = cString::getPartOfString(cString::toLowerCase($belang), 0, 2)) != "en") {
     $langscripts = '<script type="text/javascript" src="scripts/jquery/plugins/timepicker-' . $lang_short . '.js"></script>
     <script type="text/javascript" src="scripts/jquery/plugins/datepicker-' . $lang_short . '.js"></script>';
     $tpl->set('s', 'CAL_LANG', $langscripts);

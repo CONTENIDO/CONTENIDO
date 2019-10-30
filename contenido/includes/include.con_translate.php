@@ -99,7 +99,7 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
         if ($field > 3) {
             $sortby = array();
             foreach ($this->data as $row => $cols) {
-                $sortby[$row] = trim(strtolower(conHtmlentities($cols[$field])));
+                $sortby[$row] = trim(cString::toLowerCase(conHtmlentities($cols[$field])));
             }
             $this->data = cArray::csort($this->data, $sortby, $order);
         } else {
@@ -112,9 +112,12 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
 /**
  * Adds sorting images to string
  *
- * @param int $index
+ * @param int    $index
  * @param string $text
+ *
  * @return string
+ * 
+ * @throws cException
  */
 function addSortImages($index, $text) {
     global $cfg;
@@ -193,7 +196,7 @@ if ($editlang != 'all') {
     $editlang = cSecurity::toInteger($editlang);
 }
 
-$search = strtolower(trim($_REQUEST["search"]));
+$search = cString::toLowerCase(trim($_REQUEST["search"]));
 $filter = $_REQUEST["filter"];
 
 $cApiModuleCollection = new cApiModuleCollection();
@@ -343,11 +346,11 @@ if ($search != '' || ($filter != '' && $filter != -1)) {
         // filter by search
         if ($search != '') {
             $bFoundSearch = false;
-            if (stripos($aTranslation['string'], $search) !== false) {
+            if (cString::findFirstPosCI($aTranslation['string'], $search) !== false) {
                 $bFoundSearch = true;
             }
             foreach ($aTranslation['translations'] as $idlang => $langTranslation) {
-                if (stripos($langTranslation, $search) !== false) {
+                if (cString::findFirstPosCI($langTranslation, $search) !== false) {
                     $bFoundSearch = true;
                 }
             }
@@ -599,7 +602,6 @@ foreach ($allTranslations as $hash => $translationArray) {
         $inUseString = '';
         $currentModuleInUse = i18n('No template');
     } else {
-
         $inUseString = i18n("Click for more information about usage");
         $currentModuleInUse = '<a href="javascript:;" rel="' . $translationArray['idmod'] . '" class="in_used_mod"><img src="' . $cfg['path']['images'] . 'info.gif" border="0" title="' . $inUseString . '" alt="' . $inUseString . '">' . $countCurrentModuleInUse . ' ' . ($countCurrentModuleInUse == 1? i18n('Template') : i18n('Templates')) . ' </a>';
     }

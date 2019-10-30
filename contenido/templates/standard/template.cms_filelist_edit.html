@@ -125,7 +125,7 @@
     var bIgnoreExtensions{ID} = '{IGNOREEXTENSIONS}';
 
 
-    Con.Loader.get(Con.cfg.urlBackend + 'scripts/cmsFilelist.js', function() {
+    Con.Loader.get([Con.cfg.urlBackend + 'scripts/cmsFilelist.js'], function() {
         addFileListEvents(fileListFrame{ID}, fileListImage{ID}, sPath, Con.sid, iIdArtLang, {ID}, aFileListData{ID}, bIgnoreExtensions{ID});
     });
 })(Con, Con.$);

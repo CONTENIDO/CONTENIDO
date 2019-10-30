@@ -47,6 +47,10 @@ class cApiUserPropertyCollection extends ItemCollection {
      * Constructor to create an instance of this class.
      *
      * @param string $userId
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($userId) {
         $cfg = cRegistry::getConfig();
@@ -71,13 +75,17 @@ class cApiUserPropertyCollection extends ItemCollection {
      * Resets the states of static properties.
      */
     public static function reset() {
-        unset(self::$_enableCache, self::$_entries);
+        self::$_enableCache = null;
+        self::$_entries = null;
     }
 
     /**
      * User id setter
      *
      * @param string $userId
+     *
+     * @throws cDbException
+     * @throws cException
      * @throws cInvalidArgumentException If passed user id is empty
      */
     public function setUserId($userId) {
@@ -96,8 +104,13 @@ class cApiUserPropertyCollection extends ItemCollection {
      * @param string $type
      * @param string $name
      * @param string $value
-     * @param int $idcatlang [optional]
+     * @param int    $idcatlang [optional]
+     *
      * @return cApiUserProperty
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function setValueByTypeName($type, $name, $value, $idcatlang = 0) {
         $item = $this->fetchByUserIdTypeName($type, $name);
@@ -121,8 +134,11 @@ class cApiUserPropertyCollection extends ItemCollection {
      * @param string $type
      * @param string $name
      * @param string $value
-     * @param int $idcatlang [optional]
+     * @param int    $idcatlang [optional]
      * @return cApiUserProperty
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($type, $name, $value, $idcatlang = 0) {
         $item = $this->createNewItem();
@@ -145,6 +161,9 @@ class cApiUserPropertyCollection extends ItemCollection {
      * Returns all user properties by userid.
      *
      * @return array
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchByUserId() {
         if (self::$_enableCache) {
@@ -167,7 +186,11 @@ class cApiUserPropertyCollection extends ItemCollection {
      *
      * @param string $type
      * @param string $name
+     *
      * @return array
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchByTypeName($type, $name) {
         $sql = $this->db->prepare("type = '%s' AND name = '%s'", $type, $name);
@@ -184,7 +207,11 @@ class cApiUserPropertyCollection extends ItemCollection {
      *
      * @param string $type
      * @param string $name
+     *
      * @return cApiUserProperty|NULL
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchByUserIdTypeName($type, $name) {
         if (self::$_enableCache) {
@@ -203,7 +230,11 @@ class cApiUserPropertyCollection extends ItemCollection {
      * Returns all user properties by userid and type.
      *
      * @param string $type
+     *
      * @return array
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public function fetchByUserIdType($type) {
         if (self::$_enableCache) {
@@ -224,7 +255,12 @@ class cApiUserPropertyCollection extends ItemCollection {
      *
      * @param string $type
      * @param string $name
+     *
      * @return bool
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function deleteByUserIdTypeName($type, $name) {
         $sql = $this->db->prepare("user_id = '%s' AND type = '%s' AND name = '%s'", $this->_userId, $type, $name);
@@ -236,7 +272,12 @@ class cApiUserPropertyCollection extends ItemCollection {
      * Deletes user properties by userid and type.
      *
      * @param string $type
+     *
      * @return bool
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function deleteByUserIdType($type) {
         $sql = $this->db->prepare("user_id = '%s' AND type = '%s'", $this->_userId, $type);
@@ -248,6 +289,10 @@ class cApiUserPropertyCollection extends ItemCollection {
      * Deletes all user properties by userid.
      *
      * @return bool
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function deleteByUserId() {
         $sql = $this->db->prepare("user_id = '%s'", $this->_userId);
@@ -259,6 +304,10 @@ class cApiUserPropertyCollection extends ItemCollection {
      * Deletes selected user properties.
      *
      * @return bool
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     protected function _deleteSelected() {
         $result = false;
@@ -274,6 +323,9 @@ class cApiUserPropertyCollection extends ItemCollection {
 
     /**
      * Loads/Caches all user properties.
+     *
+     * @throws cDbException
+     * @throws cException
      */
     protected function _loadFromCache() {
         self::$_entries = array();
@@ -366,13 +418,16 @@ class cApiUserPropertyCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiUserProperty extends Item {
-
+class cApiUserProperty extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
      * @param mixed $mId [optional]
-     *         Specifies the ID of item to load
+     *                   Specifies the ID of item to load
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         $cfg = cRegistry::getConfig();
@@ -388,6 +443,8 @@ class cApiUserProperty extends Item {
      *
      * @param string $value
      * @return bool
+     * @throws cDbException
+     * @throws cInvalidArgumentException
      */
     public function updateValue($value) {
         $this->set('value', $value);

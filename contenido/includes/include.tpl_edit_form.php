@@ -57,6 +57,7 @@ if ($db->nextRecord()) {
 }
 
 // *************** List layouts ****************
+$tpl2->set('s', 'ID', 'cLayoutSelect');
 $tpl2->set('s', 'NAME', 'idlay');
 $tpl2->set('s', 'CLASS', 'text_medium');
 $tpl2->set('s', 'OPTIONS', 'onchange="tplform.changelayout.value=1;tplform.submit();"');

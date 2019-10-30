@@ -15,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // In some cases dont print menue
-if ($dont_print_subnav == 1) {
+if (isset($dont_print_subnav) && $dont_print_subnav == 1) {
     $tpl->reset();
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['right_top_blank']);
     return;
@@ -40,7 +40,7 @@ foreach ($_GET as $sTempKey => $sTempValue) {
     if (in_array($sTempKey, $aBasicParams)) {
         // Basic parameters attached
         $iCountBasicVal++;
-    } else if ((substr($sTempKey, 0, 2) == 'id' || substr($sTempKey, -2, 2) == 'id')
+    } else if ((cString::getPartOfString($sTempKey, 0, 2) == 'id' || cString::getPartOfString($sTempKey, -2, 2) == 'id')
         && ((int) $sTempValue == $sTempValue                      // check integer
         || preg_match('/^[0-9a-f]{32}$/', $sTempValue)) // check md5
         )
@@ -56,20 +56,18 @@ if ($iCountBasicVal == count($_GET)) {
     $bVirgin = true;
 }
 
-/*
-// Area-Url-Params for special params
-switch ($area) {
-    case 'style':
-    case 'js':
-    case 'htmltpl':
-        if (array_key_exists('file', $_GET)) {
-            $sUrlParams .= '&file=' . $_GET['file'];
-        }
-        break;
-    default:
-        echo '';
-}
-*/
+// // Area-Url-Params for special params
+// switch ($area) {
+//     case 'style':
+//     case 'js':
+//     case 'htmltpl':
+//         if (array_key_exists('file', $_GET)) {
+//             $sUrlParams .= '&file=' . $_GET['file'];
+//         }
+//         break;
+//     default:
+//         echo '';
+// }
 
 // Debug
 cDebug::out('Url-Params: ' . $sUrlParams);
@@ -99,7 +97,7 @@ foreach ($areasNavSubs as $areasNavSub) {
     $sClass = ($areaName == $area) ? ' current' : '';
 
     // Link
-    $sLink = $sess->url('main.php?area=' . $areaName . '&frame=4' . ($appendparameters ? '&appendparameters=' . $appendparameters : '') . $sUrlParams);
+    $sLink = $sess->url('main.php?area=' . $areaName . '&frame=4' . (!empty($appendparameters) ? '&appendparameters=' . $appendparameters : '') . $sUrlParams);
 
     // Fill template
     $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
@@ -123,7 +121,6 @@ if (!$bVirgin || $bMenuless) {
 
     $sTpl = $tpl->generate($cfg['path']['templates'] . $cfg['templates']['subnav'], true);
 
-    cDebug::out('sExectime: ' . substr($sExectime, 0, 7) . ' sec');
     echo $sTpl;
 } else {
     // Is loading from main.php

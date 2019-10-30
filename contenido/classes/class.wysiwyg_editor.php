@@ -72,7 +72,7 @@ abstract class cWYSIWYGEditor {
 
     /**
      *
-     * @param string $sContent
+     * @param string $sEditorContent
      */
     protected function _setEditorContent($sEditorContent) {
         $this->_sEditorContent = $sEditorContent;
@@ -86,7 +86,7 @@ abstract class cWYSIWYGEditor {
         global $cfg;
 
         if (is_dir($cfg['path']['all_wysiwyg'] . $sEditor)) {
-            if (substr($sEditor, strlen($sEditor) - 1, 1) != "/") {
+            if (cString::getPartOfString($sEditor, cString::getStringLength($sEditor) - 1, 1) != "/") {
                 $sEditor = $sEditor . "/";
             }
 
@@ -167,11 +167,11 @@ abstract class cWYSIWYGEditor {
 
         // no paths are allowed in WYSIWYG editor
         // fall back to defaults if editor folder does not exist
-        if (0 === strlen($curWysiwygEditor)
+        if (0 === cString::getStringLength($curWysiwygEditor)
         || false === cFileHandler::exists(cRegistry::getConfigValue('path', 'all_wysiwyg') . $curWysiwygEditor)
-        || false !== strpos($curWysiwygEditor, '.')
-        || false !== strpos($curWysiwygEditor, '/')
-        || false !== strpos($curWysiwygEditor, '\\')) {
+        || false !== cString::findFirstPos($curWysiwygEditor, '.')
+        || false !== cString::findFirstPos($curWysiwygEditor, '/')
+        || false !== cString::findFirstPos($curWysiwygEditor, '\\')) {
             $curWysiwygEditor = constant('DEFAULT_WYSIWYG_EDITOR');
         }
 
@@ -182,10 +182,14 @@ abstract class cWYSIWYGEditor {
      * Saves configuration of WYSIWYG editor into a file
      * This function does not validate input! This has to be done by classes that extend cWYSIWYGEditor
      * because this class does not know what each WYSIWYG editor expects.
+     *
      * @param array $config
      *         Array with configuration values for the current WYSIWYG editor to save
+     *
      * @return array
      *         Array with values that were not accepted
+     *
+     * @throws cInvalidArgumentException
      */
     public static function saveConfig($config) {
 

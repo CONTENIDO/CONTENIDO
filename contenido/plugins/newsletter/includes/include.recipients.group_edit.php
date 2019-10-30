@@ -42,7 +42,7 @@ $aFields["deactivated"] = array(
 );
 
 if ($action == "recipientgroup_create" && $perm->have_perm_area_action($area, $action)) {
-    $oRGroup = $oRGroups->create(" " . i18n("-- New group --", 'newsletter', "newsletter"));
+    $oRGroup = $oRGroups->create(" " . i18n("-- New group --", 'newsletter'));
     $_REQUEST["idrecipientgroup"] = $oRGroup->get("idnewsgroup");
     $oPage->setReload();
     $sRefreshLeftTopScript = '<script type="text/javascript">Con.getFrame("left_top").refreshGroupOption(\'' . $_REQUEST["idrecipientgroup"] . '\', \'add\')</script>';
@@ -195,7 +195,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
 
     $oSelSortBy = new cHTMLSelectElement("member_sortby");
     foreach ($aFields as $sKey => $aData) {
-        if (strpos($aData["type"], "sort") !== false) {
+        if (cString::findFirstPos($aData["type"], "sort") !== false) {
             if ($_REQUEST["member_sortby"] == "") {
                 $_REQUEST["member_sortby"] = $aData["field"];
             }
@@ -219,7 +219,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
     $oSelSearchIn->addOptionElement("all", $oOption);
 
     foreach ($aFields as $sKey => $aData) {
-        if (strpos($aData["type"], "search") !== false) {
+        if (cString::findFirstPos($aData["type"], "search") !== false) {
             $oOption = new cHTMLOptionElement($aData["caption"], $aData["field"]);
             $oSelSearchIn->addOptionElement($aData["field"], $oOption);
         }
@@ -228,34 +228,34 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
 
     $oSubmit = new cHTMLButton("submit", i18n("Apply", 'newsletter'));
 
-    $sContent = '<div>' . chr(10);
-    $sContent .= '   <table>' . chr(10);
-    $sContent .= '      <tr>' . chr(10);
-    $sContent .= '         <td>' . i18n("Items / page", 'newsletter') . '</td>' . chr(10);
-    $sContent .= '         <td>' . $oSelItemsPerPage->render() . '</td>' . chr(10);
-    $sContent .= '      </tr>' . chr(10);
-    $sContent .= '      <tr>' . chr(10);
-    $sContent .= '         <td>' . i18n("Sort by", 'newsletter') . '</td>' . chr(10);
-    $sContent .= '         <td>' . $oSelSortBy->render() . '</td>' . chr(10);
-    $sContent .= '      </tr>' . chr(10);
-    $sContent .= '      <tr>' . chr(10);
-    $sContent .= '         <td>' . i18n("Sort order", 'newsletter') . '</td>' . chr(10);
-    $sContent .= '         <td>' . $oSelSortOrder->render() . '</td>' . chr(10);
-    $sContent .= '      </tr>' . chr(10);
-    $sContent .= '      <tr>' . chr(10);
-    $sContent .= '         <td>' . i18n("Search for", 'newsletter') . '</td>' . chr(10);
-    $sContent .= '         <td>' . $oTxtFilter->render() . '</td>' . chr(10);
-    $sContent .= '      </tr>' . chr(10);
-    $sContent .= '      <tr>' . chr(10);
-    $sContent .= '         <td>' . i18n("Search in", 'newsletter') . '</td>' . chr(10);
-    $sContent .= '         <td>' . $oSelSearchIn->render() . '</td>' . chr(10);
-    $sContent .= '      </tr>' . chr(10);
-    $sContent .= '      <tr>' . chr(10);
-    $sContent .= '         <td>&nbsp;</td>' . chr(10);
-    $sContent .= '         <td>' . $oSubmit->render() . '</td>' . chr(10);
-    $sContent .= '      </tr>' . chr(10);
-    $sContent .= '   </table>' . chr(10);
-    $sContent .= '</div>' . chr(10);
+    $sContent = '<div>' . PHP_EOL;
+    $sContent .= '   <table>' . PHP_EOL;
+    $sContent .= '      <tr>' . PHP_EOL;
+    $sContent .= '         <td>' . i18n("Items / page", 'newsletter') . '</td>' . PHP_EOL;
+    $sContent .= '         <td>' . $oSelItemsPerPage->render() . '</td>' . PHP_EOL;
+    $sContent .= '      </tr>' . PHP_EOL;
+    $sContent .= '      <tr>' . PHP_EOL;
+    $sContent .= '         <td>' . i18n("Sort by", 'newsletter') . '</td>' . PHP_EOL;
+    $sContent .= '         <td>' . $oSelSortBy->render() . '</td>' . PHP_EOL;
+    $sContent .= '      </tr>' . PHP_EOL;
+    $sContent .= '      <tr>' . PHP_EOL;
+    $sContent .= '         <td>' . i18n("Sort order", 'newsletter') . '</td>' . PHP_EOL;
+    $sContent .= '         <td>' . $oSelSortOrder->render() . '</td>' . PHP_EOL;
+    $sContent .= '      </tr>' . PHP_EOL;
+    $sContent .= '      <tr>' . PHP_EOL;
+    $sContent .= '         <td>' . i18n("Search for", 'newsletter') . '</td>' . PHP_EOL;
+    $sContent .= '         <td>' . $oTxtFilter->render() . '</td>' . PHP_EOL;
+    $sContent .= '      </tr>' . PHP_EOL;
+    $sContent .= '      <tr>' . PHP_EOL;
+    $sContent .= '         <td>' . i18n("Search in", 'newsletter') . '</td>' . PHP_EOL;
+    $sContent .= '         <td>' . $oSelSearchIn->render() . '</td>' . PHP_EOL;
+    $sContent .= '      </tr>' . PHP_EOL;
+    $sContent .= '      <tr>' . PHP_EOL;
+    $sContent .= '         <td>&nbsp;</td>' . PHP_EOL;
+    $sContent .= '         <td>' . $oSubmit->render() . '</td>' . PHP_EOL;
+    $sContent .= '      </tr>' . PHP_EOL;
+    $sContent .= '   </table>' . PHP_EOL;
+    $sContent .= '</div>' . PHP_EOL;
     $oMemberListOptionRow->setContentData($sContent);
 
     // Members
@@ -297,7 +297,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
         if ($_REQUEST["member_filter"] != "") {
             if ($_REQUEST["member_searchin"] == "--all--" || $_REQUEST["member_searchin"] == "") {
                 foreach ($aFields as $sKey => $aData) {
-                    if (strpos($aData["type"], "search") !== false) {
+                    if (cString::findFirstPos($aData["type"], "search") !== false) {
                         $oInsiders->setWhereGroup("filter", $aData["field"], $_REQUEST["member_filter"], "LIKE");
                     }
                 }
@@ -338,7 +338,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
     if ($iItems == 0 && $_REQUEST["member_filter"] == "" && ($_REQUEST["member_elemperpage"] == 0 || $iMembers == 0)) {
         $oAddedRecipientList->setCell(1, 1, i18n("No recipients are added to this group yet", 'newsletter'));
         $oAddedRecipientList->setCell(1, 2, '&nbsp;');
-    } else if ($iItems == 0) {
+    } elseif ($iItems == 0) {
         $oAddedRecipientList->setCell(1, 1, i18n("No recipients found", 'newsletter'));
         $oAddedRecipientList->setCell(1, 2, '&nbsp;');
     } else {
@@ -405,7 +405,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
 
     $oSelSortBy = new cHTMLSelectElement("outsider_sortby");
     foreach ($aFields as $sKey => $aData) {
-        if (strpos($aData["type"], "sort") !== false) {
+        if (cString::findFirstPos($aData["type"], "sort") !== false) {
             if ($_REQUEST["outsider_sortby"] == "") {
                 $_REQUEST["outsider_sortby"] = $aData["field"];
             }
@@ -429,7 +429,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
     $oSelSearchIn->addOptionElement("all", $oOption);
 
     foreach ($aFields as $sKey => $aData) {
-        if (strpos($aData["type"], "search") !== false) {
+        if (cString::findFirstPos($aData["type"], "search") !== false) {
             $oOption = new cHTMLOptionElement($aData["caption"], $aData["field"]);
             $oSelSearchIn->addOptionElement($aData["field"], $oOption);
         }
@@ -438,34 +438,34 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
 
     $oSubmit = new cHTMLButton("submit", i18n("Apply", 'newsletter'));
 
-    $sContent = '<div>' . chr(10);
-    $sContent .= '   <table>' . chr(10);
-    $sContent .= '      <tr>' . chr(10);
-    $sContent .= '         <td>' . i18n("Items / page", 'newsletter') . '</td>' . chr(10);
-    $sContent .= '         <td>' . $oSelItemsPerPage->render() . '</td>' . chr(10);
-    $sContent .= '      </tr>' . chr(10);
-    $sContent .= '      <tr>' . chr(10);
-    $sContent .= '         <td>' . i18n("Sort by", 'newsletter') . '</td>' . chr(10);
-    $sContent .= '         <td>' . $oSelSortBy->render() . '</td>' . chr(10);
-    $sContent .= '      </tr>' . chr(10);
-    $sContent .= '      <tr>' . chr(10);
-    $sContent .= '         <td>' . i18n("Sort order", 'newsletter') . '</td>' . chr(10);
-    $sContent .= '         <td>' . $oSelSortOrder->render() . '</td>' . chr(10);
-    $sContent .= '      </tr>' . chr(10);
-    $sContent .= '      <tr>' . chr(10);
-    $sContent .= '         <td>' . i18n("Search for", 'newsletter') . '</td>' . chr(10);
-    $sContent .= '         <td>' . $oTxtFilter->render() . '</td>' . chr(10);
-    $sContent .= '      </tr>' . chr(10);
-    $sContent .= '      <tr>' . chr(10);
-    $sContent .= '         <td>' . i18n("Search in", 'newsletter') . '</td>' . chr(10);
-    $sContent .= '         <td>' . $oSelSearchIn->render() . '</td>' . chr(10);
-    $sContent .= '      </tr>' . chr(10);
-    $sContent .= '      <tr>' . chr(10);
-    $sContent .= '         <td>&nbsp;</td>' . chr(10);
-    $sContent .= '         <td>' . $oSubmit->render() . '</td>' . chr(10);
-    $sContent .= '      </tr>' . chr(10);
-    $sContent .= '   </table>' . chr(10);
-    $sContent .= '</div>' . chr(10);
+    $sContent = '<div>' . PHP_EOL;
+    $sContent .= '   <table>' . PHP_EOL;
+    $sContent .= '      <tr>' . PHP_EOL;
+    $sContent .= '         <td>' . i18n("Items / page", 'newsletter') . '</td>' . PHP_EOL;
+    $sContent .= '         <td>' . $oSelItemsPerPage->render() . '</td>' . PHP_EOL;
+    $sContent .= '      </tr>' . PHP_EOL;
+    $sContent .= '      <tr>' . PHP_EOL;
+    $sContent .= '         <td>' . i18n("Sort by", 'newsletter') . '</td>' . PHP_EOL;
+    $sContent .= '         <td>' . $oSelSortBy->render() . '</td>' . PHP_EOL;
+    $sContent .= '      </tr>' . PHP_EOL;
+    $sContent .= '      <tr>' . PHP_EOL;
+    $sContent .= '         <td>' . i18n("Sort order", 'newsletter') . '</td>' . PHP_EOL;
+    $sContent .= '         <td>' . $oSelSortOrder->render() . '</td>' . PHP_EOL;
+    $sContent .= '      </tr>' . PHP_EOL;
+    $sContent .= '      <tr>' . PHP_EOL;
+    $sContent .= '         <td>' . i18n("Search for", 'newsletter') . '</td>' . PHP_EOL;
+    $sContent .= '         <td>' . $oTxtFilter->render() . '</td>' . PHP_EOL;
+    $sContent .= '      </tr>' . PHP_EOL;
+    $sContent .= '      <tr>' . PHP_EOL;
+    $sContent .= '         <td>' . i18n("Search in", 'newsletter') . '</td>' . PHP_EOL;
+    $sContent .= '         <td>' . $oSelSearchIn->render() . '</td>' . PHP_EOL;
+    $sContent .= '      </tr>' . PHP_EOL;
+    $sContent .= '      <tr>' . PHP_EOL;
+    $sContent .= '         <td>&nbsp;</td>' . PHP_EOL;
+    $sContent .= '         <td>' . $oSubmit->render() . '</td>' . PHP_EOL;
+    $sContent .= '      </tr>' . PHP_EOL;
+    $sContent .= '   </table>' . PHP_EOL;
+    $sContent .= '</div>' . PHP_EOL;
     $oOutsiderListOptionRow->setContentData($sContent);
 
     // TODO: Try to enhance genericdb to get this working with the usual
@@ -492,7 +492,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
         $sSQLSearchIn = "";
         if ($_REQUEST["outsider_searchin"] == "--all--" || $_REQUEST["outsider_searchin"] == "") {
             foreach ($aFields as $sKey => $aData) {
-                if (strpos($aData["type"], "search") !== false) {
+                if (cString::findFirstPos($aData["type"], "search") !== false) {
                     if ($sSQLSearchIn !== "") {
                         $sSQLSearchIn .= " OR ";
                     }

@@ -64,7 +64,7 @@ if ((int) $client > 0) {
     $oSelectSortOrder->setDefault($_REQUEST["sortorder"]);
 
     $oSelectSearchIn = new cHTMLSelectElement("searchin");
-// CON-1910
+    // CON-1910
     $oSelectSearchIn->autoFill(array('' => i18n("-- All --"),
         'name' => i18n("Module name"),
         'description' => i18n("Description"),

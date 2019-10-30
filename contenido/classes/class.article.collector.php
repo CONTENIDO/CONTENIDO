@@ -84,7 +84,9 @@ class cArticleCollector implements SeekableIterator, Countable {
      * initiated.
      *
      * @param array $options [optional, default: empty array]
-     *         array with options for the collector
+     *                       array with options for the collector
+     *
+     * @throws cDbException
      */
     public function __construct($options = array()) {
         $this->setOptions($options);
@@ -168,13 +170,17 @@ class cArticleCollector implements SeekableIterator, Countable {
             $options['limit'] = 0;
         }
 
+        if (isset($options['offset']) === false) {
+            $options['offset'] = 0;
+        }
+
         $this->_options = $options;
     }
 
     /**
      * Executes the article search with the given options.
      *
-     * @throws cUnexpectedValueException
+     * @throws cDbException
      */
     public function loadArticles() {
         $this->_articles = array();
@@ -198,6 +204,7 @@ class cArticleCollector implements SeekableIterator, Countable {
         $sqlCat = (count($this->_options['categories']) > 0) ? ", " . $cfg['tab']['cat_art'] . " AS c WHERE c.idcat IN ('" . implode("','", $this->_options['categories']) . "') AND b.idart = c.idart AND " : ' WHERE ';
 
         $sqlArtSpecs = (count($this->_options['artspecs']) > 0) ? " a.artspec IN ('" . implode("','", $this->_options['artspecs']) . "') AND " : '';
+        $sqlStartArticles = '';
 
         if (count($this->_startArticles) > 0) {
             if ($this->_options['start'] == false) {
@@ -227,7 +234,11 @@ class cArticleCollector implements SeekableIterator, Countable {
         $sql .= " ORDER BY a." . $this->_options['order'] . " " . $this->_options['direction'];
 
         if ((int) $this->_options['limit'] > 0) {
-            $sql .= " LIMIT " . $this->_options['limit'];
+            $sql .= " LIMIT " . cSecurity::toInteger($this->_options['limit']);
+        }
+
+        if ((int) $this->_options['offset'] > 0) {
+            $sql .= " OFFSET " . cSecurity::toInteger($this->_options['offset']);
         }
 
         $db->query($sql);
@@ -249,6 +260,7 @@ class cArticleCollector implements SeekableIterator, Countable {
      * article of a category. Does work only if one category was requested.
      *
      * @return cApiArticleLanguage
+     * 
      * @throws cBadMethodCallException
      */
     public function startArticle() {
@@ -310,16 +322,16 @@ class cArticleCollector implements SeekableIterator, Countable {
      *         The page of the article collection
      */
     public function setPage($page) {
-        if (is_array($this->_pages[$page])) {
+        if (array_key_exists($page, $this->_pages)) {
             $this->_articles = $this->_pages[$page];
         }
     }
-
     /**
      * Seeks a specific position in the loaded articles.
      *
      * @param int $position
      *         position to load
+     * 
      * @throws cOutOfBoundsException
      */
     public function seek($position) {
@@ -379,6 +391,14 @@ class cArticleCollector implements SeekableIterator, Countable {
      */
     public function count() {
         return count($this->_articles);
+    }
+
+    /**
+     * @return array
+     */
+    public function getStartArticles()
+    {
+        return $this->_startArticles;
     }
 
 }

@@ -20,9 +20,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiSearchTrackingCollection extends ItemCollection {
-
     /**
      * Constructor to create an instance of this class.
+     *
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
         global $cfg;
@@ -35,16 +36,20 @@ class cApiSearchTrackingCollection extends ItemCollection {
      * Create a new tracking row
      *
      * @param string $searchTerm
-     *         Term the user searched for
-     * @param int $searchResults
-     *         Number of results
+     *                          Term the user searched for
+     * @param int    $searchResults
+     *                          Number of results
      * @param string $timestamp [optional]
-     *         Timestamp of the search
-     * @param number $idclient [optional]
-     *         Client
-     * @param number $idlang [optional]
-     *         Language
+     *                          Timestamp of the search
+     * @param int    $idclient  [optional]
+     *                          Client
+     * @param int    $idlang    [optional]
+     *                          Language
+     *
      * @return bool
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function create($searchTerm, $searchResults, $timestamp = "", $idclient = 0, $idlang = 0) {
         $item = $this->createNewItem();
@@ -62,9 +67,13 @@ class cApiSearchTrackingCollection extends ItemCollection {
      *
      * @param string $searchTerm
      *         Term the user searched for
-     * @param int $resultCount
+     * @param int    $resultCount
      *         Number of results
+     *
      * @return bool
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function trackSearch($searchTerm, $resultCount) {
         if (getEffectiveSetting("search", "term_tracking", "on") != "on") {
@@ -78,14 +87,42 @@ class cApiSearchTrackingCollection extends ItemCollection {
      * Select all search terms of this client and language and sort them by
      * popularity
      *
-     * @param number $idclient [optional]
-     *         Use this client instead of the current one
-     * @param number $idlang [optional]
-     *         Use this language instead of the current one
+     * @param int $idclient [optional]
+     *                      Use this client instead of the current one
+     * @param int $idlang   [optional]
+     *                      Use this language instead of the current one
      * @return bool
+     * @throws cDbException
+     * @deprecated Since 4.10.1, We can't use fields created by AVG or COUNT here! Result sets received by this function will contain all search term entries, not the cumulated ones.
      */
     public function selectPopularSearchTerms($idclient = 0, $idlang = 0) {
-        return $this->select('idclient=' . (($idclient == 0) ? cRegistry::getClientId() : $idclient) . ' AND idlang=' . (($idlang == 0) ? cRegistry::getLanguageId() : $idlang), 'searchterm', 'COUNT(searchterm) DESC');
+        return $this->select('idclient=' . (($idclient == 0) ? cRegistry::getClientId() : $idclient) . ' AND idlang=' . (($idlang == 0) ? cRegistry::getLanguageId() : $idlang), 'searchterm, idsearchtracking, idclient, idlang, results, datesearched', 'COUNT(searchterm) DESC');
+    }
+
+    /**
+     * Query all search terms of this client and language, group them by search
+     * term and sort them by popularity.
+     *
+     * The record sets created by this query contain following fields:
+     * - searchterm = The search term
+     * - avgresults = Average result of the search term
+     * - countsearchterm = The number of search for the search term
+     *
+     * @param int $idclient [optional]
+     *                      Use this client instead of the current one
+     * @param int $idlang   [optional]
+     *                      Use this language instead of the current one
+     * @return cDb
+     * @throws cDbException
+     */
+    public function queryPopularSearchTerms($idclient = 0, $idlang = 0) {
+        $idclient = ($idclient == 0) ? cRegistry::getClientId() : $idclient;
+        $idlang = ($idlang == 0) ? cRegistry::getLanguageId() : $idclient;
+        $db = cRegistry::getDb(); // Don't use own db instance, use a new one!
+        $sql = 'SELECT searchterm, AVG(results) AS avgresults, COUNT(searchterm) AS countsearchterm FROM `%s` '
+             . 'WHERE idclient=%d AND idlang=%d GROUP BY searchterm ORDER BY COUNT(searchterm) DESC';
+        $db->query($sql, $this->table, $idclient, $idlang);
+        return $db;
     }
 
     /**
@@ -93,12 +130,13 @@ class cApiSearchTrackingCollection extends ItemCollection {
      * sorted by the date
      *
      * @param string $term
-     *         Term the user searched for
-     * @param number $idclient [optional]
-     *         Use this client instead of the current one
-     * @param number $idlang [optional]
-     *         Use this language instead of the current one
+     *                         Term the user searched for
+     * @param int    $idclient [optional]
+     *                         Use this client instead of the current one
+     * @param int    $idlang   [optional]
+     *                         Use this language instead of the current one
      * @return bool
+     * @throws cDbException
      */
     public function selectSearchTerm($term, $idclient = 0, $idlang = 0) {
         return $this->select('searchterm=\'' . addslashes($term) . '\' AND idclient=' . (($idclient == 0) ? cRegistry::getClientId() : $idclient) . ' AND idlang=' . (($idlang == 0) ? cRegistry::getLanguageId() : $idlang), '', 'datesearched DESC');
@@ -112,13 +150,16 @@ class cApiSearchTrackingCollection extends ItemCollection {
  * @package Core
  * @subpackage GenericDB_Model
  */
-class cApiSearchTracking extends Item {
-
+class cApiSearchTracking extends Item
+{
     /**
      * Constructor to create an instance of this class.
      *
-     * @param string $mId [optional]
-     *         Item Id
+     * @param bool $mId [optional]
+     *                  Item Id
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function __construct($mId = false) {
         global $cfg;

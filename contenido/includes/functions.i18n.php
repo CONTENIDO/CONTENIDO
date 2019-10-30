@@ -22,10 +22,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @deprecated [2015-05-21]
  *         This method is no longer supported (no replacement)
+ *
  * @param string $string
  *         The string to translate
+ *
  * @return string
  *         Returns the translation
+ * 
+ * @throws cException
  */
 function trans($string) {
     return cI18n::__($string);
@@ -41,8 +45,11 @@ function trans($string) {
  *         The string to translate
  * @param string $domain
  *         The domain to look up
+ *
  * @return string
  *         Returns the translation
+ * 
+ * @throws cException
  */
 function i18n($string, $domain = 'contenido') {
     return cI18n::__($string, $domain);
@@ -55,8 +62,11 @@ function i18n($string, $domain = 'contenido') {
  *         The string to translate
  * @param string $domain
  *         The domain to look up
+ *
  * @return string
  *         Returns the translation
+ * 
+ * @throws cInvalidArgumentException
  */
 function i18nEmulateGettext($string, $domain = 'contenido') {
     return cI18n::emulateGettext($string, $domain);
@@ -135,7 +145,7 @@ function i18nMatchBrowserAccept($accept) {
      * de-ch isn't in the list. Cut it down after the '-' to 'de' which should
      * be in the list.
      */
-    $accept = substr($accept, 0, 2);
+    $accept = cString::getPartOfString($accept, 0, 2);
     foreach ($available_languages as $key => $value) {
         list($country, $lang, $encoding, $shortaccept) = $value;
         if ($accept == $shortaccept) {
@@ -419,49 +429,56 @@ function i18nGetAvailableLanguages() {
 }
 
 /**
- * Now the function supports formated strings like %s.
- * e.g. echo mi18n("May the %s be with %s", 'force', 'you');
- * will output: May the force be with you
+ * If a translation is missing its key will be returned.
+ * If the setting debug/module_translation_message is set to true, which is the default,
+ * it then will be prefixed by 'Module translation not found: '.
  *
- * @param string $key
- *         the string to translate
- * @return string
- *         the translated string
+ * This function is variadic in order to support formatted strings like %s.
+ * e.g. echo mi18n("May the %s be with %s.", 'force', 'you');
+ * will return: "May the force be with you."
+ *
+ * @param string $key the string to translate
+ *
+ * @return string the translated string
+ * @throws cDbException
+ * @throws cException
+ * @throws cInvalidArgumentException
  */
-function mi18n($key) {
+function mi18n($key)
+{
+    $key = trim($key);
 
     // skip empty keys
-    if (0 === strlen(trim($key))) {
+    if (empty($key)) {
         return 'No module translation ID specified.';
     }
 
-    // dont workd by setup/upgrade
+    // dont works by setup/upgrade
     cInclude('classes', 'contenido/class.module.php');
     cInclude('classes', 'module/class.module.filetranslation.php');
 
     // get all translations of current module
-    $cCurrentModule = cRegistry::getCurrentModuleId();
+    $cCurrentModule             = cRegistry::getCurrentModuleId();
     $contenidoTranslateFromFile = new cModuleFileTranslation($cCurrentModule, true);
-    $translations = $contenidoTranslateFromFile->getLangArray();
+    $translations               = $contenidoTranslateFromFile->getLangArray();
 
-    $translation = $translations[$key];
+    $translation = isset($translations[$key]) ? $translations[$key] : '';
 
-    // Get module_translation_message setting value
-    $moduleTranslationMessage = getEffectiveSetting('debug', 'module_translation_message', 'true');
-    $moduleTranslationMessage = 'true' === $moduleTranslationMessage ? true : false;
-
-    // consider key as untranslated if translation has length 0
+    // consider key as untranslated if translation is empty
     // Don't trim translation, so that a string can be translated as ' '!
     // Show message only if module_translation_message mode is turn on
-    if (0 === strlen($translation)) {
-        $translation = $moduleTranslationMessage ? 'Module translation not found: ' : '';
-        $translation .= $key;
+    if (empty($translation)) {
+        // Get module_translation_message setting value
+        $moduleTranslationMessage = getEffectiveSetting('debug', 'module_translation_message', 'true');
+        $moduleTranslationMessage = 'true' === $moduleTranslationMessage ? true : false;
+        $translation              = $moduleTranslationMessage ? 'Module translation not found: ' : '';
+        $translation              .= $key;
     }
 
     // call sprintf on translation with additional params
     if (1 < func_num_args()) {
-        $arrArgs = func_get_args();
-        $arrArgs[0] = $translation;
+        $arrArgs     = func_get_args();
+        $arrArgs[0]  = $translation;
         $translation = call_user_func_array('sprintf', $arrArgs);
     }
 

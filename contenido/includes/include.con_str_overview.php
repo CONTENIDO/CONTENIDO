@@ -20,9 +20,13 @@ cInclude('includes', 'functions.lang.php');
 
 /**
  *
- * @param int $iIdcat
+ * @param int   $iIdcat
  * @param array $aWholelist
+ *
  * @return string
+ *
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function showTree($iIdcat, &$aWholelist) {
     global $check_global_rights, $sess, $cfg, $perm, $db, $db2, $db3, $area, $client, $lang, $navigationTree;
@@ -141,7 +145,7 @@ function showTree($iIdcat, &$aWholelist) {
                 $aCssClasses[] = 'last';
             }
 
-            if ($aValue['collapsed'] == 1 && is_array($navigationTree[$idcat])) {
+            if ($aValue['collapsed'] == 1 && isset($navigationTree[$idcat]) && is_array($navigationTree[$idcat])) {
                 $aCssClasses[] = 'collapsed';
             }
 
@@ -193,7 +197,7 @@ function showTree($iIdcat, &$aWholelist) {
 
             // Build Tree
             $tpl->set('d', 'CFGDATA', $cfgdata);
-            if (is_array($navigationTree[$idcat])) {
+            if (isset($navigationTree[$idcat]) && is_array($navigationTree[$idcat])) {
                 $tpl->set('d', 'SUBCATS', showTree($idcat, $aWholelist));
                 $tpl->set('d', 'COLLAPSE', '<a href="#"> </a>');
                 $aWholelist[] = $idcat;
@@ -299,7 +303,8 @@ if ($syncoptions == -1) {
                 b.public AS public,
                 b.visible AS online,
                 d.idtpl AS idtpl,
-                b.idlang AS idlang
+                b.idlang AS idlang,
+                c.idtree AS idtree
             FROM
                 (" . $cfg["tab"]["cat"] . " AS a,
                 " . $cfg["tab"]["cat_lang"] . " AS b,
@@ -325,7 +330,8 @@ if ($syncoptions == -1) {
                 b.public AS public,
                 b.visible AS online,
                 d.idtpl AS idtpl,
-                b.idlang AS idlang
+                b.idlang AS idlang,
+                c.idtree AS idtree
             FROM
                 (" . $cfg["tab"]["cat"] . " AS a,
                 " . $cfg["tab"]["cat_lang"] . " AS b,
@@ -371,6 +377,7 @@ while ($db->nextRecord()) {
 }
 
 $arrArtCache = array();
+$aIsArticles = array();
 
 if (count($arrIn) > 0) {
     $sIn = implode(',', $arrIn);
@@ -434,7 +441,7 @@ if ($syncoptions == -1) {
                 b.idclient = '" . cSecurity::toInteger($client) . "' AND
                 b.idart = c.idart AND
                 c.idcat = d.idcat
-            GROUP BY c.idcat";
+            GROUP BY c.idcat, online, d.startidartlang";
 } else {
     $sql2 = "SELECT
                 c.idcat AS idcat,
@@ -450,7 +457,7 @@ if ($syncoptions == -1) {
                 b.idclient = '" . cSecurity::toInteger($client) . "' AND
                 b.idart = c.idart AND
                 c.idcat = d.idcat
-            GROUP BY c.idcat";
+            GROUP BY c.idcat, online, d.startidartlang";
 }
 $db->query($sql2);
 
@@ -627,7 +634,7 @@ while ($db->nextRecord()) {
             'forcedisplay' => $forcedisplay,
             'active' => $active,
             'islast' => false,
-            'articles' => $aIsArticles[$db->f("idcat")],
+            'articles' => !empty($aIsArticles[$db->f("idcat")]) ? $aIsArticles[$db->f("idcat")] : false,
             'level' => $db->f('level')
         );
         if ($aStartOnlineArticles[$db->f('idcat')]['is_start']) {

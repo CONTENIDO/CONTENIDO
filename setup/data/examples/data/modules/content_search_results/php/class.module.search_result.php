@@ -87,6 +87,16 @@ class SearchResultModule {
     protected $_page = 0;
 
     /**
+     * @var string
+     */
+    protected $_msgResult;
+
+    /**
+     * @var string
+     */
+    protected $_msgRange;
+
+    /**
      *
      * @param array $options
      */
@@ -108,6 +118,9 @@ class SearchResultModule {
         $this->_idcat = cRegistry::getCategoryId();
         $this->_idart = cRegistry::getArticleId();
         $this->_sess = cRegistry::getSession();
+        $this->_combine = '';
+        $this->_msgResult = '';
+        $this->_msgRange = '';
 
         // get global variables (the ugly way)
         global $sArtSpecs;
@@ -134,9 +147,9 @@ class SearchResultModule {
         $this->_dispSearchTerm = $searchTerm;
 
         // now parse search term and set search options
-        if (strlen(trim($searchTerm)) > 0) {
+        if (cString::getStringLength(trim($searchTerm)) > 0) {
             $searchTerm = conHtmlEntityDecode($searchTerm);
-            if (false === stristr($searchTerm, ' or ')) {
+            if (false === cString::findFirstOccurrenceCI($searchTerm, ' or ')) {
                 $this->_combine = 'and';
             } else {
                 $this->_combine = 'or';
@@ -145,7 +158,7 @@ class SearchResultModule {
             // force converting string to UTF-8
             $searchTerm = htmlentities($searchTerm, ENT_COMPAT, 'UTF-8');
             // remove superfluous white space and convert search term to lowercase
-            $searchTerm = (trim(strtolower($searchTerm)));
+            $searchTerm = (trim(cString::toLowerCase($searchTerm)));
             $searchTerm = html_entity_decode($searchTerm, ENT_COMPAT, 'UTF-8');
 
             $searchTerm = str_replace(' and ', ' ', $searchTerm);
@@ -174,6 +187,7 @@ class SearchResultModule {
         $tpl->assign('prev', $this->_getPreviousLink());
         $tpl->assign('next', $this->_getNextLink());
         $tpl->assign('pages', $this->_getPageLinks());
+        $tpl->assign('method', 'post');
 
         // determine action & method for search form
         // depends upon if plugin mod_rewrite is enabled
@@ -221,7 +235,7 @@ class SearchResultModule {
             'htmltext',
             'text'
         ));
-        if (strlen($this->_prepSearchTerm) > 1) {
+        if (cString::getStringLength($this->_prepSearchTerm) > 1) {
             $searchResultArray = $search->searchIndex($this->_prepSearchTerm, '');
             
             if (false !== $searchResultArray) {

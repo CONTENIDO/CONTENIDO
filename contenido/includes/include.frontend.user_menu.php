@@ -75,7 +75,7 @@ if ($bUsePlugins == true && is_array($cfg['plugins']['frontendusers'])) {
     $_sValidPlugins = getEffectiveSetting("frontendusers", "pluginsearch_valid_plugins", '');
     $_aValidPlugins = array();
 
-    if (strlen($_sValidPlugins) > 0) {
+    if (cString::getStringLength($_sValidPlugins) > 0) {
         $_aValidPlugins = explode(',', $_sValidPlugins);
     }
 
@@ -103,7 +103,7 @@ if ($bUsePlugins == true && is_array($cfg['plugins']['frontendusers'])) {
 
 $oFEUsers->setWhere("cApiFrontendUserCollection.idclient", $client);
 
-if (strlen($_REQUEST["filter"]) > 0) {
+if (cString::getStringLength($_REQUEST["filter"]) > 0) {
     if ($_REQUEST['searchin'] == "--all--" || $_REQUEST['searchin'] == "") {
         foreach ($aFieldSources as $variableName => $source) {
             $oFEUsers->setWhereGroup("filter", $variableName, $_REQUEST["filter"], "LIKE");
@@ -131,13 +131,13 @@ $elemperpage = (int) $_REQUEST['elemperpage'];
 $oFEUsers->query();
 $fullTableCount = $oFEUsers->count();
 
-if (strlen($_REQUEST['sortby']) !== 0 && in_array($_REQUEST['sortby'], array_keys($aFieldSources))) {
+if (cString::getStringLength($_REQUEST['sortby']) !== 0 && in_array($_REQUEST['sortby'], array_keys($aFieldSources))) {
     $sortBy = $_REQUEST['sortby'];
 } else {
     $sortBy = 'username';
 }
 
-if (strlen($_REQUEST['sortorder']) !== 0 && in_array($_REQUEST['sortorder'], array_keys($aSortOrderOptions))) {
+if (cString::getStringLength($_REQUEST['sortorder']) !== 0 && in_array($_REQUEST['sortorder'], array_keys($aSortOrderOptions))) {
     $sortOrder = $_REQUEST['sortorder'];
 } else {
     $sortOrder = 'asc';

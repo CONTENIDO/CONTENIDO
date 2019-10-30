@@ -18,7 +18,6 @@ function fncSetPager(sId, sCurPage) {
             oInsert.innerHTML = sNavigation;
             oLeftTop.newsletter_listoptionsform_curPage = sCurPage;
             oLeftTop.toggle_pager(sId);
-
             window.clearInterval(oTimer);
         }
     }

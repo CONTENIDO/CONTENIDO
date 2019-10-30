@@ -357,6 +357,46 @@
                 }
             });
         });
+
+
+        // On flip mark click
+        $('a.flip_mark').click(function() {
+            $('input.mark_data').each(function() {
+                if ($(this).prop('checked')) {
+                    $(this).prop('checked', false);
+                } else {
+                    $(this).prop('checked', true);
+                }
+            });
+        });
+
+        /**
+         * Submit form via Ajax and delete form data.
+         */
+        $('#right_bottom img.delete').on('click', function(event) {
+            event.preventDefault();
+            var iddatas = [];
+            $('input.mark_data').each(function() {
+                if ($(this).prop('checked')) {
+                    iddatas.push($(this).val());
+                }
+            });
+            if (!iddatas.length){
+                return;
+            }
+            var deleteUrl = $('input.deleteUrl').val();
+            $.ajax({
+                type: 'POST',
+                url:  deleteUrl,
+                data: 'iddatas=' + iddatas.join(','),
+                success: function(msg) {
+                    if (Con.checkAjaxResponse(msg) === false)  {
+                        return false;
+                    }
+                    document.location.reload();
+                }
+            });
+        });
             
     });
 

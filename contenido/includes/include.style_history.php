@@ -67,15 +67,15 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage')) {
                                                                                                                       // variables
         $oVersionStyle = new cVersionFile($aFileInfo['idsfi'], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
 
-        $sStyleCode = $_POST['stylecode'];
-        $sStyleName = $_POST['stylename'];
-        $sStyleDesc = $_POST['styledesc'];
+        $sStyleCode = stripslashes($_POST['stylecode']);
+        $sStyleName = stripslashes($_POST['stylename']);
+        $sStyleDesc = stripslashes($_POST['styledesc']);
 
         $sPath = $oVersionStyle->getPathFile();
 
         // Edit File, there is a need for renaming file
         if ($sFileName != $sStyleName) {
-            if (cFileHandler::getExtension($sStyleName) != 'css' and strlen(stripslashes(trim($sStyleName))) > 0) {
+            if (cFileHandler::getExtension($sStyleName) != 'css' && cString::getStringLength(stripslashes(trim($sStyleName))) > 0) {
                 $sStyleName = stripslashes($sStyleName) . '.css';
             }
 
@@ -161,7 +161,7 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage')) {
         // Render and handle History Area
         $oPage->setEncoding('utf-8');
 
-        $oCodeMirrorOutput = new CodeMirror('IdLaycode', 'css', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
+        $oCodeMirrorOutput = new CodeMirror('IdLaycode', 'css', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg, !$bInUse);
         if($readOnly) {
             $oCodeMirrorOutput->setProperty("readOnly", "true");
         }

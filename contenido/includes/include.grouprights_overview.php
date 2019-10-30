@@ -14,7 +14,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-cInclude('includes', 'functions.rights.php');
 $page = new cGuiPage('grouprights_overview', '', '0');
 
 if (!$perm->have_perm_area_action($area, $action)) {
@@ -56,7 +55,8 @@ if (($action == 'group_edit')) {
             $bError = true;
         } else {
             foreach ($mlang as $ilang) {
-                if (!checkLangInClients($mclient, $ilang, NULL, NULL)) {
+                $clientLangColl = new cApiClientLanguageCollection();
+                if (!$clientLangColl->hasLanguageInClients($ilang, $mclient)) {
                     $sNotification = $notification->returnNotification("error", i18n("If you want to assign a language to a group you need to give it access to the client too."));
                     $bError = true;
                     break;
@@ -66,7 +66,7 @@ if (($action == 'group_edit')) {
     }
 
     if (!$bError) {
-        $aPerms = buildUserOrGroupPermsFromRequest();
+        $aPerms = cRights::buildUserOrGroupPermsFromRequest();
         $oGroup->setField('description', $request['description']);
         $oGroup->setField('perms', implode(',', $aPerms));
 

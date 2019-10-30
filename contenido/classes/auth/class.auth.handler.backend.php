@@ -53,6 +53,10 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
      * Includes a file which displays the login form.
      *
      * @see cAuthHandlerAbstract::displayLoginForm()
+     * 
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function displayLoginForm() {
         // @TODO  We need a better solution for this.
@@ -75,12 +79,16 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
      * ID or false.
      *
      * @see cAuthHandlerAbstract::validateCredentials()
+     *
      * @return string|false
+     *
+     * @throws cDbException
+     * @throws cException
      */
     public function validateCredentials() {
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $formtimestamp = $_POST['formtimestamp'];
+        $username = isset($_POST['username']) ? $_POST['username'] : '';
+        $password = isset($_POST['password']) ? $_POST['password'] : '';
+        $formtimestamp = isset($_POST['formtimestamp']) ? $_POST['formtimestamp'] : '';
 
         // add slashes if they are not automatically added
         if (cRegistry::getConfigValue('simulate_magic_quotes') !== true) {
@@ -160,7 +168,15 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
     /**
      * Log the successful authentication.
      *
+     * Switches the globals $client & $lang to the first client/language for which the current user has permissions.
+     * If a client/language combination is found the action "login" is added to the actionlog.
+     * Eventually the global $saveLoginTime is set to true which will trigger the update of the user properties
+     * "currentlogintime" and "lastlogintime" in mycontenido.
+     *
      * @see cAuthHandlerAbstract::logSuccessfulAuth()
+     * 
+     * @throws cDbException
+     * @throws cException
      */
     public function logSuccessfulAuth() {
         global $client, $lang, $saveLoginTime;

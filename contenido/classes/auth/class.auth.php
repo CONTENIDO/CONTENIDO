@@ -39,6 +39,12 @@ class cAuth {
     /**
      * The global auth information array.
      *
+     * This array has these keys:
+     * - uid = user_id for backend users and idfrontenduser for frontendusers
+     * - uname = username as part of the credentials to login
+     * - perm = user and group permissions as CSV
+     * - exp = expiration date as Unix timestamp
+     *
      * @var array
      */
     public $auth = array();
@@ -67,6 +73,14 @@ class cAuth {
     private $_in = false;
 
     /**
+     * Property used for session persistency, by cSession.
+     * This property needs to be public since cSession has to set it!
+     *
+     * @var array
+     */
+    public $persistent_slots = ['auth'];
+
+    /**
      * Magic getter function for outdated variable names.
      *
      * @param string $name
@@ -78,12 +92,6 @@ class cAuth {
             return $this->_lifetime;
         }
 
-        if ($name == 'persistent_slots') {
-            return array(
-                "auth"
-            );
-        }
-
         if ($name == 'classname') {
             return get_class($this);
         }
@@ -93,6 +101,7 @@ class cAuth {
      * Starts the authentication process.
      */
     public function start() {
+
         $sess = cRegistry::getSession();
         if (!$this->_in) {
             $sess->register('auth');
@@ -148,10 +157,9 @@ class cAuth {
      *         switched to nobody. (optional, default: false)
      */
     public function resetAuthInfo($nobody = false) {
-        $this->auth['uid'] = ($nobody == false? '' : self::AUTH_UID_NOBODY);
+        $this->auth['uid']  = $nobody ? self::AUTH_UID_NOBODY : '';
         $this->auth['perm'] = '';
-
-        $this->_setExpiration($nobody == false? 0 : 0x7fffffff);
+        $this->_setExpiration($nobody ? 0x7fffffff : 0);
     }
 
     /**

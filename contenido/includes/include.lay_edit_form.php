@@ -39,7 +39,7 @@ if ((!$readOnly) && $action == "lay_new") {
     if (!$perm->have_perm_area_action_anyitem($area, $action)) {
         $page->displayError(i18n("Permission denied"));
     } else {
-        $layoutAlias = strtolower(cString::cleanURLCharacters(i18n("-- New layout --")));
+        $layoutAlias = cString::toLowerCase(cString::cleanURLCharacters(i18n("-- New layout --")));
 
         if (cLayoutHandler::existLayout($layoutAlias, $cfgClient, $client)) {
             $page->displayError(i18n("Layout name exist, rename the layout!"));
@@ -125,16 +125,14 @@ if (true === $layout->isLoaded()) {
             $containerCounter[$containerNr] = 0;
 
             // Search for old-style CMS_CONTAINER[x]
-            $containerCounter[$containerNr] += substr_count($code, "CMS_CONTAINER[$containerNr]");
+            $containerCounter[$containerNr] += cString::countSubstring($code, "CMS_CONTAINER[$containerNr]");
 
             // Search for the new-style containers
             $count = preg_match_all("/<container( +)id=\\\\\"$containerNr\\\\\"(.*)>(.*)<\/container>/i", addslashes($code), $matches);
 
             $containerCounter[$containerNr] += $count;
 
-            if (is_array(tplGetContainerTypes($idlay, $containerNr))) {
-                $types = array_merge($types, tplGetContainerTypes($idlay, $containerNr));
-            }
+            $types = array_merge($types, tplGetContainerTypes($idlay, $containerNr));
         }
 
         $types = array_unique($types);
@@ -222,7 +220,7 @@ if (true === $layout->isLoaded()) {
     $form->add(i18n("Code"), $ta_code);
     $form->add(i18n("Options"), $cb_refresh);
 
-    $oCodeMirror = new CodeMirror('code', 'html', substr(strtolower($belang), 0, 2), true, $cfg);
+    $oCodeMirror = new CodeMirror('code', 'html', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg);
     // disable codemirror editing if readonly is on
     if($readOnly) {
         $oCodeMirror->setProperty("readOnly", "true");
@@ -240,11 +238,11 @@ if (stripslashes($_REQUEST['idlay']) || $bReloadSyncSrcipt) {
     $page->setReload();
 }
 
-if ($action == "lay_sync") {
-    //$page->setSubnav("idlay={$idlay}&dont_print_subnav=1", "lay");
-} else {
-    //$page->setSubnav("idlay={$idlay}", "lay");
-}
+// if ($action == "lay_sync") {
+//     $page->setSubnav("idlay={$idlay}&dont_print_subnav=1", "lay");
+// } else {
+//     $page->setSubnav("idlay={$idlay}", "lay");
+// }
 
 $page->render();
 

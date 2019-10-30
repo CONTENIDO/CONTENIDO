@@ -67,7 +67,7 @@ if (true === $recipient->isLoaded() && $recipient->get("idclient") == $client &&
         if (!isValidMail($email)) {
             $aMessages[] = i18n("Please specify a valid e-mail address", 'newsletter');
         } else {
-            $email = strtolower($email); // e-mail always in lower case
+            $email = cString::toLowerCase($email); // e-mail always in lower case
             if ($recipient->get("email") != $email) {
                 $oRecipients->resetQuery();
                 $oRecipients->setWhere("email", $email);

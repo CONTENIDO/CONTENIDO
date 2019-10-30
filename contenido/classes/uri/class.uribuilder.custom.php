@@ -62,9 +62,11 @@ class cUriBuilderCustom extends cUriBuilder {
      * as "1" in this sample.
      *
      * @param array $aParams
-     * @param bool $bUseAbsolutePath [optional]
-     * @param array $aConfig [optional]
-     *         If not set, will use cUriBuilderConfig::getConfig()
+     * @param bool  $bUseAbsolutePath [optional]
+     * @param array $aConfig          [optional]
+     *                                If not set, will use cUriBuilderConfig::getConfig()
+     *
+     * @throws cException
      * @throws cInvalidArgumentException
      */
     public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array()) {

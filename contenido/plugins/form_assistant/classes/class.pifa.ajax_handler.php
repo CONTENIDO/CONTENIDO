@@ -1,12 +1,13 @@
 <?php
 
 /**
+ * This file contains the PifaAjaxHandler class.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage FormAssistant
- * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @copyright four for business AG
- * @link http://www.4fb.de
+ * @author     Marcus Gnaß <marcus.gnass@4fb.de>
+ * @copyright  four for business AG
+ * @link       http://www.4fb.de
  */
 
 // assert CONTENIDO framework
@@ -80,11 +81,22 @@ class PifaAjaxHandler {
      *
      * @var string
      */
+    const DELETE_DATA = 'pifa_delete_data';
+
+    /**
+     * Action constant.
+     *
+     * @var string
+     */
     const GET_OPTION_ROW = 'pifa_get_option_row';
 
     /**
+     * @param $action
      *
      * @throws PifaException if action is unknown
+     * @throws PifaIllegalStateException
+     * @throws cDbException
+     * @throws cException
      */
     function dispatch($action) {
         global $area;
@@ -116,6 +128,14 @@ class PifaAjaxHandler {
             case self::DELETE_FIELD:
                 $idfield = cSecurity::toInteger($_GET['idfield']);
                 $this->_deleteField($idfield);
+                break;
+
+            case self::DELETE_DATA:
+                $idform  = cSecurity::toInteger($_GET['idform']);
+                $iddatas = explode(',', $_POST['iddatas']);
+                $iddatas = array_map('cSecurity::toInteger', $iddatas);
+                $iddatas = array_filter($iddatas);
+                $this->_deleteData($idform, $iddatas);
                 break;
 
             case self::REORDER_FIELDS:
@@ -164,7 +184,10 @@ class PifaAjaxHandler {
      * @param int $idform
      * @param int $idfield
      * @param int $fieldType
+     *
      * @throws PifaException
+     * @throws cDbException
+     * @throws cException
      */
     private function _getFieldForm($idform, $idfield, $fieldType) {
         $cfg = cRegistry::getConfig();
@@ -260,7 +283,10 @@ class PifaAjaxHandler {
      *
      * @param int $idform
      * @param int $idfield
+     *
      * @throws PifaException
+     * @throws cDbException
+     * @throws cException
      */
     private function _postFieldForm($idform, $idfield) {
         global $area;
@@ -325,11 +351,11 @@ class PifaAjaxHandler {
             $columnName = cSecurity::unescapeDB($columnName);
             $columnName = cSecurity::toString($columnName);
             $columnName = trim($columnName);
-            $columnName = strtolower($columnName);
+            $columnName = cString::toLowerCase($columnName);
             // does not seem to work
             // $columnName = cString::replaceDiacritics($columnName);
             $columnName = preg_replace('/[^a-z0-9_]/', '_', $columnName);
-            $columnName = substr($columnName, 0, 64);
+            $columnName = cString::getPartOfString($columnName, 0, 64);
             if ($columnName !== $pifaField->get('column_name')) {
                 $pifaField->set('column_name', $columnName);
             }
@@ -341,7 +367,7 @@ class PifaAjaxHandler {
             $label = cSecurity::toString($label);
             $label = strip_tags($label);
             $label = trim($label);
-            $label = substr($label, 0, 1023);
+            $label = cString::getPartOfString($label, 0, 1023);
             if ($label !== $pifaField->get('label')) {
                 $pifaField->set('label', $label);
             }
@@ -363,7 +389,7 @@ class PifaAjaxHandler {
             $uri = cSecurity::unescapeDB($uri);
             $uri = cSecurity::toString($uri);
             $uri = trim($uri);
-            $uri = substr($uri, 0, 1023);
+            $uri = cString::getPartOfString($uri, 0, 1023);
             if ($uri !== $pifaField->get('uri')) {
                 $pifaField->set('uri', $uri);
             }
@@ -374,7 +400,7 @@ class PifaAjaxHandler {
             $defaultValue = cSecurity::unescapeDB($defaultValue);
             $defaultValue = cSecurity::toString($defaultValue);
             $defaultValue = trim($defaultValue);
-            $defaultValue = substr($defaultValue, 0, 1023);
+            $defaultValue = cString::getPartOfString($defaultValue, 0, 1023);
             if ($defaultValue !== $pifaField->get('default_value')) {
                 $pifaField->set('default_value', $defaultValue);
             }
@@ -383,7 +409,7 @@ class PifaAjaxHandler {
         if ($pifaField->showField('option_labels')) {
             if (array_key_exists('option_labels', $_POST) && is_array($_POST['option_labels'])) {
                 $optionLabels = implode(',', array_map($string_cast_deep, $_POST['option_labels']));
-                $optionLabels = substr($optionLabels, 0, 1023);
+                $optionLabels = cString::getPartOfString($optionLabels, 0, 1023);
             }
             if ($optionLabels !== $pifaField->get('option_labels')) {
                 $pifaField->set('option_labels', $optionLabels);
@@ -393,7 +419,7 @@ class PifaAjaxHandler {
         if ($pifaField->showField('option_values')) {
             if (array_key_exists('option_values', $_POST) && is_array($_POST['option_values'])) {
                 $optionValues = implode(',', array_map($string_cast_deep, $_POST['option_values']));
-                $optionValues = substr($optionValues, 0, 1023);
+                $optionValues = cString::getPartOfString($optionValues, 0, 1023);
             }
             if ($optionValues !== $pifaField->get('option_values')) {
                 $pifaField->set('option_values', $optionValues);
@@ -423,16 +449,15 @@ class PifaAjaxHandler {
 
         if ($pifaField->showField('rule')) {
             $rule = $_POST['rule'];
-            $rule = cSecurity::unescapeDB($rule);
-            $rule = cSecurity::toString($rule);
+            $rule = cSecurity::toString($rule, false);
             $rule = trim($rule);
-            $rule = substr($rule, 0, 1023);
+            $rule = cString::getPartOfString($rule, 0, 1023);
             // check if rule is valid
-            if (0 === strlen($rule)) {
+            if (0 === cString::getStringLength($rule)) {
                 $pifaField->set('rule', $rule);
-            } else if (false === @preg_match($rule, 'And always remember: the world is an orange!')) {
+            } elseif (false === @preg_match($rule, 'And always remember: the world is an orange!')) {
                 // PASS
-            } else if ($rule === $pifaField->get('rule')) {
+            } elseif ($rule === $pifaField->get('rule')) {
                 // PASS
             } else {
                 $pifaField->set('rule', $rule);
@@ -444,7 +469,7 @@ class PifaAjaxHandler {
             $errorMessage = cSecurity::unescapeDB($errorMessage);
             $errorMessage = cSecurity::toString($errorMessage);
             $errorMessage = trim($errorMessage);
-            $errorMessage = substr($errorMessage, 0, 1023);
+            $errorMessage = cString::getPartOfString($errorMessage, 0, 1023);
             if ($errorMessage !== $pifaField->get('error_message')) {
                 $pifaField->set('error_message', $errorMessage);
             }
@@ -452,7 +477,7 @@ class PifaAjaxHandler {
 
         if ($pifaField->showField('css_class') && array_key_exists('css_class', $_POST) && is_array($_POST['css_class'])) {
             $cssClass = implode(',', array_map($string_cast_deep, $_POST['css_class']));
-            $cssClass = substr($cssClass, 0, 1023);
+            $cssClass = cString::getPartOfString($cssClass, 0, 1023);
         }
         if ($cssClass !== $pifaField->get('css_class')) {
             $pifaField->set('css_class', $cssClass);
@@ -463,7 +488,7 @@ class PifaAjaxHandler {
             $optionClass = cSecurity::unescapeDB($optionClass);
             $optionClass = cSecurity::toString($optionClass);
             $optionClass = trim($optionClass);
-            $optionClass = substr($optionClass, 0, 1023);
+            $optionClass = cString::getPartOfString($optionClass, 0, 1023);
             if ($optionClass !== $pifaField->get('option_class')) {
                 $pifaField->set('option_class', $optionClass);
             }
@@ -509,11 +534,12 @@ class PifaAjaxHandler {
                 ;";
 
             $db = cRegistry::getDb();
-            if (false === $db->query($sql)) {
-                // false is returned if no fields were updated
-                // but that doesn't matter cause new field might
-                // have no younger siblings
-            }
+            $succ = $db->query($sql);
+            // if (false === $succ) {
+            //     // false is returned if no fields were updated
+            //     // but that doesn't matter cause new field might
+            //     // have no younger siblings
+            // }
         }
 
         // return new row to be displayed in list
@@ -546,18 +572,34 @@ class PifaAjaxHandler {
     }
 
     /**
-     *
      * @param int $idfield
      * @throws PifaException
      */
     private function _deleteField($idfield) {
-        if (0 == $idfield) {
+        if (0 === $idfield) {
             $msg = Pifa::i18n('MISSING_IDFIELD');
             throw new PifaException($msg);
         }
 
         $pifaField = new PifaField($idfield);
         $pifaField->delete();
+    }
+
+    /**
+     *
+     * @param int   $idform
+     * @param array $iddatas
+     *
+     * @throws PifaException
+     */
+    private function _deleteData($idform, array $iddatas) {
+        if (empty($iddatas)) {
+            $msg = Pifa::i18n('MISSING_IDDATA');
+            throw new PifaException($msg);
+        }
+
+        $pifaForm = new PifaForm($idform);
+        $pifaForm->deleteData($iddatas);
     }
 
     /**
@@ -571,7 +613,6 @@ class PifaAjaxHandler {
     }
 
     /**
-     *
      * @param int $idform
      */
     private function _exportData($idform) {
@@ -591,7 +632,7 @@ class PifaAjaxHandler {
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
         header('Cache-Control: private');
         header('Content-Type: text/csv');
-        header('Content-Length: ' . strlen($data));
+        header('Content-Length: ' . cString::getStringLength($data));
         header('Content-Disposition: attachment; filename="' . $filename . '"');
         header('Content-Transfer-Encoding: binary');
 
@@ -626,7 +667,7 @@ class PifaAjaxHandler {
         header('Cache-Control: private');
         header('Content-Type: text/xml');
         // header('Content-Type: application/xml');
-        header('Content-Length: ' . strlen($xml));
+        header('Content-Length: ' . cString::getStringLength($xml, '8bit'));
         header('Content-Disposition: attachment; filename="' . $filename . '"');
         header('Content-Transfer-Encoding: binary');
 
@@ -635,7 +676,6 @@ class PifaAjaxHandler {
     }
 
     /**
-     *
      * @param string $name
      * @param string $file
      */
@@ -665,7 +705,7 @@ class PifaAjaxHandler {
         $buffer = '';
         $handle = fopen($path . $file, 'rb');
         if (false === $handle) {
-            return false;
+            return;
         }
         while (!feof($handle)) {
             print fread($handle, 1 * (1024 * 1024));
@@ -676,8 +716,9 @@ class PifaAjaxHandler {
     }
 
     /**
-     *
      * @param int $index
+     *
+     * @throws cException
      */
     private function _getOptionRow($index) {
         $cfg = cRegistry::getConfig();

@@ -80,15 +80,19 @@ class cGuiSourceEditor extends cGuiPage {
      * Initializes the class and its parent.
      *
      * @param string $filename
-     *         Name of the edited file
-     * @param bool $versioning [optional]
-     *         Is versioning activated or not. Defaults to true
-     * @param string $filetype [optional]
-     *         The type of the file. If ommited the class tries to determine
-     *         the type from the area
-     * @param string $filepath [optional]
-     *         Path to the file. If ommited the class tries to determine the
-     *         path from the type and the area
+     *                           Name of the edited file
+     * @param bool   $versioning [optional]
+     *                           Is versioning activated or not. Defaults to true
+     * @param string $filetype   [optional]
+     *                           The type of the file. If ommited the class tries to determine
+     *                           the type from the area
+     * @param string $filepath   [optional]
+     *                           Path to the file. If ommited the class tries to determine the
+     *                           path from the type and the area
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function __construct($filename, $versioning = true, $filetype = '', $filepath = '') {
         global $belang, $cfgClient;
@@ -143,7 +147,7 @@ class cGuiSourceEditor extends cGuiPage {
 
         // include the class and create the codemirror instance
         cInclude('external', 'codemirror/class.codemirror.php');
-        $this->_codeMirror = new CodeMirror('code', $this->_filetype, substr(strtolower($belang), 0, 2), true, $cfg, !$this->_readOnly);
+        $this->_codeMirror = new CodeMirror('code', $this->_filetype, cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg, !$this->_readOnly);
 
         $this->_versioning = $versioning;
 
@@ -156,6 +160,10 @@ class cGuiSourceEditor extends cGuiPage {
      *
      * @param array $req
      *         Request array. Usually _REQUEST
+     *
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     protected function update($req) {
         global $cfgClient;
@@ -334,7 +342,9 @@ class cGuiSourceEditor extends cGuiPage {
      *
      * @see cGuiPage::render()
      * @param cTemplate|null $template
-     * @param bool $return
+     * @param bool           $return
+     * @throws cDbException
+     * @throws cException
      * @throws cInvalidArgumentException
      */
     public function render($template = NULL, $return = false) {
