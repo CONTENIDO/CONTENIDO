@@ -239,7 +239,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * Function returns idarts of selected articles as array
      *
      * @return array
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -260,7 +260,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @return mixed
      *         string of select box or array of articles
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -288,22 +288,22 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
                 // objects manually
                 foreach ($manualArts as $idArt) {
                     $article = new cApiArticleLanguage();
-                    $article->loadByArticleAndLanguageId($idArt, $this->_lang);
-
-                    // try to fill teaser image
-                    if ($returnAsArray == false && $this->_fillTeaserTemplateEntry($article, $template)) {
-                        $i++;
-                        // break render, if teaser limit is reached
-                        if ($i == $this->_settings['teaser_count']) {
-                            break;
+                    if ($article->loadByArticleAndLanguageId($idArt, $this->_lang)) {
+                        // try to fill teaser image
+                        if ($returnAsArray == false && $this->_fillTeaserTemplateEntry($article, $template)) {
+                            $i++;
+                            // break render, if teaser limit is reached
+                            if ($i == $this->_settings['teaser_count']) {
+                                break;
+                            }
                         }
-                    }
 
-                    if ($returnAsArray == true && $this->_fillTeaserTemplateEntry($article, $template)) {
-                        array_push($articles, $article);
+                        if ($returnAsArray == true && $this->_fillTeaserTemplateEntry($article, $template)) {
+                            array_push($articles, $article);
 
-                        if ($i == $this->_settings['teaser_count']) {
-                            break;
+                            if ($i == $this->_settings['teaser_count']) {
+                                break;
+                            }
                         }
                     }
                 }
@@ -336,12 +336,12 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
                 $imageId = trim($this->_getArtContent($article, $this->_settings['teaser_source_image'], $this->_settings['teaser_source_image_count']));
 
                 if (!empty($title) || !empty($text) || !empty($imageId)) {
-                      if ($returnAsArray == true) {
+                    if ($returnAsArray == true) {
                          array_push($articles, $article);
                     } else {
                          $this->_fillTeaserTemplateEntry($article, $template);
                     }
-                   }
+                }
             }
         }
 
@@ -367,7 +367,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @return bool
      *         success state of this operation
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -394,12 +394,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $published = $article->getField('published');
         $online = $article->getField('online');
         $afields = [];
-        foreach ($article as $item => $value){
-            if ($item === 'values') {
-                foreach ($value as $field => $val){
-                    $afields[$field] = $val;
-                }
-            }
+        if (is_array($article->values)) {
+            $afields = $article->values;
         }
 
         if ($online == 1 || $contenido) {
@@ -635,7 +631,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         escaped HTML code which should be shown if content type is edited
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -868,7 +864,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         the code for the advanced tab
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -1059,7 +1055,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         name of article
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
