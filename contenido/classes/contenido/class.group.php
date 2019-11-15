@@ -122,7 +122,7 @@ class cApiGroupCollection extends ItemCollection {
      * Returns all groups which are accessible by the current group.
      *
      * @param array $perms
-     * @return array Array of group objects*         Array of group objects
+     * @return array Array of group objects
      * @throws cDbException
      * @throws cException
      */

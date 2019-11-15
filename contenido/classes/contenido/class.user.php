@@ -204,7 +204,7 @@ class cApiUserCollection extends ItemCollection {
     public function fetchSystemAdmins($forceActive = false) {
         $users = array();
 
-        $where = "perms LIKE %sysadmin%'";
+        $where = "perms LIKE '%sysadmin%'";
         if ($forceActive === true) {
             $where .= " AND (valid_from <= NOW() OR valid_from = '0000-00-00 00:00:00')" . " AND (valid_to >= NOW() OR valid_to = '0000-00-00 00:00:00')";
         }
