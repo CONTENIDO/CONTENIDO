@@ -128,7 +128,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @param int    $idcatlang [optional]
      *
      * @return cApiGroupProperty
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -207,7 +207,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
      *
      * @param string $type
      *
-     * @return array
+     * @return cApiGroupProperty[]
      *
      * @throws cDbException
      * @throws cException
@@ -229,7 +229,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
     /**
      * Returns all group properties by groupid.
      *
-     * @return array
+     * @return cApiGroupProperty[]
      *
      * @throws cDbException
      * @throws cException

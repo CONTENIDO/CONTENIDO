@@ -240,10 +240,10 @@ class PifaImporter {
      */
     private function _checkTableName() {
         $db = cRegistry::getDb();
-        $sql = '-- _checkTableName()
-            show tables
-                like "' . $db->escape($this->_tableName) . '"
-            ;';
+        $sql = "-- _checkTableName()
+            SHOW TABLES 
+                LIKE '" . $db->escape($this->_tableName) . "'
+            ;";
         $db->query($sql);
         if (0 < $db->numRows()) {
             throw new PifaDatabaseException("table $this->_tableName already exists");

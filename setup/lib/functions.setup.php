@@ -37,7 +37,9 @@ function cGenerateSetupStepsDisplay($iCurrentStep) {
 /**
  * Logs general setup failures into setuplog.txt in logs directory.
  *
- * @param   string  $sErrorMessage  Message to log in file
+ * @param string $sErrorMessage Message to log in file
+ * @throws cInvalidArgumentException
+ * @global  array $cfg
  */
 function logSetupFailure($sErrorMessage) {
     global $cfg;
@@ -46,9 +48,11 @@ function logSetupFailure($sErrorMessage) {
 
 /**
  * Initializes clients configuration, if not done before
- * @global  array  $cfg
- * @global  array  $cfgClient
- * @param  bool  $reset  Flag to reset any existing client configuration
+ * @param bool $reset Flag to reset any existing client configuration
+ * @throws cDbException
+ * @throws cInvalidArgumentException
+ * @global  array $cfg
+ * @global  array $cfgClient
  */
 function setupInitializeCfgClient($reset = false) {
     global $cfg, $cfgClient;
@@ -64,7 +68,7 @@ function setupInitializeCfgClient($reset = false) {
         } else {
             $db = getSetupMySQLDBConnection();
 
-            $db->query("SELECT * FROM " . $cfg["tab"]["clients"]);
+            $db->query("SELECT * FROM `%s`", $cfg["tab"]["clients"]);
             while ($db->nextRecord()) {
                 updateClientCache($db->f("idclient"), $db->f("htmlpath"), $db->f("frontendpath"));
             }

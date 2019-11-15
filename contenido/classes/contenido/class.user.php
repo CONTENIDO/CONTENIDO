@@ -110,18 +110,18 @@ class cApiUserCollection extends ItemCollection {
 
             foreach ($allClients as $key => $value) {
                 if (in_array('client[' . $key . ']', $perms) || in_array('admin[' . $key . ']', $perms)) {
-                    $limit[] = 'perms LIKE "%client[' . $this->escape($key) . ']%"';
+                    $limit[] = "perms LIKE '%client[" . $this->escape($key) . "]%'";
                     if ($includeAdmins) {
-                        $limit[] = 'perms LIKE "%admin[' . $this->escape($key) . ']%"';
+                        $limit[] = "perms LIKE '%admin[" . $this->escape($key) . "]%'";
                     }
                 }
                 if (in_array('admin[' . $key . ']', $perms)) {
-                    $limit[] = 'perms LIKE "%admin[' . $key . ']%"';
+                    $limit[] = "perms LIKE '%admin[" . $key . "]%'";
                 }
             }
 
             if ($includeAdmins) {
-                $limit[] = 'perms LIKE "%sysadmin%"';
+                $limit[] = "perms LIKE '%sysadmin%'";
             }
 
             if (count($limit) > 0) {
@@ -204,7 +204,7 @@ class cApiUserCollection extends ItemCollection {
     public function fetchSystemAdmins($forceActive = false) {
         $users = array();
 
-        $where = 'perms LIKE "%sysadmin%"';
+        $where = "perms LIKE %sysadmin%'";
         if ($forceActive === true) {
             $where .= " AND (valid_from <= NOW() OR valid_from = '0000-00-00 00:00:00')" . " AND (valid_to >= NOW() OR valid_to = '0000-00-00 00:00:00')";
         }
@@ -230,7 +230,7 @@ class cApiUserCollection extends ItemCollection {
         $client = (int) $client;
         $users = array();
 
-        $where = 'perms LIKE "%admin[' . $client . ']%"';
+        $where = "perms LIKE '%admin[" . $client . "]%'";
 
         $this->select($where);
         while (($item = $this->next()) !== false) {
@@ -392,7 +392,7 @@ class cApiUser extends Item {
      *
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
-     *                   
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -412,7 +412,7 @@ class cApiUser extends Item {
      *         Specifies the userID
      * @return bool
      *         True if the load was successful
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -427,7 +427,7 @@ class cApiUser extends Item {
      *         Specifies the username
      * @return bool
      *         True if the load was successful
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -439,10 +439,10 @@ class cApiUser extends Item {
      * Checks if a user with the id $userId exists
      *
      * @param string $userId
-     * 
+     *
      * @return bool
      *         user exists or not
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -459,7 +459,7 @@ class cApiUser extends Item {
      *         the name
      * @return bool
      *         username exists or not
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -595,7 +595,7 @@ class cApiUser extends Item {
      * NOTE: Setting the user id by this method will load the user model.
      *
      * @param string $uid
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -1046,7 +1046,7 @@ class cApiUser extends Item {
      *                      Flag to search in groups
      * @return string|bool
      *                      value of the retrieved property or false
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -1168,7 +1168,7 @@ class cApiUser extends Item {
      *         Name of the property to retrieve
      * @param string $value
      *         Value to insert
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException

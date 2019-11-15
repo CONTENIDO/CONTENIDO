@@ -229,14 +229,14 @@ if ($idquser == '%' || $idquser == "") {
         $userarray[] = $key;
     }
     $uservalues = implode('", "', $userarray);
-    $userquery = 'IN ("' . $uservalues . '")';
+    $userquery = "IN ('" . $uservalues . "')";
 } else {
     $userquery = "LIKE '" . $idquser . "'";
 }
 
-$where = 'user_id ' . $userquery . ' AND idlang LIKE "'.$db->escape($selectedLangauge) .'" AND idaction LIKE "' . $db->escape($idqaction) . '" AND '
-    . 'logtimestamp > "' . $db->escape($fromdate) . '" AND logtimestamp < "' . $db->escape($todate) . '" AND '
-    . 'idclient LIKE "' . $db->escape($idqclient) . '"';
+$where = "user_id " . $userquery . " AND idlang LIKE '".$db->escape($selectedLangauge) ."' AND idaction LIKE '" . $db->escape($idqaction) . "' AND "
+    . "logtimestamp > '" . $db->escape($fromdate) . "' AND logtimestamp < '" . $db->escape($todate) . "' AND "
+    . "idclient LIKE '" . $db->escape($idqclient) . "'";
 
 
 $actionLogColl = new cApiActionlogCollection();
