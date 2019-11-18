@@ -37,7 +37,7 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
      * Initial update jobs.
      *
      * NOTE: Don't spam this function with additional upgrade tasks.
-     * Create a new upgrated job file and implement the execute() method!
+     * Create a new upgrade job file and implement the execute() method!
      */
     protected function _executeInitialJobs() {
         global $cfg;
@@ -48,7 +48,7 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
         }
 
         // Set code creation (on update) flag
-        $this->_oDb->query('UPDATE %s SET createcode = 1', $cfg['tab']['cat_art']);
+        $this->_oDb->query('UPDATE `%s` SET createcode = 1', $cfg['tab']['cat_art']);
 
         // Convert old category start articles to new format, we don't support
         $this->_jobConvertOldStartArticlesToNewOne();
@@ -82,8 +82,7 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
         // Convert old category start articles to new format, we don't support
         // the configuration '$cfg["is_start_compatible"] = true;'
         if ($this->_setupType == 'upgrade') {
-            $sql = "SELECT * FROM " . $cfg["tab"]["cat_art"] . " WHERE is_start = 1";
-            $this->_oDb->query($sql);
+            $this->_oDb->query("SELECT * FROM `%s` WHERE is_start = 1", $cfg["tab"]["cat_art"]);
 
             $db2 = getSetupMySQLDBConnection();
 
@@ -93,18 +92,15 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
 
                 foreach (self::$_languages as $vlang => $oLang) {
                     $vlang = (int) $vlang;
-                    $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idart = " . $startidart . " AND idlang = " . $vlang;
-                    $db2->query($sql);
+                    $db2->query("SELECT idartlang FROM `%s` WHERE idart = %d AND idlang = %d", $cfg["tab"]["art_lang"], $startidart, $vlang);
                     if ($db2->nextRecord()) {
                         $idartlang = (int) $db2->f("idartlang");
-                        $sql = "UPDATE " . $cfg["tab"]["cat_lang"] . " SET startidartlang = " . $idartlang . " WHERE idcat = " . $idcat . " AND idlang= " . $vlang;
-                        $db2->query($sql);
+                        $db2->query("UPDATE `%s` SET startidartlang = %d WHERE idcat = %d AND idlang = %d", $cfg["tab"]["cat_lang"], $idartlang, $idcat, $vlang);
                     }
                 }
             }
 
-            $sql = "UPDATE " . $cfg["tab"]["cat_art"] . " SET is_start = 0";
-            $this->_oDb->query($sql);
+            $this->_oDb->query("UPDATE `%s` SET is_start = 0", $cfg["tab"]["cat_art"]);
         }
     }
 
@@ -114,22 +110,22 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
     protected function _renameOldUserTableToNewOne() {
         global $cfg;
 
-        $this->_oDb->query('SHOW TABLES LIKE "%s"', $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5');
+        $this->_oDb->query("SHOW TABLES LIKE '%s'", $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5');
         $oldTable = $this->_oDb->nextRecord();
 
-        $this->_oDb->query('SHOW TABLES LIKE "%s"', $cfg['sql']['sqlprefix'] . '_user');
+        $this->_oDb->query("SHOW TABLES LIKE '%s'", $cfg['sql']['sqlprefix'] . '_user');
         $newTable = $this->_oDb->nextRecord();
 
         if ($oldTable === true) {
             if ($newTable === false) {
                 // Only the old table exists. Rename it.
-                $this->_oDb->query('RENAME TABLE ' . $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5 TO ' . $cfg['sql']['sqlprefix'] . '_user');
+                $this->_oDb->query('RENAME TABLE `%s` TO `%s`', $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5', $cfg['sql']['sqlprefix'] . '_user');
             } else {
                 // The new and the old table exists. We trust the old table more
                 // since the new one should've been deleted by the setup. Drop
                 // the new one and rename the old one
-                $this->_oDb->query('DROP TABLE ' . $cfg['sql']['sqlprefix'] . '_user');
-                $this->_oDb->query('RENAME TABLE ' . $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5 TO ' . $cfg['sql']['sqlprefix'] . '_user');
+                $this->_oDb->query('DROP TABLE `%s`', $cfg['sql']['sqlprefix'] . '_user');
+                $this->_oDb->query('RENAME TABLE `%s` TO `%s`', $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5', $cfg['sql']['sqlprefix'] . '_user');
             }
         }
 

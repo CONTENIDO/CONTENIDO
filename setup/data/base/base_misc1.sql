@@ -1,1 +1,1 @@
-UPDATE !PREFIX!_art_lang SET published=lastmodified, publishedby=modifiedby WHERE online=1 and published="0000-00-00 00:00:00";
+UPDATE `!PREFIX!_art_lang` SET published=lastmodified, publishedby=modifiedby WHERE online=1 and published='0000-00-00 00:00:00';

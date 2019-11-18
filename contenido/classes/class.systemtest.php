@@ -523,7 +523,7 @@ class cSystemtest {
      *
      * @return number|bool
      *         ID or false if unable to determine the user
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     protected function getServerUID() {
@@ -556,7 +556,7 @@ class cSystemtest {
      *
      * @return number|bool
      *         ID or false if unable to determine the group
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     protected function getServerGID() {
@@ -586,7 +586,7 @@ class cSystemtest {
      *
      * @return int
      *         CON_PREDICT_
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     protected function predictCorrectFilepermissions($file) {
@@ -1017,10 +1017,10 @@ class cSystemtest {
      * @param string $host
      * @param string $username
      * @param string $password
-     * 
+     *
      * @return bool
      *         true if the test passed and false if not
-     * 
+     *
      * @throws cDbException
      */
     public function testMySQLModeStrict($host, $username, $password) {
@@ -1051,7 +1051,7 @@ class cSystemtest {
      *
      * @return int
      *         1 if the test passed and > 1 if not
-     * 
+     *
      * @throws cDbException
      */
     public function testMySQL($host, $username, $password) {
@@ -1446,7 +1446,7 @@ class cSystemtest {
      * @param string $databasePrefix
      * @param string $charset   [optional]
      * @param string $collation [optional]
-     *                          
+     *
      * @throws cDbException
      */
     public function checkSetupMysql($setupType, $databaseName, $databasePrefix, $charset = '', $collation = '') {
@@ -1464,7 +1464,7 @@ class cSystemtest {
                     $db->connect();
 
                     // Check if data already exists
-                    $db->query('SHOW TABLES LIKE "%s_actions"', $databasePrefix);
+                    $db->query("SHOW TABLES LIKE '%s_actions'", $databasePrefix);
 
                     if ($db->nextRecord()) {
                         $this->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("MySQL database already exists and seems to be filled", "setup"), sprintf(i18n("Setup checked the database %s and found the table %s. It seems that you already have a CONTENIDO installation in this database. If you want to install anyways, change the database prefix. If you want to upgrade from a previous version, choose 'upgrade' as setup type.", "setup"), $databaseName, sprintf("%s_actions", $databasePrefix)));
@@ -1472,13 +1472,13 @@ class cSystemtest {
                     }
 
                     // Check if data already exists
-                    $db->query('SHOW TABLES LIKE "%s_test"', $databasePrefix);
+                    $db->query("SHOW TABLES LIKE '%s_test'", $databasePrefix);
                     if ($db->nextRecord()) {
                         $this->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("MySQL test table already exists in the database", "setup"), sprintf(i18n("Setup checked the database %s and found the test table %s. Please remove it before continuing.", "setup"), $databaseName, sprintf("%s_test", $databasePrefix)));
                         return;
                     }
 
-                    // Good, table doesn't exist. Check for database permisions
+                    // Good, table doesn't exist. Check for database permissions
                     $status = checkMySQLTableCreation($db, $databaseName, sprintf("%s_test", $databasePrefix));
                     if (!$status) {
                         $this->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("Unable to create tables in the selected MySQL database", "setup"), sprintf(i18n("Setup tried to create a test table in the database %s and failed. Please assign table creation permissions to the database user you entered, or ask an administrator to do so.", "setup"), $databaseName));
@@ -1526,7 +1526,7 @@ class cSystemtest {
                 $db = getSetupMySQLDBConnection();
 
                 // Check if data already exists
-                $sql = 'SHOW TABLES LIKE "%s_actions"';
+                $sql = "SHOW TABLES LIKE '%s_actions'";
                 $db->query(sprintf($sql, $databasePrefix));
                 if (!$db->nextRecord()) {
                     $this->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("No data found for the upgrade", "setup"), sprintf(i18n("Setup tried to locate the data for the upgrade, however, the database %s contains no tables. You need to copy your database first before running setup.", "setup"), $databaseName));

@@ -15,9 +15,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Checks if a plugin is already installed
- * @param   cDb  $db
- * @param   string  $sPluginname
- * @return  bool
+ * @param cDb $db
+ * @param string $sPluginname
+ * @return bool
+ * @throws cDbException
  */
 function checkExistingPlugin($db, $sPluginname) {
     global $cfg;
@@ -32,19 +33,19 @@ function checkExistingPlugin($db, $sPluginname) {
 
     switch ($sPluginname) {
         case 'plugin_cronjob_overview':
-            $sSql = "SELECT * FROM %s WHERE idnavs=950";
+            $sSql = "SELECT * FROM `%s` WHERE idnavs=950";
             break;
         case 'plugin_conman':
-            $sSql = "SELECT * FROM %s WHERE idnavs=900";
+            $sSql = "SELECT * FROM `%s` WHERE idnavs=900";
             break;
         case 'plugin_content_allocation':
-            $sSql = "SELECT * FROM %s WHERE idnavs=800";
+            $sSql = "SELECT * FROM `%s` WHERE idnavs=800";
             break;
         case 'plugin_newsletter':
-            $sSql = "SELECT * FROM %s WHERE idnavs=610";
+            $sSql = "SELECT * FROM `%s` WHERE idnavs=610";
             break;
         case 'plugin_mod_rewrite':
-            $sSql = "SELECT * FROM %s WHERE idnavs=700 OR location='mod_rewrite/xml/;navigation/content/mod_rewrite'";
+            $sSql = "SELECT * FROM `%s` WHERE idnavs=700 OR location='mod_rewrite/xml/;navigation/content/mod_rewrite'";
             break;
         default:
             $sSql = '';
@@ -63,8 +64,10 @@ function checkExistingPlugin($db, $sPluginname) {
 
 /**
  * Updates system properties
- * @param  cDb $db
- * @param  string  $table  DB table name
+ * @param cDb $db
+ * @param string $table DB table name
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function updateSystemProperties($db, $table) {
     $table = $db->escape($table);
@@ -94,18 +97,16 @@ function updateSystemProperties($db, $table) {
     );
 
     foreach ($aStandardvalues as $aData) {
-        $sql = "SELECT `value` FROM `%s` WHERE `type` = '%s' AND `name` = '%s'";
-        $db->query(sprintf($sql, $table, $aData['type'], $aData['name']));
+        $sql = $db->prepare("SELECT `value` FROM `%s` WHERE `type` = '%s' AND `name` = '%s'", $table, $aData['type'], $aData['name']);
+        $db->query($sql);
         if ($db->nextRecord()) {
             $sValue = $db->f('value');
             if ($sValue == '') {
-                $sql = "UPDATE `%s` SET `value` = '%s' WHERE `type` = '%s' AND `name` = '%s'";
-                $sql = sprintf($sql, $table, $aData['value'], $aData['type'], $aData['name']);
+                $sql = $db->prepare("UPDATE `%s` SET `value` = '%s' WHERE `type` = '%s' AND `name` = '%s'", $table, $aData['value'], $aData['type'], $aData['name']);
                 $db->query($sql);
             }
         } else {
-            $sql = "INSERT INTO `%s` SET `type` = '%s', `name` = '%s', `value` = '%s'";
-            $sql = sprintf($sql, $table, $aData['type'], $aData['name'], $aData['value']);
+            $sql = $db->prepare("INSERT INTO `%s` SET `type` = '%s', `name` = '%s', `value` = '%s'", $table, $aData['type'], $aData['name'], $aData['value']);
             $db->query($sql);
         }
 
@@ -117,33 +118,30 @@ function updateSystemProperties($db, $table) {
 
 /**
  * Updates contenido version in given table
- * @param  cDb $db
- * @param  string  $table  DB table name
- * @param  string  $version  Version
+ * @param cDb $db
+ * @param string $table DB table name
+ * @param string $version Version
+ * @throws cDbException
  */
 function updateContenidoVersion($db, $table, $version) {
-    $sql = "SELECT `idsystemprop` FROM `%s` WHERE `type` = 'system' AND `name` = 'version'";
-    $db->query(sprintf($sql, $db->escape($table)));
+    $db->query("SELECT `idsystemprop` FROM `%s` WHERE `type` = 'system' AND `name` = 'version'", $table);
 
     if ($db->nextRecord()) {
-        $sql = "UPDATE `%s` SET `value` = '%s' WHERE `type` = 'system' AND `name` = 'version'";
-        $db->query(sprintf($sql, $db->escape($table), $db->escape($version)));
+        $db->query("UPDATE `%s` SET `value` = '%s' WHERE `type` = 'system' AND `name` = 'version'", $table, $version);
     } else {
-        //$id = $db->nextid($table);
-        $sql = "INSERT INTO `%s` SET `type` = 'system', `name` = 'version', `value` = '%s'";
-        $db->query(sprintf($sql, $db->escape($table), $db->escape($version)));
+        $db->query("INSERT INTO `%s` SET `type` = 'system', `name` = 'version', `value` = '%s'", $table, $version);
     }
 }
 
 /**
  * Returns current version
- * @param  cDb $db
- * @param  string  $table  DB table name
+ * @param cDb $db
+ * @param string $table DB table name
  * @return string
+ * @throws cDbException
  */
 function getContenidoVersion($db, $table) {
-    $sql = "SELECT `value` FROM `%s` WHERE `type` = 'system' AND `name` = 'version'";
-    $db->query(sprintf($sql, $db->escape($table)));
+    $db->query("SELECT `value` FROM `%s` WHERE `type` = 'system' AND `name` = 'version'", $table);
 
     if ($db->nextRecord()) {
         return $db->f("value");
@@ -153,42 +151,37 @@ function getContenidoVersion($db, $table) {
 }
 
 /**
- * Updates the system administrators password. 
- * 
- * @param $db
- * @param $table
- * @param $password
- * @param $mail
+ * Updates the system administrators password.
  *
+ * @param cDb $db
+ * @param string $table
+ * @param string $password
+ * @param string $mail
  * @return bool
+ * @throws cDbException
  */
 function updateSysadminPassword($db, $table, $password, $mail) {
-    $sql = "SELECT password FROM %s WHERE username='sysadmin'";
-    $db->query(sprintf($sql, $db->escape($table)));
+    $db->query("SELECT password FROM `%s` WHERE username='sysadmin'", $table);
 
     if ($db->nextRecord()) {
-        $sql = "UPDATE %s SET password='%s', email='%s' WHERE username='sysadmin'";
-        $db->query(sprintf($sql, $db->escape($table), md5($password), $mail));
+        $db->query("UPDATE `%s` SET password='%s', email='%s' WHERE username='sysadmin'", $table, md5($password), $mail);
         return true;
     } else {
-
         return false;
     }
 }
 
 /**
  * Reads and returns the total list of system clients.
- * @param $db
- * @param $table
- *
+ * @param cDb $db
+ * @param string $table
  * @return array
+ * @throws cDbException
  */
 function listClients($db, $table) {
     global $cfgClient;
 
-    $sql = "SELECT idclient, name FROM %s";
-
-    $db->query(sprintf($sql, $db->escape($table)));
+    $db->query("SELECT idclient, name FROM `%s`", $table);
 
     $clients = array();
 
@@ -202,12 +195,14 @@ function listClients($db, $table) {
 }
 
 /**
- * Updates the path information of a client and refreshs the configuration file.
- * @param $db
- * @param $table
- * @param $idclient
- * @param $frontendpath
- * @param $htmlpath
+ * Updates the path information of a client and refreshes the configuration file.
+ * @param cDb $db
+ * @param string $table
+ * @param int $idclient
+ * @param string $frontendpath
+ * @param string $htmlpath
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function updateClientPath($db, $table, $idclient, $frontendpath, $htmlpath) {
     global $cfg, $cfgClient;
@@ -218,7 +213,7 @@ function updateClientPath($db, $table, $idclient, $frontendpath, $htmlpath) {
 
 /**
  * Removes the trailing slash of a string.
- * @param $sInput
+ * @param string $sInput
  *
  * @return string
  */

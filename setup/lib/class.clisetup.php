@@ -347,7 +347,7 @@ class cCLISetup {
             }
 
             $db = getSetupMySQLDBConnection(false);
-            $db->query('DROP DATABASE ' . $this->_settings['db']['database']);
+            $db->query('DROP DATABASE `%s`', $this->_settings['db']['database']);
 
             prntln();
             prntln(sprintf(i18n('THE DATABASE %s HAS BEEN DELETED!!!', 'setup'), $this->_settings['db']['database']));
