@@ -224,8 +224,8 @@ function uplSyncDirectory($sPath) {
     // get current upload directory, it's subdirectories and remove all database
     // entries pointing to a non existing upload directory on the file system
     $db->query(
-        "SELECT DISTINCT(dirname) AS dirname FROM %s WHERE idclient=%d AND dirname LIKE '%s'",
-        $cfg['tab']['upl'], $client, $sPath
+        "SELECT DISTINCT(dirname) AS dirname FROM %s WHERE idclient=%d AND dirname LIKE '%s%%'", // NOTE: We escape % with %%
+        $cfg['tab']['upl'], cSecurity::toInteger($client), $sPath
     );
     while ($db->nextRecord()) {
         $sCurrDirname = $db->f('dirname');
