@@ -25,7 +25,6 @@ cms/images/misc/download_misc.png -text
 cms/images/misc/logo.png -text
 cms/images/misc/sprite.png -text
 cms/images/spacer.gif -text
-cms/includes/concache.php -text
 cms/includes/index.php -text
 cms/index.php -text
 cms/robots.txt -text
@@ -620,7 +619,6 @@ contenido/external/frontend/front_content.php -text
 contenido/external/frontend/front_crcloginform.inc.php -text
 contenido/external/frontend/images/but_ok.gif -text
 contenido/external/frontend/images/index.php -text
-contenido/external/frontend/includes/concache.php -text
 contenido/external/frontend/includes/index.php -text
 contenido/external/frontend/index.php -text
 contenido/external/frontend/js/index.php -text

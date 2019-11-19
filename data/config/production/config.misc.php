@@ -172,10 +172,10 @@ $cfg['php_error_reporting'] = E_ALL & ~(E_STRICT | E_NOTICE);
  * -----------------------------------------------------------------------------
  * This flag is for globally activating the caching feature in all frontends.
  * NOTE: You can control the caching behaviour of each client by configuring it
- * separately in its specific configuration file located in cms/includes/concache.php.
+ * separately in its specific configuration file located in cms/data/config/{environment}/concache.php.
  *
  * So, if you want to enable frontend caching, set $cfg['cache']['disable'] to false and configure
- * the rest in cms/includes/concache.php!
+ * the rest in cms/data/config/{environment}/concache.php!
  */
 
 // (bool) Enable/disable caching
