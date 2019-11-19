@@ -36,7 +36,7 @@ class cTinymce4Configuration {
      *
      * @var array
      */
-    private $_configErrors = array();
+    private $_configErrors = [];
 
     /**
      * Constructor function.
@@ -52,18 +52,13 @@ class cTinymce4Configuration {
     }
 
     /**
-     * Generate a div containing a label and a textbox.
+     * Generate a div containing a label and a text box.
      *
-     * @param string $description
-     *        Label text before the textbox
-     * @param string $name
-     *        Name of textbox form element
-     * @param string $value
-     *        Default value of textbox
-     * @param number $width
-     *        Width of label in px
-     * @return cHTMLDiv
-     *        The div element containing label and textbox
+     * @param string $description Label text before the text box
+     * @param string $name Name of text box form element
+     * @param string $value Default value of text box
+     * @param int $width Width of label in px
+     * @return cHTMLDiv The div element containing label and text box
      */
     private function _addLabelWithTextarea($description, $name, $value = '', $width = 75) {
         $label = new cHTMLLabel($description, $name);
@@ -85,17 +80,11 @@ class cTinymce4Configuration {
      * Generates a cHTMLCheckbox based on function arguments and sets
      * its disabled state based on permission check.
      *
-     * @param string $description
-     *        Description that will be displayed in checkbox label
-     * @param string $name
-     *        Name of checkbox, this is important for fetching values
-     *        from sent form
-     * @param string $value
-     *        The value that will be sent as content in the name key
-     * @param bool $checked
-     *        Whether this checkbox is setup as checked
-     * @return cHTMLCheckbox
-     *        Checkbox with label
+     * @param string $description Description that will be displayed in checkbox label
+     * @param string $name Name of checkbox, this is important for fetching values from sent form
+     * @param string $value The value that will be sent as content in the name key
+     * @param bool $checked Whether this checkbox is setup as checked
+     * @return cHTMLCheckbox Checkbox with label
      */
     private function _addLabelWithCheckbox($description, $name, $value, $checked) {
         $checkBox = new cHTMLCheckbox($name, $value, str_replace('[]', '_', $name . $value), (true === $checked));
@@ -151,45 +140,44 @@ class cTinymce4Configuration {
     }
 
     /**
-     * This function lists all external plugins that should be shown in
-     * a table.
+     * This function lists all external plugins that should be shown in a table.
      *
      * @return string
+     * @throws cException
      */
     private function _listExternalPlugins() {
         /// TODO: use a preference loading function for plugins to list
-        $externalPlugins = static::get(array(), 'raw', 'externalplugins');
+        $externalPlugins = static::get([], 'raw', 'externalplugins');
 
         // build a table
         $table = new cHTMLTable();
         $table->setClass('generic');
 
         // table row
-        $headrow = new cHTMLTableRow();
+        $headRow = new cHTMLTableRow();
 
         // table column 1 (plugin name)
         $col = new cHTMLTableHead();
         $col->appendContent(i18n('Name'));
-        $headrow->appendContent($col);
+        $headRow->appendContent($col);
 
         // table column 2 (plugin url)
         $col = new cHTMLTableHead();
         $col->appendContent(i18n('URL'));
-        $headrow->appendContent($col);
+        $headRow->appendContent($col);
 
         // table column 3 (user actions)
         $col = new cHTMLTableHead();
         $col->appendContent(i18n('Action'));
-        $headrow->appendContent($col);
+        $headRow->appendContent($col);
 
         // add columns to table
-        $table->appendContent($headrow);
+        $table->appendContent($headRow);
 
         // build table body
         $tbody = new cHTMLTableBody();
-        $i = 0;
         $n = count($externalPlugins) -1;
-        for ($i; $i < $n; $i++) {
+        for ($i = 0; $i < $n; $i++) {
             // new tr
             $row = new cHTMLTableRow();
 
@@ -263,7 +251,6 @@ class cTinymce4Configuration {
         // append row to table body
         $tbody->appendContent($row);
 
-
         // insert table body into table
         $table->appendContent($tbody);
 
@@ -274,10 +261,8 @@ class cTinymce4Configuration {
     /**
      * Function to check if toolbar data contains valid input.
      *
-     * @param string $toolbarData
-     *        The toolbar data to check for validity
-     * @return boolean
-     *        True if toolbar data is valid, false otherwise
+     * @param string $toolbarData The toolbar data to check for validity
+     * @return boolean True if toolbar data is valid, false otherwise
      */
     private function _validateToolbarN($toolbarData) {
         // do not use cRequestValidator instance
@@ -293,10 +278,8 @@ class cTinymce4Configuration {
     /**
      * Variadic function to obtain config values using nested key values.
      *
-     * @param mixed $default
-     *        Default value to use in case no value is set
-     * param string keys
-     *        The keys to access values in configuration
+     * @param mixed $default Default value to use in case no value is set
+     * param string keys The keys to access values in configuration
      * @return string|array
      */
     public static function get($default) {
@@ -309,17 +292,23 @@ class cTinymce4Configuration {
             if (true !== cFileHandler::exists($configPath)) {
                 return $default;
             }
-            // check if file is reable
-            if (true !== cFileHandler::readable($configPath)) {
+
+            try {
+                // check if file is readable
+                if (true !== cFileHandler::readable($configPath)) {
+                    return $default;
+                }
+            } catch (cInvalidArgumentException $e) {
                 return $default;
             }
+
             // Include configuration file
             require $configPath;
         }
 
         // check number of keys passed to function
-        $numargs = func_num_args();
-        if (0 === $numargs) {
+        $numArgs = func_num_args();
+        if (0 === $numArgs) {
             return $default;
         }
 
@@ -335,7 +324,7 @@ class cTinymce4Configuration {
         }
         $result = $result['wysiwyg']['tinymce4'];
         // get values in key path that user requested
-        for ($i = 0; $i < $numargs -1; $i++) {
+        for ($i = 0; $i < $numArgs -1; $i++) {
             if (false === isset($result[func_get_arg(1 + $i)])) {
                 return $default;
             }
@@ -349,10 +338,10 @@ class cTinymce4Configuration {
     /**
      * Function to validate form from showConfigurationForm().
      *
-     * @param array $config
-     *        The post parameters of submitted form
-     * @return boolean|array
-     *        False if data should not be saved, otherwise data to save
+     * @param array $config The post parameters of submitted form
+     * @return boolean|array False if data should not be saved, otherwise data to save
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     public function validateForm($config) {
         // Checks for cross site requests and cross site scripting
@@ -382,7 +371,7 @@ class cTinymce4Configuration {
 
         // check if config should be deleted
         if (isset($_POST['reset'])) {
-            $noti = new cGuiNotification();
+            $notification = new cGuiNotification();
 
             // try to delete configuration
             $configPath = cRegistry::getConfigValue('path', 'contenido_config');
@@ -390,10 +379,10 @@ class cTinymce4Configuration {
             if (cFileHandler::exists($configPath)
             && cFileHandler::writeable($configPath)) {
                 cFileHandler::remove($configPath);
-                $noti->displayNotification(cGuiNotification::LEVEL_INFO, i18n('TinyMCE 4 configuration got reset back to default'));
+                $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('TinyMCE 4 configuration got reset back to default'));
             } else {
                 // can not delete config, display message
-                $noti->displayNotification(cGuiNotification::LEVEL_ERROR, i18n('Can not delete config file'));
+                $notification->displayNotification(cGuiNotification::LEVEL_ERROR, i18n('Can not delete config file'));
             }
 
             // do not save config
@@ -441,20 +430,23 @@ class cTinymce4Configuration {
 
         // do not use cRequestValidator instance because it does not support multi-dimensional arrays
         if (false === $this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar1'])
-        || false === $this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar2'])
-        || false === $this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar3'])
-        || false === $this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar1'])
-        || false === $this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar2'])
-        || false === $this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar3'])) {
+            || false === $this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar2'])
+            || false === $this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar3'])
+            || false === $this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar1'])
+            || false === $this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar2'])
+            || false === $this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar3'])) {
             $this->_configErrors[] = i18n('Toolbar(s) of editor contain erroneous data.');
             return false;
         }
 
         // remove last entry of external plugins if it is empty
-        $lastExternalPlugin = $config[$key]['externalplugins'][count($config[$key]['externalplugins']) -1];
-        if ('' === $lastExternalPlugin['name']
-        && '' === $lastExternalPlugin['url']) {
-            unset($config[$key]['externalplugins'][count($config[$key]['externalplugins']) -1]);
+        if (!empty($config[$key]['externalplugins'])
+            && is_array($config[$key]['externalplugins']) && count($config[$key]['externalplugins']) > 0) {
+            $lastExternalPlugin = $config[$key]['externalplugins'][count($config[$key]['externalplugins']) -1];
+            if ('' === $lastExternalPlugin['name']
+                && '' === $lastExternalPlugin['url']) {
+                unset($config[$key]['externalplugins'][count($config[$key]['externalplugins']) -1]);
+            }
         }
 
         // custom tinymce 4 settings overwrite other fields
@@ -463,35 +455,38 @@ class cTinymce4Configuration {
         }
 
         // unescape strings then build config
-        $customConfig = (array) json_decode($config[$key]['custom'], true);
-        switch(json_last_error()) {
-            case JSON_ERROR_DEPTH:
-                $this->_configErrors[] = i18n('Maximum stack depth exceeded while decoding json');
-            return false;
-            case JSON_ERROR_CTRL_CHAR:
-                $this->_configErrors[] = i18n('Unexpected control character found');
-            return false;
-            case JSON_ERROR_SYNTAX:
-                $this->_configErrors[] = i18n('Syntax error, malformed JSON');
-            return false;
+        $customConfig = null;
+        if (!empty($config[$key]['custom'])) {
+            $customConfig = (array) json_decode($config[$key]['custom'], true);
+            switch(json_last_error()) {
+                case JSON_ERROR_DEPTH:
+                    $this->_configErrors[] = i18n('Maximum stack depth exceeded while decoding json');
+                    return false;
+                case JSON_ERROR_CTRL_CHAR:
+                    $this->_configErrors[] = i18n('Unexpected control character found');
+                    return false;
+                case JSON_ERROR_SYNTAX:
+                    $this->_configErrors[] = i18n('Syntax error, malformed JSON');
+                    return false;
+            }
         }
 
         // append new config to old config
-        $origConfig = static::get(array(), 'raw');
+        $origConfig = static::get([], 'raw');
         $config['raw'] = array_merge($origConfig, $config);
         //$config['raw'] = $config;
 
         // use custom parameters if they are correct JSON
-        if (JSON_ERROR_NONE === json_last_error()) {
+        if (is_array($customConfig) && JSON_ERROR_NONE === json_last_error()) {
             $config[$key] = array_merge($config[$key], $customConfig);
         }
         unset($config[$key]['custom']);
 
         // put all config values into ['tinymce4']['tinymce4']
         // put the raw settings of config page into ['tinymce4']['raw']
-        $origConfig = static::get(array(), 'tinymce4');
+        $origConfig = static::get([], 'tinymce4');
         $config = array_merge($origConfig, $config);
-        $res = array('tinymce4' => array('tinymce4' =>$config));
+        $res = ['tinymce4' => ['tinymce4' => $config]];
         //unset($res['tinymce4']['tinymce4']['custom']);
         $res['tinymce4']['raw'] = $res['tinymce4']['tinymce4']['raw'];
         unset($res['tinymce4']['tinymce4']['raw']);
@@ -503,15 +498,13 @@ class cTinymce4Configuration {
     /**
      * Do not load external plugin if user has permission to request that.
      *
-     * @param array $form
-     *        get parameters from deletion link
-     * @return boolean|array
-     *        False if data should not be saved, otherwise data to save
+     * @param array $form Get parameters from deletion link
+     * @return boolean|array False if data should not be saved, otherwise data to save
      */
     public function removeExternalPluginLoad($form) {
         // abort if user has not sufficient permissions
         if (false === $this->_perm) {
-            return;
+            return false;
         }
 
         $pluginToRemoveIdx = (int) $form['external_plugin_idx'];
@@ -522,9 +515,9 @@ class cTinymce4Configuration {
         // no config or no external plugins or no plugin with that index
         // means nothing to remove
         if (false === $settings
-        || false === isset($settings['raw'])
-        || false === isset($settings['raw']['externalplugins'])
-        || false === isset($settings['raw']['externalplugins'][$pluginToRemoveIdx])) {
+            || false === isset($settings['raw'])
+            || false === isset($settings['raw']['externalplugins'])
+            || false === isset($settings['raw']['externalplugins'][$pluginToRemoveIdx])) {
             return false;
         }
 
@@ -539,7 +532,7 @@ class cTinymce4Configuration {
         // apply raw settings to computed settings
         $settings['tinymce4']['externalplugins'] = $settings['raw']['externalplugins'];
 
-        return array('tinymce4' => $settings);
+        return ['tinymce4' => $settings];
     }
 
     /**
@@ -582,7 +575,7 @@ class cTinymce4Configuration {
             if (false === class_exists($contentTypeClassName)) {
                 continue;
             }
-            $cContentType = new $contentTypeClassName(null, 0, array());
+            $cContentType = new $contentTypeClassName(null, 0, []);
             if (false === $cContentType->isWysiwygCompatible()) {
                 continue;
             }
@@ -710,7 +703,6 @@ class cTinymce4Configuration {
             $resetForm = $resetForm->appendContent($oResetButton);
             $result .= $resetForm->render();
         }
-
 
         $page->set('s', 'FORM', $result);
         $page->set('s', 'RELOAD_HEADER', (false) ? 'true' : 'false');
