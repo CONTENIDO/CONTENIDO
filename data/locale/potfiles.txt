@@ -455,7 +455,6 @@
 ./external/frontend/front_content.php
 ./external/frontend/front_crcloginform.inc.php
 ./external/frontend/images/index.php
-./external/frontend/includes/concache.php
 ./external/frontend/includes/index.php
 ./external/frontend/index.php
 ./external/frontend/js/index.php
