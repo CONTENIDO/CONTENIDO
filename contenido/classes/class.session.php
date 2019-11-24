@@ -279,6 +279,11 @@ class cSession {
         // Split URL by question mark and remove existing session parameter
         if (cString::findFirstPos($url, '?') !== false) {
             list($file, $query) = explode('?', $url);
+            if (cString::findFirstPos($query, '#') !== false) {
+                list($query, $fragment) = explode('#', $query);
+            } else {
+                $fragment = '';
+            }
             parse_str($query, $parameters);
             if (isset($parameters[$encodedName])) {
                 unset($parameters[$encodedName]);
@@ -286,6 +291,7 @@ class cSession {
         } else {
             $file = $url;
             $parameters = [];
+            $fragment = '';
         }
 
         if ($addSession) {
@@ -295,6 +301,11 @@ class cSession {
 
         // Assemble URL again
         $url = $file . (count($parameters) > 0 ? '?' . http_build_query($parameters) : '');
+
+        // Add fragment
+        if ($fragment) {
+            $url .= '#' . urlencode($fragment);
+        }
 
         return $url;
     }
