@@ -267,14 +267,13 @@ class cSession {
     }
 
     /**
-     * Removes existing session parameter (e. g., contenido=1) from the URL, encodes some characters
-     * and returns the URL back.
+     * Removes existing session parameter (e. g., contenido=1) from the URL and returns the rebuild URL back
      *
      * @param  string  $url  The URL to process
-     * @param  bool  $addSession  Flag to add the current session to it, e. g. used by the backend
+     * @param  bool  $addSession  Flag to add the current session parameter (e. g., contenido=1) to it, e. g. used by the backend
      * @return  string
      */
-    protected function _url($url, $addSession = false) {
+    protected function _url($url, $addSession) {
         $encodedName = urlencode($this->name);
 
         // Split URL by question mark and remove existing session parameter
@@ -296,9 +295,6 @@ class cSession {
 
         // Assemble URL again
         $url = $file . (count($parameters) > 0 ? '?' . http_build_query($parameters) : '');
-
-        // Encode naughty characters in the URL
-        $url = str_replace(['<', '>', ' ', '"', '\''], ['%3C', '%3E', '+', '%22', '%27',], $url);
 
         return $url;
     }
