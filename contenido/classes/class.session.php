@@ -71,7 +71,7 @@ class cSession {
      *
      * The session cookie is accessible only through the HTTP protocol.
      *
-     * @param string $prefix [optional] The prefix for the session variables
+     * @param  string  $prefix  The prefix for the session variables
      */
     public function __construct($prefix = 'backend')
     {
@@ -100,10 +100,10 @@ class cSession {
         // determine cookie security flag
         $secure = cRegistry::getConfigValue('secure');
 
-        // determine cookie httponly flag
-        $httponly = true;
+        // determine cookie httpOnly flag
+        $httpOnly = true;
 
-        session_set_cookie_params($lifetime, $path, $domain, $secure, $httponly);
+        session_set_cookie_params($lifetime, $path, $domain, $secure, $httpOnly);
         session_name($this->_prefix);
         session_start();
 
@@ -113,8 +113,7 @@ class cSession {
     /**
      * Registers a global variable which will become persistent
      *
-     * @param string $things
-     *         The name of the variable (e.g. "idclient")
+     * @param  string  $things  The name of the variable (e.g. "idclient")
      */
     public function register($things) {
         $things = explode(',', $things);
@@ -130,8 +129,7 @@ class cSession {
     /**
      * Unregisters a variable
      *
-     * @param string $name
-     *         The name of the variable (e.g. "idclient")
+     * @param  string  $name  The name of the variable (e.g. "idclient")
      */
     public function unregister($name) {
         $this->_pt[$name] = false;
@@ -140,9 +138,8 @@ class cSession {
     /**
      * Checks if a variable is registered
      *
-     * @param string $name
-     *         The name of the variable (e.g. "idclient")
-     * @return bool
+     * @param  string  $name  The name of the variable (e.g. "idclient")
+     * @return  bool
      */
     public function isRegistered($name) {
         if (isset($this->_pt[$name]) && $this->_pt[$name] == true) {
@@ -156,25 +153,12 @@ class cSession {
      * This is no longer needed to make sessions work but some CONTENIDO
      * functions/classes rely on it
      *
-     * @param string $url
-     *         a URL
-     * @return mixed
+     * @param  string  $url  A URL
+     * @return  mixed
      */
     public function url($url) {
-        // Remove existing session info from url
-        $url = preg_replace('/([&?])' . quotemeta(urlencode($this->name)) . '=1(&|$)/', "\\1", $url);
-
-        // Remove trailing ?/& if needed
-        $url = preg_replace('/[&?]+$/', '', $url);
-
-        if (!preg_match('~\b' . quotemeta(urlencode($this->name)) . '=[a-zA-Z0-9]*\b~', $url)) {
-            $url .= (cString::findFirstPos($url, '?') != false? '&' : '?') . urlencode($this->name) . '=' . $this->id;
-        }
-
-        // Encode naughty characters in the URL
-        $url = str_replace(['<', '>', ' ', '"', '\''], ['%3C', '%3E', '+', '%22', '%27',], $url);
-
-        return $url;
+        // Return url with session parameter
+        return $this->_url($url, true);
     }
 
     /**
@@ -182,21 +166,18 @@ class cSession {
      * This is no longer needed to make sessions work but some CONTENIDO
      * functions/classes rely on it
      *
-     * @return mixed
+     * @return  mixed
      */
     public function selfURL() {
         return $this->url($_SERVER['REQUEST_URI'] . ((isset($_SERVER['QUERY_STRING']) && ('' != $_SERVER['QUERY_STRING'])) ? '?' . $_SERVER['QUERY_STRING'] : ''));
     }
 
     /**
-     * Returns PHP code which can be used to rebuild the variable by evaluating
-     * it.
-     * This will work recursevly on arrays
+     * Returns PHP code which can be used to rebuild the variable by evaluating it.
+     * This will work recursively on arrays
      *
-     * @param mixed $var
-     *         A variable which should get serialized.
-     * @return string
-     *         the PHP code which can be evaluated.
+     * @param  mixed  $var  A variable which should get serialized.
+     * @return  string  The PHP code which can be evaluated.
      */
     public function serialize($var) {
         $str = "";
@@ -205,13 +186,10 @@ class cSession {
     }
 
     /**
-     * This function will go recursevly through arrays and objects to serialize
-     * them.
+     * This function will go recursively through arrays and objects to serialize them.
      *
-     * @param mixed $var
-     *         The variable
-     * @param string $str
-     *         The PHP code will be attached to this string
+     * @param  mixed  $var  The variable
+     * @param  string  $str  The PHP code will be attached to this string
      */
     protected function _rSerialize($var, &$str) {
         static $t, $l, $k;
@@ -287,12 +265,57 @@ class cSession {
     public function start() {
         $this->thaw();
     }
+
+    /**
+     * Removes existing session parameter (e. g., contenido=1) from the URL and returns the rebuild URL back
+     *
+     * @param  string  $url  The URL to process
+     * @param  bool  $addSession  Flag to add the current session parameter (e. g., contenido=1) to it, e. g. used by the backend
+     * @return  string
+     */
+    protected function _url($url, $addSession) {
+        $encodedName = urlencode($this->name);
+
+        // Split URL by question mark and remove existing session parameter
+        if (cString::findFirstPos($url, '?') !== false) {
+            list($file, $query) = explode('?', $url);
+            if (cString::findFirstPos($query, '#') !== false) {
+                list($query, $fragment) = explode('#', $query);
+            } else {
+                $fragment = '';
+            }
+            parse_str($query, $parameters);
+            if (isset($parameters[$encodedName])) {
+                unset($parameters[$encodedName]);
+            }
+        } else {
+            $file = $url;
+            $parameters = [];
+            $fragment = '';
+        }
+
+        if ($addSession) {
+            // Add session parameter, use array_merge, so we have session name at first pos.
+            $parameters = array_merge([$encodedName => $this->id], $parameters);
+        }
+
+        // Assemble URL again
+        $url = $file . (count($parameters) > 0 ? '?' . http_build_query($parameters) : '');
+
+        // Add fragment
+        if ($fragment) {
+            $url .= '#' . urlencode($fragment);
+        }
+
+        return $url;
+    }
+
 }
 
 /**
  * Session class for the frontend.
- * It uses a different prefix. The rest is the
- * same
+ * It uses a different prefix and session url will be created without the contenido=1 parameter.
+ * The rest is the same.
  *
  * @package Core
  * @subpackage Session
@@ -316,12 +339,12 @@ class cFrontendSession extends cSession {
      *
      * The session cookie is accessible only through the HTTP protocol.
      *
-     * @param string $prefix [optional] The prefix for the session variables
+     * @param  string  $prefix  The prefix for the session variables
      */
-    public function __construct() {
+    public function __construct($prefix = 'frontend') {
         $client = cRegistry::getClientId();
 
-        parent::__construct($client . "frontend");
+        parent::__construct($client . $prefix);
     }
 
     /**
@@ -329,20 +352,11 @@ class cFrontendSession extends cSession {
      * attached to the URL for the frontend
      *
      * @see cSession::url()
-     * @param string $url
-     *         a URL
-     * @return mixed
+     * @param  string  $url A URL
+     * @return  mixed
      */
     public function url($url) {
-        // Remove existing session info from url
-        $url = preg_replace('/([&?])' . quotemeta(urlencode($this->name)) . '=' . $this->id . '(&|$)/', "\\1", $url);
-
-        // Remove trailing ?/& if needed
-        $url = preg_replace('/[&?]+$/', '', $url);
-
-        // Encode naughty characters in the URL
-        $url = str_replace(['<', '>', ' ', '"', '\''], ['%3C', '%3E', '+', '%22', '%27'], $url);
-
-        return $url;
+        // Return url without session parameter
+        return $this->_url($url, false);
     }
 }
