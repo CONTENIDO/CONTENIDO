@@ -55,7 +55,7 @@ Renaming table prefixes of the test database is done as follows:
 
 ### Test Environment
 
-Unit tests should run in a specific "test" environment, therefore "test" environment related configuration files in folder `cms/data/config/test` and `data/config/test` are needed. Do following steps to prepare the environment for unit tests in case the configuration folders are missing:
+Unit tests should run in a specific "test" environment, therefore "test" environment related configuration files in folder `cms/data/config/test` and `data/config/test` are needed. Do following steps to prepare the environment for unit tests in case the configuration folders/files are missing:
 
 1. Copy folder `cms/data/config/{environment}` with its content to `cms/data/config/test`
 
