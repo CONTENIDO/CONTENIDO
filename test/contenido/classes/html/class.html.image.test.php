@@ -37,7 +37,7 @@ class cHtmlImageTest extends cTestingTestCase {
 
     /**
      */
-    public function setUp() {
+    protected function setUp(): void {
         // image w/o data
         $this->_imageEmpty = new cHTMLImage();
 

@@ -26,7 +26,7 @@ class cSessionTest extends cTestingTestCase {
 
     protected $_session;
 
-    public function setUp() {
+    protected function setUp(): void {
         $this->_session = new cSession();
         $this->_session->id = 'TestBeXupedOhesi';
     }

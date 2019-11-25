@@ -22,8 +22,8 @@ cInclude("includes", "functions.con.php");
  * Edit or create a new Template
  *
  * @param unknown_type $changelayout
- * @param unknown_type $idtpl
- * @param unknown_type $name
+ * @param int $idtpl
+ * @param string $name
  * @param unknown_type $description
  * @param unknown_type $idlay
  * @param unknown_type $c

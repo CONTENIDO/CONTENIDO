@@ -1,4 +1,8 @@
 <?php
+
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Assert;
+
 /**
  *
  * @author claus.schunk@4fb.de
@@ -15,7 +19,7 @@ require_once 'mockup/class.sql_item_collection.php';
  * @package Testing
  * @subpackage Test_Validator
  */
-class ItemCollectionTest extends PHPUnit_Framework_TestCase {
+class ItemCollectionTest extends TestCase {
 
     /**
      *
@@ -25,7 +29,7 @@ class ItemCollectionTest extends PHPUnit_Framework_TestCase {
 
     /**
      */
-    public function setUp() {
+    protected function setUp(): void {
         ini_set('display_errors', true);
         error_reporting(E_ALL);
 
@@ -48,7 +52,7 @@ class ItemCollectionTest extends PHPUnit_Framework_TestCase {
 
     /**
      */
-    public function tearDown() {
+    protected function tearDown(): void {
         $sql = SqlItemCollection::getDeleteStatement(array(
             'con_test_dog',
             'con_test_rfid_dog',
@@ -89,12 +93,12 @@ class ItemCollectionTest extends PHPUnit_Framework_TestCase {
         $this->_collection->setEncoding($encoding);
 
         // test member _encoding of collection
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_encoding');
+        $act = Assert::readAttribute($this->_collection, '_encoding');
         $this->assertEquals($encoding, $act);
 
         // test member _sEncoding of driver of collection
-        $_driver = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_driver');
-        $act = PHPUnit_Framework_Assert::readAttribute($_driver, '_sEncoding');
+        $_driver = Assert::readAttribute($this->_collection, '_driver');
+        $act = Assert::readAttribute($_driver, '_sEncoding');
         $this->assertEquals($encoding, $act);
     }
 
@@ -105,7 +109,7 @@ class ItemCollectionTest extends PHPUnit_Framework_TestCase {
 
         // test linking of known class
         $dogColl->link('DogRfidCollection');
-        $_links = PHPUnit_Framework_Assert::readAttribute($dogColl, '_links');
+        $_links = Assert::readAttribute($dogColl, '_links');
         $this->assertSame(true, is_array($_links));
         $this->assertSame(true, array_key_exists('DogRfidCollection', $_links));
         $this->assertSame(true, $_links['DogRfidCollection'] instanceof DogRfidCollection);
@@ -127,11 +131,11 @@ class ItemCollectionTest extends PHPUnit_Framework_TestCase {
         $this->_collection->setLimit($_limitStart, $_limitCount);
 
         // test member _limitStart of collection
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_limitStart');
+        $act = Assert::readAttribute($this->_collection, '_limitStart');
         $this->assertEquals($_limitStart, $act);
 
         // test member _limitCount of collection
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_limitCount');
+        $act = Assert::readAttribute($this->_collection, '_limitCount');
         $this->assertEquals($_limitCount, $act);
     }
 
@@ -140,7 +144,7 @@ class ItemCollectionTest extends PHPUnit_Framework_TestCase {
      */
     public function testSetWhere() {
         $this->_collection->setWhere('foo', 'bar');
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $act = Assert::readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['global']['foo'] = array();
@@ -156,7 +160,7 @@ class ItemCollectionTest extends PHPUnit_Framework_TestCase {
      */
     public function testSetWhereOperator() {
         $this->_collection->setWhere('foo', 'bar', 'LIKE');
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $act = Assert::readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['global']['foo'] = array();
@@ -174,7 +178,7 @@ class ItemCollectionTest extends PHPUnit_Framework_TestCase {
     public function testDeleteWhereUnconditioned() {
         // test deleting a nonexistant where condition
         $this->_collection->deleteWhere('foo', 'bar');
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $act = Assert::readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['groups'] = array();
@@ -183,7 +187,7 @@ class ItemCollectionTest extends PHPUnit_Framework_TestCase {
 
         // test deleting a nonexistant where condition w/ default operator
         $this->_collection->deleteWhere('foo', 'bar', '=');
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $act = Assert::readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['groups'] = array();
@@ -192,7 +196,7 @@ class ItemCollectionTest extends PHPUnit_Framework_TestCase {
 
         // test deleting a nonexistant where condition w/ nondefault operator
         $this->_collection->deleteWhere('foo', 'bar', 'LIKE');
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $act = Assert::readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['groups'] = array();
@@ -209,7 +213,7 @@ class ItemCollectionTest extends PHPUnit_Framework_TestCase {
         // this field but w/ another restriction
         $this->_collection->setWhere('foo', 'bar');
         $this->_collection->deleteWhere('foo', 'eggs');
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $act = Assert::readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['global']['foo'] = array();
@@ -223,7 +227,7 @@ class ItemCollectionTest extends PHPUnit_Framework_TestCase {
         // this restriction but w/ another field
         $this->_collection->setWhere('foo', 'bar');
         $this->_collection->deleteWhere('spam', 'bar');
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $act = Assert::readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['global']['foo'] = array();
@@ -237,7 +241,7 @@ class ItemCollectionTest extends PHPUnit_Framework_TestCase {
         // this restriction but w/ another field
         $this->_collection->setWhere('foo', 'bar');
         $this->_collection->deleteWhere('foo', 'bar', 'LIKE');
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $act = Assert::readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['global']['foo'] = array();
@@ -251,7 +255,7 @@ class ItemCollectionTest extends PHPUnit_Framework_TestCase {
         // field w/ this restriction
         $this->_collection->setWhere('foo', 'bar');
         $this->_collection->deleteWhere('foo', 'bar');
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $act = Assert::readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['groups'] = array();
@@ -263,7 +267,7 @@ class ItemCollectionTest extends PHPUnit_Framework_TestCase {
      */
     public function testSetWhereGroup() {
         $this->_collection->setWhereGroup('myGroup', 'foo', 'bar');
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $act = Assert::readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['groups'] = array();
@@ -279,7 +283,7 @@ class ItemCollectionTest extends PHPUnit_Framework_TestCase {
      */
     public function testSetWhereGroupOperator() {
         $this->_collection->setWhereGroup('myGroup', 'foo', 'bar', 'LIKE');
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $act = Assert::readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['groups'] = array();
@@ -311,7 +315,7 @@ class ItemCollectionTest extends PHPUnit_Framework_TestCase {
         // this field but w/ another restriction
         $this->_collection->setWhereGroup('myGroup', 'foo', 'bar');
         $this->_collection->deleteWhereGroup('myGroup', 'foo', 'eggs');
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $act = Assert::readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['groups'] = array();
@@ -326,7 +330,7 @@ class ItemCollectionTest extends PHPUnit_Framework_TestCase {
         // this restriction but w/ another field
         $this->_collection->setWhereGroup('myGroup', 'foo', 'bar');
         $this->_collection->deleteWhereGroup('myGroup', 'spam', 'bar');
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $act = Assert::readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['groups'] = array();
@@ -341,7 +345,7 @@ class ItemCollectionTest extends PHPUnit_Framework_TestCase {
         // this restriction but w/ another field
         $this->_collection->setWhereGroup('myGroup', 'foo', 'bar');
         $this->_collection->deleteWhereGroup('myGroup', 'foo', 'bar', 'LIKE');
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $act = Assert::readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['groups'] = array();
@@ -356,7 +360,7 @@ class ItemCollectionTest extends PHPUnit_Framework_TestCase {
         // field w/ this restriction
         $this->_collection->setWhereGroup('myGroup', 'foo', 'bar');
         $this->_collection->deleteWhereGroup('myGroup', 'foo', 'bar');
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $act = Assert::readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['groups'] = array();

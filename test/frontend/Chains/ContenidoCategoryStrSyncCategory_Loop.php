@@ -1,4 +1,7 @@
 <?php
+
+use PHPUnit\Framework\TestCase;
+
 /**
  * This file contains tests for Contenido chain Contenido.Category.strSyncCategory_Loop
  *
@@ -37,7 +40,7 @@ function chain_ContenidoCategoryStrSyncCategory_Loop_Test2(array $data)
  * @package          Testing
  * @subpackage       Test_Chains
  */
-class ContenidoCategoryStrSyncCategory_LoopTest extends PHPUnit_Framework_TestCase
+class ContenidoCategoryStrSyncCategory_LoopTest extends TestCase
 {
     private $_chain = 'Contenido.Category.strSyncCategory_Loop';
     private $_data = array('idcat' => 23, 'idlang' => 2, 'idtplcfg' => 2314, 'visible' => 1);
@@ -45,7 +48,7 @@ class ContenidoCategoryStrSyncCategory_LoopTest extends PHPUnit_Framework_TestCa
     public static $invokeCounter = 0;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         self::$invokeCounter = 0;
     }

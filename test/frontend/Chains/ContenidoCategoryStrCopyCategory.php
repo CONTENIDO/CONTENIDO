@@ -1,4 +1,7 @@
 <?php
+
+use PHPUnit\Framework\TestCase;
+
 /**
  * This file contains tests for Contenido chain Contenido.Category.strCopyCategory
  *
@@ -37,7 +40,7 @@ function chain_ContenidoCategoryStrCopyCategory_Test2(array $data)
  * @package          Testing
  * @subpackage       Test_Chains
  */
-class ContenidoCategoryStrCopyCategoryTest extends PHPUnit_Framework_TestCase
+class ContenidoCategoryStrCopyCategoryTest extends TestCase
 {
     private $_chain = 'Contenido.Category.strCopyCategory';
     private $_data  = array('oldcat' => 1, 'newcat' => 2, 'newcatlang2' => 1);
@@ -45,7 +48,7 @@ class ContenidoCategoryStrCopyCategoryTest extends PHPUnit_Framework_TestCase
     public static $invokeCounter = 0;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         self::$invokeCounter = 0;
     }

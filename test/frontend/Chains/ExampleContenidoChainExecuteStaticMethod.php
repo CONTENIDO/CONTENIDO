@@ -1,4 +1,7 @@
 <?php
+
+use PHPUnit\Framework\TestCase;
+
 /**
  * This file contains tests for Contenido chain
  * Example.Contenido.Chain.ExecuteStaticMethod
@@ -54,7 +57,7 @@ class chain_ExampleContenidoChainExecuteStaticMethod_Test2 {
  * @package Testing
  * @subpackage Test_Chains
  */
-class ExampleContenidoChainExecuteStaticMethodTest extends PHPUnit_Framework_TestCase {
+class ExampleContenidoChainExecuteStaticMethodTest extends TestCase {
 
     /**
      *
@@ -71,7 +74,7 @@ class ExampleContenidoChainExecuteStaticMethodTest extends PHPUnit_Framework_Tes
     /**
      *
      */
-    protected function setUp() {
+    protected function setUp(): void {
         $this->_obj = new stdClass();
         $this->_obj->counter = 0;
     }
@@ -81,7 +84,7 @@ class ExampleContenidoChainExecuteStaticMethodTest extends PHPUnit_Framework_Tes
      * @deprecated 2014-08-07
      *         This method is deprecated and is not needed any longer
      */
-    public function tearDown() {
+    protected function tearDown(): void {
         cDeprecated('This method is deprecated and is not needed any longer');
     }
 

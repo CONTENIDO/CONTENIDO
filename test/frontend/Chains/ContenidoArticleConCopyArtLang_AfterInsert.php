@@ -1,4 +1,7 @@
 <?php
+
+use PHPUnit\Framework\TestCase;
+
 /**
  * This file contains tests for Contenido chain Contenido.Article.conCopyArtLang_AfterInsert
  *
@@ -37,7 +40,7 @@ function chain_ContenidoArticleConCopyArtLang_AfterInsert_Test2(array $data)
  * @package          Testing
  * @subpackage       Test_Chains
  */
-class ContenidoArticleConCopyArtLang_AfterInsertTest extends PHPUnit_Framework_TestCase
+class ContenidoArticleConCopyArtLang_AfterInsertTest extends TestCase
 {
     private $_chain = 'Contenido.Article.conCopyArtLang_AfterInsert';
     private $_data = array(
@@ -51,7 +54,7 @@ class ContenidoArticleConCopyArtLang_AfterInsertTest extends PHPUnit_Framework_T
     public static $invokeCounter = 0;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         self::$invokeCounter = 0;
     }

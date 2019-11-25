@@ -1,4 +1,7 @@
 <?php
+
+use PHPUnit\Framework\TestCase;
+
 /**
  * This file contains tests for Contenido chain Contenido.Frontend.HTMLCodeOutput
  *
@@ -33,7 +36,7 @@ function chain_ContenidoFrontendHTMLCodeOutput_Test2($html)
  * @package          Testing
  * @subpackage       Test_Chains
  */
-class ContenidoFrontendHTMLCodeOutputTest extends PHPUnit_Framework_TestCase
+class ContenidoFrontendHTMLCodeOutputTest extends TestCase
 {
     private $_chain = 'Contenido.Frontend.HTMLCodeOutput';
     private $_html  = '<html><head><title>test</title><body>content</body></html>';

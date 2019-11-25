@@ -1,4 +1,7 @@
 <?php
+
+use PHPUnit\Framework\TestCase;
+
 /**
  * This file contains tests for Contenido chain Contenido.Content.conGenerateCode
  *
@@ -33,7 +36,7 @@ function chain_ContenidoContentConGenerateCode_Test2($html)
  * @package          Testing
  * @subpackage       Test_Chains
  */
-class ContenidoContentConGenerateCodeTest extends PHPUnit_Framework_TestCase
+class ContenidoContentConGenerateCodeTest extends TestCase
 {
     private $_chain = 'Contenido.Content.conGenerateCode';
     private $_code          = '<html><head><title>test</title><body>content</body></html>';

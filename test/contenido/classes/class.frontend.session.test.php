@@ -26,7 +26,7 @@ class cFrontendSessionTest extends cTestingTestCase {
 
     protected $_session;
 
-    public function setUp() {
+    protected function setUp(): void {
         $this->_session = new cFrontendSession();
         $this->_session->id = 'TestFeXupedOhesi';
     }

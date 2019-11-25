@@ -1,4 +1,8 @@
 <?PHP
+
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Assert;
+
 /**
  *
  * @author claus.schunk@4fb.de
@@ -7,7 +11,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-class cHtmlOptionElementTest extends PHPUnit_Framework_TestCase {
+class cHtmlOptionElementTest extends TestCase {
 
     public function testConstruct() {
         $option = new cHTMLOptionElement('testTitle', 'testValue');
@@ -17,19 +21,19 @@ class cHtmlOptionElementTest extends PHPUnit_Framework_TestCase {
         $option = new cHTMLOptionElement('testTitle', 'testValue', true);
         $option->toHtml();
         $this->assertSame('testValue', $option->getAttribute('value'));
-        $this->assertSame('testTitle', PHPUnit_Framework_Assert::readAttribute($option, '_content'));
+        $this->assertSame('testTitle', Assert::readAttribute($option, '_content'));
         $this->assertSame(3, count($option->getAttributes()));
 
         $option = new cHTMLOptionElement('testTitle', 'testValue', false, false);
         $option->toHtml();
-        $this->assertSame('testTitle', PHPUnit_Framework_Assert::readAttribute($option, '_content'));
+        $this->assertSame('testTitle', Assert::readAttribute($option, '_content'));
         $this->assertSame('testValue', $option->getAttribute('value'));
         $this->assertSame(2, count($option->getAttributes()));
 
         $option = new cHTMLOptionElement('testTitle', 'testValue', true, true, 'testClass');
         $option->toHtml();
         $this->assertSame(5, count($option->getAttributes()));
-        $this->assertSame('testTitle', PHPUnit_Framework_Assert::readAttribute($option, '_content'));
+        $this->assertSame('testTitle', Assert::readAttribute($option, '_content'));
         $this->assertSame('testValue', $option->getAttribute('value'));
         $this->assertSame('selected', $option->getAttribute('selected'));
         $this->assertSame('disabled', $option->getAttribute('disabled'));

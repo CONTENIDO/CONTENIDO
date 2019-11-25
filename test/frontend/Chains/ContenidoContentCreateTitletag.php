@@ -1,4 +1,7 @@
 <?php
+
+use PHPUnit\Framework\TestCase;
+
 /**
  * This file contains tests for Contenido chain Contenido.Content.CreateTitletag
  *
@@ -33,7 +36,7 @@ function chain_ContenidoContentCreateTitletag_Test2()
  * @package          Testing
  * @subpackage       Test_Chains
  */
-class ContenidoContentCreateTitletagTest extends PHPUnit_Framework_TestCase
+class ContenidoContentCreateTitletagTest extends TestCase
 {
     private $_chain = 'Contenido.Content.CreateTitletag';
     private $_title          = 'Da title';

@@ -74,7 +74,7 @@ class cHTMLAlignmentTableTest extends cTestingTestCase {
     /**
      * Creates tables with values of different datatypes.
      */
-    public function setUp() {
+    protected function setUp(): void {
         ini_set('display_errors', true);
         error_reporting(E_ALL);
 

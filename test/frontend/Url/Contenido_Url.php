@@ -1,4 +1,7 @@
 <?php
+
+use PHPUnit\Framework\TestCase;
+
 /**
  * This file contains tests for the cUri class.
  *
@@ -17,26 +20,48 @@
  * @package          Testing
  * @subpackage       Test_Url
  */
-class cUriTest extends PHPUnit_Framework_TestCase
+class cUriTest extends TestCase
 {
+
+    /**
+     * @var int
+     */
+    protected $languageId;
+    /**
+     * @var array
+     */
+    protected $clientCfg;
+    /**
+     * @var int
+     */
+    protected $clientId;
+
+    protected function setUp(): void
+    {
+        $this->clientId = cRegistry::getClientId();
+        $this->clientCfg = cRegistry::getClientConfig($this->clientId);
+        $this->languageId = cRegistry::getLanguageId();
+    }
 
     /**
      * Test url creation to error page
      */
     public function testErrorPageUrlCreation()
     {
+        $errSite = cRegistry::getErrSite();
+
         // error page
         $aParams = array(
-            'client' => $GLOBALS['client'],
-            'idcat'  => $GLOBALS['errsite_idcat'][$GLOBALS['client']],
-            'idart'  => $GLOBALS['errsite_idart'][$GLOBALS['client']],
-            'lang'   => $GLOBALS['lang'],
+            'client' => $this->clientId,
+            'idcat'  => $errSite['idcat'],
+            'idart'  => $errSite['idart'],
+            'lang'   => $this->languageId,
             'error'  => '1'
         );
 
         $url = cUri::getInstance()->buildRedirect($aParams);
 
-        $isToBeUrl = $GLOBALS['cfgClient'][$GLOBALS['client']]['path']['htmlpath']
+        $isToBeUrl = $this->clientCfg['path']['htmlpath']
                    . 'front_content.php?idcat=2&idart=15&client=1&lang=1&error=1';
 
         $this->assertEquals($isToBeUrl, $url);
@@ -52,8 +77,8 @@ class cUriTest extends PHPUnit_Framework_TestCase
         $redirectUrl = 'front_content.php?idart=12&param=value';
         $redirectUrl = $this->_createArticleRedirectUrl($redirectUrl);
 
-        $isToBeUrl = $GLOBALS['cfgClient'][$GLOBALS['client']]['path']['htmlpath']
-                  . 'front_content.php?idart=12&param=value&lang=' . $GLOBALS['lang'];
+        $isToBeUrl = $this->clientCfg['path']['htmlpath']
+                  . 'front_content.php?idart=12&param=value&lang=' . $this->languageId;
 
         $this->assertEquals($isToBeUrl, $redirectUrl);
     }
@@ -73,8 +98,8 @@ class cUriTest extends PHPUnit_Framework_TestCase
         $idcatHome = getEffectiveSetting('navigation', 'idcat-home', 1);
 
         // result should be following url
-        $isToBeUrl = $GLOBALS['cfgClient'][$GLOBALS['client']]['path']['htmlpath']
-                  . 'front_content.php?idcat=' . $idcatHome . '&lang=' . $GLOBALS['lang'];
+        $isToBeUrl = $this->clientCfg['path']['htmlpath']
+                  . 'front_content.php?idcat=' . $idcatHome . '&lang=' . $this->languageId;
 
         // internal redirect with 'front_content.php'
         $redirectUrl = $this->_createArticleRedirectUrl('front_content.php');
@@ -100,12 +125,12 @@ class cUriTest extends PHPUnit_Framework_TestCase
     public function testInternalRedirectFullUrlCreation()
     {
         // internal redirect with full url
-        $redirectUrl = $GLOBALS['cfgClient'][$GLOBALS['client']]['path']['htmlpath']
+        $redirectUrl = $this->clientCfg['path']['htmlpath']
                      . 'front_content.php?idart=12&param=value';
         $redirectUrl = $this->_createArticleRedirectUrl($redirectUrl);
 
-        $isToBeUrl = $GLOBALS['cfgClient'][$GLOBALS['client']]['path']['htmlpath']
-                   . 'front_content.php?idart=12&param=value&lang=' . $GLOBALS['lang'];
+        $isToBeUrl = $this->clientCfg['path']['htmlpath']
+                   . 'front_content.php?idart=12&param=value&lang=' . $this->languageId;
 
         $this->assertEquals($isToBeUrl, $redirectUrl);
     }
@@ -146,7 +171,7 @@ class cUriTest extends PHPUnit_Framework_TestCase
             // perform urlbuilding only for identified internal urls
             $aUrl = $oUrl->parse($redirectUrl);
             if (!isset($aUrl['params']['lang'])) {
-                $aUrl['params']['lang'] = $GLOBALS['lang'];
+                $aUrl['params']['lang'] = $this->languageId;
             }
             $redirectUrl = $oUrl->buildRedirect($aUrl['params']);
         }

@@ -1,4 +1,7 @@
 <?PHP
+
+use PHPUnit\Framework\TestCase;
+
 /**
  *
  * @author claus.schunk@4fb.de
@@ -7,7 +10,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-class cHtmlAsideTest extends PHPUnit_Framework_TestCase {
+class cHtmlAsideTest extends TestCase {
 
     public function testArticle() {
         $cAside = new cHTMLAside('huhu', 'testclass', 'testid');

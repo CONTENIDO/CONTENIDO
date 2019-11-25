@@ -18,7 +18,7 @@ class cHtmlFormTest extends cTestingTestCase {
     /**
      * Creates tables with values of different datatypes.
      */
-    public function setUp() {
+    protected function setUp(): void {
         $this->_form = new cHTMLForm();
     }
 

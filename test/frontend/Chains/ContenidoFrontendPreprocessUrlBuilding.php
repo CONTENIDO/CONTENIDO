@@ -1,4 +1,7 @@
 <?php
+
+use PHPUnit\Framework\TestCase;
+
 /**
  * This file contains tests for Contenido chain Contenido.Frontend.PreprocessUrlBuilding
  *
@@ -35,7 +38,7 @@ function chain_ContenidoFrontendPreprocessUrlBuilding_Test2(array $param)
  * @package          Testing
  * @subpackage       Test_Chains
  */
-class ContenidoFrontendPreprocessUrlBuildingTest extends PHPUnit_Framework_TestCase
+class ContenidoFrontendPreprocessUrlBuildingTest extends TestCase
 {
     private $_chain = 'Contenido.Frontend.PreprocessUrlBuilding';
     private $_params;
@@ -43,7 +46,7 @@ class ContenidoFrontendPreprocessUrlBuildingTest extends PHPUnit_Framework_TestC
     private $_paramsTwoChains;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $param = array('idart' => 123, 'lang' => 2, 'client' => 1);
         $this->_params = array(

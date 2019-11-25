@@ -1,4 +1,7 @@
 <?PHP
+
+use PHPUnit\Framework\TestCase;
+
 /**
  *
  * @author claus.schunk@4fb.de
@@ -7,7 +10,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-class cHtmlPasswordBoxTest extends PHPUnit_Framework_TestCase {
+class cHtmlPasswordBoxTest extends TestCase {
 
     public function testConstruct() {
         $pwBox = new cHTMLPasswordbox('testName');

@@ -1,0 +1,122 @@
+<phpunit bootstrap="test/bootstrap.php" backupGlobals="false">
+    <testsuites>
+        <!--
+        TODO  Files need to end with *Test.php, then we can use directory to load all tests
+                <testsuite name="contenido_classes">
+                    <directory>test/contenido/classes</directory>
+                </testsuite>
+        -->
+        <testsuite name="contenido_classes">
+            <file>test/contenido/classes/class.array.test.php</file>
+            <file>test/contenido/classes/class.article.collector.test.php</file>
+            <file>test/contenido/classes/class.html.test.case.php</file>
+            <file>test/contenido/classes/class.security.test.php</file>
+            <file>test/contenido/classes/html/class.html.alignmenttable.test.php</file>
+            <file>test/contenido/classes/html/class.html.checkbox.test.php</file>
+            <file>test/contenido/classes/html/class.html.form.test.php</file>
+            <file>test/contenido/classes/html/class.html.image.test.php</file>
+            <file>test/contenido/classes/html/class.html.selectelement.test.php</file>
+            <file>test/contenido/classes/html/class.html.table.test.php</file>
+            <file>test/contenido/classes/html/class.html.test.php</file>
+            <file>test/contenido/classes/html/class.html.textarea.test.php</file>
+            <file>test/contenido/classes/html/class.html.time.test.php</file>
+        </testsuite>
+
+        <!--
+        TODO  Files need to end with *Test.php, then we can use directory to load all tests
+                <testsuite name="chains">
+                    <directory>test/frontend/Chains</directory>
+                </testsuite>
+        -->
+        <testsuite name="frontend_chains">
+            <file>test/frontend/Chains/cApiCecRegistry.php</file>
+            <file>test/frontend/Chains/ContenidoFrontendAllowEdit.php</file>
+            <file>test/frontend/Chains/ContenidoFrontendCategoryAccess.php</file>
+            <file>test/frontend/Chains/ContenidoFrontendBaseHrefGeneration.php</file>
+            <file>test/frontend/Chains/ContenidoFrontendHTMLCodeOutput.php</file>
+            <file>test/frontend/Chains/ContenidoFrontendPreprocessUrlBuilding.php</file>
+            <file>test/frontend/Chains/ContenidoFrontendPostprocessUrlBuilding.php</file>
+            <file>test/frontend/Chains/ContenidoArticleConMoveArticles_Loop.php</file>
+            <file>test/frontend/Chains/ContenidoArticleConCopyArtLang_AfterInsert.php</file>
+            <file>test/frontend/Chains/ContenidoArticleConSyncArticle_AfterInsert.php</file>
+            <file>test/frontend/Chains/ContenidoContentCreateTitletag.php</file>
+            <file>test/frontend/Chains/ContenidoContentConGenerateCode.php</file>
+            <file>test/frontend/Chains/ContenidoCategoryStrSyncCategory_Loop.php</file>
+            <file>test/frontend/Chains/ContenidoCategoryStrCopyCategory.php</file>
+            <file>test/frontend/Chains/ExampleContenidoChainExecuteObject.php</file>
+            <file>test/frontend/Chains/ExampleContenidoChainExecuteStaticMethod.php</file>
+            <file>test/frontend/Chains/ContenidoContentSaveContentEntry.php</file>
+            <file>test/frontend/Chains/ContenidoContentDeleteArticle.php</file>
+            <file>test/frontend/Chains/ContenidoContentCopyArticle.php</file>
+        </testsuite>
+
+        <!--
+        TODO  Files need to end with *Test.php, then we can use directory to load all tests
+                <testsuite name="frontend_classes">
+                    <directory>test/frontend/classes/genericdb</directory>
+                </testsuite>
+        -->
+        <testsuite name="frontend_classes">
+            <file>test/frontend/classes/genericdb/class.item.collection.test.php</file>
+            <file>test/frontend/classes/genericdb/class.item.test.php</file>
+        </testsuite>
+
+        <!--
+        TODO  Files need to end with *Test.php, then we can use directory to load all tests
+                <testsuite name="frontend_html">
+                    <directory>test/frontend/html</directory>
+                </testsuite>
+        -->
+        <testsuite name="frontend_html">
+            <file>test/frontend/html/html_test.php</file>
+            <file>test/frontend/html/test_article.php</file>
+            <file>test/frontend/html/test_aside.php</file>
+            <file>test/frontend/html/test_audio.php</file>
+            <file>test/frontend/html/test_button.php</file>
+            <file>test/frontend/html/test_canvas.php</file>
+            <file>test/frontend/html/test_div.php</file>
+            <file>test/frontend/html/test_fieldset.php</file>
+            <file>test/frontend/html/test_footer.php</file>
+            <file>test/frontend/html/test_formelement.php</file>
+            <file>test/frontend/html/test_header.php</file>
+            <file>test/frontend/html/test_headergroup.php</file>
+            <file>test/frontend/html/test_hiddenfield.php</file>
+            <file>test/frontend/html/test_iframe.php</file>
+            <file>test/frontend/html/test_label.php</file>
+            <file>test/frontend/html/test_legend.php</file>
+            <file>test/frontend/html/test_link.php</file>
+            <file>test/frontend/html/test_list.php</file>
+            <file>test/frontend/html/test_listitem.php</file>
+            <file>test/frontend/html/test_nav.php</file>
+            <file>test/frontend/html/test_optgroup.php</file>
+            <file>test/frontend/html/test_optionelement.php</file>
+            <file>test/frontend/html/test_paragraph.php</file>
+            <file>test/frontend/html/test_passwordbox.php</file>
+            <file>test/frontend/html/test_radiobutton.php</file>
+            <file>test/frontend/html/test_script.php</file>
+            <file>test/frontend/html/test_section.php</file>
+            <file>test/frontend/html/test_span.php</file>
+            <file>test/frontend/html/test_tablebody.php</file>
+            <file>test/frontend/html/test_tabledata.php</file>
+            <file>test/frontend/html/test_tablehead.php</file>
+            <file>test/frontend/html/test_tableheader.php</file>
+            <file>test/frontend/html/test_tablerow.php</file>
+            <file>test/frontend/html/test_textbox.php</file>
+            <file>test/frontend/html/test_upload.php</file>
+            <file>test/frontend/html/test_video.php</file>
+        </testsuite>
+
+        <testsuite name="frontend_templates">
+            <file>test/frontend/Template/template.php</file>
+        </testsuite>
+
+        <testsuite name="frontend_urls">
+            <file>test/frontend/Url/Contenido_Url.php</file>
+        </testsuite>
+
+        <testsuite name="frontend_validators">
+            <file>test/frontend/Validator/cValidatorEmail.php</file>
+        </testsuite>
+
+    </testsuites>
+</phpunit>

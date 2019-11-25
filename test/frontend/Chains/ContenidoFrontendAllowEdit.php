@@ -1,4 +1,7 @@
 <?php
+
+use PHPUnit\Framework\TestCase;
+
 /**
  * This file contains tests for Contenido chain Contenido.Frontend.AllowEdit
  *
@@ -41,7 +44,7 @@ function chain_ContenidoFrontendAllowEdit_Test3($lang, $idcat, $idart, $uid)
  * @package          Testing
  * @subpackage       Test_Chains
  */
-class ContenidoFrontendAllowEditTest extends PHPUnit_Framework_TestCase
+class ContenidoFrontendAllowEditTest extends TestCase
 {
     private $_chain = 'Contenido.Frontend.AllowEdit';
     private $_lang;
@@ -50,7 +53,7 @@ class ContenidoFrontendAllowEditTest extends PHPUnit_Framework_TestCase
     private $_uid   = null;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_lang = $GLOBALS['lang'];
 

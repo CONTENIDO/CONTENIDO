@@ -1,5 +1,7 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * This file contains tests for Contenido chain
  * Contenido.Article.conMoveArticles_Loop
@@ -41,7 +43,7 @@ function chain_ContenidoArticleConMoveArticles_Loop_Test2(array $data) {
  * @package Testing
  * @subpackage Test_Chains
  */
-class ContenidoArticleConMoveArticles_LoopTest extends PHPUnit_Framework_TestCase {
+class ContenidoArticleConMoveArticles_LoopTest extends TestCase {
 
     /**
      *
@@ -68,7 +70,7 @@ class ContenidoArticleConMoveArticles_LoopTest extends PHPUnit_Framework_TestCas
     /**
      *
      */
-    protected function setUp() {
+    protected function setUp(): void {
         self::$invokeCounter = 0;
     }
 

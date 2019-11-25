@@ -26,7 +26,7 @@ class cHtmlTimeTest extends cTestingTestCase {
     /**
      * Creates tables with values of different datatypes.
      */
-    public function setUp() {
+    protected function setUp(): void {
         $this->_time = new cHTMLTime('testContent', 'testClass', 'testId', 'testDateTime');
     }
 

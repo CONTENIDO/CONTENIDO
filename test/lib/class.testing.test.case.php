@@ -11,12 +11,17 @@
  * @link             http://www.contenido.org
  */
 
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestSuite;
+use PHPUnit\Framework\Assert;
+
+
 /**
  * CONTENIDO test case class
  * @package          Testing
  * @subpackage       Helper
  */
-abstract class cTestingTestCase extends PHPUnit_Framework_TestCase {
+abstract class cTestingTestCase extends TestCase {
     /**
      * Name of the test case
      * @var string
@@ -32,12 +37,14 @@ abstract class cTestingTestCase extends PHPUnit_Framework_TestCase {
     /**
      * Original database prefix
      * @var
+     * @deprecated Since 4.10.2, unit tests will run under "test" environment, see constant CON_TEST_SQL_PREFIX
      */
     protected static $_originalSqlPrefix;
 
     /**
      * Sets the original database prefix
      * @param $sqlPrefix
+     * @deprecated Since 4.10.2, unit tests will run under "test" environment, see constant CON_TEST_SQL_PREFIX
      */
     public static function setOriginalSqlPrefix($sqlPrefix) {
         self::$_originalSqlPrefix = $sqlPrefix;
@@ -45,24 +52,26 @@ abstract class cTestingTestCase extends PHPUnit_Framework_TestCase {
 
     /**
      * Creates a test suite.
-     * @return PHPUnit_Framework_TestSuite
+     * @return TestSuite
      * @throws cTestingException
+     * @deprecated Since 4.10.2, test suites are defined in the phpunit.xml
      */
     protected static function _createSuite() {
         if (self::$_testCaseName == '') {
             throw new cTestingException("No name provided for test case.");
         }
 
-        return new PHPUnit_Framework_TestSuite(self::$_testCaseName);
+        return new TestSuite(self::$_testCaseName);
     }
 
     /**
      * Adds test files to the given test suite and returns it.
-     * @param PHPUnit_Framework_TestSuite $suite
+     * @param TestSuite $suite
      *
-     * @return PHPUnit_Framework_TestSuite
+     * @return TestSuite
+     * @deprecated Since 4.10.2, test files for test suites are defined in the phpunit.xml
      */
-    protected static function _addTestFiles(PHPUnit_Framework_TestSuite $suite) {
+    protected static function _addTestFiles(TestSuite $suite) {
         if (count(self::$_testDirectories) == 0) {
             throw new cTestingException("No directories specified for test case.");
         }
@@ -81,10 +90,10 @@ abstract class cTestingTestCase extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @see PHPUnit_Framework_Assert::readAttribute
+     * @see Assert::readAttribute
      */
     protected function _readAttribute($classOrObject, $attributeName) {
-        return PHPUnit_Framework_Assert::readAttribute($classOrObject, $attributeName);
+        return Assert::readAttribute($classOrObject, $attributeName);
     }
 
     /**
@@ -102,8 +111,8 @@ abstract class cTestingTestCase extends PHPUnit_Framework_TestCase {
             throw new cTestingException('Can not load SQL data for this table - the source does not exist.');
         }
 
-        if ($cfg['sql']['sqlprefix'] == self::$_originalSqlPrefix) {
-            throw new cTestingException('Original database SQL prefix matches current installation prefix - can not proceed.');
+        if ($cfg['sql']['sqlprefix'] !== CON_TEST_SQL_PREFIX) {
+            throw new cTestingException('Current used database SQL prefix does not match the required test prefix - can not proceed.');
         }
 
         $sqlStatements = array();

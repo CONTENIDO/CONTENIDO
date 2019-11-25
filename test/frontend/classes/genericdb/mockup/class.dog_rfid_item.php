@@ -8,7 +8,7 @@ class DogRfidCollection extends ItemCollection {
 
     /**
      *
-     * @param unknown_type $where
+     * @param string|bool $where
      */
     public function __construct($where = false) {
         parent::__construct(cRegistry::getDbTableName('con_test_rfid_dog'), 'dog_id');
@@ -28,7 +28,7 @@ class DogRfidItem extends Item {
 
     /**
      *
-     * @param unknown_type $id
+     * @param int|bool $id
      */
     public function __construct($id = false) {
         $cfg = cRegistry::getConfig();

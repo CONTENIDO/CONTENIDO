@@ -1,0 +1,14 @@
+{
+    "name": "CONTENIDO/CONTENIDO",
+    "type": "contenido-cms",
+    "description": "CONTENIDO CMS",
+    "keywords": [
+        "CONTENIDO",
+        "CMS"
+    ],
+    "homepage": "https://www.contenido.org",
+    "license": ["GPL-2.0"],
+    "require-dev": {
+        "phpunit/phpunit": "^8"
+    }
+}

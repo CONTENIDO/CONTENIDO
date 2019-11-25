@@ -1,5 +1,9 @@
 <?PHP
 
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Assert;
+
+
 /**
  * @author claus.schunk@4fb.de
  * @copyright four for business AG <www.4fb.de>
@@ -7,7 +11,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-class cHtmlTest extends PHPUnit_Framework_TestCase {
+class cHtmlTest extends TestCase {
     /**
      * @var cHTML
      */
@@ -18,12 +22,12 @@ class cHtmlTest extends PHPUnit_Framework_TestCase {
      */
     protected $cHtmlReflection;
 
-    public function setUp() {
+    protected function setUp(): void {
         $this->_cHtml = new cHTML();
         $this->_cHtmlReflection = new ReflectionClass('cHTML');
     }
 
-    public function tearDown() {
+    protected function tearDown(): void {
         unset($this->_cHtml);
         unset($this->_cHtmlReflection);
     }
@@ -80,19 +84,19 @@ class cHtmlTest extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals($ar, $this->_cHtml->getAttributes());
         // $this->assertSame(array('id' => 'm1'),
-        // PHPUnit_Framework_Assert::readAttribute($this->_cHtml,
+        // Assert::readAttribute($this->_cHtml,
         // '_attributes'));
         // $this->assertSame(array('id' => 'm1'),
-        // PHPUnit_Framework_Assert::readAttribute($this->_cHtml,
+        // Assert::readAttribute($this->_cHtml,
         // '_attributes'));
         // $this->assertSame(array('id' => 'm1'),
-        // PHPUnit_Framework_Assert::readAttribute($this->_cHtml,
+        // Assert::readAttribute($this->_cHtml,
         // '_attributes'));
         // $this->assertSame(array('id' => 'm1'),
-        // PHPUnit_Framework_Assert::readAttribute($this->_cHtml,
+        // Assert::readAttribute($this->_cHtml,
         // '_attributes'));
         // $this->assertSame(array('id' => 'm1'),
-        // PHPUnit_Framework_Assert::readAttribute($this->_cHtml,
+        // Assert::readAttribute($this->_cHtml,
         // '_attributes'));
     }
 
@@ -156,12 +160,12 @@ class cHtmlTest extends PHPUnit_Framework_TestCase {
         $this->assertSame('', $this->_cHtml->getAttribute(''));
 
         $this->_cHtml->setAttributes(array());
-        $this->assertSame(array(), PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_attributes'));
+        $this->assertSame(array(), Assert::readAttribute($this->_cHtml, '_attributes'));
     }
 
     public function testUpdateAttribute() {
         $this->_cHtml->updateAttribute('1', '2');
-        $ar = PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_attributes');
+        $ar = Assert::readAttribute($this->_cHtml, '_attributes');
         $this->assertSame('2', $ar[2]);
     }
 
@@ -175,13 +179,13 @@ class cHtmlTest extends PHPUnit_Framework_TestCase {
 
     public function testSetTag() {
         $this->_cHtml->setTag('img');
-        $this->assertSame('img', PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_tag'));
+        $this->assertSame('img', Assert::readAttribute($this->_cHtml, '_tag'));
         $this->_cHtml->setTag('a');
-        $this->assertSame('a', PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_tag'));
+        $this->assertSame('a', Assert::readAttribute($this->_cHtml, '_tag'));
         $this->_cHtml->setTag('div');
-        $this->assertSame('div', PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_tag'));
+        $this->assertSame('div', Assert::readAttribute($this->_cHtml, '_tag'));
         $this->_cHtml->setTag('');
-        $this->assertSame('', PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_tag'));
+        $this->assertSame('', Assert::readAttribute($this->_cHtml, '_tag'));
     }
 
     public function testSetAlt() {
@@ -190,7 +194,7 @@ class cHtmlTest extends PHPUnit_Framework_TestCase {
         $ar['title'] = 'alt';
 
         $this->_cHtml->setAlt('alt', 'title');
-        $ret = PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_attributes');
+        $ret = Assert::readAttribute($this->_cHtml, '_attributes');
         unset($ret['id']);
         $this->assertSame($ar, $ret);
 
@@ -199,35 +203,35 @@ class cHtmlTest extends PHPUnit_Framework_TestCase {
         $ar['title'] = '';
 
         $this->_cHtml->setAlt('alt', false);
-        $ret = PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_attributes');
+        $ret = Assert::readAttribute($this->_cHtml, '_attributes');
         unset($ret['id']);
         // $this->assertSame($ar,$ret);
     }
 
     public function testSetId() {
         $this->_cHtml->setID('testId');
-        $ret = PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_attributes');
+        $ret = Assert::readAttribute($this->_cHtml, '_attributes');
         $this->assertSame('testId', $ret['id']);
     }
 
     public function testGetId() {
         $this->_cHtml->setID('testId');
-        $ret = PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_attributes');
+        $ret = Assert::readAttribute($this->_cHtml, '_attributes');
         $this->assertSame($this->_cHtml->getId(), $ret['id']);
     }
 
     public function testSetStyle() {
         $this->_cHtml->setStyle('margin-top:100px');
-        $ret = PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_attributes');
+        $ret = Assert::readAttribute($this->_cHtml, '_attributes');
         $this->assertSame('margin-top:100px', $ret['style']);
     }
 
     public function testSetClass() {
         $this->_cHtml->setClass('testClass');
-        $ret = PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_attributes');
+        $ret = Assert::readAttribute($this->_cHtml, '_attributes');
         $this->assertSame('testClass', $ret['class']);
 
-        // $ret = PHPUnit_Framework_Assert::readAttribute($this->_cHtml,
+        // $ret = Assert::readAttribute($this->_cHtml,
         // '_attributes');
         $this->assertInstanceOf('cHTML', $this->_cHtml->setClass(''));
     }
@@ -240,7 +244,7 @@ class cHtmlTest extends PHPUnit_Framework_TestCase {
 
     public function testSetAttribute() {
         $this->_cHtml->setAttribute('test0', 'test1');
-        $ret = PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_attributes');
+        $ret = Assert::readAttribute($this->_cHtml, '_attributes');
         $this->assertSame('test1', $ret['test0']);
 
         // $this->_cHtml = new cHTML(array('id'=>5));
@@ -308,22 +312,22 @@ class cHtmlTest extends PHPUnit_Framework_TestCase {
 
         $this->_cHtml->appendStyleDefinition('margin-top', '5px !important');
 
-        $this->assertSame($ar, PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_styleDefinitions'));
+        $this->assertSame($ar, Assert::readAttribute($this->_cHtml, '_styleDefinitions'));
 
         $this->_cHtml->appendStyleDefinition('margin-bottom', '5px !important;');
         $ar['margin-bottom'] = '5px !important';
 
-        $this->assertSame($ar, PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_styleDefinitions'));
+        $this->assertSame($ar, Assert::readAttribute($this->_cHtml, '_styleDefinitions'));
 
         // good idea to cut only the last ';' => in style definition should all ';' be removed !
         $this->_cHtml->appendStyleDefinition('margin-bottom', '5px !important;;;');
         $ar['margin-bottom'] = '5px !important;;';
 
-        $this->assertSame($ar, PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_styleDefinitions'));
+        $this->assertSame($ar, Assert::readAttribute($this->_cHtml, '_styleDefinitions'));
 
         // $this->_cHtml->appendStyleDefinition('', '');
         // $ar[''] = '';
-        // $this->assertSame($ar,PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_styleDefinitions'));
+        // $this->assertSame($ar,Assert::readAttribute($this->_cHtml, '_styleDefinitions'));
 
         // echo $this->_cHtml->toHtml();
     }
@@ -338,7 +342,7 @@ class cHtmlTest extends PHPUnit_Framework_TestCase {
             'margin-top' => '5px !important',
             'margin-bottom' => '5px !important'
         ));
-        $this->assertSame($ar, PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_styleDefinitions'));
+        $this->assertSame($ar, Assert::readAttribute($this->_cHtml, '_styleDefinitions'));
     }
 
     public function testAddRequiredScript() {
@@ -360,7 +364,7 @@ class cHtmlTest extends PHPUnit_Framework_TestCase {
         $this->_cHtml->addRequiredScript('test.js');
 
 
-        $this->assertSame($ar,PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_requiredScripts'));
+        $this->assertSame($ar,Assert::readAttribute($this->_cHtml, '_requiredScripts'));
 
     }
 
@@ -379,21 +383,21 @@ class cHtmlTest extends PHPUnit_Framework_TestCase {
         $cHtml->fillCloseSkeleton();
         // echo $cHtml->toHtml();
 
-        // var_dump(PHPUnit_Framework_Assert::readAttribute($cHtml, '_content'));
+        // var_dump(Assert::readAttribute($cHtml, '_content'));
 
         Util::callProtectedMethod($this->_cHtml, '_setContent', array('<a href="huhu.php">blabla</a>'));
-        $this->assertSame('<a href="huhu.php">blabla</a>',PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_content'));
+        $this->assertSame('<a href="huhu.php">blabla</a>',Assert::readAttribute($this->_cHtml, '_content'));
 
         // $this->_cHtml = new cHTML();
         //
-        // var_dump(PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_content'));
+        // var_dump(Assert::readAttribute($this->_cHtml, '_content'));
         //
         // var_dump(Util::callProtectedMethod($this->_cHtml, '_setContent', [$cHtml]));
         // $this->assertSame(
         //     '<div id="m26" alt="title" title="title" style="margin-left: 10px !important;" />',
-        //     PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_content')
+        //     Assert::readAttribute($this->_cHtml, '_content')
         // );
-        //var_dump(PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_skeletonOpen'));
+        //var_dump(Assert::readAttribute($this->_cHtml, '_skeletonOpen'));
     }
 
     public function testPAppendContent() {
@@ -405,20 +409,20 @@ class cHtmlTest extends PHPUnit_Framework_TestCase {
 
 
         Util::callProtectedMethod($this->_cHtml, '_appendContent', array('<a href="huhu.php">blabla</a>'));
-        $this->assertSame('<a href="huhu.php">blabla</a>',PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_content'));
+        $this->assertSame('<a href="huhu.php">blabla</a>',Assert::readAttribute($this->_cHtml, '_content'));
 
         Util::callProtectedMethod($this->_cHtml, '_appendContent', array('<a href="huhu.php">blabla</a>'));
-        $this->assertSame('<a href="huhu.php">blabla</a><a href="huhu.php">blabla</a>',PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_content'));
+        $this->assertSame('<a href="huhu.php">blabla</a><a href="huhu.php">blabla</a>',Assert::readAttribute($this->_cHtml, '_content'));
 
 
         Util::callProtectedMethod($this->_cHtml, '_appendContent', array($cHtml));
-        $this->assertSame('<a href="huhu.php">blabla</a><a href="huhu.php">blabla</a><div id="m28" alt="title" title="title" style="margin-left: 10px !important;" />',PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_content'));
+        $this->assertSame('<a href="huhu.php">blabla</a><a href="huhu.php">blabla</a><div id="m28" alt="title" title="title" style="margin-left: 10px !important;" />',Assert::readAttribute($this->_cHtml, '_content'));
 
         //_appendContent array -> duplicate stlye informations
         // Util::callProtectedMethod($this->_cHtml, '_appendContent', [[$cHtml]]);
         // $this->assertSame(
         //     '<a href="huhu.php">blabla</a><a href="huhu.php">blabla</a><div id="m28" alt="title" title="title" style="margin-left: 10px !important;" /><div id="m28" alt="title" title="title" style="margin-left: 10px !important;" />',
-        //     PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_content')
+        //     Assert::readAttribute($this->_cHtml, '_content')
         // );
     }
 }

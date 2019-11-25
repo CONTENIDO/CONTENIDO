@@ -1,5 +1,7 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * This file contains tests for Contenido chain
  * Contenido.Content.SaveContentEntry
@@ -16,7 +18,7 @@
 /**
  * 1. chain function
  *
- * @param unknown_type $idartlang
+ * @param int $idartlang
  * @param unknown_type $type
  * @param unknown_type $typeid
  * @param unknown_type $value
@@ -32,7 +34,7 @@ function chain_ContenidoContentSaveContentEntry_Test($idartlang, $type, $typeid,
 /**
  * 2. chain function
  *
- * @param unknown_type $idartlang
+ * @param int $idartlang
  * @param unknown_type $type
  * @param unknown_type $typeid
  * @param unknown_type $value
@@ -51,7 +53,7 @@ function chain_ContenidoContentSaveContentEntry_Test2($idartlang, $type, $typeid
  * @package Testing
  * @subpackage Test_Chains
  */
-class ContenidoContentSaveContentEntryTest extends PHPUnit_Framework_TestCase {
+class ContenidoContentSaveContentEntryTest extends TestCase {
 
     /**
      *
