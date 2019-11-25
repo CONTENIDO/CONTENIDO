@@ -33,6 +33,25 @@ The easiest way to achieve this is to copy your existing database, e. g. `conten
 
 All tables of the unit test database should have the prefix `test` (e. g. `test_actionlog`, `test_cat`, `test_art`, etc.) to identify them only for usage in unit tests. If you want to use one database for development and unit tests, then you should copy all your existing tables with the prefix `test`. If you have a separate database for your unit test, then ensure that all your tables also have the prefix `test`.
 
+#### phpMyAdmin
+
+The database management tool phpMyAdmin helps a lot to setup the test database. 
+
+To make a test database from an existing database, do following steps:
+- Select the existing database, e. g. `contenido`
+- Switch to tab "Operations"
+- Scroll down to the section "Copy database to"
+- Type in the name of the test database, e. g. `contenido_test`
+- Select "structure and data" to copy everything and select other options ("CREATE DATABASE before copying" , "Add AUTO_INCREMENT value")
+- Click on the "Go" button to proceed
+
+Renaming table prefixes of the test database is done as follows:
+- Select the existing database, e. g. `contenido`
+- Click on the "Structure" tab
+- Scroll down to the bottom of screen, click on "Check all"
+- Select the option "Replace Table Prefix" from the select box next to it
+- Enter old prefix (e. g. `con_`) and new prefix (`test_`)
+- Click on the "Submit" button to proceed
 
 ### Test Environment
 
@@ -43,6 +62,9 @@ Unit tests should run in a specific "test" environment, therefore "test" environ
 2. Copy folder `data/config/{environment}` with its content to `data/config/test`
     - Plugins should be disabled, they may affect behaviour of unit tests. Open `data/config/test/config.misc.php` and disable plugins (`$cfg['debug']['disable_plugins'] = true;`).
     - Unit tests should use separate database and/or tables. Unit tests require tables with the prefix `test`. Change sql prefix in `data/config/test/config.php` to `$cfg['sql']['sqlprefix'] = 'test';`. In case to use a separate database for unit tests, adapt your database connection settings in `data/config/test/config.php`.
+
+**NOTE:**
+Ensure that you have the configuration files `config.php` and `config.misc.php` in the folder `data/config/test`!
 
 ----
 
