@@ -46,7 +46,7 @@ To make a test database from an existing database, do following steps:
 - Click on the "Go" button to proceed
 
 Renaming table prefixes of the test database is done as follows:
-- Select the existing database, e. g. `contenido`
+- Select the existing database, e. g. `contenido_test`
 - Click on the "Structure" tab
 - Scroll down to the bottom of screen, click on "Check all"
 - Select the option "Replace Table Prefix" from the select box next to it
