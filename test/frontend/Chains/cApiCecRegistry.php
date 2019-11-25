@@ -1,4 +1,7 @@
 <?php
+
+use PHPUnit\Framework\TestCase;
+
 /**
  * This file contains tests for Contenido cApiCecRegistry.
  *
@@ -52,7 +55,7 @@ class chain_cApiCecRegistryClassStatic_Test
  * @package          Testing
  * @subpackage       Test_Chains
  */
-class cApiCecRegistryTest extends PHPUnit_Framework_TestCase
+class cApiCecRegistryTest extends TestCase
 {
 
     /**

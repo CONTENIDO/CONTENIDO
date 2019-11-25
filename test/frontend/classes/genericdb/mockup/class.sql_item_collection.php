@@ -104,45 +104,45 @@ class SqlItemCollection {
 
 }
 
-/**
- *
- * @author marcus.gnass
- */
-class TFCollection extends ItemCollection {
-
-    /**
-     *
-     * @param unknown_type $where
-     */
-    public function __construct($where = false) {
-        parent::__construct(cRegistry::getDbTableName('con_test'), 'ID');
-        // $this->_setItemClass('TItem');
-        if (false !== $where) {
-            $this->select($where);
-        }
-    }
-
-}
-
-/**
- *
- * @author marcus.gnass
- */
-class TFItem extends Item {
-
-    /**
-     *
-     * @param unknown_type $id
-     */
-    public function __construct($id = false) {
-        $cfg = cRegistry::getConfig();
-        parent::__construct(cRegistry::getDbTableName('con_test'), 'ID');
-        if (false !== $id) {
-            $this->loadByPrimaryKey($id);
-        }
-    }
-
-}
+///**
+// *
+// * @author marcus.gnass
+// */
+//class TFCollection extends ItemCollection {
+//
+//    /**
+//     *
+//     * @param string|bool $where
+//     */
+//    public function __construct($where = false) {
+//        parent::__construct(cRegistry::getDbTableName('con_test'), 'ID');
+//        // $this->_setItemClass('TItem');
+//        if (false !== $where) {
+//            $this->select($where);
+//        }
+//    }
+//
+//}
+//
+///**
+// *
+// * @author marcus.gnass
+// */
+//class TFItem extends Item {
+//
+//    /**
+//     *
+//     * @param int|bool $id
+//     */
+//    public function __construct($id = false) {
+//        $cfg = cRegistry::getConfig();
+//        parent::__construct(cRegistry::getDbTableName('con_test'), 'ID');
+//        if (false !== $id) {
+//            $this->loadByPrimaryKey($id);
+//        }
+//    }
+//
+//}
 
 /**
  *
@@ -152,7 +152,7 @@ class TCollection extends ItemCollection {
 
     /**
      *
-     * @param unknown_type $where
+     * @param string $where
      */
     public function __construct($where = false) {
         parent::__construct(cRegistry::getDbTableName('con_test'), 'ID');
@@ -172,7 +172,7 @@ class TItem extends Item {
 
     /**
      *
-     * @param unknown_type $id
+     * @param int $id
      */
     public function __construct($id = false) {
         $cfg = cRegistry::getConfig();
@@ -192,7 +192,7 @@ class ITCollection extends ItemCollection {
 
     /**
      *
-     * @param unknown_type $where
+     * @param string $where
      */
     public function __construct($where = false) {
         parent::__construct('', 'ID');
@@ -212,7 +212,7 @@ class TITCollection extends ItemCollection {
 
     /**
      *
-     * @param unknown_type $where
+     * @param string $where
      */
     public function __construct($where = false) {
         parent::__construct('ID', '');
@@ -232,7 +232,7 @@ class DogCollection extends ItemCollection {
 
     /**
      *
-     * @param unknown_type $where
+     * @param string|bool $where
      */
     public function __construct($where = false) {
         parent::__construct(cRegistry::getDbTableName('con_test_dog'), 'id');
@@ -252,7 +252,7 @@ class DogItem extends Item {
 
     /**
      *
-     * @param unknown_type $id
+     * @param int|bool $id
      */
     public function __construct($id = false) {
         $cfg = cRegistry::getConfig();
@@ -272,7 +272,7 @@ class DogRfidCollection extends ItemCollection {
 
     /**
      *
-     * @param unknown_type $where
+     * @param string|bool $where
      */
     public function __construct($where = false) {
         parent::__construct(cRegistry::getDbTableName('con_test_rfid_dog'), 'dog_id');
@@ -292,7 +292,7 @@ class DogRfidItem extends Item {
 
     /**
      *
-     * @param unknown_type $id
+     * @param int|bool $id
      */
     public function __construct($id = false) {
         $cfg = cRegistry::getConfig();

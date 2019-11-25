@@ -1,4 +1,7 @@
 <?php
+
+use PHPUnit\Framework\TestCase;
+
 /**
  * This file contains tests for Contenido chain Contenido.Frontend.PostprocessUrlBuilding
  *
@@ -33,7 +36,7 @@ function chain_ContenidoFrontendPostprocessUrlBuilding_Test2($url)
  * @package          Testing
  * @subpackage       Test_Chains
  */
-class ContenidoFrontendPostprocessUrlBuildingTest extends PHPUnit_Framework_TestCase
+class ContenidoFrontendPostprocessUrlBuildingTest extends TestCase
 {
     private $_chain = 'Contenido.Frontend.PostprocessUrlBuilding';
     private $_url          = '/front_content.php?idart=123';

@@ -1,4 +1,7 @@
 <?PHP
+
+use PHPUnit\Framework\TestCase;
+
 /**
  *
  * @author claus.schunk@4fb.de
@@ -7,13 +10,13 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-class cHtmlHiddenFieldTest extends PHPUnit_Framework_TestCase {
+class cHtmlHiddenFieldTest extends TestCase {
     /**
      * @var cHTMLHiddenField
      */
     protected $_cHiddenField = null;
 
-    protected function setUp() {
+    protected function setUp(): void {
         $this->_cHiddenField = new cHTMLHiddenField('testName', 'testValue', 'testId');
     }
 

@@ -118,7 +118,7 @@ class SqlItem {
 
 //     /**
 //      *
-//      * @param unknown_type $where
+//      * @param string|bool $where
 //      */
 //     public function __construct($where = false) {
 //         parent::__construct('', 'ID');
@@ -137,7 +137,7 @@ class SqlItem {
 
 //     /**
 //      *
-//      * @param unknown_type $where
+//      * @param string|bool $where
 //      */
 //     public function __construct($where = false) {
 //         parent::__construct('ID', '');

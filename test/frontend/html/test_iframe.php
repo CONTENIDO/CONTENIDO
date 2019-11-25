@@ -1,4 +1,7 @@
 <?PHP
+
+use PHPUnit\Framework\TestCase;
+
 /**
  *
  * @author claus.schunk@4fb.de
@@ -7,11 +10,11 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-class cHtmlIframeTest extends PHPUnit_Framework_TestCase {
+class cHtmlIframeTest extends TestCase {
 
     protected $_cIframe = null;
 
-    protected function setUp() {
+    protected function setUp(): void {
         $this->_cIframe = new cHTMLIFrame();
     }
 

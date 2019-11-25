@@ -482,7 +482,7 @@ class TreeItem {
      * Returns a list of the id of all parent nodes of the given node
      *
      * @param unknown_type $parentNodes
-     * @param unknown_type $id
+     * @param int|bool $id
      */
     public function getTreeParentNodes(&$parentNodes, $id) {
         $curItem = $this->_getItemByID($id);

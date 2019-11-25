@@ -25,7 +25,7 @@ class cHtmlTextAreaTest extends cTestingTestCase {
 
     /**
      */
-    public function setUp() {
+    protected function setUp(): void {
         $this->_textarea = new cHTMLTextarea('name');
     }
 

@@ -1,4 +1,8 @@
 <?PHP
+
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Assert;
+
 /**
  *
  * @author claus.schunk@4fb.de
@@ -7,11 +11,11 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-class cHtmlSpanTest extends PHPUnit_Framework_TestCase {
+class cHtmlSpanTest extends TestCase {
 
     public function testConstruct() {
         $span = new cHTMLSpan('testContent', 'testClass');
-        $this->assertSame('span', PHPUnit_Framework_Assert::readAttribute($span, '_tag'));
+        $this->assertSame('span', Assert::readAttribute($span, '_tag'));
         $this->assertSame(NULL, $span->getAttribute('_content'));
         $this->assertSame('testClass', $span->getAttribute('class'));
 

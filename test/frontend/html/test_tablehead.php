@@ -1,4 +1,8 @@
 <?PHP
+
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Assert;
+
 /**
  *
  * @author claus.schunk@4fb.de
@@ -7,16 +11,16 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-class cHtmlTableHeadTest extends PHPUnit_Framework_TestCase {
+class cHtmlTableHeadTest extends TestCase {
 
     protected $_tableHead;
 
-    public function setUp() {
+    protected function setUp(): void {
         $this->_tableHead = new cHTMLTableHead();
     }
 
     public function testConstructor() {
-        $this->assertSame('th', PHPUnit_Framework_Assert::readAttribute($this->_tableHead, '_tag'));
+        $this->assertSame('th', Assert::readAttribute($this->_tableHead, '_tag'));
     }
 
 }

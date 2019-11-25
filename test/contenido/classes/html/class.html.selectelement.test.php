@@ -49,7 +49,7 @@ class cHTMLSelectElementTest extends cTestingTestCase {
 
     /**
      */
-    public function setUp() {
+    protected function setUp(): void {
         $this->_selectEmpty = new cHTMLSelectElement('empty');
         $this->_selectData = new cHTMLSelectElement('testName');
         $this->_foo = new cHTMLOptionElement('', 'foo');

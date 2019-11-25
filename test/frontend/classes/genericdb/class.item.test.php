@@ -1,5 +1,8 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Assert;
+
 /**
  *
  * @author claus.schunk@4fb.de
@@ -24,7 +27,7 @@ require_once 'mockup/class.tf_item.php';
  * @author claus.schunk@4fb.de
  * @author marcus.gnass@4fb.de
  */
-class ItemTest extends PHPUnit_Framework_TestCase {
+class ItemTest extends TestCase {
 
     /**
      *
@@ -46,7 +49,7 @@ class ItemTest extends PHPUnit_Framework_TestCase {
 
     /**
      */
-    public function setUp() {
+    protected function setUp(): void {
         ini_set('display_errors', true);
         error_reporting(E_ALL);
 
@@ -78,7 +81,7 @@ class ItemTest extends PHPUnit_Framework_TestCase {
 
     /**
      */
-    public function tearDown() {
+    protected function tearDown(): void {
         $sql = SqlItem::getDeleteStatement(array(
             'con_test',
             'con_test_dog',
@@ -101,12 +104,12 @@ class ItemTest extends PHPUnit_Framework_TestCase {
         $this->assertInstanceOf($exp, $act);
 
         // test name of table
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_dummyItem, 'table');
+        $act = Assert::readAttribute($this->_dummyItem, 'table');
         $exp = 'table';
         $this->assertSame($exp, $act);
 
         // test name of primary key
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_dummyItem, 'primaryKey');
+        $act = Assert::readAttribute($this->_dummyItem, 'primaryKey');
         $exp = 'primaryKey';
         $this->assertSame($exp, $act);
     }

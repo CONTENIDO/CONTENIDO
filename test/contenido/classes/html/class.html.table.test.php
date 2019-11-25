@@ -24,7 +24,7 @@ class cHtmlTableTest extends cTestingTestCase {
 
     /**
      */
-    public function setUp() {
+    protected function setUp(): void {
         $this->_table = new cHTMLTable();
     }
 

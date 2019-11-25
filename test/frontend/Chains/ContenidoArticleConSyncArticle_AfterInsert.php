@@ -1,5 +1,7 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * This file contains tests for Contenido chain
  * Contenido.Article.conSyncArticle_AfterInsert
@@ -41,7 +43,7 @@ function chain_ContenidoArticleConSyncArticle_AfterInsert_Test2(array $data) {
  * @package Testing
  * @subpackage Test_Chains
  */
-class ContenidoArticleConSyncArticle_AfterInsertTest extends PHPUnit_Framework_TestCase {
+class ContenidoArticleConSyncArticle_AfterInsertTest extends TestCase {
 
     /**
      *
@@ -71,7 +73,7 @@ class ContenidoArticleConSyncArticle_AfterInsertTest extends PHPUnit_Framework_T
     /**
      *
      */
-    protected function setUp() {
+    protected function setUp(): void {
         self::$invokeCounter = 0;
     }
 

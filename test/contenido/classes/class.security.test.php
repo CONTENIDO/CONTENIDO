@@ -21,11 +21,11 @@
  */
 class cSecurityTest extends cTestingTestCase {
 
-    protected function setUp() {
+    protected function setUp(): void {
         $_REQUEST = array();
     }
 
-    protected function tearDown() {
+    protected function tearDown(): void {
         $_REQUEST = array();
     }
 

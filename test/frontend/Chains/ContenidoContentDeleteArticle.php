@@ -1,4 +1,7 @@
 <?php
+
+use PHPUnit\Framework\TestCase;
+
 /**
  * This file contains tests for Contenido chain Contenido.Content.DeleteArticle
  *
@@ -33,7 +36,7 @@ function chain_ContenidoContentDeleteArticle_Test2($idart)
  * @package          Testing
  * @subpackage       Test_Chains
  */
-class ContenidoContentDeleteArticleTest extends PHPUnit_Framework_TestCase
+class ContenidoContentDeleteArticleTest extends TestCase
 {
     private $_chain = 'Contenido.Content.DeleteArticle';
     private $_idart = 123;
@@ -41,7 +44,7 @@ class ContenidoContentDeleteArticleTest extends PHPUnit_Framework_TestCase
     public static $invokeCounter = 0;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         self::$invokeCounter = 0;
     }
@@ -50,7 +53,7 @@ class ContenidoContentDeleteArticleTest extends PHPUnit_Framework_TestCase
     /**
 	* @deprecated 2014-08-07 - This method is deprecated and is not needed any longer
 	 */
-    public function tearDown() {
+    protected function tearDown(): void {
         cDeprecated('This method is deprecated and is not needed any longer');
     }
 

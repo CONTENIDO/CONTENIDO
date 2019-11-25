@@ -1,5 +1,7 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * This file contains tests for Contenido chain
  * Contenido.Frontend.CategoryAccess
@@ -16,8 +18,8 @@
 /**
  * 1. chain function to check if the user has permission to access a category
  *
- * @param unknown_type $lang
- * @param unknown_type $idcat
+ * @param int $lang
+ * @param int $idcat
  * @param unknown_type $uid
  * @return boolean
  */
@@ -28,8 +30,8 @@ function chain_ContenidoFrontendCategoryAccess_Test($lang, $idcat, $uid) {
 /**
  * 2. chain function to check if the user has permission to access a category
  *
- * @param unknown_type $lang
- * @param unknown_type $idcat
+ * @param int $lang
+ * @param int $idcat
  * @param unknown_type $uid
  * @return boolean
  */
@@ -40,8 +42,8 @@ function chain_ContenidoFrontendCategoryAccess_Test2($lang, $idcat, $uid) {
 /**
  * 3. chain function to check if the user has permission to access a category
  *
- * @param unknown_type $lang
- * @param unknown_type $idcat
+ * @param int $lang
+ * @param int $idcat
  * @param unknown_type $uid
  * @return boolean
  */
@@ -55,7 +57,7 @@ function chain_ContenidoFrontendCategoryAccess_Test3($lang, $idcat, $uid) {
  * @package Testing
  * @subpackage Test_Chains
  */
-class ContenidoFrontendCategoryAccessTest extends PHPUnit_Framework_TestCase {
+class ContenidoFrontendCategoryAccessTest extends TestCase {
 
     /**
      *
@@ -85,7 +87,7 @@ class ContenidoFrontendCategoryAccessTest extends PHPUnit_Framework_TestCase {
     /**
      *
      */
-    protected function setUp() {
+    protected function setUp(): void {
         $this->_lang = $GLOBALS['lang'];
 
         if (!$user = cTestingTestHelper::getUserByUsername('sysadmin')) {

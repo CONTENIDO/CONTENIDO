@@ -34,7 +34,7 @@ class cArticleCollectorTest extends cTestingTestCase {
 
     /**
      */
-    public function setUp() {
+    protected function setUp(): void {
 
         // default options that are set
         $this->_defaultOptions = array(
@@ -69,7 +69,7 @@ class cArticleCollectorTest extends cTestingTestCase {
 
     /**
      */
-    public function tearDown() {
+    protected function tearDown(): void {
         // No need for tear down
     }
 
@@ -534,7 +534,7 @@ class cArticleCollectorTest extends cTestingTestCase {
     public function testLoadArticles() {
 
         // articles including start articles
-        $this->_db->query('SELECT * FROM con_art_lang_test WHERE idlang = 1 AND online = 1');
+        $this->_db->query('SELECT * FROM test_art_lang WHERE idlang = 1 AND online = 1');
         $ret = $this->_db->affectedRows();
         $this->_aColl = new cArticleCollector(array(
             'start' => true
@@ -542,7 +542,7 @@ class cArticleCollectorTest extends cTestingTestCase {
 
         // articles without start articles
         $this->assertSame($ret, $this->_aColl->count());
-        $this->_db->query('SELECT * FROM con_art_lang_test WHERE idlang = 1 AND online = 1 AND idartlang NOT IN (SELECT startidartlang FROM con_cat_lang_test WHERE startidartlang>0)');
+        $this->_db->query('SELECT * FROM test_art_lang WHERE idlang = 1 AND online = 1 AND idartlang NOT IN (SELECT startidartlang FROM test_cat_lang WHERE startidartlang>0)');
         $ret = $this->_db->affectedRows();
         $this->_aColl = new cArticleCollector(array(
             'start' => false
@@ -550,7 +550,7 @@ class cArticleCollectorTest extends cTestingTestCase {
         $this->assertSame($ret, $this->_aColl->count());
 
         // offline articles
-        $this->_db->query('SELECT * FROM con_art_lang_test WHERE idlang = 1 AND online = 0');
+        $this->_db->query('SELECT * FROM test_art_lang WHERE idlang = 1 AND online = 0');
         $ret = $this->_db->affectedRows();
 
         $ret = $this->_db->affectedRows();

@@ -1,4 +1,7 @@
 <?php
+
+use PHPUnit\Framework\TestCase;
+
 /**
  * This file is a template for unit tests
  *
@@ -12,13 +15,13 @@
 /**
  * test class
  */
-class TemplateUnitTest extends PHPUnit_Framework_TestCase {
+class TemplateUnitTest extends TestCase {
 
     /**
      * this function can be used to set up test data: it will be called before
      * every function call with the @test annotation
      */
-    protected function setUp() {
+    protected function setUp(): void {
         //
     }
 
@@ -26,7 +29,7 @@ class TemplateUnitTest extends PHPUnit_Framework_TestCase {
      * this function can be used to clear test data: it will be called after
      * every function call with the @test annotation
      */
-    protected function tearDown() {
+    protected function tearDown(): void {
         //
     }
 

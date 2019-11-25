@@ -3,6 +3,8 @@
 /.project
 /.settings
 /.idea
+/visual-studio-code.code-workspace
+/nbproject
 
 cms/cache/*
 cms/cache/code/*
@@ -11,6 +13,7 @@ cms/cache/templates_c/*
 cms/css/*
 !cms/css/.gitignore
 
+cms/data/config/production/config.local.php
 cms/data/layouts
 cms/data/logs/*
 cms/data/modules
@@ -50,6 +53,11 @@ data/config/production/config.clients.php
 data/config/production/config.local.php
 data/config/production/config.wysiwyg_tinymce4.php
 data/config/production/config.php
+data/config/test/config.autoloader.local.php
+data/config/test/config.clients.php
+data/config/test/config.local.php
+data/config/test/config.wysiwyg_tinymce4.php
+data/config/test/config.php
 data/cronlog/*.job
 data/logs/deprecatedlog.txt
 data/logs/errorlog.txt
@@ -58,5 +66,8 @@ data/logs/security.txt
 data/logs/setuplog.txt
 data/logs/debug.log
 /desktop.ini
-/nbproject
 
+/vendor
+/composer.json
+/composer.lock
+/.phpunit.result.cache

@@ -1,5 +1,7 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * This file contains tests for the mail validator.
  *
@@ -21,7 +23,7 @@
  * @package Testing
  * @subpackage Test_Validator
  */
-class cValidatorEmailTest extends PHPUnit_Framework_TestCase {
+class cValidatorEmailTest extends TestCase {
 
     /**
      *
@@ -32,7 +34,7 @@ class cValidatorEmailTest extends PHPUnit_Framework_TestCase {
     /**
      *
      */
-    public function setUp() {
+    protected function setUp(): void {
         global $cfg;
 
         $cfg['validator']['email'] = array(
@@ -59,7 +61,7 @@ class cValidatorEmailTest extends PHPUnit_Framework_TestCase {
     /**
      *
      */
-    public function tearDown() {
+    protected function tearDown(): void {
         global $cfg;
         unset($this->_validator, $cfg['validator']['email']);
     }

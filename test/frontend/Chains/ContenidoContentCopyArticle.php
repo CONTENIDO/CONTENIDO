@@ -1,5 +1,7 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * This file contains tests for Contenido chain Contenido.Content.CopyArticle
  *
@@ -36,7 +38,7 @@ function chain_ContenidoContentCopyArticle_Test2($idart) {
  * @package Testing
  * @subpackage Test_Chains
  */
-class ContenidoContentCopyArticleTest extends PHPUnit_Framework_TestCase {
+class ContenidoContentCopyArticleTest extends TestCase {
 
     /**
      *
@@ -65,7 +67,7 @@ class ContenidoContentCopyArticleTest extends PHPUnit_Framework_TestCase {
     /**
      *
      */
-    protected function setUp() {
+    protected function setUp(): void {
         self::$invokeCounter = 0;
     }
 
@@ -74,7 +76,7 @@ class ContenidoContentCopyArticleTest extends PHPUnit_Framework_TestCase {
      * @deprecated 2014-08-07
      *         This method is deprecated and is not needed any longer
      */
-    public function tearDown() {
+    protected function tearDown(): void {
         cDeprecated('This method is deprecated and is not needed any longer');
     }
 

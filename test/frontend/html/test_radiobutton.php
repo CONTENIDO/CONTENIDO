@@ -1,4 +1,9 @@
 <?PHP
+
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Assert;
+
+
 /**
  *
  * @author claus.schunk@4fb.de
@@ -7,7 +12,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-class cHtmlRadioButtonTest extends PHPUnit_Framework_TestCase {
+class cHtmlRadioButtonTest extends TestCase {
 
     public function testConstruct() {
         $pwBox = new cHTMLRadiobutton('testName', 'testValue', 'testId');
@@ -65,9 +70,9 @@ class cHtmlRadioButtonTest extends PHPUnit_Framework_TestCase {
         $this->assertSame('testId', $pwBox->getAttribute('id'));
         $this->assertSame('radio', $pwBox->getAttribute('type'));
 
-        $this->assertSame(NULL, PHPUnit_Framework_Assert::readAttribute($pwBox, '_labelText'));
+        $this->assertSame(NULL, Assert::readAttribute($pwBox, '_labelText'));
         $pwBox->setLabelText('testLabel');
-        $this->assertSame('testLabel', PHPUnit_Framework_Assert::readAttribute($pwBox, '_labelText'));
+        $this->assertSame('testLabel', Assert::readAttribute($pwBox, '_labelText'));
     }
 
     public function testToHTMLText() {

@@ -18,7 +18,7 @@
  */
 class cHTMLTest extends cTestingTestCase {
 
-    public function setUp() {
+    protected function setUp(): void {
         // create XHTML
         cHTML::setGenerateXHTML(true);
     }

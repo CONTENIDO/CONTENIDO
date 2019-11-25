@@ -25,7 +25,7 @@ class cHtmlCheckBoxTest extends cTestingTestCase {
 
     /**
      */
-    protected function setUp() {
+    protected function setUp(): void {
         $this->_checkbox = new cHTMLCheckbox('name', 'value');
         $this->_checkbox->setID('');
     }

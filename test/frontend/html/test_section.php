@@ -1,4 +1,8 @@
 <?PHP
+
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Assert;
+
 /**
  *
  * @author claus.schunk@4fb.de
@@ -7,11 +11,11 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-class cHtmlSectionTest extends PHPUnit_Framework_TestCase {
+class cHtmlSectionTest extends TestCase {
 
     public function testConstruct() {
         $section = new cHTMLSection('testContent', 'testClass', 'testId');
-        $this->assertSame('section', PHPUnit_Framework_Assert::readAttribute($section, '_tag'));
+        $this->assertSame('section', Assert::readAttribute($section, '_tag'));
         $this->assertSame(NULL, $section->getAttribute('_content'));
         $this->assertSame('testClass', $section->getAttribute('class'));
         $this->assertSame('testId', $section->getAttribute('id'));

@@ -1,4 +1,7 @@
 <?php
+
+use PHPUnit\Framework\TestCase;
+
 /**
  * This file contains tests for Contenido chain Contenido.Frontend.BaseHrefGeneration
  *
@@ -33,13 +36,13 @@ function chain_ContenidoFrontendBaseHrefGeneration_Test2($baseHref)
  * @package          Testing
  * @subpackage       Test_Chains
  */
-class ContenidoFrontendBaseHrefGenerationTest extends PHPUnit_Framework_TestCase
+class ContenidoFrontendBaseHrefGenerationTest extends TestCase
 {
     private $_chain = 'Contenido.Frontend.BaseHrefGeneration';
     private $_baseHref = null;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_baseHref = $GLOBALS['cfgClient'][$GLOBALS['client']]['path']['htmlpath'];
     }
