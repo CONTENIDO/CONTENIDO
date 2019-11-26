@@ -40,7 +40,7 @@ class cHTMLTextbox extends cHTMLFormElement {
      *         maximum input length of the box
      * @param string $id [optional]
      *         ID of the element
-     * @param string $disabled [optional]
+     * @param bool $disabled [optional]
      *         Item disabled flag (non-empty to set disabled)
      * @param string $tabindex [optional]
      *         Tab index for form elements
@@ -53,8 +53,7 @@ class cHTMLTextbox extends cHTMLFormElement {
         $name, $initvalue = '', $width = '', $maxlength = '', $id = '',
         $disabled = false, $tabindex = NULL, $accesskey = '', $class = ''
     ) {
-
-        parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
+        parent::__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
 
         $this->_tag = 'input';
         $this->_contentlessTag = true;
@@ -64,7 +63,6 @@ class cHTMLTextbox extends cHTMLFormElement {
         $this->setMaxLength($maxlength);
 
         $this->updateAttribute('type', 'text');
-        $this->setClass($class);
     }
 
     /**

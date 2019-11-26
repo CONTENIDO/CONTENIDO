@@ -306,14 +306,14 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
         $oForm->add(i18n("Type", 'newsletter'), i18n("HTML and text"));
 
         $txtMessageHTML = new cHTMLTextarea("txtMessageHTML", $oJob->get("message_html"), 80, 20);
-        $txtMessageHTML->setDisabled("disabled");
+        $txtMessageHTML->setDisabled(true);
 
         $oForm->add(i18n("HTML Message", 'newsletter'), $txtMessageHTML->render());
     } else {
         $oForm->add(i18n("Type", 'newsletter'), i18n("Text only", 'newsletter'));
     }
     $txtMessageText = new cHTMLTextarea("txtMessageText", $oJob->get("message_text"), 80, 20);
-    $txtMessageText->setDisabled("disabled");
+    $txtMessageText->setDisabled(true);
 
     $oForm->add(i18n("Text Message", 'newsletter'), $txtMessageText->render());
 

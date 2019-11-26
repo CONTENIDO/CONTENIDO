@@ -211,8 +211,8 @@ if (true === $layout->isLoaded()) {
 
     // disable the name textbox and the description textbox if readonly is on
     if($readOnly) {
-        $tb_name->setDisabled('disabled');
-        $ta_description->setDisabled('disabled');
+        $tb_name->setDisabled(true);
+        $ta_description->setDisabled(true);
     }
 
     $form->add(i18n("Name"), $tb_name);

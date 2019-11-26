@@ -47,7 +47,7 @@ class cHTMLOptionElement extends cHTMLFormElement {
      *         the class of this element
      */
     public function __construct($title, $value, $selected = false, $disabled = false, $class = '') {
-        cHTML::__construct();
+        parent::__construct('', '', $disabled, '', '', $class);
         $this->_tag = 'option';
         $this->_title = $title;
 
@@ -55,7 +55,6 @@ class cHTMLOptionElement extends cHTMLFormElement {
         $this->_contentlessTag = false;
 
         $this->setSelected($selected);
-        $this->setDisabled($disabled);
         $this->setClass($class);
     }
 
@@ -83,22 +82,6 @@ class cHTMLOptionElement extends cHTMLFormElement {
      */
     public function isSelected() {
         return $this->getAttribute('selected') === 'selected';
-    }
-
-    /**
-     * Sets the disabled flag
-     *
-     * @param bool $disabled
-     *         If true, adds the "disabled" attribute
-     * @return cHTMLOptionElement
-     *         $this for chaining
-     */
-    public function setDisabled($disabled) {
-        if ($disabled == true) {
-            return $this->updateAttribute('disabled', 'disabled');
-        } else {
-            return $this->removeAttribute('disabled');
-        }
     }
 
     /**

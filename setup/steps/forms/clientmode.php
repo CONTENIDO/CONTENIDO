@@ -86,7 +86,7 @@ class cSetupClientMode extends cSetupMask {
             $oRadio->setStyle('width:auto;border:0;');
 
             if ($_SESSION["clientmode"] == $sKey || ($_SESSION["clientmode"] == "" && $sKey == "CLIENTEXAMPLES")) {
-                $oRadio->setChecked("checked");
+                $oRadio->setChecked(true);
             }
 
             $oLabel = new cHTMLLabel($sChoice, $oRadio->getID());

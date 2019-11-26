@@ -50,7 +50,7 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      *         ID of the element
      * @param bool $checked [optional]
      *         Is element checked?
-     * @param string $disabled [optional]
+     * @param bool $disabled [optional]
      *         Item disabled flag (non-empty to set disabled)
      * @param string $tabindex [optional]
      *         Tab index for form elements
@@ -60,7 +60,7 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      *         the class of this element
      */
     public function __construct($name, $value, $id = '', $checked = false, $disabled = false, $tabindex = NULL, $accesskey = '', $class = '') {
-        parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
+        parent::__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
         $this->_tag = 'input';
         $this->_value = $value;
         $this->_contentlessTag = true;
@@ -68,7 +68,6 @@ class cHTMLRadiobutton extends cHTMLFormElement {
         $this->setChecked($checked);
         $this->updateAttribute('type', 'radio');
         $this->updateAttribute('value', $value);
-        $this->setClass($class);
     }
 
     /**
@@ -80,6 +79,8 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      *         $this for chaining
      */
     public function setChecked($checked) {
+        // NOTE: We cast the parameter to boolean, because it could be of another type!
+        $checked = cSecurity::toBoolean($checked);
         if ($checked == true) {
             return $this->updateAttribute('checked', 'checked');
         } else {

@@ -37,8 +37,8 @@ class cHTMLContentElement extends cHTML {
         parent::__construct();
         $this->setContent($content);
         $this->_contentlessTag = false;
-        $this->setClass($class);
         $this->setID($id);
+        $this->setClass($class);
     }
 
     /**

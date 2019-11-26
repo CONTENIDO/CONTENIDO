@@ -661,7 +661,7 @@ class cVersion {
         }
 
         if ($disabled) {
-            $oHTMLTextarea->setDisabled('disabled');
+            $oHTMLTextarea->setDisabled(true);
         }
 
         $oHTMLTextarea->setStyle('font-family: monospace; width: 100%;');

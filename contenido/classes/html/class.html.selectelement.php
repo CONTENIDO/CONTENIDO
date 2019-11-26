@@ -51,10 +51,9 @@ class cHTMLSelectElement extends cHTMLFormElement {
      *         the class of this element
      */
     public function __construct($name, $width = '', $id = '', $disabled = false, $tabindex = NULL, $accesskey = '', $class = '') {
-        parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
+        parent::__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
         $this->_tag = 'select';
         $this->_contentlessTag = false;
-        $this->setClass($class);
 
         if ($width != "") {
             $this->appendStyleDefinition("width", $width);

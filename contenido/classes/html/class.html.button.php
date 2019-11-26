@@ -37,7 +37,7 @@ class cHTMLButton extends cHTMLFormElement {
      *         Title of the button
      * @param string $id [optional]
      *         ID of the element
-     * @param string $disabled [optional]
+     * @param bool $disabled [optional]
      *         Item disabled flag (non-empty to set disabled)
      * @param string $tabindex [optional]
      *         Tab index for form elements
@@ -49,12 +49,11 @@ class cHTMLButton extends cHTMLFormElement {
      *         the class of this element
      */
     public function __construct($name, $title = '', $id = '', $disabled = false, $tabindex = NULL, $accesskey = '', $mode = 'submit', $class = '') {
-        parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
+        parent::__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
         $this->_tag = 'input';
         $this->_contentlessTag = true;
         $this->setTitle($title);
         $this->setMode($mode);
-        $this->setClass($class);
     }
 
     /**

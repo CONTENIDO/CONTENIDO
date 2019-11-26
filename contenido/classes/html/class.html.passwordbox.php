@@ -41,7 +41,7 @@ class cHTMLPasswordbox extends cHTMLFormElement {
      *         maximum input length of the box
      * @param string $id [optional]
      *         ID of the element
-     * @param string $disabled [optional]
+     * @param bool $disabled [optional]
      *         Item disabled flag (non-empty to set disabled)
      * @param string $tabindex [optional]
      *         Tab index for form elements
@@ -51,7 +51,7 @@ class cHTMLPasswordbox extends cHTMLFormElement {
      *         the class of this element
      */
     public function __construct($name, $initvalue = '', $width = '', $maxlength = '', $id = '', $disabled = false, $tabindex = NULL, $accesskey = '', $class = '') {
-        parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
+        parent::__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
         $this->_tag = 'input';
         $this->setValue($initvalue);
 
@@ -59,7 +59,6 @@ class cHTMLPasswordbox extends cHTMLFormElement {
         $this->setMaxLength($maxlength);
 
         $this->updateAttribute('type', 'password');
-        $this->setClass($class);
     }
 
     /**

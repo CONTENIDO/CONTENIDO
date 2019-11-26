@@ -33,7 +33,7 @@ class cHTMLFormElement extends cHTML {
      *         Name of the element
      * @param string $id [optional]
      *         ID of the element
-     * @param string $disabled [optional]
+     * @param bool $disabled [optional]
      *         Item disabled flag (non-empty to set disabled)
      * @param string $tabindex [optional]
      *         Tab index for form elements
@@ -43,10 +43,9 @@ class cHTMLFormElement extends cHTML {
      *         CSS class name to set
      */
     public function __construct(
-        $name = '', $id = '', $disabled = '', $tabindex = '', $accesskey = '',
+        $name = '', $id = '', $disabled = false, $tabindex = '', $accesskey = '',
         $class = 'text_medium'
     ) {
-
         parent::__construct();
 
         $this->updateAttribute('name', $name);
@@ -70,18 +69,19 @@ class cHTMLFormElement extends cHTML {
      * usually are showing the element as "greyed-out".
      *
      * Example:
-     * $obj->setDisabled('disabled');
-     * $obj->setDisabled('');
+     * $obj->setDisabled(true);
+     * $obj->setDisabled(false);
      *
      * The first example sets the disabled flag, the second one
      * removes the disabled flag.
      *
-     * @param string $disabled
+     * @param bool $disabled
      *         Sets the disabled-flag if non-empty
      * @return cHTMLFormElement
      *         $this for chaining
      */
     public function setDisabled($disabled) {
+        // NOTE: We use empty() here because of downwards compatibility, the variable was of type string before 4.10.2!
         if (empty($disabled)) {
             $this->removeAttribute('disabled');
         } else {
