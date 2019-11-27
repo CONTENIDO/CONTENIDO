@@ -55,7 +55,6 @@ class cHTMLOptionElement extends cHTMLFormElement {
         $this->_contentlessTag = false;
 
         $this->setSelected($selected);
-        $this->setClass($class);
     }
 
     /**

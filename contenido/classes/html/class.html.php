@@ -107,7 +107,6 @@ class cHTML {
      */
     protected $_attributes = [];
 
-
     /**
      * List of attributes which can't or shouldn't be empty.
      * See CON-980 for adding 'class' to the list.
@@ -128,8 +127,6 @@ class cHTML {
      *
      * @param array $attributes [optional]
      *         Associative array of table tag attributes
-     * @throws cDbException
-     * @throws cException
      */
     public function __construct(array $attributes = NULL) {
         if (!is_null($attributes)) {
@@ -137,7 +134,14 @@ class cHTML {
         }
 
         if (self::$_generateXHTML === NULL) {
-            if (getEffectiveSetting('generator', 'xhtml', 'false') == 'true') {
+            try {
+                $renderXhtml = getEffectiveSetting('generator', 'xhtml', 'false');
+            } catch (cDbException $e) {
+                $renderXhtml = false;
+            } catch (cException $e) {
+                $renderXhtml = false;
+            }
+            if ($renderXhtml == 'true') {
                 self::$_generateXHTML = true;
             } else {
                 self::$_generateXHTML = false;
@@ -383,10 +387,6 @@ class cHTML {
      *         $this for chaining
      */
     public function addRequiredScript($script) {
-        if (!is_array($this->_requiredScripts)) {
-            $this->_requiredScripts = [];
-        }
-
         $this->_requiredScripts[] = $script;
         $this->_requiredScripts = array_unique($this->_requiredScripts);
 
@@ -399,8 +399,8 @@ class cHTML {
      * @param string|object|array $content
      *         String with the content or a cHTML object to render or an array
      *         of strings / objects.
-     * @return cHTMLContentElement
-     *         $this for chaining
+     *
+     * @return cHTML $this for chaining
      */
     protected function _setContent($content) {
         $this->_contentlessTag = false;
@@ -532,8 +532,11 @@ class cHTML {
      * @return cHTML
      *         $this for chaining
      */
-    public function setAttributes(array $attributes) {
-        $this->_attributes = $this->_parseAttributes($attributes);
+    public function setAttributes(array $attributes)
+    {
+        list($validAttributes) = $this->_parseAttributes($attributes);
+        $this->_attributes = $validAttributes;
+
         return $this;
     }
 
@@ -543,25 +546,25 @@ class cHTML {
      * @param array $attributes
      *         Associative array with attributes
      * @return array
-     *         the parsed attributes
+     *         the parsed attributes as valid and invalid attributes
      */
     protected function _parseAttributes(array $attributes) {
-        $return = [];
+        $validAttributes = $invalidAttributes = [];
 
         foreach ($attributes as $key => $value) {
-            if ($this->_isAttributeToRemove($key, $value)) {
-                unset($attributes[$key]);
+            if (is_int($key)) {
+                $key = $value = cString::toLowerCase($value);
             } else {
-                if (is_int($key)) {
-                    $key = $value = cString::toLowerCase($value);
-                } else {
-                    $key = cString::toLowerCase($key);
-                }
-                $return[$key] = $value;
+                $key = cString::toLowerCase($key);
+            }
+            if ($this->_isAttributeToRemove($key, $value)) {
+                $invalidAttributes[$key] = $value;
+            } else {
+                $validAttributes[$key] = $value;
             }
         }
 
-        return $return;
+        return [$validAttributes, $invalidAttributes];
     }
 
     /**
@@ -609,15 +612,15 @@ class cHTML {
      * @return cHTML
      *         $this for chaining
      */
-    public function updateAttribute($name, $value) {
-        return $this->updateAttributes([
-            $name => $value
-        ]);
+    public function updateAttribute($name, $value)
+    {
+        $this->updateAttributes([$name => $value]);
+
+        return $this;
     }
 
     /**
-     * Updates the passed attributes without changing the other existing
-     * attributes
+     * Updates the passed attributes without changing the other existing attributes.
      *
      * @param array $attributes
      *         Associative array with attributes
@@ -625,14 +628,12 @@ class cHTML {
      *         $this for chaining
      */
     public function updateAttributes(array $attributes) {
-        $parsedAttributes = $this->_parseAttributes($attributes);
-
-        foreach ($attributes as $key => $value) {
-            if (!isset($parsedAttributes[$key])) {
-                $this->removeAttribute($key);
-            } else if (!is_null($value)) {
-                $this->_attributes[$key] = $value;
-            }
+        list($validAttributes, $invalidAttributes) = $this->_parseAttributes($attributes);
+        foreach ($validAttributes as $key => $value) {
+            $this->_attributes[$key] = $value;
+        }
+        foreach ($invalidAttributes as $key => $value) {
+            $this->removeAttribute($key);
         }
 
         return $this;
@@ -648,11 +649,6 @@ class cHTML {
      */
     protected function _getAttrString(array $attributes) {
         $attrString = '';
-
-        if (!is_array($attributes)) {
-            return '';
-        }
-
         foreach ($attributes as $key => $value) {
             $attrString .= ' ' . $key . '="' . $value . '"';
         }
@@ -662,16 +658,15 @@ class cHTML {
 
     /**
      * Checks whether the attribute is to remove or not. Some attributes can't have empty values, they will be removed.
-     * @param  string  $attributeName  The attribute to check
-     * @param  mixed  $value  The value of the attribute
+     *
+     * @param  string $attributeName The attribute to check
+     * @param  mixed  $value         The value of the attribute
+     *
      * @return bool
      */
-    protected function _isAttributeToRemove($attributeName, $value) {
-        if (in_array($attributeName, $this->_notEmptyAttributes) && cSecurity::toString($value) === '') {
-            return true;
-        } else {
-            return false;
-        }
+    protected function _isAttributeToRemove($attributeName, $value)
+    {
+        return in_array($attributeName, $this->_notEmptyAttributes) && cSecurity::toString($value) === '';
     }
 
     /**

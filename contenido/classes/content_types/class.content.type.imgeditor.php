@@ -548,7 +548,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $contenido = new cHTMLHiddenField('contenido', $_REQUEST['contenido']);
         $path = new cHTMLHiddenField('path');
         $foldername = new cHTMLTextbox('foldername');
-        $button = new cHTMLButton('', '', '', false, NULL, '', 'image');
+        $button = new cHTMLButton('', '', '', false, null, '', 'image');
         $button->setAttribute('src', $this->_cfg['path']['contenido_fullhtml'] . 'images/submit.gif');
         $newDirContent = new cHTMLDiv(array(
             $area,
@@ -586,7 +586,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             '<b>' . i18n('Path') . '</b>',
             $caption2Span
         ));
-        $imageUpload = new cHTMLUpload('file[]', '', '', 'cms_image_m' . $this->_id, false, '', '', 'file');
+        $imageUpload = new cHTMLUpload('file[]', '', '', 'cms_image_m' . $this->_id, false, null, '', 'file');
         $imageUpload->setClass('jqueryAjaxUpload');
         $propertiesForm->setContent(array(
             $frame,

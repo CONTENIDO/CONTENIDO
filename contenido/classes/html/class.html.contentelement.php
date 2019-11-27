@@ -51,7 +51,8 @@ class cHTMLContentElement extends cHTML {
      *         $this for chaining
      */
     public function setContent($content) {
-        return $this->_setContent($content);
+        $this->_setContent($content);
+        return $this;
     }
 
     /**
@@ -64,7 +65,8 @@ class cHTMLContentElement extends cHTML {
      *         $this for chaining
      */
     public function appendContent($content) {
-        return $this->_appendContent($content);
+        $this->_appendContent($content);
+        return $this;
     }
 
 }
