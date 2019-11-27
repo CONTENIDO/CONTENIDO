@@ -84,9 +84,9 @@ class cHTMLAlignmentTableTest extends cTestingTestCase {
         $this->_tableEmptyString = new cHTMLAlignmentTable('');
         $this->_tableString = new cHTMLAlignmentTable(' foo ');
         $this->_tableBool = new cHTMLAlignmentTable(true);
-        $this->_tableNull = new cHTMLAlignmentTable(NULL);
+        $this->_tableNull = new cHTMLAlignmentTable(null);
         $this->_tableObject = new cHTMLAlignmentTable(new stdClass());
-        $this->_tableData = new cHTMLAlignmentTable(0, 1.0, '', ' foo ', true, NULL, new stdClass());
+        $this->_tableData = new cHTMLAlignmentTable(0, 1.0, '', ' foo ', true, null, new stdClass());
     }
 
     /**
@@ -110,26 +110,43 @@ class cHTMLAlignmentTableTest extends cTestingTestCase {
 
     /**
      * Test constructor which sets the member $_data.
-     *
-     * @todo Test of member $_data does not work.
      */
     public function testConstructData() {
         $act = $this->_readAttribute($this->_tableEmpty, '_data');
         $this->assertSame(true, is_array($act));
-//         $exp = array(
-//             0,
-//             1.0,
-//             '',
-//             ' foo ',
-//             true,
-//             NULL,
-//             //new stdClass()
-//         );
-        $exp = array(
-        );
-        // TODO this will break the test!
-        $this->assertEmpty(array_diff($exp, $act));
-        $this->markTestIncomplete('Test of member $_data does not work.');
+        $this->assertEmpty(array_diff([], $act));
+
+        $act = $this->_readAttribute($this->_tableInt, '_data');
+        $this->assertSame(true, is_array($act));
+        $this->assertEmpty(array_diff([0], $act));
+
+        $act = $this->_readAttribute($this->_tableFloat, '_data');
+        $this->assertSame(true, is_array($act));
+        $this->assertEmpty(array_diff([1.0], $act));
+
+        $act = $this->_readAttribute($this->_tableEmptyString, '_data');
+        $this->assertSame(true, is_array($act));
+        $this->assertEmpty(array_diff([''], $act));
+
+        $act = $this->_readAttribute($this->_tableString, '_data');
+        $this->assertSame(true, is_array($act));
+        $this->assertEmpty(array_diff([' foo '], $act));
+
+        $act = $this->_readAttribute($this->_tableBool, '_data');
+        $this->assertSame(true, is_array($act));
+        $this->assertEmpty(array_diff([true], $act));
+
+        $act = $this->_readAttribute($this->_tableNull, '_data');
+        $this->assertSame(true, is_array($act));
+        $this->assertEmpty(array_diff([null], $act));
+
+        $act = $this->_readAttribute($this->_tableObject, '_data');
+        $this->assertSame(true, is_array($act));
+        $this->assertTrue([new stdClass()] == $act);
+
+        $act = $this->_readAttribute($this->_tableData, '_data');
+        $this->assertSame(true, is_array($act));
+        $this->assertTrue([0, 1.0, '', ' foo ', true, null, new stdClass()] == $act);
     }
 
     /**
