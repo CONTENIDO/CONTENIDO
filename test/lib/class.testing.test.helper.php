@@ -34,8 +34,9 @@ class cTestingTestHelper
     {
         $username = (!empty($username)) ? $username : 'sysadmin';
         $db = self::_getDatabase();
+        $cfg = cRegistry::getConfig();
         $sql = "SELECT * FROM `%s` WHERE username = '%s'";
-        if (!$db->query($sql, $GLOBALS['cfg']['tab']['user'], $username)) {
+        if (!$db->query($sql, $cfg['tab']['user'], $username)) {
             return null;
         } elseif (!$user = $db->getResultObject()) {
             return null;

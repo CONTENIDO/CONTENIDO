@@ -14,6 +14,7 @@
             <file>test/contenido/classes/html/class.html.alignmenttable.test.php</file>
             <file>test/contenido/classes/html/class.html.checkbox.test.php</file>
             <file>test/contenido/classes/html/class.html.form.test.php</file>
+            <file>test/contenido/classes/html/class.html.formelement.test.php</file>
             <file>test/contenido/classes/html/class.html.image.test.php</file>
             <file>test/contenido/classes/html/class.html.selectelement.test.php</file>
             <file>test/contenido/classes/html/class.html.table.test.php</file>

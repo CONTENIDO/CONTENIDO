@@ -32,9 +32,11 @@ class cHTMLParagraph extends cHTMLContentElement {
      *         String or object with the contents
      * @param string $class [optional]
      *         class of this element
+     * @param string $id [optional]
+     *         the ID of this element
      */
-    public function __construct($content = '', $class = '') {
-        parent::__construct($content, $class);
+    public function __construct($content = '', $class = '', $id = '') {
+        parent::__construct($content, $class, $id);
         $this->_tag = 'p';
     }
 }

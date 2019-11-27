@@ -998,7 +998,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         //     $this->_storeSettings();
         // }
 
-        $htmlSelect = new cHTMLSelectElement('filelist_manual_files_' . $this->_id, '', 'filelist_manual_files_' . $this->_id, false, '', '', 'manual');
+        $htmlSelect = new cHTMLSelectElement('filelist_manual_files_' . $this->_id, '', 'filelist_manual_files_' . $this->_id, false, null, '', 'manual');
 
         if (is_array($this->_settings['filelist_manual_files'])) { // More than one entry
             foreach ($this->_settings['filelist_manual_files'] as $selectedFile) {
@@ -1035,7 +1035,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      *         rendered cHTMLSelectElement
      */
     public function generateFileSelect($directoryPath = '') {
-        $htmlSelect = new cHTMLSelectElement('filelist_filename_' . $this->_id, '', 'filelist_filename_' . $this->_id, false, '', '', 'filelist_filename');
+        $htmlSelect = new cHTMLSelectElement('filelist_filename_' . $this->_id, '', 'filelist_filename_' . $this->_id, false, null, '', 'filelist_filename');
 
         $files = array();
         if ($directoryPath != '') {

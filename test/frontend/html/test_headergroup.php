@@ -12,16 +12,11 @@ use PHPUnit\Framework\TestCase;
  */
 class cHtmlHeaderHgroupTest extends TestCase {
 
-    protected $_cHeaderHgroup = null;
-
-    protected function setUp(): void {
-        $this->_cHeaderHgroup = new cHTMLHgroup();
-    }
-
     public function testConstruct() {
         $hgroup = new cHTMLHgroup('testContent', 'testClass', 'testId');
         $this->assertSame('<hgroup id="testId" class="testClass">testContent</hgroup>', $hgroup->toHtml());
-        $this->assertSame('<hgroup id=""></hgroup>', $this->_cHeaderHgroup->toHtml());
+        $hgroup = new cHTMLHgroup('', '', 'testId2');
+        $this->assertSame('<hgroup id="testId2"></hgroup>', $hgroup->toHtml());
     }
 
 }

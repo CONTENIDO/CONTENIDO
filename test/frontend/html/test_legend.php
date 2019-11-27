@@ -12,16 +12,11 @@ use PHPUnit\Framework\TestCase;
  */
 class cHtmlLegendTest extends TestCase {
 
-    protected $_cLegend = null;
-
-    protected function setUp(): void {
-        $this->_cLegend = new cHTMLLegend();
-    }
-
     public function testConstruct() {
         $cLegend = new cHTMLLegend('testContent', 'testClass', 'testId');
         $this->assertSame('<legend id="testId" class="testClass">testContent</legend>', $cLegend->toHtml());
-        $this->assertSame('<legend id=""></legend>', $this->_cLegend->toHtml());
+        $cLegend = new cHTMLLegend('', '', 'testId2');
+        $this->assertSame('<legend id="testId2"></legend>', $cLegend->toHtml());
     }
 
 }

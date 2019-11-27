@@ -19,17 +19,17 @@ class cHtmlButtonTest extends TestCase {
     }
 
     public function testConstruct() {
-        $cButton = new cHTMLButton('testButton', 'testTitle', 'testId', false, '', 'accesKey', 'submit', 'testClass');
-        $this->assertSame('<input id="testId" name="testButton" value="testTitle" type="submit" class="testClass" />', $cButton->toHtml());
+        $cButton = new cHTMLButton('testButton', 'testTitle', 'testId', false, null, 'accesKey', 'submit', 'testClass');
+        $this->assertSame('<input name="testButton" id="testId" class="testClass" value="testTitle" type="submit" />', $cButton->toHtml());
 
-        $cButton = new cHTMLButton('testButton', 'testTitle', 'testId', false, '', 'accesKey', 'submit');
-        $this->assertSame('<input id="testId" name="testButton" value="testTitle" type="submit" />', $cButton->toHtml());
+        $cButton = new cHTMLButton('testButton', 'testTitle', 'testId', false, null, 'accesKey', 'submit');
+        $this->assertSame('<input name="testButton" id="testId" value="testTitle" type="submit" />', $cButton->toHtml());
 
-        $cButton = new cHTMLButton('testButton', 'testTitle', 'testId', false, '', 'accesKey');
-        $this->assertSame('<input id="testId" name="testButton" value="testTitle" type="submit" />', $cButton->toHtml());
+        $cButton = new cHTMLButton('testButton', 'testTitle', 'testId', false, null, 'accesKey');
+        $this->assertSame('<input name="testButton" id="testId" value="testTitle" type="submit" />', $cButton->toHtml());
 
         $cButton = new cHTMLButton('testButton', 'testValue', 'testId');
-        $this->assertSame('<input id="testId" name="testButton" value="testValue" type="submit" />', $cButton->toHtml());
+        $this->assertSame('<input name="testButton" id="testId" value="testValue" type="submit" />', $cButton->toHtml());
     }
 
     public function testSetTitle() {

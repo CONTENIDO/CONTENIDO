@@ -80,21 +80,21 @@ class ContenidoFrontendCategoryAccessTest extends TestCase {
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
-    private $_uid = null;
+    private $_userId = null;
 
     /**
      *
      */
     protected function setUp(): void {
-        $this->_lang = $GLOBALS['lang'];
+        $this->_lang = cRegistry::getLanguageId();
 
         if (!$user = cTestingTestHelper::getUserByUsername('sysadmin')) {
             $this->fail('Couldn\'t get user_id of user "sysadmin".');
             return;
         }
-        $this->_uid = $user->user_id;
+        $this->_userId = $user->user_id;
     }
 
     /**
@@ -104,7 +104,7 @@ class ContenidoFrontendCategoryAccessTest extends TestCase {
         // set n' execute chain
         // break at "true", default value "false"
         cApiCecHook::setBreakCondition(true, false);
-        $allow = cApiCecHook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_uid);
+        $allow = cApiCecHook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_userId);
 
         $this->assertEquals(false, $allow);
     }
@@ -122,7 +122,7 @@ class ContenidoFrontendCategoryAccessTest extends TestCase {
         // set n' execute chain
         // break at "true", default value "false"
         cApiCecHook::setBreakCondition(true, false);
-        $allow = cApiCecHook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_uid);
+        $allow = cApiCecHook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_userId);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendCategoryAccess_Test');
@@ -145,7 +145,7 @@ class ContenidoFrontendCategoryAccessTest extends TestCase {
         // set n' execute chain
         // break at "true", default value "false"
         cApiCecHook::setBreakCondition(true, false);
-        $allow = cApiCecHook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_uid);
+        $allow = cApiCecHook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_userId);
 
         // remove chain functions
         $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendCategoryAccess_Test');

@@ -37,7 +37,7 @@ class cHTMLHiddenField extends cHTMLFormElement {
      *         ID of the element
      */
     public function __construct($name, $value = '', $id = '') {
-        parent::__construct($name, $id);
+        parent::__construct($name, $id, false, '', '', '');
         $this->_contentlessTag = true;
         $this->updateAttribute('type', 'hidden');
         $this->_tag = 'input';

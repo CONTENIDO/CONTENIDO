@@ -1,8 +1,5 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Assert;
-
 /**
  *
  * @author claus.schunk@4fb.de
@@ -27,7 +24,7 @@ require_once 'mockup/class.tf_item.php';
  * @author claus.schunk@4fb.de
  * @author marcus.gnass@4fb.de
  */
-class ItemTest extends TestCase {
+class ItemTest extends cTestingTestCase {
 
     /**
      *
@@ -104,12 +101,12 @@ class ItemTest extends TestCase {
         $this->assertInstanceOf($exp, $act);
 
         // test name of table
-        $act = Assert::readAttribute($this->_dummyItem, 'table');
+        $act = $this->_readAttribute($this->_dummyItem, 'table');
         $exp = 'table';
         $this->assertSame($exp, $act);
 
         // test name of primary key
-        $act = Assert::readAttribute($this->_dummyItem, 'primaryKey');
+        $act = $this->_readAttribute($this->_dummyItem, 'primaryKey');
         $exp = 'primaryKey';
         $this->assertSame($exp, $act);
     }

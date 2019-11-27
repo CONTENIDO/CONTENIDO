@@ -437,7 +437,7 @@ class cModuleTemplateHandler extends cModuleHandler {
      *
      * @return int
      *         if user doesn't have permission return -1
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -609,7 +609,7 @@ class cModuleTemplateHandler extends cModuleHandler {
         }
 
         if($readOnly) {
-            $oName->setDisabled('disabled');
+            $oName->setDisabled(true);
         }
 
         // add fields only if template file exists

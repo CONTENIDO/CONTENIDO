@@ -42,23 +42,22 @@ class cHTMLTextarea extends cHTMLFormElement {
      *         height of the textarea
      * @param string $id [optional]
      *         ID of the element
-     * @param string $disabled [optional]
+     * @param bool $disabled [optional]
      *         Item disabled flag (non-empty to set disabled)
-     * @param string $tabindex [optional]
+     * @param int|null $tabindex [optional]
      *         Tab index for form elements
      * @param string $accesskey [optional]
      *         Key to access the field
      * @param string $class [optional]
      *         the class of this element
      */
-    public function __construct($name, $initvalue = '', $width = '', $height = '', $id = '', $disabled = false, $tabindex = NULL, $accesskey = '', $class = '') {
-        parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
+    public function __construct($name, $initvalue = '', $width = '', $height = '', $id = '', $disabled = false, $tabindex = null, $accesskey = '', $class = '') {
+        parent::__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
         $this->_tag = 'textarea';
         $this->setValue($initvalue);
         $this->_contentlessTag = false;
         $this->setWidth($width);
         $this->setHeight($height);
-        $this->setClass($class);
     }
 
     /**

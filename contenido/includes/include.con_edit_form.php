@@ -177,7 +177,7 @@ switch ($versioningState) {
         }
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle, 'copytobutton');
         if ($action == 'con_newart') {
-            $markAsCurrentButton->setDisabled('disabled');
+            $markAsCurrentButton->setDisabled(true);
         }
 
         $infoButton = new cGuiBackendHelpbox(i18n(
@@ -746,7 +746,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     // disable select element if a non-editable version is selected
     if ($versioning->getState() == 'simple' && $articleType != 'current'
         || $versioning->getState() == 'advanced' && $articleType != 'editable') {
-            $inputArtSortSelect->setDisabled('disabled');
+            $inputArtSortSelect->setDisabled(true);
     }
     $tmp_inputArtSort .= $inputArtSortSelect->toHtml();
 

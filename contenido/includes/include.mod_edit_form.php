@@ -172,9 +172,9 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
 
     if ($bInUse == true) {
         $message .= "<br>";
-        $disabled = 'disabled="disabled"';
+        $disabled = true;
     } else {
-        $disabled = "";
+        $disabled = false;
     }
 
     $page = new cGuiPage("mod_edit_form", "", "0");
@@ -337,7 +337,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         $typeselect->setDefault("0");
     } else {
         $typeselect->setDefault($module->get("type"));
-        $custom->setDisabled("disabled");
+        $custom->setDisabled(true);
     }
 
     $modulecheck = getSystemProperty("system", "modulecheck");
@@ -348,10 +348,10 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     }
 
     if($readOnly) {
-        $name->setDisabled('disabled');
-        $descr->setDisabled('disabled');
-        $typeselect->setDisabled('disabled');
-        $custom->setDisabled('disabled');
+        $name->setDisabled(true);
+        $descr->setDisabled(true);
+        $typeselect->setDisabled(true);
+        $custom->setDisabled(true);
     }
 
     $form->add(i18n("Name"), $name->render());

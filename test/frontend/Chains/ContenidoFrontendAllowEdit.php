@@ -55,7 +55,7 @@ class ContenidoFrontendAllowEditTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->_lang = $GLOBALS['lang'];
+        $this->_lang = cRegistry::getLanguageId();
 
         if (!$user = cTestingTestHelper::getUserByUsername('sysadmin')) {
             $this->fail('Couldn\'t get user_id of user "sysadmin".');

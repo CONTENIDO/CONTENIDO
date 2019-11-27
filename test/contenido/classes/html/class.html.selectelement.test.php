@@ -66,17 +66,17 @@ class cHTMLSelectElementTest extends cTestingTestCase {
         // $section = new cHTMLSection('testContent', 'testClass', 'testId');
         $this->assertSame('select', $this->_readAttribute($this->_selectData, '_tag'));
         $this->assertSame(false, $this->_readAttribute($this->_selectData, '_contentlessTag'));
-        $this->assertSame(2, count($this->_selectData->getAttributes()));
+        $this->assertSame(1, count($this->_selectData->getAttributes()));
         $this->assertSame('testName', $this->_selectData->getAttribute('name'));
-        $this->assertSame(NULL, $this->_selectData->getAttribute('class'));
-        $this->assertSame(NULL, $this->_selectData->getAttribute('disabled'));
+        $this->assertNull($this->_selectData->getAttribute('class'));
+        $this->assertNull($this->_selectData->getAttribute('disabled'));
 
         $this->_selectData = new cHTMLSelectElement('testName', 100);
         $this->assertSame('select', $this->_readAttribute($this->_selectData, '_tag'));
         $this->assertSame(false, $this->_readAttribute($this->_selectData, '_contentlessTag'));
-        $this->assertSame(2, count($this->_selectData->getAttributes()));
+        $this->assertSame(1, count($this->_selectData->getAttributes()));
         $this->assertSame('testName', $this->_selectData->getAttribute('name'));
-        $this->assertSame(NULL, $this->_selectData->getAttribute('class'));
+        $this->assertNull($this->_selectData->getAttribute('class'));
         $ret = $this->_readAttribute($this->_selectData, '_styleDefinitions');
         $this->assertSame(100, $ret['width']);
 
@@ -85,7 +85,7 @@ class cHTMLSelectElementTest extends cTestingTestCase {
         $this->assertSame(false, $this->_readAttribute($this->_selectData, '_contentlessTag'));
         $this->assertSame(2, count($this->_selectData->getAttributes()));
         $this->assertSame('testName', $this->_selectData->getAttribute('name'));
-        $this->assertSame(NULL, $this->_selectData->getAttribute('class'));
+        $this->assertNull($this->_selectData->getAttribute('class'));
         $ret = $this->_readAttribute($this->_selectData, '_styleDefinitions');
         $this->assertSame(100, $ret['width']);
         $this->assertSame('testId', $this->_selectData->getAttribute('id'));
@@ -95,7 +95,7 @@ class cHTMLSelectElementTest extends cTestingTestCase {
         $this->assertSame(false, $this->_readAttribute($this->_selectData, '_contentlessTag'));
         $this->assertSame(3, count($this->_selectData->getAttributes()));
         $this->assertSame('testName', $this->_selectData->getAttribute('name'));
-        $this->assertSame(NULL, $this->_selectData->getAttribute('class'));
+        $this->assertNull($this->_selectData->getAttribute('class'));
         $ret = $this->_readAttribute($this->_selectData, '_styleDefinitions');
         $this->assertSame(100, $ret['width']);
         $this->assertSame('testId', $this->_selectData->getAttribute('id'));
@@ -169,7 +169,7 @@ class cHTMLSelectElementTest extends cTestingTestCase {
     /**
      */
     public function testSetMultiSelect() {
-        $this->assertSame(NULL, $this->_selectData->getAttribute('multiple'));
+        $this->assertNull($this->_selectData->getAttribute('multiple'));
         $this->_selectData->setMultiselect();
         $this->assertSame('multiple', $this->_selectData->getAttribute('multiple'));
     }
@@ -177,7 +177,7 @@ class cHTMLSelectElementTest extends cTestingTestCase {
     /**
      */
     public function testSetSize() {
-        $this->assertSame(NULL, $this->_selectData->getAttribute('size'));
+        $this->assertNull($this->_selectData->getAttribute('size'));
         $this->_selectData->setSize(100);
         $this->assertSame(100, $this->_selectData->getAttribute('size'));
     }

@@ -160,7 +160,7 @@ function renderLabel($text, $name, $width = 280, $seperator = ':', $float = '') 
 function renderTextProperty($name, $value, $label, $password = false) {
     global $auth;
 
-    $textbox = new cHTMLTextbox($name, conHtmlSpecialChars($value), '50', '96');
+    $textbox = new cHTMLTextbox($name, conHtmlSpecialChars($value), 50, 96);
     $textbox->updateAttribute('style', 'width:322px');
     // disable the textbox if user is not a sysadmin
     if (cString::findFirstPos($auth->auth['perm'], 'sysadmin') === false) {

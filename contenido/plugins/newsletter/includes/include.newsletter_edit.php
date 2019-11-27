@@ -463,7 +463,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
 
     if (getEffectiveSetting("newsletter", "option-cronjob-available", "false") == "true") {
         // Enable cronjob checkbox
-        $ckbCronJob->setDisabled("");
+        $ckbCronJob->setDisabled(false);
     } else {
         // Give the user a hint
         $ckbCronJob->setAlt(i18n("Option has to be enabled as client setting - see techref for details", 'newsletter'));

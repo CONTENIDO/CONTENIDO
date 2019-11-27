@@ -50,17 +50,17 @@ class cHTMLCheckbox extends cHTMLFormElement {
      *         ID of the element
      * @param bool $checked [optional]
      *         Is element checked?
-     * @param string $disabled [optional]
+     * @param bool $disabled [optional]
      *         Item disabled flag (non-empty to set disabled)
-     * @param string $tabindex [optional]
+     * @param int|null $tabindex [optional]
      *         Tab index for form elements
      * @param string $accesskey [optional]
      *         Key to access the field
      * @param string $class [optional]
      *         the class of this element
      */
-    public function __construct($name, $value, $id = '', $checked = false, $disabled = false, $tabindex = NULL, $accesskey = '', $class = '') {
-        parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
+    public function __construct($name, $value, $id = '', $checked = false, $disabled = false, $tabindex = null, $accesskey = '', $class = '') {
+        parent::__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
         $this->_tag = 'input';
         $this->_value = $value;
         $this->_contentlessTag = true;
@@ -68,7 +68,6 @@ class cHTMLCheckbox extends cHTMLFormElement {
         $this->setChecked($checked);
         $this->updateAttribute('type', 'checkbox');
         $this->updateAttribute('value', $value);
-        $this->setClass($class);
     }
 
     /**
@@ -80,11 +79,16 @@ class cHTMLCheckbox extends cHTMLFormElement {
      *         $this for chaining
      */
     public function setChecked($checked) {
-        if ($checked == true) {
-            return $this->updateAttribute('checked', 'checked');
+        // NOTE: We use toBoolean() because of downwards compatibility.
+        // The variable was of type string before 4.10.2!
+        $checked = cSecurity::toBoolean($checked);
+        if ($checked === true) {
+            $this->updateAttribute('checked', 'checked');
         } else {
-            return $this->removeAttribute('checked');
+            $this->removeAttribute('checked');
         }
+
+        return $this;
     }
 
     /**

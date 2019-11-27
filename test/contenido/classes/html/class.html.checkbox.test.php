@@ -64,7 +64,7 @@ class cHtmlCheckBoxTest extends cTestingTestCase {
         $this->assertSame('checked', $this->_checkbox->getAttribute('checked'));
 
         $this->_checkbox->setChecked(false);
-        $this->assertSame(NULL, $this->_checkbox->getAttribute('checked'));
+        $this->assertNull($this->_checkbox->getAttribute('checked'));
     }
 
     /**
@@ -87,7 +87,7 @@ class cHtmlCheckBoxTest extends cTestingTestCase {
      */
     public function testToHtmlFalse() {
         $act = $this->_checkbox->toHtml(false);
-        $exp = '<input id="" name="name" type="checkbox" value="value" />';
+        $exp = '<input name="name" type="checkbox" value="value" />';
         $this->assertSame($exp, $act);
     }
 
@@ -96,7 +96,7 @@ class cHtmlCheckBoxTest extends cTestingTestCase {
      */
     public function testToHtmlTrue() {
         $act = $this->_checkbox->toHtml(true);
-        $exp = '<div id="" class="checkbox_wrapper"><input id="" name="name" type="checkbox" value="value" />value</div>';
+        $exp = '<div class="checkbox_wrapper"><input name="name" type="checkbox" value="value" />value</div>';
         $this->assertSame($exp, $act);
     }
 
@@ -104,9 +104,9 @@ class cHtmlCheckBoxTest extends cTestingTestCase {
      * w/ label & text
      */
     public function testToHtml() {
-        $this->_checkbox->setLabelText('label');
+        $this->_checkbox->setLabelText('label')->setId('testId');
         $act = $this->_checkbox->toHtml(true);
-        $exp = '<div id="" class="checkbox_wrapper"><input id="" name="name" type="checkbox" value="value" /><label id="" for="">label</label></div>';
+        $exp = '<div class="checkbox_wrapper"><input name="name" type="checkbox" value="value" id="testId" /><label for="testId">label</label></div>';
         $this->assertSame($exp, $act);
     }
 }

@@ -12,16 +12,11 @@ use PHPUnit\Framework\TestCase;
  */
 class cHtmlFieldSetTest extends TestCase {
 
-    protected $_cFieldSet = null;
-
-    protected function setUp(): void {
-        $this->_cFieldSet = new cHTMLFieldset();
-    }
-
     public function testConstruct() {
         $fieldset = new cHTMLFieldset('testContent', 'testClass', 'testId');
         $this->assertSame('<fieldset id="testId" class="testClass">testContent</fieldset>', $fieldset->toHtml());
-        $this->assertSame('<fieldset id=""></fieldset>', $this->_cFieldSet->toHtml());
+        $fieldset = new cHTMLFieldset('', '', 'testId2');
+        $this->assertSame('<fieldset id="testId2"></fieldset>', $fieldset->toHtml());
     }
 
 }
