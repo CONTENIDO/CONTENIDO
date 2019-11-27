@@ -1,7 +1,5 @@
 <?PHP
 
-use PHPUnit\Framework\TestCase;
-
 /**
  *
  * @author claus.schunk@4fb.de
@@ -10,7 +8,7 @@ use PHPUnit\Framework\TestCase;
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-class cHtmlAudioTest extends TestCase {
+class cHtmlAudioTest extends cTestingTestCase {
 
     protected $_cAudio = null;
 
@@ -19,8 +17,8 @@ class cHtmlAudioTest extends TestCase {
     }
 
     public function testConstruct() {
-        $cAudio = new cHTMLAudio();
-        $this->assertSame('<audio id="" src=""></audio>', $cAudio->toHtml());
+        $cAudio = new cHTMLAudio('', '', 'm25');
+        $this->assertSame('<audio id="m25" src=""></audio>', $cAudio->toHtml());
         $this->assertSame('<audio id="testId" class="testClass" src="testSrc">testcontent</audio>', $this->_cAudio->toHtml());
     }
 

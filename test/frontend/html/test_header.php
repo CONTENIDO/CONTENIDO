@@ -12,16 +12,11 @@ use PHPUnit\Framework\TestCase;
  */
 class cHtmlHeaderTest extends TestCase {
 
-    protected $_cHeader = null;
-
-    protected function setUp(): void {
-        $this->_cHeader = new cHTMLHeader();
-    }
-
     public function testConstruct() {
         $header = new cHTMLHeader('testContent', 'testClass', 'testId');
         $this->assertSame('<header id="testId" class="testClass">testContent</header>', $header->toHtml());
-        $this->assertSame('<header id=""></header>', $this->_cHeader->toHtml());
+        $header = new cHTMLHeader('', '', 'testId2');
+        $this->assertSame('<header id="testId2"></header>', $header->toHtml());
     }
 
 }

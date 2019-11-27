@@ -1,8 +1,5 @@
 <?PHP
 
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Assert;
-
 /**
  *
  * @author claus.schunk@4fb.de
@@ -11,29 +8,29 @@ use PHPUnit\Framework\Assert;
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-class cHtmlOptionElementTest extends TestCase {
+class cHtmlOptionElementTest extends cTestingTestCase {
 
     public function testConstruct() {
         $option = new cHTMLOptionElement('testTitle', 'testValue');
         $this->assertSame('testValue', $option->getAttribute('value'));
-        $this->assertSame(2, count($option->getAttributes()));
+        $this->assertSame(1, count($option->getAttributes()));
 
         $option = new cHTMLOptionElement('testTitle', 'testValue', true);
         $option->toHtml();
         $this->assertSame('testValue', $option->getAttribute('value'));
-        $this->assertSame('testTitle', Assert::readAttribute($option, '_content'));
-        $this->assertSame(3, count($option->getAttributes()));
+        $this->assertSame('testTitle', $this->_readAttribute($option, '_content'));
+        $this->assertSame(2, count($option->getAttributes()));
 
         $option = new cHTMLOptionElement('testTitle', 'testValue', false, false);
         $option->toHtml();
-        $this->assertSame('testTitle', Assert::readAttribute($option, '_content'));
+        $this->assertSame('testTitle', $this->_readAttribute($option, '_content'));
         $this->assertSame('testValue', $option->getAttribute('value'));
-        $this->assertSame(2, count($option->getAttributes()));
+        $this->assertSame(1, count($option->getAttributes()));
 
         $option = new cHTMLOptionElement('testTitle', 'testValue', true, true, 'testClass');
         $option->toHtml();
-        $this->assertSame(5, count($option->getAttributes()));
-        $this->assertSame('testTitle', Assert::readAttribute($option, '_content'));
+        $this->assertSame(4, count($option->getAttributes()));
+        $this->assertSame('testTitle', $this->_readAttribute($option, '_content'));
         $this->assertSame('testValue', $option->getAttribute('value'));
         $this->assertSame('selected', $option->getAttribute('selected'));
         $this->assertSame('disabled', $option->getAttribute('disabled'));
@@ -42,43 +39,43 @@ class cHtmlOptionElementTest extends TestCase {
 
     public function testSetSelected() {
         $option = new cHTMLOptionElement('testTitle', 'testValue', false, false);
-        $this->assertSame(2, count($option->getAttributes()));
+        $this->assertSame(1, count($option->getAttributes()));
         $this->assertSame(NULL, $option->getAttribute('selected'));
 
         $option->setSelected(true);
-        $this->assertSame(3, count($option->getAttributes()));
+        $this->assertSame(2, count($option->getAttributes()));
         $this->assertSame('selected', $option->getAttribute('selected'));
 
         $option->setSelected(false);
-        $this->assertSame(2, count($option->getAttributes()));
+        $this->assertSame(1, count($option->getAttributes()));
         $this->assertSame(NULL, $option->getAttribute('selected'));
     }
 
     public function testIsSelected() {
         $option = new cHTMLOptionElement('testTitle', 'testValue', false, false);
-        $this->assertSame(2, count($option->getAttributes()));
+        $this->assertSame(1, count($option->getAttributes()));
         $this->assertSame(false, ($option->isSelected()));
 
         $option->setSelected(true);
-        $this->assertSame(3, count($option->getAttributes()));
+        $this->assertSame(2, count($option->getAttributes()));
         $this->assertSame(true, ($option->isSelected()));
 
         $option->setSelected(false);
-        $this->assertSame(2, count($option->getAttributes()));
+        $this->assertSame(1, count($option->getAttributes()));
         $this->assertSame(false, ($option->isSelected()));
     }
 
     public function testSetDisabled() {
         $option = new cHTMLOptionElement('testTitle', 'testValue', false, false);
-        $this->assertSame(2, count($option->getAttributes()));
+        $this->assertSame(1, count($option->getAttributes()));
         $this->assertSame(NULL, $option->getAttribute('disabled'));
 
         $option->setDisabled(true);
-        $this->assertSame(3, count($option->getAttributes()));
+        $this->assertSame(2, count($option->getAttributes()));
         $this->assertSame('disabled', $option->getAttribute('disabled'));
 
         $option->setDisabled(false);
-        $this->assertSame(2, count($option->getAttributes()));
+        $this->assertSame(1, count($option->getAttributes()));
         $this->assertSame(NULL, $option->getAttribute('disabled'));
     }
 

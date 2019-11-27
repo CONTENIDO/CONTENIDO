@@ -1,8 +1,5 @@
 <?PHP
 
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Assert;
-
 /**
  *
  * @author claus.schunk@4fb.de
@@ -11,7 +8,7 @@ use PHPUnit\Framework\Assert;
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-class cHtmlLinkTest extends TestCase {
+class cHtmlLinkTest extends cTestingTestCase {
 
     protected $_link = null;
 
@@ -20,29 +17,39 @@ class cHtmlLinkTest extends TestCase {
     }
 
     public function testConstruct() {
-        $this->assertSame('', Assert::readAttribute($this->_link, '_link'));
-        $this->assertSame('', Assert::readAttribute($this->_link, '_content'));
-        $this->assertSame(NULL, Assert::readAttribute($this->_link, '_anchor'));
-        $this->assertSame(NULL, Assert::readAttribute($this->_link, '_custom'));
-        $this->assertSame('', Assert::readAttribute($this->_link, '_image'));
+        $this->assertSame('', $this->_readAttribute($this->_link, '_link'));
+        $this->assertSame('', $this->_readAttribute($this->_link, '_content'));
+        $this->assertSame(NULL, $this->_readAttribute($this->_link, '_anchor'));
+        $this->assertSame(NULL, $this->_readAttribute($this->_link, '_custom'));
+        $this->assertSame('', $this->_readAttribute($this->_link, '_image'));
 
         $this->_link = new cHTMLLink('contenido.org');
-        $this->assertSame('contenido.org', Assert::readAttribute($this->_link, '_link'));
-        $this->assertSame('', Assert::readAttribute($this->_link, '_content'));
-        $this->assertSame(NULL, Assert::readAttribute($this->_link, '_anchor'));
-        $this->assertSame(NULL, Assert::readAttribute($this->_link, '_custom'));
-        $this->assertSame('', Assert::readAttribute($this->_link, '_image'));
-        $this->assertSame('a', Assert::readAttribute($this->_link, '_tag'));
+        $this->assertSame('contenido.org', $this->_readAttribute($this->_link, '_link'));
+        $this->assertSame('', $this->_readAttribute($this->_link, '_content'));
+        $this->assertSame(NULL, $this->_readAttribute($this->_link, '_anchor'));
+        $this->assertSame(NULL, $this->_readAttribute($this->_link, '_custom'));
+        $this->assertSame('', $this->_readAttribute($this->_link, '_image'));
+        $this->assertSame('a', $this->_readAttribute($this->_link, '_tag'));
+
+        $this->_link = new cHTMLLink('contenido.org', '<img src="path/to/image.jpg" />');
+        $this->assertSame('<a href="contenido.org"><img src="path/to/image.jpg" /></a>', $this->_link->render());
+
+        $this->_link = new cHTMLLink('contenido.org', '<img src="path/to/image.jpg" />', 'text_link');
+        $this->assertSame('<a class="text_link" href="contenido.org"><img src="path/to/image.jpg" /></a>', $this->_link->render());
+
+        $this->_link = new cHTMLLink('contenido.org', '<img src="path/to/image.jpg" />', 'text_link', 'testId');
+        $this->assertSame('<a id="testId" class="text_link" href="contenido.org"><img src="path/to/image.jpg" /></a>', $this->_link->render());
+
     }
 
     public function testSetLink() {
-        $this->assertSame('', Assert::readAttribute($this->_link, '_link'));
+        $this->assertSame('', $this->_readAttribute($this->_link, '_link'));
         $this->_link->setLink('www.contenido.org');
-        $this->assertSame('www.contenido.org', Assert::readAttribute($this->_link, '_link'));
+        $this->assertSame('www.contenido.org', $this->_readAttribute($this->_link, '_link'));
         $this->_link->setLink('contenido.org');
 
         $this->_link->enableAutomaticParameterAppend();
-        $this->assertSame('contenido.org', Assert::readAttribute($this->_link, '_link'));
+        $this->assertSame('contenido.org', $this->_readAttribute($this->_link, '_link'));
         $this->_link->setLink('javascript:void(0)');
         $this->assertSame(NULL, $this->_link->getAttribute('onclick'));
     }
@@ -54,15 +61,15 @@ class cHtmlLinkTest extends TestCase {
     }
 
     public function testSetImage() {
-        $this->assertSame('', Assert::readAttribute($this->_link, '_image'));
+        $this->assertSame('', $this->_readAttribute($this->_link, '_image'));
         $this->_link->setImage('http://contenido.org/images/contenido.png');
-        $this->assertSame('http://contenido.org/images/contenido.png', Assert::readAttribute($this->_link, '_image'));
+        $this->assertSame('http://contenido.org/images/contenido.png', $this->_readAttribute($this->_link, '_image'));
     }
 
     public function testSetAnchor() {
-        $this->assertSame(NULL, Assert::readAttribute($this->_link, '_anchor'));
+        $this->assertSame(NULL, $this->_readAttribute($this->_link, '_anchor'));
         $this->_link->setAnchor('anchorTest');
-        $this->assertSame('anchorTest', Assert::readAttribute($this->_link, '_anchor'));
+        $this->assertSame('anchorTest', $this->_readAttribute($this->_link, '_anchor'));
     }
 
     public function testToHtml() {
@@ -78,30 +85,30 @@ class cHtmlLinkTest extends TestCase {
 
     public function testSetCLink() {
         $this->_link->setCLink('top', 'frame4');
-        $this->assertSame('clink', Assert::readAttribute($this->_link, '_type'));
-        $this->assertSame('top', Assert::readAttribute($this->_link, '_targetarea'));
-        $this->assertSame('frame4', Assert::readAttribute($this->_link, '_targetframe'));
-        $this->assertSame('', Assert::readAttribute($this->_link, '_targetaction'));
+        $this->assertSame('clink', $this->_readAttribute($this->_link, '_type'));
+        $this->assertSame('top', $this->_readAttribute($this->_link, '_targetarea'));
+        $this->assertSame('frame4', $this->_readAttribute($this->_link, '_targetframe'));
+        $this->assertSame('', $this->_readAttribute($this->_link, '_targetaction'));
     }
 
     public function testSetMultiLink() {
         $this->_link->setMultiLink('right_top', 'right_top', 'right_bottom', 'right_bottom');
-        $this->assertSame('multilink', Assert::readAttribute($this->_link, '_type'));
-        $this->assertSame('right_top', Assert::readAttribute($this->_link, '_targetarea'));
-        $this->assertSame(3, Assert::readAttribute($this->_link, '_targetframe'));
-        $this->assertSame('right_top', Assert::readAttribute($this->_link, '_targetaction'));
+        $this->assertSame('multilink', $this->_readAttribute($this->_link, '_type'));
+        $this->assertSame('right_top', $this->_readAttribute($this->_link, '_targetarea'));
+        $this->assertSame(3, $this->_readAttribute($this->_link, '_targetframe'));
+        $this->assertSame('right_top', $this->_readAttribute($this->_link, '_targetaction'));
 
-        $this->assertSame('right_bottom', Assert::readAttribute($this->_link, '_targetarea2'));
-        $this->assertSame(4, Assert::readAttribute($this->_link, '_targetframe2'));
-        $this->assertSame('right_bottom', Assert::readAttribute($this->_link, '_targetaction2'));
+        $this->assertSame('right_bottom', $this->_readAttribute($this->_link, '_targetarea2'));
+        $this->assertSame(4, $this->_readAttribute($this->_link, '_targetframe2'));
+        $this->assertSame('right_bottom', $this->_readAttribute($this->_link, '_targetaction2'));
     }
 
-    public function testEnableautomaticParameterAppend() {
+    public function testEnableAutomaticParameterAppend() {
         $this->_link->enableAutomaticParameterAppend();
         $this->assertSame('var doit = true; try { var i = get_registered_parameters() } catch (e) { doit = false; }; if (doit == true) { this.href += i; }', $this->_link->getAttribute('onclick'));
     }
 
-    public function testDisableeautomaticParameterAppend() {
+    public function testDisableAutomaticParameterAppend() {
         $this->_link->enableAutomaticParameterAppend();
         $this->assertSame('var doit = true; try { var i = get_registered_parameters() } catch (e) { doit = false; }; if (doit == true) { this.href += i; }', $this->_link->getAttribute('onclick'));
         $this->_link->disableAutomaticParameterAppend();
@@ -110,16 +117,16 @@ class cHtmlLinkTest extends TestCase {
 
     public function testSetCustom(){
         $this->_link->setCustom('testKey', 'testValue');
-        $ret = Assert::readAttribute($this->_link, '_custom');
+        $ret = $this->_readAttribute($this->_link, '_custom');
         $this->assertSame('testValue', $ret['testKey']);
     }
 
     public function testUnSetCustom(){
         $this->_link->setCustom('testKey', 'testValue');
-        $ret = Assert::readAttribute($this->_link, '_custom');
+        $ret = $this->_readAttribute($this->_link, '_custom');
         $this->assertSame('testValue', $ret['testKey']);
         $this->_link->unsetCustom('testKey');
-        $this->assertSame(array(),Assert::readAttribute($this->_link, '_custom'));
+        $this->assertSame(array(),$this->_readAttribute($this->_link, '_custom'));
 
 
     }

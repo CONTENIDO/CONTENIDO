@@ -12,20 +12,11 @@ use PHPUnit\Framework\TestCase;
  */
 class cHtmlLabelTest extends TestCase {
 
-    protected $_cLabel = null;
-
-    protected function setUp(): void {
-        $this->_cLabel = new cHTMLLabel('testText', 'testLabel');
-    }
-
     public function testConstruct() {
-        $this->assertSame('<label id="" for="testLabel">testText</label>', $this->_cLabel->toHtml());
-        $this->_cLabel = new cHTMLLabel('testText', 'testLabel', 'testClass');
-        $this->assertSame('<label id="" class="testClass" for="testLabel">testText</label>', $this->_cLabel->toHtml());
-    }
-
-    public function testToHtml() {
-        $this->assertSame($this->_cLabel->toHtml(), $this->_cLabel->toHtml());
+        $cLabel = new cHTMLLabel('testText', 'testLabel', '', 'testId');
+        $this->assertSame('<label id="testId" for="testLabel">testText</label>', $cLabel->toHtml());
+        $cLabel = new cHTMLLabel('testText', 'testLabel', 'testClass', 'testId2');
+        $this->assertSame('<label id="testId2" class="testClass" for="testLabel">testText</label>', $cLabel->toHtml());
     }
 
 }

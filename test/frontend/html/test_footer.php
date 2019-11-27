@@ -12,16 +12,11 @@ use PHPUnit\Framework\TestCase;
  */
 class cHtmlFooterTest extends TestCase {
 
-    protected $_cFooter = null;
-
-    protected function setUp(): void {
-        $this->_cFooter = new cHTMLFooter();
-    }
-
     public function testConstruct() {
         $footer = new cHTMLFooter('testContent', 'testClass', 'testId');
         $this->assertSame('<footer id="testId" class="testClass">testContent</footer>', $footer->toHtml());
-        $this->assertSame('<footer id=""></footer>', $this->_cFooter->toHtml());
+        $footer = new cHTMLFooter('', '', 'testId2');
+        $this->assertSame('<footer id="testId2"></footer>', $footer->toHtml());
     }
 
 }

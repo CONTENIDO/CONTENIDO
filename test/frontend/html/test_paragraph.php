@@ -12,15 +12,14 @@ use PHPUnit\Framework\TestCase;
  */
 class cHtmlParagraphTest extends TestCase {
 
-
     public function testConstruct() {
         $p = new cHTMLParagraph('testContent', 'testClass');
-        $this->assertSame('<p id="" class="testClass">testContent</p>', $p->toHtml());
+        $this->assertSame('<p class="testClass">testContent</p>', $p->toHtml());
         $p = new cHTMLParagraph();
-        $this->assertSame('<p id=""></p>', $p->toHtml());
+        $this->assertSame('<p></p>', $p->toHtml());
         $p = new cHTMLParagraph('testContent', 'testClass');
         $p->setID('testId');
-        $this->assertSame('<p id="testId" class="testClass">testContent</p>', $p->toHtml());
+        $this->assertSame('<p class="testClass" id="testId">testContent</p>', $p->toHtml());
     }
 
 }

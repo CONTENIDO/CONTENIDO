@@ -1,8 +1,5 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Assert;
-
 /**
  *
  * @author claus.schunk@4fb.de
@@ -19,7 +16,7 @@ require_once 'mockup/class.sql_item_collection.php';
  * @package Testing
  * @subpackage Test_Validator
  */
-class ItemCollectionTest extends TestCase {
+class ItemCollectionTest extends cTestingTestCase {
 
     /**
      *
@@ -93,12 +90,12 @@ class ItemCollectionTest extends TestCase {
         $this->_collection->setEncoding($encoding);
 
         // test member _encoding of collection
-        $act = Assert::readAttribute($this->_collection, '_encoding');
+        $act = $this->_readAttribute($this->_collection, '_encoding');
         $this->assertEquals($encoding, $act);
 
         // test member _sEncoding of driver of collection
-        $_driver = Assert::readAttribute($this->_collection, '_driver');
-        $act = Assert::readAttribute($_driver, '_sEncoding');
+        $_driver = $this->_readAttribute($this->_collection, '_driver');
+        $act = $this->_readAttribute($_driver, '_sEncoding');
         $this->assertEquals($encoding, $act);
     }
 
@@ -109,7 +106,7 @@ class ItemCollectionTest extends TestCase {
 
         // test linking of known class
         $dogColl->link('DogRfidCollection');
-        $_links = Assert::readAttribute($dogColl, '_links');
+        $_links = $this->_readAttribute($dogColl, '_links');
         $this->assertSame(true, is_array($_links));
         $this->assertSame(true, array_key_exists('DogRfidCollection', $_links));
         $this->assertSame(true, $_links['DogRfidCollection'] instanceof DogRfidCollection);
@@ -131,11 +128,11 @@ class ItemCollectionTest extends TestCase {
         $this->_collection->setLimit($_limitStart, $_limitCount);
 
         // test member _limitStart of collection
-        $act = Assert::readAttribute($this->_collection, '_limitStart');
+        $act = $this->_readAttribute($this->_collection, '_limitStart');
         $this->assertEquals($_limitStart, $act);
 
         // test member _limitCount of collection
-        $act = Assert::readAttribute($this->_collection, '_limitCount');
+        $act = $this->_readAttribute($this->_collection, '_limitCount');
         $this->assertEquals($_limitCount, $act);
     }
 
@@ -144,7 +141,7 @@ class ItemCollectionTest extends TestCase {
      */
     public function testSetWhere() {
         $this->_collection->setWhere('foo', 'bar');
-        $act = Assert::readAttribute($this->_collection, '_where');
+        $act = $this->_readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['global']['foo'] = array();
@@ -160,7 +157,7 @@ class ItemCollectionTest extends TestCase {
      */
     public function testSetWhereOperator() {
         $this->_collection->setWhere('foo', 'bar', 'LIKE');
-        $act = Assert::readAttribute($this->_collection, '_where');
+        $act = $this->_readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['global']['foo'] = array();
@@ -178,7 +175,7 @@ class ItemCollectionTest extends TestCase {
     public function testDeleteWhereUnconditioned() {
         // test deleting a nonexistant where condition
         $this->_collection->deleteWhere('foo', 'bar');
-        $act = Assert::readAttribute($this->_collection, '_where');
+        $act = $this->_readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['groups'] = array();
@@ -187,7 +184,7 @@ class ItemCollectionTest extends TestCase {
 
         // test deleting a nonexistant where condition w/ default operator
         $this->_collection->deleteWhere('foo', 'bar', '=');
-        $act = Assert::readAttribute($this->_collection, '_where');
+        $act = $this->_readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['groups'] = array();
@@ -196,7 +193,7 @@ class ItemCollectionTest extends TestCase {
 
         // test deleting a nonexistant where condition w/ nondefault operator
         $this->_collection->deleteWhere('foo', 'bar', 'LIKE');
-        $act = Assert::readAttribute($this->_collection, '_where');
+        $act = $this->_readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['groups'] = array();
@@ -213,7 +210,7 @@ class ItemCollectionTest extends TestCase {
         // this field but w/ another restriction
         $this->_collection->setWhere('foo', 'bar');
         $this->_collection->deleteWhere('foo', 'eggs');
-        $act = Assert::readAttribute($this->_collection, '_where');
+        $act = $this->_readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['global']['foo'] = array();
@@ -227,7 +224,7 @@ class ItemCollectionTest extends TestCase {
         // this restriction but w/ another field
         $this->_collection->setWhere('foo', 'bar');
         $this->_collection->deleteWhere('spam', 'bar');
-        $act = Assert::readAttribute($this->_collection, '_where');
+        $act = $this->_readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['global']['foo'] = array();
@@ -241,7 +238,7 @@ class ItemCollectionTest extends TestCase {
         // this restriction but w/ another field
         $this->_collection->setWhere('foo', 'bar');
         $this->_collection->deleteWhere('foo', 'bar', 'LIKE');
-        $act = Assert::readAttribute($this->_collection, '_where');
+        $act = $this->_readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['global']['foo'] = array();
@@ -255,7 +252,7 @@ class ItemCollectionTest extends TestCase {
         // field w/ this restriction
         $this->_collection->setWhere('foo', 'bar');
         $this->_collection->deleteWhere('foo', 'bar');
-        $act = Assert::readAttribute($this->_collection, '_where');
+        $act = $this->_readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['groups'] = array();
@@ -267,7 +264,7 @@ class ItemCollectionTest extends TestCase {
      */
     public function testSetWhereGroup() {
         $this->_collection->setWhereGroup('myGroup', 'foo', 'bar');
-        $act = Assert::readAttribute($this->_collection, '_where');
+        $act = $this->_readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['groups'] = array();
@@ -283,7 +280,7 @@ class ItemCollectionTest extends TestCase {
      */
     public function testSetWhereGroupOperator() {
         $this->_collection->setWhereGroup('myGroup', 'foo', 'bar', 'LIKE');
-        $act = Assert::readAttribute($this->_collection, '_where');
+        $act = $this->_readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['groups'] = array();
@@ -315,7 +312,7 @@ class ItemCollectionTest extends TestCase {
         // this field but w/ another restriction
         $this->_collection->setWhereGroup('myGroup', 'foo', 'bar');
         $this->_collection->deleteWhereGroup('myGroup', 'foo', 'eggs');
-        $act = Assert::readAttribute($this->_collection, '_where');
+        $act = $this->_readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['groups'] = array();
@@ -330,7 +327,7 @@ class ItemCollectionTest extends TestCase {
         // this restriction but w/ another field
         $this->_collection->setWhereGroup('myGroup', 'foo', 'bar');
         $this->_collection->deleteWhereGroup('myGroup', 'spam', 'bar');
-        $act = Assert::readAttribute($this->_collection, '_where');
+        $act = $this->_readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['groups'] = array();
@@ -345,7 +342,7 @@ class ItemCollectionTest extends TestCase {
         // this restriction but w/ another field
         $this->_collection->setWhereGroup('myGroup', 'foo', 'bar');
         $this->_collection->deleteWhereGroup('myGroup', 'foo', 'bar', 'LIKE');
-        $act = Assert::readAttribute($this->_collection, '_where');
+        $act = $this->_readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['groups'] = array();
@@ -360,7 +357,7 @@ class ItemCollectionTest extends TestCase {
         // field w/ this restriction
         $this->_collection->setWhereGroup('myGroup', 'foo', 'bar');
         $this->_collection->deleteWhereGroup('myGroup', 'foo', 'bar');
-        $act = Assert::readAttribute($this->_collection, '_where');
+        $act = $this->_readAttribute($this->_collection, '_where');
         $exp = array();
         $exp['global'] = array();
         $exp['groups'] = array();

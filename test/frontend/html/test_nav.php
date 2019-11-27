@@ -16,8 +16,8 @@ class cHtmlNavTest extends TestCase {
     public function testConstruct() {
         $nav = new cHTMLNav('testContent', 'testClass', 'testId');
         $this->assertSame('<nav id="testId" class="testClass">testContent</nav>', $nav->toHtml());
-        $nav = new cHTMLNav();
-        $this->assertSame('<nav id=""></nav>', $nav->toHtml());
+        $nav = new cHTMLNav('', '', 'testId2');
+        $this->assertSame('<nav id="testId2"></nav>', $nav->toHtml());
     }
 
 }

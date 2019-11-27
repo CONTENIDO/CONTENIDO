@@ -44,7 +44,8 @@ class ContenidoFrontendBaseHrefGenerationTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->_baseHref = $GLOBALS['cfgClient'][$GLOBALS['client']]['path']['htmlpath'];
+        $cfgClient = cRegistry::getClientConfig(cRegistry::getClientId());
+        $this->_baseHref = $cfgClient['path']['htmlpath'];
     }
 
 

@@ -12,16 +12,12 @@ use PHPUnit\Framework\TestCase;
  */
 class cHtmlDivTest extends TestCase {
 
-    protected $_cDiv = null;
-
-    protected function setUp(): void {
-        $this->_cDiv = new cHTMLDiv();
-    }
-
     public function testConstruct() {
         $div = new cHTMLDiv('testContent', 'testClass', 'testId');
         $this->assertSame('<div id="testId" class="testClass">testContent</div>', $div->toHtml());
-        $this->assertSame('<div id=""></div>', $this->_cDiv->toHtml());
+
+        $div = new cHTMLDiv('', '', 'testId2');
+        $this->assertSame('<div id="testId2"></div>', $div->toHtml());
     }
 
 }

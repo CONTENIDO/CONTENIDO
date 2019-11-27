@@ -14,26 +14,26 @@ class cHtmlPasswordBoxTest extends TestCase {
 
     public function testConstruct() {
         $pwBox = new cHTMLPasswordbox('testName');
-        $this->assertSame(5, count($pwBox->getAttributes()));
+        $this->assertSame(4, count($pwBox->getAttributes()));
         $this->assertSame('testName', $pwBox->getAttribute('name'));
         $this->assertSame('', $pwBox->getAttribute('value'));
         $this->assertSame('password', $pwBox->getAttribute('type'));
 
         $pwBox = new cHTMLPasswordbox('testName', 'testInitValue');
-        $this->assertSame(5, count($pwBox->getAttributes()));
+        $this->assertSame(4, count($pwBox->getAttributes()));
         $this->assertSame('testName', $pwBox->getAttribute('name'));
         $this->assertSame('testInitValue', $pwBox->getAttribute('value'));
         $this->assertSame('password', $pwBox->getAttribute('type'));
 
         $pwBox = new cHTMLPasswordbox('testName', 'testInitValue', 200);
-        $this->assertSame(5, count($pwBox->getAttributes()));
+        $this->assertSame(4, count($pwBox->getAttributes()));
         $this->assertSame('testName', $pwBox->getAttribute('name'));
         $this->assertSame('testInitValue', $pwBox->getAttribute('value'));
         $this->assertSame('password', $pwBox->getAttribute('type'));
         $this->assertSame(200, $pwBox->getAttribute('size'));
 
         $pwBox = new cHTMLPasswordbox('testName', 'testInitValue', 200, 100);
-        $this->assertSame(6, count($pwBox->getAttributes()));
+        $this->assertSame(5, count($pwBox->getAttributes()));
         $this->assertSame('testName', $pwBox->getAttribute('name'));
         $this->assertSame('testInitValue', $pwBox->getAttribute('value'));
         $this->assertSame('password', $pwBox->getAttribute('type'));
@@ -73,7 +73,7 @@ class cHtmlPasswordBoxTest extends TestCase {
 
     public function testSetWidth() {
         $pwBox = new cHTMLPasswordbox('testName', 'testInitValue', 200);
-        $this->assertSame(5, count($pwBox->getAttributes()));
+        $this->assertSame(4, count($pwBox->getAttributes()));
         $this->assertSame('testName', $pwBox->getAttribute('name'));
         $this->assertSame('testInitValue', $pwBox->getAttribute('value'));
         $this->assertSame('password', $pwBox->getAttribute('type'));
@@ -108,7 +108,7 @@ class cHtmlPasswordBoxTest extends TestCase {
 
     public function testSetValue() {
         $pwBox = new cHTMLPasswordbox('testName', 'testInitValue');
-        $this->assertSame(5, count($pwBox->getAttributes()));
+        $this->assertSame(4, count($pwBox->getAttributes()));
         $this->assertSame('testName', $pwBox->getAttribute('name'));
         $this->assertSame('testInitValue', $pwBox->getAttribute('value'));
         $this->assertSame('password', $pwBox->getAttribute('type'));

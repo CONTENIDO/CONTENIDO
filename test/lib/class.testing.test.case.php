@@ -91,9 +91,33 @@ abstract class cTestingTestCase extends TestCase {
 
     /**
      * @see Assert::readAttribute
+     * TODO We should not use Assert::readAttribute or Reflection to access protected/private attributes.
+     *      Assert::readAttribute is deprecated, see also issues
+     *      - https://github.com/sebastianbergmann/phpunit/issues/3338
+     *      - https://github.com/sebastianbergmann/phpunit/issues/3339
      */
-    protected function _readAttribute($classOrObject, $attributeName) {
-        return Assert::readAttribute($classOrObject, $attributeName);
+    protected function _readAttribute($bject, $attributeName) {
+//        return Assert::readAttribute($classOrObject, $attributeName);
+        $reflector = new ReflectionObject($bject);
+        $property = $reflector->getProperty($attributeName);
+        $property->setAccessible(true);
+
+        return $property->getValue($bject);
+
+    }
+
+    /**
+     * @see Util::callProtectedMethod
+     * TODO We should not use Reflection to access protected/private methods.
+     *      Util::callProtectedMethod doesn't exist anymore, see also issues
+     *      - https://github.com/sebastianbergmann/phpunit/issues/3338
+     *      - https://github.com/sebastianbergmann/phpunit/issues/3339
+     */
+    protected function _callMethod($reflection, $obj, $methodName, $params) {
+        $method = $reflection->getMethod($methodName);
+        $method->setAccessible(true);
+
+        return $method->invokeArgs($obj, $params);
     }
 
     /**

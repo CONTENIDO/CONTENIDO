@@ -41,27 +41,32 @@ class cHTMLTest extends cTestingTestCase {
         $this->assertClassHasAttribute('_styleDefinitions', 'cHTML');
         $this->assertClassHasAttribute('_attributes', 'cHTML');
         $this->assertClassHasAttribute('_content', 'cHTML');
-        $this->assertSame('m1', $html->getID());
+        $this->assertSame(null, $html->getID());
     }
 
     public function testAdvanceID() {
-        $html = new cHTML();
-        $this->assertSame('m2', $html->getID());
+        $html = new cHTML(['id' => 'testId']);
+        $id = $html->getID();
         $html->advanceID();
-        $this->assertSame('m3', $html->getID());
+        $this->assertNotSame($id, $html->getID());
+    }
+
+    public function testGetNotSetID() {
+        $html = new cHTML();
+        $this->assertSame(null, $html->getID());
     }
 
     public function testGetID() {
-        $html = new cHTML();
-        $this->assertSame('m4', $html->getID());
+        $html = new cHTML(['id' => 'testId']);
+        $this->assertSame('testId', $html->getID());
     }
 
     public function testSetTag() {
         $html = new cHTML();
         $html->setTag('foo');
-        $this->assertSame('<foo id="m5" />', $html->render());
+        $this->assertSame('<foo />', $html->render());
         $html->setTag('bar');
-        $this->assertSame('<bar id="m5" />', $html->render());
+        $this->assertSame('<bar />', $html->render());
     }
 
     public function testSetAlt() {
@@ -69,23 +74,23 @@ class cHTMLTest extends cTestingTestCase {
         // set alt w/ default setting for title
         $html = new cHTML();
         $html->setAlt('foobar');
-        $this->assertSame('< id="m6" alt="foobar" title="foobar" />', $html->render());
+        $this->assertSame('< alt="foobar" title="foobar" />', $html->render());
 
         // set alt w/ title
         $html = new cHTML();
         $html->setAlt('foobar', true);
-        $this->assertSame('< id="m7" alt="foobar" title="foobar" />', $html->render());
+        $this->assertSame('< alt="foobar" title="foobar" />', $html->render());
 
         // set alt w/o title
         $html = new cHTML();
         $html->setAlt('foobar', false);
-        $this->assertSame('< id="m8" alt="foobar" />', $html->render());
+        $this->assertSame('< alt="foobar" />', $html->render());
 
         // set alt w/ title & reset alt w/o title
         $html = new cHTML();
         $html->setAlt('foo', true);
         $html->setAlt('bar', false);
-        $this->assertSame('< id="m9" alt="bar" />', $html->render());
+        $this->assertSame('< alt="bar" title="foo" />', $html->render());
     }
 
     public function testSetID() {
@@ -94,20 +99,20 @@ class cHTMLTest extends cTestingTestCase {
         $this->assertSame('foobar', $html->getID());
         $this->assertSame('< id="foobar" />', $html->render());
         $html->setID('');
-        $this->assertSame('', $html->getID());
-        $this->assertSame('< id="" />', $html->render());
+        $this->assertSame(null, $html->getID());
+        $this->assertSame('< />', $html->render());
         $html->setID(NULL);
-        $this->assertSame(NULL, $html->getID());
+        $this->assertSame(null, $html->getID());
         $this->assertSame('< />', $html->render());
     }
 
     public function testSetClass() {
         $html = new cHTML();
         $html->setClass('foobar');
-        $this->assertSame('< id="m11" class="foobar" />', $html->render());
+        $this->assertSame('< class="foobar" />', $html->render());
         $html->setClass('');
-        $this->assertSame('< id="m11" class="" />', $html->render());
-        $html->setClass(NULL);
-        $this->assertSame('< id="m11" />', $html->render());
+        $this->assertSame('< />', $html->render());
+        $html->setClass(null);
+        $this->assertSame('< />', $html->render());
     }
 }

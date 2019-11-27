@@ -139,7 +139,7 @@ class cHTMLAlignmentTableTest extends cTestingTestCase {
         // $table = new cHTMLAlignmentTable();
         // $this->assertSame($table->render(), $table->toHtml());
         $act = $this->_tableEmpty->render();
-        $exp = '<table id="" cellpadding="0" cellspacing="0"><tr id=""></tr></table>';
+        $exp = '<table cellpadding="0" cellspacing="0"><tr></tr></table>';
         $this->assertSame($exp, $act);
     }
 
@@ -148,7 +148,7 @@ class cHTMLAlignmentTableTest extends cTestingTestCase {
      */
     public function testRenderInt() {
         $act = $this->_tableInt->render();
-        $exp = '<table id="" cellpadding="0" cellspacing="0"><tr id=""><td id="">0</td></tr></table>';
+        $exp = '<table cellpadding="0" cellspacing="0"><tr><td>0</td></tr></table>';
         $this->assertSame($exp, $act);
     }
 
@@ -157,7 +157,7 @@ class cHTMLAlignmentTableTest extends cTestingTestCase {
      */
     public function testRenderFloat() {
         $act = $this->_tableFloat->render();
-        $exp = '<table id="" cellpadding="0" cellspacing="0"><tr id=""><td id="">1.0</td></tr></table>';
+        $exp = '<table cellpadding="0" cellspacing="0"><tr><td>1.0</td></tr></table>';
         $this->assertSame($exp, $act);
     }
 
@@ -166,7 +166,7 @@ class cHTMLAlignmentTableTest extends cTestingTestCase {
      */
     public function testRenderEmptyString() {
         $act = $this->_tableEmptyString->render();
-        $exp = '<table id="" cellpadding="0" cellspacing="0"><tr id=""><td id=""></td></tr></table>';
+        $exp = '<table cellpadding="0" cellspacing="0"><tr><td></td></tr></table>';
         $this->assertSame($exp, $act);
     }
 
@@ -175,7 +175,7 @@ class cHTMLAlignmentTableTest extends cTestingTestCase {
      */
     public function testRenderString() {
         $act = $this->_tableString->render();
-        $exp = '<table id="" cellpadding="0" cellspacing="0"><tr id=""><td id=""> foo </td></tr></table>';
+        $exp = '<table cellpadding="0" cellspacing="0"><tr><td> foo </td></tr></table>';
         $this->assertSame($exp, $act);
     }
 
@@ -184,7 +184,7 @@ class cHTMLAlignmentTableTest extends cTestingTestCase {
      */
     public function testRenderBool() {
         $act = $this->_tableBool->render();
-        $exp = '<table id="" cellpadding="0" cellspacing="0"><tr id=""><td id="">1</td></tr></table>';
+        $exp = '<table cellpadding="0" cellspacing="0"><tr><td>1</td></tr></table>';
         $this->assertSame($exp, $act);
     }
 
@@ -193,7 +193,7 @@ class cHTMLAlignmentTableTest extends cTestingTestCase {
      */
     public function testRenderNull() {
         $act = $this->_tableNull->render();
-        $exp = '<table id="" cellpadding="0" cellspacing="0"><tr id=""><td id=""></td></tr></table>';
+        $exp = '<table cellpadding="0" cellspacing="0"><tr><td></td></tr></table>';
         $this->assertSame($exp, $act);
     }
 

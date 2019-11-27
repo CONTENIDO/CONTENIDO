@@ -1,8 +1,5 @@
 <?PHP
 
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Assert;
-
 /**
  *
  * @author claus.schunk@4fb.de
@@ -11,11 +8,11 @@ use PHPUnit\Framework\Assert;
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-class cHtmlScriptTest extends TestCase {
+class cHtmlScriptTest extends cTestingTestCase {
 
     public function testConstruct() {
         $script = new cHTMLScript();
-        $this->assertSame('script', Assert::readAttribute($script, '_tag'));
+        $this->assertSame('script', $this->_readAttribute($script, '_tag'));
     }
 
 }

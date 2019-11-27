@@ -12,45 +12,44 @@ use PHPUnit\Framework\TestCase;
  */
 class cHtmlVideoTest extends TestCase {
 
-    protected $_cVideo = null;
-
-    protected function setUp(): void {
-        $this->_cVideo = new cHTMLVideo('testcontent', 'testClass', 'testId', 'testSrc');
-    }
-
     public function testConstruct() {
-        $cVideo = new cHTMLVideo();
-        $this->assertSame('<video id="" src=""></video>', $cVideo->toHtml());
-        $this->assertSame('<video id="testId" class="testClass" src="testSrc">testcontent</video>', $this->_cVideo->toHtml());
+        $cVideo = new cHTMLVideo('', '', 'testId2');
+        $this->assertSame('<video id="testId2" src=""></video>', $cVideo->toHtml());
+        $cVideo = new cHTMLVideo('testcontent', 'testClass', 'testId', 'testSrc');
+        $this->assertSame('<video id="testId" class="testClass" src="testSrc">testcontent</video>', $cVideo->toHtml());
     }
 
     public function testSetSrc() {
-        $this->_cVideo->setSrc('testSrc1');
-        $this->assertSame('testSrc1', $this->_cVideo->getAttribute('src'));
+        $cVideo = new cHTMLVideo();
+        $cVideo->setSrc('testSrc1');
+        $this->assertSame('testSrc1', $cVideo->getAttribute('src'));
     }
 
     public function testSetControls() {
-        $this->assertSame(NULL, $this->_cVideo->getAttribute('controls'));
-        $this->_cVideo->setControls(true);
-        $this->assertSame('controls', $this->_cVideo->getAttribute('controls'));
-        $this->_cVideo->setControls(false);
-        $this->assertSame(NULL, $this->_cVideo->getAttribute('controls'));
+        $cVideo = new cHTMLVideo();
+        $this->assertSame(NULL, $cVideo->getAttribute('controls'));
+        $cVideo->setControls(true);
+        $this->assertSame('controls', $cVideo->getAttribute('controls'));
+        $cVideo->setControls(false);
+        $this->assertSame(NULL, $cVideo->getAttribute('controls'));
     }
 
     public function testSetAutoplay() {
-        $this->assertSame(NULL, $this->_cVideo->getAttribute('autoplay'));
-        $this->_cVideo->setAutoplay(true);
-        $this->assertSame('autoplay', $this->_cVideo->getAttribute('autoplay'));
-        $this->_cVideo->setAutoplay(false);
-        $this->assertSame(NULL, $this->_cVideo->getAttribute('autoplay'));
+        $cVideo = new cHTMLVideo();
+        $this->assertSame(NULL, $cVideo->getAttribute('autoplay'));
+        $cVideo->setAutoplay(true);
+        $this->assertSame('autoplay', $cVideo->getAttribute('autoplay'));
+        $cVideo->setAutoplay(false);
+        $this->assertSame(NULL, $cVideo->getAttribute('autoplay'));
     }
 
     public function testSetPoster() {
-        $this->assertSame(NULL, $this->_cVideo->getAttribute('poster'));
-        $this->_cVideo->setPoster('poster');
-        $this->assertSame('poster', $this->_cVideo->getAttribute('poster'));
-        $this->_cVideo->setPoster('');
-        $this->assertSame('', $this->_cVideo->getAttribute('poster'));
+        $cVideo = new cHTMLVideo();
+        $this->assertSame(NULL, $cVideo->getAttribute('poster'));
+        $cVideo->setPoster('poster');
+        $this->assertSame('poster', $cVideo->getAttribute('poster'));
+        $cVideo->setPoster('');
+        $this->assertSame('', $cVideo->getAttribute('poster'));
     }
 
 }

@@ -14,26 +14,26 @@ class cHtmlUploadTest extends TestCase {
 
     public function testConstruct() {
         $pwBox = new cHTMLUpload('testName');
-        $this->assertSame(4, count($pwBox->getAttributes()));
+        $this->assertSame(3, count($pwBox->getAttributes()));
         $this->assertSame('testName', $pwBox->getAttribute('name'));
         $this->assertSame(NULL, $pwBox->getAttribute('value'));
         $this->assertSame('file', $pwBox->getAttribute('type'));
 
         $pwBox = new cHTMLUpload('testName', 100);
-        $this->assertSame(4, count($pwBox->getAttributes()));
+        $this->assertSame(3, count($pwBox->getAttributes()));
         $this->assertSame('testName', $pwBox->getAttribute('name'));
         $this->assertSame(NULL, $pwBox->getAttribute('value'));
         $this->assertSame('file', $pwBox->getAttribute('type'));
 
         $pwBox = new cHTMLUpload('testName', 100, 200);
-        $this->assertSame(5, count($pwBox->getAttributes()));
+        $this->assertSame(4, count($pwBox->getAttributes()));
         $this->assertSame('testName', $pwBox->getAttribute('name'));
         $this->assertSame(NULL, $pwBox->getAttribute('value'));
         $this->assertSame('file', $pwBox->getAttribute('type'));
         $this->assertSame(100, $pwBox->getAttribute('size'));
 
         $pwBox = new cHTMLUpload('testName', 100, 200);
-        $this->assertSame(5, count($pwBox->getAttributes()));
+        $this->assertSame(4, count($pwBox->getAttributes()));
         $this->assertSame('testName', $pwBox->getAttribute('name'));
         $this->assertSame(NULL, $pwBox->getAttribute('value'));
         $this->assertSame('file', $pwBox->getAttribute('type'));
@@ -83,7 +83,7 @@ class cHtmlUploadTest extends TestCase {
 
     public function testSetWidth() {
         $pwBox = new cHTMLUpload('testName', 100);
-        $this->assertSame(4, count($pwBox->getAttributes()));
+        $this->assertSame(3, count($pwBox->getAttributes()));
         $this->assertSame('testName', $pwBox->getAttribute('name'));
         $this->assertSame(NULL, $pwBox->getAttribute('value'));
         $this->assertSame('file', $pwBox->getAttribute('type'));
@@ -99,7 +99,7 @@ class cHtmlUploadTest extends TestCase {
 
     public function testSetMaxLength() {
         $pwBox = new cHTMLUpload('testName', 100, 200);
-        $this->assertSame(5, count($pwBox->getAttributes()));
+        $this->assertSame(4, count($pwBox->getAttributes()));
         $this->assertSame('testName', $pwBox->getAttribute('name'));
         $this->assertSame(NULL, $pwBox->getAttribute('value'));
         $this->assertSame('file', $pwBox->getAttribute('type'));

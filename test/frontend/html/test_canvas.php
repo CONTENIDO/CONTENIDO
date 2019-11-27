@@ -12,35 +12,31 @@ use PHPUnit\Framework\TestCase;
  */
 class cHtmlCanvasTest extends TestCase {
 
-    protected $_cCanvas = null;
-
-    protected function setUp(): void {
-        $this->_cCanvas = new cHTMLCanvas();
-    }
-
     public function testConstruct() {
-        $canvas = new cHTMLCanvas();
-        $this->assertSame('<canvas id=""></canvas>', $canvas->toHtml());
+        $canvas = new cHTMLCanvas('', '', 'm20');
+        $this->assertSame('<canvas id="m20"></canvas>', $canvas->toHtml());
         $canvas = new cHTMLCanvas('testContent', 'testClass', 'testId');
         $this->assertSame('<canvas id="testId" class="testClass">testContent</canvas>', $canvas->toHtml());
     }
 
     public function testSetHeight() {
-        $this->_cCanvas->setHeight(200);
-        $this->assertSame(200, $this->_cCanvas->getAttribute('height'));
-        $this->assertSame('<canvas id="" height="200"></canvas>', $this->_cCanvas->toHtml());
-        $this->_cCanvas->setHeight('');
-        $this->assertSame('', $this->_cCanvas->getAttribute('height'));
-        $this->assertSame('<canvas id="" height=""></canvas>', $this->_cCanvas->toHtml());
+        $canvas = new cHTMLCanvas('', '', 'm21');
+        $canvas->setHeight(200);
+        $this->assertSame(200, $canvas->getAttribute('height'));
+        $this->assertSame('<canvas id="m21" height="200"></canvas>', $canvas->toHtml());
+        $canvas->setHeight('');
+        $this->assertSame('', $canvas->getAttribute('height'));
+        $this->assertSame('<canvas id="m21" height=""></canvas>', $canvas->toHtml());
     }
 
     public function testSetWidth() {
-        $this->_cCanvas->setWidth(200);
-        $this->assertSame(200, $this->_cCanvas->getAttribute('width'));
-        $this->assertSame('<canvas id="" width="200"></canvas>', $this->_cCanvas->toHtml());
-        $this->_cCanvas->setWidth('');
-        $this->assertSame('', $this->_cCanvas->getAttribute('width'));
-        $this->assertSame('<canvas id="" width=""></canvas>', $this->_cCanvas->toHtml());
+        $canvas = new cHTMLCanvas('', '', 'm22');
+        $canvas->setWidth(200);
+        $this->assertSame(200, $canvas->getAttribute('width'));
+        $this->assertSame('<canvas id="m22" width="200"></canvas>', $canvas->toHtml());
+        $canvas->setWidth('');
+        $this->assertSame('', $canvas->getAttribute('width'));
+        $this->assertSame('<canvas id="m22" width=""></canvas>', $canvas->toHtml());
     }
 
 }

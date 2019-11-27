@@ -33,26 +33,26 @@ class cHtmlTextAreaTest extends cTestingTestCase {
      */
     public function testConstruct() {
         $area = new cHTMLTextarea('testName');
-        $this->assertSame(4, count($area->getAttributes()));
+        $this->assertSame(3, count($area->getAttributes()));
         $this->assertSame('testName', $area->getAttribute('name'));
         $this->assertSame(NULL, $area->getAttribute('value'));
         $this->assertSame('textarea', $this->_readAttribute($area, '_tag'));
 
         $area = new cHTMLTextarea('testName', 'testInitValue');
-        $this->assertSame(4, count($area->getAttributes()));
+        $this->assertSame(3, count($area->getAttributes()));
         $this->assertSame('testName', $area->getAttribute('name'));
         $this->assertSame('testInitValue', $this->_readAttribute($area, '_value'));
         $this->assertSame('textarea', $this->_readAttribute($area, '_tag'));
 
         $area = new cHTMLTextarea('testName', 'testInitValue', 200);
-        $this->assertSame(4, count($area->getAttributes()));
+        $this->assertSame(3, count($area->getAttributes()));
         $this->assertSame('testName', $area->getAttribute('name'));
         $this->assertSame('testInitValue', $this->_readAttribute($area, '_value'));
         $this->assertSame('textarea', $this->_readAttribute($area, '_tag'));
         $this->assertSame(200, $area->getAttribute('cols'));
 
         $area = new cHTMLTextarea('testName', 'testInitValue', 200, 100);
-        $this->assertSame(4, count($area->getAttributes()));
+        $this->assertSame(3, count($area->getAttributes()));
         $this->assertSame('testName', $area->getAttribute('name'));
         $this->assertSame('textarea', $this->_readAttribute($area, '_tag'));
         $this->assertSame('testInitValue', $this->_readAttribute($area, '_value'));
@@ -110,7 +110,7 @@ class cHtmlTextAreaTest extends cTestingTestCase {
      */
     public function testSetWidth() {
         $area = new cHTMLTextarea('testName', 'testInitValue', 200);
-        $this->assertSame(4, count($area->getAttributes()));
+        $this->assertSame(3, count($area->getAttributes()));
         $this->assertSame('testName', $area->getAttribute('name'));
         $this->assertSame('testInitValue', $this->_readAttribute($area, '_value'));
         $this->assertSame('textarea', $this->_readAttribute($area, '_tag'));
@@ -128,7 +128,7 @@ class cHtmlTextAreaTest extends cTestingTestCase {
      */
     public function testSetHeight() {
         $area = new cHTMLTextarea('testName', 'testInitValue');
-        $this->assertSame(4, count($area->getAttributes()));
+        $this->assertSame(3, count($area->getAttributes()));
         $this->assertSame('testName', $area->getAttribute('name'));
         $this->assertSame('testInitValue', $this->_readAttribute($area, '_value'));
         $this->assertSame('textarea', $this->_readAttribute($area, '_tag'));

@@ -21,14 +21,14 @@ class cHtmlHiddenFieldTest extends TestCase {
     }
 
     public function testConstruct() {
-        $this->assertSame('<input id="testId" name="testName" type="hidden" value="testValue" />', $this->_cHiddenField->toHtml());
+        $this->assertSame('<input name="testName" id="testId" type="hidden" value="testValue" />', $this->_cHiddenField->toHtml());
     }
 
     public function testSetValue() {
         $this->_cHiddenField->setValue('testValue2');
-        $this->assertSame('<input id="testId" name="testName" type="hidden" value="testValue2" />', $this->_cHiddenField->toHtml());
+        $this->assertSame('<input name="testName" id="testId" type="hidden" value="testValue2" />', $this->_cHiddenField->toHtml());
         $this->_cHiddenField->setValue('');
-        $this->assertSame('<input id="testId" name="testName" type="hidden" value="" />', $this->_cHiddenField->toHtml());
+        $this->assertSame('<input name="testName" id="testId" type="hidden" value="" />', $this->_cHiddenField->toHtml());
     }
 
 }

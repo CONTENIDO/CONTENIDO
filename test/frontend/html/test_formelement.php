@@ -14,7 +14,7 @@ class cHtmlFormElementTest extends TestCase {
 
     public function testConstruct() {
         $formElem = new cHTMLFormElement();
-        $this->assertSame('', $formElem->getAttribute('name'));
+        $this->assertSame(null, $formElem->getAttribute('name'));
 
         $formElem = new cHTMLFormElement('testClass');
         $this->assertSame('testClass', $formElem->getAttribute('name'));

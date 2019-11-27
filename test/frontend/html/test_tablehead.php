@@ -1,8 +1,5 @@
 <?PHP
 
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Assert;
-
 /**
  *
  * @author claus.schunk@4fb.de
@@ -11,7 +8,7 @@ use PHPUnit\Framework\Assert;
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-class cHtmlTableHeadTest extends TestCase {
+class cHtmlTableHeadTest extends cTestingTestCase {
 
     protected $_tableHead;
 
@@ -20,7 +17,7 @@ class cHtmlTableHeadTest extends TestCase {
     }
 
     public function testConstructor() {
-        $this->assertSame('th', Assert::readAttribute($this->_tableHead, '_tag'));
+        $this->assertSame('th', $this->_readAttribute($this->_tableHead, '_tag'));
     }
 
 }

@@ -111,6 +111,29 @@ $ .\vendor\bin\phpunit --configuration phpunit.xml {path_to_unit_test_file}
 
 Write unit tests for new features and, if possible, for already existing features.
 
+Create a file where the file consists of the class to test and the suffix `Test.php` within a proper place in `test` folder, e. g. `cIteratorTest.php` to test the class `cIterator`.
+
+The skeleton of the file should look like:
+```
+// NOTE: We extend here from cTestingTestCase, which extends the PHPUnit class TestCase and provides CONTENIDO specific functions.
+class cIteratorTest extends cTestingTestCase {
+
+    protected function setUp(): void {
+        // Set up code to run before each test
+    }
+
+    protected function tearDown(): void {
+        // Tear down code to run before each test
+    }
+
+    public function testMyTest() {
+        // Write your test here
+    }
+    
+}
+```
+
+
 ----
 
 ## Links
