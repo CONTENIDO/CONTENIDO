@@ -128,8 +128,6 @@ class cHTML {
      *
      * @param array $attributes [optional]
      *         Associative array of table tag attributes
-     * @throws cDbException
-     * @throws cException
      */
     public function __construct(array $attributes = NULL) {
         if (!is_null($attributes)) {
@@ -137,7 +135,14 @@ class cHTML {
         }
 
         if (self::$_generateXHTML === NULL) {
-            if (getEffectiveSetting('generator', 'xhtml', 'false') == 'true') {
+            try {
+                $renderXhtml = getEffectiveSetting('generator', 'xhtml', 'false');
+            } catch (cDbException $e) {
+                $renderXhtml = false;
+            } catch (cException $e) {
+                $renderXhtml = false;
+            }
+            if ($renderXhtml == 'true') {
                 self::$_generateXHTML = true;
             } else {
                 self::$_generateXHTML = false;
