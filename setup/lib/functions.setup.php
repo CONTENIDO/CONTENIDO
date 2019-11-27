@@ -76,4 +76,117 @@ function setupInitializeCfgClient($reset = false) {
     }
 }
 
+/**
+ * Check configuration path for the environment
+ * If no configuration for environment found, copy from production
+ * @param $installationPath
+ * @throws cException
+ * @throws cInvalidArgumentException
+ */
+function setupCheckConfiguration($installationPath) {
+    $configPath = $installationPath . '/data/config/' . CON_ENVIRONMENT;
+    if (!cFileHandler::exists($configPath)) {
+        // create environment config
+        mkdir($configPath);
+        // if not successful throw exception
+        if (!cFileHandler::exists($configPath)) {
+            throw new cException('Can not create environment directory: data folder is not writable');
+        }
+        // get config source path
+        $configPathProduction = $installationPath . '/data/config/production/';
+        // load config source directory
+        $directoryIterator = new DirectoryIterator($configPathProduction);
+        // iterate through files
+        foreach ($directoryIterator as $dirContent) {
+            // check file is not dot and file
+            if ($dirContent->isFile() && !$dirContent->isDot()) {
+                // get filename
+                $configFileName = $dirContent->getFilename();
+                // build source string
+                $source = $configPathProduction . $configFileName;
+                // build target string
+                $target = $configPath . '/' . $configFileName;
+                // try to copy from source to target, if not successful throw exception
+                if (!copy($source, $target)) {
+                    throw new cException('Can not copy configuration files for the environment: environment folder is not writable');
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Initializes the configuration
+ * @global $cfg
+ */
+function setupInitializeConfig() {
+    global $cfg;
+
+    // Prepare $cfg array
+    if (!is_array($cfg)) {
+        $cfg = [];
+    }
+    foreach (['wysiwyg', 'path', 'sql'] as $name) {
+        if (!isset($cfg[$name]) || !is_array($cfg[$name])) {
+            $cfg[$name] = [];
+        }
+    }
+
+    $systemDirs = getSystemDirectories();
+
+    // Set some basic configuration
+    $cfg['wysiwyg']['editor'] = 'tinymce4';
+    $cfg['path']['frontend'] = CON_FRONTEND_PATH;
+    $cfg['path']['contenido'] = $cfg['path']['frontend'] . '/contenido/';
+    $cfg['path']['contenido_config'] = CON_FRONTEND_PATH . '/data/config/' . CON_ENVIRONMENT . '/';
+    $cfg['path']['contenido_fullhtml'] = $systemDirs[1] . '/contenido/';
+    $cfg['path']['all_wysiwyg'] = $cfg['path']['contenido']  . 'external/wysiwyg/';
+    $cfg['path']['all_wysiwyg_html'] = $cfg['path']['contenido_fullhtml'] . 'external/wysiwyg/';
+    $cfg['path']['wysiwyg_html'] = $cfg['path']['all_wysiwyg_html'] . $cfg['wysiwyg']['editor'] . '/';
+
+    // DB related settings
+    $cfg['sql']['sqlprefix'] = (isset($_SESSION['dbprefix'])) ? $_SESSION['dbprefix'] : 'con';
+    $cfg['db'] = array(
+        'connection' => array(
+            'host' => (isset($_SESSION['dbhost'])) ? $_SESSION['dbhost'] : '',
+            'database' => (isset($_SESSION['dbname'])) ? $_SESSION['dbname'] : '',
+            'user' => (isset($_SESSION['dbuser'])) ? $_SESSION['dbuser'] : '',
+            'password' => (isset($_SESSION['dbpass'])) ? $_SESSION['dbpass'] : '',
+            'charset' => (isset($_SESSION['dbcharset'])) ? $_SESSION['dbcharset'] : ''
+        ),
+        'haltBehavior' => 'report',
+        'haltMsgPrefix' => (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] . ' ' : '',
+        'enableProfiling' => false,
+    );
+}
+
+/**
+ * Updates the configuration and set PHP settings
+ * @global $cfg
+ */
+function setupUpdateConfig() {
+    global $cfg;
+
+    // Takeover configured PHP settings
+    if (isset($cfg['php_settings']) && is_array($cfg['php_settings'])) {
+        foreach ($cfg['php_settings'] as $settingName => $value) {
+            // date.timezone is handled separately
+            if ($settingName !== 'date.timezone') {
+                @ini_set($settingName, $value);
+            }
+        }
+    }
+    error_reporting($cfg['php_error_reporting']);
+
+    // force date.timezone setting
+    $timezoneCfg = $cfg['php_settings']['date.timezone'];
+    if (!empty($timezoneCfg) && ini_get('date.timezone') !== $timezoneCfg) {
+        // if the timezone setting from the cfg differs from the php.ini setting, set timezone from CFG
+        date_default_timezone_set($timezoneCfg);
+    } else if (empty($timezoneCfg) && (ini_get('date.timezone') === '' || ini_get('date.timezone') === false)) {
+        // if there are no timezone settings, set UTC timezone
+        date_default_timezone_set('UTC');
+    }
+}
+
 ?>
