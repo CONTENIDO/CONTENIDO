@@ -64,7 +64,7 @@ class cHtmlCheckBoxTest extends cTestingTestCase {
         $this->assertSame('checked', $this->_checkbox->getAttribute('checked'));
 
         $this->_checkbox->setChecked(false);
-        $this->assertSame(NULL, $this->_checkbox->getAttribute('checked'));
+        $this->assertNull($this->_checkbox->getAttribute('checked'));
     }
 
     /**

@@ -42,7 +42,7 @@ class cHTMLTextbox extends cHTMLFormElement {
      *         ID of the element
      * @param bool $disabled [optional]
      *         Item disabled flag (non-empty to set disabled)
-     * @param string $tabindex [optional]
+     * @param int|null $tabindex [optional]
      *         Tab index for form elements
      * @param string $accesskey [optional]
      *         Key to access the field
@@ -51,7 +51,7 @@ class cHTMLTextbox extends cHTMLFormElement {
      */
     public function __construct(
         $name, $initvalue = '', $width = '', $maxlength = '', $id = '',
-        $disabled = false, $tabindex = NULL, $accesskey = '', $class = ''
+        $disabled = false, $tabindex = null, $accesskey = '', $class = ''
     ) {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
 
