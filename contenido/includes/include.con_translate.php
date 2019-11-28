@@ -33,7 +33,7 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
     /**
      * Is called when a new row is rendered
      *
-     * @param unknown_type $row
+     * @param int $row
      *         The current row which is being rendered
      */
     public function onRenderRow($row) {
@@ -79,20 +79,8 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
      *         Sort order (see php's sort documentation)
      */
     public function sort($field, $order) {
-        if ($order == "") {
-            $order = SORT_ASC;
-        }
-
-        if ($order == "ASC") {
-            $order = SORT_ASC;
-        }
-
-        if ($order == "DESC") {
-            $order = SORT_DESC;
-        }
-
         $this->sortkey = $field;
-        $this->sortmode = $order;
+        $this->sortmode = ($order === 'DESC') ? SORT_DESC : SORT_ASC;
 
         $field = $field + 1;
 
@@ -101,9 +89,9 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
             foreach ($this->data as $row => $cols) {
                 $sortby[$row] = trim(cString::toLowerCase(conHtmlentities($cols[$field])));
             }
-            $this->data = cArray::csort($this->data, $sortby, $order);
+            $this->data = cArray::csort($this->data, $sortby, $this->sortmode);
         } else {
-            $this->data = cArray::csort($this->data, "$field", $order);
+            $this->data = cArray::csort($this->data, "$field", $this->sortmode);
         }
     }
 
@@ -116,7 +104,7 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
  * @param string $text
  *
  * @return string
- * 
+ *
  * @throws cException
  */
 function addSortImages($index, $text) {
@@ -597,7 +585,7 @@ foreach ($allTranslations as $hash => $translationArray) {
         $sTranslationFirstLang = trim(conHtmlentities($translationArray['translations'][$lang])) . $sLinkEdit;
     }
     // building parameter array
-    $countCurrentModuleInUse = count($modulesInUse[$translationArray['idmod']]);
+    $countCurrentModuleInUse = is_array($modulesInUse[$translationArray['idmod']]) ? count($modulesInUse[$translationArray['idmod']]) : 0;
     if ($countCurrentModuleInUse == 0) {
         $inUseString = '';
         $currentModuleInUse = i18n('No template');
@@ -691,7 +679,7 @@ foreach ($allTranslations as $hash => $translationArray) {
 // Important to calculate needed pages
 $counter = count($allTranslations);
 
-$list->sort($_REQUEST["sortby"], $_REQUEST["sortmode"]);
+$list->sort(cSecurity::toInteger($_REQUEST["sortby"]), $_REQUEST["sortmode"]);
 $list->setListStart($_REQUEST["page"]);
 $form = new cHTMLForm('all_mod_translations');
 $form->setVar('area', $area);

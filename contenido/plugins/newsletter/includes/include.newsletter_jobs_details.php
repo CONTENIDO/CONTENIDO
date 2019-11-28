@@ -258,7 +258,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
 
     // A little bit senseless, as the data is already sorted, but
     // we need the sortmode in the header link
-    $oList->sort($_REQUEST["sortby"], $_REQUEST["sortmode"]);
+    $oList->sort(cSecurity::toInteger($_REQUEST["sortby"]), $_REQUEST["sortmode"]);
 
     // HerrB: Hardcore UI for browsing elements ... sorry
     $sBrowseHTML = '<table class="generic" width="100%" cellspacing="0" cellpadding="2" border="0">
