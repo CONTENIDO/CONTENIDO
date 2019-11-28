@@ -113,7 +113,7 @@ class cHTML {
      *
      * @var array
      */
-    protected $_notEmptyAttributes = ['id', 'name', 'class'];
+    protected $_notEmptyAttributes = ['id', 'name', 'class', 'border'];
 
     /**
      * The content itself
