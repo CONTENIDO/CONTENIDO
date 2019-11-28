@@ -85,8 +85,8 @@ class cHTMLAlignmentTableTest extends cTestingTestCase {
         $this->_tableString = new cHTMLAlignmentTable(' foo ');
         $this->_tableBool = new cHTMLAlignmentTable(true);
         $this->_tableNull = new cHTMLAlignmentTable(null);
-        $this->_tableObject = new cHTMLAlignmentTable(new stdClass());
-        $this->_tableData = new cHTMLAlignmentTable(0, 1.0, '', ' foo ', true, null, new stdClass());
+        $this->_tableObject = new cHTMLAlignmentTable(new cHTML());
+        $this->_tableData = new cHTMLAlignmentTable(0, 1.0, '', ' foo ', true, null, new cHTML());
     }
 
     /**
@@ -142,11 +142,15 @@ class cHTMLAlignmentTableTest extends cTestingTestCase {
 
         $act = $this->_readAttribute($this->_tableObject, '_data');
         $this->assertSame(true, is_array($act));
-        $this->assertTrue([new stdClass()] == $act);
+        $this->assertTrue([new cHTML()] == $act);
 
         $act = $this->_readAttribute($this->_tableData, '_data');
         $this->assertSame(true, is_array($act));
-        $this->assertTrue([0, 1.0, '', ' foo ', true, null, new stdClass()] == $act);
+
+        // Usage of json_decode/json_encode is to prevent error that object of class cHTML could not be converted to string!
+        $act = json_decode(json_encode($act), true);
+        $exp = json_decode(json_encode([0, 1.0, '', ' foo ', true, null, new cHTML()]), true);
+        $this->assertTrue($exp == $act);
     }
 
     /**
