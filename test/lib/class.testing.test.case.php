@@ -157,4 +157,58 @@ abstract class cTestingTestCase extends TestCase {
 
         return $sqlStatements;
     }
+
+    /**
+     * Creates the test tables for the test case. Adds the tables to the global $cfg['tab'] configuration
+     * and ensures to remove leftover test tables from previous tests.
+     * This function should be invoked within the setUp() function of the test case, and it requires
+     * a defined $_tables property.
+     *
+     * @global $cfg
+     * @throws cDbException
+     * @throws cTestingException
+     */
+    protected function setUpTestCaseDbTables() {
+        global $cfg; // don't use cRegistry!
+
+        if (!isset($this->_tables) || !is_array($this->_tables)) {
+            throw new cTestingException('No tables ($this->_tables) defined to set up for the test case');
+        }
+
+        // Update global tables configuration
+        foreach ($this->_tables as $table) {
+            $cfg['tab'][$table] = $table;
+        }
+
+        // Ensure to remove any left over tables from previous tests, e. g. failed tests!
+        $sql = SqlItemCollection::getDeleteStatement($this->_tables);
+        cRegistry::getDb()->query($sql);
+    }
+
+    /**
+     * Deletes the test tables for the test case. Removes tables to the global $cfg['tab'] configuration.
+     * This function should be invoked within the teatDown() function of the test case, and it requires
+     * a defined $_tables property.
+     *
+     * @global $cfg
+     * @throws cDbException
+     * @throws cTestingException
+     */
+    protected function tearDownTestCaseDbTables() {
+        global $cfg; // don't use cRegistry!
+
+        if (!isset($this->_tables) || !is_array($this->_tables)) {
+            throw new cTestingException('No tables ($this->_tables) defined to tear down for the test case');
+        }
+
+        // Remove tables
+        $sql = SqlItemCollection::getDeleteStatement($this->_tables);
+        cRegistry::getDb()->query($sql);
+
+        // Reset global tables configuration
+        foreach ($this->_tables as $table) {
+            unset($cfg['tab'][$table]);
+        }
+    }
+
 }

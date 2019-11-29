@@ -14,8 +14,7 @@ class SqlItemCollection
      */
     public static function getDeleteStatement(array $tables)
     {
-        $tableClause = implode('``, `', $tables);
-
+        $tableClause = implode('`, `', $tables);
         return "DROP TABLE IF EXISTS `$tableClause`;";
     }
 
