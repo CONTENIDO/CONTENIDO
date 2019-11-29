@@ -186,8 +186,8 @@ abstract class cTestingTestCase extends TestCase {
     }
 
     /**
-     * Deletes the test tables for the test case. Removes tables to the global $cfg['tab'] configuration.
-     * This function should be invoked within the teatDown() function of the test case, and it requires
+     * Deletes the test tables for the test case. Removes tables from the global $cfg['tab'] configuration.
+     * This function should be invoked within the tearDown() function of the test case, and it requires
      * a defined $_tables property.
      *
      * @global $cfg
