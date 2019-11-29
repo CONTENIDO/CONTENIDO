@@ -70,10 +70,6 @@ class ItemTest extends cTestingTestCase
         $db = cRegistry::getDb();
         $db->query(SqlItem::getCreateConTestStatement());
         $db->query(SqlItem::getInsertConTestStatement());
-//        $db->query(SqlItem::getCreateDogStatement());
-//        $db->query(SqlItem::getInserDogStatement());
-//        $db->query(SqlItem::getCreateDogRfidStatement());
-//        $db->query(SqlItem::getInserDogRfidStatement());
     }
 
     /**
