@@ -72,14 +72,17 @@ for unit tests in case the configuration folders/files are missing:
 Open command line and navigate to the CONTENIDO installation folder
 
 ### Run Unit Tests
+
+#### Run Test Suites
+
 Run "CONTENIDO classes" test suite by typing following command:
 ```
-$ ./vendor/bin/phpunit --configuration phpunit.xml --testsuite contenido_classes
+$ ./vendor/bin/phpunit --configuration phpunit.xml --testsuite classes
 ```
 
 Run "Frontend chains" test suite by typing following command:
 ```
-$ ./vendor/bin/phpunit --configuration phpunit.xml --testsuite frontend_chains
+$ ./vendor/bin/phpunit --configuration phpunit.xml --testsuite chains
 ```
 
 You can run any test suite defined in phpunit.xml by the test suite name
@@ -87,9 +90,13 @@ You can run any test suite defined in phpunit.xml by the test suite name
 $ ./vendor/bin/phpunit --configuration phpunit.xml --testsuite {test_suite_name}
 ```
 
+**TIP:** The the suite `all` will run all unit tests.
+
+#### Run Test Cases
+
 Run Url tests by typing following command
 ```
-$ ./vendor/bin/phpunit --configuration phpunit.xml test/frontend/Url/Contenido_Url.php
+$ ./vendor/bin/phpunit --configuration phpunit.xml test/contenido/uri/cUriTest.php
 ```
 
 Run any unit test file by typing following command
