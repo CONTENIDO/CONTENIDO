@@ -36,6 +36,7 @@
 ./classes/class.purge.php
 ./classes/class.registry.php
 ./classes/class.requestvalidator.php
+./classes/class.rights.php
 ./classes/class.search.php
 ./classes/class.security.php
 ./classes/class.session.php
@@ -873,3 +874,15 @@
 ../data/config/production/config.path.php
 ../data/config/production/config.php
 ../data/config/production/config.templates.php
+../data/config/production/config.wysiwyg_tinymce4.php
+../data/config/test/cfg_actions.inc.php
+../data/config/test/cfg_sql.inc.php
+../data/config/test/config.autoloader.php
+../data/config/test/config.chains.load.php
+../data/config/test/config.chains.php
+../data/config/test/config.clients.php
+../data/config/test/config.http_check.php
+../data/config/test/config.misc.php
+../data/config/test/config.path.php
+../data/config/test/config.php
+../data/config/test/config.templates.php
