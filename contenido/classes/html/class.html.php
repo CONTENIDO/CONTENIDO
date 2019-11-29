@@ -66,13 +66,6 @@ class cHTML {
     protected $_tag;
 
     /**
-     * Defines the style definitions
-     *
-     * @var array
-     */
-    protected $_styleDefs = [];
-
-    /**
      * Defines all scripts which are required by the current element
      *
      * @var array
@@ -189,6 +182,18 @@ class cHTML {
     }
 
     /**
+     * Sets the ID class
+     *
+     * @param string $id
+     *         Text to set as the "id"
+     * @return cHTML
+     *         $this for chaining
+     */
+    public function setID($id) {
+        return $this->updateAttribute('id', $id);
+    }
+
+    /**
      * Sets the HTML tag to $tag
      *
      * @param string $tag
@@ -227,18 +232,6 @@ class cHTML {
         }
 
         return $this->updateAttributes($attributes);
-    }
-
-    /**
-     * Sets the ID class
-     *
-     * @param string $id
-     *         Text to set as the "id"
-     * @return cHTML
-     *         $this for chaining
-     */
-    public function setID($id) {
-        return $this->updateAttribute('id', $id);
     }
 
     /**
@@ -306,6 +299,161 @@ class cHTML {
     }
 
     /**
+     * Returns the value of the given attribute.
+     *
+     * @param string $attributeName
+     *         Attribute name
+     * @return string
+     *         NULL value or NULL if the attribute does not exist
+     */
+    public function getAttribute($attributeName) {
+        $attributeName = cString::toLowerCase($attributeName);
+
+        if (isset($this->_attributes[$attributeName])) {
+            return $this->_attributes[$attributeName];
+        }
+
+        return NULL;
+    }
+
+    /**
+     * Sets a specific attribute
+     *
+     * @param string $attributeName
+     *         Name of the attribute
+     * @param string $value [optional]
+     *         Value of the attribute
+     * @return cHTML
+     *         $this for chaining
+     */
+    public function setAttribute($attributeName, $value = NULL) {
+        $attributeName = cString::toLowerCase($attributeName);
+
+        if ($this->_isAttributeToRemove($attributeName, $value)) {
+            $this->removeAttribute($attributeName);
+        } else {
+            if (is_null($value)) {
+                $value = $attributeName;
+            }
+            $this->_attributes[$attributeName] = $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns the assoc array(default) or string of attributes
+     *
+     * @param bool $returnAsString [optional]
+     *         Whether to return the attributes as string
+     * @return array|string
+     */
+    public function getAttributes($returnAsString = false) {
+        if ($returnAsString) {
+            return $this->_getAttrString($this->_attributes);
+        } else {
+            return $this->_attributes;
+        }
+    }
+
+    /**
+     * Sets the HTML attributes
+     *
+     * @param array $attributes
+     *         Associative array with attributes
+     * @return cHTML
+     *         $this for chaining
+     */
+    public function setAttributes(array $attributes)
+    {
+        list($validAttributes) = $this->_parseAttributes($attributes);
+        $this->_attributes = $validAttributes;
+
+        return $this;
+    }
+
+    /**
+     * Updates the passed attribute without changing the other existing
+     * attributes
+     *
+     * @param string $name
+     *         the name of the attribute
+     * @param string $value
+     *         the value of the attribute with the given name
+     * @return cHTML
+     *         $this for chaining
+     */
+    public function updateAttribute($name, $value)
+    {
+        $this->updateAttributes([$name => $value]);
+
+        return $this;
+    }
+
+    /**
+     * Updates the passed attributes without changing the other existing attributes.
+     *
+     * @param array $attributes
+     *         Associative array with attributes
+     * @return cHTML
+     *         $this for chaining
+     */
+    public function updateAttributes(array $attributes) {
+        list($validAttributes, $invalidAttributes) = $this->_parseAttributes($attributes);
+        foreach ($validAttributes as $key => $value) {
+            $this->_attributes[$key] = $value;
+        }
+        foreach ($invalidAttributes as $key => $value) {
+            $this->removeAttribute($key);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Removes an attribute
+     *
+     * @param string $attributeName
+     *         Attribute name
+     * @return cHTML
+     *         $this for chaining
+     */
+    public function removeAttribute($attributeName) {
+        if (isset($this->_attributes[$attributeName])) {
+            unset($this->_attributes[$attributeName]);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns a valid attributes array.
+     *
+     * @param array $attributes
+     *         Associative array with attributes
+     * @return array
+     *         the parsed attributes as valid and invalid attributes
+     */
+    protected function _parseAttributes(array $attributes) {
+        $validAttributes = $invalidAttributes = [];
+
+        foreach ($attributes as $key => $value) {
+            if (is_int($key)) {
+                $key = $value = cString::toLowerCase($value);
+            } else {
+                $key = cString::toLowerCase($key);
+            }
+            if ($this->_isAttributeToRemove($key, $value)) {
+                $invalidAttributes[$key] = $value;
+            } else {
+                $validAttributes[$key] = $value;
+            }
+        }
+
+        return [$validAttributes, $invalidAttributes];
+    }
+
+    /**
      * Fills the open SGML tag skeleton
      *
      * fillSkeleton fills the SGML opener tag with the
@@ -337,6 +485,7 @@ class cHTML {
 
     /**
      * Appends the given style definition to the HTML element.
+     *
      * Example usage:
      * $element->appendStyleDefinition('margin', '5px');
      *
@@ -354,6 +503,13 @@ class cHTML {
         $this->_styleDefinitions[$property] = $value;
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getStyleDefinition() {
+        return $this->_styleDefinitions;
     }
 
     /**
@@ -500,146 +656,6 @@ class cHTML {
     }
 
     /**
-     * Sets a specific attribute
-     *
-     * @param string $attributeName
-     *         Name of the attribute
-     * @param string $value [optional]
-     *         Value of the attribute
-     * @return cHTML
-     *         $this for chaining
-     */
-    public function setAttribute($attributeName, $value = NULL) {
-        $attributeName = cString::toLowerCase($attributeName);
-
-        if ($this->_isAttributeToRemove($attributeName, $value)) {
-            $this->removeAttribute($attributeName);
-        } else {
-            if (is_null($value)) {
-                $value = $attributeName;
-            }
-            $this->_attributes[$attributeName] = $value;
-        }
-
-        return $this;
-    }
-
-    /**
-     * Sets the HTML attributes
-     *
-     * @param array $attributes
-     *         Associative array with attributes
-     * @return cHTML
-     *         $this for chaining
-     */
-    public function setAttributes(array $attributes)
-    {
-        list($validAttributes) = $this->_parseAttributes($attributes);
-        $this->_attributes = $validAttributes;
-
-        return $this;
-    }
-
-    /**
-     * Returns a valid attributes array.
-     *
-     * @param array $attributes
-     *         Associative array with attributes
-     * @return array
-     *         the parsed attributes as valid and invalid attributes
-     */
-    protected function _parseAttributes(array $attributes) {
-        $validAttributes = $invalidAttributes = [];
-
-        foreach ($attributes as $key => $value) {
-            if (is_int($key)) {
-                $key = $value = cString::toLowerCase($value);
-            } else {
-                $key = cString::toLowerCase($key);
-            }
-            if ($this->_isAttributeToRemove($key, $value)) {
-                $invalidAttributes[$key] = $value;
-            } else {
-                $validAttributes[$key] = $value;
-            }
-        }
-
-        return [$validAttributes, $invalidAttributes];
-    }
-
-    /**
-     * Removes an attribute
-     *
-     * @param string $attributeName
-     *         Attribute name
-     * @return cHTML
-     *         $this for chaining
-     */
-    public function removeAttribute($attributeName) {
-        if (isset($this->_attributes[$attributeName])) {
-            unset($this->_attributes[$attributeName]);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Returns the value of the given attribute.
-     *
-     * @param string $attributeName
-     *         Attribute name
-     * @return string
-     *         NULL value or NULL if the attribute does not exist
-     */
-    public function getAttribute($attributeName) {
-        $attributeName = cString::toLowerCase($attributeName);
-
-        if (isset($this->_attributes[$attributeName])) {
-            return $this->_attributes[$attributeName];
-        }
-
-        return NULL;
-    }
-
-    /**
-     * Updates the passed attribute without changing the other existing
-     * attributes
-     *
-     * @param string $name
-     *         the name of the attribute
-     * @param string $value
-     *         the value of the attribute with the given name
-     * @return cHTML
-     *         $this for chaining
-     */
-    public function updateAttribute($name, $value)
-    {
-        $this->updateAttributes([$name => $value]);
-
-        return $this;
-    }
-
-    /**
-     * Updates the passed attributes without changing the other existing attributes.
-     *
-     * @param array $attributes
-     *         Associative array with attributes
-     * @return cHTML
-     *         $this for chaining
-     */
-    public function updateAttributes(array $attributes) {
-        list($validAttributes, $invalidAttributes) = $this->_parseAttributes($attributes);
-        foreach ($validAttributes as $key => $value) {
-            $this->_attributes[$key] = $value;
-        }
-        foreach ($invalidAttributes as $key => $value) {
-            $this->removeAttribute($key);
-        }
-
-        return $this;
-    }
-
-    /**
      * Returns an HTML formatted attribute string
      *
      * @param array $attributes
@@ -667,21 +683,6 @@ class cHTML {
     protected function _isAttributeToRemove($attributeName, $value)
     {
         return in_array($attributeName, $this->_notEmptyAttributes) && cSecurity::toString($value) === '';
-    }
-
-    /**
-     * Returns the assoc array(default) or string of attributes
-     *
-     * @param bool $returnAsString [optional]
-     *         Whether to return the attributes as string
-     * @return array|string
-     */
-    public function getAttributes($returnAsString = false) {
-        if ($returnAsString) {
-            return $this->_getAttrString($this->_attributes);
-        } else {
-            return $this->_attributes;
-        }
     }
 
     /**

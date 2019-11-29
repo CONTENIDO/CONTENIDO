@@ -151,9 +151,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
     /**
      * Sets a specific cHTMLOptionElement to the selected state.
      *
-     * @param string $lvalue
-     *         Specifies the "value" of the cHTMLOptionElement to
-     *        set
+     * @param array|string $lvalue
+     *         Specifies the "value" of the cHTMLOptionElement to set
      * @return cHTMLSelectElement
      *         $this for chaining
      */
