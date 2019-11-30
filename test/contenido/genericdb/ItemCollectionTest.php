@@ -9,8 +9,6 @@
  * @link      http://www.contenido.org
  */
 
-require_once 'mockup/class.sql_item_collection.php';
-
 /**
  *
  * @package    Testing
@@ -29,17 +27,22 @@ class ItemCollectionTest extends cTestingTestCase
     protected $_noItemClassCollection;
 
     /**
+     * Tables used by this test case
+     * @var array
+     */
+    protected $_tables = ['con_test_dog', 'con_test_rfid_dog', 'con_test'];
+
+    /**
      * @throws cDbException
+     * @throws cInvalidArgumentException
+     * @throws cTestingException
      */
     protected function setUp(): void
     {
         ini_set('display_errors', true);
         error_reporting(E_ALL);
 
-        global $cfg; // don't use cRegistry!
-        $cfg['tab']['con_test']          = 'con_test';
-        $cfg['tab']['con_test_dog']      = 'con_test_dog';
-        $cfg['tab']['con_test_rfid_dog'] = 'con_test_rfid_dog';
+        $this->setUpTestCaseDbTables();
 
         $this->_collection            = new TCollection();
         $this->_noItemClassCollection = new TFCollection();
@@ -55,22 +58,11 @@ class ItemCollectionTest extends cTestingTestCase
 
     /**
      * @throws cDbException
+     * @throws cTestingException
      */
     protected function tearDown(): void
     {
-        $sql = SqlItemCollection::getDeleteStatement(
-            [
-                'con_test_dog',
-                'con_test_rfid_dog',
-                'con_test',
-            ]
-        );
-        cRegistry::getDb()->query($sql);
-
-        global $cfg; // don't use cRegistry!
-        unset($cfg['tab']['con_test']);
-        unset($cfg['tab']['con_test_dog']);
-        unset($cfg['tab']['con_test_rfid_dog']);
+        $this->tearDownTestCaseDbTables();
     }
 
     /**
@@ -330,8 +322,8 @@ class ItemCollectionTest extends cTestingTestCase
     {
         try {
             $this->_collection->deleteWhereGroup('myGroup', 'foo', 'bar');
-            $this->fail('should have thrown PHPUnit_Framework_Error_Notice');
-        } catch (PHPUnit_Framework_Error_Notice $e) {
+            $this->fail('should have thrown PHPUnit\Framework\Error\Notice');
+        } catch (PHPUnit\Framework\Error\Notice $e) {
             $this->assertEquals('Undefined index: myGroup', $e->getMessage());
         }
     }
@@ -609,13 +601,12 @@ class ItemCollectionTest extends cTestingTestCase
     }
 
     /**
-     * check if exception is thrown in function loaditem when item class
+     * check if exception is thrown in function loadItem when item class
      * is not set in collection class
-     *
-     * @expectedException cException
      */
     public function testLoadItemNoItemClass()
     {
+        $this->expectException(cException::class);
         $this->_noItemClassCollection->loadItem(1);
     }
 

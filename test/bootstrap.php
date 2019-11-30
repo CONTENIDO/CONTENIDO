@@ -20,16 +20,14 @@
 // Set directory to CONTENIDO test location
 define('CON_TEST_PATH', __DIR__);
 
+// Set folder name of CONTENIDO test
+define('CON_TEST_BASENAME', basename(__DIR__));
+
 // Set the SQL prefix (table prefix) for tests
 define('CON_TEST_SQL_PREFIX', 'test');
 
 // Use composer's autoload
 require_once __DIR__ . '/../vendor/autoload.php';
-
-// CONTENIDO test related classes
-require_once CON_TEST_PATH . '/lib/class.testing.exception.php';
-require_once CON_TEST_PATH . '/lib/class.testing.test.case.php';
-require_once CON_TEST_PATH . '/lib/class.testing.test.helper.php';
 
 ################################################################################
 # CONTENIDO frontend initialization
@@ -60,6 +58,24 @@ if (!is_file($contenido_path . 'includes/startup.php')) {
     die("<h1>Fatal Error</h1><br>Couldn't include CONTENIDO startup.");
 }
 include_once($contenido_path.'includes/startup.php');
+
+// Add all CONTENIDO test related classes
+cAutoload::addClassmapConfig([
+    'cTestingException' => CON_TEST_BASENAME . '/lib/class.testing.exception.php',
+    'cTestingTestCase' => CON_TEST_BASENAME . '/lib/class.testing.test.case.php',
+    'cTestingTestHelper' => CON_TEST_BASENAME . '/lib/class.testing.test.helper.php',
+    'DogCollection' => CON_TEST_BASENAME . '/contenido/genericdb/mockup/class.dog_item.php',
+    'DogItem' => CON_TEST_BASENAME . '/contenido/genericdb/mockup/class.dog_item.php',
+    'DogRfidCollection' => CON_TEST_BASENAME . '/contenido/genericdb/mockup/class.dog_rfid_item.php',
+    'DogRfidItem' => CON_TEST_BASENAME . '/contenido/genericdb/mockup/class.dog_rfid_item.php',
+    'SqlItemCollection' => CON_TEST_BASENAME . '/contenido/genericdb/mockup/class.sql_item_collection.php',
+    'SqlItem' => CON_TEST_BASENAME . '/contenido/genericdb/mockup/class.sql_item.php',
+    'TestCollection' => CON_TEST_BASENAME . '/contenido/genericdb/mockup/class.test_item.php',
+    'TestItem' => CON_TEST_BASENAME . '/contenido/genericdb/mockup/class.test_item.php',
+    'TFCollection' => CON_TEST_BASENAME . '/contenido/genericdb/mockup/class.tf_item.php',
+    'TFItem' => CON_TEST_BASENAME . '/contenido/genericdb/mockup/class.tf_item.php',
+]);
+
 
 // Initialize common variables
 $idcat    = isset($idcat) ? $idcat : 0;
