@@ -84,14 +84,17 @@ class cSystemPurge {
      * @param int $clientId
      *
      * @return bool
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public function resetClientConCode($clientId) {
-        global $perm, $currentuser;
-        $cfgClient = cRegistry::getClientConfig();
+        global $currentuser;
 
-        if (cFileHandler::exists($cfgClient[$clientId]['cache']['path'] . 'code/') === false) {
+        $perm = cRegistry::getPerm();
+        $clientCfg = cRegistry::getClientConfig($clientId);
+        $codePath = $clientCfg['code']['path'];
+
+        if (cFileHandler::exists($codePath) === false) {
             return false;
         }
 
@@ -100,18 +103,15 @@ class cSystemPurge {
         }
 
         /* @var $file SplFileInfo */
-        foreach (new DirectoryIterator($cfgClient[$clientId]['code']['path']) as $file) {
+        foreach (new DirectoryIterator($codePath) as $file) {
             if ($file->isFile() === false) {
                 continue;
             }
 
-            $extension = cString::getPartOfString($file, cString::findLastPos($file->getBasename(), '.') + 1);
-            if ($extension != 'php') {
-                continue;
-            }
-
-            if (cFileHandler::remove($cfgClient[$clientId]['code']['path'] . '/' . $file->getFilename()) === false) {
-                return false;
+            if ($file->getExtension() === 'php') {
+                if (cFileHandler::remove($file->getPathname()) === false) {
+                    return false;
+                }
             }
         }
 
@@ -124,7 +124,7 @@ class cSystemPurge {
      * @param int $clientId
      *
      * @return bool
-     * 
+     *
      * @throws cDbException
      */
     public function resetClientConCatArt($clientId) {
@@ -156,7 +156,7 @@ class cSystemPurge {
      * Reset the table con_inuse.
      *
      * @return bool
-     * 
+     *
      * @throws cDbException
      */
     public function resetConInuse() {
@@ -180,7 +180,7 @@ class cSystemPurge {
      * @param int $clientId
      *
      * @return bool
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public function clearClientCache($clientId) {
@@ -204,9 +204,9 @@ class cSystemPurge {
      * @param int  $clientId
      * @param bool $keep
      * @param int  $fileNumber
-     * 
+     *
      * @return bool
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public function clearClientHistory($clientId, $keep, $fileNumber) {
@@ -249,7 +249,7 @@ class cSystemPurge {
      * @param int $idclient
      *
      * @return bool
-     * 
+     *
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
@@ -277,9 +277,9 @@ class cSystemPurge {
      * Clear client log file.
      *
      * @param int $idclient
-     * 
+     *
      * @return bool
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public function clearClientLog($idclient) {
@@ -301,7 +301,7 @@ class cSystemPurge {
      * Clear CONTENIDO log files.
      *
      * @return bool
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public function clearConLog() {
@@ -323,7 +323,7 @@ class cSystemPurge {
      * Clear the cronjob directory.
      *
      * @return bool
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public function clearConCronjob() {
@@ -345,7 +345,7 @@ class cSystemPurge {
      * Clear the cache directory for a client.
      *
      * @return bool
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public function clearConCache() {
@@ -405,7 +405,7 @@ class cSystemPurge {
      *                            files are temporarily saved
      *
      * @return bool
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public function clearDir($dirPath, $tmpDirPath, $keep = false, &$tmpFileList = array()) {
@@ -477,7 +477,7 @@ class cSystemPurge {
      * @param array  $types
      *
      * @return bool
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public function emptyFile($dirPath, $types) {
