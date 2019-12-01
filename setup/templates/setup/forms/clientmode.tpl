@@ -8,9 +8,9 @@
     <tr class="row-2">
         <td class="column-1">
             <table border="0">
-                <tr><td>{CONTROL_CLIENTEXAMPLES}</td><td>{LABEL_CLIENTEXAMPLES}{FOLDER_MESSAGE_EXAMPLES}</td></tr>
-                <tr><td>{CONTROL_CLIENTMODULES}</td><td>{LABEL_CLIENTMODULES}{FOLDER_MESSAGE_MODULES}</td></tr>
-                <tr><td>{CONTROL_NOCLIENT}</td><td>{LABEL_NOCLIENT}</td></tr>
+                <tr><td>{CONTROL_CLIENTEXAMPLES}</td></tr>
+                <tr><td>{CONTROL_CLIENTMODULES}</td></tr>
+                <tr><td>{CONTROL_NOCLIENT}</td></tr>
             </table>
         </td>
         <td class="column-2">
