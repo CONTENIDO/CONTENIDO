@@ -107,7 +107,7 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      * Note:
      *
      * If this element has an ID, the value (which equals the text displayed)
-     * will be rendered as seperate HTML label, if not, it will be displayed
+     * will be rendered as separate HTML label, if not, it will be displayed
      * as regular text. Displaying the value can be turned off via the
      * parameter.
      *
@@ -117,7 +117,7 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      *         Rendered HTML
      */
     public function toHtml($renderLabel = true) {
-        if ($renderLabel == false) {
+        if ($renderLabel !== true) {
             return $this->fillSkeleton($this->getAttributes(true));
         }
 
@@ -127,12 +127,11 @@ class cHTMLRadiobutton extends cHTMLFormElement {
             $this->advanceID();
         }
 
+        // Render label
         $label = new cHTMLLabel($this->_value, $this->getAttribute('id'));
-
         if ($this->_labelText != '') {
             $label->text = $this->_labelText;
         }
-
         $renderedLabel = $label->toHtml();
 
         return $this->fillSkeleton($this->getAttributes(true)) . $renderedLabel;
