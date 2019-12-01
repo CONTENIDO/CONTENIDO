@@ -10,8 +10,8 @@
             <div class="description">{LABEL_DESCRIPTION}</div><br>
             <table border="0">
                 <tr>
-                    <td>{CONTROL_SAVE}</td><td style="padding-right: 30px;">{CONTROL_SAVELABEL}</td>
-                    <td>{CONTROL_DOWNLOAD}</td><td>{CONTROL_DOWNLOADLABEL}</td>
+                    <td style="padding-right: 30px;">{CONTROL_SAVE}</td>
+                    <td>{CONTROL_DOWNLOAD}</td>
                 </tr>
             </table>
         </td>
