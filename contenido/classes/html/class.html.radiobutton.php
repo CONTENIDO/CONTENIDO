@@ -117,29 +117,25 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      *         Rendered HTML
      */
     public function toHtml($renderLabel = true) {
-        $attributes = $this->getAttributes(true);
-
         if ($renderLabel == false) {
-            return $this->fillSkeleton($attributes);
+            return $this->fillSkeleton($this->getAttributes(true));
         }
 
+        // We need the id-attribute render with label
         $id = $this->getAttribute('id');
-
-        $renderedLabel = '';
-
-        if ($id != '') {
-            $label = new cHTMLLabel($this->_value, $this->getAttribute('id'));
-
-            if ($this->_labelText != '') {
-                $label->text = $this->_labelText;
-            }
-
-            $renderedLabel = $label->toHtml();
-        } else {
-            $renderedLabel = $this->_value;
+        if (!$id) {
+            $this->advanceID();
         }
 
-        return $this->fillSkeleton($attributes) . $renderedLabel;
+        $label = new cHTMLLabel($this->_value, $this->getAttribute('id'));
+
+        if ($this->_labelText != '') {
+            $label->text = $this->_labelText;
+        }
+
+        $renderedLabel = $label->toHtml();
+
+        return $this->fillSkeleton($this->getAttributes(true)) . $renderedLabel;
     }
 
 }
