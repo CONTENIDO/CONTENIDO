@@ -62,8 +62,8 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
         // Insert or update default system properties
         updateSystemProperties($this->_oDb, $cfg['tab']['system_prop']);
 
-        // Renames table 'phplib_auth_user_md5' to 'user'
-        $this->_renameOldUserTableToNewOne();
+        // Does some changes on the 'user' an 'frontendusers' tables
+        $this->_doUserTableChanges();
     }
 
     /**
@@ -105,32 +105,45 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
     }
 
     /**
-     * Renames table 'phplib_auth_user_md5' to 'user'
+     * Does some changes on the 'user' an 'frontendusers' tables.
+     * 1. Renames table 'phplib_auth_user_md5' to 'user', we use table 'user' since CONTENIDO 4.9.0 Beta 1
+     * 2. Adds salts to the 'user' and 'frontendusers' table
+     * 3. Converts null or date values in 'user' tables 'valid_from' and 'valid_to' fields to datetime values.
+     *   NOTE: Backend code was changed from using date to datetime in CONTENIDO 4.9.5, but sysadmin1.sql was changed in CONTENIDO 4.10.2!
      */
-    protected function _renameOldUserTableToNewOne() {
-        global $cfg;
+    protected function _doUserTableChanges() {
+        $cfg = cRegistry::getConfig();
 
-        $this->_oDb->query("SHOW TABLES LIKE '%s'", $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5');
-        $oldTable = $this->_oDb->nextRecord();
+        // Rename table '_phplib_auth_user_md5' to 'user'
+        if ($this->_setupType === 'upgrade') {
+            $this->_oDb->query("SHOW TABLES LIKE '%s'", $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5');
+            $oldTable = $this->_oDb->nextRecord();
 
-        $this->_oDb->query("SHOW TABLES LIKE '%s'", $cfg['sql']['sqlprefix'] . '_user');
-        $newTable = $this->_oDb->nextRecord();
+            $this->_oDb->query("SHOW TABLES LIKE '%s'", $cfg['sql']['sqlprefix'] . '_user');
+            $newTable = $this->_oDb->nextRecord();
 
-        if ($oldTable === true) {
-            if ($newTable === false) {
-                // Only the old table exists. Rename it.
-                $this->_oDb->query('RENAME TABLE `%s` TO `%s`', $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5', $cfg['sql']['sqlprefix'] . '_user');
-            } else {
-                // The new and the old table exists. We trust the old table more
-                // since the new one should've been deleted by the setup. Drop
-                // the new one and rename the old one
-                $this->_oDb->query('DROP TABLE `%s`', $cfg['sql']['sqlprefix'] . '_user');
-                $this->_oDb->query('RENAME TABLE `%s` TO `%s`', $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5', $cfg['sql']['sqlprefix'] . '_user');
+            if ($oldTable === true) {
+                if ($newTable === false) {
+                    // Only the old table exists. Rename it.
+                    $this->_oDb->query('RENAME TABLE `%s` TO `%s`', $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5', $cfg['sql']['sqlprefix'] . '_user');
+                } else {
+                    // The new and the old table exists. We trust the old table more
+                    // since the new one should've been deleted by the setup. Drop
+                    // the new one and rename the old one
+                    $this->_oDb->query('DROP TABLE `%s`', $cfg['sql']['sqlprefix'] . '_user');
+                    $this->_oDb->query('RENAME TABLE `%s` TO `%s`', $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5', $cfg['sql']['sqlprefix'] . '_user');
+                }
             }
         }
 
         // Convert passwords to salted ones
-        addSalts($this->_oDb);
+        addSaltsToTables($this->_oDb);
+
+        // Convert old date values (before CONTENIDO 4.9.5 & CONTENIDO 4.10.2) in fields 'valid_from' and 'valid_to' to datetime
+        if ($this->_setupType === 'upgrade') {
+            convertDateValuesToDateTimeValue($this->_oDb, $cfg['sql']['sqlprefix'] . '_user', 'valid_from');
+            convertDateValuesToDateTimeValue($this->_oDb, $cfg['sql']['sqlprefix'] . '_user', 'valid_to');
+        }
     }
 
     /**
