@@ -49,7 +49,6 @@ class cValidatorFactory {
      * @return cValidatorAbstract
      */
     public static function getInstance($validator, array $options = array()) {
-        global $cfg;
 
         $name = cString::toLowerCase($validator);
         $className = 'cValidator' . ucfirst($name);
@@ -58,9 +57,7 @@ class cValidatorFactory {
             throw new cInvalidArgumentException("Can't use validator factory '{$validator}' as validator!");
         }
 
-        if (class_exists($className)) {
-            $obj = new $className();
-        } else {
+        if (!class_exists($className)) {
             // Try to load validator class file (in this folder)
             $path = str_replace('\\', '/', dirname(__FILE__)) . '/';
             $fileName = sprintf('class.validator.%s.php', $name);
@@ -73,16 +70,19 @@ class cValidatorFactory {
             if (!class_exists($className)) {
                 throw new cInvalidArgumentException("Missing validator class '{$className}' for validator '{$validator}' !");
             }
-            $obj = new $className();
         }
 
-        // Merge passed options with global configured options.
-        if (isset($cfg['validator']) && isset($cfg['validator'][$name]) && is_array($cfg['validator'][$name])) {
-            $options = array_merge($cfg['validator'][$name], $options);
+        // Merge given options with global configured options.
+        $configuredOptions = cRegistry::getConfigValue('validator', $name, []);
+        if (is_array($configuredOptions)) {
+            $options = array_merge($configuredOptions, $options);
         }
+
+        /** @var cValidatorAbstract $obj */
+        $obj = new $className();
         $obj->setOptions($options);
 
-        return new $obj;
+        return $obj;
     }
 
 }
