@@ -174,6 +174,7 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow {
         $this->_oMessage->advanceID();
 
         $alphaImage = new cHTMLAlphaImage();
+        $alphaImage->advanceID();
         $alphaImage->setClass("closer");
         $alphaImage->setStyle('margin-top:4px;');
         $alphaImage->setSrc("images/controls/open_all.gif");

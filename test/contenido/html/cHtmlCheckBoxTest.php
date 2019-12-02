@@ -103,8 +103,9 @@ class cHtmlCheckBoxTest extends cTestingTestCase
      */
     public function testToHtmlTrue()
     {
+        $this->_checkbox->setID('testId'); // NOTE: We need to set the id here, otherwise it will be set dynamically and we can't predict it!
         $act = $this->_checkbox->toHtml(true);
-        $exp = '<div class="checkbox_wrapper"><input name="name" type="checkbox" value="value" />value</div>';
+        $exp = '<div class="checkbox_wrapper"><input name="name" type="checkbox" value="value" id="testId" /><label for="testId">value</label></div>';
         $this->assertSame($exp, $act);
     }
 

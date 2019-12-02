@@ -80,4 +80,24 @@ class cHtmlRadioButtonTest extends cTestingTestCase
         $this->assertSame($pwBox->toHtml(), $pwBox->toHtml());
         $this->assertSame($pwBox->toHtml(false), $pwBox->toHtml(false));
     }
+
+    public function testIdRenderWithLabelWithoutSettingId()
+    {
+        // Render with label
+        $radioButton = new cHTMLRadiobutton('testName', 'testValue');
+        $this->assertNull($radioButton->getAttribute('id'));
+        // Note: Calling render() renders with label, see cHTMLRadiobutton->totoHtml()
+        $radioButton->render();
+        $this->assertNotNull($radioButton->getAttribute('id'));
+    }
+
+    public function testIdRenderWithoutLabelWithoutSettingId()
+    {
+        // Render without label
+        $radioButton = new cHTMLRadiobutton('testName', 'testValue');
+        $this->assertNull($radioButton->getAttribute('id'));
+        // Note: Calling toHtml(false) renders without label, see cHTMLRadiobutton->toHtml()
+        $radioButton->toHtml(false);
+        $this->assertNull($radioButton->getAttribute('id'));
+    }
 }
