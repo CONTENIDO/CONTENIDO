@@ -222,8 +222,8 @@ function convertToDatetime($db, $cfg) {
  */
 function convertDateValuesToDateTimeValue($db, $table, $field, $defaultTime = '00:00:00') {
     // Update format 'YYYY-MM-DD' to 'YYYY-MM-DD 00:00:00'
-    $sql = "UPDATE `:table` SET `:field` = CONCAT(`:field`, ' :time') WHERE CHAR_LENGTH(`:field`) = 10";
-    $db->query($sql, ['table' => $table, 'field' => $field, 'time' => ' ' . $defaultTime]);
+    $sql = "UPDATE `:table` SET `:field` = CONCAT(`:field`, ' ', ':time') WHERE CHAR_LENGTH(`:field`) = 10";
+    $db->query($sql, ['table' => $table, 'field' => $field, 'time' => $defaultTime]);
 }
 
 /**
