@@ -108,7 +108,7 @@ function addAutoIncrementToTables($db, $cfg) {
  * @param object $db The database object
  * @throws cDbException
  */
-function addSalts($db) {
+function addSaltsToTables($db) {
     global $cfg;
 
     $db2 = getSetupMySQLDBConnection();
@@ -208,6 +208,43 @@ function convertToDatetime($db, $cfg) {
     }
 
     $db->query("ALTER TABLE `%s` CHANGE `created` `created` DATETIME NOT NULL", $cfg['sql']['sqlprefix'] . '_template_conf');
+}
+
+/**
+ * Converts a table field value of type date to a datetime format ('YYYY-MM-DD HH:MM:SS'),
+ * if the value has the date format ('YYYY-MM-DD').
+ *
+ * @param  cDb  $db
+ * @param  string  $table
+ * @param  string  $field
+ * @param  string  $defaultTime - Format has to be 'HH:MM:SS'
+ * @throws cDbException
+ */
+function convertDateValuesToDateTimeValue($db, $table, $field, $defaultTime = '00:00:00') {
+    // Update format 'YYYY-MM-DD' to 'YYYY-MM-DD 00:00:00'
+    $sql = "UPDATE `:table` SET `:field` = CONCAT(`:field`, ' ', ':time') WHERE CHAR_LENGTH(`:field`) = 10";
+    $db->query($sql, ['table' => $table, 'field' => $field, 'time' => $defaultTime]);
+}
+
+/**
+ * Converts a table field value of type date to a datetime format ('YYYY-MM-DD HH:MM:SS'),
+ * if the value is null (null or empty string).
+ *
+ * @param  cDb  $db
+ * @param  string  $table
+ * @param  string  $field
+ * @param  string  $defaultDateTime - Format has to be 'YYYY-MM-DD HH:MM:SS'.
+ *     You can also use 'CURRENT_TIMESTAMP' or 'NOW()' to update the field to current timestamp.
+ * @throws cDbException
+ */
+function convertNullDateValuesToDateTimeValue($db, $table, $field, $defaultDateTime = '0000-00-00 00:00:00') {
+    // Update '' or NULL values to '0000-00-00 00:00:00'
+    if ($defaultDateTime === 'CURRENT_TIMESTAMP' || $defaultDateTime === 'NOW()') {
+        $sql = "UPDATE `:table` SET :field = :datetime WHERE `:field` IS NULL";
+    } else {
+        $sql = "UPDATE `:table` SET :field = ':datetime' WHERE `:field` IS NULL";
+    }
+    $db->query($sql, ['table' => $table, 'field' => $field, 'datetime' => $defaultDateTime]);
 }
 
 /**
