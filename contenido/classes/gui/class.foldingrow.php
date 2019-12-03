@@ -113,6 +113,7 @@ class cGuiFoldingRow extends cHTML {
         $this->_hiddenField = new cHTMLHiddenField("expandstate_" . $this->_contentRow->getID());
 
         $this->_foldingImage = new cHTMLImage();
+        $this->_foldingImage->advanceID();
 
         $this->setExpanded(false);
 
