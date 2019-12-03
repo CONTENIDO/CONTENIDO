@@ -95,7 +95,7 @@ abstract class cValidatorAbstract {
     }
 
     /**
-     * Abstract isValid method, which has to be implemented by childs
+     * Abstract isValid method, which has to be implemented by children
      *
      * @param mixed $value
      * @return bool
