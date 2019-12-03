@@ -94,25 +94,27 @@ class cApiPathresolveCacheCollection extends ItemCollection {
      * @param int    $idcat
      * @param int    $idlang
      * @param string $lastcached [optional]
+     *
      * @return cApiPathresolveCache
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($path, $idcat, $idlang, $lastcached = '') {
-        $oItem = $this->createNewItem();
-
+    public function create($path, $idcat, $idlang, $lastcached = '')
+    {
         if (empty($lastcached)) {
             $lastcached = time();
         }
 
-        $oItem->set('path', $path, false);
-        $oItem->set('idcat', $idcat, false);
-        $oItem->set('idlang', $idlang, false);
-        $oItem->set('lastcached', $lastcached, false);
-        $oItem->store();
+        /** @var cApiPathresolveCache $item */
+        $item = $this->createNewItem();
+        $item->set('path', $path, false);
+        $item->set('idcat', $idcat, false);
+        $item->set('idlang', $idlang, false);
+        $item->set('lastcached', $lastcached, false);
+        $item->store();
 
-        return $oItem;
+        return $item;
     }
 
     /**

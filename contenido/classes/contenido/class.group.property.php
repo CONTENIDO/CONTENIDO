@@ -156,14 +156,16 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @param string $name
      * @param string $value
      * @param int    $idcatlang [optional]
+     *
      * @return cApiGroupProperty
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($type, $name, $value, $idcatlang = 0) {
+    public function create($type, $name, $value, $idcatlang = 0)
+    {
+        /** @var cApiGroupProperty $item */
         $item = $this->createNewItem();
-
         $item->set('group_id', $this->_groupId);
         $item->set('type', $type);
         $item->set('name', $name);

@@ -259,25 +259,23 @@ class cApiDbfsCollection extends ItemCollection {
 
     /**
      * Creates a dbfs item entry
+     *
      * @param string $path
      * @param string $mimetype [optional]
      * @param string $content  [optional]
+     *
      * @return cApiDbfs|false
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($path, $mimetype = '', $content = '') {
-        global $client, $auth;
-
-        $client = (int) $client;
-        $item = false;
-
+    public function create($path, $mimetype = '', $content = '')
+    {
         if (cString::getPartOfString($path, 0, 1) == '/') {
             $path = cString::getPartOfString($path, 1);
         }
 
-        $dir = dirname($path);
+        $dir  = dirname($path);
         $file = basename($path);
 
         if ($dir == '.') {
@@ -285,20 +283,24 @@ class cApiDbfsCollection extends ItemCollection {
         }
 
         if ($file == '') {
-            return $item;
+            return false;
         }
 
         if ($file != '.') {
             if ($dir != '') {
-                // Check if the directory exists. If not, create it.
-                $this->select("dirname = '" . $dir . "' AND filename = '.' AND idclient = " . $client . " LIMIT 1");
+                // Check if the directory exists.
+                $this->select(
+                    "dirname = '" . $dir . "'
+                    AND filename = '.'
+                    AND idclient = " . (int)cRegistry::getClientId() . "
+                    LIMIT 1");
                 if (!$this->next()) {
+                    // If not, create it.
                     $this->create($dir . '/.');
                 }
             }
         } else {
             $parent = $this->parentDir($dir);
-
             if ($parent != '.') {
                 if (!$this->dirExists($parent)) {
                     $this->create($parent . '/.');
@@ -307,23 +309,23 @@ class cApiDbfsCollection extends ItemCollection {
         }
 
         if ($dir && !$this->dirExists($dir) || $file != '.') {
+            /** @var cApiDbfs $item */
             $item = $this->createNewItem();
-            $item->set('idclient', $client);
+            $item->set('idclient', (int)cRegistry::getClientId());
             $item->set('dirname', $dir);
             $item->set('filename', $file);
             $item->set('size', cString::getStringLength($content));
-
             if ($mimetype != '') {
                 $item->set('mimetype', $mimetype);
             }
-
             $item->set('content', $content);
             $item->set('created', date('Y-m-d H:i:s'), false);
-            $item->set('author', $auth->auth['uid']);
+            $item->set('author', cRegistry::getAuth()->auth['uid']);
             $item->store();
+            return $item;
+        } else {
+            return false;
         }
-
-        return $item;
     }
 
     /**

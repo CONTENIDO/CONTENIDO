@@ -54,39 +54,48 @@ class cApiUploadMetaCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
-     * @global object $auth
      */
-    public function create($idupl, $idlang, $medianame = '', $description = '',
-            $keywords = '', $internal_notice = '', $copyright = '', $author = '',
-            $created = '', $modified = '', $modifiedby = '') {
-        global $auth;
-
+    public function create(
+        $idupl,
+        $idlang,
+        $medianame = '',
+        $description = '',
+        $keywords = '',
+        $internal_notice = '',
+        $copyright = '',
+        $author = '',
+        $created = '',
+        $modified = '',
+        $modifiedby = ''
+    ) {
         if (empty($author)) {
-            $author = $auth->auth['uname'];
+            $author = cRegistry::getAuth()->auth['uname'];
         }
+
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
         }
+
         if (empty($modified)) {
             $modified = date('Y-m-d H:i:s');
         }
 
-        $oItem = $this->createNewItem();
+        /** @var cApiUploadMeta $item */
+        $item = $this->createNewItem();
+        $item->set('idupl', $idupl);
+        $item->set('idlang', $idlang);
+        $item->set('medianame', $medianame);
+        $item->set('description', $description);
+        $item->set('keywords', $keywords);
+        $item->set('internal_notice', $internal_notice);
+        $item->set('author', $author);
+        $item->set('created', $created);
+        $item->set('modified', $modified);
+        $item->set('modifiedby', $modifiedby);
+        $item->set('copyright', $copyright);
+        $item->store();
 
-        $oItem->set('idupl', $idupl);
-        $oItem->set('idlang', $idlang);
-        $oItem->set('medianame', $medianame);
-        $oItem->set('description', $description);
-        $oItem->set('keywords', $keywords);
-        $oItem->set('internal_notice', $internal_notice);
-        $oItem->set('author', $author);
-        $oItem->set('created', $created);
-        $oItem->set('modified', $modified);
-        $oItem->set('modifiedby', $modifiedby);
-        $oItem->set('copyright', $copyright);
-        $oItem->store();
-
-        return $oItem;
+        return $item;
     }
 }
 

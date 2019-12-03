@@ -40,39 +40,35 @@ class cApiNavSubCollection extends ItemCollection {
      * Create new item with given values.
      *
      * @param int        $navm
-     * @param int|string $area
-     *                           AreaId or area name
+     * @param int|string $idarea as ID or name
      * @param int        $level
      * @param string     $location
      * @param int        $online [optional]
      *
      * @return cApiNavSub
-     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($navm, $area, $level, $location, $online = 1) {
-        $item = $this->createNewItem();
-
-        if (is_string($area)) {
-            $c = new cApiArea();
-            $c->loadBy('name', $area);
-
-            if ($c->isLoaded()) {
-                $area = $c->get('idarea');
-            } else {
-                $area = 0;
-                cWarning(__FILE__, __LINE__, "Could not resolve area [$area] passed to method [create], assuming 0");
+    public function create($navm, $idarea, $level, $location, $online = 1)
+    {
+        if (is_string($idarea)) {
+            $areaName = $idarea;
+            $area     = new cApiArea();
+            $area->loadBy('name', $areaName);
+            $idarea = $area->isLoaded() ? $area->get('idarea') : 0;
+            if (0 === $idarea) {
+                cWarning(__FILE__, __LINE__, "Could not resolve area [$areaName] passed to method [create], assuming 0");
             }
         }
 
+        /** @var cApiNavSub $item */
+        $item = $this->createNewItem();
         $item->set('idnavm', $navm);
-        $item->set('idarea', $area);
+        $item->set('idarea', $idarea);
         $item->set('level', $level);
         $item->set('location', $location);
         $item->set('online', $online);
-
         $item->store();
 
         return $item;

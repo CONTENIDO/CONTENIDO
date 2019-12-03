@@ -35,23 +35,20 @@ class cApiSearchTrackingCollection extends ItemCollection {
     /**
      * Create a new tracking row
      *
-     * @param string $searchTerm
-     *                          Term the user searched for
-     * @param int    $searchResults
-     *                          Number of results
-     * @param string $timestamp [optional]
-     *                          Timestamp of the search
-     * @param int    $idclient  [optional]
-     *                          Client
-     * @param int    $idlang    [optional]
-     *                          Language
+     * @param string $searchTerm    Term the user searched for
+     * @param int    $searchResults Number of results
+     * @param string $timestamp     [optional] Timestamp of the search
+     * @param int    $idclient      [optional] Client
+     * @param int    $idlang        [optional] Language
      *
      * @return bool
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($searchTerm, $searchResults, $timestamp = "", $idclient = 0, $idlang = 0) {
+    public function create($searchTerm, $searchResults, $timestamp = "", $idclient = 0, $idlang = 0)
+    {
+        /** @var cApiSearchTracking $item */
         $item = $this->createNewItem();
         $item->set("searchterm", $searchTerm);
         $item->set("results", $searchResults);

@@ -163,39 +163,31 @@ class cApiPropertyCollection extends ItemCollection {
      * $property = $properties->create('idcat', 27, 'visual', 'image', 'images/tool.gif');
      * </pre>
      *
-     * @param mixed $itemtype
-     *                           Type of the item (example: idcat)
-     * @param mixed $itemid
-     *                           ID of the item (example: 31)
-     * @param mixed $type
-     *                           Type of the data to store (arbitary data)
-     * @param mixed $name
-     *                           Entry name
-     * @param mixed $value
-     *                           Value
-     * @param bool  $bDontEscape [optional; default false]
-     *                           on internal call do not escape parameters again
-     *                           NOTE: This parameter is deprecated since 2013-11-26
+     * @param mixed $itemtype    Type of the item (example: idcat)
+     * @param mixed $itemid      ID of the item (example: 31)
+     * @param mixed $type        Type of the data to store (arbitary data)
+     * @param mixed $name        Entry name
+     * @param mixed $value       Value
+     * @param bool $bDontEscape [optional] on internal call do not escape parameters again
+     *                          NOTE: This parameter is deprecated since 2013-11-26
      *
      * @return cApiProperty
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($itemtype, $itemid, $type, $name, $value, $bDontEscape = false) {
-        global $auth;
-
+    public function create($itemtype, $itemid, $type, $name, $value, $bDontEscape = false)
+    {
+        /** @var cApiProperty $item */
         $item = $this->createNewItem();
-
         $item->set('idclient', $this->client);
         $item->set('itemtype', $itemtype, false);
         $item->set('itemid', $itemid, false);
         $item->set('type', $type);
         $item->set('name', $name);
         $item->set('value', $value);
-
         $item->set('created', date('Y-m-d H:i:s'), false);
-        $item->set('author', $auth->auth['uid']);
+        $item->set('author', cRegistry::getAuth()->auth['uid']);
         $item->store();
 
         if ($this->_useCache($itemtype, $itemid)) {

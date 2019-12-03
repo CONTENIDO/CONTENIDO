@@ -71,16 +71,17 @@ class cApiStatCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($iIdCatArt, $iIdLang, $iIdClient, $iVisited = 1) {
-        $oItem = $this->createNewItem();
+    public function create($iIdCatArt, $iIdLang, $iIdClient, $iVisited = 1)
+    {
+        /** @var cApiStat $item */
+        $item = $this->createNewItem();
+        $item->set('visited', $iVisited);
+        $item->set('idcatart', $iIdCatArt);
+        $item->set('idlang', $iIdLang);
+        $item->set('idclient', $iIdClient);
+        $item->store();
 
-        $oItem->set('visited', $iVisited);
-        $oItem->set('idcatart', $iIdCatArt);
-        $oItem->set('idlang', $iIdLang);
-        $oItem->set('idclient', $iIdClient);
-        $oItem->store();
-
-        return $oItem;
+        return $item;
     }
 
     /**

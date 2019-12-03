@@ -39,46 +39,37 @@ class cApiFileInformationCollection extends ItemCollection {
      *
      * @todo  Pass additional fields as optional parameters
      *
-     * @param string $typeContent
-     *                            type of the entry
-     * @param string $filename
-     *                            name of the file
-     * @param string $description [optional]
-     *                            an optional description
+     * @param string $typeContent type of the entry
+     * @param string $filename    name of the file
+     * @param string $description an optional description
      *
      * @return cApiFileInformation
-     *         the new item
-     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($typeContent, $filename, $description = '') {
-        $client = cRegistry::getClientId();
-        $auth = cRegistry::getAuth();
+    public function create($typeContent, $filename, $description = '')
+    {
         $item = new cApiFileInformation();
-        $item->loadByMany(array(
-            'idclient' => $client,
-            'type' => $typeContent,
-            'filename' => $filename
-        ));
-        if (!$item->isLoaded()) {
-            $item = $this->createNewItem();
+        $item->loadByMany(['idclient' => cRegistry::getClientId(), 'type' => $typeContent, 'filename' => $filename]);
 
-            $item->set('idclient', $client);
+        if ($item->isLoaded()) {
+            $item = $this->updateFile($filename, $typeContent, $description);
+        } else {
+            /** @var cApiFileInformation $item */
+            $item = $this->createNewItem();
+            $item->set('idclient', cRegistry::getClientId());
             $item->set('type', $typeContent);
             $item->set('filename', $filename);
             $item->set('created', date('Y-m-d H:i:s'));
             $item->set('lastmodified', date('Y-m-d H:i:s'));
-            $item->set('author', $auth->auth['uid']);
-            $item->set('modifiedby', $auth->auth['uid']);
+            $item->set('author', cRegistry::getAuth()->auth['uid']);
+            $item->set('modifiedby', cRegistry::getAuth()->auth['uid']);
             $item->set('description', $description);
             $item->store();
-
-            return $item;
-        } else {
-            return $this->updateFile($filename, $typeContent, $description);
         }
+
+        return $item;
     }
 
     /**

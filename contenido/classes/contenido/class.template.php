@@ -50,8 +50,7 @@ class cApiTemplateCollection extends ItemCollection {
      *
      * @param int    $idclient
      * @param int    $idlay
-     * @param int    $idtplcfg
-     *                                Either a valid template configuration id or an empty string
+     * @param int    $idtplcfg        Either a valid template configuration id or an empty string
      * @param string $name
      * @param string $description
      * @param int    $deletable       [optional]
@@ -66,36 +65,48 @@ class cApiTemplateCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($idclient, $idlay, $idtplcfg, $name, $description,
-            $deletable = 1, $status = 0, $defaulttemplate = 0, $author = '',
-            $created = '', $lastmodified = '') {
+    public function create(
+        $idclient,
+        $idlay,
+        $idtplcfg,
+        $name,
+        $description,
+        $deletable = 1,
+        $status = 0,
+        $defaulttemplate = 0,
+        $author = '',
+        $created = '',
+        $lastmodified = ''
+    ) {
         if (empty($author)) {
-            $auth = cRegistry::getAuth();
+            $auth   = cRegistry::getAuth();
             $author = $auth->auth['uname'];
         }
+
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
         }
+
         if (empty($lastmodified)) {
             $lastmodified = date('Y-m-d H:i:s');
         }
 
-        $oItem = $this->createNewItem();
+        /** @var cApiTemplate $item */
+        $item = $this->createNewItem();
+        $item->set('idclient', $idclient);
+        $item->set('idlay', $idlay);
+        $item->set('idtplcfg', $idtplcfg);
+        $item->set('name', $name);
+        $item->set('description', $description);
+        $item->set('deletable', $deletable);
+        $item->set('status', $status);
+        $item->set('defaulttemplate', $defaulttemplate);
+        $item->set('author', $author);
+        $item->set('created', $created);
+        $item->set('lastmodified', $lastmodified);
+        $item->store();
 
-        $oItem->set('idclient', $idclient);
-        $oItem->set('idlay', $idlay);
-        $oItem->set('idtplcfg', $idtplcfg);
-        $oItem->set('name', $name);
-        $oItem->set('description', $description);
-        $oItem->set('deletable', $deletable);
-        $oItem->set('status', $status);
-        $oItem->set('defaulttemplate', $defaulttemplate);
-        $oItem->set('author', $author);
-        $oItem->set('created', $created);
-        $oItem->set('lastmodified', $lastmodified);
-        $oItem->store();
-
-        return $oItem;
+        return $item;
     }
 
     /**

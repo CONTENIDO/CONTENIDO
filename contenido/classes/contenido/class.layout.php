@@ -42,8 +42,7 @@ class cApiLayoutCollection extends ItemCollection {
      * @param int    $idclient     [optional]
      * @param string $alias        [optional]
      * @param string $description  [optional]
-     * @param int    $deletable    [optional]
-     *                             Either 1 or 0
+     * @param int    $deletable    [optional] Either 1 or 0
      * @param string $author       [optional]
      * @param string $created      [optional]
      * @param string $lastmodified [optional]
@@ -53,27 +52,39 @@ class cApiLayoutCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($name, $idclient = NULL, $alias = '', $description = '', $deletable = 1, $author = '', $created = '', $lastmodified = '') {
-        global $client, $auth;
-
-        if (NULL === $idclient) {
-            $idclient = $client;
+    public function create(
+        $name,
+        $idclient = null,
+        $alias = '',
+        $description = '',
+        $deletable = 1,
+        $author = '',
+        $created = '',
+        $lastmodified = ''
+    ) {
+        if (null === $idclient) {
+            $idclient = cRegistry::getClientId();
         }
 
         if (empty($alias)) {
-            $alias = cString::toLowerCase(cString::cleanURLCharacters(i18n("-- New layout --")));
+            $alias = i18n("-- New layout --");
+            $alias = cString::cleanURLCharacters($alias);
+            $alias = cString::toLowerCase($alias);
         }
 
         if (empty($author)) {
-            $author = $auth->auth['uname'];
+            $author = cRegistry::getAuth()->auth['uname'];
         }
+
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
         }
+
         if (empty($lastmodified)) {
             $lastmodified = date('Y-m-d H:i:s');
         }
 
+        /** @var cApiLayout $item */
         $item = $this->createNewItem();
         $item->set('idclient', $idclient);
         $item->set('name', $name);

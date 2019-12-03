@@ -38,7 +38,7 @@ class cApiActionCollection extends ItemCollection {
     /**
      * Creates an action entry.
      *
-     * @param string|int $area
+     * @param string|int $idarea
      * @param string|int $name
      * @param string|int $alt_name [optional]
      * @param string     $code     [optional]
@@ -46,42 +46,38 @@ class cApiActionCollection extends ItemCollection {
      * @param int        $relevant [optional]
      *
      * @return cApiAction
-     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($area, $name, $alt_name = '', $code = '', $location = '', $relevant = 1) {
-        $item = $this->createNewItem();
-
-        if (is_string($area)) {
-            $c = new cApiArea();
-            $c->loadBy('name', $area);
-            if ($c->isLoaded()) {
-                $area = $c->get('idarea');
-            } else {
-                $area = 0;
-                cWarning(__FILE__, __LINE__, "Could not resolve area [$area] passed to method [create], assuming 0");
+    public function create($idarea, $name, $alt_name = '', $code = '', $location = '', $relevant = 1)
+    {
+        if (is_string($idarea)) {
+            $areaName = $idarea;
+            $area     = new cApiArea();
+            $area->loadBy('name', $areaName);
+            $idarea = $area->isLoaded() ? $area->get('idarea') : 0;
+            if (0 === $idarea) {
+                cWarning(__FILE__, __LINE__, "Could not resolve area [$areaName] passed to method [create], assuming 0");
             }
         }
 
-        if (is_string($area)) {
-            $area = $this->escape($area);
-        }
         if (is_string($name)) {
             $name = $this->escape($name);
         }
+
         if (is_string($alt_name)) {
             $alt_name = $this->escape($alt_name);
         }
 
-        $item->set('idarea', $area);
+        /** @var cApiAction $item */
+        $item = $this->createNewItem();
+        $item->set('idarea', $idarea);
         $item->set('name', $name);
         $item->set('alt_name', $alt_name);
         $item->set('code', $code);
         $item->set('location', $location);
         $item->set('relevant', $relevant);
-
         $item->store();
 
         return $item;

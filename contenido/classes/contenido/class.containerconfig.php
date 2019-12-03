@@ -55,9 +55,10 @@ class cApiContainerConfigurationCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($idtplcfg, $number, $container) {
+    public function create($idtplcfg, $number, $container)
+    {
+        /** @var cApiContainerConfiguration $item */
         $item = $this->createNewItem();
-
         $item->set('idtplcfg', $idtplcfg);
         $item->set('number', $number);
         $item->set('container', $container);
@@ -76,7 +77,7 @@ class cApiContainerConfigurationCollection extends ItemCollection {
      *         container configuration.
      * @throws cDbException
      * @throws cException
-*/
+     */
     public function getByTemplateConfiguration($idtplcfg) {
         $configuration = array();
 

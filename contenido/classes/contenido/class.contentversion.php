@@ -38,33 +38,21 @@ class cApiContentVersionCollection extends ItemCollection {
     /**
      * Creates a content version entry.
      *
-     * @param mixed[] $parameters {
+     * @param array $parameters
      *
      * @return cApiContentVersion
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create(array $parameters) {
-        global $auth;
-
-        if (empty($author)) {
-            $author = $auth->auth['uname'];
-        }
-        if (empty($created)) {
-            $created = date('Y-m-d H:i:s');
-        }
-        if (empty($lastmodified)) {
-            $lastmodified = date('Y-m-d H:i:s');
-        }
-
+    public function create(array $parameters)
+    {
+        /** @var cApiContentVersion $item */
         $item = $this->createNewItem();
-
-        // populate item w/ values
-        foreach (array_keys($parameters) as $key) {
-            $item->set($key, $parameters[$key]);
+        foreach ($parameters as $key => $value) {
+            $item->set($key, $value);
         }
-    $item->store();
+        $item->store();
 
         return $item;
     }

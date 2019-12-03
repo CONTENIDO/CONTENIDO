@@ -49,34 +49,30 @@ class cApiFrontendPermissionCollection extends ItemCollection {
     /**
      * Creates a new permission entry.
      *
-     * @param int    $group
-     *         Specifies the frontend group
-     * @param string $plugin
-     *         Specifies the plugin
-     * @param string $action
-     *         Specifies the action
-     * @param string $item
-     *         Specifies the item
+     * @param int    $group  Specifies the frontend group
+     * @param string $plugin Specifies the plugin
+     * @param string $action Specifies the action
+     * @param string $item   Specifies the item
      *
      * @return cApiFrontendPermission|false
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($group, $plugin, $action, $item) {
-        global $lang;
-
-        $perm = false;
-        if (!$this->checkPerm($group, $plugin, $action, $item)) {
-            $perm = $this->createNewItem();
-            $perm->set('idlang', $lang);
-            $perm->set('idfrontendgroup', $group);
-            $perm->set('plugin', $plugin);
-            $perm->set('action', $action);
-            $perm->set('item', $item);
-
-            $perm->store();
+    public function create($group, $plugin, $action, $item)
+    {
+        if ($this->checkPerm($group, $plugin, $action, $item)) {
+            return false;
         }
+
+        /** @var cApiFrontendPermission $perm */
+        $perm = $this->createNewItem();
+        $perm->set('idlang', cRegistry::getLanguageId());
+        $perm->set('idfrontendgroup', $group);
+        $perm->set('plugin', $plugin);
+        $perm->set('action', $action);
+        $perm->set('item', $item);
+        $perm->store();
 
         return $perm;
     }

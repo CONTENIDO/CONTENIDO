@@ -58,48 +58,47 @@ class cApiFrontendUserCollection extends ItemCollection {
     /**
      * Creates a new user
      *
-     * @param string $username
-     *                         Specifies the username
-     * @param string $password [optional]
-     *                         Specifies the password (optional)
+     * @param string $username Specifies the username
+     * @param string $password [optional] Specifies the password (optional)
      *
      * @return cApiFrontendUser
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($username, $password = '') {
-        global $client, $auth;
-
-        // Check if the username already exists
-        $this->select("idclient = " . (int) $client . " AND username = '" . $this->escape($username) . "'");
-
+    public function create($username, $password = '')
+    {
+        // assert unique username
+        $this->select(
+            "idclient = " . cSecurity::toInteger(cRegistry::getClientId()) . "
+            AND username = '" . $this->escape($username) . "'"
+        );
         if ($this->next()) {
-            return $this->create($username . '_' . cString::getPartOfString(md5(rand()), 0, 10), $password);
+            $username = $username . '_' . cString::getPartOfString(md5(rand()), 0, 10);
+            return $this->create($username, $password);
         }
 
+        /** @var cApiFrontendUser $item */
         $item = $this->createNewItem();
-        $item->set('idclient', $client);
+        $item->set('idclient', cRegistry::getClientId());
         $item->set('username', $username);
         $item->set('salt', md5($username . rand(1000, 9999) . rand(1000, 9999) . rand(1000, 9999)));
         $item->set('password', $password);
         $item->set('created', date('Y-m-d H:i:s'), false);
-        $item->set('author', $auth->auth['uid']);
+        $item->set('author', cRegistry::getAuth()->auth['uid']);
         $item->set('active', 0);
-
         $item->store();
 
-        // Put this user into the default groups
-        $feGroups = new cApiFrontendGroupCollection();
-        $feGroups->select("idclient = " . (int) $client . " AND defaultgroup = 1");
-
+        // add new user to default groups
         $feGroupMembers = new cApiFrontendGroupMemberCollection();
-
-        $iduser = $item->get('idfrontenduser');
-
+        $feGroups       = new cApiFrontendGroupCollection();
+        $feGroups->select(
+            "idclient = " . cSecurity::toInteger(cRegistry::getClientId()) . "
+            AND defaultgroup = 1"
+        );
         while (($feGroup = $feGroups->next()) !== false) {
             $idgroup = $feGroup->get('idfrontendgroup');
-            $feGroupMembers->create($idgroup, $iduser);
+            $feGroupMembers->create($idgroup, $item->get('idfrontenduser'));
         }
 
         return $item;

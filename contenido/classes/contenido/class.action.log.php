@@ -46,7 +46,6 @@ class cApiActionlogCollection extends ItemCollection {
      * Creates an actionlog item.
      *
      * @param string $userId
-     *                             User id
      * @param int    $idclient
      * @param int    $idlang
      * @param int    $idaction
@@ -54,25 +53,24 @@ class cApiActionlogCollection extends ItemCollection {
      * @param string $logtimestamp [optional]
      *
      * @return cApiActionlog
-     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($userId, $idclient, $idlang, $idaction, $idcatart, $logtimestamp = '') {
-        $item = $this->createNewItem();
-
+    public function create($userId, $idclient, $idlang, $idaction, $idcatart, $logtimestamp = '')
+    {
         if (empty($logtimestamp)) {
             $logtimestamp = date('Y-m-d H:i:s');
         }
 
+        /** @var cApiActionlog $item */
+        $item = $this->createNewItem();
         $item->set('user_id', $userId);
         $item->set('idclient', $idclient);
         $item->set('idlang', $idlang);
         $item->set('idaction', $idaction);
         $item->set('idcatart', $idcatart);
         $item->set('logtimestamp', $logtimestamp);
-
         $item->store();
 
         return $item;

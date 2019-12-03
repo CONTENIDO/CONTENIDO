@@ -55,9 +55,10 @@ class cApiContainerCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($idtpl, $number, $idmod) {
+    public function create($idtpl, $number, $idmod)
+    {
+        /** @var cApiContainer $item */
         $item = $this->createNewItem();
-
         $item->set('idtpl', $idtpl);
         $item->set('number', $number);
         $item->set('idmod', $idmod);

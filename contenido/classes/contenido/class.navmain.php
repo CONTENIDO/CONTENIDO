@@ -44,16 +44,17 @@ class cApiNavMainCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($name, $location, $id = null) {
+    public function create($name, $location, $id = null)
+    {
+        /** @var cApiNavMain $item */
         $item = $this->createNewItem();
-
         if ($id != null) {
             $item->set('idnavm', $id);
         }
-
         $item->set('name', $name);
         $item->set('location', $location);
         $item->store();
+
         return $item;
     }
 }

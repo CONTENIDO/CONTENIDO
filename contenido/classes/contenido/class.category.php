@@ -55,37 +55,45 @@ class cApiCategoryCollection extends ItemCollection {
      * @param string $lastmodified [optional]
      *
      * @return cApiCategory
-     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($idclient, $parentid = 0, $preid = 0, $postid = 0, $status = 0, $author = '', $created = '', $lastmodified = '') {
-        global $auth;
-
+    public function create(
+        $idclient,
+        $parentid = 0,
+        $preid = 0,
+        $postid = 0,
+        $status = 0,
+        $author = '',
+        $created = '',
+        $lastmodified = ''
+    ) {
         if (empty($author)) {
-            $author = $auth->auth['uname'];
+            $author = cRegistry::getAuth()->auth['uname'];
         }
+
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
         }
+
         if (empty($lastmodified)) {
             $lastmodified = date('Y-m-d H:i:s');
         }
 
-        $oItem = $this->createNewItem();
+        /** @var cApiCategory $item */
+        $item = $this->createNewItem();
+        $item->set('idclient', $idclient);
+        $item->set('parentid', $parentid);
+        $item->set('preid', $preid);
+        $item->set('postid', $postid);
+        $item->set('status', $status);
+        $item->set('author', $author);
+        $item->set('created', $created);
+        $item->set('lastmodified', $lastmodified);
+        $item->store();
 
-        $oItem->set('idclient', $idclient);
-        $oItem->set('parentid', $parentid);
-        $oItem->set('preid', $preid);
-        $oItem->set('postid', $postid);
-        $oItem->set('status', $status);
-        $oItem->set('author', $author);
-        $oItem->set('created', $created);
-        $oItem->set('lastmodified', $lastmodified);
-        $oItem->store();
-
-        return $oItem;
+        return $item;
     }
 
     /**

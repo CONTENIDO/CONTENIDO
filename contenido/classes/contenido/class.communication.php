@@ -43,12 +43,12 @@ class cApiCommunicationCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create() {
-        global $auth, $client;
+    public function create()
+    {
+        /** @var cApiCommunication $item */
         $item = $this->createNewItem();
-
-        $item->set('idclient', $client);
-        $item->set('author', $auth->auth['uid']);
+        $item->set('idclient', cRegistry::getClientId());
+        $item->set('author', cRegistry::getAuth()->auth['uid']);
         $item->set('created', date('Y-m-d H:i:s'), false);
 
         return $item;

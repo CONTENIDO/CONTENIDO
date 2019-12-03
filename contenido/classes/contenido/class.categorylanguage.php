@@ -66,36 +66,50 @@ class cApiCategoryLanguageCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($idcat, $idlang, $name, $urlname, $urlpath = '', $idtplcfg = 0, $visible = 0, $public = 0, $status = 0, $author = '', $startidartlang = 0, $created = '', $lastmodified = '') {
-        global $auth;
-
+    public function create(
+        $idcat,
+        $idlang,
+        $name,
+        $urlname,
+        $urlpath = '',
+        $idtplcfg = 0,
+        $visible = 0,
+        $public = 0,
+        $status = 0,
+        $author = '',
+        $startidartlang = 0,
+        $created = '',
+        $lastmodified = ''
+    ) {
         if (empty($author)) {
-            $author = $auth->auth['uname'];
+            $author = cRegistry::getAuth()->auth['uname'];
         }
+
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
         }
+
         if (empty($lastmodified)) {
             $lastmodified = date('Y-m-d H:i:s');
         }
 
-        $oItem = $this->createNewItem();
+        /** @var cApiCategoryLanguage $item */
+        $item = $this->createNewItem();
+        $item->set('idcat', $idcat);
+        $item->set('idlang', $idlang);
+        $item->set('name', $name);
+        $item->set('urlname', $urlname);
+        $item->set('urlpath', $urlpath);
+        $item->set('idtplcfg', $idtplcfg);
+        $item->set('visible', $visible);
+        $item->set('public', $public);
+        $item->set('status', $status);
+        $item->set('author', $author);
+        $item->set('created', $created);
+        $item->set('lastmodified', $lastmodified);
+        $item->store();
 
-        $oItem->set('idcat', $idcat);
-        $oItem->set('idlang', $idlang);
-        $oItem->set('name', $name);
-        $oItem->set('urlname', $urlname);
-        $oItem->set('urlpath', $urlpath);
-        $oItem->set('idtplcfg', $idtplcfg);
-        $oItem->set('visible', $visible);
-        $oItem->set('public', $public);
-        $oItem->set('status', $status);
-        $oItem->set('author', $author);
-        $oItem->set('created', $created);
-        $oItem->set('lastmodified', $lastmodified);
-        $oItem->store();
-
-        return $oItem;
+        return $item;
     }
 
     /**

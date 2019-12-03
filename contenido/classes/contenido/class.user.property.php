@@ -135,14 +135,16 @@ class cApiUserPropertyCollection extends ItemCollection {
      * @param string $name
      * @param string $value
      * @param int    $idcatlang [optional]
+     *
      * @return cApiUserProperty
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($type, $name, $value, $idcatlang = 0) {
+    public function create($type, $name, $value, $idcatlang = 0)
+    {
+        /** @var cApiUserProperty $item */
         $item = $this->createNewItem();
-
         $item->set('user_id', $this->_userId);
         $item->set('type', $type);
         $item->set('name', $name);

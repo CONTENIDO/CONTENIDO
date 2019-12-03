@@ -52,9 +52,14 @@ class cApiMailLogCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($from, $to, $replyTo, $cc, $bcc, $subject, $body, $created, $charset, $contentType) {
-        $item = $this->createNewItem();
+    public function create($from, $to, $replyTo, $cc, $bcc, $subject, $body, $created, $charset, $contentType)
+    {
+        $date     = date('Y-m-d H:i:s', $created);
+        $idclient = cRegistry::getClientId();
+        $idlang   = cRegistry::getLanguageId();
 
+        /** @var cApiMailLog $item */
+        $item = $this->createNewItem();
         $item->set('from', json_encode($from));
         $item->set('to', json_encode($to));
         $item->set('reply_to', json_encode($replyTo));
@@ -62,15 +67,11 @@ class cApiMailLogCollection extends ItemCollection {
         $item->set('bcc', json_encode($bcc));
         $item->set('subject', $subject);
         $item->set('body', $body);
-        $date = date('Y-m-d H:i:s', $created);
         $item->set('created', $date, false);
-        $idclient = cRegistry::getClientId();
         $item->set('idclient', $idclient);
-        $idlang = cRegistry::getLanguageId();
         $item->set('idlang', $idlang);
         $item->set('charset', $charset);
         $item->set('content_type', $contentType);
-
         $item->store();
 
         return $item;

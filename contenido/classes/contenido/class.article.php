@@ -50,14 +50,14 @@ class cApiArticleCollection extends ItemCollection {
      * @param int $idclient
      *
      * @return cApiArticle
-     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($idclient) {
+    public function create($idclient)
+    {
+        /** @var cApiArticle $item */
         $item = $this->createNewItem();
-
         $item->set('idclient', $idclient);
         $item->store();
 

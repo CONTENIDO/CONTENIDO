@@ -48,15 +48,16 @@ class cApiMetaTagCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($iIdArtLang, $iIdMetaType, $sMetaValue) {
-        $oItem = $this->createNewItem();
+    public function create($iIdArtLang, $iIdMetaType, $sMetaValue)
+    {
+        /** @var cApiMetaTag $item */
+        $item = $this->createNewItem();
+        $item->set('idartlang', $iIdArtLang, false);
+        $item->set('idmetatype', $iIdMetaType, false);
+        $item->set('metavalue', $sMetaValue, false);
+        $item->store();
 
-        $oItem->set('idartlang', $iIdArtLang, false);
-        $oItem->set('idmetatype', $iIdMetaType, false);
-        $oItem->set('metavalue', $sMetaValue, false);
-        $oItem->store();
-
-        return $oItem;
+        return $item;
     }
 
     /**

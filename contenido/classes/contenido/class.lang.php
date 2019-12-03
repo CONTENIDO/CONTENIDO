@@ -24,6 +24,7 @@ class cApiLanguageCollection extends ItemCollection {
     /**
      * Constructor to create an instance of this class.
      *
+     * @global array  $cfg
      * @throws cInvalidArgumentException
      */
     public function __construct() {
@@ -44,18 +45,16 @@ class cApiLanguageCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
-     * @global object $auth
      */
-    public function create($name, $active, $encoding, $direction) {
-        global $auth;
-
+    public function create($name, $active, $encoding, $direction)
+    {
+        /** @var cApiLanguage $item */
         $item = $this->createNewItem();
-
         $item->set('name', $name, false);
         $item->set('active', $active, false);
         $item->set('encoding', $encoding, false);
         $item->set('direction', $direction, false);
-        $item->set('author', $auth->auth['uid'], false);
+        $item->set('author', cRegistry::getAuth()->auth['uid'], false);
         $item->set('created', date('Y-m-d H:i:s'), false);
         $item->set('lastmodified', '0000-00-00 00:00:00', false);
         $item->store();
@@ -71,7 +70,6 @@ class cApiLanguageCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      * @global object $perm
-     * @global array  $cfg
      * @global int    $client
      * @global int    $lang
      *

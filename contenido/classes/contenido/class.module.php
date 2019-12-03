@@ -51,35 +51,44 @@ class cApiModuleCollection extends ItemCollection {
      * @param string  $lastmodified [optional]
      *
      * @return cApiModule
-     * @global int    $client
-     * @global object $auth
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($name, $idclient = NULL, $alias = '', $type = '',
-            $error = 'none', $description = '', $deletable = 0, $template = '',
-            $static = 0, $package_guid = '', $package_data = '', $author = '',
-            $created = '', $lastmodified = '') {
-        global $client, $auth;
-
-        if (NULL === $idclient) {
-            $idclient = $client;
+    public function create(
+        $name,
+        $idclient = null,
+        $alias = '',
+        $type = '',
+        $error = 'none',
+        $description = '',
+        $deletable = 0,
+        $template = '',
+        $static = 0,
+        $package_guid = '',
+        $package_data = '',
+        $author = '',
+        $created = '',
+        $lastmodified = ''
+    ) {
+        if (null === $idclient) {
+            $idclient = cRegistry::getClientId();
         }
 
         if (empty($author)) {
-            $author = $auth->auth['uname'];
+            $author = cRegistry::getAuth()->auth['uname'];
         }
+        
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
         }
+        
         if (empty($lastmodified)) {
             $lastmodified = date('Y-m-d H:i:s');
         }
 
         /** @var cApiModule $item */
         $item = $this->createNewItem();
-
         $item->set('idclient', $idclient);
         $item->set('name', $name);
         $item->set('alias', $alias);

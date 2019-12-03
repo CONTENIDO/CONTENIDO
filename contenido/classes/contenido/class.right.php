@@ -56,20 +56,20 @@ class cApiRightCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($userId, $idarea, $idaction, $idcat, $idclient, $idlang, $type) {
-        $oItem = $this->createNewItem();
+    public function create($userId, $idarea, $idaction, $idcat, $idclient, $idlang, $type)
+    {
+        /** @var cApiRight $item */
+        $item = $this->createNewItem();
+        $item->set('user_id', $userId);
+        $item->set('idarea', $idarea);
+        $item->set('idaction', $idaction);
+        $item->set('idcat', $idcat);
+        $item->set('idclient', $idclient);
+        $item->set('idlang', $idlang);
+        $item->set('type', $type);
+        $item->store();
 
-        $oItem->set('user_id', $userId);
-        $oItem->set('idarea', $idarea);
-        $oItem->set('idaction', $idaction);
-        $oItem->set('idcat', $idcat);
-        $oItem->set('idclient', $idclient);
-        $oItem->set('idlang', $idlang);
-        $oItem->set('type', $type);
-
-        $oItem->store();
-
-        return $oItem;
+        return $item;
     }
 
     /**

@@ -39,20 +39,23 @@ class cApiClientLanguageCollection extends ItemCollection {
     /**
      * Creates a client language entry.
      *
-     * @param int $iClient
-     * @param int $iLang
+     * @param int $idclient
+     * @param int $idlang
      *
      * @return cApiClientLanguage
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($iClient, $iLang) {
-        $oItem = $this->createNewItem();
-        $oItem->set('idclient', $iClient, false);
-        $oItem->set('idlang', $iLang, false);
-        $oItem->store();
-        return $oItem;
+    public function create($idclient, $idlang)
+    {
+        /** @var cApiClientLanguage $item */
+        $item = $this->createNewItem();
+        $item->set('idclient', $idclient, false);
+        $item->set('idlang', $idlang, false);
+        $item->store();
+
+        return $item;
     }
 
     /**

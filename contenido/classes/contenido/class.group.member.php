@@ -47,15 +47,15 @@ class cApiGroupMemberCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($userId, $groupId) {
-        $oItem = $this->createNewItem();
+    public function create($userId, $groupId)
+    {
+        /** @var cApiGroupMember $item */
+        $item = $this->createNewItem();
+        $item->set('user_id', $userId);
+        $item->set('group_id', $groupId);
+        $item->store();
 
-        $oItem->set('user_id', $userId);
-        $oItem->set('group_id', $groupId);
-
-        $oItem->store();
-
-        return $oItem;
+        return $item;
     }
 
     /**

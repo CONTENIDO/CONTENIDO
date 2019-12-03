@@ -48,21 +48,29 @@ class cApiTypeCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($type, $description, $code = '', $status = 0, $author = '', $created = '', $lastmodified = '') {
-        global $auth;
-
+    public function create(
+        $type,
+        $description,
+        $code = '',
+        $status = 0,
+        $author = '',
+        $created = '',
+        $lastmodified = ''
+    ) {
         if (empty($author)) {
-            $author = $auth->auth['uname'];
+            $author = cRegistry::getAuth()->auth['uname'];
         }
+
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
         }
+
         if (empty($lastmodified)) {
             $lastmodified = date('Y-m-d H:i:s');
         }
 
+        /** @var cApiType $item */
         $item = $this->createNewItem();
-
         $item->set('type', $type);
         $item->set('description', $description);
         $item->set('code', $code);

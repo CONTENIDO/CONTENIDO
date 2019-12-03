@@ -50,28 +50,32 @@ class cApiArticleLanguageCollection extends ItemCollection {
      * @param array $parameters
      *
      * @return cApiArticleLanguage
-     * 
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create(array $parameters) {
-        $auth = cRegistry::getAuth();
-
+    public function create(array $parameters)
+    {
         if (empty($parameters['author'])) {
-            $parameters['author'] = $auth->auth['uname'];
+            $parameters['author'] = cRegistry::getAuth()->auth['uname'];
         }
+
         if (empty($parameters['created'])) {
             $parameters['created'] = date('Y-m-d H:i:s');
         }
+
         if (empty($parameters['lastmodified'])) {
             $parameters['lastmodified'] = date('Y-m-d H:i:s');
         }
 
-        $parameters['urlname'] = (trim($parameters['urlname']) == '') ? trim($parameters['title']) : trim($parameters['urlname']);
+        if (trim($parameters['urlname']) == '') {
+            $parameters['urlname'] = trim($parameters['title']);
+        } else {
+            $parameters['urlname'] = trim($parameters['urlname']);
+        }
 
+        /** @var cApiArticleLanguage $item */
         $item = $this->createNewItem();
-
         $item->set('idart', $parameters['idart']);
         $item->set('idlang', $parameters['idlang']);
         $item->set('title', $parameters['title']);
@@ -104,7 +108,6 @@ class cApiArticleLanguageCollection extends ItemCollection {
         $item->set('searchable', $parameters['searchable']);
         $item->set('sitemapprio', $parameters['sitemapprio']);
         $item->set('changefreq', $parameters['changefreq']);
-
         $item->store();
 
         return $item;

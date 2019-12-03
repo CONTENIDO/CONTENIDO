@@ -52,46 +52,50 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
     /**
      * @param array $parameters
      *
-     * @return Item
-     *
+     * @return cApiArticleLanguageVersion
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create(array $parameters) {
-        $auth = cRegistry::getAuth();
-
+    public function create(array $parameters)
+    {
         if (empty($parameters['author'])) {
-            $parameters['author'] = $auth->auth['uname'];
+            $parameters['author'] = cRegistry::getAuth()->auth['uname'];
         }
+
         if (empty($parameters['created'])) {
             $parameters['created'] = date('Y-m-d H:i:s');
         }
+
         if (empty($parameters['lastmodified'])) {
             $parameters['lastmodified'] = date('Y-m-d H:i:s');
         }
 
-        $parameters['urlname'] = (trim($parameters['urlname']) == '') ? trim($parameters['title']) : trim($parameters['urlname']);
+        if (trim($parameters['urlname']) == '') {
+            $parameters['urlname'] = trim($parameters['title']);
+        } else {
+            $parameters['urlname'] = trim($parameters['urlname']);
+        }
 
         // set version
-        $parameters['version'] = 1;
-        $sql = 'SELECT MAX(version) AS maxversion FROM ' . cRegistry::getDbTableName('art_lang_version') . ' WHERE idartlang = %d;';
+        $sql = 'SELECT MAX(version) AS maxversion
+                FROM ' . cRegistry::getDbTableName('art_lang_version') . '
+                WHERE idartlang = %d;';
         $sql = $this->db->prepare($sql, $parameters['idartlang']);
         $this->db->query($sql);
         if ($this->db->nextRecord()) {
-            $parameters['version'] = $this->db->f('maxversion');
-            ++$parameters['version'];
+            $parameters['version'] = $this->db->f('maxversion') + 1;
+        } else {
+            $parameters['version'] = 1;
         }
 
+        /** @var cApiArticleLanguageVersion $item */
         $item = $this->createNewItem();
-
-        // populate item w/ values
-        foreach (array_keys($parameters) as $key) {
-            // skip columns idcontent & version
-            if ($key == 'iscurrentversion') {
+        foreach ($parameters as $key => $value) {
+            if ('iscurrentversion' === $key) {
                 continue;
             }
-            $item->set($key, $parameters[$key]);
+            $item->set($key, $value);
         }
         $item->markAsCurrentVersion($parameters['iscurrentversion']);
         $item->store();

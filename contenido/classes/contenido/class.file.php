@@ -38,40 +38,36 @@ class cApiFileCollection extends ItemCollection {
     /**
      * Creates a file item entry
      *
-     * @param string $area
-     * @param string $filename
-     * @param string $filetype [optional]
+     * @param int|string $idarea   as ID or name
+     * @param string     $filename
+     * @param string     $filetype [optional]
      *
      * @return cApiFile
-     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($area, $filename, $filetype = 'main') {
-        $item = $this->createNewItem();
-
-        if (is_string($area)) {
-            $c = new cApiArea();
-            $c->loadBy('name', $area);
-
-            if ($c->isLoaded()) {
-                $area = $c->get('idarea');
-            } else {
-                $area = 0;
-                cWarning(__FILE__, __LINE__, "Could not resolve area [$area] passed to method [create], assuming 0");
+    public function create($idarea, $filename, $filetype = 'main')
+    {
+        if (is_string($idarea)) {
+            $areaName = $idarea;
+            $area     = new cApiArea();
+            $area->loadBy('name', $areaName);
+            $idarea = $area->isLoaded() ? $area->get('idarea') : 0;
+            if (0 === $idarea) {
+                cWarning(__FILE__, __LINE__, "Could not resolve area [$areaName] passed to method [create], assuming 0");
             }
         }
 
-        $item->set('idarea', $area);
-        $item->set('filename', $filename);
-
-        if ($filetype != 'main') {
-            $item->set('filetype', 'inc');
-        } else {
-            $item->set('filetype', 'main');
+        if ('main' !== $filetype) {
+            $filetype = 'inc';
         }
 
+        /** @var cApiFile $item */
+        $item = $this->createNewItem();
+        $item->set('idarea', $idarea);
+        $item->set('filename', $filename);
+        $item->set('filetype', $filetype);
         $item->store();
 
         return $item;

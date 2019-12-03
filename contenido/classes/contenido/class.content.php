@@ -53,33 +53,41 @@ class cApiContentCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($idArtLang, $idType, $typeId, $value, $version, $author = '', $created = '', $lastmodified = '') {
-        global $auth;
-
+    public function create(
+        $idArtLang,
+        $idType,
+        $typeId,
+        $value,
+        $version,
+        $author = '',
+        $created = '',
+        $lastmodified = ''
+    ) {
         if (empty($author)) {
-            $author = $auth->auth['uname'];
+            $author = cRegistry::getAuth()->auth['uname'];
         }
+
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
         }
+
         if (empty($lastmodified)) {
             $lastmodified = date('Y-m-d H:i:s');
         }
 
-        $oItem = $this->createNewItem();
+        /** @var cApiContent $item */
+        $item = $this->createNewItem();
+        $item->set('idartlang', $idArtLang);
+        $item->set('idtype', $idType);
+        $item->set('typeid', $typeId);
+        $item->set('value', $value);
+        $item->set('version', $version);
+        $item->set('author', $author);
+        $item->set('created', $created);
+        $item->set('lastmodified', $lastmodified);
+        $item->store();
 
-        $oItem->set('idartlang', $idArtLang);
-        $oItem->set('idtype', $idType);
-        $oItem->set('typeid', $typeId);
-        $oItem->set('value', $value);
-        $oItem->set('version', $version);
-        $oItem->set('author', $author);
-        $oItem->set('created', $created);
-        $oItem->set('lastmodified', $lastmodified);
-
-        $oItem->store();
-
-        return $oItem;
+        return $item;
     }
 
 }

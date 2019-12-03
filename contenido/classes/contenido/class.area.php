@@ -46,22 +46,21 @@ class cApiAreaCollection extends ItemCollection {
      *                             0 or 1
      *
      * @return cApiArea
-     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($name, $parentid = 0, $relevant = 1, $online = 1, $menuless = 0) {
-        $parentid = (is_string($parentid)) ? $this->escape($parentid) : (int) $parentid;
+    public function create($name, $parentid = 0, $relevant = 1, $online = 1, $menuless = 0)
+    {
+        $parentid = (is_string($parentid)) ? $this->escape($parentid) : (int)$parentid;
 
+        /** @var cApiArea $item */
         $item = $this->createNewItem();
-
         $item->set('parent_id', $parentid);
         $item->set('name', $name);
         $item->set('relevant', $relevant);
         $item->set('online', $online);
         $item->set('menuless', $menuless);
-
         $item->store();
 
         return $item;

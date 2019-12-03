@@ -46,22 +46,23 @@ class cApiFrontendGroupCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($groupname) {
-        global $client;
-
-        $group = new cApiFrontendGroup();
-
-        // _arrInFilters = array('urlencode', 'htmlspecialchars', 'addslashes');
-
+    public function create($groupname)
+    {
+        $group            = new cApiFrontendGroup();
         $mangledGroupName = $group->_inFilter($groupname);
-        $this->select("idclient = " . cSecurity::toInteger($client) . " AND groupname = '" . $mangledGroupName . "'");
+
+        $this->select(
+            "idclient = " . cSecurity::toInteger(cRegistry::getClientId()) . "
+            AND groupname = '" . $mangledGroupName . "'"
+        );
 
         if (($obj = $this->next()) !== false) {
             $groupname = $groupname . md5(rand());
         }
 
+        /** @var cApiFrontendGroup $item */
         $item = $this->createNewItem();
-        $item->set('idclient', $client);
+        $item->set('idclient', cRegistry::getClientId());
         $item->set('groupname', $groupname);
         $item->store();
 

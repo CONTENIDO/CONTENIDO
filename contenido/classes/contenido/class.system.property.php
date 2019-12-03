@@ -140,14 +140,16 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @param string $type
      * @param string $name
      * @param string $value
+     *
      * @return cApiSystemProperty
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($type, $name, $value) {
+    public function create($type, $name, $value)
+    {
+        /** @var cApiSystemProperty $item */
         $item = $this->createNewItem();
-
         $item->set('type', $type);
         $item->set('name', $name);
         $item->set('value', $value);

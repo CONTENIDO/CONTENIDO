@@ -50,11 +50,10 @@ class cApiMetaTagVersionCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($idMetaTag, $idArtLang, $idMetaType, $metaValue, $version) {
-
-        // create item
+    public function create($idMetaTag, $idArtLang, $idMetaType, $metaValue, $version)
+    {
+        /** @var cApiMetaTagVersion $item */
         $item = $this->createNewItem();
-
         $item->set('idmetatag', $idMetaTag, false);
         $item->set('idartlang', $idArtLang, false);
         $item->set('idmetatype', $idMetaType, false);

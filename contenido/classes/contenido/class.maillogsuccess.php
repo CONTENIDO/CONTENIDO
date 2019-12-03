@@ -48,14 +48,14 @@ class cApiMailLogSuccessCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($idmail, $recipient, $success, $exception) {
+    public function create($idmail, $recipient, $success, $exception)
+    {
+        /** @var cApiMailLogSuccess $item */
         $item = $this->createNewItem();
-
         $item->set('idmail', $idmail);
         $item->set('recipient', json_encode($recipient));
         $item->set('success', $success);
         $item->set('exception', $exception);
-
         $item->store();
 
         return $item;

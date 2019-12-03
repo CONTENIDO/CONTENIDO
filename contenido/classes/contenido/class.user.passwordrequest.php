@@ -50,19 +50,21 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
      * @return cApiUserPasswordRequest
      * @throws cDbException
      * @throws cException
-     * @throws cInvalidArgumentException
      */
     public function createNewItem($data = NULL) {
-        $item = parent::createNewItem($data);
 
         // check configuration setting for different password expiration
         // value must be valid string for DateTime's time variable in its constructor
-        if (false === ($expiration = getEffectiveSetting('pw_request', 'user_password_reset_expiration'))
-        || 0 === cString::getStringLength($expiration)) {
+        $expiration = getEffectiveSetting('pw_request', 'user_password_reset_expiration');
+        if (false === $expiration || empty($expiration)) {
             $expiration = '+4 hour';
         }
         $time = new DateTime('+' . $expiration, new DateTimeZone('UTC'));
-        $item->set('expiration', $this->escape($time->format('Y-m-d H:i:s')));
+        $time = $time->format('Y-m-d H:i:s');
+        
+        /** @var cApiUserPasswordRequest $item */
+        $item = parent::createNewItem($data);
+        $item->set('expiration', $this->escape($time));
 
         return $item;
     }

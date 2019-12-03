@@ -44,17 +44,16 @@ class cApiGroupCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($groupname, $perms, $description) {
+    public function create($groupname, $perms, $description)
+    {
         $primaryKeyValue = md5($groupname . time());
+        $groupname       = cApiGroup::prefixedGroupName($groupname);
 
         /** @var cApiGroup $item */
         $item = $this->createNewItem($primaryKeyValue);
         if (!is_object($item)) {
             return false;
         }
-
-        $groupname = cApiGroup::prefixedGroupName($groupname);
-
         $item->set('groupname', $groupname);
         $item->set('perms', $perms);
         $item->set('description', $description);

@@ -78,19 +78,21 @@ class cApiTemplateConfigurationCollection extends ItemCollection {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($idtpl, $status = 0, $author = '', $created = '', $lastmodified = '') {
-        global $auth;
-
+    public function create($idtpl, $status = 0, $author = '', $created = '', $lastmodified = '')
+    {
         if (empty($author)) {
-            $author = $auth->auth['uname'];
+            $author = cRegistry::getAuth()->auth['uname'];
         }
+
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
         }
+
         if (empty($lastmodified)) {
             $lastmodified = '0000-00-00 00:00:00';
         }
 
+        /** @var cApiTemplateConfiguration $item */
         $item = $this->createNewItem();
         $item->set('idtpl', $idtpl);
         $item->set('author', $author);

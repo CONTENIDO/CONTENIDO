@@ -41,25 +41,23 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
      *
      * @todo Should return null in case of failure
      *
-     * @param int $idfrontendgroup
-     *         specifies the frontend group
-     * @param int $idfrontenduser
-     *         specifies the frontend user
+     * @param int $idfrontendgroup specifies the frontend group
+     * @param int $idfrontenduser  specifies the frontend user
      *
      * @return cApiFrontendGroupMember|false
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($idfrontendgroup, $idfrontenduser) {
-        $this->select('idfrontendgroup = ' . (int) $idfrontendgroup . ' AND idfrontenduser = ' . (int) $idfrontenduser);
-
+    public function create($idfrontendgroup, $idfrontenduser)
+    {
+        $this->select('idfrontendgroup = ' . (int)$idfrontendgroup . ' AND idfrontenduser = ' . (int)$idfrontenduser);
         if ($this->next()) {
             return false;
         }
 
+        /** @var cApiFrontendGroupMember $item */
         $item = $this->createNewItem();
-
         $item->set('idfrontenduser', $idfrontenduser);
         $item->set('idfrontendgroup', $idfrontendgroup);
         $item->store();

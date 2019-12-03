@@ -55,26 +55,33 @@ class cApiCategoryArticleCollection extends ItemCollection {
      * @param int    $createcode   [optional]
      *
      * @return cApiCategoryArticle
-     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function create($idcat, $idart, $status = 0, $author = "", $created = "", $lastmodified = "", $createcode = 1) {
-        global $auth;
-
+    public function create(
+        $idcat,
+        $idart,
+        $status = 0,
+        $author = "",
+        $created = "",
+        $lastmodified = "",
+        $createcode = 1
+    ) {
         if (empty($author)) {
-            $author = $auth->auth['uname'];
+            $author = cRegistry::getAuth()->auth['uname'];
         }
+
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
         }
+
         if (empty($lastmodified)) {
             $lastmodified = date('Y-m-d H:i:s');
         }
 
+        /** @var cApiCategoryArticle $item */
         $item = $this->createNewItem();
-
         $item->set('idcat', $idcat);
         $item->set('idart', $idart);
         $item->set('status', $status);
@@ -82,8 +89,8 @@ class cApiCategoryArticleCollection extends ItemCollection {
         $item->set('created', $created);
         $item->set('lastmodified', $lastmodified);
         $item->set('createcode', $createcode);
-
         $item->store();
+
         return $item;
     }
 

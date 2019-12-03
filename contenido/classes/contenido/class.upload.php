@@ -84,40 +84,40 @@ class cApiUploadCollection extends ItemCollection {
     /**
      * Creates a upload entry.
      *
-     * @param string  $sDirname
-     * @param string  $sFilename
-     * @param string  $sFiletype    [optional]
-     * @param int     $iFileSize    [optional]
-     * @param string  $sDescription [optional]
-     * @param int     $iStatus      [optional]
+     * @param string  $dirname
+     * @param string  $filename
+     * @param string  $filetype    [optional]
+     * @param int     $size        [optional] size of file
+     * @param string  $description [optional]
+     * @param int     $status      [optional]
+     *
      * @return cApiUpload
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
-     * @global int    $client
-     * @global array  $cfg
-     * @global object $auth
      */
-    public function create($sDirname, $sFilename, $sFiletype = '', $iFileSize = 0,
-            $sDescription = '', $iStatus = 0) {
+    public function create(
+        $dirname,
+        $filename,
+        $filetype = '',
+        $size = 0,
+        $description = '',
+        $status = 0
+    ) {
+        /** @var cApiUpload $item */
+        $item = $this->createNewItem();
+        $item->set('idclient', cRegistry::getClientId());
+        $item->set('filename', $filename, false);
+        $item->set('filetype', $filetype, false);
+        $item->set('size', $size, false);
+        $item->set('dirname', $dirname, false);
+        // $item->set('description', $description, false);
+        $item->set('status', $status, false);
+        $item->set('author', cRegistry::getAuth()->auth['uid']);
+        $item->set('created', date('Y-m-d H:i:s'), false);
+        $item->store();
 
-        $client = cRegistry::getClientId();
-        $auth = cRegistry::getAuth();
-
-        $oItem = $this->createNewItem();
-
-        $oItem->set('idclient', $client);
-        $oItem->set('filename', $sFilename, false);
-        $oItem->set('filetype', $sFiletype, false);
-        $oItem->set('size', $iFileSize, false);
-        $oItem->set('dirname', $sDirname, false);
-        // $oItem->set('description', $sDescription, false);
-        $oItem->set('status', $iStatus, false);
-        $oItem->set('author', $auth->auth['uid']);
-        $oItem->set('created', date('Y-m-d H:i:s'), false);
-        $oItem->store();
-
-        return $oItem;
+        return $item;
     }
 
     /**
