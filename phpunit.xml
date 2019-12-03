@@ -26,6 +26,10 @@
             <directory>test/contenido/html</directory>
         </testsuite>
 
+        <testsuite name="items">
+            <directory>test/contenido/items</directory>
+        </testsuite>
+
         <testsuite name="uri">
             <directory>test/contenido/uri</directory>
         </testsuite>
