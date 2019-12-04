@@ -26,53 +26,27 @@
  *
  * @author marcus.gnass
  */
-class cActionLogCollectionTest extends cTestingTestCase
+class cApiActionCollectionTest extends cTestingTestCase
 {
     public function dataCreate()
     {
+        // * @param string|int $idarea
+        // * @param string|int $name
+        // * @param string|int $alt_name [optional]
+        // * @param string     $code     [optional]
+        // * @param string     $location [optional]
+        // * @param int        $relevant [optional]
+        // $idarea, $name, $alt_name = '', $code = '', $location = '', $relevant = 1
         return [
             'zeros_default'    => [
                 [0, 0, 0, 0, 0, ''],
                 [
-                    'user_id'      => 0,
-                    'idclient'     => 0,
-                    'idlang'       => 0,
-                    'idaction'     => 0,
-                    'idcatart'     => 0,
-                    'logtimestamp' => (new DateTime())->format('Y-m-d H:i:s'),
-                ],
-            ],
-            'zeros'            => [
-                [0, 0, 0, 0, 0, '1971-06-01 12:34:56'],
-                [
-                    'user_id'      => 0,
-                    'idclient'     => 0,
-                    'idlang'       => 0,
-                    'idaction'     => 0,
-                    'idcatart'     => 0,
-                    'logtimestamp' => '1971-06-01 12:34:56',
-                ],
-            ],
-            'nonzeros_default' => [
-                [1, 2, 3, 4, 5, ''],
-                [
-                    'user_id'      => 1,
-                    'idclient'     => 2,
-                    'idlang'       => 3,
-                    'idaction'     => 4,
-                    'idcatart'     => 5,
-                    'logtimestamp' => (new DateTime())->format('Y-m-d H:i:s'),
-                ],
-            ],
-            'nonzeros'         => [
-                [1, 2, 3, 4, 5, '1971-06-01 12:34:56'],
-                [
-                    'user_id'      => 1,
-                    'idclient'     => 2,
-                    'idlang'       => 3,
-                    'idaction'     => 4,
-                    'idcatart'     => 5,
-                    'logtimestamp' => '1971-06-01 12:34:56',
+                    'idarea'      => 0,
+                    'name'     => 0,
+                    'alt_name'       => 0,
+                    'code'     => 0,
+                    'location'     => 0,
+                    'relevant' => (new DateTime())->format('Y-m-d H:i:s'),
                 ],
             ],
         ];
@@ -91,10 +65,10 @@ class cActionLogCollectionTest extends cTestingTestCase
     public function testCreate(array $input = null, array $output = null)
     {
         list($userId, $idclient, $idlang, $idaction, $idcatart, $logtimestamp) = $input;
-        $coll = new cApiActionlogCollection();
+        $coll = new cApiActionCollection();
         $act = $coll->create($userId, $idclient, $idlang, $idaction, $idcatart, $logtimestamp);
         $this->assertNotNull($act);
-        $this->assertNotEquals(0, $act->getField('idlog'));
+        $this->assertNotEquals(0, $act->getField('idaction'));
         foreach ($output as $key => $value) {
             $this->assertEquals($value, $act->getField($key));
         }
