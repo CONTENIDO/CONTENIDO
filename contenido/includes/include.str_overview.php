@@ -531,7 +531,6 @@ $expandimg = '<a class="black" href="' . $expandlink . '" alt="' . i18n("Open al
 
 $tpl->set('s', 'COLLAPSE_ALL', $collapseimg);
 $tpl->set('s', 'EXPAND_ALL', $expandimg);
-$sMouseover = 'onmouseover="str.over(this)" onmouseout="str.out(this)" onclick="str.click(this)"';
 
 // Fill inline edit table row
 $tpl->set('s', 'SUM_COLUMNS_EDIT', 15 + count($listColumns));
@@ -717,8 +716,6 @@ foreach ($objects as $key => $value) {
         } else {
             $tpl->set('d', 'SHOW_MOUSEOVER', '');
         }
-
-        $tpl->set('d', 'MOUSEOVER', $sMouseover);
 
         if ($perm->have_perm_area_action($tmp_area, 'str_newcat') || $perm->have_perm_area_action_item($tmp_area, 'str_newcat', $value->getId())) {
             $bAreaAddNewCategory = true;
