@@ -18,7 +18,7 @@ $leftBottom = new ArticleForumLeftBottom();
 $menu = $leftBottom->receiveData($_GET);
 
 $tpl = new cTemplate();
-$tpl->set('s', 'menu', $menu->render());
+$tpl->set('s', 'menu', $menu->render(false));
 $tpl->generate('plugins/user_forum/templates/template.left_bottom.html');
 
 ?>
