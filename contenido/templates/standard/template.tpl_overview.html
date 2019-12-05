@@ -89,7 +89,7 @@
                         function() {
                             var iId = $(this).attr('rel');
                             if (iId) {
-                                sTemplateName = $(this).parents().filter(
+                                var sTemplateName = $(this).parents().filter(
                                         'td:first').prev().text();
                                 $.post("{AJAXURL}", {
                                     area : "{AREA}",
@@ -106,7 +106,7 @@
                             }
                         });
 
-                Con.RowMark.initialize('#tpl_list .row_mark', 'lay');
+                Con.RowMark.initialize('#tpl_list .row_mark', 'lay', '#marked');
 
             });
         })(Con, Con.$);
