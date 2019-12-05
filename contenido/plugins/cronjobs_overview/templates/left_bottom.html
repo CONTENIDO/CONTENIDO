@@ -29,7 +29,9 @@
 
 <script type="text/javascript">
 (function(Con, $) {
-    Con.RowMark.initialize('#left_bottom_list .row_mark', 'row', '#marked');
+    $(function() {
+        Con.RowMark.initialize('#left_bottom_list .row_mark', 'row', '#marked');
+    });
 })(Con, Con.$);
 </script>
 

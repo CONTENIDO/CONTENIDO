@@ -35,7 +35,9 @@
  *   </table>
  *   <script>
  *   (function(Con, $) {
- *       Con.RowMark.initialize('#myTable .row_mark', 'myRow');
+ *      $(function() {
+ *         Con.RowMark.initialize('#myTable .row_mark', 'myRow');
+ *      });
  *   })(Con, Con.$);
  *   </script>
  *

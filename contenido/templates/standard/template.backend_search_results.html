@@ -173,7 +173,9 @@ function initTheOne() {
 initTheOne();
 
 (function(Con, $) {
-    Con.RowMark.initialize('#backend_search_list .row_mark', 'artRow');
+    $(function() {
+        Con.RowMark.initialize('#backend_search_list .row_mark', 'artRow');
+    });
 })(Con, Con.$);
 
 </script>
