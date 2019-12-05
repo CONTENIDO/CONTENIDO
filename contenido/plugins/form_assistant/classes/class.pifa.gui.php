@@ -51,7 +51,7 @@ class PifaLeftBottomPage extends cGuiPage {
 
         // get the id of the content type
         $typeCollection = new cApiTypeCollection();
-        $typeCollection->select('type = "CMS_PIFAFORM"');
+        $typeCollection->select("`type` = 'CMS_PIFAFORM'");
         $type = $typeCollection->next();
         $this->typeId = $type->get('idtype');
 
