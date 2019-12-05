@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="styles/contenido.css">
     <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
 </head>
 <body class="mg10">
     <a href="javascript:location.reload()" accesskey="s"></a>
@@ -39,7 +39,7 @@
     </table>
     <div class="mgt10">
     </div>
-    <table width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
+    <table id="white_list" width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
         {WHITELIST}
     </table>
     <div class="mgt10">
@@ -51,5 +51,14 @@
             </td>
         </tr>
     </table>
+
+    <script type="text/javascript">
+        (function(Con, $) {
+            $(function() {
+                Con.RowMark.initialize('#white_list .row_mark', 'row');
+            });
+        })(Con, Con.$);
+    </script>
+
 </body>
 </html>

@@ -12,14 +12,23 @@
 <div class="navcontainer">
 </div>
 
-<table width="100%" cellspacing="0" cellpadding="2" border="0">
+<table id="log_list" width="100%" cellspacing="0" cellpadding="2" border="0">
 
     <!-- BEGIN:BLOCK -->
-    <tr class="text_medium" style="background-color: {BGCOLOR};" onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)">
+    <tr class="text_medium row_mark">
         <td style="padding-left:10px">{TEXT}</td><td align="right">{DELETE}</td>
     </tr>
     <!-- END:BLOCK -->
 
 </table>
+
+<script type="text/javascript">
+    (function(Con, $) {
+        $(function() {
+            Con.RowMark.initialize('#log_list .row_mark', 'row');
+        });
+    })(Con, Con.$);
+</script>
+
 </body>
 </html>

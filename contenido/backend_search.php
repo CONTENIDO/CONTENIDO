@@ -776,7 +776,7 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
                 $delete = "";
             }
 
-            $sRow = '<tr id="' . $sRowId . '" class="text_medium" onmouseover="artRow.over(this)" onmouseout="artRow.out(this)" onclick="artRow.click(this)">' . "\n";
+            $sRow = '<tr id="' . $sRowId . '" class="text_medium row_mark">' . "\n";
             $sRow .= $makeStartarticle . "\n";
             $sRow .= "<td nowrap=\"nowrap\" class=\"bordercell\">$editart</td>
                       <td nowrap=\"nowrap\" class=\"bordercell\">$lastmodified</td>

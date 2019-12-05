@@ -3,9 +3,8 @@
     <b>i18n("Search Terms: ")</b>
 </div>
 
-<table class="borderless" style="width: 100%;">
-    <tr onmouseover="row.over(this)" onmouseout="row.out(this)"
-        onclick="row.click(this)">
+<table id="stat_search_list" class="borderless" style="width: 100%;">
+    <tr class="row_mark">
         <td style="padding-left: 17px"><a target="right_bottom"
             href="main.php?area=stat_search&frame=4&action=show_all_terms">
             i18n("Show all Search Terms")
@@ -15,11 +14,19 @@
         <td>&nbsp;</td>
     </tr>
     <!-- BEGIN:BLOCK -->
-    <tr onmouseover="row.over(this)" onmouseout="row.out(this)"
-        onclick="row.click(this)">
+    <tr class="row_mark">
         <td style="padding-left: 17px"><a target="right_bottom"
             href="main.php?area=stat_search&frame=4&action=show_single_term&term={SEARCHTERM_URL}">{SEARCHTERM}</a>
         </td>
     </tr>
     <!-- END:BLOCK -->
 </table>
+
+<script type="text/javascript">
+    (function(Con, $) {
+        $(function() {
+            Con.RowMark.initialize('#stat_search_list .row_mark', 'row');
+        });
+    })(Con, Con.$);
+
+</script>

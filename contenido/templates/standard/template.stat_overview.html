@@ -5,7 +5,7 @@
 {_META_HEAD_CONTENIDO_}
 {_CSS_HEAD_CONTENIDO_}
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
 </head>
 <body style="margin:10px">
@@ -38,7 +38,7 @@
         <th align="right" nowrap>{TITLEINTHISLANGUAGE}</th>
     </tr>
     <!-- BEGIN:BLOCK -->
-    <tr id="{ROWNAME}" class="text_medium" style="display:{DISPLAY_ROW};" onmouseover="row.over(this)" onmouseout="row.out(this)" {ONCLICK}>
+    <tr id="{ROWNAME}" class="text_medium row_mark" style="display:{DISPLAY_ROW};">
         <td class="td_stats1" style="padding-left:{PADDING_LEFT}px;">{EXPAND} {ICON} <a style="text-decoration: none;" href="{ULR_TO_PAGE}" title="{PATH}" target="_blank">{TEXT}</a></td>
         <td class="td_stats2">{STATUS}&nbsp;</td>
         <td class="td_stats3">{NUMBEROFARTICLES}&nbsp;</td>
@@ -159,6 +159,12 @@ function changeVisibility(sIdClicked, iLevel, iIdCat) {
         }
     }
 }
+
+(function(Con, $) {
+    $(function() {
+        Con.RowMark.initialize('#stats .row_mark', 'row');
+    });
+})(Con, Con.$);
 
 </script>
 

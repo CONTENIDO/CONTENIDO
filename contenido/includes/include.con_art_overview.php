@@ -850,9 +850,9 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $tpl->set('d', 'CELLS', implode("\n", $cells));
 
                 if ($colitem[$key2] == 'con_sync') {
-                    $tpl->set('d', 'CSS_CLASS', 'class="con_sync"');
+                    $tpl->set('d', 'CSS_CLASS', 'class="con_sync row_mark"');
                 } else {
-                    $tpl->set('d', 'CSS_CLASS', '');
+                    $tpl->set('d', 'CSS_CLASS', 'class="row_mark"');
                 }
 
                 $tpl->set('d', 'ROWID', $key2);

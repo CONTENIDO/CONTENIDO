@@ -130,7 +130,7 @@ while ($cApiUser = $cApiUserCollection->next()) {
 
 $oPage->set("s", "MPAGE", $mPage);
 
-// <script type="text/javascript" src="scripts/rowMark.js"></script>
+// <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
 $oPage->addScript('parameterCollector.js');
 $oPage->set("s", "FORM", $mlist->render(false));
 

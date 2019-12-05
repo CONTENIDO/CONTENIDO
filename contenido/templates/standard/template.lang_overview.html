@@ -10,18 +10,18 @@
     </style>
 {_JS_HEAD_CONTENIDO_}
 
-    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
 </head>
 <body>
 
 {RELOAD_SCRIPT}
 
-<table class="borderless" width="100%" cellspacing="0" cellpadding="2" border="0">
+<table id="lang_overview_list" class="borderless" width="100%" cellspacing="0" cellpadding="2" border="0">
 
     {NOTIFICATION}
 
     <!-- BEGIN:BLOCK -->
-    <tr class="text_medium" {MARKED}>
+    <tr class="text_medium row_mark" {MARKED}>
         <td width="100%" class="first">{LANGUAGE}</td>
         <td>{ACTIVATEBUTTON}</td>
         <td>{DELETEBUTTON}</td>
@@ -59,21 +59,7 @@ function deleteLang(idlang) {
             refreshLangCount();
         }
 
-        // Register some events for rows
-        // ## @todo move this to rowMark.js
-        $("table tr").mouseover(function () {
-            row.over(this);
-        }).mouseout(function () {
-                    row.out(this);
-                }).click(function () {
-                    row.click(this);
-                });
-
-        // Mark element having the marked id value
-        if ($("#marked")) {
-            row.click($("#marked")[0]);
-        }
-        // ## @todo move this to rowMark.js
+        Con.RowMark.initialize('#lang_overview_list .row_mark', 'row', '#marked');
     });
 })(Con, Con.$);
 

@@ -214,9 +214,6 @@ class cGuiMenu {
                 }
 
                 $extra = "";
-                if ($this->rowmark == true) {
-                    $extra .= 'onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)" ';
-                }
                 if ($this->_marked === $key) {
                     $extra .= "id='marked' ";
                 }
@@ -243,6 +240,10 @@ class cGuiMenu {
         }
         $rendered = $tpl->generate(cRegistry::getBackendPath() . $cfg['path']['templates'] . $cfg['templates']['generic_menu'], true);
 
+        if ($this->rowmark == true && is_array($this->link) && count($this->link) > 0) {
+            $rendered .= $this->_getRowMouseEventHandlerJs();
+        }
+
         if ($print == true) {
             echo $rendered;
         } else {
@@ -250,4 +251,21 @@ class cGuiMenu {
         }
     }
 
+    /**
+     * Returns JavaScript code to initialize mouse event handler for the table rows.
+     *
+     * @return string
+     */
+    protected function _getRowMouseEventHandlerJs() {
+        $js = <<<JS
+    <script type="text/javascript">
+        (function(Con, $) {
+            $(function() {
+                Con.RowMark.initialize('table tbody > tr', 'row');
+            });
+        })(Con, Con.$);
+    </script>
+JS;
+        return $js;
+    }
 }

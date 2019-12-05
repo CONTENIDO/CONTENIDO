@@ -11,10 +11,10 @@
 	}
 </script>
 
-<table class="borderless" width="100%" cellspacing="0" cellpadding="0" border="0">
-    
+<table id="file_list" class="borderless" width="100%" cellspacing="0" cellpadding="0" border="0">
+
     <!-- BEGIN:BLOCK -->
-    <tr class="tooltip-north" original-title="{DESCRIPTION}" id="{MARKED}" onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)">
+    <tr class="tooltip-north row_mark" original-title="{DESCRIPTION}" id="{MARKED}">
         <td><img alt="" width="10" src="images/spacer.gif"></td>
         <td>
             <table width="100%" cellspacing="0" cellpadding="3" border="0">
@@ -27,15 +27,13 @@
         <td><img alt="" width="5" src="images/spacer.gif"></td>
     </tr>
     <!-- END:BLOCK -->
-    
+
 </table>
 
 <script type="text/javascript">
 (function(Con, $) {
     $(function() {
-        if ($("#marked")) {
-            row.click($("#marked")[0]);
-        }
+        Con.RowMark.initialize('#file_list .row_mark', 'row', '#marked');
     });
 })(Con, Con.$);
 </script>

@@ -5,17 +5,15 @@
 {_CSS_HEAD_CONTENIDO_}
 <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/tipsy.css">
 {_JS_HEAD_CONTENIDO_}
-<script type="text/javascript" src="scripts/rowMark.js"></script>
+<script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
 <script type="text/javascript" src="scripts/jquery/plugins/tipsy.js"></script>
 <script type="text/javascript" src="scripts/registerTipsy.js"></script>
 </head>
 <body>
 
-    <table width="100%" cellspacing="0" cellpadding="2" border="0">
+    <table id="tpl_list" width="100%" cellspacing="0" cellpadding="2" border="0">
         <!-- BEGIN:BLOCK -->
-        <tr class="tooltip-north" original-title="{DESCRIPTION}" id="{ID}"
-            onmouseover="lay.over(this)" onmouseout="lay.out(this)"
-            onclick="lay.click(this)">
+        <tr class="tooltip-north row_mark" original-title="{DESCRIPTION}" id="{ID}">
             <td><img alt="" width="5" height="1" alt="" src="images/spacer.gif"></td>
             <td class="textw_small">{NAME}</td>
             <td align="right" class="nowrap">{INUSE}{COPY}{DELETE}</td>
@@ -107,6 +105,9 @@
                                 });
                             }
                         });
+
+                Con.RowMark.initialize('#tpl_list .row_mark', 'lay');
+
             });
         })(Con, Con.$);
     </script>
