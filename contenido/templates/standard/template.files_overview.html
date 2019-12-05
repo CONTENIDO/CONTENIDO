@@ -1,12 +1,13 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+    <!-- TODO Check if this template is still in use somewhere! -->
     <title>template.files_overview.html</title>
 {_META_HEAD_CONTENIDO_}
 {_CSS_HEAD_CONTENIDO_}
     <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/tipsy.css">
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
     <script type="text/javascript" src="scripts/jquery/plugins/tipsy.js"></script>
     <script type="text/javascript" src="scripts/registerTipsy.js"></script>
     <script type="text/javascript">
@@ -23,9 +24,9 @@
 </head>
 <body>
 
-<table class="borderless" width="100%" cellspacing="0" cellpadding="0" border="0">
+<table id="files_list" class="borderless" width="100%" cellspacing="0" cellpadding="0" border="0">
     <!-- BEGIN:BLOCK -->
-    <tr class="tooltip-north" original-title="{DESCRIPTION}" {ID} onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)">
+    <tr class="tooltip-north row_mark" original-title="{DESCRIPTION}" {ID}>
         <td><img alt="" width="10" src="images/spacer.gif"></td>
         <td>
             <table width="100%" cellspacing="0" cellpadding="3" border="0">
@@ -43,9 +44,7 @@
 <script type="text/javascript">
 (function(Con, $) {
     $(function() {
-        if ($("#marked")) {
-            row.click($("#marked")[0]);
-        }
+        Con.RowMark.initialize('#file_list tbody > tr.row_mark', 'row', '#marked');
     });
 })(Con, Con.$);
 </script>

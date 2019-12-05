@@ -1,6 +1,6 @@
 <form method="post" action="main.php" name="contentallocation">
     {HIDDENFIELDS}
-    <table border="0" cellpadding="2" cellspacing="0" width="500" class="borderB3 nobordert noborderr">
+    <table id="tree_article" border="0" cellpadding="2" cellspacing="0" width="500" class="borderB3 nobordert noborderr">
         <tr class="text_medium fett bgcE2">
             <td width="450" class="textg_medium borderB3 noborderl noborderb">
                 {CATEGORY}
@@ -10,7 +10,7 @@
             </td>
         </tr>
         <!-- BEGIN:BLOCK -->
-        <tr style="background-color: {BACKGROUND_COLOR};" onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)">
+        <tr class="row_mark" style="background-color: {BACKGROUND_COLOR};">
             <td class="borderB3 noborderl noborderb" style="padding-left: {ITEMINDENT} ;">
                 {ITEMNAME}
             </td>
@@ -22,3 +22,9 @@
     </table>
     {DIV}
 </form>
+
+<script type="text/javascript">
+    (function(Con, $) {
+        Con.RowMark.initialize('#tree_article tbody > tr.row_mark', 'row');
+    })(Con, Con.$);
+</script>

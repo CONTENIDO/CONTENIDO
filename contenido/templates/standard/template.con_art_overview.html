@@ -6,7 +6,7 @@
 {_CSS_HEAD_CONTENIDO_}
 {_JS_HEAD_CONTENIDO_}
     <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/tipsy.css">
-    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
     <script type="text/javascript" src="scripts/articleObject.js.php?contenido={_SID_}"></script>
     <script type="text/javascript" src="scripts/jquery/plugins/tipsy.js"></script>
     <script type="text/javascript" src="scripts/registerTipsy.js"></script>
@@ -89,7 +89,7 @@
             {HEADERS}
         </tr>
         <!-- BEGIN:BLOCK -->
-        <tr id="{ROWID}" {CSS_CLASS} onmouseover="artRow.over(this)" onmouseout="artRow.out(this)" onclick="artRow.click(this)">
+        <tr id="{ROWID}" {CSS_CLASS}>
             {CELLS}
         </tr>
         <!-- END:BLOCK -->
@@ -487,6 +487,8 @@ function doInlineEditArt() {
             });
 
         }
+
+        Con.RowMark.initialize('.generic_art_overwiew tbody > tr.row_mark', 'artRow');
 
     });
 

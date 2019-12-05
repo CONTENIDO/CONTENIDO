@@ -5,7 +5,7 @@
 {_META_HEAD_CONTENIDO_}
 {_CSS_HEAD_CONTENIDO_}
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
     <script type="text/javascript" src="scripts/parameterCollector.js"></script>
 </head>
 <body>
@@ -79,15 +79,7 @@ function deleteDirectory(path) {
             $('.root').click();
         }
 
-        // @todo move this to rowMark.js
-        $('#upl_dirs_list tbody > tr').mouseover(function () {
-            str.over(this);
-        }).mouseout(function () {
-            str.out(this);
-        }).click(function () {
-            str.click(this);
-        });
-        // @todo move this to rowMark.js
+        Con.RowMark.initialize('#upl_dirs_list tbody > tr', 'upl');
 
     });
 })(Con, Con.$);

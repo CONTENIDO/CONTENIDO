@@ -5,7 +5,7 @@
 {_META_HEAD_CONTENIDO_}
 {_CSS_HEAD_CONTENIDO_}
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
 </head>
 <body style="margin:10px">
@@ -19,13 +19,13 @@
     </tr>
 </table>
 
-<table class="generic" width="100%" cellspacing="0" cellpadding="2">
+<table id="stat_top_list" class="generic" width="100%" cellspacing="0" cellpadding="2">
     <tr>
         <th style="padding-left:{TITLEPADDING_LEFT}px">{TITLETEXT}</th>
         <th align="right">{TITLETOTAL}</th>
     </tr>
     <!-- BEGIN:BLOCK -->
-    <tr onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)">
+    <tr class="row_mark">
         <td style="padding-left:{PADDING_LEFT}px">
         <a style="text-decoration: none;" href="{ULR_TO_PAGE}" title="{PATH}" target="_blank">{TEXT}</a></td>
         <td align="right">{TOTAL}</td>
@@ -47,6 +47,13 @@ function top10ActionYearly(selObj) {
     var sortkey = selObj.options[i].value;
     window.location.href = url + '&action=stat_show&displaytype=' + sortkey + '&showYear=1&year=' + document.hiddenValues.yearmonth.value;
 }
+
+(function(Con, $) {
+    $(function() {
+        Con.RowMark.initialize('#stat_top_list tbody > tr.row_mark', 'row');
+    });
+})(Con, Con.$);
+
 </script>
 
 </body>

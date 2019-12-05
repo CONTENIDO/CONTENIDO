@@ -19,12 +19,25 @@
  *   1:    Farbe des Over Effekts z.B. "#ff0000" - string
  *   2:    Farbe des Mark Effeks - string
  *   3:    Farbe des Over Effeks bei der Marked Row - string
- *   4: Funktion die bei onClick aufgerufen wird - string
+ *   4:    Funktion die bei onClick aufgerufen wird - string
  *
  *   <tr class="grau" onMouseOver="myRow.over(this)" onMouseOut="myRow.out(this)" onClick="myRow.click(this)">
  *       <td>eine Zeile</td>
  *       <td><img src="einbild.gif"></td>
  *   </tr>
+ *
+ * Alternative Lösung ohne inline JavaScript event handler.
+ *   <table id="myTable">
+ *   <tr class="grau row_mark">
+ *       <td>eine Zeile</td>
+ *       <td><img src="einbild.gif"></td>
+ *   </tr>
+ *   </table>
+ *   <script>
+ *   (function(Con, $) {
+ *       Con.RowMark.initialize('#myTable tbody > tr.row_mark', 'myRow');
+ *   })(Con, Con.$);
+ *   </script>
  *
  * @param String overColor     Over-Color
  * @param String markedColor   Marked-Color
@@ -418,3 +431,49 @@ artRow = new rowMark('#f9fbdd', '#ecf1b2', '#ecf1b2', 'rowMarkArtRowClick(oRow)'
 
 // rowMark instance for area 'lay'
 lay = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'rowMarkLayClick(oRow)', 'lay');
+
+
+(function(Con, $) {
+
+    var NAME = 'rowmark';
+
+    /**
+     * RowMark class
+     * @class  RowMark
+     * @static
+     */
+    var RowMark = {
+
+        /**
+         * Registers desired row mark type (row, sub, con, str, etc) instance to to mouse event handler
+         * of a list of elements.
+         * Marks found element, if parameter markedSelector is passed.
+         *
+         * @param {String|jQuery} selector - Selector to retrieve the elements or the jQuery instance
+         * @param {String} rowMarkType - The rom mark type
+         * @param {String} [markedSelector] - The selector of the element to mark (highlight)
+         */
+        initialize: function(selectorOrJquery, rowMarkType, markedSelector) {
+            var rowMarkInstance = window[rowMarkType],
+                $elements = typeof selectorOrJquery === 'string' ? $(selectorOrJquery) : selectorOrJquery;
+
+            // Register event handler
+            $elements.mouseover(function () {
+                rowMarkInstance.over(this);
+            }).mouseout(function () {
+                rowMarkInstance.out(this);
+            }).click(function () {
+                rowMarkInstance.click(this);
+            });
+
+            // Mark element matching the marked selector
+            if (markedSelector && $(markedSelector)) {
+                rowMarkInstance.click($(markedSelector).get(0));
+            }
+        }
+
+    };
+
+    Con.RowMark = RowMark;
+
+})(Con, Con.$);

@@ -5,21 +5,21 @@
 {_META_HEAD_CONTENIDO_}
 {_CSS_HEAD_CONTENIDO_}
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
 </head>
 <body>
 
-<table width="100%" cellspacing="0" cellpadding="2" border="0">
+<table id="group_rights_list" width="100%" cellspacing="0" cellpadding="2" border="0">
     <!-- BEGIN:BLOCK -->
-    <tr class="text_medium" id="{ID_MARKED}" style="background-color: {BGCOLOR};" onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)">
+    <tr class="text_medium" id="{ID_MARKED}" style="background-color: {BGCOLOR};">
         <td>{ICON}</td>
         <td width="100%">{TEXT}</td>
         <td align="right">{DELETE}</td>
     </tr>
     <!-- END:BLOCK -->
-
 </table>
+
 <script type="text/javascript">
 // Function for deleting modules
 function deleteGroup(idgroup) {
@@ -31,10 +31,11 @@ function deleteGroup(idgroup) {
 }
 
 (function(Con, $) {
-    if ($('#marked')) {
-        row.markedRow = $('#marked')[0];
-    }
+    $(function() {
+        Con.RowMark.initialize('#group_rights_list tbody > tr', 'row', '#marked');
+    });
 })(Con, Con.$);
 </script>
+
 </body>
 </html>

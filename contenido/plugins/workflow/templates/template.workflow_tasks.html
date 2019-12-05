@@ -5,7 +5,7 @@
 {_META_HEAD_CONTENIDO_}
 {_CSS_HEAD_CONTENIDO_}
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
     <script type="text/javascript" src="scripts/articleObject.js.php?contenido={_SID_}"></script>
 </head>
 <body class="mg10">
@@ -15,7 +15,7 @@
         <div class="clearb"></div>
     </div>
 
-    <table width="100%" border="0" cellspacing="0" cellpadding="2" class="generic" style="display:{DISPLAY}">
+    <table id="workflow_tasks_list" width="100%" border="0" cellspacing="0" cellpadding="2" class="generic" style="display:{DISPLAY}">
     <tr>
         <th width="1%" nowrap="nowrap">{TH_START}</th>
         <th width="100%" nowrap="nowrap">{TH_TITLE}</th>
@@ -28,7 +28,7 @@
     </tr>
 
     <!-- BEGIN:BLOCK -->
-    <tr id="{ROWID}" class="text_medium" onmouseover="artRow.over(this)" onmouseout="artRow.out(this)" onclick="artRow.click(this)">
+    <tr id="{ROWID}" class="text_medium row_mark">
         <td nowrap="nowrap">{START}</td>
         <td nowrap="nowrap">{TITLE}</td>
         <td nowrap="nowrap">{WORKFLOW_STEP}</td>
@@ -128,6 +128,12 @@ function initTheOne() {
 }
 
 initTheOne();
+
+(function(Con, $) {
+    $(function() {
+        Con.RowMark.initialize('#workflow_tasks_list tbody > tr.row_mark', 'artRow');
+    });
+})(Con, Con.$);
 
 </script>
 </body>

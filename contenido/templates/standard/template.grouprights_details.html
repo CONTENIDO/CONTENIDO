@@ -1,11 +1,12 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+    <!-- TODO Check if this template is still in use somewhere! -->
     <title>template.grouprights_details.html</title>
 {_META_HEAD_CONTENIDO_}
 {_CSS_HEAD_CONTENIDO_}
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
     <script type="text/javascript">
     Con.getFrame('left_bottom').location.reload();
@@ -19,18 +20,27 @@
 </table>
 
 {FORM}
-<table id="stats" style="}; border: 0 solid BORDERCOLOR;border-bottom-width: 1px;border-left-width: 1px;" cellspacing="0" cellpadding="2" border="0">
+<table id="group_rights_details" style="}; border: 0 solid BORDERCOLOR;border-bottom-width: 1px;border-left-width: 1px;" cellspacing="0" cellpadding="2" border="0">
     <!-- BEGIN:BLOCK -->
-    <tr class="{ROWNAME} text_medium" style="background-color: {BGCOLOR};" onmouseover="row.over(this)" onmouseout="row.out(this)">
+    <tr class="{ROWNAME} text_medium" style="background-color: {BGCOLOR};">
         <td valign="top" style="}; border: 1px solid BORDERCOLOR;border-bottom-width: 0;border-left-width: 0;padding-left:{PADDING_LEFT}px">{CATNAME}</td>
         <td valign="top" style="}; border: 1px solid BORDERCOLOR;border-bottom-width: 0;border-left-width: 0;" align="right">{CATFIELD}</td>
     </tr>
     <!-- END:BLOCK -->
-    <tr class="{ROWNAME} text_medium" style="background-color: {BGCOLOR};" onmouseover="row.over(this)" onmouseout="row.out(this)">
+    <tr class="{ROWNAME} text_medium" style="background-color: {BGCOLOR};">
         <td valign="top" style="}; border: 1px solid BORDERCOLOR;border-bottom-width: 0;border-left-width: 0;padding-left:{PADDING_LEFT}px">&nbsp;</td>
         <td valign="top" style="}; border: 1px solid BORDERCOLOR;border-bottom-width: 0;border-left-width: 0;" align="right"><input type="image" src="images/but_ok.gif" alt="{SUBMITTEXT}" title="{SUBMITTEXT}" border="0"></td>
     </tr>
 </table>
 </form>
+
+<script type="text/javascript">
+    (function(Con, $) {
+        $(function() {
+            Con.RowMark.initialize('#group_rights_list tbody > tr', 'row', '#marked');
+        });
+    })(Con, Con.$);
+</script>
+
 </body>
 </html>

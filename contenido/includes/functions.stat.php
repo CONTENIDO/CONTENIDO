@@ -186,7 +186,6 @@ function statsOverviewAll($yearmonth) {
             $tpl->set('d', 'TOTAL', '');
             $tpl->set('d', 'ICON', '');
             $tpl->set('d', 'STATUS', '');
-            $tpl->set('d', 'ONCLICK', '');
             $tpl->set('d', 'ROWNAME', '');
             $tpl->set('d', 'INTHISLANGUAGE', '');
             $tpl->set('d', 'EXPAND', '');
@@ -278,7 +277,6 @@ function statsOverviewAll($yearmonth) {
         $db2->query($sql);
 
         $numrows = $db2->numRows();
-        $onclick = "";
 
         $online = $db->f("visible");
         if ($bCatVisible == 1) {
@@ -301,7 +299,6 @@ function statsOverviewAll($yearmonth) {
 
         $tpl->set('d', 'PADDING_LEFT', $padding_left);
         $tpl->set('d', 'TEXT', conHtmlSpecialChars($text) . ' (idcat: ' . cSecurity::toInteger($db->f('idcat')) . ')');
-        $tpl->set('d', 'ONCLICK', $onclick);
         $tpl->set('d', 'ICON', $icon);
         $tpl->set('d', 'STATUS', $offonline);
         $tpl->set('d', 'NUMBEROFARTICLES', $numberOfArticles);
@@ -333,7 +330,6 @@ function statsOverviewAll($yearmonth) {
         $tpl->next();
         $currentRow++;
 
-        $onclick = "";
         $text = "";
         $numberOfArticles = "";
         $total = "";
@@ -411,7 +407,6 @@ function statsOverviewAll($yearmonth) {
             $icon = '<img alt="" src="' . $cfg['path']['images'] . 'article.gif"  class="vAlignMiddle">';
             $tpl->set('d', 'PADDING_LEFT', $padding_left);
             $tpl->set('d', 'TEXT', conHtmlSpecialChars($text) . ' (idart: ' . cSecurity::toInteger($db3->f('idart')) . ')');
-            $tpl->set('d', 'ONCLICK', "");
             $tpl->set('d', 'ICON', $icon);
             $tpl->set('d', 'STATUS', $offonline);
             $tpl->set('d', 'ROWNAME', implode('_', $aRowname));
@@ -481,7 +476,6 @@ function statsOverviewAll($yearmonth) {
     $tpl->set('d', 'INTHISLANGUAGE', '');
     $tpl->set('d', 'EXPAND', '');
     $tpl->set('d', 'ROWNAME', '');
-    $tpl->set('d', 'ONCLICK', '');
     $tpl->set('d', 'DISPLAY_ROW', $sDisplay);
 
     $tpl->set('s', 'SUMTEXT', i18n("Sum"));
@@ -541,7 +535,6 @@ function statsOverviewYear($year) {
             $tpl->set('d', 'NUMBEROFARTICLES', '');
             $tpl->set('d', 'TOTAL', '');
             $tpl->set('d', 'STATUS', '');
-            $tpl->set('d', 'ONCLICK', '');
             $tpl->set('d', 'ICON', '');
             $tpl->set('d', 'INTHISLANGUAGE', '');
             $tpl->set('d', 'EXPAND', '');
@@ -612,7 +605,6 @@ function statsOverviewYear($year) {
         $db2->query($sql);
 
         $numrows = $db2->numRows();
-        $onclick = "";
 
         if ($bCatVisible == 0) {
             $offonline = '<img src="' . $cfg['path']['images'] . 'offline_off.gif" alt="' . i18n("Category is offline") . '" title="' . i18n("Category is offline") . '">';
@@ -634,7 +626,6 @@ function statsOverviewYear($year) {
 
         $tpl->set('d', 'PADDING_LEFT', $padding_left);
         $tpl->set('d', 'TEXT', conHtmlSpecialChars($text) . ' (idcat: ' . cSecurity::toInteger($db->f('idcat')) . ')');
-        $tpl->set('d', 'ONCLICK', $onclick);
         $tpl->set('d', 'ICON', $icon);
         $tpl->set('d', 'STATUS', $offonline);
         $tpl->set('d', 'NUMBEROFARTICLES', $numberOfArticles);
@@ -668,7 +659,6 @@ function statsOverviewYear($year) {
         $tpl->next();
         $currentRow++;
 
-        $onclick = "";
         $text = "";
         $numberOfArticles = "";
         $total = "";
@@ -725,7 +715,6 @@ function statsOverviewYear($year) {
             $icon = '<img alt="" src="' . $cfg['path']['images'] . 'article.gif" class="vAlignMiddle">';
             $tpl->set('d', 'PADDING_LEFT', $padding_left);
             $tpl->set('d', 'TEXT', conHtmlSpecialChars($text) . ' (idart: ' . cSecurity::toInteger($idart) . ')');
-            $tpl->set('d', 'ONCLICK', "");
             $tpl->set('d', 'ICON', $icon);
             $tpl->set('d', 'STATUS', $offonline);
             $tpl->set('d', 'ROWNAME', implode('_', $aRowname));
@@ -773,7 +762,6 @@ function statsOverviewYear($year) {
     $tpl->set('d', 'PADDING_LEFT', '10');
     $tpl->set('d', 'NUMBEROFARTICLES', '');
     $tpl->set('d', 'TOTAL', '');
-    $tpl->set('d', 'ONCLICK', '');
     $tpl->set('d', 'EXPAND', '');
     $tpl->set('d', 'ROWNAME', '');
     $tpl->set('d', 'INTHISLANGUAGE', '');

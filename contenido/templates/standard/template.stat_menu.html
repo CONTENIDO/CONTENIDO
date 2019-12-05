@@ -5,31 +5,40 @@
 {_META_HEAD_CONTENIDO_}
 {_CSS_HEAD_CONTENIDO_}
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
 </head>
 <body>
 
-<table class="borderless" width="100%" cellspacing="0" cellpadding="2" border="0">
+<table id="stat_menu_list" class="borderless" width="100%" cellspacing="0" cellpadding="2" border="0">
     <tr>
         <th style="padding-left:{PADDING_LEFT}px">{OVERVIEWTEXT}</th>
     </tr>
-    <tr onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)">
+    <tr data-type="row">
         <td style="padding-left:{PADDING_LEFT}px">{CURRENTTEXT}</td>
     </tr>
     <tr>
         <td style="padding-left:{PADDING_LEFT}px">&nbsp;</td>
     </tr>
-    <tr class="text_medium" style="background-color: {ARCHIVEBGCOLOR};">
+    <tr class="text_medium">
         <td style="padding-left:{PADDING_LEFT}px">{ARCHIVETEXT}</td>
     </tr>
 
     <!-- BEGIN:BLOCK -->
-    <tr class="text_medium" onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)">
+    <tr class="text_medium" data-type="row">
         <td style="padding-left:{PADDING_LEFT}px">{TEXT}</td>
     </tr>
     <!-- END:BLOCK -->
 
 </table>
+
+<script type="text/javascript">
+    (function(Con, $) {
+        $(function() {
+            Con.RowMark.initialize('#stat_menu_list tbody > tr[data-type="row"]', 'row');
+        });
+    })(Con, Con.$);
+</script>
+
 </body>
 </html>

@@ -14,7 +14,7 @@
 {_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/jquery/plugins/tipsy.js"></script>
     <script type="text/javascript" src="scripts/registerTipsy.js"></script>
-    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
     <script type="text/javascript" src="scripts/str_overview.js"></script>
     <script type="text/javascript">
     var area = "{AREA}";
@@ -630,16 +630,11 @@ function confDel(idcat, idparent, sName) {
             stop: _onSortableStop
         });
 
-        // Register some events for rows
-        // @todo move this to rowMark.js
-        $categoryList.find('> tr').mouseover(function () {
-            str.over(this);
-        }).mouseout(function () {
-            str.out(this);
-        }).click(function () {
-            str.click(this);
+        // Filter rows, we need those with id, others without ids are spacer!
+        var $filteredRows = $('#category_list tbody > tr').filter(function (pos, item) {
+            return (typeof $(item).data('idcat') === 'number');
         });
-        // @todo move this to rowMark.js
+        Con.RowMark.initialize($filteredRows, 'str');
 
     });
 })(Con, Con.$);
