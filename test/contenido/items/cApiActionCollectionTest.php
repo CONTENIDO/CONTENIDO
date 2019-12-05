@@ -28,25 +28,71 @@
  */
 class cApiActionCollectionTest extends cTestingTestCase
 {
+    /** @var cApiAction */
+    private $_item;
+
+    /**
+     * @throws cDbException
+     * @throws cInvalidArgumentException
+     */
+    public function tearDown(): void
+    {
+        // delete aggregated item after every test
+        if ($this->_item && $this->_item->isLoaded()) {
+            $pkey = $this->_item->getPrimaryKeyName();
+            $coll = new cApiActionCollection();
+            $coll->delete($this->_item->getField($pkey));
+        }
+    }
+
+    /**
+     * Parameters:
+     * string|int $idarea
+     * string|int $name
+     * string|int $alt_name [optional]
+     * string     $code     [optional]
+     * string     $location [optional]
+     * int        $relevant [optional]
+     *
+     * Signature:
+     * create($idarea, $name, $alt_name = '', $code = '', $location = '', $relevant = 1)
+     *
+     * @return array
+     */
     public function dataCreate()
     {
-        // * @param string|int $idarea
-        // * @param string|int $name
-        // * @param string|int $alt_name [optional]
-        // * @param string     $code     [optional]
-        // * @param string     $location [optional]
-        // * @param int        $relevant [optional]
-        // $idarea, $name, $alt_name = '', $code = '', $location = '', $relevant = 1
         return [
-            'zeros_default'    => [
-                [0, 0, 0, 0, 0, ''],
+            'default' => [
+                [0, '', '', '', '', 1],
                 [
-                    'idarea'      => 0,
-                    'name'     => 0,
-                    'alt_name'       => 0,
-                    'code'     => 0,
-                    'location'     => 0,
-                    'relevant' => (new DateTime())->format('Y-m-d H:i:s'),
+                    'idarea'   => 0,
+                    'name'     => '',
+                    'alt_name' => '',
+                    'code'     => '',
+                    'location' => '',
+                    'relevant' => 1,
+                ],
+            ],
+            'empty'   => [
+                [0, '', '', '', '', 0],
+                [
+                    'idarea'   => 0,
+                    'name'     => '',
+                    'alt_name' => '',
+                    'code'     => '',
+                    'location' => '',
+                    'relevant' => 0,
+                ],
+            ],
+            'valid'   => [
+                [0, 'name', 'alternative name', 'this is my code', 'my location', 1],
+                [
+                    'idarea'   => 0,
+                    'name'     => 'name',
+                    'alt_name' => 'alternative name',
+                    'code'     => 'this is my code',
+                    'location' => 'my location',
+                    'relevant' => 1,
                 ],
             ],
         ];
@@ -64,13 +110,17 @@ class cApiActionCollectionTest extends cTestingTestCase
      */
     public function testCreate(array $input = null, array $output = null)
     {
-        list($userId, $idclient, $idlang, $idaction, $idcatart, $logtimestamp) = $input;
+        // create item from input
         $coll = new cApiActionCollection();
-        $act = $coll->create($userId, $idclient, $idlang, $idaction, $idcatart, $logtimestamp);
-        $this->assertNotNull($act);
-        $this->assertNotEquals(0, $act->getField('idaction'));
+        list($idarea, $name, $alt_name, $code, $location, $relevant) = $input;
+        $this->_item = $coll->create($idarea, $name, $alt_name, $code, $location, $relevant);
+
+        // assertions
+        $this->assertNotNull($this->_item);
+        $this->assertEquals(true, $this->_item->isLoaded());
+        $this->assertNotEquals(0, $this->_item->getField($this->_item->getPrimaryKeyName()));
         foreach ($output as $key => $value) {
-            $this->assertEquals($value, $act->getField($key));
+            $this->assertEquals($value, $this->_item->getField($key));
         }
     }
 }
