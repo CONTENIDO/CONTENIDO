@@ -101,7 +101,7 @@ $oTextboxArtID = new cHTMLTextbox("bs_search_id", $bsSearchId, 10);
 $oTextboxArtID->setStyle('width:135px;');
 
 // Date type
-$oSelectArtDateType = new cHTMLSelectElement("bs_search_date_type", "bs_search_date_type");
+$oSelectArtDateType = new cHTMLSelectElement("bs_search_date_type");
 $oSelectArtDateType->autoFill(
     [
         'n/a'          => i18n('Ignore'),
