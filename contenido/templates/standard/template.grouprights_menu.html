@@ -12,7 +12,7 @@
 
 <table id="group_rights_list" width="100%" cellspacing="0" cellpadding="2" border="0">
     <!-- BEGIN:BLOCK -->
-    <tr class="text_medium" id="{ID_MARKED}" style="background-color: {BGCOLOR};">
+    <tr class="text_medium row_mark" id="{ID_MARKED}" style="background-color: {BGCOLOR};">
         <td>{ICON}</td>
         <td width="100%">{TEXT}</td>
         <td align="right">{DELETE}</td>
@@ -32,7 +32,7 @@ function deleteGroup(idgroup) {
 
 (function(Con, $) {
     $(function() {
-        Con.RowMark.initialize('#group_rights_list tbody > tr', 'row', '#marked');
+        Con.RowMark.initialize('#group_rights_list .row_mark', 'row', '#marked');
     });
 })(Con, Con.$);
 </script>

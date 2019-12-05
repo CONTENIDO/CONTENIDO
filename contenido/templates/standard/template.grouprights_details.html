@@ -22,7 +22,7 @@
 {FORM}
 <table id="group_rights_details" style="}; border: 0 solid BORDERCOLOR;border-bottom-width: 1px;border-left-width: 1px;" cellspacing="0" cellpadding="2" border="0">
     <!-- BEGIN:BLOCK -->
-    <tr class="{ROWNAME} text_medium" style="background-color: {BGCOLOR};">
+    <tr class="{ROWNAME} text_medium row_mark" style="background-color: {BGCOLOR};">
         <td valign="top" style="}; border: 1px solid BORDERCOLOR;border-bottom-width: 0;border-left-width: 0;padding-left:{PADDING_LEFT}px">{CATNAME}</td>
         <td valign="top" style="}; border: 1px solid BORDERCOLOR;border-bottom-width: 0;border-left-width: 0;" align="right">{CATFIELD}</td>
     </tr>
@@ -37,7 +37,7 @@
 <script type="text/javascript">
     (function(Con, $) {
         $(function() {
-            Con.RowMark.initialize('#group_rights_list tbody > tr', 'row', '#marked');
+            Con.RowMark.initialize('#group_rights_list .row_mark', 'row', '#marked');
         });
     })(Con, Con.$);
 </script>

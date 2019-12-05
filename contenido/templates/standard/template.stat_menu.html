@@ -25,7 +25,7 @@
     </tr>
 
     <!-- BEGIN:BLOCK -->
-    <tr class="text_medium" data-type="row">
+    <tr class="text_medium .row_mark" data-type="row">
         <td style="padding-left:{PADDING_LEFT}px">{TEXT}</td>
     </tr>
     <!-- END:BLOCK -->
@@ -35,7 +35,7 @@
 <script type="text/javascript">
     (function(Con, $) {
         $(function() {
-            Con.RowMark.initialize('#stat_menu_list tbody > tr[data-type="row"]', 'row');
+            Con.RowMark.initialize('#stat_menu_list .row_mark', 'row');
         });
     })(Con, Con.$);
 </script>

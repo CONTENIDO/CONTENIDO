@@ -15,7 +15,7 @@
 
 <table id="upl_dirs_list" width="87%" style="margin:10px 10px 10px 17px;" cellspacing="0" cellpadding="0" border="0">
     <!-- BEGIN:BLOCK -->
-    <tr id="{ID_PATH}" data-path="{DATA_PATH}">
+    <tr id="{ID_PATH}" class="row_mark" data-path="{DATA_PATH}">
         <td style="padding-left: {INDENT}px">
             <table style="margin-top:-1px;" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
@@ -79,7 +79,7 @@ function deleteDirectory(path) {
             $('.root').click();
         }
 
-        Con.RowMark.initialize('#upl_dirs_list tbody > tr', 'upl');
+        Con.RowMark.initialize('#upl_dirs_list .row_mark', 'upl');
 
     });
 })(Con, Con.$);

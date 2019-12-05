@@ -13,7 +13,7 @@
 
     <table id="tpl_list" width="100%" cellspacing="0" cellpadding="2" border="0">
         <!-- BEGIN:BLOCK -->
-        <tr class="tooltip-north" original-title="{DESCRIPTION}" id="{ID}">
+        <tr class="tooltip-north row_mark" original-title="{DESCRIPTION}" id="{ID}">
             <td><img alt="" width="5" height="1" alt="" src="images/spacer.gif"></td>
             <td class="textw_small">{NAME}</td>
             <td align="right" class="nowrap">{INUSE}{COPY}{DELETE}</td>
@@ -106,7 +106,7 @@
                             }
                         });
 
-                Con.RowMark.initialize('#tpl_list tbody > tr', 'lay');
+                Con.RowMark.initialize('#tpl_list .row_mark', 'lay');
 
             });
         })(Con, Con.$);

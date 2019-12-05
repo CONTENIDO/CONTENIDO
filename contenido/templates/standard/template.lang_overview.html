@@ -21,7 +21,7 @@
     {NOTIFICATION}
 
     <!-- BEGIN:BLOCK -->
-    <tr class="text_medium" {MARKED}>
+    <tr class="text_medium row_mark" {MARKED}>
         <td width="100%" class="first">{LANGUAGE}</td>
         <td>{ACTIVATEBUTTON}</td>
         <td>{DELETEBUTTON}</td>
@@ -59,7 +59,7 @@ function deleteLang(idlang) {
             refreshLangCount();
         }
 
-        Con.RowMark.initialize('#lang_overview_list tbody > tr', 'row', '#marked');
+        Con.RowMark.initialize('#lang_overview_list .row_mark', 'row', '#marked');
     });
 })(Con, Con.$);
 
