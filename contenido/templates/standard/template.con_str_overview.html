@@ -34,7 +34,7 @@ function reloadRightFrame() {
 
         // Con.getFrame('right_top').location.reload();
     } catch (e) {
-        Con.log(['reloadRightFrame() fail', e], 'template.con_str_overwiew.html', 'warn');
+        Con.log(['reloadRightFrame() fail', e], 'template.con_str_overview.html', 'warn');
     }
 }
 
@@ -43,7 +43,7 @@ function getReference() {
     try {
         refCfg = Con.getFrame('left_top').cfg;
     } catch (e) {
-        Con.log(['getReference() fail', e], 'template.con_str_overwiew.html', 'warn');
+        Con.log(['getReference() fail', e], 'template.con_str_overview.html', 'warn');
     }
     return refCfg;
 }
@@ -96,7 +96,7 @@ var scatlist = catlist.join(',');
 
             frameResize.optimalSize = myTable.offsetWidth;
         } catch (e) {
-            Con.log(['frameResize update fail', e], 'template.con_str_overwiew.html', 'warn');
+            Con.log(['frameResize update fail', e], 'template.con_str_overview.html', 'warn');
         }
 
         $(".con_str_tree li:last-child").addClass('last');
@@ -134,20 +134,18 @@ var scatlist = catlist.join(',');
 
         $(".con_str_tree li div > a.off_disabled").css('cursor', 'default');
 
-        $(".con_str_tree .root li div").hover(function() {
+        // Register mouse event handler like functionality in rowMark.js
+        $('.con_str_tree .root li div').hover(function() {
             $(this).addClass('hover');
         }, function() {
             $(this).removeClass('hover');
-        });
-
-        $(".con_str_tree .root li div").mousedown(function() {
-            $(".con_str_tree .root li div.active").removeClass("active");
-            $(this).addClass("active");
-        });
-
-        $(".con_str_tree .root li div").click(function() {
+        }).mousedown(function() {
+            $('.con_str_tree .root li div.active').removeClass('active');
+            $(this).addClass('active');
+        }).click(function() {
             rowMarkConClick(this.parentNode);
         });
+
     });
 })(Con, Con.$);
 
