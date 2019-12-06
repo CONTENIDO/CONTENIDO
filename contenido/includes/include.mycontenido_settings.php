@@ -14,13 +14,17 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$cpage = new cGuiPage("mycontenido_settings", "", "2");
+// Global variables, send by the form
+global $newpassword, $oldpassword, $newpassword2, $name, $email, $phonenumber, $street, $zip,
+       $city, $country, $wysi, $format, $formatdate, $formattime;
+
+$page = new cGuiPage("mycontenido_settings", "", "2");
 
 $user = new cApiUser($auth->auth["uid"]);
 
 if ($action == "mycontenido_editself") {
 
-    $notidisplayed = false;
+    $notificationDisplayed = false;
 
     if (!isset($wysi)) {
         $wysi = false;
@@ -38,7 +42,7 @@ if ($action == "mycontenido_editself") {
         }
 
         if ($error !== false) {
-            $cpage->displayError($error);
+            $page->displayError($error);
         } else {
             // New Class User, update password
 
@@ -47,11 +51,11 @@ if ($action == "mycontenido_editself") {
             // user->set("password", md5($newpassword));
 
             if ($iResult == cApiUser::PASS_OK) {
-                $notidisplayed = true;
-                $cpage->displayOk(i18n("Changes saved"));
+                $notificationDisplayed = true;
+                $page->displayOk(i18n("Changes saved"));
             } else {
-                $notidisplayed = true;
-                $cpage->displayError(cApiUser::getErrorString($iResult));
+                $notificationDisplayed = true;
+                $page->displayError(cApiUser::getErrorString($iResult));
             }
         }
     }
@@ -84,26 +88,26 @@ if ($action == "mycontenido_editself") {
     if (true === cString::validateDateFormat($format)) {
         $user->setUserProperty("dateformat", "full", $format);
     } else {
-        $notidisplayed = true;
-        $cpage->displayError(i18n("Date/Time format is not correct."));
+        $notificationDisplayed = true;
+        $page->displayError(i18n("Date/Time format is not correct."));
     }
     if (true === cString::validateDateFormat($formatdate)) {
         $user->setUserProperty("dateformat", "date", $formatdate);
     } else {
-        $notidisplayed = true;
-        $cpage->displayError(i18n("Date format is not correct."));
+        $notificationDisplayed = true;
+        $page->displayError(i18n("Date format is not correct."));
     }
     if (true === cString::validateDateFormat($formattime)) {
         $user->setUserProperty("dateformat", "time", $formattime);
     } else {
-        $notidisplayed = true;
-        $cpage->displayError(i18n("Time format is not correct."));
+        $notificationDisplayed = true;
+        $page->displayError(i18n("Time format is not correct."));
     }
 
-    if ($user->store() && !$notidisplayed) {
-        $cpage->displayOk(i18n("Changes saved"));
-    } else if (!$notidisplayed) {
-        $cpage->displayError(i18n("An error occured while saving user info."));
+    if ($user->store() && !$notificationDisplayed) {
+        $page->displayOk(i18n("Changes saved"));
+    } else if (!$notificationDisplayed) {
+        $page->displayError(i18n("An error occured while saving user info."));
     }
 }
 
@@ -112,7 +116,7 @@ $realname = $user->get('realname');
 if (!empty($realname)) {
     $username .= ' (' . $realname . ')';
 }
-$settingsfor = sprintf(i18n("Settings for %s"), $username);
+$settingsFor = sprintf(i18n("Settings for %s"), $username);
 
 $form = new cGuiTableForm("settings");
 
@@ -121,7 +125,7 @@ $form->setVar("area", $area);
 $form->setVar("action", "mycontenido_editself");
 $form->setVar("frame", $frame);
 
-$form->addHeader($settingsfor);
+$form->addHeader($settingsFor);
 
 $realname = new cHTMLTextbox("name", $user->get("realname"));
 $form->add(i18n("Name"), $realname);
@@ -130,8 +134,11 @@ $form->add(i18n("Name"), $realname);
 // only
 if ($user->get("password") != 'active_directory_auth') {
     $oldpassword = new cHTMLPasswordbox("oldpassword");
+    $oldpassword->setAutocomplete('off');
     $newpassword = new cHTMLPasswordbox("newpassword");
+    $newpassword->setAutocomplete('off');
     $newpassword2 = new cHTMLPasswordbox("newpassword2");
+    $newpassword2->setAutocomplete('off');
 
     $form->add(i18n("Old password"), $oldpassword);
     $form->add(i18n("New password"), $newpassword);
@@ -160,9 +167,7 @@ $wysiwyg = new cHTMLCheckbox("wysi", 1);
 $wysiwyg->setChecked($user->get("wysi"));
 $wysiwyg->setLabelText(i18n("Use WYSIWYG Editor"));
 
-$form->add(i18n("Options"), array(
-    $wysiwyg
-));
+$form->add(i18n("Options"), [$wysiwyg]);
 
 $formathint = "<br>" . i18n("The format is equal to PHP's date() function.");
 $formathint .= "<br>";
@@ -188,26 +193,24 @@ $format3 = new cHTMLTextbox("formattime", $user->getUserProperty("dateformat", "
 
 $infoButton = new cGuiBackendHelpbox(i18n("FORMAT_DATE_TIME"));
 
-$form->add(i18n("Date/Time format"), array(
+$form->add(i18n("Date/Time format"), [
     $format,
     ' ',
     $infoButton->render(),
     $formathint
-));
+]);
 $infoButton->setHelpText(i18n("FORMAT_DATE"));
-$form->add(i18n("Date format"), array(
+$form->add(i18n("Date format"), [
     $format2,
     ' ',
     $infoButton->render()
-));
+]);
 $infoButton->setHelpText(i18n("FORMATE_TIME"));
-$form->add(i18n("Time format"), array(
+$form->add(i18n("Time format"), [
     $format3,
     ' ',
     $infoButton->render()
-));
+]);
 
-$cpage->setContent(array(
-    $form
-));
-$cpage->render();
+$page->setContent([$form]);
+$page->render();

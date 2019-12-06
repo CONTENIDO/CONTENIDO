@@ -16,6 +16,8 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $mclient, $msysadmin, $mlang;
+
 if (!($perm->have_perm_area_action($area, $action) || $perm->have_perm_area_action('user', $action))) {
     // access denied
     $notification->displayNotification("error", i18n("Permission denied"));
@@ -34,9 +36,10 @@ if (!isset($request['userid'])) {
     return;
 }
 
-$aPerms = array();
+$aPerms = [];
 $bError = false;
 $sNotification = '';
+$belang = cRegistry::getBackendLanguage();
 
 // Action delete user
 if ($action == 'user_delete') {
@@ -75,26 +78,26 @@ if ($action == 'user_edit') {
     if (is_array($mclient) && count($mclient) > 0) {
 
         // Prevent setting the permissions for a client without a language of that client
-        foreach ($mclient as $selectedclient) {
+        foreach ($mclient as $selectedClient) {
 
             // Get all available languages for selected client
             $clientLanguageCollection = new cApiClientLanguageCollection();
-            $availablelanguages = $clientLanguageCollection->getLanguagesByClient($selectedclient);
+            $availableLanguages = $clientLanguageCollection->getLanguagesByClient($selectedClient);
 
             if (!is_array($mlang) || count($mlang) == 0) {
                 // User has no selected language
                 $sNotification = $notification->returnNotification("warning", i18n("Please select a language for your selected client."));
                 $bError = true;
-            } else if ($availablelanguages == false) {
+            } else if ($availableLanguages == false) {
                 // Client has no assigned language(s)
                 $sNotification = $notification->returnNotification("warning", i18n("You can only assign users to a client with languages."));
                 $bError = true;
             } else {
 
                 // Client has one or more assigned language(s)
-                foreach ($mlang as $selectedlanguage) {
+                foreach ($mlang as $selectedLanguage) {
 
-                    if (!$clientLanguageCollection->hasLanguageInClients($selectedlanguage, $mclient)) {
+                    if (!$clientLanguageCollection->hasLanguageInClients($selectedLanguage, $mclient)) {
                         // Selected language are not assigned to selected client
                         $sNotification = $notification->returnNotification("warning", i18n("You have to select a client with a language of that client."));
                         $bError = true;
@@ -220,12 +223,14 @@ if ($msysadmin || $oUser->getField('password') != 'active_directory_auth') {
     $tpl->set('d', 'ROW_ID', "password");
     $tpl->set('d', 'CATNAME', i18n("New password"));
     $oTxtPass = new cHTMLPasswordbox('password', '', 40, 255);
+    $oTxtPass->setAutocomplete('off');
     $tpl->set('d', 'CATFIELD', $oTxtPass->render());
     $tpl->next();
 
     $tpl->set('d', 'ROW_ID', "confirm_password");
     $tpl->set('d', 'CATNAME', i18n("Confirm new password"));
     $oTxtWord = new cHTMLPasswordbox('passwordagain', '', 40, 255);
+    $oTxtWord->setAutocomplete('off');
     $tpl->set('d', 'CATFIELD', $oTxtWord->render());
     $tpl->next();
 }
