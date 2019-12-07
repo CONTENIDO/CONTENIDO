@@ -182,9 +182,9 @@ if (true === $feuser->isLoaded() && $feuser->get("idclient") == $client) {
 
     $username = new cHTMLTextbox("username", $feuser->get("username"), 40);
     $newpw = new cHTMLPasswordBox("newpd", "", 40);
-    $newpw->setAutocomplete('off');
+    $newpw-->setAutofill(false);
     $newpw2 = new cHTMLPasswordBox("newpd2", "", 40);
-    $newpw2->setAutocomplete('off');
+    $newpw2-->setAutofill(false);
     $active = new cHTMLCheckbox("active", "1");
     $active->setChecked($feuser->get("active"));
 

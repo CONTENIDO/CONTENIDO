@@ -170,6 +170,7 @@ $tpl->next();
 $tpl->set('d', 'CATNAME', i18n("New password"));
 $oTxtPass = new cHTMLPasswordbox('password', '', 40, 255);
 $oTxtPass->setAttribute('autocomplete', 'off');
+$oTxtPass->setAutofill(false);
 $tpl->set('d', 'CATFIELD', $oTxtPass->render());
 $tpl->next();
 

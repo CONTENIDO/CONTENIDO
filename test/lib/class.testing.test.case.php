@@ -96,13 +96,13 @@ abstract class cTestingTestCase extends TestCase {
      *      - https://github.com/sebastianbergmann/phpunit/issues/3338
      *      - https://github.com/sebastianbergmann/phpunit/issues/3339
      */
-    protected function _readAttribute($bject, $attributeName) {
+    protected function _readAttribute($object, $attributeName) {
 //        return Assert::readAttribute($classOrObject, $attributeName);
-        $reflector = new ReflectionObject($bject);
+        $reflector = new ReflectionObject($object);
         $property = $reflector->getProperty($attributeName);
         $property->setAccessible(true);
 
-        return $property->getValue($bject);
+        return $property->getValue($object);
 
     }
 

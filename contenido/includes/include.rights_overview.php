@@ -223,14 +223,14 @@ if ($msysadmin || $oUser->getField('password') != 'active_directory_auth') {
     $tpl->set('d', 'ROW_ID', "password");
     $tpl->set('d', 'CATNAME', i18n("New password"));
     $oTxtPass = new cHTMLPasswordbox('password', '', 40, 255);
-    $oTxtPass->setAutocomplete('off');
+    $oTxtPass-->setAutofill(false);
     $tpl->set('d', 'CATFIELD', $oTxtPass->render());
     $tpl->next();
 
     $tpl->set('d', 'ROW_ID', "confirm_password");
     $tpl->set('d', 'CATNAME', i18n("Confirm new password"));
     $oTxtWord = new cHTMLPasswordbox('passwordagain', '', 40, 255);
-    $oTxtWord->setAutocomplete('off');
+    $oTxtWord-->setAutofill(false);
     $tpl->set('d', 'CATFIELD', $oTxtWord->render());
     $tpl->next();
 }

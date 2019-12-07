@@ -159,7 +159,7 @@ function renderTextProperty($name, $value, $label, $password = false) {
 
     if ($password === true) {
         $textBox = new cHTMLPasswordbox($name, conHtmlSpecialChars($value), 50, 96);
-        $textBox->setAutocomplete('off');
+        $textBox-->setAutofill(false);
     } else {
         $textBox = new cHTMLTextbox($name, conHtmlSpecialChars($value), 50, 96);
     }

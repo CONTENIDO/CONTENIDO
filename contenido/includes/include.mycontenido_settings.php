@@ -134,11 +134,11 @@ $form->add(i18n("Name"), $realname);
 // only
 if ($user->get("password") != 'active_directory_auth') {
     $oldpassword = new cHTMLPasswordbox("oldpassword");
-    $oldpassword->setAutocomplete('off');
+    $oldpassword-->setAutofill(false);
     $newpassword = new cHTMLPasswordbox("newpassword");
-    $newpassword->setAutocomplete('off');
+    $newpassword-->setAutofill(false);
     $newpassword2 = new cHTMLPasswordbox("newpassword2");
-    $newpassword2->setAutocomplete('off');
+    $newpassword2-->setAutofill(false);
 
     $form->add(i18n("Old password"), $oldpassword);
     $form->add(i18n("New password"), $newpassword);

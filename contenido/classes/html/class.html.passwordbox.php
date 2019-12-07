@@ -24,6 +24,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHTMLPasswordbox extends cHTMLFormElement {
 
     /**
+     * @var bool $_autofill
+     */
+    protected $_autofill = true;
+
+    /**
      * Constructor to create an instance of this class.
      *
      * Creates an HTML password box.
@@ -62,14 +67,14 @@ class cHTMLPasswordbox extends cHTMLFormElement {
     }
 
     /**
-     * Sets the autocomplete attribute of the element.
+     * Sets the autofill property of the element.
      *
-     * @param string $value - The autocomplete attribute value
+     * @param boolean $autofill - The autofill flag
      * @return cHTMLPasswordbox|cHTML
      */
-    public function setAutocomplete($value) {
-        $value = cString::toLowerCase(cSecurity::toString($value));
-        return $this->updateAttribute('autocomplete', $value);
+    public function setAutofill($autofill) {
+        $this->_autofill = cSecurity::toBoolean($autofill);
+        return $this;
     }
 
     /**
@@ -122,9 +127,10 @@ class cHTMLPasswordbox extends cHTMLFormElement {
 
     /**
      * Generates the HTML markup for the input field of type password.
-     * Additionally, it deals with the attribute "autocomplete" set to "off".
-     * This should work as expected but some browser or password manager may
-     * still pre fill the field with the previous stored value.
+     * Additionally, it deals with the enabled status of th property $_autofill.
+     * Setting the autocomplete to "off" will prevent from autocompletion but
+     * some browser or password manager may autofill the field with the
+     * previous stored value, which is not always wanted.
      * Setting the field initially to readonly and enabling it again after
      * getting focus does the trick!
      *
@@ -137,10 +143,9 @@ class cHTMLPasswordbox extends cHTMLFormElement {
      */
     public function toHtml() {
         $sReadonly = $this->getAttribute('readonly') !== null;
-        $autocomplete = $this->getAttribute('autocomplete');
 
-        if ($autocomplete !== 'off' || $sReadonly) {
-            // Field has no autocomplete="off" or has already readonly attribute, nothing to do here...
+        if ($this->_autofill === true || $sReadonly) {
+            // Field can be filled or has already readonly attribute, nothing to do here...
             return parent::toHtml();
         }
 

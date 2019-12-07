@@ -121,12 +121,16 @@ class cHtmlPasswordBoxTest extends cTestingTestCase
         $this->assertSame('testInitValue', $pwBox->getAttribute('value'));
     }
 
-    public function testAutocomplete() {
-        // Test autocomplete="off"
+    public function testAutofill() {
+        // Test default autofill
         $pwBox = new cHTMLPasswordbox('testName', 'testInitValue');
-        // Setting autocomplete="off" sets also readonly="readonly" & renders script together with the element
-        $pwBox->setAutocomplete('off');
-        $this->assertSame('off', $pwBox->getAttribute('autocomplete'));
+        $this->assertTrue($this->_readAttribute($pwBox, '_autofill'));
+
+        // Test autofill false
+        $pwBox = new cHTMLPasswordbox('testName', 'testInitValue');
+        // Setting autofill to false sets also readonly="readonly" & renders script together with the element
+        $pwBox->setAutofill(false);
+        $this->assertFalse($this->_readAttribute($pwBox, '_autofill'));
 
         $html = $pwBox->toHtml();
         $this->assertSame('readonly', $pwBox->getAttribute('readonly'));
@@ -134,11 +138,11 @@ class cHtmlPasswordBoxTest extends cTestingTestCase
         $this->assertStringContainsString('$("#' . $pwBox->getID() . '").on("focus", function() {', $html);
         $this->assertStringContainsString('$(this).prop("readonly", false);', $html);
 
-        // Test autocomplete="on"
+        // Test autofill true
         $pwBox = new cHTMLPasswordbox('testName', 'testInitValue');
-        // Setting autocomplete="on" sets also readonly="readonly" & renders script together with the element
-        $pwBox->setAutocomplete('on');
-        $this->assertSame('on', $pwBox->getAttribute('autocomplete'));
+        // Setting autofill true sets also readonly="readonly" & renders script together with the element
+        $pwBox->setAutofill(true);
+        $this->assertTrue($this->_readAttribute($pwBox, '_autofill'));
 
         $html = $pwBox->toHtml();
         $this->assertNull($pwBox->getAttribute('readonly'));
