@@ -56,19 +56,6 @@ class chain_cApiCecRegistryClassStatic_Test
  */
 class cApiCecRegistryTest extends cTestingTestCase
 {
-    /**
-     * Test
-     * - cApiCecRegistry->registerChain()
-     * - cApiCecRegistry->isChainRegistered()
-     * - cApiCecRegistry->unregisterChain()
-     *
-     * @deprecated 2014-08-07 - This method is deprecated and is not needed any longer
-     * @throws cInvalidArgumentException
-     */
-    public function testChains()
-    {
-        cDeprecated('This method is deprecated and is not needed any longer');
-    }
 
     /**
      * Test

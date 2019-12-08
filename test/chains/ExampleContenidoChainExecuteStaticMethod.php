@@ -80,15 +80,6 @@ class ExampleContenidoChainExecuteStaticMethodTest extends TestCase {
     }
 
     /**
-     *
-     * @deprecated 2014-08-07
-     *         This method is deprecated and is not needed any longer
-     */
-    protected function tearDown(): void {
-        cDeprecated('This method is deprecated and is not needed any longer');
-    }
-
-    /**
      * Test Example.Contenido.Chain.ExecuteStaticMethod chain
      */
     public function testNoChain() {
