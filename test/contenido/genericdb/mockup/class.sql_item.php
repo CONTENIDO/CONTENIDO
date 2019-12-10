@@ -61,7 +61,7 @@ class SqlItem
                 `name` VARCHAR(255) DEFAULT NULL,
                 `descr` TEXT,
                 `size` ENUM('small', 'medium', 'large') DEFAULT NULL,
-                `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                `date` TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
                 PRIMARY KEY  (`id`)
             ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;";
     }
@@ -92,7 +92,7 @@ class SqlItem
                 `bar_code` VARCHAR(128) NOT NULL,
                 `notes` TEXT,
                 `iso_compliant` ENUM('y', 'n') DEFAULT 'n',
-                `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                `date` TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
                 PRIMARY KEY  (`dog_id`)
             ) ENGINE=MyISAM DEFAULT CHARSET=latin1;";
     }

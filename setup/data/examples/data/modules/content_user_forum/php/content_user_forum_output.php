@@ -420,7 +420,7 @@ class UserForumArticle {
 
                     $record['FORUM'] = str_replace('\\', '', $value['forum']);
 
-                    if (($value['editedby'] != '') && ($value['editedat'] != "0000-00-00 00:00:00")) {
+                    if (($value['editedby'] != '') && !isEmptyDbDateTime($value['editedat'])) {
 
                         // string manipulation for edittime
                         $arrTmp = explode(' ', $value['editedat']);

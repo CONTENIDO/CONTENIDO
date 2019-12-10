@@ -413,11 +413,11 @@ $tpl->set('d', 'CATFIELD', $sInputValidTo);
 $tpl->next();
 
 // account active or not
-if ($sCurrentValueFrom == '') {
+if (isEmptyDbDateTime($sCurrentValueFrom)) {
     $sCurrentValueFrom = '0000-00-00 00:00:00';
 }
 
-if (($sCurrentValueTo == '') || ($sCurrentValueTo == '0000-00-00 00:00:00')) {
+if (isEmptyDbDateTime($sCurrentValueTo)) {
     $sCurrentValueTo = '9999-99-99 99:99:99';
 }
 

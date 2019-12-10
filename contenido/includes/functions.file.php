@@ -184,7 +184,7 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
                     '$sType',
                     '$sFilenameNew',
                     NOW(),
-                    '0000-00-00 00:00:00',
+                    NULL,
                     '$sAuthor',
                     '',
                     '$sDescription'

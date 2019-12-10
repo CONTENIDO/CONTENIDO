@@ -232,7 +232,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
                 $sStatus = sprintf(i18n("Error: %s", 'newsletter'), $oLog->get("status"));
         }
 
-        if ($oLog->get("sent") == "0000-00-00 00:00:00") {
+        if (isEmptyDbDateTime($oLog->get("sent"))) {
             $sSent = "-";
         } else {
             $sSent = date($sDateFormat, strtotime($oLog->get("sent")));
@@ -291,10 +291,13 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
             $oForm->add(i18n("Status", 'newsletter'), i18n("Pending", 'newsletter'));
             break;
         case 2:
-            $oForm->add(i18n("Status", 'newsletter'), sprintf(i18n("Sending (started: %s)", 'newsletter'), date($sDateFormat, strtotime($oJob->get("started")))));
+            $started = isEmptyDbDateTime($oJob->get("started")) ? '-' : date($sDateFormat, strtotime($oJob->get("started")));
+            $oForm->add(i18n("Status", 'newsletter'), sprintf(i18n("Sending (started: %s)", 'newsletter'), $started));
             break;
         case 9:
-            $oForm->add(i18n("Status", 'newsletter'), sprintf(i18n("Finished (started: %s, finished: %s)", 'newsletter'), date($sDateFormat, strtotime($oJob->get("started"))), date($sDateFormat, strtotime($oJob->get("finished")))));
+            $started = isEmptyDbDateTime($oJob->get("started")) ? '-' : date($sDateFormat, strtotime($oJob->get("started")));
+            $finished = isEmptyDbDateTime($oJob->get("finished")) ? '-' : date($sDateFormat, strtotime($oJob->get("finished")));
+            $oForm->add(i18n("Status", 'newsletter'), sprintf(i18n("Finished (started: %s, finished: %s)", 'newsletter'), $started, $finished));
             break;
     }
 

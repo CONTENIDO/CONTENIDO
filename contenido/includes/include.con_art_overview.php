@@ -327,7 +327,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $created = $sart["created"];
             $modified = $sart["lastmodified"];
 
-            if ($modified === '0000-00-00 00:00:00') {
+            if (isEmptyDbDateTime($modified)) {
                 $modified = i18n("not modified yet");
             } else {
                 $modified = date($dateformat, strtotime($modified));
@@ -340,7 +340,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $locked = $sart["locked"];
             $redirect = $sart["redirect"];
 
-            $published = ($published != '0000-00-00 00:00:00') ? date($dateformat, strtotime($published)) : i18n("not yet published");
+            $published = (!isEmptyDbDateTime($published)) ? date($dateformat, strtotime($published)) : i18n("not yet published");
             $created = date($dateformat, strtotime($created));
             $alttitle = "idart" . '&#58; ' . $idart . ' ' . "idcatart" . '&#58; ' . $idcatart . ' ' . "idartlang" . '&#58; ' . $idartlang;
 

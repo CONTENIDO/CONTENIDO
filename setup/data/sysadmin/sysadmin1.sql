@@ -1,1 +1,1 @@
-INSERT INTO `!PREFIX!_user` VALUES('48a365b4ce1e322a55ae9017f3daf0c0', 'sysadmin', 'hash', '', 'sysadmin', 'Systemadministrator', 'mail', '', '', '', '', '', '1', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '0');
+INSERT INTO `!PREFIX!_user` VALUES('48a365b4ce1e322a55ae9017f3daf0c0', 'sysadmin', 'hash', '', 'sysadmin', 'Systemadministrator', 'mail', '', '', '', '', '', '1', null, null, null, '', '0');

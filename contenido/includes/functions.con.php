@@ -304,7 +304,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     $urlname = conGetUniqueArticleUrlname($idart, $idlang, $urlname, $idcatnew);
 
     $usetimemgmt = ((int) $timemgmt == 1)? 1 : 0;
-    if ($timemgmt == '1' && (($datestart == '' && $dateend == '') || ($datestart == '0000-00-00 00:00:00' && $dateend == '0000-00-00 00:00:00'))) {
+    if ($timemgmt == '1' && !isEmptyDbDateTime($datestart) && !isEmptyDbDateTime($dateend)) {
         $usetimemgmt = 0;
     }
 
@@ -1594,7 +1594,7 @@ function conFlagOnOffline() {
     $oArtLangColl = new cApiArticleLanguageCollection();
 
     // Set all articles which are before our starttime to offline
-    $where = "NOW() < datestart AND datestart != '0000-00-00 00:00:00' AND datestart IS NOT NULL AND timemgmt = 1";
+    $where = "NOW() < datestart AND datestart IS NOT NULL AND timemgmt = 1";
     $ids = $oArtLangColl->getIdsByWhereClause($where);
     foreach ($ids as $id) {
         $sql = "UPDATE " . $cfg['tab']['art_lang'] . " SET online = 0 WHERE idartlang = " . (int) $id;
@@ -1606,7 +1606,7 @@ function conFlagOnOffline() {
     }
 
     // Set all articles which are in between of our start/endtime to online
-    $where = "NOW() > datestart AND (NOW() < dateend OR dateend = '0000-00-00 00:00:00') AND " . "online = 0 AND timemgmt = 1";
+    $where = "NOW() > datestart AND (NOW() < dateend OR dateend IS NOT NULL) AND " . "online = 0 AND timemgmt = 1";
     $oArtLangColl->resetQuery();
     $ids = $oArtLangColl->getIdsByWhereClause($where);
     foreach ($ids as $id) {
@@ -1619,7 +1619,7 @@ function conFlagOnOffline() {
     }
 
     // Set all articles after our endtime to offline
-    $where = "NOW() > dateend AND dateend != '0000-00-00 00:00:00' AND timemgmt = 1 AND online = 1";
+    $where = "NOW() > dateend AND dateend IS NOT NULL AND timemgmt = 1 AND online = 1";
     $oArtLangColl->resetQuery();
     $ids = $oArtLangColl->getIdsByWhereClause($where);
     foreach ($ids as $id) {
@@ -1650,7 +1650,7 @@ function conMoveArticles() {
         'time_target_cat',
         'time_online_move'
     );
-    $where = "NOW() > dateend AND dateend != '0000-00-00 00:00:00' AND timemgmt = 1 AND time_move_cat = 1";
+    $where = "NOW() > dateend AND dateend IS NOT NULL AND timemgmt = 1 AND time_move_cat = 1";
     $oArtLangColl = new cApiArticleLanguageCollection();
     $rsList = $oArtLangColl->getFieldsByWhereClause($fields, $where);
 

@@ -115,6 +115,24 @@ function isUtf8($input) {
     return cString::isUtf8($input);
 }
 
+
+/**
+ * Does a simple check whether the given parameter is an empty date time value or not. This function is to meant
+ * to check database fields having values of type datetime.
+ * - Everything except a string will be treated as empty
+ * - Empty string, '0000-00-00 00:00:00' and '0000-00-00' will be treated as empty
+ *
+ * @param mixed $datetime
+ * @return bool
+ */
+function isEmptyDbDateTime($datetime) {
+    if (is_string($datetime) && !empty($datetime) && $datetime !== '0000-00-00 00:00:00' && $datetime !== '0000-00-00') {
+        return false;
+    } else {
+        return true;
+    }
+}
+
 /**
  * Returns multi-language month name (canonical) by its numeric value
  *

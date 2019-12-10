@@ -239,7 +239,9 @@ function convertDateValuesToDateTimeValue($db, $table, $field, $defaultTime = '0
  */
 function convertNullDateValuesToDateTimeValue($db, $table, $field, $defaultDateTime = '0000-00-00 00:00:00') {
     // Update '' or NULL values to '0000-00-00 00:00:00'
-    if ($defaultDateTime === 'CURRENT_TIMESTAMP' || $defaultDateTime === 'NOW()') {
+    // Some common used MySQL keywords (list is not complete!)
+    $keywords = ['CURRENT_TIME', 'CURRENT_TIMESTAMP', 'LOCALTIME', 'LOCALTIMESTAMP', 'UTC_TIME', 'UTC_TIMESTAMP', 'NULL', 'NOW()'];
+    if (in_array($defaultDateTime, $keywords)) {
         $sql = "UPDATE `:table` SET :field = :datetime WHERE `:field` IS NULL";
     } else {
         $sql = "UPDATE `:table` SET :field = ':datetime' WHERE `:field` IS NULL";

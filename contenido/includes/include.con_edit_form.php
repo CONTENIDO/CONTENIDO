@@ -677,8 +677,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         $tmp_author = '';
         $tmp_online = "0";
         $tmp_searchable = "1";
-        $tmp_datestart = "0000-00-00 00:00:00";
-        $tmp_dateend = "0000-00-00 00:00:00";
+        $tmp_datestart = '';
+        $tmp_dateend = '';
         $tmp_keyart = '';
         $tmp_keyautoart = '';
         $tmp_sort = '';
@@ -1017,14 +1017,14 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     }
 
     // Start date
-    if ($tmp_datestart == "0000-00-00 00:00:00") {
+    if (isEmptyDbDateTime($tmp_datestart)) {
         $page->set('s', 'STARTDATE', '');
     } else {
         $page->set('s', 'STARTDATE', $tmp_datestart);
     }
 
     // End date
-    if ($tmp_dateend == "0000-00-00 00:00:00") {
+    if (isEmptyDbDateTime($tmp_dateend)) {
         $page->set('s', 'ENDDATE', '');
     } else {
         $page->set('s', 'ENDDATE', $tmp_dateend);
@@ -1407,7 +1407,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     }
 
     if ($tmp_usetimemgmt == '1') {
-        if ($tmp_datestart == "0000-00-00 00:00:00" && $tmp_dateend == "0000-00-00 00:00:00") {
+        if (isEmptyDbDateTime($tmp_datestart) && isEmptyDbDateTime($tmp_dateend)) {
             $message = sprintf(i18n("Please fill in the start date and/or the end date!"));
             $notification->displayNotification("warning", $message);
         }

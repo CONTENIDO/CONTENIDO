@@ -684,11 +684,11 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
         $dateStart = $oArtLang->get('datestart');
         $dateEnd   = $oArtLang->get('dateend');
 
-        if ($dateStart != '0000-00-00 00:00:00' && $dateEnd != '0000-00-00 00:00:00' && (strtotime($dateStart) <= time() || strtotime($dateEnd) > time()) && strtotime($dateStart) < strtotime($dateEnd)) {
+        if (!isEmptyDbDateTime($dateStart) && !isEmptyDbDateTime($dateEnd) && (strtotime($dateStart) <= time() || strtotime($dateEnd) > time()) && strtotime($dateStart) < strtotime($dateEnd)) {
             $online = 1;
-        } elseif ($dateStart != '0000-00-00 00:00:00' && $dateEnd == '0000-00-00 00:00:00' && strtotime($dateStart) <= time()) {
+        } elseif (!isEmptyDbDateTime($dateStart) && !isEmptyDbDateTime($dateEnd) && strtotime($dateStart) <= time()) {
             $online = 1;
-        } elseif ($dateStart == '0000-00-00 00:00:00' && $dateEnd != '0000-00-00 00:00:00' && strtotime($dateEnd) > time()) {
+        } elseif (!isEmptyDbDateTime($dateStart) && !isEmptyDbDateTime($dateEnd) && strtotime($dateEnd) > time()) {
             $online = 1;
         }
     }

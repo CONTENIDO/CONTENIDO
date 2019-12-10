@@ -349,8 +349,8 @@ class cPasswordRequest
                     " . $this->_cfg['tab']['user'] . "
                 WHERE
                     username = '" . $this->_db->escape($this->_username) . "'
-                    AND (valid_from <= NOW() OR valid_from = '0000-00-00 00:00:00' OR valid_from IS NULL)
-                    AND (valid_to >= NOW() OR valid_to = '0000-00-00 00:00:00' OR valid_to IS NULL)";
+                    AND (valid_from <= NOW() OR valid_from IS NULL)
+                    AND (valid_to >= NOW() OR valid_to IS NULL)";
         $this->_db->query($sql);
 
         if ($this->_db->nextRecord() && md5($this->_username) == md5($this->_db->f('username'))) {

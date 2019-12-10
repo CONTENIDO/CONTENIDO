@@ -112,7 +112,7 @@ while ($cApiUser = $cApiUserCollection->next()) {
 
             $iMenu++;
 
-            if (($sToday < $cApiUser->get("valid_from") && ($cApiUser->get("valid_from") != '0000-00-00 00:00:00' && $cApiUser->get("valid_from") != '')) || ($sToday > $cApiUser->get("valid_to") && ($cApiUser->get("valid_to") != '0000-00-00 00:00:00') && $cApiUser->get("valid_from") != '')) {
+            if (($sToday < $cApiUser->get("valid_from") && !isEmptyDbDateTime($cApiUser->get("valid_from"))) || ($sToday > $cApiUser->get("valid_to") && !isEmptyDbDateTime($cApiUser->get("valid_to")))) {
                 $mlist->setTitle($iMenu, '<span class="inactiveUser">' . conHtmlSpecialChars($cApiUser->get("username")) . "<br>" . conHtmlSpecialChars($cApiUser->get("realname")) . '</span>');
             } else {
                 $mlist->setTitle($iMenu, conHtmlSpecialChars($cApiUser->get("username")) . "<br>" . conHtmlSpecialChars($cApiUser->get("realname")));
