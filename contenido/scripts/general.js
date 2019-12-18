@@ -1066,47 +1066,49 @@
     Con.showConfirmation = function(description, callback, additionalOptions) {
         // Get the translations so that we can use them
         Con.getTranslations(function(translations) {
+            var contentWindow, buttons, options;
+
             if (null === translations) {
                 // Use fallback
                 translations = TRANSLATIONS;
             }
 
-            // Define the options and extend them with the given ones
-            var contentWindow = Con.getContentWindow(), buttons = {};
+            contentWindow = Con.getContentWindow();
+            if (!contentWindow.$ || !contentWindow.$.ui) {
+                // This may happen, e. g. in layout preview
+                Con.log('Could not find $ or $.ui in content window', 'Con.showConfirmation', 'warn');
+                return;
+            }
 
+            // Define the options and extend them with the given ones.
+            // NOTE: Code in dialog callbacks should be executed in the context of the
+            //       content window (e. g. contentWindow.$), not in this window (e. g. $).
+            buttons = {};
             buttons[translations.OK] = function() {
                 if (typeof callback === 'function') {
                     callback();
                 }
-                contentWindow.$('#single_dialog').dialog('close');
+                contentWindow.$(this).dialog('close');
             };
             buttons[translations.Cancel] = function() {
-                contentWindow.$('#single_dialog').dialog('close');
+                contentWindow.$(this).dialog('close');
             };
 
-            var options = {
+            options = {
                 modal: true,
                 buttons: buttons,
                 position: ['center', 50],
                 resizable: false,
                 close: function () {
-                    contentWindow.$('html').find('#single_dialog').remove();
+                    contentWindow.$('#con_dialog_confirmation').remove();
                 },
                 title: translations['Confirmation Required']
             };
             options = $.extend(options, additionalOptions);
 
-            // show the dialog in the content window
-            if (0 === contentWindow.$('html').find('#single_dialog').length) {
-                contentWindow.$('html').find('div.ui-dialog').remove();
-                contentWindow.$('html').find('div.ui-widget-overlay').remove();
-                contentWindow.$('html').find('#single_dialog').remove();
-
-                contentWindow
-                    .$('<div id="single_dialog">' + description + '</div>')
-                    .dialog(options);
-            }
-
+            // Show the dialog in the content window
+            contentWindow.$('div.ui-dialog, #con_dialog_confirmation').remove();
+            contentWindow.$('<div id="con_dialog_confirmation">' + description + '</div>').dialog(options);
         }, this);
     };
 
@@ -1126,40 +1128,47 @@
      * @param {Boolean} hideButtons
      */
     Con.showNotification = function(title, description, additionalOptions,
-            hideButtons) {
+                                    hideButtons) {
         // Get the translations so that we can use them
         Con.getTranslations(function(translations) {
+            var contentWindow, buttons, options;
+
             if (null === translations) {
                 // Use fallback
                 translations = TRANSLATIONS;
             }
 
-            // Define the options and extend them with the given ones
-            var buttons = {};
+            contentWindow = Con.getContentWindow();
+            if (!contentWindow.$ || !contentWindow.$.ui) {
+                // This may happen, e. g. in layout preview
+                Con.log('Could not find $ or $.ui in content window', 'Con.showNotification', 'warn');
+                return;
+            }
+
+            // Define the options and extend them with the given ones.
+            // NOTE: Code in dialog callbacks should be executed in the context of the
+            //       content window (e. g. contentWindow.$), not in this window (e. g. $).
+            buttons = {};
             if (!hideButtons) {
                 buttons[translations.OK] = function() {
-                    // unfortunately, the following line does not work if the
-                    // dialog is opened from another frame
-                    // $(this).dialog('close');
-                    // so use this ugly workaround
-                    $(this).parent().remove();
+                    contentWindow.$(this).dialog('close');
                 };
             }
-            var options = {
+
+            options = {
                 buttons: buttons,
                 position: ['center', 50],
                 title: title,
+                close: function () {
+                    contentWindow.$('#con_dialog_notification').remove();
+                },
                 modal: true
             };
             options = $.extend(options, additionalOptions);
-            // show the dialog in the content window
-            var contentWindow = Con.getContentWindow();
 
-            contentWindow.$('html').find('div.ui-dialog').remove();
-            contentWindow.$('html').find('div.ui-widget-overlay').remove();
-
-            contentWindow.$('<div>' + description + '</div>').dialog(options);
-
+            // Show the dialog in the content window
+            contentWindow.$('div.ui-dialog, #con_dialog_notification').remove();
+            contentWindow.$('<div id="con_dialog_notification">' + description + '</div>').dialog(options);
         }, this);
     };
 
