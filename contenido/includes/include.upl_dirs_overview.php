@@ -95,15 +95,14 @@ if ($action == 'upl_delete') {
 
         // Check for files
         if (uplHasFiles($path)) {
-            if (is_dir($cfgClient[$client]['upl']['path'] . $path)) {
-                if (false !== ($directory = cDirHandler::read($uploadPath))) {
-                    foreach ($directory as $dir_entry) {
-                        if (cFileHandler::fileNameIsDot($dir_entry) === false) {
-                            $res = cFileHandler::remove($cfgClient[$client]['upl']['path'] . $path . $dir_entry);
+            $uploadPath = $cfgClient[$client]['upl']['path'] . $path;
+            if (false !== ($directory = cDirHandler::read($uploadPath))) {
+                foreach ($directory as $directoryEntry) {
+                    if (cFileHandler::fileNameIsDot($directoryEntry) === false) {
+                        $res = cFileHandler::remove($uploadPath . $directoryEntry);
 
-                            if ($res == false) {
-                                $failedFiles[] = $dir_entry;
-                            }
+                        if ($res == false) {
+                            $failedFiles[] = $directoryEntry;
                         }
                     }
                 }
