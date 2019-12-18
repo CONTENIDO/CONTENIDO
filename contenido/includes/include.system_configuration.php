@@ -35,13 +35,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @return array
  *         associative array with the label and the input field
- * 
+ *
  * @throws cException
  */
 function renderSelectProperty($name, $possibleValues, $value, $label, $width = 328) {
-    global $auth;
-
-    $return = array();
+    $auth = cRegistry::getAuth();
+    $return = [];
 
     if (count($possibleValues) === 2 && (in_array('true', $possibleValues) && in_array('false', $possibleValues) || in_array('enabled', $possibleValues) && in_array('disabled', $possibleValues) || in_array('0', $possibleValues) && in_array('1', $possibleValues))) {
         // render a checkbox if there are only the values true and false
@@ -121,22 +120,20 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
  *         the name of the corresponding input element
  * @param int $width
  *         the width in pixel
- * @param string $seperator
- *         the seperator which is written at the end of the label
+ * @param string $separator
+ *         the separator which is written at the end of the label
  * @param string $float
  * @return string
  *         the rendered cHTMLLabel element
  */
-function renderLabel($text, $name, $width = 280, $seperator = ':', $float = '') {
-    $label = new cHTMLLabel($text . $seperator, $name);
+function renderLabel($text, $name, $width = 280, $separator = ':', $float = '') {
+    $label = new cHTMLLabel($text . $separator, $name);
     $label->setClass("sys_config_txt_lbl");
     if ($float != '') {
         $label->setStyle('width:' . $width . 'px;' . 'float:' . $float . ';');
     } else {
         $label->setStyle('width:' . $width . 'px;');
     }
-
-
 
     return $label->render();
 }
@@ -158,23 +155,26 @@ function renderLabel($text, $name, $width = 280, $seperator = ':', $float = '') 
  *         associative array with the label and the input field
  */
 function renderTextProperty($name, $value, $label, $password = false) {
-    global $auth;
+    $auth = cRegistry::getAuth();
 
-    $textbox = new cHTMLTextbox($name, conHtmlSpecialChars($value), 50, 96);
-    $textbox->updateAttribute('style', 'width:322px');
-    // disable the textbox if user is not a sysadmin
-    if (cString::findFirstPos($auth->auth['perm'], 'sysadmin') === false) {
-        $textbox->updateAttribute('disabled', 'true');
-    }
     if ($password === true) {
-        $textbox->updateAttribute('type', 'password');
+        $textBox = new cHTMLPasswordbox($name, conHtmlSpecialChars($value), 50, 96);
+        $textBox->setAutofill(false);
+        $textBox->setAttribute('autocomplete', 'off');
+    } else {
+        $textBox = new cHTMLTextbox($name, conHtmlSpecialChars($value), 50, 96);
+    }
+    $textBox->updateAttribute('style', 'width:322px');
+
+    // disable the text box if user is not a sysadmin
+    if (cString::findFirstPos($auth->auth['perm'], 'sysadmin') === false) {
+        $textBox->updateAttribute('disabled', 'true');
     }
 
-    $return = array();
-    $return['input'] = $textbox->render();
-    $return['label'] = renderLabel($label, $name);
-
-    return $return;
+    return [
+        'input' => $textBox->render(),
+        'label' => renderLabel($label, $name),
+    ];
 }
 
 $page = new cGuiPage('system_configuration', '', '1');
@@ -247,7 +247,7 @@ if (cString::findFirstPos($auth->auth['perm'], 'sysadmin') === false) {
     $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n("You are not sysadmin. You can't change these settings."), 's');
 }
 
-$groups = array();
+$groups = [];
 $currentGroup = '';
 $leftContent = '';
 // iterate over all property types

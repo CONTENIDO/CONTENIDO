@@ -37,7 +37,7 @@ class cHTMLFormElement extends cHTML {
      *         Item disabled flag (non-empty to set disabled)
      * @param int|null $tabindex [optional]
      *         Tab index for form elements
-     * @param string $accesskey [optional]
+     * @param string $accessKey [optional]
      *         Key to access the field
      * @param string $class [optional]
      *         CSS class name to set
@@ -47,14 +47,14 @@ class cHTMLFormElement extends cHTML {
         $id = '',
         $disabled = false,
         $tabindex = null,
-        $accesskey = '',
+        $accessKey = '',
         $class = 'text_medium'
     ) {
         $this->_tag = 'input';
         parent::__construct(['name' => $name, 'id' => $id, 'class' => $class]);
         $this->setDisabled($disabled);
         $this->setTabindex($tabindex);
-        $this->setAccessKey($accesskey);
+        $this->setAccessKey($accessKey);
     }
 
     /**
@@ -113,14 +113,14 @@ class cHTMLFormElement extends cHTML {
     /**
      * Sets the access key for this element.
      *
-     * @param string $accesskey
+     * @param string $accessKey
      *         The length of the access key. May be A-Z and 0-9.
      * @return cHTMLFormElement
      *         $this for chaining
      */
-    public function setAccessKey($accesskey) {
-        if ((cString::getStringLength($accesskey) == 1) && cString::isAlphanumeric($accesskey)) {
-            $this->updateAttribute('accesskey', $accesskey);
+    public function setAccessKey($accessKey) {
+        if ((cString::getStringLength($accessKey) == 1) && cString::isAlphanumeric($accessKey)) {
+            $this->updateAttribute('accesskey', $accessKey);
         } else {
             $this->removeAttribute('accesskey');
         }

@@ -120,4 +120,34 @@ class cHtmlPasswordBoxTest extends cTestingTestCase
         $pwBox->setValue('testInitValue');
         $this->assertSame('testInitValue', $pwBox->getAttribute('value'));
     }
+
+    public function testAutofill() {
+        // Test default autofill
+        $pwBox = new cHTMLPasswordbox('testName', 'testInitValue');
+        $this->assertTrue($this->_readAttribute($pwBox, '_autofill'));
+
+        // Test autofill false
+        $pwBox = new cHTMLPasswordbox('testName', 'testInitValue');
+        // Setting autofill to false sets also readonly="readonly" & renders script together with the element
+        $pwBox->setAutofill(false);
+        $this->assertFalse($this->_readAttribute($pwBox, '_autofill'));
+
+        $html = $pwBox->toHtml();
+        $this->assertSame('readonly', $pwBox->getAttribute('readonly'));
+        $this->assertStringContainsString('<script', $html);
+        $this->assertStringContainsString('$("#' . $pwBox->getID() . '").on("focus", function() {', $html);
+        $this->assertStringContainsString('$(this).prop("readonly", false);', $html);
+
+        // Test autofill true
+        $pwBox = new cHTMLPasswordbox('testName', 'testInitValue');
+        // Setting autofill true sets also readonly="readonly" & renders script together with the element
+        $pwBox->setAutofill(true);
+        $this->assertTrue($this->_readAttribute($pwBox, '_autofill'));
+
+        $html = $pwBox->toHtml();
+        $this->assertNull($pwBox->getAttribute('readonly'));
+        $this->assertStringNotContainsString('<script', $html);
+        $this->assertStringNotContainsString('$("#' . $pwBox->getID() . '").on("focus", function() {', $html);
+        $this->assertStringNotContainsString('$(this).prop("readonly", false);', $html);
+    }
 }

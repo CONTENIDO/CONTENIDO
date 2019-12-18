@@ -14,9 +14,12 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+// Global variables, send by the form
+global $idfrontenduser, $username, $newpd, $newpd2, $active;
+
 $page = new cGuiPage("frontend.user_edit");
 
-$feusers = new cApiFrontendUserCollection();
+$feUsers = new cApiFrontendUserCollection();
 
 if (is_array($cfg['plugins']['frontendusers'])) {
     foreach ($cfg['plugins']['frontendusers'] as $plugin) {
@@ -24,6 +27,7 @@ if (is_array($cfg['plugins']['frontendusers'])) {
     }
 }
 
+// NOTE: Don't rename $feuser, plugin "frontendusers" function "frontendusers_valid_from_display" & "frontendusers_valid_from_store" uses it!
 $feuser = new cApiFrontendUser();
 $feuser->loadByPrimaryKey($idfrontenduser);
 
@@ -32,15 +36,15 @@ $oFEGroupMemberCollection->setWhere('idfrontenduser', $idfrontenduser);
 $oFEGroupMemberCollection->addResultField('idfrontendgroup');
 $oFEGroupMemberCollection->query();
 
-// Fetch all groups the user belongs to (no goup, one group, more than one group).
-// The array $aFEGroup can be used in frontenduser plugins to display selfdefined user properties group dependent.
-$aFEGroup = array();
+// Fetch all groups the user belongs to (no group, one group, more than one group).
+// The array $aFEGroup can be used in frontend user plugins to display self defined user properties group dependent.
+$aFEGroup = [];
 while ($oFEGroup = $oFEGroupMemberCollection->next()) {
     $aFEGroup[] = $oFEGroup->get("idfrontendgroup");
 }
 
 if ($action == "frontend_create" && $perm->have_perm_area_action("frontend", "frontend_create")) {
-    $feuser = $feusers->create(" ".i18n("-- new user --"));
+    $feuser = $feUsers->create(" ".i18n("-- new user --"));
     $idfrontenduser = $feuser->get("idfrontenduser");
     // put idfrontenduser of newly created user into superglobals for plugins
     $_GET['idfrontenduser'] = $idfrontenduser;
@@ -70,7 +74,7 @@ JS;
 }
 
 if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "frontend_delete")) {
-    $feusers->delete($idfrontenduser);
+    $feUsers->delete($idfrontenduser);
 
     $iterator = $_cecRegistry->getIterator("Contenido.Permissions.FrontendUser.AfterDeletion");
 
@@ -88,7 +92,8 @@ if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "fr
 
 if (true === $feuser->isLoaded() && $feuser->get("idclient") == $client) {
     $username = stripslashes(trim($username));
-    $messages = array();
+    $messages = [];
+    $variablesToStore = [];
 
     if ($action == "frontend_save_user" && cString::getStringLength($username) == 0) {
         $page->displayError(i18n("Username can't be empty"));
@@ -99,8 +104,8 @@ if (true === $feuser->isLoaded() && $feuser->get("idclient") == $client) {
 
         if ($feuser->get("username") != $username) {
 			$usernameDb = $feuser->escape($username);
-            $feusers->select("username = '".$usernameDb."' and idclient='$client'");
-            if ($feusers->next()) {
+            $feUsers->select("username = '".$usernameDb."' and idclient='$client'");
+            if ($feUsers->next()) {
                 $messages[] = i18n("Could not set new username: Username already exists");
             } else {
                 $feuser->set("username", $username);
@@ -135,19 +140,17 @@ if (true === $feuser->isLoaded() && $feuser->get("idclient") == $client) {
                         $wantVariables = call_user_func("frontendusers_".$plugin."_wantedVariables");
 
                         if (is_array($wantVariables)) {
-                            $varArray = array();
-
                             foreach ($wantVariables as $value) {
                                 if (is_array($GLOBALS[$value])) {
                                     foreach ($GLOBALS[$value] as $globKey => $globValue) {
                                         $GLOBALS[$value][$globKey] = stripslashes($globValue);
                                     }
                                 } else {
-                                    $varArray[$value] = stripslashes($GLOBALS[$value]);
+                                    $variablesToStore[$value] = stripslashes($GLOBALS[$value]);
                                 }
                             }
                         }
-                        $store = call_user_func("frontendusers_".$plugin."_store", $varArray);
+                        $store = call_user_func("frontendusers_".$plugin."_store", $variablesToStore);
                     }
                 }
             }
@@ -157,7 +160,7 @@ if (true === $feuser->isLoaded() && $feuser->get("idclient") == $client) {
 
         if ($iterator->count() > 0) {
         	while (false !== $chainEntry = $iterator->next()) {
-        		$chainEntry->execute($varArray);
+        		$chainEntry->execute($variablesToStore);
         	}
         }
 
@@ -169,7 +172,6 @@ if (true === $feuser->isLoaded() && $feuser->get("idclient") == $client) {
         $page->displayWarning(implode("<br>", $messages)) . "<br>";
     }
 
-
     $form = new cGuiTableForm("properties");
     $form->setVar("frame", $frame);
     $form->setVar("area", $area);
@@ -179,9 +181,13 @@ if (true === $feuser->isLoaded() && $feuser->get("idclient") == $client) {
     $form->addHeader(i18n("Edit user"));
 
     $username = new cHTMLTextbox("username", $feuser->get("username"), 40);
-    $newpw    = new cHTMLPasswordBox("newpd", "", 40);
-    $newpw2   = new cHTMLPasswordBox("newpd2", "", 40);
-    $active   = new cHTMLCheckbox("active", "1");
+    $newpw = new cHTMLPasswordBox("newpd", "", 40);
+    $newpw->setAutofill(false);
+    $newpd->setAttribute('autocomplete', 'off');;
+    $newpw2 = new cHTMLPasswordBox("newpd2", "", 40);
+    $newpd2->setAttribute('autocomplete', 'off');
+    $newpw2->setAutofill(false);
+    $active = new cHTMLCheckbox("active", "1");
     $active->setChecked($feuser->get("active"));
 
     $form->add(i18n("User name"), $username->render());
@@ -227,7 +233,7 @@ if (true === $feuser->isLoaded() && $feuser->get("idclient") == $client) {
         $arrGroups = $feuser->getGroupsForUser();
 
         if (count($arrGroups) > 0) {
-            $aMemberGroups = array();
+            $aMemberGroups = [];
 
             foreach ($arrGroups as $iGroup) {
                 $oMemberGroup = new cApiFrontendGroup($iGroup);

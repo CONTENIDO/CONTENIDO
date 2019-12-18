@@ -169,12 +169,14 @@ $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("New password"));
 $oTxtPass = new cHTMLPasswordbox('password', '', 40, 255);
+$oTxtPass->setAutofill(false);
 $oTxtPass->setAttribute('autocomplete', 'off');
 $tpl->set('d', 'CATFIELD', $oTxtPass->render());
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Confirm new password"));
 $oTxtWord = new cHTMLPasswordbox('passwordagain', '', 40, 255);
+$oTxtWord->setAutofill(false);
 $oTxtWord->setAttribute('autocomplete', 'off');
 $tpl->set('d', 'CATFIELD', $oTxtWord->render());
 $tpl->next();
