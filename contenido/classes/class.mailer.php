@@ -169,6 +169,9 @@ class cMailer extends Swift_Mailer {
      * @throws cInvalidArgumentException
      */
     public function __construct($transport = NULL) {
+        // is logging of errors enabled?
+        $logErrors = (getSystemProperty('system', 'mail_log_error') === 'true');
+
         // get address of default mail sender
         $mailSender = getSystemProperty('system', 'mail_sender');
         if (Swift_Validate::email($mailSender)) {
@@ -231,12 +234,18 @@ class cMailer extends Swift_Mailer {
 
         // CON-2530
         if ($transport === false) {
-            throw new cInvalidArgumentException('Can not connect to the mail server. Please check your mail server configuration at CONTENIDO backend.');
+            $errorMessage = 'Can not connect to the mail server. Please check your mail server configuration at CONTENIDO backend.';
+            if ($logErrors) {
+                // Log the error, the exception below may be catched somewhere!
+                cWarning(__FILE__, __LINE__, $errorMessage);
+            }
+            throw new cInvalidArgumentException($errorMessage);
         }
 
         parent::__construct($transport);
 
-        if (getSystemProperty('system', 'mail_log_error') === 'true') {
+        // NOTE: We can register the plug-in after calling parents constructor!
+        if ($logErrors) {
             $this->_logger = new Swift_Plugins_Loggers_ArrayLogger();
             $this->registerPlugin(new Swift_Plugins_LoggerPlugin($this->_logger));
         }
