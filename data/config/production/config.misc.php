@@ -390,8 +390,8 @@ $cfg['backend_template']['js_files'] = array(
     '{basePath}scripts/contenido.js',
     '{basePath}scripts/general.js',
     '_CONFIG_',
-    '{basePath}scripts/startup.js',
-    '{basePath}scripts/jquery/plugins/atooltip.jquery.js'
+    '{basePath}scripts/startup.js?v=606f61b17b52c6f86295e3608e6f0ee4',
+    '{basePath}scripts/jquery/plugins/atooltip.jquery.js?v=606f61b17b52c6f86295e3608e6f0ee4'
 );
 
 
