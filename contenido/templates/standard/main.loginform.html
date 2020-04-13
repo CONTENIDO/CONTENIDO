@@ -3,7 +3,7 @@
 <head>
     <base href="{BASEPATH}">
     <title>{TITEL}</title>
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css?v=4ff97ee40f1ac052f634e7e8c2f3e37e">
     <link rel="shortcut icon" href="{BASEPATH}favicon.ico">
     <style type="text/css">
     #page {
@@ -145,9 +145,9 @@
     $('#page').addClass('load');
 
     $(function() {
-        $("#lang").change(function() {
-            if ("" !== $("#username").val() && "" !== $("#passwd").val()) {
-            	$("#login").submit();
+        $('#lang').change(function() {
+            if ('' !== $('#username').val() && '' !== $('#passwd').val()) {
+            	$('#login').submit();
         	}
         });
 
