@@ -1,21 +1,43 @@
-<script type="text/javascript">
-// Function for deleting workflows
-function deleteWorkflow(idworkflow) {
-    var url = "main.php?area=workflow";
-    url += "&action=workflow_delete";
-    url += "&frame=2";
-    url += "&idworkflow=" + idworkflow;
-    url += "&contenido=" + Con.sid;
-    parent.left_bottom.location.href = url;
-}
-</script>
+<!-- workflow/templates/template.workflow_list.html -->
 
-{FORM}
+{CONTENT}
 
 <script type="text/javascript">
-(function(Con, $) {
-    if ($('#marked')) {
-        row.markedRow = $('#marked')[0];
-    }
-})(Con, Con.$);
+    (function(Con, $) {
+        var area = 'workflow';
+
+        function actionShowWorkflow($row, id) {
+            Con.multiLink(
+                'right_top', Con.UtilUrl.build('main.php', {area: area, action: '', frame: 3, idworkflow: id}),
+                'right_bottom', Con.UtilUrl.build('main.php', {area: 'workflow_common', action: '', frame: 4, idworkflow: id})
+            );
+            Con.ParameterCollector.register('idworkflow', id);
+        }
+
+        function actionDeleteWorkflow($row, id) {
+            var deleteMessage = "{DELETE_MESSAGE}",
+                name = $row.find('[data-type="item"]').text();
+            Con.showConfirmation(deleteMessage.replace('%s', name), function() {
+                Con.multiLink(
+                    'right_bottom', Con.UtilUrl.build('main.php', {area: 'workflow_common', action: 'workflow_delete', frame: 4, idworkflow: id})
+                );
+            });
+        }
+
+        $('#generic_menu_list [data-action]').live('click', function() {
+            var action = $(this).data('action'),
+                $row = $(this).closest('[data-id]'),
+                id = $row.data('id');
+
+            if ($row && action && id) {
+                if (action === 'workflow_show') {
+                    actionShowWorkflow($row, id);
+                } else if (action === 'workflow_delete') {
+                    actionDeleteWorkflow($row, id);
+                }
+            }
+        });
+    })(Con, Con.$);
 </script>
+
+<!-- /workflow/templates/template.workflow_list.html -->

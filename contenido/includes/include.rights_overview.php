@@ -64,7 +64,7 @@ if ($action == 'user_delete') {
     $oRightColl->deleteByUserId($request['userid']);
 
     $page->displayOk(i18n("User deleted"));
-    $page->setReload();
+    $page->reloadLeftBottomFrame(['userid' => null]);
 
     $page->abortRendering();
     $page->render();

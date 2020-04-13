@@ -43,6 +43,12 @@ msgstr "Start a new scan"
 msgid "BTN_VERIFY"
 msgstr "Verify"
 
+msgid "DELETE_ENTITY"
+msgstr "Delete record"
+
+msgid "DELETE_MESSAGE"
+msgstr "Do you really want to delete the following record:<br><br>%s<br>"
+
 msgid "ERR_DELETE_ENTITY"
 msgstr "The record could not be deleted!"
 

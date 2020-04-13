@@ -18,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css?v=4ff97ee40f1ac052f634e7e8c2f3e37e">
 </head>
 <body>
 

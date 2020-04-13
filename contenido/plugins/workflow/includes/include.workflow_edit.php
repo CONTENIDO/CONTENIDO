@@ -13,19 +13,26 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $idworkflow, $wfname, $wfdescription;
+
 plugin_include('workflow', 'classes/class.workflow.php');
 
 $page = new cGuiPage("workflow_edit", "workflow");
 $page->addStyle('workflow.css');
 
+$workflows = new Workflows();
+
 if ($action == "workflow_delete") {
+    $workflows->delete($idworkflow);
+
+    $page->setSubnav('blank', 'workflow');
+    $page->reloadLeftBottomFrame(['idworkflow' => null]);
     $page->displayOk(i18n('Deleted workflow successfully!', 'workflow'));
     $page->render();
     exit();
 }
 
 $form = new cGuiTableForm("workflow_edit");
-$workflows = new Workflows();
 
 $workflow = $workflows->loadItem($idworkflow);
 
@@ -44,28 +51,6 @@ if ($action == "workflow_save") {
 
 if ((int) $idworkflow == 0) {
     $idworkflow = $_GET['idworkflow'];
-}
-
-if ($idworkflow) {
-    $reloadLeftBottom = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var left_bottom = Con.getFrame('left_bottom');
-    var right_top = Con.getFrame('right_top');
-    if (left_bottom) {
-        var href = Con.UtilUrl.replaceParams(left_bottom.location.href, {idworkflow: {$idworkflow}, action: null});
-        left_bottom.location.href = href;
-    }
-
-    if (right_top) {
-        right_top.location.href = right_top.location.href + '&idworkflow={$idworkflow}';
-    }
-})(Con, Con.$);
-</script>
-JS;
-
-} else {
-    $reloadLeftBottom = '';
 }
 
 $form->setVar("area", $area);
@@ -98,8 +83,11 @@ if (!empty($created)) {
 }
 
 $page->setContent($form);
-if (!empty($reloadLeftBottom)) {
-    $page->addScript($reloadLeftBottom);
+
+if ($idworkflow) {
+    $page->reloadLeftBottomFrame(['idworkflow' => $idworkflow]);
+} else {
+    $page->reloadLeftBottomFrame(['idworkflow' => null]);
 }
 
 $page->render();

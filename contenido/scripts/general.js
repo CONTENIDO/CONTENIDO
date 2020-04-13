@@ -688,6 +688,70 @@
 
 (function(Con, $, scope) {
 
+    var NAME = 'frame-left-bottom';
+
+    /**
+     * FrameLeftBottom class
+     *
+     * @submodule base-frame-left-bottom
+     * @class FrameLeftBottom
+     * @static
+     */
+
+    Con.FrameLeftBottom = {
+        /**
+         * Reloads the left bottom frame, optionally with a parameter.
+         * If parameter name is passed, then it has to contain a value. The parameter value can be empty.
+         *
+         * @param {Array}  parameters  Associative array with key/value pairs
+         */
+        reload: function(parameters) {
+            var frame = Con.getFrame('left_bottom'), registeredParameters = null;
+            if (frame) {
+                Con.FrameLeftBottom.registerParameter(parameters);
+                try {
+                    registeredParameters = frame.Con.ParameterCollector.getAll(false);
+                } catch (e) {
+                    console.error(NAME + ': Get registered parameter error', e);
+                }
+                if (registeredParameters) {
+                    frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, registeredParameters);
+                } else {
+                    frame.location.href = frame.location.href;
+                }
+            }
+        },
+
+        /**
+         * Registers the passed parameter on left bottom frame.
+         *
+         * @param {Array.<Object>} parameter Associative array with key/value pairs
+         */
+        registerParameter: function(parameter) {
+            var leftBottom;
+
+            if ($.isPlainObject(parameter)) {
+                leftBottom = Con.getFrame('left_bottom');
+                if (leftBottom) {
+                    if (typeof leftBottom.register_parameter === 'function') {
+                        $.each(parameter, function (name, value) {
+                            if (typeof name === 'string' && name.length) {
+                                value = value == null ? '' : '' + value; // Note == checks for null and undefined!
+                                leftBottom.register_parameter(name, value);
+                            }
+                        });
+                    }
+                }
+            }
+        }
+    };
+
+})(Con, Con.$, window);
+
+// ############################################################################
+
+(function(Con, $, scope) {
+
     var NAME = 'util-url';
 
     /**
@@ -704,7 +768,7 @@
          *
          * <pre>
          * // result: main.php?area=con&amp;action=new&amp;frame=4&amp;contenido=123434
-         * var url = Con.UtilUrl.build(&quot;main.php&quot;, {
+         * var url = Con.UtilUrl.build('main.php', {
          *     area : 'con',
          *     action : 'new',
          *     frame : 4
@@ -1232,4 +1296,40 @@
         return false;
     };
 
+    /**
+     * Serializes given form elements and returns them back, either as array of names and values
+     * (see jQuery serializeArray()) or as an object with name and values.
+     *
+     * @param {jQuery} form - jQuery form element
+     * @param {Boolean} [asObject=true] - Flag to return the form elements data as an object.
+     * @returns {Object|JQuery.NameValuePair[]} - The form data. If return type is object, form data
+     *     having multiple values for a multi select or option group (same element name!) will be returned
+     *     as an list of values, e. g. {multiselect: ['value1', 'value2']}
+     */
+    Con.serializeForm = function (form, asObject) {
+        var objData,
+            arrayData = form.serializeArray();
+
+        asObject = typeof asObject === 'boolean' ? asObject : true;
+
+        if (!asObject) {
+            return arrayData;
+        }
+
+        objData = {};
+        $.each(arrayData, function (pos, item) {
+            if (typeof objData[item.name] === 'undefined') {
+                objData[item.name] = item.value;
+            } else if (typeof objData[item.name] === 'string') {
+                objData[item.name] = [objData[item.name] ];
+                objData[item.name].push(item.value);
+            } else if (Array.isArray(objData[item.name])) {
+                objData[item.name].push(item.value);
+            }
+        });
+
+        return objData;
+    }
 })(Con, Con.$);
+
+console.log(window.name + ':general query parameter', window.location.search.replace('?', ''));

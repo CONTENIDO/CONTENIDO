@@ -13,67 +13,56 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$iIdMarked = (int) $_GET['idworkflow'];
+global $idworkflow;
+
+$iIdMarked = cSecurity::toInteger($_GET['idworkflow']);
 
 plugin_include('workflow', 'classes/class.workflow.php');
 
 $page = new cGuiPage('workflow_list', 'workflow');
 $page->addStyle('workflow.css');
 $workflows = new Workflows();
-$sScript = '';
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
+$delTitle = i18n('Delete workflow', 'workflow');
 
-if ($action == 'workflow_delete') {
-    $workflows->delete($idworkflow);
-    $urlRightTop = $sess->url('main.php?area=workflow&frame=3');
-    $urlRightBottom = $sess->url('main.php?area=workflow_common&frame=4&action=workflow_delete');
-
-    $sScript = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var right_top = Con.getFrame('right_top'),
-        right_bottom = Con.getFrame('right_bottom');
-    if (right_top) {
-        right_top.location.href = "{$urlRightTop}";
-    }
-    if (right_bottom) {
-        right_bottom.location.href = "{$urlRightBottom}";
-    }
-})(Con, Con.$);
-</script>
-JS;
-}
+$page->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
 
 $ui = new cGuiMenu();
 $workflows->select("idclient = '$client' AND idlang = '$lang'");
 
 while (($workflow = $workflows->next()) !== false) {
-    $wfid = $workflow->getField('idworkflow');
+    $wfid = cSecurity::toInteger($workflow->getField('idworkflow'));
     $wfname = preg_replace("/\"/", '', ($workflow->getField('name')));
     $wfdescription = preg_replace("/\"/", '', ($workflow->getField('description')));
 
+    $ui->setId($wfid, $wfid);
+    $ui->setTitle($wfid, $wfname);
+
     // Create the link to show/edit the workflow
     $link = new cHTMLLink();
-    $link->setMultiLink('workflow', '', 'workflow_common', 'workflow_show');
-    $link->setAlt($wfdescription);
-    $link->setCustom('idworkflow', $wfid);
-
-    $delTitle = i18n('Delete workflow', 'workflow');
-    $delDescr = sprintf(i18n("Do you really want to delete the following workflow:<br><br>%s<br>", 'workflow'), $wfname);
-    $delete = '<a class="jsDelete" title="' . $delTitle . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteWorkflow(' . $wfid . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
-
-    $ui->setTitle($wfid, $wfname);
+    $link->setClass('show_item')
+        ->setLink('javascript:;')
+        ->setAlt($wfdescription)
+        ->setAttribute('data-action', 'workflow_show');
     $ui->setLink($wfid, $link);
 
-    $ui->setActions($wfid, 'delete', $delete);
+    // Delete recipient
+    $image = new cHTMLImage($cfg['path']['images'] . 'delete.gif', 'vAlignMiddle');
+    $image->setAlt($delTitle);
+    $delete = new cHTMLLink();
+    $delete->setLink('javascript:;')
+        ->setAlt($delTitle)
+        ->setAttribute('data-action', 'workflow_delete')
+        ->setContent($image->render());
+    $ui->setActions($wfid, 'delete', $delete->render());
 
     if ($wfid == $iIdMarked) {
         $ui->setMarked($wfid);
     }
 }
 
-if (!empty($sScript)) {
-    $page->addScript($sScript);
-}
-$page->set('s', 'FORM', $ui->render(0));
+$page->set('s', 'DELETE_MESSAGE', i18n("Do you really want to delete the following workflow:<br><br>%s<br>", 'workflow'));
+$page->set('s', 'CONTENT', $ui->render(0));
 
 $page->render();

@@ -31,27 +31,28 @@ $oUser = new cApiUser($auth->auth["uid"]);
 // base: Elements from core code (other type may be: "plugin")
 // sort: Element can be used to be sorted by
 // search: Element can be used to search in
-$aFields = array();
-$aFields["name"] = array(
-    "field" => "name",
-    "caption" => i18n("Name", 'newsletter'),
-    "type" => "base,sort,search"
-);
-$aFields["email"] = array(
-    "field" => "email",
-    "caption" => i18n("E-Mail", 'newsletter'),
-    "type" => "base,sort,search"
-);
-$aFields["confirmed"] = array(
-    "field" => "confirmed",
-    "caption" => i18n("Confirmed", 'newsletter'),
-    "type" => "base"
-);
-$aFields["deactivated"] = array(
-    "field" => "deactivated",
-    "caption" => i18n("Deactivated", 'newsletter'),
-    "type" => "base"
-);
+$aFields = [
+    "name" => [
+        "field" => "name",
+        "caption" => i18n("Name", 'newsletter'),
+        "type" => "base,sort,search"
+    ],
+    "email" => [
+        "field" => "email",
+        "caption" => i18n("E-Mail", 'newsletter'),
+        "type" => "base,sort,search"
+    ],
+    "confirmed" => [
+        "field" => "confirmed",
+        "caption" => i18n("Confirmed", 'newsletter'),
+        "type" => "base"
+    ],
+    "deactivated" => [
+        "field" => "deactivated",
+        "caption" => i18n("Deactivated", 'newsletter'),
+        "type" => "base"
+    ],
+];
 
 // ################################
 // Store settings
@@ -116,6 +117,8 @@ if (!$bSortByFound) {
 if (!$bSearchInFound) {
     $_REQUEST["searchin"] = "--all--";
 }
+
+$requestIdRecipient = (isset($_REQUEST['idrecipient'])) ? cSecurity::toInteger($_REQUEST['idrecipient']) : 0;
 
 // Free memory
 unset($oUser);
@@ -182,68 +185,53 @@ $iMenu = 0;
 
 // Store messages for repeated use (speeds performance, as i18n translation is
 // only needed once)
-$aMsg = array();
-$aMsg["DelTitle"] = i18n("Delete recipient", 'newsletter');
-$aMsg["DelDescr"] = i18n("Do you really want to delete the following recipient:<br>", 'newsletter');
+$aMsg = [
+    "DelTitle" => i18n("Delete recipient", 'newsletter'),
+    "DelDescr" => i18n("Do you really want to delete the following recipient:<br>", 'newsletter'),
+];
 
 while ($oRecipient = $oRecipients->next()) {
     $iMenu++;
-    $idnewsrcp = $oRecipient->get("idnewsrcp");
+    $idnewsrcp = cSecurity::toInteger($oRecipient->get("idnewsrcp"));
 
     $sName = $oRecipient->get("name");
     if (empty($sName)) {
         $sName = $oRecipient->get("email");
     }
 
+    // Show recipient
     $oLnk = new cHTMLLink();
-    $oLnk->setMultiLink($area, "", $area, "");
-    $oLnk->setCustom("idrecipient", $idnewsrcp);
-
+    $oLnk->setClass('show_item')
+        ->setLink('javascript:;')
+        ->setAttribute('data-action', 'recipients_show');
     if ($oRecipient->get("deactivated") == 1 || $oRecipient->get("confirmed") == 0) {
-        $oLnk->updateAttributes(array(
+        $oLnk->updateAttributes([
             "style" => "color:#A20000"
-        ));
+        ]);
     }
-
-    $oMenu->setTitle($iMenu, $sName);
     $oMenu->setLink($iMenu, $oLnk);
 
+    $oMenu->setId($iMenu, $idnewsrcp);
+    $oMenu->setTitle($iMenu, $sName);
+
+    if ($requestIdRecipient == $idnewsrcp) {
+        $oMenu->setMarked($iMenu);
+    }
+
     if ($perm->have_perm_area_action("recipients", "recipients_delete")) {
-        $oMenu->setActions($iMenu, "delete", '<a title="' . $aMsg["DelTitle"] . '" href="javascript://" onclick="showDelMsg(' . $idnewsrcp . ',\'' . addslashes($sName) . '\')"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $aMsg["DelTitle"] . '" alt="' . $aMsg["DelTitle"] . '"></a>');
+        // Delete recipient
+        $oImage = new cHTMLImage($cfg['path']['images'] . 'delete.gif', 'vAlignMiddle');
+        $oImage->setAlt($aMsg["DelTitle"]);
+        $oDelete = new cHTMLLink();
+        $oDelete->setLink('javascript:;')
+            ->setAlt($aMsg["DelTitle"])
+            ->setAttribute('data-action', 'recipients_delete')
+            ->setContent($oImage->render());
+        $oMenu->setActions($iMenu, 'delete', $oDelete->render());
     }
 }
 
-$sExecScript = <<<JS
-<script type="text/javascript">
-function showDelMsg(lngId, strElement) {
-    Con.showConfirmation("{$aMsg["DelDescr"]}<b>" + strElement + "</b>", function() {
-        deleteRecipient(lngId);
-    });
-}
-
-// Function for deleting recipients
-function deleteRecipient(idrecipient) {
-    var oForm = Con.getFrame("left_top").document.getElementById("options");
-
-    var url = "main.php?area=recipients";
-    url += "&action=recipients_delete";
-    url += "&frame=4";
-    url += "&idrecipient=" + idrecipient;
-    url += "&contenido=" + Con.sid;
-    url += get_registered_parameters();
-    url += "&restrictgroup=" + oForm.restrictgroup.value;
-    url += "&sortby=" + oForm.sortby.value;
-    url += "&sortorder=" + oForm.sortorder.value;
-    url += "&filter=" + oForm.filter.value;
-    url += "&elemperpage=" + oForm.elemperpage.value;
-
-    Con.getFrame("right_bottom").location.href = url;
-}
-</script>
-JS;
-
-$oPage->addScript($sExecScript);
-$oPage->addScript('parameterCollector.js');
+$oPage->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
 // $oPage->addScript('refreshTop', $sRefreshTop);
 
 // generate current content for Object Pager�
@@ -287,5 +275,10 @@ JS;
 
 $oPage->addScript($sRefreshPager);
 
-$oPage->setContent($oMenu);
+// Generate template
+$oTpl = new cTemplate();
+$oTpl->set('s', 'DELETE_MESSAGE', $aMsg["DelDescr"]);
+$sTemplate = $oTpl->generate(cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'newsletter/templates/standard/template.recipients_menu.html', true);
+
+$oPage->setContent([$oMenu, $sTemplate]);
 $oPage->render();

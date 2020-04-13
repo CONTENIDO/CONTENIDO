@@ -1,0 +1,97 @@
+
+<!-- newsletter/templates/template.newsletter_menu.html -->
+<script type="text/javascript">
+    (function(Con, $) {
+        var area = 'news';
+
+        function actionShowNews($row, id) {
+            Con.multiLink(
+                'right_top', Con.UtilUrl.build('main.php', {area: area, action: 'news_show', frame: 3, idnewsletter: id}),
+                'right_bottom', Con.UtilUrl.build('main.php', {area: area, action: 'news_show', frame: 4, idnewsletter: id})
+            );
+            Con.ParameterCollector.register('idnewsletter', id);
+        }
+
+        function actionSendTestNews($row, id) {
+            var sendTestMessage = '{SEND_TEST_MESSAGE}';
+            Con.showConfirmation(sendTestMessage, function() {
+                var $form, formData, parameter;
+                $form = Con.getFrame('left_top').$('#newsletter_listoptionsform');
+                formData = Con.serializeForm($form);
+                parameter = $.extend(Con.ParameterCollector.getAll(false), {
+                    area: area,
+                    action: 'news_send_test',
+                    frame: 4,
+                    idnewsletter: id,
+                    sortby: formData.sortby,
+                    sortorder: formData.sortorder,
+                    filter: formData.filter,
+                    elemperpage: formData.elemperpage
+                });
+                Con.multiLink(
+                    'right_bottom', Con.UtilUrl.build('main.php', parameter)
+                );
+            });
+        }
+
+        function actionAddJobNews($row, id) {
+            Con.multiLink(
+                'right_top', Con.UtilUrl.build('main.php', {area: area, action: '', frame: 3, idnewsletter: id}),
+                'right_bottom', Con.UtilUrl.build('main.php', {area: area, action: 'news_add_job', frame: 4, idnewsletter: id})
+            );
+        }
+
+        function actionDuplicateNews($row, id) {
+            Con.multiLink(
+                'right_top', Con.UtilUrl.build('main.php', {area: area, action: '', frame: 3, idnewsletter: id}),
+                'right_bottom', Con.UtilUrl.build('main.php', {area: area, action: 'news_duplicate', frame: 4, idnewsletter: id})
+            );
+        }
+
+        function actionDeleteNews($row, id) {
+            var deleteMessage = "{DELETE_MESSAGE}",
+                name = $row.find('[data-type="item"]').text();
+            deleteMessage += '<b>' + name + '</b>';
+            Con.showConfirmation(deleteMessage, function() {
+                var $form, formData, parameter;
+                $form = Con.getFrame('left_top').$('#newsletter_listoptionsform');
+                formData = Con.serializeForm($form);
+                parameter = $.extend(Con.ParameterCollector.getAll(false), {
+                    area: area,
+                    action: 'news_delete',
+                    frame: 4,
+                    idnewsletter: id,
+                    sortby: formData.sortby,
+                    sortorder: formData.sortorder,
+                    filter: formData.filter,
+                    elemperpage: formData.elemperpage
+                });
+                Con.multiLink(
+                    'right_bottom', Con.UtilUrl.build('main.php', parameter)
+                );
+            });
+        }
+
+        $('#generic_menu_list [data-action]').live('click', function() {
+            var action = $(this).data('action'),
+                $row = $(this).closest('[data-id]'),
+                id = $row.data('id');
+
+            if ($row && action && id) {
+                if (action === 'news_show') {
+                    actionShowNews($row, id);
+                } else if (action === 'news_send_test') {
+                    actionSendTestNews($row, id);
+                } else if (action === 'news_add_job') {
+                    actionAddJobNews($row, id);
+                } else if (action === 'news_duplicate') {
+                    actionDuplicateNews($row, id);
+                } else if (action === 'news_delete') {
+                    actionDeleteNews($row, id);
+                }
+            }
+        });
+    })(Con, Con.$);
+</script>
+
+<!-- /newsletter/templates/template.newsletter_menu.html -->

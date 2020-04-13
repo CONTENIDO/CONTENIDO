@@ -685,6 +685,13 @@ a.activemenu:hover {
     text-decoration: none;
 }
 
+/* Links in overview lists (frame left_bottom) */
+.menu_overview_list a.show_item {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
 /**
  * #############################################################################
  * @section Text

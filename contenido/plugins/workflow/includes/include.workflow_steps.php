@@ -13,6 +13,9 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $adduser, $idworkflow, $idworkflowitem, $idusersequence, $wfactions,
+       $wftaskselect, $wfstepname, $wfstepdescription, $wfemailnoti, $wfescalnoti;
+
 plugin_include('workflow', 'classes/class.workflow.php');
 plugin_include('workflow', 'includes/functions.workflow.php');
 cInclude("includes", "functions.encoding.php");
@@ -20,7 +23,7 @@ cInclude("includes", "functions.encoding.php");
 $page = new cGuiPage("workflow_steps", "workflow");
 $page->addStyle('workflow.css');
 
-$iIdMarked = (int) $_GET['idworkflowitem'];
+$iIdMarked = (isset($_REQUEST['idworkflowitem'])) ? cSecurity::toInteger($_REQUEST['idworkflowitem']) : 0;
 
 $workflowActions = new WorkflowActions();
 
@@ -166,7 +169,7 @@ function getTimeUnitSelector($listid, $default) {
  * @throws cInvalidArgumentException
  */
 function getWorkflowList() {
-    global $idworkflow, $cfg;
+    global $idworkflow, $iIdMarked, $cfg;
 
     $backendUrl = cRegistry::getBackendUrl();
 
@@ -178,9 +181,10 @@ function getWorkflowList() {
     while (($workflowitem = $workflowitems->next()) !== false) {
         $pos = $workflowitem->get("position");
         $name = preg_replace("/\"/","",($workflowitem->get("name")));
-        $id = $workflowitem->get("idworkflowitem");
+        $id = cSecurity::toInteger($workflowitem->get("idworkflowitem"));
 
         $edititem = new cHTMLLink();
+        $edititem->setClass("show_item");
         $edititem->setCLink("workflow_steps", 4, "workflow_step_edit");
         $edititem->setCustom("idworkflowitem", $id);
         $edititem->setCustom("idworkflow", $idworkflow);
@@ -226,7 +230,7 @@ function getWorkflowList() {
 
         $ui->setActions($id, "delete", $deletestep->render());
 
-        if ($_GET['idworkflowitem'] == $id) {
+        if ($iIdMarked === $id) {
             $ui->setMarked($id);
         }
     }
@@ -246,7 +250,7 @@ function createNewWorkflow() {
     $backendUrl = cRegistry::getBackendUrl();
 
     $content = "";
-    $ui = new cGuiMenu();
+    $ui = new cGuiMenu('new_workflow_menu_list');
     $rowmark = false;
 
     $createstep = new cHTMLLink();
@@ -329,7 +333,8 @@ function getWorkflowUsers($idworkflowitem) {
 
     $backendUrl = cRegistry::getBackendUrl();
 
-    $ui = new cGuiMenu();
+    $ui = new cGuiMenu('workflow_users_menu_list');
+    $ui->setRowmark(false);
     $workflowusers = new WorkflowUserSequences();
 
     $workflowusers->select("idworkflowitem = '$idworkflowitem'", "", "position ASC");

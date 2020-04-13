@@ -28,12 +28,12 @@ $currentLink = '<a target="right_bottom" href="' . $sess->url("main.php?area=sta
 $availableYears = statGetAvailableYears($client, $lang);
 
 // Title
-$tpl->set('s', 'PADDING_LEFT', '17');
+$tpl->set('s', 'PADDING_LEFT', '7');
 $tpl->set('s', 'OVERVIEWTEXT', "<b>" . i18n("Statistics Overview") . "</b>");
 
 // Current Statistic
 $tpl->set('s', 'CURRENTTEXT', $currentLink);
-$tpl->set('s', 'PADDING_LEFT', '17');
+$tpl->set('s', 'PADDING_LEFT', '7');
 
 // Empty Row
 $text = '&nbsp;';
@@ -42,13 +42,13 @@ if (count($availableYears) != 0) {
 }
 
 $tpl->set('s', 'ARCHIVETEXT', $text);
-$tpl->set('s', 'PADDING_LEFT', '17');
+$tpl->set('s', 'PADDING_LEFT', '7');
 
 foreach ($availableYears as $yearIterator) {
     //$yearLink = function statsOverviewYear($year)
     $yearLink = '<a target="right_bottom" href="' . $sess->url("main.php?area=stat&frame=4&action=stat_show&displaytype=top10&showYear=1&year=" . $yearIterator) . '">' . "$yearIterator" . '</a>';
     $tpl->set('d', 'TEXT', $yearLink);
-    $tpl->set('d', 'PADDING_LEFT', '17');
+    $tpl->set('d', 'PADDING_LEFT', '7');
     $tpl->next();
 
     $availableMonths = statGetAvailableMonths($yearIterator, $client, $lang);
@@ -58,7 +58,7 @@ foreach ($availableYears as $yearIterator) {
         $monthLink = '<a target="right_bottom" href="' . $sess->url("main.php?area=stat&frame=4&action=stat_show&displaytype=top10&yearmonth=" . $yearIterator . $monthIterator) . '">' . "$monthCanonical" . '</a>';
 
         $tpl->set('d', 'TEXT', $monthLink);
-        $tpl->set('d', 'PADDING_LEFT', '20');
+        $tpl->set('d', 'PADDING_LEFT', '17');
         $tpl->next();
     }
 }

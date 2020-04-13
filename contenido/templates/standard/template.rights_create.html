@@ -16,8 +16,8 @@
         border: 1px solid;
         border-bottom-width: 0;
         border-left-width: 0;
-
-    border-color:{BORDERCOLOR};}
+        border-color: {BORDERCOLOR};
+    }
     </style>
 {_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/jquery/plugins/timepicker.js"></script>
@@ -31,6 +31,7 @@
         if (createdUserId != '') {
             Con.getFrame('right_top').location = 'main.php?area=user&frame=3&action=&userid=' + createdUserId + '&contenido=' + Con.sid;
             Con.getFrame('right_bottom').location = 'main.php?area=user_overview&frame=4&action=&userid=' + createdUserId + '&contenido=' + Con.sid;
+            Con.FrameLeftBottom.reload({userid: createdUserId});
         } else {
             Con.getFrame('right_top').location = 'main.php?area=user&frame=3&contenido=' + Con.sid;
         }

@@ -1,115 +1,93 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>template.tpl_overview.html</title> {_META_HEAD_CONTENIDO_}
+    <title>template.tpl_overview.html</title>
+{_META_HEAD_CONTENIDO_}
 {_CSS_HEAD_CONTENIDO_}
-<link rel="stylesheet" type="text/css" href="styles/jquery/plugins/tipsy.css">
+    <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/tipsy.css">
 {_JS_HEAD_CONTENIDO_}
-<script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
-<script type="text/javascript" src="scripts/jquery/plugins/tipsy.js"></script>
-<script type="text/javascript" src="scripts/registerTipsy.js"></script>
+    <script type="text/javascript" src="scripts/jquery/plugins/tipsy.js"></script>
+    <script type="text/javascript" src="scripts/registerTipsy.js"></script>
+    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
+    <script type="text/javascript" src="scripts/parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
 </head>
-<body>
+<body class="page_generic">
 
-    <table id="tpl_list" width="100%" cellspacing="0" cellpadding="2" border="0">
+    <table id="tpl_overview_list" class="menu_overview_list" width="100%" cellspacing="0" cellpadding="2" border="0">
         <!-- BEGIN:BLOCK -->
-        <tr class="tooltip-north row_mark" original-title="{DESCRIPTION}" id="{ID}">
-            <td><img alt="" width="5" height="1" alt="" src="images/spacer.gif"></td>
-            <td class="textw_small">{NAME}</td>
-            <td align="right" class="nowrap">{INUSE}{COPY}{DELETE}</td>
+        <tr id="{ID}" data-id="{DATA_ID}" class="tooltip-north row_mark" original-title="{DESCRIPTION}">
+            <td data-type="icon"></td>
+            <td data-type="item" class="textw_small">{NAME}</td>
+            <td data-type="actions" align="right" class="nowrap">{INUSE}{COPY}{DELETE}</td>
         </tr>
         <!-- END:BLOCK -->
     </table>
 
     <script type="text/javascript">
-        // Function for deleting templates
-        function deleteTemplate(idtpl) {
-            var url = Con.UtilUrl.build("main.php", {
-                area : 'tpl',
-                action : 'tpl_delete',
-                frame : 2,
-                idtpl : idtpl
-            });
-
-            // workaround to fix being able to delete templates from the "Visual Editing" tab
-            var frame = Con.getFrame('right_bottom');
-            var baseTag = null;
-            // find the base tag
-            if (frame) {
-                baseTag = $("base", frame.document)[0];
-            } else {
-                baseTag = $("base")[0];
-            }
-            // if there is one, delete it
-            if (baseTag != undefined) {
-                var existingBaseHref = baseTag.href;
-                baseTag.href = "";
-                // delete the template in left bottom
-                // this would fail with a base tag
-                window.location.href = url;
-                // restore old base tag
-                baseTag.href = existingBaseHref;
-            } else {
-                // if there is no base tag, just reload the frame with the right URL
-                window.location.href = url;
-            }
-
-            if (frame) {
-                var url = Con.UtilUrl.build("main.php", {
-                    area : 'tpl_edit',
-                    action : 'tpl_delete',
-                    frame : 4,
-                    blubi : 'blubi', //???
-                    idtpl : idtpl
-                });
-                // do the same for the right bottom frame
-                // if there is a base tag, delete it
-                if (baseTag != undefined) {
-                    var existingBaseHref = baseTag.href;
-                    baseTag.href = "";
-                    // delete template in right bottom (This is necessary to display the "Temlate deleted!" message)
-                    frame.location.href = url;
-                    // restore old base tag
-                    baseTag.href = existingBaseHref;
-                } else {
-                    // if there is no base tag there, we just continue normally
-                    frame.location.href = url;
-                }
-            }
-        }
-
-        rowMarkLayReMark(Con.getFrame('left_top').obj);
-
         (function(Con, $) {
+
+            function actionShowTemplate($row, id) {
+                Con.multiLink(
+                    'right_top', Con.UtilUrl.build('main.php', {area: 'tpl', frame: 3, idtpl: id}),
+                    'right_bottom', Con.UtilUrl.build('main.php', {area: 'tpl_edit', frame: 4, idtpl: id})
+                );
+                Con.ParameterCollector.register('idtpl', id);
+            }
+
+            function actionDeleteTemplate($row, id) {
+                var deleteMessage = "{DELETE_MESSAGE}",
+                    name = $row.find('[data-type="item"]').text();
+                Con.showConfirmation(deleteMessage.replace('%s', name), function() {
+                    Con.multiLink(
+                        'right_top', Con.UtilUrl.build('main.php', {area: 'tpl', frame: 3}),
+                        'right_bottom', Con.UtilUrl.build('main.php', {area: 'tpl_edit', action: 'tpl_delete', frame: 4, idtpl: id})
+                    );
+                });
+            }
+
+            function actionInUseTemplate($row, id) {
+                $.post(
+                    "{AJAX_URL}",
+                    { area: "{AREA}", ajax: "inused_template", id: id, contenido: Con.sid },
+                    function(data) {
+                        var name = $row.find('[data-type="item"]').text(),
+                            inUsedTitle = "{BOX_TITLE}";
+                        Con.showNotification(inUsedTitle.replace('%s', name), data, null, true);
+                    }
+                );
+            }
+
+            function actionDuplicateTemplate($row, id) {
+                Con.multiLink(
+                    'right_bottom', Con.UtilUrl.build('main.php', {area: 'tpl_edit', action: 'tpl_duplicate', frame: 4, idtpl: id})
+                );
+            }
+
             $(function() {
-                // select a frame with jquery
-                //$(Con.getFrame('right_bottom').document).find('body').html();
-                $('.in_used_tpl').live(
-                        'click',
-                        function() {
-                            var iId = $(this).attr('rel');
-                            if (iId) {
-                                var sTemplateName = $(this).parents().filter(
-                                        'td:first').prev().text();
-                                $.post("{AJAXURL}", {
-                                    area : "{AREA}",
-                                    ajax : "inused_template",
-                                    id : iId,
-                                    contenido : Con.sid
-                                }, function(data) {
-                                    var inUseTitle = "{BOX_TITLE}";
-                                    inUseTitle = inUseTitle.replace('%s',
-                                            sTemplateName);
-                                    Con.showNotification(inUseTitle, data,
-                                            null, true);
-                                });
-                            }
-                        });
+                $('#tpl_overview_list [data-action]').live('click', function() {
+                    var action = $(this).data('action'),
+                        $row = $(this).closest('[data-id]'),
+                        id = $row.data('id');
 
-                Con.RowMark.initialize('#tpl_list .row_mark', 'lay', '#marked');
+                    if ($row && action && id) {
+                        if (action === 'show_template') {
+                            actionShowTemplate($row, id);
+                        } else if (action === 'delete_template') {
+                            actionDeleteTemplate($row, id);
+                        } else if (action === 'inused_template') {
+                            actionInUseTemplate($row, id);
+                        } else if (action === 'duplicate_template') {
+                            actionDuplicateTemplate($row, id);
+                        } else if (action === 'todo_template') {
+                            // TODO we could implement the action for todo_layout here!
+                        }
+                    }
+                });
 
+                Con.RowMark.initialize('#tpl_overview_list .row_mark', 'lay', '#marked');
             });
         })(Con, Con.$);
     </script>
 
 </body>
+</html>

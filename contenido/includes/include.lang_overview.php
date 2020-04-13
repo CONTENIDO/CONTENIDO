@@ -42,45 +42,50 @@ while ($db->nextRecord()) {
 
     $idlang = $db->f("idlang");
 
+    // Show link
+    $showLink = '<a href="javascript:;" class="show_item" data-action="show_lang"><span>' . $db->f("name") . '</span>&nbsp;(' . $idlang . ')</a>';
+    $tpl->set('d', 'LANGUAGE', $showLink);
+
+    // Activate link
     if ($db->f("active") == 0) {
         // activate
         $message = i18n("Activate language");
         if ($perm->have_perm_area_action($area, "lang_activatelanguage")) {
-            $active = "<a title=\"$message\" href=\"" . $sess->url("main.php?area=$area&action=lang_activatelanguage&frame=$frame&targetclient=$targetclient&idlang=" . $db->f("idlang")) . "#clickedhere\"><img src=\"" . $cfg["path"]["images"] . "offline.gif" . "\" border=\"0\" title=\"$message\" alt=\"$message\"></a>";
+            $activeLink = "<a data-action=\"activate_lang\" title=\"$message\" href=\"javascript:;\"><img src=\"" . $cfg["path"]["images"] . "offline.gif" . "\" border=\"0\" title=\"$message\" alt=\"$message\"></a>";
         } else {
-            $active = "<img src='" . $cfg["path"]["images"] . "offline.gif' title='" . i18n("Language offline") . "'>";
+            $activeLink = "<img src='" . $cfg["path"]["images"] . "offline.gif' title='" . i18n("Language offline") . "'>";
         }
     } else {
         // deactivate
         $message = i18n("Deactivate language");
         if ($perm->have_perm_area_action($area, "lang_deactivatelanguage")) {
-            $active = "<a title=\"$message\" class=\"action\" href=\"" . $sess->url("main.php?area=$area&action=lang_deactivatelanguage&frame=$frame&targetclient=$targetclient&idlang=" . $db->f("idlang")) . "#clickedhere\"><img src=\"" . $cfg["path"]["images"] . "online.gif" . "\" border=\"0\" title=\"$message\" alt=\"$message\"></a>";
+            $activeLink = "<a data-action=\"deactivate_lang\" title=\"$message\" class=\"action\" href=\"javascript:;\"><img src=\"" . $cfg["path"]["images"] . "online.gif" . "\" border=\"0\" title=\"$message\" alt=\"$message\"></a>";
         } else {
-            $active = "<img src='" . $cfg["path"]["images"] . "online.gif' title='" . i18n("Language online") . "'>";
+            $activeLink = "<img src='" . $cfg["path"]["images"] . "online.gif' title='" . i18n("Language online") . "'>";
         }
     }
 
-    // Delete Button
+    // Delete link
     $deleteMsg = sprintf(i18n("Do you really want to delete the language %s?"), conHtmlSpecialChars($db->f("name")));
     $deleteAct = i18n("Delete language");
-    $deletebutton = '<a title="' . $deleteAct . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $deleteMsg . '&quot;, function() { deleteLang(' . $db->f('idlang') . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $deleteAct . '" alt="' . $deleteAct . '"></a>';
-
-    $tpl->set('d', 'LANGUAGE', '<a target="right_bottom" href="' . $sess->url("main.php?area=lang_edit&idlang=$idlang&targetclient=$targetclient&frame=4") . '">' . $db->f("name") . '&nbsp;<span>(' . $idlang . ')</span></a>');
-    $tpl->set('d', 'ACTIVATEBUTTON', $active);
     if ($perm->have_perm_area_action("lang_edit", "lang_deletelanguage")) {
-        $tpl->set('d', 'DELETEBUTTON', $deletebutton);
+        $deleteLink = '<a href="javascript:;" data-action="delete_lang" title="' . $deleteAct . '"><img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteAct . '" alt="' . $deleteAct . '"></a>';
     } else {
-        $tpl->set("d", "DELETEBUTTON", "");
+        $deleteLink = '';
     }
+    $tpl->set("d", "ACTIONS", $activeLink . ' ' . $deleteLink);
 
     if ($iGetIdlang == $idlang) {
-        $tpl->set('d', 'MARKED', ' id="marked" ');
+        $tpl->set('d', 'MARKED', ' id="marked" data-id="' . $idlang . '"');
     } else {
-        $tpl->set('d', 'MARKED', '');
+        $tpl->set('d', 'MARKED', ' data-id="' . $idlang . '"');
     }
 
     $tpl->next();
 }
+
+$deleteMsg = i18n("Do you really want to delete the language %s?");
+$tpl->set('s', 'DELETE_MESSAGE', $deleteMsg);
 
 $newlanguageform = '
     <form name="newlanguage" method="post" action="' . $sess->url("main.php?area=$area&frame=$frame") . '">
@@ -111,15 +116,9 @@ if ($action == 'lang_deactivatelanguage' || $action == 'lang_activatelanguage') 
     $sReloadScript = <<<JS
 <script type="text/javascript">
 (function(Con, $) {
-    var frame, href;
-    frame = Con.getFrame('right_bottom');
-    if (frame.location.href.substr(-8) != 'main.php') {
-        href = Con.UtilUrl.replaceParams(frame.location.href, {idlang: $iGetIdlang});
-        frame.location.href = href;
-    } else {
-        href = 'main.php?area=lang_edit&idlang=$iGetIdlang&targetclient=$clientId&frame=4&contenido=$contenido';
-        frame.location.href = href;
-    }
+    Con.multiLink(
+        'right_bottom', Con.UtilUrl.build('main.php', {area: 'lang_edit', frame: 4, targetclient: $clientId, idlang: $iGetIdlang})
+    );
 })(Con, Con.$);
 </script>
 JS;

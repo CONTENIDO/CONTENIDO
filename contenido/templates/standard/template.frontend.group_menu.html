@@ -1,21 +1,47 @@
-<script type="text/javascript">
-// Function for deleting frontend groups
-function deleteFrontendGroup(idfrontendgroup) {
-    var url  = "main.php?area=frontendgroups";
-    url += "&action=frontendgroup_delete";
-    url += "&frame=4";
-    url += "&idfrontendgroup=" + idfrontendgroup;
-    url += "&contenido=" + Con.sid;
-    Con.getFrame('right_bottom').location.href = url;
-}
-</script>
-
 {FORM}
 
 <script type="text/javascript">
 (function(Con, $) {
-    if ($('#marked')) {
-        row.markedRow = $('#marked')[0];
+
+    function actionShowFrontendGroup($row, id) {
+        Con.multiLink(
+            'right_top', Con.UtilUrl.build('main.php', {area: 'frontendgroups', frame: 3, idfrontendgroup: id}),
+            'right_bottom', Con.UtilUrl.build('main.php', {area: 'frontendgroups', frame: 4, idfrontendgroup: id})
+        );
+        Con.ParameterCollector.register('idfrontendgroup', id);
     }
+
+    function actionDeleteFrontendGroup($row, id) {
+        var deleteMessage = "{DELETE_MESSAGE}",
+            name = $row.find('[data-type="item"]').text();
+
+        Con.showConfirmation(deleteMessage.replace('%s', name), function() {
+            var parameter;
+
+            parameter = {
+                area: 'frontendgroups',
+                action: 'frontendgroup_delete',
+                frame: 4,
+                idfrontendgroup: id
+            };
+
+            Con.getFrame('right_bottom').location.href = Con.UtilUrl.build('main.php', parameter);
+        });
+    }
+
+    $('table [data-action]').live('click', function() {
+        var action = $(this).data('action'),
+            $row = $(this).closest('[data-id]'),
+            id = $row.data('id');
+
+        if ($row && action && id) {
+            if (action === 'show_frontendgroup') {
+                actionShowFrontendGroup($row, id);
+            } else if (action === 'delete_frontendgroup') {
+                actionDeleteFrontendGroup($row, id);
+            }
+        }
+    });
+
 })(Con, Con.$);
 </script>

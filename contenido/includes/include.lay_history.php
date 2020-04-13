@@ -52,7 +52,7 @@ if ((!$readOnly) && $_POST["lay_send"] == true && $_POST["layname"] != "" && $_P
     $sLayoutDescription = $_POST["laydesc"];
 
     // save and mak new revision
-    $oPage->addScript($oVersion->renderReloadScript('lay', $idlay, $sess));
+    $oPage->reloadLeftBottomFrame(['idlay' => $idlay]);
     layEditLayout($idlay, $sLayoutName, $sLayoutDescription, $sLayoutCode);
     unset($oVersion);
 }

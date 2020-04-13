@@ -6,21 +6,62 @@
 {_CSS_HEAD_CONTENIDO_}
 {_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
-    <script type="text/javascript" src="scripts/parameterCollector.js"></script>
+    <script type="text/javascript" src="scripts/parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
+    <style type="text/css">
+        #upl_dirs_list .dir_list_entry {
+            margin-top: -1px;
+        }
+        #upl_dirs_list td {
+            padding: 0;
+        }
+        #upl_dirs_list td.dir_item {
+            text-align: left;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+        #upl_dirs_list td.dir_item .dir_collapse_img,
+        #upl_dirs_list td.dir_item .dir_vline_img {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            padding: 0;
+        }
+        #upl_dirs_list td.dir_item .dir_folder_img,
+        #upl_dirs_list td.dir_item .dir_root_img {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            padding: 0 5px 0 2px;
+        }
+        #upl_dirs_list td.dir_item > a,
+        #upl_dirs_list td.dir_item a.dir_folder_link {
+            display: inline-block;
+            line-height: 20px;
+            height: 20px;
+        }
+        #upl_dirs_list td.dir_item a.dir_folder_link {
+            padding-right: 5px;
+        }
+        #upl_dirs_list td.dir_action {
+            text-align: right;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+    </style>
 </head>
-<body>
+<body class="page_generic">
 
 <p>{WARNING}</p>
 {CATBROWSER}
 
-<table id="upl_dirs_list" width="87%" style="margin:10px 10px 10px 17px;" cellspacing="0" cellpadding="0" border="0">
+<table id="upl_dirs_list" width="100%" cellspacing="0" cellpadding="0" border="0">
     <!-- BEGIN:BLOCK -->
-    <tr id="{ID_PATH}" class="row_mark" data-path="{DATA_PATH}">
+    <tr id="{ID_PATH}" class="row_mark" data-id="{DATA_PATH}">
         <td style="padding-left: {INDENT}px">
-            <table style="margin-top:-1px;" width="100%" cellspacing="0" cellpadding="0" border="0">
+            <table class="dir_list_entry" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                    <td align="left" valign="top" class="text_medium" nowrap="nowrap">{COLLAPSE}{DIRNAME}</td>
-                    <td align="right" nowrap="nowrap">{EDITBUTTON}{DELETEBUTTON}</td>
+                    <td class="text_medium dir_item">{COLLAPSE}{DIRNAME}</td>
+                    <td class="dir_action" data-type="actions">{EDITBUTTON}{DELETEBUTTON}</td>
                 </tr>
             </table>
         </td>
@@ -32,52 +73,80 @@
 
 var idPath = '{ID_PATH}';
 
-function refreshMenu() {
-    var frame = Con.getFrame('left_top');
-
-    if (frame.document.getElementById('caption2')) {
-        frame.document.getElementById('caption2').innerHTML = idPath;
-    }
-
-    if (frame.document.newdir) {
-        frame.document.newdir.selectedfile.value = idPath;
-        frame.document.newdir.path.value = idPath;
-    }
-}
-
-function deleteDirectory(path) {
-    var url = Con.UtilUrl.build('main.php', {
-        area: 'upl',
-        action: 'upl_delete',
-        frame: 2,
-        path: path
-    });
-    url += {APPENDPARAMETERS};
-    window.location.href = url;
-}
-
 (function(Con, $) {
+
+    var appendParameters = '{APPENDPARAMETERS}';
+
+    function toggleUplDir(id, expand) {
+        var url, parameter;
+
+        parameter = {
+            area: 'upl',
+            frame: 2
+        };
+        if (expand) {
+            parameter.expand = id;
+        } else {
+            parameter.collapse = id;
+        }
+
+        url = Con.UtilUrl.build('main.php', parameter);
+        url += appendParameters;
+        window.location.href = url;
+    }
+
+    function actionShowUplDir($row, id) {
+        Con.multiLink(
+            'right_top', Con.UtilUrl.build('main.php', {area: 'upl', frame: 3, path: id}) + appendParameters,
+            'right_bottom', Con.UtilUrl.build('main.php', {area: 'upl', frame: 4, path: id}) + appendParameters
+        );
+        Con.ParameterCollector.register('path', id);
+    }
+
+    function actionExpandUplDir($row, id) {
+        toggleUplDir(id, true);
+    }
+
+    function actionCollapseUplDir($row, id) {
+        toggleUplDir(id, false);
+    }
+
+    function actionDeleteUplDir($row, id) {
+        var deleteMsg = "{DELETE_MESSAGE}";
+        if (id) {
+            Con.showConfirmation(deleteMsg.replace('{path}', id), function() {
+                var url = Con.UtilUrl.build('main.php', {area: 'upl', action: 'upl_delete', frame: 4, path: id});
+                url += appendParameters;
+                Con.multiLink(
+                    'right_top',  Con.UtilUrl.build('main.php', {area: 'upl', frame: 3}),
+                    'right_bottom', url,
+                );
+            });
+        }
+    }
+
     $(function() {
         if (idPath != '' && $('#' + idPath)) {
             upl.click($('#' + idPath)[0]);
         }
 
-        $('.jsDelete').click(function(e) {
-            e.stopPropagation();
-            var deleteMsg = "{DELETE_MSG}";
-            var path = $(this).closest('[data-path]').data('path');
-            Con.showConfirmation(deleteMsg.replace('{path}', path), function() {
-                deleteDirectory(path);
-            });
-            return false;
-        });
+        $('table [data-action]').live('click', function() {
+            var action = $(this).data('action'),
+                $row = $(this).closest('[data-id]'),
+                id = $row.data('id');
 
-        var myLoc = window.location.href;
-        if (myLoc.indexOf('action=upl_delete') != -1) {
-            $('body', Con.getFrame('right_bottom').document).html('');
-            $('#navlist', Con.getFrame('right_top').document).remove();
-            $('.root').click();
-        }
+            if ($row && action) {
+                if (action === 'show_upl_dir') {
+                    actionShowUplDir($row, id);
+                } else if (action === 'expand_upl_dir') {
+                    actionExpandUplDir($row, $(this).data('dir'));
+                } else if (action === 'collapse_upl_dir') {
+                    actionCollapseUplDir($row, $(this).data('dir'));
+                } else if (action === 'delete_upl_dir') {
+                    actionDeleteUplDir($row, id);
+                }
+            }
+        });
 
         Con.RowMark.initialize('#upl_dirs_list .row_mark', 'upl');
 

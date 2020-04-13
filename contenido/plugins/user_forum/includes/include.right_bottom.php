@@ -23,7 +23,5 @@ if (!empty($_REQUEST['idart'])) {
 	$rightBottom->getStartpage();
 	$rightBottom->render();
 }
-$tpl = new cTemplate();
-$tpl->generate('plugins/user_forum/templates/template.right_bottom.html');
 
 ?>

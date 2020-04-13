@@ -137,9 +137,7 @@ $form2->setVar("idmod", $idmod);
 $form2->custom["submit"]["accesskey"] = '';
 
 if ($reloadLeftBottom) {
-    $page->reloadFrame('left_bottom', array(
-        "idmod" => $idmod
-    ));
+    $page->reloadLeftBottomFrame(['idmod' => $idmod]);
 }
 $page->setContent(array(
     $form2

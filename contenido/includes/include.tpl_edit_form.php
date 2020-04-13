@@ -21,11 +21,12 @@ $page = new cGuiPage("tpl_edit_form", '', '0');
 if ($action == "tpl_delete" && $perm->have_perm_area_action_anyitem($area, $action)) {
     $page->displayOk(i18n("Deleted Template succcessfully!"));
     $page->abortRendering();
+    $page->reloadLeftBottomFrame(['idtpl' => null]);
     $page->render();
     exit();
 }
 
-if (($action == "tpl_new") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
+if ($action == "tpl_new" && !$perm->have_perm_area_action_anyitem($area, $action)) {
     $page->displayCriticalError(i18n("Permission denied"));
     $page->render();
     return;
@@ -36,7 +37,7 @@ if ($action == "tpl_new") {
 }
 
 $sql = "SELECT
-        a.idtpl, a.name as name, a.description, a.idlay, b.description as laydescription, a.defaulttemplate
+        a.idtpl, a.name AS name, a.description, a.idlay, b.description AS laydescription, a.defaulttemplate
         FROM
         " . $cfg['tab']['tpl'] . " AS a
         LEFT JOIN
@@ -105,6 +106,7 @@ $form->setVar("changelayout", 0);
 $form->setVar("frame", $frame);
 $form->setVar("action", "tpl_edit");
 $form->setVar("idtpl", $idtpl != -1 ? $idtpl : "");
+$form->setVar("oldname", $tplname);
 
 if (!$idlay) {
     $form->setVar("createmode", 1);
@@ -139,7 +141,7 @@ if ($idlay) {
         // Loop through containers ****************
         $name = tplGetContainerName($idlay, $containerNr);
 
-        $modselect = new cHTMLSelectElement("c[{$containerNr}]");
+        $modSelect = new cHTMLSelectElement("c[{$containerNr}]");
 
         $caption = ($name != '') ? "{$name} (Container {$containerNr})" : "Container {$containerNr}";
 
@@ -150,7 +152,7 @@ if ($idlay) {
             $default = tplGetContainerDefault($idlay, $containerNr);
 
             $option = new cHTMLOptionElement('-- ' . i18n("none") . ' --', 0);
-            $modselect->addOptionElement(0, $option);
+            $modSelect->addOptionElement(0, $option);
 
             foreach ($modules as $key => $val) {
                 if ($val['name'] == $default) {
@@ -158,7 +160,7 @@ if ($idlay) {
                     if ($containerModules[$containerNr] == $key) {
                         $option->setSelected(true);
                     }
-                    $modselect->addOptionElement($key, $option);
+                    $modSelect->addOptionElement($key, $option);
                 }
             }
 
@@ -174,10 +176,11 @@ if ($idlay) {
                     $option->setSelected(true);
                 }
 
-                $modselect->addOptionElement(0, $option);
+                $modSelect->addOptionElement(0, $option);
             }
 
-            $allowedtypes = tplGetContainerTypes($idlay, $containerNr);
+            $allowedTypes = tplGetContainerTypes($idlay, $containerNr);
+            $createmode = isset($_REQUEST['createmode']) ? cSecurity::toInteger($_REQUEST['createmode']) : 0;
 
             foreach ($modules as $key => $val) {
                 $option = new cHTMLOptionElement($val['name'], $key);
@@ -186,12 +189,12 @@ if ($idlay) {
                     $option->setSelected(true);
                 }
 
-                if (count($allowedtypes) > 0) {
-                    if (in_array($val['type'], $allowedtypes) || $val['type'] == '') {
-                        $modselect->addOptionElement($key, $option);
+                if (count($allowedTypes) > 0) {
+                    if (in_array($val['type'], $allowedTypes) || $val['type'] == '') {
+                        $modSelect->addOptionElement($key, $option);
                     }
                 } else {
-                    $modselect->addOptionElement($key, $option);
+                    $modSelect->addOptionElement($key, $option);
                 }
             }
 
@@ -200,16 +203,19 @@ if ($idlay) {
             }
         }
 
-        $form->add($caption, $modselect->render() . $defaultModuleNotice);
+        $form->add($caption, $modSelect->render() . $defaultModuleNotice);
     }
 }
 
 $href = $sess->url("main.php?area=tpl&frame=2&idtpl=" . $idtpl);
 
-$page->setReload();
-//$page->setSubnav("idtpl=$idtpl", "tpl");
+if ($action == 'tpl_delete' || $action == 'tpl_new') {
+    $page->reloadLeftBottomFrame(['idtpl' => null]);
+} else {
+    $page->reloadLeftBottomFrame(['idtpl' => $idtpl]);
+}
 
-$page->setContent(array($form));
+$page->setContent([$form]);
 
 if ($_POST["idtpl"] === "" && $idtpl > 0) {
     $page->displayOk(i18n("Created new Template successfully!"));
