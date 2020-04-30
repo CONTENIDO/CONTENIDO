@@ -37,57 +37,31 @@ if (!cRegistry::getBackendSessionId()) {
     if (!isset($allowCookie)) {
 
         $tpl = cSmartyFrontend::getInstance();
+        $url = cUri::getInstance();
 
         // build translations
-        $tpl->assign('trans', array(
+        $tpl->assign('trans', [
             'title' => mi18n("TITLE"),
             'infoText' => mi18n("INFOTEXT"),
             'userInput' => mi18n("USERINPUT"),
             'accept' => mi18n("ACCEPT"),
             'decline' => mi18n("DECLINE")
-        ));
-
-        /**
-         *
-         * @param string $uri
-         * @return string
-         */
-        if (!function_exists('script_cookie_directive_add_get_params')) {
-            function script_cookie_directive_add_get_params($uri) {
-                foreach ($_GET as $getKey => $getValue) {
-                    // do not add already added GET parameters to redirect url
-                    if (cString::findFirstPos($uri, '?' . $getKey . '=') !== false
-                        || cString::findFirstPos($uri, '&' . $getKey . '=') !== false
-                    ) {
-                        continue;
-                    }
-                    if (cString::findFirstPos($uri, '?') === false) {
-                        $uri .= '?';
-                    } else {
-                        $uri .= '&';
-                    }
-                    $uri .= htmlentities($getKey) . '=' . htmlentities($getValue);
-                }
-
-                return $uri;
-            }
-        }
+        ]);
 
         // build accept url
-        $acceptUrl = script_cookie_directive_add_get_params(cUri::getInstance()->build(array(
+        $acceptUrl = $url->appendParameters($url->build([
             'idart' => cRegistry::getArticleId(),
             'lang' => cRegistry::getLanguageId(),
             'acceptCookie' => 1
-        ), true));
-
+        ], true), $_GET);
         $tpl->assign('pageUrlAccept', $acceptUrl);
 
         // build deny url
-        $denyUrl = script_cookie_directive_add_get_params(cUri::getInstance()->build(array(
+        $denyUrl = $url->appendParameters($url->build([
             'idart' => cRegistry::getArticleId(),
             'lang' => cRegistry::getLanguageId(),
             'acceptCookie' => 0
-        ), true));
+        ], true), $_GET);
         $tpl->assign('pageUrlDeny', $denyUrl);
 
         $tpl->display('get.tpl');

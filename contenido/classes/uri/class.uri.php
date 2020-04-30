@@ -74,20 +74,21 @@ class cUri {
      * Creates a URL to frontend page.
      *
      * @param mixed $param
-     *         Either url or assoziative array containing parameter:
+     *         Either url or associative array containing parameter:
      *         - url: front_content.php?idcat=12&lang=1
-     *         - params: array('idcat' => 12, 'lang' => 1)
+     *         - params: ['idcat' => 12, 'lang' => 1]
      *         Required values depend on used UriBuilder, but a must have is 'lang'.
      * @param bool $bUseAbsolutePath [optional]
      *         Flag to create absolute Urls
      * @param array $aConfig [optional]
      *         If not set, cUriBuilderConfig::getConfig() will be used by the UriBuilder
-     * @throws cInvalidArgumentException
-     *         if the given params do not contain the lang
      * @return string
      *         The Url build by cUriBuilder
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
-    public function build($param, $bUseAbsolutePath = false, array $aConfig = array()) {
+    public function build($param, $bUseAbsolutePath = false, array $aConfig = []) {
         if (!is_array($param)) {
             $arr = $this->parse($param);
             $param = $arr['params'];
@@ -100,9 +101,9 @@ class cUri {
         }
 
         // execute preprocess hook
-        $aHookParams = array(
+        $aHookParams = [
             'param' => $param, 'bUseAbsolutePath' => $bUseAbsolutePath, 'aConfig' => $aConfig
-        );
+        ];
         $aResult = cApiCecHook::executeAndReturn('Contenido.Frontend.PreprocessUrlBuilding', $aHookParams);
         if ($aResult) {
             $param = (isset($aResult['param'])) ? $aResult['param'] : '';
@@ -151,18 +152,20 @@ class cUri {
      * Creates a URL used to redirect to frontend page.
      *
      * @param mixed $param
-     *                       Either url or assoziative array containing parameter:
+     *                       Either url or associative array containing parameter:
      *                       - url: front_content.php?idcat=12&lang=1
-     *                       - params: array('idcat' => 12, 'lang' => 1)
+     *                       - params: ['idcat' => 12, 'lang' => 1]
      *                       Required values depend on used UriBuilder, but a must have is 'lang'.
      * @param array $aConfig [optional]
      *                       If not set, cUriBuilderConfig::getConfig() will be used by the UriBuilder.
      *
      * @return string
      *         The redirect Url build by cUriBuilder.
+     * @throws cDbException
+     * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function buildRedirect($param, array $aConfig = array()) {
+    public function buildRedirect($param, array $aConfig = []) {
         $url = $this->build($param, true, $aConfig);
         return str_replace('&amp;', '&', $url);
     }
@@ -173,7 +176,7 @@ class cUri {
      * @param string $sUrl
      *         The Url to strip down.
      * @return array
-     *         Assoziative array created by using parse_url()
+     *         Associative array created by using parse_url()
      *         having the key 'params' which includes the parameter value pairs.
      */
     public function parse($sUrl) {
@@ -185,7 +188,7 @@ class cUri {
         }
 
         if (!isset($aUrl['params']) || !is_array($aUrl['params'])) {
-            $aUrl['params'] = array();
+            $aUrl['params'] = [];
         }
 
         return $aUrl;
@@ -195,7 +198,7 @@ class cUri {
      * Composes a url using passed components array.
      *
      * @param array $aComponents
-     *         Assoziative array created by parse_url()
+     *         Associative array created by parse_url()
      * @return string
      *         The composed Url
      */
@@ -280,9 +283,9 @@ class cUri {
         }
 
         // Use pathinfo to get the path part (dirname) of the url
-        $pathinfo = pathinfo($aComponents['path']);
-        $baseName = $pathinfo['basename'];
-        $path = $pathinfo['dirname'];
+        $pathInfo = pathinfo($aComponents['path']);
+        $baseName = $pathInfo['basename'];
+        $path = $pathInfo['dirname'];
         $path = str_replace('\\', '/', $path);
         if ($path == '.') {
             $path = '';
@@ -302,6 +305,61 @@ class cUri {
         } else {
             return false;
         }
+    }
+
+    /**
+     * Appends additional query parameters to a URI
+     * @param string $uri - The URI to append parameters to
+     * @param array $parameters - Parameter to append
+     * @param array|null $reservedParameters - List of reserved parameters to skip from overwriting.
+     *     If no list is given, then following reserved parameters will be defined as not overridable:
+     *     'client', 'idart', 'idcat', 'idartlang', 'lang', 'error'
+     * @param bool $overwrite - Flag to overwrite other already existing parameters in given url.
+     *     Note, enabled flag won't invalidate the $reservedParameters value!
+     * @return string - The modified URI
+     */
+    public function appendParameters($uri, array $parameters, $reservedParameters = null, $overwrite = false) {
+        if (!is_array($reservedParameters)) {
+            $reservedParameters = [
+                'client', 'idart', 'idcat', 'idartlang', 'lang', 'error'
+            ];
+        }
+
+        $urlParts = $this->parse($uri);
+        $urlParameters = $urlParts['params'];
+
+        // Filter parameter
+        $filteredParameters = [];
+        foreach ($parameters as $key => $value) {
+            if (!$overwrite && isset($urlParameters[$key])) {
+                // Do not add already existing parameters to url
+                continue;
+            }
+            if (in_array($key, $reservedParameters)) {
+                // CON-2231: Do not add reserved get parameters to redirect url
+                continue;
+            }
+            $filteredParameters[$key] = $value;
+        }
+
+       // Clean parameter values recursive
+        array_walk_recursive($filteredParameters, function (&$value) {
+            if (!is_array($value)) {
+                $value = htmlentities(cRequestValidator::cleanParameter($value));
+            }
+        });
+
+        // Clean parameter keys
+        $filteredParameters2 = [];
+        foreach ($filteredParameters as $key => $value) {
+            $filteredParameters2[htmlentities(cRequestValidator::cleanParameter($key))] = $value;
+        }
+
+        // Merge url parameters with filtered parameters
+        $urlParts['query'] = http_build_query(array_merge($urlParameters, $filteredParameters2), '', '&');
+        $uri = $this->composeByComponents($urlParts);
+
+        return $uri;
     }
 
     /**
