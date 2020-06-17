@@ -1,0 +1,45 @@
+
+<!-- siwecos/templates/template.left_bottom.html -->
+
+<script type="text/javascript">
+    (function(Con, $) {
+        var area = 'siwecos';
+
+        function actionShowSiwecos($row, id) {
+            Con.multiLink(
+                'right_top', Con.UtilUrl.build('main.php', {area: area, action: '', frame: 3, idsiwecos: id}),
+                'right_bottom', Con.UtilUrl.build('main.php', {area: area, action: 'siwecos_show', frame: 4, idsiwecos: id})
+            );
+            Con.ParameterCollector.register('idsiwecos', id);
+        }
+
+        // 'right_top','main.php?area=siwecos&frame=3&action=siwecos_delete&idsiwecos=1',
+        // 'right_bottom','main.php?area=siwecos&frame=4&action=siwecos_delete&idsiwecos=1')
+        function actionDeleteSiwecos($row, id) {
+            var deleteMessage = "{DELETE_MESSAGE}",
+                name = $row.find('[data-type="item"]').text();
+            Con.showConfirmation(deleteMessage.replace('%s', name), function() {
+                Con.multiLink(
+                    'right_top', Con.UtilUrl.build('main.php', {area: area, action: '', frame: 3, idsiwecos: id}),
+                    'right_bottom', Con.UtilUrl.build('main.php', {area: area, action: 'siwecos_delete', frame: 4, idsiwecos: id})
+                );
+            });
+        }
+
+        $('#generic_menu_list [data-action]').live('click', function() {
+            var action = $(this).data('action'),
+                $row = $(this).closest('[data-id]'),
+                id = $row.data('id');
+
+            if ($row && action && id) {
+                if (action === 'siwecos_show') {
+                    actionShowSiwecos($row, id);
+                } else if (action === 'siwecos_delete') {
+                    actionDeleteSiwecos($row, id);
+                }
+            }
+        });
+    })(Con, Con.$);
+</script>
+
+<!-- /siwecos/templates/template.left_bottom.html -->

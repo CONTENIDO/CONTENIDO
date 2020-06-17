@@ -377,7 +377,7 @@ $cfg['inuse']['lifetime'] = 3600;
 //          The wildcard {basePath} will be replaced dynamically
 $cfg['backend_template']['css_files'] = array(
     '{basePath}styles/jquery/jquery-ui.css',
-    '{basePath}styles/contenido.css',
+    '{basePath}styles/contenido.css?v=4ff97ee40f1ac052f634e7e8c2f3e37e',
     '{basePath}styles/jquery/plugins/atooltip.css'
 );
 
@@ -388,7 +388,7 @@ $cfg['backend_template']['js_files'] = array(
     '{basePath}scripts/jquery/jquery.js',
     '{basePath}scripts/jquery/jquery-ui.js',
     '{basePath}scripts/contenido.js',
-    '{basePath}scripts/general.js',
+    '{basePath}scripts/general.js?v=c027a03b03f184f2d7d7f0d866bd9a55',
     '_CONFIG_',
     '{basePath}scripts/startup.js',
     '{basePath}scripts/jquery/plugins/atooltip.jquery.js'

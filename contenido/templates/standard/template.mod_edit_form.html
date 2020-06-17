@@ -68,11 +68,11 @@ function verifyModuleRequest(img, modId, type) {
             type: type
         },
         success: function(data, status, jqxhr) {
-			
+
 			if (Con.checkAjaxResponse(data) === false)  {
 				return false;
 			}
-			
+
             try {
                 var result = $.parseJSON(data);
             } catch(e) {
@@ -106,7 +106,7 @@ function verifyModuleRequest(img, modId, type) {
 
             //refresh left sidebar if need
             if (state == 'ok' && img.attr('data-state') != 'none') {
-                Con.getFrame('left_bottom').location.reload();
+                Con.FrameLeftBottom.reload();
             }
         }
     });
@@ -120,5 +120,6 @@ var inpIdmod  = $('#mod_edit_form input[name="idmod"]');
 verifyModuleRequest(imgInput, inpIdmod.val(), 'input');
 verifyModuleRequest(imgOutput, inpIdmod.val(), 'output');
 
-Con.getFrame('left_bottom').location.reload();
+//Con.FrameLeftBottom.reload();
+
 </script>

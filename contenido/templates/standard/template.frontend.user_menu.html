@@ -1,57 +1,72 @@
-<script type="text/javascript">
-function deleteFrontenduser(idfrontenduser) {
-    var form = Con.getFrame('left_top').document.getElementById("filter");
-    var url  = 'main.php?area=frontend';
-    url += '&action=frontend_delete';
-    url += '&frame=4';
-    url += '&idfrontenduser=' + idfrontenduser;
-    url += '&contenido=' + Con.sid;
-    url += get_registered_parameters();
-    url += '&sortby=' +form.sortby.value;
-    url += '&sortorder=' +form.sortorder.value;
-    url += '&filter=' +form.filter.value;
-    url += '&searchin=' +form.searchin.value;
-    url += '&elemperpage=' +form.elemperpage.value;
-    url += '&restrictgroup=' +form.restrictgroup.value;
-    url += '&page={MPAGE}';
-    Con.getFrame('right_bottom').location.href = url;
-}
+{FORM}
 
+<script type="text/javascript">
 (function(Con, $) {
-    var sNavigation = '{PAGER_CONTENT}';
-    var left_top = Con.getFrame('left_top');
+    var sNavigation = '{PAGER_CONTENT}',
+        left_top = Con.getFrame('left_top'), oPager, oInsert;
     if (left_top) {
-        var oPager = left_top.document.getElementById('25c6a67d-a3f1-4ea4-8391-446c131952c9');
+        oPager = left_top.document.getElementById('25c6a67d-a3f1-4ea4-8391-446c131952c9');
         if (oPager) {
-            var oInsert = oPager.firstChild;
+            oInsert = oPager.firstChild;
             oInsert.innerHTML = sNavigation;
             left_top.iPage = '{PAGE}';
             left_top.toggle_pager('25c6a67d-a3f1-4ea4-8391-446c131952c9');
         }
     }
-})(Con, Con.$);
 
-(function(Con, $) {
-    $(function() {
-        var msg = "{DELETE_MESSAGE}";
-        $('a.jsDelete').click(function() {
-            var username = $(this).data('username'),
-                idfrontenduser = $(this).data('idfrontenduser');
-            Con.showConfirmation(msg.replace('%s', username), function() {
-                deleteFrontenduser(idfrontenduser);
-            });
-            return false;
-        });
-    });
-})(Con, Con.$);
-</script>
-
-{FORM}
-
-<script type="text/javascript">
-(function(Con, $) {
-    if ($('#marked')) {
-        row.markedRow = $('#marked')[0];
+    function actionShowFrontendUser($row, id) {
+        Con.multiLink(
+            'right_top', Con.UtilUrl.build('main.php', {area: 'frontend', frame: 3, idfrontenduser: id}),
+            'right_bottom', Con.UtilUrl.build('main.php', {area: 'frontend', frame: 4, idfrontenduser: id})
+        );
+        Con.ParameterCollector.register('idfrontenduser', id);
     }
+
+    function actionDeleteFrontendUser($row, id) {
+        var deleteMessage = "{DELETE_MESSAGE}",
+            name = $row.find('[data-type="item"]').text();
+
+        Con.showConfirmation(deleteMessage.replace('%s', name), function() {
+            var $filterForm, formData, parameter;
+
+            $filterForm = Con.getFrame('left_top').$('#filter');
+            formData = Con.serializeForm($filterForm);
+
+            // TODO Do we need all the parameter in the right_bottom frame?
+            parameter = {
+                area: 'frontend',
+                action: 'frontend_delete',
+                frame: 4,
+                idfrontenduser: id,
+                sortby: formData.sortby,
+                sortorder: formData.sortorder,
+                filter: formData.filter,
+                searchin: formData.searchin,
+                elemperpage: formData.elemperpage,
+                restrictgroup: formData.restrictgroup,
+                page: '{MPAGE}'
+            };
+
+            // Merge with registered parameter
+            parameter = $.extend(Con.ParameterCollector.getAll(false), parameter);
+
+            Con.getFrame('right_bottom').location.href = Con.UtilUrl.build('main.php', parameter);
+        });
+    }
+
+    $('table [data-action]').live('click', function() {
+        var action = $(this).data('action'),
+            $row = $(this).closest('[data-id]'),
+            id = $row.data('id');
+
+        if ($row && action && id) {
+            if (action === 'show_frontenduser') {
+                actionShowFrontendUser($row, id);
+            } else if (action === 'delete_frontenduser') {
+                actionDeleteFrontendUser($row, id);
+            }
+        }
+    });
+
 })(Con, Con.$);
 </script>

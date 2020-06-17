@@ -1,46 +1,60 @@
 
-<script type="text/javascript">
-	function deleteFile(file) {
-	    var url = Con.UtilUrl.build("main.php", {
-	        area: "{JS_AREA}",
-	        action: "{JS_ACTION_DELETE}",
-	        frame: 4,
-	        delfile: file
-	    });
-	    Con.getFrame('right_bottom').location.href = url;
-	}
-</script>
-
-<table id="file_list" class="borderless" width="100%" cellspacing="0" cellpadding="0" border="0">
-
+<table id="file_overview_list" class="menu_overview_list" width="100%" cellspacing="0" cellpadding="2" border="0">
     <!-- BEGIN:BLOCK -->
-    <tr class="tooltip-north row_mark" original-title="{DESCRIPTION}" id="{MARKED}">
-        <td><img alt="" width="10" src="images/spacer.gif"></td>
-        <td>
-            <table width="100%" cellspacing="0" cellpadding="3" border="0">
-                <tr>
-                <td width="100%"><a class="action" href="javascript:Con.multiLink('right_top', 'main.php?area={AREA}&frame=3&file={FILENAME}&contenido=1', 'right_bottom', 'main.php?area={AREA}&frame=4&action={ACTION}&file={FILENAME}&tmp_file={FILENAME}&contenido=1')" alt="{FILENAME}">{FILENAME}</a></td>
-                <td align="right"><a title="i18n("Delete file")" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;i18n("Do you really want to delete the following file?")<br /><br /><b>{FILENAME}</b>&quot;, function() { deleteFile(&quot;{FILENAME}&quot;); });return false;"><img src="{DELETE_IMAGE}" border="0" title="i18n("Delete file")"></a></td>
-                </tr>
-            </table>
-        </td>
-        <td><img alt="" width="5" src="images/spacer.gif"></td>
+    <tr id="{ID}" class="tooltip-north row_mark" data-id="{DATA_ID}" original-title="{DESCRIPTION}">
+        <td data-type="icon"></td>
+        <td data-type="item" class="textw_small"><a href="javascript:;" class="show_item" data-action="show_file" title="{FILENAME}">{FILENAME}</a></td>
+        <td data-type="actions" align="right" class="nowrap">&nbsp;{DELETE}&nbsp;</td>
     </tr>
     <!-- END:BLOCK -->
-
 </table>
 
 <script type="text/javascript">
 (function(Con, $) {
+    var area = '{AREA}';
+
+    function actionShowFile($row, id) {
+        Con.multiLink(
+            'right_top', Con.UtilUrl.build('main.php', {area: area, frame: 3, file: id}),
+            'right_bottom', Con.UtilUrl.build('main.php', {area: area, action: '{ACTION_EDIT}', frame: 4, file: id, tmp_file: id})
+        );
+        Con.ParameterCollector.register('file', id);
+    }
+
+    function actionDeleteFile($row, id) {
+        var deleteMessage = 'i18n("Do you really want to delete the following file?")',
+            name = $row.find('[data-type="item"]').text();
+        deleteMessage += '<br /><br /><b>%s</b>';
+        Con.showConfirmation(deleteMessage.replace('%s', name), function() {
+            Con.multiLink(
+                'right_top', Con.UtilUrl.build('main.php', {area: area, frame: 3}),
+                'right_bottom', Con.UtilUrl.build('main.php', {area: area, action: '{ACTION_DELETE}', frame: 4, delfile: id})
+            );
+        });
+    }
+
     $(function() {
-        Con.RowMark.initialize('#file_list .row_mark', 'row', '#marked');
+        $('#file_overview_list [data-action]').live('click', function() {
+            var action = $(this).data('action'),
+                $row = $(this).closest('[data-id]'),
+                id = $row.data('id');
+
+            if ($row && action && id) {
+                if (action === 'show_file') {
+                    actionShowFile($row, id);
+                } else if (action === 'delete_file') {
+                    actionDeleteFile($row, id);
+                }
+            }
+        });
+
+        Con.RowMark.initialize('#file_overview_list .row_mark', 'row', '#marked');
     });
 })(Con, Con.$);
 </script>
 
 <!--
 
-i18n("Delete file")
 i18n("Do you really want to delete the following file?")
 
 -->

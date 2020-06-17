@@ -14,6 +14,8 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+$requestIdTpl = (isset($_REQUEST['idtpl'])) ? cSecurity::toInteger($_REQUEST['idtpl']) : 0;
+
 $sql = "SELECT * FROM " . $cfg["tab"]["tpl"] . " WHERE idclient = '" . cSecurity::toInteger($client) . "'
         ORDER BY name";
 
@@ -34,26 +36,18 @@ while ($db->nextRecord()) {
         $descr = conHtmlSpecialChars(stripslashes($db->f('description')));
         $idtpl = $db->f("idtpl");
 
-        // create javascript multilink
-        $tmp_mstr = '<a title="%s" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
+        // Create show_action item
+        $tmp_mstr = '<a href="javascript:;" class="show_item" data-action="show_template" title="%s">%s</a>';
 
         if ($db->f("defaulttemplate") == 1) {
-            $mstr = sprintf(
-                $tmp_mstr, $descr,
-                'right_top', $sess->url("main.php?area=tpl&frame=3&idtpl=$idtpl"),
-                'right_bottom', $sess->url("main.php?area=tpl_edit&frame=4&idtpl=$idtpl"),
-                '<b>' . $name . '</b>'
-            );
+            $mstr = sprintf($tmp_mstr, $descr, '<b>' . $name . '</b>');
         } else {
-            $mstr = sprintf(
-                $tmp_mstr, $descr,
-                'right_top', $sess->url("main.php?area=tpl&frame=3&idtpl=$idtpl"),
-                'right_bottom', $sess->url("main.php?area=tpl_edit&frame=4&idtpl=$idtpl"),
-                $name
-            );
+            $mstr = sprintf($tmp_mstr, $descr, $name);
         }
 
-        if ($perm->have_perm_area_action_item("tpl_edit", "tpl_edit", $db->f("idtpl"))) {
+        $tpl->set('d', 'DATA_ID', $idtpl);
+
+        if ($perm->have_perm_area_action_item("tpl_edit", "tpl_edit", $idtpl)) {
             $tpl->set('d', 'NAME', $mstr);
         } else {
             $tpl->set('d', 'NAME', $name);
@@ -66,39 +60,32 @@ while ($db->nextRecord()) {
 
         $inUseString = i18n("Click for more information about usage");
 
-        if (!$inUse && ($perm->have_perm_area_action_item("tpl", "tpl_delete", $db->f("idtpl")))) {
+        if (!$inUse && ($perm->have_perm_area_action_item("tpl", "tpl_delete", $idtpl))) {
             $delTitle = i18n("Delete template");
-            $delDescr = sprintf(
-                i18n("Do you really want to delete the following template:<br><br>%s<br>"), conHtmlSpecialChars($name)
-            );
-
-            $tpl->set('d', 'DELETE', '
-                <a title="' . $delTitle . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteTemplate(' . $idtpl . '); });return false;">
-                    <img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '">
-                </a>'
-            );
-            $tpl->set('d', 'INUSE', '<img src="images/spacer.gif" alt="" width="16">');
+            $deleteLink = '<a href="javascript:;" data-action="delete_template" title="' . $delTitle . '">'
+                        . '<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
+            $inUseLink = '<img class="vAlignMiddle" src="images/spacer.gif" alt="" width="16">';
         } else {
-            $delDescription = i18n("Template in use, cannot delete");
-            $tpl->set('d', 'DELETE', '<img src="' . $cfg['path']['images'] . 'delete_inact.gif" border="0" title="' . $delDescription . '" alt="' . $delDescription . '">');
-            $tpl->set('d', 'INUSE', '
-                <a href="javascript:;" rel="' . (int) $db->f("idtpl") . '" class="in_used_tpl">
-                    <img alt="" src="' . $cfg['path']['images'] . 'exclamation.gif" border="0" title="' . $inUseString . '" alt="' . $inUseString . '">
-                </a>'
-            );
+            $delTitle = i18n("Template in use, cannot delete");
+            $deleteLink = '<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete_inact.gif" title="' . $delTitle . '" alt="' . $delTitle . '">';
+            $inUseLink = '<a href="javascript:;" data-action="inused_template">'
+                       . '<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'exclamation.gif" title="' . $inUseString . '" alt="' . $inUseString . '"></a>';
         }
 
         if ($perm->have_perm_area_action_item("tpl", "tpl_dup", $db->f("idtpl"))) {
-            $copybutton = '
-                <a target="right_bottom" href="' . $sess->url("main.php?area=tpl_edit&action=tpl_duplicate&idtpl=$idtpl&frame=4") . '" title="' . i18n("Duplicate template") . '">
-                    <img src="' . $cfg["path"]["images"] . 'but_copy.gif' . '" border="0" title="' . i18n("Duplicate template") . '" alt="' . i18n("Duplicate template") . '">
-                </a>';
+            $copyTitle = i18n("Duplicate template");
+            $copyLink = '<a href="javascript:;" data-action="duplicate_template" title="' . $copyTitle . '">'
+                        . '<img class="vAlignMiddle" src="' . $cfg["path"]["images"] . 'but_copy.gif' . '" title="' . $copyTitle . '" alt="' . $copyTitle . '"></a>';
         } else {
-            $copybutton = '<img src="images/spacer.gif" alt="" width="14" height="1">';
+            $copyLink = '<img class="vAlignMiddle" src="images/spacer.gif" alt="" width="14" height="1">';
         }
 
-        $tpl->set('d', 'COPY', $copybutton);
-        $tpl->set('d', 'ID', 'tpl' . $tpl->dyn_cnt);
+        $tpl->set('d', 'INUSE', '&nbsp;' . $inUseLink);
+        $tpl->set('d', 'COPY', '&nbsp;' . $copyLink . '&nbsp;');
+        $tpl->set('d', 'DELETE', $deleteLink . '&nbsp;');
+
+        $marked = ($requestIdTpl == $idtpl) ? 'marked' : 'tpl' . $tpl->dyn_cnt;
+        $tpl->set('d', 'ID', $marked);
 
         $tpl->next();
     }
@@ -106,7 +93,8 @@ while ($db->nextRecord()) {
 
 // datas for show of used info per ajax
 $tpl->set('s', 'AREA', $area);
-$tpl->set('s', 'AJAXURL', cRegistry::getBackendUrl() . 'ajaxmain.php');
+$tpl->set('s', 'AJAX_URL', cRegistry::getBackendUrl() . 'ajaxmain.php');
 $tpl->set('s', 'BOX_TITLE', i18n("The template '%s' is used for following categories and articles") . ":");
+$tpl->set('s', 'DELETE_MESSAGE', i18n("Do you really want to delete the following template:<br><br>%s<br>"));
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['tpl_overview']);

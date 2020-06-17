@@ -83,9 +83,7 @@ if (cFileHandler::getExtension($file) != $sFileType && cString::getStringLength(
 }
 
 if (stripslashes($file)) {
-    $page->reloadFrame('left_bottom', array(
-        "file" => $sFilename
-    ));
+    $page->reloadLeftBottomFrame(['file' => $sFilename]);
 }
 
 // Content Type is css
@@ -117,8 +115,7 @@ if ((!$readOnly) && $actionRequest == $sActionCreate && $_REQUEST['status'] == '
     $fileInfoCollection = new cApiFileInformationCollection();
     $fileInfoCollection->updateFile($sFilename, 'css', $_REQUEST['description'], $auth->auth['uid']);
 
-    $urlReload = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
-    $page->reloadFrame('right_top', $urlReload);
+    $page->reloadRightTopFrame(['file' => $sTempFilename]);
 
     if ($ret && $bEdit) {
         $page->displayOk(i18n('Created new css file successfully'));
@@ -138,8 +135,7 @@ if ((!$readOnly) && $actionRequest == $sActionEdit && $_REQUEST['status'] == 'se
             exit();
         }
 
-        $urlReload = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
-        $page->reloadFrame('right_top', $urlReload);
+        $page->reloadRightTopFrame(['file' => $sTempFilename]);
     } else {
         $sTempFilename = $sFilename;
     }

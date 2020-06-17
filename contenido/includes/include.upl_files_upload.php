@@ -66,6 +66,7 @@ if ((cFileHandler::writeable($cfgClient[$client]["upl"]["path"] . $path) || cApi
     $page->displayCriticalError(i18n("Directory not writable") . ' (' . $cfgClient[$client]["upl"]["path"] . $path . ')');
 }
 
+$page->reloadLeftBottomFrame(['action' => null, 'path' => $path]);
 $page->render();
 
 ?>

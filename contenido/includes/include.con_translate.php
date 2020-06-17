@@ -591,7 +591,7 @@ foreach ($allTranslations as $hash => $translationArray) {
         $currentModuleInUse = i18n('No template');
     } else {
         $inUseString = i18n("Click for more information about usage");
-        $currentModuleInUse = '<a href="javascript:;" rel="' . $translationArray['idmod'] . '" class="in_used_mod"><img src="' . $cfg['path']['images'] . 'info.gif" border="0" title="' . $inUseString . '" alt="' . $inUseString . '">' . $countCurrentModuleInUse . ' ' . ($countCurrentModuleInUse == 1? i18n('Template') : i18n('Templates')) . ' </a>';
+        $currentModuleInUse = '<a href="javascript:;" rel="' . $translationArray['idmod'] . '" class="inused_module"><img src="' . $cfg['path']['images'] . 'info.gif" border="0" title="' . $inUseString . '" alt="' . $inUseString . '">' . $countCurrentModuleInUse . ' ' . ($countCurrentModuleInUse == 1? i18n('Template') : i18n('Templates')) . ' </a>';
     }
     $fields = array(
         $counter,

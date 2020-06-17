@@ -113,6 +113,6 @@
     color: #fff !important;
 }
 
-button[type="button"] {
+.mod_siwecos button[type="button"] {
     display: block !important;
 }

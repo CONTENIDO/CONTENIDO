@@ -1,43 +1,69 @@
-<script type="text/javascript">
-// Function for deleting backend user
-function deleteBackenduser(userid) {
-    var form = Con.getFrame("left_top").document.filter;
-    var url = 'main.php?area=user_overview';
-    url += '&action=user_delete';
-    url += '&frame=4';
-    url += '&userid=' + userid;
-    url += '&contenido=' + Con.sid;
-    url += get_registered_parameters();
-    url += '&sortby=' + form.sortby.value;
-    url += '&sortorder=' + form.sortorder.value;
-    url += '&filter=' + form.filter.value;
-    url += '&elemperpage=' + form.elemperpage.value;
-    url += '&page={MPAGE}';
-    Con.getFrame("right_bottom").location.href = url;
-    Con.getFrame("right_top").location.href = 'main.php?area=user&frame=3&contenido=' + Con.sid;
-}
-</script>
-<script type="text/javascript">
-(function(Con, $) {
-    var sNavigation = '{PAGER_CONTENT}';
-    var left_top = Con.getFrame("left_top");
-    if (left_top.document) {
-        var oPager = left_top.document.getElementById("44b41691-0dd4-443c-a594-66a8164e25fd");
-        if (oPager) {
-            var oInsert = oPager.firstChild;
-            oInsert.innerHTML = sNavigation;
-            left_top.toggle_pager("44b41691-0dd4-443c-a594-66a8164e25fd");
-        }
-    }
-})(Con, Con.$);
-</script>
-
 {FORM}
 
 <script type="text/javascript">
 (function(Con, $) {
-    if ($("#marked")) {
-        row.markedRow = $("#marked")[0];
+    var sNavigation = '{PAGER_CONTENT}';
+    var leftTop = Con.getFrame("left_top");
+    if (leftTop.document) {
+        var oPager = leftTop.document.getElementById("44b41691-0dd4-443c-a594-66a8164e25fd");
+        if (oPager) {
+            var oInsert = oPager.firstChild;
+            oInsert.innerHTML = sNavigation;
+            leftTop.toggle_pager("44b41691-0dd4-443c-a594-66a8164e25fd");
+        }
     }
+
+    function actionShowUser($row, id) {
+        Con.multiLink(
+            'right_top', Con.UtilUrl.build('main.php', {area: 'user', frame: 3, userid: id}),
+            'right_bottom', Con.UtilUrl.build('main.php', {area: 'user_overview', frame: 4, userid: id})
+        );
+        Con.ParameterCollector.register('userid', id);
+    }
+
+    function actionDeleteUser($row, id) {
+        var deleteMessage = "{DELETE_MESSAGE}",
+            name = $row.find('[data-type="item"] span.name').text();
+
+        Con.showConfirmation(deleteMessage.replace('%s', name), function() {
+            var $filterForm, formData, parameter;
+
+            $filterForm = Con.getFrame('left_top').$('#filter');
+            formData = Con.serializeForm($filterForm);
+
+            parameter = {
+                area: 'user_overview',
+                action: 'user_delete',
+                frame: 4,
+                userid: id,
+                page: '{MPAGE}'
+            };
+
+            // Merge with registered parameter
+            parameter = $.extend(Con.ParameterCollector.getAll(false), formData, parameter);
+
+            Con.multiLink(
+                'right_top', Con.UtilUrl.build('main.php', {area: 'user', frame: 3}),
+                'right_bottom',  Con.UtilUrl.build('main.php', parameter)
+            );
+        });
+    }
+
+    $(function() {
+        $('table [data-action]').live('click', function() {
+            var action = $(this).data('action'),
+                $row = $(this).closest('[data-id]'),
+                id = $row.data('id');
+
+            if ($row && action && id) {
+                if (action === 'show_user') {
+                    actionShowUser($row, id);
+                } else if (action === 'delete_user') {
+                    actionDeleteUser($row, id);
+                }
+            }
+        });
+    });
+
 })(Con, Con.$);
 </script>

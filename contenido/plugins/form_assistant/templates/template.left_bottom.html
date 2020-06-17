@@ -1,16 +1,60 @@
 <!-- form_assistant/templates/template.left_bottom.html -->
 
-<script type="text/javascript">
-(function(Con, $) {
-    var formAssistant = Con.namespace('Con.Plugin.FormAssistant');
-    formAssistant.translations = {I18N};
-    
-    $('.in_use_link').live('click', function() {
-    	Con.showNotification("{dialog_title}", $(this).attr("data-dialog-text"), null, true);
-    })
-})(Con, Con.$);
-</script>
-
 {menu}
+
+<script type="text/javascript">
+    (function(Con, $) {
+        var formAssistant,
+            area = '{AREA}';
+
+        formAssistant = Con.namespace('Con.Plugin.FormAssistant');
+        formAssistant.translations = {I18N};
+
+        function actionShowForm($row, id) {
+            Con.multiLink(
+                'right_top', Con.UtilUrl.build('main.php', {area: area, frame: 3, idform: id}),
+                'right_bottom', Con.UtilUrl.build('main.php', {area: area, action: '{ACTION_EDIT}', frame: 4, idform: id})
+            );
+            Con.ParameterCollector.register('idform', id);
+        }
+
+        function actionInUseForm($row, $action, id) {
+            Con.showNotification("{dialog_title}", $action.attr("data-dialog-text"), null, true);
+        }
+
+        function actionDeleteForm($row, id) {
+            var deleteMessage = "{DELETE_MESSAGE}",
+                contentWindow,
+                name = $row.find('[data-type="item"]').text();
+            deleteMessage += "\n\n%s";
+
+            // NOTE: We don't use Con.showConfirmation here, because PifaForm uses different jQuery UI version!
+            contentWindow = Con.getContentWindow();
+            if (contentWindow.confirm(deleteMessage.replace('%s', name))) {
+                Con.multiLink(
+                    'right_top', Con.UtilUrl.build('main.php', {area: area, frame: 3}),
+                    'right_bottom', Con.UtilUrl.build('main.php', {area: area, action: '{ACTION_DELETE}', frame: 4, idform: id})
+                );
+            }
+        }
+
+        $('#generic_menu_list [data-action]').live('click', function() {
+            var action = $(this).data('action'),
+                $row = $(this).closest('[data-id]'),
+                id = $row.data('id');
+
+            if ($row && action && id) {
+                if (action === 'show_form') {
+                    actionShowForm($row, id);
+                } else if (action === 'inused_form') {
+                    actionInUseForm($row, $(this), id);
+                } else if (action === 'delete_form') {
+                    actionDeleteForm($row, id);
+                }
+            }
+        });
+
+    })(Con, Con.$);
+</script>
 
 <!-- /form_assistant/templates/template.left_bottom.html -->

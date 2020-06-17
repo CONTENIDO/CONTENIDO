@@ -1,0 +1,56 @@
+
+<!-- newsletter/templates/template.recipients.group_menu.html -->
+
+<script type="text/javascript">
+    (function(Con, $) {
+        var area = 'recipientgroups';
+
+        function actionShowRecipientGroup($row, id) {
+            Con.multiLink(
+                'right_top', Con.UtilUrl.build('main.php', {area: area, action: '', frame: 3, idrecipientgroup: id}),
+                'right_bottom', Con.UtilUrl.build('main.php', {area: area, action: '', frame: 4, idrecipientgroup: id})
+            );
+            Con.ParameterCollector.register('idrecipientgroup', id);
+        }
+
+        function actionDeleteRecipientGroup($row, id) {
+            var deleteMessage = "{DELETE_MESSAGE}",
+                name = $row.find('[data-type="item"]').text();
+            deleteMessage += '<b>' + name + '</b>';
+            Con.showConfirmation(deleteMessage, function() {
+                var $form, formData, parameter;
+                $form = Con.getFrame('left_top').$('#newsletter_listoptionsform');
+                formData = Con.serializeForm($form);
+                parameter = $.extend(Con.ParameterCollector.getAll(false), {
+                    area: area,
+                    action: 'recipientgroup_delete',
+                    frame: 4,
+                    idrecipientgroup: id,
+                    sortby: formData.sortby,
+                    sortorder: formData.sortorder,
+                    filter: formData.filter,
+                    elemperpage: formData.elemperpage
+                });
+                Con.multiLink(
+                    'right_bottom', Con.UtilUrl.build('main.php', parameter)
+                );
+            });
+        }
+
+        $('#generic_menu_list [data-action]').live('click', function() {
+            var action = $(this).data('action'),
+                $row = $(this).closest('[data-id]'),
+                id = $row.data('id');
+
+            if ($row && action && id) {
+                if (action === 'recipientgroup_show') {
+                    actionShowRecipientGroup($row, id);
+                } else if (action === 'recipientgroup_delete') {
+                    actionDeleteRecipientGroup($row, id);
+                }
+            }
+        });
+    })(Con, Con.$);
+</script>
+
+<!-- /newsletter/templates/template.recipients.group_menu.html -->

@@ -41,11 +41,11 @@
  *   })(Con, Con.$);
  *   </script>
  *
- * @param String overColor     Over-Color
- * @param String markedColor   Marked-Color
- * @param String overMarked    Over-Marked-Color
- * @param String onClick  Function to evaluate on oncilck event
- * @param String instanceName    Instance name in global scope
+ * @param {String} overColor - Over-Color
+ * @param {String} markedColor - Marked-Color
+ * @param {String} overMarked - Over-Marked-Color
+ * @param {String} onClick - Function to evaluate on onclick event
+ * @param {String} instanceName - Instance name in global scope
  */
 function rowMark(overColor, markedColor, overMarked, onClick, instanceName) {
 
@@ -81,7 +81,7 @@ function rowMark(overColor, markedColor, overMarked, onClick, instanceName) {
     this.reset = rowMark_reset;
 
     /**
-     * Browsercheck
+     * Browser check
      * @access private
      */
     this.browser = '';
@@ -89,7 +89,7 @@ function rowMark(overColor, markedColor, overMarked, onClick, instanceName) {
 
 /**
  * rowMark::over()
- * @param {Object} oRow table row object
+ * @param {HTMLTableRowElement} oRow table row object
  */
 function rowMark_over(oRow) {
     if (oRow == null) {
@@ -111,7 +111,7 @@ function rowMark_over(oRow) {
 
 /**
  * rowMark::out()
- * @param {Object} oRow table row object
+ * @param {HTMLTableRowElement} oRow table row object
  */
 function rowMark_out(oRow) {
     if (oRow == this.markedRow) {
@@ -134,7 +134,7 @@ function rowMark_reset() {
         var sOnclick = String(oObjects[i].onclick);
         if (sOnclick != '' && sOnclick !== 'undefined') {
             if (sOnclick.match(pattern)) {
-                if (oObjects[i].className === "con_sync") {
+                if (oObjects[i].className === 'con_sync') {
                     oObjects[i].style.backgroundColor = this.syncColor;
                 } else {
                     oObjects[i].style.backgroundColor = '#FFFFFF';
@@ -147,14 +147,14 @@ function rowMark_reset() {
 
 /**
  * rowMark::over()
- * @param {Object} oRow table row object
+ * @param {HTMLTableRowElement} oRow table row object
  */
 function rowMark_click(oRow) {
     if (oRow == null) {
         return;
     }
-    if (typeof this.markedRow !== "object") {
-        if (oRow.className === "con_sync") {
+    if (typeof this.markedRow !== 'object') {
+        if (oRow.className === 'con_sync') {
             oRow.style.backgroundColor = this.markedSyncColor;
         } else {
             oRow.style.backgroundColor = this.markedColor;
@@ -162,14 +162,14 @@ function rowMark_click(oRow) {
 
         this.markedRow = oRow;
         this.oldColorMarked = this.oldColor;
-        if (this.onClick != "") {
+        if (this.onClick != '') {
             eval(this.onClick);
         }
    } else if (this.markedRow != oRow) {
-        /* reset old */
+        // reset old
         this.markedRow.style.backgroundColor = this.oldColorMarked;
-        /* highlight new*/
-        if (oRow.className === "con_sync") {
+        // highlight new
+        if (oRow.className === 'con_sync') {
             oRow.style.backgroundColor = this.markedSyncColor;
         } else {
             oRow.style.backgroundColor = this.markedColor;
@@ -178,7 +178,7 @@ function rowMark_click(oRow) {
         this.markedRow = oRow;
         this.oldColorMarked = this.oldColor;
 
-        if (this.onClick != "") {
+        if (this.onClick != '') {
             eval(this.onClick);
         }
     }
@@ -202,6 +202,13 @@ function rowMark_click(oRow) {
  *       <td>eine Zeile</td>
  *       <td><img src="einbild.gif"></td>
  *   </tr>
+ *
+ * @param {String} overColor - Over-Color
+ * @param {String} markedColor - Marked-Color
+ * @param {String} overMarked - Over-Marked-Color
+ * @param {String} imgOutSrc - Out-Image-Src
+ * @param {String} imgOverSrc - Over-Image-Src
+ * @param {String} onClick - Function to evaluate on onclick event
  */
 function imgMark(overColor, markedColor, overMarked, imgOutSrc, imgOverSrc, onClick) {
 
@@ -210,7 +217,7 @@ function imgMark(overColor, markedColor, overMarked, imgOutSrc, imgOverSrc, onCl
      * @access private
      */
     this.base = rowMark;
-    this.base(overColor, markedColor, overMarked, onClick);
+    this.base(overColor, markedColor, overMarked, onClick, 'imgMark');
 
     /**
      * Set image path properties
@@ -248,7 +255,7 @@ function imgMark(overColor, markedColor, overMarked, imgOutSrc, imgOverSrc, onCl
 imgMark.prototype = new rowMark;
 
 /**
- * Function for showing and hiding synchronsation options
+ * Function for showing and hiding synchronisation options
  *
  * @param boolean permSyncCat true shows options / false hides options
  */
@@ -270,15 +277,16 @@ function rowMarkRefreshSyncScreen(permSyncCat) {
 }
 
 /**
- * Interface function for transfering data from left-bottom frame to the
+ * Interface function for transferring data from left-bottom frame to the
  * configuration object in the left-top frame.
  *
- * @param object HTML Table Row Object
+ * @param {HTMLTableRowElement} obj HTML Table Row Object
  */
 function rowMarkConClick(obj) {
-    var frame = Con.getFrame('left_top');
+    var frame = Con.getFrame('left_top'),
+        cfgObj, data, str;
 
-    /* Configuration Object Reference */
+    // Configuration object reference
     cfgObj = frame.cfg;
 
     /* Split the data string.
@@ -292,8 +300,7 @@ function rowMarkConClick(obj) {
        7 -> has right for: template_edit
        8 -> cat is syncable
        9 -> idstring not splitted */
-    tmp_data = obj.id;
-    data = tmp_data.split("-");
+    data = obj.id.split('-');
 
     if (data.length == 9) {
         // Transfer data to the cfg object through the .load() method
@@ -330,29 +337,40 @@ function rowMarkConClick(obj) {
     }
 }
 
+/**
+ * @param {HTMLTableRowElement} oRow
+ */
 function rowMarkLayClick(oRow) {
     Con.getFrame('left_top').obj = oRow.id;
 }
 
 /**
  * Sets the path value in the area 'upl'
- * @param {HTMLElement} oRow
+ * @param {HTMLTableRowElement} oRow
  */
 function rowMarkUplClick(oRow) {
-    var newPath = oRow.getAttribute("data-path");
-    var frame = Con.getFrame('left_top');
+    var newPath = $(oRow).data('id'),
+        maxAttempts = 5,
+        attempts = 0;
 
-    if (frame) {
-        if (frame.document.getElementById('caption2')) {
-            frame.document.getElementById('caption2').innerHTML = newPath;
+    function process() {
+        var frame = Con.getFrame('left_top');
+        if (frame && $('#caption2', frame.document).length && $('input[name=path]', frame.document).length) {
+            // Update caption
+            $('#caption2', frame.document).html(newPath);
+            // Update 'path' field
+            $('input[name=path]', frame.document).val(newPath);
+        } else {
+            // Try it several times, the dram content may be available later...
+            if (++attempts < maxAttempts) {
+                window.setTimeout(function() {
+                    process();
+                }, 100);
+            }
         }
-
-        if (frame.document.newdir) {
-            frame.document.newdir.path.value = newPath;
-        }
-
-        id_path = newPath;
     }
+
+    process();
 }
 
 /**
@@ -373,8 +391,8 @@ function rowMarkLayReMark(sObjId) {
 }
 
 /**
- * Function gets currently selected categroy row an set it as default in select
- * box for base category (selectbox in category new layer) Function is also
+ * Function gets currently selected category row an set it as default in select
+ * box for base category (select box in category new layer) Function is also
  * called by row instance 'str', when selected row changes
  */
 function rowMarkStrClick(elemId) {
@@ -416,7 +434,7 @@ function rowMarkArtRowClick(oRow) {
 // rowMark instance for the general use
 row = new rowMark('#f9fbdd', '#ecf1b2', '#cccccc', 'void(0)', 'row');
 
-// rowMark instance for the Subnavigation
+// rowMark instance for the Sub Navigation
 sub = new rowMark('red', '#FFF', 'blue', 'void(0)', 'sub');
 
 // rowMark instance for the Content area
@@ -451,7 +469,7 @@ lay = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'rowMarkLayClick(oRow)', 'lay
          * of a list of elements.
          * Marks found element, if parameter markedSelector is passed.
          *
-         * @param {String|jQuery} selector - Selector to retrieve the elements or the jQuery instance
+         * @param {String|jQuery} selectorOrJquery - Selector to retrieve the elements or the jQuery instance
          * @param {String} rowMarkType - The rom mark type
          * @param {String} [markedSelector] - The selector of the element to mark (highlight)
          */
@@ -464,8 +482,11 @@ lay = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'rowMarkLayClick(oRow)', 'lay
                 rowMarkInstance.over(this);
             }).mouseout(function () {
                 rowMarkInstance.out(this);
-            }).click(function () {
-                rowMarkInstance.click(this);
+            }).click(function (e) {
+                // Don't mark the row when the click was on one of the actions!
+                if ($(e.target).closest('[data-type="actions"]').length === 0) {
+                    rowMarkInstance.click(this);
+                }
             });
 
             // Mark element matching the marked selector

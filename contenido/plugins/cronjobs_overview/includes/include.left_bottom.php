@@ -11,6 +11,8 @@
  * @link       http://www.contenido.org
  */
 
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
 //Has the user permission for view the cronjobs
 if (!$perm->have_perm_area_action($area, 'cronjob_overview')) {
     $notification->displayNotification('error', i18n('Permission denied', 'cronjobs_overview'));
@@ -20,17 +22,30 @@ if (!$perm->have_perm_area_action($area, 'cronjob_overview')) {
 // TODO: this should not be necessary
 include_once(dirname(__FILE__).'/config.plugin.php');
 
-$tpl = new cTemplate();
-$cronjobs = new Cronjobs();
+$page = new cGuiPage('cronjobs_overview', 'cronjobs_overview');
+$menu = new cGuiMenu();
 
-//include(cRegistry::getBackendPath() . $cfg['path']['templates'] . 'template.left_top_blank.html');
+$counter = 0;
+$cronjobs = new Cronjobs();
 foreach ($cronjobs->getAllCronjobs() as $row) {
-    $tpl->set('d','FILE', $row);
-    $file = urlencode($row);
-    $tpl->set('d', 'ROW', 'javascript:Con.multiLink(\'right_bottom\', \''.$sess->url("main.php?area=cronjob&frame=4&action=cronjob_overview&file=$file").'\');');
-    $tpl->next();
+    $counter++;
+
+    $link = new cHTMLLink();
+    $link->setClass('show_item')
+        ->setLink('javascript:;')
+        ->setAttribute('data-action', 'show_cronjob');
+
+    $menu->setId($counter, $row);
+    $menu->setTitle($counter, conHtmlSpecialChars($row));
+    $menu->setLink($counter, $link);
+    $menu->setImage($counter, $cfg['path']['images'] . 'article.gif');
+
+    if ($_GET['file'] === $row) {
+        $menu->setMarked($counter);
+    }
 }
 
-$tpl->generate($dir_plugin.'templates/left_bottom.html');
+$page->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
 
-?>
+$page->set('s', 'FORM', $menu->render(false));
+$page->render();

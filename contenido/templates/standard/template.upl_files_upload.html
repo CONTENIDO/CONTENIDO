@@ -1,4 +1,9 @@
 
+<style type="text/css">
+    #dropbox_area input.file_upload {
+        margin-bottom: 4px;
+    }
+</style>
 <div id="dropbox_area">
     <div class="dropbox" id="dropbox">i18n("Drop your files here")</div>
     <div class="shelf" id="shelf"></div>
@@ -120,12 +125,6 @@ i18n("Waiting...")
 
     if (false === Con.markSubmenuItem('c_1')) {
         Con.markSubmenuItem('c_0');
-    }
-
-    // to reload the left frame after delete/insert new files
-    var frame = Con.getFrame('left_bottom');
-    if (frame) {
-        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {action: null, path: null});
     }
 
 })(Con, Con.$);

@@ -7,30 +7,58 @@
 {_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
+    <script type="text/javascript" src="scripts/parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
 </head>
-<body>
+<body class="page_generic">
 
-<table id="group_rights_list" width="100%" cellspacing="0" cellpadding="2" border="0">
+<table id="group_rights_list" class="menu_overview_list" width="100%" cellspacing="0" cellpadding="2" border="0">
     <!-- BEGIN:BLOCK -->
-    <tr class="text_medium row_mark" id="{ID_MARKED}" style="background-color: {BGCOLOR};">
-        <td>{ICON}</td>
-        <td width="100%">{TEXT}</td>
-        <td align="right">{DELETE}</td>
+    <tr class="text_medium row_mark" {ATTRIBUTES}>
+        <td data-type="icon">{ICON}</td>
+        <td width="100%" data-type="item">{TEXT}</td>
+        <td align="right" data-type="actions">{DELETE}</td>
     </tr>
     <!-- END:BLOCK -->
 </table>
 
 <script type="text/javascript">
-// Function for deleting modules
-function deleteGroup(idgroup) {
-    var url = 'main.php?area=groups&action=group_delete&frame=2&groupid=' + idgroup + '&contenido=' + Con.sid;
-    window.location.href = url;
-
-    Con.getFrame('right_top').location.href = 'main.php?area=groups&frame=3&contenido=' + Con.sid;
-    Con.getFrame('right_bottom').location.href = 'main.php?area=groups&frame=4&contenido=' + Con.sid;
-}
-
 (function(Con, $) {
+
+    function actionShowGroup($row, id) {
+        Con.multiLink(
+            'right_top', Con.UtilUrl.build('main.php', {area: 'groups', frame: 3, groupid: id}),
+            'right_bottom', Con.UtilUrl.build('main.php', {area: 'groups_overview', frame: 4, groupid: id})
+        );
+        Con.ParameterCollector.register('groupid', id);
+    }
+
+    function actionDeleteGroup($row, id) {
+        var deleteMessage = "{DELETE_MESSAGE}",
+            name = $row.find('[data-type="item"]').text();
+
+        Con.showConfirmation(deleteMessage.replace('%s', name), function() {
+            Con.multiLink(
+                'right_top', Con.UtilUrl.build('main.php', {area: 'groups', frame: 3}),
+                'right_bottom', Con.UtilUrl.build('main.php', {area: 'groups', frame: 4}),
+                'left_bottom', Con.UtilUrl.build('main.php', {area: 'groups', action: 'group_delete', frame: 2, groupid: id})
+            );
+        });
+    }
+
+    $('table [data-action]').live('click', function() {
+        var action = $(this).data('action'),
+            $row = $(this).closest('[data-id]'),
+            id = $row.data('id');
+
+        if ($row && action && id) {
+            if (action === 'show_group') {
+                actionShowGroup($row, id);
+            } else if (action === 'delete_group') {
+                actionDeleteGroup($row, id);
+            }
+        }
+    });
+
     $(function() {
         Con.RowMark.initialize('#group_rights_list .row_mark', 'row', '#marked');
     });

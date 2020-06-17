@@ -53,11 +53,15 @@ class SIWECOSLeftBottomPage extends cGuiPage
      */
     private function _getMenu()
     {
-        global $area;
+        global $area, $idsiwecos;
 
         $cfg    = cRegistry::getConfig();
         $client = cRegistry::getClientId();
         $lang   = cRegistry::getLanguageId();
+        $requestIdSiwecos = (isset($_REQUEST['idsiwecos'])) ? cSecurity::toInteger($_REQUEST['idsiwecos']) : 0;
+
+        // Unset global $idsiwecos variable so we can get all menu entries
+        $idsiwecos = null;
 
         // get all forms of current client in current language
         $forms = SIWECOSCollection::getByClientAndLang($client, $lang);
@@ -65,52 +69,56 @@ class SIWECOSLeftBottomPage extends cGuiPage
             return '<!-- no forms for current client/language -->';
         }
 
+        $deleteForm = i18n('DELETE_ENTITY', 'siwecos');
+
         // create menu
         $oPage = new cGuiPage("siwecos_menu", "siwecos");
-        $menu  = new cGuiMenu();
+        $oPage->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
+        $counter = 0;
+        $menu = new cGuiMenu();
         foreach ($forms as $form) {
+            $counter++;
             $idsiwecos = $form['idsiwecos'];
             $domain    = $form['domain'];
 
-            $menu->setTitle($idsiwecos, $domain);
+            $menu->setId($counter, $idsiwecos);
+            $menu->setTitle($counter, $domain);
 
             // create link to show/edit the form
             $link = new cHTMLLink();
-            $link->setMultiLink($area, '', $area, SIWECOSRightBottomPage::SHOW_FORM);
-            $link->setCustom('idsiwecos', $idsiwecos);
-            $link->setAttribute('title', 'idsiwecos: ' . $idsiwecos);
-            $menu->setLink($idsiwecos, $link);
+            $link->setClass('show_item')
+                ->setLink('javascript:;')
+                ->setAlt($idsiwecos)
+                ->setAttribute('data-action', 'siwecos_show');
+            $menu->setLink($counter, $link);
 
-            $deleteForm = 'DELETE_FORM';
-            // create link to delete the form
-            if (cRegistry::getPerm()->have_perm_area_action('form', SIWECOSRightBottomPage::DELETE_FORM)) {
-                $link = new cHTMLLink();
-                $link->setMultiLink(
-                    $area,
-                    SIWECOSRightBottomPage::DELETE_FORM,
-                    $area,
-                    SIWECOSRightBottomPage::DELETE_FORM
-                );
-                $link->setCustom('idsiwecos', $idsiwecos);
-                $link->setClass('SIWECOS-icon-delete-form');
-                $link->setAlt($deleteForm);
-                $link->setContent(
-                    '<img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteForm . '" alt="'
-                    . $deleteForm . '">'
-                );
-                // $menu->setLink($idform, $link);
-                $menu->setActions($idsiwecos, 'delete', $link);
-            } else {
-                $menu->setActions(
-                    $idsiwecos,
-                    'delete',
-                    '<img src="' . $cfg['path']['images'] . 'delete_inact.gif" title="' . $deleteForm . '" alt="'
-                    . $deleteForm . '">'
-                );
+            if ($idsiwecos == $requestIdSiwecos) {
+                $menu->setMarked($counter);
             }
+
+            // create link to delete the item
+            if (cRegistry::getPerm()->have_perm_area_action('form', SIWECOSRightBottomPage::DELETE_FORM)) {
+                $image = new cHTMLImage($cfg['path']['images'] . 'delete.gif', 'vAlignMiddle');
+                $image->setAlt($deleteForm);
+                $delete = new cHTMLLink();
+                $delete->setLink('javascript:;')
+                    ->setAlt($deleteForm)
+                    ->setAttribute('data-action', 'siwecos_delete')
+                    ->setContent($image->render());
+                $menu->setActions($counter, 'delete', $delete->render());
+            } else {
+                $delete = new cHTMLImage($cfg['path']['images'] . 'delete_inact.gif', 'vAlignMiddle');
+            }
+
+            $menu->setActions($counter, 'delete', $delete->render());
         }
 
-        $oPage->setContent($menu);
+        // Generate template
+        $tpl = new cTemplate();
+        $tpl->set('s', 'DELETE_MESSAGE', i18n('DELETE_MESSAGE', 'siwecos'));
+        $template = $tpl->generate(cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'siwecos/templates/template.left_bottom.html', true);
+
+        $oPage->setContent([$menu, $template]);
 
         return $oPage->render();
     }
@@ -256,18 +264,11 @@ class SIWECOSRightBottomPage extends cGuiPage
                     } catch (Exception $e) {
                         $notification = SIWECOS::notifyException($e);
                     }
-                    $this->setReload();
-                    // reload right_top after saving of form
+
+                    // reload left_bottom & right_top after saving of form
                     $idsiwecos  = $this->_SIWECOSForm->get('idsiwecos');
-                    $formAction = new cHTMLLink();
-                    $formAction->setCLink($area, 3, self::SHOW_FORM);
-                    $formAction->setCustom('idsiwecos', $idsiwecos);
-                    $url = $formAction->getHref();
-                    $this->addScript(
-                        "<script type=\"text/javascript\">
-                            Con.getFrame('right_top').location.href = '$url';
-                        </script>"
-                    );
+                    $this->reloadLeftBottomFrame(['idsiwecos' => $idsiwecos]);
+                    $this->reloadRightTopFrame(['idsiwecos' => $idsiwecos]);
                     $content = $this->_showForm();
                     break;
 
@@ -278,8 +279,9 @@ class SIWECOSRightBottomPage extends cGuiPage
                             cGuiNotification::LEVEL_OK,
                             i18n('MSG_DELETED_ENTITY', 'siwecos')
                         );
-                        $content      = '';
-                        $this->setReload();
+                        $content = '';
+                        $this->reloadLeftBottomFrame(['idsiwecos' => null]);
+                        $this->reloadRightTopFrame(['idsiwecos' => null]);
                     } catch (Exception $e) {
                         $notification = SIWECOS::notifyException($e);
                     }

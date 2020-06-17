@@ -1,17 +1,82 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html class="no-js">
 <head>
     <base href="{BASEPATH}">
     <title>{TITEL}</title>
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css?v=4ff97ee40f1ac052f634e7e8c2f3e37e">
     <link rel="shortcut icon" href="{BASEPATH}favicon.ico">
     <style type="text/css">
-    #page {border-top:1px solid #0060b1;height:110px;/*overflow:hidden;*/}
-    #lblusername {width:75px; display:block; float:left;}
-    #lblpasswd {width:75px; display:block; float:left;}
-    .navcontainer {border-top:1px solid #666; clear: left;}
-    .text_login_error {float:right; margin-right:15px;}
-    .style1 {background-color:#f1f1f1;height:80px;}
+    #page {
+        opacity: 0;
+        border-top: 1px solid #0060b1;
+        height: 110px;
+        /*overflow:hidden;*/
+        -webkit-transition: opacity 1.5s ease-in;
+        -moz-transition: opacity 1.5s ease-in;
+        -ms-transition: opacity 1.5s ease-in;
+        -o-transition: opacity 1.5s ease-in;
+        transition: opacity 1.5s ease-in;
+    }
+    #page.load {
+        opacity: 1;
+    }
+    #noscript {
+        display: none;
+    }
+    .no-js #noscript {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        text-align: center;
+        padding: 4em 0;
+        background-color: white;
+    }
+    #noscript .noscript-content {
+        clear: both;
+        width: 520px;
+        margin: 0 auto;
+        border: 1px solid #0060b1;
+        border-radius: 4px;
+        background-color: #F1F1F1;
+    }
+    #noscript .noscript-content > div {
+        text-align: left;
+        padding: 26px 0 5px 0;
+        float: left;
+        width: 270px;
+    }
+    #noscript .noscript-content > div.column-1 {
+        padding: 0;
+        width: 250px;
+    }
+    #noscript .noscript-content > div h2 {
+        font-size: 20px;
+    }
+    #lblusername {
+        width: 75px;
+        display: block;
+        float: left;
+    }
+    #lblpasswd {
+        width: 75px;
+        display: block;
+        float: left;
+    }
+    .navcontainer {
+        border-top: 1px solid #666;
+        clear: left;
+    }
+    .text_login_error {
+        float: right;
+        margin-right: 15px;
+    }
+    .style1 {
+        background-color: #f1f1f1;
+        height: 80px;
+    }
     </style>
 {_JS_HEAD_CONTENIDO_}
     <script type="text/javascript">
@@ -56,20 +121,40 @@
     <div class="navcontainer" style="clear:none;border-top:1px solid #666;"></div>
 </div>
 <div id="alertbox">{NOTI}</div>
+<div id="noscript">
+    <noscript>
+        <div class="noscript-content">
+            <div class="column-1">
+                <a href="http://www.contenido.org"><img title="CONTENIDO Website." alt="CONTENIDO Website." src="images/conlogo.gif"></a>
+            </div>
+            <div>
+                <h2>JavaScript erforderlich</h2>
+                <p>
+                    Das CONTENIDO Backend funktioniert ohne aktiviertes JavaScript nicht richtig.<br>
+                    Bitte verwenden Sie einen Browser mit aktiviertem JavaScript.
+                </p>
+            </div>
+            <br style="clear:both;" />
+        </div>
+    </noscript>
+</div>
 
 <script type="text/javascript">
 (function(Con, $) {
+    $('html').removeClass('no-js');
+    $('#page').addClass('load');
+
     $(function() {
-        $("#lang").change(function() {
-            if ("" !== $("#username").val() && "" !== $("#passwd").val()) {
-            	$("#login").submit();
+        $('#lang').change(function() {
+            if ('' !== $('#username').val() && '' !== $('#passwd').val()) {
+            	$('#login').submit();
         	}
         });
 
-        if ("" === $("#username").val()) {
-            $("#username").focus();
+        if ('' === $('#username').val()) {
+            $('#username').focus();
         } else {
-            $("#passwd").focus();
+            $('#passwd').focus();
         }
     });
 })(Con, Con.$);
