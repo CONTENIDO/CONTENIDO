@@ -372,7 +372,7 @@ echo $teaser->generateTeaserCode();
      * @throws cDbException
      * @throws cException
      */
-    private function _fillTeaserTemplateEntry(cApiArticleLanguage $article, cTemplate &$template)
+    private function _fillTeaserTemplateEntry(cApiArticleLanguage $article, cTemplate $template)
     {
         // get necessary information for teaser from articles use properties in
         // settings for retrieval
@@ -518,7 +518,7 @@ echo $teaser->generateTeaserCode();
      * @return string Largest result of content
      * @throws cDbException
      */
-    private function _getArtContent(cApiArticleLanguage &$article, $contentTypeName, $ids)
+    private function _getArtContent(cApiArticleLanguage $article, $contentTypeName, $ids)
     {
         $this->_initCmsTypes();
 
