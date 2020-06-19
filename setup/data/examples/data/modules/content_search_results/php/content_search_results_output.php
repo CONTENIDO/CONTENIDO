@@ -13,7 +13,7 @@
  */
 
 // frontend
-cInclude('frontend', 'data/modules/content_search_results/php/class.module.search_result.php');
+cInclude('module', 'class.module.search_result.php');
 
 // get search term
 $searchTerm = '';
