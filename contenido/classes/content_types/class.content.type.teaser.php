@@ -28,7 +28,7 @@ cInclude('includes', 'functions.api.images.php');
 class cContentTypeTeaser extends cContentTypeAbstractTabbed
 {
     /**
-     * Array which contains all avariable CMS_Types and its IDs in current
+     * Array which contains all available CMS_Types and its IDs in current
      * CONTENIDO installation (described as hash [idtype => cmstypename]).
      *
      * @var array
@@ -71,7 +71,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
     ];
 
     /**
-     * Variable for detecting current interation.
+     * Variable for detecting current iteration.
      *
      * @var int
      */
@@ -82,10 +82,9 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      *
      * Initialises class attributes and handles store events.
      *
-     * @param string $rawSettings  the raw settings in an XML structure or as plaintext
+     * @param string $rawSettings  The raw settings in an XML structure or as plaintext
      * @param int    $id           ID of the content type, e.g. 3 if CMS_DATE[3] is used
-     * @param array  $contentTypes array containing the values of all content types
-     *
+     * @param array  $contentTypes Array containing the values of all content types
      * @throws cDbException
      */
     public function __construct($rawSettings, $id, array $contentTypes)
@@ -139,9 +138,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
     /**
      * Returns all translation strings for mi18n.
      *
-     * @param array $translationStrings translation strings
-     *
-     * @return array updated translation string
+     * @param array $translationStrings Translation strings
+     * @return array Updated translation string
      */
     public static function addModuleTranslations(array $translationStrings)
     {
@@ -225,7 +223,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
      * Generates the code which should be shown if this content type is shown in
      * the frontend.
      *
-     * @return string escaped HTML code which sould be shown if content type is shown in frontend
+     * @return string Escaped HTML code which should be shown if content type is shown in frontend
      */
     public function generateViewCode()
     {
@@ -234,7 +232,7 @@ $teaser = new cContentTypeTeaser(\'%s\', %s, %s);
 echo $teaser->generateTeaserCode();
 ?><?php echo "';
 
-        // escape ' to avoid accidently ending the string in $code
+        // escape ' to avoid accidentally ending the string in $code
         $code = sprintf($code, str_replace('\'', '\\\'', $this->_rawSettings), $this->_id, 'array()');
 
         return $code;
@@ -244,7 +242,6 @@ echo $teaser->generateTeaserCode();
      * Function returns idarts of selected articles as array
      *
      * @return array
-     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -258,19 +255,14 @@ echo $teaser->generateTeaserCode();
      * Function is called in edit- and viewmode in order to generate teasercode
      * for output
      *
-     * @param bool $returnAsArray [optional]
-     *                            modeswitch betwwen template generation and returning result as array
-     *
-     * @return string|array string of select box or array of articles
-     *
+     * @param bool $returnAsArray Mode switch between template generation and returning result as array
+     * @return string|array String of select box or array of articles
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
     public function generateTeaserCode($returnAsArray = false)
     {
-        global $contenido;
-
         $articles = [];
         $template = new cTemplate();
 
@@ -371,21 +363,19 @@ echo $teaser->generateTeaserCode();
     }
 
     /**
-     * In edit and view mode this function fills teaser template with informations from a CONTENIDO article object.
+     * In edit and view mode this function fills teaser template with information
+     * from a CONTENIDO article object.
      *
      * @param cApiArticleLanguage $article  CONTENIDO Article object
      * @param cTemplate           $template CONTENIDO Template object (as reference)
-     *
-     * @return bool success state of this operation
+     * @return bool Success state of this operation
      * @throws cDbException
      * @throws cException
      */
     private function _fillTeaserTemplateEntry(cApiArticleLanguage $article, cTemplate &$template)
     {
-        global $contenido;
-
-        // get necessary informations for teaser from articles use properties in
-        // a Settings for retrieval
+        // get necessary information for teaser from articles use properties in
+        // settings for retrieval
         $title   = $this->_getArtContent(
             $article,
             $this->_settings['teaser_source_head'],
@@ -419,12 +409,12 @@ echo $teaser->generateTeaserCode();
         $idArt     = $article->getField('idart');
         $published = $article->getField('published');
         $online    = $article->getField('online');
-        $afields   = [];
+        $aFields   = [];
         if (is_array($article->values)) {
-            $afields = $article->values;
+            $aFields = $article->values;
         }
 
-        if ($online == 1 || $contenido) {
+        if ($online == 1 || cRegistry::getBackendSessionId()) {
             // teaserfilter defines strings which must be contained in text for display.
             // if string is defined check if article contains this string and abort, if article does not contain this string
             if ($this->_settings['teaser_filter'] != '') {
@@ -447,7 +437,7 @@ echo $teaser->generateTeaserCode();
                 $text = cString::trimAfterWord($text, $this->_settings['teaser_character_limit']) . '...';
             }
 
-            // try to get a teaser image directly from cms_img or try to extract if a content type is given, wich contains html
+            // try to get a teaser image directly from cms_img or try to extract if a content type is given, which contains html
             $cApiUploadMeta = new cApiUploadMeta();
             if ((int)$imageId > 0) {
                 $image = $this->_getImage(
@@ -497,7 +487,7 @@ echo $teaser->generateTeaserCode();
             $template->set('d', 'ART_URL', 'front_content.php?idart=' . $idArt);
             $template->set('d', 'PUBLISHED', $published);
             $template->set('d', 'PUBLISHED_MANUAL', $date);
-            foreach ($afields as $field => $value) {
+            foreach ($aFields as $field => $value) {
                 $template->set('d', strtoupper($field), $value);
             }
 
@@ -523,11 +513,9 @@ echo $teaser->generateTeaserCode();
      * returned
      *
      * @param cApiArticleLanguage $article         CONTENIDO article object
-     * @param string              $contentTypeName Name of Content type to extract informations from
-     * @param string              $ids             list of ids to search in
-     *
-     * @return string largest result of content
-     *
+     * @param string              $contentTypeName Name of Content type to extract information from
+     * @param string              $ids             List of ids to search in
+     * @return string Largest result of content
      * @throws cDbException
      */
     private function _getArtContent(cApiArticleLanguage &$article, $contentTypeName, $ids)
@@ -552,8 +540,7 @@ echo $teaser->generateTeaserCode();
      * code and generate teaser image on that basis.
      *
      * @param string $content HTML string to search image in
-     *
-     * @return array with <img> element containing scaled image and image source
+     * @return array With <img> element containing scaled image and image source
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -599,13 +586,12 @@ echo $teaser->generateTeaserCode();
      * It is also possible to give path to image directly, in this case set
      * fourth parameter to true.
      *
-     * @param int    $image  idupl of image to use for teaser
-     * @param int    $maxX   maximum image width
-     * @param int    $maxY   maximum image height
-     * @param string $cropped
-     * @param bool   $isFile [optional] in case of a direct file path retrival from database is not needed
-     *
-     * @return array with <img> element containing scaled image and image source
+     * @param int    $image   idupl of image to use for teaser
+     * @param int    $maxX    Maximum image width
+     * @param int    $maxY    Maximum image height
+     * @param string $cropped Cropped (= 'true') or not (!= 'true')
+     * @param bool   $isFile  In case of a direct file path retrieval from database is not needed
+     * @return array With <img> element containing scaled image and image source
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -639,18 +625,16 @@ echo $teaser->generateTeaserCode();
             $imgSrc  = '';
         }
 
-        $return = [
+        return [
             'element' => $content,
             'src'     => $imgSrc,
         ];
-
-        return $return;
     }
 
     /**
      * Generates the code which should be shown if this content type is edited.
      *
-     * @return string escaped HTML code which should be shown if content type is edited
+     * @return string Escaped HTML code which should be shown if content type is edited
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -740,10 +724,10 @@ echo $teaser->generateTeaserCode();
     }
 
     /**
-     * Gets all currenty avariable content types and their ids
-     * from database and store it into class variable aCMSTypes.
+     * Gets all currently available content types and their ids
+     * from database and stores it in class variable _cmsTypes.
      * Because this information is used multiple times, this causes a better
-     * performance than gettting it seperately
+     * performance than getting it separately
      *
      * @throws cDbException
      */
@@ -770,7 +754,7 @@ echo $teaser->generateTeaserCode();
     /**
      * Generates code for the general tab in which various settings can be made.
      *
-     * @return string the code for the general tab
+     * @return string The code for the general tab
      * @throws cDbException
      * @throws cException
      */
@@ -814,7 +798,7 @@ echo $teaser->generateTeaserCode();
     }
 
     /**
-     * Generats a select box for setting teaser style.
+     * Generates a select box for setting teaser style.
      *
      * Currently four default teaser templates are supported but any number of
      * user templates can be defined as settings of type "cms_teaser" having a
@@ -826,7 +810,7 @@ echo $teaser->generateTeaserCode();
      * - Text style (cms_teaser_text.html)
      * - Blog style (cms_teaser_blog.html)
      *
-     * @return string html string of select box
+     * @return string Html string of select box
      * @throws cDbException
      * @throws cException
      */
@@ -838,7 +822,7 @@ echo $teaser->generateTeaserCode();
         $htmlSelectOption = new cHTMLOptionElement(i18n("Please choose"), '', true);
         $htmlSelect->appendOptionElement($htmlSelectOption);
 
-        // set other avariable options manually
+        // set other available options manually
         $htmlSelectOption = new cHTMLOptionElement(i18n("Slider style"), 'cms_teaser_slider.html', false);
         $htmlSelect->appendOptionElement($htmlSelectOption);
 
@@ -864,20 +848,20 @@ echo $teaser->generateTeaserCode();
     }
 
     /**
-     * Teaser gets informations from other articles and their content typs.
+     * Teaser gets information from other articles and their content types.
      *
-     * Function builds a select box in which coresponding cms type can be
+     * Function builds a select box in which corresponding cms type can be
      * selected after that a text box is rendered for setting id for this
-     * content type to get informations from.
+     * content type to get information from.
      *
-     * This function is used three times for source defintion of headline,
+     * This function is used three times for source definition of headline,
      * text and teaserimage.
      *
-     * @param string $selectName name of input elements
-     * @param string $selected   value of select box which is selected
-     * @param string $value      current value of text box
+     * @param string $selectName Name of input elements
+     * @param string $selected   Value of select box which is selected
+     * @param string $value      Current value of text box
      *
-     * @return string html string of select box
+     * @return string Html string of select box
      * @throws cException
      */
     private function _generateTypeSelect($selectName, $selected, $value)
@@ -895,7 +879,7 @@ echo $teaser->generateTeaserCode();
         $htmlSelect->addOptionElement(0, $htmlSelectOption);
 
         // use $this->_cmsTypes as basis for this select box which contains all
-        // avariable content types in system
+        // available content types in system
         foreach ($this->_cmsTypes as $key => $value) {
             $htmlSelectOption = new cHTMLOptionElement($value, $value, false);
             $htmlSelect->addOptionElement($key, $htmlSelectOption);
@@ -911,8 +895,7 @@ echo $teaser->generateTeaserCode();
      * Generates code for the advanced tab in which various advanced settings
      * can be made.
      *
-     * @return string the code for the advanced tab
-     *
+     * @return string The code for the advanced tab
      * @throws cDbException
      * @throws cException
      */
@@ -979,7 +962,7 @@ echo $teaser->generateTeaserCode();
     /**
      * Function which generated a select box for setting teaser sort argument.
      *
-     * @return string html string of select box
+     * @return string Html string of select box
      * @throws cException
      */
     private function _generateSortSelect()
@@ -990,7 +973,7 @@ echo $teaser->generateTeaserCode();
         $htmlSelectOption = new cHTMLOptionElement(i18n("Please choose"), '', true);
         $htmlSelect->appendOptionElement($htmlSelectOption);
 
-        // set other avariable options manually
+        // set other available options manually
         $htmlSelectOption = new cHTMLOptionElement(i18n("Sort sequence"), 'sortsequence', false);
         $htmlSelect->appendOptionElement($htmlSelectOption);
 
@@ -1012,7 +995,7 @@ echo $teaser->generateTeaserCode();
     /**
      * Function which generated a select box for setting teaser sort order argument.
      *
-     * @return string html string of select box
+     * @return string Html string of select box
      * @throws cException
      */
     private function _generateSortOrderSelect()
@@ -1023,7 +1006,7 @@ echo $teaser->generateTeaserCode();
         $htmlSelectOption = new cHTMLOptionElement(i18n("Please choose"), '', true);
         $htmlSelect->appendOptionElement($htmlSelectOption);
 
-        // set other avariable options manually
+        // set other available options manually
         $htmlSelectOption = new cHTMLOptionElement(i18n("Ascending"), 'asc', false);
         $htmlSelect->appendOptionElement($htmlSelectOption);
 
@@ -1039,7 +1022,7 @@ echo $teaser->generateTeaserCode();
     /**
      * Function which provides select option for cropping teaser images.
      *
-     * @return string html string of select box
+     * @return string Html string of select box
      * @throws cException
      */
     private function _generateCropSelect()
@@ -1050,7 +1033,7 @@ echo $teaser->generateTeaserCode();
         $htmlSelectOption = new cHTMLOptionElement(i18n("Please choose"), '', true);
         $htmlSelect->appendOptionElement($htmlSelectOption);
 
-        // set other avariable options manually
+        // set other available options manually
         $htmlSelectOption = new cHTMLOptionElement(i18n("Scaled"), 'false', false);
         $htmlSelect->appendOptionElement($htmlSelectOption);
 
@@ -1067,7 +1050,7 @@ echo $teaser->generateTeaserCode();
      * Generates code for the manual tab in which various settings for the
      * manual teaser can be made.
      *
-     * @return string the code for the manual tab
+     * @return string The code for the manual tab
      * @throws cDbException
      * @throws cException
      */
@@ -1145,11 +1128,10 @@ echo $teaser->generateTeaserCode();
     }
 
     /**
-     * Function retrives name of an article by its id from database.
+     * Function retrieves name of an article by its id from database.
      *
      * @param int $idArt CONTENIDO article id
-     *
-     * @return string name of article
+     * @return string Name of article
      * @throws cDbException
      * @throws cException
      */
