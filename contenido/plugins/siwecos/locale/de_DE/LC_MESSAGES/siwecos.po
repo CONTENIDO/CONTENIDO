@@ -43,6 +43,12 @@ msgstr "Neue Überprüfung starten..."
 msgid "BTN_VERIFY"
 msgstr "Überprüfen"
 
+msgid "DELETE_ENTITY"
+msgstr "Datensatz löschen"
+
+msgid "DELETE_MESSAGE"
+msgstr "Möchten Sie den folgenden Datensatz wirklich löschen:<br /><br /><b>%s</b>"
+
 msgid "ERR_DELETE_ENTITY"
 msgstr "Der Datensatz konnte nicht gelöscht werden!"
 

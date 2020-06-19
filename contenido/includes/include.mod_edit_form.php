@@ -17,123 +17,122 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude("includes", "functions.upl.php");
 cInclude("external", "codemirror/class.codemirror.php");
 
-$noti = "";
-$sOptionDebugRows = getEffectiveSetting("modules", "show-debug-rows", "never");
-
-if (!isset($idmod)) {
-    $idmod = 0;
-}
+$idmod = isset($_REQUEST['idmod']) ? cSecurity::toInteger($_REQUEST['idmod']) : 0;
+$mode = isset($_REQUEST['mode']) ? $_REQUEST['mode'] : '';
+$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 
 $readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
+$optionDebugRows = getEffectiveSetting("modules", "show-debug-rows", "never");
 
-if($readOnly && $action != "mod_edit" && $action != "mod_sync") {
+if ($readOnly && $action != "mod_edit" && $action != "mod_sync") {
     cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
 }
 
 $contenidoModuleHandler = new cModuleHandler($idmod);
-if ((!$readOnly) && ($action == "mod_delete") && (!$perm->have_perm_area_action_anyitem("mod", $action))) {
-    cRegistry::addErrorMessage(i18n("No permissions"));
-    $page = new cGuiPage('generic_page');
-    $page->abortRendering();
-    $page->render();
-    die();
-}
 
-if ((!$readOnly) && $action == "mod_delete") {
-    $modules = new cApiModuleCollection();
-    $modules->delete($idmod);
-
-    // Delete version modules
-    $moduleVersion = new cVersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
-    if ($moduleVersion->getRevisionFiles() > 0) {
-        $moduleVersion->deleteFile();
-    }
-
-    // show success message
-    cRegistry::addOkMessage(i18n("Module was successfully deleted!"));
-    $page = new cGuiPage('generic_page');
-
-    $contenidoModuleHandler->eraseModule();
-
-    // remove the navigation when module has been deleted
-    $script = new cHTMLScript();
-    $script->setContent('$(function() { $("#navlist", Con.getFrame("right_top").document).remove(); })');
-    $page->setContent(array(
-        $div
-    ));
-    // setReload so that the modules overview on the left is refreshed
-    $page->setReload();
-    $page->render();
-    exit();
-}
-
-if (($action == "mod_sync") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
-    cRegistry::addErrorMessage(i18n("No permissions"));
-    $page = new cGuiPage('generic_page');
-    $page->abortRendering();
-    $page->render();
-    die();
-}
-
-if ($action == "mod_sync") {
-    $contenidoModuleSynchronizer = new cModuleSynchronizer();
-    $idmod = $contenidoModuleSynchronizer->synchronize();
-
-    $idmodUpdate = $contenidoModuleSynchronizer->compareFileAndModuleTimestamp();
-
-    // if a module is deleted in filesystem but not in db make an update
-    // idmodUpdate = $contenidoModuleSynchronizer->updateDirFromModuls();
-    // e need the idmod for refresh all frames
-    if ($idmod == 0 && $idmodUpdate != 0) {
-        $idmod = $idmodUpdate;
-    }
-
-    // the actual module is the last module from synchronize
-    $contenidoModuleHandler = new cModuleHandler($idmod);
-}
-
-if ((!$readOnly) && ($action == "mod_new") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
-    cRegistry::addErrorMessage(i18n("No permissions"));
-    $page = new cGuiPage('generic_page');
-    $page->abortRendering();
-    $page->render();
-    die();
-}
-
-if ((!$readOnly) && $action == "mod_new") {
-    $modules = new cApiModuleCollection();
-
-    $alias = cString::cleanURLCharacters(i18n("- Unnamed module -"));
-    $contenidoModuleHandler = new cModuleHandler();
-    if ($contenidoModuleHandler->modulePathExistsInDirectory($alias)) {
-        cRegistry::addErrorMessage(i18n("The given module name already exists. Please enter another module name."));
-        $page = new cGuiPage('generic_page');
-        $page->abortRendering();
-        $page->render();
-        die();
-    }
-
-    $module = $modules->create(i18n("- Unnamed module -"));
-    $module->set("alias", cString::toLowerCase($alias));
-
-    $module->store();
-    // save into the file
-    $contenidoModuleHandler = new cModuleHandler($module->get("idmod"));
-
-    if ($contenidoModuleHandler->createModule() == false) {
-        cRegistry::addErrorMessage(i18n("Unable to create a new module!"));
+if (!$readOnly && $action == 'mod_delete') {
+    if (!$perm->have_perm_area_action_anyitem($area, $action)) {
+        cRegistry::addErrorMessage(i18n("No permissions"));
         $page = new cGuiPage('generic_page');
         $page->abortRendering();
         $page->render();
         die();
     } else {
-        cRegistry::addOkMessage(i18n("New module created successfuly!"));
+        $modules = new cApiModuleCollection();
+        $modules->delete($idmod);
+
+        // Delete version modules
+        $moduleVersion = new cVersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
+        if ($moduleVersion->getRevisionFiles() > 0) {
+            $moduleVersion->deleteFile();
+        }
+
+        // show success message
+        cRegistry::addOkMessage(i18n("Module was successfully deleted!"));
+        $page = new cGuiPage('generic_page');
+
+        $contenidoModuleHandler->eraseModule();
+
+        // remove the navigation when module has been deleted
+        $script = new cHTMLScript();
+        $script->setContent('$(function() { $("#navlist", Con.getFrame("right_top").document).remove(); })');
+        $page->setContent(array(
+            $div
+        ));
+        // Reload, so that the modules overview on the left is refreshed
+        $page->reloadLeftBottomFrame(['idmod' => null]);
+        $page->render();
+        exit();
+    }
+}
+
+if ($action == "mod_sync") {
+    if (!$perm->have_perm_area_action_anyitem($area, $action)) {
+        cRegistry::addErrorMessage(i18n("No permissions"));
+        $page = new cGuiPage('generic_page');
+        $page->abortRendering();
+        $page->render();
+        die();
+    } else {
+        $cModuleSynchronizer = new cModuleSynchronizer();
+        $idmod = $cModuleSynchronizer->synchronize();
+
+        $idmodUpdate = $cModuleSynchronizer->compareFileAndModuleTimestamp();
+
+        // if a module is deleted in filesystem but not in db make an update
+        // idmodUpdate = $cModuleSynchronizer->updateDirFromModuls();
+        // e need the idmod for refresh all frames
+        if ($idmod == 0 && $idmodUpdate != 0) {
+            $idmod = $idmodUpdate;
+        }
+
+        // the actual module is the last module from synchronize
+        $contenidoModuleHandler = new cModuleHandler($idmod);
+    }
+}
+
+if (!$readOnly && $action == "mod_new") {
+    if (!$perm->have_perm_area_action_anyitem($area, $action)) {
+        cRegistry::addErrorMessage(i18n("No permissions"));
+        $page = new cGuiPage('generic_page');
+        $page->abortRendering();
+        $page->render();
+        die();
+    } else {
+        $modules = new cApiModuleCollection();
+
+        $alias = cString::cleanURLCharacters(i18n("- Unnamed module -"));
+        $contenidoModuleHandler = new cModuleHandler();
+        if ($contenidoModuleHandler->modulePathExistsInDirectory($alias)) {
+            cRegistry::addErrorMessage(i18n("The given module name already exists. Please enter another module name."));
+            $page = new cGuiPage('generic_page');
+            $page->abortRendering();
+            $page->render();
+            die();
+        }
+
+        $module = $modules->create(i18n("- Unnamed module -"));
+        $module->set("alias", cString::toLowerCase($alias));
+
+        $module->store();
+        // save into the file
+        $contenidoModuleHandler = new cModuleHandler($module->get("idmod"));
+
+        if ($contenidoModuleHandler->createModule() == false) {
+            cRegistry::addErrorMessage(i18n("Unable to create a new module!"));
+            $page = new cGuiPage('generic_page');
+            $page->abortRendering();
+            $page->render();
+            die();
+        } else {
+            cRegistry::addOkMessage(i18n("New module created successfuly!"));
+        }
     }
 } else {
     $module = new cApiModule($idmod);
 }
 
-if ((!$readOnly) && $action == "mod_importexport_module") {
+if (!$readOnly && $action == "mod_importexport_module") {
     if ($mode == "export") {
         $module->export();
     }
@@ -155,6 +154,7 @@ $idmod = $module->get("idmod");
 // Check correct module Id
 if (!$idmod) {
     $page = new cGuiPage('generic_page');
+    $page->reloadLeftBottomFrame(['idmod' => null]);
     $page->abortRendering();
     $page->render();
     die();
@@ -172,9 +172,9 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
 
     if ($bInUse == true) {
         $message .= "<br>";
-        $disabled = 'disabled="disabled"';
+        $disabled = true;
     } else {
-        $disabled = "";
+        $disabled = false;
     }
 
     $page = new cGuiPage("mod_edit_form", "", "0");
@@ -210,7 +210,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         $sOutputData = $contenidoModuleHandler->readOutput(true);
     }
 
-    if ($sOptionDebugRows !== "never") {
+    if ($optionDebugRows !== "never") {
         // +2: Just sanity, to have at least two more lines than the code
         $iInputNewLines = cString::countSubstring($sInputData, "\n") + 2;
         $iOutputNewLines = cString::countSubstring($sOutputData, "\n") + 2;
@@ -296,7 +296,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     }
 
     // Prepare type select box
-    $typeselect = new cHTMLSelectElement("type");
+    $typeSelect = new cHTMLSelectElement("type");
 
     $oModuleColl = new cApiModuleCollection();
     $aTypes = $oModuleColl->getAllTypesByIdclient($client);
@@ -311,33 +311,34 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     }
     $aTypes = array_unique($aTypes);
 
+    $typeArray = [];
     foreach ($aTypes as $sType) {
-        $typearray[$sType] = $sType;
+        $typeArray[$sType] = $sType;
     }
     unset($aTypes);
 
-    if (is_array($typearray)) {
-        asort($typearray);
-        $typeselect->autoFill(array_merge(array(
+    if (count($typeArray) > 0) {
+        asort($typeArray);
+        $typeSelect->autoFill(array_merge(array(
             "" => "-- " . i18n("Custom") . " --"
-        ), $typearray));
+        ), $typeArray));
     } else {
-        $typeselect->autoFill(array(
+        $typeSelect->autoFill(array(
             "" => "-- " . i18n("Custom") . " --"
         ));
     }
 
-    $typeselect->setEvent("change", "if (document.forms['frm_mod_edit'].elements['type'].value == 0) { document.forms['frm_mod_edit'].elements['customtype'].disabled=0;} else {document.forms['frm_mod_edit'].elements['customtype'].disabled=1;}");
-    $typeselect->setDisabled($disabled);
+    $typeSelect->setEvent("change", "if (document.forms['frm_mod_edit'].elements['type'].value == 0) { document.forms['frm_mod_edit'].elements['customtype'].disabled=0;} else {document.forms['frm_mod_edit'].elements['customtype'].disabled=1;}");
+    $typeSelect->setDisabled($disabled);
 
     $custom = new cHTMLTextbox("customtype", "");
     $custom->setDisabled($disabled);
 
     if ($module->get("type") == "" || $module->get("type") == "0") {
-        $typeselect->setDefault("0");
+        $typeSelect->setDefault("0");
     } else {
-        $typeselect->setDefault($module->get("type"));
-        $custom->setDisabled("disabled");
+        $typeSelect->setDefault($module->get("type"));
+        $custom->setDisabled(true);
     }
 
     $modulecheck = getSystemProperty("system", "modulecheck");
@@ -347,18 +348,18 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         $inled  = '<img style="float: right;" src="images/ajax-loader_16x16.gif" class="inputok" alt="" title="" data-state="' . htmlentities($isCodeError) . '">';
     }
 
-    if($readOnly) {
-        $name->setDisabled('disabled');
-        $descr->setDisabled('disabled');
-        $typeselect->setDisabled('disabled');
-        $custom->setDisabled('disabled');
+    if ($readOnly) {
+        $name->setDisabled(true);
+        $descr->setDisabled(true);
+        $typeSelect->setDisabled(true);
+        $custom->setDisabled(true);
     }
 
     $form->add(i18n("Name"), $name->render());
-    $form->add(i18n("Type"), $typeselect->render() . $custom->render());
+    $form->add(i18n("Type"), $typeSelect->render() . $custom->render());
     $form->add(i18n("Description"), $descr->render());
 
-    if ($sOptionDebugRows == "always" || ($sOptionDebugRows == "onerror" && $isCodeError !== 'none')) {
+    if ($optionDebugRows == "always" || ($optionDebugRows == "onerror" && $isCodeError !== 'none')) {
         $form->add(i18n("Input") . $inled . $oInputRows->render(), $input->render());
         $form->add(i18n("Output") . $outled . $oOutputRows->render(), $output->render());
     } else {
@@ -370,16 +371,11 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         cRegistry::addWarningMessage(i18n("This module uses variables and/or functions which are probably not available in this CONTENIDO version. Please make sure that you use up-to-date modules."));
     }
 
-    if ($action) {
-        if ($moduleNameChanged || $action == "mod_sync") {
-            $page->setReload();
-        }
-    }
     if ($idmod != 0) {
         $oCodeMirrorInput = new CodeMirror('input', 'php', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg, !$bInUse);
         $oCodeMirrorOutput = new CodeMirror('output', 'php', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), false, $cfg, !$bInUse);
 
-        if($readOnly || $bInUse) {
+        if ($readOnly || $bInUse) {
             $oCodeMirrorInput->setProperty("readOnly", "true");
             $oCodeMirrorOutput->setProperty("readOnly", "true");
 
@@ -404,6 +400,13 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         } else {
             $page->set("s", "FORM", $message . $form->render() . "<br>");
         }
+
+        if ($action == "mod_sync") {
+            $page->reloadLeftBottomFrame(['idmod' => null]);
+        } else {
+            $page->reloadLeftBottomFrame(['idmod' => $idmod]);
+        }
+
         $page->render();
     }
 }

@@ -15,7 +15,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Executes a file of SQL queries
- * 
+ *
  * @param       $db
  * @param       $prefix
  * @param       $file
@@ -60,6 +60,8 @@ function injectSQL($db, $prefix, $file, $replacements = array()) {
  * Adds the autoincrement property to all primary keys in CONTENIDO tables
  * @param cDB $db
  * @param array $cfg
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function addAutoIncrementToTables($db, $cfg) {
     // All primary keys in tables except these below!
@@ -97,53 +99,53 @@ function addAutoIncrementToTables($db, $cfg) {
 
     // Security reason: Check iterator alter table before drop table. The count of Tables must be not less than 65.
     if (count($aRows) > 65) {
-        $sql = 'DROP TABLE IF EXISTS ' . $cfg['sql']['sqlprefix'] . '_sequence';
-        $db->query($sql);
+        $db->query('DROP TABLE IF EXISTS `%s`', $cfg['sql']['sqlprefix'] . '_sequence');
     }
 }
 
 /**
  * Adds salts to the passwords of the backend and frontend users. Converts old passwords into new ones
  * @param object $db The database object
+ * @throws cDbException
  */
-function addSalts($db) {
+function addSaltsToTables($db) {
     global $cfg;
 
     $db2 = getSetupMySQLDBConnection();
 
-    $sql = "SHOW COLUMNS FROM %s LIKE 'salt'";
-    $sql = sprintf($sql, $cfg['tab']['user']);
-
-    $db->query($sql);
+    $db->query("SHOW COLUMNS FROM `%s` LIKE 'salt'", $cfg['tab']['user']);
     if ($db->numRows() == 0) {
-        $db2->query("ALTER TABLE ".$cfg["tab"]["user"]." CHANGE password password VARCHAR(64)");
-        $db2->query("ALTER TABLE ".$cfg["tab"]["user"]." ADD salt VARCHAR(32) AFTER password");
+        $db2->query("ALTER TABLE `%s` CHANGE password password VARCHAR(64)", $cfg["tab"]["user"]);
+        $db2->query("ALTER TABLE `%s` ADD salt VARCHAR(32) AFTER password", $cfg["tab"]["user"]);
     }
 
-    $db->query("SELECT * FROM ".$cfg["tab"]["user"]);
+    $db->query("SELECT * FROM `%s`", $cfg["tab"]["user"]);
     while ($db->nextRecord()) {
         if ($db->f("salt") == "") {
             $salt = md5($db->f("username").rand(1000, 9999).rand(1000, 9999).rand(1000, 9999));
-            $db2->query("UPDATE ".$cfg["tab"]["user"]." SET salt='".$salt."' WHERE user_id='".$db->f("user_id")."'");
-            $db2->query("UPDATE ".$cfg["tab"]["user"]." SET password='".hash("sha256", $db->f("password").$salt)."' WHERE user_id='".$db->f("user_id")."'");
+            $hash = hash("sha256", $db->f("password").$salt);
+            $db2->query(
+                "UPDATE `%s` SET salt='%s', password='%s' WHERE user_id='%s'",
+                $cfg["tab"]["user"], $salt, $hash, $db->f("user_id")
+            );
         }
     }
 
-    $sql = "SHOW COLUMNS FROM %s LIKE 'salt'";
-    $sql = sprintf($sql, $cfg['tab']['frontendusers']);
-
-    $db->query($sql);
+    $db->query("SHOW COLUMNS FROM `%s` LIKE 'salt'", $cfg['tab']['frontendusers']);
     if ($db->numRows() == 0) {
-        $db2->query("ALTER TABLE ".$cfg["tab"]["frontendusers"]." CHANGE password password VARCHAR(64)");
-        $db2->query("ALTER TABLE ".$cfg["tab"]["frontendusers"]." ADD salt VARCHAR(32) AFTER password");
+        $db2->query("ALTER TABLE `%s` CHANGE password password VARCHAR(64)", $cfg["tab"]["frontendusers"]);
+        $db2->query("ALTER TABLE `%s` ADD salt VARCHAR(32) AFTER password", $cfg["tab"]["frontendusers"]);
     }
 
-    $db->query("SELECT * FROM ".$cfg["tab"]["frontendusers"]);
+    $db->query("SELECT * FROM `%s`", $cfg["tab"]["frontendusers"]);
     while ($db->nextRecord()) {
         if ($db->f("salt") == "") {
             $salt = md5($db->f("username").rand(1000, 9999).rand(1000, 9999).rand(1000, 9999));
-            $db2->query("UPDATE ".$cfg["tab"]["frontendusers"]." SET salt='".$salt."' WHERE idfrontenduser='".$db->f("idfrontenduser")."'");
-            $db2->query("UPDATE ".$cfg["tab"]["frontendusers"]." SET password='".hash("sha256", $db->f("password").$salt)."' WHERE idfrontenduser='".$db->f("idfrontenduser")."'");
+            $hash = hash("sha256", $db->f("password").$salt);
+            $db2->query(
+                "UPDATE `%s` SET salt='%s', password='%s' WHERE idfrontenduser='%s'",
+                $cfg["tab"]["frontendusers"], $salt, $hash, $db->f("idfrontenduser")
+            );
         }
     }
 }
@@ -163,19 +165,17 @@ function urlDecodeTables($db) {
     urlDecodeTable($db, $cfg['tab']['system_prop']);
     urlDecodeTable($db, $cfg['tab']['art_spec']);
     urlDecodeTable($db, $cfg['sql']['sqlprefix'] . '_pi_news_jobs', true);
-
 }
 
 function urlDecodeTable($db, $table, $checkTableExists = false) {
     if ($checkTableExists === true) {
-        $db->query('SHOW TABLES LIKE "%s"', $table);
+        $db->query("SHOW TABLES LIKE '%s'", $table);
         if ($db->nextRecord() === false) {
             return;
         }
     }
 
-    $sql = "SELECT * FROM " . $table;
-    $db->query($sql);
+    $db->query("SELECT * FROM `%s`", $table);
 
     $db2 = getSetupMySQLDBConnection(false);
 
@@ -183,7 +183,7 @@ function urlDecodeTable($db, $table, $checkTableExists = false) {
 
         $row = $db->toArray(cDb::FETCH_ASSOC);
 
-        $sql = "UPDATE " . $table . " SET ";
+        $sql = "UPDATE `" . $table . "` SET ";
         foreach ($row as $key => $value) {
             if (cString::getStringLength($value) > 0) {
                 $sql .= "`" . $key . "`='" . $db->escape(urldecode($value)) . "', ";
@@ -202,23 +202,62 @@ function urlDecodeTable($db, $table, $checkTableExists = false) {
 }
 
 function convertToDatetime($db, $cfg) {
-    $db->query('SHOW TABLES LIKE "%s"', $cfg["sql"]["sqlprefix"] . "_piwf_art_allocation");
+    $db->query("SHOW TABLES LIKE '%s'", $cfg['sql']['sqlprefix'] . '_piwf_art_allocation');
     if ($db->nextRecord()) {
-        $db->query("ALTER TABLE " . $cfg['sql']['sqlprefix'] . "_piwf_art_allocation CHANGE `starttime` `starttime` DATETIME NOT NULL");
+        $db->query("ALTER TABLE `%s` CHANGE `starttime` `starttime` DATETIME NOT NULL", $cfg['sql']['sqlprefix'] . '_piwf_art_allocation');
     }
 
-    $db->query("ALTER TABLE " . $cfg['sql']['sqlprefix'] . "_template_conf CHANGE `created` `created` DATETIME NOT NULL");
+    $db->query("ALTER TABLE `%s` CHANGE `created` `created` DATETIME NOT NULL", $cfg['sql']['sqlprefix'] . '_template_conf');
+}
+
+/**
+ * Converts a table field value of type date to a datetime format ('YYYY-MM-DD HH:MM:SS'),
+ * if the value has the date format ('YYYY-MM-DD').
+ *
+ * @param  cDb  $db
+ * @param  string  $table
+ * @param  string  $field
+ * @param  string  $defaultTime - Format has to be 'HH:MM:SS'
+ * @throws cDbException
+ */
+function convertDateValuesToDateTimeValue($db, $table, $field, $defaultTime = '00:00:00') {
+    // Update format 'YYYY-MM-DD' to 'YYYY-MM-DD 00:00:00'
+    $sql = "UPDATE `:table` SET `:field` = CONCAT(`:field`, ' ', ':time') WHERE CHAR_LENGTH(`:field`) = 10";
+    $db->query($sql, ['table' => $table, 'field' => $field, 'time' => $defaultTime]);
+}
+
+/**
+ * Converts a table field value of type date to a datetime format ('YYYY-MM-DD HH:MM:SS'),
+ * if the value is null (null or empty string).
+ *
+ * @param  cDb  $db
+ * @param  string  $table
+ * @param  string  $field
+ * @param  string  $defaultDateTime - Format has to be 'YYYY-MM-DD HH:MM:SS'.
+ *     You can also use 'CURRENT_TIMESTAMP' or 'NOW()' to update the field to current timestamp.
+ * @throws cDbException
+ */
+function convertNullDateValuesToDateTimeValue($db, $table, $field, $defaultDateTime = '0000-00-00 00:00:00') {
+    // Update '' or NULL values to '0000-00-00 00:00:00'
+    if ($defaultDateTime === 'CURRENT_TIMESTAMP' || $defaultDateTime === 'NOW()') {
+        $sql = "UPDATE `:table` SET :field = :datetime WHERE `:field` IS NULL";
+    } else {
+        $sql = "UPDATE `:table` SET :field = ':datetime' WHERE `:field` IS NULL";
+    }
+    $db->query($sql, ['table' => $table, 'field' => $field, 'datetime' => $defaultDateTime]);
 }
 
 /**
  * Changes the primary key of the given table to an auto increment type
  * @param string $tableName
+ * @throws cDbException
+ * @throws cInvalidArgumentException
  */
 function alterTableHandling($tableName) {
     $db = getSetupMySQLDBConnection(false);
     $dbAlter = getSetupMySQLDBConnection(false);
 
-    $sql = $db->prepare('SHOW KEYS FROM `%s` WHERE Key_name="PRIMARY"', $tableName);
+    $sql = $db->prepare("SHOW KEYS FROM `%s` WHERE Key_name='PRIMARY'", $tableName);
     $db->query($sql);
     while ($db->nextRecord()) {
         $row = $db->getRecord();

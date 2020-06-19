@@ -35,7 +35,7 @@ abstract class cCodeGeneratorAbstract {
      * @see $frontend_debug in __FRONTEND_PATH__/data/config/config.php
      * @var array
      */
-    protected $_feDebugOptions = array();
+    protected $_feDebugOptions = [];
 
     /**
      * Collected CSS data for current template.
@@ -128,7 +128,7 @@ abstract class cCodeGeneratorAbstract {
      *
      * @var array
      */
-    protected $_modulePrefix = array();
+    protected $_modulePrefix = [];
 
     /**
      * Module output code.
@@ -142,7 +142,7 @@ abstract class cCodeGeneratorAbstract {
      *
      * @var array
      */
-    protected $_moduleSuffix = array();
+    protected $_moduleSuffix = [];
 
     /**
      * Article language.
@@ -238,6 +238,7 @@ abstract class cCodeGeneratorAbstract {
      * @return int|NULL
      *
      * @throws cInvalidArgumentException
+     * @throws cDbException
      */
     protected function _getTemplateConfigurationId() {
         // get configuration for article
@@ -284,7 +285,7 @@ abstract class cCodeGeneratorAbstract {
      * @global array $cfg
      */
     protected function _getTemplateData() {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
 
         // get IDLAY and IDMOD array
         $sql = "SELECT
@@ -344,15 +345,15 @@ abstract class cCodeGeneratorAbstract {
         }
         // End: Variables required in content type codes
 
-        $match = array();
-        $keycode = array();
+        $match = [];
+        $keycode = [];
 
         // NOTE: $a_content is used by included/evaluated content type codes
         // below
         $a_content = $contentList;
 
         // select all cms_type entries
-        $_typeList = array();
+        $_typeList = [];
         $oTypeColl = new cApiTypeCollection();
         $oTypeColl->select();
         while (false !== ($oType = $oTypeColl->next())) {
@@ -372,8 +373,8 @@ abstract class cCodeGeneratorAbstract {
 
             $success = array_walk($a_[$key], 'cString::extractNumber');
 
-            $search = array();
-            $replacements = array();
+            $search = [];
+            $replacements = [];
 
             $typeClassName = $this->_getContentTypeClassName($type);
             $typeCodeFile = $this->_getContentTypeCodeFilePathName($type);
@@ -431,7 +432,7 @@ abstract class cCodeGeneratorAbstract {
      *         Concatenated PHP code containing CMS_VALUE variables and their values
      */
     protected function _processCmsValueTags($containerNumber, $containerCfg) {
-        $containerCfgList = array();
+        $containerCfgList = [];
 
         $containerCfg = preg_replace('/(&\$)/', '', $containerCfg);
         parse_str($containerCfg, $containerCfgList);
@@ -445,7 +446,7 @@ abstract class cCodeGeneratorAbstract {
         // }
 
         $CiCMS_Var = '$C' . $containerNumber . 'CMS_VALUE';
-        $CiCMS_Values = array();
+        $CiCMS_Values = [];
 
         foreach ($containerCfgList as $key3 => $value3) {
             // convert special characters and escape backslashes!
@@ -484,7 +485,6 @@ abstract class cCodeGeneratorAbstract {
             return;
         }
 
-        $sFeDebug = '';
         if ($this->_feDebugOptions['container_display'] == true) {
             $this->_modulePrefix[] = 'if ($frontend_debug[\'container_display\']) echo "<!-- START CONTAINER ' . $containerinf[$data['idlay']][$containerNumber]['name'] . ' (' . $containerNumber . ') -->";';
         }
@@ -554,9 +554,9 @@ abstract class cCodeGeneratorAbstract {
      * @throws cDbException
      */
     protected function _getUsedCmsTypesData($editable = true, $version = NULL) {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
 
-        $return = array();
+        $return = [];
 
         // find out what kind of CMS_... vars are in use
         if ($version == NULL) {
@@ -606,9 +606,9 @@ abstract class cCodeGeneratorAbstract {
      * Resets module related variables.
      */
     protected function _resetModule() {
-        $this->_modulePrefix = array();
+        $this->_modulePrefix = [];
         $this->_moduleCode = '';
-        $this->_moduleSuffix = array();
+        $this->_moduleSuffix = [];
     }
 
     /**
@@ -620,9 +620,7 @@ abstract class cCodeGeneratorAbstract {
      *         The classname e.g. cContentTypeHtmlhead for content type CMS_HTMLHEAD.
      */
     protected function _getContentTypeClassName($type) {
-        $typeClassName = 'cContentType' . ucfirst(cString::toLowerCase(str_replace('CMS_', '', $type)));
-
-        return $typeClassName;
+        return 'cContentType' . ucfirst(cString::toLowerCase(str_replace('CMS_', '', $type)));
     }
 
     /**
@@ -636,10 +634,36 @@ abstract class cCodeGeneratorAbstract {
      *         for content type CMS_HTMLHEAD
      */
     protected function _getContentTypeCodeFilePathName($type) {
-        global $cfg;
-        $typeCodeFile = cRegistry::getBackendPath() . $cfg['path']['includes'] . 'type/code/include.' . $type . '.code.php';
+        $cfg = cRegistry::getConfig();
+        return cRegistry::getBackendPath() . $cfg['path']['includes'] . 'type/code/include.' . $type . '.code.php';
+    }
 
-        return $typeCodeFile;
+    /**
+     * Strips all comments and whitespace from passed PHP code.
+     *
+     * @param string $code Code to clean from comments and whitespace
+     * @return string Cleaned code
+     * @throws cInvalidArgumentException
+     */
+    protected function _stripWhitespace($code) {
+        $cfg = cRegistry::getConfig();
+
+        // CON-1536 strip comments from module code
+        // regex is not enough to correctly remove comments
+        // use php_strip_whitespace instead of writing own parser
+        // downside: php_strip_whitespace requires a file as parameter
+        $tmpFile = dirname(cRegistry::getBackendPath()) . '/' . $cfg['path']['temp'] . uniqid('code_gen_') . '.php';
+        if (cFileHandler::exists(dirname($tmpFile))
+            && cFileHandler::readable(dirname($tmpFile))
+            && cFileHandler::writeable(dirname($tmpFile))) {
+            if (false !== cFileHandler::write($tmpFile, $code)) {
+                $code = php_strip_whitespace($tmpFile);
+                // delete file
+                cFileHandler::remove($tmpFile);
+            }
+        }
+
+        return $code;
     }
 
     /**

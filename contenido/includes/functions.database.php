@@ -123,7 +123,7 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
 
     // Parameter check for $default. If set, create a default value
     if ($default != '') {
-        if (((cString::findFirstPos($type, 'timestamp') !== FALSE) && ($default != '')) || ($default == 'NULL')) {
+        if (((cString::findFirstPos($type, 'timestamp') !== FALSE) && ($default != '')) || ($default == 'NULL') || ($default == 'CURRENT_TIMESTAMP')) {
             $parameter['DEFAULT'] = "DEFAULT " . $db->escape($default);
         } else {
             $parameter['DEFAULT'] = "DEFAULT '" . $db->escape($default) . "'";

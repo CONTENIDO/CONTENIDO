@@ -28,7 +28,17 @@
                 *
             </td>
             <td nowrap="nowrap" valign="top" align="left">
-                <input type="password" id="password" name="password" value="{$password}">
+                <input type="password" id="password" name="password" value="{$password}" autocomplete="off" readonly="readonly">
+                <script type="text/javascript">
+                    (function(Con, $) {
+                        $(function() {
+                            // Remove readonly attribute on focus
+                            $("#password").on("focus", function() {
+                                $(this).prop("readonly", false);
+                            });
+                        });
+                    })(Con, Con.$);
+                </script>
             </td>
         </tr>
         <tr class="2">

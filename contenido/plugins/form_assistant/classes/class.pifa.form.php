@@ -56,13 +56,13 @@ class PifaFormCollection extends ItemCollection {
         // consider $client
         $client = cSecurity::toInteger($client);
         if (0 < $client) {
-            $conditions[] = 'idclient=' . $client;
+            $conditions[] = '`idclient`=' . $client;
         }
 
         // consider $lang
         $lang = cSecurity::toInteger($lang);
         if (0 < $lang) {
-            $conditions[] = 'idlang=' . $lang;
+            $conditions[] = '`idlang`=' . $lang;
         }
 
         // get items

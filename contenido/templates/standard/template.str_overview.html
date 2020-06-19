@@ -14,7 +14,7 @@
 {_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/jquery/plugins/tipsy.js"></script>
     <script type="text/javascript" src="scripts/registerTipsy.js"></script>
-    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
     <script type="text/javascript" src="scripts/str_overview.js"></script>
     <script type="text/javascript">
     var area = "{AREA}";
@@ -123,7 +123,7 @@
     </div>
 
     <!-- Begin listing of existing categories -->
-    <table class="generic" cellspacing="0" id="category_list">
+    <table id="category_list" class="generic" cellspacing="0">
         <tbody>
             <tr class="fixed">
                 <th colspan="{SUM_COLUMNS}" id="cat_navbar">
@@ -182,7 +182,7 @@
 
             </tr>
             <!-- BEGIN:BLOCK -->
-            <tr id="cat_{CATID}_row" class="text_medium draggable" style="background-color:{BGCOLOR};{HEIGHT}" data-idcat="{CATID}" data-parentid="{PARENTID}" data-level="{LEVEL}" data-preid="{PREID}" data-postid="{POSTID}"  {MOUSEOVER}>
+            <tr id="cat_{CATID}_row" class="text_medium draggable" style="background-color:{BGCOLOR};{HEIGHT}" data-idcat="{CATID}" data-parentid="{PARENTID}" data-level="{LEVEL}" data-preid="{PREID}" data-postid="{POSTID}">
                 <td width="3" class="str-style-a" valign="middle">&nbsp;</td>
                 <td {DIRECTION} class="{BORDER_CLASS}" style="padding-left:{INDENT};" valign="middle" {SHOW_MOUSEOVER_CATEGORY}>{COLLAPSE_CATEGORY_NAME}</td>
                 <td class="{BORDER_CLASS}" valign="middle" {SHOW_MOUSEOVER_ALIAS}>{ALIAS}</td>
@@ -629,6 +629,13 @@ function confDel(idcat, idparent, sName) {
             start: _onSortableStart,
             stop: _onSortableStop
         });
+
+        // Filter rows, we need those with id, others without ids are spacer!
+        var $filteredRows = $('#category_list tbody > tr').filter(function (pos, item) {
+            return (typeof $(item).data('idcat') === 'number');
+        });
+        Con.RowMark.initialize($filteredRows, 'str');
+
     });
 })(Con, Con.$);
 

@@ -117,7 +117,7 @@ class cGuiSourceEditor extends cGuiPage {
         }
 
         // determine the filetype and path by using the area
-        if($filetype == '') {
+        if ($filetype == '') {
             switch($_REQUEST['area']) {
                 case 'style':
                     $filepath = $cfgClient[$client]['css']['path'] . $filename;
@@ -211,15 +211,15 @@ class cGuiSourceEditor extends cGuiPage {
         }
 
         // delete the specified file
-        if($req['delfile'] != '') {
+        if ($req['delfile'] != '') {
             // check if it exists
-            if(cFileHandler::exists($this->_filepath . $req['delfile'])) {
+            if (cFileHandler::exists($this->_filepath . $req['delfile'])) {
                 // load information
                 $fileInfos = new cApiFileInformationCollection();
                 $fileInfos->select('filename = \'' . $req['delfile'] . '\'');
                 $fileInfo = $fileInfos->next();
                 // if there is information and if there are versioning files, delete them
-                if($fileInfo != null) {
+                if ($fileInfo != null) {
                     $idsfi = $fileInfo->get('idsfi');
 
                     if (cSecurity::isInteger($idsfi) && is_dir($cfgClient[$client]['version']['path'] . "$dbFileType/$idsfi")) {
@@ -239,8 +239,7 @@ class cGuiSourceEditor extends cGuiPage {
                 $this->displayOk(i18n('File deleted successfully!'));
                 $this->abortRendering();
 
-                $this->reloadFrame('left_bottom', array());
-                $this->reloadFrame('right_top', "main.php?area=$area&frame=3");
+                $this->reloadLeftBottomFrame(['file' => null]);
             }
             return;
         }
@@ -249,14 +248,14 @@ class cGuiSourceEditor extends cGuiPage {
         $this->_versionfilename = $this->_filename;
 
         // if the filename is empty, display an empty editor and create a new file
-        if(is_dir($this->_filepath) && cFileHandler::writeable($this->_filepath)) {
+        if (is_dir($this->_filepath) && cFileHandler::writeable($this->_filepath)) {
             // validate the file name
-            if(!cFileHandler::validateFilename($req['file'], false)) {
+            if (!cFileHandler::validateFilename($req['file'], false)) {
                 $this->displayError(i18n('Not a valid filename!'));
                 return;
             }
             // check if the file exists already
-            if(cFileHandler::exists($this->_filepath . '/' . $req['file'])) {
+            if (cFileHandler::exists($this->_filepath . '/' . $req['file'])) {
                 $this->displayError(i18n('A file with this name exists already'));
                 return;
             }
@@ -265,11 +264,6 @@ class cGuiSourceEditor extends cGuiPage {
             $this->_filename = $req['file'];
 
             cFileHandler::write($this->_filepath, '');
-
-            $this->reloadFrame('left_bottom', array(
-                    'file' => $req['file']
-            ));
-            $this->reloadFrame('right_top', "main.php?area=$area&frame=3&file={$req['file']}");
         }
 
         // save the old code and the old name
@@ -281,24 +275,24 @@ class cGuiSourceEditor extends cGuiPage {
         $fileInfos->select('filename = \'' . $this->_filename . '\'');
         $fileInfo = $fileInfos->next();
         $oldDesc = '';
-        if($fileInfo == null) {
+        if ($fileInfo == null) {
             // file information does not exist yet. Create the row
             $fileInfo = $fileInfos->create($dbFileType, $this->_filename, $req['description']);
         } else {
             $oldDesc = $fileInfo->get('description');
-            if($oldDesc != $req['description']) {
+            if ($oldDesc != $req['description']) {
                 $fileInfo->set('description', $req['description']);
             }
         }
 
         // rename the file
-        if($req['file'] != $this->_filename) {
+        if ($req['file'] != $this->_filename) {
             // validate the file name
-            if(!cFileHandler::validateFilename($req['file'], false)) {
+            if (!cFileHandler::validateFilename($req['file'], false)) {
                 $this->displayError(i18n('Not a valid filename!'));
             } else {
                 // check if a file with that name exists already
-                if(!cFileHandler::exists(dirname($this->_filepath) . '/' . $req['file'])) {
+                if (!cFileHandler::exists(dirname($this->_filepath) . '/' . $req['file'])) {
                     // rename the file and set the variables accordingly
                     cFileHandler::rename($this->_filepath, $req['file']);
                     $this->_filepath = dirname($this->_filepath) . '/' . $req['file'];
@@ -306,12 +300,6 @@ class cGuiSourceEditor extends cGuiPage {
 
                     // update the file information
                     $fileInfo->set('filename', $req['file']);
-
-                    // reload frames
-                    $this->reloadFrame('left_bottom', array(
-                            'file' => $req['file']
-                    ));
-                    $this->reloadFrame('right_top', "main.php?area=$area&frame=3&file={$req['file']}");
                 } else {
                     $this->displayError(i18n('Couldn\'t rename file. Does it exist already?'));
                     return;
@@ -320,7 +308,7 @@ class cGuiSourceEditor extends cGuiPage {
         }
 
         // if the versioning should be updated and the code changed, create a versioning instance and update it
-        if($this->_versioning && $oldCode != $req['code']) {
+        if ($this->_versioning && $oldCode != $req['code']) {
             $fileInfoArray = $fileInfos->getFileInformation($this->_versionfilename, $dbFileType);
             $oVersion = new cVersionFile($fileInfo->get('idsfi'), $fileInfoArray, $req['file'], $dbFileType, $cfg, $cfgClient, $db, $client, $area, $frame, $this->_versionfilename);
             // Create new Layout Version in cms/version/css/ folder
@@ -328,7 +316,7 @@ class cGuiSourceEditor extends cGuiPage {
         }
 
         // write the code changes and display an error message or success message
-        if(cFileHandler::write($this->_filepath, $req['code'])) {
+        if (cFileHandler::write($this->_filepath, $req['code'])) {
             // store the file information
             $fileInfo->store();
             $this->displayOk(i18n('Changes saved successfully!'));
@@ -358,7 +346,7 @@ class cGuiSourceEditor extends cGuiPage {
         $fileInfos->select('filename = \'' . $this->_filename . '\'');
         $fileInfo = $fileInfos->next();
         $desc = '';
-        if($fileInfo != null) {
+        if ($fileInfo != null) {
             $desc = $fileInfo->get('description');
         }
 
@@ -370,18 +358,25 @@ class cGuiSourceEditor extends cGuiPage {
         $this->set('s', 'AREA', $area);
         $this->set('s', 'ACTION', $action);
         $this->set('s', 'FILENAME', $this->_filename);
-        if(cFileHandler::readable($this->_filepath) && $this->_filename != '') {
+        if (cFileHandler::readable($this->_filepath) && $this->_filename != '') {
             $this->set('s', 'SOURCE', conHtmlentities(cFileHandler::read($this->_filepath)));
         } else {
             $this->set('s', 'SOURCE', '');
         }
-        if($this->_readOnly) {
+        if ($this->_readOnly) {
             // if the read only mode is activated, display a greyed out icon
             $this->set('s', 'SAVE_BUTTON_IMAGE', $cfg['path']['images'] . 'but_ok_off.gif');
             $this->set('s', 'SAVE_BUTTON_DESC', i18n('The administratos has disabled edits'));
         } else {
             $this->set('s', 'SAVE_BUTTON_IMAGE', $cfg['path']['images'] . 'but_ok.gif');
             $this->set('s', 'SAVE_BUTTON_DESC', i18n('Save changes'));
+        }
+
+        if ($this->_filename) {
+            $this->reloadRightTopFrame(['file' => $this->_filename]);
+            $this->reloadLeftBottomFrame(['file' => $this->_filename]);
+        } else {
+            $this->reloadLeftBottomFrame(['file' => null]);
         }
 
         // call the render method of cGuiPage

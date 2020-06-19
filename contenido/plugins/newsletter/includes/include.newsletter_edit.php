@@ -35,7 +35,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
     $oNewsletter = $oNewsletters->create(i18n("-- New newsletter --", 'newsletter'));
     $idnewsletter = $oNewsletter->get("idnews");
     $oPage->setSubnav("idnewsletter=$idnewsletter", "news");
-    $oPage->setReload();
+    $oPage->reloadLeftBottomFrame(['idnewsletter' => $idnewsletter]);
 
     // Populating default values
     $oNewsletter->set("newsfrom", $oClientLang->getProperty("newsletter", "newsfrom"));
@@ -81,7 +81,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
 
     // Update subnav with new ID
     $oPage->setSubnav("idnewsletter=" . $oNewsletter->get("idnews"), "news");
-    $oPage->setReload();
+    $oPage->reloadLeftBottomFrame(['idnewsletter' => $oNewsletter->get("idnews")]);
     // show message
     $oPage->displayOk(i18n("Dupplicate newsletter successfully!", 'newsletter'));
 } elseif ($action == "news_delete" && $perm->have_perm_area_action($area, "news_delete")) {
@@ -102,7 +102,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
                                      // and must not contain "idnewsletter" as
                                      // this is checked in the _subnav file.
     $oPage->setSubnav("blank", "news");
-    $oPage->setReload();
+    $oPage->reloadLeftBottomFrame(['idnewsletter' => null]);
     $oPage->displayOk(i18n("Deleted newsletter successfully!", 'newsletter'));
 } elseif ($action == "news_add_job" && $perm->have_perm_area_action($area, "news_add_job")) {
     // Create job
@@ -213,7 +213,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
 
         if ($oNewsletter->get("name") != $sName || $oNewsletter->get("welcome") != $_REQUEST["ckbWelcome"] || $oNewsletter->get("newsfrom") != $sFromEMail) {
             // Only reload, if something visible has changed
-            $oPage->setReload();
+            $oPage->reloadLeftBottomFrame(['idnewsletter' => $oNewsletter->get("idnews")]);
         }
 
         if ($oNewsletter->get("name") != $sName) {
@@ -463,7 +463,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
 
     if (getEffectiveSetting("newsletter", "option-cronjob-available", "false") == "true") {
         // Enable cronjob checkbox
-        $ckbCronJob->setDisabled("");
+        $ckbCronJob->setDisabled(false);
     } else {
         // Give the user a hint
         $ckbCronJob->setAlt(i18n("Option has to be enabled as client setting - see techref for details", 'newsletter'));

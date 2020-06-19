@@ -15,9 +15,18 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $tpl->reset();
-if ((int) $client > 0) {
+
+$client = cSecurity::toInteger(cRegistry::getClientId());
+
+if ($client > 0) {
     if ($perm->have_perm_area_action("tpl_edit", "tpl_new")) {
-        $tpl->set('s', 'ACTION', '<a class="addfunction" target="right_bottom" href="' . $sess->url("main.php?area=tpl_edit&frame=4&action=tpl_new") . '">' . i18n("New template") . '</a>');
+        $str = sprintf(
+            '<a class="addfunction" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>',
+            'right_top', $sess->url("main.php?area=tpl_edit&frame=3"),
+            'right_bottom', $sess->url("main.php?area=tpl_edit&action=tpl_new&frame=4"),
+            i18n("New template")
+        );
+        $tpl->set('s', 'ACTION', $str);
     } else {
         $tpl->set('s', 'ACTION', '<a class="addfunction_disabled" href="#">' . i18n("No permission to create templates") . '</a>');
     }

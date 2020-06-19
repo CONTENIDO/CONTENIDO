@@ -29,12 +29,13 @@ $oUser = new cApiUser($auth->auth["uid"]);
 // base: Elements from core code (other type may be: "plugin")
 // sort: Element can be used to be sorted by
 // search: Element can be used to search in
-$aFields = array();
-$aFields["name"] = array(
-    "field" => "groupname",
-    "caption" => i18n("Name", 'newsletter'),
-    "type" => "base,sort,search"
-);
+$aFields = [
+    "name" => [
+        "field" => "groupname",
+        "caption" => i18n("Name", 'newsletter'),
+        "type" => "base,sort,search"
+    ]
+];
 
 // ################################
 // Check external input
@@ -66,6 +67,8 @@ if ($_REQUEST["sortorder"] != "DESC") {
 $_REQUEST["sortby"] = "groupname"; // Default sort by field, possible values see
                                    // above
 $_REQUEST["searchin"] = "--all--";
+
+$requestIdRecipientGoup = (isset($_REQUEST['idrecipientgroup'])) ? cSecurity::toInteger($_REQUEST['idrecipientgroup']) : 0;
 
 // Free memory
 unset($oUser);
@@ -115,65 +118,50 @@ $iMenu = 0;
 
 // Store messages for repeated use (speeds performance, as i18n translation is
 // only needed once)
-$aMsg = array();
-$aMsg["DelTitle"] = i18n("Delete recipient group", 'newsletter');
-$aMsg["DelDescr"] = i18n("Do you really want to delete the following newsletter recipient group:<br>", 'newsletter');
+$aMsg = [
+    "DelTitle" => i18n("Delete recipient group", 'newsletter'),
+    "DelDescr" => i18n("Do you really want to delete the following newsletter recipient group:<br>", 'newsletter'),
+];
 
 while ($oRcpGroup = $oRcpGroups->next()) {
     $iMenu++;
-    $iIDGroup = $oRcpGroup->get("idnewsgroup");
+    $iIDGroup = cSecurity::toInteger($oRcpGroup->get("idnewsgroup"));
 
     $sName = $oRcpGroup->get("groupname");
     if ($oRcpGroup->get("defaultgroup")) {
         $sName = $sName . "*";
     }
 
-    // Create the link to show/edit the recipient group
+    // Show recipient group
     $oLnk = new cHTMLLink();
-    $oLnk->setMultiLink("recipientgroups", "", "recipientgroups", "");
-    $oLnk->setCustom("idrecipientgroup", $iIDGroup);
-
-    // oMenu->setImage($iMenu, $cfg["path"]["images"] . "groups.gif");
-    $oMenu->setTitle($iMenu, stripslashes($sName));
+    $oLnk->setClass('show_item')
+        ->setLink('javascript:;')
+        ->setAttribute('data-action', 'recipientgroup_show');
     $oMenu->setLink($iMenu, $oLnk);
 
+    $oMenu->setId($iMenu, $iIDGroup);
+    $oMenu->setTitle($iMenu, $sName);
+
+    if ($requestIdRecipientGoup == $iIDGroup) {
+        $oMenu->setMarked($iMenu);
+    }
+
     if ($perm->have_perm_area_action($area, 'recipientgroup_delete')) {
-        $oMenu->setActions($iMenu, 'delete', '<a title="' . $aMsg["DelTitle"] . '" href="javascript://" onclick="showDelMsg(' . $iIDGroup . ',\'' . conHtmlentities(stripslashes($sName)) . '\')"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $aMsg["DelTitle"] . '" alt="' . $aMsg["DelTitle"] . '"></a>');
+        // Delete recipient group
+        $oImage = new cHTMLImage($cfg['path']['images'] . 'delete.gif', 'vAlignMiddle');
+        $oImage->setAlt($aMsg["DelTitle"]);
+        $oDelete = new cHTMLLink();
+        $oDelete->setLink('javascript:;')
+            ->setAlt($aMsg["DelTitle"])
+            ->setAttribute('data-action', 'recipientgroup_delete')
+            ->setContent($oImage->render());
+        $oMenu->setActions($iMenu, 'delete', $oDelete->render());
     }
 }
 
-$sExecScript = <<<JS
-<script type="text/javascript">
-function showDelMsg(lngId, strElement) {
-    Con.showConfirmation("{$aMsg["DelDescr"]}<b>" + strElement + "</b>", function() {
-        deleteRecipientGroup(lngId);
-    });
-}
-
-// Function for deleting recipient groups
-function deleteRecipientGroup(idrecipientgroup) {
-    var oForm = Con.getFrame("left_top").document.getElementById("groups_listoptionsform");
-
-    var url = "main.php?area=recipientgroups";
-    url += "&action=recipientgroup_delete";
-    url += "&frame=4";
-    url += "&idrecipientgroup=" + idrecipientgroup;
-    url += "&contenido=" + Con.sid;
-    url += get_registered_parameters();
-    url += "&sortby=" + oForm.sortby.value;
-    url += "&sortorder=" + oForm.sortorder.value;
-    url += "&filter=" + oForm.filter.value;
-    url += "&elemperpage=" + oForm.elemperpage.value;
-
-    Con.getFrame("right_bottom").location.href = url;
-}
-</script>
-JS;
-
-$oPage->addScript($sExecScript);
 // $oPage->addScript('cfoldingrow.js', '<script type="text/javascript"
 // src="scripts/cfoldingrow.js"></script>');
-$oPage->addScript('parameterCollector.js');
+$oPage->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
 
 // Generate current content for Object Pager
 $sPagerId = "0ed6d632-6adf-4f09-a0c6-1e38ab60e305";
@@ -215,5 +203,10 @@ JS;
 
 $oPage->addScript($sRefreshPager);
 
-$oPage->setContent($oMenu);
+// Generate template
+$oTpl = new cTemplate();
+$oTpl->set('s', 'DELETE_MESSAGE', $aMsg["DelDescr"]);
+$sTemplate = $oTpl->generate(cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'newsletter/templates/standard/template.recipients.group_menu.html', true);
+
+$oPage->setContent([$oMenu, $sTemplate]);
 $oPage->render();

@@ -55,9 +55,11 @@ class cHTMLForm extends cHTMLContentElement {
      *         the method to use - post or get
      * @param string $class [optional]
      *         the class of this element
+     * @param string $id [optional]
+     *         the ID of this element
      */
-    public function __construct($name = '', $action = 'main.php', $method = 'post', $class = '') {
-        parent::__construct('', $class);
+    public function __construct($name = '', $action = 'main.php', $method = 'post', $class = '', $id = '') {
+        parent::__construct('', $class, $id);
         $this->_tag = 'form';
         $this->_name = $name;
         $this->_action = $action;

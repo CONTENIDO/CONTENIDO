@@ -17,19 +17,17 @@
 ################################################################################
 # UnitTest Framework initialization
 
-// set dir to PHPUnit location
-define('CON_UNITTEST_LIB_DIR', '');
+// Set directory to CONTENIDO test location
+define('CON_TEST_PATH', __DIR__);
 
-// set dir to CONTENIDO test location
-define('CON_TEST_PATH', dirname(__FILE__));
+// Set folder name of CONTENIDO test
+define('CON_TEST_BASENAME', basename(__DIR__));
 
-// UnitTest sources
-require_once CON_UNITTEST_LIB_DIR . 'PHPUnit/Framework/TestCase.php';
+// Set the SQL prefix (table prefix) for tests
+define('CON_TEST_SQL_PREFIX', 'test');
 
-// CONTENIDO test related classes
-require_once CON_TEST_PATH . '/lib/class.testing.exception.php';
-require_once CON_TEST_PATH . '/lib/class.testing.test.case.php';
-require_once CON_TEST_PATH . '/lib/class.testing.test.helper.php';
+// Use composer's autoload
+require_once __DIR__ . '/../vendor/autoload.php';
 
 ################################################################################
 # CONTENIDO frontend initialization
@@ -38,10 +36,10 @@ $currentWorkingDir = getcwd();
 chdir(realpath(CON_TEST_PATH . '/../cms'));
 
 // Include the environment definer file
-include_once('environment.php');
+include_once(__DIR__ . '/environment.php');
 
 global $contenido_host, $contenido_database, $contenido_user, $contenido_password;
-global $contenido, $db, $auth, $sess, $perm, $lngAct, $_cecRegistry;
+global $contenido, $db, $auth, $sess, $perm, $lngAct, $_cecRegistry, $belang;
 global $cfgClient, $client, $load_client, $lang, $load_lang, $frontend_debug;
 global $idcat, $errsite_idcat, $errsite_idart, $encoding, $idart, $force;
 global $PHP_SELF, $QUERY_STRING;
@@ -61,10 +59,29 @@ if (!is_file($contenido_path . 'includes/startup.php')) {
 }
 include_once($contenido_path.'includes/startup.php');
 
-// overwrite the SQL table prefix and reload the database table definitions
-cTestingTestCase::setOriginalSqlPrefix($cfg['sql']['sqlprefix']);
-$cfg['sql']['sqlprefix'] = 'test';
-require $cfg['path']['contenido_config'] . 'cfg_sql.inc.php';
+// Add all CONTENIDO test related classes
+cAutoload::addClassmapConfig([
+    'cTestingException' => CON_TEST_BASENAME . '/lib/class.testing.exception.php',
+    'cTestingTestCase' => CON_TEST_BASENAME . '/lib/class.testing.test.case.php',
+    'cTestingTestHelper' => CON_TEST_BASENAME . '/lib/class.testing.test.helper.php',
+    'DogCollection' => CON_TEST_BASENAME . '/contenido/genericdb/mockup/class.dog_item.php',
+    'DogItem' => CON_TEST_BASENAME . '/contenido/genericdb/mockup/class.dog_item.php',
+    'DogRfidCollection' => CON_TEST_BASENAME . '/contenido/genericdb/mockup/class.dog_rfid_item.php',
+    'DogRfidItem' => CON_TEST_BASENAME . '/contenido/genericdb/mockup/class.dog_rfid_item.php',
+    'SqlItemCollection' => CON_TEST_BASENAME . '/contenido/genericdb/mockup/class.sql_item_collection.php',
+    'SqlItem' => CON_TEST_BASENAME . '/contenido/genericdb/mockup/class.sql_item.php',
+    'TestCollection' => CON_TEST_BASENAME . '/contenido/genericdb/mockup/class.test_item.php',
+    'TestItem' => CON_TEST_BASENAME . '/contenido/genericdb/mockup/class.test_item.php',
+    'TFCollection' => CON_TEST_BASENAME . '/contenido/genericdb/mockup/class.tf_item.php',
+    'TFItem' => CON_TEST_BASENAME . '/contenido/genericdb/mockup/class.tf_item.php',
+]);
+
+
+// Initialize common variables
+$idcat    = isset($idcat) ? $idcat : 0;
+$idart    = isset($idart) ? $idart : 0;
+$idcatart = isset($idcatart) ? $idcatart : 0;
+$error    = isset($error) ? $error : 0;
 
 cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.con2.php');
@@ -72,7 +89,7 @@ cInclude('includes', 'functions.api.php');
 cInclude('includes', 'functions.pathresolver.php');
 
 // Initialize the Database Abstraction Layer, the Session, Authentication and Permissions Handler of the
-if ($contenido) {
+if (cRegistry::getBackendSessionId()) {
     // Backend
     cRegistry::bootstrap(array(
         'sess' => 'cSession',
@@ -90,7 +107,6 @@ if ($contenido) {
 }
 
 require_once $cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php';
-
 cApiCecHook::execute('Contenido.Frontend.AfterLoadPlugins');
 
 $db = cRegistry::getDb();
@@ -100,7 +116,7 @@ $sess->register('encoding');
 // Initialize encodings
 if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0) {
     // Get encodings of all languages
-    $encoding = array();
+    $encoding  = array();
     $oLangColl = new cApiLanguageCollection();
     $oLangColl->select('');
     while ($oLang = $oLangColl->next()) {
@@ -155,12 +171,11 @@ if (file_exists('data/config/' . CON_ENVIRONMENT . '/config.local.php')) {
 if (isset($path) && cString::getStringLength($path) > 1) {
     // Which resolve method is configured?
     if ($cfg['urlpathresolve'] == true) {
-        $iLangCheck = 0;
-        $idcat = prResolvePathViaURLNames($path, $iLangCheck);
+        $idcat = prResolvePathViaURLNames($path);
     } else {
         $iLangCheck = 0;
-        $idcat = prResolvePathViaCategoryNames($path, $iLangCheck);
-        if (($lang != $iLangCheck) && ((int) $iLangCheck != 0)) {
+        $idcat      = prResolvePathViaCategoryNames($path, $iLangCheck);
+        if (($lang != $iLangCheck) && ((int)$iLangCheck != 0)) {
             $lang = $iLangCheck;
         }
     }
@@ -168,8 +183,11 @@ if (isset($path) && cString::getStringLength($path) > 1) {
 
 // Error page
 $aParams = array(
-    'client' => $client, 'idcat' => $cfgClient[$client]['errsite']['idcat'], 'idart' => $cfgClient[$client]['errsite']['idart'],
-    'lang' => $lang, 'error'=> '1'
+    'client' => $client,
+    'idcat'  => $cfgClient[$client]["errsite"]["idcat"],
+    'idart'  => $cfgClient[$client]["errsite"]["idart"],
+    'lang'   => $lang,
+    'error'  => '1'
 );
 $errsite = 'Location: ' . cUri::getInstance()->buildRedirect($aParams);
 

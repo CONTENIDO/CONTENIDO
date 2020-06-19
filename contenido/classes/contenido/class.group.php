@@ -122,7 +122,7 @@ class cApiGroupCollection extends ItemCollection {
      * Returns all groups which are accessible by the current group.
      *
      * @param array $perms
-     * @return array Array of group objects*         Array of group objects
+     * @return array Array of group objects
      * @throws cDbException
      * @throws cException
      */
@@ -137,10 +137,10 @@ class cApiGroupCollection extends ItemCollection {
             $allClients = $oClientColl->getAvailableClients();
             foreach ($allClients as $key => $value) {
                 if (in_array('client[' . $key . ']', $perms) || in_array('admin[' . $key . ']', $perms)) {
-                    $limit[] = 'perms LIKE "%client[' . $this->escape($key) . ']%"';
+                    $limit[] = "perms LIKE '%client[" . $this->escape($key) . "]%'";
                 }
                 if (in_array('admin[' . $key . ']', $perms)) {
-                    $limit[] = 'perms LIKE "%admin[' . $this->escape($key) . ']%"';
+                    $limit[] = "perms LIKE '%admin[" . $this->escape($key) . "]%'";
                 }
             }
 
@@ -207,7 +207,7 @@ class cApiGroup extends Item {
      *
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
-     *                   
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -225,10 +225,10 @@ class cApiGroup extends Item {
      *
      * @param string $groupId
      *         Specifies the groupId
-     * 
+     *
      * @return bool
      *         True if the load was successful
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -244,7 +244,7 @@ class cApiGroup extends Item {
      *
      * @return bool
      *         True if the load was successful
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -350,7 +350,7 @@ class cApiGroup extends Item {
      * Retrieves all available properties of the group.
      *
      * @return array
-     *         Returns assoziative properties array as follows:
+     *         Returns associative properties array as follows:
      *         - $arr[idgroupprop][name]
      *         - $arr[idgroupprop][type]
      *         - $arr[idgroupprop][value]
@@ -383,9 +383,9 @@ class cApiGroup extends Item {
      *         Name of the property to retrieve
      * @param string $value
      *         Value to insert
-     * 
+     *
      * @return cApiGroupProperty
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException

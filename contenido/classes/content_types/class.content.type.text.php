@@ -97,7 +97,7 @@ class cContentTypeText extends cContentTypeAbstract {
      * @throws cInvalidArgumentException
      */
     protected function _getEditJavaScript() {
-        $textbox = new cHTMLTextarea($this->_prefix . '_text_' . $this->_id, '', '', '', $this->_prefix . '_text_' . $this->_id, false, NULL, '', 'edit-textfield edit-' . $this->_prefix . '-textfield');
+        $textbox = new cHTMLTextarea($this->_prefix . '_text_' . $this->_id, '', '', '', $this->_prefix . '_text_' . $this->_id, false, null, '', 'edit-textfield edit-' . $this->_prefix . '-textfield');
         $textbox->setClass("$this->_id");
 
         $saveButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . 'images/but_ok.gif');

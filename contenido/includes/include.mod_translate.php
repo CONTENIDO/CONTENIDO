@@ -14,9 +14,11 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$langobj = new cApiLanguage($lang);
+global $t_orig, $t_trans;
 
-$langstring = $langobj->get('name') . ' (' . $lang . ')';
+$langObj = new cApiLanguage($lang);
+
+$langString = $langObj->get('name') . ' (' . $lang . ')';
 
 $readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
 
@@ -51,13 +53,16 @@ if (!isset($idmodtranslation)) {
     $idmodtranslation = 0;
 }
 
-// Get the mi18n strings from modul input/output
+// Get the mi18n strings from module input/output
 $strings = $module->parseModuleForStringsLoadFromFile($cfg, $client, $lang);
+if (is_array($strings)) {
+    $strings = [];
+}
 
 // Get the strings from translation file
 $translationArray = $moduleTranslation->getTranslationArray();
 
-$myTrans = array();
+$myTrans = [];
 $save = false;
 // Insert new strings
 foreach ($strings as $string) {
@@ -81,8 +86,9 @@ if (count(array_diff_assoc($myTrans, $translationArray)) > 0 || count(array_diff
 
 if (!isset($row)) {
     $row = 0; // first string
+    $current = 0;
     $lastString = reset($strings);
-    $lastTranslation = $myTrans[$lastString];
+    $lastTranslation = isset($myTrans[$lastString]) ? $myTrans[$lastString] : '';
 } else {
     // Get the string
     $index = 0;
@@ -111,11 +117,11 @@ $page->set("s", "IDMOD", $idmod);
 $page->set("s", "CURRENT", $current);
 $page->set("s", "ROW", $row);
 $page->set("s", "HEADER", sprintf(i18n("Translate module '%s'"), conHtmlSpecialChars($module->get('name'))));
-$page->set("s", "TRANSLATION_FOR", sprintf(i18n("Translation for %s"), $langstring));
+$page->set("s", "TRANSLATION_FOR", sprintf(i18n("Translation for %s"), $langString));
 $page->set("s", "LAST_STRING", conHtmlSpecialChars($lastString));
 $page->set("s", "LAST_TRANSLATION", conHtmlSpecialChars($lastTranslation));
 
-if($readOnly) {
+if ($readOnly) {
     $page->set("s", "DISABLED", "disabled='disabled'");
     $page->set("s", "READONLY", "_off");
 } else {
@@ -124,8 +130,6 @@ if($readOnly) {
 }
 
 $page->setMarkScript(2);
-$page->setEncoding($langobj->get('encoding'));
+$page->setEncoding($langObj->get('encoding'));
 
 $page->render();
-
-?>

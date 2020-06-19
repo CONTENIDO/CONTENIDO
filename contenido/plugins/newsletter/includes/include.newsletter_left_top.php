@@ -173,9 +173,9 @@ $oCkbHTMLNewsletter = new cHTMLCheckbox("ckbHTMLNewsletter", "enabled", "", $bHT
 
 // Disable HTML options, if user has no rights
 if (!$perm->have_perm_area_action($area, "news_html_settings")) {
-    $oSelHTMLTemplateIDCat->setDisabled("disabled");
-    $oSelHTMLNewsletterIDCat->setDisabled("disabled");
-    $oCkbHTMLNewsletter->setDisabled("disabled");
+    $oSelHTMLTemplateIDCat->setDisabled(true);
+    $oSelHTMLNewsletterIDCat->setDisabled(true);
+    $oCkbHTMLNewsletter->setDisabled(true);
 }
 
 // Destination for sending test newsletter
@@ -214,7 +214,7 @@ if (!$bTestTargetFound) {
 if (!$perm->have_perm_area_action($area, "news_send_test")) {
     // No right to send somewhere else than to yourself
     $iTestDestination = 0;
-    $oSelTestDestination->setDisabled("disabled");
+    $oSelTestDestination->setDisabled(true);
 }
 $oSelTestDestination->setDefault($iTestDestination);
 

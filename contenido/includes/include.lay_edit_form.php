@@ -17,25 +17,27 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('external', 'codemirror/class.codemirror.php');
 cInclude('classes', 'class.layout.synchronizer.php');
 
-if (!isset($idlay)) {
-    $idlay = 0;
-}
+
+$idlay = isset($_REQUEST['idlay']) ? cSecurity::toInteger($_REQUEST['idlay']) : 0;
+$refreshTemplates = isset($_REQUEST['refreshtemplates']) ? $_REQUEST['refreshtemplates'] : '';
+
+$belang = cRegistry::getBackendLanguage();
 
 // check the read only setting and display a warning if it's active
 $readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
-if($readOnly) {
+if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
 
 $page = new cGuiPage('lay_edit_form', '', '0');
 $layout = new cApiLayout();
-$bReloadSyncSrcipt = false;
+$bReloadSyncScript = false;
 if ($idlay != 0) {
     $layout->loadByPrimaryKey($idlay);
 }
 
 // check the readOnly boolean to see if changes should be made
-if ((!$readOnly) && $action == "lay_new") {
+if (!$readOnly && $action == "lay_new") {
     if (!$perm->have_perm_area_action_anyitem($area, $action)) {
         $page->displayError(i18n("Permission denied"));
     } else {
@@ -58,18 +60,25 @@ if ((!$readOnly) && $action == "lay_new") {
                 $page->displayError(i18n("Cant save layout in filesystem!"));
             } else {
                 $page->displayOk(i18n("Created layout succsessfully!"));
+                $page->reloadRightTopFrame(['area' => 'lay', 'action' => null, 'idlay' => $layout->get('idlay')]);
             }
         }
     }
-    $bReloadSyncSrcipt = true;
-} elseif ((!$readOnly) && $action == "lay_delete") {
+    $bReloadSyncScript = true;
+} elseif (!$readOnly && $action == 'lay_delete') {
     if (!$perm->have_perm_area_action_anyitem("lay", $action)) {
         $page->displayError(i18n("Permission denied"));
     } else {
         $layout = new cApiLayout();
         $page->displayOk(i18n("Layout deleted"));
+        $bReloadSyncScript = true;
     }
-} elseif ($action == "lay_sync") {
+} elseif (!$readOnly && $action == 'lay_edit') {
+    // Saving layout is done in action file include.lay_edit.action.php, we check here for changed name.
+    if (isset($_POST['layname']) && isset($_POST['oldname']) && $_POST['layname'] !== $_POST['oldname']) {
+        $bReloadSyncScript = true;
+    }
+} elseif ($action == 'lay_sync') {
     // Synchronize layout from db and filesystem
     if (!$perm->have_perm_area_action_anyitem($area, $action)) {
         $page->displayError(i18n("Permission denied"));
@@ -77,16 +86,16 @@ if ((!$readOnly) && $action == "lay_new") {
         $layoutSynchronization = new cLayoutSynchronizer($cfg, $cfgClient, $lang, $client);
         $layoutSynchronization->synchronize();
         // Reload the overview of Layouts
-        $bReloadSyncSrcipt = true;
+        $bReloadSyncScript = true;
     }
 }
 
-if ($refreshtemplates != "") {
+if ($refreshTemplates != "") {
     // Update all templates for containers with mode fixed and mandatory
     $sql = "SELECT idtpl FROM " . $cfg["tab"]["tpl"] . " WHERE idlay = '" . cSecurity::toInteger($idlay) . "'";
     $db->query($sql);
 
-    $fillTemplates = array();
+    $fillTemplates = [];
 
     while ($db->nextRecord()) {
         $fillTemplates[] = $db->f("idtpl");
@@ -114,8 +123,8 @@ if (true === $layout->isLoaded()) {
     // Search for duplicate containers
     $containerNumbers = tplGetContainerNumbersInLayout($idlay);
     if (count($containerNumbers) > 0) {
-        $types = array();
-        $containerCounter = array();
+        $types = [];
+        $containerCounter = [];
 
         foreach ($containerNumbers as $containerNr) {
             if (empty($containerNr)) {
@@ -161,9 +170,9 @@ if (true === $layout->isLoaded()) {
         }
 
         foreach ($v->missingNodes as $value) {
-            $idqualifier = "";
+            $idQualifier = "";
 
-            $attr = array();
+            $attr = [];
 
             if ($value["name"] != "") {
                 $attr["name"] = "name '" . $value["name"] . "'";
@@ -173,12 +182,12 @@ if (true === $layout->isLoaded()) {
                 $attr["id"] = "id '" . $value["id"] . "'";
             }
 
-            $idqualifier = implode(", ", $attr);
+            $idQualifier = implode(", ", $attr);
 
-            if ($idqualifier != "") {
-                $idqualifier = "($idqualifier)";
+            if ($idQualifier != "") {
+                $idQualifier = "($idQualifier)";
             }
-            $msg .= sprintf(i18n("Tag '%s' %s has no end tag (start tag is on line %s char %s)"), $value["tag"], $idqualifier, $value["line"], $value["char"]);
+            $msg .= sprintf(i18n("Tag '%s' %s has no end tag (start tag is on line %s char %s)"), $value["tag"], $idQualifier, $value["line"], $value["char"]);
             $msg .= "<br>";
         }
     }
@@ -190,29 +199,30 @@ if (true === $layout->isLoaded()) {
     $form = new cGuiTableForm("module");
     $form->addHeader(i18n("Edit Layout"));
     $form->setVar("area", $area);
-    $form->setVar("action", "lay_edit");
+    $form->setVar("action", 'lay_edit');
     $form->setVar("frame", $frame);
     $form->setVar("idlay", $idlay);
+    $form->setVar("oldname", $name);
 
     $tb_name = new cHTMLTextbox("layname", $name, 60);
     $ta_description = new cHTMLTextarea("description", $description, 100, 10);
     $ta_description->setStyle("font-family: monospace;width: 100%;");
-    $ta_description->updateAttributes(array(
+    $ta_description->updateAttributes([
         "wrap" => "off"
-    ));
+    ]);
 
     $ta_code = new cHTMLTextarea("code", conHtmlSpecialChars($code), 100, 20, 'code');
     $ta_code->setStyle("font-family: monospace;width: 100%;");
-    $ta_code->updateAttributes(array(
+    $ta_code->updateAttributes([
         "wrap" => "off"
-    ));
+    ]);
 
     $cb_refresh = new cHTMLCheckbox("refreshtemplates", i18n("On save, apply default modules to new containers"));
 
     // disable the name textbox and the description textbox if readonly is on
-    if($readOnly) {
-        $tb_name->setDisabled('disabled');
-        $ta_description->setDisabled('disabled');
+    if ($readOnly) {
+        $tb_name->setDisabled(true);
+        $ta_description->setDisabled(true);
     }
 
     $form->add(i18n("Name"), $tb_name);
@@ -222,7 +232,7 @@ if (true === $layout->isLoaded()) {
 
     $oCodeMirror = new CodeMirror('code', 'html', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg);
     // disable codemirror editing if readonly is on
-    if($readOnly) {
+    if ($readOnly) {
         $oCodeMirror->setProperty("readOnly", "true");
 
         $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n('Overwriting files is disabled'), 's');
@@ -234,11 +244,15 @@ if (true === $layout->isLoaded()) {
     $page->set('s', 'FORM', '');
 }
 
-if (stripslashes($_REQUEST['idlay']) || $bReloadSyncSrcipt) {
-    $page->setReload();
+if ($bReloadSyncScript) {
+    if ($action == 'lay_sync' || $action == 'lay_delete') {
+        $page->reloadLeftBottomFrame(['idlay' => null]);
+    } else {
+        $page->reloadLeftBottomFrame(['idlay' => $idlay]);
+    }
 }
 
-// if ($action == "lay_sync") {
+// if ($action == 'lay_sync') {
 //     $page->setSubnav("idlay={$idlay}&dont_print_subnav=1", "lay");
 // } else {
 //     $page->setSubnav("idlay={$idlay}", "lay");

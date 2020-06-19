@@ -318,6 +318,7 @@ if ($new == true) {
     $defaultform = new cHTMLCheckbox('copytemplate', 'checked', 'copytemplatechecked', true);
     $page->set('d', 'CATFIELD', $defaultform->toHtml(false));
     $page->next();
+    $page->reloadLeftBottomFrame(['idclient' => null]);
 }
 $page->set('s', 'IDCLIENT', $idclient);
 

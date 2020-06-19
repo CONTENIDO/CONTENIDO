@@ -107,8 +107,8 @@ class TODOBackendList extends cGuiScrollList {
      *         Field value
      * @param array  $hidden
      *
-     * @return unknown
-     * 
+     * @return string
+     *
      * @throws cException
      */
     public function convert($key, $value, $hidden) {
@@ -191,7 +191,7 @@ class TODOBackendList extends cGuiScrollList {
 
         if ($key == 6) {
             $p = $img = '';
-            
+
             switch ($value) {
                 case 0:
                     $img = "prio_low.gif";
@@ -434,7 +434,7 @@ if ($lcount == 0) {
     $list->setSortable(5, true);
     $list->setSortable(6, true);
     $list->setSortable(7, true);
-    $list->sort($sortby, $sortmode);
+    $list->sort(cSecurity::toInteger($sortby), $sortmode);
 
     $cpage->setContent(array($form, $list));
 }

@@ -113,10 +113,11 @@ class cGuiFoldingRow extends cHTML {
         $this->_hiddenField = new cHTMLHiddenField("expandstate_" . $this->_contentRow->getID());
 
         $this->_foldingImage = new cHTMLImage();
+        $this->_foldingImage->advanceID();
 
         $this->setExpanded(false);
 
-        $this->addRequiredScript("parameterCollector.js");
+        $this->addRequiredScript("parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e");
         $this->addRequiredScript("cfoldingrow.js");
 
         $user = new cApiUser($auth->auth["uid"]);

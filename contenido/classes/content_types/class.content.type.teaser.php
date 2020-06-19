@@ -252,7 +252,7 @@ echo $teaser->generateTeaserCode();
     }
 
     /**
-     * Function is called in edit- and viewmode in order to generate teasercode
+     * Function is called in edit- and view mode in order to generate teaser code
      * for output
      *
      * @param bool $returnAsArray Mode switch between template generation and returning result as array
@@ -415,7 +415,7 @@ echo $teaser->generateTeaserCode();
         }
 
         if ($online == 1 || cRegistry::getBackendSessionId()) {
-            // teaserfilter defines strings which must be contained in text for display.
+            // teaser filter defines strings which must be contained in text for display.
             // if string is defined check if article contains this string and abort, if article does not contain this string
             if ($this->_settings['teaser_filter'] != '') {
                 $iPosText = cString::findLastPos(conHtmlEntityDecode($text), $this->_settings['teaser_filter']);
@@ -974,6 +974,9 @@ echo $teaser->generateTeaserCode();
         $htmlSelect->appendOptionElement($htmlSelectOption);
 
         // set other available options manually
+        $htmlSelectOption = new cHTMLOptionElement(i18n("Title"), 'title', false);
+        $htmlSelect->appendOptionElement($htmlSelectOption);
+
         $htmlSelectOption = new cHTMLOptionElement(i18n("Sort sequence"), 'sortsequence', false);
         $htmlSelect->appendOptionElement($htmlSelectOption);
 

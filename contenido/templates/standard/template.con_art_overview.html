@@ -6,7 +6,7 @@
 {_CSS_HEAD_CONTENIDO_}
 {_JS_HEAD_CONTENIDO_}
     <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/tipsy.css">
-    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
     <script type="text/javascript" src="scripts/articleObject.js.php?contenido={_SID_}"></script>
     <script type="text/javascript" src="scripts/jquery/plugins/tipsy.js"></script>
     <script type="text/javascript" src="scripts/registerTipsy.js"></script>
@@ -84,12 +84,12 @@
     <!-- /flip section -->
 
     <!-- article list -->
-    <table class="generic generic_art_overwiew" width="100%" border="0" cellspacing="0" cellpadding="2">
+    <table class="generic generic_art_overview" width="100%" border="0" cellspacing="0" cellpadding="2">
         <tr>
             {HEADERS}
         </tr>
         <!-- BEGIN:BLOCK -->
-        <tr id="{ROWID}" {CSS_CLASS} onmouseover="artRow.over(this)" onmouseout="artRow.out(this)" onclick="artRow.click(this)">
+        <tr id="{ROWID}" {CSS_CLASS}>
             {CELLS}
         </tr>
         <!-- END:BLOCK -->
@@ -390,7 +390,7 @@ function doInlineEditArt() {
 
      });
 
-    $('.generic.generic_art_overwiew').off('keypress').on('keypress', function (event) {
+    $('.generic.generic_art_overview').off('keypress').on('keypress', function (event) {
         if (event.which === 13) {
             saveInlineEditArt();
         }
@@ -401,7 +401,7 @@ function doInlineEditArt() {
 (function(Con, $) {
 
     // mark first row in article list
-    var firstRow = $("table.generic_art_overwiew tr[id]")[0];
+    var firstRow = $("table.generic_art_overview tr[id]")[0];
     if (firstRow) {
         artRow.reset();
         artRow.over(firstRow);
@@ -487,6 +487,8 @@ function doInlineEditArt() {
             });
 
         }
+
+        Con.RowMark.initialize('.generic_art_overview .row_mark', 'artRow');
 
     });
 

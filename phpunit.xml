@@ -1,0 +1,38 @@
+<phpunit bootstrap="test/bootstrap.php" backupGlobals="false" colors="true">
+    <testsuites>
+
+        <testsuite name="all">
+            <directory>test/chains</directory>
+            <directory>test/contenido</directory>
+        </testsuite>
+
+        <testsuite name="chains">
+            <directory>test/chains</directory>
+        </testsuite>
+
+        <testsuite name="contenido">
+            <directory>test/contenido</directory>
+        </testsuite>
+
+        <testsuite name="classes">
+            <directory>test/contenido/classes</directory>
+        </testsuite>
+
+        <testsuite name="genericdb">
+            <directory>test/contenido/genericdb</directory>
+        </testsuite>
+
+        <testsuite name="html">
+            <directory>test/contenido/html</directory>
+        </testsuite>
+
+        <testsuite name="uri">
+            <directory>test/contenido/uri</directory>
+        </testsuite>
+
+        <testsuite name="validator">
+            <directory>test/contenido/validator</directory>
+        </testsuite>
+
+    </testsuites>
+</phpunit>

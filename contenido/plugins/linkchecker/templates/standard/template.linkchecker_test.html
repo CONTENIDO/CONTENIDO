@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>template.linkchecker_test.html</title>
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css?v=4ff97ee40f1ac052f634e7e8c2f3e37e">
     <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/tipsy.css">
     <style type="text/css">
@@ -11,7 +11,7 @@
     .toggleLink.closed {background-image: url(images/open_all.gif)}
     </style>
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
     <script type="text/javascript" src="scripts/cfoldingrow.js"></script>
     <script type="text/javascript" src="scripts/jquery/plugins/tipsy.js"></script>
     <script type="text/javascript" src="scripts/registerTipsy.js"></script>
@@ -96,7 +96,7 @@
             </tr>
         </table><!-- Table Body -->
         <div id="id_links_articles">
-            <table width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
+            <table class="error_list" width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
                 {ERRORS_SHOW_ART}
             </table>
         </div>
@@ -116,7 +116,7 @@
             </tr>
         </table><!-- Table Body -->
         <div id="id_links_docsimgs">
-            <table width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
+            <table class="error_list" width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
                 {ERRORS_SHOW_DOCIMAGES}
             </table>
         </div>
@@ -136,7 +136,7 @@
             </tr>
         </table><!-- Table Body -->
         <div id="id_links_external">
-            <table width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
+            <table class="error_list" width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
                 {ERRORS_SHOW_OTHERS}
             </table>
         </div>
@@ -177,7 +177,7 @@
             </tr>
         </table><!-- Table Body -->
         <div id="id_links_categories">
-            <table width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
+            <table class="error_list" width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
                 {ERRORS_SHOW_CAT}
             </table>
         </div>
@@ -199,6 +199,8 @@
                 $span.text('+');
             }
         });
+
+        Con.RowMark.initialize('.error_list .row_mark', 'row');
     });
 })(Con, Con.$);
 </script>

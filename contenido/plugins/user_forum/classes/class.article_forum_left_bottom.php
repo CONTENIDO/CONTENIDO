@@ -56,34 +56,37 @@ class ArticleForumLeftBottom extends cGuiPage {
             return '';
         }
 
-        global $area;
+        $idart = cSecurity::toInteger($_REQUEST['idart']);
 
         $menu = new cGuiMenu();
         for ($i = 0; $i < count($forms); $i++) {
+            // We use idart as id for the menu entry
+            $id = cSecurity::toInteger($result[$i]['idart']);
 
             $formName = $result[$i]['title'];
-            $menu->setTitle($i, $formName);
+            $menu->setId($id, $id);
+            $menu->setTitle($id, $formName);
+
+            if ($idart == $id) {
+                $menu->setMarked($id);
+            }
 
             // add 'show form' link
             $link = new cHTMLLink();
-
-            $link->setCLink($area, 4, 'show_form');
-            $link->setTargetFrame('right_bottom');
-            $link->setClass('linktext');
-            $link->setCustom('idart', $result[$i]['idart']);
-            $link->setCustom('idcat', $result[$i]['idcat']);
-            $link->setContent($formName);
-            $menu->setLink($i, $link);
+            $link->setClass('show_item')
+                ->setLink('javascript:;')
+                ->setAttribute('data-action', 'show_forum')
+                ->setAttribute('data-idart', $result[$i]['idart'])
+                ->setAttribute('data-idcat', $result[$i]['idcat']);
+            $menu->setLink($id, $link);
 
             $link = new cHTMLLink();
-
-            $arg = $result[$i]['idart'];
-            $message = UserForum::i18n('ALLDELETEFROMCAT');
-            $link->setLink('javascript:void(0)');
-            $link->setAttribute("onclick", 'Con.showConfirmation(&quot;' . $message . '&quot;, function(){ deleteArticlesByIdLeft(' . $arg . '); }); return false;');
-            $link->setImage($cfg['path']['images'] . 'delete.gif');
-            $link->setAlt($message);
-            $menu->setActions($i, 'delete', $link);
+            $deleteForm = UserForum::i18n('ALLDELETEFROMCAT');
+            $link->setLink('javascript:;')
+                ->setAttribute('data-action', 'delete_forum')
+                ->setAttribute('data-idart', $result[$i]['idart'])
+                ->setContent('<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteForm . '" alt="' . $deleteForm . '">');
+            $menu->setActions($id, 'delete', $link);
         }
 
         return $menu;
@@ -97,10 +100,6 @@ class ArticleForumLeftBottom extends cGuiPage {
      * @throws cInvalidArgumentException
      */
     public function receiveData(&$get) {
-        if ($_GET['action'] === 'delete_form') {
-            $this->_collection->deleteAllCommentsById($get['idart']);
-        }
-
         return $this->getMenu();
     }
 

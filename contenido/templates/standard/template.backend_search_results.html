@@ -5,7 +5,7 @@
 {_META_HEAD_CONTENIDO_}
 {_CSS_HEAD_CONTENIDO_}
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
     <script type="text/javascript" src="scripts/articleObject.js.php?contenido={_SID_}"></script>
 
 </head>
@@ -13,7 +13,7 @@
     <!--vertical-ailgn:middle;-->
     <div style="border:1px solid #B3B3B3; background:#E2E2E2; margin:0 0 10px 0; padding:2px;line-height:20px;">{TITLE}</div>
 
-    <table width="100%" border="0" cellspacing="0" cellpadding="2" class="bordered">
+    <table id="backend_search_list" width="100%" border="0" cellspacing="0" cellpadding="2" class="bordered">
     <tr>
         <td width="1%" class="headerbordercell" nowrap="nowrap">{TH_START}</td>
         <td width="100%" class="headerbordercell sortable" id="col-title" nowrap="nowrap">{TH_TITLE}</td>
@@ -171,6 +171,13 @@ function initTheOne() {
 }
 
 initTheOne();
+
+(function(Con, $) {
+    $(function() {
+        Con.RowMark.initialize('#backend_search_list .row_mark', 'artRow');
+    });
+})(Con, Con.$);
+
 </script>
 </body>
 </html>

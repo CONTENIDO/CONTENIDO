@@ -20,7 +20,7 @@
     </style>
 {_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/cfoldingrow.js"></script>
-    <script type="text/javascript" src="scripts/parameterCollector.js"></script>
+    <script type="text/javascript" src="scripts/parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
 </head>
 
 <body class="page_frontend_left_top">
@@ -148,7 +148,11 @@ function execFilter(bGet) {
     if (bGet == 1) {
         return multilink+'&area=frontend';
     } else {
-        Con.multiLink("left_bottom", multilink+'&area=frontend&frame=2');
+        Con.multiLink(
+            'left_bottom', multilink+'&area=frontend&frame=2',
+            'right_top', 'main.php?area=frontend&frame=3&contenido=' + Con.sid,
+            'right_bottom', 'main.php?area=frontend&frame=4&contenido=' + Con.sid
+        );
     }
 }
 
@@ -183,6 +187,36 @@ function frameLeftTopResizeInitCallback() {
 }
 
 (function(Con, $) {
+
+    function actionSwitchFrontendUser() {
+        var url = execFilter(1);
+        Con.multiLink(
+            'left_bottom', url + '&frame=2',
+            'right_top', 'main.php?area=frontend&frame=3&contenido=' + Con.sid,
+            'right_bottom', 'main.php?area=frontend&frame=4&contenido=' + Con.sid
+        );
+        toggleContainer('img_user');
+    }
+
+    function actionSwitchFrontendGroup() {
+        Con.multiLink(
+            'left_bottom', 'main.php?&area=frontendgroups&frame=2&contenido=' + Con.sid,
+            'right_top', 'main.php?area=frontend&frame=3&contenido=' + Con.sid,
+            'right_bottom', 'main.php?area=frontend&frame=4&contenido=' + Con.sid
+        );
+        toggleContainer('img_group');
+    }
+
+    $('.leftTopAction [data-action]').live('click', function() {
+        var action = $(this).data('action');
+
+        if (action === 'switch_frontenduser') {
+            actionSwitchFrontendUser();
+        } else if (action === 'switch_frontendgroup') {
+            actionSwitchFrontendGroup();
+        }
+    });
+
     $(function() {
         toggleContainer('{IINIT}');
     });

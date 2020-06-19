@@ -28,7 +28,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * // build page to display files
  * $page = new cGuiFileOverview($path, $mark, 'html');
  * // optionally set extension(s) to filter files
- * $page->setFileExtension(array('html', 'tpl'));
+ * $page->setFileExtension(['html', 'tpl']);
  * // render page
  * $page->render();
  * </code>
@@ -167,7 +167,7 @@ class cGuiFileOverview extends cGuiPage {
      */
     public function setFileExtension($extension) {
         if (cSecurity::isString($extension)) {
-            $extension = array($extension);
+            $extension = [$extension];
         }
         $this->_fileExtension = $extension;
     }
@@ -183,13 +183,12 @@ class cGuiFileOverview extends cGuiPage {
      * @throws cInvalidArgumentException
      */
     public function render($template = NULL, $return = false) {
-
         $cfg = cRegistry::getConfig();
         $area = cRegistry::getArea();
         $perm = cRegistry::getPerm();
 
         // create an array of all files in the directory
-        $files = array();
+        $files = [];
         foreach (new DirectoryIterator($this->_directory) as $file) {
             if ($file->isDir()) {
                 continue;
@@ -203,32 +202,34 @@ class cGuiFileOverview extends cGuiPage {
         // sort the files
         sort($files);
 
+        $this->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
+
         // assign variables for the JavaScript
-        $this->set('s', 'JS_AREA', $area);
-        $this->set('s', 'JS_ACTION_DELETE', $area . '_delete');
+        $this->set('s', 'AREA', $area);
+        $this->set('s', 'ACTION_DELETE', $area . '_delete');
+        $this->set('s', 'ACTION_EDIT', $area . '_edit');
+
+        $deleteTitle = i18n('Delete file');
 
         // assign variables for every file
         $fileInfos = new cApiFileInformationCollection();
-        foreach($files as $file) {
-            if($this->_fileInfoType != '') {
+        foreach ($files as $file) {
+            if ($this->_fileInfoType != '') {
                 $fileInfo = $fileInfos->getFileInformation($file, $this->_fileInfoType);
                 $this->set('d', 'DESCRIPTION', conHtmlSpecialChars(cSecurity::escapeString($fileInfo['description'])));
             } else {
                 $this->set('d', 'DESCRIPTION', '');
             }
-            $this->set('d', 'AREA', $area);
-            $this->set('d', 'ACTION', $area . '_edit');
+            $this->set('d', 'DATA_ID', $file);
             $this->set('d', 'FILENAME', $file);
-            if($file == $this->_markedFile) {
-                $this->set('d', 'MARKED', 'marked');
+            $this->set('d', 'ID', ($file == $this->_markedFile) ? 'marked' : 'file' . $file);
+
+            if (getEffectiveSetting('client', 'readonly', 'false') == 'true' || (!$perm->have_perm_area_action($area, $area . '_delete'))) {
+                $delete = '<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete_inact.gif" title="" alt="">';
             } else {
-                $this->set('d', 'MARKED', '');
+                $delete = '<a href="javascript:;" data-action="delete_file" title="' . $deleteTitle . '"><img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteTitle . '" alt="' . $deleteTitle . '"></a>';
             }
-            if(getEffectiveSetting("client", "readonly", "false") == "true" || (!$perm->have_perm_area_action($area, $area . "_delete"))) {
-                $this->set('d', 'DELETE_IMAGE', $cfg['path']['images'] . 'delete_inact.gif');
-            } else {
-                $this->set('d', 'DELETE_IMAGE', $cfg['path']['images'] . 'delete.gif');
-            }
+            $this->set('d', 'DELETE', $delete);
 
             $this->next();
         }

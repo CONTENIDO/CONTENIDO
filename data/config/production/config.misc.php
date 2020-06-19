@@ -172,10 +172,10 @@ $cfg['php_error_reporting'] = E_ALL & ~(E_STRICT | E_NOTICE);
  * -----------------------------------------------------------------------------
  * This flag is for globally activating the caching feature in all frontends.
  * NOTE: You can control the caching behaviour of each client by configuring it
- * separately in its specific configuration file located in cms/includes/concache.php.
+ * separately in its specific configuration file located in cms/data/config/{environment}/concache.php.
  *
  * So, if you want to enable frontend caching, set $cfg['cache']['disable'] to false and configure
- * the rest in cms/includes/concache.php!
+ * the rest in cms/data/config/{environment}/concache.php!
  */
 
 // (bool) Enable/disable caching
@@ -377,7 +377,7 @@ $cfg['inuse']['lifetime'] = 3600;
 //          The wildcard {basePath} will be replaced dynamically
 $cfg['backend_template']['css_files'] = array(
     '{basePath}styles/jquery/jquery-ui.css',
-    '{basePath}styles/contenido.css',
+    '{basePath}styles/contenido.css?v=4ff97ee40f1ac052f634e7e8c2f3e37e',
     '{basePath}styles/jquery/plugins/atooltip.css'
 );
 
@@ -388,10 +388,10 @@ $cfg['backend_template']['js_files'] = array(
     '{basePath}scripts/jquery/jquery.js',
     '{basePath}scripts/jquery/jquery-ui.js',
     '{basePath}scripts/contenido.js',
-    '{basePath}scripts/general.js',
+    '{basePath}scripts/general.js?v=c027a03b03f184f2d7d7f0d866bd9a55',
     '_CONFIG_',
-    '{basePath}scripts/startup.js',
-    '{basePath}scripts/jquery/plugins/atooltip.jquery.js'
+    '{basePath}scripts/startup.js?v=606f61b17b52c6f86295e3608e6f0ee4',
+    '{basePath}scripts/jquery/plugins/atooltip.jquery.js?v=606f61b17b52c6f86295e3608e6f0ee4'
 );
 
 

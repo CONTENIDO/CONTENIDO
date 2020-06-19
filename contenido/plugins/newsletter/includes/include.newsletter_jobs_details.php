@@ -57,10 +57,10 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
 
             $oForm->add("", sprintf(i18n("Sending newsletter ... (chunk %s of %s, recipients: %s, sent: %s)", 'newsletter'), $iChunk, $iChunks, $oJob->get("rcpcount"), $oJob->get("sendcount")));
 
-            $oPage->addMeta(array(
+            $oPage->addMeta([
                 'http-equiv' => 'refresh',
                 'content' => $oJob->get("dispatch_delay") . '; URL=' . $sPathNext
-            ));
+            ]);
             $oForm->unsetActionButton("submit");
             $oForm->setActionButton("cancel", $backendUrl . "images/but_cancel.gif", i18n("Stop sending", 'newsletter'), "c");
         }
@@ -71,7 +71,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
         $oForm->add("", "");
 
         $oForm->add("", sprintf(i18n("The newsletter has been sent to %s recipients", 'newsletter'), $oJob->get("sendcount")));
-        $oPage->setReload();
+        $oPage->reloadLeftBottomFrame(['idnewsjob' => $_REQUEST["idnewsjob"]]);
     }
 
     $oPage->setContent($oForm);
@@ -80,7 +80,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     $oJobs->delete($_REQUEST["idnewsjob"]);
 
     $oPage->setSubnav("blank", "news_jobs");
-    $oPage->setReload();
+    $oPage->reloadLeftBottomFrame(['idnewsjob' => null]);
     $oPage->setContent('');
 } elseif ($action == "news_job_details" || $action == "news_job_detail_delete") {
 
@@ -133,13 +133,13 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     $oSelElements = new cHTMLSelectElement("elemperpage");
     $oSelElements->setEvent("onchange", "document.forms.frmOptions.submit();");
 
-    $aData = array(
+    $aData = [
         "0" => i18n("-All-", 'newsletter'),
         "50" => "50",
         "100" => "100",
         "250" => "250",
         "500" => "500"
-    );
+    ];
     $oSelElements->autoFill($aData);
 
     $oSelElements->setDefault($_REQUEST["elemperpage"]);
@@ -153,13 +153,13 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     $oList->setCustom("nextpage", $iNextPage);
     $oList->setCustom("elemperpage", $_REQUEST["elemperpage"]);
 
-    $aCols = array(
+    $aCols = [
         "rcpname",
         "rcpemail",
         "",
         "status",
         "sent"
-    );
+    ];
     $oList->setHeader(i18n("Recipient", 'newsletter'), i18n("E-Mail", 'newsletter'), i18n("Type", 'newsletter'), i18n("Status", 'newsletter'), i18n("Sent", 'newsletter'), i18n("Actions", 'newsletter'));
     $oList->setSortable(0, true);
     $oList->setSortable(1, true);
@@ -210,9 +210,10 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     unset($oImgDelete);
 
     $iCount = 0;
-    $aNewsType[] = array(); // Performance
-    $aNewsType[0] = i18n("Text only", 'newsletter');
-    $aNewsType[1] = i18n("HTML/Text", 'newsletter');
+    $aNewsType = [
+        i18n("Text only", 'newsletter'),
+        i18n("HTML/Text", 'newsletter')
+    ];
     while ($oLog = $oLogs->next()) {
 
         $sName = $oLog->get("rcpname");
@@ -258,7 +259,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
 
     // A little bit senseless, as the data is already sorted, but
     // we need the sortmode in the header link
-    $oList->sort($_REQUEST["sortby"], $_REQUEST["sortmode"]);
+    $oList->sort(cSecurity::toInteger($_REQUEST["sortby"]), $_REQUEST["sortmode"]);
 
     // HerrB: Hardcore UI for browsing elements ... sorry
     $sBrowseHTML = '<table class="generic" width="100%" cellspacing="0" cellpadding="2" border="0">
@@ -306,14 +307,14 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
         $oForm->add(i18n("Type", 'newsletter'), i18n("HTML and text"));
 
         $txtMessageHTML = new cHTMLTextarea("txtMessageHTML", $oJob->get("message_html"), 80, 20);
-        $txtMessageHTML->setDisabled("disabled");
+        $txtMessageHTML->setDisabled(true);
 
         $oForm->add(i18n("HTML Message", 'newsletter'), $txtMessageHTML->render());
     } else {
         $oForm->add(i18n("Type", 'newsletter'), i18n("Text only", 'newsletter'));
     }
     $txtMessageText = new cHTMLTextarea("txtMessageText", $oJob->get("message_text"), 80, 20);
-    $txtMessageText->setDisabled("disabled");
+    $txtMessageText->setDisabled(true);
 
     $oForm->add(i18n("Text Message", 'newsletter'), $txtMessageText->render());
 

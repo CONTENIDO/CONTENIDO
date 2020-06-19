@@ -16,12 +16,12 @@
         border: 1px solid;
         border-bottom-width: 0;
         border-left-width: 0;
-
-    border-color:{BORDERCOLOR};}
+        border-color: {BORDERCOLOR};
+    }
     </style>
 {_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/jquery/plugins/timepicker.js"></script>
-    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
     <script type="text/javascript">
     (function(Con, $) {
@@ -31,6 +31,7 @@
         if (createdUserId != '') {
             Con.getFrame('right_top').location = 'main.php?area=user&frame=3&action=&userid=' + createdUserId + '&contenido=' + Con.sid;
             Con.getFrame('right_bottom').location = 'main.php?area=user_overview&frame=4&action=&userid=' + createdUserId + '&contenido=' + Con.sid;
+            Con.FrameLeftBottom.reload({userid: createdUserId});
         } else {
             Con.getFrame('right_top').location = 'main.php?area=user&frame=3&contenido=' + Con.sid;
         }

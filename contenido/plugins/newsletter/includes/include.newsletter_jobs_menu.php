@@ -30,22 +30,23 @@ $oUser = new cApiUser($auth->auth["uid"]);
 // base: Elements from core code (other type may be: "plugin")
 // sort: Element can be used to be sorted by
 // search: Element can be used to search in
-$aFields = array();
-$aFields["name"] = array(
-    "field" => "name",
-    "caption" => i18n("Name", 'newsletter'),
-    "type" => "base,sort,search"
-);
-$aFields["created"] = array(
-    "field" => "created",
-    "caption" => i18n("Created", 'newsletter'),
-    "type" => "base,sort"
-);
-$aFields["status"] = array(
-    "field" => "status",
-    "caption" => i18n("Status", 'newsletter'),
-    "type" => "base,sort"
-);
+$aFields = [
+    "name" => [
+        "field" => "name",
+        "caption" => i18n("Name", 'newsletter'),
+        "type" => "base,sort,search"
+    ],
+    "created" => [
+        "field" => "created",
+        "caption" => i18n("Created", 'newsletter'),
+        "type" => "base,sort"
+    ],
+    "status" => [
+        "field" => "status",
+        "caption" => i18n("Status", 'newsletter'),
+        "type" => "base,sort"
+    ],
+];
 // Not needed, as no sort/search, but keep as memo: $aFields["cronjob"] =
 // array("field" => "use_cronjob", "caption" => i18n("Use cronjob",
 // 'newsletter'), "type" => "base");
@@ -153,28 +154,27 @@ $sDateFormat = getEffectiveSetting("dateformat", "full", "d.m.Y H:i");
 
 // Store messages for repeated use (speeds performance, as i18n translation is
 // only needed once)
-$aMsg = array();
-$aMsg["DelTitle"] = i18n("Delete dispatch job", 'newsletter');
-$aMsg["DelDescr"] = i18n("Do you really want to delete the following newsletter dispatch job:<br>", 'newsletter');
+$aMsg = [
+    "DelTitle" => i18n("Delete dispatch job", 'newsletter'),
+    "DelDescr" => i18n("Do you really want to delete the following newsletter dispatch job:<br>", 'newsletter'),
+    "SendTitle" => i18n("Run job", 'newsletter'),
+    "SendDescr" => i18n("Do you really want to run the following job:<br>", 'newsletter'),
+];
 
-$aMsg["SendTitle"] = i18n("Run job", 'newsletter');
-$aMsg["SendDescr"] = i18n("Do you really want to run the following job:<br>", 'newsletter');
-
-// Prepare "send link" template
-$sTplSend = '<a title="' . $aMsg["SendTitle"] . '" href="javascript://" onclick="showSendMsg(\'{ID}\',\'{NAME}\')"><img alt="" src="' . $cfg['path']['images'] . 'newsletter_16.gif" border="0" title="' . $aMsg["SendTitle"] . '" alt="' . $aMsg["SendTitle"] . '"></a>';
 
 while ($oJob = $oJobs->next()) {
     $iMenu++;
-    $iID = $oJob->get("idnewsjob");
+    $iID = cSecurity::toInteger($oJob->get("idnewsjob"));
     $sName = $oJob->get("name") . " (" . date($sDateFormat, strtotime($oJob->get("created"))) . ")";
 
+    // Create the link to show the newsletter job
     $oLnk = new cHTMLLink();
-    $oLnk->setMultiLink($area, "", $area, "");
-    $oLnk->setCustom("idnewsjob", $iID);
+    $oLnk->setClass('show_item')
+        ->setLink('javascript:;')
+        ->setAttribute('data-action', 'news_job_show');
+    $oMenu->setLink($iMenu, $oLnk);
 
-    // Is at present redundant
-    // HerrB: No, it's just not used/set...
-    // $oMenu->setImage($iMenu, "images/newsletter_16.gif");
+    $oMenu->setId($iMenu, $iID);
     $oMenu->setTitle($iMenu, $sName);
 
     switch ($oJob->get("status")) {
@@ -183,21 +183,32 @@ while ($oJob = $oJobs->next()) {
             if ($oJob->get("cronjob") == 0) {
                 // Standard job can be run if user has the right to do so
                 if ($perm->have_perm_area_action($area, "news_job_run")) {
-                    $sLnkSend = str_replace('{ID}', $iID, $sTplSend);
-                    $sLnkSend = str_replace('{NAME}', addslashes($sName), $sLnkSend);
-
-                    $oMenu->setActions($iMenu, 'send', $sLnkSend);
+                    $oImage = new cHTMLImage($cfg['path']['images'] . 'newsletter_16.gif', 'vAlignMiddle');
+                    $oImage->setAlt($aMsg["SendTitle"]);
+                    $oSend = new cHTMLLink();
+                    $oSend->setLink('javascript:;')
+                        ->setAlt($aMsg["SendTitle"])
+                        ->setAttribute('data-action', 'news_job_run')
+                        ->setContent($oImage->render());
+                    $oMenu->setActions($iMenu, 'send', $oSend->render());
                 }
             } elseif ($oJob->get("cronjob") == 1) {
                 // It's a cronjob job - no manual sending, show it blue
-                $oLnk->updateAttributes(array(
+                $oLnk->updateAttributes([
                     "style" => "color:#0000FF"
-                ));
+                ]);
             }
 
             if ($perm->have_perm_area_action($area, "news_job_delete")) {
                 // Job may be deleted, if user has the right to do so
-                $oMenu->setActions($iMenu, 'delete', '<a title="' . $aMsg["DelTitle"] . '" href="javascript://" onclick="showDelMsg(' . $iID . ',\'' . addslashes($sName) . '\')"><img alt="" src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $aMsg["DelTitle"] . '" alt="' . $aMsg["DelTitle"] . '"></a>');
+                $oImage = new cHTMLImage($cfg['path']['images'] . 'delete.gif', 'vAlignMiddle');
+                $oImage->setAlt($aMsg["DelTitle"]);
+                $oDelete = new cHTMLLink();
+                $oDelete->setLink('javascript:;')
+                    ->setAlt($aMsg["DelTitle"])
+                    ->setAttribute('data-action', 'news_job_delete')
+                    ->setContent($oImage->render());
+                $oMenu->setActions($iMenu, 'delete', $oDelete->render());
             }
             break;
         case 2:
@@ -205,28 +216,37 @@ while ($oJob = $oJobs->next()) {
             if ($perm->have_perm_area_action($area, "news_job_run")) {
                 // User may try to start sending, again - if he has the right to
                 // do so
-                $sLnkSend = str_replace('{ID}', $iID, $sTplSend);
-                $sLnkSend = str_replace('{NAME}', addslashes($sName), $sLnkSend);
-
-                $oMenu->setActions($iMenu, 'send', $sLnkSend);
+                $oImage = new cHTMLImage($cfg['path']['images'] . 'newsletter_16.gif', 'vAlignMiddle');
+                $oImage->setAlt($aMsg["SendTitle"]);
+                $oSend = new cHTMLLink();
+                $oSend->setLink('javascript:;')
+                    ->setAlt($aMsg["SendTitle"])
+                    ->setAttribute('data-action', 'news_job_run')
+                    ->setContent($oImage->render());
+                $oMenu->setActions($iMenu, 'send', $oSend->render());
             }
 
-            $oLnk->updateAttributes(array(
+            $oLnk->updateAttributes([
                 "style" => "color:#da8a00"
-            ));
+            ]);
 
-            $sDelete = '< alt="" img src="' . $cfg['path']['images'] . 'delete_inact.gif" border="0" title="' . i18n("Can't delete the job while it's running", "newsletter") . '" alt="' . i18n("Can't delete the job while it's running", "newsletter") . '">';
+            // Delete disabled
+            $oImage = new cHTMLImage($cfg['path']['images'] . 'delete_inact.gif', 'vAlignMiddle');
+            $oImage->setAlt(i18n("Can't delete the job while it's running", "newsletter"));
+            $oMenu->setActions($iMenu, 'delete', $oImage->render());
             break;
         case 9:
             // Job finished, don't do anything
-            $oLnk->updateAttributes(array(
+            $oLnk->updateAttributes([
                 "style" => "color:#808080"
-            ));
+            ]);
 
             if ($perm->have_perm_area_action($area, "news_job_delete")) {
                 // You have the right, but you can't delete the job after
                 // sending
-                $oMenu->setActions($iMenu, 'delete', '<img alt="" src="' . $cfg['path']['images'] . 'delete_inact.gif" border="0" title="' . i18n("Can't delete the job after it's been sent", "newsletter") . '" alt="' . i18n("Can't delete the job after it's been sent", "newsletter") . '">');
+                $oImage = new cHTMLImage($cfg['path']['images'] . 'delete_inact.gif', 'vAlignMiddle');
+                $oImage->setAlt(i18n("Can't delete the job after it's been sent", "newsletter"));
+                $oMenu->setActions($iMenu, 'delete', $oImage->render());
             }
             break;
     }
@@ -234,63 +254,7 @@ while ($oJob = $oJobs->next()) {
     $oMenu->setLink($iMenu, $oLnk);
 }
 
-$sExecScript = <<<JS
-<script type="text/javascript">
-function showSendMsg(lngId, strElement) {
-    Con.showConfirmation("{$aMsg["SendDescr"]}<b>" + strElement + "</b>", function() {
-        runJob(lngId);
-    });
-}
-
-function showDelMsg(lngId, strElement) {
-    Con.showConfirmation("{$aMsg["DelDescr"]}<b>" + strElement + "</b>", function() {
-        deleteJob(lngId);
-    });
-}
-
-// Function for running job
-function runJob(idnewsjob) {
-    var oForm = Con.getFrame("left_top").document.getElementById("dispatch_listoptionsform");
-
-    var url = "main.php?area=news_jobs";
-    url += "&action=news_job_run";
-    url += "&frame=4";
-    url += "&idnewsjob=" + idnewsjob;
-    url += "&contenido=" + Con.sid;
-    url += get_registered_parameters();
-    url += "&selAuthor=" + oForm.selAuthor.value;
-    url += "&sortby=" + oForm.sortby.value;
-    url += "&sortorder=" + oForm.sortorder.value;
-    url += "&filter=" + oForm.filter.value;
-    url += "&elemperpage=" + oForm.elemperpage.value;
-
-    Con.getFrame("right_bottom").location.href = url;
-}
-
-// Function for deleting job
-function deleteJob(idnewsjob) {
-    var oForm = Con.getFrame("left_top").document.getElementById("dispatch_listoptionsform");
-
-    var url = "main.php?area=news_jobs";
-    url += "&action=news_job_delete";
-    url += "&frame=4";
-    url += "&idnewsjob=" + idnewsjob;
-    url += "&contenido=" + Con.sid;
-    url += get_registered_parameters();
-    url += "&selAuthor=" + oForm.selAuthor.value;
-    url += "&sortby=" + oForm.sortby.value;
-    url += "&sortorder=" + oForm.sortorder.value;
-    url += "&filter=" + oForm.filter.value;
-    url += "&elemperpage=" + oForm.elemperpage.value;
-
-    Con.getFrame("right_bottom").location.href = url;
-}
-</script>
-JS;
-
-// Messagebox JS has to be included before ExecScript!
-$oPage->addScript($sExecScript);
-$oPage->addScript('parameterCollector.js');
+$oPage->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
 
 // generate current content for Object Pager
 $sPagerId = '0ed6d632-6adf-4f09-a0c6-1e38ab60e303';
@@ -334,5 +298,11 @@ JS;
 
 $oPage->addScript($sRefreshPager);
 
-$oPage->setContent($oMenu);
+// Generate template
+$oTpl = new cTemplate();
+$oTpl->set('s', 'SEND_MESSAGE', $aMsg["SendDescr"]);
+$oTpl->set('s', 'DELETE_MESSAGE', $aMsg["DelDescr"]);
+$sTemplate = $oTpl->generate(cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'newsletter/templates/standard/template.newsletter_jobs_menu.html', true);
+
+$oPage->setContent([$oMenu, $sTemplate]);
 $oPage->render();

@@ -179,31 +179,36 @@ while ($feuser = $oFEUsers->next()) {
     }
 }
 
-$mlist = new cGuiMenu();
+$cGuiMenu = new cGuiMenu();
 $iMenu = 0;
 
 foreach ($aUserTable as $mkey => $params) {
     $idfrontenduser = $params["idfrontenduser"];
     $link = new cHTMLLink();
-    $link->setMultiLink($area, "", $area, "");
-    $link->setCustom("idfrontenduser", $idfrontenduser);
+    $link->setClass('show_item')
+        ->setLink('javascript:;')
+        ->setAttribute('data-action', 'show_frontenduser');
 
     $iMenu++;
 
     $delTitle = i18n("Delete user");
-    $deletebutton = '<a title="' . $delTitle . '" data-username="' . conHtmlSpecialChars($params['username']) . '" data-idfrontenduser="' . $idfrontenduser . '" class="jsDelete" href="javascript:void(0)"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
+    $deleteLink = '
+        <a href="javascript:;" data-action="delete_frontenduser" title="' . $delTitle . '">
+            <img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '">
+        </a>';
 
-    $mlist->setTitle($iMenu, conHtmlentities($params["username"]));
-    $mlist->setLink($iMenu, $link);
-    $mlist->setActions($iMenu, "delete", $deletebutton);
-    $mlist->setImage($iMenu, "");
+    $cGuiMenu->setId($iMenu, $idfrontenduser);
+    $cGuiMenu->setTitle($iMenu, conHtmlentities($params["username"]));
+    $cGuiMenu->setLink($iMenu, $link);
+    $cGuiMenu->setActions($iMenu, "delete", $deleteLink);
+    $cGuiMenu->setImage($iMenu, "");
 
     if ($_GET['frontenduser'] == $idfrontenduser) {
-        $mlist->setMarked($iMenu);
+        $cGuiMenu->setMarked($iMenu);
     }
 }
 
-$oPage->addScript('parameterCollector.js');
+$oPage->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
 
 $message = i18n("Do you really want to delete the user %s?");
 $oPage->set("s", "DELETE_MESSAGE", $message);
@@ -233,5 +238,5 @@ $sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
 $oPage->set("s", "MPAGE", $mpage);
 $oPage->set("s", "PAGER_CONTENT", $sPagerContent);
 $oPage->set("s", "PAGE", $mPage);
-$oPage->set("s", "FORM", $mlist->render(false));
+$oPage->set("s", "FORM", $cGuiMenu->render(false));
 $oPage->render();

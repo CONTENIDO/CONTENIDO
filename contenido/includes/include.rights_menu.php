@@ -89,37 +89,37 @@ while ($cApiUser = $cApiUserCollection->next()) {
     }
 
     $link = new cHTMLLink();
-    $link->setMultiLink("user", "", "user_overview", "");
-    $link->setCustom("userid", $cApiUser->get("user_id"));
+    $link->setClass('show_item')
+        ->setLink('javascript:;')
+        ->setAttribute('data-action', 'show_user');
 
     if ($bDisplayUser == true) {
         $iItemCount++;
 
         if ($iItemCount > ($elemperpage * ($mPage - 1)) && $iItemCount < (($elemperpage * $mPage) + 1)) {
-            if ($perm->have_perm_area_action('user', "user_delete")) {
-                $message = sprintf(
-                    i18n("Do you really want to delete the user %s?"),
-                    htmlspecialchars(addslashes($cApiUser->get("username")))
-                );
-
-                $delTitle = i18n("Delete user");
-                $deletebutton = '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $message . '&quot;, function() { deleteBackenduser(&quot;' . $userid . '&quot;); });return false;">
-                                     <img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '">
-                                 </a>';
-            } else {
-                $deletebutton = '';
-            }
-
             $iMenu++;
 
-            if (($sToday < $cApiUser->get("valid_from") && ($cApiUser->get("valid_from") != '0000-00-00 00:00:00' && $cApiUser->get("valid_from") != '')) || ($sToday > $cApiUser->get("valid_to") && ($cApiUser->get("valid_to") != '0000-00-00 00:00:00') && $cApiUser->get("valid_from") != '')) {
-                $mlist->setTitle($iMenu, '<span class="inactiveUser">' . conHtmlSpecialChars($cApiUser->get("username")) . "<br>" . conHtmlSpecialChars($cApiUser->get("realname")) . '</span>');
+            // Delete button
+            if ($perm->have_perm_area_action('user', "user_delete")) {
+                $delTitle = i18n("Delete user");
+                $deleteLink = '
+                    <a href="javascript:;" data-action="delete_user" title="' . $delTitle . '" >
+                        <img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '">
+                    </a>
+                ';
             } else {
-                $mlist->setTitle($iMenu, conHtmlSpecialChars($cApiUser->get("username")) . "<br>" . conHtmlSpecialChars($cApiUser->get("realname")));
+                $deleteLink = '';
             }
 
+            if (($sToday < $cApiUser->get("valid_from") && ($cApiUser->get("valid_from") != '0000-00-00 00:00:00' && $cApiUser->get("valid_from") != '')) || ($sToday > $cApiUser->get("valid_to") && ($cApiUser->get("valid_to") != '0000-00-00 00:00:00') && $cApiUser->get("valid_from") != '')) {
+                $mlist->setTitle($iMenu, '<span class="inactiveUser"><span class="name">' . conHtmlSpecialChars($cApiUser->get("username")) . "</span><br>" . conHtmlSpecialChars($cApiUser->get("realname")) . '</span>');
+            } else {
+                $mlist->setTitle($iMenu, '<span class="name">' . conHtmlSpecialChars($cApiUser->get("username")) . "</span><br>" . conHtmlSpecialChars($cApiUser->get("realname")));
+            }
+
+            $mlist->setId($iMenu, $userid);
             $mlist->setLink($iMenu, $link);
-            $mlist->setActions($iMenu, "delete", $deletebutton);
+            $mlist->setActions($iMenu, "delete", $deleteLink);
 
             if ($_GET['userid'] == $cApiUser->get("user_id")) {
                 $mlist->setMarked($iMenu);
@@ -128,10 +128,12 @@ while ($cApiUser = $cApiUserCollection->next()) {
     }
 }
 
+$deleteMsg = i18n("Do you really want to delete the user %s?");
+$oPage->set("s", "DELETE_MESSAGE", $deleteMsg);
 $oPage->set("s", "MPAGE", $mPage);
 
-// <script type="text/javascript" src="scripts/rowMark.js"></script>
-$oPage->addScript('parameterCollector.js');
+// <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
+$oPage->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
 $oPage->set("s", "FORM", $mlist->render(false));
 
 // generate current content for Object Pager

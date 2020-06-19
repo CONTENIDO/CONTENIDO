@@ -50,17 +50,17 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      *         ID of the element
      * @param bool $checked [optional]
      *         Is element checked?
-     * @param string $disabled [optional]
+     * @param bool $disabled [optional]
      *         Item disabled flag (non-empty to set disabled)
-     * @param string $tabindex [optional]
+     * @param int|null $tabindex [optional]
      *         Tab index for form elements
      * @param string $accesskey [optional]
      *         Key to access the field
      * @param string $class [optional]
      *         the class of this element
      */
-    public function __construct($name, $value, $id = '', $checked = false, $disabled = false, $tabindex = NULL, $accesskey = '', $class = '') {
-        parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
+    public function __construct($name, $value, $id = '', $checked = false, $disabled = false, $tabindex = null, $accesskey = '', $class = '') {
+        parent::__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
         $this->_tag = 'input';
         $this->_value = $value;
         $this->_contentlessTag = true;
@@ -68,7 +68,6 @@ class cHTMLRadiobutton extends cHTMLFormElement {
         $this->setChecked($checked);
         $this->updateAttribute('type', 'radio');
         $this->updateAttribute('value', $value);
-        $this->setClass($class);
     }
 
     /**
@@ -80,6 +79,8 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      *         $this for chaining
      */
     public function setChecked($checked) {
+        // NOTE: We cast the parameter to boolean, because it could be of another type!
+        $checked = cSecurity::toBoolean($checked);
         if ($checked == true) {
             return $this->updateAttribute('checked', 'checked');
         } else {
@@ -106,7 +107,7 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      * Note:
      *
      * If this element has an ID, the value (which equals the text displayed)
-     * will be rendered as seperate HTML label, if not, it will be displayed
+     * will be rendered as separate HTML label, if not, it will be displayed
      * as regular text. Displaying the value can be turned off via the
      * parameter.
      *
@@ -116,29 +117,24 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      *         Rendered HTML
      */
     public function toHtml($renderLabel = true) {
-        $attributes = $this->getAttributes(true);
-
-        if ($renderLabel == false) {
-            return $this->fillSkeleton($attributes);
+        if ($renderLabel !== true) {
+            return $this->fillSkeleton($this->getAttributes(true));
         }
 
+        // We need the id-attribute render with label
         $id = $this->getAttribute('id');
-
-        $renderedLabel = '';
-
-        if ($id != '') {
-            $label = new cHTMLLabel($this->_value, $this->getAttribute('id'));
-
-            if ($this->_labelText != '') {
-                $label->text = $this->_labelText;
-            }
-
-            $renderedLabel = $label->toHtml();
-        } else {
-            $renderedLabel = $this->_value;
+        if (!$id) {
+            $this->advanceID();
         }
 
-        return $this->fillSkeleton($attributes) . $renderedLabel;
+        // Render label
+        $label = new cHTMLLabel($this->_value, $this->getAttribute('id'));
+        if ($this->_labelText != '') {
+            $label->text = $this->_labelText;
+        }
+        $renderedLabel = $label->toHtml();
+
+        return $this->fillSkeleton($this->getAttributes(true)) . $renderedLabel;
     }
 
 }

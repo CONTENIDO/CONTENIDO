@@ -65,12 +65,13 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
 
         foreach ($aClientToClear as $iClientId) {
             $iClientId = (int) $iClientId;
+            $aCurrentClientCfg = cRegistry::getClientConfig($iClientId);
             if ($iClientId > 0) {
                 if (isset($_POST['conCode']) && $_POST['conCode'] == 1) {
                     if (!$oPurge->resetClientConCode($iClientId)) {
                         $bError = true;
                         $sErrorMsg .= i18n('Client ') . $aClientName[$iClientId] . ': ' .
-                               sprintf(i18n('The entries of %s table are not deleted!'), $cfg['tab']['code']) . '<br>';
+                               sprintf(i18n('The files in the cache folder %s are not deleted!'), $aCurrentClientCfg['code']['path']) . '<br>';
                     }
                 }
 

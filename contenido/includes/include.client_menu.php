@@ -22,7 +22,8 @@ if (!isset($action)) {
 
 if ($action == 'client_delete') {
     if ($perm->have_perm_area_action('client', 'client_delete')) {
-        $clientColl->delete((int) $idclientdelete);
+        $idclientdelete = (int) $_GET['idclientdelete'];
+        $clientColl->delete($idclientdelete);
 
         $cfgClient[$idclientdelete] = NULL;
 
@@ -36,62 +37,33 @@ while ($oClient = $clientColl->next()) {
     $idclient = $oClient->get('idclient');
     $name = $oClient->get('name');
     if ((cString::findFirstPos($auth->auth['perm'], "client[$idclient]") !== false) || (cString::findFirstPos($auth->auth['perm'], 'sysadmin') !== false)) {
-        $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
-        $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&idclient=$idclient"), 'right_bottom', $sess->url("main.php?area=client_edit&frame=4&idclient=$idclient"), $name);
+        if ($_GET['idclient'] == $idclient) {
+            $tpl->set('d', 'ID', 'id="marked" data-id="' . $idclient . '"');
+        } else {
+            $tpl->set('d', 'ID', 'data-id="' . $idclient . '"');
+        }
+
+        $tpl->set('d', 'ICON', '');
+
+        $showLink = '<a href="javascript:;" class="show_item" data-action="show_client">' . $name . '</a>';
+        $tpl->set('d', 'TEXT', $showLink);
 
         if (!$oClient->hasLanguages() && $perm->have_perm_area_action('client', 'client_delete')) {
             $delTitle = i18n("Delete client");
-            $delDescr = sprintf(i18n("Do you really want to delete the following client:<br><br>%s<br>"), conHtmlSpecialChars($name));
-            $tpl->set('d', 'DELETE', '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteClient(&quot;' . $idclient . '&quot;); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>');
+            $deleteLink = '
+                <a href="javascript:;" data-action="delete_client" title="' . $delTitle . '">
+                    <img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '">
+                </a>';
         } else {
-            $tpl->set('d', 'DELETE', '&nbsp;');
+            $deleteLink = '&nbsp;';
         }
-
-        $tpl->set('d', 'ICON', '<img src="images/spacer.gif" alt="" width="12">');
-        $tpl->set('d', 'BGCOLOR', $bgColor);
-        $tpl->set('d', 'TEXT', $mstr);
-
-        if ($_GET['idclient'] == $idclient) {
-            $tpl->set('d', 'ID', 'id="marked"');
-        } else {
-            $tpl->set('d', 'ID', '');
-        }
+        $tpl->set('d', 'DELETE', $deleteLink);
 
         $tpl->next();
     }
 }
 
-// $sql = "SELECT * FROM " . $cfg["tab"]["clients"];
-// $db->query($sql);
-
-// while ($db->nextRecord()) {
-//     $idclient = $db->f("idclient");
-//     if ((cString::findFirstPos($auth->auth["perm"], "admin[$idclient]") !== false) || (cString::findFirstPos($auth->auth["perm"], "sysadmin") !== false)) {
-//         $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
-//         $idclient = $db->f("idclient");
-//         $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&idclient=$idclient"), 'right_bottom', $sess->url("main.php?area=client_edit&frame=4&idclient=$idclient"), $db->f("name"));
-
-//         if (!$classclient->hasLanguageAssigned($idclient) && $perm->have_perm_area_action('client', "client_delete")) {
-//             $delTitle = i18n("Delete client");
-//             $delDescr = sprintf(i18n("Do you really want to delete the following client:<br><br>%s<br>"), conHtmlSpecialChars($db->f("name")));
-//             $tpl->set('d', 'DELETE', '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteClient(&quot;' . $idclient . '&quot;); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>');
-//         } else {
-//             $tpl->set('d', 'DELETE', '&nbsp;');
-//         }
-
-//         $tpl->set('d', 'ICON', '<img src="images/spacer.gif" width="12">');
-//         $tpl->set('d', 'BGCOLOR', $bgColor);
-//         $tpl->set('d', 'TEXT', $mstr);
-
-//         if ($_GET['idclient'] == $idclient) {
-//             $tpl->set('d', 'ID', 'id="marked"');
-//         } else {
-//             $tpl->set('d', 'ID', '');
-//         }
-
-//         $tpl->next();
-//     }
-// }
+$tpl->set('s', 'DELETE_MESSAGE', i18n("Do you really want to delete the following client:<br><br>%s<br>"));
 
 // Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['client_menu']);

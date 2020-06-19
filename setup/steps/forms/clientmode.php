@@ -82,17 +82,14 @@ class cSetupClientMode extends cSetupMask {
 
         foreach ($aChoices as $sKey => $sChoice) {
             $oRadio = new cHTMLRadiobutton("clientmode", $sKey);
-            $oRadio->setLabelText(" ");
+            $oRadio->setLabelText($sChoice);
             $oRadio->setStyle('width:auto;border:0;');
 
             if ($_SESSION["clientmode"] == $sKey || ($_SESSION["clientmode"] == "" && $sKey == "CLIENTEXAMPLES")) {
-                $oRadio->setChecked("checked");
+                $oRadio->setChecked(true);
             }
 
-            $oLabel = new cHTMLLabel($sChoice, $oRadio->getID());
-
             $this->_stepTemplateClass->set("s", "CONTROL_" . $sKey, $oRadio->render());
-            $this->_stepTemplateClass->set("s", "LABEL_" . $sKey, $oLabel->render());
         }
 
         $this->setNavigation($previous, $next);

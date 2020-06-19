@@ -27,15 +27,17 @@ if (!isset($idcat) || $idcat == '') {
     $idcat = 0;
 }
 
+$area = $_GET['area'];
+
 if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
 
-    $anchorTpl = '<a class="white" style="%s" onclick="%s">%s</a>';
+    $anchorTpl = '<a class="white%" style="%s" onclick="%s">%s</a>';
 
     $nav = new cGuiNavigation();
 
     // Simple SQL statement to get the number of articles
     $sql_count =
-            "SELECT
+        "SELECT
                     COUNT(*) AS article_count
                  FROM
                     " . $cfg["tab"]["art_lang"] . " AS a,
@@ -86,9 +88,9 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
          * - if article is created or saved
          */
         if (cSecurity::toInteger($idcat) == 0 || $iArticleCount > 0 || ($iArticleCount <= 0 && $tpl->dyn_cnt == 0) ||
-                ($iArticleCount <= 0 && $tpl->dyn_cnt == 1 && $bNoArticle == 'true') ||
-                ($bNoArticle == 'true' && $action == 'saveart') ||
-                ($iArticleCount <= 0 && $tpl->dyn_cnt == 0 && $action == 'deleteArt')) {
+            ($iArticleCount <= 0 && $tpl->dyn_cnt == 1 && $bNoArticle == 'true') ||
+            ($bNoArticle == 'true' && $action == 'saveart') ||
+            ($iArticleCount <= 0 && $tpl->dyn_cnt == 0 && $action == 'deleteArt')) {
             $style = '';
         } else {
             $style = 'display:none;';
@@ -96,23 +98,34 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
 
         // Tab select "logic"
         if (($iArticleCount <= 0 && $tpl->dyn_cnt == 1 && $bNoArticle == 'true') ||
-                ($tpl->dyn_cnt == 1 && $bNoArticle == 'true' && $action == 'saveart')) {
+            ($tpl->dyn_cnt == 1 && $bNoArticle == 'true' && $action == 'saveart')) {
             $num = $tpl->dyn_cnt;
         }
 
         $caption = $areasNavSub['caption'];
         $areaName = $areasNavSub['name'];
 
+        // CSS Class
+        $sClass = ($areaName == $area) ? ' current' : '';
+
+        // Link
+        if ($cfg['help'] == true) {
+            $sLink = getJsHelpContext(i18n("Article") . "/$caption") . 'artObj.doAction(\'' . $areaName . '\');';
+        } else {
+            $sLink = 'artObj.doAction(\'' . $areaName . '\');';
+        }
+
         // Set template data
         $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
         $tpl->set('d', 'DATA_NAME', $areaName);
         $tpl->set('d', 'CLASS', '');
         $tpl->set('d', 'OPTIONS', '');
-        if ($cfg['help'] == true) {
-            $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $style, getJsHelpContext(i18n("Article") . "/$caption") . 'artObj.doAction(\'' . $areaName . '\');' , $caption));
-        } else {
-            $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $style, 'artObj.doAction(\'' . $areaName . '\');' , $caption));
-        }
+        $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sClass, $style, $sLink, $caption));
+#        if ($cfg['help'] == true) {
+#            $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $style, getJsHelpContext(i18n("Article") . "/$caption") . 'artObj.doAction(\'' . $areaName . '\');' , $caption));
+#        } else {
+#            $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $style, 'artObj.doAction(\'' . $areaName . '\');' , $caption));
+#        }
 
         $tpl->next();
     }

@@ -8,17 +8,18 @@
 {_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/jquery/plugins/tipsy.js"></script>
     <script type="text/javascript" src="scripts/registerTipsy.js"></script>
-    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
+    <script type="text/javascript" src="scripts/parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
 </head>
-<body style="padding-top: 5px;">
+<body class="page_generic">
 
-<table class="borderless" width="100%" cellspacing="0" cellpadding="2" border="0">
+<table id="lay_overview_list" class="borderless menu_overview_list" width="100%" cellspacing="0" cellpadding="2" border="0">
 
     <!-- BEGIN:BLOCK -->
-    <tr id="{ID}" class="layout_row tooltip-north" original-title="{DESCRIPTION}">
-        <td></td>
-        <td>{NAME}</td>
-        <td align="right" class="nowrap">{INUSE}&nbsp;{TODO}&nbsp;{DELETE}&nbsp;</td>
+    <tr id="{ID}" data-id="{DATA_ID}" class="row_mark tooltip-north" original-title="{DESCRIPTION}">
+        <td data-type="icon"></td>
+        <td data-type="item">{NAME}</td>
+        <td data-type="actions" align="right" class="nowrap">{INUSE}&nbsp;{TODO}&nbsp;{DELETE}&nbsp;</td>
     </tr>
     <!-- END:BLOCK -->
 
@@ -26,56 +27,63 @@
 
 <script type="text/javascript">
 
-// Function for deleting layout
-function deleteLayout(idlay) {
-    var url = Con.UtilUrl.build("main.php", {
-        area: "lay_edit",
-        action: "lay_delete",
-        frame: 4,
-        idlay: idlay
-    });
-
-    Con.getFrame('right_bottom').location.href = url;
-}
-
 (function(Con, $) {
-    $(function() {
-        // select a frame with jquery
-        //$(Con.getFrame('right_bottom').document).find('body').html();
 
-        $('.in_used_lay').live('click', function() {
-            var iId = $(this).attr('rel');
-            if (iId) {
-                var sTemplateName = $(this).parents().filter('td:first').prev().text();
-                $.post(
-                   "{AJAXURL}",
-                     { area: "{AREA}", ajax: "inused_layout", id: iId, contenido: Con.sid },
-                     function(data) {
-                        var sInUseTitle = "{BOX_TITLE}";
-                        sInUseTitle = sInUseTitle.replace('%s', sTemplateName);
-                        Con.showNotification(sInUseTitle, data, null, true);
-                     }
-                );
+    function actionShowLayout($row, id) {
+        Con.multiLink(
+            'right_top', Con.UtilUrl.build('main.php', {area: 'lay', frame: 3, idlay: id}),
+            'right_bottom', Con.UtilUrl.build('main.php', {area: 'lay_edit', frame: 4, idlay: id})
+        );
+        Con.ParameterCollector.register('idlay', id);
+    }
+
+    function actionDeleteLayout($row, id) {
+        var deleteMessage = "{DELETE_MESSAGE}",
+            name = $row.find('[data-type="item"]').text();
+        Con.showConfirmation(deleteMessage.replace('%s', name), function() {
+            Con.multiLink(
+                'right_top', Con.UtilUrl.build('main.php', {area: 'lay', frame: 3}),
+                'right_bottom', Con.UtilUrl.build('main.php', {area: 'lay_edit', action: 'lay_delete', frame: 4, idlay: id})
+            );
+        });
+    }
+
+    function actionInUseLayout($row, id) {
+        $.post(
+            '{AJAX_URL}',
+            { area: '{AREA}', ajax: 'inused_layout', id: id, contenido: Con.sid },
+            function(data) {
+                var name = $row.find('[data-type="item"]').text(),
+                    inUsedTitle = "{BOX_TITLE}";
+                Con.showNotification(inUsedTitle.replace('%s', name), data, null, true);
+            }
+        );
+    }
+
+    $(function() {
+        $('#lay_overview_list [data-action]').live('click', function() {
+            var action = $(this).data('action'),
+                $row = $(this).closest('[data-id]'),
+                id = $row.data('id');
+
+            if ($row && action && id) {
+                if (action === 'show_layout') {
+                    actionShowLayout($row, id);
+                } else if (action === 'delete_layout') {
+                    actionDeleteLayout($row, id);
+                } else if (action === 'inused_layout') {
+                    actionInUseLayout($row, id);
+                } else if (action === 'todo_layout') {
+                    // TODO we could implement the action for todo_layout here!
+                }
             }
         });
 
-        // Register some events for rows
-        // ## @todo move this to rowMark.js
-        $("tr.layout_row").mouseover(function () {
-            row.over(this);
-        }).mouseout(function () {
-                    row.out(this);
-                }).click(function () {
-                    row.click(this);
-                });
-
-        if ($('#marked')) {
-            lay.click($('#marked')[0]);
-        }
-        // ## @todo move this to rowMark.js
-
+        Con.RowMark.initialize('#lay_overview_list .row_mark', 'row', '#marked');
     });
 })(Con, Con.$);
+
 </script>
 
 </body>
+</html>

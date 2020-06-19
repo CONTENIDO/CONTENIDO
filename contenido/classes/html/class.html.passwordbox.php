@@ -24,6 +24,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHTMLPasswordbox extends cHTMLFormElement {
 
     /**
+     * @var bool $_autofill
+     */
+    protected $_autofill = true;
+
+    /**
      * Constructor to create an instance of this class.
      *
      * Creates an HTML password box.
@@ -33,7 +38,7 @@ class cHTMLPasswordbox extends cHTMLFormElement {
      *
      * @param string $name
      *         Name of the element
-     * @param string $initvalue [optional]
+     * @param string $value [optional]
      *         Initial value of the box
      * @param int $width [optional]
      *         width of the text box
@@ -41,25 +46,35 @@ class cHTMLPasswordbox extends cHTMLFormElement {
      *         maximum input length of the box
      * @param string $id [optional]
      *         ID of the element
-     * @param string $disabled [optional]
+     * @param bool $disabled [optional]
      *         Item disabled flag (non-empty to set disabled)
-     * @param string $tabindex [optional]
+     * @param int|null $tabindex [optional]
      *         Tab index for form elements
-     * @param string $accesskey [optional]
+     * @param string $accessKey [optional]
      *         Key to access the field
      * @param string $class [optional]
      *         the class of this element
      */
-    public function __construct($name, $initvalue = '', $width = '', $maxlength = '', $id = '', $disabled = false, $tabindex = NULL, $accesskey = '', $class = '') {
-        parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
+    public function __construct($name, $value = '', $width = 0, $maxlength = 0, $id = '', $disabled = false, $tabindex = null, $accessKey = '', $class = '') {
+        parent::__construct($name, $id, $disabled, $tabindex, $accessKey, $class);
         $this->_tag = 'input';
-        $this->setValue($initvalue);
+        $this->setValue($value);
 
         $this->setWidth($width);
         $this->setMaxLength($maxlength);
 
         $this->updateAttribute('type', 'password');
-        $this->setClass($class);
+    }
+
+    /**
+     * Sets the autofill property of the element.
+     *
+     * @param boolean $autofill - The autofill flag
+     * @return cHTMLPasswordbox|cHTML
+     */
+    public function setAutofill($autofill) {
+        $this->_autofill = cSecurity::toBoolean($autofill);
+        return $this;
     }
 
     /**
@@ -71,7 +86,7 @@ class cHTMLPasswordbox extends cHTMLFormElement {
      *         $this for chaining
      */
     public function setWidth($width) {
-        $width = intval($width);
+        $width = cSecurity::toInteger($width);
 
         if ($width <= 0) {
             $width = 20;
@@ -83,18 +98,18 @@ class cHTMLPasswordbox extends cHTMLFormElement {
     /**
      * Sets the maximum input length of the text box.
      *
-     * @param int $maxlen
+     * @param int $maxLength
      *         maximum input length
      * @return cHTMLPasswordbox
      *         $this for chaining
      */
-    public function setMaxLength($maxlen) {
-        $maxlen = intval($maxlen);
+    public function setMaxLength($maxLength) {
+        $maxLength = cSecurity::toInteger($maxLength);
 
-        if ($maxlen <= 0) {
+        if ($maxLength <= 0) {
             return $this->removeAttribute('maxlength');
         } else {
-            return $this->updateAttribute('maxlength', $maxlen);
+            return $this->updateAttribute('maxlength', $maxLength);
         }
     }
 
@@ -108,6 +123,56 @@ class cHTMLPasswordbox extends cHTMLFormElement {
      */
     public function setValue($value) {
         return $this->updateAttribute('value', $value);
+    }
+
+    /**
+     * Generates the HTML markup for the input field of type password.
+     * Additionally, it deals with the enabled status of th property $_autofill.
+     * Setting the autocomplete to "off" will prevent from autocompletion but
+     * some browser or password manager may autofill the field with the
+     * previous stored value, which is not always wanted.
+     * Setting the field initially to readonly and enabling it again after
+     * getting focus does the trick!
+     *
+     * @TODO This function could be moved to somewhere else, because all input, textarea,
+     *       select and form elements could use the autocomplete attribute.
+     *       But, only input and textarea can have readonly attribute.
+     *
+     *
+     * @return string
+     */
+    public function toHtml() {
+        $sReadonly = $this->getAttribute('readonly') !== null;
+
+        if ($this->_autofill === true || $sReadonly) {
+            // Field can be filled or has already readonly attribute, nothing to do here...
+            return parent::toHtml();
+        }
+
+        // Handle autocomplete="off", disable the field and enable it again via JavaScript!
+
+        if (!$this->getAttribute('id')) {
+            $this->advanceID();
+        }
+        $this->setAttribute('readonly', 'readonly');
+
+        $html = parent::toHtml();
+        // NOTE: If you change the code below, don't forget to adapt the unit test
+        //       cHtmlPasswordBoxTest->testAutocomplete()!
+        $html .= '
+    <script type="text/javascript">
+        (function(Con, $) {
+            $(function() {
+                // Remove readonly attribute on focus
+                $("#' . $this->getID() . '").on("focus", function() {
+                    $(this).prop("readonly", false);
+                });
+            });
+        })(Con, Con.$);
+    </script>
+        ';
+
+        return $html;
     }
 
 }

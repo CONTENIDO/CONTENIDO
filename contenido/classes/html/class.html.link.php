@@ -29,15 +29,6 @@ class cHTMLLink extends cHTMLContentElement {
     protected $_link;
 
     /**
-     * Stores the content
-     *
-     * @todo this property overloads cHTML::$_content
-     *          and should be removed if unittests are available
-     * @var unknown_type
-     */
-    protected $_content;
-
-    /**
      * Stores the anchor
      * @var string
      */
@@ -96,9 +87,15 @@ class cHTMLLink extends cHTMLContentElement {
      *
      * @param string $href [optional]
      *         String with the location to link to
+     * @param mixed $content [optional]
+     *         String or object with the contents
+     * @param string $class [optional]
+     *         the class of this element
+     * @param string $id [optional]
+     *         the ID of this element
      */
-    public function __construct($href = '') {
-        parent::__construct();
+    public function __construct($href = '', $content = '', $class = '', $id = '') {
+        parent::__construct($content, $class, $id);
 
         $this->setLink($href);
         $this->_tag = 'a';

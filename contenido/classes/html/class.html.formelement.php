@@ -33,35 +33,28 @@ class cHTMLFormElement extends cHTML {
      *         Name of the element
      * @param string $id [optional]
      *         ID of the element
-     * @param string $disabled [optional]
+     * @param bool $disabled [optional]
      *         Item disabled flag (non-empty to set disabled)
-     * @param string $tabindex [optional]
+     * @param int|null $tabindex [optional]
      *         Tab index for form elements
-     * @param string $accesskey [optional]
+     * @param string $accessKey [optional]
      *         Key to access the field
      * @param string $class [optional]
      *         CSS class name to set
      */
     public function __construct(
-        $name = '', $id = '', $disabled = '', $tabindex = '', $accesskey = '',
+        $name = '',
+        $id = '',
+        $disabled = false,
+        $tabindex = null,
+        $accessKey = '',
         $class = 'text_medium'
     ) {
-
-        parent::__construct();
-
-        $this->updateAttribute('name', $name);
-
-        if (is_string($id) && !empty($id)) {
-            $this->updateAttribute('id', $id);
-        }
-
         $this->_tag = 'input';
-
-        $this->setClass($class);
+        parent::__construct(['name' => $name, 'id' => $id, 'class' => $class]);
         $this->setDisabled($disabled);
         $this->setTabindex($tabindex);
-        $this->setAccessKey($accesskey);
-
+        $this->setAccessKey($accessKey);
     }
 
     /**
@@ -70,22 +63,25 @@ class cHTMLFormElement extends cHTML {
      * usually are showing the element as "greyed-out".
      *
      * Example:
-     * $obj->setDisabled('disabled');
-     * $obj->setDisabled('');
+     * $obj->setDisabled(true);
+     * $obj->setDisabled(false);
      *
      * The first example sets the disabled flag, the second one
      * removes the disabled flag.
      *
-     * @param string $disabled
+     * @param bool $disabled
      *         Sets the disabled-flag if non-empty
      * @return cHTMLFormElement
      *         $this for chaining
      */
     public function setDisabled($disabled) {
-        if (empty($disabled)) {
-            $this->removeAttribute('disabled');
-        } else {
+        // NOTE: We use toBoolean() because of downwards compatibility.
+        // The variable was of type string before 4.10.2!
+        $disabled = cSecurity::toBoolean($disabled);
+        if ($disabled) {
             $this->updateAttribute('disabled', 'disabled');
+        } else {
+            $this->removeAttribute('disabled');
         }
 
         return $this;
@@ -93,17 +89,22 @@ class cHTMLFormElement extends cHTML {
 
     /**
      * Sets the tab index for this element.
-     * The tab
-     * index needs to be numeric, bigger than 0 and smaller than 32767.
+     * The tab index needs to be numeric, bigger than 0 and smaller than 32767.
      *
-     * @param int $tabindex
+     * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex
+     * @param int|null $tabindex
      *         Desired tab index
      * @return cHTMLFormElement
      *         $this for chaining
      */
     public function setTabindex($tabindex) {
-        if (is_numeric($tabindex) && $tabindex >= 0 && $tabindex <= 32767) {
-            $this->updateAttribute('tabindex', $tabindex);
+        if (is_numeric($tabindex)) {
+            $tabindex = cSecurity::toInteger($tabindex);
+            if (-1 <= $tabindex && $tabindex <= 32767) {
+                $this->updateAttribute('tabindex', $tabindex);
+            }
+        } else {
+            $this->removeAttribute('tabindex');
         }
 
         return $this;
@@ -112,14 +113,14 @@ class cHTMLFormElement extends cHTML {
     /**
      * Sets the access key for this element.
      *
-     * @param string $accesskey
+     * @param string $accessKey
      *         The length of the access key. May be A-Z and 0-9.
      * @return cHTMLFormElement
      *         $this for chaining
      */
-    public function setAccessKey($accesskey) {
-        if ((cString::getStringLength($accesskey) == 1) && cString::isAlphanumeric($accesskey)) {
-            $this->updateAttribute('accesskey', $accesskey);
+    public function setAccessKey($accessKey) {
+        if ((cString::getStringLength($accessKey) == 1) && cString::isAlphanumeric($accessKey)) {
+            $this->updateAttribute('accesskey', $accessKey);
         } else {
             $this->removeAttribute('accesskey');
         }

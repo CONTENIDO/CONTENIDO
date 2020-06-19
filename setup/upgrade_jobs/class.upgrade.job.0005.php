@@ -25,13 +25,13 @@ class cUpgradeJob_0005 extends cUpgradeJobAbstract {
     public $maxVersion = "4.9.0-beta1";
 
     public function _execute() {
-        global $cfg, $cfgClient;
+        $cfg = cRegistry::getConfig();
 
         $db = $this->_oDb;
 
         if ($this->_setupType == 'upgrade') {
             // map all content types to their IDs
-            $types = array();
+            $types = [];
             $typeCollection = new cApiTypeCollection();
             $typeCollection->addResultField('idtype');
             $typeCollection->addResultField('type');
@@ -74,11 +74,19 @@ EOT;
             $contentCollection->query();
             while (($item = $contentCollection->next()) !== false) {
                 $oldFilelistVal = $item->get('value');
-                // skip CMS_FILELISTs w/ empty values
+                // skip CMS_FILELIST w/ empty values
                 if (0 === cString::getStringLength(trim($oldFilelistVal))) {
                     continue;
                 }
-                $oldFilelistArray = cXmlBase::xmlStringToArray($oldFilelistVal);
+
+                // skip CMS_FILELIST w/ invalid XML content
+                try {
+                    $oldFilelistArray = cXmlBase::xmlStringToArray($oldFilelistVal);
+                } catch (Exception $exception) {
+                    logSetupFailure('Could not convert content with id = ' . $item->get('idcontent') . ' and idtype = CMS_FILELIST. Error details: ' . $exception->getTraceAsString());
+                    $oldFilelistArray = [];
+                }
+
                 // skip empty filelist array
                 if (true === empty($oldFilelistArray)) {
                     continue;
@@ -136,7 +144,7 @@ EOT;
              */
             $sql = 'SELECT `idcontent`, `idartlang`, `idtype`, `typeid`, `value` FROM `' . $cfg['tab']['content'] . '` WHERE `idtype`=' . $types['CMS_IMG'] . ' OR `idtype`=' . $types['CMS_IMGDESCR'] . ' ORDER BY `typeid` ASC';
             $db->query($sql);
-            $result = array();
+            $result = [];
             while ($db->nextRecord()) {
                 // create an array in which each entry contains the data needed for converting one entry
                 $idartlang = $db->f('idartlang');
@@ -145,7 +153,7 @@ EOT;
                 if (isset($result[$key])) {
                     $subResult = $result[$key];
                 } else {
-                    $subResult = array();
+                    $subResult = [];
                     $subResult['idartlang'] = $idartlang;
                 }
 
@@ -176,7 +184,7 @@ EOT;
                     $idlang = $db->f('idlang');
                     $metaItem = new cApiUploadMeta();
                     $metaItemExists = $metaItem->loadByUploadIdAndLanguageId($imageInfo['idupl'], $idlang);
-                    // $metaItemExists = $metaItem->loadByMany(array('idupl' => $imageInfo['idupl'], 'idlang' => $idlang));
+                    // $metaItemExists = $metaItem->loadByMany(['idupl' => $imageInfo['idupl'], 'idlang' => $idlang]);
                     if ($metaItemExists) {
                         // if meta item exists but there is no description, add the description
                         if ($metaItem->get('description') == '') {
@@ -203,7 +211,7 @@ EOT;
              */
             $sql = 'SELECT `idcontent`, `idartlang`, `idtype`, `typeid`, `value` FROM `' . $cfg['tab']['content'] . '` WHERE `idtype`=' . $types['CMS_LINK'] . ' OR `idtype`=' . $types['CMS_LINKTARGET'] . ' OR `idtype`=' . $types['CMS_LINKDESCR'] . ' ORDER BY `typeid` ASC';
             $db->query($sql);
-            $result = array();
+            $result = [];
             while ($db->nextRecord()) {
                 // create an array in which each entry contains the data needed for converting one entry
                 $idartlang = $db->f('idartlang');
@@ -212,7 +220,7 @@ EOT;
                 if (isset($result[$key])) {
                     $subResult = $result[$key];
                 } else {
-                    $subResult = array();
+                    $subResult = [];
                     $subResult['idartlang'] = $idartlang;
                 }
 
@@ -283,7 +291,15 @@ EOT;
             $contentCollection->query();
             while (($item = $contentCollection->next()) !== false) {
                 $oldTeaserVal = $item->get('value');
-                $oldTeaserArray = cXmlBase::xmlStringToArray($oldTeaserVal);
+
+                // skip CMS_TEASER w/ invalid XML content
+                try {
+                    $oldTeaserArray = cXmlBase::xmlStringToArray($oldTeaserVal);
+                } catch (Exception $exception) {
+                    logSetupFailure('Could not convert content with id = ' . $item->get('idcontent') . ' and idtype = CMS_TEASER. Error details: ' . $exception->getTraceAsString());
+                    $oldTeaserArray = [];
+                }
+
                 if (!isset($oldTeaserArray['manual_art']['art'])) {
                     continue;
                 }

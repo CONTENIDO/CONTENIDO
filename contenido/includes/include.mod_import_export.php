@@ -100,17 +100,17 @@ $inputChecked = "";
 $outputChecked = "";
 
 if ($inputChecked != "" && $outputChecked != "") {
-    $export->setChecked("checked");
+    $export->setChecked(true);
 } else {
-    $import->setChecked("checked");
+    $import->setChecked(true);
 }
 
 if($readOnly) {
-    $import->setDisabled('disabled');
-    $importXML->setDisabled('disabled');
-    $export->setChecked('checked');
-    $import->setChecked('');
-    $importXML->setChecked('');
+    $import->setDisabled(true);
+    $importXML->setDisabled(true);
+    $export->setChecked(true);
+    $import->setChecked(false);
+    $importXML->setChecked(false);
 }
 
 $form2 = new cGuiTableForm("export");
@@ -137,9 +137,7 @@ $form2->setVar("idmod", $idmod);
 $form2->custom["submit"]["accesskey"] = '';
 
 if ($reloadLeftBottom) {
-    $page->reloadFrame('left_bottom', array(
-        "idmod" => $idmod
-    ));
+    $page->reloadLeftBottomFrame(['idmod' => $idmod]);
 }
 $page->setContent(array(
     $form2

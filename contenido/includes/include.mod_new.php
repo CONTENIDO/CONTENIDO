@@ -21,40 +21,57 @@ if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST['elemperpage']) ||
 
 $tpl->reset();
 
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+
+$strActions = '';
+$strAddLink = '';
+$strSyncLink = '';
+
 // New module link
-$str = '';
-if (0 < (int) $client && 0 < (int) $lang) {
+if ($client > 0 && $lang > 0) {
     if ($perm->have_perm_area_action("mod_edit", "mod_new")) {
-        $str = '<div class="leftTopAction"><a class="addfunction" target="right_bottom" href="' . $sess->url("main.php?area=mod_edit&frame=4&action=mod_new") . '">' . i18n("New module") . '</a> </div>';
+        $str = sprintf(
+            '<a class="addfunction" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>',
+            'right_top', $sess->url("main.php?area=mod_edit&frame=3"),
+            'right_bottom', $sess->url("main.php?area=mod_edit&action=mod_new&frame=4"),
+            i18n("New module")
+        );
+        $strAddLink = '<div class="leftTopAction">' . $str . '</div>';
     } else {
-        $str = '<div class="leftTopAction"><a class="addfunction_disabled" href="#">' . i18n("No permission to create modules") . '</a> </div>';
+        $strAddLink = '<div class="leftTopAction"><a class="addfunction_disabled" href="#">' . i18n("No permission to create modules") . '</a> </div>';
     }
     if ($perm->have_perm_area_action("mod_edit", "mod_sync")) {
-        $strSync = '<div class="leftTopAction leftTopActionNext"><a class="syncronizefunction" target="right_bottom" href="' . $sess->url("main.php?area=mod_edit&frame=4&action=mod_sync") . '">' . i18n("Synchronize modules") . '</a></div>';
+        $str = sprintf(
+            '<a class="syncronizefunction" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>',
+            'right_top', $sess->url("main.php?area=mod_edit&frame=3"),
+            'right_bottom', $sess->url("main.php?area=mod_edit&action=mod_sync&frame=4"),
+            i18n("Synchronize modules")
+        );
+        $strSyncLink = '<div class="leftTopAction leftTopActionNext">' . $str . '</div>';
     } else {
-        $strSync = '<div class="leftTopAction leftTopActionNext"><a class="syncronizefunction_disabled" href="#">' . i18n("No permission to synchronize modules") . '</a> </div>';
+        $strSyncLink = '<div class="leftTopAction leftTopActionNext"><a class="syncronizefunction_disabled" href="#">' . i18n("No permission to synchronize modules") . '</a> </div>';
     }
 } else {
     // either no client or no language selected
-    if (0 > (int) $lang) {
+    if ($lang > 0) {
         // no client selected
-        $str = '<div class="leftTopAction">' . i18n('No client selected') . '</div>';
+        $strActions = '<div class="leftTopAction">' . i18n('No client selected') . '</div>';
     } else {
         // no language selected
-        $str = '<div class="leftTopAction">' . i18n('No language selected') . '</div>';
+        $strActions = '<div class="leftTopAction">' . i18n('No language selected') . '</div>';
     }
 }
 
 // Only show other options, if there is an active client
-if ((int) $client > 0) {
+if ($client > 0) {
     // List Options
-    $aSortByOptions = array("name" => i18n("Name"), "type" => i18n("Type"));
-    $aSortOrderOptions = array("asc" => i18n("Ascending"), "desc" => i18n("Descending"));
-    $listoplink = "listoptions";
-    $oListOptionRow = new cGuiFoldingRow("e9ddf415-4b2d-4a75-8060-c3cd88b6ff98", i18n("List options"), $listoplink);
-    $tpl->set('s', 'LISTOPLINK', $listoplink);
+    $aSortByOptions = ["name" => i18n("Name"), "type" => i18n("Type")];
+    $aSortOrderOptions = ["asc" => i18n("Ascending"), "desc" => i18n("Descending")];
+    $listOpLink = "listoptions";
+    $oListOptionRow = new cGuiFoldingRow("e9ddf415-4b2d-4a75-8060-c3cd88b6ff98", i18n("List options"), $listOpLink);
     $oSelectItemsPerPage = new cHTMLSelectElement("elemperpage");
-    $oSelectItemsPerPage->autoFill(array(0 => i18n("-- All --"), 5 => 5, 25 => 25, 50 => 50, 75 => 75, 100 => 100));
+    $oSelectItemsPerPage->autoFill([0 => i18n("-- All --"), 5 => 5, 25 => 25, 50 => 50, 75 => 75, 100 => 100]);
     $oSelectItemsPerPage->setDefault($_REQUEST["elemperpage"]);
     $oSelectSortBy = new cHTMLSelectElement("sortby");
     $oSelectSortBy->autoFill($aSortByOptions);
@@ -65,18 +82,18 @@ if ((int) $client > 0) {
 
     $oSelectSearchIn = new cHTMLSelectElement("searchin");
     // CON-1910
-    $oSelectSearchIn->autoFill(array('' => i18n("-- All --"),
+    $oSelectSearchIn->autoFill(['' => i18n("-- All --"),
         'name' => i18n("Module name"),
         'description' => i18n("Description"),
         'type' => i18n("Type"),
         'input' => i18n("Input"),
         'output' => i18n("Output")
-    ));
+    ]);
 
     $oSelectSearchIn->setDefault($_REQUEST["searchin"]);
 
     // build list with filter types
-    $aFilterType = array();
+    $aFilterType = [];
     $aFilterType["--all--"] = i18n("-- All --");
     $aFilterType["--wotype--"] = i18n("-- Without type --");
 
@@ -125,12 +142,15 @@ if ((int) $client > 0) {
     $oPagerLink->setCustom("contenido", $sess->id);
     $oPager = new cGuiObjectPager("02420d6b-a77e-4a97-9395-7f6be480f497", $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page", $pagerl);
 
-    $tpl->set('s', 'PAGINGLINK', $pagerl);
+    $strActions = $strAddLink . $strSyncLink . '<table class="generic" border="0" cellspacing="0" cellpadding="0" width="100%">' . $oListOptionRow->render() . $oPager->render() . '</table>';
 
-    $tpl->set('s', 'ACTION', $str . $strSync . '<table class="generic" border="0" cellspacing="0" cellpadding="0" width="100%">' . $oListOptionRow->render() . $oPager->render() . '</table>');
+    $tpl->set('s', 'PAGINGLINK', $pagerl);
+    $tpl->set('s', 'ACTION', $strActions);
+    $tpl->set('s', 'LISTOPLINK', $listOpLink);
+
 } else {
     $tpl->set('s', 'PAGINGLINK', '');
-    $tpl->set('s', 'ACTION', $str);
+    $tpl->set('s', 'ACTION', $strActions);
     $tpl->set('s', 'LISTOPLINK', '');
 }
 

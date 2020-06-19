@@ -6,45 +6,84 @@
 {_CSS_HEAD_CONTENIDO_}
     <style type="text/css">
     table tbody {vertical-align: top;}
-    td.first {padding-left: 10px;}
     </style>
 {_JS_HEAD_CONTENIDO_}
 
-    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
+    <script type="text/javascript" src="scripts/parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
 </head>
-<body>
+<body class="page_generic">
 
 {RELOAD_SCRIPT}
 
-<table class="borderless" width="100%" cellspacing="0" cellpadding="2" border="0">
+<table id="lang_overview_list" class="borderless menu_overview_list" width="100%" cellspacing="0" cellpadding="2" border="0">
 
     {NOTIFICATION}
 
     <!-- BEGIN:BLOCK -->
-    <tr class="text_medium" {MARKED}>
-        <td width="100%" class="first">{LANGUAGE}</td>
-        <td>{ACTIVATEBUTTON}</td>
-        <td>{DELETEBUTTON}</td>
+    <tr class="text_medium row_mark" {MARKED}>
+        <td align="left" data-type="icon"></td>
+        <td align="left" data-type="item" width="100%" class="text_medium" style="white-space:nowrap" nowrap="nowrap">{LANGUAGE}</td>
+        <td valign="top" data-type="actions" align="right" style="white-space:nowrap" nowrap="nowrap">{ACTIONS}</td>
     </tr>
     <!-- END:BLOCK -->
 
 </table>
 
 <script type="text/javascript">
+(function(Con, $) {
 
-function deleteLang(idlang) {
-    var url = Con.UtilUrl.build("main.php", {
-        area: "lang_edit",
-        action: "lang_deletelanguage",
-        frame: 4,
-        idlang: idlang,
-        targetclient: "{TARGETCLIENT}"
+    var targetClient = "{TARGETCLIENT}";
+
+    function actionShowLang($row, id) {
+        Con.multiLink(
+            'right_bottom', Con.UtilUrl.build('main.php', {area: 'lang_edit', frame: 4, targetclient: targetClient, idlang: id})
+        );
+        Con.ParameterCollector.register('idlang', id);
+    }
+
+    function actionActivateLang($row, id) {
+        window.location.href = Con.UtilUrl.build('main.php', {area: 'lang', action: 'lang_activatelanguage', frame: 2, targetclient: targetClient, idlang: id});
+    }
+
+    function actionDeactivateLang($row, id) {
+        window.location.href = Con.UtilUrl.build('main.php', {area: 'lang', action: 'lang_deactivatelanguage', frame: 2, targetclient: targetClient, idlang: id});
+    }
+
+    function actionDeleteLang($row, id) {
+        var deleteMessage = "{DELETE_MESSAGE}",
+            name = $row.find('[data-type="item"] span').text();
+
+        Con.showConfirmation(deleteMessage.replace('%s', name), function() {
+            var url = Con.UtilUrl.build('main.php', {
+                area: 'lang_edit',
+                action: 'lang_deletelanguage',
+                frame: 4,
+                idlang: id,
+                targetclient: targetClient
+            });
+            Con.getFrame('right_bottom').location.href = url;
+        });
+    }
+
+    $('table [data-action]').live('click', function() {
+        var action = $(this).data('action'),
+            $row = $(this).closest('[data-id]'),
+            id = $row.data('id');
+
+        if ($row && action && id) {
+            if (action === 'show_lang') {
+                actionShowLang($row, id);
+            } else if (action === 'activate_lang') {
+                actionActivateLang($row, id);
+            } else if (action === 'deactivate_lang') {
+                actionDeactivateLang($row, id);
+            } else if (action === 'delete_lang') {
+                actionDeleteLang($row, id);
+            }
+        }
     });
 
-    Con.getFrame('right_bottom').location.href = url;
-}
-
-(function(Con, $) {
     $(function() {
 
         function refreshLangCount() {
@@ -59,21 +98,7 @@ function deleteLang(idlang) {
             refreshLangCount();
         }
 
-        // Register some events for rows
-        // ## @todo move this to rowMark.js
-        $("table tr").mouseover(function () {
-            row.over(this);
-        }).mouseout(function () {
-                    row.out(this);
-                }).click(function () {
-                    row.click(this);
-                });
-
-        // Mark element having the marked id value
-        if ($("#marked")) {
-            row.click($("#marked")[0]);
-        }
-        // ## @todo move this to rowMark.js
+        Con.RowMark.initialize('#lang_overview_list .row_mark', 'row', '#marked');
     });
 })(Con, Con.$);
 
