@@ -82,9 +82,7 @@ if (cFileHandler::getExtension($file) != $sFileType && cString::getStringLength(
 }
 
 if (stripslashes($file)) {
-    $page->reloadFrame('left_bottom', array(
-        "file" => $sFilename
-    ));
+    $page->reloadLeftBottomFrame(['file' => $sFilename]);
 }
 
 if (true === cFileHandler::exists($path . $sFilename)
@@ -111,8 +109,7 @@ if ((!$readOnly) && $actionRequest == $sActionCreate && $_REQUEST['status'] == '
         $oApiModule->store();
     }
 
-    $urlReload = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
-    $page->reloadFrame('right_top', $urlReload);
+    $page->reloadRightTopFrame(['file' => $sTempFilename]);
 
     // Show message for user
     if ($bEdit === true) {
@@ -141,8 +138,7 @@ if ((!$readOnly) && $actionRequest == $sActionEdit && $_REQUEST['status'] == 'se
             $notification->displayNotification("error", sprintf(i18n("Can not rename file %s"), $path . $sTempFilename));
         }
 
-        $urlReload = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
-        $page->reloadFrame('right_top', $urlReload);
+        $page->reloadRightTopFrame(['file' => $sTempFilename]);
     } else {
         $sTempFilename = $sFilename;
     }

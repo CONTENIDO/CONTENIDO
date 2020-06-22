@@ -28,9 +28,9 @@ if ($_REQUEST["selDelimiter"] == "") {
 }
 
 $sFileData = '';
-$aFields = array();
-$aFieldDetails = array();
-$aMessage = array();
+$aFields = [];
+$aFieldDetails = [];
+$aMessage = [];
 
 $aFields["name"] = cString::toLowerCase(i18n("Name", 'newsletter'));
 $aFieldDetails["name"]["fieldtype"] = "field"; // field, plugin or group
@@ -154,7 +154,7 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
         $iRow = 0;
         $iCol = 0;
         $bStop = false;
-        $aInvalidLines = array();
+        $aInvalidLines = [];
         $oGroupMembers = new NewsletterRecipientGroupMemberCollection();
 
         foreach ($aLines as $sLine) {
@@ -217,7 +217,7 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
                         $iAdded++;
 
                         unset($aPluginValue);
-                        $aPluginValue = array();
+                        $aPluginValue = [];
 
                         foreach ($aFieldDetails as $sKey => $aDetails) {
                             if ($aDetails["col"] > -1) {
@@ -320,7 +320,7 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
         }
         $oPage->displayOk(sprintf(i18n("%d recipients added, %d recipients skipped (e-mail already exists) and %d invalid recipients/e-mail addresses ignored. Invalid recipients are shown (if any).", 'newsletter'), $iAdded, $iDublettes, $iInvalid));
         if ($iAdded > 0) {
-            $oPage->setReload();
+            $oPage->reloadLeftBottomFrame([]);
         }
     } else {
         // error message
@@ -336,15 +336,16 @@ $oForm->setVar("action", "recipients_import_exec");
 $oForm->addHeader(i18n("Import recipients", 'newsletter'));
 
 $oSelDelimiter = new cHTMLSelectElement("selDelimiter");
-$aItems = array();
-$aItems[] = array(
-    "tab",
-    i18n("Tab", 'newsletter')
-);
-$aItems[] = array(
-    "semicolon",
-    i18n("Semicolon", 'newsletter')
-);
+$aItems = [
+    [
+        "tab",
+        i18n("Tab", 'newsletter')
+    ],
+    [
+        "semicolon",
+        i18n("Semicolon", 'newsletter')
+    ]
+];
 $oSelDelimiter->autoFill($aItems);
 $oSelDelimiter->setDefault($_REQUEST["selDelimiter"]);
 $oForm->add(i18n("Delimiter", 'newsletter'), $oSelDelimiter->render());

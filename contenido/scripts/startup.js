@@ -38,6 +38,7 @@
                 xOffset:    -20,
                 yOffset:    4,
                 outSpeed:   250,
+                removeOnOutsideClick: true,
                 tipContent: $('#' + id).html()
             });
         });

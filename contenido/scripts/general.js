@@ -285,6 +285,20 @@
      */
 
     /**
+     * @const STATE_LOADING
+     * @type {Number}
+     * @private
+     */
+    var STATE_LOADING = 1;
+
+    /**
+     * @const STATE_LOADED
+     * @type {Number}
+     * @private
+     */
+    var STATE_LOADED = 2;
+
+    /**
      * Reference to head HTML element
      *
      * @property _head
@@ -303,38 +317,47 @@
     var _cache = {};
 
     /**
-     * Stack to process for each Loader.get() calls.
+     * Stack to process for each Loader.get() call.
      *
      * @property _queue
-     * @type {Object}
+     * @type {Array.<Object>}
      * @private
      */
     var _queue = [];
 
     /**
+     * Delay for evaluation of loaded scripts.
+     *
+     * @property _lateEvalDelay
+     * @type {Number}
+     * @private
+     */
+    var _lateEvalDelay = 250;
+
+    /**
      * Load file
      *
-     * @method _load
+     * @method _loadFile
      * @param {String} file
      * @private
      */
-    var _load = function (file) {
+    function _loadFile(file) {
         if (typeof _cache[file] === 'undefined') {
-            _cache[file] = 0;
+            _cache[file] = STATE_LOADING;
 
             if (file.search(/\.css\b/) > 0) {
                 _loadCss(file, function () {
-                    _cache[file] = 1;
-                    _onLoaded();
+                    _cache[file] = STATE_LOADED;
+                    _processQueue();
                 })
             } else {
                 _loadJs(file, function () {
-                    _cache[file] = 1;
-                    _onLoaded();
+                    _cache[file] = STATE_LOADED;
+                    _processQueue();
                 })
             }
         }
-    };
+    }
 
     /**
      * Loads CSS file by appending a link node to the head
@@ -344,48 +367,48 @@
      * @param {Function} callback
      * @private
      */
-    var _loadCss = function (file, callback) {
+    function _loadCss(file, callback) {
         var link = document.createElement('link');
         link.href = file;
         link.rel = 'stylesheet';
         link.type = 'text/css';
         _head.appendChild(link);
         callback();
-    };
+    }
 
     /**
      * Tries to evaluate JavaScript with a timeout so that
      * dependencies can be loaded correctly.
-     * This function will try 3 times with 250ms inbetween
+     * This function will try 3 times with 250ms in between
      * before it gives up
      *
      * @method _lateEval
-     * @param {String} fileContent JS to be evaluted
+     * @param {String} fileContent JS to be evaluated
      * @param {Function} callback Callback after successful eval
-     * @param {Integer} tries Noumber of times the eval has failed already
+     * @param {Number} tries Number of times the eval has failed already
      * @param {String} fileName Name of the file (for debugging)
-     * @param {Object} jqxhr XHR Object of the request (for debugging)
+     * @param {jqXHR} jqXHR jQuery XHR Object of the request (for debugging)
      * @param {Object} settings Settings Object (for debugging)
      * @private
      */
-    var _lateEval = function(fileContent, callback, tries, fileName, jqxhr, settings) {
+    function _lateEval(fileContent, callback, tries, fileName, jqXHR, settings) {
         try {
             eval(fileContent);
         } catch(err) {
-            if (tries >=3) {
+            if (tries >= 3) {
                 Con.log("failed 3 times for " + fileName, NAME);
-                Con.log(jqxhr, NAME);
+                Con.log(jqXHR, NAME);
                 Con.log(settings, NAME);
                 Con.log(err, NAME);
             } else {
                 setTimeout(function() {
-                    _lateEval(fileContent, callback, tries + 1, fileName, jqxhr, settings);
-                }, 250);
+                    _lateEval(fileContent, callback, tries + 1, fileName, jqXHR, settings);
+                }, _lateEvalDelay);
             }
             return;
         }
         callback();
-    };
+    }
 
     /**
      * Loads JavaScript file by using $.getScript
@@ -395,57 +418,61 @@
      * @param {Function} callback
      * @private
      */
-    var _loadJs = function(file, callback) {
-        $.ajaxSetup({
-            cache: true
-        });
-        $.getScript(file).done(function () {
+    function _loadJs(file, callback) {
+        // We use $.ajax instead $.getScript, since we want to cache the file!
+        $.ajax({
+            dataType: 'script',
+            cache: true,
+            url: file
+        }).done(function () {
             callback();
-        }).fail(function (jqxhr, settings, exception) {
-            if (jqxhr.status === "200" && jqxhr.responseText !== "") {
+        }).fail(function (jqXHR, settings, exception) {
+            if (jqXHR.status === "200" && jqXHR.responseText !== "") {
                 // Give other files a little bit of time to load in case there are dependencies
                 // Try to evaluate the file after 250ms
                 setTimeout(function () {
-                    _lateEval(jqxhr.responseText, callback, 1, file, jqxhr, settings);
-                }, 250);
+                    _lateEval(jqXHR.responseText, callback, 1, file, jqXHR, settings);
+                }, _lateEvalDelay);
             } else {
                 Con.log('fail ' + file, NAME);
-                Con.log(jqxhr, NAME);
+                Con.log(jqXHR, NAME);
                 Con.log(settings, NAME);
                 Con.log(exception, NAME);
             }
         });
-        $.ajaxSetup({
-            cache: false
-        });
-    };
+    }
 
     /**
-     * Check queue on file load
+     * Check queue on file load.
+     * Loops through the queue entries and loads the next file, if not loaded before.
+     * If all files from one queue entry have been loaded the queue entry will be removed
+     * from the queue stack and its callback will be called.
      *
-     * @method _onLoaded
+     * @method _processQueue
      * @private
      */
-    var _onLoaded = function () {
+    function _processQueue() {
         var toCall = [];
-        _queue = _queue.filter(function (item) {
-            var state = _getState(item[0]);
 
-            if (state.loaded.length === item[0].length) {
+        _queue = _queue.filter(function (item) {
+            var state = _getState(item.files);
+
+            if (state.loaded.length === item.files.length) {
                 toCall.push(item);
                 return false;
             }
 
-            // load next
-            if (!state.loading.length && state.load.length) {
-                _load(state.load.shift());
+            // Load next
+            if (state.load.length) {
+                _loadFile(state.load.shift());
             }
 
             return true;
         });
 
+        // Invoke functions to call
         for (var i = 0; i < toCall.length; i++) {
-            toCall[i][1].apply(toCall[i][2], toCall[i][3]);
+            toCall[i].callback.apply(toCall[i].scope, toCall[i].params);
         }
     }
 
@@ -453,31 +480,31 @@
      * Add callback to queue
      *
      * @method _addToQueue
-     * @param {String[]} files
+     * @param {Array.<String>} files
      * @param {Function} [callback]
      * @param {Object} [scope]
      * @param {Array} [params]
      * @return {Boolean}
      * @static
      */
-    var _addToQueue = function (files, callback, scope, params) {
-        _queue.push([
-            files,
-            callback,
-            scope,
-            params
-        ]);
+    function _addToQueue(files, callback, scope, params) {
+        _queue.push({
+            files: files,
+            callback: callback,
+            scope: scope,
+            params: params
+        });
     }
 
     /**
      * Get current loading state for callback files
      *
      * @method _getState
-     * @param {Array} files
+     * @param {Array.<String>} files
      * @returns {{load: Array, loaded: Array, loading: Array}}
      * @private
      */
-    var _getState = function(files) {
+    function _getState(files) {
         var out = {
             load: [],
             loaded: [],
@@ -489,9 +516,9 @@
 
             if (typeof _cache[f] === 'undefined') {
                 out.load.push(f);
-            } else if (_cache[f] === 1) {
+            } else if (_cache[f] === STATE_LOADED) {
                 out.loaded.push(f);
-            } else if (_cache[f] === 0) {
+            } else if (_cache[f] === STATE_LOADING) {
                 out.loading.push(f);
             }
         }
@@ -503,29 +530,16 @@
      * Add callback to queue
      *
      * @method _push
-     * @param {String[]} files
+     * @param {Array.<String>} files
      * @param {Function} [callback]
      * @param {Object} [scope]
      * @param {Array} [params]
      * @return {Boolean}
      * @static
      */
-    var _push = function (files, callback, scope, params) {
-        // step 1: check is loaded
-        var state = _getState(files);
-
-        if (state.loaded.length === files.length) {
-            // step 2: if all loaded, call callback
-            callback.apply(scope, params);
-        } else {
-            // step 3: add callback to queue
-            _addToQueue(files, callback, scope, params);
-
-            // step 4: load first file
-            if (!state.loading.length && state.load.length) {
-                _load(state.load.shift());
-            }
-        }
+    function _push(files, callback, scope, params) {
+        _addToQueue(files, callback, scope, params);
+        _processQueue();
     }
 
     Con.Loader = {
@@ -598,7 +612,7 @@
          * Resize top left frame. Retrieves the container element
          * top_left_container and it's data attributes to handle the resize.
          * Following attributes are supported: - data-resizegap: (Number) The
-         * amount of exta pixels to add to the detected content height of top
+         * amount of extar pixels to add to the detected content height of top
          * left frame - data-resizeinitcb: (String) Optional a callback to call
          * which does the initial frame resizing Example:
          *
@@ -674,10 +688,74 @@
 
 (function(Con, $, scope) {
 
+    var NAME = 'frame-left-bottom';
+
+    /**
+     * FrameLeftBottom class
+     *
+     * @submodule base-frame-left-bottom
+     * @class FrameLeftBottom
+     * @static
+     */
+
+    Con.FrameLeftBottom = {
+        /**
+         * Reloads the left bottom frame, optionally with a parameter.
+         * If parameter name is passed, then it has to contain a value. The parameter value can be empty.
+         *
+         * @param {Array}  parameters  Associative array with key/value pairs
+         */
+        reload: function(parameters) {
+            var frame = Con.getFrame('left_bottom'), registeredParameters = null;
+            if (frame) {
+                Con.FrameLeftBottom.registerParameter(parameters);
+                try {
+                    registeredParameters = frame.Con.ParameterCollector.getAll(false);
+                } catch (e) {
+                    console.error(NAME + ': Get registered parameter error', e);
+                }
+                if (registeredParameters) {
+                    frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, registeredParameters);
+                } else {
+                    frame.location.href = frame.location.href;
+                }
+            }
+        },
+
+        /**
+         * Registers the passed parameter on left bottom frame.
+         *
+         * @param {Array.<Object>} parameter Associative array with key/value pairs
+         */
+        registerParameter: function(parameter) {
+            var leftBottom;
+
+            if ($.isPlainObject(parameter)) {
+                leftBottom = Con.getFrame('left_bottom');
+                if (leftBottom) {
+                    if (typeof leftBottom.register_parameter === 'function') {
+                        $.each(parameter, function (name, value) {
+                            if (typeof name === 'string' && name.length) {
+                                value = value == null ? '' : '' + value; // Note == checks for null and undefined!
+                                leftBottom.register_parameter(name, value);
+                            }
+                        });
+                    }
+                }
+            }
+        }
+    };
+
+})(Con, Con.$, window);
+
+// ############################################################################
+
+(function(Con, $, scope) {
+
     var NAME = 'util-url';
 
     /**
-     * URL utily class
+     * URL utility class
      *
      * @submodule base-util-url
      * @class UtilUrl
@@ -690,7 +768,7 @@
          *
          * <pre>
          * // result: main.php?area=con&amp;action=new&amp;frame=4&amp;contenido=123434
-         * var url = Con.UtilUrl.build(&quot;main.php&quot;, {
+         * var url = Con.UtilUrl.build('main.php', {
          *     area : 'con',
          *     action : 'new',
          *     frame : 4
@@ -741,7 +819,7 @@
         },
 
         /**
-         * Extracs all query parameters from a given url and returns them back.
+         * Extracts all query parameters from a given url and returns them back.
          * Example:
          *
          * <pre>
@@ -843,7 +921,7 @@
          * @static
          */
         validate: function(value) {
-            var urlregex = /(http:\/\/www.|https:\/\/www.|www.|http:\/\/|https:\/\/){1}(([0-9A-Za-z]+\.))|(localhost)/;
+            var urlregex = /(http:\/\/www.|https:\/\/www.|www.|http:\/\/|https:\/\/){1}([0-9A-Za-z]+\.)|(localhost)/;
             return urlregex.test(value);
 
         }
@@ -896,7 +974,7 @@
         // get last argument
         var tmp = arguments[arguments.length - 1];
         // check by last argument if reduced frame structure is used
-        var simpleFrame = (tmp === 'simpleFrame') ? true : false;
+        var simpleFrame = tmp === 'simpleFrame';
         // change for-loop counter if last parameter is used to identify simple
         // frame multilinks
         var len = (simpleFrame) ? arguments.length - 1 : arguments.length;
@@ -938,7 +1016,7 @@
      * </pre>
      *
      * @method getRegistry
-     * @return {Registry|NULL}
+     * @return {Registry|Null}
      */
     Con.getRegistry = function() {
         var frame = Con.getFrame('header');
@@ -1052,47 +1130,49 @@
     Con.showConfirmation = function(description, callback, additionalOptions) {
         // Get the translations so that we can use them
         Con.getTranslations(function(translations) {
+            var contentWindow, buttons, options;
+
             if (null === translations) {
                 // Use fallback
                 translations = TRANSLATIONS;
             }
 
-            // Define the options and extend them with the given ones
-            var contentWindow = Con.getContentWindow(), buttons = {};
+            contentWindow = Con.getContentWindow();
+            if (!contentWindow.$ || !contentWindow.$.ui) {
+                // This may happen, e. g. in layout preview
+                Con.log('Could not find $ or $.ui in content window', 'Con.showConfirmation', 'warn');
+                return;
+            }
 
+            // Define the options and extend them with the given ones.
+            // NOTE: Code in dialog callbacks should be executed in the context of the
+            //       content window (e. g. contentWindow.$), not in this window (e. g. $).
+            buttons = {};
             buttons[translations.OK] = function() {
                 if (typeof callback === 'function') {
                     callback();
                 }
-                contentWindow.$('#single_dialog').dialog('close');
+                contentWindow.$(this).dialog('close');
             };
             buttons[translations.Cancel] = function() {
-                contentWindow.$('#single_dialog').dialog('close');
+                contentWindow.$(this).dialog('close');
             };
 
-            var options = {
+            options = {
                 modal: true,
                 buttons: buttons,
                 position: ['center', 50],
                 resizable: false,
                 close: function () {
-                    contentWindow.$('html').find('#single_dialog').remove();
+                    contentWindow.$('#con_dialog_confirmation').remove();
                 },
                 title: translations['Confirmation Required']
             };
             options = $.extend(options, additionalOptions);
 
-            // show the dialog in the content window
-            if (0 === contentWindow.$('html').find('#single_dialog').length) {
-                contentWindow.$('html').find('div.ui-dialog').remove();
-                contentWindow.$('html').find('div.ui-widget-overlay').remove();
-                contentWindow.$('html').find('#single_dialog').remove();
-
-                contentWindow
-                    .$('<div id="single_dialog">' + description + '</div>')
-                    .dialog(options);
-            }
-
+            // Show the dialog in the content window
+            contentWindow.$('div.ui-dialog, #con_dialog_confirmation').remove();
+            contentWindow.$('<div id="con_dialog_confirmation">' + description + '</div>').dialog(options);
         }, this);
     };
 
@@ -1112,40 +1192,47 @@
      * @param {Boolean} hideButtons
      */
     Con.showNotification = function(title, description, additionalOptions,
-            hideButtons) {
+                                    hideButtons) {
         // Get the translations so that we can use them
         Con.getTranslations(function(translations) {
+            var contentWindow, buttons, options;
+
             if (null === translations) {
                 // Use fallback
                 translations = TRANSLATIONS;
             }
 
-            // Define the options and extend them with the given ones
-            var buttons = {};
+            contentWindow = Con.getContentWindow();
+            if (!contentWindow.$ || !contentWindow.$.ui) {
+                // This may happen, e. g. in layout preview
+                Con.log('Could not find $ or $.ui in content window', 'Con.showNotification', 'warn');
+                return;
+            }
+
+            // Define the options and extend them with the given ones.
+            // NOTE: Code in dialog callbacks should be executed in the context of the
+            //       content window (e. g. contentWindow.$), not in this window (e. g. $).
+            buttons = {};
             if (!hideButtons) {
                 buttons[translations.OK] = function() {
-                    // unfortunately, the following line does not work if the
-                    // dialog is opened from another frame
-                    // $(this).dialog('close');
-                    // so use this ugly workaround
-                    $(this).parent().remove();
+                    contentWindow.$(this).dialog('close');
                 };
             }
-            var options = {
+
+            options = {
                 buttons: buttons,
                 position: ['center', 50],
                 title: title,
+                close: function () {
+                    contentWindow.$('#con_dialog_notification').remove();
+                },
                 modal: true
             };
             options = $.extend(options, additionalOptions);
-            // show the dialog in the content window
-            var contentWindow = Con.getContentWindow();
 
-            contentWindow.$('html').find('div.ui-dialog').remove();
-            contentWindow.$('html').find('div.ui-widget-overlay').remove();
-
-            contentWindow.$('<div>' + description + '</div>').dialog(options);
-
+            // Show the dialog in the content window
+            contentWindow.$('div.ui-dialog, #con_dialog_notification').remove();
+            contentWindow.$('<div id="con_dialog_notification">' + description + '</div>').dialog(options);
         }, this);
     };
 
@@ -1153,7 +1240,7 @@
     * Check Ajax response and located user to login page
     * if authentication failed (e. g. user timeout)
     *
-    * @method checkAjaxResponde
+    * @method checkAjaxResponse
     * @param {String|Object} response
     * @return {Boolean}
     */
@@ -1209,4 +1296,40 @@
         return false;
     };
 
+    /**
+     * Serializes given form elements and returns them back, either as array of names and values
+     * (see jQuery serializeArray()) or as an object with name and values.
+     *
+     * @param {jQuery} form - jQuery form element
+     * @param {Boolean} [asObject=true] - Flag to return the form elements data as an object.
+     * @returns {Object|JQuery.NameValuePair[]} - The form data. If return type is object, form data
+     *     having multiple values for a multi select or option group (same element name!) will be returned
+     *     as an list of values, e. g. {multiselect: ['value1', 'value2']}
+     */
+    Con.serializeForm = function (form, asObject) {
+        var objData,
+            arrayData = form.serializeArray();
+
+        asObject = typeof asObject === 'boolean' ? asObject : true;
+
+        if (!asObject) {
+            return arrayData;
+        }
+
+        objData = {};
+        $.each(arrayData, function (pos, item) {
+            if (typeof objData[item.name] === 'undefined') {
+                objData[item.name] = item.value;
+            } else if (typeof objData[item.name] === 'string') {
+                objData[item.name] = [objData[item.name] ];
+                objData[item.name].push(item.value);
+            } else if (Array.isArray(objData[item.name])) {
+                objData[item.name].push(item.value);
+            }
+        });
+
+        return objData;
+    }
 })(Con, Con.$);
+
+console.log(window.name + ':general query parameter', window.location.search.replace('?', ''));

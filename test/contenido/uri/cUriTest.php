@@ -174,6 +174,82 @@ class cUriTest extends cTestingTestCase
     }
 
     /**
+     * Test append parameters
+     */
+    public function testAppendParameters()
+    {
+        // Append parameters
+        $url = $this->clientCfg['path']['htmlpath'] . 'front_content.php?idart=12&param=value';
+        $url = cUri::getInstance()->appendParameters($url, ['a' => '1', 'b' => 2]);
+        $isToBeUrl = $this->clientCfg['path']['htmlpath'] . 'front_content.php?idart=12&param=value&a=1&b=2';
+        $this->assertEquals($isToBeUrl, $url);
+    }
+
+    /**
+     * Test append parameters with reserved parameters
+     */
+    public function testAppendParameterReservedParameters()
+    {
+        $url = $this->clientCfg['path']['htmlpath'] . 'front_content.php?idart=12&param=value';
+        $url = cUri::getInstance()->appendParameters($url, ['a' => '1', 'b' => 2, 'client' => 1, 'idart' => 123]);
+        $isToBeUrl = $this->clientCfg['path']['htmlpath'] . 'front_content.php?idart=12&param=value&a=1&b=2';
+        $this->assertEquals($isToBeUrl, $url);
+    }
+
+    /**
+     * Test append parameters with user defined reserved parameters
+     */
+    public function testAppendParametersWithUserDefinedReservedParameters()
+    {
+        $url = $this->clientCfg['path']['htmlpath'] . 'front_content.php?idart=12&param=value';
+        $url = cUri::getInstance()->appendParameters($url, ['a' => '1', 'b' => 2, 'client' => 1, 'lang' => 3], ['client', 'lang']);
+        $isToBeUrl = $this->clientCfg['path']['htmlpath'] . 'front_content.php?idart=12&param=value&a=1&b=2';
+        $this->assertEquals($isToBeUrl, $url);
+    }
+
+    /**
+     * Test parameters and overwrite reserved parameters
+     */
+    public function testAppendParametersOverwriteReservedParameters()
+    {
+        $url = $this->clientCfg['path']['htmlpath'] . 'front_content.php?idart=12&param=value';
+        $url = cUri::getInstance()->appendParameters($url, ['a' => '1', 'b' => 2, 'client' => 1, 'lang' => 3], []);
+        $isToBeUrl = $this->clientCfg['path']['htmlpath'] . 'front_content.php?idart=12&param=value&a=1&b=2&client=1&lang=3';
+        $this->assertEquals($isToBeUrl, $url);
+    }
+
+    /**
+     * Test parameters and don't overwrite or overwrite existing parameters
+     */
+    public function testAppendParametersOverride()
+    {
+        // Don't overwrite existing parameters
+        $url = $this->clientCfg['path']['htmlpath'] . 'front_content.php?idart=12&param=value';
+        $url = cUri::getInstance()->appendParameters($url, ['a' => '1', 'b' => 2, 'param' => 'newValue'], []);
+        $isToBeUrl = $this->clientCfg['path']['htmlpath'] . 'front_content.php?idart=12&param=newValue&a=1&b=2';
+        $this->assertNotEquals($isToBeUrl, $url);
+
+        // Overwrite existing parameters
+        $url = $this->clientCfg['path']['htmlpath'] . 'front_content.php?idart=12&param=value';
+        $url = cUri::getInstance()->appendParameters($url, ['a' => '1', 'b' => 2, 'param' => 'newValue'], [], true);
+        $isToBeUrl = $this->clientCfg['path']['htmlpath'] . 'front_content.php?idart=12&param=newValue&a=1&b=2';
+        $this->assertEquals($isToBeUrl, $url);
+    }
+
+    /**
+     * Test redirect url with complex parameters
+     * @link https://github.com/CONTENIDO/CONTENIDO/issues/132
+     */
+    public function testRedirectUrlWithComplexParameters() {
+        $redirectUrl = $this->clientCfg['path']['htmlpath'] . 'front_content.php?idart=12';
+        // Query parameter a=1&b[]=2&b[1][]=3
+        $parameters = ['a' => 1, 'b' => [2, [3]]];
+        $redirectUrl = cUri::getInstance()->appendParameters($redirectUrl, $parameters);
+        $isToBeUrl = $this->clientCfg['path']['htmlpath'] . 'front_content.php?idart=12&a=1&b[]=2&b[1][]=3';
+        $this->assertNotEquals($isToBeUrl, $redirectUrl);
+    }
+
+    /**
      * @param $redirectUrl
      *
      * @return string

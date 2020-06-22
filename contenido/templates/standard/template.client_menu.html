@@ -7,34 +7,63 @@
 {_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
+    <script type="text/javascript" src="scripts/parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
 </head>
-<body>
+<body class="page_generic">
 
-<table id="client_menu_list" width="100%" cellspacing="0" cellpadding="2" border="0">
+<table id="client_menu_list" class="menu_overview_list " width="100%" cellspacing="0" cellpadding="2" border="0">
     <!-- BEGIN:BLOCK -->
     <tr {ID} class="text_medium row_mark">
-        <td align="left" class="text_medium">{ICON}</td>
-        <td width="100%">{TEXT}</td><td align="right">{DELETE}</td>
+        <td align="left" data-type="icon">{ICON}</td>
+        <td width="100%" data-type="item">{TEXT}</td>
+        <td align="right" data-type="actions">{DELETE}</td>
     </tr>
     <!-- END:BLOCK -->
-
 </table>
 
 <script type="text/javascript">
 (function(Con, $) {
+
+    function actionShowClient($row, id) {
+        Con.multiLink(
+            'right_top', Con.UtilUrl.build('main.php', {area: 'client', frame: 3, idclient: id}),
+            'right_bottom', Con.UtilUrl.build('main.php', {area: 'client_edit', frame: 4, idclient: id})
+        );
+        Con.ParameterCollector.register('idclient', id);
+    }
+
+    function actionDeleteClient($row, id) {
+        var deleteMessage = "{DELETE_MESSAGE}",
+            name = $row.find('[data-type="item"]').text();
+
+        Con.showConfirmation(deleteMessage.replace('%s', name), function() {
+            Con.multiLink(
+                'right_top',  Con.UtilUrl.build('main.php', {area: 'client', frame: 3}),
+                'right_bottom', Con.UtilUrl.build('main.php', {area: 'client', frame: 4}),
+                'left_bottom', Con.UtilUrl.build('main.php', {area: 'client', action: 'client_delete', frame: 2, idclientdelete: id})
+            );
+        });
+    }
+
+    $('table [data-action]').live('click', function() {
+        var action = $(this).data('action'),
+            $row = $(this).closest('[data-id]'),
+            id = $row.data('id');
+
+        if ($row && action && id) {
+            if (action === 'show_client') {
+                actionShowClient($row, id);
+            } else if (action === 'delete_client') {
+                actionDeleteClient($row, id);
+            }
+        }
+    });
+
     $(function() {
         Con.RowMark.initialize('#client_menu_list .row_mark', 'row', '#marked');
     });
+
 })(Con, Con.$);
-
-// Function for deleting clients
-function deleteClient(idclient) {
-    var url_right_bottom  = Con.UtilUrl.build('main.php', {area: 'client', frame: 4});
-        url_top  = Con.UtilUrl.build('main.php', {area: 'client', frame: 3});
-        url_left_bottom  = Con.UtilUrl.build('main.php', {area: 'client', action: 'client_delete', frame: 2, idclientdelete: idclient});
-
-    Con.multiLink('right_top', url_top, 'right_bottom', url_right_bottom, 'left_bottom', url_left_bottom);
-}
 </script>
 </body>
 </html>

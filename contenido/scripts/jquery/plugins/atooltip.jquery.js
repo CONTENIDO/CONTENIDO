@@ -6,6 +6,8 @@
                                 Read more about this license at --> http://creativecommons.org/licenses/by/3.0/
     Modified:                   Murat Purc <murat@purc>, 2010-01-28: Position clickable tooltip on right side,
                                                                      remove previous opened tooltip
+    Modified:                   Murat Purc <murat@purc>, 2019-12-21: Option to close opened tooltip on outside
+                                                                     click.
 
 Creates following node:
 -----------------------
@@ -34,11 +36,24 @@ Creates following node:
             tipContent: '',
             toolTipClass: 'aToolTip',
             xOffset: 0,
-            yOffset: 0
+            yOffset: 0,
+            removeOnOutsideClick: false
         },
 
         // This makes it so the users custom options overrides the default ones
         settings = $.extend({}, defaults, options);
+
+        // If setting to remove tooltip on outside click is set, register proper event handler. but only once!
+        if (settings.removeOnOutsideClick && !$.fn.aToolTip.documentClickEventHandlerRegistered) {
+            $.fn.aToolTip.documentClickEventHandlerRegistered = true;
+            $(document).click(function (e) {
+                if ($(e.target).hasClass(settings.toolTipClass) || $(e.target).closest('.' + settings.toolTipClass).length > 0) {
+                    return;
+                }
+                // Fade out
+                $('.' + settings.toolTipClass).stop().fadeOut(settings.outSpeed, function(){$(this).remove();});
+            });
+        }
 
         return this.each(function() {
             var obj = $(this);

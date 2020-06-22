@@ -1,0 +1,35 @@
+
+<!-- cronjobs_overview/templates/template.cronjobs_overview.html -->
+
+{FORM}
+
+<script type="text/javascript">
+
+    (function(Con, $) {
+
+        function actionShowCronjob($row, id) {
+            Con.multiLink(
+                'right_bottom', Con.UtilUrl.build('main.php', {area: 'cronjob', action: 'cronjob_overview', frame: 4, file: id})
+            );
+            Con.ParameterCollector.register('file', id);
+        }
+
+        $(function() {
+            $('#generic_menu_list [data-action]').live('click', function() {
+                var action = $(this).data('action'),
+                    $row = $(this).closest('[data-id]'),
+                    id = $row.data('id');
+
+                if ($row && action && id) {
+                    if (action === 'show_cronjob') {
+                        actionShowCronjob($row, id);
+                    }
+                }
+            });
+
+        });
+    })(Con, Con.$);
+
+</script>
+
+<!-- /cronjobs_overview/templates/template.cronjobs_overview.html -->

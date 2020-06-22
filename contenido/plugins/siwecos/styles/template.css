@@ -1,35 +1,5 @@
 @charset "UTF-8";
 
-.btn, .btn-primary, button:not(.mainnav__navtoggler), input[type=button], input[type=reset], input[type=submit] {
-    background: #1d7d73;
-    border: none;
-    border-radius: 2px;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, .4);
-    color: #fff !important;
-    display: inline-block;
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 1em;
-    margin: 1px;
-    min-width: 144px;
-    padding: 10px 20px;
-    position: relative;
-    text-align: center;
-    text-decoration: none;
-    text-shadow: none;
-    transition: background-color .3s;
-}
-
-.btn-primary:focus, .btn-primary:hover, .btn:focus, .btn:hover, button:not(.mainnav__navtoggler):focus, button:not(.mainnav__navtoggler):hover, input[type=button]:focus, input[type=button]:hover, input[type=reset]:focus, input[type=reset]:hover, input[type=submit]:focus, input[type=submit]:hover {
-    background: #8a0000;
-}
-
-.btn-primary[disabled], .btn[disabled], button:not(.mainnav__navtoggler)[disabled], input[type=button][disabled], input[type=reset][disabled], input[type=submit][disabled] {
-    background: #cbcccc;
-    cursor: no-drop;
-    color: #444 !important;
-}
-
 .scanner-data {
     font-size: 1.2rem;
     font-weight: 700;

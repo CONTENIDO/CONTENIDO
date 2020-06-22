@@ -18,15 +18,18 @@ cInclude("includes", "functions.str.php");
 cInclude("includes", "functions.tpl.php");
 cInclude('includes', 'functions.lang.php');
 
+global $syncidcat, $syncfromlang, $multiple, $markscript;
+
 /**
  *
- * @param int   $iIdcat
+ * @param int $iIdcat
  * @param array $aWholelist
  *
  * @return string
  *
  * @throws cDbException
  * @throws cInvalidArgumentException
+ * @throws cException
  */
 function showTree($iIdcat, &$aWholelist) {
     global $check_global_rights, $sess, $cfg, $perm, $db, $db2, $db3, $area, $client, $lang, $navigationTree;
@@ -572,6 +575,7 @@ $sql = "SELECT DISTINCT " .
         "b.idlang, " .
         "b.visible, " .
         "b.public, " .
+        "c.idtree, " .
         "c.level, " .
         "d.idtpl " .
         "FROM {$cfg['tab']['cat']} AS a " .

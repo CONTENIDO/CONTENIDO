@@ -637,48 +637,6 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
 
     @eval("\$" . "redirect_url = \"$redirect_url\";");
 
-    // CON-1990: append GET parameters to redirect url
-    foreach ($_GET as $getKey => $getValue) {
-        // do not add already added GET parameters to redirect url
-        if (cString::findFirstPos($redirect_url, '?' . $getKey . '=') !== false
-            || cString::findFirstPos($redirect_url, '&' . $getKey . '=') !== false
-            || cString::findFirstPos($redirect_url, '&amp;' . $getKey . '=') !== false
-        ) {
-            continue;
-        }
-
-        // CON-2231: Do not add reserved get parameters to redirect url
-        switch ($getKey) {
-            case 'client':
-                continue 2;
-            case 'idart':
-                continue 2;
-            case 'idcat';
-                continue 2;
-            case 'idartlang':
-                continue 2;
-            case 'lang':
-                continue 2;
-            case 'error':
-                continue 2;
-        }
-
-        if (cString::findFirstPos($redirect_url, '?') === false) {
-            $redirect_url .= '?';
-        } else {
-            $redirect_url .= '&amp;';
-        }
-
-        if (!is_array($getValue)) {
-            $redirect_url .= htmlentities(cRequestValidator::cleanParameter($getKey)) . '=' . htmlentities(cRequestValidator::cleanParameter($getValue));
-        } else {
-            foreach ($getValue as $getArrayKey => $getArrayValue) {
-                $redirect_url .= htmlentities(cRequestValidator::cleanParameter($getKey)) . '[' . $getArrayKey . ']=' . htmlentities(cRequestValidator::cleanParameter($getArrayValue));
-            }
-        }
-
-    }
-
     if ($oArtLang->get('timemgmt') == '1' && $isstart != 1) {
         $online    = 0;
         $dateStart = $oArtLang->get('datestart');
@@ -717,6 +675,9 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             // Redirect to the URL defined in article properties
             $oUrl = cUri::getInstance();
             if ($oUrl->isIdentifiableFrontContentUrl($redirect_url)) {
+                // CON-1990: append GET parameters to redirect url
+                $redirect_url = $oUrl->appendParameters($redirect_url, $_GET);
+
                 // Perform urlbuilding only for identified internal urls
                 $aUrl = $oUrl->parse($redirect_url);
                 if (!isset($aUrl['params']['lang'])) {

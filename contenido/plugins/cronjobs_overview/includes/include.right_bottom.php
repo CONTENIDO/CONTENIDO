@@ -73,7 +73,9 @@ switch ($_REQUEST['action']) {
             include($cronjobs->getCronjobDirectory().$cronjobs->getFile());
             $cronjobs->setRunTime(time());
             //$cronjobs->executeCronjob();
-            $notification->displayNotification('info', i18n('File has been included!', 'cronjobs_overview'));
+            $message = $notification->returnNotification('info', i18n('File has been included!', 'cronjobs_overview'));
+            $tpl->set('s', 'CONTENTS', $message);
+            $tpl->generate($cfg['path']['templates'] . $cfg['templates']['blank']);
         }
         break;
 }

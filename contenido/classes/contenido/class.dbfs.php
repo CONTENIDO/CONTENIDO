@@ -157,23 +157,17 @@ class cApiDbfsCollection extends ItemCollection {
      * @global int   $client
      */
     public function hasFiles($path) {
-        global $client;
-
+        $client = cSecurity::toInteger(cRegistry::getClientId());
         $path = cApiDbfs::stripPath($path);
-        $client = (int) $client;
 
-        // Are there any subdirs?
-        $this->select("dirname LIKE '" . $path . "/%' AND idclient = " . $client . " LIMIT 1");
-        if ($this->count() > 0) {
-            return true;
-        }
+        // Are there any subdirectories or any files?
+        $this->select(
+            "(`dirname` LIKE '" . $path . "/%' AND `idclient` = " . $client . ") OR " .
+            "(`dirname` = '" . $path . "' AND `idclient` = " . $client . " AND `filename` != '' AND `filename` != '.') " .
+            " LIMIT 1"
+        );
 
-        $this->select("dirname LIKE '" . $path . "%' AND idclient = " . $client . " LIMIT 2");
-        if ($this->count() > 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->count() > 0 ? true : false;
     }
 
     /**
@@ -408,7 +402,7 @@ class cApiDbfsCollection extends ItemCollection {
     /**
      *
      * @param string $path
-     *
+     * @return bool Success state
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -427,8 +421,9 @@ class cApiDbfsCollection extends ItemCollection {
 
         $this->select("dirname = '" . $dirname . "' AND filename = '" . $filename . "' AND idclient = " . $client . " LIMIT 1");
         if (($item = $this->next()) !== false) {
-            $this->delete($item->get('iddbfs'));
+            return $this->delete($item->get('iddbfs'));
         }
+        return false;
     }
 
     /**

@@ -32,12 +32,13 @@ $lIDCatArt = (int) $oClientLang->getProperty("newsletter", "idcatart");
 // base: Elements from core code (other type may be: "plugin")
 // sort: Element can be used to be sorted by
 // search: Element can be used to search in
-$aFields = array();
-$aFields["name"] = array(
-    "field" => "name",
-    "caption" => i18n("Name", 'newsletter'),
-    "type" => "base,sort,search"
-);
+$aFields = [
+    "name" => [
+        "field" => "name",
+        "caption" => i18n("Name", 'newsletter'),
+        "type" => "base,sort,search"
+    ]
+];
 
 // ################################
 // Store settings/Get basic data
@@ -85,6 +86,8 @@ if ($_REQUEST["page"] <= 0 || $_REQUEST["elemperpage"] == 0) {
 if ($_REQUEST["sortorder"] != "DESC") {
     $_REQUEST["sortorder"] = "ASC";
 }
+
+$requestIdNewsletter = (isset($_REQUEST['idnewsletter'])) ? cSecurity::toInteger($_REQUEST['idnewsletter']) : 0;
 
 // Check sort by and search in criteria
 $bSortByFound = false;
@@ -153,17 +156,18 @@ $iMenu = 0;
 
 // Store messages for repeated use (speeds performance, as i18n translation is
 // only needed once)
-$aMsg = array();
-$aMsg["DelTitle"] = i18n("Delete newsletter", 'newsletter');
-$aMsg["DelDescr"] = i18n("Do you really want to delete the following newsletter:<br>", 'newsletter');
-$aMsg["SendTestTitle"] = i18n("Send test newsletter", 'newsletter');
-$aMsg["SendTestTitleOff"] = i18n("Send test newsletter (disabled, check newsletter sender e-mail address and handler article selection)", 'newsletter');
-$aMsg["AddJobTitle"] = i18n("Add newsletter dispatch job", 'newsletter');
-$aMsg["AddJobTitleOff"] = i18n("Add newsletter dispatch job (disabled, check newsletter sender e-mail address and handler article selection)", 'newsletter');
-$aMsg["CopyTitle"] = i18n("Duplicate newsletter");
+$aMsg = [
+    "DelTitle" => i18n("Delete newsletter", 'newsletter'),
+    "DelDescr" => i18n("Do you really want to delete the following newsletter:<br>", 'newsletter'),
+    "SendTestTitle" => i18n("Send test newsletter", 'newsletter'),
+    "SendTestTitleOff" => i18n("Send test newsletter (disabled, check newsletter sender e-mail address and handler article selection)", 'newsletter'),
+    "AddJobTitle" => i18n("Add newsletter dispatch job", 'newsletter'),
+    "AddJobTitleOff" => i18n("Add newsletter dispatch job (disabled, check newsletter sender e-mail address and handler article selection)", 'newsletter'),
+    "CopyTitle" => i18n("Duplicate newsletter"),
+];
 
 while ($oNewsletter = $oNewsletters->next()) {
-    $idnewsletter = $oNewsletter->get("idnews");
+    $idnewsletter = cSecurity::toInteger($oNewsletter->get("idnews"));
     $iMenu++;
 
     $sName = (cString::getStringLength(trim($oNewsletter->get("name"))) > 0) ? $oNewsletter->get("name") : i18n("-- New newsletter --", 'newsletter');
@@ -173,11 +177,17 @@ while ($oNewsletter = $oNewsletters->next()) {
 
     // Create the link to show/edit the newsletter
     $oLnk = new cHTMLLink();
-    $oLnk->setMultiLink($area, "", $area, "");
-    $oLnk->setCustom("idnewsletter", $idnewsletter);
-
-    $oMenu->setTitle($iMenu, $sName);
+    $oLnk->setClass('show_item')
+        ->setLink('javascript:;')
+        ->setAttribute('data-action', 'news_show');
     $oMenu->setLink($iMenu, $oLnk);
+
+    $oMenu->setId($iMenu, $idnewsletter);
+    $oMenu->setTitle($iMenu, $sName);
+
+    if ($requestIdNewsletter == $idnewsletter) {
+        $oMenu->setMarked($iMenu);
+    }
 
     if ($perm->have_perm_area_action($area, "news_add_job") || $perm->have_perm_area_action($area, "news_create") || $perm->have_perm_area_action($area, "news_save")) {
         // Rights: If you are able to add a job, you should be able to test it
@@ -186,42 +196,57 @@ while ($oNewsletter = $oNewsletters->next()) {
         // Usability: If no e-mail has been specified, you can't send a test
         // newsletter
         if (isValidMail($oNewsletter->get("newsfrom")) && $lIDCatArt > 0) {
-            $sLnkSendTest = '<a title="' . $aMsg["SendTestTitle"] . '" href="javascript://" onclick="showSendTestMsg(' . $idnewsletter . ')"><img src="' . $cfg['path']['images'] . 'newsletter_sendtest_16.gif" border="0" title="' . $aMsg["SendTestTitle"] . '" alt="' . $aMsg["SendTestTitle"] . '"></a>';
+            $oImage = new cHTMLImage($cfg['path']['images'] . 'newsletter_sendtest_16.gif', 'vAlignMiddle');
+            $oImage->setAlt($aMsg["SendTestTitle"]);
+            $oSendTest = new cHTMLLink();
+            $oSendTest->setLink('javascript:;')
+                ->setAlt($aMsg["SendTestTitle"])
+                ->setAttribute('data-action', 'news_send_test')
+                ->setContent($oImage->render());
         } else {
-            $sLnkSendTest = '<img src="' . $cfg['path']['images'] . 'newsletter_sendtest_16_off.gif" border="0" title="' . $aMsg["SendTestTitleOff"] . '" alt="' . $aMsg["SendTestTitleOff"] . '">';
+            $oSendTest = new cHTMLImage($cfg['path']['images'] . 'newsletter_sendtest_16_off.gif', 'vAlignMiddle');
+            $oSendTest->setAlt($aMsg["SendTestTitleOff"]);
         }
-        $oMenu->setActions($iMenu, 'test', $sLnkSendTest);
+        $oMenu->setActions($iMenu, 'test', $oSendTest->render());
     }
 
     if ($perm->have_perm_area_action($area, "news_add_job")) {
         if (isValidMail($oNewsletter->get("newsfrom")) && $lIDCatArt > 0) {
-            $oLnkAddJob = new cHTMLLink();
-            $oLnkAddJob->setMultiLink("news", "", "news", "news_add_job");
-            $oLnkAddJob->setCustom("idnewsletter", $idnewsletter);
-            $oLnkAddJob->setAlt($aMsg["AddJobTitle"]);
-            $oLnkAddJob->setContent('<img src="' . $cfg['path']['images'] . 'newsletter_dispatch_16.gif" border="0" title="' . $aMsg["AddJobTitle"] . '" alt="' . $aMsg["AddJobTitle"] . '">');
-
-            $sLnkAddJob = $oLnkAddJob->render();
+            $oImage = new cHTMLImage($cfg['path']['images'] . 'newsletter_dispatch_16.gif', 'vAlignMiddle');
+            $oImage->setAlt($aMsg["AddJobTitle"]);
+            $oAddJob = new cHTMLLink();
+            $oAddJob->setLink('javascript:;')
+                ->setAlt($aMsg["AddJobTitle"])
+                ->setAttribute('data-action', 'news_add_job')
+                ->setContent($oImage->render());
         } else {
-            $sLnkAddJob = '<img src="' . $cfg['path']['images'] . 'newsletter_dispatch_16_off.gif" border="0" title="' . $aMsg["AddJobTitleOff"] . '" alt="' . $aMsg["AddJobTitleOff"] . '">';
+            $oAddJob = new cHTMLImage($cfg['path']['images'] . 'newsletter_dispatch_16_off.gif', 'vAlignMiddle');
+            $oAddJob->setAlt($aMsg["AddJobTitleOff"]);
         }
-
-        $oMenu->setActions($iMenu, 'dispatch', $sLnkAddJob);
+        $oMenu->setActions($iMenu, 'dispatch', $oAddJob->render());
     }
 
     if ($perm->have_perm_area_action($area, "news_create")) {
-        $oLnkCopy = new cHTMLLink();
-        $oLnkCopy->setMultiLink("news", "", "news", "news_duplicate");
-        $oLnkCopy->setCustom("idnewsletter", $idnewsletter);
-        $oLnkCopy->setAlt($aMsg["CopyTitle"]);
-        $oLnkCopy->setContent('<img src="' . $cfg['path']['images'] . 'but_copy.gif" border="0" title="' . $aMsg["CopyTitle"] . '" alt="' . $aMsg["CopyTitle"] . '">');
-
-        $oMenu->setActions($iMenu, 'copy', $oLnkCopy->render());
+        $oImage = new cHTMLImage($cfg['path']['images'] . 'but_copy.gif', 'vAlignMiddle');
+        $oImage->setAlt($aMsg["CopyTitle"]);
+        $oCopy = new cHTMLLink();
+        $oCopy->setLink('javascript:;')
+            ->setAlt($aMsg["CopyTitle"])
+            ->setAttribute('data-action', 'news_duplicate')
+            ->setContent($oImage->render());
+        $oMenu->setActions($iMenu, 'copy', $oCopy->render());
     }
 
     if ($perm->have_perm_area_action($area, "news_delete")) {
-        $sDelete = '<a title="' . $aMsg["DelTitle"] . '" href="javascript://" onclick="showDelMsg(' . $idnewsletter . ',\'' . addslashes($sName) . '\')"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $aMsg["DelTitle"] . '" alt="' . $aMsg["DelTitle"] . '"></a>';
-        $oMenu->setActions($iMenu, 'delete', $sDelete);
+        $oImage = new cHTMLImage($cfg['path']['images'] . 'delete.gif', 'vAlignMiddle');
+        $oImage->setAlt($aMsg["DelTitle"]);
+
+        $oDelete = new cHTMLLink();
+        $oDelete->setLink('javascript:;')
+            ->setAlt($aMsg["DelTitle"])
+            ->setAttribute('data-action', 'news_delete')
+            ->setContent($oImage->render());
+        $oMenu->setActions($iMenu, 'delete', $oDelete->render());
     }
 }
 
@@ -241,69 +266,7 @@ if ($_REQUEST["selTestDestination"] > 0 && $perm->have_perm_area_action($area, "
 
 $aMsg["SendTestDescr"] = sprintf(i18n("Do you really want to send the newsletter to:<br><strong>%s</strong>", 'newsletter'), $sSendTestTarget);
 
-$sExecScript = <<<JS
-<script type="text/javascript">
-function showSendTestMsg(lngId) {
-    Con.showConfirmation("{$aMsg["SendTestDescr"]}", function() {
-        sendTestNewsletter(lngId);
-    });
-}
-
-function showDelMsg(lngId, strElement) {
-    Con.showConfirmation("{$aMsg["DelDescr"]}<b>" + strElement + "</b>", function() {
-        deleteNewsletter(lngId);
-    });
-}
-
-function checkSelection(strValue) {
-    if (strValue == "selection") {
-        document.getElementById("groupselect").disabled = false;
-    } else {
-        document.getElementById("groupselect").disabled = true;
-    }
-}
-
-// Function for sending test newsletter
-function sendTestNewsletter(idnewsletter) {
-    var oForm = Con.getFrame("left_top").document.getElementById("newsletter_listoptionsform");
-
-    var url = "main.php?area=news";
-    url += "&action=news_send_test";
-    url += "&frame=4";
-    url += "&idnewsletter=" + idnewsletter;
-    url += "&contenido=" + Con.sid;
-    url += get_registered_parameters();
-    url += "&sortby=" + oForm.sortby.value;
-    url += "&sortorder=" + oForm.sortorder.value;
-    url += "&filter=" + oForm.filter.value;
-    url += "&elemperpage=" + oForm.elemperpage.value;
-
-    Con.getFrame("right_bottom").location.href = url;
-}
-
-// Function for deleting newsletters
-function deleteNewsletter(idnewsletter) {
-    var oForm = Con.getFrame("left_top").document.getElementById("newsletter_listoptionsform");
-
-    var url = "main.php?area=news";
-    url += "&action=news_delete";
-    url += "&frame=4";
-    url += "&idnewsletter=" + idnewsletter;
-    url += "&contenido=" + Con.sid;
-    url += get_registered_parameters();
-    url += "&sortby=" + oForm.sortby.value;
-    url += "&sortorder=" + oForm.sortorder.value;
-    url += "&filter=" + oForm.filter.value;
-    url += "&elemperpage=" + oForm.elemperpage.value;
-
-    Con.getFrame("right_bottom").location.href = url;
-}
-</script>
-JS;
-
-// Messagebox JS has to be included before ExecScript!
-$oPage->addScript($sExecScript);
-$oPage->addScript('parameterCollector.js');
+$oPage->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
 
 // Generate current content for Object Pager
 $sPagerId = "0ed6d632-6adf-4f09-a0c6-1e38ab60e302";
@@ -335,8 +298,16 @@ $sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
 // Send new object pager to left_top
 $oPage->addScript('setPager.js');
 
-$sRefreshPager = <<<JS
+$sScript = <<<JS
 <script type="text/javascript">
+function checkSelection(strValue) {
+    if (strValue == "selection") {
+        document.getElementById("groupselect").disabled = false;
+    } else {
+        document.getElementById("groupselect").disabled = true;
+    }
+}
+
 var sNavigation = '{$sPagerContent}';
 // Activate time to refresh pager folding row in left top
 var oTimer = window.setInterval(function() {
@@ -345,7 +316,13 @@ var oTimer = window.setInterval(function() {
 </script>
 JS;
 
-$oPage->addScript($sRefreshPager);
+$oPage->addScript($sScript);
 
-$oPage->setContent($oMenu);
+// Generate template
+$oTpl = new cTemplate();
+$oTpl->set('s', 'SEND_TEST_MESSAGE', $aMsg["SendTestDescr"]);
+$oTpl->set('s', 'DELETE_MESSAGE', $aMsg["DelDescr"]);
+$sTemplate = $oTpl->generate(cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'newsletter/templates/standard/template.newsletter_menu.html', true);
+
+$oPage->setContent([$oMenu, $sTemplate]);
 $oPage->render();

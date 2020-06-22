@@ -47,8 +47,6 @@ class ArticleForumRightBottom extends cGuiPage {
         parent::__construct('right_bottom', 'user_forum');
         $this->addStyle('right_bottom.css');
         $this->addScript('location.js');
-        // Reload left bottom in this code because of irregular update problems in the location file
-        $this->setReload();
     }
 
     /**
@@ -160,12 +158,12 @@ class ArticleForumRightBottom extends cGuiPage {
         $idaart = $cont['idart'];
 
         // button with delete action
-        $deleteButton = '<a title="' . $cont['title'] . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $message . '&quot;, function(){ deleteArticlesByIdRight(' . $level . ', ' . $keyy . ', ' . $id . ', ' . $idacat . ', ' . $idaart . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $message . '" alt="' . $message . '"></a>';
+        $deleteLink = '<a title="' . $cont['title'] . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $message . '&quot;, function(){ deleteArticlesByIdRight(' . $level . ', ' . $keyy . ', ' . $id . ', ' . $idacat . ', ' . $idaart . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $message . '" alt="' . $message . '"></a>';
 
         // insert buttons to array for return
         $buttons['online'] = $online;
         $buttons['edit'] = $edit;
-        $buttons['delete'] = $deleteButton;
+        $buttons['delete'] = $deleteLink;
 
         return $buttons;
     }
@@ -572,6 +570,7 @@ class ArticleForumRightBottom extends cGuiPage {
             case 'deleteComment':
                 $this->_collection->deleteHierarchy($_REQUEST['key'], $_REQUEST['level'], $idart, $idcat, $lang);
                 $this->getForum($idcat, $idart, $lang);
+                $this->reloadLeftBottomFrame([]);
                 break;
             // after click on save button in edit dialog
             case 'update':
@@ -583,9 +582,14 @@ class ArticleForumRightBottom extends cGuiPage {
                 }
 
                 break;
-            case 'show_form':
+            case 'show_forum':
                 // lists all comments from given articleId
                 $this->getForum($idcat, $idart, $lang);
+                break;
+            case 'delete_forum':
+                // deletes all comments from given articleId
+                $this->_collection->deleteAllCommentsById($idart);
+                $this->reloadLeftBottomFrame(['idart' => null]);
                 break;
             case 'edit':
                 // shows edit mode for a comment

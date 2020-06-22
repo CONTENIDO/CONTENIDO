@@ -23,16 +23,6 @@
     <script type="text/javascript" src="scripts/jquery/plugins/timepicker.js"></script>
     <script type="text/javascript" src="scripts/rowMark.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
-    <script type="text/javascript">
-    (function(Con, $) {
-        var frame = Con.getFrame('left_bottom');
-        if (frame.get_registered_parameters) {
-            frame.location.href = frame.location.href + frame.get_registered_parameters() + '&userid={GET_USERID}';
-        } else {
-            frame.location.href = frame.location.href + '&userid={GET_USERID}';
-        }
-    })(Con, Con.$);
-    </script>
 
     <!-- get javascript files for language != en -->
     {CAL_LANG}

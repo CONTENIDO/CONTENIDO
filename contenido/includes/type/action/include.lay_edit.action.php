@@ -19,8 +19,8 @@ cInclude('includes', 'functions.lay.php');
 if ($perm->have_perm_area_action($area, "lay_edit")) {
 
     // check the read only setting and only apply changes if it's off
-    $readOonly = (getEffectiveSetting("client", "readonly", "false") == "true");
-    if(!$readOonly) {
+    $readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
+    if (!$readOnly) {
         $idlay = layEditLayout($idlay, $_POST['layname'], $_POST['description'], $_POST['code']);
     }
 } else {

@@ -22,14 +22,19 @@ if (is_array($cfg['plugins']['recipients'])) {
     }
 }
 
+$requestIdRecipient = (isset($_REQUEST['idrecipient'])) ? cSecurity::toInteger($_REQUEST['idrecipient']) : 0;
+$requestConfirmed = (isset($_REQUEST['confirmed'])) ? cSecurity::toInteger($_REQUEST['confirmed']) : 0;
+$requestDeactivated = (isset($_REQUEST['deactivated'])) ? cSecurity::toInteger($_REQUEST['deactivated']) : 0;
+$requestNewstype = (isset($_REQUEST['newstype'])) ? cSecurity::toInteger($_REQUEST['newstype']) : 0;
+
 // Note, that the object name has to be $recipient for plugins
 if ($action == "recipients_create" && $perm->have_perm_area_action($area, $action)) {
     $recipient = $oRecipients->create("mail@domain.tld"," ".i18n("-- New recipient --", 'newsletter'));
-    $oPage->setReload();
+    $oPage->reloadLeftBottomFrame(['idrecipient' => $recipient->get('idnewsrcp')]);
 } elseif ($action == "recipients_delete" && $perm->have_perm_area_action($area, $action)) {
-    $oRecipients->delete($idrecipient);
+    $oRecipients->delete($requestIdRecipient);
     $recipient = new NewsletterRecipient();
-    $oPage->setReload();
+    $oPage->reloadLeftBottomFrame(['idrecipient' => null]);
     $oPage->abortRendering();
 } elseif ($action == "recipients_purge" && $perm->have_perm_area_action($area, "recipients_delete")) {
     $oClient = new cApiClient($client);
@@ -46,21 +51,21 @@ if ($action == "recipients_create" && $perm->have_perm_area_action($area, $actio
     }
 
     $recipient = new NewsletterRecipient;
-    $oPage->setReload();
+    $oPage->reloadLeftBottomFrame(['idrecipient' => null]);
 } else {
-    $recipient = new NewsletterRecipient($idrecipient);
+    $recipient = new NewsletterRecipient($requestIdRecipient);
 }
 
 if (true === $recipient->isLoaded() && $recipient->get("idclient") == $client && $recipient->get("idlang") == $lang) {
+    $aMessages = [];
     if ($action == "recipients_save" && $perm->have_perm_area_action($area, $action)) {
-        $oPage->setReload();
-        $aMessages = array();
+        $oPage->reloadLeftBottomFrame(['idrecipient' => $recipient->get('idnewsrcp')]);
 
         $name = stripslashes($name);
         $email = stripslashes($email);
-        $confirmed = (int)$confirmed;
-        $deactivated = (int)$deactivated;
-        $newstype = (int)$newstype;
+        $confirmed = $requestConfirmed;
+        $deactivated = $requestDeactivated;
+        $newstype = $requestNewstype;
 
         $recipient->set("name", $name);
 
@@ -99,9 +104,10 @@ if (true === $recipient->isLoaded() && $recipient->get("idclient") == $client &&
             foreach ($cfg['plugins']['recipients'] as $plugin) {
                 if (function_exists("recipients_".$plugin."_wantedVariables") && function_exists("recipients_".$plugin."_store")) {
                     $wantVariables = call_user_func("recipients_".$plugin."_wantedVariables");
+                    $varArray = null;
 
                     if (is_array($wantVariables)) {
-                        $varArray = array();
+                        $varArray = [];
 
                         foreach ($wantVariables as $value) {
                             $varArray[$value] = stripslashes($GLOBALS[$value]);
