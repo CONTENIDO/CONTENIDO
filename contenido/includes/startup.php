@@ -79,6 +79,7 @@ if (false === cFileHandler::exists($cfg['path']['contenido_config'] . 'config.ph
 }
 
 include_once($backendPath . '/includes/functions.php54.php');
+include_once($backendPath . '/includes/functions.php_polyfill.php');
 
 // Security check: Include security class and invoke basic request checks
 require_once($backendPath . '/classes/class.registry.php');
