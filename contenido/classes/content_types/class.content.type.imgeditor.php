@@ -670,7 +670,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
 
         // set default value
         if (isset($this->_dirname)) {
-            $htmlSelect->setDefault($this->_dirname . $this->_filename);
+            $default = $this->_dirname . (empty($this->_dirname) ? '/' : '') . $this->_filename;
+            $htmlSelect->setDefault($default);
         } else {
             $htmlSelect->setDefault('');
         }

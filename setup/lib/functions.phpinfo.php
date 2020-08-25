@@ -106,7 +106,7 @@ function getAsBytes($val) {
         return 0;
     }
     $val = trim($val);
-    $last = $val{cString::getStringLength($val) - 1};
+    $last = $val[cString::getStringLength($val) - 1];
     switch ($last) {
         case 'k':
         case 'K':
