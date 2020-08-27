@@ -748,10 +748,10 @@ body.no-media .hide_desktop {
 	.user_forum strong {
 		line-height: 20px;
 	}
-	.user_forum .blog-data {
+	.user_forum .blog_data {
 		padding-top: 10px;
 	}
-	.user_forum #calendarTable td+td .block {
+	.user_forum .list_table td+td .block {
 		padding-left: 10px;
 		width: auto;
 	}

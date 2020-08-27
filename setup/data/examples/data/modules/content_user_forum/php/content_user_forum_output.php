@@ -177,8 +177,7 @@ class UserForumArticle {
             // user interaction click at save in input new comment dialog
             case 'save_new_forum':
                 if ($this->_modMode && $this->_saveForum()) {
-                    echo '<br />';
-                    echo mi18n("FEEDBACK");
+                    $this->_messageText .= $this->_messageText ? ' ' . mi18n("FEEDBACK") : mi18n("FEEDBACK");
                 }
                 $this->_listForum();
                 break;
@@ -506,13 +505,10 @@ class UserForumArticle {
                     $ar = $this->_collection->getCommentContent($idquote);
                     $transTemplate = mi18n("quoteFrom");
                     $this->_tpl->assign('INPUT_FORUM_QUOTE', $transTemplate . ' ' . $ar['name'] . "\n" . $ar['content']);
-                    $this->_tpl->assign('DISPLAY', 'display:block');
                 } else {
-                    $this->_tpl->assign('DISPLAY', 'display:none');
                     $this->_tpl->assign('INPUT_FORUM_QUOTE', '');
                 }
             } else {
-                $this->_tpl->assign('DISPLAY', 'display:none');
                 $this->_tpl->assign('INPUT_FORUM_QUOTE', '');
             }
 
