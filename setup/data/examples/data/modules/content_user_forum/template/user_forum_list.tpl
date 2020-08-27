@@ -1,14 +1,17 @@
 {*template for listing all comments*}
 <div class="user_forum">
-    <div class="form_status_message">{$MESSAGE|escape}</div>
+    {if !empty($MESSAGE)}
+        <div class="form_status_message">
+            {$MESSAGE|escape}
+        </div>
+    {/if}
     <br />
-        <a href="front_content.php?userid={$LINK_NEW_FORUM|escape}&user_forum_action=new_forum"class='new button red'>{$LINKTEXT|escape}</a>
+    <a href="front_content.php?userid={$LINK_NEW_FORUM|escape}&user_forum_action=new_forum"class='new button red'>{$LINKTEXT|escape}</a>
     <br />
-    <table id="calendarTable">
-    <!-- BEGIN:BLOCK -->
+    <table class="list_table">
     {foreach from=$POSTS item=POST}
         <tr>
-            <td valign="top" style="padding-left:{$PADDING|escape}px">
+            <td valign="top" style="padding-left:{$POST.PADDING|escape}px">
                 <div class="block">
                     <p>
                         <span class="number">
@@ -53,9 +56,8 @@
             </td>
         </tr>
         <tr>
-            <td colspan="2" style=" background: url(upload/zimages/pix_common.gif) repeat-x bottom;padding-top: 5px;padding-bottom: 5px;"></td>
+            <td colspan="2" class="post_hr"></td>
         </tr>
-
     {/foreach}
     </table>
 </div>

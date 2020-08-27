@@ -1,9 +1,15 @@
 {*template for new entry dialog*}
 <div class="user_forum">
-    <div class="form_status_message">{$MESSAGE}</div>
-    <div class="replyment_handler">
-    <div class="replyment">
-    {$FORUM_REPLYMENT} </div></div>
+    {if !empty($MESSAGE)}
+        <div class="form_status_message">
+            {$MESSAGE|escape}
+        </div>
+    {/if}
+    {if !empty($FORUM_REPLYMENT)}
+        <div class="replyment_handler">
+            <div class="replyment">{$FORUM_REPLYMENT}</div>
+        </div>
+    {/if}
     <form action="front_content.php" method="post" name="new_user_forum">
         <input type="hidden" name="idcat" value="{$IDCAT|escape}" />
         <input type="hidden" name="idart" value="{$IDART|escape}" />
@@ -18,14 +24,17 @@
                     <label for="realname"><strong>{$REALNAME|escape} </strong></label>{$INPUT_REALNAME}
                 </div>
             </div>
-            <div style="padding-top:10px;"></div>
-            <div class="yourcomment" style="padding-top:10px;{$DISPLAY}"><strong>{$FORUM_QUOTE|escape}</strong></div>
+
+            {if !empty($INPUT_FORUM_QUOTE)}
+                <div class="yourcomment"><strong>{$FORUM_QUOTE|escape}</strong></div>
+                <div>
+                    <textarea class="input_forum_text" name="forum_quote" tabindex="3">{$INPUT_FORUM_QUOTE|escape}</textarea>
+                </div>
+            {/if}
+
+            <div class="yourcomment"><strong>{$FORUM|escape}</strong></div>
             <div>
-                <textarea class="input_forum_text" name="forum_quote" style="width:400px;height:90px;{$DISPLAY}" tabindex="3">{$INPUT_FORUM_QUOTE|escape}</textarea>
-            </div>
-            <div class="yourcomment" style="padding-top:10px;"><strong>{$FORUM|escape}</strong></div>
-            <div>
-                <textarea class="input_forum_text" name="forum" style="width:400px;height:90px;" tabindex="4">{$INPUT_FORUM|escape}</textarea>
+                <textarea class="input_forum_text" name="forum" tabindex="4">{$INPUT_FORUM|escape}</textarea>
             </div>
             {if isset($MODEMODETEXT)}
                 <div class="modtext"><p>{$MODEMODETEXT|escape}</p></div>
