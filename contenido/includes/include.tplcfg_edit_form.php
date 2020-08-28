@@ -16,11 +16,14 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $db, $notification, $tpl, $auth, $perm, $cfg, $sess, $client, $area, $frame, $idcat, $idart, $idtpl, $lang, $idtplcfg, $syncoptions;
+
 cInclude('includes', 'functions.pathresolver.php');
 
 $message = '';
 $description = '';
 $configLocked = false;
+$notificationMsg = '';
 
 if (isset($idart)) {
     if ($idart > 0) {
@@ -40,7 +43,7 @@ if (isset($idart)) {
             $inUseUserRealName = $vuser->getField('realname');
 
             $message = sprintf(i18n("Article is in use by %s (%s)"), $inUseUser, $inUseUserRealName);
-            $notification->displayNotification('warning', $message);
+            $notificationMsg .= $notification->returnNotification('warning', $message) . '<br>';
             $inUse = true;
             $disabled = 'disabled="disabled"';
         }
@@ -58,7 +61,7 @@ if (isset($idart)) {
             $inUseUserRealName = $vuser->getField('realname');
 
             $message = sprintf(i18n("Category template configuration is in use by %s (%s)"), $inUseUser, $inUseUserRealName);
-            $notification->displayNotification('warning', $message);
+            $notificationMsg .= $notification->returnNotification('warning', $message) . '<br>';
             $inUse = true;
             $disabled = 'disabled="disabled"';
         }
@@ -99,7 +102,8 @@ if ($idart) {
                 $disabled = ($admin === false)? 'disabled="disabled"' : '';
                 // display notification if article configuration can not be edited
                 if (false === $admin) {
-                    $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
+                    $message = i18n('This article is currently frozen and can not be edited!');
+                    $notificationMsg .= $notification->returnNotification('warning', $message) . '<br>';
                 }
                 $configLocked = true;
             }
@@ -133,7 +137,8 @@ if ($idart) {
                 $inUse = true;
                 $disabled = ($admin)? '': 'disabled="disabled"';
                 if ($configLocked === false){
-                    $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
+                    $message = i18n('This article is currently frozen and can not be edited!');
+                    $notificationMsg .= $notification->returnNotification('warning', $message) . '<br>';
                 }
             }
         } else {
@@ -234,7 +239,7 @@ if (!$db->nextRecord()) {
     }
 }
 if (count($_POST) > 0 && $message == '') {
-    $notification->displayNotification(cGuiNotification::LEVEL_OK, i18n("Save change successfully!"));
+    $notificationMsg .= $notification->returnNotification('warning', i18n("Save change successfully!")) . '<br>';
 }
 
 $tmp_area = 'tplcfg';
@@ -461,8 +466,9 @@ if (!$idtpl && $idcat && $idart) {
     } else {
         $message = i18n("no template with this categories and/or article associated. You must be set a template.");
     }
-    $notification->displayNotification('warning', $message);
+    $notificationMsg .= $notification->returnNotification('warning', $message) . '<br>';
 }
+$tpl->set('s', 'NOTIFICATION', $notificationMsg);
 
 // Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['tplcfg_edit_form']);

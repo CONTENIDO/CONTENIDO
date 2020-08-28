@@ -14,6 +14,8 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $tpl, $cfg, $sess, $frame, $idcat, $idart, $idtpl, $lang, $idtplcfg;
+
 $tpl->reset();
 
 //Form
@@ -86,6 +88,7 @@ foreach ($containerModules as $containerNumber => $containerModuleId) {
 $tpl->set('s', 'SCRIPT', '');
 $tpl->set('s', 'MARKSUBMENU', '');
 $tpl->set('s', 'CATEGORY', '');
+$tpl->set('s', 'NOTIFICATION', '');
 
 $tpl->set('s', 'HEADER', i18n('Template preconfiguration'));
 $tpl->set('s', 'DISPLAY_HEADER', 'block');
