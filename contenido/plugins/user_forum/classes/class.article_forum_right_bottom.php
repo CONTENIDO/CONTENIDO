@@ -42,7 +42,6 @@ class ArticleForumRightBottom extends cGuiPage {
      *
      */
     function __construct() {
-
         $this->_collection = new ArticleForumCollection();
         parent::__construct('right_bottom', 'user_forum');
         $this->addStyle('right_bottom.css');
@@ -55,43 +54,43 @@ class ArticleForumRightBottom extends cGuiPage {
      * @return array
      */
     protected function formatTimeString($timeStamp) {
-        $nullstring = '0';
+        $nullString = '0';
         if ($timeStamp == "0000-00-00 00:00:00") {
-            return array();
+            return [];
         } else {
             $ar = (date_parse($timeStamp));
             // if elements are smaller than 2 digits add a '0' at front. e.g
             // 2:10 -> 02:10
-            (cString::getStringLength($ar['day']) < 2) ? $ar['day'] = $nullstring . $ar['day'] : '';
-            (cString::getStringLength($ar['month']) < 2) ? $ar['month'] = $nullstring . $ar['month'] : '';
-            (cString::getStringLength($ar['minute']) < 2) ? $ar['minute'] = $nullstring . $ar['minute'] : '';
-            (cString::getStringLength($ar['hour']) < 2) ? $ar['hour'] = $nullstring . $ar['hour'] : '';
+            (cString::getStringLength($ar['day']) < 2) ? $ar['day'] = $nullString . $ar['day'] : '';
+            (cString::getStringLength($ar['month']) < 2) ? $ar['month'] = $nullString . $ar['month'] : '';
+            (cString::getStringLength($ar['minute']) < 2) ? $ar['minute'] = $nullString . $ar['minute'] : '';
+            (cString::getStringLength($ar['hour']) < 2) ? $ar['hour'] = $nullString . $ar['hour'] : '';
         }
 
         return $ar;
     }
 
     /**
-     * this function returns an deactive link or an link with mail-to directive
-     * if the given mail adress is valid
+     * this function returns an inactive link or an link with mail-to directive
+     * if the given mail address is valid
      *
-     * @param string $emailadr
-     * @param string $realname
+     * @param string $emailAddr
+     * @param string $realName
      * @return cHTMLLink
      */
-    protected function checkValidEmail($emailadr, $realname) {
+    protected function checkValidEmail($emailAddr, $realName) {
         $regex = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
         // Run the preg_match() function on regex against the email address
-        if (preg_match($regex, $emailadr)) {
+        if (preg_match($regex, $emailAddr)) {
             $mail = new cHTMLLink();
             $mail->setClass('emailactive');
-            $mail->setLink("mailto:" . $emailadr);
-            $mail->setContent($realname);
+            $mail->setLink("mailto:" . $emailAddr);
+            $mail->setContent($realName);
         } else {
             $mail = new cHTMLLink();
             $mail->setLink('#');
             $mail->setClass('emaildeactive');
-            $mail->setContent($realname);
+            $mail->setContent($realName);
         }
         return $mail;
     }
@@ -107,8 +106,8 @@ class ArticleForumRightBottom extends cGuiPage {
      * @return array with buttons
      */
     protected function buildOnlineButtonBackendListMode(&$key, &$cont, &$cfg, $mod = null) {
-        global $area;
-        $buttons = array();
+        $area = cRegistry::getArea();
+        $buttons = [];
 
         $id = $cont['id_user_forum'];
 
@@ -178,17 +177,17 @@ class ArticleForumRightBottom extends cGuiPage {
      * @throws cException
      */
     public function getMenu(&$result, $mod = null) {
+        $area = cRegistry::getArea();
         $table = new cHTMLTable();
         if (count($result) < 1) {
-            return new cHTMLTable();
+            return $table;
         }
         $table->setCellPadding('100px');
-        global $area;
-        $table->updateAttributes(array(
+        $table->updateAttributes([
             "class" => "generic",
             "cellspacing" => "0",
             "cellpadding" => "2"
-        ));
+        ]);
 
         if (count($result) > 0) {
             $tr = new cHTMLTableRow();
@@ -207,20 +206,15 @@ class ArticleForumRightBottom extends cGuiPage {
             $table->appendContent($tr);
         }
 
-        $menu = new cGuiMenu();
         $cfg = cRegistry::getConfig();
 
         foreach ($result as $key => $cont) {
-
-            $set = false;
             $like = $cont['like'];
             $dislike = $cont['dislike'];
-            $timestamp = $cont['timestamp'];
 
-            $datearray = $this->formatTimeString($cont['timestamp']);
-            $date =  (empty($datearray)) ? '' : $datearray['day'] . '.' . $datearray['month'] . '.' . $datearray['year'] . ' ' . UserForum::i18n("AT") . ' ' . $datearray['hour'] . ':' . $datearray['minute'] . ' ' . UserForum::i18n("CLOCK");
+            $arrDate = $this->formatTimeString($cont['timestamp']);
+            $date =  (empty($arrDate)) ? '' : $arrDate['day'] . '.' . $arrDate['month'] . '.' . $arrDate['year'] . ' ' . UserForum::i18n("AT") . ' ' . $arrDate['hour'] . ':' . $arrDate['minute'] . ' ' . UserForum::i18n("CLOCK");
 
-            $buttons = array();
             $buttons = $this->buildOnlineButtonBackendListMode($key, $cont, $cfg, $mod);
 
             $online = $buttons['online'];
@@ -239,10 +233,8 @@ class ArticleForumRightBottom extends cGuiPage {
             $maili = $this->checkValidEmail($cont['email'], $cont['realname']);
             $text = $cont['forum'];
 
-            $timestamp = $cont['editedat'];
-
-            $editarray = $this->formatTimeString($cont['editedat']);
-            $editdate = (empty($editarray)) ? '' : $editarray['day'] . '.' . $editarray['month'] . '.' . $editarray['year'] . ' ' . UserForum::i18n("AT") . ' ' . $editarray['hour'] . ':' . $editarray['minute'] . ' ' . UserForum::i18n("CLOCK");
+            $arrEditedAtDate = $this->formatTimeString($cont['editedat']);
+            $editdate = (empty($arrEditedAtDate)) ? '' : $arrEditedAtDate['day'] . '.' . $arrEditedAtDate['month'] . '.' . $arrEditedAtDate['year'] . ' ' . UserForum::i18n("AT") . ' ' . $arrEditedAtDate['hour'] . ':' . $arrEditedAtDate['minute'] . ' ' . UserForum::i18n("CLOCK");
 
             $userColl = new cApiUserCollection();
             $user = $userColl->loadItem($cont['editedby'])->get('username');
@@ -379,13 +371,10 @@ class ArticleForumRightBottom extends cGuiPage {
      * @throws cException
      */
     protected function getEditModeMenu($post) {
-
-        global $area;
         $changes = 0;
         $cfg = cRegistry::getConfig();
         $idart = cRegistry::getArticleId();
         $idcat = cRegistry::getCategoryId();
-        $menu = new cGuiMenu();
         $tr = new cHTMLTableRow();
 
         $th = new cHTMLTableHead();
@@ -407,26 +396,21 @@ class ArticleForumRightBottom extends cGuiPage {
         $user->loadByPrimaryKey($post['editedby']);
         $username = $user->getField('username');
 
-        $id = $post['id_user_forum'];
-
-        $likeButton = new cHTMLImage($cfg['path']['images'] . 'like.png');
-        $dislikeButton = new cHTMLImage($cfg['path']['images'] . 'dislike.png');
-
         $name = new cHTMLTextBox("realname", str_replace('\\', '',(conHtmlSpecialChars($post['realname']))), 30, 255);
         $email = new cHTMLTextBox("email", $post['email'], 30, 255);
         $like = new cHTMLTextBox("like", $post['like'], 7, 7);
         $dislike = new cHTMLTextBox("dislike", $post['dislike'], 7, 7);
 
-        $text = str_replace("<br />", "\n", conHtmlSpecialChars($post['forum']));
+        $text = conHtmlSpecialChars(str_replace(['<br />', '<br>', '<br/>'], ['', '', ''], $post['forum']));
         $text = str_replace('\\', '', $text);
 
         $forum = new cHTMLTextArea("forum", $text);
 
-        $datearray = $this->formatTimeString($post['timestamp']);
-        $date = (empty($datearray)) ? '' : $datearray['day'] . '.' . $datearray['month'] . '.' . $datearray['year'] . ' ' . UserForum::i18n("AT") . ' ' . $datearray['hour'] . ':' . $datearray['minute'] . ' ' . UserForum::i18n("CLOCK");
+        $arrDate = $this->formatTimeString($post['timestamp']);
+        $date = (empty($arrDate)) ? '' : $arrDate['day'] . '.' . $arrDate['month'] . '.' . $arrDate['year'] . ' ' . UserForum::i18n("AT") . ' ' . $arrDate['hour'] . ':' . $arrDate['minute'] . ' ' . UserForum::i18n("CLOCK");
 
-        $editedatearray = $this->formatTimeString($post['editedat']);
-        $editedat = (empty($editedatearray)) ? '' : $editedatearray['day'] . '.' . $editedatearray['month'] . '.' . $editedatearray['year'] . ' ' . UserForum::i18n("AT") . ' ' . $editedatearray['hour'] . ':' . $editedatearray['minute'] . ' ' . UserForum::i18n("CLOCK");
+        $arrEditedAtDate = $this->formatTimeString($post['editedat']);
+        $editedat = (empty($arrEditedAtDate)) ? '' : $arrEditedAtDate['day'] . '.' . $arrEditedAtDate['month'] . '.' . $arrEditedAtDate['year'] . ' ' . UserForum::i18n("AT") . ' ' . $arrEditedAtDate['hour'] . ':' . $arrEditedAtDate['minute'] . ' ' . UserForum::i18n("CLOCK");
 
         $timestamp = new cHTMLTextBox("timestamp", $date, 30, 255);
         $editedat = new cHTMLTextBox("editedat", $editedat, 30, 255);
@@ -453,12 +437,8 @@ class ArticleForumRightBottom extends cGuiPage {
         }
 
         $onlineBox = new cHTMLCheckbox("onlineState", "");
-
-        $onlineBox->setChecked(($post['online'] == 1) ? true : false);
+        $onlineBox->setChecked($post['online'] == 1);
         $form1->add(UserForum::i18n("ONLINE"), $onlineBox, '');
-
-        $idart = $post['idart'];
-        $idcat = $post['idcat'];
 
         $form1->add(UserForum::i18n("COMMENT"), $forum, '');
 
@@ -476,39 +456,37 @@ class ArticleForumRightBottom extends cGuiPage {
     }
 
     /**
-     * @param $id_cat
-     * @param $id_art
-     * @param $id_lang
+     * @param $idCat
+     * @param $idArt
+     * @param $idLang
      *
      * @return ArticleForumRightBottom
      * @throws cException
      */
-    public function getForum($id_cat, $id_art, $id_lang) {
+    public function getForum($idCat, $idArt, $idLang) {
         $arrUsers = $this->_collection->getExistingforum();
 
-        $arrforum = array();
+        $arrForum = [];
+        $this->_collection->getTreeLevel($idCat, $idArt, $idLang, $arrUsers, $arrForum);
 
-        $this->_collection->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum);
-        $result = array();
-        $this->normalizeArray($arrforum, $result);
+        $result = [];
+        $this->normalizeArray($arrForum, $result);
 
-        $ret = $this->getMenu($result);
-
-        return $ret;
+        return $this->getMenu($result);
     }
 
     /**
-     * @param array $arrforum
+     * @param array $arrForum
      * @param array $result
      * @param int   $level
      */
-    protected function normalizeArray($arrforum, &$result, $level = 0) {
-        if (is_array($arrforum)) {
-            foreach ($arrforum as $key => $value) {
+    protected function normalizeArray($arrForum, &$result, $level = 0) {
+        if (is_array($arrForum)) {
+            foreach ($arrForum as $key => $value) {
                 $value['level'] = $level;
                 unset($value['children']);
                 $result[$key] = $value;
-                $this->normalizeArray($arrforum[$key]['children'], $result, $level + 1);
+                $this->normalizeArray($arrForum[$key]['children'], $result, $level + 1);
             }
         }
     }
@@ -530,8 +508,7 @@ class ArticleForumRightBottom extends cGuiPage {
     /**
      * @throws cException
      */
-    public function getStartpage()
-    {
+    public function getStartpage() {
         $cGuiNotification = new cGuiNotification();
         echo $cGuiNotification->returnNotification(cGuiNotification::LEVEL_INFO, UserForum::i18n('MODMODE'));
         echo '<br />';
@@ -546,7 +523,6 @@ class ArticleForumRightBottom extends cGuiPage {
      * @throws Exception
      */
     protected function switchActions() {
-
         $lang = cRegistry::getLanguageId();
         $idart = $_REQUEST['idart'];
         $idcat = $_REQUEST['idcat'];
