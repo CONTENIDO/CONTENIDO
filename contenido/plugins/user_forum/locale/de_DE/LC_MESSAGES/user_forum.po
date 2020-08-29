@@ -15,7 +15,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: \n"
 
 
-; class.article_forum_right_bottom.php
+# class.article_forum_right_bottom.php
 
 msgid "STATUS"
 msgstr "Status"
@@ -86,7 +86,7 @@ msgstr "Inhalt"
 msgid "MODMODE"
 msgstr "Mit aktiviertem Moderatormodus können hier die neusten Beiträge moderiert werden."
 
-; class.article_forum_left_bottom.php
+# class.article_forum_left_bottom.php
 
 msgid "NOENTRY"
 msgstr "Noch keine Einträge vorhanden" 
@@ -115,7 +115,7 @@ msgstr "von: "
 msgid "ACTIONS"
 msgstr "Aktionen"
 
-; class.content.type.user_forum.php
+# class.content.type.user_forum.php
 
 msgid "MODSETTINGS"
 msgstr "Einstellungen: "
@@ -132,7 +132,7 @@ msgstr "Forum moderieren"
 msgid "EDITABLE"
 msgstr "Antworten möglich"
 
-; class.article_forum_collection.php
+# class.article_forum_collection.php
 
 msgid "NEWENTRY"
 msgstr "Neuer Kommentar hinzugefuegt: "

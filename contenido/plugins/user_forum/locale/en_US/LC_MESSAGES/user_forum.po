@@ -15,7 +15,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: \n"
 
 
-; class.article_forum_right_bottom.php
+# class.article_forum_right_bottom.php
 
 msgid "STATUS"
 msgstr "State"
@@ -92,7 +92,7 @@ msgstr "content"
 msgid "MODMODE"
 msgstr "With active moderator mode you can moderate the newest comments here"
 
-; class.article_forum_left_bottom.php
+# class.article_forum_left_bottom.php
 
 msgid "NOENTRY"
 msgstr "no entries available" 
@@ -109,7 +109,7 @@ msgstr "articles"
 msgid "ALLDELETEFROMCATHIER"
 msgstr "delete comments inclusive subcomments ?"
 
-; class.content.type.user_forum.php
+# class.content.type.user_forum.php
 
 msgid "ADMINISTRATION"
 msgstr "administration userform"
@@ -123,7 +123,7 @@ msgstr "moderator forum"
 msgid "EDITABLE"
 msgstr "subcomments allowed"
 
-; class.article_forum_collection.php
+# class.article_forum_collection.php
 
 msgid "MODSETTINGS"
 msgstr "settings"
