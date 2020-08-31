@@ -14,6 +14,16 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $notification, $tmp_notification, $targetclient, $idlang, $tpl;
+
+$cfg = cRegistry::getConfig();
+$client = cRegistry::getClientId();
+$db = cRegistry::getDb();
+$perm = cRegistry::getPerm();
+$frame = cRegistry::getFrame();
+$sess = cRegistry::getSession();
+
+
 $area = 'lang';
 
 if (!isset($action)) {
@@ -43,7 +53,7 @@ while ($db->nextRecord()) {
     $idlang = $db->f("idlang");
 
     // Show link
-    $showLink = '<a href="javascript:;" class="show_item" data-action="show_lang"><span>' . $db->f("name") . '</span>&nbsp;(' . $idlang . ')</a>';
+    $showLink = '<a href="javascript:;" class="show_item" data-action="show_lang"><span>' . conHtmlSpecialChars($db->f("name")) . '</span>&nbsp;(' . $idlang . ')</a>';
     $tpl->set('d', 'LANGUAGE', $showLink);
 
     // Activate link

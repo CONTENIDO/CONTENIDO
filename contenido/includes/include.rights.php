@@ -104,13 +104,13 @@ foreach ($clientList as $key => $value) {
 if (count($availableClients) > 1) {
 
     foreach ($availableClients as $key => $value) {
-        $oHtmlSelectOption = new cHTMLOptionElement($availableClients[$key]['value_name'] . ' -> ' . $availableClients[$key]['lang_name'], $availableClients[$key]['idClientsLang'], $availableClients[$key]['selected']);
+        $oHtmlSelectOption = new cHTMLOptionElement(conHtmlSpecialChars($availableClients[$key]['value_name']) . ' -> ' . conHtmlSpecialChars($availableClients[$key]['lang_name']), $availableClients[$key]['idClientsLang'], $availableClients[$key]['selected']);
         $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
     }
 
     $oTpl->set('s', 'INPUT_SELECT_CLIENT', $oHtmlSelect->render());
 } else {
-    $string = "<span class='vAlignMiddle'>" . $availableClients[0]['value_name'] . " -> " . $availableClients[0]['lang_name'] . "</span>&nbsp;";
+    $string = "<span class='vAlignMiddle'>" . conHtmlSpecialChars($availableClients[0]['value_name']) . " -> " . conHtmlSpecialChars($availableClients[0]['lang_name']) . "</span>&nbsp;";
     $oTpl->set('s', 'INPUT_SELECT_CLIENT', $string);
 }
 

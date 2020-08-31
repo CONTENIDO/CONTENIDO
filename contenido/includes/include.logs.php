@@ -14,6 +14,18 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $notification, $tpl, $idquser, $lngAct, $limit, $classarea;
+
+$auth = cRegistry::getAuth();
+$area = cRegistry::getArea();
+$cfg = cRegistry::getConfig();
+$db = cRegistry::getDb();
+$frame = cRegistry::getFrame();
+$sess = cRegistry::getSession();
+$perm = cRegistry::getPerm();
+$client = cRegistry::getClientId();
+$belang = cRegistry::getBackendLanguage();
+
 if (!$perm->have_perm_area_action($area)) {
     $notification->displayNotification('error', i18n('Permission denied'));
     return;
@@ -51,7 +63,7 @@ if (!isset($idqclient)) {
 
 foreach ($clientList as $key => $value) {
     $selected = (strcmp($idqclient, $key) == 0) ? ' selected="selected"' : '';
-    $clientselect .= '<option value="' . $key . '"' . $selected . '>' . $value['name'] . '</option>';
+    $clientselect .= '<option value="' . $key . '"' . $selected . '>' . conHtmlSpecialChars($value['name']) . '</option>';
 }
 
 foreach ($users as $key => $value) {
@@ -73,17 +85,17 @@ foreach ($actions as $key => $value) {
     $actionselect .= '<option value="' . $key . '"' . $selected . '>' . $value['name'] . ' (' . $actionDescription . ')</option>';
 }
 
-$days = array();
+$days = [];
 for ($i = 1; $i < 32; $i ++) {
     $days[$i] = $i;
 }
 
-$months = array();
+$months = [];
 for ($i = 1; $i < 13; $i++) {
     $months[$i] = $i;
 }
 
-$years = array();
+$years = [];
 for ($i = 2000; $i < (date('Y') + 1); $i++) {
     $years[$i] = $i;
 }
@@ -105,15 +117,16 @@ $db->query($sql);
 
 
 $iLangCount = 0;
-$aDisplayLangauge = array();
-$aDisplayLangauge['%'] = i18n('All languages');
+$aDisplayLanguage = [
+    '%' => i18n('All languages')
+];
 $selectedLangauge = '%';
 
 while ($db->nextRecord()) {
-    $aDisplayLangauge[$db->f('idlang')] = $db->f('name');
+    $aDisplayLanguage[$db->f('idlang')] = $db->f('name');
 }
 
-if (array_key_exists($_REQUEST['display_langauge'], $aDisplayLangauge)) {
+if (array_key_exists($_REQUEST['display_langauge'], $aDisplayLanguage)) {
     $selectedLangauge = $_REQUEST['display_langauge'];
 }
 
@@ -171,14 +184,14 @@ if ($_REQUEST['toyear'] > 0) {
     $toyear->setDefault(date('Y'));
 }
 
-$entries = array(
+$entries = [
     1   => i18n('Unlimited'),
     10  => '10 '. i18n('Entries'),
     20  => '20 '. i18n('Entries'),
     30  => '30 '. i18n('Entries'),
     50  => '50 '. i18n('Entries'),
     100 => '100 '. i18n('Entries'),
-);
+];
 
 $olimit = new cHTMLSelectElement('limit');
 $olimit->autoFill($entries);
@@ -189,8 +202,12 @@ if (isset($_REQUEST['limit'])) {
     $olimit->setDefault(10);
 }
 
+$aDisplayLanguageEscaped = $aDisplayLanguage;
+foreach ($aDisplayLanguageEscaped as $id => $displayLanguage) {
+    $aDisplayLanguageEscaped[$id] = conHtmlSpecialChars( $displayLanguage);
+}
 $olangauge = new cHTMLSelectElement('display_langauge');
-$olangauge->autoFill($aDisplayLangauge);
+$olangauge->autoFill($aDisplayLanguageEscaped);
 
 if (isset($_REQUEST['display_langauge'])) {
     $olangauge->setDefault($_REQUEST['display_langauge']);
@@ -223,7 +240,7 @@ if ($limit == 1) {
 }
 
 if ($idquser == '%' || $idquser == "") {
-    $userarray = array();
+    $userarray = [];
     $users = $userColl->getAccessibleUsers(explode(',', $auth->auth['perm']));
     foreach ($users as $key => $value) {
         $userarray[] = $key;
@@ -253,10 +270,8 @@ $tpl->set('s', 'NORESULTS', $noresults);
 
 $counter = 0;
 
-$artNames = array();
-$strNames = array();
-
-
+$artNames = [];
+$strNames = [];
 
 $tpl->set('s', 'LABEL_CLIENT', i18n("Client"));
 $tpl->set('s', 'LABEL_LANG', i18n("Language"));
@@ -312,7 +327,7 @@ while ($oItem = $actionLogColl->next()) {
     $tpl->set('d', 'RCLIENT', $clientList[$oItem->get('idclient')]['name']);
     $tpl->set('d', 'RDATETIME', $oItem->get('logtimestamp'));
     $tpl->set('d', 'RUSER' , $users[$oItem->get('user_id')]['username']);
-    $tpl->set('d', 'RLANG', $aDisplayLangauge[$oItem->get('idlang')]);
+    $tpl->set('d', 'RLANG', $aDisplayLanguage[$oItem->get('idlang')]);
     $areaname = $classarea->getAreaName($actionColl->getAreaForAction($oItem->get('idaction')));
     //the conversion of areaname may seem pointless, but it's apparently the only way to get the $langAct[''][*] array entries
     $actionDescription =  $lngAct[($areaname == "") ? "" : $areaname][$actionColl->getActionName($oItem->get('idaction'))];
