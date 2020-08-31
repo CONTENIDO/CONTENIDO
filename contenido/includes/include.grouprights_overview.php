@@ -14,6 +14,16 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $notification, $mclient;
+
+$auth = cRegistry::getAuth();
+$perm = cRegistry::getPerm();
+$sess = cRegistry::getSession();
+$frame = cRegistry::getFrame();
+$lang = cRegistry::getLanguageId();
+$area = cRegistry::getArea();
+$action = cRegistry::getAction();
+
 $page = new cGuiPage('grouprights_overview', '', '0');
 
 if (!$perm->have_perm_area_action($area, $action)) {
@@ -38,7 +48,7 @@ if (!isset($request['groupid'])) {
 $oGroup = new cApiGroup($request['groupid']);
 $bError = false;
 $sNotification = '';
-$aPerms = array();
+$aPerms = [];
 
 // Info message for a new group
 if ($_REQUEST['created'] == 1) {
@@ -136,7 +146,7 @@ $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
     if (in_array("admin[" . $idclient . "]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms)) {
         $oCheckbox = new cHTMLCheckbox("madmin[" . $idclient . "]", $idclient, "madmin[" . $idclient . "]" . $idclient, in_array("admin[" . $idclient . "]", $aPerms));
-        $oCheckbox->setLabelText($item['name'] . " (" . $idclient . ")");
+        $oCheckbox->setLabelText(conHtmlSpecialChars($item['name']) . " (" . $idclient . ")");
         $sClientCheckboxes .= $oCheckbox->toHtml();
     }
 }
@@ -152,7 +162,7 @@ $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
     if ((in_array("client[" . $idclient . "]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms) || in_array("admin[" . $idclient . "]", $aAuthPerms)) && !in_array("admin[" . $idclient . "]", $aPerms)) {
         $oCheckbox = new cHTMLCheckbox("mclient[" . $idclient . "]", $idclient, "mclient[" . $idclient . "]" . $idclient, in_array("client[" . $idclient . "]", $aPerms));
-        $oCheckbox->setLabelText($item['name'] . " (" . $idclient . ")");
+        $oCheckbox->setLabelText(conHtmlSpecialChars($item['name']) . " (" . $idclient . ")");
         $sClientCheckboxes .= $oCheckbox->toHtml();
     }
 }
@@ -169,7 +179,7 @@ $sClientCheckboxes = '';
 foreach ($aClientsLanguages as $item) {
     if (($perm->have_perm_client("lang[" . $item['idlang'] . "]") || $perm->have_perm_client("admin[" . $item['idclient'] . "]")) && !in_array("admin[" . $item['idclient'] . "]", $aPerms)) {
         $oCheckbox = new cHTMLCheckbox("mlang[" . $item['idlang'] . "]", $item['idlang'], "mlang[" . $item['idlang'] . "]" . $item['idlang'], in_array("lang[" . $item['idlang'] . "]", $aPerms));
-        $oCheckbox->setLabelText($item['langname'] . " (" . $item['clientname'] . ")");
+        $oCheckbox->setLabelText(conHtmlSpecialChars($item['langname']) . " (" . $item['clientname'] . ")");
         $sClientCheckboxes .= $oCheckbox->toHtml();
     }
 }

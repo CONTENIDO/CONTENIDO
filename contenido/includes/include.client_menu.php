@@ -14,6 +14,13 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $tpl;
+
+$perm = cRegistry::getPerm();
+$action = cRegistry::getAction();
+$auth = cRegistry::getAuth();
+$cfg = cRegistry::getConfig();
+
 $clientColl = new cApiClientCollection();
 
 if (!isset($action)) {
@@ -45,7 +52,7 @@ while ($oClient = $clientColl->next()) {
 
         $tpl->set('d', 'ICON', '');
 
-        $showLink = '<a href="javascript:;" class="show_item" data-action="show_client">' . $name . '</a>';
+        $showLink = '<a href="javascript:;" class="show_item" data-action="show_client">' . conHtmlSpecialChars($name) . '</a>';
         $tpl->set('d', 'TEXT', $showLink);
 
         if (!$oClient->hasLanguages() && $perm->have_perm_area_action('client', 'client_delete')) {

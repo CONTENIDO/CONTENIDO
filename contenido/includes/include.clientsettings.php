@@ -15,6 +15,9 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $backendUrl = cRegistry::getBackendUrl();
+$cfg = cRegistry::getConfig();
+$area = cRegistry::getArea();
+$frame = cRegistry::getFrame();
 
 $oPage = new cGuiPage("clientsettings");
 $oList = new cGuiScrollList();
@@ -46,7 +49,8 @@ $oClientLangColl = new cApiClientLanguageCollection();
 $aLanguages = $oClientLangColl->getAllLanguagesByClient($idclient);
 foreach ($aLanguages as $curIdLang => $aItem) {
     $iID = $aItem['idclientslang'];
-    $oOption = new cHTMLOptionElement("{$aItem['name']} ({$aItem['idlang']})", $iID);
+    $languageName = conHtmlSpecialChars($aItem['name']);
+    $oOption = new cHTMLOptionElement("{$languageName} ({$aItem['idlang']})", $iID);
     $oSelRange->addOptionElement($iID, $oOption);
 }
 
@@ -75,12 +79,12 @@ if ($_GET['action'] == 'clientsettings_delete_item') {
 }
 
 $oList->setHeader(i18n('Type'), i18n('Name'), i18n('Value'), '&nbsp;');
-$oList->objHeaderItem->updateAttributes(array(
+$oList->objHeaderItem->updateAttributes([
     'width' => 52
-));
-$oList->objRow->updateAttributes(array(
+]);
+$oList->objRow->updateAttributes([
     'valign' => 'top'
-));
+]);
 
 $aItems = $oClient->getProperties();
 
@@ -156,9 +160,9 @@ if ($aItems !== false) {
         $iCounter++;
     }
 } else {
-    $oList->objItem->updateAttributes(array(
+    $oList->objItem->updateAttributes([
         'colspan' => 4
-    ));
+    ]);
     $oList->setData(0, i18n("No defined properties"));
 }
 
@@ -194,21 +198,21 @@ if (($_GET['action'] == "clientsettings_edit_item")) {
     $oForm2->setVar("idclientslang", $request["idclientslang"]);
 
     $oForm2->appendContent($oList->render());
-    $oPage->setContent(array(
+    $oPage->setContent([
         $oFrmRange,
         $spacer,
         $oForm2,
         $spacer,
         $oForm
-    ));
+    ]);
 } else {
-    $oPage->setContent(array(
+    $oPage->setContent([
         $oFrmRange,
         $spacer,
         $oList,
         $spacer,
         $oForm
-    ));
+    ]);
 }
 
 $oPage->render();
