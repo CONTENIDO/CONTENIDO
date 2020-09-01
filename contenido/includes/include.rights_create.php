@@ -14,6 +14,19 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $notification, $tpl, $username, $realname, $mclient, $mlang, $password, $passwordagain, $email, $telephone,
+       $address_street, $address_city, $address_zip, $address_country, $wysi, $valid_from, $valid_to;
+
+$auth = cRegistry::getAuth();
+$belang = cRegistry::getBackendLanguage();
+$cfg = cRegistry::getConfig();
+$action = cRegistry::getAction();
+$area = cRegistry::getArea();
+$frame = cRegistry::getFrame();
+$lang = cRegistry::getLanguageId();
+$perm = cRegistry::getPerm();
+$sess = cRegistry::getSession();
+
 if (!$perm->have_perm_area_action($area, $action)) {
     $notification->displayNotification("error", i18n("Permission denied"));
     return;
@@ -23,7 +36,7 @@ if (!isset($wysi)) {
     $wysi = 1;
 }
 
-$aPerms = array();
+$aPerms = [];
 $sNotification = '';
 $bError = false;
 $userId = NULL;
@@ -125,7 +138,7 @@ if ($action == 'user_createuser') {
                     $wysi = 1;
                     $valid_from = '';
                     $valid_to = '';
-                    $aPerms = array();
+                    $aPerms = [];
                     $password = '';
                     $userId = $oUser->getUserId();
                 } else {
@@ -240,7 +253,7 @@ $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
     if (in_array("admin[" . $idclient . "]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms)) {
         $oCheckbox = new cHTMLCheckbox("madmin[" . $idclient . "]", $idclient, "madmin[" . $idclient . "]" . $idclient, in_array("admin[" . $idclient . "]", $aPerms));
-        $oCheckbox->setLabelText($item['name'] . " (" . $idclient . ")");
+        $oCheckbox->setLabelText(conHtmlSpecialChars($item['name']) . " (" . $idclient . ")");
         $sClientCheckboxes .= $oCheckbox->toHtml();
     }
 }
@@ -256,7 +269,7 @@ $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
     if (in_array("client[" . $idclient . "]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms) || in_array("admin[" . $idclient . "]", $aAuthPerms)) {
         $oCheckbox = new cHTMLCheckbox("mclient[" . $idclient . "]", $idclient, "mclient[" . $idclient . "]" . $idclient, in_array("client[" . $idclient . "]", $aPerms));
-        $oCheckbox->setLabelText($item['name'] . " (" . $idclient . ")");
+        $oCheckbox->setLabelText(conHtmlSpecialChars($item['name']) . " (" . $idclient . ")");
         $sClientCheckboxes .= $oCheckbox->toHtml();
     }
 }
@@ -271,7 +284,7 @@ $sClientCheckboxes = '';
 foreach ($aClientsLanguages as $item) {
     if ($perm->have_perm_client("lang[" . $item['idlang'] . "]") || $perm->have_perm_client("admin[" . $item['idclient'] . "]")) {
         $oCheckbox = new cHTMLCheckbox("mlang[" . $item['idlang'] . "]", $item['idlang'], "mlang[" . $item['idlang'] . "]" . $item['idlang'], in_array("lang[" . $item['idlang'] . "]", $aPerms));
-        $oCheckbox->setLabelText($item['langname'] . " (" . $item['clientname'] . ")");
+        $oCheckbox->setLabelText(conHtmlSpecialChars($item['langname']) . " (" . $item['clientname'] . ")");
         $sClientCheckboxes .= $oCheckbox->toHtml();
     }
 }

@@ -1,38 +1,40 @@
-.blog-data {
-    width: 100%;
-    clear: both;
-}
-
-.block p {
-    word-wrap: break-word;
-    max-width: 500px;
-}
-
 .user_forum {
     font-size: 11px;
     padding: 10px 0;
 }
 
-table#calendarTable {
+.user_forum .blog_data {
+    clear: both;
+    margin-bottom: 15px;
+    display: block;
     width: 100%;
 }
 
-.user_forum #calendarTable tr td {
+.user_forum .block p {
+    word-wrap: break-word;
+    max-width: 500px;
+}
+
+.user_forum .list_table {
+    width: 100%;
+}
+
+.user_forum .list_table tr td {
     vertical-align: top;
 }
 
-.user_forum #calendarTable tr td+td {
+.user_forum .list_table tr td+td {
     width: 148px;
 }
 
-.user_forum #calendarTable .block {
+.user_forum .list_table .block {
     display: block;
     width: 100%;
     padding-top: 10px;
     border-top: 1px dotted #9ba21b;
 }
 
-.user_forum #calendarTable td+td .block {
+.user_forum .list_table td+td .block {
     padding-left: 23px;
     width: 150px;
 }
@@ -40,7 +42,6 @@ table#calendarTable {
 .user_forum a.reply,
 .user_forum a.reply_quote,
 .user_forum .like+a {
-    background: url("../images/nav_bg.jpg") repeat-x 0 -10px transparent;
     display: block;
     float: right;
     text-decoration: none;
@@ -64,8 +65,8 @@ table#calendarTable {
     cursor: pointer;
 }
 
-a.submit,
-a.cancel {
+.user_forum a.submit,
+.user_forum a.cancel {
     display: inline-block;
     color: #fff;
     text-decoration: none;
@@ -74,7 +75,7 @@ a.cancel {
     padding: 0 5px;
     margin-bottom: 5px;
     margin-left: 6px;
-    background: #444 url("../images/nav_bg.jpg") repeat-x 0 -10px;
+    background-color: #444;
 }
 
 .user_forum div.like {
@@ -120,24 +121,35 @@ a.cancel {
     float: right;
 }
 
-.forum_quote,
-.replyment {
+.user_forum .forum_quote,
+.user_forum .replyment {
     background: #dadada;
     padding: 3px 6px;
     margin-bottom: 5px;
 }
 
-.user_forum .yourcomment{
+.user_forum .yourcomment {
+    padding-top: 10px;
     clear: both;
 }
 
-.quote_handler,
-.replyment_handler {
+.user_forum .input_forum_text {
+    width: 400px;
+    height: 90px;
+}
+
+.user_forum .post_hr {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.user_forum .quote_handler,
+.user_forum .replyment_handler {
     padding: 0 0 0 8px;
     background: url("../images/buttons/quote_tick.png") 0 20% no-repeat;
 }
 
-.form_status_message {
+.user_forum .form_status_message {
     background: #fefefe;
     padding: 7px;
     border: 1px dashed #999;

@@ -14,6 +14,8 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $cfg, $lngAct;
+
 // plugin includes
 plugin_include('content_allocation', 'classes/class.content_allocation_tree.php');
 plugin_include('content_allocation', 'classes/class.content_allocation_treeview.php');
@@ -37,11 +39,13 @@ $cfg['pica']['style_complexlist']        = 'complexlist.css';
 $cfg['pica']['script_complexlist']       = 'complexlist.js';
 
 // administration > users > area translations
-global $lngAct;
 $lngAct['con_contentallocation']['storeallocation'] = i18n('Store tagging', 'content_allocation');
 
-global $_cecRegistry;
-$_cecRegistry->addChainFunction("Contenido.Article.RegisterCustomTab", "pica_RegisterCustomTab");
-$_cecRegistry->addChainFunction("Contenido.Article.GetCustomTabProperties", "pica_GetCustomTabProperties");
+// Add chain functions
+$cec = cRegistry::getCecRegistry();
+$cec->addChainFunction('Contenido.Article.RegisterCustomTab', 'pica_RegisterCustomTab');
+$cec->addChainFunction('Contenido.Article.GetCustomTabProperties', 'pica_GetCustomTabProperties');
+$cec->addChainFunction('Contenido.Article.conCopyArtLang_AfterInsert', 'pica_CopyArticleAllocations');
+$cec->addChainFunction('Contenido.Action.con_deleteart.AfterCall', 'pica_DeleteArticleAllocations');
 
 ?>

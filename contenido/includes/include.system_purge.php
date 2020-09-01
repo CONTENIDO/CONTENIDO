@@ -14,7 +14,15 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $contenido, $tpl, $notification;
+
 cInclude('classes', 'class.purge.php');
+
+$action = cRegistry::getAction();
+$area = cRegistry::getArea();
+$auth = cRegistry::getAuth();
+$cfg = cRegistry::getConfig();
+$perm = cRegistry::getPerm();
 
 $tpl->reset();
 
@@ -31,8 +39,8 @@ if (($action == 'do_purge') && (!$perm->have_perm_area_action_anyitem($area, $ac
 }
 
 if (isset($_POST['send']) && $_POST['send'] == 'store') {
-    $aClientToClear = array();
-    $aClientName = array();
+    $aClientToClear = [];
+    $aClientName = [];
 
     if (isset($_POST['selectClient']) && $_POST['selectClient'] == 'all') {
         // selected all clients
@@ -52,6 +60,9 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
         $aClientToClear[] = (int)$_POST['purge_clients'];
     }
 
+    $bError = false;
+    $sErrorMsg = '';
+
     $oPurge = new cSystemPurge();
     if (count($aClientToClear) > 0) {
         // execute the selected actions
@@ -59,9 +70,6 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
         foreach ($aAvailableClient as $iClientId => $aClient) {
             $aClientName[$iClientId] = $aClient['name'];
         }
-
-        $bError = false;
-        $sErrorMsg = '';
 
         foreach ($aClientToClear as $iClientId) {
             $iClientId = (int) $iClientId;
@@ -165,7 +173,7 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
 $oHtmlSelectHour = new  cHTMLSelectElement ('purge_clients[]', '', 'client_select');
 
 foreach ($aAvailableClient as $iClientId => $aClient) {
-    $oHtmlSelectOption = new cHTMLOptionElement($aClient['name'], $iClientId, false);
+    $oHtmlSelectOption = new cHTMLOptionElement(conHtmlSpecialChars($aClient['name']), $iClientId, false);
     $oHtmlSelectHour->appendOptionElement($oHtmlSelectOption);
 }
 

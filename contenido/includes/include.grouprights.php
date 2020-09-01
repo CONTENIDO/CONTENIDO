@@ -14,8 +14,15 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $dataSync;
-$dataSync = array();
+global $db2, $dataSync, $right_list, $rights_perms, $rights_clientslang, $groupid;
+
+$area = cRegistry::getArea();
+$cfg = cRegistry::getConfig();
+$db = cRegistry::getDb();
+$perm = cRegistry::getPerm();
+$sess = cRegistry::getSession();
+
+$dataSync = [];
 
 if (!isset($actionarea)) {
     $actionarea = 'area';
@@ -36,10 +43,10 @@ if (!is_array($right_list)) {
 }
 
 $dataSync['SESS_ID'] = $sess->id;
-$dataSync['ACTION_URL'] = array(
+$dataSync['ACTION_URL'] = [
     '',
     $sess->url('main.php')
-);
+];
 $dataSync['TYPE_ID'] = 'groupid';
 $dataSync['USER_ID'] = $groupid;
 $dataSync['AREA'] = $area;
@@ -76,13 +83,13 @@ foreach ($clientList as $key => $value) {
             }
 
             if ($rights_clientslang == $db->f('idclientslang')) {
-                $oHtmlSelectOption = new cHTMLOptionElement($value['name'] . ' -> ' . $db->f('name'), $db->f('idclientslang'), true);
+                $oHtmlSelectOption = new cHTMLOptionElement(conHtmlSpecialChars($value['name']) . ' -> ' . conHtmlSpecialChars($db->f('name')), $db->f('idclientslang'), true);
                 $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
                 if (!isset($rights_client)) {
                     $firstClientsLang = $db->f('idclientslang');
                 }
             } else {
-                $oHtmlSelectOption = new cHTMLOptionElement($value['name'] . ' -> ' . $db->f('name'), $db->f('idclientslang'), false);
+                $oHtmlSelectOption = new cHTMLOptionElement(conHtmlSpecialChars($value['name']) . ' -> ' . conHtmlSpecialChars($db->f('name')), $db->f('idclientslang'), false);
                 $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
             }
         }
@@ -95,7 +102,6 @@ if (!isset($rights_clientslang)) {
 
 // Render Select Box
 $dataSync['INPUT_SELECT_CLIENT'] = $oHtmlSelect->render();
-// $oTpl->set('s', 'INPUT_SELECT_CLIENT', $oHtmlSelect->render());
 
 if ($area != 'groups_content') {
     $dataSync['INPUT_SELECT_RIGHTS'] = '';
@@ -120,7 +126,7 @@ if ($area != 'groups_content') {
     $oHtmlSelect->setDefault($_POST['filter_rights']);
 
     // Set global array which defines rights to display
-    $aArticleRights = array(
+    $aArticleRights = [
         'con_syncarticle',
         'con_lock',
         'con_deleteart',
@@ -132,18 +138,18 @@ if ($area != 'groups_content') {
         'con_edit',
         'con_meta_edit',
         'con_meta_deletetype'
-    );
-    $aCategoryRights = array(
+    ];
+    $aCategoryRights = [
         'con_synccat',
         'con_makecatonline',
         'con_makepublic'
-    );
-    $aTemplateRights = array(
+    ];
+    $aTemplateRights = [
         'con_changetemplate',
         'con_tplcfg_edit'
-    );
+    ];
 
-    $aViewRights = array();
+    $aViewRights = [];
     $bExclusive = false;
     if (isset($_POST['filter_rights'])) {
         switch ($_POST['filter_rights']) {

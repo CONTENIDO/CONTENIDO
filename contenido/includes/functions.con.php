@@ -991,7 +991,7 @@ function conDeleteart($idart) {
     do {
         $chainEntry = $cecIterator->next();
         if ($chainEntry) {
-            $chainEntry->execute($idart);
+            $chainEntry->execute($idart, $idartlang);
         }
     } while ($chainEntry);
 }
@@ -1771,19 +1771,16 @@ function conCopyMetaTags($srcidartlang, $dstidartlang) {
  * @param int    $srcidart
  * @param int    $dstidart
  * @param int    $dstidcat
- * @param int    $newtitle
+ * @param string $newtitle
  * @param bool   $useCopyLabel
  *
  * @throws cDbException
  * @throws cException
  * @throws cInvalidArgumentException
- *
- * @global array $cfg
- * @global int   $lang
  */
 function conCopyArtLang($srcidart, $dstidart, $dstidcat, $newtitle, $useCopyLabel = true) {
-
-    global $auth, $lang;
+    $auth = cRegistry::getAuth();
+    $lang = cRegistry::getLanguageId();
 
     $oSrcArtLang = new cApiArticleLanguage();
     if (!$oSrcArtLang->loadByArticleAndLanguageId($srcidart, $lang)) {
@@ -1844,6 +1841,7 @@ function conCopyArtLang($srcidart, $dstidart, $dstidcat, $newtitle, $useCopyLabe
 
     // Execute CEC hook
     cApiCecHook::execute('Contenido.Article.conCopyArtLang_AfterInsert', array(
+        'oldidartlang' => cSecurity::toInteger($oSrcArtLang->get('idartlang')),
         'idartlang' => cSecurity::toInteger($oNewArtLang->get('idartlang')),
         'idart' => cSecurity::toInteger($idart),
         'idlang' => cSecurity::toInteger($idlang),

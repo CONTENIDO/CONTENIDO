@@ -73,4 +73,37 @@ function pica_RenderArticleAction($idcat, $idart, $idartlang, $actionkey)
     return $anchor;
 }
 
+/**
+ * Takeover allocations of a copied article.
+ * @param array $data ['oldidartlang' => int, 'idartlang' => int, 'idart' => int, 'idlang' => int, 'idtplcfg' => int, 'title' => string]
+ * @throws cDbException
+ */
+function pica_CopyArticleAllocations(array $data)
+{
+    if (!empty($data['oldidartlang']) && !empty($data['idartlang'])) {
+        $oldidartlang = cSecurity::toInteger($data['oldidartlang']);
+        $idartlang = cSecurity::toInteger($data['idartlang']);
+        $oAlloc = new pApiContentAllocation();
+        $allocations = $oAlloc->loadAllocations($oldidartlang);
+        if (count($allocations)) {
+            $oAlloc->storeAllocations($idartlang, $allocations);
+        }
+    }
+}
+
+/**
+ * Delete allocations of a deleted article.
+ * @param int $idart Id of deleted article
+ * @param int $idartlang Id of deleted article language
+ * @throws cDbException
+ */
+function pica_DeleteArticleAllocations($idart, $idartlang)
+{
+    $idartlang = cSecurity::toInteger($idartlang);
+    if ($idartlang > 0) {
+        $oAlloc = new pApiContentAllocation();
+        $oAlloc->deleteAllocationsByIdartlang($idartlang);
+    }
+}
+
 ?>
