@@ -19,31 +19,14 @@
     var frameResize = new Con.FrameResize();
     </script>
 
-    <script type="text/javascript">
-        var ua = navigator.userAgent,
-            m = ua.match(/MSIE\s([^;]*)/),
-            s = ua.match(/safari/gi), // If there is no frameborder, safari does not allow to resize frame
-            contentFrameBorder = 0,
-            leftBorder = 0;
-
-        if (m && m[1]) {
-            contentFrameBorder = 0;
-            leftBorder = 0;
-        } else if (s) {
-            contentFrameBorder = 1;
-            leftBorder = 1;
-        } else {
-            contentFrameBorder = 1;
-            leftBorder = 0;
-        }
-
-        document.writeln('<frameset id="contentFrame" cols="{WIDTH},*" border="5" frameborder="' + contentFrameBorder + '" framespacing="5">');
-        document.writeln('    <frame name="left" id="left" scrolling="no" src="{LEFT}" frameborder="' + leftBorder + '">');
-        document.writeln('    <frame name="right" id="right" scrolling="no" src="{RIGHT}" frameborder="0">');
-        document.writeln('</frameset>');
-    </script>
-
 </head>
+
+<frameset id="contentFrame" cols="{WIDTH},*" border="5" frameborder="{CONTENT_FRAME_BORDER}" framespacing="5">
+
+    <frame name="left" id="left" scrolling="no" src="{LEFT}" frameborder="{LEFT_BORDER}">
+    <frame name="right" id="right" scrolling="no" src="{RIGHT}" frameborder="0">
+
+</frameset>
 
 <script type="text/javascript">
 (function(Con, $) {
