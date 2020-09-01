@@ -40,9 +40,8 @@ class MailedFormProcessor extends DefaultFormProcessor {
      * @throws cInvalidArgumentException
      */
     protected function _processStoredData() {
-
         // array to collect errors
-        $errors = array();
+        $errors = [];
 
         // client mail
         try {
@@ -112,6 +111,7 @@ class MailedFormProcessor extends DefaultFormProcessor {
     		$mailTo = $this->getModule()->getSetting('pifaform_mail_system_recipient_email');
     	}
 
+        $encoding = null;
     	if (cRegistry::getLanguageId() != 0) {
 	    	$language = cRegistry::getLanguage();
 	    	$encoding = $language->getField('encoding');
@@ -120,16 +120,25 @@ class MailedFormProcessor extends DefaultFormProcessor {
 	    	}
     	}
 
-    	$mailOptions = array(
+    	// Set reply-to email address
+    	$replyTo = $this->getModule()->getSetting('pifaform_mail_' . $mode . '_reply_to_email');
+    	if ($replyTo === 'system') {
+            $replyTo = getSystemProperty('system', 'mail_sender');
+        } elseif ($mode == self::MAIL_MODE_SYSTEM && $replyTo === 'form') {
+            $replyTo = $values['email'];
+        } else {
+            $replyTo = '';
+        }
+
+    	$mailOptions = [
     		'from' => $this->getModule()->getSetting('pifaform_mail_' . $mode . '_from_email'),
     		'fromName' => $this->getModule()->getSetting('pifaform_mail_' . $mode . '_from_name'),
     		'to' => $mailTo,
+    		'replyTo' => $replyTo,
     		'subject' => $subject,
     		'body' => $body,
     		'charSet' => $encoding
-    	);
-
-    	// !!
+        ];
 
     	if ($mode == self::MAIL_MODE_SYSTEM) {
     		$mailOptions['attachmentNames'] = $this->_getAttachmentNames();
@@ -146,10 +155,9 @@ class MailedFormProcessor extends DefaultFormProcessor {
      * @return array
      */
     protected function _getAttachmentNames() {
-
         // determine attachment names
         // these are already stored in the FS
-        $attachmentNames = array();
+        $attachmentNames = [];
         if (0 < count($this->getForm()->getFiles())) {
             $tableName = $this->getForm()->get('data_table');
             $lastInsertedId = $this->getForm()->getLastInsertedId();
@@ -175,7 +183,7 @@ class MailedFormProcessor extends DefaultFormProcessor {
      * @return array
      */
     protected function _getAttachmentStrings() {
-        return array();
+        return [];
     }
 }
 
