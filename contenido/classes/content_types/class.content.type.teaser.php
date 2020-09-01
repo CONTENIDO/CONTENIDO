@@ -270,7 +270,7 @@ echo $teaser->generateTeaserCode();
         $template->set('s', 'TEASER_TITLE', $this->_settings['teaser_title']);
 
         // decide if it is a manual or category teaser
-        if ($this->_settings['teaser_manual'] == 'true' && count($this->_settings['teaser_manual_art']) > 0) {
+        if ($this->_settings['teaser_manual'] == 'true' && !empty($this->_settings['teaser_manual_art'])) {
             // in case of manual article definition
             // get all art to display and generate article objects manually
             $manualArts = $this->_settings['teaser_manual_art'];
