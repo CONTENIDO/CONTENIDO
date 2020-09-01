@@ -511,6 +511,7 @@
 ./includes/functions.mod.php
 ./includes/functions.pathresolver.php
 ./includes/functions.php54.php
+./includes/functions.php_polyfill.php
 ./includes/functions.rights.php
 ./includes/functions.stat.php
 ./includes/functions.str.php
