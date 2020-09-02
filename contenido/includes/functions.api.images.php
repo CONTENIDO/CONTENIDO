@@ -43,7 +43,7 @@ function cApiImgScaleGetMD5CacheFile($sImg, $iMaxX, $iMaxY, $bCrop, $bExpand) {
     $iFileSize = filesize($sImg);
 
     if (function_exists('md5_file')) {
-        $sMD5 = md5(implode('', array(
+        $sMD5 = md5(implode('', [
             $sImg,
             md5_file($sImg),
             $iFileSize,
@@ -51,16 +51,16 @@ function cApiImgScaleGetMD5CacheFile($sImg, $iMaxX, $iMaxY, $bCrop, $bExpand) {
             $iMaxY,
             $bCrop,
             $bExpand
-        )));
+        ]));
     } else {
-        $sMD5 = md5(implode('', array(
+        $sMD5 = md5(implode('', [
             $sImg,
             $iFileSize,
             $iMaxX,
             $iMaxY,
             $bCrop,
             $bExpand
-        )));
+        ]));
     }
 
     return $sMD5;
@@ -98,29 +98,17 @@ function cApiImgScaleGetMD5CacheFile($sImg, $iMaxX, $iMaxY, $bCrop, $bExpand) {
  *         url to the resulting image (http://...
  */
 function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $quality = 0, $keepType = false) {
-    global $cfgClient, $client, $cfg;
-
     if (!cFileHandler::exists($img)) {
         return false;
     }
 
-    if ($quality == 0 && isset($cfg['images']['image_quality']['compression_rate'])) {
-        $quality = (int) $cfg['images']['image_quality']['compression_rate'];
-    }
-
-    if ($quality == 0) {
-        $quality = 75;
-    }
+    $cfgClient = cRegistry::getClientConfig();
+    $client = cRegistry::getClientId();
 
     $fileName = $img;
-    $maxX = (int) $maxX;
-    $maxY = (int) $maxY;
-    $cacheTime = (int) $cacheTime;
-    $quality = (int) $quality;
-
-    if ($quality <= 0 || $quality > 100) {
-        $quality = 75;
-    }
+    $maxX = cSecurity::toInteger($maxX);
+    $maxY = cSecurity::toInteger($maxY);
+    $cacheTime = cSecurity::toInteger($cacheTime);
 
     $frontendURL = cRegistry::getFrontendUrl();
     $fileType = cFileHandler::getExtension($fileName);
@@ -133,27 +121,8 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
         return $webFile;
     }
 
-    // Get out which file we have
-    switch (cString::toLowerCase($fileType)) {
-        case 'gif':
-            $function = 'imagecreatefromgif';
-            break;
-        case 'png':
-            $function = 'imagecreatefrompng';
-            break;
-        case 'jpg':
-            $function = 'imagecreatefromjpeg';
-            break;
-        case 'jpeg':
-            $function = 'imagecreatefromjpeg';
-            break;
-        default:
-            return false;
-    }
-
-    $imageHandle = (function_exists($function)) ? @$function($fileName) : null;
-
     // If we can't open the image, return false
+    $imageHandle = cApiImgCreateImageResourceFromFile($fileName, $fileType);
     if (!$imageHandle) {
         return false;
     }
@@ -174,25 +143,11 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
         imagecopyresized($targetImage, $imageHandle, 0, 0, 0, 0, $targetX, $targetY, $x, $y);
     }
 
-    // Output the file
-    if ($keepType) {
-        switch (cString::toLowerCase($fileType)) {
-            case 'png':
-                // no quality option available
-                imagepng($targetImage, $cacheFile);
-                break;
-            case 'gif':
-                // no quality option available
-                imagegif($targetImage, $cacheFile);
-                break;
-            default:
-                imagejpeg($targetImage, $cacheFile, $quality);
-        }
-    } else {
-        imagejpeg($targetImage, $cacheFile, $quality);
-    }
+    // Save the cache file
+    cApiImgSaveImageResourceToFile($targetImage, $cacheFile, $quality, $fileType, $keepType);
 
-    return ($webFile);
+    // Return the web file
+    return $webFile;
 }
 
 /**
@@ -230,29 +185,17 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
  *         Url to the resulting image (http://...)
  */
 function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $quality = 0, $keepType = true) {
-    global $cfgClient, $client, $cfg;
-
     if (!cFileHandler::exists($img)) {
         return false;
     }
 
-    if ($quality == 0 && isset($cfg['images']['image_quality']['compression_rate'])) {
-        $quality = (int) $cfg['images']['image_quality']['compression_rate'];
-    }
-
-    if ($quality == 0) {
-        $quality = 75;
-    }
+    $cfgClient = cRegistry::getClientConfig();
+    $client = cRegistry::getClientId();
 
     $fileName = $img;
-    $maxX = (int) $maxX;
-    $maxY = (int) $maxY;
-    $cacheTime = (int) $cacheTime;
-    $quality = (int) $quality;
-
-    if ($quality <= 0 || $quality > 100) {
-        $quality = 75;
-    }
+    $maxX = cSecurity::toInteger($maxX);
+    $maxY = cSecurity::toInteger($maxY);
+    $cacheTime = cSecurity::toInteger($cacheTime);
 
     $frontendURL = cRegistry::getFrontendUrl();
     $fileType = cFileHandler::getExtension($fileName);
@@ -265,27 +208,8 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
         return $webFile;
     }
 
-    // Get out which file we have
-    switch (cString::toLowerCase($fileType)) {
-        case 'gif':
-            $function = 'imagecreatefromgif';
-            break;
-        case 'png':
-            $function = 'imagecreatefrompng';
-            break;
-        case 'jpg':
-            $function = 'imagecreatefromjpeg';
-            break;
-        case 'jpeg':
-            $function = 'imagecreatefromjpeg';
-            break;
-        default:
-            return false;
-    }
-
-    $imageHandle = (function_exists($function)) ? @$function($fileName) : null;
-
     // If we can't open the image, return false
+    $imageHandle = cApiImgCreateImageResourceFromFile($fileName, $fileType);
     if (!$imageHandle) {
         return false;
     }
@@ -326,23 +250,10 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
         imagecopyresampled($targetImage, $imageHandle, 0, 0, 0, 0, $targetX, $targetY, $x, $y);
     }
 
-    // Output the file
-    if ($keepType) {
-        switch (cString::toLowerCase($fileType)) {
-            case 'png':
-                // no quality option available
-                imagepng($targetImage, $cacheFile);
-                break;
-            case 'gif':
-                imagegif($targetImage, $cacheFile);
-                break;
-            default:
-                imagejpeg($targetImage, $cacheFile, $quality);
-        }
-    } else {
-        imagejpeg($targetImage, $cacheFile, $quality);
-    }
+    // Save the cache file
+    cApiImgSaveImageResourceToFile($targetImage, $cacheFile, $quality, $fileType, $keepType);
 
+    // Return the web file
     return $webFile;
 }
 
@@ -380,31 +291,19 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
  *         Url to the resulting image (http://...)
  */
 function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $quality = 0, $keepType = false) {
-    global $cfg, $cfgClient, $client;
-
     if (!cFileHandler::exists($img)) {
         return false;
     } elseif (isFunctionDisabled('escapeshellarg') || isFunctionDisabled('exec')) {
         return false;
     }
 
-    if ($quality == 0 && isset($cfg['images']['image_quality']['compression_rate'])) {
-        $quality = (int) $cfg['images']['image_quality']['compression_rate'];
-    }
-
-    if ($quality == 0) {
-        $quality = 75;
-    }
+    $cfgClient = cRegistry::getClientConfig();
+    $client = cRegistry::getClientId();
 
     $fileName = $img;
-    $maxX = (int) $maxX;
-    $maxY = (int) $maxY;
-    $cacheTime = (int) $cacheTime;
-    $quality = (int) $quality;
-
-    if ($quality <= 0 || $quality > 100) {
-        $quality = 75;
-    }
+    $maxX = cSecurity::toInteger($maxX);
+    $maxY = cSecurity::toInteger($maxY);
+    $cacheTime = cSecurity::toInteger($cacheTime);
 
     $frontendURL = cRegistry::getFrontendUrl();
     $fileType = cFileHandler::getExtension($fileName);
@@ -431,12 +330,15 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
         }
     }
 
+    $cfg = cRegistry::getConfig();
+
     // Try to execute convert
-    $output = array();
+    $output = [];
     $retVal = 0;
     $program = escapeshellarg($cfg['images']['image_magick']['path'] . 'convert');
     $source = escapeshellarg($fileName);
     $destination = escapeshellarg($cacheFile);
+    $quality = cApiImgGetCompressionRate($quality, $fileType);
     if ($crop) {
         $cmd = "'{$program}' -gravity center -quality {$quality} -crop {$maxX}x{$maxY}+1+1 '{$source}' '{$destination}'";
     } else {
@@ -466,8 +368,6 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
  *         True (gif is animated)/ false (single frame gif)
  */
 function cApiImageIsAnimGif($sFile) {
-    global $cfg;
-
     // check if functions escapeshellarg or exec are disabled
     if (isFunctionDisabled('escapeshellarg') || isFunctionDisabled('exec')) {
         return false;
@@ -478,7 +378,8 @@ function cApiImageIsAnimGif($sFile) {
         return false;
     }
 
-    $output = array();
+    $cfg = cRegistry::getConfig();
+    $output = [];
     $retVal = 0;
     $program = escapeshellarg($cfg['images']['image_magick']['path'] . 'identify');
     $source = escapeshellarg($sFile);
@@ -537,17 +438,9 @@ function cApiImageIsAnimGif($sFile) {
  * @throws cInvalidArgumentException
  */
 function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $wantHQ = false, $quality = 0, $keepType = true) {
-    global $client, $cfgClient, $cfg;
-
+    $cfgClient = cRegistry::getClientConfig();
+    $client = cRegistry::getClientId();
     $deleteAfter = false;
-
-    if ($quality == 0 && isset($cfg['images']['image_quality']['compression_rate'])) {
-        $quality = (int) $cfg['images']['image_quality']['compression_rate'];
-    }
-
-    if ($quality == 0) {
-        $quality = 75;
-    }
 
     $sRelativeImg = str_replace($cfgClient[$client]['upl']['path'], '', $img);
     if (cApiDbfs::isDbfs($sRelativeImg)) {
@@ -572,6 +465,7 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false, $cache
 
     $fileName = $img;
     $fileType = cString::getPartOfString($fileName, cString::getStringLength($fileName) - 4, 4);
+    $quality = cApiImgGetCompressionRate($quality, cFileHandler::getExtension($fileName));
 
     $mxdAvImgEditingPossibility = cApiImageCheckImageEditingPossibility();
     switch ($mxdAvImgEditingPossibility) {
@@ -633,7 +527,7 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false, $cache
  *         </pre>
  */
 function cApiImageCheckImageEditingPossibility() {
-    global $cfg;
+    $cfg = cRegistry::getConfig();
 
     if ($cfg['images']['image_magick']['use']) {
         if (cApiIsImageMagickAvailable()) {
@@ -709,10 +603,10 @@ function cApiImageGetTargetDimensions($x, $y, $maxX, $maxY, $expand) {
     $targetX = ($targetX != 0) ? $targetX : 1;
     $targetY = ($targetY != 0) ? $targetY : 1;
 
-    return array(
+    return [
         $targetX,
         $targetY
-    );
+    ];
 }
 
 /**
@@ -728,7 +622,6 @@ function cApiImageGetCacheFileName($md5, $fileType, $keepType) {
 
     // Should we keep the file type?
     if ($keepType) {
-
         // Just using switch if someone likes to add other types
         switch (cString::toLowerCase($fileType)) {
             case 'png':
@@ -740,12 +633,9 @@ function cApiImageGetCacheFileName($md5, $fileType, $keepType) {
             default:
                 $fileName = $md5 . '.jpg';
         }
-
     } else {
-
         // No... use .jpg
         $fileName = $md5 . '.jpg';
-
     }
 
     return $fileName;
@@ -760,17 +650,12 @@ function cApiImageGetCacheFileName($md5, $fileType, $keepType) {
  *         Returns true, if cache file exists and7or is still valid or false
  */
 function cApiImageCheckCachedImageValidity($cacheFile, $cacheTime) {
-
     // Check if the file exists. If it does, check if the file is valid.
     if (cFileHandler::exists($cacheFile)) {
-
         if ($cacheTime == 0) {
-
             // Do not check expiration date
             return true;
-
         } else if (!function_exists('md5_file')) {
-
             // TODO: Explain why this is still needed ... or remove it
             if ((filemtime($cacheFile) + (60 * $cacheTime)) < time()) {
                 // Cache time expired, unlink the file
@@ -779,12 +664,9 @@ function cApiImageCheckCachedImageValidity($cacheFile, $cacheTime) {
                 // Return the web file name
                 return true;
             }
-
         } else {
-
             return true;
-        }
-
+       }
     }
 
     return false;
@@ -799,7 +681,6 @@ function cApiImageCheckCachedImageValidity($cacheFile, $cacheTime) {
  *         true if ImageMagick is available
  */
 function cApiIsImageMagickAvailable() {
-    global $cfg;
     static $imagemagickAvailable = NULL;
 
     // if the check has already been executed, just return the result
@@ -813,9 +694,11 @@ function cApiIsImageMagickAvailable() {
         return $imagemagickAvailable;
     }
 
+    $cfg = cRegistry::getConfig();
+
     // otherwise execute the IM check
     $program = escapeshellarg($cfg['images']['image_magick']['path'] . 'convert');
-    $output = array();
+    $output = [];
     $retVal = 0;
     @exec("'{$program}' -version", $output, $retVal);
 
@@ -831,4 +714,102 @@ function cApiIsImageMagickAvailable() {
     }
 
     return $imagemagickAvailable;
+}
+
+/**
+ * Returns the compression rate by image type.
+ * Converts the compression rate to PNG compression level. Compression rate is only supported
+ * for JPG, JPEG or PNG images.
+ *
+ * @param int $quality The quality of the image (0 - 100)
+ * @param string $imgType The image type, e. g. 'jpg', 'jpeg' or 'png'
+ * @return int Returns 100-1 for JPG and JPEG images, 0-9 for PNG images and null for other images.
+ */
+function cApiImgGetCompressionRate($quality = 0, $imgType) {
+    $quality = cSecurity::toInteger($quality);
+
+    $cfg = cRegistry::getConfig();
+    if ($quality <= 0 && isset($cfg['images']['image_quality']['compression_rate'])) {
+        $quality = cSecurity::toInteger($cfg['images']['image_quality']['compression_rate']);
+    }
+
+    if ($quality <= 0 || $quality > 100) {
+        $quality = 75;
+    }
+
+    switch (cString::toLowerCase($imgType)) {
+        case 'png':
+            // Convert compression rate to PNG compression level
+            $quality = ($quality - 100) / 11.111111;
+            $quality = round(abs($quality));
+            break;
+        case 'jpg':
+        case 'jpeg':
+            // No action needed for jpg or jpeg
+            break;
+        default:
+            $quality = 0;
+    }
+
+    return $quality;
+}
+
+/**
+ * Returns image resource by file name.
+ * @param string $fileName Path to image
+ * @param string|null $fileType File type (extension)
+ * @return resource|null Created image resource or null
+ */
+function cApiImgCreateImageResourceFromFile($fileName, $fileType = null) {
+    if (!$fileType) {
+        $fileType = cFileHandler::getExtension($fileName);
+    }
+
+    // Find out which file we have
+    switch (cString::toLowerCase($fileType)) {
+        case 'gif':
+            $function = 'imagecreatefromgif';
+            break;
+        case 'png':
+            $function = 'imagecreatefrompng';
+            break;
+        case 'jpg':
+            $function = 'imagecreatefromjpeg';
+            break;
+        case 'jpeg':
+            $function = 'imagecreatefromjpeg';
+            break;
+        default:
+            return null;
+    }
+
+    return (function_exists($function)) ? @$function($fileName) : null;
+}
+
+/**
+ * Saves the given image resource.
+ * @param resource $targetImage The image resource
+ * @param string $saveTo The path to save the image to
+ * @param int $quality The quality of the image
+ * @param string $fileType The file type (extension)
+ * @param bool $keepType Flag to keep the type. If false, the image resource will be saved as JPEG.
+ * @return bool
+ */
+function cApiImgSaveImageResourceToFile($targetImage, $saveTo, $quality, $fileType, $keepType) {
+    // save the file
+    if ($keepType) {
+        switch (cString::toLowerCase($fileType)) {
+            case 'png':
+                $quality = cApiImgGetCompressionRate($quality, $fileType);
+                return imagepng($targetImage, $saveTo, $quality);
+            case 'gif':
+                return imagegif($targetImage, $saveTo);
+            default:
+                $quality = cApiImgGetCompressionRate($quality, $fileType);
+                return imagejpeg($targetImage, $saveTo, $quality);
+        }
+    } else {
+        $quality = cApiImgGetCompressionRate($quality, $fileType);
+        return imagejpeg($targetImage, $saveTo, $quality);
+    }
 }
