@@ -55,28 +55,6 @@
     #noscript .noscript-content > div h2 {
         font-size: 20px;
     }
-    #lblusername {
-        width: 75px;
-        display: block;
-        float: left;
-    }
-    #lblpasswd {
-        width: 75px;
-        display: block;
-        float: left;
-    }
-    .navcontainer {
-        border-top: 1px solid #666;
-        clear: left;
-    }
-    .text_login_error {
-        float: right;
-        margin-right: 15px;
-    }
-    .style1 {
-        background-color: #f1f1f1;
-        height: 80px;
-    }
     </style>
 {_JS_HEAD_CONTENIDO_}
     <script type="text/javascript">
@@ -142,9 +120,9 @@
 <script type="text/javascript">
 (function(Con, $) {
     $('html').removeClass('no-js');
-    $('#page').addClass('load');
 
     $(function() {
+        $('#page').addClass('load');
         $('#lang').change(function() {
             if ('' !== $('#username').val() && '' !== $('#passwd').val()) {
             	$('#login').submit();
