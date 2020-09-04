@@ -264,27 +264,24 @@ table.foldingrow th {
 
 /**
  * #############################################################################
- * @section Page_Login_Form
+ * @section Page_Login_Form, Page_Header
  */
-#lblusername {
-    margin-left: 54px;
-}
-#username {
-    height: 17px;
-    line-height: 17px;
-    margin-left: 13px;
-    margin-top: 3px;
-    padding: 0 2px;
-}
+
+#lblusername,
 #lblpasswd {
     margin-left: 54px;
+    width: 75px;
+    display: block;
+    float: left;
 }
+#username,
 #passwd {
     height: 17px;
     line-height: 17px;
     margin-left: 13px;
     margin-top: 3px;
     padding: 0 2px;
+    width: 150px;
 }
 #lang {
     margin-top: 3px;
@@ -298,17 +295,26 @@ table.foldingrow th {
     width: 65px;
     height: 20px;
 }
+#okbutton {
+    margin-top: 3px;
+    margin-right: 10px;
+    float: right;
+}
+.navcontainer {
+    border-top: 1px solid #666;
+    clear: left;
+}
+.text_login_error {
+    float: right;
+    margin-right: 15px;
+}
+
 #operate {
     float: right;
     line-height: 30px;
 }
 #infobox {
     float: left;
-}
-#okbutton {
-    margin-top: 3px;
-    margin-right: 10px;
-    float: right;
 }
 
 /**

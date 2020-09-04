@@ -114,6 +114,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
             'teaser_image_height',
             'teaser_manual_art',
             'teaser_image_crop',
+            'teaser_image_original',
             'teaser_source_date',
             'teaser_source_date_count',
         ];
@@ -270,7 +271,7 @@ echo $teaser->generateTeaserCode();
         $template->set('s', 'TEASER_TITLE', $this->_settings['teaser_title']);
 
         // decide if it is a manual or category teaser
-        if ($this->_settings['teaser_manual'] == 'true' && count($this->_settings['teaser_manual_art']) > 0) {
+        if ($this->_settings['teaser_manual'] == 'true' && !empty($this->_settings['teaser_manual_art'])) {
             // in case of manual article definition
             // get all art to display and generate article objects manually
             $manualArts = $this->_settings['teaser_manual_art'];
@@ -615,7 +616,13 @@ echo $teaser->generateTeaserCode();
         // scale image if exists and return it
         if (file_exists($teaserImage)) {
             // Scale Image using cApiImgScale
-            $imgSrc = cApiImgScale($teaserImage, $maxX, $maxY, $cropped == 'true');
+            if ($this->_settings['teaser_image_original'] == 'true') {
+                // Use original version of image
+                $frontendURL = cRegistry::getFrontendUrl();
+                $imgSrc = str_replace(cRegistry::getFrontendPath(), $frontendURL, $teaserImage);
+            } else {
+                $imgSrc = cApiImgScale($teaserImage, $maxX, $maxY, $cropped == 'true');
+            }
             $letter = $this->_useXHTML == 'true' ? ' /' : '';
 
             // Put Image into the teasertext
@@ -1098,6 +1105,9 @@ echo $teaser->generateTeaserCode();
         );
         $wrapperContent[] = new cHTMLLabel(i18n('Image scale'), 'teaser_image_crop_' . $this->_id);
         $wrapperContent[] = $this->_generateCropSelect();
+
+        $wrapperContent[] = new cHTMLLabel(i18n("Use original image"), 'teaser_image_original_' . $this->_id);
+        $wrapperContent[] = new cHTMLCheckbox('teaser_image_original_' . $this->_id, '', 'teaser_image_original_' . $this->_id, ($this->_settings['teaser_image_original'] == 'true'));
 
         $wrapperContent[] = new cHTMLParagraph(i18n("Content types"), 'head_sub');
         $wrapperContent[] = new cHTMLLabel(i18n("Headline source"), 'teaser_source_head_' . $this->_id);

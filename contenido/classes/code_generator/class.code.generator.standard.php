@@ -148,7 +148,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                 if (isset($containerConfigurations[$containerNr])) {
                     $containerCmsValues = $this->_processCmsValueTags($containerNr, $containerConfigurations[$containerNr]);
                 } else {
-                    $containerCmsValues = '';
+                    $containerCmsValues = $this->_processCmsValueTags($containerNr, '');
                 }
 
                 // add CMS value code to module prefix code
