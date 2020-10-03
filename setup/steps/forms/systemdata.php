@@ -81,7 +81,7 @@ class cSetupSystemData extends cSetupMask {
         }
 
         if ($_SESSION['dbcharset'] == '' && $_SESSION['setuptype'] == 'setup') {
-            $_SESSION['dbcharset'] = CON_SETUP_DBCHARSET;
+            $_SESSION['dbcharset'] = CON_SETUP_DB_CHARSET;
         }
 
         unset($_SESSION['install_failedchunks']);
