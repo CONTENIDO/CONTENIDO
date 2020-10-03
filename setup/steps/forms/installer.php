@@ -28,24 +28,24 @@ class cSetupInstaller extends cSetupMask
         $this->_stepTemplateClass->set("s", "IFRAMEVISIBILITY", (CON_SETUP_DEBUG) ? 'visible' : 'hidden');
         $this->_stepTemplateClass->set("s", "DBUPDATESCRIPT", "index.php?c=db");
 
-        switch ($_SESSION["setuptype"]) {
-            case "setup":
+        switch ($_SESSION['setuptype']) {
+            case 'setup':
                 $this->setHeader(i18n("System Installation", "setup"));
                 $this->_stepTemplateClass->set("s", "TITLE", i18n("System Installation", "setup"));
                 $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("CONTENIDO will be installed, please wait. This process may take several moments!", "setup"));
                 $this->_stepTemplateClass->set("s", "DONEINSTALLATION", i18n("Setup completed installing. Click on next to continue.", "setup"));
                 $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("Setup is installing, please wait...", "setup"));
-                $_SESSION["upgrade_nextstep"] = "setup8";
-                $this->setNavigation("", "setup8");
+                $_SESSION['upgrade_nextstep'] = 'setup8';
+                $this->setNavigation('', 'setup8');
                 break;
-            case "upgrade":
+            case 'upgrade':
                 $this->setHeader(i18n("System Upgrade", "setup"));
                 $this->_stepTemplateClass->set("s", "TITLE", i18n("System Upgrade", "setup"));
                 $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("CONTENIDO will be upgraded, please wait. This process may take several moments!", "setup"));
                 $this->_stepTemplateClass->set("s", "DONEINSTALLATION", i18n("Setup completed upgrading. Click on next to continue.", "setup"));
                 $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("Setup is upgrading, please wait...", "setup"));
-                $_SESSION["upgrade_nextstep"] = "ugprade6";
-                $this->setNavigation("", "upgrade6");
+                $_SESSION['upgrade_nextstep'] = 'ugprade6';
+                $this->setNavigation('', 'upgrade6');
                 break;
         }
     }

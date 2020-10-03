@@ -111,7 +111,7 @@ function initializeVariables() {
     $_SESSION['setuptype'] = 'setup';
     $_SESSION['dbname'] = '';
     $_SESSION['configmode'] = 'save';
-    $_SESSION["override_root_http_path"] = '';
+    $_SESSION['override_root_http_path'] = '';
     $_SESSION['clientmode'] = '';
     $_SESSION['adminpass'] = '';
     $_SESSION['adminmail'] = '';

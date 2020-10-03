@@ -49,7 +49,7 @@ class cSetupSystemtest extends cSetupMask {
 
         $this->_systemtest = new cSystemtest($cfg);
         $this->_systemtest->runTests(false);
-        $this->_systemtest->testFilesystem($_SESSION["configmode"] == "save", $_SESSION['setuptype'] == 'upgrade');
+        $this->_systemtest->testFilesystem($_SESSION['configmode'] == 'save', $_SESSION['setuptype'] == 'upgrade');
         if ($_SESSION['setuptype'] == 'setup') {
             $this->_systemtest->testFrontendFolderCreation();
         }
@@ -73,7 +73,7 @@ class cSetupSystemtest extends cSetupMask {
 
         $cHTMLFoldableErrorMessages = array();
 
-        if ($_SESSION["setuptype"] == 'upgrade') {
+        if ($_SESSION['setuptype'] == 'upgrade') {
             // Check if there is an old version of integrated plugins installed
             // in upgrademode.
             $this->doExistingOldPluginTests();
@@ -235,7 +235,7 @@ class cSetupSystemtest extends cSetupMask {
     }
 
     public function checkCountryLanguageCode() {
-        if ($_SESSION["setuptype"] != 'upgrade') {
+        if ($_SESSION['setuptype'] != 'upgrade') {
             return;
         }
 
