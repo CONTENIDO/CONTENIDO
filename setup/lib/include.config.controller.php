@@ -32,7 +32,7 @@ $tpl->set('s', 'NOLOCK', $_SESSION['nolock']);
 
 // Set CON_UTF8 constant only for new installations
 if ($_SESSION['setuptype'] == 'setup') {
-	$tpl->set('s', 'CON_UTF8', 'define("CON_UTF8", true);');
+	$tpl->set('s', 'CON_UTF8', "define('CON_UTF8', true);");
 } else {
 	$tpl->set('s', 'CON_UTF8', '');
 }
