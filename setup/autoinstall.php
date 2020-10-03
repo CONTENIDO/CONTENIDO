@@ -34,8 +34,6 @@ $args = getArgs();
 $cliSetup = new cCLISetup($args);
 
 // define the necessary constants and include the setup's startup.php
-define('CON_SETUP_PATH', str_replace('\\', '/', realpath(dirname(__FILE__))));
-define('CON_FRONTEND_PATH', str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')));
 include_once('lib/startup.php');
 
 echo('startup...');

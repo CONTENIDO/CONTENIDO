@@ -24,6 +24,9 @@ if (isset($_SESSION['setuptype'])) {
     }
 }
 
+define('CON_SETUP_PATH', str_replace('\\', '/', realpath(__DIR__ . '/../')));
+define('CON_FRONTEND_PATH', str_replace('\\', '/', realpath(__DIR__ . '/../../')));
+
 define('CON_SETUP_MYSQLI', 'mysqli');
 define('CON_SETUP_MYSQL', 'mysql');
 

@@ -14,6 +14,8 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $cfg;
+
 // Report all errors except warnings
 error_reporting(E_ALL ^E_NOTICE);
 
@@ -36,7 +38,8 @@ function checkAndInclude($filename) {
     }
 }
 
-checkAndInclude(CON_SETUP_PATH . '/lib/defines.php');
+
+include_once(__DIR__ . '/defines.php');
 
 // Check version in the 'first' line, as class.security.php uses
 // PHP5 object syntax not compatible with PHP < 5
@@ -61,7 +64,7 @@ checkAndInclude(CON_SETUP_PATH . '/lib/functions.system.php');
 
 // Check configuration path for the environment
 // If no configuration for environment found, copy from production
-setupCheckConfiguration(str_replace('\\', '/', realpath(dirname(__FILE__) . '/../..')));
+setupCheckConfiguration(str_replace('\\', '/', realpath(__DIR__ . '/../..')));
 
 try {
     $requestValidator = cRequestValidator::getInstance();

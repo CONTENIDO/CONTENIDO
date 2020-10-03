@@ -15,10 +15,6 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
-define('CON_SETUP_PATH', str_replace('\\', '/', realpath(dirname(__FILE__))));
-
-define('CON_FRONTEND_PATH', str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')));
-
 include_once('lib/startup.php');
 
 // Detect controller
