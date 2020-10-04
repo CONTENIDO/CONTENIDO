@@ -1464,7 +1464,12 @@ class cSystemtest {
         switch ($setupType) {
             case "setup":
 
-                $db = getSetupMySQLDBConnection(false);
+                try {
+                    $db = getSetupMySQLDBConnection(false);
+                } catch (Exception $e) {
+                    $this->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("Could not connect to MySQL database", "setup"), $e->getMessage());
+                    return;
+                }
 
                 // Check if the database exists
                 $status = checkMySQLDatabaseExists($db, $databaseName);
