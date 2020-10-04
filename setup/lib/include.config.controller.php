@@ -31,7 +31,7 @@ $tpl->set('s', 'MYSQL_CHARSET', $cfg['db']['connection']['charset']);
 $dbOptions = [];
 foreach ($cfg['db']['connection']['options'] as $const => $value) {
     if ($const === MYSQLI_INIT_COMMAND) {
-        $dbOptions[] = 'MYSQLI_INIT_COMMAND => "' . $value . '"';
+        $dbOptions[] = 'MYSQLI_INIT_COMMAND => "' . $value . '",';
     }
 }
 if (count($dbOptions) > 0) {
