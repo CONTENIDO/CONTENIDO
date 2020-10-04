@@ -48,6 +48,9 @@ class cSetupClientAdjust extends cSetupMask {
         list($a_root_path, $a_root_http_path) = getSystemDirectories();
 
         @include($cfg['path']['contenido_config'] . 'config.php');
+        if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.local.php')) {
+            @include($cfg['path']['contenido_config'] . 'config.local.php');
+        }
 
         setupInitializeCfgClient();
 
