@@ -274,7 +274,7 @@ abstract class cDbDriverHandler {
      *         Either The connection (object, resource, integer) or NULL
      */
     protected function _getConnection($data) {
-        $hash = md5($this->_driverType . '-' . (is_array($data) ? implode('-', $data) : (string)$data));
+        $hash = md5($this->_driverType . '-' . (is_array($data) ? json_encode($data) : (string)$data));
 
         return (isset(self::$_connectionCache[$hash])) ? self::$_connectionCache[$hash] : NULL;
     }
@@ -288,7 +288,7 @@ abstract class cDbDriverHandler {
      *         The connection to store in cache
      */
     protected function _setConnection($data, $connection) {
-        $hash = md5($this->_driverType . '-' . (is_array($data) ? implode('-', $data) : (string)$data));
+        $hash = md5($this->_driverType . '-' . (is_array($data) ? json_encode($data) : (string)$data));
         self::$_connectionCache[$hash] = $connection;
     }
 
