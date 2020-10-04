@@ -45,25 +45,36 @@ class cSetupSetupSummary extends cSetupMask
                 break;
         }
 
-        $messages = array(
+        $messages = [
             i18n("Installation type", "setup") . ":" => $sType,
-            i18n("Database parameters", "setup") . ":" => i18n("Database host", "setup") . ": " . $_SESSION['dbhost'] . "<br>" .
-                i18n("Database name", "setup") . ": " . $_SESSION['dbname'] . "<br>" .
-                i18n("Database username", "setup") . ": " . $_SESSION['dbuser'] . "<br>" .
-                i18n("Table prefix", "setup") . ": " . $_SESSION['dbprefix'] . "<br>" .
-                i18n("Database character set", "setup") . ": " . $_SESSION['dbcharset']
-        );
+        ];
 
+        // Database summary
+        $dbMessages = [
+            i18n("Database parameters", "setup") . ":" => i18n("Database host", "setup") . ": " . $_SESSION['dbhost'],
+            i18n("Database name", "setup") . ": " . $_SESSION['dbname'],
+            i18n("Database username", "setup") . ": " . $_SESSION['dbuser'],
+            i18n("Table prefix", "setup") . ": " . $_SESSION['dbprefix'],
+            i18n("Database character set", "setup") . ": " . $_SESSION['dbcharset'],
+        ];
+        if (is_array($_SESSION['dboptions'])) {
+            if (!empty($_SESSION['dboptions'][MYSQLI_INIT_COMMAND])) {
+                $dbMessages[] = i18n("Database option MYSQLI_INIT_COMMAND", "setup") . ": " . $_SESSION['dboptions'][MYSQLI_INIT_COMMAND];
+            }
+        }
+        $messages[i18n("Database parameters", "setup") . ":" ] = implode("<br>", $dbMessages);
+
+        // Client summary
         if ($_SESSION['setuptype'] == 'setup') {
-            $aChoices = array(
+            $aChoices = [
                 "CLIENTEXAMPLES" => i18n("Client with example modules and example content", "setup"),
                 "CLIENTMODULES"  => i18n("Client with example modules but without example content", "setup"),
                 "NOCLIENT"       => i18n("Don't create a client", "setup")
-            );
+            ];
             $messages[i18n("Client installation", "setup").":"] = $aChoices[$_SESSION['clientmode']];
         }
 
-        $cHTMLFoldableErrorMessages = array();
+        $cHTMLFoldableErrorMessages = [];
 
         foreach ($messages as $key => $message) {
             $cHTMLFoldableErrorMessages[] = new cHTMLInfoMessage($key, $message);

@@ -65,17 +65,20 @@ class cSetupSystemtest extends cSetupMask {
 
         if (is_null(getMySQLDatabaseExtension())) {
             $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("PHP MySQL Extension missing", "setup"), i18n("CONTENIDO requires the MySQL or MySQLi extension to access MySQL databases. Please configure PHP to use either MySQL or MySQLi.", "setup"));
-        } else if ($this->_systemtest->testMySQL($_SESSION["dbhost"], $_SESSION["dbuser"], $_SESSION["dbpass"]) == cSystemtest::CON_MYSQL_OK) {
-            $this->initDB();
+        } else {
+            $result = $this->_systemtest->testMySQL($_SESSION['dbhost'], $_SESSION['dbuser'], $_SESSION['dbpass'], !empty($_SESSION['dboptions']) ? $_SESSION['dboptions'] : []);
+            if ($result == cSystemtest::CON_MYSQL_OK) {
+                $this->initDB();
+            }
         }
 
         $this->checkCountryLanguageCode();
 
-        $cHTMLFoldableErrorMessages = array();
+        $cHTMLFoldableErrorMessages = [];
 
         if ($_SESSION['setuptype'] == 'upgrade') {
             // Check if there is an old version of integrated plugins installed
-            // in upgrademode.
+            // in upgrade mode.
             $this->doExistingOldPluginTests();
 
             // Check if user updates a system lower than 4.9
@@ -145,58 +148,46 @@ class cSetupSystemtest extends cSetupMask {
         }
     }
 
-    /**
-     * Old constructor
-     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
-     * @param $step
-     * @param $previous
-     * @param $next
-     */
-    public function cSetupSystemtest($step, $previous, $next) {
-        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
-       $this->__construct($step, $previous, $next);
-    }
-
     public function doExistingOldPluginTests() {
         $db = getSetupMySQLDBConnection(false);
         $message = '';
 
         // get all tables in database and list it into array
-        $avariableTableNames = array();
+        $availableTableNames = [];
         $tableNames = $db->getTableNames();
         if (!is_array($tableNames)) {
             return;
         }
 
         foreach ($tableNames as $table) {
-            $avariableTableNames[] = $table['table_name'];
+            $availableTableNames[] = $table['table_name'];
         }
 
         // list of plugin tables to copy into new plugin tables
-        $oldPluginTables = array(
-            'Workflow' => array(
+        $oldPluginTables = [
+            'Workflow' => [
                 'piwf_actions',
                 'piwf_allocation',
                 'piwf_art_allocation',
                 'piwf_items',
                 'piwf_user_sequences',
                 'piwf_workflow'
-            ),
-            'Content allocation' => array(
+            ],
+            'Content allocation' => [
                 'pica_alloc',
                 'pica_alloc_con',
                 'pica_lang'
-            ),
-            'Linkchecker' => array(
+            ],
+            'Linkchecker' => [
                 'pi_externlinks',
                 'pi_linkwhitelist'
-            )
-        );
+            ]
+        ];
 
         foreach ($oldPluginTables as $plugin => $tables) {
             $pluginExists = false;
             foreach ($tables as $currentTable) {
-                if (in_array($currentTable, $avariableTableNames)) {
+                if (in_array($currentTable, $availableTableNames)) {
                     $pluginExists = true;
                 }
             }
@@ -239,7 +230,7 @@ class cSetupSystemtest extends cSetupMask {
             return;
         }
 
-        $errors = array();
+        $errors = [];
 
         cDb::setDefaultConfiguration($GLOBALS['cfg']['db']);
 
@@ -254,13 +245,13 @@ class cSetupSystemtest extends cSetupMask {
             $oLanguage->loadByPrimaryKey($lang);
 
             $languageCode = $oLanguage->getProperty("language", "code", $client);
-            $contryCode = $oLanguage->getProperty("country", "code", $client);
+            $countryCode = $oLanguage->getProperty("country", "code", $client);
 
             $oClient = new cApiClient();
             $oClient->loadByPrimaryKey($client);
             $clientName = $oClient->getField('name');
 
-            if (cString::getStringLength($languageCode) == 0 || cString::getStringLength($contryCode) == 0) {
+            if (cString::getStringLength($languageCode) == 0 || cString::getStringLength($countryCode) == 0) {
                 $langName = $oLanguage->getField('name');
 
                 $oClient = new cApiClient();

@@ -13,29 +13,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-define('CON_PREDICT_SUFFICIENT', 1);
-
-define('CON_PREDICT_NOTPREDICTABLE', 2);
-
-define('CON_PREDICT_CHANGEPERM_SAMEOWNER', 3);
-
-define('CON_PREDICT_CHANGEPERM_SAMEGROUP', 4);
-
-define('CON_PREDICT_CHANGEPERM_OTHERS', 5);
-
-define('CON_PREDICT_CHANGEUSER', 6);
-
-define('CON_PREDICT_CHANGEGROUP', 7);
-
-define('CON_PREDICT_WINDOWS', 8);
-
-define('CON_BASEDIR_NORESTRICTION', 1);
-
-define('CON_BASEDIR_DOTRESTRICTION', 2);
-
-define('CON_BASEDIR_RESTRICTIONSUFFICIENT', 3);
-
-define('CON_BASEDIR_INCOMPATIBLE', 4);
 
 function canWriteFile($filename) {
     clearstatcache();

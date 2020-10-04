@@ -43,6 +43,10 @@
                     <td class="first"><div class="description">{LABEL_DBCOLLATION}</div></td>
                     <td class="last">{INPUT_DBCOLLATION}</td>
                 </tr>
+                <tr class="advancedSetting" style="visibility: hidden;">
+                    <td class="first"><div class="description">{LABEL_DBOPTION_INIT_COMMAND}</div></td>
+                    <td class="last">{INPUT_DBOPTION_INIT_COMMAND}</td>
+                </tr>
             </table>
         </td>
         <td class="column-2">

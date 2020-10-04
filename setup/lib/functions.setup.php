@@ -58,7 +58,7 @@ function setupInitializeCfgClient($reset = false) {
     global $cfg, $cfgClient;
 
     if (true === $reset) {
-        $cfgClient = array();
+        $cfgClient = [];
     }
 
     // Load client configuration
@@ -146,18 +146,19 @@ function setupInitializeConfig() {
 
     // DB related settings
     $cfg['sql']['sqlprefix'] = (isset($_SESSION['dbprefix'])) ? $_SESSION['dbprefix'] : 'con';
-    $cfg['db'] = array(
-        'connection' => array(
+    $cfg['db'] = [
+        'connection' => [
             'host' => (isset($_SESSION['dbhost'])) ? $_SESSION['dbhost'] : '',
             'database' => (isset($_SESSION['dbname'])) ? $_SESSION['dbname'] : '',
             'user' => (isset($_SESSION['dbuser'])) ? $_SESSION['dbuser'] : '',
             'password' => (isset($_SESSION['dbpass'])) ? $_SESSION['dbpass'] : '',
-            'charset' => (isset($_SESSION['dbcharset'])) ? $_SESSION['dbcharset'] : ''
-        ),
+            'charset' => (isset($_SESSION['dbcharset'])) ? $_SESSION['dbcharset'] : '',
+            'options' => !empty($_SESSION['dboptions']) ? $_SESSION['dboptions'] : [],
+        ],
         'haltBehavior' => 'report',
         'haltMsgPrefix' => (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] . ' ' : '',
         'enableProfiling' => false,
-    );
+    ];
 }
 
 /**
@@ -186,6 +187,35 @@ function setupUpdateConfig() {
     } else if (empty($timezoneCfg) && (ini_get('date.timezone') === '' || ini_get('date.timezone') === false)) {
         // if there are no timezone settings, set UTC timezone
         date_default_timezone_set('UTC');
+    }
+}
+
+/**
+ * Stores setup request variables in session
+ * @param array $request
+ */
+function takeoverRequestToSession(array $request) {
+    foreach ($request as $key => $value) {
+        if ($key == 'c') {
+            // c = setup controller to process
+            continue;
+        }
+        if (($value != '' && $key != 'dbpass' && $key != 'adminpass' && $key != 'adminpassrepeat') ||
+            ($key == 'dbpass' && $request['dbpass_changed'] == 'true') ||
+            ($key == 'adminpass' && $request['adminpass_changed'] == 'true') ||
+            ($key == 'adminpassrepeat' && $request['adminpassrepeat_changed'] == 'true'))
+        {
+            if ($key === 'dboptions') {
+                $_SESSION[$key] = [];
+                foreach ($value as $subKey => $subValue) {
+                    if (!empty($subValue)) {
+                        $_SESSION[$key][$subKey] = $subValue;
+                    }
+                }
+            } else {
+                $_SESSION[$key] = $value;
+            }
+        }
     }
 }
 

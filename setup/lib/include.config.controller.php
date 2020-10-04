@@ -14,6 +14,8 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $cfg;
+
 list($rootPath, $rootHttpPath) = getSystemDirectories();
 
 $tpl = new cTemplate();
@@ -25,6 +27,19 @@ $tpl->set('s', 'MYSQL_USER', $cfg['db']['connection']['user']);
 $tpl->set('s', 'MYSQL_PASS', $cfg['db']['connection']['password']);
 $tpl->set('s', 'MYSQL_PREFIX', $cfg['sql']['sqlprefix']);
 $tpl->set('s', 'MYSQL_CHARSET', $cfg['db']['connection']['charset']);
+
+$dbOptions = [];
+foreach ($cfg['db']['connection']['options'] as $const => $value) {
+    if ($const === MYSQLI_INIT_COMMAND) {
+        $dbOptions[] = 'MYSQLI_INIT_COMMAND => "' . $value . '"';
+    }
+}
+if (count($dbOptions) > 0) {
+    $dbOptions = str_repeat(' ', 12) . implode($dbOptions, str_repeat(' ', 12) . "\n");
+} else {
+    $dbOptions = '';
+}
+$tpl->set('s', 'MYSQL_OPTIONS', $dbOptions);
 
 $tpl->set('s', 'DB_EXTENSION', (string) getMySQLDatabaseExtension());
 
