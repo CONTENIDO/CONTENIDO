@@ -1,6 +1,9 @@
 <?php
 /**
- * This is the automated install script for CONTENIDO
+ * This is the automated install script for CONTENIDO.
+ *
+ * Usage:
+ * php autoinstall.php -h
  *
  * @package Setup
  * @subpackage Setup
