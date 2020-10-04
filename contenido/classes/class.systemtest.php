@@ -1039,7 +1039,7 @@ class cSystemtest {
         // Get not supported SQL modes
         $notSupportedSqlModes = array_map('trim', explode(',', CON_DB_NOT_SUPPORTED_SQL_MODES));
 
-        // Retrieve SQL modes set in current connection session against not supported ones
+        // Retrieve SQL modes set in current connection session and compare against not supported ones
         $db = new cDb($dbCfg);
         $db->query('SELECT UPPER(@@SESSION.sql_mode) AS sql_mode');
         if ($db->nextRecord()) {
