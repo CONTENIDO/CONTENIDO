@@ -13,8 +13,10 @@
 
 // first, check if the file is being called by the CLI
 if ('cli' !== PHP_SAPI) {
-    die('This program is suppsoed to be run from the command line.');
+    die('This program is supposed to be run from the command line.');
 }
+
+global $db, $cfg, $cfgClient, $totalSteps;
 
 // some standard configurations of the php cli have a max execution limit
 set_time_limit(0);
