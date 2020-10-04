@@ -426,7 +426,8 @@ class cCLISetup {
      * Take the settings from the settings array and write them to the appropriate places
      */
     public function applySettings() {
-        $cfg = cRegistry::getConfig();
+        // NOTE: Use global $cfg variable!
+        global $cfg;
 
         $cfg['db'] = [
             'connection' => [
