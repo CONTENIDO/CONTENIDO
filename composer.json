@@ -13,6 +13,7 @@
     },
     "require": {
         "ext-mysqli": "*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ext-simplexml": "*"
     }
 }
