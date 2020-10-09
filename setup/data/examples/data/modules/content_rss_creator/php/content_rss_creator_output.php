@@ -53,57 +53,63 @@ $tpl->display('rss_edit.tpl');
 
 echo "CMS_TEASER[5]";
 
-$art = new cApiArticleLanguage(cRegistry::getArticleLanguageId());
-$contentValue = $art->getContent("TEASER", $teaserIndex);
+if (cRegistry::getBackendSessionId() === NULL) {
+    $art = new cApiArticleLanguage(cRegistry::getArticleLanguageId());
+    $contentValue = $art->getContent("TEASER", $teaserIndex);
 
-$teaser = new cContentTypeTeaser($contentValue, $teaserIndex, array());
-$articles = $teaser->getConfiguredArticles();
-$configuration = $teaser->getConfiguration();
+    $teaser = new cContentTypeTeaser($contentValue, $teaserIndex, []);
+    $articles = $teaser->getConfiguredArticles();
+    $configuration = $teaser->getConfiguration();
 
-$xmlString = '<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"></rss>';
+    $xmlString = '<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"></rss>';
 
-$rssFeed = new SimpleXMLElement($xmlString);
-$rssChannel = $rssFeed->addChild('channel');
-$rssChannel->title = $art->getContent("CMS_TEXT", 1);
-$rssChannel->link = $art->getContent("CMS_TEXT", 2);
-$rssChannel->description = conHtmlEntityDecode(strip_tags($art->getContent("CMS_HTML", 1)));;
+    $rssFeed = new SimpleXMLElement($xmlString);
+    $rssChannel = $rssFeed->addChild('channel');
+    $rssChannel->title = $art->getContent("CMS_TEXT", 1);
+    $rssChannel->link = $art->getContent("CMS_TEXT", 2);
+    $rssChannel->description = conHtmlEntityDecode(strip_tags($art->getContent("CMS_HTML", 1)));;
 
-$imgId = $art->getContent("CMS_IMG", 1);
+    $imgId = $art->getContent("CMS_IMG", 1);
 
-if ((int) $imgId > 0) {
-    $upload = new cApiUpload($imgId);
-    $rssLogo = $cfgClient[$client]['path']['htmlpath'] . 'upload/' . $upload->get('dirname') . $upload->get('filename');
+    if ((int) $imgId > 0) {
+        $upload = new cApiUpload($imgId);
+        $rssLogo = $cfgClient[$client]['path']['htmlpath'] . 'upload/' . $upload->get('dirname') . $upload->get('filename');
 
-    $rssImage = $rssChannel->addChild('image');
-    $rssImage->url = $rssLogo;
-    $rssImage->title = $art->getContent("CMS_TEXT", 1);
-    $rssImage->link = $art->getContent("CMS_TEXT", 2);
-}
-
-foreach ($articles as $article) {
-    $child = $rssChannel->addChild('item');
-    $title = strip_tags($article->getContent('HTMLHEAD', 1));
-    $text = strip_tags($article->getContent('HTML', 1));
-    $text = cString::trimAfterWord($text, $configuration['teaser_character_limit']);
-    $link = $cfgClient[$client]['path']['htmlpath'] . $article->getLink();
-
-    $child->title = conHtmlEntityDecode(conHtmlSpecialChars($title));
-    $child->link = conHtmlEntityDecode($link);
-    $child->description = conHtmlEntityDecode($text);
-    $child->pubDate = date('D, d M Y H:i:s T', strtotime($article->getField('published')));
-}
-
-$result = mi18n("LABEL_RSS_CREATION_FAILED");
-if (isset($cfgClient[$client]['xml']['frontendpath'])) {
-    if (false === cFileHandler::exists($cfgClient[$client]['xml']['frontendpath'])) {
-        cDirHandler::create($cfgClient[$client]['xml']['frontendpath'], true);
-    }
-    // try to write xml to disk
-    $success = $rssFeed->asXML($filename);
-    if (false !== $success) {
-        $result = mi18n("LABEL_RSS_CREATED");
+        $rssImage = $rssChannel->addChild('image');
+        $rssImage->url = $rssLogo;
+        $rssImage->title = $art->getContent("CMS_TEXT", 1);
+        $rssImage->link = $art->getContent("CMS_TEXT", 2);
     }
 
+    foreach ($articles as $article) {
+        $child = $rssChannel->addChild('item');
+        $title = strip_tags($article->getContent('HTMLHEAD', 1));
+        $text = strip_tags($article->getContent('HTML', 1));
+        $text = cString::trimAfterWord($text, $configuration['teaser_character_limit']);
+        $link = cUri::getInstance()->build([
+            'idart' => $article->get('idart'),
+            'lang' => $article->get('idlang'),
+        ], true);
+
+        $child->title = conHtmlEntityDecode(conHtmlSpecialChars($title));
+        $child->link = conHtmlEntityDecode($link);
+        $child->description = conHtmlEntityDecode($text);
+        $child->pubDate = date('D, d M Y H:i:s T', strtotime($article->getField('published')));
+    }
+
+    $result = mi18n("LABEL_RSS_CREATION_FAILED");
+    if (isset($cfgClient[$client]['xml']['frontendpath'])) {
+        if (false === cFileHandler::exists($cfgClient[$client]['xml']['frontendpath'])) {
+            cDirHandler::create($cfgClient[$client]['xml']['frontendpath'], true);
+        }
+        // try to write xml to disk
+        $success = $rssFeed->asXML($filename);
+        if (false !== $success) {
+            $result = mi18n("LABEL_RSS_CREATED");
+        }
+    }
+} else {
+    $result = mi18n("MESSAGE_CREATE_RSS_IN_FRONTEND");
 }
 
 $tpl = cSmartyFrontend::getInstance();
