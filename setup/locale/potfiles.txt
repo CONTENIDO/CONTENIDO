@@ -105,6 +105,9 @@
 ./data/examples/data/modules/layout_logo/info.xml
 ./data/examples/data/modules/layout_logo/php/layout_logo_input.php
 ./data/examples/data/modules/layout_logo/php/layout_logo_output.php
+./data/examples/data/modules/login_top/info.xml
+./data/examples/data/modules/login_top/php/login_top_input.php
+./data/examples/data/modules/login_top/php/login_top_output.php
 ./data/examples/data/modules/navigation_bottom/info.xml
 ./data/examples/data/modules/navigation_bottom/php/navigation_bottom_input.php
 ./data/examples/data/modules/navigation_bottom/php/navigation_bottom_output.php
@@ -152,6 +155,7 @@
 ./data/examples/templates/cms_teaser_text.html
 ./data/examples/templates/index.php
 ./index.php
+./index_test.php
 ./lib/class.clisetup.php
 ./lib/class.setupcontrols.php
 ./lib/class.setupmask.php
@@ -216,5 +220,6 @@
 ./upgrade_jobs/class.upgrade.job.0015.php
 ./upgrade_jobs/class.upgrade.job.0016.php
 ./upgrade_jobs/class.upgrade.job.0017.php
+./upgrade_jobs/class.upgrade.job.0018.php
 ./upgrade_jobs/class.upgrade.job.abstract.php
 ./upgrade_jobs/class.upgrade.job.main.php
