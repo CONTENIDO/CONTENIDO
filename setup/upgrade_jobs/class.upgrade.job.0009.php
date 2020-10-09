@@ -28,7 +28,7 @@ class cUpgradeJob_0009 extends cUpgradeJobAbstract {
             return;
         }
 
-        switch ($_SESSION["clientmode"]) {
+        switch ($_SESSION['clientmode']) {
             case "NOCLIENT":
                 break;
             case "CLIENTEXAMPLES":

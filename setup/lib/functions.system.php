@@ -24,7 +24,7 @@ function checkExistingPlugin($db, $sPluginname) {
     global $cfg;
 
     #new install: all plugins are checked
-    if ($_SESSION["setuptype"] == "setup") {
+    if ($_SESSION['setuptype'] == 'setup') {
         return true;
     }
 
@@ -258,12 +258,12 @@ function getSystemDirectories($bOriginalPath = false) {
         return array($root_path, $root_http_path);
     }
 
-    if (isset($_SESSION["override_root_path"])) {
-        $root_path = $_SESSION["override_root_path"];
+    if (isset($_SESSION['override_root_path'])) {
+        $root_path = $_SESSION['override_root_path'];
     }
 
-    if (isset($_SESSION["override_root_http_path"])) {
-        $root_http_path = $_SESSION["override_root_http_path"];
+    if (isset($_SESSION['override_root_http_path'])) {
+        $root_http_path = $_SESSION['override_root_http_path'];
     }
 
     $root_path = stripLastSlash($root_path);

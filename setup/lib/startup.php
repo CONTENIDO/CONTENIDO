@@ -14,6 +14,8 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $cfg;
+
 // Report all errors except warnings
 error_reporting(E_ALL ^E_NOTICE);
 
@@ -36,16 +38,19 @@ function checkAndInclude($filename) {
     }
 }
 
-checkAndInclude(CON_SETUP_PATH . '/lib/defines.php');
 
-// Check version in the 'first' line, as class.security.php uses
-// PHP5 object syntax not compatible with PHP < 5
+include_once(__DIR__ . '/defines.php');
+
+// Check minimum required PHP version in the 'first' line
 if (version_compare(PHP_VERSION, CON_SETUP_MIN_PHP_VERSION, '<')) {
     die(sprintf("You need PHP >= %s for CONTENIDO. Sorry, even the setup doesn't work otherwise. Your version: %s\n", CON_SETUP_MIN_PHP_VERSION, PHP_VERSION));
 }
 
 // Include the environment definer file
-include_once(CON_FRONTEND_PATH . '/contenido/environment.php');
+checkAndInclude(CON_FRONTEND_PATH . '/contenido/environment.php');
+
+// Include CONTENIDO defines
+checkAndInclude(CON_FRONTEND_PATH . '/contenido/includes/defines.php');
 
 // Include cStringMultiByteWrapper and cString
 checkAndInclude(CON_FRONTEND_PATH . '/contenido/classes/class.string.multi.byte.wrapper.php');
@@ -61,7 +66,7 @@ checkAndInclude(CON_SETUP_PATH . '/lib/functions.system.php');
 
 // Check configuration path for the environment
 // If no configuration for environment found, copy from production
-setupCheckConfiguration(str_replace('\\', '/', realpath(dirname(__FILE__) . '/../..')));
+setupCheckConfiguration(str_replace('\\', '/', realpath(__DIR__ . '/../..')));
 
 try {
     $requestValidator = cRequestValidator::getInstance();
@@ -72,19 +77,12 @@ try {
 
 session_start();
 
+// Save setup request variables in session
 if (is_array($_REQUEST)) {
-    foreach ($_REQUEST as $key => $value) {
-        if ($key == 'c') {
-            // c = setup controller to process
-            continue;
-        }
-        if (($value != '' && $key != 'dbpass' && $key != 'adminpass' && $key != 'adminpassrepeat') || ($key == 'dbpass' && $_REQUEST['dbpass_changed'] == 'true') || ($key == 'adminpass' && $_REQUEST['adminpass_changed'] == 'true') || ($key == 'adminpassrepeat' && $_REQUEST['adminpassrepeat_changed'] == 'true')) {
-            $_SESSION[$key] = $value;
-        }
-    }
+    takeoverRequestToSession($_REQUEST);
 }
 
-// set max_execution_time
+// Set max_execution_time
 $maxExecutionTime = (int) ini_get('max_execution_time');
 if ($maxExecutionTime < 60 && $maxExecutionTime !== 0) {
     ini_set('max_execution_time', 60);

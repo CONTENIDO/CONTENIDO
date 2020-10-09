@@ -13,11 +13,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-define('CON_EXTENSION_AVAILABLE', 1);
-
-define('CON_EXTENSION_UNAVAILABLE', 2);
-
-define('CON_EXTENSION_CANTCHECK', 3);
 
 /**
  * Retrieves the setting $setting from the PHP setup.

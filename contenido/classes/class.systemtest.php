@@ -339,7 +339,8 @@ class cSystemtest {
 
         $this->storeResult($this->testIconv(), self::C_SEVERITY_ERROR, i18n("PHP iconv functions are not available."), i18n("PHP has been compiled with the --without-iconv directive. CONTENIDO won't work without the iconv functions."), i18n("iconv is available"));
 
-        $result = $this->testMySQL($this->_config['db']['connection']['host'], $this->_config['db']['connection']['user'], $this->_config['db']['connection']['password']);
+        $cfgDbCon = $this->_config['db']['connection'];
+        $result = $this->testMySQL($cfgDbCon['host'], $cfgDbCon['user'], $cfgDbCon['password'], !empty($cfgDbCon['options']) ? $cfgDbCon['options'] : []);
         switch ($result) {
             case self::CON_MYSQL_OK:
                 $this->storeResult(true, self::C_SEVERITY_ERROR, "", "", i18n("Database connection works"));
@@ -374,19 +375,19 @@ class cSystemtest {
      */
     public function storeResult($result, $severity, $errorHeadline = "", $errorMessage = "", $successHeadline = "", $successMessage = "") {
         if ($result) {
-            $this->_messages[] = array(
+            $this->_messages[] = [
                 "result" => $result,
                 "severity" => $severity,
                 "headline" => $successHeadline,
                 "message" => $successMessage
-            );
+            ];
         } else {
-            $this->_messages[] = array(
+            $this->_messages[] = [
                 "result" => $result,
                 "severity" => $severity,
                 "headline" => $errorHeadline,
                 "message" => $errorMessage
-            );
+            ];
         }
     }
 
@@ -476,7 +477,7 @@ class cSystemtest {
                 break;
         }
 
-        $aFileinfo = array();
+        $aFileinfo = [];
         $aFileinfo["info"] = $info;
         $aFileinfo["type"] = $type;
         $aFileinfo["owner"]["read"] = ($oiFilePermissions & 0x0100) ? true : false;
@@ -708,33 +709,33 @@ class cSystemtest {
      *         with the cDB object on the first place and a bool on the second
      */
     protected function doMySQLConnect($host, $username, $password) {
-        $aOptions = array(
-            'connection' => array(
+        $aOptions = [
+            'connection' => [
                 'host' => $host,
                 'user' => $username,
                 'password' => $password
-            )
-        );
+            ]
+        ];
         $db = null;
         try {
             $db = new cDb($aOptions);
         } catch (cDbException $e) {
-            return array(
+            return [
                 $db,
                 false
-            );
+            ];
         }
 
         if ($db->connect() == 0) {
-            return array(
+            return [
                 $db,
                 false
-            );
+            ];
         } else {
-            return array(
+            return [
                 $db,
                 true
-            );
+            ];
         }
     }
 
@@ -1017,27 +1018,36 @@ class cSystemtest {
      * @param string $host
      * @param string $username
      * @param string $password
+     * @param array $options
      *
      * @return bool
      *         true if the test passed and false if not
      *
      * @throws cDbException
      */
-    public function testMySQLModeStrict($host, $username, $password) {
-        // host, user and password
-        $dbCfg = array(
-            'connection' => array(
+    public function testMySQLModeStrict($host, $username, $password, array $options = []) {
+        // host, user, password and options
+        $dbCfg = [
+            'connection' => [
                 'host' => $host,
                 'user' => $username,
-                'password' => $password
-            )
-        );
+                'password' => $password,
+                'options' => $options,
+            ],
+        ];
 
+        // Get not supported SQL modes
+        $notSupportedSqlModes = array_map('trim', explode(',', CON_DB_NOT_SUPPORTED_SQL_MODES));
+
+        // Retrieve SQL modes set in current connection session and compare against not supported ones
         $db = new cDb($dbCfg);
-        $db->query('SELECT LOWER(@@GLOBAL.sql_mode) AS sql_mode');
+        $db->query('SELECT UPPER(@@SESSION.sql_mode) AS sql_mode');
         if ($db->nextRecord()) {
-            if (cString::findFirstPos($db->f('sql_mode'), 'strict_trans_tables') !== false || cString::findFirstPos($db->f('sql_mode'), 'strict_all_tables') !== false) {
-                return false;
+            $sqlModes = array_map('trim', explode(',', $db->f('sql_mode')));
+            foreach ($sqlModes as $sqlMode) {
+                if (in_array($sqlMode, $notSupportedSqlModes)) {
+                    return false;
+                }
             }
         }
         return true;
@@ -1048,13 +1058,14 @@ class cSystemtest {
      * @param string $host
      * @param string $username
      * @param string $password
+     * @param array $options
      *
      * @return int
      *         1 if the test passed and > 1 if not
      *
      * @throws cDbException
      */
-    public function testMySQL($host, $username, $password) {
+    public function testMySQL($host, $username, $password, array $options = []) {
         list($handle, $status) = $this->doMySQLConnect($host, $username, $password);
 
         $errorMessage = "";
@@ -1075,7 +1086,7 @@ class cSystemtest {
             return self::CON_MYSQL_CANT_CONNECT;
         }
 
-        if (!$this->testMySQLModeStrict($host, $username, $password)) {
+        if (!$this->testMySQLModeStrict($host, $username, $password, $options)) {
             return self::CON_MYSQL_STRICT_MODE;
         }
 
@@ -1097,74 +1108,74 @@ class cSystemtest {
 
         $status = true;
 
-        $files = array(
+        $files = [
             // check files
-            array(
+            [
                 'filename' => $this->_config['path']['contenido_logs'] . "errorlog.txt",
                 'severity' => self::C_SEVERITY_WARNING
-            ),
-            array(
+            ],
+            [
                 'filename' => $this->_config['path']['contenido_logs'] . "setuplog.txt",
                 'severity' => self::C_SEVERITY_WARNING
-            ),
-            array(
+            ],
+            [
                 'filename' => $this->_config['path']['contenido_cronlog'] . "pseudo-cron.log",
                 'severity' => self::C_SEVERITY_WARNING
-            ),
-            array(
+            ],
+            [
                 'filename' => $this->_config['path']['contenido_cronlog'] . "session_cleanup.php.job",
                 'severity' => self::C_SEVERITY_WARNING
-            ),
-            array(
+            ],
+            [
                 'filename' => $this->_config['path']['contenido_cronlog'] . "send_reminder.php.job",
                 'severity' => self::C_SEVERITY_WARNING
-            ),
-            array(
+            ],
+            [
                 'filename' => $this->_config['path']['contenido_cronlog'] . "optimize_database.php.job",
                 'severity' => self::C_SEVERITY_WARNING
-            ),
-            array(
+            ],
+            [
                 'filename' => $this->_config['path']['contenido_cronlog'] . "move_old_stats.php.job",
                 'severity' => self::C_SEVERITY_WARNING
-            ),
-            array(
+            ],
+            [
                 'filename' => $this->_config['path']['contenido_cronlog'] . "move_articles.php.job",
                 'severity' => self::C_SEVERITY_WARNING
-            ),
-            array(
+            ],
+            [
                 'filename' => $this->_config['path']['contenido_cronlog'] . "linkchecker.php.job",
                 'severity' => self::C_SEVERITY_WARNING
-            ),
-            array(
+            ],
+            [
                 'filename' => $this->_config['path']['contenido_cronlog'] . "run_newsletter_job.php.job",
                 'severity' => self::C_SEVERITY_WARNING
-            ),
-            array(
+            ],
+            [
                 'filename' => $this->_config['path']['contenido_cronlog'] . "setfrontenduserstate.php.job",
                 'severity' => self::C_SEVERITY_WARNING
-            ),
-            array(
+            ],
+            [
                 'filename' => $this->_config['path']['contenido_cronlog'] . "advance_workflow.php.job",
                 'severity' => self::C_SEVERITY_WARNING
-            ),
-            array(
+            ],
+            [
                 'filename' => $this->_config['path']['contenido_cache'],
                 'severity' => self::C_SEVERITY_WARNING,
                 'dir' => true
-            ),
-            array(
+            ],
+            [
                 'filename' => $this->_config['path']['contenido_temp'],
                 'severity' => self::C_SEVERITY_WARNING,
                 'dir' => true
-            ),
-            array(
+            ],
+            [
                 'filename' => $this->_config['path']['contenido_config'] . "config.php",
                 'severity' => self::C_SEVERITY_ERROR,
                 'config' => $testConfig
-            )
-        );
+            ]
+        ];
 
-        $frontendFiles = array(
+        $frontendFiles = [
             "cache",
             "cache/code",
             "css",
@@ -1181,7 +1192,7 @@ class cSystemtest {
             "js",
             "templates",
             "upload"
-        );
+        ];
 
         $ret = true;
         foreach ($files as $key => $file) {
@@ -1337,7 +1348,7 @@ class cSystemtest {
      * @throws cInvalidArgumentException
      */
     public function testFrontendFolderCreation() {
-        $directories = array(
+        $directories = [
             "cms/cache",
             "cms/cache/code",
             "cms/css",
@@ -1353,7 +1364,7 @@ class cSystemtest {
             "cms/js",
             "cms/templates",
             "cms/upload"
-        );
+        ];
 
         $ret = true;
 
@@ -1453,7 +1464,12 @@ class cSystemtest {
         switch ($setupType) {
             case "setup":
 
-                $db = getSetupMySQLDBConnection(false);
+                try {
+                    $db = getSetupMySQLDBConnection(false);
+                } catch (Exception $e) {
+                    $this->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("Could not connect to MySQL database", "setup"), $e->getMessage());
+                    return;
+                }
 
                 // Check if the database exists
                 $status = checkMySQLDatabaseExists($db, $databaseName);

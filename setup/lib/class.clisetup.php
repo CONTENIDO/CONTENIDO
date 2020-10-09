@@ -44,7 +44,6 @@ class cCLISetup {
      * @param array $args the parsed command line
      */
     public function __construct($args) {
-
         $this->_settings['db']['host'] = 'localhost';
         $this->_settings['db']['user'] = 'root';
         $this->_settings['db']['password'] = '';
@@ -52,6 +51,7 @@ class cCLISetup {
         $this->_settings['db']['collation'] = 'utf8_general_ci';
         $this->_settings['db']['database'] = 'contenido';
         $this->_settings['db']['prefix'] = 'con';
+        $this->_settings['db']['option_mysqli_init_command'] = CON_SETUP_DB_OPTION_MYSQLI_INIT_COMMAND;
 
         $this->_settings['paths']['http_root_path'] = '';
 
@@ -164,6 +164,7 @@ class cCLISetup {
         $this->_settings['db']['collation'] = ($this->_args['dbcollation'] == '') ? $this->_settings['db']['collation'] : $this->_args['dbcollation'];
         $this->_settings['db']['database'] = ($this->_args['dbdatabase'] == '') ? $this->_settings['db']['database'] : $this->_args['dbdatabase'];
         $this->_settings['db']['prefix'] = ($this->_args['dbprefix'] == '') ? $this->_settings['db']['prefix'] : $this->_args['dbprefix'];
+        $this->_settings['db']['option_mysqli_init_command'] = ($this->_args['dboptionmysqliinitcommand'] == '') ? $this->_settings['db']['option_mysqli_init_command'] : $this->_args['dboptionmysqliinitcommand'];
 
         $this->_settings['paths']['http_root_path'] = ($this->_args['pathshttprootpath'] == '') ? $this->_settings['paths']['http_root_path'] : $this->_args['pathshttprootpath'];
 
@@ -178,7 +179,6 @@ class cCLISetup {
      * Start a dialog with the user to get the settings
      */
     public function getUserInputSettings() {
-
         // print welcome message
         prntln('>>>>> '. i18n('Welcome to CONTENIDO', 'setup'). ' <<<<<');
         prntln('');
@@ -217,6 +217,11 @@ class cCLISetup {
         prnt(i18n('Prefix', 'setup') . ' [' . $this->_settings['db']['prefix'] . ']: ', 1);
         $line = trim(fgets(STDIN));
         $this->_settings['db']['prefix'] = ($line == "") ? $this->_settings['db']['prefix'] : $line;
+
+        // Database option MYSQLI_INIT_COMMAND
+        prnt(i18n('Database option MYSQLI_INIT_COMMAND', 'setup') . ' [' . $this->_settings['db']['option_mysqli_init_command'] . ']: ', 1);
+        $line = trim(fgets(STDIN));
+        $this->_settings['db']['option_mysqli_init_command'] = ($line == "") ? $this->_settings['db']['option_mysqli_init_command'] : $line;
 
         // http root path
         prntln();
@@ -306,6 +311,7 @@ class cCLISetup {
                 $this->_settings['db']['database'] = trim($xml->db->database);
                 $this->_settings['db']['prefix'] = trim($xml->db->prefix);
                 $this->_settings['db']['collation'] = trim($xml->db->collation);
+                $this->_settings['db']['option_mysqli_init_command'] = trim($xml->db->option_mysqli_init_command);
 
                 $this->_settings['paths']['http_root_path'] = trim($xml->path->http_root_path);
 
@@ -420,21 +426,26 @@ class cCLISetup {
      * Take the settings from the settings array and write them to the appropriate places
      */
     public function applySettings() {
+        // NOTE: Use global $cfg variable!
+        global $cfg;
 
-        $cfg = cRegistry::getConfig();
-
-        $cfg['db'] = array(
-            'connection' => array(
+        $cfg['db'] = [
+            'connection' => [
                 'host'     => $this->_settings['db']['host'],
                 'user'     => $this->_settings['db']['user'],
                 'password' => $this->_settings['db']['password'],
                 'charset'  => $this->_settings['db']['charset'],
-                'database' => $this->_settings['db']['database']
-            ),
+                'database' => $this->_settings['db']['database'],
+                'options'  => [],
+            ],
             'haltBehavior'    => 'report',
             'haltMsgPrefix'   => (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] . ' ' : '',
             'enableProfiling' => false
-        );
+        ];
+        if (!empty($this->_settings['db']['option_mysqli_init_command'])) {
+            $cfg['db']['connection']['options'][MYSQLI_INIT_COMMAND] = $this->_settings['db']['option_mysqli_init_command'];
+        }
+
         $_SESSION['setuptype'] = 'setup';
         $_SESSION['dbname'] = $this->_settings['db']['database'];
         $_SESSION['configmode'] = 'save';
@@ -445,6 +456,10 @@ class cCLISetup {
         $_SESSION['dbprefix'] = $this->_settings['db']['prefix'];
         $_SESSION['dbcollation'] = $this->_settings['db']['collation'];
         $_SESSION['dbcharset'] = $this->_settings['db']['charset'];
+        $_SESSION['dboptions'] = [];
+        if (!empty($this->_settings['db']['option_mysqli_init_command'])) {
+            $_SESSION['dboptions'][MYSQLI_INIT_COMMAND] = $this->_settings['db']['option_mysqli_init_command'];
+        }
         $cfg['sql']['sqlprefix'] = $this->_settings['db']['prefix'];
         // reload cfg_sql.inc.php because new sql prefix will change resulting array data
         include($cfg['path']['contenido_config'] . 'cfg_sql.inc.php');

@@ -14,7 +14,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $db;
+global $db, $cfg, $cfgClient;
 
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.database.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.general.php');

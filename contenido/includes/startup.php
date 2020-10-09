@@ -7,7 +7,7 @@
  * - Runs validation of request variables
  * - Loads available login languages
  * - Initializes CEC
- * - Includes userdefined configuration
+ * - Includes user-defined configuration
  * - Sets/Checks DB connection
  * - Initializes UriBuilder
  *
@@ -21,9 +21,6 @@
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
-
-// SetEnv CON_VERSION
-defined('CON_VERSION') || define('CON_VERSION', '4.10.1');
 
 global $cfg, $cfgClient, $errsite_idcat, $errsite_idart;
 
@@ -50,8 +47,10 @@ error_reporting(E_ALL ^E_NOTICE);
 // Set 5 bits per character
 @ini_set('session.hash_bits_per_character', 5);
 
+include_once(__DIR__ . '/defines.php');
+
 // Temporary backend path, will be re-set again later...
-$backendPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/..'));
+$backendPath = str_replace('\\', '/', realpath(__DIR__ . '/..'));
 
 // Include the environment definer file
 include_once($backendPath . '/environment.php');
@@ -59,7 +58,7 @@ include_once($backendPath . '/environment.php');
 require_once($backendPath . '/classes/class.filehandler.php');
 
 // (string) Path to folder containing all contenido configuration files. Use environment setting!
-$cfg['path']['contenido_config'] = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../..')) . '/data/config/' . CON_ENVIRONMENT . '/';
+$cfg['path']['contenido_config'] = str_replace('\\', '/', realpath(__DIR__ . '/../..')) . '/data/config/' . CON_ENVIRONMENT . '/';
 
 // check if config folder & files exist
 if (false === cFileHandler::exists($cfg['path']['contenido_config'])) {
@@ -110,10 +109,10 @@ require_once($cfg['path']['contenido_config'] . 'cfg_sql.inc.php');
 if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
     require_once($cfg['path']['contenido_config'] . 'config.clients.php');
     if (is_array($errsite_idcat)) {
-        $errsite_idcat = array();
+        $errsite_idcat = [];
     }
     if (is_array($errsite_idart)) {
-        $errsite_idart = array();
+        $errsite_idart = [];
     }
     foreach ($cfgClient as $id => $aClientCfg) {
         if (is_array($aClientCfg)) {
@@ -123,7 +122,7 @@ if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php'
     }
 }
 
-// Include userdefined configuration (if available), where you are able to
+// Include user-defined configuration (if available), where you are able to
 // extend/overwrite core settings from included configuration files above
 if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.local.php')) {
     require_once($cfg['path']['contenido_config'] . 'config.local.php');

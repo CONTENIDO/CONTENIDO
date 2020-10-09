@@ -78,18 +78,22 @@ $cfg['database_extension'] = '{DB_EXTENSION}';
  *
  * @since  CONTENIDO version 4.9.0
  */
-$cfg['db'] = array(
-    'connection' => array(
+$cfg['db'] = [
+    'connection' => [
         'host'     => '{MYSQL_HOST}', // (string) The host where your database runs on
         'database' => '{MYSQL_DB}',   // (string) The database name which you use
         'user'     => '{MYSQL_USER}', // (string) The username to access the database
         'password' => '{MYSQL_PASS}', // (string) The password to access the database
         'charset'  => '{MYSQL_CHARSET}', // (string) The charset of connection to database
-    ),
+        'options'  => [
+            // (string[]) Database options
+{MYSQL_OPTIONS}
+        ],
+    ],
     'haltBehavior'    => 'report', // (string) Feasible values are 'yes', 'no' or 'report'
     'haltMsgPrefix'   => (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] . ' ' : '',
     'enableProfiling' => false,    // (bool) Flag to enable profiling
-);
+];
 
 /* Section 3: UTF-8 flag
  * ----------------------------

@@ -23,6 +23,9 @@ The configurable settings are mostly the same -->
         <prefix>
             DATABASE_PREFIX
         </prefix>
+        <option_mysqli_init_command>
+            DATABASE_OPTION_MYSQLI_INIT_COMMAND
+        </option_mysqli_init_command>
     </db>
 
     <path>

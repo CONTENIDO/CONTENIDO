@@ -24,6 +24,9 @@ if (isset($_SESSION['setuptype'])) {
     }
 }
 
+define('CON_SETUP_PATH', str_replace('\\', '/', realpath(__DIR__ . '/../')));
+define('CON_FRONTEND_PATH', str_replace('\\', '/', realpath(__DIR__ . '/../../')));
+
 define('CON_SETUP_MYSQLI', 'mysqli');
 define('CON_SETUP_MYSQL', 'mysql');
 
@@ -35,7 +38,9 @@ define('CON_SETUP_MAX_CHUNKS_PER_STEP', 50);
 
 define('CON_SETUP_MIN_PHP_VERSION', '7.0.0');
 
-define('CON_SETUP_DBCHARSET', 'utf8');
+define('CON_SETUP_DB_CHARSET', 'utf8');
+
+define('CON_SETUP_DB_OPTION_MYSQLI_INIT_COMMAND', "SET SESSION sql_mode='';");
 
 define('CON_SETUP_VERSION', '4.10.1');
 

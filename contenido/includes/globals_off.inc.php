@@ -17,20 +17,9 @@
  * @link http://www.contenido.org
  */
 
-/**
- * Set constant value depending on get_magic_quotes_gpc status
- *
- * @var bool
- */
-if (function_exists('get_magic_quotes_gpc')) {
-    define('CON_STRIPSLASHES', !get_magic_quotes_gpc());
-} else {
-    define('CON_STRIPSLASHES', true);
-}
 
 // Simulate get_magic_quotes_gpc on if turned off
 if (CON_STRIPSLASHES) {
-
     // classes cStringMultiByteWrapper and cString are not loaded here as autoloader wasn't called yet
     if (false === class_exists('cStringMultiByteWrapper')) {
         include_once dirname(__DIR__) . '/classes/class.string.multi.byte.wrapper.php';
@@ -54,13 +43,13 @@ if (version_compare(PHP_VERSION, '5.3.0', '<')) {
 }
 
 // Register globals
-$types_to_register = array(
+$types_to_register = [
     'GET',
     'POST',
     'COOKIE',
     'SESSION',
     'SERVER'
-);
+];
 foreach ($types_to_register as $global_type) {
     $arr = @ ${'_' . $global_type};
     if (is_array($arr) && count($arr) > 0) {
@@ -72,7 +61,6 @@ foreach ($types_to_register as $global_type) {
                 unset($arr[$key]);
             }
         }
-        // echo "<pre>\$_$global_type:"; print_r ($arr); echo "</pre>";
         extract($arr, EXTR_OVERWRITE);
     }
 }
