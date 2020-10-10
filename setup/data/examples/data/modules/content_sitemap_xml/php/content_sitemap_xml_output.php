@@ -118,7 +118,7 @@ EOD;
         echo "\n\n[" . date('Y-m-d') . "] " . $e->getMessage() . "\n";
     }
 } else {
-    echo mi18n("Please open this article in frontend in order to output the XNL sitemap or to store it on the file system.");
+    echo mi18n("Please open this article in frontend in order to output the XML sitemap or to store it on the file system.");
 }
 
 ?>

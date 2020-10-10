@@ -2,4 +2,4 @@ XML sitemap successfully written to %s=XML Sitemap erfolgreich nach %s geschrieb
 XML sitemap could not be written to %s=XML Sitemap konnte nicht nach %s geschrieben werden
 Choose tree:=Baum auswählen:
 Enter filename (optional):=Dateinamen eingeben (optional):
-Please open this article in frontend in order to output the XNL sitemap or to store it on the file system.=Bitte den Artikel im Frontend öffnen um die XML Sitemap auszugeben oder auf dem Dateisystem zu speichern.
+Please open this article in frontend in order to output the XML sitemap or to store it on the file system.=Bitte den Artikel im Frontend öffnen um die XML Sitemap auszugeben oder auf dem Dateisystem zu speichern.
