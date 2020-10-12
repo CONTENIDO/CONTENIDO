@@ -7,3 +7,4 @@ LABEL_RSS_LINK=Header: RSS Link
 LABEL_RSS_LOGO=Header: RSS Logo
 LABEL_RSS_SOURCE=RSS Quelle
 LABEL_RSS_TITLE=Header: RSS Überschrift
+MESSAGE_CREATE_RSS_IN_FRONTEND=Bitte den Artikel im Frontend öffnen um die RSS zu erzeugen.

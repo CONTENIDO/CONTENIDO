@@ -13,13 +13,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-define('CON_IMAGERESIZE_GD', 1);
-
-define('CON_IMAGERESIZE_IMAGEMAGICK', 2);
-
-define('CON_IMAGERESIZE_CANTCHECK', 3);
-
-define('CON_IMAGERESIZE_NOTHINGAVAILABLE', 4);
 
 function checkImageResizer() {
     global $cfg;

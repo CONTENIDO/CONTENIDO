@@ -30,7 +30,7 @@ class cSetupConfigMode extends cSetupMask {
     public function __construct($step, $previous, $next) {
         $cfg = cRegistry::getConfig();
 
-        if ($_SESSION["setuptype"] == "setup") {
+        if ($_SESSION['setuptype'] == 'setup') {
             cSetupMask::__construct("templates/setup/forms/configmode.tpl", $step);
         } else {
             cSetupMask::__construct("templates/setup/forms/configmodewopass.tpl", $step);

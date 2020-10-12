@@ -96,26 +96,28 @@ function progressBar($width, $filled) {
 function initializeVariables() {
     global $cfg, $_SESSION;
 
-    $cfg['db'] = array(
-        'connection' => array(
+    $cfg['db'] = [
+        'connection' => [
             'host'     => '',
             'user'     => '',
             'password' => '',
             'charset'  => '',
-            'database' => ''
-        ),
+            'database' => '',
+            'options'  => [],
+        ],
         'haltBehavior'    => 'report',
         'haltMsgPrefix'   => (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] . ' ' : '',
         'enableProfiling' => false
-    );
+    ];
     $_SESSION['setuptype'] = 'setup';
     $_SESSION['dbname'] = '';
     $_SESSION['configmode'] = 'save';
-    $_SESSION["override_root_http_path"] = '';
+    $_SESSION['override_root_http_path'] = '';
     $_SESSION['clientmode'] = '';
     $_SESSION['adminpass'] = '';
     $_SESSION['adminmail'] = '';
     $_SESSION['dbprefix'] = '';
+    $_SESSION['dboptions'] = [];
 }
 
 /**
@@ -193,7 +195,7 @@ function checkInstallationSettings() {
 function getArgs() {
     $args = $_SERVER['argv'];
 
-    $out = array();
+    $out = [];
     $last_arg = null;
 
     for ($i = 1, $il = sizeof($args); $i < $il; $i++) {

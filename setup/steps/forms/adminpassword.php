@@ -40,19 +40,19 @@ class cSetupAdminPassword extends cSetupMask {
 
         $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("Please enter the password for the default administrator account sysadmin and specify it's mail address in case you forgot your entered password.", "setup"));
 
-        if ($_SESSION["adminpass"] != "") {
-            $displayadminpass = str_repeat("*", cString::getStringLength($_SESSION["adminpass"]));
+        if ($_SESSION['adminpass'] != '') {
+            $displayadminpass = str_repeat('*', cString::getStringLength($_SESSION['adminpass']));
         } else {
-            $displayadminpass = "";
+            $displayadminpass = '';
         }
 
-        if ($_SESSION["adminpassrepeat"] != "") {
-            $displayadminpassrepeat = str_repeat("*", cString::getStringLength($_SESSION["adminpassrepeat"]));
+        if ($_SESSION['adminpassrepeat'] != '') {
+            $displayadminpassrepeat = str_repeat('*', cString::getStringLength($_SESSION['adminpassrepeat']));
         } else {
-            $displayadminpassrepeat = "";
+            $displayadminpassrepeat = '';
         }
 
-        $adminmail = new cHTMLTextbox("adminmail", $_SESSION["adminmail"], 30, 255);
+        $adminmail = new cHTMLTextbox("adminmail", $_SESSION['adminmail'], 30, 255);
         $adminpass = new cHTMLPasswordbox("adminpass", $displayadminpass, 30, 255);
         $adminpassrepeat = new cHTMLPasswordbox("adminpassrepeat", $displayadminpassrepeat, 30, 255);
 
@@ -91,7 +91,7 @@ class cSetupAdminPassword extends cSetupMask {
     protected function _createNavigation()  {
         $link = new cHTMLLink("#");
 
-       // if ($_SESSION["setuptype"] == "setup") {
+       // if ($_SESSION['setuptype'] == 'setup') {
             $checkScript = sprintf(
                 "var msg = ''; if (document.setupform.adminpass.value == '' || document.setupform.adminpassrepeat.value == '') { msg += '%s '; } if (msg == '' && document.setupform.adminpass.value != document.setupform.adminpassrepeat.value) { msg += '%s '; } if (msg == '' && document.setupform.adminmail.value == '') { msg += '%s '; } if (msg == '') { document.setupform.submit(); } else { alert(msg); }",
                 i18n("You need to enter a password.", "setup"),

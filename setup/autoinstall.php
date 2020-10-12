@@ -1,6 +1,9 @@
 <?php
 /**
- * This is the automated install script for CONTENIDO
+ * This is the automated install script for CONTENIDO.
+ *
+ * Usage:
+ * php autoinstall.php -h
  *
  * @package Setup
  * @subpackage Setup
@@ -13,8 +16,10 @@
 
 // first, check if the file is being called by the CLI
 if ('cli' !== PHP_SAPI) {
-    die('This program is suppsoed to be run from the command line.');
+    die('This program is supposed to be run from the command line.');
 }
+
+global $db, $cfg, $cfgClient, $totalSteps;
 
 // some standard configurations of the php cli have a max execution limit
 set_time_limit(0);
@@ -25,6 +30,9 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
+// define the necessary constants and include the setup's startup.php
+include_once('lib/startup.php');
+
 // include the console helper functions
 include_once('lib/functions.clisetup.php');
 include_once('lib/class.clisetup.php');
@@ -32,11 +40,6 @@ include_once('lib/class.clisetup.php');
 // parse the arguments of the script and store them in an array
 $args = getArgs();
 $cliSetup = new cCLISetup($args);
-
-// define the necessary constants and include the setup's startup.php
-define('CON_SETUP_PATH', str_replace('\\', '/', realpath(dirname(__FILE__))));
-define('CON_FRONTEND_PATH', str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')));
-include_once('lib/startup.php');
 
 echo('startup...');
 

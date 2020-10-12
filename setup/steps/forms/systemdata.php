@@ -39,30 +39,9 @@ class cSetupSystemData extends cSetupMask {
         cArray::initializeKey($_SESSION, 'dbpass', '');
         cArray::initializeKey($_SESSION, 'dbcharset', '');
         cArray::initializeKey($_SESSION, 'dbcollation', '');
+        cArray::initializeKey($_SESSION, 'dboptions', []);
 
-        if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php')) {
-            $cfgBackup = $cfg;
-
-            @include($cfg['path']['contenido_config'] . 'config.php');
-
-            $aVars = array(
-                'dbhost' => $cfg['db']['connection']['host'],
-                'dbuser' => $cfg['db']['connection']['user'],
-                'dbname' => $cfg['db']['connection']['database'],
-                'dbpass' => $cfg['db']['connection']['password'],
-                'dbprefix' => $cfg['sql']['sqlprefix'],
-                'dbcharset' => $cfg['db']['connection']['charset'],
-            );
-
-            $cfg = $cfgBackup;
-            unset($cfgBackup);
-
-            foreach ($aVars as $aVar => $sValue) {
-                if ($_SESSION[$aVar] == '') {
-                    $_SESSION[$aVar] = $sValue;
-                }
-            }
-        }
+        $this->takeoverExistingDbSettingsToSession();
 
         $this->setHeader(i18n("Database Parameters", "setup"));
         $this->_stepTemplateClass->set('s', 'TITLE', i18n("Database Parameters", "setup"));
@@ -81,7 +60,7 @@ class cSetupSystemData extends cSetupMask {
         }
 
         if ($_SESSION['dbcharset'] == '' && $_SESSION['setuptype'] == 'setup') {
-            $_SESSION['dbcharset'] = CON_SETUP_DBCHARSET;
+            $_SESSION['dbcharset'] = CON_SETUP_DB_CHARSET;
         }
 
         unset($_SESSION['install_failedchunks']);
@@ -111,7 +90,7 @@ class cSetupSystemData extends cSetupMask {
         $dbcollation = new cHTMLSelectElement('collationSelect', '1', 'collationSelect');
         $dbcollation->setAttribute("onchange", "comboBox('collationSelect', 'collationText')");
 
-        // Compose charset and collation select box, only if CONUTF8 flag is not set
+        // Compose charset and collation select box, only if CON_UTF8 flag is not set
         if (!cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php') || (defined('CON_UTF8') && CON_UTF8 === true)) {
             // database charset
             $hiddenFieldDbCharset = new cHTMLHiddenField('dbcharset', 'utf8');
@@ -121,7 +100,6 @@ class cSetupSystemData extends cSetupMask {
             $hiddenFieldDbCollation = new cHTMLHiddenField('dbcollation', 'utf8_general_ci');
             $dbCollationTextbox = $hiddenFieldDbCollation . 'utf8_general_ci';
         } else {
-
             // database charset
             $pos = 0;
             $option = new cHTMLOptionElement('-- ' . i18n("No character set", "setup") . ' --', '');
@@ -149,6 +127,12 @@ class cSetupSystemData extends cSetupMask {
             $dbCollationTextbox = new cHTMLTextbox('dbcollation', $selectedCollation, '', '', 'collationText'). $dbcollation->render();
         }
 
+        if (isset($_SESSION['dboptions'][MYSQLI_INIT_COMMAND])) {
+            $dbOptionInitCommand = new cHTMLTextbox('dboptions[' . MYSQLI_INIT_COMMAND . ']', $_SESSION['dboptions'][MYSQLI_INIT_COMMAND], 20, 256);
+        } else {
+            $dbOptionInitCommand = new cHTMLTextbox('dboptions[' . MYSQLI_INIT_COMMAND . ']', CON_SETUP_DB_OPTION_MYSQLI_INIT_COMMAND, 20, 256);
+        }
+
         $this->_stepTemplateClass->set('s', 'LABEL_DBHOST', i18n("Database Server (IP or name)", "setup"));
 
         if ($_SESSION['setuptype'] == 'setup') {
@@ -164,6 +148,7 @@ class cSetupSystemData extends cSetupMask {
         $this->_stepTemplateClass->set('s', 'LABEL_DBADVANCED', i18n("Advanced Settings", "setup"));
         $this->_stepTemplateClass->set('s', 'LABEL_DBCHARSET', i18n("Database character set", "setup"));
         $this->_stepTemplateClass->set('s', 'LABEL_DBCOLLATION', i18n("Database collation", "setup"));
+        $this->_stepTemplateClass->set('s', 'LABEL_DBOPTION_INIT_COMMAND', i18n("Database option MYSQLI_INIT_COMMAND", "setup"));
 
         $this->_stepTemplateClass->set('s', 'INPUT_DBHOST', $dbhost->render());
         $this->_stepTemplateClass->set('s', 'INPUT_DBNAME', $dbname->render());
@@ -172,20 +157,9 @@ class cSetupSystemData extends cSetupMask {
         $this->_stepTemplateClass->set('s', 'INPUT_DBPREFIX', $dbprefix->render());
         $this->_stepTemplateClass->set('s', 'INPUT_DBCHARSET', $dbcharsetTextbox);
         $this->_stepTemplateClass->set('s', 'INPUT_DBCOLLATION', $dbCollationTextbox);
+        $this->_stepTemplateClass->set('s', 'INPUT_DBOPTION_INIT_COMMAND', $dbOptionInitCommand);
 
         $this->setNavigation($previous, $next);
-    }
-
-    /**
-     * Old constructor
-     * @deprecated [2016-04-14] This method is deprecated and is not needed any longer. Please use __construct() as constructor function.
-     * @param $step
-     * @param $previous
-     * @param $next
-     */
-    public function cSetupSystemData($step, $previous, $next) {
-        cDeprecated('This method is deprecated and is not needed any longer. Please use __construct() as constructor function.');
-        $this->__construct($step, $previous, $next);
     }
 
     protected function _createNavigation() {
@@ -213,6 +187,37 @@ class cSetupSystemData extends cSetupMask {
         $this->_stepTemplateClass->set('s', 'BACK', $backlink->render());
     }
 
+    protected function takeoverExistingDbSettingsToSession() {
+        $cfg = cRegistry::getConfig();
+
+        if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php')) {
+            $cfgBackup = $cfg;
+
+            @include($cfg['path']['contenido_config'] . 'config.php');
+            if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.local.php')) {
+                @include($cfg['path']['contenido_config'] . 'config.local.php');
+            }
+
+            $aVars = [
+                'dbhost' => $cfg['db']['connection']['host'],
+                'dbuser' => $cfg['db']['connection']['user'],
+                'dbname' => $cfg['db']['connection']['database'],
+                'dbpass' => $cfg['db']['connection']['password'],
+                'dbprefix' => $cfg['sql']['sqlprefix'],
+                'dbcharset' => $cfg['db']['connection']['charset'],
+                'dboptions' => !empty($cfg['db']['connection']['options']) ? $cfg['db']['connection']['options'] : []
+            ];
+
+            $cfg = $cfgBackup;
+            unset($cfgBackup);
+
+            foreach ($aVars as $aVar => $sValue) {
+                if ($_SESSION[$aVar] == '') {
+                    $_SESSION[$aVar] = $sValue;
+                }
+            }
+        }
+    }
 }
 
 ?>

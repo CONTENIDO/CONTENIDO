@@ -29,11 +29,11 @@ class cSetupResults extends cSetupMask
     public function __construct($step) {
         $this->setHeader(i18n("Results", "setup"));
 
-        if (!isset($_SESSION["install_failedchunks"]) && !isset($_SESSION["install_failedupgradetable"]) && !isset($_SESSION["configsavefailed"])) {
+        if (!isset($_SESSION['install_failedchunks']) && !isset($_SESSION['install_failedupgradetable']) && !isset($_SESSION['configsavefailed'])) {
             cSetupMask::__construct("templates/setup/forms/setupresults.tpl", $step);
             $this->_stepTemplateClass->set("s", "TITLE", i18n("Results", "setup"));
             $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("CONTENIDO was installed and configured successfully on your server.", "setup"));
-            if ($_SESSION["setuptype"] == 'setup') {
+            if ($_SESSION['setuptype'] == 'setup') {
                 $this->_stepTemplateClass->set("s", "LOGIN_INFO", '<p>'.i18n("Please use username <b>sysadmin</b> and the configured password to login into CONTENIDO Backend.", "setup").'</p>');
             } else {
                 $this->_stepTemplateClass->set("s", "LOGIN_INFO", '');
@@ -46,7 +46,7 @@ class cSetupResults extends cSetupMask
             $cHTMLButtonLink = new cHTMLButtonLink($rootHttpPath . "/contenido/", "Backend - CMS");
             $this->_stepTemplateClass->set("s", "BACKEND", $cHTMLButtonLink->render());
 
-            if ($_SESSION["setuptype"] == "setup" && $_SESSION["clientmode"] == "CLIENTEXAMPLES") {
+            if ($_SESSION['setuptype'] == 'setup' && $_SESSION['clientmode'] == 'CLIENTEXAMPLES') {
                 $cHTMLButtonLink = new cHTMLButtonLink($rootHttpPath . "/cms/", "Frontend - Web");
                 $this->_stepTemplateClass->set("s", "FRONTEND", $cHTMLButtonLink->render());
             } else {
@@ -67,11 +67,11 @@ class cSetupResults extends cSetupMask
 
             $this->_stepTemplateClass->set("s", "DESCRIPTION", sprintf(i18n("An error occured during installation. Please take a look at the file %s (located in &quot;data/logs/&quot;) for more information.", "setup"), 'setuplog.txt'));
 
-            switch ($_SESSION["setuptype"]) {
-                case "setup":
+            switch ($_SESSION['setuptype']) {
+                case 'setup':
                     $this->setNavigation("setup1", "");
                     break;
-                case "upgrade":
+                case 'upgrade':
                     $this->setNavigation("upgrade1", "");
                     break;
             }
