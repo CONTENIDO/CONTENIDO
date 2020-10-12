@@ -163,7 +163,7 @@ class ModuleContentSitemapXml {
 
         $url->addChild('loc', $data['loc']);
 
-        if ($data['lastmod'] == '0000-00-00 00:00:00' || $data['lastmod'] == '') {
+        if (isEmptyDbDateTime($data['lastmod'])) {
             $url->addChild('lastmod', conHtmlSpecialChars($this->iso8601Date(mktime())));
         } else {
             $url->addChild('lastmod', conHtmlSpecialChars($this->iso8601Date($data['lastmod'])));
