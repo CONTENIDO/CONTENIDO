@@ -66,14 +66,17 @@ class ModuleContentSitemapXml {
 
             $useCategoryUrlsForStartArticles = 'true' == $this->catUrlForStartArt;
 
-            $categoryIds = implode(',', $categoryIds);
+            $lang = cSecurity::toInteger($lang);
+            $categoryIds = implode(',', array_map(function($categoryId) {
+                return cSecurity::toInteger($categoryId);
+            }, $categoryIds));
 
             // get articles from DB
             $this->db->query("
             SELECT
                 art_lang.idart
                 , art_lang.idartlang
-                , UNIX_TIMESTAMP(art_lang.lastmodified) as lastmod
+                , UNIX_TIMESTAMP(art_lang.lastmodified) AS lastmod
                 , art_lang.changefreq
                 , art_lang.sitemapprio
                 , cat_art.idcat
