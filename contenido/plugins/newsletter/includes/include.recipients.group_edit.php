@@ -13,6 +13,8 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $action, $perm, $area, $client, $lang, $auth, $frame, $sess;
+
 // Initialization
 $oPage = new cGuiPage("recipients.group_edit", "newsletter");
 $oRGroups = new NewsletterRecipientGroupCollection();
@@ -61,9 +63,10 @@ if ($action == "recipientgroup_create" && $perm->have_perm_area_action($area, $a
 }
 
 if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oRGroup->get("idlang") == $lang) {
+    $aMessages = [];
+
     if ($action == "recipientgroup_save_group" && $perm->have_perm_area_action($area, $action)) {
         // Saving changes
-        $aMessages = [];
         $bReload = false;
 
         $sGroupName = $_REQUEST["groupname"];
@@ -84,8 +87,9 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
             }
         }
 
-        if (count($_REQUEST["adduser"]) > 0) {
-            foreach ($_REQUEST["adduser"] as $iRcpID) {
+        $addUser = isset($_REQUEST["adduser"]) && is_array($_REQUEST["adduser"]) ? $_REQUEST["adduser"] : [];
+        if (count($addUser) > 0) {
+            foreach ($addUser as $iRcpID) {
                 if (is_numeric($iRcpID)) {
                     $oRGroupMembers->create($_REQUEST["idrecipientgroup"], $iRcpID);
                 }
