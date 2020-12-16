@@ -53,10 +53,10 @@ $aSearchIDInfosCatArt = [];
 $aSearchIDInfosNonID  = [];
 
 // Var initialization
-$aUrl = array(
+$aUrl = [
     'cms' => cRegistry::getFrontendUrl(),
     'contenido' => cRegistry::getBackendUrl()
-);
+];
 
 // Template- and languagevars
 if ($cronjob != true) {
@@ -80,14 +80,14 @@ if (!$cronjob) {
 }
 
 // Cache options
-$aCacheName = array(
+$aCacheName = [
     'errors' => $sess->id,
     'errorscount' => $aCacheName['errors'] . "ErrorsCountChecked"
-);
-$oCache = new cFileCache(array(
+];
+$oCache = new cFileCache([
     'cacheDir' => $cfgClient[$client]['cache']['path'],
     'lifeTime' => $iCacheLifeTime
-));
+]);
 
 /*
  * ******** Program code ********
@@ -196,7 +196,7 @@ $sql = "SELECT url FROM " . $cfg['tab']['whitelist'] . " WHERE lastview < " . (t
         AND lastview > " . (time() - $iWhitelistTimeout);
 $db->query($sql);
 
-$aWhitelist = array();
+$aWhitelist = [];
 while ($db->nextRecord()) {
     $aWhitelist[] = $db->f("url");
 }
@@ -325,12 +325,12 @@ if (empty($aErrors) && $cronjob != true) {
     $tpl->set('s', 'ERRORS_HELP_ERRORS', i18n("Wrong links", $plugin_name));
 
     // error_output initialization
-    $aError_output = array(
+    $aError_output = [
         'art' => '',
         'cat' => '',
         'docimages' => '',
         'others' => ''
-    );
+    ];
 
     // Initializing repair class
     $repair = new cLinkcheckerRepair();
@@ -435,10 +435,10 @@ if (empty($aErrors) && $cronjob != true) {
 
         $tpl->set('s', 'ERRORS_SHOW_' . cString::toUpperCase($sKey), $aError_output[$sKey]);
 
-        if (count($aErrors[$sKey]) > 0) {
+        if (isset($aErrors[$sKey]) && is_array($aErrors[$sKey]) && count($aErrors[$sKey]) > 0) {
             $tpl->set('s', 'ERRORS_COUNT_ERRORS_' . cString::toUpperCase($sKey), '<span class="settingWrong">' . count($aErrors[$sKey]) . '</span>');
         } else {
-            $tpl->set('s', 'ERRORS_COUNT_ERRORS_' . cString::toUpperCase($sKey), count($aErrors[$key]));
+            $tpl->set('s', 'ERRORS_COUNT_ERRORS_' . cString::toUpperCase($sKey), 0);
         }
     }
 
