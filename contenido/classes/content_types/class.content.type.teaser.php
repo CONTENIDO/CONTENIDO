@@ -234,7 +234,7 @@ echo $teaser->generateTeaserCode();
 ?><?php echo "';
 
         // escape ' to avoid accidentally ending the string in $code
-        $code = sprintf($code, str_replace('\'', '\\\'', $this->_rawSettings), $this->_id, 'array()');
+        $code = sprintf($code, str_replace('\'', '\\\'', $this->_rawSettings), $this->_id, '[]');
 
         return $code;
     }
@@ -489,7 +489,7 @@ echo $teaser->generateTeaserCode();
             $template->set('d', 'PUBLISHED', $published);
             $template->set('d', 'PUBLISHED_MANUAL', $date);
             foreach ($aFields as $field => $value) {
-                $template->set('d', strtoupper($field), $value);
+                $template->set('d', cString::toUpperCase($field), $value);
             }
 
             $template->set('d', 'PUBLISHED_COMBINED', $date != '' ? $date : $published);

@@ -580,8 +580,7 @@ class cTinymce4Configuration {
                 continue;
             }
 
-
-            $form = new cGuiTableForm('system_wysiwyg_tinymce4_' . strtolower($curType));
+            $form = new cGuiTableForm('system_wysiwyg_tinymce4_' . cString::toLowerCase($curType));
             $form->setAcceptCharset('UTF-8');
 
             $form->addHeader(i18n('TinyMCE 4 configuration for ') . $curType);
@@ -589,7 +588,6 @@ class cTinymce4Configuration {
             $form->setVar('area', $area);
             $form->setVar('frame', $frame);
             $form->setVar('action', 'edit_tinymce4');
-
 
             $containerDiv = new cHTMLDiv();
             if ('CMS_HTMLHEAD' === $curType) {
