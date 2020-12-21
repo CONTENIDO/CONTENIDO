@@ -1044,9 +1044,8 @@ div.navcontainer ul#navlist li a:visited {
 }
 
 .hoverbox .preview {
-    border-color: #000;
-    width: 200px;
-    height: 150px;
+    border: 1px solid black;
+    background-color: white;
 }
 
 .td_rights0 {
