@@ -200,10 +200,14 @@ class cSession {
             case 'array':
                 // $$var is an array. Enumerate the elements and serialize them.
                 $str .= "\$$var = array(); ";
-                eval("\$l = array(); foreach(\$$var as \$k => \$v) {\$l[] = array(\$k,gettype(\$k),\$v);}");
-                foreach ($l as $item) {
-                    // Structural recursion
-                    $this->_rSerialize($var . "['" . preg_replace("/([\\'])/", "\\\\1", $item[0]) . "']", $str);
+                if (is_array($var) || isset($_SESSION['backendcsession'])) {
+                    eval("\$l = array(); foreach(\$$var as \$k => \$v) {\$l[] = array(\$k,gettype(\$k),\$v);}");
+                }
+                if (is_array($l) || isset($_SESSION['backendcsession'])) {
+                    foreach ($l as $item) {
+                        // Structural recursion
+                        $this->_rSerialize($var . "['" . preg_replace("/([\\'])/", "\\\\1", $item[0]) . "']", $str);
+                    }
                 }
                 break;
             case 'object':
