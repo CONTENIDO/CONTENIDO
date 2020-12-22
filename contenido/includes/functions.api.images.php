@@ -338,7 +338,7 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
     $program = escapeshellarg($cfg['images']['image_magick']['path'] . 'convert');
     $source = escapeshellarg($fileName);
     $destination = escapeshellarg($cacheFile);
-    $quality = cApiImgGetCompressionRate($quality, $fileType);
+    $quality = cApiImgGetCompressionRate($fileType, $quality);
     if ($crop) {
         $cmd = "'{$program}' -gravity center -quality {$quality} -crop {$maxX}x{$maxY}+1+1 '{$source}' '{$destination}'";
     } else {
@@ -465,7 +465,7 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false, $cache
 
     $fileName = $img;
     $fileType = cString::getPartOfString($fileName, cString::getStringLength($fileName) - 4, 4);
-    $quality = cApiImgGetCompressionRate($quality, cFileHandler::getExtension($fileName));
+    $quality = cApiImgGetCompressionRate(cFileHandler::getExtension($fileName), $quality);
 
     $mxdAvImgEditingPossibility = cApiImageCheckImageEditingPossibility();
     switch ($mxdAvImgEditingPossibility) {
@@ -721,11 +721,11 @@ function cApiIsImageMagickAvailable() {
  * Converts the compression rate to PNG compression level. Compression rate is only supported
  * for JPG, JPEG or PNG images.
  *
- * @param int $quality The quality of the image (0 - 100)
  * @param string $imgType The image type, e. g. 'jpg', 'jpeg' or 'png'
+ * @param int $quality The quality of the image (0 - 100)
  * @return int Returns 100-1 for JPG and JPEG images, 0-9 for PNG images and null for other images.
  */
-function cApiImgGetCompressionRate($quality = 0, $imgType) {
+function cApiImgGetCompressionRate($imgType, $quality = 0) {
     $quality = cSecurity::toInteger($quality);
 
     $cfg = cRegistry::getConfig();
@@ -800,16 +800,16 @@ function cApiImgSaveImageResourceToFile($targetImage, $saveTo, $quality, $fileTy
     if ($keepType) {
         switch (cString::toLowerCase($fileType)) {
             case 'png':
-                $quality = cApiImgGetCompressionRate($quality, $fileType);
+                $quality = cApiImgGetCompressionRate($fileType, $quality);
                 return imagepng($targetImage, $saveTo, $quality);
             case 'gif':
                 return imagegif($targetImage, $saveTo);
             default:
-                $quality = cApiImgGetCompressionRate($quality, $fileType);
+                $quality = cApiImgGetCompressionRate($fileType, $quality);
                 return imagejpeg($targetImage, $saveTo, $quality);
         }
     } else {
-        $quality = cApiImgGetCompressionRate($quality, $fileType);
+        $quality = cApiImgGetCompressionRate($fileType, $quality);
         return imagejpeg($targetImage, $saveTo, $quality);
     }
 }

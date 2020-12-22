@@ -41,7 +41,7 @@ class pApiTree {
      *
      * @var array
      */
-    protected $_table = array();
+    protected $_table = [];
 
     /**
      *
@@ -77,7 +77,7 @@ class pApiTree {
      *
      * @var array
      */
-    protected $_treeStatus = array();
+    protected $_treeStatus = [];
 
     /**
      *
@@ -89,13 +89,13 @@ class pApiTree {
      *
      * @var array
      */
-    protected $_arrInFilters = array('htmlspecialchars', 'addslashes');
+    protected $_arrInFilters = ['htmlspecialchars', 'addslashes'];
 
     /**
      *
      * @var array
      */
-    protected $_arrOutFilters = array('stripslashes', 'htmldecode');
+    protected $_arrOutFilters = ['stripslashes', 'htmldecode'];
 
     /**
      * pApiTree constructor
@@ -148,7 +148,6 @@ class pApiTree {
      * @throws cDbException
      */
     public function fetchTree($parentId = false, $level = 0, $useTreeStatus = true) {
-
         // fetch current lang category
         $sql = "SELECT
                     tree.idpica_alloc, tree.parentid, tree.sortorder
@@ -165,7 +164,7 @@ class pApiTree {
 
         $this->_db->query($sql);
 
-        $result_tmp = array(); // tmp result array
+        $result_tmp = []; // tmp result array
         while ($this->_db->nextRecord()) { // walk resultset
 
             $item = $this->fetchItemNameLang($this->_db->f('idpica_alloc'));
@@ -183,7 +182,7 @@ class pApiTree {
                 }
             }
 
-            $rs = array(
+            $rs = [
                 'idpica_alloc' => $this->_db->f('idpica_alloc'),
                 'parentid' => ($this->_db->f('parentid') == NULL) ? false : $this->_db->f('parentid'),
                 'sortorder' => $this->_db->f('sortorder'),
@@ -192,13 +191,13 @@ class pApiTree {
                 'level' => $level,
                 'status' => $itemStatus,
                 'online' => $item['online']
-            );
+            ];
 
             array_push($result_tmp, $rs); // append recordset
         }
 
         if (count($result_tmp) > 0) {
-            $result = array(); // result array
+            $result = []; // result array
 
             foreach ($result_tmp as $rs) { // run results
                 $children = $this->fetchTree($rs['idpica_alloc'], ($level + 1), $useTreeStatus);
@@ -227,7 +226,6 @@ class pApiTree {
      * @throws cDbException
      */
     public function fetchTreeIds($parentId = false, $level = 0, $showOffline = false) {
-
         // fetch current lang category
         $sql = "SELECT
                     tree.idpica_alloc, tree.parentid, tree.sortorder
@@ -248,22 +246,22 @@ class pApiTree {
 
         $this->_db->query($sql);
 
-        $result_tmp = array(); // tmp result array
+        $result_tmp = []; // tmp result array
         while ($this->_db->nextRecord()) { // walk resultset
 
             $item = $this->fetchItemNameLang($this->_db->f('idpica_alloc'));
 
             if ($showOffline || $item['online'] == 1) {
-                $rs = array(
+                $rs = [
                     'idpica_alloc' => $this->_db->f('idpica_alloc')
-                );
+                ];
 
                 array_push($result_tmp, $rs); // append recordset
             }
         }
 
         if (count($result_tmp) > 0) {
-            $result = array(); // result array
+            $result = []; // result array
             foreach ($result_tmp as $rs) { // run results
                 $children = $this->fetchTreeIds($rs['idpica_alloc'], $level + 1, $showOffline);
                 if ($children !== false) {
@@ -364,7 +362,7 @@ class pApiTree {
 
         $this->_db->query($sql);
 
-        $result_tmp = array(); // tmp result array
+        $result_tmp = []; // tmp result array
         while ($this->_db->nextRecord()) { // walk resultset
             $item = $this->
             fetchItemNameLang($this->_db->f('idpica_alloc'));
@@ -374,7 +372,7 @@ class pApiTree {
                 $itemStatus = 'collapsed';
             }
 
-            $rs = array(
+            $rs = [
                 'idpica_alloc' => $this->_db->f('idpica_alloc'),
                 'parentid' => ($this->_db->f('parentid') == NULL) ? false : $this->_db->f('parentid'),
                 'sortorder' => $this->_db->f('sortorder'),
@@ -383,7 +381,7 @@ class pApiTree {
                 'level' => 0,
                 'status' => $itemStatus,
                 'online' => $item['online']
-            );
+            ];
 
             array_push($result_tmp, $rs); // append recordset
         }
@@ -400,7 +398,6 @@ class pApiTree {
      * @throws cDbException
      */
     public function storeItem($treeItem) {
-
         if (!$treeItem['idpica_alloc']) { // insert
             //$treeItem['idpica_alloc'] = $this->db->nextid($this->table['pica_alloc']);
             $treeItem['sortorder'] = $this->_fetchMaxOrder($treeItem['parentid']) + 1;
@@ -557,14 +554,14 @@ class pApiTree {
         $item = $this->fetchItemNameLang($idpica_alloc);
 
         if ($this->_db->nextRecord()) {
-            $row = array(
+            $row = [
                 'idpica_alloc' => $idpica_alloc,
                 'parentid' => ($this->_db->f('parentid') == NULL) ? false : $this->_db->f('parentid'),
                 'sortorder' => $this->_db->f('sortorder'),
                 'name' => $item['name'],
                 'idlang' => $item['idlang'],
                 'online' => $item['online']
-            );
+            ];
             return $row;
         } else {
             return false;
@@ -580,14 +577,13 @@ class pApiTree {
      * @throws cDbException
      */
     public function fetchItemNameLang($idpica_alloc) {
-
         // temporary new db instance
         $db = cRegistry::getDb();
 
         $sql = "SELECT name, idlang, online FROM " . $this->_table['pica_lang'] . " WHERE idpica_alloc = " . cSecurity::toInteger($idpica_alloc) . " AND idlang = " . cSecurity::toInteger($this->_lang);
         $db->query($sql);
 
-        $result = array();
+        $result = [];
         if ($db->nextRecord()) { // item found for this language
 
             $result['name']   = $this->_outFilter($db->f('name'));
@@ -610,7 +606,6 @@ class pApiTree {
      * @throws cDbException
      */
     protected function _fetchMaxOrder($parentId = false) {
-
         if ($parentId == 'root') {
             $parentId = false;
         }
@@ -632,12 +627,12 @@ class pApiTree {
     /**
      * Decrease order (value at database - 1)
      *
-     * @param bool    $parentId
+     * @param bool $parentId
      * @param int $fromOrder
      *
      * @throws cDbException
      */
-    protected function _decreaseOrder($parentId = false, $fromOrder) {
+    protected function _decreaseOrder($parentId = false, $fromOrder = 1) {
         $sql = "UPDATE " . $this->_table['pica_alloc'] . " SET sortorder = sortorder - 1 WHERE sortorder >= " . cSecurity::toInteger($fromOrder);
         if ($parentId === false) {
             $sql .= " AND parentid IS NULL";
@@ -651,11 +646,11 @@ class pApiTree {
      * Increase order (value at database + 1)
      *
      * @param bool $parentId
-     * @param int  $fromOrder
+     * @param int $fromOrder
      *
      * @throws cDbException
      */
-    protected function _increaseOrder($parentId = false, $fromOrder) {
+    protected function _increaseOrder($parentId = false, $fromOrder = 1) {
         $sql = "UPDATE " . $this->_table['pica_alloc'] . " SET sortorder = sortorder + 1 WHERE sortorder >= " . cSecurity::toInteger($fromOrder);
         if ($parentId === false) {
             $sql .= " AND parentid IS NULL";
@@ -671,7 +666,7 @@ class pApiTree {
      * @param array $arrInFilters
      * @param array $arrOutFilters
      */
-    public function setFilters($arrInFilters = array(), $arrOutFilters = array()) {
+    public function setFilters($arrInFilters = [], $arrOutFilters = []) {
         $this->_arrInFilters = $arrInFilters;
         $this->_arrOutFilters = $arrOutFilters;
     }
@@ -683,7 +678,6 @@ class pApiTree {
      * @return mixed
      */
     protected function _inFilter($data) {
-
         foreach ($this->_arrInFilters as $_function) {
             if (function_exists($_function)) {
                 $data = $_function($data);
@@ -700,7 +694,6 @@ class pApiTree {
      * @return mixed
      */
     protected function _outFilter($data) {
-
         foreach ($this->_arrOutFilters as $_function) {
             if (function_exists($_function)) {
                 $data = $_function($data);
