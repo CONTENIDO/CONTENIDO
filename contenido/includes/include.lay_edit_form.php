@@ -17,6 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('external', 'codemirror/class.codemirror.php');
 cInclude('classes', 'class.layout.synchronizer.php');
 
+global $action, $perm, $area, $cfgClient, $client, $cfg, $lang, $db, $frame;
 
 $idlay = isset($_REQUEST['idlay']) ? cSecurity::toInteger($_REQUEST['idlay']) : 0;
 $refreshTemplates = isset($_REQUEST['refreshtemplates']) ? $_REQUEST['refreshtemplates'] : '';
@@ -145,7 +146,7 @@ if (true === $layout->isLoaded()) {
         }
 
         $types = array_unique($types);
-        $layout->setProperty("layout", "used-types", implode($types, ";"));
+        $layout->setProperty("layout", "used-types", implode(';', $types));
 
         foreach ($containerCounter as $key => $value) {
             if ($value > 1) {
