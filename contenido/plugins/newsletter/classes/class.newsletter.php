@@ -249,7 +249,7 @@ class Newsletter extends Item
         } elseif ($sCode) {
             // Extract certain tag
             $sRegExp   = '/\[mail\s*([^]]+)\s*name=(?:"|&quot;)'.$sField.'(?:"|&quot;)\s*(.*?)\s*\]((?:.|\s)+?)\[\/mail\]/i';
-            $aMatch    = array();
+            $aMatch    = [];
             $iMatches  = preg_match($sRegExp, $sCode, $aMatch) ;
 
             if ($iMatches > 0) {
@@ -257,7 +257,7 @@ class Newsletter extends Item
                 $sParameter = $aMatch[1] . $aMatch[2];
                 $sMessage   = $aMatch[3];
                 $sRegExp    = '/\s*(.*?)\s*=\s*(?:"|&quot;)(.*?)(?:"|&quot;)\s*/i';
-                $aMatch     = array();
+                $aMatch     = [];
 
                 if (preg_match_all($sRegExp, $sParameter, $aMatch) > 0) {
                     // Store parameter data as assoziative array
@@ -350,19 +350,19 @@ class Newsletter extends Item
 
         /*
         $sRegExp = '/\[mail\s*([^]]+)\]((?:.|\s)+?)\[\/mail\]/is';
-        $aMatch = array();
+        $aMatch = [];
         preg_match_all($sRegExp, $sHTML, $aMatch, PREG_SET_ORDER);
         print_r ($aMatch);
 
         // Auf bestimmten Typ matchen
         $sRegExp = '/\[mail.*?name="name".*?\]((?:.|\s)+?)\[\/mail\]/is';
-        $aMatch = array();
+        $aMatch = [];
         preg_match_all($sRegExp, $sHTML, $aMatch, PREG_SET_ORDER);
         print_r ($aMatch); */
 
         // Parameter auseinandernehmen (ohne PREG_SET_ORDER)
         //$sRegExp = '/\s*(.*?)\s*=\s*"(.*?)"\s*/i';
-        //$aMatch = array();
+        //$aMatch = [];
         //preg_match_all($sRegExp, $sHTML, $aMatch);
         //print_r ($aMatch);
     }
@@ -382,7 +382,7 @@ class Newsletter extends Item
         // Analyze header
         $aParts = preg_split("/\r?\n/", $sHeader, -1, PREG_SPLIT_NO_EMPTY);
 
-        $aHeader = array();
+        $aHeader = [];
         for ($i = 0;$i < sizeof ($aParts); $i++) {
             if ($i != 0) {
                 $iPos       = cString::findFirstPos($aParts[$i], ':');
@@ -512,7 +512,7 @@ class Newsletter extends Item
                 $sFile = "front_content.php?client=$client&lang=$lang&idcat=$iIDCat&idart=$iIDArt&noex=1&send=1";
 
                 $handler = cHttpRequest::getHttpRequest($frontendURL.$sFile);
-                $headers = array();
+                $headers = [];
 
                 // Maybe the website has been protected using .htaccess, then login
                 if ($sHTTPUserName != "" && $sHTTPPassword != "") {
@@ -715,7 +715,7 @@ class Newsletter extends Item
                     foreach ($cfg['plugins']['recipients'] as $sPlugin) {
                         plugin_include("recipients", $sPlugin."/".$sPlugin.".php");
                         if (function_exists("recipients_".$sPlugin."_wantedVariables")) {
-                            $aPluginVars = array();
+                            $aPluginVars = [];
                             $aPluginVars = call_user_func("recipients_".$sPlugin."_wantedVariables");
 
                             foreach ($aPluginVars as $sPluginVar) {
@@ -799,12 +799,12 @@ class Newsletter extends Item
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function sendDirect($iIDCatArt, $iIDNewsRcp = false, $iIDNewsGroup = false, &$aSendRcps, $sEncoding = "iso-8859-1")
+    public function sendDirect($iIDCatArt, $iIDNewsRcp = false, $iIDNewsGroup = false, &$aSendRcps = [], $sEncoding = "iso-8859-1")
     {
         global $lang, $client, $cfg, $cfgClient, $contenido, $recipient;
 
         // Initialization
-        $aMessages  = array();
+        $aMessages  = [];
 
         // Initializing cApiLanguage and get properties for dateformat
         $oLanguage = new cApiLanguage($lang);
@@ -870,7 +870,7 @@ class Newsletter extends Item
         // Enabling plugin interface
         if (getSystemProperty("newsletter", "newsletter-recipients-plugin") == "true") {
             $bPluginEnabled = true;
-            $aPlugins       = array();
+            $aPlugins       = [];
 
             if (is_array($cfg['plugins']['recipients'])) {
                 foreach ($cfg['plugins']['recipients'] as $sPlugin) {
@@ -885,7 +885,7 @@ class Newsletter extends Item
             $bPluginEnabled = false;
         }
 
-        $aRecipients = array();
+        $aRecipients = [];
         if ($iIDNewsGroup !== false) {
             $oGroupMembers = new NewsletterRecipientGroupMemberCollection;
             $aRecipients = $oGroupMembers->getRecipientsInGroup($iIDNewsGroup, false);
