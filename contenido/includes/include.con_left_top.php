@@ -291,7 +291,7 @@ $editCategory = new cGuiFoldingRow("31f52be2-7499-4d21-8175-3917129e6014", i18n(
 
 $divLegend = new cHTMLDiv("", "articleLegend", "legend-content");
 
-$aInformation = array('imgsrc', 'description');
+$aInformation = ['imgsrc', 'description'];
 if (empty($aData)) {
     $aData = [];
 }
@@ -326,7 +326,7 @@ $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_left_top']);
  *
  * @return array
  */
-function xmlFileToArray($filename, $aData = [], $aInformation)
+function xmlFileToArray($filename, $aData = [], $aInformation = [])
 {
     $_dom = simplexml_load_file($filename);
     for ($i = 0, $size = count($_dom); $i < $size; $i++) {

@@ -28,7 +28,7 @@ if (!isset($idcat)) {
 $edit = 'true';
 $scripts = '';
 // export only these content types
-$allowedContentTypes = array(
+$allowedContentTypes = [
     "CMS_HTMLHEAD",
     "CMS_HTML",
     "CMS_TEXT",
@@ -41,7 +41,7 @@ $allowedContentTypes = array(
     "CMS_IMG",
     "CMS_IMGDESCR",
     "CMS_TEASER"
-);
+];
 
 $versioning = new cContentVersioning();
 $versioningState = $versioning->getState();
@@ -52,7 +52,7 @@ $templateFile = cRegistry::getConfigValue('path', 'templates', '') . cRegistry::
 $page->setPageBase($templateFile);
 
 $jslibs = '';
-$aNotifications = array();
+$aNotifications = [];
 
 // Include wysiwyg editor class
 $wysiwygeditor = cWYSIWYGEditor::getCurrentWysiwygEditorName();
@@ -145,11 +145,11 @@ if (($action == 'savecontype' || $action == 10)) {
         if (isset($_REQUEST['idcontent']) && is_numeric($_REQUEST['idcontent'])) {
             $oContentColl = new cApiContentCollection();
 
-            $linkedTypes = array(
+            $linkedTypes = [
                 4 => 22, // if a CMS_IMG is deleted, the corresponding
                 // CMS_IMAGEEDITOR will be deleted too
                 22 => 4 // the same goes for the other way round
-            );
+            ];
 
             switch ($versioningState) {
                 case 'simple':
@@ -213,12 +213,12 @@ if (($action == 'savecontype' || $action == 10)) {
             $aNotifications[] = $notification->returnNotification("ok", i18n("Changes saved"));
 
             // Execute cec hook
-            cApiCecHook::execute('Contenido.Article.DeletecontentType', array(
+            cApiCecHook::execute('Contenido.Article.DeletecontentType', [
                 'idcontent' => (int) $_REQUEST['idcontent'],
                 'idart' => cRegistry::getArticleId(),
                 'idlang' => cRegistry::getArticleLanguageId(),
                 'idartlang' => cRegistry::getArticleLanguageId()
-            ));
+            ]);
 
             conGenerateCodeForArtInAllCategories($idart);
         }
@@ -351,7 +351,7 @@ if (($action == 'savecontype' || $action == 10)) {
 
                     // load article by artice id and language
                     $articleLanguage = new cApiArticleLanguage();
-                    $articleLanguage->loadByMany(array("idart" => $articleId, "idlang" => cRegistry::getLanguageId()));
+                    $articleLanguage->loadByMany(["idart" => $articleId, "idlang" => cRegistry::getLanguageId()]);
 
                     $versioning = new cContentVersioning();
                     $version = NULL;
@@ -414,7 +414,7 @@ if (($action == 'savecontype' || $action == 10)) {
                                         } else {
                                             if ($versioningState == 'simple' || $versioningState == 'disabled') {
                                                 $contentEntry = new cApiContent();
-                                                $contentEntry->loadByMany(array("idtype" => $typeEntry->get("idtype"), "typeid" => $typeid, "idartlang" => $articleLanguage->get('idartlang')));
+                                                $contentEntry->loadByMany(["idtype" => $typeEntry->get("idtype"), "typeid" => $typeid, "idartlang" => $articleLanguage->get('idartlang')]);
                                             } else if ($versioningState == 'advanced') {
                                                 $contentEntryVersionCollection = new cApiContentVersionCollection();
                                                 $where = 'idtype = ' . $typeEntry->get("idtype") . ' AND typeid = ' . $typeid . ' AND idartlang = ' . $articleLanguage->get('idartlang');
@@ -486,8 +486,8 @@ global $selectedArticleId;
 if ($_REQUEST['idArtLangVersion'] != NULL) {
     $selectedArticleId = $_REQUEST['idArtLangVersion'];
 }
-$result = array();
-$list = array();
+$result = [];
+$list = [];
 $articleType = $versioning->getArticleType(
     $_REQUEST['idArtLangVersion'],
     (int)$_REQUEST['idartlang'],
@@ -508,10 +508,10 @@ switch ($versioningState) {
                 $selectedArticleId = 'current';
 
                 // Execute cec hook
-                cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
-                ));
+                ]);
             }
         }
 
@@ -538,7 +538,7 @@ switch ($versioningState) {
 
         // check if selected version is availible, else select the next lower version
         $temp_id = $selectedArticleId;
-        $temp_ids = array();
+        $temp_ids = [];
 
         foreach (array_values($optionElementParameters) AS $key => $value) {
             $temp_ids[] = key($value);
@@ -619,12 +619,12 @@ switch ($versioningState) {
 
         // info button
         $versioningBoxInfoBtn = new cHTMLLink();
-        $versioningBoxInfoBtn->setAttributes(array(
+        $versioningBoxInfoBtn->setAttributes([
             'href' => '#',
             'id' => 'pluginInfoDetails-link',
             'class' => 'main i-link infoButton',
             'title' => ''
-        ));
+        ]);
         $versioningBoxContentChooserSpan->appendContent(' ');
         $versioningBoxContentChooserSpan->appendContent($versioningBoxInfoBtn);
 
@@ -663,10 +663,10 @@ switch ($versioningState) {
                 }
 
                 // Execute cec hook
-                cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
-                ));
+                ]);
             } else if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
                 $artLangVersion = new cApiArticleLanguageVersion((int)$_REQUEST['idArtLangVersion']);
                 $artLangVersion->markAsEditable('content');
@@ -674,10 +674,10 @@ switch ($versioningState) {
                 $selectedArticleId = 'editable';
 
                 // Execute cec hook
-                cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
-                ));
+                ]);
             } else if ($_REQUEST['idArtLangVersion'] == 'current') {
                 $artLang = new cApiArticleLanguage((int)$_REQUEST['idartlang']);
                 $artLang->markAsEditable('content');
@@ -685,10 +685,10 @@ switch ($versioningState) {
                 $selectedArticleId = 'editable';
 
                 // Execute cec hook
-                cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
-                ));
+                ]);
             }
         }
 
@@ -729,7 +729,7 @@ switch ($versioningState) {
 
         // check if selected version is availible, else select the next lower version
         $temp_id = $selectedArticleId;
-        $temp_ids = array();
+        $temp_ids = [];
 
         foreach (array_values($optionElementParameters) AS $key => $value) {
             $temp_ids[] = key($value);
@@ -801,12 +801,12 @@ switch ($versioningState) {
 
         // info button
         $versioningBoxInfoBtn = new cHTMLLink();
-        $versioningBoxInfoBtn->setAttributes(array(
+        $versioningBoxInfoBtn->setAttributes([
             'href' => '#',
             'id' => 'pluginInfoDetails-link',
             'class' => 'main i-link infoButton',
             'title' => ''
-        ));
+        ]);
         $versioningBoxContentChooserSpan->appendContent(' ');
         $versioningBoxContentChooserSpan->appendContent($versioningBoxInfoBtn);
 
@@ -880,7 +880,7 @@ $page->set('s', 'FRONTEND', cRegistry::getFrontendUrl());
 // Add tiny options
 if ('tinymce4' === $wysiwygeditor) {
     // set toolbar options for each CMS type that can be edited using a WYSIWYG editor
-    $aTinyOptions = array();
+    $aTinyOptions = [];
     $oTypeColl = new cApiTypeCollection();
     $oTypeColl->select();
     while (false !== ($typeEntry = $oTypeColl->next())) {
@@ -891,7 +891,7 @@ if ('tinymce4' === $wysiwygeditor) {
         if (false === class_exists($contentTypeClassName)) {
             continue;
         }
-        $cContentType = new $contentTypeClassName(null, 0, array());
+        $cContentType = new $contentTypeClassName(null, 0, []);
         if (false === $cContentType->isWysiwygCompatible()) {
             continue;
         }
@@ -1019,7 +1019,7 @@ cRegistry::shutdown();
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode, $articleType, $versioningState, $version)
+function _processCmsTags($list, $contentList, $saveKeywords, $layoutCode, $articleType, $versioningState, $version)
 {
     /*
      * NOTE: Variables below are required in included/evaluated content type codes!
@@ -1060,8 +1060,8 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
      * End: Variables required in content type codes
      */
 
-    $match = array();
-    $keycode = array();
+    $match = [];
+    $keycode = [];
 
     // $a_content is used by included/evaluated content type codes below
     $a_content = $contentList;
@@ -1071,7 +1071,7 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
         $list[0] = 0;
     }
 
-    $_typeList = array();
+    $_typeList = [];
     $oTypeColl = new cApiTypeCollection();
     $oTypeColl->select('idtype IN (' . implode(',', array_map(function ($i) {
             return (int)$i;
@@ -1094,8 +1094,8 @@ function _processCmsTags($list, $contentList, $saveKeywords = true, $layoutCode,
 
         $a_[$key] = $match[2]; //all typeids
 
-        $search = array();
-        $replacements = array();
+        $search = [];
+        $replacements = [];
 
         $backendPath = cRegistry::getBackendPath();
 
