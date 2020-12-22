@@ -106,7 +106,11 @@ abstract class cWYSIWYGEditor {
      *         to overwrite defined setting
      * @param bool $type Normally unused (counterpart of cTinyMCE4Editor::setSetting)
      */
-    public function setSetting($type = null, $key, $value, $forceSetting = false) {
+    public function setSetting($type = null, $key = null, $value = '', $forceSetting = false) {
+        if ($key === null) {
+            cWarning(__FILE__, __LINE__, "Key can not be null");
+            return;
+        }
         if ($forceSetting || !array_key_exists($key, $this->_aSettings)) {
             $this->_aSettings[$key] = $value;
         }
@@ -192,7 +196,6 @@ abstract class cWYSIWYGEditor {
      * @throws cInvalidArgumentException
      */
     public static function saveConfig($config) {
-
         // specify filename scheme
         // for tinymce 4 this will be config.wysiwyg_tinymce4.php
         $configFile = 'config.wysiwyg_' . static::getCurrentWysiwygEditorName() . '.php';
@@ -209,10 +212,10 @@ abstract class cWYSIWYGEditor {
 
         // first try to write then check what went wrong in case of error
         if (true !== cFileHandler::write($configPath . $configFile, $content)) {
-            $erroneousSettings = array();
+            $erroneousSettings = [];
 
             // just pass back that the file could not be written
-            $erroneusSettings['saving'] = array('config_file' => 'wysiwyg config file could not be written');
+            $erroneusSettings['saving'] = ['config_file' => 'wysiwyg config file could not be written'];
             // write more detailed information with sensitive information such as full path into error log
             error_log('Error writing ' . $configPath . $configFile);
             return $erroneusSettings;
@@ -222,6 +225,6 @@ abstract class cWYSIWYGEditor {
         global $cfg;
         $cfg['wysiwyg'][static::getCurrentWysiwygEditorName()] = $config;
 
-        return array();
+        return [];
     }
 }
