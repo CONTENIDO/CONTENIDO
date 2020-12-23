@@ -26,6 +26,12 @@ if (!isset($syncfrom)) {
 if (!isset($idcat) || $idcat == '') {
     $idcat = 0;
 }
+if (!isset($sql)) {
+    $sql = '';
+}
+if (!isset($bNoArticle)) {
+    $bNoArticle = 'false';
+}
 
 $area = $_GET['area'];
 
