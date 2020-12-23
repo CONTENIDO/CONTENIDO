@@ -444,6 +444,99 @@ class cFileHandler {
     }
 
     /**
+     * Returns an array with information about the file, especially the file owner.
+     *
+     * The return array looks like this:
+     * [
+     *     // 's' for a socket, 'l' for a symbolic link, '-' for a regular file, 'b' 'block special',
+     *     // 'd' for a directory, 'c' 'character special', 'p' FIFO pipe, 'u' for unknown
+     *     'info' => $info,
+     *     'type' => $type, // A more descriptive version of $info
+     *     'owner' => [
+     *         'id' => $id, // the owner id
+     *         'read' => $read, // true if the owner is allowed to read the file
+     *         'write' => $write // true if the owner is allowed to write the file
+     *     ]
+     *     'group' => [
+     *         'id' => $id, // the owner group
+     *         'read' => $read, // true if the owner group is allowed to read the file
+     *         'write' => $write // true if the owner group is allowed to write the file
+     *     ]
+     *     'others' => [
+     *         'read' => $read, // true if others are allowed to read the file
+     *         'write' => $write // true if others are allowed to write the file
+     *     ]
+     * ]
+     *
+     * @param string $filename The path to the file
+     * @return array|bool The file info array or false if the file can't be accessed
+     */
+    public static function typeOwnerInfo($filename) {
+        if (!cFileHandler::exists($filename)) {
+            return false;
+        }
+
+        $oiFilePermissions = fileperms($filename);
+        if ($oiFilePermissions === false) {
+            return false;
+        }
+
+        switch (true) {
+            case (($oiFilePermissions & 0xC000) == 0xC000):
+                $info = 's';
+                $type = 'socket';
+                break;
+            case (($oiFilePermissions & 0xA000) == 0xA000):
+                $info = 'l';
+                $type = 'symbolic link';
+                break;
+            case (($oiFilePermissions & 0x8000) == 0x8000):
+                $info = '-';
+                $type = 'regular file';
+                break;
+            case (($oiFilePermissions & 0x6000) == 0x6000):
+                $info = 'b';
+                $type = 'block special';
+                break;
+            case (($oiFilePermissions & 0x4000) == 0x4000):
+                $info = 'd';
+                $type = 'directory';
+                break;
+            case (($oiFilePermissions & 0x2000) == 0x2000):
+                $info = 'c';
+                $type = 'character special';
+                break;
+            case (($oiFilePermissions & 0x1000) == 0x1000):
+                $info = 'p';
+                $type = 'FIFO pipe';
+                break;
+            default:
+                $info = 'u';
+                $type = 'Unknown';
+                break;
+        }
+
+        return [
+            'info' => $info,
+            'type' => $type,
+            'owner' => [
+                'read' => ($oiFilePermissions & 0x0100) ? true : false,
+                'write' => ($oiFilePermissions & 0x0080) ? true : false,
+                'id' => fileowner($filename),
+            ],
+            'group' => [
+                'read' => ($oiFilePermissions & 0x0020) ? true : false,
+                'write' => ($oiFilePermissions & 0x0010) ? true : false,
+                'id' => filegroup($filename),
+            ],
+            'others' => [
+                'read' => ($oiFilePermissions & 0x0004) ? true : false,
+                'write' => ($oiFilePermissions & 0x0002) ? true : false,
+            ],
+        ];
+    }
+
+    /**
      * Returns the extension of passed filename
      *
      * @param string $basename
@@ -569,4 +662,5 @@ class cFileHandler {
         $parts = explode('/', $fileName);
         return cString::findFirstPos(end($parts), '.') === 0;
     }
+
 }
