@@ -15,6 +15,8 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $cfg, $auth, $perm, $area, $frame;
+
 /**
  * Renders a select element with a label.
  *
@@ -40,9 +42,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 function renderSelectProperty($name, $possibleValues, $value, $label, $width = 328) {
     $auth = cRegistry::getAuth();
-    $return = [];
+    $return = [
+        'label' => '',
+        'input' => '',
+    ];
 
-    if (count($possibleValues) === 2 && (in_array('true', $possibleValues) && in_array('false', $possibleValues) || in_array('enabled', $possibleValues) && in_array('disabled', $possibleValues) || in_array('0', $possibleValues) && in_array('1', $possibleValues))) {
+    if (count($possibleValues) === 2 && (in_array('true', $possibleValues) && in_array('false', $possibleValues)
+        || in_array('enabled', $possibleValues) && in_array('disabled', $possibleValues)
+        || in_array('0', $possibleValues) && in_array('1', $possibleValues)))
+    {
         // render a checkbox if there are only the values true and false
         $checked = $value == 'true' || $value == '1' || $value == 'enabled';
         $html = new cHTMLCheckbox($name, $possibleValues[0], $name, $checked);
@@ -59,13 +67,13 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
             $html->appendOptionElement($element);
         }
 
-        //if (in_array($value, array('disabled', 'simple', 'advanced'))) {
+        //if (in_array($value, ['disabled', 'simple', 'advanced'])) {
         if ($name == 'versioning{_}enabled') {
             $html->setStyle('float:left;padding:3px;width:' . $width . 'px;');
             $return['label'] =
                 ' <div>
-                    <span style="width: 284px; display: inline-block; padding: 0px 0px 0px 2px; float:left;">
-                        <span style="margin: 0px 10px 0px 0px;">' . i18n("Article versioning") . ':' . '</span>
+                    <span style="width: 284px; display: inline-block; padding: 0 0 0 2px; float:left;">
+                        <span style="margin: 0 10px 0 0;">' . i18n("Article versioning") . ':' . '</span>
                         <a
                             href="#"
                             id="pluginInfoDetails-link"
@@ -103,7 +111,7 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
         $html->updateAttribute('disabled', 'true');
     }
 
-    //if (!in_array($value, array('disabled', 'simple', 'advanced'))) {
+    //if (!in_array($value, ['disabled', 'simple', 'advanced'])) {
     if ($name != 'versioning{_}enabled') {
         $return['input'] = $html->render();
     }
