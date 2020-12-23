@@ -66,8 +66,12 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
 
-        $this->_settings['linkeditor_title'] = utf8_decode($this->_settings['linkeditor_title']);
-        $this->_settings['linkeditor_title'] = conHtmlentities($this->_settings['linkeditor_title']);
+        if (isset($this->_settings['linkeditor_title'])) {
+            $this->_settings['linkeditor_title'] = utf8_decode($this->_settings['linkeditor_title']);
+            $this->_settings['linkeditor_title'] = conHtmlentities($this->_settings['linkeditor_title']);
+        } else {
+            $this->_settings['linkeditor_title'] = '';
+        }
 
         // if form is submitted, store the current teaser settings
         // notice: also check the ID of the content type (there could be more
