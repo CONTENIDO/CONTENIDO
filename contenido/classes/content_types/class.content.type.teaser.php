@@ -218,6 +218,13 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
         ) {
             $this->_settings['teaser_image_crop'] = 'false';
         }
+
+        // original image
+        if (!isset($this->_settings['teaser_image_original']) || cString::getStringLength($this->_settings['teaser_image_original']) == 0
+            || $this->_settings['teaser_image_original'] == 'false'
+        ) {
+            $this->_settings['teaser_image_original'] = 'false';
+        }
     }
 
     /**
