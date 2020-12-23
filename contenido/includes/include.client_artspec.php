@@ -16,6 +16,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $page = new cGuiPage("client_artspec");
 
+if (!isset($online)) {
+    $online = 0;
+}
+
 if ($action == "client_artspec_save") {
     if (!$perm->have_perm_area_action($area, $action)) {
         $notification->displayNotification("error", i18n("Permission denied"));
@@ -51,7 +55,6 @@ if ($action == "client_artspec_default") {
 $artspec = getArtspec();
 
 if (!empty($artspec)) {
-
     $backendUrl = cRegistry::getBackendUrl();
 
     $list = new cGuiList();
@@ -80,24 +83,24 @@ if (!empty($artspec)) {
     if (is_array($artspec)) {
         foreach ($artspec as $id => $tmp_artspec) {
             $link->setCustom("idartspec", $id);
-            $link->updateAttributes(array(
+            $link->updateAttributes([
                 'style' => 'padding:3'
-            ));
+            ]);
 
             $dlink->setCustom("idartspec", $id);
-            $dlink->updateAttributes(array(
+            $dlink->updateAttributes([
                 'style' => 'padding:3'
-            ));
+            ]);
 
             $olink->setCustom("idartspec", $id);
-            $olink->updateAttributes(array(
+            $olink->updateAttributes([
                 'style' => 'padding:3'
-            ));
+            ]);
 
             $defLink->setCustom("idartspec", $id);
-            $defLink->updateAttributes(array(
+            $defLink->updateAttributes([
                 'style' => 'padding:3'
-            ));
+            ]);
 
             if (($action == "client_artspec_edit") && ($idartspec == $id)) {
                 $form = new cHTMLForm("artspec");
@@ -155,7 +158,7 @@ $spacer = new cHTMLDiv();
 $spacer->setStyle("width: 1%");
 $spacer->setContent("<br>" . $form->render());
 
-$content = array();
+$content = [];
 if (!empty($list)) {
     $content[] = $list;
 }
@@ -163,5 +166,3 @@ $content[] = $spacer;
 $page->setContent($content);
 
 $page->render();
-
-?>

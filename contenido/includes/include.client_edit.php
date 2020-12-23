@@ -24,14 +24,6 @@ $page = new cGuiPage('client_edit', '', '0');
 $cApiPropertyColl = new cApiPropertyCollection();
 $cApiClient = new cApiClient();
 
-if ($action == 'client_new') {
-    $new = true;
-}
-
-if (!empty($idclient) && is_numeric($idclient)) {
-    $cApiClient->loadByPrimaryKey((int) $idclient);
-}
-
 // @TODO Find a general solution for this!
 if (defined('CON_STRIPSLASHES')) {
     $request = cString::stripSlashes($_REQUEST);
@@ -39,10 +31,22 @@ if (defined('CON_STRIPSLASHES')) {
     $request = $_REQUEST;
 }
 
-$clientname = $request['clientname'];
-$htmlpath = $request['htmlpath'];
-$frontendpath = $request['frontendpath'];
-$clientlogo = $request['clientlogo'];
+$idclient = isset($request['idclient']) ? cSecurity::toInteger($request['idclient']) : 0;
+$clientname = isset($request['clientname']) ? $request['clientname'] : '';
+$htmlpath = isset($request['htmlpath']) ? $request['htmlpath'] : '';
+$frontendpath = isset($request['frontendpath']) ? $request['frontendpath'] : '';
+$clientlogo = isset($request['clientlogo']) ? $request['clientlogo'] : '';
+$serverpath = isset($request['serverpath']) ? $request['serverpath'] : '';
+$active = isset($request['active']) && $request['active'] == 1 ? $request['active'] : '0';
+if ($action == 'client_new') {
+    $new = true;
+} else {
+    $new = isset($request['new']) && $request['new'] == '1' ? true : false;
+}
+
+if ($idclient) {
+    $cApiClient->loadByPrimaryKey($idclient);
+}
 
 $urlscheme = parse_url($htmlpath, PHP_URL_SCHEME);
 $valid = ($clientname != "" && $frontendpath != "" && ($urlscheme == 'http' || $urlscheme == 'https'));
@@ -52,27 +56,22 @@ if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && 
     $validPath = false;
     $pathExisted = false;
 
-    if (!cFileHandler::exists($request['frontendpath'])) {
-        $validPath = mkdir($request['frontendpath'], cDirHandler::getDefaultPermissions());
+    if (!cFileHandler::exists($frontendpath)) {
+        $validPath = mkdir($frontendpath, cDirHandler::getDefaultPermissions());
     } else {
         $pathExisted = true;
         $validPath = true;
     }
 
     $sNewNotification = '';
-    if ($active != '1') {
-        $active = '0';
-    }
 
-    if ($new == true && ($validPath == true || cFileHandler::exists($request['frontendpath']))) {
-
+    if ($new == true && ($validPath == true || cFileHandler::exists($frontendpath))) {
         // Create new client entry in clients table
         $cApiClientColl = new cApiClientCollection();
         $cApiClient = $cApiClientColl->create($clientname, $errsite_cat, $errsite_art);
 
         $idclient = $cApiClient->get('idclient');
         $cfgClient[$idclient]["name"] = $clientname;
-
 
         $sLangNotification = i18n('Notice: In order to use this client, you must create a new language for it.');
         $sTarget = $sess->url('frameset.php?area=lang&targetclient=' . $idclient);
@@ -91,7 +90,6 @@ if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && 
         if (cString::getPartOfString($htmlpath, cString::getStringLength($htmlpath) - 1) != '/') {
             $htmlpath .= '/';
         }
-
 
         $cApiPropertyColl->setValue('idclient', $idclient, 'backend', 'clientimage', $clientlogo);
 
@@ -190,7 +188,7 @@ if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && 
     }
 }
 
-if (isset($idclient)) {
+if ($idclient) {
     $htmlpath = $cfgClient[$idclient]['path']['htmlpath'];
     $serverpath = $cfgClient[$idclient]['path']['frontend'];
 }
@@ -213,13 +211,13 @@ $page->set('d', 'BRDRT', 1);
 $page->set('d', 'BRDRB', 0);
 
 $page->set('d', 'CATNAME', i18n("Client name"));
-$oTxtClient = new cHTMLTextbox("clientname", conHtmlSpecialChars(str_replace(array(
+$oTxtClient = new cHTMLTextbox("clientname", conHtmlSpecialChars(str_replace([
     '*/',
     '/*',
     '//',
     '\\',
     '"'
-), '', ($cApiClient->isLoaded())? $cApiClient->get("name") : $clientname)), 75, 255, "clientname");
+], '', ($cApiClient->isLoaded())? $cApiClient->get("name") : $clientname)), 75, 255, "clientname");
 $page->set('d', 'CATFIELD', $oTxtClient->render());
 $page->set('d', 'BRDRT', 0);
 $page->set('d', 'BRDRB', 1);
@@ -271,10 +269,10 @@ $page->set('d', 'BRDRB', 1);
 $page->next();
 
 // Flag to generate XHTML
-$aChoices = array(
+$aChoices = [
     'no' => i18n('No'),
     'yes' => i18n('Yes')
-);
+];
 
 $oXHTMLSelect = new cHTMLSelectElement('generate_xhtml');
 $oXHTMLSelect->autoFill($aChoices);
@@ -292,10 +290,10 @@ $page->set('d', 'BRDRB', 1);
 $page->next();
 
 // Flag to enable tracking
-$aChoices = array(
+$aChoices = [
     'on' => i18n('On'),
     'off' => i18n('Off')
-);
+];
 
 $oXHTMLSelect = new cHTMLSelectElement('statistic');
 $oXHTMLSelect->autoFill($aChoices);
