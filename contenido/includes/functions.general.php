@@ -24,8 +24,7 @@ cInclude('includes', 'functions.file.php');
  *
  * @author  Samuel Suther (alias "rethus")
  */
-function consoleLog($value, $method = 'log')
-{
+function consoleLog($value, $method = 'log') {
     $method = in_array($method, ['log', 'warn', 'error']) ? $method : 'log';
     $value  = json_encode($value);
     echo sprintf("<script>console.$method('$value');</script>");
@@ -374,7 +373,8 @@ function backToMainArea($send) {
         $parent = $oAreaColl->getParentAreaID($area);
 
         // Create url string
-        $url_str = 'main.php?' . 'area=' . $parent . '&' . 'idcat=' . $idcat . '&' . 'idart=' . $idart . '&' . 'idartlang=' . $idartlang . '&' . 'idcatart=' . $idcatart . '&' . 'force=1&' . 'frame=' . $frame;
+        $url_str = 'main.php?' . 'area=' . $parent . '&' . 'idcat=' . $idcat . '&' . 'idart=' . $idart . '&'
+            . 'idartlang=' . $idartlang . '&' . 'idcatart=' . $idcatart . '&' . 'force=1&' . 'frame=' . $frame;
         $url = $sess->url($url_str);
 
         // Redirect
@@ -465,14 +465,14 @@ function getAllClientsAndLanguages() {
                 c.idclient = b.idclient";
     $db->query($sql);
 
-    $aRs = array();
+    $aRs = [];
     while ($db->nextRecord()) {
-        $aRs[] = array(
+        $aRs[] = [
             'idlang' => $db->f('idlang'),
             'langname' => $db->f('langname'),
             'idclient' => $db->f('idclient'),
             'clientname' => $db->f('clientname')
-        );
+        ];
     }
     return $aRs;
 }
@@ -576,11 +576,10 @@ function htmldecode($string) {
  * @throws cInvalidArgumentException
  */
 function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
-
     global $cfg, $cfgClient, $errsite_idcat, $errsite_idart;
 
     if (!is_array($cfgClient)) {
-        $cfgClient = array();
+        $cfgClient = [];
     }
 
     if ($idclient != 0 && $htmlpath != '' && $frontendpath != '') {
@@ -589,8 +588,8 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
     }
 
     // remember paths as these will be lost otherwise
-    $htmlpaths = array();
-    $frontendpaths = array();
+    $htmlpaths = [];
+    $frontendpaths = [];
     foreach ($cfgClient as $id => $aclient) {
         if (is_array($aclient)) {
             $htmlpaths[$id] = $aclient["path"]["htmlpath"];
@@ -598,7 +597,7 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
         }
     }
     unset($cfgClient);
-    $cfgClient = array();
+    $cfgClient = [];
 
     // don't do that as the set of clients may have changed!
     // paths will be set in subsequent foreach instead.
@@ -628,11 +627,11 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
             $cfgClient[$iClient]["path"]["frontend"] = $frontendpaths[$iClient];
         }
 
-        $cfgClient[$iClient]['name'] = conHtmlSpecialChars(str_replace(array(
+        $cfgClient[$iClient]['name'] = conHtmlSpecialChars(str_replace([
             '*/',
             '/*',
             '//'
-        ), '', $db->f('name')));
+        ], '', $db->f('name')));
 
         $errsite_idcat[$iClient] = $db->f('errsite_cat');
         $errsite_idart[$iClient] = $db->f('errsite_art');
@@ -684,7 +683,7 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
         $cfgClient[$iClient]['version']['frontendpath'] = 'data/version/';
     }
 
-    $aConfigFileContent = array();
+    $aConfigFileContent = [];
     $aConfigFileContent[] = '<?php';
     $aConfigFileContent[] = 'global $cfgClient;';
     $aConfigFileContent[] = '';
@@ -831,7 +830,7 @@ function deleteSystemProperty($type, $name) {
  * @throws cException
  */
 function getSystemProperties($bGetPropId = false) {
-    $return = array();
+    $return = [];
 
     $systemPropColl = new cApiSystemPropertyCollection();
     $props = $systemPropColl->fetchAll('type ASC, name ASC, value ASC');
@@ -883,7 +882,7 @@ function getSystemProperty($type, $name) {
  * @throws cException
  */
 function getSystemPropertiesByType($type) {
-    $return = array();
+    $return = [];
 
     $systemPropColl = new cApiSystemPropertyCollection();
     $props = $systemPropColl->fetchByType($type);
@@ -954,11 +953,12 @@ function getEffectiveSettingsByType($type) {
  */
 function getArtspec() {
     global $db, $cfg, $lang, $client;
+
     $sql = "SELECT artspec, idartspec, online, artspecdefault FROM " . $cfg['tab']['art_spec'] . "
             WHERE client = " . (int) $client . " AND lang = " . (int) $lang . " ORDER BY artspec ASC";
     $db->query($sql);
 
-    $artspec = array();
+    $artspec = [];
 
     while ($db->nextRecord()) {
         $artspec[$db->f("idartspec")]['artspec'] = $db->f("artspec");
@@ -982,22 +982,22 @@ function addArtspec($artspectext, $online) {
     global $db, $cfg, $lang, $client;
 
     if (isset($_POST['idartspec'])) { // update
-        $fields = array(
+        $fields = [
             'artspec' => $artspectext,
             'online' => (int) $online
-        );
-        $where = array(
+        ];
+        $where = [
             'idartspec' => (int) $_POST['idartspec']
-        );
+        ];
         $sql = $db->buildUpdate($cfg['tab']['art_spec'], $fields, $where);
     } else {
-        $fields = array(
+        $fields = [
             'client' => (int) $client,
             'lang' => (int) $lang,
             'artspec' => $artspectext,
             'online' => 0,
             'artspecdefault' => 0
-        );
+        ];
         $sql = $db->buildInsert($cfg['tab']['art_spec'], $fields);
     }
     $db->query($sql);
@@ -1013,6 +1013,7 @@ function addArtspec($artspectext, $online) {
  */
 function deleteArtspec($idartspec) {
     global $db, $cfg;
+
     $sql = "DELETE FROM " . $cfg['tab']['art_spec'] . " WHERE idartspec = " . (int) $idartspec;
     $db->query($sql);
 
@@ -1035,6 +1036,7 @@ function deleteArtspec($idartspec) {
  */
 function setArtspecOnline($idartspec, $online) {
     global $db, $cfg;
+
     $sql = "UPDATE " . $cfg['tab']['art_spec'] . " SET online = " . (int) $online . " WHERE idartspec = " . (int) $idartspec;
     $db->query($sql);
 }
@@ -1052,6 +1054,7 @@ function setArtspecOnline($idartspec, $online) {
  */
 function setArtspecDefault($idartspec) {
     global $db, $cfg, $lang, $client;
+
     $sql = "UPDATE " . $cfg['tab']['art_spec'] . " SET artspecdefault=0 WHERE client = " . (int) $client . " AND lang = " . (int) $lang;
     $db->query($sql);
 
@@ -1140,7 +1143,7 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
 
     $db->query($sql);
 
-    $categories = array();
+    $categories = [];
 
     while ($db->nextRecord()) {
         $categories[$db->f("idcat")]["name"] = $db->f("name");
@@ -1192,7 +1195,7 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
  */
 function humanReadableSize($number) {
     $base = 1024;
-    $suffixes = array(
+    $suffixes = [
         'Bytes',
         'KiB',
         'MiB',
@@ -1200,7 +1203,7 @@ function humanReadableSize($number) {
         'TiB',
         'PiB',
         'EiB'
-    );
+    ];
 
     $usesuf = 0;
     $n = (float) $number; // Appears to be necessary to avoid rounding
@@ -1223,7 +1226,6 @@ function humanReadableSize($number) {
  * @return number
  */
 function machineReadableSize($sizeString) {
-
     // If sizeString is a integer value (i. e. 64242880), return it
     if (cSecurity::isInteger($sizeString)) {
         return $sizeString;
@@ -1293,7 +1295,7 @@ function scanPlugins($entity) {
     $pluginorder = getSystemProperty('plugin', $entity . '-pluginorder');
     $lastscantime = (int) getSystemProperty('plugin', $entity . '-lastscantime');
 
-    $plugins = array();
+    $plugins = [];
 
     // Fetch and trim the plugin order
     if ($pluginorder != '') {
@@ -1359,7 +1361,7 @@ function scanPlugins($entity) {
 function includePlugins($entity) {
     global $cfg;
 
-    if (is_array($cfg['plugins'][$entity])) {
+    if (isset($cfg['plugins'][$entity]) && is_array($cfg['plugins'][$entity])) {
         foreach ($cfg['plugins'][$entity] as $plugin) {
             plugin_include($entity, $plugin . '/' . $plugin . '.php');
         }
@@ -1376,13 +1378,13 @@ function callPluginStore($entity) {
     global $cfg;
 
     // Check out if there are any plugins
-    if (is_array($cfg['plugins'][$entity])) {
+    if (isset($cfg['plugins'][$entity]) && is_array($cfg['plugins'][$entity])) {
         foreach ($cfg['plugins'][$entity] as $plugin) {
             if (function_exists($entity . '_' . $plugin . '_wantedVariables') && function_exists($entity . '_' . $plugin . '_store')) {
                 $wantVariables = call_user_func($entity . '_' . $plugin . '_wantedVariables');
 
                 if (is_array($wantVariables)) {
-                    $varArray = array();
+                    $varArray = [];
                     foreach ($wantVariables as $value) {
                         $varArray[$value] = stripslashes($GLOBALS[$value]);
                     }
@@ -1676,7 +1678,7 @@ function getNamedFrame($frame) {
  *
  * @throws cInvalidArgumentException
  */
-function startTiming($function, $parameters = array()) {
+function startTiming($function, $parameters = []) {
     global $_timings, $cfg;
 
     if ($cfg['debug']['functiontiming'] == false) {
@@ -1688,7 +1690,7 @@ function startTiming($function, $parameters = array()) {
 
     if (!is_array($parameters)) {
         cWarning(__FILE__, __LINE__, "Warning: startTiming's parameters parameter expects an array");
-        $parameters = array();
+        $parameters = [];
     }
 
     $_timings[$uuid]['parameters'] = $parameters;
@@ -1718,7 +1720,7 @@ function endAndLogTiming($uuid) {
 
     $timeSpent = $_timings[$uuid]['end'] - $_timings[$uuid]['start'];
 
-    $myparams = array();
+    $myparams = [];
 
     // Build nice representation of the function
     foreach ($_timings[$uuid]['parameters'] as $parameter) {
@@ -1778,7 +1780,7 @@ function sendEncodingHeader($db, $cfg, $lang, $contentType = 'text/html') {
     }
 
     if ($use_encoding != false) {
-        $aLanguageEncodings = array();
+        $aLanguageEncodings = [];
 
         $oLangColl = new cApiLanguageCollection();
         $oLangColl->select();
