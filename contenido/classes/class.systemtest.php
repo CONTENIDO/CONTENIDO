@@ -59,7 +59,7 @@ class cSystemtest {
     const C_SEVERITY_ERROR = 4;
 
     /**
-     * Possible result of cSystemtest::predictCorrectFilePermissions()
+     * Possible result of @see cSystemtest::predictCorrectFilePermissions()
      * The filepermissions are okay
      *
      * @var int
@@ -67,7 +67,7 @@ class cSystemtest {
     const CON_PREDICT_SUFFICIENT = 1;
 
     /**
-     * Possible result of cSystemtest::predictCorrectFilePermissions()
+     * Possible result of @see cSystemtest::predictCorrectFilePermissions()
      * The filepermissions are not predictable (we can't figure the server UID)
      *
      * @var int
@@ -75,7 +75,7 @@ class cSystemtest {
     const CON_PREDICT_NOTPREDICTABLE = 2;
 
     /**
-     * Possible result of cSystemtest::predictCorrectFilePermissions()
+     * Possible result of @see cSystemtest::predictCorrectFilePermissions()
      * The filepermissions for the owner have to be changed
      *
      * @var int
@@ -83,7 +83,7 @@ class cSystemtest {
     const CON_PREDICT_CHANGEPERM_SAMEOWNER = 3;
 
     /**
-     * Possible result of cSystemtest::predictCorrectFilePermissions()
+     * Possible result of @see cSystemtest::predictCorrectFilePermissions()
      * The filepermissions for the group have to be changed
      *
      * @var int
@@ -91,7 +91,7 @@ class cSystemtest {
     const CON_PREDICT_CHANGEPERM_SAMEGROUP = 4;
 
     /**
-     * Possible result of cSystemtest::predictCorrectFilePermissions()
+     * Possible result of @see cSystemtest::predictCorrectFilePermissions()
      * The filepermissions for others should be changed
      *
      * @var int
@@ -99,7 +99,7 @@ class cSystemtest {
     const CON_PREDICT_CHANGEPERM_OTHERS = 5;
 
     /**
-     * Possible result of cSystemtest::predictCorrectFilePermissions()
+     * Possible result of @see cSystemtest::predictCorrectFilePermissions()
      * The owner of the file should be changed
      *
      * @var int
@@ -107,7 +107,7 @@ class cSystemtest {
     const CON_PREDICT_CHANGEUSER = 6;
 
     /**
-     * Possible result of cSystemtest::predictCorrectFilePermissions()
+     * Possible result of @see cSystemtest::predictCorrectFilePermissions()
      * The group of the file should be changed
      *
      * @var int
@@ -115,12 +115,20 @@ class cSystemtest {
     const CON_PREDICT_CHANGEGROUP = 7;
 
     /**
-     * Possible result of cSystemtest::predictCorrectFilePermissions()
+     * Possible result of @see cSystemtest::predictCorrectFilePermissions()
      * The filepermissions are unpredictable because Windows
      *
      * @var int
      */
     const CON_PREDICT_WINDOWS = 8;
+
+    /**
+     * Possible result of @see cSystemtest::predictCorrectFilePermissions()
+     * Unknown filepermissions
+     *
+     * @var int
+     */
+    const CON_PREDICT_UNKNOWN = 9;
 
     /**
      * Possible result of cSystemtest::checkOpenBaseDir().
@@ -239,12 +247,12 @@ class cSystemtest {
     /**
      * The test results which are stored for display.
      * Every array element is an assoicative array like this:
-     * $_messages[$i] = array(
-     * "result" => $result, //true or false, success or no success
-     * "severity" => $severity, //one of the C_SEVERITY constants
-     * "headline" => $headline, //the headline of the message
-     * "message" => $message //the message
-     * );
+     * $_messages[$i] = [
+     *     "result" => $result, //true or false, success or no success
+     *     "severity" => $severity, //one of the C_SEVERITY constants
+     *     "headline" => $headline, //the headline of the message
+     *     "message" => $message //the message
+     * ];
      *
      * @var array
      */
@@ -406,26 +414,26 @@ class cSystemtest {
      * owner
      *
      * The return array looks like this:
-     * array(
-     * "info" => $info, //'s' for a socket, 'l' for a symbolic link, '-' for a
-     * regular file, 'b' "block special", 'd' for a directory, 'c' "character
-     * special", 'p' FIFO pipe, 'u' for unkown
-     * "type" => $type, //A more descriptive version of $info
-     * "owner" => array(
-     * "id" => $id, //the owner id
-     * "read" => $read, //true if the owner is allowed to read the file
-     * "write" => $write //true if the owner is allowed to write the file
-     * )
-     * "group" => array(
-     * "id" => $id, //the owner group
-     * "read" => $read, //true if the owner group is allowed to read the file
-     * "write" => $write //true if the owner group is allowed to write the file
-     * )
-     * "others" => array(
-     * "read" => $read, //true if others are allowed to read the file
-     * "write" => $write //true if others are allowed to write the file
-     * )
-     * )
+     * [
+     *     // 's' for a socket, 'l' for a symbolic link, '-' for a regular file, 'b' "block special",
+     *     // 'd' for a directory, 'c' "character special", 'p' FIFO pipe, 'u' for unknown
+     *     "info" => $info,
+     *     "type" => $type, // A more descriptive version of $info
+     *     "owner" => [
+     *         "id" => $id, // the owner id
+     *         "read" => $read, // true if the owner is allowed to read the file
+     *         "write" => $write // true if the owner is allowed to write the file
+     *     ]
+     *     "group" => [
+     *         "id" => $id, // the owner group
+     *         "read" => $read, // true if the owner group is allowed to read the file
+     *         "write" => $write // true if the owner group is allowed to write the file
+     *     ]
+     *     "others" => [
+     *         "read" => $read, // true if others are allowed to read the file
+     *         "write" => $write // true if others are allowed to write the file
+     *     ]
+     * ]
      *
      * @param string $sFilename
      *         The path to the file
@@ -648,6 +656,8 @@ class cSystemtest {
 
             return self::CON_PREDICT_CHANGEPERM_OTHERS;
         }
+
+        return self::CON_PREDICT_UNKNOWN;
     }
 
     /**
@@ -660,9 +670,7 @@ class cSystemtest {
      */
     protected function getPHPIniSetting($setting) {
         // Avoid errors if ini_get is in the disable_functions directive
-        $value = @ini_get($setting);
-
-        return $value;
+        return @ini_get($setting);
     }
 
     /**
@@ -682,17 +690,14 @@ class cSystemtest {
             case 'k':
             case 'K':
                 return (int) $val * 1024;
-                break;
             case 'm':
             case 'M':
                 return (int) $val * 1048576;
-                break;
             case 'g':
             case 'G':
                 return (int) $val * 1048576 * 1024;
-                break;
             default:
-                return $val;
+                return (int) $val;
         }
     }
 
@@ -1196,11 +1201,10 @@ class cSystemtest {
 
         $ret = true;
         foreach ($files as $key => $file) {
-
             $name = $file['filename'];
             $severity = $file['severity'];
-            $frontend = $file['frontend'];
-            $config = $file['config'];
+            $frontend = isset($file['frontend']) ? $file['frontend'] : false;
+            $config = isset($file['config']) ? $file['config'] : false;
 
             if (array_key_exists('frontend', $file) && $frontend != false) {
                 $ret = $this->testSingleFile($name, $severity, $frontend);
@@ -1215,17 +1219,17 @@ class cSystemtest {
         }
 
         if ($testFrontend) {
+            $isUpgrade = isset($_SESSION['setuptype']) && $_SESSION['setuptype'] == 'upgrade';
             foreach ($cfgClient as $oneClient) {
                 if (!is_array($oneClient)) {
                     continue;
                 }
                 foreach ($frontendFiles as $file) {
-
                     // If data/layouts or data/modules not exist, do not display an error message
                     // Cause: At CONTENIDO 4.8 both folders do not exist
                     // Only for upgrade mode
 
-                    if ($_SESSION['setuptype'] == 'upgrade' && ($file == "data/layouts" || $file == "data/modules") && !cDirHandler::exists($oneClient["path"]["frontend"] . $file)) {
+                    if ($isUpgrade && ($file == "data/layouts" || $file == "data/modules") && !cDirHandler::exists($oneClient["path"]["frontend"] . $file)) {
                         continue;
                     } else {
                         $ret = $this->testSingleFile($oneClient["path"]["frontend"] . $file, self::C_SEVERITY_WARNING, true);
