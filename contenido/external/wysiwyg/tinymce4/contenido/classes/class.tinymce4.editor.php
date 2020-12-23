@@ -676,7 +676,11 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * @param bool $forceSetting
      *      to overwrite defined setting
      */
-    public function setSetting($type, $key, $value, $forceSetting = false) {
+    public function setSetting($type = null, $key = null, $value = '', $forceSetting = false) {
+        if ($type === null || $key === null) {
+            cWarning(__FILE__, __LINE__, "Type and key can not be null");
+            return;
+        }
         if ($forceSetting || !array_key_exists($key, $this->_aSettings[$type])) {
             $this->_aSettings[$type][$key] = $value;
         }
