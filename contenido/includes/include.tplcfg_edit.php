@@ -15,8 +15,16 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $idart, $idcat, $lang, $cfg, $db, $client, $back, $send;
+
 if (!isset($idtpl)) {
     $idtpl = 0;
+}
+if (!isset($idtplcfg)) {
+    $idtplcfg = 0;
+}
+if (!isset($changetemplate)) {
+    $changetemplate = 0;
 }
 
 if ($idtpl != 0 && $idtplcfg != 0) {
@@ -71,9 +79,6 @@ if ($idtpl != 0 && $idtplcfg != 0) {
     }
 
     $idtplcfg = 0;
-    if (!isset($changetemplate)) {
-        $changetemplate = 0;
-    }
 
     if ($idcat != 0 && $changetemplate == 1 && !$idart) {
         // Category
@@ -144,5 +149,3 @@ if ($idtpl != 0 && $idtplcfg != 0) {
 
     conGenerateCodeForAllArtsInCategory($idcat);
 }
-
-?>

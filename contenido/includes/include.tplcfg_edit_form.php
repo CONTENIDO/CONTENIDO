@@ -24,6 +24,9 @@ $message = '';
 $description = '';
 $configLocked = false;
 $notificationMsg = '';
+$disabled = '';
+$artlang = null;
+$inUse = false;
 
 if (isset($idart)) {
     if ($idart > 0) {
@@ -273,7 +276,9 @@ $tpl2->set('s', 'CLASS', 'text_medium');
 
 // CON-2157 fix categorie page has no article
 if (!$perm->have_perm_area_action_item('con', 'con_changetemplate', $idcat) || is_object($artlang) && $artlang->get('locked') === 1 ) {
-    $disabled2 = ($admin)? '' : 'disabled="disabled"' ;
+    $disabled2 = ($admin) ? '' : 'disabled="disabled"' ;
+} else {
+    $disabled2 = '';
 }
 
 $tpl2->set('s', 'OPTIONS', $disabled . ' ' . $disabled2 . ' onchange="tplcfgform.changetemplate.value=1;tplcfgform.send.value=0;tplcfgform.submit();"');
@@ -329,7 +334,8 @@ foreach ($containerModules as $containerNumber => $containerModuleId) {
         $input = $contenidoModuleHandler->readInput() . "\n";
     }
 
-    $modulecode = cApiModule::processContainerInputCode($containerNumber, $containerConfigurations[$containerNumber], $input);
+    $containerConfig = isset($containerConfigurations[$containerNumber]) ? $containerConfigurations[$containerNumber] : '';
+    $modulecode = cApiModule::processContainerInputCode($containerNumber, $containerConfig, $input);
 
     ob_start();
     eval($modulecode);
@@ -472,5 +478,3 @@ $tpl->set('s', 'NOTIFICATION', $notificationMsg);
 
 // Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['tplcfg_edit_form']);
-
-?>
