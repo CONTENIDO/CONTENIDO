@@ -230,7 +230,8 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             }
             $this->setToolbar($cmsType, trim(cString::toLowerCase($sMode)));
 
-            $autoFullElements = $this->_aSettings[$cmsType]['auto_full_elements'];
+            $autoFullElements = isset($this->_aSettings[$cmsType]['auto_full_elements']) ?
+                $this->_aSettings[$cmsType]['auto_full_elements'] : false;
             if (true === isset($this->_aSettings[$cmsType]['auto_full_elements'])) {
                 unset($this->_aSettings[$cmsType]['auto_full_elements']);
             }
