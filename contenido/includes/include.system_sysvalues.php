@@ -14,6 +14,8 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $tpl, $cfg, $db, $cfgClient;
+
 $tpl->reset();
 
 // print out tmp_notifications if any action has been done
@@ -24,32 +26,32 @@ if (isset($tmp_notification)) {
 }
 
 // server configuration
-$aChecks = array(
+$aChecks = [
     1 => $cfg['path']['frontend'],
     2 => cRegistry::getBackendPath(),
     3 => $cfg['path']['all_wysiwyg'],
     4 => cRegistry::getBackendUrl(),
     5 => $cfg['path']['all_wysiwyg_html']
-);
+];
 
-$aServerConfiguration = array(
-    array(i18n('System environment'), CON_ENVIRONMENT),
-    array(i18n('Host name'), $_SERVER['HTTP_HOST'], 0),
-    array(i18n('CONTENIDO server path'), $cfg['path']['frontend'], 0),
-    array(i18n('CONTENIDO backend path'), cRegistry::getBackendPath(), 1),
-    array(i18n('CONTENIDO WYSIWYG repository path'), $cfg['path']['all_wysiwyg'], 2),
-    array(i18n('CONTENIDO WYSIWYG editor path'), $cfg['path']['wysiwyg'], 3),
-    array(i18n('CONTENIDO backend URL'),  cRegistry::getBackendUrl(), 0),
-    array(i18n('CONTENIDO WYSIWYG repository URL'), $cfg['path']['all_wysiwyg_html'], 4),
-    array(i18n('CONTENIDO WYSIWYG editor URL'), $cfg['path']['wysiwyg_html'], 5),
-);
+$aServerConfiguration = [
+    [i18n('System environment'), CON_ENVIRONMENT],
+    [i18n('Host name'), $_SERVER['HTTP_HOST'], 0],
+    [i18n('CONTENIDO server path'), $cfg['path']['frontend'], 0],
+    [i18n('CONTENIDO backend path'), cRegistry::getBackendPath(), 1],
+    [i18n('CONTENIDO WYSIWYG repository path'), $cfg['path']['all_wysiwyg'], 2],
+    [i18n('CONTENIDO WYSIWYG editor path'), $cfg['path']['wysiwyg'], 3],
+    [i18n('CONTENIDO backend URL'),  cRegistry::getBackendUrl(), 0],
+    [i18n('CONTENIDO WYSIWYG repository URL'), $cfg['path']['all_wysiwyg_html'], 4],
+    [i18n('CONTENIDO WYSIWYG editor URL'), $cfg['path']['wysiwyg_html'], 5],
+];
 
 $oTpl2 = new cTemplate();
 $oTpl2->set('s', 'HEADLINE', i18n('System configuration'));
 foreach ($aServerConfiguration as $aConfData) {
     $sValue = $aConfData[1];
 
-    if (isset($aChecks[$aConfData[2]])) {
+    if (isset($aConfData[2]) && isset($aChecks[$aConfData[2]])) {
         $sValue = str_replace(
             $aChecks[$aConfData[2]],
             '<span class="unhighlighted">' . $aChecks[$aConfData[2]] . '</span>',
@@ -68,17 +70,17 @@ $sServerConfiguration = $oTpl2->generate($cfg['path']['templates'] . $cfg['templ
 $tpl->set('s', 'SERVER_CONFIGURATION', $sServerConfiguration);
 
 // system statistics
-$aSystemStatistics = array(
-    array(i18n('Number of clients'), 'cApiClientCollection'),
-    array(i18n('Number of languages'), 'cApiLanguageCollection'),
-    array(i18n('Number of layouts'), 'cApiLayoutCollection'),
-    array(i18n('Number of modules'), 'cApiModuleCollection'),
-    array(i18n('Number of templates'), 'cApiTemplateCollection'),
-    array(i18n('Number of articles'), 'cApiArticleCollection'),
-    array(i18n('Number of categories'), 'cApiCategoryCollection'),
-    array(i18n('Number of users'), 'cApiUserCollection'),
-    array(i18n('Number of groups'), 'cApiGroupCollection'),
-);
+$aSystemStatistics = [
+    [i18n('Number of clients'), 'cApiClientCollection'],
+    [i18n('Number of languages'), 'cApiLanguageCollection'],
+    [i18n('Number of layouts'), 'cApiLayoutCollection'],
+    [i18n('Number of modules'), 'cApiModuleCollection'],
+    [i18n('Number of templates'), 'cApiTemplateCollection'],
+    [i18n('Number of articles'), 'cApiArticleCollection'],
+    [i18n('Number of categories'), 'cApiCategoryCollection'],
+    [i18n('Number of users'), 'cApiUserCollection'],
+    [i18n('Number of groups'), 'cApiGroupCollection'],
+];
 
 $oTpl2 = new cTemplate();
 $oTpl2->set('s', 'HEADLINE', i18n('System statistics (all clients)'));
@@ -100,13 +102,13 @@ $tpl->set('s', 'SYSTEM_STATISTICS', $sSystemStatistics);
 // installed versions
 $sql_server_info = $db->getServerInfo();
 
-$aInstalledVersions = array(
-    array(i18n('CONTENIDO version'), CON_VERSION),
-    array(i18n('Server operating system'), $_SERVER['SERVER_SOFTWARE']),
-    array(i18n('Installed PHP version'), phpversion()),
-    array(i18n('Database server version'), $sql_server_info['description']),
-    array(i18n('PHP database extension'), $cfg['database_extension'])
-);
+$aInstalledVersions = [
+    [i18n('CONTENIDO version'), CON_VERSION],
+    [i18n('Server operating system'), $_SERVER['SERVER_SOFTWARE']],
+    [i18n('Installed PHP version'), phpversion()],
+    [i18n('Database server version'), $sql_server_info['description']],
+    [i18n('PHP database extension'), $cfg['database_extension']]
+];
 
 $oTpl2 = new cTemplate();
 $oTpl2->set('s', 'HEADLINE', i18n('Installed versions'));
@@ -122,10 +124,10 @@ $sInstalledVersions = $oTpl2->generate($cfg['path']['templates'] . $cfg['templat
 $tpl->set('s', 'INSTALLED_VERSIONS', $sInstalledVersions);
 
 // php configuration
-$aPhpConfiguration = array(
+$aPhpConfiguration = [
     'date.timezone', 'include_path', 'memory_limit', 'upload_max_filesize', 'post_max_size',
     'max_execution_time', 'max_file_uploads', 'max_input_time',  'sql.safe_mode', 'disable_classes', 'disable_functions'
-);
+];
 
 $oTpl2 = new cTemplate();
 $oTpl2->set('s', 'HEADLINE', i18n('PHP configuration'));
@@ -134,17 +136,17 @@ foreach ($aPhpConfiguration as $sConfigName) {
 
     if ($sConfigName == 'disable_classes' || $sConfigName == 'disable_functions') {
         if ($sValue == '') {
-            $sValue = '<span class="settingFine">' . i18n('nothing disabled') . "</span>";
+            $sValue = '<span class="settingFine">' . i18n('nothing disabled') . '</span>';
         } else {
-            $sValue = '<span class="settingWrong">' . str_replace(',', ', ', $sValue) . "</span>";
+            $sValue = '<span class="settingWrong">' . str_replace(',', ', ', $sValue) . '</span>';
         }
     }
 
     if ($sConfigName == 'sql.safe_mode') {
         if ($sValue == 1) {
-            $sValue = '<span class="settingWrong">' . i18n('activated') . "</span>";
+            $sValue = '<span class="settingWrong">' . i18n('activated') . '</span>';
         } else {
-            $sValue = '<span class="settingFine">' . i18n('deactivated') . "</span>";
+            $sValue = '<span class="settingFine">' . i18n('deactivated') . '</span>';
         }
     }
 
@@ -176,11 +178,11 @@ while ($oItem = $oClientColl->next()) {
         $oTpl2->set('s', 'HEADLINE', i18n('Client') . ' ' . $oItem->get('name') . ' (' . $oItem->get('idclient') . ')');
         $oTpl2->set('s', 'ADDITIONAL', '');
 
-        $oTpl2->set('d', 'NAME', i18n("HTML path"));
+        $oTpl2->set('d', 'NAME', i18n('HTML path'));
         $oTpl2->set('d', 'VALUE', $htmlpath);
         $oTpl2->next();
 
-        $oTpl2->set('d', 'NAME', i18n("Frontend path"));
+        $oTpl2->set('d', 'NAME', i18n('Frontend path'));
         $oTpl2->set('d', 'VALUE', $frontendpath);
         $oTpl2->next();
 
@@ -188,7 +190,7 @@ while ($oItem = $oClientColl->next()) {
         $oClientLanguageColl->setWhere('idclient', $iIdClient);
         $oClientLanguageColl->query();
 
-        $aLanguages = array();
+        $aLanguages = [];
 
         if ($oClientLanguageColl->count() > 0) {
             while ($oClientLang = $oClientLanguageColl->next()) {
@@ -203,7 +205,7 @@ while ($oItem = $oClientColl->next()) {
             $sLanguages = i18n('No languages were found for this client');
         }
 
-        $oTpl2->set('d', 'NAME', i18n("language(s)"));
+        $oTpl2->set('d', 'NAME', i18n('language(s)'));
         $oTpl2->set('d', 'VALUE', $sLanguages);
         $oTpl2->next();
 
@@ -216,21 +218,26 @@ $tpl->set('s', 'CLIENTS', $sClients);
 
 $oTpl2 = new cTemplate();
 $oTpl2->set('s', 'HEADLINE', i18n('Database configuration'));
-$oTpl2->set("s", "ADDITIONAL", "");
+$oTpl2->set('s', 'ADDITIONAL', '');
 
-$readableName = array(
-    "host" => i18n("Host"),
-    "database" => i18n("Database"),
-    "user" => i18n("User"),
-    "charset" => i18n("Charset")
-);
+$readableName = [
+    'host' => i18n('Host'),
+    'database' => i18n('Database'),
+    'user' => i18n('User'),
+    'charset' => i18n('Charset'),
+    'options' => i18n('Options'),
+];
 
 foreach($cfg['db']['connection'] as $key => $value) {
-    if($key == "password") { // Skip password
+    if ($key === 'password') {
+        // Skip password
         continue;
     }
-    $oTpl2->set("d", "NAME", $readableName[$key]);
-    $oTpl2->set("d", "VALUE", $value);
+    if ($key === 'options') {
+        $value = '<pre>' . str_replace(' [3] ', ' MYSQLI_INIT_COMMAND ', print_r($value, true)) . '</pre>';
+    }
+    $oTpl2->set('d', 'NAME', $readableName[$key]);
+    $oTpl2->set('d', 'VALUE', $value);
     $oTpl2->next();
 }
 

@@ -39,7 +39,7 @@ class cFileHandler {
      *
      * @return bool
      *         true on success. Otherwise false.
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public static function create($filename, $content = '') {
@@ -62,11 +62,11 @@ class cFileHandler {
      *         this will be the first byte which is read.
      * @param bool $reverse [optional]
      *         if true, the function will start from the back of the file.
-     * 
+     *
      * @return string|bool
      *         On success it returns the bytes which have been read.
      *         Otherwise false.
-     *                      
+     *
      * @throws cInvalidArgumentException
      *         if the file with the given filename does not exist
      */
@@ -97,12 +97,12 @@ class cFileHandler {
      *         the number of lines to be read.
      * @param int $lineoffset [optional]
      *         this will be the first line which is read.
-     * 
+     *
      * @return string|array|bool
      *         If one line was read the function will return it.
      *         If more than one line was read the function will return an array
      *         containing the lines. Otherwise false is returned
-     *                        
+     *
      * @throws cInvalidArgumentException
      *         if the file with the given filename does not exist
      */
@@ -112,9 +112,7 @@ class cFileHandler {
         }
 
         $f = fopen($filename, 'r');
-
         if ($f === false) {
-            fclose($f);
             return false;
         }
         if ($lines == 0) {
@@ -127,7 +125,7 @@ class cFileHandler {
 
         $ret = NULL;
         if ($lines > 1) {
-            $ret = array();
+            $ret = [];
             for ($i = 0; $i < $lines; $i++) {
                 $temp = fgets($f);
                 if ($temp === false) {
@@ -154,10 +152,10 @@ class cFileHandler {
      *                       the data which should be written
      * @param bool   $append [optional]
      *                       if true the data will be appended to the file.
-     *                       
+     *
      * @return bool
      *                       true on success, false otherwise
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public static function write($filename, $content, $append = false) {
@@ -175,9 +173,7 @@ class cFileHandler {
     }
 
     /**
-     * Writes a line to a file (this is similar to
-     * cFileHandler::write($filename, $data."\n", $apppend)
-     *
+     * Writes a line (data with a new line character) to a file, similar to
      * @see cFileHandler::write($filename, $content, $append)
      *
      * @param string $filename
@@ -189,7 +185,7 @@ class cFileHandler {
      *
      * @return bool
      *         true on success, false otherwise
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public static function writeLine($filename, $content, $append = false) {
@@ -237,10 +233,10 @@ class cFileHandler {
      *
      * @param string $filename
      *         the name and path of the file
-     * 
+     *
      * @return bool
      *         true if the file is readable
-     * 
+     *
      * @throws cInvalidArgumentException
      *         if the file with the given filename does not exist
      */
@@ -257,10 +253,10 @@ class cFileHandler {
      *
      * @param string $filename
      *         the name and path of the file
-     * 
+     *
      * @return bool
      *         true on success
-     * 
+     *
      * @throws cInvalidArgumentException
      *         if the file with the given filename does not exist
      */
@@ -277,10 +273,10 @@ class cFileHandler {
      *
      * @param string $filename
      *         the name and path of the file
-     * 
+     *
      * @return bool
      *         true on success
-     * 
+     *
      * @throws cInvalidArgumentException
      *         if the file with the given filename does not exist
      */
@@ -304,10 +300,10 @@ class cFileHandler {
      * @param string $destination
      *         the destination. Note that the file can also be renamed in the
      *         process of moving it
-     * 
+     *
      * @return bool
      *         true on success
-     * 
+     *
      * @throws cInvalidArgumentException
      *         if the file with the given filename does not exist
      */
@@ -330,10 +326,10 @@ class cFileHandler {
      *         the name and path of the file
      * @param string $new_filename
      *         the new name of the file
-     * 
+     *
      * @return bool
      *         true on success
-     * 
+     *
      * @throws cInvalidArgumentException
      *         if the file with the given filename does not exist
      */
@@ -356,10 +352,10 @@ class cFileHandler {
      *         the name and path of the file
      * @param string $destination
      *         the destination. Note that existing files get overwritten
-     * 
+     *
      * @return bool
      *         true on success
-     * 
+     *
      * @throws cInvalidArgumentException
      *         if the file with the given filename does not exist
      */
@@ -382,10 +378,10 @@ class cFileHandler {
      *         the name and path of the file
      * @param int $mode
      *         the new access mode : php chmod needs octal value
-     * 
+     *
      * @return bool
      *         true on success
-     * 
+     *
      * @throws cInvalidArgumentException
      *         if the file with the given filename does not exist
      */
@@ -410,10 +406,10 @@ class cFileHandler {
      *
      * @param string $filename
      *         the name and path to the file
-     * 
+     *
      * @return array
      *         Returns an array containing information about the file
-     * 
+     *
      * @throws cInvalidArgumentException
      *         if the file with the given filename does not exist
      */
@@ -422,8 +418,7 @@ class cFileHandler {
             throw new cInvalidArgumentException('The file ' . $filename . ' could not be accessed because it does not exist.');
         }
 
-        $ret = array();
-
+        $ret = [];
         $ret['size'] = @filesize($filename);
         $ret['atime'] = @fileatime($filename);
         $ret['ctime'] = @filectime($filename);
@@ -449,6 +444,99 @@ class cFileHandler {
     }
 
     /**
+     * Returns an array with information about the file, especially the file owner.
+     *
+     * The return array looks like this:
+     * [
+     *     // 's' for a socket, 'l' for a symbolic link, '-' for a regular file, 'b' 'block special',
+     *     // 'd' for a directory, 'c' 'character special', 'p' FIFO pipe, 'u' for unknown
+     *     'info' => $info,
+     *     'type' => $type, // A more descriptive version of $info
+     *     'owner' => [
+     *         'id' => $id, // the owner id
+     *         'read' => $read, // true if the owner is allowed to read the file
+     *         'write' => $write // true if the owner is allowed to write the file
+     *     ]
+     *     'group' => [
+     *         'id' => $id, // the owner group
+     *         'read' => $read, // true if the owner group is allowed to read the file
+     *         'write' => $write // true if the owner group is allowed to write the file
+     *     ]
+     *     'others' => [
+     *         'read' => $read, // true if others are allowed to read the file
+     *         'write' => $write // true if others are allowed to write the file
+     *     ]
+     * ]
+     *
+     * @param string $filename The path to the file
+     * @return array|bool The file info array or false if the file can't be accessed
+     */
+    public static function typeOwnerInfo($filename) {
+        if (!cFileHandler::exists($filename)) {
+            return false;
+        }
+
+        $oiFilePermissions = fileperms($filename);
+        if ($oiFilePermissions === false) {
+            return false;
+        }
+
+        switch (true) {
+            case (($oiFilePermissions & 0xC000) == 0xC000):
+                $info = 's';
+                $type = 'socket';
+                break;
+            case (($oiFilePermissions & 0xA000) == 0xA000):
+                $info = 'l';
+                $type = 'symbolic link';
+                break;
+            case (($oiFilePermissions & 0x8000) == 0x8000):
+                $info = '-';
+                $type = 'regular file';
+                break;
+            case (($oiFilePermissions & 0x6000) == 0x6000):
+                $info = 'b';
+                $type = 'block special';
+                break;
+            case (($oiFilePermissions & 0x4000) == 0x4000):
+                $info = 'd';
+                $type = 'directory';
+                break;
+            case (($oiFilePermissions & 0x2000) == 0x2000):
+                $info = 'c';
+                $type = 'character special';
+                break;
+            case (($oiFilePermissions & 0x1000) == 0x1000):
+                $info = 'p';
+                $type = 'FIFO pipe';
+                break;
+            default:
+                $info = 'u';
+                $type = 'Unknown';
+                break;
+        }
+
+        return [
+            'info' => $info,
+            'type' => $type,
+            'owner' => [
+                'read' => ($oiFilePermissions & 0x0100) ? true : false,
+                'write' => ($oiFilePermissions & 0x0080) ? true : false,
+                'id' => fileowner($filename),
+            ],
+            'group' => [
+                'read' => ($oiFilePermissions & 0x0020) ? true : false,
+                'write' => ($oiFilePermissions & 0x0010) ? true : false,
+                'id' => filegroup($filename),
+            ],
+            'others' => [
+                'read' => ($oiFilePermissions & 0x0004) ? true : false,
+                'write' => ($oiFilePermissions & 0x0002) ? true : false,
+            ],
+        ];
+    }
+
+    /**
      * Returns the extension of passed filename
      *
      * @param string $basename
@@ -465,8 +553,7 @@ class cFileHandler {
      *
      * @return int
      */
-    public static function getDefaultPermissions()
-    {
+    public static function getDefaultPermissions() {
         $mode = cRegistry::getConfigValue('default_perms', 'file', self::DEFAULT_MODE);
 
         return intval($mode, 8);
@@ -483,8 +570,7 @@ class cFileHandler {
      *
      * @throws cInvalidArgumentException
      */
-    public static function setDefaultPermissions($filename)
-    {
+    public static function setDefaultPermissions($filename) {
         return self::chmod($filename, self::getDefaultPermissions());
     }
 
@@ -500,8 +586,7 @@ class cFileHandler {
      *
      * @throws cInvalidArgumentException
      */
-    public static function setDefaultFilePerms($filename)
-    {
+    public static function setDefaultFilePerms($filename) {
         return self::setDefaultPermissions($filename);
     }
 
@@ -515,7 +600,7 @@ class cFileHandler {
      *
      * @return bool
      *         true if the given filename is valid, false otherwise
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public static function validateFilename($filename, $notifyAndExitOnFailure = true) {
@@ -574,6 +659,8 @@ class cFileHandler {
      * @return bool
      */
     public static function fileNameBeginsWithDot($fileName) {
-        return cString::findFirstPos(end(explode('/', $fileName)), ".") === 0;
+        $parts = explode('/', $fileName);
+        return cString::findFirstPos(end($parts), '.') === 0;
     }
+
 }

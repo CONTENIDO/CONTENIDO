@@ -47,28 +47,28 @@ class cArticleCollector implements SeekableIterator, Countable {
      *
      * @var array
      */
-    protected $_options = array();
+    protected $_options = [];
 
     /**
      * Loaded articles.
      *
      * @var array
      */
-    protected $_articles = array();
+    protected $_articles = [];
 
     /**
      * Total paging data.
      *
      * @var array
      */
-    protected $_pages = array();
+    protected $_pages = [];
 
     /**
      * Start articles of the requested categories.
      *
      * @var array
      */
-    protected $_startArticles = array();
+    protected $_startArticles = [];
 
     /**
      * Current position for the iterator.
@@ -88,7 +88,7 @@ class cArticleCollector implements SeekableIterator, Countable {
      *
      * @throws cDbException
      */
-    public function __construct($options = array()) {
+    public function __construct($options = []) {
         $this->setOptions($options);
         $this->loadArticles();
     }
@@ -102,13 +102,13 @@ class cArticleCollector implements SeekableIterator, Countable {
      */
     public function setOptions($options) {
         if (isset($options['idcat']) && !isset($options['categories'])) {
-            $options['categories'] = array(
+            $options['categories'] = [
                     $options['idcat']
-            );
+            ];
         }
 
         if (isset($options['categories']) === false) {
-            $options['categories'] = array();
+            $options['categories'] = [];
         }
 
         if (isset($options['lang']) === false) {
@@ -135,7 +135,8 @@ class cArticleCollector implements SeekableIterator, Countable {
             $options['offlineonly'] = false;
         }
 
-        switch ($options['order']) {
+        $order = isset($options['order']) ? $options['order'] : '';
+        switch ($order) {
             case 'sortsequence':
                 $options['order'] = 'artsort';
                 break;
@@ -159,7 +160,7 @@ class cArticleCollector implements SeekableIterator, Countable {
         }
 
         if (isset($options['artspecs']) === false) {
-            $options['artspecs'] = array();
+            $options['artspecs'] = [];
         }
 
         if (isset($options['direction']) === false) {
@@ -183,7 +184,7 @@ class cArticleCollector implements SeekableIterator, Countable {
      * @throws cDbException
      */
     public function loadArticles() {
-        $this->_articles = array();
+        $this->_articles = [];
 
         $cfg = cRegistry::getConfig();
         $db  = cRegistry::getDb();
@@ -252,10 +253,10 @@ class cArticleCollector implements SeekableIterator, Countable {
         }
 
         // Execute cec hook
-        cApiCecHook::execute('Contenido.ArticleCollector.Articles', array(
+        cApiCecHook::execute('Contenido.ArticleCollector.Articles', [
             'idart' => cRegistry::getArticleId(),
             'articles' => $this->_articles
-        ));
+        ]);
     }
 
     /**
@@ -263,7 +264,7 @@ class cArticleCollector implements SeekableIterator, Countable {
      * article of a category. Does work only if one category was requested.
      *
      * @return cApiArticleLanguage
-     * 
+     *
      * @throws cBadMethodCallException
      */
     public function startArticle() {
@@ -309,7 +310,7 @@ class cArticleCollector implements SeekableIterator, Countable {
             if (is_array($this->_articles)) {
                 $this->_pages = array_chunk($this->_articles, $resPerPage);
             } else {
-                $this->_pages = array();
+                $this->_pages = [];
             }
         }
     }
@@ -334,7 +335,7 @@ class cArticleCollector implements SeekableIterator, Countable {
      *
      * @param int $position
      *         position to load
-     * 
+     *
      * @throws cOutOfBoundsException
      */
     public function seek($position) {

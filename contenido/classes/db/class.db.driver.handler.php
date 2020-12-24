@@ -77,33 +77,33 @@ abstract class cDbDriverHandler {
      *
      * @var array
      */
-    protected static $_defaultDbCfg = array();
+    protected static $_defaultDbCfg = [];
 
     /**
      * Assoziative list of database connections
      * @var array
      */
-    protected static $_connectionCache = array();
+    protected static $_connectionCache = [];
 
     /**
      * Assoziative list of database tables metadata
      * @var array
      */
-    protected static $_metaCache = array();
+    protected static $_metaCache = [];
 
     /**
      * Database connection configuration for current instance
      *
      * @var array
      */
-    protected $_dbCfg = array();
+    protected $_dbCfg = [];
 
     /**
-     * Halt status during occured errors.
+     * Halt status during occurred errors.
      * Feasible values are
      * - "yes" (halt with message)
      * - "no" (ignore errors quietly)
-     * - "report" (ignore errror, but spit a warning)
+     * - "report" (ignore error, but spit a warning)
      *
      * @var string
      */
@@ -121,7 +121,7 @@ abstract class cDbDriverHandler {
      *
      * @var array
      */
-    protected static $_profileData = array();
+    protected static $_profileData = [];
 
     /**
      * Constructor to create an instance of this class.
@@ -132,14 +132,14 @@ abstract class cDbDriverHandler {
      * will overwrite connection settings for current instance.
      *
      * @param array $options [optional]
-     *         Assoziative options as follows:
+     *         Associative options as follows:
      *         - $options['haltBehavior'] (string) Optional, halt behavior on
      *             occured errors
      *         - $options['haltMsgPrefix'] (string) Optional, Text to prepend to
      *             the halt message
      *         - $options['enableProfiling'] (bool) Optional, flag to enable
      *             profiling
-     *         - $options['connection'] (array) Optional, assoziative connection
+     *         - $options['connection'] (array) Optional, associative connection
      *             settings
      *         - $options['connection']['host'] (string) Hostname or ip
      *         - $options['connection']['database'] (string) Database name
@@ -147,7 +147,7 @@ abstract class cDbDriverHandler {
      *         - $options['connection']['password'] (string) User password
      * @throws cDbException
      */
-    public function __construct($options = array()) {
+    public function __construct($options = []) {
         // use default connection configuration, but overwrite it by passed
         // options
         $this->_dbCfg = array_merge(self::$_defaultDbCfg, $options);
@@ -203,7 +203,7 @@ abstract class cDbDriverHandler {
      * @return bool
      */
     public function isProfilingEnabled() {
-        return (bool) $this->_dbCfg['enableProfiling'];
+        return isset($this->_dbCfg['enableProfiling']) ? (bool) $this->_dbCfg['enableProfiling'] : false;
     }
 
     /**
@@ -316,9 +316,9 @@ abstract class cDbDriverHandler {
      * @param string $statement
      */
     protected static function _addProfileData($timeStart, $timeEnd, $statement) {
-        self::$_profileData[] = array(
+        self::$_profileData[] = [
             'time' => $timeEnd - $timeStart, 'query' => $statement
-        );
+        ];
     }
 
     /**
@@ -338,29 +338,26 @@ abstract class cDbDriverHandler {
      * Accepts multiple parameter, where the first parameter should be the query
      * and any additional parameter should be the values to replace in format
      * definitions.
-     * As an alternative the second parameter cound be also a indexed array with
+     * As an alternative the second parameter could be also a indexed array with
      * values to replace in format definitions.
      *
      * Other option is to call this function with the statement containing named
      * parameter
-     * and the second parameter as a assoziative array with key/value pairs to
+     * and the second parameter as a associative array with key/value pairs to
      * set in statement.
      *
      * Examples:
      * <pre>
      * // multiple parameter
-     * $sql = $obj->prepare('SELECT * FROM `%s` WHERE id = %d', 'tablename',
-     * 123);
+     * $sql = $obj->prepare('SELECT * FROM `%s` WHERE id = %d', 'tablename', 123);
      *
      * // 2 parameter where the first is the statement with formatting signs and
      * the second the entries array
-     * $sql = $obj->prepare('SELECT * FROM `%s` WHERE id = %d',
-     * array('tablename', 123));
+     * $sql = $obj->prepare('SELECT * FROM `%s` WHERE id = %d', ['tablename', 123]);
      *
      * // 2 parameter where the first is the statement with named parameter and
-     * the second the assoziative entries array
-     * $sql = $obj->prepare('SELECT * FROM `:mytab` WHERE id = :myid',
-     * array('mytab' => 'tablename', 'myid' => 123));
+     * the second the associative entries array
+     * $sql = $obj->prepare('SELECT * FROM `:mytab` WHERE id = :myid', ['mytab' => 'tablename', 'myid' => 123]);
      * </pre>
      *
      * Accepts additional unlimited parameter, where the parameter will be
@@ -420,10 +417,8 @@ abstract class cDbDriverHandler {
      *
      * Examples:
      * <pre>
-     * $obj->_prepareStatementF('SELECT * FROM `%s` WHERE id = %d', 'tablename',
-     * 123);
-     * $obj->_prepareStatementF('SELECT * FROM `%s` WHERE id = %d AND user =
-     * %d', 'tablename', 123, 3);
+     * $obj->_prepareStatementF('SELECT * FROM `%s` WHERE id = %d', 'tablename', 123);
+     * $obj->_prepareStatementF('SELECT * FROM `%s` WHERE id = %d AND user = %d', 'tablename', 123, 3);
      * </pre>
      *
      * @param string $statement
@@ -435,9 +430,9 @@ abstract class cDbDriverHandler {
      */
     protected function _prepareStatementF($statement, array $arguments) {
         if (count($arguments) > 0) {
-            $arguments = array_map(array(
+            $arguments = array_map([
                 $this, 'escape'
-            ), $arguments);
+            ], $arguments);
             array_unshift($arguments, $statement);
             $statement = call_user_func_array('sprintf', $arguments);
         }
@@ -450,18 +445,20 @@ abstract class cDbDriverHandler {
      *
      * Examples:
      * <pre>
-     * // named parameter and assoziative entries array
-     * $sql = $obj->_prepareStatementA('SELECT * FROM `:mytab` WHERE id =
-     * :myid', array('mytab' => 'tablename', 'myid' => 123));
-     * $sql = $obj->_prepareStatementA('SELECT * FROM `:mytab` WHERE id = :myid
-     * AND user = :myuser', array('mytab' => 'tablename', 'myid' => 123,
-     * 'myuser' => 3));
+     * // named parameter and associative entries array
+     * $sql = $obj->_prepareStatementA(
+     *     'SELECT * FROM `:mytab` WHERE id = :myid', ['mytab' => 'tablename', 'myid' => 123]
+     * );
+     * $sql = $obj->_prepareStatementA(
+     *     'SELECT * FROM `:mytab` WHERE id = :myid AND user = :myuser',
+     *     ['mytab' => 'tablename', 'myid' => 123, 'myuser' => 3]
+     * );
      * </pre>
      *
      * @param string $statement
      * @param array  $arguments
      *         Arguments array containing the query with named parameter and
-     *         assoziative entries array
+     *         associative entries array
      *
      * @return string
      */
@@ -512,12 +509,12 @@ abstract class cDbDriverHandler {
      * Example:
      * <pre>
      * $db = cRegistry::getDb();
-     * $fields = array(
-     * 'idcatart' => $idcatart,
-     * 'idlang' => $lang,
-     * 'idclient' => $client,
-     * 'code' => "<html>... code n' fun ...</html>",
-     * );
+     * $fields = [
+     *     'idcatart' => $idcatart,
+     *     'idlang' => $lang,
+     *     'idclient' => $client,
+     *     'code' => "<html>... code n' fun ...</html>",
+     * ];
      * $result = $db->insert($cfg['tab']['code'], $fields);
      * </pre>
      *
@@ -543,13 +540,13 @@ abstract class cDbDriverHandler {
      * Example:
      * <pre>
      * $db = cRegistry::getDb();
-     * $fields = array(
-     * 'idcode' => $idcode,
-     * 'idcatart' => $idcatart,
-     * 'idlang' => $lang,
-     * 'idclient' => $client,
-     * 'code' => "<html>... code n' fun ...</html>",
-     * );
+     * $fields = [
+     *     'idcode' => $idcode,
+     *     'idcatart' => $idcatart,
+     *     'idlang' => $lang,
+     *     'idclient' => $client,
+     *     'code' => "<html>... code n' fun ...</html>",
+     * ];
      * $statement = $db->buildInsert($cfg['tab']['code'], $fields);
      * $db->query($statement);
      * </pre>
@@ -557,7 +554,7 @@ abstract class cDbDriverHandler {
      * @param string $tableName
      *         The table name
      * @param array  $fields
-     *         Assoziative array of fields to insert
+     *         Associative array of fields to insert
      *
      * @return string
      */
@@ -573,17 +570,17 @@ abstract class cDbDriverHandler {
      * Example:
      * <pre>
      * $db = cRegistry::getDb();
-     * $fields = array('code' => "<html>... some new code n' fun ...</html>");
-     * $whereClauses = array('idcode' => 123);
+     * $fields = ['code' => "<html>... some new code n' fun ...</html>"];
+     * $whereClauses = ['idcode' => 123];
      * $result = $db->update($cfg['tab']['code'], $fields, $whereClauses);
      * </pre>
      *
      * @param string $tableName
      *         The table name
      * @param array  $fields
-     *         Assoziative array of fields to update
+     *         Associative array of fields to update
      * @param array  $whereClauses
-     *         Assoziative array of field in where clause.
+     *         Associative array of field in where clause.
      *         Multiple entries will be concatenated with AND
      * @return bool
      * @throws cDbException
@@ -602,19 +599,18 @@ abstract class cDbDriverHandler {
      * Example:
      * <pre>
      * $db = cRegistry::getDb();
-     * $fields = array('code' => "<html>... some new code n' fun ...</html>");
-     * $whereClauses = array('idcode' => 123);
-     * $statement = $db->buildUpdate($cfg['tab']['code'], $fields,
-     * $whereClauses);
+     * $fields = ['code' => "<html>... some new code n' fun ...</html>"];
+     * $whereClauses = ['idcode' => 123];
+     * $statement = $db->buildUpdate($cfg['tab']['code'], $fields, $whereClauses);
      * $db->query($statement);
      * </pre>
      *
      * @param string $tableName
      *         The table name
      * @param array  $fields
-     *         Assoziative array of fields to update
+     *         Associative array of fields to update
      * @param array  $whereClauses
-     *         Assoziative array of field in where clause.
+     *         Associative array of field in where clause.
      *         Multiple entries will be concatenated with AND
      * @return string
      */
@@ -629,12 +625,12 @@ abstract class cDbDriverHandler {
      * Accepts multiple parameter, where the first parameter should be the query
      * and any additional parameter should be the values to replace in format
      * definitions.
-     * As an alternative the second parameter cound be also a indexed array with
+     * As an alternative the second parameter could be also a indexed array with
      * values to replace in format definitions.
      *
      * Other option is to call this function with the statement containing named
      * parameter
-     * and the second parameter as a assoziative array with key/value pairs to
+     * and the second parameter as a associative array with key/value pairs to
      * set in statement.
      *
      * Examples:
@@ -647,12 +643,13 @@ abstract class cDbDriverHandler {
      *
      * // 2 parameter where the first is the statement with formatting signs and
      * the second the entries array
-     * $obj->query('SELECT * FROM `%s` WHERE id = %d', array('tablename', 123));
+     * $obj->query('SELECT * FROM `%s` WHERE id = %d', ['tablename', 123]);
      *
      * // 2 parameter where the first is the statement with named parameter and
-     * the second the assoziative entries array
-     * $obj->query('SELECT * FROM `:mytab` WHERE id = :myid', array('mytab' =>
-     * 'tablename', 'myid' => 123));
+     * the second the associative entries array
+     * $obj->query(
+     *     'SELECT * FROM `:mytab` WHERE id = :myid', ['mytab' => 'tablename', 'myid' => 123]
+     * );
      * </pre>
      *
      * Accepts additional unlimited parameter, where the parameter will be
@@ -802,7 +799,7 @@ abstract class cDbDriverHandler {
      * Moves the cursor (position inside current result sets).
      *
      * @param int $pos
-     *         The positon to move to inside the current result set
+     *         The position to move to inside the current result set
      * @return int
      * @throws cDbException
      */
@@ -860,7 +857,7 @@ abstract class cDbDriverHandler {
      * Returns names of existing tables.
      *
      * @return array|NULL
-     *         array containing assoziative table data as follows or NULL:
+     *         array containing associative table data as follows or NULL:
      *         - $info[$i]['table_name']
      *         - $info[$i]['tablespace_name']
      *         - $info[$i]['database']
@@ -875,8 +872,7 @@ abstract class cDbDriverHandler {
 
     /**
      * Returns information about DB server.
-     * The return value depends always on
-     * used DBMS.
+     * The return value depends always on used DBMS.
      *
      * @return array|NULL
      *         array as follows or NULL:
@@ -941,7 +937,7 @@ abstract class cDbDriverHandler {
                 break;
         }
 
-        $result = array();
+        $result = [];
         if (is_array($this->getRecord())) {
             foreach ($this->getRecord() as $key => $value) {
                 if ($fetchMode == self::FETCH_ASSOC && !is_numeric($key)) {

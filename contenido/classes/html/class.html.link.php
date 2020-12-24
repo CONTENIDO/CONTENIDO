@@ -255,9 +255,8 @@ class cHTMLLink extends cHTMLContentElement {
     public function getHref() {
         global $sess;
 
+        $custom = '';
         if (is_array($this->_custom)) {
-            $custom = '';
-
             foreach ($this->_custom as $key => $value) {
                 $custom .= "&$key=$value";
             }
@@ -283,17 +282,16 @@ class cHTMLLink extends cHTMLContentElement {
                 }
 
                 return $this->_link . $custom . $anchor;
-                break;
             case 'clink':
                 $this->disableAutomaticParameterAppend();
                 return 'main.php?area=' . $this->_targetarea . '&frame=' . $this->_targetframe . '&action=' . $this->_targetaction . $custom . '&contenido=' . $sess->id . $anchor;
-                break;
             case 'multilink':
                 $this->disableAutomaticParameterAppend();
                 $tmp_mstr = 'javascript:Con.multiLink(\'%s\',\'%s\',\'%s\',\'%s\');';
                 $mstr = sprintf($tmp_mstr, 'right_top', $sess->url('main.php?area=' . $this->_targetarea . '&frame=' . $this->_targetframe . '&action=' . $this->_targetaction . $custom), 'right_bottom', $sess->url('main.php?area=' . $this->_targetarea2 . '&frame=' . $this->_targetframe2 . '&action=' . $this->_targetaction2 . $custom));
                 return $mstr;
-                break;
+            default:
+                return '';
         }
     }
 

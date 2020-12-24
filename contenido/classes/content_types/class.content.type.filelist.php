@@ -33,7 +33,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      *
      * @var array
      */
-    private $_fileExtensions = array(
+    private $_fileExtensions = [
         'gif',
         'jpeg',
         'jpg',
@@ -44,30 +44,30 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         'txt',
         'zip',
         'ppt'
-    );
+    ];
 
     /**
      * Meta data identifiers.
      *
      * @var array
      */
-    private $_metaDataIdents = array(
+    private $_metaDataIdents = [
         'description' => 'Description',
         'medianame' => 'Media name',
         'copyright' => 'Copyright',
         'keywords' => 'Keywords',
         'internal_notice' => 'Internal notes'
-    );
+    ];
 
     /**
      * Date fields.
      *
      * @var array
      */
-    private $_dateFields = array(
+    private $_dateFields = [
         'ctime' => 'creationdate',
         'mtime' => 'modifydate'
-    );
+    ];
 
     /**
      * Placeholders for labels in frontend.
@@ -75,10 +75,10 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      *
      * @var array
      */
-    protected static $_translations = array(
+    protected static $_translations = [
         "LABEL_FILESIZE",
         "LABEL_UPLOAD_DATE"
-    );
+    ];
 
     /**
      * Constructor to create an instance of this class.
@@ -101,7 +101,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $this->_type = 'CMS_FILELIST';
         $this->_prefix = 'filelist';
         $this->_settingsType = 'xml';
-        $this->_formFields = array(
+        $this->_formFields = [
             'filelist_title',
             'filelist_style',
             'filelist_directories',
@@ -116,7 +116,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
             'filelist_ignore_extensions',
             'filelist_manual_files',
             'filelist_filecount'
-        );
+        ];
 
         // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
@@ -127,7 +127,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         }
 
         // dynamically add form fields based on the date fields
-        $dateFormFields = array();
+        $dateFormFields = [];
         foreach ($this->_dateFields as $dateField) {
             $this->_formFields[] = 'filelist_' . $dateField . 'filter_from';
             $dateFormFields[] = 'filelist_' . $dateField . 'filter_from';
@@ -138,8 +138,9 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         // if form is submitted, store the current file list settings
         // notice: there is also a need, that filelist_id is the same (case:
         // more than one cms file list is used on the same page
-        if (isset($_POST['filelist_action']) && $_POST['filelist_action'] === 'store' && isset($_POST['filelist_id']) && (int) $_POST['filelist_id'] == $this->_id) {
-
+        if (isset($_POST['filelist_action']) && $_POST['filelist_action'] === 'store'
+            && isset($_POST['filelist_id']) && (int) $_POST['filelist_id'] == $this->_id)
+        {
             // convert the date form fields to timestamps
             foreach ($dateFormFields as $dateFormField) {
                 $value = $_POST[$dateFormField];
@@ -181,17 +182,17 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     protected function _readSettings() {
         parent::_readSettings();
         // convert the timestamps to dates
-        $dateFormFields = array();
+        $dateFormFields = [];
         foreach ($this->_dateFields as $dateField) {
             $dateFormFields[] = 'filelist_' . $dateField . 'filter_from';
             $dateFormFields[] = 'filelist_' . $dateField . 'filter_to';
         }
         foreach ($dateFormFields as $dateFormField) {
-            $value = $this->_settings[$dateFormField];
-            if ($dateFormField == 0) {
+            $value = isset($this->_settings[$dateFormField]) ? cSecurity::toInteger($this->_settings[$dateFormField]) : 0;
+            if ($value == 0) {
                 $value = 'DD.MM.YYYY';
             } else {
-                $value = date('d.m.Y', $dateFormField);
+                $value = date('d.m.Y', $value);
             }
             $this->_settings[$dateFormField] = $value;
         }
@@ -202,15 +203,15 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      * the frontend.
      *
      * @return string
-     *         escaped HTML code which sould be shown if content type is shown in frontend
+     *         escaped HTML code which should be shown if content type is shown in frontend
      */
     public function generateViewCode() {
         $code = '";?><?php
                     $fileList = new cContentTypeFilelist(\'%s\', %s, %s);
                     echo $fileList->generateFileListCode();
                  ?><?php echo "';
-        // escape ' to avoid accidently ending the string in $code
-        $code = sprintf($code, str_replace('\'', '\\\'', $this->_rawSettings), $this->_id, 'array()');
+        // escape ' to avoid accidentally ending the string in $code
+        $code = sprintf($code, str_replace('\'', '\\\'', $this->_rawSettings), $this->_id, '[]');
 
         return $code;
     }
@@ -419,7 +420,10 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                 $fileSize = $fileStats['size'];
 
                 $fileSizeMib = $fileSize / 1024 / 1024;
-                if (($this->_settings['filelist_filesizefilter_from'] == 0 && $this->_settings['filelist_filesizefilter_to'] == 0) || ($this->_settings['filelist_filesizefilter_from'] <= $fileSizeMib && $this->_settings['filelist_filesizefilter_to'] >= $fileSizeMib)) {
+                if (($this->_settings['filelist_filesizefilter_from'] == 0
+                    && $this->_settings['filelist_filesizefilter_to'] == 0) ||
+                    ($this->_settings['filelist_filesizefilter_from'] <= $fileSizeMib && $this->_settings['filelist_filesizefilter_to'] >= $fileSizeMib))
+                {
 
                     if ($this->_applyDateFilters($fileStats)) {
                         $creationDate = $fileStats['ctime'];
@@ -606,12 +610,12 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $codeTop = $templateTop->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_top.html', true);
 
         // define the available tabs
-        $tabMenu = array(
+        $tabMenu = [
             'directories' => i18n('Directories'),
             'general' => i18n('General'),
             'filter' => i18n('Filter'),
             'manual' => i18n('Manual')
-        );
+        ];
 
         // construct the bottom code of the template
         $templateBottom = new cTemplate();
@@ -646,17 +650,17 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     private function _generateTabDirectories() {
         // wrapper containing content of directories tab
         $wrapper = new cHTMLDiv();
-        $wrapperContent = array();
+        $wrapperContent = [];
 
         $wrapperContent[] = new cHTMLParagraph(i18n('Source directory'), 'head_sub');
 
         $directoryList = new cHTMLDiv('', 'directoryList', 'directoryList' . '_' . $this->_id);
         $liRoot = new cHTMLListItem('root', 'root last');
         $directoryListCode = $this->generateDirectoryList($this->buildDirectoryList());
-        $liRoot->setContent(array(
+        $liRoot->setContent([
             '<em>Uploads</em>',
             $directoryListCode
-        ));
+        ]);
         $conStrTree = new cHTMLList('ul', 'con_str_tree', 'con_str_tree', $liRoot);
         $directoryList->setContent($conStrTree);
         $wrapperContent[] = $directoryList;
@@ -676,7 +680,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     private function _generateTabGeneral() {
         // wrapper containing content of general tab
         $wrapper = new cHTMLDiv();
-        $wrapperContent = array();
+        $wrapperContent = [];
 
         $wrapperContent[] = new cHTMLParagraph(i18n('General settings'), 'head_sub');
 
@@ -713,7 +717,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $htmlSelectOption = new cHTMLOptionElement(i18n('Default style'), 'cms_filelist_style_default.html', true);
         $htmlSelect->appendOptionElement($htmlSelectOption);
         $additionalOptions = getEffectiveSettingsByType('cms_filelist_style');
-        $options = array();
+        $options = [];
         foreach ($additionalOptions as $key => $value) {
             $options[$value] = $key;
         }
@@ -805,7 +809,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     private function _generateTabFilter() {
         // wrapper containing content of filter tab
         $wrapper = new cHTMLDiv();
-        $wrapperContent = array();
+        $wrapperContent = [];
 
         $wrapperContent[] = new cHTMLParagraph(i18n('Filter settings'), 'head_sub');
 
@@ -873,9 +877,9 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         }
 
         // set default values
-        $extensions = (is_array($this->_settings['filelist_extensions'])) ? $this->_settings['filelist_extensions'] : array(
+        $extensions = (is_array($this->_settings['filelist_extensions'])) ? $this->_settings['filelist_extensions'] : [
             $this->_settings['filelist_extensions']
-        );
+        ];
         $htmlSelect->setSelected($extensions);
         $htmlSelect->setMultiselect();
         $htmlSelect->setSize(5);
@@ -927,7 +931,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     private function _generateTabManual() {
         // wrapper containing content of manual tab
         $wrapper = new cHTMLDiv();
-        $wrapperContent = array();
+        $wrapperContent = [];
 
         $wrapperContent[] = new cHTMLParagraph(i18n('Manual settings'), 'head_sub');
 
@@ -937,7 +941,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $manualDiv = new cHTMLDiv();
         $manualDiv->setID('manual_filelist_setting');
         $manualDiv->appendStyleDefinition('display', 'none');
-        $divContent = array();
+        $divContent = [];
         $divContent[] = new cHTMLParagraph(i18n('Existing files'), 'head_sub');
         $divContent[] = $this->_generateExistingFileSelect();
         $divContent[] = new cHTMLSpan(i18n('Already configured entries can be deleted by using double click'), 'filelist_manual_' . $this->_id);
@@ -949,10 +953,10 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $directoryList = new cHTMLDiv('', 'directoryList', 'directoryList_' . $this->_id . '_manual');
         $liRoot = new cHTMLListItem('root', 'last');
         $directoryListCode = $this->generateDirectoryList($this->buildDirectoryList());
-        $liRoot->setContent(array(
+        $liRoot->setContent([
             '<em>Uploads</em>',
             $directoryListCode
-        ));
+        ]);
         $conStrTree = new cHTMLList('ul', 'con_str_tree', 'con_str_tree', $liRoot);
         $directoryList->setContent($conStrTree);
         $divContent[] = $directoryList;
@@ -980,8 +984,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      *         rendered cHTMLSelectElement
      */
     private function _generateExistingFileSelect() {
-        $tempSelectedFiles = $this->_settings['filelist_manual_files'];
-
+        // $tempSelectedFiles = $this->_settings['filelist_manual_files'];
         // Check if manual selected file exists, otherwise ignore them
         // Write only existing files into selectedFiles array
         // if (is_array($tempSelectedFiles)) {
@@ -1037,13 +1040,13 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     public function generateFileSelect($directoryPath = '') {
         $htmlSelect = new cHTMLSelectElement('filelist_filename_' . $this->_id, '', 'filelist_filename_' . $this->_id, false, null, '', 'filelist_filename');
 
-        $files = array();
+        $files = [];
         if ($directoryPath != '') {
             $handle = cDirHandler::read($this->_uploadPath . $directoryPath);
             if (false !== $handle) {
                 foreach ($handle as $entry) {
                     if (is_file($this->_uploadPath . $directoryPath . '/' . $entry)) {
-                        $file = array();
+                        $file = [];
                         $file["name"] = $entry;
                         $file["path"] = $directoryPath . "/" . $entry;
                         $files[] = $file;
@@ -1107,7 +1110,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
             $template->set('d', 'TITLE', $dirData['path'] . $dirData['name']);
             $template->set('d', 'DIRNAME', $dirData['name']);
 
-            $liClasses = array();
+            $liClasses = [];
             $template->set('d', 'SUBDIRLIST', $this->generateAjaxDirectoryList($dirData['sub']));
 
             if ($i === count($dirs)) {

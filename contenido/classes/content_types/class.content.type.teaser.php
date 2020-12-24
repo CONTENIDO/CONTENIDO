@@ -158,65 +158,72 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
     private function _setDefaultValues()
     {
         // character limit is 120 by default
-        if ((int)$this->_settings['teaser_character_limit'] == 0) {
+        if (!isset($this->_settings['teaser_character_limit']) || cSecurity::toInteger($this->_settings['teaser_character_limit']) == 0) {
             $this->_settings['teaser_character_limit'] = 120;
         }
 
         // teaser cont is 6 by default
-        if ((int)$this->_settings['teaser_count'] == 0) {
+        if (!isset($this->_settings['teaser_count']) || cSecurity::toInteger($this->_settings['teaser_count']) == 0) {
             $this->_settings['teaser_count'] = 6;
         }
 
         // teasersort is creationdate by default
-        if (cString::getStringLength($this->_settings['teaser_sort']) == 0) {
+        if (!isset($this->_settings['teaser_sort']) || cString::getStringLength($this->_settings['teaser_sort']) == 0) {
             $this->_settings['teaser_sort'] = 'creationdate';
         }
 
         // teaser style is liststyle by default
-        if (cString::getStringLength($this->_settings['teaser_style']) == 0) {
+        if (!isset($this->_settings['teaser_style']) || cString::getStringLength($this->_settings['teaser_style']) == 0) {
             $this->_settings['teaser_style'] = 'cms_teaser_slider.html';
         }
 
         // teaser image width default
-        if ((int)$this->_settings['teaser_image_width'] == 0) {
+        if (!isset($this->_settings['teaser_image_width']) || cSecurity::toInteger($this->_settings['teaser_image_width']) == 0) {
             $this->_settings['teaser_image_width'] = 100;
         }
 
         // teaser image height default
-        if ((int)$this->_settings['teaser_image_height'] == 0) {
+        if (!isset($this->_settings['teaser_image_height']) || cSecurity::toInteger($this->_settings['teaser_image_height']) == 0) {
             $this->_settings['teaser_image_height'] = 75;
         }
 
         // cms type head default
-        if (cString::getStringLength($this->_settings['teaser_source_head']) == 0) {
+        if (!isset($this->_settings['teaser_source_head']) || cString::getStringLength($this->_settings['teaser_source_head']) == 0) {
             $this->_settings['teaser_source_head'] = 'CMS_HTMLHEAD';
         }
 
         // cms type text default
-        if (cString::getStringLength($this->_settings['teaser_source_text']) == 0) {
+        if (!isset($this->_settings['teaser_source_text']) || cString::getStringLength($this->_settings['teaser_source_text']) == 0) {
             $this->_settings['teaser_source_text'] = 'CMS_HTML';
         }
 
         // cms type image default
-        if (cString::getStringLength($this->_settings['teaser_source_image']) == 0) {
+        if (!isset($this->_settings['teaser_source_image']) || cString::getStringLength($this->_settings['teaser_source_image']) == 0) {
             $this->_settings['teaser_source_image'] = 'CMS_IMG';
         }
 
         // cms type date default
-        if (cString::getStringLength($this->_settings['teaser_source_date']) == 0) {
+        if (!isset($this->_settings['teaser_source_date']) || cString::getStringLength($this->_settings['teaser_source_date']) == 0) {
             $this->_settings['teaser_source_date'] = 'CMS_DATE';
         }
 
         // sort order of teaser articles
-        if (cString::getStringLength($this->_settings['teaser_sort_order']) == 0) {
+        if (!isset($this->_settings['teaser_sort_order']) || cString::getStringLength($this->_settings['teaser_sort_order']) == 0) {
             $this->_settings['teaser_sort_order'] = 'asc';
         }
 
         // teaser image crop option
-        if (cString::getStringLength($this->_settings['teaser_image_crop']) == 0
+        if (!isset($this->_settings['teaser_image_crop']) || cString::getStringLength($this->_settings['teaser_image_crop']) == 0
             || $this->_settings['teaser_image_crop'] == 'false'
         ) {
             $this->_settings['teaser_image_crop'] = 'false';
+        }
+
+        // original image
+        if (!isset($this->_settings['teaser_image_original']) || cString::getStringLength($this->_settings['teaser_image_original']) == 0
+            || $this->_settings['teaser_image_original'] == 'false'
+        ) {
+            $this->_settings['teaser_image_original'] = 'false';
         }
     }
 

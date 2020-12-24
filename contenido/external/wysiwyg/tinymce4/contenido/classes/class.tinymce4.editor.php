@@ -230,7 +230,8 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             }
             $this->setToolbar($cmsType, trim(cString::toLowerCase($sMode)));
 
-            $autoFullElements = $this->_aSettings[$cmsType]['auto_full_elements'];
+            $autoFullElements = isset($this->_aSettings[$cmsType]['auto_full_elements']) ?
+                $this->_aSettings[$cmsType]['auto_full_elements'] : false;
             if (true === isset($this->_aSettings[$cmsType]['auto_full_elements'])) {
                 unset($this->_aSettings[$cmsType]['auto_full_elements']);
             }
@@ -676,7 +677,11 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * @param bool $forceSetting
      *      to overwrite defined setting
      */
-    public function setSetting($type, $key, $value, $forceSetting = false) {
+    public function setSetting($type = null, $key = null, $value = '', $forceSetting = false) {
+        if ($type === null || $key === null) {
+            cWarning(__FILE__, __LINE__, "Type and key can not be null");
+            return;
+        }
         if ($forceSetting || !array_key_exists($key, $this->_aSettings[$type])) {
             $this->_aSettings[$type][$key] = $value;
         }
@@ -710,8 +715,12 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
 
     /**
+     * Returns settings for inline editing.
      *
-     * @return string
+     * NOTE:
+     * @see cTinyMCEEditor::getConfigInlineEdit() returns string, this function returns an array.
+     *
+     * @return array
      */
     public function getConfigInlineEdit() {
         // Unused

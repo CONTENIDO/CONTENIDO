@@ -188,19 +188,21 @@ class cSession {
     /**
      * This function will go recursively through arrays and objects to serialize them.
      *
-     * @param  mixed  $var  The variable
+     * @param  mixed  $var  The variable to serialize
      * @param  string  $str  The PHP code will be attached to this string
      */
     protected function _rSerialize($var, &$str) {
-        static $t, $l, $k;
+        $t = null; // type
+        $l = null; // some variable
+        $k = null; // class instance
 
         // Determine the type of $$var
-        eval("\$t = gettype(\$$var);");
+        eval("\$t = isset(\${$var}) ? gettype(\${$var}) : NULL;");
         switch ($t) {
             case 'array':
                 // $$var is an array. Enumerate the elements and serialize them.
-                $str .= "\$$var = array(); ";
-                eval("\$l = array(); foreach(\$$var as \$k => \$v) {\$l[] = array(\$k,gettype(\$k),\$v);}");
+                $str .= "\${$var} = [];\n";
+                eval("\$l = []; foreach (\${$var} as \$k => \$v) { \$l[] = [\$k, gettype(\$k), \$v]; }");
                 foreach ($l as $item) {
                     // Structural recursion
                     $this->_rSerialize($var . "['" . preg_replace("/([\\'])/", "\\\\1", $item[0]) . "']", $str);
@@ -208,18 +210,18 @@ class cSession {
                 break;
             case 'object':
                 // $$var is an object. Enumerate the slots and serialize them.
-                eval("\$k = \$${var}->classname; \$l = reset(\$${var}->persistent_slots);");
-                $str .= "\$$var = new $k; ";
+                eval("\$k = \${$var}->classname; \$l = reset(\${$var}->persistent_slots);");
+                $str .= "\${$var} = new {$k}();\n";
                 while ($l) {
-                    // Structural recursion.
+                    // Structural recursion
                     $this->_rSerialize($var . "->" . $l, $str);
-                    eval("\$l = next(\$${var}->persistent_slots);");
+                    eval("\$l = next(\${$var}->persistent_slots);");
                 }
                 break;
             default:
-                // $$var is an atom. Extract it to $l, then generate code.
-                eval("\$l = \$$var;");
-                $str .= "\$$var = '" . preg_replace("/([\\'])/", "\\\\1", $l) . "'; ";
+                // $$var is an atom. Extract it to $l, then generate code
+                eval("\$l = isset(\${$var}) ? \${$var} : '';");
+                $str .= "\${$var} = '" . preg_replace("/([\\'])/", "\\\\1", $l) . "';\n";
                 break;
         }
     }
