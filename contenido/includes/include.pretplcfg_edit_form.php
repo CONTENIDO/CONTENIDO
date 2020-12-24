@@ -70,7 +70,8 @@ foreach ($containerModules as $containerNumber => $containerModuleId) {
         $input = $contenidoModuleHandler->readInput() . "\n";
     }
 
-    $modulecode = cApiModule::processContainerInputCode($containerNumber, $containerConfigurations[$containerNumber], $input);
+    $containerConfig = isset($containerConfigurations[$containerNumber]) ? $containerConfigurations[$containerNumber] : '';
+    $modulecode = cApiModule::processContainerInputCode($containerNumber, $containerConfig, $input);
 
     ob_start();
     eval($modulecode);
@@ -100,5 +101,3 @@ $tpl->set('s', 'BUTTONS', $buttons);
 
 // Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['tplcfg_edit_form']);
-
-?>
