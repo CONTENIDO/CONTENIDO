@@ -715,8 +715,12 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
 
     /**
+     * Returns settings for inline editing.
      *
-     * @return string
+     * NOTE:
+     * @see cTinyMCEEditor::getConfigInlineEdit() returns string, this function returns an array.
+     *
+     * @return array
      */
     public function getConfigInlineEdit() {
         // Unused
