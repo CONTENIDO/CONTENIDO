@@ -14,6 +14,9 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $action, $perm, $duplicate, $idart, $lang, $sourcelanguage, $_cecRegistry, $cfg, $currentuser, $client, $db;
+global $tpl, $sess, $auth, $contenido, $frame, $idtpl, $notification;
+
 cInclude('includes', 'functions.tpl.php');
 cInclude('includes', 'functions.str.php');
 cInclude('includes', 'functions.pathresolver.php');
@@ -30,6 +33,9 @@ if (!isset($syncfrom)) {
     $syncfrom = -1;
 }
 
+// TODO What was the purpose of this variable?
+$foreignlang = false;
+
 $syncoptions = $syncfrom;
 // CON-1752
 // init duplicate counter in session
@@ -42,7 +48,6 @@ global $selectedArticleId;
 $selectedArticleId = NULL;
 
 if ($action == 'con_duplicate' && ($perm->have_perm_area_action("con", "con_duplicate") || $perm->have_perm_area_action_item("con", "con_duplicate", $idcat))) {
-
     $count = (int) $_SESSION['count_duplicate'];
 
     // check if duplicate action was called from click or from back button
@@ -59,9 +64,9 @@ if ($action == 'con_syncarticle' && ($perm->have_perm_area_action("con", "con_sy
     if ($_POST['idarts']) {
         $idarts = json_decode($_POST['idarts'], true);
     } else {
-        $idarts = array(
+        $idarts = [
             $idart
-        );
+        ];
     }
 
     // Verify that the category is available in this language
@@ -75,7 +80,7 @@ if ($action == 'con_syncarticle' && ($perm->have_perm_area_action("con", "con_sy
 }
 
 // Which columns to display?
-$listColumns = array(
+$listColumns = [
     "mark" => i18n("Mark"),
     "start" => i18n("Article"),
     "title" => i18n("Title"),
@@ -84,17 +89,17 @@ $listColumns = array(
     "sortorder" => i18n("Sort order"),
     "template" => i18n("Template"),
     "actions" => i18n("Actions")
-);
+];
 
 // Which actions to display?
-$actionList = array(
+$actionList = [
     "online",
     "duplicate",
     "locked",
     "todo",
     "delete",
     "usetime"
-);
+];
 
 // Call chains to process the columns and the action list
 $_cecIterator = $_cecRegistry->getIterator("Contenido.ArticleList.Columns");
@@ -140,7 +145,20 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
     $col = new cApiInUseCollection();
 
-    if ((($idcat == 0 || $perm->have_perm_area_action('con')) && $perm->have_perm_item('str', $idcat)) || $perm->have_perm_area_action('con', 'con_makestart') || $perm->have_perm_area_action('con', 'con_makeonline') || $perm->have_perm_area_action('con', 'con_deleteart') || $perm->have_perm_area_action('con', 'con_tplcfg_edit') || $perm->have_perm_area_action('con', 'con_lock') || $perm->have_perm_area_action('con', 'con_makecatonline') || $perm->have_perm_area_action('con', 'con_changetemplate') || $perm->have_perm_area_action('con_editcontent', 'con_editart') || $perm->have_perm_area_action('con_editart', 'con_edit') || $perm->have_perm_area_action('con_editart', 'con_newart') || $perm->have_perm_area_action('con_editart', 'con_saveart') || $perm->have_perm_area_action('con_tplcfg', 'con_tplcfg_edit') || $perm->have_perm_area_action_item('con', 'con_makestart', $idcat) || $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat) || $perm->have_perm_area_action_item('con', 'con_deleteart', $idcat) || $perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat) || $perm->have_perm_area_action_item('con', 'con_lock', $idcat) || $perm->have_perm_area_action_item('con', 'con_makecatonline', $idcat) || $perm->have_perm_area_action_item('con', 'con_changetemplate', $idcat) || $perm->have_perm_area_action_item('con_editcontent', 'con_editart', $idcat) || $perm->have_perm_area_action_item('con_editart', 'con_edit', $idcat) || $perm->have_perm_area_action_item('con_editart', 'con_newart', $idcat) || $perm->have_perm_area_action_item('con_tplcfg', 'con_tplcfg_edit', $idcat) || $perm->have_perm_area_action_item('con_editart', 'con_saveart', $idcat)) {
+    if ((($idcat == 0 || $perm->have_perm_area_action('con')) && $perm->have_perm_item('str', $idcat))
+        || $perm->have_perm_area_action('con', 'con_makestart') || $perm->have_perm_area_action('con', 'con_makeonline')
+        || $perm->have_perm_area_action('con', 'con_deleteart') || $perm->have_perm_area_action('con', 'con_tplcfg_edit')
+        || $perm->have_perm_area_action('con', 'con_lock') || $perm->have_perm_area_action('con', 'con_makecatonline')
+        || $perm->have_perm_area_action('con', 'con_changetemplate') || $perm->have_perm_area_action('con_editcontent', 'con_editart')
+        || $perm->have_perm_area_action('con_editart', 'con_edit') || $perm->have_perm_area_action('con_editart', 'con_newart')
+        || $perm->have_perm_area_action('con_editart', 'con_saveart') || $perm->have_perm_area_action('con_tplcfg', 'con_tplcfg_edit')
+        || $perm->have_perm_area_action_item('con', 'con_makestart', $idcat) || $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat)
+        || $perm->have_perm_area_action_item('con', 'con_deleteart', $idcat) || $perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat)
+        || $perm->have_perm_area_action_item('con', 'con_lock', $idcat) || $perm->have_perm_area_action_item('con', 'con_makecatonline', $idcat)
+        || $perm->have_perm_area_action_item('con', 'con_changetemplate', $idcat) || $perm->have_perm_area_action_item('con_editcontent', 'con_editart', $idcat)
+        || $perm->have_perm_area_action_item('con_editart', 'con_edit', $idcat) || $perm->have_perm_area_action_item('con_editart', 'con_newart', $idcat)
+        || $perm->have_perm_area_action_item('con_tplcfg', 'con_tplcfg_edit', $idcat) || $perm->have_perm_area_action_item('con_editart', 'con_saveart', $idcat))
+    {
 
         // Simple SQL statement to get the number of articles in selected language
         $sql_count_in_selected_language = "SELECT
@@ -272,7 +290,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         // No article
         $no_article = true;
 
-        $aArticles = array();
+        $aArticles = [];
 
         while ($db->nextRecord()) {
             $sItem = "k" . $db->f("idart");
@@ -299,8 +317,8 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             }
         }
 
-        $artlist = array();
-        $colitem = array();
+        $artlist = [];
+        $colitem = [];
         $articlesOnline = 0;
         $articlesOffline = 0;
         $articlesLocked = 0;
@@ -665,7 +683,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                         $value = $a_tplname;
                         break;
                     case "actions":
-                        $actions = array();
+                        $actions = [];
                         foreach ($actionList as $actionItem) {
                             switch ($actionItem) {
                                 case "todo":
@@ -692,7 +710,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                                 default:
                                     // Ask chain about the entry
                                     $_cecIterator = $_cecRegistry->getIterator("Contenido.ArticleList.RenderAction");
-                                    $contents = array();
+                                    $contents = [];
                                     if ($_cecIterator->count() > 0) {
                                         while ($chainEntry = $_cecIterator->next()) {
                                             $contents[] = $chainEntry->execute($idcat, $idart, $idartlang, $actionItem);
@@ -719,11 +737,11 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                         $value = implode("\n", $actions);
                         break;
                     default:
-                        $contents = array();
+                        $contents = [];
                         // Call chain to retrieve value
                         $_cecIterator = $_cecRegistry->getIterator("Contenido.ArticleList.RenderColumn");
                         if ($_cecIterator->count() > 0) {
-                            $contents = array();
+                            $contents = [];
                             while ($chainEntry = $_cecIterator->next()) {
                                 $contents[] = $chainEntry->execute($idcat, $idart, $idartlang, $listColumn);
                             }
@@ -736,15 +754,15 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             unset($oArtLang);
         }
 
-        $headers = array();
+        $headers = [];
 
         // keep old keys so that saved user properties still work
-        $sortColumns = array(
+        $sortColumns = [
             'title' => 1,
             'changeddate' => 2,
             'publisheddate' => 3,
             'sortorder' => 4
-        );
+        ];
         foreach ($listColumns as $key => $listColumn) {
             // Dirty hack to force column widths
             $width = ($key == 'title' || $listColumn == i18n('Title')) ? '100%' : '1%';
@@ -828,8 +846,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         if (count($artlist) > 0) {
             foreach ($artlist as $key2 => $artitem) {
-
-                $cells = array();
+                $cells = [];
 
                 foreach ($listColumns as $key => $listColumn) {
                     // Description for hover effect
@@ -866,14 +883,14 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         }
 
         // Elements per Page select
-        $aElemPerPage = array(
+        $aElemPerPage = [
             0 => i18n("All"),
             10 => "10",
             25 => "25",
             50 => "50",
             75 => "75",
             100 => "100"
-        );
+        ];
 
         $tpl2 = new cTemplate();
         $tpl2->set('s', 'NAME', 'sort');
@@ -956,8 +973,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
          */
 
         if (($perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat)
-            || $perm->have_perm_area_action('con', 'con_tplcfg_edit'))
-            && (isset($foreignlang) && $foreignlang == false))
+            || $perm->have_perm_area_action('con', 'con_tplcfg_edit')) && $foreignlang == false)
         {
             if (0 != $idcat) {
                 $tpl->set('s', 'CATEGORY', $cat_name);
@@ -985,8 +1001,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         // New Article link
         if (($perm->have_perm_area_action('con_editart', 'con_newart')
-            || $perm->have_perm_area_action_item('con_editart', 'con_newart', $idcat))
-            && (isset($foreignlang) && $foreignlang == false))
+            || $perm->have_perm_area_action_item('con_editart', 'con_newart', $idcat)) && $foreignlang == false)
         {
             // check if category has an assigned template
             if ($idcat != 0 && $cat_idtpl != 0) {
