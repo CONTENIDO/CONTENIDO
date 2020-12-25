@@ -14,6 +14,8 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $idtpl, $notification;
+
 if (!isset($idtplcfg)) {
     // Load template configuration for current template, create it if not done before
     $tplItem = new cApiTemplate($idtpl);
@@ -32,10 +34,8 @@ if (!isset($idtplcfg)) {
 
 if (isset($idtplcfg)) {
     // Is form send
-    if ($x > 0) {
+    if (isset($x) && $x > 0) {
         tplProcessSendContainerConfiguration($idtpl, $idtplcfg, $_POST);
         $notification->displayNotification(cGuiNotification::LEVEL_OK, i18n("Saved changes successfully!"));
     }
 }
-
-?>

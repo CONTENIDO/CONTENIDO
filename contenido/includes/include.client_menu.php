@@ -27,14 +27,16 @@ if (!isset($action)) {
     $action = '';
 }
 
+$requestIdClient = isset($_GET['idclient']) ? cSecurity::toInteger($_GET['idclient']) : 0;
+
 if ($action == 'client_delete') {
     if ($perm->have_perm_area_action('client', 'client_delete')) {
-        $idclientdelete = (int) $_GET['idclientdelete'];
-        $clientColl->delete($idclientdelete);
-
-        $cfgClient[$idclientdelete] = NULL;
-
-        updateClientCache();
+        $idclientdelete = isset($_GET['idclientdelete']) ? cSecurity::toInteger($_GET['idclientdelete']) : 0;
+        if ($idclientdelete) {
+            $clientColl->delete($idclientdelete);
+            $cfgClient[$idclientdelete] = NULL;
+            updateClientCache();
+        }
     }
 }
 
@@ -44,7 +46,7 @@ while ($oClient = $clientColl->next()) {
     $idclient = $oClient->get('idclient');
     $name = $oClient->get('name');
     if ((cString::findFirstPos($auth->auth['perm'], "client[$idclient]") !== false) || (cString::findFirstPos($auth->auth['perm'], 'sysadmin') !== false)) {
-        if ($_GET['idclient'] == $idclient) {
+        if ($requestIdClient == $idclient) {
             $tpl->set('d', 'ID', 'id="marked" data-id="' . $idclient . '"');
         } else {
             $tpl->set('d', 'ID', 'data-id="' . $idclient . '"');

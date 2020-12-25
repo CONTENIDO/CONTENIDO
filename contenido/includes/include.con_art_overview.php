@@ -849,7 +849,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 }
                 $tpl->set('d', 'CELLS', implode("\n", $cells));
 
-                if ($colitem[$key2] == 'con_sync') {
+                if (isset($colitem[$key2]) && $colitem[$key2] == 'con_sync') {
                     $tpl->set('d', 'CSS_CLASS', 'class="con_sync row_mark"');
                 } else {
                     $tpl->set('d', 'CSS_CLASS', 'class="row_mark"');
@@ -955,10 +955,13 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
          * $lidcat))
          */
 
-        if (($perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat) || $perm->have_perm_area_action('con', 'con_tplcfg_edit')) && $foreignlang == false) {
+        if (($perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat)
+            || $perm->have_perm_area_action('con', 'con_tplcfg_edit'))
+            && (isset($foreignlang) && $foreignlang == false))
+        {
             if (0 != $idcat) {
                 $tpl->set('s', 'CATEGORY', $cat_name);
-                $tpl->set('s', 'CATEGORY_CONF', $tmp_img);
+                $tpl->set('s', 'CATEGORY_CONF', isset($tmp_img) ? $tmp_img : '');
                 $tpl->set('s', 'CATEGORY_LINK', $tmp_link);
             } else {
                 $tpl->set('s', 'CATEGORY', $cat_name);
@@ -981,7 +984,10 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         }
 
         // New Article link
-        if (($perm->have_perm_area_action('con_editart', 'con_newart') || $perm->have_perm_area_action_item('con_editart', 'con_newart', $idcat)) && $foreignlang == false) {
+        if (($perm->have_perm_area_action('con_editart', 'con_newart')
+            || $perm->have_perm_area_action_item('con_editart', 'con_newart', $idcat))
+            && (isset($foreignlang) && $foreignlang == false))
+        {
             // check if category has an assigned template
             if ($idcat != 0 && $cat_idtpl != 0) {
                 $tpl->set('s', 'NEWARTICLE_TEXT', '<a id="newArtTxt" href="' . $sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat") . '">' . i18n("Create new article") . '</a>');

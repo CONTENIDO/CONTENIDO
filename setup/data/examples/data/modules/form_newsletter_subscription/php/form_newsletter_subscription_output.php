@@ -126,7 +126,7 @@ if (class_exists('NewsletterJobCollection')) {
     $tpl->assign('LINKEDITOR', $cmsLinkeditor);
     $tpl->assign('PRIVACY_TEXT_PART1', mi18n("READ_AND_ACCEPT_1"));
 
-    $tpl->assign('PRIVACY_TEXT_PART2', mi18n("READ_AND_ACCEPT_2 "));
+    $tpl->assign('PRIVACY_TEXT_PART2', mi18n("READ_AND_ACCEPT_2"));
 
     $tpl->display($sTemplate);
 }

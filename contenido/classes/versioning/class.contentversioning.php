@@ -67,11 +67,9 @@ class cContentVersioning {
      * @return array $result[cms type][typeId] = value
      */
     public function sortResults(array $result) {
-
         uksort($result, function($a, $b) {
-
             // cms type sort sequence
-            $cmsType = array(
+            $cmsType = [
                 "CMS_HTMLHEAD",
                 "CMS_HEAD",
                 "CMS_HTML",
@@ -87,14 +85,12 @@ class cContentVersioning {
                 "CMS_TEASER",
                 "CMS_FILELIST",
                 "CMS_RAW"
-            );
+            ];
 
             return array_search($a, $cmsType) - array_search($b, $cmsType);
-
         });
 
         return $result;
-
     }
 
     /**
@@ -116,19 +112,17 @@ class cContentVersioning {
         } else {
             return date('d.m.Y, H:i\h', strtotime($lastModified));
         }
-
     }
 
     /**
      * Returns the current versioning state (disabled (default), simple, advanced).
      *
      * @return string $versioningState
-     *                
+     *
      * @throws cDbException
      * @throws cException
      */
     public static function getState() {
-
         static $versioningState;
 
         if (!isset($versioningState)) {
@@ -148,7 +142,6 @@ class cContentVersioning {
         }
 
         return $versioningState;
-
     }
 
     /**
@@ -167,7 +160,6 @@ class cContentVersioning {
      * @throws cException
      */
     public function getSelectedArticle($idArtLangVersion, $idArtLang, $articleType, $selectedArticleId = NULL) {
-
         $this->editableArticleId = $this->getEditableArticleId($idArtLang);
         $versioningState = $this->getState();
         $this->selectedArticle = NULL;
@@ -176,7 +168,7 @@ class cContentVersioning {
         }
 
         if (($articleType == 'version' || $articleType == 'editable') && ($versioningState == 'advanced')
-        || ($articleType == 'version' && $versioningState == 'simple')) {
+            || ($articleType == 'version' && $versioningState == 'simple')) {
             if (is_numeric($idArtLangVersion) && $articleType == 'version') {
                 $this->selectedArticle = new cApiArticleLanguageVersion($idArtLangVersion);
             } else if (isset($this->editableArticleId)) {
@@ -202,20 +194,19 @@ class cContentVersioning {
      * @throws cException
      */
     public function getList($idArtLang, $articleType) {
-
         $sql = 'SELECT DISTINCT b.idtype as idtype, b.type as name
                 FROM %s AS a, %s AS b
                 WHERE a.idartlang = %d AND a.idtype = b.idtype
                 ORDER BY idtype, name';
 
         if (($articleType == 'version' || $articleType == 'editable') && $this->getState() == 'advanced'
-                || $articleType == 'version' && $this->getState() == 'simple') {
+            || $articleType == 'version' && $this->getState() == 'simple') {
             $this->db->query($sql, cRegistry::getDbTableName('content_version'), cRegistry::getDbTableName('type'), $idArtLang);
         } else if ($articleType == 'current' || $articleType == 'editable' && $this->getState() != 'advanced') {
             $this->db->query($sql, cRegistry::getDbTableName('content'), cRegistry::getDbTableName('type'), $idArtLang);
         }
 
-        $list = array();
+        $list = [];
         while ($this->db->nextRecord()) {
             $list[$this->db->f('idtype')] = $this->db->f('name');
         }
@@ -230,7 +221,6 @@ class cContentVersioning {
      * @throws cDbException
      */
     public function getMaxIdContent() {
-
         $sql = 'SELECT max(idcontent) AS max FROM %s';
         $this->db->query($sql, cRegistry::getDbTableName('content'));
         $this->db->nextRecord();
@@ -252,7 +242,6 @@ class cContentVersioning {
      * @throws cException
      */
     public function getArticleType($idArtLangVersion, $idArtLang, $action, $selectedArticleId) {
-
         $this->editableArticleId = $this->getEditableArticleId($idArtLang);
 
         if ($this->getState() == 'disabled' // disabled
@@ -287,7 +276,6 @@ class cContentVersioning {
         }
 
         return $this->articleType;
-
     }
 
     /**
@@ -299,7 +287,6 @@ class cContentVersioning {
      * @return string
      */
     public function getVersionSelectionField($class, $selectElement, $copyToButton, $infoText) {
-
         // TODO avoid inline CSS!!!
         $versionselection = '
             <div class="%s">
@@ -341,9 +328,7 @@ class cContentVersioning {
      * @throws cException
      */
     public function getEditableArticleId($idArtLang) {
-
         if ($this->getState() == 'advanced') {
-
             $this->db->query(
                 'SELECT
                     max(idartlangversion) AS max
@@ -358,11 +343,8 @@ class cContentVersioning {
             $this->editableArticleId = $this->db->f('max');
 
             return $this->editableArticleId;
-
         } else if ($this->getState() == 'simple' || $this->getState() == 'disabled') {
-
             return $idArtLang;
-
         }
     }
 
@@ -380,13 +362,12 @@ class cContentVersioning {
      * @throws cDbException
      */
     public function getContentId($idArtLang, $typeId, $type, $versioningState, $articleType, $version) {
-
-        $idContent = array();
+        $idContent = [];
         $type = addslashes($type);
 
         if ($versioningState == 'simple' && $articleType != 'version'
-        || $versioningState == 'advanced' && $articleType == 'current'
-        || $versioningState == 'disabled') {
+            || $versioningState == 'advanced' && $articleType == 'current'
+            || $versioningState == 'disabled') {
             $this->db->query("
                 SELECT
                     a.idcontent
@@ -424,7 +405,6 @@ class cContentVersioning {
         }
 
         return $idContent;
-
     }
 
     /**
@@ -439,8 +419,7 @@ class cContentVersioning {
      * @throws cException
      */
     public function getDataForSelectElement($idArtLang, $selectElementType = '') {
-
-        $artLangVersionMap = array();
+        $artLangVersionMap = [];
 
         $artLangVersionColl = new cApiArticleLanguageVersionCollection();
         $artLangVersionColl->addResultField('version');
@@ -467,7 +446,7 @@ class cContentVersioning {
                 $table = $contentVersionColl->fetchTable($contentFields);
 
                 // add ...
-                $contentVersionMap = array();
+                $contentVersionMap = [];
                 foreach ($table AS $key => $item) {
                     $contentVersionMap[] = $item['version'];
                 }
@@ -491,7 +470,7 @@ class cContentVersioning {
                 $table = $metaVersionColl->fetchTable($metaFields);
 
                 // add ...
-                $metaVersionMap = array();
+                $metaVersionMap = [];
                 foreach ($table AS $key => $item) {
                     $metaVersionMap[] = $item['version'];
                 }
@@ -541,11 +520,10 @@ class cContentVersioning {
      * @throws cInvalidArgumentException
      */
     public function prepareContentForSaving($idartlang, cApiContent $content, $value) {
-
         // Through a CONTENIDO bug filelists save each of their changes multiple
         // times. Therefore its necessary to check if the same change already
         // has been saved and prevent multiple savings.
-        static $savedTypes = array();
+        static $savedTypes = [];
 
         $contentTypeIdent = $content->get('idartlang') . $content->get('idtype') . $content->get('typeid');
 
@@ -572,7 +550,7 @@ class cContentVersioning {
                     $idContent = $this->getMaxIdContent() + 1;
                 }
 
-                $parameters = array(
+                $parameters = [
                     'idcontent' => $idContent,
                     'idartlang' => $idartlang,
                     'idtype' => $content->get('idtype'),
@@ -581,7 +559,7 @@ class cContentVersioning {
                     'author' => $author,
                     'created' => $date,
                     'lastmodified' => $date
-                );
+                ];
 
                 $this->createContentVersion($parameters);
             case 'disabled':
@@ -625,7 +603,7 @@ class cContentVersioning {
                     $idContent = $this->getMaxIdContent() + 1;
                 }
 
-                $parameters = array(
+                $parameters = [
                     'idcontent' => $idContent,
                     'idartlang' => $idartlang,
                     'idtype' => $content->get('idtype'),
@@ -634,7 +612,7 @@ class cContentVersioning {
                     'author' => $author,
                     'created' => $date,
                     'lastmodified' => $date
-                );
+                ];
 
                 $this->createContentVersion($parameters);
             default:
@@ -646,18 +624,17 @@ class cContentVersioning {
      * Create new content version.
      *
      * @param mixed[] $parameters
-     *                            
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
     public function createContentVersion(array $parameters) {
-
         // set parameters for article language version
         $currentArticle = cRegistry::getArticleLanguage();
 
         // create new article language version and get the version number
-        $parametersArticleVersion = array(
+        $parametersArticleVersion = [
             'idartlang' => $currentArticle->getField('idartlang'),
             'idart' => $currentArticle->getField('idart'),
             'idlang' => $currentArticle->getField('idlang'),
@@ -692,7 +669,7 @@ class cContentVersioning {
             'searchable' => $currentArticle->getField('searchable'),
             'sitemapprio' => $currentArticle->getField('sitemapprio'),
             'changefreq' => $currentArticle->getField('changefreq')
-        );
+        ];
 
         $artLangVersion = $this->createArticleLanguageVersion($parametersArticleVersion);
 
@@ -728,9 +705,9 @@ class cContentVersioning {
      * Create new article language version.
      *
      * @param mixed[] $parameters
-     *                            
+     *
      * @return cApiArticleLanguageVersion
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @global int    $lang
@@ -739,7 +716,6 @@ class cContentVersioning {
      * @global string $page_title
      */
     public function createArticleLanguageVersion(array $parameters) {
-
         global $lang, $auth, $urlname, $page_title;
 
         // Some stuff for the redirect
@@ -775,7 +751,7 @@ class cContentVersioning {
         }
 
         // Set parameters for article language version
-        $artLangVersionParameters = array(
+        $artLangVersionParameters = [
             'idartlang' => $parameters['idartlang'],
             'idart' => $parameters['idart'],
             'idlang' => $lang,
@@ -810,7 +786,7 @@ class cContentVersioning {
             'searchable' => $parameters['searchable'],
             'sitemapprio' => $parameters['sitemapprio'],
             'changefreq' => $parameters['changefreq']
-        );
+        ];
 
         // Create article language version entry
         $artLangVersionColl = new cApiArticleLanguageVersionCollection();
@@ -827,15 +803,18 @@ class cContentVersioning {
             $artLang = new cApiArticleLanguage($parameters['idartlang']);
             $conType = new cApiType();
             $content = new cApiContent();
-            foreach ($artLang->getContent() AS $type => $typeids) {
-                foreach ($typeids AS $typeid => $value) {
-                    $conType->loadByType($type);
-                    $content->loadByArticleLanguageIdTypeAndTypeId(
-                        $parameters['idartlang'],
-                        $conType->get('idtype'),
-                        $typeid
-                    );
-                    $content->markAsEditable($artLangVersion->get('version'), 0);
+            $artLangContent = $artLang->getContent();
+            if (is_array($artLangContent)) {
+                foreach ($artLangContent as $type => $typeids) {
+                    foreach ($typeids as $typeid => $value) {
+                        $conType->loadByType($type);
+                        $content->loadByArticleLanguageIdTypeAndTypeId(
+                            $parameters['idartlang'],
+                            $conType->get('idtype'),
+                            $typeid
+                        );
+                        $content->markAsEditable($artLangVersion->get('version'), 0);
+                    }
                 }
             }
         }
@@ -869,9 +848,8 @@ class cContentVersioning {
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
-*/
+    */
     public function createMetaTagVersion(array $parameters) {
-
         $coll = new cApiMetaTagVersionCollection();
         $item = $coll->create(
             $parameters['idmetatag'],
@@ -879,9 +857,8 @@ class cContentVersioning {
             $parameters['idmetatype'],
             $parameters['value'],
             $parameters['version']
-        );;
+        );
 
         return $item;
-
     }
 }

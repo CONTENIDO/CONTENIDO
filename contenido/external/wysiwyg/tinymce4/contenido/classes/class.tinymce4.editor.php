@@ -73,7 +73,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      *
      * @var array
      */
-    private $_cmsTypes = array();
+    private $_cmsTypes = [];
 
     /**
      * Access key under which the wysiwyg editor settings will be stored
@@ -88,7 +88,6 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * @param string $editorContent
      */
     public function __construct($editorName, $editorContent) {
-
         $belang = cRegistry::getBackendLanguage();
         $client = cRegistry::getClientId();
         $cfgClient = cRegistry::getClientConfig();
@@ -97,10 +96,10 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
         parent::__construct($editorName, $editorContent);
         $this->_setEditor("tinymce4");
-        $this->_aSettings = array();
+        $this->_aSettings = [];
 
         // Retrieve all settings for tinymce 4
-        $this->_aSettings = cTinymce4Configuration::get(array(), 'tinymce4');
+        $this->_aSettings = cTinymce4Configuration::get([], 'tinymce4');
 
         // define empty arrays for all CMS types that can be edited using a WYSIWYG editor
         $oTypeColl = new cApiTypeCollection();
@@ -113,13 +112,13 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             if (false === class_exists($contentTypeClassName)) {
                 continue;
             }
-            $cContentType = new $contentTypeClassName(null, 0, array());
+            $cContentType = new $contentTypeClassName(null, 0, []);
             if (false === $cContentType->isWysiwygCompatible()) {
                 continue;
             }
 
             if (false === isset($this->_aSettings[$curType])) {
-                $this->_aSettings[$curType] = array();
+                $this->_aSettings[$curType] = [];
             }
             // cache allowed cms types
             $this->_cmsTypes[$curType] = true;
@@ -142,7 +141,6 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 unset($this->_aSettings[$curSettingKey]);
             }
         }
-
 
         // CEC for template pre processing
         $this->_aSettings = cApiCecHook::executeAndReturn('Contenido.WYSIWYG.LoadConfiguration', $this->_aSettings, $this->_sEditor);
@@ -230,9 +228,10 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             if (array_key_exists("contenido_toolbar_mode", $this->_aSettings[$cmsType])) {
                 $sMode = $this->_aSettings[$cmsType]["contenido_toolbar_mode"];
             }
-            $this->setToolbar($cmsType, trim(strtolower($sMode)));
+            $this->setToolbar($cmsType, trim(cString::toLowerCase($sMode)));
 
-            $autoFullElements = $this->_aSettings[$cmsType]['auto_full_elements'];
+            $autoFullElements = isset($this->_aSettings[$cmsType]['auto_full_elements']) ?
+                $this->_aSettings[$cmsType]['auto_full_elements'] : false;
             if (true === isset($this->_aSettings[$cmsType]['auto_full_elements'])) {
                 unset($this->_aSettings[$cmsType]['auto_full_elements']);
             }
@@ -278,9 +277,9 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * @return string
      */
     public function convertFormat($sInput) {
-        $aFormatCodes = array(
+        $aFormatCodes = [
             "y" => "%y", "Y" => "%Y", "d" => "%d", "m" => "%m", "H" => "%H", "h" => "%I", "i" => "%M", "s" => "%S", "a" => "%P", "A" => "%P"
-        );
+        ];
 
         foreach ($aFormatCodes as $sFormatCode => $sReplacement) {
             $sInput = str_replace($sFormatCode, $sReplacement, $sInput);
@@ -322,7 +321,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         $client = cRegistry::getClientId();
         $lang = cRegistry::getLanguageId();
 
-        $aLists = array();
+        $aLists = [];
         if (array_key_exists("contenido_lists", $this->_aSettings[$sType])) {
             $aLists = $this->_aSettings[$sType]["contenido_lists"];
         }
@@ -384,7 +383,6 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * @param string $mode
      */
     public function setToolbar($cmsType, $mode = "") {
-
         $cfgClient = cRegistry::getClientConfig();
         $client = cRegistry::getClientId();
 
@@ -422,7 +420,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $this->setSetting($cmsType, 'toolbar3', $defaultToolbar3, true);
                 $this->setSetting($cmsType, 'plugins',  $defaultPlugins,  true);
 
-                $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', $cmsType, 'tinymce4_full');
+                $aCustSettings = cTinymce4Configuration::get([], 'tinymce4', $cmsType, 'tinymce4_full');
                 foreach ($aCustSettings as $key => $value) {
                     $this->setSetting($cmsType, $key, $value, true);
                 }
@@ -449,7 +447,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 // load some plugins
                 $this->setSetting($cmsType, 'plugins', $defaultPlugins, true);
 
-                $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', $cmsType, 'tinymce4_fullscreen');
+                $aCustSettings = cTinymce4Configuration::get([], 'tinymce4', $cmsType, 'tinymce4_fullscreen');
 
                 foreach ($aCustSettings as $key => $value) {
                     $this->setSetting($cmsType, $key, $value, true);
@@ -464,7 +462,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
                 $this->setSetting($cmsType, "plugins", "anchor charmap code insertdatetime preview searchreplace print contextmenu paste directionality textcolor", true);
 
-                $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', $cmsType, 'tinymce4_simple');
+                $aCustSettings = cTinymce4Configuration::get([], 'tinymce4', $cmsType, 'tinymce4_simple');
                 foreach ($aCustSettings as $key => $value) {
                     $this->setSetting($cmsType, $key, $value, true);
                 }
@@ -478,7 +476,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
                 $this->setSetting($cmsType, "plugins", "contextmenu", true);
 
-                $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', $cmsType, 'tinymce4_mini');
+                $aCustSettings = cTinymce4Configuration::get([], 'tinymce4', $cmsType, 'tinymce4_mini');
                 foreach ($aCustSettings as $key => $value) {
                     $this->setSetting($cmsType, $key, $value, true);
                 }
@@ -486,7 +484,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 break;
 
             case "custom": // Custom toolbar
-                $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', $cmsType, 'tinymce4_custom');
+                $aCustSettings = cTinymce4Configuration::get([], 'tinymce4', $cmsType, 'tinymce4_custom');
                 foreach ($aCustSettings as $key => $value) {
                     $this->setSetting($cmsType, $key, $value, true);
                 }
@@ -526,7 +524,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $this->setSetting($cmsType, 'menubar', false);
                 $this->setSetting($cmsType, "content_css", $cfgClient[$client]["path"]["htmlpath"] . "css/style_tiny.css", true);
 
-                $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', $cmsType, 'tinymce4_inline');
+                $aCustSettings = cTinymce4Configuration::get([], 'tinymce4', $cmsType, 'tinymce4_inline');
                 foreach ($aCustSettings as $key => $value) {
                     $this->setSetting($cmsType, $key, $value, true);
                 }
@@ -539,7 +537,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $this->setSetting($cmsType, 'toolbar3', "", true);
                 $this->setSetting($cmsType, 'plugins', "anchor code contextmenu media paste table searchreplace textcolor", true);
 
-                $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', $cmsType, 'tinymce_default');
+                $aCustSettings = cTinymce4Configuration::get([], 'tinymce4', $cmsType, 'tinymce_default');
                 foreach ($aCustSettings as $key => $value) {
                     $this->setSetting($cmsType, $key, $value, true);
                 }
@@ -551,17 +549,16 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * @param string $cmsType
      */
     public function cleanURLs($cmsType) {
-
         $sess = cRegistry::getBackendSessionId();
 
         // Add the path to the following values
-        $aParameters = array(
+        $aParameters = [
             //builtin
             'content_css', 'popups_css', 'popups_css_add', 'editor_css', // plugins
             'plugin_preview_pageurl', //preview plugin
             'media_external_list_url', //media plugin
             'template_external_list_url' //template plugin
-        );
+        ];
 
         foreach ($aParameters as $sParameter) {
             if (array_key_exists($sParameter, $this->_aSettings[$cmsType])) {
@@ -570,10 +567,10 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         }
 
         // Session for template and media support files that are written in PHP
-        $aParameters = array(
+        $aParameters = [
             'media_external_list_url', //media plugin
             'template_external_list_url' //template plugin
-        );
+        ];
 
         foreach ($aParameters as $sParameter) {
             if (array_key_exists($sParameter, $this->_aSettings[$cmsType]) && preg_match('/\\.php$/i', $this->_aSettings[$cmsType][$sParameter])) {
@@ -588,7 +585,6 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * @return string
      */
     public function addPath($file) {
-
         $cfgClient = cRegistry::getClientConfig();
         $client = cRegistry::getClientId();
 
@@ -631,7 +627,6 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * @return string
      */
     public function getEditor() {
-
         $sess = cRegistry::getSession();
         $cfg = cRegistry::getConfig();
         $client = cRegistry::getClientId();
@@ -682,7 +677,11 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * @param bool $forceSetting
      *      to overwrite defined setting
      */
-    public function setSetting($type, $key, $value, $forceSetting = false) {
+    public function setSetting($type = null, $key = null, $value = '', $forceSetting = false) {
+        if ($type === null || $key === null) {
+            cWarning(__FILE__, __LINE__, "Type and key can not be null");
+            return;
+        }
         if ($forceSetting || !array_key_exists($key, $this->_aSettings[$type])) {
             $this->_aSettings[$type][$key] = $value;
         }
@@ -716,8 +715,12 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
 
     /**
+     * Returns settings for inline editing.
      *
-     * @return string
+     * NOTE:
+     * @see cTinyMCEEditor::getConfigInlineEdit() returns string, this function returns an array.
+     *
+     * @return array
      */
     public function getConfigInlineEdit() {
         // Unused
@@ -757,13 +760,11 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * @return array
      */
     public function getConfigFullscreen() {
-
         foreach ($this->_cmsTypes as $cmsType => $setting) {
             $this->setToolbar($cmsType, 'fullscreen');
         }
 
         return $this->_aSettings;
-
     }
 
     /**

@@ -112,7 +112,7 @@ function prepareWorkflowItems() {
         $idcatlang = getCatLang($modidcat, $lang);
 
         // associate workflow with category
-        if ($GLOBALS[$seltpl] != 0) {
+        if (isset($GLOBALS[$seltpl]) && $GLOBALS[$seltpl] != 0) {
             $wfa->select("idcatlang = '$idcatlang'");
             if (($item = $wfa->next()) !== false) {
                 $item->setWorkflow($GLOBALS[$seltpl]);
@@ -137,8 +137,8 @@ function prepareWorkflowItems() {
 
             if (($item = $wfa->next()) !== false) {
                 $alloc = $item->get("idallocation");
+                $wfa->delete($alloc);
             }
-            $wfa->delete($alloc);
 
             // delete user sequences for listing in tasklist for each included
             // article

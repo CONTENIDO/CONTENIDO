@@ -877,7 +877,7 @@ class PifaForm extends Item {
         }
         // read CSV from tmp file and delete it
         if (0 < $total) {
-            $csv = fread($tmpfile, $length);
+            $csv = (string) fread($tmpfile, $length);
             fclose($tmpfile);
         }
 

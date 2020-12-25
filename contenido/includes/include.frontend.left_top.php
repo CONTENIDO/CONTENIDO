@@ -14,9 +14,13 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $auth, $area, $cfg, $client, $perm, $sess;
+
 $tpl = new cTemplate();
 
 $user = new cApiUser($auth->auth["uid"]);
+
+$buttonRow = '';
 
 // Set default values
 $oUser = new cApiUser($auth->auth["uid"]);
@@ -33,20 +37,21 @@ if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST['page']) || $_REQUEST['pa
     $_REQUEST["page"] = 1;
 }
 
-$aFieldsToSearch = array(
+$aFieldsToSearch = [
     "--all--" => i18n("-- All fields --"),
     "username" => i18n("Username")
-);
-$aFieldsToSort = array(
+];
+$aFieldsToSort = [
     "username" => i18n("Username"),
     "created" => i18n("Created"),
     "modified" => i18n("Modified")
-);
+];
 
-$aFieldSources = array();
-$aFieldSources["username"] = "base";
-$aFieldSources["created"] = "created";
-$aFieldSources["modified"] = "modified";
+$aFieldSources = [
+    "username" => "base",
+    "created" => "created",
+    "modified" => "modified"
+];
 
 $bUsePlugins = getEffectiveSetting("frontendusers", "pluginsearch", "true");
 $bUsePlugins = ($bUsePlugins == "false") ? false : true;
@@ -59,7 +64,7 @@ if (is_array($cfg['plugins']['frontendusers'])) {
 
 $oFEUsers = new cApiFrontendUserCollection();
 
-$databaseFields = array();
+$databaseFields = [];
 
 // query the collection and fetch the first available item
 $oFEUsers->query();
@@ -76,7 +81,7 @@ if ($bUsePlugins == true && is_array($cfg['plugins']['frontendusers'])) {
     }
 
     $_sValidPlugins = getEffectiveSetting("frontendusers", "pluginsearch_valid_plugins", '');
-    $_aValidPlugins = array();
+    $_aValidPlugins = [];
 
     if (cString::getStringLength($_sValidPlugins) > 0) {
         $_aValidPlugins = explode(',', $_sValidPlugins);
@@ -113,10 +118,10 @@ if ($bUsePlugins == true && is_array($cfg['plugins']['frontendusers'])) {
     }
 }
 
-$aSortOrderOptions = array(
+$aSortOrderOptions = [
     "asc" => i18n("Ascending"),
     "desc" => i18n("Descending")
-);
+];
 
 /*
  * Buttons
@@ -198,12 +203,12 @@ if (isset($_GET['filterrow']) && $_GET['filterrow'] == 'collapsed') {
 
 $tpl->set('s', 'LISTOPTIONLINK', $listOptionLink);
 $oSelectItemsPerPage = new cHTMLSelectElement("elemperpage");
-$oSelectItemsPerPage->autoFill(array(
+$oSelectItemsPerPage->autoFill([
     25 => 25,
     50 => 50,
     75 => 75,
     100 => 100
-));
+]);
 $oSelectItemsPerPage->setDefault($_REQUEST["elemperpage"]);
 
 asort($aFieldsToSort);
@@ -225,9 +230,9 @@ $fegroups = new cApiFrontendGroupCollection();
 $fegroups->setWhere("idclient", $client);
 $fegroups->query();
 
-$aFEGroups = array(
+$aFEGroups = [
     "--all--" => i18n("-- All Groups --")
-);
+];
 
 while ($fegroup = $fegroups->next()) {
     $aFEGroups[$fegroup->get("idfrontendgroup")] = $fegroup->get("groupname");

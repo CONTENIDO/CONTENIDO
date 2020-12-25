@@ -13,6 +13,8 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $cfg, $action, $perm, $area, $client, $lang, $frame;
+
 $oPage = new cGuiPage("recipients_edit", "newsletter");
 $oRecipients = new NewsletterRecipientCollection();
 
@@ -26,6 +28,8 @@ $requestIdRecipient = (isset($_REQUEST['idrecipient'])) ? cSecurity::toInteger($
 $requestConfirmed = (isset($_REQUEST['confirmed'])) ? cSecurity::toInteger($_REQUEST['confirmed']) : 0;
 $requestDeactivated = (isset($_REQUEST['deactivated'])) ? cSecurity::toInteger($_REQUEST['deactivated']) : 0;
 $requestNewstype = (isset($_REQUEST['newstype'])) ? cSecurity::toInteger($_REQUEST['newstype']) : 0;
+$requestName = (isset($_REQUEST['name'])) ? cSecurity::toString($_REQUEST['name']) : '';
+$requestEmail = (isset($_REQUEST['email'])) ? cSecurity::toString($_REQUEST['email']) : '';
 
 // Note, that the object name has to be $recipient for plugins
 if ($action == "recipients_create" && $perm->have_perm_area_action($area, $action)) {
@@ -61,8 +65,8 @@ if (true === $recipient->isLoaded() && $recipient->get("idclient") == $client &&
     if ($action == "recipients_save" && $perm->have_perm_area_action($area, $action)) {
         $oPage->reloadLeftBottomFrame(['idrecipient' => $recipient->get('idnewsrcp')]);
 
-        $name = stripslashes($name);
-        $email = stripslashes($email);
+        $name = stripslashes($requestName);
+        $email = stripslashes($requestEmail);
         $confirmed = $requestConfirmed;
         $deactivated = $requestDeactivated;
         $newstype = $requestNewstype;
