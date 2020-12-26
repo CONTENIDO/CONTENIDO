@@ -16,7 +16,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $idtpl, $notification;
 
+if (!isset($idtpl)) {
+    $idtpl = 0;
+}
 if (!isset($idtplcfg)) {
+    $idtplcfg = 0;
+}
+
+if ($idtplcfg == 0) {
     // Load template configuration for current template, create it if not done before
     $tplItem = new cApiTemplate($idtpl);
     $idtplcfg = $tplItem->get('idtplcfg');
@@ -32,10 +39,8 @@ if (!isset($idtplcfg)) {
     }
 }
 
-if (isset($idtplcfg)) {
-    // Is form send
-    if (isset($x) && $x > 0) {
-        tplProcessSendContainerConfiguration($idtpl, $idtplcfg, $_POST);
-        $notification->displayNotification(cGuiNotification::LEVEL_OK, i18n("Saved changes successfully!"));
-    }
+// Do we have $idtpl, $idtplcfg, and is form send?
+if ($idtpl != 0 && $idtplcfg != 0 && isset($_POST) && count($_POST) > 0) {
+    tplProcessSendContainerConfiguration($idtpl, $idtplcfg, $_POST);
+    $notification->displayNotification(cGuiNotification::LEVEL_OK, i18n("Saved changes successfully!"));
 }
