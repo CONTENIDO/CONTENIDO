@@ -919,11 +919,8 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         $db->query($sql);
 
         if ($db->nextRecord()) {
-            // $foreignlang = false;
-            // conCreateLocationString($idcat, "&nbsp;/&nbsp;", $cat_name);
+            $cat_idtpl = $db->f("idtpl");
         }
-
-        $cat_idtpl = $db->f("idtpl");
 
         $cat_name = renderBackendBreadcrumb($syncoptions, false, true);
 
@@ -984,9 +981,8 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         }
 
         // New Article link
-        if (($perm->have_perm_area_action('con_editart', 'con_newart')
+        if ($perm->have_perm_area_action('con_editart', 'con_newart')
             || $perm->have_perm_area_action_item('con_editart', 'con_newart', $idcat))
-            && (isset($foreignlang) && $foreignlang == false))
         {
             // check if category has an assigned template
             if ($idcat != 0 && $cat_idtpl != 0) {
