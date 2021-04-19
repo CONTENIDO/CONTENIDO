@@ -55,7 +55,7 @@ if (!isset($idmodtranslation)) {
 
 // Get the mi18n strings from module input/output
 $strings = $module->parseModuleForStringsLoadFromFile($cfg, $client, $lang);
-if (is_array($strings)) {
+if (!is_array($strings)) {
     $strings = [];
 }
 
