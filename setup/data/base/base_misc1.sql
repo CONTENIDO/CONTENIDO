@@ -1,1 +1,1 @@
-UPDATE `!PREFIX!_art_lang` SET published=lastmodified, publishedby=modifiedby WHERE online=1 and published=CURRENT_TIMESTAMP;
+UPDATE `!PREFIX!_art_lang` SET `published` = `lastmodified`, `publishedby` = `modifiedby` WHERE `online` = 1 AND `published` IS NULL;

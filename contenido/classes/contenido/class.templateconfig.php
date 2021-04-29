@@ -87,16 +87,15 @@ class cApiTemplateConfigurationCollection extends ItemCollection {
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
         }
-        if (empty($lastmodified)) {
-            $lastmodified = '0000-00-00 00:00:00';
-        }
 
         $item = $this->createNewItem();
         $item->set('idtpl', $idtpl);
         $item->set('author', $author);
         $item->set('status', $status);
         $item->set('created', $created);
-        $item->set('lastmodified', $lastmodified);
+        if (!empty($lastmodified)) {
+            $item->set('lastmodified', $lastmodified);
+        }
         $item->store();
 
         return $item;

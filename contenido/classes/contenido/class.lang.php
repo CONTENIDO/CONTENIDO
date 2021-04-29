@@ -57,7 +57,8 @@ class cApiLanguageCollection extends ItemCollection {
         $item->set('direction', $direction, false);
         $item->set('author', $auth->auth['uid'], false);
         $item->set('created', date('Y-m-d H:i:s'), false);
-        $item->set('lastmodified', '0000-00-00 00:00:00', false);
+        // TODO We should be able to set null!
+        //$item->set('lastmodified', null, false);
         $item->store();
 
         return $item;

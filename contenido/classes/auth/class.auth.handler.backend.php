@@ -123,8 +123,8 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
 
         $userColl = new cApiUserCollection();
         $where = "username = '" . $username . "'";
-        $where .= " AND (valid_from <= NOW() OR valid_from = '0000-00-00 00:00:00' OR valid_from is NULL)";
-        $where .= " AND (valid_to >= NOW() OR valid_to = '0000-00-00 00:00:00' OR valid_to is NULL)";
+        $where .= " AND (valid_from <= NOW() OR valid_from is NULL)";
+        $where .= " AND (valid_to >= NOW() OR valid_to is NULL)";
 
         $maintenanceMode = getSystemProperty('maintenance', 'mode');
         if ($maintenanceMode == 'enabled') {

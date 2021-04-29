@@ -12,9 +12,9 @@ CREATE TABLE IF NOT EXISTS `con_pi_user_forum` (
   `idclient` int(11) NOT NULL,
   `like` int(11) NOT NULL,
   `dislike` int(11) NOT NULL,
-  `editedat` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `editedat` datetime NULL,
   `editedby` varchar(50) NOT NULL DEFAULT '',
-  `timestamp` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `timestamp` datetime NOT NULL DEFAULT NOW(),
   `online` tinyint(1) NOT NULL,
   `moderated` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY  (`id_user_forum`)
