@@ -38,6 +38,6 @@ if (file_exists($cfgClient[$client]['config']['path'] . '/config.local.php')) {
 }
 
 // Include article view handler
-include(cRegistry::getBackendPath() . $cfg['path']['includes'] . '/frontend/include.front_content.php');
+include(cRegistry::getBackendPath() . $cfg['path']['includes'] . 'frontend/include.front_content.php');
 
 ?>
