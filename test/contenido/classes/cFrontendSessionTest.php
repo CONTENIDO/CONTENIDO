@@ -80,4 +80,13 @@ class cFrontendSessionTest extends cTestingTestCase
         $sessUrl     = $this->_session->url($url);
         $this->assertEquals($expectedUrl, $sessUrl);
     }
+
+    public function testUrlWithEntityEncodedAmpersand()
+    {
+        $url = self::URL_BASE . '?foo=bar&amp;baz=1';
+
+        $expectedUrl = self::URL_BASE . '?foo=bar&baz=1';
+        $sessUrl     = $this->_session->url($url);
+        $this->assertEquals($expectedUrl, $sessUrl);
+    }
 }
