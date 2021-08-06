@@ -278,6 +278,9 @@ class cSession {
     protected function _url($url, $addSession) {
         $encodedName = urlencode($this->name);
 
+        // Replace ampersand entity code, otherwise parsing the url below will fail
+        $url = str_replace('&amp;', '&', $url);
+
         // Split URL by question mark and remove existing session parameter
         if (cString::findFirstPos($url, '?') !== false) {
             list($file, $query) = explode('?', $url);
