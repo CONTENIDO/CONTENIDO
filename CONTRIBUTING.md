@@ -1,7 +1,7 @@
 
 # Contributing
 
-Anleitung für Entwickler um beim CONTENIDO-Projekt mitwirken.
+Anleitung für Entwickler um beim CONTENIDO-Projekt mitzuwirken.
 
 
 ## Tickets erstellen
