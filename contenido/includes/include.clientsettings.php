@@ -23,11 +23,7 @@ $oPage = new cGuiPage("clientsettings");
 $oList = new cGuiScrollList();
 
 // @TODO Find a general solution for this!
-if (defined('CON_STRIPSLASHES')) {
-    $request = cString::stripSlashes($_REQUEST);
-} else {
-    $request = $_REQUEST;
-}
+$request = $_REQUEST;
 
 $idclientslang = isset($request["idclientslang"]) ? cSecurity::toInteger($request["idclientslang"]) : 0;
 $action = isset($request["action"]) ? $request["action"] : '';
