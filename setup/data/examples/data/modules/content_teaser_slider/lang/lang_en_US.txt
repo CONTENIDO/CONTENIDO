@@ -1,1 +1,2 @@
+LABEL_TEXT=Slider Teaser
 MORE=more

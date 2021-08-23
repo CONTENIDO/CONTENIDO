@@ -1,1 +1,2 @@
+LABEL_TEXT=Text Teaser
 MORE=more

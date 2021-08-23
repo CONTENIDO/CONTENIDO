@@ -691,7 +691,7 @@ echo $teaser->generateTeaserCode();
 
         // construct the top code of the template
         $templateTop = new cTemplate();
-        $templateTop->set('s', 'ICON', 'images/isstart0.gif');
+        $templateTop->set('s', 'ICON', 'images/isstart0.gif');  
         $templateTop->set('s', 'ID', $this->_id);
         $templateTop->set('s', 'PREFIX', $this->_prefix);
         $templateTop->set('s', 'HEADLINE', i18n('Teaser settings'));
@@ -727,12 +727,12 @@ echo $teaser->generateTeaserCode();
         );
 
         // construct the whole template code
-        $code = $this->generateViewCode();
-        $code .= $this->_encodeForOutput($codeTop);
+        $code  = $this->_encodeForOutput($codeTop);
         $code .= $this->_generateTabMenuCode($tabMenu);
         $code .= $this->_encodeForOutput($codeTabs);
         $code .= $this->_generateActionCode();
         $code .= $this->_encodeForOutput($codeBottom);
+        $code .= $this->generateViewCode();
 
         return $code;
     }

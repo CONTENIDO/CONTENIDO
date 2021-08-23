@@ -12,8 +12,14 @@
  * @link http://www.contenido.org
  */
 
-echo "CMS_TEASER[1]";
-
 mi18n("MORE");
+
+// use smarty template to output label
+$tpl = cSmartyFrontend::getInstance();
+$tpl->assign('backend', cRegistry::isBackendEditMode());
+$tpl->assign('label', mi18n("LABEL_TEXT"));
+$tpl->display('get.tpl');
+
+echo "CMS_TEASER[1]";
 
 ?>
