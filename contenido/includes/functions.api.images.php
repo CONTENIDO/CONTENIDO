@@ -228,7 +228,7 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
         $srcY = ($y - $maxY) / 2;
 
         // Preserve transparency
-        if (cString::toLowerCase($fileType) == 'gif' || cString::toLowerCase($fileType) == 'png') {
+        if (cString::toLowerCase($fileType) == 'gif' || cString::toLowerCase($fileType) == 'png' || cString::toLowerCase($fileType) == 'webp') {
         	imagecolortransparent($targetImage, imagecolorallocatealpha($targetImage, 0, 0, 0, 127));
         	imagealphablending($targetImage, false);
         	imagesavealpha($targetImage, true);
@@ -241,7 +241,7 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
         $targetImage = imagecreatetruecolor($targetX, $targetY);
 
         // Preserve transparency
-        if (cString::toLowerCase($fileType) == 'gif' || cString::toLowerCase($fileType) == 'png') {
+        if (cString::toLowerCase($fileType) == 'gif' || cString::toLowerCase($fileType) == 'png' || cString::toLowerCase($fileType) == 'webp') {
             imagecolortransparent($targetImage, imagecolorallocatealpha($targetImage, 0, 0, 0, 127));
             imagealphablending($targetImage, false);
             imagesavealpha($targetImage, true);
@@ -464,25 +464,37 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false, $cache
     }
 
     $fileName = $img;
-    $fileType = cString::getPartOfString($fileName, cString::getStringLength($fileName) - 4, 4);
+	$fileType = cFileHandler::getExtension($fileName);
     $quality = cApiImgGetCompressionRate(cFileHandler::getExtension($fileName), $quality);
 
     $mxdAvImgEditingPossibility = cApiImageCheckImageEditingPossibility();
+
+	if ( $fileType == "svg") $mxdAvImgEditingPossibility = "untouched" ;
+	
     switch ($mxdAvImgEditingPossibility) {
         case '1': // gd1
             $method = 'gd1';
-            if (!function_exists('imagecreatefromgif') && $fileType == '.gif') {
+            if (!function_exists('imagecreatefromgif') && $fileType == 'gif') {
                 $method = 'failure';
             }
+            if (!function_exists('imagecreatefromwebp') && $fileType == 'webp') {
+                $method = 'failure';
+            }				
             break;
         case '2': // gd2
             $method = 'gd2';
-            if (!function_exists('imagecreatefromgif') && $fileType == '.gif') {
+            if (!function_exists('imagecreatefromgif') && $fileType == 'gif') {
                 $method = 'failure';
             }
+            if (!function_exists('imagecreatefromwebp') && $fileType == 'webp') {
+                $method = 'failure';
+            }			
             break;
         case 'im': // ImageMagick
             $method = 'im';
+            break;
+        case 'untouched': // special routine for svg only
+            $method = 'untouched';
             break;
         case '0':
         default:
@@ -499,6 +511,10 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false, $cache
             break;
         case 'im':
             $return = cApiImgScaleImageMagick($img, $maxX, $maxY, $crop, $expand, $cacheTime, $quality, $keepType);
+            break;
+        case 'untouched':
+            $frontendURL = cRegistry::getFrontendUrl();
+            $return = str_replace(cRegistry::getFrontendPath(), $frontendURL, $img);
             break;
         case 'failure':
         default:
@@ -630,6 +646,9 @@ function cApiImageGetCacheFileName($md5, $fileType, $keepType) {
             case 'gif':
                 $fileName = $md5 . '.gif';
                 break;
+            case 'webp':
+                $fileName = $md5 . '.webp';	
+                break;			
             default:
                 $fileName = $md5 . '.jpg';
         }
@@ -743,6 +762,8 @@ function cApiImgGetCompressionRate($imgType, $quality = 0) {
             $quality = ($quality - 100) / 11.111111;
             $quality = round(abs($quality));
             break;
+        case 'svg':
+        case 'webp':
         case 'jpg':
         case 'jpeg':
             // No action needed for jpg or jpeg
@@ -779,6 +800,9 @@ function cApiImgCreateImageResourceFromFile($fileName, $fileType = null) {
         case 'jpeg':
             $function = 'imagecreatefromjpeg';
             break;
+        case 'webp':
+            $function = 'imagecreatefromwebp';
+            break;
         default:
             return null;
     }
@@ -804,6 +828,9 @@ function cApiImgSaveImageResourceToFile($targetImage, $saveTo, $quality, $fileTy
                 return imagepng($targetImage, $saveTo, $quality);
             case 'gif':
                 return imagegif($targetImage, $saveTo);
+            case 'webp':
+				$quality = cApiImgGetCompressionRate($fileType, $quality);
+                return imagewebp($targetImage, $saveTo, $quality);
             default:
                 $quality = cApiImgGetCompressionRate($fileType, $quality);
                 return imagejpeg($targetImage, $saveTo, $quality);
