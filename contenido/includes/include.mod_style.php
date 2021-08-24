@@ -167,6 +167,7 @@ if ((!$readOnly) && $actionRequest == $sActionEdit && $_REQUEST['status'] == 'se
 if (isset($actionRequest)) {
 
     $sAction = ($bEdit) ? $sActionEdit : $actionRequest;
+    $module = new cApiModule($idmod);
 
     $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
 
@@ -186,7 +187,7 @@ if (isset($actionRequest)) {
 
     $form = new cGuiTableForm('file_editor');
     $form->setTableID('mod_style');
-    $form->addHeader(i18n('Edit file'));
+    $form->addHeader(i18n('Edit file') . " &quot;". conHtmlSpecialChars($module->get('name')). "&quot;");
     $form->setVar('area', $area);
     $form->setVar('action', $sAction);
     $form->setVar('frame', $frame);

@@ -167,6 +167,7 @@ if ((!$readOnly) && $actionRequest == $sActionEdit && $_REQUEST['status'] == 'se
 if (isset($actionRequest)) {
     $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
     $sAction = ($bEdit) ? $sActionEdit : $actionRequest;
+    $module = new cApiModule($idmod);
 
     if ($actionRequest == $sActionEdit
     && cFileHandler::exists($path . $sFilename)) {
@@ -182,7 +183,7 @@ if (isset($actionRequest)) {
 
     $form = new cGuiTableForm('file_editor');
     $form->setTableID('mod_javascript');
-    $form->addHeader(i18n('Edit file'));
+    $form->addHeader(i18n('Edit file') . " &quot;". conHtmlSpecialChars($module->get('name')). "&quot;");
     $form->setVar('area', $area);
     $form->setVar('action', $sAction);
     $form->setVar('frame', $frame);
