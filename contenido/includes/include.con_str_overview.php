@@ -196,8 +196,8 @@ function showTree($iIdcat, &$aWholelist) {
             }
 
             $strName = cSecurity::unFilter($name);
-            $title = ($aValue['lang_popup'] && $aValue['lang_popup'] != "") ? $aValue['lang_popup']."\n " : "";
-			$mstr = '<a class="' . $aAnchorClass . '" href="#" title="'.$title.'idcat' . '&#58; ' . $idcat . '">' . $strName . '</a>';
+            $title = ($aValue['langPopup'] && $aValue['langPopup'] != "") ? $aValue['langPopup']."\n " : "";
+            $mstr = '<a class="' . $aAnchorClass . '" href="#" title="'.$title.'idcat' . '&#58; ' . $idcat . '">' . $strName . '</a>';
 
             // Build Tree
             $tpl->set('d', 'CFGDATA', $cfgdata);
@@ -566,8 +566,8 @@ if ($lang > $syncoptions) {
 }
 
 $fallbackLang = getEffectiveSetting('system', 'cat_fallback_language', 0);
-$sql_lang_popup = ($fallbackLang != 0) ? "LEFT JOIN {$cfg['tab']['cat_lang']} AS b1 ON( b1.idcat=a.idcat AND b1.idlang=$fallbackLang ) " : "";
-$sql_lang_b1 = ($fallbackLang != 0) ? "b1.name as lang_popup, " : "";
+$sqlLangPopup = ($fallbackLang != 0) ? "LEFT JOIN {$cfg['tab']['cat_lang']} AS b1 ON(b1.idcat = a.idcat AND b1.idlang = $fallbackLang) " : "";
+$sqlLangB1 = ($fallbackLang != 0) ? "b1.name as langPopup, " : "";
 
 $client = (int) $client;
 $sql = "SELECT DISTINCT " .
@@ -577,7 +577,7 @@ $sql = "SELECT DISTINCT " .
         "a.postid, " .
         "a.parentid, " .
         "b.name, " .
-        $sql_lang_b1 .
+        $sqlLangB1 .
         "b.idlang, " .
         "b.visible, " .
         "b.public, " .
@@ -586,7 +586,7 @@ $sql = "SELECT DISTINCT " .
         "d.idtpl " .
         "FROM {$cfg['tab']['cat']} AS a " .
         "LEFT JOIN {$cfg['tab']['cat_lang']} AS b ON a.idcat = b.idcat " .
-        $sql_lang_popup .
+        $sqlLangPopup .
         "LEFT JOIN {$cfg['tab']['cat_tree']} AS c ON (a.idcat = c.idcat AND b.idcat = c.idcat) " .
         "LEFT JOIN {$cfg["tab"]["tpl_conf"]} AS d ON b.idtplcfg = d.idtplcfg " .
         "WHERE " .
@@ -639,7 +639,7 @@ while ($db->nextRecord()) {
             'online' => $db->f('visible'),
             'public' => $db->f('public'),
             'name' => $db->f('name'),
-			'lang_popup'=>$db->f('lang_popup'),
+            'langPopup' => $db->f('langPopup'),
             'idlang' => $db->f('idlang'),
             'idtpl' => $db->f('idtpl'),
             'collapsed' => $collapsed,
@@ -677,5 +677,3 @@ $tpl->set('s', 'WHOLELIST', implode(', ', $aWholelist));
 $tpl->set('s', 'EXPANDEDLIST', implode(', ', $conexpandedList[$client]));
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_str_overview']);
-
-?>
