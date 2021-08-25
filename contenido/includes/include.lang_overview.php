@@ -103,7 +103,7 @@ $newlanguageform = '
         <table cellpadding="0" cellspacing="0" border="0">
             <tr><td class="text_medium">' . i18n("New language") . ':
                 <input type="text" name="name">&nbsp;&nbsp;&nbsp;
-                <input type="image" src="' . $cfg['path']['images'] . 'but_ok.gif" border="0">
+                <input type="image" src="' . $cfg['path']['images'] . 'but_ok.gif">
             </td></tr>
         </table>
     </from>

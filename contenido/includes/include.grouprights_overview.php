@@ -203,7 +203,7 @@ foreach ($aProperties as $propertyId => $prop) {
         <td>' . $name . '</td>
         <td>' . $value . '</td>
         <td>
-            <a href="' . $sess->url("main.php?area=$area&frame=4&groupid={$request['groupid']}&del_groupprop_type=$type&del_groupprop_name=$name") . '"><img src="images/delete.gif" border="0" alt="' . i18n("Delete") . '" title="' . i18n("Delete") . '"></a>
+            <a href="' . $sess->url("main.php?area=$area&frame=4&groupid={$request['groupid']}&del_groupprop_type=$type&del_groupprop_name=$name") . '"><img src="images/delete.gif" alt="' . i18n("Delete") . '" title="' . i18n("Delete") . '"></a>
         </td>
     </tr>';
 }

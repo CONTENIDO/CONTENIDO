@@ -96,7 +96,7 @@ class pApiContentAllocationTreeView extends pApiTree {
                     <tr>
                     <td class="text_medium"><input id="itemname" class="text_medium" type="text" name="treeItemPost[name]" value="' . conHtmlentities($item_tmp['name']) . '"></td>
                     <td>&nbsp;
-                    <a href="main.php?action=' . $action . '&frame=' . $frame . '&area=' . $area . '&contenido=' . $sess . '"><img src="images/but_cancel.gif" border="0"></a>
+                    <a href="main.php?action=' . $action . '&frame=' . $frame . '&area=' . $area . '&contenido=' . $sess . '"><img src="images/but_cancel.gif"></a>
                     <input type="image" src="images/but_ok.gif">
                     </td></tr>
                     </form>
@@ -120,23 +120,23 @@ class pApiContentAllocationTreeView extends pApiTree {
                         $expandCollapseImg = 'images/open_all.gif';
                     }
 
-                    $expandCollapse = '<a href="main.php?contenido=' . $sess . '&idart=' . $idart . '&action=' . $action . '&frame=' . $frame . '&area=' . $area .  '&oldstate=' . 'huhu' . '&step=collapse&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="' . $expandCollapseImg . '" border="0" class="vAlignMiddle" alt="" width="7" height="7"></a>';
+                    $expandCollapse = '<a href="main.php?contenido=' . $sess . '&idart=' . $idart . '&action=' . $action . '&frame=' . $frame . '&area=' . $area .  '&oldstate=' . 'huhu' . '&step=collapse&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="' . $expandCollapseImg . '" class="vAlignMiddle" alt="" width="7" height="7"></a>';
                 } else {
                     $expandCollapseImg = 'images/spacer.gif';
-                    $expandCollapse = '<img src="' . $expandCollapseImg . '" border="0" alt="" class="vAlignMiddle" width="11" height="11">';
+                    $expandCollapse = '<img src="' . $expandCollapseImg . '" alt="" class="vAlignMiddle" width="11" height="11">';
                 }
 
                 if ($item_tmp['status'] == 'collapsed') {
-                    $expandCollapse = '<a href="main.php?contenido=' . $sess . '&idart=' . $idart . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=expanded&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="' . $expandCollapseImg . '" border="0" alt="" class="vAlignMiddle" width="7" height="7"></a>';
+                    $expandCollapse = '<a href="main.php?contenido=' . $sess . '&idart=' . $idart . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=expanded&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="' . $expandCollapseImg . '" alt="" class="vAlignMiddle" width="7" height="7"></a>';
                 }
                 $item['ITEMNAME'] = $expandCollapse . ' ' . $item_tmp['name'];
             }
             $item['ITEMINDENT'] = $item_tmp['level'] * 15 + 3;
-            $item['ACTION_CREATE'] = '<a href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=add&parentid=' . $item_tmp['idpica_alloc'] . '"><img src="images/folder_new.gif" border="0" alt="" title="' . i18n("New category", 'content_allocation') . '" alt="' . i18n("New category", 'content_allocation') . '"></a>';
+            $item['ACTION_CREATE'] = '<a href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=add&parentid=' . $item_tmp['idpica_alloc'] . '"><img src="images/folder_new.gif" alt="" title="' . i18n("New category", 'content_allocation') . '" alt="' . i18n("New category", 'content_allocation') . '"></a>';
 
-            $item['ACTION_RENAME'] = '<a href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=rename&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="images/but_todo.gif" width="16" height="16" border="0" alt="' . i18n("Rename category", 'content_allocation') . '" title="' . i18n("Rename category", 'content_allocation') . '"></a>';
-            $item['ACTION_MOVE_UP'] = (count($result) >= 1) ? '<a href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=moveup&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="images/folder_moveup.gif" border="0" alt="' . i18n("Move category up", 'content_allocation') . '" title="' . i18n("Move category up", 'content_allocation') . '"></a>' : '<img src="images/spacer.gif" width="16" height="16"></a>';
-            $item['ACTION_MOVE_DOWN'] = (count($result) >= 1) ? '<img src="images/folder_movedown.gif" border="0" alt="' . i18n("Move category down", 'content_allocation') . '" title="' . i18n("Move category down", 'content_allocation') . '">' : '<img src="images/spacer.gif" width="16" height="16">';
+            $item['ACTION_RENAME'] = '<a href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=rename&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="images/but_todo.gif" width="16" height="16" alt="' . i18n("Rename category", 'content_allocation') . '" title="' . i18n("Rename category", 'content_allocation') . '"></a>';
+            $item['ACTION_MOVE_UP'] = (count($result) >= 1) ? '<a href="main.php?contenido=' . $sess . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=moveup&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="images/folder_moveup.gif" alt="' . i18n("Move category up", 'content_allocation') . '" title="' . i18n("Move category up", 'content_allocation') . '"></a>' : '<img src="images/spacer.gif" width="16" height="16"></a>';
+            $item['ACTION_MOVE_DOWN'] = (count($result) >= 1) ? '<img src="images/folder_movedown.gif" alt="' . i18n("Move category down", 'content_allocation') . '" title="' . i18n("Move category down", 'content_allocation') . '">' : '<img src="images/spacer.gif" width="16" height="16">';
             $item['ACTION_MOVE_DOWN'] = '';
 
             if ($item_tmp['online'] == 1) { // set offline
@@ -146,10 +146,10 @@ class pApiContentAllocationTreeView extends pApiTree {
             }
 
             if ($item_tmp['children']) {
-                $item['ACTION_DELETE'] = '<img src="images/delete_inact.gif" border="0" alt="' . i18n("One or more subcategories exist, unable to delete", 'content_allocation') . '" title="' . i18n("One or more subcategories exist, unable to delete", 'content_allocation') . '">';
+                $item['ACTION_DELETE'] = '<img src="images/delete_inact.gif" alt="' . i18n("One or more subcategories exist, unable to delete", 'content_allocation') . '" title="' . i18n("One or more subcategories exist, unable to delete", 'content_allocation') . '">';
             } else {
                 $name = str_replace("\"", "&amp;quot;", str_replace("'", "\'", $item_tmp['name']));
-                $item['ACTION_DELETE'] = '<a href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . i18n("Are you sure to delete the following category", 'content_allocation') . '&quot;, function() { deleteCategory(' . $item_tmp['idpica_alloc'] . '); });return false;"><img src="images/delete.gif" border="0" alt="' . i18n("Delete category") . '" title="' . i18n("Delete category", 'content_allocation') . '"></a>';
+                $item['ACTION_DELETE'] = '<a href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . i18n("Are you sure to delete the following category", 'content_allocation') . '&quot;, function() { deleteCategory(' . $item_tmp['idpica_alloc'] . '); });return false;"><img src="images/delete.gif" alt="' . i18n("Delete category") . '" title="' . i18n("Delete category", 'content_allocation') . '"></a>';
             }
 
             $result[] = $item;
@@ -175,7 +175,7 @@ class pApiContentAllocationTreeView extends pApiTree {
                     <tr>
                     <td class="text_medium"><input id="itemname" class="text_medium" type="text" name="treeItemPost[name]" value=""></td>
                     <td>&nbsp;
-                    <a href="main.php?action=' . $action . '&frame=' . $frame . '&area=' . $area . '&contenido=' . $sess . '"><img src="images/but_cancel.gif" alt="" border="0"></a>
+                    <a href="main.php?action=' . $action . '&frame=' . $frame . '&area=' . $area . '&contenido=' . $sess . '"><img src="images/but_cancel.gif" alt=""></a>
                     <input type="image" src="images/but_ok.gif">
                     </td></tr>
                     </form>
