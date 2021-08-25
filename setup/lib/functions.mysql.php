@@ -87,8 +87,6 @@ function getSetupMySQLDBConnection($full = true) {
 function getMySQLDatabaseExtension() {
 	if (hasMySQLiExtension ()) {
 		return CON_SETUP_MYSQLI;
-	} elseif (hasMySQLExtension ()) {
-		return CON_SETUP_MYSQL;
 	} else {
 		return null;
 	}
