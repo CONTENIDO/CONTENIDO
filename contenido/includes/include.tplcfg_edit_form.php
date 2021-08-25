@@ -411,10 +411,10 @@ if ($idart) {
 $cancelbutton = '';
 $acceptbutton = '';
 if ($idart || $area == 'con_tplcfg') {
-    $cancelbutton = '<a accesskey="c" href="' . $sess->url("main.php?area=con&frame=4&idcat=$idcat") . '"><img alt="" src="images/but_cancel.gif" border="0"></a>&nbsp;&nbsp;&nbsp;&nbsp;';
+    $cancelbutton = '<a accesskey="c" href="' . $sess->url("main.php?area=con&frame=4&idcat=$idcat") . '"><img alt="" src="images/but_cancel.gif"></a>&nbsp;&nbsp;&nbsp;&nbsp;';
     $acceptbutton = '<input accesskey="s" type="image" src="images/but_ok.gif" onclick="document.getElementById(\'tpl_form\').action = document.getElementById(\'tpl_form\').action+\'&back=true\'">';
 } else {
-    $cancelbutton = '<a accesskey="c" href="' . $sess->url("main.php?area=str&frame=4&idcat=$idcat") . '"><img alt="" src="images/but_cancel.gif" border="0"></a>&nbsp;&nbsp;&nbsp;&nbsp;';
+    $cancelbutton = '<a accesskey="c" href="' . $sess->url("main.php?area=str&frame=4&idcat=$idcat") . '"><img alt="" src="images/but_cancel.gif"></a>&nbsp;&nbsp;&nbsp;&nbsp;';
     $acceptbutton = '<input accesskey="s" type="image" src="images/but_ok.gif" onclick="document.getElementById(\'tpl_form\').action = document.getElementById(\'tpl_form\').action+\'&back=true\'">';
 }
 if ($idtpl != 0 && $inUse == false) {

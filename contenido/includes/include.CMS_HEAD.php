@@ -85,8 +85,8 @@ ob_start();
 <?php endif; ?>
 
             <div class="cms_edit_row">
-                <a href="<?php echo $sess->url($path2) ?>"><img src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_cancel.gif" border="0"></a>
-                <input type="image" name="submit" value="editcontent" src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_ok.gif" border="0">
+                <a href="<?php echo $sess->url($path2) ?>"><img src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_cancel.gif"></a>
+                <input type="image" name="submit" value="editcontent" src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_ok.gif">
             </div>
         </form>
     </div>

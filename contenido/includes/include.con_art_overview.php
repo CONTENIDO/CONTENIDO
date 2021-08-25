@@ -426,7 +426,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     $lockimg = 'images/article_unlocked.gif';
                     $lockalt = i18n("Freeze article");
                 }
-                $tmp_lock = '<a href="' . $sess->url("main.php?area=con&idcat=$idcat&action=con_lock&frame=4&idart=$idart&next=$next") . '" title="' . $lockalt . '"><img class="vAlignMiddle tableElement" src="' . $lockimg . '" title="' . $lockalt . '" alt="' . $lockalt . '" border="0"></a>';
+                $tmp_lock = '<a href="' . $sess->url("main.php?area=con&idcat=$idcat&action=con_lock&frame=4&idart=$idart&next=$next") . '" title="' . $lockalt . '"><img class="vAlignMiddle tableElement" src="' . $lockimg . '" title="' . $lockalt . '" alt="' . $lockalt . '"></a>';
             } else {
                 if ($locked == 1) {
                     $lockimg = 'images/article_locked.gif';
@@ -435,7 +435,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     $lockimg = 'images/article_unlocked.gif';
                     $lockalt = i18n("Article is not frozen");
                 }
-                $tmp_lock = '<img class="vAlignMiddle tableElement" src="' . $lockimg . '" title="' . $lockalt . '" alt="' . $lockalt . '" border="0">';
+                $tmp_lock = '<img class="vAlignMiddle tableElement" src="' . $lockimg . '" title="' . $lockalt . '" alt="' . $lockalt . '">';
             }
 
             if ($idlang != $lang) {
@@ -452,7 +452,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
             // Article conf button
             if ($perm->have_perm_area_action('con_editart', 'con_edit') || $perm->have_perm_area_action_item('con_editart', 'con_edit', $idcat)) {
-                $tmp_artconf = '<a href="' . $sess->url("main.php?area=con_editart&action=con_edit&frame=4&idart=$idart&idcat=$idcat") . '" title="' . i18n("Article properties") . '"><img class="vAlignMiddle tableElement" src="' . $cfg["path"]["images"] . 'but_art_conf2.gif" alt="' . i18n("Article properties") . '" title="' . i18n("Article properties") . '" border="0"></a>';
+                $tmp_artconf = '<a href="' . $sess->url("main.php?area=con_editart&action=con_edit&frame=4&idart=$idart&idcat=$idcat") . '" title="' . i18n("Article properties") . '"><img class="vAlignMiddle tableElement" src="' . $cfg["path"]["images"] . 'but_art_conf2.gif" alt="' . i18n("Article properties") . '" title="' . i18n("Article properties") . '"></a>';
             } else {
                 $tmp_artconf = '';
             }
@@ -463,7 +463,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $db->query($sql);
 
                 if ($db->nextRecord()) {
-                    $tmp_sync = '<a href="' . $sess->url("main.php?area=con&action=con_syncarticle&idart=$idart&sourcelanguage=$idlang&frame=4&idcat=$idcat&next=$next") . '" title="' . i18n("Copy article to the current language") . '"><img class="vAlignMiddle tableElement" src="' . $cfg["path"]["images"] . 'but_sync_art.gif" alt="' . i18n("Copy article to the current language") . '" title="' . i18n("Copy article to the current language") . '" border="0"></a>';
+                    $tmp_sync = '<a href="' . $sess->url("main.php?area=con&action=con_syncarticle&idart=$idart&sourcelanguage=$idlang&frame=4&idcat=$idcat&next=$next") . '" title="' . i18n("Copy article to the current language") . '"><img class="vAlignMiddle tableElement" src="' . $cfg["path"]["images"] . 'but_sync_art.gif" alt="' . i18n("Copy article to the current language") . '" title="' . i18n("Copy article to the current language") . '"></a>';
                 } else {
                     $tmp_sync = '';
                     $articlesToSync--;
@@ -543,9 +543,9 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
             if ($idlang == $lang && ($perm->have_perm_area_action('con', 'con_makestart') || $perm->have_perm_area_action_item('con', 'con_makestart', $idcat)) && $idcat != 0 && ((int) $locked === 0 || $admin)) {
                 if ($is_start == false) {
-                    $tmp_link = '<a href="' . $sess->url("main.php?area=con&amp;idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=1&next=$next") . '" title="' . i18n("Flag as start article") . '"><img class="vAlignMiddle tableElement" src="images/' . $imgsrc . '" border="0" title="' . i18n("Flag as start article") . '" alt="' . i18n("Flag as start article") . '"></a>';
+                    $tmp_link = '<a href="' . $sess->url("main.php?area=con&amp;idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=1&next=$next") . '" title="' . i18n("Flag as start article") . '"><img class="vAlignMiddle tableElement" src="images/' . $imgsrc . '" title="' . i18n("Flag as start article") . '" alt="' . i18n("Flag as start article") . '"></a>';
                 } else {
-                    $tmp_link = '<a href="' . $sess->url("main.php?area=con&amp;idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=0&next=$next") . '" title="' . i18n("Flag as normal article") . '"><img class="vAlignMiddle tableElement" src="images/' . $imgsrc . '" border="0" title="' . i18n("Flag as normal article") . '" alt="' . i18n("Flag as normal article") . '"></a>';
+                    $tmp_link = '<a href="' . $sess->url("main.php?area=con&amp;idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=0&next=$next") . '" title="' . i18n("Flag as normal article") . '"><img class="vAlignMiddle tableElement" src="images/' . $imgsrc . '" title="' . i18n("Flag as normal article") . '" alt="' . i18n("Flag as normal article") . '"></a>';
                 }
             } else {
                 if ($is_start == true) {
@@ -554,7 +554,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     $sTitle = i18n("Normal article");
                 }
 
-                $tmp_img = '<img class="vAlignMiddle tableElement" src="images/' . $imgsrc . '" border="0" title="' . $sTitle . '" alt="' . $sTitle . '">';
+                $tmp_img = '<img class="borderless vAlignMiddle tableElement" src="images/' . $imgsrc . '" title="' . $sTitle . '" alt="' . $sTitle . '">';
 
                 $tmp_link = $tmp_img;
             }
@@ -566,7 +566,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $imgsrc = "but_copy.gif";
                 // add count_duplicate param to identify if the duplicate action
                 // is called from click or back button.
-                $tmp_link = '<a href="' . $sess->url("main.php?area=con&idcat=$idcat&action=con_duplicate&duplicate=$idart&frame=4&next=$next") . "&count_duplicate=" . $_SESSION['count_duplicate'] . '" title="' . i18n("Duplicate article") . '"><img class="vAlignMiddle tableElement" src="images/' . $imgsrc . '" border="0" title="' . i18n("Duplicate article") . '" alt="' . i18n("Duplicate article") . '"></a>';
+                $tmp_link = '<a href="' . $sess->url("main.php?area=con&idcat=$idcat&action=con_duplicate&duplicate=$idart&frame=4&next=$next") . "&count_duplicate=" . $_SESSION['count_duplicate'] . '" title="' . i18n("Duplicate article") . '"><img class="vAlignMiddle tableElement" src="images/' . $imgsrc . '" title="' . i18n("Duplicate article") . '" alt="' . i18n("Duplicate article") . '"></a>';
             } else {
                 $tmp_link = '';
             }
@@ -590,15 +590,15 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             // Make On-/Offline button
             if ($online) {
                 if (($perm->have_perm_area_action('con', 'con_makeonline') || $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat)) && ($idcat != 0) && ((int) $locked === 0 || $admin)) {
-                    $tmp_online = '<a href="' . $sess->url("main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart&next=$next") . '" title="' . i18n("Make offline") . '"><img class="vAlignMiddle tableElement" src="images/online.gif" title="' . i18n("Make offline") . '" alt="' . i18n("Make offline") . '" border="0"></a>';
+                    $tmp_online = '<a href="' . $sess->url("main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart&next=$next") . '" title="' . i18n("Make offline") . '"><img class="vAlignMiddle tableElement" src="images/online.gif" title="' . i18n("Make offline") . '" alt="' . i18n("Make offline") . '"></a>';
                 } else {
-                    $tmp_online = '<img class="vAlignMiddle tableElement" src="images/online.gif" title="' . i18n("Article is online") . '" alt="' . i18n("Article is online") . '" border="0">';
+                    $tmp_online = '<img class="borderless vAlignMiddle tableElement" src="images/online.gif" title="' . i18n("Article is online") . '" alt="' . i18n("Article is online") . '">';
                 }
             } else {
                 if (($perm->have_perm_area_action('con', 'con_makeonline') || $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat)) && ($idcat != 0) && ((int) $locked === 0 || $admin)) {
-                    $tmp_online = '<a href="' . $sess->url("main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart&next=$next") . '" title="' . i18n("Make online") . '"><img class="vAlignMiddle tableElement" src="images/offline.gif" title="' . i18n("Make online") . '" alt="' . i18n("Make online") . '" border="0"></a>';
+                    $tmp_online = '<a href="' . $sess->url("main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart&next=$next") . '" title="' . i18n("Make online") . '"><img class="vAlignMiddle tableElement" src="images/offline.gif" title="' . i18n("Make online") . '" alt="' . i18n("Make online") . '"></a>';
                 } else {
-                    $tmp_online = '<img class="vAlignMiddle tableElement" src="images/offline.gif" title="' . i18n("Article is offline") . '" alt="' . i18n("Article is offline") . '" border="0">';
+                    $tmp_online = '<img class="borderless vAlignMiddle tableElement" src="images/offline.gif" title="' . i18n("Article is offline") . '" alt="' . i18n("Article is offline") . '">';
                 }
             }
 
@@ -987,7 +987,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             // check if category has an assigned template
             if ($idcat != 0 && $cat_idtpl != 0) {
                 $tpl->set('s', 'NEWARTICLE_TEXT', '<a id="newArtTxt" href="' . $sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat") . '">' . i18n("Create new article") . '</a>');
-                $tpl->set('s', 'NEWARTICLE_IMG', '<a id="newArtImg" href="' . $sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat") . '" title="' . i18n("Create new article") . '"><img src="images/but_art_new.gif" border="0" alt="' . i18n("Create new article") . '"></a>');
+                $tpl->set('s', 'NEWARTICLE_IMG', '<a id="newArtImg" href="' . $sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat") . '" title="' . i18n("Create new article") . '"><img src="images/but_art_new.gif" alt="' . i18n("Create new article") . '"></a>');
                 $tpl->set('s', 'CATTEMPLATE', $warningBox);
             } else {
                 // category is either not in sync or does not exist

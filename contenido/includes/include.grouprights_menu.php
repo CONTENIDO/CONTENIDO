@@ -119,7 +119,7 @@ while ($db->nextRecord()) {
 
         if ($perm->have_perm_area_action('groups', "groups_delete")) {
             $delTitle = i18n("Delete group");
-            $deleteLink = '<a href="javascript:;" data-action="delete_group" title="' . $delTitle . '"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
+            $deleteLink = '<a href="javascript:;" data-action="delete_group" title="' . $delTitle . '"><img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
         } else {
             $deleteLink = '&nbsp;';
         }
