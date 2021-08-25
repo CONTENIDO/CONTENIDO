@@ -997,14 +997,10 @@ class cSystemtest {
         list($handle, $status) = $this->doMySQLConnect($host, $username, $password);
 
         $errorMessage = "";
-        if ($this->testMySQLiExtension() && !$this->testMySQLExtension()) {
-            if (!empty($handle)) {
-                $errorMessage = mysqli_error($handle->getLinkId());
-            } else {
-                $errorMessage = mysqli_error();
-            }
+        if (!empty($handle)) {
+            $errorMessage = mysqli_error($handle->getLinkId());
         } else {
-            $errorMessage = mysql_error();
+            $errorMessage = mysqli_error();
         }
         if ($errorMessage != "") {
             return $errorMessage;

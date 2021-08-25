@@ -61,8 +61,6 @@ function doMySQLSelectDB($linkid, $database) {
 
 	if (CON_SETUP_MYSQLI === $extension) {
 		return (@mysqli_select_db ( $linkid, $database )) ? true : false;
-	} elseif (CON_SETUP_MYSQL === $extension) {
-		return (@mysql_select_db ( $database, $linkid )) ? true : false;
 	} else {
 		return false;
 	}
