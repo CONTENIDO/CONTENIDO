@@ -14,12 +14,21 @@
 
 mi18n("MORE");
 
-// use smarty template to output label
+// Get teaser output
+
+ob_start();
+
+echo "CMS_TEASER[2]";
+
+$teaser = ob_get_contents();
+
+ob_end_clean();
+
+// use smarty template to output header text
 $tpl = cSmartyFrontend::getInstance();
 $tpl->assign('backend', cRegistry::isBackendEditMode());
 $tpl->assign('label', mi18n("LABEL_TEXT"));
+$tpl->assign('teaser', $teaser);
 $tpl->display('get.tpl');
-
-echo "CMS_TEASER[2]";
 
 ?>
