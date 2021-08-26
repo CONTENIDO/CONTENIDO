@@ -272,7 +272,7 @@ class cGuiNavigation {
         $link->setClass('main');
         $link->setTargetFrame('content');
         $link->setLink($sess->url("frameset.php?area=mycontenido&frame=4"));
-        $link->setContent('<img class="vAlignMiddle" src="' . $backendUrl . $cfg['path']['images'] . 'my_contenido.gif" border="0" alt="My CONTENIDO" id="imgMyContenido" title="' . i18n("My CONTENIDO") . '">');
+        $link->setContent('<img class="borderless vAlignMiddle" src="' . $backendUrl . $cfg['path']['images'] . 'my_contenido.gif" alt="My CONTENIDO" id="imgMyContenido" title="' . i18n("My CONTENIDO") . '">');
         $main->set('s', 'MYCONTENIDO', $link->render());
 
         // info link
@@ -280,7 +280,7 @@ class cGuiNavigation {
         $link->setClass('main');
         $link->setTargetFrame('content');
         $link->setLink($sess->url('frameset.php?area=info&frame=4'));
-        $link->setContent('<img alt="" class="vAlignMiddle" src="' . $backendUrl . $cfg['path']['images'] . 'info.gif" border="0" alt="Info" title="Info" id="imgInfo">');
+        $link->setContent('<img alt="" class="borderless vAlignMiddle" src="' . $backendUrl . $cfg['path']['images'] . 'info.gif" alt="Info" title="Info" id="imgInfo">');
         $main->set('s', 'INFO', $link->render());
 
         $main->set('s', 'LOGOUT', $sess->url('logout.php'));
@@ -292,7 +292,7 @@ class cGuiNavigation {
             $link->setClass('main');
             $link->setLink('javascript://');
             $link->setEvent('click', 'Con.Help.show($(\'#help\').attr(\'data\'));');
-            $link->setContent('<img class="vAlignMiddle" src="' . $backendUrl . $cfg['path']['images'] . 'but_help.gif" border="0" alt="Hilfe" title="Hilfe">');
+            $link->setContent('<img class="borderless vAlignMiddle" src="' . $backendUrl . $cfg['path']['images'] . 'but_help.gif" alt="Hilfe" title="Hilfe">');
             $main->set('s', 'HELP', $link->render());
         } else {
             $main->set('s', 'HELP', '');

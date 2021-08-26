@@ -395,7 +395,7 @@ if (empty($aErrors) && $cronjob != true) {
                 // Repaired question
                 $repaired_question = i18n("Linkchecker has found a way to repair your wrong link. Do you want to automatically repair the link to the URL below?", $plugin_name);
 
-                $tpl2->set('s', 'ERRORS_REPAIRED_LINK', '<a href="javascript:void(0)" onclick="javascript:Con.showConfirmation(\'' . $repaired_question . '<br /><br /><strong>' . $repaired_link . '</strong>\', function() { window.location.href=\'' . $aUrl['contenido'] . 'main.php?area=linkchecker&frame=4&contenido=' . $sess->id . '&action=linkchecker&mode=' . $_GET['mode'] . '&idcontent=' . $aRow[$i]['idcontent'] . '&idartlang=' . $aRow[$i]['idartlang'] . '&oldlink=' . base64_encode($aRow[$i]['url']) . '&repairedlink=' . base64_encode($repaired_link) . '&redirect=' . $aRow[$i]['redirect'] . '\';})"><img src="' . $aUrl['contenido'] . 'images/but_editlink.gif" alt="" border="0"></a>');
+                $tpl2->set('s', 'ERRORS_REPAIRED_LINK', '<a href="javascript:void(0)" onclick="javascript:Con.showConfirmation(\'' . $repaired_question . '<br /><br /><strong>' . $repaired_link . '</strong>\', function() { window.location.href=\'' . $aUrl['contenido'] . 'main.php?area=linkchecker&frame=4&contenido=' . $sess->id . '&action=linkchecker&mode=' . $_GET['mode'] . '&idcontent=' . $aRow[$i]['idcontent'] . '&idartlang=' . $aRow[$i]['idartlang'] . '&oldlink=' . base64_encode($aRow[$i]['url']) . '&repairedlink=' . base64_encode($repaired_link) . '&redirect=' . $aRow[$i]['redirect'] . '\';})"><img src="' . $aUrl['contenido'] . 'images/but_editlink.gif" alt=""></a>');
             }
 
             if ($sKey != "cat") {

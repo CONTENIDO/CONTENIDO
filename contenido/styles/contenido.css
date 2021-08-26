@@ -490,7 +490,7 @@ a.nav:link {
     color: #fff;
 }
 
-a img {
+a img, label img, img.borderless, input[type=image] {
     border: 0;
 }
 

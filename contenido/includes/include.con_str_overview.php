@@ -523,8 +523,8 @@ $languages = getLanguageNamesByClient($client);
 $selflink = "main.php";
 $expandlink = $sess->url($selflink . "?area=$area&frame=$frame&expand=all&syncoptions=$syncoptions");
 $collapselink = $sess->url($selflink . "?area=$area&frame=$frame&collapse=all&syncoptions=$syncoptions");
-$collapseimg = '<a href="' . $collapselink . '" alt="' . i18n("Close all categories") . '" title="' . i18n("Close all categories") . '"><img src="images/but_minus.gif" border="0"></a>';
-$expandimg = '<a href="' . $expandlink . '" alt="' . i18n("Open all categories") . '" title="' . i18n("Open all categories") . '"><img src="images/but_plus.gif" border="0"></a>';
+$collapseimg = '<a href="' . $collapselink . '" alt="' . i18n("Close all categories") . '" title="' . i18n("Close all categories") . '"><img src="images/but_minus.gif"></a>';
+$expandimg = '<a href="' . $expandlink . '" alt="' . i18n("Open all categories") . '" title="' . i18n("Open all categories") . '"><img src="images/but_plus.gif"></a>';
 $allLinks = $expandimg . '<img src="images/spacer.gif" width="3" alt="">' . $collapseimg;
 $text_direction = langGetTextDirection($lang);
 

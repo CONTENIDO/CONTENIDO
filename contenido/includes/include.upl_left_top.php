@@ -109,7 +109,7 @@ $mstr = sprintf(
     $tmp_mstr,
     'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"),
     'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"),
-    '<img src="images/ordner_oben.gif" align="middle" alt="" border="0"><img align="middle" src="images/spacer.gif" width="5" border="0">' . $file
+    '<img class="borderless" src="images/ordner_oben.gif" align="middle" alt=""><img class="borderless" align="middle" src="images/spacer.gif" width="5">' . $file
 );
 
 $tpl->set('d', 'PATH', $pathstring);
