@@ -70,7 +70,7 @@ $cfg['path']['wysiwyg_html']            = $cfg['path']['all_wysiwyg_html'] . $cf
 /* The prefix for all CONTENIDO system tables, usually 'con' */
 $cfg['sql']['sqlprefix'] = '{MYSQL_PREFIX}';
 
-/* Database extension/driver to use, feasible values are 'mysqli' or 'mysql' */
+/* Database extension/driver to use, only feasible value is 'mysqli' */
 $cfg['database_extension'] = '{DB_EXTENSION}';
 
 /**

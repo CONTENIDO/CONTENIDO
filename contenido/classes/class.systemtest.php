@@ -920,19 +920,6 @@ class cSystemtest {
      * @return bool
      *         true if the test passed and false if not
      */
-    public function testMySQLExtension() {
-        if ($this->isPHPExtensionLoaded("mysql") == self::CON_EXTENSION_AVAILABLE) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     *
-     * @return bool
-     *         true if the test passed and false if not
-     */
     public function testMySQLiExtension() {
         if ($this->isPHPExtensionLoaded("mysqli") == self::CON_EXTENSION_AVAILABLE) {
             return true;

@@ -11,9 +11,6 @@
  * @link       http://www.contenido.org
  */
 defined ( 'CON_FRAMEWORK' ) || die ( 'Illegal call: Missing framework initialization - request aborted.' );
-function hasMySQLExtension() {
-	return (isPHPExtensionLoaded ( "mysql" ) == CON_EXTENSION_AVAILABLE) ? true : false;
-}
 function hasMySQLiExtension() {
 	return (isPHPExtensionLoaded ( "mysqli" ) == CON_EXTENSION_AVAILABLE) ? true : false;
 }
@@ -80,7 +77,7 @@ function getSetupMySQLDBConnection($full = true) {
 }
 
 /**
- * Checks existing MySQL extensions and returns 'mysqli' as default, 'mysql' or null.
+ * Checks existing MySQL extensions and returns 'mysqli' as default, or null. 'mysql' is deprecated.
  *
  * @return string null
  */

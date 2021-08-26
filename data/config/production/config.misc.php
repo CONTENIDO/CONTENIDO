@@ -181,24 +181,6 @@ $cfg['php_error_reporting'] = E_ALL & ~(E_STRICT | E_NOTICE);
 // (bool) Enable/disable caching
 $cfg['cache']['disable'] = true;
 
-
-/* GenericDB settings
- * -----------------------------------------------------------------------------
- */
-
-// (string) The GenericDB driver to use, at the moment only 'mysql' is supported
-$cfg['sql']['gdb_driver'] = 'mysql';
-
-// (int) Number of GenericDB items per table to cache
-$cfg['sql']['cache']['max_items_to_cache'] = 10;
-
-// (bool) Enable GenericDB item cache
-$cfg['sql']['cache']['enable'] = true;
-
-// (bool) Enable mode to select all fields in GenericDB item collections.
-$cfg['sql']['select_all_mode'] = true;
-
-
 /* UriBuilder settings
  * -----------------------------------------------------------------------------
  * Configuration of UriBuilder to use.
