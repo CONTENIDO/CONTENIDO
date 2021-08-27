@@ -1,7 +1,10 @@
 <?php
 
 /**
- * This file contains fix functions for PHP 5.4 support (encoding related).
+ * Originally, this file contained fixed functions for PHP 5.4 support (encoding related).
+ * Update 2021-08-25: check for PHP-Version has been omitted. 
+ * It is presumed that at least PHP7.x is running. 
+ * Code alternatives for PHP below 5.4 have been deleted.
  *
  * @package Core
  * @subpackage Backend
@@ -15,25 +18,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-if (function_exists('conPhp54Check') == false) {
-
-    /**
-     * Checks if at least PHP 5.4.0 is available. If so 1 is returned,
-     * 0 otherwise. The check is only performed once and stored as
-     * constant CON_PHP54.
-     *
-     * @return int
-     */
-    function conPhp54Check() {
-        if (!defined('CON_PHP54')) {
-            define('CON_PHP54', version_compare(PHP_VERSION, '5.4.0', '<') ? 0 : 1);
-        }
-
-        return CON_PHP54;
-    }
-
-}
-
 if (function_exists('conHtmlSpecialChars') == false) {
 
     /**
@@ -44,7 +28,6 @@ if (function_exists('conHtmlSpecialChars') == false) {
      * @return string
      */
     function conHtmlSpecialChars($value, $flags = '', $encoding = '') {
-        $isPhp54 = conPhp54Check();
 
         if ($encoding == '') {
             $encoding = cRegistry::getEncoding();
@@ -55,12 +38,8 @@ if (function_exists('conHtmlSpecialChars') == false) {
             $encoding = null;
         }
 
-        if ($isPhp54 == 1) {
-            $flags = ($flags == '') ? ENT_COMPAT | ENT_HTML401 : $flags;
-            $encoding = ($encoding == '') ? 'UTF-8' : $encoding;
-        } else {
-            $flags = ($flags == '') ? ENT_COMPAT : $flags;
-        }
+        $flags = ($flags == '') ? ENT_COMPAT | ENT_HTML401 : $flags;
+        $encoding = ($encoding == '') ? 'UTF-8' : $encoding;
 
         return htmlspecialchars($value, $flags, $encoding);
     }
@@ -77,18 +56,13 @@ if (function_exists('conHtmlEntityDecode') == false) {
      * @return string
      */
     function conHtmlEntityDecode($value, $flags = '', $encoding = '') {
-        $isPhp54 = conPhp54Check();
 
         if ($encoding == '') {
             $encoding = cRegistry::getEncoding();
         }
 
-        if ($isPhp54 == 1) {
-            $flags = ($flags == '') ? ENT_COMPAT | ENT_HTML401 : $flags;
-            $encoding = ($encoding == '') ? 'UTF-8' : $encoding;
-        } else {
-            $flags = ($flags == '') ? ENT_COMPAT : $flags;
-        }
+        $flags = ($flags == '') ? ENT_COMPAT | ENT_HTML401 : $flags;
+        $encoding = ($encoding == '') ? 'UTF-8' : $encoding;
 
         return html_entity_decode($value, $flags, $encoding);
     }
@@ -105,18 +79,13 @@ if (function_exists('conHtmlentities') == false) {
      * @return string
      */
     function conHtmlentities($value, $flags = '', $encoding = '') {
-        $isPhp54 = conPhp54Check();
 
         if ($encoding == '') {
             $encoding = cRegistry::getEncoding();
         }
 
-        if ($isPhp54 == 1) {
-            $flags = ($flags == '') ? ENT_COMPAT | ENT_HTML401 : $flags;
-            $encoding = ($encoding == '') ? 'UTF-8' : $encoding;
-        } else {
-            $flags = ($flags == '') ? ENT_COMPAT : $flags;
-        }
+        $flags = ($flags == '') ? ENT_COMPAT | ENT_HTML401 : $flags;
+        $encoding = ($encoding == '') ? 'UTF-8' : $encoding;
 
         return htmlentities($value, $flags, $encoding);
     }
@@ -132,14 +101,9 @@ if (function_exists('conGetHtmlTranslationTable') == false) {
      * @return array
      */
     function conGetHtmlTranslationTable($table = '', $flags = '') {
-        $isPhp54 = conPhp54Check();
 
-        if ($isPhp54 == 1) {
-            $table = ($table == '') ? HTML_SPECIALCHARS : $table;
-            $flags = ($flags == '') ? ENT_COMPAT | ENT_HTML401 : $flags;
-        } else {
-            $flags = ($flags == '') ? ENT_COMPAT : $flags;
-        }
+        $table = ($table == '') ? HTML_SPECIALCHARS : $table;
+        $flags = ($flags == '') ? ENT_COMPAT | ENT_HTML401 : $flags;
 
         return get_html_translation_table($table, $flags);
     }

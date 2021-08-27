@@ -1146,10 +1146,10 @@ function _processCmsTags($list, $contentList, $saveKeywords, $layoutCode, $artic
             // article can be edited or (article is published version and versioning is turned off or set to simple mode)
             if (($locked == 0 || true === $admin) && ($articleType == 'editable' || ($articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple')))) { // No freeze
                 $replacements[$num] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); }); return false;">
-            <img border="0" src="' . $backendUrl . 'images/delete.gif">
+            <img src="' . $backendUrl . 'images/delete.gif">
             </a>';
                 $keycode[$type][$num] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); }); return false;">
-            <img border="0" src="' . $backendUrl . 'images/delete.gif">
+            <img src="' . $backendUrl . 'images/delete.gif">
             </a>';
             } else { // Freeze status
                 $replacements[$num] = $tmp;

@@ -104,7 +104,7 @@ while ($cApiUser = $cApiUserCollection->next()) {
                 $delTitle = i18n("Delete user");
                 $deleteLink = '
                     <a href="javascript:;" data-action="delete_user" title="' . $delTitle . '" >
-                        <img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '">
+                        <img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '">
                     </a>
                 ';
             } else {

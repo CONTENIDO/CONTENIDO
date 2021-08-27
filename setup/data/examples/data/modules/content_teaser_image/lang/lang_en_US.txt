@@ -1,1 +1,2 @@
+LABEL_TEXT=Image Teaser
 MORE=more

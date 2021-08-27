@@ -15,14 +15,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-// Try to load GenericDB database driver
-// TODO: check if this is needed any longer because we have autoloading feature
-global $cfg;
-$driver_filename = cRegistry::getBackendPath() . $cfg['path']['classes'] . 'drivers/' . $cfg['sql']['gdb_driver'] . '/class.gdb.' . $cfg['sql']['gdb_driver'] . '.php';
-if (cFileHandler::exists($driver_filename)) {
-    include_once($driver_filename);
-}
-
 /**
  * Class cItemBaseAbstract.
  * Base class with common features for database based items and item

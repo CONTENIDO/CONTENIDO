@@ -257,7 +257,6 @@ return array(
     'cUnderflowException' => 'contenido/classes/exceptions/class.exception.underflow.php',
     'cUnexpectedValueException' => 'contenido/classes/exceptions/class.exception.unexpectedvalue.php',
     'cGenericDbDriver' => 'contenido/classes/genericdb/class.gdb.driver.php',
-    'cGenericDbDriverMysql' => 'contenido/classes/genericdb/class.gdb.mysql.php',
     'cGenericDb' => 'contenido/classes/genericdb/class.genericdb.php',
     'cItemBaseAbstract' => 'contenido/classes/genericdb/class.item.base.abstract.php',
     'cItemCache' => 'contenido/classes/genericdb/class.item.cache.php',
