@@ -545,6 +545,22 @@ function isValidMail($email, $strict = false) {
 }
 
 /**
+ * Checks if passed date is valid or not
+ * Checks for Y-m-d or Y-m-d H:i:s
+ * NULL, unexisting dates and zeros are returned false
+ *
+ * @param string $date
+ *
+ * @return bool
+ *
+ * @throws cInvalidArgumentException
+ */
+function isValidDate($date) {
+    $validator = cValidatorFactory::getInstance('date');
+    return $validator->isValid($date);
+}
+
+/**
  *
  * @param string $string
  * @return string
