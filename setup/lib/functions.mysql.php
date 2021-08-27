@@ -11,9 +11,6 @@
  * @link       http://www.contenido.org
  */
 defined ( 'CON_FRAMEWORK' ) || die ( 'Illegal call: Missing framework initialization - request aborted.' );
-function hasMySQLExtension() {
-	return (isPHPExtensionLoaded ( "mysql" ) == CON_EXTENSION_AVAILABLE) ? true : false;
-}
 function hasMySQLiExtension() {
 	return (isPHPExtensionLoaded ( "mysqli" ) == CON_EXTENSION_AVAILABLE) ? true : false;
 }
@@ -61,8 +58,6 @@ function doMySQLSelectDB($linkid, $database) {
 
 	if (CON_SETUP_MYSQLI === $extension) {
 		return (@mysqli_select_db ( $linkid, $database )) ? true : false;
-	} elseif (CON_SETUP_MYSQL === $extension) {
-		return (@mysql_select_db ( $database, $linkid )) ? true : false;
 	} else {
 		return false;
 	}
@@ -82,15 +77,13 @@ function getSetupMySQLDBConnection($full = true) {
 }
 
 /**
- * Checks existing MySQL extensions and returns 'mysqli' as default, 'mysql' or null.
+ * Checks existing MySQL extensions and returns 'mysqli' as default, or null. 'mysql' is deprecated.
  *
  * @return string null
  */
 function getMySQLDatabaseExtension() {
 	if (hasMySQLiExtension ()) {
 		return CON_SETUP_MYSQLI;
-	} elseif (hasMySQLExtension ()) {
-		return CON_SETUP_MYSQL;
 	} else {
 		return null;
 	}
