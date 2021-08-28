@@ -6,414 +6,432 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-03 12:00+0200\n"
+"POT-Creation-Date: 2021-08-28 12:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.0\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: i18n\n"
+"X-Poedit-SearchPath-0: classes\n"
+"X-Poedit-SearchPath-1: includes\n"
 
-#: classes/class.workflowactions.php:48
+#: classes/class.workflowactions.php:56
 msgid "Publish article"
 msgstr ""
 
-#: classes/class.workflowactions.php:49
+#: classes/class.workflowactions.php:57
 msgid "Lock article"
 msgstr ""
 
-#: classes/class.workflowactions.php:50
+#: classes/class.workflowactions.php:58
 msgid "Move back to last editor"
 msgstr ""
 
-#: classes/class.workflowactions.php:51 includes/functions.workflow.php:158
+#: classes/class.workflowactions.php:59 includes/functions.workflow.php:180
 msgid "Reject article"
 msgstr ""
 
-#: classes/class.workflowactions.php:52
+#: classes/class.workflowactions.php:60
 msgid "Edit article content"
 msgstr ""
 
-#: classes/class.workflowactions.php:53
+#: classes/class.workflowactions.php:61
 msgid "Edit article properties"
 msgstr ""
 
-#: classes/class.workflowactions.php:54
+#: classes/class.workflowactions.php:62
 msgid "Edit template"
 msgstr ""
 
-#: classes/class.workflowactions.php:55 includes/functions.workflow.php:166
+#: classes/class.workflowactions.php:63 includes/functions.workflow.php:188
 msgid "Revise article"
 msgstr ""
 
-#: classes/class.workflowallocation.php:85
-#: classes/class.workflowallocation.php:189
+#: classes/class.workflowallocation.php:99
+#: classes/class.workflowallocation.php:213
 msgid "Category already has a workflow assigned"
 msgstr ""
 
-#: classes/class.workflowallocation.php:93
-#: classes/class.workflowallocation.php:165
-#: classes/class.workflowitems.php:259
+#: classes/class.workflowallocation.php:107
+#: classes/class.workflowallocation.php:184 classes/class.workflowitems.php:307
 msgid "Workflow doesn't exist"
 msgstr ""
 
-#: classes/class.workflowallocation.php:198
+#: classes/class.workflowallocation.php:222
 msgid "Category doesn't exist, assignment failed"
 msgstr ""
 
-#: classes/class.workflowartallocation.php:44
+#: classes/class.workflowartallocation.php:51
 msgid "Article doesn't exist"
 msgstr ""
 
-#: classes/class.workflowartallocation.php:51
+#: classes/class.workflowartallocation.php:58
 msgid "Article is already assigned to a usersequence step."
 msgstr ""
 
-#: classes/class.workflowartallocation.php:219
-#: classes/class.workflowartallocation.php:223
+#: classes/class.workflowartallocation.php:210
+#, php-format
+msgid ""
+"Hello %s,\n"
+"\n"
+"you are assigned as the next editor for the Article %s.\n"
+"\n"
+"More informations:\n"
+"Article: %s\n"
+"Category: %s\n"
+"Editor: %s\n"
+"Author: %s\n"
+"Editable from: %s\n"
+"Editable to: %s\n"
+msgstr ""
+
+#: classes/class.workflowartallocation.php:222
+#: classes/class.workflowartallocation.php:226
 msgid "Workflow notification"
 msgstr ""
 
-#: classes/class.workflowartallocation.php:240
-#: classes/class.workflowartallocation.php:244
+#: classes/class.workflowartallocation.php:243
+#: classes/class.workflowartallocation.php:247
 msgid "Workflow escalation"
 msgstr ""
 
-#: classes/class.workflowitems.php:104 classes/class.workflowitems.php:112
-#: classes/class.workflowusersequence.php:106
-#: classes/class.workflowusersequence.php:114
+#: classes/class.workflowitems.php:132 classes/class.workflowitems.php:140
+#: classes/class.workflowusersequence.php:137
+#: classes/class.workflowusersequence.php:145
 msgid "Swapping items failed: Item doesn't exist"
 msgstr ""
 
-#: classes/class.workflowitems.php:137
+#: classes/class.workflowitems.php:174
 msgid "Can't add item to workflow: Workflow doesn't exist"
 msgstr ""
 
-#: classes/class.workflowitems.php:216
+#: classes/class.workflowitems.php:258
 msgid "No item loaded"
 msgstr ""
 
-#: classes/class.workflowitems.php:236
+#: classes/class.workflowitems.php:278
 msgid "Requested task doesn't exist, can't assign"
 msgstr ""
 
-#: classes/class.workflowitems.php:266
+#: classes/class.workflowitems.php:314
 msgid "Position in this workflow already exists."
 msgstr ""
 
-#: classes/class.workflowusersequence.php:81
+#: classes/class.workflowusersequence.php:102
 msgid "Workflow item doesn't exist. Can't create entry."
 msgstr ""
 
-#: classes/class.workflowusersequence.php:190
+#: classes/class.workflowusersequence.php:222
 msgid "Can't set user_id: User or group doesn't exist"
 msgstr ""
 
-#: includes/config.plugin.php:23 includes/include.workflow_list.php:55
+#: includes/config.plugin.php:21 includes/include.workflow_list.php:27
 msgid "Delete workflow"
 msgstr ""
 
-#: includes/config.plugin.php:24
+#: includes/config.plugin.php:22
 msgid "Select workflow task"
 msgstr ""
 
-#: includes/config.plugin.php:25
+#: includes/config.plugin.php:23
 msgid "Show workflow"
 msgstr ""
 
-#: includes/config.plugin.php:26 includes/include.workflow_left_top.php:23
+#: includes/config.plugin.php:24 includes/include.workflow_left_top.php:23
 msgid "Create workflow"
 msgstr ""
 
-#: includes/config.plugin.php:27 includes/include.workflow_edit.php:77
+#: includes/config.plugin.php:25 includes/include.workflow_edit.php:65
 msgid "Edit workflow"
 msgstr ""
 
-#: includes/config.plugin.php:28 includes/config.plugin.php:29
+#: includes/config.plugin.php:26 includes/config.plugin.php:27
 msgid "Process workflow step"
 msgstr ""
 
-#: includes/config.plugin.php:30 includes/config.plugin.php:31
-#: includes/config.plugin.php:179
+#: includes/config.plugin.php:28 includes/config.plugin.php:181
 msgid "Inherit workflow down"
 msgstr ""
 
-#: includes/config.plugin.php:32 includes/include.workflow_steps.php:275
+#: includes/config.plugin.php:29 includes/include.workflow_steps.php:303
 msgid "Edit workflow step"
 msgstr ""
 
-#: includes/config.plugin.php:33
+#: includes/config.plugin.php:30
 msgid "Move workflowstep up"
 msgstr ""
 
-#: includes/config.plugin.php:34
+#: includes/config.plugin.php:31
 msgid "Move workflowstep down"
 msgstr ""
 
-#: includes/config.plugin.php:35
+#: includes/config.plugin.php:32
 msgid "Save Workflowstep"
 msgstr ""
 
-#: includes/config.plugin.php:36
+#: includes/config.plugin.php:33
 msgid "Create workflowstep"
 msgstr ""
 
-#: includes/config.plugin.php:37
+#: includes/config.plugin.php:34
 msgid "Delete workflowstep"
 msgstr ""
 
-#: includes/config.plugin.php:38
+#: includes/config.plugin.php:35
 msgid "Move workflowstepuser up"
 msgstr ""
 
-#: includes/config.plugin.php:39
+#: includes/config.plugin.php:36
 msgid "Move workflowstepuser down"
 msgstr ""
 
-#: includes/config.plugin.php:40
+#: includes/config.plugin.php:37
 msgid "Create Workflowstepuser"
 msgstr ""
 
-#: includes/config.plugin.php:41
+#: includes/config.plugin.php:38
 msgid "Delete Workflowstepuser"
 msgstr ""
 
-#: includes/config.plugin.php:42
+#: includes/config.plugin.php:39
 msgid "Associate workflow with category"
 msgstr ""
 
-#: includes/config.plugin.php:158 includes/config.plugin.php:400
-#: includes/config.plugin.php:406 includes/functions.workflow.php:36
-#: includes/functions.workflow.php:299 includes/include.workflow_tasks.php:189
+#: includes/config.plugin.php:160 includes/config.plugin.php:474
+#: includes/config.plugin.php:480 includes/functions.workflow.php:43
+#: includes/functions.workflow.php:341 includes/include.workflow_tasks.php:185
 msgid "None"
 msgstr ""
 
-#: includes/config.plugin.php:195
+#: includes/config.plugin.php:223
 msgid "Workflow"
 msgstr ""
 
-#: includes/config.plugin.php:289 includes/include.workflow_tasks.php:122
+#: includes/config.plugin.php:342 includes/include.workflow_tasks.php:118
 msgid "Workflow Step"
 msgstr ""
 
-#: includes/config.plugin.php:290 includes/include.workflow_tasks.php:123
+#: includes/config.plugin.php:343 includes/include.workflow_tasks.php:119
 msgid "Workflow Action"
 msgstr ""
 
-#: includes/config.plugin.php:291 includes/include.workflow_tasks.php:124
+#: includes/config.plugin.php:344 includes/include.workflow_tasks.php:120
 msgid "Workflow Editor"
 msgstr ""
 
-#: includes/config.plugin.php:292 includes/include.workflow_tasks.php:125
+#: includes/config.plugin.php:345 includes/include.workflow_tasks.php:121
 msgid "Last status"
 msgstr ""
 
-#: includes/functions.workflow.php:142
+#: includes/functions.workflow.php:164
 msgid "Confirm"
 msgstr ""
 
-#: includes/functions.workflow.php:150
+#: includes/functions.workflow.php:172
 msgid "Back to last editor"
 msgstr ""
 
-#: includes/functions.workflow.php:287
+#: includes/functions.workflow.php:329
 msgid "Rejected"
 msgstr ""
 
-#: includes/functions.workflow.php:290
+#: includes/functions.workflow.php:332
 msgid "Revised"
 msgstr ""
 
-#: includes/functions.workflow.php:293
+#: includes/functions.workflow.php:335
 msgid "Last"
 msgstr ""
 
-#: includes/functions.workflow.php:296
+#: includes/functions.workflow.php:338
 msgid "Confirmed"
 msgstr ""
 
-#: includes/functions.workflow.php:475
+#: includes/functions.workflow.php:544
 msgid "Inherit workflow to sub-categories"
 msgstr ""
 
-#: includes/include.workflow_edit.php:23
+#: includes/include.workflow_edit.php:30
 msgid "Deleted workflow successfully!"
 msgstr ""
 
-#: includes/include.workflow_edit.php:36
+#: includes/include.workflow_edit.php:42
 msgid "Created new workflow successfully!"
 msgstr ""
 
-#: includes/include.workflow_edit.php:38
+#: includes/include.workflow_edit.php:44
 msgid "Saved changes successfully!"
 msgstr ""
 
-#: includes/include.workflow_edit.php:74
+#: includes/include.workflow_edit.php:62
 msgid "New Workflow"
 msgstr ""
 
-#: includes/include.workflow_edit.php:75
+#: includes/include.workflow_edit.php:63
 msgid "Create new workflow"
 msgstr ""
 
-#: includes/include.workflow_edit.php:87
+#: includes/include.workflow_edit.php:75
 msgid "Workflow name"
 msgstr ""
 
-#: includes/include.workflow_edit.php:89
+#: includes/include.workflow_edit.php:77
 msgid "Description"
 msgstr ""
 
-#: includes/include.workflow_edit.php:91
+#: includes/include.workflow_edit.php:79
 msgid "Author"
 msgstr ""
 
-#: includes/include.workflow_edit.php:94
+#: includes/include.workflow_edit.php:82
 msgid "Created"
 msgstr ""
 
-#: includes/include.workflow_list.php:56
+#: includes/include.workflow_list.php:65
 #, php-format
 msgid "Do you really want to delete the following workflow:<br><br>%s<br>"
 msgstr ""
 
-#: includes/include.workflow_steps.php:32
-#: includes/include.workflow_steps.php:381
+#: includes/include.workflow_steps.php:34
+#: includes/include.workflow_steps.php:418
 msgid "Add User"
 msgstr ""
 
-#: includes/include.workflow_steps.php:64
+#: includes/include.workflow_steps.php:66
 msgid "New Workflow Step"
 msgstr ""
 
-#: includes/include.workflow_steps.php:127
+#: includes/include.workflow_steps.php:136
 msgid "Seconds"
 msgstr ""
 
-#: includes/include.workflow_steps.php:128
+#: includes/include.workflow_steps.php:137
 msgid "Minutes"
 msgstr ""
 
-#: includes/include.workflow_steps.php:129
+#: includes/include.workflow_steps.php:138
 msgid "Hours"
 msgstr ""
 
-#: includes/include.workflow_steps.php:130
+#: includes/include.workflow_steps.php:139
 msgid "Days"
 msgstr ""
 
-#: includes/include.workflow_steps.php:131
+#: includes/include.workflow_steps.php:140
 msgid "Weeks"
 msgstr ""
 
-#: includes/include.workflow_steps.php:132
+#: includes/include.workflow_steps.php:141
 msgid "Months"
 msgstr ""
 
-#: includes/include.workflow_steps.php:133
+#: includes/include.workflow_steps.php:142
 msgid "Years"
 msgstr ""
 
-#: includes/include.workflow_steps.php:181
+#: includes/include.workflow_steps.php:197
 msgid "Move step up"
 msgstr ""
 
-#: includes/include.workflow_steps.php:189
+#: includes/include.workflow_steps.php:205
 msgid "Move step down"
 msgstr ""
 
-#: includes/include.workflow_steps.php:197
+#: includes/include.workflow_steps.php:213
 msgid "Delete step"
 msgstr ""
 
-#: includes/include.workflow_steps.php:241
+#: includes/include.workflow_steps.php:261
 msgid "Create new step"
 msgstr ""
 
-#: includes/include.workflow_steps.php:277
+#: includes/include.workflow_steps.php:305
 msgid "Step name"
 msgstr ""
 
-#: includes/include.workflow_steps.php:279
+#: includes/include.workflow_steps.php:307
 msgid "Step description"
 msgstr ""
 
-#: includes/include.workflow_steps.php:289
-#: includes/include.workflow_tasks.php:118
+#: includes/include.workflow_steps.php:317
+#: includes/include.workflow_tasks.php:114
 msgid "Actions"
 msgstr ""
 
-#: includes/include.workflow_steps.php:290
+#: includes/include.workflow_steps.php:318
 msgid "Assigned users"
 msgstr ""
 
-#: includes/include.workflow_steps.php:320
+#: includes/include.workflow_steps.php:357
 msgid "Move user up"
 msgstr ""
 
-#: includes/include.workflow_steps.php:328
+#: includes/include.workflow_steps.php:365
 msgid "Move user down"
 msgstr ""
 
-#: includes/include.workflow_steps.php:337
+#: includes/include.workflow_steps.php:374
 msgid "Delete user"
 msgstr ""
 
-#: includes/include.workflow_steps.php:345
+#: includes/include.workflow_steps.php:382
 msgid "Notify this user via E-Mail"
 msgstr ""
 
-#: includes/include.workflow_steps.php:346
+#: includes/include.workflow_steps.php:383
 msgid "Escalate to this user via E-Mail"
 msgstr ""
 
-#: includes/include.workflow_steps.php:391
+#: includes/include.workflow_steps.php:428
 msgid "Warning: Changes will reset active Workflows"
 msgstr ""
 
-#: includes/include.workflow_tasks.php:105
+#: includes/include.workflow_tasks.php:101
 msgid "Show users"
 msgstr ""
 
-#: includes/include.workflow_tasks.php:113
+#: includes/include.workflow_tasks.php:109
 msgid "Search results"
 msgstr ""
 
-#: includes/include.workflow_tasks.php:113
+#: includes/include.workflow_tasks.php:109
 msgid "Workflow tasks"
 msgstr ""
 
-#: includes/include.workflow_tasks.php:116
+#: includes/include.workflow_tasks.php:112
 msgid "Article"
 msgstr ""
 
-#: includes/include.workflow_tasks.php:117
+#: includes/include.workflow_tasks.php:113
 msgid "Template"
 msgstr ""
 
-#: includes/include.workflow_tasks.php:119
+#: includes/include.workflow_tasks.php:115
 msgid "Title"
 msgstr ""
 
-#: includes/include.workflow_tasks.php:120
+#: includes/include.workflow_tasks.php:116
 msgid "Changed"
 msgstr ""
 
-#: includes/include.workflow_tasks.php:121
+#: includes/include.workflow_tasks.php:117
 msgid "Published"
 msgstr ""
 
-#: includes/include.workflow_tasks.php:181
+#: includes/include.workflow_tasks.php:177
 msgid "Reminder"
 msgstr ""
 
-#: includes/include.workflow_tasks.php:182
+#: includes/include.workflow_tasks.php:178
 msgid "Set reminder / add to todo list"
 msgstr ""
 
-#: includes/include.workflow_tasks.php:217
+#: includes/include.workflow_tasks.php:213
 msgid "No article found."
 msgstr ""
