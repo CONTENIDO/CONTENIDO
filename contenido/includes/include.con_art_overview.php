@@ -670,7 +670,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                         $value = $modified;
                         break;
                     case "publisheddate":
-                        if ('1' === $oArtLang->get('online')) {
+                        if (1 === cSecurity::toInteger($oArtLang->get('online'))) {
                             $value = $published;
                         } else {
                             $value = i18n("not yet published");
