@@ -14,6 +14,8 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $idtpl, $client, $cfg, $db, $lang, $containerinf, $sess, $frame, $area;
+
 cInclude('includes', 'functions.tpl.php');
 
 $idtpl = cSecurity::toInteger($idtpl);
@@ -191,5 +193,3 @@ $code = preg_replace("/<body(.*)>/i", "<body\\1>" . $form . $button, $code);
 $code = preg_replace("/<\/body(.*)>/i", '</form></body>', $code);
 
 eval("?>\n" . $code . "\n<?php\n");
-
-?>
