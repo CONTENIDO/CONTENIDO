@@ -495,7 +495,7 @@ class cRights
         try {
             $rights = [];
 
-            $areas->select('relevant = 1 AND online = 1 AND name != "login"');
+            $areas->select('relevant = 1 AND online = 1 AND name != "login" ORDER BY idarea ASC');
             while ($area = $areas->next()) {
                 $right = [
                     'perm'     => $area->get('name'),
@@ -503,13 +503,13 @@ class cRights
                 ];
 
                 // get location
-                $navSubs->select('idarea = ' . (int)$area->get('idarea'));
+                $navSubs->select('idarea = ' . (int)$area->get('idarea') . ' ORDER BY idarea ASC');
                 if ($navSubItem = $navSubs->next()) {
                     $right['location'] = $navSubItem->get('location');
                 }
 
                 // get relevant actions
-                $actions->select('relevant = 1 AND idarea = ' . (int)$area->get('idarea'));
+                $actions->select('relevant = 1 AND idarea = ' . (int)$area->get('idarea') . ' ORDER BY idarea ASC');
                 while ($action = $actions->next()) {
                     $right['action'][] = $action->get('name');
                 }
