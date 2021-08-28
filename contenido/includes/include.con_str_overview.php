@@ -18,7 +18,7 @@ cInclude("includes", "functions.str.php");
 cInclude("includes", "functions.tpl.php");
 cInclude('includes', 'functions.lang.php');
 
-global $syncidcat, $syncfromlang, $multiple, $markscript;
+global $syncidcat, $syncfromlang, $multiple, $markscript, $tpl, $action, $lang, $sess, $client, $cfg, $db, $area, $frame, $idcat, $currentuser, $_cecRegistry, $perm;
 
 /**
  *
