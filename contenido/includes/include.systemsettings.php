@@ -26,11 +26,7 @@ $aManagedValues = array(
 );
 
 // @TODO Find a general solution for this!
-if (defined('CON_STRIPSLASHES')) {
-    $request = cString::stripSlashes($_REQUEST);
-} else {
-    $request = $_REQUEST;
-}
+$request = $_REQUEST;
 
 // @TODO: Check possibility to use $perm->isSysadmin()
 $isSysadmin = (false !== cString::findFirstPos($auth->auth["perm"], "sysadmin"));

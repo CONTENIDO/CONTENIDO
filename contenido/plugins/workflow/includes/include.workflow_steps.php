@@ -195,7 +195,7 @@ function getWorkflowList() {
         $moveup->setCustom("idworkflow", $idworkflow);
         $moveup->setCustom("position", $pos);
         $moveup->setAlt(i18n("Move step up", "workflow"));
-        $moveup->setContent('<img border="0" src="' . $backendUrl . $cfg["path"]["plugins"] . "workflow/images/no_verschieben.gif" . '">');
+        $moveup->setContent('<img src="' . $backendUrl . $cfg["path"]["plugins"] . "workflow/images/no_verschieben.gif" . '">');
 
         $movedown = new cHTMLLink();
         $movedown->setCLink("workflow_steps", 4, "workflow_step_down");
@@ -203,7 +203,7 @@ function getWorkflowList() {
         $movedown->setCustom("idworkflow", $idworkflow);
         $movedown->setCustom("position", $pos);
         $movedown->setAlt(i18n("Move step down", "workflow"));
-        $movedown->setContent('<img border="0" src="' . $backendUrl . $cfg["path"]["plugins"] . "workflow/images/nu_verschieben.gif" . '">');
+        $movedown->setContent('<img src="' . $backendUrl . $cfg["path"]["plugins"] . "workflow/images/nu_verschieben.gif" . '">');
 
         $deletestep = new cHTMLLink();
         $deletestep->setCLink("workflow_steps", 4, "workflow_step_delete");
@@ -211,7 +211,7 @@ function getWorkflowList() {
         $deletestep->setCustom("idworkflow", $idworkflow);
         $deletestep->setCustom("position", $pos);
         $deletestep->setAlt(i18n("Delete step", "workflow"));
-        $deletestep->setContent('<img border="0" src="' . $backendUrl . $cfg["path"]["plugins"] . "workflow/images/workflow_step_delete.gif" . '">');
+        $deletestep->setContent('<img src="' . $backendUrl . $cfg["path"]["plugins"] . "workflow/images/workflow_step_delete.gif" . '">');
 
         $ui->setTitle($id, "$pos. $name");
         $ui->setLink($id, $edititem);
@@ -355,7 +355,7 @@ function getWorkflowUsers($idworkflowitem) {
         $moveup->setCustom("idworkflow", $idworkflow);
         $moveup->setCustom("position", $pos);
         $moveup->setAlt(i18n("Move user up", "workflow"));
-        $moveup->setContent('<img border="0" src="' . $backendUrl . $cfg["path"]["plugins"] . "workflow/images/no_verschieben.gif" . '">');
+        $moveup->setContent('<img src="' . $backendUrl . $cfg["path"]["plugins"] . "workflow/images/no_verschieben.gif" . '">');
 
         $movedown = new cHTMLLink();
         $movedown->setCLink("workflow_steps", 4, "workflow_user_down");
@@ -363,7 +363,7 @@ function getWorkflowUsers($idworkflowitem) {
         $movedown->setCustom("idworkflow", $idworkflow);
         $movedown->setCustom("position", $pos);
         $movedown->setAlt(i18n("Move user down", "workflow"));
-        $movedown->setContent('<img border="0" src="' . $backendUrl . $cfg["path"]["plugins"] . "workflow/images/nu_verschieben.gif" . '">');
+        $movedown->setContent('<img src="' . $backendUrl . $cfg["path"]["plugins"] . "workflow/images/nu_verschieben.gif" . '">');
 
         $deletestep = new cHTMLLink();
         $deletestep->setCLink("workflow_steps", 4, "workflow_user_delete");
@@ -372,7 +372,7 @@ function getWorkflowUsers($idworkflowitem) {
         $deletestep->setCustom("position", $pos);
         $deletestep->setCustom("idusersequence", $id);
         $deletestep->setAlt(i18n("Delete user", "workflow"));
-        $deletestep->setContent('<img border="0" src="' . $backendUrl . $cfg["path"]["plugins"] . "workflow/images/workflow_step_delete.gif" . '">');
+        $deletestep->setContent('<img src="' . $backendUrl . $cfg["path"]["plugins"] . "workflow/images/workflow_step_delete.gif" . '">');
 
         $title = "$pos. " . getUsers($id, $iduser);
 
@@ -383,10 +383,10 @@ function getWorkflowUsers($idworkflowitem) {
         $altnoti = i18n("Escalate to this user via E-Mail", "workflow");
 
         $oCheckbox = new cHTMLCheckbox("wfemailnoti[" . $id . "]", "1", "wfemailnoti[" . $id . "]1", $email);
-        $title .= $oCheckbox->toHtml(false) . '<label for="wfemailnoti[' . $id . ']1"><img alt="' . $altmail . '" title="' . $altmail . '" border="0" src="' . $backendUrl . $cfg["path"]["plugins"] . 'workflow/images/workflow_email_noti.gif"></label>';
+        $title .= $oCheckbox->toHtml(false) . '<label for="wfemailnoti[' . $id . ']1"><img alt="' . $altmail . '" title="' . $altmail . '" src="' . $backendUrl . $cfg["path"]["plugins"] . 'workflow/images/workflow_email_noti.gif"></label>';
 
         $oCheckbox = new cHTMLCheckbox("wfescalnoti[" . $id . "]", "1", "wfescalnoti[" . $id . "]1", $escalation);
-        $title .= $oCheckbox->toHtml(false) . '<label for="wfescalnoti[' . $id . ']1"><img alt="' . $altnoti . '" title="' . $altnoti . '" border="0" src="' . $backendUrl . $cfg["path"]["plugins"] . 'workflow/images/workflow_escal_noti.gif"></label>';
+        $title .= $oCheckbox->toHtml(false) . '<label for="wfescalnoti[' . $id . ']1"><img alt="' . $altnoti . '" title="' . $altnoti . '" src="' . $backendUrl . $cfg["path"]["plugins"] . 'workflow/images/workflow_escal_noti.gif"></label>';
 
         $ui->setTitle($id, $title);
         $ui->setLink($id, NULL);

@@ -607,7 +607,7 @@ class PifaForm extends Item {
             $to = explode(',', $opt['to']);
             $message->setTo(array_combine($to, $to));
 
-            if (array_key_exists('replyTo', $opt)) {
+            if (array_key_exists('replyTo', $opt) && !empty($opt['replyTo'])) {
                 $message->setReplyTo($opt['replyTo']);
             }
         } catch (Exception $e) {

@@ -123,7 +123,7 @@ if (count($clients) > 1) {
     if ($perm->have_perm() && count($warnings) > 0) {
         $page->displayWarning(implode('<br>', $warnings));
     }
-    $page->set('s', 'OKBUTTON', '<input class="vAlignMiddle" type="image" src="images/but_ok.gif" alt="' . i18n('Change client') . '" title="' . i18n('Change client') . '" border="0">');
+    $page->set('s', 'OKBUTTON', '<input class="vAlignMiddle" type="image" src="images/but_ok.gif" alt="' . i18n('Change client') . '" title="' . i18n('Change client') . '">');
 } else {
     $page->set('s', 'OKBUTTON', '');
     $name = '';

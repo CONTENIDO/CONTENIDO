@@ -245,7 +245,7 @@ if ($idquser == '%' || $idquser == "") {
     foreach ($users as $key => $value) {
         $userarray[] = $key;
     }
-    $uservalues = implode('", "', $userarray);
+    $uservalues = implode('\', \'', $userarray);
     $userquery = "IN ('" . $uservalues . "')";
 } else {
     $userquery = "LIKE '" . $idquser . "'";

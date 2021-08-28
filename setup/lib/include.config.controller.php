@@ -35,7 +35,7 @@ foreach ($cfg['db']['connection']['options'] as $const => $value) {
     }
 }
 if (count($dbOptions) > 0) {
-    $dbOptions = str_repeat(' ', 12) . implode($dbOptions, str_repeat(' ', 12) . "\n");
+    $dbOptions = str_repeat(' ', 12) . implode("\n" . str_repeat(' ', 12), $dbOptions);
 } else {
     $dbOptions = '';
 }
