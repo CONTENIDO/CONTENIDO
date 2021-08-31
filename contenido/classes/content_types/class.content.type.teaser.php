@@ -152,27 +152,6 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
     }
 
     /**
-     * Returns the category list in select form as source code string.
-     * To avoid too much workload, a constant is used to only produce category list once.
-     *
-     * @param string to set the default option value
-     * @return string
-     */
-    private function _catListHelper($catDefault)
-    {
-        $catDefault = intval($catDefault);
-        if (!defined('_catList_')) {
-            define('_catList_', buildCategorySelect('catNameDefault', 0, 0));
-        }
-
-        $catList = str_replace('catNameDefault', 'teaser_category_' . $this->_id, _catList_); 
-
-        $returnString = ($catDefault > 0) ? str_replace('value="' . $catDefault . '"', 'value="' . $catDefault . '" selected="selected"', $catList) : $catList;
-
-        return $returnString;
-    }
-
-    /**
      * Sets some default values for teaser in case that there is no value
      * defined.
      */
@@ -262,9 +241,7 @@ echo $teaser->generateTeaserCode();
 ?><?php echo "';
 
         // escape ' to avoid accidentally ending the string in $code
-        $code = sprintf($code, str_replace('\'', '\\\'', $this->_rawSettings), $this->_id, '[]');
-
-        return $code;
+        return sprintf($code, str_replace('\'', '\\\'', $this->_rawSettings), $this->_id, '[]');
     }
 
     /**
@@ -712,7 +689,7 @@ echo $teaser->generateTeaserCode();
 
         // construct the top code of the template
         $templateTop = new cTemplate();
-        $templateTop->set('s', 'ICON', 'images/isstart0.gif');  
+        $templateTop->set('s', 'ICON', 'images/isstart0.gif');
         $templateTop->set('s', 'ID', $this->_id);
         $templateTop->set('s', 'PREFIX', $this->_prefix);
         $templateTop->set('s', 'HEADLINE', i18n('Teaser settings'));
@@ -774,9 +751,8 @@ echo $teaser->generateTeaserCode();
 
         $this->_cmsTypes = [];
 
-        $sql = 'SELECT * FROM ' . $this->_cfg['tab']['type'] . ' ORDER BY type';
-        $db  = cRegistry::getDb();
-        $db->query($sql);
+        $db = cRegistry::getDb();
+        $db->query('SELECT `idtype`, `type` FROM `%s` ORDER BY `type`', $this->_cfg['tab']['type']);
         while ($db->nextRecord()) {
             // we do not want certain content types
             if (in_array($db->f('type'), $this->_ignoreTypes)) {
@@ -810,7 +786,8 @@ echo $teaser->generateTeaserCode();
             'teaser_title_' . $this->_id
         );
         $wrapperContent[] = new cHTMLLabel(i18n('Source category'), 'teaser_category_' . $this->_id);
-        $wrapperContent[] = $this->_catListHelper($this->_settings['teaser_category']);
+        $wrapperContent[] =
+            buildCategorySelect('teaser_category_' . $this->_id, $this->_settings['teaser_category'], 0);
         $wrapperContent[] = new cHTMLLabel(i18n('Number of articles'), 'teaser_count_' . $this->_id);
         $wrapperContent[] = new cHTMLTextbox(
             'teaser_count_' . $this->_id, (int)$this->_settings['teaser_count'], '', '', 'teaser_count_' . $this->_id
@@ -950,7 +927,7 @@ echo $teaser->generateTeaserCode();
 
         // $wrapperContent[] = new cHTMLParagraph(i18n('Add article'), 'head_sub');
         $wrapperContent[] = new cHTMLLabel(i18n('Category'), 'teaser_cat_' . $this->_id);
-        $wrapperContent[] = $this->_catListHelper(0);
+        $wrapperContent[] = buildCategorySelect('teaser_cat_' . $this->_id, 0, 0);
         $wrapperContent[] = new cHTMLLabel(i18n('Article'), 'teaser_art_' . $this->_id);
         $wrapperContent[] = buildArticleSelect('teaser_art_' . $this->_id, 0, 0);
 
