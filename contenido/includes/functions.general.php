@@ -27,7 +27,7 @@ cInclude('includes', 'functions.file.php');
 function consoleLog($value, $method = 'log') {
     $method = in_array($method, ['log', 'warn', 'error']) ? $method : 'log';
     $value  = json_encode($value);
-    echo sprintf("<script>console.$method('$value');</script>");
+    echo "<script>console.{$method}('{$value}');</script>";
 }
 
 /**
@@ -119,7 +119,7 @@ function isUtf8($input) {
  *
  * @param int $month
  *
- * @return string
+ * @return string|null Month name or null
  *
  * @throws cException
  */
@@ -127,40 +127,30 @@ function getCanonicalMonth($month) {
     switch ($month) {
         case 1:
             return (i18n("January"));
-            break;
         case 2:
             return (i18n("February"));
-            break;
         case 3:
             return (i18n("March"));
-            break;
         case 4:
             return (i18n("April"));
-            break;
         case 5:
             return (i18n("May"));
-            break;
         case 6:
             return (i18n("June"));
-            break;
         case 7:
             return (i18n("July"));
-            break;
         case 8:
             return (i18n("August"));
-            break;
         case 9:
             return (i18n("September"));
-            break;
         case 10:
             return (i18n("October"));
-            break;
         case 11:
             return (i18n("November"));
-            break;
         case 12:
             return (i18n("December"));
-            break;
+        default:
+            return null;
     }
 }
 
@@ -170,8 +160,8 @@ function getCanonicalMonth($month) {
  * @param int $iDay
  *         The day number of date(w)
  *
- * @return string
- *         Dayname of current language
+ * @return string|null
+ *         Day name of current language or null
  *
  * @throws cException
  */
@@ -179,27 +169,20 @@ function getCanonicalDay($iDay) {
     switch ($iDay) {
         case 1:
             return (i18n("Monday"));
-            break;
         case 2:
             return (i18n("Tuesday"));
-            break;
         case 3:
             return (i18n("Wednesday"));
-            break;
         case 4:
             return (i18n("Thursday"));
-            break;
         case 5:
             return (i18n("Friday"));
-            break;
         case 6:
             return (i18n("Saturday"));
-            break;
         case 0:
             return (i18n("Sunday"));
-            break;
         default:
-            break;
+            return null;
     }
 }
 
@@ -281,7 +264,7 @@ function getParentAreaId($area) {
  *         Which menuitem to mark
  * @param bool $return
  *         Return or echo script
- * @return string
+ * @return string|void
  */
 function markSubMenuItem($menuitem, $return = false) {
     global $changeview;
@@ -479,7 +462,7 @@ function getAllClientsAndLanguages() {
 
 /**
  *
- * @return number
+ * @return float
  */
 function getmicrotime() {
     list($usec, $sec) = explode(' ', microtime());
@@ -488,7 +471,7 @@ function getmicrotime() {
 
 /**
  *
- * @param unknown_type $uid
+ * @param mixed $uid
  *
  * @return bool
  *
@@ -1095,8 +1078,19 @@ function setArtspecDefault($idartspec) {
  * @throws cException
  */
 function buildArticleSelect($sName, $iIdCat, $sValue) {
-    global $cfg, $lang;
+    $lang = cRegistry::getLanguageId();
 
+    static $cache;
+    if (!isset($cache)) {
+        $cache = [];
+    }
+    $cacheKey = implode('/', [$lang, $sName, $iIdCat, $sValue]);
+
+    if (isset($cache[$cacheKey])) {
+        return $cache[$cacheKey];
+    }
+
+    $cfg = cRegistry::getConfig();
     $db = cRegistry::getDb();
 
     $selectElem = new cHTMLSelectElement($sName, "", $sName);
@@ -1118,7 +1112,9 @@ function buildArticleSelect($sName, $iIdCat, $sValue) {
         }
     }
 
-    return $selectElem->toHtml();
+    $cache[$cacheKey] = $selectElem->toHtml();
+
+    return $cache[$cacheKey];
 }
 
 /**
@@ -1140,10 +1136,22 @@ function buildArticleSelect($sName, $iIdCat, $sValue) {
  * @throws cException
  */
 function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
-    global $cfg, $client, $lang;
+    $client = cRegistry::getClientId();
+    $lang = cRegistry::getLanguageId();
+
+    static $cache;
+    if (!isset($cache)) {
+        $cache = [];
+    }
+    $cacheKey = implode('/', [$client, $lang, $sName, $sValue, $sLevel, $sClass]);
+
+    if (isset($cache[$cacheKey])) {
+        return $cache[$cacheKey];
+    }
 
     $db = cRegistry::getDb();
     $db2 = cRegistry::getDb();
+    $cfg = cRegistry::getConfig();
 
     $selectElem = new cHTMLSelectElement($sName, "", $sName);
     $selectElem->setClass($sClass);
@@ -1184,11 +1192,7 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
     }
 
     foreach ($categories as $tmpidcat => $props) {
-        $spaces = "&nbsp;&nbsp;";
-
-        for ($i = 0; $i < $props["level"]; $i++) {
-            $spaces .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-        }
+        $spaces = "&nbsp;&nbsp;" . str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $props["level"]);
 
         $tmp_val = $tmpidcat;
 
@@ -1199,7 +1203,9 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
         }
     }
 
-    return $selectElem->toHtml();
+    $cache[$cacheKey] = $selectElem->toHtml();
+
+    return $cache[$cacheKey];
 }
 
 /**
@@ -1239,7 +1245,7 @@ function humanReadableSize($number) {
  *
  * @param string $sizeString
  *         contains the size acquired from ini_get for example
- * @return number
+ * @return float|int|string
  */
 function machineReadableSize($sizeString) {
     // If sizeString is a integer value (i. e. 64242880), return it
@@ -1665,19 +1671,14 @@ function getNamedFrame($frame) {
     switch ($frame) {
         case 1:
             return 'left_top';
-            break;
         case 2:
             return 'left_bottom';
-            break;
         case 3:
             return 'right_top';
-            break;
         case 4:
             return 'right_bottom';
-            break;
         default:
             return '';
-            break;
     }
 }
 
@@ -1792,7 +1793,7 @@ function sendEncodingHeader($db, $cfg, $lang, $contentType = 'text/html') {
     }
 
     if (is_string($use_encoding)) {
-        $use_encoding = ($use_encoding == 'false') ? false : true;
+        $use_encoding = !(($use_encoding == 'false'));
     }
 
     if ($use_encoding != false) {
