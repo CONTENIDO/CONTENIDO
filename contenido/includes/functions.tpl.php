@@ -89,11 +89,16 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         $containerColl = new cApiContainerCollection();
         $containerColl->clearAssignments($idtpl);
 
-        if ((int) $changelayout !== 1) {
+        // get all container numbers from actual layout to crossreference against $c (partially holding old layout info)
+        $layContainers = tplGetContainerNumbersInLayout($idlay);
+
+        if (is_array($c)) {
             foreach ($c as $idcontainer => $idmodule) {
                 $containerColl2 = new cApiContainerCollection();
-                $containerColl2->create($idtpl, $idcontainer, $c[$idcontainer]);
-            }
+                if ($idmodule != 0 && in_array($idcontainer, $layContainers) ) {
+                    $containerColl2->create($idtpl, $idcontainer, $idmodule);
+                }
+            } 
         }
 
         // Generate code
