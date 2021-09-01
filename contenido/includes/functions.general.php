@@ -119,7 +119,7 @@ function isUtf8($input) {
  *
  * @param int $month
  *
- * @return string Month name or empty string
+ * @return string|null Month name or null
  *
  * @throws cException
  */
@@ -150,7 +150,7 @@ function getCanonicalMonth($month) {
         case 12:
             return (i18n("December"));
         default:
-            return '';
+            return null;
     }
 }
 
@@ -160,8 +160,8 @@ function getCanonicalMonth($month) {
  * @param int $iDay
  *         The day number of date(w)
  *
- * @return string
- *         Day name of current language or empty string
+ * @return string|null
+ *         Day name of current language or null
  *
  * @throws cException
  */
@@ -182,7 +182,7 @@ function getCanonicalDay($iDay) {
         case 0:
             return (i18n("Sunday"));
         default:
-            return '';
+            return null;
     }
 }
 
