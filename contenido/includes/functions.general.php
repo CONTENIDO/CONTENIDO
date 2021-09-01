@@ -1103,7 +1103,6 @@ function buildArticleSelect($sName, $iIdCat, $sValue) {
                ORDER BY b.title";
 
     $db->query($sql);
-
     while ($db->nextRecord()) {
         if ($sValue != $db->f('idart')) {
             $selectElem->appendOptionElement(new cHTMLOptionElement($db->f('title'), $db->f('idart')));
@@ -1136,76 +1135,77 @@ function buildArticleSelect($sName, $iIdCat, $sValue) {
  * @throws cException
  */
 function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
+
     $client = cRegistry::getClientId();
     $lang = cRegistry::getLanguageId();
+    $cacheStandardID = 'bcStandardID';
+    $cacheStandardClass = 'bcStandardClass';
 
     static $cache;
     if (!isset($cache)) {
         $cache = [];
     }
-    $cacheKey = implode('/', [$client, $lang, $sName, $sValue, $sLevel, $sClass]);
 
-    if (isset($cache[$cacheKey])) {
-        return $cache[$cacheKey];
-    }
+    if (!isset($cache[$sLevel])) {
+        $cache[$sLevel] = [];
 
-    $db = cRegistry::getDb();
-    $db2 = cRegistry::getDb();
-    $cfg = cRegistry::getConfig();
+        $db = cRegistry::getDb();
+        $db2 = cRegistry::getDb();
+        $cfg = cRegistry::getConfig();
 
-    $selectElem = new cHTMLSelectElement($sName, "", $sName);
-    $selectElem->setClass($sClass);
-    $selectElem->appendOptionElement(new cHTMLOptionElement(i18n("Please choose"), ""));
+        $selectElem = new cHTMLSelectElement($cacheStandardID, "", $cacheStandardID);
+        $selectElem->setClass($cacheStandardClass);
+        $selectElem->appendOptionElement(new cHTMLOptionElement(i18n("Please choose"), ""));
 
-    $addString = ($sLevel > 0) ? "AND c.level < " . (int) $sLevel : '';
+        $addString = ($sLevel > 0) ? "AND c.level < " . (int) $sLevel : '';
 
-    $sql = "SELECT a.idcat AS idcat, b.name AS name, c.level FROM
-           " . $cfg["tab"]["cat"] . " AS a, " . $cfg["tab"]["cat_lang"] . " AS b,
-           " . $cfg["tab"]["cat_tree"] . " AS c WHERE a.idclient = " . (int) $client . "
-           AND b.idlang = " . (int) $lang . " AND b.idcat = a.idcat AND c.idcat = a.idcat " . $addString . "
-           ORDER BY c.idtree";
+        $sql = "SELECT a.idcat AS idcat, b.name AS name, c.level FROM
+            " . $cfg["tab"]["cat"] . " AS a, " . $cfg["tab"]["cat_lang"] . " AS b,
+            " . $cfg["tab"]["cat_tree"] . " AS c WHERE a.idclient = " . (int) $client . "
+            AND b.idlang = " . (int) $lang . " AND b.idcat = a.idcat AND c.idcat = a.idcat " . $addString . "
+            ORDER BY c.idtree";
 
-    $db->query($sql);
+        $db->query($sql);
 
-    $categories = [];
+        $categories = [];
 
-    while ($db->nextRecord()) {
-        $categories[$db->f("idcat")]["name"] = $db->f("name");
+        while ($db->nextRecord()) {
+            $categories[$db->f("idcat")]["name"] = $db->f("name");
 
-        $sql2 = "SELECT level FROM " . $cfg["tab"]["cat_tree"] . " WHERE idcat = " . (int) $db->f("idcat");
-        $db2->query($sql2);
+            $sql2 = "SELECT level FROM " . $cfg["tab"]["cat_tree"] . " WHERE idcat = " . (int) $db->f("idcat");
+            $db2->query($sql2);
 
-        if ($db2->nextRecord()) {
-            $categories[$db->f("idcat")]["level"] = $db2->f("level");
+            if ($db2->nextRecord()) {
+                $categories[$db->f("idcat")]["level"] = $db2->f("level");
+            }
+
+            $sql2 = "SELECT a.title AS title, b.idcatart AS idcatart FROM
+                    " . $cfg["tab"]["art_lang"] . " AS a,  " . $cfg["tab"]["cat_art"] . " AS b
+                    WHERE b.idcat = '" . $db->f("idcat") . "' AND a.idart = b.idart AND
+                    a.idlang = " . (int) $lang;
+
+            $db2->query($sql2);
+
+            while ($db2->nextRecord()) {
+                $categories[$db->f("idcat")]["articles"][$db2->f("idcatart")] = $db2->f("title");
+            }
         }
 
-        $sql2 = "SELECT a.title AS title, b.idcatart AS idcatart FROM
-                " . $cfg["tab"]["art_lang"] . " AS a,  " . $cfg["tab"]["cat_art"] . " AS b
-                WHERE b.idcat = '" . $db->f("idcat") . "' AND a.idart = b.idart AND
-                a.idlang = " . (int) $lang;
-
-        $db2->query($sql2);
-
-        while ($db2->nextRecord()) {
-            $categories[$db->f("idcat")]["articles"][$db2->f("idcatart")] = $db2->f("title");
+        foreach ($categories as $tmpidcat => $props) {
+            $spaces = "&nbsp;&nbsp;" . str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $props["level"]);
+            $selectElem->appendOptionElement(new cHTMLOptionElement($spaces . ">" . $props["name"], $tmpidcat)); 
         }
+
+        $cache[$sLevel] = $selectElem->toHtml();
+
     }
 
-    foreach ($categories as $tmpidcat => $props) {
-        $spaces = "&nbsp;&nbsp;" . str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $props["level"]);
+    // now tweak standard output with desired replacements for id, value and class		
+    $catList = str_replace($cacheStandardID, $sName, $cache[$sLevel]); 
+    $catList = str_replace('value="' .$sValue . '"', 'value="' .$sValue . '" selected="selected"', $catList); 
+    $catList = str_replace($cacheStandardClass, $sClass, $catList); 
 
-        $tmp_val = $tmpidcat;
-
-        if ($sValue != $tmp_val) {
-            $selectElem->appendOptionElement(new cHTMLOptionElement($spaces . ">" . $props["name"], $tmp_val));
-        } else {
-            $selectElem->appendOptionElement(new cHTMLOptionElement($spaces . ">" . $props["name"], $tmp_val, true));
-        }
-    }
-
-    $cache[$cacheKey] = $selectElem->toHtml();
-
-    return $cache[$cacheKey];
+    return $catList;
 }
 
 /**
