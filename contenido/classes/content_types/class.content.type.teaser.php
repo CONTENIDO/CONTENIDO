@@ -241,9 +241,7 @@ echo $teaser->generateTeaserCode();
 ?><?php echo "';
 
         // escape ' to avoid accidentally ending the string in $code
-        $code = sprintf($code, str_replace('\'', '\\\'', $this->_rawSettings), $this->_id, '[]');
-
-        return $code;
+        return sprintf($code, str_replace('\'', '\\\'', $this->_rawSettings), $this->_id, '[]');
     }
 
     /**
@@ -691,7 +689,7 @@ echo $teaser->generateTeaserCode();
 
         // construct the top code of the template
         $templateTop = new cTemplate();
-        $templateTop->set('s', 'ICON', 'images/isstart0.gif');  
+        $templateTop->set('s', 'ICON', 'images/isstart0.gif');
         $templateTop->set('s', 'ID', $this->_id);
         $templateTop->set('s', 'PREFIX', $this->_prefix);
         $templateTop->set('s', 'HEADLINE', i18n('Teaser settings'));
@@ -753,9 +751,8 @@ echo $teaser->generateTeaserCode();
 
         $this->_cmsTypes = [];
 
-        $sql = 'SELECT * FROM ' . $this->_cfg['tab']['type'] . ' ORDER BY type';
-        $db  = cRegistry::getDb();
-        $db->query($sql);
+        $db = cRegistry::getDb();
+        $db->query('SELECT `idtype`, `type` FROM `%s` ORDER BY `type`', $this->_cfg['tab']['type']);
         while ($db->nextRecord()) {
             // we do not want certain content types
             if (in_array($db->f('type'), $this->_ignoreTypes)) {

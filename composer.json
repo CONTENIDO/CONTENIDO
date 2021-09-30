@@ -12,6 +12,7 @@
         "phpunit/phpunit": "^8"
     },
     "require": {
+        "ext-bcmath": "*",
         "ext-mysqli": "*",
         "ext-json": "*",
         "ext-simplexml": "*"

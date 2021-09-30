@@ -27,7 +27,7 @@ cInclude('includes', 'functions.file.php');
 function consoleLog($value, $method = 'log') {
     $method = in_array($method, ['log', 'warn', 'error']) ? $method : 'log';
     $value  = json_encode($value);
-    echo sprintf("<script>console.$method('$value');</script>");
+    echo "<script>console.{$method}('{$value}');</script>";
 }
 
 /**
@@ -119,7 +119,7 @@ function isUtf8($input) {
  *
  * @param int $month
  *
- * @return string
+ * @return string|null Month name or null
  *
  * @throws cException
  */
@@ -127,40 +127,30 @@ function getCanonicalMonth($month) {
     switch ($month) {
         case 1:
             return (i18n("January"));
-            break;
         case 2:
             return (i18n("February"));
-            break;
         case 3:
             return (i18n("March"));
-            break;
         case 4:
             return (i18n("April"));
-            break;
         case 5:
             return (i18n("May"));
-            break;
         case 6:
             return (i18n("June"));
-            break;
         case 7:
             return (i18n("July"));
-            break;
         case 8:
             return (i18n("August"));
-            break;
         case 9:
             return (i18n("September"));
-            break;
         case 10:
             return (i18n("October"));
-            break;
         case 11:
             return (i18n("November"));
-            break;
         case 12:
             return (i18n("December"));
-            break;
+        default:
+            return null;
     }
 }
 
@@ -170,8 +160,8 @@ function getCanonicalMonth($month) {
  * @param int $iDay
  *         The day number of date(w)
  *
- * @return string
- *         Dayname of current language
+ * @return string|null
+ *         Day name of current language or null
  *
  * @throws cException
  */
@@ -179,27 +169,20 @@ function getCanonicalDay($iDay) {
     switch ($iDay) {
         case 1:
             return (i18n("Monday"));
-            break;
         case 2:
             return (i18n("Tuesday"));
-            break;
         case 3:
             return (i18n("Wednesday"));
-            break;
         case 4:
             return (i18n("Thursday"));
-            break;
         case 5:
             return (i18n("Friday"));
-            break;
         case 6:
             return (i18n("Saturday"));
-            break;
         case 0:
             return (i18n("Sunday"));
-            break;
         default:
-            break;
+            return null;
     }
 }
 
@@ -281,7 +264,7 @@ function getParentAreaId($area) {
  *         Which menuitem to mark
  * @param bool $return
  *         Return or echo script
- * @return string
+ * @return string|void
  */
 function markSubMenuItem($menuitem, $return = false) {
     global $changeview;
@@ -479,7 +462,7 @@ function getAllClientsAndLanguages() {
 
 /**
  *
- * @return number
+ * @return float
  */
 function getmicrotime() {
     list($usec, $sec) = explode(' ', microtime());
@@ -488,7 +471,7 @@ function getmicrotime() {
 
 /**
  *
- * @param unknown_type $uid
+ * @param mixed $uid
  *
  * @return bool
  *
@@ -1095,27 +1078,47 @@ function setArtspecDefault($idartspec) {
  * @throws cException
  */
 function buildArticleSelect($sName, $iIdCat, $sValue) {
-    global $cfg, $lang;
+    static $cache;
 
-    $db = cRegistry::getDb();
+    $lang = cRegistry::getLanguageId();
 
-    $selectElem = new cHTMLSelectElement($sName, "", $sName);
-    $selectElem->appendOptionElement(new cHTMLOptionElement(i18n("Please choose"), ""));
+    if (!isset($cache)) {
+        $cache = [];
+    }
+    $cacheKey = implode('/', [$lang, $sName, $iIdCat, $sValue]);
 
-    $sql = "SELECT b.title, b.idart FROM
+    if (isset($cache[$cacheKey])) {
+        // Get data from cache
+        $data = $cache[$cacheKey];
+    } else {
+        // Get data from db and cache it
+        $data = [];
+        $cfg = cRegistry::getConfig();
+        $db = cRegistry::getDb();
+
+        $sql = "SELECT b.title, b.idart FROM
                " . $cfg["tab"]["art"] . " AS a, " . $cfg["tab"]["art_lang"] . " AS b, " . $cfg["tab"]["cat_art"] . " AS c
                WHERE c.idcat = " . (int) $iIdCat . "
                AND b.idlang = " . (int) $lang . " AND b.idart = a.idart and b.idart = c.idart
                ORDER BY b.title";
 
-    $db->query($sql);
-
-    while ($db->nextRecord()) {
-        if ($sValue != $db->f('idart')) {
-            $selectElem->appendOptionElement(new cHTMLOptionElement($db->f('title'), $db->f('idart')));
-        } else {
-            $selectElem->appendOptionElement(new cHTMLOptionElement($db->f('title'), $db->f('idart'), true));
+        $db->query($sql);
+        while ($db->nextRecord()) {
+            $data[] = [
+                'idart' => $db->f('idart'),
+                'title' => $db->f('title'),
+            ];
         }
+
+        $cache[$cacheKey] = $data;
+    }
+
+    // Build the select
+    $selectElem = new cHTMLSelectElement($sName, "", $sName);
+    $selectElem->appendOptionElement(new cHTMLOptionElement(i18n("Please choose"), ""));
+    foreach ($data as $entry) {
+        $selected = ($sValue == $entry['idart']);
+        $selectElem->appendOptionElement(new cHTMLOptionElement($entry['title'], $entry['idart'], $selected));
     }
 
     return $selectElem->toHtml();
@@ -1140,63 +1143,72 @@ function buildArticleSelect($sName, $iIdCat, $sValue) {
  * @throws cException
  */
 function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
-    global $cfg, $client, $lang;
+    static $cache;
 
-    $db = cRegistry::getDb();
-    $db2 = cRegistry::getDb();
+    $client = cRegistry::getClientId();
+    $lang = cRegistry::getLanguageId();
 
-    $selectElem = new cHTMLSelectElement($sName, "", $sName);
-    $selectElem->setClass($sClass);
-    $selectElem->appendOptionElement(new cHTMLOptionElement(i18n("Please choose"), ""));
+    if (!isset($cache)) {
+        $cache = [];
+    }
 
-    $addString = ($sLevel > 0) ? "AND c.level < " . (int) $sLevel : '';
+    $cacheKey = implode('/', [$client, $lang, $$sLevel]);
 
-    $sql = "SELECT a.idcat AS idcat, b.name AS name, c.level FROM
+    if (isset($cache[$cacheKey])) {
+        // Get data from cache
+        $data = $cache[$cacheKey];
+    } else {
+        // Get data from db and cache it
+        $data = [];
+
+        $db = cRegistry::getDb();
+        $db2 = cRegistry::getDb();
+        $cfg = cRegistry::getConfig();
+
+        $addString = ($sLevel > 0) ? "AND c.level < " . (int) $sLevel : '';
+
+        $sql = "SELECT a.idcat AS idcat, b.name AS name, c.level FROM
            " . $cfg["tab"]["cat"] . " AS a, " . $cfg["tab"]["cat_lang"] . " AS b,
            " . $cfg["tab"]["cat_tree"] . " AS c WHERE a.idclient = " . (int) $client . "
            AND b.idlang = " . (int) $lang . " AND b.idcat = a.idcat AND c.idcat = a.idcat " . $addString . "
            ORDER BY c.idtree";
 
-    $db->query($sql);
+        $db->query($sql);
 
-    $categories = [];
+        while ($db->nextRecord()) {
+            $data[$db->f("idcat")]["name"] = $db->f("name");
 
-    while ($db->nextRecord()) {
-        $categories[$db->f("idcat")]["name"] = $db->f("name");
+            $sql2 = "SELECT level FROM " . $cfg["tab"]["cat_tree"] . " WHERE idcat = " . (int) $db->f("idcat");
+            $db2->query($sql2);
 
-        $sql2 = "SELECT level FROM " . $cfg["tab"]["cat_tree"] . " WHERE idcat = " . (int) $db->f("idcat");
-        $db2->query($sql2);
+            if ($db2->nextRecord()) {
+                $data[$db->f("idcat")]["level"] = $db2->f("level");
+            }
 
-        if ($db2->nextRecord()) {
-            $categories[$db->f("idcat")]["level"] = $db2->f("level");
-        }
-
-        $sql2 = "SELECT a.title AS title, b.idcatart AS idcatart FROM
+            $sql2 = "SELECT a.title AS title, b.idcatart AS idcatart FROM
                 " . $cfg["tab"]["art_lang"] . " AS a,  " . $cfg["tab"]["cat_art"] . " AS b
                 WHERE b.idcat = '" . $db->f("idcat") . "' AND a.idart = b.idart AND
                 a.idlang = " . (int) $lang;
 
-        $db2->query($sql2);
+            $db2->query($sql2);
 
-        while ($db2->nextRecord()) {
-            $categories[$db->f("idcat")]["articles"][$db2->f("idcatart")] = $db2->f("title");
+            while ($db2->nextRecord()) {
+                $data[$db->f("idcat")]["articles"][$db2->f("idcatart")] = $db2->f("title");
+            }
         }
+
+        $cache[$cacheKey] = $data;
     }
 
-    foreach ($categories as $tmpidcat => $props) {
-        $spaces = "&nbsp;&nbsp;";
+    // Build the select
+    $selectElem = new cHTMLSelectElement($sName, "", $sName);
+    $selectElem->setClass($sClass);
+    $selectElem->appendOptionElement(new cHTMLOptionElement(i18n("Please choose"), ""));
 
-        for ($i = 0; $i < $props["level"]; $i++) {
-            $spaces .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-        }
-
-        $tmp_val = $tmpidcat;
-
-        if ($sValue != $tmp_val) {
-            $selectElem->appendOptionElement(new cHTMLOptionElement($spaces . ">" . $props["name"], $tmp_val));
-        } else {
-            $selectElem->appendOptionElement(new cHTMLOptionElement($spaces . ">" . $props["name"], $tmp_val, true));
-        }
+    foreach ($data as $tmpidcat => $props) {
+        $spaces = "&nbsp;&nbsp;" . str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $props["level"] - 1);
+        $selected = ($sValue == $tmpidcat);
+        $selectElem->appendOptionElement(new cHTMLOptionElement($spaces . ">" . $props["name"], $tmpidcat, $selected));
     }
 
     return $selectElem->toHtml();
@@ -1239,7 +1251,7 @@ function humanReadableSize($number) {
  *
  * @param string $sizeString
  *         contains the size acquired from ini_get for example
- * @return number
+ * @return float|int|string
  */
 function machineReadableSize($sizeString) {
     // If sizeString is a integer value (i. e. 64242880), return it
@@ -1665,19 +1677,14 @@ function getNamedFrame($frame) {
     switch ($frame) {
         case 1:
             return 'left_top';
-            break;
         case 2:
             return 'left_bottom';
-            break;
         case 3:
             return 'right_top';
-            break;
         case 4:
             return 'right_bottom';
-            break;
         default:
             return '';
-            break;
     }
 }
 
@@ -1792,7 +1799,7 @@ function sendEncodingHeader($db, $cfg, $lang, $contentType = 'text/html') {
     }
 
     if (is_string($use_encoding)) {
-        $use_encoding = ($use_encoding == 'false') ? false : true;
+        $use_encoding = !(($use_encoding == 'false'));
     }
 
     if ($use_encoding != false) {
