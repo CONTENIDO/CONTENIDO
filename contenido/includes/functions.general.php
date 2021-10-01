@@ -1152,7 +1152,7 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
         $cache = [];
     }
 
-    $cacheKey = implode('/', [$client, $lang, $$sLevel]);
+    $cacheKey = implode('/', [$client, $lang, $sLevel]);
 
     if (isset($cache[$cacheKey])) {
         // Get data from cache
