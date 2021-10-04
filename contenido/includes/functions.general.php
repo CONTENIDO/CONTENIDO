@@ -1085,7 +1085,7 @@ function buildArticleSelect($sName, $iIdCat, $sValue) {
     if (!isset($cache)) {
         $cache = [];
     }
-    $cacheKey = implode('/', [$lang, $sName, $iIdCat, $sValue]);
+    $cacheKey = implode('/', [$lang, $sName, $iIdCat]);
 
     if (isset($cache[$cacheKey])) {
         // Get data from cache
