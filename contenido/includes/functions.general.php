@@ -115,75 +115,52 @@ function isUtf8($input) {
 }
 
 /**
- * Returns multi-language month name (canonical) by its numeric value
+ * Returns the translated month name for to the given numeric month value.
  *
  * @param int $month
+ *         numeric month value
  *
- * @return string|null Month name or null
+ * @return string|null
+ *         translated month name
  *
  * @throws cException
  */
 function getCanonicalMonth($month) {
-    switch ($month) {
-        case 1:
-            return (i18n("January"));
-        case 2:
-            return (i18n("February"));
-        case 3:
-            return (i18n("March"));
-        case 4:
-            return (i18n("April"));
-        case 5:
-            return (i18n("May"));
-        case 6:
-            return (i18n("June"));
-        case 7:
-            return (i18n("July"));
-        case 8:
-            return (i18n("August"));
-        case 9:
-            return (i18n("September"));
-        case 10:
-            return (i18n("October"));
-        case 11:
-            return (i18n("November"));
-        case 12:
-            return (i18n("December"));
-        default:
-            return null;
-    }
+    $map = [
+        i18n("January"), i18n("February"), i18n("March"), i18n("April"),
+        i18n("May"), i18n("June"), i18n("July"), i18n("August"),
+        i18n("September"), i18n("October"), i18n("November"), i18n("December"),
+    ];
+
+    // $map is 0-based, so 1 has to be subtracted from the given $month
+    $index = is_numeric($month) ? (int) $month - 1 : null;
+
+    return array_key_exists($index, $map) ? $map[$index] : null;
 }
 
 /**
- * Get multi-language day
+ * Returns the translated weekday name for to the given numeric weekday value.
  *
- * @param int $iDay
- *         The day number of date(w)
+ * This function assumes that monday is the first day of the week!
+ *
+ * @param int $day
+ *         numeric weekday value
  *
  * @return string|null
- *         Day name of current language or null
+ *         translated weekday name
  *
  * @throws cException
  */
-function getCanonicalDay($iDay) {
-    switch ($iDay) {
-        case 1:
-            return (i18n("Monday"));
-        case 2:
-            return (i18n("Tuesday"));
-        case 3:
-            return (i18n("Wednesday"));
-        case 4:
-            return (i18n("Thursday"));
-        case 5:
-            return (i18n("Friday"));
-        case 6:
-            return (i18n("Saturday"));
-        case 0:
-            return (i18n("Sunday"));
-        default:
-            return null;
-    }
+function getCanonicalDay($weekday) {
+    $map = [
+        i18n("Monday"), i18n("Tuesday"), i18n("Wednesday"), i18n("Thursday"),
+        i18n("Friday"), i18n("Saturday"), i18n("Sunday"),
+    ];
+
+    // $map is 0-based, so 1 has to be subtracted from the given $weekday
+    $index = is_numeric($weekday) ? (int) $weekday - 1 : null;
+
+    return array_key_exists($index, $map) ? $map[$index] : null;
 }
 
 /**
