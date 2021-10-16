@@ -700,7 +700,7 @@ foreach ($objects as $key => $value) {
         $aRecord['pTplcfg'] = $bPermTplcfg;
         $aInlineEditData[$value->getId()] = $aRecord;
 
-        if ($perm->have_perm_area_action($area, "str_renamecat")) {
+         if ($perm->have_perm_area_action($area, "str_renamecat") || $perm->have_perm_area_action_item($area, "str_renamecat", $value->getId())) {
             $tpl->set('d', 'RENAMEBUTTON', "<a class=\"action\" href=\"javascript:handleInlineEdit(" . $value->getId() . ");\"><img src=\"" . $cfg["path"]["images"] . "but_todo.gif\" id=\"cat_" . $value->getId() . "_image\" alt=\"" . i18n("Edit category") . "\" title=\"" . i18n("Edit category") . "\"></a>");
         } else {
             $tpl->set('d', 'RENAMEBUTTON', "");
