@@ -15,14 +15,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-// Try to load GenericDB database driver
-// TODO: check if this is needed any longer because we have autoloading feature
-global $cfg;
-$driver_filename = cRegistry::getBackendPath() . $cfg['path']['classes'] . 'drivers/' . $cfg['sql']['gdb_driver'] . '/class.gdb.' . $cfg['sql']['gdb_driver'] . '.php';
-if (cFileHandler::exists($driver_filename)) {
-    include_once($driver_filename);
-}
-
 /**
  * Class cItemBaseAbstract.
  * Base class with common features for database based items and item
@@ -144,7 +136,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
      *         If table name or primary key is not set
      */
     protected function __construct($sTable, $sPrimaryKey, $sClassName) {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
 
         $this->db = cRegistry::getDb();
 
@@ -159,7 +151,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
         $this->_settings = $cfg['sql'];
 
         // instantiate caching
-        $aCacheOpt = (isset($this->_settings['cache'])) ? $this->_settings['cache'] : array();
+        $aCacheOpt = (isset($this->_settings['cache'])) ? $this->_settings['cache'] : [];
         $this->_oCache = cItemCache::getInstance($sTable, $aCacheOpt);
 
         $this->table = $sTable;
@@ -246,6 +238,14 @@ abstract class cItemBaseAbstract extends cGenericDb {
     }
 
     /**
+     * Get the table name
+     * @return string Name of table
+     */
+    public function getTable() {
+        return (string) $this->table;
+    }
+
+    /**
      * Get the primary key name in database
      * @return string
      *         Name of primary key
@@ -288,7 +288,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * @return cApiPropertyCollection
      */
     protected function _getPropertiesCollectionInstance($idclient = 0) {
-        global $client;
+        $client = cRegistry::getClientId();
 
         if ((int) $idclient <= 0) {
             $idclient = $client;
@@ -305,4 +305,5 @@ abstract class cItemBaseAbstract extends cGenericDb {
 
         return $this->properties;
     }
+
 }

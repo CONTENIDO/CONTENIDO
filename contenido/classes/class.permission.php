@@ -339,7 +339,7 @@ class cPermission {
     /**
      *
      * @param string $area
-     * @param int    $action [optional]
+     * @param int|string    $action [optional]
      *
      * @return bool
      *
