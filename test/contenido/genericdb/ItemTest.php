@@ -410,7 +410,6 @@ class ItemTest extends cTestingTestCase
             [$parameter]
         );
         $this->assertSame($expected, $sql);
-
     }
 
 }
