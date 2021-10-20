@@ -52,10 +52,10 @@ abstract class Item extends cItemBaseAbstract {
      *
      * @var array
      */
-    protected $_arrInFilters = array(
+    protected $_arrInFilters = [
         'htmlspecialchars',
         'addslashes'
-    );
+    ];
 
     /**
      * List of funcion names of the filters used when data is retrieved from the
@@ -63,10 +63,10 @@ abstract class Item extends cItemBaseAbstract {
      *
      * @var array
      */
-    protected $_arrOutFilters = array(
+    protected $_arrOutFilters = [
         'stripslashes',
         'htmldecode'
-    );
+    ];
 
     /**
      * Class name of meta object
@@ -206,20 +206,7 @@ abstract class Item extends cItemBaseAbstract {
         }
 
         // SQL-Statement to select by fields
-        $sql = 'SELECT * FROM `:mytab` WHERE';
-        foreach (array_keys($aAttributes) as $sKey) {
-            // add quotes if key is a string
-            if (is_string($sKey)) {
-                $sql .= " $sKey = ':$sKey' AND";
-            } else {
-                $sql .= " $sKey = :$sKey AND";
-            }
-        }
-        // strip the last " AND" token
-        $sql = cString::getPartOfString($sql, 0, cString::getStringLength($sql) - 4);
-        $sql = $this->db->prepare($sql, array_merge(array(
-            'mytab' => $this->table
-        ), $aAttributes));
+        $sql = $this->_buildLoadByManyQuery($aAttributes);
 
         // Query the database
         $this->db->query($sql);
@@ -242,6 +229,35 @@ abstract class Item extends cItemBaseAbstract {
     }
 
     /**
+     * Creates a select query by maany fields
+     * @param array $fields Associative fields and values list
+     *
+     * @return string Build SQL statement
+     * @throws cDbException
+     */
+    protected function _buildLoadByManyQuery(array $fields) {
+        // SQL-Statement to select by fields
+        $fieldsSql = [];
+
+        foreach ($fields as $key => $value) {
+            if (is_string($value)) {
+                $fieldsSql[] = "`$key` = ':$key'";
+            } elseif (is_null($value)) {
+                $fieldsSql[] = "`$key` IS NULL";
+            } else {
+                $fieldsSql[] = "`$key` = :$key";
+            }
+        }
+        $sql = 'SELECT * FROM `:mytab` WHERE ' . implode(' AND ', $fieldsSql);
+
+        $sql = $this->db->prepare($sql, array_merge([
+            'mytab' => $this->table
+        ], $fields));
+
+        return $sql;
+    }
+
+    /**
      * Loads an item by passed where clause from the database.
      * This function is expensive, since it executes allways a query to the
      * database
@@ -253,13 +269,13 @@ abstract class Item extends cItemBaseAbstract {
      *         The where clause like 'idart = 123 AND idlang = 1'
      * @return bool
      *         True if the load was successful
-     * 
+     *
      * @throws cDbException
      * @throws cException if more than one item could be found matching the given where clause
      */
     protected function _loadByWhereClause($sWhere) {
         // SQL-Statement to select by whee clause
-        $sql = "SELECT %s AS pk FROM `%s` WHERE " . (string) $sWhere;
+        $sql = "SELECT %s AS `pk` FROM `%s` WHERE " . (string) $sWhere;
         $sql = $this->db->prepare($sql, $this->getPrimaryKeyName(), $this->table);
 
         // Query the database
@@ -423,60 +439,65 @@ abstract class Item extends cItemBaseAbstract {
      * @throws cInvalidArgumentException
      */
     public function store() {
-        $this->_executeCallbacks(self::STORE_BEFORE, get_class($this), array(
-            $this
-        ));
+        $class = get_class($this);
+
+        $this->_executeCallbacks(self::STORE_BEFORE, $class, [$this]);
 
         if (true !== $this->isLoaded()) {
             $this->lasterror = 'No item loaded';
-            $this->_executeCallbacks(self::STORE_FAILURE, get_class($this), array(
-                $this
-            ));
+            $this->_executeCallbacks(self::STORE_FAILURE, $class, [$this]);
             return false;
         }
 
-        $sql = 'UPDATE `' . $this->table . '` SET ';
-        $first = true;
-
         if (!is_array($this->modifiedValues)) {
-            $this->_executeCallbacks(self::STORE_SUCCESS, get_class($this), array(
-                $this
-            ));
+            $this->_executeCallbacks(self::STORE_SUCCESS, $class, [$this]);
             return true;
         }
 
-        foreach ($this->modifiedValues as $key => $bValue) {
-            $value = $this->values[$key];
-            if (is_string($value)) {
-                $value = $this->db->escape($value);
-            }
-
-            if ($first == true) {
-                $sql .= "`$key` = '" . $value . "'";
-                $first = false;
-            } else {
-                $sql .= ", `$key` = '" . $value . "'";
-            }
-        }
-
-        $sql .= " WHERE " . $this->getPrimaryKeyName() . " = '" . $this->oldPrimaryKey . "'";
-
+        $sql = $this->_buildStoreQuery($this->modifiedValues);
         $this->db->query($sql);
 
         $this->_lastSQL = $sql;
 
         if ($this->db->affectedRows() > 0) {
             $this->_oCache->addItem($this->oldPrimaryKey, $this->values);
-            $this->_executeCallbacks(self::STORE_SUCCESS, get_class($this), array(
-                $this
-            ));
+            $this->_executeCallbacks(self::STORE_SUCCESS, $class, [$this]);
             return true;
         }
 
-        $this->_executeCallbacks(self::STORE_FAILURE, get_class($this), array(
-            $this
-        ));
+        $this->_executeCallbacks(self::STORE_FAILURE, $class, [$this]);
         return false;
+    }
+
+    /**
+     * Creates a update query by maany fields
+     * @param array $fields Associative fields and values list
+     *
+     * @return string
+     */
+    protected function _buildStoreQuery(array $fields) {
+        $fieldsSql = [];
+
+        foreach ($fields as $key => $mValue) {
+            $value = $this->values[$key];
+            if (is_string($value)) {
+                $fieldsSql[] = "`$key` = '" . $this->db->escape($value) . "'";
+            } elseif (is_null($value)) {
+                $fieldsSql[] = "`$key` = NULL";
+            } else {
+                $fieldsSql[] = "`$key` = " . $value;
+            }
+        }
+
+        $sql = 'UPDATE `' . $this->table . '` SET ' . implode(', ', $fieldsSql);
+        $sql .= " WHERE `" . $this->getPrimaryKeyName() . "` = ";
+        if (is_string($this->oldPrimaryKey)) {
+            $sql .= "'" . $this->oldPrimaryKey . "'";
+        } else {
+            $sql .= $this->oldPrimaryKey;
+        }
+
+        return $sql;
     }
 
     /**
@@ -490,7 +511,7 @@ abstract class Item extends cItemBaseAbstract {
             return false;
         }
 
-        $aReturn = array();
+        $aReturn = [];
         foreach ($this->values as $field => $value) {
             $aReturn[$field] = $this->getField($field);
         }
@@ -576,7 +597,7 @@ abstract class Item extends cItemBaseAbstract {
      *                        Id of client to delete properties
      *
      * @return bool
-     * 
+     *
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
@@ -600,7 +621,7 @@ abstract class Item extends cItemBaseAbstract {
      *         Id of property
      *
      * @return bool
-     * 
+     *
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
@@ -623,9 +644,9 @@ abstract class Item extends cItemBaseAbstract {
      *
      * Examples:
      * <pre>
-     * $obj->setFilters(array('addslashes'), array('stripslashes'));
-     * $obj->setFilters(array('htmlencode', 'addslashes'), array('stripslashes',
-     * 'htmlencode'));
+     * $obj->setFilters(['addslashes'], ['stripslashes']);
+     * $obj->setFilters(['htmlencode', 'addslashes'], ['stripslashes',
+     * 'htmlencode']);
      * </pre>
      *
      * @param array $aInFilters [optional]
@@ -633,7 +654,7 @@ abstract class Item extends cItemBaseAbstract {
      * @param array $aOutFilters [optional]
      *         Array with function names
      */
-    public function setFilters($aInFilters = array(), $aOutFilters = array()) {
+    public function setFilters($aInFilters = [], $aOutFilters = []) {
         $this->_arrInFilters = $aInFilters;
         $this->_arrOutFilters = $aOutFilters;
     }
@@ -708,7 +729,7 @@ abstract class Item extends cItemBaseAbstract {
         global $_metaObjectCache;
 
         if (!is_array($_metaObjectCache)) {
-            $_metaObjectCache = array();
+            $_metaObjectCache = [];
         }
 
         $sClassName = $this->_metaObject;
