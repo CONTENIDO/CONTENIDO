@@ -44,7 +44,10 @@ function consoleLog($value, $method = 'log') {
  * @throws cException
  */
 function getAvailableContentTypes($idartlang) {
-    global $db, $cfg, $a_content, $a_description;
+    global $a_content, $a_description;
+
+    $db = cRegistry::getDb();
+    $cfg = cRegistry::getConfig();
 
     $sql = "SELECT
                 *
@@ -77,9 +80,9 @@ function getAvailableContentTypes($idartlang) {
  * @throws cDbException
  */
 function isArtInMultipleUse($idart) {
-    global $cfg;
-
     $db = cRegistry::getDb();
+    $cfg = cRegistry::getConfig();
+
     $sql = "SELECT idart FROM " . $cfg["tab"]["cat_art"] . " WHERE idart = " . (int) $idart;
     $db->query($sql);
 
@@ -325,8 +328,14 @@ JS;
  */
 function backToMainArea($send) {
     if ($send) {
-        // Global vars
-        global $area, $sess, $idart, $idcat, $idartlang, $idcatart, $frame;
+        global $idcatart;
+
+        $area = cRegistry::getArea();
+        $sess = cRegistry::getSession();
+        $idart = cRegistry::getArticleId();
+        $idcat = cRegistry::getCategoryId();
+        $idartlang = cRegistry::getArticleLanguageId();
+        $frame = cRegistry::getFrame();
 
         // Get main area
         $oAreaColl = new cApiAreaCollection();
@@ -386,8 +395,9 @@ function getLanguageNamesByClient($client) {
 function set_magic_quotes_gpc(&$code) {
     cDeprecated('This method is deprecated and is not needed any longer');
 
-    global $cfg;
+    $cfg = cRegistry::getConfig();
     if (!$cfg['simulate_magic_quotes']) {
+        /** @noinspection PhpElementIsNotAvailableInCurrentPhpVersionInspection */
         if (get_magic_quotes_gpc() == 0) {
             $code = addslashes($code);
         }
@@ -409,7 +419,8 @@ function set_magic_quotes_gpc(&$code) {
  * @throws cDbException
  */
 function getAllClientsAndLanguages() {
-    global $db, $cfg;
+    $db = cRegistry::getDb();
+    $cfg = cRegistry::getConfig();
 
     $sql = "SELECT
                 a.idlang as idlang,
@@ -552,7 +563,10 @@ function htmldecode($string) {
  * @throws cInvalidArgumentException
  */
 function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
-    global $cfg, $cfgClient, $errsite_idcat, $errsite_idart;
+    global $errsite_idcat, $errsite_idart;
+
+    $cfg = cRegistry::getConfig();
+    $cfgClient = cRegistry::getClientConfig();
 
     if (!is_array($cfgClient)) {
         $cfgClient = [];
@@ -928,20 +942,23 @@ function getEffectiveSettingsByType($type) {
  * @throws cDbException
  */
 function getArtspec() {
-    global $db, $cfg, $lang, $client;
+    $db = cRegistry::getDb();
+    $cfg = cRegistry::getConfig();
+    $client = cRegistry::getClientId();
+    $lang = cRegistry::getLanguageId();
 
     $sql = "SELECT artspec, idartspec, online, artspecdefault FROM " . $cfg['tab']['art_spec'] . "
             WHERE client = " . (int) $client . " AND lang = " . (int) $lang . " ORDER BY artspec ASC";
     $db->query($sql);
 
-    $artspec = [];
+    $artSpec = [];
 
     while ($db->nextRecord()) {
-        $artspec[$db->f("idartspec")]['artspec'] = $db->f("artspec");
-        $artspec[$db->f("idartspec")]['online'] = $db->f("online");
-        $artspec[$db->f("idartspec")]['default'] = $db->f("artspecdefault");
+        $artSpec[$db->f('idartspec')]['artspec'] = $db->f('artspec');
+        $artSpec[$db->f('idartspec')]['online'] = $db->f('online');
+        $artSpec[$db->f('idartspec')]['default'] = $db->f('artspecdefault');
     }
-    return $artspec;
+    return $artSpec;
 }
 
 /**
@@ -955,7 +972,10 @@ function getArtspec() {
  * @throws cDbException
  */
 function addArtspec($artspectext, $online) {
-    global $db, $cfg, $lang, $client;
+    $db = cRegistry::getDb();
+    $cfg = cRegistry::getConfig();
+    $client = cRegistry::getClientId();
+    $lang = cRegistry::getLanguageId();
 
     if (isset($_POST['idartspec'])) { // update
         $fields = [
@@ -988,7 +1008,8 @@ function addArtspec($artspectext, $online) {
  * @throws cDbException
  */
 function deleteArtspec($idartspec) {
-    global $db, $cfg;
+    $db = cRegistry::getDb();
+    $cfg = cRegistry::getConfig();
 
     $sql = "DELETE FROM " . $cfg['tab']['art_spec'] . " WHERE idartspec = " . (int) $idartspec;
     $db->query($sql);
@@ -1011,7 +1032,8 @@ function deleteArtspec($idartspec) {
  * @throws cDbException
  */
 function setArtspecOnline($idartspec, $online) {
-    global $db, $cfg;
+    $db = cRegistry::getDb();
+    $cfg = cRegistry::getConfig();
 
     $sql = "UPDATE " . $cfg['tab']['art_spec'] . " SET online = " . (int) $online . " WHERE idartspec = " . (int) $idartspec;
     $db->query($sql);
@@ -1029,7 +1051,10 @@ function setArtspecOnline($idartspec, $online) {
  * @throws cDbException
  */
 function setArtspecDefault($idartspec) {
-    global $db, $cfg, $lang, $client;
+    $db = cRegistry::getDb();
+    $cfg = cRegistry::getConfig();
+    $client = cRegistry::getClientId();
+    $lang = cRegistry::getLanguageId();
 
     $sql = "UPDATE " . $cfg['tab']['art_spec'] . " SET artspecdefault=0 WHERE client = " . (int) $client . " AND lang = " . (int) $lang;
     $db->query($sql);
@@ -1145,32 +1170,32 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
         $addString = ($sLevel > 0) ? "AND c.level < " . (int) $sLevel : '';
 
         $sql = "SELECT a.idcat AS idcat, b.name AS name, c.level FROM
-           " . $cfg["tab"]["cat"] . " AS a, " . $cfg["tab"]["cat_lang"] . " AS b,
-           " . $cfg["tab"]["cat_tree"] . " AS c WHERE a.idclient = " . (int) $client . "
+           " . $cfg['tab']['cat'] . " AS a, " . $cfg['tab']['cat_lang'] . " AS b,
+           " . $cfg['tab']['cat_tree'] . " AS c WHERE a.idclient = " . (int) $client . "
            AND b.idlang = " . (int) $lang . " AND b.idcat = a.idcat AND c.idcat = a.idcat " . $addString . "
            ORDER BY c.idtree";
 
         $db->query($sql);
 
         while ($db->nextRecord()) {
-            $data[$db->f("idcat")]["name"] = $db->f("name");
+            $data[$db->f('idcat')]['name'] = $db->f('name');
 
-            $sql2 = "SELECT level FROM " . $cfg["tab"]["cat_tree"] . " WHERE idcat = " . (int) $db->f("idcat");
+            $sql2 = "SELECT level FROM " . $cfg['tab']['cat_tree'] . " WHERE idcat = " . (int) $db->f('idcat');
             $db2->query($sql2);
 
             if ($db2->nextRecord()) {
-                $data[$db->f("idcat")]["level"] = $db2->f("level");
+                $data[$db->f('idcat')]['level'] = (int) $db2->f('level');
             }
 
             $sql2 = "SELECT a.title AS title, b.idcatart AS idcatart FROM
-                " . $cfg["tab"]["art_lang"] . " AS a,  " . $cfg["tab"]["cat_art"] . " AS b
-                WHERE b.idcat = '" . $db->f("idcat") . "' AND a.idart = b.idart AND
+                " . $cfg['tab']['art_lang'] . " AS a,  " . $cfg['tab']['cat_art'] . " AS b
+                WHERE b.idcat = '" . $db->f('idcat') . "' AND a.idart = b.idart AND
                 a.idlang = " . (int) $lang;
 
             $db2->query($sql2);
 
             while ($db2->nextRecord()) {
-                $data[$db->f("idcat")]["articles"][$db2->f("idcatart")] = $db2->f("title");
+                $data[$db->f('idcat')]['articles'][$db2->f('idcatart')] = $db2->f('title');
             }
         }
 
@@ -1178,21 +1203,24 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
     }
 
     // Build the select
-    $selectElem = new cHTMLSelectElement($sName, "", $sName);
+    $selectElem = new cHTMLSelectElement($sName, '', $sName);
     $selectElem->setClass($sClass);
-    $selectElem->appendOptionElement(new cHTMLOptionElement(i18n("Please choose"), ""));
+    $selectElem->appendOptionElement(new cHTMLOptionElement(i18n("Please choose"), ''));
 
     foreach ($data as $tmpidcat => $props) {
-        $spaces = "&nbsp;&nbsp;" . str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $props["level"] - 1);
+        $spaces = '&nbsp;&nbsp;';
+        if ($props['level'] > 0) {
+            $spaces .= str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', $props['level'] - 1);
+        }
         $selected = ($sValue == $tmpidcat);
-        $selectElem->appendOptionElement(new cHTMLOptionElement($spaces . ">" . $props["name"], $tmpidcat, $selected));
+        $selectElem->appendOptionElement(new cHTMLOptionElement($spaces . '>' . $props['name'], $tmpidcat, $selected));
     }
 
     return $selectElem->toHtml();
 }
 
 /**
- * Converts a size in bytes in a human readable form
+ * Converts a size in bytes in a human-readable form
  *
  * @param int $number
  *         Some number of bytes
@@ -1290,9 +1318,9 @@ function isRunningFromWeb() {
  * @throws cInvalidArgumentException
  */
 function scanPlugins($entity) {
-    global $cfg;
-
+    $cfg = cRegistry::getConfig();
     $basedir = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $entity . '/';
+
     if (is_dir($basedir) === false) {
         return;
     }
@@ -1364,7 +1392,7 @@ function scanPlugins($entity) {
  *         string Name of the directory to scan
  */
 function includePlugins($entity) {
-    global $cfg;
+    $cfg = cRegistry::getConfig();
 
     if (isset($cfg['plugins'][$entity]) && is_array($cfg['plugins'][$entity])) {
         foreach ($cfg['plugins'][$entity] as $plugin) {
@@ -1380,7 +1408,7 @@ function includePlugins($entity) {
  *         Name of the directory to scan
  */
 function callPluginStore($entity) {
-    global $cfg;
+    $cfg = cRegistry::getConfig();
 
     // Check out if there are any plugins
     if (isset($cfg['plugins'][$entity]) && is_array($cfg['plugins'][$entity])) {
@@ -1435,7 +1463,7 @@ function createRandomName($nameLength) {
  *         The context context JS code
  */
 function getJsHelpContext($area) {
-    global $cfg;
+    $cfg = cRegistry::getConfig();
 
     if ($cfg['help'] == true) {
         $hc = "parent.parent.parent.frames[0].document.getElementById('help').setAttribute('data', '$area');";
@@ -1520,7 +1548,7 @@ function buildStackString($startlevel = 2) {
  * @throws cInvalidArgumentException
  */
 function cWarning() {
-    global $cfg;
+    $cfg = cRegistry::getConfig();
 
     $args = func_get_args();
     if (count($args) == 3) {
@@ -1572,7 +1600,7 @@ function cWarning() {
  * @internal         has variadic parameters
  */
 function cError($message) {
-    global $cfg;
+    $cfg = cRegistry::getConfig();
 
     $args = func_get_args();
     if (count($args) == 3) {
@@ -1615,7 +1643,7 @@ function cError($message) {
  * @throws cInvalidArgumentException
  */
 function cDeprecated($message = '') {
-    global $cfg;
+    $cfg = cRegistry::getConfig();
 
     if (isset($cfg['debug']['log_deprecations']) && $cfg['debug']['log_deprecations'] == false) {
         return;
@@ -1679,7 +1707,9 @@ function getNamedFrame($frame) {
  * @throws cInvalidArgumentException
  */
 function startTiming($function, $parameters = []) {
-    global $_timings, $cfg;
+    global $_timings;
+
+    $cfg = cRegistry::getConfig();
 
     if ($cfg['debug']['functiontiming'] == false) {
         return '';
@@ -1710,7 +1740,9 @@ function startTiming($function, $parameters = []) {
  * @throws cInvalidArgumentException
  */
 function endAndLogTiming($uuid) {
-    global $_timings, $cfg;
+    global $_timings;
+
+    $cfg = cRegistry::getConfig();
 
     if ($cfg['debug']['functiontiming'] == false) {
         return;
