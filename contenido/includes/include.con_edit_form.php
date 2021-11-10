@@ -22,9 +22,9 @@ cInclude("includes", "functions.pathresolver.php");
 // ugly globals that are used in this script
 global $tpl, $cfg, $db, $perm, $sess, $selectedArticleId;
 global $frame, $area, $action, $contenido, $notification;
-global $client, $lang, $belang;
+global $client, $lang, $belang, $lngAct, $auth;
 global $idcat, $idart, $idcatlang, $idartlang, $idcatart, $idtpl;
-global $tplinputchanged, $idcatnew, $newart, $syncoptions, $tmp_notification, $bNoArticle;
+global $tplinputchanged, $idcatnew, $newart, $syncoptions, $tmp_notification, $bNoArticle, $artLangVersion, $classarea;
 
 $page = new cGuiPage("con_edit_form", "", "con_editart");
 $tpl = null;
@@ -52,13 +52,17 @@ if (isset($idart)) {
 }
 
 
-if ($_REQUEST['idArtLangVersion'] != NULL) {
+if (isset($_REQUEST['idArtLangVersion']) && $_REQUEST['idArtLangVersion'] != NULL) {
     $selectedArticleId = $_REQUEST['idArtLangVersion'];
+    $idArtLangVersion = $_REQUEST['idArtLangVersion'];
+} else {
+    $idArtLangVersion = null;
 }
+
 $versioning = new cContentVersioning();
 $versioningState = $versioning->getState();
 $articleType = $versioning->getArticleType(
-    $_REQUEST['idArtLangVersion'],
+    $idArtLangVersion,
     $idartlang,
     $action,
     $selectedArticleId
@@ -69,10 +73,10 @@ switch ($versioningState) {
     case 'advanced' :
          // Set as current/editable
         if ($action == 'copyto') {
-            if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'current') {
+            if (is_numeric($idArtLangVersion) && $articleType == 'current') {
                 // editable->current
                 $artLangVersion = NULL;
-                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+                $artLangVersion = new cApiArticleLanguageVersion((int) $idArtLangVersion);
                 if (isset($artLangVersion)) {
                     $artLangVersion->markAsCurrent('complete');
                     $selectedArticleId = 'current';
@@ -84,11 +88,11 @@ switch ($versioningState) {
                     'idlang' => cRegistry::getLanguageId()
                 ));
 
-            } else if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
+            } else if (is_numeric($idArtLangVersion) && $articleType == 'editable') {
                 // version->editable
-                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+                $artLangVersion = new cApiArticleLanguageVersion((int) $idArtLangVersion);
                 $artLangVersion->markAsEditable('complete');
-                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action, $selectedArticleId);
+                $articleType = $versioning->getArticleType($idArtLangVersion, (int) $_REQUEST['idartlang'], $action, $selectedArticleId);
                 $selectedArticleId = 'editable';
 
                 // Execute cec hook
@@ -97,11 +101,11 @@ switch ($versioningState) {
                     'idlang' => cRegistry::getLanguageId()
                 ));
 
-            } else if ($_REQUEST['idArtLangVersion'] == 'current') {
+            } else if ($idArtLangVersion == 'current') {
                 // current->editable
                 $artLang = new cApiArticleLanguage((int) $_REQUEST['idartlang']);
                 $artLang->markAsEditable('complete');
-                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action, $selectedArticleId);
+                $articleType = $versioning->getArticleType($idArtLangVersion, (int) $_REQUEST['idartlang'], $action, $selectedArticleId);
                 $selectedArticleId = 'editable';
 
                 // Execute cec hook
@@ -212,8 +216,8 @@ switch ($versioningState) {
     case 'simple' :
 
          if ($action == 'copyto') {
-            if (is_numeric($_REQUEST['idArtLangVersion'])) {
-                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+            if (is_numeric($idArtLangVersion)) {
+                $artLangVersion = new cApiArticleLanguageVersion((int) $idArtLangVersion);
                 $artLangVersion->markAsCurrent('complete');
                 $selectedArticleId = 'current';
             }
@@ -475,6 +479,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     // apply settings from the synchronization menu
     // take single articles online or offline
 
+    $inUse = false;
+
     if (isset($_POST['onlineOne'])) {
         conMakeOnline(cRegistry::getArticleId(), cSecurity::toInteger($_POST['onlineOne']), 1);
     } else if (isset($_POST['offlineOne'])) {
@@ -506,7 +512,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     } else if (isset($_POST['onlineAll'])) {
         $onlineValue = 1;
     }
-    if (is_array($_POST['syncingLanguage']) && $onlineValue != -1) {
+    if (isset($_POST['syncingLanguage']) && is_array($_POST['syncingLanguage']) && $onlineValue != -1) {
         foreach ($_POST['syncingLanguage'] as $langId) {
             conMakeOnline(cRegistry::getArticleId(), cSecurity::toInteger($langId), $onlineValue);
         }
@@ -568,7 +574,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         if (is_numeric((int) $selectedArticleId)) {
             $sql = "SELECT *
                 FROM " . $cfg["tab"]["art_lang_version"] . "
-                WHERE idartlangversion = " . (int) $selectedArticleId;//cSecurity::toInteger($_REQUEST['idArtLangVersion']);
+                WHERE idartlangversion = " . (int) $selectedArticleId;//cSecurity::toInteger($idArtLangVersion);
         } else $sql = '';
     }
 
@@ -748,7 +754,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         || $versioning->getState() == 'advanced' && $articleType != 'editable') {
             $inputArtSortSelect->setDisabled(true);
     }
-    $tmp_inputArtSort .= $inputArtSortSelect->toHtml();
+    $tmp_inputArtSort = $inputArtSortSelect->toHtml();
 
     if ($iAvariableSpec == 0) {
         $tmp_inputArtSort = i18n("No article specifications found!");
