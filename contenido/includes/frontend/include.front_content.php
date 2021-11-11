@@ -46,6 +46,8 @@ if (!isset($contenido)) {
     }
 }
 
+global $cfg, $belang, $force, $load_client;
+
 // Initialize common variables
 $idcat    = isset($idcat) ? $idcat : 0;
 $idart    = isset($idart) ? $idart : 0;
@@ -73,19 +75,19 @@ if ($cfg['use_pseudocron'] == true) {
 // @see http://sourceforge.net/projects/phplib
 if (cRegistry::getBackendSessionId()) {
     // Backend
-    cRegistry::bootstrap(array(
+    cRegistry::bootstrap([
         'sess' => 'cSession',
         'auth' => 'cAuthHandlerBackend',
         'perm' => 'cPermission'
-    ));
+    ]);
     i18nInit($cfg['path']['contenido_locale'], $belang);
 } else {
     // Frontend
-    cRegistry::bootstrap(array(
+    cRegistry::bootstrap([
         'sess' => 'cFrontendSession',
         'auth' => 'cAuthHandlerFrontend',
         'perm' => 'cPermission'
-    ));
+    ]);
 }
 
 // Include plugins & call hook after plugins are loaded
@@ -93,6 +95,11 @@ require_once($backendPath . $cfg['path']['includes'] . 'functions.includePluginC
 cApiCecHook::execute('Contenido.Frontend.AfterLoadPlugins');
 
 $db = cRegistry::getDb();
+$sess = cRegistry::getSession();
+$lang = cRegistry::getLanguageId();
+$auth = cRegistry::getAuth();
+$perm = cRegistry::getPerm();
+
 
 // $sess->register('cfgClient');
 // $sess->register('errsite_idcat');
@@ -102,7 +109,7 @@ $sess->register('encoding');
 // Initialize encodings
 if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0) {
     // Get encodings of all languages
-    $encoding  = array();
+    $encoding  = [];
     $oLangColl = new cApiLanguageCollection();
     $oLangColl->select('');
     while ($oLang = $oLangColl->next()) {
@@ -199,13 +206,13 @@ if (isset($path) && cString::getStringLength($path) > 1) {
 }
 
 // Error page
-$aParams = array(
+$aParams = [
     'client' => $client,
     'idcat'  => $cfgClient[$client]["errsite"]["idcat"],
     'idart'  => $cfgClient[$client]["errsite"]["idart"],
     'lang'   => $lang,
     'error'  => '1'
-);
+];
 $errsite = 'Location: ' . cUri::getInstance()->buildRedirect($aParams);
 
 $errtpl = $cfgClient[$client]['tpl']['path'] . "frontend_error.html";
@@ -340,7 +347,7 @@ if ($cfg['cache']['disable'] != '1') {
     $oCacheHandler = new cOutputCacheHandler($GLOBALS['cfgConCache'], $db);
     // $iStartTime ist optional und ist die Startzeit des Scriptes,
     // z.B. am Anfang von fron_content.php
-    $oCacheHandler->start($iStartTime);
+    $oCacheHandler->start($iStartTime ?? null);
 }
 
 // Backend / Frontend editing
@@ -364,6 +371,11 @@ if ($contenido) {
     }
 
     $col = new cApiInUseCollection();
+
+    $overrideid = isset($overrideid) ?? '';
+    $overridetype = isset($overridetype) ?? '';
+    $type = isset($type) ?? '';
+    $typenr = isset($typenr) ?? '';
 
     if ($overrideid != '' && $overridetype != '') {
         $col->removeItemMarks($overridetype, $overrideid);
@@ -413,7 +425,7 @@ if ($contenido) {
 
         // get ids of modules inside container
         $containerModules = conGetUsedModules($idtpl);
-        $erroneousModules = array();
+        $erroneousModules = [];
         foreach ($containerModules as $containerModule) {
             $oModule = new cApiModule($containerModule);
             if ($oModule->get('idmod') !== false
@@ -478,12 +490,12 @@ if ($contenido) {
 $db = cRegistry::getDb();
 $db->query($sql);
 
-$data = array();
+$data = [];
 while ($db->next_record()) {
     array_push($data, $db->toArray());
 }
 
-if ($data[0]['idtplcfg'] === '0' && !isset($_REQUEST['idart'])) {
+if (isset($data[0]) && $data[0]['idtplcfg'] === '0' && !isset($_REQUEST['idart'])) {
     $tpl = new cTemplate();
     $tpl->set("s", "ERROR_TITLE", $errorTitle);
     $tpl->set("s", "ERROR_TEXT", $errorText);
@@ -620,7 +632,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     if (getSystemProperty('stats', 'tracking') != 'disabled' && cRegistry::isTrackingAllowed()) {
         // Statistic, track page hit
         $oStatColl = new cApiStatCollection();
-        $oStat     = $oStatColl->trackVisit($idcatart, $lang, $client);
+        $oStatColl->trackVisit($idcatart, $lang, $client);
     }
 
     // Check if an article is start article of the category
