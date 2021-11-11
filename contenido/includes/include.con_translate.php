@@ -177,7 +177,7 @@ $langobj = new cApiLanguage($lang);
 $langstring = $langobj->get('name') . ' (' . $lang . ')';
 
 // Initialize $_REQUEST with common used keys to prevent PHP 'Undefined array key' warnings
-foreach (['dellang', 'editlang', 'editstring', 'elemperpage', 'extralang', 'filter', 'page', 'search', 'sortby', 'sortmode'] as $_key) {
+foreach (['dellang', 'editlang', 'editstring', 'elemperpage', 'extralang', 'filter', 'modtrans', 'page', 'search', 'sortby', 'sortmode'] as $_key) {
     if (!isset($_REQUEST[$_key])) {
         $_REQUEST[$_key] = '';
     }
