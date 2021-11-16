@@ -63,7 +63,7 @@ class cVersionLayout extends cVersion {
      * @param cDb    $oDB
      *         CONTENIDO database object
      * @param int    $iClient
-     * @param object $sArea
+     * @param string $sArea
      * @param int    $iFrame
      *
      * @throws cInvalidArgumentException
