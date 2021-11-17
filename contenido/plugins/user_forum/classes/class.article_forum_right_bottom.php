@@ -55,7 +55,7 @@ class ArticleForumRightBottom extends cGuiPage {
      */
     protected function formatTimeString($timeStamp) {
         $nullString = '0';
-        if ($timeStamp == "0000-00-00 00:00:00") {
+        if ($timeStamp == "0000-00-00 00:00:00"  || $timeStamp == NULL) {
             return [];
         } else {
             $ar = (date_parse($timeStamp));
@@ -239,7 +239,7 @@ class ArticleForumRightBottom extends cGuiPage {
             $userColl = new cApiUserCollection();
             $user = $userColl->loadItem($cont['editedby'])->get('username');
 
-            if (($cont['editedby'] != '') && ($cont['editedat'] != '') && $cont['editedat'] != "0000-00-00 00:00:00") {
+            if (($cont['editedby'] != '') && ($cont['editedat'] != '') && $cont['editedat'] != "0000-00-00 00:00:00" && $cont['editedat'] != NULL) {
                 $edit_information = (UserForum::i18n("EDITED") . $editdate . ' ' . UserForum::i18n("FROM") . $user);
                 $edit_information = "<em>$edit_information</em>";
             } else {
