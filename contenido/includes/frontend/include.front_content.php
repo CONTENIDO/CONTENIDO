@@ -372,10 +372,10 @@ if ($contenido) {
 
     $col = new cApiInUseCollection();
 
-    $overrideid = isset($overrideid) ?? '';
-    $overridetype = isset($overridetype) ?? '';
-    $type = isset($type) ?? '';
-    $typenr = isset($typenr) ?? '';
+    $overrideid = isset($overrideid) ? $overrideid : '';
+    $overridetype = isset($overridetype) ? $overridetype : '';
+    $type = isset($type) ? $type : '';
+    $typenr = isset($typenr) ? $typenr : '';
 
     if ($overrideid != '' && $overridetype != '') {
         $col->removeItemMarks($overridetype, $overrideid);
