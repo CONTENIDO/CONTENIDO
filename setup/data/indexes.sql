@@ -51,6 +51,7 @@ ALTER TABLE `!PREFIX!_template` ADD INDEX idtplcfg (idtplcfg);
 
 ALTER TABLE `!PREFIX!_template_conf` ADD INDEX idtplcfg (idtplcfg);
 
+ALTER TABLE `!PREFIX!_upl` ENGINE = InnoDB;
 ALTER TABLE `!PREFIX!_upl` ADD INDEX idclient (idclient);
 ALTER TABLE `!PREFIX!_upl` ADD INDEX filesync (idclient, filename, dirname);
 ALTER TABLE `!PREFIX!_properties` ADD INDEX index_client (idclient);
