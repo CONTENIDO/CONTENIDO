@@ -1183,7 +1183,9 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
     $selectElem->appendOptionElement(new cHTMLOptionElement(i18n("Please choose"), ""));
 
     foreach ($data as $tmpidcat => $props) {
-        if($props["level"] < 1)$props["level"] = 1; //Faar, PHP Warning:  str_repeat(): Second argument has to be greater than or equal to 0
+        if ($props["level"] < 1) {
+            $props["level"] = 1;
+        }//Faar, PHP Warning:  str_repeat(): Second argument has to be greater than or equal to 0
         $spaces = "&nbsp;&nbsp;" . str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $props["level"] - 1);
         $selected = ($sValue == $tmpidcat);
         $selectElem->appendOptionElement(new cHTMLOptionElement($spaces . ">" . $props["name"], $tmpidcat, $selected));
