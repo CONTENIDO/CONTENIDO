@@ -14,7 +14,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $data, $idartlang, $notification, $syncoptions, $name, $idtype, $encoding, $contenido;
+global $data, $idartlang, $notification, $syncoptions, $name, $idtype, $encoding, $contenido, $admin, $locked;
 
 $backendPath = cRegistry::getBackendPath();
 $backendUrl = cRegistry::getBackendUrl();
