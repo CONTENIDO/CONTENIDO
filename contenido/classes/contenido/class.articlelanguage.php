@@ -494,11 +494,11 @@ class cApiArticleLanguage extends Item {
      * @param bool $bSafe [optional]
      *         Flag to run defined outFilter on passed value
      *         NOTE: It's not used ATM!
-     * @return string
+     * @return string|null
      *         Value of property
      */
     public function getField($name, $bSafe = true) {
-        return $this->values[$name];
+        return isset($this->values[$name]) ? $this->values[$name] : null;
     }
 
     /**
