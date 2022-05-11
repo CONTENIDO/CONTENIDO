@@ -259,7 +259,7 @@ class cGuiMenu {
                 if ($this->_marked === $key) {
                     $extra[] = 'id="marked"';
                 }
-                if ($this->tooltips[$key] != "") {
+                if (!empty($this->tooltips[$key])) {
                     $extra[] = 'class="tooltip-north row_mark" original-title="' . $this->tooltips[$key] . '"';
                 } else {
                     $extra[] = 'class="row_mark"';
