@@ -83,10 +83,10 @@ switch ($versioningState) {
                 }
 
                 // Execute cec hook
-                cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
-                ));
+                ]);
 
             } else if (is_numeric($idArtLangVersion) && $articleType == 'editable') {
                 // version->editable
@@ -96,10 +96,10 @@ switch ($versioningState) {
                 $selectedArticleId = 'editable';
 
                 // Execute cec hook
-                cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
-                ));
+                ]);
 
             } else if ($idArtLangVersion == 'current') {
                 // current->editable
@@ -109,10 +109,10 @@ switch ($versioningState) {
                 $selectedArticleId = 'editable';
 
                 // Execute cec hook
-                cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
-                ));
+                ]);
             }
         }
 
@@ -315,13 +315,13 @@ switch ($versioningState) {
 // ------------------
 if ($action == "con_newart" && $newart == true) {
     // New article, no action log available
-    $query = array();
+    $query = [];
 } else {
     // receive data
     $conCatColl = new cApiCategoryArticleCollection();
-    $catArt = $conCatColl->getFieldsByWhereClause(array(
+    $catArt = $conCatColl->getFieldsByWhereClause([
         'idcatart'
-    ), 'idart=' . $idart);
+    ], 'idart=' . $idart);
 
     $permClause = '';
     if ($perm->isClientAdmin($client, false) === false && $perm->isSysadmin(false) === false) {
@@ -329,18 +329,18 @@ if ($action == "con_newart" && $newart == true) {
     }
 
     $actionCollection = new cApiActionlogCollection();
-    $query = $actionCollection->getFieldsByWhereClause(array(
+    $query = $actionCollection->getFieldsByWhereClause([
         'idaction',
         'idlang',
         'idclient',
         'logtimestamp',
         'user_id'
-    ), 'idcatart=' . $catArt[0]['idcatart'] . $permClause);
+    ], 'idcatart=' . $catArt[0]['idcatart'] . $permClause . ' AND idaction > 0');
 
     $actionsCollection = new cApiActionCollection();
     $actionsCollection->query();
 
-    $actions = $areas = array();
+    $actions = $areas = [];
     while (($actionItem = $actionsCollection->next()) !== false) {
         $actions[$actionItem->get('idaction')] = $actionItem->get('name');
         $areas[$actionItem->get('idaction')] = $classarea->getAreaName($actionItem->get('idarea'));
@@ -1048,7 +1048,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $languages = new cApiLanguageCollection();
     $languages->select("idlang IN(" . join(', ', $available_client_ids) . ")");
 
-    $langArray = array();
+    $langArray = [];
     while (($someLang = $languages->nextAccessible()) != false) {
         $langArray[] = $someLang;
     }
