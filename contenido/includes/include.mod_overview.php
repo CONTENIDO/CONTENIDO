@@ -14,6 +14,16 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $db;
+
+$auth = cRegistry::getAuth();
+$perm = cRegistry::getPerm();
+$sess = cRegistry::getSession();
+$frame = cRegistry::getFrame();
+$area = cRegistry::getArea();
+$client = cRegistry::getClientId();
+$cfg = cRegistry::getConfig();
+
 $oPage = new cGuiPage('mod_overview');
 
 // display critical error if no valid client is selected
@@ -24,6 +34,13 @@ if (cSecurity::toInteger($client) < 1) {
 }
 
 $requestIdMod = (isset($_REQUEST['idmod'])) ? cSecurity::toInteger($_REQUEST['idmod']) : 0;
+$elemPerPage = (isset($_REQUEST['elemperpage'])) ? cSecurity::toInteger($_REQUEST['elemperpage']) : 0;
+$page = (isset($_REQUEST['page'])) ? cSecurity::toInteger($_REQUEST['page']) : 1;
+$sortby = (isset($_REQUEST['sortby'])) ? cSecurity::toString($_REQUEST['sortby']) : '';
+$sortorder = (isset($_REQUEST['sortorder'])) ? cSecurity::toString($_REQUEST['sortorder']) : '';
+$filter = (isset($_REQUEST['filter'])) ? cSecurity::toString($_REQUEST['filter']) : '';
+$filterType = (isset($_REQUEST['filtertype'])) ? cSecurity::toString($_REQUEST['filtertype']) : '';
+$searchIn = (isset($_REQUEST['searchin'])) ? cSecurity::toString($_REQUEST['searchin']) : '';
 
 // Now build bottom with list
 $cApiModuleCollection = new cApiModuleCollection();
@@ -32,20 +49,17 @@ $searchOptions = [];
 
 // no value found in request for items per page -> get form db or set default
 $oUser = new cApiUser($auth->auth['uid']);
-if (!isset($_REQUEST['elemperpage']) || !is_numeric($_REQUEST['elemperpage']) || $_REQUEST['elemperpage'] < 0) {
-    $_REQUEST['elemperpage'] = $oUser->getProperty("itemsperpage", $area);
+if ($elemPerPage < 0) {
+    $elemPerPage = $oUser->getProperty('itemsperpage', $area);
 }
-if (!is_numeric($_REQUEST['elemperpage'])) {
-    $_REQUEST['elemperpage'] = 0;
-}
-if ($_REQUEST['elemperpage'] > 0) {
+if ($elemPerPage > 0) {
     // -- All -- will not be stored, as it may be impossible to change this back to something more useful
-    $oUser->setProperty("itemsperpage", $area, $_REQUEST['elemperpage']);
+    $oUser->setProperty('itemsperpage', $area, $elemPerPage);
 }
 unset($oUser);
 
-if (!isset($_REQUEST['page']) || !is_numeric($_REQUEST['page']) || $_REQUEST['page'] <= 0 || $_REQUEST['elemperpage'] == 0) {
-    $_REQUEST['page'] = 1;
+if ($page <= 0 || $elemPerPage == 0) {
+    $page = 1;
 }
 
 
@@ -55,42 +69,32 @@ $sOptionModuleCheck = getSystemProperty("system", "modulecheck");
 $sOptionForceCheck = getEffectiveSetting("modules", "force-menu-check", "false");
 $iMenu = 0;
 
-$searchOptions['elementPerPage'] = $_REQUEST['elemperpage'];
+$searchOptions['elementPerPage'] = $elemPerPage;
 
-$searchOptions['orderBy'] = 'name';
-if ($_REQUEST['sortby'] == 'type') {
-    $searchOptions['orderBy'] = 'type';
+$searchOptions['orderBy'] = ($sortby === 'type') ? 'type' : 'name';
+
+$searchOptions['sortOrder'] = ($sortorder == 'desc') ? 'desc' : 'asc';
+
+$searchOptions['moduleType'] = ($filterType == '--wotype--') ? '' : '%%';
+if (!empty($filterType) && $filterType !== '--wotype--' && $filterType !== '--all--') {
+    $searchOptions['moduleType'] = $db->escape($filterType);
 }
 
-$searchOptions['sortOrder'] = 'asc';
-if ($_REQUEST['sortorder'] == "desc") {
-    $searchOptions['sortOrder'] = 'desc';
-}
-
-$searchOptions['moduleType'] = '%%';
-if ($_REQUEST['filtertype'] == '--wotype--') {
-    $searchOptions['moduleType'] = '';
-}
-
-if (!empty($_REQUEST['filtertype']) && $_REQUEST['filtertype'] != '--wotype--' && $_REQUEST['filtertype'] != '--all--') {
-    $searchOptions['moduleType'] = $db->escape($_REQUEST['filtertype']);
-}
-
-$searchOptions['filter'] = $db->escape($_REQUEST['filter']);
+$searchOptions['filter'] = $db->escape($filter);
 
 //search in
 $searchOptions['searchIn'] = 'all';
-if ($_REQUEST['searchin'] == 'name' || $_REQUEST['searchin'] == 'description' || $_REQUEST['searchin'] == 'type' || $_REQUEST['searchin'] == 'input' || $_REQUEST['searchin'] == 'output') {
-    $searchOptions['searchIn'] = $_REQUEST['searchin'];
+if (in_array($searchIn, ['name', 'description', 'type', 'input', 'output'])) {
+    $searchOptions['searchIn'] = $searchIn;
 }
 
-$searchOptions['selectedPage'] = $_REQUEST['page'];
+$searchOptions['selectedPage'] = $page;
 
 $cModuleSearch = new cModuleSearch($searchOptions);
 
 $allModules = $cModuleSearch->getModules();
 
-if ($_REQUEST['elemperpage'] > 0) {
+if ($elemPerPage > 0) {
     $iItemCount = $cModuleSearch->getModulCount();
 } else {
     $iItemCount = 0;
@@ -184,15 +188,15 @@ $oPagerLink = new cHTMLLink();
 $pagerl = "pagerlink";
 $oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setLink("main.php");
-$oPagerLink->setCustom('elemperpage', $elemperpage);
-$oPagerLink->setCustom("filter", stripslashes($_REQUEST["filter"]));
-$oPagerLink->setCustom("sortby", $_REQUEST["sortby"]);
-$oPagerLink->setCustom("sortorder", $_REQUEST["sortorder"]);
+$oPagerLink->setCustom('elemperpage', $elemPerPage);
+$oPagerLink->setCustom("filter", stripslashes($filter));
+$oPagerLink->setCustom("sortby", $sortby);
+$oPagerLink->setCustom("sortorder", $sortorder);
 $oPagerLink->setCustom("frame", $frame);
 $oPagerLink->setCustom("area", $area);
 $oPagerLink->enableAutomaticParameterAppend();
 $oPagerLink->setCustom("contenido", $sess->id);
-$oPager = new cGuiObjectPager("02420d6b-a77e-4a97-9395-7f6be480f497", $iItemCount, $_REQUEST['elemperpage'], $_REQUEST['page'], $oPagerLink, 'page', $pagerl);
+$oPager = new cGuiObjectPager("02420d6b-a77e-4a97-9395-7f6be480f497", $iItemCount, $elemPerPage, $page, $oPagerLink, 'page', $pagerl);
 
 //add slashes, to insert in javascript
 $sPagerContent = $oPager->render(true);
