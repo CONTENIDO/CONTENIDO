@@ -1183,10 +1183,13 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
     $selectElem->appendOptionElement(new cHTMLOptionElement(i18n("Please choose"), ""));
 
     foreach ($data as $tmpidcat => $props) {
-        if ($props["level"] < 1) {
-            $props["level"] = 1;
+        $levelfix = 1; // assumes that level always starts at 1
+        if ($props["level"] == 0) {
+            $levelfix = 0; // assumes that level this time starts at 0
+        } else {
+           // there must be an error, because level should never be lower than 0
         }
-        $spaces = "&nbsp;&nbsp;" . str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $props["level"] - 1);
+        $spaces = "&nbsp;&nbsp;" . str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $props["level"] - $levelfix);
         $selected = ($sValue == $tmpidcat);
         $selectElem->appendOptionElement(new cHTMLOptionElement($spaces . ">" . $props["name"], $tmpidcat, $selected));
     }
