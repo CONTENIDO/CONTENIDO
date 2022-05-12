@@ -132,7 +132,7 @@ class cGuiFileOverview extends cGuiPage {
     /**
      * Selected file extension.
      *
-     * @var string
+     * @var array
      */
     protected $_fileExtension;
 
@@ -214,7 +214,7 @@ class cGuiFileOverview extends cGuiPage {
         // assign variables for every file
         $fileInfos = new cApiFileInformationCollection();
         foreach ($files as $file) {
-            if ($this->_fileInfoType != '') {
+            if ($this->_fileInfoType != '' && !empty($fileInfo['description'])) {
                 $fileInfo = $fileInfos->getFileInformation($file, $this->_fileInfoType);
                 $this->set('d', 'DESCRIPTION', conHtmlSpecialChars(cSecurity::escapeString($fileInfo['description'])));
             } else {

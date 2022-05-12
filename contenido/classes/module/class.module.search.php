@@ -74,11 +74,32 @@ class cModuleSearch extends cModuleHandler {
     protected $_selectedPage = 1;
 
     /**
+     * Page.
+     *
+     * @var int
+     */
+    protected $_page = 1;
+
+    /**
      * Result saved in a array.
      *
      * @var array
      */
-    protected $_result = array();
+    protected $_result = [];
+
+    /**
+     * Db table name.
+     *
+     * @var string
+     */
+    protected $_table = '';
+
+    /**
+     * Id of client to search for modules.
+     *
+     * @var int
+     */
+    protected $_client = 0;
 
     /**
      * Constructor to create an instance of this class.
@@ -97,6 +118,9 @@ class cModuleSearch extends cModuleHandler {
         $this->_filter = $searchOptions['filter'];
         $this->_searchIn = $searchOptions['searchIn'];
         $this->_selectedPage = $searchOptions['selectedPage'];
+
+        $this->_client = !empty($searchOptions['client']) ? $searchOptions['client'] : cRegistry::getClientId();
+        $this->_table = cRegistry::getConfig()['tab']['mod'];
     }
 
     /**
@@ -127,21 +151,17 @@ class cModuleSearch extends cModuleHandler {
      * @throws cInvalidArgumentException
      */
     public function searchForAllModules() {
-        global $cfg, $client;
+        $db = cRegistry::getDb();
 
-        $idClient = $client;
         // first fetch all modules for client
         // then apply _filter on input and output from files
         // then use the whitelisted id's and search for additional filter matches on database
-        $sql = sprintf("SELECT * FROM %s WHERE idclient = %s", $cfg['tab']['mod'], $idClient);
-
-
-        $db = cRegistry::getDb();
-        $db->query($sql);
-        $moduleIds = array();
+        $sql = "SELECT * FROM `%s` WHERE idclient = %d";
+        $db->query($sql, $this->_table, $this->_client);
+        $moduleIds = [];
 
         // filter modules based on input and output
-        while (($modul = $db->nextRecord()) !== false) {
+        while ($db->nextRecord()) {
             $this->initWithDatabaseRow($db);
             if (cString::getStringLength(stripslashes($this->_filter)) === 0
                     || cString::findFirstPos($this->readInput(), stripslashes($this->_filter)) !== false
@@ -155,26 +175,22 @@ class cModuleSearch extends cModuleHandler {
         foreach ($moduleIds as $moduleId) {
             $idFilter .= " OR idmod=" . (int) $moduleId;
         }
-        $sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND (
-                            type LIKE '%s'
-                            AND type LIKE '%s'
-                            OR description LIKE '%s'
-                            OR name LIKE  '%s'" . $idFilter . ")
-                            ORDER BY %s %s", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%', $this->_orderBy, $this->_sortOrder);
+        $sql = "SELECT * FROM `%s` WHERE idclient = %d AND (
+                    type LIKE '%s'
+                    AND type LIKE '%s'
+                    OR description LIKE '%s'
+                    OR name LIKE  '%s'" . $idFilter . "
+                ) ORDER BY %s %s";
 
-        $db = cRegistry::getDb();
-        $db->query($sql);
-        $result = array();
+        $db->query($sql,
+            $this->_table, $this->_client, $this->_moduleType, '%' . $this->_filter . '%', '%' . $this->_filter . '%',
+            '%' . $this->_filter . '%', $this->_orderBy, $this->_sortOrder
+        );
+        $result = [];
 
-        while (($modul = $db->nextRecord()) !== false) {
+        while ($db->nextRecord()) {
             $this->initWithDatabaseRow($db);
-            $result[$db->f('idmod')] = array(
-                    'name' => $db->f('name'),
-                    'description' => $db->f('description'),
-                    'error' => $db->f('error'),
-                    'input' => $this->readInput(),
-                    'output' => $this->readOutput()
-            );
+            $result[$db->f('idmod')] = $this->_getModuleResultRow($db);
         }
 
         return $result;
@@ -189,7 +205,7 @@ class cModuleSearch extends cModuleHandler {
      * @throws cInvalidArgumentException
      */
     public function getModules() {
-        $modules = array();
+        $modules = [];
 
         switch ($this->_searchIn) {
             case 'all':
@@ -228,33 +244,27 @@ class cModuleSearch extends cModuleHandler {
     }
 
     /**
-     * Search for modules in "name" column of modul.
+     * Search for modules in "name" column of module.
      *
      * @return array
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
     public function findeModulWithName() {
-        global $cfg, $client;
-        $idClient = $client;
-
-        $sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND (type LIKE '%s' AND name LIKE '%s')
-                        ORDER BY %s %s ", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', $this->_orderBy, $this->_sortOrder);
-
         $db = cRegistry::getDb();
-        $db->query($sql);
-        $result = array();
 
-        while (($module = $db->nextRecord()) !== false) {
+        $sql = "SELECT * FROM `%s` WHERE idclient = %d AND (type LIKE '%s' AND name LIKE '%s') ORDER BY %s %s ";
+        $db->query(
+            $sql, $this->_table, $this->_client, $this->_moduleType, '%' . $this->_filter . '%',
+            $this->_orderBy, $this->_sortOrder
+        );
+        $result = [];
+
+        while ($db->nextRecord()) {
             $this->initWithDatabaseRow($db);
-            $result[$db->f('idmod')] = array(
-                    'name' => $db->f('name'),
-                    'description' => $db->f('description'),
-                    'error' => $db->f('error'),
-                    'input' => $this->readInput(),
-                    'output' => $this->readOutput()
-            );
+            $result[$db->f('idmod')] = $this->_getModuleResultRow($db);
         }
+
         return $result;
     }
 
@@ -266,26 +276,17 @@ class cModuleSearch extends cModuleHandler {
      * @throws cInvalidArgumentException
      */
     public function findModulWithInput() {
-        global $cfg, $client;
-
-        $idClient = $client;
-        $sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND type LIKE '%s'
-                        ORDER BY %s %s ", $cfg['tab']['mod'], $idClient, $this->_moduleType, $this->_orderBy, $this->_sortOrder);
-
         $db = cRegistry::getDb();
-        $db->query($sql);
-        $result = array();
-        while (($module = $db->nextRecord()) !== false) {
+
+        $sql = "SELECT * FROM `%s` WHERE idclient = %d AND type LIKE '%s' ORDER BY %s %s";
+        $db->query($sql, $this->_table, $this->_client, $this->_moduleType, $this->_orderBy, $this->_sortOrder);
+        $result = [];
+
+        while ($db->nextRecord()) {
             $this->initWithDatabaseRow($db);
             if (cString::getStringLength(stripslashes($this->_filter)) === 0
                 || cString::findFirstPos($this->readInput(), stripslashes($this->_filter)) !== false) {
-                $result[$db->f('idmod')] = array(
-                        'name' => $db->f('name'),
-                        'description' => $db->f('description'),
-                        'error' => $db->f('error'),
-                        'input' => $this->readInput(),
-                        'output' => $this->readOutput()
-                );
+                $result[$db->f('idmod')] = $this->_getModuleResultRow($db);
             }
         }
 
@@ -300,28 +301,17 @@ class cModuleSearch extends cModuleHandler {
      * @throws cInvalidArgumentException
      */
     public function findModulWithOutput() {
-         global $cfg, $client;
-
-        $result = array();
-
-        $idClient = $client;
-        $sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND type LIKE '%s'
-                        ORDER BY %s %s ", $cfg['tab']['mod'], $idClient, $this->_moduleType, $this->_orderBy, $this->_sortOrder);
-
         $db = cRegistry::getDb();
-        $db->query($sql);
-        $result = array();
-        while (($module = $db->nextRecord()) !== false) {
+
+        $sql = "SELECT * FROM `%s` WHERE idclient = %d AND type LIKE '%s' ORDER BY %s %s";
+        $db->query($sql, $this->_table, $this->_client, $this->_moduleType, $this->_orderBy, $this->_sortOrder);
+        $result = [];
+
+        while ($db->nextRecord()) {
             $this->initWithDatabaseRow($db);
             if (cString::getStringLength(stripslashes($this->_filter)) === 0
                 || cString::findFirstPos($this->readOutput(), stripslashes($this->_filter)) !== false) {
-                $result[$db->f('idmod')] = array(
-                        'name' => $db->f('name'),
-                        'description' => $db->f('description'),
-                        'error' => $db->f('error'),
-                        'input' => $this->readInput(),
-                        'output' => $this->readOutput()
-                );
+                $result[$db->f('idmod')] = $this->_getModuleResultRow($db);
             }
         }
 
@@ -336,28 +326,20 @@ class cModuleSearch extends cModuleHandler {
      * @throws cInvalidArgumentException
      */
     public function findModuleWithType() {
-        global $cfg, $client;
-        $idClient = $client;
-
-        $sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND (
-                            type LIKE '%s'
-                            AND type LIKE '%s')
-                            ORDER BY %s %s ", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', $this->_orderBy, $this->_sortOrder);
-
         $db = cRegistry::getDb();
-        $db->query($sql);
-        $result = array();
 
-        while (($module = $db->nextRecord()) !== false) {
+        $sql = "SELECT * FROM `%s` WHERE idclient = %d AND (type LIKE '%s' AND type LIKE '%s') ORDER BY %s %s";
+        $db->query(
+            $sql, $this->_table, $this->_client, $this->_moduleType, '%' . $this->_filter . '%',
+            $this->_orderBy, $this->_sortOrder
+        );
+        $result = [];
+
+        while ($db->nextRecord()) {
             $this->initWithDatabaseRow($db);
-            $result[$db->f('idmod')] = array(
-                    'name' => $db->f('name'),
-                    'description' => $db->f('description'),
-                    'error' => $db->f('error'),
-                    'input' => $this->readInput(),
-                    'output' => $this->readOutput()
-            );
+            $result[$db->f('idmod')] = $this->_getModuleResultRow($db);
         }
+
         return $result;
     }
 
@@ -369,30 +351,36 @@ class cModuleSearch extends cModuleHandler {
      * @throws cInvalidArgumentException
      */
     public function findModuleWithDescription() {
-        global $cfg, $client;
-        $idClient = $client;
-
-        $sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND (
-                            type LIKE '%s'
-                            AND description LIKE '%s')
-                            ORDER BY %s %s ", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', $this->_orderBy, $this->_sortOrder);
-
         $db = cRegistry::getDb();
-        $db->query($sql);
-        $result = array();
 
-        while (($module = $db->nextRecord()) !== false) {
+        $sql = "SELECT * FROM `%s` WHERE idclient = %d AND (type LIKE '%s' AND description LIKE '%s') ORDER BY %s %s";
+        $db->query(
+            $sql, $this->_table, $this->_client, $this->_moduleType, '%' . $this->_filter . '%',
+            $this->_orderBy, $this->_sortOrder
+        );
+        $result = [];
+
+        while ($db->nextRecord()) {
             $this->initWithDatabaseRow($db);
-            $result[$db->f('idmod')] = array(
-                    'name' => $db->f('name'),
-                    'description' => $db->f('description'),
-                    'error' => $db->f('error'),
-                    'input' => $this->readInput(),
-                    'output' => $this->readOutput()
-            );
+            $result[$db->f('idmod')] = $this->_getModuleResultRow($db);
         }
 
         return $result;
     }
 
+    /**
+     * Returns module table query result row
+     * @param cDb $db
+     * @return array
+     * @throws cInvalidArgumentException
+     */
+    protected function _getModuleResultRow($db) {
+        return [
+            'name' => $db->f('name'),
+            'description' => $db->f('description'),
+            'error' => $db->f('error'),
+            'input' => $this->readInput(),
+            'output' => $this->readOutput()
+        ];
+    }
 }

@@ -15,6 +15,16 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $contenido, $db, $tpl, $newidlang, $targetclient, $datetimeformat, $dateformat, $timeformat, $datetimelocale;
+global $languagecode, $countrycode, $langname, $active, $direction, $error;
+
+$perm = cRegistry::getPerm();
+$cfg = cRegistry::getConfig();
+$area = cRegistry::getArea();
+$client = cRegistry::getClientId();
+$action = cRegistry::getAction();
+$frame = cRegistry::getFrame();
+
 includePlugins('languages');
 
 if ($action == "lang_newlanguage" && (int) $newidlang > 0) {
@@ -145,7 +155,7 @@ if ($action == "lang_newlanguage") {
             $form->setVar("area", $area);
             $form->setVar("frame", $frame);
 
-            $charsets = array();
+            $charsets = [];
             foreach ($cfg['AvailableCharsets'] as $charset) {
                 $charsets[$charset] = $charset;
             }
@@ -185,10 +195,10 @@ if ($action == "lang_newlanguage") {
 
             $directionSelect = new cHTMLSelectElement("direction");
             $directionSelect->setStyle('width:255px');
-            $directionSelect->autoFill(array(
+            $directionSelect->autoFill([
                 "ltr" => i18n("Left to right"),
                 "rtl" => i18n("Right to left")
-            ));
+            ]);
             $directionSelect->setDefault($db->f("direction"));
 
             $fulldateformat = new cHTMLTextbox("datetimeformat", $oLanguage->getProperty("dateformat", "full", $targetclient), 40);
@@ -237,7 +247,7 @@ if ($action == "lang_newlanguage") {
                 $page->set("s", "NEW_LANG_NAME", "");
             }
 
-            if ($_REQUEST['action'] != '') {
+            if ($action != '') {
                 $page->set('s', 'CONTENIDO', $contenido);
                 $page->set("s", "RELOAD_LEFT_BOTTOM", "true");
             } else {

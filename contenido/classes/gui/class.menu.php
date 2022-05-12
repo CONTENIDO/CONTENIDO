@@ -220,39 +220,36 @@ class cGuiMenu {
 
         if (is_array($this->link)) {
             foreach ($this->link as $key => $value) {
+                $img = '&nbsp;';
+
                 if ($value != NULL) {
-                    $image = new cHTMLImage($this->image[$key], 'vAlignMiddle');
-                    $image->setAlt($this->imageAlt[$key]);
-                    if ($this->imagewidth[$key] != 0) {
-                        $image->setWidth($this->imagewidth[$key]);
+                    if (isset($this->image[$key])) {
+                        $image = new cHTMLImage($this->image[$key], 'vAlignMiddle');
+                        $image->setAlt($this->imageAlt[$key]);
+                        if ($this->imagewidth[$key] != 0) {
+                            $image->setWidth($this->imagewidth[$key]);
+                        }
+                        $value->setContent($image);
+                        $img = $value->render();
                     }
-                    $value->setContent($image);
-                    $img = $value->render();
 
                     $value->setContent($this->title[$key]);
                     $link = $value->render();
                 } else {
                     $link = $this->title[$key];
 
-                    if ($this->image[$key] != "") {
+                    if (isset($this->image[$key])) {
                         $image = new cHTMLImage($this->image[$key], 'vAlignMiddle');
                         $image->setAlt($this->imageAlt[$key]);
                         if ($this->imagewidth[$key] != 0) {
                             $image->setWidth($this->imagewidth[$key]);
                         }
                         $img = $image->render();
-                    } else {
-                        $img = '&nbsp;';
                     }
                 }
 
                 $tpl->set('d', 'NAME', $link);
-
-                if ($this->image[$key] == "") {
-                    $tpl->set('d', 'ICON', '');
-                } else {
-                    $tpl->set('d', 'ICON', $img);
-                }
+                $tpl->set('d', 'ICON', $img);
 
                 $extra = [];
                 if (isset($this->id[$key])) {
@@ -262,7 +259,7 @@ class cGuiMenu {
                 if ($this->_marked === $key) {
                     $extra[] = 'id="marked"';
                 }
-                if ($this->tooltips[$key] != "") {
+                if (!empty($this->tooltips[$key])) {
                     $extra[] = 'class="tooltip-north row_mark" original-title="' . $this->tooltips[$key] . '"';
                 } else {
                     $extra[] = 'class="row_mark"';
