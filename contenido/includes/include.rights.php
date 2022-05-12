@@ -16,9 +16,22 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-if (!isset($actionarea)) {
-    $actionarea = 'area';
-}
+global $notification, $oTpl, $db, $db2, $aViewRights, $bExclusive;
+
+$sess = cRegistry::getSession();
+$area = cRegistry::getArea();
+$perm = cRegistry::getPerm();
+$cfg = cRegistry::getConfig();
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
+
+$userid = (isset($_REQUEST['userid'])) ? cSecurity::toString($_REQUEST['userid']) : '';
+$actionarea = (isset($_REQUEST['actionarea'])) ? cSecurity::toString($_REQUEST['actionarea']) : 'area';
+$right_list = (isset($_POST['right_list']) && is_array($_POST['right_list'])) ? $_POST['right_list'] : null;
+$rights_perms = (isset($_POST['rights_perms'])) ? cSecurity::toString($_POST['rights_perms']) : '';
+$rights_clientslang = (isset($_POST['rights_clientslang']) && is_numeric($_POST['rights_clientslang']))
+    ? cSecurity::toInteger($_POST['rights_clientslang']) : 0;
+$filter_rights = (isset($_POST['filter_rights'])) ? cSecurity::toString($_POST['filter_rights']) : '';
 
 if (!isset($rights_client)) {
     $rights_client = $client;
@@ -53,70 +66,73 @@ ob_start();
 $oTpl->set('s', 'RIGHTS_PERMS', $rights_perms);
 
 // Selectbox for clients
-$oHtmlSelect = new cHTMLSelectElement('rights_clientslang', '', 'rights_clientslang', false, NULL, "", "vAlignMiddle");
+$oHtmlSelect = new cHTMLSelectElement('rights_clientslang', '', 'rights_clientslang', false, NULL, '', 'vAlignMiddle');
 
 $oClientColl = new cApiClientCollection();
 $clientList = $oClientColl->getAccessibleClients();
 $firstSel = false;
 $firstClientsLang = 0;
 
-$availableClients = array();
+$availableClients = [];
 
 foreach ($clientList as $key => $value) {
-    $sql = "SELECT * FROM " . $cfg["tab"]["lang"] . " AS A, " . $cfg["tab"]["clients_lang"] . " AS B WHERE B.idclient=" . (int) $key . " AND A.idlang=B.idlang";
+    $sql = "SELECT * FROM " . $cfg["tab"]["lang"] . " AS A, " . $cfg["tab"]["clients_lang"]
+        . " AS B WHERE B.idclient=" . cSecurity::toInteger($key) . " AND A.idlang=B.idlang";
     $db->query($sql);
 
     while ($db->nextRecord()) {
 
         $idClientsLang = $db->f('idclientslang');
 
-        if ((cString::findFirstPos($userPerms, "client[$key]") !== false) && (cString::findFirstPos($userPerms, "lang[" . $db->f("idlang") . "]") !== false) && ($perm->have_perm("lang[" . $db->f("idlang") . "]"))) {
-            if ($firstSel == false) {
+        if ((cString::findFirstPos($userPerms, "client[$key]") !== false)
+            && (cString::findFirstPos($userPerms, "lang[" . $db->f("idlang") . "]") !== false)
+            && ($perm->have_perm("lang[" . $db->f("idlang") . "]"))) {
+            if (!$firstSel) {
                 $firstSel = true;
                 $firstClientsLang = $idClientsLang;
             }
 
             if ($rights_clientslang == $idClientsLang) {
-
-                $availableClients[] = array(
+                $availableClients[] = [
                     'idClientsLang' => $idClientsLang,
                     'value_name' => $value['name'],
                     'lang_name' => $db->f('name'),
                     'selected' => 1
-                );
+                ];
 
                 if (!isset($rights_client)) {
                     $firstClientsLang = $idClientsLang;
                 }
             } else {
-                $availableClients[] = array(
+                $availableClients[] = [
                     'idClientsLang' => $idClientsLang,
                     'value_name' => $value['name'],
                     'lang_name' => $db->f('name'),
                     'selected' => 0
-                );
+                ];
             }
         }
     }
 }
 
 // Generate Select Box or simple the value as text
-if (count($availableClients) > 1) {
-
+if (count($availableClients) > 0) {
     foreach ($availableClients as $key => $value) {
-        $oHtmlSelectOption = new cHTMLOptionElement(conHtmlSpecialChars($availableClients[$key]['value_name']) . ' -> ' . conHtmlSpecialChars($availableClients[$key]['lang_name']), $availableClients[$key]['idClientsLang'], $availableClients[$key]['selected']);
+        $oHtmlSelectOption = new cHTMLOptionElement(conHtmlSpecialChars($value['value_name']) . ' -> '
+            . conHtmlSpecialChars($value['lang_name']), $value['idClientsLang'], $value['selected']);
         $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
     }
-
     $oTpl->set('s', 'INPUT_SELECT_CLIENT', $oHtmlSelect->render());
 } else {
-    $string = "<span class='vAlignMiddle'>" . conHtmlSpecialChars($availableClients[0]['value_name']) . " -> " . conHtmlSpecialChars($availableClients[0]['lang_name']) . "</span>&nbsp;";
-    $oTpl->set('s', 'INPUT_SELECT_CLIENT', $string);
+    $oTpl->set('s', 'INPUT_SELECT_CLIENT', '');
 }
 
-if (!isset($rights_clientslang)) {
+if (empty($rights_clientslang)) {
     $rights_clientslang = $firstClientsLang;
 }
+
+$aViewRights = [];
+$bExclusive = false;
 
 if ($area != 'user_content') {
     $oTpl->set('s', 'INPUT_SELECT_RIGHTS', '');
@@ -135,10 +151,10 @@ if ($area != 'user_content') {
     $oHtmlSelectOption = new cHTMLOptionElement(i18n('Plugin/Other rights'), 'other', false);
     $oHtmlSelect->addOptionElement(4, $oHtmlSelectOption);
     $oHtmlSelect->setEvent('change', 'document.rightsform.submit();');
-    $oHtmlSelect->setDefault($_POST['filter_rights']);
+    $oHtmlSelect->setDefault($filter_rights);
 
     // Set global array which defines rights to display
-    $aArticleRights = array(
+    $aArticleRights = [
         'con_syncarticle',
         'con_lock',
         'con_deleteart',
@@ -150,21 +166,19 @@ if ($area != 'user_content') {
         'con_edit',
         'con_meta_edit',
         'con_meta_deletetype'
-    );
-    $aCategoryRights = array(
+    ];
+    $aCategoryRights = [
         'con_synccat',
         'con_makecatonline',
         'con_makepublic'
-    );
-    $aTemplateRights = array(
+    ];
+    $aTemplateRights = [
         'con_changetemplate',
         'con_tplcfg_edit'
-    );
+    ];
 
-    $aViewRights = array();
-    $bExclusive = false;
-    if (isset($_POST['filter_rights'])) {
-        switch ($_POST['filter_rights']) {
+    if (!empty($filter_rights)) {
+        switch ($filter_rights) {
             case 'article':
                 $aViewRights = $aArticleRights;
                 break;
@@ -210,7 +224,7 @@ if ($oClientLang->isLoaded()) {
     $oTpl->set('s', 'DISPLAY_FILTER', 'none');
 }
 
-if ($bEndScript != true) {
+if (!$bEndScript) {
     $tmp = ob_get_contents();
     ob_end_clean();
     $oTpl->set('s', 'OB_CONTENT', $tmp);
@@ -218,7 +232,7 @@ if ($bEndScript != true) {
     $oTpl->set('s', 'OB_CONTENT', '');
 }
 
-if ($bEndScript == true) {
+if ($bEndScript) {
     $oTpl->set('s', 'NOTIFICATION_SAVE_RIGHTS', '');
     $oTpl->set('s', 'RIGHTS_CONTENT', '');
     $oTpl->set('s', 'JS_SCRIPT_BEFORE', '');
