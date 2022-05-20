@@ -1128,25 +1128,17 @@ function buildArticleSelect($sName, $iIdCat, $sValue) {
 
 /**
  * Build a Category / Article select Box
- *
- * @param string $sName
- *         Name of the SelectBox
- * @param string $sValue
- *         Value of the SelectBox
- * @param int    $sLevel
- *         Value of highest level that should be shown
- * @param string $sClass
- *         Optional css class for select
- *
- * @return string
- *         HTML
- *
- * @throws cDbException
- * @throws cException
+ * 
+ * @staticvar array $cache Cache for DB results
+ * @param string $sName  Name of the SelectBox
+ * @param string $sValue Value of the SelectBox
+ * @param int $sLevel Value of highest level that should be shown
+ * @param string $sClass Optional css class for select
+ * @return string HTML select generated
  */
 function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
     static $cache;
-
+    
     $client = cRegistry::getClientId();
     $lang = cRegistry::getLanguageId();
 
@@ -1176,29 +1168,24 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
            ORDER BY c.idtree";
 
         $db->query($sql);
-
+        $aIdCat = [];
         while ($db->nextRecord()) {
             $data[$db->f('idcat')]['name'] = $db->f('name');
-
-            $sql2 = "SELECT level FROM " . $cfg['tab']['cat_tree'] . " WHERE idcat = " . (int) $db->f('idcat');
-            $db2->query($sql2);
-
-            if ($db2->nextRecord()) {
-                $data[$db->f('idcat')]['level'] = (int) $db2->f('level');
-            }
-
-            $sql2 = "SELECT a.title AS title, b.idcatart AS idcatart FROM
-                " . $cfg['tab']['art_lang'] . " AS a,  " . $cfg['tab']['cat_art'] . " AS b
-                WHERE b.idcat = '" . $db->f('idcat') . "' AND a.idart = b.idart AND
-                a.idlang = " . (int) $lang;
-
-            $db2->query($sql2);
-
-            while ($db2->nextRecord()) {
-                $data[$db->f('idcat')]['articles'][$db2->f('idcatart')] = $db2->f('title');
-            }
+            $data[$db->f('idcat')]['level'] = (int) $db->f('level');
+            $aIdCat[] = $db->f('idcat');
         }
-
+        
+        if(!empty($data)) {
+            $sSql2 = "SELECT a.title AS title, b.idcatart AS idcatart, b.idcat AS idcat FROM
+                " . $cfg['tab']['art_lang'] . " AS a,  " . $cfg['tab']['cat_art'] . " AS b
+                WHERE b.idcat IN (" . implode(',', $aIdCat) . ") AND a.idart = b.idart AND
+                a.idlang = " . (int) $lang;
+            
+            $db2->query($sSql2);
+            while ($db2->nextRecord()) {
+                $data[$db2->f('idcat')]['articles'][$db2->f('idcatart')] = $db2->f('title');
+            }            
+        }
         $cache[$cacheKey] = $data;
     }
 
@@ -1206,11 +1193,11 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
     $selectElem = new cHTMLSelectElement($sName, '', $sName);
     $selectElem->setClass($sClass);
     $selectElem->appendOptionElement(new cHTMLOptionElement(i18n("Please choose"), ''));
-
+    
     foreach ($data as $tmpidcat => $props) {
         $spaces = '&nbsp;&nbsp;';
-        if ($props['level'] > 0) {
-            $spaces .= str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', $props['level'] - 1);
+        for($i = 1; $i <= $props['level']; $i++) {
+            $spaces .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
         }
         $selected = ($sValue == $tmpidcat);
         $selectElem->appendOptionElement(new cHTMLOptionElement($spaces . '>' . $props['name'], $tmpidcat, $selected));
