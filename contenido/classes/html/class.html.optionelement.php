@@ -107,8 +107,8 @@ class cHTMLOptionElement extends cHTMLFormElement {
      * @return string Generated indentation string
      */
     public static function indent($level, $prefixAmount = 2, $levelAmount = 4, $character = '&nbsp;') {
-        $prefixStr = str_repeat($character, max(0, $prefixAmount));
-        $levelStr = str_repeat($character, max(0, $levelAmount));
+        $prefixStr = str_repeat($character, max(0, cSecurity::toInteger($prefixAmount)));
+        $levelStr = str_repeat($character, max(0, cSecurity::toInteger($levelAmount)));
         return $prefixStr . str_repeat($levelStr, max(0, cSecurity::toInteger($level)));
     }
 
