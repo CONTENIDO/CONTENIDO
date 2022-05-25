@@ -360,8 +360,11 @@ $cfg['images']['image_quality']['compression_rate'] = 75;
  * -----------------------------------------------------------------------------
  */
 
-// (string) Name of code generator to use (e. g. 'Standard' to use class cCodeGeneratorStandard)
+// (string) Name of code generator to use (e.g. 'Standard' to use class cCodeGeneratorStandard)
 $cfg['code_generator']['name'] = 'Standard';
+
+// (bool) Flag to strip white spaces and comments in module codes during code generation
+$cfg['code_generator']['strip_white_spaces'] = false;
 
 
 /* Inuse settings
