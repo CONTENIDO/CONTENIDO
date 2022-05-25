@@ -13,6 +13,17 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $oTpl, $oDB;
+
+$auth = cRegistry::getAuth();
+$perm = cRegistry::getPerm();
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
+$cfg = cRegistry::getConfig();
+$area = cRegistry::getArea();
+$sess = cRegistry::getSession();
+
+
 // ####################################
 // Initialization
 // ####################################
@@ -135,8 +146,7 @@ $sSQL .= "ORDER BY tblCatTree.idtree";
 $oDB->query($sSQL);
 
 while ($oDB->nextRecord()) {
-    $sSpaces = str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $oDB->f("level"));
-
+    $sSpaces = cHTMLOptionElement::indent($oDB->f("level"), 0);
     $oOptionTemplate = new cHTMLOptionElement($sSpaces . $oDB->f("name"), $oDB->f("idcat"));
     $oOptionNewsletter = new cHTMLOptionElement($sSpaces . $oDB->f("name"), $oDB->f("idcat"));
     if ($oDB->f("visible") == 0 || $oDB->f("public") == 0) {
