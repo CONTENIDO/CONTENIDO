@@ -149,6 +149,16 @@ class cRegistry {
     }
 
     /**
+     * Checks if the visual edit mode in backend is active (contenido session and
+     * global variable "tpl_visual").
+     *
+     * @return bool
+     */
+    public static function isBackendVisualEditMode() {
+        return self::getBackendSessionId() && self::getArea() === 'tpl_visual';
+    }
+
+    /**
      * Returns the current language ID stored in the global variable "lang".
      *
      * @return int
