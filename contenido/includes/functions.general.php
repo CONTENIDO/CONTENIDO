@@ -1129,20 +1129,12 @@ function buildArticleSelect($sName, $iIdCat, $sValue) {
 /**
  * Build a Category / Article select Box
  *
- * @param string $sName
- *         Name of the SelectBox
- * @param string $sValue
- *         Value of the SelectBox
- * @param int    $sLevel
- *         Value of highest level that should be shown
- * @param string $sClass
- *         Optional css class for select
- *
- * @return string
- *         HTML
- *
- * @throws cDbException
- * @throws cException
+ * @staticvar array $cache Cache for DB results
+ * @param string $sName  Name of the SelectBox
+ * @param string $sValue Value of the SelectBox
+ * @param int $sLevel Value of the highest level that should be shown
+ * @param string $sClass Optional css class for select
+ * @return string HTML select generated
  */
 function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
     static $cache;
@@ -1164,41 +1156,42 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
         $data = [];
 
         $db = cRegistry::getDb();
-        $db2 = cRegistry::getDb();
         $cfg = cRegistry::getConfig();
 
         $addString = ($sLevel > 0) ? "AND c.level < " . (int) $sLevel : '';
 
-        $sql = "SELECT a.idcat AS idcat, b.name AS name, c.level FROM
-           " . $cfg['tab']['cat'] . " AS a, " . $cfg['tab']['cat_lang'] . " AS b,
-           " . $cfg['tab']['cat_tree'] . " AS c WHERE a.idclient = " . (int) $client . "
-           AND b.idlang = " . (int) $lang . " AND b.idcat = a.idcat AND c.idcat = a.idcat " . $addString . "
-           ORDER BY c.idtree";
+        $sql = "SELECT a.idcat AS idcat, b.name AS name, c.level FROM `:tab_cat` AS a, `:tab_cat_lang` AS b,
+           `:tab_cat_tree` AS c WHERE a.idclient = :client AND b.idlang = :lang AND b.idcat = a.idcat 
+           AND c.idcat = a.idcat " . $addString . " ORDER BY c.idtree";
 
-        $db->query($sql);
-
+        $db->query($sql, [
+            'tab_cat' =>  $cfg['tab']['cat'],
+            'tab_cat_lang' => $cfg['tab']['cat_lang'],
+            'tab_cat_tree' => $cfg['tab']['cat_tree'],
+            'client' => $client,
+            'lang' => $lang,
+        ]);
+        $aIdCat = [];
         while ($db->nextRecord()) {
             $data[$db->f('idcat')]['name'] = $db->f('name');
-
-            $sql2 = "SELECT level FROM " . $cfg['tab']['cat_tree'] . " WHERE idcat = " . (int) $db->f('idcat');
-            $db2->query($sql2);
-
-            if ($db2->nextRecord()) {
-                $data[$db->f('idcat')]['level'] = (int) $db2->f('level');
-            }
-
-            $sql2 = "SELECT a.title AS title, b.idcatart AS idcatart FROM
-                " . $cfg['tab']['art_lang'] . " AS a,  " . $cfg['tab']['cat_art'] . " AS b
-                WHERE b.idcat = '" . $db->f('idcat') . "' AND a.idart = b.idart AND
-                a.idlang = " . (int) $lang;
-
-            $db2->query($sql2);
-
-            while ($db2->nextRecord()) {
-                $data[$db->f('idcat')]['articles'][$db2->f('idcatart')] = $db2->f('title');
-            }
+            $data[$db->f('idcat')]['level'] = (int) $db->f('level');
+            $aIdCat[] = $db->f('idcat');
         }
 
+        if (!empty($data)) {
+            $sql = "SELECT a.title AS title, b.idcatart AS idcatart, b.idcat AS idcat FROM
+                `:tab_art_lang` AS a, `:tab_cat_art` AS b WHERE b.idcat IN (" . implode(',', $aIdCat) . ") 
+                AND a.idart = b.idart AND a.idlang = :lang";
+
+            $db->query($sql, [
+                'tab_art_lang' => $cfg['tab']['art_lang'],
+                'tab_cat_art' => $cfg['tab']['cat_art'],
+                'lang' => $lang,
+            ]);
+            while ($db->nextRecord()) {
+                $data[$db->f('idcat')]['articles'][$db->f('idcatart')] = $db->f('title');
+            }
+        }
         $cache[$cacheKey] = $data;
     }
 
@@ -1208,10 +1201,7 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
     $selectElem->appendOptionElement(new cHTMLOptionElement(i18n("Please choose"), ''));
 
     foreach ($data as $tmpidcat => $props) {
-        $spaces = '&nbsp;&nbsp;';
-        if ($props['level'] > 0) {
-            $spaces .= str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', $props['level'] - 1);
-        }
+        $spaces = cHTMLOptionElement::indent($props['level']);
         $selected = ($sValue == $tmpidcat);
         $selectElem->appendOptionElement(new cHTMLOptionElement($spaces . '>' . $props['name'], $tmpidcat, $selected));
     }

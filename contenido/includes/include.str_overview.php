@@ -118,11 +118,7 @@ function buildCategorySelectRights() {
     }
 
     foreach ($categories as $tmpidcat => $props) {
-        $spaces = '&nbsp;&nbsp;';
-        for ($i = 0; $i < $props['level']; $i++) {
-            $spaces .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-        }
-
+        $spaces = cHTMLOptionElement::indent($props['level']);
         $sCategoryname = $props['name'];
         $sCategoryname = cString::trimHard($sCategoryname, 30);
         $oHtmlSelectOption = new cHTMLOptionElement($spaces . ">" . conHtmlSpecialChars($sCategoryname), $tmpidcat, false, !$props['perm']);
