@@ -51,7 +51,7 @@ $sNotification = '';
 $aPerms = [];
 
 // Info message for a new group
-if ($_REQUEST['created'] == 1) {
+if (isset($request['created']) && $request['created'] == 1) {
     $sNotification = $notification->returnNotification("ok", i18n("New group created. Now you can edit and configure your new group."));
 }
 

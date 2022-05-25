@@ -14,6 +14,9 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+$cfg = cRegistry::getConfig();
+$action = cRegistry::getAction();
+
 cInclude('includes', 'functions.general.php');
 
 $page = new cGuiPage('system_log_sysvalues');
@@ -21,7 +24,7 @@ $page = new cGuiPage('system_log_sysvalues');
 $path = $cfg['path']['frontend'] . '/' . $cfg['path']['logs'];
 $numberOfLines = $cfg['system_log']['number_of_lines'];
 
-$logfile = basename($_REQUEST['logfile']);
+$logfile = isset($_REQUEST['logfile']) ? basename($_REQUEST['logfile']) : '';
 
 // memory limit
 $memoryLimit = machineReadableSize(ini_get('memory_limit'));

@@ -133,7 +133,7 @@ foreach ($containerNumbers as $containerNr) {
                 $option->setAttribute('title', "Container $containerNr ({$name}) {$val['name']}");
             }
 
-            if ($containerModules[$containerNr] == $key || ($containerModules[$containerNr] == 0 && $val['name'] == $default)) {
+            if (isset($containerModules[$containerNr]) && ($containerModules[$containerNr] == $key || ($containerModules[$containerNr] == 0 && $val['name'] == $default))) {
                 $option->setSelected(true);
             }
 
@@ -174,6 +174,10 @@ $code = preg_replace("/<\/form(.*)>/i", '', $code);
 
 $backendUrl = cRegistry::getBackendUrl();
 
+$headCode = '
+    <link rel="stylesheet" type="text/css" href="' . $backendUrl . 'styles/jquery/jquery-ui.css">
+';
+
 $form = '
     <form id="tpl_visedit" name="tpl_visedit" action="' . $backendUrl . 'main.php">
     <input type="hidden" name="' . $sess->name . '" value="' . $sess->id . '"' . $sElemClosing . '>
@@ -189,7 +193,8 @@ $form .= $sContainerInHead;
 
 $sInput = '<input type="image" src="' . $backendUrl . $cfg['path']['images'] . 'but_ok.gif' . '"' . $sElemClosing . '>';
 $button = '<table border="0" width="100%"><tr><td align="right">' . $sInput . '</td></tr></table>';
+$code = preg_replace("/<\/head(.*)>/i", $headCode . '</head\\1>', $code);
 $code = preg_replace("/<body(.*)>/i", "<body\\1>" . $form . $button, $code);
-$code = preg_replace("/<\/body(.*)>/i", '</form></body>', $code);
+$code = preg_replace("/<\/body(.*)>/i", '</form></body\\1>', $code);
 
 eval("?>\n" . $code . "\n<?php\n");

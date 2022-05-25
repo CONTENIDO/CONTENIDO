@@ -109,7 +109,7 @@ class cVersion {
     /**
      * For init global variable $area
      *
-     * @var array
+     * @var string
      */
     protected $sArea;
 

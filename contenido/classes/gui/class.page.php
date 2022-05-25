@@ -900,7 +900,7 @@ class cGuiPage {
                 $output .= $obj;
             }
 
-            if (!method_exists($obj, 'render')) {
+            if (!is_object($obj) || !method_exists($obj, 'render')) {
                 continue;
             }
 

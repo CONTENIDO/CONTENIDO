@@ -14,8 +14,18 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $data, $idartlang, $notification, $syncoptions, $name, $idtype, $encoding, $contenido, $admin, $locked;
+
 $backendPath = cRegistry::getBackendPath();
 $backendUrl = cRegistry::getBackendUrl();
+$sess = cRegistry::getSession();
+$perm = cRegistry::getPerm();
+$cfg = cRegistry::getConfig();
+$area = cRegistry::getArea();
+$action = cRegistry::getAction();
+$idart = cRegistry::getArticleId();
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
 
 cInclude('includes', 'functions.str.php');
 cInclude('includes', 'functions.pathresolver.php');
@@ -61,6 +71,8 @@ $wysiwygeditor = cWYSIWYGEditor::getCurrentWysiwygEditorName();
 if ('tinymce3' === $wysiwygeditor) {
     include($cfg['path'][$wysiwygeditor . '_editorclass']);
 }
+$sConfigInlineEdit = '';
+$sConfigFullscreen = '';
 switch ($wysiwygeditor) {
     case 'tinymce4':
         $page->set('s', '_PATH_CONTENIDO_TINYMCE_CSS_', $cfg['path']['all_wysiwyg_html'] . $wysiwygeditor . '/contenido/css/');
@@ -483,13 +495,17 @@ if (count($aNotifications) > 0) {
 $selectedArticle = NULL;
 $editableArticleId = NULL;
 global $selectedArticleId;
-if ($_REQUEST['idArtLangVersion'] != NULL) {
+if (isset($_REQUEST['idArtLangVersion']) && $_REQUEST['idArtLangVersion'] != NULL) {
     $selectedArticleId = $_REQUEST['idArtLangVersion'];
+    $idArtLangVersion = $_REQUEST['idArtLangVersion'];
+} else {
+    $idArtLangVersion = null;
 }
+
 $result = [];
 $list = [];
 $articleType = $versioning->getArticleType(
-    $_REQUEST['idArtLangVersion'],
+    $idArtLangVersion,
     (int)$_REQUEST['idartlang'],
     $action,
     $selectedArticleId
@@ -498,12 +514,12 @@ $articleType = $versioning->getArticleType(
 switch ($versioningState) {
     case 'simple':
         // get selected article
-        $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], (int)$_REQUEST['idartlang'], $articleType, $selectedArticleId);
+        $selectedArticle = $versioning->getSelectedArticle($idArtLangVersion, (int)$_REQUEST['idartlang'], $articleType, $selectedArticleId);
 
         // Set as current/editable
         if ($action == 'copyto') {
-            if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
-                $artLangVersion = new cApiArticleLanguageVersion((int)$_REQUEST['idArtLangVersion']);
+            if (is_numeric($idArtLangVersion) && $articleType == 'editable') {
+                $artLangVersion = new cApiArticleLanguageVersion((int)$idArtLangVersion);
                 $artLangVersion->markAsCurrent('content');
                 $selectedArticleId = 'current';
 
@@ -654,9 +670,9 @@ switch ($versioningState) {
 
         // Set as current/editable
         if ($action == 'copyto') {
-            if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'current') {
+            if (is_numeric($idArtLangVersion) && $articleType == 'current') {
                 $artLangVersion = NULL;
-                $artLangVersion = new cApiArticleLanguageVersion((int)$_REQUEST['idArtLangVersion']);
+                $artLangVersion = new cApiArticleLanguageVersion((int)$idArtLangVersion);
                 if (isset($artLangVersion)) {
                     $artLangVersion->markAsCurrent('content');
                     $selectedArticleId = 'current';
@@ -667,10 +683,10 @@ switch ($versioningState) {
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
                 ]);
-            } else if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
-                $artLangVersion = new cApiArticleLanguageVersion((int)$_REQUEST['idArtLangVersion']);
+            } else if (is_numeric($idArtLangVersion) && $articleType == 'editable') {
+                $artLangVersion = new cApiArticleLanguageVersion((int)$idArtLangVersion);
                 $artLangVersion->markAsEditable('content');
-                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int)$_REQUEST['idartlang'], $action, $selectedArticleId);
+                $articleType = $versioning->getArticleType($idArtLangVersion, (int)$_REQUEST['idartlang'], $action, $selectedArticleId);
                 $selectedArticleId = 'editable';
 
                 // Execute cec hook
@@ -678,10 +694,10 @@ switch ($versioningState) {
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
                 ]);
-            } else if ($_REQUEST['idArtLangVersion'] == 'current') {
+            } else if ($idArtLangVersion == 'current') {
                 $artLang = new cApiArticleLanguage((int)$_REQUEST['idartlang']);
                 $artLang->markAsEditable('content');
-                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int)$_REQUEST['idartlang'], $action, $selectedArticleId);
+                $articleType = $versioning->getArticleType($idArtLangVersion, (int)$_REQUEST['idartlang'], $action, $selectedArticleId);
                 $selectedArticleId = 'editable';
 
                 // Execute cec hook
@@ -693,7 +709,7 @@ switch ($versioningState) {
         }
 
         // get selected article
-        $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], (int)$_REQUEST['idartlang'], $articleType);
+        $selectedArticle = $versioning->getSelectedArticle($idArtLangVersion, (int)$_REQUEST['idartlang'], $articleType);
         // Get Content or Content Version and sort
         $content = $selectedArticle->getContent();
 
@@ -841,7 +857,7 @@ switch ($versioningState) {
         $versioning_info_text = i18n('For reviewing and restoring older article versions activate the article versioning under Administration/System/System configuration.');
 
         // get selected article
-        $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], (int)$_REQUEST['idartlang'], $articleType);
+        $selectedArticle = $versioning->getSelectedArticle($idArtLangVersion, (int)$_REQUEST['idartlang'], $articleType);
 
         // Get Content/set $result
         $content = $selectedArticle->getContent();
