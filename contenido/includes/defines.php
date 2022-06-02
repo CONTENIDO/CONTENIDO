@@ -26,7 +26,7 @@ if (!defined('CON_DB_NOT_SUPPORTED_SQL_MODES')) {
 
 // Flag to strip slashes
 if (function_exists('get_magic_quotes_gpc')) {
-    define('CON_STRIPSLASHES', !get_magic_quotes_gpc());
+    define('CON_STRIPSLASHES', !@get_magic_quotes_gpc());
 } else {
     define('CON_STRIPSLASHES', true);
 }
