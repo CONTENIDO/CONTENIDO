@@ -33,13 +33,13 @@ class cGuiTableForm {
      *
      * @var array
      */
-    public $items = array();
+    public $items = [];
 
     /**
      *
      * @var array
      */
-    public $captions = array();
+    public $captions = [];
 
     /**
      *
@@ -51,13 +51,13 @@ class cGuiTableForm {
      *
      * @var array
      */
-    public $rownames = array();
+    public $rownames = [];
 
     /**
      *
      * @var  array
      */
-    public $itemType = array();
+    public $itemType = [];
 
     /**
      *
@@ -81,13 +81,13 @@ class cGuiTableForm {
      *
      * @var array
      */
-    public $formvars = array();
+    public $formvars = [];
 
     /**
      *
      * @var string
      */
-    public $tableid = "";
+    public $tableid = '';
 
     /**
      *
@@ -111,7 +111,7 @@ class cGuiTableForm {
      *
      * @var array
      */
-    public $custom = array();
+    public $custom = [];
 
     /**
      * Constructor to create an instance of this class.
@@ -126,7 +126,6 @@ class cGuiTableForm {
      *         of form defaults to 'post'
      */
     public function __construct($name, $action = 'main.php', $method = 'post') {
-
         // action defaults to 'main.php'
         if ($action == '') {
             $action = 'main.php';
@@ -156,13 +155,12 @@ class cGuiTableForm {
      * @param array|object|string $item
      * @param string $rowname [optional]
      */
-    public function add($caption, $item, $rowname = "") {
-
+    public function add($caption, $item, $rowname = '') {
         // handle item as array of items
         if (is_array($item)) {
-            $temp = "";
+            $temp = '';
             foreach ($item as $value) {
-                if (is_object($value) && method_exists($value, "render")) {
+                if (is_object($value) && method_exists($value, 'render')) {
                     $temp .= $value->render();
                 } else {
                     $temp .= $value;
@@ -172,7 +170,7 @@ class cGuiTableForm {
         }
 
         // handle item as object
-        if (is_object($item) && method_exists($item, "render")) {
+        if (is_object($item) && method_exists($item, 'render')) {
             $item = $item->render();
         }
 
@@ -180,13 +178,13 @@ class cGuiTableForm {
         $this->id++;
 
         // set defaults
-        if ($caption == "") {
-            $caption = "&nbsp;";
+        if ($caption == '') {
+            $caption = '&nbsp;';
         }
-        if ($item == "") {
-            $item = "&nbsp;";
+        if ($item == '') {
+            $item = '&nbsp;';
         }
-        if ($rowname == "") {
+        if ($rowname == '') {
             $rowname = $this->id;
         }
 
@@ -248,7 +246,7 @@ class cGuiTableForm {
      * @param string $event
      */
     public function setActionEvent($id, $event) {
-        $this->custom[$id]["event"] = $event;
+        $this->custom[$id]['event'] = $event;
     }
 
     /**
@@ -258,14 +256,16 @@ class cGuiTableForm {
      * @param string $description [optional]
      * @param bool $accesskey [optional]
      * @param bool $action [optional]
+     * @param bool $disabled [optional]
      */
-    public function setActionButton($id, $image, $description = "", $accesskey = false, $action = false) {
-        $this->custom[$id]["image"] = $image;
-        $this->custom[$id]["type"] = "actionsetter";
-        $this->custom[$id]["action"] = $action;
-        $this->custom[$id]["description"] = $description;
-        $this->custom[$id]["accesskey"] = $accesskey;
-        $this->custom[$id]["event"] = "";
+    public function setActionButton($id, $image, $description = '', $accesskey = false, $action = false, $disabled = false) {
+        $this->custom[$id]['image'] = $image;
+        $this->custom[$id]['type'] = 'actionsetter';
+        $this->custom[$id]['action'] = $action;
+        $this->custom[$id]['description'] = $description;
+        $this->custom[$id]['accesskey'] = $accesskey;
+        $this->custom[$id]['event'] = '';
+        $this->custom[$id]['disabled'] = $disabled;
     }
 
     /**
@@ -275,8 +275,8 @@ class cGuiTableForm {
      * @param string $description
      */
     public function setConfirm($id, $title, $description) {
-        $this->custom[$id]["confirmtitle"] = $title;
-        $this->custom[$id]["confirmdescription"] = $description;
+        $this->custom[$id]['confirmtitle'] = $title;
+        $this->custom[$id]['confirmdescription'] = $description;
     }
 
     /**
@@ -302,133 +302,51 @@ class cGuiTableForm {
      * @param bool $return [optional]
      *                     if true then return markup, else echo immediately
      *
-     * @return string
+     * @return string|void
      * @throws cInvalidArgumentException
      */
     public function render($return = true) {
-        global $sess, $cfg;
-
+        $sess = cRegistry::getSession();
+        $cfg = cRegistry::getConfig();
         $tpl = new cTemplate();
 
-        if ($this->submitjs != "") {
-            if (cString::getStringLength($this->_acceptCharset) > 0) {
-                $tpl->set("s", "JSEXTRA", 'onsubmit="' . $this->submitjs
-                        . '" accept-charset="' . $this->_acceptCharset . '"');
-            } else {
-                $tpl->set("s", "JSEXTRA", 'onsubmit="' . $this->submitjs . '"');
-            }
-        } else {
-            if (cString::getStringLength($this->_acceptCharset) > 0) {
-                $tpl->set("s", "JSEXTRA", 'accept-charset="' . $this->_acceptCharset . '"');
-            } else {
-                $tpl->set("s", "JSEXTRA", '');
-            }
-        }
+        $tpl->set('s', 'JSEXTRA', $this->renderJsExtraAttribute());
 
-        $tpl->set("s", "FORMNAME", $this->formname);
-        $tpl->set("s", "METHOD", $this->formmethod);
-        $tpl->set("s", "ACTION", $this->formaction);
+        $tpl->set('s', 'FORMNAME', $this->formname);
+        $tpl->set('s', 'METHOD', $this->formmethod);
+        $tpl->set('s', 'ACTION', $this->formaction);
 
         $this->formvars[$sess->name] = $sess->id;
 
-        $hidden = "";
-        if (is_array($this->formvars)) {
-            foreach ($this->formvars as $key => $value) {
-                $val = new cHTMLHiddenField($key, $value);
-                $hidden .= $val->render() . "\n";
-            }
-        }
-
-        if (!array_key_exists("action", $this->formvars)) {
-            $val = new cHTMLHiddenField("", "");
-            $hidden .= $val->render() . "\n";
-        }
-
-        $tpl->set("s", "HIDDEN_VALUES", $hidden);
+        $tpl->set('s', 'HIDDEN_VALUES', $this->renderHiddenValues());
 
         $tpl->set('s', 'ID', $this->tableid);
 
-        $header = "";
-        if ($this->header != "") {
-            $tablerow = new cHTMLTableRow();
-            $tablehead = new cHTMLTableHead();
-            $tablehead->setAttribute("colspan", "2");
-            $tablehead->setAttribute("valign", "top");
-            $tablehead->setContent($this->header);
-            $tablerow->setContent($tablehead);
-            $header = $tablerow->render();
-        }
+        $tpl->set('s', 'HEADER', $this->renderHeader());
 
-        $tpl->set('s', 'HEADER', $header);
+        foreach ($this->items as $key => $value) {
+            if (!empty($this->itemType[$key]) && $this->itemType[$key] == 'subheader') {
+                $tablerow = new cHTMLTableRow();
+                $tabledata = new cHTMLTableData();
+                $tabledata->setAttribute('colspan', '2');
+                $tabledata->setAttribute('valign', 'top');
+                $tabledata->setContent($this->captions[$key]);
+                $tablerow->setContent($tablehead);
 
-        if (is_array($this->items)) {
-            foreach ($this->items as $key => $value) {
-                if (!empty($this->itemType[$key]) && $this->itemType[$key] == 'subheader') {
-                    $tablerow = new cHTMLTableRow();
-                    $tabledata = new cHTMLTableData();
-                    $tabledata->setAttribute("colspan", "2");
-                    $tabledata->setAttribute("valign", "top");
-                    $tabledata->setContent($this->captions[$key]);
-                    $tablerow->setContent($tablehead);
-
-                    $tpl->set('d', 'SUBHEADER', $tablerow->render());
-                } else {
-                    $tpl->set('d', 'SUBHEADER', '');
-                    $tpl->set('d', 'CATNAME', $this->captions[$key]);
-                    $tpl->set('d', 'CATFIELD', $value);
-                    $tpl->set('d', 'ROWNAME', $this->rownames[$key]);
-
-                    $tpl->next();
-                }
-            }
-        }
-
-        if ($this->cancelLink != "") {
-            $image = new cHTMLImage(cRegistry::getBackendUrl() . 'images/but_cancel.gif');
-            $link = new cHTMLLink($this->cancelLink);
-            $link->setContent($image);
-
-            $tpl->set('s', 'CANCELLINK', $link->render());
-        } else {
-            $tpl->set('s', 'CANCELLINK', '');
-        }
-
-        $custombuttons = "";
-
-        foreach ($this->custom as $key => $value) {
-            if ($value["accesskey"] != "") {
-                $accesskey = $value["accesskey"];
+                $tpl->set('d', 'SUBHEADER', $tablerow->render());
             } else {
-                $accesskey = "";
+                $tpl->set('d', 'SUBHEADER', '');
+                $tpl->set('d', 'CATNAME', $this->captions[$key]);
+                $tpl->set('d', 'CATFIELD', $value);
+                $tpl->set('d', 'ROWNAME', $this->rownames[$key]);
+
+                $tpl->next();
             }
-
-            $onclick = "";
-            if ($value["action"] !== false) {
-
-                if ($value["confirmtitle"] != "") {
-                    $action = 'document.forms["' . $this->formname . '"].elements["action"].value = "' . $value['action'] . '";';
-                    $action .= 'document.forms["' . $this->formname . '"].submit()';
-
-                    $onclick = 'Con.showConfirmation("' . $value['confirmdescription'] . '", function() { ' . $action . ' });return false;';
-                } else {
-                    $onclick = 'document.forms["' . $this->formname . '"].elements["action"].value = "' . $value['action'] . '";';
-                }
-            }
-
-            if ($value["event"] != "") {
-                $onclick .= $value["event"];
-            }
-
-            $button = new cHTMLFormElement("submit", "", "", "", "", "image_button");
-            $button->setAttribute("type", "image");
-            $button->setAttribute("src", $value["image"]);
-            $button->setAlt($value['description']);
-            $button->setAttribute("accesskey", $accesskey);
-            $button->setEvent("onclick", $onclick);
-            $custombuttons .= $button->render();
         }
 
-        $tpl->set('s', 'EXTRABUTTONS', $custombuttons);
+        $tpl->set('s', 'CANCELLINK', $this->renderCancelLink());
+
+        $tpl->set('s', 'EXTRABUTTONS', $this->renderCustomButtons());
 
         $tpl->set('s', 'ROWNAME', $this->id);
 
@@ -440,4 +358,128 @@ class cGuiTableForm {
             echo $rendered;
         }
     }
+
+    /**
+     * @return string
+     */
+    protected function renderJsExtraAttribute() {
+        $jsAttribute = '';
+
+        if ($this->submitjs != '') {
+            if (cString::getStringLength($this->_acceptCharset) > 0) {
+                $jsAttribute = 'onsubmit="' . $this->submitjs
+                    . '" accept-charset="' . $this->_acceptCharset . '"';
+            } else {
+                $jsAttribute = 'onsubmit="' . $this->submitjs . '"';
+            }
+        } else {
+            if (cString::getStringLength($this->_acceptCharset) > 0) {
+                $jsAttribute = 'accept-charset="' . $this->_acceptCharset . '"';
+            }
+        }
+
+        return $jsAttribute;
+    }
+
+    /**
+     * @return string
+     */
+    protected function renderHiddenValues() {
+        $hidden = '';
+
+        if (is_array($this->formvars)) {
+            foreach ($this->formvars as $key => $value) {
+                $val = new cHTMLHiddenField($key, $value);
+                $hidden .= $val->render() . "\n";
+            }
+        }
+
+        if (!array_key_exists('action', $this->formvars)) {
+            $val = new cHTMLHiddenField('', '');
+            $hidden .= $val->render() . "\n";
+        }
+
+        return $hidden;
+    }
+
+    /**
+     * @return string
+     */
+    protected function renderHeader() {
+        $header = '';
+
+        if ($this->header != '') {
+            $tablerow = new cHTMLTableRow();
+            $tablehead = new cHTMLTableHead();
+            $tablehead->setAttribute('colspan', '2');
+            $tablehead->setAttribute('valign', 'top');
+            $tablehead->setContent($this->header);
+            $tablerow->setContent($tablehead);
+            $header = $tablerow->render();
+        }
+
+        return $header;
+    }
+
+    /**
+     * @return string
+     */
+    protected function renderCancelLink() {
+        $cancelLink = '';
+
+        if ($this->cancelLink != '') {
+            $image = new cHTMLImage(cRegistry::getBackendUrl() . 'images/but_cancel.gif');
+            $link = new cHTMLLink($this->cancelLink);
+            $link->setContent($image);
+            $cancelLink = $link->render();
+        }
+
+        return $cancelLink;
+    }
+
+    /**
+     * @return string
+     */
+    protected function renderCustomButtons() {
+        $custombuttons = '';
+
+        foreach ($this->custom as $key => $value) {
+            if ($value['accesskey'] != '') {
+                $accesskey = $value['accesskey'];
+            } else {
+                $accesskey = '';
+            }
+
+            $onclick = '';
+            if ($value['disabled'] === false) {
+                if ($value['action'] !== false) {
+                    if ($value['confirmtitle'] != '') {
+                        $action = 'document.forms["' . $this->formname . '"].elements["action"].value = "' . $value['action'] . '";'
+                            . 'document.forms["' . $this->formname . '"].submit()';
+                        $onclick = 'Con.showConfirmation("' . $value['confirmdescription'] . '", function() { ' . $action . ' });return false;';
+                    } else {
+                        $onclick = 'document.forms["' . $this->formname . '"].elements["action"].value = "' . $value['action'] . '";';
+                    }
+                }
+
+                if ($value['event'] != '') {
+                    $onclick .= $value['event'];
+                }
+            }
+
+            $button = new cHTMLFormElement('submit', '', '', '', '', 'image_button');
+            $button->setAttribute('type', 'image');
+            $button->setAttribute('src', $value['image']);
+            $button->setAlt($value['description']);
+            $button->setAttribute('accesskey', $accesskey);
+            $button->setEvent('onclick', $onclick);
+            if ($value['disabled']) {
+                $button->updateAttribute('disabled', 'disabled');
+            }
+            $custombuttons .= $button->render();
+        }
+
+        return $custombuttons;
+    }
+
 }

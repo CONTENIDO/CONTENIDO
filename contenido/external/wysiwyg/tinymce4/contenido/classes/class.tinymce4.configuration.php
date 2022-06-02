@@ -62,7 +62,7 @@ class cTinymce4Configuration {
      */
     private function _addLabelWithTextarea($description, $name, $value = '', $width = 75) {
         $label = new cHTMLLabel($description, $name);
-        $label->setClass("sys_config_txt_lbl");
+        $label->setClass('sys_config_txt_lbl');
         $label->setStyle('width:' . $width . 'px; vertical-align: top;');
 
         $textarea = new cHTMLTextarea($name);
@@ -190,6 +190,10 @@ class cTinymce4Configuration {
             $input->setAttribute('type', 'hidden');
             $input->setAttribute('name', 'externalplugins[' . $i . '][name]');
             $input->setAttribute('value', $externalPlugins[$i]['name']);
+            if (false === $this->_perm) {
+                $input->updateAttribute('disabled', 'disabled');
+            }
+
             $td->appendContent($input);
 
             // add td to tr
@@ -204,6 +208,9 @@ class cTinymce4Configuration {
             $input->setAttribute('type', 'hidden');
             $input->setAttribute('name', 'externalplugins[' . $i . '][url]');
             $input->setAttribute('value', $externalPlugins[$i]['url']);
+            if (false === $this->_perm) {
+                $input->updateAttribute('disabled', 'disabled');
+            }
             $td->appendContent($input);
 
             // add td to tr
@@ -214,8 +221,8 @@ class cTinymce4Configuration {
             if (true === $this->_perm) {
                 // Edit/delete links only for sysadmin
                 $oLinkDelete = new cHTMLLink();
-                $oLinkDelete->setCLink(cRegistry::getArea(), cRegistry::getFrame(), "system_wysiwyg_tinymce4_delete_item");
-                $oLinkDelete->setCustom("external_plugin_idx", urlencode($i));
+                $oLinkDelete->setCLink(cRegistry::getArea(), cRegistry::getFrame(), 'system_wysiwyg_tinymce4_delete_item');
+                $oLinkDelete->setCustom('external_plugin_idx', urlencode($i));
                 $img = new cHTMLImage(cRegistry::getBackendUrl() . cRegistry::getConfigValue('path', 'images') . 'delete.gif');
                 $img->setAttribute('alt', i18n("Delete"));
                 $img->setAttribute('title', i18n("Delete"));
@@ -235,12 +242,18 @@ class cTinymce4Configuration {
         // create new td for plugin name
         $td = new cHTMLTableData();
         $input = new cHTMLFormElement('externalplugins[' . $i . '][name]');
+        if (false === $this->_perm) {
+            $input->updateAttribute('disabled', 'disabled');
+        }
         $td->appendContent($input);
         $row->appendContent($td);
 
         // create new td for plugin url
         $td = new cHTMLTableData();
         $input = new cHTMLFormElement('externalplugins[' . $i . '][url]');
+        if (false === $this->_perm) {
+            $input->updateAttribute('disabled', 'disabled');
+        }
         $td->appendContent($input);
         $row->appendContent($td);
 
@@ -563,6 +576,9 @@ class cTinymce4Configuration {
         if ($this->successfully === true) $page->displayOk(i18n("Changes saved successfully!"));
 
         $page->displayInfo(sprintf(i18n('Currently active WYSIWYG editor: %s'), cWYSIWYGEditor::getCurrentWysiwygEditorName()));
+        if (false === $this->_perm) {
+            $page->displayWarning(i18n("You are not sysadmin. You can't change these settings."));
+        }
 
         $oTypeColl = new cApiTypeCollection();
         $oTypeColl->select();
@@ -660,6 +676,10 @@ class cTinymce4Configuration {
             //add textarea for custom tinymce 4 settings
             $textarea = new cHTMLTextarea($curType . '[custom]');
             $textarea->setAttribute('style', 'width: 99%;');
+            if (false === $this->_perm) {
+                $textarea->updateAttribute('disabled', 'disabled');
+            }
+
             $defaultParams = '';
             if ('CMS_HTMLHEAD' === $curType) {
                 $defaultParams = '{' . PHP_EOL . '"inline": true,' . PHP_EOL . '"menubar": false' . PHP_EOL . '}';
@@ -669,13 +689,16 @@ class cTinymce4Configuration {
 
             // check permission to save system wysiwyg editor settings
             if (false === $this->_perm) {
-                $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n("You are not sysadmin. You can't change these settings."), 's');
+                $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n("You are not sysadmin. You can't change these settings."), 's', false, true);
             }
             $result .= '<p>' . $form->render() . '</p>';
         }
 
         // external plugins (can not be configured per CMS-type)
         $form = new cGuiTableForm('system_wysiwyg_tinymce4_external_plugins');
+        if (false === $this->_perm) {
+            $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n("You are not sysadmin. You can't change these settings."), 's', false, true);
+        }
         $form->setAcceptCharset('UTF-8');
         $form->addHeader(i18n('TinyMCE 4 configuration for external plugins'));
 
@@ -697,6 +720,9 @@ class cTinymce4Configuration {
             $resetForm->setVar('action', 'edit_tinymce4');
             $oResetButton = new cHTMLButton('reset', i18n('Reset configuration back to default'));
             $oResetButton->setAttribute('value', i18n('Reset Configuration'));
+            if (false === $this->_perm) {
+                $oResetButton->updateAttribute('disabled', 'disabled');
+            }
 
             $resetForm = $resetForm->appendContent($oResetButton);
             $result .= $resetForm->render();
