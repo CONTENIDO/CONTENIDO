@@ -137,6 +137,13 @@ $frame = cRegistry::getFrame();
 
 $page = new cGuiPage("con_translate");
 
+// display critical error if no valid client is selected
+if ((int) $client < 1) {
+    $page->displayCriticalError(i18n("No Client selected"));
+    $page->render();
+    return;
+}
+
 if (empty($action)) {
     $action = 'con_translate_view';
 }
