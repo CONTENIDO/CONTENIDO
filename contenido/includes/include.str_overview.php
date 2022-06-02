@@ -31,8 +31,6 @@ if (is_array($ret)) {
     $notification->displayNotification(cGuiNotification::LEVEL_WARNING, $string);
 }
 
-strRemakeTreeTable();
-
 $tmp_area = 'str';
 
 $db = cRegistry::getDb();
@@ -46,6 +44,16 @@ $client = cRegistry::getClientId();
 $lang = cRegistry::getLanguageId();
 $frame = cRegistry::getFrame();
 $_cecRegistry = cApiCecRegistry::getInstance();
+
+// display critical error if no valid client is selected
+if ((int) $client < 1) {
+    $page = new cGuiPage("str_overview");
+    $page->displayCriticalError(i18n("No Client selected"));
+    $page->render();
+    return;
+}
+
+strRemakeTreeTable();
 
 // Duplicate category
 if ($action == 'str_duplicate' && ($perm->have_perm_area_action('str', 'str_duplicate') || $perm->have_perm_area_action_item('str', 'str_duplicate', $idcat))) {
