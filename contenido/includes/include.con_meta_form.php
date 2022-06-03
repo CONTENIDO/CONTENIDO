@@ -41,11 +41,7 @@ $idcatlang = cRegistry::getCategoryLanguageId();
 $tpl->reset();
 
 // Admin rights
-$aAuthPerms = explode(',', cRegistry::getAuth()->auth['perm']);
-$admin = false;
-if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
-	$admin = true;
-}
+$isAdmin = $perm::checkAdminPermission($auth->getPerms());
 
 // Check permissions
 if (!$perm->have_perm_area_action($area, 'con_meta_edit') && !$perm->have_perm_area_action_item($area, 'con_meta_edit', $idcat)) {
@@ -176,7 +172,7 @@ if ($art->getField('created')) {
         $tpl->set("s", "REASON", sprintf(i18n('Article is in use by %s (%s)'), $inUseUser, $inUseUserRealName));
     }
 
-    if ($art->getField('locked') == 1 && false === $admin) {
+    if ($art->getField('locked') == 1 && false === $isAdmin) {
         $disabled = 'disabled="disabled"';
         $tpl->set('s', 'DISABLED', ' ' . $disabled);
         $notifications[] = $notification->returnNotification('warning', i18n('This article is currently frozen and can not be edited!'));
@@ -353,7 +349,7 @@ foreach ($availableTags as $key => $value) {
 
     if ($versioning->getState() == 'simple' && $articleType == 'current'
             || $versioning->getState() == 'advanced' && $articleType == 'editable'
-            || $versioning->getState() == 'disabled' && ($art->getField('locked') != 1 || in_array('sysadmin', $aAuthPerms))) {
+            || $versioning->getState() == 'disabled' && ($art->getField('locked') != 1 || $perm::checkSysadminPermission($auth->getPerms()))) {
         $tpl->set('d', 'CURSOR', 'pointer');
         $tpl->set('d', 'DELETE_META',
             "Con.showConfirmation('" .
@@ -669,7 +665,7 @@ while ($db->nextRecord()) {
 }
 
 // accessible by the current user (sysadmin client admin) anymore.
-if (in_array('sysadmin', $aAuthPerms)) {
+if ($perm::checkSysadminPermission($auth->getPerms())) {
     // disable/grey out button if a non-editable version is selected
     if ($versioning->getState() == 'simple' && $articleType != 'current'
             || $versioning->getState() == 'advanced' && $articleType != 'editable') {

@@ -236,7 +236,7 @@ class cAuth {
     public function getUsername() {
         $authInfo = $this->getAuthInfo();
 
-        return $authInfo['uname'];
+        return isset($authInfo['uname']) ? $authInfo['uname'] : '';
     }
 
     /**
@@ -247,11 +247,11 @@ class cAuth {
     public function getPerms() {
         $authInfo = $this->getAuthInfo();
 
-        return $authInfo['perm'];
+        return isset($authInfo['perm']) ? $authInfo['perm'] : '';
     }
 
     /**
-     * Sets or refreshs the expiration of the authentication.
+     * Sets or refreshes the expiration of the authentication.
      *
      * @param int $expiration [optional]
      *         new expiration (optional, default: NULL = current time plus lifetime minutes)

@@ -21,8 +21,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * collections.
  *
  * NOTE:
- * Because of required downwards compatibilitiy all protected/private member
- * variables or methods don't have an leading underscore.
+ * Because of required downwards compatibility all protected/private member
+ * variables or methods don't have a leading underscore.
  *
  * @package Core
  * @subpackage GenericDB
@@ -108,7 +108,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
     protected $_loaded = false;
 
     /**
-     * Storage of the last occured error
+     * Storage of the last occurred error
      *
      * @var string
      */
@@ -255,6 +255,23 @@ abstract class cItemBaseAbstract extends cGenericDb {
     }
 
     /**
+     * Prepares the statement for execution and returns it back.
+     * The function can be called with a statement and replacement parameters,
+     * see {@see cDbDriverHandler::prepare()} for more details.
+     *
+     * @param mixed ... Multiple parameters where the first is the statement and the further ones the replacements.
+     *     See {@see cDbDriverHandler::prepare()} for more details.
+     * @return string
+     * @throws cDbException
+     */
+    public function prepare() {
+        $arguments = func_get_args();
+        $statement = count($arguments) ? array_shift($arguments) : '';
+
+        return $this->db->prepare($statement, $arguments);
+    }
+
+    /**
      * Set the primary key name for class
      * The name must always match the primary key name in database
      *
@@ -279,7 +296,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
 
     /**
      * Returns properties instance, instantiates it if not done before.
-     * NOTE: This funtion changes always the client variable of property
+     * NOTE: This function changes always the client variable of property
      * collection instance.
      *
      * @param int $idclient [optional]

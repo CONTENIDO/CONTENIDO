@@ -535,12 +535,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             }
 
             // CON-2137 check admin permission
-            $aAuthPerms = explode(',', $auth->auth['perm']);
-
-            $admin = false;
-            if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
-                $admin = true;
-            }
+            $isAdmin = $perm::checkAdminPermission($auth->getPerms());
 
             // Make Startarticle button
             $imgsrc = "isstart";
@@ -559,7 +554,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
             $imgsrc .= '.gif';
 
-            if ($idlang == $lang && ($perm->have_perm_area_action('con', 'con_makestart') || $perm->have_perm_area_action_item('con', 'con_makestart', $idcat)) && $idcat != 0 && ((int) $locked === 0 || $admin)) {
+            if ($idlang == $lang && ($perm->have_perm_area_action('con', 'con_makestart') || $perm->have_perm_area_action_item('con', 'con_makestart', $idcat)) && $idcat != 0 && ((int) $locked === 0 || $isAdmin)) {
                 if ($is_start == false) {
                     $tmp_link = '<a href="' . $sess->url("main.php?area=con&amp;idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=1&next=$next") . '" title="' . i18n("Flag as start article") . '"><img class="vAlignMiddle tableElement" src="images/' . $imgsrc . '" title="' . i18n("Flag as start article") . '" alt="' . i18n("Flag as start article") . '"></a>';
                 } else {
@@ -580,7 +575,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $tmp_start = $tmp_link;
 
             // Make copy button
-            if (($perm->have_perm_area_action('con', 'con_duplicate') || $perm->have_perm_area_action_item('con', 'con_duplicate', $idcat)) && $idcat != 0 && ((int) $locked === 0 || $admin )) {
+            if (($perm->have_perm_area_action('con', 'con_duplicate') || $perm->have_perm_area_action_item('con', 'con_duplicate', $idcat)) && $idcat != 0 && ((int) $locked === 0 || $isAdmin )) {
                 $imgsrc = "but_copy.gif";
                 // add count_duplicate param to identify if the duplicate action
                 // is called from click or back button.
@@ -607,13 +602,13 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
             // Make On-/Offline button
             if ($online) {
-                if (($perm->have_perm_area_action('con', 'con_makeonline') || $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat)) && ($idcat != 0) && ((int) $locked === 0 || $admin)) {
+                if (($perm->have_perm_area_action('con', 'con_makeonline') || $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat)) && ($idcat != 0) && ((int) $locked === 0 || $isAdmin)) {
                     $tmp_online = '<a href="' . $sess->url("main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart&next=$next") . '" title="' . i18n("Make offline") . '"><img class="vAlignMiddle tableElement" src="images/online.gif" title="' . i18n("Make offline") . '" alt="' . i18n("Make offline") . '"></a>';
                 } else {
                     $tmp_online = '<img class="borderless vAlignMiddle tableElement" src="images/online.gif" title="' . i18n("Article is online") . '" alt="' . i18n("Article is online") . '">';
                 }
             } else {
-                if (($perm->have_perm_area_action('con', 'con_makeonline') || $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat)) && ($idcat != 0) && ((int) $locked === 0 || $admin)) {
+                if (($perm->have_perm_area_action('con', 'con_makeonline') || $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat)) && ($idcat != 0) && ((int) $locked === 0 || $isAdmin)) {
                     $tmp_online = '<a href="' . $sess->url("main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart&next=$next") . '" title="' . i18n("Make online") . '"><img class="vAlignMiddle tableElement" src="images/offline.gif" title="' . i18n("Make online") . '" alt="' . i18n("Make online") . '"></a>';
                 } else {
                     $tmp_online = '<img class="borderless vAlignMiddle tableElement" src="images/offline.gif" title="' . i18n("Article is offline") . '" alt="' . i18n("Article is offline") . '">';
@@ -627,7 +622,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             }
 
             // Delete button
-            if (($perm->have_perm_area_action('con', 'con_deleteart') || $perm->have_perm_area_action_item('con', 'con_deleteart', $idcat)) && $inUse == false && ((int) $locked === 0  || $admin)) {
+            if (($perm->have_perm_area_action('con', 'con_deleteart') || $perm->have_perm_area_action_item('con', 'con_deleteart', $idcat)) && $inUse == false && ((int) $locked === 0  || $isAdmin)) {
                 $tmp_title = $title;
                 if (cString::getStringLength($tmp_title) > 30) {
                     $tmp_title = cString::getPartOfString($tmp_title, 0, 27) . "...";

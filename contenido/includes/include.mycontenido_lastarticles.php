@@ -16,6 +16,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 cInclude("includes", "functions.con.php");
 
+global $tpl, $db;
+
+$cfg = cRegistry::getConfig();
+$perm = cRegistry::getPerm();
+$auth = cRegistry::getAuth();
+$lang = cRegistry::getLanguageId();
+$client = cRegistry::getClientId();
+$sess = cRegistry::getSession();
+$frame = cRegistry::getFrame();
+
 $sql = "SELECT
             logtimestamp
         FROM
@@ -31,7 +41,7 @@ $db->nextRecord();
 
 $lastlogin = $db->f("logtimestamp");
 
-$idaction = $perm->getIDForAction("con_editart");
+$idaction = $perm->getIdForAction("con_editart");
 
 $sql = "SELECT
             a.idart AS idart,
