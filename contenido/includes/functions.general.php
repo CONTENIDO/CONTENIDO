@@ -38,7 +38,7 @@ function consoleLog($value, $method = 'log') {
  * Same for array $a_description
  *
  * @param int $idartlang
- *         Language specific ID of the arcticle
+ *         Language specific ID of the article
  *
  * @throws cDbException
  * @throws cException
@@ -167,7 +167,7 @@ function getCanonicalDay($weekday) {
 }
 
 /**
- * Returns a formatted date and/or timestring according to the current settings
+ * Returns a formatted date and/or time-string according to the current settings
  *
  * @param mixed $timestamp
  *         a timestamp. If no value is given the current time will be used.
@@ -188,8 +188,6 @@ function displayDatetime($timestamp = "", $date = false, $time = false) {
     } else {
         $timestamp = strtotime($timestamp);
     }
-
-    $ret = "";
 
     if ($date && !$time) {
         $ret = date(getEffectiveSetting("dateformat", "date", "Y-m-d"), $timestamp);
@@ -408,7 +406,7 @@ function set_magic_quotes_gpc(&$code) {
  * Returns a list with all clients and languages.
  *
  * @return array
- *         Indexed array where the value is an assoziative array as follows:
+ *         Indexed array where the value is an associative array as follows:
  *         <pre>
  *         - $arr[0]['idlang']
  *         - $arr[0]['langname']
@@ -546,14 +544,14 @@ function htmldecode($string) {
 /**
  * Loads the client information from the database and stores it in
  * config.client.php.
- * Reinitializes the $cfgClient array and fills it wih updated information if
+ * Re-initializes the $cfgClient array and fills it wih updated information if
  * provided.
  *
- * @param int    $idclient
+ * @param int    $idClient
  *         client id which will be updated
- * @param string $htmlpath
+ * @param string $htmlPath
  *         new HTML path. Starting with "http://"
- * @param string $frontendpath
+ * @param string $frontendPath
  *         path the to the frontend
  *
  * @return array
@@ -562,28 +560,27 @@ function htmldecode($string) {
  * @throws cDbException
  * @throws cInvalidArgumentException
  */
-function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
-    global $errsite_idcat, $errsite_idart;
+function updateClientCache($idClient = 0, $htmlPath = '', $frontendPath = '') {
+    global $cfgClient, $errsite_idcat, $errsite_idart;
 
     $cfg = cRegistry::getConfig();
-    $cfgClient = cRegistry::getClientConfig();
 
     if (!is_array($cfgClient)) {
         $cfgClient = [];
     }
 
-    if ($idclient != 0 && $htmlpath != '' && $frontendpath != '') {
-        $cfgClient[$idclient]['path']['frontend'] = cSecurity::escapeString($frontendpath);
-        $cfgClient[$idclient]['path']['htmlpath'] = cSecurity::escapeString($htmlpath);
+    if ($idClient != 0 && $htmlPath != '' && $frontendPath != '') {
+        $cfgClient[$idClient]['path']['frontend'] = cSecurity::escapeString($frontendPath);
+        $cfgClient[$idClient]['path']['htmlpath'] = cSecurity::escapeString($htmlPath);
     }
 
     // remember paths as these will be lost otherwise
-    $htmlpaths = [];
-    $frontendpaths = [];
+    $htmlPaths = [];
+    $frontendPaths = [];
     foreach ($cfgClient as $id => $aclient) {
         if (is_array($aclient)) {
-            $htmlpaths[$id] = $aclient["path"]["htmlpath"];
-            $frontendpaths[$id] = $aclient["path"]["frontend"];
+            $htmlPaths[$id] = $aclient['path']['htmlpath'];
+            $frontendPaths[$id] = $aclient['path']['frontend'];
         }
     }
     unset($cfgClient);
@@ -591,30 +588,26 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
 
     // don't do that as the set of clients may have changed!
     // paths will be set in subsequent foreach instead.
-    // foreach ($htmlpaths as $id => $path) {
-    //     $cfgClient[$id]["path"]["htmlpath"] = $htmlpaths[$id];
-    //     $cfgClient[$id]["path"]["frontend"] = $frontendpaths[$id];
+    // foreach ($htmlPaths as $id => $path) {
+    //     $cfgClient[$id]['path']['htmlpath'] = $htmlPaths[$id];
+    //     $cfgClient[$id]['path']['frontend'] = $frontendPaths[$id];
     // }
 
     // get clients from database
     $db = cRegistry::getDb();
-    $db->query('
-        SELECT idclient
-            , name
-            , errsite_cat
-            , errsite_art
-        FROM ' . $cfg['tab']['clients']);
+    $sql = 'SELECT `idclient`, `name`, `errsite_cat`, `errsite_art` FROM `%s`';
+    $db->query($sql, $cfg['tab']['clients']);
 
     while ($db->nextRecord()) {
         $iClient = $db->f('idclient');
         $cfgClient['set'] = 'set';
 
         // set original paths
-        if (isset($htmlpaths[$iClient])) {
-            $cfgClient[$iClient]["path"]["htmlpath"] = $htmlpaths[$iClient];
+        if (isset($htmlPaths[$iClient])) {
+            $cfgClient[$iClient]['path']['htmlpath'] = $htmlPaths[$iClient];
         }
-        if (isset($frontendpaths[$iClient])) {
-            $cfgClient[$iClient]["path"]["frontend"] = $frontendpaths[$iClient];
+        if (isset($frontendPaths[$iClient])) {
+            $cfgClient[$iClient]['path']['frontend'] = $frontendPaths[$iClient];
         }
 
         $cfgClient[$iClient]['name'] = conHtmlSpecialChars(str_replace([
@@ -625,8 +618,8 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
 
         $errsite_idcat[$iClient] = $db->f('errsite_cat');
         $errsite_idart[$iClient] = $db->f('errsite_art');
-        $cfgClient[$iClient]["errsite"]["idcat"] = $errsite_idcat[$iClient];
-        $cfgClient[$iClient]["errsite"]["idart"] = $errsite_idart[$iClient];
+        $cfgClient[$iClient]['errsite']['idcat'] = $errsite_idcat[$iClient];
+        $cfgClient[$iClient]['errsite']['idart'] = $errsite_idart[$iClient];
 
         $cfgClient[$iClient]['images'] = $cfgClient[$iClient]['path']['htmlpath'] . 'images/';
         $cfgClient[$iClient]['upload'] = 'upload/';
@@ -675,6 +668,9 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
 
     $aConfigFileContent = [];
     $aConfigFileContent[] = '<?php';
+    $aConfigFileContent[] = '';
+    $aConfigFileContent[] = '// NOTE: This configuration file was generated by CONTENIDO!';
+    $aConfigFileContent[] = '';
     $aConfigFileContent[] = 'global $cfgClient;';
     $aConfigFileContent[] = '';
 
@@ -683,17 +679,17 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
 
             $aConfigFileContent[] = '/* ' . $aClient['name'] . ' */';
             $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["name"] = "' . $aClient['name'] . '";';
-            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["errsite"]["idcat"] = "' . $aClient["errsite"]["idcat"] . '";';
-            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["errsite"]["idart"] = "' . $aClient["errsite"]["idart"] . '";';
-            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["images"] = "' . $aClient["path"]["htmlpath"] . 'images/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["errsite"]["idcat"] = "' . $aClient['errsite']['idcat'] . '";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["errsite"]["idart"] = "' . $aClient['errsite']['idart'] . '";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["images"] = "' . $aClient['path']['htmlpath'] . 'images/";';
             $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["upload"] = "upload/";';
 
-            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["path"]["frontend"] = "' . $aClient["path"]["frontend"] . '";';
-
-            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["htmlpath"]["frontend"] = "' . $aClient["path"]["htmlpath"] . '";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["path"]["frontend"] = "' . $aClient['path']['frontend'] . '";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["path"]["htmlpath"] = "' . $aClient['path']['htmlpath'] . '";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["htmlpath"]["frontend"] = "' . $aClient['path']['htmlpath'] . '";';
 
             $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["upl"]["path"] = $cfgClient[' . $iIdClient . ']["path"]["frontend"] . "upload/";';
-            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["upl"]["htmlpath"] = "' . $aClient["htmlpath"]["frontend"] . 'upload/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["upl"]["htmlpath"] = "' . $aClient['htmlpath']['frontend'] . 'upload/";';
             $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["upl"]["frontendpath"] = "upload/";';
 
             $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["css"]["path"] = $cfgClient[' . $iIdClient . ']["path"]["frontend"] . "css/";';
@@ -730,7 +726,6 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
 
             $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["version"]["path"] = $cfgClient[' . $iIdClient . ']["path"]["frontend"] . "data/version/";';
             $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["version"]["frontendpath"] = "data/version/";';
-            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["path"]["htmlpath"] = "' . $aClient['path']['htmlpath'] . '";';
             $aConfigFileContent[] = '';
         }
     }
@@ -805,7 +800,7 @@ function deleteSystemProperty($type, $name) {
  * $array[$type][$name] = $value;
  *
  * @modified Timo Trautmann 22.02.2008 Support for editing name and type editing
- * by primaray key idsystemprop
+ * by primary key idsystemprop
  * if bGetPropId is set:
  * $array[$type][$name][value] = $value;
  * $array[$type][$name][idsystemprop] = $idsystemprop;
@@ -865,7 +860,7 @@ function getSystemProperty($type, $name) {
  *         The type of the properties
  *
  * @return array
- *         Assoziative array like
+ *         Associative array like
  *         - $arr[name] = value
  *
  * @throws cDbException
@@ -1427,30 +1422,30 @@ function callPluginStore($entity) {
  *         Random name
  */
 function createRandomName($nameLength) {
-    $NameChars = 'abcdefghijklmnopqrstuvwxyz';
-    $Vouel = 'aeiou';
-    $Name = '';
+    $nameChars = 'abcdefghijklmnopqrstuvwxyz';
+    $vowels = 'aeiou';
+    $name = '';
 
     for ($index = 1; $index <= $nameLength; $index++) {
         if ($index % 3 == 0) {
-            $randomNumber = rand(1, cString::getStringLength($Vouel));
-            $Name .= cString::getPartOfString($Vouel, $randomNumber - 1, 1);
+            $randomNumber = rand(1, cString::getStringLength($vowels));
+            $name .= cString::getPartOfString($vowels, $randomNumber - 1, 1);
         } else {
-            $randomNumber = rand(1, cString::getStringLength($NameChars));
-            $Name .= cString::getPartOfString($NameChars, $randomNumber - 1, 1);
+            $randomNumber = rand(1, cString::getStringLength($nameChars));
+            $name .= cString::getPartOfString($nameChars, $randomNumber - 1, 1);
         }
     }
 
-    return $Name;
+    return $name;
 }
 
 /**
- * Returns the JavaScript help context code, if help confuguration is enabled
+ * Returns the JavaScript help context code, if help configuration is enabled
  *
  * @param string $area
  *         The area name
  * @return string
- *         The context context JS code
+ *         The context JS code
  */
 function getJsHelpContext($area) {
     $cfg = cRegistry::getConfig();
@@ -1742,31 +1737,31 @@ function endAndLogTiming($uuid) {
 
     $timeSpent = $_timings[$uuid]['end'] - $_timings[$uuid]['start'];
 
-    $myparams = [];
+    $myParams = [];
 
     // Build nice representation of the function
     foreach ($_timings[$uuid]['parameters'] as $parameter) {
         switch (gettype($parameter)) {
             case 'string':
-                $myparams[] = '"' . $parameter . '"';
+                $myParams[] = '"' . $parameter . '"';
                 break;
             case 'boolean':
                 if ($parameter == true) {
-                    $myparams[] = 'true';
+                    $myParams[] = 'true';
                 } else {
-                    $myparams[] = 'false';
+                    $myParams[] = 'false';
                 }
                 break;
             default:
                 if ($parameter == '') {
-                    $myparams[] = '"' . $parameter . '"';
+                    $myParams[] = '"' . $parameter . '"';
                 } else {
-                    $myparams[] = $parameter;
+                    $myParams[] = $parameter;
                 }
         }
     }
 
-    $parameterString = implode(', ', $myparams);
+    $parameterString = implode(', ', $myParams);
 
     cDebug::out('calling function ' . $_timings[$uuid]['function'] . '(' . $parameterString . ') took ' . $timeSpent . ' seconds');
 }
@@ -1774,7 +1769,7 @@ function endAndLogTiming($uuid) {
 /**
  * Function checks current language and client settings by HTTP-Params and DB
  * settings.
- * Based on this informations it will send an HTTP header for right encoding.
+ * Based on this information it will send an HTTP header for right encoding.
  *
  * @param cDb    $db
  *         NO MORE NEEDED
@@ -1882,7 +1877,7 @@ function isFunctionDisabled($functionName) {
  * Generates category article breadcrumb for backend
  *
  * @param string $syncoptions
- *                       syncstate of backend
+ *                       sync state of backend
  * @param bool   $showArticle
  *                       show also current article or categories only (optional)
  * @param bool   $return [optional]
