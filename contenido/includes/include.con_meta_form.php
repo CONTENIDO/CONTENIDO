@@ -41,7 +41,7 @@ $idcatlang = cRegistry::getCategoryLanguageId();
 $tpl->reset();
 
 // Admin rights
-$isAdmin = $perm::checkAdminPermission($auth->getPerms());
+$isAdmin = cPermission::checkAdminPermission($auth->getPerms());
 
 // Check permissions
 if (!$perm->have_perm_area_action($area, 'con_meta_edit') && !$perm->have_perm_area_action_item($area, 'con_meta_edit', $idcat)) {
@@ -349,7 +349,7 @@ foreach ($availableTags as $key => $value) {
 
     if ($versioning->getState() == 'simple' && $articleType == 'current'
             || $versioning->getState() == 'advanced' && $articleType == 'editable'
-            || $versioning->getState() == 'disabled' && ($art->getField('locked') != 1 || $perm::checkSysadminPermission($auth->getPerms()))) {
+            || $versioning->getState() == 'disabled' && ($art->getField('locked') != 1 || cPermission::checkSysadminPermission($auth->getPerms()))) {
         $tpl->set('d', 'CURSOR', 'pointer');
         $tpl->set('d', 'DELETE_META',
             "Con.showConfirmation('" .
@@ -665,7 +665,7 @@ while ($db->nextRecord()) {
 }
 
 // accessible by the current user (sysadmin client admin) anymore.
-if ($perm::checkSysadminPermission($auth->getPerms())) {
+if (cPermission::checkSysadminPermission($auth->getPerms())) {
     // disable/grey out button if a non-editable version is selected
     if ($versioning->getState() == 'simple' && $articleType != 'current'
             || $versioning->getState() == 'advanced' && $articleType != 'editable') {

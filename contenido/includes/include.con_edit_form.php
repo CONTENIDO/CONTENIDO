@@ -42,7 +42,7 @@ $page = new cGuiPage("con_edit_form", "", "con_editart");
 $tpl = null;
 
 // Admin rights
-$isAdmin = $perm::checkAdminPermission(cRegistry::getAuth()->getPerms());
+$isAdmin = cPermission::checkAdminPermission(cRegistry::getAuth()->getPerms());
 
 if (isset($idart)) {
     if (!isset($idartlang) || 0 == $idartlang) {

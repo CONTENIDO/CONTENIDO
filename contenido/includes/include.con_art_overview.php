@@ -535,7 +535,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             }
 
             // CON-2137 check admin permission
-            $isAdmin = $perm::checkAdminPermission($auth->getPerms());
+            $isAdmin = cPermission::checkAdminPermission($auth->getPerms());
 
             // Make Startarticle button
             $imgsrc = "isstart";

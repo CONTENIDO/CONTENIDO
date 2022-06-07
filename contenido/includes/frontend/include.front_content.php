@@ -401,7 +401,7 @@ if ($contenido) {
     $locked = $oArtLang->get('locked');
     if ($locked == 1) {
         // admin can edit article despite its locked status
-        $isAdmin = $perm::checkAdminPermission($auth->getPerms());
+        $isAdmin = cPermission::checkAdminPermission($auth->getPerms());
         if (false === $isAdmin) {
             $notification    = new cGuiNotification();
             $modErrorMessage = i18n('This article is currently frozen and can not be edited!');

@@ -294,7 +294,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     $perm = cRegistry::getPerm();
 
     // CON-2134 check admin permission
-    $isAdmin = $perm::checkAdminPermission(cRegistry::getAuth()->getPerms());
+    $isAdmin = cPermission::checkAdminPermission(cRegistry::getAuth()->getPerms());
 
     $oArtLang = new cApiArticleLanguage($idartlang);
     $locked = (int) $oArtLang->get('locked');

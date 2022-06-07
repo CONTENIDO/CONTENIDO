@@ -103,7 +103,7 @@ if ($idart) {
         $artlang = new cApiArticleLanguage($idartlang);
 
         // check admin rights
-        $isAdmin = $perm::checkAdminPermission($auth->getPerms());
+        $isAdmin = cPermission::checkAdminPermission($auth->getPerms());
 
         if ($artlang->isLoaded()) {
             if(!$idtpl && $idcat && $idart && (int) $artlang->get('locked') === 1) {
