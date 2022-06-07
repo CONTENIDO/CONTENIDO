@@ -94,6 +94,7 @@ $installedPluginFoldernames = array();
 // get all installed plugins
 $oItem = new PimPluginCollection();
 $oItem->select(NULL, NULL, 'executionorder');
+$pluginsInstalled = '';
 
 while (($plugin = $oItem->next()) !== false) {
 
@@ -159,6 +160,8 @@ while (($plugin = $oItem->next()) !== false) {
 
     $pluginsInstalled .= $pagePlugins->generate($tempTplPath . '/template.pim_plugins_installed.html', true, false);
 }
+
+$pluginsExtracted = '';
 
 // get extracted plugins
 if (is_dir($cfg['path']['plugins'])) {

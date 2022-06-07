@@ -14,7 +14,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $db2, $dataSync, $right_list, $rights_perms, $rights_clientslang, $groupid;
+global $db2, $dataSync;
 
 $area = cRegistry::getArea();
 $cfg = cRegistry::getConfig();
@@ -22,20 +22,19 @@ $db = cRegistry::getDb();
 $perm = cRegistry::getPerm();
 $sess = cRegistry::getSession();
 
-$dataSync = [];
+$groupid = (isset($_REQUEST['groupid'])) ? cSecurity::toString($_REQUEST['groupid']) : '';
+$actionarea = (isset($_REQUEST['actionarea'])) ? cSecurity::toString($_REQUEST['actionarea']) : 'area';
+$right_list = (isset($_POST['right_list']) && is_array($_POST['right_list'])) ? $_POST['right_list'] : null;
+$rights_perms = (isset($_POST['rights_perms'])) ? cSecurity::toString($_POST['rights_perms']) : '';
+$rights_clientslang = (isset($_POST['rights_clientslang']) && is_numeric($_POST['rights_clientslang']))
+    ? cSecurity::toInteger($_POST['rights_clientslang']) : 0;
+$filter_rights = (isset($_POST['filter_rights'])) ? cSecurity::toString($_POST['filter_rights']) : '';
 
-if (!isset($actionarea)) {
-    $actionarea = 'area';
-}
+$dataSync = [];
 
 if (!is_object($db2)) {
     $db2 = cRegistry::getDb();
 }
-
-// if (!is_object($oTpl)) {
-//     $oTpl = new cTemplate();
-// }
-// $oTpl->reset();
 
 // get list of rights
 if (!is_array($right_list)) {
@@ -96,7 +95,7 @@ foreach ($clientList as $key => $value) {
     }
 }
 
-if (!isset($rights_clientslang)) {
+if (empty($rights_clientslang)) {
     $rights_clientslang = $firstClientsLang;
 }
 
@@ -123,7 +122,7 @@ if ($area != 'groups_content') {
     $oHtmlSelectOption = new cHTMLOptionElement(i18n('Plugin/Other rights'), 'other', false);
     $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
     $oHtmlSelect->setEvent('change', 'document.rightsform.submit();');
-    $oHtmlSelect->setDefault($_POST['filter_rights']);
+    $oHtmlSelect->setDefault($filter_rights);
 
     // Set global array which defines rights to display
     $aArticleRights = [
@@ -151,8 +150,8 @@ if ($area != 'groups_content') {
 
     $aViewRights = [];
     $bExclusive = false;
-    if (isset($_POST['filter_rights'])) {
-        switch ($_POST['filter_rights']) {
+    if (!empty($filter_rights)) {
+        switch ($filter_rights) {
             case 'article':
                 $aViewRights = $aArticleRights;
                 break;

@@ -26,17 +26,17 @@ class cSystemPurge {
      *
      * @var array
      */
-    private $_dirsExcluded = array(
+    private $_dirsExcluded = [
         'code',
         'templates_c'
-    );
+    ];
 
     /**
      * These directories and the included files should not be cleared.
      *
      * @var array
      */
-    private $_dirsExcludedWithFiles = array(
+    private $_dirsExcludedWithFiles = [
         '.',
         '..',
         '.svn',
@@ -45,23 +45,23 @@ class cSystemPurge {
         '.git',
         '.gitignore',
         '.keep',
-    );
+    ];
 
     /**
      *
      * @var array
      */
-    private $_logFileTypes = array(
+    private $_logFileTypes = [
         'txt'
-    );
+    ];
 
     /**
      *
      * @var array
      */
-    private $_cronjobFileTypes = array(
+    private $_cronjobFileTypes = [
         'job'
-    );
+    ];
 
     /**
      * Constructor to create an instance of this class.
@@ -160,7 +160,9 @@ class cSystemPurge {
      * @throws cDbException
      */
     public function resetConInuse() {
-        global $perm, $currentuser;
+        global $currentuser;
+
+        $perm = cRegistry::getPerm();
         $db = cRegistry::getDb();
         $cfg = cRegistry::getConfig();
 
@@ -168,7 +170,7 @@ class cSystemPurge {
             $sql = 'DELETE FROM ' . $cfg['tab']['inuse'];
             $db->query($sql);
 
-            return ($db->getErrorMessage() == '') ? true : false;
+            return $db->getErrorMessage() == '';
         } else {
             return false;
         }
@@ -184,13 +186,15 @@ class cSystemPurge {
      * @throws cInvalidArgumentException
      */
     public function clearClientCache($clientId) {
-        global $perm, $currentuser;
+        global $currentuser;
+
+        $perm = cRegistry::getPerm();
         $cfgClient = cRegistry::getClientConfig();
 
         if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
             $cacheDir = $cfgClient[$clientId]['cache']['path'];
             if (cDirHandler::exists($cacheDir)) {
-                return ($this->clearDir($cacheDir, $cacheDir) ? true : false);
+                return $this->clearDir($cacheDir, $cacheDir);
             }
             return false;
         } else {
@@ -210,13 +214,15 @@ class cSystemPurge {
      * @throws cInvalidArgumentException
      */
     public function clearClientHistory($clientId, $keep, $fileNumber) {
-        global $perm, $currentuser;
+        global $currentuser;
+
+        $perm = cRegistry::getPerm();
         $cfgClient = cRegistry::getClientConfig();
 
         if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
             $versionDir = $cfgClient[$clientId]['version']['path'];
             if (cDirHandler::exists($versionDir)) {
-                $tmpFile = array();
+                $tmpFile = [];
                 $this->clearDir($versionDir, $versionDir, $keep, $tmpFile);
                 if (count($tmpFile) > 0) {
                     foreach ($tmpFile as $sKey => $aFiles) {
@@ -254,10 +260,11 @@ class cSystemPurge {
      * @throws cInvalidArgumentException
      */
     public function clearClientContentVersioning($idclient) {
-        global $perm, $currentuser;
+        global $currentuser;
+
+        $perm = cRegistry::getPerm();
 
         if ($perm->isClientAdmin($idclient, $currentuser) || $perm->isSysadmin($currentuser)) {
-
             $artLangVersionColl = new cApiArticleLanguageVersionCollection();
             $artLangVersionColl->deleteByWhereClause('idartlangversion != 0');
 
@@ -283,7 +290,9 @@ class cSystemPurge {
      * @throws cInvalidArgumentException
      */
     public function clearClientLog($idclient) {
-        global $perm, $currentuser;
+        global $currentuser;
+
+        $perm = cRegistry::getPerm();
         $cfgClient = cRegistry::getClientConfig();
 
         if ($perm->isClientAdmin($idclient, $currentuser) || $perm->isSysadmin($currentuser)) {
@@ -305,7 +314,9 @@ class cSystemPurge {
      * @throws cInvalidArgumentException
      */
     public function clearConLog() {
-        global $perm, $currentuser;
+        global $currentuser;
+
+        $perm = cRegistry::getPerm();
         $cfg = cRegistry::getConfig();
 
         $logDir = $cfg['path']['contenido_logs'];
@@ -327,7 +338,9 @@ class cSystemPurge {
      * @throws cInvalidArgumentException
      */
     public function clearConCronjob() {
-        global $perm, $currentuser;
+        global $currentuser;
+
+        $perm = cRegistry::getPerm();
         $cfg = cRegistry::getConfig();
 
         $cronjobDir = $cfg['path']['contenido_cronlog'];
@@ -349,13 +362,15 @@ class cSystemPurge {
      * @throws cInvalidArgumentException
      */
     public function clearConCache() {
-        global $perm, $currentuser;
+        global $currentuser;
+
+        $perm = cRegistry::getPerm();
         $cfg = cRegistry::getConfig();
 
         $cacheDir = $cfg['path']['contenido_cache'];
         if ($perm->isSysadmin($currentuser)) {
             if (cDirHandler::exists($cacheDir)) {
-                return ($this->clearDir($cacheDir, $cacheDir) ? true : false);
+                return $this->clearDir($cacheDir, $cacheDir);
             }
             return false;
         } else {
@@ -408,12 +423,13 @@ class cSystemPurge {
      *
      * @throws cInvalidArgumentException
      */
-    public function clearDir($dirPath, $tmpDirPath, $keep = false, &$tmpFileList = array()) {
+    public function clearDir($dirPath, $tmpDirPath, $keep = false, &$tmpFileList = []) {
         if (cDirHandler::exists($dirPath) && false !== ($handle = cDirHandler::read($dirPath))) {
-            $tmp = str_replace(array(
+            $bCanDelete = false;
+            $tmp = str_replace([
                 '/',
                 '..'
-            ), '', $dirPath);
+            ], '', $dirPath);
             foreach ($handle as $file) {
                 if (!in_array($file, $this->_dirsExcludedWithFiles)) {
                     $filePath = $dirPath . '/' . $file;
@@ -436,26 +452,26 @@ class cSystemPurge {
             }
             $dirName = end($dirs);
 
-            if (str_replace(array(
+            if (str_replace([
                 '/',
                 '..'
-            ), '', $dirPath) != str_replace(array(
+                ], '', $dirPath) != str_replace([
                 '/',
                 '..'
-            ), '', $tmpDirPath)
+                ], '', $tmpDirPath)
             && $keep === false) {
-                // check if directoy contains reserved files folders
+                // check if directory contains reserved files folders
                 $bCanDelete = true;
                 $dirContent = cDirHandler::read($dirPath);
                 foreach ($dirContent as $sContent) {
                     if (in_array($sContent, $this->_dirsExcludedWithFiles)
-                    || in_array($dirContent, $this->_dirsExcluded)) {
+                        || in_array($dirContent, $this->_dirsExcluded)) {
                         $bCanDelete = false;
                         break;
                     }
                 }
                 if (true === $bCanDelete
-                && in_array($dirName, $this->_dirsExcluded)) {
+                    && in_array($dirName, $this->_dirsExcluded)) {
                     $bCanDelete = false;
                 }
             }
@@ -486,7 +502,8 @@ class cSystemPurge {
 
         if (cDirHandler::exists($dirPath) && false !== ($handle = cDirHandler::read($dirPath))) {
             foreach ($handle as $file) {
-                $fileExt = trim(end(explode('.', $file)));
+                $fileParts = explode('.', $file);
+                $fileExt = trim(end($fileParts));
 
                 if ($file != '.' && $file != '..' && in_array($fileExt, $types)) {
                     $filePath = $dirPath . '/' . $file;
@@ -502,7 +519,7 @@ class cSystemPurge {
             }
 
             // true if all files are cleaned
-            return ($count == $countCleared) ? true : false;
+            return $count == $countCleared;
         }
 
         return false;

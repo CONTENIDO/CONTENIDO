@@ -37,6 +37,7 @@ class ItemTest extends cTestingTestCase
 
     /**
      * Tables used by this test case
+     *
      * @var array
      */
     protected $_tables = ['con_test'];
@@ -359,6 +360,58 @@ class ItemTest extends cTestingTestCase
     {
         $this->markTestIncomplete('missing implementation');
     }
+
+    public function testBuildLoadByManyQuery()
+    {
+        // Test with multiple parameter
+        $parameter = ['idclient' => 1, 'name' => 'CONTENIDO Demo'];
+        $cApiClient = new cApiClient();
+        $expected = "SELECT * FROM `" . $cApiClient->getTable() . "` WHERE `idclient` = 1 AND `name` = 'CONTENIDO Demo'";
+        $cApiClientReflection = new \ReflectionClass('cApiClient');
+        $sql = $this->_callMethod(
+            $cApiClientReflection, $cApiClient, '_buildLoadByManyQuery',
+            [$parameter]
+        );
+        $this->assertSame($expected, $sql);
+
+        // Test with multiple parameter including null value
+        $parameter = ['username' => 'test123', 'email' => null];
+        $cApiUser = new cApiUser();
+        $expected = "SELECT * FROM `" . $cApiUser->getTable() . "` WHERE `username` = 'test123' AND `email` IS NULL";
+        $cApiUserReflection = new \ReflectionClass('cApiUser');
+        $sql = $this->_callMethod(
+            $cApiUserReflection, $cApiUser, '_buildLoadByManyQuery',
+            [$parameter]
+        );
+        $this->assertSame($expected, $sql);
+    }
+
+    public function testBuildStoreQuery()
+    {
+        // Test with multiple parameter
+        $parameter = ['idclient' => 1, 'name' => 'CONTENIDO Demo'];
+        $cApiClient = new cApiClient();
+        $cApiClient->loadByRecordSet($parameter);
+        $expected = "UPDATE `" . $cApiClient->getTable() . "` SET `idclient` = 1, `name` = 'CONTENIDO Demo' WHERE `idclient` = 1";
+        $cApiClientReflection = new \ReflectionClass('cApiClient');
+        $sql = $this->_callMethod(
+            $cApiClientReflection, $cApiClient, '_buildStoreQuery', [$parameter]
+        );
+        $this->assertSame($expected, $sql);
+
+        // Test with multiple parameter including null value
+        $parameter = ['user_id' => 1, 'username' => 'test123', 'email' => null];
+        $cApiUser = new cApiUser();
+        $cApiUser->loadByRecordSet($parameter);
+        $expected = "UPDATE `" . $cApiUser->getTable() . "` SET `user_id` = 1, `username` = 'test123', `email` = NULL WHERE `user_id` = 1";
+        $cApiUserReflection = new \ReflectionClass('cApiUser');
+        $sql = $this->_callMethod(
+            $cApiUserReflection, $cApiUser, '_buildStoreQuery',
+            [$parameter]
+        );
+        $this->assertSame($expected, $sql);
+    }
+
 }
 
 /**

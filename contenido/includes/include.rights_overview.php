@@ -375,7 +375,7 @@ foreach ($aProperties as $entry) {
             <td>' . $type . '</td>
             <td>' . $name . '</td>
             <td>' . $value . '</td>
-            <td><a href="' . $href . '"><img src="images/delete.gif" border="0" alt="' . i18n('Delete') . '" title="' . i18n('Delete') . '"></a></td>
+            <td><a href="' . $href . '"><img src="images/delete.gif" alt="' . i18n('Delete') . '" title="' . i18n('Delete') . '"></a></td>
         </tr>';
 }
 $table = '

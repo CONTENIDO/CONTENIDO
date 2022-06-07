@@ -50,7 +50,7 @@ class cApiArticleLanguageCollection extends ItemCollection {
      * @param array $parameters
      *
      * @return cApiArticleLanguage
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -115,9 +115,9 @@ class cApiArticleLanguageCollection extends ItemCollection {
      *
      * @param int $idart
      * @param int $idlang
-     * 
+     *
      * @return int
-     * 
+     *
      * @throws cDbException
      */
     public function getIdByArticleIdAndLanguageId($idart, $idlang) {
@@ -352,7 +352,7 @@ class cApiArticleLanguage extends Item {
      *         Flag to fetch content
      * @return bool
      *         true on success, otherwise false
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -383,10 +383,10 @@ class cApiArticleLanguage extends Item {
      *         Article id
      * @param int $idlang
      *         Language id
-     * 
+     *
      * @return int
      *         Language dependant article id
-     * 
+     *
      * @throws cDbException
      */
     protected function _getIdArtLang($idart, $idlang) {
@@ -423,7 +423,7 @@ class cApiArticleLanguage extends Item {
      *
      * @deprecated [2015-05-15]
      *         use _loadArticleContent, automaticly loaded with getContent()
-     *             
+     *
      * @throws cDbException
      */
     protected function _getArticleContent() {
@@ -494,11 +494,11 @@ class cApiArticleLanguage extends Item {
      * @param bool $bSafe [optional]
      *         Flag to run defined outFilter on passed value
      *         NOTE: It's not used ATM!
-     * @return string
+     * @return string|null
      *         Value of property
      */
     public function getField($name, $bSafe = true) {
-        return $this->values[$name];
+        return isset($this->values[$name]) ? $this->values[$name] : null;
     }
 
     /**
@@ -573,7 +573,7 @@ class cApiArticleLanguage extends Item {
      *
      * @return string|array
      *         data
-     * 
+     *
      * @throws cDbException
      */
     public function getContent($type = '', $id = NULL) {
@@ -650,7 +650,7 @@ class cApiArticleLanguage extends Item {
 
     /**
      * Returns all available content types
-     * 
+     *
      * @return array
      *
      * @throws cException
@@ -672,7 +672,7 @@ class cApiArticleLanguage extends Item {
      *
      * @return string
      *         link
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public function getLink($changeLangId = 0) {

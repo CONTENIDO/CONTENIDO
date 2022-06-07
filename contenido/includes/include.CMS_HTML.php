@@ -104,9 +104,9 @@ include($cfg['path'][$wysiwygeditor . '_editor']);
             </div>
 
             <div class="cms_edit_row">
-                <a data-tiny-role="cancel" href="<?php echo $sess->url($path2) ?>"><img src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_cancel.gif" border="0" alt="<?php echo i18n("Cancel")?>" title="<?php echo i18n("Cancel") ?>"></a>
-                <input type="image" name="save" value="editcontent" src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_refresh.gif" border="0" onclick="document.forms[0].doedit.value='2';document.forms[0].submit();" alt="<?php echo i18n("Save without leaving the editor") ?>" title="<?php echo i18n("Save without leaving the editor") ?>">
-                <input type="image" name="submit" value="editcontent" src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_ok.gif" border="0"  alt="<?php echo i18n("Save and close editor") ?>" title="<?php echo i18n("Save and close editor")?>">
+                <a data-tiny-role="cancel" href="<?php echo $sess->url($path2) ?>"><img src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_cancel.gif" alt="<?php echo i18n("Cancel")?>" title="<?php echo i18n("Cancel") ?>"></a>
+                <input type="image" name="save" value="editcontent" src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_refresh.gif" onclick="document.forms[0].doedit.value='2';document.forms[0].submit();" alt="<?php echo i18n("Save without leaving the editor") ?>" title="<?php echo i18n("Save without leaving the editor") ?>">
+                <input type="image" name="submit" value="editcontent" src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_ok.gif" alt="<?php echo i18n("Save and close editor") ?>" title="<?php echo i18n("Save and close editor")?>">
             </div>
 
         </form>

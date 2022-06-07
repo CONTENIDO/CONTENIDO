@@ -14,16 +14,28 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $tpl, $db, $classclient, $restriction;
+
+$auth = cRegistry::getAuth();
+$perm = cRegistry::getPerm();
+$sess = cRegistry::getSession();
+$cfg = cRegistry::getConfig();
+$area = cRegistry::getArea();
+$action = cRegistry::getAction();
+
+$reqGroupId = (isset($_REQUEST['groupid'])) ? cSecurity::toString($_REQUEST['groupid']) : '';
+$restriction = (isset($_REQUEST['restriction'])) ? cSecurity::toInteger($_REQUEST['restriction']) : 0;
+
 $tpl->reset();
 
 if (($action == "group_delete") && ($perm->have_perm_area_action($area, $action))) {
-    $sql = "DELETE FROM " . $cfg["tab"]["groups"] . " WHERE group_id = '" . $db->escape($groupid) . "'";
+    $sql = "DELETE FROM " . $cfg["tab"]["groups"] . " WHERE group_id = '" . $db->escape($reqGroupId) . "'";
     $db->query($sql);
 
-    $sql = "DELETE FROM " . $cfg["tab"]["groupmembers"] . " WHERE group_id = '" . $db->escape($groupid) . "'";
+    $sql = "DELETE FROM " . $cfg["tab"]["groupmembers"] . " WHERE group_id = '" . $db->escape($reqGroupId) . "'";
     $db->query($sql);
 
-    $sql = "DELETE FROM " . $cfg["tab"]["rights"] . " WHERE user_id = '" . $db->escape($groupid) . "'";
+    $sql = "DELETE FROM " . $cfg["tab"]["rights"] . " WHERE user_id = '" . $db->escape($reqGroupId) . "'";
     $db->query($sql);
 }
 
@@ -106,7 +118,7 @@ while ($db->nextRecord()) {
 
         $area = "groups";
 
-        if ($_GET['groupid'] == $groupid) {
+        if ($reqGroupId == $groupid) {
             $tpl->set('d', 'ATTRIBUTES', 'id="marked" data-id="' . $groupid . '"');
         } else {
             $tpl->set('d', 'ATTRIBUTES', 'data-id="' . $groupid . '"');
@@ -119,7 +131,7 @@ while ($db->nextRecord()) {
 
         if ($perm->have_perm_area_action('groups', "groups_delete")) {
             $delTitle = i18n("Delete group");
-            $deleteLink = '<a href="javascript:;" data-action="delete_group" title="' . $delTitle . '"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
+            $deleteLink = '<a href="javascript:;" data-action="delete_group" title="' . $delTitle . '"><img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
         } else {
             $deleteLink = '&nbsp;';
         }

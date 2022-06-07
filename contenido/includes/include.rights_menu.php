@@ -14,27 +14,43 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $classclient;
+
+$auth = cRegistry::getAuth();
+$sess = cRegistry::getSession();
+$perm = cRegistry::getPerm();
+$area = cRegistry::getArea();
+$frame = cRegistry::getFrame();
+$cfg = cRegistry::getConfig();
+
+$page = isset($_REQUEST['page']) ? abs(cSecurity::toInteger($_REQUEST['page'])) : 1;
+$elemPerPage = (isset($_REQUEST['elemperpage'])) ? cSecurity::toInteger($_REQUEST['elemperpage']) : 0;
+$sortby = (isset($_REQUEST['sortby'])) ? cSecurity::toString($_REQUEST['sortby']) : '';
+$sortorder = (isset($_REQUEST['sortorder'])) ? cSecurity::toString($_REQUEST['sortorder']) : 'asc';
+$filter = (isset($_REQUEST['filter'])) ? cSecurity::toString($_REQUEST['filter']) : '';
+$userid = (isset($_GET['userid'])) ? cSecurity::toString($_GET['userid']) : '';
+
 $oPage = new cGuiPage("rights_menu");
 
 $cApiUserCollection = new cApiUserCollection();
 $cApiUserCollection->query();
 $iSumUsers = $cApiUserCollection->count();
 
-if (isset($_REQUEST["sortby"]) && $_REQUEST["sortby"] != "") {
-    $cApiUserCollection->setOrder($_REQUEST["sortby"] . " " . $_REQUEST["sortorder"]);
+if (!empty($sortby)) {
+    $cApiUserCollection->setOrder($sortby . " " . $sortorder);
 } else {
     $cApiUserCollection->setOrder("username asc");
 }
 
-if (isset($_REQUEST["filter"]) && $_REQUEST["filter"] != "") {
-    $cApiUserCollection->setWhereGroup("default", "username", "%" . $_REQUEST["filter"] . "%", "LIKE");
-    $cApiUserCollection->setWhereGroup("default", "realname", "%" . $_REQUEST["filter"] . "%", "LIKE");
-    $cApiUserCollection->setWhereGroup("default", "email", "%" . $_REQUEST["filter"] . "%", "LIKE");
-    $cApiUserCollection->setWhereGroup("default", "telephone", "%" . $_REQUEST["filter"] . "%", "LIKE");
-    $cApiUserCollection->setWhereGroup("default", "address_street", "%" . $_REQUEST["filter"] . "%", "LIKE");
-    $cApiUserCollection->setWhereGroup("default", "address_zip", "%" . $_REQUEST["filter"] . "%", "LIKE");
-    $cApiUserCollection->setWhereGroup("default", "address_city", "%" . $_REQUEST["filter"] . "%", "LIKE");
-    $cApiUserCollection->setWhereGroup("default", "address_country", "%" . $_REQUEST["filter"] . "%", "LIKE");
+if (!empty($filter)) {
+    $cApiUserCollection->setWhereGroup("default", "username", "%" . $filter . "%", "LIKE");
+    $cApiUserCollection->setWhereGroup("default", "realname", "%" . $filter . "%", "LIKE");
+    $cApiUserCollection->setWhereGroup("default", "email", "%" . $filter . "%", "LIKE");
+    $cApiUserCollection->setWhereGroup("default", "telephone", "%" . $filter . "%", "LIKE");
+    $cApiUserCollection->setWhereGroup("default", "address_street", "%" . $filter . "%", "LIKE");
+    $cApiUserCollection->setWhereGroup("default", "address_zip", "%" . $filter . "%", "LIKE");
+    $cApiUserCollection->setWhereGroup("default", "address_city", "%" . $filter . "%", "LIKE");
+    $cApiUserCollection->setWhereGroup("default", "address_country", "%" . $filter . "%", "LIKE");
 
     $cApiUserCollection->setInnerGroupCondition("default", "OR");
 }
@@ -45,23 +61,21 @@ $aCurrentUserAccessibleClients = $classclient->getAccessibleClients();
 
 $iMenu = 0;
 $iItemCount = 0;
-$mPage = $_REQUEST["page"];
+$mPage = $page;
 
 if ($mPage == 0) {
     $mPage = 1;
 }
 
-$elemperpage = $_REQUEST["elemperpage"];
-
-if ($elemperpage == 0) {
-    $elemperpage = 25;
+if ($elemPerPage == 0) {
+    $elemPerPage = 25;
 }
 
 $mlist = new cGuiMenu();
 $sToday = date('Y-m-d H:i:s');
 
-if (($elemperpage * $mPage) >= $iSumUsers + $elemperpage && $mPage != 1) {
-    $_REQUEST["page"]--;
+if (($elemPerPage * $mPage) >= $iSumUsers + $elemPerPage && $mPage != 1) {
+    $page--;
     $mPage--;
 }
 
@@ -96,7 +110,7 @@ while ($cApiUser = $cApiUserCollection->next()) {
     if ($bDisplayUser == true) {
         $iItemCount++;
 
-        if ($iItemCount > ($elemperpage * ($mPage - 1)) && $iItemCount < (($elemperpage * $mPage) + 1)) {
+        if ($iItemCount > ($elemPerPage * ($mPage - 1)) && $iItemCount < (($elemPerPage * $mPage) + 1)) {
             $iMenu++;
 
             // Delete button
@@ -104,7 +118,7 @@ while ($cApiUser = $cApiUserCollection->next()) {
                 $delTitle = i18n("Delete user");
                 $deleteLink = '
                     <a href="javascript:;" data-action="delete_user" title="' . $delTitle . '" >
-                        <img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '">
+                        <img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $delTitle . '" alt="' . $delTitle . '">
                     </a>
                 ';
             } else {
@@ -121,7 +135,7 @@ while ($cApiUser = $cApiUserCollection->next()) {
             $mlist->setLink($iMenu, $link);
             $mlist->setActions($iMenu, "delete", $deleteLink);
 
-            if ($_GET['userid'] == $cApiUser->get("user_id")) {
+            if ($userid == $cApiUser->get("user_id")) {
                 $mlist->setMarked($iMenu);
             }
         }
@@ -140,17 +154,17 @@ $oPage->set("s", "FORM", $mlist->render(false));
 $oPagerLink = new cHTMLLink();
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame('left_bottom');
-$oPagerLink->setCustom("elemperpage", $elemperpage);
-$oPagerLink->setCustom("filter", $_REQUEST["filter"]);
-$oPagerLink->setCustom("sortby", $_REQUEST["sortby"]);
-$oPagerLink->setCustom("sortorder", $_REQUEST["sortorder"]);
+$oPagerLink->setCustom("elemperpage", $elemPerPage);
+$oPagerLink->setCustom("filter", $filter);
+$oPagerLink->setCustom("sortby", $sortby);
+$oPagerLink->setCustom("sortorder", $sortorder);
 $oPagerLink->setCustom("frame", $frame);
 $oPagerLink->setCustom("area", $area);
 $oPagerLink->enableAutomaticParameterAppend();
 $oPagerLink->setCustom("contenido", $sess->id);
 
 $pagerID = "pager";
-$oPager = new cGuiObjectPager("44b41691-0dd4-443c-a594-66a8164e25fd", $iItemCount, $elemperpage, $page, $oPagerLink, "page", $pagerID);
+$oPager = new cGuiObjectPager("44b41691-0dd4-443c-a594-66a8164e25fd", $iItemCount, $elemPerPage, $page, $oPagerLink, "page", $pagerID);
 
 // add slashes, to insert in javascript
 $sPagerContent = $oPager->render(1);

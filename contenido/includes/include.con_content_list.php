@@ -14,8 +14,18 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $data, $idartlang, $notification, $syncoptions, $name, $idtype, $encoding, $contenido, $locked;
+
 $backendPath = cRegistry::getBackendPath();
 $backendUrl = cRegistry::getBackendUrl();
+$sess = cRegistry::getSession();
+$perm = cRegistry::getPerm();
+$cfg = cRegistry::getConfig();
+$area = cRegistry::getArea();
+$action = cRegistry::getAction();
+$idart = cRegistry::getArticleId();
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
 
 cInclude('includes', 'functions.str.php');
 cInclude('includes', 'functions.pathresolver.php');
@@ -61,6 +71,8 @@ $wysiwygeditor = cWYSIWYGEditor::getCurrentWysiwygEditorName();
 if ('tinymce3' === $wysiwygeditor) {
     include($cfg['path'][$wysiwygeditor . '_editorclass']);
 }
+$sConfigInlineEdit = '';
+$sConfigFullscreen = '';
 switch ($wysiwygeditor) {
     case 'tinymce4':
         $page->set('s', '_PATH_CONTENIDO_TINYMCE_CSS_', $cfg['path']['all_wysiwyg_html'] . $wysiwygeditor . '/contenido/css/');
@@ -483,27 +495,33 @@ if (count($aNotifications) > 0) {
 $selectedArticle = NULL;
 $editableArticleId = NULL;
 global $selectedArticleId;
-if ($_REQUEST['idArtLangVersion'] != NULL) {
+if (isset($_REQUEST['idArtLangVersion']) && $_REQUEST['idArtLangVersion'] != NULL) {
     $selectedArticleId = $_REQUEST['idArtLangVersion'];
+    $idArtLangVersion = $_REQUEST['idArtLangVersion'];
+} else {
+    $idArtLangVersion = null;
 }
+
 $result = [];
 $list = [];
 $articleType = $versioning->getArticleType(
-    $_REQUEST['idArtLangVersion'],
+    $idArtLangVersion,
     (int)$_REQUEST['idartlang'],
     $action,
     $selectedArticleId
 );
 
+$isAdmin = false;
+
 switch ($versioningState) {
     case 'simple':
         // get selected article
-        $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], (int)$_REQUEST['idartlang'], $articleType, $selectedArticleId);
+        $selectedArticle = $versioning->getSelectedArticle($idArtLangVersion, (int)$_REQUEST['idartlang'], $articleType, $selectedArticleId);
 
         // Set as current/editable
         if ($action == 'copyto') {
-            if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
-                $artLangVersion = new cApiArticleLanguageVersion((int)$_REQUEST['idArtLangVersion']);
+            if (is_numeric($idArtLangVersion) && $articleType == 'editable') {
+                $artLangVersion = new cApiArticleLanguageVersion((int)$idArtLangVersion);
                 $artLangVersion->markAsCurrent('content');
                 $selectedArticleId = 'current';
 
@@ -574,16 +592,11 @@ switch ($versioningState) {
         $locked = $cApiArticleLanguage->getField('locked');
 
         //CON-2151 check if article is locked
-        $aAuthPerms = explode(',', cRegistry::getAuth()->auth['perm']);
-
-        $admin = false;
-        if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
-            $admin = true;
-        }
+        $isAdmin = cRegistry::getPerm()::checkAdminPermission(cRegistry::getAuth()->getPerms());
 
         // Create code/output
         // Set import labels
-        if ($articleType != 'version' && $locked == 0 && true === $admin) {
+        if ($articleType != 'version' && $locked == 0 && true === $isAdmin) {
             $page->set('s', 'DISABLED', '');
         } else {
             $page->set('s', 'DISABLED', 'DISABLED');
@@ -592,7 +605,7 @@ switch ($versioningState) {
         $page->set('s', 'COPY_LABEL', i18n('Copy Version'));
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to published version'));
         $markAsCurrentButton->setEvent('onclick', "copyto.idArtLangVersion.value=$('#selectVersionElement option:selected').val();copyto.submit()");
-        if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple' || ($locked == 1 && false === $admin)) {
+        if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple' || ($locked == 1 && false === $isAdmin)) {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
 
@@ -654,9 +667,9 @@ switch ($versioningState) {
 
         // Set as current/editable
         if ($action == 'copyto') {
-            if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'current') {
+            if (is_numeric($idArtLangVersion) && $articleType == 'current') {
                 $artLangVersion = NULL;
-                $artLangVersion = new cApiArticleLanguageVersion((int)$_REQUEST['idArtLangVersion']);
+                $artLangVersion = new cApiArticleLanguageVersion((int)$idArtLangVersion);
                 if (isset($artLangVersion)) {
                     $artLangVersion->markAsCurrent('content');
                     $selectedArticleId = 'current';
@@ -667,10 +680,10 @@ switch ($versioningState) {
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
                 ]);
-            } else if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
-                $artLangVersion = new cApiArticleLanguageVersion((int)$_REQUEST['idArtLangVersion']);
+            } else if (is_numeric($idArtLangVersion) && $articleType == 'editable') {
+                $artLangVersion = new cApiArticleLanguageVersion((int)$idArtLangVersion);
                 $artLangVersion->markAsEditable('content');
-                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int)$_REQUEST['idartlang'], $action, $selectedArticleId);
+                $articleType = $versioning->getArticleType($idArtLangVersion, (int)$_REQUEST['idartlang'], $action, $selectedArticleId);
                 $selectedArticleId = 'editable';
 
                 // Execute cec hook
@@ -678,10 +691,10 @@ switch ($versioningState) {
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
                 ]);
-            } else if ($_REQUEST['idArtLangVersion'] == 'current') {
+            } else if ($idArtLangVersion == 'current') {
                 $artLang = new cApiArticleLanguage((int)$_REQUEST['idartlang']);
                 $artLang->markAsEditable('content');
-                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int)$_REQUEST['idartlang'], $action, $selectedArticleId);
+                $articleType = $versioning->getArticleType($idArtLangVersion, (int)$_REQUEST['idartlang'], $action, $selectedArticleId);
                 $selectedArticleId = 'editable';
 
                 // Execute cec hook
@@ -693,7 +706,7 @@ switch ($versioningState) {
         }
 
         // get selected article
-        $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], (int)$_REQUEST['idartlang'], $articleType);
+        $selectedArticle = $versioning->getSelectedArticle($idArtLangVersion, (int)$_REQUEST['idartlang'], $articleType);
         // Get Content or Content Version and sort
         $content = $selectedArticle->getContent();
 
@@ -841,7 +854,7 @@ switch ($versioningState) {
         $versioning_info_text = i18n('For reviewing and restoring older article versions activate the article versioning under Administration/System/System configuration.');
 
         // get selected article
-        $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], (int)$_REQUEST['idartlang'], $articleType);
+        $selectedArticle = $versioning->getSelectedArticle($idArtLangVersion, (int)$_REQUEST['idartlang'], $articleType);
 
         // Get Content/set $result
         $content = $selectedArticle->getContent();
@@ -929,7 +942,7 @@ $page->set('s', 'EXPORT_LABEL', i18n("Raw data export"));
 $page->set('s', 'IMPORT_LABEL', i18n("Raw data import"));
 $page->set('s', 'OVERWRITE_DATA_LABEL', i18n("Overwrite data"));
 
-$page->set('s', 'HIDE', ($admin || (int)$locked === 0) ? '' : 'style="display:none;"');
+$page->set('s', 'HIDE', ($isAdmin || (int)$locked === 0) ? '' : 'style="display:none;"');
 
 if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false') {
     $page->set('s', 'USE_TINY', '');
@@ -1042,14 +1055,10 @@ function _processCmsTags($list, $contentList, $saveKeywords, $layoutCode, $artic
     $locked = $cApiArticleLanguage->getField('locked');
 
     // admin can edit article despite its locked status
-    $aAuthPerms = explode(',', cRegistry::getAuth()->auth['perm']);
-    $admin = false;
-    if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
-        $admin = true;
-    }
+    $isAdmin = cRegistry::getPerm()::checkAdminPermission(cRegistry::getAuth()->getPerms());
 
     // If article is locked show notification
-    if ($locked == 1 && false === $admin) {
+    if ($locked == 1 && false === $isAdmin) {
         $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
     }
 
@@ -1109,7 +1118,7 @@ function _processCmsTags($list, $contentList, $saveKeywords, $layoutCode, $artic
             if (cFileHandler::exists($cTypeClassFile)) {
                 $tmp = $a_content[$_typeItem->type][$val];
                 $cTypeObject = new $className($tmp, $val, $a_content);
-                if (cRegistry::isBackendEditMode() && ($locked == 0 || true === $admin) && $articleType == 'editable' || ($articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple'))) {
+                if (cRegistry::isBackendEditMode() && ($locked == 0 || true === $isAdmin) && $articleType == 'editable' || ($articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple'))) {
                     $tmp = $cTypeObject->generateEditCode();
                 } else {
                     $tmp = $cTypeObject->generateViewCode();
@@ -1144,12 +1153,12 @@ function _processCmsTags($list, $contentList, $saveKeywords, $layoutCode, $artic
             // can delete article content if all conditions are fulfilled:
             // article is not frozen or admin accesses page (admin can do everything, even when article is frozen)
             // article can be edited or (article is published version and versioning is turned off or set to simple mode)
-            if (($locked == 0 || true === $admin) && ($articleType == 'editable' || ($articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple')))) { // No freeze
+            if (($locked == 0 || true === $isAdmin) && ($articleType == 'editable' || ($articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple')))) { // No freeze
                 $replacements[$num] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); }); return false;">
-            <img border="0" src="' . $backendUrl . 'images/delete.gif">
+            <img src="' . $backendUrl . 'images/delete.gif">
             </a>';
                 $keycode[$type][$num] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); }); return false;">
-            <img border="0" src="' . $backendUrl . 'images/delete.gif">
+            <img src="' . $backendUrl . 'images/delete.gif">
             </a>';
             } else { // Freeze status
                 $replacements[$num] = $tmp;

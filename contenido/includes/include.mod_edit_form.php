@@ -14,8 +14,18 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $db;
+
 cInclude("includes", "functions.upl.php");
 cInclude("external", "codemirror/class.codemirror.php");
+
+$perm = cRegistry::getPerm();
+$area = cRegistry::getArea();
+$frame = cRegistry::getFrame();
+$cfg = cRegistry::getConfig();
+$client = cRegistry::getClientId();
+$cfgClient = cRegistry::getClientConfig();
+$belang = cRegistry::getBackendLanguage();
 
 $idmod = isset($_REQUEST['idmod']) ? cSecurity::toInteger($_REQUEST['idmod']) : 0;
 $mode = isset($_REQUEST['mode']) ? $_REQUEST['mode'] : '';
@@ -56,9 +66,7 @@ if (!$readOnly && $action == 'mod_delete') {
         // remove the navigation when module has been deleted
         $script = new cHTMLScript();
         $script->setContent('$(function() { $("#navlist", Con.getFrame("right_top").document).remove(); })');
-        $page->setContent(array(
-            $div
-        ));
+        $page->setContent(['']);
         // Reload, so that the modules overview on the left is refreshed
         $page->reloadLeftBottomFrame(['idmod' => null]);
         $page->render();
@@ -188,12 +196,12 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         $form->setVar("action", "mod_edit");
     }
 
-    $form->addHeader(i18n("Edit module"));
+    $form->addHeader(i18n("Edit module") . " &quot;". conHtmlSpecialChars($module->get('name')). "&quot;");
 
     $name = new cHTMLTextbox("name", conHtmlSpecialChars(stripslashes($module->get("name"))), 60);
-    $descr = new cHTMLTextarea("descr", str_replace(array(
+    $descr = new cHTMLTextarea("descr", str_replace([
         '\r\n'
-    ), "\r\n", conHtmlentities($module->get("description"))), 100, 5);
+    ], "\r\n", conHtmlentities($module->get("description"))), 100, 5);
 
     // Get input and output code; if specified, prepare row fields
     $sInputData = "";
@@ -251,19 +259,19 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         }
         $oOutputRows = new cHTMLTextarea("txtOutputRows", $sRows, $iChars, 20);
 
-        $oInputRows->updateAttributes(array(
+        $oInputRows->updateAttributes([
             "wrap" => "off"
-        ));
-        $oOutputRows->updateAttributes(array(
+        ]);
+        $oOutputRows->updateAttributes([
             "wrap" => "off"
-        ));
+        ]);
 
-        $oInputRows->updateAttributes(array(
+        $oInputRows->updateAttributes([
             "readonly" => "true"
-        ));
-        $oOutputRows->updateAttributes(array(
+        ]);
+        $oOutputRows->updateAttributes([
             "readonly" => "true"
-        ));
+        ]);
 
         $oInputRows->setStyle("font-family: monospace;");
         $oOutputRows->setStyle("font-family: monospace;");
@@ -274,12 +282,12 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     $output = new cHTMLTextarea("output", $sOutputData, 100, 20, 'output');
 
     // Style the fields
-    $input->updateAttributes(array(
+    $input->updateAttributes([
         "wrap" => "off"
-    ));
-    $output->updateAttributes(array(
+    ]);
+    $output->updateAttributes([
         "wrap" => "off"
-    ));
+    ]);
 
     $name->setDisabled($disabled);
     $descr->setDisabled($disabled);
@@ -319,13 +327,13 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
 
     if (count($typeArray) > 0) {
         asort($typeArray);
-        $typeSelect->autoFill(array_merge(array(
+        $typeSelect->autoFill(array_merge([
             "" => "-- " . i18n("Custom") . " --"
-        ), $typeArray));
+        ], $typeArray));
     } else {
-        $typeSelect->autoFill(array(
+        $typeSelect->autoFill([
             "" => "-- " . i18n("Custom") . " --"
-        ));
+        ]);
     }
 
     $typeSelect->setEvent("change", "if (document.forms['frm_mod_edit'].elements['type'].value == 0) { document.forms['frm_mod_edit'].elements['customtype'].disabled=0;} else {document.forms['frm_mod_edit'].elements['customtype'].disabled=1;}");

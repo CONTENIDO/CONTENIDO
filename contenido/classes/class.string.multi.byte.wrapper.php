@@ -209,7 +209,7 @@ class cStringMultiByteWrapper {
      * @param integer $offset [Optional]
      * @param string|null $encoding
      *         encoding parameter, standard: cRegistry::getEncoding()
-     * @return int
+     * @return int|false
      *         Returns the numeric position of the first occurrence of needle in the haystack string
      * @link http://php.net/manual/de/function.mb-strpos.php
      */

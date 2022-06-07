@@ -42,6 +42,6 @@ if (!is_file($contenido_path . 'includes/startup.php')) {
 include_once($contenido_path . 'includes/startup.php');
 
 // Include article view handler
-include(cRegistry::getBackendPath() . $cfg['path']['includes'] . '/frontend/include.front_content.php');
+include(cRegistry::getBackendPath() . $cfg['path']['includes'] . 'frontend/include.front_content.php');
 
 ?>

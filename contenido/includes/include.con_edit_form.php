@@ -20,21 +20,29 @@ cInclude("includes", "functions.str.php");
 cInclude("includes", "functions.pathresolver.php");
 
 // ugly globals that are used in this script
-global $tpl, $cfg, $db, $perm, $sess, $selectedArticleId;
-global $frame, $area, $action, $contenido, $notification;
-global $client, $lang, $belang;
-global $idcat, $idart, $idcatlang, $idartlang, $idcatart, $idtpl;
-global $tplinputchanged, $idcatnew, $newart, $syncoptions, $tmp_notification, $bNoArticle;
+global $tpl, $db, $selectedArticleId, $contenido, $notification, $lngAct, $idcatart, $idtpl;
+global $tplinputchanged, $idcatnew, $newart, $syncoptions, $tmp_notification, $bNoArticle, $artLangVersion, $classarea;
+
+$perm = cRegistry::getPerm();
+$sess = cRegistry::getSession();
+$area = cRegistry::getArea();
+$action = cRegistry::getAction();
+$client = cRegistry::getClientId();
+$cfg = cRegistry::getConfig();
+$frame = cRegistry::getFrame();
+$auth = cRegistry::getAuth();
+$lang = cRegistry::getLanguageId();
+$belang = cRegistry::getBackendLanguage();
+$idart = cRegistry::getArticleId();
+$idcat = cRegistry::getCategoryId();
+$idcatlang = cRegistry::getCategoryLanguageId();
+$idartlang = cRegistry::getArticleLanguageId();
 
 $page = new cGuiPage("con_edit_form", "", "con_editart");
 $tpl = null;
 
 // Admin rights
-$aAuthPerms = explode(',', cRegistry::getAuth()->auth['perm']);
-$admin = false;
-if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
-	$admin = true;
-}
+$isAdmin = cPermission::checkAdminPermission(cRegistry::getAuth()->getPerms());
 
 if (isset($idart)) {
     if (!isset($idartlang) || 0 == $idartlang) {
@@ -52,13 +60,17 @@ if (isset($idart)) {
 }
 
 
-if ($_REQUEST['idArtLangVersion'] != NULL) {
+if (isset($_REQUEST['idArtLangVersion']) && $_REQUEST['idArtLangVersion'] != NULL) {
     $selectedArticleId = $_REQUEST['idArtLangVersion'];
+    $idArtLangVersion = $_REQUEST['idArtLangVersion'];
+} else {
+    $idArtLangVersion = null;
 }
+
 $versioning = new cContentVersioning();
 $versioningState = $versioning->getState();
 $articleType = $versioning->getArticleType(
-    $_REQUEST['idArtLangVersion'],
+    $idArtLangVersion,
     $idartlang,
     $action,
     $selectedArticleId
@@ -69,46 +81,46 @@ switch ($versioningState) {
     case 'advanced' :
          // Set as current/editable
         if ($action == 'copyto') {
-            if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'current') {
+            if (is_numeric($idArtLangVersion) && $articleType == 'current') {
                 // editable->current
                 $artLangVersion = NULL;
-                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+                $artLangVersion = new cApiArticleLanguageVersion((int) $idArtLangVersion);
                 if (isset($artLangVersion)) {
                     $artLangVersion->markAsCurrent('complete');
                     $selectedArticleId = 'current';
                 }
 
                 // Execute cec hook
-                cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
-                ));
+                ]);
 
-            } else if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
+            } else if (is_numeric($idArtLangVersion) && $articleType == 'editable') {
                 // version->editable
-                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+                $artLangVersion = new cApiArticleLanguageVersion((int) $idArtLangVersion);
                 $artLangVersion->markAsEditable('complete');
-                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action, $selectedArticleId);
+                $articleType = $versioning->getArticleType($idArtLangVersion, (int) $_REQUEST['idartlang'], $action, $selectedArticleId);
                 $selectedArticleId = 'editable';
 
                 // Execute cec hook
-                cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
-                ));
+                ]);
 
-            } else if ($_REQUEST['idArtLangVersion'] == 'current') {
+            } else if ($idArtLangVersion == 'current') {
                 // current->editable
                 $artLang = new cApiArticleLanguage((int) $_REQUEST['idartlang']);
                 $artLang->markAsEditable('complete');
-                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action, $selectedArticleId);
+                $articleType = $versioning->getArticleType($idArtLangVersion, (int) $_REQUEST['idartlang'], $action, $selectedArticleId);
                 $selectedArticleId = 'editable';
 
                 // Execute cec hook
-                cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
-                ));
+                ]);
             }
         }
 
@@ -212,8 +224,8 @@ switch ($versioningState) {
     case 'simple' :
 
          if ($action == 'copyto') {
-            if (is_numeric($_REQUEST['idArtLangVersion'])) {
-                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+            if (is_numeric($idArtLangVersion)) {
+                $artLangVersion = new cApiArticleLanguageVersion((int) $idArtLangVersion);
                 $artLangVersion->markAsCurrent('complete');
                 $selectedArticleId = 'current';
             }
@@ -311,13 +323,13 @@ switch ($versioningState) {
 // ------------------
 if ($action == "con_newart" && $newart == true) {
     // New article, no action log available
-    $query = array();
+    $query = [];
 } else {
     // receive data
     $conCatColl = new cApiCategoryArticleCollection();
-    $catArt = $conCatColl->getFieldsByWhereClause(array(
+    $catArt = $conCatColl->getFieldsByWhereClause([
         'idcatart'
-    ), 'idart=' . $idart);
+    ], 'idart=' . $idart);
 
     $permClause = '';
     if ($perm->isClientAdmin($client, false) === false && $perm->isSysadmin(false) === false) {
@@ -325,18 +337,18 @@ if ($action == "con_newart" && $newart == true) {
     }
 
     $actionCollection = new cApiActionlogCollection();
-    $query = $actionCollection->getFieldsByWhereClause(array(
+    $query = $actionCollection->getFieldsByWhereClause([
         'idaction',
         'idlang',
         'idclient',
         'logtimestamp',
         'user_id'
-    ), 'idcatart=' . $catArt[0]['idcatart'] . $permClause);
+    ], 'idcatart=' . $catArt[0]['idcatart'] . $permClause . ' AND idaction > 0');
 
     $actionsCollection = new cApiActionCollection();
     $actionsCollection->query();
 
-    $actions = $areas = array();
+    $actions = $areas = [];
     while (($actionItem = $actionsCollection->next()) !== false) {
         $actions[$actionItem->get('idaction')] = $actionItem->get('name');
         $areas[$actionItem->get('idaction')] = $classarea->getAreaName($actionItem->get('idarea'));
@@ -475,6 +487,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     // apply settings from the synchronization menu
     // take single articles online or offline
 
+    $inUse = false;
+
     if (isset($_POST['onlineOne'])) {
         conMakeOnline(cRegistry::getArticleId(), cSecurity::toInteger($_POST['onlineOne']), 1);
     } else if (isset($_POST['offlineOne'])) {
@@ -506,7 +520,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     } else if (isset($_POST['onlineAll'])) {
         $onlineValue = 1;
     }
-    if (is_array($_POST['syncingLanguage']) && $onlineValue != -1) {
+    if (isset($_POST['syncingLanguage']) && is_array($_POST['syncingLanguage']) && $onlineValue != -1) {
         foreach ($_POST['syncingLanguage'] as $langId) {
             conMakeOnline(cRegistry::getArticleId(), cSecurity::toInteger($langId), $onlineValue);
         }
@@ -568,7 +582,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         if (is_numeric((int) $selectedArticleId)) {
             $sql = "SELECT *
                 FROM " . $cfg["tab"]["art_lang_version"] . "
-                WHERE idartlangversion = " . (int) $selectedArticleId;//cSecurity::toInteger($_REQUEST['idArtLangVersion']);
+                WHERE idartlangversion = " . (int) $selectedArticleId;//cSecurity::toInteger($idArtLangVersion);
         } else $sql = '';
     }
 
@@ -624,7 +638,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         // Remove all own marks
         $col->removeSessionMarks($sess->id);
 
-        if (false === $admin) {
+        if (false === $isAdmin) {
 
 	        if ((($obj = $col->checkMark("article", $tmp_idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) && $tmp_locked != 1) {
 	            $col->markInUse("article", $tmp_idartlang, $sess->id, $auth->auth["uid"]);
@@ -748,7 +762,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         || $versioning->getState() == 'advanced' && $articleType != 'editable') {
             $inputArtSortSelect->setDisabled(true);
     }
-    $tmp_inputArtSort .= $inputArtSortSelect->toHtml();
+    $tmp_inputArtSort = $inputArtSortSelect->toHtml();
 
     if ($iAvariableSpec == 0) {
         $tmp_inputArtSort = i18n("No article specifications found!");
@@ -1042,7 +1056,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $languages = new cApiLanguageCollection();
     $languages->select("idlang IN(" . join(', ', $available_client_ids) . ")");
 
-    $langArray = array();
+    $langArray = [];
     while (($someLang = $languages->nextAccessible()) != false) {
         $langArray[] = $someLang;
     }

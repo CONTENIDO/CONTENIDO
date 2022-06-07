@@ -112,18 +112,17 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * @throws cException
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-
         // set props
         $this->_type = 'CMS_IMGEDITOR';
         $this->_prefix = 'imgeditor';
-        $this->_formFields = array(
+        $this->_formFields = [
             'image_filename',
             'image_medianame',
             'image_description',
             'image_keywords',
             'image_internal_notice',
             'image_copyright'
-        );
+        ];
 
         // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
@@ -135,28 +134,36 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             $this->_storeSettings();
         }
 
-        // get image information from con_upl from the database
-        $upload = new cApiUpload($this->_rawSettings);
-        $this->_filename = $upload->get('filename');
-        $this->_dirname = $upload->get('dirname');
-        $this->_imagePath = $this->_generateImagePath();
-        $this->_fileType = $upload->get('filetype');
-        $this->_fileSize = $upload->get('size');
+        $this->_medianame = '';
+        $this->_description = '';
+        $this->_keywords = '';
+        $this->_internalNotice = '';
+        $this->_copyright = '';
+        if ($this->_rawSettings) {
+            // get image information from con_upl from the database
+            $upload = new cApiUpload($this->_rawSettings);
+            $this->_filename = $upload->get('filename');
+            $this->_dirname = $upload->get('dirname');
+            $this->_imagePath = $this->_generateImagePath();
+            $this->_fileType = $upload->get('filetype');
+            $this->_fileSize = $upload->get('size');
 
-        // get image information from con_upl_meta from the database
-        $uploadMeta = new cApiUploadMeta();
-        $uploadMeta->loadByMany(array(
-            'idupl' => $this->_rawSettings,
-            'idlang' => $this->_lang
-        ));
-        $this->_medianame = ($uploadMeta->get('medianame') !== false) ? $uploadMeta->get('medianame') : '';
-        $this->_description = ($uploadMeta->get('description') !== false) ? $uploadMeta->get('description') : '';
-        $this->_keywords = ($uploadMeta->get('keywords') !== false) ? $uploadMeta->get('keywords') : '';
-        $this->_internalNotice = ($uploadMeta->get('internal_notice') !== false) ? $uploadMeta->get('internal_notice') : '';
-        $this->_copyright = ($uploadMeta->get('copyright') !== false) ? $uploadMeta->get('copyright') : '';
+            // get image information from con_upl_meta from the database
+            $uploadMeta = new cApiUploadMeta();
+
+            $uploadMeta->loadByMany([
+                'idupl' => $this->_rawSettings,
+                'idlang' => $this->_lang
+            ]);
+            $this->_medianame = ($uploadMeta->get('medianame') !== false) ? $uploadMeta->get('medianame') : '';
+            $this->_description = ($uploadMeta->get('description') !== false) ? $uploadMeta->get('description') : '';
+            $this->_keywords = ($uploadMeta->get('keywords') !== false) ? $uploadMeta->get('keywords') : '';
+            $this->_internalNotice = ($uploadMeta->get('internal_notice') !== false) ? $uploadMeta->get('internal_notice') : '';
+            $this->_copyright = ($uploadMeta->get('copyright') !== false) ? $uploadMeta->get('copyright') : '';
+        }
 
         // Define settings for this content type as an array
-        $this->_settings = array();
+        $this->_settings = [];
     }
 
     /**
@@ -186,17 +193,16 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             // settings
             if ($editable == false) {
                 $content = new cApiContent();
-                $content->loadByMany(array(
+                $content->loadByMany([
                     'idartlang' => $idArtLang,
                     'idtype' => $idtype,
                     'typeid' => $id
-                ));
+                ]);
                 return $content->get('value');
             } else if ($editable == true) {
                 $db = cRegistry::getDb();
-                $sql = "SELECT max(version) AS max
-                        FROM " . $cfg["tab"]["content_version"]	. " WHERE idartlang = " . $idArtLang . " AND typeid = " . $id .
-                        " AND idtype = '" . $idtype . "'";
+                $sql = "SELECT MAX(`version`) AS `max` FROM `%s` WHERE `idartlang` = %d AND `typeid` = %d AND `idtype` = %d";
+                $sql = $db->prepare($sql, $cfg['tab']['content_version'], $idArtLang, $id, $idtype);
                 $db->query($sql);
                 while($db->nextRecord()) {
                     $idContentVersion = $db->f('max');
@@ -270,13 +276,13 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * @return array
      */
     public function getMetaData() {
-        return array(
+        return [
             'medianame' => $this->_medianame,
             'description' => $this->_description,
             'keywords' => $this->_keywords,
             'internalnotice' => $this->_internalNotice,
             'copyright' => $this->_copyright
-        );
+        ];
     }
 
     /**
@@ -316,11 +322,11 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
 
         // get the upload ID
         $upload = new cApiUpload();
-        $upload->loadByMany(array(
+        $upload->loadByMany([
             'filename' => $filename,
             'dirname' => $dirname,
             'idclient' => $this->_client
-        ), false);
+        ], false);
 
         $this->_rawSettings = $upload->get('idupl');
 
@@ -328,7 +334,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         conSaveContentEntry($this->_idArtLang, 'CMS_IMGEDITOR', $this->_id, $this->_rawSettings);
         $versioning = new cContentVersioning();
         if ($versioning->getState() != 'advanced') {
-            conMakeArticleIndex($this->_idartlang, $this->_idart);
+            conMakeArticleIndex($this->_idArtLang, $this->_idArt);
         }
         conGenerateCodeForArtInAllCategories($this->_idArt);
 
@@ -341,10 +347,10 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
 
         // load meta data object
         $uploadMeta = new cApiUploadMeta();
-        $uploadMeta->loadByMany(array(
+        $uploadMeta->loadByMany([
             'idupl' => $this->_rawSettings,
             'idlang' => $this->_lang
-        ));
+        ]);
         // if meta data object already exists, update the values
         if ($uploadMeta->get('id_uplmeta') != false) {
             $uploadMeta->set('idupl', $this->_rawSettings);
@@ -392,11 +398,11 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $templateTop->set('s', 'HEADLINE', i18n('Image settings'));
         $codeTop = $templateTop->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_top.html', true);
 
-        $tabMenu = array(
+        $tabMenu = [
             'directories' => i18n('Directories'),
             'meta' => i18n('Meta'),
             'upload' => i18n('Upload')
-        );
+        ];
 
         $templateTabs = new cTemplate();
 
@@ -460,7 +466,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         // define a wrapper which contains the whole content of the directories
         // tab
         $wrapper = new cHTMLDiv();
-        $wrapperContent = array();
+        $wrapperContent = [];
 
         $directoryList = new cHTMLDiv('', 'directoryList', 'directoryList' . '_' . $this->_id);
         $liRoot = new cHTMLListItem('root', 'root');
@@ -469,10 +475,10 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $aUpload->setAttribute('title', 'upload');
         $aUpload->setContent('Uploads');
 
-        $div = new cHTMLDiv(array(
+        $div = new cHTMLDiv([
             '<em><a href="#"></a></em>',
             $aUpload
-        ));
+        ]);
 
         $liRoot->setContent($div);
         $conStrTree = new cHTMLList('ul', 'con_str_tree', 'con_str_tree', $liRoot);
@@ -495,15 +501,15 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     private function _generateTabMeta() {
         // define a wrapper which contains the whole content of the meta tab
         $wrapper = new cHTMLDiv();
-        $wrapperContent = array();
+        $wrapperContent = [];
 
         $imageMetaUrl = new cHTMLSpan();
         $imageMetaUrl->setID('image_meta_url_' . $this->_id);
         $imageMetaUrl->setClass('image_meta_url');
-        $wrapperContent[] = new cHTMLDiv(array(
+        $wrapperContent[] = new cHTMLDiv([
             '<b>' . i18n('Selected file') . '</b>',
             $imageMetaUrl
-        ));
+        ]);
         $wrapperContent[] = new cHTMLLabel(i18n('Title'), 'image_medianame_' . $this->_id);
         $wrapperContent[] = new cHTMLTextbox('image_medianame', $this->_medianame, '', '', 'image_medianame_' . $this->_id);
         $wrapperContent[] = new cHTMLLabel(i18n('Description'), 'image_description_' . $this->_id);
@@ -528,7 +534,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     private function _generateTabUpload() {
         // define a wrapper which contains the whole content of the upload tab
         $wrapper = new cHTMLDiv();
-        $wrapperContent = array();
+        $wrapperContent = [];
 
         // create a new directory form
         $newDirForm = new cHTMLForm();
@@ -537,10 +543,10 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $newDirForm->setAttribute('action', $this->_cfg['path']['contenido_fullhtml'] . 'main.php');
         $caption1Span = new cHTMLSpan();
         $caption1Span->setID('caption1');
-        $newDirHead = new cHTMLDiv(array(
+        $newDirHead = new cHTMLDiv([
             '<b>' . i18n('Create a directory in') . '</b>',
             $caption1Span
-        ));
+        ]);
         $area = new cHTMLHiddenField('area', 'upl');
         $action = new cHTMLHiddenField('action', 'upl_mkdir');
         $frame = new cHTMLHiddenField('frame', '2');
@@ -550,7 +556,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $foldername = new cHTMLTextbox('foldername');
         $button = new cHTMLButton('', '', '', false, null, '', 'image');
         $button->setAttribute('src', $this->_cfg['path']['contenido_fullhtml'] . 'images/submit.gif');
-        $newDirContent = new cHTMLDiv(array(
+        $newDirContent = new cHTMLDiv([
             $area,
             $action,
             $frame,
@@ -559,11 +565,11 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             $path,
             $foldername,
             $button
-        ));
-        $newDirForm->setContent(array(
+        ]);
+        $newDirForm->setContent([
             $newDirHead,
             $newDirContent
-        ));
+        ]);
         $wrapperContent[] = $newDirForm;
 
         // upload a new file form
@@ -582,13 +588,13 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $contenido = new cHTMLHiddenField('contenido', $_REQUEST['contenido']);
         $caption2Span = new cHTMLSpan();
         $caption2Span->setID('caption2');
-        $propertiesHead = new cHTMLDiv(array(
+        $propertiesHead = new cHTMLDiv([
             '<b>' . i18n('Path') . '</b>',
             $caption2Span
-        ));
+        ]);
         $imageUpload = new cHTMLUpload('file[]', '', '', 'cms_image_m' . $this->_id, false, null, '', 'file');
         $imageUpload->setClass('jqueryAjaxUpload');
-        $propertiesForm->setContent(array(
+        $propertiesForm->setContent([
             $frame,
             $area,
             $path,
@@ -598,7 +604,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             $contenido,
             $propertiesHead,
             $imageUpload
-        ));
+        ]);
         $wrapperContent[] = $propertiesForm;
 
         $wrapperContent[] = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . 'images/ajax-loader.gif', 'loading');
@@ -627,12 +633,12 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $htmlSelectOption = new cHTMLOptionElement('Kein', '', false);
         $htmlSelect->addOptionElement(0, $htmlSelectOption);
 
-        $files = array();
+        $files = [];
         if (is_dir($this->_uploadPath . $directoryPath)) {
             if (false !== ($handle = cDirHandler::read($this->_uploadPath . $directoryPath, false, false, true))) {
                 foreach ($handle as $entry) {
                     if (false === cFileHandler::fileNameBeginsWithDot($entry)) {
-                        $file = array();
+                        $file = [];
                         $file["name"] = $entry;
                         $file["path"] = $directoryPath . $entry;
                         $files[] = $file;
@@ -721,20 +727,20 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      */
     public function getImageMeta($filename, $dirname) {
         $upload = new cApiUpload();
-        $upload->loadByMany(array(
+        $upload->loadByMany([
             'filename' => $filename,
             'dirname' => $dirname,
             'idclient' => $this->_client
-        ), false);
+        ], false);
         $idupl = $upload->get('idupl');
 
         $uploadMeta = new cApiUploadMeta();
-        $uploadMeta->loadByMany(array(
+        $uploadMeta->loadByMany([
             'idupl' => $idupl,
             'idlang' => $this->_lang
-        ));
+        ]);
 
-        $imageMeta = array();
+        $imageMeta = [];
         $imageMeta['medianame'] = ($uploadMeta->get('medianame') !== false) ? $uploadMeta->get('medianame') : '';
         $imageMeta['description'] = ($uploadMeta->get('description') !== false) ? $uploadMeta->get('description') : '';
         $imageMeta['keywords'] = ($uploadMeta->get('keywords') !== false) ? $uploadMeta->get('keywords') : '';
@@ -782,10 +788,10 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
                     uplSyncDirectory($path);
 
                     $upload = new cApiUpload();
-                    $upload->loadByMany(array(
+                    $upload->loadByMany([
                         'dirname' => $path,
                         'filename' => $_FILES['file']['name'][$key]
-                    ), false);
+                    ], false);
                     if ($upload->get('idupl') != false) {
                         $uplfilename = $this->_cfgClient[$this->_client]['upl']['htmlpath'] . $upload->get('dirname') . $upload->get('filename');
                     } else {

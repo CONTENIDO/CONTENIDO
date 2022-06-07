@@ -35,7 +35,7 @@ foreach ($cfg['db']['connection']['options'] as $const => $value) {
     }
 }
 if (count($dbOptions) > 0) {
-    $dbOptions = str_repeat(' ', 12) . implode($dbOptions, str_repeat(' ', 12) . "\n");
+    $dbOptions = str_repeat(' ', 12) . implode("\n" . str_repeat(' ', 12), $dbOptions);
 } else {
     $dbOptions = '';
 }
@@ -43,7 +43,7 @@ $tpl->set('s', 'MYSQL_OPTIONS', $dbOptions);
 
 $tpl->set('s', 'DB_EXTENSION', (string) getMySQLDatabaseExtension());
 
-$tpl->set('s', 'NOLOCK', $_SESSION['nolock']);
+$tpl->set('s', 'NOLOCK', isset($_SESSION['nolock']) ? $_SESSION['nolock'] : '');
 
 // Set CON_UTF8 constant only for new installations
 if ($_SESSION['setuptype'] == 'setup') {

@@ -27,7 +27,7 @@ cInclude('includes', 'functions.file.php');
 function consoleLog($value, $method = 'log') {
     $method = in_array($method, ['log', 'warn', 'error']) ? $method : 'log';
     $value  = json_encode($value);
-    echo sprintf("<script>console.$method('$value');</script>");
+    echo "<script>console.{$method}('{$value}');</script>";
 }
 
 /**
@@ -38,13 +38,16 @@ function consoleLog($value, $method = 'log') {
  * Same for array $a_description
  *
  * @param int $idartlang
- *         Language specific ID of the arcticle
+ *         Language specific ID of the article
  *
  * @throws cDbException
  * @throws cException
  */
 function getAvailableContentTypes($idartlang) {
-    global $db, $cfg, $a_content, $a_description;
+    global $a_content, $a_description;
+
+    $db = cRegistry::getDb();
+    $cfg = cRegistry::getConfig();
 
     $sql = "SELECT
                 *
@@ -77,9 +80,9 @@ function getAvailableContentTypes($idartlang) {
  * @throws cDbException
  */
 function isArtInMultipleUse($idart) {
-    global $cfg;
-
     $db = cRegistry::getDb();
+    $cfg = cRegistry::getConfig();
+
     $sql = "SELECT idart FROM " . $cfg["tab"]["cat_art"] . " WHERE idart = " . (int) $idart;
     $db->query($sql);
 
@@ -133,96 +136,56 @@ function isEmptyDbDateTime($datetime) {
 }
 
 /**
- * Returns multi-language month name (canonical) by its numeric value
+ * Returns the translated month name for to the given numeric month value.
  *
  * @param int $month
+ *         numeric month value
  *
- * @return string
+ * @return string|null
+ *         translated month name
  *
  * @throws cException
  */
 function getCanonicalMonth($month) {
-    switch ($month) {
-        case 1:
-            return (i18n("January"));
-            break;
-        case 2:
-            return (i18n("February"));
-            break;
-        case 3:
-            return (i18n("March"));
-            break;
-        case 4:
-            return (i18n("April"));
-            break;
-        case 5:
-            return (i18n("May"));
-            break;
-        case 6:
-            return (i18n("June"));
-            break;
-        case 7:
-            return (i18n("July"));
-            break;
-        case 8:
-            return (i18n("August"));
-            break;
-        case 9:
-            return (i18n("September"));
-            break;
-        case 10:
-            return (i18n("October"));
-            break;
-        case 11:
-            return (i18n("November"));
-            break;
-        case 12:
-            return (i18n("December"));
-            break;
-    }
+    $map = [
+        i18n("January"), i18n("February"), i18n("March"), i18n("April"),
+        i18n("May"), i18n("June"), i18n("July"), i18n("August"),
+        i18n("September"), i18n("October"), i18n("November"), i18n("December"),
+    ];
+
+    // $map is 0-based, so 1 has to be subtracted from the given $month
+    $index = is_numeric($month) ? (int) $month - 1 : null;
+
+    return array_key_exists($index, $map) ? $map[$index] : null;
 }
 
 /**
- * Get multi-language day
+ * Returns the translated weekday name for to the given numeric weekday value.
  *
- * @param int $iDay
- *         The day number of date(w)
+ * This function assumes that monday is the first day of the week!
  *
- * @return string
- *         Dayname of current language
+ * @param int $day
+ *         numeric weekday value
+ *
+ * @return string|null
+ *         translated weekday name
  *
  * @throws cException
  */
-function getCanonicalDay($iDay) {
-    switch ($iDay) {
-        case 1:
-            return (i18n("Monday"));
-            break;
-        case 2:
-            return (i18n("Tuesday"));
-            break;
-        case 3:
-            return (i18n("Wednesday"));
-            break;
-        case 4:
-            return (i18n("Thursday"));
-            break;
-        case 5:
-            return (i18n("Friday"));
-            break;
-        case 6:
-            return (i18n("Saturday"));
-            break;
-        case 0:
-            return (i18n("Sunday"));
-            break;
-        default:
-            break;
-    }
+function getCanonicalDay($weekday) {
+    $map = [
+        i18n("Monday"), i18n("Tuesday"), i18n("Wednesday"), i18n("Thursday"),
+        i18n("Friday"), i18n("Saturday"), i18n("Sunday"),
+    ];
+
+    // $map is 0-based, so 1 has to be subtracted from the given $weekday
+    $index = is_numeric($weekday) ? (int) $weekday - 1 : null;
+
+    return array_key_exists($index, $map) ? $map[$index] : null;
 }
 
 /**
- * Returns a formatted date and/or timestring according to the current settings
+ * Returns a formatted date and/or time-string according to the current settings
  *
  * @param mixed $timestamp
  *         a timestamp. If no value is given the current time will be used.
@@ -243,8 +206,6 @@ function displayDatetime($timestamp = "", $date = false, $time = false) {
     } else {
         $timestamp = strtotime($timestamp);
     }
-
-    $ret = "";
 
     if ($date && !$time) {
         $ret = date(getEffectiveSetting("dateformat", "date", "Y-m-d"), $timestamp);
@@ -267,7 +228,7 @@ function displayDatetime($timestamp = "", $date = false, $time = false) {
  * @throws cDbException
  * @throws cException
  */
-function getIDForArea($area) {
+function getIdForArea($area) {
     if (!is_numeric($area)) {
         $oArea = new cApiArea();
         if ($oArea->loadBy('name', $area)) {
@@ -289,7 +250,7 @@ function getIDForArea($area) {
  */
 function getParentAreaId($area) {
     $oAreaColl = new cApiAreaCollection();
-    return $oAreaColl->getParentAreaID($area);
+    return $oAreaColl->getParentAreaId($area);
 }
 
 /**
@@ -299,7 +260,7 @@ function getParentAreaId($area) {
  *         Which menuitem to mark
  * @param bool $return
  *         Return or echo script
- * @return string
+ * @return string|void
  */
 function markSubMenuItem($menuitem, $return = false) {
     global $changeview;
@@ -383,12 +344,18 @@ JS;
  */
 function backToMainArea($send) {
     if ($send) {
-        // Global vars
-        global $area, $sess, $idart, $idcat, $idartlang, $idcatart, $frame;
+        global $idcatart;
+
+        $area = cRegistry::getArea();
+        $sess = cRegistry::getSession();
+        $idart = cRegistry::getArticleId();
+        $idcat = cRegistry::getCategoryId();
+        $idartlang = cRegistry::getArticleLanguageId();
+        $frame = cRegistry::getFrame();
 
         // Get main area
         $oAreaColl = new cApiAreaCollection();
-        $parent = $oAreaColl->getParentAreaID($area);
+        $parent = $oAreaColl->getParentAreaId($area);
 
         // Create url string
         $url_str = 'main.php?' . 'area=' . $parent . '&' . 'idcat=' . $idcat . '&' . 'idart=' . $idart . '&'
@@ -444,8 +411,9 @@ function getLanguageNamesByClient($client) {
 function set_magic_quotes_gpc(&$code) {
     cDeprecated('This method is deprecated and is not needed any longer');
 
-    global $cfg;
+    $cfg = cRegistry::getConfig();
     if (!$cfg['simulate_magic_quotes']) {
+        /** @noinspection PhpElementIsNotAvailableInCurrentPhpVersionInspection */
         if (get_magic_quotes_gpc() == 0) {
             $code = addslashes($code);
         }
@@ -456,7 +424,7 @@ function set_magic_quotes_gpc(&$code) {
  * Returns a list with all clients and languages.
  *
  * @return array
- *         Indexed array where the value is an assoziative array as follows:
+ *         Indexed array where the value is an associative array as follows:
  *         <pre>
  *         - $arr[0]['idlang']
  *         - $arr[0]['langname']
@@ -467,7 +435,8 @@ function set_magic_quotes_gpc(&$code) {
  * @throws cDbException
  */
 function getAllClientsAndLanguages() {
-    global $db, $cfg;
+    $db = cRegistry::getDb();
+    $cfg = cRegistry::getConfig();
 
     $sql = "SELECT
                 a.idlang as idlang,
@@ -497,7 +466,7 @@ function getAllClientsAndLanguages() {
 
 /**
  *
- * @return number
+ * @return float
  */
 function getmicrotime() {
     list($usec, $sec) = explode(' ', microtime());
@@ -506,7 +475,7 @@ function getmicrotime() {
 
 /**
  *
- * @param unknown_type $uid
+ * @param mixed $uid
  *
  * @return bool
  *
@@ -563,6 +532,22 @@ function isValidMail($email, $strict = false) {
 }
 
 /**
+ * Checks if passed date is valid or not
+ * Checks for Y-m-d or Y-m-d H:i:s
+ * NULL, unexisting dates and zeros are returned false
+ *
+ * @param string $date
+ *
+ * @return bool
+ *
+ * @throws cInvalidArgumentException
+ */
+function isValidDate($date) {
+    $validator = cValidatorFactory::getInstance('date');
+    return $validator->isValid($date);
+}
+
+/**
  *
  * @param string $string
  * @return string
@@ -577,14 +562,14 @@ function htmldecode($string) {
 /**
  * Loads the client information from the database and stores it in
  * config.client.php.
- * Reinitializes the $cfgClient array and fills it wih updated information if
+ * Re-initializes the $cfgClient array and fills it wih updated information if
  * provided.
  *
- * @param int    $idclient
+ * @param int    $idClient
  *         client id which will be updated
- * @param string $htmlpath
+ * @param string $htmlPath
  *         new HTML path. Starting with "http://"
- * @param string $frontendpath
+ * @param string $frontendPath
  *         path the to the frontend
  *
  * @return array
@@ -593,25 +578,27 @@ function htmldecode($string) {
  * @throws cDbException
  * @throws cInvalidArgumentException
  */
-function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
-    global $cfg, $cfgClient, $errsite_idcat, $errsite_idart;
+function updateClientCache($idClient = 0, $htmlPath = '', $frontendPath = '') {
+    global $cfgClient, $errsite_idcat, $errsite_idart;
+
+    $cfg = cRegistry::getConfig();
 
     if (!is_array($cfgClient)) {
         $cfgClient = [];
     }
 
-    if ($idclient != 0 && $htmlpath != '' && $frontendpath != '') {
-        $cfgClient[$idclient]['path']['frontend'] = cSecurity::escapeString($frontendpath);
-        $cfgClient[$idclient]['path']['htmlpath'] = cSecurity::escapeString($htmlpath);
+    if ($idClient != 0 && $htmlPath != '' && $frontendPath != '') {
+        $cfgClient[$idClient]['path']['frontend'] = cSecurity::escapeString($frontendPath);
+        $cfgClient[$idClient]['path']['htmlpath'] = cSecurity::escapeString($htmlPath);
     }
 
     // remember paths as these will be lost otherwise
-    $htmlpaths = [];
-    $frontendpaths = [];
+    $htmlPaths = [];
+    $frontendPaths = [];
     foreach ($cfgClient as $id => $aclient) {
         if (is_array($aclient)) {
-            $htmlpaths[$id] = $aclient["path"]["htmlpath"];
-            $frontendpaths[$id] = $aclient["path"]["frontend"];
+            $htmlPaths[$id] = $aclient['path']['htmlpath'];
+            $frontendPaths[$id] = $aclient['path']['frontend'];
         }
     }
     unset($cfgClient);
@@ -619,30 +606,26 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
 
     // don't do that as the set of clients may have changed!
     // paths will be set in subsequent foreach instead.
-    // foreach ($htmlpaths as $id => $path) {
-    //     $cfgClient[$id]["path"]["htmlpath"] = $htmlpaths[$id];
-    //     $cfgClient[$id]["path"]["frontend"] = $frontendpaths[$id];
+    // foreach ($htmlPaths as $id => $path) {
+    //     $cfgClient[$id]['path']['htmlpath'] = $htmlPaths[$id];
+    //     $cfgClient[$id]['path']['frontend'] = $frontendPaths[$id];
     // }
 
     // get clients from database
     $db = cRegistry::getDb();
-    $db->query('
-        SELECT idclient
-            , name
-            , errsite_cat
-            , errsite_art
-        FROM ' . $cfg['tab']['clients']);
+    $sql = 'SELECT `idclient`, `name`, `errsite_cat`, `errsite_art` FROM `%s`';
+    $db->query($sql, $cfg['tab']['clients']);
 
     while ($db->nextRecord()) {
         $iClient = $db->f('idclient');
         $cfgClient['set'] = 'set';
 
         // set original paths
-        if (isset($htmlpaths[$iClient])) {
-            $cfgClient[$iClient]["path"]["htmlpath"] = $htmlpaths[$iClient];
+        if (isset($htmlPaths[$iClient])) {
+            $cfgClient[$iClient]['path']['htmlpath'] = $htmlPaths[$iClient];
         }
-        if (isset($frontendpaths[$iClient])) {
-            $cfgClient[$iClient]["path"]["frontend"] = $frontendpaths[$iClient];
+        if (isset($frontendPaths[$iClient])) {
+            $cfgClient[$iClient]['path']['frontend'] = $frontendPaths[$iClient];
         }
 
         $cfgClient[$iClient]['name'] = conHtmlSpecialChars(str_replace([
@@ -653,8 +636,8 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
 
         $errsite_idcat[$iClient] = $db->f('errsite_cat');
         $errsite_idart[$iClient] = $db->f('errsite_art');
-        $cfgClient[$iClient]["errsite"]["idcat"] = $errsite_idcat[$iClient];
-        $cfgClient[$iClient]["errsite"]["idart"] = $errsite_idart[$iClient];
+        $cfgClient[$iClient]['errsite']['idcat'] = $errsite_idcat[$iClient];
+        $cfgClient[$iClient]['errsite']['idart'] = $errsite_idart[$iClient];
 
         $cfgClient[$iClient]['images'] = $cfgClient[$iClient]['path']['htmlpath'] . 'images/';
         $cfgClient[$iClient]['upload'] = 'upload/';
@@ -703,6 +686,9 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
 
     $aConfigFileContent = [];
     $aConfigFileContent[] = '<?php';
+    $aConfigFileContent[] = '';
+    $aConfigFileContent[] = '// NOTE: This configuration file was generated by CONTENIDO!';
+    $aConfigFileContent[] = '';
     $aConfigFileContent[] = 'global $cfgClient;';
     $aConfigFileContent[] = '';
 
@@ -711,17 +697,17 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
 
             $aConfigFileContent[] = '/* ' . $aClient['name'] . ' */';
             $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["name"] = "' . $aClient['name'] . '";';
-            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["errsite"]["idcat"] = "' . $aClient["errsite"]["idcat"] . '";';
-            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["errsite"]["idart"] = "' . $aClient["errsite"]["idart"] . '";';
-            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["images"] = "' . $aClient["path"]["htmlpath"] . 'images/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["errsite"]["idcat"] = "' . $aClient['errsite']['idcat'] . '";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["errsite"]["idart"] = "' . $aClient['errsite']['idart'] . '";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["images"] = "' . $aClient['path']['htmlpath'] . 'images/";';
             $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["upload"] = "upload/";';
 
-            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["path"]["frontend"] = "' . $aClient["path"]["frontend"] . '";';
-
-            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["htmlpath"]["frontend"] = "' . $aClient["path"]["htmlpath"] . '";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["path"]["frontend"] = "' . $aClient['path']['frontend'] . '";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["path"]["htmlpath"] = "' . $aClient['path']['htmlpath'] . '";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["htmlpath"]["frontend"] = "' . $aClient['path']['htmlpath'] . '";';
 
             $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["upl"]["path"] = $cfgClient[' . $iIdClient . ']["path"]["frontend"] . "upload/";';
-            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["upl"]["htmlpath"] = "' . $aClient["htmlpath"]["frontend"] . 'upload/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["upl"]["htmlpath"] = "' . $aClient['htmlpath']['frontend'] . 'upload/";';
             $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["upl"]["frontendpath"] = "upload/";';
 
             $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["css"]["path"] = $cfgClient[' . $iIdClient . ']["path"]["frontend"] . "css/";';
@@ -758,7 +744,6 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
 
             $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["version"]["path"] = $cfgClient[' . $iIdClient . ']["path"]["frontend"] . "data/version/";';
             $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["version"]["frontendpath"] = "data/version/";';
-            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["path"]["htmlpath"] = "' . $aClient['path']['htmlpath'] . '";';
             $aConfigFileContent[] = '';
         }
     }
@@ -833,7 +818,7 @@ function deleteSystemProperty($type, $name) {
  * $array[$type][$name] = $value;
  *
  * @modified Timo Trautmann 22.02.2008 Support for editing name and type editing
- * by primaray key idsystemprop
+ * by primary key idsystemprop
  * if bGetPropId is set:
  * $array[$type][$name][value] = $value;
  * $array[$type][$name][idsystemprop] = $idsystemprop;
@@ -893,7 +878,7 @@ function getSystemProperty($type, $name) {
  *         The type of the properties
  *
  * @return array
- *         Assoziative array like
+ *         Associative array like
  *         - $arr[name] = value
  *
  * @throws cDbException
@@ -970,20 +955,23 @@ function getEffectiveSettingsByType($type) {
  * @throws cDbException
  */
 function getArtspec() {
-    global $db, $cfg, $lang, $client;
+    $db = cRegistry::getDb();
+    $cfg = cRegistry::getConfig();
+    $client = cRegistry::getClientId();
+    $lang = cRegistry::getLanguageId();
 
     $sql = "SELECT artspec, idartspec, online, artspecdefault FROM " . $cfg['tab']['art_spec'] . "
             WHERE client = " . (int) $client . " AND lang = " . (int) $lang . " ORDER BY artspec ASC";
     $db->query($sql);
 
-    $artspec = [];
+    $artSpec = [];
 
     while ($db->nextRecord()) {
-        $artspec[$db->f("idartspec")]['artspec'] = $db->f("artspec");
-        $artspec[$db->f("idartspec")]['online'] = $db->f("online");
-        $artspec[$db->f("idartspec")]['default'] = $db->f("artspecdefault");
+        $artSpec[$db->f('idartspec')]['artspec'] = $db->f('artspec');
+        $artSpec[$db->f('idartspec')]['online'] = $db->f('online');
+        $artSpec[$db->f('idartspec')]['default'] = $db->f('artspecdefault');
     }
-    return $artspec;
+    return $artSpec;
 }
 
 /**
@@ -997,7 +985,10 @@ function getArtspec() {
  * @throws cDbException
  */
 function addArtspec($artspectext, $online) {
-    global $db, $cfg, $lang, $client;
+    $db = cRegistry::getDb();
+    $cfg = cRegistry::getConfig();
+    $client = cRegistry::getClientId();
+    $lang = cRegistry::getLanguageId();
 
     if (isset($_POST['idartspec'])) { // update
         $fields = [
@@ -1030,7 +1021,8 @@ function addArtspec($artspectext, $online) {
  * @throws cDbException
  */
 function deleteArtspec($idartspec) {
-    global $db, $cfg;
+    $db = cRegistry::getDb();
+    $cfg = cRegistry::getConfig();
 
     $sql = "DELETE FROM " . $cfg['tab']['art_spec'] . " WHERE idartspec = " . (int) $idartspec;
     $db->query($sql);
@@ -1053,7 +1045,8 @@ function deleteArtspec($idartspec) {
  * @throws cDbException
  */
 function setArtspecOnline($idartspec, $online) {
-    global $db, $cfg;
+    $db = cRegistry::getDb();
+    $cfg = cRegistry::getConfig();
 
     $sql = "UPDATE " . $cfg['tab']['art_spec'] . " SET online = " . (int) $online . " WHERE idartspec = " . (int) $idartspec;
     $db->query($sql);
@@ -1071,7 +1064,10 @@ function setArtspecOnline($idartspec, $online) {
  * @throws cDbException
  */
 function setArtspecDefault($idartspec) {
-    global $db, $cfg, $lang, $client;
+    $db = cRegistry::getDb();
+    $cfg = cRegistry::getConfig();
+    $client = cRegistry::getClientId();
+    $lang = cRegistry::getLanguageId();
 
     $sql = "UPDATE " . $cfg['tab']['art_spec'] . " SET artspecdefault=0 WHERE client = " . (int) $client . " AND lang = " . (int) $lang;
     $db->query($sql);
@@ -1097,27 +1093,47 @@ function setArtspecDefault($idartspec) {
  * @throws cException
  */
 function buildArticleSelect($sName, $iIdCat, $sValue) {
-    global $cfg, $lang;
+    static $cache;
 
-    $db = cRegistry::getDb();
+    $lang = cRegistry::getLanguageId();
 
-    $selectElem = new cHTMLSelectElement($sName, "", $sName);
-    $selectElem->appendOptionElement(new cHTMLOptionElement(i18n("Please choose"), ""));
+    if (!isset($cache)) {
+        $cache = [];
+    }
+    $cacheKey = implode('/', [$lang, $sName, $iIdCat]);
 
-    $sql = "SELECT b.title, b.idart FROM
+    if (isset($cache[$cacheKey])) {
+        // Get data from cache
+        $data = $cache[$cacheKey];
+    } else {
+        // Get data from db and cache it
+        $data = [];
+        $cfg = cRegistry::getConfig();
+        $db = cRegistry::getDb();
+
+        $sql = "SELECT b.title, b.idart FROM
                " . $cfg["tab"]["art"] . " AS a, " . $cfg["tab"]["art_lang"] . " AS b, " . $cfg["tab"]["cat_art"] . " AS c
                WHERE c.idcat = " . (int) $iIdCat . "
                AND b.idlang = " . (int) $lang . " AND b.idart = a.idart and b.idart = c.idart
                ORDER BY b.title";
 
-    $db->query($sql);
-
-    while ($db->nextRecord()) {
-        if ($sValue != $db->f('idart')) {
-            $selectElem->appendOptionElement(new cHTMLOptionElement($db->f('title'), $db->f('idart')));
-        } else {
-            $selectElem->appendOptionElement(new cHTMLOptionElement($db->f('title'), $db->f('idart'), true));
+        $db->query($sql);
+        while ($db->nextRecord()) {
+            $data[] = [
+                'idart' => $db->f('idart'),
+                'title' => $db->f('title'),
+            ];
         }
+
+        $cache[$cacheKey] = $data;
+    }
+
+    // Build the select
+    $selectElem = new cHTMLSelectElement($sName, "", $sName);
+    $selectElem->appendOptionElement(new cHTMLOptionElement(i18n("Please choose"), ""));
+    foreach ($data as $entry) {
+        $selected = ($sValue == $entry['idart']);
+        $selectElem->appendOptionElement(new cHTMLOptionElement($entry['title'], $entry['idart'], $selected));
     }
 
     return $selectElem->toHtml();
@@ -1126,86 +1142,88 @@ function buildArticleSelect($sName, $iIdCat, $sValue) {
 /**
  * Build a Category / Article select Box
  *
- * @param string $sName
- *         Name of the SelectBox
- * @param string $sValue
- *         Value of the SelectBox
- * @param int    $sLevel
- *         Value of highest level that should be shown
- * @param string $sClass
- *         Optional css class for select
- *
- * @return string
- *         HTML
- *
- * @throws cDbException
- * @throws cException
+ * @staticvar array $cache Cache for DB results
+ * @param string $sName  Name of the SelectBox
+ * @param string $sValue Value of the SelectBox
+ * @param int $sLevel Value of the highest level that should be shown
+ * @param string $sClass Optional css class for select
+ * @return string HTML select generated
  */
 function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
-    global $cfg, $client, $lang;
+    static $cache;
 
-    $db = cRegistry::getDb();
-    $db2 = cRegistry::getDb();
+    $client = cRegistry::getClientId();
+    $lang = cRegistry::getLanguageId();
 
-    $selectElem = new cHTMLSelectElement($sName, "", $sName);
-    $selectElem->setClass($sClass);
-    $selectElem->appendOptionElement(new cHTMLOptionElement(i18n("Please choose"), ""));
-
-    $addString = ($sLevel > 0) ? "AND c.level < " . (int) $sLevel : '';
-
-    $sql = "SELECT a.idcat AS idcat, b.name AS name, c.level FROM
-           " . $cfg["tab"]["cat"] . " AS a, " . $cfg["tab"]["cat_lang"] . " AS b,
-           " . $cfg["tab"]["cat_tree"] . " AS c WHERE a.idclient = " . (int) $client . "
-           AND b.idlang = " . (int) $lang . " AND b.idcat = a.idcat AND c.idcat = a.idcat " . $addString . "
-           ORDER BY c.idtree";
-
-    $db->query($sql);
-
-    $categories = [];
-
-    while ($db->nextRecord()) {
-        $categories[$db->f("idcat")]["name"] = $db->f("name");
-
-        $sql2 = "SELECT level FROM " . $cfg["tab"]["cat_tree"] . " WHERE idcat = " . (int) $db->f("idcat");
-        $db2->query($sql2);
-
-        if ($db2->nextRecord()) {
-            $categories[$db->f("idcat")]["level"] = $db2->f("level");
-        }
-
-        $sql2 = "SELECT a.title AS title, b.idcatart AS idcatart FROM
-                " . $cfg["tab"]["art_lang"] . " AS a,  " . $cfg["tab"]["cat_art"] . " AS b
-                WHERE b.idcat = '" . $db->f("idcat") . "' AND a.idart = b.idart AND
-                a.idlang = " . (int) $lang;
-
-        $db2->query($sql2);
-
-        while ($db2->nextRecord()) {
-            $categories[$db->f("idcat")]["articles"][$db2->f("idcatart")] = $db2->f("title");
-        }
+    if (!isset($cache)) {
+        $cache = [];
     }
 
-    foreach ($categories as $tmpidcat => $props) {
-        $spaces = "&nbsp;&nbsp;";
+    $cacheKey = implode('/', [$client, $lang, $sLevel]);
 
-        for ($i = 0; $i < $props["level"]; $i++) {
-            $spaces .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+    if (isset($cache[$cacheKey])) {
+        // Get data from cache
+        $data = $cache[$cacheKey];
+    } else {
+        // Get data from db and cache it
+        $data = [];
+
+        $db = cRegistry::getDb();
+        $cfg = cRegistry::getConfig();
+
+        $addString = ($sLevel > 0) ? "AND c.level < " . (int) $sLevel : '';
+
+        $sql = "SELECT a.idcat AS idcat, b.name AS name, c.level FROM `:tab_cat` AS a, `:tab_cat_lang` AS b,
+           `:tab_cat_tree` AS c WHERE a.idclient = :client AND b.idlang = :lang AND b.idcat = a.idcat 
+           AND c.idcat = a.idcat " . $addString . " ORDER BY c.idtree";
+
+        $db->query($sql, [
+            'tab_cat' =>  $cfg['tab']['cat'],
+            'tab_cat_lang' => $cfg['tab']['cat_lang'],
+            'tab_cat_tree' => $cfg['tab']['cat_tree'],
+            'client' => $client,
+            'lang' => $lang,
+        ]);
+        $aIdCat = [];
+        while ($db->nextRecord()) {
+            $data[$db->f('idcat')]['name'] = $db->f('name');
+            $data[$db->f('idcat')]['level'] = (int) $db->f('level');
+            $aIdCat[] = $db->f('idcat');
         }
 
-        $tmp_val = $tmpidcat;
+        if (!empty($data)) {
+            $sql = "SELECT a.title AS title, b.idcatart AS idcatart, b.idcat AS idcat FROM
+                `:tab_art_lang` AS a, `:tab_cat_art` AS b WHERE b.idcat IN (" . implode(',', $aIdCat) . ") 
+                AND a.idart = b.idart AND a.idlang = :lang";
 
-        if ($sValue != $tmp_val) {
-            $selectElem->appendOptionElement(new cHTMLOptionElement($spaces . ">" . $props["name"], $tmp_val));
-        } else {
-            $selectElem->appendOptionElement(new cHTMLOptionElement($spaces . ">" . $props["name"], $tmp_val, true));
+            $db->query($sql, [
+                'tab_art_lang' => $cfg['tab']['art_lang'],
+                'tab_cat_art' => $cfg['tab']['cat_art'],
+                'lang' => $lang,
+            ]);
+            while ($db->nextRecord()) {
+                $data[$db->f('idcat')]['articles'][$db->f('idcatart')] = $db->f('title');
+            }
         }
+        $cache[$cacheKey] = $data;
+    }
+
+    // Build the select
+    $selectElem = new cHTMLSelectElement($sName, '', $sName);
+    $selectElem->setClass($sClass);
+    $selectElem->appendOptionElement(new cHTMLOptionElement(i18n("Please choose"), ''));
+
+    foreach ($data as $tmpidcat => $props) {
+        $spaces = cHTMLOptionElement::indent($props['level']);
+        $selected = ($sValue == $tmpidcat);
+        $selectElem->appendOptionElement(new cHTMLOptionElement($spaces . '>' . $props['name'], $tmpidcat, $selected));
     }
 
     return $selectElem->toHtml();
 }
 
 /**
- * Converts a size in bytes in a human readable form
+ * Converts a size in bytes in a human-readable form
  *
  * @param int $number
  *         Some number of bytes
@@ -1241,7 +1259,7 @@ function humanReadableSize($number) {
  *
  * @param string $sizeString
  *         contains the size acquired from ini_get for example
- * @return number
+ * @return float|int|string
  */
 function machineReadableSize($sizeString) {
     // If sizeString is a integer value (i. e. 64242880), return it
@@ -1303,9 +1321,9 @@ function isRunningFromWeb() {
  * @throws cInvalidArgumentException
  */
 function scanPlugins($entity) {
-    global $cfg;
-
+    $cfg = cRegistry::getConfig();
     $basedir = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $entity . '/';
+
     if (is_dir($basedir) === false) {
         return;
     }
@@ -1377,7 +1395,7 @@ function scanPlugins($entity) {
  *         string Name of the directory to scan
  */
 function includePlugins($entity) {
-    global $cfg;
+    $cfg = cRegistry::getConfig();
 
     if (isset($cfg['plugins'][$entity]) && is_array($cfg['plugins'][$entity])) {
         foreach ($cfg['plugins'][$entity] as $plugin) {
@@ -1393,7 +1411,7 @@ function includePlugins($entity) {
  *         Name of the directory to scan
  */
 function callPluginStore($entity) {
-    global $cfg;
+    $cfg = cRegistry::getConfig();
 
     // Check out if there are any plugins
     if (isset($cfg['plugins'][$entity]) && is_array($cfg['plugins'][$entity])) {
@@ -1422,33 +1440,33 @@ function callPluginStore($entity) {
  *         Random name
  */
 function createRandomName($nameLength) {
-    $NameChars = 'abcdefghijklmnopqrstuvwxyz';
-    $Vouel = 'aeiou';
-    $Name = '';
+    $nameChars = 'abcdefghijklmnopqrstuvwxyz';
+    $vowels = 'aeiou';
+    $name = '';
 
     for ($index = 1; $index <= $nameLength; $index++) {
         if ($index % 3 == 0) {
-            $randomNumber = rand(1, cString::getStringLength($Vouel));
-            $Name .= cString::getPartOfString($Vouel, $randomNumber - 1, 1);
+            $randomNumber = rand(1, cString::getStringLength($vowels));
+            $name .= cString::getPartOfString($vowels, $randomNumber - 1, 1);
         } else {
-            $randomNumber = rand(1, cString::getStringLength($NameChars));
-            $Name .= cString::getPartOfString($NameChars, $randomNumber - 1, 1);
+            $randomNumber = rand(1, cString::getStringLength($nameChars));
+            $name .= cString::getPartOfString($nameChars, $randomNumber - 1, 1);
         }
     }
 
-    return $Name;
+    return $name;
 }
 
 /**
- * Returns the JavaScript help context code, if help confuguration is enabled
+ * Returns the JavaScript help context code, if help configuration is enabled
  *
  * @param string $area
  *         The area name
  * @return string
- *         The context context JS code
+ *         The context JS code
  */
 function getJsHelpContext($area) {
-    global $cfg;
+    $cfg = cRegistry::getConfig();
 
     if ($cfg['help'] == true) {
         $hc = "parent.parent.parent.frames[0].document.getElementById('help').setAttribute('data', '$area');";
@@ -1533,7 +1551,7 @@ function buildStackString($startlevel = 2) {
  * @throws cInvalidArgumentException
  */
 function cWarning() {
-    global $cfg;
+    $cfg = cRegistry::getConfig();
 
     $args = func_get_args();
     if (count($args) == 3) {
@@ -1585,7 +1603,7 @@ function cWarning() {
  * @internal         has variadic parameters
  */
 function cError($message) {
-    global $cfg;
+    $cfg = cRegistry::getConfig();
 
     $args = func_get_args();
     if (count($args) == 3) {
@@ -1628,7 +1646,7 @@ function cError($message) {
  * @throws cInvalidArgumentException
  */
 function cDeprecated($message = '') {
-    global $cfg;
+    $cfg = cRegistry::getConfig();
 
     if (isset($cfg['debug']['log_deprecations']) && $cfg['debug']['log_deprecations'] == false) {
         return;
@@ -1667,19 +1685,14 @@ function getNamedFrame($frame) {
     switch ($frame) {
         case 1:
             return 'left_top';
-            break;
         case 2:
             return 'left_bottom';
-            break;
         case 3:
             return 'right_top';
-            break;
         case 4:
             return 'right_bottom';
-            break;
         default:
             return '';
-            break;
     }
 }
 
@@ -1697,7 +1710,9 @@ function getNamedFrame($frame) {
  * @throws cInvalidArgumentException
  */
 function startTiming($function, $parameters = []) {
-    global $_timings, $cfg;
+    global $_timings;
+
+    $cfg = cRegistry::getConfig();
 
     if ($cfg['debug']['functiontiming'] == false) {
         return '';
@@ -1728,7 +1743,9 @@ function startTiming($function, $parameters = []) {
  * @throws cInvalidArgumentException
  */
 function endAndLogTiming($uuid) {
-    global $_timings, $cfg;
+    global $_timings;
+
+    $cfg = cRegistry::getConfig();
 
     if ($cfg['debug']['functiontiming'] == false) {
         return;
@@ -1738,31 +1755,31 @@ function endAndLogTiming($uuid) {
 
     $timeSpent = $_timings[$uuid]['end'] - $_timings[$uuid]['start'];
 
-    $myparams = [];
+    $myParams = [];
 
     // Build nice representation of the function
     foreach ($_timings[$uuid]['parameters'] as $parameter) {
         switch (gettype($parameter)) {
             case 'string':
-                $myparams[] = '"' . $parameter . '"';
+                $myParams[] = '"' . $parameter . '"';
                 break;
             case 'boolean':
                 if ($parameter == true) {
-                    $myparams[] = 'true';
+                    $myParams[] = 'true';
                 } else {
-                    $myparams[] = 'false';
+                    $myParams[] = 'false';
                 }
                 break;
             default:
                 if ($parameter == '') {
-                    $myparams[] = '"' . $parameter . '"';
+                    $myParams[] = '"' . $parameter . '"';
                 } else {
-                    $myparams[] = $parameter;
+                    $myParams[] = $parameter;
                 }
         }
     }
 
-    $parameterString = implode(', ', $myparams);
+    $parameterString = implode(', ', $myParams);
 
     cDebug::out('calling function ' . $_timings[$uuid]['function'] . '(' . $parameterString . ') took ' . $timeSpent . ' seconds');
 }
@@ -1770,7 +1787,7 @@ function endAndLogTiming($uuid) {
 /**
  * Function checks current language and client settings by HTTP-Params and DB
  * settings.
- * Based on this informations it will send an HTTP header for right encoding.
+ * Based on this information it will send an HTTP header for right encoding.
  *
  * @param cDb    $db
  *         NO MORE NEEDED
@@ -1794,7 +1811,7 @@ function sendEncodingHeader($db, $cfg, $lang, $contentType = 'text/html') {
     }
 
     if (is_string($use_encoding)) {
-        $use_encoding = ($use_encoding == 'false') ? false : true;
+        $use_encoding = !(($use_encoding == 'false'));
     }
 
     if ($use_encoding != false) {
@@ -1878,7 +1895,7 @@ function isFunctionDisabled($functionName) {
  * Generates category article breadcrumb for backend
  *
  * @param string $syncoptions
- *                       syncstate of backend
+ *                       sync state of backend
  * @param bool   $showArticle
  *                       show also current article or categories only (optional)
  * @param bool   $return [optional]

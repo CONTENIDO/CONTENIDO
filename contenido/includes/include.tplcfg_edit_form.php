@@ -16,9 +16,18 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $db, $notification, $tpl, $auth, $perm, $cfg, $sess, $client, $area, $frame, $idcat, $idart, $idtpl, $lang, $idtplcfg, $syncoptions;
+global $db, $notification, $tpl, $idcat, $idart, $idtpl, $idtplcfg, $syncoptions;
 
 cInclude('includes', 'functions.pathresolver.php');
+
+$auth = cRegistry::getAuth();
+$sess = cRegistry::getSession();
+$perm = cRegistry::getPerm();
+$area = cRegistry::getArea();
+$frame = cRegistry::getFrame();
+$cfg = cRegistry::getConfig();
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
 
 $message = '';
 $description = '';
@@ -86,25 +95,22 @@ if (!isset($db3) || !is_object($db3)) {
 
 $tpl->reset();
 
+$isAdmin = false;
+
 if ($idart) {
     if ($perm->have_perm_area_action('con', 'con_tplcfg_edit') || $perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat)) {
 
         $artlang = new cApiArticleLanguage($idartlang);
 
         // check admin rights
-        $aAuthPerms = explode(',', $auth->auth['perm']);
-
-        $admin = false;
-        if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
-            $admin = true;
-        }
+        $isAdmin = cPermission::checkAdminPermission($auth->getPerms());
 
         if ($artlang->isLoaded()) {
             if(!$idtpl && $idcat && $idart && (int) $artlang->get('locked') === 1) {
                 $inUse    = true;
-                $disabled = ($admin === false)? 'disabled="disabled"' : '';
+                $disabled = ($isAdmin === false)? 'disabled="disabled"' : '';
                 // display notification if article configuration can not be edited
-                if (false === $admin) {
+                if (false === $isAdmin) {
                     $message = i18n('This article is currently frozen and can not be edited!');
                     $notificationMsg .= $notification->returnNotification('warning', $message) . '<br>';
                 }
@@ -138,7 +144,7 @@ if ($idart) {
 
             if ($db->f('locked') == 1) {
                 $inUse = true;
-                $disabled = ($admin)? '': 'disabled="disabled"';
+                $disabled = ($isAdmin)? '': 'disabled="disabled"';
                 if ($configLocked === false){
                     $message = i18n('This article is currently frozen and can not be edited!');
                     $notificationMsg .= $notification->returnNotification('warning', $message) . '<br>';
@@ -276,7 +282,7 @@ $tpl2->set('s', 'CLASS', 'text_medium');
 
 // CON-2157 fix categorie page has no article
 if (!$perm->have_perm_area_action_item('con', 'con_changetemplate', $idcat) || is_object($artlang) && $artlang->get('locked') === 1 ) {
-    $disabled2 = ($admin) ? '' : 'disabled="disabled"' ;
+    $disabled2 = ($isAdmin) ? '' : 'disabled="disabled"' ;
 } else {
     $disabled2 = '';
 }
@@ -411,10 +417,10 @@ if ($idart) {
 $cancelbutton = '';
 $acceptbutton = '';
 if ($idart || $area == 'con_tplcfg') {
-    $cancelbutton = '<a accesskey="c" href="' . $sess->url("main.php?area=con&frame=4&idcat=$idcat") . '"><img alt="" src="images/but_cancel.gif" border="0"></a>&nbsp;&nbsp;&nbsp;&nbsp;';
+    $cancelbutton = '<a accesskey="c" href="' . $sess->url("main.php?area=con&frame=4&idcat=$idcat") . '"><img alt="" src="images/but_cancel.gif"></a>&nbsp;&nbsp;&nbsp;&nbsp;';
     $acceptbutton = '<input accesskey="s" type="image" src="images/but_ok.gif" onclick="document.getElementById(\'tpl_form\').action = document.getElementById(\'tpl_form\').action+\'&back=true\'">';
 } else {
-    $cancelbutton = '<a accesskey="c" href="' . $sess->url("main.php?area=str&frame=4&idcat=$idcat") . '"><img alt="" src="images/but_cancel.gif" border="0"></a>&nbsp;&nbsp;&nbsp;&nbsp;';
+    $cancelbutton = '<a accesskey="c" href="' . $sess->url("main.php?area=str&frame=4&idcat=$idcat") . '"><img alt="" src="images/but_cancel.gif"></a>&nbsp;&nbsp;&nbsp;&nbsp;';
     $acceptbutton = '<input accesskey="s" type="image" src="images/but_ok.gif" onclick="document.getElementById(\'tpl_form\').action = document.getElementById(\'tpl_form\').action+\'&back=true\'">';
 }
 if ($idtpl != 0 && $inUse == false) {

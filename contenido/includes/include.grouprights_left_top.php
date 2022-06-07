@@ -14,6 +14,14 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $tpl;
+
+$cfg = cRegistry::getConfig();
+$perm = cRegistry::getPerm();
+$sess = cRegistry::getSession();
+
+$restrict = (isset($_REQUEST['restrict'])) ? cSecurity::toString($_REQUEST['restrict']) : '';
+
 // The following lines unset all right objects since I don't know (or I was unable
 // to find out) if they are global and/or session variables - so if you are
 // switching between groups and user management, we are safe.
@@ -33,11 +41,11 @@ $tpl2->set('s', 'NAME', 'restrict');
 $tpl2->set('s', 'CLASS', 'text_medium');
 $tpl2->set('s', 'OPTIONS', 'onchange="groupChangeRestriction()"');
 
-$limit = array(
+$limit = [
     "2" => i18n("All"),
     "1" => i18n("Frontend only"),
     "3" => i18n("Backend only")
-);
+];
 
 foreach ($limit as $key => $value) {
     $selected = ($restrict == $key) ? "selected" : "";

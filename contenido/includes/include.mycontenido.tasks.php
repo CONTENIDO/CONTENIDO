@@ -331,7 +331,7 @@ while ($todo = $todoitems->next()) {
         }
 
         $link->setCustom("idcommunication", $todo->get("idcommunication"));
-        $link->setContent('<img id="myContenidoTodoButton" src="images/but_todo.gif" alt="" border="0">');
+        $link->setContent('<img id="myContenidoTodoButton" src="images/but_todo.gif" alt="">');
 
         $mimg = $link->render();
 

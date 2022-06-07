@@ -492,9 +492,9 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
             // Add attributes "parent", "relevant" and "menuless" to an array
             $attributes = array(
-                'parent' => cSecurity::escapeString($attributes['parent']),
-            	'relevant' => cSecurity::toInteger($attributes['relevant']),
-                'menuless' => cSecurity::toInteger($attributes['menuless'])
+                'parent' => isset($attributes['parent']) ? cSecurity::escapeString($attributes['parent']) : '',
+            	'relevant' => isset($attributes['relevant']) ? cSecurity::toInteger($attributes['relevant']) : 0,
+                'menuless' => isset($attributes['menuless']) ? cSecurity::toInteger($attributes['menuless']) : 0
             );
 
             // Fix for parent and relevant attributes

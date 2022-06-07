@@ -91,7 +91,7 @@ if ($_GET['step'] == 'createRoot') { // create new root item
         <tr><td colspan="2" class="text_medium">'.i18n("Create new tree", 'content_allocation').'</td></tr>
         <tr>
             <td class="text_medium"><input id="itemname" class="text_medium" type="text" name="treeItemPost[name]" value=""></td>
-            <td>&nbsp;<a href="main.php?action='.$action.'&frame='.$frame.'&area='.$area.'&contenido='.$sess->id.'"><img src="images/but_cancel.gif" alt="" border="0"></a>
+            <td>&nbsp;<a href="main.php?action='.$action.'&frame='.$frame.'&area='.$area.'&contenido='.$sess->id.'"><img src="images/but_cancel.gif" alt=""></a>
             <input type="image" src="images/but_ok.gif"></td>
         </tr>
         </form>
@@ -111,7 +111,7 @@ if ($_GET['step'] == 'createRoot') { // create new root item
     $oDiv->updateAttributes(array('style' => 'padding: 5px; width: 400px; border: 1px #B3B3B3 solid; background-color: #FFFFFF;'));
     $oDiv->setContent($form);
 } else {
-    $oDiv->setContent('<a href="main.php?action='.$action.'&step=createRoot&frame='.$frame.'&area='.$area.'&contenido='.$sess->id.'"><img  src="images/folder_new.gif" border="0" class="vAlignMiddle"><span class="tableElement">'.i18n("Create new tree", 'content_allocation').'</span></a>');
+    $oDiv->setContent('<a href="main.php?action='.$action.'&step=createRoot&frame='.$frame.'&area='.$area.'&contenido='.$sess->id.'"><img  src="images/folder_new.gif" class="vAlignMiddle"><span class="tableElement">'.i18n("Create new tree", 'content_allocation').'</span></a>');
 }
 
 $treeDiv = new cHTMLDiv();

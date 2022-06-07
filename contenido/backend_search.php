@@ -16,20 +16,33 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
+global $idtpl, $properties, $tplconfig;
+
 // CONTENIDO startup process
 include_once('./includes/startup.php');
 
-cRegistry::bootstrap(array(
+cRegistry::bootstrap([
     'sess' => 'cSession',
     'auth' => 'Contenido_Challenge_Crypt_Auth',
     'perm' => 'cPermission'
-));
+]);
+
+$cfg = cRegistry::getConfig();
+$belang = cRegistry::getBackendLanguage();
+$lang = cRegistry::getLanguageId();
+$sess = cRegistry::getSession();
+$auth = cRegistry::getAuth();
+$perm = cRegistry::getPerm();
+$client = cRegistry::getClientId();
+$area = cRegistry::getArea();
+$frame = cRegistry::getFrame();
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 
 // Initialize variables
 $db = cRegistry::getDb();
 $db2 = cRegistry::getDb();
+
 
 // Session
 $sSession = '';
@@ -91,25 +104,25 @@ if (isset($_POST['speach'])) {
 }
 if (!empty($sSession)) {
     // Backend
-    cRegistry::bootstrap(array(
+    cRegistry::bootstrap([
         'sess' => 'cSession',
         'auth' => 'cAuthHandlerBackend',
         'perm' => 'cPermission'
-    ));
+    ]);
     i18nInit($cfg['path']['contenido_locale'], $belang);
 } else {
     // Frontend
-    cRegistry::bootstrap(array(
+    cRegistry::bootstrap([
         'sess' => 'cFrontendSession',
         'auth' => 'cAuthHandlerFrontend',
         'perm' => 'cPermission'
-    ));
+    ]);
 }
 
 // Get sorting values - make sure that they only contain valid values!
-$sSortByValues = array('title', 'lastmodified', 'published', 'artsort');
-$sSortBy = in_array($_POST['sortby'], $sSortByValues) ? $_POST['sortby'] : 'lastmodified';
-$sSortMode = ($_POST['sortmode'] == 'asc') ? 'asc' : 'desc';
+$sSortByValues = ['title', 'lastmodified', 'published', 'artsort'];
+$sSortBy = isset($_POST['sortby']) && in_array($_POST['sortby'], $sSortByValues) ? $_POST['sortby'] : 'lastmodified';
+$sSortMode = (isset($_POST['sortmode']) && $_POST['sortmode'] == 'asc') ? 'asc' : 'desc';
 
 /*
  * SAVE SEARCH
@@ -231,7 +244,7 @@ function getSearchResults($itemidReq, $itemtypeReq) {
     global $sSaveName;
     global $sType;
 
-    $retValue = array();
+    $retValue = [];
     // Request from DB
     $propertyCollection = new cApiPropertyCollection();
     $results = $propertyCollection->getValuesByType($itemtypeReq, $itemidReq, $sType);
@@ -476,7 +489,7 @@ if (!empty($sWhere)) {
     $db->query($sql);
 }
 
-$aTableHeaders = array();
+$aTableHeaders = [];
 foreach ($sSortByValues as $value) {
     $sTableHeader = '<a href="#" class="gray">';
     switch ($value) {
@@ -659,16 +672,18 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
             if ($perm->have_perm_area_action_item("con", "con_makestart", $idcat) && 0 == 1) {
                 if ($startidartlang == $idartlang) {
                     $sFlagTitle = i18n('Flag as normal article');
-                    $makeStartarticle = "<td nowrap=\"nowrap\" class=\"bordercell\"><a href=\"main.php?area=con&idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=0&contenido=$sSession\" title=\"{$sFlagTitle}\"><img src=\"images/isstart1.gif\" border=\"0\" title=\"{$sFlagTitle}\" alt=\"{$sFlagTitle}\"></a></td>";
+                    $makeStartarticle = "<td nowrap=\"nowrap\" class=\"bordercell\"><a href=\"main.php?area=con&idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=0&contenido=$sSession\" title=\"{$sFlagTitle}\"><img src=\"images/isstart1.gif\" title=\"{$sFlagTitle}\" alt=\"{$sFlagTitle}\"></a></td>";
                 } else {
                     $sFlagTitle = i18n('Flag as start article');
-                    $makeStartarticle = "<td nowrap=\"nowrap\" class=\"bordercell\"><a href=\"main.php?area=con&idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=1&contenido=$sSession\" title=\"{$sFlagTitle}\"><img src=\"images/isstart0.gif\" border=\"0\" title=\"{$sFlagTitle}\" alt=\"{$sFlagTitle}\"></a></td>";
+                    $makeStartarticle = "<td nowrap=\"nowrap\" class=\"bordercell\"><a href=\"main.php?area=con&idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=1&contenido=$sSession\" title=\"{$sFlagTitle}\"><img src=\"images/isstart0.gif\" title=\"{$sFlagTitle}\" alt=\"{$sFlagTitle}\"></a></td>";
                 }
             } else {
                 if ($startidartlang == $idartlang) {
-                    $makeStartarticle = "<td nowrap=\"nowrap\" class=\"bordercell\"><img src=\"images/isstart1.gif\" border=\"0\" title=\"{$sFlagTitle}\" alt=\"{$sFlagTitle}\"></td>";
+                    $sFlagTitle = i18n('Flag as normal article');
+                    $makeStartarticle = "<td nowrap=\"nowrap\" class=\"bordercell\"><img src=\"images/isstart1.gif\" title=\"{$sFlagTitle}\" alt=\"{$sFlagTitle}\"></td>";
                 } else {
-                    $makeStartarticle = "<td nowrap=\"nowrap\" class=\"bordercell\"><img src=\"images/isstart0.gif\" border=\"0\" title=\"{$sFlagTitle}\" alt=\"{$sFlagTitle}\"></td>";
+                    $sFlagTitle = i18n('Flag as start article');
+                    $makeStartarticle = "<td nowrap=\"nowrap\" class=\"bordercell\"><img src=\"images/isstart0.gif\" title=\"{$sFlagTitle}\" alt=\"{$sFlagTitle}\"></td>";
                 }
             }
 
@@ -676,19 +691,19 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
             if ($online == 1) {
                 $sOnlineStatus = i18n('Make offline');
                 $bgColorRow = "background-color: #E2E2E2;";
-                $setOnOff = "<a href=\"main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart&contenido=$sSession\" title=\"{$sOnlineStatus}\"><img src=\"images/online.gif\" title=\"{$sOnlineStatus}\" alt=\"{$sOnlineStatus}\" border=\"0\"></a>";
+                $setOnOff = "<a href=\"main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart&contenido=$sSession\" title=\"{$sOnlineStatus}\"><img src=\"images/online.gif\" title=\"{$sOnlineStatus}\" alt=\"{$sOnlineStatus}\"></a>";
             } else {
                 $sOnlineStatus = i18n('Make online');
                 $bgColorRow = "background-color: #E2D9D9;";
-                $setOnOff = "<a href=\"main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart&contenido=$sSession\" title=\"{$sOnlineStatus}\"><img src=\"images/offline.gif\" title=\"{$sOnlineStatus}\" alt=\"{$sOnlineStatus}\" border=\"0\"></a>";
+                $setOnOff = "<a href=\"main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart&contenido=$sSession\" title=\"{$sOnlineStatus}\"><img src=\"images/offline.gif\" title=\"{$sOnlineStatus}\" alt=\"{$sOnlineStatus}\"></a>";
             }
             // Lock/unlock article
             if ($locked == 1) {
                 $sLockStatus = i18n('Unfreeze article');
-                $lockArticle = "<a href=\"main.php?area=con&idcat=$idcat&action=con_lock&frame=4&idart=$idart&contenido=$sSession\" title=\"{$sLockStatus}\"><img src=\"images/lock_closed.gif\" title=\"{$sLockStatus}\" alt=\"{$sLockStatus}\" border=\"0\"></a>";
+                $lockArticle = "<a href=\"main.php?area=con&idcat=$idcat&action=con_lock&frame=4&idart=$idart&contenido=$sSession\" title=\"{$sLockStatus}\"><img src=\"images/lock_closed.gif\" title=\"{$sLockStatus}\" alt=\"{$sLockStatus}\"></a>";
             } else {
                 $sLockStatus = i18n('Freeze article');
-                $lockArticle = "<a href=\"main.php?area=con&idcat=$idcat&action=con_lock&frame=4&idart=$idart&contenido=$sSession\" title=\"{$sLockStatus}\"><img src=\"images/lock_open.gif\" title=\"{$sLockStatus}\" alt=\"{$sLockStatus}\" border=\"0\"></a>";
+                $lockArticle = "<a href=\"main.php?area=con&idcat=$idcat&action=con_lock&frame=4&idart=$idart&contenido=$sSession\" title=\"{$sLockStatus}\"><img src=\"images/lock_open.gif\" title=\"{$sLockStatus}\" alt=\"{$sLockStatus}\"></a>";
             }
 
             // Templatename
@@ -747,13 +762,13 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
             }
 
             if ($perm->have_perm_area_action_item("con_editcontent", "con_editart", $idcat)) {
-                $editart = "<a href=\"main.php?area=con_editcontent&action=con_editart&changeview=edit&idartlang=$idartlang&idart=$idart&idcat=$idcat&frame=4&contenido=$sSession\" title=\"idart: $idart idcatart: $idcatart\" alt=\"idart: $idart idcatart: $idcatart\"><i><span style='font-size: 80%'>" . $catstring . "</span></i><br>" . $strTitle . "</a>";
+                $editart = "<a href=\"main.php?area=con_editcontent&action=con_editart&changeview=edit&idartlang=$idartlang&idart=$idart&idcat=$idcat&frame=4&contenido=$sSession\" title=\"idart: $idart idcatart: $idcatart\"><i><span style='font-size: 80%'>" . $catstring . "</span></i><br>" . $strTitle . "</a>";
             } else {
                 $editart = "<i><span style='font-size: 80%'>" . $catstring . "</span></i><br>" . $strTitle;
             }
 
             if ($perm->have_perm_area_action_item("con", "con_duplicate", $idcat)) {
-                $duplicate = "<a href=\"main.php?area=con&idcat=$idcat&action=con_duplicate&duplicate=$idart&frame=4&contenido=$sSession\" title=\"$sDuplicateArticle\"><img src=\"images/but_copy.gif\" border=\"0\" title=\"$sDuplicateArticle\" alt=\"$sDuplicateArticle\"></a>";
+                $duplicate = "<a href=\"main.php?area=con&idcat=$idcat&action=con_duplicate&duplicate=$idart&frame=4&contenido=$sSession\" title=\"$sDuplicateArticle\"><img src=\"images/but_copy.gif\" title=\"$sDuplicateArticle\" alt=\"$sDuplicateArticle\"></a>";
             } else {
                 $duplicate = "";
             }
@@ -784,7 +799,7 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
                       <td nowrap=\"nowrap\" class=\"bordercell\">" . $db->f("artsort") . "</td>
                       <td nowrap=\"nowrap\" class=\"bordercell\">$sTemplateName</td>
                       <td nowrap=\"nowrap\" class=\"bordercell\">
-                          <a id=\"m1\" onclick=\"javascript:window.open('main.php?subject=$sTodoListSubject&amp;area=todo&amp;frame=1&amp;itemtype=idart&amp;itemid=$idart&amp;contenido=$sSession', 'todo', 'scrollbars=yes, height=300, width=625');\" alt=\"$sReminder\" title=\"$sReminder\" href=\"#\"><img id=\"m2\" alt=\"$sReminder\" src=\"images/but_setreminder.gif\" border=\"0\"></a>
+                          <a id=\"m1\" onclick=\"javascript:window.open('main.php?subject=$sTodoListSubject&amp;area=todo&amp;frame=1&amp;itemtype=idart&amp;itemid=$idart&amp;contenido=$sSession', 'todo', 'scrollbars=yes, height=300, width=625');\" title=\"$sReminder\" href=\"#\"><img id=\"m2\" alt=\"$sReminder\" src=\"images/but_setreminder.gif\"></a>
                           $properties
                           $tplconfig
                           $duplicate

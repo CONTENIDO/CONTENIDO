@@ -19,21 +19,29 @@ cInclude('includes', 'functions.str.php');
 cInclude('includes', 'functions.pathresolver.php');
 
 // ugly globals that are used in this script
-global $tpl, $cfg, $db, $perm, $sess, $auth;
-global $frame, $area, $contenido, $notification;
-global $client, $lang, $belang;
-global $idcat, $idart, $idcatlang, $idcatart, $idtpl;
-global $syncoptions, $tmp_notification;
+global $tpl, $contenido, $notification, $idcatart, $idtpl;
+global $syncoptions, $tmp_notification, $versioningState;
+
+$db = cRegistry::getDb();
+$perm = cRegistry::getPerm();
+$auth = cRegistry::getAuth();
+$belang = cRegistry::getBackendLanguage();
+$frame = cRegistry::getFrame();
+$action = cRegistry::getAction();
+$idart = cRegistry::getArticleId();
+$cfg = cRegistry::getConfig();
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
+$sess = cRegistry::getSession();
+$area = cRegistry::getArea();
+$idcat = cRegistry::getCategoryId();
+$idcatlang = cRegistry::getCategoryLanguageId();
 
 // Reset template
 $tpl->reset();
 
 // Admin rights
-$aAuthPerms = explode(',', cRegistry::getAuth()->auth['perm']);
-$admin = false;
-if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
-	$admin = true;
-}
+$isAdmin = cPermission::checkAdminPermission($auth->getPerms());
 
 // Check permissions
 if (!$perm->have_perm_area_action($area, 'con_meta_edit') && !$perm->have_perm_area_action_item($area, 'con_meta_edit', $idcat)) {
@@ -44,21 +52,24 @@ if (!$perm->have_perm_area_action($area, 'con_meta_edit') && !$perm->have_perm_a
 
 $versioning = new cContentVersioning();
 
+// Initialize $_REQUEST with common used keys to prevent PHP 'Undefined array key' warnings
+foreach (['idArtLangVersion'] as $_key) {
+    if (!isset($_REQUEST[$_key])) {
+        $_REQUEST[$_key] = '';
+    }
+}
+
 // Get article (version) data
 $art = new cApiArticleLanguage();
 $art->loadByArticleAndLanguageId(cSecurity::toInteger($idart), cSecurity::toInteger($lang));
 
 if ($_REQUEST['idArtLangVersion'] == NULL && $versioning->getState() == 'advanced') {
-
     $art = new cApiArticleLanguageVersion($versioning->getEditableArticleId($art->getField('idartlang')));
     //$art = new cApiArticleLanguageVersion($versioning->getEditableArticleId($idArtLang));
-
 } else if ($versioning->getState() == 'advanced' && $_REQUEST['idArtLangVersion'] != 'current'
     || $versioning->getState() == 'simple' && ($_REQUEST['idArtLangVersion'] != NULL
     && is_numeric ($_REQUEST['idArtLangVersion']) || is_numeric ($_REQUEST['idArtLangVersion']))) {
-
     $art = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
-
 }
 
 // if there is no (editable) version yet, output the published version
@@ -79,7 +90,7 @@ $articleType = $versioning->getArticleType(
 
 // Set as current/editable
 switch ($versioning->getState()) {
-    case 'advanced' :
+    case 'advanced':
         if ($action == 'copyto') {
             if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'current') {
                 // editable->current
@@ -91,11 +102,10 @@ switch ($versioning->getState()) {
                 }
 
                 // Execute cec hook
-                cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
-                ));
-
+                ]);
             } else if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
                 // version->editable
                 $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
@@ -104,10 +114,10 @@ switch ($versioning->getState()) {
                 $selectedArticleId = 'editable';
 
                 // Execute cec hook
-                cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
                     'idart' => $artLangVersion->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
-                ));
+                ]);
             } else if ($_REQUEST['idArtLangVersion'] == 'current') {
                 // current->editable
                 $artLang = new cApiArticleLanguage((int) $_REQUEST['idartlang']);
@@ -116,15 +126,15 @@ switch ($versioning->getState()) {
                 $selectedArticleId = 'editable';
 
                 // Execute cec hook
-                cApiCecHook::execute('Contenido.Content.CopyToVersion', array(
+                cApiCecHook::execute('Contenido.Content.CopyToVersion', [
                     'idart' => $artLang->get("idart"),
                     'idlang' => cRegistry::getLanguageId()
-                ));
+                ]);
             }
         }
 
         break;
-    case 'simple' :
+    case 'simple':
         if ($action == 'copyto') {
             if (is_numeric($_REQUEST['idArtLangVersion'])) {
                 $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
@@ -133,6 +143,7 @@ switch ($versioning->getState()) {
             }
         }
 
+        break;
     default:
         break;
 }
@@ -161,7 +172,7 @@ if ($art->getField('created')) {
         $tpl->set("s", "REASON", sprintf(i18n('Article is in use by %s (%s)'), $inUseUser, $inUseUserRealName));
     }
 
-    if ($art->getField('locked') == 1 && false === $admin) {
+    if ($art->getField('locked') == 1 && false === $isAdmin) {
         $disabled = 'disabled="disabled"';
         $tpl->set('s', 'DISABLED', ' ' . $disabled);
         $notifications[] = $notification->returnNotification('warning', i18n('This article is currently frozen and can not be edited!'));
@@ -187,7 +198,6 @@ if ($art->getField('created')) {
         $tpl->set('s', 'BUTTONDISABLE', $disabled);
         $tpl->set("s", "REASON", "");
     }
-
 }
 
 // Assign head values to page
@@ -233,10 +243,10 @@ if (!empty($notifications)) {
 // Assign form page seo elements values (incl. CON-2696 change, undo CON-2532 changes)
 $tpl->set('s', 'LINK', $art->getLink());
 
-$tpl->set('s', 'FULL_LINK', cUri::getInstance()->build(array(
+$tpl->set('s', 'FULL_LINK', cUri::getInstance()->build([
     'idart' => $art->get('idart'),
     'lang' => $art->get('idlang')
-), true));
+], true));
 
 $tpl->set('s', 'PAGE_TITLE', conHtmlSpecialChars(cSecurity::unFilter(stripslashes($art->getField('pagetitle')))));
 
@@ -244,7 +254,7 @@ $tpl->set('s', 'ALIAS', cSecurity::unFilter(stripslashes($art->getField('urlname
 
 // Assign Meta-Tags elements
 $availableTags = conGetAvailableMetaTagTypes();
-$managedTypes = array(
+$managedTypes = [
     'author',
     'description',
     'expires',
@@ -252,20 +262,20 @@ $managedTypes = array(
     'revisit-after',
     'robots',
     'copyright'
-);
+];
 
-$metaPreview = array();
+$metaPreview = [];
 
 // Set meta tags values
 foreach ($availableTags as $key => $value) {
     $contentMetaValue = conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version'));
     $contentMetaValue = str_replace('"', '', $contentMetaValue);
 
-    $metaPreview[] = array(
+    $metaPreview[] = [
         'fieldname' => $value['fieldname'],
         'name' => $value['metatype'],
         'content' => cSecurity::unFilter(stripslashes($contentMetaValue))
-    );
+    ];
 
     // Set meta values to inputs
     if (in_array($value['metatype'], $managedTypes)) {
@@ -279,7 +289,6 @@ foreach ($availableTags as $key => $value) {
                         $metaPreview[$i]['content'] = 'index, follow';
                         break;
                     }
-
                     $i++;
                 }
             }
@@ -298,7 +307,6 @@ foreach ($availableTags as $key => $value) {
     }
 
     // Create add and edit MetaTag form BLOCK
-    $tpl->set('d', 'METAINPUT', 'META' . $value);
     switch ($value['fieldtype']) {
         case 'text':
             $element = '<input ' . $disabled . '
@@ -318,6 +326,7 @@ foreach ($availableTags as $key => $value) {
                             id="META' . $value['metatype'] . '"
                             rows="3"
                         >' . cSecurity::unFilter(stripslashes($contentMetaValue)) . '</textarea>';
+
             break;
         case 'date':
             $element = '<input ' . $disabled . '
@@ -340,7 +349,7 @@ foreach ($availableTags as $key => $value) {
 
     if ($versioning->getState() == 'simple' && $articleType == 'current'
             || $versioning->getState() == 'advanced' && $articleType == 'editable'
-            || $versioning->getState() == 'disabled' && ($art->getField('locked') != 1 || in_array('sysadmin', $aAuthPerms))) {
+            || $versioning->getState() == 'disabled' && ($art->getField('locked') != 1 || cPermission::checkSysadminPermission($auth->getPerms()))) {
         $tpl->set('d', 'CURSOR', 'pointer');
         $tpl->set('d', 'DELETE_META',
             "Con.showConfirmation('" .
@@ -350,7 +359,6 @@ foreach ($availableTags as $key => $value) {
                     }
             ); "
         );
-
     } else {
         $tpl->set('d', 'CURSOR', 'default');
         $tpl->set('d', 'DELETE_META', '');
@@ -362,9 +370,7 @@ foreach ($availableTags as $key => $value) {
 $tpl->set('s', 'SITEMAP_PRIO', $art->getField('sitemapprio'));
 
 switch ($versioning->getState()) {
-
     case 'advanced':
-
         $optionElementParameters = $versioning->getDataForSelectElement($art->getField('idartlang'), 'seo');
 
         // set editable element
@@ -378,12 +384,11 @@ switch ($versioning->getState()) {
             if (count($optionElementParameters) > 0) {
                 unset($optionElementParameters[max(array_keys($optionElementParameters))]);
             }
-
         }
 
         // check if selected version is availible, else select the next lower version
         $temp_id = $selectedArticleId;
-        $temp_ids = array ();
+        $temp_ids = [];
 
         foreach (array_values($optionElementParameters) AS $key => $value) {
             $temp_ids[] = key($value);
@@ -428,7 +433,7 @@ switch ($versioning->getState()) {
         }
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle, 'copytobutton');
 
-        $infoButton =  new cGuiBackendHelpbox(i18n('<strong>Advanced-mode:</strong> '
+        $infoButton = new cGuiBackendHelpbox(i18n('<strong>Advanced-mode:</strong> '
                 . 'Older SEO versions can be reviewed and restored. Unpublished drafts can be created (For further configurations please go to Administration/System/System configuration).<br/><br/>'
                 . 'Changes are only related to SEO!'));
 
@@ -460,8 +465,7 @@ switch ($versioning->getState()) {
         $tpl->set('s', 'ARTICLE_VERSIONING_BOX', $versioningBox);
 
         break;
-    case 'simple' :
-
+    case 'simple':
         $optionElementParameters = $versioning->getDataForSelectElement($art->getField('idartlang'), 'seo');
 
         // Create Metatag Version Option Elements
@@ -474,7 +478,7 @@ switch ($versioning->getState()) {
 
         // check if selected version is availible, else select the next lower version
         $temp_id = $selectedArticleId;
-        $temp_ids = array ();
+        $temp_ids = [];
 
         foreach (array_values($optionElementParameters) AS $key => $value) {
             $temp_ids[] = key($value);
@@ -504,14 +508,13 @@ switch ($versioning->getState()) {
         $tpl->set("s", "ACTION2", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=con_meta_change_version'));
         $tpl->set("s", "ACTION3", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=copyto'));
 
-
         // Create markAsCurrent Button
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to published version'), 'copytobutton');
         if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
 
-        $infoButton =  new cGuiBackendHelpbox(i18n('<strong>Simple-mode:</strong> '
+        $infoButton = new cGuiBackendHelpbox(i18n('<strong>Simple-mode:</strong> '
                 . 'Older SEO versions can be reviewed and restored (For further configurations please go to Administration/System/System configuration).<br/><br/>'
                 . 'Changes are only related to SEO!'));
 
@@ -543,14 +546,12 @@ switch ($versioning->getState()) {
         $tpl->set('s', 'ARTICLE_VERSIONING_BOX', $versioningBox);
 
         break;
-    case 'disabled' :
-
-
+    case 'disabled':
          // do not show box to select article version when article versioning is disabled
         $tpl->set('s', 'ARTICLE_VERSIONING_BOX', '');
-    default :
         break;
-
+    default:
+        break;
 }
 
 $infoButton = new cGuiBackendHelpbox(i18n('The title-tag is one of the most important on-page factors for SEO and is not longer than 60 characters. It includes top keywords and the branding.'));
@@ -575,7 +576,7 @@ $infoButton->setHelpText(i18n('The refresh rate is focused on the content.'));
 $tpl->set("s", "INFO_BUTTON_SITEMAP_FREQUENCY", $infoButton->render());
 
 $tpl->set('s', 'SELECTED_' . $art->getField('changefreq'), 'selected');
-$sitemapChangeFrequencies = array(
+$sitemapChangeFrequencies = [
     '',
     'always',
     'hourly',
@@ -584,7 +585,7 @@ $sitemapChangeFrequencies = array(
     'monthly',
     'yearly',
     'never'
-);
+];
 foreach ($sitemapChangeFrequencies as $value) {
     $tpl->set('s', 'SELECTED_' . $value, '');
 }
@@ -599,16 +600,16 @@ while (false !== $chainEntry = $cecIterator->next()) {
 $tpl->set('s', 'ADDITIONAL_ROWS', $additionalRows);
 
 // Assign add new meta
-$result = array(
+$result = [
     'metatype' => '',
-    'fieldtype' => array(
+    'fieldtype' => [
         'text',
         'textarea',
         'date'
-    ),
+    ],
     'maxlength' => '255',
     'fieldname' => 'name'
-);
+];
 $tpl2 = new cTemplate();
 $infoButton->setHelpText(i18n('Attribute content has to begin with a letter and can be followed by letters, digits or the following chars: . : _ - '));
 $tpl2->set('s', 'METATITLE', i18n('New meta tag') . ' ' . $infoButton->render());
@@ -617,28 +618,23 @@ $sql = "SHOW FIELDS
 $db->query($sql);
 
 while ($db->nextRecord()) {
-
-    if ($db->f('Field') == 'idmetatype')
+    if ($db->f('Field') == 'idmetatype') {
         continue;
+    }
 
     switch ($db->f('Field')) {
-
         case 'fieldtype':
             $tpl2->set('d', 'METATITLE', i18n('Field Type'));
             break;
-
         case 'metatype':
             $tpl2->set('d', 'METATITLE', i18n('Attribute content'));
             break;
-
         case 'maxlength':
             $tpl2->set('d', 'METATITLE', i18n('Max Length'));
             break;
-
         case 'fieldname':
             $tpl2->set('d', 'METATITLE', i18n('Meta Attribute'));
             break;
-
         default:
             $tpl2->set('d', 'METATITLE', i18n($db->f('Field')));
             break;
@@ -669,13 +665,13 @@ while ($db->nextRecord()) {
 }
 
 // accessible by the current user (sysadmin client admin) anymore.
-if (in_array('sysadmin', $aAuthPerms)) {
+if (cPermission::checkSysadminPermission($auth->getPerms())) {
     // disable/grey out button if a non-editable version is selected
     if ($versioning->getState() == 'simple' && $articleType != 'current'
             || $versioning->getState() == 'advanced' && $articleType != 'editable') {
-        $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new_off.png" id="addMetaDisabled">');
+        $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new_off.png" id="addMetaDisabled" alt="">');
     } else {
-        $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new.gif" id="addMeta">');
+        $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new.gif" id="addMeta" alt="">');
     }
     $tpl->set('s', 'ADDNEWMETA', $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['con_meta_addnew'], true));
 } else {

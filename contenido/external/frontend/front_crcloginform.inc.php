@@ -16,6 +16,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 global $cfg;
 
 // Include clients login form handler
-include(cRegistry::getBackendPath() . $cfg['path']['includes'] . '/frontend/include.front_crcloginform.inc.php');
+include(cRegistry::getBackendPath() . $cfg['path']['includes'] . 'frontend/include.front_crcloginform.inc.php');
 
 ?>

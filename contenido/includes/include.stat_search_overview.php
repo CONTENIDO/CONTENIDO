@@ -13,6 +13,8 @@
  */
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+$action = cRegistry::getAction();
+
 $page = new cGuiPage("stat_search_overview");
 
 // check for the client setting. If search tracking is not allowed, display an
@@ -25,7 +27,7 @@ if (getEffectiveSetting("search", "term_tracking", "on") != "on") {
 
 // the collection we'll be showing
 $termCollection = new cApiSearchTrackingCollection();
-$term = $_GET['term'];
+$term = isset($_GET['term']) ? $_GET['term'] : '';
 if (true === cRegistry::getConfigValue('simulate_magic_quotes')) {
     $term = stripslashes($term);
 }
@@ -69,5 +71,3 @@ if ($action == "show_single_term") {
 }
 
 $page->render();
-
-?>

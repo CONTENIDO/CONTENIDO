@@ -648,6 +648,15 @@ abstract class cCodeGeneratorAbstract {
     protected function _stripWhitespace($code) {
         $cfg = cRegistry::getConfig();
 
+        // Check if stripping white spaces and comments is active, it is enabled by default
+        // and has to be disabled explicitly.
+        $stripWhiteSpaces = !isset($cfg['code_generator']['strip_white_spaces'])
+            || $cfg['code_generator']['strip_white_spaces'] === true;
+
+        if (!$stripWhiteSpaces) {
+            return $code;
+        }
+
         // CON-1536 strip comments from module code
         // regex is not enough to correctly remove comments
         // use php_strip_whitespace instead of writing own parser

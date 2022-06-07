@@ -132,7 +132,7 @@ class cGuiFileOverview extends cGuiPage {
     /**
      * Selected file extension.
      *
-     * @var string
+     * @var array
      */
     protected $_fileExtension;
 
@@ -189,18 +189,20 @@ class cGuiFileOverview extends cGuiPage {
 
         // create an array of all files in the directory
         $files = [];
-        foreach (new DirectoryIterator($this->_directory) as $file) {
-            if ($file->isDir()) {
-                continue;
+        if (!empty($this->_directory)) {
+            foreach (new DirectoryIterator($this->_directory) as $file) {
+                if ($file->isDir()) {
+                    continue;
+                }
+                if (!empty($this->_fileExtension) && !in_array($file->getExtension(), $this->_fileExtension)) {
+                    continue;
+                }
+                $files[] = $file->getBasename();
             }
-            if (!empty($this->_fileExtension) && !in_array($file->getExtension(), $this->_fileExtension)) {
-                continue;
-            }
-            $files[] = $file->getBasename();
-        }
 
-        // sort the files
-        sort($files);
+            // sort the files
+            sort($files);
+        }
 
         $this->addScript('parameterCollector.js?v=4ff97ee40f1ac052f634e7e8c2f3e37e');
 
@@ -214,7 +216,7 @@ class cGuiFileOverview extends cGuiPage {
         // assign variables for every file
         $fileInfos = new cApiFileInformationCollection();
         foreach ($files as $file) {
-            if ($this->_fileInfoType != '') {
+            if ($this->_fileInfoType != '' && !empty($fileInfo['description'])) {
                 $fileInfo = $fileInfos->getFileInformation($file, $this->_fileInfoType);
                 $this->set('d', 'DESCRIPTION', conHtmlSpecialChars(cSecurity::escapeString($fileInfo['description'])));
             } else {

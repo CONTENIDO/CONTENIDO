@@ -17,6 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude("external", "codemirror/class.codemirror.php");
 cInclude("includes", "functions.file.php");
 $sFileType = "html";
+$module = new cApiModule($idmod);
 
 $readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
 
@@ -37,7 +38,7 @@ if (true === cRegistry::getConfigValue('simulate_magic_quotes')) {
 
 $page = new cGuiPage("mod_template");
 $tpl->reset();
-
+$page->displayInfo(i18n('Edit file') . " &quot;". conHtmlSpecialChars($module->get('name')) . "&quot;");
 if (!is_object($notification)) {
     $notification = new cGuiNotification();
 }

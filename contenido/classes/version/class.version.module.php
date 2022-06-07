@@ -41,7 +41,7 @@ class cVersionModule extends cVersion {
      * @param cDb    $oDB
      *         CONTENIDO database object
      * @param int    $iClient
-     * @param object $sArea
+     * @param string $sArea
      * @param int    $iFrame
      *
      * @throws cInvalidArgumentException
@@ -61,10 +61,11 @@ class cVersionModule extends cVersion {
 
     /**
      *
+     * @throws cDbException
+     * @throws cException
      * @throws cInvalidArgumentException
      */
     protected function _storeModuleInformation() {
-
         $iIdMod = cSecurity::toInteger($this->iIdentity);
         $oModule = new cApiModule($iIdMod);
 
@@ -86,7 +87,7 @@ class cVersionModule extends cVersion {
     }
 
     /**
-     * This function read an xml file nodes
+     * This function read a xml file nodes
      *
      * @param string $sPath
      *         Path to file
@@ -94,7 +95,7 @@ class cVersionModule extends cVersion {
      *         returns array width this four nodes
      */
     public function initXmlReader($sPath) {
-        $aResult = array();
+        $aResult = [];
         if ($sPath != '') {
             // Output this xml file
             $sXML = simplexml_load_file($sPath);
@@ -115,7 +116,7 @@ class cVersionModule extends cVersion {
 
     /**
      * Function returns javascript which refreshes CONTENIDO frames for file
-     * list an subnavigation. This is necessary, if filenames where changed,
+     * list a sub-navigation. This is necessary, if filenames where changed,
      * when a history entry is restored.
      *
      * @param string $sArea

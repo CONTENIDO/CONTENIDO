@@ -14,6 +14,21 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $notification, $db, $newmember;
+
+$auth = cRegistry::getAuth();
+$perm = cRegistry::getPerm();
+$sess = cRegistry::getSession();
+$cfg = cRegistry::getConfig();
+$area = cRegistry::getArea();
+$action = cRegistry::getAction();
+$lang = cRegistry::getLanguageId();
+$frame = cRegistry::getFrame();
+
+$filter_in = isset($_POST['filter_in']) ? cSecurity::toString($_POST['filter_in']) : '';
+$filter_non = isset($_POST['filter_non']) ? cSecurity::toString($_POST['filter_non']) : '';
+$user_in_group = isset($_POST['user_in_group']) ? $_POST['user_in_group'] : '';
+
 $db2 = cRegistry::getDb();
 // $page = new cTemplate();
 
@@ -28,12 +43,12 @@ if (!$perm->have_perm_area_action($area, $action)) {
 
 if (($action == "group_deletemember") && ($perm->have_perm_area_action($area, $action))) {
     $aDeleteMembers = array();
-    if (!is_array($_POST['user_in_group'])) {
-        if ($_POST['user_in_group'] > 0) {
-            $aDeleteMembers[] = $_POST['user_in_group'];
+    if (!is_array($user_in_group)) {
+        if ($user_in_group > 0) {
+            $aDeleteMembers[] = $user_in_group;
         }
     } else {
-        $aDeleteMembers = $_POST['user_in_group'];
+        $aDeleteMembers = $user_in_group;
     }
 
     $groupMemberColl = new cApiGroupMemberCollection();
@@ -46,6 +61,8 @@ if (($action == "group_deletemember") && ($perm->have_perm_area_action($area, $a
 
 if (($action == "group_addmember") && ($perm->have_perm_area_action($area, $action))) {
     if (is_array($newmember)) {
+        $notiAdded = '';
+        $notiAlreadyExisting = '';
         foreach ($newmember as $key => $value) {
             $myUser = new cApiUser();
 
@@ -61,7 +78,7 @@ if (($action == "group_addmember") && ($perm->have_perm_area_action($area, $acti
             $groupMember = $groupMemberColl->fetchByUserIdAndGroupId($myUser->getField('user_id'), $groupid);
 
             if (!$groupMember) {
-                // group member entry does not exists, create it
+                // group member entry does not exist, create it
                 $newGroupMember = $groupMemberColl->create($myUser->getField('user_id'), $groupid);
                 if ($notiAdded == '') {
                     $notiAdded .= $myUser->getField('realname');
@@ -101,7 +118,7 @@ if ($sortby != '') {
 $db->query($sql);
 
 $sInGroupOptions = '';
-$aAddedUsers = array();
+$aAddedUsers = [];
 $myUser = new cApiUser();
 
 while ($db->nextRecord()) {
@@ -151,8 +168,8 @@ $page->set('s', 'RECORD_ID_NAME', 'groupid');
 $page->set('s', 'ADD_ACTION', 'group_addmember');
 $page->set('s', 'DELETE_ACTION', 'group_deletemember');
 $page->set('s', 'STANDARD_ACTION', 'group_addmember');
-$page->set('s', 'IN_GROUP_VALUE', $_POST['filter_in']);
-$page->set('s', 'NON_GROUP_VALUE', $_POST['filter_non']);
+$page->set('s', 'IN_GROUP_VALUE', $filter_in);
+$page->set('s', 'NON_GROUP_VALUE', $filter_non);
 $page->set('s', 'DISPLAY_OK', 'none');
 $page->set('s', 'RELOADSCRIPT', '');
 

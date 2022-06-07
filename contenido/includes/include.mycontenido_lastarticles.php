@@ -16,6 +16,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 cInclude("includes", "functions.con.php");
 
+global $tpl, $db;
+
+$cfg = cRegistry::getConfig();
+$perm = cRegistry::getPerm();
+$auth = cRegistry::getAuth();
+$lang = cRegistry::getLanguageId();
+$client = cRegistry::getClientId();
+$sess = cRegistry::getSession();
+$frame = cRegistry::getFrame();
+
 $sql = "SELECT
             logtimestamp
         FROM
@@ -31,7 +41,7 @@ $db->nextRecord();
 
 $lastlogin = $db->f("logtimestamp");
 
-$idaction = $perm->getIDForAction("con_editart");
+$idaction = $perm->getIdForAction("con_editart");
 
 $sql = "SELECT
             a.idart AS idart,
@@ -135,13 +145,13 @@ while ($db->nextRecord()) {
     $tpl->set('d', 'TPLNAME', $a_tplname);
 
     // Make Startarticle button
-    $tmp_img = (1 == $is_start) ? '<img src="images/isstart1.gif" border="0" alt="">' : '<img src="images/isstart0.gif" border="0" alt="">';
+    $tmp_img = (1 == $is_start) ? '<img src="images/isstart1.gif" alt="">' : '<img src="images/isstart0.gif" alt="">';
     $tpl->set('d', 'START', $tmp_img);
 
     if ($online) {
-        $tmp_online = '<img src="images/online.gif" title="' . i18n("Article is online") . '" alt="' . i18n("Article is online") . '" border="0">';
+        $tmp_online = '<img src="images/online.gif" title="' . i18n("Article is online") . '" alt="' . i18n("Article is online") . '">';
     } else {
-        $tmp_online = '<img src="images/offline.gif" title="' . i18n("Article is offline") . '" alt="' . i18n("Article is offline") . '" border="0"></a>';
+        $tmp_online = '<img src="images/offline.gif" title="' . i18n("Article is offline") . '" alt="' . i18n("Article is offline") . '"></a>';
     }
 
     $tpl->set('d', 'ONLINE', $tmp_online);
