@@ -284,25 +284,23 @@ function conEditFirstTime(
  * @throws cInvalidArgumentException
  */
 function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $published, $artsort, $keyart = 0, $searchable = 1, $sitemapprio = -1, $changefreq = 'nothing') {
-    global $client, $lang, $redirect, $redirect_url, $external_redirect, $perm;
+    global $client, $lang, $redirect, $redirect_url, $external_redirect;
     global $urlname, $page_title;
     global $time_move_cat, $time_target_cat;
     // Used to indicate if the moved article should be online
     global $time_online_move;
     global $timemgmt;
-    // CON-2134 check admin permission
-    $auth = cRegistry::getAuth();
-    $aAuthPerms = explode(',', $auth->auth['perm']);
 
-    $admin = false;
-    if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
-        $admin = true;
-    }
+    $perm = cRegistry::getPerm();
+
+    // CON-2134 check admin permission
+    $isAdmin = cPermission::checkAdminPermission(cRegistry::getAuth()->getPerms());
+
     $oArtLang = new cApiArticleLanguage($idartlang);
     $locked = (int) $oArtLang->get('locked');
 
-    // abort editing if article is locked and user user no admin
-    if (1 === $locked && false === $admin) {
+    // abort editing if article is locked and user is no admin
+    if (1 === $locked && false === $isAdmin) {
         return $idart;
     }
 
@@ -624,7 +622,8 @@ function conMakeArticleIndex($idartlang, $idart) {
         }
         // get first idcat by idart
         $coll = new cApiCategoryArticleCollection();
-        $idcat = array_shift($coll->getCategoryIdsByArticleId($idart));
+        $categoryIds = $coll->getCategoryIdsByArticleId($idart);
+        $idcat = array_shift($categoryIds);
         // get idcatlang by idcat & idlang
         $categoryLanguage = new cApiCategoryLanguage();
         $categoryLanguage->loadByCategoryIdAndLanguageId($idcat, $idlang);

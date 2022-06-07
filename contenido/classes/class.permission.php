@@ -34,14 +34,14 @@ class cPermission {
      *
      * @var array
      */
-    public $areacache = array();
+    public $areacache = [];
 
     /**
      * Actions cache
      *
      * @var array
      */
-    public $actioncache = array();
+    public $actioncache = [];
 
     /**
      * CONTENIDO database object
@@ -62,7 +62,7 @@ class cPermission {
      * @throws cException
      */
     public function getGroupsForUser($userId) {
-        $groups = array();
+        $groups = [];
 
         $oGroupMemberColl = new cApiGroupMemberCollection();
         $oGroupMemberColl->select("user_id='" . $oGroupMemberColl->escape($userId) . "'");
@@ -75,7 +75,7 @@ class cPermission {
 
     /**
      * Returns the id of an area.
-     * If passed area is numeric, it will returned directly.
+     * If passed area is numeric, it will be returned directly.
      *
      * @deprecated [2015-05-21]
      *         This method is no longer supported (no replacement)
@@ -86,7 +86,7 @@ class cPermission {
      * @throws cDbException
      * @throws cException
      */
-    public function getIDForArea($area) {
+    public function getIdForArea($area) {
         if (is_numeric($area)) {
             return $area;
         } elseif (isset($this->areacache[$area])) {
@@ -105,7 +105,7 @@ class cPermission {
 
     /**
      * Returns the id of an action.
-     * If passed action is numeric, it will returned directly.
+     * If passed action is numeric, it will be returned directly.
      *
      * @param string|int $action
      *
@@ -114,7 +114,7 @@ class cPermission {
      * @throws cDbException
      * @throws cException
      */
-    public function getIDForAction($action) {
+    public function getIdForAction($action) {
         if (is_numeric($action)) {
             return $action;
         } elseif (isset($this->actioncache[$action])) {
@@ -132,14 +132,14 @@ class cPermission {
     }
 
     /**
-     * Loads all permissions of groups where current logged in user is a member
+     * Loads all permissions of groups where current logged-in user is a member
      * and saves them in session.
      *
      * @param bool $force [optional]
      *                    Flag to force loading, event if they were cached before
      *
      * @return string
-     *         Returns diffrent values, depending on state:
+     *         Returns different values, depending on state:
      *         '1' (string) if permissions couldn't loaded
      *         '3' (string) if permissions were loaded successfully
      *
@@ -147,7 +147,10 @@ class cPermission {
      * @throws cException
      */
     public function load_permissions($force = false) {
-        global $sess, $area_rights, $item_rights, $auth, $changelang, $changeclient;
+        global $area_rights, $item_rights, $changelang, $changeclient;
+
+        $auth = cRegistry::getAuth();
+        $sess = cRegistry::getSession();
 
         $return = '1';
 
@@ -160,7 +163,7 @@ class cPermission {
                 // register variables
                 $sess->register('area_rights');
                 $sess->register('item_rights');
-                $item_rights = array();
+                $item_rights = [];
                 $groups = $this->getGroupsForUser($auth->auth['uid']);
 
                 if (is_array($groups)) {
@@ -188,18 +191,19 @@ class cPermission {
      * @throws cException
      */
     public function load_permissions_for_user($user) {
-        global $client, $lang;
         global $area_rights, $item_rights;
 
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
+
         $oRightColl = new cApiRightCollection();
-        $sWhere = "user_id='" . $oRightColl->escape($user) . "'";
-        $sWhere .= " AND idcat=0 AND " . "idclient=" . (int) $client;
-        $sWhere .= " AND idlang=" . (int) $lang;
+        $sWhere = "user_id = '%s' AND idcat = 0 AND idclient = %d AND idlang = %d";
+        $sWhere = $oRightColl->prepare($sWhere, $user, $client, $lang);
         $oRightColl->select($sWhere);
 
         // define $area_rights if not already done so
         if (!is_array($area_rights)) {
-            $area_rights = array();
+            $area_rights = [];
         }
         while (false !== $oItem = $oRightColl->next()) {
             $idarea = $oItem->get('idarea');
@@ -207,20 +211,14 @@ class cPermission {
             $area_rights[$idarea][$idaction] = true;
         }
 
-        // Select Rights for Article and Sructure (Attention Hard code Areas)
+        // Select Rights for Article and structure (Attention Hard code Areas)
         $oAreaColl = new cApiAreaCollection();
-        $oAreaColl->select();
-        while (false !== $oItem = $oAreaColl->next()) {
-            $idarea = $oItem->get('idarea');
-            $tmp_area[] = $idarea;
-        }
+        $allAreaIds = $oAreaColl->getAllIds();
+        asort($allAreaIds);
 
-        $tmp_area_string = implode("','", array_values($tmp_area));
-        $sWhere = "user_id='" . $oRightColl->escape($user) . "'";
-        $sWhere .= " AND idclient=" . (int) $client;
-        $sWhere .= " AND idlang=" . (int) $lang;
-        $sWhere .= " AND idarea IN ('$tmp_area_string')";
-        $sWhere .= "AND idcat != 0";
+        $tmp_area_string = implode("','", array_values($allAreaIds));
+        $sWhere = "`user_id` = '%s' AND `idclient` = %d AND `idlang` = %d AND `idarea` IN ('$tmp_area_string') AND `idcat` != 0";
+        $sWhere = $oRightColl->prepare($sWhere, $user, $client, $lang);
         $oRightColl->select($sWhere);
         while (false !== $oItem = $oRightColl->next()) {
             $idarea = $oItem->get('idarea');
@@ -248,9 +246,9 @@ class cPermission {
         }
 
         $oAreaColl = new cApiAreaCollection();
-        $area = $oAreaColl->getAreaID($area);
+        $area = $oAreaColl->getAreaId($area);
 
-        $action = $this->getIDForAction($action);
+        $action = $this->getIdForAction($action);
 
         return isset($item_rights[$area][$action]);
     }
@@ -267,15 +265,15 @@ class cPermission {
      * @throws cException
      */
     public function have_perm_area_action_item($area, $action, $itemid) {
-        global $item_rights, $auth, $client, $lang, $cfg;
+        global $item_rights;
 
         if ($this->have_perm()) {
             return true;
         }
 
         $oAreaColl = new cApiAreaCollection();
-        $area = $oAreaColl->getAreaID($area);
-        $action = $this->getIDForAction($action);
+        $area = $oAreaColl->getAreaId($area);
+        $action = $this->getIdForAction($action);
 
         // If the user has a right on this action in this area check for the
         // items
@@ -290,6 +288,10 @@ class cPermission {
             return true;
         }
 
+        $auth = cRegistry::getAuth();
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
+
         if ($item_rights[$area] != 'noright') {
             $groupsForUser = $this->getGroupsForUser($auth->auth['uid']);
             $groupsForUser[] = $auth->auth['uid'];
@@ -297,8 +299,8 @@ class cPermission {
             $userIdIn = implode("','", $groupsForUser);
 
             $oRightsColl = new cApiRightCollection();
-            $where = "user_id IN ('" . $userIdIn . "') AND idclient=" . (int) $client . " AND idlang=" . (int) $lang . " AND idarea=$area AND idcat != 0";
-
+            $where = "`user_id` IN ('" . $userIdIn . "') AND `idclient` = %d AND `idlang` = %d AND `idarea` = %d AND `idcat` != 0";
+            $where = $oRightsColl->prepare($where, $client, $lang, $area);
             if (!$oRightsColl->select($where)) {
                 $item_rights[$area] = 'noright';
                 return false;
@@ -333,7 +335,7 @@ class cPermission {
      */
     public function getParentAreaId($area) {
         $oAreaColl = new cApiAreaCollection();
-        return $oAreaColl->getParentAreaID($area);
+        return $oAreaColl->getParentAreaId($area);
     }
 
     /**
@@ -347,29 +349,30 @@ class cPermission {
      * @throws cException
      */
     public function have_perm_area_action($area, $action = 0) {
-        global $area_rights, $client, $lang, $cfg;
+        global $area_rights;
+
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
 
         $oAreaColl = new cApiAreaCollection();
-        $area = $oAreaColl->getAreaID($area);
-        $action = $this->getIDForAction($action);
+        $area = $oAreaColl->getAreaId($area);
+        $action = $this->getIdForAction($action);
 
         if ($action == 0) {
-            $area = $oAreaColl->getParentAreaID($area);
+            $area = $oAreaColl->getParentAreaId($area);
         }
 
-        $area = $oAreaColl->getAreaID($area);
+        $area = $oAreaColl->getAreaId($area);
 
         if (!$this->have_perm()) {
             if ($action == 0 && $area_rights[$area]) {
-                // If have action for area + action check right for client and
-                // lang
+                // If we have action for area + action check right for client and lang
                 return $this->have_perm_client_lang($client, $lang);
             }
 
             // check rights for the action in this area
             if ($area_rights[$area][$action]) {
-                // If have action for area + action check right for client and
-                // lang
+                // If we have action for area + action check right for client and lang
                 return $this->have_perm_client_lang($client, $lang);
             }
 
@@ -386,34 +389,22 @@ class cPermission {
      * @return bool
      */
     public function have_perm_client_lang($client, $lang) {
-        global $auth;
-
-        // Changed back to a full featured function, as have_perm
-        // needs $client as global variable - not provided by this
-        // function
+        // Changed back to a full-featured function, as have_perm needs
+        // $client as global variable - not provided by this function
         // return $this->have_perm("client[$client],lang[$lang]");
 
-        if (!isset($auth->auth['perm'])) {
-            $auth->auth['perm'] = '';
-        }
+        $auth = cRegistry::getAuth();
 
-        // Split the permissions of the user
-        $userperm = explode(',', $auth->auth['perm']);
-
-        if (in_array('sysadmin', $userperm)) {
-            return true; // User is sysadmin
-        } elseif (in_array("admin[$client]", $userperm)) {
-            return true; // User is admin
+        if (self::checkSysadminPermission($auth->getPerms())) {
+            // User is sysadmin
+            return true;
+        } elseif (self::checkClientAdminPermission($client, $auth->getPerms())) {
+            // User is client admin
+            return true;
         } else {
             // Check rights for the client and the language
-            $pageperm = explode(',', "client[$client],lang[$lang]");
-            foreach ($pageperm as $value) {
-                if (!in_array($value, $userperm)) {
-                    return false;
-                }
-            }
+            return self::checkClientAndLanguagePermission($client, $lang, $auth->getPerms());
         }
-        return true;
     }
 
     /**
@@ -421,7 +412,7 @@ class cPermission {
      *
      * @param bool $iClient [optional]
      *                      idclient to check, or false for the current client
-     * @param object $oUser   [optional]
+     * @param object|bool $oUser   [optional]
      *                      User object to check against, or false for the current user
      *
      * @return bool
@@ -429,10 +420,8 @@ class cPermission {
      * @throws cInvalidArgumentException
      */
     public function hasClientPermission($iClient = false, $oUser = false) {
-        global $client;
-
         if ($iClient === false) {
-            $iClient = $client;
+            $iClient = cRegistry::getClientId();
         }
 
         $oUser = $this->_checkUserObject($oUser);
@@ -471,23 +460,16 @@ class cPermission {
      *
      * @param int    $iClient
      *         idclient to check
-     * @param object $oUser
-     *         User object to check against
+     * @param object|bool $oUser
+     *         User object to check against, or false for the current user
      *
      * @return bool
      *
      * @throws cInvalidArgumentException
      */
-    public function isClientUser($iClient, $oUser) {
+    public function isClientUser($iClient, $oUser = false) {
         $oUser = $this->_checkUserObject($oUser);
-
-        $aPermissions = explode(',', $oUser->getEffectiveUserPerms());
-
-        if (in_array("client[$iClient]", $aPermissions)) {
-            return true;
-        }
-
-        return false;
+        return self::checkClientPermission($iClient, $oUser->getEffectiveUserPerms());
     }
 
     /**
@@ -500,70 +482,68 @@ class cPermission {
      * @return bool
      */
     public function isClientGroup($iClient, $oGroup) {
-        $aPermissions = explode(',', $oGroup->getField('perms'));
+        return self::checkClientPermission($iClient, $oGroup->getField('perms'));
+    }
 
-        if (in_array("client[$iClient]", $aPermissions)) {
-            return true;
-        }
-
-        return false;
+    /**
+     * Checks if the given user has an admin permission for a specific client.
+     *
+     * @param int    $iClient
+     *         idclient to check
+     * @param object|bool $oUser
+     *         User object to check against, or false for the current user
+     *
+     * @return bool
+     *
+     * @throws cInvalidArgumentException
+     */
+    public function isClientAdmin($iClient, $oUser = false) {
+        $oUser = $this->_checkUserObject($oUser);
+        return self::checkClientAdminPermission($iClient, $oUser->getEffectiveUserPerms());
     }
 
     /**
      * Checks if the given user has an admin permission
      *
-     * @param int    $iClient
-     *         idclient to check
-     * @param object $oUser
-     *         User object to check against
-     *
+     * @param object|bool $oUser
+     *         User object to check against, or false for the current user
+     * @param bool $strict
+     *         Flag to run a strict check.
+     *         If true, then the check is only for admin value.
+     *         If false, then the check is only for admin or sysadmin value.
      * @return bool
      *
      * @throws cInvalidArgumentException
      */
-    public function isClientAdmin($iClient, $oUser) {
+    public function isAdmin($oUser = false, $strict = false) {
         $oUser = $this->_checkUserObject($oUser);
-
-        $aPermissions = explode(',', $oUser->getEffectiveUserPerms());
-
-        if (in_array("admin[$iClient]", $aPermissions)) {
-            return true;
-        }
-
-        return false;
+        return self::checkAdminPermission($oUser->getEffectiveUserPerms(), $strict);
     }
 
     /**
      * Checks if the given user has sysadmin permission
      *
-     * @param object $oUser
-     *         User object to check against
+     * @param object|bool $oUser
+     *         User object to check against, or false for the current user
      *
      * @return bool
      *
      * @throws cInvalidArgumentException
      */
-    public function isSysadmin($oUser) {
+    public function isSysadmin($oUser = false) {
         $oUser = $this->_checkUserObject($oUser);
-
-        $aPermissions = explode(',', $oUser->getEffectiveUserPerms());
-
-        if (in_array('sysadmin', $aPermissions)) {
-            return true;
-        }
-
-        return false;
+        return self::checkSysadminPermission($oUser->getEffectiveUserPerms());
     }
 
     /**
      * Checks if the given object is a user object.
      *
-     * If oUser is false, initialize the object from the currently logged in
+     * If oUser is false, initialize the object from the currently logged-in
      * user. If oUser is not an object of the class cApiUser, throw an
      * exception.
      *
-     * @param object $oUser
-     *         User object
+     * @param object|bool $oUser
+     *         User object to check against, or false for the current user
      *
      * @return object
      *
@@ -581,7 +561,7 @@ class cPermission {
             $oUser = new cApiUser($auth->auth['uid']);
         }
 
-        if (get_class($oUser) != 'cApiUser') {
+        if (!$oUser instanceof cApiUser) {
             throw new cInvalidArgumentException('oUser parameter is not of type User');
         }
 
@@ -589,77 +569,56 @@ class cPermission {
     }
 
     /**
+     * Does a client check but also any other check depending on passed $perm value.
+     *
+     * TODO The function name suggest a check for client permission but if you call this with $perm values other
+     *      than client related, then the check has nothing to do with a client check. Rename function or find
+     *      another solution for this.
      *
      * @param string $perm [optional]
      *
      * @return bool
      */
     public function have_perm_client($perm = 'x') {
-        global $auth, $client;
-
-        if (!isset($auth->auth['perm'])) {
-            $auth->auth['perm'] = '';
-        }
-
-        // Split the permissions of the user
-        $userperm = explode(',', $auth->auth['perm']);
+        $auth = cRegistry::getAuth();
 
         // If User is sysadmin or admin at this client return true
-        if (in_array('sysadmin', $userperm)) {
+        if (self::checkSysadminPermission($auth->getPerms())) {
             return true;
         }
 
-        // If there are more permissions to ask split them
-        $pageperm = explode(',', $perm);
-        foreach ($pageperm as $value) {
-            if (!in_array($value, $userperm)) {
-                return false;
-            }
-        }
-        return true;
+        // If there are more permissions to ask, check them too
+        return self::checkPermission($auth->getPerms(), $perm);
     }
 
     /**
      * Checks if user has permissions to passed perm.
-     * - Sysadmin has allways permission
-     * - Client admin has allways permission
+     * - Sysadmin has always permission
+     * - Client admin has always permission
      *
      * @param string $perm [optional]
      *         Permissions (comma separated list of perms) to check
      * @return bool
      */
     public function have_perm($perm = 'x') {
-        global $auth, $client;
+        $auth = cRegistry::getAuth();
+        $client = cRegistry::getClientId();
 
-        if (!isset($auth->auth['perm'])) {
-            $auth->auth['perm'] = '';
+        // If user is sysadmin or admin of current client return true
+        if (self::checkSysadminPermission($auth->getPerms())) {
+            return true;
+        } elseif (self::checkClientAdminPermission($client, $auth->getPerms())) {
+            return true;
         }
 
-        // Split the permissions of the user
-        $userperm = explode(',', $auth->auth['perm']);
-
-        // If User is sysadmin or admin at this client return true
-        if (in_array('sysadmin', $userperm)) {
-            return true;
-        } elseif (in_array("admin[$client]", $userperm)) {
-            return true;
-            // Else check rights for the client and the language
-        } else {
-            // If there are more permissions to ask split them
-            $pageperm = explode(',', $perm);
-            foreach ($pageperm as $value) {
-                if (!in_array($value, $userperm)) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        // If there are more permissions to ask, check them too
+        return self::checkPermission($auth->getPerms(), $perm);
     }
 
     /**
      * Checks if an item have any perms
      *
-     * @param string|int $mainarea
+     * @param string|int $mainArea
      * @param int        $itemid
      *
      * @return bool
@@ -667,11 +626,11 @@ class cPermission {
      * @throws cDbException
      * @throws cException
      */
-    public function have_perm_item($mainarea, $itemid) {
-        global $cfg, $item_rights, $cfg, $client, $lang, $auth, $area_tree, $sess;
+    public function have_perm_item($mainArea, $itemid) {
+        global $item_rights, $area_tree;
 
         $oAreaColl = new cApiAreaCollection();
-        $mainarea = $oAreaColl->getAreaID($mainarea);
+        $mainArea = $oAreaColl->getAreaId($mainArea);
 
         // If is admin or sysadmin
         if ($this->have_perm()) {
@@ -680,15 +639,21 @@ class cPermission {
 
         // If is not admin or sysadmin
 
+        $auth = cRegistry::getAuth();
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
+        $cfg = cRegistry::getConfig();
+
+
         if (!is_object($this->db)) {
             $this->db = cRegistry::getDb();
         }
 
-        $this->showareas($mainarea);
+        $this->showareas($mainArea);
 
         $flg = false;
         // Check if there are any rights for this areas
-        foreach ($area_tree[$mainarea] as $value) {
+        foreach ($area_tree[$mainArea] as $value) {
             // If the flag noright is set there are no rights in this area
             if ($item_rights[$value] == 'noright') {
                 continue;
@@ -702,19 +667,12 @@ class cPermission {
             } elseif ($item_rights[$value] != 'noright') {
                 $groupsForUser = $this->getGroupsForUser($auth->auth['uid']);
                 $groupsForUser[] = $auth->auth['uid'];
+                $userIdIn = implode("','", $groupsForUser);
 
                 // else search for rights for this user in this area
-                $sql = "SELECT
-                            *
-                         FROM
-                            " . $cfg['tab']['rights'] . "
-                         WHERE
-                            user_id IN ('" . implode("','", $groupsForUser) . "') AND
-                            idclient = " . cSecurity::toInteger($client) . " AND
-                            idlang = " . cSecurity::toInteger($lang) . " AND
-                            idarea = '$value' AND
-                            idcat != 0";
-                $this->db->query($sql);
+                $sql = "SELECT * FROM `%s` WHERE `user_id` IN ('" . $userIdIn . "') "
+                    . "AND `idclient` = %d AND `idlang` = %d AND `idarea` = %d AND `idcat` != 0";
+                $this->db->query($sql, $cfg['tab']['rights'], $client, $lang, $value);
 
                 // If there are no rights for this area set the flag norights
                 if ($this->db->affectedRows() == 0) {
@@ -734,42 +692,143 @@ class cPermission {
     }
 
     /**
+     * Loads all areas related to passed main area into the global $area_tree variable.
      *
-     * @param string|int $mainarea
+     * @param string|int $mainArea
      *
      * @return int
      *
      * @throws cDbException
      * @throws cException
      */
-    public function showareas($mainarea) {
-        global $area_tree, $sess, $perm, $cfg;
+    public function showareas($mainArea) {
+        global $area_tree;
 
-        if (!is_object($this->db)) {
-            $this->db = cRegistry::getDb();
-        }
+        $sess = cRegistry::getSession();
 
         $oAreaColl = new cApiAreaCollection();
-        $mainarea = $oAreaColl->getAreaID($mainarea);
+        $mainArea = $oAreaColl->getAreaId($mainArea);
 
         // If $area_tree for this area is not register
-        if (!isset($area_tree[$mainarea])) {
+        if (!isset($area_tree[$mainArea])) {
             $sess->register('area_tree');
 
             // parent_id uses the name not the idarea
-            $sql = "SELECT name FROM " . $cfg['tab']['area'] . " WHERE idarea=$mainarea";
-            $this->db->query($sql);
-            $this->db->nextRecord();
-            $name = $this->db->f('name');
+            $name = $oAreaColl->getNameByAreaId($mainArea);
 
             // Check which subareas are there and write them in the array
-            $sql = "SELECT idarea FROM " . $cfg['tab']['area'] . " WHERE parent_id='$name' OR idarea=$mainarea";
-            $this->db->query($sql);
-            $area_tree[$mainarea] = array();
-            while ($this->db->nextRecord()) {
-                $area_tree[$mainarea][] = $this->db->f('idarea');
-            }
+            $area_tree[$mainArea] = $oAreaColl->getAreaIdsByParentIdOrAreaId($name, $mainArea);
         }
-        return $mainarea;
+        return $mainArea;
     }
+
+    /**
+     * Splits passed permission string and returns it as an array. If the passed permission is already an array,
+     * then it will be returned without any further ado.
+     *
+     * @param string|string[] $permission Comma separated permission string or list of permissions.
+     * @return string[]
+     */
+    public static function permissionToArray($permission) {
+        return is_array($permission) ? $permission
+            : (is_string($permission) && !empty($permission) ? explode(',', $permission) : []);
+    }
+
+    /**
+     * Checks for language permissions.
+     *
+     * @param int $languageId
+     * @param string|string[] $permission Comma separated permission string or list of permissions.
+     * @return bool
+     */
+    public static function checkLanguagePermission($languageId, $permission) {
+        $languageId = cSecurity::toInteger($languageId);
+        $permissions = self::permissionToArray($permission);
+        return in_array("lang[$languageId]", $permissions);
+    }
+
+    /**
+     * Checks for client permissions.
+     *
+     * @param int $clientId
+     * @param string|string[] $permission Comma separated permission string or list of permissions.
+     * @return bool
+     */
+    public static function checkClientPermission($clientId, $permission) {
+        $clientId = cSecurity::toInteger($clientId);
+        $permissions = self::permissionToArray($permission);
+        return in_array("client[$clientId]", $permissions);
+    }
+
+    /**
+     * Checks for client and language permissions.
+     *
+     * @param int $clientId
+     * @param int $languageId
+     * @param string|string[] $permission Comma separated permission string or list of permissions.
+     * @return bool
+     */
+    public static function checkClientAndLanguagePermission($clientId, $languageId, $permission) {
+        return self::checkClientPermission($clientId, $permission)
+            && self::checkLanguagePermission($languageId, $permission);
+    }
+
+    /**
+     * Checks for client admin permissions.
+     *
+     * @param int $clientId
+     * @param string|string[] $permission Comma separated permission string or list of permissions.
+     * @return bool
+     */
+    public static function checkClientAdminPermission($clientId, $permission) {
+        $clientId = cSecurity::toInteger($clientId);
+        $permissions = self::permissionToArray($permission);
+        return in_array("admin[$clientId]", $permissions);
+    }
+
+    /**
+     * Checks for admin permissions.
+     *
+     * @param string|string[] $permission Comma separated permission string or list of permissions.
+     * @param bool $strict Flag to run a strict check.
+     *      If true, then the check is only for admin value.
+     *      If false, then the check is only for admin or sysadmin value.
+     *
+     * @return bool
+     */
+    public static function checkAdminPermission($permission, $strict = false) {
+        $permissions = self::permissionToArray($permission);
+        $pattern = $strict ? '/^admin.*/' : '/admin.*/';
+        return (count(preg_grep($pattern, $permissions)) > 0);
+    }
+
+    /**
+     * Checks for sysadmin permissions.
+     *
+     * @param string|string[] $permission Comma separated permission string or list of permissions.
+     * @return bool
+     */
+    public static function checkSysadminPermission($permission) {
+        $permissions = self::permissionToArray($permission);
+        return (in_array('sysadmin', $permissions));
+    }
+
+    /**
+     * Check if permissions (needle) are all available in other permissions (haystack).
+     *
+     * @param string|string[] $haystackPerm The permissions to search in.
+     *      Comma separated permission string or list of permissions.
+     * @param string|string[] $needlePerm The permissions to search for, all of them must be found in haystackPerm.
+     *      Comma separated permission string or list of permissions.
+     * @return bool
+     */
+    public static function checkPermission($haystackPerm, $needlePerm) {
+        $haystackPerms = self::permissionToArray($haystackPerm);
+        $needlePerms = self::permissionToArray($needlePerm);
+
+        // Get values available in both arrays, the result count should be the same as the needlePerms count
+        $result = array_intersect($haystackPerms, $needlePerms);
+        return count($result) === count($needlePerms);
+    }
+
 }

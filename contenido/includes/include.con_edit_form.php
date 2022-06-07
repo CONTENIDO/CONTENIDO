@@ -20,21 +20,29 @@ cInclude("includes", "functions.str.php");
 cInclude("includes", "functions.pathresolver.php");
 
 // ugly globals that are used in this script
-global $tpl, $cfg, $db, $perm, $sess, $selectedArticleId;
-global $frame, $area, $action, $contenido, $notification;
-global $client, $lang, $belang, $lngAct, $auth;
-global $idcat, $idart, $idcatlang, $idartlang, $idcatart, $idtpl;
+global $tpl, $db, $selectedArticleId, $contenido, $notification, $lngAct, $idcatart, $idtpl;
 global $tplinputchanged, $idcatnew, $newart, $syncoptions, $tmp_notification, $bNoArticle, $artLangVersion, $classarea;
+
+$perm = cRegistry::getPerm();
+$sess = cRegistry::getSession();
+$area = cRegistry::getArea();
+$action = cRegistry::getAction();
+$client = cRegistry::getClientId();
+$cfg = cRegistry::getConfig();
+$frame = cRegistry::getFrame();
+$auth = cRegistry::getAuth();
+$lang = cRegistry::getLanguageId();
+$belang = cRegistry::getBackendLanguage();
+$idart = cRegistry::getArticleId();
+$idcat = cRegistry::getCategoryId();
+$idcatlang = cRegistry::getCategoryLanguageId();
+$idartlang = cRegistry::getArticleLanguageId();
 
 $page = new cGuiPage("con_edit_form", "", "con_editart");
 $tpl = null;
 
 // Admin rights
-$aAuthPerms = explode(',', cRegistry::getAuth()->auth['perm']);
-$admin = false;
-if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
-	$admin = true;
-}
+$isAdmin = cPermission::checkAdminPermission(cRegistry::getAuth()->getPerms());
 
 if (isset($idart)) {
     if (!isset($idartlang) || 0 == $idartlang) {
@@ -630,7 +638,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         // Remove all own marks
         $col->removeSessionMarks($sess->id);
 
-        if (false === $admin) {
+        if (false === $isAdmin) {
 
 	        if ((($obj = $col->checkMark("article", $tmp_idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) && $tmp_locked != 1) {
 	            $col->markInUse("article", $tmp_idartlang, $sess->id, $auth->auth["uid"]);

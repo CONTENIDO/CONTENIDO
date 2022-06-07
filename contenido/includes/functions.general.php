@@ -210,7 +210,7 @@ function displayDatetime($timestamp = "", $date = false, $time = false) {
  * @throws cDbException
  * @throws cException
  */
-function getIDForArea($area) {
+function getIdForArea($area) {
     if (!is_numeric($area)) {
         $oArea = new cApiArea();
         if ($oArea->loadBy('name', $area)) {
@@ -232,7 +232,7 @@ function getIDForArea($area) {
  */
 function getParentAreaId($area) {
     $oAreaColl = new cApiAreaCollection();
-    return $oAreaColl->getParentAreaID($area);
+    return $oAreaColl->getParentAreaId($area);
 }
 
 /**
@@ -337,7 +337,7 @@ function backToMainArea($send) {
 
         // Get main area
         $oAreaColl = new cApiAreaCollection();
-        $parent = $oAreaColl->getParentAreaID($area);
+        $parent = $oAreaColl->getParentAreaId($area);
 
         // Create url string
         $url_str = 'main.php?' . 'area=' . $parent . '&' . 'idcat=' . $idcat . '&' . 'idart=' . $idart . '&'

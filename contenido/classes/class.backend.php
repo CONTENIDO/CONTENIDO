@@ -293,7 +293,7 @@ class cBackend {
         }
 
         $oldaction = $idaction;
-        $idaction = $perm->getIDForAction($idaction);
+        $idaction = $perm->getIdForAction($idaction);
 
         if ($idaction != '') {
             $oActionLogColl = new cApiActionlogCollection();
