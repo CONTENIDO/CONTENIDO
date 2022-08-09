@@ -271,6 +271,8 @@ class cSearchResult extends cSearchBaseAbstract {
 
                     if (count($this->_replacement) == 2) {
                         foreach ($search_words as $word) {
+                            $word = conHtmlentities(conHtmlEntityDecode($this->_index->addSpecialUmlauts($word)));
+                            $match = array();
                             preg_match("/$word/i", $cms_content, $match);
                             if (isset($match[0])) {
                                 $pattern = $match[0];
