@@ -343,7 +343,7 @@ class cSearchResult extends cSearchBaseAbstract {
      *         Similarity between searchword and matching word in article
      */
     public function getSimilarity($art_id) {
-        return isset($this->_searchResult[$art_id]['similarity']) ? $this->_searchResult[$art_id]['similarity'] : 0;
+        return isset($this->_searchResult[$art_id]['similarity']) ? $this->_searchResult[$art_id]['similarity'] : 0.0001;
     }
 
     /**
