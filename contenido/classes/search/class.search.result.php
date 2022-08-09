@@ -250,9 +250,9 @@ class cSearchResult extends cSearchBaseAbstract {
                         // build consistent escaped string, replace ae ue ..
                         // with original html entities (Timo Trautmann)
                         // 2008-04-17
-                        $word = conHtmlentities(conHtmlEntityDecode($this->_index->addSpecialUmlauts($word)));
-                        $match = array();
-                        preg_match("/$word/i", $cms_content, $match);
+                        $word_escaped = conHtmlentities(conHtmlEntityDecode($this->_index->addSpecialUmlauts($word)));
+                        $match = [];
+                        preg_match("/($word|$word_escaped)/i", $cms_content, $match);
                         if (isset($match[0])) {
                             $pattern = $match[0];
                             $replacement = $this->_replacement[0] . $pattern . $this->_replacement[1];
@@ -271,9 +271,9 @@ class cSearchResult extends cSearchBaseAbstract {
 
                     if (count($this->_replacement) == 2) {
                         foreach ($search_words as $word) {
-                            $word = conHtmlentities(conHtmlEntityDecode($this->_index->addSpecialUmlauts($word)));
+                            $word_escaped = conHtmlentities(conHtmlEntityDecode($this->_index->addSpecialUmlauts($word)));
                             $match = array();
-                            preg_match("/$word/i", $cms_content, $match);
+                            preg_match("/($word|$word_escaped)/i", $cms_content, $match);
                             if (isset($match[0])) {
                                 $pattern = $match[0];
                                 $replacement = $this->_replacement[0] . $pattern . $this->_replacement[1];
