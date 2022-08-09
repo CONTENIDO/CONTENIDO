@@ -245,44 +245,14 @@ class cSearchResult extends cSearchBaseAbstract {
                 // get content of cms_type[cms_nr]
                 // build consistent escaped string(Timo Trautmann) 2008-04-17
                 $cms_content = conHtmlentities(conHtmlEntityDecode(strip_tags($article->getContent($cms_type, $cms_nr))));
-                if (count($this->_replacement) == 2) {
-                    foreach ($search_words as $word) {
-                        // build consistent escaped string, replace ae ue ..
-                        // with original html entities (Timo Trautmann)
-                        // 2008-04-17
-                        $word_escaped = conHtmlentities(conHtmlEntityDecode($this->_index->addSpecialUmlauts($word)));
-                        $match = [];
-                        preg_match("/($word|$word_escaped)/i", $cms_content, $match);
-                        if (isset($match[0])) {
-                            $pattern = $match[0];
-                            $replacement = $this->_replacement[0] . $pattern . $this->_replacement[1];
-                            $cms_content = preg_replace("/$pattern/i", $replacement, $cms_content); // emphasize
-                            // located
-                            // searchwords
-                        }
-                    }
-                }
+                $cms_content = $this->highlightSearchWords($search_words, $cms_content);
                 $content[] = htmlspecialchars_decode($cms_content);
             } else {
                 // get content of cms_type[$id], where $id are the cms_type
                 // numbers found in search
                 foreach ($id_type as $id) {
                     $cms_content = strip_tags($article->getContent($cms_type, $id));
-
-                    if (count($this->_replacement) == 2) {
-                        foreach ($search_words as $word) {
-                            $word_escaped = conHtmlentities(conHtmlEntityDecode($this->_index->addSpecialUmlauts($word)));
-                            $match = array();
-                            preg_match("/($word|$word_escaped)/i", $cms_content, $match);
-                            if (isset($match[0])) {
-                                $pattern = $match[0];
-                                $replacement = $this->_replacement[0] . $pattern . $this->_replacement[1];
-                                $cms_content = preg_replace("/$pattern/i", $replacement, $cms_content); // emphasize
-                                // located
-                                // searchwords
-                            }
-                        }
-                    }
+                    $cms_content = $this->highlightSearchWords($search_words, $cms_content);
                     $content[] = $cms_content;
                 }
             }
@@ -300,6 +270,38 @@ class cSearchResult extends cSearchBaseAbstract {
             }
         }
         return $content;
+    }
+
+    /**
+     * @param array $search_words
+     * @param string $cms_content
+     * @return string
+     */
+    protected function highlightSearchWords($search_words, $cms_content)
+    {
+        if (count($this->_replacement) == 2)
+        {
+            foreach ($search_words as $word)
+            {
+                // build consistent escaped string, replace ae ue ..
+                // with original html entities (Timo Trautmann)
+                // 2008-04-17
+                $word_escaped = conHtmlentities(conHtmlEntityDecode($this->_index->addSpecialUmlauts($word)));
+                $match = [];
+                preg_match("/($word|$word_escaped)/i", $cms_content, $match);
+
+                if (isset($match[0]))
+                {
+                    $pattern = $match[0];
+                    $replacement = $this->_replacement[0] . $pattern . $this->_replacement[1];
+                    $cms_content = preg_replace("/$pattern/i", $replacement, $cms_content); // emphasize
+                    // located
+                    // searchwords
+                }
+            }
+        }
+
+        return $cms_content;
     }
 
     /**
