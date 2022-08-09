@@ -206,6 +206,7 @@ class cSearchIndex extends cSearchBaseAbstract {
 
         $this->_place = $place;
         $this->_keycode = $aContent;
+        $this->addTitle();
         $this->setStopwords($aStopwords);
         $this->setCmsOptions($cms_options);
 
@@ -222,6 +223,33 @@ class cSearchIndex extends cSearchBaseAbstract {
 
         if (count($this->_keywordsDel) > 0) {
             $this->deleteKeywords();
+        }
+    }
+
+    /**
+     * Adds the title of the article to the index.
+     *
+     * @return void
+     */
+    public function addTitle(): void
+    {
+        global $cfg;
+        $oDB = cRegistry::getDb();
+
+        $sql = "SELECT
+                *
+            FROM
+                " . $cfg["tab"]["art_lang"] . "
+            WHERE
+                idart = " . cSecurity::toInteger($this->idart); // AND idlang = " . cSecurity::toInteger($lang);"
+        $oDB->query($sql);
+        $oDB->nextRecord();
+
+        $title = $oDB->f("title") . ' ' . $oDB->f("pagetitle");
+        $firstItemKey = array_key_first($this->_keycode["CMS_HTML"] ?? []);
+        if ($firstItemKey)
+        {
+            $this->_keycode["CMS_HTML"][$firstItemKey] .= ' ' . $title;
         }
     }
 
