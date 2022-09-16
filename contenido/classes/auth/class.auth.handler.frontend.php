@@ -150,7 +150,7 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
         }
 
         if ($uid == false || hash("sha256", md5($password) . $salt) != $pass) {
-            sleep(5);
+            sleep(2);
 
             return false;
         }
