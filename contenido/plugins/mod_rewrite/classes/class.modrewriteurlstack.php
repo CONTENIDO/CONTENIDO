@@ -67,23 +67,23 @@ class ModRewriteUrlStack {
      *
      * @var  array
      */
-    private $_aUrls = array();
+    private $_aUrls = [];
 
     /**
      * Url stack array
      *
      * @var  array
      */
-    private $_aStack = array();
+    private $_aStack = [];
 
     /**
      * CONTENIDO related parameter array
      *
      * @var  array
      */
-    private $_aConParams = array(
+    private $_aConParams = [
         'idcat' => 1, 'idart' => 1, 'lang' => 1, 'idcatlang' => 1, 'idcatart' => 1, 'idartlang' => 1
-    );
+    ];
 
     /**
      * Database tables array
@@ -150,14 +150,14 @@ class ModRewriteUrlStack {
 
         $sStackId = $this->_makeStackId($aUrl['params']);
         $this->_aUrls[$url] = $sStackId;
-        $this->_aStack[$sStackId] = array('params' => $aUrl['params']);
+        $this->_aStack[$sStackId] = ['params' => $aUrl['params']];
     }
 
     /**
      * Returns the pretty urlparts (only category path an article name) of the
      * desired url.
      *
-     * @param   string  Url, like front_content.php?idcat=123...
+     * @param   string  $url  Url, like front_content.php?idcat=123...
      *
      * @return  array   Assoziative array like
      * <code>
@@ -177,30 +177,22 @@ class ModRewriteUrlStack {
         if (!isset($this->_aStack[$sStackId]['urlpath'])) {
             $this->_chunkSetPrettyUrlParts($sStackId);
         }
-        $aPretty = array(
+        $aPretty = [
             'urlpath' => $this->_aStack[$sStackId]['urlpath'],
             'urlname' => $this->_aStack[$sStackId]['urlname']
-        );
+        ];
         return $aPretty;
     }
 
     /**
      * Extracts passed url using parse_urla and adds also the 'params' array to it
      *
-     * @param   string  Url, like front_content.php?idcat=123...
+     * @param   string  $url  Url, like front_content.php?idcat=123...
      * @return  array  Components containing result of parse_url with additional
      *                 'params' array
      */
     private function _extractUrl($url) {
-        $aUrl = @parse_url($url);
-        if (isset($aUrl['query'])) {
-            $aUrl['query'] = str_replace('&amp;', '&', $aUrl['query']);
-            parse_str($aUrl['query'], $aUrl['params']);
-        }
-        if (!isset($aUrl['params']) || !is_array($aUrl['params'])) {
-            $aUrl['params'] = array();
-        }
-        return $aUrl;
+        return cUri::getInstance()->parse($url);
     }
 
     /**
@@ -241,7 +233,7 @@ class ModRewriteUrlStack {
      */
     private function _chunkSetPrettyUrlParts($sStackId) {
         // collect stack parameter to get urlpath and urlname
-        $aStack = array();
+        $aStack = [];
         foreach ($this->_aStack as $stackId => $item) {
             if (!isset($item['urlpath'])) {
                 // pretty url is to create
@@ -289,10 +281,10 @@ WHERE
 SQL;
         ModRewriteDebugger::add($sql, 'ModRewriteUrlStack->_chunkSetPrettyUrlParts() $sql');
 
-        $aNewStack = array();
+        $aNewStack = [];
 
         // create array of fields, which are to reduce step by step from record set below
-        $aFields = array('', 'idart', 'idartlang', 'idcatart', 'idcat');
+        $aFields = ['', 'idart', 'idartlang', 'idcatart', 'idcat'];
 
         $this->_oDb->query($sql);
         while ($this->_oDb->nextRecord()) {
