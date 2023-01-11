@@ -114,7 +114,7 @@ class cUri {
                 $aConfig = $aResult['aConfig'];
             }
         }
-        
+
         if ($this->_sUriBuilderName == 'custom_path' && !isset($aParams['level'])) {
             // downwards compatibility to cUriBuilderCustomPath
             $aParams['level'] = '1';
@@ -187,7 +187,7 @@ class cUri {
             parse_str($aUrl['query'], $aUrl['params']);
         }
 
-        if (!isset($aUrl['params']) || !is_array($aUrl['params'])) {
+        if (!isset($aUrl['params'])) {
             $aUrl['params'] = [];
         }
 
