@@ -125,7 +125,10 @@ if (ModRewrite::isEnabled()) {
     if (!isset($contenido)) {
         // we are not in backend, add cec functions for rewriting
 
-        if ((int)$_GET['idart'] == 0 && (int)$_GET['idcat'] == 0 && (int)$_POST['idart'] == 0 && (int)$_POST['idcat'] == 0) {
+        if (isset($_GET['idart']) && (int)$_GET['idart'] == 0
+            && isset($_GET['idcat']) && (int)$_GET['idcat'] == 0
+            && isset($_POST['idart']) && (int)$_POST['idart'] == 0
+            && isset($_POST['idcat']) && (int)$_POST['idcat'] == 0) {
             // submitted idart and idcat vars has a higher priority than submitted seo url
             // Add mr related function for hook "after plugins loaded" to CONTENIDO Extension Chainer
             $_cecRegistry->addChainFunction('Contenido.Frontend.AfterLoadPlugins', 'mr_runFrontendController');

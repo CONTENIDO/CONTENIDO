@@ -197,7 +197,7 @@ class ModRewriteUrlStack {
             $aUrl['query'] = str_replace('&amp;', '&', $aUrl['query']);
             parse_str($aUrl['query'], $aUrl['params']);
         }
-        if (!isset($aUrl['params']) && !is_array($aUrl['params'])) {
+        if (!isset($aUrl['params']) || !is_array($aUrl['params'])) {
             $aUrl['params'] = array();
         }
         return $aUrl;
