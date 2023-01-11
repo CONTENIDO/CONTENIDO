@@ -1303,7 +1303,9 @@ function isRunningFromWeb() {
  * @throws cInvalidArgumentException
  */
 function scanPlugins($entity) {
-    $cfg = cRegistry::getConfig();
+    // Use the global variable $cfg here, the function modifies it!
+    global $cfg;
+
     $basedir = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $entity . '/';
 
     if (is_dir($basedir) === false) {
