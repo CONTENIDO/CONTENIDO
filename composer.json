@@ -1,5 +1,5 @@
 {
-    "name": "CONTENIDO/CONTENIDO",
+    "name": "contenido/contenido",
     "type": "contenido-cms",
     "description": "CONTENIDO CMS",
     "keywords": [
@@ -8,6 +8,12 @@
     ],
     "homepage": "https://www.contenido.org",
     "license": ["GPL-2.0"],
+    "config": {
+        "platform": {
+            "php": "7.2"
+        },
+        "sort-packages": true
+    },
     "require-dev": {
         "phpunit/phpunit": "^8"
     },
@@ -15,6 +21,7 @@
         "ext-bcmath": "*",
         "ext-mysqli": "*",
         "ext-json": "*",
-        "ext-simplexml": "*"
+        "ext-simplexml": "*",
+        "php": ">=7.0.0"
     }
 }
