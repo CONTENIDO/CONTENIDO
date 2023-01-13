@@ -1,8 +1,10 @@
 {*template for new entry dialog*}
 <div class="user_forum">
-    {if !empty($MESSAGE)}
+    {if !empty($MESSAGES)}
         <div class="form_status_message">
-            {$MESSAGE|escape}
+            {foreach from=$MESSAGES item=msgItem}
+                {$msgItem|escape}<br />
+            {/foreach}
         </div>
     {/if}
     {if !empty($FORUM_REPLYMENT)}
