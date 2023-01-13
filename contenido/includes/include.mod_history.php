@@ -15,11 +15,23 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $idmod, $bInUse;
+
+$client = cRegistry::getClientId();
+$cfgClient = cRegistry::getClientConfig();
+$db = cRegistry::getDb();
+$perm = cRegistry::getPerm();
+$cfg = cRegistry::getConfig();
+$area = cRegistry::getArea();
+$frame = cRegistry::getFrame();
+$sess = cRegistry::getSession();
+$belang = cRegistry::getBackendLanguage();
+
 cInclude('external', 'codemirror/class.codemirror.php');
 cInclude('includes', 'functions.mod.php');
 
 $readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
-if($readOnly) {
+if ($readOnly) {
     cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
 }
 
@@ -48,7 +60,13 @@ if (!$perm->have_perm_area_action($area, 'mod_history_manage')) {
     return;
 }
 
-if ((!$readOnly) && $_POST["mod_send"] == true && ($_POST["CodeOut"] != "" || $_POST["CodeIn"] != "")) { // save button
+$requestModSend = isset($_POST["mod_send"]);
+$requestCodeOut = $_POST["CodeOut"] ?? '';
+$requestCodeIn = $_POST["CodeIn"] ?? '';
+$requestAction = $_POST["action"] ?? '';
+$requestIdModHistory = $_POST["idmodhistory"] ?? '';
+
+if ((!$readOnly) && $requestModSend == true && ($requestCodeOut != "" || $requestCodeIn != "")) { // save button
     $oVersion = new cVersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
     $sName = $_POST["modname"];
     $sCodeInput = $_POST["CodeIn"];
@@ -62,7 +80,7 @@ if ((!$readOnly) && $_POST["mod_send"] == true && ($_POST["CodeOut"] != "" || $_
 }
 
 // [action] => history_truncate delete all current history
-if ((!$readOnly) && $_POST["action"] == "history_truncate") {
+if ((!$readOnly) && $requestAction == "history_truncate") {
     $oVersion = new cVersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
     $bDeleteFile = $oVersion->deleteFile();
     unset($oVersion);
@@ -91,22 +109,21 @@ $oForm->setVar("idmod", $idmod);
 $oForm->setVar("mod_send", 1);
 
 // if send form refresh
-if ($_POST["idmodhistory"] != "") {
-    $sRevision = $_POST["idmodhistory"];
+if ($requestIdModHistory != "") {
+    $sRevision = $requestIdModHistory;
 } else {
     $sRevision = $oVersion->getLastRevision();
 }
 
-if ($sRevision != '' && ($_POST["action"] != "history_truncate" || $readOnly)) {
+if ($sRevision != '' && ($requestAction != "history_truncate" || $readOnly)) {
     // File Path
     $sPath = $oVersion->getFilePath() . $sRevision;
 
-    // Read XML Nodes  and get an array
-    $aNodes = array();
+    // Read XML Nodes and get an array
+    $aNodes = [];
     $aNodes = $oVersion->initXmlReader($sPath);
 
     if (count($aNodes) > 1) {
-
         //    if choose xml file read value an set it
         $sName = $oVersion->getTextBox("modname", cString::stripSlashes(conHtmlentities(conHtmlSpecialChars($aNodes["name"]))), 60, $readOnly);
         $description = $oVersion->getTextarea("moddesc", cString::stripSlashes(conHtmlSpecialChars($aNodes["desc"])), 100, 10, '', $readOnly);
@@ -127,7 +144,7 @@ if ($sSelectBox != "") {
     // Render and handle History Area
     $oCodeMirrorIn = new CodeMirror('IdCodeIn', 'php', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg, !$bInUse);
     $oCodeMirrorOutput = new CodeMirror('IdCodeOut', 'php', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), false, $cfg, !$bInUse);
-    if($readOnly) {
+    if ($readOnly) {
         $oCodeMirrorIn->setProperty("readOnly", "true");
         $oCodeMirrorOutput->setProperty("readOnly", "true");
     }
