@@ -14,7 +14,13 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $upl_last_path;
+
 $backendPath = cRegistry::getBackendPath();
+$sess = cRegistry::getSession();
+$client = cRegistry::getClientId();
+$cfgClient = cRegistry::getClientConfig();
+$action = cRegistry::getAction();
 
 cInclude('includes', 'api/functions.frontend.list.php');
 cInclude('includes', 'functions.file.php');
@@ -36,7 +42,7 @@ $sortmode         = isset($_REQUEST['sortmode']) ? cSecurity::escapeString($_REQ
 $thumbnailmode    = isset($_REQUEST['thumbnailmode']) ? cSecurity::escapeString($_REQUEST['thumbnailmode']) : '';
 
 if ((empty($browserparameters) || !is_array($browserparameters)) && ($appendparameters != 'imagebrowser' || $appendparameters != 'filebrowser')) {
-    $browserparameters = array();
+    $browserparameters = [];
 }
 
 if (!$sess->isRegistered('upl_last_path')) {
@@ -206,7 +212,7 @@ if ($action === 'upl_delete' && $perm->have_perm_area_action($area, $action) && 
 if ($action === 'upl_multidelete' && $perm->have_perm_area_action($area, $action) && $bDirectoryIsWritable === true) {
     if (is_array($fdelete)) {
         // array of cApiUpload objects to be passed to chain function
-        $uploadObjects = array();
+        $uploadObjects = [];
 
         // Check if it is in the upload table
         foreach ($fdelete as $fileNameToDelete) {
@@ -409,15 +415,14 @@ class UploadList extends FrontendList {
                     } else {
                         $href = $frontendURL . $cfgClient[$client]['upload'] . $data;
                     }
-                    $retValue = '<a class="jsZoom" href="' . $href . '">
-                           <img class="hover" name="smallImage" alt="" src="' . $sCacheThumbnail . '" data-width="' . $iWidth . '" data-height="' . $iHeight . '">
-                           <img class="preview" name="prevImage" alt="" src="' . $sCacheThumbnail . '">
+                    return '<a class="jsZoom" href="' . $href . '">
+                           <img class="hover" alt="" src="' . $sCacheThumbnail . '" data-width="' . $iWidth . '" data-height="' . $iHeight . '">
+                           <img class="preview" alt="" src="' . $sCacheThumbnail . '">
                        </a>';
-                    return $retValue;
                     break;
                 default:
                     $sCacheThumbnail = uplGetThumbnail($data, 150);
-                    return '<img class="hover_none" name="smallImage" alt="" src="' . $sCacheThumbnail . '">';
+                    return '<img class="hover_none" alt="" src="' . $sCacheThumbnail . '">';
             }
         }
 
@@ -465,7 +470,7 @@ class UploadList extends FrontendList {
      * @param bool $return
      *         if true, returns the list
      *
-     * @return string
+     * @return string|void
      *
      * @throws cDbException
      * @throws cException
@@ -780,6 +785,7 @@ if ($list2->getCurrentPage() < $list2->getNumPages()) {
 
 // curpage = $list2->getCurrentPage() . " / ". $list2->getNumPages();
 
+$paging_form = '';
 if ($list2->getNumPages() > 1) {
     $num_pages = $list2->getNumPages();
 
@@ -814,13 +820,13 @@ $output = str_replace('-C-PAGE-', i18n("Page") . ' ' . $curpage, $output);
 
 $select = new cHTMLSelectElement('thumbnailmode');
 
-$values = array(
+$values = [
     10 => '10',
     25 => '25',
     50 => '50',
     100 => '100',
     200 => '200'
-);
+];
 
 $select->autoFill($values);
 
@@ -850,8 +856,8 @@ if ($bDirectoryIsWritable == false) {
     $page->displayError(i18n("Directory not writable") . ' (' . $cfgClient[$client]['upl']['path'] . $path . ')');
 }
 
-$page->setContent(array(
+$page->setContent([
     $delform
-));
+]);
 
 $page->render();

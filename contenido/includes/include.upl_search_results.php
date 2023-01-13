@@ -140,25 +140,25 @@ class UploadSearchResultList extends FrontendList {
 
                     if (cApiDbfs::isDbfs($data)) {
                         $retValue = '<a href="JavaScript:iZoom(\'' . $sess->url($frontendURL . "dbfs.php?file=" . $data) . '\');">
-                                <img class="hover" alt="" name="smallImage" src="' . $sCacheThumbnail . '">
-                                <img class="preview" alt="" name="prevImage" src="' . $sCacheThumbnail . '">
+                                <img class="hover" alt="" src="' . $sCacheThumbnail . '">
+                                <img class="preview" alt="" src="' . $sCacheThumbnail . '">
                             </a>';
                         return $retValue;
                     } else {
                         $retValue = '<a href="JavaScript:iZoom(\'' . $frontendURL . $cfgClient[$client]["upload"] . $data . '\');">
-                                    <img class="hover" alt="" name="smallImage"  onMouseOver="correctPosition(this, ' . $iWidth . ', ' . $iHeight . ');" onmouseout="if (typeof(previewHideIe6) == \'function\') {previewHideIe6(this)}" src="' . $sCacheThumbnail . '">
-                                    <img class="preview" alt="" name="prevImage" src="' . $sCacheThumbnail . '">
+                                    <img class="hover" alt=""  onMouseOver="correctPosition(this, ' . $iWidth . ', ' . $iHeight . ');" onmouseout="if (typeof(previewHideIe6) == \'function\') {previewHideIe6(this)}" src="' . $sCacheThumbnail . '">
+                                    <img class="preview" alt="" src="' . $sCacheThumbnail . '">
                                 </a>';
-                        $retValue .= '<a href="JavaScript:iZoom(\'' . $frontendURL . $cfgClient[$client]["upload"] . $data . '\');"><img class="preview" alt="" name="prevImage" src="' . $sCacheThumbnail . '"></a>';
+                        $retValue .= '<a href="JavaScript:iZoom(\'' . $frontendURL . $cfgClient[$client]["upload"] . $data . '\');"><img class="preview" alt="" src="' . $sCacheThumbnail . '"></a>';
                         return $retValue;
                     }
                     break;
                 case '':
                     // folder has empty filetype column value
-                    return '<img class="hover_none" name="smallImage" alt="" src="' . cRegistry::getBackendUrl() . 'images/grid_folder.gif' . '">';
+                    return '<img class="hover_none" alt="" src="' . cRegistry::getBackendUrl() . 'images/grid_folder.gif' . '">';
                 default:
                     $sCacheThumbnail = uplGetThumbnail($data, 150);
-                    return '<img class="hover_none" name="smallImage" alt="" src="' . $sCacheThumbnail . '">';
+                    return '<img class="hover_none" alt="" src="' . $sCacheThumbnail . '">';
             }
         }
 
