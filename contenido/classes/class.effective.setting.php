@@ -340,7 +340,7 @@ class cEffectiveSetting {
      *
      * @param string $key
      *         The setting key
-     * @return string
+     * @return string|string[]
      *         bool setting value or false
      */
     protected static function _get($key) {
@@ -352,7 +352,7 @@ class cEffectiveSetting {
      *
      * @param string $key
      *         The setting key
-     * @param string $value
+     * @param string $value|string[]
      *         Value to store
      */
     protected static function _set($key, $value) {
