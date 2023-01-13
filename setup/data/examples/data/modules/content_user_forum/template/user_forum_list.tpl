@@ -1,8 +1,10 @@
 {*template for listing all comments*}
 <div class="user_forum">
-    {if !empty($MESSAGE)}
+    {if !empty($MESSAGES)}
         <div class="form_status_message">
-            {$MESSAGE|escape}
+            {foreach from=$MESSAGES item=msgItem}
+                {$msgItem|escape}<br />
+            {/foreach}
         </div>
     {/if}
     <br />
@@ -34,7 +36,9 @@
                     <p>
                         {$POST.FORUM}
                     </p>
-                    {$POST.EDIT_INFORMATION}
+                    {if !empty($POST.EDIT_INFORMATION)}
+                        {$POST.EDIT_INFORMATION}
+                    {/if}
                 </div>
             </td>
             <td valign="top">
