@@ -82,7 +82,7 @@ class cEffectiveSetting {
      * @throws cException
      */
     private static function _loadSettings() {
-		if (!isset(self::$_loaded[self::_getKeyPrefix()])) {
+        if (!isset(self::$_loaded[self::_getKeyPrefix()])) {
             $typeGroup = [];
 
             //get all client settings
@@ -380,21 +380,21 @@ class cEffectiveSetting {
      */
     protected static function _getKeyPrefix() {
         $auth = cRegistry::getAuth();
-    	$prefix = '';
+        $prefix = '';
 
-    	if ($auth instanceof cAuth) {
-    		if (!self::_isAuthenticated()) {
-    			$prefix = cAuth::AUTH_UID_NOBODY;
-    		} else {
-    			$prefix = $auth->auth['uid'];
-    		}
-    	}
+        if ($auth instanceof cAuth) {
+            if (!self::_isAuthenticated()) {
+                $prefix = cAuth::AUTH_UID_NOBODY;
+            } else {
+                $prefix = $auth->auth['uid'];
+            }
+        }
 
-		if (cString::getStringLength($prefix) == 0) {
-			$prefix = cAuth::AUTH_UID_NOBODY;
-		}
+        if (cString::getStringLength($prefix) == 0) {
+            $prefix = cAuth::AUTH_UID_NOBODY;
+        }
 
-    	return $prefix;
+        return $prefix;
     }
 
     /**
