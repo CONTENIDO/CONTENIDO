@@ -16,10 +16,13 @@ include_once(dirname(__FILE__).'/config.plugin.php');
 
 $tpl = new cTemplate();
 
-$cronjobs = new Cronjobs($_REQUEST['file']);
+$requestFile = $_REQUEST['file'] ?? '';
+$requestAction = $_REQUEST['action'] ?? '';
+
+$cronjobs = new Cronjobs($requestFile);
 $notification = new cGuiNotification();
 
-switch ($_REQUEST['action']) {
+switch ($requestAction) {
     case 'cronjob_overview':
         if (!$perm->have_perm_area_action($area, 'cronjob_overview')) {
             $notification->displayNotification('error', i18n('Permission denied', 'cronjobs_overview'));

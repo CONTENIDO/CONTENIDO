@@ -267,7 +267,7 @@ class cGuiMenu {
                 $tpl->set('d', 'EXTRA', implode(' ', $extra));
 
                 $actions = '';
-                if (is_array($this->actions[$key])) {
+                if (isset($this->actions[$key]) && is_array($this->actions[$key])) {
                     foreach ($this->actions[$key] as $key => $singleAction) {
                         $actions .= '&nbsp;' . $singleAction . '&nbsp;';
                     }

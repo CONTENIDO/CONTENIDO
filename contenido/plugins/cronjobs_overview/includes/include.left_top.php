@@ -12,11 +12,12 @@
  */
 
 //Has the user permission for crontab_edit
-if (!$perm->have_perm_area_action($area, 'crontab_edit'))
-{
+if (!$perm->have_perm_area_action($area, 'crontab_edit')) {
     $notification->displayNotification('error', i18n('Permission denied', 'cronjobs_overview'));
     return -1;
 }
+
+$file = $file ?? '';
 
 $tpl = new cTemplate();
 $tpl->set('s', 'LABLE_CRONJOB_EDIT', i18n('Edit cronjob', 'cronjobs_overview'));
