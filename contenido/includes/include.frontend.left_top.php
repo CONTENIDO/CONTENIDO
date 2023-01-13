@@ -18,23 +18,29 @@ global $auth, $area, $cfg, $client, $perm, $sess;
 
 $tpl = new cTemplate();
 
-$user = new cApiUser($auth->auth["uid"]);
+$oUser = new cApiUser($auth->auth["uid"]);
 
 $buttonRow = '';
 
-// Set default values
-$oUser = new cApiUser($auth->auth["uid"]);
-if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST['elemperpage']) || $_REQUEST['elemperpage'] <= 0) {
-    $_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area);
-}
-if (!is_numeric($_REQUEST['elemperpage'])) {
-    $_REQUEST['elemperpage'] = 25;
-}
-$oUser->setProperty("itemsperpage", $area, $_REQUEST["elemperpage"]);
-unset($oUser);
+$requestElemPerPage = cSecurity::toInteger($_REQUEST['elemperpage'] ?? '0');
+$requestPage = cSecurity::toInteger($_REQUEST['page'] ?? '0');
+$requestFilter = $_REQUEST['filter'] ?? '';
+$requestSortBy = $_REQUEST['sortby'] ?? '';
+$requestSortOrder = $_REQUEST['sortorder'] ?? '';
+$requestSearchIn = $_REQUEST['searchin'] ?? '';
+$requestRestrictGroup = $_REQUEST['restrictgroup'] ?? '';
 
-if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST['page']) || $_REQUEST['page'] <= 0 || $_REQUEST["elemperpage"] == 0) {
-    $_REQUEST["page"] = 1;
+// Set default values
+if ($requestElemPerPage <= 0) {
+    $requestElemPerPage = cSecurity::toInteger($oUser->getProperty("itemsperpage", $area));
+}
+if (!is_numeric($requestElemPerPage)) {
+    $requestElemPerPage = 25;
+}
+$oUser->setProperty("itemsperpage", $area, $requestElemPerPage);
+
+if ($requestPage <= 0 || $requestElemPerPage == 0) {
+    $requestPage = 1;
 }
 
 $aFieldsToSearch = [
@@ -107,7 +113,6 @@ if ($bUsePlugins == true && is_array($cfg['plugins']['frontendusers'])) {
                     foreach ($aVariableNames as $sVariableName => $name) {
                         if (in_array($sVariableName, $databaseFields)) {
                             $aFieldSources[$sVariableName] = $plugin;
-
                             $aFieldsToSort[$sVariableName] = $name;
                             $aFieldsToSearch[$sVariableName] = $name;
                         }
@@ -161,10 +166,10 @@ $sActionUuid = '28cf9b31-e6d7-4657-a9a7-db31478e7a5c';
 $oActionRow = new cGuiFoldingRow($sActionUuid, i18n("Actions"), $actionLink);
 if (isset($_GET['actionrow']) && $_GET['actionrow'] == 'collapsed') {
     $oActionRow->setExpanded(false);
-    $user->setProperty("expandstate", $sActionUuid, 'false');
+    $oUser->setProperty("expandstate", $sActionUuid, 'false');
 } else if (isset($_GET['actionrow']) && $_GET['actionrow'] == 'expanded') {
     $oActionRow->setExpanded(true);
-    $user->setProperty("expandstate", $sActionUuid, 'true');
+    $oUser->setProperty("expandstate", $sActionUuid, 'true');
 }
 
 $tpl->set('s', 'ACTIONLINK', $actionLink);
@@ -195,10 +200,10 @@ $oListOptionRow->setExpanded(true);
 
 if (isset($_GET['filterrow']) && $_GET['filterrow'] == 'collapsed') {
     $oActionRow->setExpanded(false);
-    $user->setProperty("expandstate", $sListOptionId, 'false');
+    $oUser->setProperty("expandstate", $sListOptionId, 'false');
 } else if (isset($_GET['filterrow']) && $_GET['filterrow'] == 'expanded') {
     $oActionRow->setExpanded(true);
-    $user->setProperty("expandstate", $sListOptionId, 'true');
+    $oUser->setProperty("expandstate", $sListOptionId, 'true');
 }
 
 $tpl->set('s', 'LISTOPTIONLINK', $listOptionLink);
@@ -209,22 +214,22 @@ $oSelectItemsPerPage->autoFill([
     75 => 75,
     100 => 100
 ]);
-$oSelectItemsPerPage->setDefault($_REQUEST["elemperpage"]);
+$oSelectItemsPerPage->setDefault($requestElemPerPage);
 
 asort($aFieldsToSort);
 asort($aFieldsToSearch);
 
 $oSelectSortBy = new cHTMLSelectElement("sortby");
 $oSelectSortBy->autoFill($aFieldsToSort);
-$oSelectSortBy->setDefault($_REQUEST["sortby"]);
+$oSelectSortBy->setDefault($requestSortBy);
 
 $oSelectSortOrder = new cHTMLSelectElement("sortorder");
 $oSelectSortOrder->autoFill($aSortOrderOptions);
-$oSelectSortOrder->setDefault($_REQUEST["sortorder"]);
+$oSelectSortOrder->setDefault($requestSortOrder);
 
 $oSelectSearchIn = new cHTMLSelectElement("searchin");
 $oSelectSearchIn->autoFill($aFieldsToSearch);
-$oSelectSearchIn->setDefault($_REQUEST["searchin"]);
+$oSelectSearchIn->setDefault($requestSearchIn);
 
 $fegroups = new cApiFrontendGroupCollection();
 $fegroups->setWhere("idclient", $client);
@@ -240,8 +245,8 @@ while ($fegroup = $fegroups->next()) {
 
 $oSelectRestrictGroup = new cHTMLSelectElement("restrictgroup");
 $oSelectRestrictGroup->autoFill($aFEGroups);
-$oSelectRestrictGroup->setDefault($_REQUEST["restrictgroup"]);
-$oTextboxFilter = new cHTMLTextbox("filter", $_REQUEST["filter"], 20);
+$oSelectRestrictGroup->setDefault($requestRestrictGroup);
+$oTextboxFilter = new cHTMLTextbox("filter", $requestFilter, 20);
 $oTextboxFilter->setClass("text_medium");
 
 $tplFilter = new cTemplate();
@@ -260,30 +265,27 @@ $oFEUsers->setWhere("cApiFrontendUserCollection.idclient", $client);
  * Process request parameters
  */
 
-if (cString::getStringLength($_REQUEST["filter"]) > 0) {
-    if ($_REQUEST['searchin'] == "--all--" || $_REQUEST['searchin'] == "") {
+if (cString::getStringLength($requestFilter) > 0) {
+    if ($requestSearchIn == "--all--" || $requestSearchIn == "") {
         foreach ($aFieldSources as $variableName => $source) {
-            $oFEUsers->setWhereGroup("filter", $variableName, $_REQUEST["filter"], "LIKE");
+            $oFEUsers->setWhereGroup("filter", $variableName, $requestFilter, "LIKE");
         }
 
         $oFEUsers->setInnerGroupCondition("filter", "OR");
     } else {
         $searchField = 'username';
-        if (in_array($_REQUEST['searchin'], $databaseFields)) {
-            $searchField = $_REQUEST['searchin'];
+        if (in_array($requestSearchIn, $databaseFields)) {
+            $searchField = $requestSearchIn;
         }
 
-        $oFEUsers->setWhere("cApiFrontendUserCollection." . $searchField, $_REQUEST["filter"], "LIKE");
+        $oFEUsers->setWhere("cApiFrontendUserCollection." . $searchField, $requestFilter, "LIKE");
     }
 }
 
-if ($_REQUEST["restrictgroup"] != "" && $_REQUEST["restrictgroup"] != "--all--") {
+if ($requestRestrictGroup != "" && $requestRestrictGroup != "--all--") {
     $oFEUsers->link("cApiFrontendGroupMemberCollection");
-    $oFEUsers->setWhere("cApiFrontendGroupMemberCollection.idfrontendgroup", $_REQUEST["restrictgroup"]);
+    $oFEUsers->setWhere("cApiFrontendGroupMemberCollection.idfrontendgroup", $requestRestrictGroup);
 }
-
-$mPage = (int) $_REQUEST["page"];
-$elemperpage = (int) $_REQUEST["elemperpage"];
 
 $oFEUsers->query();
 $iItemCount = $oFEUsers->count();
@@ -297,18 +299,18 @@ $tpl->set('s', 'PAGINGLINK', $pagingLink);
 $oPagerLink = new cHTMLLink();
 $oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setLink("main.php");
-$oPagerLink->setCustom("elemperpage", $elemperpage);
-$oPagerLink->setCustom("filter", $_REQUEST["filter"]);
-$oPagerLink->setCustom("sortby", $_REQUEST["sortby"]);
-$oPagerLink->setCustom("sortorder", $_REQUEST["sortorder"]);
-$oPagerLink->setCustom("searchin", $_REQUEST["searchin"]);
-$oPagerLink->setCustom("restrictgroup", $_REQUEST["restrictgroup"]);
+$oPagerLink->setCustom("elemperpage", $requestElemPerPage);
+$oPagerLink->setCustom("filter", $requestFilter);
+$oPagerLink->setCustom("sortby", $requestSortBy);
+$oPagerLink->setCustom("sortorder", $requestSortOrder);
+$oPagerLink->setCustom("searchin", $requestSearchIn);
+$oPagerLink->setCustom("restrictgroup", $requestRestrictGroup);
 $oPagerLink->setCustom("frame", 2);
 $oPagerLink->setCustom("area", $area);
 $oPagerLink->enableAutomaticParameterAppend();
 $oPagerLink->setCustom("contenido", $sess->id);
 
-$oPager = new cGuiObjectPager("25c6a67d-a3f1-4ea4-8391-446c131952c9", $iItemCount, $elemperpage, $mPage, $oPagerLink, "page", $pagingLink);
+$oPager = new cGuiObjectPager("25c6a67d-a3f1-4ea4-8391-446c131952c9", $iItemCount, $requestElemPerPage, $requestPage, $oPagerLink, "page", $pagingLink);
 $oPager->setExpanded(true);
 
 /*
@@ -359,5 +361,5 @@ $containerGroups .= '</div>';
 $tpl->set('s', 'CGROUPS', $containerGroups);
 $tpl->set('s', 'ID_GROUPS', $containerGroupsId);
 
-$tpl->set('s', 'PAGE', $mPage);
+$tpl->set('s', 'PAGE', $requestPage);
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['frontend_left_top']);

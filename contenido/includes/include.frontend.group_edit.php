@@ -16,16 +16,21 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 $fegroups = new cApiFrontendGroupCollection();
 $page = new cGuiPage("grouprights_memberselect", "", 0);
 
-if (is_array($cfg['plugins']['frontendgroups'])) {
+if (isset($cfg['plugins']['frontendgroups']) && is_array($cfg['plugins']['frontendgroups'])) {
     foreach ($cfg['plugins']['frontendgroups'] as $plugin) {
-        plugin_include("frontendgroups", $plugin."/".$plugin.".php");
+        plugin_include('frontendgroups', $plugin . '/' . $plugin . '.php');
     }
 }
+
 $successMessage = '';
 $fegroup      = new cApiFrontendGroup();
 $groupmembers = new cApiFrontendGroupMemberCollection();
 $fegroup->loadByPrimaryKey($idfrontendgroup);
 $sRefreshRightTopLinkJs = "";
+
+$requestUserInGroup = $_POST['user_in_group'] ?? '';
+$requestFilterIn = $_POST['filter_in'] ?? '';
+$requestFilterNon = $_POST['filter_non'] ?? '';
 
 if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $action)) {
    $fegroup = $fegroups->create(" ".i18n("-- New group --"));
@@ -35,13 +40,13 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
    $sRefreshRightTopLinkJs = '<script type="text/javascript">' . $sRefreshRightTopLink . '</script>';
    $successMessage = i18n("Created new frontend-group successfully");
 } else if ($action == "frontendgroups_user_delete" && $perm->have_perm_area_action($area, $action)) {
-    $aDeleteMembers = array();
-    if (!is_array($_POST['user_in_group'])) {
-        if ($_POST['user_in_group'] > 0) {
-            array_push($aDeleteMembers, $_POST['user_in_group']);
+    $aDeleteMembers = [];
+    if (!is_array($requestUserInGroup)) {
+        if ($requestUserInGroup > 0) {
+            array_push($aDeleteMembers, $requestUserInGroup);
         }
     } else {
-        $aDeleteMembers = $_POST['user_in_group'];
+        $aDeleteMembers = $requestUserInGroup;
     }
     foreach ($aDeleteMembers as $idfrontenduser) {
         $groupmembers->remove($idfrontendgroup, $idfrontenduser);
@@ -88,7 +93,7 @@ JS;
 }
 
 if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
-    $messages = array();
+    $messages = [];
 
     if ($action == "frontendgroup_save_group" && $perm->have_perm_area_action($area, $action)) {
         if ($fegroup->get("groupname") != stripslashes($groupname)) {
@@ -106,27 +111,27 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
 
         //Reset all other default groups
         if ($defaultgroup == 1) {
-            $sSql = 'UPDATE '.$cfg["tab"]["frontendgroups"].' SET defaultgroup = 0 WHERE idfrontendgroup != ' . cSecurity::toInteger($idfrontendgroup) . ' AND idclient=' . cSecurity::toInteger($client) . ';';
-            $db->query($sSql);
+            $sSql = 'UPDATE `%s` SET defaultgroup = 0 WHERE idfrontendgroup != %d AND idclient = %d;';
+            $db->query($sSql, $cfg["tab"]["frontendgroups"], $idfrontendgroup, $client);
         }
         $fegroup->set("defaultgroup", $defaultgroup);
 
         // Check out if there are any plugins
-        if (is_array($cfg['plugins']['frontendgroups'])) {
+        if (isset($cfg['plugins']['frontendgroups']) && is_array($cfg['plugins']['frontendgroups'])) {
             foreach ($cfg['plugins']['frontendgroups'] as $plugin) {
-                if (function_exists("frontendgroups_".$plugin."_wantedVariables") &&
-                    function_exists("frontendgroups_".$plugin."_store"))
+                if (function_exists('frontendgroups_' . $plugin . '_wantedVariables') &&
+                    function_exists('frontendgroups_' . $plugin . '_store'))
                 {
-                    $wantVariables = call_user_func("frontendgroups_".$plugin."_wantedVariables");
+                    $wantVariables = call_user_func('frontendgroups_' . $plugin . '_wantedVariables');
 
                     if (is_array($wantVariables)) {
-                        $varArray = array();
+                        $varArray = [];
 
                         foreach ($wantVariables as $value) {
                             $varArray[$value] = stripslashes($GLOBALS[$value]);
                         }
                     }
-                    $store = call_user_func("frontendgroups_".$plugin."_store", $varArray);
+                    $store = call_user_func('frontendgroups_' . $plugin . '_store', $varArray);
                 }
             }
         }
@@ -144,20 +149,18 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
         }
     }
 
-
     $feusers = new cApiFrontendUserCollection();
     $feusers->select("idclient='$client'");
 
-    $addedusers = $groupmembers->getUsersInGroup($idfrontendgroup,false);
-    $addeduserobjects = $groupmembers->getUsersInGroup($idfrontendgroup,true);
+    $addedusers = $groupmembers->getUsersInGroup($idfrontendgroup, false);
+    $addeduserobjects = $groupmembers->getUsersInGroup($idfrontendgroup, true);
 
-    $cells = array();
+    $cells = [];
     foreach ($addeduserobjects as $addeduserobject) {
-        if ((int)$addeduserobject->get("idfrontenduser") != 0 && $addeduserobject->get("username") != '') {
+        if ((int) $addeduserobject->get("idfrontenduser") != 0 && $addeduserobject->get("username") != '') {
             $cells[$addeduserobject->get("idfrontenduser")] = $addeduserobject->get("username");
         }
     }
-
     asort($cells);
 
     $sInGroupOptions = '';
@@ -166,18 +169,16 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
     }
     $page->set('s', 'IN_GROUP_OPTIONS', $sInGroupOptions);
 
-    $items = array();
+    $items = [];
     while ($feuser = $feusers->next()) {
         $idfrontenduser = $feuser->get("idfrontenduser");
         $sUsername = $feuser->get("username");
-
         if (!in_array($idfrontenduser,$addedusers)) {
             if ((int) $idfrontenduser != 0 && $sUsername != '') {
                 $items[$idfrontenduser] = $sUsername;
             }
         }
     }
-
     asort($items);
 
     $sNonGroupOptions = '';
@@ -204,12 +205,11 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
     // Check out if there are any plugins
     if (is_array($pluginOrder)) {
         foreach ($pluginOrder as $plugin) {
-            if (function_exists("frontendgroups_".$plugin."_getTitle") &&
-                function_exists("frontendgroups_".$plugin."_display"))
+            if (function_exists('frontendgroups_' . $plugin . '_getTitle') &&
+                function_exists('frontendgroups_' . $plugin . '_display'))
             {
-
-                $plugTitle = call_user_func("frontendgroups_".$plugin."_getTitle");
-                $display = call_user_func("frontendgroups_".$plugin."_display", $fegroup);
+                $plugTitle = call_user_func('frontendgroups_' . $plugin . '_getTitle');
+                $display = call_user_func('frontendgroups_' . $plugin . '_display', $fegroup);
 
                 if (is_array($plugTitle) && is_array($display)) {
                     foreach ($plugTitle as $key => $value) {
@@ -219,7 +219,7 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
                     }
                 } else {
                     if (is_array($plugTitle) || is_array($display)) {
-                        $page->set('d', 'LABEL', "WARNING");
+                        $page->set('d', 'LABEL', 'WARNING');
                         $page->set('d', 'INPUT', "The plugin $plugin delivered an array for the displayed titles, but did not return an array for the contents.");
                         $page->next();
                     } else {
@@ -243,8 +243,8 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
     $page->set('s', 'ADD_ACTION', 'frontendgroup_user_add');
     $page->set('s', 'DELETE_ACTION', 'frontendgroups_user_delete');
     $page->set('s', 'DISPLAY_OK', 'block');
-    $page->set('s', 'IN_GROUP_VALUE', $_POST['filter_in']);
-    $page->set('s', 'NON_GROUP_VALUE', $_POST['filter_non']);
+    $page->set('s', 'IN_GROUP_VALUE', $requestFilterIn);
+    $page->set('s', 'NON_GROUP_VALUE', $requestFilterNon);
     $page->set('s', 'RECORD_ID_NAME', 'idfrontendgroup');
     $page->set('s', 'RELOADSCRIPT', $reloadLeftBottom.$sRefreshRightTopLinkJs);
 
@@ -257,5 +257,3 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
 
     $page->render();
 }
-
-?>
