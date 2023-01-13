@@ -270,9 +270,9 @@ class ArticleForumCollection extends ItemCollection {
 
             // load timestamp from db to check if the article was already
             // edited.
-            if ($this->item->getField('editedat') === "0000-00-00 00:00:00") {
+            if (isEmptyDbDateTime($this->item->getField('editedat'))) {
                 // case : never edited
-                $timeStamp = "0000-00-00 00:00:00";
+                $timeStamp = null;
             } else {
                 $timeStamp = $this->item->getField('editedat');
             }
@@ -301,13 +301,16 @@ class ArticleForumCollection extends ItemCollection {
             'editedby'  => $uuid,
             'email'     => $email,
             'forum'     => $forum,
-            'editedat'  => $timeStamp,
+            //'editedat'  => $timeStamp, // TODO Setting 'editedat' => null should be possible
             'like'      => $like,
             'dislike'   => $dislike,
             'online'    => $online,
             // update moderated flag with update => comment is moderated now.
             'moderated' => 1
         ];
+        if ($timeStamp) {
+            $fields['editedat'] = $timeStamp;
+        }
 
         $whereClauses = [
             'id_user_forum' => $idUserForum

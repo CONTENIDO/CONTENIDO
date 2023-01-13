@@ -123,7 +123,9 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
 
     // Parameter check for $default. If set, create a default value
     if ($default != '') {
-        if (((cString::findFirstPos($type, 'timestamp') !== FALSE) && ($default != '')) || ($default == 'NULL') || ($default == 'CURRENT_TIMESTAMP')) {
+        // Some common used MySQL keywords (list is not complete!)
+        $keywords = ['CURRENT_TIME', 'CURRENT_TIMESTAMP', 'LOCALTIME', 'LOCALTIMESTAMP', 'UTC_TIME', 'UTC_TIMESTAMP', 'NULL', 'NOW()'];
+        if (((cString::findFirstPos($type, 'timestamp') !== FALSE) && ($default != '')) || (in_array($default, $keywords))) {
             $parameter['DEFAULT'] = "DEFAULT " . $db->escape($default);
         } else {
             $parameter['DEFAULT'] = "DEFAULT '" . $db->escape($default) . "'";

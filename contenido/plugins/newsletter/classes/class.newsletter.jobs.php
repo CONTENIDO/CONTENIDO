@@ -271,7 +271,8 @@ class NewsletterJob extends Item {
 
             if (($dNow - $dStart) > (5 * 60)) {
                 $this->set("status", 1);
-                $this->set("started", "0000-00-00 00:00:00", false);
+                // TODO We should be able to set null!
+                //$this->set("started", null, false);
 
                 $oLogs = new NewsletterLogCollection();
                 $oLogs->setWhere("idnewsjob", $this->get($this->getPrimaryKeyName()));
@@ -478,7 +479,8 @@ class NewsletterJob extends Item {
                 If ($oLogs->next()) {
                     // Remaining recipients found, set job back to pending
                     $this->set("status", 1);
-                    $this->set("started", "0000-00-00 00:00:00", false);
+                    // TODO We should be able to set null!
+                    //$this->set("started", null, false);
                 } else {
                     // No remaining recipients, job finished
                     $this->set("status", 9);
@@ -487,7 +489,8 @@ class NewsletterJob extends Item {
             } else {
                 // Set job back to pending
                 $this->set("status", 1);
-                $this->set("started", "0000-00-00 00:00:00", false);
+                // TODO We should be able to set null!
+                //$this->set("started", null, false);
             }
             $this->store();
         }
@@ -502,7 +505,7 @@ class NewsletterJob extends Item {
         if ($this->get("rcpcount") == 0) {
             // No recipients, job finished
             $this->set("status", 9);
-            if ($this->get("started") == "0000-00-00 00:00:00") {
+            if (isEmptyDbDateTime($this->get("started"))) {
                 $this->set("started", date("Y-m-d H:i:s"), false);
             }
             $this->set("finished", date("Y-m-d H:i:s"), false);

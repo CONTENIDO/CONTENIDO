@@ -96,7 +96,8 @@ if (true === $recipient->isLoaded() && $recipient->get("idclient") == $client &&
         if ($recipient->get("confirmed") != $confirmed && $confirmed) {
             $recipient->set("confirmeddate", date("Y-m-d H:i:s"), false);
         } elseif (!$confirmed) {
-            $recipient->set("confirmeddate", "0000-00-00 00:00:00", false);
+            // TODO We should be able to set null!
+            //$recipient->set("confirmeddate", null, false);
         }
         $recipient->set("confirmed",   $confirmed);
         $recipient->set("deactivated", $deactivated);

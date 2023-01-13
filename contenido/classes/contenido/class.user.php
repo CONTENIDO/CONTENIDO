@@ -206,7 +206,8 @@ class cApiUserCollection extends ItemCollection {
 
         $where = "perms LIKE '%sysadmin%'";
         if ($forceActive === true) {
-            $where .= " AND (valid_from <= NOW() OR valid_from = '0000-00-00 00:00:00')" . " AND (valid_to >= NOW() OR valid_to = '0000-00-00 00:00:00')";
+            $where .= " AND (valid_from <= NOW() OR valid_from IS NULL)"
+                    . " AND (valid_to >= NOW() OR valid_to IS NULL)";
         }
 
         $this->select($where);
@@ -901,7 +902,7 @@ class cApiUser extends Item {
      * @param string $sValidateTo
      */
     public function setValidDateTo($sValidateTo) {
-        if ('0000-00-00' == $this->get('valid_to') && 0 == cString::getStringLength(trim($sValidateTo))) {
+        if (isEmptyDbDateTime(trim($sValidateTo))) {
             return;
         }
         if ($this->get('valid_to') != $sValidateTo) {
@@ -916,7 +917,7 @@ class cApiUser extends Item {
      * @param string $sValidateFrom
      */
     public function setValidDateFrom($sValidateFrom) {
-        if ('0000-00-00' == $this->get('valid_from') && 0 == cString::getStringLength(trim($sValidateFrom))) {
+        if (isEmptyDbDateTime(trim($sValidateFrom))) {
             return;
         }
         if ($this->get('valid_from') != $sValidateFrom) {
