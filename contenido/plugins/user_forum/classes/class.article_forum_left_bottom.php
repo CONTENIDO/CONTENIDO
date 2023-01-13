@@ -56,7 +56,7 @@ class ArticleForumLeftBottom extends cGuiPage {
             return '';
         }
 
-        $idart = cSecurity::toInteger($_REQUEST['idart']);
+        $idart = cSecurity::toInteger(isset($_REQUEST['idart']) ?? '0');
 
         $menu = new cGuiMenu();
         for ($i = 0; $i < count($forms); $i++) {
