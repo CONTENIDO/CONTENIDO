@@ -20,10 +20,17 @@ if (!$perm->have_perm_area_action($area, $action)) {
     return;
 }
 
+if (!isset($groupname)) {
+    $groupname = '';
+}
+if (!isset($description)) {
+    $description = '';
+}
+
 // create group instance
 $bError        = false;
 $sNotification = '';
-$aPerms        = array();
+$aPerms        = [];
 $groupId       = NULL;
 
 if ($action == 'group_create') {
