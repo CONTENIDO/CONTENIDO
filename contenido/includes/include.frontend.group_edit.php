@@ -16,11 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 $fegroups = new cApiFrontendGroupCollection();
 $page = new cGuiPage("grouprights_memberselect", "", 0);
 
-if (isset($cfg['plugins']['frontendgroups']) && is_array($cfg['plugins']['frontendgroups'])) {
-    foreach ($cfg['plugins']['frontendgroups'] as $plugin) {
-        plugin_include('frontendgroups', $plugin . '/' . $plugin . '.php');
-    }
-}
+cIncludePlugins('frontendgroups');
 
 $successMessage = '';
 $fegroup      = new cApiFrontendGroup();
@@ -117,23 +113,8 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
         $fegroup->set("defaultgroup", $defaultgroup);
 
         // Check out if there are any plugins
-        if (isset($cfg['plugins']['frontendgroups']) && is_array($cfg['plugins']['frontendgroups'])) {
-            foreach ($cfg['plugins']['frontendgroups'] as $plugin) {
-                if (function_exists('frontendgroups_' . $plugin . '_wantedVariables') &&
-                    function_exists('frontendgroups_' . $plugin . '_store'))
-                {
-                    $wantVariables = call_user_func('frontendgroups_' . $plugin . '_wantedVariables');
-
-                    if (is_array($wantVariables)) {
-                        $varArray = [];
-
-                        foreach ($wantVariables as $value) {
-                            $varArray[$value] = stripslashes($GLOBALS[$value]);
-                        }
-                    }
-                    $store = call_user_func('frontendgroups_' . $plugin . '_store', $varArray);
-                }
-            }
+        if (cHasPlugins('frontendgroups')) {
+            cCallPluginStore('frontendgroups');
         }
 
         $fegroup->store();

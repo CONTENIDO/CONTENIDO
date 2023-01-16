@@ -114,12 +114,12 @@ class NewsletterJobCollection extends ItemCollection {
 
                     // Replace plugin tags by simple MAIL_ tags
                     if (getSystemProperty("newsletter", "newsletter-recipients-plugin") == "true") {
-                        if (is_array($cfg['plugins']['recipients'])) {
+                        if (cHasPlugins('recipients')) {
+                            cIncludePlugins('recipients');
                             foreach ($cfg['plugins']['recipients'] as $sPlugin) {
-                                plugin_include("recipients", $sPlugin . "/" . $sPlugin . ".php");
-                                if (function_exists("recipients_" . $sPlugin . "_wantedVariables")) {
-                                    $aPluginVars = array();
-                                    $aPluginVars = call_user_func("recipients_" . $sPlugin . "_wantedVariables");
+                                if (function_exists('recipients_' . $sPlugin . '_wantedVariables')) {
+                                    $aPluginVars = [];
+                                    $aPluginVars = call_user_func('recipients_' . $sPlugin . '_wantedVariables');
 
                                     foreach ($aPluginVars as $sPluginVar) {
                                         $oNewsletter->_replaceTag($sMessageHTML, true, $sPluginVar, "MAIL_" . cString::toUpperCase($sPluginVar));
@@ -341,13 +341,13 @@ class NewsletterJob extends Item {
             $bPluginEnabled = false;
             if (getSystemProperty("newsletter", "newsletter-recipients-plugin") == "true") {
                 $bPluginEnabled = true;
-                $aPlugins = array();
+                $aPlugins = [];
 
-                if (is_array($cfg['plugins']['recipients'])) {
+                if (cHasPlugins('recipients')) {
+                    cIncludePlugins('recipients');
                     foreach ($cfg['plugins']['recipients'] as $sPlugin) {
-                        plugin_include("recipients", $sPlugin . "/" . $sPlugin . ".php");
-                        if (function_exists("recipients_" . $sPlugin . "_wantedVariables")) {
-                            $aPlugins[$sPlugin] = call_user_func("recipients_" . $sPlugin . "_wantedVariables");
+                        if (function_exists('recipients_' . $sPlugin . '_wantedVariables')) {
+                            $aPlugins[$sPlugin] = call_user_func('recipients_' . $sPlugin . '_wantedVariables');
                         }
                     }
                 }

@@ -711,12 +711,12 @@ class Newsletter extends Item
         if ($bSimulatePlugins) {
             // Enabling plugin interface
             if (getSystemProperty("newsletter", "newsletter-recipients-plugin") == "true") {
-                if (is_array($cfg['plugins']['recipients'])) {
+                if (cHasPlugins('recipients')) {
+                    cIncludePlugins('recipients');
                     foreach ($cfg['plugins']['recipients'] as $sPlugin) {
-                        plugin_include("recipients", $sPlugin."/".$sPlugin.".php");
-                        if (function_exists("recipients_".$sPlugin."_wantedVariables")) {
+                        if (function_exists('recipients_' . $sPlugin . '_wantedVariables')) {
                             $aPluginVars = [];
-                            $aPluginVars = call_user_func("recipients_".$sPlugin."_wantedVariables");
+                            $aPluginVars = call_user_func('recipients_' . $sPlugin . '_wantedVariables');
 
                             foreach ($aPluginVars as $sPluginVar) {
                                 // Replace tags in text message
@@ -872,11 +872,11 @@ class Newsletter extends Item
             $bPluginEnabled = true;
             $aPlugins       = [];
 
-            if (is_array($cfg['plugins']['recipients'])) {
+            if (cHasPlugins('recipients')) {
+                cIncludePlugins('recipients');
                 foreach ($cfg['plugins']['recipients'] as $sPlugin) {
-                    plugin_include("recipients", $sPlugin."/".$sPlugin.".php");
-                    if (function_exists("recipients_".$sPlugin."_wantedVariables")) {
-                        $aPlugins[$sPlugin] = call_user_func("recipients_".$sPlugin."_wantedVariables");
+                    if (function_exists('recipients_' . $sPlugin . '_wantedVariables')) {
+                        $aPlugins[$sPlugin] = call_user_func('recipients_' . $sPlugin . '_wantedVariables');
                     }
                 }
             }

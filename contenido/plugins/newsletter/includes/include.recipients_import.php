@@ -16,10 +16,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 $oPage = new cGuiPage("recipients_import", "newsletter");
 $oRecipients = new NewsletterRecipientCollection();
 
-if (is_array($cfg['plugins']['recipients'])) {
-    foreach ($cfg['plugins']['recipients'] as $plugin) {
-        plugin_include("recipients", $plugin . "/" . $plugin . ".php");
-    }
+if (cHasPlugins('recipients')) {
+    cIncludePlugins('recipients');
 }
 
 // Check form data
@@ -72,11 +70,12 @@ $aFieldDetails["news_type"]["link"] = false;
 $aFieldDetails["news_type"]["col"] = -1;
 
 // Check out if there are any plugins
-if (is_array($cfg['plugins']['recipients'])) {
+if (cHasPlugins('recipients')) {
     foreach ($cfg['plugins']['recipients'] as $sPlugin) {
-        if (function_exists("recipients_" . $sPlugin . "_wantedVariables") && function_exists("recipients_" . $sPlugin . "_canonicalVariables")) {
-            $aPluginTitles = call_user_func("recipients_" . $sPlugin . "_canonicalVariables");
-            $aPluginFields = call_user_func("recipients_" . $sPlugin . "_wantedVariables");
+        if (function_exists('recipients_' . $sPlugin . '_wantedVariables')
+            && function_exists('recipients_' . $sPlugin . '_canonicalVariables')) {
+            $aPluginTitles = call_user_func('recipients_' . $sPlugin . '_canonicalVariables');
+            $aPluginFields = call_user_func('recipients_' . $sPlugin . '_wantedVariables');
             foreach ($aPluginFields as $sField) {
                 // if ($_REQUEST["ckb".$sField]) {
                 $aFields[$sField] = cString::toLowerCase(str_replace(" ", "", $aPluginTitles[$sField]));

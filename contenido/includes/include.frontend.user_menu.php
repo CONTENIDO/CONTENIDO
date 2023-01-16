@@ -74,12 +74,10 @@ if ($sampleItem) {
     $databaseFields = array_keys($sampleItem->toArray());
 }
 
-if ($bUsePlugins == true && is_array($cfg['plugins']['frontendusers'])) {
-    foreach ($cfg['plugins']['frontendusers'] as $plugin) {
-        plugin_include("frontendusers", $plugin . "/" . $plugin . ".php");
-    }
+if ($bUsePlugins == true && cHasPlugins('frontendusers')) {
+    cIncludePlugins('frontendusers');
 
-    $_sValidPlugins = getEffectiveSetting("frontendusers", "pluginsearch_valid_plugins", '');
+    $_sValidPlugins = getEffectiveSetting('frontendusers', 'pluginsearch_valid_plugins', '');
     $_aValidPlugins = [];
 
     if (cString::getStringLength($_sValidPlugins) > 0) {
@@ -90,11 +88,11 @@ if ($bUsePlugins == true && is_array($cfg['plugins']['frontendusers'])) {
 
     foreach ($cfg['plugins']['frontendusers'] as $plugin) {
         if ($_iCountValidPlugins == 0 || in_array($plugin, $_aValidPlugins)) {
-            if (function_exists("frontendusers_" . $plugin . "_wantedVariables")
-                && function_exists("frontendusers_" . $plugin . "_canonicalVariables")
-                && function_exists("frontendusers_" . $plugin . "_getvalue")) {
+            if (function_exists('frontendusers_' . $plugin . '_wantedVariables')
+                && function_exists('frontendusers_' . $plugin . '_canonicalVariables')
+                && function_exists('frontendusers_' . $plugin . '_getvalue')) {
 
-                $aVariableNames = call_user_func("frontendusers_" . $plugin . "_canonicalVariables");
+                $aVariableNames = call_user_func('frontendusers_' . $plugin . '_canonicalVariables');
 
                 if (is_array($aVariableNames)) {
                     foreach ($aVariableNames as $sVariableName => $name) {

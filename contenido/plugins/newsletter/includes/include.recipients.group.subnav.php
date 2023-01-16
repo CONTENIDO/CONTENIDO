@@ -31,10 +31,9 @@ $tpl->set('d', 'OPTIONS', '');
 $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=$area&frame=4&idrecipientgroup=$idrecipientgroup"), $caption));
 $tpl->next();
 
-if (is_array($cfg['plugins']['recipientslogic'])) {
+if (cHasPlugins('recipientslogic')) {
+    cIncludePlugins('recipientslogic');
     foreach ($cfg['plugins']['recipientslogic'] as $plugin) {
-        cInclude('plugins', "recipientslogic/{$plugin}/{$plugin}.php");
-
         $className = 'recipientslogic_' . $plugin;
         $class = new $className();
 

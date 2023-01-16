@@ -24,10 +24,8 @@ if (isset($idnewsletter)) {
 }
 
 // Include plugins
-if (is_array($cfg['plugins']['newsletters'])) {
-    foreach ($cfg['plugins']['newsletters'] as $plugin) {
-        plugin_include("newsletters", $plugin . "/" . $plugin . ".php");
-    }
+if (cHasPlugins('newsletters')) {
+    cIncludePlugins('newsletters');
 }
 
 if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create")) {
@@ -140,7 +138,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
 
     // Send test newsletter
     $oNewsletter = new Newsletter($idnewsletter);
-    $aRecipients = array();
+    $aRecipients = [];
 
     if ($iTestIDNewsGroup == 0) {
         // Send test newsletter to current user email address
@@ -173,45 +171,54 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
 }
 
 if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $client && $oNewsletter->get("idlang") == $lang) {
+    $requestOptSendTo = $_REQUEST['optSendTo'] ?? '';
+    $requestCkbWelcome = cSecurity::toInteger($_REQUEST['ckbWelcome'] ?? '0');
+    $requestTxtDispatchCount = cSecurity::toInteger($_REQUEST['txtDispatchCount'] ?? '0');
+    $requestTxtDispatchDelay = cSecurity::toInteger($_REQUEST['txtDispatchDelay'] ?? '0');
+    $requestSelTemplate = cSecurity::toInteger($_REQUEST['selTemplate'] ?? '0');
+    $requestTxtName = $_REQUEST['txtName'] ?? '';
+    $requestTxtFromEMail = $_REQUEST['txtFromEMail'] ?? '';
+    $requestTxtFromName = $_REQUEST['txtFromName'] ?? '';
+    $requestTxtSubject = $_REQUEST['txtSubject'] ?? '';
+    $requestSelGroup = $_REQUEST['selGroup'] ?? '';
+    $requestCkbCronJob = cSecurity::toInteger($_REQUEST['ckbCronJob'] ?? '0');
+    $requestCkbDispatch = cSecurity::toInteger($_REQUEST['ckbDispatch'] ?? '0');
+    $requestCkbDefault = cSecurity::toInteger($_REQUEST['ckbSetDefault'] ?? '0');
 
     // Check and set values
-    if ($_REQUEST["optSendTo"] == "") {
-        $_REQUEST["optSendTo"] = $oNewsletter->get("send_to");
+    if ($requestOptSendTo == "") {
+        $requestOptSendTo = $oNewsletter->get("send_to");
     }
 
-    if (!is_numeric($_REQUEST["ckbWelcome"])) {
-        $_REQUEST["ckbWelcome"] = 0;
-    }
-
-    if (!is_numeric($_REQUEST["txtDispatchCount"]) || $_REQUEST["txtDispatchCount"] <= 0) {
-        $_REQUEST["txtDispatchCount"] = $oNewsletter->get("dispatch_count");
+    if ($requestTxtDispatchCount <= 0) {
+        $requestTxtDispatchCount = $oNewsletter->get("dispatch_count");
     }
 
     // Note, that for DispatchDelay 0 is possible (= send chunks manually)
-    if (!is_numeric($_REQUEST["txtDispatchDelay"]) || $_REQUEST["txtDispatchDelay"] < 0) {
-        $_REQUEST["txtDispatchDelay"] = $oNewsletter->get("dispatch_delay");
+    if ($requestTxtDispatchDelay < 0) {
+        $requestTxtDispatchDelay = $oNewsletter->get("dispatch_delay");
     }
 
     // Only set template id to 0 if it has been specified (as something not
     // useful).
     // This prevents deleting of the template id, if type setting is changed to
     // "text"
-    if (isset($_REQUEST["selTemplate"]) && !is_numeric($_REQUEST["selTemplate"])) {
-        $_REQUEST["selTemplate"] = 0;
+    if ($requestSelTemplate < 0) {
+        $requestSelTemplate = 0;
     }
 
     if ($action == "news_save" && $perm->have_perm_area_action($area, $action)) {
         // Save changes
-        $aMessages = array();
+        $aMessages = [];
 
         // Changing e.g. \' back to ' (magic_quotes)
-        $sName = stripslashes($_REQUEST["txtName"]);
+        $sName = stripslashes($requestTxtName);
         $sName = conHtmlSpecialChars($sName);
-        $sFromEMail = stripslashes($_REQUEST["txtFromEMail"]);
-        $sFromName = stripslashes($_REQUEST["txtFromName"]);
-        $sSubject = stripslashes($_REQUEST["txtSubject"]);
+        $sFromEMail = stripslashes($requestTxtFromEMail);
+        $sFromName = stripslashes($requestTxtFromName);
+        $sSubject = stripslashes($requestTxtSubject);
 
-        if ($oNewsletter->get("name") != $sName || $oNewsletter->get("welcome") != $_REQUEST["ckbWelcome"] || $oNewsletter->get("newsfrom") != $sFromEMail) {
+        if ($oNewsletter->get("name") != $sName || $oNewsletter->get("welcome") != $requestCkbWelcome || $oNewsletter->get("newsfrom") != $sFromEMail) {
             // Only reload, if something visible has changed
             $oPage->reloadLeftBottomFrame(['idnewsletter' => $oNewsletter->get("idnews")]);
         }
@@ -254,71 +261,60 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
         $oNewsletter->set("subject", $sSubject);
 
         // Options
-        $oNewsletter->set("welcome", $_REQUEST["ckbWelcome"]);
+        $oNewsletter->set("welcome", $requestCkbWelcome);
 
         // Check out if there are any plugins
-        if (is_array($cfg['plugins']['newsletters'])) {
-            foreach ($cfg['plugins']['newsletters'] as $plugin) {
-                if (function_exists("newsletters_" . $plugin . "_wantedVariables") && function_exists("newsletters_" . $plugin . "_store")) {
-                    $wantVariables = call_user_func("newsletters_" . $plugin . "_wantedVariables");
-                    if (is_array($wantVariables)) {
-                        $varArray = array();
-                        foreach ($wantVariables as $value) {
-                            $varArray[$value] = stripslashes($GLOBALS[$value]);
-                        }
-                    }
-                    $store = call_user_func("newsletters_" . $plugin . "_store", $varArray);
-                }
-            }
+        if (cHasPlugins('newsletters')) {
+            cCallPluginStore('newsletters');
         }
 
         // If "selected groups" have been selected and no group specified, set
         // selection to "all"
-        if ($_REQUEST["optSendTo"] == "selection" && !is_array($_REQUEST["selGroup"])) {
+        if ($requestOptSendTo == "selection" && !is_array($requestSelGroup)) {
             $aMessages[] = i18n("'Send to recipients in selected groups' has been selected, but no group has been specified. Selection has been set to 'Send to all recipients'", 'newsletter');
-            $_REQUEST["optSendTo"] = "all";
+            $requestOptSendTo = "all";
         }
-        $oNewsletter->set("send_to", $_REQUEST["optSendTo"]);
-        $oNewsletter->set("send_ids", serialize($_REQUEST["selGroup"]));
+        $oNewsletter->set("send_to", $requestOptSendTo);
+        $oNewsletter->set("send_ids", serialize($requestSelGroup));
 
         if (getEffectiveSetting("newsletter", "option-cronjob-available", "false") == "true") {
             // Only store changes, if cronjob option is available
-            if (isset($_REQUEST["ckbCronJob"])) {
+            if ($requestCkbCronJob === 1) {
                 $oNewsletter->set("use_cronjob", 1);
             } else {
                 $oNewsletter->set("use_cronjob", 0);
             }
         }
 
-        if (isset($_REQUEST["ckbDispatch"])) {
+        if ($requestCkbDispatch === 1) {
             $oNewsletter->set("dispatch", 1);
         } else {
             $oNewsletter->set("dispatch", 0);
         }
 
-        $oNewsletter->set("dispatch_count", $_REQUEST["txtDispatchCount"]);
-        $oNewsletter->set("dispatch_delay", $_REQUEST["txtDispatchDelay"]);
+        $oNewsletter->set("dispatch_count", $requestTxtDispatchCount);
+        $oNewsletter->set("dispatch_delay", $requestTxtDispatchDelay);
 
         $oNewsletter->store(); // Note, that the properties are stored, anyway
 
         // Storing from (e-mail), from (name) and options as default
-        if ($_REQUEST["ckbSetDefault"]) {
+        if ($requestCkbDefault) {
             $oClientLang->setProperty("newsletter", "newsfrom", $sFromEMail);
             $oClientLang->setProperty("newsletter", "newsfromname", $sFromName);
-            $oClientLang->setProperty("newsletter", "sendto", $_REQUEST["optSendTo"]);
-            $oClientLang->setProperty("newsletter", "sendgroups", serialize($_REQUEST["selGroup"]));
-            if (isset($_REQUEST["ckbCronJob"])) {
+            $oClientLang->setProperty("newsletter", "sendto", $requestOptSendTo);
+            $oClientLang->setProperty("newsletter", "sendgroups", serialize($requestSelGroup));
+            if ($requestCkbCronJob === 1) {
                 $oClientLang->setProperty("newsletter", "use_cronjob", "1");
             } else {
                 $oClientLang->setProperty("newsletter", "use_cronjob", "0");
             }
-            if (isset($_REQUEST["ckbDispatch"])) {
+            if ($requestCkbDispatch === 1) {
                 $oClientLang->setProperty("newsletter", "dispatch", "1");
             } else {
                 $oClientLang->setProperty("newsletter", "dispatch", "0");
             }
-            $oClientLang->setProperty("newsletter", "dispatchcount", $_REQUEST["txtDispatchCount"]);
-            $oClientLang->setProperty("newsletter", "dispatchdelay", $_REQUEST["txtDispatchDelay"]);
+            $oClientLang->setProperty("newsletter", "dispatchcount", $requestTxtDispatchCount);
+            $oClientLang->setProperty("newsletter", "dispatchdelay", $requestTxtDispatchDelay);
         }
 
         if (count($aMessages) > 0) {
@@ -328,19 +324,19 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
             $oPage->displayOk(i18n("Saved changes successfully!", 'newsletter'));
         }
     } else {
-        $_REQUEST["selGroup"] = unserialize($oNewsletter->get("send_ids"));
-        if (!is_array($_REQUEST["selGroup"])) {
-            $_REQUEST["selGroup"] = unserialize($oClientLang->getProperty("newsletter", "sendgroups"));
-            if (!is_array($_REQUEST["selGroup"])) {
-                $_REQUEST["selGroup"] = array();
+        $requestSelGroup = unserialize($oNewsletter->get("send_ids"));
+        if (!is_array($requestSelGroup)) {
+            $requestSelGroup = unserialize($oClientLang->getProperty("newsletter", "sendgroups"));
+            if (!is_array($requestSelGroup)) {
+                $requestSelGroup = [];
             }
         }
 
-        $_REQUEST["ckbDispatch"] = false;
+        $requestCkbDispatch = 0;
         if ($oNewsletter->get("dispatch") == 1) {
-            $_REQUEST["ckbDispatch"] = true;
+            $requestCkbDispatch = 1;
         } elseif ($oNewsletter->get("dispatch") == "" && $oClientLang->getProperty("newsletter", "dispatch") == "true") {
-            $_REQUEST["ckbDispatch"] = true;
+            $requestCkbDispatch = 1;
         }
     }
 
@@ -356,16 +352,16 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     $oForm->add(i18n("Name", 'newsletter'), $oTxtName->render());
 
     $oSelType = new cHTMLSelectElement("selType");
-    $aItems = array();
-    $aItems[] = array(
+    $aItems = [];
+    $aItems[] = [
         "text",
         i18n("Text only", 'newsletter')
-    );
+    ];
     if ($oClientLang->getProperty("newsletter", "html_newsletter") == "true") {
-        $aItems[] = array(
+        $aItems[] = [
             "html",
             i18n("HTML and text", 'newsletter')
-        );
+        ];
     } else {
         $oNewsletter->set("type", "text"); // just in case the global setting
                                            // was switched off
@@ -398,16 +394,16 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     $oRcpGroups->setOrder("defaultgroup DESC, groupname ASC");
     $oRcpGroups->query();
 
-    $aItems = array();
+    $aItems = [];
     while ($oRcpGroup = $oRcpGroups->next()) {
         $sGroupName = $oRcpGroup->get("groupname");
         if ($oRcpGroup->get("defaultgroup")) {
             $sGroupName = $sGroupName . "*";
         }
-        $aItems[] = array(
+        $aItems[] = [
             $oRcpGroup->get("idnewsgroup"),
             $sGroupName
-        );
+        ];
     }
 
     $oSelGroup = new cHTMLSelectElement("selGroup[]", "", "groupselect");
@@ -420,14 +416,14 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     // No groups in the list, sendToGroups and group listbox disabled
     if (count($aItems) == 0) {
         $oSendToGroups->setDisabled(true);
-        if ($_REQUEST["optSendTo"] == "selection") {
-            $_REQUEST["optSendTo"] == "all";
+        if ($requestOptSendTo == "selection") {
+            $requestOptSendTo == "all";
         }
-    } elseif (is_array($_REQUEST["selGroup"])) {
-        $oSelGroup->setSelected($_REQUEST['selGroup']);
+    } elseif (is_array($requestSelGroup)) {
+        $oSelGroup->setSelected($requestSelGroup);
     }
 
-    switch ($_REQUEST["optSendTo"]) {
+    switch ($requestOptSendTo) {
         case "default":
             $oSendToDefault->setChecked(true);
             $oSelGroup->setDisabled(true);

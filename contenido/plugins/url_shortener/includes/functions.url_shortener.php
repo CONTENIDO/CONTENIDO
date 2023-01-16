@@ -206,7 +206,7 @@ function piUsGetErrorMessage($errorCode, $shortUrlItem = NULL) {
  * @throws cInvalidArgumentException
  */
 function piUsAfterLoadPlugins() {
-    $requestUri = $_SERVER['REQUEST_URI'];
+    $requestUri = $_SERVER['REQUEST_URI'] ?? '';
     $shorturl = cString::getPartOfString($requestUri, cString::findLastPos($requestUri, '/') + 1);
     $shortUrlItem = new cApiShortUrl();
     $shortUrlItem->loadBy('shorturl', $shorturl);

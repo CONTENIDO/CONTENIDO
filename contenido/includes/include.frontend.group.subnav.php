@@ -32,10 +32,9 @@ $tpl->set('d', 'OPTIONS', '');
 $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=$area&frame=4&idfrontendgroup=$idfrontendgroup"), $caption));
 $tpl->next();
 
-if (is_array($cfg['plugins']['frontendlogic'])) {
+if (cHasPlugins('frontendlogic')) {
+    cIncludePlugins('frontendlogic');
     foreach ($cfg['plugins']['frontendlogic'] as $plugin) {
-        cInclude('plugins', "frontendlogic/{$plugin}/{$plugin}.php");
-
         $className = 'frontendlogic_' . $plugin;
 
         if (class_exists($className)) {
