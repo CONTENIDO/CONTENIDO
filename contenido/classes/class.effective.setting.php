@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the the effective setting class.
+ * This file contains the effective setting class.
  *
  * @package Core
  * @subpackage Backend
@@ -15,14 +15,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Effective setting manager class.
- * Provides a interface to retrieve effective
- * settings.
+ * Provides an interface to retrieve effective settings.
  *
  * Requested effective settings will be cached at first time. Further requests
- * will
- * return cached settings.
+ * will return cached settings.
  *
- * The order to retrieve a effective setting is:
+ * NOTE:
+ * Don't use this class to retrieve setting within an early bootstrapping process
+ * of the CONTENIDO application, e.g. in plugin configuration files, which are
+ * loaded before detecting/setting the global variables $client and $lang!
+ *
+ * The order to retrieve an effective setting is:
  * System => Client => Client (language) => Group => User
  *
  * - System properties can be overridden by the client
@@ -39,7 +42,7 @@ class cEffectiveSetting {
      *
      * @var array
      */
-    protected static $_settings = array();
+    protected static $_settings = [];
 
     /**
      *
@@ -63,7 +66,7 @@ class cEffectiveSetting {
      *
      * @var bool
      */
-    protected static $_loaded = array();
+    protected static $_loaded = [];
 
     /**
      *
@@ -72,17 +75,15 @@ class cEffectiveSetting {
     protected static $_language;
 
     /**
-     * Loads all client, clientlanguage an system properties into an static array.
+     * Loads all client, clientLanguage a system properties into a static array.
      * The order is: System => Client => Client (language)
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
     private static function _loadSettings() {
-		if (!isset(self::$_loaded[self::_getKeyPrefix()])) {
-            global $contenido;
-
-            $typeGroup = array();
+        if (!isset(self::$_loaded[self::_getKeyPrefix()])) {
+            $typeGroup = [];
 
             //get all client settings
             $client = self::_getClientInstance();
@@ -93,29 +94,29 @@ class cEffectiveSetting {
                     $key = self::_makeKey($setting['type'], $setting['name']);
                     self::_set($key, $setting['value']);
                     if (!isset($typeGroup[$setting['type']])) {
-                        $typeGroup[$setting['type']] = array();
+                        $typeGroup[$setting['type']] = [];
                     }
                     $typeGroup[$setting['type']][$setting['name']] = $setting['value'];
                 }
             }
 
-            //get all clientlang setting
-            $clientlang = self::_getClientLanguageInstance();
-            $settings = $clientlang->getProperties();
+            //get all clientLang setting
+            $clientLang = self::_getClientLanguageInstance();
+            $settings = $clientLang->getProperties();
 
             if (is_array($settings)) {
                 foreach ($settings as $setting) {
                     $key = self::_makeKey($setting['type'], $setting['name']);
                     self::_set($key, $setting['value']);
                     if (!isset($typeGroup[$setting['type']])) {
-                        $typeGroup[$setting['type']] = array();
+                        $typeGroup[$setting['type']] = [];
                     }
                     $typeGroup[$setting['type']][$setting['name']] = $setting['value'];
                 }
             }
 
             //get user settings
-            if (self::_isAuthenticated() && isset($contenido)) {
+            if (self::_isAuthenticated() && !empty(cRegistry::getBackendSessionId())) {
                 $user = self::_getUserInstance();
                 $settings = $user->getUserProperties();
 
@@ -124,7 +125,7 @@ class cEffectiveSetting {
                         $key = self::_makeKey($setting['type'], $setting['name']);
                         self::_set($key, $setting['value']);
                         if (!isset($typeGroup[$setting['type']])) {
-                            $typeGroup[$setting['type']] = array();
+                            $typeGroup[$setting['type']] = [];
                         }
                         $typeGroup[$setting['type']][$setting['name']] = $setting['value'];
                     }
@@ -161,7 +162,7 @@ class cEffectiveSetting {
      *
      * @return bool|string
      *         Setting value or false
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -204,8 +205,8 @@ class cEffectiveSetting {
      *         The type of the item
      *
      * @return array
-     *         Assoziative array like $arr[name] = value
-     * 
+     *         Associative array like $arr[name] = value
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -222,15 +223,15 @@ class cEffectiveSetting {
         if (isset($settings) && is_array($settings)) {
             return $settings;
         } else {
-            return array();
+            return [];
         }
     }
 
     /**
-     * Sets a effective setting.
+     * Sets an effective setting.
      *
      * Note:
-     * The setting will be set only in cache, not in persistency layer.
+     * The setting will be set only in cache, not in persistence layer.
      *
      * @param string $type
      *         The type of the item
@@ -245,10 +246,10 @@ class cEffectiveSetting {
     }
 
     /**
-     * Deletes a effective setting.
+     * Deletes an effective setting.
      *
      * Note:
-     * The setting will be deleted only from cache, not from persistency layer.
+     * The setting will be deleted only from cache, not from persistence layer.
      *
      * @param string $type
      *         The type of the item
@@ -269,19 +270,20 @@ class cEffectiveSetting {
      * Usable to start getting settings from scratch.
      */
     public static function reset() {
-        self::$_settings = array();
-        unset(self::$_user, self::$_client, self::$_clientLanguage);
+        self::$_settings = [];
+        self::$_user = self::$_client = self::$_clientLanguage = NULL;
     }
 
     /**
      * Returns the user object instance.
      *
      * @return cApiUser
+     * @throws cDbException
+     * @throws cException
      */
     protected static function _getUserInstance() {
-        global $auth;
-
         if (!isset(self::$_user)) {
+            $auth = cRegistry::getAuth();
             self::$_user = new cApiUser($auth->auth['uid']);
         }
         return self::$_user;
@@ -291,11 +293,13 @@ class cEffectiveSetting {
      * Returns the client language object instance.
      *
      * @return cApiClientLanguage
+     * @throws cDbException
+     * @throws cException
      */
     protected static function _getClientLanguageInstance() {
-        global $client, $lang;
-
         if (!isset(self::$_clientLanguage)) {
+            $client = cRegistry::getClientId();
+            $lang = cRegistry::getLanguageId();
             self::$_clientLanguage = new cApiClientLanguage(false, $client, $lang);
         }
         return self::$_clientLanguage;
@@ -305,11 +309,12 @@ class cEffectiveSetting {
      * Returns the language object instance.
      *
      * @return cApiLanguage
+     * @throws cDbException
+     * @throws cException
      */
     protected static function _getLanguageInstance() {
-        global $lang;
-
         if (!isset(self::$_language)) {
+            $lang = cRegistry::getLanguageId();
             self::$_language = new cApiLanguage($lang);
         }
         return self::$_language;
@@ -319,11 +324,12 @@ class cEffectiveSetting {
      * Returns the client language object instance.
      *
      * @return cApiClient
+     * @throws cDbException
+     * @throws cException
      */
     protected static function _getClientInstance() {
-        $client = cRegistry::getClientId();
-
         if (!isset(self::$_client)) {
+            $client = cRegistry::getClientId();
             self::$_client = new cApiClient($client);
         }
         return self::$_client;
@@ -334,7 +340,7 @@ class cEffectiveSetting {
      *
      * @param string $key
      *         The setting key
-     * @return string
+     * @return string|string[]
      *         bool setting value or false
      */
     protected static function _get($key) {
@@ -346,7 +352,7 @@ class cEffectiveSetting {
      *
      * @param string $key
      *         The setting key
-     * @param string $value
+     * @param string $value|string[]
      *         Value to store
      */
     protected static function _set($key, $value) {
@@ -364,9 +370,7 @@ class cEffectiveSetting {
      *         The setting key
      */
     protected static function _makeKey($type, $name) {
-        $key = self::_getKeyPrefix() . '_' . $type . '_' . $name;
-
-        return $key;
+        return self::_getKeyPrefix() . '_' . $type . '_' . $name;
     }
 
     /**
@@ -375,23 +379,22 @@ class cEffectiveSetting {
      * @return string
      */
     protected static function _getKeyPrefix() {
-    	global $auth;
+        $auth = cRegistry::getAuth();
+        $prefix = '';
 
-    	$prefix = '';
+        if ($auth instanceof cAuth) {
+            if (!self::_isAuthenticated()) {
+                $prefix = cAuth::AUTH_UID_NOBODY;
+            } else {
+                $prefix = $auth->auth['uid'];
+            }
+        }
 
-    	if ($auth instanceof cAuth) {
-    		if (!self::_isAuthenticated()) {
-    			$prefix = cAuth::AUTH_UID_NOBODY;
-    		} else {
-    			$prefix = $auth->auth['uid'];
-    		}
-    	}
+        if (cString::getStringLength($prefix) == 0) {
+            $prefix = cAuth::AUTH_UID_NOBODY;
+        }
 
-		if (cString::getStringLength($prefix) == 0) {
-			$prefix = cAuth::AUTH_UID_NOBODY;
-		}
-		
-    	return $prefix;
+        return $prefix;
     }
 
     /**
@@ -400,7 +403,7 @@ class cEffectiveSetting {
      * @return bool
      */
     protected static function _isAuthenticated() {
-        global $auth;
+        $auth = cRegistry::getAuth();
         return $auth instanceof cAuth && $auth->isAuthenticated() && !$auth->isLoginForm();
     }
 }
