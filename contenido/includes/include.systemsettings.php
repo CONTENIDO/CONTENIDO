@@ -16,17 +16,19 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $page = new cGuiPage("systemsettings");
 
-$aManagedValues = array(
+$aManagedValues = [
     'versioning_prune_limit', 'update_check', 'update_news_feed', 'versioning_path', 'versioning_activated',
     'update_check_period', 'system_clickmenu', 'mail_transport', 'system_mail_host', 'system_mail_sender',
     'system_mail_sender_name', 'pw_request_enable', 'maintenance_mode', 'codemirror_activated',
     'backend_preferred_idclient', 'generator_basehref', 'generator_xhtml', 'system_insite_editing_activated',
     'backend_backend_label', 'backend_file_extensions', 'module_translation_message', 'versioning_enabled',
     'stats_tracking'
-);
+];
 
-// @TODO Find a general solution for this!
-$request = $_REQUEST;
+$requestSysType = trim($_REQUEST['systype'] ?? '');
+$requestSysName = trim($_REQUEST['sysname'] ?? '');
+$requestSysValue = trim($_REQUEST['sysvalue'] ?? '');
+$requestCsIdSystemProp = cSecurity::toInteger($_REQUEST['csidsystemprop'] ?? '0');
 
 // @TODO: Check possibility to use $perm->isSysadmin()
 $isSysadmin = (false !== cString::findFirstPos($auth->auth["perm"], "sysadmin"));
@@ -35,8 +37,8 @@ if ($action == "systemsettings_save_item") {
     if (false === $isSysadmin) {
         $page->displayError(i18n("You don't have the permission to make changes here."));
     } else {
-        if (!in_array($request['systype'] . '_' . $request['sysname'], $aManagedValues)) {
-            setSystemProperty(trim($request['systype']), trim($request['sysname']), trim($request['sysvalue']), cSecurity::toInteger($request['csidsystemprop']));
+        if (!in_array($requestSysType . '_' . $requestSysName, $aManagedValues)) {
+            setSystemProperty($requestSysType, $requestSysName, $requestSysValue, $requestCsIdSystemProp);
             if (isset($x)) {
                 $page->displayOk(i18n('Saved changes successfully!'));
             } else {
@@ -52,7 +54,7 @@ if ($action == "systemsettings_delete_item") {
     if (false === $isSysadmin) {
         $page->displayError(i18n("You don't have the permission to make changes here."));
     } else {
-        deleteSystemProperty($request['systype'], $request['sysname']);
+        deleteSystemProperty($requestSysType, $requestSysName);
         $page->displayOk(i18n('Deleted item successfully!'));
     }
 }
@@ -105,7 +107,7 @@ foreach ($allSystemProperties as $type => $typeSystemProperties) {
         $settingName  = conHtmlentities($name);
         $settingValue = conHtmlentities($value['value']);
 
-        if (($action == "systemsettings_edit_item") && ($request['systype'] == $type) && ($request['sysname'] == $name) && $isSysadmin) {
+        if (($action == "systemsettings_edit_item") && ($requestSysType == $type) && ($requestSysName == $name) && $isSysadmin) {
 
             $oInputboxType = new cHTMLTextbox("systype", $settingType);
             $oInputboxType->setWidth(10);
@@ -195,7 +197,7 @@ $form->add(i18n("Value"), $inputbox->render());
 $spacer = new cHTMLDiv();
 $spacer->setContent("<br>");
 
-$renderobj = array();
+$renderobj = [];
 
 if ($action == "systemsettings_edit_item") {
     if (false === $isSysadmin) {

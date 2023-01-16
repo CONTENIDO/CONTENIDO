@@ -83,7 +83,7 @@ foreach ($actions as $key => $value) {
 
     // $areaname = $classarea->getAreaName($actionColl->getAreaForAction($value["name"]));
     $areaname = $value["areaname"];
-    $actionDescription = $lngAct[$areaname][$value["name"]];
+    $actionDescription = $lngAct[$areaname][$value["name"]] ?? '';
 
     if ($actionDescription == "") {
         $actionDescription = $value["name"];
@@ -103,7 +103,8 @@ for ($i = 1; $i < 13; $i++) {
 }
 
 $years = [];
-for ($i = 2000; $i < (date('Y') + 1); $i++) {
+$endYear = cSecurity::toInteger(date('Y')) + 1;
+for ($i = 2000; $i < $endYear; $i++) {
     $years[$i] = $i;
 }
 
