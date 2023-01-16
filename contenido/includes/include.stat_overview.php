@@ -43,13 +43,17 @@ if (($piwikUrl = getEffectiveSetting('stats', 'piwik_url', '')) != "") {
     }
 }
 
+$requestShowYear = cSecurity::toInteger($_REQUEST['showYear'] ?? '0');
+$requestYear = cSecurity::toInteger($_REQUEST['year'] ?? '0');
+$requestYearMonth = $_REQUEST['yearmonth'] ?? '';
+$requestDisplayType = $_REQUEST['displaytype'] ?? '';
 
 if ($action == "stat_show") {
-    if (cString::getStringLength($yearmonth) < 4) {
-        $yearmonth = "current";
+    if (cString::getStringLength($requestYearMonth) < 4) {
+        $requestYearMonth = "current";
     }
 
-    switch ($displaytype) {
+    switch ($requestDisplayType) {
         case "all":
             $stattype = i18n("Full statistics");
             break;
@@ -63,27 +67,27 @@ if ($action == "stat_show") {
             $stattype = i18n("Top 30");
             break;
         default:
-            $displaytype = "all";
+            $requestDisplayType = "all";
             $stattype = i18n("Full statistics");
             break;
     }
 
     $tpl->set('s', 'SELF_URL', $sess->url("main.php?area=stat&frame=4&idcat=$idcat"));
-    if ($showYear == 1) {
-        $tpl->set('s', 'DROPDOWN', statDisplayYearlyTopChooser($displaytype));
-        $tpl->set('s', 'YEARMONTH', '<form name="hiddenValues"><input type="hidden" name="yearmonth" value="' . $year . '"></form>');
+    if ($requestShowYear == 1) {
+        $tpl->set('s', 'DROPDOWN', statDisplayYearlyTopChooser($requestDisplayType));
+        $tpl->set('s', 'YEARMONTH', '<form name="hiddenValues"><input type="hidden" name="yearmonth" value="' . $requestYear . '"></form>');
     } else {
-        $tpl->set('s', 'DROPDOWN', statDisplayTopChooser($displaytype));
-        $tpl->set('s', 'YEARMONTH', '<form name="hiddenValues"><input type="hidden" name="yearmonth" value="' . $yearmonth . '"></form>');
+        $tpl->set('s', 'DROPDOWN', statDisplayTopChooser($requestDisplayType));
+        $tpl->set('s', 'YEARMONTH', '<form name="hiddenValues"><input type="hidden" name="yearmonth" value="' . $requestYearMonth . '"></form>');
     }
 
-    if ($showYear == 1) {
-        $tpl->set('s', 'STATTITLE', i18n("Yearly") . ' ' . $stattype . " " . $year);
+    if ($requestShowYear == 1) {
+        $tpl->set('s', 'STATTITLE', i18n("Yearly") . ' ' . $stattype . " " . $requestYear);
     } else {
-        if (strcmp($yearmonth, "current") == 0) {
+        if (strcmp($requestYearMonth, "current") == 0) {
             $tpl->set('s', 'STATTITLE', i18n("Current") . ' ' . $stattype);
         } else {
-            $tpl->set('s', 'STATTITLE', $stattype . " " . getCanonicalMonth(cString::getPartOfString($yearmonth, 4, 2)) . ' ' . cString::getPartOfString($yearmonth, 0, 4));
+            $tpl->set('s', 'STATTITLE', $stattype . " " . getCanonicalMonth(cString::getPartOfString($requestYearMonth, 4, 2)) . ' ' . cString::getPartOfString($requestYearMonth, 0, 4));
         }
     }
 
@@ -97,37 +101,37 @@ if ($action == "stat_show") {
     $tpl->set('s', 'GOOGLE_NOTIFICATION', $googleNotification . ($googleNotification != '') ? '<br>' : '');
     $tpl->set('s', 'PIWIK_NOTIFICATION', $piwikNotification . ($piwikNotification != '') ? '<br>' : '');
 
-    switch ($displaytype) {
+    switch ($requestDisplayType) {
         case "all":
         default:
-            if ($showYear == 1) {
-                statsOverviewYear($year);
+            if ($requestShowYear == 1) {
+                statsOverviewYear($requestYear);
             } else {
-                statsOverviewAll($yearmonth);
+                statsOverviewAll($requestYearMonth);
             }
             $tpl->generate($cfg['path']['templates'] . $cfg['templates']['stat_overview']);
             break;
         case "top10":
-            if ($showYear == 1) {
-                statsOverviewTopYear($year, 10);
+            if ($requestShowYear == 1) {
+                statsOverviewTopYear($requestYear, 10);
             } else {
-                statsOverviewTop($yearmonth, 10);
+                statsOverviewTop($requestYearMonth, 10);
             }
             $tpl->generate($cfg['path']['templates'] . $cfg['templates']['stat_top']);
             break;
         case "top20":
-            if ($showYear == 1) {
-                statsOverviewTopYear($year, 20);
+            if ($requestShowYear == 1) {
+                statsOverviewTopYear($requestYear, 20);
             } else {
-                statsOverviewTop($yearmonth, 20);
+                statsOverviewTop($requestYearMonth, 20);
             }
             $tpl->generate($cfg['path']['templates'] . $cfg['templates']['stat_top']);
             break;
         case "top30":
-            if ($showYear == 1) {
-                statsOverviewTopYear($year, 30);
+            if ($requestShowYear == 1) {
+                statsOverviewTopYear($requestYear, 30);
             } else {
-                statsOverviewTop($yearmonth, 30);
+                statsOverviewTop($requestYearMonth, 30);
             }
             $tpl->generate($cfg['path']['templates'] . $cfg['templates']['stat_top']);
             break;
