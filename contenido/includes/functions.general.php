@@ -416,8 +416,8 @@ function getAllClientsAndLanguages() {
     $sql = 'SELECT
                 l.idlang AS idlang,
                 l.name AS langname,
-                cl.name AS clientname,
-                cl.idclient AS idclient
+                c.name AS clientname,
+                c.idclient AS idclient
              FROM
                  `%s` AS l, `%s` AS cl, `%s` AS c
              WHERE
