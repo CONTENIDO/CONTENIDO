@@ -16,6 +16,14 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
+/**
+ * @var cPermission $perm
+ * @var string $belang
+ * @var array $cfg
+ * @var cSession $sess
+ * @var string $type
+ */
+
 // CONTENIDO startup process
 include_once('../includes/startup.php');
 
@@ -24,11 +32,11 @@ $fullstart = getmicrotime();
 cInclude('includes', 'functions.api.php');
 cInclude('includes', 'functions.con.php');
 
-cRegistry::bootstrap(array(
+cRegistry::bootstrap([
     'sess' => 'cSession',
     'auth' => 'cAuthHandlerBackend',
     'perm' => 'cPermission'
-));
+]);
 
 // The following lines load hooks (CON-2491)
 // It is a duplicated of the hook execution code of include.front_content.php (TODO)
@@ -48,6 +56,8 @@ i18nInit($cfg['path']['contenido_locale'], $belang);
 
 require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 
+$changeclient = $changeclient ?? '';
+
 // Create CONTENIDO classes
 // FIXME: Correct variable names, instances of classes at objects, not classes!
 $db = cRegistry::getDb();
@@ -57,13 +67,13 @@ $classlayout = new cApiLayout();
 $classclient = new cApiClientCollection();
 
 // Change client
-if (is_numeric($changeclient)) {
+if (isset($changeclient) && is_numeric($changeclient)) {
     $client = $changeclient;
     unset($lang);
 }
 
 // Change language
-if (is_numeric($changelang)) {
+if (isset($changelang) && is_numeric($changelang)) {
     unset($area_rights);
     unset($item_rights);
     $lang = $changelang;
@@ -83,10 +93,8 @@ if (!is_numeric($client) || $client == '') {
 if (!is_numeric($lang) || $lang == '') {
     $sess->register('lang');
     // Search for the first language of this client
-    $sql = "SELECT * FROM ".$cfg['tab']['lang']." AS A, ".$cfg['tab']['clients_lang']." AS B WHERE A.idlang=B.idlang AND idclient='$client' ORDER BY A.idlang ASC";
-    $db->query($sql);
-    $db->nextRecord();
-    $lang = $db->f('idlang');
+    $oClientLangColl = new cApiClientLanguageCollection();
+    $lang = (int) $oClientLangColl->getFirstLanguageIdByClient($client);
 } else {
     $sess->register('lang');
 }

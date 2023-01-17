@@ -601,14 +601,13 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         $tmp_page_title = cSecurity::unFilter(stripslashes($db->f("pagetitle")));
         $tmp_idlang = $db->f("idlang");
         $tmp_title = cSecurity::unFilter($db->f("title"));
-        // plugin Advanced Mod Rewrite - edit by stese
         $tmp_urlname = cSecurity::unFilter($db->f("urlname"));
         $tmp_artspec = $db->f("artspec");
         $tmp_summary = cSecurity::unFilter($db->f("summary"));
         $tmp_created = $db->f("created");
         $tmp_lastmodified = $db->f("lastmodified");
         $tmp_author = $db->f("author");
-        $tmp_modifiedby = $db->f("modifiedby");
+        $tmp_modifiedby = !empty($db->f("modifiedby")) ? $db->f("modifiedby") : $db->f("author");
         $tmp_online = $db->f("online");
         $tmp_searchable = $db->f("searchable");
         $tmp_published = $db->f("published");
@@ -628,10 +627,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         $tmp_external_redirect_checked = ($db->f("external_redirect") == '1')? 'checked' : '';
         $tmp_redirect_mode = $db->f('redirect_mode');
         $idtplinput = $db->f("idtplinput");
-
-        if ($tmp_modifiedby == '') {
-            $tmp_modifiedby = $tmp_author;
-        }
+        $newArtStyle = 'table-row';
 
         $col = new cApiInUseCollection();
 
@@ -667,45 +663,44 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 	        }
         }
 
-        $newArtStyle = 'table-row';
     } else {
 
         // ***************** this art is edited the first time *************
-
-        if (!$idart) {
-            $tmp_firstedit = 1; // **** is needed when input is written to db
-                                    // (update or insert)
-        }
-
-        $tmp_idartlang = 0;
-        $tmp_idlang = $lang;
-        $tmp_page_title = stripslashes($db->f("pagetitle"));
-        $tmp_title = '';
-        $tmp_urlname = ''; // plugin Advanced Mod Rewrite - edit by stese
-        $tmp_artspec = '';
-        $tmp_summary = '';
-        $tmp_created = date("Y-m-d H:i:s");
-        $tmp_lastmodified = date("Y-m-d H:i:s");
-        $tmp_published = date("Y-m-d H:i:s");
-        $tmp_publishedby = '';
-        $tmp_author = '';
-        $tmp_online = "0";
-        $tmp_searchable = "1";
-        $tmp_datestart = "0000-00-00 00:00:00";
-        $tmp_dateend = "0000-00-00 00:00:00";
-        $tmp_keyart = '';
-        $tmp_keyautoart = '';
-        $tmp_sort = '';
-        $tmp_sitemapprio = '0.5';
-        $tmp_changefreq = '';
 
         if (!strHasStartArticle($idcat, $lang)) {
             $tmp_is_start = true;
         }
 
+        $tmp_firstedit = (!$idart) ? 1 : 0; // is needed when input is written to db (update or insert)
+        $tmp_idartlang = 0;
+        $tmp_page_title = '';
+        $tmp_idlang = $lang;
+        $tmp_title = '';
+        $tmp_urlname = '';
+        $tmp_artspec = '';
+        $tmp_summary = '';
+        $tmp_created = date("Y-m-d H:i:s");
+        $tmp_lastmodified = date("Y-m-d H:i:s");
+        $tmp_author = '';
+        $tmp_modifiedby = '';
+        $tmp_online = "0";
+        $tmp_searchable = "1";
+        $tmp_published = date("Y-m-d H:i:s");
+        $tmp_publishedby = '';
+        $tmp_datestart = "0000-00-00 00:00:00";
+        $tmp_dateend = "0000-00-00 00:00:00";
+        $tmp_sort = '';
+        $tmp_sitemapprio = '0.5';
+        $tmp_changefreq = '';
+        $tmp_movetocat = '';
+        $tmp_targetcat = '';
+        $tmp_onlineaftermove = '';
+        $tmp_usetimemgmt = '0';
+        $tmp_locked = '0';
         $tmp_redirect_checked = '';
         $tmp_redirect_url = "http://";
-        $tmp_external_redirect = '';
+        $tmp_external_redirect_checked = '';
+        $tmp_redirect_mode = '';
         $newArtStyle = 'none';
     }
 
@@ -888,7 +883,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     $page->set('s', 'LABEL_REDIRECT_CODE', i18n("Status code"));
 
-    if ($catArt[0]['idcatart'] > 0) {
+    if (isset($catArt[0]['idcatart']) && $catArt[0]['idcatart'] > 0) {
         $page->set('s', 'LOGTABLE_HEADLINE', '<h3 style="margin-top:20px;margin-bottom:10px;">' . i18n('Articlelog') . '</h3>');
         $page->set('s', 'LOGTABLE', $div->render());
     } else {

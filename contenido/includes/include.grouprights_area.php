@@ -28,15 +28,23 @@ $debug = (cDebug::getDefaultDebuggerName() != cDebug::DEBUGGER_DEVNULL);
 
 // set the areas which are in use for selecting these
 $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name
-        FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C
-        WHERE user_id = '" . $db->escape($groupid) . "' AND idclient = " . cSecurity::toInteger($rights_client) . "
-        AND idlang = " . cSecurity::toInteger($rights_lang) . " AND idcat = 0
-        AND A.idaction = C.idaction AND A.idarea = B.idarea";
-$db->query($sql);
+        FROM `:tab_rights` AS A, `:tab_area` AS B, `:tab_actions` AS C
+        WHERE user_id = ':user_id' AND idclient = :idclient
+        AND idlang = :idlang AND idcat = 0 AND A.idaction = C.idaction AND A.idarea = B.idarea";
+$db->query($sql, [
+    'tab_rights' => $cfg['tab']['rights'],
+    'tab_area' => $cfg['tab']['area'],
+    'tab_actions' => $cfg['tab']['actions'],
+    'user_id' => $groupid,
+    'idclient' => $rights_client,
+    'idlang' => $rights_lang,
+]);
+
 $rights_list_old = [];
 while ($db->nextRecord()) { // set a new rights list for this user
     $rights_list_old[$db->f(3) . "|" . $db->f(4) . "|" . $db->f("idcat")] = "x";
 }
+$rights_list_old_keys = array_keys($rights_list_old);
 
 if (($perm->have_perm_area_action("groups_overview", $action)) && ($action == "group_edit")) {
     if (cRights::saveGroupRights() === true) {
@@ -62,9 +70,8 @@ $sJsBefore .= "var areatree = [];\n";
 
 if (!isset($rights_perms) || $action == "" || !isset($action)) {
     // search for the permissions of this user
-    $sql = "SELECT perms FROM " . $cfg["tab"]["groups"] . " WHERE group_id = '" . $db->escape($groupid) . "'";
-
-    $db->query($sql);
+    $sql = "SELECT `perms` FROM `%s` WHERE `group_id` = '`%s`'";
+    $db->query($sql, $cfg['tab']['groups'], $groupid);
     $db->nextRecord();
     $rights_perms = $db->f("perms");
 }
@@ -135,7 +142,7 @@ foreach ($right_list as $key => $value) {
         $items = "";
         if ($key == $key2) {
             // does the user have the right
-            if (in_array($value2["perm"] . "|fake_permission_action|0", array_keys($rights_list_old))) {
+            if (in_array($value2["perm"] . "|fake_permission_action|0", $rights_list_old_keys)) {
                 $checked = "checked=\"checked\"";
             } else {
                 $checked = "";
@@ -185,7 +192,7 @@ foreach ($right_list as $key => $value) {
             foreach ($value2["action"] as $key3 => $value3) {
                 $idaction = $value3;
                 // does the user have the right
-                if (in_array($value2["perm"] . "|$idaction|0", array_keys($rights_list_old))) {
+                if (in_array($value2["perm"] . "|$idaction|0", $rights_list_old_keys)) {
                     $checked = "checked=\"checked\"";
                 } else {
                     $checked = "";
@@ -196,7 +203,7 @@ foreach ($right_list as $key => $value) {
                 if ($debug) {
                     $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $value2["perm"] . " | " . $value3 . "-->" . $lngAct[$value2["perm"]][$value3] . "&nbsp;&nbsp;&nbsp;&nbsp;";
                 } else {
-                    if ($lngAct[$value2["perm"]][$value3] == "") {
+                    if (empty($lngAct[$value2["perm"]][$value3])) {
                         $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $value2["perm"] . "|" . $value3 . "&nbsp;&nbsp;&nbsp;&nbsp;";
                     } else {
                         $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $lngAct[$value2["perm"]][$value3] . "&nbsp;&nbsp;&nbsp;&nbsp;";

@@ -148,6 +148,9 @@ class cTinymce4Configuration {
     private function _listExternalPlugins() {
         /// TODO: use a preference loading function for plugins to list
         $externalPlugins = static::get([], 'raw', 'externalplugins');
+        if (isset($externalPlugins['custom'])) {
+            unset($externalPlugins['custom']);
+        }
 
         // build a table
         $table = new cHTMLTable();
@@ -176,7 +179,7 @@ class cTinymce4Configuration {
 
         // build table body
         $tbody = new cHTMLTableBody();
-        $n = count($externalPlugins) -1;
+        $n = count($externalPlugins);
         for ($i = 0; $i < $n; $i++) {
             // new tr
             $row = new cHTMLTableRow();
@@ -375,9 +378,11 @@ class cTinymce4Configuration {
         unset($config['submit_x']);
         unset($config['submit_y']);
 
+        $requestAction = $_GET['action'] ?? '';
+
         // form action (added in showConfigurationForm() inside this
         // class) is not used for saving config
-        if ('system_wysiwyg_tinymce4_delete_item' === $_GET['action']) {
+        if ('system_wysiwyg_tinymce4_delete_item' === $requestAction) {
             return $this->removeExternalPluginLoad($_GET);
         }
         unset($config['action']);
@@ -404,25 +409,25 @@ class cTinymce4Configuration {
 
         // check if all array entries actually exist
         // abort if too many values are encountered
-        $shouldArrayStructure =  array (
+        $shouldArrayStructure =  [
             'tinymce4_full' =>
-            array (
+            [
                     'toolbar1',
                     'toolbar2',
                     'toolbar3',
                     'plugins'
-            ),
+            ],
             'tinymce4_fullscreen' =>
-            array (
+            [
                     'toolbar1',
                     'toolbar2',
                     'toolbar3',
                     'plugins'
-            ),
+            ],
             'contenido_lists',
             'contenido_gzip',
             'custom',
-        );
+        ];
 
         // get name of first key
         reset($config);
@@ -442,12 +447,12 @@ class cTinymce4Configuration {
         }
 
         // do not use cRequestValidator instance because it does not support multi-dimensional arrays
-        if (false === $this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar1'])
-            || false === $this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar2'])
-            || false === $this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar3'])
-            || false === $this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar1'])
-            || false === $this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar2'])
-            || false === $this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar3'])) {
+        if (false === $this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar1'] ?? '')
+            || false === $this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar2'] ?? '')
+            || false === $this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar3'] ?? '')
+            || false === $this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar1'] ?? '')
+            || false === $this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar2'] ?? '')
+            || false === $this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar3'] ?? '')) {
             $this->_configErrors[] = i18n('Toolbar(s) of editor contain erroneous data.');
             return false;
         }
@@ -464,14 +469,14 @@ class cTinymce4Configuration {
 
         // custom tinymce 4 settings overwrite other fields
         if (cRegistry::getConfigValue('simulate_magic_quotes') === true) {
-            $config[$key]['custom'] = stripslashes($config[$key]['custom']);
+            $config[$key]['custom'] = stripslashes($config[$key]['custom'] ?? '');
         }
 
         // unescape strings then build config
         $customConfig = null;
         if (!empty($config[$key]['custom'])) {
             $customConfig = (array) json_decode($config[$key]['custom'], true);
-            switch(json_last_error()) {
+            switch (json_last_error()) {
                 case JSON_ERROR_DEPTH:
                     $this->_configErrors[] = i18n('Maximum stack depth exceeded while decoding json');
                     return false;
@@ -520,17 +525,14 @@ class cTinymce4Configuration {
             return false;
         }
 
-        $pluginToRemoveIdx = (int) $form['external_plugin_idx'];
+        $pluginToRemoveIdx = cSecurity::toInteger($form['external_plugin_idx'] ?? '-1');
 
         // load config through usage of get function
         $settings = static::get(false);
 
         // no config or no external plugins or no plugin with that index
         // means nothing to remove
-        if (false === $settings
-            || false === isset($settings['raw'])
-            || false === isset($settings['raw']['externalplugins'])
-            || false === isset($settings['raw']['externalplugins'][$pluginToRemoveIdx])) {
+        if (!isset($settings['raw']['externalplugins'][$pluginToRemoveIdx])) {
             return false;
         }
 

@@ -157,8 +157,8 @@ if (!isset($lang)) {
         // load_client is set in __FRONTEND_PATH__/data/config/config.php
         $lang = $load_lang;
     } else {
-        $oClientLang = new cApiClientLanguageCollection();
-        $lang        = $oClientLang->getFirstLanguageIdByClient($client);
+        $oClientLangColl = new cApiClientLanguageCollection();
+        $lang = (int) $oClientLangColl->getFirstLanguageIdByClient($client);
     }
 }
 

@@ -25,10 +25,8 @@ if (isset($idnewsletter)) {
 }
 
 // Include plugins
-if (is_array($cfg['plugins']['newsletters'])) {
-    foreach ($cfg['plugins']['newsletters'] as $plugin) {
-        plugin_include("newsletters", $plugin . "/" . $plugin . ".php");
-    }
+if (cHasPlugins('newsletters')) {
+    cIncludePlugins('newsletters');
 }
 
 // Exec actions
@@ -39,8 +37,11 @@ if (isset($idnewsletter)) {
 
 if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $client && $oNewsletter->get("idlang") == $lang) {
     // Check and set values
-    if (!is_numeric($_REQUEST["selTemplate"])) {
-        $_REQUEST["selTemplate"] = 0;
+    $requestSelTemplate = cSecurity::toInteger($_REQUEST['selTemplate'] ?? '0');
+    $requestTxtMessage = $_REQUEST['txtMessage'] ?? '';
+
+    if ($requestSelTemplate < 0) {
+        $requestSelTemplate = 0;
     }
 
     // Saving message changes; note, that if a user doesn't have the right to save the
@@ -51,10 +52,10 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
 
         // Don't use $area! Changing e.g. \' back to ' (magic_quotes)
 
-        $sMessage = cSecurity::unescapeDB($_REQUEST["txtMessage"]);
+        $sMessage = cSecurity::unescapeDB($requestTxtMessage);
         $oNewsletter->set("message", $sMessage);
 
-        if ($oNewsletter->get("template_idart") != $_REQUEST["selTemplate"]) {
+        if ($oNewsletter->get("template_idart") != $requestSelTemplate) {
             if ($oNewsletter->get("idart") > 0) {
                 // Template has been changed: Delete old article
                 // (this discards the current html content as it deletes the
@@ -63,16 +64,16 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
                 $iIDArt = 0;
             }
 
-            if ($_REQUEST["selTemplate"] > 0) {
+            if ($requestSelTemplate > 0) {
                 // Template has been changed, but specified: Store template
                 // article as new newsletter article
-                $iIDArt = conCopyArticle($_REQUEST["selTemplate"], $oClientLang->getProperty("newsletter", "html_newsletter_idcat"), sprintf(i18n("Newsletter: %s", 'newsletter'), $oNewsletter->get("name")));
+                $iIDArt = conCopyArticle($requestSelTemplate, $oClientLang->getProperty("newsletter", "html_newsletter_idcat"), sprintf(i18n("Newsletter: %s", 'newsletter'), $oNewsletter->get("name")));
                 conMakeOnline($iIDArt, $lang); // Article has to be online for
                                                // sending...
             }
 
             $oNewsletter->set("idart", $iIDArt);
-            $oNewsletter->set("template_idart", $_REQUEST["selTemplate"]);
+            $oNewsletter->set("template_idart", $requestSelTemplate);
         }
 
         $oNewsletter->store();
@@ -132,12 +133,11 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
         $sTagInfoText .= "<br><br><strong>" . i18n("Additional message tags from recipients plugins:", 'newsletter') . "</strong><br>";
         $sTagInfoHTML .= "<br><br><strong>" . i18n("Additional message tags from recipients plugins:", 'newsletter') . "</strong><br>";
 
-        if (is_array($cfg['plugins']['recipients'])) {
+        if (cHasPlugins('recipients')) {
+            cIncludePlugins('recipients');
             foreach ($cfg['plugins']['recipients'] as $plugin) {
-                plugin_include("recipients", $plugin . "/" . $plugin . ".php");
-
-                if (function_exists("recipients_" . $plugin . "_wantedVariables")) {
-                    $aPluginVars = call_user_func("recipients_" . $plugin . "_wantedVariables");
+                if (function_exists('recipients_' . $plugin . '_wantedVariables')) {
+                    $aPluginVars = call_user_func('recipients_' . $plugin . '_wantedVariables');
 
                     foreach ($aPluginVars as $sPluginVar) {
                         $sTagInfoText .= 'MAIL_' . cString::toUpperCase($sPluginVar) . '<br>';
@@ -158,24 +158,24 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
         $iTplIDArt = $oNewsletter->get("template_idart");
         $oSelTemplate = new cHTMLSelectElement("selTemplate");
         $oSelTemplate->setEvent("change", "askSubmitOnTplChange(this);");
-        $aOptions = array(
+        $aOptions = [
             "idcat" => $oClientLang->getProperty("newsletter", "html_template_idcat"),
             "start" => true,
             "offline" => true,
             "order" => "title"
-        );
+        ];
         $oTemplateArticles = new cArticleCollector($aOptions);
 
-        $aItems = array();
-        $aItems[] = array(
+        $aItems = [];
+        $aItems[] = [
             0,
             i18n("-- none --", 'newsletter')
-        );
+        ];
         while ($oArticle = $oTemplateArticles->nextArticle()) {
-            $aItems[] = array(
+            $aItems[] = [
                 $oArticle->get("idart"),
                 $oArticle->get("title")
-            );
+            ];
         }
 
         $oSelTemplate->autoFill($aItems);

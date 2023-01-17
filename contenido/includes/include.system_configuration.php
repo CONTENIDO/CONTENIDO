@@ -217,7 +217,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have
                     $value = (isset($infos['values'][1])) ? $infos['values'][1] : 'false';
                 }
 
-                $storedValue = $settings[$type][$name];
+                $storedValue = $settings[$type][$name] ?? '';
                 if ($storedValue != $value && (is_array($infos['values']) && $value != '' || !is_array($infos['values']))) {
                     if ($type == 'update' && $name == 'check_period' && $value < 60) {
                         $page->displayError(i18n('Update check period must be at least 60 minutes.'));

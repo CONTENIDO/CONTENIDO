@@ -56,18 +56,17 @@ class cContentTypeDate extends cContentTypeAbstract {
         $this->_type = 'CMS_DATE';
         $this->_prefix = 'date';
         $this->_settingsType = self::SETTINGS_TYPE_XML;
-        $this->_formFields = array(
+        $this->_formFields = [
             'date_timestamp',
             'date_format'
-        );
+        ];
 
         // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
 
         // set the locale
         $locale = cRegistry::getBackendLanguage();
-        if (empty($locale)
-        || false === setlocale(LC_TIME, $locale)) {
+        if (empty($locale) || false === setlocale(LC_TIME, $locale)) {
             $oApiLang = new cApiLanguage(cRegistry::getLanguageId());
             $locale = $oApiLang->getProperty('dateformat', 'locale');
             if (empty($locale)) {
@@ -82,7 +81,7 @@ class cContentTypeDate extends cContentTypeAbstract {
         }
 
         // initialise the date formats
-        $this->_dateFormatsPhp = array(
+        $this->_dateFormatsPhp = [
             conHtmlentities('{"dateFormat":"","timeFormat":""}') => '',
             conHtmlentities('{"dateFormat":"d.m.Y","timeFormat":""}') => $this->_formatDate('d.m.Y'),
             conHtmlentities('{"dateFormat":"D, d.m.Y","timeFormat":""}') => $this->_formatDate('D, d.m.Y'),
@@ -98,14 +97,15 @@ class cContentTypeDate extends cContentTypeAbstract {
             conHtmlentities('{"dateFormat":"","timeFormat":"H:i:s"}') => $this->_formatDate('H:i:s'),
             conHtmlentities('{"dateFormat":"","timeFormat":"h:i A"}') => $this->_formatDate('h:i A'),
             conHtmlentities('{"dateFormat":"","timeFormat":"h:i:s A"}') => $this->_formatDate('h:i:s A')
-        );
+        ];
 
         // add formats from client settings
         $additionalFormats = getEffectiveSettingsByType('cms_date');
         foreach ($additionalFormats as $format) {
             $formatArray = json_decode($format, true);
             // ignore invalid formats
-            if (empty($formatArray) || count($formatArray) != 2 || !array_key_exists('dateFormat', $formatArray) || !array_key_exists('timeFormat', $formatArray)) {
+            if (empty($formatArray) || count($formatArray) != 2 || !array_key_exists('dateFormat', $formatArray)
+                || !array_key_exists('timeFormat', $formatArray)) {
                 cWarning('An invalid date-time-format has been entered in the client settings.');
                 continue;
             }
@@ -205,7 +205,7 @@ class cContentTypeDate extends cContentTypeAbstract {
         if ($timestamp === NULL) {
             $timestamp = time();
         }
-        $replacements = array(
+        $replacements = [
             'd',
             'D',
             'j',
@@ -243,7 +243,7 @@ class cContentTypeDate extends cContentTypeAbstract {
             'c',
             'r',
             'U'
-        );
+        ];
         foreach (str_split($format) as $char) {
             if (in_array($char, $replacements)) {
                 // replace the format chars with localised values
@@ -326,7 +326,7 @@ class cContentTypeDate extends cContentTypeAbstract {
         if ($belang == 'de_DE') {
             $format = 'd.m.Y H:i:s';
         }
-        $value = date($format, $this->_settings['date_timestamp']);
+        $value = !empty($this->_settings['date_timestamp']) ? date($format, $this->_settings['date_timestamp']) : '';
         $code = new cHTMLTextbox('date_timestamp_' . $this->_id, $value, '', '', 'date_timestamp_' . $this->_id, true, '', '', 'date_timestamp');
         $code .= $this->_generateFormatSelect();
         $code .= $this->_generateStoreButton();
@@ -382,12 +382,12 @@ class cContentTypeDate extends cContentTypeAbstract {
      */
     private function _generateFormatSelect() {
         $formatSelect = new cHTMLSelectElement($this->_prefix . '_format_select_' . $this->_id, '', $this->_prefix . '_format_select_' . $this->_id);
-        $formatSelect->appendStyleDefinitions(array(
+        $formatSelect->appendStyleDefinitions([
             'border' => '1px solid #ccc',
             'margin' => '0px 5px 5px'
-        ));
+        ]);
         $formatSelect->autoFill($this->_dateFormatsPhp);
-        $phpDateFormat = conHtmlSpecialChars($this->_settings[$this->_prefix . '_format']);
+        $phpDateFormat = conHtmlSpecialChars($this->_settings[$this->_prefix . '_format'] ?? '');
         $formatSelect->setDefault($phpDateFormat);
 
         return $formatSelect->render();

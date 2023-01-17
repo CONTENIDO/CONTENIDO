@@ -322,6 +322,7 @@ class cGuiTableForm {
 
         $tpl->set('s', 'ID', $this->tableid);
 
+        $tablehead = $this->renderHeader();
         $tpl->set('s', 'HEADER', $this->renderHeader());
 
         foreach ($this->items as $key => $value) {

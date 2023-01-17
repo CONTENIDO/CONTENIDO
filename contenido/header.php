@@ -15,14 +15,23 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
+/**
+ * @var cPermission $perm
+ * @var string $belang
+ * @var array $cfg
+ * @var cSession $sess
+ * @var int $changelang
+ * @var int $client
+ */
+
 // CONTENIDO startup process
 include_once('./includes/startup.php');
 
-cRegistry::bootstrap(array(
+cRegistry::bootstrap([
     'sess' => 'cSession',
     'auth' => 'cAuthHandlerBackend',
     'perm' => 'cPermission'
-));
+]);
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 
@@ -68,11 +77,10 @@ if (!is_numeric($client) ||
 }
 
 if (!is_numeric($lang)) { // use first language found
-    $sess->register("lang");
-    $sql = "SELECT * FROM ".$cfg["tab"]["lang"]." AS A, ".$cfg["tab"]["clients_lang"]." AS B WHERE A.idlang=B.idlang AND idclient='".cSecurity::toInteger($client)."' ORDER BY A.idlang ASC";
-    $db->query($sql);
-    $db->nextRecord();
-    $lang = $db->f('idlang');
+    $sess->register('lang');
+    // Search for the first language of this client
+    $oClientLangColl = new cApiClientLanguageCollection();
+    $lang = (int) $oClientLangColl->getFirstLanguageIdByClient($client);
 } else {
     $sess->register('lang');
 }
@@ -88,5 +96,3 @@ $nav = new cGuiNavigation();
 $nav->buildHeader($lang);
 
 cRegistry::shutdown();
-
-?>

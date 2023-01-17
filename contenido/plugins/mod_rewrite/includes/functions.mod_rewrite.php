@@ -143,7 +143,7 @@ function mr_strRenameCategory(array $data) {
  *
  * @param   int $idcat Category id
  *
- * @return  int  Category id
+ * @return  int|void  Category id
  * @throws cDbException
  * @throws cInvalidArgumentException
  */
@@ -178,9 +178,9 @@ function mr_strMoveUpCategory($idcat) {
  * @todo  do we really need processing of the category? there is no mr relevant data
  *        changes while moving the category on same level, level and name won't change
  *
- * @param   int $idcat Id of category beeing moved down
+ * @param   int $idcat Id of category being moved down
  *
- * @return  int  Category id
+ * @return  int|void  Category id
  * @throws cDbException
  * @throws cInvalidArgumentException
  */
@@ -211,9 +211,9 @@ function mr_strMovedownCategory($idcat) {
  *
  * Will be called by chain 'Contenido.Action.str_movesubtree.AfterCall'.
  *
- * @param   array $data Assoziative array with some values
+ * @param   array $data Associative array with some values
  *
- * @return  array  Passed parameter
+ * @return  array|void  Passed parameter
  * @throws cDbException
  * @throws cException
  * @throws cInvalidArgumentException
@@ -257,9 +257,9 @@ function mr_strMoveSubtree(array $data) {
  *
  * Will be called by chain 'Contenido.Category.strCopyCategory'.
  *
- * @param   array $data Assoziative array with some values
+ * @param   array $data Associative array with some values
  *
- * @return  array  Passed parameter
+ * @return  array|void  Passed parameter
  * @throws cDbException
  * @throws cInvalidArgumentException
  */
@@ -598,7 +598,7 @@ function mr_buildGeneratedCode($code) {
  * @throws cDbException
  */
 function mr_setClientLanguageId($client) {
-    global $lang, $load_lang, $cfg;
+    global $lang, $load_lang;
 
     if ((int) $lang > 0) {
         // there is nothing to do
@@ -609,16 +609,11 @@ function mr_setClientLanguageId($client) {
         return;
     }
 
-    // try to get clients language from table
-    $sql = "SELECT B.idlang FROM "
-            . $cfg['tab']['clients_lang'] . " AS A, "
-            . $cfg['tab']['lang'] . " AS B "
-            . "WHERE "
-            . "A.idclient='" . ((int) $client) . "' AND A.idlang=B.idlang"
-            . "LIMIT 0,1";
-
-    if ($aData = mr_queryAndNextRecord($sql)) {
-        $lang = $aData['idlang'];
+    // Search for the first language of this client
+    $oClientLangColl = new cApiClientLanguageCollection();
+    $languageId = (int) $oClientLangColl->getFirstLanguageIdByClient($client);
+    if ($languageId) {
+        $lang = $languageId;
     }
 }
 
@@ -965,7 +960,7 @@ function mr_header($header) {
  *
  * @param   bool $print Flag to echo the debug data
  *
- * @return  mixed  Either the debug data, if parameter $print is set to true, or nothing
+ * @return  mixed|viod  Either the debug data, if parameter $print is set to true, or nothing
  * @throws cInvalidArgumentException
  */
 function mr_debugOutput($print = true) {

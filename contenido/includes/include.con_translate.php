@@ -609,7 +609,7 @@ foreach ($allTranslations as $hash => $translationArray) {
         $sTranslationFirstLang = trim(conHtmlentities($translationArray['translations'][$lang])) . $sLinkEdit;
     }
     // building parameter array
-    $countCurrentModuleInUse = is_array($modulesInUse[$translationArray['idmod']]) ? count($modulesInUse[$translationArray['idmod']]) : 0;
+    $countCurrentModuleInUse = isset($modulesInUse[$translationArray['idmod']]) && is_array($modulesInUse[$translationArray['idmod']]) ? count($modulesInUse[$translationArray['idmod']]) : 0;
     if ($countCurrentModuleInUse == 0) {
         $inUseString = '';
         $currentModuleInUse = i18n('No template');

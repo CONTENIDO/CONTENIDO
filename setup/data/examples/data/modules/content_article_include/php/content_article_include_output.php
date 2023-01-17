@@ -186,6 +186,9 @@ if ($cms_idcat >= 0 && $cms_idcatart >= 0) {
 
     $db->query($sql, $cfg["tab"]["cat_art"], $cfg["tab"]["art_lang"], $languageId, $cmsFieldId);
 
+    $includeCatId = 0;
+    $includeArtId = 0;
+
     if ($db->nextRecord()) {
         $isArticleAvailable = true;
         $includeCatArtId = $db->f("idcatart");

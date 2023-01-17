@@ -233,7 +233,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             $this->_layoutCode = cString::iReplaceOnce('</head>', $this->_processCodeMetaTags() . '</head>', $this->_layoutCode);
         }
 
-        if ($this->_feDebugOptions['general_information']) {
+        if (!empty($this->_feDebugOptions['general_information'])) {
             $debugPrefix = '';
 
             $debugPrefix .= "<?php\nif (\$frontend_debug['general_information']) {\n";

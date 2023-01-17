@@ -18,10 +18,8 @@ global $cfg, $action, $perm, $area, $client, $lang, $frame;
 $oPage = new cGuiPage("recipients_edit", "newsletter");
 $oRecipients = new NewsletterRecipientCollection();
 
-if (is_array($cfg['plugins']['recipients'])) {
-    foreach ($cfg['plugins']['recipients'] as $plugin) {
-        plugin_include("recipients", $plugin."/".$plugin.".php");
-    }
+if (cHasPlugins('recipients')) {
+    cIncludePlugins('recipients');
 }
 
 $requestIdRecipient = (isset($_REQUEST['idrecipient'])) ? cSecurity::toInteger($_REQUEST['idrecipient']) : 0;
@@ -103,22 +101,8 @@ if (true === $recipient->isLoaded() && $recipient->get("idclient") == $client &&
         $recipient->set("news_type",   $newstype);
 
         // Check out if there are any plugins
-        if (is_array($cfg['plugins']['recipients'])) {
-            foreach ($cfg['plugins']['recipients'] as $plugin) {
-                if (function_exists("recipients_".$plugin."_wantedVariables") && function_exists("recipients_".$plugin."_store")) {
-                    $wantVariables = call_user_func("recipients_".$plugin."_wantedVariables");
-                    $varArray = null;
-
-                    if (is_array($wantVariables)) {
-                        $varArray = [];
-
-                        foreach ($wantVariables as $value) {
-                            $varArray[$value] = stripslashes($GLOBALS[$value]);
-                        }
-                    }
-                    $store = call_user_func("recipients_".$plugin."_store", $varArray);
-                }
-            }
+        if (cHasPlugins('recipients')) {
+            cCallPluginStore('recipients');
         }
 
         $recipient->store();

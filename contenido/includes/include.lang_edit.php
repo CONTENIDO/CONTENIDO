@@ -25,7 +25,7 @@ $client = cRegistry::getClientId();
 $action = cRegistry::getAction();
 $frame = cRegistry::getFrame();
 
-includePlugins('languages');
+cIncludePlugins('languages');
 
 if ($action == "lang_newlanguage" && (int) $newidlang > 0) {
     $idlang = $newidlang;
@@ -85,7 +85,7 @@ if ($action == "lang_newlanguage") {
     // whether all data is ok
     $invalidData = false;
     if ($action == "lang_edit") {
-        callPluginStore('languages');
+        cCallPluginStore('languages');
 
         if (true === cString::validateDateFormat(stripslashes($datetimeformat))) {
             $oLanguage->setProperty("dateformat", "full", stripslashes($datetimeformat), $targetclient);

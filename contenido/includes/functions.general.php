@@ -49,18 +49,11 @@ function getAvailableContentTypes($idartlang) {
     $db = cRegistry::getDb();
     $cfg = cRegistry::getConfig();
 
-    $sql = "SELECT
-                *
-            FROM
-                " . $cfg["tab"]["content"] . " AS a,
-                " . $cfg["tab"]["art_lang"] . " AS b,
-                " . $cfg["tab"]["type"] . " AS c
-            WHERE
-                a.idtype    = c.idtype AND
-                a.idartlang = b.idartlang AND
-                b.idartlang = " . (int) $idartlang;
-
-    $db->query($sql);
+    $sql = 'SELECT * FROM `%s` AS a, `%s` AS b, `%s` AS c
+            WHERE a.idtype = c.idtype AND a.idartlang = b.idartlang AND b.idartlang = %d';
+    $db->query(
+        $sql, $cfg['tab']['content'], $cfg['tab']['art_lang'], $cfg['tab']['type'], $idartlang
+    );
 
     while ($db->nextRecord()) {
         $a_content[$db->f('type')][$db->f('typeid')] = $db->f('value');
@@ -83,8 +76,8 @@ function isArtInMultipleUse($idart) {
     $db = cRegistry::getDb();
     $cfg = cRegistry::getConfig();
 
-    $sql = "SELECT idart FROM " . $cfg["tab"]["cat_art"] . " WHERE idart = " . (int) $idart;
-    $db->query($sql);
+    $sql = 'SELECT `idart` FROM `%s` WHERE idart = %d';
+    $db->query($sql, $cfg['tab']['cat_art'], $idart);
 
     return ($db->affectedRows() > 1);
 }
@@ -420,19 +413,16 @@ function getAllClientsAndLanguages() {
     $db = cRegistry::getDb();
     $cfg = cRegistry::getConfig();
 
-    $sql = "SELECT
-                a.idlang as idlang,
-                a.name as langname,
-                b.name as clientname,
-                b.idclient as idclient
+    $sql = 'SELECT
+                l.idlang AS idlang,
+                l.name AS langname,
+                c.name AS clientname,
+                c.idclient AS idclient
              FROM
-                " . $cfg["tab"]["lang"] . " as a,
-                " . $cfg["tab"]["clients_lang"] . " as c,
-                " . $cfg["tab"]["clients"] . " as b
+                 `%s` AS l, `%s` AS cl, `%s` AS c
              WHERE
-                a.idlang = c.idlang AND
-                c.idclient = b.idclient";
-    $db->query($sql);
+                l.idlang = cl.idlang AND cl.idclient = c.idclient';
+    $db->query($sql, $cfg['tab']['lang'], $cfg['tab']['clients_lang'], $cfg['tab']['clients']);
 
     $aRs = [];
     while ($db->nextRecord()) {
@@ -942,9 +932,9 @@ function getArtspec() {
     $client = cRegistry::getClientId();
     $lang = cRegistry::getLanguageId();
 
-    $sql = "SELECT artspec, idartspec, online, artspecdefault FROM " . $cfg['tab']['art_spec'] . "
-            WHERE client = " . (int) $client . " AND lang = " . (int) $lang . " ORDER BY artspec ASC";
-    $db->query($sql);
+    $sql = 'SELECT `artspec`, `idartspec`, `online`, `artspecdefault` FROM `%s`
+            WHERE `client` = %d AND `lang` = %d ORDER BY `artspec` ASC';
+    $db->query($sql, $cfg['tab']['art_spec'], $client, $lang);
 
     $artSpec = [];
 
@@ -1006,11 +996,11 @@ function deleteArtspec($idartspec) {
     $db = cRegistry::getDb();
     $cfg = cRegistry::getConfig();
 
-    $sql = "DELETE FROM " . $cfg['tab']['art_spec'] . " WHERE idartspec = " . (int) $idartspec;
-    $db->query($sql);
+    $sql = 'DELETE FROM `%s` WHERE `idartspec` = %d';
+    $db->query($sql, $cfg['tab']['art_spec'], $idartspec);
 
-    $sql = "UPDATE " . $cfg["tab"]["art_lang"] . " SET artspec = 0 WHERE artspec = " . (int) $idartspec;
-    $db->query($sql);
+    $sql = 'UPDATE `%s` SET `artspec` = 0 WHERE `artspec` = %d';
+    $db->query($sql, $cfg['tab']['art_lang'], $idartspec);
 }
 
 /**
@@ -1030,8 +1020,8 @@ function setArtspecOnline($idartspec, $online) {
     $db = cRegistry::getDb();
     $cfg = cRegistry::getConfig();
 
-    $sql = "UPDATE " . $cfg['tab']['art_spec'] . " SET online = " . (int) $online . " WHERE idartspec = " . (int) $idartspec;
-    $db->query($sql);
+    $sql = 'UPDATE `%s` SET `online` = %d WHERE `idartspec` = %d';
+    $db->query($sql, $cfg['tab']['art_spec'], $online, $idartspec);
 }
 
 /**
@@ -1051,11 +1041,11 @@ function setArtspecDefault($idartspec) {
     $client = cRegistry::getClientId();
     $lang = cRegistry::getLanguageId();
 
-    $sql = "UPDATE " . $cfg['tab']['art_spec'] . " SET artspecdefault=0 WHERE client = " . (int) $client . " AND lang = " . (int) $lang;
-    $db->query($sql);
+    $sql = 'UPDATE `%s` SET `artspecdefault` = 0 WHERE `client` = %d AND `lang` = %d';
+    $db->query($sql, $cfg['tab']['art_spec'], $client, $lang);
 
-    $sql = "UPDATE " . $cfg['tab']['art_spec'] . " SET artspecdefault = 1 WHERE idartspec = " . (int) $idartspec;
-    $db->query($sql);
+    $sql = 'UPDATE `%s` SET `artspecdefault` = 1 WHERE `idartspec` = %d';
+    $db->query($sql, $cfg['tab']['art_spec'], $idartspec);
 }
 
 /**
@@ -1093,13 +1083,12 @@ function buildArticleSelect($sName, $iIdCat, $sValue) {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 
-        $sql = "SELECT b.title, b.idart FROM
-               " . $cfg["tab"]["art"] . " AS a, " . $cfg["tab"]["art_lang"] . " AS b, " . $cfg["tab"]["cat_art"] . " AS c
-               WHERE c.idcat = " . (int) $iIdCat . "
-               AND b.idlang = " . (int) $lang . " AND b.idart = a.idart and b.idart = c.idart
-               ORDER BY b.title";
+        $sql = 'SELECT al.title, al.idart
+               FROM `%s` AS a, `%s` AS al, `%s` AS ca
+               WHERE ca.idcat = %d AND al.idlang = %d AND al.idart = a.idart AND al.idart = ca.idart
+               ORDER BY al.title';
 
-        $db->query($sql);
+        $db->query($sql, $cfg['tab']['art'], $cfg['tab']['art_lang'], $cfg['tab']['cat_art'], $iIdCat, $lang);
         while ($db->nextRecord()) {
             $data[] = [
                 'idart' => $db->f('idart'),
@@ -1271,11 +1260,21 @@ function machineReadableSize($sizeString) {
  *         True if the script is running from the web
  */
 function isRunningFromWeb() {
-    if ($_SERVER['REQUEST_URI'] == '' || php_sapi_name() == 'cgi' || php_sapi_name() == 'cli') {
+    if (empty($_SERVER['REQUEST_URI']) || php_sapi_name() == 'cgi' || php_sapi_name() == 'cli') {
         return false;
     }
 
     return true;
+}
+
+/**
+ * @param $entity
+ * @return void
+ * cDeprecated("The function scanPlugins() is deprecated since CONTENIDO 4.10.2, use cScanPlugins() instead.");
+ */
+function scanPlugins($entity) {
+    cDeprecated("The function scanPlugins() is deprecated since CONTENIDO 4.10.2, use cScanPlugins() instead.");
+    cScanPlugins($entity);
 }
 
 /**
@@ -1302,7 +1301,7 @@ function isRunningFromWeb() {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function scanPlugins($entity) {
+function cScanPlugins($entity) {
     // Use the global variable $cfg here, the function modifies it!
     global $cfg;
 
@@ -1373,19 +1372,52 @@ function scanPlugins($entity) {
 }
 
 /**
+ * @param $entity
+ * @return void
+ * @deprecated Since 4.10.2, use cCallPluginStore() instead
+ */
+function includePlugins($entity) {
+    cDeprecated("The function includePlugins() is deprecated since CONTENIDO 4.10.2, use cIncludePlugins() instead.");
+    cIncludePlugins($entity);
+}
+
+/**
  * Includes plugins for a given entity.
  *
  * @param string $entity
  *         string Name of the directory to scan
  */
-function includePlugins($entity) {
+function cIncludePlugins($entity) {
     $cfg = cRegistry::getConfig();
 
-    if (isset($cfg['plugins'][$entity]) && is_array($cfg['plugins'][$entity])) {
+    if (cHasPlugins($entity)) {
         foreach ($cfg['plugins'][$entity] as $plugin) {
             plugin_include($entity, $plugin . '/' . $plugin . '.php');
         }
     }
+}
+
+/**
+ * Checks for existing plugins for a given entity.
+ *
+ * @param string $entity
+ *         Name of the directory to scan
+ * @return bool
+ */
+function cHasPlugins($entity) {
+    $cfg = cRegistry::getConfig();
+
+    return isset($cfg['plugins'][$entity]) && is_array($cfg['plugins'][$entity] && count($cfg['plugins'][$entity]));
+}
+
+/**
+ * @param $entity
+ * @return void
+ * @deprecated Since 4.10.2, use cCallPluginStore() instead
+ */
+function callPluginStore($entity) {
+    cDeprecated("The function callPluginStore() is deprecated since CONTENIDO 4.10.2, use cCallPluginStore() instead.");
+    cCallPluginStore($entity);
 }
 
 /**
@@ -1394,13 +1426,14 @@ function includePlugins($entity) {
  * @param string $entity
  *         Name of the directory to scan
  */
-function callPluginStore($entity) {
+function cCallPluginStore($entity) {
     $cfg = cRegistry::getConfig();
 
     // Check out if there are any plugins
     if (isset($cfg['plugins'][$entity]) && is_array($cfg['plugins'][$entity])) {
         foreach ($cfg['plugins'][$entity] as $plugin) {
-            if (function_exists($entity . '_' . $plugin . '_wantedVariables') && function_exists($entity . '_' . $plugin . '_store')) {
+            if (function_exists($entity . '_' . $plugin . '_wantedVariables')
+                && function_exists($entity . '_' . $plugin . '_store')) {
                 $wantVariables = call_user_func($entity . '_' . $plugin . '_wantedVariables');
 
                 if (is_array($wantVariables)) {

@@ -14,67 +14,76 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $idmod, $tpl, $notification;
+
+$client = cRegistry::getClientId();
+$perm = cRegistry::getPerm();
+$area = cRegistry::getArea();
+$belang = cRegistry::getBackendLanguage();
+$frame = cRegistry::getFrame();
+
 cInclude("external", "codemirror/class.codemirror.php");
 cInclude("includes", "functions.file.php");
+
 $sFileType = "html";
 $module = new cApiModule($idmod);
 
 $readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
-
-if($readOnly) {
+if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
 
 $sActionCreate = 'htmltpl_create';
 $sActionEdit = 'htmltpl_edit';
 
-if (true === cRegistry::getConfigValue('simulate_magic_quotes')) {
-    $fileRequest = stripslashes($_REQUEST['file']);
-    $TmpFileRequest = stripslashes($_REQUEST['tmp_file']);
-} else {
-    $fileRequest = $_REQUEST['file'];
-    $TmpFileRequest = $_REQUEST['tmp_file'];
-}
+$requestFile = $_REQUEST['file'] ?? '';
+$requestTmpFile = $_REQUEST['tmp_file'] ?? '';
+$requestNew = $_REQUEST['new'] ?? '';
+$requestDelete = $_REQUEST['delete'] ?? '';
+$requestSelectedFile = $_REQUEST['selectedFile'] ?? '';
+$requestStatus = $_REQUEST['status'] ?? '';
 
 $page = new cGuiPage("mod_template");
 $tpl->reset();
-$page->displayInfo(i18n('Edit file') . " &quot;". conHtmlSpecialChars($module->get('name')) . "&quot;");
-if (!is_object($notification)) {
-    $notification = new cGuiNotification();
-}
 
-// $_REQUEST['action'] = $sActionEdit;
 if (!$perm->have_perm_area_action($area, $sActionEdit)) {
     $page->displayCriticalError(i18n("Permission denied"));
-} else if (!(int) $client > 0) {
-    // If there is no client selected, display empty page
-} else {
-    $contenidoModulTemplateHandler = new cModuleTemplateHandler($idmod, $page);
-    $contenidoModulTemplateHandler->checkWritePermissions();
-    $contenidoModulTemplateHandler->setAction($sActionEdit);
-    if (isset($_REQUEST['code'])) {
-        if (true === cRegistry::getConfigValue('simulate_magic_quotes')) {
-            $contenidoModulTemplateHandler->setCode($_REQUEST['code']);
-        } else {
-            $contenidoModulTemplateHandler->setCode(stripslashes($_REQUEST['code']));
-        }
-    }
-    if (true === cRegistry::getConfigValue('simulate_magic_quotes')) {
-        $contenidoModulTemplateHandler->setFiles($_REQUEST['file'], $_REQUEST['tmp_file']);
-        $contenidoModulTemplateHandler->setFrameIdmodArea($frame, $idmod, $area);
-        $contenidoModulTemplateHandler->setNewDelete($_REQUEST['new'], $_REQUEST['delete']);
-        $contenidoModulTemplateHandler->setSelectedFile($_REQUEST['selectedFile']);
-        $contenidoModulTemplateHandler->setStatus($_REQUEST['status']);
-    } else {
-        $contenidoModulTemplateHandler->setFiles(stripslashes($_REQUEST['file']), stripslashes($_REQUEST['tmp_file']));
-        $contenidoModulTemplateHandler->setFrameIdmodArea($frame, $idmod, $area);
-        $contenidoModulTemplateHandler->setNewDelete(stripslashes($_REQUEST['new']), stripslashes($_REQUEST['delete']));
-        $contenidoModulTemplateHandler->setSelectedFile(stripslashes($_REQUEST['selectedFile']));
-        $contenidoModulTemplateHandler->setStatus(stripslashes($_REQUEST['status']));
-    }
-    $contenidoModulTemplateHandler->display($perm, $notification, $belang, $readOnly);
+    $page->render();
+    return;
 }
 
-$page->render();
+// display critical error if no valid client is selected
+if ((int) $client < 1) {
+    $page->displayCriticalError(i18n("No Client selected"));
+    $page->render();
+    return;
+}
 
-?>
+$page->displayInfo(i18n('Edit file') . " &quot;". conHtmlSpecialChars($module->get('name')) . "&quot;");
+
+$moduleTemplateHandler = new cModuleTemplateHandler($idmod, $page);
+$moduleTemplateHandler->checkWritePermissions();
+$moduleTemplateHandler->setAction($sActionEdit);
+if (isset($_REQUEST['code'])) {
+    if (true === cRegistry::getConfigValue('simulate_magic_quotes')) {
+        $moduleTemplateHandler->setCode($_REQUEST['code']);
+    } else {
+        $moduleTemplateHandler->setCode(stripslashes($_REQUEST['code']));
+    }
+}
+if (true === cRegistry::getConfigValue('simulate_magic_quotes')) {
+    $moduleTemplateHandler->setFiles($requestFile, $requestTmpFile);
+    $moduleTemplateHandler->setFrameIdmodArea($frame, $idmod, $area);
+    $moduleTemplateHandler->setNewDelete($requestNew, $requestDelete);
+    $moduleTemplateHandler->setSelectedFile($requestSelectedFile);
+    $moduleTemplateHandler->setStatus($requestStatus);
+} else {
+    $moduleTemplateHandler->setFiles(stripslashes($requestFile), stripslashes($requestTmpFile));
+    $moduleTemplateHandler->setFrameIdmodArea($frame, $idmod, $area);
+    $moduleTemplateHandler->setNewDelete(stripslashes($requestNew), stripslashes($requestDelete));
+    $moduleTemplateHandler->setSelectedFile(stripslashes($requestSelectedFile));
+    $moduleTemplateHandler->setStatus(stripslashes($requestStatus));
+}
+$moduleTemplateHandler->display($perm, $notification, $belang, $readOnly);
+
+$page->render();

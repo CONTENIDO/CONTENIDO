@@ -16,7 +16,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This class save the translations from a modul in a file and get it
+ * This class save the translations from a module in a file and get it
  * from file.
  *
  * @package    Core
@@ -25,7 +25,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cModuleFileTranslation extends cModuleHandler {
 
     /**
-     * Path to the modul directory.
+     * Path to the module directory.
      *
      * @var string
      */
@@ -43,10 +43,10 @@ class cModuleFileTranslation extends cModuleHandler {
      *
      * @var array
      */
-    static $langArray = array();
+    static $langArray = [];
 
     /**
-     * The id of the modul.
+     * The id of the module.
      *
      * @var int
      */
@@ -81,7 +81,7 @@ class cModuleFileTranslation extends cModuleHandler {
 
         $this->_encoding = self::getEncoding($this->_idlang);
 
-        // dont open the translations file for each mi18n call
+        // don't open the translations file for each mi18n call
         if ($static == true) {
             if (self::$savedIdMod != $idmodul) {
                 // set filename lang_[language]_[Country].txt
@@ -103,7 +103,7 @@ class cModuleFileTranslation extends cModuleHandler {
     }
 
     /**
-     * Get the value of a item from properties db.
+     * Get the value of an item from properties db.
      *
      * @param string $type
      * @param string $name
@@ -131,7 +131,7 @@ class cModuleFileTranslation extends cModuleHandler {
     }
 
     /**
-     * Save the hole translations for a idmod and lang.
+     * Save the hole translations for an idmod and lang.
      * For the upgrade/setup.
      *
      * @throws cDbException
@@ -153,7 +153,7 @@ class cModuleFileTranslation extends cModuleHandler {
             $country = $this->_getValueFromProperties('country', 'code');
             self::$fileName = 'lang_' . $language . '_' . cString::toUpperCase($country) . '.txt';
 
-            $translations = array();
+            $translations = [];
             while ($db->nextRecord()) {
                 $original = mb_convert_encoding(urldecode(cSecurity::unFilter($db->f('original'))), "UTF-8");
                 $translation = mb_convert_encoding(urldecode(cSecurity::unFilter($db->f('translation'))), "UTF-8");
@@ -167,7 +167,7 @@ class cModuleFileTranslation extends cModuleHandler {
             $text .= $this->readOutput();
 
             mb_ereg_search_init($text, 'mi18n\(["|\'](.*?)["|\']\)');
-            while(mb_ereg_search()) {
+            while (mb_ereg_search()) {
                 $translation = mb_ereg_search_getregs();
                 if(!isset($translations[$translation[1]])) {
                     $translations[$translation[1]] = $translation[1];
@@ -216,7 +216,7 @@ class cModuleFileTranslation extends cModuleHandler {
      * @return array
      */
     private function _unserializeArray($string) {
-        $retArray = array();
+        $retArray = [];
 
         $string = $string . PHP_EOL;
         $words = preg_split('((\r\n)|(\r)|(\n))', cString::getPartOfString($string, 0, cString::getStringLength($string) - cString::getStringLength(PHP_EOL)));
@@ -231,7 +231,11 @@ class cModuleFileTranslation extends cModuleHandler {
                 $keys = array_keys($retArray);
                 $lastKey = end($keys);
                 $newValue = PHP_EOL . cString::recodeString(str_replace("\=", "=", $oriTrans[0]), $this->_fileEncoding, $this->_encoding);
-                $retArray[$lastKey] .= $newValue;
+                if (empty($retArray[$lastKey])) {
+                    $retArray[$lastKey] = $newValue;
+                } else {
+                    $retArray[$lastKey] .= $newValue;
+                }
             }
         }
 
@@ -254,7 +258,7 @@ class cModuleFileTranslation extends cModuleHandler {
             return false;
         }
 
-        $escapedArray = array();
+        $escapedArray = [];
         foreach ($wordListArray as $key => $value) {
             $newKey = cString::ereg_replace("=", "\\=", $key);
             $newValue = cString::ereg_replace("=", "\\=", $value);
@@ -276,10 +280,9 @@ class cModuleFileTranslation extends cModuleHandler {
      */
     public function getTranslationArray() {
         if (cFileHandler::exists($this->_modulePath . $this->_directories['lang'] . self::$fileName)) {
-            $array = $this->_unserializeArray(cFileHandler::read($this->_modulePath . $this->_directories['lang'] . self::$fileName));
-            return $array;
+            return $this->_unserializeArray(cFileHandler::read($this->_modulePath . $this->_directories['lang'] . self::$fileName));
         } else {
-            return array();
+            return [];
         }
     }
 

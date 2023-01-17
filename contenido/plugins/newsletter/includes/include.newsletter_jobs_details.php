@@ -18,14 +18,17 @@ $backendUrl = cRegistry::getBackendUrl();
 // Initialization
 $oPage = new cGuiPage("newsletter_job_details", "newsletter");
 
-if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) && is_numeric($_REQUEST["idnewsjob"])) {
+$requestIdNewsJob = cSecurity::toInteger($_REQUEST['idnewsjob'] ?? '0');
+$requestIdNewsLog = cSecurity::toInteger($_REQUEST['idnewslog'] ?? '0');
+
+if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) && $requestIdNewsJob > 0) {
     // Run job
-    $oJob = new NewsletterJob($_REQUEST["idnewsjob"]);
+    $oJob = new NewsletterJob($requestIdNewsJob);
     $iSendCount = $oJob->runJob();
 
     if ($oJob->get("dispatch") == '1' && intval($oJob->get("sendcount")) < intval($oJob->get("rcpcount"))) {
         // Send in chunks
-        $sPathNext = $sess->url("main.php?area=$area&action=news_job_run&frame=4&idnewsjob=" . $_REQUEST["idnewsjob"]);
+        $sPathNext = $sess->url("main.php?area=$area&action=news_job_run&frame=4&idnewsjob=" . $requestIdNewsJob);
 
         // Calculating some statistics
         $iChunk = ceil($oJob->get("sendcount") / $oJob->get("dispatch_count"));
@@ -71,13 +74,13 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
         $oForm->add("", "");
 
         $oForm->add("", sprintf(i18n("The newsletter has been sent to %s recipients", 'newsletter'), $oJob->get("sendcount")));
-        $oPage->reloadLeftBottomFrame(['idnewsjob' => $_REQUEST["idnewsjob"]]);
+        $oPage->reloadLeftBottomFrame(['idnewsjob' => $requestIdNewsJob]);
     }
 
     $oPage->setContent($oForm);
-} elseif ($action == "news_job_delete" && $perm->have_perm_area_action($area, $action) && is_numeric($_REQUEST["idnewsjob"])) {
+} elseif ($action == "news_job_delete" && $perm->have_perm_area_action($area, $action) && $requestIdNewsJob > 0) {
     $oJobs = new NewsletterJobCollection();
-    $oJobs->delete($_REQUEST["idnewsjob"]);
+    $oJobs->delete($requestIdNewsJob);
 
     $oPage->setSubnav("blank", "news_jobs");
     $oPage->reloadLeftBottomFrame(['idnewsjob' => null]);
@@ -86,36 +89,47 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
 
     // Show job details (recipients)
 
+    $requestSortMode = !isset($_REQUEST['sortmode']) || $_REQUEST['sortmode'] !== 'DESC' ? 'ASC' : 'DESC';
+    $requestSortBy = cSecurity::toInteger($_REQUEST['sortby'] ?? '-1');
+    $requestElemPerPage = $_REQUEST['elemperpage'] ?? '';
+
+    $aCols = [
+        "rcpname",
+        "rcpemail",
+        "",
+        "status",
+        "sent"
+    ];
+    if (!array_key_exists($requestSortBy, $aCols)) {
+        $requestSortBy = 0; // Sort by rcpname by default
+    }
+
     $oLogs = new NewsletterLogCollection();
 
     // Remove recipient from a job
-    if ($action == "news_job_detail_delete" && is_numeric($_REQUEST["idnewslog"]) && $perm->have_perm_area_action($area, "news_job_detail_delete")) {
-        $oLogs->delete($_REQUEST["idnewslog"]);
+    if ($action == "news_job_detail_delete" && $requestIdNewsLog > 0 && $perm->have_perm_area_action($area, "news_job_detail_delete")) {
+        $oLogs->delete($requestIdNewsLog);
     }
 
     // Initialize
-    $iNextPage = cSecurity::toInteger($_GET['nextpage']);
+    $iNextPage = cSecurity::toInteger($_GET['nextpage'] ?? '1');
     if ($iNextPage <= 0) {
         $iNextPage = 1;
-    }
-
-    if ($_REQUEST["sortmode"] !== "DESC") {
-        $_REQUEST["sortmode"] = "ASC";
     }
 
     $sDateFormat = getEffectiveSetting("dateformat", "full", "d.m.Y H:i");
 
     // Set default values
     $oUser = new cApiUser($auth->auth["uid"]);
-    if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST["elemperpage"]) || $_REQUEST["elemperpage"] < 0) {
-        $_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area . "_job_details");
+    if (!is_numeric($requestElemPerPage) || $requestElemPerPage < 0) {
+        $requestElemPerPage = $oUser->getProperty("itemsperpage", $area . "_job_details");
     }
-    if (!is_numeric($_REQUEST["elemperpage"])) {
-        $_REQUEST["elemperpage"] = 50;
+    if (!is_numeric($requestElemPerPage)) {
+        $requestElemPerPage = 50;
     }
-    if ($_REQUEST["elemperpage"] > 0) {
+    if ($requestElemPerPage > 0) {
         // - All - will not be saved
-        $oUser->setProperty("itemsperpage", $area . "_job_details", $_REQUEST["elemperpage"]);
+        $oUser->setProperty("itemsperpage", $area . "_job_details", $requestElemPerPage);
     }
 
     $oFrmOptions = new cGuiTableForm("frmOptions");
@@ -123,9 +137,9 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     $oFrmOptions->setVar("area", $area);
     $oFrmOptions->setVar("action", $action);
     $oFrmOptions->setVar("frame", $frame);
-    $oFrmOptions->setVar("sortmode", $_REQUEST["sortmode"]);
-    $oFrmOptions->setVar("sortby", $_REQUEST["sortby"]);
-    $oFrmOptions->setVar("idnewsjob", $_REQUEST["idnewsjob"]);
+    $oFrmOptions->setVar("sortmode", $requestSortMode);
+    $oFrmOptions->setVar("sortby", $requestSortBy);
+    $oFrmOptions->setVar("idnewsjob", $requestIdNewsJob);
     // $oFrmOptions->setVar("startpage", $startpage);
     // $oFrmOptions->setVar("appendparameters", $appendparameters);
     $oFrmOptions->addHeader(i18n("List options", 'newsletter'));
@@ -142,24 +156,18 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     ];
     $oSelElements->autoFill($aData);
 
-    $oSelElements->setDefault($_REQUEST["elemperpage"]);
+    $oSelElements->setDefault($requestElemPerPage);
 
     // $oSelElements->setStyle('border:1px;border-style:solid;border-color:black;');
     $oFrmOptions->add(i18n("Items per page:", 'newsletter'), $oSelElements->render());
 
     // Ouput data
     $oList = new cGuiScrollList(true, "news_job_details");
-    $oList->setCustom("idnewsjob", $_REQUEST["idnewsjob"]);
+    $oList->setCustom("idnewsjob", $requestIdNewsJob);
     $oList->setCustom("nextpage", $iNextPage);
-    $oList->setCustom("elemperpage", $_REQUEST["elemperpage"]);
+    $oList->setCustom("elemperpage", $requestElemPerPage);
 
-    $aCols = [
-        "rcpname",
-        "rcpemail",
-        "",
-        "status",
-        "sent"
-    ];
+    // Columns
     $oList->setHeader(i18n("Recipient", 'newsletter'), i18n("E-Mail", 'newsletter'), i18n("Type", 'newsletter'), i18n("Status", 'newsletter'), i18n("Sent", 'newsletter'), i18n("Actions", 'newsletter'));
     $oList->setSortable(0, true);
     $oList->setSortable(1, true);
@@ -169,20 +177,20 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
 
     // Get data
     $oLogs->resetQuery();
-    $oLogs->setWhere("idnewsjob", $_REQUEST["idnewsjob"]);
+    $oLogs->setWhere("idnewsjob", $requestIdNewsJob);
 
     $sBrowseLinks = "1";
-    if ($_REQUEST["elemperpage"] > 0) {
+    if ($requestElemPerPage > 0) {
         // First, get total data count
         $oLogs->query();
         $iRecipients = $oLogs->count(); // Getting item count without limit (for
                                         // page function) - better idea anybody
                                         // (performance)?
 
-        if ($iRecipients > 0 && $iRecipients > $_REQUEST["elemperpage"]) {
+        if ($iRecipients > 0 && $iRecipients > $requestElemPerPage) {
             $sBrowseLinks = "";
-            for ($i = 1; $i <= ceil($iRecipients / $_REQUEST["elemperpage"]); $i++) {
-                // $iNext = (($i - 1) * $_REQUEST["elemperpage"]) + 1;
+            for ($i = 1; $i <= ceil($iRecipients / $requestElemPerPage); $i++) {
+                // $iNext = (($i - 1) * $requestElemPerPage) + 1;
                 if ($sBrowseLinks !== "") {
                     $sBrowseLinks .= "&nbsp;";
                 }
@@ -190,18 +198,15 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
                     $sBrowseLinks .= $i . "\n"; // I'm on the current page, no
                                               // link
                 } else {
-                    $sBrowseLinks .= '<a href="' . $sess->url("main.php?area=$area&action=$action&frame=$frame&idnewsjob=" . $_REQUEST["idnewsjob"] . "&nextpage=$i&sortmode=" . $_REQUEST["sortmode"] . "&sortby=" . $_REQUEST["sortby"]) . '">' . $i . '</a>' . "\n";
+                    $sBrowseLinks .= '<a href="' . $sess->url("main.php?area=$area&action=$action&frame=$frame&idnewsjob=" . $requestIdNewsJob . "&nextpage=$i&sortmode=" . $requestSortMode . "&sortby=" . $requestSortBy) . '">' . $i . '</a>' . "\n";
                 }
             }
         }
 
-        $oLogs->setLimit($_REQUEST["elemperpage"] * ($iNextPage - 1), $_REQUEST["elemperpage"]);
+        $oLogs->setLimit($requestElemPerPage * ($iNextPage - 1), $requestElemPerPage);
     }
 
-    if (!array_key_exists($_REQUEST["sortby"], $aCols)) {
-        $_REQUEST["sortby"] = 0; // Sort by rcpname by default
-    }
-    $oLogs->setOrder($aCols[$_REQUEST["sortby"]] . " " . $_REQUEST["sortmode"]);
+    $oLogs->setOrder($aCols[$requestSortBy] . " " . $requestSortMode);
     $oLogs->query();
 
     $oImgDelete = new cHTMLImage("images/delete.gif");
@@ -243,10 +248,10 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
         if ($oLog->get("status") == "pending" && $perm->have_perm_area_action($area, "news_job_detail_delete")) {
             $oLnkRemove = new cHTMLLink();
             $oLnkRemove->setCLink("news_jobs", 4, "news_job_detail_delete");
-            $oLnkRemove->setCustom("idnewsjob", $_REQUEST["idnewsjob"]);
+            $oLnkRemove->setCustom("idnewsjob", $requestIdNewsJob);
             $oLnkRemove->setCustom("idnewslog", $oLog->get($oLog->getPrimaryKeyName()));
-            $oLnkRemove->setCustom("sortby", $_REQUEST["sortby"]);
-            $oLnkRemove->setCustom("sortmode", $_REQUEST["sortmode"]);
+            $oLnkRemove->setCustom("sortby", $requestSortBy);
+            $oLnkRemove->setCustom("sortmode", $requestSortMode);
             $oLnkRemove->setContent($sImgDelete);
 
             $sLnkRemove = $oLnkRemove->render();
@@ -259,7 +264,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
 
     // A little bit senseless, as the data is already sorted, but
     // we need the sortmode in the header link
-    $oList->sort(cSecurity::toInteger($_REQUEST["sortby"]), $_REQUEST["sortmode"]);
+    $oList->sort($requestSortBy, $requestSortMode);
 
     // HerrB: Hardcore UI for browsing elements ... sorry
     $sBrowseHTML = '<table class="generic" width="100%" cellspacing="0" cellpadding="2" border="0">
@@ -274,7 +279,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     $oPage->setContent($oFrmOptions->render(false) . "<br>" . $oList->render(false) . $sBrowseHTML);
 } else {
     // Just show the job data
-    $oJob = new NewsletterJob($_REQUEST["idnewsjob"]);
+    $oJob = new NewsletterJob($requestIdNewsJob);
 
     $oForm = new cGuiTableForm("properties");
     $oForm->setVar("frame", $frame);

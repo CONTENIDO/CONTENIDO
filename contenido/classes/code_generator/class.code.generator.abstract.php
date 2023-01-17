@@ -459,6 +459,7 @@ abstract class cCodeGeneratorAbstract {
 
         $this->_moduleCode = str_replace("CMS_VALUE", $CiCMS_Var, $this->_moduleCode);
         $this->_moduleCode = str_replace("\$" . $CiCMS_Var, $CiCMS_Var, $this->_moduleCode);
+        $this->_moduleCode = preg_replace('/\$C([0-9]*)CMS_VALUE\[([0-9]*)\]/i', '', $this->_moduleCode);
         $this->_moduleCode = preg_replace("/(CMS_VALUE\[)([0-9]*)(\])/i", '', $this->_moduleCode);
 
         return implode("\n", $CiCMS_Values);
