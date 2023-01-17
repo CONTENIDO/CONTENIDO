@@ -16,6 +16,21 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
+/**
+ * @var cPermission $perm
+ * @var cAuth $auth
+ * @var string $belang
+ * @var array $cfg
+ * @var cSession $sess
+ * @var int $changelang
+ * @var int $client
+ * @var int $frame
+ * @var string $area
+ * @var int $idart
+ * @var int $idcat
+ * @var bool $bJobRunned
+ */
+
 // CONTENIDO startup process
 include_once('./includes/startup.php');
 
@@ -26,11 +41,11 @@ $cfg['debug']['backend_exectime']['fullstart'] = getmicrotime();
 
 cInclude('includes', 'functions.api.php');
 
-cRegistry::bootstrap(array(
+cRegistry::bootstrap([
     'sess' => 'cSession',
     'auth' => 'cAuthHandlerBackend',
     'perm' => 'cPermission'
-));
+]);
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 
@@ -62,7 +77,7 @@ if ($cfg['use_pseudocron'] == true) {
 // Remove all own marks, only for frame 1 and 4 if $_REQUEST['appendparameters']
 // == 'filebrowser'
 // filebrowser is used in tiny in this case also do not remove session marks
-$appendparameters = isset($_REQUEST['appendparameters']) ? $_REQUEST['appendparameters'] : '';
+$appendparameters = $_REQUEST['appendparameters'] ?? '';
 if (in_array($frame, [1, 4]) && $appendparameters != 'filebrowser') {
     $col = new cApiInUseCollection();
     $col->removeSessionMarks($sess->id);
@@ -99,7 +114,7 @@ if (isset($changelang) && is_numeric($changelang)) {
 
     // If user switch language and the previously selected article is not existing in the new language
     // redirect to MyCONTENIDO area
-    if ($area == "con_editart" || $area == "con_meta" || $area == "con_tplcfg" || $area == "con_content_list") {
+    if ($area == 'con_editart' || $area == 'con_meta' || $area == 'con_tplcfg' || $area == 'con_content_list') {
 
     	$artLangColl = new cApiArticleLanguageCollection;
     	$artLangColl->setWhere('idart', $idart);
@@ -107,7 +122,7 @@ if (isset($changelang) && is_numeric($changelang)) {
     	$artLangColl->query();
 
 		if ($artLangColl->count() == 0) {
-			$frame = $sess->url("index.php?area=mycontenido&frame=4");
+			$frame = $sess->url('index.php?area=mycontenido&frame=4');
 			echo "<script>parent.frames.top.location.href='" . $frame . "';</script>";
 		}
     }
@@ -128,12 +143,9 @@ if (!is_numeric($client) || (!$perm->have_perm_client('client[' . $client . ']')
 
 if (!is_numeric($lang) || $lang == '') {
     $sess->register('lang');
-    // search for the first language of this client
-    // @TODO  Move this to cApiClientLanguageCollection
-    $sql = "SELECT * FROM " . $cfg['tab']['lang'] . " AS A, " . $cfg['tab']['clients_lang'] . " AS B WHERE A.idlang=B.idlang AND idclient=" . cSecurity::toInteger($client) . " ORDER BY A.idlang ASC";
-    $db->query($sql);
-    $db->nextRecord();
-    $lang = $db->f('idlang');
+    // Search for the first language of this client
+    $oClientLangColl = new cApiClientLanguageCollection();
+    $lang = (int) $oClientLangColl->getFirstLanguageIdByClient($client);
 } else {
     $sess->register('lang');
 }
@@ -195,7 +207,7 @@ if (isset($action)) {
 
 // Include the 'main' file for the selected area. Usually there is only one main
 // file
-$sFilename = "";
+$sFilename = '';
 if (count($backend->getFile('main')) > 0) {
     foreach ($backend->getFile('main') as $id => $filename) {
         $sFilename = $filename;
@@ -211,13 +223,13 @@ if (count($backend->getFile('main')) > 0) {
 
 $cfg['debug']['backend_exectime']['end'] = getmicrotime();
 
-$debugInfo = array(
+$debugInfo = [
     'Building this page (excluding CONTENIDO includes) took: ' . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['start']) . ' seconds',
     'Building the complete page took: ' . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['fullstart']) . ' seconds',
     'Include memory usage: ' . humanReadableSize(memory_get_usage() - $oldmemusage),
     'Complete memory usage: ' . humanReadableSize(memory_get_usage()),
-    "*****" . $sFilename . "*****"
-);
+    '*****' . $sFilename . '*****'
+];
 cDebug::out(implode("\n", $debugInfo));
 
 // Do user tracking (who is online)
@@ -225,5 +237,3 @@ $oActiveUser = new cApiOnlineUserCollection();
 $oActiveUser->startUsersTracking();
 
 cRegistry::shutdown();
-
-?>

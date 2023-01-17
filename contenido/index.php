@@ -17,18 +17,23 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
+/**
+ * @var cPermission $perm
+ * @var string $belang
+ * @var array $cfg
+ * @var cSession $sess
+ * @var int $changelang
+ * @var int $client
+ */
+
 // CONTENIDO startup process
 include_once('./includes/startup.php');
 
-// ugly globals that are used in this script
-// global $sess, $perm, $area;
-// global $belang, $changelang, $changeclient;
-
-cRegistry::bootstrap(array(
+cRegistry::bootstrap([
     'sess' => 'cSession',
     'auth' => 'cAuthHandlerBackend',
     'perm' => 'cPermission'
-));
+]);
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 
@@ -92,29 +97,16 @@ if (!is_numeric($client) || $client == '') {
 
 if (!is_numeric($lang) || $lang == '') {
     $sess->register('lang');
-    // search for the first language of this client
-    $sql = "SELECT
-                *
-            FROM
-                " . $cfg["tab"]["lang"] . " AS A
-                , " . $cfg["tab"]["clients_lang"] . " AS B
-            WHERE
-                A.idlang=B.idlang
-                AND idclient='" . cSecurity::toInteger($client) . "'
-            ORDER BY
-                A.idlang ASC";
-    $db->query($sql);
-    $db->nextRecord();
-    $lang = $db->f('idlang');
 
-    if (!$perm->have_perm_client_lang($client, $lang)) {
-        $lang = '';
-        while ($db->nextRecord() && ($lang == '')) {
-            if ($perm->have_perm_client_lang($client, $db->f('idlang'))) {
-                $lang = $db->f('idlang');
-            }
+    $oClientLangColl = new cApiClientLanguageCollection();
+    $aClientLanguages = $oClientLangColl->getAllanguageIdsByClient($client);
+    do {
+        $lang = array_shift($aClientLanguages);
+        if (!$perm->have_perm_client_lang($client, $lang)) {
+            $lang = '';
         }
-    }
+    } while (count($aClientLanguages) && !is_numeric($lang));
+    unset($aClientLanguages);
 } else {
     $sess->register('lang');
 }
@@ -133,7 +125,7 @@ $tpl->reset();
 
 // Get backend label
 $backend_label = getSystemProperty('backend', 'backend_label');
-$backend_label = " " . $backend_label . " ";
+$backend_label = ' ' . $backend_label . ' ';
 $tpl->set('s', 'BACKEND_LABEL', $backend_label);
 
 // Template settings
@@ -145,5 +137,3 @@ $tpl->set('s', 'CONTENIDOPATH', $backendUrl . 'favicon.ico');
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['frameset']);
 
 cRegistry::shutdown();
-
-?>

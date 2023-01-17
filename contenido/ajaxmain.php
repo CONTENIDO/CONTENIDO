@@ -18,6 +18,15 @@ if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
+/**
+ * @var cPermission $perm
+ * @var cAuth $auth
+ * @var string $belang
+ * @var array $cfg
+ * @var cSession $sess
+ * @var int $idcat
+ */
+
 // CONTENIDO startup process
 include_once('./includes/startup.php');
 
@@ -27,11 +36,11 @@ $cfg['debug']['backend_exectime']['fullstart'] = getmicrotime();
 
 cInclude('includes', 'functions.api.php');
 
-cRegistry::bootstrap(array(
+cRegistry::bootstrap([
     'sess' => 'cSession',
     'auth' => 'cAuthHandlerBackend',
     'perm' => 'cPermission'
-));
+]);
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 
@@ -82,21 +91,9 @@ if (!is_numeric($client)
 
 if (!is_numeric($lang) || $lang == '') {
     $sess->register('lang');
-    // search for the first language of this client
-    $db->query("
-        SELECT
-            *
-        FROM
-            " . $cfg['tab']['lang'] . " AS A
-            , " . $cfg['tab']['clients_lang'] . " AS B
-        WHERE
-            A.idlang=B.idlang
-            AND idclient=" . cSecurity::toInteger($client) . "
-        ORDER BY
-            A.idlang ASC
-        ;");
-    $db->nextRecord();
-    $lang = $db->f('idlang');
+    // Search for the first language of this client
+    $oClientLangColl = new cApiClientLanguageCollection();
+    $lang = (int) $oClientLangColl->getFirstLanguageIdByClient($client);
 } else {
     $sess->register('lang');
 }
@@ -130,8 +127,8 @@ $backend->select($area);
 
 $cfg['debug']['backend_exectime']['start'] = getmicrotime();
 
-// If $action is set -> User klicked some button/link
-// get the appopriate code for this action and evaluate it.
+// If $action is set -> User clicked some button/link
+// get the appropriate code for this action and evaluate it.
 if (isset($action) && $action != '') {
     if (!isset($idart)) {
         $idart = 0;
@@ -162,15 +159,15 @@ if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
 
 if ($cfg['debug']['rendering'] == true) {
     $cfg['debug']['backend_exectime']['end'] = getmicrotime();
-    $debugInfo = array(
-    'Building this page (excluding CONTENIDO includes) took: ' .
-        ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['start']) . ' seconds',
-    'Building the complete page took: ' .
-        ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['fullstart']) . ' seconds',
-        'Include memory usage: ' . humanReadableSize(memory_get_usage() - $oldmemusage),
-    'Complete memory usage: ' . humanReadableSize(memory_get_usage()),
-    "*****" . $sFilename . "*****"
-    );
+    $debugInfo = [
+        'Building this page (excluding CONTENIDO includes) took: ' .
+            ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['start']) . ' seconds',
+        'Building the complete page took: ' .
+            ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['fullstart']) . ' seconds',
+            'Include memory usage: ' . humanReadableSize(memory_get_usage() - $oldmemusage),
+        'Complete memory usage: ' . humanReadableSize(memory_get_usage()),
+        "*****" . $sFilename . "*****"
+    ];
     cDebug::out(implode("\n", $debugInfo));
 }
 
