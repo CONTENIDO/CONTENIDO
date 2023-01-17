@@ -178,7 +178,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
     /**
      * Associative array with fields of linked tables.
      * Linked tables are linked by using the primary keys by default, but
-     * any defined link fields will be used instead.
+     * any defined link fields will be used instead of the primary keys.
      *
      * @var array
      */
@@ -295,7 +295,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param string $sForeignClass
      *         The class of foreign table to use
      * @param string $sLinkField
-     *         The link filed to use instead of the primary keys
+     *         The link field to use instead of the primary keys
      * @throws cInvalidArgumentException
      *         if the given foreign class does not exist
      */
