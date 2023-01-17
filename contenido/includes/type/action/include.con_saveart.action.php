@@ -14,24 +14,50 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$idtpl           = isset($idtpl) ? $idtpl : false;
-$artspec         = isset($artspec) ? $artspec : '';
-$online          = isset($online) || isset($timemgmt) ? $online : false;
-$searchable      = isset($searchable) ? $searchable : false;
-$publishing_date = isset($publishing_date) ? $publishing_date : false;
+/**
+ * @var cPermission $perm
+ * @var cDb $db
+ * @var string $area
+ * @var int $idcat
+ * @var int $idart
+ * @var int $lang
+ * @var array $cfg
+ * @var cGuiNotification $notification
+ *
+ * @var mixed $admin
+ * @var int $tmp_firstedit
+ * @var int|int[] $idcatnew
+ * @var int $is_start
+ * @var string $summary
+ * @var string $created
+ * @var string $lastmodified
+ * @var string $author
+ * @var int $online
+ * @var string $datestart
+ * @var string $dateend
+ * @var int $artsort
+ * @var string $urlname
+ */
+
+$idtpl = $idtpl ?? false;
+$artspec = $artspec ?? '';
+$online = isset($online) || isset($timemgmt) ? $online : false;
+$searchable = $searchable ?? false;
+$publishing_date = $publishing_date ?? false;
+$locked = $locked ?? 0;
+$is_start = $is_start ?? 0;
+$sitemapprio = $sitemapprio ?? '0.5';
+$changefreq = $changefreq ?? '0';
 
 // remember old values to be passed to listeners of Contenido.Action.con_saveart.AfterCall
-$oldData = array();
+$oldData = [];
 
 if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_action_item($area, "con_edit", $idcat))  && ((int) $locked === 0 || $admin )) {
 
 	// get idartlang
 	if (!isset($idartlang) || $idartlang == 0) {
-		$db->query("
-            SELECT idartlang
-            FROM " . $cfg["tab"]["art_lang"] . "
-            WHERE idart = '$idart'
-                AND idlang = '$lang'");
+        $sql = 'SELECT `idartlang` FROM `%s` WHERE `idart` = %d AND `idlang` = %d';
+		$db->query($sql, $cfg["tab"]["art_lang"], $idart, $lang);
 		$db->nextRecord();
 		$idartlang = $db->f("idartlang");
 	}
@@ -43,55 +69,11 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
             $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort, 0, $searchable
         );
 
+        // Set startarticle status
+        conSetStartArticleHandler($idcatnew, $idcat, $is_start, $idart, $lang, $idartlang);
+
         // build notification
         $tmp_notification = $notification->returnNotification("ok", i18n("Changes saved"));
-
-        // if article should be related to current category
-        if (in_array($idcat, $idcatnew)) {
-            // if article should be startarticle
-            if ($is_start == 1) {
-                // set as startarticle of current category
-                conSetStartArticle($idcat, $idart, $lang, $is_start);
-            }
-
-            // if article should not be startarticle
-            if (!isset($is_start)) {
-                // get startidartlang of current category in current language
-                $db->query("
-                    SELECT *
-                    FROM " . $cfg["tab"]["cat_lang"] . "
-                    WHERE idcat = '$idcat'
-                        AND idlang = '$lang'
-                        AND startidartlang != '0'");
-                if ($db->nextRecord()) {
-                    // category has startarticle
-                    if ($idartlang == $db->f('startidartlang')) {
-                        // current article is currently startarticle
-                        conSetStartArticle($idcat, $idart, $lang, 0);
-                    } else {
-                        // another article is currently startarticle
-                    }
-                } else {
-                    // category has no startarticle
-                    conSetStartArticle($idcat, $idart, $lang, 0);
-                }
-            }
-        }
-
-        // if article should be related to categories
-        if (is_array($idcatnew)) {
-            // enforce code creation for all categories this article should be related to
-            foreach ($idcatnew as $idcat) {
-                $db->query("
-                    SELECT idcatart
-                    FROM " . $cfg["tab"]["cat_art"] . "
-                    WHERE idcat = '$idcat'
-                        AND idart = '$idart'");
-                $db->nextRecord();
-
-                conSetCodeFlag($db->f("idcatart"));
-            }
-        }
 
         // if meta-tag 'robots' is available add value 'index, follow'
         $availableTags = conGetAvailableMetaTagTypes();
@@ -154,55 +136,11 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
             $created, $lastmodified, $author, $online, $datestart, $dateend, $publishing_date, $artsort, 0, $searchable
         );
 
+        // Set startarticle status
+        conSetStartArticleHandler($idcatnew, $idcat, $is_start, $idart, $lang, $idartlang);
+
         // build notification
         $tmp_notification = $notification->returnNotification("ok", i18n("Changes saved"));
-
-        // if article should be related to categories
-        if (is_array($idcatnew)) {
-            // if article should still be related to current category
-            if (in_array($idcat, $idcatnew)) {
-                // if article should be startarticle
-                if ($is_start == 1) {
-                    // set as startarticle of current category
-                    conSetStartArticle($idcat, $idart, $lang, $is_start);
-                }
-
-                // if article should not be startarticle
-                if (!isset($is_start)) {
-                    // get startidartlang of current category in current language
-                    $db->query("
-                        SELECT startidartlang
-                        FROM " . $cfg["tab"]["cat_lang"] . "
-                        WHERE idcat = '$idcat'
-                            AND idlang = '$lang'
-                            AND startidartlang != '0'");
-                    if ($db->nextRecord()) {
-                        // category has startarticle
-                        if ($idartlang == $db->f('startidartlang')) {
-                            // current article is currently startarticle
-                            conSetStartArticle($idcat, $idart, $lang, 0);
-                        } else {
-                            // another article is currently startarticle
-                        }
-                    } else {
-                        // category has no startarticle
-                        conSetStartArticle($idcat, $idart, $lang, 0);
-                    }
-                }
-            }
-
-            // enforce code creation for all categories this article should be related to
-            foreach ($idcatnew as $idcat) {
-                $db->query("
-                    SELECT idcatart
-                    FROM " . $cfg["tab"]["cat_art"] . "
-                    WHERE idcat = '$idcat'
-                        AND idart = '$idart'");
-                $db->nextRecord();
-
-                conSetCodeFlag($db->f("idcatart"));
-            }
-        }
     }
 }
 
