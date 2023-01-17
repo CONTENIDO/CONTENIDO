@@ -14,6 +14,13 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+$cfg = cRegistry::getConfig();
+$sess = cRegistry::getSession();
+$auth = cRegistry::getAuth();
+$client = cRegistry::getClientId();
+$area = cRegistry::getArea();
+$frame = cRegistry::getFrame();
+
 $oPage = new cGuiPage("frontend.user_menu");
 
 $oUser = new cApiUser($auth->auth["uid"]);
@@ -126,7 +133,7 @@ if (cString::getStringLength($requestFilter) > 0) {
 }
 
 if ($requestRestrictGroup != "" && $requestRestrictGroup != "--all--") {
-    $oFEUsers->link("cApiFrontendGroupMemberCollection");
+    $oFEUsers->link("cApiFrontendGroupMemberCollection", 'idfrontenduser');
     $oFEUsers->setWhere("cApiFrontendGroupMemberCollection.idfrontendgroup", $requestRestrictGroup);
 }
 
