@@ -88,7 +88,7 @@ class cApiArticleLanguageCollection extends ItemCollection {
         $item->set('online', $parameters['online']);
         $item->set('redirect', $parameters['redirect']);
         $item->set('redirect_url', $parameters['redirect_url']);
-        $item->set('external_redirect', $parameters['external_redirect']);
+        $item->set('external_redirect', $parameters['external_redirect'] ?? '');
         $item->set('artsort', $parameters['artsort']);
         $item->set('timemgmt', $parameters['timemgmt']);
         $item->set('datestart', $parameters['datestart']);
@@ -102,7 +102,7 @@ class cApiArticleLanguageCollection extends ItemCollection {
         $item->set('free_use_02', $parameters['free_use_02']);
         $item->set('free_use_03', $parameters['free_use_03']);
         $item->set('searchable', $parameters['searchable']);
-        $item->set('sitemapprio', $parameters['sitemapprio']);
+        $item->set('sitemapprio', $parameters['sitemapprio'] ?? '0.5');
         $item->set('changefreq', $parameters['changefreq']);
 
         $item->store();
