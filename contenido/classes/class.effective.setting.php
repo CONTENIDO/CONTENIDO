@@ -15,6 +15,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Effective setting manager class.
+ *
  * Provides an interface to retrieve effective settings.
  *
  * Requested effective settings will be cached at first time. Further requests
@@ -39,43 +40,38 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cEffectiveSetting {
 
     /**
-     *
      * @var array
      */
     protected static $_settings = [];
 
     /**
-     *
      * @var cApiUser
      */
     protected static $_user;
 
     /**
-     *
      * @var cApiClient
      */
     protected static $_client;
 
     /**
-     *
      * @var cApiClientLanguage
      */
     protected static $_clientLanguage;
 
     /**
-     *
      * @var bool
      */
     protected static $_loaded = [];
 
     /**
-     *
      * @var cApiLanguage
      */
     protected static $_language;
 
     /**
      * Loads all client, clientLanguage a system properties into a static array.
+     *
      * The order is: System => Client => Client (language)
      *
      * @throws cDbException
@@ -150,8 +146,8 @@ class cEffectiveSetting {
      * System properties can be overridden by the group, and group properties
      * can be overridden by the user.
      *
-     * NOTE: If you provide a default value (other than empty string), then it will be returned back
-     *       in case of not existing or empty setting.
+     * NOTE: If you provide a default value (other than empty string),
+     * then it will be returned in case of not existing or empty setting.
      *
      * @param string $type
      *                        The type of the item
@@ -192,14 +188,12 @@ class cEffectiveSetting {
 
     /**
      * Returns effective setting for a type of properties.
-     * Caches also the collected settings, but contrary to get() it returns
-     * never cached entries.
      *
-     * The order is:
-     * System => Client => Client (language) => Group => User
+     * Caches also the collected settings, but contrary to get() it returns never cached entries.
      *
-     * System properties can be overridden by the group, and group
-     * properties can be overridden by the user.
+     * The order is: System => Client => Client (language) => Group => User
+     *
+     * System properties can be overridden by the group, and group properties can be overridden by the user.
      *
      * @param string $type
      *         The type of the item
@@ -230,8 +224,7 @@ class cEffectiveSetting {
     /**
      * Sets an effective setting.
      *
-     * Note:
-     * The setting will be set only in cache, not in persistence layer.
+     * Note: The setting will be set only in cache, not in persistence layer.
      *
      * @param string $type
      *         The type of the item
@@ -248,8 +241,7 @@ class cEffectiveSetting {
     /**
      * Deletes an effective setting.
      *
-     * Note:
-     * The setting will be deleted only from cache, not from persistence layer.
+     * Note: The setting will be deleted only from cache, not from persistence layer.
      *
      * @param string $type
      *         The type of the item
@@ -267,6 +259,7 @@ class cEffectiveSetting {
 
     /**
      * Resets all properties of the effective settings class.
+     *
      * Usable to start getting settings from scratch.
      */
     public static function reset() {
