@@ -13,25 +13,41 @@
  */
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $notification;
+
+$cfg = cRegistry::getConfig();
+$sess = cRegistry::getSession();
+$perm = cRegistry::getPerm();
+$client = cRegistry::getClientId();
+$area = cRegistry::getArea();
+$frame = cRegistry::getFrame();
+$lang = cRegistry::getLanguageId();
+$action = cRegistry::getAction();
+$db = cRegistry::getDb();
+
 $fegroups = new cApiFrontendGroupCollection();
 $page = new cGuiPage("grouprights_memberselect", "", 0);
 
 cIncludePlugins('frontendgroups');
 
-$successMessage = '';
-$fegroup      = new cApiFrontendGroup();
-$groupmembers = new cApiFrontendGroupMemberCollection();
-$fegroup->loadByPrimaryKey($idfrontendgroup);
-$sRefreshRightTopLinkJs = "";
-
 $requestUserInGroup = $_POST['user_in_group'] ?? '';
 $requestFilterIn = $_POST['filter_in'] ?? '';
 $requestFilterNon = $_POST['filter_non'] ?? '';
+$requestIdFrontendGroup = cSecurity::toInteger($_REQUEST['idfrontendgroup'] ?? '0');
+$requestNewMember = $_REQUEST['newmember'] ?? [];
+$requestGroupName = $_REQUEST['groupname'] ?? '';
+$requestDefaultGroup =  cSecurity::toInteger($_REQUEST['defaultgroup'] ?? '0');
+
+$successMessage = '';
+$fegroup      = new cApiFrontendGroup();
+$groupmembers = new cApiFrontendGroupMemberCollection();
+$fegroup->loadByPrimaryKey($requestIdFrontendGroup);
+$sRefreshRightTopLinkJs = "";
 
 if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $action)) {
    $fegroup = $fegroups->create(" ".i18n("-- New group --"));
-   $idfrontendgroup = $fegroup->get("idfrontendgroup");
-   $sRefreshRightTopLink = $sess->url('main.php?frame=3&area='.$area.'&idfrontendgroup='.$idfrontendgroup);
+   $requestIdFrontendGroup = $fegroup->get("idfrontendgroup");
+   $sRefreshRightTopLink = $sess->url('main.php?frame=3&area='.$area.'&idfrontendgroup='.$requestIdFrontendGroup);
    $sRefreshRightTopLink = "Con.multiLink('right_top', '".$sRefreshRightTopLink."')";
    $sRefreshRightTopLinkJs = '<script type="text/javascript">' . $sRefreshRightTopLink . '</script>';
    $successMessage = i18n("Created new frontend-group successfully");
@@ -39,30 +55,30 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
     $aDeleteMembers = [];
     if (!is_array($requestUserInGroup)) {
         if ($requestUserInGroup > 0) {
-            array_push($aDeleteMembers, $requestUserInGroup);
+            $aDeleteMembers[] = $requestUserInGroup;
         }
     } else {
         $aDeleteMembers = $requestUserInGroup;
     }
     foreach ($aDeleteMembers as $idfrontenduser) {
-        $groupmembers->remove($idfrontendgroup, $idfrontenduser);
+        $groupmembers->remove($requestIdFrontendGroup, $idfrontenduser);
     }
 
     $successMessage = i18n("Removed user from group successfully!");
     // also save other variables
     $action = "frontendgroup_save_group";
 } else if ($action == "frontendgroup_user_add" && $perm->have_perm_area_action($area, $action)) {
-    if (count($newmember) > 0) {
-        foreach ($newmember as $add) {
-            $groupmembers->create($idfrontendgroup, $add);
+    if (count($requestNewMember) > 0) {
+        foreach ($requestNewMember as $add) {
+            $groupmembers->create($requestIdFrontendGroup, $add);
         }
     }
     $successMessage = i18n("Added user to group successfully!");
     // also save other variables
     $action = "frontendgroup_save_group";
 } else if ($action == "frontendgroup_delete" && $perm->have_perm_area_action($area, $action)) {
-   $fegroups->delete($idfrontendgroup);
-   $idfrontendgroup= 0;
+   $fegroups->delete($requestIdFrontendGroup);
+   $requestIdFrontendGroup= 0;
    $fegroup = new cApiFrontendGroup();
 
   cRegistry::addOkMessage(i18n("Deleted group successfully!"));
@@ -74,7 +90,7 @@ if ($action != '') {
 (function(Con, $) {
     var frame = Con.getFrame('left_bottom');
     if (frame) {
-        var href = Con.UtilUrl.replaceParams(frame.location.href, {idfrontendgroup: {$idfrontendgroup}, action: null});
+        var href = Con.UtilUrl.replaceParams(frame.location.href, {idfrontendgroup: {$requestIdFrontendGroup}, action: null});
         frame.location.href = href;
         var frame2 = Con.getFrame('left_top');
         if (frame2 && 'function' === $.type(frame2.refresh)) {
@@ -92,12 +108,12 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
     $messages = [];
 
     if ($action == "frontendgroup_save_group" && $perm->have_perm_area_action($area, $action)) {
-        if ($fegroup->get("groupname") != stripslashes($groupname)) {
-            $fegroups->select("groupname = '$groupname' and idclient='$client'");
+        if ($fegroup->get("groupname") != stripslashes($requestGroupName)) {
+            $fegroups->select("groupname = '$requestGroupName' and idclient='$client'");
             if ($fegroups->next()) {
                 $messages[] = i18n("Could not set new group name: Group already exists");
             } else {
-                $fegroup->set("groupname", stripslashes($groupname));
+                $fegroup->set("groupname", stripslashes($requestGroupName));
 
                 if (!isset($successMessage)) {
                     $successMessage = i18n("Saved changes successfully!");
@@ -106,11 +122,11 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
         }
 
         //Reset all other default groups
-        if ($defaultgroup == 1) {
+        if ($requestDefaultGroup == 1) {
             $sSql = 'UPDATE `%s` SET defaultgroup = 0 WHERE idfrontendgroup != %d AND idclient = %d;';
-            $db->query($sSql, $cfg["tab"]["frontendgroups"], $idfrontendgroup, $client);
+            $db->query($sSql, $cfg["tab"]["frontendgroups"], $requestIdFrontendGroup, $client);
         }
-        $fegroup->set("defaultgroup", $defaultgroup);
+        $fegroup->set("defaultgroup", $requestDefaultGroup);
 
         // Check out if there are any plugins
         if (cHasPlugins('frontendgroups')) {
@@ -133,8 +149,8 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
     $feusers = new cApiFrontendUserCollection();
     $feusers->select("idclient='$client'");
 
-    $addedusers = $groupmembers->getUsersInGroup($idfrontendgroup, false);
-    $addeduserobjects = $groupmembers->getUsersInGroup($idfrontendgroup, true);
+    $addedusers = $groupmembers->getUsersInGroup($requestIdFrontendGroup, false);
+    $addeduserobjects = $groupmembers->getUsersInGroup($requestIdFrontendGroup, true);
 
     $cells = [];
     foreach ($addeduserobjects as $addeduserobject) {
@@ -217,7 +233,7 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
     $page->set('s', 'CATFIELD', "&nbsp;");
     $page->set('s', 'FORM_ACTION', $sess->url('main.php'));
     $page->set('s', 'AREA', $area);
-    $page->set('s', 'GROUPID', $idfrontendgroup);
+    $page->set('s', 'GROUPID', $requestIdFrontendGroup);
     $page->set('s', 'FRAME', $frame);
     $page->set('s', 'IDLANG', $lang);
     $page->set('s', 'STANDARD_ACTION', 'frontendgroup_save_group');
