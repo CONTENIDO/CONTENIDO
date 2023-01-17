@@ -1083,10 +1083,10 @@ function buildArticleSelect($sName, $iIdCat, $sValue) {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 
-        $sql = 'SELECT b.title, b.idart
+        $sql = 'SELECT al.title, al.idart
                FROM `%s` AS a, `%s` AS al, `%s` AS ca
                WHERE ca.idcat = %d AND al.idlang = %d AND al.idart = a.idart AND al.idart = ca.idart
-               ORDER BY b.title';
+               ORDER BY al.title';
 
         $db->query($sql, $cfg['tab']['art'], $cfg['tab']['art_lang'], $cfg['tab']['cat_art'], $iIdCat, $lang);
         while ($db->nextRecord()) {
