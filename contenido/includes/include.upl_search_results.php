@@ -14,11 +14,25 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cApiUser $currentuser
+ * @var string $area
+ * @var array $cfg
+ * @var array $cfgClient
+ * @var cSession $sess
+ * @var int $client
+ * @var int $frame
+ */
+
 cInclude('includes', 'api/functions.frontend.list.php');
 cInclude('includes', 'functions.upl.php');
 cInclude('includes', 'functions.file.php');
 
-$appendparameters = $_REQUEST["appendparameters"];
+$appendparameters = $_REQUEST['appendparameters'] ?? '';
+$sortby = $sortby ?? '';
+$startpage = $startpage ?? '';
+$thumbnailmode = $thumbnailmode ?? '';
+$searchfor = $searchfor ?? '';
 
 /**
  * Class UploadSearchResultList
@@ -28,7 +42,7 @@ class UploadSearchResultList extends FrontendList {
      *
      * @var string
      */
-    private $_pathdata;
+    private $_pathData;
 
     /**
      *
@@ -49,7 +63,7 @@ class UploadSearchResultList extends FrontendList {
      *
      * @param int $field
      *         Field index
-     * @param     $data
+     * @param mixed $data
      *
      * @return mixed
      *
@@ -58,7 +72,11 @@ class UploadSearchResultList extends FrontendList {
      * @throws cInvalidArgumentException
      */
     public function convert($field, $data) {
-        global $cfg, $sess, $client, $cfgClient, $appendparameters;
+        global $appendparameters;
+
+        $sess = cRegistry::getSession();
+        $client = cRegistry::getClientId();
+        $cfgClient = cRegistry::getClientConfig();
 
         if ($field == 5) {
             if ($data == "") {
@@ -78,11 +96,10 @@ class UploadSearchResultList extends FrontendList {
         }
 
         if ($field == 2) {
-
             // OK icon
             $icon = "<img src=\"images/but_ok.gif\" alt=\"\" />&nbsp;";
 
-            $vpath = str_replace($cfgClient[$client]["upl"]["path"], "", $this->_pathdata);
+            $vpath = str_replace($cfgClient[$client]["upl"]["path"], "", $this->_pathData);
             $slashpos = cString::findLastPos($vpath, "/");
             if ($slashpos === false) {
                 $file = $vpath;
@@ -102,14 +119,14 @@ class UploadSearchResultList extends FrontendList {
                 $markLeftPane = "Con.getFrame('left_bottom').upl.click(Con.getFrame('left_bottom').document.getElementById('$path'));";
 
                 $tmp_mstr = '<a onmouseover="this.style.cursor=\'pointer\'" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\');' . $markLeftPane . '">%s</a>';
-                // concatinate path with folder name (file) for path parameter to access folder
+                // concatenate path with folder name (file) for path parameter to access folder
                 $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl&frame=4&path=$path$file/&file="), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$file"), $data);
             }
             return $mstr;
         }
 
         if ($field == 1) {
-            $this->_pathdata = $data;
+            $this->_pathData = $data;
 
             // If this file is an image, try to open
             $this->_fileType = cString::toLowerCase(cFileHandler::getExtension($data));
@@ -139,20 +156,17 @@ class UploadSearchResultList extends FrontendList {
                     }
 
                     if (cApiDbfs::isDbfs($data)) {
-                        $retValue = '<a href="JavaScript:iZoom(\'' . $sess->url($frontendURL . "dbfs.php?file=" . $data) . '\');">
-                                <img class="hover" alt="" src="' . $sCacheThumbnail . '">
-                                <img class="preview" alt="" src="' . $sCacheThumbnail . '">
-                            </a>';
-                        return $retValue;
-                    } else {
-                        $retValue = '<a href="JavaScript:iZoom(\'' . $frontendURL . $cfgClient[$client]["upload"] . $data . '\');">
-                                    <img class="hover" alt=""  onMouseOver="correctPosition(this, ' . $iWidth . ', ' . $iHeight . ');" onmouseout="if (typeof(previewHideIe6) == \'function\') {previewHideIe6(this)}" src="' . $sCacheThumbnail . '">
+                        return '<a href="javascript:iZoom(\'' . $sess->url($frontendURL . "dbfs.php?file=" . $data) . '\');">
+                                    <img class="hover" alt="" src="' . $sCacheThumbnail . '">
                                     <img class="preview" alt="" src="' . $sCacheThumbnail . '">
                                 </a>';
-                        $retValue .= '<a href="JavaScript:iZoom(\'' . $frontendURL . $cfgClient[$client]["upload"] . $data . '\');"><img class="preview" alt="" src="' . $sCacheThumbnail . '"></a>';
-                        return $retValue;
+                    } else {
+                        return '<a href="javascript:iZoom(\'' . $frontendURL . $cfgClient[$client]["upload"] . $data . '\');">
+                                    <img class="hover" alt=""  onmouseover="correctPosition(this, ' . $iWidth . ', ' . $iHeight . ');" onmouseout="if (typeof(previewHideIe6) == \'function\') {previewHideIe6(this)}" src="' . $sCacheThumbnail . '">
+                                    <img class="preview" alt="" src="' . $sCacheThumbnail . '">
+                                </a>
+                                <a href="javascript:iZoom(\'' . $frontendURL . $cfgClient[$client]["upload"] . $data . '\');"><img class="preview" alt="" src="' . $sCacheThumbnail . '"></a>';
                     }
-                    break;
                 case '':
                     // folder has empty filetype column value
                     return '<img class="hover_none" alt="" src="' . cRegistry::getBackendUrl() . 'images/grid_folder.gif' . '">';
@@ -164,7 +178,6 @@ class UploadSearchResultList extends FrontendList {
 
         return $data;
     }
-
 
     /**
      * @return int $size
@@ -331,7 +344,7 @@ $list2->setSize($thumbnailmode);
 
 $rownum = 0;
 if (!is_array($files)) {
-    $files = array();
+    $files = [];
 }
 
 arsort($files, SORT_NUMERIC);
@@ -393,6 +406,7 @@ if ($list2->getCurrentPage() < $list2->getNumPages()) {
     $nextpage = '&nbsp;';
 }
 
+$paging_form = '';
 if ($list2->getNumPages() > 1) {
     $num_pages = $list2->getNumPages();
 
@@ -441,12 +455,12 @@ $form->setVar("appendparameters", $appendparameters);
 
 $select = new cHTMLSelectElement("thumbnailmode");
 $select->setClass("vAlignMiddle tableElement");
-$values = array(
+$values = [
     25 => "25",
     50 => "50",
     100 => "100",
     200 => "200"
-);
+];
 
 $select->autoFill($values);
 
