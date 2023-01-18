@@ -24,8 +24,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * - idcat - category ID
  * - categories - array with multiple category IDs
- * - lang - language ID, active language if ommited
- * - client - client ID, active client if ommited
+ * - lang - language ID, active language if omitted
+ * - client - client ID, active client if omitted
  * - artspecs - array of article specifications, which should be considered
  * - offline - include offline article in the collection, defaults to false
  * - offlineonly - only list offline articles, defaults to false
@@ -135,7 +135,7 @@ class cArticleCollector implements SeekableIterator, Countable {
             $options['offlineonly'] = false;
         }
 
-        $order = isset($options['order']) ? $options['order'] : '';
+        $order = $options['order'] ?? '';
         switch ($order) {
             case 'sortsequence':
                 $options['order'] = 'artsort';
@@ -359,7 +359,7 @@ class cArticleCollector implements SeekableIterator, Countable {
      * @return mixed
      */
     public function current() {
-        return $this->_articles[$this->_currentPosition];
+        return $this->_articles[$this->_currentPosition] ?? null;
     }
 
     /**
