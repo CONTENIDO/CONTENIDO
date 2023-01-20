@@ -264,6 +264,35 @@ class PifaField extends Item {
     }
 
     /**
+     * Loads a pifa field dummy recordset by a template, which is used during
+     * the creation of a new pifa form field.
+     *
+     * @param array $aRecordSet Associative array with pre-set values.
+     * @return void
+     */
+    function loadByRecordSetTemplate(array $aRecordSet) {
+        $aRecordSet = array_merge([
+            'idfield' => 0,
+            'idform' => 0,
+            'field_rank' => 0,
+            'field_type' => 0,
+            'column_name' => '',
+            'label' => '',
+            'display_label' => 1,
+            'default_value' => '',
+            'option_labels' => '',
+            'option_values' => '',
+            'option_class' => '',
+            'help_text' => '',
+            'obligatory' => 1,
+            'rule' => '',
+            'error_message' => '',
+            'css_class' => '',
+        ], $aRecordSet);
+        $this->loadByRecordSet($aRecordSet);
+    }
+
+    /**
      * Rule has to be stripslashed to allow regular expressions with
      * backslashes.
      *

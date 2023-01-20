@@ -68,22 +68,25 @@ class pApiContentAllocationTreeView extends pApiTree {
     }
 
     /**
-     * Build an render tree
+     * Build and render tree
      *
      * @param array $tree
      * @return array $result html code
+     * @throws cException
      */
     protected function _buildRenderTree($tree) {
-        global $action, $frame, $area;
         $idart = cRegistry::getArticleId();
         $sess = cRegistry::getBackendSessionId();
+        $area = cRegistry::getArea();
+        $action = cRegistry::getAction();
+        $frame = cRegistry::getFrame();
 
-        $result = array();
+        $result = [];
         foreach ($tree as $item_tmp) {
-            $item = array();
+            $item = [];
             // update item
             if ($_GET['step'] == 'rename' && $item_tmp['idpica_alloc'] == $_GET['idpica_alloc']) {
-                $item = array();
+                $item = [];
                 $item['ITEMNAME'] = '
                     <table cellspacing="0" cellpaddin="0" border="0">
                     <form name="rename" action="main.php" method="POST" onsubmit="return fieldCheck();">
@@ -161,7 +164,7 @@ class pApiContentAllocationTreeView extends pApiTree {
 
             // add new item -> show formular
             if ($_GET['step'] == 'add' && $item_tmp['idpica_alloc'] == $_GET['parentid']) {
-                $item = array();
+                $item = [];
 
                 $item['ITEMNAME'] = '
                     <table cellspacing="0" cellpaddin="0" border="0">
@@ -176,7 +179,7 @@ class pApiContentAllocationTreeView extends pApiTree {
                     <td class="text_medium"><input id="itemname" class="text_medium" type="text" name="treeItemPost[name]" value=""></td>
                     <td>&nbsp;
                     <a href="main.php?action=' . $action . '&frame=' . $frame . '&area=' . $area . '&contenido=' . $sess . '"><img src="images/but_cancel.gif" alt=""></a>
-                    <input type="image" src="images/but_ok.gif">
+                    <input type="image" alt="" src="images/but_ok.gif">
                     </td></tr>
                     </form>
                     </table>
@@ -201,7 +204,7 @@ class pApiContentAllocationTreeView extends pApiTree {
                 $item['ACTION_DELETE'] = '<img src="images/spacer.gif" alt="" width="14" height="13">';
                 $item['ACTION_ONOFFLINE'] = '<img src="images/spacer.gif" alt="" width="11" height="12">';
 
-                array_push($result, $item);
+                $result[] = $item;
             }
         }
         return $result;
@@ -212,9 +215,9 @@ class pApiContentAllocationTreeView extends pApiTree {
      *
      * @param bool $return
      *
-     * @return string|bool
+     * @return string|bool|void
      * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cInvalidArgumentException|cException
      */
     public function renderTree($return = true) {
         $this->_tpl->reset();

@@ -13,12 +13,21 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cDb $db
+ * @var cSession $sess
+ * @var string $area
+ * @var int $frame
+ * @var string $action
+ * @var array $treeItem
+ */
+
 if (isset($_REQUEST['treeItem'])) {
-    die ('Illegal call!');
+    die('Illegal call!');
 }
 
 #added 24.06.08 timo.trautmann security fix filter submitted treeItemPost array before insertion, name also changed according to security fix
-$aPostTreeItem = array();
+$aPostTreeItem = [];
 if (!is_object($db)) {
     $db = cRegistry::getDb();
 }
@@ -108,7 +117,7 @@ if ($_GET['step'] == 'createRoot') { // create new root item
             return true;
         }
         </script>';
-    $oDiv->updateAttributes(array('style' => 'padding: 5px; width: 400px; border: 1px #B3B3B3 solid; background-color: #FFFFFF;'));
+    $oDiv->updateAttributes(['style' => 'padding: 5px; width: 400px; border: 1px #B3B3B3 solid; background-color: #FFFFFF;']);
     $oDiv->setContent($form);
 } else {
     $oDiv->setContent('<a href="main.php?action='.$action.'&step=createRoot&frame='.$frame.'&area='.$area.'&contenido='.$sess->id.'"><img  src="images/folder_new.gif" class="vAlignMiddle"><span class="tableElement">'.i18n("Create new tree", 'content_allocation').'</span></a>');
@@ -133,7 +142,7 @@ function deleteCategory(idpica_alloc) {
 
 $oPage->addScript($js);
 
-$oPage->setContent(array($oDiv, $treeDiv));
+$oPage->setContent([$oDiv, $treeDiv]);
 $oPage->render();
 
 ?>

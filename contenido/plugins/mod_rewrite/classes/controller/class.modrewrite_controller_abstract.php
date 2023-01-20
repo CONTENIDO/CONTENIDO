@@ -66,6 +66,12 @@ abstract class ModRewrite_ControllerAbstract {
     protected $_contenido;
 
     /**
+     * Plugin name
+     * @var  string
+     */
+    protected $_pluginName;
+
+    /**
      * Template file or template string to render
      * @var  string
      */
@@ -75,7 +81,7 @@ abstract class ModRewrite_ControllerAbstract {
      * Additional properties list
      * @var  array
      */
-    protected $_properties = array();
+    protected $_properties = [];
 
     /**
      * Debug flag
@@ -87,27 +93,27 @@ abstract class ModRewrite_ControllerAbstract {
      * Constructor, sets some properties by assigning global variables to them.
      */
     public function __construct() {
-        global $cfg, $client, $area, $action, $frame, $contenido, $sess;
-
         $this->_oView = new stdClass();
-        $this->_cfg = $cfg;
-        $this->_area = $area;
-        $this->_action = $action;
-        $this->_frame = $frame;
-        $this->_client = $client;
-        $this->_contenido = $contenido;
+        $this->_cfg = cRegistry::getConfig();
+        $this->_area = cRegistry::getArea();
+        $this->_action = cRegistry::getAction();
+        $this->_frame = cRegistry::getFrame();
+        $this->_client = cRegistry::getClientId();
+        $this->_contenido = cRegistry::getBackendSessionId();
+        $this->_pluginName = $this->_cfg['pi_mod_rewrite']['pluginName'];
+        $sess = cRegistry::getSession();
 
         $this->_oView->area = $this->_area;
         $this->_oView->frame = $this->_frame;
         $this->_oView->contenido = $this->_contenido;
         $this->_oView->sessid = $sess->id;
-        $this->_oView->lng_more_informations = i18n('More informations', 'mod_rewrite');
+        $this->_oView->lng_more_informations = i18n('More informations', $this->_pluginName);
 
         $this->init();
     }
 
     /**
-     * Initializer method, could be overwritten by childs.
+     * Initializer method, could be overwritten by children.
      * This method will be invoked in constructor of ModRewrite_ControllerAbstract.
      */
     public function init() {
@@ -171,7 +177,7 @@ abstract class ModRewrite_ControllerAbstract {
      * @param   string  $template Either full path and name of template file or a template string.
      *                  If not passed, previous set template will be used.
      * @throws cException if no template is set
-     * @return  string
+     * @return  void
      */
     public function render($template = NULL) {
         if ($template == NULL) {

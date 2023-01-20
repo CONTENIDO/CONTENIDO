@@ -60,7 +60,7 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract {
         $this->_oView->content = '';
 
         // Array for testcases
-        $aTests = array();
+        $aTests = [];
 
         // Instance of mr test
         $oMRTest = new ModRewriteTest($this->_iMaxItems);
@@ -74,19 +74,19 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract {
         // Loop through the structure and compose testcases
         foreach ($aStruct as $idcat => $aCat) {
             // category
-            $aTests[] = array(
+            $aTests[] = [
                 'url' => $oMRTest->composeURL($aCat, 'c'),
                 'level' => $aCat['level'],
                 'name' => $aCat['name']
-            );
+            ];
 
             foreach ($aCat['articles'] as $idart => $aArt) {
                 // articles
-                $aTests[] = array(
+                $aTests[] = [
                     'url' => $oMRTest->composeURL($aArt, 'a'),
                     'level' => $aCat['level'],
                     'name' => $aCat['name'] . ' :: ' . $aArt['title']
-                );
+                ];
             }
         }
 

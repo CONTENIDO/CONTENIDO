@@ -12,10 +12,12 @@
     {$data}
 {else}
     {* If no $exportUrl is given user lacks rights to download CSV. *}
-    {if 0 lt $exportUrl|trim|strlen}
+    {if isset($exportUrl) && 0 lt $exportUrl|trim|strlen}
     <a class="form-data-export" href="{$exportUrl}">{$trans.export}</a>
     {/if}
-    {$lnkDel}
+    {if $data|count}
+        {$lnkDel}
+    {/if}
 
     <!-- table cellpadding="0" class="generic" -->
     <table class="generic" width="97%" cellspacing="0" cellpadding="2" border="0">
@@ -44,7 +46,7 @@
         {foreach from=$data item=row}
         <tr>
             <td nowrap="nowrap" class="bordercell">{$row.id}</td>
-        {if $withTimestamp}
+        {if $withTimestamp && isset($row.pifa_timestam)}
             <td nowrap="nowrap" class="bordercell">{$row.pifa_timestamp}</td>
         {/if}
         {foreach from=$fields item=field}
@@ -66,6 +68,7 @@
         {/foreach}
     {/if}
     </table>
+    {if $data|count}
     <table>
         <tr>
             <th>
@@ -74,6 +77,7 @@
             </th>
         </tr>
     </table>
+    {/if}
 {/if}
 </fieldset>
 

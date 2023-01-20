@@ -45,7 +45,7 @@ abstract class ModRewriteBase {
     }
 
     /**
-     * Returns configuration of mod rewrite, content of gobal $cfg['mod_rewrite']
+     * Returns configuration of mod rewrite, content of global $cfg['mod_rewrite']
      *
      * @param   string  $key  Name of configuration key
      * @param   mixed   $default  Default value to return as a fallback
@@ -53,7 +53,7 @@ abstract class ModRewriteBase {
      *                  or one of the desired subpart
      */
     public static function getConfig($key = NULL, $default = NULL) {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
         if ($key == NULL) {
             return $cfg['mod_rewrite'];
         } elseif ((string) $key !== '') {
@@ -64,7 +64,7 @@ abstract class ModRewriteBase {
     }
 
     /**
-     * Sets the configuration of mod rewrite, content of gobal $cfg['mod_rewrite']
+     * Sets the configuration of mod rewrite, content of global $cfg['mod_rewrite']
      *
      * @param   string  $key    Name of configuration key
      * @param   mixed   $value  The value to set

@@ -32,7 +32,7 @@ class pApiContentAllocationComplexList extends pApiTree {
     /**
      * @var array
      */
-    protected $_load = array();
+    protected $_load = [];
 
     /**
      * pApiContentAllocationComplexList constructor
@@ -70,7 +70,6 @@ class pApiContentAllocationComplexList extends pApiTree {
      * @return string
      */
     protected function _buildRenderTree($tree) {
-
         $oldIdSetter = $this->_idSetter;
         $this->_idSetter = false;
 
@@ -94,13 +93,13 @@ class pApiContentAllocationComplexList extends pApiTree {
             $cnt++;
 
             $even = !$even;
-            $bgcolor = ($even) ? 'bright' : 'dark';
+            $bgColor = ($even) ? 'bright' : 'dark';
 
             // for wrapping purposes
             $item_tmp['name'] = str_replace('-', '- ', $item_tmp['name']);
 
             $checkbox = '<input type="checkbox" name="allocation[]" onClick="addToList(this);" ' . $checked . '" id="e'.$item_tmp['idpica_alloc'].'" value="'.$item_tmp['idpica_alloc'].'">';
-            $item = "\n<li baseClass=\"" . $bgcolor . "\" ".$li_closeElm.">" . $checkbox . " " . $item_tmp['name'];
+            $item = "\n<li baseClass=\"" . $bgColor . "\" ".$li_closeElm.">" . $checkbox . " " . $item_tmp['name'];
 
             $result .= $item;
 

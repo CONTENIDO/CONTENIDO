@@ -59,11 +59,11 @@ class ModRewriteController extends ModRewriteBase {
     private $_sPath;
 
     /**
-     * Incomming URL
+     * Incoming URL
      *
      * @var string
      */
-    private $_sIncommingUrl;
+    private $_sIncomingUrl;
 
     /**
      * Resolved URL
@@ -87,7 +87,7 @@ class ModRewriteController extends ModRewriteBase {
     private $_iLangMR;
 
     /**
-     * Flag about occured errors
+     * Flag about occurred errors
      *
      * @var bool
      */
@@ -110,28 +110,28 @@ class ModRewriteController extends ModRewriteBase {
     /**
      * Constructor, sets several properties.
      *
-     * @param  string  $incommingUrl  Incomming URL
+     * @param  string  $incomingUrl  Incoming URL
      */
-    public function __construct($incommingUrl) {
+    public function __construct($incomingUrl) {
 
-        // CON-1266 make incomming URL lowercase if option "URLS to
+        // CON-1266 make incoming URL lowercase if option "URLS to
         // lowercase" is set
         if (1 == $this->getConfig('use_lowercase_uri')) {
-            $incommingUrl = cString::toLowerCase($incommingUrl);
+            $incomingUrl = cString::toLowerCase($incomingUrl);
         }
 
-        $this->_sIncommingUrl = $incommingUrl;
-        $this->_aParts = array();
+        $this->_sIncomingUrl = $incomingUrl;
+        $this->_aParts = [];
         $this->_sArtName = '';
     }
 
     /**
-     * Getter for overwritten client id (see $GLOBALS['client'])
+     * Getter for overwritten client id ({@see cRegistry::getClientId()})
      *
      * @return  int  Client id
      */
     public function getClient() {
-        return $GLOBALS['client'];
+        return cRegistry::getClientId();
     }
 
     /**
@@ -144,39 +144,39 @@ class ModRewriteController extends ModRewriteBase {
     }
 
     /**
-     * Getter for article id (see $GLOBALS['idart'])
+     * Getter for article id ({@see cRegistry::getArticleId()})
      *
      * @return  int  Article id
      */
     public function getIdArt() {
-        return $GLOBALS['idart'];
+        return cRegistry::getArticleId();
     }
 
     /**
-     * Getter for category id (see $GLOBALS['idcat'])
+     * Getter for category id ({@see cRegistry::getCategoryId()})
      *
      * @return  int  Category id
      */
     public function getIdCat() {
-        return $GLOBALS['idcat'];
+        return cRegistry::getCategoryId();
     }
 
     /**
-     * Getter for language id (see $GLOBALS['lang'])
+     * Getter for language id ({@see cRegistry::getLanguageId()})
      *
      * @return  int  Language id
      */
     public function getLang() {
-        return $GLOBALS['lang'];
+        return cRegistry::getLanguageId();
     }
 
     /**
-     * Getter for change language id (see $GLOBALS['changelang'])
+     * Getter for change language id ({@see cRegistry::getLanguageId()})
      *
      * @return  int  Change language id
      */
     public function getChangeLang() {
-        return $GLOBALS['changelang'];
+        return (int) cRegistry::getChangeLang();
     }
 
     /**
@@ -207,16 +207,16 @@ class ModRewriteController extends ModRewriteBase {
     }
 
     /**
-     * Getter for occured error state
+     * Getter for occurred error state
      *
-     * @return  bool  Flag for occured error
+     * @return  bool  Flag for occurred error
      */
     public function errorOccured() {
         return $this->_bError;
     }
 
     /**
-     * Getter for occured error state
+     * Getter for occurred error state
      *
      * @return  int  Numeric error code
      */
@@ -227,7 +227,7 @@ class ModRewriteController extends ModRewriteBase {
     /**
      * Main function to call for mod rewrite related preprocessing jobs.
      *
-     * Executes some private functions to extract request URI and to set needed membervariables
+     * Executes some private functions to extract request URI and to set needed member variables
      * (client, language, article id, category id, etc.)
      *
      * @throws cDbException
@@ -272,7 +272,7 @@ class ModRewriteController extends ModRewriteBase {
      * @throws cInvalidArgumentException
      */
     private function _extractRequestUri($secondCall = false) {
-        global $client;
+        $client = cRegistry::getClientId();
 
         // get REQUEST_URI
         $requestUri = $_SERVER['REQUEST_URI'];
@@ -285,17 +285,17 @@ class ModRewriteController extends ModRewriteBase {
         // check for defined rootdir
         // allows for root dir being alternativly defined as path of setting client/%frontend_path%
         $rootdir = cUriBuilderMR::getMultiClientRootDir(parent::getConfig('rootdir'));
-        if ('/' !==  $rootdir && 0 === cString::findFirstPos($requestUri, $this->_sIncommingUrl)) {
-            $this->_sIncommingUrl = str_replace($rootdir, '/', $this->_sIncommingUrl);
+        if ('/' !==  $rootdir && 0 === cString::findFirstPos($requestUri, $this->_sIncomingUrl)) {
+            $this->_sIncomingUrl = str_replace($rootdir, '/', $this->_sIncomingUrl);
         }
 
-        $aUrlComponents = $this->_parseUrl($this->_sIncommingUrl);
+        $aUrlComponents = $this->_parseUrl($this->_sIncomingUrl);
         if (isset($aUrlComponents['path'])) {
             if (parent::getConfig('rootdir') !== '/' && cString::findFirstPos($aUrlComponents['path'], parent::getConfig('rootdir')) === 0) {
                 $aUrlComponents['path'] = str_replace(parent::getConfig('rootdir'), '/', $aUrlComponents['path']);
             }
 
-            if ($secondCall == true) {
+            if ($secondCall) {
 
                 // @todo: implement real redirect of old front_content.php style urls
                 // check for routing definition
@@ -322,7 +322,7 @@ class ModRewriteController extends ModRewriteBase {
                             $_GET = array_merge($_GET, $vars);
                         }
 
-                        $this->_aParts = array();
+                        $this->_aParts = [];
                     }
                 } else {
                     return;
@@ -344,7 +344,7 @@ class ModRewriteController extends ModRewriteBase {
                 }
             }
 
-            if ($secondCall == true) {
+            if ($secondCall) {
                 // reprocess extracting client and language
                 $this->_setClientId();
                 mr_loadConfiguration($this->_iClientMR);
@@ -634,14 +634,14 @@ class ModRewriteController extends ModRewriteBase {
             //rebuild url
             $url = mr_buildNewUrl(self::FRONT_CONTENT . '?' . $param);
 
-            $aUrlComponents = @parse_url($this->_sIncommingUrl);
-            $incommingUrl = (isset($aUrlComponents['path'])) ? $aUrlComponents['path'] : '';
+            $aUrlComponents = @parse_url($this->_sIncomingUrl);
+            $incomingUrl = (isset($aUrlComponents['path'])) ? $aUrlComponents['path'] : '';
 
             ModRewriteDebugger::add($url, 'ModRewriteController->_postValidation validate url');
-            ModRewriteDebugger::add($incommingUrl, 'ModRewriteController->_postValidation incommingUrl');
+            ModRewriteDebugger::add($incomingUrl, 'ModRewriteController->_postValidation incomingUrl');
 
             // now the new generated uri should be identical with the request uri
-            if ($incommingUrl !== $url) {
+            if ($incomingUrl !== $url) {
                 $this->_setError(self::ERROR_POST_VALIDATION);
                 $idcat = NULL;
             }
@@ -666,7 +666,7 @@ class ModRewriteController extends ModRewriteBase {
     /**
      * Returns state of parts property.
      *
-     * @return  bool  True if $this->_aParts propery contains items
+     * @return  bool  True if $this->_aParts property contains items
      */
     private function _hasPartArrayItems() {
         return (!empty($this->_aParts));
@@ -678,7 +678,7 @@ class ModRewriteController extends ModRewriteBase {
      * @return  bool
      */
     private function _isRootRequest() {
-        return ($this->_sIncommingUrl == '/' || $this->_sIncommingUrl == '');
+        return ($this->_sIncomingUrl == '/' || $this->_sIncomingUrl == '');
     }
 
     /**

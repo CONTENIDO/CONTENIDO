@@ -82,11 +82,12 @@ class cSmartyWrapper extends Smarty {
             }
         }
 
-        if ($frontend_debug['template_display']) {
+        // NOTE: We don't have $frontend_debug when Smarty runs in backend context!
+        if (isset($frontend_debug['template_display']) && $frontend_debug['template_display']) {
             echo("<!-- SMARTY TEMPLATE " . $template . " -->");
         }
 
-        return parent::display($template, $cache_id, $compile_id, $parent);
+        parent::display($template, $cache_id, $compile_id, $parent);
     }
 
     /**

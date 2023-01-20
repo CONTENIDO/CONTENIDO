@@ -1,7 +1,11 @@
 <!-- form_assistant/templates/template.right_bottom_fields.tpl -->
 
-{if $captcha_notification}{$captcha_notification}<br />{/if}
-{if $email_notification}{$email_notification}<br />{/if}
+{if isset($captcha_notification)}
+    {$captcha_notification}<br />
+{/if}
+{if isset($email_notification)}
+    {$email_notification}<br />
+{/if}
 
 {if NULL eq $idform}
 

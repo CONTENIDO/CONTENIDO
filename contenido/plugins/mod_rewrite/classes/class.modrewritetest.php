@@ -67,14 +67,14 @@ class ModRewriteTest {
     /**
      * Returns resolved URL
      *
-     * @return  bool  Resolved URL
+     * @return  string  Resolved URL
      */
     public function getResolvedUrl() {
         return $this->_sResolvedUrl;
     }
 
     /**
-     * Returns flagz about found routing
+     * Returns flags about found routing
      *
      * @return  bool
      */
@@ -83,7 +83,7 @@ class ModRewriteTest {
     }
 
     /**
-     * Fetchs full structure of the installation (categories and articles) and returns it back.
+     * Fetches full structure of the installation (categories and articles) and returns it back.
      *
      * @param   int $idclient Client id
      * @param   int $idlang   Language id
@@ -96,66 +96,63 @@ class ModRewriteTest {
      * @throws cDbException
      */
     public function fetchFullStructure($idclient = NULL, $idlang = NULL) {
-        global $client, $lang;
-
         $db = cRegistry::getDb();
         $db2 = cRegistry::getDb();
 
         if (!$idclient || (int) $idclient == 0) {
-            $idclient = $client;
+            $idclient = cRegistry::getClientId();
         }
         if (!$idlang || (int) $idlang == 0) {
-            $idlang = $lang;
+            $idlang = cRegistry::getLanguageId();
         }
 
         $aTab = $this->_aCfgTab;
 
-        $aStruct = array();
+        $aStruct = [];
 
         $sql = "SELECT
                     *
                 FROM
-                    " . $aTab['cat_tree'] . " AS a,
-                    " . $aTab['cat_lang'] . " AS b,
-                    " . $aTab['cat'] . " AS c
+                    `%s` AS a,
+                    `%s` AS b,
+                    `%s` AS c
                 WHERE
                     a.idcat = b.idcat AND
                     c.idcat = a.idcat AND
-                    c.idclient = '" . $idclient . "' AND
-                    b.idlang = '" . $idlang . "'
+                    c.idclient = %d AND
+                    b.idlang = %d
                 ORDER BY
                     a.idtree";
 
-        $db->query($sql);
+        $db->query($sql, $aTab['cat_tree'], $aTab['cat_lang'], $aTab['cat'], $idclient, $idlang);
 
         $counter = 0;
 
         while ($db->nextRecord()) {
-
             if (++$counter == $this->_iMaxItems) {
                 break; // break this loop
             }
 
             $idcat = $db->f('idcat');
             $aStruct[$idcat] = $db->getRecord();
-            $aStruct[$idcat]['articles'] = array();
+            $aStruct[$idcat]['articles'] = [];
 
             $sql2 = "SELECT
                          *
                      FROM
-                         " . $aTab['cat_art'] . "  AS a,
-                         " . $aTab['art'] . "      AS b,
-                         " . $aTab['art_lang'] . " AS c
+                         `%s` AS a,
+                         `%s` AS b,
+                         `%s` AS c
                      WHERE
-                         a.idcat = '" . $idcat . "' AND
+                         a.idcat = %d AND
                          b.idart = a.idart AND
                          c.idart = a.idart AND
-                         c.idlang = '" . $idlang . "' AND
-                         b.idclient = '" . $idclient . "'
+                         c.idlang = %d AND
+                         b.idclient = %d
                      ORDER BY
                          c.title ASC";
 
-            $db2->query($sql2);
+            $db2->query($sql2, $aTab['cat_art'], $aTab['art'], $aTab['art_lang'], $idcat, $idlang, $idclient);
 
             while ($db2->nextRecord()) {
                 $idart = $db2->f('idart');
@@ -170,11 +167,11 @@ class ModRewriteTest {
     }
 
     /**
-     * Creates an URL using passed data.
+     * Creates a URL using passed data.
      *
      * The result is used to generate seo urls...
      *
-     * @param  array  $arr    Assoziative array with some data as follows:
+     * @param  array  $arr    Associative array with some data as follows:
      *                        <code>
      *                        $arr['idcat']
      *                        $arr['idart']
@@ -189,7 +186,7 @@ class ModRewriteTest {
     public function composeURL($arr, $type) {
         $type = ($type == 'a') ? 'a' : 'c';
 
-        $param = array();
+        $param = [];
 
         if ($type == 'c') {
             $param[] = 'idcat=' . $arr['idcat'];
@@ -212,36 +209,36 @@ class ModRewriteTest {
     }
 
     /**
-     * Resolves variables of an page (idcat, idart, idclient, idlang, etc.) by
+     * Resolves variables of a page (idcat, idart, idclient, idlang, etc.) by
      * processing passed url using ModRewriteController
      *
      * @param   string $url Url to resolve
      *
-     * @return  array   Assoziative array with resolved data
+     * @return  array   Associative array with resolved data
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
     public function resolveUrl($url) {
         // some globals to reset
-        $aGlobs = array(
+        $aGlobs = [
             'mr_preprocessedPageError', 'idart', 'idcat'
-        );
+        ];
         foreach ($aGlobs as $p => $k) {
             if (isset($GLOBALS[$k])) {
                 unset($GLOBALS[$k]);
             }
         }
 
-        $aReturn = array();
+        $aReturn = [];
 
-        // create an mod rewrite controller instance and execute processing
+        // create a mod rewrite controller instance and execute processing
         $oMRController = new ModRewriteController($url);
         $oMRController->execute();
 
         if ($oMRController->errorOccured()) {
 
-            // an error occured (idcat and or idart couldn't catched by controller)
+            // an error occurred (idcat and or idart couldn't caught by controller)
             $aReturn['mr_preprocessedPageError'] = 1;
             $aReturn['error'] = $oMRController->getError();
 
@@ -289,7 +286,7 @@ class ModRewriteTest {
     /**
      * Creates a readable string from passed resolved data array.
      *
-     * @param   array   $data Assoziative array with resolved data
+     * @param   array   $data Associative array with resolved data
      * @return  string  Readable resolved data
      */
     public function getReadableResolvedData(array $data) {
@@ -298,8 +295,7 @@ class ModRewriteTest {
         foreach ($data as $k => $v) {
             $ret .= $k . '=' . $v . '; ';
         }
-        $ret = cString::getPartOfString($ret, 0, cString::getStringLength($ret) - 2);
-        return $ret;
+        return cString::getPartOfString($ret, 0, cString::getStringLength($ret) - 2);
     }
 
 }

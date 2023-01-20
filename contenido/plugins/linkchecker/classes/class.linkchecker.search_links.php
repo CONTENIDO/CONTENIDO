@@ -39,7 +39,7 @@ class cLinkcheckerSearchLinks
      *
      * @param $mode
      *
-     * @return mixed
+     * @return string
      */
     public function setMode($mode)
     {
@@ -47,7 +47,7 @@ class cLinkcheckerSearchLinks
     }
 
     /**
-     * Searchs extern and intern links.
+     * Searches extern and intern links.
      *
      * @todo Optimize this function!
      * @todo Do not use global!

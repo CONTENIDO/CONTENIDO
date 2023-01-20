@@ -39,7 +39,7 @@ class pApiContentAllocation {
     /**
      * @var array
      */
-    protected $_table = array();
+    protected $_table = [];
 
     /**
      * @var int
@@ -95,7 +95,10 @@ class pApiContentAllocation {
 
         if (is_array($allocations)) {
             foreach ($allocations as $value) {
-                $sql = "INSERT INTO " . $this->_table['pica_alloc_con'] . " (idpica_alloc, idartlang) VALUES (" . cSecurity::toInteger($value) . ", " . cSecurity::toInteger($idartlang) . ")";
+                $sql = $this->_db->buildInsert($this->_table['pica_alloc_con'], [
+                    'idpica_alloc' => $value,
+                    'idartlang' => $idartlang,
+                ]);
                 $this->_db->query($sql);
             }
         }
@@ -109,8 +112,8 @@ class pApiContentAllocation {
      * @throws cDbException
      */
     public function deleteAllocations($idpica_alloc) {
-        $sql = "DELETE FROM " . $this->_table['pica_alloc_con'] . " WHERE idpica_alloc = " . cSecurity::toInteger($idpica_alloc);
-        $this->_db->query($sql);
+        $sql = 'DELETE FROM `%s` WHERE `idpica_alloc` = %d';
+        $this->_db->query($sql, $this->_table['pica_alloc_con'], $idpica_alloc);
     }
 
     /**
@@ -121,8 +124,8 @@ class pApiContentAllocation {
      * @throws cDbException
      */
     public function deleteAllocationsByIdartlang($idartlang) {
-        $sql = "DELETE FROM " . $this->_table['pica_alloc_con'] . " WHERE idartlang = " . cSecurity::toInteger($idartlang);
-        $this->_db->query($sql);
+        $sql = 'DELETE FROM `%s` WHERE `idartlang` = %d';
+        $this->_db->query($sql, $this->_table['pica_alloc_con'], $idartlang);
     }
 
     /**
@@ -134,18 +137,18 @@ class pApiContentAllocation {
      * @throws cDbException
      */
     public function loadAllocations($idartlang) {
-        $this->_db->query("-- pApiContentAllocation->loadAllocations()
+        $sql = "-- pApiContentAllocation->loadAllocations()
             SELECT
                 a.idpica_alloc
             FROM
-                `{$this->_table['pica_alloc']}` AS a
-                , `{$this->_table['pica_alloc_con']}` AS b
+                `%s` AS a, `%s` AS b
             WHERE
-                idartlang = $idartlang
-                AND a.idpica_alloc=b.idpica_alloc
-            ;");
+                `idartlang` = %d AND a.idpica_alloc = b.idpica_alloc
+            ;";
 
-        $result = array();
+        $this->_db->query($sql, $this->_table['pica_alloc'], $this->_table['pica_alloc_con'], $idartlang);
+
+        $result = [];
         while ($this->_db->nextRecord()) {
             $result[] = $this->_db->f('idpica_alloc');
         }
@@ -166,13 +169,19 @@ class pApiContentAllocation {
     public function loadAllocationsWithNames($idartlang, $parent, $firstonly = false) {
         $cfg = cRegistry::getConfig();
 
-        $sql = "SELECT " . $cfg['tab']['pica_alloc'] . ".idpica_alloc FROM " . $cfg['tab']['pica_alloc'] . "
-                    INNER JOIN " . $cfg['tab']['pica_alloc_con'] . " ON
-                    " . $cfg['tab']['pica_alloc'] . ".idpica_alloc = " . $cfg['tab']['pica_alloc_con'] . ".idpica_alloc
-                    WHERE (" . $cfg['tab']['pica_alloc'] . ".parentid = " . cSecurity::toInteger($parent) . ") AND (" . $cfg['tab']['pica_alloc_con'] . ".idartlang=" . cSecurity::toInteger($idartlang) . ")
-                    ORDER BY " . $cfg['tab']['pica_alloc'] . ".sortorder";
+        $sql = "SELECT :tab_pica_alloc.idpica_alloc FROM :tab_pica_alloc
+            INNER JOIN :tab_pica_alloc_con ON :tab_pica_alloc.idpica_alloc = :tab_pica_alloc_con.idpica_alloc
+            WHERE (:tab_pica_alloc.parentid = :parentid) AND (:tab_pica_alloc_con.idartlang = idartlang)
+            ORDER BY :tab_pica_alloc.sortorder";
 
-        $this->_db->query($sql);
+        $params = [
+            'tab_pica_alloc_con' => $cfg['tab']['pica_alloc_con'],
+            'tab_pica_alloc' => $cfg['tab']['pica_alloc'],
+            'parentid' => cSecurity::toInteger($parent),
+            'idartlang' => cSecurity::toInteger($idartlang)
+        ];
+
+        $this->_db->query($sql, $params);
 
         $tmp = [];
         while ($this->_db->nextRecord()) {
@@ -192,7 +201,7 @@ class pApiContentAllocation {
      * @param array $restrictions [optional]
      * @param int   $max          [optional]
      *
-     * @return string $sql
+     * @return string|bool $sql or false
      */
     public function findMatchingContent($restrictions = null, $max = 0) {
         if (!is_array($restrictions)) {
@@ -200,9 +209,7 @@ class pApiContentAllocation {
         }
 
         global $aCategoriesToExclude; // @see config.local.php!
-        $sql = $this->_buildQuery($restrictions, $aCategoriesToExclude, $max);
-
-        return $sql;
+        return $this->_buildQuery($restrictions, $aCategoriesToExclude, $max);
     }
 
     /**
@@ -227,8 +234,8 @@ class pApiContentAllocation {
 
         $sqlTemplate = "SELECT cal.idart, cal.online, aa.idartlang, cat.idcat FROM {TABLES} WHERE {WHERE} ";
 
-        $tables = array();
-        $where = array();
+        $tables = [];
+        $where = [];
 
         for ($i = 0; $i < $size; $i++) {
             if ($i == 0) { // first
@@ -276,7 +283,7 @@ class pApiContentAllocation {
     }
 
     /**
-     * Search articles by ContentAllocation and catgories
+     * Search articles by ContentAllocation and categories
      *
      * @param array $contentAllocation
      * @param array $categories
@@ -286,20 +293,20 @@ class pApiContentAllocation {
      * @return array of articles
      * @throws cDbException
      */
-    public function findMatchingContentByContentAllocationByCategories($contentAllocation, $categories = array(), $offset = 0, $numOfRows = 0) {
+    public function findMatchingContentByContentAllocationByCategories($contentAllocation, array $categories = [], $offset = 0, $numOfRows = 0) {
         if (!is_array($contentAllocation) || count($contentAllocation) == 0) {
-            return array();
+            return [];
         }
 
         for ($i = 0; $i < count($contentAllocation); $i++) {
             if (!is_int((int) $contentAllocation[$i]) || !$contentAllocation[$i] > 0) {
-                return array();
+                return [];
             }
         }
 
         for ($i = 0; $i < count($categories); $i++) {
             if (!is_int((int) $categories[$i]) || !$categories[$i] > 0) {
-                return array();
+                return [];
             }
         }
 
@@ -307,7 +314,7 @@ class pApiContentAllocation {
 
         $this->_db->query($sql);
 
-        $result = array();
+        $result = [];
         while (false !== $oRow = $this->_db->getResultObject()) {
             $result[] = $oRow;
         }
@@ -334,8 +341,8 @@ class pApiContentAllocation {
 
         $sqlTemplate = "SELECT cal.idart, cal.online, aa.idartlang, cat.idcat, aa.idpica_alloc FROM {TABLES} WHERE {WHERE} ";
 
-        $tables = array();
-        $where = array();
+        $tables = [];
+        $where = [];
 
         for ($i = 0; $i < $size; $i++) {
             if ($i == 0) { // first
@@ -385,7 +392,7 @@ class pApiContentAllocation {
     /**
      * Search articles by catgories without start articles
      *
-     * @param array  $categories [optional]
+     * @param array $categories [optional]
      * @param int    $offset     [optional]
      * @param int    $numOfRows  [optional]
      * @param string $resultType element of {article_id, object} [optional]
@@ -393,16 +400,16 @@ class pApiContentAllocation {
      * @return array of articles
      * @throws cDbException
      */
-    public function findMatchingContentByCategories($categories = array(), $offset = 0, $numOfRows = 0, $resultType = '') {
+    public function findMatchingContentByCategories(array $categories = [], $offset = 0, $numOfRows = 0, $resultType = '') {
         for ($i = 0; $i < count($categories); $i++) {
             if (!is_int((int) $categories[$i]) || !$categories[$i] > 0) {
-                return array();
+                return [];
             }
         }
 
         $sql = $this->_buildQuery_MatchingContentByCategories($categories, $offset, $numOfRows);
         $this->_db->query($sql);
-        $result = array();
+        $result = [];
 
         while (false !== $row = $this->_db->getResultObject()) {
             if ($resultType == 'article_language_id') {
@@ -425,7 +432,6 @@ class pApiContentAllocation {
      * @return string $sql
      */
     public function _buildQuery_MatchingContentByCategories($categories, $offset, $numOfRows) {
-
         if (count($categories) > 0) {
             $whereCategoryIN = " c.idcat IN (" . implode(',', $categories) . ") AND ";
         } else {

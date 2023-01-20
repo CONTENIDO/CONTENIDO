@@ -19,7 +19,7 @@ global $db;
  * @return string
  */
 function frontendusers_groupselect_getTitle () {
-    return i18n("Groupname");
+    return i18n('Groupname');
 }
 
 /**
@@ -27,23 +27,23 @@ function frontendusers_groupselect_getTitle () {
  * @throws cDbException
  * @throws cException
  */
-function frontendusers_groupselect_display () {
-    global $client;
-    $iIdfrontenduser = (int)$_REQUEST['idfrontenduser'];
+function frontendusers_groupselect_display() {
+    $client = cRegistry::getClientId();
+
+    $iIdFrontendUser = cSecurity::toInteger($_REQUEST['idfrontenduser'] ?? '0');
 
     //render select
-    $fegroups = new cApiFrontendGroupCollection();
-    $fegroups->setWhere("idclient", $client);
-    $fegroups->query();
+    $feGroups = new cApiFrontendGroupCollection();
+    $feGroups->setWhere('idclient', $client);
+    $feGroups->query();
 
-    $aFEGroups = array();
+    $aFEGroups = [];
 
-    while ($fegroup = $fegroups->next())
-    {
-        $aFEGroups[$fegroup->get("idfrontendgroup")] = $fegroup->get("groupname");
+    while ($feGroup = $feGroups->next()) {
+        $aFEGroups[$feGroup->get('idfrontendgroup')] = $feGroup->get('groupname');
     }
 
-    $oSelect = new cHTMLSelectElement("groupselect[]");
+    $oSelect = new cHTMLSelectElement('groupselect[]');
     $oSelect->autoFill($aFEGroups);
     $oSelect->setMultiselect();
     $oSelect->setSize(5);
@@ -51,14 +51,13 @@ function frontendusers_groupselect_display () {
 
     //mark groups
     $oFEGroupMemberCollection = new cApiFrontendGroupMemberCollection;
-    $oFEGroupMemberCollection->setWhere('idfrontenduser', $iIdfrontenduser);
+    $oFEGroupMemberCollection->setWhere('idfrontenduser', $iIdFrontendUser);
     $oFEGroupMemberCollection->addResultField('idfrontendgroup');
     $oFEGroupMemberCollection->query();
 
-    $aFEGroup = array();
-    while ($oFEGroup = $oFEGroupMemberCollection->next())
-    {
-        $aFEGroup[] = $oFEGroup->get("idfrontendgroup");
+    $aFEGroup = [];
+    while ($oFEGroup = $oFEGroupMemberCollection->next()) {
+        $aFEGroup[] = $oFEGroup->get('idfrontendgroup');
     }
 
     $oSelect->setDefault($aFEGroup);
@@ -69,8 +68,8 @@ function frontendusers_groupselect_display () {
 /**
  * @return array
  */
-function frontendusers_groupselect_wantedVariables () {
-    return (array("groupselect"));
+function frontendusers_groupselect_wantedVariables() {
+    return (['groupselect']);
 }
 
 /**
@@ -81,28 +80,26 @@ function frontendusers_groupselect_wantedVariables () {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function frontendusers_groupselect_store ($variables) {
-    global $client;
+function frontendusers_groupselect_store($variables) {
+    $client = cRegistry::getClientId();
 
-    $groups = $_REQUEST['groupselect'];
-    $iIdfrontenduser = (int)$_REQUEST['idfrontenduser'];
+    $groups = $_REQUEST['groupselect'] ?? null;
+    $iIdFrontendUser = cSecurity::toInteger($_REQUEST['idfrontenduser'] ?? '0');
     if (!is_array($groups)) {
-        $groups = array();
+        $groups = [];
     }
 
-    $groupmembers    = new cApiFrontendGroupMemberCollection();
+    $groupmembers = new cApiFrontendGroupMemberCollection();
 
-    $fegroups = new cApiFrontendGroupCollection();
-    $fegroups->setWhere("idclient", $client);
-    $fegroups->query();
+    $feGroups = new cApiFrontendGroupCollection();
+    $feGroups->setWhere('idclient', $client);
+    $feGroups->query();
 
-    $aFEGroups = array();
-
-    while ($fegroup = $fegroups->next())
-    {
-        $groupmembers->remove($fegroup->get("idfrontendgroup"), $iIdfrontenduser);
-        if (in_array($fegroup->get("idfrontendgroup"), $groups)) {
-            $groupmembers->create($fegroup->get("idfrontendgroup"), $iIdfrontenduser);
+    while (($feGroup = $feGroups->next()) !== false) {
+        $idFrontendGroup = $feGroup->get('idfrontendgroup');
+        $groupmembers->remove($idFrontendGroup, $iIdFrontendUser);
+        if (in_array($idFrontendGroup, $groups)) {
+            $groupmembers->create($$idFrontendGroup, $iIdFrontendUser);
         }
     }
 
@@ -112,9 +109,9 @@ function frontendusers_groupselect_store ($variables) {
 /**
  * @return array
  */
-function frontendusers_groupselect_canonicalVariables () {
+function frontendusers_groupselect_canonicalVariables() {
     //FFBCON-812
-    return array();
+    return [];
 }
 
 /**
@@ -122,8 +119,6 @@ function frontendusers_groupselect_canonicalVariables () {
  *
  * @return string
  */
-function frontendusers_groupselect_getvalue ($key) {
+function frontendusers_groupselect_getvalue($key) {
     return '';
 }
-
-?>

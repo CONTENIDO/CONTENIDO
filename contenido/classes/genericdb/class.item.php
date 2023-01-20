@@ -119,13 +119,15 @@ abstract class Item extends cItemBaseAbstract {
      *                      Specifies the value
      * @param bool   $bSafe [optional]
      *                      Use inFilter or not
+     * @param bool   $bAllowOneResult [optional]
+     *                      Flag to allow only one result
      *
      * @return bool
      *                      True if the load was successful
      * @throws cDbException
      * @throws cException if more than one item has been found matching the given arguments
      */
-    public function loadBy($sField, $mValue, $bSafe = true) {
+    public function loadBy($sField, $mValue, $bSafe = true, $bAllowOneResult = true) {
         // reset class variables back to default before loading
         $this->_resetItem();
 
@@ -156,7 +158,7 @@ abstract class Item extends cItemBaseAbstract {
 
         $this->_lastSQL = $sql;
 
-        if ($this->db->numRows() > 1) {
+        if ($bAllowOneResult && $this->db->numRows() > 1) {
             $msg = "Tried to load a single line with field $sField and value $mValue from " . $this->table . " but found more than one row";
             throw new cException($msg);
         }
@@ -172,18 +174,20 @@ abstract class Item extends cItemBaseAbstract {
     }
 
     /**
-     * Loads an item by colums/fields from the database.
+     * Loads an item by columns/fields from the database.
      *
      * @param array $aAttributes
      *                     associative array with field / value pairs
      * @param bool  $bSafe [optional]
      *                     Use inFilter or not
+     * @param bool   $bAllowOneResult [optional]
+     *                      Flag to allow only one result
      * @return bool
      *                     True if the load was successful
      * @throws cDbException
      * @throws cException if more than one item could be found matching the given arguments
      */
-    public function loadByMany(array $aAttributes, $bSafe = true) {
+    public function loadByMany(array $aAttributes, $bSafe = true, $bAllowOneResult = true) {
         // reset class variables back to default before loading
         $this->_resetItem();
 
@@ -213,7 +217,7 @@ abstract class Item extends cItemBaseAbstract {
 
         $this->_lastSQL = $sql;
 
-        if ($this->db->numRows() > 1) {
+        if ($bAllowOneResult && $this->db->numRows() > 1) {
             $msg = 'Tried to load a single line with fields ' . print_r(array_keys($aAttributes), true) . ' and values ' . print_r(array_values($aAttributes), true) . ' from ' . $this->table . ' but found more than one row';
             throw new cException($msg);
         }

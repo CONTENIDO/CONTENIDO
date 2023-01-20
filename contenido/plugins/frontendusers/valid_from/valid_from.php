@@ -25,21 +25,23 @@ function frontendusers_valid_from_getTitle() {
  * @throws cInvalidArgumentException
  */
 function frontendusers_valid_from_display() {
-    global $feuser, $db, $belang, $cfg;
+    global $feuser;
 
-    $langscripts = '';
+    $belang = cRegistry::getBackendLanguage();
+    $cfg = cRegistry::getConfig();
 
-    if (($lang_short = cString::getPartOfString(cString::toLowerCase($belang), 0, 2)) != "en") {
-        $langscripts = '<script type="text/javascript" src="scripts/jquery/plugins/timepicker-' . $lang_short . '.js"></script>
-        <script type="text/javascript" src="scripts/jquery/plugins/datepicker-' . $lang_short . '.js"></script>';
+    $langScripts = '';
+
+    if (($langShort = cString::getPartOfString(cString::toLowerCase($belang), 0, 2)) != 'en') {
+        $langScripts = '<script type="text/javascript" src="scripts/jquery/plugins/timepicker-' . $langShort . '.js"></script>
+        <script type="text/javascript" src="scripts/jquery/plugins/datepicker-' . $langShort . '.js"></script>';
     }
 
-    $path_to_calender_pic = cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif';
+    $calenderPicPath = cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif';
 
     $template = '%s';
 
-    $currentValue = $feuser->get("valid_from");
-
+    $currentValue = $feuser->get('valid_from');
     if ($currentValue == '') {
         $currentValue = '0000-00-00';
     }
@@ -49,14 +51,14 @@ function frontendusers_valid_from_display() {
         <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/timepicker.css">
 {_JS_HEAD_CONTENIDO_}
         <script type="text/javascript" src="scripts/jquery/plugins/timepicker.js"></script>';
-    $sValidFrom .= $langscripts;
+    $sValidFrom .= $langScripts;
 
     $sValidFrom .= '<input type="text" id="valid_from" name="valid_from" value="' . $currentValue . '">';
     $sValidFrom .= '<script type="text/javascript">
 (function(Con, $) {
     $(function() {
         $("#valid_from").datetimepicker({
-            buttonImage:"' . $path_to_calender_pic . '",
+            buttonImage:"' . $calenderPicPath . '",
             buttonImageOnly: true,
             showOn: "both",
             dateFormat: "yy-mm-dd",
@@ -90,7 +92,7 @@ function frontendusers_valid_from_display() {
  * @return array
  */
 function frontendusers_valid_from_wantedVariables() {
-    return (array("valid_from"));
+    return (['valid_from']);
 }
 
 /**
@@ -99,7 +101,5 @@ function frontendusers_valid_from_wantedVariables() {
 function frontendusers_valid_from_store($variables) {
     global $feuser;
 
-    $feuser->set("valid_from", $variables["valid_from"], false);
+    $feuser->set('valid_from', $variables['valid_from'], false);
 }
-
-?>
