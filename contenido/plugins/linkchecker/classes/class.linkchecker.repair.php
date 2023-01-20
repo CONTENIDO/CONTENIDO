@@ -20,7 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cLinkcheckerRepair
 {
     /**
-     * Typical link misstakes
+     * Typical link mistakes
      *
      * @var array
      */
@@ -35,7 +35,7 @@ class cLinkcheckerRepair
     ];
 
     /**
-     * Fixed link misstakes
+     * Fixed link mistakes
      * Keys are equivalent to $errorTypes
      *
      * @var array
@@ -57,8 +57,7 @@ class cLinkcheckerRepair
      *
      * @return string|bool
      */
-    public function checkLink($link)
-    {
+    public function checkLink($link) {
         foreach ($this->errorTypes as $errorTypeKey => $errorType) {
             if (cString::getPartOfString($link, 0, cString::getStringLength($errorType)) == $errorType) {
                 $repaired_link = str_replace($errorType, $this->correctTypes[$errorTypeKey], $link);
@@ -69,6 +68,7 @@ class cLinkcheckerRepair
                 }
             }
         }
+        return false;
     }
 
     /**
@@ -78,8 +78,7 @@ class cLinkcheckerRepair
      *
      * @return  bool  true or false
      */
-    private function _pingRepairedLink($repaired_link)
-    {
+    private function _pingRepairedLink($repaired_link) {
         $repaired_link = cSecurity::escapeString($repaired_link);
 
         return @fopen($repaired_link, 'r');
