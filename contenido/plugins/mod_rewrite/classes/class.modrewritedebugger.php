@@ -42,7 +42,7 @@ class ModRewriteDebugger {
      * Wrapper for <code>cDebug::getDebugger('visible_adv')</code>.
      *
      * @param  mixed  $mVar   The variable to dump
-     * @param  string $sLabel Describtion for passed $mVar
+     * @param  string $sLabel Description for passed $mVar
      *
      * @throws cInvalidArgumentException
      */
@@ -75,7 +75,7 @@ class ModRewriteDebugger {
      * Wrapper for <code>cDebug::getDebugger(cDebug::DEBUGGER_FILE)</code>.
      *
      * @param  mixed  $mVar   The variable to log the contents
-     * @param  string $sLabel Describtion for passed $mVar
+     * @param  string $sLabel Description for passed $mVar
      *
      * @throws cInvalidArgumentException
      */

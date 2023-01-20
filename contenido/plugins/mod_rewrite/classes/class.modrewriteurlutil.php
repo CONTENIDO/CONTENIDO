@@ -15,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Mod Rewrite url utility class. Handles convertion of Urls from CONTENIDO core
+ * Mod Rewrite url utility class. Handles conversion of Urls from CONTENIDO core
  * based url composition pattern to AMR (Advanced Mod Rewrite) url composition
  * pattern and vice versa.
  *
@@ -80,7 +80,7 @@ class ModRewriteUrlUtil extends ModRewriteBase {
     private $_mrArtWordSep;
 
     /**
-     * AMR extension used for articlenames (e. g. .html)
+     * AMR extension used for article-names (e. g. .html)
      * @var  string
      */
     private $_mrExt;
@@ -122,10 +122,9 @@ class ModRewriteUrlUtil extends ModRewriteBase {
      * @return  string  CONTENIDO url path
      */
     public function toContenidoUrlPath($urlPath) {
-        $newUrlPath = $this->_toUrlPath(
+        return $this->_toUrlPath(
                 $urlPath, $this->_mrCatSep, $this->_catSep, $this->_mrCatWordSep, $this->_catWordSep, $this->_mrArtSep, $this->_artSep
         );
-        return $newUrlPath;
     }
 
     /**
@@ -135,10 +134,9 @@ class ModRewriteUrlUtil extends ModRewriteBase {
      * @return  string  AMR url path
      */
     public function toModRewriteUrlPath($urlPath) {
-        $newUrlPath = $this->_toUrlPath(
+        return $this->_toUrlPath(
                 $urlPath, $this->_catSep, $this->_mrCatSep, $this->_catWordSep, $this->_mrCatWordSep, $this->_artSep, $this->_mrArtSep
         );
-        return $newUrlPath;
     }
 
     /**
@@ -182,8 +180,7 @@ class ModRewriteUrlUtil extends ModRewriteBase {
      * @return  string  CONTENIDO url name
      */
     public function toContenidoUrlName($urlName) {
-        $newUrlName = $this->_toUrlName($urlName, $this->_mrArtWordSep, $this->_artWordSep);
-        return $newUrlName;
+        return $this->_toUrlName($urlName, $this->_mrArtWordSep, $this->_artWordSep);
     }
 
     /**
@@ -193,8 +190,7 @@ class ModRewriteUrlUtil extends ModRewriteBase {
      * @return  string  AMR url name
      */
     public function toModRewriteUrlName($urlName) {
-        $newUrlName = $this->_toUrlName($urlName, $this->_artWordSep, $this->_mrArtWordSep);
-        return $newUrlName;
+        return $this->_toUrlName($urlName, $this->_artWordSep, $this->_mrArtWordSep);
     }
 
     /**

@@ -426,7 +426,6 @@ class ModRewrite extends ModRewriteBase {
         }
 
         arsort($aResults, SORT_NUMERIC);
-        reset($aResults);
 
         ModRewriteDebugger::add($path, 'ModRewrite::getCatIdByUrlPath() $path');
         ModRewriteDebugger::add($aPathsCache, 'ModRewrite::getCatIdByUrlPath() $aPathsCache');

@@ -21,7 +21,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Main goal of this class is to collect urls and to get the urlpath and urlname
  * of the related categories/articles at one go. This will reduce the queries
  * against the database.
- * Therefore the full advantage will be taken by rewriting the urls at codeoutput
+ * Therefore, the full advantage will be taken by rewriting the urls at codeoutput
  * in front_content.php, where you will be able to collect all urls at once...
  *
  * Usage:
@@ -103,14 +103,14 @@ class ModRewriteUrlStack {
      * Constructor, sets some properties.
      */
     private function __construct() {
-        global $cfg, $lang;
+        $cfg = cRegistry::getConfig();
         $this->_oDb = cRegistry::getDb();
         $this->_aTab = $cfg['tab'];
-        $this->_idLang = $lang;
+        $this->_idLang = cRegistry::getLanguageId();
     }
 
     /**
-     * Returns a instance of ModRewriteUrlStack (singleton implementation)
+     * Returns an instance of ModRewriteUrlStack (singleton implementation)
      *
      * @return  ModRewriteUrlStack
      */
@@ -154,12 +154,12 @@ class ModRewriteUrlStack {
     }
 
     /**
-     * Returns the pretty urlparts (only category path an article name) of the
+     * Returns the pretty url-parts (only category path an article name) of the
      * desired url.
      *
      * @param   string  $url  Url, like front_content.php?idcat=123...
      *
-     * @return  array   Assoziative array like
+     * @return  array   Associative array like
      * <code>
      * $arr['urlpath']
      * $arr['urlname']
@@ -177,15 +177,14 @@ class ModRewriteUrlStack {
         if (!isset($this->_aStack[$sStackId]['urlpath'])) {
             $this->_chunkSetPrettyUrlParts($sStackId);
         }
-        $aPretty = [
+        return [
             'urlpath' => $this->_aStack[$sStackId]['urlpath'],
             'urlname' => $this->_aStack[$sStackId]['urlname']
         ];
-        return $aPretty;
     }
 
     /**
-     * Extracts passed url using parse_urla and adds also the 'params' array to it
+     * Extracts passed url using parse_url and adds also the 'params' array to it
      *
      * @param   string  $url  Url, like front_content.php?idcat=123...
      * @return  array  Components containing result of parse_url with additional
@@ -203,7 +202,7 @@ class ModRewriteUrlStack {
      * @return  string  Composed stack id
      */
     private function _makeStackId(array $aParams) {
-        # idcatart
+        // idcatart
         if ((int) mr_arrayValue($aParams, 'idart') > 0) {
             $sStackId = 'idart_' . $aParams['idart'] . '_lang_' . $aParams['lang'];
         } elseif ((int) mr_arrayValue($aParams, 'idartlang') > 0) {
@@ -221,9 +220,9 @@ class ModRewriteUrlStack {
     }
 
     /**
-     * Main function to get the urlparts of urls.
+     * Main function to get the url-parts of urls.
      *
-     * Composes the query by looping thru stored but non processed urls, executes
+     * Composes the query by looping through stored but non-processed urls, executes
      * the query and adds the (urlpath and urlname) result to the stack.
      *
      * @param $sStackId
@@ -244,7 +243,6 @@ class ModRewriteUrlStack {
         // now, it's time to compose the where clause of the query
         $sWhere = '';
         foreach ($aStack as $stackId => $item) {
-
             if ($stackId == $sStackId) {
                 $aP = $item['params'];
                 if ((int)mr_arrayValue($aP, 'idart') > 0) {

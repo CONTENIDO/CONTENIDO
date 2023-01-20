@@ -22,12 +22,18 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $client, $changeclient, $cfgClient, $lang, $changelang, $idart, $idcat, $path, $mr_preprocessedPageError;
+global $changeclient, $changelang, $path, $mr_preprocessedPageError;
+
+$client = cRegistry::getClientId();
+$cfgClient = cRegistry::getClientConfig();
+$lang = cRegistry::getLanguageId();
+$idart = cRegistry::getArticleId();
+$idcat = cRegistry::getCategoryId();
 
 ModRewriteDebugger::add(ModRewrite::getConfig(), 'front_content_controller.php mod rewrite config');
 
 // get REQUEST_URI
-$requestUri = $_SERVER['REQUEST_URI'];
+$requestUri = $_SERVER['REQUEST_URI'] ?? '';
 
 // create a mod rewrite controller instance and execute processing
 $oMRController = new ModRewriteController($requestUri);
@@ -35,18 +41,16 @@ $oMRController->execute();
 
 if ($oMRController->errorOccured()) {
 
-    // an error occured (idcat and or idart couldn't catched by controller)
+    // an error occurred (idcat and or idart couldn't catch by controller)
 
     $iRedirToErrPage = ModRewrite::getConfig('redirect_invalid_article_to_errorsite', 0);
     // try to redirect to errorpage if desired
     if ($iRedirToErrPage == 1 && (int) $client > 0 && (int) $lang > 0) {
-        global $cfgClient;
-
         // errorpage
-        $aParams = array(
+        $aParams = [
             'client' => $client, 'idcat' => $cfgClient[$client]["errsite"]["idcat"], 'idart' => $cfgClient[$client]["errsite"]["idart"],
             'lang' => $lang, 'error' => '1'
-        );
+        ];
         $errsite = 'Location: ' . cUri::getInstance()->buildRedirect($aParams);
         mr_header($errsite);
         exit();
