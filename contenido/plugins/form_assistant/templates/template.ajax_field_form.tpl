@@ -99,7 +99,7 @@ DATABASE SETTINGS
 <p class="pseudo-legend">{$trans.database}</p>
 
 <div class="pseudo-fieldset">
-    <label for="column_name">{$trans.columnName}</label>
+    <label for="column_name">{$trans.columnName} *</label>
     <input type="text" id="column_name" name="column_name" value="{$field->get('column_name')}" maxlength="64" />
 </div>
 {/if}

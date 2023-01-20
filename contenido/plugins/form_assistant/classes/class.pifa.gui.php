@@ -111,7 +111,7 @@ class PifaLeftBottomPage extends cGuiPage {
             $settings = cXmlBase::xmlStringToArray($formRow['value']);
             // if it was successful append the array of articles using this form
             if ($settings['idform'] != '') {
-                if (is_array($assignedForms[$settings['idform']])) {
+                if (isset($assignedForms[$settings['idform']]) && is_array($assignedForms[$settings['idform']])) {
                     $assignedForms[$settings['idform']][] = new cApiArticleLanguage($formRow['idartlang']);
                 } else {
                     $assignedForms[$settings['idform']] = [
@@ -124,7 +124,6 @@ class PifaLeftBottomPage extends cGuiPage {
         // create menu
         $menu = new cGuiMenu();
         while (false !== $form = $forms->next()) {
-
             $formIsInUse = false;
             $idform = cSecurity::toInteger($form->get('idform'));
             $formName = $form->get('name');
@@ -217,7 +216,7 @@ class PifaRightBottomFormPage extends cGuiPage {
      *
      * @var PifaForm
      */
-    private $_pifaForm = NULL;
+    private $_pifaForm;
 
     /**
      * Creates and aggregates a model for a collection of PIFA forms
@@ -231,21 +230,13 @@ class PifaRightBottomFormPage extends cGuiPage {
      * @throws cException
      */
     public function __construct() {
-
-        /**
-         * @param string $action to be performed
-         */
+        // Action to be performed
         $action = cRegistry::getAction();
 
         /**
          * @param int $idform id of form to be edited
          */
         global $idform;
-
-        /**
-         * @param int $idfield id of field to be edited
-         */
-        global $idfield;
 
         parent::__construct('right_bottom', Pifa::getName());
 
@@ -292,7 +283,7 @@ class PifaRightBottomFormPage extends cGuiPage {
      * @throws PifaException if the given action is unknown
      * @throws PifaIllegalStateException if permissions are missing
      * @throws cDbException
-     * @throws cException
+     * @throws cException|SmartyException
      */
     protected function _dispatch($action, $notification = '') {
         $area = cRegistry::getArea();
@@ -364,11 +355,10 @@ class PifaRightBottomFormPage extends cGuiPage {
      *
      * @return string
      * @throws cDbException
-     * @throws cException
+     * @throws cException|SmartyException
      */
     private function _showForm() {
         $area = cRegistry::getArea();
-
         $cfg = cRegistry::getConfig();
 
         // get form action
@@ -422,9 +412,7 @@ class PifaRightBottomFormPage extends cGuiPage {
             'saveForm' => Pifa::i18n('save form'),
         ]);
 
-        $out = $tpl->fetch($cfg['templates']['pifa_right_bottom_form']);
-
-        return $out;
+        return $tpl->fetch($cfg['templates']['pifa_right_bottom_form']);
     }
 
     /**
@@ -433,7 +421,6 @@ class PifaRightBottomFormPage extends cGuiPage {
      * @throws PifaException
      */
     private function _storeForm() {
-
         // determine if item is loaded
         $isLoaded = $this->_pifaForm->isLoaded();
 
@@ -443,12 +430,12 @@ class PifaRightBottomFormPage extends cGuiPage {
         $name = cSecurity::toString($name);
         $name = trim($name);
 
-        $dataTable = $_POST['data_table'];
+        $dataTable = $_POST['data_table'] ?? '';
         $dataTable = trim($dataTable);
         $dataTable = cString::toLowerCase($dataTable);
         $dataTable = preg_replace('/[^a-z0-9_]/', '_', $dataTable);
 
-        $method = $_POST['method'];
+        $method = $_POST['method'] ?? '';
         $method = trim($method);
         $method = cString::toUpperCase($method);
 
@@ -500,7 +487,7 @@ class PifaRightBottomFormPage extends cGuiPage {
 
         // set item data
         // Never, really never, call Item->set() if the value doesn't differ
-        // from the previous one. Otherwise the genericDb thinks that the item
+        // from the previous one. Otherwise, the genericDb thinks that the item
         // is modified and tries to store it resulting in a return value of
         // false!
         if ($name !== $this->_pifaForm->get('name')) {
@@ -563,7 +550,7 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
      *
      * @var PifaForm
      */
-    private $_pifaForm = NULL;
+    private $_pifaForm;
 
     /**
      * Creates and aggregates a model for a collection of PIFA forms
@@ -577,21 +564,13 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
      * @throws cException
      */
     public function __construct() {
-
-        /**
-         * @param string $action to be performed
-         */
+        // Action to be performed
         $action = cRegistry::getAction();
 
         /**
          * @param int $idform id of form to be edited
          */
         global $idform;
-
-        /**
-         * @param int $idfield id of field to be edited
-         */
-        global $idfield;
 
         parent::__construct('right_bottom', Pifa::getName());
 
@@ -678,10 +657,9 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
     /**
      * @return mixed|string
      * @throws cDbException
-     * @throws cException
+     * @throws cException|SmartyException
      */
     private function _showFields() {
-        $area = cRegistry::getArea();
         $cfg = cRegistry::getConfig();
 
         $idform = $idfield = NULL;
@@ -690,7 +668,7 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
         if ($this->_pifaForm->isLoaded()) {
 
             $idform = $this->_pifaForm->get('idform');
-            $idfield = $_GET['idfield'];
+            $idfield = $_GET['idfield'] ?? '';
 
             $fields = $this->_pifaForm->getFields();
 
@@ -735,7 +713,8 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
         }
 
         // check for captcha usage
-        if ($includesCaptcha && (cString::getStringLength(getEffectiveSetting('pifa-recaptcha', 'sitekey', '')) === 0 || cString::getStringLength(getEffectiveSetting('pifa-recaptcha', 'secret', '')) === 0)) {
+        if ($includesCaptcha && (cString::getStringLength(getEffectiveSetting('pifa-recaptcha', 'sitekey', '')) === 0
+                || cString::getStringLength(getEffectiveSetting('pifa-recaptcha', 'secret', '')) === 0)) {
             $captcha_notification = $cGuiNotification->returnNotification(
                 cGuiNotification::LEVEL_WARNING,
                 Pifa::i18n('This form is configured with a captcha, but its settings were not defined.') . "<br>" .
@@ -793,9 +772,7 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
         // define path to partial template for displaying a single field row
         $tpl->assign('partialFieldRow', $cfg['templates']['pifa_ajax_field_row']);
 
-        $out = $tpl->fetch($cfg['templates']['pifa_right_bottom_fields']);
-
-        return $out;
+        return $tpl->fetch($cfg['templates']['pifa_right_bottom_fields']);
     }
 
 }
@@ -819,7 +796,7 @@ class PifaRightBottomFormDataPage extends cGuiPage {
      *
      * @var PifaForm
      */
-    private $_pifaForm = NULL;
+    private $_pifaForm;
 
     /**
      * Creates and aggregates a model for a collection of PIFA forms
@@ -838,14 +815,7 @@ class PifaRightBottomFormDataPage extends cGuiPage {
          */
         global $idform;
 
-        /**
-         * @param int $idfield id of field to be edited
-         */
-        global $idfield;
-
-        /**
-         * @param string $action to be performed
-         */
+        // Action to be performed
         $action = cRegistry::getAction();
 
         parent::__construct('right_bottom', Pifa::getName());
@@ -930,7 +900,7 @@ class PifaRightBottomFormDataPage extends cGuiPage {
 
     /**
      * @return mixed|string
-     * @throws cException
+     * @throws cException|SmartyException
      */
     private function _showData() {
         $cfg = cRegistry::getConfig();
@@ -1002,9 +972,7 @@ class PifaRightBottomFormDataPage extends cGuiPage {
         $lnkDel->setContent(Pifa::i18n('Check all'));
         $tpl->assign('lnkDel', $lnkDel->render());
 
-        $out = $tpl->fetch($cfg['templates']['pifa_right_bottom_data']);
-
-        return $out;
+        return $tpl->fetch($cfg['templates']['pifa_right_bottom_data']);
     }
 
 }
@@ -1029,7 +997,7 @@ class PifaRightBottomFormExportPage extends cGuiPage {
      *
      * @var PifaForm
      */
-    private $_pifaForm = NULL;
+    private $_pifaForm;
 
     /**
      * Creates and aggregates a model for a single PIFA form.
@@ -1098,15 +1066,12 @@ class PifaRightBottomFormExportPage extends cGuiPage {
      * @throws PifaException if the given action is unknown
      * @throws PifaIllegalStateException if permissions are missing
      * @throws cDbException
-     * @throws cException
+     * @throws cException|SmartyException
      */
     protected function _dispatch($action, $notification = '') {
-
         // dispatch actions
         switch ($action) {
-
             case self::EXPORT_FORM:
-
                 // check for permission
                 if (!cRegistry::getPerm()->have_perm_area_action('form_ajax', $action)) {
                     $msg = Pifa::i18n('NO_PERMISSIONS');
@@ -1129,7 +1094,7 @@ class PifaRightBottomFormExportPage extends cGuiPage {
 
     /**
      * @return mixed|string
-     * @throws cException
+     * @throws cException|SmartyException
      */
     private function _exportForm() {
         $cfg = cRegistry::getConfig();
@@ -1220,7 +1185,7 @@ class PifaRightBottomFormImportPage extends cGuiPage {
      * @throws PifaException if the given action is unknown
      * @throws PifaIllegalStateException if permissions are missing
      * @throws cDbException
-     * @throws cException
+     * @throws cException|SmartyException
      */
     protected function _dispatch($action, $notification = '') {
         $area = cRegistry::getArea();
@@ -1233,12 +1198,10 @@ class PifaRightBottomFormImportPage extends cGuiPage {
 
         // dispatch actions
         switch ($action) {
-
             case self::IMPORT_FORM:
                 $this->set('s', 'notification', $notification);
                 try {
-
-                    switch (cString::toUpperCase($_SERVER['REQUEST_METHOD'])) {
+                    switch (cString::toUpperCase($_SERVER['REQUEST_METHOD'] ?? '')) {
                         case 'GET':
                             $this->set('s', 'content', $this->_importFormGet());
                             break;
@@ -1271,7 +1234,7 @@ class PifaRightBottomFormImportPage extends cGuiPage {
      * @param bool $showTableNameField
      *
      * @return string
-     * @throws cException
+     * @throws cException|SmartyException
      */
     private function _importFormGet($showTableNameField = false) {
         $cfg = cRegistry::getConfig();
@@ -1284,7 +1247,7 @@ class PifaRightBottomFormImportPage extends cGuiPage {
             'xml' => Pifa::i18n('XML'),
             'used_table_name_error' => Pifa::i18n('USED_TABLE_NAME_ERROR'),
             'table_name' => Pifa::i18n('data table'),
-            'export' => Pifa::i18n('IMPORT'),
+            'import' => Pifa::i18n('IMPORT'),
         ]);
 
         $tpl->assign('formAction', 'main.php?' . implode('&', [
@@ -1296,9 +1259,7 @@ class PifaRightBottomFormImportPage extends cGuiPage {
 
         $tpl->assign('showTableNameField', $showTableNameField);
 
-        $out = $tpl->fetch($cfg['templates']['pifa_right_bottom_import']);
-
-        return $out;
+        return $tpl->fetch($cfg['templates']['pifa_right_bottom_import']);
     }
 
     /**
@@ -1310,14 +1271,14 @@ class PifaRightBottomFormImportPage extends cGuiPage {
      * PifaImporter. Eventually a notification is displayed.
      *
      * @return string
-     * @throws cException
+     * @throws cException|SmartyException
      */
     private function _importFormPost() {
         $cGuiNotification = new cGuiNotification();
 
         // read XML from file
         $xml = file_get_contents($_FILES['xml']['tmp_name']);
-        $tableName = isset($_POST['table_name'])? $_POST['table_name'] : NULL;
+        $tableName = $_POST['table_name'] ?? NULL;
 
         // check read operation
         if (false === $xml) {

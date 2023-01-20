@@ -15,6 +15,16 @@
         var $pifaFormFieldList = $('#pifa-form-field-list');
         var $pifaFormFieldForm = $('#pifa-form-field-dialog');
 
+        var $body = $('body');
+
+        /**
+         * Flag about already running Pifa form request.
+         * The droppable event "drop" will be fired twice due to the usage of
+         * sortable and droppable, and this flag prevents the double loading of the form fields.
+         * @type {boolean}
+         */
+        var formRequestIsRunning = false;
+
         $('#pifa-form #name').focus();
 
         /**
@@ -22,7 +32,7 @@
          * then its form is requested via AJAX and displayed
          * as a dialog.
          */
-        $('body').delegate('.pifa-icon-edit-field', 'click', function(event) {
+        $body.delegate('.pifa-icon-edit-field', 'click', function(event) {
             event.preventDefault();
             var href = $(this).attr('href');
             // If no href is given user lacks rights to add field.
@@ -37,13 +47,11 @@
                         return false;
                     }
                     $pifaFormFieldForm.html(data);
-                    pifaShowFormFieldDialog($pifaFormFieldForm, null);                    
-                    
-                    $('#pifa-form-field-dialog').find('.pseudo-fieldset').find('#deselectCss').click( function() {
-                        console.log($('#css_class'));
+                    pifaShowFormFieldDialog($pifaFormFieldForm, null);
+
+                    $pifaFormFieldForm.find('.pseudo-fieldset').find('#deselectCss').click(function() {
                         $('#css_class option:selected').removeAttr('selected');
                     });
-                    
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     $(jqXHR.responseText).appendTo('body').dialog({
@@ -67,7 +75,7 @@
          * Ajax request is send which deletes the field. Eventually
          * the field is removed via a hide animation.
          */
-        $('body').delegate('.pifa-icon-delete-field', 'click', function(event) {
+        $body.delegate('.pifa-icon-delete-field', 'click', function(event) {
             event.preventDefault();
             if (false === confirm(formAssistant.getTrans('confirm_delete_field'))) {
                 return;
@@ -140,7 +148,7 @@
         /**
          * Make field type icons draggable.
          */
-        $(".img-draggable").draggable({
+        $('.img-draggable').draggable({
             connectToSortable: '#pifa-form-field-list',
             // make a copy of the dragged icon
             helper: 'clone',
@@ -165,7 +173,7 @@
                     }
 
                     $pifaFormFieldForm.html(data);
-                    $("#field_rank", $pifaFormFieldForm).val($pifaFormFieldList.find('li').length + 1);
+                    $('#field_rank', $pifaFormFieldForm).val($pifaFormFieldList.find('li').length + 1);
                     pifaShowFormFieldDialog($pifaFormFieldForm, null);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -189,6 +197,12 @@
         $pifaFormFieldList.droppable({
             accept: '.img-draggable', // accept only field type icons
             drop: function(event, ui) {
+                // Prevent multiple form field requests in a row.
+                if (formRequestIsRunning) {
+                    return;
+                }
+                formRequestIsRunning = true;
+
                 var href = $(ui.draggable).attr('href');
                 // If no href is given user lacks rights to add field.
                 if (0 === href.length) {
@@ -199,11 +213,13 @@
                     url: 'main.php',
                     data: href,
                     success: function(data, textStatus, jqXHR) {
+                        formRequestIsRunning = false;
                         $pifaFormFieldForm.html(data);
-                        $("#field_rank", $pifaFormFieldForm).val(ui.draggable.index() + 1);
+                        $('#field_rank', $pifaFormFieldForm).val(ui.draggable.index() + 1);
                         pifaShowFormFieldDialog($pifaFormFieldForm, ui.draggable);
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
+                        formRequestIsRunning = false;
                         $(jqXHR.responseText).appendTo('body').dialog({
                             modal: true,
                             title: errorThrown,
@@ -226,7 +242,7 @@
          * and when a field type icon is dragged into the list of form fields in order to
          * create a new form field. When creating a new form field the dragged icon is
          * passed as $draggedItem and will be removed just before dialog is closed. When
-         * the dialog is called to edit an exisiting form field NULL is passed instead.
+         * the dialog is called to edit an existing form field NULL is passed instead.
          *
          * After the dialog is opened its #label is focused.
          *
@@ -241,8 +257,12 @@
                 modal: true,
                 resizable: true,
                 open: function(event, ui) {
+                    $pifaFormFieldForm = $(event.target);
                     // focus label
-                    $('#label').focus();
+                    $pifaFormFieldForm.find('#label').focus();
+                    $pifaFormFieldForm.find('#column_name').on('blur change keyup', function(e) {
+                        pifaValidateFormFieldElement($(e.currentTarget));
+                    });
                 },
                 close: function(event, ui) {
                     // remove dragged item
@@ -253,24 +273,58 @@
             };
 
             // form has no hidden action when user lacks rights to save form field
-            // add buttons only if user has approopriate rights
-            if (0 < $('#pifa-form-field-dialog #action').length) {
+            // add buttons only if user has appropriate rights
+            if (0 < $pifaFormFieldForm.find('#action').length) {
                 opt.buttons= [{
                     text: ' ',
                     click: function() {
-                        $(this).dialog('close').submit();
+                        if (!pifaValidateFormFieldDialog($pifaFormFieldForm)) {
+                            $(this).dialog('close').submit();
+                        }
                     }
                 }];
             }
 
             $dialog.dialog(opt);
+        }
 
+        /**
+         * Validates a single form field element, checks if its value is empty,
+         * and sets/removes proper css class.
+         *
+         * @param {jQuery} $field The form field to validate
+         */
+        function pifaValidateFormFieldElement($field) {
+            if ($field.val().trim()) {
+                $field.removeClass('pifa-form-field-error');
+            } else {
+                $field.addClass('pifa-form-field-error');
+            }
+        }
+
+        /**
+         * Validates the form field dialog, checks the values of some form elements,
+         * and adds proper css class if they are empty.
+         *
+         * @param {jQuery} $form The for to check the elements.
+         */
+        function pifaValidateFormFieldDialog($form) {
+            // column_name is mandatory
+            var $element = $('#column_name', $pifaFormFieldForm),
+                error = false;
+
+            if (!$element.val().trim()) {
+                $element.addClass('pifa-form-field-error');
+                error = true;
+            }
+
+            return error;
         }
 
         /**
          * Get new options row via Ajax and insert them at the end of list of options.
          */
-        $('body').delegate('#icon-add-option', 'click', function(event) {
+        $body.delegate('#icon-add-option', 'click', function(event) {
             event.preventDefault();
             var href = $(this).attr('href');
             // If no href is given user lacks rights to add option.
@@ -306,7 +360,7 @@
         /**
          * Delete option row. In order for this action to take effect the form has to be saved!
          */
-        $('body').delegate('.del-option a', 'click', function(event) {
+        $body.delegate('.del-option a', 'click', function(event) {
             event.preventDefault();
             $(this).parents('.option-outer').hide('slide', function() {
                 $(this).remove();
@@ -318,7 +372,7 @@
          * Submit form via AJAX.
          * The response is the row for the edited form field to be shown in the list of form fields.
          */
-        $('#pifa-form-field-dialog').on('submit', function(event) {
+        $pifaFormFieldForm.on('submit', function(event) {
             event.preventDefault();
             $.ajax({
                 type: 'POST',
@@ -335,7 +389,7 @@
                     // either replace item when editing existing field
                     // or append new item to predecessor when creating new field and list is not empty
                     // or append new item to list when creating new field and list is empty
-                    if (!isNaN(idfield)) {
+                    if (!isNaN(idfield) && idfield !== 0) {
                         $items.eq(fieldRank - 1).replaceWith(data);
                     } else if (0 < $items.length) {
                         $items.eq(fieldRank - 2).after(data);
@@ -357,7 +411,6 @@
                 }
             });
         });
-
 
         // On flip mark click
         $('a.flip_mark').click(function() {
@@ -397,7 +450,7 @@
                 }
             });
         });
-            
+
     });
 
 })(Con, Con.$);
