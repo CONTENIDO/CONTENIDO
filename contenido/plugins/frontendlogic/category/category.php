@@ -28,31 +28,29 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class frontendlogic_category extends FrontendLogic {
 
     /**
-     * @see FrontendLogic::getFriendlyName()
+     * @inheritdoc
      */
     public function getFriendlyName() {
         return i18n("Category", "frontendlogic_category");
     }
 
     /**
-     * @see FrontendLogic::listActions()
+     * @inheritdoc
      */
     public function listActions() {
-        return array(
+        return [
             "access" => i18n("Access category", "frontendlogic_category")
-        );
+        ];
     }
 
     /**
-     * @see FrontendLogic::listItems()
+     * @inheritdoc
      * @throws cDbException
      */
     public function listItems() {
-        global $lang, $db, $cfg;
-
-        if (!is_object($db)) {
-            $db = cRegistry::getDb();
-        }
+        $cfg = cRegistry::getConfig();
+        $lang = cRegistry::getLanguageId();
+        $db = cRegistry::getDb();
 
         $sSQL = "SELECT
                    b.idcatlang,
@@ -70,6 +68,7 @@ class frontendlogic_category extends FrontendLogic {
                  ORDER BY c.idtree ASC";
 
         $db->query($sSQL);
+        $items = [];
         while ($db->nextRecord()) {
             $items[$db->f("idcatlang")] = '<span style="padding-left: ' . ($db->f("level") * 10) . 'px;">' . htmldecode($db->f("name")) . '</span>';
         }
@@ -77,5 +76,3 @@ class frontendlogic_category extends FrontendLogic {
         return $items;
     }
 }
-
-?>
