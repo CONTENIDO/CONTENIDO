@@ -193,7 +193,7 @@ class pApiTree {
                 'online' => $item['online']
             ];
 
-            array_push($result_tmp, $rs); // append recordset
+            $result_tmp[] = $rs; // append recordset
         }
 
         if (count($result_tmp) > 0) {
@@ -204,7 +204,7 @@ class pApiTree {
                 if ($children !== false && $rs['status'] == 'expanded') {
                     $rs['children'] = $children;
                 }
-                array_push($result, $rs);
+                $result[] = $rs;
             }
             return $result;
         } else {
@@ -256,7 +256,7 @@ class pApiTree {
                     'idpica_alloc' => $this->_db->f('idpica_alloc')
                 ];
 
-                array_push($result_tmp, $rs); // append recordset
+                $result_tmp[] = $rs; // append recordset
             }
         }
 
@@ -267,7 +267,7 @@ class pApiTree {
                 if ($children !== false) {
                     $rs['children'] = $children;
                 }
-                array_push($result, $rs);
+                $result[] = $rs;
             }
             return $result;
         } else {
@@ -383,7 +383,7 @@ class pApiTree {
                 'online' => $item['online']
             ];
 
-            array_push($result_tmp, $rs); // append recordset
+            $result_tmp[] = $rs; // append recordset
         }
 
         return $result_tmp;

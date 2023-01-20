@@ -14,14 +14,26 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var array $cfg
+ * @var int $idart
+ * @var int $idcat
+ * @var int $lang
+ * @var cDb $db
+ * @var cGuiNotification $notification
+ * @var cSession $sess
+ * @var string $area
+ * @var int $frame
+ * @var cTemplate|null $tpl
+ * @var int|string $syncoptions
+ * @var string $contenido
+ */
+
 cInclude('includes', 'functions.pathresolver.php');
 
 // fetch idartlang for idart
-$sql = "SELECT idartlang, locked
-        FROM " . $cfg['tab']['art_lang'] . "
-        WHERE idart=" . (int) $idart . "
-            AND idlang=" . (int) $lang;
-$db->query($sql);
+$sql = "SELECT `idartlang`, `locked` FROM `%s` WHERE `idart` = %d AND `idlang` = %d";
+$db->query($sql, $cfg['tab']['art_lang'], $idart, $lang);
 $db->nextRecord();
 $this_idartlang = $db->f('idartlang');
 $this_locked = $db->f('locked');
@@ -73,10 +85,10 @@ if ($result == false) {
     }
 
     $oDiv = new cHTMLDiv();
-    $oDiv->updateAttributes(array(
+    $oDiv->updateAttributes([
         'style' => 'text-align:right;padding:5px;width:730px;border:1px #B3B3B3 solid;background-color:#FFF;'
-    ));
-    $oDiv->setContent('<input type="image" src="images/but_ok.gif">');
+    ]);
+    $oDiv->setContent('<input type="image" alt="" src="images/but_ok.gif">');
     $tpl->set('s', 'DIV', '<br>' . $oDiv->render());
 
     $tpl->set('s', 'TREE', $result);

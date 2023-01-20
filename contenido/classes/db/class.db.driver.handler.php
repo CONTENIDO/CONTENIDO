@@ -370,7 +370,7 @@ abstract class cDbDriverHandler {
      * @throws cDbException
      *         If statement is empty or function is called with less than 2 parameters
      */
-    public function prepare($statement) {
+    public function prepare($statement, ...$params) {
         // No empty queries
         if (empty($statement)) {
             throw new cDbException('Empty statement!');
@@ -662,7 +662,7 @@ abstract class cDbDriverHandler {
      *         database driver, false on error
      * @throws cDbException
      */
-    public function query($statement) {
+    public function query($statement, ...$params) {
         // No empty queries, please, since PHP4 chokes on them
         if ($statement == '') {
             // The empty query string is passed on from the constructor, when

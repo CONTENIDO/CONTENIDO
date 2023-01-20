@@ -32,7 +32,7 @@ class pApiContentAllocationSelectBox extends pApiTree {
     /**
      * @var array
      */
-    protected $_load = array();
+    protected $_load = [];
 
     /**
      * pApiContentAllocationSelectBox constructor
@@ -70,7 +70,6 @@ class pApiContentAllocationSelectBox extends pApiTree {
      * @return string
      */
     protected function _buildRenderTree($tree) {
-
         $this->_idSetter = false;
         $result = '';
 
@@ -93,7 +92,7 @@ class pApiContentAllocationSelectBox extends pApiTree {
      * Old function
      *
      * @deprecated [2016-02-11]
-     * 				This method is deprecated and is not needed any longer.    *
+     * 				This method is deprecated and is not needed any longer.
      * @param null $load
      * @return bool
      */
@@ -109,11 +108,10 @@ class pApiContentAllocationSelectBox extends pApiTree {
      * @param mixed   $parentId
      * @param bool $useTreeStatus (if true use expand/collapsed status of the tree, otherwise not)
      *
-     * @return bool|object
+     * @return bool|string|null
      * @throws cDbException
      */
     public function renderTree($return = true, $parentId = false, $useTreeStatus = false) {
-
         $tree = $this->fetchTree($parentId, 0, $useTreeStatus);
 
         if ($tree === false) {
