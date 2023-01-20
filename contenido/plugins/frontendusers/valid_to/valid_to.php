@@ -16,26 +16,23 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * @return string
  */
-function frontendusers_valid_to_getTitle ()
-{
+function frontendusers_valid_to_getTitle() {
     return i18n("Valid to");
 }
 
 /**
  * @return string
  */
-function frontendusers_valid_to_display ()
-{
-    global $feuser,$db,$belang,$cfg;
+function frontendusers_valid_to_display() {
+    global $feuser;
 
-    $langscripts = '';
+    $cfg = cRegistry::getConfig();
 
-    $path_to_calender_pic =  cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif';
+    $calenderPicPath =  cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif';
 
     $template  = '%s';
 
-    $currentValue = $feuser->get("valid_to");
-
+    $currentValue = $feuser->get('valid_to');
     if ($currentValue == '') {
         $currentValue = '0000-00-00';
     }
@@ -47,7 +44,7 @@ function frontendusers_valid_to_display ()
 (function(Con, $) {
         $(function() {
     $("#valid_to").datetimepicker({
-        buttonImage: "'. $path_to_calender_pic .'",
+        buttonImage: "'. $calenderPicPath .'",
         buttonImageOnly: true,
         showOn: "both",
         dateFormat: "yy-mm-dd",
@@ -72,25 +69,21 @@ function frontendusers_valid_to_display ()
 })(Con, Con.$);
 </script>';
 
-    return sprintf($template,$sValidFrom);
+    return sprintf($template, $sValidFrom);
 }
 
 /**
  * @return array
  */
-function frontendusers_valid_to_wantedVariables()
-{
-    return (array("valid_to"));
+function frontendusers_valid_to_wantedVariables() {
+    return (['valid_to']);
 }
 
 /**
  * @param $variables
  */
-function frontendusers_valid_to_store($variables)
-{
+function frontendusers_valid_to_store($variables) {
     global $feuser;
 
-    $feuser->set("valid_to", $variables["valid_to"], false);
+    $feuser->set('valid_to', $variables['valid_to'], false);
 }
-
-?>
