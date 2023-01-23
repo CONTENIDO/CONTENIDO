@@ -236,7 +236,7 @@ class cGuiMenu {
                     $value->setContent($this->title[$key]);
                     $link = $value->render();
                 } else {
-                    $link = $this->title[$key];
+                    $link = $this->title[$key] ?? '';
 
                     if (isset($this->image[$key])) {
                         $image = new cHTMLImage($this->image[$key], 'vAlignMiddle');
