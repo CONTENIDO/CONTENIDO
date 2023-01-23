@@ -14,8 +14,24 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var int $idartlang
+ * @var int $lang
+ * @var int $idart
+ * @var int $idcat
+ * @var int $client
+ * @var int $typenr
+ * @var string $CMS_HTML
+ * @var string $type
+ * @var cSession $sess
+ * @var array $encoding
+ * @var array $cfg
+ * @var array $a_description
+ */
+
 $backendUrl = cRegistry::getBackendUrl();
 $frontendUrl = cRegistry::getFrontendUrl();
+$doedit = $doedit ?? '0';
 
 if (isset($area) && $area == 'con_content_list') {
     $tmp_area = $area;

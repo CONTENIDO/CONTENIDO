@@ -14,8 +14,26 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var int $idartlang
+ * @var int $lang
+ * @var int $idart
+ * @var int $idcat
+ * @var int $client
+ * @var int $typenr
+ * @var string $CMS_HEAD
+ * @var string $type
+ * @var string $contenido
+ * @var cSession $sess
+ * @var array $encoding
+ * @var array $cfg
+ * @var array $a_description
+ * @var array $a_content
+ */
+
 $backendUrl = cRegistry::getBackendUrl();
 $frontendUrl = cRegistry::getFrontendUrl();
+$doedit = $doedit ?? '0';
 
 if (isset($area) && $area == 'con_content_list') {
     $tmp_area = $area;
@@ -85,8 +103,8 @@ ob_start();
 <?php endif; ?>
 
             <div class="cms_edit_row">
-                <a href="<?php echo $sess->url($path2) ?>"><img src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_cancel.gif"></a>
-                <input type="image" name="submit" value="editcontent" src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_ok.gif">
+                <a href="<?php echo $sess->url($path2) ?>"><img src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_cancel.gif" alt=""></a>
+                <input type="image" name="submit" value="editcontent" src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_ok.gif" alt="">
             </div>
         </form>
     </div>

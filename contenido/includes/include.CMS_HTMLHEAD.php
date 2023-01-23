@@ -14,8 +14,24 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var int $idartlang
+ * @var int $lang
+ * @var int $idart
+ * @var int $idcat
+ * @var int $client
+ * @var int $typenr
+ * @var string $CMS_HTMLHEAD
+ * @var string $type
+ * @var cSession $sess
+ * @var array $encoding
+ * @var array $cfg
+ * @var array $a_description
+ */
+
 $backendUrl = cRegistry::getBackendUrl();
 $frontendUrl = cRegistry::getFrontendUrl();
+$doedit = $doedit ?? '0';
 
 if (isset($area) && $area == 'con_content_list') {
     $tmp_area = $area;
@@ -33,13 +49,13 @@ if (isset($area) && $area == 'con_content_list') {
     $inputHTML = "";
 }
 
-if (isset($_POST['doedit']) && ($_POST['doedit'] == "1" || $_POST['doedit'] == "2")) {
+if ($doedit == "1" || $doedit == "2") {
     //1: save; 2: refresh;
-    conSaveContentEntry($idartlang, "CMS_HTMLHEAD", $typenr, $_POST['CMS_HTMLHEAD']);
+    conSaveContentEntry($idartlang, "CMS_HTMLHEAD", $typenr, $CMS_HTMLHEAD);
     conMakeArticleIndex($idartlang, $idart);
     conGenerateCodeForArtInAllCategories($idart);
 }
-if (isset($_POST['doedit']) && $_POST['doedit'] == "1") {
+if ($doedit) {
     // redirect
     header("Location:" . $sess->url($path1));
 }
