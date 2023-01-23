@@ -19,7 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package Plugin
  * @subpackage Workflow
  * @method WorkflowAction createNewItem
- * @method WorkflowAction next
+ * @method WorkflowAction|bool next
  */
 class WorkflowActions extends ItemCollection {
     /**
@@ -28,7 +28,7 @@ class WorkflowActions extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
         parent::__construct($cfg["tab"]["workflow_actions"], "idworkflowaction");
         $this->_setItemClass("WorkflowAction");
     }
@@ -52,7 +52,7 @@ class WorkflowActions extends ItemCollection {
      * @return array
      */
     public function getAvailableWorkflowActions() {
-        $availableWorkflowActions = array(
+        $availableWorkflowActions = [
             "publish" => i18n("Publish article", "workflow"),
             "lock" => i18n("Lock article", "workflow"),
             "last" => i18n("Move back to last editor", "workflow"),
@@ -61,7 +61,7 @@ class WorkflowActions extends ItemCollection {
             "propertyedit" => i18n("Edit article properties", "workflow"),
             "templateedit" => i18n("Edit template", "workflow"),
             "revise" => i18n("Revise article", "workflow")
-        );
+        ];
 
         return ($availableWorkflowActions);
     }
@@ -77,10 +77,10 @@ class WorkflowActions extends ItemCollection {
     public function set($idworkflowitem, $action) {
         $this->select("idworkflowitem = " . (int) $idworkflowitem . " AND action = '" . $this->escape($action) . "'");
         if (!$this->next()) {
-            $newitem = $this->createNewItem();
-            $newitem->setField("idworkflowitem", $idworkflowitem);
-            $newitem->setField("action", $action);
-            $newitem->store();
+            $newItem = $this->createNewItem();
+            $newItem->setField("idworkflowitem", $idworkflowitem);
+            $newItem->setField("action", $action);
+            $newItem->store();
         }
     }
 
@@ -106,10 +106,9 @@ class WorkflowActions extends ItemCollection {
      * @param string $limit
      *
      * @return bool
+     * @throws cDbException
      */
     public function select($where = "", $group_by = "", $order_by = "", $limit = "") {
-        global $client;
-
         return parent::select($where, $group_by, $order_by, $limit);
     }
 
@@ -129,10 +128,10 @@ class WorkflowAction extends Item {
 
     /**
      * Constructor Function
+     * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-
+        $cfg = cRegistry::getConfig();
         parent::__construct($cfg["tab"]["workflow_actions"], "idworkflowaction");
     }
 

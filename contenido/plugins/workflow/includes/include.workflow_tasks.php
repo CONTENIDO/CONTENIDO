@@ -13,16 +13,33 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-plugin_include('workflow', 'classes/class.workflow.php');
 plugin_include('workflow', 'includes/functions.workflow.php');
 
-global $sess;
+/**
+ * @var cSession $sess
+ * @var cPermission $perm
+ * @var cAuth $auth
+ * @var cTemplate $tpl
+ * @var cDb $db
+ * @var string $area
+ * @var string $sFlagTitle
+ * @var string $action
+ * @var int $frame
+ * @var int $lang
+ * @var int $client
+ * @var int $idtpl
+ * @var array $cfg
+ */
+
 $sSession = $sess->id;
 
 $wfa = new WorkflowArtAllocations();
 $wfu = new WorkflowUserSequences();
 $user = new cApiUser();
 $db2 = cRegistry::getDb();
+
+$usershow = $usershow ?? '';
+$modidartlang = cSecurity::toInteger($modidartlang ?? '0');
 
 ob_start();
 
@@ -39,8 +56,11 @@ if ($action == "workflow_do_action") {
     doWorkflowAction($modidartlang, $GLOBALS[$selectedAction]);
 }
 
-$wfa->select();
+$usersequence = [];
+$lastusersequence = [];
+$article = [];
 
+$wfa->select();
 while (($wfaitem = $wfa->next()) !== false) {
     $wfaid = $wfaitem->get("idartallocation");
     $usersequence[$wfaid] = $wfaitem->get("idusersequence");
@@ -48,6 +68,7 @@ while (($wfaitem = $wfa->next()) !== false) {
     $article[$wfaid] = $wfaitem->get("idartlang");
 }
 
+$userids = [];
 if (is_array($usersequence)) {
     foreach ($usersequence as $key => $value) {
         $wfu->select("idusersequence = '$value'");
@@ -153,7 +174,7 @@ if (is_array($isCurrent)) {
                 $idart = $db->f("idart");
 
                 // Create javascript multilink
-                $tmp_mstr = '<a href="javascript://" onclick="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')"  title="idart: ' . $db->f('idart') . ' idcatart: ' . $db->f('idcatart') . '" alt="idart: ' . $db->f('idart') . ' idcatart: ' . $db->f('idcatart') . '">%s</a>';
+                $tmp_mstr = '<a href="javascript://" onclick="Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')"  title="idart: ' . $db->f('idart') . ' idcatart: ' . $db->f('idcatart') . '" title="idart: ' . $db->f('idart') . ' idcatart: ' . $db->f('idcatart') . '">%s</a>';
 
                 $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=con&frame=3&idcat=$idcat&idtpl=$idtpl"), 'right_bottom', $sess->url("main.php?area=con_editart&action=con_edit&frame=4&idcat=$idcat&idtpl=$idtpl&idart=$idart"), $db->f("title"));
 
@@ -176,7 +197,7 @@ if (is_array($isCurrent)) {
 
                 $todoListeSubject = i18n("Reminder");
                 $sReminder = i18n("Set reminder / add to todo list");
-                $sReminderHtml = "<a id=\"m1\" onclick=\"javascript:window.open('main.php?subject=$todoListeSubject&amp;area=todo&amp;frame=1&amp;itemtype=idart&amp;itemid=$idart&amp;contenido=$sSession', 'todo', 'scrollbars=yes, height=300, width=550');\" href=\"#\"><img alt=\"$sReminder\" title=\"$sReminder\" id=\"m2\" src=\"images/but_setreminder.gif\" border=\"0\"></a>";
+                $sReminderHtml = "<a id=\"m1\" onclick=\"window.open('main.php?subject=$todoListeSubject&amp;area=todo&amp;frame=1&amp;itemtype=idart&amp;itemid=$idart&amp;contenido=$sSession', 'todo', 'scrollbars=yes, height=300, width=550');\" href=\"#\"><img alt=\"$sReminder\" title=\"$sReminder\" id=\"m2\" src=\"images/but_setreminder.gif\" border=\"0\"></a>";
 
                 $templatename = $db->f('tpl_name');
                 if (!empty($templatename)) {
