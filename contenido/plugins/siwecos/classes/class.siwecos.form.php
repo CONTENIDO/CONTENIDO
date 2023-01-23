@@ -14,7 +14,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * SIWECOS form item collection class.
- * It's a kind of a model.
+ * It's a kind of model.
  *
  * @author Fulai Zhang <fulai.zhang@4fb.de>
  */
@@ -77,18 +77,19 @@ class SIWECOSCollection extends ItemCollection
         global $idsiwecos;
 
         if ($idsiwecos) {
-            $str = "AND idsiwecos = " . cSecurity::toInteger($idsiwecos);
+            $str = "AND `idsiwecos` = " . cSecurity::toInteger($idsiwecos);
         } else {
             $str = '';
         }
 
+        $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
         $db->query(
             "SELECT *
-            FROM `con_pi_siwecos`
+            FROM `{$cfg['tab']['siwecos']}`
             WHERE 
-                idclient = " . cSecurity::toInteger($client) . "
-                AND idlang = " . cSecurity::toInteger($lang) . "
+                `idclient` = " . cSecurity::toInteger($client) . "
+                AND `idlang` = " . cSecurity::toInteger($lang) . "
                 " . $str . "
             ;"
         );
@@ -195,19 +196,11 @@ class SIWECOS extends Item
     public function delete()
     {
         global $idsiwecos;
-        $db = cRegistry::getDb();
 
-        // delete form
-        $succ = $db->query(
-            "
-            DELETE
-            FROM con_pi_siwecos
-            WHERE
-                idsiwecos = " . cSecurity::toInteger($idsiwecos) . "
-            ;"
-        );
+        $oSIWECOSCollection = new SIWECOSCollection();
+        $success = $oSIWECOSCollection->delete($idsiwecos);
 
-        if (false === $succ) {
+        if (!$success) {
             $msg = i18n('ERR_DELETE_ENTITY', 'siwecos');
             throw new SIWECOSException($msg);
         }

@@ -16,6 +16,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 define('SIWECOS_VERSION', '1.0.0');
 define('SIWECOS_API_URL', 'https://bla.siwecos.de/api/v1');
 
+global $cfg;
+
 // define plugin path
 $cfg['plugins']['siwecos'] = 'siwecos/';
 
@@ -40,5 +42,3 @@ $templatePath = cRegistry::getBackendPath() . 'plugins/siwecos/';
 $cfg['templates']['siwecos_right_bottom_form'] = $templatePath . 'templates/template.right_bottom.tpl';
 $cfg['templates']['siwecos_report_form']       = $templatePath . 'templates/template.siwecos_report.tpl';
 $cfg['templates']['siwecos_verification_form'] = $templatePath . 'templates/template.siwecos_verification.tpl';
-
-?>

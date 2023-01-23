@@ -13,19 +13,19 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $notification = new cGuiNotification();
-$actions = array();
+$actions = [];
 
 // ACTION: SHOW_FORM (in order to create new form)
 if (cRegistry::getPerm()->have_perm_area_action('siwecos', SIWECOSRightBottomPage::STORE_FORM)) {
-    global $area;
+    $area = cRegistry::getArea();
 
     $link = new cHTMLLink();
     $link->setMultiLink($area, SIWECOSRightBottomPage::SHOW_FORM, $area, SIWECOSRightBottomPage::SHOW_FORM);
     $link->setContent(i18n('BTN_CREATE', 'siwecos'));
     // class addfunction lets display add icon beneath link
-    $link->updateAttributes(array(
+    $link->updateAttributes([
         'class' => 'addfunction'
-    ));
+    ]);
     $actions[] = $link->render();
 } else {
     $actions[] = $notification->returnNotification(cGuiNotification::LEVEL_WARNING, i18n('ERR_PERMISSION_DENIED', 'siwecos'));
@@ -37,5 +37,3 @@ foreach ($actions as $action) {
     $page->next();
 }
 $page->render();
-
-?>
