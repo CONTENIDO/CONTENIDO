@@ -42,12 +42,12 @@ class FrontendNavigation {
     /**
      * @var array
      */
-    protected $_cfgClient = array();
+    protected $_cfgClient = [];
 
     /**
      * @var array
      */
-    protected $_cfg = array();
+    protected $_cfg = [];
 
     /**
      * @var integer
@@ -87,7 +87,7 @@ class FrontendNavigation {
      */
     public function getSubCategories($parentCategory) {
         if (!is_int((int) $parentCategory)) {
-            return array();
+            return [];
         }
 
         $sql = "SELECT
@@ -115,7 +115,7 @@ class FrontendNavigation {
 
         $this->_db->query($sql);
 
-        $navigation = array();
+        $navigation = [];
         while ($this->_db->nextRecord()) {
             $navigation[] = $this->_db->f("idcat");
         }
@@ -673,6 +673,8 @@ class FrontendNavigation {
                 return $cat_str . '/index-g-' . $selectedNumber . '.html';
             }
         }
+
+        return '';
     }
 
     /**
@@ -774,17 +776,17 @@ class FrontendNavigation {
      */
     public function getCategoryPath($cat_id, $level = 0, $reverse = true) {
         if (!is_int((int) $cat_id) && $cat_id < 0) {
-            return array();
+            return [];
         }
 
-        $root_path = array();
-        array_push($root_path, $cat_id);
+        $root_path = [];
+        $root_path[] = $cat_id;
         $parent_id = $cat_id;
 
         while ($this->getLevel($parent_id) >= 0 && $this->getLevel($parent_id) > $level) {
             $parent_id = $this->getParent($parent_id);
             if ($parent_id >= 0) {
-                array_push($root_path, $parent_id);
+                $root_path[] = $parent_id;
             }
         }
 
@@ -798,21 +800,22 @@ class FrontendNavigation {
     /**
      * Get root category of a given category
      *
-     * @param integer $cat_id
+     * @param int $catId
      *
-     * @return array
+     * @return int|false
      * @throws cDbException
      */
-    function getRoot($cat_id) {
-        if (!is_int((int) $cat_id) && $cat_id < 0) {
-            return array();
+    function getRoot($catId) {
+        if (!is_int((int) $catId) && $catId < 0) {
+            return false;
         }
 
-        $parent_id = $cat_id;
+        $rootCategory = false;
+        $parentId = $catId;
 
-        while ($this->getLevel($parent_id) >= 0) {
-            $rootCategory = $parent_id;
-            $parent_id = $this->getParent($parent_id);
+        while ($this->getLevel($parentId) >= 0) {
+            $rootCategory = $parentId;
+            $parentId = $this->getParent($parentId);
         }
 
         return $rootCategory;
@@ -827,9 +830,8 @@ class FrontendNavigation {
      * @throws cDbException
      */
     function getSubTree($idcat_start) {
-
         if (!is_int((int) $idcat_start)) {
-            return array();
+            return [];
         }
 
         $sql = "SELECT
