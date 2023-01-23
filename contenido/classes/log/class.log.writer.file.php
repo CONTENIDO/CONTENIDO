@@ -38,7 +38,7 @@ class cLogWriterFile extends cLogWriter {
      * @throws cException
      * @throws cFileNotFoundException
      */
-    public function __construct($options = array()) {
+    public function __construct(array $options = []) {
         parent::__construct($options);
 
         $this->_createHandle();
