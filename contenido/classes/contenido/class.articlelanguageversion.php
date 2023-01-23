@@ -24,7 +24,7 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
      * Constructor to create an instance of this class.
      *
      * @see ItemCollection::select()
-     * 
+     *
      * @param bool $select
      *         where clause to use for selection
      *
@@ -52,7 +52,7 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
     /**
      * @param array $parameters
      *
-     * @return Item
+     * @return Item|cApiArticleLanguageVersion
      *
      * @throws cDbException
      * @throws cException
@@ -107,7 +107,7 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
      * @param int $version
      *
      * @return int
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -557,10 +557,10 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
      *         Article language id
      * @param int $version
      *         version number
-     * 
+     *
      * @return int
      *         Article language version id
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -654,7 +654,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
      *
      * @return string|array
      *         data
-     * 
+     *
      * @throws cDbException
      */
     public function getContent($type = '', $id = NULL) {
