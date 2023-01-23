@@ -23,7 +23,7 @@ if (!isset($cfg['tab']['url_shortener']['shorturl'])) {
 // extend the $cfg array with the short URL rules if they have not been defined
 // yet
 if (!isset($cfg['url_shortener']['exlude_dirs'])) {
-    $cfg['url_shortener']['exlude_dirs'] = array();
+    $cfg['url_shortener']['exlude_dirs'] = [];
 }
 if (!isset($cfg['url_shortener']['minimum_length'])) {
     $cfg['url_shortener']['minimum_length'] = 3;

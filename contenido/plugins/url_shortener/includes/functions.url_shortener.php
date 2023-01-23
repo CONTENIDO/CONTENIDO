@@ -28,11 +28,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 function piUsEditFormAdditionalRows($idart, $idlang, $idclient, $disabled) {
     $shortUrl = new cApiShortUrl();
-    $shortUrl->loadByMany(array(
+    $shortUrl->loadByMany([
         'idart' => $idart,
         'idlang' => $idlang,
         'idclient' => $idclient
-    ));
+    ]);
 
     $tr = new cHTMLTableRow();
 
@@ -73,11 +73,11 @@ function piUsConSaveArtAfter($editedIdArt, $values) {
     $idlang = cRegistry::getLanguageId();
     $idclient = cRegistry::getClientId();
     $shortUrlItem = new cApiShortUrl();
-    $shortUrlItem->loadByMany(array(
+    $shortUrlItem->loadByMany([
         'idart' => $idart,
         'idlang' => $idlang,
         'idclient' => $idclient
-    ));
+    ]);
     // if given shorturl is already in use, show error message
     $checkShortUrlItem = new cApiShortUrl();
     $checkShortUrlItem->loadBy('shorturl', $shorturl);
@@ -153,26 +153,21 @@ function piUsGetErrorMessage($errorCode, $shortUrlItem = NULL) {
     switch ($errorCode) {
         case cApiShortUrlCollection::ERR_INVALID_CHARS:
             return i18n('The entered short URL contains invalid characters!', 'url_shortener');
-            break;
         case cApiShortUrlCollection::ERR_IS_ARTICLE_ALIAS:
             return i18n('The entered short URL is already an article alias!', 'url_shortener');
-            break;
         case cApiShortUrlCollection::ERR_IS_CATEGORY_ALIAS:
             return i18n('The entered short URL is already a category alias!', 'url_shortener');
-            break;
         case cApiShortUrlCollection::ERR_IS_CLIENT_FOLDER:
             return i18n('The entered short URL is a subdirectory of the client directory!', 'url_shortener');
-            break;
         case cApiShortUrlCollection::ERR_TOO_SHORT:
             return i18n('The entered short URL is too short!', 'url_shortener');
-            break;
         case cApiShortUrlCollection::ERR_ALREADY_EXISTS:
             $message = i18n('The entered short URL already exists!', 'url_shortener');
             $message .= '<br />';
             if ($shortUrlItem !== NULL) {
                 // add the client name to the error message
                 $clientColl = new cApiClientCollection();
-                $message .= i18n('Client', 'url_shortener') . ': ' . $clientColl->getClientname($shortUrlItem->get('idclient'));;
+                $message .= i18n('Client', 'url_shortener') . ': ' . $clientColl->getClientname($shortUrlItem->get('idclient'));
                 $message .= '<br />';
                 // add the language name to the error message
                 $langColl = new cApiLanguageCollection();
@@ -191,7 +186,6 @@ function piUsGetErrorMessage($errorCode, $shortUrlItem = NULL) {
                 $message .= i18n('Article', 'url_shortener') . ': ' . $artlang->get('title');
             }
             return $message;
-            break;
     }
     return i18n('The entered short URL is not valid!', 'url_shortener');
 }
@@ -211,10 +205,10 @@ function piUsAfterLoadPlugins() {
     $shortUrlItem = new cApiShortUrl();
     $shortUrlItem->loadBy('shorturl', $shorturl);
     if ($shortUrlItem->isLoaded()) {
-        $uriParams = array(
+        $uriParams = [
             'idart' => $shortUrlItem->get('idart'),
             'lang' => $shortUrlItem->get('idlang')
-        );
+        ];
         $url = cUri::getInstance()->build($uriParams, true);
         header('Location:' . $url);
         exit();
@@ -233,13 +227,12 @@ function piUsAfterLoadPlugins() {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function piUseConDeleteArtAfter($idart)
-{
+function piUseConDeleteArtAfter($idart) {
     $count = 0;
     if (cRegistry::getPerm()->have_perm_area_action('url_shortener', 'url_shortener_delete')) {
-        $idart        = cSecurity::toInteger($idart);
+        $idart = cSecurity::toInteger($idart);
         $shortUrlColl = new cApiShortUrlCollection();
-        $count        = $shortUrlColl->deleteBy('idart', $idart);
+        $count = $shortUrlColl->deleteBy('idart', $idart);
     }
 
     return $count;

@@ -13,7 +13,11 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $action, $cfg;
+/**
+ * @var cPermission $perm
+ * @var array $cfg
+ * @var string $action
+ */
 
 $page = new cGuiPage('url_shortener', 'url_shortener');
 
@@ -82,10 +86,10 @@ if ($action === 'url_shortener_delete' && !empty($_POST['idshorturl']) && $perm-
     }
 } elseif ($action === 'url_shortener_copy_htaccess' && !empty($_GET['htaccess_type'])) {
     // copy the .htaccess file to the client path
-    $validTypes = array(
+    $validTypes = [
         'simple',
         'restrictive'
-    );
+    ];
     if (in_array($_GET['htaccess_type'], $validTypes)) {
         $source = $cfg['path']['contenido'] . $cfg['path']['plugins'] . 'url_shortener/files/htaccess_' . $_GET['htaccess_type'] . '.txt';
         $dest = cRegistry::getFrontendPath() . '.htaccess';
@@ -141,7 +145,7 @@ $table->setWidth('100%');
 
 // construct the table header
 $theader = new cHTMLTableHeader();
-$tableHeads = array(
+$tableHeads = [
     i18n('Client', 'url_shortener'),
     i18n('Language', 'url_shortener'),
     i18n('Category', 'url_shortener'),
@@ -150,7 +154,7 @@ $tableHeads = array(
     i18n('Creation Date', 'url_shortener'),
     i18n('URL With idart And idlang', 'url_shortener'),
     i18n('Actions', 'url_shortener')
-);
+];
 foreach ($tableHeads as $tableHead) {
     $th = new cHTMLTableHead();
     $th->setContent($tableHead);
@@ -165,7 +169,7 @@ $tbody = new cHTMLTableBody();
 while (($shortUrl = $shortUrlColl->next()) !== false) {
     $tr = new cHTMLTableRow();
     $tr->setID('shorturl-' . $shortUrl->get('idshorturl'));
-    $contents = array();
+    $contents = [];
 
     // get the client name
     $apiClient = new cApiClient($shortUrl->get('idclient'));
@@ -215,10 +219,10 @@ while (($shortUrl = $shortUrlColl->next()) !== false) {
 
     // construct URL with idart and idlang
     $uriBuilder = cUriBuilderFactory::getUriBuilder('front_content');
-    $uriParams = array(
+    $uriParams = [
         'idart' => $shortUrl->get('idart'),
         'lang' => $shortUrl->get('idlang')
-    );
+    ];
     $uriBuilder->buildUrl($uriParams, true);
     $url = $uriBuilder->getUrl();
     $link = new cHTMLLink(cRegistry::getFrontendUrl() . $url);
