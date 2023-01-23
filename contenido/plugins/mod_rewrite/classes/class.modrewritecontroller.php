@@ -525,7 +525,7 @@ class ModRewriteController extends ModRewriteBase {
             $idcat = NULL;
         } else {
             // unset $this->_sPath if $idcat could set, otherwise it would be resolved again.
-            unset($this->_sPath);
+            $this->_sPath = '';
         }
 
         ModRewriteDebugger::add($idcat, 'ModRewriteController->_setPathresolverSetting $idcat');

@@ -950,14 +950,13 @@ function mr_header($header) {
  * @throws cInvalidArgumentException
  */
 function mr_debugOutput($print = true) {
-    global $DB_Contenido_QueryCache;
-    if (isset($DB_Contenido_QueryCache) && is_array($DB_Contenido_QueryCache) &&
-            count($DB_Contenido_QueryCache) > 0) {
-        ModRewriteDebugger::add($DB_Contenido_QueryCache, 'sql statements');
+    $profileData = cDb::getProfileData();
+    if (count($profileData) > 0) {
+        ModRewriteDebugger::add($profileData, 'sql statements');
 
-        // calculate total time consumption of queries
+        // Calculate total time consumption of queries
         $timeTotal = 0;
-        foreach ($DB_Contenido_QueryCache as $pos => $item) {
+        foreach ($profileData as $pos => $item) {
             $timeTotal += $item['time'];
         }
         ModRewriteDebugger::add($timeTotal, 'sql total time');
