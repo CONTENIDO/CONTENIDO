@@ -12,6 +12,8 @@
  */
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $cfg;
+
 $client = cRegistry::getClientId();
 $cfgClient = cRegistry::getClientConfig();
 
@@ -31,4 +33,3 @@ try {
 } catch (Exception $e) {
     cWarning($e->getFile(), $e->getLine(), $e->getMessage());
 }
-?>

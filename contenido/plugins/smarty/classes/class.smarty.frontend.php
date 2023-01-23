@@ -68,11 +68,11 @@ class cSmartyFrontend {
         }
 
         self::$oSmarty = new cSmartyWrapper();
-        self::$aDefaultPaths = array(
+        self::$aDefaultPaths = [
             'template_dir' => $aClientCfg['module']['path'],
             'cache_dir' => $aClientCfg['cache']['path'] . 'templates_c',
             'compile_dir' => $aClientCfg['cache']['path'] . 'templates_c'
-        );
+        ];
 
         // check the template directory and create new one if it not exists
         if (!is_dir(self::$aDefaultPaths['compile_dir'])) {
@@ -118,7 +118,7 @@ class cSmartyFrontend {
      * static function to provide the smart object
      *
      * @param boolean $bResetTemplate true if the template values shall all be
-     *        resetted
+     *        retested
      * @throws cException if singleton has not been instantiated yet
      * @return cSmartyWrapper
      */
