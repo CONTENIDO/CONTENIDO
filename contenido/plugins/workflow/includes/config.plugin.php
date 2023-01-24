@@ -50,7 +50,7 @@ $lngAct['workflow_steps']['workflow_user_delete'] = i18n('Delete Workflowstepuse
 $lngAct['str']['workflow_cat_assign'] = i18n('Associate workflow with category', $pluginName);
 
 // Plugin class-loader configuration
-$pluginClassesPath = "contenido/plugins/$pluginName/classes";
+$pluginClassesPath = cRegistry::getBackendPath(true) . $cfg['path']['plugins'] . "$pluginName/classes";
 cAutoload::addClassmapConfig([
     'Workflows' => $pluginClassesPath . '/class.workflow.php',
     'Workflow' => $pluginClassesPath . '/class.workflow.php',

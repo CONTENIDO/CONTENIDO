@@ -59,8 +59,13 @@ $cfg['pi_mod_rewrite'] = [
     'pluginName' => $pluginName,
 ];
 
+// Plugin translation for usage in backend areas (menus, right, etc.)
+$lngAct[$pluginName]['mod_rewrite'] = i18n('Advanced Mod Rewrite', $pluginName);
+$lngAct[$pluginName]['mod_rewrite_expert'] = i18n('Advanced Mod Rewrite functions', $pluginName);
+$lngAct[$pluginName]['mod_rewrite_test'] = i18n('Advanced Mod Rewrite test', $pluginName);
+
 // Include necessary sources, Setup autoloader for plugin
-$pluginClassesPath = "contenido/plugins/$pluginName/classes";
+$pluginClassesPath = cRegistry::getBackendPath(true) . $cfg['path']['plugins'] . "$pluginName/classes";
 cAutoload::addClassmapConfig([
     'ModRewrite_ControllerAbstract' => $pluginClassesPath . '/controller/class.modrewrite_controller_abstract.php',
     'ModRewrite_ContentController' => $pluginClassesPath . '/controller/class.modrewrite_content_controller.php',
@@ -76,11 +81,6 @@ cAutoload::addClassmapConfig([
 ]);
 
 plugin_include($pluginName, 'includes/functions.mod_rewrite.php');
-
-// Plugin translation for usage in backend areas (menus, right, etc.)
-$lngAct[$pluginName]['mod_rewrite'] = i18n('Advanced Mod Rewrite', $pluginName);
-$lngAct[$pluginName]['mod_rewrite_expert'] = i18n('Advanced Mod Rewrite functions', $pluginName);
-$lngAct[$pluginName]['mod_rewrite_test'] = i18n('Advanced Mod Rewrite test', $pluginName);
 
 // Set debug configuration
 ModRewriteDebugger::setEnabled(!empty(cRegistry::getBackendSessionId()));

@@ -39,7 +39,7 @@ $cfg['pica']['script_complexlist']       = 'complexlist.js';
 $lngAct['con_contentallocation']['storeallocation'] = i18n('Store tagging', $pluginName);
 
 // Plugin includes and class-loader configuration
-$pluginClassesPath = "contenido/plugins/$pluginName/classes";
+$pluginClassesPath = cRegistry::getBackendPath(true) . $cfg['path']['plugins'] . "$pluginName/classes";
 cAutoload::addClassmapConfig([
     'pApiContentAllocation' => $pluginClassesPath . '/class.content_allocation.php',
     'pApiContentAllocationArticle' => $pluginClassesPath . '/class.content_allocation_article.php',

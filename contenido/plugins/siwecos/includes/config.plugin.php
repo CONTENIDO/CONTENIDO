@@ -26,8 +26,14 @@ $cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugi
 // define table names
 $cfg['tab']['siwecos'] = $cfg['sql']['sqlprefix'] . '_pi_siwecos';
 
+// define templates
+$pluginTemplatesPath = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/templates";
+$cfg['templates']['siwecos_right_bottom_form'] = $pluginTemplatesPath . '/template.right_bottom.tpl';
+$cfg['templates']['siwecos_report_form']       = $pluginTemplatesPath . '/template.siwecos_report.tpl';
+$cfg['templates']['siwecos_verification_form'] = $pluginTemplatesPath . '/template.siwecos_verification.tpl';
+
 // setup autoloader
-$pluginClassesPath = "contenido/plugins/$pluginName/classes";
+$pluginClassesPath = cRegistry::getBackendPath(true) . $cfg['path']['plugins'] . "$pluginName/classes";
 cAutoload::addClassmapConfig([
     'SIWECOSLeftBottomPage'  => $pluginClassesPath . '/class.siwecos.gui.php',
     'SIWECOSCollection'      => $pluginClassesPath . '/class.siwecos.form.php',
@@ -36,11 +42,5 @@ cAutoload::addClassmapConfig([
     'SIWECOSRightBottomPage' => $pluginClassesPath . '/class.siwecos.gui.php',
     'CurlService'            => $pluginClassesPath . '/CurlService.php',
 ]);
-
-// define templates
-$pluginTemplatesPath = cRegistry::getBackendPath() . "plugins/$pluginName/templates";
-$cfg['templates']['siwecos_right_bottom_form'] = $pluginTemplatesPath . '/template.right_bottom.tpl';
-$cfg['templates']['siwecos_report_form']       = $pluginTemplatesPath . '/template.siwecos_report.tpl';
-$cfg['templates']['siwecos_verification_form'] = $pluginTemplatesPath . '/template.siwecos_verification.tpl';
 
 unset($pluginName, $pluginClassesPath, $pluginTemplatesPath);

@@ -15,16 +15,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 global $cfg;
 
 $pluginName = basename(dirname(__DIR__, 1));
+plugin_include($pluginName, 'classes/class.solr.php');
+
+$pluginName = Solr::getName();
 
 $cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/";
 
-plugin_include($pluginName, 'classes/class.solr.php');
-
 // define template names
-$cfg['templates']['solr_right_bottom'] = $cfg['plugins'][Solr::getName()] . 'templates/template.right_bottom.tpl';
+$cfg['templates']['solr_right_bottom'] = $cfg['plugins'][$pluginName] . 'templates/template.right_bottom.tpl';
 
 // include necessary sources, setup autoloader for plugin
-$pluginClassesPath = 'contenido/plugins/' . Solr::getName() . '/classes';
+$pluginClassesPath = cRegistry::getBackendPath(true) . $cfg['path']['plugins'] . "$pluginName/classes";
 cAutoload::addClassmapConfig([
     'SolrIndexer' => $pluginClassesPath . '/class.solr_indexer.php',
     'SolrSearcherAbstract' => $pluginClassesPath . '/class.solr_searcher_abstract.php',

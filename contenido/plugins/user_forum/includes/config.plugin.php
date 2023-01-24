@@ -27,7 +27,7 @@ $cfg['templates']['user_forum_left_bottom'] = $pluginTemplatesPath . '/template.
 $cfg['tab']['user_forum'] = $cfg['sql']['sqlprefix'] . '_pi_user_forum';
 
 // include necessary sources, setup autoloader for plugin
-$pluginClassesPath = "contenido/plugins/$pluginName/classes";
+$pluginClassesPath = cRegistry::getBackendPath(true) . $cfg['path']['plugins'] . "$pluginName/classes";
 cAutoload::addClassmapConfig([
     'ArticleForumCollection' => $pluginClassesPath . '/class.article_forum_collection.php',
     'ArticleForum' => $pluginClassesPath . '/class.article_forum.php',

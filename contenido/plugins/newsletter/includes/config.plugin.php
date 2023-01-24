@@ -27,7 +27,7 @@ $cfg['tab']['news_rcp'] = $cfg['sql']['sqlprefix'] . '_pi_news_rcp';
 $cfg['tab']['news'] = $cfg['sql']['sqlprefix'] . '_pi_news';
 
 // Include necessary sources, Setup autoloader for plugin
-$pluginClassesPath = "contenido/plugins/$pluginName/classes";
+$pluginClassesPath = cRegistry::getBackendPath(true) . $cfg['path']['plugins'] . "$pluginName/classes";
 cAutoload::addClassmapConfig([
     'NewsletterRecipientGroupCollection' => $pluginClassesPath . '/class.newsletter.groups.php',
     'NewsletterRecipientGroup' => $pluginClassesPath . '/class.newsletter.groups.php',

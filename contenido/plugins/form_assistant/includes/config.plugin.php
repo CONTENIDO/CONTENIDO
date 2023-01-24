@@ -17,20 +17,21 @@ global $cfg, $lngAct;
 $pluginName = basename(dirname(__DIR__, 1));
 plugin_include($pluginName, 'classes/class.pifa.php');
 
+$pluginName = Pifa::getName();
+
 // define plugin path
-$cfg['plugins'][Pifa::getName()] = Pifa::getPath();
+$cfg['plugins'][$pluginName] = Pifa::getPath();
 
 // define template names
-// $cfg['templates']['form_left_bottom'] = $cfg['plugins']['form'] .
-// 'templates/template.left_bottom.html';
-$cfg['templates']['pifa_right_bottom_form'] = $cfg['plugins'][Pifa::getName()] . 'templates/template.right_bottom_form.tpl';
-$cfg['templates']['pifa_right_bottom_fields'] = $cfg['plugins'][Pifa::getName()] . 'templates/template.right_bottom_fields.tpl';
-$cfg['templates']['pifa_right_bottom_data'] = $cfg['plugins'][Pifa::getName()] . 'templates/template.right_bottom_data.tpl';
-$cfg['templates']['pifa_right_bottom_export'] = $cfg['plugins'][Pifa::getName()] . 'templates/template.right_bottom_export.tpl';
-$cfg['templates']['pifa_right_bottom_import'] = $cfg['plugins'][Pifa::getName()] . 'templates/template.right_bottom_import.tpl';
-$cfg['templates']['pifa_ajax_field_form'] = $cfg['plugins'][Pifa::getName()] . 'templates/template.ajax_field_form.tpl';
-$cfg['templates']['pifa_ajax_field_row'] = $cfg['plugins'][Pifa::getName()] . 'templates/template.ajax_field_row.tpl';
-$cfg['templates']['pifa_ajax_option_row'] = $cfg['plugins'][Pifa::getName()] . 'templates/template.ajax_option_row.tpl';
+// $cfg['templates']['form_left_bottom'] = $cfg['plugins']['form'] . 'templates/template.left_bottom.html';
+$cfg['templates']['pifa_right_bottom_form'] = $cfg['plugins'][$pluginName] . 'templates/template.right_bottom_form.tpl';
+$cfg['templates']['pifa_right_bottom_fields'] = $cfg['plugins'][$pluginName] . 'templates/template.right_bottom_fields.tpl';
+$cfg['templates']['pifa_right_bottom_data'] = $cfg['plugins'][$pluginName] . 'templates/template.right_bottom_data.tpl';
+$cfg['templates']['pifa_right_bottom_export'] = $cfg['plugins'][$pluginName] . 'templates/template.right_bottom_export.tpl';
+$cfg['templates']['pifa_right_bottom_import'] = $cfg['plugins'][$pluginName] . 'templates/template.right_bottom_import.tpl';
+$cfg['templates']['pifa_ajax_field_form'] = $cfg['plugins'][$pluginName] . 'templates/template.ajax_field_form.tpl';
+$cfg['templates']['pifa_ajax_field_row'] = $cfg['plugins'][$pluginName] . 'templates/template.ajax_field_row.tpl';
+$cfg['templates']['pifa_ajax_option_row'] = $cfg['plugins'][$pluginName] . 'templates/template.ajax_option_row.tpl';
 
 // define table names
 $cfg['tab']['pifa_form'] = $cfg['sql']['sqlprefix'] . '_pifa_form';
@@ -54,7 +55,7 @@ $lngAct['form_ajax']['pifa_delete_data'] = Pifa::i18n('pifa_delete_data');
 $lngAct['form_ajax']['pifa_get_option_row'] = Pifa::i18n('pifa_get_option_row');
 
 // Setup autoloader for plugin
-$pluginClassesPath = 'contenido/plugins/' . Pifa::getName() . '/classes';
+$pluginClassesPath = cRegistry::getBackendPath(true) . $cfg['path']['plugins'] . "$pluginName/classes";
 cAutoload::addClassmapConfig([
     'Pifa' => $pluginClassesPath . '/class.pifa.php',
     'cContentTypePifaForm' => $pluginClassesPath . '/class.content.type.pifa_form.php',
