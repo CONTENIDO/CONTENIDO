@@ -230,18 +230,28 @@ $oSelTestDestination->setDefault($iTestDestination);
 
 $oBtnSave = new cHTMLButton("submit", i18n("Save", 'newsletter'));
 
+$requestElemPerPage = cSecurity::toInteger($_REQUEST['elemperpage'] ?? '0');
+if ($requestElemPerPage <= 0) {
+    $requestElemPerPage = '';
+}
+$requestSortBy = $_REQUEST['sortby'] ?? '';
+$requestSortOrder = $_REQUEST['sortorder'] ?? '';
+$requestRestrictGroup = $_REQUEST['restrictgroup'] ?? '';
+$requestFilter = $_REQUEST['filter'] ?? '';
+$requestSearchIn = $_REQUEST['searchin'] ?? '';
+
 $sContent = '
 <div class="news_section news_section_settings">
     <form target="left_bottom" onsubmit="append_registered_parameters(this);" id="htmlnewsletter" name="htmlnewsletter" method="get" action="main.php?1">
         <input type="hidden" name="area" value="' . $area . '">
         <input type="hidden" name="frame" value="2">
         <input type="hidden" name="contenido" value="' . $sess->id . '">
-        <input type="hidden" name="elemperpage" value="' . $_REQUEST["elemperpage"] . '">
-        <input type="hidden" name="sortby" value="' . $_REQUEST["sortby"] . '">
-        <input type="hidden" name="sortorder" value="' . $_REQUEST["sortorder"] . '">
-        <input type="hidden" name="restrictgroup" value="' . $_REQUEST["restrictgroup"] . '">
-        <input type="hidden" name="filter" value="' . $_REQUEST["filter"] . '">
-        <input type="hidden" name="searchin" value="' . $_REQUEST["searchin"] . '">
+        <input type="hidden" name="elemperpage" value="' . $requestElemPerPage . '">
+        <input type="hidden" name="sortby" value="' . $requestSortBy . '">
+        <input type="hidden" name="sortorder" value="' . $requestSortOrder . '">
+        <input type="hidden" name="restrictgroup" value="' . $requestRestrictGroup . '">
+        <input type="hidden" name="filter" value="' . $requestFilter . '">
+        <input type="hidden" name="searchin" value="' . $requestSearchIn . '">
         <input type="hidden" name="action_html" value="save_newsletter_properties">
         <table>
             <tr>
@@ -311,7 +321,7 @@ $oSelSearchIn = new cHTMLSelectElement("searchin");
 $oOption = new cHTMLOptionElement(i18n("-- All fields --", 'newsletter'), "--all--");
 $oSelSearchIn->addOptionElement("all", $oOption);
 $oOption = new cHTMLOptionElement("Name", "name");
-$oSelSearchIn->addOptionElement($sKey, $oOption);
+$oSelSearchIn->addOptionElement("name", $oOption);
 $oSelSearchIn->setDefault("name");
 
 // Apply button
@@ -370,7 +380,7 @@ $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame("left_bottom");
 $oPagerLink->setCustom("elemperpage", $iItemsPerPage);
 $oPagerLink->setCustom("filter", "");
-// $oPagerLink->setCustom("restrictgroup", $_REQUEST["restrictgroup"]);
+// $oPagerLink->setCustom("restrictgroup", $requestRestrictGroup);
 $oPagerLink->setCustom("sortby", "name");
 $oPagerLink->setCustom("sortorder", "ASC");
 $oPagerLink->setCustom("searchin", "name");
@@ -588,7 +598,7 @@ $oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setCustom("selAuthor", $auth->auth["uid"]);
 $oPagerLink->setCustom("elemperpage", $iItemsPerPage);
 $oPagerLink->setCustom("filter", "");
-// $oPagerLink->setCustom("restrictgroup", $_REQUEST["restrictgroup"]);
+// $oPagerLink->setCustom("restrictgroup", $requestRestrictGroup);
 $oPagerLink->setCustom("sortby", "created");
 $oPagerLink->setCustom("sortorder", "DESC");
 $oPagerLink->setCustom("searchin", "--all--");
@@ -703,12 +713,12 @@ $sContent = '
         <input type="hidden" name="area" value="recipients">
         <input type="hidden" name="frame" value="2">
         <input type="hidden" name="contenido" value="' . $sess->id . '">
-        <input type="hidden" name="elemperpage" value="' . $_REQUEST["elemperpage"] . '">
-        <input type="hidden" name="sortby" value="' . $_REQUEST["sortby"] . '">
-        <input type="hidden" name="sortorder" value="' . $_REQUEST["sortorder"] . '">
-        <input type="hidden" name="restrictgroup" value="' . $_REQUEST["restrictgroup"] . '">
-        <input type="hidden" name="filter" value="' . $_REQUEST["filter"] . '">
-        <input type="hidden" name="searchin" value="' . $_REQUEST["searchin"] . '">
+        <input type="hidden" name="elemperpage" value="' . $requestElemPerPage . '">
+        <input type="hidden" name="sortby" value="' . $requestSortBy . '">
+        <input type="hidden" name="sortorder" value="' . $requestSortOrder . '">
+        <input type="hidden" name="restrictgroup" value="' . $requestRestrictGroup . '">
+        <input type="hidden" name="filter" value="' . $requestFilter . '">
+        <input type="hidden" name="searchin" value="' . $requestSearchIn . '">
         <table>
             <tr>
                 <td class="col_1"><label for="' . $oTxtTimeframe->getID() . '">' . i18n("Purge timeframe", 'newsletter') . ':</label></td>
