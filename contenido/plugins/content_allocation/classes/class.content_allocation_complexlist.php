@@ -103,7 +103,7 @@ class pApiContentAllocationComplexList extends pApiTree {
 
             $result .= $item;
 
-            if ($item_tmp['children']) {
+            if (count($item_tmp['children'])) {
                 $children = $this->_buildRenderTree($item_tmp['children']);
                 $result .= "\n<ul>" . $children . "</li>";
             } else {
@@ -132,7 +132,7 @@ class pApiContentAllocationComplexList extends pApiTree {
      *
      * @param bool $return
      *
-     * @return bool|string
+     * @return bool|string|void
      * @throws cDbException
      */
     public function renderTree($return = true) {

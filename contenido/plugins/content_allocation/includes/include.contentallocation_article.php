@@ -48,14 +48,18 @@ $oPage = new cGuiPage("contentallocation_article", "content_allocation", "7");
 $oTree = new pApiContentAllocationComplexList('06bd456d-fe76-40cb-b041-b9ba90dc400a');
 $oAlloc = new pApiContentAllocation();
 
-if ($_POST['action'] == 'storeallocation') {
-    $oAlloc->storeAllocations($this_idartlang, $_POST['allocation']);
+$requestAction = $_POST['action'] ?? '';
+$requestStep = $_GET['step'] ?? '';
+
+if ($requestAction == 'storeallocation') {
+    $oAlloc->storeAllocations($this_idartlang, $_POST['allocation'] ?? []);
 }
-if ($_GET['step'] == 'collapse') {
+if ($requestStep == 'collapse') {
     $oTree->setTreeStatus($_GET['idpica_alloc']);
 }
 
-// uild category path
+// Build category path
+$syncoptions = $syncoptions ?? '';
 $sLocationString = renderBackendBreadcrumb($syncoptions, true, true);
 
 // load allocations
@@ -64,7 +68,7 @@ $loadedAllocations = $oAlloc->loadAllocations($this_idartlang);
 $oTree->setChecked($loadedAllocations);
 $result = $oTree->renderTree(true);
 
-if ($result == false) {
+if (!$result) {
     $result = $notification->returnNotification('warning', i18n('There is no tagging tree.', 'content_allocation'));
 } else {
     if (!is_object($tpl)) {
@@ -134,5 +138,3 @@ $div->setContent($sLocationString . $result);
 
 $oPage->setContent($div);
 $oPage->render();
-
-?>
