@@ -35,4 +35,4 @@ cAutoload::addClassmapConfig([
     'Cronjobs' => "$pluginClassesPath/class.cronjobs.php",
 ]);
 
-unset($pluginClassesPath, $pluginName);
+unset($pluginName, $pluginClassesPath);

@@ -22,7 +22,8 @@ $pluginName = Solr::getName();
 $cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/";
 
 // define template names
-$cfg['templates']['solr_right_bottom'] = $cfg['plugins'][$pluginName] . 'templates/template.right_bottom.tpl';
+$pluginTemplatesPath = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/templates";
+$cfg['templates']['solr_right_bottom'] = $pluginTemplatesPath . '/template.right_bottom.tpl';
 
 // include necessary sources, setup autoloader for plugin
 $pluginClassesPath = cRegistry::getBackendPath(true) . $cfg['path']['plugins'] . "$pluginName/classes";
@@ -43,4 +44,4 @@ $cec->addChainFunction('Contenido.Action.con_saveart.AfterCall', 'SolrIndexer::h
 // reindex article after any content entry is updated
 $cec->addChainFunction('Contenido.Content.AfterStore', 'SolrIndexer::handleStoringOfContentEntry');
 
-unset($pluginName, $pluginClassesPath);
+unset($pluginName, $pluginTemplatesPath, $pluginClassesPath);

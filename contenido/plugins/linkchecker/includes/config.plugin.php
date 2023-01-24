@@ -30,14 +30,14 @@ $cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugi
 $cfg['tab']['whitelist']     = $cfg['sql']['sqlprefix'] . '_pi_linkwhitelist';
 
 // Add templates to templates configuration
-$templatePath = $cfg['plugins'][$pluginName] . 'templates/standard';
-$cfg['templates']['linkchecker_test']            = "$templatePath/template.linkchecker_test.html";
-$cfg['templates']['linkchecker_test_errors']     = "$templatePath/template.linkchecker_test_errors.html";
-$cfg['templates']['linkchecker_test_errors_cat'] = "$templatePath/template.linkchecker_test_errors_cat.html";
-$cfg['templates']['linkchecker_test_nothing']    = "$templatePath/template.linkchecker_test_nothing.html";
-$cfg['templates']['linkchecker_noerrors']        = "$templatePath/template.linkchecker_noerrors.html";
-$cfg['templates']['linkchecker_whitelist']       = "$templatePath/template.linkchecker_whitelist.html";
-$cfg['templates']['linkchecker_whitelist_urls']  = "$templatePath/template.linkchecker_whitelist_urls.html";
+$pluginTemplatesPath = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/templates/standard";
+$cfg['templates']['linkchecker_test']            = "$pluginTemplatesPath/template.linkchecker_test.html";
+$cfg['templates']['linkchecker_test_errors']     = "$pluginTemplatesPath/template.linkchecker_test_errors.html";
+$cfg['templates']['linkchecker_test_errors_cat'] = "$pluginTemplatesPath/template.linkchecker_test_errors_cat.html";
+$cfg['templates']['linkchecker_test_nothing']    = "$pluginTemplatesPath/template.linkchecker_test_nothing.html";
+$cfg['templates']['linkchecker_noerrors']        = "$pluginTemplatesPath/template.linkchecker_noerrors.html";
+$cfg['templates']['linkchecker_whitelist']       = "$pluginTemplatesPath/template.linkchecker_whitelist.html";
+$cfg['templates']['linkchecker_whitelist_urls']  = "$pluginTemplatesPath/template.linkchecker_whitelist_urls.html";
 
 // Add classes to autoloader
 $pluginClassesPath = cRegistry::getBackendPath(true) . $cfg['path']['plugins'] . "$pluginName/classes";
@@ -48,4 +48,4 @@ cAutoload::addClassmapConfig([
     'cLinkcheckerTester'         => "$pluginClassesPath/class.linkchecker.tester.php",
 ]);
 
-unset($pluginName, $pluginClassesPath, $templatePath);
+unset($pluginName, $pluginClassesPath, $pluginTemplatesPath);

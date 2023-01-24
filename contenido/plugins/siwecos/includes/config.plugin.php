@@ -43,4 +43,4 @@ cAutoload::addClassmapConfig([
     'CurlService'            => $pluginClassesPath . '/CurlService.php',
 ]);
 
-unset($pluginName, $pluginClassesPath, $pluginTemplatesPath);
+unset($pluginName, $pluginTemplatesPath, $pluginClassesPath);

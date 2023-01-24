@@ -25,12 +25,12 @@ $cfg['tab']['pica_alloc']     = $cfg['sql']['sqlprefix'] . '_pica_alloc';
 $cfg['tab']['pica_alloc_con'] = $cfg['sql']['sqlprefix'] . '_pica_alloc_con';
 $cfg['tab']['pica_lang']      = $cfg['sql']['sqlprefix'] . '_pica_lang';
 
-$backendPath = cRegistry::getBackendPath();
+$pluginTemplatesPath = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/templates";
 
-$cfg['pica']['logpath']                  = $backendPath . $cfg['path']['plugins'] . 'repository/log/data/';
-$cfg['pica']['treetemplate']             = $backendPath . $cfg['path']['plugins'] . $pluginName . '/templates/template.tree_structure.html';
-$cfg['pica']['treetemplate_article']     = $backendPath . $cfg['path']['plugins'] . $pluginName . '/templates/template.tree_article.html';
-$cfg['pica']['treetemplate_complexlist'] = $backendPath . $cfg['path']['plugins'] . $pluginName . '/templates/template.tree_complexlist.html';
+$cfg['pica']['logpath']                  = cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'repository/log/data/';
+$cfg['pica']['treetemplate']             = $pluginTemplatesPath . '/template.tree_structure.html';
+$cfg['pica']['treetemplate_article']     = $pluginTemplatesPath . '/template.tree_article.html';
+$cfg['pica']['treetemplate_complexlist'] = $pluginTemplatesPath . '/template.tree_complexlist.html';
 $cfg['pica']['loglevel']                 = 'warn';
 $cfg['pica']['style_complexlist']        = 'complexlist.css';
 $cfg['pica']['script_complexlist']       = 'complexlist.js';
@@ -58,4 +58,4 @@ $cec->addChainFunction('Contenido.Article.GetCustomTabProperties', 'pica_GetCust
 $cec->addChainFunction('Contenido.Article.conCopyArtLang_AfterInsert', 'pica_CopyArticleAllocations');
 $cec->addChainFunction('Contenido.Action.con_deleteart.AfterCall', 'pica_DeleteArticleAllocations');
 
-unset($pluginName, $pluginClassesPath);
+unset($pluginName, $pluginTemplatesPath, $pluginClassesPath);
