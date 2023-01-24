@@ -93,7 +93,8 @@ if (!$cronjob) {
 }
 
 // Cache options
-if (isset($aCacheName['errors'])) {
+// TODO find out where the variable $aCacheName is used and where it is set.
+if (!isset($aCacheName['errors'])) {
     $aCacheName['errors'] = '';
 }
 $aCacheName = [
