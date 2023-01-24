@@ -291,10 +291,8 @@ class NewsletterRecipient extends Item {
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
+            case 'news_type':
             case 'confirmed':
-                $value = (int) $value;
-                break;
-			case 'news_type':
                 $value = (int) $value;
                 break;
         }
@@ -303,5 +301,3 @@ class NewsletterRecipient extends Item {
     }
 
 }
-
-?>

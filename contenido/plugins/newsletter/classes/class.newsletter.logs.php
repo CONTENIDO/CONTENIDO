@@ -109,7 +109,7 @@ class NewsletterLogCollection extends ItemCollection {
             $iIDLang = $oNewsletter->get("idlang");
             $nrc = new NewsletterRecipientCollection();
             $nrcClassName = cString::toLowerCase(get_class($nrc));
-            
+
             switch ($sDestination) {
                 case "all":
                     $sDistinct = "";
@@ -240,10 +240,8 @@ class NewsletterLog extends Item {
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
+            case 'idnewsrcp':
             case 'idnewsjob':
-                $value = (int) $value;
-                break;
-			case 'idnewsrcp':
                 $value = (int) $value;
                 break;
         }
@@ -252,5 +250,3 @@ class NewsletterLog extends Item {
     }
 
 }
-
-?>

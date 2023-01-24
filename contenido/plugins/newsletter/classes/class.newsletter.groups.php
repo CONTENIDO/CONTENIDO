@@ -151,10 +151,8 @@ class NewsletterRecipientGroup extends Item {
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
+            case 'idlang':
             case 'idclient':
-                $value = (int) $value;
-                break;
-			case 'idlang':
                 $value = (int) $value;
                 break;
         }
@@ -166,7 +164,7 @@ class NewsletterRecipientGroup extends Item {
 
 /**
  * Recipient group member management class
- * 
+ *
  * @method NewsletterRecipientGroupMember createNewItem
  * @method NewsletterRecipientGroupMember next
  */
@@ -341,10 +339,8 @@ class NewsletterRecipientGroupMember extends Item {
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
+            case 'idnewsrcp':
             case 'idnewsgroup':
-                $value = (int) $value;
-                break;
-			case 'idnewsrcp':
                 $value = (int) $value;
                 break;
         }
@@ -353,5 +349,3 @@ class NewsletterRecipientGroupMember extends Item {
     }
 
 }
-
-?>
