@@ -13,15 +13,26 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-//include cronjobs class
-include_once(dirname(__FILE__).'/../classes/class.cronjobs.php');
+global $cfg, $lngAct;
 
-//dir plugin
-$dir_plugin = dirname(__FILE__).'/../';
+$pluginName = basename(dirname(__DIR__, 1));
 
-global $lngAct;
-$lngAct['cronjob']['cronjob_overview'] = i18n('Cronjob overview', 'cronjobs_overview');
-$lngAct['cronjob']['crontab_edit'] = i18n('Edit cronjob', 'cronjobs_overview');
-$lngAct['cronjob']['cronjob_execute'] = i18n('Execute cronjob', 'cronjobs_overview');
+// Plugin configuration
+$cfg['pi_cronjob_overview'] = [
+    'pluginName' => $pluginName,
+];
 
-?>
+$cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/";
+
+// Add classes to autoloader
+$pluginClassesPath = "contenido/plugins/$pluginName/classes";
+cAutoload::addClassmapConfig([
+    'Cronjobs' => "$pluginClassesPath/class.cronjobs.php",
+]);
+
+// Plugin translation for usage in backend areas (menus, right, etc.)
+$lngAct['cronjob']['cronjob_overview'] = i18n('Cronjob overview', $pluginName);
+$lngAct['cronjob']['crontab_edit'] = i18n('Edit cronjob', $pluginName);
+$lngAct['cronjob']['cronjob_execute'] = i18n('Execute cronjob', $pluginName);
+
+unset($pluginClassesPath, $pluginName);

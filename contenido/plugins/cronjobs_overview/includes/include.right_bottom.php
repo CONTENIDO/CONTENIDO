@@ -11,10 +11,18 @@
  * @link       http://www.contenido.org
  */
 
-// TODO: this should not be necessary
-include_once(dirname(__FILE__).'/config.plugin.php');
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * @var cPermission $perm
+ * @var string $area
+ * @var string $contenido
+ * @var array $cfg
+ */
 
 $tpl = new cTemplate();
+
+$pluginName = $cfg['pi_cronjob_overview']['pluginName'];
 
 $requestFile = $_REQUEST['file'] ?? '';
 $requestAction = $_REQUEST['action'] ?? '';
@@ -41,7 +49,7 @@ switch ($requestAction) {
             $tpl->set('s', 'LABLE_EXECUTE',i18n("Execute cronjob:", 'cronjobs_overview'));
             $tpl->set('s', 'ALT_TITLE', i18n('Execute cronjob', 'cronjobs_overview'));
             $tpl->set('s', 'FILE', $cronjobs->getFile());
-            $tpl->generate($dir_plugin.'templates/right_bottom_overview.html');
+            $tpl->generate($cfg['plugins'][$pluginName] . 'templates/right_bottom_overview.html');
         }
         break;
 
@@ -62,7 +70,7 @@ switch ($requestAction) {
         $tpl->set('s', 'CONTENTS', $cronjobs->getContentsCrontabFile());
         $tpl->set('s', 'CONTENIDO', $contenido);
         $tpl->set('s', 'ALT_TITLE', i18n('Save changes', 'cronjobs_overview'));
-        $tpl->generate($dir_plugin.'templates/right_bottom_crontab_edit.html');
+        $tpl->generate($cfg['plugins'][$pluginName] . 'templates/right_bottom_crontab_edit.html');
         break;
 
     case 'cronjob_execute':
@@ -82,5 +90,3 @@ switch ($requestAction) {
         }
         break;
 }
-
-?>

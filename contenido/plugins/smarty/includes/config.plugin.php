@@ -14,12 +14,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $cfg;
 
+$pluginName = basename(dirname(__DIR__, 1));
+
+$cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/";
+
 $client = cRegistry::getClientId();
 $cfgClient = cRegistry::getClientConfig();
 
+
 // Load smarty
 if (!defined('SMARTY_DIR')) {
-    define('SMARTY_DIR', $cfg['path']['contenido'] . 'plugins/smarty/smarty_source/');
+    define('SMARTY_DIR', $cfg['plugins'][$pluginName]. 'smarty_source/');
 }
 
 require_once(SMARTY_DIR . 'Smarty.class.php');
@@ -33,3 +38,5 @@ try {
 } catch (Exception $e) {
     cWarning($e->getFile(), $e->getLine(), $e->getMessage());
 }
+
+unset($pluginName);

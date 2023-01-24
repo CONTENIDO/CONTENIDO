@@ -13,26 +13,29 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-// define plugin path
-$cfg['plugins']['user_forum'] = 'user_forum/';
+global $cfg;
+
+$pluginName = basename(dirname(__DIR__, 1));
+
+$cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/";
 
 // define template names
-$cfg['templates']['user_forum_right_bottom'] = $cfg['plugins']['user_forum'] . 'templates/XXXXX';
+$pluginTemplatesPath = cRegistry::getBackendPath() . "plugins/$pluginName/templates";
+$cfg['templates']['user_forum_left_bottom'] = $pluginTemplatesPath . '/template.left_bottom.html';
 
 // define table names
 $cfg['tab']['user_forum'] = $cfg['sql']['sqlprefix'] . '_pi_user_forum';
 
 // include necessary sources, setup autoloader for plugin
-// @todo Use config variables for $pluginClassPath below!
-$pluginClassPath = 'contenido/plugins/' . $cfg['plugins']['user_forum'];
-cAutoload::addClassmapConfig(array(
-    'ArticleForumCollection' => $pluginClassPath . 'classes/class.article_forum_collection.php',
-    'ArticleForum' => $pluginClassPath . 'classes/class.article_forum.php',
-    'ArticleForumLeftBottom' => $pluginClassPath . 'classes/class.article_forum_left_bottom.php',
-    'ArticleForumRightBottom' => $pluginClassPath . 'classes/class.article_forum_right_bottom.php',
-    'ArticleForumItem' => $pluginClassPath .'classes/class.article_forum_item.php',
-    'UserForum' => $pluginClassPath .'classes/class.user_forum.php',
-    'cContentTypeUserForum' => $pluginClassPath .'classes/class.content.type.user_forum.php'
-));
+$pluginClassesPath = "contenido/plugins/$pluginName/classes";
+cAutoload::addClassmapConfig([
+    'ArticleForumCollection' => $pluginClassesPath . '/class.article_forum_collection.php',
+    'ArticleForum' => $pluginClassesPath . '/class.article_forum.php',
+    'ArticleForumLeftBottom' => $pluginClassesPath . '/class.article_forum_left_bottom.php',
+    'ArticleForumRightBottom' => $pluginClassesPath . '/class.article_forum_right_bottom.php',
+    'ArticleForumItem' => $pluginClassesPath .'/class.article_forum_item.php',
+    'UserForum' => $pluginClassesPath .'/class.user_forum.php',
+    'cContentTypeUserForum' => $pluginClassesPath .'/class.content.type.user_forum.php'
+]);
 
-?>
+unset($pluginName, $pluginTemplatesPath, $pluginClassesPath);

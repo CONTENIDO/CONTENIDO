@@ -14,30 +14,32 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $cfg;
+
+$pluginName = basename(dirname(__DIR__, 1));
+
 // Plugin configuration
 $cfg['pi_linkchecker'] = [
-    'pluginName' => 'linkchecker',
+    'pluginName' => $pluginName,
     'whitelistTimeout' => 2592000, // 30 days
     'cacheLifeTime' => 1209600, // two weeks
 ];
 
-$pluginName = $cfg['pi_linkchecker']['pluginName'];
-
 // paths
-$cfg['plugins']['linkchecker'] = cRegistry::getBackendPath() . "plugins/$pluginName/";
-$cfg['tab']['whitelist']       = $cfg['sql']['sqlprefix'] . '_pi_linkwhitelist';
+$cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/";
+$cfg['tab']['whitelist']     = $cfg['sql']['sqlprefix'] . '_pi_linkwhitelist';
 
 // Add classes to autoloader
-$classPath = 'contenido/plugins/$pluginName/classes';
+$pluginClassesPath = "contenido/plugins/$pluginName/classes";
 cAutoload::addClassmapConfig([
-    'cLinkcheckerCategoryHelper' => "$classPath/class.linkchecker.category_helper.php",
-    'cLinkcheckerRepair'         => "$classPath/class.linkchecker.repair.php",
-    'cLinkcheckerSearchLinks'    => "$classPath/class.linkchecker.search_links.php",
-    'cLinkcheckerTester'         => "$classPath/class.linkchecker.tester.php",
+    'cLinkcheckerCategoryHelper' => "$pluginClassesPath/class.linkchecker.category_helper.php",
+    'cLinkcheckerRepair'         => "$pluginClassesPath/class.linkchecker.repair.php",
+    'cLinkcheckerSearchLinks'    => "$pluginClassesPath/class.linkchecker.search_links.php",
+    'cLinkcheckerTester'         => "$pluginClassesPath/class.linkchecker.tester.php",
 ]);
 
 // Add templates to templates configuration
-$templatePath = $cfg['plugins']['linkchecker'] . 'templates/standard';
+$templatePath = $cfg['plugins'][$pluginName] . 'templates/standard';
 $cfg['templates']['linkchecker_test']            = "$templatePath/template.linkchecker_test.html";
 $cfg['templates']['linkchecker_test_errors']     = "$templatePath/template.linkchecker_test_errors.html";
 $cfg['templates']['linkchecker_test_errors_cat'] = "$templatePath/template.linkchecker_test_errors_cat.html";
@@ -46,4 +48,4 @@ $cfg['templates']['linkchecker_noerrors']        = "$templatePath/template.linkc
 $cfg['templates']['linkchecker_whitelist']       = "$templatePath/template.linkchecker_whitelist.html";
 $cfg['templates']['linkchecker_whitelist_urls']  = "$templatePath/template.linkchecker_whitelist_urls.html";
 
-unset($pluginName, $classPath, $templatePath);
+unset($pluginName, $pluginClassesPath, $templatePath);

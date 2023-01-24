@@ -17,7 +17,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $_cecRegistry, $cfg, $load_client;
+global $_cecRegistry, $cfg, $lngAct, $load_client;
 
 ####################################################################################################
 /**
@@ -50,32 +50,32 @@ if (isset($client) && (int) $client > 0) {
     $clientId = '';
 }
 
+$pluginName = basename(dirname(__DIR__, 1));
+
+$cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/";
+
 // Plugin configuration
 $cfg['pi_mod_rewrite'] = [
-    'pluginName' => 'mod_rewrite',
+    'pluginName' => $pluginName,
 ];
 
-$pluginName = $cfg['pi_mod_rewrite']['pluginName'];
-
-// Include necessary sources, setup autoloader for plugin
-$pluginClassPath = "contenido/plugins/$pluginName/classes/";
+// Include necessary sources, Setup autoloader for plugin
+$pluginClassesPath = "contenido/plugins/$pluginName/classes";
 cAutoload::addClassmapConfig([
-    'ModRewrite_ControllerAbstract' => $pluginClassPath . 'controller/class.modrewrite_controller_abstract.php',
-    'ModRewrite_ContentController' => $pluginClassPath . 'controller/class.modrewrite_content_controller.php',
-    'ModRewrite_ContentExpertController' => $pluginClassPath . 'controller/class.modrewrite_contentexpert_controller.php',
-    'ModRewrite_ContentTestController' => $pluginClassPath . 'controller/class.modrewrite_contenttest_controller.php',
-    'ModRewriteBase' => $pluginClassPath . 'class.modrewritebase.php',
-    'ModRewrite' => $pluginClassPath . 'class.modrewrite.php',
-    'ModRewriteController' => $pluginClassPath . 'class.modrewritecontroller.php',
-    'ModRewriteDebugger' => $pluginClassPath . 'class.modrewritedebugger.php',
-    'ModRewriteTest' => $pluginClassPath . 'class.modrewritetest.php',
-    'ModRewriteUrlStack' => $pluginClassPath . 'class.modrewriteurlstack.php',
-    'ModRewriteUrlUtil' => $pluginClassPath . 'class.modrewriteurlutil.php'
+    'ModRewrite_ControllerAbstract' => $pluginClassesPath . '/controller/class.modrewrite_controller_abstract.php',
+    'ModRewrite_ContentController' => $pluginClassesPath . '/controller/class.modrewrite_content_controller.php',
+    'ModRewrite_ContentExpertController' => $pluginClassesPath . '/controller/class.modrewrite_contentexpert_controller.php',
+    'ModRewrite_ContentTestController' => $pluginClassesPath . '/controller/class.modrewrite_contenttest_controller.php',
+    'ModRewriteBase' => $pluginClassesPath . '/class.modrewritebase.php',
+    'ModRewrite' => $pluginClassesPath . '/class.modrewrite.php',
+    'ModRewriteController' => $pluginClassesPath . '/class.modrewritecontroller.php',
+    'ModRewriteDebugger' => $pluginClassesPath . '/class.modrewritedebugger.php',
+    'ModRewriteTest' => $pluginClassesPath . '/class.modrewritetest.php',
+    'ModRewriteUrlStack' => $pluginClassesPath . '/class.modrewriteurlstack.php',
+    'ModRewriteUrlUtil' => $pluginClassesPath . '/class.modrewriteurlutil.php'
 ]);
-unset($pluginClassPath);
-plugin_include($pluginName, 'includes/functions.mod_rewrite.php');
 
-global $lngAct;
+plugin_include($pluginName, 'includes/functions.mod_rewrite.php');
 
 // Plugin translation for usage in backend areas (menus, right, etc.)
 $lngAct[$pluginName]['mod_rewrite'] = i18n('Advanced Mod Rewrite', $pluginName);
@@ -89,7 +89,6 @@ ModRewriteDebugger::setEnabled(!empty(cRegistry::getBackendSessionId()));
 ModRewrite::initialize($clientId);
 
 if (ModRewrite::isEnabled()) {
-
     $aMrCfg = ModRewrite::getConfig();
 
     $_cecRegistry = cApiCecRegistry::getInstance();
@@ -175,4 +174,4 @@ if (cRegistry::getBackendSessionId() && $area === 'con_meta' && ModRewrite::isEn
     cUriBuilderConfig::setConfig($cfg['url_builder']);
 }
 
-unset($pluginName, $clientId);
+unset($pluginName, $pluginClassesPath, $clientId);
