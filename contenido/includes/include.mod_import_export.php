@@ -15,31 +15,42 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var string $action
+ * @var string $area
+ * @var int $frame
+ */
+
 $page = new cGuiPage("mod_import_export");
 
+$requestIdMod = cSecurity::toInteger($_REQUEST['idmod'] ?? '0');
+$requestMode = $_REQUEST['mode'] ?? '';
+
 $module = new cApiModule();
-$module->loadByPrimaryKey($idmod);
+if ($requestIdMod > 0) {
+    $module->loadByPrimaryKey($requestIdMod);
+}
 $notification = new cGuiNotification();
 $reloadLeftBottom = false;
 
 $readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
 
-if($readOnly) {
+if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
 
 if ($action == "mod_importexport_module") {
 
-    switch ($mode) {
+    switch ($requestMode) {
         case 'export':
-            if ($idmod != 0) {
+            if ($requestIdMod > 0) {
                 $module->export();
             } else {
                 $notification->displayNotification('error', i18n("Could not export module!"));
             }
             break;
         case 'import':
-            if($readOnly) {
+            if ($readOnly) {
                 cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
                 break;
             }
@@ -48,7 +59,7 @@ if ($action == "mod_importexport_module") {
                     $notification->displayNotification('error', i18n("Could not import module!"));
                 } else {
                     $notification->displayNotification('info', i18n("Module import successfully!"));
-                    $idmod = $module->get('idmod');
+                    $requestIdMod = $module->get('idmod');
                     $reloadLeftBottom = true;
                 }
             } else {
@@ -72,7 +83,7 @@ if ($action == "mod_importexport_module") {
                     $modules->delete($module->get('idmod'));
                 } else {
                     $notification->displayNotification('info', i18n("Module import successfully!"));
-                    $idmod = $module->get('idmod');
+                    $requestIdMod = $module->get('idmod');
                     $reloadLeftBottom = true;
                 }
             } else {
@@ -95,6 +106,7 @@ $importXML->setEvent("onclick", "$('#vupload').show()");
 $import->setEvent("onclick", "$('#vupload').show()");
 
 $upload = new cHTMLUpload("upload");
+$upload->setID('vupload');
 
 $inputChecked = "";
 $outputChecked = "";
@@ -105,7 +117,7 @@ if ($inputChecked != "" && $outputChecked != "") {
     $import->setChecked(true);
 }
 
-if($readOnly) {
+if ($readOnly) {
     $import->setDisabled(true);
     $importXML->setDisabled(true);
     $export->setChecked(true);
@@ -117,13 +129,13 @@ $form2 = new cGuiTableForm("export");
 $form2->setVar("action", "mod_importexport_module");
 $form2->setVar("use_encoding", "false");
 $form2->addHeader("Import/Export" . " &quot;". conHtmlSpecialChars($module->get('name')). "&quot;");
-$form2->add(i18n("Mode"), array(
+$form2->add(i18n("Mode"), [
     $export,
     "<br>",
     $import,
     '<br>',
     $importXML
-));
+]);
 
 if ($inputChecked != "" && $outputChecked != "") {
     $form2->add(i18n("File"), $upload, "vupload", "display: none;");
@@ -133,16 +145,14 @@ if ($inputChecked != "" && $outputChecked != "") {
 
 $form2->setVar("area", $area);
 $form2->setVar("frame", $frame);
-$form2->setVar("idmod", $idmod);
+$form2->setVar("idmod", $requestIdMod);
 $form2->custom["submit"]["accesskey"] = '';
 
 if ($reloadLeftBottom) {
-    $page->reloadLeftBottomFrame(['idmod' => $idmod]);
+    $page->reloadLeftBottomFrame(['idmod' => $requestIdMod]);
 }
-$page->setContent(array(
+$page->setContent([
     $form2
-));
+]);
 
 $page->render();
-
-?>
