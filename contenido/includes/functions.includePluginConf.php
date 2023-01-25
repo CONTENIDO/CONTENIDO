@@ -14,7 +14,11 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$plugins = array();
+/**
+ * @var array $cfg
+ */
+
+$plugins = [];
 $pluginFolder = cRegistry::getBackendPath() . $cfg['path']['plugins'];
 
 if ($cfg['debug']['disable_plugins'] === false) {
@@ -59,3 +63,5 @@ foreach ($plugins as $pluginName) {
 // They remain in old sub plugins logic for now
 cScanPlugins("frontendusers");
 cScanPlugins("frontendlogic");
+
+#mp_d($cfg['plugins']);

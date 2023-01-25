@@ -311,11 +311,11 @@ class cLinkcheckerTester
         for ($i = 0; $i < count($aSearchIDInfosNonID); $i++) {
             $url = $aSearchIDInfosNonID[$i]['url'];
             $urlLength = cString::getStringLength($url);
-            if (!filter_var($url, FILTER_VALIDATE_URL) && !url_is_image($url)) {
+            if (!filter_var($url, FILTER_VALIDATE_URL) && !cLinkcheckerHelper::urlIsImage($url)) {
                 $aErrors['others'][] = array_merge($aSearchIDInfosNonID[$i], [
                     'error_type' => 'invalidurl',
                 ]);
-            } elseif (url_is_uri($url)) {
+            } elseif (cLinkcheckerHelper::urlIsUri($url)) {
                 if (cString::getPartOfString($url,0, $urlLength) == $frontendURL) {
                     $iPing = @cFileHandler::exists(str_replace($frontendURL, $frontendPath, $url));
                 } else {
@@ -323,7 +323,7 @@ class cLinkcheckerTester
                 }
 
                 if (!$iPing) {
-                    if (url_is_image($url)) {
+                    if (cLinkcheckerHelper::urlIsImage($url)) {
                         $aErrors['docimages'][] = array_merge($aSearchIDInfosNonID[$i], [
                             'error_type' => 'unknown',
                         ]);
@@ -364,7 +364,7 @@ class cLinkcheckerTester
                 }
             } else {
                 if (!cFileHandler::exists($frontendPath . $url)) {
-                    if (url_is_image($url)) {
+                    if (cLinkcheckerHelper::urlIsImage($url)) {
                         $aErrors['docimages'][] = array_merge($aSearchIDInfosNonID[$i], [
                             'error_type' => 'unknown',
                         ]);

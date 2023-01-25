@@ -28,7 +28,7 @@ abstract class cLogWriter {
      *
      * @var array
      */
-    protected $_options = array();
+    protected $_options = [];
 
     /**
      * Constructor to create an instance of this class.
@@ -36,7 +36,7 @@ abstract class cLogWriter {
      * @param array $options [optional]
      *         Array with options for the writer instance (optional)
      */
-    public function __construct($options = array()) {
+    public function __construct(array $options = []) {
         $this->setOptions($options);
 
         // Set all default options if they were not set already
@@ -64,7 +64,7 @@ abstract class cLogWriter {
         }
 
         $writer = new $logWriterClassName($writerOptions);
-        if (($writer instanceof cLogWriter) == false) {
+        if (!($writer instanceof cLogWriter)) {
             throw new cInvalidArgumentException('Provided class is not an instance of cLogWriter');
         }
 
@@ -103,7 +103,7 @@ abstract class cLogWriter {
      *         Flag to force setting the option value (optional, default: false)
      */
     public function setOption($option, $value, $force = false) {
-        if ($force == false && isset($this->_options[$option]) == true) {
+        if (!$force && isset($this->_options[$option])) {
             return;
         }
 

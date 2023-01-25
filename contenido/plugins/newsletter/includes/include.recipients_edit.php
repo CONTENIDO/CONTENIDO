@@ -13,7 +13,17 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $cfg, $action, $perm, $area, $client, $lang, $frame;
+/**
+ * @var cAuth $auth
+ * @var cPermission $perm
+ * @var cSession $sess
+ * @var array $cfg
+ * @var string $area
+ * @var string $action
+ * @var int $client
+ * @var int $lang
+ * @var int $frame
+ */
 
 $oPage = new cGuiPage("recipients_edit", "newsletter");
 $oRecipients = new NewsletterRecipientCollection();
@@ -213,5 +223,3 @@ if (true === $recipient->isLoaded() && $recipient->get("idclient") == $client &&
 }
 
 $oPage->render();
-
-?>

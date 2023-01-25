@@ -22,5 +22,10 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cTemplate $tpl
+ * @var array $cfg
+ */
+
 // Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['subnav_blank']);

@@ -20,5 +20,3 @@ try {
     SIWECOS::logException($e);
     SIWECOS::notifyException($e);
 }
-
-?>

@@ -13,6 +13,12 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cTemplate $tpl
+ * @var cSession $sess
+ * @var array $cfg
+ */
+
 $requestIdNewsletter = cSecurity::toInteger($_GET['idnewsletter'] ?? '0');
 
 if ($requestIdNewsletter <= 0) {

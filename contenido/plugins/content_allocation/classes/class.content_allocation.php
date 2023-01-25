@@ -390,7 +390,7 @@ class pApiContentAllocation {
     }
 
     /**
-     * Search articles by catgories without start articles
+     * Search articles by categories without start articles
      *
      * @param array $categories [optional]
      * @param int    $offset     [optional]

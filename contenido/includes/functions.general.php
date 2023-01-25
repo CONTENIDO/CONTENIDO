@@ -1270,7 +1270,7 @@ function isRunningFromWeb() {
 /**
  * @param $entity
  * @return void
- * cDeprecated("The function scanPlugins() is deprecated since CONTENIDO 4.10.2, use cScanPlugins() instead.");
+ * @deprecated Since 4.10.2, use cScanPlugins() instead
  */
 function scanPlugins($entity) {
     cDeprecated("The function scanPlugins() is deprecated since CONTENIDO 4.10.2, use cScanPlugins() instead.");

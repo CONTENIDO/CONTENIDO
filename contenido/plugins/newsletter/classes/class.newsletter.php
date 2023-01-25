@@ -41,9 +41,7 @@ class NewsletterCollection extends ItemCollection
      * @param $sName string specifies the newsletter name
      *
      * @return Item
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($sName)
     {
@@ -78,9 +76,7 @@ class NewsletterCollection extends ItemCollection
      * @param  int $iItemID specifies the newsletter id
      *
      * @return Item
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function duplicate($iItemID)
     {
@@ -178,7 +174,7 @@ class Newsletter extends Item
     }
 
     /**
-     * Overriden store()-Method to set modified and modifiedby data and
+     * Overridden store()-Method to set modified and modifiedby data and
      * to ensure, that there is only one welcome newsletter
      *
      * @throws cException
@@ -213,7 +209,7 @@ class Newsletter extends Item
     }
 
     /**
-     * Userdefined setter for newsletter fields.
+     * User-defined setter for newsletter fields.
      *
      * @param string $name
      * @param mixed  $value
@@ -795,9 +791,7 @@ class Newsletter extends Item
      * @param string $sEncoding    Message (and header) encoding, e.g. iso-8859-1
      *
      * @return bool
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function sendDirect($iIDCatArt, $iIDNewsRcp = false, $iIDNewsGroup = false, &$aSendRcps = [], $sEncoding = "iso-8859-1")
     {

@@ -20,5 +20,3 @@ try {
     Solr::logException($e);
     echo Solr::notifyException($e);
 }
-
-?>

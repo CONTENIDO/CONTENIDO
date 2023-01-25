@@ -44,16 +44,12 @@ class SolrRightBottomPage extends cGuiPage {
     private $_clientOptions;
 
     /**
-     * @throws SolrClientException
-     * @throws cDbException
-     * @throws cException
-     * @global string $action to be performed
+     * @throws SolrClientException|cDbException|cException
      */
     public function __construct() {
-
-        global $action;
-
         parent::__construct('right_bottom', Solr::getName());
+
+        $action = cRegistry::getAction();
 
         $this->addStyle('smoothness/jquery-ui-1.8.20.custom.css');
         $this->addStyle('right_bottom.css');
@@ -135,17 +131,15 @@ class SolrRightBottomPage extends cGuiPage {
      *
      * @param string $action to be executed
      *
-     * @throws SolrClientException
-     * @throws cDbException
-     * @throws cException
+     * @throws SolrClientException|cDbException|cException
      */
     protected function _dispatch($action) {
-        global $area;
+        $area = cRegistry::getArea();
 
         // check for permission
         $perm = cRegistry::getPerm();
         if (!$perm->have_perm_area_action($area, $action)) {
-            throw new IllegalStateException('no permissions');
+            throw new cException('no permissions');
         }
 
         if (NULL === $action) {
@@ -186,7 +180,7 @@ class SolrRightBottomPage extends cGuiPage {
         $settings .= 'proxy_host,proxy_port,proxy_login,proxy_password,';
         $settings .= 'ssl_cert,ssl_key,ssl_keypassword,ssl_cainfo,ssl_capath';
         foreach (explode(',', $settings) as $setting) {
-            $value = $_POST[$setting];
+            $value = $_POST[$setting] ?? '';
             if (0 < cString::getStringLength(trim($value))) {
                 setSystemProperty('solr', $setting, $value);
             } else {
@@ -209,21 +203,21 @@ class SolrRightBottomPage extends cGuiPage {
 
         // build URL
         // @see https://en.wikipedia.org/wiki/Basic_access_authentication
+        $pathList = explode('/', $this->_clientOptions['path']);
         $url = 'http://';
         $url .= $this->_clientOptions['login'] . ':' . $this->_clientOptions['password'] . '@';
         $url .= $this->_clientOptions['hostname'] . ':' . $this->_clientOptions['port'];
-        $url .= '/solr/admin/cores?' . http_build_query(array(
-                    'action' => 'RELOAD',
-                    'core' => array_pop(explode('/', $this->_clientOptions['path']))
-        ));
+        $url .= '/solr/admin/cores?' . http_build_query([
+            'action' => 'RELOAD',
+            'core' => array_pop($pathList)
+            ]);
 
         // create curl resource
         $ch = curl_init();
 
         $data = false;
         if (false !== $ch) {
-
-            $opt = array(
+            $opt = [
                 // set url
                 CURLOPT_URL => $url,
                 // TRUE to reset the HTTP request method to GET.
@@ -241,7 +235,7 @@ class SolrRightBottomPage extends cGuiPage {
                 CURLOPT_RETURNTRANSFER => 1,
                 // TRUE to include the header in the output.
                 CURLOPT_HEADER => false
-            );
+            ];
 
             curl_setopt_array($ch, $opt);
 
@@ -323,16 +317,16 @@ class SolrRightBottomPage extends cGuiPage {
                 art_lang.idartlang
             ;");
 
-        $articleIds = array();
+        $articleIds = [];
         while ($db->nextRecord()) {
-            array_push($articleIds, array(
+            $articleIds[] = [
                 'idclient' => $db->f('idclient'),
                 'idlang' => $db->f('idlang'),
                 'idcat' => $db->f('idcat'),
                 'idcatlang' => $db->f('idcatlang'),
                 'idart' => $db->f('idart'),
                 'idartlang' => $db->f('idartlang')
-            ));
+            ];
         }
 
         $indexer = new SolrIndexer($articleIds);
@@ -349,7 +343,6 @@ class SolrRightBottomPage extends cGuiPage {
      * @throws cException
      */
     private function _delete() {
-
         $cfg = cRegistry::getConfig();
 
         // statement is not correct if articles are related to more than one category.
@@ -381,16 +374,16 @@ class SolrRightBottomPage extends cGuiPage {
                 art_lang.idartlang
             ;");
 
-        $articleIds = array();
+        $articleIds = [];
         while ($db->nextRecord()) {
-            array_push($articleIds, array(
+            $articleIds[] = [
                 'idclient' => $db->f('idclient'),
                 'idlang' => $db->f('idlang'),
                 'idcat' => $db->f('idcat'),
                 'idcatlang' => $db->f('idcatlang'),
                 'idart' => $db->f('idart'),
                 'idartlang' => $db->f('idartlang')
-            ));
+            ];
         }
 
         $indexer = new SolrIndexer($articleIds);

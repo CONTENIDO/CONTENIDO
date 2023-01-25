@@ -178,8 +178,8 @@ class ModRewriteUrlStack {
             $this->_chunkSetPrettyUrlParts($sStackId);
         }
         return [
-            'urlpath' => $this->_aStack[$sStackId]['urlpath'],
-            'urlname' => $this->_aStack[$sStackId]['urlname']
+            'urlpath' => $this->_aStack[$sStackId]['urlpath'] ?? '',
+            'urlname' => $this->_aStack[$sStackId]['urlname'] ?? ''
         ];
     }
 

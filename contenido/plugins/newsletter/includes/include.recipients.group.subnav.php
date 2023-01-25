@@ -13,7 +13,16 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-if (!isset($_GET['idrecipientgroup']) || (int) $_GET['idrecipientgroup'] <= 0) {
+/**
+ * @var cTemplate $tpl
+ * @var cSession $sess
+ * @var array $cfg
+ * @var string $area
+ */
+
+$requestIddRecipientGroup = cSecurity::toInteger($_GET['idrecipientgroup'] ?? '');
+
+if ($requestIddRecipientGroup <= 0) {
     $tpl->reset();
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['right_top_blank']);
     return;
@@ -28,7 +37,7 @@ $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
 $tpl->set('d', 'DATA_NAME', $area);
 $tpl->set('d', 'CLASS', '');
 $tpl->set('d', 'OPTIONS', '');
-$tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=$area&frame=4&idrecipientgroup=$idrecipientgroup"), $caption));
+$tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=$area&frame=4&idrecipientgroup=$requestIddRecipientGroup"), $caption));
 $tpl->next();
 
 if (cHasPlugins('recipientslogic')) {
@@ -43,7 +52,7 @@ if (cHasPlugins('recipientslogic')) {
         $tpl->set('d', 'DATA_NAME', 'recipientgroup_rights');
         $tpl->set('d', 'CLASS', '');
         $tpl->set('d', 'OPTIONS', '');
-        $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=recipientgroup_rights&frame=4&useplugin=$plugin&idrecipientgroup=$idrecipientgroup"), $caption));
+        $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=recipientgroup_rights&frame=4&useplugin=$plugin&idrecipientgroup=$requestIddRecipientGroup"), $caption));
         $tpl->next();
     }
 }

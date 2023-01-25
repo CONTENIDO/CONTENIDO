@@ -13,7 +13,18 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $action, $perm, $area, $client, $lang, $auth, $frame, $sess;
+/**
+ * @var cAuth $auth
+ * @var cPermission $perm
+ * @var cSession $sess
+ * @var array $cfg
+ * @var string $area
+ * @var string $action
+ * @var int $client
+ * @var int $lang
+ * @var int $frame
+ */
+
 
 // Initialization
 $oPage = new cGuiPage("recipients.group_edit", "newsletter");
@@ -297,6 +308,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
 
     $oInsiders = '';
     $aInsiders = [];
+    $iMembers = 0;
     if (count($groupRecipients) > 0) {
         $oInsiders = new NewsletterRecipientCollection();
         $oInsiders->setWhere("idclient", $client);
@@ -605,7 +617,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
 
     $oForm->add(
         i18n("Add recipients", 'newsletter'),
-        '<table border="0" cellspacing="0" cellpadding="0" width="100%">'
+        '<table data-foo="bar" border="0" cellspacing="0" cellpadding="0" width="100%">'
         . $oOutsiderListOptionRow->render() . $oOutsiderPager->render()
         . '<tr><td>' . $oSelUser->render() . '<br>'
         . i18n("Note: Hold &lt;Ctrl&gt; to<br>select multiple items.", 'newsletter')

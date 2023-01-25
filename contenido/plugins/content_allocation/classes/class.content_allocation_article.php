@@ -100,7 +100,7 @@ class pApiContentAllocationArticle extends pApiTree {
 
             $result[] = $item;
 
-            if ($item_tmp['children']) {
+            if (count($item_tmp['children'])) {
                 $children = $this->_buildRenderTree($item_tmp['children']);
                 $result = array_merge($result, $children);
             }

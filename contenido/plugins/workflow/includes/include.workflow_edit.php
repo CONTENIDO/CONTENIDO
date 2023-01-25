@@ -15,15 +15,21 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $idworkflow, $wfname, $wfdescription;
 
-plugin_include('workflow', 'classes/class.workflow.php');
+/**
+ * @var string $action
+ * @var int $frame
+ * @var string $area
+ */
+
+$requestIdWorkflow = cSecurity::toInteger($_GET['idworkflow'] ?? '0');
 
 $page = new cGuiPage("workflow_edit", "workflow");
 $page->addStyle('workflow.css');
 
 $workflows = new Workflows();
 
-if ($action == "workflow_delete") {
-    $workflows->delete($idworkflow);
+if ($action == "workflow_delete" && $requestIdWorkflow) {
+    $workflows->delete($requestIdWorkflow);
 
     $page->setSubnav('blank', 'workflow');
     $page->reloadLeftBottomFrame(['idworkflow' => null]);
@@ -34,10 +40,10 @@ if ($action == "workflow_delete") {
 
 $form = new cGuiTableForm("workflow_edit");
 
-$workflow = $workflows->loadItem($idworkflow);
+$workflow = $workflows->loadItem($requestIdWorkflow);
 
 if ($action == "workflow_save") {
-    if ($idworkflow == "-1") {
+    if ($requestIdWorkflow <= 0) {
         $workflow = $workflows->create();
         $page->displayOk(i18n("Created new workflow successfully!", 'workflow'));
     } elseif ($idworkflow > 0) {
@@ -45,12 +51,12 @@ if ($action == "workflow_save") {
     }
     $workflow->set("name",  str_replace('\\', '', $wfname));
     $workflow->set("description", str_replace('\\', '', $wfdescription));
-    $idworkflow = $workflow->get("idworkflow");
+    $idworkflow = cSecurity::toInteger($workflow->get("idworkflow"));
     $workflow->store();
 }
 
-if ((int) $idworkflow == 0) {
-    $idworkflow = $_GET['idworkflow'];
+if ($idworkflow <= 0) {
+    $idworkflow = $requestIdWorkflow;
 }
 
 $form->setVar("area", $area);
@@ -61,13 +67,15 @@ $form->setVar("frame", $frame);
 if (true !== $workflow->isLoaded()) {
     $name = i18n("New Workflow", "workflow");
     $header = i18n("Create new workflow", "workflow");
+    $description = '';
+    $author = '';
 } else {
     $header = i18n("Edit workflow", "workflow");
     $description = preg_replace("/\"/","",($workflow->getField("description")));
     $name = preg_replace("/\"/","",($workflow->getField("name")));
     $created = displayDatetime($workflow->get("created"));
-    $userclass = new cApiUser($workflow->get("idauthor"));
-    $author = $userclass->getEffectiveName();
+    $userObj = new cApiUser($workflow->get("idauthor"));
+    $author = $userObj->getEffectiveName();
 }
 
 $form->addHeader($header);

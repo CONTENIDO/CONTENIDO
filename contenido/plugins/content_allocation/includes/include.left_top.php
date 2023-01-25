@@ -15,5 +15,3 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $oPage = new cGuiPage("left_top", "content_allocation");
 $oPage->render();
-
-?>

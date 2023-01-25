@@ -67,12 +67,18 @@ class cRegistry {
      * configuration file.
      *
      * @author konstantinos.katikakis
+     * @param  bool  $relativeToRoot
+     *         Flag to return relative path from project root
      * @return string
      *         path
      */
-    public static function getBackendPath() {
+    public static function getBackendPath($relativeToRoot = false) {
         $cfg = self::getConfig();
-        return $cfg['path']['contenido'];
+        if (!$relativeToRoot) {
+            return $cfg['path']['contenido'];
+        } else {
+            return str_replace($cfg['path']['frontend'] . '/', '', $cfg['path']['contenido']);
+        }
     }
 
     /**

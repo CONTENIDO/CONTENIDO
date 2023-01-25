@@ -14,36 +14,39 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+global $cfg;
+
+$pluginName = basename(dirname(__DIR__, 1));
+
 // Plugin configuration
 $cfg['pi_linkchecker'] = [
-    'pluginName' => 'linkchecker',
+    'pluginName' => $pluginName,
     'whitelistTimeout' => 2592000, // 30 days
     'cacheLifeTime' => 1209600, // two weeks
 ];
 
-$pluginName = $cfg['pi_linkchecker']['pluginName'];
-
-// paths
-$cfg['plugins']['linkchecker'] = cRegistry::getBackendPath() . "plugins/$pluginName/";
-$cfg['tab']['whitelist']       = $cfg['sql']['sqlprefix'] . '_pi_linkwhitelist';
-
-// Add classes to autoloader
-$classPath = 'contenido/plugins/$pluginName/classes';
-cAutoload::addClassmapConfig([
-    'cLinkcheckerCategoryHelper' => "$classPath/class.linkchecker.category_helper.php",
-    'cLinkcheckerRepair'         => "$classPath/class.linkchecker.repair.php",
-    'cLinkcheckerSearchLinks'    => "$classPath/class.linkchecker.search_links.php",
-    'cLinkcheckerTester'         => "$classPath/class.linkchecker.tester.php",
-]);
+// Paths & tables
+$cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/";
+$cfg['tab']['whitelist']     = $cfg['sql']['sqlprefix'] . '_pi_linkwhitelist';
 
 // Add templates to templates configuration
-$templatePath = $cfg['plugins']['linkchecker'] . 'templates/standard';
-$cfg['templates']['linkchecker_test']            = "$templatePath/template.linkchecker_test.html";
-$cfg['templates']['linkchecker_test_errors']     = "$templatePath/template.linkchecker_test_errors.html";
-$cfg['templates']['linkchecker_test_errors_cat'] = "$templatePath/template.linkchecker_test_errors_cat.html";
-$cfg['templates']['linkchecker_test_nothing']    = "$templatePath/template.linkchecker_test_nothing.html";
-$cfg['templates']['linkchecker_noerrors']        = "$templatePath/template.linkchecker_noerrors.html";
-$cfg['templates']['linkchecker_whitelist']       = "$templatePath/template.linkchecker_whitelist.html";
-$cfg['templates']['linkchecker_whitelist_urls']  = "$templatePath/template.linkchecker_whitelist_urls.html";
+$pluginTemplatesPath = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/templates/standard";
+$cfg['templates']['linkchecker_test']            = "$pluginTemplatesPath/template.linkchecker_test.html";
+$cfg['templates']['linkchecker_test_errors']     = "$pluginTemplatesPath/template.linkchecker_test_errors.html";
+$cfg['templates']['linkchecker_test_errors_cat'] = "$pluginTemplatesPath/template.linkchecker_test_errors_cat.html";
+$cfg['templates']['linkchecker_test_nothing']    = "$pluginTemplatesPath/template.linkchecker_test_nothing.html";
+$cfg['templates']['linkchecker_noerrors']        = "$pluginTemplatesPath/template.linkchecker_noerrors.html";
+$cfg['templates']['linkchecker_whitelist']       = "$pluginTemplatesPath/template.linkchecker_whitelist.html";
+$cfg['templates']['linkchecker_whitelist_urls']  = "$pluginTemplatesPath/template.linkchecker_whitelist_urls.html";
 
-unset($pluginName, $classPath, $templatePath);
+// Add classes to autoloader
+$pluginClassesPath = cRegistry::getBackendPath(true) . $cfg['path']['plugins'] . "$pluginName/classes";
+cAutoload::addClassmapConfig([
+    'cLinkcheckerCategoryHelper' => "$pluginClassesPath/class.linkchecker.category_helper.php",
+    'cLinkcheckerHelper'         => "$pluginClassesPath/class.linkchecker.helper.php",
+    'cLinkcheckerRepair'         => "$pluginClassesPath/class.linkchecker.repair.php",
+    'cLinkcheckerSearchLinks'    => "$pluginClassesPath/class.linkchecker.search_links.php",
+    'cLinkcheckerTester'         => "$pluginClassesPath/class.linkchecker.tester.php",
+]);
+
+unset($pluginName, $pluginClassesPath, $pluginTemplatesPath);

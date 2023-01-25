@@ -235,7 +235,7 @@ class ModRewriteController extends ModRewriteBase {
      * @throws cInvalidArgumentException
      */
     public function execute() {
-        if (parent::isEnabled() == false) {
+        if (!parent::isEnabled()) {
             return;
         }
 
@@ -275,7 +275,7 @@ class ModRewriteController extends ModRewriteBase {
         $client = cRegistry::getClientId();
 
         // get REQUEST_URI
-        $requestUri = $_SERVER['REQUEST_URI'];
+        $requestUri = $_SERVER['REQUEST_URI'] ?? '';
         // CON-1266 make request URL lowercase if option "URLS to
         // lowercase" is set
         if (1 == $this->getConfig('use_lowercase_uri')) {
@@ -374,7 +374,6 @@ class ModRewriteController extends ModRewriteBase {
         $iChangeClient = (isset($changeclient) && (int) $changeclient > 0) ? $changeclient : 0;
         $iLoadClient = (isset($load_client) && (int) $load_client > 0) ? $load_client : 0;
 
-        $this->_iClientMR = 0;
         if ($iClient > 0 && $iChangeClient == 0) {
             $this->_iClientMR = $iClient;
         } elseif ($iChangeClient > 0) {
@@ -399,7 +398,6 @@ class ModRewriteController extends ModRewriteBase {
         $iChangeLang = (isset($changelang) && (int) $changelang > 0) ? $changelang : 0;
         $iLoadLang = (isset($load_lang) && (int) $load_lang > 0) ? $load_lang : 0;
 
-        $this->_iLangMR = 0;
         if ($iLang > 0 && $iChangeLang == 0) {
             $this->_iLangMR = $iLang;
         } elseif ($iChangeLang > 0) {
@@ -525,7 +523,7 @@ class ModRewriteController extends ModRewriteBase {
             $idcat = NULL;
         } else {
             // unset $this->_sPath if $idcat could set, otherwise it would be resolved again.
-            unset($this->_sPath);
+            $this->_sPath = '';
         }
 
         ModRewriteDebugger::add($idcat, 'ModRewriteController->_setPathresolverSetting $idcat');

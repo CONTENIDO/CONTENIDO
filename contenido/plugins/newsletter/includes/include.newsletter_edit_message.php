@@ -13,6 +13,18 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cAuth $auth
+ * @var cPermission $perm
+ * @var cSession $sess
+ * @var array $cfg
+ * @var string $action
+ * @var string $area
+ * @var int $client
+ * @var int $lang
+ * @var int $frame
+ */
+
 cInclude("includes", "functions.con.php"); // For conDeleteArt and conCopyArt
 
 // Initialization
@@ -20,9 +32,7 @@ $oPage = new cGuiPage("newsletter_edit_message", "newsletter");
 $oClientLang = new cApiClientLanguage(false, $client, $lang);
 
 // Ensure to have numeric newsletter id
-if (isset($idnewsletter)) {
-    $idnewsletter = (int) $idnewsletter;
-}
+$requestIdNewsletter = cSecurity::toInteger($_REQUEST['idnewsletter'] ?? '0');
 
 // Include plugins
 if (cHasPlugins('newsletters')) {
@@ -31,8 +41,8 @@ if (cHasPlugins('newsletters')) {
 
 // Exec actions
 $oNewsletter = new Newsletter();
-if (isset($idnewsletter)) {
-    $oNewsletter->loadByPrimaryKey($idnewsletter);
+if ($requestIdNewsletter > 0) {
+    $oNewsletter->loadByPrimaryKey($requestIdNewsletter);
 }
 
 if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $client && $oNewsletter->get("idlang") == $lang) {
@@ -115,7 +125,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     $oForm->setVar("frame", $frame);
     $oForm->setVar("area", $area);
     $oForm->setVar("action", "news_save");
-    $oForm->setVar("idnewsletter", $idnewsletter);
+    $oForm->setVar("idnewsletter", $requestIdNewsletter);
 
     $oForm->addHeader(sprintf(i18n("Edit newsletter message (%s)", 'newsletter'), $oNewsletter->get("name")));
     $oForm->add(i18n("Subject", 'newsletter'), $oNewsletter->get("subject"));
@@ -157,6 +167,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     if ($oNewsletter->get("type") == "html") {
         $iTplIDArt = $oNewsletter->get("template_idart");
         $oSelTemplate = new cHTMLSelectElement("selTemplate");
+        $oSelTemplate->setClass('text_medium');
         $oSelTemplate->setEvent("change", "askSubmitOnTplChange(this);");
         $aOptions = [
             "idcat" => $oClientLang->getProperty("newsletter", "html_template_idcat"),

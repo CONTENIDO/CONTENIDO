@@ -928,7 +928,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
     public function fetchObject($sClassName) {
         $sKey = cString::toLowerCase($sClassName);
 
-        if (!is_object($this->_collectionCache[$sKey])) {
+        if (empty($this->_collectionCache[$sKey]) || !is_object($this->_collectionCache[$sKey])) {
             $this->_collectionCache[$sKey] = new $sClassName();
         }
         /* @var $obj ItemCollection */

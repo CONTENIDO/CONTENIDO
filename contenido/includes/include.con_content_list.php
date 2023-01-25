@@ -35,6 +35,19 @@ if (!isset($idcat)) {
     return;
 }
 
+$sess->register('encoding');
+
+// Initialize encodings
+if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0) {
+    // Get encodings of all languages
+    $encoding  = [];
+    $oLangColl = new cApiLanguageCollection();
+    $oLangColl->select('');
+    while ($oLang = $oLangColl->next()) {
+        $encoding[$oLang->get('idlang')] = $oLang->get('encoding');
+    }
+}
+
 $edit = 'true';
 $scripts = '';
 // export only these content types
@@ -1043,15 +1056,15 @@ function _processCmsTags($list, $contentList, $saveKeywords, $layoutCode, $artic
     // content type codes within backend edit mode!
     global $edit, $editLink, $belang;
 
-    $idcat = $_REQUEST['idcat'];
-    $idart = $_REQUEST['idart'];
-    $lang = $_REQUEST['lang'];
-    $client = $_REQUEST['client'];
-    $idartlang = $_REQUEST['idartlang'];
-    $contenido = $_REQUEST['contenido'];
+    $idcat = cSecurity::toInteger($_REQUEST['idcat'] ?? '0');
+    $idart = cSecurity::toInteger($_REQUEST['idart'] ?? '0');
+    $lang = cSecurity::toInteger($_REQUEST['lang'] ?? '0');
+    $client = cSecurity::toInteger($_REQUEST['client'] ?? '0');
+    $idartlang = cSecurity::toInteger($_REQUEST['idartlang'] ?? '0');
+    $contenido = $_REQUEST['contenido'] ?? '';
 
     // Get locked status (article freeze)
-    $cApiArticleLanguage = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
+    $cApiArticleLanguage = new cApiArticleLanguage($idartlang);
     $locked = $cApiArticleLanguage->getField('locked');
 
     // admin can edit article despite its locked status
@@ -1083,8 +1096,8 @@ function _processCmsTags($list, $contentList, $saveKeywords, $layoutCode, $artic
     $_typeList = [];
     $oTypeColl = new cApiTypeCollection();
     $oTypeColl->select('idtype IN (' . implode(',', array_map(function ($i) {
-            return (int)$i;
-        }, array_keys($list))) . ')');
+        return (int)$i;
+    }, array_keys($list))) . ')');
     if (0 < $oTypeColl->count()) {
         while (false !== ($oType = $oTypeColl->next())) {
             $_typeList[] = $oType->toObject();
@@ -1093,7 +1106,6 @@ function _processCmsTags($list, $contentList, $saveKeywords, $layoutCode, $artic
 
     // Replace all CMS_TAGS[]
     foreach ($_typeList as $_typeItem) {
-
         $key = cString::toLowerCase($_typeItem->type);
         $type = $_typeItem->type;
 
@@ -1136,7 +1148,7 @@ function _processCmsTags($list, $contentList, $saveKeywords, $layoutCode, $artic
             }
 
             $versioning = new cContentVersioning();
-            $idcontent = $versioning->getContentId(cSecurity::toInteger($_REQUEST["idartlang"]), cSecurity::toInteger($val), cSecurity::toString($type), $versioningState, $articleType, $version);
+            $idcontent = $versioning->getContentId(cSecurity::toInteger($_REQUEST["idartlang"] ?? ''), cSecurity::toInteger($val), cSecurity::toString($type), $versioningState, $articleType, $version);
 
             $backendUrl = cRegistry::getBackendUrl();
             $num = (int)$val;
@@ -1155,10 +1167,10 @@ function _processCmsTags($list, $contentList, $saveKeywords, $layoutCode, $artic
             // article can be edited or (article is published version and versioning is turned off or set to simple mode)
             if (($locked == 0 || true === $isAdmin) && ($articleType == 'editable' || ($articleType == 'current' && ($versioningState == 'disabled' || $versioningState == 'simple')))) { // No freeze
                 $replacements[$num] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); }); return false;">
-            <img src="' . $backendUrl . 'images/delete.gif">
+            <img src="' . $backendUrl . 'images/delete.gif" alt="">
             </a>';
                 $keycode[$type][$num] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); }); return false;">
-            <img src="' . $backendUrl . 'images/delete.gif">
+            <img src="' . $backendUrl . 'images/delete.gif" alt="">
             </a>';
             } else { // Freeze status
                 $replacements[$num] = $tmp;

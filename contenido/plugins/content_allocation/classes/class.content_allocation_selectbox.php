@@ -79,7 +79,7 @@ class pApiContentAllocationSelectBox extends pApiTree {
 
             $result .= '<option value="'.$item_tmp['idpica_alloc'].'_'.$item_tmp['level'].'">'.$spacer . $item_tmp['name'].'</option>';
 
-            if ($item_tmp['children']) {
+            if (count($item_tmp['children'])) {
                 $children = $this->_buildRenderTree($item_tmp['children']);
                 $result .= $children;
             }
@@ -108,7 +108,7 @@ class pApiContentAllocationSelectBox extends pApiTree {
      * @param mixed   $parentId
      * @param bool $useTreeStatus (if true use expand/collapsed status of the tree, otherwise not)
      *
-     * @return bool|string|null
+     * @return bool|string|void
      * @throws cDbException
      */
     public function renderTree($return = true, $parentId = false, $useTreeStatus = false) {

@@ -13,11 +13,11 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $idworkflow;
+/**
+ * @var array $cfg
+ */
 
-$iIdMarked = cSecurity::toInteger($_GET['idworkflow']);
-
-plugin_include('workflow', 'classes/class.workflow.php');
+$requestIdWorkflow = cSecurity::toInteger($_GET['idworkflow'] ?? '0');
 
 $page = new cGuiPage('workflow_list', 'workflow');
 $page->addStyle('workflow.css');
@@ -57,7 +57,7 @@ while (($workflow = $workflows->next()) !== false) {
         ->setContent($image->render());
     $ui->setActions($wfid, 'delete', $delete->render());
 
-    if ($wfid == $iIdMarked) {
+    if ($wfid == $requestIdWorkflow) {
         $ui->setMarked($wfid);
     }
 }
