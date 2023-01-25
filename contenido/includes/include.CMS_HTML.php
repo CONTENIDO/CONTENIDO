@@ -99,7 +99,7 @@ ob_start();
             <?php echo $inputHTML ?>
 
             <p class="cms_edit_row text_medium">
-                &nbsp;<?php echo $typenr?>.&nbsp;<?php echo $a_description[$type][$typenr]?>:&nbsp;
+                &nbsp;<?php echo $typenr?>.&nbsp;<?php echo $a_description[$type][$typenr] ?? '' ?>:&nbsp;
             </p>
 
             <div class="cms_edit_row">
