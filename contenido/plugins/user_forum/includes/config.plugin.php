@@ -20,7 +20,7 @@ $pluginName = basename(dirname(__DIR__, 1));
 $cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/";
 
 // define template names
-$pluginTemplatesPath = cRegistry::getBackendPath() . "plugins/$pluginName/templates";
+$pluginTemplatesPath = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/templates";
 $cfg['templates']['user_forum_left_bottom'] = $pluginTemplatesPath . '/template.left_bottom.html';
 
 // define table names
