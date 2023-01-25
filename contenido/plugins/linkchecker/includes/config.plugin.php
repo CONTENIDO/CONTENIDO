@@ -43,6 +43,7 @@ $cfg['templates']['linkchecker_whitelist_urls']  = "$pluginTemplatesPath/templat
 $pluginClassesPath = cRegistry::getBackendPath(true) . $cfg['path']['plugins'] . "$pluginName/classes";
 cAutoload::addClassmapConfig([
     'cLinkcheckerCategoryHelper' => "$pluginClassesPath/class.linkchecker.category_helper.php",
+    'cLinkcheckerHelper'         => "$pluginClassesPath/class.linkchecker.helper.php",
     'cLinkcheckerRepair'         => "$pluginClassesPath/class.linkchecker.repair.php",
     'cLinkcheckerSearchLinks'    => "$pluginClassesPath/class.linkchecker.search_links.php",
     'cLinkcheckerTester'         => "$pluginClassesPath/class.linkchecker.tester.php",

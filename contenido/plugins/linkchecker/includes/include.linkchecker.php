@@ -34,7 +34,7 @@ $cronjob = $cronjob ?? false;
 
 if (!$cronjob) {
     // Check permissions for linkchecker action
-    if (!$perm->have_perm_area_action($pluginName, "linkchecker") && $cronjob != true) {
+    if (!$perm->have_perm_area_action($pluginName, "linkchecker")) {
         cRegistry::addErrorMessage(i18n("No permissions"));
         $page = new cGuiPage('generic_page');
         $page->abortRendering();
@@ -42,7 +42,7 @@ if (!$cronjob) {
         exit();
     }
 
-    if (cRegistry::getClientId() == 0 && $cronjob != true) {
+    if (cRegistry::getClientId() == 0) {
         $notification->displayNotification("error", i18n("No Client selected"));
         exit();
     }
@@ -50,13 +50,9 @@ if (!$cronjob) {
 
 // If no mode defined, use mode 3 (1 = intern, 2 = extern, 3 = intern/extern)
 $requestMode = cSecurity::toInteger($_GET['mode'] ?? '3');
-$_GET['mode'] = $requestMode;
 
 // If no action defined
-if (empty($_GET['action'])) {
-    $_GET['action'] = 'linkchecker';
-    $action = 'linkchecker';
-}
+$requestAction = $_GET['action'] ?? 'linkchecker';
 
 // Initialization
 $aCats                = [];
@@ -70,27 +66,6 @@ $aUrl = [
     'cms' => cRegistry::getFrontendUrl(),
     'contenido' => cRegistry::getBackendUrl()
 ];
-
-// Template- and languagevars
-if ($cronjob != true) {
-    $tpl->set('s', 'MODE', $requestMode);
-}
-
-// Fill Subnav I
-if (!$cronjob) {
-    $sLink = $sess->url("main.php?area=linkchecker&frame=4&action=linkchecker") . '&mode=';
-
-    // Fill Subnav II
-    $tpl->set('s', 'INTERNS_HREF', $sLink . '1');
-    $tpl->set('s', 'INTERNS_LABEL', i18n("Interns", $pluginName));
-    $tpl->set('s', 'EXTERNS_HREF', $sLink . '2');
-    $tpl->set('s', 'EXTERNS_LABEL', i18n("Externs", $pluginName));
-    $tpl->set('s', 'INTERNS_EXTERNS_HREF', $sLink . '3');
-    $tpl->set('s', 'INTERNS_EXTERNS_LABEL', i18n("Intern/extern Links", $pluginName));
-
-    // Fill Subnav III
-    $tpl->set('s', 'UPDATE_HREF', $sLink . $requestMode . '&live=1');
-}
 
 // Cache options
 // TODO find out where the variable $aCacheName is used and where it is set.
@@ -111,65 +86,27 @@ $oCache = new cFileCache([
  */
 
 /**
- * @param array $sErrors
- * @param string $requestSort
- *
- * @return mixed
+ * @deprecated Since 4.10.2, use cLinkcheckerHelper::sortErrors() instead
  */
 function linksort($sErrors, $requestSort) {
-    if ($requestSort == "nameart") {
-        $aNameArt = [];
-        foreach ($sErrors as $key => $aRow) {
-            $aNameArt[$key] = $aRow['nameart'];
-        }
-        array_multisort($sErrors, SORT_ASC, SORT_STRING, $aNameArt);
-    } elseif ($requestSort == "namecat") {
-        $aNameCat = [];
-        foreach ($sErrors as $key => $aRow) {
-            $aNameCat[$key] = $aRow['namecat'];
-        }
-        array_multisort($sErrors, SORT_ASC, SORT_STRING, $aNameCat);
-    } elseif ($requestSort == "wronglink") {
-        $aWrongLink = [];
-        foreach ($sErrors as $key => $aRow) {
-            $aWrongLink[$key] = $aRow['url'];
-        }
-        array_multisort($sErrors, SORT_ASC, SORT_STRING, $aWrongLink);
-    } elseif ($requestSort == "error_type") {
-        $aErrorType = [];
-        foreach ($sErrors as $key => $aRow) {
-            $aErrorType[$key] = $aRow['error_type'];
-        }
-        array_multisort($sErrors, SORT_ASC, SORT_STRING, $aErrorType);
-    }
-
-    return $sErrors;
+    cDeprecated("The function linksort() is deprecated since CONTENIDO 4.10.2, use cLinkcheckerHelper::sortErrors() instead.");
+    return cLinkcheckerHelper::sortErrors($sErrors, $requestSort);
 }
 
 /**
- * @param $sUrl
- *
- * @return bool
+ * @deprecated Since 4.10.2, use cLinkcheckerHelper::urlIsImage() instead
  */
 function url_is_image($sUrl) {
-    if (cString::getPartOfString($sUrl, -3, 3) == "gif" || cString::getPartOfString($sUrl, -3, 3) == "jpg" || cString::getPartOfString($sUrl, -4, 4) == "jpeg" || cString::getPartOfString($sUrl, -3, 3) == "png" || cString::getPartOfString($sUrl, -3, 3) == "tif" || cString::getPartOfString($sUrl, -3, 3) == "psd" || cString::getPartOfString($sUrl, -3, 3) == "bmp") {
-        return true;
-    } else {
-        return false;
-    }
+    cDeprecated("The function url_is_image() is deprecated since CONTENIDO 4.10.2, use cLinkcheckerHelper::urlIsImage() instead.");
+    return cLinkcheckerHelper::urlIsImage($sUrl);
 }
 
 /**
- * @param $sUrl
- *
- * @return bool
+ * @deprecated Since 4.10.2, use cLinkcheckerHelper::urlIsUri() instead
  */
 function url_is_uri($sUrl) {
-    if (cString::getPartOfString($sUrl, 0, 4) == "file" || cString::getPartOfString($sUrl, 0, 3) == "ftp" || cString::getPartOfString($sUrl, 0, 4) == "http" || cString::getPartOfString($sUrl, 0, 2) == "ww") {
-        return true;
-    } else {
-        return false;
-    }
+    cDeprecated("The function url_is_uri() is deprecated since CONTENIDO 4.10.2, use cLinkcheckerHelper::urlIsUri() instead.");
+    return cLinkcheckerHelper::urlIsUri($sUrl);
 }
 
 /// Repair some selected link
@@ -231,12 +168,13 @@ while ($db->nextRecord()) {
 $sCache_errors = $oCache->get($aCacheName['errors'], $requestMode);
 
 // Search if cache doesn't exist, or we're in live mode
-if ($sCache_errors && $_GET['live'] != 1) {
+$requestLive = $_GET['live'] ?? '';
+if ($sCache_errors && $requestLive != 1) {
     $aErrors = unserialize($sCache_errors);
 } else { // If no cache exists
 
     // Initializing cLinkCheckerSearchLinks class
-    $searchLinks = new cLinkcheckerSearchLinks();
+    $searchLinks = new cLinkcheckerSearchLinks('text', $requestMode);
 
     $db2 = cRegistry::getDb();
 
@@ -322,166 +260,190 @@ if ($sCache_errors && $_GET['live'] != 1) {
 }
 
 /* Analysis of the errors */
-// Templateset
-if ($cronjob != true) {
+
+if (!$cronjob) {
+    // Fill and render the template
+
+    $tpl->set('s', 'MODE', $requestMode);
+
+    // Fill Subnav I
+    $sLink = $sess->url("main.php?area=linkchecker&frame=4&action=linkchecker") . '&mode=';
+
+    // Fill Subnav II
+    $tpl->set('s', 'INTERNS_HREF', $sLink . '1');
+    $tpl->set('s', 'INTERNS_LABEL', i18n("Interns", $pluginName));
+    $tpl->set('s', 'EXTERNS_HREF', $sLink . '2');
+    $tpl->set('s', 'EXTERNS_LABEL', i18n("Externs", $pluginName));
+    $tpl->set('s', 'INTERNS_EXTERNS_HREF', $sLink . '3');
+    $tpl->set('s', 'INTERNS_EXTERNS_LABEL', i18n("Intern/extern Links", $pluginName));
+
+    // Fill Subnav III
+    $tpl->set('s', 'UPDATE_HREF', $sLink . $requestMode . '&live=1');
+
     $tpl->set('s', 'TITLE', i18n('Link analysis from ', $pluginName) . strftime(i18n('%Y-%m-%d', $pluginName), time()));
-}
 
-// If no errors found, say that
-if (empty($aErrors) && $cronjob != true) {
-    // Reset cache
-    $oCache->remove($aCacheName['errors'], $requestMode);
+    // If no errors found, say that
+    if (empty($aErrors)) {
+        // Reset cache
+        $oCache->remove($aCacheName['errors'], $requestMode);
 
-    $tpl->set('s', 'NO_ERRORS', i18n("<strong>No errors</strong> were found.", $pluginName));
-    $tpl->generate($cfg['templates']['linkchecker_noerrors']);
-} elseif (!empty($aErrors) && $cronjob != true) {
+        $tpl->set('s', 'NO_ERRORS', i18n("<strong>No errors</strong> were found.", $pluginName));
+        $tpl->generate($cfg['templates']['linkchecker_noerrors']);
+    } elseif (!empty($aErrors)) {
 
-    $tpl->set('s', 'ERRORS_HEADLINE', i18n("Total checked links", $pluginName));
-    $tpl->set('s', 'ERRORS_HEADLINE_ARTID', i18n("idart", $pluginName));
-    $tpl->set('s', 'ERRORS_HEADLINE_ARTICLE', i18n("Article", $pluginName));
-    $tpl->set('s', 'ERRORS_HEADLINE_CATID', i18n("idcat", $pluginName));
-    $tpl->set('s', 'ERRORS_HEADLINE_CATNAME', i18n("Category", $pluginName));
-    $tpl->set('s', 'ERRORS_HEADLINE_DESCRIPTION', i18n("Description", $pluginName));
-    $tpl->set('s', 'ERRORS_HEADLINE_REPAIRED', i18n("Repair", $pluginName));
-    $tpl->set('s', 'ERRORS_HEADLINE_LINK', i18n("Linkerror", $pluginName));
-    $tpl->set('s', 'ERRORS_HEADLINE_LINKS_ARTICLES', i18n("Links to articles", $pluginName));
-    $tpl->set('s', 'ERRORS_HEADLINE_LINKS_CATEGORYS', i18n("Links to categories", $pluginName));
-    $tpl->set('s', 'ERRORS_HEADLINE_LINKS_DOCIMAGES', i18n("Links to documents and images", $pluginName));
-    $tpl->set('s', 'ERRORS_HEADLINE_OTHERS', i18n("Links to extern sites and not defined links", $pluginName));
-    $tpl->set('s', 'ERRORS_HEADLINE_WHITELIST', "Whitelist");
-    $tpl->set('s', 'ERRORS_HELP_ERRORS', i18n("Wrong links", $pluginName));
+        $tpl->set('s', 'ERRORS_HEADLINE', i18n("Total checked links", $pluginName));
+        $tpl->set('s', 'ERRORS_HEADLINE_ARTID', i18n("idart", $pluginName));
+        $tpl->set('s', 'ERRORS_HEADLINE_ARTICLE', i18n("Article", $pluginName));
+        $tpl->set('s', 'ERRORS_HEADLINE_CATID', i18n("idcat", $pluginName));
+        $tpl->set('s', 'ERRORS_HEADLINE_CATNAME', i18n("Category", $pluginName));
+        $tpl->set('s', 'ERRORS_HEADLINE_DESCRIPTION', i18n("Description", $pluginName));
+        $tpl->set('s', 'ERRORS_HEADLINE_REPAIRED', i18n("Repair", $pluginName));
+        $tpl->set('s', 'ERRORS_HEADLINE_LINK', i18n("Linkerror", $pluginName));
+        $tpl->set('s', 'ERRORS_HEADLINE_LINKS_ARTICLES', i18n("Links to articles", $pluginName));
+        $tpl->set('s', 'ERRORS_HEADLINE_LINKS_CATEGORYS', i18n("Links to categories", $pluginName));
+        $tpl->set('s', 'ERRORS_HEADLINE_LINKS_DOCIMAGES', i18n("Links to documents and images", $pluginName));
+        $tpl->set('s', 'ERRORS_HEADLINE_OTHERS', i18n("Links to extern sites and not defined links", $pluginName));
+        $tpl->set('s', 'ERRORS_HEADLINE_WHITELIST', "Whitelist");
+        $tpl->set('s', 'ERRORS_HELP_ERRORS', i18n("Wrong links", $pluginName));
 
-    // error_output initialization
-    $aError_output = [
-        'art' => '',
-        'cat' => '',
-        'docimages' => '',
-        'others' => ''
-    ];
+        // error_output initialization
+        $aError_output = [
+            'art' => '',
+            'cat' => '',
+            'docimages' => '',
+            'others' => ''
+        ];
 
-    // Initializing repair class
-    $repair = new cLinkcheckerRepair();
+        // Initializing repair class
+        $repair = new cLinkcheckerRepair();
 
-    foreach ($aErrors as $sKey => $aRow) {
+        $sortBy = $_GET['sort'] ?? '';
+        $tpl2 = new cTemplate();
 
-        $aRow = linksort($aRow, $_GET['sort'] ?? '');
+        foreach ($aErrors as $sKey => $aRow) {
+            $aRow = cLinkcheckerHelper::sortErrors($aRow, $sortBy);
 
-        for ($i = 0; $i < count($aRow); $i++) {
+            for ($i = 0; $i < count($aRow); $i++) {
+                $tpl2->reset();
 
-            $tpl2 = new cTemplate();
-            $tpl2->reset();
+                // html entities for artname and catname
+                $aRow[$i]['nameart'] = conHtmlentities($aRow[$i]['nameart']);
+                $aRow[$i]['namecat'] = conHtmlentities($aRow[$i]['namecat']);
 
-            // html entities for artname and catname
-            $aRow[$i]['nameart'] = conHtmlentities($aRow[$i]['nameart']);
-            $aRow[$i]['namecat'] = conHtmlentities($aRow[$i]['namecat']);
+                $artNameShort = cString::getPartOfString($aRow[$i]['nameart'], 0, 20) . ((cString::getStringLength($aRow[$i]['nameart']) > 20) ? ' ...' : '');
+                $caNameShort = cString::getPartOfString($aRow[$i]['namecat'], 0, 20) . ((cString::getStringLength($aRow[$i]['namecat']) > 20) ? ' ...' : '');
+                $linkShort = cString::getPartOfString($aRow[$i]['url'], 0, 45) . ((cString::getStringLength($aRow[$i]['url']) > 45) ? ' ...' : '');
 
-            // set template variables
-            $tpl2->set('s', 'ERRORS_ARTID', cSecurity::toInteger($aRow[$i]['idart']));
-            $tpl2->set('s', 'ERRORS_ARTICLE', cSecurity::escapeString($aRow[$i]['nameart']));
-            $tpl2->set('s', 'ERRORS_ARTICLE_SHORT', cString::getPartOfString($aRow[$i]['nameart'], 0, 20) . ((cString::getStringLength($aRow[$i]['nameart']) > 20) ? ' ...' : ''));
-            $tpl2->set('s', 'ERRORS_CATID', cSecurity::toInteger($aRow[$i]['idcat']));
-            $tpl2->set('s', 'ERRORS_LANGARTID', cSecurity::toInteger($aRow[$i]['idartlang']));
-            $tpl2->set('s', 'ERRORS_LINK', cSecurity::escapeString($aRow[$i]['url']));
-            $tpl2->set('s', 'ERRORS_LINK_ENCODE', base64_encode($aRow[$i]['url']));
-            $tpl2->set('s', 'ERRORS_LINK_SHORT', cString::getPartOfString($aRow[$i]['url'], 0, 45) . ((cString::getStringLength($aRow[$i]['url']) > 45) ? ' ...' : ''));
-            $tpl2->set('s', 'ERRORS_CATNAME', cSecurity::escapeString($aRow[$i]['namecat']));
-            $tpl2->set('s', 'ERRORS_CATNAME_SHORT', cString::getPartOfString($aRow[$i]['namecat'], 0, 20) . ((cString::getStringLength($aRow[$i]['namecat']) > 20) ? ' ...' : ''));
-            $tpl2->set('s', 'MODE', $requestMode);
-            $tpl2->set('s', 'URL_FRONTEND', $aUrl['cms']);
+                // set template variables
+                $tpl2->set('s', 'ERRORS_ARTID', cSecurity::toInteger($aRow[$i]['idart']));
+                $tpl2->set('s', 'ERRORS_ARTICLE', cSecurity::escapeString($aRow[$i]['nameart']));
+                $tpl2->set('s', 'ERRORS_ARTICLE_SHORT', $artNameShort);
+                $tpl2->set('s', 'ERRORS_CATID', cSecurity::toInteger($aRow[$i]['idcat']));
+                $tpl2->set('s', 'ERRORS_LANGARTID', cSecurity::toInteger($aRow[$i]['idartlang']));
+                $tpl2->set('s', 'ERRORS_LINK', cSecurity::escapeString($aRow[$i]['url']));
+                $tpl2->set('s', 'ERRORS_LINK_ENCODE', base64_encode($aRow[$i]['url']));
+                $tpl2->set('s', 'ERRORS_LINK_SHORT', $linkShort);
+                $tpl2->set('s', 'ERRORS_CATNAME', cSecurity::escapeString($aRow[$i]['namecat']));
+                $tpl2->set('s', 'ERRORS_CATNAME_SHORT', $caNameShort);
+                $tpl2->set('s', 'MODE', $requestMode);
+                $tpl2->set('s', 'URL_FRONTEND', $aUrl['cms']);
 
-            $repaired_link = false;
-            if ($aRow[$i]['error_type'] == "unknown") {
-                $tpl2->set('s', 'ERRORS_ERROR_TYPE', i18n("Unknown", $pluginName));
-                $tpl2->set('s', 'ERRORS_ERROR_TYPE_HELP', i18n("Unknown: articles, documents etc. do not exist.", $pluginName));
-            } elseif ($aRow[$i]['error_type'] == "offline") {
-                $tpl2->set('s', 'ERRORS_ERROR_TYPE', i18n("Offline", $pluginName));
-                $tpl2->set('s', 'ERRORS_ERROR_TYPE_HELP', i18n("Offline: article or category is offline.", $pluginName));
-            } elseif ($aRow[$i]['error_type'] == "startart") {
-                $tpl2->set('s', 'ERRORS_ERROR_TYPE', i18n("Offline startarticle", $pluginName));
-                $tpl2->set('s', 'ERRORS_ERROR_TYPE_HELP', i18n("Offline: article or category is offline.", $pluginName));
-            } elseif ($aRow[$i]['error_type'] == "dbfs") {
-                $tpl2->set('s', 'ERRORS_ERROR_TYPE', i18n("Filemanager", $pluginName));
-                $tpl2->set('s', 'ERRORS_ERROR_TYPE_HELP', i18n("dbfs: no matches found in the dbfs database.", $pluginName));
-            } elseif ($aRow[$i]['error_type'] == "invalidurl") {
-                $tpl2->set('s', 'ERRORS_ERROR_TYPE', i18n("Invalid url", $pluginName));
-                $tpl2->set('s', 'ERRORS_ERROR_TYPE_HELP', i18n("Invalid url, i. e. syntax error.", $pluginName));
+                $repaired_link = false;
+                if ($aRow[$i]['error_type'] == "unknown") {
+                    $tpl2->set('s', 'ERRORS_ERROR_TYPE', i18n("Unknown", $pluginName));
+                    $tpl2->set('s', 'ERRORS_ERROR_TYPE_HELP', i18n("Unknown: articles, documents etc. do not exist.", $pluginName));
+                } elseif ($aRow[$i]['error_type'] == "offline") {
+                    $tpl2->set('s', 'ERRORS_ERROR_TYPE', i18n("Offline", $pluginName));
+                    $tpl2->set('s', 'ERRORS_ERROR_TYPE_HELP', i18n("Offline: article or category is offline.", $pluginName));
+                } elseif ($aRow[$i]['error_type'] == "startart") {
+                    $tpl2->set('s', 'ERRORS_ERROR_TYPE', i18n("Offline startarticle", $pluginName));
+                    $tpl2->set('s', 'ERRORS_ERROR_TYPE_HELP', i18n("Offline: article or category is offline.", $pluginName));
+                } elseif ($aRow[$i]['error_type'] == "dbfs") {
+                    $tpl2->set('s', 'ERRORS_ERROR_TYPE', i18n("Filemanager", $pluginName));
+                    $tpl2->set('s', 'ERRORS_ERROR_TYPE_HELP', i18n("dbfs: no matches found in the dbfs database.", $pluginName));
+                } elseif ($aRow[$i]['error_type'] == "invalidurl") {
+                    $tpl2->set('s', 'ERRORS_ERROR_TYPE', i18n("Invalid url", $pluginName));
+                    $tpl2->set('s', 'ERRORS_ERROR_TYPE_HELP', i18n("Invalid url, i. e. syntax error.", $pluginName));
 
-                // Try to repair this link misstate
-                $repaired_link = $repair->checkLink($aRow[$i]['url']);
-            }
+                    // Try to repair this link misstate
+                    $repaired_link = $repair->checkLink($aRow[$i]['url']);
+                }
 
-            // Generate repaired link variables
-            if ($aRow[$i]['error_type'] != "invalidurl") {
-                // No invalid url case
-                $tpl2->set('s', 'ERRORS_REPAIRED_LINK', '-');
-            } elseif ($repaired_link === false) {
-                // Linkchecker can not repaire this link
-                $tpl2->set('s', 'ERRORS_REPAIRED_LINK', i18n("No repaired link", $pluginName));
-            } else {
-                // Yeah, we have an repaired link!
+                // Generate repaired link variables
+                if ($aRow[$i]['error_type'] != "invalidurl") {
+                    // No invalid url case
+                    $tpl2->set('s', 'ERRORS_REPAIRED_LINK', '-');
+                } elseif ($repaired_link === false) {
+                    // Linkchecker can not repair this link
+                    $tpl2->set('s', 'ERRORS_REPAIRED_LINK', i18n("No repaired link", $pluginName));
+                } else {
+                    // Repair link
+                    $repaired_question = i18n("Linkchecker has found a way to repair your wrong link. Do you want to automatically repair the link to the URL below?", $pluginName);
+                    $url = $aUrl['contenido'] . 'main.php?area=linkchecker&frame=4&contenido=' . $sess->id
+                        . '&action=linkchecker&mode=' . $requestMode . '&idcontent=' . $aRow[$i]['idcontent']
+                        . '&idartlang=' . $aRow[$i]['idartlang'] . '&oldlink=' . base64_encode($aRow[$i]['url'])
+                        . '&repairedlink=' . base64_encode($repaired_link) . '&redirect=' . $aRow[$i]['redirect'];
+                    $link = '<a href="javascript:void(0)" onclick="Con.showConfirmation(\'' . $repaired_question . '<br /><br /><strong>'
+                        . $repaired_link . '</strong>\', function() { window.location.href=\'' . $url . '\';})"><img src="' . $aUrl['contenido'] . 'images/but_editlink.gif" alt=""></a>';
+                    $tpl2->set('s', 'ERRORS_REPAIRED_LINK', $link);
+                }
 
-                // Repaired question
-                $repaired_question = i18n("Linkchecker has found a way to repair your wrong link. Do you want to automatically repair the link to the URL below?", $pluginName);
-
-                $tpl2->set('s', 'ERRORS_REPAIRED_LINK', '<a href="javascript:void(0)" onclick="Con.showConfirmation(\'' . $repaired_question . '<br /><br /><strong>' . $repaired_link . '</strong>\', function() { window.location.href=\'' . $aUrl['contenido'] . 'main.php?area=linkchecker&frame=4&contenido=' . $sess->id . '&action=linkchecker&mode=' . $requestMode . '&idcontent=' . $aRow[$i]['idcontent'] . '&idartlang=' . $aRow[$i]['idartlang'] . '&oldlink=' . base64_encode($aRow[$i]['url']) . '&repairedlink=' . base64_encode($repaired_link) . '&redirect=' . $aRow[$i]['redirect'] . '\';})"><img src="' . $aUrl['contenido'] . 'images/but_editlink.gif" alt=""></a>');
-            }
-
-            if ($sKey != "cat") {
-                $aError_output[$sKey] .= $tpl2->generate($cfg['templates']['linkchecker_test_errors'], 1);
-            } else {
-                // special template for idcats
-                $aError_output[$sKey] .= $tpl2->generate($cfg['templates']['linkchecker_test_errors_cat'], 1);
+                if ($sKey != "cat") {
+                    $aError_output[$sKey] .= $tpl2->generate($cfg['templates']['linkchecker_test_errors'], 1);
+                } else {
+                    // special template for idcats
+                    $aError_output[$sKey] .= $tpl2->generate($cfg['templates']['linkchecker_test_errors_cat'], 1);
+                }
             }
         }
-    }
 
-    // Counter
-    if ($iCounter = $oCache->get($aCacheName['errorscount'], $requestMode)) {
-        // Cache exists?
-        $iErrorsCountChecked = $iCounter;
-    } else {
-        // Count searched links: idarts + idcats + idcatarts + others
-        $iErrorsCountChecked = count($aSearchIDInfosArt) + count($aSearchIDInfosCat) + count($aSearchIDInfosCatArt) + count($aSearchIDInfosNonID);
-    }
-
-    // Count errors
-    $iErrorsCounted = 0;
-    foreach ($aErrors as $sKey => $aRow) {
-        $iErrorsCounted += count($aRow);
-    }
-
-    $tpl->set('s', 'ERRORS_COUNT_CHECKED', $iErrorsCountChecked);
-    $tpl->set('s', 'ERRORS_COUNT_ERRORS', $iErrorsCounted);
-    $tpl->set('s', 'ERRORS_COUNT_ERRORS_PERCENT', round(($iErrorsCounted * 100) / $iErrorsCountChecked, 2));
-
-    /* Template output */
-    foreach ($aError_output as $sKey => $sValue) {
-        if (empty($sValue)) { // Errors for this type?
-            $tpl2->set('s', 'ERRORS_NOTHING', i18n("No errors for this type.", $pluginName));
-            $aError_output[$sKey] = $tpl2->generate($cfg['templates']['linkchecker_test_nothing'], 1);
-        }
-
-        $tpl->set('s', 'ERRORS_SHOW_' . cString::toUpperCase($sKey), $aError_output[$sKey]);
-
-        if (isset($aErrors[$sKey]) && is_array($aErrors[$sKey]) && count($aErrors[$sKey]) > 0) {
-            $tpl->set('s', 'ERRORS_COUNT_ERRORS_' . cString::toUpperCase($sKey), '<span class="settingWrong">' . count($aErrors[$sKey]) . '</span>');
+        // Counter
+        if ($iCounter = $oCache->get($aCacheName['errorscount'], $requestMode)) {
+            // Cache exists?
+            $iErrorsCountChecked = $iCounter;
         } else {
-            $tpl->set('s', 'ERRORS_COUNT_ERRORS_' . cString::toUpperCase($sKey), 0);
+            // Count searched links: idarts + idcats + idcatarts + others
+            $iErrorsCountChecked = count($aSearchIDInfosArt) + count($aSearchIDInfosCat) + count($aSearchIDInfosCatArt) + count($aSearchIDInfosNonID);
         }
+
+        // Count errors
+        $iErrorsCounted = 0;
+        foreach ($aErrors as $sKey => $aRow) {
+            $iErrorsCounted += count($aRow);
+        }
+
+        $tpl->set('s', 'ERRORS_COUNT_CHECKED', $iErrorsCountChecked);
+        $tpl->set('s', 'ERRORS_COUNT_ERRORS', $iErrorsCounted);
+        $tpl->set('s', 'ERRORS_COUNT_ERRORS_PERCENT', round(($iErrorsCounted * 100) / $iErrorsCountChecked, 2));
+
+        /* Template output */
+        foreach ($aError_output as $sKey => $sValue) {
+            if (empty($sValue)) { // Errors for this type?
+                $tpl2->reset();
+                $tpl2->set('s', 'ERRORS_NOTHING', i18n("No errors for this type.", $pluginName));
+                $aError_output[$sKey] = $tpl2->generate($cfg['templates']['linkchecker_test_nothing'], 1);
+            }
+
+            $tpl->set('s', 'ERRORS_SHOW_' . cString::toUpperCase($sKey), $aError_output[$sKey]);
+
+            if (isset($aErrors[$sKey]) && is_array($aErrors[$sKey]) && count($aErrors[$sKey]) > 0) {
+                $tpl->set('s', 'ERRORS_COUNT_ERRORS_' . cString::toUpperCase($sKey), '<span class="settingWrong">' . count($aErrors[$sKey]) . '</span>');
+            } else {
+                $tpl->set('s', 'ERRORS_COUNT_ERRORS_' . cString::toUpperCase($sKey), 0);
+            }
+        }
+
+        $tpl->generate($cfg['templates']['linkchecker_test']);
+
+        /* Cache */
+        // Reset cache
+        $oCache->remove($aCacheName['errors'], $requestMode);
+
+        // Build new cache
+        $oCache->save(serialize($aErrors), $aCacheName['errors'], $requestMode);
+        $oCache->save($iErrorsCountChecked, $aCacheName['errorscount'], $requestMode);
     }
 
-    $tpl->generate($cfg['templates']['linkchecker_test']);
-
-    /* Cache */
-    // Reset cache
-    $oCache->remove($aCacheName['errors'], $requestMode);
-
-    // Build new cache
-    $oCache->save(serialize($aErrors), $aCacheName['errors'], $requestMode);
-    $oCache->save($iErrorsCountChecked, $aCacheName['errorscount'], $requestMode);
-}
-
-// Log
-if ($cronjob != true) {
-    $backend->log(0, 0, cRegistry::getClientId(), cRegistry::getLanguageId(), $action);
+    // Log
+    $backend->log(0, 0, cRegistry::getClientId(), cRegistry::getLanguageId(), $requestAction);
 }
