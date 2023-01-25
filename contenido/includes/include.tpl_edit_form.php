@@ -199,7 +199,8 @@ if ($idlay) {
             foreach ($modules as $key => $val) {
                 $option = new cHTMLOptionElement($val['name'], $key);
 
-                if ($containerModules[$containerNr] == $key || (($containerModules[$containerNr] == 0 && $val['name'] == $default) && $createmode == 1)) {
+                $containerModulePos = $containerModules[$containerNr] ?? 0;
+                if ($containerModulePos === $key || (($containerModulePos === 0 && $val['name'] == $default) && $createmode === 1)) {
                     $option->setSelected(true);
                 }
 
