@@ -28,7 +28,7 @@ class NewsletterRecipientGroupCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
         parent::__construct($cfg["tab"]["news_groups"], "idnewsgroup");
         $this->_setItemClass("NewsletterRecipientGroup");
     }
@@ -37,18 +37,18 @@ class NewsletterRecipientGroupCollection extends ItemCollection {
      * Creates a new group
      *
      * @param $groupname    string Specifies the groupname
-     * @param $defaultgroup integer Specfies, if group is default group
+     * @param $defaultgroup integer Specifies, if group is default group
      *                      (optional)
      *
      * @return Item
      * @throws cException
      */
     public function create($groupname, $defaultgroup = 0) {
-        global $client, $lang;
-
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
         $group = new NewsletterRecipientGroup();
 
-        // _arrInFilters = array('urlencode', 'htmlspecialchars', 'addslashes');
+        // _arrInFilters = ['urlencode', 'htmlspecialchars', 'addslashes'];
 
         $mangledGroupName = $group->_inFilter($groupname);
         $this->setWhere("idclient", $client);
@@ -71,14 +71,12 @@ class NewsletterRecipientGroupCollection extends ItemCollection {
     }
 
     /**
-     * Overridden delete method to remove groups from groupmember table
+     * Overridden delete method to remove groups from group member table
      * before deleting group
      *
      * @param $itemID int specifies the newsletter recipient group
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function delete($itemID) {
         $oAssociations = new NewsletterRecipientGroupMemberCollection();
@@ -106,7 +104,7 @@ class NewsletterRecipientGroup extends Item {
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
         parent::__construct($cfg["tab"]["news_groups"], "idnewsgroup");
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -114,15 +112,13 @@ class NewsletterRecipientGroup extends Item {
     }
 
     /**
-     * Overriden store() method to ensure, that there is only one default group
+     * Overridden store() method to ensure, that there is only one default group
      *
      * @throws cException
      */
     public function store() {
-        global $client, $lang;
-
-        $client = cSecurity::toInteger($client);
-        $lang = cSecurity::toInteger($lang);
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
 
         if ($this->get("defaultgroup") == 1) {
             $oItems = new NewsletterRecipientGroupCollection();
@@ -141,7 +137,7 @@ class NewsletterRecipientGroup extends Item {
     }
 
     /**
-     * Userdefined setter for newsletter recipient group fields.
+     * User-defined setter for newsletter recipient group fields.
      *
      * @param string $name
      * @param mixed  $value
@@ -193,7 +189,6 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection {
      * @throws cException
      */
     public function create($idrecipientgroup, $idrecipient) {
-
         $this->setWhere("idnewsgroup", $idrecipientgroup);
         $this->setWhere("idnewsrcp", $idrecipient);
         $this->query();
@@ -217,9 +212,7 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection {
      * @param $idrecipientgroup int specifies the newsletter group
      * @param $idrecipient      int specifies the newsletter user
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function remove($idrecipientgroup, $idrecipient) {
         $idrecipientgroup = cSecurity::toInteger($idrecipientgroup);
@@ -239,9 +232,7 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection {
      *
      * @param $idrecipient int specifies the newsletter recipient
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function removeRecipientFromGroups($idrecipient) {
         $idrecipient = cSecurity::toInteger($idrecipient);
@@ -259,9 +250,7 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection {
      *
      * @param $idgroup int specifies the newsletter recipient group
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function removeGroup($idgroup) {
         $idgroup = cSecurity::toInteger($idgroup);
@@ -290,7 +279,7 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection {
         $this->setWhere("idnewsgroup", $idrecipientgroup);
         $this->query();
 
-        $aObjects = array();
+        $aObjects = [];
 
         while ($oItem = $this->next()) {
             if ($asObjects) {
@@ -321,7 +310,7 @@ class NewsletterRecipientGroupMember extends Item {
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
         parent::__construct($cfg["tab"]["news_groupmembers"], "idnewsgroupmember");
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -329,7 +318,7 @@ class NewsletterRecipientGroupMember extends Item {
     }
 
     /**
-     * Userdefined setter for newsletter recipient group member fields.
+     * User-defined setter for newsletter recipient group member fields.
      *
      * @param string $name
      * @param mixed  $value

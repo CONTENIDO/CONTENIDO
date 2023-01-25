@@ -11,7 +11,19 @@
  * @link http://www.contenido.org
  */
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * @var cAuth $auth
+ * @var cPermission $perm
+ * @var string $action
+ * @var string $area
+ * @var int $client
+ * @var int $lang
+ * @var int $frame
+ */
+
 cInclude("includes", "functions.con.php");
+
 // Initialization
 $oPage = new cGuiPage("newsletter_edit", "newsletter");
 $oRcpGroups = new NewsletterRecipientGroupCollection();
@@ -252,7 +264,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
             }
         }
         if ($oClientLang->getProperty("newsletter", "html_newsletter") == "true") {
-            $oNewsletter->set("type", $selType);
+            $oNewsletter->set("type", $_REQUEST['selType'] ?? '');
         } else {
             $oNewsletter->set("type", "text");
         }
@@ -352,6 +364,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     $oForm->add(i18n("Name", 'newsletter'), $oTxtName->render());
 
     $oSelType = new cHTMLSelectElement("selType");
+    $oSelType->setClass('text_medium');
     $aItems = [];
     $aItems[] = [
         "text",
@@ -407,6 +420,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     }
 
     $oSelGroup = new cHTMLSelectElement("selGroup[]", "", "groupselect");
+    $oSelGroup->setClass('text_medium');
     $oSelGroup->setSize(10);
     $oSelGroup->setStyle("width: 350px; margin-top: 5px; margin-bottom: 5px; margin-left: 25px;");
     $oSelGroup->setMultiselect();
@@ -417,7 +431,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     if (count($aItems) == 0) {
         $oSendToGroups->setDisabled(true);
         if ($requestOptSendTo == "selection") {
-            $requestOptSendTo == "all";
+            $requestOptSendTo = "all";
         }
     } elseif (is_array($requestSelGroup)) {
         $oSelGroup->setSelected($requestSelGroup);
@@ -498,5 +512,3 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
 }
 
 $oPage->render();
-
-?>

@@ -13,6 +13,17 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cAuth $auth
+ * @var cPermission $perm
+ * @var cSession $sess
+ * @var array $cfg
+ * @var string $area
+ * @var int $client
+ * @var int $lang
+ * @var int $frame
+ */
+
 // ################################
 // Initialization
 // ################################
@@ -183,7 +194,7 @@ while ($oJob = $oJobs->next()) {
     switch ($oJob->get("status")) {
         case 1:
             // Pending
-            if ($oJob->get("cronjob") == 0) {
+            if ($oJob->get("use_cronjob") == 0) {
                 // Standard job can be run if user has the right to do so
                 if ($perm->have_perm_area_action($area, "news_job_run")) {
                     $oImage = new cHTMLImage($cfg['path']['images'] . 'newsletter_16.gif', 'vAlignMiddle');
@@ -195,7 +206,7 @@ while ($oJob = $oJobs->next()) {
                         ->setContent($oImage->render());
                     $oMenu->setActions($iMenu, 'send', $oSend->render());
                 }
-            } elseif ($oJob->get("cronjob") == 1) {
+            } elseif ($oJob->get("use_cronjob") == 1) {
                 // It's a cronjob job - no manual sending, show it blue
                 $oLnk->updateAttributes([
                     "style" => "color:#0000FF"
@@ -305,7 +316,7 @@ $oPage->addScript($sRefreshPager);
 $oTpl = new cTemplate();
 $oTpl->set('s', 'SEND_MESSAGE', $aMsg["SendDescr"]);
 $oTpl->set('s', 'DELETE_MESSAGE', $aMsg["DelDescr"]);
-$sTemplate = $oTpl->generate(cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'newsletter/templates/standard/template.newsletter_jobs_menu.html', true);
+$sTemplate = $oTpl->generate($cfg['templates']['newsletter_newsletter_jobs_menu'], true);
 
 $oPage->setContent([$oMenu, $sTemplate]);
 $oPage->render();

@@ -13,6 +13,15 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cAuth $auth
+ * @var cPermission $perm
+ * @var cSession $sess
+ * @var string $action
+ * @var string $area
+ * @var int $frame
+ */
+
 $backendUrl = cRegistry::getBackendUrl();
 
 // Initialization
@@ -145,6 +154,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     $oFrmOptions->addHeader(i18n("List options", 'newsletter'));
 
     $oSelElements = new cHTMLSelectElement("elemperpage");
+    $oSelElements->setClass('text_medium');
     $oSelElements->setEvent("onchange", "document.forms.frmOptions.submit();");
 
     $aData = [
@@ -285,7 +295,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     $oForm->setVar("frame", $frame);
     $oForm->setVar("area", $area);
     $oForm->setVar("action", "");
-    $oForm->setVar("idnewsjob", $idnewsjob);
+    $oForm->setVar("idnewsjob", $requestIdNewsJob);
 
     $oForm->addHeader(i18n("Newsletter dispatch job", 'newsletter'));
 

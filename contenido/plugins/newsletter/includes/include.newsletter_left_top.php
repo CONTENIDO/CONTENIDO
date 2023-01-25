@@ -287,33 +287,32 @@ if ($iItemsPerPage == 0) {
 }
 
 $oSelItemsPerPage = new cHTMLSelectElement("elemperpage");
-$oSelItemsPerPage->autoFill(array(
+$oSelItemsPerPage->autoFill([
     0 => i18n("-- All --", 'newsletter'),
     25 => 25,
     50 => 50,
     75 => 75,
     100 => 100
-));
+]);
 $oSelItemsPerPage->setDefault($iItemsPerPage);
 
 // Sort By
 $oSelSortBy = new cHTMLSelectElement("sortby");
-$oSelSortBy->autoFill(array(
+$oSelSortBy->autoFill([
     "name" => i18n("Name", 'newsletter')
-));
+]);
 $oSelSortBy->setDefault("name");
 
 // Sort Order
 $oSelSortOrder = new cHTMLSelectElement("sortorder");
-$oSelSortOrder->autoFill(array(
+$oSelSortOrder->autoFill([
     "ASC" => i18n("Ascending", 'newsletter'),
     "DESC" => i18n("Descending", 'newsletter')
-));
+]);
 $oSelSortOrder->setDefault("ASC");
 
 // Search For
 $oTextboxFilter = new cHTMLTextbox("filter", "", 16);
-$oTextboxFilter->setClass("text_medium text");
 
 // Search In
 $oSelSearchIn = new cHTMLSelectElement("searchin");
@@ -431,27 +430,27 @@ $oTpl->set('s', 'ID_CNEWSLETTER', $sContainerId);
 // base: Elements from core code (other type may be: "plugin")
 // sort: Element can be used to be sorted by
 // search: Element can be used to search in
-$aFields = array();
-$aFields["name"] = array(
+$aFields = [];
+$aFields["name"] = [
     "field" => "name",
     "caption" => i18n("Name", 'newsletter'),
     "type" => "base,sort,search"
-);
-$aFields["created"] = array(
+];
+$aFields["created"] = [
     "field" => "created",
     "caption" => i18n("Created", 'newsletter'),
     "type" => "base,sort"
-);
-$aFields["status"] = array(
+];
+$aFields["status"] = [
     "field" => "status",
     "caption" => i18n("Status", 'newsletter'),
     "type" => "base,sort"
-);
-$aFields["cronjob"] = array(
+];
+$aFields["cronjob"] = [
     "field" => "use_cronjob",
     "caption" => i18n("Use cronjob", 'newsletter'),
     "type" => "base"
-);
+];
 
 // ####################################
 // 2.1 Job dispatch: List options folding row
@@ -462,19 +461,19 @@ $oSelAuthor = new cHTMLSelectElement("selAuthor");
 // Get possible authors/users from available jobs
 // For this query genericdb can't be used, as the class id is always included
 // (distinct won't work)
-$sSQL = "SELECT DISTINCT author, authorname FROM " . $cfg["tab"]["news_jobs"] . " ORDER BY authorname";
+$sSQL = "SELECT DISTINCT `author`, `authorname` FROM `" . $cfg["tab"]["news_jobs"] . "` ORDER BY `authorname`";
 $oDB->query($sSQL);
 
-$aItems = array();
+$aItems = [];
 $bUserInList = false;
 while ($oDB->nextRecord()) {
     if ($oDB->f("author") == $auth->auth["uid"]) {
         $bUserInList = true;
     }
-    $aItems[] = array(
+    $aItems[] = [
         $oDB->f("author"),
         $oDB->f("authorname")
-    );
+    ];
 }
 $oSelAuthor->autoFill($aItems);
 
@@ -486,24 +485,20 @@ if (!$bUserInList) {
 }
 $oSelAuthor->setDefault($auth->auth["uid"]);
 
-// Items per page
-$iItemsPerPage = (int) $oUser->getProperty("itemsperpage", "news_jobs"); // Used
-                                                                        // also
-                                                                        // below
-                                                                        // in
-                                                                        // query
+// Items per page, used also below in query
+$iItemsPerPage = (int) $oUser->getProperty("itemsperpage", "news_jobs");
 if ($iItemsPerPage == 0) {
     $iItemsPerPage = 25; // All can't be saved
 }
 
 $oSelItemsPerPage = new cHTMLSelectElement("elemperpage");
-$oSelItemsPerPage->autoFill(array(
+$oSelItemsPerPage->autoFill([
     0 => i18n("-- All --", 'newsletter'),
     25 => 25,
     50 => 50,
     75 => 75,
     100 => 100
-));
+]);
 $oSelItemsPerPage->setDefault($iItemsPerPage);
 
 // Sort by
@@ -518,10 +513,10 @@ $oSelSortBy->setDefault("created");
 
 // Sort order
 $oSelSortOrder = new cHTMLSelectElement("sortorder");
-$oSelSortOrder->autoFill(array(
+$oSelSortOrder->autoFill([
     "ASC" => i18n("Ascending", 'newsletter'),
     "DESC" => i18n("Descending", 'newsletter')
-));
+]);
 $oSelSortOrder->setDefault("DESC");
 
 // Filter
@@ -631,27 +626,27 @@ $oTpl->set('s', 'ID_CDISPATCH', $sContainerId);
 // 3. Recipients
 // ####################################
 // See comment at 2. Job dispatch
-$aFields = array();
-$aFields["name"] = array(
+$aFields = [];
+$aFields["name"] = [
     "field" => "name",
     "caption" => i18n("Name", 'newsletter'),
     "type" => "base,sort,search"
-);
-$aFields["email"] = array(
+];
+$aFields["email"] = [
     "field" => "email",
     "caption" => i18n("E-Mail", 'newsletter'),
     "type" => "base,sort,search"
-);
-$aFields["confirmed"] = array(
+];
+$aFields["confirmed"] = [
     "field" => "confirmed",
     "caption" => i18n("Confirmed", 'newsletter'),
     "type" => "base"
-);
-$aFields["deactivated"] = array(
+];
+$aFields["deactivated"] = [
     "field" => "deactivated",
     "caption" => i18n("Deactivated", 'newsletter'),
     "type" => "base"
-);
+];
 
 // ####################################
 // 3.1 Recipients: Actions folding row
@@ -662,7 +657,7 @@ $sContent = '';
 if ($perm->have_perm_area_action("recipients", "recipients_create")) {
     $oLink = new cHTMLLink();
     $oLink->setMultiLink("recipients", "", "recipients", "recipients_create");
-    $oLink->setContent('<img src="' . $cfg["path"]["images"] . 'folder_new.gif">' . i18n("Create recipient", 'newsletter') . '</a>');
+    $oLink->setContent('<img src="' . $cfg["path"]["images"] . 'folder_new.gif" alt="">' . i18n("Create recipient", 'newsletter') . '</a>');
     $sContent .= $oLink->render() . '<br>' . "\n";
 }
 
@@ -670,7 +665,7 @@ if ($perm->have_perm_area_action("recipients", "recipients_create")) {
 if ($perm->have_perm_area_action("recipients", "recipients_create")) {
     $oLink = new cHTMLLink();
     $oLink->setMultiLink("recipients", "", "recipients_import", "recipients_import");
-    $oLink->setContent('<img src="' . $cfg["path"]["images"] . 'importieren.gif">' . i18n("Import recipients", 'newsletter') . '</a>');
+    $oLink->setContent('<img src="' . $cfg["path"]["images"] . 'importieren.gif" alt="">' . i18n("Import recipients", 'newsletter') . '</a>');
     $sContent .= $oLink->render() . '<br>' . "\n";
 }
 
@@ -683,7 +678,7 @@ if ($iTimeframe <= 0) {
 if ($perm->have_perm_area_action("recipients", "recipients_delete")) {
     $oLink = new cHTMLLink();
     $oLink->setLink("javascript:showPurgeMsg('" . i18n('Purge recipients', 'newsletter') . "', '" . sprintf(i18n('Do you really want to remove recipients, that have not been confirmed since %s days and over?', 'newsletter'), $iTimeframe) . "')");
-    $oLink->setContent('<img src="' . $cfg["path"]["images"] . 'delete.gif">' . i18n("Purge recipients", 'newsletter') . '</a>');
+    $oLink->setContent('<img src="' . $cfg["path"]["images"] . 'delete.gif" alt="">' . i18n("Purge recipients", 'newsletter') . '</a>');
     $sContent .= $oLink->render();
 }
 
@@ -743,18 +738,18 @@ $oTpl->set('s', 'SETTINGSLINKREC', $sLink);
 // 3.3 Recipients: List options folding row
 // ####################################
 $iItemsPerPage = (int) $oUser->getProperty("itemsperpage", "recipients");
-if ($iItemsPerPage == 0) {
+if ($iItemsPerPage === 0) {
     $iItemsPerPage = 25; // All can't be saved
 }
 
 $oSelItemsPerPage = new cHTMLSelectElement("elemperpage");
-$oSelItemsPerPage->autoFill(array(
+$oSelItemsPerPage->autoFill([
     0 => i18n("-- All --", 'newsletter'),
     25 => 25,
     50 => 50,
     75 => 75,
     100 => 100
-));
+]);
 $oSelItemsPerPage->setDefault($iItemsPerPage);
 
 $oSelSortBy = new cHTMLSelectElement("sortby");
@@ -767,10 +762,10 @@ foreach ($aFields as $sKey => $aData) {
 $oSelSortBy->setDefault("name");
 
 $oSelSortOrder = new cHTMLSelectElement("sortorder");
-$oSelSortOrder->autoFill(array(
+$oSelSortOrder->autoFill([
     "ASC" => i18n("Ascending", 'newsletter'),
     "DESC" => i18n("Descending", 'newsletter')
-));
+]);
 $oSelSortOrder->setDefault("ASC");
 
 $oSelRestrictGroup = new cHTMLSelectElement("restrictgroup");
@@ -911,12 +906,12 @@ $oTpl->set('s', 'ID_CRECIPIENTS', $sContainerId);
 // 4 Recipient groups
 // ####################################
 // See comment at 2. Job dispatch
-$aFields = array();
-$aFields["name"] = array(
+$aFields = [];
+$aFields["name"] = [
     "field" => "groupname",
     "caption" => i18n("Name", 'newsletter'),
     "type" => "base,sort,search"
-);
+];
 
 // ####################################
 // 4.1 Recipient groups: Actions
@@ -927,7 +922,7 @@ $sContent = '';
 if ($perm->have_perm_area_action("recipientgroups", "recipientgroup_create")) {
     $oLnk = new cHTMLLink();
     $oLnk->setMultiLink("recipientgroups", "", "recipientgroups", "recipientgroup_create");
-    $oLnk->setContent('<img src="' . $cfg["path"]["images"] . 'folder_new.gif" align="middle">' . i18n("Create group", 'newsletter') . '</a>');
+    $oLnk->setContent('<img src="' . $cfg["path"]["images"] . 'folder_new.gif" alt="" align="middle">' . i18n("Create group", 'newsletter') . '</a>');
     $sContent .= $oLnk->render() . '<br>' . "\n";
 }
 
@@ -951,13 +946,13 @@ if ($iItemsPerPage == 0) {
 }
 
 $oSelItemsPerPage = new cHTMLSelectElement("elemperpage");
-$oSelItemsPerPage->autoFill(array(
+$oSelItemsPerPage->autoFill([
     0 => i18n("-- All --", 'newsletter'),
     25 => 25,
     50 => 50,
     75 => 75,
     100 => 100
-));
+]);
 $oSelItemsPerPage->setDefault($iItemsPerPage);
 
 $oSelSortBy = new cHTMLSelectElement("sortby");
@@ -970,10 +965,10 @@ foreach ($aFields as $sKey => $aData) {
 $oSelSortBy->setDefault("name");
 
 $oSelSortOrder = new cHTMLSelectElement("sortorder");
-$oSelSortOrder->autoFill(array(
+$oSelSortOrder->autoFill([
     "ASC" => i18n("Ascending", 'newsletter'),
     "DESC" => i18n("Descending", 'newsletter')
-));
+]);
 $oSelSortOrder->setDefault("ASC");
 
 $oTxtFilter = new cHTMLTextbox("filter", "", 16);
@@ -1078,4 +1073,4 @@ $sContainer = '<div id="' . $sContainerId . '">
 $oTpl->set('s', 'CRECIPIENTGROUP', $sContainer);
 $oTpl->set('s', 'ID_CRECIPIENTGROUP', $sContainerId);
 
-$oTpl->generate(cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'newsletter/templates/standard/template.newsletter_left_top.html');
+$oTpl->generate($cfg['templates']['newsletter_newsletter_left_top']);

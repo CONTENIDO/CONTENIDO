@@ -46,9 +46,7 @@ class NewsletterRecipientCollection extends ItemCollection {
      * @param int    $iMessageType Specifies the message type for the recipient (0 = text, 1 = html)
      *
      * @return Item
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($sEMail, $sName = "", $iConfirmed = 0, $sJoinID = "", $iMessageType = 0) {
         global $client, $lang, $auth;
@@ -121,9 +119,7 @@ class NewsletterRecipientCollection extends ItemCollection {
      *
      * @param $itemID int specifies the recipient
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function delete($itemID) {
         $oAssociations = new NewsletterRecipientGroupMemberCollection();
@@ -144,9 +140,7 @@ class NewsletterRecipientCollection extends ItemCollection {
      *                   be removed
      *
      * @return int Count of deleted recipients
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function purge($timeframe) {
         global $client, $lang;
@@ -281,7 +275,7 @@ class NewsletterRecipient extends Item {
     }
 
     /**
-     * Userdefined setter for newsletter recipients fields.
+     * User-defined setter for newsletter recipients fields.
      *
      * @param string $name
      * @param mixed  $value

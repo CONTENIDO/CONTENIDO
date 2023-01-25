@@ -13,6 +13,17 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cAuth $auth
+ * @var cPermission $perm
+ * @var cSession $sess
+ * @var array $cfg
+ * @var string $area
+ * @var int $client
+ * @var int $lang
+ * @var int $frame
+ */
+
 // ################################
 // Initialization
 // ################################
@@ -208,7 +219,7 @@ $oPage->addScript($sRefreshPager);
 // Generate template
 $oTpl = new cTemplate();
 $oTpl->set('s', 'DELETE_MESSAGE', $aMsg["DelDescr"]);
-$sTemplate = $oTpl->generate(cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'newsletter/templates/standard/template.recipients.group_menu.html', true);
+$sTemplate = $oTpl->generate($cfg['templates']['newsletter_recipients_group_menu'], true);
 
 $oPage->setContent([$oMenu, $sTemplate]);
 $oPage->render();

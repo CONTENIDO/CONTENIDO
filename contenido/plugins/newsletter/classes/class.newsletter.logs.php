@@ -28,7 +28,7 @@ class NewsletterLogCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
         parent::__construct($cfg["tab"]["news_log"], "idnewslog");
         $this->_setItemClass("NewsletterLog");
     }
@@ -40,12 +40,9 @@ class NewsletterLogCollection extends ItemCollection {
      * @param $idnewsrcp integer ID of recipient
      *
      * @return bool|Item
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($idnewsjob, $idnewsrcp) {
-
         $this->resetQuery();
         $this->setWhere("idnewsjob", $idnewsjob);
         $this->setWhere("idnewsrcp", $idnewsrcp);
@@ -92,13 +89,10 @@ class NewsletterLogCollection extends ItemCollection {
      * @param  int $idnews    ID of newsletter
      *
      * @return  int  Recipient count
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function initializeJob($idnewsjob, $idnews) {
-        global $cfg;
-
+        $cfg = cRegistry::getConfig();
         $idnewsjob = cSecurity::toInteger($idnewsjob);
         $idnews = cSecurity::toInteger($idnews);
 
@@ -169,7 +163,7 @@ class NewsletterLogCollection extends ItemCollection {
     }
 
     /**
-     * Overriden delete function to update recipient count if removing recipient
+     * Overridden delete function to update recipient count if removing recipient
      * from the list
      *
      * @param int $idnewslog ID
@@ -222,7 +216,7 @@ class NewsletterLog extends Item {
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
         parent::__construct($cfg["tab"]["news_log"], "idnewslog");
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -230,7 +224,7 @@ class NewsletterLog extends Item {
     }
 
     /**
-     * Userdefined setter for newsletter logs fields.
+     * User-defined setter for newsletter logs fields.
      *
      * @param string $name
      * @param mixed  $value
