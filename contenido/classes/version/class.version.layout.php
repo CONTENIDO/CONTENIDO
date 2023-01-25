@@ -42,14 +42,14 @@ class cVersionLayout extends cVersion {
      *
      * @var string
      */
-    protected $sDescripion;
+    protected $sDescription;
 
     /**
-     * The Metainformation about layout
+     * Whether the layout is deletable.
      *
-     * @var string
+     * @var int  1 or 0
      */
-    private $sDeletabel;
+    private $iDeletable;
 
     /**
      * Constructor to create an instance of this class.
@@ -66,15 +66,14 @@ class cVersionLayout extends cVersion {
      * @param string $sArea
      * @param int    $iFrame
      *
-     * @throws cInvalidArgumentException
-     * @throws cDbException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function __construct($iIdLayout, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame) {
         // Init class members in super class
         parent::__construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame);
 
         // folder layout
-        $this->sType = "layout";
+        $this->sType = 'layout';
         $this->iIdentity = $iIdLayout;
 
         // This function looks if maximum number of stored versions is achieved
@@ -82,14 +81,14 @@ class cVersionLayout extends cVersion {
 
         $this->initRevisions();
 
-        // Set Layout Table Iformation
+        // Set layout table Information
         $this->setLayoutTable();
 
         // Create Body Node of Xml File
-        $this->setData("name", $this->sName);
-        $this->setData("description", $this->sDescripion);
-        $this->setData("code", $this->sCode);
-        $this->setData("deletable", $this->sDeletabel);
+        $this->setData('name', $this->sName);
+        $this->setData('description', $this->sDescription);
+        $this->setData('code', $this->sCode);
+        $this->setData('deletable', $this->iDeletable);
     }
 
     /**
@@ -105,33 +104,23 @@ class cVersionLayout extends cVersion {
      * Function reads rows variables from table con_layout and init with the
      * class members.
      *
-     * @throws cDbException
+     * @throws cDbException|cException
      */
     private function setLayoutTable() {
-        if (!is_object($this->oDB)) {
-            $this->oDB = cRegistry::getDb();
-        }
-
-        $sSql = "";
-        $aLayout = array();
-
-        $sSql = "SELECT * FROM " . $this->aCfg["tab"]["lay"] . "
-                 WHERE idlay = '" . cSecurity::toInteger($this->iIdentity) . "'";
-
-        if ($this->oDB->query($sSql)) {
-            $this->oDB->nextRecord();
-            $this->iClient = $this->oDB->f("idclient");
-            $this->sName = $this->oDB->f("name");
-            $this->sDescripion = $this->oDB->f("description");
-            $this->sDeletabel = $this->oDB->f("deletable");
-            $this->sAuthor = $this->oDB->f("author");
-            $this->dCreated = $this->oDB->f("created");
-            $this->dLastModified = $this->oDB->f("lastmodified");
+        $oLayout = new cApiLayout($this->iIdentity);
+        if ($oLayout->isLoaded()) {
+            $this->iClient = $oLayout->get('idclient');
+            $this->sName = $oLayout->get('name');
+            $this->sDescription = $oLayout->get('description');
+            $this->iDeletable = cSecurity::toInteger($oLayout->get('deletable'));
+            $this->sAuthor = $oLayout->get('author');
+            $this->dCreated = $oLayout->get('created');
+            $this->dLastModified = $oLayout->get('lastmodified');
         }
     }
 
     /**
-     * This function read an xml file nodes
+     * This function reads xml file nodes
      *
      * @param string $sPath
      *         Path to file
@@ -139,17 +128,17 @@ class cVersionLayout extends cVersion {
      *         returns array width this three nodes
      */
     public function initXmlReader($sPath) {
-        $aResult = array();
-        if ($sPath != "") {
+        $aResult = [];
+        if ($sPath != '') {
             // Output this xml file
             $sXML = simplexml_load_file($sPath);
 
             if ($sXML) {
                 foreach ($sXML->body as $oBodyValues) {
                     // if choose xml file read value an set it
-                    $aResult["name"] = $oBodyValues->name;
-                    $aResult["desc"] = $oBodyValues->description;
-                    $aResult["code"] = $oBodyValues->code;
+                    $aResult['name'] = $oBodyValues->name;
+                    $aResult['desc'] = $oBodyValues->description;
+                    $aResult['code'] = $oBodyValues->code;
                 }
             }
         }
@@ -158,7 +147,7 @@ class cVersionLayout extends cVersion {
 
     /**
      * Function returns javascript which refreshes CONTENIDO frames for file
-     * list an subnavigation.
+     * list a sub navigation.
      * This is necessary, if filenames where changed, when a history entry is
      * restored
      *
@@ -169,11 +158,11 @@ class cVersionLayout extends cVersion {
      * @param object $sess
      *         CONTENIDO session object
      * @return string
-     *         Javascript for refrehing frames
+     *         Javascript for refreshing frames
      */
     public function renderReloadScript($sArea, $iIdLayout, $sess) {
         $urlLeftBottom = $sess->url("main.php?area=$sArea&frame=2&idlay=$iIdLayout");
-        $sReloadScript = <<<JS
+        return <<<JS
 <script type="text/javascript">
 (function(Con, $) {
     var frame = Con.getFrame('left_bottom');
@@ -183,7 +172,6 @@ class cVersionLayout extends cVersion {
 })(Con, Con.$);
 </script>
 JS;
-        return $sReloadScript;
     }
 
 }
