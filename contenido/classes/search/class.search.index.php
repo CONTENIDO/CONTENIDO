@@ -74,35 +74,35 @@ class cSearchIndex extends cSearchBaseAbstract {
      *
      * @var array
      */
-    protected $_keycode = array();
+    protected $_keycode = [];
 
     /**
      * list of keywords of an article
      *
      * @var array
      */
-    protected $_keywords = array();
+    protected $_keywords = [];
 
     /**
      * words, which should not be indexed
      *
      * @var array
      */
-    protected $_stopwords = array();
+    protected $_stopwords = [];
 
     /**
      * keywords of an article stored in the DB
      *
      * @var array
      */
-    protected $_keywordsOld = array();
+    protected $_keywordsOld = [];
 
     /**
      * keywords to be deleted
      *
      * @var array
      */
-    protected $_keywordsDel = array();
+    protected $_keywordsDel = [];
 
     /**
      * 'auto' or 'self'
@@ -124,7 +124,7 @@ class cSearchIndex extends cSearchBaseAbstract {
      *
      * @var array
      */
-    protected $_cmsOptions = array();
+    protected $_cmsOptions = [];
 
     /**
      * array of all available cms types
@@ -137,20 +137,20 @@ class cSearchIndex extends cSearchBaseAbstract {
      * imgdescr - Image description
      * link - Link (URL)
      * linktarget - Linktarget (_self, _blank, _top ...)
-     * linkdescr - Linkdescription
+     * linkdescr - Link description
      * swf - Upload id of the element
      * etc.
      *
      * @var array
      */
-    protected $_cmsType = array();
+    protected $_cmsType = [];
 
     /**
      * suffix of all available cms types
      *
      * @var array
      */
-    protected $_cmsTypeSuffix = array();
+    protected $_cmsTypeSuffix = [];
 
     /**
      *
@@ -194,10 +194,9 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @param array  $cms_options       [optional] One can specify explicitly cms types which should not be indexed.
      * @param array  $aStopwords        [optional] Array with words which should not be indexed.
      *
-     * @throws cInvalidArgumentException
-     * @throws cDbException
+     * @throws cInvalidArgumentException|cDbException
      */
-    public function start($idart, $aContent, $place = 'auto', $cms_options = array(), $aStopwords = array()) {
+    public function start($idart, $aContent, $place = 'auto', $cms_options = [], $aStopwords = []) {
         if (!is_int((int) $idart) || $idart < 0) {
             return;
         } else {
@@ -240,7 +239,7 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @throws cInvalidArgumentException
      */
     public function createKeywords() {
-        $tmp_keys = array();
+        $tmp_keys = [];
 
         // Only create keycodes, if some are available
         if (is_array($this->_keycode)) {
@@ -252,10 +251,10 @@ class cSearchIndex extends cSearchBaseAbstract {
                         // remove backslash
                         $code = stripslashes($code);
                         // replace HTML line breaks with newlines
-                        $code = str_ireplace(array(
+                        $code = str_ireplace([
                             '<br>',
                             '<br />'
-                        ), "\n", $code);
+                        ], "\n", $code);
                         // remove html tags
                         $code = strip_tags($code);
                         if (cString::getStringLength($code) > 0) {
@@ -280,7 +279,7 @@ class cSearchIndex extends cSearchBaseAbstract {
 
                                 if (cString::getStringLength($value) > 1) {
                                     // do not index single characters
-                                    $this->_keywords[$value] = $this->_keywords[$value] . $idtype . '-' . $typeid . ' ';
+                                    $this->_keywords[$value] = ($this->_keywords[$value] ?? '') . $idtype . '-' . $typeid . ' ';
                                 }
                             }
                         }
@@ -302,7 +301,6 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @throws cDbException
      */
     public function saveKeywords() {
-
         foreach ($this->_keywords as $keyword => $count) {
             $tmp_count = preg_split('/[\s]/', trim($count));
             $this->_debug('tmp_count', $tmp_count);
@@ -321,7 +319,7 @@ class cSearchIndex extends cSearchBaseAbstract {
                 $sql  .= "VALUES";
                 $sql  .= "('{$this->db->escape($keyword)}', '{$this->db->escape($index_string)}', {$iLang})";
             } else {
-                // if keyword allready exists, create new index_string
+                // if keyword already exists, create new index_string
                 if (preg_match("/&$this->idart=/", $this->_keywordsOld[$keyword])) {
                     $index_string = preg_replace("/&$this->idart=[0-9]+\([\w\-,]+\)/", $index_string, $this->_keywordsOld[$keyword]);
                 } else {
@@ -395,10 +393,10 @@ class cSearchIndex extends cSearchBaseAbstract {
      *
      * @param string $key
      *         Keyword
-     * @return mixed
+     * @return array|string|string[]
      */
     public function removeSpecialChars($key) {
-        $aSpecialChars = array(
+        $aSpecialChars = [
             /*"-",*/
             "_",
             "'",
@@ -432,7 +430,7 @@ class cSearchIndex extends cSearchBaseAbstract {
             "}",
             "~",
             "„"
-        );
+        ];
 
         // for ($i = 127; $i < 192; $i++) {
         // some other special characters
@@ -453,7 +451,7 @@ class cSearchIndex extends cSearchBaseAbstract {
             $key = htmlentities_iso88592($key);
         }
 
-        // $aUmlautMap = array(
+        // $aUmlautMap = [
         // '&Uuml;' => 'ue',
         // '&uuml;' => 'ue',
         // '&Auml;' => 'ae',
@@ -461,16 +459,14 @@ class cSearchIndex extends cSearchBaseAbstract {
         // '&Ouml;' => 'oe',
         // '&ouml;' => 'oe',
         // '&szlig;' => 'ss'
-        // );
+        // ];
 
         // foreach ($aUmlautMap as $sUmlaut => $sMapped) {
         // $key = str_replace($sUmlaut, $sMapped, $key);
         // }
 
         $key = conHtmlEntityDecode($key);
-        $key = str_replace($aSpecialChars, '', $key);
-
-        return $key;
+        return str_replace($aSpecialChars, '', $key);
     }
 
     /**
@@ -481,7 +477,7 @@ class cSearchIndex extends cSearchBaseAbstract {
      */
     public function addSpecialUmlauts($key) {
         $key = conHtmlentities($key, NULL, cRegistry::getEncoding());
-        $aUmlautMap = array(
+        $aUmlautMap = [
             'Ue' => '&Uuml;',
             'ue' => '&uuml;',
             'Ae' => '&Auml;',
@@ -489,14 +485,13 @@ class cSearchIndex extends cSearchBaseAbstract {
             'Oe' => '&Ouml;',
             'oe' => '&ouml;',
             'ss' => '&szlig;'
-        );
+        ];
 
         foreach ($aUmlautMap as $sUmlaut => $sMapped) {
             $key = str_replace($sUmlaut, $sMapped, $key);
         }
 
-        $key = conHtmlEntityDecode($key);
-        return $key;
+        return conHtmlEntityDecode($key);
     }
 
     /**
@@ -517,7 +512,7 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @throws cDbException
      */
     public function setContentTypes() {
-        $sql = "SELECT type, idtype FROM " . $this->cfg['tab']['type'] . ' ';
+        $sql = "SELECT `type`, `idtype` FROM `" . $this->cfg['tab']['type'] . "`";
         $this->_debug('sql', $sql);
         $this->db->query($sql);
         while ($this->db->nextRecord()) {
@@ -550,7 +545,7 @@ class cSearchIndex extends cSearchBaseAbstract {
                 }
             }
         } else {
-            $this->_cmsOptions = array();
+            $this->_cmsOptions = [];
         }
     }
 
@@ -569,7 +564,7 @@ class cSearchIndex extends cSearchBaseAbstract {
             return true;
         }
 
-        return (count($this->_cmsOptions) === 0 || in_array($idtype, $this->_cmsOptions)) ? false : true;
+        return !((count($this->_cmsOptions) === 0 || in_array($idtype, $this->_cmsOptions)));
     }
 
     /**
