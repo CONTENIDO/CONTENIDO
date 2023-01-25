@@ -176,7 +176,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * @param array  $contentTypes
      *                         Content type array
      * @param bool   $editable [optional]
-     * @return mixed
+     * @return mixed|void
      * @throws cDbException
      * @throws cException
      */
@@ -307,17 +307,20 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * Stores all values from the $_POST array in the $_settings attribute
      * (associative array) and saves them in the database (XML).
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     protected function _storeSettings() {
         // prepare the filename and dirname
-        $filename = basename($_POST['image_filename']);
-        $dirname = dirname($_POST['image_filename']);
+        $filename = basename($_POST['image_filename'] ?? '');
+        $dirname = dirname($_POST['image_filename'] ?? '');
         if ($dirname === '\\' || $dirname === '/') {
             $dirname = '';
         } else {
             $dirname .= '/';
+        }
+
+        if (empty($filename)) {
+            return;
         }
 
         // get the upload ID
@@ -345,7 +348,6 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $internal_notice = $_POST['image_internal_notice'];
         $copyright = $_POST['image_copyright'];
 
-        // load meta data object
         $uploadMeta = new cApiUploadMeta();
         $uploadMeta->loadByMany([
             'idupl' => $this->_rawSettings,
@@ -362,7 +364,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             $uploadMeta->set('copyright', $copyright);
             $uploadMeta->store();
         } else {
-            // if meta data object does not exist yet, create a new one
+            // if metadata object does not exist yet, create a new one
             $uploadMetaCollection = new cApiUploadMetaCollection();
             $uploadMetaCollection->create($this->_rawSettings, $this->_lang, $medianame, $description, $keywords, $internal_notice, $copyright);
         }
@@ -373,7 +375,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * the frontend.
      *
      * @return string
-     *         escaped HTML code which sould be shown if content type is shown in frontend
+     *         escaped HTML code which should be shown if content type is shown in frontend
      */
     public function generateViewCode() {
         $image = new cHTMLImage($this->_imagePath);
@@ -387,7 +389,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         escaped HTML code which should be shown if content type is edited
-     * @throws cInvalidArgumentException
+     * @throws cInvalidArgumentException|cException
      */
     public function generateEditCode() {
         // construct the top code of the template
@@ -463,8 +465,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *         the code for the directories tab
      */
     private function _generateTabDirectories() {
-        // define a wrapper which contains the whole content of the directories
-        // tab
+        // define a wrapper which contains the whole content of the directories tab
         $wrapper = new cHTMLDiv();
         $wrapperContent = [];
 
@@ -492,11 +493,12 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     }
 
     /**
-     * Generates code for the meta tab in which the images's meta data can be
+     * Generates code for the meta tab in which the image's metadata can be
      * edited.
      *
      * @return string
      *         the code for the meta tab
+     * @throws cException
      */
     private function _generateTabMeta() {
         // define a wrapper which contains the whole content of the meta tab
@@ -530,6 +532,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *
      * @return string
      *         the code for the upload tab
+     * @throws cException
      */
     private function _generateTabUpload() {
         // define a wrapper which contains the whole content of the upload tab
@@ -621,6 +624,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *         directory of the files
      * @return string
      *         rendered cHTMLSelectElement
+     * @throws cException
      */
     public function generateFileSelect($directoryPath = '') {
         // make sure the path ends with a slash
@@ -714,14 +718,14 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     }
 
     /**
-     * Gets the meta data of the image with the given filename/dirname.
+     * Gets the metadata of the image with the given filename/dirname.
      *
      * @param string $filename
      *         the filename of the image
      * @param string $dirname
      *         the dirname of the image
      * @return string
-     *         JSON-encoded array with meta data
+     *         JSON-encoded array with metadata
      * @throws cDbException
      * @throws cException
      */
@@ -761,6 +765,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *         Name of directory to create
      * @return string|void
      *         value of filemode as string ('0702') or nothing
+     *
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function uplmkdir($path, $name) {
         return uplmkdir($path, $name);
@@ -773,11 +779,10 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *         the path to which the file should be uploaded
      * @return string
      *         the filename of the uploaded file
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function uplupload($path) {
+        $uplFilename = '';
         if (count($_FILES) === 1) {
             foreach ($_FILES['file']['name'] as $key => $value) {
                 if (file_exists($_FILES['file']['tmp_name'][$key])) {
@@ -793,15 +798,15 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
                         'filename' => $_FILES['file']['name'][$key]
                     ], false);
                     if ($upload->get('idupl') != false) {
-                        $uplfilename = $this->_cfgClient[$this->_client]['upl']['htmlpath'] . $upload->get('dirname') . $upload->get('filename');
+                        $uplFilename = $this->_cfgClient[$this->_client]['upl']['htmlpath'] . $upload->get('dirname') . $upload->get('filename');
                     } else {
-                        $uplfilename = 'error';
+                        $uplFilename = 'error';
                     }
                 }
             }
         }
 
-        return $uplfilename;
+        return $uplFilename;
     }
 
 }
