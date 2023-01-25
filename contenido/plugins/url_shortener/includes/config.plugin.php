@@ -13,7 +13,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $cfg;
+global $cfg, $lngAct;
 
 $pluginName = basename(dirname(__DIR__, 1));
 
@@ -36,14 +36,13 @@ if (!isset($cfg['url_shortener']['allowed_chars'])) {
     $cfg['url_shortener']['allowed_chars'] = '/^[a-zA-Z0-9-_]*$/';
 }
 
-// include plugin classes
-plugin_include($pluginName, 'classes/class.url_shortener.shorturl.php');
-
-// include plugin includes
-plugin_include($pluginName, 'includes/functions.url_shortener.php');
-
+// Plugin translations for backend
 $lngAct[$pluginName]["url_shortener_delete"] = i18n("Delete Short URLs", $pluginName);
 $lngAct[$pluginName]["url_shortener_edit"] = i18n("Edit Short URLs", $pluginName);
+
+// Include plugin sources
+plugin_include($pluginName, 'classes/class.url_shortener.shorturl.php');
+plugin_include($pluginName, 'includes/functions.url_shortener.php');
 
 // add chain functions
 $cecRegistry = cApiCecRegistry::getInstance();
