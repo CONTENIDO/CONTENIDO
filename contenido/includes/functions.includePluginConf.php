@@ -63,5 +63,3 @@ foreach ($plugins as $pluginName) {
 // They remain in old sub plugins logic for now
 cScanPlugins("frontendusers");
 cScanPlugins("frontendlogic");
-
-#mp_d($cfg['plugins']);
