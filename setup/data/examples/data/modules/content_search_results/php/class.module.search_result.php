@@ -11,13 +11,23 @@
 
 /**
  *
+ * @property array $_cfg
+ * @property cDb $_db
+ * @property int $_client
+ * @property int $_lang
+ * @property int $_idcat
+ * @property int $_idart
+ * @property cSession $_sess
+ * @property string $_combine
+ * @property string $_templateName
+ *
  * @author marcus.gnass
  */
 class SearchResultModule {
 
     /**
      *
-     * @var unknown_type
+     * @var int
      */
     protected $_countValues;
 
@@ -101,6 +111,7 @@ class SearchResultModule {
      * @param array $options
      */
     public function __construct(array $options = NULL) {
+        global $sArtSpecs;
 
         // generic way to set options
         if (NULL !== $options) {
@@ -123,7 +134,6 @@ class SearchResultModule {
         $this->_msgRange = '';
 
         // get global variables (the ugly way)
-        global $sArtSpecs;
         $this->_artSpecs = $sArtSpecs;
 
         // perform first preparation of searchterm
@@ -192,10 +202,10 @@ class SearchResultModule {
         // determine action & method for search form
         // depends upon if plugin mod_rewrite is enabled
         if (class_exists('ModRewrite') && ModRewrite::isEnabled()) {
-            $tpl->assign('action', cUri::getInstance()->build(array(
+            $tpl->assign('action', cUri::getInstance()->build([
                 'idart' => cRegistry::getArticleId(),
                 'lang' => cRegistry::getLanguageId()
-            )));
+            ]));
         } else {
             $tpl->assign('action', 'front_content.php');
             $tpl->assign('idart', cRegistry::getArticleId());
@@ -208,10 +218,9 @@ class SearchResultModule {
     /**
      */
     protected function _performSearch() {
-
         // build search object
         // only certain content types will be searched
-        $search = new cSearch(array(
+        $search = new cSearch([
             // use db function regexp
             'db' => 'regexp',
             // combine searchterms with and
@@ -227,17 +236,19 @@ class SearchResultModule {
             // => do not search articles or articles in categories which are
             // offline or protected
             'protected' => true
-        ));
-        $search->setCmsOptions(array(
+        ]);
+
+        $search->setCmsOptions([
             'head',
             'html',
             'htmlhead',
             'htmltext',
             'text'
-        ));
+        ]);
+
         if (cString::getStringLength($this->_prepSearchTerm) > 1) {
             $searchResultArray = $search->searchIndex($this->_prepSearchTerm, '');
-            
+
             if (false !== $searchResultArray) {
 
                 $this->_searchResultCount = count($searchResultArray);
@@ -290,12 +301,11 @@ class SearchResultModule {
      * Default value is 1.
      *
      * @return array
+     * @throws cDbException|cException
      */
     protected function _getSearchableIdcats() {
         $searchableIdcats = getEffectiveSetting('searchable', 'idcats', 1);
-        $searchableIdcats = explode(',', $searchableIdcats);
-
-        return $searchableIdcats;
+        return explode(',', $searchableIdcats);
     }
 
     /**
@@ -304,24 +314,22 @@ class SearchResultModule {
      * TODO use cApiArticleSpecificationCollection instead
      *
      * @return array
+     * @throws cDbException|cInvalidArgumentException
      */
     protected function _getArticleSpecs() {
         $sql = "-- getArticleSpecs()
             SELECT
-                idartspec
-                , artspec
+                `idartspec`, `artspec`
             FROM
-                " . $this->_cfg['tab']['art_spec'] . "
+                `%s`
             WHERE
-                client = $this->_client
-                AND lang = $this->_lang
-                AND online = 1
+                `client` = %d AND `lang` = %d AND `online` = 1
             ;";
 
-        $this->_db->query($sql);
+        $this->_db->query($sql, $this->_cfg['tab']['art_spec'], $this->_client, $this->_lang);
 
-        $aArtSpecs = array();
-        while ($this->_db->next_record()) {
+        $aArtSpecs = [];
+        while ($this->_db->nextRecord()) {
             $aArtSpecs[] = $this->_db->f('idartspec');
         }
         $aArtSpecs[] = 0;
@@ -332,10 +340,11 @@ class SearchResultModule {
     /**
      *
      * @return array
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     protected function _getResults() {
         if (NULL === $this->_searchResults) {
-            return array();
+            return [];
         }
 
         // get current result page
@@ -343,14 +352,13 @@ class SearchResultModule {
 
         // skip if current page has no results
         if (0 == count($searchResultPage) > 0) {
-            return array();
+            return [];
         }
 
         // build single search result on result page
-        $entries = array();
+        $entries = [];
         $i = 0;
         foreach (array_keys($searchResultPage) as $idart) {
-
             $i++;
 
             // get absolute number of current search result
@@ -373,21 +381,21 @@ class SearchResultModule {
             $similarity = sprintf("%.0f", $similarity);
 
             // build link to that result page
-            $href = cUri::getInstance()->build(array(
+            $href = cUri::getInstance()->build([
                 'lang' => cRegistry::getLanguageId(),
                 'idcat' => $this->_searchResults->getArtCat($idart),
                 'idart' => $idart
-            ));
+            ]);
 
             // assemble entry
-            $entries[] = array(
+            $entries[] = [
                 'number' => $number,
                 'headline' => $headline,
                 'subheadline' => $subheadline,
                 'paragraph' => $paragraph,
                 'similarity' => $similarity,
                 'href' => $href
-            );
+            ];
         }
 
         $lower = ($this->_page - 1) * $this->_itemsPerPage + 1;
@@ -404,16 +412,13 @@ class SearchResultModule {
      * @return string
      */
     protected function _getPreviousLink() {
-
         // skip if there are no previous pages
         if (1 >= $this->_page) {
             return '';
         }
 
         // build link to previous result page
-        $url = $this->_getPageLink($this->_dispSearchTerm, $this->_page - 1);
-
-        return $url;
+        return $this->_getPageLink($this->_dispSearchTerm, $this->_page - 1);
     }
 
     /**
@@ -421,25 +426,22 @@ class SearchResultModule {
      * @return string
      */
     protected function _getNextLink() {
-
         // skip if there are no next pages
         if ($this->_page >= $this->_numberOfPages) {
             return '';
         }
 
         // build link to next result page
-        $url = $this->_getPageLink($this->_dispSearchTerm, $this->_page + 1);
-
-        return $url;
+        return $this->_getPageLink($this->_dispSearchTerm, $this->_page + 1);
     }
 
     /**
      * Build links to other result pages.
      *
-     * @return string
+     * @return array
      */
     protected function _getPageLinks() {
-        $pageLinks = array();
+        $pageLinks = [];
         for ($i = 1; $i <= $this->_numberOfPages; $i++) {
             $pageLinks[$i] = $this->_getPageLink($this->_dispSearchTerm, $i);
         }
@@ -454,15 +456,15 @@ class SearchResultModule {
      * @param string $searchTerm
      * @param int $page
      * @return mixed
+     * @throws cDbException|cException
      */
     protected function _getPageLink($searchTerm = NULL, $page = NULL) {
-
         // define standard params
-        $params = array(
+        $params = [
             'lang' => $this->_lang,
             'idcat' => $this->_idcat,
             'idart' => $this->_idart
-        );
+        ];
         // add optional params if given
         if (NULL !== $searchTerm) {
             $params['search_term'] = conHtmlEntityDecode($searchTerm);
@@ -475,28 +477,28 @@ class SearchResultModule {
 
         // define special params when 'front_content' or 'MR' url builders are
         // *NOT* used in this case the standard params are wrapped as 'search'
-        // and lang, idcat & level are aded cause they are needed to build the
+        // and lang, idcat & level are added because they are needed to build the
         // category path
-        $url_builder = array(
+        $url_builder = [
             'front_content',
             'MR'
-        );
+        ];
         if (false === in_array($this->_cfg['url_builder']['name'], $url_builder)) {
-            $params = array(
+            $params = [
                 'search' => $params,
                 'lang' => $this->_lang,
                 'idcat' => $this->_idcat,
                 'level' => 1
-            );
+            ];
         }
 
         try {
             $url = cUri::getInstance()->build($params);
         } catch (cInvalidArgumentException $e) {
-            $url = $this->_sess->url(implode('?', array(
+            $url = $this->_sess->url(implode('?', [
                 'front_content.php',
                 implode('&', $defaultParams)
-            )));
+            ]));
         }
 
         return $url;
@@ -504,4 +506,3 @@ class SearchResultModule {
 
 }
 
-?>

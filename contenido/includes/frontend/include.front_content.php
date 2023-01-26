@@ -487,7 +487,7 @@ $db = cRegistry::getDb();
 $db->query($sql);
 
 $data = [];
-while ($db->next_record()) {
+while ($db->nextRecord()) {
     array_push($data, $db->toArray());
 }
 
