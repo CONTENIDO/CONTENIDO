@@ -18,6 +18,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiCategoryArticle createNewItem
+ * @method cApiCategoryArticle next
  */
 class cApiCategoryArticleCollection extends ItemCollection {
     /**
@@ -26,12 +28,11 @@ class cApiCategoryArticleCollection extends ItemCollection {
      * @param bool $select [optional]
      *                     where clause to use for selection (see ItemCollection::select())
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($select = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['cat_art'], 'idcatart');
+        $table = cRegistry::getDbTableName('cat_art');
+        parent::__construct($table, 'idcatart');
         $this->_setItemClass('cApiCategoryArticle');
 
         // set the join partners so that joins can be used via link() method
@@ -56,14 +57,11 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *
      * @return cApiCategoryArticle
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($idcat, $idart, $status = 0, $author = "", $created = "", $lastmodified = "", $createcode = 1) {
-        global $auth;
-
         if (empty($author)) {
+            $auth = cRegistry::getAuth();
             $author = $auth->auth['uname'];
         }
         if (empty($created)) {
@@ -98,26 +96,39 @@ class cApiCategoryArticleCollection extends ItemCollection {
      * @param int $lang
      *
      * @return cApiCategoryArticle|NULL
-     * 
-     * @throws cDbException
+     *
+     * @throws cDbException|cInvalidArgumentException
      */
     public function fetchFirstFromTreeByClientIdAndLangId($client, $lang) {
-        global $cfg;
+        $sql = "-- cApiCategoryArticleCollection->fetchFirstFromTreeByClientIdAndLangId()
+            SELECT
+                A.*
+            FROM
+                `:tab_cat_art` AS A,
+                `:tab_cat_tree` AS B,
+                `:tab_cat` AS C,
+                `:tab_cat_lang` AS D,
+                `:tab_art_lang` AS E
+            WHERE
+                A.idcat = B.idcat AND
+                B.idcat = C.idcat AND
+                D.startidartlang = E.idartlang AND
+                D.idlang = :lang AND
+                E.idart = A.idart AND
+                E.idlang = :lang AND
+                idclient = :client
+            ORDER BY
+                `idtree` ASC LIMIT 1";
 
-        $sql = "SELECT A.* FROM `:cat_art` AS A, `:cat_tree` AS B, `:cat` AS C, `:cat_lang` AS D, `:art_lang` AS E " . "WHERE A.idcat = B.idcat AND B.idcat = C.idcat AND D.startidartlang = E.idartlang AND D.idlang = :lang AND E.idart = A.idart AND E.idlang = :lang AND idclient = :client " . "ORDER BY idtree ASC LIMIT 1";
-
-        $params = array(
-            'cat_art' => $this->table,
-            'cat_tree' => $cfg['tab']['cat_tree'],
-            'cat' => $cfg['tab']['cat'],
-            'cat_lang' => $cfg['tab']['cat_lang'],
-            'art_lang' => $cfg['tab']['art_lang'],
-            'lang' => (int) $lang,
-            'client' => (int) $client
-        );
-
-        $sql = $this->db->prepare($sql, $params);
-        $this->db->query($sql);
+        $this->db->query($sql, [
+            'tab_cat_art' => $this->table,
+            'tab_cat_tree' => cRegistry::getDbTableName('cat_tree'),
+            'tab_cat_lang' => cRegistry::getDbTableName('cat_lang'),
+            'tab_art_lang' => cRegistry::getDbTableName('art_lang'),
+            'tab_cat' => cRegistry::getDbTableName('cat'),
+            'lang' => cSecurity::toInteger($lang),
+            'client' => cSecurity::toInteger($client)
+        ]);
         if ($this->db->nextRecord()) {
             $oItem = new cApiCategoryArticle();
             $oItem->loadByRecordSet($this->db->toArray());
@@ -134,14 +145,13 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *
      * @return cApiCategoryArticle|NULL
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function fetchByCategoryIdAndArticleId($idcat, $idart) {
-        $aProps = array(
+        $aProps = [
             'idcat' => $idcat,
             'idart' => $idart
-        );
+        ];
         $aRecordSet = $this->_oCache->getItemByProperties($aProps);
         if ($aRecordSet) {
             // entry in cache found, load entry from cache
@@ -149,7 +159,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
             $oItem->loadByRecordSet($aRecordSet);
             return $oItem;
         } else {
-            $this->select('idcat = ' . (int) $idcat . ' AND idart = ' . (int) $idart);
+            $this->select(sprintf('`idcat` = %d AND `idart` = %d', $idcat, $idart));
             return $this->next();
         }
     }
@@ -177,15 +187,14 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *
      * @return array
      *
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function getAllIdsByClientId($idclient) {
-        global $cfg;
+        $aIds = [];
 
-        $aIds = array();
-
-        $sql = "SELECT A.idcatart FROM `%s` as A, `%s` as B WHERE B.idclient = %d AND B.idcat = A.idcat";
-        $this->db->query($sql, $this->table, $cfg['tab']['cat'], $idclient);
+        $catTable = cRegistry::getDbTableName('cat');
+        $sql = "SELECT a.idcatart FROM `%s` AS a, `%s` AS b WHERE b.idclient = %d AND b.idcat = a.idcat";
+        $this->db->query($sql, $this->table, $catTable, $idclient);
         while ($this->db->nextRecord()) {
             $aIds[] = $this->db->f('idcatart');
         }
@@ -194,23 +203,22 @@ class cApiCategoryArticleCollection extends ItemCollection {
     }
 
     /**
-     * Returns all available category ids of entries having a secific article id
+     * Returns all available category ids of entries having a specific article id
      *
      * @param int $idart
-     * 
+     *
      * @return array
-     * 
-     * @throws cDbException
+     *
+     * @throws cDbException|cInvalidArgumentException
      */
     public function getCategoryIdsByArticleId($idart) {
-        $aIdCats = array();
+        $aIdCats = [];
 
-        $sql = "SELECT idcat FROM `:cat_art` WHERE idart=:idart";
-        $sql = $this->db->prepare($sql, array(
-            'cat_art' => $this->table,
-            'idart' => (int) $idart
-        ));
-        $this->db->query($sql);
+        $sql = "SELECT `idcat` FROM `:tab_cat_art` WHERE `idart` = :idart";
+        $this->db->query($sql, [
+            'tab_cat_art' => $this->table,
+            'idart' => cSecurity::toInteger($idart)
+        ]);
 
         while ($this->db->nextRecord()) {
             $aIdCats[] = $this->db->f('idcat');
@@ -226,24 +234,22 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *         Category id
      * @param int $idlang
      *         Language id
-     * 
+     *
      * @return bool
-     * 
-     * @throws cDbException
+     *
+     * @throws cDbException|cInvalidArgumentException
      */
     public function getHasArticles($idcat, $idlang) {
-        global $cfg;
-
-        $sql = "SELECT b.idartlang AS idartlang FROM `:cat_art` AS a, `:art_lang` AS b " . "WHERE a.idcat = :idcat AND a.idart = b.idart AND b.idlang = :idlang";
-        $sql = $this->db->prepare($sql, array(
-            'cat_art' => $this->table,
-            'art_lang' => $cfg['tab']['art_lang'],
+        $sql = "SELECT b.idartlang FROM `:tab_cat_art` AS a, `:art_lang` AS b "
+            . "WHERE a.idcat = :idcat AND a.idart = b.idart AND b.idlang = :idlang";
+        $this->db->query($sql, [
+            'tab_cat_art' => $this->table,
+            'art_lang' => cRegistry::getDbTableName('art_lang'),
             'idcat' => $idcat,
             'idlang' => $idlang
-        ));
-        $this->db->query($sql);
+        ]);
 
-        return ($this->db->nextRecord()) ? true : false;
+        return $this->db->nextRecord();
     }
 
     /**
@@ -254,7 +260,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
      * @param int       $createcode [optional]
      *                              Create code state, either 1 or 0.
      *
-     * @return int
+     * @return int|void
      *                              Number of updated entries
      *
      * @throws cDbException
@@ -267,14 +273,14 @@ class cApiCategoryArticleCollection extends ItemCollection {
                 return;
             }
             foreach ($idcatart as $pos => $id) {
-                $idcatart[$pos] = (int) $id;
+                $idcatart[$pos] = cSecurity::toInteger($id);
             }
             $inSql = implode(', ', $idcatart);
-            $sql = "UPDATE `%s` SET createcode = %d WHERE idcatart IN (" . $inSql . ")";
+            $sql = "UPDATE `%s` SET `createcode` = %d WHERE `idcatart` IN (" . $inSql . ")";
             $sql = $this->db->prepare($sql, $this->table, $createcode);
         } else {
             // Single id
-            $sql = "UPDATE `%s` SET createcode = %d WHERE idcatart = %d";
+            $sql = "UPDATE `%s` SET `createcode` = %d WHERE `idcatart` = %d";
             $sql = $this->db->prepare($sql, $this->table, $createcode, $idcatart);
         }
         $this->db->query($sql);
@@ -296,12 +302,11 @@ class cApiCategoryArticle extends Item
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['cat_art'], 'idcatart');
+        $table = cRegistry::getDbTableName('cat_art');
+        parent::__construct($table, 'idcatart');
         $this->setFilters(array(), array());
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -309,7 +314,7 @@ class cApiCategoryArticle extends Item
     }
 
     /**
-     * Userdefined setter for category article fields.
+     * User-defined setter for category article fields.
      *
      * @param string $name
      * @param mixed $value
@@ -319,13 +324,9 @@ class cApiCategoryArticle extends Item
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
-            case 'idcat':
-                $value = cSecurity::toInteger($value);
-                break;
             case 'idart':
-                $value = cSecurity::toInteger($value);
-                break;
             case 'status':
+            case 'idcat':
                 $value = cSecurity::toInteger($value);
                 break;
             case 'createcode':

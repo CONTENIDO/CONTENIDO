@@ -3,29 +3,27 @@
 /**
  * Contains class to create a class map file.
  *
- * @category Development
- * @package mpAutoloaderClassMap
- * @author Murat Purc <murat@purc.de>
- * @copyright Copyright (c) 2009-2010 Murat Purc (http://www.purc.de)
- * @license http://www.gnu.org/licenses/gpl-2.0.html - GNU General Public
- *          License, version 2
- * @version $Id$
+ * @category   Development
+ * @package    mpAutoloaderClassMap
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  Copyright (c) 2009-2010 Murat Purc (https://www.purc.de)
+ * @license    https://www.gnu.org/licenses/gpl-2.0.html - GNU General Public License, version 2
  */
 
 /**
- * Class to create a PHP file which contains a assoziative PHP array.
+ * Class to create a PHP file which contains an associative PHP array.
  *
  * Generated file will contain a PHP array as following:
  * <code>
- * return array(
- * '{classname}' => '{path_to_classfile}',
- * '{classname2}' => '{path_to_classfile2}',
- * );
+ * return [
+ *     '{classname}' => '{path_to_class_file}',
+ *     '{classname2}' => '{path_to_class_file2}',
+ * ];
  * </code>
  *
- * @category Development
- * @package mpAutoloaderClassMap
- * @author Murat Purc <murat@purc.de>
+ * @category  Development
+ * @package   mpAutoloaderClassMap
+ * @author    Murat Purc <murat@purc.de>
  */
 class mpClassMapFileCreator {
 
@@ -46,7 +44,8 @@ class mpClassMapFileCreator {
     /**
      * Sets template and template replacements
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->_template = trim('
 <?php
 /**
@@ -78,39 +77,41 @@ class mpClassMapFileCreator {
         $this->_data->subpackage = 'Classmap';
         $this->_data->version = '0.1';
         $this->_data->author = 'System';
-        $this->_data->copyright = 'Copyright (c) 2009-2010 Murat Purc (http://www.purc.de)';
-        $this->_data->license = 'http://www.gnu.org/licenses/gpl-2.0.html - GNU General Public License, version 2';
+        $this->_data->copyright = 'Copyright (c) 2009-2023 Murat Purc (https://www.purc.de)';
+        $this->_data->license = 'https://www.gnu.org/licenses/gpl-2.0.html - GNU General Public License, version 2';
     }
 
     /**
      * Creates classmap file with passed data list
      *
      * @param array $data
-     *         Assoziative list which contains class type tokens
+     *         Associative list which contains class type tokens
      *         and the related path to the class file.
      * @param string $file
      *         Destination class map file
      * @return bool
      */
-    public function create(array $data, $file) {
+    public function create(array $data, string $file): bool
+    {
         $this->_createClassMap($data);
 
         return (bool) file_put_contents($file, $this->_renderTemplate());
     }
 
     /**
-     * Fills template replacement variable with generated assoziative PHP array
+     * Fills template replacement variable with generated associative PHP array
      *
      * @param array $data
-     *         Assoziative list with class type tokens and files
+     *         Associative list with class type tokens and files
      */
-    protected function _createClassMap(array $data) {
-        $classMapTpl = "\r\nreturn array(\r\n%s\r\n);\r\n";
+    protected function _createClassMap(array $data)
+    {
+        $classMapTpl = "\r\nreturn [\r\n%s\r\n];\r\n";
         $classMapContent = '';
         foreach ($data as $classToken => $path) {
             $classMapContent .= sprintf("    '%s' => '%s',\r\n", addslashes($classToken), addslashes($path));
         }
-        $classMapContent = cString::getPartOfString($classMapContent, 0, -3);
+        $classMapContent = substr($classMapContent, 0, -3);
 
         $this->_data->content .= sprintf($classMapTpl, $classMapContent);
     }
@@ -121,10 +122,11 @@ class mpClassMapFileCreator {
      * @return string
      *         Replaced template
      */
-    protected function _renderTemplate() {
+    protected function _renderTemplate(): string
+    {
         $template = $this->_template;
         foreach ($this->_data as $name => $value) {
-            $template = str_replace('{' . cString::toUpperCase($name) . '}', $value, $template);
+            $template = str_replace('{' . strtoupper($name) . '}', $value, $template);
         }
 
         return $template;

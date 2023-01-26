@@ -5,8 +5,8 @@
 
 {* search form *}
 <form action="{$action}" method="{$method}" id="navigation_searchform_top">
-    {if $idart}<input type="hidden" name="idart" value="{$idart}" />{/if}
-    {if $idlang}<input type="hidden" name="idlang" value="{$idlang}" />{/if}
+    {if !empty($idart)}<input type="hidden" name="idart" value="{$idart}" />{/if}
+    {if !empty($idlang)}<input type="hidden" name="idlang" value="{$idlang}" />{/if}
     <input type="text" id="search_term" name="search_term" class="full" title="Suche" />
     <input type="submit" class="submit search" value="{$label.submit|escape} &raquo;" />
 </form>

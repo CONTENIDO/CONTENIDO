@@ -6,7 +6,7 @@
  *
  * Usage:
  * ------
- * 1. Modifiy settings to your requirements
+ * 1. Modify settings to your requirements
  * 2. Call this script from command line as follows:
  *     $ php create_autoloader_cfg.php
  * 3. Check created class map file
@@ -20,8 +20,8 @@
  * @link             http://www.contenido.org
  */
 
-// allow execution only thru cli mode
-if (cString::getPartOfString(PHP_SAPI, 0, 3) != 'cli') {
+// Allow execution only through cli mode
+if (substr(PHP_SAPI, 0, 3) != 'cli') {
     die('Illegal call');
 }
 
@@ -29,10 +29,10 @@ if (cString::getPartOfString(PHP_SAPI, 0, 3) != 'cli') {
 // /////////////////////////////////////////////////////////////////////
 // Initialization/Settings
 
-// create a page context class, better than spamming global scope
+// Create a page context class, better than spamming global scope
 $context = new stdClass();
 
-// current path
+// Current path
 $context->currentPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/')) . '/';
 
 // CONTENIDO installation path (folder which contains "cms", "contenido", "docs", "setup", etc...)
@@ -40,31 +40,31 @@ $context->contenidoInstallPath = str_replace('\\', '/', realpath(dirname(__FILE_
 
 // Include the environment definer file
 include_once($context->contenidoInstallPath . 'contenido/environment.php');
-// the destination file where the class map configuration should be written in
+// The destination file where the class map configuration should be written in
 $context->destinationFile = $context->contenidoInstallPath . '/data/config/' . CON_ENVIRONMENT . '/config.autoloader.php';
 
-// list of paths from where all class/interface names should be found
-$context->pathsToParse = array(
+// List of paths from where all class/interface names should be found
+$context->pathsToParse = [
     $context->contenidoInstallPath . 'contenido/classes/',
     $context->contenidoInstallPath . 'contenido/external/wysiwyg/tinymce4/contenido/classes/'
-);
+];
 
-// class type finder options
-$context->options = array(
-    // list of directories which are to exclude from parsing (case insensitive)
-    'excludeDirs'       => array('.svn'),
-    // list of files which are to exclude from parsing (case insensitive), also possible regex patterns like /^~*.\.php$/
-    'excludeFiles'      => array(),
-    // list of file extensions to parse (case insensitive)
+// Class type finder options
+$context->options = [
+    // list of directories which are to exclude from parsing (case-insensitive)
+    'excludeDirs'       => ['.svn'],
+    // list of files which are to exclude from parsing (case-insensitive), also possible regex patterns like /^~*.\.php$/
+    'excludeFiles'      => [],
+    // list of file extensions to parse (case-insensitive)
     'extensionsToParse' => '.php',
     'enableDebug'       => false,
-);
+];
 
-// list to collect class maps
-$context->classMapList = array();
+// List to collect class maps
+$context->classMapList = [];
 
 // /////////////////////////////////////////////////////////////////////
-// Proccess
+// Process
 
 // include required classes
 include_once($context->currentPath . 'mpAutoloaderClassMap/mpClassTypeFinder.php');
@@ -79,7 +79,7 @@ foreach ($context->pathsToParse as $pos => $dir) {
     }
 }
 
-// uncomment following line to get some debug messages
+// Uncomment following line to get some debug messages
 // echo $context->classTypeFinder->getFormattedDebugMessages();
 
 // write the class map configuration
