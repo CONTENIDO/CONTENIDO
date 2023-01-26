@@ -420,7 +420,7 @@ $sql = "SELECT
 
 $db->query($sql);
 
-if ($db->num_rows() == 0) { // If we have no categories, display warning message
+if ($db->numRows() == 0) { // If we have no categories, display warning message
     $additionalHeader = $notification->returnNotification("warning", i18n("You have no categories for this client. Please create a new root category with your categories. Without categories, you can't create some articles.")) . "<br />";
 } else {
     $bIgnore = false;
