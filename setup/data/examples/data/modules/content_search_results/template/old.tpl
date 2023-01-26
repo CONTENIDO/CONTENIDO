@@ -8,8 +8,8 @@
 <div id="search">
     <form action="{$action}" method="post">
         <label for="searchterm">{$label.submit}</label>
-        {if $idart}<input type="hidden" name="idart" value="{$idart}" />{/if}
-        {if $idlang}<input type="hidden" name="idlang" value="{$idlang}" />{/if}
+        {if !empty($idart)}<input type="hidden" name="idart" value="{$idart}" />{/if}
+        {if !empty($idlang)}<input type="hidden" name="idlang" value="{$idlang}" />{/if}
         <input type="text" id="searchterm" name="search_term" />
         <input type="image" id="search_send" name="search_send" src="images/navi_pfeil_zu.gif" class="sbmt" />
     </form>
