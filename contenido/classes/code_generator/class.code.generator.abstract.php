@@ -190,21 +190,18 @@ abstract class cCodeGeneratorAbstract {
      *         Generated code or error code '0601' if no template
      *         configuration was found for category or article.
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException If an article with the given idart and idlang can not be loaded.
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function generate(
         $idcat, $idart, $lang, $client, $layout = false, $save = true,
         $contype = true, $editable = true, $version = NULL
     ) {
-
-        $this->_idcat = (int) $idcat;
-        $this->_idart = (int) $idart;
-        $this->_lang = (int) $lang;
-        $this->_client = (int) $client;
-        $this->_layout = (bool) $layout;
-        $this->_save = (bool) $save;
+        $this->_idcat = cSecurity::toInteger($idcat);
+        $this->_idart = cSecurity::toInteger($idart);
+        $this->_lang = cSecurity::toInteger($lang);
+        $this->_client = cSecurity::toInteger($client);
+        $this->_layout = cSecurity::toBoolean($layout);
+        $this->_save = cSecurity::toBoolean($save);
 
         $this->_oArtLang = new cApiArticleLanguage();
         $this->_oArtLang->loadByArticleAndLanguageId($this->_idart, $this->_lang);
@@ -309,7 +306,9 @@ abstract class cCodeGeneratorAbstract {
             $data['idlay'] = $this->_layout;
         }
 
-        cDebug::out("Using Layout: $data[idlay] and Template: $data[idtpl] for generation of code.<br><br>");
+        $idLay = $data['idlay'] ?? '0';
+        $idTpl = $data['idtpl'] ?? '0';
+        cDebug::out("Using Layout: $idLay and Template: $idTpl for generation of code.<br><br>");
 
         return $data;
     }
@@ -474,8 +473,7 @@ abstract class cCodeGeneratorAbstract {
      * @param array $module
      *         Recordset as assoziative array of related module (container code).
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     protected function _processFrontendDebug($containerNumber, array $module) {
         global $containerinf;
@@ -486,27 +484,27 @@ abstract class cCodeGeneratorAbstract {
             return;
         }
 
-        if ($this->_feDebugOptions['container_display'] == true) {
+        if ($this->_getFeDebugOption('container_display')) {
             $this->_modulePrefix[] = 'if ($frontend_debug[\'container_display\']) echo "<!-- START CONTAINER ' . $containerinf[$data['idlay']][$containerNumber]['name'] . ' (' . $containerNumber . ') -->";';
         }
 
-        if ($this->_feDebugOptions['module_display'] == true) {
+        if ($this->_getFeDebugOption('module_display')) {
             $this->_modulePrefix[] = 'if ($frontend_debug[\'module_display\']) echo "<!-- START MODULE ' . $module['name'] . ' (' . $module['idmod'] . ') -->";';
         }
 
-        if ($this->_feDebugOptions['module_timing'] == true) {
+        if ($this->_getFeDebugOption('module_timing')) {
             $this->_modulePrefix[] = '$modTime' . $containerNumber . ' = -getmicrotime(true);';
             $this->_moduleSuffix[] = '$modTime' . $containerNumber . ' += getmicrotime(true);';
         }
 
-        if ($this->_feDebugOptions['module_display'] == true) {
+        if ($this->_getFeDebugOption('module_display')) {
             $this->_moduleSuffix[] = 'if ($frontend_debug[\'module_display\']) echo "<!-- END MODULE ' . $module['name'] . ' (' . $module['idmod'] . ')";';
-            if ($this->_feDebugOptions['module_timing'] == true) {
+            if ($this->_getFeDebugOption('module_timing')) {
                 $this->_moduleSuffix[] = 'if ($frontend_debug[\'module_timing\']) echo(" AFTER " . $modTime' . $containerNumber . ');';
             }
             $this->_moduleSuffix[] = 'if ($frontend_debug[\'module_display\']) echo " -->";';
         }
-        if ($this->_feDebugOptions['container_display'] == true) {
+        if ($this->_getFeDebugOption('container_display')) {
             $this->_moduleSuffix[] = 'if ($frontend_debug[\'container_display\']) echo "<!-- END CONTAINER ' . $containerinf[$data['idlay']][$containerNumber]['name'] . ' (' . $containerNumber . ') -->";';
         }
     }
@@ -674,6 +672,16 @@ abstract class cCodeGeneratorAbstract {
         }
 
         return $code;
+    }
+
+    /**
+     * Getter for frontend debug option (see global variable $frontend_debug)
+     * @param string $key
+     *
+     * @return bool
+     */
+    protected function _getFeDebugOption($key) {
+        return cSecurity::toBoolean($this->_feDebugOptions[$key] ?? '0');
     }
 
     /**

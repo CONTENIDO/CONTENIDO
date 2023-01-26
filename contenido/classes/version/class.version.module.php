@@ -44,7 +44,7 @@ class cVersionModule extends cVersion {
      * @param string $sArea
      * @param int    $iFrame
      *
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function __construct($iIdMod, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame) {
         // Set globals in main class
@@ -60,10 +60,7 @@ class cVersionModule extends cVersion {
     }
 
     /**
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     protected function _storeModuleInformation() {
         $iIdMod = cSecurity::toInteger($this->iIdentity);
@@ -130,7 +127,7 @@ class cVersionModule extends cVersion {
      */
     public function renderReloadScript($sArea, $iIdModule, cSession $sess) {
         $urlLeftBottom = $sess->url("main.php?area=$sArea&frame=2&idmod=$iIdModule");
-        $sReloadScript = <<<JS
+        return <<<JS
 <script type="text/javascript">
 (function(Con, $) {
     var frame = Con.getFrame('left_bottom');
@@ -140,7 +137,6 @@ class cVersionModule extends cVersion {
 })(Con, Con.$);
 </script>
 JS;
-        return $sReloadScript;
     }
 
 }

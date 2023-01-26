@@ -26,14 +26,14 @@ class cDb extends cDbDriverHandler {
     /**
      * Link ID resource
      *
-     * @var resource
+     * @var NULL|resource|mysqli
      */
     protected $_linkId = NULL;
 
     /**
      * Query ID resource
      *
-     * @var resource
+     * @var NULL|resource|mysqli_result
      */
     protected $_queryId = NULL;
 
@@ -42,7 +42,7 @@ class cDb extends cDbDriverHandler {
      *
      * @var array
      */
-    protected $_record = array();
+    protected $_record = [];
 
     /**
      * Active row count.
@@ -68,7 +68,7 @@ class cDb extends cDbDriverHandler {
     /**
      * Returns the query ID resource.
      *
-     * @return NULL|resource
+     * @return NULL|resource|mysqli_result
      */
     public function getQueryId() {
         return $this->_queryId;
@@ -78,7 +78,7 @@ class cDb extends cDbDriverHandler {
      * Sets the query ID resource.
      * Do not set it manually unless you know what you are doing.
      *
-     * @param resource $queryId
+     * @param NULL|resource|mysqli_result $queryId
      *         query ID resource
      */
     public function setQueryId($queryId) {
@@ -88,7 +88,7 @@ class cDb extends cDbDriverHandler {
     /**
      * Returns the link ID resource.
      *
-     * @return NULL|resource
+     * @return NULL|resource|mysqli
      */
     public function getLinkId() {
         return $this->_linkId;
@@ -98,7 +98,7 @@ class cDb extends cDbDriverHandler {
      * Sets the link ID resource.
      * Do not set it manually unless you know what you are doing.
      *
-     * @param resource $linkId
+     * @param NULL|resource|mysqli $linkId
      *         link ID resource
      */
     public function setLinkId($linkId) {

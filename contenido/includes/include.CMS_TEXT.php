@@ -95,11 +95,11 @@ ob_start();
             <input type="hidden" name="typenr" value="<?php echo $typenr ?>">
 
             <p class="cms_edit_row text_medium">
-                &nbsp;<?php echo $typenr?>.&nbsp;<?php echo $a_description[$type][$typenr]?>:&nbsp;
+                &nbsp;<?php echo $typenr?>.&nbsp;<?php echo $a_description[$type][$typenr] ?? '' ?>:&nbsp;
             </p>
 
             <div class="cms_edit_row">
-                <textarea name="CMS_TEXT" rows="15" cols="90"><?php echo $a_content[$type][$typenr]?></textarea>
+                <textarea name="CMS_TEXT" rows="15" cols="90"><?php echo $a_content[$type][$typenr] ?? '' ?></textarea>
             </div>
 
             <div class="cms_edit_row">
