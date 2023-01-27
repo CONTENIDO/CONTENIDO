@@ -172,7 +172,7 @@ if ($idlay) {
             foreach ($modules as $key => $val) {
                 if ($val['name'] == $default) {
                     $option = new cHTMLOptionElement($val['name'], $key);
-                    if ($containerModules[$containerNr] == $key) {
+                    if (isset($containerModules[$containerNr]) && $containerModules[$containerNr] == $key) {
                         $option->setSelected(true);
                     }
                     $modSelect->addOptionElement($key, $option);
