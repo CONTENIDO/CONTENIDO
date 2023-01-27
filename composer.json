@@ -19,6 +19,7 @@
     },
     "require": {
         "ext-bcmath": "*",
+        "ext-fileinfo": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
         "ext-mysqli": "*",
