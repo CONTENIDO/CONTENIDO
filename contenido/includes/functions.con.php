@@ -1320,6 +1320,7 @@ function conSetStartArticle($idcat, $idart, $lang, $isstart)
 /**
  * Handles the start article logic of an new created or edited article.
  *
+ * @since CONTENIDO 4.10.2
  * @param int|array $idcatnew
  * @param int $idcat
  * @param int $is_start

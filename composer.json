@@ -19,9 +19,12 @@
     },
     "require": {
         "ext-bcmath": "*",
-        "ext-mysqli": "*",
+        "ext-fileinfo": "*",
         "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-mysqli": "*",
         "ext-simplexml": "*",
+        "ext-zip": "*",
         "php": ">=7.0.0"
     }
 }

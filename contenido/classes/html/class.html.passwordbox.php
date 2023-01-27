@@ -69,6 +69,7 @@ class cHTMLPasswordbox extends cHTMLFormElement {
     /**
      * Sets the autofill property of the element.
      *
+     * @since CONTENIDO 4.10.2
      * @param boolean $autofill - The autofill flag
      * @return cHTMLPasswordbox|cHTML
      */
@@ -134,6 +135,7 @@ class cHTMLPasswordbox extends cHTMLFormElement {
      * Setting the field initially to readonly and enabling it again after
      * getting focus does the trick!
      *
+     * @since CONTENIDO 4.10.2
      * @TODO This function could be moved to somewhere else, because all input, textarea,
      *       select and form elements could use the autocomplete attribute.
      *       But, only input and textarea can have readonly attribute.

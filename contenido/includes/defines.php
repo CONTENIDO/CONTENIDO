@@ -2,6 +2,7 @@
 /**
  * This file contains CONTENIDO constants.
  *
+ * @since      CONTENIDO 4.10.2
  * @package    Core
  * @subpackage Backend
  * @author     Murat Purc <murat@purc.de>

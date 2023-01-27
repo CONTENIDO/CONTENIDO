@@ -435,7 +435,4 @@ class cGuiScrollList {
         }
     }
 
-    protected function setSortKey($sortKey) {
-
-    }
 }

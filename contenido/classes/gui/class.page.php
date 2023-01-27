@@ -509,6 +509,7 @@ class cGuiPage {
     /**
      * Adds JavaScript to the page to reload a left_top frame.
      *
+     * @since CONTENIDO 4.10.2
      * @param string|array $updatedParameters [optional]
      *         Either an array with keys that will be passed to
      *         Con.UtilUrl.replaceParams OR a string containing
@@ -524,6 +525,7 @@ class cGuiPage {
     /**
      * Adds JavaScript to the page to reload a left_bottom frame.
      *
+     * @since CONTENIDO 4.10.2
      * @param string|array $updatedParameters [optional]
      *         Either an array with keys that will be passed to
      *         Con.UtilUrl.replaceParams OR a string containing
@@ -539,6 +541,7 @@ class cGuiPage {
     /**
      * Adds JavaScript to the page to reload a right_top frame.
      *
+     * @since CONTENIDO 4.10.2
      * @param string|array $updatedParameters [optional]
      *         Either an array with keys that will be passed to
      *         Con.UtilUrl.replaceParams OR a string containing
@@ -554,6 +557,7 @@ class cGuiPage {
     /**
      * Adds JavaScript to the page to reload a right_bottom frame.
      *
+     * @since CONTENIDO 4.10.2
      * @param string|array $updatedParameters [optional]
      *         Either an array with keys that will be passed to
      *         Con.UtilUrl.replaceParams OR a string containing
