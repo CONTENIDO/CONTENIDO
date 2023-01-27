@@ -468,6 +468,7 @@ class cFileHandler {
      *     ]
      * ]
      *
+     * @since CONTENIDO 4.10.2
      * @param string $filename The path to the file
      * @return array|bool The file info array or false if the file can't be accessed
      */

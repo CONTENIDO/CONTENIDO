@@ -158,6 +158,7 @@ class cRegistry {
      * Checks if the visual edit mode in backend is active (contenido session and
      * global variable "tpl_visual").
      *
+     * @since CONTENIDO 4.10.2
      * @return bool
      */
     public static function isBackendVisualEditMode() {

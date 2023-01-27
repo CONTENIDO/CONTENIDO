@@ -308,7 +308,9 @@ class cUri {
     }
 
     /**
-     * Appends additional query parameters to a URI
+     * Appends additional query parameters to a URI.
+     *
+     * @since CONTENIDO 4.10.2
      * @param string $uri - The URI to append parameters to
      * @param array $parameters - Parameter to append
      * @param array|null $reservedParameters - List of reserved parameters to skip from overwriting.

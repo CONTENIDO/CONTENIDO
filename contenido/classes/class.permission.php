@@ -505,6 +505,7 @@ class cPermission {
     /**
      * Checks if the given user has an admin permission
      *
+     * @since CONTENIDO 4.10.2
      * @param object|bool $oUser
      *         User object to check against, or false for the current user
      * @param bool $strict
@@ -726,6 +727,7 @@ class cPermission {
      * Splits passed permission string and returns it as an array. If the passed permission is already an array,
      * then it will be returned without any further ado.
      *
+     * @since CONTENIDO 4.10.2
      * @param string|string[] $permission Comma separated permission string or list of permissions.
      * @return string[]
      */
@@ -737,6 +739,7 @@ class cPermission {
     /**
      * Checks for language permissions.
      *
+     * @since CONTENIDO 4.10.2
      * @param int $languageId
      * @param string|string[] $permission Comma separated permission string or list of permissions.
      * @return bool
@@ -750,6 +753,7 @@ class cPermission {
     /**
      * Checks for client permissions.
      *
+     * @since CONTENIDO 4.10.2
      * @param int $clientId
      * @param string|string[] $permission Comma separated permission string or list of permissions.
      * @return bool
@@ -763,6 +767,7 @@ class cPermission {
     /**
      * Checks for client and language permissions.
      *
+     * @since CONTENIDO 4.10.2
      * @param int $clientId
      * @param int $languageId
      * @param string|string[] $permission Comma separated permission string or list of permissions.
@@ -776,6 +781,7 @@ class cPermission {
     /**
      * Checks for client admin permissions.
      *
+     * @since CONTENIDO 4.10.2
      * @param int $clientId
      * @param string|string[] $permission Comma separated permission string or list of permissions.
      * @return bool
@@ -789,6 +795,7 @@ class cPermission {
     /**
      * Checks for admin permissions.
      *
+     * @since CONTENIDO 4.10.2
      * @param string|string[] $permission Comma separated permission string or list of permissions.
      * @param bool $strict Flag to run a strict check.
      *      If true, then the check is only for admin value.
@@ -805,6 +812,7 @@ class cPermission {
     /**
      * Checks for sysadmin permissions.
      *
+     * @since CONTENIDO 4.10.2
      * @param string|string[] $permission Comma separated permission string or list of permissions.
      * @return bool
      */
@@ -816,6 +824,7 @@ class cPermission {
     /**
      * Check if permissions (needle) are all available in other permissions (haystack).
      *
+     * @since CONTENIDO 4.10.2
      * @param string|string[] $haystackPerm The permissions to search in.
      *      Comma separated permission string or list of permissions.
      * @param string|string[] $needlePerm The permissions to search for, all of them must be found in haystackPerm.

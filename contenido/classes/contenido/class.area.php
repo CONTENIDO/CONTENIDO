@@ -117,6 +117,7 @@ class cApiAreaCollection extends ItemCollection {
      * This function is similar to {@see cApiAreaCollection::getAreaName()},
      * but it uses direct SQL instead a cApiArea instance.
      *
+     * @since CONTENIDO 4.10.2
      * @param int $areaId The area id
      * @return string
      * @throws cDbException
@@ -130,6 +131,7 @@ class cApiAreaCollection extends ItemCollection {
     /**
      * Returns area ids of areas by parent id and area id.
      *
+     * @since CONTENIDO 4.10.2
      * @param string|int $parentId Parent id as a string or number
      * @param int $areaId The area id
      * @return array

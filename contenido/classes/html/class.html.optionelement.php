@@ -100,6 +100,7 @@ class cHTMLOptionElement extends cHTMLFormElement {
     /**
      * Generates the indentation used to display a structure tree, e.g. within a select box.
      *
+     * @since CONTENIDO 4.10.2
      * @param int $level The category level
      * @param int $prefixAmount Initial amount of indentation characters to start with
      * @param int $levelAmount The amount of indentation characters for each level

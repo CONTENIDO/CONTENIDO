@@ -883,6 +883,8 @@ class cApiModule extends Item {
      * Processes container placeholder (e.g. CMS_VALUE[123]) in given module output code.
      * Tries to find the proper container tag and replaces its value against
      * container configuration.
+
+     * @since CONTENIDO 4.10.2
      * @param int $containerNr
      *         The container number to process
      * @param string $containerCfg
@@ -897,6 +899,8 @@ class cApiModule extends Item {
 
     /**
      * Processes container placeholder (e.g. CMS_VAR[123], CMS_VALUE[123]) in given module input/output code.
+     *
+     * @since CONTENIDO 4.10.2
      * @param int $containerNr
      * @param string $containerCfg
      * @param string $moduleICode

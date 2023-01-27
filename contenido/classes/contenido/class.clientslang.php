@@ -164,6 +164,7 @@ class cApiClientLanguageCollection extends ItemCollection {
     /**
      * Returns ids of all languages for a specific client.
      *
+     * @since CONTENIDO 4.10.2
      * @param int $client
      * @return array
      * @throws cDbException

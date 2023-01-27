@@ -1294,6 +1294,7 @@ function scanPlugins($entity) {
  * function
  * won't find them!
  *
+ * @since CONTENIDO 4.10.2
  * @param string $entity
  *         Name of the directory to scan
  *
@@ -1384,6 +1385,7 @@ function includePlugins($entity) {
 /**
  * Includes plugins for a given entity.
  *
+ * @since CONTENIDO 4.10.2
  * @param string $entity
  *         string Name of the directory to scan
  */
@@ -1400,6 +1402,7 @@ function cIncludePlugins($entity) {
 /**
  * Checks for existing plugins for a given entity.
  *
+ * @since CONTENIDO 4.10.2
  * @param string $entity
  *         Name of the directory to scan
  * @return bool
@@ -1423,6 +1426,7 @@ function callPluginStore($entity) {
 /**
  * Calls the plugin's store methods.
  *
+ * @since CONTENIDO 4.10.2
  * @param string $entity
  *         Name of the directory to scan
  */
