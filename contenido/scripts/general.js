@@ -693,6 +693,7 @@
     /**
      * FrameLeftBottom class
      *
+     * @since CONTENIDO 4.10.2
      * @submodule base-frame-left-bottom
      * @class FrameLeftBottom
      * @static
@@ -1300,6 +1301,7 @@
      * Serializes given form elements and returns them back, either as array of names and values
      * (see jQuery serializeArray()) or as an object with name and values.
      *
+     * @since CONTENIDO 4.10.2
      * @param {jQuery} form - jQuery form element
      * @param {Boolean} [asObject=true] - Flag to return the form elements data as an object.
      * @returns {Object|JQuery.NameValuePair[]} - The form data. If return type is object, form data
