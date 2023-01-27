@@ -431,37 +431,7 @@ abstract class cCodeGeneratorAbstract {
      *         Concatenated PHP code containing CMS_VALUE variables and their values
      */
     protected function _processCmsValueTags($containerNumber, $containerCfg) {
-        $containerCfgList = [];
-
-        $containerCfg = preg_replace('/(&\$)/', '', $containerCfg);
-        parse_str($containerCfg, $containerCfgList);
-
-        // $tmp1 = preg_split('/&/', $containerCfg);
-        // foreach ($tmp1 as $key1 => $value1) {
-        //     $tmp2 = explode('=', $value1);
-        //     foreach ($tmp2 as $key2 => $value2) {
-        //         $containerCfgList["$tmp2[0]"] = $tmp2[1];
-        //     }
-        // }
-
-        $CiCMS_Var = '$C' . $containerNumber . 'CMS_VALUE';
-        $CiCMS_Values = [];
-
-        foreach ($containerCfgList as $key3 => $value3) {
-            // convert special characters and escape backslashes!
-            $tmp = conHtmlSpecialChars($value3);
-            $tmp = str_replace('\\', '\\\\', $tmp);
-            $CiCMS_Values[] = $CiCMS_Var . '[' . $key3 . '] = "' . $tmp . '"; ';
-            $this->_moduleCode = str_replace("\$CMS_VALUE[$key3]", $tmp, $this->_moduleCode);
-            $this->_moduleCode = str_replace("CMS_VALUE[$key3]", $tmp, $this->_moduleCode);
-        }
-
-        $this->_moduleCode = str_replace("CMS_VALUE", $CiCMS_Var, $this->_moduleCode);
-        $this->_moduleCode = str_replace("\$" . $CiCMS_Var, $CiCMS_Var, $this->_moduleCode);
-        $this->_moduleCode = preg_replace('/\$C([0-9]*)CMS_VALUE\[([0-9]*)\]/i', '', $this->_moduleCode);
-        $this->_moduleCode = preg_replace("/(CMS_VALUE\[)([0-9]*)(\])/i", '', $this->_moduleCode);
-
-        return implode("\n", $CiCMS_Values);
+        return cApiModule::processContainerOutputCode($containerNumber, $containerCfg, $this->_moduleCode);
     }
 
     /**
@@ -471,7 +441,7 @@ abstract class cCodeGeneratorAbstract {
      * @param int   $containerNumber
      *         Container number (the id attribute in container tag).
      * @param array $module
-     *         Recordset as assoziative array of related module (container code).
+     *         Recordset as associative array of related module (container code).
      *
      * @throws cDbException|cInvalidArgumentException
      */

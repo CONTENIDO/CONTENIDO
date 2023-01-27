@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the the static file handler class.
+ * This file contains the static file handler class.
  *
  * @package Core
  * @subpackage Util
@@ -38,7 +38,7 @@ class cFileHandler {
      *                        content of the new file
      *
      * @return bool
-     *         true on success. Otherwise false.
+     *         true on success, otherwise false.
      *
      * @throws cInvalidArgumentException
      */
@@ -64,8 +64,8 @@ class cFileHandler {
      *         if true, the function will start from the back of the file.
      *
      * @return string|bool
-     *         On success it returns the bytes which have been read.
-     *         Otherwise false.
+     *         On success, it returns the bytes which have been read.
+     *         Otherwise, false.
      *
      * @throws cInvalidArgumentException
      *         if the file with the given filename does not exist
@@ -101,7 +101,7 @@ class cFileHandler {
      * @return string|array|bool
      *         If one line was read the function will return it.
      *         If more than one line was read the function will return an array
-     *         containing the lines. Otherwise false is returned
+     *         containing the lines. Otherwise, false is returned
      *
      * @throws cInvalidArgumentException
      *         if the file with the given filename does not exist
@@ -433,7 +433,7 @@ class cFileHandler {
         }
 
         if (function_exists('finfo_open')) {
-            // extension has to be installed seperately in versions prior to 5.3
+            // extension has to be installed separately in versions prior to 5.3
             $finfo = @finfo_open(FILEINFO_MIME_TYPE);
             $ret['mime'] = @finfo_file($finfo, $filename);
         } else {
@@ -547,6 +547,17 @@ class cFileHandler {
     }
 
     /**
+     * Returns the filename of passed filename without the extension
+     *
+     * @since CONTENIDO 4.10.2
+     * @param string $basename
+     * @return string
+     */
+    public static function getFilename($basename) {
+        return pathinfo($basename, PATHINFO_FILENAME);
+    }
+
+    /**
      * Determines the default permissions for new files.
      * These can be configured using the setting "default_perms/file" in "data/config/<ENV>/config.misc.php".
      * If no configuration can be found 0664 is assumed.
@@ -601,7 +612,7 @@ class cFileHandler {
      * @return bool
      *         true if the given filename is valid, false otherwise
      *
-     * @throws cInvalidArgumentException
+     * @throws cInvalidArgumentException|cException
      */
     public static function validateFilename($filename, $notifyAndExitOnFailure = true) {
         // check if filename only contains valid characters
