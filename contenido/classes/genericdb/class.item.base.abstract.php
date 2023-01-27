@@ -151,7 +151,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
         $this->_settings = $cfg['sql'];
 
         // instantiate caching
-        $aCacheOpt = (isset($this->_settings['cache'])) ? $this->_settings['cache'] : [];
+        $aCacheOpt = $this->_settings['cache'] ?? [];
         $this->_oCache = cItemCache::getInstance($sTable, $aCacheOpt);
 
         $this->table = $sTable;
@@ -209,7 +209,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
      *
      * @param string $name
      *         Name of the variable that should be accessed
-     * @return mixed
+     * @return mixed|void
      */
     public function __get($name) {
         if ('primaryKey' === $name) {
@@ -262,7 +262,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * see {@see cDbDriverHandler::prepare()} for more details.
      *
      * @since CONTENIDO 4.10.2
-     * @param mixed ... Multiple parameters where the first is the statement and the further ones the replacements.
+     * @param ... Multiple parameters where the first is the statement and the further ones the replacements.
      *     See {@see cDbDriverHandler::prepare()} for more details.
      * @return string
      * @throws cDbException
