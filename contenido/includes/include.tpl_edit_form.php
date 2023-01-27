@@ -26,8 +26,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 
 
-$idtpl = cSecurity::toInteger($_REQUEST['idtpl'] ?? '0');
-
 $tpl2 = new cTemplate();
 
 $page = new cGuiPage("tpl_edit_form", '', '0');
@@ -46,6 +44,12 @@ if ($action == "tpl_new" && !$perm->have_perm_area_action_anyitem($area, $action
     return;
 }
 
+$idtpl = cSecurity::toInteger($_REQUEST['idtpl'] ?? '0');
+$description = $description ?? '';
+$idlay = cSecurity::toInteger($idlay ?? '0');
+$vdefault = cSecurity::toInteger(!empty($vdefault) ? $vdefault : '0');
+$laydescription = '';
+
 if ($action == "tpl_new") {
     $tplname = i18n("-- New template --");
 }
@@ -53,10 +57,9 @@ if ($action == "tpl_new") {
 $sql = "SELECT
         a.idtpl, a.name AS name, a.description, a.idlay, b.description AS laydescription, a.defaulttemplate
         FROM
-        " . $cfg['tab']['tpl'] . " AS a
+            " . $cfg['tab']['tpl'] . " AS a
         LEFT JOIN
-        " . $cfg['tab']['lay'] . " AS b
-        ON a.idlay=b.idlay
+            " . $cfg['tab']['lay'] . " AS b ON a.idlay = b.idlay
         WHERE a.idtpl = " . $idtpl . "
         ORDER BY name";
 
@@ -89,10 +92,8 @@ if ($idlay != 0) {
     $tpl2->next();
 }
 
-$sql = "SELECT idlay, name FROM " . $cfg['tab']['lay'] . "
-        WHERE idclient='" . cSecurity::toInteger($client) . "'
-        ORDER BY name";
-$db->query($sql);
+$sql = 'SELECT `idlay`, `name` FROM `%s` WHERE `idclient` = %d ORDER BY `name`';
+$db->query($sql, $cfg['tab']['lay'], $client);
 while ($db->nextRecord()) {
     if ($db->f("idlay") != $idlay) {
         $tpl2->set('d', 'VALUE', $db->f("idlay"));
