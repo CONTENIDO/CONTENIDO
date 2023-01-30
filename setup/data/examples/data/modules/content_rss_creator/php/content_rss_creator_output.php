@@ -59,7 +59,7 @@ if (cRegistry::getBackendSessionId() === NULL) {
 
     $teaser = new cContentTypeTeaser($contentValue, $teaserIndex, []);
     $articles = $teaser->getConfiguredArticles();
-    $configuration = $teaser->getConfiguration();
+    $configuration = $teaser->getSettings();
 
     $xmlString = '<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"></rss>';
 
