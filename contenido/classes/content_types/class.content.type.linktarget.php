@@ -37,7 +37,6 @@ class cContentTypeLinktarget extends cContentTypeLinkeditor {
      * @throws cException
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-
         // There are no raw settings here, because CMS_LINKEDITOR is now
         // saved in con_upl_meta. So compute the appropriate raw settings
         // and call the parent constructor with them.
@@ -47,7 +46,6 @@ class cContentTypeLinktarget extends cContentTypeLinkeditor {
 
         // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
-
     }
 
     /**
@@ -58,7 +56,7 @@ class cContentTypeLinktarget extends cContentTypeLinkeditor {
      *         escaped HTML code which sould be shown if content type is shown in frontend
      */
     public function generateViewCode() {
-        $target = ($this->_settings['linkeditor_newwindow'] == 'true') ? '_blank' : '';
+        $target = ($this->getSetting('linkeditor_newwindow') == 'true') ? '_blank' : '';
         return $this->_encodeForOutput($target);
     }
 

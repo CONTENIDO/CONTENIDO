@@ -51,7 +51,6 @@ class cContentTypeDate extends cContentTypeAbstract {
      * @throws cException
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-
         // set props
         $this->_type = 'CMS_DATE';
         $this->_prefix = 'date';
@@ -117,12 +116,15 @@ class cContentTypeDate extends cContentTypeAbstract {
         // if form is submitted, store the current date settings
         // notice: also check the ID of the content type (there could be more
         // than one content type of the same type on the same page!)
-        if (isset($_POST[$this->_prefix . '_action']) && $_POST[$this->_prefix . '_action'] === 'store' && isset($_POST[$this->_prefix . '_id']) && (int) $_POST[$this->_prefix . '_id'] == $this->_id) {
+        $postAction = $_POST[$this->_prefix . '_action'] ?? '';
+        $postId = cSecurity::toInteger($_POST[$this->_prefix . '_id'] ?? '0');
+        if ($postAction === 'store' && $postId == $this->_id) {
             // convert the given date string into a valid timestamp, so that a
             // timestamp is stored
             //CON-2049 additional check for base64 strings
-            if (!empty($_POST['date_format']) && base64_encode(base64_decode($_POST['date_format'])) === $_POST['date_format']) {
-                $_POST['date_format'] = stripslashes(base64_decode($_POST['date_format']));
+            $postDateFormat = $_POST['date_format'] ?? '';
+            if (!empty($postDateFormat) && base64_encode(base64_decode($postDateFormat)) === $postDateFormat) {
+                $_POST['date_format'] = stripslashes(base64_decode($postDateFormat));
             } else { // if no date_format is given, set standard value
                 $_POST['date_format'] = '{"dateFormat":"","timeFormat":""}';
             }
@@ -142,7 +144,7 @@ class cContentTypeDate extends cContentTypeAbstract {
      * @return string
      */
     public function getDateTimestamp() {
-        return $this->_settings['date_timestamp'];
+        return $this->getSetting('date_timestamp', '');
     }
 
     /**
@@ -151,7 +153,7 @@ class cContentTypeDate extends cContentTypeAbstract {
      * @return string
      */
     public function getDateFormat() {
-        $format = $this->_settings['date_format'];
+        $format = $this->getSetting('date_format', '');
 
         if (empty($format)) {
             $format = '';
@@ -173,7 +175,7 @@ class cContentTypeDate extends cContentTypeAbstract {
      * @return string
      */
     public function getTimeFormat() {
-        $format = $this->_settings['date_format'];
+        $format = $this->getSetting('date_format', '');
 
         if (empty($format)) {
             $format = '';
@@ -292,16 +294,15 @@ class cContentTypeDate extends cContentTypeAbstract {
      *         escaped HTML code which should be shown if content type is shown in frontend
      */
     public function generateViewCode() {
-        if (empty($this->_settings['date_timestamp'])) {
+        $timestamp = $this->getSetting('date_timestamp', '');
+        if (empty($timestamp)) {
             return '';
         }
 
-        $timestamp = $this->_settings['date_timestamp'];
-
-        if (empty($this->_settings['date_format'])) {
+        $format = $this->getSetting('date_format');
+        if (empty($format)) {
             $format = '';
         } else {
-            $format = $this->_settings['date_format'];
             $decoded_array = json_decode($format, true);
             if (is_array($decoded_array)) {
                 $format = implode(' ', $decoded_array);
@@ -326,8 +327,12 @@ class cContentTypeDate extends cContentTypeAbstract {
         if ($belang == 'de_DE') {
             $format = 'd.m.Y H:i:s';
         }
-        $value = !empty($this->_settings['date_timestamp']) ? date($format, $this->_settings['date_timestamp']) : '';
-        $code = new cHTMLTextbox('date_timestamp_' . $this->_id, $value, '', '', 'date_timestamp_' . $this->_id, true, '', '', 'date_timestamp');
+        $value = !empty($this->getSetting('date_timestamp'))
+            ? date($format, $this->getSetting('date_timestamp')) : '';
+        $code = new cHTMLTextbox(
+            'date_timestamp_' . $this->_id, $value, '', '',
+            'date_timestamp_' . $this->_id, true, '', '', 'date_timestamp'
+        );
         $code .= $this->_generateFormatSelect();
         $code .= $this->_generateStoreButton();
         $code .= $this->_generateJavaScript();
@@ -352,14 +357,17 @@ class cContentTypeDate extends cContentTypeAbstract {
         $template->set('s', 'IDARTLANG', $this->_idArtLang);
         $template->set('s', 'LANG', cString::getPartOfString(cRegistry::getBackendLanguage(), 0, 2));
         $template->set('s', 'PATH_TO_CALENDAR_PIC', $pathBackend . $this->_cfg['path']['images'] . 'calendar.gif');
-        $setting = $this->_settings;
+        $setting = $this->getSettings();
         if (array_key_exists('date_format', $setting)) {
             $setting['date_format'] = json_decode($setting['date_format'], true);
         }
         $template->set('s', 'SETTINGS', json_encode($setting));
         $template->set('s', 'BELANG', cRegistry::getBackendLanguage());
 
-        return $template->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_date.html', true);
+        return $template->generate(
+            $this->_cfg['path']['contenido'] . 'templates/standard/template.cms_date.html',
+            true
+        );
     }
 
     /**
@@ -369,7 +377,10 @@ class cContentTypeDate extends cContentTypeAbstract {
      *         HTML code for the save button
      */
     private function _generateStoreButton() {
-        $saveButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_ok.gif', 'save_settings');
+        $saveButton = new cHTMLImage(
+            $this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_ok.gif',
+            'save_settings'
+        );
 
         return $saveButton->render();
     }
@@ -381,13 +392,16 @@ class cContentTypeDate extends cContentTypeAbstract {
      *         the HTML code of the format select box
      */
     private function _generateFormatSelect() {
-        $formatSelect = new cHTMLSelectElement($this->_prefix . '_format_select_' . $this->_id, '', $this->_prefix . '_format_select_' . $this->_id);
+        $formatSelect = new cHTMLSelectElement(
+            $this->_prefix . '_format_select_' . $this->_id, '',
+            $this->_prefix . '_format_select_' . $this->_id)
+        ;
         $formatSelect->appendStyleDefinitions([
             'border' => '1px solid #ccc',
             'margin' => '0px 5px 5px'
         ]);
         $formatSelect->autoFill($this->_dateFormatsPhp);
-        $phpDateFormat = conHtmlSpecialChars($this->_settings[$this->_prefix . '_format'] ?? '');
+        $phpDateFormat = conHtmlSpecialChars($this->getSetting($this->_prefix . '_format', ''));
         $formatSelect->setDefault($phpDateFormat);
 
         return $formatSelect->render();

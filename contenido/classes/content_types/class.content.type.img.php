@@ -37,7 +37,6 @@ class cContentTypeImg extends cContentTypeImgeditor {
      * @throws cException
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-
         // There are no raw settings here, because CMS_IMG is not saved
         // separately any more. So compute the appropriate raw settings
         // and call the parent constructor with them.
