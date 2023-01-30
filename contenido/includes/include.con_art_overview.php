@@ -787,9 +787,10 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         $tpl->set('s', 'HEADERS', implode("\n", $headers));
 
         if ($elemperpage > 0 && $iArticleCount > 0 && $iArticleCount > $elemperpage) {
+            $sBrowseLinks = '';
             for ($i = 1; $i <= ceil($iArticleCount / $elemperpage); $i++) {
                 $iNext = ($i - 1) * $elemperpage;
-                if ($sBrowseLinks !== '') {
+                if (!empty($sBrowseLinks)) {
                     $sBrowseLinks .= '&nbsp;';
                 }
                 if ($next == $iNext) {
