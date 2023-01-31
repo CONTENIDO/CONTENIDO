@@ -1989,3 +1989,27 @@ function renderBackendBreadcrumb($syncoptions, $showArticle = true, $return = fa
 
     return $tplBread->generate($cfg['path']['templates'] . $cfg['templates']['breadcrumb'], $return);
 }
+
+/**
+ * Build debug information about the rendering status of backend pages.
+ * This function id used by main.php and ajaxmain.php at the moment.
+ *
+ * @since CONTENIDO 4.10.2
+ * @param array $cfg The global configuration array
+ * @param int $oldMemoryUsage  The memory usage after the backend initialization
+ * @param string $includedFile The main included file in the backend
+ * @return string Compiled information about the rendering status
+ */
+function cBuildBackendRenderDebugInfo(array &$cfg, $oldMemoryUsage, $includedFile) {
+    $cfg['debug']['backend_exectime']['end'] = getmicrotime();
+    $debugInfo = [
+        'Building this page (excluding CONTENIDO includes) took: '
+            . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['start']) . ' seconds',
+        'Building the complete page took: '
+            . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['fullstart']) . ' seconds',
+        'Include memory usage: ' . humanReadableSize(memory_get_usage() - $oldMemoryUsage),
+        'Complete memory usage: ' . humanReadableSize(memory_get_usage()),
+        '*****' . $includedFile . '*****'
+    ];
+    return implode("\n", $debugInfo);
+}
