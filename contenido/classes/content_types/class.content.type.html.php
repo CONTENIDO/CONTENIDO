@@ -36,14 +36,12 @@ class cContentTypeHtml extends cContentTypeAbstract {
      *         array containing the values of all content types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-
         // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
 
         // set props
         $this->_type = 'CMS_HTML';
         $this->_prefix = 'html';
-
     }
 
     /**
@@ -71,8 +69,8 @@ class cContentTypeHtml extends cContentTypeAbstract {
         // important because it is used to save the content accordingly
         $id = str_replace('CMS_', '', $this->_type) . '_';
         $db = cRegistry::getDb();
-        $sql = 'SELECT `idtype` FROM `' . $this->_cfg['tab']['type'] . '` WHERE `type`=\'' . $this->_type . '\'';
-        $db->query($sql);
+        $sql = "SELECT `idtype` FROM `%s` WHERE `type` = '%s'";
+        $db->query($sql, $this->_cfg['tab']['type'], $this->_type);
         $db->nextRecord();
         $id .= $db->f('idtype') . '_' . $this->_id;
         $wysiwygDiv->setID($id);
@@ -80,11 +78,11 @@ class cContentTypeHtml extends cContentTypeAbstract {
 
         $wysiwygDiv->setEvent('Focus', "this.style.border='1px solid #bb5577';");
         $wysiwygDiv->setEvent('Blur', "this.style.border='1px dashed #bfbfbf';");
-        $wysiwygDiv->appendStyleDefinitions(array(
+        $wysiwygDiv->appendStyleDefinitions([
             'border' => '1px dashed #bfbfbf',
             'direction' => langGetTextDirection($this->_lang),
             'min-height' => '20px'
-        ));
+        ]);
         $wysiwygDiv->updateAttribute('contentEditable', 'true');
         if (cString::getStringLength($this->_rawSettings) == 0) {
             $wysiwygDiv->setContent('&nbsp;');
@@ -92,9 +90,14 @@ class cContentTypeHtml extends cContentTypeAbstract {
             $wysiwygDiv->setContent($this->_rawSettings);
         }
 
-
         // construct edit button
-        $editLink = $this->_session->url($this->_cfg['path']['contenido_fullhtml'] . 'external/backendedit/' . 'front_content.php?action=10&idcat=' . $this->_idCat . '&idart=' . $this->_idArt . '&idartlang=' . $this->_idArtLang . '&type=' . $this->_type . '&typenr=' . $this->_id. '&client=' . $this->_client);
+        $editLink = $this->_session->url(
+            $this->_cfg['path']['contenido_fullhtml'] . 'external/backendedit/'
+            . 'front_content.php?action=10&idcat=' . $this->_idCat
+            . '&idart=' . $this->_idArt . '&idartlang=' . $this->_idArtLang
+            . '&type=' . $this->_type . '&typenr=' . $this->_id .
+            '&client=' . $this->_client
+        );
         $editAnchor = new cHTMLLink('#');
         $editAnchor->setAttribute('onclick', "javascript:Con.Tiny.setContent('" . $this->_idArtLang . "','" . $editLink . "'); return false;");
         $editButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_edithtml.gif');

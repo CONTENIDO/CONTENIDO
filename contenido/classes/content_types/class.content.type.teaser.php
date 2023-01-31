@@ -125,11 +125,9 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
         // if form is submitted, store the current teaser settings
         // notice: also check the ID of the content type (there could be more
         // than one content type of the same type on the same page!)
-        if (isset($_POST[$this->_prefix . '_action'])
-            && $_POST[$this->_prefix . '_action'] == 'store'
-            && isset($_POST[$this->_prefix . '_id'])
-            && (int)$_POST[$this->_prefix . '_id'] == $this->_id
-        ) {
+        $postAction = $_POST[$this->_prefix . '_action'] ?? '';
+        $postId = cSecurity::toInteger($_POST[$this->_prefix . '_id'] ?? '0');
+        if ($postAction == 'store' && $postId == $this->_id) {
             $this->_storeSettings();
         }
 
@@ -158,72 +156,72 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
     private function _setDefaultValues()
     {
         // character limit is 120 by default
-        if (!isset($this->_settings['teaser_character_limit']) || cSecurity::toInteger($this->_settings['teaser_character_limit']) == 0) {
-            $this->_settings['teaser_character_limit'] = 120;
+        if (cSecurity::toInteger($this->getSetting('teaser_character_limit')) == 0) {
+            $this->setSetting('teaser_character_limit', 120);
         }
 
         // teaser cont is 6 by default
-        if (!isset($this->_settings['teaser_count']) || cSecurity::toInteger($this->_settings['teaser_count']) == 0) {
-            $this->_settings['teaser_count'] = 6;
+        if (cSecurity::toInteger($this->getSetting('teaser_count')) == 0) {
+            $this->setSetting('teaser_count', 6);
         }
 
         // teasersort is creationdate by default
-        if (!isset($this->_settings['teaser_sort']) || cString::getStringLength($this->_settings['teaser_sort']) == 0) {
-            $this->_settings['teaser_sort'] = 'creationdate';
+        if (cString::getStringLength($this->getSetting('teaser_sort')) == 0) {
+            $this->setSetting('teaser_sort', 'creationdate');
         }
 
         // teaser style is liststyle by default
-        if (!isset($this->_settings['teaser_style']) || cString::getStringLength($this->_settings['teaser_style']) == 0) {
-            $this->_settings['teaser_style'] = 'cms_teaser_slider.html';
+        if (cString::getStringLength($this->getSetting('teaser_style')) == 0) {
+            $this->setSetting('teaser_style', 'cms_teaser_slider.html');
         }
 
         // teaser image width default
-        if (!isset($this->_settings['teaser_image_width']) || cSecurity::toInteger($this->_settings['teaser_image_width']) == 0) {
-            $this->_settings['teaser_image_width'] = 100;
+        if (cSecurity::toInteger($this->getSetting('teaser_image_width')) == 0) {
+            $this->setSetting('teaser_image_width', 100);
         }
 
         // teaser image height default
-        if (!isset($this->_settings['teaser_image_height']) || cSecurity::toInteger($this->_settings['teaser_image_height']) == 0) {
-            $this->_settings['teaser_image_height'] = 75;
+        if (cSecurity::toInteger($this->getSetting('teaser_image_height')) == 0) {
+            $this->setSetting('teaser_image_height', 75);
         }
 
         // cms type head default
-        if (!isset($this->_settings['teaser_source_head']) || cString::getStringLength($this->_settings['teaser_source_head']) == 0) {
-            $this->_settings['teaser_source_head'] = 'CMS_HTMLHEAD';
+        if (cString::getStringLength($this->getSetting('teaser_source_head')) == 0) {
+            $this->setSetting('teaser_source_head', 'CMS_HTMLHEAD');
         }
 
         // cms type text default
-        if (!isset($this->_settings['teaser_source_text']) || cString::getStringLength($this->_settings['teaser_source_text']) == 0) {
-            $this->_settings['teaser_source_text'] = 'CMS_HTML';
+        if (cString::getStringLength($this->getSetting('teaser_source_text')) == 0) {
+            $this->setSetting('teaser_source_text', 'CMS_HTML');
         }
 
         // cms type image default
-        if (!isset($this->_settings['teaser_source_image']) || cString::getStringLength($this->_settings['teaser_source_image']) == 0) {
-            $this->_settings['teaser_source_image'] = 'CMS_IMG';
+        if (cString::getStringLength($this->getSetting('teaser_source_image')) == 0) {
+            $this->setSetting('teaser_source_image', 'CMS_IMG');
         }
 
         // cms type date default
-        if (!isset($this->_settings['teaser_source_date']) || cString::getStringLength($this->_settings['teaser_source_date']) == 0) {
-            $this->_settings['teaser_source_date'] = 'CMS_DATE';
+        if (cString::getStringLength($this->getSetting('teaser_source_date')) == 0) {
+            $this->setSetting('teaser_source_date', 'CMS_DATE');
         }
 
         // sort order of teaser articles
-        if (!isset($this->_settings['teaser_sort_order']) || cString::getStringLength($this->_settings['teaser_sort_order']) == 0) {
-            $this->_settings['teaser_sort_order'] = 'asc';
+        if (cString::getStringLength($this->getSetting('teaser_sort_order')) == 0) {
+            $this->setSetting('teaser_sort_order', 'asc');
         }
 
         // teaser image crop option
-        if (!isset($this->_settings['teaser_image_crop']) || cString::getStringLength($this->_settings['teaser_image_crop']) == 0
-            || $this->_settings['teaser_image_crop'] == 'false'
+        if (cString::getStringLength($this->getSetting('teaser_image_crop')) == 0
+            || $this->getSetting('teaser_image_crop') == 'false'
         ) {
-            $this->_settings['teaser_image_crop'] = 'false';
+            $this->setSetting('teaser_image_crop', 'false');
         }
 
         // original image
-        if (!isset($this->_settings['teaser_image_original']) || cString::getStringLength($this->_settings['teaser_image_original']) == 0
-            || $this->_settings['teaser_image_original'] == 'false'
+        if (cString::getStringLength($this->getSetting('teaser_image_original')) == 0
+            || $this->getSetting('teaser_image_original') == 'false'
         ) {
-            $this->_settings['teaser_image_original'] = 'false';
+            $this->setSetting('teaser_image_original', 'false');
         }
     }
 
@@ -273,13 +271,13 @@ echo $teaser->generateTeaserCode();
         $template = new cTemplate();
 
         // set title of teaser
-        $template->set('s', 'TEASER_TITLE', $this->_settings['teaser_title']);
+        $template->set('s', 'TEASER_TITLE', $this->getSetting('teaser_title'));
 
         // decide if it is a manual or category teaser
-        if ($this->_settings['teaser_manual'] == 'true' && !empty($this->_settings['teaser_manual_art'])) {
+        if ($this->getSetting('teaser_manual') == 'true' && !empty($this->getSetting('teaser_manual_art'))) {
             // in case of manual article definition
             // get all art to display and generate article objects manually
-            $manualArts = $this->_settings['teaser_manual_art'];
+            $manualArts = $this->getSetting('teaser_manual_art');
             if (!empty($manualArts) && !is_array($manualArts)) {
                 $manualArts = [$manualArts];
             }
@@ -296,12 +294,12 @@ echo $teaser->generateTeaserCode();
                         continue;
                     }
                     if ($returnAsArray) {
-                        array_push($articles, $article);
+                        $articles[] = $article;
                     } else {
                         $i++;
                     }
                     // stop if teaser limit is reached
-                    if ($i === (int)$this->_settings['teaser_count']) {
+                    if ($i === cSecurity::toInteger($this->getSetting('teaser_count'))) {
                         break;
                     }
                 }
@@ -312,15 +310,15 @@ echo $teaser->generateTeaserCode();
             $options = [
                 'lang'      => $this->_lang,
                 'client'    => $this->_client,
-                'idcat'     => $this->_settings['teaser_category'],
-                'order'     => $this->_settings['teaser_sort'],
-                'direction' => $this->_settings['teaser_sort_order'],
-                'limit'     => $this->_settings['teaser_count'],
+                'idcat'     => $this->getSetting('teaser_category'),
+                'order'     => $this->getSetting('teaser_sort'),
+                'direction' => $this->getSetting('teaser_sort_order'),
+                'limit'     => $this->getSetting('teaser_count'),
                 'start'     => false,
                 'offline'   => false,
             ];
 
-            if ($this->_settings['teaser_start'] == 'true') {
+            if ($this->getSetting('teaser_start') == 'true') {
                 $options['start'] = true;
             }
 
@@ -328,23 +326,23 @@ echo $teaser->generateTeaserCode();
             foreach ($artCollector as $article) {
                 $title = $this->_getArtContent(
                     $article,
-                    $this->_settings['teaser_source_head'],
-                    $this->_settings['teaser_source_head_count']
+                    $this->getSetting('teaser_source_head'),
+                    $this->getSetting('teaser_source_head_count')
                 );
                 $text  = $this->_getArtContent(
                     $article,
-                    $this->_settings['teaser_source_text'],
-                    $this->_settings['teaser_source_text_count']
+                    $this->getSetting('teaser_source_text'),
+                    $this->getSetting('teaser_source_text_count')
                 );
                 $image = $this->_getArtContent(
                     $article,
-                    $this->_settings['teaser_source_image'],
-                    $this->_settings['teaser_source_image_count']
+                    $this->getSetting('teaser_source_image'),
+                    $this->getSetting('teaser_source_image_count')
                 );
 
                 if (trim($title) || trim($text) || trim($image)) {
                     if ($returnAsArray == true) {
-                        array_push($articles, $article);
+                        $articles[] = $article;
                     } else {
                         $this->_fillTeaserTemplateEntry($article, $template);
                     }
@@ -356,8 +354,8 @@ echo $teaser->generateTeaserCode();
         if ($returnAsArray) {
             $out = $articles;
         } else {
-            $templateName =
-                $this->_cfgClient[$this->_client]['path']['frontend'] . 'templates/' . $this->_settings['teaser_style'];
+            $templateName = $this->_cfgClient[$this->_client]['path']['frontend']
+                . 'templates/' . $this->getSetting('teaser_style');
             if (file_exists($templateName) && count($template->Dyn_replacements) > 0) {
                 $out = $template->generate($templateName, true);
             } else {
@@ -384,27 +382,27 @@ echo $teaser->generateTeaserCode();
         // settings for retrieval
         $title   = $this->_getArtContent(
             $article,
-            $this->_settings['teaser_source_head'],
-            $this->_settings['teaser_source_head_count']
+            $this->getSetting('teaser_source_head'),
+            $this->getSetting('teaser_source_head_count')
         );
         $text    = $this->_getArtContent(
             $article,
-            $this->_settings['teaser_source_text'],
-            $this->_settings['teaser_source_text_count']
+            $this->getSetting('teaser_source_text'),
+            $this->getSetting('teaser_source_text_count')
         );
         $imageId = $this->_getArtContent(
             $article,
-            $this->_settings['teaser_source_image'],
-            $this->_settings['teaser_source_image_count']
+            $this->getSetting('teaser_source_image'),
+            $this->getSetting('teaser_source_image_count')
         );
         $date    = $this->_getArtContent(
             $article,
-            $this->_settings['teaser_source_date'],
-            $this->_settings['teaser_source_date_count']
+            $this->getSetting('teaser_source_date'),
+            $this->getSetting('teaser_source_date_count')
         );
 
         // check if CMS type is date before trying to parse it as date
-        if ('CMS_DATE' === $this->_settings['teaser_source_date']) {
+        if ('CMS_DATE' === $this->getSetting('teaser_source_date')) {
             $date = trim($date);
             $date = new cContentTypeDate($date, 1, ['CMS_DATE']);
             $date = $date->generateViewCode();
@@ -423,9 +421,9 @@ echo $teaser->generateTeaserCode();
         if ($online == 1 || cRegistry::getBackendSessionId()) {
             // teaser filter defines strings which must be contained in text for display.
             // if string is defined check if article contains this string and abort, if article does not contain this string
-            if ($this->_settings['teaser_filter'] != '') {
-                $iPosText = cString::findLastPos(conHtmlEntityDecode($text), $this->_settings['teaser_filter']);
-                $iPosHead = cString::findLastPos(conHtmlEntityDecode($title), $this->_settings['teaser_filter']);
+            if ($this->getSetting('teaser_filter') != '') {
+                $iPosText = cString::findLastPos(conHtmlEntityDecode($text), $this->getSetting('teaser_filter'));
+                $iPosHead = cString::findLastPos(conHtmlEntityDecode($title), $this->getSetting('teaser_filter'));
                 if (is_bool($iPosText) && !$iPosText && is_bool($iPosHead) && !$iPosHead) {
                     return false;
                 }
@@ -439,8 +437,8 @@ echo $teaser->generateTeaserCode();
             // strip tags in teaser text and cut it if it is to long
             $title = trim(strip_tags($title));
             $text  = trim(strip_tags($text));
-            if (cString::getStringLength($text) > $this->_settings['teaser_character_limit']) {
-                $text = cString::trimAfterWord($text, $this->_settings['teaser_character_limit']) . '...';
+            if (cString::getStringLength($text) > $this->getSetting('teaser_character_limit')) {
+                $text = cString::trimAfterWord($text, $this->getSetting('teaser_character_limit')) . '...';
             }
 
             // try to get a teaser image directly from cms_img or try to extract if a content type is given, which contains html
@@ -448,9 +446,9 @@ echo $teaser->generateTeaserCode();
             if ((int)$imageId > 0) {
                 $image = $this->_getImage(
                     $imageId,
-                    $this->_settings['teaser_image_width'],
-                    $this->_settings['teaser_image_height'],
-                    $this->_settings['teaser_image_crop']
+                    $this->getSetting('teaser_image_width'),
+                    $this->getSetting('teaser_image_height'),
+                    $this->getSetting('teaser_image_crop')
                 );
                 $template->set('d', 'IMAGE', $image['element']);
                 $template->set('d', 'IMAGE_SRC', $image['src']);
@@ -574,9 +572,9 @@ echo $teaser->generateTeaserCode();
             $file  = $this->_cfgClient[$this->_client]['path']['frontend'] . $img[4];
             $image = $this->_getImage(
                 $file,
-                $this->_settings['teaser_image_width'],
-                $this->_settings['teaser_image_height'],
-                $this->_settings['teaser_image_crop'],
+                $this->getSetting('teaser_image_width'),
+                $this->getSetting('teaser_image_height'),
+                $this->getSetting('teaser_image_crop'),
                 true
             );
         }
@@ -621,7 +619,7 @@ echo $teaser->generateTeaserCode();
         // scale image if exists and return it
         if (file_exists($teaserImage)) {
             // Scale Image using cApiImgScale
-            if ($this->_settings['teaser_image_original'] == 'true') {
+            if ($this->getSetting('teaser_image_original') == 'true') {
                 // Use original version of image
                 $frontendURL = cRegistry::getFrontendUrl();
                 $imgSrc = str_replace(cRegistry::getFrontendPath(), $frontendURL, $teaserImage);
@@ -712,7 +710,7 @@ echo $teaser->generateTeaserCode();
         $templateBottom->set('s', 'PREFIX', $this->_prefix);
         $templateBottom->set('s', 'IDARTLANG', $this->_idArtLang);
         $templateBottom->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
-        $templateBottom->set('s', 'SETTINGS', json_encode($this->_settings));
+        $templateBottom->set('s', 'SETTINGS', json_encode($this->getSettings()));
         $templateBottom->set(
             's',
             'JS_CLASS_SCRIPT',
@@ -780,22 +778,22 @@ echo $teaser->generateTeaserCode();
         $wrapperContent[] = new cHTMLLabel(i18n('Teaser title'), 'teaser_title_' . $this->_id);
         $wrapperContent[] = new cHTMLTextbox(
             'teaser_title_' . $this->_id,
-            conHtmlSpecialChars($this->_settings['teaser_title']),
+            conHtmlSpecialChars($this->getSetting('teaser_title')),
             '',
             '',
             'teaser_title_' . $this->_id
         );
         $wrapperContent[] = new cHTMLLabel(i18n('Source category'), 'teaser_category_' . $this->_id);
         $wrapperContent[] =
-            buildCategorySelect('teaser_category_' . $this->_id, $this->_settings['teaser_category'], 0);
+            buildCategorySelect('teaser_category_' . $this->_id, $this->getSetting('teaser_category'), 0);
         $wrapperContent[] = new cHTMLLabel(i18n('Number of articles'), 'teaser_count_' . $this->_id);
         $wrapperContent[] = new cHTMLTextbox(
-            'teaser_count_' . $this->_id, (int)$this->_settings['teaser_count'], '', '', 'teaser_count_' . $this->_id
+            'teaser_count_' . $this->_id, cSecurity::toInteger($this->getSetting('teaser_count')), '', '', 'teaser_count_' . $this->_id
         );
 
         $wrapperContent[] = new cHTMLLabel(i18n("Include start article"), 'teaser_start_' . $this->_id);
         $wrapperContent[] = new cHTMLCheckbox(
-            'teaser_start_' . $this->_id, '', 'teaser_start_' . $this->_id, ($this->_settings['teaser_start'] == 'true')
+            'teaser_start_' . $this->_id, '', 'teaser_start_' . $this->_id, ($this->getSetting('teaser_start') == 'true')
         );
 
         $wrapperContent[] = new cHTMLLabel(i18n("Teaser sort"), 'teaser_sort_' . $this->_id);
@@ -853,7 +851,7 @@ echo $teaser->generateTeaserCode();
         }
 
         // set default value
-        $htmlSelect->setDefault($this->_settings['teaser_style']);
+        $htmlSelect->setDefault($this->getSetting('teaser_style'));
 
         return $htmlSelect->render();
     }
@@ -922,7 +920,7 @@ echo $teaser->generateTeaserCode();
             'teaser_manual_' . $this->_id,
             '',
             'teaser_manual_' . $this->_id,
-            ($this->_settings['teaser_manual'] == 'true')
+            ($this->getSetting('teaser_manual') == 'true')
         );
 
         // $wrapperContent[] = new cHTMLParagraph(i18n('Add article'), 'head_sub');
@@ -944,16 +942,16 @@ echo $teaser->generateTeaserCode();
         $selectElement->setAttribute('size', '4');
         $selectElement->setAttribute('multiple', 'multiple');
         // there can be one or multiple selected articles
-        if (is_array($this->_settings['teaser_manual_art'])) {
-            foreach ($this->_settings['teaser_manual_art'] as $index => $idArt) {
+        if (is_array($this->getSetting('teaser_manual_art'))) {
+            foreach ($this->getSetting('teaser_manual_art') as $index => $idArt) {
                 $option = new cHTMLOptionElement($this->_getArtName($idArt), $idArt, true);
                 $selectElement->addOptionElement($index, $option);
             }
         } else {
             // check if the article really exists
-            $artName = $this->_getArtName($this->_settings['teaser_manual_art']);
+            $artName = $this->_getArtName($this->getSetting('teaser_manual_art'));
             if ($artName != i18n('Unknown article')) {
-                $option = new cHTMLOptionElement($artName, $this->_settings['teaser_manual_art'], true);
+                $option = new cHTMLOptionElement($artName, $this->getSetting('teaser_manual_art'), true);
                 $selectElement->addOptionElement(0, $option);
             }
         }
@@ -1001,7 +999,7 @@ echo $teaser->generateTeaserCode();
         $htmlSelect->appendOptionElement($htmlSelectOption);
 
         // set default value
-        $htmlSelect->setDefault($this->_settings['teaser_sort']);
+        $htmlSelect->setDefault($this->getSetting('teaser_sort'));
 
         return $htmlSelect->render();
     }
@@ -1028,7 +1026,7 @@ echo $teaser->generateTeaserCode();
         $htmlSelect->appendOptionElement($htmlSelectOption);
 
         // set default value
-        $htmlSelect->setDefault($this->_settings['teaser_sort_order']);
+        $htmlSelect->setDefault($this->getSetting('teaser_sort_order'));
 
         return $htmlSelect->render();
     }
@@ -1055,7 +1053,7 @@ echo $teaser->generateTeaserCode();
         $htmlSelect->appendOptionElement($htmlSelectOption);
 
         // set default value
-        $htmlSelect->setDefault($this->_settings['teaser_image_crop']);
+        $htmlSelect->setDefault($this->getSetting('teaser_image_crop'));
 
         return $htmlSelect->render();
     }
@@ -1079,12 +1077,12 @@ echo $teaser->generateTeaserCode();
         $wrapperContent[] = $this->_generateStyleSelect();
         $wrapperContent[] = new cHTMLLabel(i18n("Teaser filter"), 'teaser_filter_' . $this->_id);
         $wrapperContent[] = new cHTMLTextbox(
-            'teaser_filter_' . $this->_id, $this->_settings['teaser_filter'], '', '', 'teaser_filter_' . $this->_id
+            'teaser_filter_' . $this->_id, $this->getSetting('teaser_filter'), '', '', 'teaser_filter_' . $this->_id
         );
         $wrapperContent[] = new cHTMLLabel(i18n('Character length'), 'teaser_character_limit_' . $this->_id);
         $wrapperContent[] = new cHTMLTextbox(
             'teaser_character_limit_' . $this->_id,
-            $this->_settings['teaser_character_limit'],
+            $this->getSetting('teaser_character_limit'),
             '',
             '',
             'teaser_character_limit_' . $this->_id
@@ -1094,7 +1092,7 @@ echo $teaser->generateTeaserCode();
         $wrapperContent[] = new cHTMLLabel(i18n('Image width'), 'teaser_image_width_' . $this->_id);
         $wrapperContent[] = new cHTMLTextbox(
             'teaser_image_width_' . $this->_id,
-            $this->_settings['teaser_image_width'],
+            $this->getSetting('teaser_image_width'),
             '',
             '',
             'teaser_image_width_' . $this->_id
@@ -1102,7 +1100,7 @@ echo $teaser->generateTeaserCode();
         $wrapperContent[] = new cHTMLLabel(i18n('Image height'), 'teaser_image_height_' . $this->_id);
         $wrapperContent[] = new cHTMLTextbox(
             'teaser_image_height_' . $this->_id,
-            $this->_settings['teaser_image_height'],
+            $this->getSetting('teaser_image_height'),
             '',
             '',
             'teaser_image_height_' . $this->_id
@@ -1111,32 +1109,37 @@ echo $teaser->generateTeaserCode();
         $wrapperContent[] = $this->_generateCropSelect();
 
         $wrapperContent[] = new cHTMLLabel(i18n("Use original image"), 'teaser_image_original_' . $this->_id);
-        $wrapperContent[] = new cHTMLCheckbox('teaser_image_original_' . $this->_id, '', 'teaser_image_original_' . $this->_id, ($this->_settings['teaser_image_original'] == 'true'));
+        $wrapperContent[] = new cHTMLCheckbox(
+            'teaser_image_original_' . $this->_id,
+            '',
+            'teaser_image_original_' . $this->_id,
+            ($this->getSetting('teaser_image_original') == 'true')
+        );
 
         $wrapperContent[] = new cHTMLParagraph(i18n("Content types"), 'head_sub');
         $wrapperContent[] = new cHTMLLabel(i18n("Headline source"), 'teaser_source_head_' . $this->_id);
         $wrapperContent[] = $this->_generateTypeSelect(
             'teaser_source_head_' . $this->_id,
-            $this->_settings['teaser_source_head'],
-            $this->_settings['teaser_source_head_count']
+            $this->getSetting('teaser_source_head'),
+            $this->getSetting('teaser_source_head_count')
         );
         $wrapperContent[] = new cHTMLLabel(i18n("Text source"), 'teaser_source_text_' . $this->_id);
         $wrapperContent[] = $this->_generateTypeSelect(
             'teaser_source_text_' . $this->_id,
-            $this->_settings['teaser_source_text'],
-            $this->_settings['teaser_source_text_count']
+            $this->getSetting('teaser_source_text'),
+            $this->getSetting('teaser_source_text_count')
         );
         $wrapperContent[] = new cHTMLLabel(i18n('Image source'), 'teaser_source_image_' . $this->_id);
         $wrapperContent[] = $this->_generateTypeSelect(
             'teaser_source_image_' . $this->_id,
-            $this->_settings['teaser_source_image'],
-            $this->_settings['teaser_source_image_count']
+            $this->getSetting('teaser_source_image'),
+            $this->getSetting('teaser_source_image_count')
         );
         $wrapperContent[] = new cHTMLLabel(i18n('Date source'), 'teaser_source_date_' . $this->_id);
         $wrapperContent[] = $this->_generateTypeSelect(
             'teaser_source_date_' . $this->_id,
-            $this->_settings['teaser_source_date'],
-            $this->_settings['teaser_source_date_count']
+            $this->getSetting('teaser_source_date'),
+            $this->getSetting('teaser_source_date_count')
         );
 
         $wrapper->setContent($wrapperContent);
@@ -1155,7 +1158,7 @@ echo $teaser->generateTeaserCode();
     private function _getArtName($idArt)
     {
         $article = new cApiArticleLanguage();
-        $article->loadByArticleAndLanguageId((int)$idArt, $this->_lang);
+        $article->loadByArticleAndLanguageId(cSecurity::toInteger($idArt), $this->_lang);
 
         $title = $article->get('title');
         if ($article->isLoaded() && !empty($title)) {
@@ -1164,4 +1167,5 @@ echo $teaser->generateTeaserCode();
             return i18n('Unknown article');
         }
     }
+
 }

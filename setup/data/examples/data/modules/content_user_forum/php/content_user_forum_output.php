@@ -132,6 +132,12 @@ class UserForumArticle {
     protected $_collection;
 
     /**
+     * User forum action
+     * @var string
+     */
+    protected $_action;
+
+    /**
      *
      */
     public function __construct() {
@@ -144,6 +150,7 @@ class UserForumArticle {
         $this->_collection = new ArticleForumCollection();
         $this->_qoute = ($this->_collection->getQuoteState($this->_idart));
         $this->_modMode = ($this->_collection->getModModeActive($this->_idart));
+        $this->_action = $_REQUEST['user_forum_action'] ?? '';
     }
 
     /**
@@ -159,8 +166,7 @@ class UserForumArticle {
         $this->_getUser($auth->auth['uid']);
         $this->_allowedToEditForum = ($bAllowAnonymousforum || $this->_userLoggedIn && !$bAllowAnonymousforum) ? true : false;
 
-        $userForumAction = $_REQUEST['user_forum_action'] ?? null;
-        switch ($userForumAction) {
+        switch ($this->_action) {
             // user interaction click on like button
             case 'like_forum':
                 $this->_incrementLike();
@@ -197,9 +203,15 @@ class UserForumArticle {
     private function _getUser($userid) {
         if (($userid != '') && ($userid != 'nobody')) {
             $this->_userLoggedIn = true;
+            // TODO Fix this, selectUser() returns always boolean!
             $user = $this->_collection->selectUser($userid);
-            $this->_currentEmail = $user['email'];
-            $this->_currentRealname = $user['realname'];
+            if (is_array($user) && count($user)) {
+                $this->_currentEmail = $user['email'];
+                $this->_currentRealname = $user['realname'];
+            } else {
+                $this->_currentEmail = '';
+                $this->_currentRealname = '';
+            }
         } else {
             $this->_userLoggedIn = false;
             $this->_userid = '';
@@ -210,7 +222,7 @@ class UserForumArticle {
      * increments the current number of likes
      */
     private function _incrementLike() {
-        $form_id = (int) ($_REQUEST['user_forum_id'] ?? 0);
+        $form_id = cSecurity::toInteger($_REQUEST['user_forum_id'] ?? '0');
         if ($form_id > 0 && $this->_counter) {
             $this->_collection->incrementLike($form_id);
         }
@@ -220,7 +232,7 @@ class UserForumArticle {
      * increments the current number of dislikes
      */
     private function _incrementDislike() {
-        $form_id = (int) ($_REQUEST['user_forum_id'] ?? 0);
+        $form_id = cSecurity::toInteger($_REQUEST['user_forum_id'] ?? '0');
         if ($form_id > 0 && $this->_counter) {
             $this->_collection->incrementDislike($form_id);
         }
@@ -230,16 +242,19 @@ class UserForumArticle {
      * submit for new entry will be called after click at new comment
      */
     private function _saveForum() {
-        $bInputOK = true;
+        $regex = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
+        // Run the preg_match() function on regex against the email address
+
         if ($this->_allowedToEditForum) {
             $this->_userid = $_REQUEST['userid'] ?? '';
-            $this->_allowDeleting = $_REQUEST['deleting'] ?? '';
-            $contenido = $_REQUEST['contenido'] ?? cRegistry::getBackendSessionId();
+            $this->_allowDeleting = $_REQUEST['deleting'] ?? '0';
+            $contenido = $_REQUEST['contenido'] ?? '';
+            $bInputOK = true;
 
             $email = trim($_REQUEST['email'] ?? '');
             $realname = trim($_REQUEST['realname'] ?? '');
             $forum = trim($_REQUEST['forum'] ?? '');
-            $parentId = (int) ($_REQUEST['user_forum_parent'] ?? 0);
+            $parent = cSecurity::toInteger($_REQUEST['user_forum_parent'] ?? '0');
             $forum_quote = trim($_REQUEST['forum_quote'] ?? '');
 
             $this->_getUser($this->_userid);
@@ -274,7 +289,7 @@ class UserForumArticle {
             }
 
             if ($bInputOK) {
-                // build array for language synchronisation
+                // build array for language synchonisation
                 $ar = [
                     'NEWENTRY' => mi18n("NEWENTRY"),
                     'NEWENTRYTEXT' => mi18n("NEWENTRYTEXT"),
@@ -285,7 +300,7 @@ class UserForumArticle {
                 ];
                 $this->_collection->languageSync($ar);
                 // persist comment
-                $this->_collection->insertValues($parentId, $this->_idart, $this->_idcat, $this->_idlang, $this->_userid, $email, $realname, $forum, $forum_quote);
+                $this->_collection->insertValues($parent, $this->_idart, $this->_idcat, $this->_idlang, $this->_userid, $email, $realname, $forum, $forum_quote);
 
                 $this->_messageTexts[] = mi18n("yourArticleSaved");
             } else {
@@ -324,7 +339,7 @@ class UserForumArticle {
                 $this->_tpl->assign('IDCAT', $this->_idcat);
                 $this->_tpl->assign('IDART', $this->_idart);
                 $this->_tpl->assign('SAVE_FORUM', mi18n("saveArticle"));
-                $this->_tpl->assign('USER_FORUM_PARENT', $parentId);
+                $this->_tpl->assign('USER_FORUM_PARENT', $parent);
 
                 $this->_tpl->assign('CANCEL_FORUM', mi18n("cancel"));
                 $this->_tpl->assign('CANCEL_LINK', "front_content.php?idart=$this->_idart");
@@ -333,15 +348,11 @@ class UserForumArticle {
                 $this->_tpl->assign('CONTENIDO', $contenido);
 
                 // check for replied comments
-                $replyId = $parentId;
-                if ($replyId > 0) {
-
-                    $content = $this->_collection->selectNameAndNameByForumId($replyId);
-                    $empty = !((count($content) > 0));
+                if ($parent > 0) {
+                    $content = $this->_collection->selectNameAndNameByForumId($parent);
+                    $empty = (count($content) > 0) ? false : true;
 
                     if (!$empty) {
-                        $content['realname'] = $content['realname'] ?? '';
-                        $content['forum'] = $content['forum'] ?? '';
                         $transTemplate = mi18n("answerToQuote");
                         $transTemplateAfter = mi18n("from");
                         $this->_tpl->assign('FORUM_REPLYMENT', conHtmlSpecialChars($transTemplate) . '<br/>' . conHtmlSpecialChars($content['forum']) . "<br/><br/>" . conHtmlSpecialChars($transTemplateAfter) . ' ' . conHtmlSpecialChars($content['realname']));
@@ -435,7 +446,7 @@ class UserForumArticle {
                         $record['EDIT_INFORMATION'] = "<br /><br /><em>$edit_information</em>";
                     }
 
-                    // answers allowed or not.
+                    // ansers allowed or not.
                     if ($this->_qoute) {
                         $record['REPLY'] = sprintf($linkText, $key);
                     } else {
@@ -459,7 +470,7 @@ class UserForumArticle {
                     $record['MAILTO'] = '#';
                     $record['EMAIL'] = '';
 
-                    array_push($tplData, $record);
+                    $tplData[] = $record;
                 }
 
                 $this->_tpl->assign('POSTS', $tplData);
@@ -488,18 +499,18 @@ class UserForumArticle {
     }
 
     /**
-     * generate view for new entries
+     * generate view for new entrys
      */
     private function _newEntry() {
         if ($this->_allowedToEditForum) {
             $this->_tpl->assign('MESSAGES', $this->_messageTexts);
+            $idquote = cSecurity::toInteger($_REQUEST['user_forum_quote'] ?? '0');
 
-            $quoteId = (int) ($_REQUEST['user_forum_quote'] ?? 0);
-            if ($quoteId > 0) {
-                $content = $this->_collection->selectNameAndNameByForumId($quoteId);
-                $empty = !((count($content) > 0));
+            if ($idquote > 0) {
+                $content = $this->_collection->selectNameAndNameByForumId($idquote);
+                $empty = count($content) > 0 ? false : true;
                 if (!$empty) {
-                    $ar = $this->_collection->getCommentContent($quoteId);
+                    $ar = $this->_collection->getCommentContent($idquote);
                     $transTemplate = mi18n("quoteFrom");
                     $this->_tpl->assign('INPUT_FORUM_QUOTE', $transTemplate . ' ' . $ar['name'] . "\n" . $ar['content']);
                 } else {
@@ -509,10 +520,11 @@ class UserForumArticle {
                 $this->_tpl->assign('INPUT_FORUM_QUOTE', '');
             }
 
-            $replyId = (int) ($_REQUEST['user_forum_parent'] ?? 0);
+            $replyId = cSecurity::toInteger($_REQUEST['user_forum_parent'] ?? '0');
+
             if ($replyId > 0) {
                 $content = $this->_collection->selectNameAndNameByForumId($replyId);
-                $empty = !((count($content) > 0));
+                $empty = (count($content) > 0) ? false : true;
 
                 if (!$empty) {
                     // Quote answer content
@@ -547,8 +559,8 @@ class UserForumArticle {
             $this->_tpl->assign('CANCEL_LINK', "front_content.php?idart=$this->_idart");
             $this->_tpl->assign('USERID', $_REQUEST['userid'] ?? '');
             $this->_tpl->assign('DELETING', $_REQUEST['deleting'] ?? '');
-            $this->_tpl->assign('CONTENIDO', cRegistry::getBackendSessionId());
-            $this->_tpl->assign('USER_FORUM_PARENT', (int) ($_REQUEST['user_forum_parent'] ?? 0));
+            $this->_tpl->assign('CONTENIDO', $_REQUEST['contenido'] ?? '');
+            $this->_tpl->assign('USER_FORUM_PARENT', $replyId);
             $this->_tpl->display('user_forum_new.tpl');
         }
     }
@@ -557,25 +569,24 @@ class UserForumArticle {
      * this function sets a cookie when receiving a click on like/dislike -
      * buttons.
      * After the first click the user can't add likes/dislikes for the same
-     * comment for a fixed time interval (value in cookie).
+     * comment for a fixed time intervall (value in cookie).
      */
     private function _checkCookie() {
-        $ip = $_SERVER['REMOTE_ADDR'];
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '';
         $time = time();
         $params = session_get_cookie_params();
-        $userForumAction = $_REQUEST['user_forum_action'] ?? null;
-        $userForumId = (int) ($_REQUEST['user_forum_id'] ?? 0);
+        $userForumId = cSecurity::toInteger($_REQUEST['user_forum_id'] ?? '0');
 
-        if ($userForumAction == 'dislike_forum' && isset($_COOKIE['cookie'][$ip][$userForumId][$userForumAction])) {
+        if ($this->_action == 'dislike_forum' && isset($_COOKIE['cookie'][$ip][$userForumId][$this->_action])) {
             $this->_counter = false;
-        } elseif ($userForumAction == 'dislike_forum' && !isset($_COOKIE['cookie'][$ip][$userForumId][$userForumAction])) {
-            setcookie("cookie[" . $ip . "][" . $userForumId . "][" . $userForumAction . "]", 1, $time + 3600, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+        } elseif ($this->_action == 'dislike_forum' && !isset($_COOKIE['cookie'][$ip][$userForumId][$this->_action])) {
+            setcookie("cookie[" . $ip . "][" . $userForumId . "][" . $this->_action . "]", 1, $time + 3600, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
             $this->_counter = true;
         }
-        if ($userForumAction == 'like_forum' && isset($_COOKIE['cookie'][$ip][$userForumId][$userForumAction])) {
+        if ($this->_action == 'like_forum' && isset($_COOKIE['cookie'][$ip][$userForumId][$this->_action])) {
             $this->_counter = false;
-        } elseif ($userForumAction == 'like_forum' && !isset($_COOKIE['cookie'][$ip][$userForumId][$userForumAction])) {
-            setcookie("cookie[" . $ip . "][" . $userForumId . "][" . $userForumAction . "]", 1, $time + 3600, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+        } elseif ($this->_action == 'like_forum' && !isset($_COOKIE['cookie'][$ip][$userForumId][$this->_action])) {
+            setcookie("cookie[" . $ip . "][" . $userForumId . "][" . $this->_action . "]", 1, $time + 3600, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
             $this->_counter = true;
         }
     }

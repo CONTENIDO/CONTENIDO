@@ -130,7 +130,9 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         // if form is submitted, store the current teaser settings
         // notice: also check the ID of the content type (there could be more
         // than one content type of the same type on the same page!)
-        if (isset($_POST[$this->_prefix . '_action']) && $_POST[$this->_prefix . '_action'] === 'store' && isset($_POST[$this->_prefix . '_id']) && (int) $_POST[$this->_prefix . '_id'] == $this->_id) {
+        $postAction = $_POST[$this->_prefix . '_action'] ?? '';
+        $postId = cSecurity::toInteger($_POST[$this->_prefix . '_id'] ?? '0');
+        if ($postAction === 'store' && $postId == $this->_id) {
             $this->_storeSettings();
         }
 
@@ -181,8 +183,6 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * @throws cException
      */
     protected function _getRawSettings($contentTypeName, $id, array $contentTypes, $editable = false) {
-        $cfg = cRegistry::getConfig();
-
         if (!isset($contentTypes[$contentTypeName][$id])) {
             $idArtLang = cRegistry::getArticleLanguageId();
             // get the idtype of the content type
@@ -191,7 +191,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             $idtype = $typeItem->get('idtype');
             // first load the appropriate content entry in order to get the
             // settings
-            if ($editable == false) {
+            if (!$editable) {
                 $content = new cApiContent();
                 $content->loadByMany([
                     'idartlang' => $idArtLang,
@@ -199,17 +199,16 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
                     'typeid' => $id
                 ]);
                 return $content->get('value');
-            } else if ($editable == true) {
+            } else if ($editable) {
                 $db = cRegistry::getDb();
                 $sql = "SELECT MAX(`version`) AS `max` FROM `%s` WHERE `idartlang` = %d AND `typeid` = %d AND `idtype` = %d";
-                $sql = $db->prepare($sql, $cfg['tab']['content_version'], $idArtLang, $id, $idtype);
+                $sql = $db->prepare($sql, cRegistry::getDbTableName('content_version'), $idArtLang, $id, $idtype);
                 $db->query($sql);
-                while($db->nextRecord()) {
+                while ($db->nextRecord()) {
                     $idContentVersion = $db->f('max');
                 }
 
                 $contentVersion = new cApiContentVersion($idContentVersion);
-
                 if ($contentVersion->get('deleted') != 1) {
                     return $contentVersion->get('value');
                 }
@@ -294,9 +293,11 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     private function _generateImagePath() {
         if (!empty($this->_filename)) {
             if (cApiDbfs::isDbfs($this->_dirname)) {
-                return $this->_cfgClient[$this->_client]['path']['htmlpath'] . 'dbfs.php?file=' . urlencode($this->_dirname . $this->_filename);
+                return $this->_cfgClient[$this->_client]['path']['htmlpath']
+                    . 'dbfs.php?file=' . urlencode($this->_dirname . $this->_filename);
             } else {
-                return $this->_cfgClient[$this->_client]['path']['htmlpath'] . $this->_cfgClient[$this->_client]['upload'] . $this->_dirname . $this->_filename;
+                return $this->_cfgClient[$this->_client]['path']['htmlpath']
+                    . $this->_cfgClient[$this->_client]['upload'] . $this->_dirname . $this->_filename;
             }
         }
 
@@ -342,11 +343,11 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         conGenerateCodeForArtInAllCategories($this->_idArt);
 
         // insert / update meta data
-        $medianame = $_POST['image_medianame'];
-        $description = $_POST['image_description'];
-        $keywords = $_POST['image_keywords'];
-        $internal_notice = $_POST['image_internal_notice'];
-        $copyright = $_POST['image_copyright'];
+        $medianame = $_POST['image_medianame'] ?? '';
+        $description = $_POST['image_description'] ?? '';
+        $keywords = $_POST['image_keywords'] ?? '';
+        $internal_notice = $_POST['image_internal_notice'] ?? '';
+        $copyright = $_POST['image_copyright'] ?? '';
 
         $uploadMeta = new cApiUploadMeta();
         $uploadMeta->loadByMany([
@@ -398,7 +399,10 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $templateTop->set('s', 'ID', $this->_id);
         $templateTop->set('s', 'PREFIX', $this->_prefix);
         $templateTop->set('s', 'HEADLINE', i18n('Image settings'));
-        $codeTop = $templateTop->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_top.html', true);
+        $codeTop = $templateTop->generate(
+            $this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_top.html',
+            true
+        );
 
         $tabMenu = [
             'directories' => i18n('Directories'),
@@ -427,13 +431,16 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $templateTabs->set('d', 'TAB_CONTENT', $this->_generateTabMeta());
         $templateTabs->next();
 
-        $codeTabs = $templateTabs->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_tabs.html', true);
+        $codeTabs = $templateTabs->generate(
+            $this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_tabs.html',
+            true
+        );
 
         // Write setting dirname (without backslash at the end)
         if (cString::endsWith($this->_dirname, '/')) {
-            $this->_settings['dirname'] = cString::getPartOfString($this->_dirname, 0, -1);
+            $this->setSetting('dirname', cString::getPartOfString($this->_dirname, 0, -1));
         } else {
-            $this->_settings['dirname'] = $this->_dirname;
+            $this->setSetting('dirname', $this->_dirname);
         }
 
         // construct the bottom code of the template
@@ -443,10 +450,13 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $templateBottom->set('s', 'PREFIX', $this->_prefix);
         $templateBottom->set('s', 'IDARTLANG', $this->_idArtLang);
         $templateBottom->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
-        $templateBottom->set('s', 'SETTINGS', json_encode($this->getConfiguration()));
+        $templateBottom->set('s', 'SETTINGS', json_encode($this->getSettings()));
         $templateBottom->set('s', 'JS_CLASS_SCRIPT', $this->_cfg['path']['contenido_fullhtml'] . 'scripts/content_types/cmsImgeditor.js');
         $templateBottom->set('s', 'JS_CLASS_NAME', 'Con.cContentTypeImgeditor');
-        $codeBottom = $templateBottom->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_bottom.html', true);
+        $codeBottom = $templateBottom->generate(
+            $this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_bottom.html',
+            true
+        );
 
         $code = $this->_encodeForOutput($codeTop);
         $code .= $this->_generateTabMenuCode($tabMenu);
@@ -638,7 +648,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $htmlSelect->addOptionElement(0, $htmlSelectOption);
 
         $files = [];
-        if (is_dir($this->_uploadPath . $directoryPath)) {
+        if (cDirHandler::exists($this->_uploadPath . $directoryPath)) {
             if (false !== ($handle = cDirHandler::read($this->_uploadPath . $directoryPath, false, false, true))) {
                 foreach ($handle as $entry) {
                     if (false === cFileHandler::fileNameBeginsWithDot($entry)) {
@@ -654,9 +664,9 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         usort($files, function($a, $b) {
             $a = cString::toLowerCase($a["name"]);
             $b = cString::toLowerCase($b["name"]);
-            if($a < $b) {
+            if ($a < $b) {
                 return -1;
-            } else if($a > $b) {
+            } else if ($a > $b) {
                 return 1;
             } else {
                 return 0;
@@ -664,7 +674,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         });
 
         $i = 1;
-        foreach($files as $file) {
+        foreach ($files as $file) {
             $htmlSelectOption = new cHTMLOptionElement($file["name"], $file["path"]);
             $htmlSelect->addOptionElement($i, $htmlSelectOption);
             $i++;

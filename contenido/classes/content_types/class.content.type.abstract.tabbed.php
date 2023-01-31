@@ -40,7 +40,10 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
             $template->set('d', 'TAB_NAME', $name);
             $template->next();
         }
-        $code = $template->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_tab_menu.html', true);
+        $code = $template->generate(
+            $this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_tab_menu.html',
+            true
+        );
 
         return $this->_encodeForOutput($code);
     }
@@ -69,11 +72,11 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
             // first load the appropriate content entry in order to get the
             // settings
             $content = new cApiContent();
-            $content->loadByMany(array(
+            $content->loadByMany([
                 'idartlang' => $idArtLang,
                 'idtype' => $idtype,
                 'typeid' => $id
-            ));
+            ]);
             return $content->get('value');
         } else {
             return $contentTypes[$contentTypeName][$id];
@@ -90,7 +93,10 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
     protected function _generateActionCode() {
         $template = new cTemplate();
 
-        $code = $template->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_action.html', true);
+        $code = $template->generate(
+            $this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_action.html',
+            true
+        );
 
         return $this->_encodeForOutput($code);
     }

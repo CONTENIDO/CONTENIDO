@@ -37,7 +37,6 @@ class cContentTypeLinkdescr extends cContentTypeLinkeditor {
      * @throws cException
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-
         // There are no raw settings here, because CMS_LINKEDITOR is now
         // saved in con_upl_meta. So compute the appropriate raw settings
         // and call the parent constructor with them.
@@ -57,7 +56,7 @@ class cContentTypeLinkdescr extends cContentTypeLinkeditor {
      *         escaped HTML code which sould be shown if content type is shown in frontend
      */
     public function generateViewCode() {
-        return $this->_encodeForOutput($this->_settings['linkeditor_title']);
+        return $this->_encodeForOutput($this->getSetting('linkeditor_title'));
     }
 
     /**

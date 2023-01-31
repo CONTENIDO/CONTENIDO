@@ -145,7 +145,7 @@ $code
         $checkBoxMod->setID($id);
 
         // check state
-        ($this->_settings['userforum_modactive'] === 'false') ? $checkBoxMod->setChecked(false) : $checkBoxMod->setChecked(true);
+        $checkBoxMod->setChecked($this->getSetting('userforum_modactive', 'false') === 'false');
 
         // build div element as wrapper
         $div = new cHTMLDiv(array(
@@ -171,7 +171,7 @@ $code
         $checkBoxMod->setID($id);
 
         // check state
-        ($this->_settings['userforum_subcomments'] === 'false') ? $checkBoxMod->setChecked(false) : $checkBoxMod->setChecked(true);
+        $checkBoxMod->setChecked($this->getSetting('userforum_subcomments', 'false') === 'false');
 
         // build div element as wrapper
         $div = new cHTMLDiv(array(
@@ -199,7 +199,7 @@ $code
 
         $inputEmail = new cHTMLTextbox($id);
         $inputEmail->setID($id);
-        $inputEmail->setValue($this->_settings['userforum_email']);
+        $inputEmail->setValue($this->getSetting('userforum_email', ''));
 
         // build div element as wrapper
         $div = new cHTMLDiv(array(

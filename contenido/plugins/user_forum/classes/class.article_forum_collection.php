@@ -554,8 +554,8 @@ class ArticleForumCollection extends ItemCollection {
             'idclient'             => cRegistry::getClientId(),
             'like'                 => 0,
             'dislike'              => 0,
-            'editedat'             => NULL,
-            'editedby'             => NULL,
+            'editedat'             => '',
+            'editedby'             => '',
             'timestamp'            => date('Y-m-d H:i:s'),
             'online'               => $online
         ];

@@ -73,10 +73,8 @@ class cAjaxRequest {
      *         name of requested ajax action
      *
      * @return string
-     * 
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     *
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function handle($action) {
         $backendPath = cRegistry::getBackendPath();
@@ -84,18 +82,19 @@ class cAjaxRequest {
         $string = '';
         switch ($action) {
             case 'artsel':
-                $name  = cSecurity::toString($_REQUEST['name']);
-                $idcat = cSecurity::toInteger($_REQUEST['idcat']);
-                $value = cSecurity::toInteger($_REQUEST['value']);
+
+                $name  = cSecurity::toString($_REQUEST['name'] ?? '');
+                $idcat = cSecurity::toInteger($_REQUEST['idcat'] ?? '0');
+                $value = cSecurity::toInteger($_REQUEST['value'] ?? '0');
 
                 $string = buildArticleSelect($name, $idcat, $value);
                 break;
 
             case 'dirlist':
 
-                $idartlang = cSecurity::toInteger($_REQUEST['idartlang']);
-                $fileListId = cSecurity::toInteger($_REQUEST['id']);
-                $dirname = cSecurity::toString($_REQUEST['dir']);
+                $idartlang = cSecurity::toInteger($_REQUEST['idartlang'] ?? '0');
+                $fileListId = cSecurity::toInteger($_REQUEST['id'] ?? '0');
+                $dirname = cSecurity::toString($_REQUEST['dir'] ?? '');
 
                 $clientId = cRegistry::getClientId();
                 $cfgClient = cRegistry::getClientConfig($clientId);
@@ -104,16 +103,16 @@ class cAjaxRequest {
                 $art = new cApiArticleLanguage($idartlang);
                 $content = $art->getContent('CMS_FILELIST', $fileListId);
 
-                $fileList = new cContentTypeFilelist($content, $fileListId, array());
+                $fileList = new cContentTypeFilelist($content, $fileListId, []);
                 $directoryList = $fileList->buildDirectoryList($uplPath . $dirname);
                 $string = $fileList->generateDirectoryList($directoryList);
                 break;
 
             case 'imgdirlist':
 
-                $idartlang  = cSecurity::toInteger($_REQUEST['idartlang']);
-                $fileListId = cSecurity::toInteger($_REQUEST['id']);
-                $dirname    = cSecurity::toString($_REQUEST['dir']);
+                $idartlang  = cSecurity::toInteger($_REQUEST['idartlang'] ?? '0');
+                $fileListId = cSecurity::toInteger($_REQUEST['id'] ?? '0');
+                $dirname    = cSecurity::toString($_REQUEST['dir'] ?? '');
 
                 $clientId  = cRegistry::getClientId();
                 $cfgClient = cRegistry::getClientConfig($clientId);
@@ -128,21 +127,23 @@ class cAjaxRequest {
                 break;
 
             case 'filelist':
-                $idartlang  = cSecurity::toInteger($_REQUEST['idartlang']);
-                $fileListId = cSecurity::toInteger($_REQUEST['id']);
-                $dirname    = cSecurity::toString($_REQUEST['dir']);
+
+                $idartlang  = cSecurity::toInteger($_REQUEST['idartlang'] ?? '0');
+                $fileListId = cSecurity::toInteger($_REQUEST['id'] ?? '0');
+                $dirname    = cSecurity::toString($_REQUEST['dir'] ?? '');
 
                 $art = new cApiArticleLanguage($idartlang);
                 $content = $art->getContent('CMS_FILELIST', $fileListId);
 
-                $fileList = new cContentTypeFilelist($content, $fileListId, array());
+                $fileList = new cContentTypeFilelist($content, $fileListId, []);
                 $string = $fileList->generateFileSelect($dirname);
                 break;
 
             case 'inused_layout':
-                global $cfg;
-                if (0 < (int) $_REQUEST['id']) {
-                    $layout = new cApiLayout((int) $_REQUEST['id']);
+
+                $id = cSecurity::toInteger($_REQUEST['id'] ?? '0');
+                if ($id > 0) {
+                    $layout = new cApiLayout($id);
                     if ($layout->isInUse(true)) {
                         $template = new cTemplate();
                         $usedTemplates = $layout->getUsedTemplates();
@@ -157,6 +158,7 @@ class cAjaxRequest {
                                 $template->next();
                             }
 
+                            $cfg = cRegistry::getConfig();
                             $string = '<div class="inuse_info" >' . $template->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['inuse_lay_mod'], true) . '</div>';
                         } else {
                             $string = i18n('No data found!');
@@ -166,9 +168,10 @@ class cAjaxRequest {
                 break;
 
             case 'inused_module':
-                global $cfg;
+
+                $id = cSecurity::toInteger($_REQUEST['id'] ?? '0');
                 $module = new cApiModule();
-                if ((int) $_REQUEST['id'] > 0 && $module->moduleInUse((int) $_REQUEST['id'], true)) {
+                if ($id > 0 && $module->moduleInUse($id, true)) {
                     $template = new cTemplate();
                     $usedTemplates = $module->getUsedTemplates();
                     if (count($usedTemplates) > 0) {
@@ -183,6 +186,7 @@ class cAjaxRequest {
                             $template->next();
                         }
 
+                        $cfg = cRegistry::getConfig();
                         $string = '<div class="inuse_info" >' . $template->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['inuse_lay_mod'], true) . '</div>';
                     } else {
                         $string = i18n('No data found!');
@@ -191,12 +195,14 @@ class cAjaxRequest {
                 break;
 
             case 'inused_template':
-                global $cfg;
+
                 cInclude('backend', 'includes/functions.tpl.php');
 
-                if ((int) $_REQUEST['id'] > 0) {
+                $cfg = cRegistry::getConfig();
+                $id = cSecurity::toInteger($_REQUEST['id'] ?? '0');
+                if ($id > 0) {
                     $response = '';
-                    $usedData = tplGetInUsedData((int) $_REQUEST['id']);
+                    $usedData = tplGetInUsedData($id);
 
                     $template = new cTemplate();
                     $template->reset();
@@ -239,26 +245,21 @@ class cAjaxRequest {
                 break;
 
             case 'scaleImage':
+
                 // Access to frontend configuration only when needed, clients config may not available everywhere in the backend
                 $frontendURL = cRegistry::getFrontendUrl();
                 $frontendPath = cRegistry::getFrontendPath();
 
-                $filename_a = $_REQUEST['url'];
+                $filename_a = $_REQUEST['url'] ?? '';
                 $filename = str_replace($frontendURL, $frontendPath, $filename_a);
                 // $filename muss not url path(http://) sondern globale PC
                 // Path(c:/) sein.
                 $filetype = cString::getPartOfString($filename, cString::getStringLength($filename) - 4, 4);
                 switch (cString::toLowerCase($filetype)) {
-                    case '.gif':
-                        $string = cApiImgScale($filename, 428, 210);
-                        break;
                     case '.png':
-                        $string = cApiImgScale($filename, 428, 210);
-                        break;
                     case '.jpg':
-                        $string = cApiImgScale($filename, 428, 210);
-                        break;
                     case 'jpeg':
+                    case '.gif':
                         $string = cApiImgScale($filename, 428, 210);
                         break;
                     default:
@@ -274,13 +275,14 @@ class cAjaxRequest {
                 break;
 
             case 'imagelist':
-                $dirName = (string) $_REQUEST['dir'];
-                $imageId = (int) $_REQUEST['id'];
-                $idArtLang = (int) $_REQUEST['idartlang'];
+
+                $dirName = cSecurity::toString($_REQUEST['dir'] ?? '');
+                $imageId = cSecurity::toInteger($_REQUEST['id'] ?? '0');
+                $idArtLang = cSecurity::toInteger($_REQUEST['idartlang'] ?? '0');
 
                 $art = new cApiArticleLanguage($idArtLang);
                 $artReturn = $art->getContent('CMS_IMGEDITOR', $imageId);
-                $image = new cContentTypeImgeditor($artReturn, $imageId, array());
+                $image = new cContentTypeImgeditor($artReturn, $imageId, []);
 
                 $string = $image->generateFileSelect($dirName);
                 break;
@@ -289,28 +291,29 @@ class cAjaxRequest {
 
                 $languageCollection = new cApiArticleLanguageCollection();
 
-                for ($i = 0; $i < count($_REQUEST['fields']); $i++) {
-
-                    $idartlang = $languageCollection->getIdByArticleIdAndLanguageId(cSecurity::toInteger($_REQUEST['fields'][$i]['idart']), cRegistry::getLanguageId());
+                $fields = $_REQUEST['fields'] ?? [];
+                for ($i = 0; $i < count($fields); $i++) {
+                    $requestIdArt = cSecurity::toInteger($_REQUEST['fields'][$i]['idart'] ?? '0');
+                    $idartlang = $languageCollection->getIdByArticleIdAndLanguageId($requestIdArt, cRegistry::getLanguageId());
 
                     $artLang = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
                     $artLang->set('title', cSecurity::escapeString($_REQUEST['fields'][$i]['title']));
                     $artLang->set('artsort', cSecurity::escapeString($_REQUEST['fields'][$i]['index']));
                     $artLang->store();
                 }
-
                 break;
 
             case 'loadImageMeta':
-                $imageId = (int) $_REQUEST['id'];
-                $idArtLang = (int) $_REQUEST['idartlang'];
+
+                $imageId = cSecurity::toInteger($_REQUEST['id'] ?? '0');
+                $idArtLang = cSecurity::toInteger($_REQUEST['idartlang'] ?? '0');
 
                 $art = new cApiArticleLanguage($idArtLang);
                 $artReturn = $art->getContent('CMS_IMGEDITOR', $imageId);
-                $image = new cContentTypeImgeditor($artReturn, $imageId, array());
+                $image = new cContentTypeImgeditor($artReturn, $imageId, []);
 
-                $filename = (string) basename($_REQUEST['filename']);
-                $dirname = (string) dirname($_REQUEST['filename']);
+                $filename = basename(cSecurity::toString($_REQUEST['filename'] ?? ''));
+                $dirname = dirname(cSecurity::toString($_REQUEST['filename'] ?? ''));
                 if ($dirname != '.') {
                     $dirname .= '/';
                 } else {
@@ -321,14 +324,15 @@ class cAjaxRequest {
                 break;
 
             case 'upl_mkdir':
-                $imageId = (int) $_REQUEST['id'];
-                $idArtLang = (int) $_REQUEST['idartlang'];
-                $path = (string) $_REQUEST['path'];
-                $name = (string) $_REQUEST['foldername'];
+
+                $imageId = cSecurity::toInteger($_REQUEST['id'] ?? '0');
+                $idArtLang = cSecurity::toInteger($_REQUEST['idartlang'] ?? '0');
+                $path = cSecurity::toString($_REQUEST['path'] ?? '');
+                $name = cSecurity::toString($_REQUEST['foldername'] ?? '');
 
                 $art = new cApiArticleLanguage($idArtLang);
                 $artReturn = $art->getContent('CMS_IMGEDITOR', $imageId);
-                $image = new cContentTypeImgeditor($artReturn, $imageId, array());
+                $image = new cContentTypeImgeditor($artReturn, $imageId, []);
 
                 $string = $image->uplmkdir($path, $name);
                 switch ($string) {
@@ -347,30 +351,32 @@ class cAjaxRequest {
                 break;
 
             case 'upl_upload':
-                $imageId = (int) $_REQUEST['id'];
-                $idArtLang = (int) $_REQUEST['idartlang'];
-                $path = (string) $_REQUEST['path'];
+
+                $imageId = cSecurity::toInteger($_REQUEST['id'] ?? '0');
+                $idArtLang = cSecurity::toInteger($_REQUEST['idartlang'] ?? '0');
+                $path = cSecurity::toString($_REQUEST['path'] ?? '');
                 if ($path == '/') {
                     $path = '';
                 }
 
                 $art = new cApiArticleLanguage($idArtLang);
                 $artReturn = $art->getContent('CMS_IMGEDITOR', $imageId);
-                $image = new cContentTypeImgeditor($artReturn, $imageId, array());
+                $image = new cContentTypeImgeditor($artReturn, $imageId, []);
 
                 $string = $image->uplupload($path);
                 break;
 
             case 'linkeditorarticleslist':
-                $id = (int) $_REQUEST['id'];
-                $idArtLang = (int) $_REQUEST['idartlang'];
-                $idCat = (string) $_REQUEST['idcat'];
+
+                $id = cSecurity::toInteger($_REQUEST['id'] ?? '0');
+                $idArtLang = cSecurity::toInteger($_REQUEST['idartlang'] ?? '0');
+                $idCat = cSecurity::toInteger($_REQUEST['idcat'] ?? '0');
 
                 $art = new cApiArticleLanguage($idArtLang);
                 $artReturn = $art->getContent('CMS_LINKEDITOR', $id);
-                $linkEditor = new cContentTypeLinkeditor($artReturn, $id, array());
+                $linkEditor = new cContentTypeLinkeditor($artReturn, $id, []);
 
-                if ($idCat === '') {
+                if ($idCat === 0) {
                     $activeIdcats = $linkEditor->getActiveIdcats();
                     $idCat        = $activeIdcats[0];
                 }
@@ -379,26 +385,28 @@ class cAjaxRequest {
                 break;
 
             case 'linkeditordirlist':
-                $id = (int) $_REQUEST['id'];
-                $idArtLang = (int) $_REQUEST['idartlang'];
-                $levelId = (string) $_REQUEST['level'];
-                $parentidcat = (string) $_REQUEST['parentidcat'];
+
+                $id = cSecurity::toInteger($_REQUEST['id'] ?? '0');
+                $idArtLang = cSecurity::toInteger($_REQUEST['idartlang'] ?? '0');
+                $levelId = cSecurity::toString($_REQUEST['level'] ?? '');
+                $parentidcat = cSecurity::toString($_REQUEST['parentidcat'] ?? '');
 
                 $art = new cApiArticleLanguage($idArtLang);
                 $artReturn = $art->getContent('CMS_LINKEDITOR', $id);
-                $linkEditor = new cContentTypeLinkeditor($artReturn, $id, array());
+                $linkEditor = new cContentTypeLinkeditor($artReturn, $id, []);
 
                 $string = $linkEditor->getCategoryList($linkEditor->buildCategoryArray($levelId, $parentidcat));
                 break;
 
             case 'linkeditorimagelist':
-                $dirName = (string) $_REQUEST['dir'];
-                $id = (int) $_REQUEST['id'];
-                $idArtLang = (int) $_REQUEST['idartlang'];
+
+                $dirName = cSecurity::toString($_REQUEST['dir'] ?? '0');
+                $id = cSecurity::toInteger($_REQUEST['id'] ?? '0');
+                $idArtLang = cSecurity::toInteger($_REQUEST['idartlang'] ?? '0');
 
                 $art = new cApiArticleLanguage($idArtLang);
                 $artReturn = $art->getContent('CMS_LINKEDITOR', $id);
-                $linkEditor = new cContentTypeLinkeditor($artReturn, $id, array());
+                $linkEditor = new cContentTypeLinkeditor($artReturn, $id, []);
 
                 if ($dirName === '') {
                     $dirName = dirname($linkEditor->getFilename());
@@ -408,7 +416,8 @@ class cAjaxRequest {
                 break;
 
             case 'generaljstranslations':
-                $translations = array();
+
+                $translations = [];
                 $translations['Confirmation Required'] = i18n('Confirmation Required');
                 $translations['OK'] = i18n('OK');
                 $translations['Cancel'] = i18n('Cancel');
@@ -416,8 +425,9 @@ class cAjaxRequest {
                 break;
 
             case 'logfilecontent':
-                $type = cSecurity::escapeString($_REQUEST['logfile']);
-                $numberOfLines = cSecurity::toInteger($_REQUEST['numberOfLines']);
+
+                $type = cSecurity::escapeString($_REQUEST['logfile'] ?? '');
+                $numberOfLines = cSecurity::toInteger($_REQUEST['numberOfLines'] ?? '0');
                 $cfg = cRegistry::getConfig();
                 if (in_array($type, $cfg['system_log']['allowed_filenames'])) {
                     $filename = $cfg['path']['frontend'] . DIRECTORY_SEPARATOR . $cfg['path']['logs'] . $type;
@@ -428,9 +438,10 @@ class cAjaxRequest {
                 break;
 
             case 'updatepluginorder':
+
                 // only sysadmins can do this
                 if (cRegistry::getPerm()->have_perm()) {
-                    $newOrder = cSecurity::toInteger($_POST['neworder']);
+                    $newOrder = cSecurity::toInteger($_POST['neworder'] ?? '0');
                     $pluginColl = new PimPluginCollection();
                     $pluginColl->select();
                     if ($newOrder <= 0 || $newOrder > $pluginColl->count()) {
@@ -438,7 +449,7 @@ class cAjaxRequest {
                         break;
                     }
 
-                    $pluginId = cSecurity::toInteger($_POST['idplugin']);
+                    $pluginId = cSecurity::toInteger($_POST['idplugin'] ?? '0');
                     $plugin = new PimPlugin($pluginId);
                     $result = $plugin->updateExecOrder($newOrder);
                     if ($result === true) {
@@ -450,19 +461,20 @@ class cAjaxRequest {
                 break;
 
             case 'verify_module':
-                $idmod = isset($_POST['idmod']) ? $_POST['idmod'] : NULL;
-                $inputType = isset($_POST['type']) ? $_POST['type'] : NULL;
+
+                $idmod = cSecurity::toInteger($_POST['idmod'] ?? '0');
+                $inputType = cSecurity::toString($_POST['type'] ?? '');
 
                 // @see CON-2425 modules are checked by default
                 $moduleCheck = getSystemProperty('system', 'modulecheck');
                 $moduleCheck = ($moduleCheck == '' && $moduleCheck != 'false') || $moduleCheck == 'true' || $moduleCheck == '1';
 
-                $result = array(
+                $result = [
                     'state' => 'ok',
                     'message' => i18n("Module successfully compiled")
-                );
+                ];
 
-                if ($idmod && $inputType && $moduleCheck) {
+                if ($idmod > 0 && !empty($inputType) && $moduleCheck) {
                     $contenidoModuleHandler = new cModuleHandler($idmod);
                     switch ($inputType) {
                         case 'input':
@@ -472,10 +484,10 @@ class cAjaxRequest {
                             $result = $contenidoModuleHandler->testOutput();
                             break;
                         default:
-                            $result = array(
+                            $result = [
                                 'state' => 'error',
                                 'message' => 'No cModuleHandler for ' . $idmod . ', or wrong code type: ' . $inputType
-                            );
+                            ];
                     }
 
                     // create answer
@@ -492,20 +504,26 @@ class cAjaxRequest {
                 break;
 
             case 'authentication_fail':
-                $string = json_encode(array(
+
+                $string = json_encode([
                     'state' => 'error',
                     'code' => 401,
                     'message' => 'Unauthorized',
                     'type' => 'authentication_failure'
-                ));
+                ]);
                 break;
+
             case 'custom':
-                $string = cApiCecHook::executeAndReturn('Contenido.AjaxMain.CustomCall', $_REQUEST['method']);
+
+                $requestMethod = cSecurity::toString($_REQUEST['method'] ?? '');
+                $string = cApiCecHook::executeAndReturn('Contenido.AjaxMain.CustomCall', $requestMethod);
                 if($string === NULL) {
                     $string = 'Unknown Custom Ajax Action';
                 }
                 break;
+
             default:
+
                 // If action is unknown generate error message
                 $string = 'Unknown Ajax Action';
                 break;

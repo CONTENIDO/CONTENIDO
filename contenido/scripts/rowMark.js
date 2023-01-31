@@ -458,7 +458,9 @@ lay = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'rowMarkLayClick(oRow)', 'lay
     var NAME = 'rowmark';
 
     /**
-     * RowMark class
+     * RowMark class.
+     *
+     * @since CONTENIDO 4.10.2
      * @class  RowMark
      * @static
      */

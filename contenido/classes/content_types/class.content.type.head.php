@@ -36,7 +36,6 @@ class cContentTypeHead extends cContentTypeText {
      * @throws cDbException
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-
         // try to call constructor of parent of parent to avoid overwriting of $this->_settings
         // this can happen in case of POST-data
         if (false === get_parent_class($this) || false === get_parent_class(get_parent_class($this))) {
@@ -55,7 +54,9 @@ class cContentTypeHead extends cContentTypeText {
         // if form is submitted, store the current text
         // notice: also check the ID of the content type (there could be more
         // than one content type of the same type on the same page!)
-        if (isset($_POST[$this->_prefix . '_action']) && $_POST[$this->_prefix . '_action'] === 'store' && isset($_POST[$this->_prefix . '_id']) && (int) $_POST[$this->_prefix . '_id'] == $this->_id) {
+        $postAction = $_POST[$this->_prefix . '_action'] ?? '';
+        $postId = cSecurity::toInteger($_POST[$this->_prefix . '_id'] ?? '0');
+        if ($postAction === 'store' && $postId == $this->_id) {
             $this->_settings = $_POST[$this->_prefix . '_text_' . $this->_id];
             $this->_rawSettings = $this->_settings;
             $this->_storeSettings();
@@ -76,15 +77,25 @@ class cContentTypeHead extends cContentTypeText {
      * @throws cInvalidArgumentException
      */
     protected function _getEditJavaScript() {
-        $textbox = new cHTMLTextbox($this->_prefix . '_text_' . $this->_id, '', '', '', $this->_prefix . '_text_' . $this->_id, false, NULL, '', 'edit-textfield edit-' . $this->_prefix . '-textfield');
+        $textbox = new cHTMLTextbox(
+            $this->_prefix . '_text_' . $this->_id,
+            '',
+            '',
+            '',
+            $this->_prefix . '_text_' . $this->_id,
+            false,
+            NULL,
+            '',
+            'edit-textfield edit-' . $this->_prefix . '-textfield'
+        );
         $textbox->setClass("$this->_id");
 
         $saveButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . 'images/but_ok.gif');
         $saveButton->setID($this->_prefix . '_savebutton_' . $this->_id);
-        $saveButton->appendStyleDefinitions(array(
-                'margin-left' => '5px',
-                'cursor' => 'pointer'
-        ));
+        $saveButton->appendStyleDefinitions([
+            'margin-left' => '5px',
+            'cursor' => 'pointer'
+        ]);
 
         $template = new cTemplate();
         $template->set('s', 'PREFIX', $this->_prefix);
@@ -93,7 +104,10 @@ class cContentTypeHead extends cContentTypeText {
         $template->set('s', 'SAVEBUTTON', $saveButton->render());
         $template->set('s', 'IDARTLANG', $this->_idArtLang);
 
-        return $template->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_text_js.html', true);
+        return $template->generate(
+            $this->_cfg['path']['contenido'] . 'templates/standard/template.cms_text_js.html',
+            true
+        );
     }
 
 }
