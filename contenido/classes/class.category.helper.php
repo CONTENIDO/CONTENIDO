@@ -47,7 +47,7 @@ class cCategoryHelper {
      *
      * @var array
      */
-    protected $_levelCache = array();
+    protected $_levelCache = [];
 
     /**
      * Auth object to use.
@@ -61,7 +61,7 @@ class cCategoryHelper {
      *
      * @var array
      */
-    protected $_feGroups = array();
+    protected $_feGroups = [];
 
     /**
      * Object for frontend permission collection.
@@ -211,11 +211,10 @@ class cCategoryHelper {
     public function getCategoryPath($categoryId, $startingLevel = 1, $maxDepth = 20) {
         $languageId = $this->getLanguageId();
 
-        $categories = array();
-
         $categoryLanguage = new cApiCategoryLanguage();
         $categoryLanguage->loadByCategoryIdAndLanguageId($categoryId, $languageId);
 
+        $categories = [];
         if ($this->hasCategoryAccess($categoryLanguage) === true) {
             $categories[] = $categoryLanguage;
         }
@@ -248,18 +247,17 @@ class cCategoryHelper {
      *         Array with parent category IDs.
      */
     public function getParentCategoryIds($categoryId, $maxDepth = 20) {
-        $categoryIds = array();
-
         $nextCategoryId = $categoryId;
+        $categoryCount  = 1;
 
-        $categoryCount = 1;
+        $categoryIds    = [];
         while ($nextCategoryId != 0 && $categoryCount < $maxDepth) {
-            $category = new cApiCategory($nextCategoryId);
-
+            $category       = new cApiCategory($nextCategoryId);
             $nextCategoryId = $category->get('parentid');
             if ($nextCategoryId != 0) {
                 $categoryIds[] = $nextCategoryId;
             }
+
             $categoryCount++;
         }
 
@@ -311,13 +309,14 @@ class cCategoryHelper {
      */
     public function getSubCategories($categoryId, $depth) {
         if ((int) $categoryId <= 0 || (int) $depth < 0) {
-            return array();
+            return [];
         }
+
         $depth = (int) $depth;
 
         $cfg = cRegistry::getConfig();
 
-        $categories = array();
+        $categories = [];
 
         $clientId = $this->getClientId();
         $languageId = $this->getLanguageId();
@@ -361,12 +360,12 @@ class cCategoryHelper {
             if ($depth > 0 && ($depth > ($catLevel))) {
                 $subCategories = $this->getSubCategories($catId, $depth);
             } else {
-                $subCategories = array();
+                $subCategories = [];
             }
             $categoryLanguage = new cApiCategoryLanguage();
             $categoryLanguage->loadByCategoryIdAndLanguageId($catId, $languageId);
 
-            $category = array();
+            $category = [];
             $category['item'] = $categoryLanguage;
             $category['idcat'] = $catId;
             $category['level'] = $catLevel;

@@ -151,7 +151,7 @@ class cPager {
      *         Pager structure
      */
     public function getPagesInRange() {
-        $items = array();
+        $items = [];
 
         $maxPages = $this->getMaxPages();
 

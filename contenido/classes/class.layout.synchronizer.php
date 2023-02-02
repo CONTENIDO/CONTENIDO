@@ -22,34 +22,29 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cLayoutSynchronizer {
 
     /**
-     *
      * @var array
      */
     protected $_cfg;
 
     /**
-     *
      * @var array
      */
     protected $_cfgClient;
 
     /**
-     *
      * @var int
      */
     protected $_lang;
 
     /**
-     *
      * @var int
      */
     protected $_client;
 
     /**
-     *
      * @var array
      */
-    private $_outputMessage = array();
+    private $_outputMessage = [];
 
     /**
      * Constructor to create an instance of this class.

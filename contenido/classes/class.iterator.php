@@ -56,7 +56,7 @@ class cIterator {
      *         Items to add
      */
     public function __construct($aItems) {
-        $this->_aIteratorItems = is_array($aItems) ? $aItems : array();
+        $this->_aIteratorItems = is_array($aItems) ? $aItems : [];
         $this->reset();
     }
 

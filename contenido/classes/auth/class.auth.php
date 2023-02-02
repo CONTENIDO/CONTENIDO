@@ -47,7 +47,7 @@ class cAuth {
      *
      * @var array
      */
-    public $auth = array();
+    public $auth = [];
 
     /**
      * Lifetime for authenticated users in minutes.

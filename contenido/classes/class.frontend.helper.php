@@ -90,7 +90,7 @@ class cFrontendHelper {
 
         $categoryTree = $categoryHelper->getSubCategories($baseCategoryId, $depth);
 
-        $tree = array();
+        $tree = [];
 
         $parentCategories = $categoryHelper->getParentCategoryIds($currentCategoryId);
 
