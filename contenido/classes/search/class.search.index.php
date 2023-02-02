@@ -205,6 +205,7 @@ class cSearchIndex extends cSearchBaseAbstract {
 
         $this->_place = $place;
         $this->_keycode = $aContent;
+        $this->addTitle();
         $this->setStopwords($aStopwords);
         $this->setCmsOptions($cms_options);
 
@@ -221,6 +222,24 @@ class cSearchIndex extends cSearchBaseAbstract {
 
         if (count($this->_keywordsDel) > 0) {
             $this->deleteKeywords();
+        }
+    }
+
+    /**
+     * Adds the title and pagetitle of the article to the index.
+     *
+     * @return void
+     * @throws cDbException
+     */
+    public function addTitle() {
+        $sql = "SELECT `title`, `pagetitle` FROM `%s` WHERE `idart` = %d AND `idlang` = %d";
+        $this->db->query($sql, cRegistry::getDbTableName('art_lang'), $this->idart, $this->lang);
+        if ($this->db->nextRecord()) {
+            $title = $this->db->f('title') . ' ' . $this->db->f('pagetitle');
+            $firstItemKey = cArray::getFirstKey($this->_keycode['CMS_HTML'] ?? []);
+            if ($firstItemKey) {
+                $this->_keycode['CMS_HTML'][$firstItemKey] .= ' ' . $title;
+            }
         }
     }
 

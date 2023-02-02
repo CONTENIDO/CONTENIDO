@@ -213,4 +213,22 @@ class cArray {
         }
         return true;
     }
+
+    /**
+     * Get the first key of the given array without affecting the internal
+     * array pointer.
+     *
+     * @since CONTENIDO 4.10.2
+     * @param array $array An array
+     * @return int|string|null
+     */
+    public static function getFirstKey(array $array) {
+        // We could use array_key_first(), but only from PHP >= 7.3.0
+        // see https://www.php.net/manual/en/function.array-key-first.php
+        foreach ($array as $key => $unused) {
+            return $key;
+        }
+        return NULL;
+    }
+
 }
