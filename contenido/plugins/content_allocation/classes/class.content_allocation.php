@@ -167,16 +167,14 @@ class pApiContentAllocation {
      * @throws cDbException
      */
     public function loadAllocationsWithNames($idartlang, $parent, $firstonly = false) {
-        $cfg = cRegistry::getConfig();
-
         $sql = "SELECT :tab_pica_alloc.idpica_alloc FROM :tab_pica_alloc
             INNER JOIN :tab_pica_alloc_con ON :tab_pica_alloc.idpica_alloc = :tab_pica_alloc_con.idpica_alloc
             WHERE (:tab_pica_alloc.parentid = :parentid) AND (:tab_pica_alloc_con.idartlang = idartlang)
             ORDER BY :tab_pica_alloc.sortorder";
 
         $params = [
-            'tab_pica_alloc_con' => $cfg['tab']['pica_alloc_con'],
-            'tab_pica_alloc' => $cfg['tab']['pica_alloc'],
+            'tab_pica_alloc_con' => cRegistry::getDbTableName('pica_alloc_con'),
+            'tab_pica_alloc' => cRegistry::getDbTableName('pica_alloc'),
             'parentid' => cSecurity::toInteger($parent),
             'idartlang' => cSecurity::toInteger($idartlang)
         ];
@@ -222,8 +220,6 @@ class pApiContentAllocation {
      * @return string $sql
      */
     protected function _buildQuery($restrictions, $categoriesToExclude, $max) {
-        $cfg = cRegistry::getConfig();
-
         $size = sizeof($restrictions);
 
         if ($size == 0) {
@@ -239,9 +235,9 @@ class pApiContentAllocation {
 
         for ($i = 0; $i < $size; $i++) {
             if ($i == 0) { // first
-                $tables[] = " " . $cfg['tab']['pica_alloc_con'] . " AS " . $sql_concat[$i];
+                $tables[] = " " . cRegistry::getDbTableName('pica_alloc_con') . " AS " . $sql_concat[$i];
             } else {
-                $tables[] = " LEFT JOIN " . $cfg['tab']['pica_alloc_con'] . " AS " . $sql_concat[$i] . " USING (idartlang)";
+                $tables[] = " LEFT JOIN " . cRegistry::getDbTableName('pica_alloc_con') . " AS " . $sql_concat[$i] . " USING (idartlang)";
             }
             if (is_int((int) $restrictions[$i]) and $restrictions[$i] > 0) {
                 $where[] = $sql_concat[$i] . ".idpica_alloc = " . $restrictions[$i];
@@ -333,8 +329,6 @@ class pApiContentAllocation {
      * @return string
      */
     protected function _buildQuery_MatchingContentByContentAllocationByCategories($contentAllocation, $categories, $offset, $numOfRows) {
-        $cfg = cRegistry::getConfig();
-
         $size = sizeof($contentAllocation);
 
         $sql_concat = unserialize('a:78:{i:0;s:2:"aa";i:1;s:2:"ab";i:2;s:2:"ac";i:3;s:2:"ad";i:4;s:2:"ae";i:5;s:2:"af";i:6;s:2:"ag";i:7;s:2:"ah";i:8;s:2:"ai";i:9;s:2:"aj";i:10;s:2:"ak";i:11;s:2:"al";i:12;s:2:"am";i:13;s:2:"an";i:14;s:2:"ao";i:15;s:2:"ap";i:16;s:2:"aq";i:17;s:2:"ar";i:18;s:2:"as";i:19;s:2:"at";i:20;s:2:"au";i:21;s:2:"av";i:22;s:2:"aw";i:23;s:2:"ax";i:24;s:2:"ay";i:25;s:2:"az";i:26;s:2:"ca";i:27;s:2:"cb";i:28;s:2:"cc";i:29;s:2:"cd";i:30;s:2:"ce";i:31;s:2:"cf";i:32;s:2:"cg";i:33;s:2:"ch";i:34;s:2:"ci";i:35;s:2:"cj";i:36;s:2:"ck";i:37;s:2:"cl";i:38;s:2:"cm";i:39;s:2:"cn";i:40;s:2:"co";i:41;s:2:"cp";i:42;s:2:"cq";i:43;s:2:"cr";i:44;s:2:"cs";i:45;s:2:"ct";i:46;s:2:"cu";i:47;s:2:"cv";i:48;s:2:"cw";i:49;s:2:"cx";i:50;s:2:"cy";i:51;s:2:"cz";i:52;s:1:"a";i:53;s:1:"b";i:54;s:1:"c";i:55;s:1:"d";i:56;s:1:"e";i:57;s:1:"f";i:58;s:1:"g";i:59;s:1:"h";i:60;s:1:"i";i:61;s:1:"j";i:62;s:1:"k";i:63;s:1:"l";i:64;s:1:"m";i:65;s:1:"n";i:66;s:1:"o";i:67;s:1:"p";i:68;s:1:"q";i:69;s:1:"r";i:70;s:1:"s";i:71;s:1:"t";i:72;s:1:"u";i:73;s:1:"v";i:74;s:1:"w";i:75;s:1:"x";i:76;s:1:"y";i:77;s:1:"z";}');
@@ -346,9 +340,9 @@ class pApiContentAllocation {
 
         for ($i = 0; $i < $size; $i++) {
             if ($i == 0) { // first
-                $tables[] = " " . $cfg['tab']['pica_alloc_con'] . " AS " . $sql_concat[$i];
+                $tables[] = " " . cRegistry::getDbTableName('pica_alloc_con') . " AS " . $sql_concat[$i];
             } else {
-                $tables[] = " LEFT JOIN " . $cfg['tab']['pica_alloc_con'] . " AS " . $sql_concat[$i] . " USING (idartlang)";
+                $tables[] = " LEFT JOIN " . cRegistry::getDbTableName('pica_alloc_con') . " AS " . $sql_concat[$i] . " USING (idartlang)";
             }
             if (is_int((int) $contentAllocation[$i]) && $contentAllocation[$i] > 0) {
                 $where[] = $sql_concat[$i] . ".idpica_alloc = " . $contentAllocation[$i];

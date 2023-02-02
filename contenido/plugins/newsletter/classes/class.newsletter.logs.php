@@ -28,8 +28,7 @@ class NewsletterLogCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        $cfg = cRegistry::getConfig();
-        parent::__construct($cfg["tab"]["news_log"], "idnewslog");
+        parent::__construct(cRegistry::getDbTableName('news_log'), 'idnewslog');
         $this->_setItemClass("NewsletterLog");
     }
 
@@ -92,7 +91,6 @@ class NewsletterLogCollection extends ItemCollection {
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function initializeJob($idnewsjob, $idnews) {
-        $cfg = cRegistry::getConfig();
         $idnewsjob = cSecurity::toInteger($idnewsjob);
         $idnews = cSecurity::toInteger($idnews);
 
@@ -112,7 +110,7 @@ class NewsletterLogCollection extends ItemCollection {
                     break;
                 case "default":
                     $sDistinct = "distinct";
-                    $sFrom = $cfg["tab"]["news_groups"] . " AS groups, " . $cfg["tab"]["news_groupmembers"] . " AS groupmembers ";
+                    $sFrom = cRegistry::getDbTableName('news_groups') . " AS groups, " . cRegistry::getDbTableName('news_groupmembers') . " AS groupmembers ";
                     $sSQL = $nrcClassName . ".idclient = '" . $iIDClient . "' AND " . $nrcClassName . ".idlang = '" . $iIDLang . "' AND " . $nrcClassName . ".deactivated = '0' AND " . $nrcClassName . ".confirmed = '1' AND " . $nrcClassName . ".idnewsrcp = groupmembers.idnewsrcp AND " . "groupmembers.idnewsgroup = groups.idnewsgroup AND " . "groups.defaultgroup = '1' AND groups.idclient = '" . $iIDClient . "' AND " . "groups.idlang = '" . $iIDLang . "'";
                     break;
                 case "selection":
@@ -122,7 +120,7 @@ class NewsletterLogCollection extends ItemCollection {
                         $sGroups = "'" . implode("','", $aGroups) . "'";
 
                         $sDistinct = "distinct";
-                        $sFrom = $cfg["tab"]["news_groupmembers"] . " AS groupmembers ";
+                        $sFrom = cRegistry::getDbTableName('news_groupmembers') . " AS groupmembers ";
                         $sSQL = "newsletterrecipientcollection.idclient = '" . $iIDClient . "' AND newsletterrecipientcollection.idlang = '" . $iIDLang . "' AND newsletterrecipientcollection.deactivated = '0' AND newsletterrecipientcollection.confirmed = '1' AND newsletterrecipientcollection.idnewsrcp = groupmembers.idnewsrcp AND " . "groupmembers.idnewsgroup IN (" . $sGroups . ")";
                     } else {
                         $sDestination = "unknown";
@@ -216,8 +214,7 @@ class NewsletterLog extends Item {
      * @throws cException
      */
     public function __construct($mId = false) {
-        $cfg = cRegistry::getConfig();
-        parent::__construct($cfg["tab"]["news_log"], "idnewslog");
+        parent::__construct(cRegistry::getDbTableName('news_log'), 'idnewslog');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -236,7 +233,7 @@ class NewsletterLog extends Item {
         switch ($name) {
             case 'idnewsrcp':
             case 'idnewsjob':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

@@ -24,9 +24,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $changeclient, $changelang, $path, $mr_preprocessedPageError;
 
-$client = cRegistry::getClientId();
+$client = cSecurity::toInteger(cRegistry::getClientId());
 $cfgClient = cRegistry::getClientConfig();
-$lang = cRegistry::getLanguageId();
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
 $idart = cRegistry::getArticleId();
 $idcat = cRegistry::getCategoryId();
 

@@ -13,6 +13,13 @@
  */
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cPermission $perm
+ * @var cApiUser $currentuser
+ * @var cSession $sess
+ * @var array $cfg
+ */
+
 // initializing classes
 $page = new cGuiPage('pim_overview', 'pim');
 
@@ -38,7 +45,7 @@ $pluginDependenciesView = new PimPluginViewDependencies();
 // initializing PimPluginViewNavSub class
 $navSubView = new PimPluginViewNavSub();
 
-$viewAction = isset($_REQUEST['pim_view']) ? $_REQUEST['pim_view'] : 'overview';
+$viewAction = $_REQUEST['pim_view'] ?? 'overview';
 
 switch ($viewAction) {
     case 'activestatus':
@@ -89,7 +96,7 @@ switch ($viewAction) {
 $tempTplPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . 'pim/templates';
 
 // initializing array for installed plugins
-$installedPluginFoldernames = array();
+$installedPluginFoldernames = [];
 
 // get all installed plugins
 $oItem = new PimPluginCollection();

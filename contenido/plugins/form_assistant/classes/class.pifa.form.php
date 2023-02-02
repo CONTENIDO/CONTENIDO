@@ -18,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * It's a kind of model.
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @method PifaForm createNewItem
+ * @method PifaForm createNewItem($data)
  * @method PifaForm|bool next
  */
 class PifaFormCollection extends ItemCollection {
@@ -31,7 +31,6 @@ class PifaFormCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct($where = false) {
-        $cfg = cRegistry::getConfig();
         parent::__construct(cRegistry::getDbTableName('pifa_form'), 'idform');
         $this->_setItemClass('PifaForm');
         if (false !== $where) {
@@ -182,7 +181,6 @@ class PifaForm extends Item {
      * @throws cException
      */
     public function __construct($id = false) {
-        $cfg = cRegistry::getConfig();
         parent::__construct(cRegistry::getDbTableName('pifa_form'), 'idform');
         $this->setFilters([], []);
         if (false !== $id) {
@@ -1235,7 +1233,6 @@ class PifaForm extends Item {
      * @throws cDbException
      */
     public function delete() {
-        $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 
         if (!$this->isLoaded()) {

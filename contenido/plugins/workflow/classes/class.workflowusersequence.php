@@ -28,8 +28,7 @@ class WorkflowUserSequences extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        $cfg = cRegistry::getConfig();
-        parent::__construct($cfg["tab"]["workflow_user_sequences"], "idusersequence");
+        parent::__construct(cRegistry::getDbTableName('workflow_user_sequences'), "idusersequence");
         $this->_setItemClass("WorkflowUserSequence");
     }
 
@@ -70,18 +69,17 @@ class WorkflowUserSequences extends ItemCollection {
         global $idworkflow;
 
         $idusersequence = cSecurity::toInteger($idusersequence);
-        $cfg = cRegistry::getConfig();
         $oDb = cRegistry::getDb();
 
         $aIdArtLang = [];
         $sSql = 'SELECT `idartlang` FROM `%s` WHERE `idusersequence` = %d';
-        $oDb->query($sSql, $cfg["tab"]["workflow_art_allocation"], $idusersequence);
+        $oDb->query($sSql, cRegistry::getDbTableName('workflow_art_allocation'), $idusersequence);
         while ($oDb->nextRecord()) {
             $aIdArtLang[] = cSecurity::toInteger($oDb->f('idartlang'));
         }
 
         $sSql = 'DELETE FROM `%s` WHERE `idusersequence` = %d';
-        $oDb->query($sSql, $cfg["tab"]["workflow_art_allocation"], $idusersequence);
+        $oDb->query($sSql, cRegistry::getDbTableName('workflow_art_allocation'), $idusersequence);
 
         foreach ($aIdArtLang as $iIdArtLang) {
             setUserSequence($iIdArtLang, $idworkflow);
@@ -182,8 +180,7 @@ class WorkflowUserSequence extends Item {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        $cfg = cRegistry::getConfig();
-        parent::__construct($cfg["tab"]["workflow_user_sequences"], "idusersequence");
+        parent::__construct(cRegistry::getDbTableName('workflow_user_sequences'), "idusersequence");
     }
 
     /**
@@ -208,14 +205,13 @@ class WorkflowUserSequence extends Item {
                 throw new cInvalidArgumentException("Please use create and swap to set the position. Direct modifications are not allowed");
             case "iduser":
                 if ($value != 0) {
-                    $cfg = cRegistry::getConfig();
                     $db = cRegistry::getDb();
 
                     $sql = "SELECT `user_id` FROM `%s` WHERE `user_id` = '%s'";
-                    $db->query($sql, $cfg['tab']['user'], $value);
+                    $db->query($sql, cRegistry::getDbTableName('user'), $value);
                     if (!$db->nextRecord()) {
                         $sql = "SELECT `group_id` FROM `%s` WHERE `group_id` = '%s'";
-                        $db->query($sql, $cfg["tab"]["groups"], $value);
+                        $db->query($sql, cRegistry::getDbTableName('groups'), $value);
                         if (!$db->nextRecord()) {
                             $this->lasterror = i18n("Can't set user_id: User or group doesn't exist", "workflow");
                             return false;
@@ -225,11 +221,13 @@ class WorkflowUserSequence extends Item {
                 }
         }
 
-        parent::setField($field, $value, $safe);
+        $result = parent::setField($field, $value, $safe);
         if ($idusersquence) {
             $workflowUserSequences = new WorkflowUserSequences();
             $workflowUserSequences->updateArtAllocation(0);
         }
+
+        return $result;
     }
 
     /**

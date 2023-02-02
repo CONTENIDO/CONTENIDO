@@ -18,7 +18,7 @@ $pluginName = basename(dirname(__DIR__, 1));
 
 $cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/";
 
-$client = cRegistry::getClientId();
+$client = cSecurity::toInteger(cRegistry::getClientId());
 $cfgClient = cRegistry::getClientConfig();
 
 

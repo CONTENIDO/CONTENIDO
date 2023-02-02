@@ -56,8 +56,8 @@ class SIWECOSLeftBottomPage extends cGuiPage
         global $idsiwecos;
 
         $cfg    = cRegistry::getConfig();
-        $client = cRegistry::getClientId();
-        $lang   = cRegistry::getLanguageId();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $lang   = cSecurity::toInteger(cRegistry::getLanguageId());
         $requestIdSiwecos = cSecurity::toInteger($_REQUEST['idsiwecos'] ?? '0');
 
         // Unset global $idsiwecos variable so we can get all menu entries
@@ -554,8 +554,8 @@ class SIWECOSRightBottomPage extends cGuiPage
      */
     private function _validation()
     {
-        $client = cRegistry::getClientId();
-        $lang = cRegistry::getLanguageId();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
         $forms = SIWECOSCollection::getByClientAndLang($client, $lang);
         $domain = trim(cSecurity::toString(cSecurity::unescapeDB($_POST['domain'])));
         if (!filter_var($domain, FILTER_VALIDATE_URL)) {

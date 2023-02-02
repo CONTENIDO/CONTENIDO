@@ -33,7 +33,7 @@ cInclude('includes', 'functions.pathresolver.php');
 
 // fetch idartlang for idart
 $sql = "SELECT `idartlang`, `locked` FROM `%s` WHERE `idart` = %d AND `idlang` = %d";
-$db->query($sql, $cfg['tab']['art_lang'], $idart, $lang);
+$db->query($sql, cRegistry::getDbTableName('art_lang'), $idart, $lang);
 $db->nextRecord();
 $this_idartlang = $db->f('idartlang');
 $this_locked = $db->f('locked');

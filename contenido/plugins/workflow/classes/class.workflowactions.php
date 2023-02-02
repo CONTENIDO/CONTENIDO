@@ -28,8 +28,7 @@ class WorkflowActions extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        $cfg = cRegistry::getConfig();
-        parent::__construct($cfg["tab"]["workflow_actions"], "idworkflowaction");
+        parent::__construct(cRegistry::getDbTableName('workflow_actions'), "idworkflowaction");
         $this->_setItemClass("WorkflowAction");
     }
 
@@ -131,8 +130,7 @@ class WorkflowAction extends Item {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        $cfg = cRegistry::getConfig();
-        parent::__construct($cfg["tab"]["workflow_actions"], "idworkflowaction");
+        parent::__construct(cRegistry::getDbTableName('workflow_actions'), "idworkflowaction");
     }
 
 }

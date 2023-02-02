@@ -340,7 +340,7 @@ class PimPluginViewNavSub {
      * @return string|bool
      */
     private function _getPluginNavigation($contenidoNav = "") {
-        global $belang;
+        $belang = cRegistry::getBackendLanguage();
         $cfg = cRegistry::getConfig();
 
         // Path to plugin specific navigation xml file with selected backend
@@ -350,7 +350,7 @@ class PimPluginViewNavSub {
         if (cFileHandler::exists($pluginLanguageFileLang) && $contenidoNav != "") {
 
             // Initializing founded array
-            $founded = array();
+            $founded = [];
 
             for ($i = 0; $i < $this->_NavCount; $i++) {
 

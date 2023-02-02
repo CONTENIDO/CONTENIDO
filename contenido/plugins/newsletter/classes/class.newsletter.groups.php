@@ -28,9 +28,8 @@ class NewsletterRecipientGroupCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        $cfg = cRegistry::getConfig();
-        parent::__construct($cfg["tab"]["news_groups"], "idnewsgroup");
-        $this->_setItemClass("NewsletterRecipientGroup");
+        parent::__construct(cRegistry::getDbTableName('news_groups'), 'idnewsgroup');
+        $this->_setItemClass('NewsletterRecipientGroup');
     }
 
     /**
@@ -44,8 +43,8 @@ class NewsletterRecipientGroupCollection extends ItemCollection {
      * @throws cException
      */
     public function create($groupname, $defaultgroup = 0) {
-        $client = cRegistry::getClientId();
-        $lang = cRegistry::getLanguageId();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
         $group = new NewsletterRecipientGroup();
 
         // _arrInFilters = ['urlencode', 'htmlspecialchars', 'addslashes'];
@@ -104,8 +103,7 @@ class NewsletterRecipientGroup extends Item {
      * @throws cException
      */
     public function __construct($mId = false) {
-        $cfg = cRegistry::getConfig();
-        parent::__construct($cfg["tab"]["news_groups"], "idnewsgroup");
+        parent::__construct(cRegistry::getDbTableName('news_groups'), 'idnewsgroup');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -117,8 +115,8 @@ class NewsletterRecipientGroup extends Item {
      * @throws cException
      */
     public function store() {
-        $client = cRegistry::getClientId();
-        $lang = cRegistry::getLanguageId();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
         if ($this->get("defaultgroup") == 1) {
             $oItems = new NewsletterRecipientGroupCollection();
@@ -149,7 +147,7 @@ class NewsletterRecipientGroup extends Item {
         switch ($name) {
             case 'idlang':
             case 'idclient':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 
@@ -171,8 +169,7 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg["tab"]["news_groupmembers"], "idnewsgroupmember");
+        parent::__construct(cRegistry::getDbTableName('news_groupmembers'), 'idnewsgroupmember');
         $this->_setJoinPartner('NewsletterRecipientGroupCollection');
         $this->_setJoinPartner('NewsletterRecipientCollection');
         $this->_setItemClass("NewsletterRecipientGroupMember");
@@ -310,8 +307,7 @@ class NewsletterRecipientGroupMember extends Item {
      * @throws cException
      */
     public function __construct($mId = false) {
-        $cfg = cRegistry::getConfig();
-        parent::__construct($cfg["tab"]["news_groupmembers"], "idnewsgroupmember");
+        parent::__construct(cRegistry::getDbTableName('news_groupmembers'), 'idnewsgroupmember');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -330,7 +326,7 @@ class NewsletterRecipientGroupMember extends Item {
         switch ($name) {
             case 'idnewsrcp':
             case 'idnewsgroup':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

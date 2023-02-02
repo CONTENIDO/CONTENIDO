@@ -28,7 +28,7 @@ function frontendusers_groupselect_getTitle () {
  * @throws cException
  */
 function frontendusers_groupselect_display() {
-    $client = cRegistry::getClientId();
+    $client = cSecurity::toInteger(cRegistry::getClientId());
 
     $iIdFrontendUser = cSecurity::toInteger($_REQUEST['idfrontenduser'] ?? '0');
 
@@ -81,7 +81,7 @@ function frontendusers_groupselect_wantedVariables() {
  * @throws cInvalidArgumentException
  */
 function frontendusers_groupselect_store($variables) {
-    $client = cRegistry::getClientId();
+    $client = cSecurity::toInteger(cRegistry::getClientId());
 
     $groups = $_REQUEST['groupselect'] ?? null;
     $iIdFrontendUser = cSecurity::toInteger($_REQUEST['idfrontenduser'] ?? '0');

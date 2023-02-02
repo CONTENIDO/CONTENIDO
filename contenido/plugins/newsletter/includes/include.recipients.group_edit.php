@@ -519,7 +519,7 @@ if (true === $oRGroup->isLoaded() && $oRGroup->get("idclient") == $client && $oR
     // TODO: Add mySQL server version switch
     // sSQL = "idclient = '".$client."' AND idlang = '".$lang."' AND ".
     // "idnewsrcp NOT IN (SELECT idnewsrcp FROM
-    // ".$cfg["tab"]["news_groupmembers"]." WHERE idnewsgroup =
+    // ".cRegistry::getDbTableName('news_groupmembers')." WHERE idnewsgroup =
     // '".$requestIdRecipientGroup."')";
 
     // TODO: This works with every mySQL version but may be problematic, if a

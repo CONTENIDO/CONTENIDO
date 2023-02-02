@@ -66,8 +66,7 @@ class cApiShortUrlCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        $cfg = cRegistry::getConfig();
-        parent::__construct($cfg['tab']['url_shortener']['shorturl'], 'idshorturl');
+        parent::__construct(cRegistry::getDbTableName('url_shortener_shorturl'), 'idshorturl');
         $this->_setItemClass('cApiShortUrl');
     }
 
@@ -183,8 +182,7 @@ class cApiShortUrl extends Item {
      * @throws cException
      */
     public function __construct($id = false) {
-        $cfg = cRegistry::getConfig();
-        parent::__construct($cfg['tab']['url_shortener']['shorturl'], 'idshorturl');
+        parent::__construct(cRegistry::getDbTableName('url_shortener_shorturl'), 'idshorturl');
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }

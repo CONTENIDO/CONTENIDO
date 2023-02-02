@@ -30,9 +30,8 @@ class NewsletterCollection extends ItemCollection
      */
     public function __construct()
     {
-        global $cfg;
-        parent::__construct($cfg["tab"]["news"], "idnews");
-        $this->_setItemClass("Newsletter");
+        parent::__construct(cRegistry::getDbTableName('news'), 'idnews');
+        $this->_setItemClass('Newsletter');
     }
 
     /**
@@ -45,7 +44,9 @@ class NewsletterCollection extends ItemCollection
      */
     public function create($sName)
     {
-        global $client, $lang, $auth;
+        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $auth = cRegistry::getAuth();
 
         // Check if the newsletter name already exists
         $this->resetQuery();
@@ -80,10 +81,9 @@ class NewsletterCollection extends ItemCollection
      */
     public function duplicate($iItemID)
     {
-        global $client, $lang, $auth;
-
-        $client = cSecurity::toInteger($client);
-        $lang   = cSecurity::toInteger($lang);
+        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $auth = cRegistry::getAuth();
 
         cInclude("includes", "functions.con.php");
 
@@ -165,9 +165,8 @@ class Newsletter extends Item
      */
     public function __construct($mId = false)
     {
-        global $cfg;
-        parent::__construct($cfg["tab"]["news"], "idnews");
-        $this->_sError = "";
+        parent::__construct(cRegistry::getDbTableName('news'), 'idnews');
+        $this->_sError = '';
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -181,10 +180,9 @@ class Newsletter extends Item
      */
     public function store()
     {
-        global $client, $lang, $auth;
-
-        $client = cSecurity::toInteger($client);
-        $lang     = cSecurity::toInteger($lang);
+        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $auth = cRegistry::getAuth();
 
         $this->set("modified", date('Y-m-d H:i:s'), false);
         $this->set("modifiedby", $auth->auth["uid"]);
@@ -219,11 +217,9 @@ class Newsletter extends Item
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
+            case 'idlang':
             case 'idclient':
-                $value = (int) $value;
-                break;
-			case 'idlang':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 
@@ -469,9 +465,10 @@ class Newsletter extends Item
      */
     public function getHTMLMessage()
     {
-        global $lang, $client, $contenido;
         $frontendURL = cRegistry::getFrontendUrl();
         if ($this->get("type") == "html" && $this->get("idart") > 0 && $this->htmlArticleExists()) {
+            $client = cSecurity::toInteger(cRegistry::getClientId());
+            $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
             // Article ID
             $iIDArt = $this->get("idart");
@@ -547,7 +544,7 @@ class Newsletter extends Item
 
                     $sReturn = $sHTML;
                 } else {
-                    if ($contenido) { // Use i18n only in backend
+                    if (cRegistry::getBackendSessionId()) { // Use i18n only in backend
                         $sErrorText = i18n("There was a problem getting the newsletter article using http. Error: %s (%s)", "newsletter");
                     } else {
                         $sErrorText = "There was a problem getting the newsletter article using http. Error: %s (%s)";
@@ -625,7 +622,7 @@ class Newsletter extends Item
      */
     public function sendEMail($iIDCatArt, $sEMail, $sName = "", $bSimulatePlugins = true, $sEncoding = "iso-8859-1")
     {
-        global $lang, $client, $cfg, $cfgClient, $contenido;
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
         // Initialization
         if ($sName == "") {
@@ -709,6 +706,7 @@ class Newsletter extends Item
             if (getSystemProperty("newsletter", "newsletter-recipients-plugin") == "true") {
                 if (cHasPlugins('recipients')) {
                     cIncludePlugins('recipients');
+                    $cfg = cRegistry::getConfig();
                     foreach ($cfg['plugins']['recipients'] as $sPlugin) {
                         if (function_exists('recipients_' . $sPlugin . '_wantedVariables')) {
                             $aPluginVars = [];
@@ -732,7 +730,7 @@ class Newsletter extends Item
 
         if (!isValidMail($sEMail) || cString::toLowerCase($sEMail) == "sysadmin@ihresite.de") {
             // No valid destination mail address specified
-            if ($contenido) { // Use i18n only in backend
+            if (cRegistry::getBackendSessionId()) { // Use i18n only in backend
                 $sError = i18n("Newsletter to %s could not be sent: No valid e-mail address", "newsletter");
             } else {
                 $sError = "Newsletter to %s could not be sent: No valid e-mail address";
@@ -765,7 +763,7 @@ class Newsletter extends Item
 
             if (!$result) {
                 // Use i18n only in backend
-                if ($contenido) {
+                if (cRegistry::getBackendSessionId()) {
                     $sError = i18n("Newsletter to %s could not be sent", "newsletter");
                 } else {
                     $sError = "Newsletter to %s could not be sent";
@@ -795,7 +793,9 @@ class Newsletter extends Item
      */
     public function sendDirect($iIDCatArt, $iIDNewsRcp = false, $iIDNewsGroup = false, &$aSendRcps = [], $sEncoding = "iso-8859-1")
     {
-        global $lang, $client, $cfg, $cfgClient, $contenido, $recipient;
+        global $recipient;
+
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
         // Initialization
         $aMessages  = [];
@@ -868,6 +868,7 @@ class Newsletter extends Item
 
             if (cHasPlugins('recipients')) {
                 cIncludePlugins('recipients');
+                $cfg = cRegistry::getConfig();
                 foreach ($cfg['plugins']['recipients'] as $sPlugin) {
                     if (function_exists('recipients_' . $sPlugin . '_wantedVariables')) {
                         $aPlugins[$sPlugin] = call_user_func('recipients_' . $sPlugin . '_wantedVariables');
@@ -886,6 +887,8 @@ class Newsletter extends Item
         } elseif ($iIDNewsRcp !== false) {
             $aRecipients[] = $iIDNewsRcp;
         }
+
+        $contenido = cRegistry::getBackendSessionId();
 
         $iCount = count($aRecipients);
         if ($iCount > 0) {
@@ -993,7 +996,7 @@ class Newsletter extends Item
             if ($contenido) { // Use i18n only in backend
                 $sError = i18n("No recipient with specified recipient/group id %s/%s found", "newsletter");
             } else {
-                $sError = "No recipient with specified recpient/group id %s/%s found";
+                $sError = "No recipient with specified recipient/group id %s/%s found";
             }
             $aMessages[] = sprintf($sError, $iIDNewsRcp, $iIDNewsGroup);
         }

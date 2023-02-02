@@ -84,11 +84,10 @@ class SIWECOSCollection extends ItemCollection
             $str = '';
         }
 
-        $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
         $db->query(
             "SELECT *
-            FROM `{$cfg['tab']['siwecos']}`
+            FROM `" . cRegistry::getDbTableName('siwecos') . "`
             WHERE 
                 `idclient` = " . cSecurity::toInteger($client) . "
                 AND `idlang` = " . cSecurity::toInteger($lang) . "

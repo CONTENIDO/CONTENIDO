@@ -13,6 +13,14 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cPermission $perm
+ * @var string $area
+ * @var array $cfg
+ * @var cGuiNotification $notification
+ */
+
+
 //Has the user permission for view the cronjobs
 if (!$perm->have_perm_area_action($area, 'cronjob_overview')) {
     $notification->displayNotification('error', i18n('Permission denied', 'cronjobs_overview'));

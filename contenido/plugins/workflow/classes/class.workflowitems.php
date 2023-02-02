@@ -28,8 +28,7 @@ class WorkflowItems extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        $cfg = cRegistry::getConfig();
-        parent::__construct($cfg["tab"]["workflow_items"], "idworkflowitem");
+        parent::__construct(cRegistry::getDbTableName('workflow_items'), "idworkflowitem");
         $this->_setItemClass("WorkflowItem");
     }
 
@@ -41,7 +40,6 @@ class WorkflowItems extends ItemCollection {
      * @throws cException
      */
     public function delete($id) {
-        $cfg = cRegistry::getConfig();
         $item = new WorkflowItem();
         $item->loadByPrimaryKey($id);
         $pos = cSecurity::toInteger($item->get("position"));
@@ -56,19 +54,19 @@ class WorkflowItems extends ItemCollection {
 
         $aUserSequencesDelete = [];
         $sSql = 'SELECT `idusersequence` FROM `%s` WHERE `idworkflowitem` = %d';
-        $oDb->query($sSql, $cfg["tab"]["workflow_user_sequences"], $id);
+        $oDb->query($sSql, cRegistry::getDbTableName('workflow_user_sequences'), $id);
         while ($oDb->nextRecord()) {
             $aUserSequencesDelete[] = cSecurity::toInteger($oDb->f('idusersequence'));
         }
 
         $sSql = 'DELETE FROM `%s` WHERE `idworkflowitem` = %d';
-        $oDb->query($sSql, $cfg["tab"]["workflow_actions"], $id);
+        $oDb->query($sSql, cRegistry::getDbTableName('workflow_actions'), $id);
 
         $this->updateArtAllocation($id, 1);
 
         if (count($aUserSequencesDelete) > 0) {
             $sSql = 'DELETE FROM `%s` WHERE `idusersequence` IN (' . implode(',', $aUserSequencesDelete) . ')';
-            $oDb->query($sSql, $cfg["tab"]["workflow_user_sequences"]);
+            $oDb->query($sSql, cRegistry::getDbTableName('workflow_user_sequences'));
         }
     }
 
@@ -81,12 +79,11 @@ class WorkflowItems extends ItemCollection {
     public function updateArtAllocation($idworkflowitem, $delete = false) {
         global $idworkflow;
 
-        $cfg = cRegistry::getConfig();
         $oDb = cRegistry::getDb();
 
         $aUserSequences = [];
         $sSql = 'SELECT `idusersequence` FROM `%s` WHERE idworkflowitem = %d';
-        $oDb->query($sSql, $cfg["tab"]["workflow_user_sequences"], $idworkflowitem);
+        $oDb->query($sSql, cRegistry::getDbTableName('workflow_user_sequences'), $idworkflowitem);
         while ($oDb->nextRecord()) {
             $aUserSequences[] = cSecurity::toInteger($oDb->f('idusersequence'));
         }
@@ -94,12 +91,12 @@ class WorkflowItems extends ItemCollection {
         $aIdArtLang = [];
         if (count($aUserSequences) > 0) {
             $sSql = 'SELECT `idartlang` FROM `%s` WHERE `idusersequence` IN (' . implode(',', $aUserSequences) . ')';
-            $oDb->query($sSql, $cfg["tab"]["workflow_art_allocation"]);
+            $oDb->query($sSql, cRegistry::getDbTableName('workflow_art_allocation'));
             while ($oDb->nextRecord()) {
                 $aIdArtLang[] = cSecurity::toInteger($oDb->f('idartlang'));
             }
             $sSql = 'DELETE FROM `%s` WHERE `idusersequence` IN (' . implode(',', $aUserSequences) . ')';
-            $oDb->query($sSql, $cfg["tab"]["workflow_art_allocation"]);
+            $oDb->query($sSql, cRegistry::getDbTableName('workflow_art_allocation'));
         }
 
         if ($delete) {
@@ -213,8 +210,7 @@ class WorkflowItem extends Item {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        $cfg = cRegistry::getConfig();
-        parent::__construct($cfg["tab"]["workflow_items"], "idworkflowitem");
+        parent::__construct(cRegistry::getDbTableName('workflow_items'), "idworkflowitem");
     }
 
     /**
@@ -275,7 +271,7 @@ class WorkflowItem extends Item {
             }
         }
 
-        parent::setField($field, $value, $safe);
+        return parent::setField($field, $value, $safe);
     }
 
     /**

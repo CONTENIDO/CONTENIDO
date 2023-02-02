@@ -49,7 +49,7 @@ class frontendlogic_category extends FrontendLogic {
      */
     public function listItems() {
         $cfg = cRegistry::getConfig();
-        $lang = cRegistry::getLanguageId();
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
         $db = cRegistry::getDb();
 
         $sSQL = "SELECT
@@ -57,9 +57,9 @@ class frontendlogic_category extends FrontendLogic {
                    b.name,
                    c.level
                  FROM
-                   " . $cfg['tab']['cat'] . " AS a,
-                   " . $cfg['tab']['cat_lang'] . " AS b,
-                   " . $cfg['tab']['cat_tree'] . " AS c
+                   " . cRegistry::getDbTableName('cat') . " AS a,
+                   " . cRegistry::getDbTableName('cat_lang') . " AS b,
+                   " . cRegistry::getDbTableName('cat_tree') . " AS c
                  WHERE
                    a.idcat = b.idcat AND
                    a.idcat = c.idcat AND

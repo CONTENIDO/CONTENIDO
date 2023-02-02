@@ -43,7 +43,7 @@ class ArticleForumLeftBottom extends cGuiPage {
     protected function getMenu() {
         $arts = new ArticleForumCollection();
         $result = $arts->getAllCommentedArticles();
-        if (count($result) == 0) {
+        if (count($result) === 0) {
             echo UserForum::i18n("NOENTRY");
         }
 
@@ -51,8 +51,7 @@ class ArticleForumLeftBottom extends cGuiPage {
 
         // get all forms of current client in current language
         $forms = $arts->getAllCommentedArticles();
-
-        if (false === $forms) {
+        if (count($forms) === 0) {
             return '';
         }
 

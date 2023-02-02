@@ -40,7 +40,6 @@ class cLinkcheckerCategoryHelper
      */
     public static function checkPermission($widcat, $db = null) {
         $auth = cRegistry::getAuth();
-        $cfg = cRegistry::getConfig();
 
         if (cString::findFirstPos($auth->auth['perm'], 'admin') !== false) {
             return true;
@@ -56,7 +55,7 @@ class cLinkcheckerCategoryHelper
         if (!is_array(self::$_categoryIds)) {
             $sqlInc = " `user_id` = '" . implode("' OR `user_id` = '", $group_ids) . "' ";
             $sql = "SELECT `idcat` FROM `%s` WHERE `idarea` = 6 AND `idaction` = 359 AND ($sqlInc)";
-            $db->query($sql, $cfg['tab']['rights']);
+            $db->query($sql, cRegistry::getDbTableName('rights'));
 
             self::$_categoryIds = [];
             while ($db->nextRecord()) {
@@ -79,10 +78,9 @@ class cLinkcheckerCategoryHelper
         }
 
         $auth = cRegistry::getAuth();
-        $cfg = cRegistry::getConfig();
 
         $sql = "SELECT `group_id` FROM `%s` WHERE `user_id` = '%s'";
-        $db->query($sql, $cfg['tab']['groupmembers'], $auth->auth['uid']);
+        $db->query($sql, cRegistry::getDbTableName('groupmembers'), $auth->auth['uid']);
 
         self::$_groupIds = [];
         while ($db->nextRecord()) {

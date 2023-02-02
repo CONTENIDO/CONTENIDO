@@ -31,7 +31,7 @@ class cLinkcheckerTester
         $auth = cRegistry::getAuth();
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
-        $lang = cRegistry::getLanguageId();
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
         if (!is_array($aErrors)) {
             $aErrors = [];
@@ -153,7 +153,7 @@ class cLinkcheckerTester
 
         // SQL query, please note: integer cast some lines before!
         $sql = "SELECT `idart`, `online` FROM `%s` WHERE `idart` IN (" . $idArts . ")";
-        $db->query($sql, $cfg['tab']['art_lang']);
+        $db->query($sql, cRegistry::getDbTableName('art_lang'));
 
         // Check articles
         $aFind = [];
@@ -198,7 +198,7 @@ class cLinkcheckerTester
 
         // SQL query, please note: integer cast some lines before!
         $sql = "SELECT `idcat`, `startidartlang`, `visible` FROM `%s` WHERE `idcat` IN (" . $sSearch . ") AND `idlang` = %d";
-        $db->query($sql, $cfg['tab']['cat_lang'], $lang);
+        $db->query($sql, cRegistry::getDbTableName('cat_lang'), $lang);
 
         // Check categories
         $aFind = [];
@@ -232,7 +232,7 @@ class cLinkcheckerTester
                 && $aFind[$aSearchIDInfosCat[$i]['id']]['startidart'] != 0
             ) {
                 $sql = "SELECT `idart` FROM `%s` WHERE `idartlang` = %d AND online = 1";
-                $db->query($sql, $cfg['tab']['art_lang'], $aFind[$aSearchIDInfosCat[$i]['id']]['startidart']);
+                $db->query($sql, cRegistry::getDbTableName('art_lang'), $aFind[$aSearchIDInfosCat[$i]['id']]['startidart']);
 
                 if ($db->numRows() == 0) {
                     $aErrors['cat'][] = array_merge($aSearchIDInfosCat[$i], [
@@ -262,7 +262,7 @@ class cLinkcheckerTester
 
         // SQL query, please note: integer cast some lines before!
         $sql = "SELECT `idcatart` FROM `%s` WHERE `idcatart` IN (" . $sSearch . ")";
-        $db->query($sql, $cfg['tab']['cat_art']);
+        $db->query($sql, cRegistry::getDbTableName('cat_art'));
 
         // Check articles
         $aFind = [];
@@ -295,7 +295,7 @@ class cLinkcheckerTester
         // Select user-rights (is the user admin or sysadmin?)
         $sql = "SELECT `username` FROM `:tab_user` WHERE `user_id` = ':user_id' AND `perms` LIKE '%admin%'";
         $db->query($sql, [
-            'tab_user' => $cfg['tab']['user'],
+            'tab_user' => cRegistry::getDbTableName('user'),
             'user_id' => $auth->auth['uid'],
         ]);
 
@@ -352,7 +352,7 @@ class cLinkcheckerTester
                     . " WHERE `dirname` IN (':dirname', '" . conHtmlEntityDecode($sDirname) . "')"
                     . " AND `filename` = ':filename'";
                 $db->query($sql, [
-                    'tab_dbfs' => $cfg['tab']['dbfs'],
+                    'tab_dbfs' => cRegistry::getDbTableName('dbfs'),
                     'dirname' => $sDirname,
                     'filename' => $sFilename
                 ]);

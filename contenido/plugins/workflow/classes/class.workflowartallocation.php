@@ -28,8 +28,7 @@ class WorkflowArtAllocations extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        $cfg = cRegistry::getConfig();
-        parent::__construct($cfg["tab"]["workflow_art_allocation"], "idartallocation");
+        parent::__construct(cRegistry::getDbTableName('workflow_art_allocation'), "idartallocation");
         $this->_setItemClass("WorkflowArtAllocation");
     }
 
@@ -41,10 +40,9 @@ class WorkflowArtAllocations extends ItemCollection {
      */
     public function create($idartlang) {
         $idartlang = cSecurity::toInteger($idartlang);
-        $cfg = cRegistry::getConfig();
 
         $sql = "SELECT `idartlang` FROM `%s` WHERE idartlang = %d";
-        $this->db->query($sql, $cfg["tab"]["art_lang"], $idartlang);
+        $this->db->query($sql, cRegistry::getDbTableName('art_lang'), $idartlang);
         if (!$this->db->nextRecord()) {
             $this->lasterror = i18n("Article doesn't exist", "workflow");
             return false;
@@ -82,8 +80,7 @@ class WorkflowArtAllocation extends Item {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        $cfg = cRegistry::getConfig();
-        parent::__construct($cfg["tab"]["workflow_art_allocation"], "idartallocation");
+        parent::__construct(cRegistry::getDbTableName('workflow_art_allocation'), "idartallocation");
     }
 
     /**
@@ -131,8 +128,6 @@ class WorkflowArtAllocation extends Item {
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function store() {
-        $cfg = cRegistry::getConfig();
-
         $mailer = new cMailer();
 
         if (array_key_exists("idusersequence", $this->modifiedValues)) {
@@ -158,7 +153,7 @@ class WorkflowArtAllocation extends Item {
                 $db = cRegistry::getDb();
 
                 $sql = "SELECT `author`, `title`, `idart` FROM `%s` WHERE idartlang = %d";
-                $db->query($sql, $cfg["tab"]["art_lang"], $idartlang);
+                $db->query($sql, cRegistry::getDbTableName('art_lang'), $idartlang);
                 if ($db->nextRecord()) {
                     $idart = $db->f("idart");
                     $title = $db->f("title");
@@ -168,7 +163,7 @@ class WorkflowArtAllocation extends Item {
                 // Extract category
                 if ($idart > 0) {
                     $sql = "SELECT `idcat` FROM `%s` WHERE `idart` = %d";
-                    $db->query($sql, $cfg["tab"]["cat_art"], $idart);
+                    $db->query($sql, cRegistry::getDbTableName('cat_art'), $idart);
                     if ($db->nextRecord()) {
                         $idcat = $db->f("idcat");
                     }
@@ -176,7 +171,7 @@ class WorkflowArtAllocation extends Item {
 
                 if ($idcat > 0) {
                     $sql = "SELECT `name` FROM `%s` WHERE `idcat` = %d" ;
-                    $db->query($sql, $cfg["tab"]["cat_lang"], $idcat);
+                    $db->query($sql, cRegistry::getDbTableName('cat_lang'), $idcat);
                     if ($db->nextRecord()) {
                         $catName = $db->f("name");
                     }
@@ -218,7 +213,7 @@ class WorkflowArtAllocation extends Item {
 
                     if (isGroup($userSequence->get("iduser"))) {
                         $sql = "SELECT `idgroupuser`, `user_id` FROM `%s` WHERE `group_id` = '%s'";
-                        $db->query($sql, $cfg["tab"]["groupmembers"], $userSequence->get("iduser"));
+                        $db->query($sql, cRegistry::getDbTableName('groupmembers'), $userSequence->get("iduser"));
                         while ($db->nextRecord()) {
                             $user->loadByPrimaryKey($db->f("user_id"));
                             $mailer->sendMail(NULL, $user->getField("email"), stripslashes(i18n('Workflow notification')), $filledMail);
@@ -236,7 +231,7 @@ class WorkflowArtAllocation extends Item {
 
                     if (isGroup($userSequence->get("iduser"))) {
                         $sql = "SELECT `idgroupuser`, `user_id` FROM `%s` WHERE `group_id` = '%s'";
-                        $db->query($sql, $cfg["tab"]["groupmembers"], $userSequence->get("iduser"));
+                        $db->query($sql, cRegistry::getDbTableName('groupmembers'), $userSequence->get("iduser"));
                         while ($db->nextRecord()) {
                             $user->loadByPrimaryKey($db->f("user_id"));
                             $mailer->sendMail(NULL, $user->getField("email"), stripslashes(i18n('Workflow escalation')), $filledMail);

@@ -39,11 +39,11 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
         $this->_type = 'CMS_USERFORUM';
         $this->_prefix = 'userforum';
         $this->_settingsType = self::SETTINGS_TYPE_XML;
-        $this->_formFields = array(
+        $this->_formFields = [
             'userforum_email',
             'userforum_subcomments',
             'userforum_modactive'
-        );
+        ];
 
         // encoding conversions to avoid problems with umlauts
         $rawSettings = conHtmlEntityDecode($rawSettings);
@@ -54,8 +54,8 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
         // if form is submitted, store the current settings
         // notice: also check the ID of the content type (there could be more
         // than one content type of the same type on the same page!)
-        $action = isset($_POST['userforum_action']) ? $_POST['userforum_action'] : NULL;
-        $id = isset($_POST['userforum_id']) ? $_POST['userforum_id'] : NULL;
+        $action = $_POST['userforum_action'] ?? NULL;
+        $id = $_POST['userforum_id'] ?? NULL;
         if ('store' === $action && $this->_id == $id) {
             $this->_storeSettings();
         }
@@ -123,11 +123,11 @@ $code
      * @return string  The code for the base panel
      */
     private function _getPanel() {
-        $wrapper = new cHTMLDiv(array(
+        $wrapper = new cHTMLDiv([
             $this->_getModEmail(),
             $this->_getModMode(),
             $this->_getEditMode()
-        ), $this->_prefix . '_panel_base', $this->_prefix . '_panel_base_' . $this->_id);
+        ], $this->_prefix . '_panel_base', $this->_prefix . '_panel_base_' . $this->_id);
         $wrapper->setStyle('clear:both');
 
         return $wrapper->render();
@@ -148,11 +148,11 @@ $code
         $checkBoxMod->setChecked($this->getSetting('userforum_modactive', 'false') === 'false');
 
         // build div element as wrapper
-        $div = new cHTMLDiv(array(
+        $div = new cHTMLDiv([
             '<br />',
             $labelModMode,
             $checkBoxMod
-        ));
+        ]);
         $div->setClass('modMode');
 
         // return div element
@@ -174,10 +174,10 @@ $code
         $checkBoxMod->setChecked($this->getSetting('userforum_subcomments', 'false') === 'false');
 
         // build div element as wrapper
-        $div = new cHTMLDiv(array(
+        $div = new cHTMLDiv([
             $labelModMode,
             $checkBoxMod
-        ));
+        ]);
         $div->setClass('editMode');
 
         // return div element
@@ -202,10 +202,10 @@ $code
         $inputEmail->setValue($this->getSetting('userforum_email', ''));
 
         // build div element as wrapper
-        $div = new cHTMLDiv(array(
+        $div = new cHTMLDiv([
             $labelEmail,
             $inputEmail
-        ));
+        ]);
         $div->setClass('mail');
 
         // return div element
@@ -215,18 +215,16 @@ $code
     /**
      * Generates the code which should be shown if this content type is shown in
      * the frontend.
-     * This code is cached. Thatfor ist no more than the initialisation of this
-     * class and the call of its method buildCode(). Otherwise the generated
+     * This code is cached. That for ist no more than the initialisation of this
+     * class and the call of its method buildCode(). Otherwise, the generated
      * HTML would have been cached.
      *
-     * @return string escaped HTML code which sould be shown if content type is
+     * @return string escaped HTML code which should be shown if content type is
      *         shown in frontend
      */
     public function generateViewCode() {
         $code = '";?' . '><' . '?php $form = new %s(\'%s\', %s, %s); echo $form->buildCode(); ?' . '><' . '?php echo "';
-        $code = sprintf($code, get_class($this), $this->_rawSettings, $this->_id, 'array()');
-
-        return $code;
+        return sprintf($code, get_class($this), $this->_rawSettings, $this->_id, '[]');
     }
 
     /**
@@ -236,8 +234,7 @@ $code
      *         shown in frontend
      */
     public function buildCode() {
-        $out = '';
-        return $out;
+        return '';
     }
 
 }

@@ -17,8 +17,8 @@ global $oTpl, $oDB;
 
 $auth = cRegistry::getAuth();
 $perm = cRegistry::getPerm();
-$client = cRegistry::getClientId();
-$lang = cRegistry::getLanguageId();
+$client = cSecurity::toInteger(cRegistry::getClientId());
+$lang = cSecurity::toInteger(cRegistry::getLanguageId());
 $cfg = cRegistry::getConfig();
 $area = cRegistry::getArea();
 $sess = cRegistry::getSession();
@@ -137,8 +137,8 @@ $oSelHTMLNewsletterIDCat->addOptionElement(0, $oOptionNewsletter);
 
 $sSQL = "SELECT tblCat.idcat AS idcat, tblCatLang.name AS name, tblCatTree.level AS level, ";
 $sSQL .= "tblCatLang.visible AS visible, tblCatLang.public AS public FROM ";
-$sSQL .= $cfg["tab"]["cat"] . " AS tblCat, " . $cfg["tab"]["cat_lang"] . " AS tblCatLang, ";
-$sSQL .= $cfg["tab"]["cat_tree"] . " AS tblCatTree ";
+$sSQL .= cRegistry::getDbTableName('cat') . " AS tblCat, " . cRegistry::getDbTableName('cat_lang') . " AS tblCatLang, ";
+$sSQL .= cRegistry::getDbTableName('cat_tree') . " AS tblCatTree ";
 $sSQL .= "WHERE tblCat.idclient = '" . cSecurity::toInteger($client) . "' AND tblCatLang.idlang = '" . cSecurity::toInteger($lang) . "' AND ";
 $sSQL .= "tblCatLang.idcat = tblCat.idcat AND tblCatTree.idcat = tblCat.idcat ";
 $sSQL .= "ORDER BY tblCatTree.idtree";
@@ -461,7 +461,7 @@ $oSelAuthor = new cHTMLSelectElement("selAuthor");
 // Get possible authors/users from available jobs
 // For this query genericdb can't be used, as the class id is always included
 // (distinct won't work)
-$sSQL = "SELECT DISTINCT `author`, `authorname` FROM `" . $cfg["tab"]["news_jobs"] . "` ORDER BY `authorname`";
+$sSQL = "SELECT DISTINCT `author`, `authorname` FROM `" . cRegistry::getDbTableName('news_jobs') . "` ORDER BY `authorname`";
 $oDB->query($sSQL);
 
 $aItems = [];

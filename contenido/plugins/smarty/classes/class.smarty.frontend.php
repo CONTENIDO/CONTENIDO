@@ -39,7 +39,7 @@ class cSmartyFrontend {
      *
      * @var array
      */
-    protected static $aDefaultPaths = array();
+    protected static $aDefaultPaths = [];
 
     /**
      * constructor

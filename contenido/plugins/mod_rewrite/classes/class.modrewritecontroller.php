@@ -272,7 +272,7 @@ class ModRewriteController extends ModRewriteBase {
      * @throws cInvalidArgumentException
      */
     private function _extractRequestUri($secondCall = false) {
-        $client = cRegistry::getClientId();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
 
         // get REQUEST_URI
         $requestUri = $_SERVER['REQUEST_URI'] ?? '';
@@ -368,6 +368,7 @@ class ModRewriteController extends ModRewriteBase {
      * This is required to load the proper plugin configuration for current client.
      */
     private function _initializeClientId() {
+        // Use global here, the variables will be updated!
         global $client, $changeclient, $load_client;
 
         $iClient = (isset($client) && (int) $client > 0) ? $client : 0;
@@ -392,6 +393,7 @@ class ModRewriteController extends ModRewriteBase {
      * Tries to initialize the language id.
      */
     private function _initializeLanguageId() {
+        // Use global here, the variables will be updated!
         global $lang, $changelang, $load_lang;
 
         $iLang = (isset($lang) && (int) $lang > 0) ? $lang : 0;
@@ -418,6 +420,7 @@ class ModRewriteController extends ModRewriteBase {
      * @throws cDbException
      */
     private function _setClientId() {
+        // Use global here, the variables will be updated!
         global $client;
 
         if ($this->_bError) {
@@ -518,7 +521,7 @@ class ModRewriteController extends ModRewriteBase {
         $idcat = (int) ModRewrite::getCatIdByUrlPath($this->_sPath);
 
         if ($idcat == 0) {
-            // category couldn't resolved
+            // category couldn't resolve
             $this->_setError(self::ERROR_CATEGORY);
             $idcat = NULL;
         } else {

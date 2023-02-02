@@ -90,7 +90,6 @@ function getUsers($listid, $default) {
  * @throws cDbException|cException
  */
 function isCurrentEditor($uid) {
-    $cfg = cRegistry::getConfig();
     $auth = cRegistry::getAuth();
 
     // Check if the UID is a group. If yes, check if we are in it
@@ -100,7 +99,7 @@ function isCurrentEditor($uid) {
 
         // Yes, it's a group. Let's try to load the group members!
         $sql = "SELECT `user_id` FROM `%s` WHERE `group_id` = '%s'";
-        $db2->query($sql, $cfg["tab"]["groupmembers"], $uid);
+        $db2->query($sql, cRegistry::getDbTableName('groupmembers'), $uid);
         while ($db2->nextRecord()) {
             if ($db2->f("user_id") == $auth->auth["uid"]) {
                 return true;
@@ -340,7 +339,6 @@ function getLastWorkflowStatus($idartlang) {
  * @throws cDbException|cException
  */
 function doWorkflowAction($idartlang, $action) {
-    $cfg = cRegistry::getConfig();
     $idcat = cRegistry::getCategoryId();
     $idartlang = cSecurity::toInteger($idartlang);
 
@@ -456,7 +454,7 @@ function doWorkflowAction($idartlang, $action) {
         case "revise":
             $db = cRegistry::getDb();
             $sql = "SELECT `idart`, `idlang` FROM `%s` WHERE `idartlang` = %d";
-            $db->query($sql, $cfg["tab"]["art_lang"], $idartlang);
+            $db->query($sql, cRegistry::getDbTableName('art_lang'), $idartlang);
             $db->nextRecord();
             $idart = $db->f("idart");
             $idlang = $db->f("idlang");
@@ -546,7 +544,7 @@ function workflowInherit($idcat) {
  */
 function getWorkflowForCat($idcat) {
     $idcat = cSecurity::toInteger($idcat);
-    $lang = cRegistry::getLanguageId();
+    $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
     $idcatlang = getCatLang($idcat, $lang);
     if (!$idcatlang) {
@@ -588,8 +586,8 @@ function prepareWorkflowItems() {
     global $modidcat, $workflowSelectBox, $workflowworkflows, $tpl;
 
     $action = cRegistry::getAction();
-    $lang = cRegistry::getLanguageId();
-    $client = cRegistry::getClientId();
+    $client = cSecurity::toInteger(cRegistry::getClientId());
+    $lang = cSecurity::toInteger(cRegistry::getLanguageId());
     $cfg = cRegistry::getConfig();
 
     $workflowworkflows = new Workflows();

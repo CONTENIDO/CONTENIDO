@@ -99,7 +99,7 @@ class PifaAjaxHandler {
      * @throws cException
      */
     function dispatch($action) {
-        global $area;
+        $area = cRegistry::getArea();
 
         // check for permission
         if (!cRegistry::getPerm()->have_perm_area_action($area, $action)) {
@@ -217,16 +217,16 @@ class PifaAjaxHandler {
 
         // get option classes
         $optionClasses = Pifa::getExtensionClasses('PifaExternalOptionsDatasourceInterface');
-        array_unshift($optionClasses, array(
+        array_unshift($optionClasses, [
             'value' => '',
             'label' => Pifa::i18n('none')
-        ));
+        ]);
 
         // create form
         $tpl = cSmartyBackend::getInstance(true);
 
         // translations
-        $tpl->assign('trans', array(
+        $tpl->assign('trans', [
             'idfield' => Pifa::i18n('ID'),
             'fieldRank' => Pifa::i18n('RANK'),
             'fieldType' => Pifa::i18n('FIELD_TYPE'),
@@ -249,7 +249,7 @@ class PifaAjaxHandler {
             'uri' => Pifa::i18n('URI'),
             'externalOptionsDatasource' => Pifa::i18n('EXTERNAL_OPTIONS_DATASOURCE'),
             'deleteAll' => Pifa::i18n('DELETE_CSS_CLASSES')
-        ));
+        ]);
 
         // hidden form values (requires right to store form field)
         if (cRegistry::getPerm()->have_perm_area_action('form_ajax', self::POST_FIELD_FORM)) {
@@ -269,12 +269,12 @@ class PifaAjaxHandler {
 
         // build href to add new option row (requires right to add option)
         if (cRegistry::getPerm()->have_perm_area_action('form_ajax', self::POST_FIELD_FORM) && cRegistry::getPerm()->have_perm_area_action('form_ajax', self::GET_OPTION_ROW)) {
-            $tpl->assign('hrefAddOption', 'main.php?' . implode('&', array(
+            $tpl->assign('hrefAddOption', 'main.php?' . implode('&', [
                 'area=form_ajax',
                 'frame=4',
                 'contenido=' . cRegistry::getBackendSessionId(),
                 'action=' . PifaAjaxHandler::GET_OPTION_ROW
-            )));
+                ]));
         }
 
         // path to partial template for displaying a single option row
@@ -294,7 +294,7 @@ class PifaAjaxHandler {
      * @throws cException
      */
     private function _postFieldForm($idform, $idfield) {
-        global $area;
+        $area = cRegistry::getArea();
 
         $string_cast_deep = function($value) {
             $value = cSecurity::unescapeDB($value);
@@ -322,10 +322,10 @@ class PifaAjaxHandler {
             $fieldType = cSecurity::toInteger($fieldType);
             // create field
             $collection = new PifaFieldCollection();
-            $pifaField = $collection->createNewItem(array(
+            $pifaField = $collection->createNewItem([
                 'idform' => $idform,
                 'field_type' => $fieldType
-            ));
+            ]);
             $isFieldCreated = true;
         }
 
@@ -561,11 +561,11 @@ class PifaAjaxHandler {
         $tpl = cSmartyBackend::getInstance(true);
 
         // translations
-        $tpl->assign('trans', array(
+        $tpl->assign('trans', [
             'edit' => Pifa::i18n('EDIT'),
             'delete' => Pifa::i18n('DELETE'),
             'obligatory' => Pifa::i18n('OBLIGATORY')
-        ));
+        ]);
 
         // the field
         $tpl->assign('field', $pifaField);
@@ -735,18 +735,18 @@ class PifaAjaxHandler {
         $tpl = cSmartyBackend::getInstance(true);
 
         // translations
-        $tpl->assign('trans', array(
+        $tpl->assign('trans', [
             'label' => Pifa::i18n('LABEL'),
             'value' => Pifa::i18n('VALUE')
-        ));
+        ]);
 
         $tpl->assign('i', $index);
 
         // option
-        $tpl->assign('option', array(
+        $tpl->assign('option', [
             'label' => '',
             'value' => ''
-        ));
+        ]);
 
         $tpl->display($cfg['templates']['pifa_ajax_option_row']);
     }

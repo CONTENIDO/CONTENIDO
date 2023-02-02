@@ -40,13 +40,13 @@ $backendUrl = cRegistry::getBackendUrl();
 // Whitelist: Delete
 if (!empty($_GET['url_to_delete'])) {
     $sql = "DELETE FROM `%s` WHERE `url` = '%s'";
-    $db->query($sql, $cfg['tab']['whitelist'], base64_decode($_GET['url_to_delete']));
+    $db->query($sql, cRegistry::getDbTableName('whitelist'), base64_decode($_GET['url_to_delete']));
 }
 
 // Get whitelist
 $whitelistTimeout = $cfg['pi_linkchecker']['whitelistTimeout'];
 $sql = "SELECT `url`, `lastview` FROM `%s` WHERE `lastview` < %d AND `lastview` > %d ORDER BY `lastview` DESC";
-$db->query($sql, $cfg['tab']['whitelist'], time() + $whitelistTimeout, time() - $whitelistTimeout);
+$db->query($sql, cRegistry::getDbTableName('whitelist'), time() + $whitelistTimeout, time() - $whitelistTimeout);
 
 $aWhitelist = [];
 while ($db->nextRecord()) {

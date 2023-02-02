@@ -116,7 +116,7 @@ if (!empty($_GET['idcontent']) && !empty($_GET['idartlang']) && !empty($_GET['ol
 
     if ($_GET['redirect'] == true) {
         // Update redirect
-        $sql = $db->buildUpdate($cfg['tab']['art_lang'], ['redirect_url' => base64_decode($_GET['repairedlink'])], ['idartlang' => $requestIdArtLang]);
+        $sql = $db->buildUpdate(cRegistry::getDbTableName('art_lang'), ['redirect_url' => base64_decode($_GET['repairedlink'])], ['idartlang' => $requestIdArtLang]);
         $db->query($sql);
     } else {
         // Update content
@@ -125,14 +125,14 @@ if (!empty($_GET['idcontent']) && !empty($_GET['idartlang']) && !empty($_GET['ol
 
         // Get old value
         $sql = "SELECT `value` FROM `%s` WHERE `idcontent` = %d AND `idartlang` = %d";
-        $db->query($sql, $cfg['tab']['content'], $requestIdContent, $requestIdArtLang);
+        $db->query($sql, cRegistry::getDbTableName('content'), $requestIdContent, $requestIdArtLang);
         $db->nextRecord();
 
         // Generate new value
         $newValue = str_replace(base64_decode($_GET['oldlink']), base64_decode($_GET['repairedlink']), $db->f("value"));
 
         // Update database table with new value
-        $sql = $db->buildUpdate($cfg['tab']['content'], ['value' => $newValue], ['idcontent' => $requestIdContent, 'idartlang' => $requestIdArtLang]);
+        $sql = $db->buildUpdate(cRegistry::getDbTableName('content'), ['value' => $newValue], ['idcontent' => $requestIdContent, 'idartlang' => $requestIdArtLang]);
 
         $db->query($sql);
     }
@@ -145,7 +145,7 @@ if (!empty($_GET['idcontent']) && !empty($_GET['idartlang']) && !empty($_GET['ol
 if (!empty($_GET['whitelist'])) {
     $sql = "REPLACE INTO `:tab_whitelist` VALUES (':url', ':lastview')";
     $db->query($sql, [
-        'tab_whitelist' => $cfg['tab']['whitelist'],
+        'tab_whitelist' => cRegistry::getDbTableName('whitelist'),
         'url' => base64_decode($_GET['whitelist']),
         'lastview' => time()
     ]);
@@ -156,7 +156,7 @@ if (!empty($_GET['whitelist'])) {
 /* Whitelist: Get */
 $whitelistTimeout = $cfg['pi_linkchecker']['whitelistTimeout'];
 $sql = "SELECT `url` FROM `%s` WHERE `lastview` < %d AND `lastview` > %d";
-$db->query($sql, $cfg['tab']['whitelist'], time() + $whitelistTimeout, time() - $whitelistTimeout);
+$db->query($sql, cRegistry::getDbTableName('whitelist'), time() + $whitelistTimeout, time() - $whitelistTimeout);
 
 $aWhitelist = [];
 while ($db->nextRecord()) {
@@ -180,7 +180,7 @@ if ($sCache_errors && $requestLive != 1) {
 
     // Select all categories
     // Check user-rights, if no cronjob
-    $db->query("SELECT `idcat` FROM `%s` GROUP BY `idcat`",  $cfg['tab']['cat']);
+    $db->query("SELECT `idcat` FROM `%s` GROUP BY `idcat`",  cRegistry::getDbTableName('cat'));
     while ($db->nextRecord()) {
         if ($cronjob || cLinkcheckerCategoryHelper::checkPermission($db->f("idcat"), $db2)) {
             $aCats[] = cSecurity::toInteger($db->f("idcat"));
@@ -198,10 +198,10 @@ if ($sCache_errors && $requestLive != 1) {
     $languageId = cRegistry::getLanguageId();
 
     // How many articles exist? [Text]
-    $sql = "SELECT art.title, art.idartlang, art.idlang, cat.idart, cat.idcat, catName.name AS namecat, con.idcontent, con.value FROM " . $cfg['tab']['cat_art'] . " cat
-            LEFT JOIN " . $cfg['tab']['art_lang'] . " art ON (art.idart = cat.idart)
-            LEFT JOIN " . $cfg['tab']['cat_lang'] . " catName ON (catName.idcat = cat.idcat)
-            LEFT JOIN " . $cfg['tab']['content'] . " con ON (con.idartlang = art.idartlang)
+    $sql = "SELECT art.title, art.idartlang, art.idlang, cat.idart, cat.idcat, catName.name AS namecat, con.idcontent, con.value FROM " . cRegistry::getDbTableName('cat_art') . " cat
+            LEFT JOIN " . cRegistry::getDbTableName('art_lang') . " art ON (art.idart = cat.idart)
+            LEFT JOIN " . cRegistry::getDbTableName('cat_lang') . " catName ON (catName.idcat = cat.idcat)
+            LEFT JOIN " . cRegistry::getDbTableName('content') . " con ON (con.idartlang = art.idartlang)
             WHERE (
                 con.value LIKE '%action%'
                 OR con.value LIKE '%data%'
@@ -231,9 +231,9 @@ if ($sCache_errors && $requestLive != 1) {
     }
 
     // How many articles exist? [Redirects]
-    $sql = "SELECT art.title, art.redirect_url, art.idartlang, art.idlang, cat.idart, cat.idcat, catName.name AS namecat FROM " . $cfg['tab']['cat_art'] . " cat
-            LEFT JOIN " . $cfg['tab']['art_lang'] . " art ON (art.idart = cat.idart)
-            LEFT JOIN " . $cfg['tab']['cat_lang'] . " catName ON (catName.idcat = cat.idcat)
+    $sql = "SELECT art.title, art.redirect_url, art.idartlang, art.idlang, cat.idart, cat.idcat, catName.name AS namecat FROM " . cRegistry::getDbTableName('cat_art') . " cat
+            LEFT JOIN " . cRegistry::getDbTableName('art_lang') . " art ON (art.idart = cat.idart)
+            LEFT JOIN " . cRegistry::getDbTableName('cat_lang') . " catName ON (catName.idcat = cat.idcat)
             WHERE art.online = '1'
                 AND art.redirect = '1'
                 " . $aCats_Sql . "

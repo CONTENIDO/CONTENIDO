@@ -13,7 +13,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $notification = new cGuiNotification();
-$actions = array();
+$actions = [];
 
 // ACTION: SHOW_FORM (in order to create new form)
 if (cRegistry::getPerm()->have_perm_area_action('form', PifaRightBottomFormPage::STORE_FORM)) {
@@ -23,9 +23,9 @@ if (cRegistry::getPerm()->have_perm_area_action('form', PifaRightBottomFormPage:
     $link->setMultiLink($area, PifaRightBottomFormPage::SHOW_FORM, $area, PifaRightBottomFormPage::SHOW_FORM);
     $link->setContent(Pifa::i18n('CREATE_FORM'));
     // class addfunction lets display add icon beneath link
-    $link->updateAttributes(array(
+    $link->updateAttributes([
         'class' => 'addfunction'
-    ));
+    ]);
     $actions[] = $link->render();
 } else {
     $actions[] = $notification->returnNotification(cGuiNotification::LEVEL_WARNING, Pifa::i18n('CREATE_FORM_NO_PERMISSIONS'));

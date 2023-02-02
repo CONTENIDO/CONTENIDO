@@ -63,7 +63,7 @@ class CurlService
         return is_bool($result) ? new stdClass() : json_decode($result);
     }
 
-    private function _getCurlOptions(array $options = [], array $header)
+    private function _getCurlOptions(array $options, array $header = [])
     {
         $curlOptions = [
             //CURLOPT_HEADER         => true,

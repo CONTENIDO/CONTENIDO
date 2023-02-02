@@ -28,8 +28,7 @@ class NewsletterJobCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        $cfg = cRegistry::getConfig();
-        parent::__construct($cfg["tab"]["news_jobs"], "idnewsjob");
+        parent::__construct(cRegistry::getDbTableName('news_jobs'), 'idnewsjob');
         $this->_setItemClass("NewsletterJob");
     }
 
@@ -45,8 +44,8 @@ class NewsletterJobCollection extends ItemCollection {
      */
     public function create($iIDNews, $iIDCatArt, $sName = "") {
         $cfg = cRegistry::getConfig();
-        $client = cRegistry::getClientId();
-        $lang = cRegistry::getLanguageId();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
         $auth = cRegistry::getAuth();
 
         $oNewsletter = new Newsletter();
@@ -248,8 +247,7 @@ class NewsletterJob extends Item {
      * @throws cException
      */
     public function __construct($mId = false) {
-        $cfg = cRegistry::getConfig();
-        parent::__construct($cfg["tab"]["news_jobs"], "idnewsjob");
+        parent::__construct(cRegistry::getDbTableName('news_jobs'), 'idnewsjob');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

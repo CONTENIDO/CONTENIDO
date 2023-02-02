@@ -215,7 +215,7 @@ class PimPluginSetupUninstall extends PimPluginSetup {
         $this->_PimPluginRelationsCollection->query();
 
         // Initializing relations array
-        $relations = array();
+        $relations = [];
 
         while (($relation = $this->_PimPluginRelationsCollection->next()) !== false) {
             // Relation to tables *_action_, *_area, *_nav_main, *_nav_sub and

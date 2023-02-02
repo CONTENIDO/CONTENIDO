@@ -84,8 +84,8 @@ class PifaLeftBottomPage extends cGuiPage {
      */
     private function _getMenu() {
         $cfg = cRegistry::getConfig();
-        $client = cRegistry::getClientId();
-        $lang = cRegistry::getLanguageId();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
         // get all forms of current client in current language
         $forms = PifaFormCollection::getByClientAndLang($client, $lang);

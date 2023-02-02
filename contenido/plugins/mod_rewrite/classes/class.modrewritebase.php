@@ -32,7 +32,7 @@ abstract class ModRewriteBase {
      * @return  bool
      */
     public static function isEnabled() {
-        return (self::getConfig('use', 0) == 1) ? true : false;
+        return self::getConfig('use', 0) == 1;
     }
 
     /**
@@ -70,6 +70,7 @@ abstract class ModRewriteBase {
      * @param   mixed   $value  The value to set
      */
     public static function setConfig($key, $value) {
+        // Use global here, we update the variable!
         global $cfg;
         $cfg['mod_rewrite'][$key] = $value;
     }

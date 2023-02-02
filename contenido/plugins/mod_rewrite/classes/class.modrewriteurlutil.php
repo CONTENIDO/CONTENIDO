@@ -143,12 +143,12 @@ class ModRewriteUrlUtil extends ModRewriteBase {
      * Converts passed url path to a another url path (CONTENIDO to AMR and vice versa).
      *
      * @param   string  $urlPath         Source url path
-     * @param   string  $fromCatSep      Source category seperator
-     * @param   string  $toCatSep        Destination category seperator
-     * @param   string  $fromCatWordSep  Source category word seperator
-     * @param   string  $toCatWordSep    Destination category word seperator
-     * @param   string  $fromArtSep      Source article seperator
-     * @param   string  $toArtSep        Destination article seperator
+     * @param   string  $fromCatSep      Source category separator
+     * @param   string  $toCatSep        Destination category separator
+     * @param   string  $fromCatWordSep  Source category word separator
+     * @param   string  $toCatWordSep    Destination category word separator
+     * @param   string  $fromArtSep      Source article separator
+     * @param   string  $toArtSep        Destination article separator
      * @return  string  Destination url path
      */
     private function _toUrlPath($urlPath, $fromCatSep, $toCatSep, $fromCatWordSep, $toCatWordSep, $fromArtSep, $toArtSep) {
@@ -160,17 +160,15 @@ class ModRewriteUrlUtil extends ModRewriteBase {
             $urlPath = cString::getPartOfString($urlPath, 0, -1) . '{TAS}';
         }
 
-        // pre replace category word seperator and category seperator
+        // pre replace category word separator and category separator
         $urlPath = str_replace($fromCatWordSep, '{CWS}', $urlPath);
         $urlPath = str_replace($fromCatSep, '{CS}', $urlPath);
 
-        // replace category word seperator
+        // replace category word separator
         $urlPath = str_replace('{CWS}', $toCatWordSep, $urlPath);
         $urlPath = str_replace('{CS}', $toCatSep, $urlPath);
 
-        $urlPath = str_replace('{TAS}', $toArtSep, $urlPath);
-
-        return $urlPath;
+        return str_replace('{TAS}', $toArtSep, $urlPath);
     }
 
     /**
@@ -197,8 +195,8 @@ class ModRewriteUrlUtil extends ModRewriteBase {
      * Converts passed url name to a another url name (CONTENIDO to AMR and vice versa).
      *
      * @param   string  $urlName         Source url name
-     * @param   string  $fromArtWordSep  Source article word seperator
-     * @param   string  $toArtWordSep    Destination article word seperator
+     * @param   string  $fromArtWordSep  Source article word separator
+     * @param   string  $toArtWordSep    Destination article word separator
      * @return  string  Destination url name
      */
     private function _toUrlName($urlName, $fromArtWordSep, $toArtWordSep) {
@@ -208,12 +206,10 @@ class ModRewriteUrlUtil extends ModRewriteBase {
 
         $urlName = str_replace($this->_mrExt, '{EXT}', $urlName);
 
-        // replace article word seperator
+        // replace article word separator
         $urlName = str_replace($fromArtWordSep, $toArtWordSep, $urlName);
 
-        $urlName = str_replace('{EXT}', $this->_mrExt, $urlName);
-
-        return $urlName;
+        return str_replace('{EXT}', $this->_mrExt, $urlName);
     }
 
     /**
@@ -226,7 +222,7 @@ class ModRewriteUrlUtil extends ModRewriteBase {
         if (cString::findFirstPos($url, $this->_mrExt) === false) {
             $newUrl = $this->toContenidoUrlPath($url);
         } else {
-            // replace category word and article word seperator
+            // replace category word and article word separator
             $path = cString::getPartOfString($url, 0, cString::findLastPos($url, $this->_mrArtSep) + 1);
             $name = cString::getPartOfString($url, cString::findLastPos($url, $this->_mrArtSep) + 1);
             $newUrl = $this->toContenidoUrlPath($path) . $this->toContenidoUrlName($name);
@@ -244,7 +240,7 @@ class ModRewriteUrlUtil extends ModRewriteBase {
         if (cString::findFirstPos($url, $this->_mrExt) === false) {
             $newUrl = $this->toModRewriteUrlPath($url);
         } else {
-            // replace category word and article word seperator
+            // replace category word and article word separator
             $path = cString::getPartOfString($url, 0, cString::findLastPos($url, $this->_artSep) + 1);
             $name = cString::getPartOfString($url, cString::findLastPos($url, $this->_artSep) + 1);
             $newUrl = $this->toModRewriteUrlPath($path) . $this->toModRewriteUrlName($name);

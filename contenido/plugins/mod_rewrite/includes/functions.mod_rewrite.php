@@ -36,7 +36,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @throws cInvalidArgumentException
  */
 function mr_strNewTree(array $data) {
-    $lang = cRegistry::getLanguageId();
+    $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
     ModRewriteDebugger::log($data, 'mr_strNewTree $data');
 
@@ -62,7 +62,7 @@ function mr_strNewTree(array $data) {
  * @throws cInvalidArgumentException
  */
 function mr_strNewCategory(array $data) {
-    $lang = cRegistry::getLanguageId();
+    $lang = cSecurity::toInteger(cRegistry::getLanguageId());
 
     ModRewriteDebugger::log($data, 'mr_strNewCategory $data');
 
@@ -308,7 +308,7 @@ function mr_strSyncCategory(array $data) {
 function mr_conSaveArticle(array $data) {
     global $tmp_firstedit;
 
-    $client = cRegistry::getClientId();
+    $client = cSecurity::toInteger(cRegistry::getClientId());
 
     ModRewriteDebugger::log($data, 'mr_conSaveArticle $data');
 
@@ -459,7 +459,7 @@ function mr_conSyncArticle($data) {
 function mr_buildNewUrl($url) {
     ModRewriteDebugger::add($url, 'mr_buildNewUrl() in -> $url');
 
-    $lang = cRegistry::getLanguageId();
+    $lang = cSecurity::toInteger(cRegistry::getLanguageId());
     $oUrl = cUri::getInstance();
     $aUrl = $oUrl->parse($url);
 
@@ -626,7 +626,7 @@ function mr_loadConfiguration($clientId, $forceReload = false) {
     $clientId = (int) $clientId;
     if (!isset($aLoaded)) {
         $aLoaded = [];
-    } elseif (isset($aLoaded[$clientId]) && $forceReload == false) {
+    } elseif (isset($aLoaded[$clientId]) && !$forceReload) {
         return;
     }
 
@@ -708,13 +708,14 @@ function mr_setConfiguration($clientId, array $config) {
     $file = mr_getConfigurationFilePath($clientId);
     $result = cFileHandler::write($file, serialize($config));
 
+    // Remove old configuration within plugin folder.
     $backendPath = cRegistry::getBackendPath();
     $file = $backendPath . $cfg['path']['plugins'] . 'mod_rewrite/includes/config.mod_rewrite_' . $clientId . '.php';
     if (is_file($file) && is_writeable($file)) {
-        cFileHandler::remove($file, serialize($config));
+        cFileHandler::remove($file);
     }
 
-    return ($result) ? true : false;
+    return (bool) $result;
 }
 
 /**
@@ -731,7 +732,7 @@ function mr_runFrontendController() {
 
     plugin_include('mod_rewrite', 'includes/config.plugin.php');
 
-    if (ModRewrite::isEnabled() == true) {
+    if (ModRewrite::isEnabled()) {
         plugin_include('mod_rewrite', 'includes/front_content_controller.php');
 
         $totalTime = sprintf('%.4f', (getmicrotime() - $iStartTime));

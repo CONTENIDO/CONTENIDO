@@ -39,7 +39,7 @@ global $_cecRegistry, $cfg, $lngAct, $load_client;
 
 $contenido = cRegistry::getBackendSessionId();
 $area = cRegistry::getArea();
-$client = cRegistry::getClientId();
+$client = cSecurity::toInteger(cRegistry::getClientId());
 
 // Initialize client id
 if (isset($client) && (int) $client > 0) {

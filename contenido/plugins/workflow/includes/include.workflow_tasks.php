@@ -88,7 +88,7 @@ if (is_array($userids)) {
 
         if ($user->loadByPrimaryKey($value) == false) {
             // Yes, it's a group. Let's try to load the group members!
-            $sql = "SELECT user_id FROM " . $cfg["tab"]["groupmembers"] . " WHERE group_id = '" . $db2->escape($value) . "'";
+            $sql = "SELECT user_id FROM " . cRegistry::getDbTableName('groupmembers') . " WHERE group_id = '" . $db2->escape($value) . "'";
             $db2->query($sql);
 
             while ($db2->nextRecord()) {
@@ -153,12 +153,12 @@ if (is_array($isCurrent)) {
             $sql = "SELECT B.idcat AS idcat, A.title AS title, A.created AS created, A.lastmodified AS changed,
                            A.idart as idart, E.name as tpl_name, A.idartlang as idartlang, F.idcatlang as idcatlang,
                            B.idcatart as idcatart, A.idlang as art_lang, F.startidartlang as startidartlang
-                    FROM (" . $cfg["tab"]["art_lang"] . " AS A,
-                         " . $cfg["tab"]["cat_art"] . " AS B,
-                          " . $cfg["tab"]["art"] . " AS C)
-                          LEFT JOIN " . $cfg['tab']['tpl_conf'] . " as D ON A.idtplcfg = D.idtplcfg
-                          LEFT JOIN " . $cfg['tab']['tpl'] . " as E ON D.idtpl = E.`idtpl`
-                          LEFT JOIN " . $cfg['tab']['cat_lang'] . " as F ON B.idcat = F.`idcat`
+                    FROM (" . cRegistry::getDbTableName('art_lang') . " AS A,
+                         " . cRegistry::getDbTableName('cat_art') . " AS B,
+                          " . cRegistry::getDbTableName('art') . " AS C)
+                          LEFT JOIN " . cRegistry::getDbTableName('tpl_conf') . " as D ON A.idtplcfg = D.idtplcfg
+                          LEFT JOIN " . cRegistry::getDbTableName('tpl') . " as E ON D.idtpl = E.`idtpl`
+                          LEFT JOIN " . cRegistry::getDbTableName('cat_lang') . " as F ON B.idcat = F.`idcat`
                          WHERE A.idartlang = '$idartlang' AND
                                A.idart = B.idart AND
                                A.idart = C.idart AND

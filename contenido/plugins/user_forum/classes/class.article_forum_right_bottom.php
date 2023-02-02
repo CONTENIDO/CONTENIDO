@@ -21,7 +21,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage UserForum
  */
 
-global $area;
 
 /**
  * Class ArticleForumRightBottom
@@ -523,11 +522,11 @@ class ArticleForumRightBottom extends cGuiPage {
      * @throws Exception
      */
     protected function switchActions() {
-        $lang = cRegistry::getLanguageId();
+        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
         $idart = $_REQUEST['idart'];
         $idcat = $_REQUEST['idcat'];
         $action = $_REQUEST["action"];
-        $online = (isset($_REQUEST['onlineState'])) ? 1 : 0;
+        $online = isset($_REQUEST['onlineState']) ? 1 : 0;
 
         switch ($action) {
 

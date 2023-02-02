@@ -28,8 +28,7 @@ class WorkflowTasks extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        $cfg = cRegistry::getConfig();
-        parent::__construct($cfg["tab"]["tasks"], "idtask");
+        parent::__construct(cRegistry::getDbTableName('tasks'), "idtask");
         $this->_setItemClass("WorkflowTask");
     }
 
@@ -51,10 +50,10 @@ class WorkflowTasks extends ItemCollection {
      * @throws cDbException
      */
     public function select($where = "", $group_by = "", $order_by = "", $limit = "") {
-        $client = cRegistry::getClientId();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
 
         if ($where != "") {
-            $where = $where . " AND idclient = " . cSecurity::toInteger($client);
+            $where = $where . " AND idclient = " . $client;
         }
         return parent::select($where, $group_by, $order_by, $limit);
     }
@@ -78,8 +77,7 @@ class WorkflowTask extends Item {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        $cfg = cRegistry::getConfig();
-        parent::__construct($cfg["tab"]["tasks"], "idtask");
+        parent::__construct(cRegistry::getDbTableName('tasks'), "idtask");
     }
 
 }
