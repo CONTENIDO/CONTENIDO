@@ -106,7 +106,7 @@ class cApiContent extends Item
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['content'], 'idcontent');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -167,11 +167,11 @@ class cApiContent extends Item
      * @throws cException
      */
     public function loadByArticleLanguageIdTypeAndTypeId($idartlang, $idtype, $typeid) {
-        $aProps = array(
+        $aProps = [
             'idartlang' => $idartlang,
-            'idtype' => $idtype,
-            'typeid' => $typeid
-        );
+            'idtype'    => $idtype,
+            'typeid'    => $typeid,
+        ];
         $aRecordSet = $this->_oCache->getItemByProperties($aProps);
         if ($aRecordSet) {
             // entry in cache found, load entry from cache

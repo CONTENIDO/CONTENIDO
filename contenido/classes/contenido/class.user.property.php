@@ -174,7 +174,7 @@ class cApiUserPropertyCollection extends ItemCollection {
 
         $sql = $this->db->prepare("user_id = '%s'", $this->_userId);
         $this->select($sql);
-        $props = array();
+        $props = [];
         while (($property = $this->next()) !== false) {
             $props[] = clone $property;
         }
@@ -197,7 +197,7 @@ class cApiUserPropertyCollection extends ItemCollection {
     public function fetchByTypeName($type, $name) {
         $sql = $this->db->prepare("type = '%s' AND name = '%s'", $type, $name);
         $this->select($sql);
-        $props = array();
+        $props = [];
         while (($property = $this->next()) !== false) {
             $props[] = clone $property;
         }
@@ -245,7 +245,7 @@ class cApiUserPropertyCollection extends ItemCollection {
 
         $sql = $this->db->prepare("user_id = '%s' AND type = '%s'", $this->_userId, $type);
         $this->select($sql);
-        $props = array();
+        $props = [];
         while (($property = $this->next()) !== false) {
             $props[] = clone $property;
         }
@@ -330,7 +330,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      * @throws cException
      */
     protected function _loadFromCache() {
-        self::$_entries = array();
+        self::$_entries = [];
         $sql = $this->db->prepare("user_id = '%s'", $this->_userId);
         $this->select($sql);
         while (($property = $this->next()) !== false) {
@@ -355,7 +355,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      * @return array
      */
     protected function _fetchByUserIdFromCache() {
-        $props = array();
+        $props = [];
         $obj = new cApiUserProperty();
         foreach (self::$_entries as $entry) {
             $obj->loadByRecordSet($entry);
@@ -372,7 +372,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      * @return cApiUserProperty|NULL
      */
     public function _fetchByUserIdTypeNameFromCache($type, $name) {
-        $props = array();
+        $props = [];
         $obj = new cApiUserProperty();
         foreach (self::$_entries as $entry) {
             if ($entry['type'] == $type && $entry['name'] == $name) {
@@ -390,7 +390,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      * @return array
      */
     public function _fetchByUserIdTypeFromCache($type) {
-        $props = array();
+        $props = [];
         $obj = new cApiUserProperty();
         foreach (self::$_entries as $entry) {
             if ($entry['type'] == $type) {
@@ -434,7 +434,7 @@ class cApiUserProperty extends Item
     public function __construct($mId = false) {
         $cfg = cRegistry::getConfig();
         parent::__construct($cfg['tab']['user_prop'], 'iduserprop');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

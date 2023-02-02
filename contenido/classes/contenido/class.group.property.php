@@ -221,7 +221,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
 
         $sql = $this->db->prepare("group_id = '%s' AND type = '%s'", $this->_groupId, $type);
         $this->select($sql);
-        $props = array();
+        $props = [];
         while (($property = $this->next()) !== false) {
             $props[] = clone $property;
         }
@@ -243,7 +243,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
 
         $sql = $this->db->prepare("group_id = '%s'", $this->_groupId);
         $this->select($sql);
-        $props = array();
+        $props = [];
         while (($property = $this->next()) !== false) {
             $props[] = clone $property;
         }
@@ -328,7 +328,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
      */
     protected function _loadFromCache() {
         if (!isset(self::$_entries)) {
-            self::$_entries = array();
+            self::$_entries = [];
         }
 
         if (isset(self::$_entries[$this->_groupId])) {
@@ -336,7 +336,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
             return;
         }
 
-        self::$_entries[$this->_groupId] = array();
+        self::$_entries[$this->_groupId] = [];
 
         // remove entry from beginning, if we achieved the number of max
         // cachable groups
@@ -387,8 +387,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @return array
      */
     protected function _fetchByGroupIdTypeFromCache($type) {
-        $props = array();
-        $obj = new cApiGroupProperty();
+        $props = [];
+        $obj   = new cApiGroupProperty();
         foreach (self::$_entries[$this->_groupId] as $entry) {
             if ($entry['type'] == $type) {
                 $obj->loadByRecordSet($entry);
@@ -404,8 +404,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @return array
      */
     protected function _fetchByGroupIdFromCache() {
-        $props = array();
-        $obj = new cApiGroupProperty();
+        $props = [];
+        $obj   = new cApiGroupProperty();
         foreach (self::$_entries[$this->_groupId] as $entry) {
             $obj->loadByRecordSet($entry);
             $props[] = clone $obj;
@@ -461,7 +461,7 @@ class cApiGroupProperty extends Item
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['group_prop'], 'idgroupprop');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

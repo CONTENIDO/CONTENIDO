@@ -84,14 +84,14 @@ class cApiClientCollection extends ItemCollection {
      * @throws cException
      */
     public function getAvailableClients() {
-        $clients = array();
+        $clients = [];
 
         $this->select();
 
         while (($item = $this->next()) !== false) {
-            $clients[$item->get('idclient')] = array(
-                'name' => $item->get('name')
-            );
+            $clients[$item->get('idclient')] = [
+                'name' => $item->get('name'),
+            ];
         }
 
         return $clients;
@@ -107,13 +107,13 @@ class cApiClientCollection extends ItemCollection {
      */
     public function getAccessibleClients() {
         global $perm;
-        $clients = array();
+        $clients = [];
         $this->select();
         while (($item = $this->next()) !== false) {
             if ($perm->have_perm_client("client[" . $item->get('idclient') . "]") || $perm->have_perm_client("admin[" . $item->get('idclient') . "]") || $perm->have_perm_client()) {
-                $clients[$item->get('idclient')] = array(
-                    'name' => $item->get('name')
-                );
+                $clients[$item->get('idclient')] = [
+                    'name' => $item->get('name'),
+                ];
             }
         }
         return $clients;
@@ -254,7 +254,7 @@ class cApiClient extends Item {
      *         Reference to the singleton instance.
      */
     public static function getInstance($client = false) {
-        static $currentInstance = array();
+        static $currentInstance = [];
 
         cDeprecated('This method is deprecated and is not needed any longer');
 
@@ -379,7 +379,7 @@ class cApiClient extends Item {
         $propertyColl->select($whereString, "", "type, name, value ASC");
 
         if ($propertyColl->count() > 0) {
-            $array = array();
+            $array = [];
 
             while (($item = $propertyColl->next()) !== false) {
                 $array[$item->get('idproperty')]['type'] = $item->get('type');

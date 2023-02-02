@@ -82,18 +82,20 @@ class cApiNavSubCollection extends ItemCollection {
 
     /**
      * Returns sub navigation by area name
+     *
      * @param string $area
      * @param int    $level  [optional]
      * @param int    $online [optional]
+     *
      * @return array
      *                       List of assiziative arrays like
      *                       <pre>
-     *                       $arr[] = array(
-     *                       'location' => location xml path
-     *                       'caption' => The tanslation of location from XML file
-     *                       'name' => area name for sub navigation item
-     *                       'menulesss' => Menuless state
-     *                       );
+     *                       $arr[] = [
+     *                           'location'  => location xml path
+     *                           'caption'   => The tanslation of location from XML file
+     *                           'name'      => area name for sub navigation item
+     *                           'menulesss' => Menuless state
+     *                       ];
      *                       </pre>
      * @throws cDbException
      * @throws cException
@@ -103,8 +105,6 @@ class cApiNavSubCollection extends ItemCollection {
 
         $level = (int) $level;
         $online = (1 == $online) ? 1 : 0;
-
-        $areasNsRs = array();
 
         $nav = new cGuiNavigation();
 
@@ -132,6 +132,7 @@ class cApiNavSubCollection extends ItemCollection {
 
         $this->db->query($sql);
 
+        $areasNsRs = [];
         while ($this->db->nextRecord()) {
             $rs = $this->db->toArray();
             $rs['caption'] = $nav->getName($rs['location']);
@@ -162,11 +163,7 @@ class cApiNavSub extends Item {
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['nav_sub'], 'idnavs');
-        $this->setFilters(array(
-            'addslashes'
-        ), array(
-            'stripslashes'
-        ));
+        $this->setFilters(['addslashes'], ['stripslashes']);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

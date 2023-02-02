@@ -95,11 +95,7 @@ class cApiFrameFile extends Item {
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['framefiles'], 'idframefile');
-        $this->setFilters(array(
-            'addslashes'
-        ), array(
-            'stripslashes'
-        ));
+        $this->setFilters(['addslashes'], ['stripslashes']);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

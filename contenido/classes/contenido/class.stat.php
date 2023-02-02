@@ -135,7 +135,7 @@ class cApiStat extends Item
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['stat'], 'idstat');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

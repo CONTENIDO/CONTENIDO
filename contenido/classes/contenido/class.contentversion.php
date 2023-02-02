@@ -83,7 +83,7 @@ class cApiContentVersionCollection extends ItemCollection {
 
         $this->select($where);
 
-        $ids = array();
+        $ids = [];
         while($item = $this->next()){
             $ids[] = $item->get('idcontentversion');
         }
@@ -112,7 +112,7 @@ class cApiContentVersion extends Item
      */
     public function __construct($id = false) {
         parent::__construct(cRegistry::getDbTableName('content_version'), 'idcontentversion');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }
@@ -203,12 +203,12 @@ class cApiContentVersion extends Item
      * @throws cException
      */
     public function loadByArticleLanguageIdTypeTypeIdAndVersion(array $contentParameters) {
-        $props = array(
+        $props = [
             'idartlang' => $contentParameters['idartlang'],
-            'idtype' => $contentParameters['idtype'],
-            'typeid' => $contentParameters['typeid'],
-            'version' => $contentParameters['version']
-        );
+            'idtype'    => $contentParameters['idtype'],
+            'typeid'    => $contentParameters['typeid'],
+            'version'   => $contentParameters['version'],
+        ];
         $recordSet = $this->_oCache->getItemByProperties($props);
         if ($recordSet) {
             // entry in cache found, load entry from cache

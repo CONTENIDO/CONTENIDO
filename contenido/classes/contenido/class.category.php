@@ -118,7 +118,7 @@ class cApiCategoryCollection extends ItemCollection {
      * @throws cDbException
      */
     public function getCategoryIdsByClient($idclient) {
-        $list = array();
+        $list = [];
         $sql = 'SELECT idcat FROM `%s` WHERE idclient=%d';
         $this->db->query($sql, $this->table, $idclient);
         while ($this->db->nextRecord()) {
@@ -295,7 +295,7 @@ class cApiCategoryCollection extends ItemCollection {
     public function getAllChildCategoryIds($idcat, $idlang = NULL) {
         global $cfg;
 
-        $aCats = array();
+        $aCats = [];
         $bLoop = true;
         $db2 = $this->_getSecondDBInstance();
 
@@ -362,8 +362,8 @@ class cApiCategoryCollection extends ItemCollection {
     public function getAllCategoryIdsRecursive($idcat, $idclient) {
         global $cfg;
 
-        $catList = array();
-        $openList = array();
+        $catList  = [];
+        $openList = [];
 
         $openList[] = $idcat;
 
@@ -375,12 +375,15 @@ class cApiCategoryCollection extends ItemCollection {
             $catList[] = $actId;
 
             $sql = "SELECT * FROM `:cat_tree` AS A, `:cat` AS B WHERE A.idcat=B.idcat AND B.parentid=:parentid AND idclient=:idclient ORDER BY idtree";
-            $sql = $this->db->prepare($sql, array(
-                'cat_tree' => $cfg['tab']['cat_tree'],
-                'cat' => $this->table,
-                'parentid' => (int) $actId,
-                'idclient' => (int) $idclient
-            ));
+            $sql = $this->db->prepare(
+                $sql,
+                [
+                    'cat_tree' => $cfg['tab']['cat_tree'],
+                    'cat'      => $this->table,
+                    'parentid' => (int)$actId,
+                    'idclient' => (int)$idclient,
+                ]
+            );
             $this->db->query($sql);
 
             while ($this->db->nextRecord()) {
@@ -427,8 +430,8 @@ class cApiCategoryCollection extends ItemCollection {
     public function getAllCategoryIdsRecursive2($idcat, $idclient) {
         global $cfg;
 
-        $aCats = array();
-        $found = false;
+        $aCats    = [];
+        $found    = false;
         $curLevel = 0;
 
         $sql = "SELECT * FROM `%s` AS a, `%s` AS b WHERE a.idcat = b.idcat AND idclient = %d ORDER BY idtree";
@@ -475,7 +478,7 @@ class cApiCategory extends Item
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['cat'], 'idcat');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
 
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -533,9 +536,9 @@ class cApiCategory extends Item
             return '';
         }
 
-        $options = array();
+        $options          = [];
         $options['idcat'] = $this->get('idcat');
-        $options['lang'] = ($changeLangId == 0) ? cRegistry::getLanguageId() : $changeLangId;
+        $options['lang']  = ($changeLangId == 0) ? cRegistry::getLanguageId() : $changeLangId;
         if ($changeLangId > 0) {
             $options['changelang'] = $changeLangId;
         }

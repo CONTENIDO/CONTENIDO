@@ -121,8 +121,8 @@ class cApiOnlineUserCollection extends ItemCollection {
      */
     public function findAllUser() {
         // todo use $perm
-        $aAllUser = array();
-        $aUser = array();
+        $aAllUser    = [];
+        $aUser       = [];
         $sClientName = '';
 
         // get all user_ids
@@ -150,7 +150,7 @@ class cApiOnlineUserCollection extends ItemCollection {
                 $bIsAdmin = false;
                 $iCounter = 0;
                 foreach ($aPerms as $sPerm) {
-                    $aResults = array();
+                    $aResults = [];
                     if (preg_match('/^admin\[(\d+)\]$/', $sPerm, $aResults)) {
                         $iClientId = $aResults[1];
                         $bIsAdmin = true;
@@ -281,7 +281,7 @@ class cApiOnlineUser extends Item
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['online_user'], 'user_id');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

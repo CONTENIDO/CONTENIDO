@@ -105,7 +105,7 @@ class cApiLayout extends Item {
      *
      * @var array
      */
-    protected $_aUsedTemplates = array();
+    protected $_aUsedTemplates = [];
 
     /**
      * Constructor to create an instance of this class.
@@ -119,7 +119,7 @@ class cApiLayout extends Item {
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['lay'], 'idlay');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -146,12 +146,12 @@ class cApiLayout extends Item {
         }
 
         if ($setData === true) {
-            $this->_aUsedTemplates = array();
+            $this->_aUsedTemplates = [];
             foreach ($templates as $i => $template) {
-                $this->_aUsedTemplates[$i] = array(
-                    'tpl_id' => $template->get('idtpl'),
-                    'tpl_name' => $template->get('name')
-                );
+                $this->_aUsedTemplates[$i] = [
+                    'tpl_id'   => $template->get('idtpl'),
+                    'tpl_name' => $template->get('name'),
+                ];
             }
         }
 

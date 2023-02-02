@@ -237,7 +237,7 @@ class cApiFrontendUser extends Item
         $feGroupMembers->setWhere('idfrontenduser', $this->get('idfrontenduser'));
         $feGroupMembers->query();
 
-        $groups = array();
+        $groups = [];
         while (($feGroupMember = $feGroupMembers->next()) !== false) {
             $groups[] = $feGroupMember->get('idfrontendgroup');
         }

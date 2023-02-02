@@ -121,13 +121,13 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
      * @throws cException
      */
     public function fetchAvailableRequests($userid = false, $orderBy = 'id_pwreq ASC') {
-        $requests = array();
-
         if (false === $userid) {
             $this->select('', '', $this->escape($orderBy));
         } else {
             $this->select('user_id = \'' . $this->escape($userid) . '\'', '', $this->escape($orderBy));
         }
+
+        $requests = [];
         while (($oItem = $this->next()) !== false) {
             $requests[] = clone $oItem;
         }
@@ -145,10 +145,10 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
      * @throws cException
      */
     public function fetchCurrentRequests($userid = false) {
-        $requests = array();
-
         $now = new DateTime('now', new DateTimeZone('UTC'));
         $this->select('expiration > \'' . $this->escape($now->format('Y-m-d H:i:s')) . '\'');
+
+        $requests = [];
         while (($oItem = $this->next()) !== false) {
             if (false === $userid) {
                 $requests[] = clone $oItem;
@@ -181,7 +181,7 @@ class cApiUserPasswordRequest extends Item
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['user_pw_request'], 'id_pwreq');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
