@@ -69,6 +69,7 @@ class cRegistry {
      * @author konstantinos.katikakis
      * @param  bool  $relativeToRoot
      *         Flag to return relative path from project root
+     *         Since CONTENIDO 4.10.2
      * @return string
      *         path
      */
