@@ -27,7 +27,7 @@ class cTreeItem {
      *
      * @var array
      */
-    protected $_subitems = array();
+    protected $_subitems = [];
 
     /**
      * Determinates if this tree item is collapsed
@@ -62,7 +62,7 @@ class cTreeItem {
      *
      * @var array
      */
-    protected $_attributes = array();
+    protected $_attributes = [];
 
     /**
      * parent of this tree item
@@ -191,7 +191,7 @@ class cTreeItem {
      * @param array $array
      */
     public function importStructuredArray($array) {
-        $i = array();
+        $i = [];
 
         $lastid = 1;
         $level = 1;
@@ -583,7 +583,7 @@ class cTreeItem {
      */
     public function getCollapsedList(&$list) {
         if (!is_array($list)) {
-            $list = array();
+            $list = [];
         }
 
         if ($this->_collapsed == true) {
@@ -603,7 +603,7 @@ class cTreeItem {
      */
     public function getExpandedList(&$list) {
         if (!is_array($list)) {
-            $list = array();
+            $list = [];
         }
 
         if ($this->_collapsed == false && !in_array($this->_id, $list)) {

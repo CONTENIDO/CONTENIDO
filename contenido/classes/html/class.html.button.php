@@ -79,12 +79,12 @@ class cHTMLButton extends cHTMLFormElement {
      *         $this for chaining
      */
     public function setMode($mode) {
-        $modes = array(
+        $modes = [
             'submit',
             'reset',
             'image',
-            'button'
-        );
+            'button',
+        ];
         if (in_array($mode, $modes)) {
             $this->updateAttribute('type', $mode);
         }

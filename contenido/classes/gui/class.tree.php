@@ -147,7 +147,7 @@ class cGuiTree extends cTree {
             $this->setExpanded($_GET[$treename . "expand"]);
         }
 
-        $xlist = array(); // Define variable before using it by reference...
+        $xlist = []; // Define variable before using it by reference...
         $this->getCollapsedList($xlist);
         $slist = serialize($xlist);
 
@@ -221,7 +221,7 @@ class cGuiTree extends cTree {
         $r_actioncell = new cHTMLTableData;
 
         $img_spacer = new cHTMLImage;
-        $img_spacer->updateAttributes(array('width' => '16', 'height' => '20'));
+        $img_spacer->updateAttributes(['width' => '16', 'height' => '20']);
         $img_spacer->setAlt("");
         $img_spacer->setSrc("images/spacer.gif");
         $img_spacer->advanceID();
@@ -232,9 +232,9 @@ class cGuiTree extends cTree {
         $r_rightcell->appendStyleDefinition("padding-left", "3px");
         $r_rightcell->setVerticalAlignment("middle");
         $r_leftcell->setVerticalAlignment("middle");
-        $r_leftcell->updateAttributes(array("nowrap" => "nowrap"));
-        $r_rightcell->updateAttributes(array("nowrap" => "nowrap"));
-        $r_actioncell->updateAttributes(array("nowrap" => "nowrap"));
+        $r_leftcell->updateAttributes(["nowrap" => "nowrap"]);
+        $r_rightcell->updateAttributes(["nowrap" => "nowrap"]);
+        $r_actioncell->updateAttributes(["nowrap" => "nowrap"]);
         $r_leftcell->setWidth("1%");
         $r_rightcell->setWidth("100%");
         $r_actioncell->setAlignment("right");
@@ -246,7 +246,7 @@ class cGuiTree extends cTree {
 
         $out = $result = '';
 
-        $lastitem = array();
+        $lastitem = [];
         foreach ($objects as $key => $object) {
             $img->setAlt("");
             $r_table->advanceID();
@@ -367,7 +367,7 @@ class cGuiTree extends cTree {
             $r_leftcell->setContent($out . $renderedIcon);
             $r_rightcell->setContent($renderedName);
 
-            $r_row->setContent(array($r_leftcell, $r_rightcell, $r_actioncell));
+            $r_row->setContent([$r_leftcell, $r_rightcell, $r_actioncell]);
 
             $r_table->setContent($r_row);
 

@@ -32,14 +32,14 @@ class cItemCache {
      *
      * @var array
      */
-    protected static $_oInstances = array();
+    protected static $_oInstances = [];
 
     /**
      * Assoziative cache array
      *
      * @var array
      */
-    protected $_aItemsCache = array();
+    protected $_aItemsCache = [];
 
     /**
      * Table name for current instance
@@ -72,7 +72,7 @@ class cItemCache {
      *         - $aOptions['max_items_to_cache'] = (int) Number of items to cache
      *         - $aOptions['enable'] = (bool) Flag to enable caching
      */
-    protected function __construct($sTable, array $aOptions = array()) {
+    protected function __construct($sTable, array $aOptions = []) {
         $this->_sTable = $sTable;
         if (isset($aOptions['max_items_to_cache']) && (int) $aOptions['max_items_to_cache'] > 0) {
             $this->_iMaxItemsToCache = (int) $aOptions['max_items_to_cache'];
@@ -100,7 +100,7 @@ class cItemCache {
      *         - $aOptions['enable'] = (bool) Flag to enable caching
      * @return cItemCache
      */
-    public static function getInstance($sTable, array $aOptions = array()) {
+    public static function getInstance($sTable, array $aOptions = []) {
         if (!isset(self::$_oInstances[$sTable])) {
             self::$_oInstances[$sTable] = new self($sTable, $aOptions);
         }

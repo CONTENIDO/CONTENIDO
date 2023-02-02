@@ -67,7 +67,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
      * Constructor to create an instance of this class.
      */
     private function __construct() {
-        $this->_aItems = array();
+        $this->_aItems = [];
     }
 
     /**
@@ -87,7 +87,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
      * Reset internal collection with Debug items.
      */
     public function reset() {
-        $this->_aItems = array();
+        $this->_aItems = [];
     }
 
     /**

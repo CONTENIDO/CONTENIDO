@@ -484,7 +484,7 @@ class cModuleTemplateHandler extends cModuleHandler {
             foreach ($v->missingNodes as $value) {
                 $idQualifier = '';
 
-                $attr = array();
+                $attr = [];
 
                 if ($value['name'] != '') {
                     $attr['name'] = "name '" . $value['name'] . "'";
@@ -597,9 +597,7 @@ class cModuleTemplateHandler extends cModuleHandler {
 
         $oCode->setStyle('font-family: monospace;width: 100%;');
 
-        $oCode->updateAttributes(array(
-            'wrap' => getEffectiveSetting('html_editor', 'wrap', 'off')
-        ));
+        $oCode->updateAttributes(['wrap' => getEffectiveSetting('html_editor', 'wrap', 'off'),]);
 
         $fileForm->add(i18n('Action'), $aAdd->toHtml());
         // show only if file exists
@@ -617,9 +615,7 @@ class cModuleTemplateHandler extends cModuleHandler {
             $form->add(i18n('Name'), $oName);
             $form->add(i18n('Code'), $oCode);
         }
-        $this->_page->setContent(array(
-            $fileForm
-        ));
+        $this->_page->setContent([$fileForm]);
         if ($this->_file) {
             $this->_page->appendContent($form);
         }

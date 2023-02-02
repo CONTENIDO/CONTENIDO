@@ -94,21 +94,21 @@ class cSearchResult extends cSearchBaseAbstract {
      *
      * @var array
      */
-    protected $_replacement = array();
+    protected $_replacement = [];
 
     /**
      * Array of article id's with ranking information
      *
      * @var array
      */
-    protected $_rankStructure = array();
+    protected $_rankStructure = [];
 
     /**
      * Array of result-pages with array's of article id's
      *
      * @var array
      */
-    protected $_orderedSearchResult = array();
+    protected $_orderedSearchResult = [];
 
     /**
      * Array of article id's with information about cms-types, occurence of
@@ -116,7 +116,7 @@ class cSearchResult extends cSearchBaseAbstract {
      *
      * @var array
      */
-    protected $_searchResult = array();
+    protected $_searchResult = [];
 
     /**
      * Constructor to create an instance of this class.
@@ -225,14 +225,14 @@ class cSearchResult extends cSearchBaseAbstract {
                 }
             } else {
                 if (!array_key_exists($cms_type, $this->_index->getCmsType())) {
-                    return array();
+                    return [];
                 }
             }
         }
 
         $article = new cApiArticleLanguage();
         $article->loadByArticleAndLanguageId($art_id, $this->lang);
-        $content = array();
+        $content = [];
         if (isset($this->_searchResult[$art_id][$cms_type])) {
             // if searchword occurs in cms_type
             $search_words = $this->_searchResult[$art_id]['search'];
@@ -251,7 +251,7 @@ class cSearchResult extends cSearchBaseAbstract {
                         // with original html entities (Timo Trautmann)
                         // 2008-04-17
                         $word = conHtmlentities(conHtmlEntityDecode($this->_index->addSpecialUmlauts($word)));
-                        $match = array();
+                        $match = [];
                         preg_match("/$word/i", $cms_content, $match);
                         if (isset($match[0])) {
                             $pattern = $match[0];

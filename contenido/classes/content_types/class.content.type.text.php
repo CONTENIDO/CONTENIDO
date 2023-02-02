@@ -82,10 +82,12 @@ class cContentTypeText extends cContentTypeAbstract {
 
         $editButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_edithead.gif');
         $editButton->setID($this->_prefix . '_editbutton_' . $this->_id);
-        $editButton->appendStyleDefinitions(array(
-            'margin-left' => '5px',
-            'cursor' => 'pointer'
-        ));
+        $editButton->appendStyleDefinitions(
+            [
+                'margin-left' => '5px',
+                'cursor'      => 'pointer',
+            ]
+        );
 
         return $this->_encodeForOutput($script . $div->render() . $editButton->render());
     }
@@ -107,10 +109,12 @@ class cContentTypeText extends cContentTypeAbstract {
 
         $saveButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . 'images/but_ok.gif');
         $saveButton->setID($this->_prefix . '_savebutton_' . $this->_id);
-        $saveButton->appendStyleDefinitions(array(
-            'margin-left' => '5px',
-            'cursor' => 'pointer'
-        ));
+        $saveButton->appendStyleDefinitions(
+            [
+                'margin-left' => '5px',
+                'cursor'      => 'pointer',
+            ]
+        );
 
         $template = new cTemplate();
         $template->set('s', 'PREFIX', $this->_prefix);

@@ -48,8 +48,7 @@ class cValidatorFactory {
      *         tries to get cValidatorFactory instance.
      * @return cValidatorAbstract
      */
-    public static function getInstance($validator, array $options = array()) {
-
+    public static function getInstance($validator, array $options = []) {
         $name = cString::toLowerCase($validator);
         $className = 'cValidator' . ucfirst($name);
 

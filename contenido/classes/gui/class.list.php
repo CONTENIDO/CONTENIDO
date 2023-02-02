@@ -33,7 +33,7 @@ class cGuiList {
      * Constructor to create an instance of this class.
      */
     public function __construct() {
-        $this->cells = array();
+        $this->cells = [];
     }
 
     /**

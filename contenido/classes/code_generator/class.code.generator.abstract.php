@@ -270,11 +270,11 @@ abstract class cCodeGeneratorAbstract {
      *
      * @return array
      *         Assoziative array like
-     *         array(
+     *         [
      *             'idlay' => (int),
      *             'idtpl' => (int),
-     *             'name' => (string)
-     *         )
+     *             'name'  => (string)
+     *         ]
      *
      * @throws cDbException
      * @throws cInvalidArgumentException

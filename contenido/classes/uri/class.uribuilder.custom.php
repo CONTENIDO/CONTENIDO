@@ -69,7 +69,7 @@ class cUriBuilderCustom extends cUriBuilder {
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array()) {
+    public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = []) {
         if (sizeof($aParams) == 0) {
             throw new cInvalidArgumentException('$aParams must have at least one entry!');
         }

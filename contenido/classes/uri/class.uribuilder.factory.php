@@ -54,7 +54,8 @@ class cUriBuilderFactory {
                     if (!class_exists($sClassName)) {
                         throw new cInvalidArgumentException('The classfile of cUriBuilder couldn\'t included by cUriBuilderFactory: ' . $sBuilder . '!');
                     }
-                    return call_user_func(array($sClassName, 'getInstance'));
+
+                    return call_user_func([$sClassName, 'getInstance']);
                 }
 
                 throw new cInvalidArgumentException('Invalid/Empty cUriBuilder passed to cUriBuilderFactory: ' . $sBuilder . '!');

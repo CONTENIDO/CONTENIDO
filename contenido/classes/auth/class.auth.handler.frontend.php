@@ -96,7 +96,7 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
         $username = $frontendUserColl->escape(stripslashes(trim($_POST['username'])));
         $password = $_POST['password'];
 
-        $groupPerm = array();
+        $groupPerm = [];
 
         if (isset($username)) {
             $this->auth['uname'] = $username;

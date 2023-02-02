@@ -28,7 +28,7 @@ class cHTMLSelectElement extends cHTMLFormElement {
      *
      * @var cHTMLOptionElement[]
      */
-    protected $_options = array();
+    protected $_options = [];
 
     /**
      * Constructor to create an instance of this class.
@@ -64,16 +64,16 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * Automatically creates and fills cHTMLOptionElements
      *
      * Array format:
-     * $stuff = array(
-     * array('value', 'title'),
-     * array('value', 'title')
-     * );
+     * $stuff = [
+     *     ['value', 'title'],
+     *     ['value', 'title'],
+     * ];
      *
      * or regular key => value arrays:
-     * $stuff = array(
-     * 'value' => 'title',
-     * 'value' => 'title'
-     * );
+     * $stuff = [
+     *     'value' => 'title',
+     *     'value' => 'title'
+     * ];
      *
      * @param array $stuff
      *         Array with all items
@@ -81,6 +81,10 @@ class cHTMLSelectElement extends cHTMLFormElement {
      *         $this for chaining
      */
     public function autoFill(array $stuff) {
+        $stuff = [
+            ['value', 'title'],
+            ['value', 'title'],
+        ];
         foreach ($stuff as $key => $row) {
             if (is_array($row)) {
                 $option = new cHTMLOptionElement($row[1], $row[0]);
