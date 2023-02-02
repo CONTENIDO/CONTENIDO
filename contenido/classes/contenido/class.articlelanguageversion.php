@@ -32,7 +32,6 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
      * @throws cInvalidArgumentException
      */
     public function __construct($select = false) {
-
         $sTable = cRegistry::getDbTableName('art_lang_version');
         $sPrimaryKey = 'idartlangversion';
         ItemCollection::__construct($sTable, $sPrimaryKey);
@@ -59,9 +58,8 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
      * @throws cInvalidArgumentException
      */
     public function create(array $parameters) {
-        $auth = cRegistry::getAuth();
-
         if (empty($parameters['author'])) {
+            $auth = cRegistry::getAuth();
             $parameters['author'] = $auth->auth['uname'];
         }
         if (empty($parameters['created'])) {
@@ -112,7 +110,6 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
      * @throws cException
      */
     public function getIdByArticleIdAndLanguageId($idArtLang, $version) {
-
         $id = NULL;
 
         $where = 'idartlang = ' . $idArtLang . ' AND version = ' . $version;
@@ -120,13 +117,13 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
         $artLangVersionColl = new cApiArticleLanguageVersionCollection();
         $artLangVersionColl->select($where);
 
-        while($item = $artLangVersionColl->next()){
+        while ($item = $artLangVersionColl->next()) {
             $id = $item->get('idartlangversion');
         }
 
-        return isset($id) ? $id : 0;
-
+        return $id ?? 0;
     }
+
 }
 
 /**
@@ -539,7 +536,8 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
                 // entry in cache found, load entry from cache
                 $this->loadByRecordSet($recordSet);
             } else {
-                $idArtLangVersion = $this->_getIdArtLangVersion($idArtLang, $version);
+                $coll = new cApiArticleLanguageVersionCollection();
+                $idArtLangVersion = $coll->getIdByArticleIdAndLanguageId($idArtLang, $version);
                 $result = $this->loadByPrimaryKey($idArtLangVersion);
             }
         }
@@ -552,41 +550,20 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
     }
 
     /**
-     * Extract 'idartlangversion' for a specified 'idartlang' and 'version'
-     *
-     * @param int $idArtLang
-     *         Article language id
-     * @param int $version
-     *         version number
-     *
-     * @return int
-     *         Article language version id
-     *
-     * @throws cDbException
-     * @throws cException
+     * @deprecated Since 4.10.2. Code was redundant with {@see cApiArticleLanguageVersionCollection::getIdByArticleIdAndLanguageId}
+     *     and it is not the job ob the item to do this.
      */
     protected function _getIdArtLangVersion($idArtLang, $version) {
-
-        $id = NULL;
-
-        $where = 'idartlang = ' . $idArtLang . ' AND version = ' . $version;
-
-        $artLangVersionColl = new cApiArticleLanguageVersionCollection();
-        $artLangVersionColl->select($where);
-
-        while($item = $artLangVersionColl->next()){
-            $id = $item->get('idartlangversion');
-        }
-
-        return isset($id) ? $id : 0;
-
+        cDeprecated("The function _getIdArtLangVersion() is deprecated since CONTENIDO 4.10.2, use cApiArticleLanguageVersionCollection::getIdByArticleIdAndLanguageId() instead.");
+        $coll = new cApiArticleLanguageVersionCollection();
+        return $coll->getIdByArticleIdAndLanguageId($idArtLang, $version);
     }
 
     /**
      * Load the articles version content and store it in the 'content' property of the
      * article version object: $article->content[type][number] = value;
      *
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
     protected function _getArticleVersionContent() {
 
@@ -633,7 +610,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
      * 'con_type'.
      * Default content types are:
      *
-     * NOTE: Parameter is case insensitive, you can use html or cms_HTML or
+     * NOTE: Parameter is case-insensitive, you can use html or cms_HTML or
      * CmS_HtMl.
      * You don't need to start with cms, but it won't crash if you do so.
      *
@@ -656,7 +633,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
      * @return string|array
      *         data
      *
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function getContent($type = '', $id = NULL) {
         if (NULL === $this->content) {

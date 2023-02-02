@@ -29,8 +29,7 @@ class cApiContentCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['content'], 'idcontent');
+        parent::__construct(cRegistry::getDbTableName('content'), 'idcontent');
         $this->_setItemClass('cApiContent');
 
         // set the join partners so that joins can be used via link() method
@@ -56,9 +55,8 @@ class cApiContentCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function create($idArtLang, $idType, $typeId, $value, $version, $author = '', $created = '', $lastmodified = '') {
-        global $auth;
-
         if (empty($author)) {
+            $auth = cRegistry::getAuth();
             $author = $auth->auth['uname'];
         }
         if (empty($created)) {
@@ -104,8 +102,7 @@ class cApiContent extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['content'], 'idcontent');
+        parent::__construct(cRegistry::getDbTableName('content'), 'idcontent');
         $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -128,7 +125,7 @@ class cApiContent extends Item
             case 'idtype':
             case 'typeid':
             case 'version':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

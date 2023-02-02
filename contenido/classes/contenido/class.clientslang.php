@@ -30,7 +30,7 @@ class cApiClientLanguageCollection extends ItemCollection {
      */
     public function __construct() {
         $cfg = cRegistry::getConfig();
-        parent::__construct($cfg['tab']['clients_lang'], 'idclientslang');
+        parent::__construct(cRegistry::getDbTableName('clients_lang'), 'idclientslang');
         $this->_setItemClass('cApiClientLanguage');
 
         // set the join partners so that joins can be used via link() method
@@ -109,7 +109,7 @@ class cApiClientLanguageCollection extends ItemCollection {
                 WHERE idclient=%d AND cl.idlang = l.idlang
                 ORDER BY idlang ASC";
 
-        $this->db->query($sql, $this->table, $cfg['tab']['lang'], $client);
+        $this->db->query($sql, $this->table, cRegistry::getDbTableName('lang'), $client);
         while ($this->db->nextRecord()) {
             $list[$this->db->f('idlang')] = $this->db->f('name');
         }
@@ -137,7 +137,7 @@ class cApiClientLanguageCollection extends ItemCollection {
                 WHERE cl.idclient=%d AND cl.idlang = l.idlang
                 ORDER BY l.idlang ASC";
 
-        $this->db->query($sql, $this->table, $cfg['tab']['lang'], $client);
+        $this->db->query($sql, $this->table, cRegistry::getDbTableName('lang'), $client);
         while ($this->db->nextRecord()) {
             $list[$this->db->f('idlang')] = $this->db->toArray();
         }
@@ -158,7 +158,7 @@ class cApiClientLanguageCollection extends ItemCollection {
         $sql = "SELECT l.idlang FROM `%s` AS cl, `%s` AS l "
             . "WHERE cl.idclient = %d AND cl.idlang = l.idlang LIMIT 0,1";
 
-        $this->db->query($sql, $this->table, $cfg['tab']['lang'], $client);
+        $this->db->query($sql, $this->table, cRegistry::getDbTableName('lang'), $client);
 
         return ($this->db->nextRecord()) ? (int) $this->db->f('idlang') : NULL;
     }
@@ -178,7 +178,7 @@ class cApiClientLanguageCollection extends ItemCollection {
         $sql = "SELECT l.idlang FROM `%s` AS cl, `%s` AS l "
             . "WHERE cl.idclient = %d AND cl.idlang = l.idlang ORDER BY l.idlang ASC";
 
-        $this->db->query($sql, $this->table, $cfg['tab']['lang'], $client);
+        $this->db->query($sql, $this->table, cRegistry::getDbTableName('lang'), $client);
         while ($this->db->nextRecord()) {
             $list[] = $this->db->f('idlang');
         }
@@ -225,8 +225,7 @@ class cApiClientLanguage extends Item {
      * @throws cException
      */
     public function __construct($iIdClientsLang = false, $iIdClient = false, $iIdLang = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['clients_lang'], 'idclientslang');
+        parent::__construct(cRegistry::getDbTableName('clients_lang'), 'idclientslang');
 
         if ($iIdClientsLang !== false) {
             $this->loadByPrimaryKey($iIdClientsLang);
@@ -258,7 +257,7 @@ class cApiClientLanguage extends Item {
      * @throws cException
      */
     public function loadByPrimaryKey($iIdClientsLang) {
-        if (parent::loadByPrimaryKey($iIdClientsLang) == true) {
+        if (parent::loadByPrimaryKey($iIdClientsLang)) {
             $this->idclient = $this->get('idclient');
             return true;
         }
@@ -273,7 +272,7 @@ class cApiClientLanguage extends Item {
      * @see  Item::setProperty()
      *
      * @param mixed $mType
-     *                      Type of the data to store (arbitary data)
+     *                      Type of the data to store (arbitrary data)
      * @param mixed $mName
      *                      Entry name
      * @param mixed $mValue
@@ -411,7 +410,7 @@ class cApiClientLanguage extends Item {
         switch ($name) {
             case 'idlang':
             case 'idclient':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

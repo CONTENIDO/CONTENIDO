@@ -50,7 +50,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
     protected static $_enableCache;
 
     /**
-     * Number of max groups to cache proerties from.
+     * Number of max groups to cache properties from.
      *
      * @var int
      */
@@ -66,27 +66,21 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct($groupId) {
-        global $cfg;
-        parent::__construct($cfg['tab']['group_prop'], 'idgroupprop');
+        parent::__construct(cRegistry::getDbTableName('group_prop'), 'idgroupprop');
         $this->_setItemClass('cApiGroupProperty');
 
         // set the join partners so that joins can be used via link() method
         $this->_setJoinPartner('cApiGroupCollection');
 
         if (!isset(self::$_enableCache)) {
-            if (isset($cfg['properties']) && isset($cfg['properties']['group_prop']) && isset($cfg['properties']['group_prop']['enable_cache'])) {
-                self::$_enableCache = (bool) $cfg['properties']['group_prop']['enable_cache'];
-
-                if (isset($cfg['properties']['group_prop']['max_groups'])) {
-                    self::$_maxGroups = (int) $cfg['properties']['group_prop']['max_groups'];
-                    // if caching is enabled, there is no need to set max cache
-                    // value to lower than 1
-                    if (self::$_maxGroups < 1) {
-                        self::$_maxGroups = 1;
-                    }
+            $cfg = cRegistry::getConfig();
+            self::$_enableCache = cSecurity::toBoolean($cfg['properties']['group_prop']['enable_cache'] ?? '0');
+            if (self::$_enableCache) {
+                self::$_maxGroups = cSecurity::toInteger($cfg['properties']['group_prop']['max_groups'] ?? '0');
+                // If caching is enabled, there is no need to set max cache value to lower than 1
+                if (self::$_maxGroups < 1) {
+                    self::$_maxGroups = 1;
                 }
-            } else {
-                self::$_enableCache = false;
             }
         }
 
@@ -459,8 +453,7 @@ class cApiGroupProperty extends Item
      * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['group_prop'], 'idgroupprop');
+        parent::__construct(cRegistry::getDbTableName('group_prop'), 'idgroupprop');
         $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -492,7 +485,7 @@ class cApiGroupProperty extends Item
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
              case 'idcatlang':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

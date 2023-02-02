@@ -29,8 +29,7 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['frontendgroupmembers'], 'idfrontendgroupmember');
+        parent::__construct(cRegistry::getDbTableName('frontendgroupmembers'), 'idfrontendgroupmember');
         $this->_setItemClass('cApiFrontendGroupMember');
 
         // set the join partners so that joins can be used via link() method
@@ -139,8 +138,7 @@ class cApiFrontendGroupMember extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['frontendgroupmembers'], 'idfrontendgroupmember');
+        parent::__construct(cRegistry::getDbTableName('frontendgroupmembers'), 'idfrontendgroupmember');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

@@ -29,8 +29,7 @@ class cApiFrontendUserCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['frontendusers'], 'idfrontenduser');
+        parent::__construct(cRegistry::getDbTableName('frontendusers'), 'idfrontenduser');
         $this->_setItemClass('cApiFrontendUser');
 
         // set the join partners so that joins can be used via link() method
@@ -47,14 +46,12 @@ class cApiFrontendUserCollection extends ItemCollection {
      * @throws cException
      */
     public function userExists($sUsername) {
-        global $client;
-
         $feUsers = new cApiFrontendUserCollection();
-        $feUsers->setWhere('idclient', $client);
+        $feUsers->setWhere('idclient', cRegistry::getClientId());
         $feUsers->setWhere('username', cString::toLowerCase($sUsername));
         $feUsers->query();
 
-        return ($feUsers->next()) ? true : false;
+        return (bool)$feUsers->next();
     }
 
     /**
@@ -71,7 +68,8 @@ class cApiFrontendUserCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function create($username, $password = '') {
-        global $client, $auth;
+        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $auth = cRegistry::getAuth();
 
         // Check if the username already exists
         $this->select("idclient = " . (int) $client . " AND username = '" . $this->escape($username) . "'");
@@ -153,8 +151,7 @@ class cApiFrontendUser extends Item
      * @throws cInvalidArgumentException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['frontendusers'], 'idfrontenduser');
+        parent::__construct(cRegistry::getDbTableName('frontendusers'), 'idfrontenduser');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -218,7 +215,7 @@ class cApiFrontendUser extends Item
      * @throws cInvalidArgumentException
      */
     public function store() {
-        global $auth;
+        $auth = cRegistry::getAuth();
 
         $this->set('modified', date('Y-m-d H:i:s'), false);
         $this->set('modifiedby', $auth->auth['uid']);

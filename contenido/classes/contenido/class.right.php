@@ -29,8 +29,7 @@ class cApiRightCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['rights'], 'idright');
+        parent::__construct(cRegistry::getDbTableName('rights'), 'idright');
         $this->_setItemClass('cApiRight');
 
         // set the join partners so that joins can be used via link() method
@@ -85,8 +84,6 @@ class cApiRightCollection extends ItemCollection {
      * @throws cDbException
      */
     public function hasFrontendAccessByCatIdAndUserId($idcat, $userId) {
-        global $cfg;
-
         $sql = "SELECT :pk FROM `:rights` AS A, `:actions` AS B, `:area` AS C
                 WHERE B.name = 'front_allow' AND C.name = 'str' AND A.user_id = ':userid'
                     AND A.idcat = :idcat AND A.idarea = C.idarea AND B.idaction = A.idaction
@@ -95,8 +92,8 @@ class cApiRightCollection extends ItemCollection {
         $params = [
             'pk'      => $this->getPrimaryKeyName(),
             'rights'  => $this->table,
-            'actions' => $cfg['tab']['actions'],
-            'area'    => $cfg['tab']['area'],
+            'actions' => cRegistry::getDbTableName('actions'),
+            'area'    => cRegistry::getDbTableName('area'),
             'userid'  => $userId,
             'idcat'   => (int)$idcat,
         ];
@@ -121,7 +118,7 @@ class cApiRightCollection extends ItemCollection {
      */
     public function deleteByUserId($userId) {
         $result = $this->deleteBy('user_id', $userId);
-        return ($result > 0) ? true : false;
+        return $result > 0;
     }
 
 }
@@ -144,8 +141,7 @@ class cApiRight extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['rights'], 'idright');
+        parent::__construct(cRegistry::getDbTableName('rights'), 'idright');
         $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -163,23 +159,13 @@ class cApiRight extends Item
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
-            case 'idarea':
-                $value = (int) $value;
-                break;
             case 'idaction':
-                $value = (int) $value;
-                break;
             case 'idcat':
-                $value = (int) $value;
-                break;
             case 'idclient':
-                $value = (int) $value;
-                break;
             case 'idlang':
-                $value = (int) $value;
-                break;
             case 'type':
-                $value = (int) $value;
+            case 'idarea':
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

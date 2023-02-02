@@ -29,8 +29,7 @@ class cApiClientCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['clients'], 'idclient');
+        parent::__construct(cRegistry::getDbTableName('clients'), 'idclient');
         $this->_setItemClass('cApiClient');
     }
 
@@ -48,12 +47,10 @@ class cApiClientCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
-     * @global object $auth
      */
     public function create($name, $errsite_cat = 0, $errsite_art = 0, $author = '', $created = '', $lastmodified = '') {
-        global $auth;
-
         if (empty($author)) {
+            $auth = cRegistry::getAuth();
             $author = $auth->auth['uname'];
         }
         if (empty($created)) {
@@ -106,12 +103,15 @@ class cApiClientCollection extends ItemCollection {
      * @throws cException
      */
     public function getAccessibleClients() {
-        global $perm;
+        $perm = cRegistry::getPerm();
         $clients = [];
         $this->select();
         while (($item = $this->next()) !== false) {
-            if ($perm->have_perm_client("client[" . $item->get('idclient') . "]") || $perm->have_perm_client("admin[" . $item->get('idclient') . "]") || $perm->have_perm_client()) {
-                $clients[$item->get('idclient')] = [
+            $idClient = $item->get('idclient');
+            if ($perm->have_perm_client("client[" . $idClient . "]")
+                || $perm->have_perm_client("admin[" . $idClient . "]")
+                || $perm->have_perm_client()) {
+                $clients[$idClient] = [
                     'name' => $item->get('name'),
                 ];
             }
@@ -127,10 +127,12 @@ class cApiClientCollection extends ItemCollection {
      * @throws cException
      */
     public function getFirstAccessibleClient() {
-        global $perm;
+        $perm = cRegistry::getPerm();
         $this->select();
         while (($item = $this->next()) !== false) {
-            if ($perm->have_perm_client("client[" . $item->get('idclient') . "]") || $perm->have_perm_client("admin[" . $item->get('idclient') . "]")) {
+            $idClient = $item->get('idclient');
+            if ($perm->have_perm_client("client[" . $idClient . "]")
+                || $perm->have_perm_client("admin[" . $idClient . "]")) {
                 return $item;
             }
         }
@@ -138,11 +140,11 @@ class cApiClientCollection extends ItemCollection {
     }
 
     /**
-     * Returns the clientname of the given clientid
+     * Returns the client name of the given clientid
      *
      * @param int $idClient
      * @return string
-     *         Clientname if found, or empty string if not.
+     *         Client name if found, or empty string if not.
      * @throws cDbException
      * @throws cException
      */
@@ -205,8 +207,7 @@ class cApiClient extends Item {
      * @throws cException
      */
     public function __construct($id = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['clients'], 'idclient');
+        parent::__construct(cRegistry::getDbTableName('clients'), 'idclient');
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }
@@ -260,7 +261,7 @@ class cApiClient extends Item {
 
         if (!$client) {
             // Use global $client
-            $client = cRegistry::getClientId();
+            $client = cSecurity::toInteger(cRegistry::getClientId());
         }
 
         if (!isset($currentInstance[$client])) {
@@ -278,7 +279,7 @@ class cApiClient extends Item {
      * @return bool
      */
     public function loadByPrimaryKey($idKey) {
-        if (parent::loadByPrimaryKey($idKey) == true) {
+        if (parent::loadByPrimaryKey($idKey)) {
             $this->set('idclient', $idKey);
             return true;
         }
@@ -291,7 +292,7 @@ class cApiClient extends Item {
      * @todo should return return value as overwritten method
      *
      * @param mixed $type
-     *                          Type of the data to store (arbitary data)
+     *                          Type of the data to store (arbitrary data)
      * @param mixed $name
      *                          Entry name
      * @param mixed $value
@@ -425,7 +426,7 @@ class cApiClient extends Item {
         switch ($name) {
             case 'errsite_cat':
             case 'errsite_art':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

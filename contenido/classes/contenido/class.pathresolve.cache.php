@@ -83,7 +83,7 @@ class cApiPathresolveCacheCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
         cApiPathresolveCacheHelper::setup($cfg);
         parent::__construct($cfg['sql']['sqlprefix'] . '_pathresolve_cache', 'idpathresolvecache');
         $this->_setItemClass('cApiPathresolveCache');
@@ -127,7 +127,8 @@ class cApiPathresolveCacheCollection extends ItemCollection {
      * @throws cException
      */
     public function fetchLatestByPathAndLanguage($path, $idlang) {
-        $this->select("path LIKE '" . $this->db->escape($path) . "' AND idlang=" . (int) $idlang, '', 'lastcached DESC', '1');
+        $where = $this->db->prepare("path LIKE '%s' AND idlang = %d", $path, $idlang);
+        $this->select($where, '', 'lastcached DESC', '1');
         return $this->next();
     }
 
@@ -142,7 +143,8 @@ class cApiPathresolveCacheCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function deleteByCategoryAndLanguage($idcat, $idlang) {
-        $this->select('idcat=' . (int) $idcat . ' AND idlang=' . (int) $idlang);
+        $where = $this->db->prepare('idcat = %d AND idlang = %d', $idcat, $idlang);
+        $this->select($where);
         while (($oCode = $this->next()) !== false) {
             $this->delete($oCode->get('idpathresolvecache'));
         }
@@ -168,7 +170,7 @@ class cApiPathresolveCache extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
         cApiPathresolveCacheHelper::setup($cfg);
         parent::__construct($cfg['sql']['sqlprefix'] . '_pathresolve_cache', 'idpathresolvecache');
         $this->setFilters([], []);
@@ -184,10 +186,10 @@ class cApiPathresolveCache extends Item
      * @return bool
      */
     public function isCacheTimeExpired() {
-        global $cfg;
         if (!$this->isLoaded()) {
             throw new cException('Item not loaded!');
         }
+        $cfg = cRegistry::getConfig();
         $cacheTime = (isset($cfg['pathresolve_heapcache_time'])) ? $cfg['pathresolve_heapcache_time'] : 60 * 60 * 24;
         return $this->get('lastcached') + $cacheTime < time();
     }
@@ -206,7 +208,7 @@ class cApiPathresolveCache extends Item
         switch ($name) {
             case 'idcat':
             case 'idlang':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

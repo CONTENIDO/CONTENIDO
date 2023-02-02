@@ -106,39 +106,35 @@ class cApiPropertyCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct($idclient = 0) {
-        global $cfg, $client, $lang;
-
         if (0 === $idclient) {
             // @todo Make client id parameter mandatory, otherwise using the global variable
             // may lead to unwanted issues!
-            $idclient = $client;
+            $idclient = cRegistry::getClientId();
         }
 
         $this->client = cSecurity::toInteger($idclient);
-        parent::__construct($cfg['tab']['properties'], 'idproperty');
+        parent::__construct(cRegistry::getDbTableName('properties'), 'idproperty');
         $this->_setItemClass('cApiProperty');
 
         // set the join partners so that joins can be used via link() method
         $this->_setJoinPartner('cApiClientCollection');
 
         if (!isset(self::$_enableCache)) {
-            if (isset($cfg['properties']) && isset($cfg['properties']['properties']) && isset($cfg['properties']['properties']['enable_cache'])) {
-                self::$_enableCache = (bool) $cfg['properties']['properties']['enable_cache'];
-
+            $cfg = cRegistry::getConfig();
+            self::$_enableCache = cSecurity::toBoolean($cfg['properties']['properties']['enable_cache'] ?? '0');
+            if (self::$_enableCache) {
                 if (isset($cfg['properties']['properties']['itemtypes']) && is_array($cfg['properties']['properties']['itemtypes'])) {
                     self::$_cacheItemtypes = $cfg['properties']['properties']['itemtypes'];
                     foreach (self::$_cacheItemtypes as $name => $value) {
                         if ('%client%' == $value) {
                             self::$_cacheItemtypes[$name] = (int) $idclient;
                         } elseif ('%lang%' == $value) {
-                            self::$_cacheItemtypes[$name] = (int) $lang;
+                            self::$_cacheItemtypes[$name] = cSecurity::toInteger(cRegistry::getLanguageId());
                         } else {
                             unset(self::$_cacheItemtypes[$name]);
                         }
                     }
                 }
-            } else {
-                self::$_enableCache = false;
             }
         }
 
@@ -170,7 +166,7 @@ class cApiPropertyCollection extends ItemCollection {
      * @param mixed $itemid
      *                           ID of the item (example: 31)
      * @param mixed $type
-     *                           Type of the data to store (arbitary data)
+     *                           Type of the data to store (arbitrary data)
      * @param mixed $name
      *                           Entry name
      * @param mixed $value
@@ -185,8 +181,7 @@ class cApiPropertyCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function create($itemtype, $itemid, $type, $name, $value, $bDontEscape = false) {
-        global $auth;
-
+        $auth = cRegistry::getAuth();
         $item = $this->createNewItem();
 
         $item->set('idclient', $this->client);
@@ -221,7 +216,7 @@ class cApiPropertyCollection extends ItemCollection {
      * @param mixed $itemid
      *                       ID of the item (example: 31)
      * @param mixed $type
-     *                       Type of the data to store (arbitary data)
+     *                       Type of the data to store (arbitrary data)
      * @param mixed $name
      *                       Entry name
      * @param mixed $default [optional]
@@ -342,7 +337,7 @@ class cApiPropertyCollection extends ItemCollection {
      * @param mixed $itemid
      *                      ID of the item (example: 31)
      * @param mixed $type
-     *                      Type of the data to store (arbitary data)
+     *                      Type of the data to store (arbitrary data)
      * @param mixed $name
      *                      Entry name
      * @param mixed $value
@@ -356,7 +351,7 @@ class cApiPropertyCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function setValue($itemtype, $itemid, $type, $name, $value, $idProp = 0) {
-        $idProp = (int) $idProp;
+        $idProp = cSecurity::toInteger($idProp);
 
         if ($idProp == 0) {
             $sql = $this->db->prepare("idclient = %d AND itemtype = '%s' AND itemid = '%s' AND type = '%s' AND name = '%s'", $this->client, $itemtype, $itemid, $type, $name);
@@ -393,7 +388,7 @@ class cApiPropertyCollection extends ItemCollection {
      * @param mixed $itemid
      *         ID of the item (example: 31)
      * @param mixed $type
-     *         Type of the data to store (arbitary data)
+     *         Type of the data to store (arbitrary data)
      * @param mixed $name
      *         Entry name
      *
@@ -408,11 +403,11 @@ class cApiPropertyCollection extends ItemCollection {
             $where = $this->db->prepare("itemtype = '%s' AND itemid = '%s' AND type = '%s' AND name = '%s'", $itemtype, $itemid, $type, $name);
         }
 
-        $idproperties = $this->getIdsByWhereClause($where);
+        $idProperties = $this->getIdsByWhereClause($where);
 
-        $this->_deleteMultiple($idproperties);
+        $this->_deleteMultiple($idProperties);
         if ($this->_useCache()) {
-            $this->_deleteFromCacheMultiple($idproperties);
+            $this->_deleteFromCacheMultiple($idProperties);
         }
     }
 
@@ -483,7 +478,7 @@ class cApiPropertyCollection extends ItemCollection {
         $fieldValue = $this->db->escape($fieldValue);
 
         if (isset($this->client)) {
-            $this->select("idclient = " . (int) $this->client . " AND " . $field . " = '" . $fieldValue . "'" . $authString, '', 'itemid');
+            $this->select("idclient = " . $this->client . " AND " . $field . " = '" . $fieldValue . "'" . $authString, '', 'itemid');
         } else {
             // @fixme We never get here, since this class will always have a set client property!
             $this->select($field . " = '" . $fieldValue . "'" . $authString);
@@ -528,9 +523,9 @@ class cApiPropertyCollection extends ItemCollection {
             $where = $this->db->prepare("itemtype = '%s' AND itemid = '%s'", $itemtype, $itemid);
         }
 
-        $idproperties = $this->getIdsByWhereClause($where);
+        $idProperties = $this->getIdsByWhereClause($where);
 
-        $this->_deletePropertiesByIds($idproperties);
+        $this->_deletePropertiesByIds($idProperties);
     }
 
     /**
@@ -550,15 +545,15 @@ class cApiPropertyCollection extends ItemCollection {
         $in = "'" . implode("', '", $itemids) . "'";
 
         if (isset($this->client)) {
-            $where = "idclient = " . (int) $this->client . " AND itemtype = '" . $itemtype . "' AND itemid IN (" . $in . ")";
+            $where = "idclient = " . $this->client . " AND itemtype = '" . $itemtype . "' AND itemid IN (" . $in . ")";
         } else {
             // @fixme We never get here, since this class will always have a set client property!
             $where = "itemtype = '" . $itemtype . "' AND itemid IN (" . $in . ")";
         }
 
-        $idproperties = $this->getIdsByWhereClause($where);
+        $idProperties = $this->getIdsByWhereClause($where);
 
-        $this->_deletePropertiesByIds($idproperties);
+        $this->_deletePropertiesByIds($idProperties);
     }
 
     /**
@@ -567,7 +562,7 @@ class cApiPropertyCollection extends ItemCollection {
      * @param int $idclient
      */
     public function changeClient($idclient) {
-        $this->client = (int) $idclient;
+        $this->client = cSecurity::toInteger($idclient);
     }
 
     /**
@@ -579,7 +574,6 @@ class cApiPropertyCollection extends ItemCollection {
      * @throws cException
      */
     protected function _loadFromCache() {
-        global $client;
         if (!isset(self::$_entries)) {
             self::$_entries = [];
         }
@@ -597,7 +591,7 @@ class cApiPropertyCollection extends ItemCollection {
             return;
         }
 
-        $where = "idclient = " . (int) $client . ' AND ' . implode(' OR ', $where);
+        $where = "idclient = " . $this->client . ' AND ' . implode(' OR ', $where);
         $this->select($where);
         /** @var cApiUserProperty $property */
         while (($property = $this->next()) !== false) {
@@ -612,7 +606,7 @@ class cApiPropertyCollection extends ItemCollection {
      * @return bool
      */
     protected function _useCache($itemtype = NULL, $itemid = NULL) {
-        global $client;
+        $client = cSecurity::toInteger(cRegistry::getClientId());
         $ok = (self::$_enableCache && $this->client == $client);
         if (!$ok) {
             return $ok;
@@ -790,8 +784,7 @@ class cApiProperty extends Item {
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['properties'], 'idproperty');
+        parent::__construct(cRegistry::getDbTableName('properties'), 'idproperty');
 
         // Initialize maximum lengths for each column
         $this->maximumLength = [
@@ -814,7 +807,7 @@ class cApiProperty extends Item {
      * @throws cInvalidArgumentException
      */
     public function store() {
-        global $auth;
+        $auth = cRegistry::getAuth();
 
         $this->set('modified', date('Y-m-d H:i:s'), false);
         $this->set('modifiedby', $auth->auth['uid']);

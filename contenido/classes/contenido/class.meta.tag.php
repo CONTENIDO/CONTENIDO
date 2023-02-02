@@ -143,7 +143,7 @@ class cApiMetaTag extends Item
         switch ($name) {
             case 'idmetatype':
             case 'idartlang':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

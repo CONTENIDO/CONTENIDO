@@ -29,8 +29,7 @@ class cApiKeywordCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['keywords'], 'idkeyword');
+        parent::__construct(cRegistry::getDbTableName('keywords'), 'idkeyword');
         $this->_setItemClass('cApiKeyword');
     }
 
@@ -82,8 +81,7 @@ class cApiKeyword extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['keywords'], 'idkeyword');
+        parent::__construct(cRegistry::getDbTableName('keywords'), 'idkeyword');
         $this->setFilters(['addslashes'], ['stripslashes']);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -102,7 +100,7 @@ class cApiKeyword extends Item
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
             case 'idlang':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

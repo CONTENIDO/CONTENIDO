@@ -23,14 +23,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @method cApiAction|bool next
  */
 class cApiActionCollection extends ItemCollection {
+
     /**
      * Constructor to create an instance of this class.
      *
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['actions'], 'idaction');
+        parent::__construct(cRegistry::getDbTableName('actions'), 'idaction');
         $this->_setItemClass('cApiAction');
 
         // set the join partners so that joins can be used via link() method
@@ -98,14 +98,12 @@ class cApiActionCollection extends ItemCollection {
      * @throws cDbException
      */
     public function getAvailableActions() {
-        global $cfg;
-
         $sql = "SELECT action.idaction, action.name, area.name AS areaname
                 FROM `%s` AS action LEFT JOIN `%s` AS area
                 ON area.idarea = action.idarea
                 WHERE action.relevant = 1 ORDER BY action.name;";
 
-        $this->db->query($sql, $this->table, $cfg['tab']['area']);
+        $this->db->query($sql, $this->table, cRegistry::getDbTableName('area'));
 
         $actions = [];
 
@@ -174,9 +172,7 @@ class cApiAction extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-
-        parent::__construct($cfg['tab']['actions'], 'idaction');
+        parent::__construct(cRegistry::getDbTableName('actions'), 'idaction');
         $this->setFilters(['addslashes'], ['stripslashes']);
 
         if ($mId !== false) {
@@ -199,7 +195,7 @@ class cApiAction extends Item
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
              case 'relevant':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

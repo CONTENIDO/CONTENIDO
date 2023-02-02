@@ -29,8 +29,7 @@ class cApiTypeCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['type'], 'idtype');
+        parent::__construct(cRegistry::getDbTableName('type'), 'idtype');
         $this->_setItemClass('cApiType');
     }
 
@@ -51,9 +50,8 @@ class cApiTypeCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function create($type, $description, $code = '', $status = 0, $author = '', $created = '', $lastmodified = '') {
-        global $auth;
-
         if (empty($author)) {
+            $auth = cRegistry::getAuth();
             $author = $auth->auth['uname'];
         }
         if (empty($created)) {
@@ -97,8 +95,7 @@ class cApiType extends Item
      * @throws cException
      */
     public function __construct($id = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['type'], 'idtype');
+        parent::__construct(cRegistry::getDbTableName('type'), 'idtype');
         $this->setFilters([], []);
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
@@ -142,7 +139,7 @@ class cApiType extends Item
      */
     public function setField($name, $value, $safe = true) {
         if ('status' === $name) {
-            $value = (int) $value;
+            $value = cSecurity::toInteger($value);
         }
 
         return parent::setField($name, $value, $safe);

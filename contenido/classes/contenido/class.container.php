@@ -33,8 +33,7 @@ class cApiContainerCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct($select = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['container'], 'idcontainer');
+        parent::__construct(cRegistry::getDbTableName('container'), 'idcontainer');
         $this->_setItemClass('cApiContainer');
 
         // set the join partners so that joins can be used via link() method
@@ -135,8 +134,7 @@ class cApiContainer extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['container'], 'idcontainer');
+        parent::__construct(cRegistry::getDbTableName('container'), 'idcontainer');
         $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -158,7 +156,7 @@ class cApiContainer extends Item
             case 'idtpl':
             case 'number':
             case 'idmod':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

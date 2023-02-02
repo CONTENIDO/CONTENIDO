@@ -251,7 +251,7 @@ class cApiCategoryLanguage extends Item
             case 'idlang':
             case 'idtplcfg':
             case 'status':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

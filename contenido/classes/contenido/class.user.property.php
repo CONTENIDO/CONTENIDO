@@ -55,19 +55,15 @@ class cApiUserPropertyCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct($userId) {
-        $cfg = cRegistry::getConfig();
-        parent::__construct($cfg['tab']['user_prop'], 'iduserprop');
+        parent::__construct(cRegistry::getDbTableName('user_prop'), 'iduserprop');
         $this->_setItemClass('cApiUserProperty');
 
         // set the join partners so that joins can be used via link() method
         $this->_setJoinPartner('cApiUserCollection');
 
         if (!isset(self::$_enableCache)) {
-            if (isset($cfg['properties']) && isset($cfg['properties']['user_prop']) && isset($cfg['properties']['user_prop']['enable_cache'])) {
-                self::$_enableCache = (bool) $cfg['properties']['user_prop']['enable_cache'];
-            } else {
-                self::$_enableCache = false;
-            }
+            $cfg = cRegistry::getConfig();
+            self::$_enableCache = cSecurity::toBoolean($cfg['properties']['user_prop']['enable_cache'] ?? '0');
         }
 
         $this->setUserId($userId);
@@ -433,7 +429,7 @@ class cApiUserProperty extends Item
      */
     public function __construct($mId = false) {
         $cfg = cRegistry::getConfig();
-        parent::__construct($cfg['tab']['user_prop'], 'iduserprop');
+        parent::__construct(cRegistry::getDbTableName('user_prop'), 'iduserprop');
         $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -465,7 +461,7 @@ class cApiUserProperty extends Item
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
             case 'idcatlang':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

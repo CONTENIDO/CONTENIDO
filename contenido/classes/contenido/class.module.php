@@ -452,7 +452,7 @@ class cApiModule extends Item {
         }
 
         $cfg = cRegistry::getConfig();
-        $client = cRegistry::getClientId();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
         $lang = cRegistry::getLanguageId();
         return $this->parseModuleForStringsLoadFromFile($cfg, $client, $lang);
     }

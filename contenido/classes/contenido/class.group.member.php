@@ -29,8 +29,7 @@ class cApiGroupMemberCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['groupmembers'], 'idgroupuser');
+        parent::__construct(cRegistry::getDbTableName('groupmembers'), 'idgroupuser');
         $this->_setItemClass('cApiGroupMember');
 
         // set the join partners so that joins can be used via link() method
@@ -72,7 +71,7 @@ class cApiGroupMemberCollection extends ItemCollection {
      */
     public function deleteByUserId($userId) {
         $result = $this->deleteBy('user_id', $userId);
-        return ($result > 0) ? true : false;
+        return $result > 0;
     }
 
     /**
@@ -115,8 +114,7 @@ class cApiGroupMember extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['groupmembers'], 'idgroupuser');
+        parent::__construct(cRegistry::getDbTableName('groupmembers'), 'idgroupuser');
         $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);

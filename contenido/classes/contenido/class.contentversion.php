@@ -40,7 +40,7 @@ class cApiContentVersionCollection extends ItemCollection {
     /**
      * Creates a content version entry.
      *
-     * @param mixed[] $parameters {
+     * @param array $parameters
      *
      * @return cApiContentVersion
      * @throws cDbException
@@ -48,16 +48,15 @@ class cApiContentVersionCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function create(array $parameters) {
-        global $auth;
-
-        if (empty($author)) {
-            $author = $auth->auth['uname'];
+        if (empty($parameters['author'])) {
+            $auth = cRegistry::getAuth();
+            $parameters['author'] = $auth->auth['uname'];
         }
-        if (empty($created)) {
-            $created = date('Y-m-d H:i:s');
+        if (empty($parameters['created'])) {
+            $parameters['created'] = date('Y-m-d H:i:s');
         }
-        if (empty($lastmodified)) {
-            $lastmodified = date('Y-m-d H:i:s');
+        if (empty($parameters['lastmodified'])) {
+            $parameters['lastmodified'] = date('Y-m-d H:i:s');
         }
 
         $item = $this->createNewItem();
@@ -66,7 +65,7 @@ class cApiContentVersionCollection extends ItemCollection {
         foreach (array_keys($parameters) as $key) {
             $item->set($key, $parameters[$key]);
         }
-    $item->store();
+        $item->store();
 
         return $item;
     }
@@ -79,16 +78,14 @@ class cApiContentVersionCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      */
-    public function getIdsByWhereClause($where){
-
+    public function getIdsByWhereClause($where) {
         $this->select($where);
 
         $ids = [];
-        while($item = $this->next()){
+        while ($item = $this->next()) {
             $ids[] = $item->get('idcontentversion');
         }
         return $ids;
-
     }
 
 }
@@ -138,7 +135,6 @@ class cApiContentVersion extends Item
      * @throws cException
      */
     public function markAsCurrent() {
-
         // try to get item from database
         $content = new cApiContent();
         $succ = $content->loadByArticleLanguageIdTypeAndTypeId(
@@ -176,7 +172,6 @@ class cApiContentVersion extends Item
      * @throws cInvalidArgumentException
      */
     public function markAsEditable($version, $deleted) {
-
         // get parameters for editable version
         $parameters = $this->toArray();
         unset($parameters['idcontentversion']);
@@ -190,13 +185,12 @@ class cApiContentVersion extends Item
         }
 
         $contentVersion->store();
-
     }
 
     /**
      * Loads a content entry by its article language id, idtype, type id and version.
      *
-     * @param mixed $contentParameters []{
+     * @param array $contentParameters
      *
      * @return bool
      *
@@ -215,10 +209,13 @@ class cApiContentVersion extends Item
             $this->loadByRecordSet($recordSet);
             return true;
         } else {
-            $where = $this->db->prepare('idartlang = %d AND idtype = %d AND typeid = %d AND version <= %d GROUP BY pk desc LIMIT 1', $contentParameters['idartlang'], $contentParameters['idtype'], $contentParameters['typeid'], $contentParameters['version']);
+            $where = 'idartlang = %d AND idtype = %d AND typeid = %d AND version <= %d GROUP BY pk desc LIMIT 1';
+            $where = $this->db->prepare(
+                $where, $contentParameters['idartlang'], $contentParameters['idtype'],
+                $contentParameters['typeid'], $contentParameters['version']
+            );
             return $this->_loadByWhereClause($where);
         }
-
     }
 
 }

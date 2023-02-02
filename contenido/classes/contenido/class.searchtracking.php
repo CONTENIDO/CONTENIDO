@@ -28,8 +28,7 @@ class cApiSearchTrackingCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['search_tracking'], 'idsearchtracking');
+        parent::__construct(cRegistry::getDbTableName('search_tracking'), 'idsearchtracking');
 
         $this->_setItemClass('cApiSearchTracking');
     }
@@ -98,7 +97,11 @@ class cApiSearchTrackingCollection extends ItemCollection {
      * @deprecated Since 4.10.1, We can't use fields created by AVG or COUNT here! Result sets received by this function will contain all search term entries, not the cumulated ones.
      */
     public function selectPopularSearchTerms($idclient = 0, $idlang = 0) {
-        return $this->select('idclient=' . (($idclient == 0) ? cRegistry::getClientId() : $idclient) . ' AND idlang=' . (($idlang == 0) ? cRegistry::getLanguageId() : $idlang), 'searchterm, idsearchtracking, idclient, idlang, results, datesearched', 'COUNT(searchterm) DESC');
+        return $this->select('idclient=' . (($idclient == 0) ? cRegistry::getClientId() : $idclient)
+            . ' AND idlang=' . (($idlang == 0) ? cRegistry::getLanguageId() : $idlang),
+            'searchterm, idsearchtracking, idclient, idlang, results, datesearched',
+            'COUNT(searchterm) DESC'
+        );
     }
 
     /**
@@ -141,7 +144,9 @@ class cApiSearchTrackingCollection extends ItemCollection {
      * @throws cDbException
      */
     public function selectSearchTerm($term, $idclient = 0, $idlang = 0) {
-        return $this->select('searchterm=\'' . addslashes($term) . '\' AND idclient=' . (($idclient == 0) ? cRegistry::getClientId() : $idclient) . ' AND idlang=' . (($idlang == 0) ? cRegistry::getLanguageId() : $idlang), '', 'datesearched DESC');
+        return $this->select('searchterm=\'' . addslashes($term) . '\' AND idclient='
+            . (($idclient == 0) ? cRegistry::getClientId() : $idclient) . ' AND idlang='
+            . (($idlang == 0) ? cRegistry::getLanguageId() : $idlang), '', 'datesearched DESC');
     }
 
 }
@@ -164,8 +169,7 @@ class cApiSearchTracking extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['search_tracking'], 'idsearchtracking');
+        parent::__construct(cRegistry::getDbTableName('search_tracking'), 'idsearchtracking');
         $this->setFilters(['addslashes'], ['stripslashes']);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);

@@ -33,8 +33,7 @@ class cApiCategoryTreeCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct($select = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['cat_tree'], 'idtree');
+        parent::__construct(cRegistry::getDbTableName('cat_tree'), 'idtree');
 
         // set the join partners so that joins can be used via link() method
         $this->_setJoinPartner('cApiCategoryCollection');
@@ -71,8 +70,6 @@ class cApiCategoryTreeCollection extends ItemCollection {
      * @throws cDbException
      */
     function getCategoryTreeStructureByClientIdAndLanguageId($client, $lang) {
-        global $cfg;
-
         $aCatTree = [];
 
         $sql = 'SELECT * FROM `:cat_tree` AS A, `:cat` AS B, `:cat_lang` AS C ' . 'WHERE A.idcat = B.idcat AND B.idcat = C.idcat AND C.idlang = :idlang AND idclient = :idclient ' . 'ORDER BY idtree';
@@ -81,8 +78,8 @@ class cApiCategoryTreeCollection extends ItemCollection {
             $sql,
             [
                 'cat_tree' => $this->table,
-                'cat'      => $cfg['tab']['cat'],
-                'cat_lang' => $cfg['tab']['cat_lang'],
+                'cat'      => cRegistry::getDbTableName('cat'),
+                'cat_lang' => cRegistry::getDbTableName('cat_lang'),
                 'idlang'   => (int)$lang,
                 'idclient' => (int)$client,
             ]
@@ -123,8 +120,7 @@ class cApiCategoryTree extends Item {
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['cat_tree'], 'idtree');
+        parent::__construct(cRegistry::getDbTableName('cat_tree'), 'idtree');
         $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);

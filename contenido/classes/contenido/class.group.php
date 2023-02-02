@@ -19,7 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
- * @method cApiGroup createNewItem
+ * @method cApiGroup createNewItem($data)
  * @method cApiGroup|bool next
  */
 class cApiGroupCollection extends ItemCollection {
@@ -29,8 +29,7 @@ class cApiGroupCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['groups'], 'group_id');
+        parent::__construct(cRegistry::getDbTableName('groups'), 'group_id');
         $this->_setItemClass('cApiGroup');
     }
 
@@ -49,7 +48,6 @@ class cApiGroupCollection extends ItemCollection {
     public function create($groupname, $perms, $description) {
         $primaryKeyValue = md5($groupname . time());
 
-        /** @var cApiGroup $item */
         $item = $this->createNewItem($primaryKeyValue);
         if (!is_object($item)) {
             return false;
@@ -75,14 +73,12 @@ class cApiGroupCollection extends ItemCollection {
      * @throws cException
      */
     public function fetchByUserID($userid) {
-        global $cfg;
-
         $aIds    = [];
         $aGroups = [];
 
         $sql = "SELECT a.group_id FROM `%s` AS a, `%s` AS b " . "WHERE (a.group_id  = b.group_id) AND (b.user_id = '%s')";
 
-        $this->db->query($sql, $this->table, $cfg['tab']['groupmembers'], $userid);
+        $this->db->query($sql, $this->table, cRegistry::getDbTableName('groupmembers'), $userid);
         $this->_lastSQL = $sql;
 
         while ($this->db->nextRecord()) {
@@ -117,7 +113,7 @@ class cApiGroupCollection extends ItemCollection {
     public function deleteGroupByGroupname($groupname) {
         $groupname = cApiGroup::prefixedGroupName($groupname);
         $result = $this->deleteBy('groupname', $groupname);
-        return ($result > 0) ? true : false;
+        return $result > 0;
     }
 
     /**
@@ -214,8 +210,7 @@ class cApiGroup extends Item {
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['groups'], 'group_id');
+        parent::__construct(cRegistry::getDbTableName('groups'), 'group_id');
         $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);

@@ -30,11 +30,9 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
      *
      * @throws cDbException
      * @throws cInvalidArgumentException
-     * @global array      $cfg
      */
     public function __construct($where = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['user_pw_request'], 'id_pwreq');
+        parent::__construct(cRegistry::getDbTableName('user_pw_request'), 'id_pwreq');
         $this->_setItemClass('cApiUserPasswordRequest');
         if ($where !== false) {
             $this->select($where);
@@ -90,7 +88,7 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
      */
     public function deleteByUserId($userid) {
         $result = $this->deleteBy('user_id', $userid);
-        return ($result > 0) ? true : false;
+        return $result > 0;
     }
 
     /**
@@ -106,7 +104,7 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
      */
     public function deleteByToken($token) {
         $result = $this->deleteBy('validation_token', $token);
-        return ($result > 0) ? true : false;
+        return $result > 0;
     }
 
     /**
@@ -179,8 +177,7 @@ class cApiUserPasswordRequest extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['user_pw_request'], 'id_pwreq');
+        parent::__construct(cRegistry::getDbTableName('user_pw_request'), 'id_pwreq');
         $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);

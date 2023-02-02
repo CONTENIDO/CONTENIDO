@@ -20,7 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
- * @method cApiUser createNewItem
+ * @method cApiUser createNewItem($data)
  * @method cApiUser|bool next
  */
 class cApiUserCollection extends ItemCollection {
@@ -33,11 +33,9 @@ class cApiUserCollection extends ItemCollection {
      *
      * @throws cDbException
      * @throws cInvalidArgumentException
-     * @global array      $cfg
      */
     public function __construct($where = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['user'], 'user_id');
+        parent::__construct(cRegistry::getDbTableName('user'), 'user_id');
         $this->_setItemClass('cApiUser');
         if ($where !== false) {
             $this->select($where);
@@ -83,7 +81,7 @@ class cApiUserCollection extends ItemCollection {
      */
     public function deleteUserByUsername($username) {
         $result = $this->deleteBy('username', $username);
-        return ($result > 0) ? true : false;
+        return $result > 0;
     }
 
     /**
@@ -393,8 +391,7 @@ class cApiUser extends Item {
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['user'], 'user_id');
+        parent::__construct(cRegistry::getDbTableName('user'), 'user_id');
         $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -475,10 +472,9 @@ class cApiUser extends Item {
      *         One of defined PASS_* constants (PASS_OK if everything was ok)
      */
     public static function checkPasswordMask($password) {
-        global $cfg;
-
         $iResult = self::PASS_OK;
 
+        $cfg = cRegistry::getConfig();
         $cfgPw = $cfg['password'];
 
         if (!isset($cfgPw['check_password_mask']) || $cfgPw['check_password_mask'] == false) {
@@ -497,19 +493,20 @@ class cApiUser extends Item {
             $iResult = self::PASS_TO_SHORT;
         }
 
-        // check password elements
-        // numbers.....
-        if ($iResult == self::PASS_OK && isset($cfgPw['numbers_mandatory']) && (int) $cfgPw['numbers_mandatory'] > 0) {
+        // check password elements numbers.....
+        $iNumbersMandatory = cSecurity::toInteger($cfgPw['numbers_mandatory'] ?? '0');
+        if ($iResult == self::PASS_OK && $iNumbersMandatory > 0) {
             $aNumbersInPassword = [];
             preg_match_all('/[0-9]/', $password, $aNumbersInPassword);
 
-            if (count($aNumbersInPassword[0]) < (int) $cfgPw['numbers_mandatory']) {
+            if (count($aNumbersInPassword[0]) < $iNumbersMandatory) {
                 $iResult = self::PASS_NOT_ENOUGH_NUMBERS;
             }
         }
 
         // symbols....
-        if ($iResult == self::PASS_OK && isset($cfgPw['symbols_mandatory']) && (int) $cfgPw['symbols_mandatory'] > 0) {
+        $iSymbolsMandatory = cSecurity::toInteger($cfgPw['symbols_mandatory'] ?? '0');
+        if ($iResult == self::PASS_OK && $iSymbolsMandatory > 0) {
             $aSymbols = [];
             $sSymbolsDefault = "/[|!@#$%&*\/=?,;.:\-_+~^¨\\\]/";
             if (isset($cfgPw['symbols_regex']) && !empty($cfgPw['symbols_regex'])) {
@@ -518,20 +515,21 @@ class cApiUser extends Item {
 
             preg_match_all($sSymbolsDefault, $password, $aSymbols);
 
-            if (count($aSymbols[0]) < (int) $cfgPw['symbols_mandatory']) {
+            if (count($aSymbols[0]) < $iSymbolsMandatory) {
                 $iResult = self::PASS_NOT_ENOUGH_SYMBOLS;
             }
         }
 
         // mixed case??
-        if ($iResult == self::PASS_OK && isset($cfgPw['mixed_case_mandatory']) && (int) $cfgPw['mixed_case_mandatory'] > 0) {
+        $MixedCaseMandatory = cSecurity::toInteger($cfgPw['mixed_case_mandatory'] ?? '0');
+        if ($iResult == self::PASS_OK && $MixedCaseMandatory > 0) {
             $aLowerCaseChars = [];
             $aUpperCaseChars = [];
 
             preg_match_all('/[a-z]/', $password, $aLowerCaseChars);
             preg_match_all('/[A-Z]/', $password, $aUpperCaseChars);
 
-            if ((count($aLowerCaseChars[0]) < (int) $cfgPw['mixed_case_mandatory']) || (count($aUpperCaseChars[0]) < (int) $cfgPw['mixed_case_mandatory'])) {
+            if ((count($aLowerCaseChars[0]) < $MixedCaseMandatory) || (count($aUpperCaseChars[0]) < $MixedCaseMandatory)) {
                 $iResult = self::PASS_NOT_ENOUGH_MIXED_CHARS;
             }
         }
@@ -934,8 +932,6 @@ class cApiUser extends Item {
      *         Current users permissions
      */
     public function getEffectiveUserPerms() {
-        global $perm;
-
         // first get users own permissions and filter them into result array
         // $aUserPerms
         $aUserPerms     = [];
@@ -947,6 +943,7 @@ class cApiUser extends Item {
         }
 
         // get all corresponding groups for this user
+        $perm = $this->_getPermInstance();
         $groups = $perm->getGroupsForUser($this->values['user_id']);
 
         foreach ($groups as $value) {
@@ -954,7 +951,7 @@ class cApiUser extends Item {
             $oGroup = new cApiGroup($value);
             $aGroupPerms = $oGroup->getPermsArray();
 
-            // add group permissions to $aUserPerms if they were not alredy
+            // add group permissions to $aUserPerms if they were not already
             // defined before
             foreach ($aGroupPerms as $sPerm) {
                 if (trim($sPerm) != '' && !in_array($sPerm, $aUserPerms)) {
@@ -1041,16 +1038,11 @@ class cApiUser extends Item {
      * @throws cException
      */
     public function getUserProperty($type, $name, $group = false) {
-        global $perm;
-
-        if (!is_object($perm)) {
-            $perm = new cPermission();
-        }
-
         $result = false;
 
-        if ($group == true) {
+        if ($group) {
             // first get property by existing groups, if desired
+            $perm = $this->_getPermInstance();
             $groups = $perm->getGroupsForUser($this->values['user_id']);
 
             foreach ($groups as $groupid) {
@@ -1082,7 +1074,7 @@ class cApiUser extends Item {
      * @param bool   $group [optional]
      *                      Flag to retrieve in group properties. If enabled, group
      *                      properties will be merged with user properties where the user
-     *                      poperties will overwrite group properties
+     *                      properties will overwrite group properties
      * @return array
      *                      Assoziative properties array as follows:
      *                      - $arr[name] = value
@@ -1090,16 +1082,11 @@ class cApiUser extends Item {
      * @throws cException
      */
     public function getUserPropertiesByType($type, $group = false) {
-        global $perm;
-
-        if (!is_object($perm)) {
-            $perm = new cPermission();
-        }
-
         $props = [];
 
-        if ($group == true) {
+        if ($group) {
             // first get properties by existing groups, if desired
+            $perm = $this->_getPermInstance();
             $groups = $perm->getGroupsForUser($this->values['user_id']);
             foreach ($groups as $groupid) {
                 $groupPropColl = new cApiGroupPropertyCollection($groupid);
@@ -1194,9 +1181,7 @@ class cApiUser extends Item {
      * @return string
      */
     public static function getErrorString($iErrorCode) {
-        global $cfg;
-
-        $sError = '';
+        $cfg = cRegistry::getConfig();
 
         switch ($iErrorCode) {
             case self::PASS_NOT_ENOUGH_MIXED_CHARS:
@@ -1212,7 +1197,7 @@ class cApiUser extends Item {
                 $sError = sprintf(i18n('Password is too short! Please use at least %d signs.'), ($cfg['password']['min_length'] > 0? $cfg['password']['min_length'] : self::MIN_PASS_LENGTH_DEFAULT));
                 break;
             case self::PASS_NOT_ENOUGH_DIFFERENT_CHARS:
-                $sError = sprintf(i18n('Password does not contain enough different characters.'));
+                $sError = i18n('Password does not contain enough different characters.');
                 break;
             case self::PASS_NOT_STRONG:
                 $sError = i18n('Please choose a more secure password!');
@@ -1224,4 +1209,18 @@ class cApiUser extends Item {
 
         return $sError;
     }
+
+    /**
+     * Returns permission instance, either the global one or a new created.
+     *
+     * @return cPermission
+     */
+    private function _getPermInstance() {
+        $perm = cRegistry::getPerm();
+        if (!is_object($perm)) {
+            $perm = new cPermission();
+        }
+        return $perm;
+    }
+
 }

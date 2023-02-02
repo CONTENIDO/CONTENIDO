@@ -28,8 +28,7 @@ class cApiArticleSpecificationCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['art_spec'], 'idartspec');
+        parent::__construct(cRegistry::getDbTableName('art_spec'), 'idartspec');
         $this->_setItemClass('cApiArticleSpecification');
     }
 
@@ -74,8 +73,7 @@ class cApiArticleSpecification extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['art_spec'], 'idartspec');
+        parent::__construct(cRegistry::getDbTableName('art_spec'), 'idartspec');
         $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);

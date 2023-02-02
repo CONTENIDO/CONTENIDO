@@ -33,8 +33,7 @@ class cApiTemplateCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct($select = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['tpl'], 'idtpl');
+        parent::__construct(cRegistry::getDbTableName('tpl'), 'idtpl');
         $this->_setItemClass('cApiTemplate');
 
         // set the join partners so that joins can be used via link() method
@@ -104,7 +103,7 @@ class cApiTemplateCollection extends ItemCollection {
      * Returns the default template configuration item
      *
      * @param int $idclient
-     * @return cApiTemplateConfiguration|NULL
+     * @return cApiTemplateConfiguration|bool
      * @throws cDbException
      * @throws cException
      */
@@ -149,8 +148,7 @@ class cApiTemplate extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['tpl'], 'idtpl');
+        parent::__construct(cRegistry::getDbTableName('tpl'), 'idtpl');
         $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -175,7 +173,6 @@ class cApiTemplate extends Item
      * @throws cException
      */
     public function loadByArticleOrCategory($idart, $idcat, $lang, $client) {
-
         // get ID of template configuration that is used for
         // either the article language or the category language
         $idtplcfg = conGetTemplateConfigurationIdForArticle($idart, $idcat, $lang, $client);
@@ -218,7 +215,7 @@ class cApiTemplate extends Item
                 break;
             case 'idclient':
             case 'idlay':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
             case 'idtplcfg':
                 if (!is_numeric($value)) {

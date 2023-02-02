@@ -28,8 +28,7 @@ class cApiAreaCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['area'], 'idarea');
+        parent::__construct(cRegistry::getDbTableName('area'), 'idarea');
         $this->_setItemClass('cApiArea');
     }
 
@@ -231,8 +230,7 @@ class cApiArea extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['area'], 'idarea');
+        parent::__construct(cRegistry::getDbTableName('area'), 'idarea');
         $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -250,13 +248,9 @@ class cApiArea extends Item
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
-            case 'relevant':
-                $value = ($value == 1) ? 1 : 0;
-                break;
             case 'online':
-                $value = ($value == 1) ? 1 : 0;
-                break;
             case 'menuless':
+            case 'relevant':
                 $value = ($value == 1) ? 1 : 0;
                 break;
         }

@@ -29,8 +29,7 @@ class cApiLayoutCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['lay'], 'idlay');
+        parent::__construct(cRegistry::getDbTableName('lay'), 'idlay');
         $this->_setItemClass('cApiLayout');
 
         // set the join partners so that joins can be used via link() method
@@ -56,10 +55,8 @@ class cApiLayoutCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function create($name, $idclient = NULL, $alias = '', $description = '', $deletable = 1, $author = '', $created = '', $lastmodified = '') {
-        global $client, $auth;
-
         if (NULL === $idclient) {
-            $idclient = $client;
+            $idclient = cRegistry::getClientId();
         }
 
         if (empty($alias)) {
@@ -67,6 +64,7 @@ class cApiLayoutCollection extends ItemCollection {
         }
 
         if (empty($author)) {
+            $auth = cRegistry::getAuth();
             $author = $auth->auth['uname'];
         }
         if (empty($created)) {
@@ -117,8 +115,7 @@ class cApiLayout extends Item {
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['lay'], 'idlay');
+        parent::__construct(cRegistry::getDbTableName('lay'), 'idlay');
         $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -183,7 +180,7 @@ class cApiLayout extends Item {
                 $value = ($value == 1) ? 1 : 0;
                 break;
             case 'idclient':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

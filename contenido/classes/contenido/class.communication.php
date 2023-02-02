@@ -29,8 +29,7 @@ class cApiCommunicationCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['communications'], 'idcommunication');
+        parent::__construct(cRegistry::getDbTableName('communications'), 'idcommunication');
         $this->_setItemClass('cApiCommunication');
 
         // set the join partners so that joins can be used via link() method
@@ -46,7 +45,9 @@ class cApiCommunicationCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function create() {
-        global $auth, $client;
+        $auth = cRegistry::getAuth();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
+
         $item = $this->createNewItem();
 
         $item->set('idclient', $client);
@@ -75,8 +76,7 @@ class cApiCommunication extends Item {
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['communications'], 'idcommunication');
+        parent::__construct(cRegistry::getDbTableName('communications'), 'idcommunication');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -89,7 +89,7 @@ class cApiCommunication extends Item {
      * @return bool
      */
     public function store() {
-        global $auth;
+        $auth = cRegistry::getAuth();
         $this->set('modifiedby', $auth->auth['uid']);
         $this->set('modified', date('Y-m-d H:i:s'), false);
 
@@ -97,7 +97,7 @@ class cApiCommunication extends Item {
     }
 
     /**
-     * User-defined setter for communcation fields.
+     * User-defined setter for communication fields.
      *
      * @param string $name
      * @param mixed $value
@@ -108,7 +108,7 @@ class cApiCommunication extends Item {
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
             case 'idclient':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

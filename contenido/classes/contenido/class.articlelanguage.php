@@ -512,7 +512,7 @@ class cApiArticleLanguage extends Item {
             case 'searchable':
             case 'artsort':
             case 'status':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
             case 'redirect_url':
                 $value = ($value == 'http://' || $value == '') ? '0' : $value;

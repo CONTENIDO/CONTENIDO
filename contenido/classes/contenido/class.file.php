@@ -29,8 +29,7 @@ class cApiFileCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['files'], 'idfile');
+        parent::__construct(cRegistry::getDbTableName('files'), 'idfile');
         $this->_setItemClass('cApiFile');
 
         // set the join partners so that joins can be used via link() method
@@ -97,8 +96,7 @@ class cApiFile extends Item {
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['files'], 'idfile');
+        parent::__construct(cRegistry::getDbTableName('files'), 'idfile');
         $this->setFilters(['addslashes'], ['stripslashes']);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);

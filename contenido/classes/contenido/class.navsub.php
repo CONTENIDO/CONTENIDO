@@ -29,8 +29,7 @@ class cApiNavSubCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['nav_sub'], 'idnavs');
+        parent::__construct(cRegistry::getDbTableName('nav_sub'), 'idnavs');
         $this->_setItemClass('cApiNavSub');
 
         // set the join partners so that joins can be used via link() method
@@ -101,8 +100,6 @@ class cApiNavSubCollection extends ItemCollection {
      * @throws cException
      */
     public function getSubnavigationsByAreaName($area, $level = 1, $online = 1) {
-        global $cfg;
-
         $level = (int) $level;
         $online = (1 == $online) ? 1 : 0;
 
@@ -113,7 +110,7 @@ class cApiNavSubCollection extends ItemCollection {
                     a.name AS name,
                     a.menuless AS menuless
                 FROM
-                    " . $cfg['tab']['area'] . " AS a,
+                    " . cRegistry::getDbTableName('area') . " AS a,
                     " . $this->table . " AS ns
                 WHERE
                     a.idarea = ns.idarea
@@ -161,8 +158,7 @@ class cApiNavSub extends Item {
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['nav_sub'], 'idnavs');
+        parent::__construct(cRegistry::getDbTableName('nav_sub'), 'idnavs');
         $this->setFilters(['addslashes'], ['stripslashes']);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -183,7 +179,7 @@ class cApiNavSub extends Item {
             case 'idarea':
             case 'idnavm':
             case 'level':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
             case 'online':
                 $value = (1 == $value) ? 1 : 0;

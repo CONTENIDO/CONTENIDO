@@ -29,8 +29,7 @@ class cApiNavMainCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['nav_main'], 'idnavm');
+        parent::__construct(cRegistry::getDbTableName('nav_main'), 'idnavm');
         $this->_setItemClass('cApiNavMain');
     }
 
@@ -78,8 +77,7 @@ class cApiNavMain extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['nav_main'], 'idnavm');
+        parent::__construct(cRegistry::getDbTableName('nav_main'), 'idnavm');
         $this->setFilters(['addslashes'], ['stripslashes']);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);

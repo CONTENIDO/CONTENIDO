@@ -29,8 +29,7 @@ class cApiUploadMetaCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['upl_meta'], 'id_uplmeta');
+        parent::__construct(cRegistry::getDbTableName('upl_meta'), 'id_uplmeta');
         $this->_setItemClass('cApiUploadMeta');
 
         // set the join partners so that joins can be used via link() method
@@ -56,14 +55,13 @@ class cApiUploadMetaCollection extends ItemCollection {
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
-     * @global object $auth
      */
     public function create($idupl, $idlang, $medianame = '', $description = '',
             $keywords = '', $internal_notice = '', $copyright = '', $author = '',
             $created = '', $modified = '', $modifiedby = '') {
-        global $auth;
 
         if (empty($author)) {
+            $auth = cRegistry::getAuth();
             $author = $auth->auth['uname'];
         }
         if (empty($created)) {
@@ -110,8 +108,7 @@ class cApiUploadMeta extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['upl_meta'], 'id_uplmeta');
+        parent::__construct(cRegistry::getDbTableName('upl_meta'), 'id_uplmeta');
         $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -158,7 +155,7 @@ class cApiUploadMeta extends Item
         switch ($name) {
             case 'idupl':
             case 'idlang':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

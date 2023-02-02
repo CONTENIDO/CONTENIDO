@@ -29,8 +29,7 @@ class cApiMailLogCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['mail_log'], 'idmail');
+        parent::__construct(cRegistry::getDbTableName('mail_log'), 'idmail');
         $this->_setItemClass('cApiMailLog');
     }
 
@@ -96,8 +95,7 @@ class cApiMailLog extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['mail_log'], 'idmail');
+        parent::__construct(cRegistry::getDbTableName('mail_log'), 'idmail');
         $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);

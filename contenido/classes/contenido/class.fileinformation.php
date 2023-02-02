@@ -31,8 +31,7 @@ class cApiFileInformationCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['file_information'], 'idsfi');
+        parent::__construct(cRegistry::getDbTableName('file_information'), 'idsfi');
         $this->_setItemClass('cApiFileInformation');
     }
 
@@ -56,7 +55,7 @@ class cApiFileInformationCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function create($typeContent, $filename, $description = '') {
-        $client = cRegistry::getClientId();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
         $auth = cRegistry::getAuth();
         $item = new cApiFileInformation();
         $item->loadByMany(
@@ -110,7 +109,7 @@ class cApiFileInformationCollection extends ItemCollection {
      */
     public function updateFile($filename, $typeContent, $description = '', $newFilename = '', $author = '') {
         $auth = cRegistry::getAuth();
-        $client = cRegistry::getClientId();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
         $item = new cApiFileInformation();
         $item->loadByMany(
             [
@@ -169,7 +168,7 @@ class cApiFileInformationCollection extends ItemCollection {
      * @throws cException
      */
     public function getFileInformation($filename, $type) {
-        $client = cRegistry::getClientId();
+        $client = cSecurity::toInteger(cRegistry::getClientId());
         $fileInformation = [];
         $item = new cApiFileInformation();
         $item->loadByMany(
@@ -208,8 +207,7 @@ class cApiFileInformation extends Item
      * @throws cException
      */
     public function __construct($id = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['file_information'], 'idsfi');
+        parent::__construct(cRegistry::getDbTableName('file_information'), 'idsfi');
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }

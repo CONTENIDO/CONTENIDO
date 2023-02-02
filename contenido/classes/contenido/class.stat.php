@@ -29,8 +29,7 @@ class cApiStatCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function __construct() {
-        global $cfg;
-        parent::__construct($cfg['tab']['stat'], 'idstat');
+        parent::__construct(cRegistry::getDbTableName('stat'), 'idstat');
         $this->_setItemClass('cApiStat');
 
         // set the join partners so that joins can be used via link() method
@@ -41,7 +40,7 @@ class cApiStatCollection extends ItemCollection {
 
     /**
      * Tracks a visit.
-     * Increments a existing entry or creates a new one.
+     * Increments an existing entry or creates a new one.
      *
      * @param int $iIdCatArt
      * @param int $iIdLang
@@ -95,7 +94,8 @@ class cApiStatCollection extends ItemCollection {
      * @throws cException
      */
     public function fetchByCatArtAndLang($iIdCatArt, $iIdLang) {
-        $this->select('idcatart=' . (int) $iIdCatArt . ' AND idlang=' . (int) $iIdLang);
+        $where = $this->db->prepare('idcatart = %d AND idlang = %d', $iIdCatArt, $iIdLang);
+        $this->select($where);
         return $this->next();
     }
 
@@ -110,7 +110,7 @@ class cApiStatCollection extends ItemCollection {
      * @throws cInvalidArgumentException
      */
     public function deleteByCategoryArticleAndLanguage($idcatart, $idlang) {
-        $where = 'idcatart = ' . (int) $idcatart . ' AND idlang = ' . (int) $idlang;
+        $where = $this->db->prepare('idcatart = %d AND idlang = %d', $idcatart, $idlang);
         return $this->deleteByWhereClause($where);
     }
 }
@@ -133,8 +133,7 @@ class cApiStat extends Item
      * @throws cException
      */
     public function __construct($mId = false) {
-        global $cfg;
-        parent::__construct($cfg['tab']['stat'], 'idstat');
+        parent::__construct(cRegistry::getDbTableName('stat'), 'idstat');
         $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -163,17 +162,11 @@ class cApiStat extends Item
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
-            case 'visited':
-                $value = (int) $value;
-                break;
             case 'idcatart':
-                $value = (int) $value;
-                break;
             case 'idlang':
-                $value = (int) $value;
-                break;
             case 'idclient':
-                $value = (int) $value;
+            case 'visited':
+                $value = cSecurity::toInteger($value);
                 break;
         }
 
