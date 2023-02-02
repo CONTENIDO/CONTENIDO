@@ -105,7 +105,7 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
     public function getUsersInGroup($idfrontendgroup, $asObjects = true) {
         $this->select('idfrontendgroup = ' . (int) $idfrontendgroup);
 
-        $objects = array();
+        $objects = [];
 
         while (($item = $this->next()) !== false) {
             if ($asObjects) {

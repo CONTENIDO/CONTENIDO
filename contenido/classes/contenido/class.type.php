@@ -99,7 +99,7 @@ class cApiType extends Item
     public function __construct($id = false) {
         global $cfg;
         parent::__construct($cfg['tab']['type'], 'idtype');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }
@@ -116,9 +116,9 @@ class cApiType extends Item
      * @throws cException
      */
     public function loadByType($type) {
-        $aProps = array(
-            'type' => $type
-        );
+        $aProps = [
+            'type' => $type,
+        ];
         $aRecordSet = $this->_oCache->getItemByProperties($aProps);
         if ($aRecordSet) {
             // entry in cache found, load entry from cache

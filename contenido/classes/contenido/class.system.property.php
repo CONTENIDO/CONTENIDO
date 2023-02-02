@@ -178,7 +178,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
         }
 
         $this->select('', '', $this->escape($orderBy));
-        $props = array();
+        $props = [];
         while (($property = $this->next()) !== false) {
             $props[] = clone $property;
         }
@@ -242,7 +242,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
 
         $sql = $this->db->prepare("type = '%s'", $type);
         $this->select($sql);
-        $props = array();
+        $props = [];
         while (($property = $this->next()) !== false) {
             $props[] = clone $property;
         }
@@ -312,7 +312,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @throws cException
      */
     protected function _loadFromCache() {
-        self::$_entries = array();
+        self::$_entries = [];
         $this->select();
         while (($property = $this->next()) !== false) {
             $data = $property->toArray();
@@ -336,8 +336,8 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @return array
      */
     protected function _fetchAllFromCache() {
-        $props = array();
-        $obj = new cApiSystemProperty();
+        $props = [];
+        $obj   = new cApiSystemProperty();
         foreach (self::$_entries as $entry) {
             $obj->loadByRecordSet($entry);
             $props[] = clone $obj;
@@ -387,8 +387,8 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @return array
      */
     protected function _fetchByTypeFromCache($type) {
-        $props = array();
-        $obj = new cApiSystemProperty();
+        $props = [];
+        $obj   = new cApiSystemProperty();
         foreach (self::$_entries as $entry) {
             if ($entry['type'] == $type) {
                 $obj->loadByRecordSet($entry);
@@ -443,7 +443,7 @@ class cApiSystemProperty extends Item
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['system_prop'], 'idsystemprop');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

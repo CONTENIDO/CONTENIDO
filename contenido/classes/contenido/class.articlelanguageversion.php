@@ -187,7 +187,7 @@ class cApiArticleLanguageVersionCollection extends cApiArticleLanguageCollection
  * available
  * content of this type. The array has the following schema:
  *
- * array(number => content);
+ * [number => content];
  *
  * $headlines = $obj->getContent("htmlhead");
  *
@@ -250,7 +250,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
         $sPrimaryKey = 'idartlangversion';
         Item::__construct($sTable, $sPrimaryKey);
 
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
             if (true === $fetchContent) {
@@ -269,10 +269,10 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
      * @throws cInvalidArgumentException
      */
     public function markAsCurrentVersion($isCurrentVersion){
-        $attributes = array(
-            'idartlang' => $this->get('idartlang'),
-            'iscurrentversion' => $isCurrentVersion
-        );
+        $attributes = [
+            'idartlang'        => $this->get('idartlang'),
+            'iscurrentversion' => $isCurrentVersion,
+        ];
         if ($isCurrentVersion == 1) {
             $artLangVersion = new cApiArticleLanguageVersion();
             if ($artLangVersion->loadByMany($attributes)) {
@@ -353,12 +353,12 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
                 foreach ($this->content AS $typeName => $typeids) {
                     foreach ($typeids AS $typeid => $value) {
                         $ctype->loadByType($typeName);
-                        $contentParameters = array(
+                        $contentParameters = [
                             'idartlang' => $this->get('idartlang'),
-                            'idtype' => $ctype->get('idtype'),
-                            'typeid' => $typeid,
-                            'version' => $this->get('version')
-                        );
+                            'idtype'    => $ctype->get('idtype'),
+                            'typeid'    => $typeid,
+                            'version'   => $this->get('version'),
+                        ];
                         $contentVersion->loadByArticleLanguageIdTypeTypeIdAndVersion($contentParameters);
                         $contentVersion->markAsCurrent();
                     }
@@ -429,7 +429,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
             $this->_getArticleVersionContent();
 
             // get all Content Versions
-            $mergedContent = array();
+            $mergedContent = [];
             foreach ($this->content AS $typeName => $typeids) {
                 foreach ($typeids AS $typeid => $value) {
                     $mergedContent[$typeName][$typeid] = '';
@@ -445,27 +445,28 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
                 foreach ($typeids AS $typeid => $value) {
                     $apiType->loadByType($typeName);
                     if (isset($this->content[$typeName][$typeid])) {
-                        $contentParameters = array(
+                        $contentParameters = [
                             'idartlang' => $this->get('idartlang'),
-                            'idtype' => $apiType->get('idtype'),
-                            'typeid' => $typeid,
-                            'version' => $this->get('version')
-                        );
+                            'idtype'    => $apiType->get('idtype'),
+                            'typeid'    => $typeid,
+                            'version'   => $this->get('version'),
+                        ];
                         $contentVersion->loadByArticleLanguageIdTypeTypeIdAndVersion($contentParameters);
 
                         if (isset($contentVersion)) {
                             $contentVersion->markAsEditable($artLangVersion->get('version'), 0);
                         }
-                    } else { // muss bleiben, um contents zu löschen;
-                    //      vorsicht bei "als entwurf nutzen" wenn artikelversion jünger als contentversion
-                        $contentParameters = array(
+                    } else {
+                        // muss bleiben, um contents zu löschen;
+                        // vorsicht bei "als entwurf nutzen" wenn artikelversion jünger als contentversion
+                        $contentParameters = [
                             'idartlang' => $artLangVersion->get('idartlang'),
-                            'idtype' => $apiType->get('idtype'),
-                            'typeid' => $typeid,
-                            'version' => $artLangVersion->get('version'),
-                            'author' => $this->get('author'),
-                            'deleted' => 1
-                        );
+                            'idtype'    => $apiType->get('idtype'),
+                            'typeid'    => $typeid,
+                            'version'   => $artLangVersion->get('version'),
+                            'author'    => $this->get('author'),
+                            'deleted'   => 1,
+                        ];
                         $contentVersionColl = new cApiContentVersionCollection();
                         $contentVersionColl->create($contentParameters);
                     }
@@ -529,10 +530,10 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
     public function loadByArticleLanguageIdAndVersion($idArtLang, $version, $fetchContent = false) {
         $result = true;
         if (!$this->isLoaded()) {
-            $props = array(
+            $props = [
                 'idartlang' => $idArtLang,
-                'version' => $version
-            );
+                'version'   => $version,
+            ];
             $recordSet = $this->_oCache->getItemByProperties($props);
             if ($recordSet) {
                 // entry in cache found, load entry from cache
@@ -615,7 +616,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
             $this->get('idartlang')
         );
 
-        $this->content = array();
+        $this->content = [];
         while ($this->db->nextRecord()) {
             $this->content[cString::toLowerCase($this->db->f('type'))][$this->db->f('typeid')] = $this->db->f('value');
         }
@@ -625,7 +626,7 @@ class cApiArticleLanguageVersion extends cApiArticleLanguage {
     /**
      * Get content(s) from an article version.
      *
-     * Returns the specified content element or an array("id"=>"value") if the
+     * Returns the specified content element or an ["id"=>"value"] if the
      * second parameter is omitted.
      *
      * Legal content type string are defined in the CONTENIDO system table

@@ -123,7 +123,7 @@ class cApiTemplateCollection extends ItemCollection {
      */
     public function fetchByIdLay($idlay) {
         $this->select('idlay = ' . (int) $idlay);
-        $entries = array();
+        $entries = [];
         while (($entry = $this->next()) !== false) {
             $entries[] = clone $entry;
         }
@@ -151,7 +151,7 @@ class cApiTemplate extends Item
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['tpl'], 'idtpl');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

@@ -112,7 +112,7 @@ class cApiUploadMeta extends Item
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['upl_meta'], 'id_uplmeta');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -129,10 +129,10 @@ class cApiUploadMeta extends Item
      * @throws cException
      */
     public function loadByUploadIdAndLanguageId($idupl, $idlang) {
-        $aProps = array(
-            'idupl' => $idupl,
-            'idlang' => $idlang
-        );
+        $aProps     = [
+            'idupl'  => $idupl,
+            'idlang' => $idlang,
+        ];
         $aRecordSet = $this->_oCache->getItemByProperties($aProps);
         if ($aRecordSet) {
             // entry in cache found, load entry from cache

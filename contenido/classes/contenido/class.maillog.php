@@ -98,7 +98,7 @@ class cApiMailLog extends Item
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['mail_log'], 'idmail');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

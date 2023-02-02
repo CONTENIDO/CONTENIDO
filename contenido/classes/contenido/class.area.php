@@ -233,7 +233,7 @@ class cApiArea extends Item
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['area'], 'idarea');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

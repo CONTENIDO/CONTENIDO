@@ -60,7 +60,7 @@ class cApiIso6392 extends Item {
      */
     public function __construct($mId = false) {
         parent::__construct(cRegistry::getDbTableName('iso_639_2'), 'iso');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

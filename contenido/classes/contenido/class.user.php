@@ -101,8 +101,8 @@ class cApiUserCollection extends ItemCollection {
      * @throws cException
      */
     public function fetchAccessibleUsers($perms, $includeAdmins = false, $orderBy = '') {
-        $users = array();
-        $limit = array();
+        $users = [];
+        $limit = [];
         $where = '';
 
         if (!in_array('sysadmin', $perms)) {
@@ -161,13 +161,13 @@ class cApiUserCollection extends ItemCollection {
      * @throws cException
      */
     public function getAccessibleUsers($perms, $includeAdmins = false, $orderBy = '') {
-        $users = array();
+        $users  = [];
         $oUsers = $this->fetchAccessibleUsers($perms, $includeAdmins, $orderBy);
         foreach ($oUsers as $oItem) {
-            $users[$oItem->get('user_id')] = array(
+            $users[$oItem->get('user_id')] = [
                 'username' => $oItem->get('username'),
-                'realname' => $oItem->get('realname')
-            );
+                'realname' => $oItem->get('realname'),
+            ];
         }
         return $users;
     }
@@ -182,7 +182,7 @@ class cApiUserCollection extends ItemCollection {
      * @throws cException
      */
     public function fetchAvailableUsers($orderBy = 'realname ASC') {
-        $users = array();
+        $users = [];
 
         $this->select('', '', $this->escape($orderBy));
         while (($oItem = $this->next()) !== false) {
@@ -203,7 +203,7 @@ class cApiUserCollection extends ItemCollection {
      * @throws cException
      */
     public function fetchSystemAdmins($forceActive = false) {
-        $users = array();
+        $users = [];
 
         $where = "perms LIKE '%sysadmin%'";
         if ($forceActive === true) {
@@ -228,10 +228,9 @@ class cApiUserCollection extends ItemCollection {
      * @throws cException
      */
     public function fetchClientAdmins($client) {
-        $client = (int) $client;
-        $users = array();
-
-        $where = "perms LIKE '%admin[" . $client . "]%'";
+        $client = (int)$client;
+        $users  = [];
+        $where  = "perms LIKE '%admin[" . $client . "]%'";
 
         $this->select($where);
         while (($item = $this->next()) !== false) {
@@ -396,7 +395,7 @@ class cApiUser extends Item {
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['user'], 'user_id');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -501,8 +500,7 @@ class cApiUser extends Item {
         // check password elements
         // numbers.....
         if ($iResult == self::PASS_OK && isset($cfgPw['numbers_mandatory']) && (int) $cfgPw['numbers_mandatory'] > 0) {
-
-            $aNumbersInPassword = array();
+            $aNumbersInPassword = [];
             preg_match_all('/[0-9]/', $password, $aNumbersInPassword);
 
             if (count($aNumbersInPassword[0]) < (int) $cfgPw['numbers_mandatory']) {
@@ -512,8 +510,7 @@ class cApiUser extends Item {
 
         // symbols....
         if ($iResult == self::PASS_OK && isset($cfgPw['symbols_mandatory']) && (int) $cfgPw['symbols_mandatory'] > 0) {
-
-            $aSymbols = array();
+            $aSymbols = [];
             $sSymbolsDefault = "/[|!@#$%&*\/=?,;.:\-_+~^¨\\\]/";
             if (isset($cfgPw['symbols_regex']) && !empty($cfgPw['symbols_regex'])) {
                 $sSymbolsDefault = $cfgPw['symbols_regex'];
@@ -528,9 +525,8 @@ class cApiUser extends Item {
 
         // mixed case??
         if ($iResult == self::PASS_OK && isset($cfgPw['mixed_case_mandatory']) && (int) $cfgPw['mixed_case_mandatory'] > 0) {
-
-            $aLowerCaseChars = array();
-            $aUpperCaseChars = array();
+            $aLowerCaseChars = [];
+            $aUpperCaseChars = [];
 
             preg_match_all('/[a-z]/', $password, $aLowerCaseChars);
             preg_match_all('/[A-Z]/', $password, $aUpperCaseChars);
@@ -724,14 +720,12 @@ class cApiUser extends Item {
      *         </pre>
      */
     public function getAddressData() {
-        $aret = array(
-            'street' => $this->get('address_street'),
-            'city' => $this->get('address_city'),
+        return [
+            'street'  => $this->get('address_street'),
+            'city'    => $this->get('address_city'),
             'country' => $this->get('address_country'),
-            'zip' => $this->get('address_zip')
-        );
-
-        return $aret;
+            'zip'     => $this->get('address_zip'),
+        ];
     }
 
     /**
@@ -944,7 +938,7 @@ class cApiUser extends Item {
 
         // first get users own permissions and filter them into result array
         // $aUserPerms
-        $aUserPerms = array();
+        $aUserPerms     = [];
         $aUserPermsSelf = explode(',', $this->values['perms']);
         foreach ($aUserPermsSelf as $sPerm) {
             if (trim($sPerm) != '') {
@@ -985,7 +979,7 @@ class cApiUser extends Item {
     public function getGroupNamesByUserID($userid = NULL, $bAddDescription = true) {
         $userid = (NULL === $userid) ? $this->get('user_id') : $userid;
 
-        $aGroups = array();
+        $aGroups = [];
 
         $oGroupColl = new cApiGroupCollection();
         $groups = $oGroupColl->fetchByUserID($userid);
@@ -1019,7 +1013,7 @@ class cApiUser extends Item {
     public function getGroupIDsByUserID($userid) {
         $userid = (NULL === $userid) ? $this->get('user_id') : $userid;
 
-        $aGroups = array();
+        $aGroups = [];
 
         $oGroupColl = new cApiGroupCollection();
         $groups = $oGroupColl->fetchByUserID($userid);
@@ -1102,7 +1096,7 @@ class cApiUser extends Item {
             $perm = new cPermission();
         }
 
-        $props = array();
+        $props = [];
 
         if ($group == true) {
             // first get properties by existing groups, if desired
@@ -1142,14 +1136,13 @@ class cApiUser extends Item {
         $userPropColl = new cApiUserPropertyCollection($this->values['user_id']);
         $userProps = $userPropColl->fetchByUserId();
 
-        $props = array();
-
+        $props = [];
         foreach ($userProps as $userProp) {
-            $props[$userProp->get('iduserprop')] = array(
-                'name' => $userProp->get('name'),
-                'type' => $userProp->get('type'),
-                'value' => $userProp->get('value')
-            );
+            $props[$userProp->get('iduserprop')] = [
+                'name'  => $userProp->get('name'),
+                'type'  => $userProp->get('type'),
+                'value' => $userProp->get('value'),
+            ];
         }
 
         return $props;
