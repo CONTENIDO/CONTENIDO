@@ -22,7 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package Plugin
  * @subpackage UrlShortener
  * @method cApiShortUrl createNewItem
- * @method cApiShortUrl next
+ * @method cApiShortUrl|bool next
  */
 class cApiShortUrlCollection extends ItemCollection {
 

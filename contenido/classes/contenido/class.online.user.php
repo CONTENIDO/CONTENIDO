@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiOnlineUser createNewItem
+ * @method cApiOnlineUser|bool next
  */
 class cApiOnlineUserCollection extends ItemCollection {
     /**
@@ -41,8 +43,8 @@ class cApiOnlineUserCollection extends ItemCollection {
 
     /**
      * Start the User Tracking:
-     * 1) First delete all inactive users with timelimit is off
-     * 2) If find user in the table, do update
+     * 1) First delete all inactive users with time-limit is off
+     * 2) If you find user in the table, do update
      * 3) Else there is no current user do insert new user
      *
      * @param string $userId [optional]
@@ -250,7 +252,7 @@ class cApiOnlineUserCollection extends ItemCollection {
      *         Is the User-Id (get from auth object)
      * @return bool
      *         Returns true if successful, else false
-     * 
+     *
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
@@ -272,7 +274,7 @@ class cApiOnlineUser extends Item
      *
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
-     *                   
+     *
      * @throws cDbException
      * @throws cException
      */

@@ -20,7 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage  PluginManager
  * @author Frederic Schneider
  * @method PimPlugin createNewItem
- * @method PimPlugin next
+ * @method PimPlugin|bool next
  */
 class PimPluginCollection extends ItemCollection {
     /**

@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiClient createNewItem
+ * @method cApiClient|bool next
  */
 class cApiClientCollection extends ItemCollection {
     /**
@@ -317,7 +319,7 @@ class cApiClient extends Item {
      *
      * @return mixed
      *                      Value
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -352,7 +354,7 @@ class cApiClient extends Item {
      *
      * @return array
      *         Assoziative array
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -410,13 +412,13 @@ class cApiClient extends Item {
     }
 
     /**
-     * Userdefined setter for client fields.
+     * User-defined setter for client fields.
      *
      * @param string $name
      * @param mixed $value
      * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
-     *                    
+     *
      * @return bool
      */
     public function setField($name, $value, $bSafe = true) {

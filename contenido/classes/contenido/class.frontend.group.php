@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiFrontendGroup createNewItem
+ * @method cApiFrontendGroup|bool next
  */
 class cApiFrontendGroupCollection extends ItemCollection {
     /**
@@ -76,7 +78,7 @@ class cApiFrontendGroupCollection extends ItemCollection {
      *         specifies the frontend user group
      *
      * @return bool
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException

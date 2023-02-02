@@ -20,6 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiUser createNewItem
+ * @method cApiUser|bool next
  */
 class cApiUserCollection extends ItemCollection {
     /**
@@ -43,7 +45,7 @@ class cApiUserCollection extends ItemCollection {
     }
 
     /**
-     * Createa a user by user name.
+     * Creates a user by user name.
      *
      * @param string $username
      *
@@ -144,8 +146,7 @@ class cApiUserCollection extends ItemCollection {
     /**
      * Returns all users which are accessible by the current user.
      * Is a wrapper of fetchAccessibleUsers() and returns contrary to that
-     * function
-     * a multidimensional array instead of a list of objects.
+     * function a multidimensional array instead of a list of objects.
      *
      * @param array  $perms
      *                              Permissions array
@@ -244,8 +245,8 @@ class cApiUserCollection extends ItemCollection {
 /**
  * User item
  *
- * In current version you can administer optional password checks
- * via following configuration values:
+ * In current version you can administer optional password checks via following
+ * configuration values:
  *
  * - En- or disabling checks:
  * $cfg['password']['check_password_mask'] = [true|false]
@@ -263,17 +264,14 @@ class cApiUserCollection extends ItemCollection {
  * Minimum length a password has to have. If not set, 8 chars are set as default
  * $cfg['password']['numbers_mandatory'], int
  * If set to a value greater than 0, at least
- * $cfg['password']['numbers_mandatory'] numbers
- * must be in password
+ * $cfg['password']['numbers_mandatory'] numbers must be in password
  * $cfg['password']['symbols_mandatory'], int &&
  * $cfg['password']['symbols_regex'], String
  * If 'symbols_mandatory' set to a value greater than 0, at least so many
- * symbols has to appear in
- * given password. What symbols are regcognized can be administrated via
- * 'symbols_regex'. This has
- * to be a regular expression which is used to "find" the symbols in $password.
- * If not set, following
- * RegEx is used: "/[|!@#$%&*\/=?,;.:\-_+~^¨\\\]/"
+ * symbols has to appear in  * given password. What symbols are recognized can be
+ * administrated via 'symbols_regex'. This has to be a regular expression which is
+ * used to "find" the symbols in $password.
+ * If not set, following RegEx is used: "/[|!@#$%&*\/=?,;.:\-_+~^¨\\\]/"
  * $cfg['password']['mixed_case_mandatory'], int
  * If set to a value greater than 0 so many lower and upper case character must
  * appear in the password.
@@ -281,13 +279,12 @@ class cApiUserCollection extends ItemCollection {
  *
  * - Strength check
  * Passwords should have some special characteristics to be a strong, i.e. not
- * easy to guess, password. Currently
- * cracklib is supported. These are the configuration possibilities:
+ * easy to guess, password. Currently, cracklib is supported. These are the
+ * configuration possibilities:
  *
  * $cfg['password']['cracklib_dict'], string
  * Path and file name (without file extension!) to dictionary you want to use.
- * This setting is
- * mandatory!
+ * This setting is mandatory!
  *
  * Keep in mind that these type of check only works if crack module is
  * available.
@@ -361,7 +358,7 @@ class cApiUser extends Item {
     const PASS_NOT_ENOUGH_DIFFERENT_CHARS = 7;
 
     /**
-     * Exception code, which is used if you try to add an user
+     * Exception code, which is used if you try to add a user
      * that already exists.
      *
      * @var int
@@ -370,7 +367,7 @@ class cApiUser extends Item {
     const EXCEPTION_USERNAME_EXISTS = 8;
 
     /**
-     * Exception code, which is used if an password is set to save
+     * Exception code, which is used if a password is set to save
      * that is not valid.
      *
      * @var int
@@ -470,8 +467,7 @@ class cApiUser extends Item {
 
     /**
      * Checks a given password against some predefined rules like minimum
-     * character
-     * length, required special character, etc...
+     * character length, required special character, etc...
      * This behaviour is configurable in global configuration $cfg['password'].
      *
      * @param string $password
@@ -591,7 +587,7 @@ class cApiUser extends Item {
     }
 
     /**
-     * User id settter.
+     * User id setter.
      * NOTE: Setting the user id by this method will load the user model.
      *
      * @param string $uid
@@ -718,7 +714,7 @@ class cApiUser extends Item {
     }
 
     /**
-     * Getter method to get user adress data
+     * Getter method to get user address data
      *
      * @return array
      *         Address data array like:
@@ -1039,7 +1035,7 @@ class cApiUser extends Item {
      * Retrieves the effective user property.
      *
      * @param string $type
-     *                      Type (class, category etc) for the property to retrieve
+     *                      Type (class, category etc.) for the property to retrieve
      * @param string $name
      *                      Name of the property to retrieve
      * @param bool   $group [optional]
@@ -1088,7 +1084,7 @@ class cApiUser extends Item {
      * @todo return value should be similar to getUserProperties()
      *
      * @param string $type
-     *                      Type (class, category etc) of the properties to retrieve
+     *                      Type (class, category etc.) of the properties to retrieve
      * @param bool   $group [optional]
      *                      Flag to retrieve in group properties. If enabled, group
      *                      properties will be merged with user properties where the user
@@ -1163,7 +1159,7 @@ class cApiUser extends Item {
      * Stores a property to the database
      *
      * @param string $type
-     *         Type (class, category etc) for the property to retrieve
+     *         Type (class, category etc.) for the property to retrieve
      * @param string $name
      *         Name of the property to retrieve
      * @param string $value

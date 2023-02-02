@@ -20,7 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage UserForum
  * @method ArticleForum createNewItem
- * @method ArticleForum next
+ * @method ArticleForum|bool next
  */
 class ArticleForumCollection extends ItemCollection {
 
@@ -818,5 +818,3 @@ class ArticleForumCollection extends ItemCollection {
     }
 
 }
-
-?>

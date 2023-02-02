@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiUploadMeta createNewItem
+ * @method cApiUploadMeta|bool next
  */
 class cApiUploadMetaCollection extends ItemCollection {
     /**
@@ -123,7 +125,7 @@ class cApiUploadMeta extends Item
      * @param int $idlang
      *
      * @return bool
-     * 
+     *
      * @throws cException
      */
     public function loadByUploadIdAndLanguageId($idupl, $idlang) {
@@ -143,7 +145,7 @@ class cApiUploadMeta extends Item
     }
 
     /**
-     * Userdefined setter for upload meta fields.
+     * User-defined setter for upload meta fields.
      *
      * @param string $name
      * @param mixed $value

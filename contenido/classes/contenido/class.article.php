@@ -21,7 +21,7 @@ cInclude('includes', 'functions.str.php');
  * @package Core
  * @subpackage GenericDB_Model
  * @method cApiArticle createNewItem
- * @method cApiArticle next
+ * @method cApiArticle|bool next
  */
 class cApiArticleCollection extends ItemCollection {
     /**

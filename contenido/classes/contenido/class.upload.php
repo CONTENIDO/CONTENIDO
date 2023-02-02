@@ -18,6 +18,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiUpload createNewItem
+ * @method cApiUpload|bool next
  */
 class cApiUploadCollection extends ItemCollection {
     /**
@@ -125,9 +127,9 @@ class cApiUploadCollection extends ItemCollection {
      *
      * @todo Code is similar/redundant to include.upl_files_overview.php 216-230
      * @param int              $id
-     * 
+     *
      * @return bool
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @global cApiCecRegistry $_cecRegistry
@@ -223,7 +225,7 @@ class cApiUpload extends Item {
      *
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
-     *                   
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -237,7 +239,7 @@ class cApiUpload extends Item {
 
     /**
      * Updates upload recordset.
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException

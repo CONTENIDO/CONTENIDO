@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiLanguage createNewItem
+ * @method cApiLanguage|bool next
  */
 class cApiLanguageCollection extends ItemCollection {
     /**
@@ -178,7 +180,7 @@ class cApiLanguage extends Item {
     }
 
     /**
-     * Userdefined setter for lang fields.
+     * User-defined setter for lang fields.
      *
      * @param string $name
      * @param mixed $value

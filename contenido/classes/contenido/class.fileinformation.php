@@ -21,6 +21,8 @@ cInclude('includes', 'functions.file.php');
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiFileInformation createNewItem
+ * @method cApiFileInformation|bool next
  */
 class cApiFileInformationCollection extends ItemCollection {
     /**
@@ -48,7 +50,7 @@ class cApiFileInformationCollection extends ItemCollection {
      *
      * @return cApiFileInformation
      *         the new item
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -99,7 +101,7 @@ class cApiFileInformationCollection extends ItemCollection {
      *
      * @return cApiFileInformation
      *                            the updated item
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -139,7 +141,7 @@ class cApiFileInformationCollection extends ItemCollection {
      * @param array $values
      *         with parameters
      * @return bool
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -158,7 +160,7 @@ class cApiFileInformationCollection extends ItemCollection {
      * @param string $type
      *         type of the entry
      * @return array
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */

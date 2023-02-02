@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiCategoryTree createNewItem
+ * @method cApiCategoryTree|bool next
  */
 class cApiCategoryTreeCollection extends ItemCollection {
     /**
@@ -65,7 +67,7 @@ class cApiCategoryTreeCollection extends ItemCollection {
      *         $arr[n]['urlname'] (string)
      *         $arr[n]['is_start'] (int)
      *         </pre>
-     * 
+     *
      * @throws cDbException
      */
     function getCategoryTreeStructureByClientIdAndLanguageId($client, $lang) {

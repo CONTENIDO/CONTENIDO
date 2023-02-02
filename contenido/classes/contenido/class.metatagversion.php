@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiMetaTagVersion createNewItem
+ * @method cApiMetaTagVersion|bool next
  */
 class cApiMetaTagVersionCollection extends ItemCollection {
     /**
@@ -191,7 +193,7 @@ class cApiMetaTagVersion extends Item
     }
 
     /**
-     * Userdefined setter for meta tag fields.
+     * User-defined setter for meta tag fields.
      *
      * @see Item::setField()
      * @param string $name

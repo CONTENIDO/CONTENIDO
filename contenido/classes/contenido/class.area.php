@@ -18,6 +18,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiArea createNewItem
+ * @method cApiArea|bool next
  */
 class cApiAreaCollection extends ItemCollection {
     /**
@@ -238,7 +240,7 @@ class cApiArea extends Item
     }
 
     /**
-     * Userdefined setter for area fields.
+     * User-defined setter for area fields.
      *
      * @param string $name
      * @param mixed $value

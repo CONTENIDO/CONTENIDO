@@ -23,6 +23,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiGroupProperty createNewItem
+ * @method cApiGroupProperty|bool next
  */
 class cApiGroupPropertyCollection extends ItemCollection {
 
@@ -479,7 +481,7 @@ class cApiGroupProperty extends Item
     }
 
     /**
-     * Userdefined setter for group property fields.
+     * User-defined setter for group property fields.
      *
      * @param string $name
      * @param mixed $value

@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiFrontendPermission createNewItem
+ * @method cApiFrontendPermission|bool next
  */
 class cApiFrontendPermissionCollection extends ItemCollection {
 

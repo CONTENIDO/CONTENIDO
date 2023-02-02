@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiNavSub createNewItem
+ * @method cApiNavSub|bool next
  */
 class cApiNavSubCollection extends ItemCollection {
     /**
@@ -47,7 +49,7 @@ class cApiNavSubCollection extends ItemCollection {
      * @param int        $online [optional]
      *
      * @return cApiNavSub
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -171,7 +173,7 @@ class cApiNavSub extends Item {
     }
 
     /**
-     * Userdefined setter for navsub fields.
+     * User-defined setter for navsub fields.
      *
      * @param string $name
      * @param mixed $value

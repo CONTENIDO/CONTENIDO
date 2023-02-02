@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiUserProperty createNewItem
+ * @method cApiUserProperty|bool next
  */
 class cApiUserPropertyCollection extends ItemCollection {
 
@@ -107,7 +109,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      * @param int    $idcatlang [optional]
      *
      * @return cApiUserProperty
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -188,7 +190,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      * @param string $name
      *
      * @return array
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -209,7 +211,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      * @param string $name
      *
      * @return cApiUserProperty|NULL
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -232,7 +234,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      * @param string $type
      *
      * @return array
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -257,7 +259,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      * @param string $name
      *
      * @return bool
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -274,7 +276,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      * @param string $type
      *
      * @return bool
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -289,7 +291,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      * Deletes all user properties by userid.
      *
      * @return bool
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -304,7 +306,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      * Deletes selected user properties.
      *
      * @return bool
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -452,7 +454,7 @@ class cApiUserProperty extends Item
     }
 
     /**
-     * Userdefined setter for user property fields.
+     * User-defined setter for user property fields.
      *
      * @param string $name
      * @param mixed $value

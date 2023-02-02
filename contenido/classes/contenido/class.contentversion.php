@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiContentVersion createNewItem
+ * @method cApiContentVersion|bool next
  */
 class cApiContentVersionCollection extends ItemCollection {
     /**
@@ -117,7 +119,7 @@ class cApiContentVersion extends Item
     }
 
     /**
-     * Userdefined setter for item fields.
+     * User-defined setter for item fields.
      *
      * @param string $name
      * @param mixed $value
@@ -197,7 +199,7 @@ class cApiContentVersion extends Item
      * @param mixed $contentParameters []{
      *
      * @return bool
-     * 
+     *
      * @throws cException
      */
     public function loadByArticleLanguageIdTypeTypeIdAndVersion(array $contentParameters) {

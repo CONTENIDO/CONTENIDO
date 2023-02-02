@@ -17,10 +17,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('includes', 'functions.file.php');
 
 /**
- * DFFS item collection
+ * DBFS item collection
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiDbfs createNewItem
+ * @method cApiDbfs|bool next
  */
 class cApiDbfsCollection extends ItemCollection {
     /**
@@ -371,7 +373,7 @@ class cApiDbfsCollection extends ItemCollection {
         if (($item = $this->next()) !== false) {
             return $item->get('size');
         }
-        
+
         return 0;
     }
 
@@ -434,7 +436,7 @@ class cApiDbfsCollection extends ItemCollection {
      * @param cApiPropertyCollection $oProperties
      *
      * @return bool $bAvailable
-     *              
+     *
      * @throws cDbException
      * @throws cException
      */

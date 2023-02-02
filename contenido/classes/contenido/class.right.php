@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiRight createNewItem
+ * @method cApiRight|bool next
  */
 class cApiRightCollection extends ItemCollection {
     /**
@@ -79,7 +81,7 @@ class cApiRightCollection extends ItemCollection {
      * @param string $userId
      *
      * @return bool
-     * 
+     *
      * @throws cDbException
      */
     public function hasFrontendAccessByCatIdAndUserId($idcat, $userId) {
@@ -151,7 +153,7 @@ class cApiRight extends Item
     }
 
     /**
-     * Userdefined setter for right fields.
+     * User-defined setter for right fields.
      *
      * @param string $name
      * @param mixed $value

@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiInUse createNewItem
+ * @method cApiInUse|bool next
  */
 class cApiInUseCollection extends ItemCollection {
     /**
@@ -108,7 +110,7 @@ class cApiInUseCollection extends ItemCollection {
      *         Specifies the type to de-mark.
      * @param string $session
      *         Specifies the session for which the "in use" mark is valid
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -133,7 +135,7 @@ class cApiInUseCollection extends ItemCollection {
      *         Specifies the type to de-mark.
      * @param string $itemid
      *         Specifies the item
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -156,7 +158,7 @@ class cApiInUseCollection extends ItemCollection {
      *
      * @param string $userId
      *         Specifies the user
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -196,7 +198,7 @@ class cApiInUseCollection extends ItemCollection {
      *
      * @param string $session
      *         Specifies the session for which the "in use" marks should be removed
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -324,7 +326,7 @@ class cApiInUse extends Item
      *
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
-     *                   
+     *
      * @throws cDbException
      * @throws cException
      */

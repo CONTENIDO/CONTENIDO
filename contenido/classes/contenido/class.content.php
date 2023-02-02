@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiContent createNewItem
+ * @method cApiContent|bool next
  */
 class cApiContentCollection extends ItemCollection {
     /**
@@ -111,7 +113,7 @@ class cApiContent extends Item
     }
 
     /**
-     * Userdefined setter for item fields.
+     * User-defined setter for item fields.
      *
      * @param string $name
      * @param mixed $value

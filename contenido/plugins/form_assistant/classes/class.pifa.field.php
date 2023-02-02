@@ -15,11 +15,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * PIFA field item collection class.
- * It's a kind of a model.
+ * It's a kind of model.
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  * @method PifaField createNewItem
- * @method PifaField next
+ * @method PifaField|bool next
  */
 class PifaFieldCollection extends ItemCollection {
     /**
@@ -62,7 +62,7 @@ class PifaFieldCollection extends ItemCollection {
 
 /**
  * PIFA field item class.
- * It's a kind of a model.
+ * It's a kind of model.
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
  */

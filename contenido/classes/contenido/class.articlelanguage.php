@@ -19,7 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package Core
  * @subpackage GenericDB_Model
  * @method cApiArticleLanguage createNewItem
- * @method cApiArticleLanguage next
+ * @method cApiArticleLanguage|bool next
  */
 class cApiArticleLanguageCollection extends ItemCollection {
     /**

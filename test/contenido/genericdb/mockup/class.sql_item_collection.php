@@ -110,6 +110,8 @@ class SqlItemCollection
 ///**
 // *
 // * @author marcus.gnass
+// * @method TFItem createNewItem
+// * @method TFItem|bool next
 // */
 //class TFCollection extends ItemCollection {
 //
@@ -150,6 +152,8 @@ class SqlItemCollection
 /**
  *
  * @author marcus.gnass
+ * @method TItem createNewItem
+ * @method TItem|bool next
  */
 class TCollection extends ItemCollection
 {
@@ -195,6 +199,8 @@ class TItem extends Item
 /**
  *
  * @author marcus.gnass
+ * @method TITCollection createNewItem
+ * @method TITCollection|bool next
  */
 class ITCollection extends ItemCollection
 {
@@ -218,6 +224,8 @@ class ITCollection extends ItemCollection
 /**
  *
  * @author marcus.gnass
+ * @method TItem createNewItem
+ * @method TItem|bool next
  */
 class TITCollection extends ItemCollection
 {
@@ -241,6 +249,8 @@ class TITCollection extends ItemCollection
 /**
  *
  * @author marcus.gnass
+ * @method DogItem createNewItem
+ * @method DogItem|bool next
  */
 class DogCollection extends ItemCollection
 {
@@ -286,6 +296,8 @@ class DogItem extends Item
 /**
  *
  * @author marcus.gnass
+ * @method DogRfidItem createNewItem
+ * @method DogRfidItem|bool next
  */
 class DogRfidCollection extends ItemCollection
 {

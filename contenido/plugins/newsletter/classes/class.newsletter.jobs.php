@@ -19,7 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package Plugin
  * @subpackage Newsletter
  * @method NewsletterJob createNewItem
- * @method NewsletterJob next
+ * @method NewsletterJob|bool next
  */
 class NewsletterJobCollection extends ItemCollection {
     /**
