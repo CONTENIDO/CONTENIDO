@@ -194,8 +194,7 @@ class cSearchResult extends cSearchBaseAbstract {
      * @return string
      *                   Content of an article, specified by its content type
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function getContent($artId, $cmsType, $id = 0) {
         $article = new cApiArticleLanguage();
@@ -214,8 +213,7 @@ class cSearchResult extends cSearchBaseAbstract {
      * @return array Content of an article in search result, specified by its type
      *         Content of an article in search result, specified by its type
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function getSearchContent($artId, $cmsType, $cmsNr = NULL) {
         $cmsType = cString::toUpperCase($cmsType);
@@ -335,13 +333,13 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param int $art_id
+     * @param int $artId
      *         Id of an article
      * @return int
      *         Similarity between search-word and matching word in article
      */
-    public function getSimilarity($art_id) {
-        return isset($this->_searchResult[$art_id]['similarity']) ? $this->_searchResult[$art_id]['similarity'] : 0.0001;
+    public function getSimilarity($artId) {
+        return $this->_searchResult[$artId]['similarity'] ?? 0.0001;
     }
 
     /**
@@ -382,7 +380,7 @@ class cSearchResult extends cSearchBaseAbstract {
      *
      * @return int|void
      *         Category id or nothing
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function getArtCat($artId) {
         $catArtColl = new cApiCategoryArticleCollection();
