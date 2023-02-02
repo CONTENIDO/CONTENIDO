@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiStat createNewItem
+ * @method cApiStat|bool next
  */
 class cApiStatCollection extends ItemCollection {
     /**
@@ -141,7 +143,7 @@ class cApiStat extends Item
 
     /**
      * Increment and store property 'visited'.
-     * 
+     *
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
@@ -151,7 +153,7 @@ class cApiStat extends Item
     }
 
     /**
-     * Userdefined setter for stat fields.
+     * User-defined setter for stat fields.
      *
      * @param string $name
      * @param mixed $value

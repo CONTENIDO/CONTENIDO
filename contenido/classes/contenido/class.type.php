@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiType createNewItem
+ * @method cApiType|bool next
  */
 class cApiTypeCollection extends ItemCollection {
     /**
@@ -110,7 +112,7 @@ class cApiType extends Item
      *         e.g. CMS_HTML, CMS_TEXT, etc.
      *
      * @return bool
-     * 
+     *
      * @throws cException
      */
     public function loadByType($type) {
@@ -129,13 +131,13 @@ class cApiType extends Item
     }
 
     /**
-     * Userdefined setter for item fields.
+     * User-defined setter for item fields.
      *
      * @param string $name
      * @param mixed $value
      * @param bool $safe [optional]
      *         Flag to run defined inFilter on passed value
-     *                   
+     *
      * @return bool
      */
     public function setField($name, $value, $safe = true) {

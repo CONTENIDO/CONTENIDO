@@ -3,6 +3,8 @@
 /**
  *
  * @author marcus.gnass
+ * @method TestItem createNewItem
+ * @method TestItem|bool next
  */
 class TestCollection extends ItemCollection
 {

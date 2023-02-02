@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiFrontendGroupMember createNewItem
+ * @method cApiFrontendGroupMember|bool next
  */
 class cApiFrontendGroupMemberCollection extends ItemCollection {
     /**
@@ -96,7 +98,7 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
      *                        Specifies if the function should return objects
      * @return array
      *                        List of frontend user ids or cApiFrontendUser items
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -132,7 +134,7 @@ class cApiFrontendGroupMember extends Item
      *
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
-     *                   
+     *
      * @throws cDbException
      * @throws cException
      */

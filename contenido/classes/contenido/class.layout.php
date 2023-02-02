@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiLayout createNewItem
+ * @method cApiLayout|bool next
  */
 class cApiLayoutCollection extends ItemCollection {
     /**
@@ -167,7 +169,7 @@ class cApiLayout extends Item {
     }
 
     /**
-     * Userdefined setter for layout fields.
+     * User-defined setter for layout fields.
      *
      * @param string $name
      * @param mixed $value

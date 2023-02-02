@@ -72,6 +72,8 @@ class cApiPathresolveCacheHelper {
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiPathresolveCache createNewItem
+ * @method cApiPathresolveCache|bool next
  */
 class cApiPathresolveCacheCollection extends ItemCollection {
     /**
@@ -161,7 +163,7 @@ class cApiPathresolveCache extends Item
      *
      * @param mixed $mId [optional]
      *                   Specifies the ID of item to load
-     *                   
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -191,7 +193,7 @@ class cApiPathresolveCache extends Item
     }
 
     /**
-     * Userdefined setter for pathresolve cache fields.
+     * User-defined setter for pathresolve cache fields.
      *
      * @param string $name
      * @param mixed $value

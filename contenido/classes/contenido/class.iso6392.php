@@ -15,10 +15,12 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Isocode 639-2 collection
+ * ISO 639-2 codes collection
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiIso6392 createNewItem
+ * @method cApiIso6392|bool next
  */
 class cApiIso6392Collection extends ItemCollection {
     /**
@@ -41,7 +43,7 @@ class cApiIso6392Collection extends ItemCollection {
 }
 
 /**
- * Iso 639-2 item
+ * ISO 639-2 code item
  *
  * @package Core
  * @subpackage GenericDB_Model

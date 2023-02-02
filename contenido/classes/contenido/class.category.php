@@ -18,6 +18,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiCategory createNewItem
+ * @method cApiCategory|bool next
  */
 class cApiCategoryCollection extends ItemCollection {
     /**
@@ -55,7 +57,7 @@ class cApiCategoryCollection extends ItemCollection {
      * @param string $lastmodified [optional]
      *
      * @return cApiCategory
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -94,9 +96,9 @@ class cApiCategoryCollection extends ItemCollection {
      * Last entry has no parentid and no postid.
      *
      * @param int $idclient
-     * 
+     *
      * @return cApiCategory|NULL
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -110,9 +112,9 @@ class cApiCategoryCollection extends ItemCollection {
      * Returns list of categories (category ids) by passed client.
      *
      * @param int $idclient
-     * 
+     *
      * @return array
-     * 
+     *
      * @throws cDbException
      */
     public function getCategoryIdsByClient($idclient) {
@@ -139,9 +141,9 @@ class cApiCategoryCollection extends ItemCollection {
      * </pre>
      *
      * @param int $idcat
-     * 
+     *
      * @return int
-     * 
+     *
      * @throws cDbException
      */
     public function getNextPostCategoryId($idcat) {
@@ -184,9 +186,9 @@ class cApiCategoryCollection extends ItemCollection {
      *
      * @param int $idcat
      *         Category id
-     * 
+     *
      * @return int
-     * 
+     *
      * @throws cDbException
      */
     public function getParentsNextPostCategoryId($idcat) {
@@ -243,9 +245,9 @@ class cApiCategoryCollection extends ItemCollection {
      *                         If defined, it checks also if there is a next deeper category in this language.
      *
      * @return int
-     * 
+     *
      * @throws cDbException
-     * 
+     *
      * @global array   $cfg
      */
     public function getFirstChildCategoryId($idcat, $idlang = NULL) {
@@ -283,11 +285,11 @@ class cApiCategoryCollection extends ItemCollection {
      *
      * @param int      $idcat
      * @param int|NULL $idlang [optional]
-     *                         
+     *
      * @return array
-     * 
+     *
      * @throws cDbException
-     * 
+     *
      * @global array   $cfg
      */
     public function getAllChildCategoryIds($idcat, $idlang = NULL) {
@@ -352,9 +354,9 @@ class cApiCategoryCollection extends ItemCollection {
      * @param int    $idclient
      *
      * @return array
-     * 
+     *
      * @throws cDbException
-     * 
+     *
      * @global array $cfg
      */
     public function getAllCategoryIdsRecursive($idcat, $idclient) {
@@ -417,9 +419,9 @@ class cApiCategoryCollection extends ItemCollection {
      * @param        $idclient
      * @return array
      *         Sorted by category id
-     * 
+     *
      * @throws cDbException
-     * 
+     *
      * @global array $cfg
      */
     public function getAllCategoryIdsRecursive2($idcat, $idclient) {
@@ -491,7 +493,7 @@ class cApiCategory extends Item
     }
 
     /**
-     * Userdefined setter for category fields.
+     * User-defined setter for category fields.
      *
      * @param string $name
      * @param mixed $value
@@ -520,10 +522,10 @@ class cApiCategory extends Item
      *
      * @param int $changeLangId [optional]
      *                          change language id for URL (optional)
-     *                          
+     *
      * @return string
      *                          link
-     * 
+     *
      * @throws cInvalidArgumentException
      */
     public function getLink($changeLangId = 0) {

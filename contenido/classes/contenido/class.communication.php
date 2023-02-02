@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiCommunication createNewItem
+ * @method cApiCommunication|bool next
  */
 class cApiCommunicationCollection extends ItemCollection {
     /**
@@ -95,7 +97,7 @@ class cApiCommunication extends Item {
     }
 
     /**
-     * Userdefined setter for communcation fields.
+     * User-defined setter for communcation fields.
      *
      * @param string $name
      * @param mixed $value

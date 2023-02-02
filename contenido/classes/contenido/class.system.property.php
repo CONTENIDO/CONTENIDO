@@ -24,6 +24,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiSystemProperty createNewItem
+ * @method cApiSystemProperty|bool next
  */
 class cApiSystemPropertyCollection extends ItemCollection {
 
@@ -111,9 +113,9 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @param string $type
      * @param string $name
      * @param string $value
-     * 
+     *
      * @return cApiSystemProperty
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -229,7 +231,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @param string $type
      *
      * @return array
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -254,7 +256,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @param string $name
      *
      * @return bool
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -271,7 +273,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @param string $type
      *
      * @return bool
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -286,7 +288,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * Deletes selected system properties.
      *
      * @return bool
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException

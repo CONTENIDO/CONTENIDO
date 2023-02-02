@@ -18,6 +18,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiArticleSpecification createNewItem
+ * @method cApiArticleSpecification|bool next
  */
 class cApiArticleSpecificationCollection extends ItemCollection {
     /**

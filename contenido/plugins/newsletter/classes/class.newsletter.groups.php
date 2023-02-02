@@ -19,7 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package Plugin
  * @subpackage Newsletter
  * @method NewsletterRecipientGroup createNewItem
- * @method NewsletterRecipientGroup next
+ * @method NewsletterRecipientGroup|bool next
  */
 class NewsletterRecipientGroupCollection extends ItemCollection {
     /**
@@ -162,7 +162,7 @@ class NewsletterRecipientGroup extends Item {
  * Recipient group member management class
  *
  * @method NewsletterRecipientGroupMember createNewItem
- * @method NewsletterRecipientGroupMember next
+ * @method NewsletterRecipientGroupMember|bool next
  */
 class NewsletterRecipientGroupMemberCollection extends ItemCollection {
     /**

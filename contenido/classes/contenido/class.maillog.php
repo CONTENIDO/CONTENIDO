@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiMailLog createNewItem
+ * @method cApiMailLog|bool next
  */
 class cApiMailLogCollection extends ItemCollection {
     /**

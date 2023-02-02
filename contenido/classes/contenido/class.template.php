@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiTemplate createNewItem
+ * @method cApiTemplate|bool next
  */
 class cApiTemplateCollection extends ItemCollection {
     /**
@@ -166,9 +168,9 @@ class cApiTemplate extends Item
      *         language id
      * @param int $client
      *         client id
-     * 
+     *
      * @return bool
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */
@@ -193,12 +195,12 @@ class cApiTemplate extends Item
         // try to load template by determined ID
         $idtpl = $templateConfiguration->get('idtpl');
         $this->loadByPrimaryKey($idtpl);
-        
+
         return true;
     }
 
     /**
-     * Userdefined setter for template fields.
+     * User-defined setter for template fields.
      *
      * @param string $name
      * @param mixed $value

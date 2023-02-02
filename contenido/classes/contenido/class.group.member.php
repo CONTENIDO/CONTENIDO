@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiGroupMember createNewItem
+ * @method cApiGroupMember|bool next
  */
 class cApiGroupMemberCollection extends ItemCollection {
     /**
@@ -78,9 +80,9 @@ class cApiGroupMemberCollection extends ItemCollection {
      *
      * @param string $userId
      * @param string $groupId
-     * 
+     *
      * @return cApiGroupMember|NULL
-     * 
+     *
      * @throws cDbException
      * @throws cException
      */

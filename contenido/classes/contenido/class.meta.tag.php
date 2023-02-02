@@ -20,7 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package Core
  * @subpackage GenericDB_Model
  * @method cApiMetaTag createNewItem
- * @method cApiMetaTag next
+ * @method cApiMetaTag|bool next
  */
 class cApiMetaTagCollection extends ItemCollection {
     /**

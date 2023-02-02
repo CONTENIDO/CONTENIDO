@@ -20,7 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package Core
  * @subpackage GenericDB_Model
  * @method cApiContainerConfiguration createNewItem
- * @method cApiContainerConfiguration next
+ * @method cApiContainerConfiguration|bool next
  */
 class cApiContainerConfigurationCollection extends ItemCollection {
     /**

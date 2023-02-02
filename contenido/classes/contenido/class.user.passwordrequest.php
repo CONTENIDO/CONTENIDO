@@ -18,6 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiUserPasswordRequest|bool next
  */
 class cApiUserPasswordRequestCollection extends ItemCollection {
     /**
@@ -41,24 +42,32 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
     }
 
     /**
+     * @deprecated Since 4.10.2, use {@see cApiUserPasswordRequestCollection::create} instead
+     */
+    public function createNewItem($data = NULL) {
+        cDeprecated("The function createNewItem() is deprecated since CONTENIDO 4.10.2, use cApiUserPasswordRequestCollection::create() instead.");
+        return $this->create($data);
+    }
+
+    /**
      * Create a user password request by user id.
      *
      * @param string|array $data [optional]
      *                           optional parameter for direct input of primary key value
      *                           (string) or multiple column name - value pairs
      *
-     * @return cApiUserPasswordRequest
+     * @return cApiUserPasswordRequest|Item
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
      */
-    public function createNewItem($data = NULL) {
+    public function create($data = NULL) {
         $item = parent::createNewItem($data);
 
         // check configuration setting for different password expiration
         // value must be valid string for DateTime's time variable in its constructor
         if (false === ($expiration = getEffectiveSetting('pw_request', 'user_password_reset_expiration'))
-        || 0 === cString::getStringLength($expiration)) {
+            || 0 === cString::getStringLength($expiration)) {
             $expiration = '+4 hour';
         }
         $time = new DateTime('+' . $expiration, new DateTimeZone('UTC'));

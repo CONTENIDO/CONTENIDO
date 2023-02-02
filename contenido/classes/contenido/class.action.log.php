@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
+ * @method cApiActionlog createNewItem
+ * @method cApiActionlog|bool next
  */
 class cApiActionlogCollection extends ItemCollection {
     /**
@@ -107,7 +109,7 @@ class cApiActionlog extends Item
     }
 
     /**
-     * Userdefined setter for action log fields.
+     * User-defined setter for action log fields.
      *
      * @param string $name
      * @param mixed $value

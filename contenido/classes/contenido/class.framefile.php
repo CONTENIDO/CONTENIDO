@@ -19,6 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Core
  * @subpackage GenericDB_Model
+ * @method cApiFrameFile createNewItem
+ * @method cApiFrameFile|bool next
  */
 class cApiFrameFileCollection extends ItemCollection {
     /**
@@ -44,7 +46,7 @@ class cApiFrameFileCollection extends ItemCollection {
      * @param int    $idfile
      *
      * @return cApiFrameFile
-     * 
+     *
      * @throws cDbException
      * @throws cException
      * @throws cInvalidArgumentException
@@ -104,7 +106,7 @@ class cApiFrameFile extends Item {
     }
 
     /**
-     * Userdefined setter for framefile fields.
+     * User-defined setter for framefile fields.
      *
      * @param string $name
      * @param mixed $value
