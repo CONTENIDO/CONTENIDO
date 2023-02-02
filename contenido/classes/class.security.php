@@ -148,7 +148,7 @@ class cSecurity {
     }
 
     /**
-     * Escaped an query-string with mysql_real_escape_string.
+     * Escaped an query-string with mysqli_real_escape_string.
      *
      * @param string $sString
      *         Input string
