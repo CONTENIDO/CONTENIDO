@@ -223,7 +223,7 @@ class cSearchResult extends cSearchBaseAbstract {
                     $cmsType = 'CMS_' . $cmsType;
                 }
             } else {
-                if (!array_key_exists($cms_type, $this->_index->getCmsType())) {
+                if (!array_key_exists($cmsType, $this->_index->getCmsType())) {
                     return [];
                 }
             }
@@ -242,7 +242,7 @@ class cSearchResult extends cSearchBaseAbstract {
 
             if (isset($cmsNr) && is_numeric($cmsNr)) {
                 // Get content of cms_type[cms_nr]
-                // Sild consistent escaped string(Timo Trautmann) 2008-04-17
+                // build consistent escaped string(Timo Trautmann) 2008-04-17
                 $cmsContent = conHtmlentities(conHtmlEntityDecode(strip_tags($article->getContent($cmsType, $cmsNr))));
                 $cmsContent = $this->highlightSearchWords($searchWords, $cmsContent);
                 $content[] = htmlspecialchars_decode($cmsContent);
