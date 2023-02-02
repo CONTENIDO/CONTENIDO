@@ -332,10 +332,10 @@ class cDirHandler {
             return false;
         }
 
-        $dirContent = array();
+        $dirContent = [];
         if ($recursive == false) {
             $dirHandle = opendir($dirname);
-            $dirContent = array();
+            $dirContent = [];
             while (false !== ($file = readdir($dirHandle))) {
                 if (!cFileHandler::fileNameIsDot($file)) {
 

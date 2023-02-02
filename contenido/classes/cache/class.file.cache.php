@@ -27,7 +27,7 @@ class cFileCache {
      *
      * @var array
      */
-    protected $_options = array();
+    protected $_options = [];
 
     /**
      * Constructor to create an instance of this class.
@@ -35,7 +35,7 @@ class cFileCache {
      * @param array $options [optional]
      *         array with options for the cache (optional, default: empty array)
      */
-    public function __construct($options = array()) {
+    public function __construct($options = []) {
         $this->setOptions($options);
     }
 

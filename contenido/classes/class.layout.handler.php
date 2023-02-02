@@ -53,7 +53,7 @@ class cLayoutHandler {
      *
      * @var array
      */
-    protected $_cfg = array();
+    protected $_cfg = [];
 
     /**
      * Encoding of the page
@@ -98,7 +98,7 @@ class cLayoutHandler {
      * @throws cDbException
      * @throws cInvalidArgumentException
      */
-    public function __construct($layoutId = 0, $layoutCode = '', array $cfg = array(), $lang = 0, cDb $db = NULL) {
+    public function __construct($layoutId = 0, $layoutCode = '', array $cfg = [], $lang = 0, cDb $db = null) {
         if ($db === NULL) {
             $db = cRegistry::getDb();
         }

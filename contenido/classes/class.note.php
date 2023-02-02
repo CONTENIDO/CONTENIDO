@@ -198,7 +198,7 @@ class NoteList extends cHTMLDiv {
         $oPropertyCollection = new cApiPropertyCollection();
         $oPropertyCollection->select("itemtype = 'idcommunication' AND type = 'note' AND name = 'idlang' AND value = " . (int) $lang);
 
-        $items = array();
+        $items = [];
 
         while ($oProperty = $oPropertyCollection->next()) {
             $items[] = $oProperty->get('itemid');
@@ -212,7 +212,7 @@ class NoteList extends cHTMLDiv {
 
         $oNoteItems->select('idcommunication IN (' . implode(', ', $items) . ')', '', 'created DESC');
 
-        $i = array();
+        $i    = [];
         $dark = false;
         while ($oNoteItem = $oNoteItems->next()) {
             if ($oNoteItem->getProperty('note', 'itemtype') == $sItemType && $oNoteItem->getProperty('note', 'itemid') == $sItemId) {
@@ -345,10 +345,7 @@ class NoteListItem extends cHTMLDiv {
         $oMessage->setContent($this->_sMessage);
         $oMessage->setStyle("padding-bottom: 8px; margin-top: 4px;");
 
-        $this->setContent(array(
-            $table,
-            $oMessage
-        ));
+        $this->setContent([$table, $oMessage]);
 
         return parent::render();
     }

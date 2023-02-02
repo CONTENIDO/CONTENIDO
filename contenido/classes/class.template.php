@@ -28,29 +28,28 @@ class cTemplate {
      *
      * @var array
      */
-    public $needles = array();
+    public $needles = [];
 
     /**
      * Replacements (static)
      *
      * @var array
      */
-    public $replacements = array();
+    public $replacements = [];
 
     /**
      * Dyn_Needles (dynamic)
      *
      * @var array
      */
-    public $Dyn_needles = array();
+    public $Dyn_needles = [];
 
     /**
      * Dyn_Replacements (dynamic)
      *
      * @var array
      */
-    public $Dyn_replacements = array();
-
+    public $Dyn_replacements = [];
 
     /**
      * Dynamic counter
@@ -64,11 +63,11 @@ class cTemplate {
      *
      * @var array
      */
-    public $tags = array(
+    public $tags = [
         'static' => '{%s}',
-        'start' => '<!-- BEGIN:BLOCK -->',
-        'end' => '<!-- END:BLOCK -->'
-    );
+        'start'  => '<!-- BEGIN:BLOCK -->',
+        'end'    => '<!-- END:BLOCK -->',
+    ];
 
     /**
      * gettext domain (default: contenido)
@@ -146,11 +145,11 @@ class cTemplate {
      * Reset template data
      */
     public function reset() {
-        $this->dyn_cnt = 0;
-        $this->needles = array();
-        $this->replacements = array();
-        $this->Dyn_needles = array();
-        $this->Dyn_replacements = array();
+        $this->dyn_cnt          = 0;
+        $this->needles          = [];
+        $this->replacements     = [];
+        $this->Dyn_needles      = [];
+        $this->Dyn_replacements = [];
     }
 
     /**
@@ -207,7 +206,7 @@ class cTemplate {
         // CEC for template pre processing
         $content = cApiCecHook::executeAndReturn('Contenido.Template.BeforeParse', $content, $this);
 
-        $pieces = array();
+        $pieces = [];
 
         // Replace i18n strings before replacing other placeholders
         $this->replacei18n($content, 'i18n');
@@ -261,10 +260,10 @@ class cTemplate {
      *         Name of the translation function (e.g. i18n)
      */
     public function replacei18n(&$template, $functionName) {
-        $container = array();
+        $container = [];
 
         // Be sure that php code stays unchanged
-        $php_matches = array();
+        $php_matches = [];
         /*
          * if (preg_match_all('/<\?(php)?((.)|(\s))*?\?>/i', $template,
          * $php_matches)) { $x = 0; foreach ($php_matches[0] as $php_match) {
@@ -275,7 +274,7 @@ class cTemplate {
         $functionNameQ = preg_quote($functionName, '/');
 
         // If template contains functionName + parameter store all matches
-        $matches = array();
+        $matches = [];
         preg_match_all('/' . $functionNameQ . "\\(([\\\"\\'])(.*?)\\1\\)/s", $template, $matches);
 
         $matches = array_values(array_unique($matches[2]));

@@ -122,8 +122,7 @@ class cString extends cStringMultiByteWrapper {
      * @return string|array
      */
     public static function addSlashes($value) {
-        $value = is_array($value) ? array_map(array('cString', 'addSlashes'), $value) : addslashes($value);
-        return $value;
+        return is_array($value) ? array_map(['cString', 'addSlashes'], $value) : addslashes($value);
     }
 
     /**
@@ -134,8 +133,7 @@ class cString extends cStringMultiByteWrapper {
      * @return string|array
      */
     public static function stripSlashes($value) {
-        $value = is_array($value) ? array_map(array('cString', 'stripSlashes'), $value) : stripslashes($value);
-        return $value;
+        return is_array($value) ? array_map(['cString', 'stripSlashes'], $value) : stripslashes($value);
     }
 
     /**
@@ -503,7 +501,7 @@ class cString extends cStringMultiByteWrapper {
         // diacritics
         static $search, $replace;
         if (!isset($search)) {
-            $search = array(
+            $search  = [
                 'Ä',
                 'Ö',
                 'Ü',
@@ -540,9 +538,9 @@ class cString extends cStringMultiByteWrapper {
                 'Û',
                 'ú',
                 'ù',
-                'û'
-            );
-            $replace = array(
+                'û',
+            ];
+            $replace = [
                 'Ae',
                 'Oe',
                 'Ue',
@@ -579,8 +577,8 @@ class cString extends cStringMultiByteWrapper {
                 'U',
                 'u',
                 'u',
-                'u'
-            );
+                'u',
+            ];
         }
         $string = str_replace($search, $replace, $string);
 
