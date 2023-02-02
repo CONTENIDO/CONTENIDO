@@ -54,7 +54,7 @@ class cXmlWriter extends cXmlBase {
      * @return DOMElement
      *         created DOM element
      */
-    public function addElement($name, $value = '', $rootElement = NULL, $attributes = array(), $cdata = false) {
+    public function addElement($name, $value = '', $rootElement = null, $attributes = [], $cdata = false) {
         if ($value == '' || ($value != '' && $cdata == true)) {
             $element = $this->_dom->createElement($name);
             if ($value != '' && $cdata == true) {
@@ -85,7 +85,7 @@ class cXmlWriter extends cXmlBase {
      * @return DOMElement
      *         DOM element with assigned attributes
      */
-    protected function _addElementAttributes(DOMElement $element, array $attributes = array()) {
+    protected function _addElementAttributes(DOMElement $element, array $attributes = []) {
         if (count($attributes) == 0) {
             return $element;
         }

@@ -23,8 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * the used module.
  *
  * Example:
- * $writer = cLogWriter::factory("File", array('destination' =>
- * 'contenido.log'));
+ * $writer = cLogWriter::factory("File", ['destination' => 'contenido.log');
  *
  * $log = new cModuleLog($writer);
  * $log->setModule(1);
@@ -61,10 +60,7 @@ class cModuleLog extends cLog {
 
         parent::__construct($writer);
 
-        $this->setShortcutHandler('module', array(
-            $this,
-            'shModule'
-        ));
+        $this->setShortcutHandler('module', [$this, 'shModule']);
         $this->getWriter()->setOption("log_format", "[%date] [%level] [%module] %message", true);
     }
 

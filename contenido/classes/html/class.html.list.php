@@ -37,7 +37,7 @@ class cHTMLList extends cHTMLContentElement {
      * @param array|string|object $elements [optional]
      *         the elements of this list
      */
-    public function __construct($type = 'ul', $id = '', $class = '', $elements = array()) {
+    public function __construct($type = 'ul', $id = '', $class = '', $elements = []) {
         parent::__construct($elements, $class, $id);
         if ($type !== 'ul' && $type !== 'ol') {
             $type = 'ul';

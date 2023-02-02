@@ -223,7 +223,7 @@ class cSearchResult extends cSearchBaseAbstract {
                     $cmsType = 'CMS_' . $cmsType;
                 }
             } else {
-                if (!array_key_exists($cmsType, $this->_index->getCmsType())) {
+                if (!array_key_exists($cms_type, $this->_index->getCmsType())) {
                     return [];
                 }
             }

@@ -477,7 +477,7 @@ class cOutputCacheHandler extends cOutputCache
      *                           several variables to create a unique id,
      *                           if the output depends on them. e.g.
      *                           [
-     *                               'uri' => $_SERVER['REQUEST_URI'],
+     *                               'uri'  => $_SERVER['REQUEST_URI'],
      *                               'post' => $_POST, 'get' => $_GET
      *                           ]
      * @param cDb   $db

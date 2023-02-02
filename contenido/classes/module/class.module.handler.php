@@ -82,14 +82,14 @@ class cModuleHandler {
      *
      * @var array
      */
-    protected $_directories = array(
-        'css' => 'css/',
-        'js' => 'js/',
+    protected $_directories = [
+        'css'      => 'css/',
+        'js'       => 'js/',
         'template' => 'template/',
-        'image' => 'image/',
-        'lang' => 'lang/',
-        'php' => 'php/'
-    );
+        'image'    => 'image/',
+        'lang'     => 'lang/',
+        'php'      => 'php/',
+    ];
 
     /**
      * CONTENIDO cfg.
@@ -159,7 +159,7 @@ class cModuleHandler {
      *
      * @var array
      */
-    protected static $_encodingStore = array();
+    protected static $_encodingStore = [];
 
     /**
      * Constructor to create an instance of this class.
@@ -1005,11 +1005,10 @@ class cModuleHandler {
      * @throws cInvalidArgumentException
      */
     protected function _testCode($inputType) {
-
-        $result = array(
-            'state' => false,
-            'errorMessage' => 'Module path not exist'
-        );
+        $result = [
+            'state'        => false,
+            'errorMessage' => 'Module path not exist',
+        ];
 
         if (!$this->modulePathExists()) return $result;
 
@@ -1098,10 +1097,10 @@ class cModuleHandler {
      */
     protected function _verifyCode($code, $id, $output = false) {
         $isError = false;
-        $result = array(
-            'state' => false,
-            'errorMessage' => NULL
-        );
+        $result = [
+            'state'        => false,
+            'errorMessage' => null,
+        ];
 
         // Put a $ in front of all CMS variables to prevent PHP error messages
         $sql = 'SELECT type FROM ' . $this->_cfg['tab']['type'];

@@ -56,13 +56,13 @@ class cUriBuilderConfig {
      *
      * @var array
      */
-    private static $_aUriBuilderCfg = array(
-        'config' => array(
-            'prefix' => 'index',
-            'suffix' => '.html',
-            'separator' => '-'
-        )
-    );
+    private static $_aUriBuilderCfg = [
+        'config' => [
+            'prefix'    => 'index',
+            'suffix'    => '.html',
+            'separator' => '-',
+        ],
+    ];
 
     /**
      * Set cUriBuilder configuration.

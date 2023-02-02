@@ -103,16 +103,14 @@ class cGenericDb {
      *
      * @var array
      */
-    private static $_callbacks = array();
+    private static $_callbacks = [];
 
     /**
      * Registers a new callback.
      *
      * Example:
-     * cGenericDb::register(cGenericDb::CREATE_SUCCESS, 'itemCreateHandler',
-     * 'cApiArticle');
-     * cGenericDb::register(cGenericDb::CREATE_SUCCESS,
-     * array('cCallbackHandler', 'executeCreateHandle'), 'cApiArticle');
+     * cGenericDb::register(cGenericDb::CREATE_SUCCESS, 'itemCreateHandler', 'cApiArticle');
+     * cGenericDb::register(cGenericDb::CREATE_SUCCESS, ['cCallbackHandler', 'executeCreateHandle'], 'cApiArticle');
      *
      * @param string $event
      *         Callback event, must be a valid value of a cGenericDb event constant
@@ -190,7 +188,7 @@ class cGenericDb {
      * @throws cInvalidArgumentException
      *         if the event or class is not set
      */
-    protected final function _executeCallbacks($event, $class, $arguments = array()) {
+    protected final function _executeCallbacks($event, $class, $arguments = []) {
         if (isset($event) === false) {
             throw new cInvalidArgumentException("No callback event for execution was given");
         }

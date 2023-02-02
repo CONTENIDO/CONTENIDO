@@ -273,7 +273,7 @@ abstract class cCodeGeneratorAbstract {
      *         [
      *             'idlay' => (int),
      *             'idtpl' => (int),
-     *             'name' => (string)
+     *             'name'  => (string)
      *         ]
      *
      * @throws cDbException

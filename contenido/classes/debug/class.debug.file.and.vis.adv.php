@@ -62,7 +62,7 @@ class cDebugFileAndVisAdv extends cDebugVisibleAdv {
      */
     private function __construct() {
         global $cfg;
-        $this->_aItems = array();
+        $this->_aItems = [];
         $this->_filePathName = $cfg['path']['contenido_logs'] . 'debug.log';
     }
 
