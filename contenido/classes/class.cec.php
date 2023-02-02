@@ -52,7 +52,7 @@ class cApiCecRegistry {
      * Constructor to create an instance of this class.
      */
     protected function __construct() {
-        $this->_aChains = array();
+        $this->_aChains = [];
     }
 
     /**
@@ -122,7 +122,8 @@ class cApiCecRegistry {
      */
     public function getRegisteredChainNames() {
         cDeprecated('This method is deprecated and is not needed any longer');
-        return array();
+
+        return [];
     }
 
     /**
@@ -136,7 +137,7 @@ class cApiCecRegistry {
      *         Chain parameter
      * @return NULL
      */
-    protected function _addChain($sChainName, array $aParameters = array()) {
+    protected function _addChain($sChainName, array $aParameters = []) {
         cDeprecated('This method is deprecated and is not needed any longer');
         return NULL;
     }
@@ -179,10 +180,10 @@ class cApiCecRegistry {
             } elseif (!method_exists($class, $method)) {
                 throw new cInvalidArgumentException('Method ' . $method . ' in class ' . $class . ' doesn\'t exist, can\'t add ' . $sFunctionName . ' to chain ' . $sChainName);
             }
-            $call = array(
+            $call = [
                 new $class(),
-                $method
-            );
+                $method,
+            ];
         } elseif (cString::findFirstPos($sFunctionName, '::') > 0) {
             // chain function is static method of a object
             list($class, $method) = explode('::', $sFunctionName);
@@ -191,10 +192,10 @@ class cApiCecRegistry {
             } elseif (!method_exists($class, $method)) {
                 throw new cInvalidArgumentException('Method ' . $method . ' in class ' . $class . ' doesn\'t exist, can\'t add ' . $sFunctionName . ' to chain ' . $sChainName);
             }
-            $call = array(
+            $call = [
                 $class,
-                $method
-            );
+                $method,
+            ];
         } else {
             // chain function is a function
             if (!function_exists($sFunctionName)) {
@@ -295,7 +296,7 @@ class cApiCecRegistry {
      *
      */
     public function flushAddedChains() {
-        $this->_aChains = array();
+        $this->_aChains = [];
     }
 }
 
@@ -418,7 +419,7 @@ class cApiCecChainItem {
      */
     public function getParameters() {
         cDeprecated('This method is deprecated and is not needed any longer');
-        return array();
+        return [];
     }
 
     /**
@@ -451,7 +452,7 @@ class cApiCecChainItem {
      *
      * @param array $args [optional]
      */
-    public function setTemporaryArguments(array $args = array()) {
+    public function setTemporaryArguments(array $args = []) {
         $this->_mTemporaryArguments = $args;
     }
 

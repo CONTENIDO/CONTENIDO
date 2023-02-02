@@ -107,7 +107,7 @@ class cApiActionCollection extends ItemCollection {
 
         $this->db->query($sql, $this->table, $cfg['tab']['area']);
 
-        $actions = array();
+        $actions = [];
 
         while ($this->db->nextRecord()) {
             $newentry['name'] = $this->db->f('name');
@@ -177,18 +177,14 @@ class cApiAction extends Item
         global $cfg;
 
         parent::__construct($cfg['tab']['actions'], 'idaction');
-        $this->setFilters(array(
-            'addslashes'
-        ), array(
-            'stripslashes'
-        ));
+        $this->setFilters(['addslashes'], ['stripslashes']);
 
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
 
         // @todo Where is this used???
-        $this->_wantParameters = array();
+        $this->_wantParameters = [];
     }
 
     /**

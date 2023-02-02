@@ -259,7 +259,7 @@ class cApiInUseCollection extends ItemCollection {
      *                                True if the user can override the lock
      * @param string $location        [optional]
      *                                Value to append to the override lock button
-     * @return bool array
+     * @return bool|array
      *                                returnWarning is false, returns a bool value wether the object
      *                                is locked. If returnWarning is true, returns a 2-item array
      *                                (bool inUse, string errormessage).
@@ -305,7 +305,7 @@ class cApiInUseCollection extends ItemCollection {
         }
 
         if ($returnWarning == true) {
-            return array($inUse, $noti);
+            return [$inUse, $noti];
         } else {
             return $inUse;
         }

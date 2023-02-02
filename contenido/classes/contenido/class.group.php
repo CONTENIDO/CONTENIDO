@@ -77,8 +77,8 @@ class cApiGroupCollection extends ItemCollection {
     public function fetchByUserID($userid) {
         global $cfg;
 
-        $aIds = array();
-        $aGroups = array();
+        $aIds    = [];
+        $aGroups = [];
 
         $sql = "SELECT a.group_id FROM `%s` AS a, `%s` AS b " . "WHERE (a.group_id  = b.group_id) AND (b.user_id = '%s')";
 
@@ -129,9 +129,9 @@ class cApiGroupCollection extends ItemCollection {
      * @throws cException
      */
     public function fetchAccessibleGroups($perms) {
-        $groups = array();
-        $limit = array();
-        $where = '';
+        $groups = [];
+        $limit  = [];
+        $where  = '';
 
         if (!in_array('sysadmin', $perms)) {
             // not sysadmin, compose where rules
@@ -177,13 +177,13 @@ class cApiGroupCollection extends ItemCollection {
      * @throws cException
      */
     public function getAccessibleGroups($perms) {
-        $groups = array();
+        $groups  = [];
         $oGroups = $this->fetchAccessibleGroups($perms);
         foreach ($oGroups as $oItem) {
-            $groups[$oItem->get('group_id')] = array(
-                'groupname' => $oItem->getGroupName(true),
-                'description' => $oItem->get('description')
-            );
+            $groups[$oItem->get('group_id')] = [
+                'groupname'   => $oItem->getGroupName(true),
+                'description' => $oItem->get('description'),
+            ];
         }
         return $groups;
     }
@@ -216,7 +216,7 @@ class cApiGroup extends Item {
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['groups'], 'group_id');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -361,16 +361,16 @@ class cApiGroup extends Item {
      * @throws cException
      */
     public function getGroupProperties() {
-        $props = array();
-
         $groupPropColl = new cApiGroupPropertyCollection($this->values['group_id']);
         $groupProps = $groupPropColl->fetchByGroupId();
+
+        $props = [];
         foreach ($groupProps as $groupProp) {
-            $props[$groupProp->get('idgroupprop')] = array(
-                'name' => $groupProp->get('name'),
-                'type' => $groupProp->get('type'),
-                'value' => $groupProp->get('value')
-            );
+            $props[$groupProp->get('idgroupprop')] = [
+                'name'  => $groupProp->get('name'),
+                'type'  => $groupProp->get('type'),
+                'value' => $groupProp->get('value'),
+            ];
         }
 
         return $props;

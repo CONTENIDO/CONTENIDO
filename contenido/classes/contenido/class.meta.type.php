@@ -81,7 +81,7 @@ class cApiMetaType extends Item
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['meta_type'], 'idmetatype');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

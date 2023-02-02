@@ -59,11 +59,13 @@ class cApiFileInformationCollection extends ItemCollection {
         $client = cRegistry::getClientId();
         $auth = cRegistry::getAuth();
         $item = new cApiFileInformation();
-        $item->loadByMany(array(
-            'idclient' => $client,
-            'type' => $typeContent,
-            'filename' => $filename
-        ));
+        $item->loadByMany(
+            [
+                'idclient' => $client,
+                'type'     => $typeContent,
+                'filename' => $filename,
+            ]
+        );
         if (!$item->isLoaded()) {
             $item = $this->createNewItem();
 
@@ -110,11 +112,13 @@ class cApiFileInformationCollection extends ItemCollection {
         $auth = cRegistry::getAuth();
         $client = cRegistry::getClientId();
         $item = new cApiFileInformation();
-        $item->loadByMany(array(
-            'idclient' => $client,
-            'type' => $typeContent,
-            'filename' => $filename
-        ));
+        $item->loadByMany(
+            [
+                'idclient' => $client,
+                'type'     => $typeContent,
+                'filename' => $filename,
+            ]
+        );
         $id = $item->get('idsfi');
         if ($item->isLoaded()) {
             $item->set('idsfi', $id);
@@ -166,13 +170,15 @@ class cApiFileInformationCollection extends ItemCollection {
      */
     public function getFileInformation($filename, $type) {
         $client = cRegistry::getClientId();
-        $fileInformation = array();
+        $fileInformation = [];
         $item = new cApiFileInformation();
-        $item->loadByMany(array(
-            'idclient' => $client,
-            'type' => $type,
-            'filename' => $filename
-        ));
+        $item->loadByMany(
+            [
+                'idclient' => $client,
+                'type'     => $type,
+                'filename' => $filename,
+            ]
+        );
         if ($item->isLoaded()) {
             $fileInformation['idsfi'] = $item->get('idsfi');
             $fileInformation['created'] = $item->get('created');

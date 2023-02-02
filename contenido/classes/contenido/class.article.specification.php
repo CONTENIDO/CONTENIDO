@@ -47,7 +47,7 @@ class cApiArticleSpecificationCollection extends ItemCollection {
      */
     public function fetchByClientLang($client, $lang, $orderBy = '') {
         $this->select("client=" . (int) $client . " AND lang=" . (int) $lang, '', $this->escape($orderBy));
-        $entries = array();
+        $entries = [];
         while (($entry = $this->next()) !== false) {
             $entries[] = clone $entry;
         }
@@ -76,7 +76,7 @@ class cApiArticleSpecification extends Item
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['art_spec'], 'idartspec');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

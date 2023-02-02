@@ -171,7 +171,7 @@ class cApiPathresolveCache extends Item
         global $cfg;
         cApiPathresolveCacheHelper::setup($cfg);
         parent::__construct($cfg['sql']['sqlprefix'] . '_pathresolve_cache', 'idpathresolvecache');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

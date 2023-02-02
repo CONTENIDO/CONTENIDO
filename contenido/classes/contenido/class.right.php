@@ -92,14 +92,14 @@ class cApiRightCollection extends ItemCollection {
                     AND A.idcat = :idcat AND A.idarea = C.idarea AND B.idaction = A.idaction
                 LIMIT 1";
 
-        $params = array(
-            'pk' => $this->getPrimaryKeyName(),
-            'rights' => $this->table,
+        $params = [
+            'pk'      => $this->getPrimaryKeyName(),
+            'rights'  => $this->table,
             'actions' => $cfg['tab']['actions'],
-            'area' => $cfg['tab']['area'],
-            'userid' => $userId,
-            'idcat' => (int) $idcat
-        );
+            'area'    => $cfg['tab']['area'],
+            'userid'  => $userId,
+            'idcat'   => (int)$idcat,
+        ];
 
         $sql = $this->db->prepare($sql, $params);
         $this->db->query($sql);
@@ -146,7 +146,7 @@ class cApiRight extends Item
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['rights'], 'idright');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

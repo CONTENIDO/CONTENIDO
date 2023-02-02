@@ -138,16 +138,14 @@ class cApiLanguageCollection extends ItemCollection {
  */
 class cApiLanguage extends Item {
     /**
-     *
      * @var array
      */
-    protected static $_propertiesCache = array();
+    protected static $_propertiesCache = [];
 
     /**
-     *
      * @var array
      */
-    protected static $_propertiesCacheLoaded = array();
+    protected static $_propertiesCacheLoaded = [];
 
     /**
      * Constructor to create an instance of this class.
@@ -161,7 +159,7 @@ class cApiLanguage extends Item {
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['lang'], 'idlang');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -209,8 +207,7 @@ class cApiLanguage extends Item {
     protected function _loadProperties($idclient = 0) {
 
         if (!isset(self::$_propertiesCacheLoaded[$idclient])) {
-
-            self::$_propertiesCache[$idclient] = array();
+            self::$_propertiesCache[$idclient] = [];
 
             $itemtype = $this->db->escape($this->getPrimaryKeyName());
             $itemid = $this->db->escape($this->get($this->getPrimaryKeyName()));
@@ -224,7 +221,7 @@ class cApiLanguage extends Item {
 
                     $type = $item->get('type');
                     if (!isset(self::$_propertiesCache[$idclient][$type])) {
-                        self::$_propertiesCache[$idclient][$type] = array();
+                        self::$_propertiesCache[$idclient][$type] = [];
                     }
 
                     $name = $item->get('name');

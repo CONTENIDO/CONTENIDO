@@ -117,7 +117,7 @@ class cApiGroupMember extends Item
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['groupmembers'], 'idgroupuser');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

@@ -120,7 +120,7 @@ class cApiTemplateConfigurationCollection extends ItemCollection {
         if (($oTemplate = $oTemplateColl->next()) !== false) {
             if ($oTemplate->get('idtplcfg') > 0) {
                 $oContainerConfColl = new cApiContainerConfigurationCollection('idtplcfg = ' . $oTemplate->get('idtplcfg'));
-                $aStandardconfig = array();
+                $aStandardconfig = [];
                 while (($oContainerConf = $oContainerConfColl->next()) !== false) {
                     $aStandardconfig[$oContainerConf->get('number')] = $oContainerConf->get('container');
                 }
@@ -153,7 +153,7 @@ class cApiTemplateConfiguration extends Item
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['tpl_conf'], 'idtplcfg');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

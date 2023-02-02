@@ -80,11 +80,7 @@ class cApiNavMain extends Item
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['nav_main'], 'idnavm');
-        $this->setFilters(array(
-            'addslashes'
-        ), array(
-            'stripslashes'
-        ));
+        $this->setFilters(['addslashes'], ['stripslashes']);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

@@ -140,7 +140,7 @@ class cApiMetaTagVersion extends Item
     public function __construct($id = false) {
         global $cfg;
         parent::__construct($cfg['tab']['meta_tag_version'], 'idmetatagversion');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }

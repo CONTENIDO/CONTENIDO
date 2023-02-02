@@ -207,49 +207,49 @@ class cUpdateNotifier {
      *
      * @var array
      */
-    protected $aPropConf = array(
+    protected $aPropConf = [
         "itemType" => "update",
-        "itemID" => 1,
-        "type" => "file_check",
-        "name" => "xml"
-    );
+        "itemID"   => 1,
+        "type"     => "file_check",
+        "name"     => "xml",
+    ];
 
     /**
      * System property configuration array for update notification
      *
      * @var array
      */
-    protected $aSysPropConf = array(
+    protected $aSysPropConf = [
         "type" => "update",
-        "name" => "check"
-    );
+        "name" => "check",
+    ];
 
     /**
      * System property configuration array for rss notification
      *
      * @var array
      */
-    protected $aSysPropConfRss = array(
+    protected $aSysPropConfRss = [
         "type" => "update",
-        "name" => "news_feed"
-    );
+        "name" => "news_feed",
+    ];
 
     /**
      * System property configuration array for update period
      *
      * @var array
      */
-    protected $aSysPropConfPeriod = array(
+    protected $aSysPropConfPeriod = [
         "type" => "update",
-        "name" => "check_period"
-    );
+        "name" => "check_period",
+    ];
 
     /**
      * CONTENIDO configuration array
      *
      * @var array
      */
-    protected $aCfg = array();
+    protected $aCfg = [];
 
     /**
      * Constructor to create an instance of this class.
@@ -365,12 +365,12 @@ class cUpdateNotifier {
     protected function checkUpdateNecessity() {
         $bUpdateNecessity = false;
 
-        $aCheckFiles = array(
+        $aCheckFiles = [
             $this->sVendorXMLFile,
             $this->sVendorRssDeFile,
             $this->sVendorRssEnFile,
-            $this->sTimestampCacheFile
-        );
+            $this->sTimestampCacheFile,
+        ];
         foreach ($aCheckFiles as $sFilename) {
             if (!cFileHandler::exists($this->sCacheDirectory . $sFilename)) {
                 $bUpdateNecessity = true;
@@ -532,7 +532,6 @@ class cUpdateNotifier {
      * @throws cException
      */
     protected function getVendorHostFiles() {
-        $aXMLContent = array();
         // get update file
         $sXMLUpdate = $this->fetchUrl($this->sVendorHostPath . $this->sVendorXMLFile);
 
@@ -542,6 +541,7 @@ class cUpdateNotifier {
         // get english rss file
         $sEnRSSContent = $this->fetchUrl($this->sVendorHostPath . $this->sVendorRssEnFile);
 
+        $aXMLContent = [];
         $aXMLContent[$this->sVendorXMLFile] = $sXMLUpdate;
         $aXMLContent[$this->sVendorRssDeFile] = $sDeRSSContent;
         $aXMLContent[$this->sVendorRssEnFile] = $sEnRSSContent;
@@ -557,7 +557,7 @@ class cUpdateNotifier {
      * @throws cInvalidArgumentException
      */
     protected function updateCacheFiles($aRSSContent) {
-        $aWriteCache = array();
+        $aWriteCache = [];
         $aWriteCache[$this->sVendorXMLFile] = $this->sXMLContent;
         $aWriteCache[$this->sVendorRssDeFile] = $aRSSContent[$this->sVendorRssDeFile];
         $aWriteCache[$this->sVendorRssEnFile] = $aRSSContent[$this->sVendorRssEnFile];

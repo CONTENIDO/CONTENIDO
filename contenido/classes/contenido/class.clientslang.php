@@ -368,7 +368,7 @@ class cApiClientLanguage extends Item {
         $oPropertyColl->select("itemtype='" . $itemtype . "' AND itemid='" . $itemid . "'", '', 'type, value ASC');
 
         if ($oPropertyColl->count() > 0) {
-            $aArray = array();
+            $aArray = [];
 
             while (($oItem = $oPropertyColl->next()) !== false) {
                 $aArray[$oItem->get('idproperty')]['type'] = $oItem->get('type');

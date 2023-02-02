@@ -76,7 +76,7 @@ class cApiContainerCollection extends ItemCollection {
      * @throws cDbException
      */
     public function getNumbersByTemplate($idtpl) {
-        $list = array();
+        $list = [];
         $sql = "SELECT number FROM `%s` WHERE idtpl = %d";
         $this->db->query($sql, $this->table, $idtpl);
         while ($this->db->nextRecord()) {
@@ -137,7 +137,7 @@ class cApiContainer extends Item
     public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg['tab']['container'], 'idcontainer');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

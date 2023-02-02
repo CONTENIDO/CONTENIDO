@@ -307,7 +307,7 @@ class cApiCategoryArticle extends Item
     public function __construct($mId = false) {
         $table = cRegistry::getDbTableName('cat_art');
         parent::__construct($table, 'idcatart');
-        $this->setFilters(array(), array());
+        $this->setFilters([], []);
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

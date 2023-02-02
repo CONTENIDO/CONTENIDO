@@ -29,7 +29,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * // example of executing a cec with multiple parameter but without a return
  * value
- * $param = array('foo' => $bar, 'foo2' => $bar2);
+ * $param = ['foo' => $bar, 'foo2' => $bar2];
  * $param = cApiCecHook::execute('Contenido.Content.Somewhere', $param);
  *
  * // example of executing a cec without a parameter but a return value (with
