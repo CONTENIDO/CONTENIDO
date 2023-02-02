@@ -227,29 +227,20 @@ class cSearchIndex extends cSearchBaseAbstract {
     }
 
     /**
-     * Adds the title of the article to the index.
+     * Adds the title and pagetitle of the article to the index.
      *
      * @return void
+     * @throws cDbException
      */
-    public function addTitle(): void
-    {
-        global $cfg;
-        $oDB = cRegistry::getDb();
-
-        $sql = "SELECT
-                *
-            FROM
-                " . $cfg["tab"]["art_lang"] . "
-            WHERE
-                idart = " . cSecurity::toInteger($this->idart); // AND idlang = " . cSecurity::toInteger($lang);"
-        $oDB->query($sql);
-        $oDB->nextRecord();
-
-        $title = $oDB->f("title") . ' ' . $oDB->f("pagetitle");
-        $firstItemKey = array_key_first($this->_keycode["CMS_HTML"] ?? []);
-        if ($firstItemKey)
-        {
-            $this->_keycode["CMS_HTML"][$firstItemKey] .= ' ' . $title;
+    public function addTitle() {
+        $sql = "SELECT `title`, `pagetitle` FROM `%s` WHERE `idart` = %d AND `idlang` = %d";
+        $this->db->query($sql, cRegistry::getDbTableName('art_lang'), $this->idart, $this->lang);
+        if ($this->db->nextRecord()) {
+            $title = $this->db->f('title') . ' ' . $this->db->f('pagetitle');
+            $firstItemKey = cArray::getFirstKey($this->_keycode['CMS_HTML'] ?? []);
+            if ($firstItemKey) {
+                $this->_keycode['CMS_HTML'][$firstItemKey] .= ' ' . $title;
+            }
         }
     }
 
