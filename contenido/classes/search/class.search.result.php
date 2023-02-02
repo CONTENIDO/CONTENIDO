@@ -26,13 +26,13 @@ cInclude('includes', 'functions.encoding.php');
  * methods to display the search results.
  * The search result is basically an array with article ID's.
  *
- * If $search_result = $search->searchIndex($searchword, $searchwordex);
+ * If $searchResult = $search->searchIndex($searchWords, $searchWordsToExclude);
  *
  * use object with
  *
- * $oSearchResults = new cSearchResult($search_result, 10);
+ * $oSearchResults = new cSearchResult($searchResult, 10);
  *
- * // html-tags to emphasize the located searchwords
+ * // html-tags to emphasize the located search-words
  * $oSearchResults->setReplacement('<span style="color:red">', '</span>');
  *
  * $num_res = $oSearchResults->getNumberOfResults();
@@ -90,33 +90,33 @@ class cSearchResult extends cSearchBaseAbstract {
     protected $_resultPerPage;
 
     /**
-     * Array of html-tags to emphasize the searchwords
+     * Array of html-tags to emphasize the search-words
      *
      * @var array
      */
-    protected $_replacement = array();
+    protected $_replacement = [];
 
     /**
      * Array of article id's with ranking information
      *
      * @var array
      */
-    protected $_rankStructure = array();
+    protected $_rankStructure = [];
 
     /**
      * Array of result-pages with array's of article id's
      *
      * @var array
      */
-    protected $_orderedSearchResult = array();
+    protected $_orderedSearchResult = [];
 
     /**
-     * Array of article id's with information about cms-types, occurence of
-     * keyword/searchword, similarity .
+     * Array of article id's with information about cms-types, occurrence of
+     * keyword/search-word, similarity .
      *
      * @var array
      */
-    protected $_searchResult = array();
+    protected $_searchResult = [];
 
     /**
      * Constructor to create an instance of this class.
@@ -124,8 +124,8 @@ class cSearchResult extends cSearchBaseAbstract {
      * Compute ranking factor for each search result and order the
      * search results by ranking factor.
      *
-     * NOTE: The ranking factor is the sum of occurences of matching
-     * searchterms weighted by similarity (in %) between searchword
+     * NOTE: The ranking factor is the sum of occurrences of matching
+     * search-terms weighted by similarity (in %) between search-word
      * and matching word in the article.
      *
      * TODO: One can think of more sophisticated ranking strategies.
@@ -133,26 +133,26 @@ class cSearchResult extends cSearchBaseAbstract {
      * matching word in the headline (CMS_HEADLINE[1]) could be weighted
      * more than a matching word in the text (CMS_HTML[1]).
      *
-     * @param array $search_result
+     * @param array $searchResult
      *                      list of article ids
-     * @param int   $result_per_page
+     * @param int   $resultPerPage
      *                      number of items per page
      * @param cDb   $oDB    [optional]
      *                      CONTENIDO database object
      * @param bool  $bDebug [optional]
      *                      flag to enable debugging
      *
-     * @throws cInvalidArgumentException
+     * @throws cInvalidArgumentException|cDbException
      */
-    public function __construct($search_result, $result_per_page, $oDB = NULL, $bDebug = false) {
+    public function __construct(array $searchResult, $resultPerPage, $oDB = NULL, $bDebug = false) {
         parent::__construct($oDB, $bDebug);
 
         $this->_index = new cSearchIndex($oDB);
 
-        $this->_searchResult = $search_result;
+        $this->_searchResult = $searchResult;
         $this->_debug('$this->search_result', $this->_searchResult);
 
-        $this->_resultPerPage = $result_per_page;
+        $this->_resultPerPage = $resultPerPage;
         $this->_results = count($this->_searchResult);
 
         // compute ranking factor for each search result
@@ -168,16 +168,16 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param array $ranked_search
-     * @param int $result_per_page
+     * @param array $rankedSearch
+     * @param int $resultPerPage
      */
-    public function setOrderedSearchResult($ranked_search, $result_per_page) {
-        asort($ranked_search);
+    public function setOrderedSearchResult(array $rankedSearch, $resultPerPage) {
+        asort($rankedSearch);
 
-        $sorted_rank = array_reverse($ranked_search, true);
+        $sorted_rank = array_reverse($rankedSearch, true);
 
-        if (isset($result_per_page) && $result_per_page > 0) {
-            $split_result = array_chunk($sorted_rank, $result_per_page, true);
+        if (isset($resultPerPage) && $resultPerPage > 0) {
+            $split_result = array_chunk($sorted_rank, $resultPerPage, true);
             $this->_orderedSearchResult = $split_result;
         } else {
             $this->_orderedSearchResult[] = $sorted_rank;
@@ -186,84 +186,85 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param int    $art_id
+     * @param int    $artId
      *                   Id of an article
-     * @param string $cms_type
+     * @param string $cmsType
      * @param int    $id [optional]
      *
      * @return string
-     *                   Content of an article, specified by it's content type
-     * 
+     *                   Content of an article, specified by its content type
+     *
      * @throws cDbException
      * @throws cException
      */
-    public function getContent($art_id, $cms_type, $id = 0) {
+    public function getContent($artId, $cmsType, $id = 0) {
         $article = new cApiArticleLanguage();
-        $article->loadByArticleAndLanguageId($art_id, $this->lang);
-        return $article->getContent($cms_type, $id);
+        $article->loadByArticleAndLanguageId($artId, $this->lang);
+        return $article->getContent($cmsType, $id);
     }
 
     /**
      *
-     * @param int    $art_id
+     * @param int    $artId
      *                       Id of an article
-     * @param string $cms_type
+     * @param string $cmsType
      *                       Content type
-     * @param int    $cms_nr [optional]
-     *                       
-     * @return array Content of an article in search result, specified by its type*         Content of an article in search result, specified by its type
-     *               
+     * @param int    $cmsNr [optional]
+     *
+     * @return array Content of an article in search result, specified by its type
+     *         Content of an article in search result, specified by its type
+     *
      * @throws cDbException
      * @throws cException
      */
-    public function getSearchContent($art_id, $cms_type, $cms_nr = NULL) {
-        $cms_type = cString::toUpperCase($cms_type);
-        if (cString::getStringLength($cms_type) > 0) {
-            if (!cString::findFirstOccurrenceCI($cms_type, 'cms_')) {
-                if (in_array($cms_type, $this->_index->getCmsTypeSuffix())) {
-                    $cms_type = 'CMS_' . $cms_type;
+    public function getSearchContent($artId, $cmsType, $cmsNr = NULL) {
+        $cmsType = cString::toUpperCase($cmsType);
+        if (cString::getStringLength($cmsType) > 0) {
+            if (!cString::findFirstOccurrenceCI($cmsType, 'cms_')) {
+                if (in_array($cmsType, $this->_index->getCmsTypeSuffix())) {
+                    $cmsType = 'CMS_' . $cmsType;
                 }
             } else {
-                if (!array_key_exists($cms_type, $this->_index->getCmsType())) {
-                    return array();
+                if (!array_key_exists($cmsType, $this->_index->getCmsType())) {
+                    return [];
                 }
             }
         }
 
         $article = new cApiArticleLanguage();
-        $article->loadByArticleAndLanguageId($art_id, $this->lang);
-        $content = array();
-        if (isset($this->_searchResult[$art_id][$cms_type])) {
-            // if searchword occurs in cms_type
-            $search_words = $this->_searchResult[$art_id]['search'];
-            $search_words = array_unique($search_words);
+        $article->loadByArticleAndLanguageId($artId, $this->lang);
+        $content = [];
+        if (isset($this->_searchResult[$artId][$cmsType])) {
+            // If search-word occurs in cms_type
+            $searchWords = $this->_searchResult[$artId]['search'];
+            $searchWords = array_unique($searchWords);
 
-            $id_type = $this->_searchResult[$art_id][$cms_type];
-            $id_type = array_unique($id_type);
+            $idType = $this->_searchResult[$artId][$cmsType];
+            $idType = array_unique($idType);
 
-            if (isset($cms_nr) && is_numeric($cms_nr)) {
-                // get content of cms_type[cms_nr]
-                // build consistent escaped string(Timo Trautmann) 2008-04-17
-                $cms_content = conHtmlentities(conHtmlEntityDecode(strip_tags($article->getContent($cms_type, $cms_nr))));
-                $cms_content = $this->highlightSearchWords($search_words, $cms_content);
-                $content[] = htmlspecialchars_decode($cms_content);
+            if (isset($cmsNr) && is_numeric($cmsNr)) {
+                // Get content of cms_type[cms_nr]
+                // Sild consistent escaped string(Timo Trautmann) 2008-04-17
+                $cmsContent = conHtmlentities(conHtmlEntityDecode(strip_tags($article->getContent($cmsType, $cmsNr))));
+                $cmsContent = $this->highlightSearchWords($searchWords, $cmsContent);
+                $content[] = htmlspecialchars_decode($cmsContent);
             } else {
                 // get content of cms_type[$id], where $id are the cms_type
                 // numbers found in search
-                foreach ($id_type as $id) {
-                    $cms_content = strip_tags($article->getContent($cms_type, $id));
-                    $cms_content = $this->highlightSearchWords($search_words, $cms_content);
-                    $content[] = $cms_content;
+                foreach ($idType as $id) {
+                    $cmsContent = strip_tags($article->getContent($cmsType, $id));
+                    $cmsContent = $this->highlightSearchWords($searchWords, $cmsContent);
+                    $content[] = $cmsContent;
                 }
             }
         } else {
-            // searchword was not found in cms_type
-            if (isset($cms_nr) && is_numeric($cms_nr)) {
-                $content[] = strip_tags($article->getContent($cms_type, $cms_nr));
+            // search-word was not found in cms_type
+            if (isset($cmsNr) && is_numeric($cmsNr)) {
+                $content[] = strip_tags($article->getContent($cmsType, $cmsNr));
             } else {
-                $art_content = $article->getContent($cms_type);
-                if (count($art_content) > 0) {
-                    foreach ($art_content as $val) {
+                $artContent = $article->getContent($cmsType);
+                if (count($artContent) > 0) {
+                    foreach ($artContent as $val) {
                         $content[] = strip_tags($val);
                     }
                 }
@@ -273,49 +274,42 @@ class cSearchResult extends cSearchBaseAbstract {
     }
 
     /**
-     * @param array $search_words
-     * @param string $cms_content
+     * @param array $searchWords
+     * @param string $cmsContent
      * @return string
      */
-    protected function highlightSearchWords($search_words, $cms_content)
-    {
-        if (count($this->_replacement) == 2)
-        {
-            foreach ($search_words as $word)
-            {
-                // build consistent escaped string, replace ae ue ..
-                // with original html entities (Timo Trautmann)
-                // 2008-04-17
+    protected function highlightSearchWords(array $searchWords, $cmsContent) {
+        if (count($this->_replacement) == 2) {
+            foreach ($searchWords as $word) {
+                // Build consistent escaped string, replace ae ue ..
+                // with original html entities (Timo Trautmann) 2008-04-17
                 $word_escaped = conHtmlentities(conHtmlEntityDecode($this->_index->addSpecialUmlauts($word)));
                 $match = [];
-                preg_match("/($word|$word_escaped)/i", $cms_content, $match);
+                preg_match("/($word|$word_escaped)/i", $cmsContent, $match);
 
-                if (isset($match[0]))
-                {
+                if (isset($match[0])) {
                     $pattern = $match[0];
                     $replacement = $this->_replacement[0] . $pattern . $this->_replacement[1];
-                    $cms_content = preg_replace("/$pattern/i", $replacement, $cms_content); // emphasize
-                    // located
-                    // searchwords
+                    // Emphasize located search-words
+                    $cmsContent = preg_replace("/$pattern/i", $replacement, $cmsContent);
                 }
             }
         }
 
-        return $cms_content;
+        return $cmsContent;
     }
 
     /**
      * Returns articles in page.
      *
-     * @param int $page_id
+     * @param int $pageId
      * @return array
-     *         Articles in page $page_id
+     *         Articles in page $pageId
      */
-    public function getSearchResultPage($page_id) {
-        if (isset($this->_orderedSearchResult[$page_id - 1])) {
-            $this->_resultPage = $page_id;
-            $result_page = $this->_orderedSearchResult[$page_id - 1];
-            return $result_page;
+    public function getSearchResultPage($pageId) {
+        if (isset($this->_orderedSearchResult[$pageId - 1])) {
+            $this->_resultPage = $pageId;
+            return $this->_orderedSearchResult[$pageId - 1];
         } else {
             return [];
         }
@@ -344,7 +338,7 @@ class cSearchResult extends cSearchBaseAbstract {
      * @param int $art_id
      *         Id of an article
      * @return int
-     *         Similarity between searchword and matching word in article
+     *         Similarity between search-word and matching word in article
      */
     public function getSimilarity($art_id) {
         return isset($this->_searchResult[$art_id]['similarity']) ? $this->_searchResult[$art_id]['similarity'] : 0;
@@ -352,13 +346,13 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param int $art_id
+     * @param int $artId
      *         Id of an article
      * @return int
-     *         number of matching searchwords found in article
+     *         number of matching search-words found in article
      */
-    public function getOccurrence($art_id) {
-        $aOccurence = $this->_searchResult[$art_id]['occurence'];
+    public function getOccurrence($artId) {
+        $aOccurence = $this->_searchResult[$artId]['occurence'];
         $iSumOfOccurence = 0;
         for ($i = 0; $i < count($aOccurence); $i++) {
             $iSumOfOccurence += $aOccurence[$i];
@@ -370,7 +364,7 @@ class cSearchResult extends cSearchBaseAbstract {
     /**
      *
      * @param string $rep1
-     *         The opening html-tag to emphasize the searchword e.g. '<b>'
+     *         The opening html-tag to emphasize the search-word e.g. '<b>'
      * @param string $rep2
      *         The closing html-tag e.g. '</b>'
      */
@@ -382,21 +376,20 @@ class cSearchResult extends cSearchBaseAbstract {
     }
 
     /**
+     * Returns the first found category id by article id.
      *
-     * @todo refactor this because it shouldn't be the Search's job
+     * @param int $artId
      *
-     * @param int $artid
-     *
-     * @return int
-     *         Category Id
+     * @return int|void
+     *         Category id or nothing
      * @throws cDbException
      */
-    public function getArtCat($artid) {
-        $sql = "SELECT idcat FROM " . $this->cfg['tab']['cat_art'] . "
-                WHERE idart = " . cSecurity::toInteger($artid) . " ";
-        $this->db->query($sql);
-        if ($this->db->nextRecord()) {
-            return $this->db->f('idcat');
+    public function getArtCat($artId) {
+        $catArtColl = new cApiCategoryArticleCollection();
+        $result = $catArtColl->getCategoryIdsByArticleId($artId);
+        if (count($result) > 0) {
+            return $result[0];
         }
     }
+
 }
