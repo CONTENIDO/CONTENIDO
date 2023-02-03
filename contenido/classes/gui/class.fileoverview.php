@@ -108,7 +108,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cGuiFileOverview extends cGuiPage {
 
     /**
-     * Path to the directory directory where files to display are located.
+     * Path to the directory where files to display are located.
      *
      * @var string
      */
@@ -142,7 +142,7 @@ class cGuiFileOverview extends cGuiPage {
      * Initializes the class for the directory.
      *
      * @param string $dir
-     *        path to the directory directory where files to display are
+     *        path to the directory where files to display are
      *        located
      * @param string $markedFile [optional]
      *        basename of file that will be marked as selected.
