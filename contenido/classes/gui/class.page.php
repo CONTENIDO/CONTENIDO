@@ -97,7 +97,7 @@ class cGuiPage {
     protected $_subnav;
 
     /**
-     * The script to markup the current submenu item.
+     * The script to mark up the current submenu item.
      * This will be included in the final page.
      *
      * @var string
@@ -182,6 +182,13 @@ class cGuiPage {
     protected $_skipTemplateCheck = false;
 
     /**
+     * The current logged-in user in backend.
+     *
+     * @var cApiUser
+     */
+    protected $_currentUser;
+
+    /**
      * Constructor to create an instance of this class.
      *
      * The constructor initializes the class and tries to get the
@@ -203,6 +210,8 @@ class cGuiPage {
      * @throws cException
      */
     public function __construct($pageName, $pluginName = '', $subMenu = '') {
+        global $currentuser;
+
         $this->_pageName = $pageName;
         $this->_pluginName = $pluginName;
         $this->_pageTemplate = new cTemplate();
@@ -219,6 +228,7 @@ class cGuiPage {
         $this->_objects = [];
         $this->_metaTags = [];
         $this->_bodyClassNames = [];
+        $this->_currentUser = $currentuser;
 
         $lang = cRegistry::getLanguageId();
         $cfg = cRegistry::getConfig();
@@ -235,12 +245,12 @@ class cGuiPage {
 
         $this->_pageTemplate->set('s', 'SUBMENU', $subMenu);
         $this->_pageTemplate->set('s', 'PAGENAME', $pageName);
-        $pageid = str_replace('.', '_', $pageName);
+        $pageId = str_replace('.', '_', $pageName);
         $this->_pageTemplate->set('s', 'PAGENAME', $pageName);
-        $this->_pageTemplate->set('s', 'PAGEID', $pageid);
+        $this->_pageTemplate->set('s', 'PAGEID', $pageId);
 
         $this->addBodyClassName('page_generic');
-        $this->addBodyClassName('page_' . $pageid);
+        $this->addBodyClassName('page_' . $pageId);
 
         if ($pluginName != '') {
             $this->_filesDirectory = '';
@@ -256,11 +266,10 @@ class cGuiPage {
             $this->addStyle($this->_filesDirectory . $pageName . '.css');
         }
 
-        /* @var $stylefile SplFileInfo */
         if (cFileHandler::exists($styleDir)) {
-            foreach (new DirectoryIterator($styleDir) as $stylefile) {
-                if (cString::endsWith($stylefile->getFilename(), '.' . $pageName . '.css')) {
-                    $this->addStyle($this->_filesDirectory . $stylefile->getFilename());
+            foreach (new DirectoryIterator($styleDir) as $styleFile) {
+                if (cString::endsWith($styleFile->getFilename(), '.' . $pageName . '.css')) {
+                    $this->addStyle($this->_filesDirectory . $styleFile->getFilename());
                 }
             }
         }
@@ -269,11 +278,10 @@ class cGuiPage {
             $this->addScript($this->_filesDirectory . $pageName . '.js');
         }
 
-        /* @var $scriptfile SplFileInfo */
         if (cFileHandler::exists($scriptDir)) {
-            foreach (new DirectoryIterator($scriptDir) as $scriptfile) {
-                if (cString::endsWith($scriptfile->getFilename(), '.' . $pageName . '.js')) {
-                    $this->addScript($this->_filesDirectory . $scriptfile->getFilename());
+            foreach (new DirectoryIterator($scriptDir) as $scriptFile) {
+                if (cString::endsWith($scriptFile->getFilename(), '.' . $pageName . '.js')) {
+                    $this->addScript($this->_filesDirectory . $scriptFile->getFilename());
                 }
             }
         }
@@ -298,8 +306,6 @@ class cGuiPage {
      * @throws cInvalidArgumentException
      */
     public function addScript($script) {
-        global $currentuser;
-
         $script = trim($script);
         if (empty($script)) {
             return;
@@ -312,7 +318,7 @@ class cGuiPage {
         $filePathName = $this->_getRealFilePathName($script);
 
         // Warning message for not existing resources
-        if ($perm->isSysadmin($currentuser) && cString::findFirstPos(trim($script), '<script') === false &&
+        if ($perm->isSysadmin($this->_currentUser) && cString::findFirstPos(trim($script), '<script') === false &&
            ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['scripts'] . $script)) &&
            (!cFileHandler::exists($backendPath . $cfg['path']['scripts'] . $filePathName)))) {
             $this->displayWarning(i18n("The requested resource") . " <strong>" . $filePathName . "</strong> " . i18n("was not found"));
@@ -351,8 +357,6 @@ class cGuiPage {
      * @throws cInvalidArgumentException
      */
     public function addStyle($stylesheet) {
-        global $currentuser;
-
         $stylesheet = trim($stylesheet);
         if (empty($stylesheet)) {
             return;
@@ -365,7 +369,7 @@ class cGuiPage {
         $filePathName = $this->_getRealFilePathName($stylesheet);
 
         // Warning message for not existing resources
-        if ($perm->isSysadmin($currentuser) && ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $stylesheet))) ||
+        if ($perm->isSysadmin($this->_currentUser) && ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $stylesheet))) ||
            (empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['styles'] . $filePathName))) {
             $this->displayWarning(i18n("The requested resource") . " <strong>" . $filePathName . "</strong> " . i18n("was not found"));
         }
@@ -706,8 +710,8 @@ class cGuiPage {
      * NOTE: All these objects must have a render() method or else they
      * won't be shown.
      *
-     * @param array|object $objects
-     *         An array of objects
+     * @param array|object|string $objects
+     *         A list of objects, a single object or a string to output
      */
     public function setContent($objects) {
         if (!is_array($objects)) {
@@ -725,8 +729,8 @@ class cGuiPage {
      * NOTE: All these objects must have a render() method or else they
      * won't be shown.
      *
-     * @param array|object $objects
-     *         An array of objects or a single object
+     * @param array|object|string $objects
+     *         A list of objects, a single object or a string to output
      */
     public function appendContent($objects) {
         if (!is_array($objects)) {
@@ -749,7 +753,6 @@ class cGuiPage {
      * @throws cException
      */
     public function render($template = NULL, $return = false) {
-
         if ($template == NULL) {
             $template = $this->_contentTemplate;
         }
@@ -938,7 +941,7 @@ class cGuiPage {
      * @throws cException
      */
     protected function _renderTemplate($template) {
-        global $currentuser, $notification;
+        global $notification;
 
         $perm = cRegistry::getPerm();
         $cfg = cRegistry::getConfig();
@@ -951,7 +954,7 @@ class cGuiPage {
 
         $output = '';
         // Warning message for not existing resources
-        if (!$this->_skipTemplateCheck && $perm->isSysadmin($currentuser) && !cFileHandler::exists($file)) {
+        if (!$this->_skipTemplateCheck && $perm->isSysadmin($this->_currentUser) && !cFileHandler::exists($file)) {
             $output .= $notification->returnNotification('warning', i18n("The requested resource") . " <strong>template." . $this->_pageName . ".html</strong> " . i18n("was not found")) . '<br>';
         }
 
