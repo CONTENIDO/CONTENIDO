@@ -78,8 +78,8 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
                 // Template has been changed, but specified: Store template
                 // article as new newsletter article
                 $iIDArt = conCopyArticle($requestSelTemplate, $oClientLang->getProperty("newsletter", "html_newsletter_idcat"), sprintf(i18n("Newsletter: %s", 'newsletter'), $oNewsletter->get("name")));
-                conMakeOnline($iIDArt, $lang); // Article has to be online for
-                                               // sending...
+                // Article has to be online for sending...
+                conMakeOnline($iIDArt, $lang);
             }
 
             $oNewsletter->set("idart", $iIDArt);
@@ -130,11 +130,11 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     $oForm->addHeader(sprintf(i18n("Edit newsletter message (%s)", 'newsletter'), $oNewsletter->get("name")));
     $oForm->add(i18n("Subject", 'newsletter'), $oNewsletter->get("subject"));
 
-    $sTagInfoText = '<a href="javascript:fncShowHide(\'idTagInfoText\');"><strong>' . i18n("Tag information", 'newsletter') . '</strong></a>' . '<div id="idTagInfoText" style="display: none"><br><b>' . i18n("Special message tags (will be replaced when sending)", 'newsletter') . ':</b><br>' . 'MAIL_NAME: ' . i18n("Name of the recipient", 'newsletter') . '<br>' . 'MAIL_DATE: ' . i18n("Date, when the mail has been sent", 'newsletter') . '<br>' . 'MAIL_TIME: ' . i18n("Time, when the mail has been sent", 'newsletter') . '<br>' . 'MAIL_NUMBER: ' . i18n("Number of recipients", 'newsletter') . '<br>'.
+    $sTagInfoText = '<a href="javascript://" data-action="toggle_tag_info" data-toggle-id="idTagInfoText"><strong>' . i18n("Tag information", 'newsletter') . '</strong></a>' . '<div id="idTagInfoText" style="display: none"><br><b>' . i18n("Special message tags (will be replaced when sending)", 'newsletter') . ':</b><br>' . 'MAIL_NAME: ' . i18n("Name of the recipient", 'newsletter') . '<br>' . 'MAIL_DATE: ' . i18n("Date, when the mail has been sent", 'newsletter') . '<br>' . 'MAIL_TIME: ' . i18n("Time, when the mail has been sent", 'newsletter') . '<br>' . 'MAIL_NUMBER: ' . i18n("Number of recipients", 'newsletter') . '<br>'.
             'MAIL_UNSUBSCRIBE: ' .
              i18n("Link to unsubscribe", 'newsletter') . '<br />' . 'MAIL_STOP: ' . i18n("Link to pause the subscription", 'newsletter') . '<br />' . 'MAIL_GOON: ' . i18n("Link to resume the subscription", 'newsletter');
 
-    $sTagInfoHTML = '<a href="javascript:fncShowHide(\'idTagInfoHTML\');"><strong>' . i18n("Tag information", 'newsletter') . '</strong></a>' . '<div id="idTagInfoHTML" style="display: none"><br><b>' . i18n("Special message tags (will be replaced when sending, {..} = optional)", 'newsletter') . ":</b><br>" . '[mail name="name" type="text"]{text}MAIL_NAME{text}[/mail]: ' . i18n("Name of the recipient", 'newsletter') . "<br>" . '[mail name="date" type="text"]{text}MAIL_DATE{text}[/mail]: ' . i18n("Date, when the mail has been sent", 'newsletter') . "<br>" . '[mail name="time" type="text"]{text}MAIL_TIME{text}[/mail]: ' . i18n("Time, when the mail has been sent", 'newsletter') . "<br>" . '[mail name="number" type="text"]{text}MAIL_NUMBER{text}[/mail]: ' . i18n("Number of recipients", 'newsletter') . "<br>".
+    $sTagInfoHTML = '<a href="javascript:/" data-action="toggle_tag_info" data-toggle-id="idTagInfoHTML"><strong>' . i18n("Tag information", 'newsletter') . '</strong></a>' . '<div id="idTagInfoHTML" style="display: none"><br><b>' . i18n("Special message tags (will be replaced when sending, {..} = optional)", 'newsletter') . ":</b><br>" . '[mail name="name" type="text"]{text}MAIL_NAME{text}[/mail]: ' . i18n("Name of the recipient", 'newsletter') . "<br>" . '[mail name="date" type="text"]{text}MAIL_DATE{text}[/mail]: ' . i18n("Date, when the mail has been sent", 'newsletter') . "<br>" . '[mail name="time" type="text"]{text}MAIL_TIME{text}[/mail]: ' . i18n("Time, when the mail has been sent", 'newsletter') . "<br>" . '[mail name="number" type="text"]{text}MAIL_NUMBER{text}[/mail]: ' . i18n("Number of recipients", 'newsletter') . "<br>".
             '[mail name="unsubscribe" type="link" {text="' .
             i18n("Link text", 'newsletter') . '" }]{text}MAIL_UNSUBSCRIBE{text}[/mail]: ' . i18n("Link to unsubscribe", 'newsletter') . "<br>" . '[mail name="stop" type="link" {text="' . i18n("Link text", 'newsletter') . '" }]{text}MAIL_STOP{text}[/mail]: ' . i18n("Link to pause the subscription", 'newsletter') . "<br>" . '[mail name="goon" type="link" {text="' . i18n("Link text", 'newsletter') . '" }]{text}MAIL_GOON{text}[/mail]: ' . i18n("Link to resume the subscription", 'newsletter');
 
@@ -167,8 +167,8 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     if ($oNewsletter->get("type") == "html") {
         $iTplIDArt = $oNewsletter->get("template_idart");
         $oSelTemplate = new cHTMLSelectElement("selTemplate");
-        $oSelTemplate->setClass('text_medium');
-        $oSelTemplate->setEvent("change", "askSubmitOnTplChange(this);");
+        $oSelTemplate->setClass('text_medium')
+            ->setAttribute("data-action-change", "template_change");
         $aOptions = [
             "idcat" => $oClientLang->getProperty("newsletter", "html_template_idcat"),
             "start" => true,
@@ -213,40 +213,49 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
 
     $sExecScript = '
     <script type="text/javascript">
-    // Enabled/Disable group box
-    function fncShowHide(strItemID) {
-        objItem = document.getElementById(strItemID);
-
-        if (objItem.style.display == "none") {
-            objItem.style.display = "inline";
-        } else {
-            objItem.style.display = "none";
-        }
-    }
-
-    // If html newsletter template selection has changed, ask user
-    // if he/she may like to save this change (e.g. to get an html
-    // newsletter immediately)
-    function askSubmitOnTplChange(oSelectObject) {
-        var iOriginalTplIDArt = ' . $iTplIDArt . ';
-
-        if (iOriginalTplIDArt != oSelectObject.options[oSelectObject.selectedIndex].value) {
-            if (iOriginalTplIDArt == 0) {
-                // Everything fine: Just selecting a template for the first time
-                submitForm();
-            } else {
-                // You may loose information, warn!
-                Con.showConfirmation("' . i18n("HTML template has been changed. Do you like to save now to apply changes?<br><br><b>Note, that existing HTML newsletter content will get lost!</b>", 'newsletter') . '", submitForm);
+    (function(Con, $) {
+        // If html newsletter template selection has changed, ask user
+        // if he/she may like to save this change (e.g. to get a html
+        // newsletter immediately)
+        function actionTemplateChange($select) {
+            var iOriginalTplIDArt = ' . $iTplIDArt . ';
+    
+            if (iOriginalTplIDArt !== parseInt($select.val(), 10)) {
+                if (iOriginalTplIDArt === 0) {
+                    // Everything fine: Just selecting a template for the first time
+                    submitForm();
+                } else {
+                    // You may lose information, warn!
+                    var msg = "' . i18n("HTML template has been changed. Do you like to save now to apply changes?<br><br><b>Note, that existing HTML newsletter content will get lost!</b>", 'newsletter') . '";
+                    Con.showConfirmation(msg, submitForm);
+                }
             }
         }
-    }
 
-    function submitForm() {
-        document.frmNewsletterMsg.submit();
-    }
+        function submitForm() {
+            $("form[name=\'frmNewsletterMsg\']").submit();
+        }
+
+        $("form [data-action-change]").live("change", function () {
+            var $element = $(this),
+                action = $element.data("action-change");
+            if (action === "template_change") {
+                actionTemplateChange($element);
+            }
+        });
+
+        $("form [data-action]").live("click", function () {
+            var $element = $(this),
+                action = $element.data("action");
+            if (action === "toggle_tag_info") {
+                // Doggle tag info text
+                var selector = "#" + $element.data("toggle-id");
+                $(selector).slideToggle();
+            }
+        });
+    })(Con, Con.$);
     </script>';
-    $oPage->addScript($sExecScript);
-    $oPage->setContent($oForm);
+    $oPage->setContent([$oForm, $sExecScript]);
 }
 
 $oPage->render();

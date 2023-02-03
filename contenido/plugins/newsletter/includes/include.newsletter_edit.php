@@ -108,9 +108,8 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
     $oNewsletter = new Newsletter(); // Generate empty newsletter object
 
     // Setting blank subnav - "blank" doesn't mean anything special, it just
-                                     // can't be empty
-                                     // and must not contain "idnewsletter" as
-                                     // this is checked in the _subnav file.
+    // can't be empty and must not contain "idnewsletter" as this is checked
+    // in the _subnav file.
     $oPage->setSubnav("blank", "news");
     $oPage->reloadLeftBottomFrame(['idnewsletter' => null]);
     $oPage->displayOk(i18n("Deleted newsletter successfully!", 'newsletter'));
@@ -139,8 +138,8 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
         $iTestIDNewsGroup = (int) $oUser->getProperty("newsletter", "test_idnewsgrp_lang" . $lang);
 //        $iTestIDNewsGroup = 0;
     } else {
-        $iTestIDNewsGroup = 0; // If user doesn't have the news_send_test right,
-                               // just send to himself
+        // If user doesn't have the news_send_test right, just send to himself
+        $iTestIDNewsGroup = 0;
     }
 
     // Get encoding
@@ -376,10 +375,9 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
             i18n("HTML and text", 'newsletter')
         ];
     } else {
-        $oNewsletter->set("type", "text"); // just in case the global setting
-                                           // was switched off
-                                               // TODO: Should this setting be
-                                           // stored?
+        // Just in case the global setting was switched off
+        // TODO: Should this setting be stored?
+        $oNewsletter->set("type", "text");
     }
     $oSelType->autoFill($aItems);
     $oSelType->setDefault($oNewsletter->get("type"));
@@ -396,11 +394,14 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
 
     // Send options
     $oSendToAll = new cHTMLRadiobutton("optSendTo", "all");
-    $oSendToAll->setEvent("Click", "checkSelection(this.value)");
-    $oSendToDefault = new cHTMLRadiobutton("optSendTo", "default");
-    $oSendToDefault->setEvent("Click", "checkSelection(this.value)");
-    $oSendToGroups = new cHTMLRadiobutton("optSendTo", "selection");
-    $oSendToGroups->setEvent("Click", "checkSelection(this.value)");
+    $oSendToAll->setLabelText("&nbsp;" . i18n("Send newsletter to all recipients", 'newsletter'))
+        ->setAttribute("data-action-change", "send_to_change");
+    $oSendToDefault = new cHTMLRadiobutton("optSendTo", "default", "optSendTo_default");
+    $oSendToDefault->setLabelText("&nbsp;" . i18n("Send newsletter to the members of the default group", 'newsletter'))
+        ->setAttribute("data-action-change", "send_to_change");
+    $oSendToGroups = new cHTMLRadiobutton("optSendTo", "selection", "optSendTo_selection");
+    $oSendToGroups->setLabelText("&nbsp;" . i18n("Send newsletter to the members of the selected group(s):", 'newsletter'))
+        ->setAttribute("data-action-change", "send_to_change");
 
     $oRcpGroups->setWhere("idclient", $client);
     $oRcpGroups->setWhere("idlang", $lang);
@@ -427,7 +428,7 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     $oSelGroup->setAlt(i18n("Note: Hold <Ctrl> to select multiple items.", 'newsletter'));
     $oSelGroup->autoFill($aItems);
 
-    // No groups in the list, sendToGroups and group listbox disabled
+    // No groups in the list, sendToGroups and group list-box disabled
     if (count($aItems) == 0) {
         $oSendToGroups->setDisabled(true);
         if ($requestOptSendTo == "selection") {
@@ -451,25 +452,28 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     }
 
     // Recipients
-    $html = $oSendToAll->toHtml(false) . "&nbsp;" . i18n("Send newsletter to all recipients", 'newsletter') . "<br>" . PHP_EOL;
-    $html .= $oSendToDefault->toHtml(false) . "&nbsp;" . i18n("Send newsletter to the members of the default group", 'newsletter') . "<br>" . PHP_EOL;
-    $html .= $oSendToGroups->toHtml(false) . "&nbsp;" . i18n("Send newsletter to the members of the selected group(s):", 'newsletter') . "<br>" . PHP_EOL;
+    $html = $oSendToAll->toHtml() . "<br>" . PHP_EOL;
+    $html .= $oSendToDefault->toHtml() . "<br>" . PHP_EOL;
+    $html .= $oSendToGroups->toHtml() . "<br>" . PHP_EOL;
     $html .= $oSelGroup->render();
+
     $oForm->add(i18n("Recipients", 'newsletter'), $html);
 
     // Options
     $ckbWelcome = new cHTMLCheckbox("ckbWelcome", "1");
-    $ckbWelcome->setChecked($oNewsletter->get("welcome"));
+    $ckbWelcome->setLabelText("&nbsp;" . i18n("Welcome-Newsletter", 'newsletter'))
+        ->setChecked($oNewsletter->get("welcome"));
 
     // Generate disabled cronjob element
-    // Provide only "Use cronjob" option, if it has been explicitely enabled
+    // Provide only "Use cronjob" option, if it has been explicitly enabled
     // (and the admin knows, what he is doing - like using a real cronjob, not a
     // simulated one...)
     // Note, that the run_newsletter_job.php file has not been added to the
     // cronjob
-    // list in the cronjobs folder - as it may be used, but not via cronjob
+    // list in the 'cronjobs' folder - as it may be used, but not via cronjob
     // simulation
     $ckbCronJob = new cHTMLCheckbox("ckbCronJob", "1", "", $oNewsletter->get("use_cronjob"), true);
+    $ckbCronJob->setLabelText("&nbsp;" . i18n("Use cronjob", 'newsletter'));
 
     if (getEffectiveSetting("newsletter", "option-cronjob-available", "false") == "true") {
         // Enable cronjob checkbox
@@ -480,13 +484,25 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
     }
 
     $oCkbDispatch = new cHTMLCheckbox("ckbDispatch", "enabled");
-    $oCkbDispatch->setChecked($oNewsletter->get("dispatch"));
+    $oCkbDispatch->setLabelText("&nbsp;" . i18n("Send in blocks:", 'newsletter'))
+        ->setChecked($oNewsletter->get("dispatch"))
+        ->setAttribute("data-action-init", "dispatch_change")
+        ->setAttribute("data-action-change", "dispatch_change");
+
     $oTxtDispatchCount = new cHTMLTextbox("txtDispatchCount", $oNewsletter->get("dispatch_count"), 4);
     $oTxtDispatchDelay = new cHTMLTextbox("txtDispatchDelay", $oNewsletter->get("dispatch_delay"), 4);
     $oTxtDispatchDelay->setAlt(i18n("Note: Set to 0 to send chunks manually.", 'newsletter'));
     $oCkbSaveAsDefault = new cHTMLCheckbox("ckbSetDefault", "1");
+    $oCkbSaveAsDefault->setLabelText("&nbsp;" . i18n("Save option settings as default", 'newsletter'));
 
-    $oForm->add(i18n("Options", 'newsletter'), $ckbWelcome->toHtml(false) . "&nbsp;" . i18n("Welcome-Newsletter", 'newsletter') . "<br>" . $ckbCronJob->toHtml(false) . "&nbsp;" . i18n("Use cronjob", 'newsletter') . "<br>" . $oCkbDispatch->toHtml(false) . "&nbsp;" . i18n("Send in blocks:", 'newsletter') . "&nbsp;&nbsp;&nbsp;" . i18n("Recipients per block:", 'newsletter') . "&nbsp;" . $oTxtDispatchCount->render() . "&nbsp;" . i18n("Delay between blocks:", 'newsletter') . "&nbsp;" . $oTxtDispatchDelay->render() . "&nbsp;" . i18n("sec.", 'newsletter') . "<br>" . $oCkbSaveAsDefault->toHtml(false) . "&nbsp;" . i18n("Save option settings as default", 'newsletter'));
+    $oForm->add(i18n("Options", 'newsletter'),
+        $ckbWelcome->toHtml()
+        . $ckbCronJob->toHtml()
+        . $oCkbDispatch->toHtml() . "&nbsp;&nbsp;&nbsp;&nbsp;" . i18n("Recipients per block:", 'newsletter')
+            . "&nbsp;" . $oTxtDispatchCount->render() . "&nbsp;" . i18n("Delay between blocks:", 'newsletter')
+            . "&nbsp;" . $oTxtDispatchDelay->render() . "&nbsp;" . i18n("sec.", 'newsletter') . "<br>"
+        . $oCkbSaveAsDefault->toHtml()
+    );
 
     $oUser = new cApiUser($oNewsletter->get("author"));
     $oForm->add(i18n("Author", 'newsletter'), $oUser->get('username') . " (" . displayDatetime($oNewsletter->get("created")) . ")");
@@ -495,18 +511,36 @@ if (true === $oNewsletter->isLoaded() && $oNewsletter->get("idclient") == $clien
 
     $sExecScript = '
     <script type="text/javascript">
-    // Enabled/Disable group box
-    function checkSelection(strValue) {
-        if (strValue == "selection") {
-            document.getElementById("groupselect").disabled = false;
-        } else {
-            document.getElementById("groupselect").disabled = true;
+    (function(Con, $) {
+        function actionDispatchChange($element) {
+            $("input[name=\'txtDispatchCount\']").prop("disabled", !$element.prop("checked"));
+            $("input[name=\'txtDispatchDelay\']").prop("disabled", !$element.prop("checked"));
         }
-    }
-    </script>';
-    $oPage->addScript($sExecScript);
 
-    $oPage->setContent($oForm);
+        function actionSendToChange($element) {
+            $("#groupselect").prop("disabled", $element.val() !== "selection");
+        }
+
+        $("form [data-action-init]").each(function(pos, element) {
+            var $element = $(element),
+                actionInit = $element.data("action-init");
+            if (actionInit === "dispatch_change") {
+                actionDispatchChange($element);
+            }
+        });
+
+        $("form [data-action-change]").live("change", function () {
+            var $element = $(this),
+                action = $element.data("action-change");
+            if (action === "send_to_change") {
+                actionSendToChange($element);
+            } else if (action === "dispatch_change") {
+                actionDispatchChange($element);
+            }
+        });
+    })(Con, Con.$);
+    </script>';
+    $oPage->setContent([$oForm, $sExecScript]);
 } else {
     $oPage->setContent("");
 }
