@@ -160,11 +160,11 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0) {
         strDeleteCategory($db->f('idcat'));
     }
 
-    $aIdArtLang = array();
-    $aIdArt = array();
-    $aIdCatLang = array();
-    $aIdCat = array();
-    $aIdTplCfg = array();
+    $aIdArtLang = [];
+    $aIdArt     = [];
+    $aIdCatLang = [];
+    $aIdCat     = [];
+    $aIdTplCfg  = [];
 
     if ($deleteok == 1) {
         // ********* check if this is the clients last language to be deleted,

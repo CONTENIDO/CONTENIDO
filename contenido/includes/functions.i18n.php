@@ -111,7 +111,7 @@ function i18nRegisterDomain($domain, $localePath) {
  */
 function i18nStripAcceptLanguages($accept) {
     $languages = explode(',', $accept);
-    $shortLanguages = array();
+    $shortLanguages = [];
     foreach ($languages as $value) {
         $components = explode(';', $value);
         $shortLanguages[] = $components[0];
@@ -170,260 +170,260 @@ function i18nGetAvailableLanguages() {
      * ISO-Encoding Fourth field: Browser accept mapping Fifth field: SPAW
      * language
      */
-    $aLanguages = array(
-        'ar_AA' => array(
+    $aLanguages = [
+        'ar_AA' => [
             'Arabic',
             'Arabic Countries',
             'ISO8859-6',
             'ar',
-            'en'
-        ),
-        'be_BY' => array(
+            'en',
+        ],
+        'be_BY' => [
             'Byelorussian',
             'Belarus',
             'ISO8859-5',
             'be',
-            'en'
-        ),
-        'bg_BG' => array(
+            'en',
+        ],
+        'bg_BG' => [
             'Bulgarian',
             'Bulgaria',
             'ISO8859-5',
             'bg',
-            'en'
-        ),
-        'cs_CZ' => array(
+            'en',
+        ],
+        'cs_CZ' => [
             'Czech',
             'Czech Republic',
             'ISO8859-2',
             'cs',
-            'cz'
-        ),
-        'da_DK' => array(
+            'cz',
+        ],
+        'da_DK' => [
             'Danish',
             'Denmark',
             'ISO8859-1',
             'da',
-            'dk'
-        ),
-        'de_CH' => array(
+            'dk',
+        ],
+        'de_CH' => [
             'German',
             'Switzerland',
             'ISO8859-1',
             'de-ch',
-            'de'
-        ),
-        'de_DE' => array(
+            'de',
+        ],
+        'de_DE' => [
             'German',
             'Germany',
             'ISO8859-1',
             'de',
-            'de'
-        ),
-        'el_GR' => array(
+            'de',
+        ],
+        'el_GR' => [
             'Greek',
             'Greece',
             'ISO8859-7',
             'el',
-            'en'
-        ),
-        'en_GB' => array(
+            'en',
+        ],
+        'en_GB' => [
             'English',
             'Great Britain',
             'ISO8859-1',
             'en-gb',
-            'en'
-        ),
-        'en_US' => array(
+            'en',
+        ],
+        'en_US' => [
             'English',
             'United States',
             'ISO8859-1',
             'en',
-            'en'
-        ),
-        'es_ES' => array(
+            'en',
+        ],
+        'es_ES' => [
             'Spanish',
             'Spain',
             'ISO8859-1',
             'es',
-            'es'
-        ),
-        'fi_FI' => array(
+            'es',
+        ],
+        'fi_FI' => [
             'Finnish',
             'Finland',
             'ISO8859-1',
             'fi',
-            'en'
-        ),
-        'fr_BE' => array(
+            'en',
+        ],
+        'fr_BE' => [
             'French',
             'Belgium',
             'ISO8859-1',
             'fr-be',
-            'fr'
-        ),
-        'fr_CA' => array(
+            'fr',
+        ],
+        'fr_CA' => [
             'French',
             'Canada',
             'ISO8859-1',
             'fr-ca',
-            'fr'
-        ),
-        'fr_FR' => array(
+            'fr',
+        ],
+        'fr_FR' => [
             'French',
             'France',
             'ISO8859-1',
             'fr',
-            'fr'
-        ),
-        'fr_CH' => array(
+            'fr',
+        ],
+        'fr_CH' => [
             'French',
             'Switzerland',
             'ISO8859-1',
             'fr-ch',
-            'fr'
-        ),
-        'hr_HR' => array(
+            'fr',
+        ],
+        'hr_HR' => [
             'Croatian',
             'Croatia',
             'ISO8859-2',
             'hr',
-            'en'
-        ),
-        'hu_HU' => array(
+            'en',
+        ],
+        'hu_HU' => [
             'Hungarian',
             'Hungary',
             'ISO8859-2',
             'hu',
-            'hu'
-        ),
-        'is_IS' => array(
+            'hu',
+        ],
+        'is_IS' => [
             'Icelandic',
             'Iceland',
             'ISO8859-1',
             'is',
-            'en'
-        ),
-        'it_IT' => array(
+            'en',
+        ],
+        'it_IT' => [
             'Italian',
             'Italy',
             'ISO8859-1',
             'it',
-            'it'
-        ),
-        'iw_IL' => array(
+            'it',
+        ],
+        'iw_IL' => [
             'Hebrew',
             'Israel',
             'ISO8859-8',
             'he',
-            'he'
-        ),
-        'nl_BE' => array(
+            'he',
+        ],
+        'nl_BE' => [
             'Dutch',
             'Belgium',
             'ISO8859-1',
             'nl-be',
-            'nl'
-        ),
-        'nl_NL' => array(
+            'nl',
+        ],
+        'nl_NL' => [
             'Dutch',
             'Netherlands',
             'ISO8859-1',
             'nl',
-            'nl'
-        ),
-        'no_NO' => array(
+            'nl',
+        ],
+        'no_NO' => [
             'Norwegian',
             'Norway',
             'ISO8859-1',
             'no',
-            'en'
-        ),
-        'pl_PL' => array(
+            'en',
+        ],
+        'pl_PL' => [
             'Polish',
             'Poland',
             'ISO8859-2',
             'pl',
-            'en'
-        ),
-        'pt_BR' => array(
+            'en',
+        ],
+        'pt_BR' => [
             'Brazillian',
             'Brazil',
             'ISO8859-1',
             'pt-br',
-            'br'
-        ),
-        'pt_PT' => array(
+            'br',
+        ],
+        'pt_PT' => [
             'Portuguese',
             'Portugal',
             'ISO8859-1',
             'pt',
-            'en'
-        ),
-        'ro_RO' => array(
+            'en',
+        ],
+        'ro_RO' => [
             'Romanian',
             'Romania',
             'ISO8859-2',
             'ro',
-            'en'
-        ),
-        'ru_RU' => array(
+            'en',
+        ],
+        'ru_RU' => [
             'Russian',
             'Russia',
             'ISO8859-5',
             'ru',
-            'ru'
-        ),
-        'sh_SP' => array(
+            'ru',
+        ],
+        'sh_SP' => [
             'Serbian Latin',
             'Yugoslavia',
             'ISO8859-2',
             'sr',
-            'en'
-        ),
-        'sl_SI' => array(
+            'en',
+        ],
+        'sl_SI' => [
             'Slovene',
             'Slovenia',
             'ISO8859-2',
             'sl',
-            'en'
-        ),
-        'sk_SK' => array(
+            'en',
+        ],
+        'sk_SK' => [
             'Slovak',
             'Slovakia',
             'ISO8859-2',
             'sk',
-            'en'
-        ),
-        'sq_AL' => array(
+            'en',
+        ],
+        'sq_AL' => [
             'Albanian',
             'Albania',
             'ISO8859-1',
             'sq',
-            'en'
-        ),
-        'sr_SP' => array(
+            'en',
+        ],
+        'sr_SP' => [
             'Serbian Cyrillic',
             'Yugoslavia',
             'ISO8859-5',
             'sr-cy',
-            'en'
-        ),
-        'sv_SE' => array(
+            'en',
+        ],
+        'sv_SE' => [
             'Swedish',
             'Sweden',
             'ISO8859-1',
             'sv',
-            'se'
-        ),
-        'tr_TR' => array(
+            'se',
+        ],
+        'tr_TR' => [
             'Turkisch',
             'Turkey',
             'ISO8859-9',
             'tr',
-            'tr'
-        )
-    );
+            'tr',
+        ],
+    ];
 
     return $aLanguages;
 }

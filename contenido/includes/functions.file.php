@@ -100,10 +100,11 @@ function getFileInformation($iIdClient, $sFilename, $sType, $oDb) {
     $sFilename = cSecurity::filter((string) $sFilename, $oDb);
     $sType = cSecurity::filter((string) $sType, $oDb);
 
-    $aFileInformation = array();
     $sSql = "SELECT * FROM `" . $cfg["tab"]["file_information"] . "` WHERE idclient = $iIdClient AND
             filename = '$sFilename' AND type = '$sType';";
     $oDb->query($sSql);
+
+    $aFileInformation = [];
     if ($oDb->numRows() > 0) {
         $oDb->nextRecord();
         $aFileInformation['idsfi'] = $oDb->f('idsfi');
@@ -286,7 +287,8 @@ function scanDirectory($sDirectory, $bRecursive = false) {
  *
  * @throws cInvalidArgumentException
  */
-function recursiveCopy($sourcePath, $destinationPath, $mode = null, array $options = array()) {
+function recursiveCopy($sourcePath, $destinationPath, $mode = null, array $options = []) {
     cDeprecated('This method is deprecated and is not needed any longer');
+
     return cDirHandler::recursiveCopy($sourcePath, $destinationPath, $mode);
 }

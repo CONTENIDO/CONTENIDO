@@ -36,12 +36,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 function prResolvePathViaURLNames($path) {
     global $cfg, $lang, $client;
 
-    $handle = startTiming('prResolvePathViaURLNames', array($path));
+    $handle = startTiming('prResolvePathViaURLNames', [$path]);
 
     // Initialize variables
-    $db = cRegistry::getDb();
-    $categories = array();
-    $results = array();
+    $db         = cRegistry::getDb();
+    $categories = [];
+    $results    = [];
 
     // Pre-process path
     $path = cString::toLowerCase(str_replace(' ', '', $path));
@@ -66,7 +66,7 @@ function prResolvePathViaURLNames($path) {
             AND C.visible = 1 AND B.idclient=" . (int) $client . " ORDER BY A.idtree";
     $db->query($sql);
 
-    $catpath = array();
+    $catpath = [];
     while ($db->nextRecord()) {
         $cat_str = '';
         prCreateURLNameLocationString($db->f('idcat'), '/', $cat_str, false, '', 0, 0, true, true);
@@ -134,12 +134,12 @@ function prResolvePathViaURLNames($path) {
 function prResolvePathViaCategoryNames($path, &$iLangCheck) {
     global $cfg, $lang, $client;
 
-    $handle = startTiming('prResolvePathViaCategoryNames', array($path));
+    $handle = startTiming('prResolvePathViaCategoryNames', [$path]);
 
     // Initialize variables
-    $db = cRegistry::getDb();
-    $categories = array();
-    $results = array();
+    $db            = cRegistry::getDb();
+    $categories    = [];
+    $results       = [];
     $iLangCheckOrg = $iLangCheck;
 
     // To take only path body
@@ -169,14 +169,14 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck) {
             AND C.visible = 1 AND B.idclient= " . (int) $client . " ORDER BY A.idtree";
     $db->query($sql);
 
-    $catpath = array();
-    $arrLangMatches = array();
+    $catpath        = [];
+    $arrLangMatches = [];
 
     while ($db->nextRecord()) {
         $cat_str = '';
-        $aTemp = '';
-        $iFor = 0;
-        $bLang = false;
+        $aTemp   = '';
+        $iFor    = 0;
+        $bLang   = false;
 
         // $level is changeless 0!!!
         conCreateLocationString($db->f('idcat'), '/', $cat_str, false, '', 0, $db->f('idlang'));
@@ -408,10 +408,10 @@ function prGetCacheFileContent($client, $lang) {
     if (cFileHandler::exists($path . $filename)) {
         $data = unserialize(cFileHandler::read($path . $filename));
     } else {
-        $data = array();
+        $data = [];
     }
 
-    return (is_array($data)) ? $data : array();
+    return (is_array($data)) ? $data : [];
 }
 
 /**

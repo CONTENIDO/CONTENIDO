@@ -101,9 +101,7 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
     }
 
     // Loop through languages
-    $aLanguages = array(
-        $lang
-    );
+    $aLanguages = [$lang];
     foreach ($aLanguages as $curLang) {
         $name = $catname;
         $urlname = conHtmlSpecialChars(cString::cleanURLCharacters($catalias), ENT_QUOTES);
@@ -339,12 +337,13 @@ function strRemakeTreeTable() {
 
     // Get all categories by client
     $sql = "SELECT idcat, parentid, preid, postid FROM " . $cfg['tab']['cat'] . " WHERE idclient = " . (int) $client . " ORDER BY parentid ASC, preid ASC, postid ASC";
-    $aCategories = array();
     $db->query($sql);
+
+    $aCategories = [];
     while ($db->nextRecord()) {
         $rs = $db->toArray();
         if (!isset($aCategories[$rs['parentid']])) {
-            $aCategories[$rs['parentid']] = array();
+            $aCategories[$rs['parentid']] = [];
         }
         $aCategories[$rs['parentid']][$rs['idcat']] = $rs;
     }
@@ -374,7 +373,7 @@ function strSortPrePost($arr) {
     }
 
     $curId = $firstElement;
-    $array = array();
+    $array = [];
 
     // Test for a last element in the category list
     $fine = false;
@@ -537,11 +536,11 @@ function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias) {
         return;
     }
 
-    $oldData = array(
-        'idcat' => $oCatLang->get('idcat'),
-        'name' => $oCatLang->get('name'),
-        'urlname' => $oCatLang->get('urlname')
-    );
+    $oldData = [
+        'idcat'   => $oCatLang->get('idcat'),
+        'name'    => $oCatLang->get('name'),
+        'urlname' => $oCatLang->get('urlname'),
+    ];
 
     $name = stripslashes($newCategoryName);
     $urlName = (trim($newCategoryAlias) != '') ? trim($newCategoryAlias) : $newCategoryName;
@@ -561,11 +560,11 @@ function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias) {
     $oCatLang->set('lastmodified', date('Y-m-d H:i:s'));
     $oCatLang->store();
 
-    $newData = array(
-        'idcat' => $idcat,
-        'name' => $name,
-        'urlname' => $urlName
-    );
+    $newData = [
+        'idcat'   => $idcat,
+        'name'    => $name,
+        'urlname' => $urlName,
+    ];
 
     cApiCecHook::execute('Contenido.Category.strRenameCategory', $newData, $oldData);
 }
@@ -591,10 +590,10 @@ function strRenameCategoryAlias($idcat, $lang, $newcategoryalias) {
         return;
     }
 
-    $oldData = array(
-        'idcat' => $oCatLang->get('idcat'),
-        'urlname' => $oCatLang->get('urlname')
-    );
+    $oldData = [
+        'idcat'   => $oCatLang->get('idcat'),
+        'urlname' => $oCatLang->get('urlname'),
+    ];
 
     if (trim($newcategoryalias) == '') {
         // Use categoryname as default -> get it escape it save it as urlname
@@ -609,10 +608,10 @@ function strRenameCategoryAlias($idcat, $lang, $newcategoryalias) {
     $client = cRegistry::getClientId();
     prDeleteCacheFileContent($client, $lang);
 
-    $newData = array(
-        'idcat' => $idcat,
-        'urlname' => $newcategoryalias
-    );
+    $newData = [
+        'idcat'   => $idcat,
+        'urlname' => $newcategoryalias,
+    ];
 
     cApiCecHook::execute('Contenido.Category.strRenameCategoryAlias', $newData, $oldData);
 }
@@ -775,9 +774,7 @@ function strDeleteCategory($idcat) {
         $oPostCat->store();
     }
 
-    $error = strCheckTreeForErrors(array(), array(
-        $idcat
-    ));
+    $error = strCheckTreeForErrors([], [$idcat]);
     if (!($error === false)) {
         if ($preid != 0) {
             $oPreCat = new cApiCategory($preid);
@@ -863,7 +860,7 @@ function strMoveUpCategory($idcat) {
         $oPostCat->loadByPrimaryKey((int) $postid);
     }
 
-    $updateCats = array();
+    $updateCats = [];
 
     // Update category before previous, if exists
     if ($oPrePreCat->isLoaded()) {
@@ -942,7 +939,7 @@ function strMoveDownCategory($idcat) {
     $postIdcat = $oPostCat->get('idcat');
     $postPostid = $oPostCat->get('postid');
 
-    $updateCats = array();
+    $updateCats = [];
 
     if ($preIdcat != 0) {
         // Update previous category, if exists
@@ -1047,7 +1044,7 @@ function strMoveSubtree($idcat, $newParentId, $newPreId = NULL, $newPostId = NUL
         $oldPostId = $category->get('postid');
         $oldParentId = $category->get('parentid');
 
-        $updateCats = array();
+        $updateCats = [];
 
         // update old predecessor (pre) category
         if ($oldPreId != 0) {
@@ -1163,7 +1160,7 @@ function strMoveCatTargetallowed($idcat, $source) {
 function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = false) {
     $bMultiple = (bool) $bMultiple;
 
-    $aCatArray = array();
+    $aCatArray = [];
     if ($bMultiple == true) {
         $aCatArray = strDeeperCategoriesArray($idcatParam);
     } else {
@@ -1276,11 +1273,14 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
     $oNewCatLang->store();
 
     // Execute cec hook
-    cApiCecHook::execute('Contenido.Category.strCopyCategory', array(
-        'oldcat' => $oOldCat,
-        'newcat' => $oNewCat,
-        'newcatlang' => $oNewCatLang
-    ));
+    cApiCecHook::execute(
+        'Contenido.Category.strCopyCategory',
+        [
+            'oldcat'     => $oOldCat,
+            'newcat'     => $oNewCat,
+            'newcatlang' => $oNewCatLang,
+        ]
+    );
 
     // Copy template configuration
     if ($oOldCatLang->get('idtplcfg') != 0) {
@@ -1403,14 +1403,14 @@ function strAssignTemplate($idcat, $client, $idTplCfg) {
  * @throws cDbException
  * @throws cException
  */
-function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
-    $errorMessages = array();
+function strCheckTreeForErrors($addCats = [], $ignoreCats = []) {
+    $errorMessages = [];
 
     // Get all categories into memory
     $cats = new cApiCategoryCollection();
     $cats->select("idclient = '" . cSecurity::toInteger(cRegistry::getClientId()) . "'");
 
-    $catArray = array();
+    $catArray = [];
     // first add the ones from the parameters
     foreach ($addCats as $addCat) {
         if ($addCat->get('idcat') == 0) {
@@ -1439,7 +1439,7 @@ function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
     // cApiCategory(catIdOfChildToParent)
     // check if every parent that is mentioned in the database actually exists
     $fine = true;
-    $parents = array();
+    $parents = [];
     foreach ($catArray as $idcat => $cat) {
         if (!array_key_exists($cat->get('parentid'), $catArray) && $cat->get('parentid') != 0) {
             $fine = false;
@@ -1453,8 +1453,8 @@ function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
         // first, check for multiple preids and postids
         // the category tree will miss some categories if multiple categories
         // share preids and/or postids
-        $preIds = array();
-        $postIds = array();
+        $preIds  = [];
+        $postIds = [];
         foreach ($parent as $idcat => $cat) {
             $preId = $cat->get('preid');
             $postId = $cat->get('postid');
@@ -1486,8 +1486,8 @@ function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
             continue;
         }
         // loop through the categories using the postid
-        $actCat = $startCat;
-        $checkedCats = array();
+        $actCat        = $startCat;
+        $checkedCats   = [];
         $checkedCats[] = $startCat->get('idcat');
         while ($actCat != null) {
             $catId = $actCat->get('idcat');
@@ -1540,8 +1540,8 @@ function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
             continue;
         }
         // loop through the categories using the preid
-        $actCat = $startCat;
-        $checkedCats = array();
+        $actCat        = $startCat;
+        $checkedCats   = [];
         $checkedCats[] = $startCat->get('idcat');
         while ($actCat != null) {
             $catId = $actCat->get('idcat');
@@ -1569,7 +1569,7 @@ function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
     // if everything is fine, return false
     // otherwise return the collected error messages
     if (!$fine) {
-        $messages = array();
+        $messages = [];
         foreach ($errorMessages as $errorMessage) {
             if (in_array($errorMessage, $messages)) {
                 continue;
