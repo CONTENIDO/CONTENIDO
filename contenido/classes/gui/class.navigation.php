@@ -401,7 +401,7 @@ class cGuiNavigation {
         }
 
         if ($availableLanguages->count() > 0) {
-            while (($myLang = $availableLanguages->nextAccessible()) !== false) {
+            while (($myLang = $availableLanguages->nextAccessible()) !== NULL) {
                 $key = $myLang->get('idlang');
                 $value = $myLang->get('name');
 

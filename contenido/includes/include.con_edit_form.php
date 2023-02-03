@@ -997,7 +997,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $languages->select("idlang IN(" . join(', ', $available_client_ids) . ")");
 
     $langArray = [];
-    while (($someLang = $languages->nextAccessible()) != false) {
+    while (($someLang = $languages->nextAccessible()) !== NULL) {
         $langArray[] = $someLang;
     }
 
