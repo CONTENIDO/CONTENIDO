@@ -140,7 +140,6 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage')) {
             $sPath = $oVersionJScript->getFilePath() . $sRevision;
 
             // Read XML Nodes and get an array
-            $aNodes = array();
             $aNodes = $oVersionJScript->initXmlReader($sPath);
 
             if (count($aNodes) > 1) {

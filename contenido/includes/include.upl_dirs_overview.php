@@ -87,11 +87,11 @@ $uplexpandedList = unserialize($currentuser->getUserProperty('system', 'upl_expa
 $upldbfsexpandedList = unserialize($currentuser->getUserProperty('system', 'upl_dbfs_expandstate'));
 
 if (!is_array($uplexpandedList)) {
-    $uplexpandedList = array();
+    $uplexpandedList = [];
 }
 
 if (!is_array($upldbfsexpandedList)) {
-    $upldbfsexpandedList = array();
+    $upldbfsexpandedList = [];
 }
 
 $dbfs = new cApiDbfsCollection();
@@ -144,19 +144,19 @@ if ($expand) {
     $rootTreeItem->markExpanded($expand);
 }
 
-$uplexpandedList = array();
+$uplexpandedList = [];
 $rootTreeItem->getExpandedList($uplexpandedList);
 
 $currentuser->setUserProperty('system', 'upl_expandstate', serialize($uplexpandedList));
 
-$objects = array();
+$objects = [];
 $rootTreeItem->traverse($objects);
 unset($objects[0]);
 
 if ($appendparameters == 'filebrowser') {
-    $mtree = new cGuiTree('b58f0ae3-8d4e-4bb3-a754-5f0628863364');
+    $mtree   = new cGuiTree('b58f0ae3-8d4e-4bb3-a754-5f0628863364');
     $cattree = conFetchCategoryTree();
-    $marray = array();
+    $marray  = [];
 
     foreach ($cattree as $key => $catitem) {
         $no_start = true;
@@ -187,14 +187,14 @@ if ($appendparameters == 'filebrowser') {
         $idcat = $catitem['idcat'];
 
         $name = '&nbsp;<a href="' . $sess->url("main.php?area=$area&frame=5&idcat=$idcat&appendparameters=$appendparameters") . '" target="right_bottom">' . $catitem['name'] . '</a>';
-        $marray[] = array(
-            'id' => $catitem['idcat'],
-            'name' => $name,
-            'level' => $catitem['level'],
-            'attributes' => array(
-                'icon' => $icon
-            )
-        );
+        $marray[] = [
+            'id'         => $catitem['idcat'],
+            'name'       => $name,
+            'level'      => $catitem['level'],
+            'attributes' => [
+                'icon' => $icon,
+            ],
+        ];
     }
 
     $mtree->setTreeName(i18n("Categories"));
@@ -209,7 +209,7 @@ if ($appendparameters == 'filebrowser') {
     $mtree->setCollapsed($collapsed);
     $mtree->processParameters();
 
-    $collapsed = array();
+    $collapsed = [];
     $mtree->getCollapsedList($collapsed);
 
     $tpl->set('s', 'CATBROWSER', $mtree->render());
@@ -334,12 +334,12 @@ if ($expand) {
     $rootTreeItem->markExpanded($expand);
 }
 
-$upldbfsexpandedList = array();
+$upldbfsexpandedList = [];
 $rootTreeItem->getExpandedList($upldbfsexpandedList);
 
 $currentuser->setUserProperty('system', 'upl_dbfs_expandstate', serialize($upldbfsexpandedList));
 
-$objects = array();
+$objects = [];
 $rootTreeItem->traverse($objects);
 
 unset($objects[0]);
@@ -361,7 +361,7 @@ $tpl->next();
 
 $dbfsc = new cApiDbfsCollection();
 
-$dlevels = array();
+$dlevels = [];
 
 if (is_array($objects)) {
     foreach ($objects as $a_file) {

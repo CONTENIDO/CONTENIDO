@@ -165,11 +165,11 @@ $sql = "SELECT A.idcat, level, name, parentid
             AND B.idclient = " . cSecurity::toInteger($rights_client) . " ORDER BY idtree";
 
 $db->query($sql);
-$counter = array();
+$counter  = [];
 $parentid = "leer";
 
-$aRowname = array();
-$iLevel = 0;
+$aRowname = [];
+$iLevel   = 0;
 
 while ($db->nextRecord()) {
     $iCurrentIdCat = $db->f('idcat');
@@ -212,16 +212,12 @@ while ($db->nextRecord()) {
 
         $spaces = '<img src="images/spacer.gif" height="1" width="' . ($db->f("level") * 15) . '"><a><img src="images/spacer.gif" width="7" id="' . implode('_', $aRowname) . '_img"></a>';
 
-        $objItem->updateAttributes(array(
-            "class" => "td_rights0"
-        ));
+        $objItem->updateAttributes(["class" => "td_rights0"]);
         $objItem->setContent($spaces . $db->f("name"));
         $items .= $objItem->render();
         $objItem->advanceID();
 
-        $objItem->updateAttributes(array(
-            "class" => "td_rights1"
-        ));
+        $objItem->updateAttributes(["class" => "td_rights1"]);
         $objItem->setContent("<a href=\"javascript:rightsInheritanceUp('$parentid', '$counter[$parentid]')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_links.gif\" alt=\"" . i18n("Apply rights for this category to all categories on the same level or above") . "\" title=\"" . i18n("Apply rights for this category to all categories on the same level or above") . "\"></a><img src=\"images/spacer.gif\" width=\"3\"><a href=\"javascript:rightsInheritanceDown('" . $db->f("idcat") . "')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_runter.gif\" alt=\"" . i18n("Apply rights for this category to all categories below the current category") . "\" title=\"" . i18n("Apply rights for this category to all categories below the current category") . "\"></a>");
         $items .= $objItem->render();
         $objItem->advanceID();
