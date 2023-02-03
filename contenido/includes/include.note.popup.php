@@ -51,7 +51,7 @@ if ($action == 'note_save_item') {
     $notesData = $propColl->getValuesOnlyByTypeName('note', 'category');
     $notesData = array_unique($notesData);
 
-    $categories = array('' => i18n('No category'));
+    $categories = ['' => i18n('No category')];
 
     $oNoteItem = new NoteItem();
 
@@ -68,10 +68,10 @@ if ($action == 'note_save_item') {
     $message = new cHTMLTextarea('note');
     $message->setStyle('width: 100%');
     $ui->add(i18n('Note'), $message->render());
-    $ui->add(i18n('Category'), array($cselect, $centry));
+    $ui->add(i18n('Category'), [$cselect, $centry]);
     $ui->setWidth('100%');
 
-    $cpage->setContent(array($list, $ui));
+    $cpage->setContent([$list, $ui]);
 }
 
 $cpage->render();

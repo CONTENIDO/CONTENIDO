@@ -114,15 +114,15 @@ function cecParseTemplate($template, cTemplate $templateObj) {
     $jsHeadCon = $prefix . "<!-- JS -->" . $jsHeadCon . $prefix . "<!-- /JS -->";
 
     // Placeholders to replace
-    $replacements = array(
-        '_SID_' => $sessid,
-        '_PATH_CONTENIDO_FULLHTML_' => $backendPath,
-        '_META_HEAD_CONTENIDO_' => $metaCon,
-        '_CSS_HEAD_CONTENIDO_' => str_replace('{basePath}', '', $cssHeadCon),
+    $replacements = [
+        '_SID_'                         => $sessid,
+        '_PATH_CONTENIDO_FULLHTML_'     => $backendPath,
+        '_META_HEAD_CONTENIDO_'         => $metaCon,
+        '_CSS_HEAD_CONTENIDO_'          => str_replace('{basePath}', '', $cssHeadCon),
         '_CSS_HEAD_CONTENIDO_FULLHTML_' => str_replace('{basePath}', $backendPath, $cssHeadCon),
-        '_JS_HEAD_CONTENIDO_' => str_replace('{basePath}', '', $jsHeadCon),
-        '_JS_HEAD_CONTENIDO_FULLHTML_' => str_replace('{basePath}', $backendPath, $jsHeadCon),
-    );
+        '_JS_HEAD_CONTENIDO_'           => str_replace('{basePath}', '', $jsHeadCon),
+        '_JS_HEAD_CONTENIDO_FULLHTML_'  => str_replace('{basePath}', $backendPath, $jsHeadCon),
+    ];
 
     // Loop through all replacements and replace keys which are not in needles but found
     // in the template

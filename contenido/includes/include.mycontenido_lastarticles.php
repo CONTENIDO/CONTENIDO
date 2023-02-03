@@ -164,11 +164,11 @@ while ($db->nextRecord()) {
 }
 
 // Sort select
-$s_types = array(
+$s_types = [
     1 => i18n("Alphabetical"),
     2 => i18n("Last change"),
-    3 => i18n("Creation date")
-);
+    3 => i18n("Creation date"),
+];
 
 $tpl2 = new cTemplate();
 $tpl2->set('s', 'NAME', 'sort');

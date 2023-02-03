@@ -166,10 +166,10 @@ $sql = "SELECT A.idcat, level, name, parentid
             AND B.idclient = " . cSecurity::toInteger($rights_client) . " ORDER BY idtree";
 $db->query($sql);
 
-$counter = array();
+$counter  = [];
 $parentid = "leer";
-$aRowname = array();
-$iLevel = 0;
+$aRowname = [];
+$iLevel   = 0;
 
 while ($db->nextRecord()) {
     if ($db->f("level") == 0 && $db->f("preid") != 0) {

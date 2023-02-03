@@ -73,20 +73,21 @@ $uploads->select("idclient = '" . $client . "' AND dirname = '" . $qpath . "' AN
 if ($upload = $uploads->next()) {
 
     // Which rows to display?
-    $aListRows = array();
-    $aListRows['filename'] = i18n('File name');
-    $aListRows['path'] = i18n('Path');
-    $aListRows['replacefile'] = i18n('Replace file');
-    $aListRows['medianame'] = i18n('Media name');
-    $aListRows['description'] = i18n('Description');
-    $aListRows['keywords'] = i18n('Keywords');
-    $aListRows['medianotes'] = i18n('Internal notes');
-    $aListRows['copyright'] = i18n('Copyright');
-    $aListRows['protected'] = i18n('Protection');
-    $aListRows['timecontrol'] = i18n('Time control');
-    $aListRows['preview'] = i18n('Preview');
-    $aListRows['author'] = i18n('Author');
-    $aListRows['modified'] = i18n('Last modified by');
+    $aListRows = [
+        'filename'    => i18n('File name'),
+        'path'        => i18n('Path'),
+        'replacefile' => i18n('Replace file'),
+        'medianame'   => i18n('Media name'),
+        'description' => i18n('Description'),
+        'keywords'    => i18n('Keywords'),
+        'medianotes'  => i18n('Internal notes'),
+        'copyright'   => i18n('Copyright'),
+        'protected'   => i18n('Protection'),
+        'timecontrol' => i18n('Time control'),
+        'preview'     => i18n('Preview'),
+        'author'      => i18n('Author'),
+        'modified'    => i18n('Last modified by'),
+    ];
 
     if ($isZipFile) {
         $id = $_GET['user_id'];
@@ -271,7 +272,7 @@ if ($upload = $uploads->next()) {
                 $_cecIterator = $_cecRegistry->getIterator('Contenido.Upl_edit.RenderRows');
 
                 if ($_cecIterator->count() > 0) {
-                    $contents = array();
+                    $contents = [];
                     while ($chainEntry = $_cecIterator->next()) {
                         $contents[] = $chainEntry->execute($iIdupl, $qpath, $filename, $sListRow);
                     }

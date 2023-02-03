@@ -145,9 +145,7 @@ $calscript = '
 </script>';
 
 $cpage->addScript($calscript);
-$cpage->setContent(array(
-    $ui
-));
+$cpage->setContent([$ui]);
 $cpage->addStyle("jquery/plugins/timepicker.css");
 // $cpage->addStyle("jquery/jquery-ui.css");
 

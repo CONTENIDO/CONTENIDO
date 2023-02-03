@@ -61,7 +61,7 @@ if ($bRedirect) {
 }
 
 if (isset($_GET['return']) || isset($_POST['return'])) {
-    $aLocator = array('lang=' . (int) $lang);
+    $aLocator = ['lang=' . (int)$lang];
 
     if ($idcat > 0) {
         $aLocator[] = 'idcat=' . (int) $idcat;

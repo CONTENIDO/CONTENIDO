@@ -83,15 +83,15 @@ class TODOBackendList extends cGuiScrollList {
      */
     public function onRenderColumn($column) {
         if ($column == 6 || $column == 5) {
-            $this->objItem->updateAttributes(array("align" => "center"));
+            $this->objItem->updateAttributes(["align" => "center"]);
         } else {
-            $this->objItem->updateAttributes(array("align" => "left"));
+            $this->objItem->updateAttributes(["align" => "left"]);
         }
 
         if ($column == 7) {
-            $this->objItem->updateAttributes(array("style" => "width: 85px;"));
+            $this->objItem->updateAttributes(["style" => "width: 85px;"]);
         } else {
-            $this->objItem->updateAttributes(array("style" => ""));
+            $this->objItem->updateAttributes(["style" => ""]);
         }
     }
 
@@ -417,7 +417,7 @@ $form->add(i18n("Options"), $restrict->render());
 
 if ($lcount == 0) {
     $cpage->displayInfo(i18n("No tasks found"));
-    $cpage->setContent(array($form));
+    $cpage->setContent([$form]);
 } else {
     if (!isset($sortby)) {
         $sortby = 1;
@@ -436,7 +436,7 @@ if ($lcount == 0) {
     $list->setSortable(7, true);
     $list->sort(cSecurity::toInteger($sortby), $sortmode);
 
-    $cpage->setContent(array($form, $list));
+    $cpage->setContent([$form, $list]);
 }
 $cpage->render();
 
