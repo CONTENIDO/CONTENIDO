@@ -29,7 +29,7 @@ cInclude('includes', 'functions.str.php');
  * @param string $direction
  *
  * @return bool
- * 
+ *
  * @throws cDbException
  * @throws cException
  * @throws cInvalidArgumentException
@@ -59,7 +59,7 @@ function langEditLanguage($idlang, $langname, $encoding, $active, $direction = '
  *
  * @return int
  *         New language id
- * 
+ *
  * @throws cDbException
  * @throws cException
  * @throws cInvalidArgumentException
@@ -102,7 +102,7 @@ function langNewLanguage($name, $client) {
  *         Name of the language
  *
  * @return bool
- * 
+ *
  * @throws cDbException
  * @throws cException
  * @throws cInvalidArgumentException
@@ -125,7 +125,7 @@ function langRenameLanguage($idlang, $name) {
  *         Id of the client, uses global client id by default
  *
  * @return void|string
- * 
+ *
  * @throws cDbException
  * @throws cException
  * @throws cInvalidArgumentException
@@ -187,7 +187,7 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0) {
             $aIdTplCfg[] = $db->f('idtplcfg');
         }
         foreach ($aIdArtLang as $value) {
-            $value = (int) $value;
+            $value = cSecurity::toInteger($value);
             $sql = "DELETE FROM " . $cfg['tab']['art_lang'] . " WHERE idartlang=" . $value;
             $db->query($sql);
             $sql = "DELETE FROM " . $cfg['tab']['content'] . " WHERE idartlang=" . $value;
@@ -196,7 +196,7 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0) {
 
         if ($lastlanguage == 1) {
             foreach ($aIdArt as $value) {
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 $sql = "DELETE FROM " . $cfg['tab']['art'] . " WHERE idart=" . $value;
                 $db->query($sql);
                 $sql = "DELETE FROM " . $cfg['tab']['cat_art'] . " WHERE idart=" . $value;
@@ -219,7 +219,7 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0) {
         }
         if ($lastlanguage == 1) {
             foreach ($aIdCat as $value) {
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 $sql = "DELETE FROM " . $cfg['tab']['cat'] . " WHERE idcat=" . $value;
                 $db->query($sql);
                 $sql = "DELETE FROM " . $cfg['tab']["cat_tree"] . " WHERE idcat=" . $value;
@@ -285,7 +285,7 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0) {
  * @param int $active
  *
  * @return bool
- * 
+ *
  * @throws cDbException
  * @throws cException
  * @throws cInvalidArgumentException
@@ -309,7 +309,7 @@ function langActivateDeactivateLanguage($idlang, $active) {
  *
  * @return string
  *         'ltr' or 'rtl'
- * 
+ *
  * @throws cDbException
  * @throws cException
  */

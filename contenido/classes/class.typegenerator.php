@@ -153,8 +153,9 @@ class cTypeGenerator {
                 $typeClassName = $this->_getContentTypeClassName($typeItem->type);
                 $typeCodeFile = $this->_getContentTypeCodeFilePathName($typeItem->type);
 
+                $settings = self::$a_content[$this->_idart][$typeItem->type][$index] ?? '';
                 /** @var cContentTypeAbstract $cTypeObject */
-                $cTypeObject = new $typeClassName(self::$a_content[$this->_idart][$typeItem->type][$index], $index, $items);
+                $cTypeObject = new $typeClassName($settings, $index, $items);
                 if (cRegistry::isBackendEditMode()) {
                     $tmp = $cTypeObject->generateEditCode();
                 } else {
