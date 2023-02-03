@@ -237,9 +237,18 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
      * @return string
      */
     public function convertFormat($input) {
-        $aFormatCodes = array(
-            "y" => "%y", "Y" => "%Y", "d" => "%d", "m" => "%m", "H" => "%H", "h" => "%I", "i" => "%M", "s" => "%S", "a" => "%P", "A" => "%P"
-        );
+        $aFormatCodes = [
+            "y" => "%y",
+            "Y" => "%Y",
+            "d" => "%d",
+            "m" => "%m",
+            "H" => "%H",
+            "h" => "%I",
+            "i" => "%M",
+            "s" => "%S",
+            "a" => "%P",
+            "A" => "%P",
+        ];
 
         foreach ($aFormatCodes as $sFormatCode => $sReplacement) {
             $input = str_replace($sFormatCode, $sReplacement, $input);
@@ -286,7 +295,6 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
             }
         }
 
-        $aLists = array();
         $aLists = explode(",", cString::toLowerCase(str_replace(" ", "", $lists)));
 
         if (in_array("link", $aLists)) {
@@ -476,13 +484,14 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         $sess = cRegistry::getBackendSessionId();
 
         // Add the path to the following values
-        $aParameters = array(
-            //builtin
-            'content_css', 'popups_css', 'popups_css_add', 'editor_css', // plugins
-            'plugin_preview_pageurl', //preview plugin
-            'media_external_list_url', //media plugin
-            'template_external_list_url' //template plugin
-        );
+        $aParameters = [
+            // builtin
+            'content_css', 'popups_css', 'popups_css_add', 'editor_css',
+            // plugins
+            'plugin_preview_pageurl', // preview plugin
+            'media_external_list_url', // media plugin
+            'template_external_list_url' // template plugin
+        ];
 
         foreach ($aParameters as $sParameter) {
             if (array_key_exists($sParameter, $this->_aSettings)) {
@@ -491,10 +500,10 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         }
 
         // Session for template and media support files that are written in PHP
-        $aParameters = array(
-            'media_external_list_url', //media plugin
-            'template_external_list_url' //template plugin
-        );
+        $aParameters = [
+            'media_external_list_url', // media plugin
+            'template_external_list_url' // template plugin
+        ];
 
         foreach ($aParameters as $sParameter) {
             if (array_key_exists($sParameter, $this->_aSettings) && preg_match('/\\.php$/i', $this->_aSettings[$sParameter])) {

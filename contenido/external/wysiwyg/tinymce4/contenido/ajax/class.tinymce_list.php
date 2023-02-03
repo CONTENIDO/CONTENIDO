@@ -33,11 +33,13 @@ if (!is_file($contenido_path . 'includes/startup.php')) {
 }
 include_once($contenido_path . 'includes/startup.php');
 
-cRegistry::bootstrap(array(
-    'sess' => 'cSession',
-    'auth' => 'cAuthHandlerBackend',
-    'perm' => 'cPermission'
-));
+cRegistry::bootstrap(
+    [
+        'sess' => 'cSession',
+        'auth' => 'cAuthHandlerBackend',
+        'perm' => 'cPermission',
+    ]
+);
 
 // include editor config/combat file
 include(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'config.php');
@@ -62,7 +64,6 @@ class cTinyMCE4List {
             return;
         }
 
-        $list = array();
         // process defined list modes
         switch ($mode) {
             case 'image':
@@ -73,6 +74,7 @@ class cTinyMCE4List {
                 break;
             default:
                 // just output an empty list for unknown mode
+                $list = [];
         }
 
         $this->_printList($list);
@@ -94,12 +96,15 @@ class cTinyMCE4List {
         $selectClause = "idclient='" . cSecurity::toInteger($client) . "' AND filetype IN ('gif', 'jpg', 'jpeg', 'png')";
         $oApiUploadCol->select($selectClause, '', 'dirname, filename ASC');
         // $oApiUploadCol->setWhere('idclient', cSecurity::toInteger($client));
-        // $oApiUploadCol->setWhere('filetype', array('gif', 'jpg', 'jpeg', 'png'), 'IN');
+        // $oApiUploadCol->setWhere('filetype', ['gif', 'jpg', 'jpeg', 'png'], 'IN');
         // $oApiUploadCol->setOrder('dirname, filename ASC');
         // $oApiUploadCol->query();
-        $aUplList = $oApiUploadCol->fetchArray($oApiUploadCol->getPrimaryKeyName(), array('idclient', 'dirname', 'filetype', 'filename'));
+        $aUplList = $oApiUploadCol->fetchArray(
+            $oApiUploadCol->getPrimaryKeyName(),
+            ['idclient', 'dirname', 'filetype', 'filename']
+        );
 
-        $imageList = array();
+        $imageList = [];
         foreach ($aUplList as $uplItem) {
             $imageItem = new stdClass();
             $imageItem->title = $uplItem['dirname'] . $uplItem['filename'];
@@ -137,7 +142,7 @@ class cTinyMCE4List {
             $scope = &$scope[key($scope)];
             // add menu property to object if it does not exist
             if (false === isset($scope->menu)) {
-                $scope->menu = array();
+                $scope->menu = [];
             }
             // get reference to menu
             $scope = &$scope->menu;
@@ -159,32 +164,33 @@ class cTinyMCE4List {
     private function _buildLinkList() {
         global $client, $lang;
 
-        $linkList = array();
-
         $catTree = new cApiCategoryTreeCollection();
         $catList = $catTree->getCategoryTreeStructureByClientIdAndLanguageId($client, $lang);
 
+        $linkList = [];
         foreach ($catList as $catEntry) {
             $tmp_catname = $catEntry['name'];
             if ($catEntry['visible'] == 0) {
                 $tmp_catname = "[" . $tmp_catname . "]";
             }
-            $listEntry = (object) array('title' => $tmp_catname,
-                                        'value' => 'front_content.php?idcat=' . $catEntry['idcat']);
+            $listEntry = (object)[
+                'title' => $tmp_catname,
+                'value' => 'front_content.php?idcat=' . $catEntry['idcat'],
+            ];
 
             $linkList = $this->_addToWoodTree($linkList, (int) $catEntry['level'], $listEntry);
 
-            $options = array();
-            $options['idcat'] = $catEntry['idcat'];
-            // order by title
-            $options['order'] = 'title';
-            // order ascending
-            $options['direction'] = 'asc';
-            // include start articles
-            $options['start'] = true;
-            // show offline articles
-            $options['offline'] = true;
-
+            $options = [
+                'idcat'     => $catEntry['idcat'],
+                // order by title
+                'order'     => 'title',
+                // order ascending
+                'direction' => 'asc',
+                // include start articles
+                'start'     => true,
+                // show offline articles
+                'offline'   => true,
+            ];
 
             // create cArticleCollector instance with specified options
             $articleCollector = new cArticleCollector($options);
@@ -194,10 +200,11 @@ class cTinyMCE4List {
                 continue;
             }
 
-            $listEntry->menu = array();
-            $listEntry->menu[] = (object) array('title' => $tmp_catname . ' ' . i18n('Category'),
-                                                'value' => 'front_content.php?idcat=' . $catEntry['idcat']
-            );
+            $listEntry->menu = [];
+            $listEntry->menu[] = (object)[
+                'title' => $tmp_catname . ' ' . i18n('Category'),
+                'value' => 'front_content.php?idcat=' . $catEntry['idcat'],
+            ];
 
             foreach ($articleCollector as $articleLanguage) {
                 $tmp_title = $articleLanguage->get("title");
@@ -221,6 +228,7 @@ class cTinyMCE4List {
                 $listEntry->menu[] = $articleEntry;
             }
         }
+
         return $linkList;
     }
 
