@@ -42,8 +42,8 @@ if (!$perm->have_perm_area_action($area, $action)) {
 }
 
 if (($action == "group_deletemember") && ($perm->have_perm_area_action($area, $action))) {
-    $aDeleteMembers = array();
     if (!is_array($user_in_group)) {
+        $aDeleteMembers = [];
         if ($user_in_group > 0) {
             $aDeleteMembers[] = $user_in_group;
         }

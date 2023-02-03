@@ -161,7 +161,6 @@ if ($sFileName != '' && !empty($aFileInfo['idsfi']) && ($requestAction != 'histo
         $sPath = $oVersionStyle->getFilePath() . $sRevision;
 
         // Read XML Nodes and get an array
-        $aNodes = array();
         $aNodes = $oVersionStyle->initXmlReader($sPath);
 
         // Create Textarea and fill it with xml nodes

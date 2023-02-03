@@ -35,7 +35,7 @@ function cecFrontendCategoryAccess_Backend($idlang, $idcat, $user) {
 
     $db2 = cRegistry::getDb();
 
-    $arrSearchFor = array("'" . $db2->escape($user) . "'");
+    $arrSearchFor = ["'" . $db2->escape($user) . "'"];
 
     $sql = "SELECT * FROM " . $cfg['tab']['groupmembers'] . " WHERE user_id = '" . $db2->escape($user) . "'";
 

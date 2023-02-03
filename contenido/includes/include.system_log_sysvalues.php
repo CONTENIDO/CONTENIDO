@@ -48,7 +48,7 @@ if ($action == 'deletelog' && !empty($logfile)) {
     }
 }
 
-$files = array();
+$files = [];
 foreach (new DirectoryIterator($path) as $fileInfo) {
     if (in_array($fileInfo->getFilename(), $cfg['system_log']['allowed_filenames'])) {
         $files[] = $path . $fileInfo->getFilename();
@@ -90,12 +90,14 @@ if (!empty($files)) {
     $link->setClass('js-action-show-log');
     $image = new cHTMLImage('images/submit.gif');
     $link->appendContent($image);
-    $div = new cHTMLDiv(array(
-        new cHTMLSpan(i18n('Show ')),
-        new cHTMLTextbox('number-of-lines', $numberOfLines, 3),
-        new cHTMLSpan(i18n(' lines')),
-        $link
-    ), 'right');
+    $div = new cHTMLDiv(
+        [
+            new cHTMLSpan(i18n('Show ')),
+            new cHTMLTextbox('number-of-lines', $numberOfLines, 3),
+            new cHTMLSpan(i18n(' lines')),
+            $link,
+        ], 'right'
+    );
     $logHeader->appendContent($div);
 
     $page->appendContent($logHeader);

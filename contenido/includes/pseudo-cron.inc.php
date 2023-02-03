@@ -422,7 +422,7 @@ function markLastRun($jobname, $lastRun, $PC_writeDir) {
  */
 function runJob($job, $PC_jobDir, $PC_writeDir, $PC_useLog, $PC_debug = false) {
     global $sess;
-    $extjob = array();
+    $extjob = [];
 
     parseElement($job[PC_MINUTE], $extjob[PC_MINUTE], 60);
     parseElement($job[PC_HOUR], $extjob[PC_HOUR], 24);
@@ -473,8 +473,8 @@ function runJob($job, $PC_jobDir, $PC_writeDir, $PC_useLog, $PC_debug = false) {
  */
 function parseCronFile($PC_cronTabFile, $PC_debug) {
     $file = @file($PC_cronTabFile);
-    $job = array();
-    $jobs = array();
+    $job  = [];
+    $jobs = [];
 
     if (!is_array($file)) {
         return $jobs;
@@ -489,7 +489,9 @@ function parseCronFile($PC_cronTabFile, $PC_debug) {
                 $jobs[$jobNumber] = $job;
                 if ($jobs[$jobNumber][PC_DOW][0] != '*' AND !is_numeric($jobs[$jobNumber][PC_DOW])) {
                     $jobs[$jobNumber][PC_DOW] = str_replace(
-                        array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"), array(0, 1, 2, 3, 4, 5, 6), $jobs[$jobNumber][PC_DOW]
+                        ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+                        [0, 1, 2, 3, 4, 5, 6],
+                        $jobs[$jobNumber][PC_DOW]
                     );
                 }
                 $jobs[$jobNumber][PC_CMD] = trim($job[PC_CMD]);
