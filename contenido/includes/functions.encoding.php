@@ -47,7 +47,7 @@ function getEncodingByLanguage($db, $lang) {
  * @return string
  */
 function htmlentities_iso88592($input = '') {
-    $arrEntities_pl = array(
+    $arrEntities_pl = [
         '&ecirc;',
         '&oacute;',
         '&plusmn;',
@@ -65,8 +65,8 @@ function htmlentities_iso88592($input = '') {
         '&not;',
         '&macr;',
         '&AElig;',
-        '&Ntilde;'
-    );
+        '&Ntilde;',
+    ];
     $arrEntities = conGetHtmlTranslationTable(HTML_ENTITIES);
     $arrEntities = array_diff($arrEntities, $arrEntities_pl);
 

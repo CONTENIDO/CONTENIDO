@@ -88,7 +88,7 @@ function generateDisplayFilePath($sDisplayPath, $iLimit) {
  * @throws cException
  * @throws cInvalidArgumentException
  */
-function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = array(), $iDepth = -1, $sPathString = '') {
+function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = [], $iDepth = -1, $sPathString = '') {
     cDeprecated('This method is deprecated and is not needed any longer');
 
     $iDepth++;
@@ -105,7 +105,7 @@ function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = arra
     }
 
     // list the files in the dir
-    $aCurrentFiles = array();
+    $aCurrentFiles = [];
     if (false === ($handle = cDirHandler::read('.', false, true))) {
         return $aFiles;
     }
@@ -119,15 +119,13 @@ function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = arra
     foreach ($aCurrentFiles as $file) {
         $sFilePathName = getcwd() . '/' . $file;
         if ((filetype($sFilePathName) == 'dir') && (opendir($sFilePathName) !== false)) {
-            $_aFile = array(
-                    'name' => $file,
-                    'depth' => $iDepth,
-                    'pathstring' => $sPathString . $file . '/'
-            );
-
+            $_aFile   = [
+                'name'       => $file,
+                'depth'      => $iDepth,
+                'pathstring' => $sPathString . $file . '/',
+            ];
             $aFiles[] = $_aFile;
-
-            $aFiles = uplDirectoryListRecursive($sFilePathName, getcwd(), $aFiles, $iDepth, $_aFile['pathstring']);
+            $aFiles   = uplDirectoryListRecursive($sFilePathName, getcwd(), $aFiles, $iDepth, $_aFile['pathstring']);
         }
     }
 
@@ -430,12 +428,12 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent) {
  * @throws cException
  */
 function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $sParent = '', $iRenameLevel = 0) {
-    $aInvalidDirectories = array();
+    $aInvalidDirectories = [];
 
     if (true === is_dir($sDirectory)) {
         $aDirsToExclude = uplGetDirectoriesToExclude();
 
-        $aFiles = array();
+        $aFiles = [];
 
         // list the files in the dir
         foreach (cDirHandler::read($sDirectory, false, true) as $key => $file) {
@@ -501,7 +499,7 @@ function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $c
     $item['.'] = $oRootItem;
 
     // TODO what was this array supposed to be?
-    $prevobj = array();
+    $prevobj = [];
     // TODO what was this object supposed to be?
     $lprevobj = new stdClass();
 
@@ -912,11 +910,7 @@ function uplCreateFriendlyName($filename) {
     $chars = '';
     if (is_array($additionalChars)) {
         $chars = implode("", $additionalChars);
-        $chars = str_replace(array(
-            '-',
-            '[',
-            ']'
-        ), '', $chars);
+        $chars = str_replace(['-', '[', ']'], '', $chars);
     }
 
     $filename = cString::replaceDiacritics($filename, cString::toUpperCase($encoding[$lang]));
@@ -946,7 +940,7 @@ function uplSearch($searchfor) {
 
     $searchfordb = $uplMetaColl->escape($searchfor);
 
-    $items = array();
+    $items = [];
 
     // Search for description, ranking *5
     $uplMetaColl->link('cApiUploadCollection');
