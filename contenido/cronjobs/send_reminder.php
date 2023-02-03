@@ -32,8 +32,8 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
     $sql = 'SELECT idclient FROM '.$cfg['tab']['clients'];
     $db->query($sql);
 
-    $clients = array();
-    $clientNames = array();
+    $clients     = [];
+    $clientNames = [];
 
     while ($db->nextRecord()) {
         $clients[] = $db->f('idclient');
@@ -44,7 +44,8 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
 
         $props = new cApiPropertyCollection();
         $props->select("itemtype = 'idcommunication' AND type = 'todo' AND name = 'reminderdate' AND value < $mydate AND value != 0 AND idclient=$client");
-        $pastreminders = array();
+
+        $pastreminders = [];
 
         while (($prop = $props->next()) !== false) {
             $pastreminders[] = $prop->get('itemid');
