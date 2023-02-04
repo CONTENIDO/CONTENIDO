@@ -41,6 +41,7 @@ return [
     'cArray' => 'contenido/classes/class.array.php',
     'cArticleCollector' => 'contenido/classes/class.article.collector.php',
     'cArticleContentHelper' => 'contenido/classes/class.article.content.helper.php',
+    'cArticleOverviewHelper' => 'contenido/classes/class.article.overview.helper.php',
     'cAutoload' => 'contenido/classes/class.autoload.php',
     'cBackend' => 'contenido/classes/class.backend.php',
     'cCategoryHelper' => 'contenido/classes/class.category.helper.php',
